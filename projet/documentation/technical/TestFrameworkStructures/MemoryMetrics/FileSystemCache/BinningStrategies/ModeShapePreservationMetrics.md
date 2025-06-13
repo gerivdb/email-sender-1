@@ -84,10 +84,9 @@ Ce document définit des métriques quantitatives pour évaluer la conservation 
 
 Métrique pondérée qui évalue la conservation de forme pour tous les modes, avec une importance accrue pour les modes de latence faible:
 
-```
+```plaintext
 ICFH = Σ(wi × similarité_forme_i) / Σwi
-```
-
+```plaintext
 Où:
 - wi = (max_latence / latence_mode_i)^α, avec α = 0.5 typiquement
 - similarité_forme_i = coefficient de Bhattacharyya entre les distributions normalisées du mode i
@@ -103,10 +102,9 @@ Où:
 
 Évalue la préservation des formes dans les régions de transition entre modes:
 
-```
+```plaintext
 ICT = moyenne(coefficient_Bhattacharyya(transition_i_réelle, transition_i_hist))
-```
-
+```plaintext
 Où les transitions sont définies comme les régions entre les points d'inflexion des modes adjacents.
 
 | Plage | Interprétation |
@@ -136,6 +134,7 @@ def normalize_mode_shape(x_values, y_values, mode_position, window_width):
         y_norm: Valeurs y normalisées (somme = 1)
     """
     # Sélectionner les points dans la fenêtre autour du mode
+
     mask = np.abs(x_values - mode_position) <= window_width
     x_window = x_values[mask]
     y_window = y_values[mask]
@@ -144,9 +143,11 @@ def normalize_mode_shape(x_values, y_values, mode_position, window_width):
         return np.array([]), np.array([])
     
     # Normaliser les positions x (centrer et mettre à l'échelle)
+
     x_norm = (x_window - mode_position) / window_width
     
     # Normaliser les valeurs y (somme = 1)
+
     y_sum = np.sum(y_window)
     if y_sum > 0:
         y_norm = y_window / y_sum
@@ -154,8 +155,7 @@ def normalize_mode_shape(x_values, y_values, mode_position, window_width):
         y_norm = y_window
     
     return x_norm, y_norm
-```
-
+```plaintext
 ### 6.2 Calcul du coefficient de Bhattacharyya
 
 ```python
@@ -171,15 +171,16 @@ def bhattacharyya_coefficient(p, q):
         bc: Coefficient de Bhattacharyya
     """
     # Vérifier que les distributions sont normalisées
+
     if abs(np.sum(p) - 1.0) > 1e-10 or abs(np.sum(q) - 1.0) > 1e-10:
         raise ValueError("Les distributions doivent être normalisées")
     
     # Calculer le coefficient
+
     bc = np.sum(np.sqrt(p * q))
     
     return bc
-```
-
+```plaintext
 ### 6.3 Calcul des métriques de conservation de forme
 
 ```python
@@ -201,25 +202,30 @@ def calculate_shape_preservation_metrics(real_modes, histogram_modes,
     x_hist, y_hist = hist_distribution
     
     # Associer chaque mode réel au mode histogramme le plus proche
+
     mode_pairs = []
     for real_mode in real_modes:
         closest_idx = np.argmin(np.abs(histogram_modes - real_mode))
         mode_pairs.append((real_mode, histogram_modes[closest_idx]))
     
     # Calculer les métriques pour chaque mode
+
     bc_values = []
     skewness_ratios = []
     kurtosis_ratios = []
     
     for real_mode, hist_mode in mode_pairs:
         # Estimer la largeur de la fenêtre comme 3 fois l'écart-type local
+
         # ou utiliser une heuristique basée sur la distance au mode voisin
+
         window_width = min(
             estimate_local_std(x_real, y_real, real_mode) * 3,
             min_distance_to_neighbor(real_modes, real_mode) * 0.8
         )
         
         # Normaliser les formes pour comparaison
+
         x_real_norm, y_real_norm = normalize_mode_shape(
             x_real, y_real, real_mode, window_width)
         x_hist_norm, y_hist_norm = normalize_mode_shape(
@@ -229,19 +235,23 @@ def calculate_shape_preservation_metrics(real_modes, histogram_modes,
             continue
         
         # Interpoler pour avoir les mêmes points x
+
         x_common = np.linspace(-1, 1, 100)
         y_real_interp = np.interp(x_common, x_real_norm, y_real_norm)
         y_hist_interp = np.interp(x_common, x_hist_norm, y_hist_norm)
         
         # Normaliser à nouveau après interpolation
+
         y_real_interp = y_real_interp / np.sum(y_real_interp)
         y_hist_interp = y_hist_interp / np.sum(y_hist_interp)
         
         # Calculer le coefficient de Bhattacharyya
+
         bc = bhattacharyya_coefficient(y_real_interp, y_hist_interp)
         bc_values.append(bc)
         
         # Calculer les moments centraux
+
         real_skewness = calculate_skewness(x_common, y_real_interp)
         hist_skewness = calculate_skewness(x_common, y_hist_interp)
         
@@ -249,6 +259,7 @@ def calculate_shape_preservation_metrics(real_modes, histogram_modes,
         hist_kurtosis = calculate_kurtosis(x_common, y_hist_interp)
         
         # Calculer les ratios (avec gestion des cas spéciaux)
+
         if abs(real_skewness) > 1e-10:
             skewness_ratio = hist_skewness / real_skewness
         else:
@@ -263,6 +274,7 @@ def calculate_shape_preservation_metrics(real_modes, histogram_modes,
         kurtosis_ratios.append(kurtosis_ratio)
     
     # Calculer l'indice de conservation de forme hiérarchique
+
     if bc_values:
         max_latency = max(real_modes)
         weights = [(max_latency / real_mode)**0.5 for real_mode, _ in mode_pairs]
@@ -272,10 +284,12 @@ def calculate_shape_preservation_metrics(real_modes, histogram_modes,
         icfh = 0.0
     
     # Filtrer les valeurs infinies ou NaN
+
     skewness_ratios = [r for r in skewness_ratios if np.isfinite(r)]
     kurtosis_ratios = [r for r in kurtosis_ratios if np.isfinite(r)]
     
     # Résultats
+
     metrics = {
         "BC": {
             "values": bc_values,
@@ -293,8 +307,7 @@ def calculate_shape_preservation_metrics(real_modes, histogram_modes,
     }
     
     return metrics
-```
-
+```plaintext
 ### 6.4 Fonctions auxiliaires
 
 ```python
@@ -321,29 +334,37 @@ def calculate_kurtosis(x, p):
 def estimate_local_std(x, y, mode_position):
     """Estime l'écart-type local autour d'un mode."""
     # Trouver l'index le plus proche du mode
+
     idx = np.argmin(np.abs(x - mode_position))
     
     # Trouver la hauteur du mode
+
     mode_height = y[idx]
     
     # Trouver les points à mi-hauteur
+
     half_height = mode_height / 2
     
     # Chercher à gauche
+
     left_idx = idx
     while left_idx > 0 and y[left_idx] > half_height:
         left_idx -= 1
     
     # Chercher à droite
+
     right_idx = idx
     while right_idx < len(y) - 1 and y[right_idx] > half_height:
         right_idx += 1
     
     # Calculer la largeur à mi-hauteur
+
     fwhm = x[right_idx] - x[left_idx]
     
     # Convertir FWHM en écart-type (pour une distribution normale)
+
     # FWHM = 2.355 * sigma
+
     std = fwhm / 2.355
     
     return max(std, (x[1] - x[0]) * 2)  # Garantir une valeur minimale
@@ -355,8 +376,7 @@ def min_distance_to_neighbor(modes, current_mode):
     
     distances = [abs(m - current_mode) for m in modes if m != current_mode]
     return min(distances) if distances else float('inf')
-```
-
+```plaintext
 ## 7. Seuils recommandés pour les latences de blocs de 2KB
 
 | Métrique | Mode | Monitoring | Analyse standard | Analyse détaillée |
@@ -428,8 +448,7 @@ def min_distance_to_neighbor(modes, current_mode):
     }
   }
 }
-```
-
+```plaintext
 ## 9. Exemples d'application
 
 ### 9.1 Cas d'étude: Histogramme à 20 bins uniformes

@@ -8,14 +8,12 @@ Depuis ce dossier, lancez :
 
 ```powershell
 npx @modelcontextprotocol/server-filesystem
-```
-
+```plaintext
 ou
 
 ```powershell
 node ./node_modules/@modelcontextprotocol/server-filesystem/dist/index.js
-```
-
+```plaintext
 ## Intégration avec MCP Manager et Proxy-MCP
 
 - Ce serveur peut être piloté par MCP Manager ou Proxy-MCP via la configuration des chemins et des ports.

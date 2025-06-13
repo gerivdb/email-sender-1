@@ -26,8 +26,7 @@ Les métriques de base pour les lectures aléatoires mesurent les caractéristiq
     }
   }
 }
-```
-
+```plaintext
 ### 2.2 Métriques statistiques fondamentales
 
 ```json
@@ -47,8 +46,7 @@ Les métriques de base pour les lectures aléatoires mesurent les caractéristiq
     "kurtosis": 8.2
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `unit` | string | - | Unité de mesure de la latence (microseconds, milliseconds, etc.) |
@@ -79,8 +77,7 @@ Les métriques de base pour les lectures aléatoires mesurent les caractéristiq
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `comparisonToSequential` | object | - | Comparaison avec les lectures séquentielles |
@@ -156,8 +153,7 @@ Les métriques de base pour les lectures aléatoires mesurent les caractéristiq
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `distribution` | object | Distribution statistique de la latence |
@@ -194,8 +190,7 @@ Les métriques de base pour les lectures aléatoires mesurent les caractéristiq
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `stability` | object | - | Métriques de stabilité de la latence |
@@ -232,8 +227,7 @@ Les métriques de base pour les lectures aléatoires mesurent les caractéristiq
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `randomnessCharacteristics` | object | - | Caractéristiques du modèle aléatoire |
@@ -279,8 +273,7 @@ Les métriques de base pour les lectures aléatoires mesurent les caractéristiq
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `timeSeries` | object | Série temporelle des métriques de latence |
@@ -314,8 +307,7 @@ Les métriques de base pour les lectures aléatoires mesurent les caractéristiq
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `throughput` | object | - | Métriques de débit pour les lectures aléatoires |
@@ -351,8 +343,7 @@ Les métriques de base pour les lectures aléatoires mesurent les caractéristiq
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `cacheEfficiency` | object | - | Métriques d'efficacité du cache pour les lectures aléatoires |
@@ -396,8 +387,7 @@ Les métriques de base pour les lectures aléatoires mesurent les caractéristiq
     }
   }
 }
-```
-
+```plaintext
 ### 5.2 Exemple complet
 
 ```json
@@ -579,8 +569,7 @@ Les métriques de base pour les lectures aléatoires mesurent les caractéristiq
     }
   }
 }
-```
-
+```plaintext
 ## 6. Bonnes pratiques
 
 ### 6.1 Collecte des métriques

@@ -11,14 +11,17 @@ Ce document définit les standards et bonnes pratiques pour le développement fr
 
 ## Structure des composants
 
-```
+```plaintext
 component/
   ├── Component.js       # Logique du composant
-  ├── Component.css      # Styles spécifiques au composant
-  ├── Component.test.js  # Tests unitaires
-  └── index.js           # Point d'entrée (export)
-```
 
+  ├── Component.css      # Styles spécifiques au composant
+
+  ├── Component.test.js  # Tests unitaires
+
+  └── index.js           # Point d'entrée (export)
+
+```plaintext
 ## Conventions de nommage
 
 - **Composants** : PascalCase (ex: `UserProfile`)

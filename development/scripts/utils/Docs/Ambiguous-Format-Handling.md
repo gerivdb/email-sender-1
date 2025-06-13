@@ -1,4 +1,4 @@
-﻿# Guide de gestion des cas ambigus
+# Guide de gestion des cas ambigus
 
 ## Introduction
 
@@ -18,35 +18,31 @@ Avec l'option `-AutoResolve`, le module choisit automatiquement le format avec l
 
 ```powershell
 Detect-FileFormat -FilePath "data.txt" -AutoResolve
-```
-
+```plaintext
 ### 2. Confirmation utilisateur
 
 Sans l'option `-AutoResolve`, le module demande Ã  l'utilisateur de choisir le format correct parmi les options possibles. L'utilisateur voit les formats possibles avec leurs scores de confiance et peut faire un choix Ã©clairÃ©.
 
 ```powershell
 Detect-FileFormat -FilePath "data.txt"
-```
-
+```plaintext
 Exemple d'interface de confirmation :
 
-```
+```plaintext
 Plusieurs formats possibles ont Ã©tÃ© dÃ©tectÃ©s.
 Veuillez sÃ©lectionner le format correct :
   1. JSON (Score: 75%, PrioritÃ©: 10)
   2. JAVASCRIPT (Score: 65%, PrioritÃ©: 9)
 
 Entrez le numÃ©ro du format (1-2) ou 'q' pour quitter:
-```
-
+```plaintext
 ### 3. MÃ©morisation des choix
 
 Avec l'option `-RememberChoices`, le module mÃ©morise les choix de l'utilisateur pour les cas similaires. Cela permet d'Ã©viter de redemander Ã  l'utilisateur pour des cas similaires Ã  l'avenir.
 
 ```powershell
 Detect-FileFormat -FilePath "data.txt" -RememberChoices
-```
-
+```plaintext
 Les choix sont stockÃ©s dans un fichier JSON (`UserFormatChoices.json`) qui associe une clÃ© unique reprÃ©sentant le cas ambigu au format choisi par l'utilisateur.
 
 ## Affichage des dÃ©tails
@@ -55,11 +51,10 @@ L'option `-ShowDetails` permet d'afficher des informations dÃ©taillÃ©es sur 
 
 ```powershell
 Detect-FileFormat -FilePath "data.txt" -ShowDetails
-```
-
+```plaintext
 Exemple de sortie dÃ©taillÃ©e :
 
-```
+```plaintext
 RÃ©sultats de dÃ©tection de format pour 'data.txt'
 Taille du fichier : 1024 octets
 Type de fichier : Texte
@@ -72,16 +67,14 @@ Tous les formats dÃ©tectÃ©s:
     CritÃ¨res: Extension (.txt), Contenu ("\"\\w+\"\\s*:"), Structure ("\\{.*\\}")
   - JAVASCRIPT (Score: 65%, PrioritÃ©: 9)
     CritÃ¨res: Contenu ("var\\s+\\w+\\s*="), Structure ("\\{.*\\}")
-```
-
+```plaintext
 ## Personnalisation du seuil d'ambiguÃ¯tÃ©
 
 Le seuil d'ambiguÃ¯tÃ© (la diffÃ©rence de score en dessous de laquelle deux formats sont considÃ©rÃ©s comme ambigus) peut Ãªtre personnalisÃ© en modifiant le paramÃ¨tre `AmbiguityThreshold` dans le script `Handle-AmbiguousFormats.ps1`.
 
 ```powershell
 Handle-AmbiguousFormats -FilePath "data.txt" -AmbiguityThreshold 15
-```
-
+```plaintext
 Un seuil plus bas rendra le systÃ¨me plus strict (plus de cas seront considÃ©rÃ©s comme ambigus), tandis qu'un seuil plus Ã©levÃ© le rendra plus permissif (moins de cas seront considÃ©rÃ©s comme ambigus).
 
 ## Exportation des rÃ©sultats
@@ -90,8 +83,7 @@ Les rÃ©sultats de dÃ©tection peuvent Ãªtre exportÃ©s dans diffÃ©rents 
 
 ```powershell
 Detect-FileFormat -FilePath "data.txt" -ShowDetails -ExportResults -ExportFormat "HTML"
-```
-
+```plaintext
 L'exportation HTML inclut une visualisation conviviale des formats dÃ©tectÃ©s avec leurs scores de confiance et les critÃ¨res correspondants.
 
 ## Bonnes pratiques

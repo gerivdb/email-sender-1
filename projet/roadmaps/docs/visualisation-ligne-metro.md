@@ -18,7 +18,7 @@ La métaphore du plan de métro est particulièrement adaptée à la visualisati
 
 ### Modèle de données
 
-```
+```plaintext
 RoadmapNetwork
 ├── Lines[] (Roadmaps)
 │   ├── id: string
@@ -39,8 +39,7 @@ RoadmapNetwork
     ├── to: string (station id)
     ├── type: "dependency"|"reference"|"continuation"
     └── metadata: object
-```
-
+```plaintext
 ### Composants techniques
 
 1. **Générateur de réseau**
@@ -140,7 +139,7 @@ Le système permet non seulement de visualiser mais aussi d'interagir avec les r
 
 ### Exemple 1: Vue globale du réseau de roadmaps
 
-```
+```plaintext
 ┌───────────────────────────────────────────────────────────┐
 │                                                           │
 │   ●───●───●───●      ●───●───●                           │
@@ -155,11 +154,10 @@ Le système permet non seulement de visualiser mais aussi d'interagir avec les r
 │           ●───●───●──────●───●───●                       │
 │                                                           │
 └───────────────────────────────────────────────────────────┘
-```
-
+```plaintext
 ### Exemple 2: Vue d'une roadmap spécifique avec statuts
 
-```
+```plaintext
 ┌───────────────────────────────────────────────────────────┐
 │                                                           │
 │   ★───◉───○───○───○───○                                   │
@@ -180,11 +178,10 @@ Légende:
 ◉ = Tâche en cours
 ○ = Tâche à faire
 ● = Tâche terminée
-```
-
+```plaintext
 ### Exemple 3: Vue avec filtrage par priorité
 
-```
+```plaintext
 ┌───────────────────────────────────────────────────────────┐
 │                                                           │
 │   ●───●───●───●      ●───●───●                           │
@@ -201,8 +198,7 @@ Légende:
 └───────────────────────────────────────────────────────────┘
 
 Note: Seules les tâches critiques sont affichées
-```
-
+```plaintext
 ## Intégration avec le système existant
 
 ### Intégration avec le format standardisé
@@ -233,24 +229,28 @@ L'intégration dans VS Code permet une expérience fluide :
 ## Plan d'implémentation
 
 ### Phase 1: Prototype de base (2 semaines)
+
 1. Développer le modèle de données
 2. Implémenter un générateur de réseau simple
 3. Créer un moteur de rendu SVG basique
 4. Développer une interface utilisateur minimaliste
 
 ### Phase 2: Fonctionnalités essentielles (3 semaines)
+
 1. Implémenter le zoom sémantique
 2. Développer le filtrage multi-critères
 3. Créer les algorithmes de layout
 4. Ajouter les interactions de base
 
 ### Phase 3: Intégration et optimisation (3 semaines)
+
 1. Intégrer avec le serveur MCP
 2. Connecter à Qdrant pour la recherche
 3. Optimiser les performances
 4. Développer l'extension VS Code
 
 ### Phase 4: Fonctionnalités avancées (2 semaines)
+
 1. Ajouter les modes d'affichage spécialisés
 2. Implémenter l'édition directe
 3. Développer les fonctionnalités de partage

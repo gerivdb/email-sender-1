@@ -1,16 +1,23 @@
-﻿# Attribution des Scores de ComplexitÃ© Technique des AmÃ©liorations
+# Attribution des Scores de ComplexitÃ© Technique des AmÃ©liorations
 
 Ce document prÃ©sente l'attribution des scores de complexitÃ© technique aux amÃ©liorations identifiÃ©es pour les diffÃ©rents gestionnaires.
 
 ## Table des MatiÃ¨res
 
 - [Process Manager](#process-manager)
+
 - [Mode Manager](#mode-manager)
+
 - [Roadmap Manager](#roadmap-manager)
+
 - [Integrated Manager](#integrated-manager)
+
 - [Script Manager](#script-manager)
+
 - [Error Manager](#error-manager)
+
 - [Configuration Manager](#configuration-manager)
+
 - [Logging Manager](#logging-manager)
 
 ## MÃ©thodologie

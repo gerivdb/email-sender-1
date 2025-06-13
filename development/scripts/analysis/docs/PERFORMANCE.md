@@ -1,4 +1,4 @@
-﻿# Optimisation des performances du systÃ¨me d'analyse
+# Optimisation des performances du systÃ¨me d'analyse
 
 Ce document explique comment optimiser les performances du systÃ¨me d'analyse de code.
 
@@ -22,36 +22,42 @@ $files | ForEach-Object -Parallel {
     $results = Invoke-FileAnalysis -FilePath $file.FullName -Tools $using:Tools
     $results
 } -ThrottleLimit 8
-```
-
+```plaintext
 #### PowerShell 5.1
 
 Si vous utilisez PowerShell 5.1, vous pouvez utiliser des Runspace Pools pour exÃ©cuter des analyses en parallÃ¨le :
 
 ```powershell
 # CrÃ©er un pool de runspaces
+
 $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
 $pool = [System.Management.Automation.Runspaces.RunspaceFactory]::CreateRunspacePool(1, 8, $sessionState, $Host)
 $pool.Open()
 
 # CrÃ©er un tableau pour stocker les runspaces
+
 $runspaces = @()
 
 # CrÃ©er un tableau pour stocker les rÃ©sultats
+
 $results = @()
 
 # CrÃ©er un runspace pour chaque fichier
+
 foreach ($file in $files) {
     $scriptBlock = {
         param($filePath, $tools, $modulePath)
         
         # Importer le module UnifiedResultsFormat
+
         Import-Module -Name $modulePath -Force
         
         # Analyser le fichier
+
         $fileResults = @()
         
         # ... code d'analyse ...
+
         
         return $fileResults
     }
@@ -60,15 +66,18 @@ foreach ($file in $files) {
     $powershell.RunspacePool = $pool
     
     # Ajouter le script et les paramÃ¨tres
+
     [void]$powershell.AddScript($scriptBlock)
     [void]$powershell.AddArgument($file.FullName)
     [void]$powershell.AddArgument($Tools)
     [void]$powershell.AddArgument($modulePath)
     
     # DÃ©marrer l'exÃ©cution asynchrone
+
     $handle = $powershell.BeginInvoke()
     
     # Ajouter le runspace au tableau
+
     $runspaces += [PSCustomObject]@{
         PowerShell = $powershell
         Handle = $handle
@@ -76,46 +85,50 @@ foreach ($file in $files) {
 }
 
 # Attendre que tous les runspaces soient terminÃ©s et rÃ©cupÃ©rer les rÃ©sultats
+
 foreach ($runspace in $runspaces) {
     $results += $runspace.PowerShell.EndInvoke($runspace.Handle)
     $runspace.PowerShell.Dispose()
 }
 
 # Fermer le pool de runspaces
+
 $pool.Close()
 $pool.Dispose()
-```
-
+```plaintext
 ### Filtrage des fichiers
 
 Le filtrage des fichiers permet d'analyser uniquement les fichiers pertinents, ce qui peut amÃ©liorer considÃ©rablement les performances.
 
 ```powershell
 # Filtrer les fichiers par extension
+
 $extensions = @(".ps1", ".psm1", ".psd1", ".js", ".jsx", ".ts", ".tsx", ".py")
 $files = Get-ChildItem -Path $Path -Recurse:$Recurse -File | Where-Object {
     $_.Extension -in $extensions
 }
 
 # Filtrer les fichiers par taille
+
 $maxSizeInBytes = 1MB
 $files = $files | Where-Object {
     $_.Length -le $maxSizeInBytes
 }
 
 # Filtrer les fichiers par date de modification
+
 $minDate = (Get-Date).AddDays(-7)
 $files = $files | Where-Object {
     $_.LastWriteTime -ge $minDate
 }
-```
-
+```plaintext
 ### Mise en cache des rÃ©sultats
 
 La mise en cache des rÃ©sultats permet d'Ã©viter d'analyser Ã  nouveau des fichiers qui n'ont pas Ã©tÃ© modifiÃ©s depuis la derniÃ¨re analyse.
 
 ```powershell
 # Fonction pour vÃ©rifier si un fichier a Ã©tÃ© modifiÃ© depuis la derniÃ¨re analyse
+
 function Test-FileModified {
     param (
         [Parameter(Mandatory = $true)]
@@ -138,6 +151,7 @@ function Test-FileModified {
 }
 
 # Fonction pour mettre Ã  jour le cache
+
 function Update-Cache {
     param (
         [Parameter(Mandatory = $true)]
@@ -156,6 +170,7 @@ function Update-Cache {
 }
 
 # Utilisation du cache
+
 $cachePath = Join-Path -Path $PSScriptRoot -ChildPath "cache"
 if (-not (Test-Path -Path $cachePath -PathType Container)) {
     New-Item -Path $cachePath -ItemType Directory -Force | Out-Null
@@ -175,8 +190,7 @@ foreach ($file in $files) {
         $results += $cachedResults
     }
 }
-```
-
+```plaintext
 ### Optimisation des outils d'analyse
 
 Certains outils d'analyse peuvent Ãªtre optimisÃ©s pour amÃ©liorer les performances.
@@ -195,8 +209,7 @@ $rules = @(
 )
 
 $results = Invoke-ScriptAnalyzer -Path $FilePath -IncludeRule $rules
-```
-
+```plaintext
 #### ESLint
 
 ESLint peut Ãªtre optimisÃ© en utilisant un fichier de configuration qui spÃ©cifie uniquement les rÃ¨gles nÃ©cessaires :
@@ -210,8 +223,7 @@ ESLint peut Ãªtre optimisÃ© en utilisant un fichier de configuration qui sp�
         "semi": "error"
     }
 }
-```
-
+```plaintext
 #### Pylint
 
 Pylint peut Ãªtre optimisÃ© en utilisant un fichier de configuration qui spÃ©cifie uniquement les rÃ¨gles nÃ©cessaires :
@@ -220,21 +232,21 @@ Pylint peut Ãªtre optimisÃ© en utilisant un fichier de configuration qui sp�
 [MESSAGES CONTROL]
 disable=all
 enable=unused-import,undefined-variable,unused-variable,syntax-error
-```
-
+```plaintext
 ### Optimisation de la gÃ©nÃ©ration de rapports
 
 La gÃ©nÃ©ration de rapports peut Ãªtre optimisÃ©e en limitant la quantitÃ© de donnÃ©es Ã  traiter :
 
 ```powershell
 # Limiter le nombre de rÃ©sultats
+
 $maxResults = 1000
 $results = $results | Select-Object -First $maxResults
 
 # Limiter les informations incluses dans le rapport
-$simplifiedResults = $results | Select-Object ToolName, FilePath, Line, Column, RuleId, Severity, Message
-```
 
+$simplifiedResults = $results | Select-Object ToolName, FilePath, Line, Column, RuleId, Severity, Message
+```plaintext
 ## Recommandations
 
 ### Configuration matÃ©rielle
@@ -266,40 +278,44 @@ Pour mesurer les performances du systÃ¨me d'analyse, vous pouvez utiliser les 
 ```powershell
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 # ... code Ã  mesurer ...
+
 $stopwatch.Stop()
 Write-Host "Temps d'exÃ©cution: $($stopwatch.Elapsed.TotalSeconds) secondes"
-```
-
+```plaintext
 ### Profilage du code
 
 ```powershell
 # Installer le module PSProfiler
+
 Install-Module -Name PSProfiler -Force
 
 # Profiler le code
+
 $profiler = New-PSProfiler
 $profiler.Start()
 # ... code Ã  profiler ...
+
 $profiler.Stop()
 $profiler.GetResults() | Format-Table -AutoSize
-```
-
+```plaintext
 ### Surveillance des ressources
 
 ```powershell
 # Mesurer l'utilisation du CPU
+
 $cpuUsage = Get-Counter -Counter "\Processor(_Total)\% Processor Time" -SampleInterval 1 -MaxSamples 10
 $cpuUsage.CounterSamples.CookedValue | Measure-Object -Average | Select-Object -ExpandProperty Average
 
 # Mesurer l'utilisation de la mÃ©moire
+
 $memoryUsage = Get-Counter -Counter "\Memory\Available MBytes" -SampleInterval 1 -MaxSamples 10
 $memoryUsage.CounterSamples.CookedValue | Measure-Object -Average | Select-Object -ExpandProperty Average
 
 # Mesurer l'utilisation du disque
+
 $diskUsage = Get-Counter -Counter "\PhysicalDisk(_Total)\Disk Bytes/sec" -SampleInterval 1 -MaxSamples 10
 $diskUsage.CounterSamples.CookedValue | Measure-Object -Average | Select-Object -ExpandProperty Average
-```
-
+```plaintext
 ## Conclusion
 
 L'optimisation des performances du systÃ¨me d'analyse de code est essentielle pour amÃ©liorer l'efficacitÃ© et la productivitÃ©. En utilisant les techniques d'optimisation prÃ©sentÃ©es dans ce document, vous pouvez amÃ©liorer considÃ©rablement les performances du systÃ¨me d'analyse, en particulier lors de l'analyse de grands projets avec de nombreux fichiers.

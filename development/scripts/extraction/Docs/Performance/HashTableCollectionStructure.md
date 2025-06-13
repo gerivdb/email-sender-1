@@ -27,13 +27,15 @@ $collection = @{
     Name = "NomDeLaCollection"
     Description = "Description de la collection"
     ItemsById = @{} # Table de hachage des éléments indexés par ID
+
     ItemsList = @() # Liste ordonnée des éléments (pour la compatibilité)
+
     Metadata = @{} # Table de hachage pour les métadonnées
+
     CreationDate = Get-Date
     LastModifiedDate = Get-Date
 }
-```
-
+```plaintext
 ### Propriétés principales
 
 | Propriété | Type | Description | Utilisation |
@@ -67,7 +69,9 @@ function New-ExtractedInfoCollection {
         Name = $Name
         Description = $Description
         ItemsById = @{} # Table de hachage vide
+
         ItemsList = @() # Tableau vide
+
         Metadata = @{}
         CreationDate = Get-Date
         LastModifiedDate = Get-Date
@@ -75,8 +79,7 @@ function New-ExtractedInfoCollection {
     
     return $collection
 }
-```
-
+```plaintext
 #### Add-ExtractedInfoToCollection (optimisé)
 
 ```powershell
@@ -103,29 +106,33 @@ function Add-ExtractedInfoToCollection {
     }
     
     # Vérifier si l'élément existe déjà
+
     if ($Collection.ItemsById.ContainsKey($Info.Id)) {
         # Remplacer l'élément existant
+
         $index = [array]::IndexOf($Collection.ItemsList, $Collection.ItemsById[$Info.Id])
         if ($index -ge 0) {
             $Collection.ItemsList[$index] = $Info
         } else {
             # Cas improbable où l'élément est dans ItemsById mais pas dans ItemsList
+
             $Collection.ItemsList += $Info
         }
     } else {
         # Ajouter un nouvel élément
+
         $Collection.ItemsList += $Info
     }
     
     # Mettre à jour la table de hachage
+
     $Collection.ItemsById[$Info.Id] = $Info
     
     $Collection.LastModifiedDate = Get-Date
     
     return $Collection
 }
-```
-
+```plaintext
 #### Get-ExtractedInfoFromCollection (optimisé)
 
 ```powershell
@@ -160,6 +167,7 @@ function Get-ExtractedInfoFromCollection {
     }
     
     # Accès direct par ID si spécifié
+
     if (-not [string]::IsNullOrEmpty($Id)) {
         if ($Collection.ItemsById.ContainsKey($Id)) {
             return $Collection.ItemsById[$Id]
@@ -168,9 +176,11 @@ function Get-ExtractedInfoFromCollection {
     }
     
     # Sinon, filtrer les éléments
+
     $items = $Collection.ItemsList
     
     # Appliquer les filtres
+
     if (-not [string]::IsNullOrEmpty($Source)) {
         $items = $items | Where-Object { $_.Source -eq $Source }
     }
@@ -189,8 +199,7 @@ function Get-ExtractedInfoFromCollection {
     
     return $items
 }
-```
-
+```plaintext
 #### Remove-ExtractedInfoFromCollection (optimisé)
 
 ```powershell
@@ -217,12 +226,15 @@ function Remove-ExtractedInfoFromCollection {
     }
     
     # Vérifier si l'élément existe
+
     if ($Collection.ItemsById.ContainsKey($InfoId)) {
         # Supprimer de la table de hachage
+
         $itemToRemove = $Collection.ItemsById[$InfoId]
         $Collection.ItemsById.Remove($InfoId)
         
         # Supprimer de la liste
+
         $Collection.ItemsList = $Collection.ItemsList | Where-Object { $_.Id -ne $InfoId }
         
         $Collection.LastModifiedDate = Get-Date
@@ -230,8 +242,7 @@ function Remove-ExtractedInfoFromCollection {
     
     return $Collection
 }
-```
-
+```plaintext
 ## Analyse des performances attendues
 
 ### Complexité algorithmique
@@ -287,10 +298,10 @@ Pour assurer la compatibilité avec le code existant, les modifications suivante
 
 ```powershell
 # Exemple d'implémentation de la propriété Items
+
 $collectionWithItems = $collection.Clone()
 $collectionWithItems | Add-Member -MemberType ScriptProperty -Name "Items" -Value { return $this.ItemsList }
-```
-
+```plaintext
 2. **Conversion des collections existantes**
    - Implémenter une fonction pour convertir les collections existantes vers la nouvelle structure.
 
@@ -314,6 +325,7 @@ function Convert-ToHashTableCollection {
     }
     
     # Copier les éléments
+
     foreach ($item in $OldCollection.Items) {
         $newCollection.ItemsList += $item
         $newCollection.ItemsById[$item.Id] = $item
@@ -321,8 +333,7 @@ function Convert-ToHashTableCollection {
     
     return $newCollection
 }
-```
-
+```plaintext
 3. **Mise à jour des fonctions existantes**
    - Mettre à jour les fonctions existantes pour utiliser la nouvelle structure tout en maintenant la compatibilité avec l'ancienne.
 
@@ -350,9 +361,11 @@ Pour migrer vers la nouvelle structure tout en maintenant la compatibilité avec
 
 ```powershell
 # Créer une nouvelle collection
+
 $collection = New-ExtractedInfoCollection -Name "MaCollection" -Description "Une collection optimisée"
 
 # Ajouter des éléments
+
 $info1 = New-ExtractedInfo -Source "Source1" -ExtractorName "Extracteur1"
 $info2 = New-ExtractedInfo -Source "Source2" -ExtractorName "Extracteur2"
 
@@ -360,15 +373,17 @@ $collection = Add-ExtractedInfoToCollection -Collection $collection -Info $info1
 $collection = Add-ExtractedInfoToCollection -Collection $collection -Info $info2
 
 # Accéder à un élément par ID (O(1))
+
 $element = Get-ExtractedInfoFromCollection -Collection $collection -Id $info1.Id
 
 # Filtrer les éléments
+
 $filteredItems = Get-ExtractedInfoFromCollection -Collection $collection -Source "Source1"
 
 # Supprimer un élément
-$collection = Remove-ExtractedInfoFromCollection -Collection $collection -InfoId $info1.Id
-```
 
+$collection = Remove-ExtractedInfoFromCollection -Collection $collection -InfoId $info1.Id
+```plaintext
 ## Conclusion
 
 La structure de collection basée sur des tables de hachage proposée offre des améliorations significatives de performance pour les opérations d'accès par ID et de suppression, tout en maintenant la compatibilité avec le code existant. Bien qu'elle introduise une légère augmentation de la consommation de mémoire et de la complexité de maintenance, les avantages en termes de performance justifient ces inconvénients.

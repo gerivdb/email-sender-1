@@ -12,9 +12,9 @@ Cette section contient les scripts liÃ©s Ã  la gestion des entrÃ©es de jou
 
 ```powershell
 # Exemple d'utilisation
-.\Add-RoadmapJournalEntry.ps1 -TaskId "1.2.3" -Status "In Progress" -Comment "Travail en cours sur cette tÃ¢che"
-```
 
+.\Add-RoadmapJournalEntry.ps1 -TaskId "1.2.3" -Status "In Progress" -Comment "Travail en cours sur cette tÃ¢che"
+```plaintext
 ## DÃ©pendances
 
 Ces scripts peuvent dÃ©pendre des modules suivants :

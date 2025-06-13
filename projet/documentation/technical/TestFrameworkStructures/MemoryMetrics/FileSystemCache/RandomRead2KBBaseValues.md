@@ -59,8 +59,7 @@ Les plages de valeurs présentées dans ce document ont été établies selon la
     }
   }
 }
-```
-
+```plaintext
 ## 4. Facteurs influençant les valeurs
 
 ### 4.1 Facteurs matériels
@@ -99,8 +98,7 @@ Environnements optimisés pour les E/S (serveurs dédiés, workstations haut de 
     "median": 170
   }
 }
-```
-
+```plaintext
 ### 5.2 Systèmes standards
 
 Environnements génériques (ordinateurs de bureau, serveurs polyvalents)
@@ -115,8 +113,7 @@ Environnements génériques (ordinateurs de bureau, serveurs polyvalents)
     "median": 220
   }
 }
-```
-
+```plaintext
 ### 5.3 Systèmes contraints
 
 Environnements limités en ressources (systèmes embarqués, machines virtuelles partagées)
@@ -131,8 +128,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     "median": 300
   }
 }
-```
-
+```plaintext
 ## 6. Plages par système de fichiers
 
 ### 6.1 NTFS (Windows)
@@ -157,8 +153,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 6.2 ext4 (Linux)
 
 ```json
@@ -181,8 +176,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 6.3 APFS (macOS)
 
 ```json
@@ -195,8 +189,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     "median": 220
   }
 }
-```
-
+```plaintext
 ### 6.4 ZFS
 
 ```json
@@ -219,8 +212,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ## 7. Plages par type de stockage
 
 ### 7.1 SSD NVMe
@@ -235,8 +227,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     "median": 180
   }
 }
-```
-
+```plaintext
 ### 7.2 SSD SATA
 
 ```json
@@ -249,8 +240,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     "median": 220
   }
 }
-```
-
+```plaintext
 ### 7.3 HDD (7200 RPM)
 
 ```json
@@ -263,8 +253,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     "median": 450
   }
 }
-```
-
+```plaintext
 ### 7.4 Stockage réseau (NAS/SAN)
 
 ```json
@@ -277,8 +266,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     "median": 380
   }
 }
-```
-
+```plaintext
 ## 8. Relation entre les métriques de base
 
 ### 8.1 Ratios typiques
@@ -294,13 +282,12 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
 
 Ces formules permettent d'estimer approximativement les valeurs manquantes à partir des valeurs connues :
 
-```
+```plaintext
 median ≈ avg / 1.35
 min ≈ median / 3.7
 max ≈ avg * 13.3
 avg ≈ median * 1.35
-```
-
+```plaintext
 ## 9. Évolution des valeurs dans le temps
 
 ### 9.1 Tendances à court terme
@@ -344,8 +331,7 @@ Sur une période de mois à années, les valeurs peuvent changer en fonction de 
     }
   }
 }
-```
-
+```plaintext
 ### 10.2 Valeurs de référence pour les tests d'intégration
 
 ```json
@@ -364,8 +350,7 @@ Sur une période de mois à années, les valeurs peuvent changer en fonction de 
     }
   }
 }
-```
-
+```plaintext
 ### 10.3 Valeurs de référence pour les tests de performance
 
 ```json
@@ -400,8 +385,7 @@ Sur une période de mois à années, les valeurs peuvent changer en fonction de 
     }
   }
 }
-```
-
+```plaintext
 ## 11. Conclusion
 
 Les plages de valeurs typiques pour les lectures aléatoires de blocs de 2KB présentent les caractéristiques suivantes :

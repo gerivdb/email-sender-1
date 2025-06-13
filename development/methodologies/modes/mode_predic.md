@@ -1,12 +1,15 @@
 # Mode PREDIC
 
 ## Description
+
 Le mode PREDIC (PrÃ©diction) est un mode opÃ©rationnel qui se concentre sur l'anticipation des performances, la dÃ©tection d'anomalies et l'analyse des tendances.
 
 ## Objectif
+
 L'objectif principal du mode PREDIC est d'utiliser l'analyse de donnÃ©es pour prÃ©dire les comportements futurs, dÃ©tecter les anomalies et optimiser les performances.
 
 ## FonctionnalitÃ©s
+
 - PrÃ©diction de performances
 - DÃ©tection d'anomalies
 - Analyse de tendances
@@ -18,16 +21,19 @@ L'objectif principal du mode PREDIC est d'utiliser l'analyse de donnÃ©es pour 
 
 ```powershell
 # Analyser les tendances de performance
+
 .\predic-mode.ps1 -LogPath "logs/performance" -AnalyzeTrends
 
 # PrÃ©dire les performances futures
+
 .\predic-mode.ps1 -LogPath "logs/performance" -PredictPerformance -Days 30
 
 # DÃ©tecter les anomalies
-.\predic-mode.ps1 -LogPath "logs/performance" -DetectAnomalies
-```
 
+.\predic-mode.ps1 -LogPath "logs/performance" -DetectAnomalies
+```plaintext
 ## Types de prÃ©dictions
+
 Le mode PREDIC peut effectuer diffÃ©rents types de prÃ©dictions :
 - **PrÃ©diction de charge** : Anticiper les pics de charge
 - **PrÃ©diction de ressources** : Estimer les besoins en ressources
@@ -36,16 +42,19 @@ Le mode PREDIC peut effectuer diffÃ©rents types de prÃ©dictions :
 - **DÃ©tection d'anomalies** : Identifier les comportements anormaux
 
 ## IntÃ©gration avec d'autres modes
+
 Le mode PREDIC peut Ãªtre utilisÃ© en combinaison avec d'autres modes :
 - **OPTI** : Pour optimiser les performances en fonction des prÃ©dictions
 - **DEBUG** : Pour anticiper et prÃ©venir les problÃ¨mes
 - **ARCHI** : Pour concevoir une architecture adaptÃ©e aux charges prÃ©vues
 
 ## ImplÃ©mentation
+
 Le mode PREDIC est implÃ©mentÃ© dans le script `predic-mode.ps1` qui se trouve dans le dossier `development/tools/development/roadmap/scripts/modes/predic`.
 
 ## Exemple de rapport prÃ©dictif
-```
+
+```plaintext
 Rapport prÃ©dictif :
 - PÃ©riode analysÃ©e : 01/01/2023 - 01/06/2023
 - PÃ©riode prÃ©dite : 01/06/2023 - 01/07/2023
@@ -60,9 +69,9 @@ Anomalies dÃ©tectÃ©es :
 - Pic d'utilisation CPU anormal le 15/05/2023
 - Tendance Ã  la hausse du temps de rÃ©ponse (+5% par semaine)
 - CorrÃ©lation entre les erreurs et l'utilisation mÃ©moire > 3.5GB
-```
-
+```plaintext
 ## Bonnes pratiques
+
 - Collecter des donnÃ©es de performance rÃ©guliÃ¨rement
 - Utiliser des modÃ¨les statistiques adaptÃ©s aux donnÃ©es
 - Valider les prÃ©dictions avec les donnÃ©es rÃ©elles

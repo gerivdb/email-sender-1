@@ -31,7 +31,7 @@ Date: 2025-05-16
 
 #### Sortie
 
-```
+```plaintext
 === Tests automatisés des nodes MCP pour n8n ===
 Date: 2025-05-16T15:58:25.609Z
 
@@ -65,8 +65,7 @@ Réussis: 8
 Échoués: 0
 Ignorés: 0
 Serveur de test arrêté
-```
-
+```plaintext
 ### 2. Tests de scénarios
 
 - **Script**: `src/n8n/nodes/tests/test-scenarios.js`
@@ -82,7 +81,7 @@ Serveur de test arrêté
 
 #### Sortie
 
-```
+```plaintext
 === Tests de scénarios pour les nodes MCP ===
 Date: 2025-05-16T15:58:36.126Z
 
@@ -130,8 +129,7 @@ Total: 3
 Réussis: 3
 Échoués: 0
 Serveur de test arrêté
-```
-
+```plaintext
 ## Conclusion
 
 Tous les tests ont été exécutés avec succès. Les nodes MCP Client et MCP Memory fonctionnent correctement pour les connexions HTTP et ligne de commande. Les scénarios d'utilisation réels ont également été testés avec succès, démontrant que les nodes peuvent être utilisés dans des workflows complexes.

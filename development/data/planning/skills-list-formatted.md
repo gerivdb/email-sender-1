@@ -5,6 +5,7 @@
 ### Amélioration de la performance
 
 #### Description
+
 Cette amélioration vise à optimiser les performances des applications.
 
 | Catégorie | Compétence | Niveau | Justification |
@@ -16,6 +17,7 @@ Cette amélioration vise à optimiser les performances des applications.
 ### Amélioration de la sécurité
 
 #### Description
+
 Cette amélioration vise à renforcer la sécurité des applications.
 
 | Catégorie | Compétence | Niveau | Justification |
@@ -29,6 +31,7 @@ Cette amélioration vise à renforcer la sécurité des applications.
 ### Amélioration de l'expérience utilisateur
 
 #### Description
+
 Cette amélioration vise à améliorer l'expérience utilisateur des applications.
 
 | Catégorie | Compétence | Niveau | Justification |
@@ -40,6 +43,7 @@ Cette amélioration vise à améliorer l'expérience utilisateur des application
 ### Amélioration de la qualité
 
 #### Description
+
 Cette amélioration vise à améliorer la qualité des applications.
 
 | Catégorie | Compétence | Niveau | Justification |

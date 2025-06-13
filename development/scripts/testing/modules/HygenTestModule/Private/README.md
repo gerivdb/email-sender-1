@@ -18,6 +18,7 @@ Exemple :
 ```powershell
 function Get-InternalData {
     <#
+
     .SYNOPSIS
         Description courte de la fonction interne.
     .DESCRIPTION
@@ -30,8 +31,10 @@ function Get-InternalData {
     .NOTES
         Cette fonction est interne au module et n'est pas exportée.
     #>
+
     [CmdletBinding()]
     [OutputType([type])] # Spécifier le type de retour
+
     param (
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
@@ -40,13 +43,13 @@ function Get-InternalData {
 
     try {
         # Code principal ici
+
     }
     catch {
         Write-Error "Une erreur s'est produite dans Get-InternalData : $_"
     }
 }
-```
-
+```plaintext
 ## Bonnes pratiques
 
 1. Préfixez les noms de fonctions avec un verbe approprié

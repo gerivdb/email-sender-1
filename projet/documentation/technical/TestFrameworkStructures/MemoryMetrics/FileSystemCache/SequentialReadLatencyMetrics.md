@@ -24,8 +24,7 @@ Les métriques de latence pour les lectures séquentielles mesurent le temps né
     }
   }
 }
-```
-
+```plaintext
 ### 2.2 Métriques de base
 
 ```json
@@ -42,8 +41,7 @@ Les métriques de latence pour les lectures séquentielles mesurent le temps né
     "stdDev": 30
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `unit` | string | - | Unité de mesure de la latence (microseconds, milliseconds, etc.) |
@@ -110,8 +108,7 @@ Les métriques de latence pour les lectures séquentielles mesurent le temps né
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `byBlockSize` | object | - | Métriques de latence par taille de bloc |
@@ -144,8 +141,7 @@ Les métriques de latence pour les lectures séquentielles mesurent le temps né
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `byState` | object | - | Métriques de latence par état du cache |
@@ -180,8 +176,7 @@ Les métriques de latence pour les lectures séquentielles mesurent le temps né
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `bySequenceLength` | object | - | Métriques de latence par longueur de séquence |
@@ -222,8 +217,7 @@ Les métriques de latence pour les lectures séquentielles mesurent le temps né
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `prefetch` | object | - | Métriques liées au préchargement |
@@ -253,8 +247,7 @@ Les métriques de latence pour les lectures séquentielles mesurent le temps né
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `throughput` | object | - | Métriques de débit pour les lectures séquentielles |
@@ -279,8 +272,7 @@ Les métriques de latence pour les lectures séquentielles mesurent le temps né
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `cacheEfficiency` | object | - | Métriques d'efficacité du cache pour les lectures séquentielles |
@@ -319,8 +311,7 @@ Les métriques de latence pour les lectures séquentielles mesurent le temps né
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `timeSeries` | object | Série temporelle des métriques de latence |
@@ -348,8 +339,7 @@ Les métriques de latence pour les lectures séquentielles mesurent le temps né
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `byFilesystem.ntfs` | object | - | Métriques spécifiques à NTFS |
@@ -373,8 +363,7 @@ Les métriques de latence pour les lectures séquentielles mesurent le temps né
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `byFilesystem.ext4` | object | - | Métriques spécifiques à ext4 |
@@ -397,8 +386,7 @@ Les métriques de latence pour les lectures séquentielles mesurent le temps né
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `performanceImpact` | object | - | Impact sur les performances du système |
@@ -433,8 +421,7 @@ Les métriques de latence pour les lectures séquentielles mesurent le temps né
     }
   }
 }
-```
-
+```plaintext
 ### 5.2 Exemple complet
 
 ```json
@@ -608,8 +595,7 @@ Les métriques de latence pour les lectures séquentielles mesurent le temps né
     }
   }
 }
-```
-
+```plaintext
 ## 6. Bonnes pratiques
 
 ### 6.1 Collecte des métriques

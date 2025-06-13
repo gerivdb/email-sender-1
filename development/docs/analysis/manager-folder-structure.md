@@ -18,25 +18,32 @@ Pour cette analyse, nous avons examiné :
 
 D'après l'analyse du code et de la documentation, la structure standard des dossiers des gestionnaires est définie comme suit :
 
-```
+```plaintext
 development/managers/<gestionnaire>/
 ├── config/
 │   └── ...                           # Fichiers de configuration locaux
+
 ├── scripts/
 │   ├── <gestionnaire>.ps1            # Script principal du gestionnaire
+
 │   ├── <gestionnaire>.manifest.json  # Manifeste du gestionnaire (optionnel)
+
 │   └── ...                           # Autres scripts
+
 ├── modules/
 │   └── ...                           # Modules PowerShell spécifiques au gestionnaire
+
 └── tests/
     ├── Test-<Gestionnaire>.ps1       # Tests unitaires
-    └── ...                           # Autres tests
-```
 
+    └── ...                           # Autres tests
+
+```plaintext
 Cette structure est définie dans plusieurs fichiers, notamment :
 
 ```powershell
 # Définir la structure des gestionnaires
+
 $managerStructure = @{
     "integrated-manager" = @{
         "Path" = Join-Path -Path $managersRoot -ChildPath "integrated-manager"
@@ -57,9 +64,9 @@ $managerStructure = @{
         )
     }
     # ...
-}
-```
 
+}
+```plaintext
 Et dans la documentation :
 
 ```markdown
@@ -71,17 +78,16 @@ Chaque gestionnaire est organisé selon la structure suivante :
 - `<gestionnaire>/scripts` : Scripts PowerShell du gestionnaire
 - `<gestionnaire>/modules` : Modules PowerShell du gestionnaire
 - `<gestionnaire>/tests` : Tests unitaires et d'intégration du gestionnaire
-```
-
+```plaintext
 ### Configuration des gestionnaires
 
 En plus de la structure locale, il existe une structure de configuration centralisée pour les gestionnaires :
 
-```
+```plaintext
 projet/config/managers/<gestionnaire>/
 └── <gestionnaire>.config.json        # Fichier de configuration principal
-```
 
+```plaintext
 Cette structure est mentionnée dans la documentation :
 
 ```markdown
@@ -100,8 +106,7 @@ Chaque gestionnaire a son propre répertoire de configuration :
 ## Format
 
 Les fichiers de configuration sont au format JSON et suivent la convention de nommage <gestionnaire>.config.json.
-```
-
+```plaintext
 ### Gestionnaires existants
 
 Les gestionnaires suivants ont été identifiés dans le projet :
@@ -119,7 +124,7 @@ Les gestionnaires suivants ont été identifiés dans le projet :
 
 #### integrated-manager
 
-```
+```plaintext
 development/managers/integrated-manager/
 ├── config/
 │   └── ...
@@ -132,11 +137,10 @@ development/managers/integrated-manager/
 └── tests/
     ├── Test-IntegratedManager.ps1
     └── ...
-```
-
+```plaintext
 #### mode-manager
 
-```
+```plaintext
 development/managers/mode-manager/
 ├── config/
 │   └── ...
@@ -149,11 +153,10 @@ development/managers/mode-manager/
 └── tests/
     ├── Test-ModeManager.ps1
     └── ...
-```
-
+```plaintext
 #### roadmap-manager
 
-```
+```plaintext
 development/managers/roadmap-manager/
 ├── config/
 │   └── ...
@@ -166,11 +169,10 @@ development/managers/roadmap-manager/
 └── tests/
     ├── Test-RoadmapManager.ps1
     └── ...
-```
-
+```plaintext
 #### script-manager
 
-```
+```plaintext
 development/managers/script-manager/
 ├── config/
 │   └── ...
@@ -183,11 +185,10 @@ development/managers/script-manager/
 └── tests/
     ├── Test-ScriptManager.ps1
     └── ...
-```
-
+```plaintext
 #### error-manager
 
-```
+```plaintext
 development/managers/error-manager/
 ├── config/
 │   └── ...
@@ -200,11 +201,10 @@ development/managers/error-manager/
 └── tests/
     ├── Test-ErrorManager.ps1
     └── ...
-```
-
+```plaintext
 #### n8n-manager
 
-```
+```plaintext
 development/managers/n8n-manager/
 ├── config/
 │   └── ...
@@ -216,12 +216,12 @@ development/managers/n8n-manager/
 └── tests/
     ├── Test-N8nManager.ps1
     └── ...
-```
-
+```plaintext
 Le gestionnaire n8n-manager a une structure de scripts plus complexe, avec des sous-dossiers pour différentes fonctionnalités :
 
 ```powershell
 # Définir les chemins des scripts
+
 $scriptPaths = @{
     Start = "deployment/start-n8n.ps1"
     Stop = "deployment/stop-n8n.ps1"
@@ -234,11 +234,10 @@ $scriptPaths = @{
     Dashboard = "dashboard/n8n-dashboard.ps1"
     Maintenance = "maintenance/maintenance.ps1"
 }
-```
-
+```plaintext
 #### mcp-manager
 
-```
+```plaintext
 development/managers/mcp-manager/
 ├── config/
 │   └── ...
@@ -251,11 +250,10 @@ development/managers/mcp-manager/
 └── tests/
     ├── Test-MCPManager.ps1
     └── ...
-```
-
+```plaintext
 #### process-manager
 
-```
+```plaintext
 development/managers/process-manager/
 ├── config/
 │   └── ...
@@ -281,8 +279,7 @@ development/managers/process-manager/
     ├── Test-ProcessManagerPerformance.ps1
     ├── Test-ProcessManagerLoad.ps1
     └── ...
-```
-
+```plaintext
 Le gestionnaire process-manager a une structure de modules plus complexe, avec des sous-modules pour différentes fonctionnalités.
 
 ## Analyse des incohérences
@@ -333,47 +330,66 @@ Le gestionnaire process-manager a une structure de modules plus complexe, avec d
 
 La structure de n8n est définie comme suit :
 
-```
+```plaintext
 n8n/
 ├── config/               # Configuration n8n
-├── data/                 # Données n8n (base de données, credentials, etc.)
-│   ├── credentials/      # Credentials chiffrées
-│   ├── database/         # Base de données SQLite
-│   └── storage/          # Stockage binaire
-├── workflows/            # Workflows n8n
-│   ├── local/            # Workflows utilisés par n8n local
-│   ├── ide/              # Workflows utilisés par l'IDE
-│   └── archive/          # Workflows archivés
-├── scripts/              # Scripts utilitaires
-│   ├── sync/             # Scripts de synchronisation
-│   ├── setup/            # Scripts d'installation et de configuration
-│   └── utils/            # Utilitaires communs
-```
 
+├── data/                 # Données n8n (base de données, credentials, etc.)
+
+│   ├── credentials/      # Credentials chiffrées
+
+│   ├── database/         # Base de données SQLite
+
+│   └── storage/          # Stockage binaire
+
+├── workflows/            # Workflows n8n
+
+│   ├── local/            # Workflows utilisés par n8n local
+
+│   ├── ide/              # Workflows utilisés par l'IDE
+
+│   └── archive/          # Workflows archivés
+
+├── scripts/              # Scripts utilitaires
+
+│   ├── sync/             # Scripts de synchronisation
+
+│   ├── setup/            # Scripts d'installation et de configuration
+
+│   └── utils/            # Utilitaires communs
+
+```plaintext
 Cette structure est plus complexe et plus spécifique à n8n, mais elle suit également une organisation logique par fonctionnalité.
 
 ### Structure de PowerShell
 
 La structure standard d'un module PowerShell est définie comme suit :
 
-```
+```plaintext
 <ModuleName>/
 ├── <ModuleName>.psd1     # Manifeste du module
+
 ├── <ModuleName>.psm1     # Module principal
+
 ├── Public/               # Fonctions publiques
+
 │   └── ...
 ├── Private/              # Fonctions privées
+
 │   └── ...
 ├── Classes/              # Classes
+
 │   └── ...
 ├── Data/                 # Données
+
 │   └── ...
 ├── Tests/                # Tests
+
 │   └── ...
 └── en-US/                # Ressources de localisation
-    └── ...
-```
 
+    └── ...
+```plaintext
 Cette structure est plus orientée vers les modules PowerShell, mais elle suit également une organisation logique par type de contenu.
 
 ## Recommandations
@@ -384,80 +400,95 @@ Sur la base de l'analyse précédente, voici quelques recommandations pour stand
 
 Tous les gestionnaires devraient être placés dans le même répertoire racine :
 
-```
+```plaintext
 development/managers/<gestionnaire>/
-```
-
+```plaintext
 ### 2. Standardiser la structure des sous-dossiers
 
 Tous les gestionnaires devraient avoir la même structure de sous-dossiers :
 
-```
+```plaintext
 development/managers/<gestionnaire>/
 ├── config/               # Configuration locale du gestionnaire
-├── scripts/              # Scripts du gestionnaire
-├── modules/              # Modules du gestionnaire
-└── tests/                # Tests du gestionnaire
-```
 
+├── scripts/              # Scripts du gestionnaire
+
+├── modules/              # Modules du gestionnaire
+
+└── tests/                # Tests du gestionnaire
+
+```plaintext
 ### 3. Standardiser l'organisation des scripts
 
 Les scripts devraient être organisés par fonctionnalité dans des sous-dossiers :
 
-```
+```plaintext
 development/managers/<gestionnaire>/scripts/
 ├── <gestionnaire>.ps1    # Script principal du gestionnaire
-├── <gestionnaire>.manifest.json  # Manifeste du gestionnaire
-├── deployment/           # Scripts de déploiement
-├── monitoring/           # Scripts de surveillance
-├── maintenance/          # Scripts de maintenance
-└── utils/                # Scripts utilitaires
-```
 
+├── <gestionnaire>.manifest.json  # Manifeste du gestionnaire
+
+├── deployment/           # Scripts de déploiement
+
+├── monitoring/           # Scripts de surveillance
+
+├── maintenance/          # Scripts de maintenance
+
+└── utils/                # Scripts utilitaires
+
+```plaintext
 ### 4. Standardiser l'organisation des modules
 
 Les modules devraient être organisés par fonctionnalité dans des sous-dossiers :
 
-```
+```plaintext
 development/managers/<gestionnaire>/modules/
 ├── <Gestionnaire>Module/  # Module principal du gestionnaire
-│   ├── <Gestionnaire>Module.psd1  # Manifeste du module
-│   ├── <Gestionnaire>Module.psm1  # Module principal
-│   ├── Public/           # Fonctions publiques
-│   └── Private/          # Fonctions privées
-└── ...                   # Autres modules
-```
 
+│   ├── <Gestionnaire>Module.psd1  # Manifeste du module
+
+│   ├── <Gestionnaire>Module.psm1  # Module principal
+
+│   ├── Public/           # Fonctions publiques
+
+│   └── Private/          # Fonctions privées
+
+└── ...                   # Autres modules
+
+```plaintext
 ### 5. Standardiser l'organisation des tests
 
 Les tests devraient être organisés par type de test dans des sous-dossiers :
 
-```
+```plaintext
 development/managers/<gestionnaire>/tests/
 ├── Test-<Gestionnaire>.ps1  # Script de test principal
-├── Unit/                 # Tests unitaires
-├── Integration/          # Tests d'intégration
-├── Performance/          # Tests de performance
-└── Load/                 # Tests de charge
-```
 
+├── Unit/                 # Tests unitaires
+
+├── Integration/          # Tests d'intégration
+
+├── Performance/          # Tests de performance
+
+└── Load/                 # Tests de charge
+
+```plaintext
 ### 6. Standardiser la configuration
 
 La configuration des gestionnaires devrait être centralisée dans un seul emplacement :
 
-```
+```plaintext
 projet/config/managers/<gestionnaire>/
 └── <gestionnaire>.config.json  # Fichier de configuration principal
-```
 
+```plaintext
 ### 7. Standardiser les manifestes
 
 Les manifestes des gestionnaires devraient suivre un format standard et être placés dans le même emplacement :
 
-```
+```plaintext
 development/managers/<gestionnaire>/scripts/<gestionnaire>.manifest.json
-```
-
+```plaintext
 ## Conclusion
 
 L'analyse de la structure des dossiers des gestionnaires révèle plusieurs incohérences dans l'emplacement des gestionnaires, la structure des sous-dossiers, l'organisation des scripts, des modules et des tests, ainsi que dans la configuration et les manifestes.

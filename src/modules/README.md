@@ -5,13 +5,21 @@ Ce module fournit un support complet pour la segmentation, l'analyse et la conve
 ## Table des matières
 
 1. [Vue d'ensemble](#vue-densemble)
+
 2. [Modules](#modules)
+
 3. [Installation](#installation)
+
 4. [Utilisation de base](#utilisation-de-base)
+
 5. [Fonctionnalités avancées](#fonctionnalités-avancées)
+
 6. [Optimisation des performances](#optimisation-des-performances)
+
 7. [Intégration avec d'autres modules](#intégration-avec-dautres-modules)
+
 8. [Exemples](#exemples)
+
 9. [Dépannage](#dépannage)
 
 ## Vue d'ensemble
@@ -50,58 +58,63 @@ Le support des formats est composé de plusieurs modules :
 
 ```powershell
 python -m pip install lxml
-```
-
+```plaintext
 ### Vérification de l'installation
 
 ```powershell
 # Importer le module UnifiedSegmenter
+
 . .\modules\UnifiedSegmenter.ps1
 
 # Initialiser le segmenteur unifié
+
 $result = Initialize-UnifiedSegmenter
 if ($result) {
     Write-Host "Installation réussie !" -ForegroundColor Green
 } else {
     Write-Host "Problème d'installation. Vérifiez les prérequis." -ForegroundColor Red
 }
-```
-
+```plaintext
 ## Utilisation de base
 
 ### Segmentation d'un fichier
 
 ```powershell
 # Importer le module UnifiedSegmenter
+
 . .\modules\UnifiedSegmenter.ps1
 
 # Initialiser le segmenteur unifié
+
 Initialize-UnifiedSegmenter
 
 # Segmenter un fichier avec détection automatique du format
+
 $segments = Split-File -FilePath "data.json" -OutputDir ".\output"
 
 # Afficher les segments créés
+
 Write-Host "Segments créés :"
 foreach ($segment in $segments) {
     Write-Host "- $segment"
 }
-```
-
+```plaintext
 ### Analyse d'un fichier
 
 ```powershell
 # Analyser un fichier avec détection automatique du format
+
 $analysis = Get-FileAnalysis -FilePath "data.json"
 
 # Afficher les résultats
-$analysis | ConvertTo-Json -Depth 5
-```
 
+$analysis | ConvertTo-Json -Depth 5
+```plaintext
 ### Validation d'un fichier
 
 ```powershell
 # Valider un fichier JSON
+
 $isValid = Test-FileValidity -FilePath "data.json" -Format "JSON"
 
 if ($isValid) {
@@ -109,12 +122,12 @@ if ($isValid) {
 } else {
     Write-Host "Le fichier n'est pas valide." -ForegroundColor Red
 }
-```
-
+```plaintext
 ### Conversion entre formats
 
 ```powershell
 # Convertir un fichier JSON en XML
+
 $result = Convert-FileFormat -InputFile "data.json" -OutputFile "data.xml" -InputFormat "JSON" -OutputFormat "XML"
 
 if ($result) {
@@ -122,121 +135,137 @@ if ($result) {
 } else {
     Write-Host "Échec de la conversion." -ForegroundColor Red
 }
-```
-
+```plaintext
 ## Fonctionnalités avancées
 
 ### Requêtes XPath (XML uniquement)
 
 ```powershell
 # Exécuter une requête XPath sur un fichier XML
+
 $results = Invoke-XPathQuery -FilePath "data.xml" -XPathExpression "//items/item[@id='2']"
 
 # Afficher les résultats
-$results
-```
 
+$results
+```plaintext
 ### Segmentation avec préservation de structure
 
 ```powershell
 # Segmenter un fichier JSON en préservant sa structure
+
 $segments = Split-File -FilePath "data.json" -Format "JSON" -OutputDir ".\output\json" -ChunkSizeKB 5 -PreserveStructure
 
 # Segmenter un fichier XML avec une expression XPath
+
 $segments = Split-File -FilePath "data.xml" -Format "XML" -OutputDir ".\output\xml" -XPathExpression "//items/item"
 
 # Segmenter un fichier texte par paragraphes
-$segments = Split-File -FilePath "data.txt" -Format "TEXT" -OutputDir ".\output\text" -TextMethod "paragraph"
-```
 
+$segments = Split-File -FilePath "data.txt" -Format "TEXT" -OutputDir ".\output\text" -TextMethod "paragraph"
+```plaintext
 ## Optimisation des performances
 
 ### Traitement en streaming
 
 ```powershell
 # Importer le module FormatOptimizer
+
 . .\modules\FormatOptimizer.ps1
 
 # Traiter un fichier volumineux en mode streaming
-$segments = Split-StreamingFile -FilePath "large_data.json" -OutputDir ".\output\streaming" -Format "JSON" -BufferSizeKB 1024 -ChunkSizeKB 10
-```
 
+$segments = Split-StreamingFile -FilePath "large_data.json" -OutputDir ".\output\streaming" -Format "JSON" -BufferSizeKB 1024 -ChunkSizeKB 10
+```plaintext
 ### Traitement en parallèle
 
 ```powershell
 # Traiter un fichier volumineux en parallèle
-$segments = Split-ParallelFile -FilePath "large_data.json" -OutputDir ".\output\parallel" -Format "JSON" -ChunkSizeKB 10 -MaxThreads 4
-```
 
+$segments = Split-ParallelFile -FilePath "large_data.json" -OutputDir ".\output\parallel" -Format "JSON" -ChunkSizeKB 10 -MaxThreads 4
+```plaintext
 ### Compression des segments
 
 ```powershell
 # Compresser les segments
+
 $archivePath = Compress-Segments -FilePaths $segments -OutputFile "segments.zip" -CompressionMethod "Zip"
 
 # Décompresser les segments
-$extractedSegments = Expand-Segments -ArchivePath $archivePath -OutputDir ".\output\extracted" -CompressionMethod "Zip"
-```
 
+$extractedSegments = Expand-Segments -ArchivePath $archivePath -OutputDir ".\output\extracted" -CompressionMethod "Zip"
+```plaintext
 ## Intégration avec d'autres modules
 
 ### Intégration avec InputSegmentation.psm1
 
 ```powershell
 # Importer le module FormatSegmentation
+
 Import-Module .\modules\FormatSegmentation.psm1
 
 # Initialiser le module d'intégration
+
 Initialize-FormatSegmentation -MaxInputSizeKB 10 -DefaultChunkSizeKB 5
 
 # Segmenter une entrée avec détection de format
+
 $segments = Split-FormatAwareInput -Input "data.json" -Format "AUTO" -OutputDir ".\output\integrated" -ChunkSizeKB 5
 
 # Traiter une entrée avec segmentation automatique
+
 $results = Invoke-WithFormatSegmentation -Input "data.json" -Format "JSON" -ScriptBlock {
     param($segment)
     # Traiter le segment
+
     return "Segment traité: $($segment.GetType().Name)"
 }
-```
-
+```plaintext
 ## Exemples
 
 ### Exemple 1 : Segmentation d'un fichier JSON volumineux
 
 ```powershell
 # Importer les modules
+
 . .\modules\UnifiedSegmenter.ps1
 . .\modules\FormatOptimizer.ps1
 
 # Initialiser le segmenteur unifié
+
 Initialize-UnifiedSegmenter
 
 # Segmenter un fichier JSON volumineux en mode streaming
+
 $segments = Split-StreamingFile -FilePath "large_data.json" -OutputDir ".\output\streaming" -Format "JSON" -BufferSizeKB 1024 -ChunkSizeKB 10
 
 # Compresser les segments
+
 $archivePath = Compress-Segments -FilePaths $segments -OutputFile "segments.zip" -CompressionMethod "Zip"
 
 Write-Host "Segments créés et compressés dans $archivePath"
-```
-
+```plaintext
 ### Exemple 2 : Analyse et validation d'un fichier XML
 
 ```powershell
 # Importer le module UnifiedSegmenter
+
 . .\modules\UnifiedSegmenter.ps1
 
 # Initialiser le segmenteur unifié
+
 Initialize-UnifiedSegmenter
 
 # Analyser un fichier XML
+
 $analysis = Get-FileAnalysis -FilePath "data.xml" -Format "XML"
 
 # Afficher les informations sur la structure
+
 $analysis.structure | ConvertTo-Json -Depth 3
 
 # Valider le fichier XML avec un schéma XSD
+
 $isValid = Test-FileValidity -FilePath "data.xml" -Format "XML" -SchemaFile "schema.xsd"
 
 if ($isValid) {
@@ -244,22 +273,25 @@ if ($isValid) {
 } else {
     Write-Host "Le fichier XML n'est pas valide selon le schéma XSD." -ForegroundColor Red
 }
-```
-
+```plaintext
 ### Exemple 3 : Traitement d'un fichier texte volumineux
 
 ```powershell
 # Importer les modules
+
 Import-Module .\modules\FormatSegmentation.psm1
 
 # Initialiser le module d'intégration
+
 Initialize-FormatSegmentation
 
 # Traiter un fichier texte volumineux avec segmentation automatique
+
 $results = Invoke-WithFormatSegmentation -Input "large_text.txt" -Format "TEXT" -ScriptBlock {
     param($segment)
     
     # Compter les mots dans le segment
+
     $wordCount = ($segment -split '\W+' | Where-Object { $_ -ne '' }).Count
     
     return [PSCustomObject]@{
@@ -269,10 +301,10 @@ $results = Invoke-WithFormatSegmentation -Input "large_text.txt" -Format "TEXT" 
 }
 
 # Afficher les résultats
+
 $totalWords = ($results | Measure-Object -Property WordCount -Sum).Sum
 Write-Host "Nombre total de mots: $totalWords"
-```
-
+```plaintext
 ## Dépannage
 
 ### Problèmes courants
@@ -283,33 +315,30 @@ Si vous obtenez une erreur indiquant que Python n'est pas disponible, vérifiez 
 
 ```powershell
 Initialize-UnifiedSegmenter -PythonPath "C:\Python39\python.exe"
-```
-
+```plaintext
 #### Modules Python manquants
 
 Si vous obtenez une erreur concernant des modules Python manquants, installez-les avec pip :
 
 ```powershell
 python -m pip install lxml
-```
-
+```plaintext
 #### Erreurs de segmentation
 
 Si la segmentation échoue, essayez de réduire la taille des segments :
 
 ```powershell
 Split-File -FilePath "data.json" -ChunkSizeKB 2
-```
-
+```plaintext
 #### Erreurs de validation XML
 
 Si la validation XML échoue, vérifiez que le schéma XSD est correct et que le fichier XML est bien formé :
 
 ```powershell
 # Vérifier que le fichier XML est bien formé
-$isValid = Test-FileValidity -FilePath "data.xml" -Format "XML"
-```
 
+$isValid = Test-FileValidity -FilePath "data.xml" -Format "XML"
+```plaintext
 ### Journalisation et débogage
 
 Pour activer la journalisation détaillée, utilisez le paramètre `-Verbose` :
@@ -317,12 +346,11 @@ Pour activer la journalisation détaillée, utilisez le paramètre `-Verbose` :
 ```powershell
 Initialize-UnifiedSegmenter -Verbose
 Split-File -FilePath "data.json" -OutputDir ".\output" -Verbose
-```
-
+```plaintext
 ### Obtenir de l'aide
 
 Pour obtenir de l'aide sur une fonction spécifique, utilisez `Get-Help` :
 
 ```powershell
 Get-Help Split-File -Detailed
-```
+```plaintext

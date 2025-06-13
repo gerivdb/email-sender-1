@@ -201,6 +201,7 @@ def adapt_weights_dynamically(data, context=None, distribution_type=None):
         weights: Vecteur de pondération [w₁, w₂, w₃, w₄]
     """
     # Détecter le type de distribution si non spécifié
+
     if distribution_type is None:
         skewness = scipy.stats.skew(data)
         kurtosis = scipy.stats.kurtosis(data, fisher=False)
@@ -215,6 +216,7 @@ def adapt_weights_dynamically(data, context=None, distribution_type=None):
             distribution_type = "moderately_asymmetric"
     
     # Poids de base selon le type de distribution
+
     if distribution_type == "quasi_normal":
         base_weights = [0.3, 0.3, 0.3, 0.1]
     elif distribution_type == "leptokurtic":
@@ -222,9 +224,11 @@ def adapt_weights_dynamically(data, context=None, distribution_type=None):
     elif distribution_type == "highly_asymmetric":
         base_weights = [0.2, 0.3, 0.35, 0.15]
     else:  # moderately_asymmetric
+
         base_weights = [0.3, 0.3, 0.25, 0.15]
     
     # Ajuster selon le contexte
+
     if context == "monitoring":
         context_weights = [0.45, 0.35, 0.15, 0.05]
     elif context == "comparative":
@@ -234,18 +238,20 @@ def adapt_weights_dynamically(data, context=None, distribution_type=None):
     elif context == "anomaly_detection":
         context_weights = [0.2, 0.25, 0.35, 0.2]
     else:  # default
+
         context_weights = base_weights
     
     # Combiner les poids (70% contexte, 30% distribution)
+
     weights = [0.7 * c + 0.3 * b for c, b in zip(context_weights, base_weights)]
     
     # Normaliser les poids
+
     sum_weights = sum(weights)
     weights = [w / sum_weights for w in weights]
     
     return weights
-```
-
+```plaintext
 ## 8. Conclusion
 
 L'analyse de l'impact des pondérations sur la sensibilité des métriques révèle plusieurs points clés :

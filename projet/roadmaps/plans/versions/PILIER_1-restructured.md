@@ -3,41 +3,77 @@
 ## Table des matières
 
 1. [PILIER 1 : La Donnée Stratégique](#section-1)
+
     1.1. [. Hub de Données Notion (Le Cerveau Opérationnel et Relationnel de l'Agence)](#section-2)
+
         1.1.1. [. Base Agence_Artistes (Master List - Référentiel Central Absolu)](#section-3)
+
         1.1.2. [. Espaces Notion par Artiste (Isolation & Collaboration Opérationnelle)](#section-4)
+
             1.1.2.1. [[Artiste]_LOT_Booking (DB principale du cycle de vente)](#section-5)
+
             1.1.2.2. [[Artiste]_Agenda_Booking (DB des événements confirmés)](#section-6)
+
             1.1.2.3. [[Artiste]_Dispo_Membres (DB des indisponibilités)](#section-7)
+
             1.1.2.4. [[Artiste]_Projets (DB de suivi de production)](#section-8)
+
             1.1.2.5. [[Artiste]_Contrats (DB des contrats spécifiques)](#section-9)
+
             1.1.2.6. [[Artiste]_Tâches (DB de gestion de tâches)](#section-10)
+
             1.1.2.7. [[Artiste]_Merch (DB de stock)](#section-11)
+
             1.1.2.8. [[Artiste]_Social_Content (DB calendrier éditorial)](#section-12)
+
             1.1.2.9. [[Artiste]_Feedback (DB retours qualitatifs)](#section-13)
+
         1.1.3. [. Bases de Données Métier Transversales (Vision 360° Agence)](#section-14)
+
             1.1.3.1. [Agence_Contacts (CRM Central)](#section-15)
+
             1.1.3.2. [Agence_Lieux_Structures (Base de données lieux)](#section-16)
+
             1.1.3.3. [Agence_Équipe (Annuaire interne agence)](#section-17)
+
             1.1.3.4. [Artiste_Membres (Annuaire musiciens/techniciens par artiste)](#section-18)
+
             1.1.3.5. [Agence_Monitoring_N8N (Log des exécutions N8N)](#section-19)
+
             1.1.3.6. [Agence_Finance (Suivi financier global)](#section-20)
+
             1.1.3.7. [Agence_HR_Personnel (Base RH centrale - Accès Ultra-Restreint)](#section-21)
+
             1.1.3.8. [Agencedevelopment/templates (Bibliothèque de modèles)](#section-22)
+
         1.1.4. [. Relations Notion Cohérentes et Stratégiques (Détails Techniques)](#section-23)
+
             1.1.4.1. [Nommage](#section-24)
+
             1.1.4.2. [Validation Notion](#section-25)
+
             1.1.4.3. [Validation N8N (WF-Data-Quality-Checker)](#section-26)
+
             1.1.4.4. [Qualité Données](#section-27)
+
             1.1.4.5. [Permissions Notion](#section-28)
+
             1.1.4.6. [Groupes d'utilisateurs](#section-29)
+
             1.1.4.7. [Accès Intégration N8N](#section-30)
+
             1.1.4.8. [Audit](#section-31)
+
     1.2. [. Stockage Documentaire Centralisé et Structuré (Google Drive)](#section-32)
+
         1.2.1. [. Arborescence Logique (Détaillée)](#section-33)
+
         1.2.2. [. Nommage Cohérent & Versioning](#section-34)
+
             1.2.2.1. [WF-Contract-Archiver](#section-35)
+
             1.2.2.2. [WF-PressKit-Generator](#section-36)
+
             1.2.2.3. [WF-GDrive-Permissions-Manager](#section-37)
 
 ## 1. PILIER 1 : La Donnée Stratégique <a name='section-1'></a>
@@ -83,8 +119,7 @@ Ce pilier établit la fondation sur laquelle reposent tous les processus automat
   "telegramChatId": "telegram_chat_id_numeric", 
   "aiTeamStaticDataPrefix": "aiApiKeys_Gribitch_" 
 }
-```
-
+```plaintext
 > **Validation :** La structure et la validité de ce JSON doivent être vérifiées (manuellement ou via WF-Data-Quality-Checker). Une erreur ici bloque tous les workflows N8N pour l'artiste.
 
 - **Lien Espace Notion, Lien Dossier GDrive, Lien Portail CMS** (Type: URL). Utilitaires pour navigation rapide depuis Notion ou le CMS.
@@ -302,7 +337,7 @@ Utiliser l'Audit Log de Notion (si plan Enterprise) pour surveiller les accès e
 
 La structure proposée est logique et granulaire. Elle permet une bonne organisation et facilite la gestion des permissions au niveau dossier.
 
-```
+```plaintext
 Agence/
 ├── Admin_Finance/ (Factures, Bilans...)
 ├── Admin_HR/ (Contrats équipe, Politiques...)
@@ -321,8 +356,7 @@ Agence/
 
 **Considération :** Assurer la création automatique de cette arborescence pour chaque nouvel artiste via WF-HR-Onboarding ou un workflow dédié.
 
-```
-
+```plaintext
 #### 1.2.2. . Nommage Cohérent & Versioning <a name='section-34'></a>
 
 **Technique :** Appliquer la convention de nommage via les workflows N8N qui uploadent/gèrent les fichiers (WF-Contract-Archiver, WF-PressKit-Generator). Utiliser les fonctions de date et de manipulation de chaînes N8N/JS.

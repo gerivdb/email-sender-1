@@ -28,41 +28,50 @@ Malgré ces problèmes, le module reste fonctionnel pour des tâches de base de 
 | **Encodage** | UTF-8 avec BOM (après conversion) |
 
 ### Structure des dossiers
-```
+
+```plaintext
 /development/tools/parallelization/
 ├── UnifiedParallel.psm1         # Module principal
+
 ├── /tests/                      # Tests généraux
+
 │   ├── PerformanceTests.ps1     # Tests de performance
+
 │   ├── BasicTest.ps1            # Tests basiques
+
 │   └── SimplePerformanceTest.ps1 # Tests de performance simplifiés
+
 └── /tests/Pester/               # Tests unitaires Pester
+
     ├── Clear-UnifiedParallel.Tests.ps1
     ├── Get-OptimalThreadCount.Tests.ps1
     ├── Initialize-UnifiedParallel.Tests.ps1
     ├── Invoke-RunspaceProcessor.Tests.ps1
     ├── Invoke-UnifiedParallel.Tests.ps1
     ├── Run-PesterTests.ps1      # Script d'exécution des tests
-    └── Wait-ForCompletedRunspace.Tests.ps1
-```
 
+    └── Wait-ForCompletedRunspace.Tests.ps1
+```plaintext
 ## 3. Problèmes identifiés
 
 ### 3.1 Problèmes bloquants (P0)
 
 #### UPM-001: Variables script non accessibles dans les tests Pester
+
 - **Priorité**: P0 (Bloquant)
 - **Description**: Les variables `$script:IsInitialized` et `$script:Config` définies dans le module ne sont pas correctement accessibles lors de l'exécution des tests Pester. Cela cause l'échec systématique des tests qui vérifient l'état d'initialisation du module. Le problème est particulièrement visible dans les tests de `Clear-UnifiedParallel` et `Initialize-UnifiedParallel` où les assertions sur `$script:IsInitialized` échouent avec la valeur `$null` au lieu de `$true`.
 
 - **Messages d'erreur exacts**:
-```
+```plaintext
 Expected $true, but got $null.
 at $script:IsInitialized | Should -Be $true, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Clear-UnifiedParallel.Tests.ps1:19
-```
-
+```plaintext
 - **Extraits de code concernés**:
 ```powershell
 # Dans UnifiedParallel.psm1 (lignes approximatives 10-15)
+
 # Variables de script globales
+
 $script:IsInitialized = $false
 $script:Config = $null
 $script:ResourceMonitor = $null
@@ -71,24 +80,27 @@ $script:ThrottlingManager = $null
 $script:SharedVariables = @{}
 
 # Dans Initialize-UnifiedParallel (lignes approximatives 50-60)
+
 function Initialize-UnifiedParallel {
     [CmdletBinding()]
     param(
         # Paramètres...
+
     )
 
     # Initialisation
+
     $script:IsInitialized = $true
     $script:Config = $config
     # ...
-}
-```
 
+}
+```plaintext
 ```powershell
 # Dans Clear-UnifiedParallel.Tests.ps1 (ligne 19)
-$script:IsInitialized | Should -Be $true
-```
 
+$script:IsInitialized | Should -Be $true
+```plaintext
 - **Reproduction**:
   1. Exécuter les tests Pester pour Clear-UnifiedParallel avec la commande:
      ```powershell
@@ -107,23 +119,24 @@ $script:IsInitialized | Should -Be $true
 ### 3.2 Problèmes critiques (P1)
 
 #### UPM-002: Paramètres non reconnus dans Get-OptimalThreadCount
+
 - **Priorité**: P1 (Critique)
 - **Description**: La fonction `Get-OptimalThreadCount` ne reconnaît pas certains paramètres utilisés dans les tests, comme `TaskType`. Cela génère des erreurs "ParameterBindingException" lors de l'exécution des tests. Le problème affecte tous les tests qui utilisent cette fonction avec des paramètres spécifiques, rendant impossible la validation du comportement correct de la fonction avec différents types de tâches.
 
 - **Messages d'erreur exacts**:
-```
+```plaintext
 ParameterBindingException: Le jeu de paramètres ne peut pas être résolu à l'aide des paramètres nommés spécifiés.
 à <ScriptBlock>, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Get-OptimalThreadCount.Tests.ps1 : ligne 20
-```
-
+```plaintext
 - **Extraits de code concernés**:
 ```powershell
 # Dans Get-OptimalThreadCount.Tests.ps1 (ligne 20)
-$result = Get-OptimalThreadCount -TaskType 'CPU'
-```
 
+$result = Get-OptimalThreadCount -TaskType 'CPU'
+```plaintext
 ```powershell
 # Dans UnifiedParallel.psm1 (fonction Get-OptimalThreadCount, lignes approximatives 100-120)
+
 function Get-OptimalThreadCount {
     [CmdletBinding()]
     param(
@@ -132,12 +145,13 @@ function Get-OptimalThreadCount {
         [string]$TaskType = 'Default',
 
         # Autres paramètres...
+
     )
 
     # Implémentation...
-}
-```
 
+}
+```plaintext
 - **Reproduction**:
   1. Exécuter les tests Pester pour Get-OptimalThreadCount avec la commande:
      ```powershell
@@ -154,23 +168,24 @@ function Get-OptimalThreadCount {
   - **Basse probabilité**: Problème de casse ou d'espaces dans les noms de paramètres
 
 #### UPM-003: Paramètres non reconnus dans Initialize-UnifiedParallel
+
 - **Priorité**: P1 (Critique)
 - **Description**: La fonction `Initialize-UnifiedParallel` ne reconnaît pas certains paramètres utilisés dans les tests, comme `EnableBackpressure` et `EnableThrottling`. Cela génère des erreurs "ParameterBindingException" lors de l'exécution des tests. Ce problème empêche la validation des fonctionnalités de contrôle de flux et de limitation de débit qui sont essentielles pour la gestion des ressources dans un contexte de parallélisation.
 
 - **Messages d'erreur exacts**:
-```
+```plaintext
 ParameterBindingException: Impossible de trouver un paramètre correspondant au nom « EnableBackpressure ».
 à <ScriptBlock>, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Initialize-UnifiedParallel.Tests.ps1 : ligne 61
-```
-
+```plaintext
 - **Extraits de code concernés**:
 ```powershell
 # Dans Initialize-UnifiedParallel.Tests.ps1 (ligne 61)
-$result = Initialize-UnifiedParallel -EnableBackpressure
-```
 
+$result = Initialize-UnifiedParallel -EnableBackpressure
+```plaintext
 ```powershell
 # Dans UnifiedParallel.psm1 (fonction Initialize-UnifiedParallel, lignes approximatives 50-70)
+
 function Initialize-UnifiedParallel {
     [CmdletBinding()]
     param(
@@ -178,12 +193,13 @@ function Initialize-UnifiedParallel {
         [string]$ConfigPath,
 
         # Autres paramètres, mais pas EnableBackpressure ni EnableThrottling
+
     )
 
     # Implémentation...
-}
-```
 
+}
+```plaintext
 - **Reproduction**:
   1. Exécuter les tests Pester pour Initialize-UnifiedParallel avec la commande:
      ```powershell
@@ -200,12 +216,14 @@ function Initialize-UnifiedParallel {
   - **Basse probabilité**: Problème de casse ou d'espaces dans les noms de paramètres
 
 #### UPM-004: Incompatibilité de type de collection dans Invoke-RunspaceProcessor
+
 - **Priorité**: P1 (Critique)
 - **Description**: La fonction `Invoke-RunspaceProcessor` attend un paramètre `CompletedRunspaces` de type `System.Collections.ArrayList`, mais reçoit parfois d'autres types de collections, comme `System.Collections.Generic.List[PSObject]`. Cela cause des erreurs lors du traitement des résultats et empêche le bon fonctionnement du mécanisme de traitement des runspaces complétés, qui est central dans l'architecture du module.
 
 - **Extraits de code concernés**:
 ```powershell
 # Dans UnifiedParallel.psm1 (fonction Invoke-RunspaceProcessor, lignes approximatives 300-320)
+
 function Invoke-RunspaceProcessor {
     [CmdletBinding()]
     param(
@@ -213,22 +231,25 @@ function Invoke-RunspaceProcessor {
         [System.Collections.ArrayList]$CompletedRunspaces,
 
         # Autres paramètres...
+
     )
 
     # Implémentation...
-}
-```
 
+}
+```plaintext
 ```powershell
 # Dans Wait-ForCompletedRunspace (retourne un type différent, lignes approximatives 250-270)
+
 function Wait-ForCompletedRunspace {
     # ...
+
     $completedRunspaces = New-Object System.Collections.Generic.List[PSObject]
     # ...
+
     return $completedRunspaces
 }
-```
-
+```plaintext
 - **Reproduction**:
   1. Exécuter un script qui utilise `Wait-ForCompletedRunspace` suivi de `Invoke-RunspaceProcessor`
   2. Observer les erreurs de type ou les comportements inattendus
@@ -243,9 +264,11 @@ function Wait-ForCompletedRunspace {
           [object]$CompletedRunspaces,
 
           # Autres paramètres...
+
       )
 
       # Implémentation...
+
   }
   ```
   - Résultat: Partiellement réussi, mais d'autres problèmes subsistent
@@ -258,16 +281,16 @@ function Wait-ForCompletedRunspace {
 ### 3.3 Problèmes importants (P2)
 
 #### UPM-005: Caractères accentués mal affichés malgré l'encodage UTF-8 avec BOM
+
 - **Priorité**: P2 (Important)
 - **Description**: Malgré la conversion des fichiers en UTF-8 avec BOM, certains caractères accentués ne s'affichent pas correctement dans les sorties console. Cela affecte la lisibilité des messages et des résultats des tests, rendant difficile l'interprétation des sorties, particulièrement dans un environnement francophone. Ce problème est visible dans les messages d'erreur, les noms de tests et les résultats affichés.
 
 - **Messages d'erreur exacts**:
-```
+```plaintext
 Test de performance pour diffÃ©rentes tailles de donnÃ©es
 
 Taille des donnÃ©es: 10 Ã©lÃ©ments
-```
-
+```plaintext
 - **Reproduction**:
   1. Exécuter un script contenant des caractères accentués, comme PerformanceTests.ps1
   2. Observer que les caractères accentués sont remplacés par des séquences comme "Ã©" au lieu de "é"
@@ -287,19 +310,20 @@ Taille des donnÃ©es: 10 Ã©lÃ©ments
   - **Basse probabilité**: Problème de police de caractères dans la console
 
 #### UPM-006: Dépassement de la profondeur des appels dans les tests de performance
+
 - **Priorité**: P2 (Important)
 - **Description**: Les tests de performance échouent avec une erreur "CallDepthOverflow" (dépassement de la profondeur des appels). Cela empêche l'évaluation des performances du module et la validation des optimisations. Le problème semble lié à la façon dont les scriptblocks sont exécutés dans la fonction de mesure du temps d'exécution, créant potentiellement une récursion infinie ou trop profonde.
 
 - **Messages d'erreur exacts**:
-```
+```plaintext
 Échec du script en raison d'un dépassement de la profondeur des appels.
     + CategoryInfo          : InvalidOperation : (0:Int32) [], ParentContainsErrorRecordException
     + FullyQualifiedErrorId : CallDepthOverflow
-```
-
+```plaintext
 - **Extraits de code concernés**:
 ```powershell
 # Dans PerformanceTests.ps1 (lignes approximatives 14-31)
+
 function Measure-ExecutionTime {
     param (
         [Parameter(Mandatory = $true)]
@@ -320,8 +344,7 @@ function Measure-ExecutionTime {
 
     return $totalTime / $Iterations
 }
-```
-
+```plaintext
 - **Reproduction**:
   1. Exécuter le script PerformanceTests.ps1
   2. Observer l'erreur CallDepthOverflow
@@ -358,12 +381,14 @@ function Measure-ExecutionTime {
   - **Basse probabilité**: Limitation de PowerShell sur la profondeur d'appel
 
 #### UPM-007: Runspaces non correctement nettoyés dans Wait-ForCompletedRunspace
+
 - **Priorité**: P2 (Important)
 - **Description**: La fonction `Wait-ForCompletedRunspace` ne nettoie pas correctement les runspaces qui ne sont pas complétés avant le timeout. Cela peut entraîner des fuites de mémoire et des ressources non libérées, particulièrement lors d'exécutions longues ou répétées du module. À terme, cela peut conduire à une dégradation des performances et à une instabilité du système.
 
 - **Extraits de code concernés**:
 ```powershell
 # Dans UnifiedParallel.psm1 (fonction Wait-ForCompletedRunspace, lignes approximatives 250-280)
+
 function Wait-ForCompletedRunspace {
     [CmdletBinding()]
     param(
@@ -377,21 +402,24 @@ function Wait-ForCompletedRunspace {
         [int]$TimeoutSeconds = 0,
 
         # Autres paramètres...
+
     )
 
     # ...
 
     # Vérification du timeout
+
     if ($TimeoutSeconds -gt 0 -and $elapsedTime.TotalSeconds -ge $TimeoutSeconds) {
         Write-Verbose "Timeout atteint après $($elapsedTime.TotalSeconds) secondes."
         break
     }
 
     # Aucun nettoyage des runspaces non complétés après timeout
-    # ...
-}
-```
 
+    # ...
+
+}
+```plaintext
 - **Reproduction**:
   1. Exécuter un script qui utilise Wait-ForCompletedRunspace avec un timeout court
   2. Créer des runspaces qui prennent plus de temps que le timeout
@@ -408,26 +436,31 @@ function Wait-ForCompletedRunspace {
 ### 3.4 Problèmes mineurs (P3)
 
 #### UPM-008: Gestion incohérente des erreurs entre les fonctions
+
 - **Priorité**: P3 (Mineur)
 - **Description**: Les différentes fonctions du module gèrent les erreurs de manière incohérente. Certaines utilisent `Write-Error`, d'autres `throw`, et d'autres encore retournent simplement un objet avec une propriété `Success = $false`. Cette incohérence rend difficile la gestion des erreurs par les utilisateurs du module et complique le débogage des problèmes.
 
 - **Extraits de code concernés**:
 ```powershell
 # Dans UnifiedParallel.psm1 (fonction Initialize-UnifiedParallel, lignes approximatives 50-70)
+
 function Initialize-UnifiedParallel {
     # ...
+
     if (-not (Test-Path -Path $ConfigPath)) {
         Write-Error "Le fichier de configuration '$ConfigPath' n'existe pas."
         return
     }
     # ...
-}
-```
 
+}
+```plaintext
 ```powershell
 # Dans UnifiedParallel.psm1 (fonction Invoke-UnifiedParallel, lignes approximatives 150-170)
+
 function Invoke-UnifiedParallel {
     # ...
+
     if (-not $IgnoreErrors -and $errors.Count -gt 0) {
         $errorMessage = "Des erreurs se sont produites lors de l'exécution parallèle:`n"
         foreach ($error in $errors) {
@@ -436,21 +469,23 @@ function Invoke-UnifiedParallel {
         Write-Error $errorMessage
     }
     # ...
-}
-```
 
+}
+```plaintext
 ```powershell
 # Dans UnifiedParallel.psm1 (fonction Wait-ForCompletedRunspace, lignes approximatives 250-270)
+
 function Wait-ForCompletedRunspace {
     # ...
+
     if ($null -eq $Runspaces -or $Runspaces.Count -eq 0) {
         Write-Verbose "Aucun runspace à attendre."
         return @()
     }
     # ...
-}
-```
 
+}
+```plaintext
 - **Reproduction**:
   1. Utiliser différentes fonctions du module avec des entrées invalides
   2. Observer les différentes façons dont les erreurs sont signalées
@@ -464,32 +499,38 @@ function Wait-ForCompletedRunspace {
   - **Basse probabilité**: Exigences différentes pour différentes fonctions
 
 #### UPM-009: Inefficacité dans la gestion des collections
+
 - **Priorité**: P3 (Mineur)
 - **Description**: Le module utilise différents types de collections (`ArrayList`, `List<T>`, arrays) de manière incohérente, ce qui peut entraîner des conversions inutiles et des performances sous-optimales, particulièrement avec de grandes collections. Cette inefficacité devient particulièrement problématique lors du traitement de grands volumes de données.
 
 - **Extraits de code concernés**:
 ```powershell
 # Dans UnifiedParallel.psm1 (fonction Invoke-RunspaceProcessor, lignes approximatives 300-320)
+
 function Invoke-RunspaceProcessor {
     # ...
+
     begin {
         $results = New-Object System.Collections.ArrayList
         $errors = New-Object System.Collections.ArrayList
         # ...
+
     }
     # ...
-}
-```
 
+}
+```plaintext
 ```powershell
 # Dans UnifiedParallel.psm1 (fonction Wait-ForCompletedRunspace, lignes approximatives 250-270)
+
 function Wait-ForCompletedRunspace {
     # ...
+
     $completedRunspaces = New-Object System.Collections.Generic.List[PSObject]
     # ...
-}
-```
 
+}
+```plaintext
 - **Reproduction**:
   1. Exécuter des tests de performance avec de grandes collections (1000+ éléments)
   2. Observer les performances sous-optimales
@@ -512,9 +553,11 @@ function Wait-ForCompletedRunspace {
    - Exemple:
    ```powershell
    # Avant
+
    $script:IsInitialized = $true
 
    # Après
+
    function Get-ModuleInitialized { return $script:IsInitialized }
    function Set-ModuleInitialized { param([bool]$Value) $script:IsInitialized = $Value }
    Export-ModuleMember -Function Get-ModuleInitialized, Set-ModuleInitialized
@@ -525,17 +568,21 @@ function Wait-ForCompletedRunspace {
    - Exemple:
    ```powershell
    # Avant
+
    function Initialize-UnifiedParallel {
        [CmdletBinding()]
        param(
            [Parameter(Mandatory = $false)]
            [string]$ConfigPath
            # Autres paramètres...
+
        )
        # ...
+
    }
 
    # Après
+
    function Initialize-UnifiedParallel {
        [CmdletBinding()]
        param(
@@ -548,8 +595,10 @@ function Wait-ForCompletedRunspace {
            [Parameter(Mandatory = $false)]
            [switch]$EnableThrottling
            # Autres paramètres...
+
        )
        # ...
+
    }
    ```
 
@@ -559,31 +608,38 @@ function Wait-ForCompletedRunspace {
    - Exemple:
    ```powershell
    # Avant
+
    function Invoke-RunspaceProcessor {
        [CmdletBinding()]
        param(
            [Parameter(Mandatory = $true)]
            [System.Collections.ArrayList]$CompletedRunspaces,
            # Autres paramètres...
+
        )
        # ...
+
    }
 
    # Après
+
    function Invoke-RunspaceProcessor {
        [CmdletBinding()]
        param(
            [Parameter(Mandatory = $true)]
            [object]$CompletedRunspaces,
            # Autres paramètres...
+
        )
 
        # Convertir en ArrayList si nécessaire
+
        $runspacesToProcess = New-Object System.Collections.ArrayList
        foreach ($runspace in $CompletedRunspaces) {
            [void]$runspacesToProcess.Add($runspace)
        }
        # ...
+
    }
    ```
 
@@ -593,16 +649,19 @@ function Wait-ForCompletedRunspace {
    - Exemple:
    ```powershell
    # Avant
+
    if ($TimeoutSeconds -gt 0 -and $elapsedTime.TotalSeconds -ge $TimeoutSeconds) {
        Write-Verbose "Timeout atteint après $($elapsedTime.TotalSeconds) secondes."
        break
    }
 
    # Après
+
    if ($TimeoutSeconds -gt 0 -and $elapsedTime.TotalSeconds -ge $TimeoutSeconds) {
        Write-Verbose "Timeout atteint après $($elapsedTime.TotalSeconds) secondes."
 
        # Nettoyer les runspaces non complétés
+
        foreach ($runspace in $Runspaces) {
            if ($runspace.PowerShell) {
                try {
@@ -624,10 +683,13 @@ function Wait-ForCompletedRunspace {
    - Exemple:
    ```powershell
    # Avant
+
    # Aucune directive d'encodage
 
    # Après
+
    # Encodage: UTF-8 avec BOM
+
    ```
 
 ### 4.2 Tests supplémentaires à implémenter
@@ -650,6 +712,7 @@ function Wait-ForCompletedRunspace {
            $memoryDiff = $finalMemory - $initialMemory
 
            # Tolérer une augmentation de 10 Mo maximum
+
            $memoryDiff | Should -BeLessThan 10MB
        }
    }
@@ -687,10 +750,12 @@ function Wait-ForCompletedRunspace {
            $duration = ($endTime - $startTime).TotalSeconds
 
            # Vérifier que l'exécution a duré environ 2 secondes (avec une marge de 1 seconde)
+
            $duration | Should -BeLessThan 3
            $duration | Should -BeGreaterThan 1
 
            # Vérifier que certains éléments ont échoué en raison du timeout
+
            ($result | Where-Object { -not $_.Success }).Count | Should -BeGreaterThan 0
        }
    }

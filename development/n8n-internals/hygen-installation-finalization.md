@@ -16,57 +16,61 @@ La première étape consiste à vérifier que Hygen est correctement installé e
 
 ```powershell
 # Vérifier la version de Hygen
+
 npx hygen --version
 
 # Vérifier l'installation complète
-.\n8n\scripts\setup\verify-hygen-installation.ps1
-```
 
+.\n8n\scripts\setup\verify-hygen-installation.ps1
+```plaintext
 ### 2. Validation de la structure de dossiers
 
 La deuxième étape consiste à vérifier que la structure de dossiers nécessaire est en place.
 
 ```powershell
 # Vérifier la structure de dossiers
+
 .\n8n\scripts\setup\validate-hygen-structure.ps1
 
 # Corriger la structure de dossiers si nécessaire
-.\n8n\scripts\setup\validate-hygen-structure.ps1 -Fix
-```
 
+.\n8n\scripts\setup\validate-hygen-structure.ps1 -Fix
+```plaintext
 ### 3. Test de l'installation dans un environnement propre
 
 La troisième étape consiste à tester l'installation dans un environnement propre pour s'assurer que le script d'installation fonctionne correctement.
 
 ```powershell
 # Tester l'installation dans un environnement propre
+
 .\n8n\scripts\setup\test-hygen-clean-install.ps1
 
 # Tester l'installation et conserver le dossier temporaire
-.\n8n\scripts\setup\test-hygen-clean-install.ps1 -KeepTemp
-```
 
+.\n8n\scripts\setup\test-hygen-clean-install.ps1 -KeepTemp
+```plaintext
 ### 4. Finalisation complète
 
 La dernière étape consiste à exécuter le script de finalisation qui effectue toutes les vérifications et corrections nécessaires.
 
 ```powershell
 # Vérifier uniquement
+
 .\n8n\scripts\setup\finalize-hygen-installation.ps1
 
 # Vérifier et corriger
+
 .\n8n\scripts\setup\finalize-hygen-installation.ps1 -Fix
 
 # Vérifier et corriger (sans test propre)
-.\n8n\scripts\setup\finalize-hygen-installation.ps1 -Fix -SkipCleanTest
-```
 
+.\n8n\scripts\setup\finalize-hygen-installation.ps1 -Fix -SkipCleanTest
+```plaintext
 Vous pouvez également utiliser le script de commande pour faciliter l'exécution de la finalisation :
 
 ```batch
 .\n8n\cmd\utils\finalize-hygen.cmd
-```
-
+```plaintext
 ## Structure des scripts
 
 ### Scripts de finalisation
@@ -83,7 +87,7 @@ Vous pouvez également utiliser le script de commande pour faciliter l'exécutio
 
 La structure de dossiers suivante est nécessaire pour Hygen :
 
-```
+```plaintext
 n8n/development/templates/
   n8n-script/
     new/
@@ -138,8 +142,7 @@ n8n/
     stop/
   development/testing/tests/
     unit/
-```
-
+```plaintext
 ## Résolution des problèmes
 
 ### Hygen n'est pas installé
@@ -148,24 +151,21 @@ Si Hygen n'est pas installé, exécutez la commande suivante :
 
 ```powershell
 npm install --save-dev hygen
-```
-
+```plaintext
 ### Structure de dossiers incomplète
 
 Si la structure de dossiers est incomplète, exécutez la commande suivante :
 
 ```powershell
 .\n8n\scripts\setup\validate-hygen-structure.ps1 -Fix
-```
-
+```plaintext
 ### Fichiers manquants
 
 Si des fichiers sont manquants, exécutez la commande suivante :
 
 ```powershell
 .\n8n\scripts\setup\install-hygen.ps1
-```
-
+```plaintext
 ### Erreurs lors de l'exécution des scripts
 
 Si vous rencontrez des erreurs lors de l'exécution des scripts, vérifiez les points suivants :
@@ -187,4 +187,4 @@ Pour plus d'informations, consultez le guide d'utilisation de Hygen :
 
 ```powershell
 .\n8n\projet/documentation\hygen-guide.md
-```
+```plaintext

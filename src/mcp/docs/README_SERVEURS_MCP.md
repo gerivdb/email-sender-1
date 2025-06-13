@@ -28,10 +28,9 @@ Plusieurs scripts ont été créés pour simplifier la gestion des serveurs MCP 
 
 Exécutez le script d'installation des dépendances :
 
-```
+```plaintext
 scripts\mcp\install-mcp-dependencies.cmd
-```
-
+```plaintext
 Ce script vérifiera et installera les packages npm suivants :
 - @modelcontextprotocol/server-filesystem
 - @modelcontextprotocol/server-github
@@ -44,10 +43,9 @@ Ce script vérifiera et installera les packages npm suivants :
 
 Exécutez le script de démarrage unifié :
 
-```
+```plaintext
 scripts\mcp\start-all-mcp-servers.cmd
-```
-
+```plaintext
 Ce script démarrera les serveurs MCP suivants :
 1. MCP Filesystem (accès aux fichiers locaux)
 2. MCP GitHub (accès aux dépôts GitHub)
@@ -59,21 +57,27 @@ Ce script démarrera les serveurs MCP suivants :
 ## Configuration des serveurs
 
 ### MCP Filesystem
+
 - Aucune configuration spéciale n'est nécessaire.
 
 ### MCP GitHub
+
 - Créez un fichier `mcp-servers\github\config.json` avec votre token GitHub.
 
 ### MCP GCP
+
 - Placez votre fichier d'authentification Google Cloud dans `mcp-servers\gcp\token.json`.
 
 ### MCP Supergateway
+
 - Utilisez le fichier de configuration `src\mcp\config\gateway.yaml`.
 
 ### MCP Augment
+
 - La configuration est déjà présente dans `.augment\config.json`.
 
 ### MCP GDrive
+
 - Utilisez le fichier de configuration `mcp\gdrive\n8n-config.json`.
 
 ## Résolution des problèmes

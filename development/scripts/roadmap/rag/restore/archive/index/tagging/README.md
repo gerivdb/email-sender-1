@@ -17,8 +17,7 @@ Ce module PowerShell fournit des fonctionnalites pour gerer les etiquettes (tags
 
 ```powershell
 . "chemin/vers/TagManager.ps1"
-```
-
+```plaintext
 ## Utilisation
 
 ### Ajout d'etiquettes a un document
@@ -32,26 +31,29 @@ $document = [PSCustomObject]@{
 }
 
 # Ajouter des etiquettes
+
 $document = Add-DocumentTags -Document $document -Tags @("important", "documentation", "test")
 
 # Ajouter des etiquettes avec Force (permet les doublons)
-$document = Add-DocumentTags -Document $document -Tags @("urgent", "important") -Force
-```
 
+$document = Add-DocumentTags -Document $document -Tags @("urgent", "important") -Force
+```plaintext
 ### Suppression d'etiquettes d'un document
 
 ```powershell
 # Supprimer des etiquettes specifiques
+
 $document = Remove-DocumentTags -Document $document -Tags @("documentation", "test")
 
 # Supprimer toutes les etiquettes
-$document = Remove-DocumentTags -Document $document -RemoveAll
-```
 
+$document = Remove-DocumentTags -Document $document -RemoveAll
+```plaintext
 ### Filtrage de documents par etiquettes
 
 ```powershell
 # Collection de documents
+
 $documents = @(
     (New-TestDocument -Title "Document 1" -Tags @("important", "urgent", "client")),
     (New-TestDocument -Title "Document 2" -Tags @("documentation", "interne")),
@@ -61,29 +63,33 @@ $documents = @(
 )
 
 # Filtrer les documents qui ont au moins une des etiquettes specifiees
+
 $filteredDocuments = Get-DocumentsByTags -Documents $documents -Tags @("important", "client") -MatchMode "Any"
 
 # Filtrer les documents qui ont toutes les etiquettes specifiees
+
 $filteredDocuments = Get-DocumentsByTags -Documents $documents -Tags @("important", "documentation") -MatchMode "All"
 
 # Filtrer les documents qui n'ont aucune des etiquettes specifiees
-$filteredDocuments = Get-DocumentsByTags -Documents $documents -Tags @("important", "client") -MatchMode "None"
-```
 
+$filteredDocuments = Get-DocumentsByTags -Documents $documents -Tags @("important", "client") -MatchMode "None"
+```plaintext
 ### Extraction des etiquettes uniques
 
 ```powershell
 # Extraire toutes les etiquettes uniques
+
 $uniqueTags = Get-UniqueDocumentTags -Documents $documents
 
 # Extraire toutes les etiquettes uniques avec leur nombre d'occurrences
-$tagCounts = Get-UniqueDocumentTags -Documents $documents -IncludeCount
-```
 
+$tagCounts = Get-UniqueDocumentTags -Documents $documents -IncludeCount
+```plaintext
 ### Suggestion d'etiquettes
 
 ```powershell
 # Suggerer des etiquettes basees sur le contenu d'un document
+
 $document = [PSCustomObject]@{
     id = "doc1"
     title = "Rapport financier trimestriel"
@@ -91,12 +97,13 @@ $document = [PSCustomObject]@{
 }
 
 # Suggerer des etiquettes
+
 $suggestedTags = Get-SuggestedTags -Document $document
 
 # Suggerer des etiquettes en utilisant des documents similaires
-$suggestedTags = Get-SuggestedTags -Document $document -SimilarDocuments $documents -MaxSuggestions 10
-```
 
+$suggestedTags = Get-SuggestedTags -Document $document -SimilarDocuments $documents -MaxSuggestions 10
+```plaintext
 ## Fonctions
 
 ### Add-DocumentTags

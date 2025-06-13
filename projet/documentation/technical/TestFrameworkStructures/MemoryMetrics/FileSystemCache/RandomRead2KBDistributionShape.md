@@ -38,10 +38,9 @@ Cette multimodalité est particulièrement visible dans les systèmes avec une h
 
 La distribution peut être modélisée comme un mélange de distributions log-normales :
 
-```
+```plaintext
 f(x) = Σ(i=1 to k) w_i * LN(x; μ_i, σ_i)
-```
-
+```plaintext
 Où :
 - k est le nombre de modes (typiquement 2-4)
 - w_i sont les poids de chaque composante (Σw_i = 1)
@@ -75,8 +74,7 @@ Pour une distribution typique à 3 modes, les paramètres approximatifs seraient
     ]
   }
 }
-```
-
+```plaintext
 ## 3. Variations de la forme selon le contexte
 
 ### 3.1 Variations par environnement matériel
@@ -160,8 +158,7 @@ Pour une distribution typique de latences de lectures aléatoires de blocs de 2K
     "binPlacementRationale": "Optimisé pour capturer la structure multimodale avec une résolution plus fine dans les régions de haute densité"
   }
 }
-```
-
+```plaintext
 ### 5.3 Alternatives selon le contexte
 
 | Contexte | Structure d'histogramme recommandée |
@@ -187,45 +184,61 @@ Pour une distribution typique de latences de lectures aléatoires de blocs de 2K
 
 #### 6.2.1 Histogramme à largeur variable avec échelle linéaire
 
-```
+```plaintext
 Fréquence
 ^
 |
 |    ####
+
 |    ####
+
 |    ########
+
 |    ############
+
 |    ################
+
 |    ####################
+
 |    ########################
+
 |    ############################
+
 |    ################################    ####
+
 |    ########################################    ####    ####
+
 +----+----+----+----+----+----+----+----+----+----+----+----+----+-->
      50  100  150  200  300  500  1000 2000 3000 4000 5000 6000  µs
-```
-
+```plaintext
 #### 6.2.2 Histogramme avec échelle logarithmique
 
-```
+```plaintext
 Fréquence
 ^
 |
 |                ####
+
 |                ########
+
 |    ####        ############
+
 |    ########    ################
+
 |    ############    ################
+
 |    ######################    ############
+
 |    ################################    ########
+
 |    ########################################    ####
+
 +----+----+----+----+----+----+----+----+----+----+----+-->
     10   30   100  300  1000 3000 10000  µs (log scale)
-```
-
+```plaintext
 #### 6.2.3 Density plot avec identification des modes
 
-```
+```plaintext
 Densité
 ^
 |
@@ -244,8 +257,7 @@ Densité
 | /          \                       \___/    \___
 +----+----+----+----+----+----+----+----+----+----+-->
     100  200  300  400  500  600  700  800  900 1000  µs
-```
-
+```plaintext
 ## 7. Conclusion
 
 La distribution des latences pour les lectures aléatoires de blocs de 2KB présente une forme complexe caractérisée par :

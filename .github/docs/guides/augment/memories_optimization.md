@@ -48,8 +48,7 @@ Pour optimiser les Memories d'Augment Code, utilisez le script suivant :
 
 ```powershell
 .\development\scripts\maintenance\augment\optimize-augment-memories.ps1 -Mode GRAN -OutputPath ".augment\memories\journal_memories.json"
-```
-
+```plaintext
 ### Paramètres
 
 - `-Mode` : Mode actif pour lequel optimiser les Memories. Valeurs possibles : ARCHI, CHECK, C-BREAK, DEBUG, DEV-R, GRAN, OPTI, PREDIC, REVIEW, TEST, ALL. Par défaut : ALL.
@@ -62,20 +61,17 @@ Pour optimiser les Memories d'Augment Code, utilisez le script suivant :
 
 ```powershell
 .\development\scripts\maintenance\augment\optimize-augment-memories.ps1
-```
-
+```plaintext
 #### Optimiser les Memories pour le mode GRAN
 
 ```powershell
 .\development\scripts\maintenance\augment\optimize-augment-memories.ps1 -Mode GRAN
-```
-
+```plaintext
 #### Optimiser les Memories et les enregistrer dans un fichier spécifique
 
 ```powershell
 .\development\scripts\maintenance\augment\optimize-augment-memories.ps1 -OutputPath "C:\temp\augment_memories.json"
-```
-
+```plaintext
 ## Structure des Memories optimisées
 
 Les Memories optimisées sont structurées en sections, chaque section ayant un nom et un contenu :
@@ -96,8 +92,7 @@ Les Memories optimisées sont structurées en sections, chaque section ayant un 
     ...
   ]
 }
-```
-
+```plaintext
 ### Sections communes
 
 Les sections communes sont présentes dans toutes les Memories, quel que soit le mode actif :
@@ -133,8 +128,7 @@ Le script d'intégration pour le gestionnaire de modes met à jour automatiqueme
 
 ```powershell
 .\development\scripts\maintenance\augment\mode-manager-augment-integration.ps1 -Mode GRAN -FilePath "docs\plans\plan-modes-stepup.md" -TaskIdentifier "1.2.3" -UpdateMemories
-```
-
+```plaintext
 Lorsque l'option `-UpdateMemories` est spécifiée, le script effectue les actions suivantes :
 1. Exécute le mode spécifié
 2. Génère les Memories optimisées pour ce mode
@@ -148,16 +142,14 @@ Pour garantir que les Memories sont toujours à jour, mettez-les à jour après 
 
 ```powershell
 .\development\scripts\maintenance\augment\mode-manager-augment-integration.ps1 -Mode <MODE> -UpdateMemories
-```
-
+```plaintext
 ### 2. Adapter les Memories à votre contexte actuel
 
 Si vous travaillez sur une tâche spécifique, adaptez les Memories à votre contexte actuel :
 
 ```powershell
 .\development\scripts\maintenance\augment\optimize-augment-memories.ps1 -Mode <MODE>
-```
-
+```plaintext
 ### 3. Éviter de surcharger les Memories
 
 Les Memories ont une taille limitée. Évitez de les surcharger avec des informations non pertinentes :

@@ -1,4 +1,4 @@
-﻿# ConvertFrom-MarkdownToRoadmapOptimized
+# ConvertFrom-MarkdownToRoadmapOptimized
 
 ## SYNOPSIS
 

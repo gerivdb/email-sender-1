@@ -1,19 +1,25 @@
 # Instructions Copilot - Exécuteur de Plans v2.0
 
 ## 🎯 Objectif
+
 Exécuter des plans de développement avec mise à jour temps réel, suivi continu et gestion robuste des erreurs.
 
 ## 📋 Workflow d'Exécution Standard
 
 ### Phase 1: Initialisation
+
 ```powershell
 # Charger le plan depuis le fichier spécifié
-# Analyser la structure et identifier toutes les tâches
-# Calculer progression initiale et temps estimé
-# Créer point de sauvegarde initial
-```
 
+# Analyser la structure et identifier toutes les tâches
+
+# Calculer progression initiale et temps estimé
+
+# Créer point de sauvegarde initial
+
+```plaintext
 ### Phase 2: Exécution avec Mise à Jour Continue
+
 Pour chaque tâche :
 
 **a) Pré-exécution :**
@@ -35,8 +41,10 @@ Pour chaque tâche :
 - Sauvegarder immédiatement dans le fichier plan
 
 ## 📊 Format de Suivi des Tâches
+
 ```markdown
 ### Phase X: [Nom de la Phase] [STATUT]
+
 - [x] **T1.1** Description de la tâche
   - ⏱️ **Durée** : 00:02:15 (07:35:10 → 07:37:25)
   - ✅ **Résultat** : Description du résultat
@@ -47,9 +55,9 @@ Pour chaque tâche :
   - 📋 **Sous-tâches** :
     - [x] Sous-tâche complétée
     - [ ] Sous-tâche en attente
-```
-
+```plaintext
 ## 🎛️ Commandes de Contrôle Disponibles
+
 - `PAUSE` : Suspend l'exécution après la tâche actuelle
 - `RESUME` : Reprend depuis la dernière tâche non terminée
 - `STATUS` : Affiche progression détaillée
@@ -57,8 +65,9 @@ Pour chaque tâche :
 - `CHECKPOINT` : Crée un point de sauvegarde manuel
 
 ## 📈 Tableau de Bord Temps Réel
+
 Afficher continuellement :
-```
+```plaintext
 ╔══════════════════════════════════════════════════════╗
 ║              📊 TABLEAU DE BORD EXÉCUTION            ║
 ║ Plan: [nom-du-fichier.md]                           ║
@@ -67,9 +76,9 @@ Afficher continuellement :
 ║ ⏱️ Temps écoulé: 1h 45min                          ║
 ║ 🎯 Temps restant estimé: 32min                      ║
 ╚══════════════════════════════════════════════════════╝
-```
-
+```plaintext
 ## 🚨 Gestion d'Erreurs Spécialisée
+
 ```markdown
 ❌ **ERREUR DÉTECTÉE**
 **Tâche** : [ID] - [Description]
@@ -79,9 +88,9 @@ Afficher continuellement :
 **Actions automatiques tentées** : [Liste des tentatives]
 **Action requise** : [Description de l'intervention nécessaire]
 **Options** : [R]éessayer, [S]auter, [A]rrêter
-```
-
+```plaintext
 ## 📁 Références aux Scripts
+
 - Scripts d'exécution : `tools/scripts/roadmap/`
 - Modes opérationnels : `tools/scripts/roadmap/modes/`
 - Utilitaires : `development/scripts/maintenance/`
@@ -98,6 +107,7 @@ Ce fichier décrit comment Copilot doit gérer l’exécution des plans de déve
 - Références : `.github/instructions/plan-executor.instructions.md`
 
 ### Extrait du guide Unified Parallel
+
 > « Les plans de développement sont structurés pour permettre une exécution séquentielle, avec validation à chaque étape et sauvegarde régulière de l’état. »
 
 Consultez aussi les guides dans `projet/guides/methodologies/`.

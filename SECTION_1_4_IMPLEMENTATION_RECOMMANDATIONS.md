@@ -26,8 +26,7 @@ if err != nil {
     log.Printf("Error in dependency resolution: %v", err)
     return err
 }
-```
-
+```plaintext
 **Implémentation Cible** :
 ```go
 // Pattern ErrorManager standardisé
@@ -46,8 +45,7 @@ if err != nil {
         },
     })
 }
-```
-
+```plaintext
 **Actions** :
 1. ✅ **Analyse du code existant** (Completed)
 2. 🔄 **Création de l'interface DependencyErrorManager**
@@ -60,7 +58,7 @@ if err != nil {
 **Objectif** : Créer un bridge ErrorManager pour les modules PowerShell
 
 **Architecture proposée** :
-```
+```plaintext
 PowerShell Module
        │
        ▼
@@ -71,13 +69,13 @@ ErrorManager Go (via API)
        │
        ▼
 Logging & Recovery System
-```
-
+```plaintext
 **Implémentation** :
 
 **1. PowerShell Bridge Module** :
 ```powershell
 # ErrorManagerBridge.psm1
+
 function Invoke-ErrorManagerProcess {
     param(
         [Parameter(Mandatory=$true)]
@@ -108,11 +106,11 @@ function Invoke-ErrorManagerProcess {
     catch {
         Write-Warning "Failed to process error via ErrorManager: $($_.Exception.Message)"
         # Fallback to local logging
+
         Write-Error $ErrorMessage
     }
 }
-```
-
+```plaintext
 **2. API Endpoint Go** :
 ```go
 // error_api.go
@@ -152,8 +150,7 @@ func (s *ErrorManagerService) HandlePowerShellError(w http.ResponseWriter, r *ht
         "recovery_action": result.RecoveryAction,
     })
 }
-```
-
+```plaintext
 **Actions** :
 1. 🔄 **Création du module PowerShell Bridge**
 2. 🔄 **Implémentation de l'API REST Go**
@@ -232,8 +229,7 @@ func (cb *UnifiedCircuitBreaker) Execute(ctx context.Context, operation func() e
     cb.metrics.RecordSuccess(duration)
     return nil
 }
-```
-
+```plaintext
 **Utilisation Standardisée** :
 ```go
 // dependency_manager.go - Example usage
@@ -243,8 +239,7 @@ func (dm *DependencyManager) ResolveDependency(ctx context.Context, dep *Depende
         return dm.performResolution(dep)
     })
 }
-```
-
+```plaintext
 **Actions** :
 1. 🔄 **Implémentation du Circuit Breaker unifié**
 2. 🔄 **Intégration avec le Dependency Manager**
@@ -303,8 +298,7 @@ func (a *AdaptiveRetryStrategy) SelectStrategy(err error) RetryStrategy {
     // Fallback to default strategy
     return a.strategies["default"]
 }
-```
-
+```plaintext
 **Actions** :
 1. 🔄 **Implémentation des stratégies de retry**
 2. 🔄 **Classification automatique des erreurs**
@@ -320,7 +314,7 @@ func (a *AdaptiveRetryStrategy) SelectStrategy(err error) RetryStrategy {
 **Objectif** : Créer une vue centralisée des erreurs et métriques
 
 **Architecture Dashboard** :
-```
+```plaintext
 ┌─────────────────────────────────────────────────────────────┐
 │                    ERROR MONITORING DASHBOARD                │
 ├─────────────────────────────────────────────────────────────┤
@@ -351,8 +345,7 @@ func (a *AdaptiveRetryStrategy) SelectStrategy(err error) RetryStrategy {
 │  [14:15] PowerShell module crash - Component: DependencyRes │
 │  [14:08] Redis connection lost - Component: CacheManager    │
 └─────────────────────────────────────────────────────────────┘
-```
-
+```plaintext
 **Implémentation Dashboard** :
 ```go
 // dashboard_service.go
@@ -396,8 +389,7 @@ func (ds *DashboardService) StartRealtimeUpdates() {
         }
     }
 }
-```
-
+```plaintext
 **Actions** :
 1. 🔄 **Développement du service de dashboard**
 2. 🔄 **Interface web temps réel**
@@ -411,10 +403,13 @@ func (ds *DashboardService) StartRealtimeUpdates() {
 **Configuration des Alertes** :
 ```yaml
 # alerts_config.yaml
+
 alerts:
   global:
     error_rate_threshold: 10  # errors per minute
+
     recovery_rate_threshold: 0.7  # 70% minimum recovery rate
+
     
   components:
     dependency-manager:
@@ -442,8 +437,7 @@ alerts:
     - type: "pagerduty"
       integration_key: "${PAGERDUTY_KEY}"
       severity_levels: ["critical"]
-```
-
+```plaintext
 **Implémentation Alertes** :
 ```go
 // alert_manager.go
@@ -484,8 +478,7 @@ func (am *AlertManager) EvaluateMetrics(metrics *DashboardMetrics) {
         }
     }
 }
-```
-
+```plaintext
 **Actions** :
 1. 🔄 **Implémentation du système d'alertes**
 2. 🔄 **Configuration des seuils par composant**
@@ -578,8 +571,7 @@ func runChaosScenario(t *testing.T, scenario ChaosTest) {
     // Validate expectations
     validateExpectedBehavior(t, scenario.expected, results)
 }
-```
-
+```plaintext
 **Actions** :
 1. 🔄 **Implémentation des tests chaos**
 2. 🔄 **Framework d'injection de fautes**
@@ -602,6 +594,7 @@ func runChaosScenario(t *testing.T, scenario ChaosTest) {
 ## 1. Patterns Fondamentaux
 
 ### Pattern 1: Basic ErrorManager Usage
+
 ```go
 // ✅ Correct Usage
 func (c *Component) PerformOperation(ctx context.Context) error {
@@ -625,9 +618,9 @@ func (c *Component) PerformOperation(ctx context.Context) error {
     }
     return nil
 }
-```
-
+```plaintext
 ### Pattern 2: Circuit Breaker Integration
+
 ```go
 // ✅ Correct Usage
 func (c *Component) ExternalAPICall(ctx context.Context) error {
@@ -635,11 +628,12 @@ func (c *Component) ExternalAPICall(ctx context.Context) error {
         return c.performAPICall()
     })
 }
-```
-
+```plaintext
 ### Pattern 3: PowerShell Error Bridge
+
 ```powershell
 # ✅ Correct Usage
+
 try {
     Invoke-SomeOperation
 }
@@ -652,28 +646,28 @@ catch {
                              }
     throw
 }
-```
-
+```plaintext
 ## 2. Anti-Patterns à Éviter
 
 ### Anti-Pattern 1: Ignorer les Erreurs
+
 ```go
 // ❌ Ne jamais faire cela
 result, _ := operation()  // Ignore error
-```
-
+```plaintext
 ### Anti-Pattern 2: Logging Multiple
+
 ```go
 // ❌ Double logging
 if err != nil {
     log.Error(err)                    // Local logging
     return errorManager.Process(err)  // ErrorManager logging
 }
-```
-
+```plaintext
 ## 3. Patterns Avancés
 
 ### Pattern 4: Error Classification
+
 ```go
 func classifyError(err error) ErrorType {
     switch {
@@ -687,9 +681,8 @@ func classifyError(err error) ErrorType {
         return UnknownError
     }
 }
-```
-```
-
+```plaintext
+```plaintext
 **Actions** :
 1. 🔄 **Rédaction du guide complet**
 2. 🔄 **Exemples pratiques par composant**
@@ -699,7 +692,7 @@ func classifyError(err error) ErrorType {
 #### 3.1.2 Documentation Technique Complète
 
 **Architecture Documentation** :
-```
+```plaintext
 docs/
 ├── architecture/
 │   ├── error-management-overview.md
@@ -717,8 +710,7 @@ docs/
     ├── common-issues.md
     ├── debugging-guide.md
     └── performance-tuning.md
-```
-
+```plaintext
 **Actions** :
 1. 🔄 **Documentation architecture complète**
 2. 🔄 **Guides de configuration**
@@ -751,8 +743,7 @@ func (em *ErrorManager) ProcessError(ctx context.Context, err error, hooks *Erro
     // Process error...
     return processedErr.Result
 }
-```
-
+```plaintext
 2. **Lazy Logging** :
 ```go
 // lazy_logger.go
@@ -763,8 +754,7 @@ func (l *LazyLogger) Error(msg string, fields ...zap.Field) {
     
     l.logger.Error(msg, fields...)
 }
-```
-
+```plaintext
 **Actions** :
 1. 🔄 **Implémentation object pooling**
 2. 🔄 **Optimisation des allocations**
@@ -776,16 +766,19 @@ func (l *LazyLogger) Error(msg string, fields ...zap.Field) {
 ### 4.1 Métriques de Progression
 
 #### Phase 1 Metrics:
+
 - **ErrorManager Coverage**: 0% → 100% (Target)
 - **Component Integration**: 2/4 → 4/4 (Target)
 - **PowerShell Bridge**: 0% → 100% (Target)
 
 #### Phase 2 Metrics:
+
 - **Monitoring Dashboard**: 0% → 100% (Target)
 - **Alert System**: 0% → 100% (Target)
 - **Chaos Test Coverage**: 0% → 80% (Target)
 
 #### Phase 3 Metrics:
+
 - **Documentation Coverage**: 0% → 95% (Target)
 - **Team Training**: 0% → 100% (Target)
 - **Performance Optimization**: 0% → 80% (Target)
@@ -793,12 +786,14 @@ func (l *LazyLogger) Error(msg string, fields ...zap.Field) {
 ### 4.2 KPIs de Succès
 
 #### Métriques Quantitatives
+
 - **🎯 Temps de récupération moyen** : ≤ 15 secondes
 - **🎯 Taux de récupération automatique** : ≥ 85%
 - **🎯 Erreurs non gérées** : < 5% du total
 - **🎯 MTTR (Mean Time To Recovery)** : ≤ 2 minutes
 
 #### Métriques Qualitatives
+
 - **🎯 Consistance des patterns** : 100% conformité
 - **🎯 Observabilité** : Visibilité complète des erreurs
 - **🎯 Maintenabilité** : Réduction de la complexité
@@ -807,7 +802,7 @@ func (l *LazyLogger) Error(msg string, fields ...zap.Field) {
 
 ### Timeline Détaillé
 
-```
+```plaintext
 Semaine 1-2: Phase 1 - Standardisation
 ├── S1.1: Refactoring Dependency Manager (3 jours)
 ├── S1.2: PowerShell Bridge Development (4 jours)
@@ -825,8 +820,7 @@ Semaine 5: Phase 3 - Finalisation
 ├── S3.2: Team Training (1 jour)
 ├── S3.3: Performance Optimization (1 jour)
 └── S3.4: Final Validation (1 jour)
-```
-
+```plaintext
 ### Jalons Critiques
 
 - **🏁 Milestone 1** (Fin S2): ErrorManager standardisé à 100%
@@ -838,16 +832,19 @@ Semaine 5: Phase 3 - Finalisation
 ### Risques Identifiés et Mitigations
 
 #### Risque 1: Impact sur les Performances
+
 - **Probabilité**: Moyenne
 - **Impact**: Moyen
 - **Mitigation**: Benchmarks continus, optimisations early
 
 #### Risque 2: Résistance au Changement
+
 - **Probabilité**: Faible
 - **Impact**: Élevé
 - **Mitigation**: Formation proactive, documentation claire
 
 #### Risque 3: Complexité d'Intégration
+
 - **Probabilité**: Moyenne
 - **Impact**: Moyen
 - **Mitigation**: Tests exhaustifs, rollback plan

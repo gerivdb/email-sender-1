@@ -14,54 +14,73 @@ Le gestionnaire d'erreurs avancé est un système complet de gestion des erreurs
 ## ✨ Fonctionnalités
 
 ### 📝 Journalisation structurée
+
 - **Zap** : Journalisation haute performance avec sortie JSON
 - **Enrichissement** : Stack traces, métadonnées contextuelles
 - **Niveaux** : DEBUG, INFO, WARNING, ERROR, CRITICAL
 
 ### 📊 Catalogage intelligent
+
 - **ErrorEntry** : Structure standardisée avec UUID, timestamp, module, sévérité
 - **Validation** : Contrôle d'intégrité des données d'erreur
 - **Catégorisation** : Classification automatique par module et code
 
 ### 🗄️ Persistance dual-store
+
 - **PostgreSQL** : Stockage relationnel pour requêtes SQL complexes
 - **Qdrant** : Recherche vectorielle pour similarité sémantique
 - **Docker** : Conteneurisation complète
 
 ### 🔍 Analyse algorithmique
+
 - **Patterns** : Détection des erreurs récurrentes
 - **Corrélations** : Analyse temporelle entre modules
 - **Rapports** : Génération automatisée JSON/HTML
 - **Recommandations** : Suggestions algorithmiques
 
 ### 🔗 Intégration système
+
 - **Integrated Manager** : Centralisation via hooks
 - **Gestionnaires** : Propagation entre tous les managers
 - **APIs** : Interface Go native et exports
 
 ## 📁 Structure du projet
 
-```
+```plaintext
 error-manager/
 ├── README.md                    # Ce fichier
-├── go.mod                      # Dépendances Go
-├── go.sum                      # Checksums des dépendances
-├── docs/                       # Documentation complète
-│   ├── api/                    # Documentation API
-│   ├── architecture/           # Diagrammes d'architecture
-│   └── guides/                 # Guides utilisateur
-├── storage/                    # Couche de persistance
-│   ├── postgres.go            # Intégration PostgreSQL
-│   ├── qdrant.go              # Intégration Qdrant
-│   └── sql/                   # Schémas SQL
-├── reports/                   # Rapports générés
-├── *.go                      # Code source principal
-└── *_test.go                 # Tests unitaires
-```
 
+├── go.mod                      # Dépendances Go
+
+├── go.sum                      # Checksums des dépendances
+
+├── docs/                       # Documentation complète
+
+│   ├── api/                    # Documentation API
+
+│   ├── architecture/           # Diagrammes d'architecture
+
+│   └── guides/                 # Guides utilisateur
+
+├── storage/                    # Couche de persistance
+
+│   ├── postgres.go            # Intégration PostgreSQL
+
+│   ├── qdrant.go              # Intégration Qdrant
+
+│   └── sql/                   # Schémas SQL
+
+├── reports/                   # Rapports générés
+
+├── *.go                      # Code source principal
+
+└── *_test.go                 # Tests unitaires
+
+```plaintext
 ## 🚀 Démarrage rapide
 
 ### Prérequis
+
 - Go 1.22+
 - Docker et Docker Compose
 - PostgreSQL 15+ (conteneurisé)
@@ -71,28 +90,32 @@ error-manager/
 
 ```bash
 # Cloner le dépôt (si nécessaire)
+
 cd development/managers/error-manager
 
 # Installer les dépendances
+
 go mod tidy
 
 # Construire le gestionnaire
+
 go build .
 
 # Lancer les tests
-go test -v ./...
-```
 
+go test -v ./...
+```plaintext
 ### Configuration Docker
 
 ```bash
 # Démarrer les services de base
+
 docker-compose up -d postgres qdrant
 
 # Vérifier le statut
-docker-compose ps
-```
 
+docker-compose ps
+```plaintext
 ### Utilisation basique
 
 ```go
@@ -123,8 +146,7 @@ func main() {
     // Cataloguer l'erreur
     errormanager.CatalogError(entry)
 }
-```
-
+```plaintext
 ## 📚 Documentation
 
 - **[API Documentation](docs/api/README.md)** : Documentation complète des APIs
@@ -139,18 +161,21 @@ Le gestionnaire d'erreurs dispose d'une suite de tests complète :
 
 ```bash
 # Tests unitaires
+
 go test -v
 
 # Tests avec couverture
+
 go test -cover
 
 # Tests de performance
+
 go test -bench=.
 
 # Tests d'intégration (nécessite Docker)
-go test -tags=integration
-```
 
+go test -tags=integration
+```plaintext
 ## 🏗️ Architecture
 
 Le gestionnaire suit les principes **SOLID** et **DRY** avec une architecture modulaire :
@@ -182,8 +207,7 @@ La configuration se fait via des variables d'environnement ou fichiers JSON :
     "correlation_analysis": true
   }
 }
-```
-
+```plaintext
 ## 🤝 Contribution
 
 Pour contribuer au gestionnaire d'erreurs :

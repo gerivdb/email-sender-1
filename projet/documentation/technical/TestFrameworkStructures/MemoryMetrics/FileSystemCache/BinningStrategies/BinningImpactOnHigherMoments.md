@@ -166,73 +166,94 @@ def select_optimal_binning_for_higher_moments(data, target_era=0.2, target_erk=0
         binning_strategy: Dictionnaire décrivant la stratégie optimale
     """
     # Calculer les statistiques de base
+
     mean = np.mean(data)
     std = np.std(data)
     skewness = scipy.stats.skew(data)
     kurtosis = scipy.stats.kurtosis(data, fisher=False)
     
     # Détecter la multimodalité
+
     is_multimodal, modes = detect_multimodality(data)
     
     # Sélectionner la stratégie de base selon les caractéristiques
+
     if is_multimodal:
         # Distribution multimodale
+
         base_strategy = "stratified"
     elif skewness > 1.0 or kurtosis > 5.0:
         # Distribution asymétrique ou leptokurtique
+
         base_strategy = "logarithmic"
     else:
         # Distribution simple
+
         base_strategy = "fixed_width"
     
     # Estimer le nombre de bins nécessaire
+
     if base_strategy == "fixed_width":
         # Règle empirique basée sur l'ERA et ERK cibles
+
         num_bins_era = int(0.7 / target_era * 10)
         num_bins_erk = int(1.0 / target_erk * 10)
         num_bins = max(num_bins_era, num_bins_erk)
     elif base_strategy == "logarithmic":
         # Règle empirique pour bins logarithmiques
+
         num_bins_era = int(0.4 / target_era * 10)
         num_bins_erk = int(0.6 / target_erk * 10)
         num_bins = max(num_bins_era, num_bins_erk)
     else:
         # Pour stratification, tenir compte des modes
+
         num_bins = max(50, len(modes) * 10)
     
     # Ajuster selon l'asymétrie et l'aplatissement
+
     if abs(skewness) > 2.0:
         # Distribution fortement asymétrique
+
         num_bins = int(num_bins * 1.2)
     
     if kurtosis > 10.0:
         # Distribution fortement leptokurtique
+
         num_bins = int(num_bins * 1.3)
     
     # Déterminer les limites
+
     if base_strategy == "stratified" and is_multimodal:
         # Stratification par mode
+
         bin_edges = generate_stratified_bins(data, modes, num_bins)
     else:
         # Limites robustes avec extension des queues
+
         p01, p99 = np.percentile(data, [1, 99])
         range_extension = 0.2  # Extension de 20% pour capturer les queues
+
         range_min = p01 - (p99 - p01) * range_extension
         range_max = p99 + (p99 - p01) * range_extension
         
         if base_strategy == "logarithmic":
             # Assurer des valeurs positives pour échelle logarithmique
+
             range_min = max(range_min, data.min() * 0.9, 0.1)
             bin_edges = np.logspace(np.log10(range_min), np.log10(range_max), num_bins+1)
         else:
             bin_edges = np.linspace(range_min, range_max, num_bins+1)
     
     # Vérifier les erreurs attendues
+
     expected_era, expected_erk = estimate_higher_moments_errors(data, bin_edges, base_strategy)
     
     # Ajuster si nécessaire
+
     if expected_era > target_era or expected_erk > target_erk:
         # Augmenter le nombre de bins
+
         adjustment_factor = max(expected_era / target_era, expected_erk / target_erk)
         return select_optimal_binning_for_higher_moments(
             data, target_era, target_erk, num_bins=int(num_bins * adjustment_factor))
@@ -244,8 +265,7 @@ def select_optimal_binning_for_higher_moments(data, target_era=0.2, target_erk=0
         "expected_era": expected_era,
         "expected_erk": expected_erk
     }
-```
-
+```plaintext
 ### 7.3 Correction adaptative pour les moments supérieurs
 
 Pour améliorer la conservation des moments supérieurs, des corrections adaptatives peuvent être appliquées :
@@ -265,9 +285,11 @@ def apply_higher_moments_correction(bin_edges, bin_counts, real_skewness, real_k
         corrected_bin_counts: Comptage par bin corrigé
     """
     # Calculer les centres des bins
+
     bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
     
     # Calculer les fréquences relatives
+
     total_count = np.sum(bin_counts)
     if total_count == 0:
         return bin_counts
@@ -275,67 +297,82 @@ def apply_higher_moments_correction(bin_edges, bin_counts, real_skewness, real_k
     frequencies = bin_counts / total_count
     
     # Calculer les moments de l'histogramme
+
     hist_mean = np.sum(bin_centers * frequencies)
     hist_var = np.sum(frequencies * (bin_centers - hist_mean)**2)
     hist_skewness = np.sum(frequencies * ((bin_centers - hist_mean) / np.sqrt(hist_var))**3)
     hist_kurtosis = np.sum(frequencies * ((bin_centers - hist_mean) / np.sqrt(hist_var))**4)
     
     # Calculer les facteurs de correction
+
     skewness_factor = real_skewness / hist_skewness if hist_skewness != 0 else 1.0
     kurtosis_factor = real_kurtosis / hist_kurtosis if hist_kurtosis != 0 else 1.0
     
     # Limiter les facteurs pour éviter les corrections excessives
+
     skewness_factor = np.clip(skewness_factor, 0.5, 2.0)
     kurtosis_factor = np.clip(kurtosis_factor, 0.5, 2.0)
     
     # Appliquer les corrections
+
     corrected_frequencies = frequencies.copy()
     
     # Correction pour l'asymétrie (ajuster les bins dans les queues)
+
     if abs(skewness_factor - 1.0) > 0.05:
         # Identifier les bins dans les queues
+
         left_tail = bin_centers < (hist_mean - hist_var)
         right_tail = bin_centers > (hist_mean + hist_var)
         
         # Ajuster selon le facteur d'asymétrie
+
         if real_skewness > hist_skewness:
             # Augmenter la queue droite ou diminuer la queue gauche
+
             if real_skewness > 0:
                 corrected_frequencies[right_tail] *= (1.0 + (skewness_factor - 1.0) * 0.5)
             else:
                 corrected_frequencies[left_tail] *= (1.0 + (1.0 - skewness_factor) * 0.5)
         else:
             # Diminuer la queue droite ou augmenter la queue gauche
+
             if real_skewness > 0:
                 corrected_frequencies[right_tail] *= (1.0 - (1.0 - skewness_factor) * 0.5)
             else:
                 corrected_frequencies[left_tail] *= (1.0 - (skewness_factor - 1.0) * 0.5)
     
     # Correction pour l'aplatissement (ajuster les bins centraux et extrêmes)
+
     if abs(kurtosis_factor - 1.0) > 0.05:
         # Identifier les bins centraux et extrêmes
+
         central_bins = np.abs(bin_centers - hist_mean) < (0.5 * np.sqrt(hist_var))
         extreme_bins = np.abs(bin_centers - hist_mean) > (2.0 * np.sqrt(hist_var))
         
         # Ajuster selon le facteur d'aplatissement
+
         if real_kurtosis > hist_kurtosis:
             # Augmenter les extrêmes et le centre (distribution plus pointue)
+
             corrected_frequencies[central_bins] *= (1.0 + (kurtosis_factor - 1.0) * 0.3)
             corrected_frequencies[extreme_bins] *= (1.0 + (kurtosis_factor - 1.0) * 0.7)
         else:
             # Diminuer les extrêmes et le centre (distribution plus plate)
+
             corrected_frequencies[central_bins] *= (1.0 - (1.0 - kurtosis_factor) * 0.3)
             corrected_frequencies[extreme_bins] *= (1.0 - (1.0 - kurtosis_factor) * 0.7)
     
     # Normaliser les fréquences corrigées
+
     corrected_frequencies = corrected_frequencies / np.sum(corrected_frequencies)
     
     # Convertir en comptages
+
     corrected_bin_counts = corrected_frequencies * total_count
     
     return corrected_bin_counts.astype(int)
-```
-
+```plaintext
 ## 8. Représentation JSON
 
 ```json
@@ -427,8 +464,7 @@ def apply_higher_moments_correction(bin_edges, bin_counts, real_skewness, real_k
     }
   }
 }
-```
-
+```plaintext
 ## 9. Exemples d'application
 
 ### 9.1 Distribution asymétrique positive (typique des latences)

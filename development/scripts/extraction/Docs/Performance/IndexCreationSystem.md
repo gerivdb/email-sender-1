@@ -66,6 +66,7 @@ function Initialize-CollectionIndexes {
     
     begin {
         # Validation de la collection
+
         if ($null -eq $Collection) {
             throw "La collection ne peut pas être null."
         }
@@ -75,11 +76,13 @@ function Initialize-CollectionIndexes {
         }
         
         # Initialisation de la structure d'index si nécessaire
+
         if ($null -eq $Collection.Indexes -or $Force) {
             $Collection.Indexes = @{}
         }
         
         # Fonction interne pour la journalisation
+
         function Write-IndexLog {
             param (
                 [string]$Message,
@@ -103,6 +106,7 @@ function Initialize-CollectionIndexes {
     
     process {
         # Vérifier si la collection contient des éléments
+
         if ($null -eq $Collection.ItemsList -or $Collection.ItemsList.Count -eq 0) {
             Write-IndexLog -Message "La collection ne contient aucun élément. Aucun index ne sera créé." -Level "Warning"
             return $Collection
@@ -112,6 +116,7 @@ function Initialize-CollectionIndexes {
         Write-IndexLog -Message "Types d'index à créer : $($IndexTypes -join ', ')" -Level "Info"
         
         # Initialiser les index temporaires
+
         $tempIndexes = @{}
         
         foreach ($indexType in $IndexTypes) {
@@ -120,6 +125,7 @@ function Initialize-CollectionIndexes {
         }
         
         # Parcourir tous les éléments de la collection une seule fois
+
         $itemCount = $Collection.ItemsList.Count
         $processedCount = 0
         $errorCount = 0
@@ -130,6 +136,7 @@ function Initialize-CollectionIndexes {
             $processedCount++
             
             # Traiter chaque type d'index
+
             foreach ($indexType in $IndexTypes) {
                 try {
                     switch ($indexType) {
@@ -198,6 +205,7 @@ function Initialize-CollectionIndexes {
             }
             
             # Afficher la progression
+
             if ($Verbose -and $processedCount % 100 -eq 0) {
                 $percentComplete = [math]::Round(($processedCount / $itemCount) * 100, 2)
                 Write-IndexLog -Message "Progression : $percentComplete% ($processedCount/$itemCount)" -Level "Info"
@@ -205,6 +213,7 @@ function Initialize-CollectionIndexes {
         }
         
         # Mettre à jour les index de la collection
+
         foreach ($indexType in $IndexTypes) {
             $Collection.Indexes[$indexType] = $tempIndexes[$indexType]
             $indexSize = 0
@@ -219,11 +228,13 @@ function Initialize-CollectionIndexes {
         }
         
         # Résumé
+
         Write-IndexLog -Message "Création des index terminée." -Level "Success"
         Write-IndexLog -Message "Éléments traités : $processedCount/$itemCount" -Level "Info"
         Write-IndexLog -Message "Erreurs rencontrées : $errorCount" -Level "Info"
         
         # Ajouter des métadonnées sur les index
+
         if ($null -eq $Collection.Metadata) {
             $Collection.Metadata = @{}
         }
@@ -240,8 +251,7 @@ function Initialize-CollectionIndexes {
         return $Collection
     }
 }
-```
-
+```plaintext
 ### Optimisations
 
 1. **Parcours unique** : La fonction parcourt tous les éléments de la collection une seule fois, même si plusieurs index sont créés, pour minimiser l'impact sur les performances.
@@ -261,15 +271,14 @@ function Initialize-CollectionIndexes {
 ```powershell
 $collection = New-ExtractedInfoCollection -Name "MaCollection" -Description "Une collection d'informations extraites"
 # Ajouter des éléments à la collection...
-$collection = Initialize-CollectionIndexes -Collection $collection -Verbose
-```
 
+$collection = Initialize-CollectionIndexes -Collection $collection -Verbose
+```plaintext
 #### Exemple 2 : Création d'index spécifiques
 
 ```powershell
 $collection = Initialize-CollectionIndexes -Collection $collection -IndexTypes @("Type", "Source") -Verbose
-```
-
+```plaintext
 #### Exemple 3 : Création d'index avec pré-allocation
 
 ```powershell
@@ -284,8 +293,7 @@ $preAllocate = @{
 }
 
 $collection = Initialize-CollectionIndexes -Collection $collection -PreAllocate $preAllocate -Verbose
-```
-
+```plaintext
 #### Exemple 4 : Création d'index insensibles à la casse
 
 ```powershell
@@ -297,8 +305,7 @@ $caseSensitive = @{
 }
 
 $collection = Initialize-CollectionIndexes -Collection $collection -CaseSensitive $caseSensitive -Verbose
-```
-
+```plaintext
 ## Analyse des performances
 
 ### Complexité algorithmique
@@ -339,6 +346,7 @@ La fonction `Initialize-CollectionIndexes` est conçue pour s'intégrer harmonie
 
 ```powershell
 # Exemple d'intégration avec New-ExtractedInfoCollection
+
 function New-ExtractedInfoCollection {
     [CmdletBinding()]
     param (
@@ -369,14 +377,14 @@ function New-ExtractedInfoCollection {
     
     return $collection
 }
-```
-
+```plaintext
 ### Intégration avec les fonctions de maintenance des index
 
 La fonction `Initialize-CollectionIndexes` servira de base pour les autres fonctions de maintenance des index :
 
 ```powershell
 # Exemple d'intégration avec Rebuild-CollectionIndexes
+
 function Rebuild-CollectionIndexes {
     [CmdletBinding()]
     param (
@@ -393,10 +401,10 @@ function Rebuild-CollectionIndexes {
     )
     
     # Utiliser Initialize-CollectionIndexes avec le paramètre Force
+
     return Initialize-CollectionIndexes -Collection $Collection -IndexTypes $IndexTypes -Force -Verbose:$Verbose
 }
-```
-
+```plaintext
 ## Conclusion
 
 La fonction `Initialize-CollectionIndexes` fournit une base solide pour la création et la maintenance des index dans les collections d'informations extraites. Elle est conçue pour être efficace, configurable et robuste, tout en s'intégrant harmonieusement avec les fonctions existantes.

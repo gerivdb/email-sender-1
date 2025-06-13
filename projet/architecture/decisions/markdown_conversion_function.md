@@ -25,17 +25,18 @@ function ConvertFrom-MarkdownToObject {
         [hashtable]$CustomStatusMarkers
     )
 }
-```
-
+```plaintext
 ## Paramètres
 
 ### FilePath
+
 - **Type**: string
 - **Obligatoire**: Oui
 - **Description**: Chemin du fichier markdown à convertir.
 - **Validation**: Ne doit pas être null ou vide, le fichier doit exister.
 
 ### Encoding
+
 - **Type**: string
 - **Obligatoire**: Non
 - **Valeur par défaut**: "UTF8"
@@ -43,12 +44,14 @@ function ConvertFrom-MarkdownToObject {
 - **Description**: Encodage du fichier markdown.
 
 ### IncludeMetadata
+
 - **Type**: switch
 - **Obligatoire**: Non
 - **Valeur par défaut**: $false
 - **Description**: Indique si les métadonnées supplémentaires (dates, assignations, tags, priorités) doivent être extraites et incluses dans les objets.
 
 ### CustomStatusMarkers
+
 - **Type**: hashtable
 - **Obligatoire**: Non
 - **Description**: Hashtable définissant des marqueurs de statut personnalisés et leur correspondance avec les statuts standard.
@@ -57,12 +60,14 @@ function ConvertFrom-MarkdownToObject {
 ## Fonctions Internes
 
 ### Get-FileEncoding
+
 - **Description**: Détecte l'encodage d'un fichier en analysant ses premiers octets (BOM).
 - **Paramètres**:
   - **FilePath**: Chemin du fichier à analyser.
 - **Retour**: Objet System.Text.Encoding représentant l'encodage détecté.
 
 ### ConvertFrom-StatusMarker
+
 - **Description**: Convertit un marqueur de statut en valeur d'énumération.
 - **Paramètres**:
   - **StatusMarker**: Marqueur de statut à convertir (x, X, ~, !, espace, etc.).
@@ -70,6 +75,7 @@ function ConvertFrom-MarkdownToObject {
 - **Retour**: Chaîne représentant le statut ("Complete", "InProgress", "Blocked", "Incomplete").
 
 ### Get-LineMetadata
+
 - **Description**: Extrait les métadonnées d'une ligne de texte.
 - **Paramètres**:
   - **Line**: Ligne de texte à analyser.
@@ -91,6 +97,7 @@ function ConvertFrom-MarkdownToObject {
 
 4. **Extraction du Titre et de la Description**:
    - Rechercher la première ligne commençant par # pour extraire le titre.
+
    - Extraire les lignes suivantes non vides jusqu'à la première section comme description.
 
 5. **Parsing des Lignes**:
@@ -120,7 +127,7 @@ function ConvertFrom-MarkdownToObject {
 
 ## Structure de l'Objet Retourné
 
-```
+```plaintext
 RootObject
 |-- Title: string
 |-- Description: string
@@ -142,29 +149,28 @@ RootObject
 |   |   |-- OriginalText: string
 |   |-- ...
 |-- Metadata: hashtable
-```
-
+```plaintext
 ## Exemples d'Utilisation
 
 ### Exemple 1: Conversion Simple
+
 ```powershell
 ConvertFrom-MarkdownToObject -FilePath ".\roadmap.md"
-```
-
+```plaintext
 ### Exemple 2: Conversion avec Extraction des Métadonnées
+
 ```powershell
 ConvertFrom-MarkdownToObject -FilePath ".\roadmap.md" -Encoding "UTF8" -IncludeMetadata
-```
-
+```plaintext
 ### Exemple 3: Conversion avec Marqueurs Personnalisés
+
 ```powershell
 $customMarkers = @{
     "o" = "InProgress";
     "?" = "Blocked"
 }
 ConvertFrom-MarkdownToObject -FilePath ".\roadmap.md" -CustomStatusMarkers $customMarkers
-```
-
+```plaintext
 ## Considérations de Performance
 
 - La fonction est optimisée pour traiter des fichiers de taille moyenne (jusqu'à quelques MB).

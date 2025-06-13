@@ -1,10 +1,12 @@
 # Plan de développement v42 - Gestionnaire d'erreurs avancé
+
 *Version 1.0 - 2025-06-04 - Progression globale : 43%*Plan de développement v42 - Gestionnaire d’erreurs avancé
 *Version 1.0 - 2025-06-03 - Progression globale : 0%*
 
 Ce plan de développement détaille l’implémentation d’un gestionnaire d’erreurs avancé en Go natif pour le projet EMAIL SENDER 1, avec journalisation, catalogage, analyse algorithmique des patterns d’erreurs, et persistance via une base SQL (PostgreSQL) et Qdrant, toutes deux conteneurisées avec Docker. L’objectif est d’améliorer la robustesse du dépôt en prévenant la récurrence des erreurs grâce à une mémoire persistante et une intégration avec les gestionnaires existants (dépendances, MCP, n8n, processus, roadmap, scripts, paths, conteneurs, réseau, etc.), notamment `development/managers/integrated-manager`. Le plan privilégie les outils Go natifs pour respecter DRY, KISS, et SOLID, tout en assurant une intégration fluide avec les autres gestionnaires.
 
 ## Table des matières
+
 - [1] Phase 1 : Mise en place de la journalisation des erreurs
 - [2] Phase 2 : Catalogage et structuration des erreurs
 - [3] Phase 3 : Persistance des erreurs (PostgreSQL et Qdrant)
@@ -14,12 +16,15 @@ Ce plan de développement détaille l’implémentation d’un gestionnaire d’
 - [7] Phase 7 : Documentation et déploiement
 
 ## Phase 1 : Mise en place de la journalisation des erreurs
+
 *Progression : 100%*
 
 ### 1.1 Configuration de la bibliothèque de journalisation
+
 *Progression : 100%*
 
 #### 1.1.1 Choix et intégration de Zap
+
 *Progression : 100%*
 - [x] Sélectionner `go.uber.org/zap` pour la journalisation structurée
   - [x] Étape 1.1 : Ajouter Zap comme dépendance dans `go.mod`
@@ -39,6 +44,7 @@ Ce plan de développement détaille l’implémentation d’un gestionnaire d’
   - [x] Conditions préalables : Go 1.22+, dépôt Git initialisé
 
 #### 1.1.2 Intégration avec pkg/errors
+
 *Progression : 100%*
 - [x] Ajouter `github.com/pkg/errors` pour enrichir les erreurs
   - [x] Étape 1.1 : Ajouter la dépendance dans `go.mod`
@@ -53,9 +59,11 @@ Ce plan de développement détaille l’implémentation d’un gestionnaire d’
   - [x] Conditions préalables : Go 1.22+, Zap configuré
 
 ## Phase 2 : Catalogage et structuration des erreurs
+
 *Progression : 100%*
 
 ### 2.1 Définition du modèle d’erreur
+
 *Progression : 100%*
 - [x] Créer une structure Go pour cataloguer les erreurs
   - [x] Étape 2.1 : Définir la structure `ErrorEntry` dans `development/managers/error-manager/model.go`
@@ -71,6 +79,7 @@ Ce plan de développement détaille l’implémentation d’un gestionnaire d’
   - [x] Conditions préalables : Zap et `pkg/errors` configurés
 
 ### 2.2 Validation des erreurs cataloguées
+
 *Progression : 100%*
 - [x] Implémenter une validation des erreurs dans `development/managers/error-manager/validator.go`
   - [x] Étape 2.1 : Vérifier l’intégrité des champs `ErrorEntry`
@@ -83,9 +92,11 @@ Ce plan de développement détaille l’implémentation d’un gestionnaire d’
   - [x] Conditions préalables : Modèle `ErrorEntry` défini
 
 ## Phase 3 : Persistance des erreurs (PostgreSQL et Qdrant)
+
 *Progression : 100%*
 
 ### 3.1 Configuration de PostgreSQL
+
 *Progression : 100%*
 - [x] Mettre en place une base PostgreSQL via Docker (vérifier si déjà existante pour d'autres managers)
   - [x] Étape 3.1 : Créer/Utiliser un conteneur PostgreSQL
@@ -105,6 +116,7 @@ Ce plan de développement détaille l’implémentation d’un gestionnaire d’
   - [x] Conditions préalables : PostgreSQL conteneurisé, modèle `ErrorEntry` défini
 
 ### 3.2 Configuration de Qdrant
+
 *Progression : 100%*
 - [x] Mettre en place Qdrant pour la recherche vectorielle des erreurs
   - [x] Étape 3.1 : Intégrer Qdrant avec le gestionnaire d'erreurs
@@ -120,9 +132,11 @@ Ce plan de développement détaille l’implémentation d’un gestionnaire d’
   - [x] Conditions préalables : Client Qdrant configuré, vecteurs d'erreurs générés
 
 ## Phase 4 : Analyse algorithmique des patterns
+
 *Progression : 0%*
 
 ### 4.1 Détection de patterns d'erreurs
+
 *Progression : 0%*
 - [ ] Implémenter l'analyse des patterns récurrents
   - [ ] Étape 4.1 : Créer un analyseur de patterns dans `development/managers/error-manager/analyzer.go`
@@ -138,9 +152,11 @@ Ce plan de développement détaille l’implémentation d’un gestionnaire d’
   - [ ] Conditions préalables : Base de données d'erreurs populée
 
 ## Phase 5 : Intégration avec les gestionnaires existants
+
 *Progression : 0%*
 
 ### 5.1 Intégration avec integrated-manager
+
 *Progression : 0%*
 - [ ] Connecter le gestionnaire d'erreurs avec les autres managers
   - [ ] Étape 5.1 : Créer des hooks dans `development/managers/integrated-manager`
@@ -155,9 +171,11 @@ Ce plan de développement détaille l’implémentation d’un gestionnaire d’
   - [ ] Conditions préalables : Gestionnaire d'erreurs fonctionnel
 
 ## Phase 6 : Tests et validation
+
 *Progression : 0%*
 
 ### 6.1 Tests unitaires et d'intégration
+
 *Progression : 0%*
 - [ ] Créer une suite de tests complète
   - [ ] Étape 6.1 : Tests unitaires pour chaque composant
@@ -173,9 +191,11 @@ Ce plan de développement détaille l’implémentation d’un gestionnaire d’
   - [ ] Conditions préalables : Toutes les phases précédentes terminées
 
 ## Phase 7 : Documentation et déploiement
+
 *Progression : 0%*
 
 ### 7.1 Documentation complète
+
 *Progression : 0%*
 - [ ] Créer la documentation utilisateur et développeur
   - [ ] Étape 7.1 : Documentation API et architecture

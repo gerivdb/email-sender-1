@@ -10,6 +10,7 @@ Chaque test doit Ãªtre indÃ©pendant des autres tests. Un test ne doit pas d�
 
 ```powershell
 # Mauvaise pratique
+
 Describe "Tests dÃ©pendants" {
     It "Premier test" {
         $global:result = Get-FileFormatAnalysis -FilePath "test.json"
@@ -18,11 +19,13 @@ Describe "Tests dÃ©pendants" {
     
     It "DeuxiÃ¨me test" {
         # DÃ©pend du premier test
+
         $global:result.Format | Should -Be "JSON"
     }
 }
 
 # Bonne pratique
+
 Describe "Tests indÃ©pendants" {
     It "Premier test" {
         $result = Get-FileFormatAnalysis -FilePath "test.json"
@@ -34,14 +37,14 @@ Describe "Tests indÃ©pendants" {
         $result.Format | Should -Be "JSON"
     }
 }
-```
-
+```plaintext
 ### 2. Un Seul Concept par Test
 
 Chaque test doit vÃ©rifier un seul concept ou comportement.
 
 ```powershell
 # Mauvaise pratique
+
 It "Analyse un fichier JSON et vÃ©rifie plusieurs propriÃ©tÃ©s" {
     $result = Get-FileFormatAnalysis -FilePath "test.json"
     $result | Should -Not -BeNullOrEmpty
@@ -52,6 +55,7 @@ It "Analyse un fichier JSON et vÃ©rifie plusieurs propriÃ©tÃ©s" {
 }
 
 # Bonne pratique
+
 Context "Analyse d'un fichier JSON" {
     BeforeEach {
         $result = Get-FileFormatAnalysis -FilePath "test.json"
@@ -77,24 +81,26 @@ Context "Analyse d'un fichier JSON" {
         $result.Properties | Should -Not -BeNullOrEmpty
     }
 }
-```
-
+```plaintext
 ### 3. Nommage Descriptif
 
 Utilisez des noms descriptifs pour vos tests qui expliquent clairement ce qui est testÃ©.
 
 ```powershell
 # Mauvaise pratique
+
 It "Test 1" {
     # ...
+
 }
 
 # Bonne pratique
+
 It "DÃ©tecte correctement le format JSON d'un fichier valide" {
     # ...
-}
-```
 
+}
+```plaintext
 ### 4. Organisation HiÃ©rarchique
 
 Organisez vos tests de maniÃ¨re hiÃ©rarchique avec `Describe`, `Context` et `It`.
@@ -104,25 +110,28 @@ Describe "Fonction Get-FileFormatAnalysis" {
     Context "Analyse de fichiers avec format spÃ©cifiÃ©" {
         It "Analyse correctement un fichier JSON" {
             # ...
+
         }
         
         It "Analyse correctement un fichier XML" {
             # ...
+
         }
     }
     
     Context "Analyse de fichiers avec dÃ©tection automatique" {
         It "DÃ©tecte et analyse correctement un fichier JSON" {
             # ...
+
         }
         
         It "DÃ©tecte et analyse correctement un fichier XML" {
             # ...
+
         }
     }
 }
-```
-
+```plaintext
 ## Structure des Tests
 
 ### 1. Configuration et Nettoyage
@@ -133,38 +142,43 @@ Utilisez `BeforeAll`, `BeforeEach`, `AfterEach` et `AfterAll` pour configurer et
 Describe "Tests avec configuration et nettoyage" {
     BeforeAll {
         # ExÃ©cutÃ© une fois avant tous les tests
+
         $script:testTempDir = Join-Path -Path $env:TEMP -ChildPath "TestDir_$(Get-Random)"
         New-Item -Path $script:testTempDir -ItemType Directory -Force | Out-Null
     }
     
     BeforeEach {
         # ExÃ©cutÃ© avant chaque test
+
         $testFilePath = Join-Path -Path $script:testTempDir -ChildPath "test.json"
         '{"name":"Test"}' | Set-Content -Path $testFilePath -Encoding UTF8
     }
     
     It "Test 1" {
         # ...
+
     }
     
     It "Test 2" {
         # ...
+
     }
     
     AfterEach {
         # ExÃ©cutÃ© aprÃ¨s chaque test
+
         Get-ChildItem -Path $script:testTempDir -File | Remove-Item -Force
     }
     
     AfterAll {
         # ExÃ©cutÃ© une fois aprÃ¨s tous les tests
+
         if (Test-Path -Path $script:testTempDir) {
             Remove-Item -Path $script:testTempDir -Recurse -Force
         }
     }
 }
-```
-
+```plaintext
 ### 2. Tests ParamÃ©trÃ©s
 
 Utilisez des tests paramÃ©trÃ©s pour tester plusieurs cas similaires.
@@ -184,8 +198,7 @@ It "DÃ©tecte correctement le format <format>" -TestCases @(
     $result = Get-FileFormatAnalysis -FilePath $filePath
     $result.Format | Should -Be $ExpectedFormat
 }
-```
-
+```plaintext
 ### 3. Mocks
 
 Utilisez des mocks pour isoler le code testÃ© et simuler des comportements spÃ©cifiques.
@@ -194,14 +207,15 @@ Utilisez des mocks pour isoler le code testÃ© et simuler des comportements sp�
 Describe "Tests avec mocks" {
     It "GÃ¨re correctement les erreurs de lecture de fichier" {
         # Mocker la fonction Get-Content pour qu'elle lÃ¨ve une exception
+
         Mock Get-Content { throw "Erreur de lecture" }
         
         # VÃ©rifier que la fonction gÃ¨re correctement l'erreur
+
         { Get-FileFormatAnalysis -FilePath "test.json" } | Should -Throw "Impossible de lire le fichier"
     }
 }
-```
-
+```plaintext
 ## Assertions
 
 ### 1. Assertions de Base
@@ -210,72 +224,84 @@ Utilisez les assertions de base pour vÃ©rifier les valeurs et les comportement
 
 ```powershell
 # Ã‰galitÃ©
+
 $result.Format | Should -Be "JSON"
 
 # Ã‰galitÃ© sensible Ã  la casse
+
 $result.Format | Should -BeExactly "JSON"
 
 # VÃ©rifier qu'une valeur est vraie
+
 $result.IsValid | Should -BeTrue
 
 # VÃ©rifier qu'une valeur est fausse
+
 $result.HasErrors | Should -BeFalse
 
 # VÃ©rifier qu'une valeur est nulle
+
 $result.Errors | Should -BeNullOrEmpty
 
 # VÃ©rifier qu'une valeur n'est pas nulle
-$result.Properties | Should -Not -BeNullOrEmpty
-```
 
+$result.Properties | Should -Not -BeNullOrEmpty
+```plaintext
 ### 2. Assertions de Collection
 
 Utilisez les assertions de collection pour vÃ©rifier les tableaux et les listes.
 
 ```powershell
 # VÃ©rifier qu'une collection contient un Ã©lÃ©ment
+
 $result.SupportedFormats | Should -Contain "JSON"
 
 # VÃ©rifier qu'une collection ne contient pas un Ã©lÃ©ment
+
 $result.SupportedFormats | Should -Not -Contain "INVALID"
 
 # VÃ©rifier qu'une collection est vide
+
 $result.Errors | Should -BeNullOrEmpty
 
 # VÃ©rifier qu'une collection a un nombre spÃ©cifique d'Ã©lÃ©ments
-$result.Properties.Count | Should -Be 3
-```
 
+$result.Properties.Count | Should -Be 3
+```plaintext
 ### 3. Assertions d'Exception
 
 Utilisez les assertions d'exception pour vÃ©rifier que le code lÃ¨ve des exceptions.
 
 ```powershell
 # VÃ©rifier qu'une expression lÃ¨ve une exception
+
 { Get-FileFormatAnalysis -FilePath "nonexistent.json" } | Should -Throw
 
 # VÃ©rifier qu'une expression lÃ¨ve une exception spÃ©cifique
+
 { Get-FileFormatAnalysis -FilePath "nonexistent.json" } | Should -Throw "Le fichier n'existe pas"
 
 # VÃ©rifier qu'une expression ne lÃ¨ve pas d'exception
-{ Get-FileFormatAnalysis -FilePath "test.json" } | Should -Not -Throw
-```
 
+{ Get-FileFormatAnalysis -FilePath "test.json" } | Should -Not -Throw
+```plaintext
 ### 4. Assertions de Type
 
 Utilisez les assertions de type pour vÃ©rifier le type des objets.
 
 ```powershell
 # VÃ©rifier le type d'un objet
+
 $result | Should -BeOfType [PSCustomObject]
 
 # VÃ©rifier qu'un objet a une propriÃ©tÃ©
+
 $result | Should -Have-Property "Format"
 
 # VÃ©rifier qu'un objet a une mÃ©thode
-$result | Should -Have-Method "ToString"
-```
 
+$result | Should -Have-Method "ToString"
+```plaintext
 ## Bonnes Pratiques AvancÃ©es
 
 ### 1. Tests de Performance
@@ -293,8 +319,7 @@ It "Analyse un fichier JSON en moins de 100ms" {
     
     $duration.TotalMilliseconds | Should -BeLessThan 100
 }
-```
-
+```plaintext
 ### 2. Tests d'IntÃ©gration
 
 Testez l'interaction entre plusieurs fonctions.
@@ -308,6 +333,7 @@ Describe "Tests d'intÃ©gration" {
         '{"name":"Test"}' | Set-Content -Path $jsonPath -Encoding UTF8
         
         # Tester l'intÃ©gration de plusieurs fonctions
+
         $format = Get-FileFormatAnalysis -FilePath $jsonPath
         $format.Format | Should -Be "JSON"
         
@@ -318,8 +344,7 @@ Describe "Tests d'intÃ©gration" {
         $xmlContent | Should -Match "<name>Test</name>"
     }
 }
-```
-
+```plaintext
 ### 3. Tests de Couverture
 
 Utilisez l'option `-CodeCoverage` de Pester pour mesurer la couverture de code.
@@ -331,8 +356,7 @@ $results = Invoke-Pester -Path .\development\testing\tests -CodeCoverage $module
 $results.CodeCoverage.NumberOfCommandsExecuted
 $results.CodeCoverage.NumberOfCommandsAnalyzed
 $results.CodeCoverage.CoveragePercent
-```
-
+```plaintext
 ### 4. Tests de RÃ©gression
 
 CrÃ©ez des tests spÃ©cifiques pour les bugs corrigÃ©s.
@@ -340,15 +364,16 @@ CrÃ©ez des tests spÃ©cifiques pour les bugs corrigÃ©s.
 ```powershell
 Describe "Tests de rÃ©gression" {
     It "Corrige le bug #123 - DÃ©tection incorrecte des fichiers XML vides" {
+
         $xmlPath = Join-Path -Path $testTempDir -ChildPath "empty.xml"
         "" | Set-Content -Path $xmlPath -Encoding UTF8
         
         $result = Get-FileFormatAnalysis -FilePath $xmlPath
         $result.Format | Should -Be "UNKNOWN"  # Avant le correctif, cela retournait "XML"
+
     }
 }
-```
-
+```plaintext
 ## Conclusion
 
 En suivant ces bonnes pratiques, vous pourrez crÃ©er des tests Pester efficaces, maintenables et robustes pour le module Format-Converters. Des tests bien conÃ§us vous aideront Ã  dÃ©tecter les problÃ¨mes plus tÃ´t, Ã  documenter le comportement attendu du code et Ã  faciliter les modifications futures.

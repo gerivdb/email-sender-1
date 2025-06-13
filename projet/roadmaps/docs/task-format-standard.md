@@ -46,12 +46,12 @@ Ce document définit le format de tâche standardisé pour notre système de roa
     }
   ]
 }
-```
-
+```plaintext
 ### Représentation Markdown
 
 ```markdown
 - [ ] **task-123** Implémenter la recherche sémantique #priority:high #duration:3d #assigned:john.doe #tags:search,ai,vector-db
+
   > Ajouter la recherche sémantique avec embeddings vectoriels
   > 
   > **Dépendances**: task-456, task-789
@@ -60,8 +60,7 @@ Ce document définit le format de tâche standardisé pour notre système de roa
   
   - [ ] **subtask-001** Configurer la base de données vectorielle
   - [ ] **subtask-002** Implémenter l'API de recherche
-```
-
+```plaintext
 ## Spécification détaillée
 
 ### Champs obligatoires
@@ -117,18 +116,25 @@ Ce document définit le format de tâche standardisé pour notre système de roa
 
 1. **Identification de la tâche**:
    - Format: `- [ ] **task-id** Titre de la tâche #tags`
+
    - Extraction de l'ID entre `**` et `**`
    - Extraction du titre après l'ID jusqu'au premier tag ou fin de ligne
    - Statut: `[ ]` = todo, `[x]` = done, `[~]` = in-progress
 
 2. **Extraction des tags**:
    - Format: `#key:value` ou `#tag`
+
    - Tags spéciaux:
      - `#priority:X` → `metadata.priority`
+
      - `#duration:X` → `metadata.estimated_duration`
+
      - `#assigned:X` → `metadata.assigned_to`
+
      - `#tags:X,Y,Z` → `metadata.tags`
+
      - `#due:YYYY-MM-DD` → `metadata.due_date`
+
      - Autres tags → `metadata.tags`
 
 3. **Extraction de la description**:
@@ -150,6 +156,7 @@ Ce document définit le format de tâche standardisé pour notre système de roa
 
 1. **Génération de la ligne de titre**:
    - Format: `- [ ] **id** title #tags`
+
    - Statut: todo = `[ ]`, done = `[x]`, in-progress = `[~]`
    - Ajout des tags principaux: priority, duration, assigned_to
 
@@ -195,8 +202,7 @@ Pour supporter les concepts de Large Workflow Models, les extensions suivantes s
     ]
   }
 }
-```
-
+```plaintext
 ### Extensions LCM (Large Concept Models)
 
 Pour supporter les concepts de Large Concept Models, les extensions suivantes sont ajoutées:
@@ -225,20 +231,19 @@ Pour supporter les concepts de Large Concept Models, les extensions suivantes so
     ]
   }
 }
-```
-
+```plaintext
 ## Exemples complets
 
 ### Exemple 1: Tâche simple
 
 ```markdown
 - [ ] **task-001** Configurer l'environnement de développement #priority:medium #duration:4h
+
   > Installer et configurer tous les outils nécessaires pour le développement
   > 
   > **Dépendances**: aucune
   > **Créé le**: 2025-05-10 par jane.doe
-```
-
+```plaintext
 ```json
 {
   "id": "task-001",
@@ -259,12 +264,12 @@ Pour supporter les concepts de Large Concept Models, les extensions suivantes so
     }
   ]
 }
-```
-
+```plaintext
 ### Exemple 2: Tâche complexe avec sous-tâches
 
 ```markdown
 - [~] **task-002** Implémenter l'authentification OAuth #priority:high #duration:2d #assigned:john.doe #tags:auth,security
+
   > Ajouter l'authentification OAuth avec support pour Google, GitHub et Microsoft
   > 
   > **Dépendances**: task-001
@@ -272,12 +277,16 @@ Pour supporter les concepts de Large Concept Models, les extensions suivantes so
   > **Mis à jour le**: 2025-05-14 par john.doe
   
   - [x] **subtask-001** Configurer les applications OAuth chez les fournisseurs #duration:2h
-  - [x] **subtask-002** Implémenter le flux d'authentification pour Google #duration:4h
-  - [~] **subtask-003** Implémenter le flux d'authentification pour GitHub #duration:4h
-  - [ ] **subtask-004** Implémenter le flux d'authentification pour Microsoft #duration:4h
-  - [ ] **subtask-005** Ajouter les tests d'intégration #duration:4h
-```
 
+  - [x] **subtask-002** Implémenter le flux d'authentification pour Google #duration:4h
+
+  - [~] **subtask-003** Implémenter le flux d'authentification pour GitHub #duration:4h
+
+  - [ ] **subtask-004** Implémenter le flux d'authentification pour Microsoft #duration:4h
+
+  - [ ] **subtask-005** Ajouter les tests d'intégration #duration:4h
+
+```plaintext
 ## Validation
 
 Pour garantir la cohérence des données, un schéma JSON Schema est fourni pour valider les tâches au format JSON:
@@ -285,6 +294,7 @@ Pour garantir la cohérence des données, un schéma JSON Schema est fourni pour
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+
   "type": "object",
   "required": ["id", "title", "status"],
   "properties": {
@@ -376,8 +386,7 @@ Pour garantir la cohérence des données, un schéma JSON Schema est fourni pour
     }
   }
 }
-```
-
+```plaintext
 ## Conclusion
 
 Ce format de tâche standardisé offre une base solide pour notre système de roadmapping, en s'inspirant des meilleures pratiques du projet claude-task-master tout en l'adaptant à nos besoins spécifiques. Il permet une représentation riche et flexible des tâches, facilitant l'analyse automatique et l'interopérabilité avec d'autres outils.

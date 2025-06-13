@@ -33,8 +33,7 @@ Le systÃ¨me d'optimisation proactive comprend les fonctionnalitÃ©s suivantes
 
 ```powershell
 Import-Module "chemin\vers\UsageMonitor\UsageMonitor.psm1" -Force
-```
-
+```plaintext
 ## Utilisation
 
 ### Monitoring de l'utilisation des scripts
@@ -43,73 +42,71 @@ Pour commencer Ã  suivre l'utilisation d'un script :
 
 ```powershell
 # Initialiser le moniteur d'utilisation
+
 Initialize-UsageMonitor
 
 # DÃ©marrer le suivi d'utilisation
+
 $executionId = Start-ScriptUsageTracking -ScriptPath $PSCommandPath
 
 # ExÃ©cuter votre code...
 
 # Terminer le suivi d'utilisation
-Stop-ScriptUsageTracking -ExecutionId $executionId -Success $true
-```
 
+Stop-ScriptUsageTracking -ExecutionId $executionId -Success $true
+```plaintext
 ### Ajout automatique du suivi d'utilisation aux scripts existants
 
 Pour ajouter automatiquement le code de suivi d'utilisation Ã  vos scripts existants :
 
 ```powershell
 .\Add-UsageTracking.ps1 -Path "C:\Scripts" -Recurse -CreateBackup
-```
-
+```plaintext
 ### Analyse des donnÃ©es d'utilisation
 
 Pour analyser les donnÃ©es d'utilisation collectÃ©es :
 
 ```powershell
 .\Analyze-UsageData.ps1 -OutputPath "C:\Reports"
-```
-
+```plaintext
 ### Optimisation de la parallÃ©lisation
 
 Pour optimiser la parallÃ©lisation en fonction des patterns d'utilisation :
 
 ```powershell
 .\Optimize-Parallelization.ps1 -Apply
-```
-
+```plaintext
 ### Optimisation du cache
 
 Pour optimiser les stratÃ©gies de mise en cache :
 
 ```powershell
 .\Optimize-Caching.ps1 -Apply
-```
-
+```plaintext
 ### Suggestions de refactorisation
 
 Pour obtenir des suggestions de refactorisation intelligentes :
 
 ```powershell
 .\Suggest-Refactoring.ps1 -OutputPath "C:\Refactoring"
-```
-
+```plaintext
 ### Utilisation du script principal
 
 Le script principal `Optimize-System.ps1` permet d'exÃ©cuter toutes les fonctionnalitÃ©s en une seule commande :
 
 ```powershell
 # ExÃ©cuter toutes les fonctionnalitÃ©s
+
 .\Optimize-System.ps1 -Action All -Apply
 
 # Ou exÃ©cuter une fonctionnalitÃ© spÃ©cifique
+
 .\Optimize-System.ps1 -Action Monitor
 .\Optimize-System.ps1 -Action Analyze
 .\Optimize-System.ps1 -Action OptimizeParallel -Apply
 .\Optimize-System.ps1 -Action OptimizeCache -Apply
 .\Optimize-System.ps1 -Action SuggestRefactoring
-```
-
+```plaintext
 ## Structure des fichiers
 
 - `UsageMonitor.psm1` - Module principal

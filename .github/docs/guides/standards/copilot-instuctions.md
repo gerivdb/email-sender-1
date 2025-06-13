@@ -62,6 +62,7 @@ Pour obtenir des résultats complets et précis en une seule fois, sans interrup
 
     Instructions:
     1. Crée un nouveau fichier nommé `#roadmap_app_web_6mois.md` dans le répertoire courant.
+
     2. Le contenu doit être une roadmap pour un projet de développement d'une application web sur 6 mois.
     3. Structure la roadmap avec des sections H2 pour chaque mois (Mois 1, Mois 2, ..., Mois 6).
     4. Sous chaque mois, utilise des sous-sections H3 pour les phases suivantes : Analyse & Spécifications, Conception UX/UI, Développement Backend, Développement Frontend, Tests (Unitaires, Intégration, QA), et Déploiement & Suivi.
@@ -71,7 +72,9 @@ Pour obtenir des résultats complets et précis en une seule fois, sans interrup
 
     Fichiers de contexte optionnels (si présents) :
     - Inspire-toi de la structure de `#ancien_roadmap_exemple.md` pour le formatage général.
+
     - Prends en compte les fonctionnalités listées dans `#user_stories_v1.md` pour détailler les tâches de développement.
+
     ```
 
 ---
@@ -102,26 +105,33 @@ Outre des prompts soignés, certains réglages et configurations peuvent réduir
         # Instructions Personnalisées pour GitHub Copilot Agent dans ce Projet
 
         ## Comportement Général
+
         - **Priorité Absolue : Génération Complète Sans Interruption.** Produis toujours le contenu demandé en une seule réponse continue. Ne demande JAMAIS de confirmations intermédiaires (pas de "Keep", "Undo", "Voulez-vous que je continue ?", "Dois-je créer le fichier ?", etc.), sauf si l'action est intrinsèquement dangereuse (ex: suppression massive de fichiers). Si une confirmation est inévitable pour une action sur un fichier, explique brièvement pourquoi et attends l'instruction.
         - **Ton et Style :** Adopte un ton professionnel, technique et concis. Évite les phrases empathiques, les salutations ou les formulations conversationnelles superflues, sauf si explicitement demandé.
         - **Respect des Prompts :** Adhère strictement aux formats, structures, et contraintes spécifiés dans le prompt. Ne dévie pas et n'ajoute pas d'éléments non sollicités.
         - **Clarté avant tout :** Si une instruction du prompt est ambiguë, privilégie l'interprétation la plus simple et la plus directe. Si une clarification est absolument nécessaire, pose une unique question concise à la fin de ta réponse, mais poursuis la génération du reste du contenu autant que possible.
 
         ## Génération de Fichiers (Markdown, Code, etc.)
+
         - **Roadmaps et Documents Structurés (Markdown) :**
             - Structure le contenu avec des sections claires (ex. : `## Mois 1`, `## Phase de Conception`).
+
             - Utilise des listes à puces (`- `) ou numérotées (`1. `) pour les tâches, fonctionnalités, ou étapes.
             - Organise les tâches par catégories logiques (ex. : Analyse, Conception, Développement Frontend/Backend, Tests, Déploiement) en utilisant des sous-sections (H3, H4) si pertinent.
             - Si un fichier de contexte (ex. : `#specifications.md`) est référencé dans le prompt, ses directives priment pour le format et le style.
+
             - Exemple de structure de base pour une roadmap :
               ```markdown
               # Roadmap : [Nom du Projet]
 
               ## [Période 1] : [Nom de la Phase/Objectif Principal]
+
               ### Catégorie A
+
               - Tâche 1
               - Tâche 2
               ### Catégorie B
+
               - Tâche X
               ```
         - **Génération de Code :**
@@ -129,17 +139,21 @@ Outre des prompts soignés, certains réglages et configurations peuvent réduir
             - Respecte les conventions de style du langage cible ou celles spécifiées dans les fichiers de contexte du projet (ex: `.eslintrc.js`, `pyproject.toml`).
 
         ## Gestion des Tâches Complexes et Longues Réponses
+
         - **Segmentation Automatique :** Si la tâche requiert une réponse qui dépasse les limites de longueur, segmente automatiquement le contenu en parties logiques (ex. : par mois, par module, par fichier). Indique clairement chaque segment mais continue la génération sans attendre de "continuer".
         - **Actions sur l'Espace de Travail :** Ne propose pas d'exécuter des commandes de terminal, de créer/modifier/supprimer des fichiers, ou d'utiliser des outils `@workspace` spécifiques sans une instruction explicite et claire dans le prompt.
 
         ## Utilisation des Outils et Capacités de `@workspace`
+
         - Limite l'utilisation proactive d'outils externes ou de fonctionnalités avancées de `@workspace` (comme l'analyse de tout le codebase) aux cas où cela est explicitement demandé ou clairement bénéfique pour répondre à la requête. L'objectif est de réduire les interactions et les demandes de validation.
         - Priorise la génération de texte brut ou de contenu structuré (Markdown, JSON, code) directement dans la réponse.
 
         ## Exemple de Prompt Attendu (pour référence interne de Copilot)
+
         - Lorsqu'un prompt demande une roadmap, inspire-toi de cet exemple de demande :
           ```plaintext
           @workspace /generate Crée une roadmap Markdown détaillée pour un projet de développement d'une application mobile sur 9 mois dans le fichier #roadmap_mobile.md. Inclus des sections mensuelles avec des tâches pour : définition des besoins, maquettage, design UI/UX, développement iOS, développement Android, développement backend, tests croisés, préparation au lancement, et marketing post-lancement. Fournis tout le contenu en une seule fois, sans pauses ni confirmations.
+
           ```
         - Tu dois alors produire une réponse complète respectant ces directives, sauf si des modifications spécifiques sont demandées dans le prompt actuel.
         ```
@@ -147,6 +161,7 @@ Outre des prompts soignés, certains réglages et configurations peuvent réduir
     3.  **Utilisation et Vérification :**
         *   Copilot Agent devrait automatiquement détecter et utiliser ce fichier `copilot-instructions.md` comme contexte pour toutes les interactions au sein de ce projet.
         *   Vous pouvez également y faire référence explicitement dans un prompt si besoin : `@workspace Génère une spécification d'API en suivant les directives de notre .github/copilot-instructions.md et les détails dans #api_requirements.json.`
+
         *   Testez avec un prompt simple (comme celui dans l'exemple ci-dessus) pour vérifier que Copilot respecte les directives (absence de confirmations, structure correcte).
 
     **Avantages de ces Instructions Personnalisées :**
@@ -162,6 +177,7 @@ Même avec une configuration optimale, certaines limites peuvent subsister.
 
 *   **Quotas et Plans :**
     *   Les plans gratuits de GitHub Copilot peuvent avoir des limitations sur le nombre de messages ou la complexité des requêtes. Pour une utilisation intensive et des générations longues, un plan payant est recommandé. Consultez la documentation officielle de GitHub Copilot pour les détails des plans : [https://github.com/features/copilot#pricing](https://github.com/features/copilot#pricing) (ou le lien pertinent au moment de la lecture).
+
 *   **Longueur des Réponses :**
     *   Si Copilot s'arrête prématurément malgré l'instruction de continuer (cela peut arriver pour des contenus *extrêmement* longs) :
         1.  Demandez explicitement : "@workspace Continue la génération à partir de [dernier élément généré]."
@@ -184,6 +200,7 @@ Même avec une configuration optimale, certaines limites peuvent subsister.
     *   `@workspace /new` : Pour créer un nouveau projet ou des fichiers selon un template.
 *   **Feedback Constructif :** Si Copilot ne respecte pas vos instructions de manière persistante (surtout concernant les confirmations), utilisez les outils de feedback de GitHub Copilot (généralement accessibles via l'interface de VS Code ou le site de GitHub) pour signaler le comportement. Cela aide à améliorer l'outil.
 *   **Clarté du Contexte :** Assurez-vous que les fichiers que vous référencez avec `@workspace #monfichier.md` sont clairs, bien structurés et contiennent les informations pertinentes pour que Copilot puisse les utiliser efficacement.
+
 *   **Modèles de Langage (Avancé) :** Certains plans GitHub Copilot (notamment Enterprise) peuvent permettre de choisir ou d'influencer le modèle de langage sous-jacent (ex: versions de GPT). Si vous avez cette option, expérimenter peut parfois donner des résultats plus fluides pour des tâches spécifiques, bien que les instructions de ce guide visent une efficacité maximale avec le comportement par défaut.
 *   **Soyez Patient et Précis :** Plus votre prompt est détaillé et bien structuré, meilleur sera le résultat. N'hésitez pas à inclure des exemples de sortie souhaitée directement dans votre prompt si le format est complexe.
 
@@ -197,48 +214,59 @@ En suivant les principes et instructions ci-dessus, un prompt demandant une road
 # Roadmap : Développement Application Web (6 Mois)
 
 ## Mois 1 : Analyse et Planification Détaillée
+
 ### Analyse & Spécifications
+
 - Atelier de recueil des besoins avec les parties prenantes.
 - Définition des personas utilisateurs et des parcours clés.
 - Rédaction des spécifications fonctionnelles détaillées (SFD).
 - Identification des exigences non-fonctionnelles (performance, sécurité, scalabilité).
 ### Conception UX/UI
+
 - Création des wireframes initiaux pour les écrans principaux.
 - Élaboration d'une première version du moodboard et de la charte graphique.
 ### Préparation Technique
+
 - Choix de la stack technologique (langages, frameworks, base de données).
 - Configuration de l'environnement de développement et des outils CI/CD.
 - Mise en place du repository Git et des stratégies de branches.
 
 ## Mois 2 : Conception Finale et Initialisation du Développement
+
 ### Conception UX/UI
+
 - Finalisation des maquettes haute-fidélité (UI).
 - Création du prototype interactif.
 - Validation des maquettes par les parties prenantes.
 ### Développement Backend
+
 - Conception du schéma de la base de données.
 - Développement des modèles de données et des migrations.
 - Initialisation des premières API critiques (ex: authentification, gestion des utilisateurs).
 ### Développement Frontend
+
 - Initialisation de la structure du projet frontend.
 - Développement des composants UI réutilisables de base.
 - Intégration des premières vues statiques basées sur les maquettes.
 
 ## Mois 3 : Développement Intensif - Fonctionnalités Clés
+
 ### Développement Backend
+
 - Développement des logiques métier principales.
 - Implémentation des endpoints API pour les fonctionnalités du sprint 1.
 - Écriture des tests unitaires et d'intégration pour le backend.
 ### Développement Frontend
+
 - Intégration des API backend pour les fonctionnalités du sprint 1.
 - Développement des interactions utilisateur et de la logique frontend.
 - Écriture des tests unitaires pour les composants frontend.
 ### Tests
+
 - Mise en place des premiers scénarios de tests d'intégration continue.
 
 [... et ainsi de suite pour les Mois 4, 5, et 6, couvrant les tests QA, le déploiement, la formation, etc.]
-```
-
+```plaintext
 ---
 
 En appliquant ces techniques, vous transformerez GitHub Copilot Agent en un assistant encore plus puissant et discret, capable de vous aider à produire des livrables de haute qualité avec un minimum de friction. Bonne prompterisation !

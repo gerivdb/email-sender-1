@@ -36,11 +36,12 @@ La méthode la plus courante pour distinguer les chemins absolus des chemins rel
 ```powershell
 if ([System.IO.Path]::IsPathRooted($Path)) {
     # Chemin absolu
+
 } else {
     # Chemin relatif
-}
-```
 
+}
+```plaintext
 Cette approche est utilisée de manière cohérente dans tout le projet.
 
 #### 2.1.2 Résolution de chemins relatifs simples
@@ -49,8 +50,7 @@ Pour les chemins relatifs simples, la méthode standard est l'utilisation de `Jo
 
 ```powershell
 $resolvedPath = Join-Path -Path $BasePath -ChildPath $RelativePath
-```
-
+```plaintext
 Cette approche est robuste et gère correctement les séparateurs de chemins.
 
 ### 2.2 Approches avancées
@@ -61,6 +61,7 @@ Le module `PathResolver.psm1` implémente une approche multi-niveaux:
 
 ```powershell
 # Cas 1: Chemin absolu
+
 if ([System.IO.Path]::IsPathRooted($Path)) {
     if (Test-Path -Path $Path) {
         return $Path
@@ -69,20 +70,21 @@ if ([System.IO.Path]::IsPathRooted($Path)) {
 }
 
 # Cas 2: Chemin relatif au script
+
 $scriptRelativePath = Join-Path -Path $BaseDirectory -ChildPath $Path
 if (Test-Path -Path $scriptRelativePath) {
     return $scriptRelativePath
 }
 
 # Cas 3: Chemin relatif au projet
+
 if ($ProjectRoot) {
     $projectRelativePath = Join-Path -Path $ProjectRoot -ChildPath $Path
     if (Test-Path -Path $projectRelativePath) {
         return $projectRelativePath
     }
 }
-```
-
+```plaintext
 Cette approche essaie plusieurs bases de référence pour résoudre un chemin relatif.
 
 #### 2.2.2 Résolution avec cache
@@ -91,20 +93,22 @@ Le module `Path-Manager.psm1` implémente un système de cache pour éviter de r
 
 ```powershell
 # Vérifier si le chemin est dans le cache
+
 $cacheKey = "$Path|$BasePath"
 if (-not $NoCache -and $script:PathCache.ContainsKey($cacheKey)) {
     return $script:PathCache[$cacheKey]
 }
 
 # Résoudre le chemin
+
 # ...
 
 # Ajouter au cache
+
 if (-not $NoCache) {
     $script:PathCache[$cacheKey] = $resolvedPath
 }
-```
-
+```plaintext
 Cette approche améliore les performances pour les résolutions répétées.
 
 #### 2.2.3 Résolution avec chemins de recherche
@@ -113,14 +117,14 @@ Le module `PathResolver.psm1` implémente un système de chemins de recherche:
 
 ```powershell
 # Rechercher le chemin dans les chemins de recherche
+
 foreach ($searchPath in ($script:SearchPaths | Select-Object -Unique)) {
     $potentialPath = Join-Path -Path $searchPath -ChildPath $normalizedPath
     if (Test-Path -Path $potentialPath) {
         return $potentialPath
     }
 }
-```
-
+```plaintext
 Cette approche permet de rechercher un fichier dans plusieurs répertoires prédéfinis.
 
 ### 2.3 Normalisation et validation
@@ -139,22 +143,24 @@ function Normalize-Path {
     )
     
     # Normaliser les séparateurs de chemin
+
     $normalizedPath = $Path.Replace('/', '\')
     
     # Résoudre les chemins relatifs
+
     if (-not [System.IO.Path]::IsPathRooted($normalizedPath)) {
         $normalizedPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine((Get-Location).Path, $normalizedPath))
     }
     
     # Vérifier l'existence si demandé
+
     if ($VerifyExists -and -not (Test-Path -Path $normalizedPath)) {
         return $null
     }
     
     return $normalizedPath
 }
-```
-
+```plaintext
 Ces fonctions assurent la cohérence des chemins dans tout le système.
 
 #### 2.3.2 Validation des chemins
@@ -166,8 +172,7 @@ if (-not (Test-Path -Path $resolvedPath)) {
     Write-Warning "Le chemin '$resolvedPath' n'existe pas."
     return $null
 }
-```
-
+```plaintext
 Certains modules offrent des options plus avancées:
 
 ```powershell
@@ -180,21 +185,23 @@ function Test-PathAccess {
     )
     
     # Vérifier si le chemin existe
+
     if (-not (Test-Path -LiteralPath $Path -ErrorAction SilentlyContinue)) {
         return $false
     }
     
     # Vérifier les permissions
+
     try {
         $acl = Get-Acl -Path $Path -ErrorAction Stop
         # Analyse des permissions...
+
     }
     catch {
         return $false
     }
 }
-```
-
+```plaintext
 ## 3. Évaluation des approches
 
 ### 3.1 Forces
@@ -275,30 +282,43 @@ function Resolve-DependencyPath {
     )
     
     # Stratégie adaptée au type de dépendance
+
     switch ($DependencyType) {
         "Script" {
             # Stratégie pour les scripts
+
             # 1. Chemin absolu
+
             # 2. Relatif au script source
+
             # 3. Relatif au projet
+
             # 4. Dans les chemins de recherche
+
         }
         "Module" {
             # Stratégie pour les modules
+
             # 1. Chemin absolu
+
             # 2. Relatif au script source
+
             # 3. Dans PSModulePath
+
             # 4. Dans les modules du projet
+
         }
         "Package" {
             # Stratégie pour les packages
+
             # 1. Dans les packages installés
+
             # 2. Dans les dépendances du projet
+
         }
     }
 }
-```
-
+```plaintext
 ### 4.4 Gestion des erreurs et journalisation
 
 Implémenter une gestion des erreurs et une journalisation cohérentes:
@@ -306,15 +326,19 @@ Implémenter une gestion des erreurs et une journalisation cohérentes:
 ```powershell
 function Resolve-DependencyPath {
     # ...
+
     
     try {
         # Tentative de résolution
+
     }
     catch {
         # Journalisation détaillée
+
         Write-Log -Level Error -Message "Erreur lors de la résolution du chemin '$Path': $($_.Exception.Message)"
         
         # Gestion des erreurs selon le contexte
+
         if ($ThrowOnError) {
             throw
         }
@@ -323,8 +347,7 @@ function Resolve-DependencyPath {
         }
     }
 }
-```
-
+```plaintext
 ### 4.5 Cache intelligent
 
 Implémenter un système de cache intelligent qui:
@@ -341,30 +364,34 @@ function Get-CachedPath {
     )
     
     # Vérifier si la clé est dans le cache
+
     if ($script:PathCache.ContainsKey($Key)) {
         $cachedPath = $script:PathCache[$Key]
         
         # Vérifier si le chemin existe toujours
+
         if (Test-Path -Path $cachedPath) {
             return $cachedPath
         }
         
         # Invalider le cache si le chemin n'existe plus
+
         $script:PathCache.Remove($Key)
     }
     
     # Résoudre le chemin
+
     $resolvedPath = & $ResolutionFunction
     
     # Mettre en cache le résultat
+
     if ($resolvedPath) {
         $script:PathCache[$Key] = $resolvedPath
     }
     
     return $resolvedPath
 }
-```
-
+```plaintext
 ## 5. Conclusion
 
 Les mécanismes de résolution de chemins relatifs dans le projet sont variés et généralement robustes, mais manquent d'unification et de spécialisation pour la gestion des dépendances. Le Process Manager devrait implémenter un système unifié qui combine les meilleures pratiques des approches existantes tout en ajoutant des fonctionnalités spécifiques à la gestion des dépendances.

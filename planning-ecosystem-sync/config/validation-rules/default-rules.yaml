@@ -1,0 +1,118 @@
+# Validation Rules Configuration
+# This file defines the validation rules for ensuring consistency
+# between Markdown plans and the dynamic system
+
+metadata_validation:
+  required_fields:
+    - title
+    - version
+    - date
+    - progression
+
+  version_format:
+    pattern: "^v?[0-9]+\\.[0-9]+\\.[0-9]+$"
+    examples:
+      - "v1.0.0"
+      - "1.2.3"
+
+  progression_validation:
+    type: "number"
+    range:
+      min: 0
+      max: 100
+    precision: 1 # One decimal place
+
+task_validation:
+  required_fields:
+    - id
+    - title
+    - completed
+    - phase
+    - section
+
+  id_format:
+    pattern: "^[a-zA-Z0-9_-]+$"
+    max_length: 100
+
+  title_validation:
+    min_length: 5
+    max_length: 200
+    forbidden_chars: ["<", ">", "&", '"']
+
+  status_values:
+    - "pending"
+    - "in_progress"
+    - "completed"
+    - "blocked"
+    - "cancelled"
+
+structure_validation:
+  phase_hierarchy:
+    required: true
+    max_depth: 4
+    naming_convention: "## Phase {n}: {title}"
+
+  task_hierarchy:
+    checkbox_format: "- [ ] {title}"
+    completed_format: "- [x] {title}"
+    indentation: 2 # spaces
+
+  section_numbering:
+    format: "{phase}.{section}.{subsection}"
+    example: "1.2.3"
+
+consistency_validation:
+  timestamp_tolerance: "5m" # 5 minutes
+  progression_tolerance: 5.0 # 5% difference allowed
+
+  conflict_detection:
+    metadata_mismatch: "warning"
+    task_status_conflict: "error"
+    structure_change: "warning"
+    timestamp_drift: "info"
+
+synchronization_rules:
+  auto_resolve:
+    timestamp_based: true
+    newer_wins: true
+    metadata_precedence: "markdown" # or "dynamic"
+
+  manual_resolution_required:
+    - "conflicting_task_dependencies"
+    - "structural_changes"
+    - "critical_metadata_mismatch"
+
+  backup_before_sync: true
+  validation_before_commit: true
+
+performance_thresholds:
+  max_validation_time: "30s"
+  max_file_size: "10MB"
+  max_tasks_per_plan: 1000
+  max_phases_per_plan: 20
+
+error_handling:
+  validation_failure_action: "log_and_continue"
+  critical_error_action: "stop_and_alert"
+
+  notification_levels:
+    info: ["log"]
+    warning: ["log", "dashboard"]
+    error: ["log", "dashboard", "slack"]
+    critical: ["log", "dashboard", "slack", "email"]
+
+custom_validators:
+  plan_completeness:
+    enabled: true
+    check_empty_phases: true
+    check_orphaned_tasks: true
+
+  dependency_validation:
+    enabled: true
+    check_circular_dependencies: true
+    validate_external_references: true
+
+  semantic_validation:
+    enabled: false # Requires AI/ML integration
+    check_task_similarity: false
+    validate_description_quality: false

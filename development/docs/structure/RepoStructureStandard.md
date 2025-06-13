@@ -154,6 +154,7 @@ Chaque script doit inclure des métadonnées standardisées dans son en-tête :
 
 ```powershell
 <#
+
 .SYNOPSIS
     Brève description du script
 .DESCRIPTION
@@ -171,8 +172,8 @@ Chaque script doit inclure des métadonnées standardisées dans son en-tête :
     Date de modification: YYYY-MM-DD
     Tags: tag1, tag2, tag3
 #>
-```
 
+```plaintext
 ### Python
 
 ```python
@@ -195,8 +196,7 @@ Parameters:
 Examples:
     python script_name.py param1 param2
 """
-```
-
+```plaintext
 ## Gestion des Versions
 
 - Chaque script doit inclure un numéro de version dans ses métadonnées

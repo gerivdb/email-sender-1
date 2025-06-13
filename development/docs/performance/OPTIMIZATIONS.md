@@ -5,12 +5,19 @@ Ce projet contient des optimisations et améliorations pour le projet EMAIL_SEND
 ## Table des matières
 
 - [Détection et prévention des cycles](#détection-et-prévention-des-cycles)
+
 - [Segmentation des entrées pour Agent Auto](#segmentation-des-entrées-pour-agent-auto)
+
 - [Optimisations d'implémentation](#optimisations-dimplémentation)
+
 - [Optimisations de performance](#optimisations-de-performance)
+
 - [Installation](#installation)
+
 - [Utilisation](#utilisation)
+
 - [Tests](#tests)
+
 - [Contribution](#contribution)
 
 ## Détection et prévention des cycles
@@ -37,12 +44,13 @@ Le système de détection et prévention des cycles permet d'éviter les boucles
 
 ```powershell
 # Détecter les cycles dans un dossier de scripts
+
 .\development\scripts\maintenance\error-prevention\Detect-CyclicDependencies.ps1 -Path ".\development\scripts" -Recursive -OutputPath ".\reports\dependencies.json"
 
 # Valider les workflows n8n
-.\development\scripts\n8n\workflow-validation\Validate-AllWorkflows.ps1 -WorkflowsPath ".\workflows" -ReportsPath ".\reports\workflows" -GenerateReport
-```
 
+.\development\scripts\n8n\workflow-validation\Validate-AllWorkflows.ps1 -WorkflowsPath ".\workflows" -ReportsPath ".\reports\workflows" -GenerateReport
+```plaintext
 ## Segmentation des entrées pour Agent Auto
 
 Le système de segmentation des entrées permet à Agent Auto de traiter des entrées volumineuses en les divisant automatiquement en segments plus petits.
@@ -66,12 +74,13 @@ Le système de segmentation des entrées permet à Agent Auto de traiter des ent
 
 ```powershell
 # Initialiser la segmentation pour Agent Auto
+
 .\development\scripts\agent-auto\Initialize-AgentAutoSegmentation.ps1 -Enable -MaxInputSizeKB 15 -ChunkSizeKB 7
 
 # Segmenter une entrée manuellement
-.\development\scripts\agent-auto\Segment-AgentAutoInput.ps1 -Input "chemin/vers/fichier.json" -OutputPath ".\output\segments" -InputType File
-```
 
+.\development\scripts\agent-auto\Segment-AgentAutoInput.ps1 -Input "chemin/vers/fichier.json" -OutputPath ".\output\segments" -InputType File
+```plaintext
 ## Optimisations d'implémentation
 
 Diverses optimisations pour maximiser l'efficacité de l'implémentation.
@@ -94,15 +103,17 @@ Diverses optimisations pour maximiser l'efficacité de l'implémentation.
 
 ```powershell
 # Détecter les serveurs MCP
+
 .\development\scripts\maintenance\mcp\Detect-MCPServers.ps1 -Scan -OutputPath ".\mcp-servers\detected.json"
 
 # Tester la compatibilité PowerShell 7
+
 .\development\scripts\maintenance\ps7-migration\Test-PSVersionCompatibility.ps1 -Path ".\development\scripts" -Recursive -OutputPath ".\reports\ps7_compatibility.json"
 
 # Initialiser le cache prédictif pour n8n
-.\development\scripts\n8n\cache\Initialize-N8nPredictiveCache.ps1 -ApiKey "n8n_api_key" -MaxCacheSizeMB 200
-```
 
+.\development\scripts\n8n\cache\Initialize-N8nPredictiveCache.ps1 -ApiKey "n8n_api_key" -MaxCacheSizeMB 200
+```plaintext
 ## Optimisations de performance
 
 Optimisations pour exploiter les performances matérielles, notamment via le parallélisme.
@@ -125,21 +136,24 @@ Optimisations pour exploiter les performances matérielles, notamment via le par
 
 ```powershell
 # Mesurer les performances d'un script
+
 .\development\scripts\performance\Measure-ScriptPerformance.ps1 -ScriptPath ".\development\scripts\example.ps1" -Iterations 5 -OutputPath ".\reports\performance.json"
 
 # Optimiser l'exécution parallèle
+
 .\development\scripts\performance\Optimize-ParallelExecution.ps1 -ScriptPath ".\development\scripts\process-data.ps1" -InputData $data -MaxThreads 8 -OutputPath ".\output\results.json"
 
 # Exemple de traitement parallèle
-.\development\scripts\performance\Example-ParallelProcessing.ps1
-```
 
+.\development\scripts\performance\Example-ParallelProcessing.ps1
+```plaintext
 ## Installation
 
 1. Assurez-vous que les dossiers nécessaires existent :
 
 ```powershell
 # Créer les dossiers nécessaires
+
 New-Item -Path "modules" -ItemType Directory -Force
 New-Item -Path "development/scripts/maintenance/error-prevention" -ItemType Directory -Force
 New-Item -Path "development/scripts/maintenance/mcp" -ItemType Directory -Force
@@ -154,18 +168,18 @@ New-Item -Path "cache/predictive" -ItemType Directory -Force
 New-Item -Path "cache/agent_auto" -ItemType Directory -Force
 New-Item -Path "reports/performance" -ItemType Directory -Force
 New-Item -Path "reports/workflows" -ItemType Directory -Force
-```
-
+```plaintext
 2. Initialisez les composants nécessaires :
 
 ```powershell
 # Initialiser la segmentation pour Agent Auto
+
 .\development\scripts\agent-auto\Initialize-AgentAutoSegmentation.ps1 -Enable
 
 # Initialiser le cache prédictif pour n8n
-.\development\scripts\n8n\cache\Initialize-N8nPredictiveCache.ps1
-```
 
+.\development\scripts\n8n\cache\Initialize-N8nPredictiveCache.ps1
+```plaintext
 ## Utilisation
 
 Consultez les sections spécifiques ci-dessus pour des exemples d'utilisation de chaque composant.
@@ -176,15 +190,17 @@ Des tests sont disponibles pour chaque composant :
 
 ```powershell
 # Tester la détection de cycles
+
 .\development\scripts\maintenance\error-prevention\Test-CycleDetection.ps1 -GenerateReport
 
 # Tester la segmentation des entrées
+
 .\development\scripts\agent-auto\Test-InputSegmentation.ps1 -GenerateReport
 
 # Tester les performances
-.\development\scripts\performance\Example-ParallelProcessing.ps1
-```
 
+.\development\scripts\performance\Example-ParallelProcessing.ps1
+```plaintext
 ## Contribution
 
 Les contributions sont les bienvenues ! Veuillez suivre ces étapes :

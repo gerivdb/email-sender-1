@@ -19,30 +19,36 @@ L'objectif principal du gestionnaire d'erreurs est de fournir une approche unifi
 
 Le gestionnaire d'erreurs est organisé selon la structure de répertoires suivante :
 
-```
+```plaintext
 development/managers/error-manager/
 ├── scripts/
 │   ├── error-manager.ps1           # Script principal
+
 │   ├── install-error-manager.ps1   # Script d'installation
+
 │   └── ...                         # Autres scripts
+
 ├── modules/
 │   └── ...                         # Modules PowerShell
+
 ├── tests/
 │   ├── Test-ErrorManager.ps1       # Tests unitaires
+
 │   └── ...                         # Autres tests
+
 └── config/
     └── ...                         # Fichiers de configuration locaux
-```
 
+```plaintext
 ### Fichiers de configuration
 
 Les fichiers de configuration du gestionnaire sont stockés dans :
 
-```
+```plaintext
 projet/config/managers/error-manager/
 └── error-manager.config.json       # Configuration principale
-```
 
+```plaintext
 ## Prérequis
 
 Avant d'utiliser le gestionnaire d'erreurs, assurez-vous que :
@@ -59,8 +65,7 @@ Pour installer le gestionnaire d'erreurs, utilisez le script d'installation :
 
 ```powershell
 .\development\managers\error-manager\scripts\install-error-manager.ps1
-```
-
+```plaintext
 ### Installation manuelle
 
 Si vous préférez une installation manuelle, suivez ces étapes :
@@ -75,10 +80,9 @@ Si vous préférez une installation manuelle, suivez ces étapes :
 
 Le fichier de configuration principal du gestionnaire est situé à :
 
-```
+```plaintext
 projet/config/managers/error-manager/error-manager.config.json
-```
-
+```plaintext
 Voici un exemple de configuration :
 
 ```json
@@ -112,8 +116,7 @@ Voici un exemple de configuration :
     "SlackWebhook": ""
   }
 }
-```
-
+```plaintext
 ### Options de configuration
 
 | Option | Type | Description | Valeur par défaut |
@@ -136,8 +139,7 @@ Le gestionnaire d'erreurs expose les commandes suivantes :
 
 ```powershell
 .\development\managers\error-manager\scripts\error-manager.ps1 -Command LogError -Message "Une erreur est survenue" -Category "Warning" -Source "MonScript.ps1"
-```
-
+```plaintext
 **Description :** Journalise une erreur
 
 **Paramètres :**
@@ -149,14 +151,12 @@ Le gestionnaire d'erreurs expose les commandes suivantes :
 **Exemple :**
 ```powershell
 .\development\managers\error-manager\scripts\error-manager.ps1 -Command LogError -Message "Fichier non trouvé" -Category "Critical" -Source "find-managers.ps1" -Exception $_.Exception
-```
-
+```plaintext
 #### Commande 2 : GetErrors
 
 ```powershell
 .\development\managers\error-manager\scripts\error-manager.ps1 -Command GetErrors -StartDate "2025-04-01" -EndDate "2025-04-29"
-```
-
+```plaintext
 **Description :** Récupère les erreurs journalisées
 
 **Paramètres :**
@@ -168,31 +168,31 @@ Le gestionnaire d'erreurs expose les commandes suivantes :
 **Exemple :**
 ```powershell
 .\development\managers\error-manager\scripts\error-manager.ps1 -Command GetErrors -Category "Critical" -Source "find-managers.ps1"
-```
-
+```plaintext
 ### Exemples d'utilisation
 
 #### Exemple 1 : Journalisation d'une erreur critique
 
 ```powershell
 # Journaliser une erreur critique
+
 try {
     # Code qui peut générer une erreur
+
     $result = 1 / 0
 } catch {
     .\development\managers\error-manager\scripts\error-manager.ps1 -Command LogError -Message "Division par zéro" -Category "Critical" -Source "mon-script.ps1" -Exception $_.Exception
 }
-```
-
+```plaintext
 #### Exemple 2 : Récupération des erreurs récentes
 
 ```powershell
 # Récupérer les erreurs des dernières 24 heures
+
 $yesterday = (Get-Date).AddDays(-1)
 $today = Get-Date
 .\development\managers\error-manager\scripts\error-manager.ps1 -Command GetErrors -StartDate $yesterday -EndDate $today
-```
-
+```plaintext
 ## Intégration avec d'autres gestionnaires
 
 Le gestionnaire d'erreurs s'intègre avec les autres gestionnaires du système :
@@ -201,20 +201,20 @@ Le gestionnaire d'erreurs s'intègre avec les autres gestionnaires du système :
 
 ```powershell
 # Utiliser le gestionnaire d'erreurs via le gestionnaire intégré
-.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Manager ErrorManager -Command LogError -Message "Une erreur est survenue" -Category "Warning" -Source "MonScript.ps1"
-```
 
+.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Manager ErrorManager -Command LogError -Message "Une erreur est survenue" -Category "Warning" -Source "MonScript.ps1"
+```plaintext
 ### Intégration avec le gestionnaire de scripts
 
 ```powershell
 # Utiliser le gestionnaire d'erreurs avec le gestionnaire de scripts
+
 try {
     .\development\managers\script-manager\scripts\script-manager.ps1 -Command RunScript -ScriptPath "development/scripts/maintenance/find-managers.ps1"
 } catch {
     .\development\managers\error-manager\scripts\error-manager.ps1 -Command LogError -Message "Erreur lors de l'exécution du script" -Category "Critical" -Source "script-manager" -Exception $_.Exception
 }
-```
-
+```plaintext
 ## Dépannage
 
 ### Problèmes courants et solutions
@@ -255,10 +255,9 @@ try {
 
 Le gestionnaire d'erreurs génère des journaux dans le répertoire suivant :
 
-```
+```plaintext
 logs/error-manager/
-```
-
+```plaintext
 Les niveaux de journalisation peuvent être configurés dans le fichier de configuration principal.
 
 ## Tests
@@ -269,8 +268,7 @@ Pour exécuter les tests du gestionnaire d'erreurs, utilisez la commande suivant
 
 ```powershell
 .\development\managers\error-manager\tests\Test-ErrorManager.ps1
-```
-
+```plaintext
 ### Types de tests disponibles
 
 - **Tests unitaires :** Testent les fonctions individuelles du gestionnaire

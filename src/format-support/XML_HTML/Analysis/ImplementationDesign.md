@@ -13,7 +13,7 @@ L'architecture de l'implémentation suivra un modèle en couches :
 
 ### 1.1 Diagramme d'architecture
 
-```
+```plaintext
 +---------------------+     +---------------------+     +---------------------+
 | Format d'entrée     |     | Modèle de données   |     | Format de sortie    |
 | (Markdown/XML/HTML) | --> | interne (Roadmap)   | --> | (Markdown/XML/HTML) |
@@ -39,8 +39,7 @@ L'architecture de l'implémentation suivra un modèle en couches :
 +-----------------------------------------------------------------------+
 |                                API publique                            |
 +-----------------------------------------------------------------------+
-```
-
+```plaintext
 ## 2. Modèle de données interne
 
 Le modèle de données interne représentera la structure d'une roadmap indépendamment du format :
@@ -101,14 +100,14 @@ class RoadmapSubtask {
 class RoadmapNote {
     [string]$Text
 }
-```
-
+```plaintext
 ## 3. Interfaces communes
 
 ### 3.1 Interface de parsing
 
 ```powershell
 # Interface pour les parsers
+
 class IRoadmapParser {
     [RoadmapModel] Parse([string]$content) {
         throw "Cette méthode doit être implémentée par les classes dérivées"
@@ -118,12 +117,12 @@ class IRoadmapParser {
         throw "Cette méthode doit être implémentée par les classes dérivées"
     }
 }
-```
-
+```plaintext
 ### 3.2 Interface de génération
 
 ```powershell
 # Interface pour les générateurs
+
 class IRoadmapGenerator {
     [string] Generate([RoadmapModel]$roadmap) {
         throw "Cette méthode doit être implémentée par les classes dérivées"
@@ -133,19 +132,18 @@ class IRoadmapGenerator {
         throw "Cette méthode doit être implémentée par les classes dérivées"
     }
 }
-```
-
+```plaintext
 ### 3.3 Interface de validation
 
 ```powershell
 # Interface pour les validateurs
+
 class IRoadmapValidator {
     [bool] Validate([RoadmapModel]$roadmap, [ref]$errors) {
         throw "Cette méthode doit être implémentée par les classes dérivées"
     }
 }
-```
-
+```plaintext
 ## 4. Implémentations spécifiques
 
 ### 4.1 Parser Markdown
@@ -156,19 +154,25 @@ class MarkdownRoadmapParser : IRoadmapParser {
         $roadmap = [RoadmapModel]::new()
         
         # Extraire le titre
+
         $titleMatch = [regex]::Match($content, "^# (.+)$", [System.Text.RegularExpressions.RegexOptions]::Multiline)
+
         if ($titleMatch.Success) {
             $roadmap.Title = $titleMatch.Groups[1].Value
         }
         
         # Extraire la vue d'ensemble
+
         $overviewMatch = [regex]::Match($content, "(?s)^## Vue d'ensemble.+?\n\n(.+?)(?=\n\n## )")
+
         if ($overviewMatch.Success) {
             $roadmap.Overview = $overviewMatch.Groups[1].Value
         }
         
         # Extraire les sections
+
         $sectionMatches = [regex]::Matches($content, "(?s)^## (\d+)\. (.+?)\n(.+?)(?=\n\n## |$)", [System.Text.RegularExpressions.RegexOptions]::Multiline)
+
         
         foreach ($sectionMatch in $sectionMatches) {
             $sectionId = $sectionMatch.Groups[1].Value
@@ -180,6 +184,7 @@ class MarkdownRoadmapParser : IRoadmapParser {
             $section.Title = $sectionTitle
             
             # Extraire les métadonnées
+
             $metadataMatches = [regex]::Matches($sectionContent, "\*\*(.+?)\*\*: (.+?)(?=\n\*\*|\n\n)", [System.Text.RegularExpressions.RegexOptions]::Multiline)
             foreach ($metadataMatch in $metadataMatches) {
                 $metadataKey = $metadataMatch.Groups[1].Value
@@ -188,6 +193,7 @@ class MarkdownRoadmapParser : IRoadmapParser {
             }
             
             # Extraire les phases
+
             $phaseMatches = [regex]::Matches($sectionContent, "(?s)- \[([ x])\] \*\*Phase (\d+): (.+?)\*\*(.+?)(?=\n- \[|$)", [System.Text.RegularExpressions.RegexOptions]::Multiline)
             
             foreach ($phaseMatch in $phaseMatches) {
@@ -202,6 +208,7 @@ class MarkdownRoadmapParser : IRoadmapParser {
                 $phase.Completed = $phaseCompleted
                 
                 # Extraire les tâches
+
                 $taskMatches = [regex]::Matches($phaseContent, "(?s)\n  - \[([ x])\] (.+?)(?=\n  - \[|\n\n|$)", [System.Text.RegularExpressions.RegexOptions]::Multiline)
                 
                 foreach ($taskMatch in $taskMatches) {
@@ -209,6 +216,7 @@ class MarkdownRoadmapParser : IRoadmapParser {
                     $taskContent = $taskMatch.Groups[2].Value
                     
                     # Extraire le titre, le temps estimé et la date de début
+
                     $taskTitleMatch = [regex]::Match($taskContent, "(.+?)(?:\s+\((.+?)\))?(?:\s+-\s+\*(.+?)\*)?$")
                     
                     $task = [RoadmapTask]::new()
@@ -218,6 +226,7 @@ class MarkdownRoadmapParser : IRoadmapParser {
                     $task.Completed = $taskCompleted
                     
                     # Extraire les sous-tâches
+
                     $subtaskMatches = [regex]::Matches($phaseContent, "(?s)\n    - \[([ x])\] (.+?)(?=\n    - \[|\n  - \[|\n\n|$)", [System.Text.RegularExpressions.RegexOptions]::Multiline)
                     
                     foreach ($subtaskMatch in $subtaskMatches) {
@@ -235,6 +244,7 @@ class MarkdownRoadmapParser : IRoadmapParser {
                 }
                 
                 # Extraire les notes
+
                 $noteMatches = [regex]::Matches($phaseContent, "(?s)\n  > \*Note: (.+?)\*(?=\n  >|\n\n|$)", [System.Text.RegularExpressions.RegexOptions]::Multiline)
                 
                 foreach ($noteMatch in $noteMatches) {
@@ -260,37 +270,42 @@ class MarkdownRoadmapParser : IRoadmapParser {
         return $this.Parse($content)
     }
 }
-```
-
+```plaintext
 ### 4.2 Générateur XML
 
 ```powershell
 class XMLRoadmapGenerator : IRoadmapGenerator {
     [string] Generate([RoadmapModel]$roadmap) {
         # Créer un document XML
+
         $xmlDoc = New-Object System.Xml.XmlDocument
         
         # Créer la déclaration XML
+
         $xmlDecl = $xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", $null)
         [void]$xmlDoc.AppendChild($xmlDecl)
         
         # Créer l'élément racine
+
         $rootElement = $xmlDoc.CreateElement("roadmap")
         $rootElement.SetAttribute("title", $roadmap.Title)
         [void]$xmlDoc.AppendChild($rootElement)
         
         # Ajouter la vue d'ensemble
+
         $overviewElement = $xmlDoc.CreateElement("overview")
         $overviewElement.InnerText = $roadmap.Overview
         [void]$rootElement.AppendChild($overviewElement)
         
         # Ajouter les sections
+
         foreach ($section in $roadmap.Sections) {
             $sectionElement = $xmlDoc.CreateElement("section")
             $sectionElement.SetAttribute("id", $section.Id)
             $sectionElement.SetAttribute("title", $section.Title)
             
             # Ajouter les métadonnées
+
             $metadataElement = $xmlDoc.CreateElement("metadata")
             
             foreach ($key in $section.Metadata.Keys) {
@@ -302,6 +317,7 @@ class XMLRoadmapGenerator : IRoadmapGenerator {
             [void]$sectionElement.AppendChild($metadataElement)
             
             # Ajouter les phases
+
             foreach ($phase in $section.Phases) {
                 $phaseElement = $xmlDoc.CreateElement("phase")
                 $phaseElement.SetAttribute("id", $phase.Id)
@@ -309,6 +325,7 @@ class XMLRoadmapGenerator : IRoadmapGenerator {
                 $phaseElement.SetAttribute("completed", $phase.Completed.ToString().ToLower())
                 
                 # Ajouter les tâches
+
                 foreach ($task in $phase.Tasks) {
                     $taskElement = $xmlDoc.CreateElement("task")
                     $taskElement.SetAttribute("title", $task.Title)
@@ -324,6 +341,7 @@ class XMLRoadmapGenerator : IRoadmapGenerator {
                     $taskElement.SetAttribute("completed", $task.Completed.ToString().ToLower())
                     
                     # Ajouter les sous-tâches
+
                     foreach ($subtask in $task.Subtasks) {
                         $subtaskElement = $xmlDoc.CreateElement("subtask")
                         $subtaskElement.SetAttribute("title", $subtask.Title)
@@ -335,6 +353,7 @@ class XMLRoadmapGenerator : IRoadmapGenerator {
                 }
                 
                 # Ajouter les notes
+
                 foreach ($note in $phase.Notes) {
                     $noteElement = $xmlDoc.CreateElement("note")
                     $noteElement.InnerText = $note.Text
@@ -348,6 +367,7 @@ class XMLRoadmapGenerator : IRoadmapGenerator {
         }
         
         # Convertir le document XML en chaîne
+
         $stringWriter = New-Object System.IO.StringWriter
         $xmlWriter = New-Object System.Xml.XmlTextWriter($stringWriter)
         $xmlWriter.Formatting = [System.Xml.Formatting]::Indented
@@ -365,12 +385,15 @@ class XMLRoadmapGenerator : IRoadmapGenerator {
     
     [string] ConvertToValidXmlName([string]$name) {
         # Remplacer les espaces par des underscores
+
         $name = $name -replace '\s+', '_'
         
         # Supprimer les caractères non valides
+
         $name = $name -replace '[^a-zA-Z0-9_]', ''
         
         # S'assurer que le nom commence par une lettre ou un underscore
+
         if ($name -match '^[^a-zA-Z_]') {
             $name = '_' + $name
         }
@@ -378,14 +401,14 @@ class XMLRoadmapGenerator : IRoadmapGenerator {
         return $name
     }
 }
-```
-
+```plaintext
 ### 4.3 Générateur HTML
 
 ```powershell
 class HTMLRoadmapGenerator : IRoadmapGenerator {
     [string] Generate([RoadmapModel]$roadmap) {
         # Créer le HTML
+
         $html = @"
 <!DOCTYPE html>
 <html>
@@ -400,8 +423,10 @@ class HTMLRoadmapGenerator : IRoadmapGenerator {
         .task { margin-left: 40px; margin-bottom: 10px; }
         .subtask { margin-left: 60px; margin-bottom: 5px; }
         .completed { color: #666; }
+
         .completed h3, .completed p { text-decoration: line-through; }
         .note { margin-left: 40px; color: #888; font-style: italic; }
+
     </style>
 </head>
 <body>
@@ -412,6 +437,7 @@ class HTMLRoadmapGenerator : IRoadmapGenerator {
 "@
         
         # Ajouter les sections
+
         foreach ($section in $roadmap.Sections) {
             $html += @"
     <div class="section">
@@ -421,6 +447,7 @@ class HTMLRoadmapGenerator : IRoadmapGenerator {
 "@
             
             # Ajouter les métadonnées
+
             foreach ($key in $section.Metadata.Keys) {
                 $html += @"
             <p><strong>$key</strong>: $($section.Metadata[$key])</p>
@@ -434,6 +461,7 @@ class HTMLRoadmapGenerator : IRoadmapGenerator {
 "@
             
             # Ajouter les phases
+
             foreach ($phase in $section.Phases) {
                 $phaseClass = if ($phase.Completed) { "phase completed" } else { "phase" }
                 $phaseChecked = if ($phase.Completed) { "checked" } else { "" }
@@ -445,6 +473,7 @@ class HTMLRoadmapGenerator : IRoadmapGenerator {
 "@
                 
                 # Ajouter les tâches
+
                 foreach ($task in $phase.Tasks) {
                     $taskClass = if ($task.Completed) { "task completed" } else { "task" }
                     $taskChecked = if ($task.Completed) { "checked" } else { "" }
@@ -465,6 +494,7 @@ class HTMLRoadmapGenerator : IRoadmapGenerator {
 "@
                     
                     # Ajouter les sous-tâches
+
                     foreach ($subtask in $task.Subtasks) {
                         $subtaskClass = if ($subtask.Completed) { "subtask completed" } else { "subtask" }
                         $subtaskChecked = if ($subtask.Completed) { "checked" } else { "" }
@@ -484,6 +514,7 @@ class HTMLRoadmapGenerator : IRoadmapGenerator {
                 }
                 
                 # Ajouter les notes
+
                 foreach ($note in $phase.Notes) {
                     $html += @"
             <div class="note">
@@ -518,8 +549,7 @@ class HTMLRoadmapGenerator : IRoadmapGenerator {
         Set-Content -Path $filePath -Value $html -Encoding UTF8
     }
 }
-```
-
+```plaintext
 ### 4.4 Gestionnaire de conversion
 
 ```powershell
@@ -546,6 +576,7 @@ class RoadmapConverter {
     
     [string] Convert([string]$content, [string]$sourceFormat, [string]$targetFormat) {
         # Vérifier si les formats sont supportés
+
         if (-not $this.Parsers.ContainsKey($sourceFormat)) {
             throw "Format source non supporté: $sourceFormat"
         }
@@ -555,45 +586,53 @@ class RoadmapConverter {
         }
         
         # Parser le contenu source
+
         $roadmap = $this.Parsers[$sourceFormat].Parse($content)
         
         # Valider le modèle de données
+
         $errors = @()
         if (-not $this.Validator.Validate($roadmap, [ref]$errors)) {
             throw "Validation échouée: $($errors -join ", ")"
         }
         
         # Générer le contenu cible
+
         return $this.Generators[$targetFormat].Generate($roadmap)
     }
     
     [string] ConvertFile([string]$sourcePath, [string]$sourceFormat, [string]$targetFormat) {
         # Vérifier si le fichier source existe
+
         if (-not (Test-Path -Path $sourcePath)) {
             throw "Le fichier source n'existe pas: $sourcePath"
         }
         
         # Lire le contenu du fichier source
+
         $content = Get-Content -Path $sourcePath -Raw
         
         # Convertir le contenu
+
         return $this.Convert($content, $sourceFormat, $targetFormat)
     }
     
     [void] ConvertFileToFile([string]$sourcePath, [string]$targetPath, [string]$sourceFormat, [string]$targetFormat) {
         # Convertir le fichier
+
         $content = $this.ConvertFile($sourcePath, $sourceFormat, $targetFormat)
         
         # Écrire le contenu dans le fichier cible
+
         Set-Content -Path $targetPath -Value $content -Encoding UTF8
     }
 }
-```
-
+```plaintext
 ## 5. API publique
 
 ```powershell
 # Fonction pour convertir un fichier Roadmap en XML
+
 function ConvertFrom-RoadmapToXml {
     param (
         [Parameter(Mandatory = $true)]
@@ -608,6 +647,7 @@ function ConvertFrom-RoadmapToXml {
 }
 
 # Fonction pour convertir un fichier Roadmap en HTML
+
 function ConvertFrom-RoadmapToHtml {
     param (
         [Parameter(Mandatory = $true)]
@@ -622,6 +662,7 @@ function ConvertFrom-RoadmapToHtml {
 }
 
 # Fonction pour convertir un fichier XML en Roadmap
+
 function ConvertFrom-XmlToRoadmap {
     param (
         [Parameter(Mandatory = $true)]
@@ -636,6 +677,7 @@ function ConvertFrom-XmlToRoadmap {
 }
 
 # Fonction pour convertir un fichier HTML en Roadmap
+
 function ConvertFrom-HtmlToRoadmap {
     param (
         [Parameter(Mandatory = $true)]
@@ -650,6 +692,7 @@ function ConvertFrom-HtmlToRoadmap {
 }
 
 # Fonction pour convertir une chaîne Roadmap en XML
+
 function ConvertFrom-RoadmapStringToXml {
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -663,6 +706,7 @@ function ConvertFrom-RoadmapStringToXml {
 }
 
 # Fonction pour convertir une chaîne Roadmap en HTML
+
 function ConvertFrom-RoadmapStringToHtml {
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -676,6 +720,7 @@ function ConvertFrom-RoadmapStringToHtml {
 }
 
 # Fonction pour convertir une chaîne XML en Roadmap
+
 function ConvertFrom-XmlStringToRoadmap {
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -689,6 +734,7 @@ function ConvertFrom-XmlStringToRoadmap {
 }
 
 # Fonction pour convertir une chaîne HTML en Roadmap
+
 function ConvertFrom-HtmlStringToRoadmap {
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -702,12 +748,12 @@ function ConvertFrom-HtmlStringToRoadmap {
 }
 
 # Exporter les fonctions
+
 Export-ModuleMember -Function ConvertFrom-RoadmapToXml, ConvertFrom-RoadmapToHtml
 Export-ModuleMember -Function ConvertFrom-XmlToRoadmap, ConvertFrom-HtmlToRoadmap
 Export-ModuleMember -Function ConvertFrom-RoadmapStringToXml, ConvertFrom-RoadmapStringToHtml
 Export-ModuleMember -Function ConvertFrom-XmlStringToRoadmap, ConvertFrom-HtmlStringToRoadmap
-```
-
+```plaintext
 ## 6. Plan d'implémentation
 
 1. **Étape 1** : Implémenter le modèle de données interne

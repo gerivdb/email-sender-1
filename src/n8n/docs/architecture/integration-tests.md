@@ -17,10 +17,9 @@ Les tests d'intégration permettent de :
 
 Le script `integration-tests.cmd` permet d'exécuter les tests d'intégration :
 
-```
+```plaintext
 .\integration-tests.cmd
-```
-
+```plaintext
 Options disponibles :
 
 - `-ScenariosFile` : Fichier JSON contenant les scénarios de test (par défaut: test-scenarios.json)
@@ -156,8 +155,7 @@ Exemple de structure du rapport JSON :
     ...
   ]
 }
-```
-
+```plaintext
 ### Rapport HTML
 
 Le rapport HTML présente les résultats des tests de manière plus visuelle et conviviale. Il est enregistré dans le fichier spécifié par l'option `-HtmlReportFile`.
@@ -184,34 +182,29 @@ Le niveau de notification dépend du taux de réussite des tests :
 
 ### Exécuter tous les tests
 
-```
+```plaintext
 .\n8n-test.cmd
-```
-
+```plaintext
 ### Exécuter un scénario spécifique
 
-```
+```plaintext
 .\n8n-test.cmd -ScenarioFilter "lifecycle-basic"
-```
-
+```plaintext
 ### Exécuter les tests de haute priorité
 
-```
+```plaintext
 .\n8n-test.cmd -PriorityFilter "high"
-```
-
+```plaintext
 ### Exécuter les tests sans notifications
 
-```
+```plaintext
 .\n8n-test.cmd -NotificationEnabled $false
-```
-
+```plaintext
 ### Exécuter les tests avec un fichier de rapport personnalisé
 
-```
+```plaintext
 .\n8n-test.cmd -HtmlReportFile "n8n/logs/custom-report.html"
-```
-
+```plaintext
 ## Intégration avec des tâches planifiées
 
 Le script peut être intégré avec des tâches planifiées pour exécuter régulièrement les tests d'intégration.
@@ -227,10 +220,9 @@ Le script peut être intégré avec des tâches planifiées pour exécuter régu
 
 ### Cron (Linux)
 
-```
+```plaintext
 0 8 * * * cd /path/to/project && ./n8n-test.cmd
-```
-
+```plaintext
 ## Résolution des problèmes
 
 ### Erreur "Fichier de scénarios non trouvé"
@@ -272,8 +264,7 @@ Pour ajouter un nouveau scénario, modifiez le fichier `test-scenarios.json` et 
     ...
   ]
 }
-```
-
+```plaintext
 ### Modifier un scénario existant
 
 Pour modifier un scénario existant, modifiez le fichier `test-scenarios.json` et mettez à jour les propriétés du scénario.
@@ -295,7 +286,7 @@ Les logs sont enregistrés dans le fichier spécifié par l'option `-LogFile` (p
 
 Exemple de log :
 
-```
+```plaintext
 [2025-04-24 10:15:30] [INFO] === Tests d'intégration n8n ===
 [2025-04-24 10:15:30] [INFO] Fichier de scénarios: n8n/automation/tests/test-scenarios.json
 [2025-04-24 10:15:30] [INFO] Filtre de scénario: Aucun
@@ -327,4 +318,4 @@ Exemple de log :
 [2025-04-24 10:18:31] [ERROR] Scénarios échoués: 1
 [2025-04-24 10:18:31] [WARNING] Taux de réussite: 80%
 [2025-04-24 10:18:32] [SUCCESS] Notification envoyée: Tests d'intégration n8n: 80% de réussite
-```
+```plaintext

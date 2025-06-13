@@ -9,6 +9,7 @@ La fonction `Debug-UnauthorizedAccessException` permet de capturer et d'analyser
 ```powershell
 function Debug-UnauthorizedAccessException {
     <#
+
     .SYNOPSIS
         Capture et analyse les erreurs d'accès non autorisé.
 
@@ -35,6 +36,7 @@ function Debug-UnauthorizedAccessException {
     .OUTPUTS
         [PSCustomObject] avec des détails sur l'erreur et les solutions possibles
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, Position = 0)]
@@ -49,9 +51,11 @@ function Debug-UnauthorizedAccessException {
 
     try {
         # Exécuter le bloc de code
+
         $result = & $ScriptBlock
 
         # Si aucune erreur ne s'est produite, retourner le résultat
+
         return [PSCustomObject]@{
             Success = $true
             Result = $result
@@ -63,6 +67,7 @@ function Debug-UnauthorizedAccessException {
         $exception = $_.Exception
 
         # Si le chemin n'est pas spécifié, essayer de l'extraire du message d'erreur
+
         if (-not $Path) {
             if ($exception.Message -match "'([^']+)'") {
                 $Path = $matches[1]
@@ -72,6 +77,7 @@ function Debug-UnauthorizedAccessException {
         }
 
         # Analyser l'exception
+
         $accessDetails = $null
         if ($exception -is [System.UnauthorizedAccessException]) {
             $accessDetails = Get-UnauthorizedAccessDetails -Exception $exception -Path $Path
@@ -80,12 +86,14 @@ function Debug-UnauthorizedAccessException {
         }
 
         # Analyser les permissions si demandé et si un chemin est disponible
+
         $permissionsAnalysis = $null
         if ($AnalyzePermissions -and $Path -and (Test-Path -Path $Path -ErrorAction SilentlyContinue)) {
             $permissionsAnalysis = Test-PathPermissions -Path $Path -TestRead -TestWrite -TestExecute -Detailed
         }
 
         # Retourner les détails de l'erreur
+
         return [PSCustomObject]@{
             Success = $false
             Result = $null
@@ -95,17 +103,18 @@ function Debug-UnauthorizedAccessException {
         }
     }
 }
-```
-
+```plaintext
 ### Exemple d'utilisation
 
 ```powershell
 # Déboguer une tentative d'accès à un fichier protégé
+
 $result = Debug-UnauthorizedAccessException -ScriptBlock {
     Get-Content -Path "C:\Windows\System32\config\SAM"
 } -AnalyzePermissions
 
 # Afficher les détails de l'erreur
+
 if (-not $result.Success) {
     Write-Host "Erreur: $($result.Error.Exception.Message)" -ForegroundColor Red
 
@@ -123,8 +132,7 @@ if (-not $result.Success) {
         Format-PathPermissionsReport -PermissionsResult $result.PermissionsAnalysis
     }
 }
-```
-
+```plaintext
 ### Interprétation des résultats
 
 La fonction `Debug-UnauthorizedAccessException` retourne un objet avec les propriétés suivantes :
@@ -142,6 +150,7 @@ La fonction `Test-AccessRequirements` permet de vérifier si les permissions né
 ```powershell
 function Test-AccessRequirements {
     <#
+
     .SYNOPSIS
         Vérifie si les permissions nécessaires sont disponibles avant d'effectuer une opération.
 
@@ -171,6 +180,7 @@ function Test-AccessRequirements {
     .OUTPUTS
         [PSCustomObject] avec des détails sur les permissions disponibles
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, Position = 0)]
@@ -188,6 +198,7 @@ function Test-AccessRequirements {
     )
 
     # Vérifier si le chemin existe
+
     if (-not (Test-Path -Path $Path -ErrorAction SilentlyContinue)) {
         if (-not $Quiet) {
             Write-Warning "Le chemin '$Path' n'existe pas."
@@ -208,6 +219,7 @@ function Test-AccessRequirements {
     }
 
     # Convertir les types d'accès requis en droits du système de fichiers
+
     $requiredRights = @()
     foreach ($access in $RequiredAccess) {
         switch ($access) {
@@ -220,16 +232,19 @@ function Test-AccessRequirements {
     }
 
     # Obtenir les informations sur le fichier/dossier
+
     $item = Get-Item -Path $Path -Force
     $isContainer = $item -is [System.IO.DirectoryInfo]
 
     # Vérifier les attributs
+
     $isReadOnly = $false
     if (-not $isContainer) {
         $isReadOnly = $item.IsReadOnly
     }
 
     # Obtenir les ACL
+
     try {
         $acl = Get-Acl -Path $Path -ErrorAction Stop
     } catch {
@@ -251,10 +266,12 @@ function Test-AccessRequirements {
     }
 
     # Obtenir l'utilisateur actuel
+
     $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
     $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
     # Vérifier les permissions
+
     $accessGranted = $true
     $missingAccess = @()
     $availableAccess = @()
@@ -263,6 +280,7 @@ function Test-AccessRequirements {
         $hasAccess = $false
 
         # Vérifier si l'utilisateur a les droits requis
+
         foreach ($ace in $acl.Access) {
             if (($ace.IdentityReference.Value -eq $currentUser -or
                  $ace.IdentityReference.Value -eq "Everyone" -or
@@ -278,6 +296,7 @@ function Test-AccessRequirements {
         }
 
         # Cas spécial pour les fichiers en lecture seule
+
         if ($right -eq [System.Security.AccessControl.FileSystemRights]::Write -and $isReadOnly) {
             $hasAccess = $false
         }
@@ -307,6 +326,7 @@ function Test-AccessRequirements {
     }
 
     # Générer des suggestions si demandé
+
     $suggestions = @()
     if (-not $accessGranted -and $SuggestSolutions) {
         if ($missingAccess -contains "Write" -and $isReadOnly) {
@@ -326,6 +346,7 @@ function Test-AccessRequirements {
     }
 
     # Afficher un avertissement si les permissions sont insuffisantes
+
     if (-not $accessGranted -and -not $Quiet) {
         Write-Warning "Permissions insuffisantes pour le chemin '$Path'. Accès manquants: $($missingAccess -join ', ')"
 
@@ -338,6 +359,7 @@ function Test-AccessRequirements {
     }
 
     # Retourner le résultat
+
     return [PSCustomObject]@{
         Path = $Path
         Exists = $true
@@ -347,17 +369,19 @@ function Test-AccessRequirements {
         Suggestions = $suggestions
     }
 }
-```
-
+```plaintext
 ### Exemple d'utilisation
 
 ```powershell
 # Vérifier les permissions avant d'écrire dans un fichier
+
 $accessCheck = Test-AccessRequirements -Path "C:\Windows\System32\drivers\etc\hosts" -RequiredAccess "Read", "Write" -SuggestSolutions
 
 if ($accessCheck.AccessGranted) {
     # Effectuer l'opération d'écriture
+
     Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "# Nouvelle entrée"
+
     Write-Host "Fichier modifié avec succès" -ForegroundColor Green
 } else {
     Write-Host "Impossible de modifier le fichier. Permissions manquantes: $($accessCheck.MissingAccess -join ', ')" -ForegroundColor Red
@@ -369,8 +393,7 @@ if ($accessCheck.AccessGranted) {
         }
     }
 }
-```
-
+```plaintext
 ### Utilisation avec Invoke-WithAccessCheck
 
 La fonction `Invoke-WithAccessCheck` permet d'exécuter un bloc de code uniquement si les permissions nécessaires sont disponibles, évitant ainsi les erreurs UnauthorizedAccessException.
@@ -378,6 +401,7 @@ La fonction `Invoke-WithAccessCheck` permet d'exécuter un bloc de code uniqueme
 ```powershell
 function Invoke-WithAccessCheck {
     <#
+
     .SYNOPSIS
         Exécute un bloc de code uniquement si les permissions nécessaires sont disponibles.
 
@@ -403,6 +427,7 @@ function Invoke-WithAccessCheck {
     .EXAMPLE
         Invoke-WithAccessCheck -Path "C:\Windows\System32\drivers\etc\hosts" -RequiredAccess "Read", "Write" -ScriptBlock {
             Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "# Nouvelle entrée"
+
         } -OnFailure {
             Write-Host "Impossible de modifier le fichier hosts" -ForegroundColor Red
         }
@@ -410,6 +435,7 @@ function Invoke-WithAccessCheck {
     .OUTPUTS
         Le résultat du bloc de code si les permissions sont disponibles, sinon le résultat du bloc OnFailure.
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, Position = 0)]
@@ -432,30 +458,33 @@ function Invoke-WithAccessCheck {
     )
 
     # Vérifier les permissions
+
     $accessCheck = Test-AccessRequirements -Path $Path -RequiredAccess $RequiredAccess -SuggestSolutions:$SuggestSolutions -Quiet
 
     if ($accessCheck.AccessGranted) {
         # Exécuter le bloc de code
+
         return & $ScriptBlock
     } else {
         # Exécuter le bloc OnFailure
+
         return & $OnFailure
     }
 }
-```
-
+```plaintext
 ### Exemple d'utilisation avec Invoke-WithAccessCheck
 
 ```powershell
 # Modifier le fichier hosts uniquement si les permissions sont disponibles
+
 Invoke-WithAccessCheck -Path "C:\Windows\System32\drivers\etc\hosts" -RequiredAccess "Read", "Write" -ScriptBlock {
     Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "# Nouvelle entrée"
+
     Write-Host "Fichier modifié avec succès" -ForegroundColor Green
 } -OnFailure {
     Write-Host "Impossible de modifier le fichier hosts. Veuillez exécuter le script en tant qu'administrateur." -ForegroundColor Red
 } -SuggestSolutions
-```
-
+```plaintext
 ## Techniques d'élévation de privilèges temporaires
 
 Dans certains cas, il est nécessaire d'élever temporairement les privilèges pour effectuer des opérations qui nécessitent des droits d'administrateur. Voici plusieurs techniques pour y parvenir.
@@ -467,6 +496,7 @@ La fonction `Start-ElevatedProcess` permet de lancer un nouveau processus PowerS
 ```powershell
 function Start-ElevatedProcess {
     <#
+
     .SYNOPSIS
         Lance un nouveau processus PowerShell avec des privilèges administratifs.
 
@@ -498,6 +528,7 @@ function Start-ElevatedProcess {
     .OUTPUTS
         [System.Diagnostics.Process] si Wait est $false, [int] (code de sortie) si Wait est $true
     #>
+
     [CmdletBinding(DefaultParameterSetName = "ScriptBlock")]
     param (
         [Parameter(Mandatory = $true, ParameterSetName = "ScriptBlock")]
@@ -517,12 +548,14 @@ function Start-ElevatedProcess {
     )
 
     # Vérifier si nous sommes déjà en mode administrateur
+
     $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
     if ($isAdmin) {
         Write-Warning "Le processus actuel est déjà en mode administrateur."
 
         # Exécuter directement le code si nous sommes déjà en mode administrateur
+
         if ($PSCmdlet.ParameterSetName -eq "ScriptBlock") {
             return & $ScriptBlock
         } else {
@@ -532,6 +565,7 @@ function Start-ElevatedProcess {
     }
 
     # Préparer la commande PowerShell
+
     $arguments = @()
 
     if ($NoExit) {
@@ -540,23 +574,28 @@ function Start-ElevatedProcess {
 
     if ($PSCmdlet.ParameterSetName -eq "ScriptBlock") {
         # Convertir le ScriptBlock en commande
+
         $encodedCommand = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($ScriptBlock.ToString()))
         $arguments += "-EncodedCommand", $encodedCommand
     } else {
         # Utiliser le chemin du script
+
         $arguments += "-File", "`"$ScriptPath`""
 
         # Ajouter les arguments du script
+
         if ($ArgumentList) {
             $arguments += $ArgumentList
         }
     }
 
     # Lancer PowerShell en tant qu'administrateur
+
     $startInfo = New-Object System.Diagnostics.ProcessStartInfo
     $startInfo.FileName = "powershell.exe"
     $startInfo.Arguments = $arguments -join " "
     $startInfo.Verb = "runas"  # Demande d'élévation de privilèges
+
     $startInfo.UseShellExecute = $true
 
     try {
@@ -573,8 +612,7 @@ function Start-ElevatedProcess {
         return $null
     }
 }
-```
-
+```plaintext
 ### 2. Exécution d'une opération avec impersonation
 
 La fonction `Invoke-WithImpersonation` permet d'exécuter une opération en utilisant les informations d'identification d'un autre utilisateur.
@@ -582,6 +620,7 @@ La fonction `Invoke-WithImpersonation` permet d'exécuter une opération en util
 ```powershell
 function Invoke-WithImpersonation {
     <#
+
     .SYNOPSIS
         Exécute une opération en utilisant les informations d'identification d'un autre utilisateur.
 
@@ -605,6 +644,7 @@ function Invoke-WithImpersonation {
     .OUTPUTS
         Le résultat du bloc de code exécuté avec les informations d'identification spécifiées.
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -615,6 +655,7 @@ function Invoke-WithImpersonation {
     )
 
     # Ajouter les types nécessaires
+
     Add-Type -TypeDefinition @"
 using System;
 using System.Runtime.InteropServices;
@@ -643,10 +684,12 @@ public class ImpersonationHelper
 "@
 
     # Constantes pour LogonUser
+
     $LOGON32_LOGON_INTERACTIVE = 2
     $LOGON32_PROVIDER_DEFAULT = 0
 
     # Extraire le nom d'utilisateur et le domaine
+
     $username = $Credential.UserName
     $domain = "."
 
@@ -661,14 +704,17 @@ public class ImpersonationHelper
     }
 
     # Obtenir le mot de passe en texte clair
+
     $password = $Credential.GetNetworkCredential().Password
     $passwordPtr = [System.Runtime.InteropServices.Marshal]::SecureStringToGlobalAllocUnicode($Credential.Password)
 
     # Initialiser le handle du token
+
     $tokenHandle = [IntPtr]::Zero
 
     try {
         # Tenter de se connecter avec les informations d'identification
+
         $result = [ImpersonationHelper]::LogonUser(
             $username,
             $domain,
@@ -683,6 +729,7 @@ public class ImpersonationHelper
         }
 
         # Impersonate l'utilisateur
+
         $result = [ImpersonationHelper]::ImpersonateLoggedOnUser($tokenHandle)
 
         if (-not $result) {
@@ -691,24 +738,27 @@ public class ImpersonationHelper
         }
 
         # Exécuter le bloc de code
+
         return & $ScriptBlock
     } finally {
         # Revenir à l'identité originale
+
         [void][ImpersonationHelper]::RevertToSelf()
 
         # Fermer le handle du token
+
         if ($tokenHandle -ne [IntPtr]::Zero) {
             [void][ImpersonationHelper]::CloseHandle($tokenHandle)
         }
 
         # Libérer la mémoire allouée pour le mot de passe
+
         if ($passwordPtr -ne [IntPtr]::Zero) {
             [System.Runtime.InteropServices.Marshal]::ZeroFreeGlobalAllocUnicode($passwordPtr)
         }
     }
 }
-```
-
+```plaintext
 ### 3. Utilisation d'un fichier temporaire avec copie
 
 La fonction `Edit-ProtectedFile` permet de modifier un fichier protégé en le copiant dans un emplacement temporaire, en le modifiant, puis en le recopiant à son emplacement d'origine avec des privilèges élevés.
@@ -716,6 +766,7 @@ La fonction `Edit-ProtectedFile` permet de modifier un fichier protégé en le c
 ```powershell
 function Edit-ProtectedFile {
     <#
+
     .SYNOPSIS
         Modifie un fichier protégé en utilisant une copie temporaire.
 
@@ -745,6 +796,7 @@ function Edit-ProtectedFile {
     .OUTPUTS
         [PSCustomObject] avec des informations sur le résultat de l'opération
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -762,6 +814,7 @@ function Edit-ProtectedFile {
     )
 
     # Vérifier si le fichier existe
+
     if (-not (Test-Path -Path $Path -ErrorAction SilentlyContinue)) {
         return [PSCustomObject]@{
             Success = $false
@@ -772,20 +825,25 @@ function Edit-ProtectedFile {
     }
 
     # Créer un répertoire temporaire
+
     $tempDir = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ([System.Guid]::NewGuid().ToString())
     New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
 
     # Créer le chemin du fichier temporaire
+
     $tempFile = Join-Path -Path $tempDir -ChildPath ([System.IO.Path]::GetFileName($Path))
 
     try {
         # Copier le fichier original vers le fichier temporaire
+
         Copy-Item -Path $Path -Destination $tempFile -Force -ErrorAction Stop
 
         # Appliquer les modifications au fichier temporaire
+
         & $EditScriptBlock $tempFile
 
         # Vérifier si le fichier temporaire existe toujours
+
         if (-not (Test-Path -Path $tempFile -ErrorAction SilentlyContinue)) {
             return [PSCustomObject]@{
                 Success = $false
@@ -796,9 +854,11 @@ function Edit-ProtectedFile {
         }
 
         # Copier le fichier temporaire vers le fichier original avec élévation de privilèges
+
         switch ($ElevationMethod) {
             "NewProcess" {
                 # Utiliser un nouveau processus avec privilèges élevés
+
                 $copyScript = {
                     param($Source, $Destination)
                     Copy-Item -Path $Source -Destination $Destination -Force
@@ -829,6 +889,7 @@ function Edit-ProtectedFile {
             }
             "Impersonation" {
                 # Vérifier si les informations d'identification sont fournies
+
                 if (-not $Credential) {
                     return [PSCustomObject]@{
                         Success = $false
@@ -839,6 +900,7 @@ function Edit-ProtectedFile {
                 }
 
                 # Utiliser l'impersonation
+
                 $result = Invoke-WithImpersonation -Credential $Credential -ScriptBlock {
                     param($Source, $Destination)
                     try {
@@ -875,11 +937,11 @@ function Edit-ProtectedFile {
         }
     } finally {
         # Nettoyer le répertoire temporaire
+
         Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
     }
 }
-```
-
+```plaintext
 ### 4. Modification temporaire des ACL
 
 La fonction `Set-TemporaryPermission` permet de modifier temporairement les permissions d'un fichier ou d'un dossier pour effectuer une opération, puis de restaurer les permissions d'origine.
@@ -887,6 +949,7 @@ La fonction `Set-TemporaryPermission` permet de modifier temporairement les perm
 ```powershell
 function Set-TemporaryPermission {
     <#
+
     .SYNOPSIS
         Modifie temporairement les permissions d'un fichier ou d'un dossier.
 
@@ -914,6 +977,7 @@ function Set-TemporaryPermission {
     .OUTPUTS
         Le résultat du bloc de code exécuté avec les permissions temporaires.
     #>
+
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory = $true)]
@@ -931,12 +995,14 @@ function Set-TemporaryPermission {
     )
 
     # Vérifier si le chemin existe
+
     if (-not (Test-Path -Path $Path -ErrorAction SilentlyContinue)) {
         Write-Error "Le chemin '$Path' n'existe pas."
         return
     }
 
     # Convertir la permission en droit du système de fichiers
+
     $fileSystemRight = switch ($Permission) {
         "Read" { [System.Security.AccessControl.FileSystemRights]::Read }
         "Write" { [System.Security.AccessControl.FileSystemRights]::Write }
@@ -946,10 +1012,12 @@ function Set-TemporaryPermission {
     }
 
     # Obtenir les ACL actuelles
+
     $acl = Get-Acl -Path $Path
     $originalAcl = $acl.Clone()
 
     # Créer une nouvelle règle d'accès
+
     $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
         $Identity,
         $fileSystemRight,
@@ -960,24 +1028,27 @@ function Set-TemporaryPermission {
 
     try {
         # Ajouter la nouvelle règle d'accès
+
         $acl.AddAccessRule($accessRule)
 
         # Appliquer les nouvelles ACL
+
         if ($PSCmdlet.ShouldProcess($Path, "Modifier temporairement les permissions")) {
             Set-Acl -Path $Path -AclObject $acl
         }
 
         # Exécuter le bloc de code
+
         return & $ScriptBlock
     } finally {
         # Restaurer les ACL d'origine
+
         if ($PSCmdlet.ShouldProcess($Path, "Restaurer les permissions d'origine")) {
             Set-Acl -Path $Path -AclObject $originalAcl
         }
     }
 }
-```
-
+```plaintext
 ### 5. Utilisation de l'API Windows pour élever les privilèges
 
 La fonction `Enable-Privilege` permet d'activer un privilège spécifique pour le processus actuel, ce qui peut être utile pour effectuer certaines opérations système.
@@ -985,6 +1056,7 @@ La fonction `Enable-Privilege` permet d'activer un privilège spécifique pour l
 ```powershell
 function Enable-Privilege {
     <#
+
     .SYNOPSIS
         Active un privilège spécifique pour le processus actuel.
 
@@ -1001,6 +1073,7 @@ function Enable-Privilege {
     .OUTPUTS
         [bool] Indique si le privilège a été activé avec succès.
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -1022,6 +1095,7 @@ function Enable-Privilege {
     )
 
     # Ajouter les types nécessaires
+
     Add-Type -TypeDefinition @"
 using System;
 using System.Runtime.InteropServices;
@@ -1081,16 +1155,19 @@ public class PrivilegeHelper
 "@
 
     # Constantes
+
     $TOKEN_ADJUST_PRIVILEGES = 0x0020
     $TOKEN_QUERY = 0x0008
     $SE_PRIVILEGE_ENABLED = 0x00000002
 
     # Initialiser les variables
+
     $tokenHandle = [IntPtr]::Zero
     $luid = New-Object PrivilegeHelper+LUID
 
     try {
         # Ouvrir le token du processus actuel
+
         $result = [PrivilegeHelper]::OpenProcessToken(
             [PrivilegeHelper]::GetCurrentProcess(),
             $TOKEN_ADJUST_PRIVILEGES -bor $TOKEN_QUERY,
@@ -1103,6 +1180,7 @@ public class PrivilegeHelper
         }
 
         # Rechercher la valeur du privilège
+
         $result = [PrivilegeHelper]::LookupPrivilegeValue($null, $Privilege, [ref]$luid)
 
         if (-not $result) {
@@ -1112,12 +1190,14 @@ public class PrivilegeHelper
         }
 
         # Préparer la structure TOKEN_PRIVILEGES
+
         $tokenPrivileges = New-Object PrivilegeHelper+TOKEN_PRIVILEGES
         $tokenPrivileges.PrivilegeCount = 1
         $tokenPrivileges.Privileges.Luid = $luid
         $tokenPrivileges.Privileges.Attributes = $SE_PRIVILEGE_ENABLED
 
         # Ajuster les privilèges du token
+
         $result = [PrivilegeHelper]::AdjustTokenPrivileges(
             $tokenHandle,
             $false,
@@ -1135,45 +1215,52 @@ public class PrivilegeHelper
         return $true
     } finally {
         # Fermer le handle du token
+
         if ($tokenHandle -ne [IntPtr]::Zero) {
             [void][PrivilegeHelper]::CloseHandle($tokenHandle)
         }
     }
 }
-```
-
+```plaintext
 ### Exemple d'utilisation des techniques d'élévation de privilèges
 
 ```powershell
 # 1. Lancement d'un nouveau processus PowerShell avec privilèges élevés
+
 Start-ElevatedProcess -ScriptBlock {
     Set-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "# Fichier hosts modifié"
+
 }
 
 # 2. Exécution d'une opération avec impersonation
+
 $credential = Get-Credential -Message "Entrez les informations d'identification d'un administrateur"
 Invoke-WithImpersonation -Credential $credential -ScriptBlock {
     Set-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "# Fichier hosts modifié"
+
 }
 
 # 3. Utilisation d'un fichier temporaire avec copie
+
 Edit-ProtectedFile -Path "C:\Windows\System32\drivers\etc\hosts" -EditScriptBlock {
     param($TempFile)
     Add-Content -Path $TempFile -Value "127.0.0.1 example.com"
 }
 
 # 4. Modification temporaire des ACL
+
 Set-TemporaryPermission -Path "C:\Windows\System32\drivers\etc\hosts" -Identity "DOMAIN\User" -Permission "Modify" -ScriptBlock {
     Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "127.0.0.1 example.com"
 }
 
 # 5. Utilisation de l'API Windows pour élever les privilèges
+
 if (Enable-Privilege -Privilege "SeBackupPrivilege") {
     # Effectuer une opération de sauvegarde qui nécessite le privilège SeBackupPrivilege
+
     Copy-Item -Path "C:\Windows\System32\config\SAM" -Destination "C:\Backup\SAM"
 }
-```
-
+```plaintext
 ## Exemples de débogage pour les scénarios courants d'accès refusé
 
 ### Exemple 1: Débogage des problèmes d'accès aux fichiers système protégés
@@ -1182,10 +1269,12 @@ Les fichiers système protégés sont souvent inaccessibles même pour les utili
 
 ```powershell
 # Exemple de script pour déboguer l'accès au fichier SAM (Security Account Manager)
+
 # Ce fichier est hautement protégé car il contient les hachages des mots de passe Windows
 
 function Debug-SystemFileAccess {
     <#
+
     .SYNOPSIS
         Démontre et débogue l'accès à un fichier système protégé.
 
@@ -1202,6 +1291,7 @@ function Debug-SystemFileAccess {
     .OUTPUTS
         [PSCustomObject] avec des informations sur les différentes tentatives d'accès
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -1220,6 +1310,7 @@ function Debug-SystemFileAccess {
     }
 
     # 1. Vérifier si le fichier existe
+
     $results.FileExists = Test-Path -Path $FilePath -ErrorAction SilentlyContinue
 
     if (-not $results.FileExists) {
@@ -1229,11 +1320,13 @@ function Debug-SystemFileAccess {
     }
 
     # 2. Analyser les permissions actuelles
+
     Write-Host "`n=== Analyse des permissions actuelles ===" -ForegroundColor Cyan
     $permissionsResult = Test-PathPermissions -Path $FilePath -TestRead -TestWrite -Detailed
     Format-PathPermissionsReport -PermissionsResult $permissionsResult
 
     # 3. Tenter un accès direct
+
     Write-Host "`n=== Tentative d'accès direct ===" -ForegroundColor Cyan
     $directAccessResult = Debug-UnauthorizedAccessException -ScriptBlock {
         Get-Content -Path $FilePath -TotalCount 1
@@ -1249,6 +1342,7 @@ function Debug-SystemFileAccess {
     }
 
     # 4. Tenter d'utiliser le privilège SeBackupPrivilege
+
     Write-Host "`n=== Tentative avec le privilège SeBackupPrivilege ===" -ForegroundColor Cyan
     $backupPrivilegeSuccess = $false
 
@@ -1259,12 +1353,14 @@ function Debug-SystemFileAccess {
             Write-Host "Privilège SeBackupPrivilege activé avec succès." -ForegroundColor Green
 
             # Créer un répertoire temporaire pour la sauvegarde
+
             $tempDir = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ([System.Guid]::NewGuid().ToString())
             New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
             $backupPath = Join-Path -Path $tempDir -ChildPath ([System.IO.Path]::GetFileName($FilePath))
 
             try {
                 # Tenter de copier le fichier avec le privilège de sauvegarde
+
                 Copy-Item -Path $FilePath -Destination $backupPath -ErrorAction Stop
                 $backupPrivilegeSuccess = $true
                 Write-Host "Fichier copié avec succès en utilisant le privilège SeBackupPrivilege." -ForegroundColor Green
@@ -1273,6 +1369,7 @@ function Debug-SystemFileAccess {
                 Write-Host "Échec de la copie malgré l'activation du privilège SeBackupPrivilege: $($_.Exception.Message)" -ForegroundColor Red
             } finally {
                 # Nettoyer
+
                 Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
             }
         } else {
@@ -1285,17 +1382,20 @@ function Debug-SystemFileAccess {
     $results.BackupPrivilegeResult = if ($backupPrivilegeSuccess) { "Succès" } else { "Échec" }
 
     # 5. Tenter de prendre possession du fichier
+
     Write-Host "`n=== Tentative de prise de possession du fichier ===" -ForegroundColor Cyan
     $takeOwnershipSuccess = $false
 
     try {
         # Activer le privilège SeTakeOwnershipPrivilege
+
         $takeOwnershipEnabled = Enable-Privilege -Privilege "SeTakeOwnershipPrivilege"
 
         if ($takeOwnershipEnabled) {
             Write-Host "Privilège SeTakeOwnershipPrivilege activé avec succès." -ForegroundColor Green
 
             # Tenter de prendre possession du fichier
+
             $acl = Get-Acl -Path $FilePath
             $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
             $acl.SetOwner([System.Security.Principal.NTAccount]$currentUser)
@@ -1306,6 +1406,7 @@ function Debug-SystemFileAccess {
                 Write-Host "Prise de possession du fichier réussie." -ForegroundColor Green
 
                 # Ajouter des droits de lecture
+
                 $acl = Get-Acl -Path $FilePath
                 $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
                     $currentUser,
@@ -1329,19 +1430,23 @@ function Debug-SystemFileAccess {
     $results.TakeOwnershipResult = if ($takeOwnershipSuccess) { "Succès" } else { "Échec" }
 
     # 6. Tenter d'utiliser un processus élevé
+
     Write-Host "`n=== Tentative avec un processus élevé ===" -ForegroundColor Cyan
     $elevatedCopySuccess = $false
 
     try {
         # Créer un répertoire temporaire pour la copie
+
         $tempDir = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ([System.Guid]::NewGuid().ToString())
         New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
         $copyPath = Join-Path -Path $tempDir -ChildPath ([System.IO.Path]::GetFileName($FilePath))
 
         # Tenter de copier le fichier avec un processus élevé
+
         $result = Edit-ProtectedFile -Path $FilePath -EditScriptBlock {
             param($TempFile)
             # Ne pas modifier le fichier, juste le copier
+
             return $true
         }
 
@@ -1355,12 +1460,14 @@ function Debug-SystemFileAccess {
         Write-Host "Erreur lors de la copie avec processus élevé: $($_.Exception.Message)" -ForegroundColor Red
     } finally {
         # Nettoyer
+
         Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
     }
 
     $results.CopyWithElevationResult = if ($elevatedCopySuccess) { "Succès" } else { "Échec" }
 
     # 7. Recommandations
+
     Write-Host "`n=== Recommandations ===" -ForegroundColor Cyan
 
     if ($backupPrivilegeSuccess) {
@@ -1392,9 +1499,11 @@ function Debug-SystemFileAccess {
 }
 
 # Exemple d'utilisation
+
 $result = Debug-SystemFileAccess -FilePath "C:\Windows\System32\config\SAM"
 
 # Afficher un résumé des résultats
+
 Write-Host "`n=== Résumé des résultats ===" -ForegroundColor Cyan
 Write-Host "Fichier: $($result.FilePath)"
 Write-Host "Existe: $($result.FileExists)"
@@ -1402,8 +1511,7 @@ Write-Host "Accès direct: $($result.DirectAccessResult)"
 Write-Host "Avec privilège de sauvegarde: $($result.BackupPrivilegeResult)"
 Write-Host "Avec prise de possession: $($result.TakeOwnershipResult)"
 Write-Host "Avec processus élevé: $($result.CopyWithElevationResult)"
-```
-
+```plaintext
 #### Points clés pour déboguer l'accès aux fichiers système protégés
 
 1. **Comprendre le type de protection** :
@@ -1430,10 +1538,12 @@ Les clés de registre protégées sont souvent inaccessibles pour des raisons de
 
 ```powershell
 # Exemple de script pour déboguer l'accès aux clés de registre protégées
+
 # Certaines clés de registre sont hautement protégées pour des raisons de sécurité
 
 function Debug-RegistryKeyAccess {
     <#
+
     .SYNOPSIS
         Démontre et débogue l'accès à une clé de registre protégée.
 
@@ -1450,6 +1560,7 @@ function Debug-RegistryKeyAccess {
     .OUTPUTS
         [PSCustomObject] avec des informations sur les différentes tentatives d'accès
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -1467,6 +1578,7 @@ function Debug-RegistryKeyAccess {
     }
 
     # 1. Vérifier si la clé de registre existe
+
     $results.KeyExists = Test-Path -Path $RegistryPath -ErrorAction SilentlyContinue
 
     if (-not $results.KeyExists) {
@@ -1476,6 +1588,7 @@ function Debug-RegistryKeyAccess {
     }
 
     # 2. Tenter un accès direct
+
     Write-Host "`n=== Tentative d'accès direct ===" -ForegroundColor Cyan
     $directAccessResult = Debug-UnauthorizedAccessException -ScriptBlock {
         Get-ItemProperty -Path $RegistryPath -ErrorAction Stop
@@ -1491,6 +1604,7 @@ function Debug-RegistryKeyAccess {
     }
 
     # 3. Tenter d'utiliser le privilège SeBackupPrivilege
+
     Write-Host "`n=== Tentative avec le privilège SeBackupPrivilege ===" -ForegroundColor Cyan
     $backupPrivilegeSuccess = $false
 
@@ -1502,15 +1616,18 @@ function Debug-RegistryKeyAccess {
 
             try {
                 # Tenter d'accéder à la clé de registre avec le privilège de sauvegarde
+
                 $regKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey(
                     [Microsoft.Win32.RegistryHive]::LocalMachine,
                     [Environment]::MachineName
                 )
 
                 # Extraire le chemin relatif (sans HKLM:\)
+
                 $relativePath = $RegistryPath -replace "^HKLM:\\", ""
 
                 # Ouvrir la clé avec des droits de lecture
+
                 $key = $regKey.OpenSubKey($relativePath, $false)
 
                 if ($key -ne $null) {
@@ -1518,6 +1635,7 @@ function Debug-RegistryKeyAccess {
                     Write-Host "Accès à la clé de registre réussi en utilisant le privilège SeBackupPrivilege." -ForegroundColor Green
 
                     # Afficher les valeurs de la clé
+
                     Write-Host "Valeurs de la clé:"
                     foreach ($valueName in $key.GetValueNames()) {
                         $value = $key.GetValue($valueName)
@@ -1526,6 +1644,7 @@ function Debug-RegistryKeyAccess {
                     }
 
                     # Fermer la clé
+
                     $key.Close()
                 } else {
                     Write-Host "Impossible d'ouvrir la clé de registre malgré l'activation du privilège SeBackupPrivilege." -ForegroundColor Red
@@ -1543,25 +1662,30 @@ function Debug-RegistryKeyAccess {
     $results.BackupPrivilegeResult = if ($backupPrivilegeSuccess) { "Succès" } else { "Échec" }
 
     # 4. Tenter de prendre possession de la clé de registre
+
     Write-Host "`n=== Tentative de prise de possession de la clé de registre ===" -ForegroundColor Cyan
     $takeOwnershipSuccess = $false
 
     try {
         # Activer le privilège SeTakeOwnershipPrivilege
+
         $takeOwnershipEnabled = Enable-Privilege -Privilege "SeTakeOwnershipPrivilege"
 
         if ($takeOwnershipEnabled) {
             Write-Host "Privilège SeTakeOwnershipPrivilege activé avec succès." -ForegroundColor Green
 
             # Tenter de prendre possession de la clé de registre
+
             $script = {
                 param($Path)
 
                 try {
                     # Charger l'assembly pour les ACL de registre
+
                     Add-Type -AssemblyName System.Security
 
                     # Obtenir la clé de registre
+
                     $key = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey(
                         $Path.Replace("HKLM:\", ""),
                         [Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,
@@ -1570,19 +1694,24 @@ function Debug-RegistryKeyAccess {
 
                     if ($key -ne $null) {
                         # Obtenir les ACL actuelles
+
                         $acl = $key.GetAccessControl()
 
                         # Définir le propriétaire
+
                         $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().User
                         $acl.SetOwner($currentUser)
 
                         # Appliquer les nouvelles ACL
+
                         $key.SetAccessControl($acl)
 
                         # Fermer la clé
+
                         $key.Close()
 
                         # Rouvrir la clé avec des droits complets
+
                         $key = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey(
                             $Path.Replace("HKLM:\", ""),
                             [Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,
@@ -1590,9 +1719,11 @@ function Debug-RegistryKeyAccess {
                         )
 
                         # Obtenir les ACL actuelles
+
                         $acl = $key.GetAccessControl()
 
                         # Ajouter une règle d'accès pour l'utilisateur actuel
+
                         $rule = New-Object System.Security.AccessControl.RegistryAccessRule(
                             $currentUser,
                             [System.Security.AccessControl.RegistryRights]::FullControl,
@@ -1604,9 +1735,11 @@ function Debug-RegistryKeyAccess {
                         $acl.AddAccessRule($rule)
 
                         # Appliquer les nouvelles ACL
+
                         $key.SetAccessControl($acl)
 
                         # Fermer la clé
+
                         $key.Close()
 
                         return $true
@@ -1620,6 +1753,7 @@ function Debug-RegistryKeyAccess {
             }
 
             # Exécuter le script avec des privilèges élevés
+
             $result = Start-ElevatedProcess -ScriptBlock $script -ArgumentList $RegistryPath -Wait
 
             if ($result -eq 0) {
@@ -1638,6 +1772,7 @@ function Debug-RegistryKeyAccess {
     $results.TakeOwnershipResult = if ($takeOwnershipSuccess) { "Succès" } else { "Échec" }
 
     # 5. Tenter d'utiliser un processus élevé
+
     Write-Host "`n=== Tentative avec un processus élevé ===" -ForegroundColor Cyan
     $elevatedAccessSuccess = $false
 
@@ -1685,6 +1820,7 @@ function Debug-RegistryKeyAccess {
     $results.ElevatedAccessResult = if ($elevatedAccessSuccess) { "Succès" } else { "Échec" }
 
     # 6. Recommandations
+
     Write-Host "`n=== Recommandations ===" -ForegroundColor Cyan
 
     if ($backupPrivilegeSuccess) {
@@ -1716,9 +1852,11 @@ function Debug-RegistryKeyAccess {
 }
 
 # Exemple d'utilisation
+
 $result = Debug-RegistryKeyAccess -RegistryPath "HKLM:\SECURITY\Policy"
 
 # Afficher un résumé des résultats
+
 Write-Host "`n=== Résumé des résultats ===" -ForegroundColor Cyan
 Write-Host "Clé de registre: $($result.RegistryPath)"
 Write-Host "Existe: $($result.KeyExists)"
@@ -1726,8 +1864,7 @@ Write-Host "Accès direct: $($result.DirectAccessResult)"
 Write-Host "Avec privilège de sauvegarde: $($result.BackupPrivilegeResult)"
 Write-Host "Avec prise de possession: $($result.TakeOwnershipResult)"
 Write-Host "Avec processus élevé: $($result.ElevatedAccessResult)"
-```
-
+```plaintext
 #### Points clés pour déboguer l'accès aux clés de registre protégées
 
 1. **Comprendre le type de protection** :
@@ -1754,10 +1891,12 @@ Les problèmes d'accès réseau peuvent être causés par diverses raisons, nota
 
 ```powershell
 # Exemple de script pour déboguer les problèmes d'accès réseau
+
 # Les problèmes d'accès réseau peuvent être causés par diverses raisons
 
 function Debug-NetworkAccess {
     <#
+
     .SYNOPSIS
         Démontre et débogue l'accès à une ressource réseau.
 
@@ -1781,6 +1920,7 @@ function Debug-NetworkAccess {
     .OUTPUTS
         [PSCustomObject] avec des informations sur les différentes tentatives d'accès
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -1805,6 +1945,7 @@ function Debug-NetworkAccess {
     }
 
     # Extraire le serveur et le partage du chemin réseau
+
     if ($NetworkPath -match "\\\\([^\\]+)\\([^\\]+)") {
         $results.Server = $matches[1]
         $results.Share = $matches[2]
@@ -1815,6 +1956,7 @@ function Debug-NetworkAccess {
     }
 
     # 1. Vérifier si le serveur répond au ping
+
     Write-Host "`n=== Test de connectivité réseau (Ping) ===" -ForegroundColor Cyan
     try {
         $pingResult = Test-Connection -ComputerName $results.Server -Count 2 -Quiet
@@ -1832,8 +1974,10 @@ function Debug-NetworkAccess {
     }
 
     # 2. Scanner les ports courants pour les partages réseau
+
     Write-Host "`n=== Test des ports réseau ===" -ForegroundColor Cyan
     $ports = @(139, 445)  # Ports SMB/CIFS
+
     $portsOpen = @()
 
     foreach ($port in $ports) {
@@ -1869,6 +2013,7 @@ function Debug-NetworkAccess {
     }
 
     # 3. Vérifier si le chemin réseau existe
+
     Write-Host "`n=== Vérification de l'existence du chemin réseau ===" -ForegroundColor Cyan
     $results.PathExists = Test-Path -Path $NetworkPath -ErrorAction SilentlyContinue
 
@@ -1879,6 +2024,7 @@ function Debug-NetworkAccess {
     }
 
     # 4. Tenter un accès direct
+
     Write-Host "`n=== Tentative d'accès direct ===" -ForegroundColor Cyan
     $directAccessResult = Debug-UnauthorizedAccessException -ScriptBlock {
         if ((Get-Item -Path $NetworkPath -ErrorAction Stop).PSIsContainer) {
@@ -1898,25 +2044,30 @@ function Debug-NetworkAccess {
     }
 
     # 5. Tenter un accès avec les informations d'identification fournies
+
     if ($Credential) {
         Write-Host "`n=== Tentative d'accès avec informations d'identification ===" -ForegroundColor Cyan
 
         try {
             # Créer un objet NetworkCredential
+
             $netCred = $Credential.GetNetworkCredential()
 
             # Construire la commande net use
+
             $username = $netCred.Domain + "\" + $netCred.UserName
             $password = $netCred.Password
             $server = "\\" + $results.Server
 
             # Utiliser la commande net use pour établir une connexion
+
             $output = net use $server /user:$username $password 2>&1
 
             if ($LASTEXITCODE -eq 0) {
                 Write-Host "Connexion établie avec le serveur en utilisant les informations d'identification fournies." -ForegroundColor Green
 
                 # Tester l'accès au chemin
+
                 $credAccessResult = Debug-UnauthorizedAccessException -ScriptBlock {
                     if ((Get-Item -Path $NetworkPath -ErrorAction Stop).PSIsContainer) {
                         Get-ChildItem -Path $NetworkPath -ErrorAction Stop
@@ -1935,6 +2086,7 @@ function Debug-NetworkAccess {
                 }
 
                 # Déconnecter la session
+
                 net use $server /delete | Out-Null
             } else {
                 Write-Host "Échec de la connexion au serveur avec les informations d'identification fournies: $output" -ForegroundColor Red
@@ -1947,6 +2099,7 @@ function Debug-NetworkAccess {
     }
 
     # 6. Tenter un accès avec impersonation
+
     if ($Credential) {
         Write-Host "`n=== Tentative d'accès avec impersonation ===" -ForegroundColor Cyan
 
@@ -1996,9 +2149,11 @@ function Debug-NetworkAccess {
     }
 
     # 7. Diagnostics réseau supplémentaires
+
     Write-Host "`n=== Diagnostics réseau supplémentaires ===" -ForegroundColor Cyan
 
     # Vérifier les partages disponibles sur le serveur
+
     Write-Host "Partages disponibles sur le serveur '$($results.Server)':" -ForegroundColor Yellow
     try {
         $shares = net view $results.Server /all 2>&1
@@ -2016,6 +2171,7 @@ function Debug-NetworkAccess {
     }
 
     # Vérifier les sessions actives
+
     Write-Host "`nSessions actives:" -ForegroundColor Yellow
     try {
         $sessions = net session 2>&1
@@ -2033,9 +2189,11 @@ function Debug-NetworkAccess {
     }
 
     # 8. Recommandations
+
     Write-Host "`n=== Recommandations ===" -ForegroundColor Cyan
 
     # Recommandations basées sur les résultats des tests
+
     if (-not $results.PingResult) {
         $results.Recommendations += "Vérifiez que le serveur est en ligne et accessible sur le réseau."
         $results.Recommendations += "Vérifiez que le ping n'est pas bloqué par un pare-feu."
@@ -2069,6 +2227,7 @@ function Debug-NetworkAccess {
     }
 
     # Recommandations générales
+
     if ($results.DirectAccessResult -eq "Échec" -and $results.CredentialAccessResult -eq "Échec" -and $results.ImpersonationResult -eq "Échec") {
         $results.Recommendations += "Vérifiez les permissions sur le partage réseau."
         $results.Recommendations += "Vérifiez que le compte utilisé a accès au partage."
@@ -2085,13 +2244,17 @@ function Debug-NetworkAccess {
 }
 
 # Exemple d'utilisation
+
 $result = Debug-NetworkAccess -NetworkPath "\\server\share\file.txt"
 
 # Avec des informations d'identification
+
 # $cred = Get-Credential
+
 # $result = Debug-NetworkAccess -NetworkPath "\\server\share\file.txt" -Credential $cred
 
 # Afficher un résumé des résultats
+
 Write-Host "`n=== Résumé des résultats ===" -ForegroundColor Cyan
 Write-Host "Chemin réseau: $($result.NetworkPath)"
 Write-Host "Serveur: $($result.Server)"
@@ -2102,8 +2265,7 @@ Write-Host "Ports ouverts: $($result.PortScanResult -join ', ')"
 Write-Host "Accès direct: $($result.DirectAccessResult)"
 Write-Host "Accès avec informations d'identification: $($result.CredentialAccessResult)"
 Write-Host "Accès avec impersonation: $($result.ImpersonationResult)"
-```
-
+```plaintext
 #### Points clés pour déboguer les problèmes d'accès réseau
 
 1. **Comprendre le type de problème** :
@@ -2131,10 +2293,12 @@ Les problèmes d'accès aux bases de données peuvent être causés par diverses
 
 ```powershell
 # Exemple de script pour déboguer les problèmes d'accès aux bases de données
+
 # Les problèmes d'accès aux bases de données peuvent être causés par diverses raisons
 
 function Debug-DatabaseAccess {
     <#
+
     .SYNOPSIS
         Démontre et débogue l'accès à une base de données SQL Server.
 
@@ -2164,6 +2328,7 @@ function Debug-DatabaseAccess {
     .OUTPUTS
         [PSCustomObject] avec des informations sur les différentes tentatives d'accès
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -2180,6 +2345,7 @@ function Debug-DatabaseAccess {
     )
 
     # Vérifier si le module SqlServer est installé
+
     if (-not (Get-Module -Name SqlServer -ListAvailable)) {
         Write-Warning "Le module SqlServer n'est pas installé. Installation en cours..."
         try {
@@ -2204,6 +2370,7 @@ function Debug-DatabaseAccess {
     }
 
     # 1. Vérifier si le serveur répond
+
     Write-Host "`n=== Test de connectivité au serveur SQL ===" -ForegroundColor Cyan
     try {
         $serverName = $ServerInstance.Split('\')[0]
@@ -2222,9 +2389,11 @@ function Debug-DatabaseAccess {
     }
 
     # 2. Scanner le port SQL Server
+
     Write-Host "`n=== Test du port SQL Server ===" -ForegroundColor Cyan
     try {
         $port = 1433  # Port SQL Server par défaut
+
         $tcpClient = New-Object System.Net.Sockets.TcpClient
         $connectionResult = $tcpClient.BeginConnect($serverName, $port, $null, $null)
         $wait = $connectionResult.AsyncWaitHandle.WaitOne(1000, $false)
@@ -2250,6 +2419,7 @@ function Debug-DatabaseAccess {
     }
 
     # 3. Tenter une connexion directe avec l'authentification Windows
+
     if ($IntegratedSecurity) {
         Write-Host "`n=== Tentative de connexion avec l'authentification Windows ===" -ForegroundColor Cyan
 
@@ -2263,6 +2433,7 @@ function Debug-DatabaseAccess {
             Write-Host "Connexion au serveur réussie avec l'authentification Windows." -ForegroundColor Green
 
             # Vérifier si la base de données existe
+
             $query = "SELECT name FROM sys.databases WHERE name = '$Database'"
             $command = New-Object System.Data.SqlClient.SqlCommand($query, $connection)
             $reader = $command.ExecuteReader()
@@ -2278,6 +2449,7 @@ function Debug-DatabaseAccess {
             $reader.Close()
 
             # Si la base de données existe, tenter de s'y connecter
+
             if ($results.DatabaseExists) {
                 $connection.Close()
                 $connectionString = "Server=$ServerInstance;Database=$Database;Integrated Security=True;"
@@ -2288,6 +2460,7 @@ function Debug-DatabaseAccess {
                 Write-Host "Connexion à la base de données '$Database' réussie avec l'authentification Windows." -ForegroundColor Green
 
                 # Vérifier les permissions de l'utilisateur
+
                 $query = @"
 SELECT
     dp.name AS principal_name,
@@ -2338,6 +2511,7 @@ ORDER BY o.name, p.permission_name
             $results.DirectAccessResult = "Échec"
 
             # Analyser l'erreur
+
             $errorMessage = $_.Exception.Message
 
             if ($errorMessage -match "Login failed for user") {
@@ -2356,6 +2530,7 @@ ORDER BY o.name, p.permission_name
     }
 
     # 4. Tenter une connexion avec les informations d'identification fournies
+
     if ($Credential) {
         Write-Host "`n=== Tentative de connexion avec les informations d'identification fournies ===" -ForegroundColor Cyan
 
@@ -2372,6 +2547,7 @@ ORDER BY o.name, p.permission_name
             Write-Host "Connexion au serveur réussie avec l'authentification SQL." -ForegroundColor Green
 
             # Vérifier si la base de données existe
+
             $query = "SELECT name FROM sys.databases WHERE name = '$Database'"
             $command = New-Object System.Data.SqlClient.SqlCommand($query, $connection)
             $reader = $command.ExecuteReader()
@@ -2387,6 +2563,7 @@ ORDER BY o.name, p.permission_name
             $reader.Close()
 
             # Si la base de données existe, tenter de s'y connecter
+
             if ($results.DatabaseExists) {
                 $connection.Close()
                 $connectionString = "Server=$ServerInstance;Database=$Database;User Id=$username;Password=$password;"
@@ -2397,6 +2574,7 @@ ORDER BY o.name, p.permission_name
                 Write-Host "Connexion à la base de données '$Database' réussie avec l'authentification SQL." -ForegroundColor Green
 
                 # Vérifier les permissions de l'utilisateur
+
                 $query = @"
 SELECT
     dp.name AS principal_name,
@@ -2447,6 +2625,7 @@ ORDER BY o.name, p.permission_name
             $results.CredentialAccessResult = "Échec"
 
             # Analyser l'erreur
+
             $errorMessage = $_.Exception.Message
 
             if ($errorMessage -match "Login failed for user") {
@@ -2467,6 +2646,7 @@ ORDER BY o.name, p.permission_name
     }
 
     # 5. Tenter une connexion avec un processus élevé
+
     Write-Host "`n=== Tentative de connexion avec un processus élevé ===" -ForegroundColor Cyan
 
     $script = {
@@ -2474,6 +2654,7 @@ ORDER BY o.name, p.permission_name
 
         try {
             # Construire la chaîne de connexion
+
             if ($IntegratedSecurity) {
                 $connectionString = "Server=$ServerInstance;Database=$Database;Integrated Security=True;"
             } else {
@@ -2481,10 +2662,12 @@ ORDER BY o.name, p.permission_name
             }
 
             # Tenter de se connecter
+
             $connection = New-Object System.Data.SqlClient.SqlConnection($connectionString)
             $connection.Open()
 
             # Exécuter une requête simple
+
             $query = "SELECT DB_NAME() AS DatabaseName, CURRENT_USER AS CurrentUser"
             $command = New-Object System.Data.SqlClient.SqlCommand($query, $connection)
             $reader = $command.ExecuteReader()
@@ -2537,9 +2720,11 @@ ORDER BY o.name, p.permission_name
     }
 
     # 6. Recommandations
+
     Write-Host "`n=== Recommandations ===" -ForegroundColor Cyan
 
     # Recommandations basées sur les résultats des tests
+
     if (-not $results.ConnectionDiagnostics["PingResult"]) {
         $results.Recommendations += "Vérifiez que le serveur est en ligne et accessible sur le réseau."
         Write-Host "- Vérifiez que le serveur est en ligne et accessible sur le réseau." -ForegroundColor Yellow
@@ -2568,6 +2753,7 @@ ORDER BY o.name, p.permission_name
     }
 
     # Recommandations générales
+
     if ($results.DirectAccessResult -eq "Échec" -and $results.CredentialAccessResult -eq "Échec" -and $results.ElevatedAccessResult -eq "Échec") {
         $results.Recommendations += "Vérifiez les permissions de l'utilisateur dans SQL Server."
         $results.Recommendations += "Vérifiez que l'authentification appropriée est activée sur le serveur."
@@ -2584,13 +2770,17 @@ ORDER BY o.name, p.permission_name
 }
 
 # Exemple d'utilisation avec l'authentification Windows
+
 $result = Debug-DatabaseAccess -ServerInstance "localhost\SQLEXPRESS" -Database "AdventureWorks" -IntegratedSecurity
 
 # Exemple d'utilisation avec l'authentification SQL
+
 # $cred = Get-Credential -Message "Entrez les informations d'identification SQL Server"
+
 # $result = Debug-DatabaseAccess -ServerInstance "localhost\SQLEXPRESS" -Database "AdventureWorks" -Credential $cred
 
 # Afficher un résumé des résultats
+
 Write-Host "`n=== Résumé des résultats ===" -ForegroundColor Cyan
 Write-Host "Serveur: $($result.ServerInstance)"
 Write-Host "Base de données: $($result.Database)"
@@ -2599,8 +2789,7 @@ Write-Host "Base de données existe: $($result.DatabaseExists)"
 Write-Host "Accès avec authentification Windows: $($result.DirectAccessResult)"
 Write-Host "Accès avec authentification SQL: $($result.CredentialAccessResult)"
 Write-Host "Accès avec processus élevé: $($result.ElevatedAccessResult)"
-```
-
+```plaintext
 #### Points clés pour déboguer les problèmes d'accès aux bases de données
 
 1. **Comprendre le type de problème** :
@@ -2629,6 +2818,7 @@ La fonction `Test-PathPermissions` permet d'analyser en détail les permissions 
 ```powershell
 function Test-PathPermissions {
     <#
+
     .SYNOPSIS
         Analyse en détail les permissions d'un fichier ou d'un dossier.
 
@@ -2662,6 +2852,7 @@ function Test-PathPermissions {
     .OUTPUTS
         [PSCustomObject] ou [bool] selon le paramètre Detailed
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, Position = 0)]
@@ -2681,6 +2872,7 @@ function Test-PathPermissions {
     )
 
     # Vérifier si le chemin existe
+
     if (-not (Test-Path -Path $Path)) {
         if ($Detailed) {
             return [PSCustomObject]@{
@@ -2706,13 +2898,16 @@ function Test-PathPermissions {
 
     try {
         # Résoudre le chemin complet
+
         $resolvedPath = Resolve-Path -Path $Path | Select-Object -ExpandProperty Path
 
         # Obtenir les informations sur le fichier/dossier
+
         $item = Get-Item -Path $resolvedPath -Force
         $isContainer = $item -is [System.IO.DirectoryInfo]
 
         # Obtenir les attributs
+
         $isReadOnly = $false
         $isHidden = $false
         $isSystem = $false
@@ -2724,17 +2919,21 @@ function Test-PathPermissions {
         }
 
         # Obtenir les ACL
+
         $acl = Get-Acl -Path $resolvedPath
         $owner = $acl.Owner
 
         # Obtenir l'utilisateur actuel
+
         $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
         $currentUserSid = [System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value
 
         # Vérifier si l'utilisateur est administrateur
+
         $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
         # Analyser les ACE pour l'utilisateur actuel
+
         $currentUserAccess = @()
         $accessControlEntries = @()
 
@@ -2751,6 +2950,7 @@ function Test-PathPermissions {
             $accessControlEntries += $aceInfo
 
             # Vérifier si cette ACE s'applique à l'utilisateur actuel
+
             if ($ace.IdentityReference.Value -eq $currentUser -or
                 $ace.IdentityReference.Value -eq "Everyone" -or
                 $ace.IdentityReference.Value -eq "BUILTIN\Users" -or
@@ -2761,6 +2961,7 @@ function Test-PathPermissions {
         }
 
         # Effectuer des tests d'accès réels
+
         $readAccess = $false
         $writeAccess = $false
         $executeAccess = $false
@@ -2793,12 +2994,15 @@ function Test-PathPermissions {
                     $testResults["WriteTest"] = "Succès: Création d'un fichier temporaire réussie"
                 } else {
                     # Sauvegarde du contenu original
+
                     $originalContent = Get-Content -Path $resolvedPath -Raw -ErrorAction Stop
 
                     # Test d'écriture (ajout d'une ligne vide à la fin)
+
                     Add-Content -Path $resolvedPath -Value "" -ErrorAction Stop
 
                     # Restauration du contenu original
+
                     Set-Content -Path $resolvedPath -Value $originalContent -ErrorAction Stop
 
                     $writeAccess = $true
@@ -2817,6 +3021,7 @@ function Test-PathPermissions {
             if ($execExtensions -contains $item.Extension.ToLower()) {
                 try {
                     # Pour les scripts PowerShell
+
                     if ($item.Extension.ToLower() -eq ".ps1") {
                         $scriptBlock = [ScriptBlock]::Create("& '$resolvedPath' -WhatIf")
                         $null = Invoke-Command -ScriptBlock $scriptBlock -ErrorAction Stop
@@ -2824,9 +3029,11 @@ function Test-PathPermissions {
                         $testResults["ExecuteTest"] = "Succès: Exécution du script PowerShell réussie (mode WhatIf)"
                     }
                     # Pour les exécutables
+
                     elseif ($item.Extension.ToLower() -eq ".exe") {
                         $process = Start-Process -FilePath $resolvedPath -ArgumentList "/?" -WindowStyle Hidden -PassThru -ErrorAction Stop
                         $process.WaitForExit(1000) # Attendre 1 seconde
+
                         if (-not $process.HasExited) {
                             $process.Kill()
                         }
@@ -2834,6 +3041,7 @@ function Test-PathPermissions {
                         $testResults["ExecuteTest"] = "Succès: Lancement de l'exécutable réussi"
                     }
                     # Pour les autres scripts
+
                     else {
                         $executeAccess = $true
                         $testResults["ExecuteTest"] = "Succès: Le fichier semble être exécutable (non testé)"
@@ -2848,12 +3056,14 @@ function Test-PathPermissions {
         }
 
         # Déterminer le résultat global
+
         $allAccess = $true
         if ($TestRead -and -not $readAccess) { $allAccess = $false }
         if ($TestWrite -and -not $writeAccess) { $allAccess = $false }
         if ($TestExecute -and -not $executeAccess) { $allAccess = $false }
 
         # Retourner le résultat
+
         if ($Detailed) {
             return [PSCustomObject]@{
                 Path = $resolvedPath
@@ -2898,18 +3108,20 @@ function Test-PathPermissions {
         return $false
     }
 }
-```
-
+```plaintext
 ### Exemple d'utilisation
 
 ```powershell
 # Analyser les permissions d'un fichier système
+
 $result = Test-PathPermissions -Path "C:\Windows\System32\drivers\etc\hosts" -TestRead -TestWrite -Detailed
 
 # Afficher le résultat
+
 $result | Format-List
 
 # Vérifier si l'utilisateur a accès en lecture
+
 if ($result.ReadAccess) {
     Write-Host "Vous avez accès en lecture au fichier hosts" -ForegroundColor Green
 } else {
@@ -2918,14 +3130,14 @@ if ($result.ReadAccess) {
 }
 
 # Vérifier si l'utilisateur a accès en écriture
+
 if ($result.WriteAccess) {
     Write-Host "Vous avez accès en écriture au fichier hosts" -ForegroundColor Green
 } else {
     Write-Host "Vous n'avez pas accès en écriture au fichier hosts" -ForegroundColor Red
     Write-Host "Raison: $($result.TestResults.WriteTest)" -ForegroundColor Red
 }
-```
-
+```plaintext
 ### Interprétation des résultats
 
 La fonction `Test-PathPermissions` retourne un objet avec les propriétés suivantes :

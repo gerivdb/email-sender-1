@@ -21,16 +21,19 @@ La stratégie de gestion des erreurs du module `CycleDetector.psm1` repose sur l
 Ces erreurs se produisent lorsque les paramètres fournis aux fonctions du module sont invalides.
 
 #### Exemples
+
 - Graphe null ou vide
 - Chemin de fichier inexistant
 - Profondeur maximale négative
 
 #### Stratégie
+
 - Utiliser les attributs de validation PowerShell (`[ValidateNotNull]`, `[ValidateNotNullOrEmpty]`, etc.)
 - Effectuer des validations supplémentaires au début des fonctions
 - Générer des erreurs de terminaison avec `Write-Error -ErrorAction Stop`
 
 #### Exemple de code
+
 ```powershell
 function Detect-Cycle {
     [CmdletBinding()]
@@ -49,24 +52,27 @@ function Detect-Cycle {
     }
     
     # Suite de la fonction...
-}
-```
 
+}
+```plaintext
 ### 2. Erreurs d'exécution
 
 Ces erreurs se produisent pendant l'exécution des fonctions du module.
 
 #### Exemples
+
 - Dépassement de la profondeur maximale
 - Débordement de pile
 - Erreur lors de la lecture d'un fichier
 
 #### Stratégie
+
 - Utiliser des blocs try/catch pour capturer les exceptions
 - Journaliser les erreurs avec `Write-Verbose`
 - Retourner des résultats partiels ou par défaut si possible
 
 #### Exemple de code
+
 ```powershell
 function Find-DependencyCycles {
     [CmdletBinding()]
@@ -80,14 +86,17 @@ function Find-DependencyCycles {
     
     try {
         # Vérifier si le chemin existe
+
         if (-not (Test-Path -Path $Path)) {
             Write-Error -Message "Le chemin '$Path' n'existe pas." -ErrorAction Stop
         }
         
         # Analyser les dépendances
+
         $dependencies = @{}
         
         # Traitement des fichiers...
+
     }
     catch [System.IO.FileNotFoundException] {
         Write-Error -Message "Fichier non trouvé: $($_.Exception.FileName)" -ErrorAction Continue
@@ -118,24 +127,27 @@ function Find-DependencyCycles {
     }
     
     # Suite de la fonction...
-}
-```
 
+}
+```plaintext
 ### 3. Erreurs de limite
 
 Ces erreurs se produisent lorsque le module atteint ses limites de performance ou de capacité.
 
 #### Exemples
+
 - Graphe trop grand
 - Trop de cycles détectés
 - Temps d'exécution trop long
 
 #### Stratégie
+
 - Implémenter des mécanismes de timeout
 - Limiter la taille des résultats
 - Fournir des avertissements avec `Write-Warning`
 
 #### Exemple de code
+
 ```powershell
 function Find-GraphCycle {
     [CmdletBinding()]
@@ -148,21 +160,25 @@ function Find-GraphCycle {
         
         [Parameter(Mandatory = $false)]
         [int]$Timeout = 30 # secondes
+
     )
     
     $startTime = Get-Date
     $timeoutReached = $false
     
     # Initialiser le résultat
+
     $result = [PSCustomObject]@{
         HasCycle = $false
         CyclePath = @()
     }
     
     # Traitement du graphe...
+
     
     foreach ($node in $Graph.Keys) {
         # Vérifier le timeout
+
         if ((New-TimeSpan -Start $startTime -End (Get-Date)).TotalSeconds -gt $Timeout) {
             $timeoutReached = $true
             Write-Warning "Timeout atteint après $Timeout secondes. L'analyse est incomplète."
@@ -170,31 +186,35 @@ function Find-GraphCycle {
         }
         
         # Traitement du nœud...
+
     }
     
     if ($timeoutReached) {
         $result.HasCycle = $null # Indique un résultat incertain
+
     }
     
     return $result
 }
-```
-
+```plaintext
 ### 4. Erreurs de format
 
 Ces erreurs se produisent lorsque les données d'entrée ne sont pas dans le format attendu.
 
 #### Exemples
+
 - Format de fichier JSON invalide
 - Structure de graphe incorrecte
 - Encodage de fichier non supporté
 
 #### Stratégie
+
 - Valider le format des données avant traitement
 - Fournir des messages d'erreur détaillés
 - Suggérer des corrections si possible
 
 #### Exemple de code
+
 ```powershell
 function Test-WorkflowCycles {
     [CmdletBinding()]
@@ -205,14 +225,17 @@ function Test-WorkflowCycles {
     
     try {
         # Lire le fichier JSON
+
         $workflowJson = Get-Content -Path $WorkflowPath -Raw | ConvertFrom-Json -ErrorAction Stop
         
         # Valider la structure du workflow
+
         if (-not $workflowJson.nodes -or -not $workflowJson.connections) {
             Write-Error -Message "Format de workflow invalide. Les propriétés 'nodes' et 'connections' sont requises." -ErrorAction Stop
         }
         
         # Traitement du workflow...
+
     }
     catch [System.ArgumentException] {
         Write-Error -Message "Format JSON invalide: $_" -ErrorAction Continue
@@ -232,9 +255,9 @@ function Test-WorkflowCycles {
     }
     
     # Suite de la fonction...
-}
-```
 
+}
+```plaintext
 ## Niveaux de gravité
 
 Le module utilise les niveaux de gravité suivants pour les erreurs et avertissements :
@@ -244,6 +267,7 @@ Le module utilise les niveaux de gravité suivants pour les erreurs et avertisse
 Ces erreurs arrêtent l'exécution de la fonction et sont générées avec `Write-Error -ErrorAction Stop`.
 
 #### Exemples
+
 - Paramètres obligatoires manquants ou invalides
 - Ressources essentielles inaccessibles
 - Conditions préalables non remplies
@@ -253,6 +277,7 @@ Ces erreurs arrêtent l'exécution de la fonction et sont générées avec `Writ
 Ces erreurs sont signalées mais n'arrêtent pas l'exécution de la fonction. Elles sont générées avec `Write-Error -ErrorAction Continue`.
 
 #### Exemples
+
 - Échec du traitement d'un fichier spécifique
 - Timeout lors de l'analyse
 - Erreurs récupérables
@@ -262,6 +287,7 @@ Ces erreurs sont signalées mais n'arrêtent pas l'exécution de la fonction. El
 Ces messages signalent des conditions potentiellement problématiques mais qui n'empêchent pas le fonctionnement du module. Ils sont générés avec `Write-Warning`.
 
 #### Exemples
+
 - Performance dégradée
 - Utilisation de fonctionnalités obsolètes
 - Résultats potentiellement incomplets
@@ -271,6 +297,7 @@ Ces messages signalent des conditions potentiellement problématiques mais qui n
 Ces messages fournissent des informations détaillées sur le fonctionnement interne du module. Ils sont générés avec `Write-Verbose`.
 
 #### Exemples
+
 - Progression de l'analyse
 - Détails des calculs
 - Informations de débogage
@@ -355,6 +382,7 @@ function Write-CycleDetectorLog {
     }
     
     # Si la journalisation dans un fichier est configurée
+
     if ($script:LogFilePath) {
         "$timestamp [$Level] $ErrorCode $Message" | Out-File -FilePath $script:LogFilePath -Append
     }
@@ -386,8 +414,7 @@ function Clear-CycleDetectorErrorLog {
     
     $script:ErrorLog = @()
 }
-```
-
+```plaintext
 ## Cas limites et leur gestion
 
 ### 1. Graphes vides
@@ -400,8 +427,7 @@ if ($Graph.Count -eq 0) {
         CyclePath = @()
     }
 }
-```
-
+```plaintext
 ### 2. Graphes déconnectés
 
 ```powershell
@@ -412,15 +438,16 @@ foreach ($node in $Graph.Keys) {
     if (-not $visited.ContainsKey($node)) {
         $connectedComponents++
         # Marquer tous les nœuds accessibles depuis ce nœud comme visités
+
         # ...
+
     }
 }
 
 if ($connectedComponents -gt 1) {
     Write-CycleDetectorLog -Message "Le graphe contient $connectedComponents composantes connexes." -Level "VERBOSE"
 }
-```
-
+```plaintext
 ### 3. Boucles sur un seul nœud
 
 ```powershell
@@ -433,8 +460,7 @@ foreach ($node in $Graph.Keys) {
         }
     }
 }
-```
-
+```plaintext
 ### 4. Nœuds manquants
 
 ```powershell
@@ -443,12 +469,12 @@ foreach ($node in $Graph.Keys) {
         if (-not $Graph.ContainsKey($neighbor)) {
             Write-CycleDetectorLog -Message "Le nœud '$neighbor' est référencé mais n'existe pas dans le graphe." -Level "WARNING" -ErrorCode "CD003"
             # Ajouter le nœud manquant au graphe
+
             $Graph[$neighbor] = @()
         }
     }
 }
-```
-
+```plaintext
 ### 5. Graphes très grands
 
 ```powershell
@@ -456,10 +482,10 @@ if ($Graph.Keys.Count -gt 10000) {
     Write-CycleDetectorLog -Message "Le graphe est très grand ($($Graph.Keys.Count) nœuds). L'analyse peut prendre du temps." -Level "WARNING" -ErrorCode "CD007"
     
     # Utiliser l'implémentation itérative optimisée
+
     $useIterative = $true
 }
-```
-
+```plaintext
 ## Conclusion
 
 Cette stratégie de gestion des erreurs fournit un cadre robuste pour détecter, signaler et gérer les erreurs dans le module `CycleDetector.psm1`. En suivant ces principes et en utilisant les mécanismes décrits, le module sera plus fiable, plus facile à déboguer et offrira une meilleure expérience utilisateur.

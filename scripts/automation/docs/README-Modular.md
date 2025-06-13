@@ -8,21 +8,28 @@ Cette version modulaire du validateur de noms de fonctions PowerShell améliore 
 
 ### Structure des fichiers
 
-```
+```plaintext
 scripts/automation/
 ├── Fix-PowerShellFunctionNames-Modular.ps1     # Script principal
+
 ├── Fix-PowerShellFunctionNames.ps1             # Version originale (365 lignes)
+
 ├── modules/
 │   ├── PowerShellVerbMapping/
 │   │   ├── PowerShellVerbMapping.psm1          # Module de mapping des verbes
+
 │   │   └── PowerShellVerbMapping.psd1          # Manifeste du module
+
 │   └── PowerShellFunctionValidator/
 │       ├── PowerShellFunctionValidator.psm1    # Module de validation
-│       └── PowerShellFunctionValidator.psd1    # Manifeste du module
-├── test-modules.ps1                            # Script de test des modules
-└── test-script-with-violations.ps1             # Fichier de test avec violations
-```
 
+│       └── PowerShellFunctionValidator.psd1    # Manifeste du module
+
+├── test-modules.ps1                            # Script de test des modules
+
+└── test-script-with-violations.ps1             # Fichier de test avec violations
+
+```plaintext
 ## Modules
 
 ### 1. PowerShellVerbMapping.psm1
@@ -73,48 +80,53 @@ scripts/automation/
 ## Utilisation
 
 ### Validation simple
+
 ```powershell
 .\Fix-PowerShellFunctionNames-Modular.ps1 -Path "."
-```
-
+```plaintext
 ### Aperçu des changements
+
 ```powershell
 .\Fix-PowerShellFunctionNames-Modular.ps1 -Path "." -DryRun -Detailed
-```
-
+```plaintext
 ### Application des corrections
+
 ```powershell
 .\Fix-PowerShellFunctionNames-Modular.ps1 -Path "." -FixIssues
-```
-
+```plaintext
 ### Validation d'un projet entier
+
 ```powershell
 .\Fix-PowerShellFunctionNames-Modular.ps1 -Path "..\.." -DryRun
-```
-
+```plaintext
 ## Améliorations par rapport à la version originale
 
 ### 1. **Séparation des responsabilités**
+
 - ✅ Mapping des verbes isolé dans son propre module
 - ✅ Logique de validation séparée de l'orchestration
 - ✅ Interface utilisateur claire et focalisée
 
 ### 2. **Réutilisabilité**
+
 - ✅ Modules peuvent être importés dans d'autres scripts
 - ✅ Fonctions testables individuellement
 - ✅ API cohérente entre les modules
 
 ### 3. **Maintenabilité**
+
 - ✅ Code plus court et plus lisible
 - ✅ Erreurs de syntaxe corrigées (problème de virgule manquante)
 - ✅ Gestion d'erreur améliorée
 
 ### 4. **Performance**
+
 - ✅ Cache des verbes approuvés
 - ✅ Support du traitement en parallèle
 - ✅ Optimisations pour les gros projets
 
 ### 5. **Extensibilité**
+
 - ✅ Ajout facile de nouveaux mappings de verbes
 - ✅ Possibilité d'ajouter de nouveaux types de validation
 - ✅ Architecture modulaire permettant l'ajout de fonctionnalités
@@ -122,6 +134,7 @@ scripts/automation/
 ## Corrections apportées
 
 ### Erreurs de syntaxe corrigées
+
 1. **Problème original :** Erreur dans la table de hachage `$VerbMappings` (virgule manquante)
    - **Solution :** Structure modulaire avec validation syntaxique
 
@@ -134,16 +147,17 @@ scripts/automation/
 ## Tests
 
 ### Test des modules individuellement
+
 ```powershell
 .\test-modules.ps1
-```
-
+```plaintext
 ### Test avec violations connues
+
 Le script `test-script-with-violations.ps1` contient intentionnellement des violations pour tester le validateur.
 
 ## Résultats de validation
 
-```
+```plaintext
 🚀 PowerShell Function Name Validator (Modular)
 ================================================================
 📍 Root Path: D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\automation
@@ -167,8 +181,7 @@ Total violations found: 0
 🎉 No function naming violations found!
 ✨ All function names follow PowerShell best practices.
 ✅ Validation completed successfully - no issues found!
-```
-
+```plaintext
 ## Prochaines étapes
 
 1. **Intégration CI/CD :** Ajouter le script dans les pipelines de validation
@@ -182,6 +195,5 @@ Total violations found: 0
 Pour ajouter de nouveaux mappings de verbes :
 ```powershell
 Add-VerbMapping -UnapprovedVerb "MonNouveauVerbe" -ApprovedVerb "Set"
-```
-
+```plaintext
 Pour étendre la validation, modifier le module `PowerShellFunctionValidator.psm1`.

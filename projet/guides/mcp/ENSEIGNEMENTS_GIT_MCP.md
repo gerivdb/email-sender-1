@@ -113,8 +113,7 @@ interface MCPTool {
   };
   execute: (params: any) => Promise<any>;
 }
-```
-
+```plaintext
 ### 3. Templates Hygen pour la génération d'outils
 
 Utiliser Hygen pour générer automatiquement :

@@ -5,10 +5,15 @@ Ce document présente les procédures d'utilisation de Hygen pour la génératio
 ## Table des matières
 
 1. [Installation](#installation)
+
 2. [Configuration](#configuration)
+
 3. [Génération de composants](#génération-de-composants)
+
 4. [Personnalisation des templates](#personnalisation-des-templates)
+
 5. [Intégration dans le workflow](#intégration-dans-le-workflow)
+
 6. [Résolution des problèmes](#résolution-des-problèmes)
 
 ## Installation
@@ -19,8 +24,7 @@ La méthode la plus simple pour installer Hygen est d'utiliser le script d'insta
 
 ```batch
 .\mcp\cmd\utils\setup-hygen-environment.cmd
-```
-
+```plaintext
 Ce script vérifie et configure l'environnement de développement pour Hygen.
 
 ### Installation manuelle
@@ -31,20 +35,17 @@ Si vous préférez installer Hygen manuellement, suivez ces étapes :
 
 ```bash
 npm install --save-dev hygen
-```
-
+```plaintext
 2. Vérifiez que Hygen est correctement installé :
 
 ```bash
 npx hygen --version
-```
-
+```plaintext
 3. Créez la structure de dossiers nécessaire :
 
 ```powershell
 .\mcp\scripts\setup\ensure-hygen-environment.ps1
-```
-
+```plaintext
 ## Configuration
 
 ### Configuration de l'environnement
@@ -53,8 +54,7 @@ Pour configurer l'environnement de développement pour Hygen, exécutez le scrip
 
 ```powershell
 .\mcp\scripts\setup\ensure-hygen-environment.ps1
-```
-
+```plaintext
 Ce script vérifie et configure les éléments suivants :
 
 - Installation de Hygen
@@ -68,8 +68,7 @@ Pour configurer l'intégration de Hygen dans le workflow de développement, exé
 
 ```powershell
 .\mcp\scripts\utils\Integrate-HygenWorkflow.ps1
-```
-
+```plaintext
 Ce script configure les éléments suivants :
 
 - Alias PowerShell
@@ -84,8 +83,7 @@ La méthode la plus simple pour générer des composants est d'utiliser le scrip
 
 ```batch
 .\mcp\cmd\utils\generate-component.cmd
-```
-
+```plaintext
 Ce script vous présentera un menu avec les options suivantes :
 
 1. Générer un script serveur MCP
@@ -100,39 +98,46 @@ Vous pouvez également utiliser directement le script PowerShell :
 
 ```powershell
 # Générer un composant en mode interactif
+
 .\mcp\scripts\utils\Generate-MCPComponent.ps1
 
 # Générer un script serveur
+
 .\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type server -Name "api-server" -Description "Serveur API MCP" -Author "John Doe"
 
 # Générer un script client
+
 .\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type client -Name "admin-client" -Description "Client d'administration MCP" -Author "Jane Smith"
 
 # Générer un module
+
 .\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type module -Name "MCPUtils" -Description "Utilitaires MCP" -Author "Dev Team"
 
 # Générer une documentation
-.\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type doc -Name "installation-guide" -Category "guides" -Description "Guide d'installation MCP" -Author "Doc Team"
-```
 
+.\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type doc -Name "installation-guide" -Category "guides" -Description "Guide d'installation MCP" -Author "Doc Team"
+```plaintext
 ### Utilisation des alias PowerShell
 
 Si vous avez exécuté le script d'intégration du workflow, vous pouvez utiliser les alias PowerShell suivants :
 
 ```powershell
 # Générer un script serveur
+
 gmcps -Name "api-server" -Description "Serveur API MCP" -Author "John Doe"
 
 # Générer un script client
+
 gmcpc -Name "admin-client" -Description "Client d'administration MCP" -Author "Jane Smith"
 
 # Générer un module
+
 gmcpm -Name "MCPUtils" -Description "Utilitaires MCP" -Author "Dev Team"
 
 # Générer une documentation
-gmcpd -Name "installation-guide" -Category "guides" -Description "Guide d'installation MCP" -Author "Doc Team"
-```
 
+gmcpd -Name "installation-guide" -Category "guides" -Description "Guide d'installation MCP" -Author "Doc Team"
+```plaintext
 ### Utilisation des tâches VS Code
 
 Si vous avez exécuté le script d'intégration du workflow, vous pouvez utiliser les tâches VS Code suivantes :
@@ -151,7 +156,7 @@ Si vous avez exécuté le script d'intégration du workflow, vous pouvez utilise
 
 Les templates sont stockés dans le dossier `mcp/_templates`. Chaque générateur a son propre dossier avec des templates spécifiques.
 
-```
+```plaintext
 mcp/_templates/
   mcp-server/
     new/
@@ -169,8 +174,7 @@ mcp/_templates/
     new/
       hello.ejs.t
       prompt.js
-```
-
+```plaintext
 ### Modification des templates existants
 
 Pour modifier un template existant, ouvrez le fichier `hello.ejs.t` correspondant dans votre éditeur de texte.
@@ -182,7 +186,9 @@ Les templates utilisent la syntaxe EJS (Embedded JavaScript) pour générer du c
 to: mcp/core/server/<%= name %>.ps1
 ---
 #!/usr/bin/env pwsh
+
 <#
+
 .SYNOPSIS
     <%= description %>
 
@@ -216,16 +222,15 @@ param (
 )
 
 # Reste du code...
-```
 
+```plaintext
 ### Création de nouveaux templates
 
 Pour créer un nouveau générateur :
 
 ```bash
 npx hygen generator new mon-generateur
-```
-
+```plaintext
 Cela créera un nouveau dossier `mcp/_templates/mon-generateur` avec les fichiers nécessaires.
 
 ## Intégration dans le workflow
@@ -250,16 +255,14 @@ Si Hygen n'est pas installé, exécutez :
 
 ```powershell
 npm install --save-dev hygen
-```
-
+```plaintext
 ### Structure de dossiers incomplète
 
 Si la structure de dossiers est incomplète, exécutez :
 
 ```powershell
 .\mcp\scripts\setup\ensure-hygen-environment.ps1
-```
-
+```plaintext
 ### Erreurs lors de la génération de composants
 
 Si vous rencontrez des erreurs lors de la génération de composants, vérifiez :

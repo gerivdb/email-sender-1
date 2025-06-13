@@ -3,16 +3,27 @@
 ## Table des matières
 
 1. [Guide d'Assistance pour Workflow N8N - Gribitch Booking](#section-1)
+
     1.1. [Contexte du Projet](#section-2)
+
         1.1.1. [Outils et Intégrations](#section-3)
+
     1.2. [Analyse des Workflows](#section-4)
+
         1.2.1. [Points d'attention particuliers](#section-5)
+
         1.2.2. [Format des solutions](#section-6)
+
         1.2.3. [Exemple de correction de nœud Code](#section-7)
+
         1.2.4. [Terminologie N8N](#section-8)
+
         1.2.5. [Erreurs courantes](#section-9)
+
         1.2.6. [Approche de débogage](#section-10)
+
     1.3. [Améliorations Recommandées](#section-11)
+
     1.4. [Phases du Processus de Booking](#section-12)
 
 ## 1. Guide d'Assistance pour Workflow N8N - Gribitch Booking <a name='section-1'></a>
@@ -79,8 +90,7 @@ for (let i = 0; i < 90; i++) {
   }
 
 return availableDates;
-```
-
+```plaintext
 #### 1.2.4. Terminologie N8N <a name='section-8'></a>
 
 Utiliser les termes techniques corrects :

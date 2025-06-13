@@ -29,6 +29,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 ### Processeur (CPU)
 
 #### CPU_UTILIZATION
+
 - **Nom** : Utilisation CPU
 - **Description** : Pourcentage moyen d'utilisation du CPU
 - **Formule** : Moyenne du pourcentage d'utilisation CPU sur la période d'analyse
@@ -40,6 +41,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 - **Interprétation** : Une utilisation CPU élevée peut indiquer un manque de ressources de calcul, des processus inefficaces ou des pics d'activité. Une utilisation constamment élevée nécessite généralement une augmentation des ressources ou une optimisation des applications.
 
 #### CPU_PEAK
+
 - **Nom** : Pic d'utilisation CPU
 - **Description** : Valeur maximale d'utilisation du CPU
 - **Formule** : Maximum du pourcentage d'utilisation CPU sur la période d'analyse
@@ -53,6 +55,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 ### Mémoire
 
 #### MEMORY_UTILIZATION
+
 - **Nom** : Utilisation mémoire
 - **Description** : Pourcentage d'utilisation de la mémoire physique
 - **Formule** : Moyenne du pourcentage d'utilisation de la mémoire sur la période d'analyse
@@ -64,6 +67,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 - **Interprétation** : Une utilisation mémoire élevée peut entraîner du swapping et dégrader significativement les performances. Elle peut indiquer des fuites mémoire, un dimensionnement insuffisant ou des applications gourmandes en ressources.
 
 #### MEMORY_AVAILABLE
+
 - **Nom** : Mémoire disponible
 - **Description** : Quantité de mémoire physique disponible
 - **Formule** : Moyenne de la mémoire disponible sur la période d'analyse
@@ -77,6 +81,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 ### Stockage
 
 #### DISK_UTILIZATION
+
 - **Nom** : Utilisation disque
 - **Description** : Pourcentage d'utilisation de l'espace disque
 - **Formule** : Moyenne du pourcentage d'utilisation de l'espace disque sur la période d'analyse
@@ -88,6 +93,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 - **Interprétation** : Une utilisation élevée de l'espace disque peut entraîner des problèmes de performance et des erreurs d'écriture. Il est recommandé de maintenir au moins 15% d'espace libre pour les opérations système et la défragmentation.
 
 #### DISK_READ_RATE
+
 - **Nom** : Taux de lecture disque
 - **Description** : Nombre d'opérations de lecture par seconde
 - **Formule** : Moyenne du nombre d'opérations de lecture par seconde sur la période d'analyse
@@ -99,6 +105,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 - **Interprétation** : Un taux de lecture élevé peut indiquer des applications intensives en I/O ou des problèmes de cache. Il peut être nécessaire d'optimiser les requêtes ou d'améliorer le sous-système de stockage.
 
 #### DISK_WRITE_RATE
+
 - **Nom** : Taux d'écriture disque
 - **Description** : Nombre d'opérations d'écriture par seconde
 - **Formule** : Moyenne du nombre d'opérations d'écriture par seconde sur la période d'analyse
@@ -110,6 +117,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 - **Interprétation** : Un taux d'écriture élevé peut indiquer des opérations intensives de journalisation, des sauvegardes ou des problèmes d'application. Les écritures sont généralement plus coûteuses en ressources que les lectures.
 
 #### DISK_QUEUE_LENGTH
+
 - **Nom** : Longueur de la file d'attente disque
 - **Description** : Nombre moyen de requêtes en attente
 - **Formule** : Moyenne de la longueur de la file d'attente disque sur la période d'analyse
@@ -123,6 +131,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 ### Réseau
 
 #### NETWORK_THROUGHPUT_IN
+
 - **Nom** : Débit réseau entrant
 - **Description** : Débit réseau entrant
 - **Formule** : Moyenne du débit réseau entrant sur la période d'analyse
@@ -134,6 +143,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 - **Interprétation** : Un débit entrant élevé peut indiquer un trafic intense ou des attaques potentielles. Il est important de corréler ce KPI avec les patterns d'utilisation normaux.
 
 #### NETWORK_THROUGHPUT_OUT
+
 - **Nom** : Débit réseau sortant
 - **Description** : Débit réseau sortant
 - **Formule** : Moyenne du débit réseau sortant sur la période d'analyse
@@ -145,6 +155,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 - **Interprétation** : Un débit sortant élevé peut indiquer des transferts de données massifs, des sauvegardes ou des fuites de données potentielles. Il est important de comprendre les patterns normaux de trafic sortant.
 
 #### NETWORK_ERRORS
+
 - **Nom** : Erreurs réseau
 - **Description** : Nombre d'erreurs réseau par minute
 - **Formule** : Somme des erreurs réseau sur la période d'analyse, normalisée par minute
@@ -158,6 +169,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 ### Système global
 
 #### SYSTEM_UPTIME
+
 - **Nom** : Temps de fonctionnement
 - **Description** : Durée depuis le dernier redémarrage
 - **Formule** : Maximum du temps de fonctionnement sur la période d'analyse
@@ -169,6 +181,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 - **Interprétation** : Un temps de fonctionnement très long peut indiquer l'absence de maintenance régulière ou de mises à jour de sécurité. Des redémarrages périodiques sont souvent nécessaires pour appliquer les mises à jour et nettoyer les ressources.
 
 #### PROCESS_COUNT
+
 - **Nom** : Nombre de processus
 - **Description** : Nombre total de processus en cours d'exécution
 - **Formule** : Moyenne du nombre de processus sur la période d'analyse
@@ -180,6 +193,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 - **Interprétation** : Un nombre élevé de processus peut indiquer des applications mal configurées, des fuites de processus ou des attaques. Il peut entraîner une surcharge du système et des problèmes de performance.
 
 #### THREAD_COUNT
+
 - **Nom** : Nombre de threads
 - **Description** : Nombre total de threads en cours d'exécution
 - **Formule** : Moyenne du nombre de threads sur la période d'analyse
@@ -191,6 +205,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 - **Interprétation** : Un nombre élevé de threads peut indiquer des applications inefficaces, des problèmes de concurrence ou des fuites de threads. Il peut entraîner une surcharge du système et des problèmes de performance.
 
 #### HANDLE_COUNT
+
 - **Nom** : Nombre de handles
 - **Description** : Nombre total de handles ouverts
 - **Formule** : Moyenne du nombre de handles sur la période d'analyse
@@ -204,6 +219,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 ### KPIs composites
 
 #### SYSTEM_LOAD
+
 - **Nom** : Charge système
 - **Description** : Indice de charge système composite (CPU, mémoire, disque)
 - **Formule** : 0.4 * (CPU_UTILIZATION / 100) + 0.3 * (MEMORY_UTILIZATION / 100) + 0.3 * (DISK_UTILIZATION / 100)
@@ -215,6 +231,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 - **Interprétation** : Ce KPI composite fournit une vue d'ensemble de la charge du système. Un score élevé indique que le système est globalement sous pression et peut nécessiter une attention immédiate.
 
 #### IO_PERFORMANCE
+
 - **Nom** : Performance E/S
 - **Description** : Indice de performance des opérations d'entrée/sortie
 - **Formule** : Combinaison pondérée des KPIs liés aux opérations d'E/S
@@ -226,6 +243,7 @@ Les KPIs système sont organisés en plusieurs catégories :
 - **Interprétation** : Ce KPI composite évalue la performance globale du sous-système de stockage. Un score élevé indique des problèmes potentiels de performance d'E/S qui peuvent affecter de nombreuses applications.
 
 #### NETWORK_PERFORMANCE
+
 - **Nom** : Performance réseau
 - **Description** : Indice de performance réseau
 - **Formule** : Combinaison pondérée des KPIs liés au réseau

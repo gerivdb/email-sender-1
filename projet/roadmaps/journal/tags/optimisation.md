@@ -8,5 +8,8 @@
 ## Sujets connexes
 
 - [#mcp](mcp.md)
+
 - [#notifications](notifications.md)
+
 - [#tests](tests.md)
+

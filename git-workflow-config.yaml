@@ -1,0 +1,79 @@
+# Configuration GitWorkflowManager optimisée pour votre projet
+workflow:
+  type: "custom" # Workflow hybride adapté à vos besoins
+
+branches:
+  main_branches:
+    - "main"
+    - "planning-ecosystem-sync"
+    - "manager-ecosystem"
+
+  protected_branches:
+    - "main"
+    - "planning-ecosystem-sync"
+
+  patterns:
+    feature: "feature/(.+)"
+    hotfix: "hotfix/(.+)"
+    experimental: "experimental/(.+)"
+    manager: "feature/(.+)-manager"
+    phase: "feature/phase-([0-9]+)-(.+)"
+
+naming_conventions:
+  feature_branches:
+    - "feature/phase-{n}-{component}" # Pour plan-dev-v55
+    - "feature/{manager-name}" # Pour managers
+    - "feature/{component}-{description}" # Général
+
+  hotfix_branches:
+    - "hotfix/{critical-issue}"
+    - "hotfix/planning-sync-{issue}"
+
+  experimental_branches:
+    - "experimental/{poc-name}"
+    - "experimental/{innovation}"
+
+merge_strategy:
+  default: "squash" # Historique propre
+  exceptions:
+    - branch: "planning-ecosystem-sync"
+      strategy: "merge" # Préserver l'historique détaillé
+
+commit_conventions:
+  format: "{type}({scope}): {description}"
+  types:
+    - "feat" # Nouvelles fonctionnalités
+    - "fix" # Corrections de bugs
+    - "refactor" # Refactoring
+    - "docs" # Documentation
+    - "test" # Tests
+    - "chore" # Tâches de maintenance
+
+  scopes:
+    - "phase-1" # Phases du plan
+    - "phase-2"
+    - "phase-3"
+    - "phase-4"
+    - "sync-core" # Composants
+    - "validation"
+    - "migration"
+    - "manager" # Systèmes
+    - "integration"
+    - "config"
+
+automation:
+  auto_delete_merged: true
+  auto_update_pr: true
+  require_pr_review: true
+  branch_protection:
+    - "main"
+    - "planning-ecosystem-sync"
+
+notifications:
+  slack_webhook: "${SLACK_WEBHOOK_URL}"
+  teams_webhook: "${TEAMS_WEBHOOK_URL}"
+
+integration:
+  ci_cd: true
+  quality_gates: true
+  security_scanning: true

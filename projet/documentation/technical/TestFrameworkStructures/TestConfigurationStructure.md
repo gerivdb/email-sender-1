@@ -39,8 +39,7 @@ La configuration des tests est représentée sous forme de structure hiérarchiq
     // Extensions personnalisées
   }
 }
-```
-
+```plaintext
 ## 3. Sections de configuration
 
 ### 3.1 Métadonnées du test
@@ -56,8 +55,7 @@ La configuration des tests est représentée sous forme de structure hiérarchiq
   "createdAt": "2025-05-15T10:00:00Z",
   "updatedAt": "2025-05-15T10:00:00Z"
 }
-```
-
+```plaintext
 | Champ | Type | Obligatoire | Description |
 |-------|------|-------------|-------------|
 | `testId` | string | Oui | Identifiant unique du test |
@@ -116,8 +114,7 @@ La configuration des tests est représentée sous forme de structure hiérarchiq
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Obligatoire | Description |
 |-------|------|-------------|-------------|
 | `type` | string | Oui | Type de scénario (script, fonction, etc.) |
@@ -163,8 +160,7 @@ La configuration des tests est représentée sous forme de structure hiérarchiq
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Obligatoire | Description |
 |-------|------|-------------|-------------|
 | `source` | object | Oui | Source des données de test |
@@ -206,8 +202,7 @@ La configuration des tests est représentée sous forme de structure hiérarchiq
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Obligatoire | Description |
 |-------|------|-------------|-------------|
 | `mode` | string | Non | Mode d'exécution (standard, stress, endurance) |
@@ -280,8 +275,7 @@ La configuration des tests est représentée sous forme de structure hiérarchiq
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Obligatoire | Description |
 |-------|------|-------------|-------------|
 | `collectors` | array | Oui | Collecteurs de métriques à utiliser |
@@ -328,8 +322,7 @@ La configuration des tests est représentée sous forme de structure hiérarchiq
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Obligatoire | Description |
 |-------|------|-------------|-------------|
 | `setup` | object | Non | Configuration de la préparation de l'environnement |
@@ -357,6 +350,7 @@ La configuration des tests est représentée sous forme de structure hiérarchiq
         "enabled": true,
         "channels": ["email", "slack"],
         "recipients": ["team@example.com", "#alerts"]
+
       }
     },
     "archiving": {
@@ -366,8 +360,7 @@ La configuration des tests est représentée sous forme de structure hiérarchiq
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Obligatoire | Description |
 |-------|------|-------------|-------------|
 | `path` | string | Non | Chemin de sortie des résultats |
@@ -417,8 +410,7 @@ La configuration des tests est représentée sous forme de structure hiérarchiq
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Obligatoire | Description |
 |-------|------|-------------|-------------|
 | `enabled` | boolean | Non | Si l'analyse est activée |
@@ -446,8 +438,7 @@ La configuration des tests est représentée sous forme de structure hiérarchiq
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Obligatoire | Description |
 |-------|------|-------------|-------------|
 | `extensions` | object | Non | Extensions personnalisées |
@@ -480,8 +471,7 @@ La configuration des tests supporte l'héritage et la surcharge pour faciliter l
     }
   }
 }
-```
-
+```plaintext
 ### 5.2 Héritage multiple
 
 ```json
@@ -492,8 +482,7 @@ La configuration des tests supporte l'héritage et la surcharge pour faciliter l
   ],
   "name": "Custom Index Loading Test"
 }
-```
-
+```plaintext
 ### 5.3 Règles de surcharge
 
 - Les champs simples (chaînes, nombres, booléens) sont remplacés.
@@ -513,8 +502,7 @@ La configuration supporte l'utilisation de variables et de substitutions pour re
     "path": "results/${testId}/${timestamp}"
   }
 }
-```
-
+```plaintext
 Variables intégrées disponibles :
 - `${testId}` : Identifiant du test
 - `${timestamp}` : Horodatage au format ISO 8601
@@ -538,8 +526,7 @@ Variables intégrées disponibles :
     }
   }
 }
-```
-
+```plaintext
 ### 6.3 Expressions conditionnelles
 
 ```json
@@ -548,8 +535,7 @@ Variables intégrées disponibles :
     "iterations": "${dataSize == 'small' ? 10 : 5}"
   }
 }
-```
-
+```plaintext
 ## 7. Exemples complets
 
 ### 7.1 Configuration minimale
@@ -563,8 +549,7 @@ Variables intégrées disponibles :
     "path": "scenarios/simple_test.ps1"
   }
 }
-```
-
+```plaintext
 ### 7.2 Configuration complète
 
 ```json
@@ -779,6 +764,7 @@ Variables intégrées disponibles :
         "enabled": true,
         "channels": ["email", "slack"],
         "recipients": ["team@example.com", "#alerts"]
+
       }
     },
     "archiving": {
@@ -833,8 +819,7 @@ Variables intégrées disponibles :
     }
   }
 }
-```
-
+```plaintext
 ## 8. Bonnes pratiques
 
 ### 8.1 Organisation des configurations

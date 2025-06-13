@@ -1,4 +1,5 @@
 # Plan de développement v5 - Plan de Développement : Intégration de QDrant avec Clustering pour RAG
+
 *Version 1.0 - 2025-05-16 - Progression globale : 0%*
 
 ## 1. Analyse de l'existant

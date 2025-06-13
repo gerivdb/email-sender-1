@@ -57,9 +57,11 @@ def calculate_mean_relative_error(real_data, bin_edges, bin_counts):
     real_mean = np.mean(real_data)
     
     # Calculer les centres des bins
+
     bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
     
     # Calculer les fréquences relatives
+
     total_count = np.sum(bin_counts)
     if total_count == 0:
         return 100.0
@@ -67,17 +69,18 @@ def calculate_mean_relative_error(real_data, bin_edges, bin_counts):
     frequencies = bin_counts / total_count
     
     # Calculer la moyenne de l'histogramme
+
     hist_mean = np.sum(bin_centers * frequencies)
     
     # Calculer l'erreur relative en pourcentage
+
     if abs(real_mean) > 1e-10:
         relative_error = abs(real_mean - hist_mean) / abs(real_mean) * 100
     else:
         relative_error = 100.0 if abs(hist_mean) > 1e-10 else 0.0
     
     return relative_error
-```
-
+```plaintext
 Les fonctions pour les autres moments suivent une structure similaire, avec des adaptations spécifiques pour chaque statistique.
 
 ### 3.2 Calcul de l'indice global
@@ -104,6 +107,7 @@ def calculate_global_moment_conservation_index(real_data, bin_edges, bin_counts,
         errors: Erreurs relatives pour chaque moment
     """
     # Définir les poids par défaut ou selon le contexte
+
     if weights is None:
         if context == "monitoring":
             weights = [0.50, 0.30, 0.15, 0.05]
@@ -115,19 +119,26 @@ def calculate_global_moment_conservation_index(real_data, bin_edges, bin_counts,
             weights = [0.25, 0.25, 0.25, 0.25]
         else:
             weights = [0.40, 0.30, 0.20, 0.10]  # Défaut
+
     
     # Normaliser les poids
+
     weights = [w / sum(weights) for w in weights]
     
     # Définir les seuils d'acceptabilité par défaut
+
     if thresholds is None:
         thresholds = [5.0, 20.0, 30.0, 40.0]  # En pourcentage
+
     
     # Définir les valeurs de saturation par défaut
+
     if saturation_values is None:
         saturation_values = [20.0, 50.0, 100.0, 150.0]  # En pourcentage
+
     
     # Calculer les erreurs relatives pour chaque moment
+
     mean_error = calculate_mean_relative_error(real_data, bin_edges, bin_counts)
     variance_error = calculate_variance_relative_error(real_data, bin_edges, bin_counts)
     skewness_error = calculate_skewness_relative_error(real_data, bin_edges, bin_counts)
@@ -136,22 +147,26 @@ def calculate_global_moment_conservation_index(real_data, bin_edges, bin_counts,
     errors = [mean_error, variance_error, skewness_error, kurtosis_error]
     
     # Calculer les indices individuels avec fonction exponentielle
+
     alpha = 2.3  # Paramètre de sensibilité
+
     component_indices = []
     
     for i in range(4):
         # Limiter l'erreur à la valeur de saturation
+
         capped_error = min(errors[i], saturation_values[i])
         # Calculer l'indice normalisé avec pénalité exponentielle
+
         index = math.exp(-alpha * (capped_error / thresholds[i])**2)
         component_indices.append(index)
     
     # Calculer l'indice global comme moyenne pondérée
+
     igcm = sum(w * idx for w, idx in zip(weights, component_indices))
     
     return igcm, component_indices, errors
-```
-
+```plaintext
 ### 3.3 Détermination du niveau de qualité
 
 ```python
@@ -170,6 +185,7 @@ def get_quality_level(igcm, context=None, distribution_type=None, latency_region
         thresholds: Seuils utilisés pour l'évaluation
     """
     # Seuils par défaut
+
     default_thresholds = {
         "excellent": 0.90,
         "veryGood": 0.80,
@@ -179,9 +195,12 @@ def get_quality_level(igcm, context=None, distribution_type=None, latency_region
     }
     
     # Sélectionner les seuils appropriés selon le contexte, le type de distribution ou la région
+
     # [Code de sélection des seuils omis pour brièveté]
+
     
     # Déterminer le niveau de qualité
+
     if igcm >= thresholds["excellent"]:
         quality_level = "Excellent"
     elif igcm >= thresholds["veryGood"]:
@@ -196,8 +215,7 @@ def get_quality_level(igcm, context=None, distribution_type=None, latency_region
         quality_level = "Insuffisant"
     
     return quality_level, thresholds
-```
-
+```plaintext
 ### 3.4 Évaluation de la qualité d'un histogramme
 
 ```python
@@ -214,17 +232,21 @@ def evaluate_histogram_quality(real_data, config, context=None):
         result: Dictionnaire des résultats d'évaluation
     """
     # Générer l'histogramme
+
     bin_edges, bin_counts = generate_histogram(real_data, config)
     
     # Calculer l'IGCM
+
     igcm, component_indices, errors = calculate_global_moment_conservation_index(
         real_data, bin_edges, bin_counts, context=context
     )
     
     # Déterminer le niveau de qualité
+
     quality_level, thresholds = get_quality_level(igcm, context=context)
     
     # Préparer les résultats
+
     result = {
         "igcm": igcm,
         "quality_level": quality_level,
@@ -245,8 +267,7 @@ def evaluate_histogram_quality(real_data, config, context=None):
     }
     
     return result
-```
-
+```plaintext
 ### 3.5 Optimisation de la configuration d'histogramme
 
 ```python
@@ -265,6 +286,7 @@ def optimize_histogram_config(real_data, target_quality="Bon", context=None, max
         evaluation: Évaluation de la qualité avec cette configuration
     """
     # Mapper le niveau de qualité cible à un seuil IGCM
+
     quality_thresholds = {
         "Excellent": 0.90,
         "Très bon": 0.80,
@@ -274,15 +296,17 @@ def optimize_histogram_config(real_data, target_quality="Bon", context=None, max
     }
     
     target_igcm = quality_thresholds.get(target_quality, 0.70)  # Par défaut: Bon
+
     
     # Types de binning à tester
+
     bin_types = ["uniform", "logarithmic", "quantile"]
     
     # [Code d'optimisation omis pour brièveté]
+
     
     return optimal_config, best_evaluation
-```
-
+```plaintext
 ## 4. Exemples d'utilisation
 
 ### 4.1 Calcul de l'IGCM pour un histogramme existant
@@ -292,13 +316,17 @@ import numpy as np
 from global_moment_conservation_index import calculate_global_moment_conservation_index
 
 # Données de latence
+
 data = np.random.gamma(shape=3, scale=50, size=1000)
 
 # Histogramme existant
+
 bin_edges = np.linspace(min(data), max(data), 21)  # 20 bins
+
 bin_counts, _ = np.histogram(data, bins=bin_edges)
 
 # Calculer l'IGCM
+
 igcm, component_indices, errors = calculate_global_moment_conservation_index(
     data, bin_edges, bin_counts
 )
@@ -306,40 +334,43 @@ igcm, component_indices, errors = calculate_global_moment_conservation_index(
 print(f"IGCM: {igcm:.4f}")
 print(f"Indices par moment: {component_indices}")
 print(f"Erreurs relatives: {errors}")
-```
-
+```plaintext
 ### 4.2 Évaluation complète d'un histogramme
 
 ```python
 from global_moment_conservation_index import evaluate_histogram_quality
 
 # Données de latence
+
 data = np.random.gamma(shape=3, scale=50, size=1000)
 
 # Configuration de l'histogramme
+
 config = {
     "type": "logarithmic",
     "num_bins": 20
 }
 
 # Évaluer la qualité
+
 result = evaluate_histogram_quality(data, config, context="monitoring")
 
 print(f"IGCM: {result['igcm']:.4f}")
 print(f"Niveau de qualité: {result['quality_level']}")
 print(f"Erreurs: Moyenne={result['errors']['mean']:.2f}%, Variance={result['errors']['variance']:.2f}%")
 print(f"         Asymétrie={result['errors']['skewness']:.2f}%, Aplatissement={result['errors']['kurtosis']:.2f}%")
-```
-
+```plaintext
 ### 4.3 Optimisation de la configuration d'histogramme
 
 ```python
 from global_moment_conservation_index import optimize_histogram_config
 
 # Données de latence
+
 data = np.random.gamma(shape=3, scale=50, size=1000)
 
 # Trouver la configuration optimale pour un niveau de qualité "Très bon"
+
 optimal_config, optimal_eval = optimize_histogram_config(
     data, target_quality="Très bon", context="stability"
 )
@@ -347,8 +378,7 @@ optimal_config, optimal_eval = optimize_histogram_config(
 print(f"Configuration optimale: {optimal_config}")
 print(f"IGCM: {optimal_eval['igcm']:.4f}")
 print(f"Niveau de qualité: {optimal_eval['quality_level']}")
-```
-
+```plaintext
 ## 5. Gestion des cas particuliers
 
 ### 5.1 Distributions avec moments non définis

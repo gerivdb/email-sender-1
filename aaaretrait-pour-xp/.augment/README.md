@@ -4,22 +4,33 @@ Ce dossier contient la configuration et les ressources pour l'assistant IA Augme
 
 ## Structure du dossier
 
-```
+```plaintext
 .augment/
 ├── config.json             # Configuration principale d'Augment
-├── memories/               # Stockage des memories Augment
-│   └── journal_memories.json  # Memories extraites du journal de bord
-├── guidelines/             # Règles et standards de développement
-│   ├── frontend_rules.md   # Règles pour le développement frontend
-│   ├── backend_rules.md    # Règles pour le développement backend
-│   ├── project_standards.md # Standards de code globaux
-│   └── implementation_steps.md # Instructions d'implémentation
-└── context/                # Contexte du projet
-    ├── app_flow.md         # Flux applicatif détaillé
-    ├── tech_stack.md       # Stack technique et utilisation API
-    └── design_system.md    # Système de design (fonts, layout, etc.)
-```
 
+├── memories/               # Stockage des memories Augment
+
+│   └── journal_memories.json  # Memories extraites du journal de bord
+
+├── guidelines/             # Règles et standards de développement
+
+│   ├── frontend_rules.md   # Règles pour le développement frontend
+
+│   ├── backend_rules.md    # Règles pour le développement backend
+
+│   ├── project_standards.md # Standards de code globaux
+
+│   └── implementation_steps.md # Instructions d'implémentation
+
+└── context/                # Contexte du projet
+
+    ├── app_flow.md         # Flux applicatif détaillé
+
+    ├── tech_stack.md       # Stack technique et utilisation API
+
+    └── design_system.md    # Système de design (fonts, layout, etc.)
+
+```plaintext
 ## Utilisation
 
 ### Configuration

@@ -1,4 +1,4 @@
-﻿# Comparaison des Conventions de Casse entre Niveaux de Titres
+# Comparaison des Conventions de Casse entre Niveaux de Titres
 
 ## RÃ©sumÃ©
 
@@ -21,25 +21,30 @@
 | **3** | NOK | NOK | - |
 
 ## Transitions de Style entre Niveaux Adjacents
+
 - **1->2**: Mixed Case â†’ Mixed Case (transition cohÃ©rente)
 - **2->3**: Mixed Case â†’ Title Case (transition incohÃ©rente)
 
 ## Exemples de Styles par Niveau
 
 ### Niveau 1 (Mixed Case)
+
 - "Définition des Niveaux d'Expertise"
 
 ### Niveau 2 (Mixed Case)
+
 - "Pondération des Critères"
 - "Calcul du Score Global"
 - "Niveaux d'Expertise Globaux"
 
 ### Niveau 3 (Title Case)
+
 - "Complexité Technique"
 - "Connaissances Théoriques"
 - "Autonomie Décisionnelle"
 
 ## Recommandations pour AmÃ©liorer la CohÃ©rence
+
 - **Style recommandÃ© pour tous les niveaux**: Mixed Case
 - Niveaux nÃ©cessitant une standardisation:
   - **Niveau 3**: Remplacer 'Title Case' par 'Mixed Case'
@@ -53,6 +58,7 @@
   3. Documenter les conventions de casse dans un guide de style pour rÃ©fÃ©rence future.
 
 ## Conclusion
+
 - La cohÃ©rence des conventions de casse entre les niveaux est faible (< 50%).
 - Une refonte complÃ¨te des conventions de casse est recommandÃ©e.
 

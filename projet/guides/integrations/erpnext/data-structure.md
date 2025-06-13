@@ -30,6 +30,7 @@ tags: [erpnext, task, project:{project}, status:{status}, priority:{priority}]
 # Tâche ERPNext: {subject}
 
 ## Détails de la tâche
+
 - **ID**: {task_id}
 - **Sujet**: {subject}
 - **Projet**: {project}
@@ -39,16 +40,18 @@ tags: [erpnext, task, project:{project}, status:{status}, priority:{priority}]
 - **Date de fin**: {exp_end_date}
 
 ## Description
+
 {description}
 
 ## Actions réalisées
+
 - Synchronisation depuis ERPNext le {date_heure_actuelle}
 
 ## Notes
+
 - Cette entrée a été générée automatiquement à partir d'une tâche ERPNext.
 - Pour mettre à jour la tâche dans ERPNext, modifiez cette entrée et exécutez la synchronisation vers ERPNext.
-```
-
+```plaintext
 ## Entrée de journal → Note ERPNext
 
 Lorsqu'une entrée de journal est convertie en note ERPNext, les données sont mappées comme suit:
@@ -60,12 +63,11 @@ Lorsqu'une entrée de journal est convertie en note ERPNext, les données sont m
 
 ### Structure de la note ERPNext
 
-```
+```plaintext
 {title}
 
 {content}
-```
-
+```plaintext
 ## Entrée de journal → Tâche ERPNext
 
 Lorsqu'une entrée de journal est utilisée pour mettre à jour une tâche ERPNext, les données sont extraites comme suit:
@@ -85,6 +87,7 @@ L'extraction des données utilise des expressions régulières pour trouver les 
 - L'ID de la tâche est extrait avec: `ID\s*:\s*([A-Za-z0-9-]+)`
 - Le sujet est extrait avec: `Sujet\s*:\s*(.+)$`
 - La description est extraite avec: `Description\s*\n(.*?)(?=\n##|\Z)`
+
 - Le statut est extrait avec: `Statut\s*:\s*(.+)$`
 - La priorité est extraite avec: `Priorité\s*:\s*(.+)$`
 

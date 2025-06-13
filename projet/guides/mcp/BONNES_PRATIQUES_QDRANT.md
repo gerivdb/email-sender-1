@@ -1,4 +1,5 @@
 # Bonnes Pratiques pour l'Utilisation de Qdrant dans le MCP Manager
+
 *Version 1.0 - 2025-05-19*
 
 Ce document présente les meilleures pratiques pour l'utilisation de Qdrant comme base de données vectorielle dans notre système MCP Manager, en se basant sur la documentation officielle et les recommandations de Qdrant.
@@ -56,8 +57,7 @@ La quantification est une technique qui permet de réduire l'empreinte mémoire 
         }
     }
 }
-```
-
+```plaintext
 - Stocke les vecteurs originaux sur disque
 - Compresse les vecteurs quantifiés en `int8`
 - Garde les vecteurs quantifiés en RAM
@@ -71,8 +71,7 @@ Option supplémentaire : Désactiver le rescoring pour des recherches encore plu
         }
     }
 }
-```
-
+```plaintext
 ### 3.2 Haute précision avec faible utilisation de mémoire
 
 ```json
@@ -88,8 +87,7 @@ Option supplémentaire : Désactiver le rescoring pour des recherches encore plu
         "ef_construct": 512
     }
 }
-```
-
+```plaintext
 - Stocke les vecteurs et l'index HNSW sur disque
 - Augmente les paramètres `m` et `ef_construct` pour améliorer la précision
 
@@ -108,8 +106,7 @@ Option supplémentaire : Désactiver le rescoring pour des recherches encore plu
         }
     }
 }
-```
-
+```plaintext
 - Garde les vecteurs en RAM
 - Applique la quantification scalaire avec rescoring pour une précision ajustable
 
@@ -123,8 +120,7 @@ Option supplémentaire : Désactiver le rescoring pour des recherches encore plu
         "default_segment_number": 16
     }
 }
-```
-
+```plaintext
 - Définit le nombre de segments égal au nombre de cœurs du système
 - Chaque segment est traité en parallèle
 
@@ -137,8 +133,7 @@ Option supplémentaire : Désactiver le rescoring pour des recherches encore plu
         "max_segment_size": 5000000
     }
 }
-```
-
+```plaintext
 - Utilise moins de segments mais plus grands
 - Bénéficie de la taille de l'index et du nombre global plus petit de comparaisons vectorielles
 

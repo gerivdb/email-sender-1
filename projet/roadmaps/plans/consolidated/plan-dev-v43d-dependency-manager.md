@@ -1,4 +1,5 @@
 # Plan de développement v43d - Audit et Harmonisation du Gestionnaire de Dépendances
+
 *Version 1.6 - 2025-06-05 - Progression globale : 75%*
 
 Ce plan de développement détaille l'audit, l'harmonisation et la potentielle refactorisation du `DependencyManager` existant pour l'aligner avec les standards du projet EMAIL SENDER 1 (v43+), notamment en ce qui concerne la journalisation, la gestion des erreurs, la configuration, et l'intégration avec les nouveaux gestionnaires (ConfigManager, ErrorManager, etc.). Le `DependencyManager` actuel est fonctionnel et documenté (`API_DOCUMENTATION.md`, `GUIDE_UTILISATEUR.md`, `INTEGRATION_SUMMARY.md`, `manifest.json`).
@@ -8,6 +9,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
 **CONTEXTE ACTUEL** : L'écosystème complet des 17 managers a été créé avec succès selon le `plan-dev-v43-managers-plan.md`. Voir `development\managers\MANAGER_ECOSYSTEM_SETUP_COMPLETE.md` pour le rapport complet.
 
 ### État des Managers (17 total)
+
 ✅ **Existants et intégrés ErrorManager** : circuit-breaker, config-manager (100% testé), dependency-manager, error-manager, integrated-manager, mode-manager, n8n-manager, powershell-bridge, process-manager, roadmap-manager, script-manager
 
 ⚡ **Nouveaux créés avec ébauches Go + interfaces ErrorManager** : storage-manager, container-manager, deployment-manager, security-manager, monitoring-manager
@@ -15,11 +17,13 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
 🔄 **À implémenter** : mcp-manager (actuellement vide)
 
 ### Implications pour ce Plan
+
 1. **ConfigManager** : ✅ 100% intégré ErrorManager et testé - prêt pour l'intégration DependencyManager
 2. **Nouveaux Managers** : Structures d'ébauche créées avec interfaces ErrorManager standards - référence pour l'harmonisation
 3. **Priorité Ajustée** : Focus sur l'intégration rapide avec les managers disponibles plutôt que attente de leur développement
 
 ## Table des matières
+
 - [1] Phase 1 : Audit Complet et Analyse des Écarts
 - [2] Phase 2 : Planification de l'Harmonisation et de la Refactorisation
 - [3] Phase 3 : Planification des Améliorations et Extensions (Optionnel)
@@ -31,26 +35,32 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
 ## ⚡ PROCHAINES ÉTAPES RECOMMANDÉES BASÉES SUR L'ÉCOSYSTÈME COMPLET
 
 ### Priorité 1 : ConfigManager ErrorManager Integration (Phase 1.3-1.4)
+
 - **Modèle disponible** : ConfigManager intégration ErrorManager 100% testée et fonctionnelle
 - **Action immédiate** : Copier et adapter les patterns ConfigManager pour le DependencyManager
 - **Référence** : `development\managers\config-manager\config_manager.go`
 
 ### Priorité 2 : Finaliser MCP Manager
+
 - **Action** : Implémenter la logique MCP manquante dans mcp-manager (actuellement vide)
 - **Impact** : Nécessaire pour l'écosystème complet des 17 managers
 
 ### Priorité 3 : Tests d'Intégration Cross-Manager
+
 - **Contexte** : 5 nouveaux managers créés avec interfaces ErrorManager
 - **Action** : Tester l'intégration DependencyManager avec SecurityManager et MonitoringManager
 
 ### Priorité 4 : Configuration Centralisée
+
 - **Modèle** : ConfigManager opérationnel et testé
 - **Action** : Migrer `dependency-manager.config.json` vers le système ConfigManager
 
 ## Phase 1 : Audit Complet et Analyse des Écarts
+
 *Progression : 68%* ⚡ **PHASES 1.3-1.4 TERMINÉES + FIX CRITIQUE RÉSOLU**
 
 ### 1.1 Audit de l'architecture et du code existant
+
 *Progression : 100%* ✅
 - [x] Objectif : Évaluer la conformité du code Go (`modules/dependency_manager.go`) et des scripts PowerShell (`scripts/`) avec les principes SOLID, DRY, KISS et les patrons de conception du projet.
   - [x] Étape 1.1 : Revue de la structure du code Go.
@@ -65,6 +75,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [x] **TERMINÉ** : Rapport complet généré dans `projet/roadmaps/plans/audits/audit-rapport-v43d-phase-1-1.md`
 
 ### 1.2 Audit de la Journalisation
+
 *Progression : 100%* ✅
 - [x] Objectif : Évaluer le système de journalisation actuel et identifier les écarts avec la stratégie de journalisation centralisée (potentiellement basée sur `ErrorManager` ou un `LogManager` dédié).
   - [x] Étape 2.1 : Analyser la configuration de journalisation existante (`manifest.json` -> `logging`, `dependency-manager.config.json` -> `logPath`, `logLevel`).
@@ -77,6 +88,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [x] Sorties : Rapport d'audit de journalisation avec plan de migration/harmonisation. ➡️ **`audit-rapport-v43d-phase-1-2.md`**
 
 ### 1.3 Audit de la Gestion des Erreurs
+
 *Progression : 100%* ✅ **TERMINÉ - MODÈLE CONFIGMANAGER ANALYSÉ**
 - [x] **RÉFÉRENCE DISPONIBLE** : ConfigManager intégration ErrorManager complétée et testée à 100%
 - [x] Objectif : Évaluer la gestion des erreurs actuelle du DependencyManager et planifier l'intégration ErrorManager basée sur le modèle ConfigManager.
@@ -92,6 +104,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [x] Sorties : ✅ **Rapport d'audit de gestion des erreurs avec plan d'intégration adapté du modèle ConfigManager** → `audit-rapport-v43d-phase-1-3.md`
 
 ### 1.4 Audit de la Configuration
+
 *Progression : 100%* ✅ **TERMINÉ - MODÈLE CONFIGMANAGER ANALYSÉ**
 - [x] **RÉFÉRENCE DISPONIBLE** : ConfigManager 100% intégré ErrorManager et testé avec succès
 - [x] Objectif : Évaluer le système de configuration actuel du DependencyManager et planifier l'intégration ConfigManager basée sur le modèle opérationnel.
@@ -107,6 +120,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [x] Sorties : ✅ **Rapport d'audit de configuration avec plan d'intégration basé sur le modèle ConfigManager opérationnel** → `audit-rapport-v43d-phase-1-4.md`
 
 ### 1.X Fix Critique - Fonction loadConfig Manquante
+
 *Progression : 100%* ✅ **RÉSOLU - DEPENDENCYMANAGER FONCTIONNEL**
 - [x] **PROBLÈME CRITIQUE IDENTIFIÉ** : Fonction `loadConfig` référencée mais pas implémentée
 - [x] **SOLUTION IMPLÉMENTÉE** : Fonction loadConfig complète avec fallback et validation
@@ -117,6 +131,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
 - [x] Sorties : ✅ **Fix critique documenté et validé** → `fixes/dependency-manager-loadconfig-fix-complete.md`
 
 ### 1.5 Audit de la Sécurité
+
 *Progression : 100%* ✅ **AUDIT TERMINÉ - MANAGERS INTÉGRÉS**
 - [x] **NOUVEAUX MANAGERS CRÉÉS** : SecurityManager et MonitoringManager avec structures complètes
 - [x] Objectif : Analyser les aspects sécurité du DependencyManager et planifier l'intégration avec les nouveaux managers sécurité.
@@ -130,6 +145,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [x] Sorties : Rapport d'audit de sécurité avec plan d'intégration des nouveaux managers sécurité.
 
 ### 1.6 Audit de la Documentation et des Tests
+
 *Progression : 0%*
 - [ ] Objectif : Vérifier l'exhaustivité et l'actualité de la documentation et des tests.
   - [ ] Étape 6.1 : Revue de `API_DOCUMENTATION.md`, `GUIDE_UTILISATEUR.md`, `INTEGRATION_SUMMARY.md`, `README.md`.
@@ -141,9 +157,11 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [ ] Sorties : Liste des mises à jour de documentation et des tests à développer.
 
 ## Phase 2 : Planification de l'Harmonisation et de la Refactorisation
+
 *Progression : 100%* ✅ **PHASE 2 COMPLÈTEMENT TERMINÉE**
 
 ### 2.1 Plan de refactorisation pour la Journalisation
+
 *Progression : 100%* ✅ **TERMINÉ**
 - [x] Objectif : Définir les modifications pour intégrer le système de journalisation standardisé.
   - [x] Étape 1.1 : Remplacer les mécanismes de logging actuels par des appels au logger centralisé (ex: via `ErrorManager` ou `LogManager`).
@@ -153,6 +171,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [x] Sorties : Tâches de refactorisation détaillées pour la journalisation.
 
 ### 2.2 Plan de refactorisation pour la Gestion des Erreurs
+
 *Progression : 100%* ✅ **TERMINÉ - MODÈLE CONFIGMANAGER INTÉGRÉ**
 - [x] **RÉFÉRENCE DIRECTE** : ConfigManager ErrorManager intégration complète et testée
 - [x] Objectif : Définir les modifications pour intégrer ErrorManager en utilisant le modèle ConfigManager validé.
@@ -167,6 +186,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [x] Sorties : ✅ **Intégration ErrorManager complète basée sur le modèle ConfigManager validé** → `phase-2-2-error-manager-integration-COMPLETE.md`
 
 ### 2.3 Plan de refactorisation pour la Configuration
+
 *Progression : 100%* ✅ **TERMINÉ - CONFIGMANAGER INTÉGRÉ**
 - [x] **RÉFÉRENCE DIRECTE** : ConfigManager 100% intégré ErrorManager et testé avec succès
 - [x] Objectif : Définir les modifications pour intégrer ConfigManager en utilisant le modèle opérationnel validé.
@@ -182,6 +202,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [x] Sorties : ✅ **Tâches de refactorisation détaillées basées sur le modèle ConfigManager opérationnel** → `phase-2-3-config-manager-integration-COMPLETE.md`
 
 ### 2.4 Plan de refactorisation du Code (si nécessaire)
+
 *Progression : 100%* ✅ **TERMINÉ**
 - [x] Objectif : Définir les modifications pour améliorer la structure du code.
   - [x] Étape 4.1 : Appliquer les recommandations du rapport d'audit architectural (1.1).
@@ -190,9 +211,11 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [x] Sorties : Tâches de refactorisation du code.
 
 ## Phase 3 : Planification des Améliorations et Extensions (Optionnel)
+
 *Progression : 75%* ⚡ **INTÉGRATION NOUVEAUX MANAGERS PRESQUE TERMINÉE**
  
 ### 3.1 Intégration avancée avec les Nouveaux Managers
+
 *Progression : 95%* ⚡ **MANAGERS INTÉGRÉS - TESTS EN COURS**
 - [x] **MANAGERS DISPONIBLES** : SecurityManager, MonitoringManager, StorageManager, ContainerManager, DeploymentManager
 - [x] Objectif : Planifier l'intégration du DependencyManager avec l'écosystème complet des nouveaux managers.
@@ -210,6 +233,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [x] Sorties : ✅ **Plan d'intégration avancée préliminaire complété** → `phase-3-1-integration-plan-DRAFT.md`
 
 ### 3.2 Amélioration des stratégies de mise à jour
+
 *Progression : 0%*
 - [ ] Objectif : Offrir des stratégies de mise à jour plus fines (ex: mise à jour vers la dernière version compatible, patchs de sécurité uniquement).
   - [ ] Étape 2.1 : Analyser la faisabilité et l'implémentation de nouvelles options pour la commande `update`.
@@ -217,6 +241,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [ ] Sorties : Spécifications pour les nouvelles stratégies de mise à jour.
 
 ## Phase 4 : Implémentation de l'Harmonisation et Refactorisation
+
 *Progression : 100%* ✅ **PHASE 4 COMPLÈTEMENT TERMINÉE**
 - [x] Implémenter les changements définis en Phase 2.
   - [x] Étape 4.1 : Appliquer la refactorisation de la journalisation.
@@ -234,6 +259,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [x] **VALIDATION** : Compilation réussie, tests CLI fonctionnels, intégration ConfigManager confirmée.
 
 ## Phase 5 : Implémentation des Améliorations (Si applicable)
+
 *Progression : 60%* ⚡ **INTÉGRATION SECURITYMANAGER TERMINÉE**
 - [x] Implémenter les améliorations définies en Phase 3.
   - [x] Étape 5.1 : Implémenter l'intégration avec `SecurityManager`.
@@ -242,9 +268,11 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [ ] Sorties : Code source du `DependencyManager` avec nouvelles fonctionnalités.
 
 ## Phase 6 : Tests Approfondis et Validation
+
 *Progression : 0%*
 
 ### 6.1 Mise à jour et Exécution des Tests Unitaires
+
 *Progression : 0%*
 - [ ] Objectif : Assurer que tous les changements sont couverts par des tests unitaires.
   - [ ] Étape 1.1 : Mettre à jour `tests/dependency_manager_test.go` pour refléter les modifications.
@@ -254,6 +282,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [ ] Sorties : Couverture de tests > 90%.
 
 ### 6.2 Tests d'Intégration
+
 *Progression : 0%*
 - [ ] Objectif : Valider l'intégration du `DependencyManager` avec les autres managers (`ErrorManager`, `ConfigManager`, `SecurityManager`).
   - [ ] Étape 2.1 : Développer des scénarios de test d'intégration.
@@ -266,9 +295,11 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [ ] Sorties : Rapport de tests d'intégration.
 
 ## Phase 7 : Mise à Jour de la Documentation et Préparation au Déploiement
+
 *Progression : 0%*
 
 ### 7.1 Mise à jour de la Documentation
+
 *Progression : 0%*
 - [ ] Objectif : Refléter tous les changements dans la documentation existante.
   - [ ] Étape 1.1 : Mettre à jour `API_DOCUMENTATION.md`, `GUIDE_UTILISATEUR.md`, `README.md`.
@@ -278,6 +309,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
   - [ ] Sorties : Documentation mise à jour.
 
 ### 7.2 Préparation au Déploiement
+
 *Progression : 0%*
 - [ ] Objectif : S'assurer que le manager est prêt à être déployé.
   - [ ] Étape 2.1 : Vérifier la compatibilité avec les scripts d'installation (`install-dependency-manager.ps1`).
@@ -326,8 +358,7 @@ type DependencyManager struct {
 logPath := m.configManager.GetString("dependency-manager.settings.logPath")
 backupOnChange := m.configManager.GetBool("dependency-manager.settings.backupOnChange")
 autoTidy := m.configManager.GetBool("dependency-manager.settings.autoTidy")
-```
-
+```plaintext
 **Statut Compilation** : ✅ SUCCÈS
 **Statut Tests CLI** : ✅ FONCTIONNEL
 **Intégration ConfigManager** : ✅ OPÉRATIONNELLE

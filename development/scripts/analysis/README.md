@@ -19,26 +19,22 @@ Ce répertoire contient des scripts pour l''analyse de code, de performance et d
 
 ```powershell
 .\code\Start-CodeAnalysis.ps1 -Path ".\development\scripts" -Tools PSScriptAnalyzer -GenerateHtmlReport -Recurse
-```
-
+```plaintext
 ### Analyse de Performance
 
 ```powershell
 .\performance\Calculate-SystemKPIs.ps1 -DataPath "data/performance" -OutputPath "data/analysis"
-```
-
+```plaintext
 ### Analyse de Données
 
 ```powershell
 .\data\Detect-Anomalies.ps1 -DataPath "data/performance" -OutputPath "data/analysis"
-```
-
+```plaintext
 ### Mise à Jour de la Roadmap
 
 ```powershell
 .\roadmap\Update-RoadmapProgress.ps1 -Path ".\projet\roadmaps\roadmap_complete_converted.md"
-```
-
+```plaintext
 ## Documentation
 
 Consultez le dossier `docs/` pour plus d''informations sur l''utilisation des différents scripts et outils.

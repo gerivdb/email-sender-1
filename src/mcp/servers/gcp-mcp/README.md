@@ -1,4 +1,4 @@
-﻿# Configuration du MCP GCP pour N8N
+# Configuration du MCP GCP pour N8N
 
 Ce dossier contient le MCP (Model Context Protocol) pour Google Cloud Platform, qui permet à N8N d'interagir avec les services GCP via des assistants IA.
 

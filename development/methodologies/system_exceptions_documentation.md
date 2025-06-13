@@ -14,15 +14,14 @@ La classe `ArgumentException` et ses dérivées sont utilisées pour signaler de
 
 ### Hiérarchie
 
-```
+```plaintext
 System.Exception
 └── System.ArgumentException
     ├── System.ArgumentNullException
     ├── System.ArgumentOutOfRangeException
     ├── System.DuplicateWaitObjectException
     └── System.ArgumentException (autres spécialisations)
-```
-
+```plaintext
 ### ArgumentException
 
 #### Description
@@ -43,8 +42,7 @@ ArgumentException(string message)
 ArgumentException(string message, Exception innerException)
 ArgumentException(string message, string paramName)
 ArgumentException(string message, string paramName, Exception innerException)
-```
-
+```plaintext
 #### Cas d'utilisation typiques
 
 - Un argument a un format incorrect
@@ -56,6 +54,7 @@ ArgumentException(string message, string paramName, Exception innerException)
 
 ```powershell
 # Exemple 1: Lancer une ArgumentException basique
+
 function Test-Argument {
     param (
         [string]$Name
@@ -76,10 +75,13 @@ try {
 }
 
 # Sortie:
+
 # Erreur: Le nom ne doit pas contenir de chiffres
+
 # Paramètre: Name
 
 # Exemple 2: Validation de plusieurs arguments
+
 function Add-Numbers {
     param (
         [int]$A,
@@ -102,10 +104,12 @@ try {
 }
 
 # Sortie:
-# Erreur: Les nombres doivent être positifs
-# Paramètre: A
-```
 
+# Erreur: Les nombres doivent être positifs
+
+# Paramètre: A
+
+```plaintext
 ### ArgumentNullException
 
 #### Description
@@ -123,8 +127,7 @@ ArgumentNullException()
 ArgumentNullException(string paramName)
 ArgumentNullException(string paramName, string message)
 ArgumentNullException(string message, Exception innerException)
-```
-
+```plaintext
 #### Cas d'utilisation typiques
 
 - Un argument obligatoire est `null`
@@ -135,6 +138,7 @@ ArgumentNullException(string message, Exception innerException)
 
 ```powershell
 # Exemple 1: Vérification de paramètre null
+
 function Process-Data {
     param (
         [object]$Data
@@ -155,10 +159,13 @@ try {
 }
 
 # Sortie:
+
 # Erreur: Les données ne peuvent pas être nulles
+
 # Paramètre: Data
 
 # Exemple 2: Vérification de propriété null
+
 function Process-User {
     param (
         [PSCustomObject]$User
@@ -189,10 +196,12 @@ try {
 }
 
 # Sortie:
-# Erreur: Le nom de l'utilisateur ne peut pas être null
-# Paramètre: User.Name
-```
 
+# Erreur: Le nom de l'utilisateur ne peut pas être null
+
+# Paramètre: User.Name
+
+```plaintext
 ### ArgumentOutOfRangeException
 
 #### Description
@@ -214,8 +223,7 @@ ArgumentOutOfRangeException(string paramName)
 ArgumentOutOfRangeException(string paramName, string message)
 ArgumentOutOfRangeException(string paramName, object actualValue, string message)
 ArgumentOutOfRangeException(string message, Exception innerException)
-```
-
+```plaintext
 #### Cas d'utilisation typiques
 
 - Un index est en dehors des limites d'un tableau ou d'une collection
@@ -227,6 +235,7 @@ ArgumentOutOfRangeException(string message, Exception innerException)
 
 ```powershell
 # Exemple 1: Vérification de plage numérique
+
 function Set-Age {
     param (
         [int]$Age
@@ -248,11 +257,15 @@ try {
 }
 
 # Sortie:
+
 # Erreur: L'âge doit être compris entre 0 et 120
+
 # Paramètre: Age
+
 # Valeur: 150
 
 # Exemple 2: Vérification d'index
+
 function Get-Element {
     param (
         [array]$Array,
@@ -277,11 +290,14 @@ try {
 }
 
 # Sortie:
-# Erreur: L'index doit être compris entre 0 et 4
-# Paramètre: Index
-# Valeur: 10
-```
 
+# Erreur: L'index doit être compris entre 0 et 4
+
+# Paramètre: Index
+
+# Valeur: 10
+
+```plaintext
 ### Autres dérivées d'ArgumentException
 
 #### DuplicateWaitObjectException
@@ -290,14 +306,17 @@ Cette exception est levée lorsqu'un objet d'attente apparaît plusieurs fois da
 
 ```powershell
 # Exemple: DuplicateWaitObjectException
+
 try {
     $event1 = [System.Threading.AutoResetEvent]::new($false)
     $event2 = [System.Threading.AutoResetEvent]::new($false)
 
     # Créer un tableau avec un objet en double
+
     $waitHandles = @($event1, $event2, $event1)
 
     # Cela va générer une DuplicateWaitObjectException
+
     [System.Threading.WaitHandle]::WaitAll($waitHandles)
 } catch {
     Write-Host "Erreur: $($_.Exception.GetType().FullName)"
@@ -305,10 +324,12 @@ try {
 }
 
 # Sortie:
-# Erreur: System.ArgumentException
-# Message: Duplicate handles are not allowed in the wait list.
-```
 
+# Erreur: System.ArgumentException
+
+# Message: Duplicate handles are not allowed in the wait list.
+
+```plaintext
 ### Bonnes pratiques pour ArgumentException
 
 1. **Spécificité** : Utilisez la classe d'exception la plus spécifique possible (`ArgumentNullException` pour les valeurs nulles, `ArgumentOutOfRangeException` pour les valeurs hors limites).
@@ -347,15 +368,16 @@ function Test-ValidationAttributes {
 }
 
 # Ces appels vont générer des erreurs de validation
+
 try { Test-ValidationAttributes -NotNullParam $null } catch { Write-Host "Erreur 1: $($_.Exception.Message)" }
 try { Test-ValidationAttributes -NotNullParam "Valid" -RangeParam 101 } catch { Write-Host "Erreur 2: $($_.Exception.Message)" }
 try { Test-ValidationAttributes -NotNullParam "Valid" -OptionParam "Option4" } catch { Write-Host "Erreur 3: $($_.Exception.Message)" }
 try { Test-ValidationAttributes -NotNullParam "Valid" -PatternParam "Invalid!" } catch { Write-Host "Erreur 4: $($_.Exception.Message)" }
 
 # Cet appel est valide
-Test-ValidationAttributes -NotNullParam "Valid" -RangeParam 50 -OptionParam "Option1" -PatternParam "Valid123"
-```
 
+Test-ValidationAttributes -NotNullParam "Valid" -RangeParam 50 -OptionParam "Option1" -PatternParam "Valid123"
+```plaintext
 ### Comparaison avec d'autres exceptions
 
 | Exception | Quand l'utiliser | Au lieu de |
@@ -398,8 +420,7 @@ function Test-ExceptionHandling {
 }
 
 Test-ExceptionHandling
-```
-
+```plaintext
 ### Résumé
 
 Les exceptions de type `ArgumentException` et ses dérivées sont essentielles pour la validation des entrées dans les applications .NET. Elles permettent de signaler clairement les problèmes liés aux arguments et facilitent le débogage en fournissant des informations précises sur la nature et la localisation de l'erreur.
@@ -414,7 +435,7 @@ En utilisant ces exceptions de manière appropriée, vous pouvez améliorer la r
 
 ### Hiérarchie
 
-```
+```plaintext
 System.Exception
 └── System.SystemException
     └── System.InvalidOperationException
@@ -422,8 +443,7 @@ System.Exception
         ├── System.InvalidTimeZoneException
         ├── System.NotSupportedException
         └── Autres exceptions spécialisées
-```
-
+```plaintext
 ### Description
 
 `InvalidOperationException` est utilisée lorsqu'une opération ne peut pas être effectuée en raison de l'état actuel de l'objet. C'est une exception très courante dans le framework .NET, car elle permet de signaler des problèmes liés au cycle de vie des objets et à la logique métier.
@@ -438,8 +458,7 @@ System.Exception
 InvalidOperationException()
 InvalidOperationException(string message)
 InvalidOperationException(string message, Exception innerException)
-```
-
+```plaintext
 ### Cas d'utilisation typiques
 
 1. **Opération sur un objet dans un état incorrect** : Tentative d'utiliser un objet qui n'est pas dans l'état approprié pour l'opération demandée.
@@ -456,6 +475,7 @@ InvalidOperationException(string message, Exception innerException)
 
 ```powershell
 # Exemple 1: État incorrect pour une opération
+
 function Start-Process {
     param (
         [PSCustomObject]$Process
@@ -482,9 +502,11 @@ try {
 }
 
 # Sortie:
+
 # Erreur: Le processus est déjà en cours d'exécution
 
 # Exemple 2: Violation de séquence d'opérations
+
 class FileProcessor {
     [bool]$IsOpen = $false
     [string]$Content = $null
@@ -520,15 +542,18 @@ $processor = [FileProcessor]::new()
 
 try {
     # Tentative de lecture avant ouverture
+
     $content = $processor.Read()
 } catch {
     Write-Host "Erreur: $($_.Exception.Message)"
 }
 
 # Sortie:
+
 # Erreur: Le fichier doit être ouvert avant de pouvoir être lu
 
 # Exemple 3: Implémentation d'une machine à états
+
 class StateMachine {
     [string]$State = "Initial"
     [hashtable]$AllowedTransitions = @{
@@ -552,20 +577,25 @@ $machine = [StateMachine]::new()
 
 try {
     # Transition valide
+
     $machine.TransitionTo("Processing")
     Write-Host "État actuel: $($machine.State)"
 
     # Transition invalide
+
     $machine.TransitionTo("Initial")
 } catch {
     Write-Host "Erreur: $($_.Exception.Message)"
 }
 
 # Sortie:
+
 # État actuel: Processing
+
 # Erreur: Transition non autorisée de 'Processing' vers 'Initial'
 
 # Exemple 4: Opération non supportée dans le contexte actuel
+
 function Invoke-Operation {
     param (
         [string]$OperationType,
@@ -603,9 +633,10 @@ try {
 }
 
 # Sortie:
-# Erreur: L'opération d'écriture n'est pas autorisée dans un contexte en lecture seule
-```
 
+# Erreur: L'opération d'écriture n'est pas autorisée dans un contexte en lecture seule
+
+```plaintext
 ### Sous-classes importantes
 
 #### ObjectDisposedException
@@ -614,6 +645,7 @@ try {
 
 ```powershell
 # Exemple: ObjectDisposedException
+
 class DisposableResource : System.IDisposable {
     [bool]$IsDisposed = $false
 
@@ -628,6 +660,7 @@ class DisposableResource : System.IDisposable {
     [void] Dispose() {
         if (-not $this.IsDisposed) {
             # Nettoyage des ressources
+
             $this.IsDisposed = $true
         }
     }
@@ -637,28 +670,35 @@ $resource = [DisposableResource]::new()
 $resource.DoWork()  # Fonctionne
 
 # Disposer la ressource
+
 $resource.Dispose()
 
 try {
     $resource.DoWork()  # Génère une exception
+
 } catch {
     Write-Host "Erreur: $($_.Exception.GetType().FullName)"
     Write-Host "Message: $($_.Exception.Message)"
 }
 
 # Sortie:
-# Travail effectué
-# Erreur: System.ObjectDisposedException
-# Message: Cannot access a disposed object.
-# Object name: 'DisposableResource'.
-```
 
+# Travail effectué
+
+# Erreur: System.ObjectDisposedException
+
+# Message: Cannot access a disposed object.
+
+# Object name: 'DisposableResource'.
+
+```plaintext
 #### NotSupportedException
 
 `NotSupportedException` est une sous-classe de `InvalidOperationException` qui est levée lorsqu'une opération n'est pas supportée par l'implémentation actuelle.
 
 ```powershell
 # Exemple: NotSupportedException
+
 class ReadOnlyCollection {
     [array]$Items
 
@@ -686,11 +726,14 @@ try {
 }
 
 # Sortie:
-# Item à l'index 1: 2
-# Erreur: System.NotSupportedException
-# Message: Cette collection est en lecture seule
-```
 
+# Item à l'index 1: 2
+
+# Erreur: System.NotSupportedException
+
+# Message: Cette collection est en lecture seule
+
+```plaintext
 ### Bonnes pratiques pour InvalidOperationException
 
 1. **Messages clairs** : Fournir des messages d'erreur qui expliquent clairement pourquoi l'opération n'est pas valide dans l'état actuel.
@@ -724,6 +767,7 @@ function Test-OperationHandling {
         $stream.Dispose()
 
         # Tentative d'utilisation après disposition
+
         $stream.Write(@(1, 2, 3), 0, 3)
     }
     catch [System.ObjectDisposedException] {
@@ -741,8 +785,7 @@ function Test-OperationHandling {
 }
 
 Test-OperationHandling
-```
-
+```plaintext
 ### Résumé
 
 `InvalidOperationException` est une exception fondamentale dans le framework .NET qui permet de signaler des problèmes liés à l'état des objets et à la séquence des opérations. Elle est particulièrement utile pour implémenter des machines à états, des cycles de vie d'objets, et pour garantir que les méthodes sont appelées dans le bon ordre et dans le bon contexte.
@@ -757,12 +800,11 @@ En utilisant cette exception de manière appropriée, vous pouvez créer des API
 
 ### Hiérarchie
 
-```
+```plaintext
 System.Exception
 └── System.SystemException
     └── System.NullReferenceException
-```
-
+```plaintext
 ### Description
 
 `NullReferenceException` est levée automatiquement par le runtime .NET lorsqu'une tentative est faite pour déréférencer une référence nulle. Contrairement à d'autres exceptions comme `ArgumentNullException` ou `InvalidOperationException`, elle n'est généralement pas levée explicitement par le code, mais plutôt par le runtime lui-même.
@@ -777,8 +819,7 @@ System.Exception
 NullReferenceException()
 NullReferenceException(string message)
 NullReferenceException(string message, Exception innerException)
-```
-
+```plaintext
 ### Causes courantes
 
 1. **Référence non initialisée** : Utilisation d'une variable qui n'a jamais été initialisée.
@@ -795,10 +836,12 @@ NullReferenceException(string message, Exception innerException)
 
 ```powershell
 # Exemple 1: Référence non initialisée
+
 function Test-NullReference1 {
     [PSCustomObject]$user = $null
 
     # Ceci va générer une NullReferenceException
+
     return $user.Name
 }
 
@@ -810,16 +853,20 @@ try {
 }
 
 # Sortie:
+
 # Erreur: System.NullReferenceException
+
 # Message: Object reference not set to an instance of an object.
 
 # Exemple 2: Chaînage d'appels sans vérification
+
 function Test-NullReference2 {
     param (
         [PSCustomObject]$user
     )
 
     # Ceci va générer une NullReferenceException si $user.Address est null
+
     return $user.Address.City
 }
 
@@ -836,14 +883,18 @@ try {
 }
 
 # Sortie:
+
 # Erreur: System.NullReferenceException
+
 # Message: Object reference not set to an instance of an object.
 
 # Exemple 3: Tableau avec éléments nuls
+
 function Test-NullReference3 {
     $array = @("Item1", $null, "Item3")
 
     # Ceci va générer une NullReferenceException
+
     return $array[1].Length
 }
 
@@ -855,10 +906,13 @@ try {
 }
 
 # Sortie:
+
 # Erreur: System.NullReferenceException
+
 # Message: Object reference not set to an instance of an object.
 
 # Exemple 4: Erreur de logique conditionnelle
+
 function Test-NullReference4 {
     param (
         [int]$id
@@ -871,24 +925,29 @@ function Test-NullReference4 {
         }
     } else {
         $null  # Retourne null pour les autres IDs
+
     }
 
     # Oubli de vérifier si $user est null
+
     return $user.Name
 }
 
 try {
     Test-NullReference4 -Id 2  # ID qui retourne null
+
 } catch {
     Write-Host "Erreur: $($_.Exception.GetType().FullName)"
     Write-Host "Message: $($_.Exception.Message)"
 }
 
 # Sortie:
-# Erreur: System.NullReferenceException
-# Message: Object reference not set to an instance of an object.
-```
 
+# Erreur: System.NullReferenceException
+
+# Message: Object reference not set to an instance of an object.
+
+```plaintext
 ### Prévention des NullReferenceException
 
 La meilleure façon de gérer les `NullReferenceException` est de les prévenir. Voici plusieurs techniques pour éviter ces exceptions :
@@ -911,8 +970,7 @@ function Get-UserCity {
 
     return $User.Address.City
 }
-```
-
+```plaintext
 #### 2. Opérateur de coalescence nulle (en C#, simulé en PowerShell)
 
 ```powershell
@@ -926,8 +984,7 @@ function Get-UserCity {
 
     return $city
 }
-```
-
+```plaintext
 #### 3. Utilisation de Try-Catch pour la gestion des erreurs
 
 ```powershell
@@ -942,8 +999,7 @@ function Get-UserCity {
         return "Inconnu"
     }
 }
-```
-
+```plaintext
 #### 4. Initialisation par défaut
 
 ```powershell
@@ -964,8 +1020,8 @@ function Initialize-User {
 
 $user = Initialize-User -Name "John Doe"
 # Maintenant $user.Address ne sera jamais null
-```
 
+```plaintext
 #### 5. Utilisation de l'opérateur d'accès sécurisé (en PowerShell 7+)
 
 ```powershell
@@ -975,10 +1031,10 @@ function Get-UserCity {
     )
 
     # L'opérateur ?. retourne null si l'objet est null au lieu de générer une exception
+
     return $User?.Address?.City
 }
-```
-
+```plaintext
 ### Débogage des NullReferenceException
 
 Lorsque vous rencontrez une `NullReferenceException`, voici quelques étapes pour la déboguer efficacement :
@@ -1016,8 +1072,7 @@ function Debug-NullReference {
         throw
     }
 }
-```
-
+```plaintext
 ### Différence entre NullReferenceException et ArgumentNullException
 
 Il est important de comprendre la différence entre `NullReferenceException` et `ArgumentNullException` :
@@ -1029,6 +1084,7 @@ Il est important de comprendre la différence entre `NullReferenceException` et 
 ```powershell
 function Compare-NullExceptions {
     # Ceci génère une ArgumentNullException (validation explicite)
+
     function Process-Data {
         param (
             [object]$Data
@@ -1042,12 +1098,14 @@ function Compare-NullExceptions {
     }
 
     # Ceci génère une NullReferenceException (erreur de runtime)
+
     function Process-DataUnsafe {
         param (
             [object]$Data
         )
 
         # Pas de vérification de nullité
+
         return $Data.ToString()
     }
 
@@ -1069,12 +1127,16 @@ function Compare-NullExceptions {
 Compare-NullExceptions
 
 # Sortie:
-# Exception 1: System.ArgumentNullException
-# Message 1: Value cannot be null. Parameter name: Data
-# Exception 2: System.NullReferenceException
-# Message 2: Object reference not set to an instance of an object.
-```
 
+# Exception 1: System.ArgumentNullException
+
+# Message 1: Value cannot be null. Parameter name: Data
+
+# Exception 2: System.NullReferenceException
+
+# Message 2: Object reference not set to an instance of an object.
+
+```plaintext
 ### Bonnes pratiques pour éviter les NullReferenceException
 
 1. **Validation des entrées** : Validez toujours les paramètres d'entrée au début des méthodes.
@@ -1105,12 +1167,11 @@ En comprenant les causes courantes de `NullReferenceException` et en appliquant 
 
 ### Hiérarchie
 
-```
+```plaintext
 System.Exception
 └── System.SystemException
     └── System.FormatException
-```
-
+```plaintext
 ### Description
 
 `FormatException` est levée lorsqu'une méthode de conversion ou de formatage ne peut pas interpréter correctement les données d'entrée selon le format attendu. Elle est souvent générée par les méthodes de conversion comme `Int32.Parse()`, `DateTime.Parse()`, ou les méthodes `Convert.To*()`.
@@ -1125,8 +1186,7 @@ System.Exception
 FormatException()
 FormatException(string message)
 FormatException(string message, Exception innerException)
-```
-
+```plaintext
 ### Scénarios courants
 
 1. **Conversion de chaîne en nombre** : Tentative de convertir une chaîne qui ne représente pas un nombre valide en type numérique.
@@ -1143,6 +1203,7 @@ FormatException(string message, Exception innerException)
 
 ```powershell
 # Exemple 1: Conversion de chaîne en nombre
+
 function Convert-ToNumber {
     param (
         [string]$InputString
@@ -1157,15 +1218,21 @@ function Convert-ToNumber {
 }
 
 Convert-ToNumber -InputString "123"    # Fonctionne
+
 Convert-ToNumber -InputString "abc"    # Génère FormatException
+
 Convert-ToNumber -InputString "123.45" # Génère FormatException (pour Int32)
 
 # Sortie:
+
 # 123
+
 # Erreur de format: 'abc' n'est pas un nombre valide
+
 # Erreur de format: '123.45' n'est pas un nombre valide
 
 # Exemple 2: Conversion de chaîne en date
+
 function Convert-ToDate {
     param (
         [string]$DateString
@@ -1180,17 +1247,25 @@ function Convert-ToDate {
 }
 
 Convert-ToDate -DateString "2023-06-17"          # Fonctionne
+
 Convert-ToDate -DateString "17/06/2023"          # Fonctionne (selon la culture)
+
 Convert-ToDate -DateString "Pas une date"        # Génère FormatException
+
 Convert-ToDate -DateString "2023-13-45"          # Génère FormatException (mois 13 invalide)
 
 # Sortie:
+
 # 17/06/2023 00:00:00
+
 # 17/06/2023 00:00:00
+
 # Erreur de format: 'Pas une date' n'est pas une date valide
+
 # Erreur de format: '2023-13-45' n'est pas une date valide
 
 # Exemple 3: Conversion de chaîne en GUID
+
 function Convert-ToGuid {
     param (
         [string]$GuidString
@@ -1205,15 +1280,21 @@ function Convert-ToGuid {
 }
 
 Convert-ToGuid -GuidString "12345678-1234-1234-1234-123456789012" # Fonctionne
+
 Convert-ToGuid -GuidString "Pas un GUID"                          # Génère FormatException
+
 Convert-ToGuid -GuidString "12345678-1234-1234-1234-12345678901"  # Génère FormatException (trop court)
 
 # Sortie:
+
 # 12345678-1234-1234-1234-123456789012
+
 # Erreur de format: 'Pas un GUID' n'est pas un GUID valide
+
 # Erreur de format: '12345678-1234-1234-1234-12345678901' n'est pas un GUID valide
 
 # Exemple 4: Formatage de chaîne avec placeholders
+
 function Format-Message {
     param (
         [string]$Template,
@@ -1229,15 +1310,21 @@ function Format-Message {
 }
 
 Format-Message -Template "Bonjour {0}, vous avez {1} messages" -Args @("John", 5)  # Fonctionne
+
 Format-Message -Template "Bonjour {0}, vous avez {1} messages" -Args @("John")     # Génère FormatException (argument manquant)
+
 Format-Message -Template "Bonjour {0}, vous avez {2} messages" -Args @("John", 5)  # Génère FormatException (index hors limites)
 
 # Sortie:
+
 # Bonjour John, vous avez 5 messages
+
 # Erreur de format: Le template 'Bonjour {0}, vous avez {1} messages' est invalide avec les arguments fournis
+
 # Erreur de format: Le template 'Bonjour {0}, vous avez {2} messages' est invalide avec les arguments fournis
 
 # Exemple 5: Conversion de base64
+
 function Convert-FromBase64 {
     param (
         [string]$Base64String
@@ -1254,17 +1341,24 @@ function Convert-FromBase64 {
 
 $validBase64 = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("Hello World"))
 Convert-FromBase64 -Base64String $validBase64        # Fonctionne
+
 Convert-FromBase64 -Base64String "Pas du base64"     # Génère FormatException
+
 Convert-FromBase64 -Base64String "SGVsbG8gV29ybGQ="  # Fonctionne (équivalent à "Hello World")
+
 Convert-FromBase64 -Base64String "SGVsbG8gV29ybGQ"   # Peut générer FormatException (longueur incorrecte)
 
 # Sortie:
-# Hello World
-# Erreur de format: 'Pas du base64' n'est pas une chaîne base64 valide
-# Hello World
-# Erreur de format: 'SGVsbG8gV29ybGQ' n'est pas une chaîne base64 valide
-```
 
+# Hello World
+
+# Erreur de format: 'Pas du base64' n'est pas une chaîne base64 valide
+
+# Hello World
+
+# Erreur de format: 'SGVsbG8gV29ybGQ' n'est pas une chaîne base64 valide
+
+```plaintext
 ### Prévention des FormatException
 
 Voici plusieurs techniques pour éviter les `FormatException` :
@@ -1291,9 +1385,10 @@ function Convert-ToNumberSafely {
 }
 
 Convert-ToNumberSafely -InputString "123"    # Retourne 123
-Convert-ToNumberSafely -InputString "abc"    # Retourne null sans exception
-```
 
+Convert-ToNumberSafely -InputString "abc"    # Retourne null sans exception
+
+```plaintext
 #### 2. Validation préalable avec des expressions régulières
 
 Vous pouvez utiliser des expressions régulières pour valider le format avant de tenter la conversion.
@@ -1305,6 +1400,7 @@ function Convert-ToDateSafely {
     )
 
     # Expression régulière simple pour une date au format YYYY-MM-DD
+
     if ($DateString -match '^\d{4}-\d{2}-\d{2}$') {
         try {
             return [DateTime]::Parse($DateString)
@@ -1319,10 +1415,12 @@ function Convert-ToDateSafely {
 }
 
 Convert-ToDateSafely -DateString "2023-06-17"  # Fonctionne
-Convert-ToDateSafely -DateString "06-17-2023"  # Format incorrect
-Convert-ToDateSafely -DateString "2023-13-45"  # Format correct mais date invalide
-```
 
+Convert-ToDateSafely -DateString "06-17-2023"  # Format incorrect
+
+Convert-ToDateSafely -DateString "2023-13-45"  # Format correct mais date invalide
+
+```plaintext
 #### 3. Utilisation de valeurs par défaut
 
 Fournir une valeur par défaut en cas d'échec de conversion.
@@ -1343,10 +1441,12 @@ function Get-NumberWithDefault {
 }
 
 Get-NumberWithDefault -InputString "123"     # Retourne 123
-Get-NumberWithDefault -InputString "abc"     # Retourne 0 (défaut)
-Get-NumberWithDefault -InputString "xyz" -DefaultValue 42  # Retourne 42
-```
 
+Get-NumberWithDefault -InputString "abc"     # Retourne 0 (défaut)
+
+Get-NumberWithDefault -InputString "xyz" -DefaultValue 42  # Retourne 42
+
+```plaintext
 #### 4. Utilisation de cultures spécifiques
 
 Pour les conversions sensibles à la culture (comme les dates et les nombres), spécifier explicitement la culture à utiliser.
@@ -1368,10 +1468,12 @@ function Convert-ToDateWithCulture {
 }
 
 Convert-ToDateWithCulture -DateString "17/06/2023" -CultureName "fr-FR"  # Fonctionne
-Convert-ToDateWithCulture -DateString "06/17/2023" -CultureName "en-US"  # Fonctionne
-Convert-ToDateWithCulture -DateString "17/06/2023" -CultureName "en-US"  # Peut échouer (selon la culture)
-```
 
+Convert-ToDateWithCulture -DateString "06/17/2023" -CultureName "en-US"  # Fonctionne
+
+Convert-ToDateWithCulture -DateString "17/06/2023" -CultureName "en-US"  # Peut échouer (selon la culture)
+
+```plaintext
 ### Débogage des FormatException
 
 Lorsque vous rencontrez une `FormatException`, voici quelques étapes pour la déboguer efficacement :
@@ -1396,6 +1498,7 @@ function Debug-FormatException {
     Write-Host "Longueur: $($InputValue.Length)"
 
     # Afficher les caractères individuels (utile pour détecter les caractères invisibles)
+
     Write-Host "Caractères individuels:"
     for ($i = 0; $i -lt $InputValue.Length; $i++) {
         $char = $InputValue[$i]
@@ -1404,6 +1507,7 @@ function Debug-FormatException {
     }
 
     # Tentative de conversion avec gestion d'erreur
+
     try {
         $result = switch ($TargetType) {
             "Int32" { [int]::Parse($InputValue) }
@@ -1425,8 +1529,8 @@ function Debug-FormatException {
 Debug-FormatException -InputValue "123" -TargetType "Int32"
 Debug-FormatException -InputValue "123.45" -TargetType "Int32"
 Debug-FormatException -InputValue "123,45" -TargetType "Double"  # Peut échouer selon la culture
-```
 
+```plaintext
 ### Différence entre FormatException et autres exceptions de conversion
 
 Il est important de comprendre la différence entre `FormatException` et d'autres exceptions qui peuvent survenir lors de conversions :
@@ -1449,14 +1553,17 @@ function Compare-ConversionExceptions {
         switch ($TestCase) {
             "Format" {
                 # Génère FormatException
+
                 return [int]::Parse("abc")
             }
             "Overflow" {
                 # Génère OverflowException
+
                 return [byte]::Parse("1000")
             }
             "ArgumentNull" {
                 # Génère ArgumentNullException
+
                 return [int]::Parse($null)
             }
             default {
@@ -1476,16 +1583,24 @@ Compare-ConversionExceptions -TestCase "Overflow"
 Compare-ConversionExceptions -TestCase "ArgumentNull"
 
 # Sortie:
-# ExceptionType : System.FormatException
-# Message      : Input string was not in a correct format.
-#
-# ExceptionType : System.OverflowException
-# Message      : Value was either too large or too small for a Byte.
-#
-# ExceptionType : System.ArgumentNullException
-# Message      : Value cannot be null. Parameter name: String
-```
 
+# ExceptionType : System.FormatException
+
+# Message      : Input string was not in a correct format.
+
+#
+
+# ExceptionType : System.OverflowException
+
+# Message      : Value was either too large or too small for a Byte.
+
+#
+
+# ExceptionType : System.ArgumentNullException
+
+# Message      : Value cannot be null. Parameter name: String
+
+```plaintext
 ### Bonnes pratiques pour éviter les FormatException
 
 1. **Utiliser TryParse** : Préférez les méthodes `TryParse` aux méthodes `Parse` pour éviter les exceptions.
@@ -1516,12 +1631,11 @@ En comprenant les scénarios courants qui génèrent des `FormatException` et en
 
 ### Hiérarchie
 
-```
+```plaintext
 System.Exception
 └── System.SystemException
     └── System.IndexOutOfRangeException
-```
-
+```plaintext
 ### Description
 
 `IndexOutOfRangeException` est levée automatiquement par le runtime .NET lorsqu'un code tente d'accéder à un élément d'un tableau ou d'une collection en utilisant un index négatif ou un index supérieur ou égal à la longueur du tableau. Comme `NullReferenceException`, elle est généralement levée par le runtime lui-même plutôt que par le code utilisateur.
@@ -1536,8 +1650,7 @@ System.Exception
 IndexOutOfRangeException()
 IndexOutOfRangeException(string message)
 IndexOutOfRangeException(string message, Exception innerException)
-```
-
+```plaintext
 ### Contextes courants
 
 1. **Accès à un index négatif** : Tentative d'accéder à un élément d'un tableau avec un index négatif.
@@ -1554,13 +1667,17 @@ IndexOutOfRangeException(string message, Exception innerException)
 
 ```powershell
 # Exemple 1: Accès à un index négatif
+
 function Access-NegativeIndex {
     $array = @(1, 2, 3, 4, 5)
 
     try {
         # Ceci va générer une IndexOutOfRangeException
+
         return $array[-1]  # En PowerShell, cela fonctionne en fait (retourne le dernier élément)
+
                            # Mais en C#, cela générerait une IndexOutOfRangeException
+
     } catch {
         Write-Host "Erreur: $($_.Exception.GetType().FullName)"
         Write-Host "Message: $($_.Exception.Message)"
@@ -1569,11 +1686,13 @@ function Access-NegativeIndex {
 }
 
 # Note: Pour simuler le comportement C# en PowerShell
+
 function Access-NegativeIndexCSharpStyle {
     $array = [array]@(1, 2, 3, 4, 5)
 
     try {
         # Simuler l'accès à un index négatif comme en C#
+
         $index = -1
         if ($index -lt 0 -or $index -ge $array.Length) {
             throw [System.IndexOutOfRangeException]::new("Index was outside the bounds of the array.")
@@ -1589,15 +1708,19 @@ function Access-NegativeIndexCSharpStyle {
 Access-NegativeIndexCSharpStyle
 
 # Sortie:
+
 # Erreur: System.IndexOutOfRangeException
+
 # Message: Index was outside the bounds of the array.
 
 # Exemple 2: Accès à un index trop grand
+
 function Access-TooLargeIndex {
     $array = @(1, 2, 3, 4, 5)
 
     try {
         # Ceci va générer une IndexOutOfRangeException
+
         return $array[10]
     } catch {
         Write-Host "Erreur: $($_.Exception.GetType().FullName)"
@@ -1609,10 +1732,13 @@ function Access-TooLargeIndex {
 Access-TooLargeIndex
 
 # Sortie:
+
 # Erreur: System.IndexOutOfRangeException
+
 # Message: Index was outside the bounds of the array.
 
 # Exemple 3: Erreur de calcul d'index
+
 function Calculate-InvalidIndex {
     param (
         [array]$Array,
@@ -1621,6 +1747,7 @@ function Calculate-InvalidIndex {
 
     try {
         # Calcul d'index incorrect qui peut générer une IndexOutOfRangeException
+
         $index = $Position * 2 - $Array.Length
         return $Array[$index]
     } catch [System.IndexOutOfRangeException] {
@@ -1631,18 +1758,23 @@ function Calculate-InvalidIndex {
 
 $array = @(1, 2, 3, 4, 5)
 Calculate-InvalidIndex -Array $array -Position 4  # Génère un index de 3, valide
+
 Calculate-InvalidIndex -Array $array -Position 5  # Génère un index de 5, invalide
 
 # Sortie:
+
 # 4
+
 # Erreur d'index: L'index calculé (5) est en dehors des limites du tableau (0..4)
 
 # Exemple 4: Boucle mal bornée
+
 function Iterate-WithInvalidBounds {
     $array = @(1, 2, 3, 4, 5)
 
     try {
         # Boucle mal bornée qui va générer une IndexOutOfRangeException
+
         for ($i = 0; $i <= $array.Length; $i++) {
             Write-Host "Élément à l'index $i : $($array[$i])"
         }
@@ -1655,15 +1787,23 @@ function Iterate-WithInvalidBounds {
 Iterate-WithInvalidBounds
 
 # Sortie:
+
 # Élément à l'index 0 : 1
+
 # Élément à l'index 1 : 2
+
 # Élément à l'index 2 : 3
+
 # Élément à l'index 3 : 4
+
 # Élément à l'index 4 : 5
+
 # Erreur à l'itération 5 : System.IndexOutOfRangeException
+
 # Message: Index was outside the bounds of the array.
 
 # Exemple 5: Confusion entre longueur et index maximal
+
 function Demonstrate-LengthVsMaxIndex {
     $array = @(1, 2, 3, 4, 5)
     $length = $array.Length
@@ -1674,15 +1814,18 @@ function Demonstrate-LengthVsMaxIndex {
 
     try {
         # Erreur courante: utiliser la longueur comme index
+
         Write-Host "Tentative d'accès à l'index $length..."
         $value = $array[$length]
         Write-Host "Valeur: $value"  # Cette ligne ne sera jamais exécutée
+
     } catch {
         Write-Host "Erreur: $($_.Exception.GetType().FullName)"
         Write-Host "Message: $($_.Exception.Message)"
     }
 
     # Accès correct à l'index maximal
+
     Write-Host "Tentative d'accès à l'index $maxIndex..."
     $value = $array[$maxIndex]
     Write-Host "Valeur: $value"
@@ -1691,15 +1834,22 @@ function Demonstrate-LengthVsMaxIndex {
 Demonstrate-LengthVsMaxIndex
 
 # Sortie:
-# Longueur du tableau: 5
-# Index maximal valide: 4
-# Tentative d'accès à l'index 5...
-# Erreur: System.IndexOutOfRangeException
-# Message: Index was outside the bounds of the array.
-# Tentative d'accès à l'index 4...
-# Valeur: 5
-```
 
+# Longueur du tableau: 5
+
+# Index maximal valide: 4
+
+# Tentative d'accès à l'index 5...
+
+# Erreur: System.IndexOutOfRangeException
+
+# Message: Index was outside the bounds of the array.
+
+# Tentative d'accès à l'index 4...
+
+# Valeur: 5
+
+```plaintext
 ### Prévention des IndexOutOfRangeException
 
 Voici plusieurs techniques pour éviter les `IndexOutOfRangeException` :
@@ -1723,9 +1873,10 @@ function Access-ArraySafely {
 
 $array = @(1, 2, 3, 4, 5)
 Access-ArraySafely -Array $array -Index 2   # Retourne 3
-Access-ArraySafely -Array $array -Index 10  # Retourne null avec message d'erreur
-```
 
+Access-ArraySafely -Array $array -Index 10  # Retourne null avec message d'erreur
+
+```plaintext
 #### 2. Utilisation de méthodes sécurisées pour les collections
 
 ```powershell
@@ -1736,6 +1887,7 @@ function Get-ElementSafely {
     )
 
     # ArrayList a une méthode Count au lieu de Length
+
     if ($Index -ge 0 -and $Index -lt $List.Count) {
         return $List[$Index]
     } else {
@@ -1748,9 +1900,10 @@ $list = [System.Collections.ArrayList]::new()
 $list.AddRange(@(1, 2, 3, 4, 5))
 
 Get-ElementSafely -List $list -Index 2   # Retourne 3
-Get-ElementSafely -List $list -Index 10  # Retourne null avec message d'erreur
-```
 
+Get-ElementSafely -List $list -Index 10  # Retourne null avec message d'erreur
+
+```plaintext
 #### 3. Utilisation de l'opérateur d'indexation sécurisée (en PowerShell)
 
 ```powershell
@@ -1761,6 +1914,7 @@ function Access-ArrayWithSafeOperator {
     )
 
     # En PowerShell, si l'index est hors limites, $null est retourné au lieu de lever une exception
+
     $result = $Array[$Index]
 
     if ($null -eq $result -and ($Index -lt 0 -or $Index -ge $Array.Length)) {
@@ -1772,9 +1926,10 @@ function Access-ArrayWithSafeOperator {
 
 $array = @(1, 2, 3, 4, 5)
 Access-ArrayWithSafeOperator -Array $array -Index 2   # Retourne 3
-Access-ArrayWithSafeOperator -Array $array -Index 10  # Retourne null avec message d'erreur
-```
 
+Access-ArrayWithSafeOperator -Array $array -Index 10  # Retourne null avec message d'erreur
+
+```plaintext
 #### 4. Utilisation de boucles foreach au lieu de for
 
 ```powershell
@@ -1784,6 +1939,7 @@ function Iterate-Safely {
     )
 
     # Utiliser foreach au lieu de for pour éviter les problèmes d'index
+
     foreach ($item in $Array) {
         Write-Host "Élément: $item"
     }
@@ -1791,8 +1947,7 @@ function Iterate-Safely {
 
 $array = @(1, 2, 3, 4, 5)
 Iterate-Safely -Array $array
-```
-
+```plaintext
 #### 5. Utilisation de méthodes d'extension LINQ (en C#) ou équivalent en PowerShell
 
 ```powershell
@@ -1803,18 +1958,21 @@ function Get-ElementWithLinq {
     )
 
     # Équivalent de LINQ FirstOrDefault en PowerShell
+
     if ($Index -ge 0 -and $Index -lt $Array.Length) {
         return $Array[$Index]
     } else {
         return $null  # Valeur par défaut
+
     }
 }
 
 $array = @(1, 2, 3, 4, 5)
 Get-ElementWithLinq -Array $array -Index 2   # Retourne 3
-Get-ElementWithLinq -Array $array -Index 10  # Retourne null sans erreur
-```
 
+Get-ElementWithLinq -Array $array -Index 10  # Retourne null sans erreur
+
+```plaintext
 ### Débogage des IndexOutOfRangeException
 
 Lorsque vous rencontrez une `IndexOutOfRangeException`, voici quelques étapes pour la déboguer efficacement :
@@ -1860,8 +2018,7 @@ $array = @(1, 2, 3, 4, 5)
 Debug-IndexOutOfRange -Array $array -Index 2
 Debug-IndexOutOfRange -Array $array -Index 5
 Debug-IndexOutOfRange -Array $array -Index -1
-```
-
+```plaintext
 ### Différence entre IndexOutOfRangeException et ArgumentOutOfRangeException
 
 Il est important de comprendre la différence entre `IndexOutOfRangeException` et `ArgumentOutOfRangeException` :
@@ -1873,6 +2030,7 @@ Il est important de comprendre la différence entre `IndexOutOfRangeException` e
 ```powershell
 function Compare-OutOfRangeExceptions {
     # Ceci génère une IndexOutOfRangeException (erreur de runtime)
+
     function Access-ArrayUnsafely {
         param (
             [array]$Array,
@@ -1880,10 +2038,12 @@ function Compare-OutOfRangeExceptions {
         )
 
         # Pas de vérification des limites
+
         return $Array[$Index]
     }
 
     # Ceci génère une ArgumentOutOfRangeException (validation explicite)
+
     function Access-ArrayWithValidation {
         param (
             [array]$Array,
@@ -1918,14 +2078,20 @@ function Compare-OutOfRangeExceptions {
 Compare-OutOfRangeExceptions
 
 # Sortie:
-# Exception 1: System.IndexOutOfRangeException
-# Message 1: Index was outside the bounds of the array.
-# Exception 2: System.ArgumentOutOfRangeException
-# Message 2: L'index doit être compris entre 0 et 4
-# Parameter name: Index
-# Actual value was 10.
-```
 
+# Exception 1: System.IndexOutOfRangeException
+
+# Message 1: Index was outside the bounds of the array.
+
+# Exception 2: System.ArgumentOutOfRangeException
+
+# Message 2: L'index doit être compris entre 0 et 4
+
+# Parameter name: Index
+
+# Actual value was 10.
+
+```plaintext
 ### Bonnes pratiques pour éviter les IndexOutOfRangeException
 
 1. **Vérifier les limites** : Toujours vérifier que l'index est dans les limites valides avant d'accéder à un élément d'un tableau.

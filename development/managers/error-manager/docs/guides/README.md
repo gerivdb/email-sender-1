@@ -3,13 +3,21 @@
 ## Table of Contents
 
 1. [Getting Started](#getting-started)
+
 2. [Basic Usage](#basic-usage)
+
 3. [Advanced Features](#advanced-features)
+
 4. [Pattern Analysis](#pattern-analysis)
+
 5. [Report Generation](#report-generation)
+
 6. [Configuration](#configuration)
+
 7. [Best Practices](#best-practices)
+
 8. [Troubleshooting](#troubleshooting)
+
 9. [Examples](#examples)
 
 ---
@@ -90,8 +98,7 @@ func main() {
     errormanager.CatalogError(entry)
     log.Println("Error cataloged successfully")
 }
-```
-
+```plaintext
 ---
 
 ## Basic Usage
@@ -111,8 +118,7 @@ type ErrorEntry struct {
     ManagerContext string    `json:"manager_context"` // Additional context
     Severity       string    `json:"severity"`       // Severity level
 }
-```
-
+```plaintext
 ### 2. Error Validation
 
 Always validate error entries before processing:
@@ -132,8 +138,7 @@ if err := errormanager.ValidateErrorEntry(entry); err != nil {
     log.Printf("Validation failed: %v", err)
     return
 }
-```
-
+```plaintext
 **Validation Rules:**
 - `ID`: Must not be empty
 - `Timestamp`: Must not be zero
@@ -150,8 +155,7 @@ Use `WrapError` to add context to existing errors:
 originalErr := errors.New("connection refused")
 wrappedErr := errormanager.WrapError(originalErr, "failed to connect to database")
 // Result: "failed to connect to database: connection refused"
-```
-
+```plaintext
 ### 4. Error Logging
 
 Log errors with structured metadata:
@@ -159,8 +163,7 @@ Log errors with structured metadata:
 ```go
 err := errors.New("authentication failed")
 errormanager.LogError(err, "auth-service", "AUTH_001")
-```
-
+```plaintext
 ---
 
 ## Advanced Features
@@ -190,8 +193,7 @@ for _, pattern := range patterns {
     log.Printf("Pattern: %s:%s, Frequency: %d, Last: %v",
         pattern.Module, pattern.ErrorCode, pattern.Frequency, pattern.LastOccurred)
 }
-```
-
+```plaintext
 ### 2. Frequency Metrics
 
 Generate frequency metrics by module and error code:
@@ -210,8 +212,7 @@ for module, errorCodes := range metrics {
         log.Printf("  %s: %d occurrences", code, frequency)
     }
 }
-```
-
+```plaintext
 ### 3. Temporal Correlation Analysis
 
 Identify correlations between different errors occurring within time windows:
@@ -230,8 +231,7 @@ for _, corr := range correlations {
         corr.Module2, corr.ErrorCode2,
         corr.Correlation, corr.OccurrenceGap)
 }
-```
-
+```plaintext
 ---
 
 ## Pattern Analysis
@@ -254,8 +254,7 @@ type PatternMetrics struct {
     Severity         string                 // Severity level
     Context          map[string]interface{} // Additional context
 }
-```
-
+```plaintext
 ### Pattern Analysis Workflow
 
 1. **Data Collection**: Gather historical error data from database
@@ -308,8 +307,7 @@ func performComprehensiveAnalysis() {
         }
     }
 }
-```
-
+```plaintext
 ---
 
 ## Report Generation
@@ -336,8 +334,7 @@ type PatternReport struct {
     Recommendations      []string                  // Automated recommendations
     CriticalFindings     []string                  // Critical issues found
 }
-```
-
+```plaintext
 ### Generating Reports
 
 ```go
@@ -355,8 +352,7 @@ err = ioutil.WriteFile("error_analysis_report.json", reportJSON, 0644)
 if err != nil {
     log.Printf("Failed to save report: %v", err)
 }
-```
-
+```plaintext
 ### Custom Report Processing
 
 ```go
@@ -389,8 +385,7 @@ func processReport(report *errormanager.PatternReport) {
         sendCriticalAlert(report.CriticalFindings)
     }
 }
-```
-
+```plaintext
 ---
 
 ## Configuration
@@ -401,6 +396,7 @@ Set up environment variables for different deployments:
 
 ```bash
 # Database configuration
+
 export ERROR_DB_HOST=localhost
 export ERROR_DB_PORT=5432
 export ERROR_DB_USER=postgres
@@ -408,20 +404,22 @@ export ERROR_DB_PASSWORD=your_password
 export ERROR_DB_NAME=email_sender_errors
 
 # Qdrant configuration (optional)
+
 export QDRANT_HOST=localhost
 export QDRANT_PORT=6333
 
 # Analysis configuration
+
 export ANALYSIS_TIME_WINDOW=1h
 export PATTERN_MIN_FREQUENCY=5
 export CORRELATION_THRESHOLD=0.5
 
 # Report configuration
+
 export REPORT_OUTPUT_DIR=/var/reports
 export REPORT_FORMAT=json,html,csv
 export REPORT_RETENTION_DAYS=30
-```
-
+```plaintext
 ### Configuration Struct
 
 ```go
@@ -446,8 +444,7 @@ type Config struct {
         RetentionDays  int      `env:"REPORT_RETENTION_DAYS" default:"30"`
     }
 }
-```
-
+```plaintext
 ### Database Setup
 
 Create the required database schema:
@@ -478,8 +475,7 @@ CREATE INDEX idx_project_errors_module ON project_errors(module);
 CREATE INDEX idx_project_errors_error_code ON project_errors(error_code);
 CREATE INDEX idx_project_errors_severity ON project_errors(severity);
 CREATE INDEX idx_project_errors_module_code ON project_errors(module, error_code);
-```
-
+```plaintext
 ---
 
 ## Best Practices
@@ -488,14 +484,13 @@ CREATE INDEX idx_project_errors_module_code ON project_errors(module, error_code
 
 Use a consistent naming convention for error codes:
 
-```
+```plaintext
 Format: [MODULE]_[CATEGORY]_[NUMBER]
 Examples:
 - EMAIL_SMTP_001: SMTP connection failure
 - AUTH_TOKEN_002: Invalid JWT token
 - DB_CONN_001: Connection pool exhausted
-```
-
+```plaintext
 ### 2. Severity Levels
 
 Choose appropriate severity levels:
@@ -519,11 +514,11 @@ Provide meaningful context in the `ManagerContext` field:
 "Error occurred"
 "Something went wrong"
 "Failed"
-```
-
+```plaintext
 ### 4. Error Handling Patterns
 
 #### Pattern 1: Wrap and Escalate
+
 ```go
 func processUser(userID string) error {
     user, err := getUserFromDB(userID)
@@ -533,9 +528,9 @@ func processUser(userID string) error {
     // Process user...
     return nil
 }
-```
-
+```plaintext
 #### Pattern 2: Log and Continue
+
 ```go
 func processUsers(userIDs []string) {
     for _, userID := range userIDs {
@@ -545,9 +540,9 @@ func processUsers(userIDs []string) {
         }
     }
 }
-```
-
+```plaintext
 #### Pattern 3: Catalog and Alert
+
 ```go
 func criticalOperation() error {
     if err := performCriticalTask(); err != nil {
@@ -568,8 +563,7 @@ func criticalOperation() error {
     }
     return nil
 }
-```
-
+```plaintext
 ### 5. Performance Considerations
 
 - **Batch Operations**: Use batch inserts for high-volume error logging
@@ -604,8 +598,7 @@ func (ep *ErrorProcessor) QueueError(entry errormanager.ErrorEntry) {
         log.Printf("Error queue full, dropping error: %s", entry.ID)
     }
 }
-```
-
+```plaintext
 ---
 
 ## Troubleshooting
@@ -637,8 +630,7 @@ func testDBConnection(connStr string) error {
     log.Println("Database connection successful")
     return nil
 }
-```
-
+```plaintext
 #### 2. Validation Errors
 
 **Problem**: "Invalid error entry"
@@ -678,8 +670,7 @@ func debugValidation(entry errormanager.ErrorEntry) {
         log.Printf("❌ Invalid severity: %s", entry.Severity)
     }
 }
-```
-
+```plaintext
 #### 3. Performance Issues
 
 **Problem**: Slow pattern analysis
@@ -703,8 +694,7 @@ func optimizedPatternAnalysis(analyzer *errormanager.PatternAnalyzer) {
     
     // Process patterns...
 }
-```
-
+```plaintext
 #### 4. Memory Issues
 
 **Problem**: High memory usage during analysis
@@ -738,8 +728,7 @@ func memoryEfficientAnalysis(analyzer *errormanager.PatternAnalyzer) {
         runtime.GC() // Force garbage collection
     }
 }
-```
-
+```plaintext
 ### Debugging Tools
 
 #### 1. Error Entry Validator
@@ -753,8 +742,7 @@ func validateAndReport(entry errormanager.ErrorEntry) {
     }
     log.Println("✅ Error entry is valid")
 }
-```
-
+```plaintext
 #### 2. Pattern Analysis Debugger
 
 ```go
@@ -778,8 +766,7 @@ func debugPatternAnalysis(analyzer *errormanager.PatternAnalyzer) {
             i+1, pattern.Module, pattern.ErrorCode, pattern.Frequency)
     }
 }
-```
-
+```plaintext
 #### 3. Database Query Monitor
 
 ```go
@@ -810,8 +797,7 @@ func monitorDatabaseQueries(db *sql.DB) {
             query[:100], meanTime, calls)
     }
 }
-```
-
+```plaintext
 ---
 
 ## Examples
@@ -902,8 +888,7 @@ func determineSeverity(err error) string {
     }
     return "low"
 }
-```
-
+```plaintext
 ### Example 2: Pattern Analysis Dashboard
 
 ```go
@@ -1007,8 +992,7 @@ func main() {
     log.Println("Dashboard server starting on :8080")
     log.Fatal(http.ListenAndServe(":8080", nil))
 }
-```
-
+```plaintext
 ### Example 3: Automated Error Monitoring
 
 ```go
@@ -1193,8 +1177,7 @@ func main() {
     log.Println("Starting error monitor...")
     monitor.Start()
 }
-```
-
+```plaintext
 ---
 
 ## Integration Examples
@@ -1254,6 +1237,5 @@ func main() {
     log.Println("Server starting on :8080")
     log.Fatal(http.ListenAndServe(":8080", handler))
 }
-```
-
+```plaintext
 This comprehensive user guide provides everything needed to effectively use the Error Manager package, from basic setup to advanced pattern analysis and monitoring.

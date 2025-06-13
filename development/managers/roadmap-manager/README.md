@@ -1,4 +1,4 @@
-﻿# roadmap-manager
+# roadmap-manager
 
 Ce rÃ©pertoire contient les fichiers du gestionnaire roadmap-manager.
 

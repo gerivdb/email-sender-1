@@ -1,4 +1,4 @@
-﻿# Gestionnaires
+# Gestionnaires
 
 Ce répertoire contient tous les gestionnaires du projet dans une architecture unifiée.
 

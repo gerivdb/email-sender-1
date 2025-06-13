@@ -6,6 +6,7 @@ related: []
 ---
 
 ## Enseignements sur l'encodage et les caractères accentués
+
 1. **Encodage des fichiers PowerShell** : Les fichiers PowerShell contenant des caractères accentués français nécessitent un encodage approprié (UTF-8 avec BOM).
 2. **Clés dupliquées dans les tables de hachage** : PowerShell est sensible aux clés dupliquées dans les tables de hachage (`@{}`), même si visuellement les caractères semblent différents.
 3. **Solutions alternatives** :
@@ -14,3 +15,4 @@ related: []
    - Éviter les tables de hachage complexes avec des caractères accentués comme clés
 
 #
+

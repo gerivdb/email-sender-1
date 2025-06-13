@@ -100,7 +100,7 @@ Le module d'interface utilisateur est responsable de fournir une interface convi
 
 ### Structure des dossiers
 
-```
+```plaintext
 n8n/
 ├── automation/
 │   ├── deployment/
@@ -158,16 +158,14 @@ n8n/
     ├── integration-tests.log
     ├── import-workflows.log
     └── history/
-```
-
+```plaintext
 ### Flux de données
 
-```
+```plaintext
 [Utilisateur] --> [n8n-manager.ps1] --> [Composants spécifiques]
                                      --> [Logs]
                                      --> [Rapports]
-```
-
+```plaintext
 1. L'utilisateur interagit avec le système via `n8n-manager.ps1` ou les scripts de raccourci
 2. `n8n-manager.ps1` appelle les composants spécifiques en fonction de l'action demandée
 3. Les composants exécutent leurs tâches et génèrent des logs et des rapports

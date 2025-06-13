@@ -1,4 +1,4 @@
-﻿# Export-RoadmapToJson
+# Export-RoadmapToJson
 
 ## SYNOPSIS
 

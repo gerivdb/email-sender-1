@@ -6,33 +6,55 @@ Cette documentation détaille la structure, l'installation, la configuration et 
 
 ## Structure du projet
 
-```
+```plaintext
 n8n/
 ├── cmd/                  # Scripts de commande Windows
-│   ├── install/          # Scripts d'installation
-│   ├── setup/            # Scripts de configuration
-│   ├── start/            # Scripts de démarrage
-│   ├── stop/             # Scripts d'arrêt
-│   └── utils/            # Scripts utilitaires
-├── config/               # Configuration n8n
-├── data/                 # Données n8n
-│   ├── credentials/      # Credentials chiffrées
-│   ├── database/         # Base de données SQLite
-│   └── storage/          # Stockage binaire
-├── docs/                 # Documentation
-├── integrations/         # Intégrations avec d'autres systèmes
-├── n8n-source-old/       # Code source original de n8n (référence)
-├── scripts/              # Scripts PowerShell
-│   ├── integrations/     # Scripts d'intégration
-│   ├── setup/            # Scripts d'installation
-│   ├── sync/             # Scripts de synchronisation
-│   └── utils/            # Utilitaires communs
-└── workflows/            # Workflows n8n
-    ├── archive/          # Workflows archivés
-    ├── ide/              # Workflows utilisés par l'IDE
-    └── local/            # Workflows utilisés par n8n local
-```
 
+│   ├── install/          # Scripts d'installation
+
+│   ├── setup/            # Scripts de configuration
+
+│   ├── start/            # Scripts de démarrage
+
+│   ├── stop/             # Scripts d'arrêt
+
+│   └── utils/            # Scripts utilitaires
+
+├── config/               # Configuration n8n
+
+├── data/                 # Données n8n
+
+│   ├── credentials/      # Credentials chiffrées
+
+│   ├── database/         # Base de données SQLite
+
+│   └── storage/          # Stockage binaire
+
+├── docs/                 # Documentation
+
+├── integrations/         # Intégrations avec d'autres systèmes
+
+├── n8n-source-old/       # Code source original de n8n (référence)
+
+├── scripts/              # Scripts PowerShell
+
+│   ├── integrations/     # Scripts d'intégration
+
+│   ├── setup/            # Scripts d'installation
+
+│   ├── sync/             # Scripts de synchronisation
+
+│   └── utils/            # Utilitaires communs
+
+└── workflows/            # Workflows n8n
+
+    ├── archive/          # Workflows archivés
+
+    ├── ide/              # Workflows utilisés par l'IDE
+
+    └── local/            # Workflows utilisés par n8n local
+
+```plaintext
 ## Installation et configuration
 
 ### Prérequis
@@ -45,10 +67,9 @@ n8n/
 
 Pour installer n8n, exécutez le script d'installation :
 
-```
+```plaintext
 .\n8n\cmd\install\install-n8n-local.cmd
-```
-
+```plaintext
 Ce script effectue les opérations suivantes :
 1. Installe n8n globalement via npm
 2. Configure les variables d'environnement nécessaires
@@ -75,30 +96,26 @@ Pour modifier la configuration, éditez ce fichier ou utilisez les variables d'e
 
 Pour démarrer n8n avec la synchronisation IDE, exécutez :
 
-```
+```plaintext
 .\start-n8n.cmd
-```
-
+```plaintext
 ou
 
-```
+```plaintext
 .\n8n\cmd\start\start-n8n-with-ide-sync.cmd
-```
-
+```plaintext
 Pour démarrer n8n sans authentification :
 
-```
+```plaintext
 .\n8n\cmd\start\start-n8n-no-auth.cmd
-```
-
+```plaintext
 ### Arrêt
 
 Pour arrêter n8n, exécutez :
 
-```
+```plaintext
 .\n8n\cmd\stop\stop-n8n.cmd
-```
-
+```plaintext
 ## Workflows
 
 Les workflows sont organisés en trois catégories :
@@ -115,8 +132,7 @@ Pour synchroniser manuellement les workflows, exécutez :
 
 ```powershell
 .\n8n\scripts\sync\sync-workflows.ps1 -Direction "both" -Environment "all"
-```
-
+```plaintext
 Options de direction :
 - `to-n8n` : Synchronise les workflows des dossiers locaux vers n8n
 - `from-n8n` : Synchronise les workflows de n8n vers les dossiers locaux
@@ -133,10 +149,9 @@ Options d'environnement :
 
 Pour utiliser l'API n8n avec Augment, vous devez créer une API key :
 
-```
+```plaintext
 .\n8n\cmd\setup\create-api-key.cmd
-```
-
+```plaintext
 Cette API key sera enregistrée dans le fichier `n8n\config\api-key.json`.
 
 ### Utilisation de l'intégration
@@ -147,26 +162,22 @@ Le script `augment-integration.ps1` permet à Augment de créer et de modifier d
 
 ```powershell
 .\n8n\scripts\integrations\augment-integration.ps1 -Action "list-workflows"
-```
-
+```plaintext
 #### Récupérer un workflow
 
 ```powershell
 .\n8n\scripts\integrations\augment-integration.ps1 -Action "get-workflow" -WorkflowId "123" -OutputPath "workflow.json"
-```
-
+```plaintext
 #### Créer un workflow
 
 ```powershell
 .\n8n\scripts\integrations\augment-integration.ps1 -Action "create-workflow" -WorkflowName "Mon workflow" -WorkflowData '{"nodes":[],"connections":{}}'
-```
-
+```plaintext
 #### Mettre à jour un workflow
 
 ```powershell
 .\n8n\scripts\integrations\augment-integration.ps1 -Action "update-workflow" -WorkflowId "123" -WorkflowData '{"nodes":[],"connections":{}}'
-```
-
+```plaintext
 ### Intégration dans les scripts Augment
 
 Pour intégrer n8n avec Augment, vous pouvez utiliser les commandes suivantes dans vos workflows Augment :
@@ -198,8 +209,7 @@ exec(`powershell -ExecutionPolicy Bypass -File "D:/DO/WEB/N8N_tests/PROJETS/EMAI
   }
   console.log(`Workflow créé: ${stdout}`);
 });
-```
-
+```plaintext
 ## Bonnes pratiques
 
 ### Organisation des workflows
@@ -228,8 +238,7 @@ Si vous recevez l'erreur "n8n n'est pas en cours d'exécution", assurez-vous que
 
 ```powershell
 .\n8n\cmd\start\start-n8n-local.cmd
-```
-
+```plaintext
 ### Erreur d'authentification
 
 Si vous recevez une erreur d'authentification, assurez-vous que vous avez configuré correctement l'API key dans le fichier `n8n/config/api-key.json`.
@@ -238,8 +247,7 @@ Si vous recevez une erreur d'authentification, assurez-vous que vous avez config
 {
   "apiKey": "votre-api-key"
 }
-```
-
+```plaintext
 ### Problèmes de synchronisation
 
 Si vous rencontrez des problèmes de synchronisation, vérifiez les points suivants :
@@ -252,10 +260,9 @@ Si vous rencontrez des problèmes de synchronisation, vérifiez les points suiva
 
 Si vous rencontrez des problèmes persistants, vous pouvez réinitialiser n8n :
 
-```
+```plaintext
 .\n8n\cmd\utils\reset-n8n.cmd
-```
-
+```plaintext
 Ce script supprime la base de données et les credentials, mais préserve vos workflows.
 
 ## Ressources additionnelles

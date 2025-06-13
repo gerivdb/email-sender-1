@@ -31,26 +31,31 @@ Nous avons évalué quatre algorithmes principaux :
 L'algorithme DFS a été sélectionné pour les raisons suivantes :
 
 ### 1. Simplicité d'implémentation
+
 - L'algorithme DFS peut être implémenté de manière concise et claire en PowerShell
 - La logique récursive est intuitive et facile à comprendre
 - Possibilité d'implémenter une version itérative pour éviter les limitations de récursion
 
 ### 2. Efficacité
+
 - Complexité temporelle optimale de O(V+E)
 - Consommation mémoire raisonnable de O(V)
 - Performances excellentes pour les graphes de petite et moyenne taille
 
 ### 3. Précision dans l'identification des cycles
+
 - Permet d'identifier exactement les nœuds impliqués dans un cycle
 - Facilite la construction du chemin complet du cycle
 - Permet de détecter tous les cycles avec des modifications mineures
 
 ### 4. Adaptabilité
+
 - S'adapte bien aux différents types de graphes que nous devons analyser
 - Peut être modifié pour des besoins spécifiques (détection de tous les cycles, limitation de profondeur)
 - Compatible avec notre représentation des graphes par tables de hachage
 
 ### 5. Compatibilité avec PowerShell
+
 - Bien adapté aux structures de données PowerShell (hashtables)
 - Peut être optimisé pour respecter les conventions PowerShell
 - Facile à intégrer dans notre architecture modulaire
@@ -60,6 +65,7 @@ L'algorithme DFS a été sélectionné pour les raisons suivantes :
 Pour optimiser l'algorithme DFS pour notre cas d'usage, nous prévoyons les adaptations suivantes :
 
 ### 1. Implémentation itérative
+
 Pour éviter les problèmes de débordement de pile sur les grands graphes, nous implémenterons une version itérative de l'algorithme DFS en utilisant une pile explicite.
 
 ```powershell
@@ -103,9 +109,11 @@ function Find-GraphCycle {
                 
                 if ($inStack.ContainsKey($neighbor) -and $inStack[$neighbor]) {
                     # Cycle détecté
+
                     $result.HasCycle = $true
                     
                     # Construire le chemin du cycle
+
                     $cyclePath = @($neighbor)
                     $pathArray = $pathStack.ToArray()
                     [array]::Reverse($pathArray)
@@ -137,9 +145,9 @@ function Find-GraphCycle {
     
     return $result
 }
-```
-
+```plaintext
 ### 2. Mise en cache des résultats intermédiaires
+
 Pour améliorer les performances sur les grands graphes, nous implémenterons un système de mise en cache des résultats intermédiaires.
 
 ```powershell
@@ -169,9 +177,9 @@ function Set-CachedCycleResult {
     
     $script:CycleCache[$GraphKey] = $Result
 }
-```
-
+```plaintext
 ### 3. Limitation de profondeur configurable
+
 Pour éviter les problèmes sur les graphes très profonds, nous ajouterons une option de limitation de profondeur.
 
 ```powershell
@@ -182,10 +190,11 @@ function Find-GraphCycleWithDepthLimit {
     )
     
     # Implémentation similaire à Find-GraphCycle avec une vérification de profondeur
-}
-```
 
+}
+```plaintext
 ### 4. Optimisations spécifiques aux types de graphes
+
 Nous implémenterons des optimisations spécifiques pour chaque type de graphe :
 
 - **Dépendances de scripts** : Prétraitement pour extraire efficacement les dépendances

@@ -20,14 +20,17 @@ L'objectif est de créer un environnement de développement où :
 Notre analyse des différents systèmes Memory Bank a révélé des forces et faiblesses spécifiques :
 
 #### Cursor Memory Bank
+
 - **Forces** : Structure hiérarchique claire, fichiers fondamentaux bien définis, concept d'auto-référencement
 - **Faiblesses** : Approche monolithique, chargement inefficace du contexte, guidage visuel limité
 
 #### vanzan01 Memory Bank
+
 - **Forces** : Architecture modulaire, chargement Just-In-Time, modes spécialisés, cartes visuelles
 - **Faiblesses** : Complexité d'installation, courbe d'apprentissage plus raide, maintenance plus lourde
 
 #### Roo Code Memory Bank
+
 - **Forces** : Intégration VS Code, cinq modes spécialisés, mises à jour en temps réel, installation simplifiée
 - **Faiblesses** : Dépendance à Roo Code, documentation moins visuelle, commande UMB manuelle
 
@@ -45,7 +48,7 @@ Notre approche hybride combine les éléments les plus pertinents de chaque syst
 
 5. **Spécificités de notre dépôt** : Adaptation aux composants n8n, MCP et autres particularités
 
-```
+```plaintext
 +------------------+     +------------------+     +------------------+
 |                  |     |                  |     |                  |
 | Cursor Memory    |     | vanzan01 Memory  |     | Roo Code Memory  |
@@ -85,8 +88,7 @@ Notre approche hybride combine les éléments les plus pertinents de chaque syst
                          | spécificités du  |
                          | dépôt           |
                          +------------------+
-```
-
+```plaintext
 ## 2. Analyse de l'état actuel et des besoins spécifiques
 
 ### 2.1 Diagnostic des problèmes actuels
@@ -145,60 +147,104 @@ Notre approche hybride combine les éléments les plus pertinents de chaque syst
 
 ### 3.2 Structure des fichiers du Memory Bank Hybride
 
-```
+```plaintext
 Repository/
 ├── .augment/                # Configuration Augment
+
 │   ├── instructions.md      # Instructions personnalisées pour Augment
+
 │   ├── modes/               # Définitions des modes spécialisés
+
 │   │   ├── architect.md      # Mode conception
+
 │   │   ├── implement.md      # Mode implémentation
+
 │   │   ├── debug.md          # Mode débogage
+
 │   │   ├── test.md           # Mode test
+
 │   │   └── document.md       # Mode documentation
+
 │   └── commands.json       # Définition des commandes spécifiques
+
 ├── .vscode/                # Configuration VS Code
+
 │   ├── extensions.json     # Extensions recommandées
+
 │   ├── snippets/           # Snippets personnalisés
+
 │   │   └── memory-bank.json  # Snippets pour le Memory Bank
+
 │   ├── tasks.json          # Tâches automatisées
+
 │   └── settings.json       # Paramètres VS Code
+
 ├── memory-bank/            # Dossier principal du Memory Bank
+
 │   ├── core/                # Fichiers fondamentaux
+
 │   │   ├── projectbrief.md    # Définition du projet
+
 │   │   ├── productContext.md  # Contexte du produit
+
 │   │   ├── systemPatterns.md  # Architecture et patterns
+
 │   │   ├── techContext.md     # Contexte technique
+
 │   │   ├── activeContext.md   # Contexte actif
+
 │   │   └── progress.md        # Progression
+
 │   ├── components/          # Documentation des composants
+
 │   │   ├── n8n/               # Documentation n8n
+
 │   │   ├── mcp/               # Documentation MCP
+
 │   │   └── api/               # Documentation API
+
 │   ├── decisions/           # Journal des décisions
+
 │   │   ├── architecture/      # Décisions d'architecture
+
 │   │   ├── technical/         # Décisions techniques
+
 │   │   └── process/           # Décisions de processus
+
 │   ├── visual-maps/         # Cartes visuelles
+
 │   │   ├── architecture/      # Diagrammes d'architecture
+
 │   │   ├── workflows/         # Diagrammes de flux
+
 │   │   └── processes/         # Diagrammes de processus
+
 │   └── segments/            # Segments pour les contenus volumineux
+
 │       ├── projectbrief/      # Segments de projectbrief.md
+
 │       ├── systemPatterns/     # Segments de systemPatterns.md
+
 │       └── techContext/       # Segments de techContext.md
+
 ├── development/templates/             # Templates Hygen
+
 │   ├── memory-bank/         # Templates pour le Memory Bank
+
 │   │   ├── core/             # Templates pour les fichiers fondamentaux
+
 │   │   ├── component/        # Templates pour les composants
+
 │   │   ├── decision/         # Templates pour les décisions
+
 │   │   └── visual-map/       # Templates pour les cartes visuelles
+
 │   └── ... (autres templates)
 └── ... (autres dossiers du dépôt)
-```
-
+```plaintext
 ### 3.3 Hiérarchie des fichiers du Memory Bank
 
-```
+```plaintext
                                   +------------------+
                                   |                  |
                                   | projectbrief.md  |
@@ -238,21 +284,19 @@ Repository/
         |  components/     |      |   decisions/     |     |  visual-maps/    |
         |                  |      |                  |     |                  |
         +------------------+      +------------------+     +------------------+
-```
-
+```plaintext
 ### 3.4 Modes spécialisés pour Augment
 
 Notre Memory Bank hybride définit cinq modes spécialisés pour Augment, chacun adapté à une phase spécifique du développement :
 
-```
+```plaintext
 +---------------+     +---------------+     +---------------+     +---------------+     +---------------+
 |               |     |               |     |               |     |               |     |               |
 |   ARCHITECT   | --> |   IMPLEMENT   | --> |     DEBUG     | --> |     TEST      | --> |   DOCUMENT    |
 |  Conception   |     |Implémentation |     | Résolution    |     |  Validation   |     |Documentation  |
 |               |     |               |     | de problèmes  |     |               |     |               |
 +---------------+     +---------------+     +---------------+     +---------------+     +---------------+
-```
-
+```plaintext
 #### 3.4.1 Mode ARCHITECT
 
 - **Objectif** : Conception de système et architecture
@@ -307,7 +351,7 @@ Notre Memory Bank hybride définit cinq modes spécialisés pour Augment, chacun
 
 Pour éviter les problèmes d'inputs trop grands avec Augment, notre Memory Bank hybride implémente une stratégie de segmentation intelligente :
 
-```
+```plaintext
 +------------------+
 |                  |
 | Fichier volumineux|
@@ -346,8 +390,7 @@ Pour éviter les problèmes d'inputs trop grands avec Augment, notre Memory Bank
 | le contexte      |     | segments         |
 | Augment          |     | pertinents       |
 +------------------+     +------------------+
-```
-
+```plaintext
 Les fichiers volumineux sont divisés en segments logiques stockés dans le dossier `memory-bank/segments/`. Chaque segment est un fichier Markdown indépendant avec des métadonnées de liaison. Lors de l'utilisation d'Augment, seuls les segments pertinents sont chargés, réduisant ainsi la taille des inputs.
 
 ### 3.6 Intégration avec VS Code
@@ -364,7 +407,7 @@ Notre Memory Bank hybride s'intègre avec VS Code via plusieurs mécanismes :
 
 Hygen est utilisé pour générer et maintenir le Memory Bank :
 
-```
+```plaintext
 +------------------+     +------------------+     +------------------+
 |                  |     |                  |     |                  |
 | Templates Hygen  |---->| Génération de   |---->| Fichiers Memory  |
@@ -379,8 +422,7 @@ Hygen est utilisé pour générer et maintenir le Memory Bank :
                                   | templates        |
                                   |                  |
                                   +------------------+
-```
-
+```plaintext
 Les templates Hygen sont organisés par type de contenu (core, component, decision, visual-map) et incluent des helpers pour la génération de contenu standardisé, la segmentation automatique et l'intégration avec Augment et VS Code.
 
 ## 4. Plan d'Implémentation
@@ -686,6 +728,7 @@ Les templates Hygen sont organisés par type de contenu (core, component, decisi
 ### 5.2 Ressources nécessaires
 
 #### 5.2.1 Ressources humaines
+
 - **Développeurs PowerShell** : 1 développeur à temps plein
 - **Développeur JavaScript/Node.js** : 1 développeur à mi-temps (pour n8n)
 - **Spécialiste Hygen** : 1 spécialiste à mi-temps
@@ -693,6 +736,7 @@ Les templates Hygen sont organisés par type de contenu (core, component, decisi
 - **Rédacteur technique** : 1 rédacteur à mi-temps
 
 #### 5.2.2 Ressources techniques
+
 - **Environnement de développement** : VS Code avec extensions spécifiques
 - **Augment** : Accès à Augment pour les tests et l'intégration
 - **Hygen** : Installation locale pour le développement des templates

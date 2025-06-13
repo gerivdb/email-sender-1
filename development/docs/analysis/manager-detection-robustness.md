@@ -30,18 +30,22 @@ Pour tester ce scénario, nous pouvons créer un répertoire `ModeController` av
 
 ```powershell
 # Créer un répertoire de test
+
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ProcessManagerTest"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
 # Créer un gestionnaire sans le suffixe "-manager"
+
 $controllerDir = Join-Path -Path $testDir -ChildPath "ModeController"
 New-Item -Path $controllerDir -ItemType Directory -Force | Out-Null
 
 # Créer le sous-répertoire scripts
+
 $scriptsDir = Join-Path -Path $controllerDir -ChildPath "scripts"
 New-Item -Path $scriptsDir -ItemType Directory -Force | Out-Null
 
 # Créer un script de gestionnaire
+
 $scriptPath = Join-Path -Path $scriptsDir -ChildPath "ModeController.ps1"
 @"
 function Start-ModeController {
@@ -70,15 +74,17 @@ function Get-ModeControllerStatus {
 "@ | Set-Content -Path $scriptPath -Encoding UTF8
 
 # Exécuter la fonction Discover-Managers
+
 $result = & $processManagerPath -Command Discover -SearchPaths $testDir
 
 # Vérifier si le gestionnaire a été découvert
+
 $registeredManager = & $processManagerPath -Command List | Where-Object { $_ -like "*ModeController*" }
 
 # Nettoyer
-Remove-Item -Path $testDir -Recurse -Force
-```
 
+Remove-Item -Path $testDir -Recurse -Force
+```plaintext
 #### Résultat attendu
 
 Le gestionnaire `ModeController` ne sera pas découvert par la fonction `Discover-Managers`.
@@ -99,14 +105,17 @@ Pour tester ce scénario, nous pouvons créer un répertoire `test-manager` avec
 
 ```powershell
 # Créer un répertoire de test
+
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ProcessManagerTest"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
 # Créer un gestionnaire avec une structure de dossiers différente
+
 $managerDir = Join-Path -Path $testDir -ChildPath "test-manager"
 New-Item -Path $managerDir -ItemType Directory -Force | Out-Null
 
 # Créer un script de gestionnaire directement dans le répertoire racine
+
 $scriptPath = Join-Path -Path $managerDir -ChildPath "test-manager.ps1"
 @"
 function Start-TestManager {
@@ -135,15 +144,17 @@ function Get-TestManagerStatus {
 "@ | Set-Content -Path $scriptPath -Encoding UTF8
 
 # Exécuter la fonction Discover-Managers
+
 $result = & $processManagerPath -Command Discover -SearchPaths $testDir
 
 # Vérifier si le gestionnaire a été découvert
+
 $registeredManager = & $processManagerPath -Command List | Where-Object { $_ -like "*TestManager*" }
 
 # Nettoyer
-Remove-Item -Path $testDir -Recurse -Force
-```
 
+Remove-Item -Path $testDir -Recurse -Force
+```plaintext
 #### Résultat attendu
 
 Le gestionnaire `test-manager` ne sera pas découvert par la fonction `Discover-Managers`, car son script principal n'est pas situé dans le sous-répertoire `scripts`.
@@ -164,18 +175,22 @@ Pour tester ce scénario, nous pouvons créer un répertoire `test-manager` avec
 
 ```powershell
 # Créer un répertoire de test
+
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ProcessManagerTest"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
 # Créer un gestionnaire avec un nom de fichier différent
+
 $managerDir = Join-Path -Path $testDir -ChildPath "test-manager"
 New-Item -Path $managerDir -ItemType Directory -Force | Out-Null
 
 # Créer le sous-répertoire scripts
+
 $scriptsDir = Join-Path -Path $managerDir -ChildPath "scripts"
 New-Item -Path $scriptsDir -ItemType Directory -Force | Out-Null
 
 # Créer un script de gestionnaire avec un nom différent
+
 $scriptPath = Join-Path -Path $scriptsDir -ChildPath "TestController.ps1"
 @"
 function Start-TestController {
@@ -204,15 +219,17 @@ function Get-TestControllerStatus {
 "@ | Set-Content -Path $scriptPath -Encoding UTF8
 
 # Exécuter la fonction Discover-Managers
+
 $result = & $processManagerPath -Command Discover -SearchPaths $testDir
 
 # Vérifier si le gestionnaire a été découvert
+
 $registeredManager = & $processManagerPath -Command List | Where-Object { $_ -like "*TestController*" }
 
 # Nettoyer
-Remove-Item -Path $testDir -Recurse -Force
-```
 
+Remove-Item -Path $testDir -Recurse -Force
+```plaintext
 #### Résultat attendu
 
 Le gestionnaire `test-manager` ne sera pas découvert par la fonction `Discover-Managers`, car son script principal n'est pas nommé `test-manager.ps1`.
@@ -233,18 +250,22 @@ Pour tester ce scénario, nous pouvons créer un répertoire `test-manager` avec
 
 ```powershell
 # Créer un répertoire de test
+
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ProcessManagerTest"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
 # Créer un gestionnaire avec un manifeste dans un emplacement différent
+
 $managerDir = Join-Path -Path $testDir -ChildPath "test-manager"
 New-Item -Path $managerDir -ItemType Directory -Force | Out-Null
 
 # Créer le sous-répertoire scripts
+
 $scriptsDir = Join-Path -Path $managerDir -ChildPath "scripts"
 New-Item -Path $scriptsDir -ItemType Directory -Force | Out-Null
 
 # Créer un script de gestionnaire
+
 $scriptPath = Join-Path -Path $scriptsDir -ChildPath "test-manager.ps1"
 @"
 function Start-TestManager {
@@ -273,6 +294,7 @@ function Get-TestManagerStatus {
 "@ | Set-Content -Path $scriptPath -Encoding UTF8
 
 # Créer un manifeste directement dans le répertoire racine
+
 $manifestPath = Join-Path -Path $managerDir -ChildPath "test-manager.manifest.json"
 @"
 {
@@ -284,15 +306,17 @@ $manifestPath = Join-Path -Path $managerDir -ChildPath "test-manager.manifest.js
 "@ | Set-Content -Path $manifestPath -Encoding UTF8
 
 # Exécuter la fonction Discover-Managers
+
 $result = & $processManagerPath -Command Discover -SearchPaths $testDir
 
 # Vérifier si le gestionnaire a été découvert avec la version du manifeste
+
 $registeredManager = & $processManagerPath -Command List | Where-Object { $_ -like "*TestManager*" -and $_ -like "*1.0.0*" }
 
 # Nettoyer
-Remove-Item -Path $testDir -Recurse -Force
-```
 
+Remove-Item -Path $testDir -Recurse -Force
+```plaintext
 #### Résultat attendu
 
 Le gestionnaire `test-manager` sera découvert par la fonction `Discover-Managers`, mais la version du manifeste ne sera pas extraite, car le manifeste n'est pas situé dans le sous-répertoire `scripts`.
@@ -313,18 +337,22 @@ Pour tester ce scénario, nous pouvons créer un répertoire `test-manager` avec
 
 ```powershell
 # Créer un répertoire de test
+
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ProcessManagerTest"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
 # Créer un gestionnaire avec un manifeste au format PSD1
+
 $managerDir = Join-Path -Path $testDir -ChildPath "test-manager"
 New-Item -Path $managerDir -ItemType Directory -Force | Out-Null
 
 # Créer le sous-répertoire scripts
+
 $scriptsDir = Join-Path -Path $managerDir -ChildPath "scripts"
 New-Item -Path $scriptsDir -ItemType Directory -Force | Out-Null
 
 # Créer un script de gestionnaire
+
 $scriptPath = Join-Path -Path $scriptsDir -ChildPath "test-manager.ps1"
 @"
 function Start-TestManager {
@@ -353,6 +381,7 @@ function Get-TestManagerStatus {
 "@ | Set-Content -Path $scriptPath -Encoding UTF8
 
 # Créer un manifeste au format PSD1
+
 $manifestPath = Join-Path -Path $scriptsDir -ChildPath "test-manager.psd1"
 @"
 @{
@@ -364,15 +393,17 @@ $manifestPath = Join-Path -Path $scriptsDir -ChildPath "test-manager.psd1"
 "@ | Set-Content -Path $manifestPath -Encoding UTF8
 
 # Exécuter la fonction Discover-Managers
+
 $result = & $processManagerPath -Command Discover -SearchPaths $testDir
 
 # Vérifier si le gestionnaire a été découvert avec la version du manifeste
+
 $registeredManager = & $processManagerPath -Command List | Where-Object { $_ -like "*TestManager*" -and $_ -like "*1.0.0*" }
 
 # Nettoyer
-Remove-Item -Path $testDir -Recurse -Force
-```
 
+Remove-Item -Path $testDir -Recurse -Force
+```plaintext
 #### Résultat attendu
 
 Le gestionnaire `test-manager` sera découvert par la fonction `Discover-Managers`, mais la version du manifeste ne sera pas extraite, car le manifeste n'est pas au format JSON.
@@ -393,10 +424,12 @@ Pour tester ce scénario, nous pouvons créer trois gestionnaires avec des dépe
 
 ```powershell
 # Créer un répertoire de test
+
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ProcessManagerTest"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
 # Créer le gestionnaire A
+
 $managerADir = Join-Path -Path $testDir -ChildPath "manager-a"
 New-Item -Path $managerADir -ItemType Directory -Force | Out-Null
 $scriptsADir = Join-Path -Path $managerADir -ChildPath "scripts"
@@ -445,6 +478,7 @@ $manifestAPath = Join-Path -Path $scriptsADir -ChildPath "manager-a.manifest.jso
 "@ | Set-Content -Path $manifestAPath -Encoding UTF8
 
 # Créer le gestionnaire B
+
 $managerBDir = Join-Path -Path $testDir -ChildPath "manager-b"
 New-Item -Path $managerBDir -ItemType Directory -Force | Out-Null
 $scriptsBDir = Join-Path -Path $managerBDir -ChildPath "scripts"
@@ -493,6 +527,7 @@ $manifestBPath = Join-Path -Path $scriptsBDir -ChildPath "manager-b.manifest.jso
 "@ | Set-Content -Path $manifestBPath -Encoding UTF8
 
 # Créer le gestionnaire C
+
 $managerCDir = Join-Path -Path $testDir -ChildPath "manager-c"
 New-Item -Path $managerCDir -ItemType Directory -Force | Out-Null
 $scriptsCDir = Join-Path -Path $managerCDir -ChildPath "scripts"
@@ -541,17 +576,19 @@ $manifestCPath = Join-Path -Path $scriptsCDir -ChildPath "manager-c.manifest.jso
 "@ | Set-Content -Path $manifestCPath -Encoding UTF8
 
 # Exécuter la fonction Discover-Managers
+
 $result = & $processManagerPath -Command Discover -SearchPaths $testDir -SkipDependencyCheck
 
 # Vérifier si les gestionnaires ont été découverts
+
 $registeredManagerA = & $processManagerPath -Command List | Where-Object { $_ -like "*ManagerA*" }
 $registeredManagerB = & $processManagerPath -Command List | Where-Object { $_ -like "*ManagerB*" }
 $registeredManagerC = & $processManagerPath -Command List | Where-Object { $_ -like "*ManagerC*" }
 
 # Nettoyer
-Remove-Item -Path $testDir -Recurse -Force
-```
 
+Remove-Item -Path $testDir -Recurse -Force
+```plaintext
 #### Résultat attendu
 
 Les gestionnaires A, B et C seront découverts par la fonction `Discover-Managers` si l'option `SkipDependencyCheck` est utilisée. Sinon, la fonction pourrait échouer en raison des dépendances circulaires.
@@ -587,8 +624,7 @@ Ajouter une option pour effectuer une recherche récursive dans les sous-répert
 ```powershell
 [Parameter(Mandatory = $false)]
 [switch]$Recursive
-```
-
+```plaintext
 ### 2. Ajouter la recherche basée sur les fichiers
 
 Ajouter une option pour rechercher les gestionnaires en se basant sur les fichiers plutôt que sur les répertoires :
@@ -596,8 +632,7 @@ Ajouter une option pour rechercher les gestionnaires en se basant sur les fichie
 ```powershell
 [Parameter(Mandatory = $false)]
 [switch]$SearchFiles
-```
-
+```plaintext
 ### 3. Ajouter la recherche basée sur les manifestes
 
 Ajouter une option pour découvrir les gestionnaires en se basant sur les manifestes :
@@ -605,8 +640,7 @@ Ajouter une option pour découvrir les gestionnaires en se basant sur les manife
 ```powershell
 [Parameter(Mandatory = $false)]
 [switch]$SearchManifests
-```
-
+```plaintext
 ### 4. Ajouter la recherche basée sur les conventions alternatives
 
 Ajouter une option pour rechercher les gestionnaires en se basant sur des conventions alternatives :
@@ -614,8 +648,7 @@ Ajouter une option pour rechercher les gestionnaires en se basant sur des conven
 ```powershell
 [Parameter(Mandatory = $false)]
 [string[]]$AlternativePatterns = @("*Controller", "*Service", "*Provider")
-```
-
+```plaintext
 ### 5. Ajouter la recherche dans des emplacements alternatifs
 
 Ajouter une option pour rechercher les scripts et les manifestes dans des emplacements alternatifs :
@@ -626,8 +659,7 @@ Ajouter une option pour rechercher les scripts et les manifestes dans des emplac
 
 [Parameter(Mandatory = $false)]
 [string[]]$ManifestLocations = @("scripts", ".", "config", "manifests")
-```
-
+```plaintext
 ### 6. Ajouter la prise en charge des formats de manifeste alternatifs
 
 Ajouter une option pour prendre en charge les formats de manifeste alternatifs :
@@ -635,8 +667,7 @@ Ajouter une option pour prendre en charge les formats de manifeste alternatifs :
 ```powershell
 [Parameter(Mandatory = $false)]
 [string[]]$ManifestFormats = @("*.manifest.json", "*.psd1", "*.xml")
-```
-
+```plaintext
 ### 7. Améliorer la gestion des dépendances circulaires
 
 Améliorer la gestion des dépendances circulaires en ajoutant une détection des cycles et en permettant de les ignorer :
@@ -644,8 +675,7 @@ Améliorer la gestion des dépendances circulaires en ajoutant une détection de
 ```powershell
 [Parameter(Mandatory = $false)]
 [switch]$IgnoreCircularDependencies
-```
-
+```plaintext
 ### 8. Ajouter des tests de robustesse
 
 Ajouter des tests spécifiques pour évaluer la robustesse du mécanisme de détection face aux structures de dossiers non standard :
@@ -656,10 +686,10 @@ Ajouter des tests spécifiques pour évaluer la robustesse du mécanisme de dét
     Description = "Vérifie que le Process Manager peut découvrir des gestionnaires avec des structures non standard."
     Test = {
         # Tests pour les différents scénarios...
+
     }
 }
-```
-
+```plaintext
 ## Conclusion
 
 Le mécanisme de détection automatique des gestionnaires du Process Manager présente certaines faiblesses face aux structures de dossiers non standard. Les recommandations proposées visent à améliorer sa robustesse en ajoutant des options pour s'adapter à différentes conventions et structures.

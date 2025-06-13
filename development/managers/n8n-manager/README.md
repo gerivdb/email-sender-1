@@ -1,4 +1,4 @@
-﻿# n8n-manager
+# n8n-manager
 
 Ce rÃ©pertoire contient les fichiers du gestionnaire n8n-manager.
 

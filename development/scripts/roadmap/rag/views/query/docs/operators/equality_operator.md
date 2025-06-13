@@ -16,12 +16,11 @@ L'opérateur d'égalité peut être exprimé de plusieurs façons :
 
 ### Format général
 
-```
+```plaintext
 field:value
 field=value
 field==value
-```
-
+```plaintext
 Où :
 - `field` est le nom du champ à vérifier (par exemple, status, priority, category)
 - `value` est la valeur recherchée
@@ -30,115 +29,100 @@ Où :
 
 ### Filtrage par statut
 
-```
+```plaintext
 status:todo
-```
-
+```plaintext
 Cette requête trouve toutes les tâches dont le statut est "todo" (à faire).
 
 Variantes équivalentes :
-```
+```plaintext
 status=todo
 status==todo
-```
-
+```plaintext
 ### Filtrage par priorité
 
-```
+```plaintext
 priority:high
-```
-
+```plaintext
 Cette requête trouve toutes les tâches dont la priorité est "high" (haute).
 
 Variantes équivalentes :
-```
+```plaintext
 priority=high
 priority==high
-```
-
+```plaintext
 ### Filtrage par catégorie
 
-```
+```plaintext
 category:development
-```
-
+```plaintext
 Cette requête trouve toutes les tâches appartenant à la catégorie "development" (développement).
 
 Variantes équivalentes :
-```
+```plaintext
 category=development
 category==development
-```
-
+```plaintext
 ## Utilisation avec des valeurs contenant des espaces
 
 Pour les valeurs contenant des espaces, il est nécessaire d'utiliser des guillemets :
 
-```
+```plaintext
 title:"Implémenter l'interface utilisateur"
 description:"Créer la documentation du projet"
-```
-
+```plaintext
 ## Sensibilité à la casse
 
 Par défaut, l'opérateur d'égalité est sensible à la casse. Cela signifie que :
 
-```
+```plaintext
 status:todo
-```
-
+```plaintext
 est différent de :
 
-```
+```plaintext
 status:TODO
-```
-
+```plaintext
 Pour effectuer une recherche insensible à la casse, utilisez l'opérateur de contenance (`~`) avec des caractères jokers :
 
-```
+```plaintext
 status~*todo*
-```
-
+```plaintext
 ## Utilisation avec différents types de données
 
 ### Chaînes de caractères
 
-```
+```plaintext
 title:"Interface utilisateur"
 description:"Documentation API"
-```
-
+```plaintext
 ### Nombres
 
-```
+```plaintext
 indent_level:2
 completion_percentage:100
-```
-
+```plaintext
 ### Booléens
 
-```
+```plaintext
 has_children:true
 has_parent:false
-```
-
+```plaintext
 ### Dates
 
-```
+```plaintext
 due_date:2025-06-15
 created_at:2025-01-01
-```
-
+```plaintext
 ## Combinaison avec d'autres opérateurs
 
 L'opérateur d'égalité peut être combiné avec des opérateurs logiques pour créer des requêtes plus complexes :
 
-```
+```plaintext
 status:todo AND priority:high
 category:development OR category:documentation
 NOT status:done AND priority:high
-```
-
+```plaintext
 ## Bonnes pratiques
 
 1. **Préférez la forme standard** : Utilisez la forme `:` pour une meilleure lisibilité et cohérence.
@@ -155,25 +139,22 @@ NOT status:done AND priority:high
 
 Pour rechercher des champs avec des valeurs nulles ou vides, utilisez :
 
-```
+```plaintext
 field:null
 field:""
-```
-
+```plaintext
 ### Valeurs multiples
 
 L'opérateur d'égalité ne permet pas de vérifier directement l'appartenance à un ensemble de valeurs. Pour cela, utilisez plusieurs conditions avec l'opérateur OR :
 
-```
+```plaintext
 status:todo OR status:in_progress
-```
-
+```plaintext
 Ou utilisez la syntaxe de liste (si supportée) :
 
-```
+```plaintext
 status:[todo,in_progress]
-```
-
+```plaintext
 ### Champs inexistants
 
 Si vous recherchez un champ qui n'existe pas dans certains éléments, ces éléments ne seront pas inclus dans les résultats.
@@ -182,22 +163,19 @@ Si vous recherchez un champ qui n'existe pas dans certains éléments, ces élé
 
 ### Trouver les tâches à faire de haute priorité
 
-```
+```plaintext
 status:todo AND priority:high
-```
-
+```plaintext
 ### Trouver les tâches de documentation terminées
 
-```
+```plaintext
 status:done AND category:documentation
-```
-
+```plaintext
 ### Trouver les tâches avec une date d'échéance spécifique
 
-```
+```plaintext
 due_date:2025-06-15
-```
-
+```plaintext
 ## Résolution des problèmes courants
 
 ### Problème : Aucun résultat trouvé alors que des correspondances existent

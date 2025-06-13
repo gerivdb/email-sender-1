@@ -9,5 +9,8 @@ Ce fichier répertorie toutes les entrées du journal de bord liées aux serveur
 ## Sujets connexes
 
 - [#optimisation](optimisation.md)
+
 - [#notifications](notifications.md)
+
 - [#tests](tests.md)
+

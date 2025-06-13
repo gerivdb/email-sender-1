@@ -7,6 +7,7 @@
 Le format Roadmap utilise une structure Markdown hiérarchique avec les éléments suivants :
 
 1. **Titres de section** : Utilisent la syntaxe `## N. Titre` pour définir les sections principales
+
 2. **Métadonnées de section** : Informations comme la complexité, le temps estimé et la progression
 3. **Phases** : Définies avec `- [ ] **Phase N: Titre**` (non cochées) ou `- [x] **Phase N: Titre**` (cochées)
 4. **Tâches** : Définies avec `  - [ ] Titre` (non cochées) ou `  - [x] Titre` (cochées)
@@ -42,8 +43,7 @@ Le format XML est un format de données hiérarchique qui utilise des balises po
   </section>
   <!-- Autres sections... -->
 </roadmap>
-```
-
+```plaintext
 ### 1.3 Structure du format HTML
 
 Le format HTML est également hiérarchique mais orienté vers l'affichage. Une représentation HTML de la roadmap pourrait être :
@@ -60,7 +60,9 @@ Le format HTML est également hiérarchique mais orienté vers l'affichage. Une 
     .subtask { margin-left: 60px; }
     .completed { text-decoration: line-through; }
     .metadata { font-style: italic; color: #666; }
+
     .note { color: #888; font-style: italic; margin-left: 40px; }
+
   </style>
 </head>
 <body>
@@ -94,8 +96,7 @@ Le format HTML est également hiérarchique mais orienté vers l'affichage. Une 
   <!-- Autres sections... -->
 </body>
 </html>
-```
-
+```plaintext
 ## 2. Règles de conversion
 
 ### 2.1 Conversion de Markdown vers XML
@@ -121,6 +122,7 @@ Le format HTML est également hiérarchique mais orienté vers l'affichage. Une 
 ### 2.3 Conversion de XML vers Markdown
 
 1. **Éléments `<section>`** : Convertir en titres de section `## N. Titre`
+
 2. **Éléments `<metadata>`** : Convertir en lignes de métadonnées de section
 3. **Éléments `<phase>`** : Convertir en lignes de phase avec cases à cocher
 4. **Éléments `<task>`** : Convertir en lignes de tâche avec cases à cocher
@@ -211,6 +213,7 @@ Le format HTML est également hiérarchique mais orienté vers l'affichage. Une 
 ### 4.2 Gestion des caractères spéciaux
 
 - Échapper les caractères spéciaux dans le Markdown (*, _, #, etc.)
+
 - Encoder correctement les caractères spéciaux en XML et HTML
 - Gérer les accents et les caractères non-ASCII
 
@@ -233,6 +236,7 @@ Le format HTML est également hiérarchique mais orienté vers l'affichage. Une 
 **Markdown :**
 ```markdown
 ## 1. Section de test
+
 **Complexite**: Moyenne
 **Temps estime**: 3-5 jours
 **Progression**: 50%
@@ -243,8 +247,7 @@ Le format HTML est également hiérarchique mais orienté vers l'affichage. Une 
     - [ ] Sous-tâche 2
   - [ ] Tâche 2 (2 jours)
   > *Note: Ceci est une note*
-```
-
+```plaintext
 **XML :**
 ```xml
 <section id="1" title="Section de test">
@@ -262,13 +265,13 @@ Le format HTML est également hiérarchique mais orienté vers l'affichage. Une 
     <note>Ceci est une note</note>
   </phase>
 </section>
-```
-
+```plaintext
 ### 5.2 Exemple de conversion Markdown vers HTML
 
 **Markdown :**
 ```markdown
 ## 1. Section de test
+
 **Complexite**: Moyenne
 **Temps estime**: 3-5 jours
 **Progression**: 50%
@@ -279,8 +282,7 @@ Le format HTML est également hiérarchique mais orienté vers l'affichage. Une 
     - [ ] Sous-tâche 2
   - [ ] Tâche 2 (2 jours)
   > *Note: Ceci est une note*
-```
-
+```plaintext
 **HTML :**
 ```html
 <div class="section">
@@ -315,4 +317,4 @@ Le format HTML est également hiérarchique mais orienté vers l'affichage. Une 
     </div>
   </div>
 </div>
-```
+```plaintext

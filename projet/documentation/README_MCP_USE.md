@@ -1,4 +1,4 @@
-﻿# IntÃ©gration de mcp-use pour la gestion des serveurs MCP
+# IntÃ©gration de mcp-use pour la gestion des serveurs MCP
 
 Ce document explique comment utiliser la bibliothÃ¨que `mcp-use` pour amÃ©liorer la gestion des serveurs MCP (Model Context Protocol) dans le projet EMAIL_SENDER_1.
 
@@ -48,8 +48,7 @@ Le script `mcp_manager.py` crÃ©era automatiquement un fichier de configuration
 
 ```powershell
 .\mcp-manager.ps1
-```
-
+```plaintext
 Ce script dÃ©marrera le gestionnaire de serveurs MCP qui :
 1. VÃ©rifie si les packages nÃ©cessaires sont installÃ©s
 2. CrÃ©e ou charge la configuration des serveurs MCP
@@ -61,8 +60,7 @@ Ce script dÃ©marrera le gestionnaire de serveurs MCP qui :
 
 ```powershell
 .\mcp-manager.ps1 -Agent
-```
-
+```plaintext
 Ce script dÃ©marrera un agent MCP qui :
 1. VÃ©rifie si la configuration des serveurs MCP existe
 2. Demande Ã  l'utilisateur d'entrer une requÃªte
@@ -73,8 +71,7 @@ Ce script dÃ©marrera un agent MCP qui :
 
 ```powershell
 .\mcp-manager.ps1 -Agent -Query "Trouve les meilleurs restaurants Ã  Paris"
-```
-
+```plaintext
 Ce script dÃ©marrera un agent MCP et exÃ©cutera la requÃªte spÃ©cifiÃ©e.
 
 ## RÃ©solution des problÃ¨mes

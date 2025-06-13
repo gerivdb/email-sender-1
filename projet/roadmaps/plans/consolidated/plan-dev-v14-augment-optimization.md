@@ -1,4 +1,5 @@
 # Plan de dÃ©veloppement v14 - Optimisation des pratiques avec Augment
+
 *Version 1.0 - 2025-05-14*
 
 Ce plan dÃ©taille les amÃ©liorations Ã  apporter aux pratiques de dÃ©veloppement avec Augment/Claude pour maximiser l'efficacitÃ© et minimiser les erreurs.

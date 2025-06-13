@@ -186,7 +186,7 @@ Après analyse des mesures de performance, plusieurs goulots d'étranglement ont
 
 ### Profil de performance pour les opérations sur les collections
 
-```
+```plaintext
 Opération : Add-ExtractedInfoToCollection
 Taille de collection : 10 éléments
 Temps moyen : X ms
@@ -206,11 +206,10 @@ Opération : Get-ExtractedInfoFromCollection (filtrage)
 Taille de collection : 100 éléments
 Temps moyen : 15Z ms
 Utilisation mémoire : 15W MB
-```
-
+```plaintext
 ### Profil de performance pour la sérialisation/désérialisation
 
-```
+```plaintext
 Opération : ConvertTo-ExtractedInfoJson
 Type d'objet : Simple
 Temps moyen : A ms
@@ -230,8 +229,7 @@ Opération : ConvertFrom-ExtractedInfoJson
 Type d'objet : Complexe
 Temps moyen : 7C ms
 Utilisation mémoire : 9D MB
-```
-
+```plaintext
 ## Conclusion
 
 L'analyse des performances du module ExtractedInfoModuleV2 a permis d'identifier plusieurs goulots d'étranglement qui affectent les performances globales du module. Les principaux problèmes concernent les opérations sur les collections volumineuses, la sérialisation/désérialisation JSON, et la validation des informations extraites.

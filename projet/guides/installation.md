@@ -14,8 +14,7 @@ Pour vérifier votre version de PowerShell, exécutez la commande suivante dans 
 
 ```powershell
 $PSVersionTable.PSVersion
-```
-
+```plaintext
 ## Installation depuis le dépôt Git
 
 ### Clonage du dépôt
@@ -24,40 +23,34 @@ $PSVersionTable.PSVersion
 
 ```powershell
 cd C:\Chemin\Vers\Votre\Repertoire
-```
-
+```plaintext
 2. Clonez le dépôt Git :
 
 ```powershell
 git clone https://github.com/votre-organisation/roadmap-parser.git
-```
-
+```plaintext
 3. Naviguez vers le répertoire du module :
 
 ```powershell
 cd roadmap-parser
-```
-
+```plaintext
 ### Installation manuelle
 
 1. Copiez le répertoire du module dans l'un des chemins de modules PowerShell. Pour trouver les chemins disponibles, exécutez :
 
 ```powershell
 $env:PSModulePath -split ';'
-```
-
+```plaintext
 2. Généralement, vous pouvez utiliser le chemin utilisateur :
 
 ```powershell
 Copy-Item -Path ".\tools\scripts\roadmap-parser\module" -Destination "$env:USERPROFILE\Documents\WindowsPowerShell\Modules\RoadmapParser" -Recurse -Force
-```
-
+```plaintext
 Pour PowerShell 7, utilisez plutôt :
 
 ```powershell
 Copy-Item -Path ".\tools\scripts\roadmap-parser\module" -Destination "$env:USERPROFILE\Documents\PowerShell\Modules\RoadmapParser" -Recurse -Force
-```
-
+```plaintext
 ## Installation depuis un package
 
 Si vous disposez d'un package NuGet ou d'un module PowerShell Gallery, vous pouvez l'installer comme suit :
@@ -66,36 +59,31 @@ Si vous disposez d'un package NuGet ou d'un module PowerShell Gallery, vous pouv
 
 ```powershell
 Install-Module -Name RoadmapParser -Scope CurrentUser
-```
-
+```plaintext
 ### Depuis un fichier .nupkg
 
 ```powershell
 Install-Module -Name .\RoadmapParser.nupkg -Scope CurrentUser
-```
-
+```plaintext
 ## Vérification de l'installation
 
 Pour vérifier que le module a été correctement installé, exécutez :
 
 ```powershell
 Get-Module -Name RoadmapParser -ListAvailable
-```
-
+```plaintext
 ## Chargement du module
 
 Pour charger le module dans votre session PowerShell actuelle, exécutez :
 
 ```powershell
 Import-Module -Name RoadmapParser
-```
-
+```plaintext
 Pour voir les commandes disponibles dans le module :
 
 ```powershell
 Get-Command -Module RoadmapParser
-```
-
+```plaintext
 ## Configuration initiale
 
 Après l'installation, vous pouvez configurer le module en créant un fichier de configuration :
@@ -105,8 +93,7 @@ Après l'installation, vous pouvez configurer le module en créant un fichier de
 ```powershell
 $configDir = Join-Path -Path $env:USERPROFILE -ChildPath ".roadmap-parser"
 New-Item -Path $configDir -ItemType Directory -Force | Out-Null
-```
-
+```plaintext
 2. Créez un fichier de configuration de base :
 
 ```powershell
@@ -121,8 +108,7 @@ $config = @{
     MaxLogFiles = 5
 }
 $config | ConvertTo-Json | Set-Content -Path $configFile -Encoding UTF8
-```
-
+```plaintext
 ## Mise à jour du module
 
 Pour mettre à jour le module à partir du dépôt Git :
@@ -131,14 +117,12 @@ Pour mettre à jour le module à partir du dépôt Git :
 
 ```powershell
 cd C:\Chemin\Vers\Votre\Repertoire\roadmap-parser
-```
-
+```plaintext
 2. Tirez les dernières modifications :
 
 ```powershell
 git pull
-```
-
+```plaintext
 3. Réinstallez le module comme décrit dans la section "Installation manuelle".
 
 ## Désinstallation
@@ -147,20 +131,17 @@ Pour désinstaller le module :
 
 ```powershell
 Uninstall-Module -Name RoadmapParser -Force
-```
-
+```plaintext
 Si vous avez installé le module manuellement, supprimez le répertoire du module :
 
 ```powershell
 Remove-Item -Path "$env:USERPROFILE\Documents\WindowsPowerShell\Modules\RoadmapParser" -Recurse -Force
-```
-
+```plaintext
 Pour PowerShell 7 :
 
 ```powershell
 Remove-Item -Path "$env:USERPROFILE\Documents\PowerShell\Modules\RoadmapParser" -Recurse -Force
-```
-
+```plaintext
 ## Résolution des problèmes
 
 ### Le module ne se charge pas
@@ -171,35 +152,31 @@ Si vous rencontrez des problèmes lors du chargement du module, vérifiez les po
 
 ```powershell
 $env:PSModulePath -split ';'
-```
-
+```plaintext
 2. Vérifiez la politique d'exécution PowerShell :
 
 ```powershell
 Get-ExecutionPolicy
-```
-
+```plaintext
 Si la politique est restrictive, vous pouvez la modifier pour votre session actuelle :
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-```
-
+```plaintext
 3. Vérifiez les erreurs de chargement du module :
 
 ```powershell
 Import-Module -Name RoadmapParser -Verbose
-```
-
+```plaintext
 ### Problèmes de dépendances
 
 Si vous rencontrez des problèmes liés aux dépendances, assurez-vous que toutes les dépendances requises sont installées :
 
 ```powershell
 # Exemple d'installation de dépendances
-Install-Module -Name Pester -Scope CurrentUser -Force
-```
 
+Install-Module -Name Pester -Scope CurrentUser -Force
+```plaintext
 ## Support
 
 Si vous rencontrez des problèmes ou avez des questions, veuillez :

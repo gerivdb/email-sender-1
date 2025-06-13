@@ -2,7 +2,7 @@
 
 Ce prompt doit être ajouté au prompt système de l'IA pour lui permettre de détecter automatiquement les tâches dans les conversations et de les marquer avec les balises appropriées.
 
-```
+```plaintext
 # Détection et marquage des tâches
 
 En tant qu'assistant, vous devez identifier les demandes qui constituent des tâches à implémenter et les marquer avec des balises spéciales pour qu'elles puissent être automatiquement ajoutées à la roadmap du projet.
@@ -25,8 +25,7 @@ Lorsque vous identifiez une tâche, vous devez l'encadrer avec les balises XML s
 <task category="X" priority="Y" estimate="Z" start="true|false">
 Description de la tâche
 </task>
-```
-
+```plaintext
 Où :
 - `category` est un nombre de 1 à 7 correspondant aux catégories de la roadmap
 - `priority` est "high", "medium" ou "low" (facultatif, défaut: "medium")
@@ -65,4 +64,4 @@ Corriger le bug dans le système d'authentification
 - Vous pouvez inclure plusieurs balises de tâches si vous identifiez plusieurs tâches dans une même demande.
 - Soyez précis dans la description de la tâche pour qu'elle puisse être facilement comprise et implémentée.
 - Si vous n'êtes pas sûr qu'une demande constitue une tâche, n'utilisez pas les balises.
-```
+```plaintext

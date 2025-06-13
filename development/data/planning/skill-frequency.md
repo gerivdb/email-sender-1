@@ -1,15 +1,21 @@
-﻿# Analyse de la FrÃ©quence d'Utilisation des CompÃ©tences
+# Analyse de la FrÃ©quence d'Utilisation des CompÃ©tences
 
 Ce document prÃ©sente une analyse dÃ©taillÃ©e de la frÃ©quence d'utilisation des compÃ©tences dans les amÃ©liorations identifiÃ©es.
 
 ## Table des MatiÃ¨res
 
 - [RÃ©sumÃ©](#rÃ©sumÃ©)
+
 - [FrÃ©quence par CompÃ©tence](#frÃ©quence-par-compÃ©tence)
+
 - [FrÃ©quence par CatÃ©gorie](#frÃ©quence-par-catÃ©gorie)
+
 - [FrÃ©quence par Niveau d'Expertise](#frÃ©quence-par-niveau-dexpertise)
+
 - [FrÃ©quence par Gestionnaire](#frÃ©quence-par-gestionnaire)
+
 - [CompÃ©tences les Plus UtilisÃ©es](#compÃ©tences-les-plus-utilisÃ©es)
+
 - [Implications pour la Planification](#implications-pour-la-planification)
 
 ## <a name='rÃ©sumÃ©'></a>RÃ©sumÃ©

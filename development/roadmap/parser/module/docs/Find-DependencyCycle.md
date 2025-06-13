@@ -1,4 +1,4 @@
-﻿# Find-DependencyCycle
+# Find-DependencyCycle
 
 ## SYNOPSIS
 

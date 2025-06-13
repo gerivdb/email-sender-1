@@ -1,4 +1,4 @@
-﻿# reporting - analysis
+# reporting - analysis
 
 Cette section contient les scripts liÃ©s Ã  reporting dans la catÃ©gorie analysis.
 
@@ -14,6 +14,7 @@ Cette section contient les scripts liÃ©s Ã  reporting dans la catÃ©gorie a
 
 `powershell
 # Exemple d'utilisation
+
 .\<nom-du-script>.ps1 -InputPath "Roadmap/roadmap.md" -OutputPath "Roadmap/output.md"
 `
 

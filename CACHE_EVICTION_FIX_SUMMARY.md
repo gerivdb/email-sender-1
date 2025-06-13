@@ -3,6 +3,7 @@
 ## Summary of Changes Made
 
 ### Problem Identified
+
 The cache eviction test was failing because of race conditions in the `cacheResult` and `evictOldest` methods where `cacheSize` was being accessed under different locks (`cacheLock` vs `statsLock`).
 
 ### Fixes Applied
@@ -21,6 +22,7 @@ The cache eviction test was failing because of race conditions in the `cacheResu
 ## Expected Behavior
 
 ### Test Configuration
+
 - Cache max size: 12,288 bytes (exactly 2 embeddings)
 - Each embedding: 1536 dimensions × 4 bytes = 6,144 bytes
 - Cache hit rate: 100% (deterministic for testing)
@@ -28,18 +30,21 @@ The cache eviction test was failing because of race conditions in the `cacheResu
 ### Test Sequence: ["first", "second", "third"]
 
 #### Step 1: Insert "first"
+
 - Cache: {"first": embedding}
 - Size: 6,144 bytes
 - Queue: ["first"]
 - Result: ✓ Successfully cached
 
 #### Step 2: Insert "second"  
+
 - Cache: {"first": embedding, "second": embedding}
 - Size: 12,288 bytes (at limit)
 - Queue: ["first", "second"]
 - Result: ✓ Successfully cached
 
 #### Step 3: Insert "third"
+
 - Current size (12,288) + new size (6,144) = 18,432 bytes > 12,288 limit
 - **Eviction triggered**: Remove "first" (oldest in FIFO queue)
 - Cache: {"second": embedding, "third": embedding}
@@ -48,6 +53,7 @@ The cache eviction test was failing because of race conditions in the `cacheResu
 - Result: ✓ Successfully cached, "first" evicted
 
 ### Final Expected State
+
 - ✗ "first" should NOT be in cache (evicted)
 - ✓ "second" should be in cache
 - ✓ "third" should be in cache
@@ -55,6 +61,7 @@ The cache eviction test was failing because of race conditions in the `cacheResu
 ## Code Changes Summary
 
 ### Before (Race Condition)
+
 ```go
 func (p *MockEmbeddingProvider) cacheResult(text string, embedding []float32) {
     p.cacheLock.Lock()
@@ -70,9 +77,9 @@ func (p *MockEmbeddingProvider) evictOldest() {
     // No locks - accessing cacheSize directly (RACE CONDITION!)
     // or accessing cacheSize under different lock than cache map
 }
-```
-
+```plaintext
 ### After (Thread-Safe)
+
 ```go
 func (p *MockEmbeddingProvider) cacheResult(text string, embedding []float32) {
     p.cacheLock.Lock()
@@ -105,17 +112,18 @@ func (p *MockEmbeddingProvider) cacheResult(text string, embedding []float32) {
     }
     // ... cache update ...
 }
-```
-
+```plaintext
 ## Race Condition Resolution
 
 ### The Problem
+
 - `cache` map was protected by `cacheLock`
 - `cacheSize` was protected by `statsLock`  
 - `evictOldest()` was called while holding `cacheLock` but needed to access `cacheSize`
 - This created potential deadlocks and race conditions
 
 ### The Solution
+
 - All cache operations (map + queue) now happen under `cacheLock`
 - Size reads use temporary `statsLock` acquisition with immediate release
 - Size updates use proper `statsLock` acquisition

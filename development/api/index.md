@@ -1,4 +1,4 @@
-﻿# Documentation de l'API RoadmapParser
+# Documentation de l'API RoadmapParser
 
 Cette documentation dÃ©crit les fonctions disponibles dans le module RoadmapParser.
 

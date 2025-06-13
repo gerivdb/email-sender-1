@@ -16,8 +16,7 @@ Chaque gestionnaire enregistré possède un ensemble de métadonnées stockées 
   "Enabled": true,
   "RegisteredAt": "2025-05-02 10:00:00"
 }
-```
-
+```plaintext
 ### Propriétés des métadonnées
 
 1. **Path** (string)
@@ -61,8 +60,7 @@ $config.Managers | Add-Member -NotePropertyName $Name -NotePropertyValue @{
     Enabled = $true
     RegisteredAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 } -Force
-```
-
+```plaintext
 1. **Utilisation de Add-Member**
    - La cmdlet `Add-Member` ajoute une propriété à un objet
    - `-NotePropertyName` spécifie le nom de la propriété (nom du gestionnaire)
@@ -79,8 +77,7 @@ $config.Managers | Add-Member -NotePropertyName $Name -NotePropertyValue @{
 
 ```powershell
 $config | ConvertTo-Json -Depth 10 | Set-Content -Path $configFilePath -Encoding UTF8
-```
-
+```plaintext
 1. **Conversion en JSON**
    - La cmdlet `ConvertTo-Json` convertit l'objet `$config` en chaîne JSON
    - `-Depth 10` spécifie la profondeur maximale de récursion (10 niveaux)
@@ -113,8 +110,7 @@ Le fichier de configuration du Process Manager (`process-manager.config.json`) a
     ...
   }
 }
-```
-
+```plaintext
 1. **Structure globale**
    - `Enabled` : état global du Process Manager
    - `LogLevel` : niveau de journalisation
@@ -135,8 +131,7 @@ $manager = $config.Managers.$ManagerName
 $managerPath = $manager.Path
 $managerEnabled = $manager.Enabled
 $managerRegisteredAt = $manager.RegisteredAt
-```
-
+```plaintext
 1. **Accès au gestionnaire**
    - `$config.Managers.$ManagerName` accède à l'entrée du gestionnaire dans la configuration
    - Retourne `$null` si le gestionnaire n'existe pas
@@ -153,8 +148,7 @@ if (-not $config.Managers.$ManagerName) {
     Write-Log -Message "Le gestionnaire '$ManagerName' n'est pas enregistré." -Level Error
     return $false
 }
-```
-
+```plaintext
 1. **Vérification d'existence**
    - `-not $config.Managers.$ManagerName` est vrai si le gestionnaire n'existe pas
    - Permet de vérifier si un gestionnaire est enregistré
@@ -166,8 +160,7 @@ if (-not $config.Managers.$ManagerName.Enabled) {
     Write-Log -Message "Le gestionnaire '$ManagerName' est désactivé." -Level Warning
     return $false
 }
-```
-
+```plaintext
 1. **Vérification d'activation**
    - `-not $config.Managers.$ManagerName.Enabled` est vrai si le gestionnaire est désactivé
    - Permet de vérifier si un gestionnaire est activé
@@ -178,8 +171,7 @@ if (-not $config.Managers.$ManagerName.Enabled) {
 
 ```powershell
 $config.Managers.$ManagerName.Enabled = $Enabled
-```
-
+```plaintext
 1. **Modification de l'état**
    - `$config.Managers.$ManagerName.Enabled = $Enabled` modifie l'état d'activation du gestionnaire
    - `$Enabled` est un booléen (`$true` ou `$false`)
@@ -188,8 +180,7 @@ $config.Managers.$ManagerName.Enabled = $Enabled
 
 ```powershell
 $config.Managers.$ManagerName.Path = $Path
-```
-
+```plaintext
 1. **Modification du chemin**
    - `$config.Managers.$ManagerName.Path = $Path` modifie le chemin du gestionnaire
    - `$Path` est une chaîne de caractères représentant le nouveau chemin
@@ -198,8 +189,7 @@ $config.Managers.$ManagerName.Path = $Path
 
 ```powershell
 $config | ConvertTo-Json -Depth 10 | Set-Content -Path $configFilePath -Encoding UTF8
-```
-
+```plaintext
 1. **Enregistrement des modifications**
    - Identique au processus de persistance des métadonnées
    - Enregistre toutes les modifications dans le fichier de configuration
@@ -215,20 +205,22 @@ $commandParams = @{
 }
 
 # Ajouter le paramètre Command si spécifié
+
 if ($Command) {
     $commandParams.ArgumentList = "-Command $Command"
 }
 
 # Ajouter les paramètres supplémentaires
+
 foreach ($param in $Parameters.Keys) {
     $value = $Parameters[$param]
     $commandParams.ArgumentList += " -$param $value"
 }
 
 # Exécuter la commande
-$result = Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $($commandParams.FilePath) $($commandParams.ArgumentList)" -Wait -PassThru -NoNewWindow
-```
 
+$result = Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $($commandParams.FilePath) $($commandParams.ArgumentList)" -Wait -PassThru -NoNewWindow
+```plaintext
 1. **Récupération du chemin**
    - `$config.Managers.$ManagerName.Path` récupère le chemin du gestionnaire
    - Utilisé pour construire la commande à exécuter
@@ -254,6 +246,7 @@ foreach ($managerName in $config.Managers.PSObject.Properties.Name) {
         Write-Log -Message "  Enregistré le : $($manager.RegisteredAt)" -Level Info
         
         # Vérifier si le gestionnaire existe
+
         if (Test-Path -Path $manager.Path) {
             Write-Log -Message "  État : Disponible" -Level Info
         } else {
@@ -273,8 +266,7 @@ foreach ($managerName in $config.Managers.PSObject.Properties.Name) {
         Available = Test-Path -Path $manager.Path
     }
 }
-```
-
+```plaintext
 1. **Énumération des gestionnaires**
    - `$config.Managers.PSObject.Properties.Name` récupère les noms de tous les gestionnaires
    - Permet d'itérer sur tous les gestionnaires enregistrés

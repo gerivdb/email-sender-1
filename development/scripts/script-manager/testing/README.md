@@ -32,15 +32,17 @@ Plusieurs scripts sont disponibles pour exécuter les tests :
 
 ```powershell
 # Exécuter tous les tests et générer des rapports HTML
+
 .\Run-AllManagerTests.ps1 -OutputPath ".\reports\tests" -GenerateHTML
 
 # Exécuter uniquement les tests corrigés liés à l'organisation
+
 .\Run-FixedTests.ps1 -TestName "Organization" -OutputPath ".\reports\tests" -GenerateHTML
 
 # Exécuter uniquement les tests simplifiés
-.\Run-SimplifiedTests.ps1 -OutputPath ".\reports\tests" -GenerateHTML
-```
 
+.\Run-SimplifiedTests.ps1 -OutputPath ".\reports\tests" -GenerateHTML
+```plaintext
 ## Rapports de tests
 
 Les rapports de tests sont générés au format XML et HTML. Les rapports XML sont compatibles avec les outils d'intégration continue comme Jenkins, TeamCity, etc. Les rapports HTML sont plus faciles à lire et à interpréter.

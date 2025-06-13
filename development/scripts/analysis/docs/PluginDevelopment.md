@@ -5,15 +5,25 @@ Ce document explique comment dÃ©velopper des plugins personnalisÃ©s pour le 
 ## Table des matiÃ¨res
 
 1. [Introduction](#introduction)
+
 2. [Architecture du systÃ¨me de plugins](#architecture-du-systÃ¨me-de-plugins)
+
 3. [Structure d'un plugin](#structure-dun-plugin)
+
 4. [CrÃ©ation d'un plugin simple](#crÃ©ation-dun-plugin-simple)
+
 5. [Fonctions avancÃ©es](#fonctions-avancÃ©es)
+
    - [Conversion des rÃ©sultats](#conversion-des-rÃ©sultats)
+
    - [Configuration du plugin](#configuration-du-plugin)
+
    - [Gestion des dÃ©pendances](#gestion-des-dÃ©pendances)
+
 6. [Bonnes pratiques](#bonnes-pratiques)
+
 7. [DÃ©bogage des plugins](#dÃ©bogage-des-plugins)
+
 8. [Exemples](#exemples)
 
 ## Introduction
@@ -47,25 +57,30 @@ Voici la structure minimale d'un plugin :
 
 ```powershell
 # Importer le module de gestion des plugins
+
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $pluginManagerPath = Join-Path -Path $modulesPath -ChildPath "AnalysisPluginManager.psm1"
 Import-Module -Name $pluginManagerPath -Force
 
 # Fonction d'analyse
+
 $analyzeFunction = {
     param (
         [string]$FilePath
     )
     
     # Analyser le fichier et retourner des rÃ©sultats au format unifiÃ©
+
     $results = @()
     
     # ...
+
     
     return $results
 }
 
 # Enregistrer le plugin
+
 Register-AnalysisPlugin -Name "MonPlugin" `
                        -Description "Description de mon plugin" `
                        -Version "1.0" `
@@ -73,17 +88,18 @@ Register-AnalysisPlugin -Name "MonPlugin" `
                        -Language "Generic" `
                        -AnalyzeFunction $analyzeFunction `
                        -Force
-```
-
+```plaintext
 ## CrÃ©ation d'un plugin simple
 
 Voici un exemple de plugin simple qui vÃ©rifie la longueur des lignes dans un fichier texte :
 
 ```powershell
 # LineLengthAnalyzer.ps1
+
 #Requires -Version 5.1
 
 # Importer les modules requis
+
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $pluginManagerPath = Join-Path -Path $modulesPath -ChildPath "AnalysisPluginManager.psm1"
 $unifiedResultsFormatPath = Join-Path -Path $modulesPath -ChildPath "UnifiedResultsFormat.psm1"
@@ -92,6 +108,7 @@ Import-Module -Name $pluginManagerPath -Force
 Import-Module -Name $unifiedResultsFormatPath -Force
 
 # Fonction d'analyse
+
 $analyzeFunction = {
     param (
         [string]$FilePath,
@@ -99,21 +116,25 @@ $analyzeFunction = {
     )
     
     # VÃ©rifier si le fichier existe
+
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Error "Le fichier '$FilePath' n'existe pas."
         return $null
     }
     
     # Lire le contenu du fichier
+
     $content = Get-Content -Path $FilePath
     $results = @()
     
     # Analyser chaque ligne
+
     for ($i = 0; $i -lt $content.Count; $i++) {
         $line = $content[$i]
         $lineNumber = $i + 1
         
         # VÃ©rifier la longueur de la ligne
+
         if ($line.Length -gt $MaxLineLength) {
             $result = New-UnifiedAnalysisResult -ToolName "LineLengthAnalyzer" `
                                                -FilePath $FilePath `
@@ -133,6 +154,7 @@ $analyzeFunction = {
 }
 
 # Enregistrer le plugin
+
 Register-AnalysisPlugin -Name "LineLengthAnalyzer" `
                        -Description "Analyse la longueur des lignes dans un fichier texte" `
                        -Version "1.0" `
@@ -143,19 +165,19 @@ Register-AnalysisPlugin -Name "LineLengthAnalyzer" `
                            MaxLineLength = 80
                        } `
                        -Force
-```
-
+```plaintext
 Pour utiliser ce plugin :
 
 ```powershell
 # Enregistrer le plugin
+
 .\development\scripts\analysis\Register-AnalysisPlugin.ps1 -Path ".\development\scripts\analysis\plugins\LineLengthAnalyzer.ps1"
 
 # Utiliser le plugin via le systÃ¨me de plugins
+
 $plugin = Get-AnalysisPlugin -Name "LineLengthAnalyzer"
 $results = Invoke-AnalysisPlugin -Name "LineLengthAnalyzer" -FilePath "chemin\vers\fichier.txt" -AdditionalParameters @{ MaxLineLength = 100 }
-```
-
+```plaintext
 ## Fonctions avancÃ©es
 
 ### Conversion des rÃ©sultats
@@ -164,6 +186,7 @@ Si votre plugin utilise un outil externe qui produit des rÃ©sultats dans un fo
 
 ```powershell
 # Fonction de conversion
+
 $convertFunction = {
     param (
         [object]$Results
@@ -189,6 +212,7 @@ $convertFunction = {
 }
 
 # Enregistrer le plugin avec la fonction de conversion
+
 Register-AnalysisPlugin -Name "MonPlugin" `
                        -Description "Description de mon plugin" `
                        -Version "1.0" `
@@ -197,14 +221,14 @@ Register-AnalysisPlugin -Name "MonPlugin" `
                        -AnalyzeFunction $analyzeFunction `
                        -ConvertFunction $convertFunction `
                        -Force
-```
-
+```plaintext
 ### Configuration du plugin
 
 Vous pouvez dÃ©finir une configuration par dÃ©faut pour votre plugin :
 
 ```powershell
 # Enregistrer le plugin avec une configuration
+
 Register-AnalysisPlugin -Name "MonPlugin" `
                        -Description "Description de mon plugin" `
                        -Version "1.0" `
@@ -217,8 +241,7 @@ Register-AnalysisPlugin -Name "MonPlugin" `
                            IgnoreEmptyLines = $true
                        } `
                        -Force
-```
-
+```plaintext
 La configuration est accessible dans la fonction d'analyse via les paramÃ¨tres :
 
 ```powershell
@@ -231,15 +254,16 @@ $analyzeFunction = {
     )
     
     # ...
-}
-```
 
+}
+```plaintext
 ### Gestion des dÃ©pendances
 
 Vous pouvez spÃ©cifier les dÃ©pendances de votre plugin :
 
 ```powershell
 # Enregistrer le plugin avec des dÃ©pendances
+
 Register-AnalysisPlugin -Name "MonPlugin" `
                        -Description "Description de mon plugin" `
                        -Version "1.0" `
@@ -248,8 +272,7 @@ Register-AnalysisPlugin -Name "MonPlugin" `
                        -AnalyzeFunction $analyzeFunction `
                        -Dependencies @("PSScriptAnalyzer", "ESLint") `
                        -Force
-```
-
+```plaintext
 Le systÃ¨me vÃ©rifiera que ces dÃ©pendances sont disponibles avant d'exÃ©cuter le plugin.
 
 ## Bonnes pratiques
@@ -286,8 +309,7 @@ Pour dÃ©boguer un plugin :
 
 ```powershell
 Invoke-AnalysisPlugin -Name "MonPlugin" -FilePath "chemin\vers\fichier.txt" -Verbose
-```
-
+```plaintext
 2. Utilisez `Write-Verbose` dans votre fonction d'analyse pour afficher des informations de dÃ©bogage :
 
 ```powershell
@@ -299,24 +321,25 @@ $analyzeFunction = {
     Write-Verbose "Analyse du fichier: $FilePath"
     
     # ...
-}
-```
 
+}
+```plaintext
 3. Utilisez `Get-AnalysisPluginStatistics` pour obtenir des statistiques sur l'exÃ©cution de votre plugin :
 
 ```powershell
 Get-AnalysisPluginStatistics -Name "MonPlugin"
-```
-
+```plaintext
 ## Exemples
 
 ### Plugin pour analyser les commentaires TODO
 
 ```powershell
 # TodoAnalyzer.ps1
+
 #Requires -Version 5.1
 
 # Importer les modules requis
+
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $pluginManagerPath = Join-Path -Path $modulesPath -ChildPath "AnalysisPluginManager.psm1"
 $unifiedResultsFormatPath = Join-Path -Path $modulesPath -ChildPath "UnifiedResultsFormat.psm1"
@@ -325,6 +348,7 @@ Import-Module -Name $pluginManagerPath -Force
 Import-Module -Name $unifiedResultsFormatPath -Force
 
 # Fonction d'analyse
+
 $analyzeFunction = {
     param (
         [string]$FilePath,
@@ -334,23 +358,28 @@ $analyzeFunction = {
     )
     
     # VÃ©rifier si le fichier existe
+
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Error "Le fichier '$FilePath' n'existe pas."
         return $null
     }
     
     # Lire le contenu du fichier
+
     $content = Get-Content -Path $FilePath
     $results = @()
     
     # Analyser chaque ligne
+
     for ($i = 0; $i -lt $content.Count; $i++) {
         $line = $content[$i]
         $lineNumber = $i + 1
         
         # VÃ©rifier si la ligne contient un commentaire TODO
+
         foreach ($keyword in $Keywords) {
             if ($line -match "(?i)(?:#|\/\/|\/\*|\*|--|<!--)\s*($keyword)(?:\s*:)?\s*(.*)") {
+
                 $todoKeyword = $matches[1]
                 $todoComment = $matches[2]
                 
@@ -373,6 +402,7 @@ $analyzeFunction = {
 }
 
 # Enregistrer le plugin
+
 Register-AnalysisPlugin -Name "TodoAnalyzer" `
                        -Description "Analyse les commentaires TODO, FIXME, etc. dans le code" `
                        -Version "1.0" `
@@ -384,15 +414,16 @@ Register-AnalysisPlugin -Name "TodoAnalyzer" `
                            Severity = "Information"
                        } `
                        -Force
-```
-
+```plaintext
 ### Plugin pour analyser les fichiers de configuration JSON
 
 ```powershell
 # JsonConfigAnalyzer.ps1
+
 #Requires -Version 5.1
 
 # Importer les modules requis
+
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $pluginManagerPath = Join-Path -Path $modulesPath -ChildPath "AnalysisPluginManager.psm1"
 $unifiedResultsFormatPath = Join-Path -Path $modulesPath -ChildPath "UnifiedResultsFormat.psm1"
@@ -401,6 +432,7 @@ Import-Module -Name $pluginManagerPath -Force
 Import-Module -Name $unifiedResultsFormatPath -Force
 
 # Fonction d'analyse
+
 $analyzeFunction = {
     param (
         [string]$FilePath,
@@ -409,18 +441,21 @@ $analyzeFunction = {
     )
     
     # VÃ©rifier si le fichier existe
+
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Error "Le fichier '$FilePath' n'existe pas."
         return $null
     }
     
     # VÃ©rifier si le fichier est un fichier JSON
+
     if (-not ($FilePath -match '\.json$')) {
         Write-Warning "Le fichier '$FilePath' n'est pas un fichier JSON."
         return @()
     }
     
     # Lire le contenu du fichier
+
     try {
         $content = Get-Content -Path $FilePath -Raw
         $json = $content | ConvertFrom-Json -ErrorAction Stop
@@ -441,6 +476,7 @@ $analyzeFunction = {
     $results = @()
     
     # VÃ©rifier les propriÃ©tÃ©s requises
+
     foreach ($property in $RequiredProperties) {
         if (-not (Get-Member -InputObject $json -Name $property -MemberType Properties)) {
             $result = New-UnifiedAnalysisResult -ToolName "JsonConfigAnalyzer" `
@@ -458,6 +494,7 @@ $analyzeFunction = {
     }
     
     # Valider les propriÃ©tÃ©s avec des validateurs personnalisÃ©s
+
     foreach ($property in $PropertyValidators.Keys) {
         if (Get-Member -InputObject $json -Name $property -MemberType Properties) {
             $validator = $PropertyValidators[$property]
@@ -485,6 +522,7 @@ $analyzeFunction = {
 }
 
 # Enregistrer le plugin
+
 Register-AnalysisPlugin -Name "JsonConfigAnalyzer" `
                        -Description "Analyse les fichiers de configuration JSON" `
                        -Version "1.0" `
@@ -496,6 +534,5 @@ Register-AnalysisPlugin -Name "JsonConfigAnalyzer" `
                            PropertyValidators = @{}
                        } `
                        -Force
-```
-
+```plaintext
 Ces exemples montrent comment crÃ©er des plugins personnalisÃ©s pour des cas d'utilisation spÃ©cifiques. Vous pouvez les adapter Ã  vos besoins ou crÃ©er vos propres plugins pour intÃ©grer d'autres outils d'analyse.

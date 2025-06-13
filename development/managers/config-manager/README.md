@@ -1,9 +1,11 @@
 # ConfigManager Module
 
 ## Overview
+
 The `ConfigManager` is responsible for handling all application configurations. It loads settings from various sources (files, environment variables, defaults), provides typed access to them, and manages source priorities.
 
 ## Features (Implemented)
+
 - ✅ Load configuration from JSON, YAML, and TOML files
 - ✅ Load configuration from environment variables with prefix filtering
 - ✅ Support for default values
@@ -16,12 +18,14 @@ The `ConfigManager` is responsible for handling all application configurations. 
 - ✅ Flat key notation support (e.g., "database.host")
 
 ## Implementation Status
+
 - **Phase 1: Conception et Initialisation** - ✅ COMPLETE
 - **Phase 2: Implémentation des Fonctionnalités Clés** - ✅ COMPLETE  
 - **Phase 3: Intégration et Tests Avancés** - 🔄 IN PROGRESS
 - **Phase 4: Documentation et Finalisation** - ⏳ PENDING
 
 ## Structure
+
 - `config_manager.go`: Contains the main `ConfigManager` interface and its implementation
 - `loader.go`: Implements the logic for loading configurations from different sources (JSON/YAML/TOML/ENV)
 - `types.go`: Defines any internal data structures used by the manager
@@ -31,6 +35,7 @@ The `ConfigManager` is responsible for handling all application configurations. 
 ## Usage
 
 ### Initialization
+
 ```go
 cfgManager, err := configmanager.New()
 if err != nil {
@@ -59,9 +64,9 @@ cfgManager.LoadFromEnv("APP_")
 if err := cfgManager.Validate(); err != nil {
     log.Fatalf("Configuration validation failed: %v", err)
 }
-```
-
+```plaintext
 ### Accessing Configuration
+
 ```go
 // Get string values
 logLevel, err := cfgManager.GetString("logging.level")
@@ -99,11 +104,11 @@ var dbConfig DatabaseConfig
 if err := cfgManager.UnmarshalKey("database", &dbConfig); err != nil {
     log.Fatalf("Failed to unmarshal database config: %v", err)
 }
-```
-
+```plaintext
 ### Configuration File Examples
 
 #### JSON (config.json)
+
 ```json
 {
   "database": {
@@ -116,9 +121,9 @@ if err := cfgManager.UnmarshalKey("database", &dbConfig); err != nil {
     "debug": true
   }
 }
-```
-
+```plaintext
 #### YAML (config.yaml)
+
 ```yaml
 database:
   host: localhost
@@ -127,9 +132,9 @@ database:
 server:
   port: 8080
   debug: true
-```
-
+```plaintext
 #### TOML (config.toml)
+
 ```toml
 [database]
 host = "localhost"
@@ -139,21 +144,23 @@ name = "myapp"
 [server]
 port = 8080
 debug = true
-```
-
+```plaintext
 ### Environment Variables
+
 Environment variables are automatically converted to configuration keys:
 - `APP_DATABASE_HOST=localhost` → `database.host`
 - `APP_SERVER_PORT=8080` → `server.port`
 - `APP_DEBUG_MODE=true` → `debug.mode`
 
 ## Priority Order
+
 Configuration values are resolved in the following priority order (highest to lowest):
 1. Environment variables
 2. Configuration files
 3. Default values
 
 ## Error Handling
+
 The ConfigManager defines specific error types:
 - `ErrKeyNotFound`: Configuration key was not found
 - `ErrConfigParse`: Failed to parse configuration file
@@ -165,6 +172,7 @@ The ConfigManager defines specific error types:
 The ConfigManager seamlessly integrates with the EMAIL_SENDER_1 project's IntegratedManager system for centralized management and error handling.
 
 ### Real Integration Usage
+
 ```go
 import (
     configmanager "path/to/config-manager"
@@ -200,11 +208,11 @@ for _, manager := range managers {
         log.Printf("Manager %s validation failed: %v", manager, err)
     }
 }
-```
-
+```plaintext
 ### Advanced Features
 
 #### Dynamic Configuration Management
+
 ```go
 // Set configuration values dynamically
 configMgr.Set("runtime.debug_mode", true)
@@ -213,9 +221,9 @@ configMgr.Set("feature_flags.new_algorithm", "v2")
 // Save current configuration to file
 config := configMgr.GetAll()
 err = configMgr.SaveToFile("current_config.yaml", "yaml", config)
-```
-
+```plaintext
 #### Manager-Specific Configuration
+
 ```go
 // Configure specific managers
 connector.SetManagerConfig("storage-manager", map[string]interface{}{
@@ -227,11 +235,11 @@ connector.SetManagerConfig("storage-manager", map[string]interface{}{
 
 // Get manager configuration
 storageConfig := connector.GetManagerConfig("storage-manager")
-```
-
+```plaintext
 ## Architecture
 
 ### Integration Layer
+
 The ConfigManager provides multiple integration layers:
 
 1. **Basic Integration** (`integration.go`): Mock-based integration for testing
@@ -239,6 +247,7 @@ The ConfigManager provides multiple integration layers:
 3. **IntegratedConfigManager**: Wrapper that combines both approaches
 
 ### Error Propagation
+
 All configuration errors are automatically propagated to the IntegratedManager's ErrorManager with detailed context:
 
 ```go
@@ -249,25 +258,28 @@ All configuration errors are automatically propagated to the IntegratedManager's
     "file_type": "yaml",
     "manager": "config-manager"
 }
-```
-
+```plaintext
 ## Testing
 
 ### Running Tests
+
 ```bash
 # Run all tests
+
 go test -v
 
 # Run specific test suite
+
 go test -v -run TestConfigManager
 go test -v -run TestIntegration
 go test -v -run TestRealIntegration
 
 # Run with coverage
-go test -v -cover
-```
 
+go test -v -cover
+```plaintext
 ### Test Coverage
+
 - ✅ Unit tests for all ConfigManager methods
 - ✅ Integration tests with mock IntegratedManager
 - ✅ Real integration tests with actual IntegratedManager interface

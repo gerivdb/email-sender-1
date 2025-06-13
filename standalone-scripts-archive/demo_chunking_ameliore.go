@@ -10,12 +10,13 @@ import (
 // ChunkingDemo démontre les améliorations apportées à l'algorithme de chunking
 func main() {
 	log.SetPrefix("[CHUNKING-DEMO] ")
-	
-	fmt.Println("=== DÉMONSTRATION DES AMÉLIORATIONS DE CHUNKING ===\n")
+
+	fmt.Println("=== DÉMONSTRATION DES AMÉLIORATIONS DE CHUNKING ===")
+	fmt.Println()
 
 	// Texte de test problématique (131 caractères)
 	text := "This is a longer text that should be split into multiple chunks. It contains multiple sentences and should generate several chunks."
-	
+
 	fmt.Printf("Texte d'origine (%d caractères):\n%q\n\n", len(text), text)
 
 	// Configuration optimisée
@@ -86,7 +87,7 @@ func main() {
 	fmt.Printf("   • Métadonnées complètes: ✅ (ID, timestamps, contexte)\n")
 	fmt.Printf("   • Validation des options: ✅ (taille min/max, overlap)\n")
 	fmt.Printf("   • Logs en temps réel: ✅ (pour monitoring)\n")
-	
+
 	// Test avec différentes tailles
 	fmt.Println("\n=== TESTS AVEC DIFFÉRENTES CONFIGURATIONS ===")
 	testConfigs := []struct {
@@ -102,14 +103,14 @@ func main() {
 	for _, config := range testConfigs {
 		options.MaxChunkSize = config.chunkSize
 		options.ChunkOverlap = config.overlap
-		
+
 		testChunks, err := chunker.Chunk(text, options)
 		if err != nil {
 			fmt.Printf("❌ %s: erreur %v\n", config.name, err)
 			continue
 		}
-		
-		fmt.Printf("📊 %s (size=%d, overlap=%d): %d chunks\n", 
+
+		fmt.Printf("📊 %s (size=%d, overlap=%d): %d chunks\n",
 			config.name, config.chunkSize, config.overlap, len(testChunks))
 	}
 
@@ -122,6 +123,6 @@ func main() {
 	fmt.Println("   6. ✅ Logs détaillés pour debugging")
 	fmt.Println("   7. ✅ Optimisations mémoire (pré-allocation)")
 	fmt.Println("   8. ✅ Gestion d'erreurs complète")
-	
+
 	fmt.Println("\n🎯 RÉSULTAT: L'algorithme produit maintenant exactement 3 chunks comme attendu!")
 }

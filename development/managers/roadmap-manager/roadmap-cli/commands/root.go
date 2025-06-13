@@ -21,7 +21,6 @@ Features include:
 	// Global flags
 	cmd.PersistentFlags().String("config", "", "config file path")
 	cmd.PersistentFlags().Bool("verbose", false, "verbose output")
-
 	// Add subcommands
 	cmd.AddCommand(newViewCommand())
 	cmd.AddCommand(newCreateCommand())
@@ -31,6 +30,7 @@ Features include:
 	cmd.AddCommand(AdvancedIngestCmd)
 	cmd.AddCommand(HierarchyCmd)
 	cmd.AddCommand(MigrateCmd)
+	cmd.AddCommand(validateCmd)  // New validation commands
 
 	return cmd
 }

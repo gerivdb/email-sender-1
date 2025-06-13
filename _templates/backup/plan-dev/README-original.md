@@ -32,16 +32,16 @@ Vous pouvez utiliser ce template de trois façons :
 ## Fichier généré
 
 Le template génère un fichier Markdown dans le dossier `projet/roadmaps/plans/consolidated/` avec le nom suivant :
-```
+```plaintext
 plan-dev-v{{version}}-{{title.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9\-]/g, '').slice(0,50)}}.md
-```
-
+```plaintext
 Exemple : `plan-dev-v24-titre-du-plan.md`
 
 ## Structure du fichier généré (exemple dynamique)
 
 ```markdown
 # Plan de développement v{{version}} - {{title}}
+
 *Version 1.0 - {{date}} - Progression globale : 0%*
 
 {{description}}
@@ -53,8 +53,7 @@ Exemple : `plan-dev-v24-titre-du-plan.md`
     - [ ] **1.1.1.1** Sous-sous-tâche 1.1.1
       - [ ] **1.1.1.1.1** Action 1.1.1.1
       ...
-```
-
+```plaintext
 ## Génération avancée
 
 Ce template supporte l'inclusion dynamique de sous-tâches, table des matières, progression, points de vigilance, liens doc, annexes, scénarios de test, etc. via les fichiers EJS du dossier `plan-dev/` :

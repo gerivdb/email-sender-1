@@ -19,11 +19,10 @@ Ce document définit des métriques quantitatives pour évaluer la préservation
 
 Pour un histogramme avec des bins de largeur fixe, la largeur FWHM peut être estimée par:
 
-```
+```plaintext
 FWHM_hist = largeur_bin × (nombre de bins avec hauteur ≥ 0.5 × hauteur_max + 
            fraction du bin à gauche + fraction du bin à droite)
-```
-
+```plaintext
 Où les fractions sont calculées par interpolation linéaire aux seuils de mi-hauteur.
 
 ## 3. Métriques de préservation de largeur
@@ -50,10 +49,9 @@ Où les fractions sont calculées par interpolation linéaire aux seuils de mi-h
 
 Évalue la préservation du profil complet du mode, pas seulement sa largeur:
 
-```
+```plaintext
 IPF = 1 - (1/n) × Σ|densité_normalisée_réelle(i) - densité_normalisée_hist(i)|
-```
-
+```plaintext
 Où les densités sont normalisées par leur maximum et échantillonnées en n points équidistants.
 
 | Plage | Interprétation |
@@ -67,10 +65,9 @@ Où les densités sont normalisées par leur maximum et échantillonnées en n p
 
 Compare l'asymétrie du mode dans la distribution réelle et l'histogramme:
 
-```
+```plaintext
 RCA = asymétrie_hist / asymétrie_réelle
-```
-
+```plaintext
 Où l'asymétrie peut être mesurée par le rapport entre les demi-largeurs droite et gauche à mi-hauteur.
 
 | Plage | Interprétation |
@@ -84,10 +81,9 @@ Où l'asymétrie peut être mesurée par le rapport entre les demi-largeurs droi
 
 Évalue si la résolution de l'histogramme est suffisante par rapport à la largeur du mode:
 
-```
+```plaintext
 IRR = FWHM_réel / largeur_bin
-```
-
+```plaintext
 | Plage | Interprétation |
 |-------|----------------|
 | > 8 | Excellente résolution relative |
@@ -101,10 +97,9 @@ IRR = FWHM_réel / largeur_bin
 
 Métrique pondérée qui évalue la préservation des largeurs de tous les modes, avec une importance accrue pour les modes de latence faible:
 
-```
+```plaintext
 IPVH = Σ(wi × (1 - |FWHM_réel_i - FWHM_hist_i| / FWHM_réel_i)) / Σwi
-```
-
+```plaintext
 Où wi = (max_latence / latence_mode_i)^α, avec α = 0.5 typiquement.
 
 | Plage | Interprétation |
@@ -118,10 +113,9 @@ Où wi = (max_latence / latence_mode_i)^α, avec α = 0.5 typiquement.
 
 Compare le coefficient de variation (CV = σ/μ) dans la région de chaque mode:
 
-```
+```plaintext
 RCS = CV_hist / CV_réel
-```
-
+```plaintext
 | Plage | Interprétation |
 |-------|----------------|
 | 0.9-1.1 | Excellente conservation de stabilité |
@@ -147,15 +141,19 @@ def estimate_fwhm_in_histogram(bin_edges, bin_counts, mode_position):
         fwhm: Largeur à mi-hauteur estimée
     """
     # Calculer les centres des bins
+
     bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
     bin_width = bin_edges[1] - bin_edges[0]  # Supposant des bins de largeur fixe
+
     
     # Trouver le bin contenant le mode
+
     mode_bin_idx = np.argmin(np.abs(bin_centers - mode_position))
     max_height = bin_counts[mode_bin_idx]
     half_max = max_height / 2
     
     # Trouver les intersections avec la mi-hauteur
+
     left_idx = mode_bin_idx
     while left_idx > 0 and bin_counts[left_idx] > half_max:
         left_idx -= 1
@@ -165,6 +163,7 @@ def estimate_fwhm_in_histogram(bin_edges, bin_counts, mode_position):
         right_idx += 1
     
     # Interpolation linéaire pour les positions exactes des intersections
+
     if left_idx < len(bin_counts) - 1:
         if bin_counts[left_idx] != bin_counts[left_idx + 1]:
             left_frac = (half_max - bin_counts[left_idx]) / (bin_counts[left_idx + 1] - bin_counts[left_idx])
@@ -182,14 +181,15 @@ def estimate_fwhm_in_histogram(bin_edges, bin_counts, mode_position):
         right_frac = 0
     
     # Calculer la largeur FWHM
+
     left_pos = bin_centers[left_idx] + left_frac * bin_width
     right_pos = bin_centers[right_idx] - right_frac * bin_width
     
     fwhm = right_pos - left_pos
     
     return max(fwhm, bin_width)  # Garantir une largeur minimale d'un bin
-```
 
+```plaintext
 ### 6.2 Calcul des métriques de préservation de largeur
 
 ```python
@@ -209,16 +209,19 @@ def calculate_width_preservation_metrics(real_modes, real_fwhms,
         metrics: Dictionnaire des métriques calculées
     """
     # Associer chaque mode réel au mode histogramme le plus proche
+
     mode_pairs = []
     for i, real_mode in enumerate(real_modes):
         closest_idx = np.argmin(np.abs(histogram_modes - real_mode))
         mode_pairs.append((i, closest_idx))
     
     # Calculer les largeurs FWHM dans l'histogramme
+
     hist_fwhms = [estimate_fwhm_in_histogram(bin_edges, bin_counts, histogram_modes[idx]) 
                  for _, idx in mode_pairs]
     
     # Calculer les métriques de base
+
     abs_errors = [abs(real_fwhms[i] - hist_fwhm) 
                  for (i, _), hist_fwhm in zip(mode_pairs, hist_fwhms)]
     
@@ -229,10 +232,13 @@ def calculate_width_preservation_metrics(real_modes, real_fwhms,
              for (i, _), hist_fwhm in zip(mode_pairs, hist_fwhms)]
     
     # Calculer l'indice de résolution relative
+
     bin_width = bin_edges[1] - bin_edges[0]  # Supposant des bins de largeur fixe
+
     irr_values = [real_fwhms[i] / bin_width for i, _ in mode_pairs]
     
     # Calculer l'indice de préservation de variabilité hiérarchique
+
     max_latency = max(real_modes)
     weights = [(max_latency / real_modes[i])**0.5 for i, _ in mode_pairs]
     weight_sum = sum(weights)
@@ -241,6 +247,7 @@ def calculate_width_preservation_metrics(real_modes, real_fwhms,
                for w, ((i, _), hist_fwhm) in zip(weights, zip(mode_pairs, hist_fwhms))]) / weight_sum
     
     # Résultats
+
     metrics = {
         "EAL": {
             "values": abs_errors,
@@ -267,8 +274,7 @@ def calculate_width_preservation_metrics(real_modes, real_fwhms,
     }
     
     return metrics
-```
-
+```plaintext
 ## 7. Seuils recommandés pour les latences de blocs de 2KB
 
 | Métrique | Mode | Monitoring | Analyse standard | Analyse détaillée |
@@ -355,8 +361,7 @@ def calculate_width_preservation_metrics(real_modes, real_fwhms,
     }
   }
 }
-```
-
+```plaintext
 ## 9. Exemples d'application
 
 ### 9.1 Cas d'étude: Histogramme à 20 bins uniformes

@@ -22,7 +22,7 @@
 
 **Hiérarchie basée sur l'existant :**
 
-```
+```plaintext
 Core Managers (Existants) :
 ├── ErrorManager (gestion centralisée des erreurs)
 ├── StorageManager (PostgreSQL, Qdrant) 
@@ -34,8 +34,7 @@ Service Managers (Adaptés) :
 ├── IndexManager (Qdrant + SQLiteEmbeddingCache)
 ├── RetrievalManager (PostgreSQL + SQLite via StorageManager)
 └── IntegrationManager (MCP Gateway + N8N)
-```
-
+```plaintext
 **Tableau comparatif adapté :**
 
 | Manager | Rôle | Base de données | État | Intégration |
@@ -49,7 +48,7 @@ Service Managers (Adaptés) :
 | **IntegrationManager** | MCP Gateway + workflows N8N | SQLite (MCP) | 🔄 40% | MCP Gateway |
 
 **Flux de données adapté :**
-```
+```plaintext
 [IDE/Editor] --> [ContextualMemoryManager] --> [IndexManager] --> [Qdrant + SQLiteEmbeddingCache]
                             |                        |
                             v                        v
@@ -57,8 +56,7 @@ Service Managers (Adaptés) :
         |                                                                     |
         v                                                                     v
 [MCP Gateway + N8N] <-- [ConfigManager] <-- [ErrorManager] <-- [PostgreSQL (errors)]
-```
-
+```plaintext
 ## Module 3 : Interfaces des Managers Adaptées
 
 **Interface générique réutilisant l'existant :**
@@ -71,8 +69,7 @@ type ContextualMemoryManager interface {
     SearchContext(ctx context.Context, query string) ([]ContextResult, error)
     AnalyzeContext(ctx context.Context, data ContextData) (Analysis, error)
 }
-```
-
+```plaintext
 ### IndexManager adapté
 
 **Rôle :** Vectorisation via Qdrant et cache local via SQLiteEmbeddingCache existant.
@@ -149,8 +146,7 @@ func (im *indexManagerImpl) IndexAction(ctx context.Context, action Action) erro
     // 4. Indexer dans Qdrant
     return im.upsertToQdrant(ctx, action.ID, vector)
 }
-```
-
+```plaintext
 ### RetrievalManager adapté
 
 **Rôle :** Récupération via PostgreSQL/SQLite en utilisant StorageManager existant.
@@ -218,8 +214,7 @@ func (rm *retrievalManagerImpl) QueryContext(ctx context.Context, query ContextQ
     
     return results, nil
 }
-```
-
+```plaintext
 ### IntegrationManager adapté
 
 **Rôle :** Intégration avec MCP Gateway et workflows N8N existants.
@@ -280,8 +275,7 @@ func (im *integrationManagerImpl) SyncToMCPDatabase(ctx context.Context, actions
     
     return nil
 }
-```
-
+```plaintext
 ## Module 4 : Tests Adaptés
 
 ### Tests unitaires utilisant les mocks existants
@@ -324,8 +318,7 @@ func TestRetrievalManager_QueryContext(t *testing.T) {
     assert.Len(t, results, 1)
     assert.Equal(t, "test-1", results[0].ID)
 }
-```
-
+```plaintext
 ### Tests d'intégration avec bases de données réelles
 
 ```go
@@ -364,8 +357,7 @@ func TestIntegration_FullContextualFlow(t *testing.T) {
     err = igm.NotifyMCPGateway(ctx, event)
     assert.NoError(t, err)
 }
-```
-
+```plaintext
 ## Module 5 : Exemples Concrets Adaptés
 
 ### Exemple 1 : Indexation avec SQLiteEmbeddingCache et Qdrant
@@ -431,8 +423,7 @@ func main() {
     
     fmt.Printf("Action indexée avec succès: %s\n", action.ID)
 }
-```
-
+```plaintext
 ### Exemple 2 : Récupération via PostgreSQL et SQLite
 
 **Input :** Récupérer le contexte depuis PostgreSQL avec recherche vectorielle.
@@ -495,8 +486,7 @@ func ExampleRetrievalWithPostgreSQL() {
     
     fmt.Printf("Trouvé %d résultats contextuels\n", len(results))
 }
-```
-
+```plaintext
 ### Exemple 3 : Intégration MCP Gateway
 
 **Input :** Synchroniser avec la base SQLite du MCP Gateway existant.
@@ -550,14 +540,14 @@ func SyncWithMCPGateway(ctx context.Context, actions []Action) error {
     
     return nil
 }
-```
-
+```plaintext
 ### Exemple 4 : Configuration adaptée aux environnements
 
 **Configuration YAML adaptée :**
 
 ```yaml
 # config/environments/dev.yaml
+
 contextual_memory:
   storage:
     postgresql:
@@ -580,8 +570,10 @@ contextual_memory:
   indexing:
     batch_size: 100
     cache_ttl: 86400  # 24h
+
     auto_cleanup: true
     cleanup_interval: 3600  # 1h
+
   
   retrieval:
     max_results: 50
@@ -596,6 +588,7 @@ contextual_memory:
     n8n:
       webhook_url: "http://localhost:5678/webhook/contextual-memory"
       enabled: false  # Désactivé en dev
+
   
   monitoring:
     metrics_enabled: true
@@ -607,6 +600,7 @@ contextual_memory:
 
 ---
 # config/environments/prod.yaml
+
 contextual_memory:
   storage:
     postgresql:
@@ -638,14 +632,14 @@ contextual_memory:
       webhook_url: "${N8N_WEBHOOK_URL}"
       enabled: true
       auth_token: "${N8N_AUTH_TOKEN}"
-```
-
+```plaintext
 ## Module 6 : Architecture de Déploiement Adaptée
 
 ### Docker Compose pour l'environnement local
 
 ```yaml
 # docker-compose.contextual-memory.yml
+
 version: '3.8'
 
 services:
@@ -713,8 +707,7 @@ volumes:
 networks:
   email-sender-network:
     external: true
-```
-
+```plaintext
 ### Schémas SQL adaptés
 
 ```sql
@@ -785,8 +778,7 @@ CREATE INDEX IF NOT EXISTS idx_contextual_embeddings_action ON contextual_embedd
 CREATE INDEX IF NOT EXISTS idx_contextual_relationships_source ON contextual_relationships(source_action_id);
 CREATE INDEX IF NOT EXISTS idx_contextual_relationships_target ON contextual_relationships(target_action_id);
 CREATE INDEX IF NOT EXISTS idx_contextual_sessions_workspace ON contextual_sessions(workspace_path);
-```
-
+```plaintext
 ## Module 7 : Monitoring et Métriques Adaptées
 
 ### Intégration avec ErrorManager existant
@@ -859,8 +851,7 @@ func (cm *ContextualMetrics) RecordCacheHit() {
 func (cm *ContextualMetrics) RecordCacheMiss() {
     contextualCacheHitRate.WithLabelValues("miss").Inc()
 }
-```
-
+```plaintext
 ## Module 8 : Scripts d'Installation et Configuration
 
 ### Script PowerShell d'installation
@@ -882,6 +873,7 @@ param(
 Write-Host "Installation du Système de Mémoire Contextuelle - Environnement: $Environment" -ForegroundColor Green
 
 # 1. Vérifier les prérequis
+
 Write-Host "Vérification des prérequis..." -ForegroundColor Yellow
 
 if (-not $SkipDocker) {
@@ -895,6 +887,7 @@ if (-not $SkipDocker) {
 }
 
 # 2. Créer les répertoires nécessaires
+
 $dataDir = "./data/contextual-memory"
 $configDir = "./config/contextual-memory"
 
@@ -906,18 +899,22 @@ New-Item -ItemType Directory -Force -Path $configDir
 Write-Host "Répertoires créés: $dataDir, $configDir" -ForegroundColor Green
 
 # 3. Copier les configurations
+
 Copy-Item "./config/environments/$Environment.yaml" "$configDir/config.yaml" -Force
 Write-Host "Configuration copiée pour l'environnement: $Environment" -ForegroundColor Green
 
 # 4. Initialiser la base de données si demandé
+
 if ($InitializeDatabase) {
     Write-Host "Initialisation de la base de données..." -ForegroundColor Yellow
     
     # Démarrer PostgreSQL si pas déjà en cours
+
     docker-compose -f docker-compose.contextual-memory.yml up -d postgres
     Start-Sleep -Seconds 10
     
     # Exécuter les migrations
+
     $migrationFiles = Get-ChildItem "./development/managers/contextual-memory-manager/migrations/*.sql" | Sort-Object Name
     
     foreach ($migrationFile in $migrationFiles) {
@@ -925,6 +922,7 @@ if ($InitializeDatabase) {
         $sql = Get-Content $migrationFile.FullName -Raw
         
         # Exécuter via docker exec
+
         $sql | docker exec -i $(docker-compose -f docker-compose.contextual-memory.yml ps -q postgres) psql -U postgres -d email_sender_dev
         
         if ($LASTEXITCODE -ne 0) {
@@ -936,15 +934,18 @@ if ($InitializeDatabase) {
 }
 
 # 5. Démarrer les services si Docker est disponible
+
 if (-not $SkipDocker) {
     Write-Host "Démarrage des services Docker..." -ForegroundColor Yellow
     docker-compose -f docker-compose.contextual-memory.yml up -d
     
     # Attendre que les services soient prêts
+
     Write-Host "Attente du démarrage des services..." -ForegroundColor Yellow
     Start-Sleep -Seconds 30
     
     # Vérifier la santé des services
+
     $services = @("contextual-memory", "postgres", "qdrant")
     foreach ($service in $services) {
         $status = docker-compose -f docker-compose.contextual-memory.yml ps $service
@@ -957,6 +958,7 @@ if (-not $SkipDocker) {
 }
 
 # 6. Test de santé
+
 Write-Host "Test de santé du système..." -ForegroundColor Yellow
 
 try {
@@ -973,8 +975,7 @@ try {
 Write-Host "Installation terminée!" -ForegroundColor Green
 Write-Host "URL du service: http://localhost:8081" -ForegroundColor Cyan
 Write-Host "Monitoring: http://localhost:8081/metrics" -ForegroundColor Cyan
-```
-
+```plaintext
 ## Module 9 : Plan de Développement par Phases
 
 ### Phase 1 : Fondations (Semaines 1-2)
@@ -1150,17 +1151,21 @@ Write-Host "Monitoring: http://localhost:8081/metrics" -ForegroundColor Cyan
 
 ```bash
 # Installation rapide
+
 git clone <repo>
 cd EMAIL_SENDER_1
 ./scripts/Install-ContextualMemorySystem.ps1 -Environment dev -InitializeDatabase
 
 # Démarrage des services
+
 docker-compose -f docker-compose.contextual-memory.yml up -d
 
 # Test de fonctionnement
+
 curl http://localhost:8081/health
 
 # Indexer une action
+
 curl -X POST http://localhost:8081/api/v1/actions \
   -H "Content-Type: application/json" \
   -d '{
@@ -1173,26 +1178,35 @@ curl -X POST http://localhost:8081/api/v1/actions \
   }'
 
 # Rechercher du contexte
-curl -X GET "http://localhost:8081/api/v1/search?q=git%20commit&limit=10"
-```
 
+curl -X GET "http://localhost:8081/api/v1/search?q=git%20commit&limit=10"
+```plaintext
 ### API Reference
 
 ```yaml
 # Endpoints principaux
+
 POST /api/v1/actions           # Indexer une action
+
 GET  /api/v1/search           # Recherche contextuelle
+
 GET  /api/v1/actions/{id}     # Récupérer une action
+
 GET  /api/v1/sessions         # Lister les sessions
+
 POST /api/v1/sessions         # Créer une session
+
 GET  /api/v1/metrics          # Métriques Prometheus
+
 GET  /api/v1/health           # Health check
 
 # Webhooks
-POST /api/v1/webhooks/mcp     # Intégration MCP Gateway
-POST /api/v1/webhooks/n8n     # Trigger N8N workflows
-```
 
+POST /api/v1/webhooks/mcp     # Intégration MCP Gateway
+
+POST /api/v1/webhooks/n8n     # Trigger N8N workflows
+
+```plaintext
 ### Troubleshooting Guide
 
 #### Problèmes fréquents

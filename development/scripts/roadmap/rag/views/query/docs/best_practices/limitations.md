@@ -64,17 +64,19 @@ Le traitement des valeurs nulles ou manquantes peut varier selon le contexte.
 
 #### Exemples :
 
-```
+```plaintext
 # Trouve les tâches sans assigné
+
 assignee:null
 
 # Trouve les tâches avec un assigné
+
 assignee!=null
 
 # Comportement potentiellement différent (selon l'implémentation)
-NOT assignee:null
-```
 
+NOT assignee:null
+```plaintext
 #### Recommandations :
 
 - Testez le comportement spécifique de votre implémentation avec les valeurs nulles.
@@ -93,14 +95,15 @@ La sensibilité à la casse peut varier selon les champs et les opérateurs.
 
 #### Exemples :
 
-```
+```plaintext
 # Sensible à la casse (généralement)
+
 status:todo
 
 # Potentiellement insensible à la casse (selon l'implémentation)
-title~"interface"
-```
 
+title~"interface"
+```plaintext
 #### Recommandations :
 
 - Vérifiez la documentation spécifique de votre implémentation.
@@ -119,17 +122,19 @@ Les dates peuvent avoir des formats et des comportements spécifiques.
 
 #### Exemples :
 
-```
+```plaintext
 # Date absolue
+
 due_date<2025-06-30
 
 # Date relative (si supportée)
+
 due_date:today
 
 # Date avec heure (si supportée)
-created_at>2025-01-01T09:00:00Z
-```
 
+created_at>2025-01-01T09:00:00Z
+```plaintext
 #### Recommandations :
 
 - Utilisez le format ISO 8601 pour les dates absolues.
@@ -150,14 +155,15 @@ L'accès aux champs imbriqués peut nécessiter une syntaxe spéciale.
 
 #### Exemples :
 
-```
+```plaintext
 # Notation par point (si supportée)
+
 metadata.author:john
 
 # Notation par crochets (si supportée)
-metadata[author]:john
-```
 
+metadata[author]:john
+```plaintext
 #### Recommandations :
 
 - Consultez la documentation spécifique de votre implémentation.
@@ -176,17 +182,19 @@ La recherche dans les champs de type tableau peut avoir un comportement spécifi
 
 #### Exemples :
 
-```
+```plaintext
 # Trouve les tâches avec le tag exact "urgent"
+
 tags:urgent
 
 # Trouve les tâches avec un tag contenant "urgent" (si supporté)
+
 tags~urgent
 
 # Trouve les tâches avec tous ces tags (si supporté)
-tags:ALL(urgent, important)
-```
 
+tags:ALL(urgent, important)
+```plaintext
 #### Recommandations :
 
 - Testez le comportement spécifique de votre implémentation avec les tableaux.
@@ -205,14 +213,15 @@ Les caractères spéciaux peuvent nécessiter un échappement spécifique.
 
 #### Exemples :
 
-```
+```plaintext
 # Échappement avec backslash
+
 title:Interface\:\ Version\ 1
 
 # Échappement avec guillemets
-title:"Interface: Version 1"
-```
 
+title:"Interface: Version 1"
+```plaintext
 #### Recommandations :
 
 - Préférez l'utilisation des guillemets pour les valeurs contenant des caractères spéciaux.

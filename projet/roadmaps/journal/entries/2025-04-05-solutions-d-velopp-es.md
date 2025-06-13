@@ -6,6 +6,7 @@ related: []
 ---
 
 ## Solutions développées
+
 1. **Script de correction d'encodage (Python)** : `fix_all_workflows.py`
    - Remplace les caractères accentués par leurs équivalents non accentués dans les fichiers JSON
    - Utilise une approche simple et efficace pour normaliser les caractères
@@ -19,3 +20,4 @@ related: []
    - Permet de nettoyer l'instance n8n avant d'importer de nouveaux workflows
 
 #
+

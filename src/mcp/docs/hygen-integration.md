@@ -69,25 +69,36 @@ La documentation externe générée par Hygen respecte les standards de document
 
 La documentation Hygen est structurée de la manière suivante :
 
-```
+```plaintext
 mcp/docs/
   ├── hygen-guide.md                 # Guide d'utilisation
+
   ├── hygen-training-guide.md        # Guide de formation
+
   ├── hygen-procedures.md            # Procédures d'utilisation
+
   ├── hygen-benefits-report.md       # Rapport des bénéfices
+
   ├── hygen-user-feedback-report.md  # Rapport des retours utilisateurs
+
   ├── hygen-analysis.md              # Analyse de la structure
+
   ├── hygen-templates-plan.md        # Plan des templates
+
   ├── hygen-integration-plan.md      # Plan d'intégration
+
   ├── hygen-integration.md           # Intégration dans la documentation globale
+
   ├── api/
   │   └── MCPApiUtils.md             # Documentation de l'API MCPApiUtils
+
   ├── guides/
   │   └── api-gateway-guide.md       # Guide d'utilisation du serveur de passerelle API
+
   └── architecture/
       └── hygen-architecture.md      # Architecture de Hygen
-```
 
+```plaintext
 ## Navigation dans la documentation
 
 La documentation Hygen est accessible depuis la documentation MCP de la manière suivante :

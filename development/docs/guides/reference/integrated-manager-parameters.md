@@ -1,18 +1,27 @@
-﻿# RÃ©fÃ©rence des paramÃ¨tres du gestionnaire intÃ©grÃ©
+# RÃ©fÃ©rence des paramÃ¨tres du gestionnaire intÃ©grÃ©
 
 Ce document prÃ©sente une rÃ©fÃ©rence complÃ¨te des paramÃ¨tres du gestionnaire intÃ©grÃ© et des modes associÃ©s.
 
 ## Table des matiÃ¨res
 
 1. [Gestionnaire intÃ©grÃ©](#gestionnaire-intÃ©grÃ©)
+
 2. [Mode CHECK](#mode-check)
+
 3. [Mode GRAN](#mode-gran)
+
 4. [Mode ROADMAP-SYNC](#mode-roadmap-sync)
+
 5. [Mode ROADMAP-REPORT](#mode-roadmap-report)
+
 6. [Mode ROADMAP-PLAN](#mode-roadmap-plan)
+
 7. [Workflow quotidien](#workflow-quotidien)
+
 8. [Workflow hebdomadaire](#workflow-hebdomadaire)
+
 9. [Workflow mensuel](#workflow-mensuel)
+
 10. [Installation des tÃ¢ches planifiÃ©es](#installation-des-tÃ¢ches-planifiÃ©es)
 
 ## Gestionnaire intÃ©grÃ©
@@ -42,18 +51,21 @@ Script : `development\scripts\integrated-manager.ps1`
 
 ```powershell
 # ExÃ©cuter le mode CHECK
+
 .\development\scripts\integrated-manager.ps1 -Mode CHECK -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3"
 
 # ExÃ©cuter le workflow RoadmapManagement
+
 .\development\scripts\integrated-manager.ps1 -Workflow "RoadmapManagement" -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md"
 
 # Afficher la liste des modes disponibles
+
 .\development\scripts\integrated-manager.ps1 -ListModes
 
 # Afficher la liste des workflows disponibles
-.\development\scripts\integrated-manager.ps1 -ListWorkflows
-```
 
+.\development\scripts\integrated-manager.ps1 -ListWorkflows
+```plaintext
 ## Mode CHECK
 
 Script : `development\scripts\maintenance\modes\check.ps1`
@@ -78,15 +90,17 @@ Script : `development\scripts\maintenance\modes\check.ps1`
 
 ```powershell
 # VÃ©rifier l'Ã©tat d'avancement d'une tÃ¢che
+
 .\development\scripts\maintenance\modes\check.ps1 -FilePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3"
 
 # VÃ©rifier l'Ã©tat d'avancement d'une tÃ¢che et mettre Ã  jour la roadmap
+
 .\development\scripts\maintenance\modes\check.ps1 -FilePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -UpdateRoadmap
 
 # VÃ©rifier l'Ã©tat d'avancement d'une tÃ¢che et gÃ©nÃ©rer un rapport
-.\development\scripts\maintenance\modes\check.ps1 -FilePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -GenerateReport -ReportPath "projet\roadmaps\Reports"
-```
 
+.\development\scripts\maintenance\modes\check.ps1 -FilePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -GenerateReport -ReportPath "projet\roadmaps\Reports"
+```plaintext
 ## Mode GRAN
 
 Script : `development\scripts\maintenance\modes\gran-mode.ps1`
@@ -108,15 +122,17 @@ Script : `development\scripts\maintenance\modes\gran-mode.ps1`
 
 ```powershell
 # DÃ©composer une tÃ¢che en sous-tÃ¢ches
+
 .\development\scripts\maintenance\modes\gran-mode.ps1 -FilePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3"
 
 # DÃ©composer une tÃ¢che en sous-tÃ¢ches avec un fichier de sous-tÃ¢ches
+
 .\development\scripts\maintenance\modes\gran-mode.ps1 -FilePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -SubTasksFile "templates\subtasks.txt"
 
 # DÃ©composer une tÃ¢che en sous-tÃ¢ches avec un style d'indentation personnalisÃ©
-.\development\scripts\maintenance\modes\gran-mode.ps1 -FilePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -IndentationStyle "Spaces4"
-```
 
+.\development\scripts\maintenance\modes\gran-mode.ps1 -FilePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -IndentationStyle "Spaces4"
+```plaintext
 ## Mode ROADMAP-SYNC
 
 Script : `development\scripts\maintenance\modes\roadmap-sync-mode.ps1`
@@ -139,19 +155,21 @@ Script : `development\scripts\maintenance\modes\roadmap-sync-mode.ps1`
 
 ```powershell
 # Synchroniser une roadmap Markdown vers JSON
+
 .\development\scripts\maintenance\modes\roadmap-sync-mode.ps1 -SourcePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TargetFormat "JSON"
 
 # Synchroniser une roadmap Markdown vers HTML
+
 .\development\scripts\maintenance\modes\roadmap-sync-mode.ps1 -SourcePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TargetFormat "HTML"
 
 # Synchroniser plusieurs roadmaps en une seule opÃ©ration
+
 $sourcePaths = @(
     "projet\roadmaps\Roadmap\roadmap_complete_converted.md",
     "projet\roadmaps\mes-plans\roadmap_perso.md"
 )
 .\development\scripts\maintenance\modes\roadmap-sync-mode.ps1 -SourcePath $sourcePaths -MultiSync -TargetFormat "JSON"
-```
-
+```plaintext
 ## Mode ROADMAP-REPORT
 
 Script : `development\scripts\maintenance\modes\roadmap-report-mode.ps1`
@@ -175,15 +193,17 @@ Script : `development\scripts\maintenance\modes\roadmap-report-mode.ps1`
 
 ```powershell
 # GÃ©nÃ©rer un rapport HTML
+
 .\development\scripts\maintenance\modes\roadmap-report-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -ReportFormat "HTML"
 
 # GÃ©nÃ©rer des rapports dans tous les formats
+
 .\development\scripts\maintenance\modes\roadmap-report-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -ReportFormat "All"
 
 # GÃ©nÃ©rer un rapport sans graphiques ni prÃ©visions
-.\development\scripts\maintenance\modes\roadmap-report-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -ReportFormat "HTML" -IncludeCharts:$false -IncludePredictions:$false
-```
 
+.\development\scripts\maintenance\modes\roadmap-report-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -ReportFormat "HTML" -IncludeCharts:$false -IncludePredictions:$false
+```plaintext
 ## Mode ROADMAP-PLAN
 
 Script : `development\scripts\maintenance\modes\roadmap-plan-mode.ps1`
@@ -203,15 +223,17 @@ Script : `development\scripts\maintenance\modes\roadmap-plan-mode.ps1`
 
 ```powershell
 # GÃ©nÃ©rer un plan d'action
+
 .\development\scripts\maintenance\modes\roadmap-plan-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md"
 
 # GÃ©nÃ©rer un plan d'action avec une pÃ©riode de prÃ©vision personnalisÃ©e
+
 .\development\scripts\maintenance\modes\roadmap-plan-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -DaysToForecast 60
 
 # GÃ©nÃ©rer un plan d'action dans un fichier spÃ©cifique
-.\development\scripts\maintenance\modes\roadmap-plan-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -OutputPath "projet\roadmaps\Plans\plan_action_q3_2023.md"
-```
 
+.\development\scripts\maintenance\modes\roadmap-plan-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -OutputPath "projet\roadmaps\Plans\plan_action_q3_2023.md"
+```plaintext
 ## Workflow quotidien
 
 Script : `development\scripts\workflows\workflow-quotidien.ps1`
@@ -229,15 +251,17 @@ Script : `development\scripts\workflows\workflow-quotidien.ps1`
 
 ```powershell
 # ExÃ©cuter le workflow quotidien
+
 .\development\scripts\workflows\workflow-quotidien.ps1
 
 # ExÃ©cuter le workflow quotidien avec un chemin de roadmap personnalisÃ©
+
 .\development\scripts\workflows\workflow-quotidien.ps1 -RoadmapPath "projet\roadmaps\mes-plans\roadmap_perso.md"
 
 # ExÃ©cuter le workflow quotidien avec un rÃ©pertoire de journalisation personnalisÃ©
-.\development\scripts\workflows\workflow-quotidien.ps1 -LogPath "projet\roadmaps\Logs\quotidien"
-```
 
+.\development\scripts\workflows\workflow-quotidien.ps1 -LogPath "projet\roadmaps\Logs\quotidien"
+```plaintext
 ## Workflow hebdomadaire
 
 Script : `development\scripts\workflows\workflow-hebdomadaire.ps1`
@@ -256,9 +280,11 @@ Script : `development\scripts\workflows\workflow-hebdomadaire.ps1`
 
 ```powershell
 # ExÃ©cuter le workflow hebdomadaire
+
 .\development\scripts\workflows\workflow-hebdomadaire.ps1
 
 # ExÃ©cuter le workflow hebdomadaire avec plusieurs chemins de roadmap
+
 $roadmapPaths = @(
     "projet\roadmaps\Roadmap\roadmap_complete_converted.md",
     "projet\roadmaps\mes-plans\roadmap_perso.md"
@@ -266,9 +292,9 @@ $roadmapPaths = @(
 .\development\scripts\workflows\workflow-hebdomadaire.ps1 -RoadmapPaths $roadmapPaths
 
 # ExÃ©cuter le workflow hebdomadaire avec un rÃ©pertoire de sortie personnalisÃ©
-.\development\scripts\workflows\workflow-hebdomadaire.ps1 -OutputPath "projet\roadmaps\output"
-```
 
+.\development\scripts\workflows\workflow-hebdomadaire.ps1 -OutputPath "projet\roadmaps\output"
+```plaintext
 ## Workflow mensuel
 
 Script : `development\scripts\workflows\workflow-mensuel.ps1`
@@ -287,9 +313,11 @@ Script : `development\scripts\workflows\workflow-mensuel.ps1`
 
 ```powershell
 # ExÃ©cuter le workflow mensuel
+
 .\development\scripts\workflows\workflow-mensuel.ps1
 
 # ExÃ©cuter le workflow mensuel avec plusieurs chemins de roadmap
+
 $roadmapPaths = @(
     "projet\roadmaps\Roadmap\roadmap_complete_converted.md",
     "projet\roadmaps\mes-plans\roadmap_perso.md"
@@ -297,9 +325,9 @@ $roadmapPaths = @(
 .\development\scripts\workflows\workflow-mensuel.ps1 -RoadmapPaths $roadmapPaths
 
 # ExÃ©cuter le workflow mensuel avec un rÃ©pertoire de sortie personnalisÃ©
-.\development\scripts\workflows\workflow-mensuel.ps1 -OutputPath "projet\roadmaps\output"
-```
 
+.\development\scripts\workflows\workflow-mensuel.ps1 -OutputPath "projet\roadmaps\output"
+```plaintext
 ## Installation des tÃ¢ches planifiÃ©es
 
 Script : `development\scripts\workflows\install-scheduled-tasks.ps1`
@@ -318,15 +346,18 @@ Script : `development\scripts\workflows\install-scheduled-tasks.ps1`
 
 ```powershell
 # Installer les tÃ¢ches planifiÃ©es
+
 .\development\scripts\workflows\install-scheduled-tasks.ps1
 
 # Installer les tÃ¢ches planifiÃ©es avec un prÃ©fixe personnalisÃ©
+
 .\development\scripts\workflows\install-scheduled-tasks.ps1 -TaskPrefix "MonProjet"
 
 # Remplacer les tÃ¢ches existantes
+
 .\development\scripts\workflows\install-scheduled-tasks.ps1 -Force
 
 # Voir ce que l'installation ferait sans l'exÃ©cuter rÃ©ellement
-.\development\scripts\workflows\install-scheduled-tasks.ps1 -WhatIf
-```
 
+.\development\scripts\workflows\install-scheduled-tasks.ps1 -WhatIf
+```plaintext

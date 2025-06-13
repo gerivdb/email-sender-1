@@ -1,27 +1,34 @@
 # Tâche: PRED-123
 
 ## Titre
+
 Implémenter le module de régression linéaire simple
 
 ## Statut
+
 in-progress
 
 ## Dépendances
+
 - PRED-101: Définition des interfaces de prédiction
 - PRED-115: Implémentation du module TrendAnalyzer
 
 ## Priorité
+
 high
 
 ## Estimation
+
 4 heures
 
 ## Description
 
 ### Contexte
+
 Le système de prédiction de charge nécessite un module de régression linéaire simple pour prédire les valeurs futures des métriques système. Ce module doit s'intégrer avec le module TrendAnalyzer existant et respecter les interfaces définies dans le PRD.
 
 ### Objectifs
+
 1. Créer un module PowerShell `SimpleLinearRegression.psm1` qui implémente les fonctionnalités de régression linéaire
 2. Implémenter les fonctions principales pour créer des modèles et faire des prédictions
 3. Assurer la compatibilité avec PowerShell 5.1+ sans dépendances externes
@@ -30,11 +37,13 @@ Le système de prédiction de charge nécessite un module de régression linéai
 ### Spécifications techniques
 
 #### Structure du module
+
 - Variables globales minimales (uniquement `$script:Models` pour stocker les modèles)
 - Fonctions d'accès aux modèles (`Get-SimpleLinearModel`)
 - Fonctions principales exposées (`New-SimpleLinearModel`, `Invoke-SimpleLinearPrediction`)
 
 #### Fonction New-SimpleLinearModel
+
 - **Paramètres**:
   * `XValues [double[]]` (obligatoire): Valeurs indépendantes
   * `YValues [double[]]` (obligatoire): Valeurs dépendantes
@@ -46,6 +55,7 @@ Le système de prédiction de charge nécessite un module de régression linéai
 - **Retour**: Nom du modèle créé
 
 #### Fonction Invoke-SimpleLinearPrediction
+
 - **Paramètres**:
   * `ModelName [string]` (obligatoire): Nom du modèle à utiliser
   * `XValues [double[]]` (obligatoire): Valeurs pour lesquelles prédire
@@ -57,12 +67,14 @@ Le système de prédiction de charge nécessite un module de régression linéai
 - **Retour**: Hashtable avec prédictions et intervalles
 
 #### Gestion des erreurs
+
 - Vérification des dimensions des tableaux d'entrée
 - Gestion des cas de division par zéro
 - Validation des paramètres (ConfidenceLevel entre 0 et 1)
 - Retour de `$null` avec message d'erreur explicite en cas d'échec
 
 ### Contraintes
+
 - Compatible PowerShell 5.1+
 - Pas de dépendances externes
 - Respect des conventions de nommage PowerShell
@@ -71,6 +83,7 @@ Le système de prédiction de charge nécessite un module de régression linéai
 ## Stratégie de test
 
 ### Tests unitaires
+
 1. **Test de création de modèle**:
    - Données parfaitement linéaires (y = 2x)
    - Vérification des coefficients (pente = 2, ordonnée = 0)
@@ -92,22 +105,26 @@ Le système de prédiction de charge nécessite un module de régression linéai
    - Gestion des noms de modèles invalides ou inexistants
 
 ### Critères d'acceptation
+
 - Tous les tests unitaires passent
 - Le code respecte les conventions de style PowerShell
 - La documentation est complète et précise
 - Les performances sont acceptables (< 100ms pour créer un modèle avec 1000 points)
 
 ## Notes de développement
+
 - Utiliser la méthode des moindres carrés pour calculer les coefficients
 - Pour les intervalles de confiance, utiliser l'approximation normale
 - Stocker les modèles en mémoire uniquement (pas de persistance)
 - Prévoir une extension future pour d'autres types de régression
 
 ## Livrables
+
 - Module `SimpleLinearRegression.psm1`
 - Script de test `Test-SimpleLinearRegression.ps1`
 - Documentation des fonctions et exemples d'utilisation
 
 ## Historique
+
 - 2025-05-13: Création de la tâche
 - 2025-05-14: Mise à jour des spécifications après revue du PRD

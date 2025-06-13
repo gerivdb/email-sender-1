@@ -1,4 +1,5 @@
 # Plan de Développement Amélioré : Système d'Orchestration & Parallélisation en Go
+
 ## Intégration avec EMAIL SENDER 1
 
 **Date de création :** 2025-05-26
@@ -153,12 +154,15 @@
     - [ ] **4.3.2** Module PowerShell étendu
         ```powershell
         # Intégration avec les managers Go
+
         Import-Module EmailSenderGoIntegration
         
         # Démarrer les managers
+
         Start-GoManagers -ParallelizationManager -ProcessManager
         
         # Exécuter un workflow complet
+
         Invoke-BookingWorkflow -Mode PREDIC -Venue "Salle Example" -Date "2025-06-01"
         ```
 
@@ -241,7 +245,7 @@
 
 ## Architecture Technique Proposée
 
-```
+```plaintext
 ┌─────────────────────────────────────────────────────────────┐
 │                     EMAIL SENDER 1                         │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────┐ │
@@ -266,8 +270,7 @@
     │                Intégrations                              │
     │  Notion LOT1 │ Google Calendar │ Gmail │ OpenRouter      │
     └──────────────────────────────────────────────────────────┘
-```
-
+```plaintext
 ---
 
 ## Actions Immédiates Requises

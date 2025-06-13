@@ -1,4 +1,4 @@
-﻿# Build-DependencyGraph
+# Build-DependencyGraph
 
 ## RÃ©sumÃ©
 
@@ -17,6 +17,7 @@ Build-DependencyGraph [-Files <FileInfo[]>]  [-ProjectRoot <string>]  [-MaxDepth
 `
 
 ## ParamÃ¨tres
+
 ### -Files
 
 

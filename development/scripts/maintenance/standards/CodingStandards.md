@@ -1,13 +1,17 @@
-﻿# Standards de Codage pour les Scripts
+# Standards de Codage pour les Scripts
 
 Ce document dÃ©finit les standards de codage Ã  suivre pour tous les scripts du projet. Ces standards visent Ã  amÃ©liorer la lisibilitÃ©, la maintenabilitÃ© et la cohÃ©rence du code.
 
 ## Table des matiÃ¨res
 
 1. [Standards GÃ©nÃ©raux](#standards-gÃ©nÃ©raux)
+
 2. [Standards pour PowerShell](#standards-pour-powershell)
+
 3. [Standards pour Python](#standards-pour-python)
+
 4. [Standards pour les Scripts Batch](#standards-pour-les-scripts-batch)
+
 5. [Standards pour les Scripts Shell](#standards-pour-les-scripts-shell)
 
 ## Standards GÃ©nÃ©raux
@@ -116,6 +120,7 @@ Ces standards s'appliquent Ã  tous les types de scripts.
 
 ```powershell
 <#
+
 .SYNOPSIS
     BrÃ¨ve description du script.
 .DESCRIPTION
@@ -145,8 +150,8 @@ param (
 )
 
 # Code du script
-```
 
+```plaintext
 ## Standards pour Python
 
 ### Style de Code
@@ -182,7 +187,9 @@ param (
 
 ```python
 #!/usr/bin/env python3
+
 # -*- coding: utf-8 -*-
+
 """
 Nom du script : script_name.py
 Description : BrÃ¨ve description du script.
@@ -208,8 +215,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-```
-
+```plaintext
 ## Standards pour les Scripts Batch
 
 ### Style de Code
@@ -249,8 +255,7 @@ setlocal enabledelayedexpansion
 ::-----------------------------------------------------------------------------
 
 :: Code du script
-```
-
+```plaintext
 ## Standards pour les Scripts Shell
 
 ### Style de Code
@@ -279,30 +284,42 @@ setlocal enabledelayedexpansion
 
 ```bash
 #!/bin/bash
+
 #-----------------------------------------------------------------------------
+
 # Nom du script : script-name.sh
+
 # Description   : BrÃ¨ve description du script.
+
 # Auteur        : Nom de l'auteur
+
 # Date de crÃ©ation : YYYY-MM-DD
+
 # DerniÃ¨re modification : YYYY-MM-DD
+
 # Version       : 1.0
+
 #
+
 # Utilisation   : ./script-name.sh [arg1] [arg2]
+
 #-----------------------------------------------------------------------------
 
 # ArrÃªter le script en cas d'erreur
+
 set -e
 
 # Code du script
 
 main() {
     # Code principal
+
 }
 
 # Appel de la fonction principale
-main "$@"
-```
 
+main "$@"
+```plaintext
 ## Conclusion
 
 Ces standards de codage sont conÃ§us pour amÃ©liorer la qualitÃ© et la maintenabilitÃ© du code. Ils doivent Ãªtre suivis par tous les dÃ©veloppeurs travaillant sur le projet. Des exceptions peuvent Ãªtre faites dans des cas particuliers, mais elles doivent Ãªtre documentÃ©es et justifiÃ©es.

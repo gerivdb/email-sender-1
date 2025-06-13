@@ -1,4 +1,4 @@
-﻿Absolument. Voici une analyse technique de la vidéo, axée sur son utilité pour votre projet EMAIL_SENDER_1.
+Absolument. Voici une analyse technique de la vidéo, axée sur son utilité pour votre projet EMAIL_SENDER_1.
 
 ## Compte Rendu : LIVE - Human in the loop
 
@@ -102,7 +102,7 @@ Démontrer la mise en place d'un workflow "Human in the Loop" (HITL) avec n8n. C
 *   **Interface de Validation :** Slack est utilisé ici, mais pour EMAIL_SENDER_1, une interface e-mail ou une mini-application web dédiée pourrait être plus appropriée pour les validateurs.
 
 **Diagramme ASCII Simplifié du Workflow :**
-```
+```plaintext
 [Airtable Trigger] ----> [AI Agent (Draft Email)] ----> [Code (Set Vars)] ----> [Edit Fields] ----+
      ^                                                                                           |
      |                                                                                           |
@@ -115,6 +115,5 @@ Démontrer la mise en place d'un workflow "Human in the Loop" (HITL) avec n8n. C
                                                             | [Approved]
                                                             v
                                                  [Slack/Gmail (Send to Prospect)]
-```
-
+```plaintext
 Ce workflow est une excellente base pour intégrer une validation humaine robuste dans EMAIL_SENDER_1, notamment pour les campagnes où la qualité et la personnalisation sont primordiales.

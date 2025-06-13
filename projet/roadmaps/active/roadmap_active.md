@@ -1,4 +1,4 @@
-﻿# Roadmap Active - EMAIL_SENDER_1
+# Roadmap Active - EMAIL_SENDER_1
 
 Ce fichier contient les tÃ¢ches actives et Ã  venir de la roadmap.
 GÃ©nÃ©rÃ© le 2025-05-02 18:02:39

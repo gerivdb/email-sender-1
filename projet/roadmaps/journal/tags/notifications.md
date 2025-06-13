@@ -9,4 +9,6 @@ Ce fichier répertorie toutes les entrées du journal de bord liées aux notific
 ## Sujets connexes
 
 - [#mcp](mcp.md)
+
 - [#optimisation](optimisation.md)
+

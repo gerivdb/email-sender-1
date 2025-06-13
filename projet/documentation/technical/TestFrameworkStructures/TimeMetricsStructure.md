@@ -28,8 +28,7 @@ Les métriques temporelles sont organisées dans une structure hiérarchique qui
     }
   }
 }
-```
-
+```plaintext
 ## 3. Composants détaillés
 
 ### 3.1 Temps réel (wallClock)
@@ -75,8 +74,7 @@ Le temps réel, ou "wall clock time", représente le temps écoulé tel que mesu
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `total` | number | Durée totale du test en millisecondes |
@@ -123,8 +121,7 @@ Le temps CPU représente le temps de traitement utilisé par le processeur pour 
     "utilization": 0.85
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `total` | number | Temps CPU total en millisecondes |
@@ -227,8 +224,7 @@ Le temps par opération représente le temps passé à exécuter des opérations
     ]
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `summary.total` | number | Temps total pour toutes les opérations en millisecondes |
@@ -289,8 +285,7 @@ Les marqueurs temporels permettent de mesurer le temps entre des points spécifi
     ]
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `points` | object | Points de marquage temporel |
@@ -377,8 +372,7 @@ Les distributions temporelles fournissent des informations statistiques sur la r
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `histogram.buckets` | array | Buckets de l'histogramme des temps |
@@ -426,8 +420,7 @@ Les distributions temporelles fournissent des informations statistiques sur la r
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `latency` | object | Métriques de latence en millisecondes |
@@ -468,8 +461,7 @@ Les distributions temporelles fournissent des informations statistiques sur la r
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `responseTime.firstByte` | object | Temps jusqu'au premier octet en millisecondes |
@@ -505,8 +497,7 @@ Les distributions temporelles fournissent des informations statistiques sur la r
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `waiting.total` | number | Temps d'attente total en millisecondes |
@@ -531,8 +522,7 @@ Les distributions temporelles fournissent des informations statistiques sur la r
     }
   }
 }
-```
-
+```plaintext
 ### 5.2 Exemple complet
 
 ```json
@@ -853,8 +843,7 @@ Les distributions temporelles fournissent des informations statistiques sur la r
     }
   }
 }
-```
-
+```plaintext
 ## 6. Bonnes pratiques
 
 ### 6.1 Unités de mesure

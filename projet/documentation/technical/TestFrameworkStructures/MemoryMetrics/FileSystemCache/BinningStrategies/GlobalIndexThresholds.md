@@ -181,6 +181,7 @@ def validate_thresholds_by_simulation(distribution_types, bin_configurations, th
     for dist_type in distribution_types:
         dist_results = {
             "confusion_matrix": np.zeros((6, 6)),  # Matrice de confusion 6x6 (6 niveaux de qualité)
+
             "accuracy": 0.0,
             "precision": np.zeros(6),
             "recall": np.zeros(6)
@@ -190,37 +191,50 @@ def validate_thresholds_by_simulation(distribution_types, bin_configurations, th
         
         for _ in range(n_simulations):
             # Générer une distribution synthétique du type spécifié
+
             real_data = generate_synthetic_distribution(dist_type)
             
             for config in bin_configurations:
                 # Générer l'histogramme avec cette configuration
+
                 bin_edges, bin_counts = generate_histogram(real_data, config)
                 
                 # Calculer l'IGCM
+
                 igcm, _ = calculate_global_moment_conservation_index(real_data, bin_edges, bin_counts)
                 
                 # Déterminer le niveau de qualité réel (par évaluation experte ou autre référence)
+
                 true_quality = determine_true_quality(real_data, bin_edges, bin_counts)
                 
                 # Déterminer le niveau de qualité prédit par les seuils
+
                 if igcm >= thresholds[0]:
                     predicted_quality = 0  # Excellent
+
                 elif igcm >= thresholds[1]:
                     predicted_quality = 1  # Très bon
+
                 elif igcm >= thresholds[2]:
                     predicted_quality = 2  # Bon
+
                 elif igcm >= thresholds[3]:
                     predicted_quality = 3  # Acceptable
+
                 elif igcm >= thresholds[4]:
                     predicted_quality = 4  # Limité
+
                 else:
                     predicted_quality = 5  # Insuffisant
+
                 
                 # Mettre à jour la matrice de confusion
+
                 dist_results["confusion_matrix"][true_quality, predicted_quality] += 1
                 total_simulations += 1
         
         # Calculer les métriques d'évaluation
+
         dist_results["accuracy"] = np.trace(dist_results["confusion_matrix"]) / total_simulations
         
         for i in range(6):
@@ -233,8 +247,7 @@ def validate_thresholds_by_simulation(distribution_types, bin_configurations, th
         validation_results[dist_type] = dist_results
     
     return validation_results
-```
-
+```plaintext
 ### 7.2 Validation par analyse de sensibilité
 
 ```python
@@ -253,32 +266,40 @@ def perform_threshold_sensitivity_analysis(thresholds, step_size=0.01, range_siz
     sensitivity_results = {}
     
     # Charger le jeu de données de validation
+
     validation_data = load_validation_dataset()
     
     # Calculer les métriques de référence avec les seuils actuels
+
     reference_metrics = calculate_classification_metrics(validation_data, thresholds)
     
     # Pour chaque seuil
+
     for i, threshold in enumerate(thresholds):
         threshold_name = ["excellent", "très_bon", "bon", "acceptable", "limité"][i]
         threshold_sensitivity = []
         
         # Faire varier le seuil dans la plage spécifiée
+
         for delta in np.arange(-range_size, range_size + step_size, step_size):
             # Créer un nouvel ensemble de seuils avec ce seuil modifié
+
             modified_thresholds = thresholds.copy()
             modified_thresholds[i] = threshold + delta
             
             # S'assurer que les seuils restent ordonnés
+
             if i > 0 and modified_thresholds[i] > modified_thresholds[i-1]:
                 continue
             if i < len(thresholds) - 1 and modified_thresholds[i] < modified_thresholds[i+1]:
                 continue
             
             # Calculer les métriques avec les seuils modifiés
+
             modified_metrics = calculate_classification_metrics(validation_data, modified_thresholds)
             
             # Calculer les variations des métriques
+
             metric_variations = {
                 "accuracy": modified_metrics["accuracy"] - reference_metrics["accuracy"],
                 "precision": modified_metrics["precision"] - reference_metrics["precision"],
@@ -295,8 +316,7 @@ def perform_threshold_sensitivity_analysis(thresholds, step_size=0.01, range_siz
         sensitivity_results[threshold_name] = threshold_sensitivity
     
     return sensitivity_results
-```
-
+```plaintext
 ## 8. Représentation JSON des seuils
 
 ```json
@@ -429,8 +449,7 @@ def perform_threshold_sensitivity_analysis(thresholds, step_size=0.01, range_siz
     }
   }
 }
-```
-
+```plaintext
 ## 9. Exemples d'application
 
 ### 9.1 Distribution asymétrique positive (typique des latences)

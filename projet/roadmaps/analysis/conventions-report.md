@@ -1,4 +1,4 @@
-﻿# Conventions SpÃ©cifiques au Projet
+# Conventions SpÃ©cifiques au Projet
 
 **Fichier analysÃ©:** D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete_converted.md
 **Date d'analyse:** 2025-04-23 23:43:33

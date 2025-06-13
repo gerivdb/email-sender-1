@@ -1,4 +1,4 @@
-﻿# Rapport d'analyse pre-commit
+# Rapport d'analyse pre-commit
 
 Date: 2025-04-14 07:46:53
 

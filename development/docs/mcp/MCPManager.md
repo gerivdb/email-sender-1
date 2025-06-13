@@ -1,4 +1,4 @@
-﻿# Module MCPManager
+# Module MCPManager
 
 ## Description
 
@@ -19,8 +19,7 @@ Le module MCPManager est installÃ© dans le dossier `modules` du projet. Pour l
 
 ```powershell
 Import-Module -Path ".\modules\MCPManager.psm1"
-```
-
+```plaintext
 ## Fonctions publiques
 
 ### Find-MCPServers
@@ -31,8 +30,7 @@ DÃ©tecte les serveurs MCP locaux et cloud.
 
 ```powershell
 Find-MCPServers [[-ConfigPath] <string>] [[-OutputPath] <string>] [-Scan] [-Force] [<CommonParameters>]
-```
-
+```plaintext
 #### ParamÃ¨tres
 
 - **ConfigPath** : Chemin du fichier de configuration MCP. Par dÃ©faut : `.\.augment\config.json`.
@@ -44,8 +42,7 @@ Find-MCPServers [[-ConfigPath] <string>] [[-OutputPath] <string>] [-Scan] [-Forc
 
 ```powershell
 Find-MCPServers -Scan -Force
-```
-
+```plaintext
 ### New-MCPConfiguration
 
 CrÃ©e une configuration MCP.
@@ -54,8 +51,7 @@ CrÃ©e une configuration MCP.
 
 ```powershell
 New-MCPConfiguration [[-OutputPath] <string>] [-Force] [<CommonParameters>]
-```
-
+```plaintext
 #### ParamÃ¨tres
 
 - **OutputPath** : Chemin du fichier de sortie pour la configuration. Par dÃ©faut : `.\mcp-servers\mcp-config.json`.
@@ -65,8 +61,7 @@ New-MCPConfiguration [[-OutputPath] <string>] [-Force] [<CommonParameters>]
 
 ```powershell
 New-MCPConfiguration -Force
-```
-
+```plaintext
 ### mcp-manager
 
 DÃ©marre le gestionnaire de serveurs MCP ou un agent MCP.
@@ -75,8 +70,7 @@ DÃ©marre le gestionnaire de serveurs MCP ou un agent MCP.
 
 ```powershell
 mcp-manager [-Agent] [[-Query] <string>] [-Force] [<CommonParameters>]
-```
-
+```plaintext
 #### ParamÃ¨tres
 
 - **Agent** : DÃ©marre un agent MCP au lieu du gestionnaire de serveurs.
@@ -87,8 +81,7 @@ mcp-manager [-Agent] [[-Query] <string>] [-Force] [<CommonParameters>]
 
 ```powershell
 mcp-manager -Agent -Query "Trouve les meilleurs restaurants Ã  Paris"
-```
-
+```plaintext
 ### Invoke-MCPCommand
 
 ExÃ©cute une commande MCP.
@@ -97,8 +90,7 @@ ExÃ©cute une commande MCP.
 
 ```powershell
 Invoke-MCPCommand [-MCP] <string> [[-Args] <string>] [<CommonParameters>]
-```
-
+```plaintext
 #### ParamÃ¨tres
 
 - **MCP** : Le type de MCP Ã  exÃ©cuter (standard, notion, gateway, git-ingest).
@@ -108,8 +100,7 @@ Invoke-MCPCommand [-MCP] <string> [[-Args] <string>] [<CommonParameters>]
 
 ```powershell
 Invoke-MCPCommand -MCP "standard" -Args "--help"
-```
-
+```plaintext
 ## IntÃ©gration avec les scripts Python
 
 Le module MCPManager s'intÃ¨gre avec les scripts Python suivants :
@@ -133,8 +124,7 @@ Des tests unitaires sont disponibles dans le fichier `tests\unit\MCPManager.Test
 
 ```powershell
 Invoke-Pester -Path ".\development\testing\tests\unit\MCPManager.Tests.ps1" -Output Detailed
-```
-
+```plaintext
 ## Auteur
 
 EMAIL_SENDER_1 Team

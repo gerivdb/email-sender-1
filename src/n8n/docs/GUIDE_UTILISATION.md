@@ -5,38 +5,60 @@ Ce guide explique comment utiliser la nouvelle structure n8n mise en place dans 
 ## Table des matières
 
 1. [Vue d'ensemble](#vue-densemble)
+
 2. [Démarrage](#démarrage)
+
 3. [Gestion des workflows](#gestion-des-workflows)
+
 4. [Configuration](#configuration)
+
 5. [Intégrations](#intégrations)
+
 6. [Automatisation](#automatisation)
+
 7. [Dépannage](#dépannage)
 
 ## Vue d'ensemble
 
 La nouvelle structure n8n est organisée de manière à séparer clairement les différents composants et à faciliter la maintenance et l'intégration avec d'autres systèmes.
 
-```
+```plaintext
 n8n/
 ├── core/                  # Composants principaux
-│   ├── workflows/        # Workflows n8n
-│   ├── credentials/      # Gestion des credentials
-│   └── triggers/        # Déclencheurs automatisés
-├── integrations/         # Intégrations externes
-│   ├── mcp/            # Integration MCP
-│   ├── ide/            # Integration IDE
-│   └── api/            # APIs externes
-├── automation/           # Scripts d'automatisation
-│   ├── deployment/      # Scripts de déploiement
-│   ├── maintenance/     # Scripts de maintenance
-│   └── monitoring/      # Scripts de surveillance
-├── data/                 # Données n8n (base de données, credentials, etc.)
-└── docs/                # Documentation
-    ├── architecture/    # Documentation technique
-    ├── workflows/       # Documentation des workflows
-    └── api/            # Documentation API
-```
 
+│   ├── workflows/        # Workflows n8n
+
+│   ├── credentials/      # Gestion des credentials
+
+│   └── triggers/        # Déclencheurs automatisés
+
+├── integrations/         # Intégrations externes
+
+│   ├── mcp/            # Integration MCP
+
+│   ├── ide/            # Integration IDE
+
+│   └── api/            # APIs externes
+
+├── automation/           # Scripts d'automatisation
+
+│   ├── deployment/      # Scripts de déploiement
+
+│   ├── maintenance/     # Scripts de maintenance
+
+│   └── monitoring/      # Scripts de surveillance
+
+├── data/                 # Données n8n (base de données, credentials, etc.)
+
+└── docs/                # Documentation
+
+    ├── architecture/    # Documentation technique
+
+    ├── workflows/       # Documentation des workflows
+
+    └── api/            # Documentation API
+
+```plaintext
 ## Démarrage
 
 ### Installation
@@ -45,24 +67,21 @@ Pour installer n8n avec la nouvelle structure, exécutez le script d'installatio
 
 ```powershell
 .\n8n\automation\deployment\install-n8n-complete.ps1
-```
-
+```plaintext
 Ce script installe n8n, crée la nouvelle structure de dossiers, migre les fichiers existants et configure l'environnement.
 
 ### Démarrage de n8n
 
 Pour démarrer n8n, exécutez le script de démarrage :
 
-```
+```plaintext
 .\start-n8n-new.cmd
-```
-
+```plaintext
 Ou directement :
 
 ```powershell
 .\n8n\automation\deployment\start-n8n.ps1
-```
-
+```plaintext
 ### Arrêt de n8n
 
 Pour arrêter n8n, appuyez sur Ctrl+C dans la fenêtre de terminal où n8n est en cours d'exécution.
@@ -82,16 +101,14 @@ Pour lister tous les workflows présents dans la nouvelle structure, exécutez :
 
 ```powershell
 .\n8n\automation\monitoring\list-workflows.ps1
-```
-
+```plaintext
 ### Synchronisation des workflows
 
 Pour synchroniser les workflows entre n8n et les fichiers locaux, exécutez :
 
 ```powershell
 .\n8n\automation\maintenance\sync-workflows-simple.ps1
-```
-
+```plaintext
 Options disponibles :
 - `-Direction` : Direction de la synchronisation (`to-n8n`, `from-n8n`, `both`)
 - `-Environment` : Environnement cible (`local`, `ide`, `all`)
@@ -100,8 +117,7 @@ Exemple :
 
 ```powershell
 .\n8n\automation\maintenance\sync-workflows-simple.ps1 -Direction "both" -Environment "all"
-```
-
+```plaintext
 ## Configuration
 
 ### Fichier de configuration
@@ -116,8 +132,7 @@ Pour mettre à jour la configuration, exécutez :
 
 ```powershell
 .\n8n\automation\deployment\update-n8n-config.ps1
-```
-
+```plaintext
 ## Intégrations
 
 ### Intégration MCP
@@ -150,8 +165,7 @@ Pour vérifier que la structure n8n est correcte, exécutez :
 
 ```powershell
 .\n8n\automation\monitoring\test-n8n-structure-simple.ps1
-```
-
+```plaintext
 ### Problèmes courants
 
 #### n8n ne démarre pas

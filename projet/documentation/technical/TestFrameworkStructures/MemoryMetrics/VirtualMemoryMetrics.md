@@ -16,8 +16,7 @@ Les métriques de mémoire virtuelle sont organisées dans une structure hiérar
     }
   }
 }
-```
-
+```plaintext
 ## 3. Métriques principales
 
 ### 3.1 Utilisation globale
@@ -35,8 +34,7 @@ Les métriques de mémoire virtuelle sont organisées dans une structure hiérar
     "reserved": 17179869184
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `total` | number | octets | Taille totale de l'espace d'adressage virtuel disponible |
@@ -65,8 +63,7 @@ Les métriques de mémoire virtuelle sont organisées dans une structure hiérar
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `min` | number | octets | Utilisation minimale de mémoire virtuelle pendant le test |
@@ -104,8 +101,7 @@ Les métriques de mémoire virtuelle sont organisées dans une structure hiérar
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `interval` | number | Intervalle d'échantillonnage en millisecondes |
@@ -146,8 +142,7 @@ Les métriques de mémoire virtuelle sont organisées dans une structure hiérar
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `allocation.total` | number | octets | Quantité totale de mémoire virtuelle allouée pendant le test |
@@ -195,8 +190,7 @@ Les métriques de mémoire virtuelle sont organisées dans une structure hiérar
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `byRegion.<region>.size` | number | octets | Taille de la région de mémoire virtuelle |
@@ -229,8 +223,7 @@ Les métriques de mémoire virtuelle sont organisées dans une structure hiérar
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `paging.pageSize` | number | octets | Taille d'une page mémoire |
@@ -262,8 +255,7 @@ Les métriques de mémoire virtuelle sont organisées dans une structure hiérar
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `addressSpaceFragmentation.index` | number | - | Indice de fragmentation de l'espace d'adressage (0-1, où 1 est très fragmenté) |
@@ -311,8 +303,7 @@ Les métriques de mémoire virtuelle sont organisées dans une structure hiérar
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `protection.byPermission.<permission>.size` | number | octets | Taille de la mémoire avec les permissions spécifiées |
@@ -355,8 +346,7 @@ Les métriques de mémoire virtuelle sont organisées dans une structure hiérar
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `performance.commitLatency.avg` | number | ms | Latence moyenne pour engager de la mémoire virtuelle |
@@ -394,8 +384,7 @@ Les métriques de mémoire virtuelle sont organisées dans une structure hiérar
     }
   }
 }
-```
-
+```plaintext
 ### 5.2 Exemple complet
 
 ```json
@@ -593,8 +582,7 @@ Les métriques de mémoire virtuelle sont organisées dans une structure hiérar
     }
   }
 }
-```
-
+```plaintext
 ## 6. Bonnes pratiques
 
 ### 6.1 Collecte des métriques

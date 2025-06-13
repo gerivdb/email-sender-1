@@ -7,11 +7,17 @@ The Error Manager package provides a comprehensive solution for error handling, 
 ## Table of Contents
 
 1. [Core Error Management](#core-error-management)
+
 2. [Error Analysis](#error-analysis)
+
 3. [Pattern Recognition](#pattern-recognition)
+
 4. [Report Generation](#report-generation)
+
 5. [Storage Management](#storage-management)
+
 6. [Validation](#validation)
+
 7. [Data Types](#data-types)
 
 ---
@@ -23,8 +29,7 @@ The Error Manager package provides a comprehensive solution for error handling, 
 **Function Signature:**
 ```go
 func WrapError(err error, message string) error
-```
-
+```plaintext
 **Description:**
 Enriches an error with additional context using the `github.com/pkg/errors` package.
 
@@ -39,15 +44,13 @@ Enriches an error with additional context using the `github.com/pkg/errors` pack
 ```go
 originalErr := errors.New("database connection failed")
 wrappedErr := WrapError(originalErr, "failed to connect to user database")
-```
-
+```plaintext
 ### CatalogError
 
 **Function Signature:**
 ```go
 func CatalogError(entry ErrorEntry)
-```
-
+```plaintext
 **Description:**
 Prepares and logs an error entry using structured logging with Zap logger.
 
@@ -66,15 +69,13 @@ entry := ErrorEntry{
     Severity:       "high",
 }
 CatalogError(entry)
-```
-
+```plaintext
 ### InitializeLogger
 
 **Function Signature:**
 ```go
 func InitializeLogger() error
-```
-
+```plaintext
 **Description:**
 Initializes the Zap logger in production mode for structured logging.
 
@@ -86,8 +87,7 @@ Initializes the Zap logger in production mode for structured logging.
 **Function Signature:**
 ```go
 func LogError(err error, module string, code string)
-```
-
+```plaintext
 **Description:**
 Logs an error with additional metadata using the structured logger.
 
@@ -105,8 +105,7 @@ Logs an error with additional metadata using the structured logger.
 **Function Signature:**
 ```go
 func (pa *PatternAnalyzer) AnalyzeErrorPatterns() ([]PatternMetrics, error)
-```
-
+```plaintext
 **Description:**
 Analyzes error patterns from the database to detect recurring errors. Implements micro-task 4.1.1.
 
@@ -125,8 +124,7 @@ Analyzes error patterns from the database to detect recurring errors. Implements
 **Function Signature:**
 ```go
 func (pa *PatternAnalyzer) CreateFrequencyMetrics() (map[string]map[string]int, error)
-```
-
+```plaintext
 **Description:**
 Creates frequency metrics by module and error code. Implements micro-task 4.1.2.
 
@@ -139,8 +137,7 @@ Creates frequency metrics by module and error code. Implements micro-task 4.1.2.
 **Function Signature:**
 ```go
 func (pa *PatternAnalyzer) IdentifyTemporalCorrelations(timeWindow time.Duration) ([]TemporalCorrelation, error)
-```
-
+```plaintext
 **Description:**
 Identifies temporal correlations between different errors within a specified time window. Implements micro-task 4.1.3.
 
@@ -160,8 +157,7 @@ Identifies temporal correlations between different errors within a specified tim
 **Function Signature:**
 ```go
 func NewPatternAnalyzer(db *sql.DB) *PatternAnalyzer
-```
-
+```plaintext
 **Description:**
 Creates a new instance of PatternAnalyzer with database connection.
 
@@ -180,8 +176,7 @@ Creates a new instance of PatternAnalyzer with database connection.
 **Function Signature:**
 ```go
 func (rg *ReportGenerator) GeneratePatternReport() (*PatternReport, error)
-```
-
+```plaintext
 **Description:**
 Generates a comprehensive pattern analysis report. Implements micro-task 4.2.1.
 
@@ -202,8 +197,7 @@ Generates a comprehensive pattern analysis report. Implements micro-task 4.2.1.
 **Function Signature:**
 ```go
 func NewReportGenerator(analyzer *PatternAnalyzer) *ReportGenerator
-```
-
+```plaintext
 **Description:**
 Creates a new instance of ReportGenerator with pattern analyzer.
 
@@ -222,8 +216,7 @@ Creates a new instance of ReportGenerator with pattern analyzer.
 **Function Signature:**
 ```go
 func InitializePostgres(connStr string) error
-```
-
+```plaintext
 **Description:**
 Initializes PostgreSQL database connection for error storage.
 
@@ -238,8 +231,7 @@ Initializes PostgreSQL database connection for error storage.
 **Function Signature:**
 ```go
 func PersistErrorToSQL(entry ErrorEntry) error
-```
-
+```plaintext
 **Description:**
 Persists an error entry to PostgreSQL database.
 
@@ -258,8 +250,7 @@ Persists an error entry to PostgreSQL database.
 **Function Signature:**
 ```go
 func ValidateErrorEntry(entry ErrorEntry) error
-```
-
+```plaintext
 **Description:**
 Validates all required fields of an ErrorEntry structure.
 
@@ -296,8 +287,7 @@ type ErrorEntry struct {
     ManagerContext string    `json:"manager_context"`
     Severity       string    `json:"severity"`
 }
-```
-
+```plaintext
 ### PatternMetrics
 
 Structure for error pattern analysis metrics.
@@ -316,8 +306,7 @@ type PatternMetrics struct {
     Severity         string                 `json:"severity"`
     Context          map[string]interface{} `json:"context"`
 }
-```
-
+```plaintext
 ### TemporalCorrelation
 
 Structure for temporal correlation analysis.
@@ -332,8 +321,7 @@ type TemporalCorrelation struct {
     TimeWindow    time.Duration `json:"time_window"`
     OccurrenceGap time.Duration `json:"occurrence_gap"`
 }
-```
-
+```plaintext
 ### PatternReport
 
 Complete pattern analysis report structure.
@@ -349,8 +337,7 @@ type PatternReport struct {
     Recommendations      []string                  `json:"recommendations"`
     CriticalFindings     []string                  `json:"critical_findings"`
 }
-```
-
+```plaintext
 ---
 
 ## Usage Examples
@@ -384,8 +371,7 @@ if err := ValidateErrorEntry(entry); err != nil {
 }
 
 CatalogError(entry)
-```
-
+```plaintext
 ### Pattern Analysis
 
 ```go
@@ -409,8 +395,7 @@ if err != nil {
 for _, recommendation := range report.Recommendations {
     log.Printf("Recommendation: %s", recommendation)
 }
-```
-
+```plaintext
 ---
 
 ## Error Codes Reference

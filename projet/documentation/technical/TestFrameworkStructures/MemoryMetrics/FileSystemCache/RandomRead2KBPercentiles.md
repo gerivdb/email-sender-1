@@ -58,8 +58,7 @@ Ce document définit les percentiles caractéristiques (p90, p95, p99) pour les 
     }
   }
 }
-```
-
+```plaintext
 ## 4. Ratios entre percentiles et métriques centrales
 
 ### 4.1 Ratios typiques
@@ -78,13 +77,12 @@ Ce document définit les percentiles caractéristiques (p90, p95, p99) pour les 
 
 Ces formules permettent d'estimer approximativement les percentiles à partir des valeurs connues :
 
-```
+```plaintext
 p90 ≈ median * 3.0
 p95 ≈ p90 * 1.5
 p99 ≈ p95 * 2.2
 p99.9 ≈ p99 * 1.6
-```
-
+```plaintext
 ## 5. Facteurs influençant les percentiles
 
 ### 5.1 Facteurs à fort impact sur les percentiles élevés
@@ -122,8 +120,7 @@ Environnements optimisés pour les E/S (serveurs dédiés, workstations haut de 
     "p99_9": 2500
   }
 }
-```
-
+```plaintext
 ### 6.2 Systèmes standards
 
 Environnements génériques (ordinateurs de bureau, serveurs polyvalents)
@@ -138,8 +135,7 @@ Environnements génériques (ordinateurs de bureau, serveurs polyvalents)
     "p99_9": 3500
   }
 }
-```
-
+```plaintext
 ### 6.3 Systèmes contraints
 
 Environnements limités en ressources (systèmes embarqués, machines virtuelles partagées)
@@ -154,8 +150,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     "p99_9": 5000
   }
 }
-```
-
+```plaintext
 ## 7. Percentiles par système de fichiers
 
 ### 7.1 NTFS (Windows)
@@ -170,8 +165,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     "p99_9": 3800
   }
 }
-```
-
+```plaintext
 ### 7.2 ext4 (Linux)
 
 ```json
@@ -184,8 +178,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     "p99_9": 3200
   }
 }
-```
-
+```plaintext
 ### 7.3 APFS (macOS)
 
 ```json
@@ -198,8 +191,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     "p99_9": 3500
   }
 }
-```
-
+```plaintext
 ### 7.4 ZFS
 
 ```json
@@ -212,8 +204,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     "p99_9": 4000
   }
 }
-```
-
+```plaintext
 ## 8. Percentiles par type de stockage
 
 ### 8.1 SSD NVMe
@@ -228,8 +219,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     "p99_9": 2800
   }
 }
-```
-
+```plaintext
 ### 8.2 SSD SATA
 
 ```json
@@ -242,8 +232,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     "p99_9": 3200
   }
 }
-```
-
+```plaintext
 ### 8.3 HDD (7200 RPM)
 
 ```json
@@ -256,8 +245,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     "p99_9": 7000
   }
 }
-```
-
+```plaintext
 ### 8.4 Stockage réseau (NAS/SAN)
 
 ```json
@@ -270,8 +258,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     "p99_9": 6500
   }
 }
-```
-
+```plaintext
 ## 9. Évolution des percentiles dans le temps
 
 ### 9.1 Tendances à court terme
@@ -313,8 +300,7 @@ Sur une période de mois à années, les percentiles peuvent changer en fonction
     }
   }
 }
-```
-
+```plaintext
 ### 10.2 Percentiles de référence pour les tests d'intégration
 
 ```json
@@ -331,8 +317,7 @@ Sur une période de mois à années, les percentiles peuvent changer en fonction
     }
   }
 }
-```
-
+```plaintext
 ### 10.3 Percentiles de référence pour les tests de performance
 
 ```json
@@ -361,8 +346,7 @@ Sur une période de mois à années, les percentiles peuvent changer en fonction
     }
   }
 }
-```
-
+```plaintext
 ## 11. Interprétation des percentiles
 
 ### 11.1 Signification opérationnelle

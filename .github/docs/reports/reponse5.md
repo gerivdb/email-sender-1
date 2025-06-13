@@ -5,6 +5,7 @@ Pour aborder la **Phase 5: Documentation et finalisation** comme indiqué dans l
 ## Phase 5: Documentation et finalisation
 
 ### Objectifs
+
 1. **Mettre à jour la documentation complète du module**:
    - Documentation des fonctions (commentaires based help)
    - Guide d'utilisation détaillé
@@ -17,6 +18,7 @@ Pour aborder la **Phase 5: Documentation et finalisation** comme indiqué dans l
    - S'assurer que le module est prêt pour une utilisation en production
 
 ### Environnement
+
 - **PowerShell**: Versions 5.1 et 7.5.0
 - **Systèmes d'exploitation**: Windows (principal), Linux et macOS (compatibilité)
 - **Pester**: Version 5.7.1
@@ -34,6 +36,7 @@ Pour aborder la **Phase 5: Documentation et finalisation** comme indiqué dans l
    # UnifiedParallel.psm1
 
    <#
+
    .SYNOPSIS
    Initialise le module UnifiedParallel avec les paramètres spécifiés.
 
@@ -72,6 +75,7 @@ Pour aborder la **Phase 5: Documentation et finalisation** comme indiqué dans l
    .LINK
    Clear-UnifiedParallel
    #>
+
    function Initialize-UnifiedParallel {
        [CmdletBinding()]
        param(
@@ -86,6 +90,7 @@ Pour aborder la **Phase 5: Documentation et finalisation** comme indiqué dans l
        )
 
        # Implémentation...
+
    }
    ```
 
@@ -134,8 +139,7 @@ Avant d'utiliser le module, vous devez l'initialiser:
 
 ```powershell
 Initialize-UnifiedParallel
-```
-
+```plaintext
 ### Exécution de tâches en parallèle
 
 Pour exécuter un scriptblock en parallèle sur un ensemble de données:
@@ -145,16 +149,14 @@ $data = 1..100
 $scriptBlock = { param($item) return $item * 2 }
 
 $results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -MaxThreads 8 -UseRunspacePool
-```
-
+```plaintext
 ### Nettoyage des ressources
 
 Après utilisation, nettoyez les ressources:
 
 ```powershell
 Clear-UnifiedParallel
-```
-
+```plaintext
 ## Fonctionnalités avancées
 
 ### Optimisation pour différents types de tâches
@@ -163,15 +165,17 @@ Le module peut optimiser le nombre de threads en fonction du type de tâche:
 
 ```powershell
 # Pour les tâches CPU-intensives
+
 $results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -TaskType 'CPU'
 
 # Pour les tâches IO-intensives
+
 $results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -TaskType 'IO'
 
 # Pour les tâches mixtes
-$results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -TaskType 'Mixed'
-```
 
+$results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -TaskType 'Mixed'
+```plaintext
 ### Gestion des erreurs
 
 Par défaut, les erreurs sont capturées et incluses dans les résultats:
@@ -180,15 +184,14 @@ Par défaut, les erreurs sont capturées et incluses dans les résultats:
 $results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data
 
 # Vérifier les erreurs
-$errors = $results | Where-Object { -not $_.Success }
-```
 
+$errors = $results | Where-Object { -not $_.Success }
+```plaintext
 Pour ignorer les erreurs:
 
 ```powershell
 $results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -IgnoreErrors
-```
-
+```plaintext
 ### Utilisation de variables partagées
 
 Le module permet de partager des variables entre les runspaces:
@@ -203,8 +206,7 @@ $scriptBlock = {
 }
 
 $results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data
-```
-
+```plaintext
 ## Exemples d'utilisation
 
 ### Traitement de fichiers en parallèle
@@ -216,6 +218,7 @@ $scriptBlock = {
     param($file)
     $content = Get-Content -Path $file.FullName
     # Traitement du contenu...
+
     return @{
         FileName = $file.Name
         LineCount = $content.Count
@@ -223,8 +226,7 @@ $scriptBlock = {
 }
 
 $results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $files -TaskType 'IO'
-```
-
+```plaintext
 ### Requêtes API en parallèle
 
 ```powershell
@@ -241,8 +243,7 @@ $scriptBlock = {
 }
 
 $results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $urls -TaskType 'IO'
-```
-
+```plaintext
 ### Calculs intensifs en parallèle
 
 ```powershell
@@ -258,8 +259,7 @@ $scriptBlock = {
 }
 
 $results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $numbers -TaskType 'CPU'
-```
-
+```plaintext
 ## Bonnes pratiques
 
 1. **Utilisez le bon type de tâche**: Spécifiez `TaskType` en fonction de la nature de vos tâches (CPU, IO, Mixed).
@@ -283,14 +283,12 @@ Pour activer la journalisation détaillée:
 ```powershell
 $VerbosePreference = 'Continue'
 Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data
-```
-
+```plaintext
 ## Compatibilité
 
 - PowerShell 5.1 et 7.x
 - Windows, Linux et macOS (avec PowerShell 7.x)
-```
-
+```plaintext
 ---
 
 ## 3. Exemples d'utilisation
@@ -306,49 +304,61 @@ Ce document contient des exemples concrets d'utilisation du module UnifiedParall
 
 ```powershell
 # Importer le module
+
 Import-Module -Path ".\UnifiedParallel.psm1"
 
 # Initialiser le module
+
 Initialize-UnifiedParallel
 
 # Définir les données et le scriptblock
+
 $data = 1..100
 $scriptBlock = { param($item) return $item * 2 }
 
 # Exécuter en parallèle
+
 $results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -MaxThreads 8 -UseRunspacePool
 
 # Afficher les résultats
+
 $results | Format-Table
 
 # Nettoyer
-Clear-UnifiedParallel
-```
 
+Clear-UnifiedParallel
+```plaintext
 ## Exemple 2: Traitement de fichiers
 
 ```powershell
 # Importer le module
+
 Import-Module -Path ".\UnifiedParallel.psm1"
 
 # Initialiser le module
+
 Initialize-UnifiedParallel
 
 # Obtenir la liste des fichiers
+
 $files = Get-ChildItem -Path "C:\Data" -Filter "*.txt"
 
 # Définir le scriptblock de traitement
+
 $scriptBlock = {
     param($file)
 
     # Lire le contenu du fichier
+
     $content = Get-Content -Path $file.FullName
 
     # Compter les lignes et les mots
+
     $lineCount = $content.Count
     $wordCount = ($content | Measure-Object -Word).Words
 
     # Retourner les statistiques
+
     return [PSCustomObject]@{
         FileName = $file.Name
         LineCount = $lineCount
@@ -358,25 +368,30 @@ $scriptBlock = {
 }
 
 # Exécuter en parallèle (optimisé pour les opérations I/O)
+
 $results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $files -TaskType 'IO' -UseRunspacePool
 
 # Afficher les résultats
+
 $results | Select-Object -ExpandProperty Value | Format-Table
 
 # Nettoyer
-Clear-UnifiedParallel
-```
 
+Clear-UnifiedParallel
+```plaintext
 ## Exemple 3: Requêtes API
 
 ```powershell
 # Importer le module
+
 Import-Module -Path ".\UnifiedParallel.psm1"
 
 # Initialiser le module
+
 Initialize-UnifiedParallel
 
 # Définir les URLs
+
 $urls = @(
     "https://jsonplaceholder.typicode.com/posts/1",
     "https://jsonplaceholder.typicode.com/posts/2",
@@ -386,14 +401,17 @@ $urls = @(
 )
 
 # Définir le scriptblock
+
 $scriptBlock = {
     param($url)
 
     try {
         # Effectuer la requête
+
         $response = Invoke-RestMethod -Uri $url -Method Get
 
         # Retourner la réponse
+
         return [PSCustomObject]@{
             Url = $url
             Title = $response.title
@@ -403,6 +421,7 @@ $scriptBlock = {
     }
     catch {
         # Gérer l'erreur
+
         return [PSCustomObject]@{
             Url = $url
             Error = $_.Exception.Message
@@ -412,28 +431,34 @@ $scriptBlock = {
 }
 
 # Exécuter en parallèle (optimisé pour les opérations I/O)
+
 $results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $urls -TaskType 'IO' -UseRunspacePool
 
 # Afficher les résultats
+
 $results | Select-Object -ExpandProperty Value | Format-Table Url, Title, Success
 
 # Nettoyer
-Clear-UnifiedParallel
-```
 
+Clear-UnifiedParallel
+```plaintext
 ## Exemple 4: Calculs intensifs
 
 ```powershell
 # Importer le module
+
 Import-Module -Path ".\UnifiedParallel.psm1"
 
 # Initialiser le module
+
 Initialize-UnifiedParallel
 
 # Définir les données
+
 $numbers = 1..20
 
 # Définir le scriptblock (calcul des nombres premiers jusqu'à n)
+
 $scriptBlock = {
     param($n)
 
@@ -470,28 +495,34 @@ $scriptBlock = {
 }
 
 # Exécuter en parallèle (optimisé pour les opérations CPU)
+
 $results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $numbers -TaskType 'CPU' -UseRunspacePool
 
 # Afficher les résultats
+
 $results | Select-Object -ExpandProperty Value | Format-Table Number, PrimeCount, Primes
 
 # Nettoyer
-Clear-UnifiedParallel
-```
 
+Clear-UnifiedParallel
+```plaintext
 ## Exemple 5: Gestion des erreurs
 
 ```powershell
 # Importer le module
+
 Import-Module -Path ".\UnifiedParallel.psm1"
 
 # Initialiser le module
+
 Initialize-UnifiedParallel
 
 # Définir les données
+
 $data = 1..10
 
 # Définir un scriptblock qui génère des erreurs pour les nombres pairs
+
 $scriptBlock = {
     param($item)
 
@@ -503,22 +534,25 @@ $scriptBlock = {
 }
 
 # Exécuter en parallèle et capturer les erreurs
+
 $results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -UseRunspacePool
 
 # Afficher les succès
+
 Write-Host "Succès:" -ForegroundColor Green
 $successes = $results | Where-Object { $_.Success }
 $successes | Format-Table Index, Value
 
 # Afficher les erreurs
+
 Write-Host "Erreurs:" -ForegroundColor Red
 $errors = $results | Where-Object { -not $_.Success }
 $errors | Format-Table Index, Error
 
 # Nettoyer
-Clear-UnifiedParallel
-```
 
+Clear-UnifiedParallel
+```plaintext
 ---
 
 ## 4. Création d'une nouvelle version du module
@@ -530,6 +564,7 @@ Clear-UnifiedParallel
    # UnifiedParallel.psm1
 
    <#
+
    .SYNOPSIS
    Module de parallélisation unifié pour PowerShell.
 
@@ -545,15 +580,18 @@ Clear-UnifiedParallel
    #>
 
    # Variables de module
+
    $script:ModuleVersion = "1.5.0"
    $script:IsInitialized = $false
    $script:Config = $null
    # ...
+
    ```
 
 2. **Créer une fonction pour obtenir la version du module**:
    ```powershell
    <#
+
    .SYNOPSIS
    Retourne la version actuelle du module UnifiedParallel.
 
@@ -565,6 +603,7 @@ Clear-UnifiedParallel
 
    Retourne la version actuelle du module.
    #>
+
    function Get-UnifiedParallelVersion {
        [CmdletBinding()]
        param()
@@ -573,12 +612,14 @@ Clear-UnifiedParallel
    }
 
    # Exporter la fonction
+
    Export-ModuleMember -Function Get-UnifiedParallelVersion
    ```
 
 3. **Mettre à jour le manifeste du module** (si utilisé):
    ```powershell
    # UnifiedParallel.psd1
+
    @{
        RootModule = 'UnifiedParallel.psm1'
        ModuleVersion = '1.5.0'
@@ -624,42 +665,50 @@ Créer un fichier de notes de version dans `/docs/guides/augment/UnifiedParallel
 ## Version 1.5.0 (2023-06-30)
 
 ### Nouvelles fonctionnalités
+
 - Ajout de la documentation complète du module
 - Ajout d'exemples d'utilisation détaillés
 - Ajout de la fonction `Get-UnifiedParallelVersion`
 - Ajout du manifeste de module (.psd1)
 
 ### Améliorations
+
 - Documentation des fonctions avec commentaires based help
 - Guide d'utilisation détaillé
 - Exemples d'utilisation pour différents scénarios
 
 ### Corrections
+
 - Finalisation de toutes les corrections des problèmes identifiés (UPM-001 à UPM-009)
 
 ## Version 1.4.0 (2023-06-15)
 
 ### Nouvelles fonctionnalités
+
 - Ajout de la fonction `New-UnifiedError` pour standardiser la gestion des erreurs
 - Ajout de tests de compatibilité pour PowerShell 5.1 et 7.x
 
 ### Améliorations
+
 - Gestion des caractères accentués (UPM-005)
 - Détection automatique de la version de PowerShell
 - Documentation des erreurs et des messages
 
 ### Corrections
+
 - Correction de la gestion incohérente des erreurs entre les fonctions (UPM-008)
 
 ## Version 1.3.0 (2023-06-01)
 
 ### Améliorations
+
 - Optimisation de la gestion des collections pour de meilleures performances (UPM-009)
 - Optimisation des algorithmes de parallélisation dans Invoke-UnifiedParallel
 - Optimisation de la gestion des runspaces dans Wait-ForCompletedRunspace
 - Optimisation du traitement des résultats dans Invoke-RunspaceProcessor
 
 ### Nouvelles fonctionnalités
+
 - Ajout de tests de performance complets
 - Utilisation de collections optimisées (List<T>, ConcurrentBag<T>)
 - Création des runspaces par batch pour réduire l'overhead
@@ -668,10 +717,12 @@ Créer un fichier de notes de version dans `/docs/guides/augment/UnifiedParallel
 ## Version 1.2.0 (2023-05-15)
 
 ### Nouvelles fonctionnalités
+
 - Ajout des fonctions getter/setter pour les variables script
 - Standardisation des types de collections
 
 ### Corrections
+
 - Correction des problèmes de portée des variables script (UPM-001)
 - Correction des problèmes de paramètres des fonctions (UPM-002, UPM-003)
 - Correction des problèmes de type de collection (UPM-004)
@@ -679,22 +730,24 @@ Créer un fichier de notes de version dans `/docs/guides/augment/UnifiedParallel
 ## Version 1.1.0 (2023-05-01)
 
 ### Nouvelles fonctionnalités
+
 - Ajout du support pour différents types de tâches (CPU, IO, Mixed)
 - Ajout de l'option UseRunspacePool pour améliorer les performances
 
 ### Améliorations
+
 - Optimisation de Get-OptimalThreadCount
 - Amélioration de la gestion des erreurs
 
 ## Version 1.0.0 (2023-04-15)
 
 ### Fonctionnalités initiales
+
 - Parallélisation des tâches avec Invoke-UnifiedParallel
 - Gestion des runspaces avec Wait-ForCompletedRunspace
 - Traitement des résultats avec Invoke-RunspaceProcessor
 - Initialisation et nettoyage du module
-```
-
+```plaintext
 ---
 
 ## 5. Préparation du déploiement
@@ -706,15 +759,19 @@ Créer un fichier de notes de version dans `/docs/guides/augment/UnifiedParallel
    # Run-AllTests.ps1
 
    # Définir le chemin du module
+
    $modulePath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization"
 
    # Définir le chemin des tests
+
    $testsPath = Join-Path -Path $modulePath -ChildPath "tests\Pester"
 
    # Importer le module Pester
+
    Import-Module Pester -MinimumVersion 5.0.0
 
    # Configurer Pester
+
    $pesterConfig = New-PesterConfiguration
    $pesterConfig.Run.Path = $testsPath
    $pesterConfig.Output.Verbosity = "Detailed"
@@ -725,15 +782,18 @@ Créer un fichier de notes de version dans `/docs/guides/augment/UnifiedParallel
    $pesterConfig.CodeCoverage.OutputPath = Join-Path -Path $modulePath -ChildPath "tests\CodeCoverage.xml"
 
    # Exécuter les tests
+
    Invoke-Pester -Configuration $pesterConfig
    ```
 
 2. **Vérifier la couverture de code**:
    ```powershell
    # Analyser les résultats de couverture
+
    $coverageResult = Import-Clixml -Path "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\CodeCoverage.xml"
 
    # Afficher le pourcentage de couverture
+
    $totalLines = $coverageResult.NumberOfCommandsAnalyzed
    $coveredLines = $coverageResult.NumberOfCommandsExecuted
    $coveragePercent = [math]::Round(($coveredLines / $totalLines) * 100, 2)
@@ -741,6 +801,7 @@ Créer un fichier de notes de version dans `/docs/guides/augment/UnifiedParallel
    Write-Host "Couverture de code: $coveragePercent% ($coveredLines/$totalLines lignes)" -ForegroundColor Cyan
 
    # Vérifier si la couverture est suffisante
+
    if ($coveragePercent -lt 80) {
        Write-Warning "La couverture de code est inférieure à 80%. Veuillez améliorer les tests."
    } else {
@@ -751,6 +812,7 @@ Créer un fichier de notes de version dans `/docs/guides/augment/UnifiedParallel
 3. **Vérifier la documentation**:
    ```powershell
    # Vérifier que toutes les fonctions publiques ont une documentation
+
    $module = Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force -PassThru
 
    $functions = Get-Command -Module $module | Where-Object { $_.CommandType -eq "Function" }
@@ -780,11 +842,13 @@ Créer un fichier de notes de version dans `/docs/guides/augment/UnifiedParallel
    # Create-Package.ps1
 
    # Définir les chemins
+
    $sourcePath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization"
    $packagePath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\package"
    $version = "1.5.0"
 
    # Créer le dossier de package
+
    if (Test-Path -Path $packagePath) {
        Remove-Item -Path $packagePath -Recurse -Force
    }
@@ -793,14 +857,17 @@ Créer un fichier de notes de version dans `/docs/guides/augment/UnifiedParallel
    New-Item -Path "$packagePath\UnifiedParallel" -ItemType Directory -Force | Out-Null
 
    # Copier les fichiers du module
+
    Copy-Item -Path "$sourcePath\UnifiedParallel.psm1" -Destination "$packagePath\UnifiedParallel"
    Copy-Item -Path "$sourcePath\UnifiedParallel.psd1" -Destination "$packagePath\UnifiedParallel"
 
    # Copier la documentation
+
    New-Item -Path "$packagePath\UnifiedParallel\docs" -ItemType Directory -Force | Out-Null
    Copy-Item -Path "$sourcePath\..\..\..\docs\guides\augment\UnifiedParallel*.md" -Destination "$packagePath\UnifiedParallel\docs"
 
    # Créer le fichier README.md
+
    @"
    # UnifiedParallel
 
@@ -829,6 +896,7 @@ Créer un fichier de notes de version dans `/docs/guides/augment/UnifiedParallel
    "@ | Out-File -FilePath "$packagePath\UnifiedParallel\README.md" -Encoding utf8
 
    # Créer l'archive
+
    Compress-Archive -Path "$packagePath\UnifiedParallel" -DestinationPath "$packagePath\UnifiedParallel-$version.zip" -Force
 
    Write-Host "Package créé: $packagePath\UnifiedParallel-$version.zip" -ForegroundColor Green
@@ -837,6 +905,7 @@ Créer un fichier de notes de version dans `/docs/guides/augment/UnifiedParallel
 2. **Exécuter le script de packaging**:
    ```powershell
    # Exécuter le script
+
    & "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\Create-Package.ps1"
    ```
 

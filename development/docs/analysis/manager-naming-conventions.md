@@ -26,6 +26,7 @@ Cette convention est visible dans plusieurs parties du code :
 
 ```powershell
 # Définir la structure des gestionnaires
+
 $managerStructure = @{
     "integrated-manager" = @{
         "Path" = Join-Path -Path $managersRoot -ChildPath "integrated-manager"
@@ -46,9 +47,9 @@ $managerStructure = @{
         )
     }
     # ...
-}
-```
 
+}
+```plaintext
 Cependant, il existe quelques incohérences :
 - Certains dossiers utilisent le format `<Domaine>Manager` (avec PascalCase) au lieu de `<domaine>-manager`
 - Exemple : `MCPManager` au lieu de `mcp-manager`
@@ -63,8 +64,7 @@ Cette convention est visible dans plusieurs parties du code :
 
 ```powershell
 $managerScriptPath = Join-Path -Path $managerDir.FullName -ChildPath "scripts\$($managerDir.Name).ps1"
-```
-
+```plaintext
 Les fichiers de configuration suivent généralement la convention suivante :
 - Format : `<domaine>-manager.config.json`
 - Exemple : `mode-manager.config.json`, `roadmap-manager.config.json`
@@ -82,16 +82,14 @@ Les fichiers de configuration suivent généralement la convention suivante :
   "AutoRestart": false,
   "NotificationEnabled": true
 }
-```
-
+```plaintext
 Les fichiers de manifeste suivent généralement la convention suivante :
 - Format : `<domaine>-manager.manifest.json`
 - Exemple : `mode-manager.manifest.json`, `roadmap-manager.manifest.json`
 
 ```powershell
 $manifestPath = Join-Path -Path $managerDir.FullName -ChildPath "scripts\$($managerDir.Name).manifest.json"
-```
-
+```plaintext
 Cependant, il existe quelques incohérences :
 - Certains fichiers utilisent le format `<Domaine>Manager.ps1` (avec PascalCase) au lieu de `<domaine>-manager.ps1`
 - Exemple : `MCPManager.psm1` au lieu de `mcp-manager.psm1`
@@ -130,8 +128,7 @@ function Get-ExampleManagerStatus {
         StartTime = Get-Date
     }
 }
-```
-
+```plaintext
 Cependant, il existe quelques incohérences :
 - Certaines fonctions utilisent le format `Verb<Domaine>Manager<Action>` (sans tiret après le verbe)
 - Exemple : `InitializeMCPManager` au lieu de `Initialize-MCPManager`
@@ -146,8 +143,7 @@ Les variables et les paramètres liés aux gestionnaires suivent généralement 
 
 ```powershell
 $managerName = $managerDir.Name -replace "-manager", "Manager" -replace "^.", { $args[0].ToString().ToUpper() }
-```
-
+```plaintext
 Cependant, il existe quelques incohérences :
 - Certaines variables utilisent le format `$<Domaine>Manager` (avec PascalCase)
 - Exemple : `$MCPManager` au lieu de `$mcpManager`

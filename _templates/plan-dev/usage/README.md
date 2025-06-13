@@ -3,16 +3,19 @@
 ## 📖 Comment utiliser les templates
 
 ### 1️⃣ Création d'un nouveau plan
+
 \\\powershell
 hygen plan-dev new
 \\\
 
 ### 2️⃣ Mise à jour d'un script
+
 \\\powershell
 hygen plan-dev update add-script
 \\\
 
 ### 3️⃣ Génération d'un rapport
+
 \\\powershell
 hygen plan-dev report weekly
 \\\
@@ -23,8 +26,11 @@ hygen plan-dev report weekly
 _templates/plan-dev/
 ├── new/
 │   ├── index.ejs.t    # Template principal
+
 │   ├── warnings.ejs.t # Gestion des alertes
+
 │   └── prompt.js      # Questions interactives
+
 ├── update/
 │   ├── add-script.ejs.t
 │   └── prompt.js

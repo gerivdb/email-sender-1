@@ -1,4 +1,4 @@
-﻿# validation - analysis
+# validation - analysis
 
 Cette section contient les scripts liÃ©s Ã  validation dans la catÃ©gorie analysis.
 
@@ -10,6 +10,7 @@ Aucun script n'est encore disponible dans cette section.
 
 `powershell
 # Exemple d'utilisation
+
 .\<nom-du-script>.ps1 -InputPath "Roadmap/roadmap.md" -OutputPath "Roadmap/output.md"
 `
 

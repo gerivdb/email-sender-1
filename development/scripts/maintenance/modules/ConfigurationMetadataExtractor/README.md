@@ -35,8 +35,7 @@ Détecte le format d'un fichier de configuration.
 ```powershell
 Get-ConfigurationFormat -Path "config.json"
 Get-ConfigurationFormat -Content '{"key": "value"}'
-```
-
+```plaintext
 ### Get-ConfigurationStructure
 
 Analyse la structure d'un fichier de configuration.
@@ -44,8 +43,7 @@ Analyse la structure d'un fichier de configuration.
 ```powershell
 Get-ConfigurationStructure -Path "config.json"
 Get-ConfigurationStructure -Content '{"key": "value"}' -Format "JSON"
-```
-
+```plaintext
 ### Get-ConfigurationOptions
 
 Détecte les options de configuration dans un fichier de configuration.
@@ -53,8 +51,7 @@ Détecte les options de configuration dans un fichier de configuration.
 ```powershell
 Get-ConfigurationOptions -Path "config.json"
 Get-ConfigurationOptions -Path "config.json" -IncludeValues -Flatten
-```
-
+```plaintext
 ### Get-ConfigurationDependencies
 
 Extrait les dépendances d'un fichier de configuration.
@@ -62,8 +59,7 @@ Extrait les dépendances d'un fichier de configuration.
 ```powershell
 Get-ConfigurationDependencies -Path "config.json"
 Get-ConfigurationDependencies -Path "config.json" -DetectionMode "All" -ExternalPaths "external.json"
-```
-
+```plaintext
 ### Get-ConfigurationConstraints
 
 Analyse les contraintes d'un fichier de configuration.
@@ -71,8 +67,7 @@ Analyse les contraintes d'un fichier de configuration.
 ```powershell
 Get-ConfigurationConstraints -Path "config.json"
 Get-ConfigurationConstraints -Path "config.json" -SchemaPath "schema.json" -ValidateValues
-```
-
+```plaintext
 ## Exemples
 
 Voir le dossier `Examples` pour des exemples d'utilisation du module.
@@ -83,8 +78,7 @@ Le module inclut des tests unitaires Pester. Pour exécuter les tests :
 
 ```powershell
 Invoke-Pester -Path ".\Tests"
-```
-
+```plaintext
 ## Formats de configuration pris en charge
 
 - JSON : Fichiers JSON standard

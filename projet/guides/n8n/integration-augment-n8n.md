@@ -1,4 +1,5 @@
 # Intégration Augment-n8n
+
 *Version 2025-05-15*
 
 Ce guide présente les meilleures pratiques pour l'intégration entre Augment et n8n dans le cadre du projet EMAIL SENDER 1.
@@ -16,7 +17,7 @@ L'intégration entre Augment et n8n permet de combiner la puissance de l'IA gén
 
 ### 2.1 Schéma global
 
-```
+```plaintext
 +-------------+      +----------------+      +----------------+      +-------------+
 |  Augment    | ---> | PowerShell/    | ---> | MCP Servers    | ---> | n8n         |
 | (IA Agent)  |      | Python Scripts |      | (Context)      |      | (Workflows) |
@@ -27,8 +28,7 @@ L'intégration entre Augment et n8n permet de combiner la puissance de l'IA gén
 +-----------------------------------------------------------------------------------+
 |                           Sources de données (Notion, Google Calendar)             |
 +-----------------------------------------------------------------------------------+
-```
-
+```plaintext
 ### 2.2 Composants clés
 
 1. **Augment** : Agent IA qui génère du code, des configurations et des analyses
@@ -43,10 +43,9 @@ L'intégration entre Augment et n8n permet de combiner la puissance de l'IA gén
 
 Un node personnalisé a été développé pour faciliter l'intégration entre n8n et Augment :
 
-```
+```plaintext
 src/n8n/nodes/augment-client/
-```
-
+```plaintext
 Ce node permet d'exécuter directement les modes opérationnels d'Augment depuis n8n.
 
 #### Installation du node
@@ -78,19 +77,18 @@ Le node Augment Client prend en charge les opérations suivantes :
 #### Exemples de workflows
 
 Des workflows d'exemple sont disponibles dans :
-```
+```plaintext
 src/n8n/workflows/examples/
-```
-
+```plaintext
 ### 3.2 Génération de workflows n8n par Augment
 
 Augment peut générer des workflows n8n complets ou partiels :
 
 ```powershell
 # Exemple : Générer un workflow n8n avec Augment
-Invoke-AugmentMode -Mode "DEV-R" -Task "Créer un workflow n8n pour la prospection initiale" -OutputPath "src/n8n/workflows/email-sender-phase1.json"
-```
 
+Invoke-AugmentMode -Mode "DEV-R" -Task "Créer un workflow n8n pour la prospection initiale" -OutputPath "src/n8n/workflows/email-sender-phase1.json"
+```plaintext
 #### Bonnes pratiques
 
 - Fournir à Augment des exemples de workflows n8n existants
@@ -104,6 +102,7 @@ Les scripts PowerShell/Python générés par Augment peuvent déclencher des wor
 
 ```powershell
 # Exemple : Script PowerShell appelant un webhook n8n
+
 function Invoke-EmailSenderWorkflow {
     [CmdletBinding()]
     param (
@@ -122,8 +121,7 @@ function Invoke-EmailSenderWorkflow {
 
     Invoke-RestMethod -Uri $WebhookUrl -Method Post -Body $payload -ContentType "application/json"
 }
-```
-
+```plaintext
 #### Bonnes pratiques
 
 - Stocker les URLs de webhook dans des variables d'environnement ou des fichiers de configuration sécurisés
@@ -168,8 +166,7 @@ items.forEach(async (item) => {
 });
 
 return items;
-```
-
+```plaintext
 #### Bonnes pratiques
 
 - Limiter les appels à Augment aux cas nécessitant une IA avancée
@@ -183,7 +180,7 @@ return items;
 
 MCP (Model Context Protocol) sert d'intermédiaire entre n8n et les services IA :
 
-```
+```plaintext
 +-------------+      +----------------+      +----------------+
 | n8n         | ---> | MCP Server     | ---> | OpenRouter/   |
 | (Workflow)  |      | (Context)      |      | DeepSeek      |
@@ -195,8 +192,7 @@ MCP (Model Context Protocol) sert d'intermédiaire entre n8n et les services IA 
 | Notion/GCal    |    | Context Sources|
 | (Data Source)  |    | (Files, DB)    |
 +----------------+    +----------------+
-```
-
+```plaintext
 ### 4.2 Configuration MCP pour n8n
 
 ```javascript
@@ -238,8 +234,7 @@ for (const item of items) {
 }
 
 return items;
-```
-
+```plaintext
 #### Bonnes pratiques
 
 - Configurer MCP pour charger automatiquement le contexte pertinent
@@ -286,8 +281,7 @@ async function generatePersonalizedEmail(items) {
 
   return items;
 }
-```
-
+```plaintext
 ### 5.2 Analyse des réponses aux emails
 
 ```javascript
@@ -328,14 +322,14 @@ async function analyzeEmailResponse(items) {
 
   return items;
 }
-```
-
+```plaintext
 ### 5.3 Génération et maintenance de workflows n8n
 
 Augment peut aider à créer et maintenir des workflows n8n complexes :
 
 ```powershell
 # Exemple : Script pour générer un workflow n8n complet
+
 function New-EmailSenderWorkflow {
     [CmdletBinding()]
     param (
@@ -348,6 +342,7 @@ function New-EmailSenderWorkflow {
     )
 
     # Préparer la description du workflow en fonction de la phase
+
     $description = switch ($Phase) {
         "Phase1" { "Workflow de prospection initiale" }
         "Phase2" { "Workflow de suivi des propositions" }
@@ -356,15 +351,16 @@ function New-EmailSenderWorkflow {
     }
 
     # Appeler Augment pour générer le workflow
+
     $result = Invoke-AugmentMode -Mode "DEV-R" -Task "Créer un workflow n8n pour $description" -OutputFormat "JSON"
 
     # Sauvegarder le résultat
+
     $result | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding utf8
 
     Write-Output "Workflow généré avec succès : $OutputPath"
 }
-```
-
+```plaintext
 ## 6. Bonnes pratiques générales
 
 ### 6.1 Sécurité

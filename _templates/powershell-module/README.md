@@ -44,14 +44,12 @@ Caractéristiques :
 
 ```bash
 npx hygen powershell-module new
-```
-
+```plaintext
 Ou avec des paramètres spécifiques :
 
 ```bash
 npx hygen powershell-module new --name NomDuModule --description "Description du module" --category core --type standard --author "Votre Nom"
-```
-
+```plaintext
 #### Paramètres
 
 - `--name` : Nom du module (obligatoire)
@@ -64,34 +62,45 @@ npx hygen powershell-module new --name NomDuModule --description "Description du
 
 ```bash
 # Créer un module standard
+
 npx hygen powershell-module new --name ConfigManager --category core --type standard
 
 # Créer un module avancé avec gestion d'état
+
 npx hygen powershell-module new --name StateManager --category utils --type advanced
 
 # Créer un module d'extension
-npx hygen powershell-module new --name ExtensionManager --category integration --type extension
-```
 
+npx hygen powershell-module new --name ExtensionManager --category integration --type extension
+```plaintext
 ## Structure des modules générés
 
-```
+```plaintext
 NomDuModule/
 ├── NomDuModule.psd1     # Manifeste du module
+
 ├── NomDuModule.psm1     # Module principal
+
 ├── Public/              # Fonctions publiques
+
 │   └── README.md        # Documentation des fonctions publiques
+
 ├── Private/             # Fonctions privées
+
 │   └── README.md        # Documentation des fonctions privées
+
 ├── Tests/               # Tests Pester
+
 │   └── NomDuModule.Tests.ps1
 ├── config/              # Fichiers de configuration
+
 │   └── NomDuModule.config.json
 ├── logs/                # Fichiers de logs
+
 │   └── ...
 └── README.md            # Documentation du module
-```
 
+```plaintext
 Les modules avancés et d'extension incluent des dossiers et fichiers supplémentaires spécifiques à leurs fonctionnalités.
 
 ## Tests
@@ -100,8 +109,7 @@ Pour tester les templates de modules PowerShell :
 
 ```powershell
 .\development\scripts\tests\Test-PowerShellModuleTemplates.ps1
-```
-
+```plaintext
 Options disponibles :
 - `-TestStandard` : Teste uniquement le template de module standard
 - `-TestAdvanced` : Teste uniquement le template de module avancé

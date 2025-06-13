@@ -72,8 +72,7 @@ flowchart TD
 
     click B1 "https://github.com/gerivdb/email-sender-1" "Accéder au repo"
     click B2 "https://qdrant.tech/" "Site QDrant"
-```
-
+```plaintext
 ## 5. Points d’attention
 
 - **Cohérence** : la synchronisation SQL <-> QDrant est cruciale pour éviter les “orphans” ou les divergences.
@@ -85,6 +84,5 @@ flowchart TD
 
 > Ce schéma est un point de départ : adapte-le à tes conventions, ajoute les flèches ou API spécifiques selon les flux réels de ton projet. Une version SVG ou draw.io peut être générée à partir du Mermaid si besoin.
 
-```
-
+```plaintext
 N’hésite pas à préciser si tu veux un focus sur un workflow particulier (par exemple, ingestion de contacts, recherche contextuelle d’email, etc.) ou un format de schéma différent (SVG, PNG, etc.).

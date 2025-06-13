@@ -9,6 +9,7 @@ Ce document identifie et catégorise les différents types de dépendances qui d
 Les scripts peuvent dépendre d'autres scripts, modules ou ressources externes. Ces dépendances sont généralement détectées par analyse statique du code.
 
 #### Caractéristiques:
+
 - **Détection**: Analyse de code statique (regex, AST)
 - **Mécanismes**: Import-Module, dot-sourcing, require, import, etc.
 - **Exemples**:
@@ -18,6 +19,7 @@ Les scripts peuvent dépendre d'autres scripts, modules ou ressources externes. 
   ```
 
 #### Sous-types:
+
 - **Dépendances PowerShell**:
   - Import-Module
   - Dot-sourcing (.)
@@ -39,15 +41,18 @@ Les scripts peuvent dépendre d'autres scripts, modules ou ressources externes. 
 Les modules peuvent dépendre d'autres modules, packages ou bibliothèques.
 
 #### Caractéristiques:
+
 - **Détection**: Manifestes, fichiers de configuration
 - **Mécanismes**: RequiredModules, NestedModules, etc.
 - **Exemples**:
   ```powershell
   # Dans un .psd1
+
   RequiredModules = @('PSReadLine', 'PSScriptAnalyzer')
   ```
 
 #### Sous-types:
+
 - **Modules PowerShell**: .psd1, .psm1
 - **Packages Python**: requirements.txt, setup.py
 - **Packages Node.js**: package.json
@@ -57,15 +62,18 @@ Les modules peuvent dépendre d'autres modules, packages ou bibliothèques.
 Les gestionnaires peuvent dépendre d'autres gestionnaires pour certaines fonctionnalités.
 
 #### Caractéristiques:
+
 - **Détection**: Configuration, enregistrement
 - **Mécanismes**: Adaptateurs, interfaces
 - **Exemples**:
   ```powershell
   # Dans un adaptateur
+
   $result = Invoke-ProcessManagerCommand -ManagerName "ModeManager" -Command "GetStatus"
   ```
 
 #### Sous-types:
+
 - **Dépendances directes**: Un gestionnaire appelle explicitement un autre
 - **Dépendances indirectes**: Un gestionnaire utilise des ressources gérées par un autre
 - **Dépendances d'initialisation**: Un gestionnaire doit être initialisé avant un autre
@@ -75,6 +83,7 @@ Les gestionnaires peuvent dépendre d'autres gestionnaires pour certaines foncti
 Les tâches dans une roadmap peuvent dépendre d'autres tâches.
 
 #### Caractéristiques:
+
 - **Détection**: Métadonnées, références
 - **Mécanismes**: DependsOn, références dans le titre/description
 - **Exemples**:
@@ -83,6 +92,7 @@ Les tâches dans une roadmap peuvent dépendre d'autres tâches.
   ```
 
 #### Sous-types:
+
 - **Dépendances explicites**: Définies dans les métadonnées
 - **Dépendances implicites**: Détectées par analyse de références
 - **Dépendances hiérarchiques**: Basées sur la structure parent-enfant
@@ -94,6 +104,7 @@ Les tâches dans une roadmap peuvent dépendre d'autres tâches.
 Une dépendance directe existe lorsqu'un composant A utilise explicitement un composant B.
 
 #### Caractéristiques:
+
 - **Détection**: Références explicites
 - **Impact**: Élevé - le composant ne peut pas fonctionner sans sa dépendance
 
@@ -102,6 +113,7 @@ Une dépendance directe existe lorsqu'un composant A utilise explicitement un co
 Une dépendance indirecte existe lorsqu'un composant A dépend d'un composant B qui dépend d'un composant C.
 
 #### Caractéristiques:
+
 - **Détection**: Analyse récursive
 - **Impact**: Moyen à élevé - peut causer des problèmes difficiles à diagnostiquer
 
@@ -110,6 +122,7 @@ Une dépendance indirecte existe lorsqu'un composant A dépend d'un composant B 
 Une dépendance optionnelle existe lorsqu'un composant peut utiliser un autre composant si disponible, mais peut fonctionner sans lui.
 
 #### Caractéristiques:
+
 - **Détection**: Vérifications conditionnelles
 - **Impact**: Faible - le composant peut fonctionner sans sa dépendance
 
@@ -118,6 +131,7 @@ Une dépendance optionnelle existe lorsqu'un composant peut utiliser un autre co
 Une dépendance cyclique existe lorsque deux composants dépendent l'un de l'autre, directement ou indirectement.
 
 #### Caractéristiques:
+
 - **Détection**: Algorithmes de détection de cycles dans les graphes
 - **Impact**: Critique - peut causer des blocages ou des comportements imprévisibles
 
@@ -128,6 +142,7 @@ Une dépendance cyclique existe lorsque deux composants dépendent l'un de l'aut
 Dépendances sur des composants du système d'exploitation ou de l'environnement d'exécution.
 
 #### Exemples:
+
 - PowerShell 5.1 ou 7.x
 - Python 3.x
 - Node.js
@@ -137,6 +152,7 @@ Dépendances sur des composants du système d'exploitation ou de l'environnement
 Dépendances sur des bibliothèques ou services tiers.
 
 #### Exemples:
+
 - Packages NuGet
 - Modules PowerShell Gallery
 - Packages PyPI
@@ -147,6 +163,7 @@ Dépendances sur des bibliothèques ou services tiers.
 Dépendances sur des composants développés en interne.
 
 #### Exemples:
+
 - Modules personnalisés
 - Scripts utilitaires
 - Bibliothèques internes
@@ -158,6 +175,7 @@ Dépendances sur des composants développés en interne.
 La gestion des versions est essentielle pour assurer la compatibilité entre les composants.
 
 #### Stratégies:
+
 - Versionnement sémantique (SemVer)
 - Plages de versions compatibles
 - Verrouillage de versions
@@ -167,6 +185,7 @@ La gestion des versions est essentielle pour assurer la compatibilité entre les
 Des mécanismes doivent être en place pour résoudre les conflits de dépendances.
 
 #### Stratégies:
+
 - Priorité basée sur la version
 - Priorité basée sur la source
 - Résolution manuelle
@@ -176,6 +195,7 @@ Des mécanismes doivent être en place pour résoudre les conflits de dépendanc
 La résolution des dépendances doit être efficace, surtout pour les grands projets.
 
 #### Optimisations:
+
 - Mise en cache des résultats
 - Analyse incrémentale
 - Parallélisation
@@ -185,6 +205,7 @@ La résolution des dépendances doit être efficace, surtout pour les grands pro
 Les dépendances peuvent introduire des vulnérabilités de sécurité.
 
 #### Mesures:
+
 - Vérification des sources
 - Analyse de vulnérabilités
 - Mise à jour automatique

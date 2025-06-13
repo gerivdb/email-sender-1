@@ -19,8 +19,7 @@ Ces scripts sont généralement utilisés par les scripts principaux, mais peuve
 
 ```powershell
 .\helpers\Navigate-Roadmap.ps1 -Mode Active -DetailLevel 2
-```
-
+```plaintext
 ```powershell
 .\import\Get-RoadmapFiles.ps1 -Directories @("projet/roadmaps", "development/roadmap") -FileExtensions @(".md")
-```
+```plaintext

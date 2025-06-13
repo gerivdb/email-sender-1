@@ -10,8 +10,7 @@ Le moyen le plus simple de créer une entrée est d'utiliser le script `journal_
 
 ```powershell
 python development/scripts/python/journal/journal_entry.py "Titre de l'entrée" --tags tag1 tag2 tag3
-```
-
+```plaintext
 #### Options disponibles
 
 - `--tags`: Liste de tags séparés par des espaces
@@ -21,8 +20,7 @@ Exemple complet:
 
 ```powershell
 python development/scripts/python/journal/journal_entry.py "Optimisation du système RAG" --tags rag optimisation performance --related 2025-04-01-14-30-implementation-du-systeme-rag.md
-```
-
+```plaintext
 ### Structure d'une entrée
 
 Chaque entrée créée suivra cette structure:
@@ -39,35 +37,42 @@ related: [fichier1.md, fichier2.md]
 # Titre de l'entrée
 
 ## Actions réalisées
+
 - 
 
 ## Résolution des erreurs, déductions tirées
+
 - 
 
 ## Optimisations identifiées
+
 - Pour le système: 
 - Pour le code: 
 - Pour la gestion des erreurs: 
 - Pour les workflows: 
 
 ## Enseignements techniques
+
 - 
 
 ## Impact sur le projet musical
+
 - 
 
 ## Code associé
-```
-# Exemple de code
-```
 
+```plaintext
+# Exemple de code
+
+```plaintext
 ## Prochaines étapes
+
 - 
 
 ## Références et ressources
-- 
-```
 
+- 
+```plaintext
 ### Bonnes pratiques pour remplir une entrée
 
 1. **Actions réalisées**: Décrivez précisément ce que vous avez fait, les décisions prises et les raisons.
@@ -98,20 +103,20 @@ Le script `journal-daily.ps1` permet de créer automatiquement des entrées quot
 
 ```powershell
 # Créer une entrée quotidienne
+
 .\development\scripts\cmd\journal-daily.ps1
 
 # Forcer la création d'une entrée hebdomadaire (normalement créée le dimanche)
-.\development\scripts\cmd\journal-daily.ps1 -ForceWeekly
-```
 
+.\development\scripts\cmd\journal-daily.ps1 -ForceWeekly
+```plaintext
 ### Création à partir d'issues GitHub
 
 Si vous utilisez l'intégration GitHub, vous pouvez créer des entrées à partir d'issues:
 
 ```powershell
 python development/scripts/python/journal/github_integration.py create-from-issue --issue 123
-```
-
+```plaintext
 Cette commande créera une entrée avec les détails de l'issue #123, y compris son titre, sa description et ses labels.
 
 ### Création à partir de l'interface web
@@ -126,9 +131,9 @@ Vous pouvez configurer des tâches planifiées pour créer automatiquement des e
 
 ```powershell
 # Configurer les tâches planifiées
-.\development\scripts\cmd\setup-journal-tasks.ps1
-```
 
+.\development\scripts\cmd\setup-journal-tasks.ps1
+```plaintext
 Ce script configurera:
 - Une tâche quotidienne pour créer une entrée chaque jour à 18h
 - Une tâche hebdomadaire pour créer une entrée de résumé chaque dimanche à 18h
@@ -139,9 +144,9 @@ Si vous utilisez n8n, vous pouvez intégrer la création d'entrées dans vos wor
 
 ```powershell
 # Configurer l'intégration n8n
-python development/scripts/python/journal/n8n_journal_integration.py setup
-```
 
+python development/scripts/python/journal/n8n_journal_integration.py setup
+```plaintext
 Cette commande configurera un webhook que vous pourrez utiliser dans vos workflows n8n pour créer des entrées.
 
 ## Édition d'entrées existantes
@@ -165,10 +170,9 @@ Si vous utilisez VS Code, vous pouvez utiliser les tâches définies dans `.vsco
 
 Les fichiers sont nommés selon le format:
 
-```
+```plaintext
 AAAA-MM-JJ-HH-MM-slug-de-l-entree.md
-```
-
+```plaintext
 Ne modifiez pas manuellement les noms de fichiers, car cela pourrait casser les liens entre les entrées.
 
 ### Utilisation des tags
@@ -186,8 +190,7 @@ Utilisez le champ `related` dans les métadonnées pour lier des entrées entre 
 
 ```yaml
 related: [2025-04-01-14-30-implementation-du-systeme-rag.md, 2025-04-02-10-15-debug-du-systeme-rag.md]
-```
-
+```plaintext
 ## Recherche d'entrées
 
 ### Recherche en ligne de commande
@@ -196,15 +199,17 @@ Vous pouvez rechercher dans le journal avec le script `journal_search_simple.py`
 
 ```powershell
 # Recherche par mots-clés
+
 python development/scripts/python/journal/journal_search_simple.py --query "système rag"
 
 # Recherche par tag
+
 python development/scripts/python/journal/journal_search_simple.py --tag "rag"
 
 # Recherche par date
-python development/scripts/python/journal/journal_search_simple.py --date "2025-04-05"
-```
 
+python development/scripts/python/journal/journal_search_simple.py --date "2025-04-05"
+```plaintext
 ### Recherche via l'interface web
 
 Si vous utilisez l'interface web, vous pouvez utiliser la barre de recherche en haut de la page Journal.
@@ -215,8 +220,7 @@ Vous pouvez interroger le journal en langage naturel avec le système RAG:
 
 ```powershell
 python development/scripts/python/journal/journal_rag_simple.py --query "Quelles sont les optimisations identifiées pour le système RAG?"
-```
-
+```plaintext
 ## Conseils pour un journal efficace
 
 1. **Régularité**: Créez des entrées régulièrement, idéalement à la fin de chaque session de travail

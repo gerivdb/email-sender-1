@@ -46,20 +46,17 @@ Ce dossier contient tous les templates Hygen pour la génération automatique de
 
 ```powershell
 hygen plan-dev new --version "v1" --title "Mon Plan" --description "Description"
-```
-
+```plaintext
 ### Création de scripts
 
 ```powershell
 hygen script new --name "mon-script" --category "maintenance" --description "Description"
-```
-
+```plaintext
 ### Génération de documentation
 
 ```powershell
 hygen doc-structure new --name "architecture" --type "system"
-```
-
+```plaintext
 ## ⚙️ Configuration
 
 Les templates utilisent la configuration dans `.hygen.js` à la racine du projet. Les chemins sont relatifs à la racine du projet.

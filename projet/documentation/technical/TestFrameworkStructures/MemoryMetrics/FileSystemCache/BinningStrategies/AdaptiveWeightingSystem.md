@@ -90,10 +90,9 @@ Le système de pondération adaptative ajuste dynamiquement l'importance relativ
 
 Le vecteur de pondération final W est calculé comme une combinaison des vecteurs de pondération spécifiques à chaque facteur :
 
-```
+```plaintext
 W = α·Wₖ + β·Wₜ + γ·Wᵣ + δ·Wₒ
-```
-
+```plaintext
 où :
 - Wₖ est le vecteur de pondération du contexte d'analyse
 - Wₜ est le vecteur de pondération du type de distribution
@@ -114,13 +113,12 @@ où :
 
 Les coefficients peuvent être ajustés dynamiquement en fonction de la confiance dans la détection de chaque facteur :
 
-```
+```plaintext
 α' = α·Cₖ / (α·Cₖ + β·Cₜ + γ·Cᵣ + δ·Cₒ)
 β' = β·Cₜ / (α·Cₖ + β·Cₜ + γ·Cᵣ + δ·Cₒ)
 γ' = γ·Cᵣ / (α·Cₖ + β·Cₜ + γ·Cᵣ + δ·Cₒ)
 δ' = δ·Cₒ / (α·Cₖ + β·Cₜ + γ·Cᵣ + δ·Cₒ)
-```
-
+```plaintext
 où Cₖ, Cₜ, Cᵣ, Cₒ sont les niveaux de confiance (entre 0 et 1) dans la détection de chaque facteur.
 
 ## 5. Implémentation
@@ -140,18 +138,22 @@ def detect_distribution_type(data):
         confidence: Niveau de confiance dans la détection
     """
     # Calculer les statistiques de base
+
     mean = np.mean(data)
     std = np.std(data)
     skewness = scipy.stats.skew(data)
     kurtosis = scipy.stats.kurtosis(data, fisher=False)
     
     # Vérifier la multimodalité
+
     is_multimodal, _ = detect_multimodality(data)
     
     # Déterminer le type de distribution
+
     if is_multimodal:
         distribution_type = "multimodal"
         confidence = 0.8  # Confiance élevée dans la détection de multimodalité
+
     elif abs(skewness) < 0.5 and abs(kurtosis - 3) < 0.5:
         distribution_type = "quasiNormal"
         confidence = 0.9 - abs(skewness) - abs(kurtosis - 3) / 3
@@ -166,11 +168,11 @@ def detect_distribution_type(data):
         confidence = min(0.7, skewness / 2)
     else:
         distribution_type = "quasiNormal"  # Par défaut
+
         confidence = 0.5
     
     return distribution_type, confidence
-```
-
+```plaintext
 ### 5.2 Détection de la région de latence
 
 ```python
@@ -186,9 +188,11 @@ def detect_latency_region(data):
         confidence: Niveau de confiance dans la détection
     """
     # Calculer les statistiques de base
+
     median = np.median(data)
     
     # Déterminer la région de latence
+
     if median < 100:
         latency_region = "l1l2Cache"
         confidence = 1.0 - abs(median - 75) / 75
@@ -203,11 +207,11 @@ def detect_latency_region(data):
         confidence = min(1.0, median / 2000)
     
     # Limiter la confiance entre 0.5 et 0.95
+
     confidence = max(0.5, min(0.95, confidence))
     
     return latency_region, confidence
-```
-
+```plaintext
 ### 5.3 Calcul des poids adaptatifs
 
 ```python
@@ -225,6 +229,7 @@ def calculate_adaptive_weights(data, context=None, objective=None):
         factors: Facteurs détectés et utilisés
     """
     # Définir les matrices de pondération
+
     context_weights = {
         "monitoring": [0.50, 0.30, 0.15, 0.05],
         "comparative": [0.30, 0.30, 0.25, 0.15],
@@ -232,6 +237,7 @@ def calculate_adaptive_weights(data, context=None, objective=None):
         "anomaly_detection": [0.20, 0.25, 0.35, 0.20],
         "characterization": [0.25, 0.25, 0.25, 0.25],
         None: [0.40, 0.30, 0.20, 0.10]  # Par défaut
+
     }
     
     distribution_weights = {
@@ -255,19 +261,27 @@ def calculate_adaptive_weights(data, context=None, objective=None):
         "predictability": [0.15, 0.25, 0.30, 0.30],
         "structure": [0.25, 0.25, 0.25, 0.25],
         None: [0.40, 0.30, 0.20, 0.10]  # Par défaut
+
     }
     
     # Détecter les facteurs automatiquement si non spécifiés
+
     distribution_type, dist_confidence = detect_distribution_type(data)
     latency_region, region_confidence = detect_latency_region(data)
     
     # Définir les coefficients de mélange par défaut
+
     alpha = 0.40  # Contexte
+
     beta = 0.30   # Distribution
+
     gamma = 0.20  # Région
+
     delta = 0.10  # Objectif
+
     
     # Ajuster les coefficients selon la confiance
+
     context_confidence = 1.0 if context else 0.7
     objective_confidence = 1.0 if objective else 0.7
     
@@ -282,12 +296,14 @@ def calculate_adaptive_weights(data, context=None, objective=None):
     delta_adj = delta * objective_confidence / denominator
     
     # Récupérer les vecteurs de pondération
+
     w_context = context_weights[context]
     w_distribution = distribution_weights[distribution_type]
     w_region = latency_weights[latency_region]
     w_objective = objective_weights[objective]
     
     # Calculer le vecteur de pondération final
+
     weights = [0, 0, 0, 0]
     for i in range(4):
         weights[i] = (alpha_adj * w_context[i] + 
@@ -296,10 +312,12 @@ def calculate_adaptive_weights(data, context=None, objective=None):
                      delta_adj * w_objective[i])
     
     # Normaliser les poids
+
     sum_weights = sum(weights)
     weights = [w / sum_weights for w in weights]
     
     # Préparer les informations sur les facteurs
+
     factors = {
         "context": {
             "value": context,
@@ -328,8 +346,7 @@ def calculate_adaptive_weights(data, context=None, objective=None):
     }
     
     return weights, factors
-```
-
+```plaintext
 ## 6. Représentation JSON
 
 ```json
@@ -371,43 +388,54 @@ def calculate_adaptive_weights(data, context=None, objective=None):
     }
   }
 }
-```
-
+```plaintext
 ## 7. Exemples d'application
 
 ### 7.1 Analyse de stabilité pour une distribution asymétrique
 
 ```python
 # Données de latence asymétriques
+
 data = np.random.gamma(shape=3, scale=50, size=1000)
 
 # Calculer les poids adaptatifs pour une analyse de stabilité
+
 weights, factors = calculate_adaptive_weights(data, context="stability")
 
 # Résultat typique: [0.22, 0.48, 0.21, 0.09]
-# - Poids réduit pour la moyenne (0.22 vs 0.40 par défaut)
-# - Poids accru pour la variance (0.48 vs 0.30 par défaut)
-# - Poids légèrement accru pour l'asymétrie (0.21 vs 0.20 par défaut)
-# - Poids légèrement réduit pour l'aplatissement (0.09 vs 0.10 par défaut)
-```
 
+# - Poids réduit pour la moyenne (0.22 vs 0.40 par défaut)
+
+# - Poids accru pour la variance (0.48 vs 0.30 par défaut)
+
+# - Poids légèrement accru pour l'asymétrie (0.21 vs 0.20 par défaut)
+
+# - Poids légèrement réduit pour l'aplatissement (0.09 vs 0.10 par défaut)
+
+```plaintext
 ### 7.2 Monitoring opérationnel pour une région L1/L2 Cache
 
 ```python
 # Données de latence L1/L2 Cache
+
 data = np.random.gamma(shape=5, scale=10, size=1000)
 data = data * (50 / np.mean(data)) + 50  # Ajuster pour la plage cible
 
 # Calculer les poids adaptatifs pour un monitoring opérationnel
+
 weights, factors = calculate_adaptive_weights(data, context="monitoring")
 
 # Résultat typique: [0.52, 0.32, 0.12, 0.04]
-# - Poids accru pour la moyenne (0.52 vs 0.40 par défaut)
-# - Poids légèrement accru pour la variance (0.32 vs 0.30 par défaut)
-# - Poids réduit pour l'asymétrie (0.12 vs 0.20 par défaut)
-# - Poids réduit pour l'aplatissement (0.04 vs 0.10 par défaut)
-```
 
+# - Poids accru pour la moyenne (0.52 vs 0.40 par défaut)
+
+# - Poids légèrement accru pour la variance (0.32 vs 0.30 par défaut)
+
+# - Poids réduit pour l'asymétrie (0.12 vs 0.20 par défaut)
+
+# - Poids réduit pour l'aplatissement (0.04 vs 0.10 par défaut)
+
+```plaintext
 ## 8. Validation et ajustement
 
 ### 8.1 Méthode de validation croisée

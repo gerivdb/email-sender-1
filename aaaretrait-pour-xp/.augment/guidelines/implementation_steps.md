@@ -42,26 +42,31 @@ Ce document fournit un guide détaillé pour l'implémentation de nouvelles fonc
 ## Développement d'une nouvelle fonctionnalité
 
 ### 1. Préparation
+
 - Créer une nouvelle branche à partir de `main`
 - Définir clairement le périmètre de la fonctionnalité
 - Identifier les dépendances et prérequis
 
 ### 2. Développement TDD
+
 - Écrire d'abord les tests (qui échoueront)
 - Implémenter le code minimal pour faire passer les tests
 - Refactoriser le code tout en maintenant les tests au vert
 
 ### 3. Intégration
+
 - Intégrer avec les composants existants
 - Vérifier la compatibilité avec les autres fonctionnalités
 - Résoudre les conflits potentiels
 
 ### 4. Validation
+
 - Exécuter la suite complète de tests
 - Vérifier la couverture de code
 - Valider manuellement les cas d'utilisation principaux
 
 ### 5. Finalisation
+
 - Nettoyer le code (supprimer le code commenté, les logs de debug)
 - Mettre à jour la documentation
 - Préparer la pull request
@@ -69,26 +74,31 @@ Ce document fournit un guide détaillé pour l'implémentation de nouvelles fonc
 ## Correction de bugs
 
 ### 1. Reproduction
+
 - Reproduire le bug de manière fiable
 - Identifier les conditions exactes qui déclenchent le bug
 - Documenter les étapes de reproduction
 
 ### 2. Analyse
+
 - Localiser la source du problème
 - Comprendre la cause racine
 - Évaluer l'impact sur les autres parties du système
 
 ### 3. Correction
+
 - Écrire un test qui reproduit le bug
 - Implémenter la correction
 - Vérifier que le test passe désormais
 
 ### 4. Validation
+
 - S'assurer que la correction n'introduit pas de régressions
 - Vérifier que tous les cas de test passent
 - Valider la correction dans différents environnements si nécessaire
 
 ### 5. Documentation
+
 - Documenter la nature du bug et sa correction
 - Mettre à jour la documentation si nécessaire
 - Ajouter des notes sur les leçons apprises
@@ -96,21 +106,25 @@ Ce document fournit un guide détaillé pour l'implémentation de nouvelles fonc
 ## Refactoring
 
 ### 1. Préparation
+
 - S'assurer d'avoir une bonne couverture de tests
 - Définir clairement les objectifs du refactoring
 - Établir des métriques pour mesurer l'amélioration
 
 ### 2. Exécution
+
 - Procéder par petites étapes
 - Exécuter les tests après chaque modification
 - Committer fréquemment
 
 ### 3. Validation
+
 - Vérifier que le comportement du système reste inchangé
 - Mesurer l'amélioration selon les métriques définies
 - Valider avec d'autres développeurs
 
 ### 4. Documentation
+
 - Documenter les changements architecturaux
 - Mettre à jour les diagrammes et la documentation technique
 - Expliquer les raisons du refactoring

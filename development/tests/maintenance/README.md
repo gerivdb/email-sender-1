@@ -17,14 +17,12 @@ Pour exécuter tous les tests, utilisez le script `Run-AllTests.ps1` :
 
 ```powershell
 .\development\tests\maintenance\Run-AllTests.ps1
-```
-
+```plaintext
 Pour générer un rapport de test et de couverture de code :
 
 ```powershell
 .\development\tests\maintenance\Run-AllTests.ps1 -GenerateReport
-```
-
+```plaintext
 ## Prérequis
 
 - PowerShell 5.1 ou supérieur
@@ -35,12 +33,14 @@ Pour générer un rapport de test et de couverture de code :
 Les tests unitaires couvrent les aspects suivants du système de gestion de roadmap :
 
 ### Split-Roadmap.ps1
+
 - Validation des paramètres
 - Séparation de la roadmap en fichiers actif et complété
 - Archivage des sections complétées
 - Fonctions internes (Get-TaskStatus, Get-SectionLevel, etc.)
 
 ### Update-RoadmapStatus.ps1
+
 - Validation des paramètres
 - Mise à jour du statut des tâches
 - Archivage des tâches terminées
@@ -48,6 +48,7 @@ Les tests unitaires couvrent les aspects suivants du système de gestion de road
 - Fonctions internes (Get-TasksStatus, etc.)
 
 ### Navigate-Roadmap.ps1
+
 - Validation des paramètres
 - Navigation dans la roadmap active
 - Navigation dans la roadmap complétée
@@ -56,6 +57,7 @@ Les tests unitaires couvrent les aspects suivants du système de gestion de road
 - Fonctions internes (Get-SectionLevel, Get-SectionId, etc.)
 
 ### Manage-Roadmap.ps1
+
 - Action Split
 - Action Update
 - Action Navigate

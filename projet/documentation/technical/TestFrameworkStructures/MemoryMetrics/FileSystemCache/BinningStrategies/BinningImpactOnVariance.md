@@ -10,10 +10,9 @@ Ce document analyse l'impact des différentes stratégies de binning sur la cons
 
 Pour une distribution continue f(x) discrétisée en k bins, la variance de l'histogramme σ²ₕ est donnée par :
 
-```
+```plaintext
 σ²ₕ = Σ (xᵢ - μₕ)²·pᵢ
-```
-
+```plaintext
 où xᵢ est le centre du bin i, pᵢ est la probabilité associée au bin i, et μₕ est la moyenne de l'histogramme.
 
 L'erreur sur la variance due au binning peut être décomposée en trois composantes :
@@ -26,20 +25,18 @@ L'erreur sur la variance due au binning peut être décomposée en trois composa
 
 Le regroupement des observations dans des bins introduit un biais systématique dans l'estimation de la variance. Pour des bins de largeur h, ce biais est approximativement :
 
-```
+```plaintext
 Biais(σ²ₕ) ≈ -h²/12
-```
-
+```plaintext
 Ce biais est négatif, indiquant que l'histogramme tend à sous-estimer la variance réelle. La correction de Sheppard compense ce biais en ajoutant h²/12 à la variance calculée.
 
 ### 2.3 Erreur théorique en fonction du nombre de bins
 
 Pour une distribution continue f(x) discrétisée en k bins de largeur h, l'erreur relative théorique sur la variance est approximativement :
 
-```
+```plaintext
 ERV ≈ C·(1/k²) + O(1/k³)
-```
-
+```plaintext
 où C est une constante qui dépend de la forme de la distribution.
 
 ## 3. Impact du nombre de bins
@@ -209,6 +206,7 @@ def select_optimal_binning_for_variance_conservation(data, target_erv=0.1):
         binning_strategy: Dictionnaire décrivant la stratégie optimale
     """
     # Calculer les statistiques de base
+
     mean = np.mean(data)
     variance = np.var(data, ddof=1)
     std = np.sqrt(variance)
@@ -216,44 +214,61 @@ def select_optimal_binning_for_variance_conservation(data, target_erv=0.1):
     skewness = scipy.stats.skew(data)
     
     # Détecter la multimodalité
+
     is_multimodal, modes = detect_multimodality(data)
     
     # Sélectionner la stratégie de base selon les caractéristiques
+
     if is_multimodal:
         # Distribution multimodale
+
         base_strategy = "stratified"
     elif skewness > 1.0 or (max(data) / min(data) > 10):
         # Distribution asymétrique ou grande plage dynamique
+
         base_strategy = "logarithmic"
     else:
         # Distribution simple
+
         base_strategy = "fixed_width"
     
     # Estimer le nombre de bins nécessaire
+
     if base_strategy == "fixed_width":
         # Règle empirique basée sur l'ERV cible
+
         num_bins = int(np.sqrt(0.02 / target_erv) * 20)
     elif base_strategy == "logarithmic":
         # Règle empirique pour bins logarithmiques
+
         num_bins = int(np.sqrt(0.015 / target_erv) * 20)
     else:
         # Pour stratification, tenir compte des modes
+
         num_bins = max(40, len(modes) * 8)
     
     # Ajuster selon le coefficient de variation
+
     if cv < 0.3:
         # Distribution à faible variabilité relative
+
         num_bins = int(num_bins * 0.8)  # Moins de bins nécessaires
+
     elif cv > 0.7:
         # Distribution à forte variabilité relative
+
         num_bins = int(num_bins * 1.2)  # Plus de bins nécessaires
+
     
     # Déterminer les limites
+
     if base_strategy == "stratified" and is_multimodal:
         # Stratification par mode
+
         bin_edges = generate_stratified_bins(data, modes, num_bins)
     else:
         # Limites robustes
+
         p01, p99 = np.percentile(data, [1, 99])
         if base_strategy == "logarithmic":
             bin_edges = np.logspace(np.log10(max(p01, 1)), np.log10(p99), num_bins+1)
@@ -261,11 +276,14 @@ def select_optimal_binning_for_variance_conservation(data, target_erv=0.1):
             bin_edges = np.linspace(p01, p99, num_bins+1)
     
     # Vérifier l'ERV attendue
+
     expected_erv = estimate_variance_relative_error(data, bin_edges, base_strategy)
     
     # Ajuster si nécessaire
+
     if expected_erv > target_erv:
         # Augmenter le nombre de bins
+
         adjustment_factor = np.sqrt(expected_erv / target_erv)
         return select_optimal_binning_for_variance_conservation(
             data, target_erv, num_bins=int(num_bins * adjustment_factor))
@@ -277,8 +295,7 @@ def select_optimal_binning_for_variance_conservation(data, target_erv=0.1):
         "expected_erv": expected_erv,
         "apply_sheppard_correction": True
     }
-```
-
+```plaintext
 ### 8.3 Correction du biais de groupement
 
 Pour améliorer la conservation de la variance, la correction de Sheppard devrait être appliquée systématiquement :
@@ -296,9 +313,11 @@ def apply_sheppard_correction(bin_edges, bin_counts):
         corrected_variance: Variance corrigée de l'histogramme
     """
     # Calculer les centres des bins
+
     bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
     
     # Calculer les fréquences relatives
+
     total_count = np.sum(bin_counts)
     if total_count == 0:
         return 0
@@ -306,22 +325,25 @@ def apply_sheppard_correction(bin_edges, bin_counts):
     frequencies = bin_counts / total_count
     
     # Calculer la moyenne
+
     mean = np.sum(bin_centers * frequencies)
     
     # Calculer la variance non corrigée
+
     uncorrected_variance = np.sum(frequencies * (bin_centers - mean)**2)
     
     # Pour les bins à largeur variable, utiliser la largeur moyenne pondérée
+
     bin_widths = np.diff(bin_edges)
     weighted_bin_width = np.sum(bin_widths * frequencies)
     
     # Appliquer la correction de Sheppard
+
     correction = weighted_bin_width**2 / 12
     corrected_variance = uncorrected_variance + correction
     
     return corrected_variance
-```
-
+```plaintext
 ## 9. Représentation JSON
 
 ```json
@@ -395,8 +417,7 @@ def apply_sheppard_correction(bin_edges, bin_counts):
     }
   }
 }
-```
-
+```plaintext
 ## 10. Exemples d'application
 
 ### 10.1 Cas d'étude: Distribution unimodale asymétrique

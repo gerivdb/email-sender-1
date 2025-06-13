@@ -1,4 +1,5 @@
 # Spécification du Graphe de Dépendances
+
 *Version 1.0 - 2025-05-15*
 
 ## 1. Description Générale
@@ -10,6 +11,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
 ### 2.1 Représentation des Nœuds
 
 #### 2.1.1 Apparence des Nœuds
+
 - **Forme**: 
   - Standard: Rectangles arrondis
   - Jalons: Losanges
@@ -28,6 +30,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
   - Sélectionné: 2px solide, couleur de mise en évidence
 
 #### 2.1.2 Contenu des Nœuds
+
 - **Texte principal**: Titre de la tâche (tronqué si nécessaire)
 - **Identifiant**: Code de la tâche (petit, en haut)
 - **Indicateurs**:
@@ -36,6 +39,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
   - Nombre de dépendances: Badge numérique
 
 #### 2.1.3 Positionnement des Nœuds
+
 - **Algorithmes de disposition**:
   - Force-directed: Placement automatique équilibré
   - Hiérarchique: Organisation par niveaux de dépendance
@@ -49,6 +53,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
 ### 2.2 Visualisation des Relations
 
 #### 2.2.1 Types de Relations
+
 - **Dépendance directe**: Tâche A dépend de Tâche B
 - **Dépendance bidirectionnelle**: Dépendance mutuelle
 - **Dépendance faible**: Relation non bloquante
@@ -56,6 +61,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
 - **Relation de groupe**: Appartenance à un ensemble
 
 #### 2.2.2 Apparence des Liens
+
 - **Lignes**:
   - Style: Flèches courbes ou lignes brisées
   - Épaisseur: Variable selon l'importance (1-3px)
@@ -70,6 +76,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
   - Problématique: Ligne en zigzag ou colorée
 
 #### 2.2.3 Étiquettes des Relations
+
 - **Contenu**:
   - Type de dépendance
   - Force de la relation (optionnel)
@@ -86,6 +93,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
 ### 2.3 Indicateurs de Dépendances Problématiques
 
 #### 2.3.1 Détection de Cycles
+
 - **Visualisation**:
   - Mise en évidence des cycles en rouge
   - Numérotation des nœuds dans le cycle
@@ -96,6 +104,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
   - Information: Dépendances mutuelles intentionnelles
 
 #### 2.3.2 Nœuds Critiques
+
 - **Critères d'identification**:
   - Nombre élevé de dépendances entrantes
   - Position dans un chemin critique
@@ -106,6 +115,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
   - Badge spécial "critique"
 
 #### 2.3.3 Chemins Problématiques
+
 - **Types de problèmes**:
   - Chaînes de dépendances trop longues
   - Convergence excessive (trop de dépendances sur un nœud)
@@ -118,6 +128,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
 ## 3. Métadonnées à Afficher
 
 ### 3.1 Informations Essentielles par Nœud
+
 - **Identifiant**: Code hiérarchique (ex: 1.2.3)
 - **Titre**: Nom de la tâche
 - **Statut**: Représenté visuellement (couleur/icône)
@@ -127,6 +138,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
   - Score de centralité
 
 ### 3.2 Informations sur les Relations
+
 - **Type de dépendance**:
   - Bloquante/Non-bloquante
   - Technique/Fonctionnelle/Organisationnelle
@@ -139,6 +151,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
   - Délai entre tâches liées
 
 ### 3.3 Indicateurs de Blocage
+
 - **État de blocage**:
   - Actif: Actuellement bloqué
   - Potentiel: Risque de blocage
@@ -155,6 +168,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
 ## 4. Cas d'Utilisation Spécifiques
 
 ### 4.1 Analyse de Dépendances
+
 - **Objectif**: Comprendre les relations entre tâches
 - **Fonctionnalités clés**:
   - Vue d'ensemble de toutes les dépendances
@@ -166,6 +180,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
   - Zoom sur des clusters spécifiques
 
 ### 4.2 Identification de Blocages
+
 - **Objectif**: Détecter et résoudre les problèmes de dépendances
 - **Fonctionnalités clés**:
   - Détection automatique des cycles
@@ -177,6 +192,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
   - Suggestions automatiques de résolution
 
 ### 4.3 Planification d'Exécution
+
 - **Objectif**: Optimiser l'ordre d'exécution des tâches
 - **Fonctionnalités clés**:
   - Calcul du chemin critique
@@ -190,12 +206,14 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
 ## 5. Exigences Techniques
 
 ### 5.1 Performance
+
 - **Nombre de nœuds**: Support jusqu'à 300 nœuds sans dégradation
 - **Nombre de liens**: Support jusqu'à 1000 liens
 - **Temps de calcul**: < 2 secondes pour la détection de cycles
 - **Fluidité**: 30 FPS minimum lors des interactions
 
 ### 5.2 Algorithmes
+
 - **Disposition**:
   - Force-directed: D3.js force simulation
   - Hiérarchique: Algorithme de Sugiyama
@@ -206,6 +224,7 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
   - Calculs asynchrones pour opérations lourdes
 
 ### 5.3 Intégration
+
 - **Export**: PNG, SVG, GraphML, JSON
 - **API**: Endpoints pour analyse programmatique
 - **Événements**: Hooks pour intégration avec d'autres vues
@@ -213,20 +232,21 @@ Le graphe de dépendances est une visualisation des relations de dépendance ent
 ## 6. Exemples et Maquettes
 
 ### 6.1 Exemple de Graphe Simple
-```
+
+```plaintext
 A ──→ B ──→ D
 │     ↑     ↑
 └──→ C ─────┘
-```
-
+```plaintext
 ### 6.2 Exemple de Cycle Problématique
-```
+
+```plaintext
 A ──→ B ──→ C
 ↑           │
 └───────────┘
-```
-
+```plaintext
 ### 6.3 Exemples d'Interactions
+
 - Clic sur le nœud B: Met en évidence toutes ses relations
 - Double-clic sur un cycle: Zoom sur le cycle problématique
 - Glisser-déposer du nœud A: Réorganise le graphe dynamiquement

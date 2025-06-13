@@ -1,15 +1,19 @@
 # Product Requirements Document: Module de Prédiction par Régression Linéaire
+
 *Version 1.0 - 2025-05-13*
 
 ## 1. Introduction
 
 ### 1.1 Objectif
+
 Ce document définit les exigences pour le développement d'un module PowerShell de prédiction par régression linéaire, destiné à être intégré au système de monitoring EMAIL_SENDER_1. Ce module permettra de prédire les valeurs futures des métriques système à partir des données historiques, facilitant ainsi la planification des ressources et l'anticipation des problèmes potentiels.
 
 ### 1.2 Portée
+
 Le module de prédiction par régression linéaire fait partie du système de prédiction de charge global, qui vise à optimiser l'utilisation des ressources système. Ce PRD couvre spécifiquement le module de régression linéaire simple, qui constitue la première étape du système de prédiction.
 
 ### 1.3 Définitions
+
 - **Régression linéaire** : Technique statistique qui modélise la relation entre une variable dépendante et une ou plusieurs variables indépendantes par une équation linéaire.
 - **R²** : Coefficient de détermination, mesure de la qualité d'un modèle de régression.
 - **RMSE** : Root Mean Square Error, mesure de l'erreur moyenne du modèle.
@@ -86,7 +90,7 @@ Le module doit permettre de gérer plusieurs modèles:
 
 Le module sera implémenté sous forme d'un module PowerShell standard:
 
-```
+```plaintext
 SimpleLinearRegression.psm1
 ├── Variables globales
 │   └── $script:Models (hashtable)
@@ -97,8 +101,7 @@ SimpleLinearRegression.psm1
 └── Fonctions privées
     ├── Invoke-LeastSquaresRegression
     └── Calculate-ConfidenceInterval
-```
-
+```plaintext
 ### 4.2 Interfaces
 
 #### 4.2.1 New-SimpleLinearModel
@@ -118,9 +121,9 @@ function New-SimpleLinearModel {
     )
     
     # Retourne le nom du modèle créé
-}
-```
 
+}
+```plaintext
 #### 4.2.2 Invoke-SimpleLinearPrediction
 
 ```powershell
@@ -139,9 +142,9 @@ function Invoke-SimpleLinearPrediction {
     )
     
     # Retourne un hashtable avec les prédictions
-}
-```
 
+}
+```plaintext
 #### 4.2.3 Get-SimpleLinearModel
 
 ```powershell
@@ -153,9 +156,9 @@ function Get-SimpleLinearModel {
     )
     
     # Retourne le modèle demandé
-}
-```
 
+}
+```plaintext
 ### 4.3 Contraintes techniques
 
 - Compatible PowerShell 5.1 et versions ultérieures

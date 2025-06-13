@@ -105,8 +105,7 @@ Tests réalisés sur des distributions uniformes synthétiques avec différentes
     }
   }
 }
-```
-
+```plaintext
 ## 4. Analyse qualitative
 
 ### 4.1 Forces pour les distributions uniformes
@@ -132,36 +131,45 @@ Dans les distributions de latence de blocs de 2KB, certaines régions peuvent pr
 
 #### 4.3.1 Distribution uniforme pure
 
-```
+```plaintext
 Fréquence
 ^
 |
 |    ####    ####    ####    ####    ####    ####    ####    ####    ####    ####
+
 |    ####    ####    ####    ####    ####    ####    ####    ####    ####    ####
+
 |    ####    ####    ####    ####    ####    ####    ####    ####    ####    ####
+
 |    ####    ####    ####    ####    ####    ####    ####    ####    ####    ####
+
 +----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+---->
      100  200  300  400  500  600  700  800  900  1000 1100 1200 1300 1400 1500  µs
-```
-
+```plaintext
 #### 4.3.2 Plateau entre modes dans une distribution de latence
 
-```
+```plaintext
 Fréquence
 ^
 |
 |                                                        ####
+
 |                                                    ####    ####
+
 |                                                ####            ####
+
 |    ####                                    ####                    ####
+
 |    ####    ####                        ####                            ####
+
 |    ####    ####    ####            ####                                    ####
+
 |    ####    ####    ####    ####    ####    ####    ####    ####                ####
+
 +----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+---->
      100  200  300  400  500  600  700  800  900  1000 1100 1200 1300 1400 1500  µs
                                     |<--Région uniforme-->|
-```
-
+```plaintext
 ## 5. Comparaison avec d'autres stratégies pour distributions uniformes
 
 ### 5.1 Analyse comparative détaillée
@@ -225,19 +233,24 @@ def optimize_binning_for_uniform_regions(latency_data, significance_level=0.05):
         bin_edges: Limites de bins optimisées
     """
     # Trier les données
+
     sorted_data = np.sort(latency_data)
     n = len(sorted_data)
     
     # Identifier les régions potentiellement uniformes
+
     uniform_regions = []
     start_idx = 0
     
     for i in range(1, n):
         # Vérifier si un segment est potentiellement uniforme
+
         if i - start_idx >= 30:  # Minimum d'échantillons pour test fiable
+
             segment = sorted_data[start_idx:i]
             
             # Test de Kolmogorov-Smirnov pour l'uniformité
+
             D, p_value = scipy.stats.kstest(
                 segment, 
                 'uniform', 
@@ -246,15 +259,19 @@ def optimize_binning_for_uniform_regions(latency_data, significance_level=0.05):
             
             if p_value > significance_level:
                 # Région uniforme détectée
+
                 uniform_regions.append((start_idx, i-1))
                 start_idx = i
     
     # Ajouter la dernière région si nécessaire
+
     if start_idx < n-1:
         uniform_regions.append((start_idx, n-1))
     
     # Calculer les limites de bins optimales pour chaque région
+
     bin_edges = [sorted_data[0]]  # Commencer par la valeur minimale
+
     
     for start_idx, end_idx in uniform_regions:
         region_data = sorted_data[start_idx:end_idx+1]
@@ -263,19 +280,21 @@ def optimize_binning_for_uniform_regions(latency_data, significance_level=0.05):
         region_size = end_idx - start_idx + 1
         
         # Règle de Freedman-Diaconis pour le nombre de bins
+
         iqr = np.percentile(region_data, 75) - np.percentile(region_data, 25)
         bin_width = 2 * iqr * (region_size ** (-1/3))
         num_bins = max(1, int(np.ceil((region_max - region_min) / bin_width)))
         
         # Créer des bins uniformes pour cette région
+
         region_edges = np.linspace(region_min, region_max, num_bins + 1)
         
         # Ajouter les limites (sauf la première qui est déjà incluse)
+
         bin_edges.extend(region_edges[1:])
     
     return np.array(bin_edges)
-```
-
+```plaintext
 ## 7. Conclusion
 
 L'évaluation de l'efficacité des bins à largeur fixe pour les distributions uniformes révèle une optimalité théorique et pratique exceptionnelle :

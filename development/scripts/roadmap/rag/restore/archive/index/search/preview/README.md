@@ -17,14 +17,12 @@ Ce module PowerShell fournit des fonctionnalites pour generer des previsualisati
 
 ```powershell
 Import-Module -Name "SearchResultPreview"
-```
-
+```plaintext
 Ou importez directement le fichier `.psm1` :
 
 ```powershell
 Import-Module -Name "chemin/vers/SearchResultPreview.psm1"
-```
-
+```plaintext
 ## Utilisation
 
 ### Generation d'extraits de texte
@@ -33,8 +31,7 @@ Import-Module -Name "chemin/vers/SearchResultPreview.psm1"
 $texte = "Ce rapport presente les resultats financiers de l'annee 2024."
 $termeRecherche = "resultats"
 $extrait = Get-TextSnippet -Text $texte -SearchTerm $termeRecherche -ContextLength 20
-```
-
+```plaintext
 ### Generation de previsualisations de documents
 
 ```powershell
@@ -49,32 +46,33 @@ $document = [PSCustomObject]@{
 }
 
 $previsualisation = Get-DocumentPreview -Document $document -SearchTerm "resultats" -IncludeMetadata
-```
-
+```plaintext
 ### Generation de previsualisations pour une liste de documents
 
 ```powershell
 $documents = @(
     # Liste de documents
+
 )
 
 $previsualisations = Get-SearchResultPreviews -Documents $documents -SearchTerm "terme" -IncludeMetadata -MaxResults 10
-```
-
+```plaintext
 ### Formatage des previsualisations
 
 ```powershell
 # Formatage en texte
+
 $texte = Format-PreviewsAsText -Previews $previsualisations
 
 # Formatage en HTML
+
 $html = Format-PreviewsAsHtml -Previews $previsualisations
 $html | Out-File -FilePath "resultats.html" -Encoding utf8
 
 # Formatage en JSON
-$json = Format-PreviewsAsJson -Previews $previsualisations
-```
 
+$json = Format-PreviewsAsJson -Previews $previsualisations
+```plaintext
 ## Exemple complet
 
 Voir le fichier `ExempleUtilisation.ps1` pour un exemple complet d'utilisation du module.

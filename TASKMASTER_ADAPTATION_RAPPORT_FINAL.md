@@ -19,34 +19,36 @@ L'adaptation de l'architecture TaskMaster-Ink-CLI (React Ink + TypeScript) vers 
 ## 🏗️ Architecture Avant/Après
 
 ### AVANT : TaskMaster-Ink-CLI (React Ink + TS)
-```
+
+```plaintext
 📦 Node.js Runtime
 ├── 🎨 React Ink (TUI Components)
 ├── 📝 TypeScript
 ├── 🗄️ SQLite + CGO
 └── 📚 npm dependencies (>50 packages)
-```
-
+```plaintext
 ### APRÈS : Roadmap CLI Go Native + RAG
-```
+
+```plaintext
 🚀 Go Binary (Single Executable)
 ├── 🎨 Bubbletea TUI (Native Go)
 ├── 🧠 RAG Client (QDrant + OpenAI)
 ├── 📁 JSON Storage (Zero CGO)
 └── 📦 4 dependencies minimales
-```
-
+```plaintext
 ---
 
 ## 🎯 Fonctionnalités Implémentées
 
 ### ✅ Core CLI Operations
+
 - **Création d'items** : `roadmap-cli create item`
 - **Création de milestones** : `roadmap-cli create milestone`
 - **Interface TUI** : `roadmap-cli view` avec 3 modes de vue
 - **Synchronisation** : `roadmap-cli sync` pour l'écosystème EMAIL_SENDER_1
 
 ### 🧠 Intelligence RAG (Nouveau)
+
 - **Analyse vectorielle** : `roadmap-cli intelligence analyze`
 - **Détection dépendances** : `roadmap-cli intelligence dependencies`
 - **Optimisation IA** : `roadmap-cli intelligence optimize`
@@ -54,6 +56,7 @@ L'adaptation de l'architecture TaskMaster-Ink-CLI (React Ink + TypeScript) vers 
 - **Synchronisation RAG** : `roadmap-cli intelligence sync`
 
 ### 🎨 Interface TUI
+
 - **Vue Liste** : Affichage linéaire avec priorités et progression
 - **Vue Timeline** : Chronologie des items avec dates cibles
 - **Vue Kanban** : Colonnes par statut (Planned, In Progress, Review, Completed, Blocked)
@@ -64,6 +67,7 @@ L'adaptation de l'architecture TaskMaster-Ink-CLI (React Ink + TypeScript) vers 
 ## 🔧 Détails Techniques
 
 ### Stack Technologique
+
 ```go
 module email_sender/cmd/roadmap-cli
 
@@ -75,28 +79,42 @@ require (
     github.com/google/uuid v1.5.0               // ID Generation
     github.com/spf13/cobra v1.8.0               // CLI Framework
 )
-```
-
+```plaintext
 ### Architecture Modulaire
-```
+
+```plaintext
 cmd/roadmap-cli/
 ├── main.go                 # Point d'entrée
-├── commands/               # Commandes CLI
-│   ├── root.go            # Commande racine
-│   ├── create.go          # Création items/milestones
-│   ├── view.go            # Interface TUI
-│   ├── sync.go            # Synchronisation EMAIL_SENDER_1
-│   └── intelligence.go    # Commandes RAG IA
-├── tui/                   # Interface utilisateur
-│   ├── list.go           # Vue liste
-│   ├── timeline.go       # Vue chronologie
-│   └── kanban.go         # Vue kanban
-├── storage/               # Persistance
-│   └── json.go           # Stockage JSON
-└── rag/                  # Intelligence artificielle
-    └── client.go         # Client RAG QDrant
-```
 
+├── commands/               # Commandes CLI
+
+│   ├── root.go            # Commande racine
+
+│   ├── create.go          # Création items/milestones
+
+│   ├── view.go            # Interface TUI
+
+│   ├── sync.go            # Synchronisation EMAIL_SENDER_1
+
+│   └── intelligence.go    # Commandes RAG IA
+
+├── tui/                   # Interface utilisateur
+
+│   ├── list.go           # Vue liste
+
+│   ├── timeline.go       # Vue chronologie
+
+│   └── kanban.go         # Vue kanban
+
+├── storage/               # Persistance
+
+│   └── json.go           # Stockage JSON
+
+└── rag/                  # Intelligence artificielle
+
+    └── client.go         # Client RAG QDrant
+
+```plaintext
 ### Intégration EMAIL_SENDER_1
 
 Le CLI réutilise l'infrastructure RAG existante :
@@ -115,6 +133,7 @@ Le CLI réutilise l'infrastructure RAG existante :
 1. **Compilation et Build**
    ```powershell
    go build -o roadmap-cli.exe main.go  # ✅ Succès
+
    ```
 
 2. **Création d'Items**
@@ -123,25 +142,32 @@ Le CLI réutilise l'infrastructure RAG existante :
    .\roadmap-cli.exe create item "Database schema design" --priority medium  
    .\roadmap-cli.exe create item "API rate limiting" --priority low
    # ✅ 3 items créés avec succès
+
    ```
 
 3. **Interface TUI**
    ```powershell
    .\roadmap-cli.exe view
    # ✅ 3 vues fonctionnelles (List, Timeline, Kanban)
+
    # ✅ Navigation fluide j/k, v pour basculer
+
    # ✅ Affichage correct des 5 items total
+
    ```
 
 4. **Commandes Intelligence**
    ```powershell
    .\roadmap-cli.exe intelligence --help
    # ✅ 5 sous-commandes disponibles
+
    .\roadmap-cli.exe intelligence health
    # ✅ Détection correcte de l'absence de QDrant
+
    ```
 
 ### Données de Test Générées
+
 ```json
 {
   "items": [
@@ -158,65 +184,75 @@ Le CLI réutilise l'infrastructure RAG existante :
   "milestones": [],
   "last_update": "2025-05-31T..."
 }
-```
-
+```plaintext
 ---
 
 ## 🚀 Déploiement et Utilisation
 
 ### Installation
+
 ```powershell
 # Cloner et construire
+
 cd EMAIL_SENDER_1/cmd/roadmap-cli
 go build -o roadmap-cli.exe main.go
 
 # Exécutable portable (aucune dépendance runtime)
-.\roadmap-cli.exe --help
-```
 
+.\roadmap-cli.exe --help
+```plaintext
 ### Configuration EMAIL_SENDER_1
+
 ```bash
 # Variables d'environnement pour RAG
+
 export QDRANT_URL="http://localhost:6333"
 export OPENAI_API_KEY="your_openai_key"
 export OPENAI_URL="https://api.openai.com/v1"
 
 # Démarrer QDrant
-docker run -p 6333:6333 qdrant/qdrant
-```
 
+docker run -p 6333:6333 qdrant/qdrant
+```plaintext
 ### Workflow Typique
+
 ```powershell
 # 1. Créer des items de roadmap
+
 .\roadmap-cli.exe create item "Mon objectif" --priority high
 
 # 2. Visualiser dans l'interface TUI
+
 .\roadmap-cli.exe view
 
 # 3. Synchroniser avec RAG pour l'IA
+
 .\roadmap-cli.exe intelligence sync
 
 # 4. Obtenir des insights intelligents
+
 .\roadmap-cli.exe intelligence analyze "API development"
 .\roadmap-cli.exe intelligence dependencies "Build authentication"
 .\roadmap-cli.exe intelligence optimize
-```
-
+```plaintext
 ---
 
 ## 📈 Avantages de l'Adaptation
 
 ### Performances
+
 - **⚡ Startup** : ~50ms vs ~2000ms (Node.js)
 - **💾 Mémoire** : ~10MB vs ~80MB
 - **📦 Taille** : 15MB executable vs 200MB+ node_modules
 
 ### Maintenance
+
 - **🔧 Zero Runtime** : Pas de Node.js, npm, ou dépendances système
 - **🏗️ Cross-Platform** : Compilation native Windows/Linux/macOS
 - **📦 Distribution** : Single binary portable
 
 ### Fonctionnalités Nouvelles
+
 - **🧠 Intelligence RAG** : Capacités IA inexistantes dans l'original
 - **🔍 Recherche Vectorielle** : Analyse sémantique des roadmaps
 - **💡 Recommandations** : Suggestions automatiques optimisées
@@ -227,6 +263,7 @@ docker run -p 6333:6333 qdrant/qdrant
 ## 🔮 Prochaines Étapes
 
 ### Améliorations Futures
+
 1. **🔄 Synchronisation Temps Réel** : Watch mode pour les changements
 2. **📊 Analytics Dashboard** : Métriques de progression avancées  
 3. **🔔 Notifications** : Intégration avec EMAIL_SENDER_1 pour alerts
@@ -234,6 +271,7 @@ docker run -p 6333:6333 qdrant/qdrant
 5. **🎨 Thèmes** : Personnalisation visuelle du TUI
 
 ### Intégrations EMAIL_SENDER_1
+
 1. **🤖 n8n Workflows** : Automatisation roadmap → actions
 2. **📧 Email Reports** : Rapports de progression automatiques
 3. **📊 Qdrant Analytics** : Tendances et patterns de roadmaps

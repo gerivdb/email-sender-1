@@ -5,18 +5,21 @@
 Le mode CHECK amélioré est une version avancée du mode CHECK qui vérifie si les tâches sélectionnées ont été implémentées à 100% et testées avec succès à 100%, puis met à jour automatiquement les cases à cocher dans le document actif.
 
 ## Objectifs
+
 - Vérifier l’implémentation complète des tâches sélectionnées.
 - S’assurer que les tests associés sont réussis à 100%.
 - Mettre à jour automatiquement les cases à cocher dans les roadmaps et documents actifs.
 - Préserver l’encodage, l’indentation et le texte des tâches.
 
 ## Commandes principales
+
 - `check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche>` : Vérification simple (mode simulation)
 - `check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche> -Force` : Mise à jour automatique des cases à cocher
 - `check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche> -ActiveDocumentPath <chemin_document>` : Spécification manuelle du document actif
 - `check.ps1 -FilePath <chemin_roadmap> -Selection <startLine>-<endLine>` : Applique le mode CHECK uniquement à la ou aux lignes sélectionnées dans l’IDE (via la sélection de lignes à la souris dans la colonne des numéros de lignes).
 
 ## Fonctionnement
+
 - Analyse la roadmap pour identifier les tâches et leur structure.
 - Vérifie l’implémentation et les tests de chaque tâche.
 - Vérifie que chaque tâche effectivement implémentée a sa case à cocher marquée comme terminée ([x]).
@@ -44,21 +47,23 @@ Exemple de configuration :
     "SimulationModeDefault": true
   }
 }
-```
-
+```plaintext
 ### Algorithme de vérification (rappel)
+
 - Recherche de la tâche à vérifier dans la roadmap
 - Analyse de l’implémentation et des tests associés
 - Mise à jour automatique si tout est validé
 - Génération d’un rapport de vérification
 
 ## Bonnes pratiques
+
 - Exécuter le mode CHECK après chaque étape de développement/test pour garantir la cohérence de la roadmap.
 - Toujours vérifier l’encodage des fichiers si des caractères spéciaux sont présents.
 - Utiliser le paramètre `-Force` uniquement après avoir validé les modifications en mode simulation.
 - Documenter les cas particuliers ou corrections manuelles dans la roadmap.
 
 ## Intégration avec les autres modes
+
 - **[Mode DEV-R](mode_dev_r.md)** : Vérifie automatiquement les tâches implémentées pendant le développement.
 - **[Mode GRAN](mode_gran.md)** : Complémentaire pour la granularisation des tâches.
 - **[Mode TEST](mode_test.md)** : Utilise les résultats de tests pour valider les tâches.
@@ -68,53 +73,67 @@ Exemple de configuration :
 - **[Mode ARCHI](mode_archi.md)** : Vérifie l’architecture des composants en complément de l’implémentation et des tests.
 
 ## Exemples d’utilisation
+
 ```powershell
 # Vérification simple (simulation)
+
 .\development\tools\scripts\check.ps1 -FilePath "projet/documentation/roadmap/roadmap.md" -TaskIdentifier "1.2.3"
 
 # Mise à jour automatique
+
 .\development\tools\scripts\check.ps1 -FilePath "projet/documentation/roadmap/roadmap.md" -TaskIdentifier "1.2.3" -Force
 
 # Spécification du document actif
-.\development\tools\scripts\check.ps1 -FilePath "projet/documentation/roadmap/roadmap.md" -TaskIdentifier "1.2.3" -ActiveDocumentPath "projet/documentation/roadmap/roadmap.md" -Force
-```
 
+.\development\tools\scripts\check.ps1 -FilePath "projet/documentation/roadmap/roadmap.md" -TaskIdentifier "1.2.3" -ActiveDocumentPath "projet/documentation/roadmap/roadmap.md" -Force
+```plaintext
 ## Snippet VS Code (optionnel)
+
 ```json
 {
   "Mode CHECK Amélioré": {
     "prefix": "mode-check-ameliore",
     "body": [
       "# Mode CHECK Amélioré",
+
       "",
       "## Description",
+
       "Le mode CHECK amélioré vérifie l’implémentation et les tests des tâches, puis met à jour les cases à cocher.",
       "",
       "## Objectifs",
+
       "- Vérifier l’implémentation complète des tâches.",
       "- S’assurer que les tests sont réussis à 100%.",
       "- Mettre à jour automatiquement les cases à cocher.",
       "",
       "## Commandes principales",
+
       "- check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche>",
       "- check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche> -Force",
       "- check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche> -ActiveDocumentPath <chemin_document>",
       "",
       "## Fonctionnement",
+
       "- Analyse la roadmap, vérifie l’implémentation et les tests, met à jour les cases à cocher.",
       "",
       "## Bonnes pratiques",
+
       "- Exécuter après chaque étape de développement/test.",
       "- Vérifier l’encodage des fichiers.",
       "- Utiliser -Force après validation.",
       "",
       "## Intégration avec les autres modes",
+
       "- DEV-R, GRAN, TEST, REVIEW, OPTI, C-BREAK.",
       "",
       "## Exemples d’utilisation",
+
       "# Vérification simple",
+
       ".\\development\\tools\\scripts\\check.ps1 -FilePath \"projet/documentation/roadmap/roadmap.md\" -TaskIdentifier \"1.2.3\"",
       "# Mise à jour automatique",
+
       ".\\development\\tools\\scripts\\check.ps1 -FilePath \"projet/documentation/roadmap/roadmap.md\" -TaskIdentifier \"1.2.3\" -Force"
     ],
     "description": "Insère le template du mode CHECK Amélioré."
@@ -123,13 +142,13 @@ Exemple de configuration :
     "prefix": "check",
     "body": [
       "# Vérification des lignes sélectionnées (mode CHECK)",
+
       "${1:check.ps1} -FilePath ${2:projet/documentation/roadmap/roadmap.md} -Selection ${TM_SELECTED_TEXT}"
     ],
     "description": "Lance la vérification CHECK sur les lignes sélectionnées dans l'éditeur."
   }
 }
-```
-
+```plaintext
 ## Documentation associée et approfondissements
 
 Pour la gestion avancée de la validation, des erreurs et de la robustesse, voir :

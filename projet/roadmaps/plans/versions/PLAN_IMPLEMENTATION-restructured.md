@@ -3,29 +3,53 @@
 ## Table des matières
 
 1. [Plan d'Implémentation du Workflow "Email Sender 1"](#section-1)
+
     1.1. [Philosophie Générale](#section-2)
+
         1.1.1. [Action](#section-3)
+
         1.1.2. [Objectif](#section-4)
+
         1.1.3. [Implémentation](#section-5)
+
         1.1.4. [Avantages](#section-6)
+
         1.1.5. [Action](#section-7)
+
         1.1.6. [Problème](#section-8)
+
             1.1.6.1. [. Nœud Google Calendar (Get Events)](#section-9)
+
             1.1.6.2. [. Nœud Notion (Get Database Pages pour Dispo Membres)](#section-10)
+
             1.1.6.3. [. Nouveau Nœud Code (Consolider Indisponibilités)](#section-11)
+
             1.1.6.4. [. Modifier le Nœud Suivant (ancien Filtrer créneaux)](#section-12)
+
             1.1.6.5. [. Nettoyage](#section-13)
+
             1.1.6.6. [Problème](#section-14)
+
             1.1.6.7. [Solution](#section-15)
+
             1.1.6.8. [Problème](#section-16)
+
             1.1.6.9. [Solution](#section-17)
+
             1.1.6.10. [Problème](#section-18)
+
             1.1.6.11. [Solution](#section-19)
+
         1.1.7. [Action](#section-20)
+
         1.1.8. [Problème](#section-21)
+
         1.1.9. [Solution](#section-22)
+
         1.1.10. [Points d'amélioration par IA plus avancée](#section-23)
+
         1.1.11. [Recommandation](#section-24)
+
     1.2. [Prochaines Étapes Immédiates](#section-25)
 
 ## 1. Plan d'Implémentation du Workflow "Email Sender 1" <a name='section-1'></a>
@@ -119,8 +143,7 @@ notionPages.forEach(item => {
 
 // Return a single item with the unique busy dates array
 return [{ json: { busyDates: Array.from(busyDatesSet) } }];
-```
-
+```plaintext
 ##### 1.1.6.4. . Modifier le Nœud Suivant (ancien Filtrer créneaux) <a name='section-12'></a>
 
 - Renommer en "Calculer Plages Libres"
@@ -153,8 +176,7 @@ if (availableSlots.length === 0) {
 
 // Return the list of available Friday/Saturday slots
 return availableSlots;
-```
-
+```plaintext
 ##### 1.1.6.5. . Nettoyage <a name='section-13'></a>
 
 - Supprimer ou déconnecter clairement (avec une note) les anciens nœuds:
@@ -231,8 +253,7 @@ return contacts.map(contact => {
       aiMessage: aiMessage
   };
 });
-```
-
+```plaintext
 4. Adapter le Nœud Personnalisation Message (Code):
    - Recevoir des items contenant: notionPageId, contactEmail, contactName, venueName, aiMessage
    - Ajuster le code pour utiliser item.json.aiMessage comme base et injecter les champs de personnalisation

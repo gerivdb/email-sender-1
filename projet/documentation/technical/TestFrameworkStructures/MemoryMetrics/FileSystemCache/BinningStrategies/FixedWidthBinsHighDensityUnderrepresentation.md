@@ -18,44 +18,62 @@ Ce document quantifie et analyse la sous-représentation des régions à haute d
 
 Pour une distribution de latence typique de blocs de 2KB avec asymétrie positive :
 
-```
+```plaintext
 Densité
 ^
 |
 |    ####
+
 |    ########
+
 |    ############
+
 |    ################
+
 |    ####################
+
 |    ########################
+
 |    ############################
+
 |    ################################
+
 |    ####################################
+
 |    ########################################    ####    ####    ####
+
 +----+----+----+----+----+----+----+----+----+----+----+----+----+---->
      100  200  300  400  500  600  700  800  900 1000 2000 3000 4000  µs
-```
-
+```plaintext
 Avec des bins à largeur fixe (ex: 500 µs), la représentation devient :
 
-```
+```plaintext
 Fréquence
 ^
 |
 |    ########################################
+
 |    ########################################
+
 |    ########################################
+
 |    ########################################
+
 |    ########################################
+
 |    ########################################
+
 |    ########################################
+
 |    ########################################
+
 |    ########################################
+
 |    ########################################    ####    ####    ####
+
 +----+----+----+----+----+----+----+----+----+----+----+----+----+---->
      500  1000 1500 2000 2500 3000 3500 4000 4500 5000 5500 6000 6500  µs
-```
-
+```plaintext
 La région dense entre 0 et 500 µs est représentée par un seul bin, masquant toute la structure interne.
 
 ## 3. Quantification de la sous-représentation
@@ -127,8 +145,7 @@ La région dense entre 0 et 500 µs est représentée par un seul bin, masquant 
     }
   }
 }
-```
-
+```plaintext
 ## 4. Analyse détaillée par type de distribution asymétrique
 
 ### 4.1 Distributions log-normales (typiques des latences de base)
@@ -173,7 +190,7 @@ La région dense entre 0 et 500 µs est représentée par un seul bin, masquant 
 
 Pour une distribution typique de latences de blocs de 2KB, les accès aux différents niveaux de cache (L1, L2, L3) peuvent créer des modes distincts mais proches dans la région 50-200 µs. Avec des bins à largeur fixe de 50 µs ou plus, ces modes sont fusionnés en un seul pic, masquant la structure hiérarchique du cache.
 
-```
+```plaintext
 Densité réelle (µs)
 ^
 |
@@ -191,23 +208,25 @@ Représentation avec bins à largeur fixe (50 µs)
 ^
 |
 |    ########
+
 |    ########
+
 |    ########
+
 |    ########
+
 +----+----+----+----+---->
     50   100  150  200  µs
-```
-
+```plaintext
 #### 5.2.2 Perte de sensibilité aux dégradations de performance
 
 Une dégradation de performance qui affecte principalement les latences les plus basses (ex: augmentation de 20% des latences < 100 µs) peut être pratiquement invisible dans un histogramme à largeur de bin fixe, car elle ne modifie pas significativement la distribution des observations entre les bins.
 
-```
+```plaintext
 Avant dégradation:  80% des observations dans le bin 0-200 µs
 Après dégradation:  78% des observations dans le bin 0-200 µs
                     (différence visuellement imperceptible)
-```
-
+```plaintext
 ### 5.3 Quantification de l'impact sur les métriques dérivées
 
 | Métrique | Erreur typique avec bins à largeur fixe | Mécanisme |
@@ -284,21 +303,27 @@ def create_optimized_histogram_for_2kb_latencies(latency_data):
         metadata: Métadonnées sur la représentation
     """
     # Analyse préliminaire
+
     min_val = np.min(latency_data)
     max_val = np.max(latency_data)
     q25, median, q75 = np.percentile(latency_data, [25, 50, 75])
     iqr = q75 - q25
     
     # Détection de l'asymétrie
+
     skewness = scipy.stats.skew(latency_data)
     
     if skewness > 2.0:  # Asymétrie forte
+
         # Approche 1: Transformation logarithmique
+
         log_data = np.log1p(latency_data - min_val + 1)  # log(x+1) pour éviter log(0)
+
         log_bins = np.linspace(0, np.max(log_data), 30)
         hist, bin_edges = np.histogram(log_data, bins=log_bins)
         
         # Retransformer les limites de bins en échelle originale
+
         bins = np.expm1(bin_edges) + min_val - 1
         
         metadata = {
@@ -308,14 +333,19 @@ def create_optimized_histogram_for_2kb_latencies(latency_data):
             "effectiveResolutionLoss": (bins[1] - bins[0]) / iqr
         }
     else:  # Asymétrie modérée
+
         # Approche 2: Bins à largeur variable
+
         # Définir des largeurs de bins croissantes
+
         dense_region_end = q75 + 1.5 * iqr
         
         # 10 bins étroits pour la région dense (jusqu'à q75 + 1.5*IQR)
+
         dense_bins = np.linspace(min_val, dense_region_end, 11)
         
         # 10 bins plus larges pour la queue
+
         if max_val > dense_region_end:
             sparse_bins = np.linspace(dense_region_end, max_val, 6)[1:]
             bins = np.concatenate([dense_bins, sparse_bins])
@@ -333,8 +363,7 @@ def create_optimized_histogram_for_2kb_latencies(latency_data):
         }
     
     return bins, hist, metadata
-```
-
+```plaintext
 ## 8. Conclusion
 
 La quantification de la sous-représentation des régions à haute densité dans les histogrammes à largeur de bin fixe révèle des limitations significatives pour l'analyse des distributions de latence de blocs de 2KB :

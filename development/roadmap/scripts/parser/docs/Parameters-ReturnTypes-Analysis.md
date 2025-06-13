@@ -1,4 +1,4 @@
-﻿# Analyse des paramÃ¨tres et types de retour
+# Analyse des paramÃ¨tres et types de retour
 
 Ce document dÃ©finit les paramÃ¨tres et types de retour pour les fonctions du module RoadmapParser.
 
@@ -226,8 +226,7 @@ Les structures de donnÃ©es de retour sont principalement des objets PowerShell
         MemoryUsage = 0
     }
 }
-```
-
+```plaintext
 #### Structure de rÃ©sultat de validation
 
 ```powershell
@@ -246,8 +245,7 @@ Les structures de donnÃ©es de retour sont principalement des objets PowerShell
         TaskWithoutCheckboxCount = 0
     }
 }
-```
-
+```plaintext
 #### Structure de rÃ©sultat de dÃ©pendances
 
 ```powershell
@@ -257,8 +255,7 @@ Les structures de donnÃ©es de retour sont principalement des objets PowerShell
     Dependencies = @()
     Visualization = "Visualisation des dÃ©pendances"
 }
-```
-
+```plaintext
 ### 2.3 Objets personnalisÃ©s nÃ©cessaires
 
 Les objets personnalisÃ©s nÃ©cessaires sont :

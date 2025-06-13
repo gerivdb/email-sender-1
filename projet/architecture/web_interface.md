@@ -8,7 +8,7 @@ L'interface web fournit un accès unifié à toutes les fonctionnalités du syst
 
 L'interface web est basée sur une architecture client-serveur:
 
-```
+```plaintext
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
 │  Frontend   │ ◄─► │  API REST   │ ◄─► │  Backend    │
 │  (Browser)  │     │  (FastAPI)  │     │  (Python)   │
@@ -19,8 +19,7 @@ L'interface web est basée sur une architecture client-serveur:
                                         │  Journal    │
                                         │  de Bord    │
                                         └─────────────┘
-```
-
+```plaintext
 ## Backend (FastAPI)
 
 Le backend est implémenté avec FastAPI, un framework web Python moderne et performant.
@@ -31,9 +30,9 @@ Ce script implémente l'API REST:
 
 ```python
 # Démarrer l'application web
-python scripts/python/journal/web_app.py
-```
 
+python scripts/python/journal/web_app.py
+```plaintext
 ### Structure modulaire
 
 L'API est organisée en modules:
@@ -49,35 +48,32 @@ L'API expose les points d'entrée suivants:
 
 #### Journal
 
-```
+```plaintext
 GET /api/journal/entries - Liste les entrées du journal
 POST /api/journal/search - Recherche dans le journal
 POST /api/journal/rag - Interroge le système RAG
 GET /api/journal/tags - Récupère tous les tags
 GET /api/journal/entry/{filename} - Récupère une entrée spécifique
-```
-
+```plaintext
 #### Analyse
 
-```
+```plaintext
 GET /api/analysis/term-frequency - Analyse de fréquence des termes
 GET /api/analysis/word-cloud - Nuage de mots
 GET /api/analysis/tag-evolution - Évolution des tags
 GET /api/analysis/topic-trends - Tendances des sujets
 GET /api/analysis/clusters - Clustering des entrées
 GET /api/analysis/insights - Insights extraits du journal
-```
-
+```plaintext
 #### GitHub
 
-```
+```plaintext
 GET /api/github/commits - Commits récents
 GET /api/github/issues - Issues GitHub
 GET /api/github/commit-entries - Associations commit-entrées
 GET /api/github/issue-entries - Associations issue-entrées
 POST /api/github/create-entry-from-issue - Crée une entrée à partir d'une issue
-```
-
+```plaintext
 ### Modèles de données
 
 L'API utilise des modèles Pydantic pour valider les données:
@@ -89,16 +85,14 @@ class SearchQuery(BaseModel):
 
 class IssueRequest(BaseModel):
     issue_number: int
-```
-
+```plaintext
 ### Fichiers statiques
 
 L'API sert également des fichiers statiques:
 
 ```python
 app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
-```
-
+```plaintext
 ## Frontend
 
 Le frontend est conçu pour être simple et intuitif, permettant aux utilisateurs d'accéder facilement à toutes les fonctionnalités du système.
@@ -171,17 +165,16 @@ export default {
   }
 }
 </script>
-```
-
+```plaintext
 ## Démarrage de l'application
 
 Le script `start-journal-web.ps1` permet de configurer et démarrer l'application web:
 
 ```powershell
 # Démarrer l'application web
-.\scripts\cmd\start-journal-web.ps1
-```
 
+.\scripts\cmd\start-journal-web.ps1
+```plaintext
 Ce script:
 1. Installe les dépendances nécessaires
 2. Vérifie que les répertoires requis existent
@@ -196,12 +189,12 @@ L'API est configurée pour permettre les requêtes cross-origin:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # À restreindre en production
+
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-```
-
+```plaintext
 ## Dépendances
 
 L'interface web utilise plusieurs bibliothèques et frameworks:

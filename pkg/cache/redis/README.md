@@ -7,6 +7,7 @@ This implementation provides a complete Redis configuration system following the
 ## Features Implemented
 
 ### ✅ Core Configuration (Plan v39)
+
 - **Connection Parameters**: Host, Port, Password, DB with validation
 - **Timeouts**: DialTimeout=5s, ReadTimeout=3s, WriteTimeout=3s
 - **SSL/TLS**: Production-ready SSL configuration support
@@ -15,6 +16,7 @@ This implementation provides a complete Redis configuration system following the
 - **Health Checks**: Automatic ping every 30 seconds
 
 ### ✅ Advanced Features
+
 - **Circuit Breaker Pattern**: Prevents cascade failures with configurable thresholds
 - **Error Classification**: Categorizes Redis errors by type (Connection, Timeout, Auth, Network)
 - **Reconnection Management**: Exponential backoff with jitter for robust reconnections
@@ -42,8 +44,7 @@ defer client.Close()
 // Use Redis client
 ctx := context.Background()
 err = client.Set(ctx, "key", "value", time.Hour).Err()
-```
-
+```plaintext
 ### Advanced Redis Client with Circuit Breaker
 
 ```go
@@ -72,8 +73,7 @@ if err != nil {
 // Get client statistics
 stats := redisClient.GetStats()
 fmt.Printf("Redis Stats: %+v\n", stats)
-```
-
+```plaintext
 ### Hybrid Client with Fallback Cache
 
 ```go
@@ -111,8 +111,7 @@ if hybridClient.IsRedisHealthy() {
 } else {
     fmt.Println("Using fallback cache")
 }
-```
-
+```plaintext
 ### Configuration Validation
 
 ```go
@@ -135,8 +134,7 @@ if err := validator.Validate(config); err != nil {
 // Convert to Redis options
 opts := config.ToRedisOptions()
 client := redis.NewClient(opts)
-```
-
+```plaintext
 ### Circuit Breaker Usage
 
 ```go
@@ -166,8 +164,7 @@ if err != nil {
 fmt.Printf("Circuit Breaker State: %s\n", cb.State())
 stats := cb.Stats()
 fmt.Printf("Circuit Breaker Stats: %+v\n", stats)
-```
-
+```plaintext
 ## Configuration Options
 
 ### RedisConfig Structure
@@ -208,24 +205,25 @@ type RedisConfig struct {
     // Health checking (Plan v39)
     HealthCheckInterval time.Duration `json:"health_check_interval"` // 30s
 }
-```
-
+```plaintext
 ## Testing
 
 ### Run Unit Tests
+
 ```bash
 go test ./pkg/cache/redis -v
-```
-
+```plaintext
 ### Run Integration Tests
+
 ```bash
 # Test with Redis server
+
 go run ./cmd/redis-test -host localhost -port 6379
 
 # Test fallback functionality
-go run ./cmd/redis-fallback-test
-```
 
+go run ./cmd/redis-fallback-test
+```plaintext
 ## Architecture
 
 The Redis configuration system is built with a modular architecture:
@@ -260,13 +258,18 @@ This implementation fully complies with Section 1.3.1.1 of Plan v39:
 
 ## Files Structure
 
-```
+```plaintext
 pkg/cache/redis/
 ├── client.go              # Core Redis configuration
+
 ├── config_validator.go    # Configuration validation
+
 ├── error_handler.go       # Error handling and circuit breaker
+
 ├── reconnection_manager.go # Reconnection with health checking
+
 ├── fallback_cache.go      # Local cache and hybrid client
+
 └── redis_test.go          # Comprehensive unit tests
 
 pkg/cache/
@@ -274,5 +277,7 @@ pkg/cache/
 
 cmd/
 ├── redis-test/            # Redis connection testing tool
+
 └── redis-fallback-test/   # Fallback functionality test
-```
+
+```plaintext

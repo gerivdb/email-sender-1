@@ -6,8 +6,10 @@ related: []
 ---
 
 ## 3. Recherche et métadonnées
+
 - Recherche récursive avec motifs et exclusions
 - Obtention de métadonnées détaillées (taille, dates, type, permissions)
 - Listage des répertoires autorisés
 
 #
+

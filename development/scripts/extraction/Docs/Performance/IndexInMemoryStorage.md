@@ -15,9 +15,11 @@ L'objectif de cette analyse est d'évaluer les différentes options de stockage 
 ### 1. Variables PowerShell standard
 
 #### Description
+
 Utilisation de variables PowerShell standard pour stocker les index clonés.
 
 #### Implémentation
+
 ```powershell
 function Backup-CollectionIndexesInMemory {
     param (
@@ -26,9 +28,11 @@ function Backup-CollectionIndexesInMemory {
     )
     
     # Cloner les index
+
     $backupIndexes = Copy-CollectionIndexesDeep -Indexes $Collection.Indexes
     
     # Stocker dans une variable globale ou de script
+
     $script:IndexBackups = @{
         Timestamp = Get-Date
         CollectionName = $Collection.Name
@@ -37,14 +41,15 @@ function Backup-CollectionIndexesInMemory {
     
     return $script:IndexBackups
 }
-```
-
+```plaintext
 #### Avantages
+
 - **Simplicité** : Implémentation très simple et directe.
 - **Performance** : Accès rapide aux données en mémoire.
 - **Intégration native** : Fonctionne nativement dans l'environnement PowerShell.
 
 #### Inconvénients
+
 - **Portée limitée** : Les variables de script sont limitées à la portée du script ou du module.
 - **Persistance limitée** : Les variables sont perdues si le script se termine ou si PowerShell est redémarré.
 - **Gestion de la mémoire** : Pas de contrôle explicite sur la libération de la mémoire.
@@ -52,16 +57,20 @@ function Backup-CollectionIndexesInMemory {
 ### 2. Runspaces PowerShell
 
 #### Description
+
 Utilisation de runspaces PowerShell pour stocker les index dans un espace mémoire isolé et persistant.
 
 #### Implémentation
+
 ```powershell
 function Initialize-IndexBackupRunspace {
     # Créer un runspace initial
+
     $script:BackupRunspace = [runspacefactory]::CreateRunspace()
     $script:BackupRunspace.Open()
     
     # Initialiser la structure de stockage
+
     $initCommand = [powershell]::Create()
     $initCommand.Runspace = $script:BackupRunspace
     $initCommand.AddScript({
@@ -80,9 +89,11 @@ function Backup-CollectionIndexesInRunspace {
     )
     
     # Cloner les index
+
     $backupIndexes = Copy-CollectionIndexesDeep -Indexes $Collection.Indexes
     
     # Créer un objet de sauvegarde
+
     $backup = @{
         Timestamp = Get-Date
         CollectionName = $Collection.Name
@@ -90,6 +101,7 @@ function Backup-CollectionIndexesInRunspace {
     }
     
     # Stocker dans le runspace
+
     $storeCommand = [powershell]::Create()
     $storeCommand.Runspace = $script:BackupRunspace
     $storeCommand.AddScript({
@@ -108,6 +120,7 @@ function Get-CollectionIndexesFromRunspace {
     )
     
     # Récupérer depuis le runspace
+
     $retrieveCommand = [powershell]::Create()
     $retrieveCommand.Runspace = $script:BackupRunspace
     $backup = $retrieveCommand.AddScript({
@@ -118,14 +131,15 @@ function Get-CollectionIndexesFromRunspace {
     
     return $backup
 }
-```
-
+```plaintext
 #### Avantages
+
 - **Isolation** : Les données sont isolées dans un runspace séparé.
 - **Persistance** : Le runspace peut rester actif même si le script principal se termine.
 - **Concurrence** : Permet d'accéder aux données depuis différents scripts ou threads.
 
 #### Inconvénients
+
 - **Complexité** : Implémentation plus complexe que les variables standard.
 - **Overhead** : Communication inter-runspace plus coûteuse que l'accès direct aux variables.
 - **Gestion des ressources** : Nécessite une gestion explicite des runspaces (création, fermeture).
@@ -133,15 +147,19 @@ function Get-CollectionIndexesFromRunspace {
 ### 3. Cache en mémoire avec System.Runtime.Caching
 
 #### Description
+
 Utilisation de la classe `MemoryCache` du namespace `System.Runtime.Caching` pour stocker les index avec des fonctionnalités avancées de cache.
 
 #### Implémentation
+
 ```powershell
 function Initialize-IndexBackupCache {
     # Charger l'assembly System.Runtime.Caching
+
     Add-Type -AssemblyName System.Runtime.Caching
     
     # Créer une instance de MemoryCache
+
     $script:IndexBackupCache = [System.Runtime.Caching.MemoryCache]::Default
 }
 
@@ -158,9 +176,11 @@ function Backup-CollectionIndexesToCache {
     )
     
     # Cloner les index
+
     $backupIndexes = Copy-CollectionIndexesDeep -Indexes $Collection.Indexes
     
     # Créer un objet de sauvegarde
+
     $backup = @{
         Timestamp = Get-Date
         CollectionName = $Collection.Name
@@ -168,10 +188,12 @@ function Backup-CollectionIndexesToCache {
     }
     
     # Créer une politique d'expiration
+
     $policy = New-Object System.Runtime.Caching.CacheItemPolicy
     $policy.AbsoluteExpiration = [DateTimeOffset]::Now.Add($ExpirationTime)
     
     # Stocker dans le cache
+
     $script:IndexBackupCache.Set($BackupId, $backup, $policy)
     
     return $BackupId
@@ -184,6 +206,7 @@ function Get-CollectionIndexesFromCache {
     )
     
     # Récupérer depuis le cache
+
     $backup = $script:IndexBackupCache.Get($BackupId)
     
     return $backup
@@ -196,17 +219,19 @@ function Remove-CollectionIndexesFromCache {
     )
     
     # Supprimer du cache
+
     $script:IndexBackupCache.Remove($BackupId)
 }
-```
-
+```plaintext
 #### Avantages
+
 - **Gestion automatique de la durée de vie** : Expiration automatique des entrées basée sur le temps ou la pression mémoire.
 - **Fonctionnalités avancées** : Callbacks, dépendances, priorités, etc.
 - **Optimisation de la mémoire** : Libération automatique de la mémoire lorsque nécessaire.
 - **Concurrence** : Thread-safe par défaut.
 
 #### Inconvénients
+
 - **Dépendance externe** : Nécessite l'assembly System.Runtime.Caching.
 - **Complexité** : API plus complexe que les variables standard.
 - **Sérialisation** : Certains objets complexes peuvent nécessiter une sérialisation spécifique.
@@ -214,15 +239,19 @@ function Remove-CollectionIndexesFromCache {
 ### 4. Collections concurrentes avec System.Collections.Concurrent
 
 #### Description
+
 Utilisation des collections concurrentes du namespace `System.Collections.Concurrent` pour stocker les index de manière thread-safe.
 
 #### Implémentation
+
 ```powershell
 function Initialize-IndexBackupConcurrentDictionary {
     # Charger l'assembly System.Collections.Concurrent
+
     Add-Type -AssemblyName System.Collections.Concurrent
     
     # Créer une instance de ConcurrentDictionary
+
     $script:IndexBackups = New-Object System.Collections.Concurrent.ConcurrentDictionary[string,object]
 }
 
@@ -236,9 +265,11 @@ function Backup-CollectionIndexesToConcurrentDictionary {
     )
     
     # Cloner les index
+
     $backupIndexes = Copy-CollectionIndexesDeep -Indexes $Collection.Indexes
     
     # Créer un objet de sauvegarde
+
     $backup = @{
         Timestamp = Get-Date
         CollectionName = $Collection.Name
@@ -246,6 +277,7 @@ function Backup-CollectionIndexesToConcurrentDictionary {
     }
     
     # Stocker dans le dictionnaire concurrent
+
     $script:IndexBackups.TryAdd($BackupId, $backup)
     
     return $BackupId
@@ -258,6 +290,7 @@ function Get-CollectionIndexesFromConcurrentDictionary {
     )
     
     # Récupérer depuis le dictionnaire concurrent
+
     $backup = $null
     $script:IndexBackups.TryGetValue($BackupId, [ref]$backup)
     
@@ -271,18 +304,20 @@ function Remove-CollectionIndexesFromConcurrentDictionary {
     )
     
     # Supprimer du dictionnaire concurrent
+
     $removed = $null
     $script:IndexBackups.TryRemove($BackupId, [ref]$removed)
 }
-```
-
+```plaintext
 #### Avantages
+
 - **Thread-safe** : Conçu pour les accès concurrents sans verrous explicites.
 - **Performance** : Optimisé pour les scénarios à haute concurrence.
 - **Fonctionnalités avancées** : Opérations atomiques, callbacks, etc.
 - **Intégration .NET** : Intégration native avec les autres composants .NET.
 
 #### Inconvénients
+
 - **Dépendance externe** : Nécessite l'assembly System.Collections.Concurrent.
 - **Complexité** : API plus complexe que les variables standard.
 - **Pas de gestion automatique de la durée de vie** : Nécessite une gestion explicite de la durée de vie des entrées.
@@ -315,18 +350,22 @@ function Remove-CollectionIndexesFromConcurrentDictionary {
 ### Recommandations selon les scénarios
 
 #### Scénario 1 : Collections de petite taille, opérations simples
+
 **Recommandation** : Variables PowerShell standard
 **Justification** : Solution la plus simple et la plus directe, suffisante pour les cas simples.
 
 #### Scénario 2 : Collections de taille moyenne, besoin de persistance
+
 **Recommandation** : Runspaces PowerShell
 **Justification** : Bon équilibre entre simplicité et persistance, isolation des données.
 
 #### Scénario 3 : Collections volumineuses, gestion automatique de la mémoire
+
 **Recommandation** : System.Runtime.Caching
 **Justification** : Gestion automatique de la durée de vie, optimisation de la mémoire.
 
 #### Scénario 4 : Environnement multi-thread, haute concurrence
+
 **Recommandation** : System.Collections.Concurrent
 **Justification** : Optimisé pour les accès concurrents, performances élevées.
 
@@ -346,18 +385,22 @@ Pour le stockage temporaire des index dans le cadre du mécanisme de sauvegarde 
 
 ```powershell
 # Module de sauvegarde des index en mémoire
+
 function Initialize-IndexBackupCache {
     # Charger l'assembly System.Runtime.Caching
+
     if (-not ([System.Management.Automation.PSTypeName]'System.Runtime.Caching.MemoryCache').Type) {
         Add-Type -AssemblyName System.Runtime.Caching
     }
     
     # Créer une instance de MemoryCache nommée
+
     if (-not $script:IndexBackupCache) {
         $script:IndexBackupCache = New-Object System.Runtime.Caching.MemoryCache("IndexBackups")
     }
     
     # Initialiser le compteur de sauvegardes
+
     $script:BackupCounter = 0
     
     Write-Host "Cache de sauvegarde des index initialisé." -ForegroundColor Green
@@ -381,20 +424,24 @@ function Backup-CollectionIndexesToCache {
     )
     
     # Initialiser le cache si nécessaire
+
     if (-not $script:IndexBackupCache) {
         Initialize-IndexBackupCache
     }
     
     # Générer un ID de sauvegarde si non spécifié
+
     if ([string]::IsNullOrEmpty($BackupId)) {
         $script:BackupCounter++
         $BackupId = "Backup_$(Get-Date -Format 'yyyyMMdd_HHmmss')_$($script:BackupCounter)"
     }
     
     # Cloner les index
+
     $backupIndexes = Copy-CollectionIndexesDeep -Indexes $Collection.Indexes
     
     # Créer un objet de sauvegarde
+
     $backup = @{
         BackupId = $BackupId
         Timestamp = Get-Date
@@ -405,10 +452,12 @@ function Backup-CollectionIndexesToCache {
     }
     
     # Créer une politique d'expiration
+
     $policy = New-Object System.Runtime.Caching.CacheItemPolicy
     $policy.AbsoluteExpiration = [DateTimeOffset]::Now.Add($ExpirationTime)
     
     # Ajouter un callback de suppression pour la journalisation
+
     if ($Verbose) {
         $callback = New-Object System.Runtime.Caching.CacheEntryRemovedCallback({
             param($source, $args)
@@ -420,6 +469,7 @@ function Backup-CollectionIndexesToCache {
     }
     
     # Stocker dans le cache
+
     $script:IndexBackupCache.Set($BackupId, $backup, $policy)
     
     if ($Verbose) {
@@ -440,12 +490,14 @@ function Get-CollectionIndexesFromCache {
     )
     
     # Vérifier que le cache est initialisé
+
     if (-not $script:IndexBackupCache) {
         Write-Host "Le cache de sauvegarde des index n'est pas initialisé." -ForegroundColor Red
         return $null
     }
     
     # Récupérer depuis le cache
+
     $backup = $script:IndexBackupCache.Get($BackupId)
     
     if ($null -eq $backup) {
@@ -473,12 +525,14 @@ function Remove-CollectionIndexesFromCache {
     )
     
     # Vérifier que le cache est initialisé
+
     if (-not $script:IndexBackupCache) {
         Write-Host "Le cache de sauvegarde des index n'est pas initialisé." -ForegroundColor Red
         return $false
     }
     
     # Supprimer du cache
+
     $result = $script:IndexBackupCache.Remove($BackupId)
     
     if ($Verbose) {
@@ -497,15 +551,18 @@ function Get-AllIndexBackupsInfo {
     param ()
     
     # Vérifier que le cache est initialisé
+
     if (-not $script:IndexBackupCache) {
         Write-Host "Le cache de sauvegarde des index n'est pas initialisé." -ForegroundColor Red
         return @()
     }
     
     # Récupérer toutes les clés du cache
+
     $backupIds = $script:IndexBackupCache.Select({param($kvp) $kvp.Key})
     
     # Récupérer les informations de chaque sauvegarde
+
     $backupsInfo = @()
     
     foreach ($backupId in $backupIds) {
@@ -533,15 +590,18 @@ function Clear-AllIndexBackups {
     )
     
     # Vérifier que le cache est initialisé
+
     if (-not $script:IndexBackupCache) {
         Write-Host "Le cache de sauvegarde des index n'est pas initialisé." -ForegroundColor Red
         return
     }
     
     # Récupérer toutes les clés du cache
+
     $backupIds = $script:IndexBackupCache.Select({param($kvp) $kvp.Key})
     
     # Supprimer toutes les sauvegardes
+
     $count = 0
     
     foreach ($backupId in $backupIds) {
@@ -553,8 +613,7 @@ function Clear-AllIndexBackups {
         Write-Host "$count sauvegardes d'index supprimées du cache." -ForegroundColor Green
     }
 }
-```
-
+```plaintext
 ## Conclusion
 
 Le stockage en mémoire des index temporaires est une option viable pour le mécanisme de sauvegarde des index existants du module ExtractedInfoModuleV2. Parmi les options analysées, System.Runtime.Caching offre le meilleur équilibre entre fonctionnalités, performance et gestion de la mémoire.

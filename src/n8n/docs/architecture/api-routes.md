@@ -10,10 +10,9 @@ n8n expose une API REST qui permet d'interagir avec les workflows, les exécutio
 
 L'API n8n utilise une API Key pour l'authentification. Pour accéder aux routes protégées, vous devez inclure l'en-tête HTTP suivant dans vos requêtes :
 
-```
+```plaintext
 X-N8N-API-KEY: votre-api-key
-```
-
+```plaintext
 Vous pouvez configurer l'API Key dans le fichier `n8n/core/n8n-config.json` et dans le fichier `.env`.
 
 ## Routes API principales
@@ -99,6 +98,7 @@ Vous pouvez configurer l'API Key dans le fichier `n8n/core/n8n-config.json` et d
 
 ```powershell
 # Configuration de l'API Key
+
 $apiKey = "votre-api-key"
 $headers = @{
     "X-N8N-API-KEY" = $apiKey
@@ -107,12 +107,15 @@ $headers = @{
 $baseUrl = "http://localhost:5678"
 
 # Exemple: Liste des workflows
+
 Invoke-RestMethod -Uri "$baseUrl/api/v1/workflows" -Method Get -Headers $headers
 
 # Exemple: Obtenir un workflow spécifique
+
 Invoke-RestMethod -Uri "$baseUrl/api/v1/workflows/123" -Method Get -Headers $headers
 
 # Exemple: Créer un nouveau workflow
+
 $workflow = @{
     name = "Nouveau workflow"
     active = $false
@@ -122,29 +125,33 @@ $workflow = @{
 Invoke-RestMethod -Uri "$baseUrl/api/v1/workflows" -Method Post -Headers $headers -Body ($workflow | ConvertTo-Json -Depth 10) -ContentType "application/json"
 
 # Exemple: Exécuter un workflow
-Invoke-RestMethod -Uri "$baseUrl/api/v1/workflows/123/execute" -Method Post -Headers $headers
-```
 
+Invoke-RestMethod -Uri "$baseUrl/api/v1/workflows/123/execute" -Method Post -Headers $headers
+```plaintext
 ### curl
 
 ```bash
 # Configuration de l'API Key
+
 API_KEY="votre-api-key"
 BASE_URL="http://localhost:5678"
 
 # Exemple: Liste des workflows
+
 curl -X GET "${BASE_URL}/api/v1/workflows" -H "X-N8N-API-KEY: ${API_KEY}"
 
 # Exemple: Obtenir un workflow spécifique
+
 curl -X GET "${BASE_URL}/api/v1/workflows/123" -H "X-N8N-API-KEY: ${API_KEY}"
 
 # Exemple: Créer un nouveau workflow
+
 curl -X POST "${BASE_URL}/api/v1/workflows" -H "X-N8N-API-KEY: ${API_KEY}" -H "Content-Type: application/json" -d '{"name":"Nouveau workflow","active":false,"nodes":[],"connections":{}}'
 
 # Exemple: Exécuter un workflow
-curl -X POST "${BASE_URL}/api/v1/workflows/123/execute" -H "X-N8N-API-KEY: ${API_KEY}"
-```
 
+curl -X POST "${BASE_URL}/api/v1/workflows/123/execute" -H "X-N8N-API-KEY: ${API_KEY}"
+```plaintext
 ## Outils de vérification des routes API
 
 Pour vérifier les routes API disponibles et leur état, vous pouvez utiliser les scripts suivants :
@@ -155,8 +162,7 @@ Ce script teste toutes les routes API connues et génère un rapport détaillé 
 
 ```powershell
 .\verify-n8n-api-routes.ps1 -DetailLevel 3 -OutputFile "api-report.md"
-```
-
+```plaintext
 Options disponibles :
 - `-ApiKey` : API Key à utiliser
 - `-Hostname` : Hôte n8n (par défaut: localhost)
@@ -171,8 +177,7 @@ Ce script teste une route API spécifique avec différentes méthodes et paramè
 
 ```powershell
 .\test-n8n-api-route.ps1 -Url "/api/v1/workflows" -Method "GET"
-```
-
+```plaintext
 Options disponibles :
 - `-Url` : URL de la route à tester (sans le protocole, l'hôte et le port)
 - `-Method` : Méthode HTTP à utiliser (GET, POST, PUT, DELETE, etc.)
@@ -189,8 +194,7 @@ Ce script génère une documentation complète des routes API de n8n en se basan
 
 ```powershell
 .\generate-api-documentation.ps1 -ApiRoutesReportFile "api-report.md" -OutputFile "api-doc.md"
-```
-
+```plaintext
 Options disponibles :
 - `-ApiRoutesReportFile` : Fichier de rapport de vérification des routes API (par défaut: n8n-api-routes-report.md)
 - `-OutputFile` : Fichier de sortie pour la documentation (par défaut: n8n-api-documentation.md)

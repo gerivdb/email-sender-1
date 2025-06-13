@@ -1,4 +1,4 @@
-﻿# Script Manager
+# Script Manager
 
 Ce dossier contient le Script Manager du projet EMAIL_SENDER_1, un ensemble d'outils pour gérer, analyser et organiser les scripts du projet.
 
@@ -43,16 +43,14 @@ Pour configurer l'environnement du script manager, exécutez :
 
 ```powershell
 .\script-manager.ps1 -Force
-```
-
+```plaintext
 ### Création d'un nouveau script
 
 Pour créer un nouveau script avec Hygen :
 
 ```powershell
 npx hygen script new
-```
-
+```plaintext
 Suivez les instructions pour spécifier le nom, la description et la catégorie du script.
 
 ### Création d'un nouveau module
@@ -61,8 +59,7 @@ Pour créer un nouveau module avec Hygen :
 
 ```powershell
 npx hygen module new
-```
-
+```plaintext
 Suivez les instructions pour spécifier le nom, la description et la catégorie du module.
 
 ### Organisation des scripts
@@ -71,24 +68,21 @@ Pour organiser les scripts existants :
 
 ```powershell
 .\organization\Organize-ManagerScripts.ps1 -Force
-```
-
+```plaintext
 ### Surveillance des scripts
 
 Pour surveiller les scripts et détecter les problèmes :
 
 ```powershell
 .\monitoring\Monitor-ManagerScripts.ps1
-```
-
+```plaintext
 ### Utilisation de MCP Desktop Commander
 
 Pour utiliser MCP Desktop Commander :
 
 ```powershell
 npx -y @wonderwhy-er/desktop-commander
-```
-
+```plaintext
 Sélectionnez la commande `manager` pour accéder aux commandes du script manager.
 
 ## Bonnes pratiques
@@ -106,8 +100,7 @@ Des tests unitaires sont disponibles pour vérifier le bon fonctionnement des sc
 
 ```powershell
 .\testing\Test-ManagerScripts.ps1
-```
-
+```plaintext
 ## Résolution des problèmes
 
 Si vous rencontrez des problèmes avec le script manager :

@@ -24,100 +24,105 @@ Le format XML pour les roadmaps utilise la structure suivante :
     </phase>
   </section>
 </roadmap>
-```
-
+```plaintext
 ## Conversion entre Roadmap et XML
 
 ### Convertir une Roadmap en XML
 
 ```powershell
 # Convertir un fichier Roadmap en XML
+
 ConvertFrom-RoadmapFileToXmlFile -RoadmapPath "roadmap.md" -XmlPath "roadmap.xml"
 
 # Convertir une chaîne Roadmap en XML
+
 $roadmapContent = Get-Content -Path "roadmap.md" -Raw
 $xmlContent = ConvertFrom-RoadmapToXml -RoadmapContent $roadmapContent
-```
-
+```plaintext
 ### Convertir un XML en Roadmap
 
 ```powershell
 # Convertir un fichier XML en Roadmap
+
 ConvertFrom-XmlFileToRoadmapFile -XmlPath "roadmap.xml" -RoadmapPath "roadmap.md"
 
 # Convertir une chaîne XML en Roadmap
+
 $xmlContent = Get-Content -Path "roadmap.xml" -Raw
 $roadmapContent = ConvertFrom-XmlToRoadmap -XmlContent $xmlContent
-```
-
+```plaintext
 ## Analyse et validation XML
 
 ### Détecter les éléments XML
 
 ```powershell
 # Détecter les éléments XML dans un fichier
+
 $elements = Get-XmlElementsFromFile -XmlPath "roadmap.xml"
 
 # Afficher les éléments
-$elements | ForEach-Object { $_.ToString() }
-```
 
+$elements | ForEach-Object { $_.ToString() }
+```plaintext
 ### Générer un rapport de structure XML
 
 ```powershell
 # Générer un rapport de structure XML
-$report = Get-XmlStructureReportFromFile -XmlPath "roadmap.xml" -OutputPath "structure_report.html" -AsHtml
-```
 
+$report = Get-XmlStructureReportFromFile -XmlPath "roadmap.xml" -OutputPath "structure_report.html" -AsHtml
+```plaintext
 ### Valider un fichier XML
 
 ```powershell
 # Valider un fichier XML
+
 $result = Test-XmlFile -XmlPath "roadmap.xml"
 
 # Afficher le résultat
-$result.ToString()
-```
 
+$result.ToString()
+```plaintext
 ### Générer un rapport de validation XML
 
 ```powershell
 # Générer un rapport de validation XML
+
 $result = Test-XmlFile -XmlPath "roadmap.xml"
 $report = Get-XmlValidationReport -ValidationResult $result -AsHtml
 $report | Out-File -FilePath "validation_report.html" -Encoding UTF8
-```
-
+```plaintext
 ### Valider un fichier XML par rapport à un schéma XSD
 
 ```powershell
 # Valider un fichier XML par rapport à un schéma XSD
+
 $result = Test-XmlFileAgainstSchema -XmlPath "roadmap.xml" -SchemaPath "roadmap.xsd"
 
 # Afficher le résultat
-$result.ToString()
-```
 
+$result.ToString()
+```plaintext
 ### Générer un schéma XSD à partir d'un fichier XML
 
 ```powershell
 # Générer un schéma XSD à partir d'un fichier XML
-New-XsdSchemaFromXml -XmlPath "roadmap.xml" -SchemaPath "roadmap.xsd"
-```
 
+New-XsdSchemaFromXml -XmlPath "roadmap.xml" -SchemaPath "roadmap.xsd"
+```plaintext
 ## Manipulation de fichiers XML
 
 ### Importer un fichier XML
 
 ```powershell
 # Importer un fichier XML
-$xmlDoc = Import-XmlFile -FilePath "roadmap.xml"
-```
 
+$xmlDoc = Import-XmlFile -FilePath "roadmap.xml"
+```plaintext
 ### Exporter un objet en XML
 
 ```powershell
 # Exporter un objet en XML
+
 $data = @{
     roadmap = @{
         title = "Titre de la Roadmap"
@@ -139,36 +144,38 @@ $data = @{
 }
 
 Export-XmlFile -InputObject $data -FilePath "roadmap.xml"
-```
-
+```plaintext
 ## Affichage XML
 
 ### Afficher un fichier XML sous forme d'arborescence
 
 ```powershell
 # Afficher un fichier XML sous forme d'arborescence
-Show-XmlTree -XmlPath "roadmap.xml"
-```
 
+Show-XmlTree -XmlPath "roadmap.xml"
+```plaintext
 ### Afficher un fichier XML formaté
 
 ```powershell
 # Afficher un fichier XML formaté
-Show-XmlFormatted -XmlPath "roadmap.xml"
-```
 
+Show-XmlFormatted -XmlPath "roadmap.xml"
+```plaintext
 ## Exemples pratiques
 
 ### Exemple 1 : Extraire toutes les tâches d'une roadmap XML
 
 ```powershell
 # Importer le fichier XML
+
 $xmlDoc = Import-XmlFile -FilePath "roadmap.xml"
 
 # Extraire toutes les tâches
+
 $tasks = $xmlDoc.SelectNodes("//task")
 
 # Afficher les informations sur les tâches
+
 foreach ($task in $tasks) {
     $taskTitle = $task.GetAttribute("title")
     $taskCompleted = $task.GetAttribute("completed")
@@ -179,6 +186,7 @@ foreach ($task in $tasks) {
     Write-Host "  Temps estimé: $taskEstimatedTime"
     
     # Extraire les sous-tâches
+
     $subtasks = $task.SelectNodes("subtask")
     
     if ($subtasks.Count -gt 0) {
@@ -194,52 +202,60 @@ foreach ($task in $tasks) {
     
     Write-Host ""
 }
-```
-
+```plaintext
 ### Exemple 2 : Calculer la progression d'une roadmap XML
 
 ```powershell
 # Importer le fichier XML
+
 $xmlDoc = Import-XmlFile -FilePath "roadmap.xml"
 
 # Extraire toutes les tâches
+
 $tasks = $xmlDoc.SelectNodes("//task")
 $totalTasks = $tasks.Count
 $completedTasks = ($tasks | Where-Object { $_.GetAttribute("completed") -eq "true" }).Count
 
 # Calculer la progression
+
 $progression = if ($totalTasks -gt 0) { [math]::Round(($completedTasks / $totalTasks) * 100, 2) } else { 0 }
 
 Write-Host "Progression de la roadmap: $progression% ($completedTasks/$totalTasks tâches terminées)"
 
 # Extraire toutes les phases
+
 $phases = $xmlDoc.SelectNodes("//phase")
 $totalPhases = $phases.Count
 $completedPhases = ($phases | Where-Object { $_.GetAttribute("completed") -eq "true" }).Count
 
 # Calculer la progression des phases
+
 $phaseProgression = if ($totalPhases -gt 0) { [math]::Round(($completedPhases / $totalPhases) * 100, 2) } else { 0 }
 
 Write-Host "Progression des phases: $phaseProgression% ($completedPhases/$totalPhases phases terminées)"
-```
-
+```plaintext
 ### Exemple 3 : Mettre à jour une roadmap XML
 
 ```powershell
 # Importer le fichier XML
+
 $xmlDoc = Import-XmlFile -FilePath "roadmap.xml"
 
 # Trouver une tâche spécifique
+
 $task = $xmlDoc.SelectSingleNode("//task[@title='Analyser les besoins']")
 
 if ($task -ne $null) {
     # Mettre à jour l'attribut completed
+
     $task.SetAttribute("completed", "true")
     
     # Mettre à jour la date de fin
+
     $task.SetAttribute("endDate", (Get-Date -Format "dd/MM/yyyy"))
     
     # Enregistrer les modifications
+
     $xmlDoc.Save("roadmap_updated.xml")
     
     Write-Host "Tâche 'Analyser les besoins' marquée comme terminée."
@@ -247,8 +263,7 @@ if ($task -ne $null) {
 else {
     Write-Host "Tâche 'Analyser les besoins' non trouvée."
 }
-```
-
+```plaintext
 ## Dépannage
 
 ### Problèmes courants
@@ -259,25 +274,28 @@ Si vous rencontrez une erreur lors de la conversion d'une roadmap en XML, vérif
 
 ```powershell
 # Valider la structure de la roadmap
+
 $roadmapContent = Get-Content -Path "roadmap.md" -Raw
 $xmlContent = ConvertFrom-RoadmapToXml -RoadmapContent $roadmapContent
 
 # Valider le XML généré
+
 $result = Test-XmlContent -XmlContent $xmlContent
 if (-not $result.IsValid) {
     Write-Host "Erreurs de validation XML :"
     $result.Errors | ForEach-Object { $_.ToString() }
 }
-```
-
+```plaintext
 #### Caractères spéciaux dans les fichiers XML
 
 Si vous rencontrez des problèmes avec des caractères spéciaux dans les fichiers XML, assurez-vous que les fichiers sont encodés en UTF-8 :
 
 ```powershell
 # Lire le contenu du fichier
+
 $content = Get-Content -Path "roadmap.xml" -Raw
 
 # Enregistrer le fichier en UTF-8
+
 Set-Content -Path "roadmap.xml" -Value $content -Encoding UTF8
-```
+```plaintext

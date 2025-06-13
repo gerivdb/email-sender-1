@@ -3,14 +3,23 @@
 ## Table des matières
 
 1. [Instructions pour Projet N8N](#section-1)
+
     1.1. [Objectif](#section-2)
+
         1.1.1. [. Utilisation des Ressources de Référence](#section-3)
+
         1.1.2. [. Structure du Workflow](#section-4)
+
         1.1.3. [. Configuration Spécifique des Nœuds](#section-5)
+
         1.1.4. [. Intégrité du JSON](#section-6)
+
         1.1.5. [. Clarification des Détails Manquants](#section-7)
+
         1.1.6. [. Format de Sortie](#section-8)
+
     1.2. [Objectif Final](#section-9)
+
     1.3. [Exemple de Structure de Base](#section-10)
 
 ## 1. Instructions pour Projet N8N <a name='section-1'></a>
@@ -98,7 +107,6 @@ Fournir un fichier JSON autonome qui peut être importé directement dans N8N, r
             "type": "main",
             "index": 0
         ]
-```
-
+```plaintext
 Si des détails sur certains nœuds sont manquants ou peu clairs, veuillez les lister et demander des précisions avant de produire le JSON final.
 

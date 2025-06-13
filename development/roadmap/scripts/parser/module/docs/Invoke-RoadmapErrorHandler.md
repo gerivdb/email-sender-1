@@ -1,4 +1,4 @@
-﻿# Invoke-RoadmapErrorHandler
+# Invoke-RoadmapErrorHandler
 
 ## SYNOPSIS
 
@@ -204,6 +204,7 @@ Date de crÃ©ation: 2023-07-15
 `powershell
 try {
     # Code qui peut gÃ©nÃ©rer une erreur
+
 } catch {
     Invoke-RoadmapErrorHandler -ErrorRecord $_ -ErrorAction Stop -Category "Parsing" -LogFilePath ".\logs\roadmap-parser.log"
 }

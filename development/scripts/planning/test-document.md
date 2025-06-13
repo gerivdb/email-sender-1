@@ -1,4 +1,4 @@
-﻿# Titre Principal: Introduction
+# Titre Principal: Introduction
 
 Contenu du titre principal.
 

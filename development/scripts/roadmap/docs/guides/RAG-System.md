@@ -21,8 +21,7 @@ Pour une utilisation avancée, vous pouvez exécuter directement le script Power
 
 ```powershell
 .\Run-CompleteTestSuite.ps1 -TestType All -Force
-```
-
+```plaintext
 ## Fonctionnalités
 
 - **Analyse des roadmaps** : Inventaire, analyse de structure, détection de doublons
@@ -43,8 +42,7 @@ Pour installer toutes les dépendances nécessaires, exécutez le script `Instal
 
 ```powershell
 .\Install-Dependencies.ps1
-```
-
+```plaintext
 Ce script installera :
 - Python (si nécessaire)
 - Les packages Python requis (sentence-transformers, qdrant-client, matplotlib, networkx, pyvis)
@@ -59,8 +57,7 @@ Pour analyser les roadmaps, utilisez le script `Simple-RoadmapAnalysis.ps1` :
 
 ```powershell
 .\Simple-RoadmapAnalysis.ps1 -Action All -OutputDirectory "projet/roadmaps/analysis" -Force
-```
-
+```plaintext
 Options disponibles :
 - `-Action` : Action à exécuter (Inventory, Analyze, FindDuplicates, All)
 - `-OutputDirectory` : Dossier de sortie pour les résultats
@@ -72,8 +69,7 @@ Pour vectoriser les roadmaps et les stocker dans Qdrant, utilisez le script `Inv
 
 ```powershell
 .\Invoke-RoadmapRAG.ps1 -Action Vectorize -InventoryPath "projet/roadmaps/analysis/inventory.json"
-```
-
+```plaintext
 Options disponibles :
 - `-InventoryPath` : Chemin vers le fichier d'inventaire JSON
 - `-Model` : Nom du modèle SentenceTransformer à utiliser (défaut: all-MiniLM-L6-v2)
@@ -90,8 +86,7 @@ Pour rechercher dans les roadmaps vectorisées, utilisez le script `Invoke-Roadm
 
 ```powershell
 .\Invoke-RoadmapRAG.ps1 -Action Search -Query "implémentation du backend" -Limit 5 -OutputFormat markdown
-```
-
+```plaintext
 Options disponibles :
 - `-Query` : Requête de recherche
 - `-Limit` : Nombre maximum de résultats (défaut: 10)
@@ -105,8 +100,7 @@ Pour générer des visualisations graphiques des roadmaps, utilisez le script `I
 
 ```powershell
 .\Invoke-RoadmapVisualization.ps1 -RoadmapPath "projet/roadmaps/active/roadmap_active.md" -OpenInBrowser
-```
-
+```plaintext
 Options disponibles :
 - `-RoadmapPath` : Chemin vers le fichier markdown de roadmap
 - `-OutputDirectory` : Dossier de sortie pour les visualisations
@@ -119,8 +113,7 @@ Pour démarrer la synchronisation automatique des roadmaps avec Qdrant, utilisez
 
 ```powershell
 .\Start-RoadmapSync.ps1 -RoadmapPath "projet/roadmaps/active/roadmap_active.md" -IntervalMinutes 20 -NoPrompt
-```
-
+```plaintext
 Options disponibles :
 - `-RoadmapPath` : Chemin vers le fichier markdown de roadmap
 - `-OutputDirectory` : Dossier de sortie pour les résultats
@@ -131,6 +124,7 @@ Options disponibles :
 ## Structure des fichiers
 
 ### Scripts principaux
+
 - `Simple-RoadmapAnalysis.ps1` : Script principal pour l'analyse des roadmaps
 - `Invoke-RoadmapRAG.ps1` : Interface pour le système RAG
 - `Invoke-RoadmapVisualization.ps1` : Script pour générer des visualisations
@@ -138,11 +132,13 @@ Options disponibles :
 - `Install-Dependencies.ps1` : Script pour installer les dépendances
 
 ### Scripts Python
+
 - `vectorize_roadmaps.py` : Script Python pour vectoriser les roadmaps
 - `search_roadmaps.py` : Script Python pour rechercher dans les roadmaps
 - `Generate-RoadmapVisualization.py` : Script Python pour générer des visualisations
 
 ### Scripts de test
+
 - `Run-CompleteTestSuite.ps1` : Script principal pour exécuter tous les tests
 - `RunTests.bat` : Script batch pour exécuter tous les tests
 - `RunChangeDetectionTests.bat` : Script batch pour les tests de détection des changements
@@ -155,24 +151,29 @@ Options disponibles :
 
 ```powershell
 # Installer les dépendances
+
 .\Install-Dependencies.ps1
 
 # Analyser les roadmaps
+
 .\Simple-RoadmapAnalysis.ps1 -Action All -Force
 
 # Vectoriser les roadmaps
+
 .\Invoke-RoadmapRAG.ps1 -Action Vectorize -InventoryPath "projet/roadmaps/analysis/inventory.json"
 
 # Rechercher dans les roadmaps
+
 .\Invoke-RoadmapRAG.ps1 -Action Search -Query "implémentation du backend" -OutputPath "projet/roadmaps/analysis/search_results.md" -OutputFormat markdown
 
 # Générer des visualisations
+
 .\Invoke-RoadmapVisualization.ps1 -RoadmapPath "projet/roadmaps/active/roadmap_active.md" -OpenInBrowser
 
 # Démarrer la synchronisation automatique
-.\Start-RoadmapSync.ps1 -IntervalMinutes 20 -NoPrompt
-```
 
+.\Start-RoadmapSync.ps1 -IntervalMinutes 20 -NoPrompt
+```plaintext
 ### Filtres de recherche
 
 Vous pouvez créer un fichier JSON contenant des filtres pour la recherche :
@@ -196,14 +197,12 @@ Vous pouvez créer un fichier JSON contenant des filtres pour la recherche :
     }
   ]
 }
-```
-
+```plaintext
 Puis utiliser ce fichier pour filtrer les résultats de recherche :
 
 ```powershell
 .\Invoke-RoadmapRAG.ps1 -Action Search -Query "implémentation" -FilterPath "projet/roadmaps/analysis/filters.json"
-```
-
+```plaintext
 ## Tests et validation
 
 ### Exécution des tests automatisés
@@ -226,14 +225,12 @@ Pour exécuter tous les tests avec une configuration automatique :
 
 ```powershell
 .\Run-CompleteTestSuite.ps1 -Force
-```
-
+```plaintext
 Pour exécuter un type de test spécifique :
 
 ```powershell
 .\Run-CompleteTestSuite.ps1 -TestType ChangeDetection -Force
-```
-
+```plaintext
 Options disponibles :
 - `-TestType` : Type de tests à exécuter (`All`, `ChangeDetection`, `VectorUpdate`, `Versioning`)
 - `-VenvPath` : Chemin de l'environnement virtuel (par défaut : `venv`)
@@ -253,44 +250,38 @@ Si Qdrant n'est pas accessible, vérifiez que Docker est en cours d'exécution e
 
 ```powershell
 docker ps
-```
-
+```plaintext
 Si le conteneur n'est pas en cours d'exécution, démarrez-le :
 
 ```powershell
 docker start qdrant
-```
-
+```plaintext
 ### Erreurs Python
 
 Si vous rencontrez des erreurs Python, utilisez le script de résolution automatique :
 
 ```powershell
 .\Run-CompleteTestSuite.ps1 -Force
-```
-
+```plaintext
 Ce script installera automatiquement toutes les dépendances nécessaires avec les versions exactes requises.
 
 Pour une installation manuelle, vérifiez que toutes les dépendances sont installées :
 
 ```powershell
 python -c "import sentence_transformers, qdrant_client, matplotlib, networkx, pyvis"
-```
-
+```plaintext
 Si des dépendances sont manquantes, installez les versions compatibles :
 
 ```powershell
 pip install huggingface-hub==0.19.4 transformers==4.36.2 torch==2.1.2 sentence-transformers==2.2.2 qdrant-client==1.7.0 matplotlib networkx pyvis
-```
-
+```plaintext
 ### Problèmes de compatibilité des dépendances
 
 Si vous rencontrez des problèmes de compatibilité entre les bibliothèques Python, consultez le guide de dépannage :
 
 ```powershell
 notepad docs\guides\roadmap\TROUBLESHOOTING_DEPENDENCIES.md
-```
-
+```plaintext
 Ce guide explique les problèmes courants et leurs solutions, notamment les incompatibilités entre `sentence-transformers`, `huggingface-hub` et `transformers`.
 
 ## Licence

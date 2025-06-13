@@ -69,7 +69,9 @@ Pour résoudre ces problèmes de manière systématique, nous recommandons :
        )
        
        # Logique de détection sécurisée
+
        # Retourne l'encodage approprié
+
    }
    
    function Set-SafeContent {
@@ -80,6 +82,7 @@ Pour résoudre ces problèmes de manière systématique, nous recommandons :
        )
        
        # Utilise l'encodage approprié selon le type de fichier
+
    }
    ```
 
@@ -92,6 +95,7 @@ Pour résoudre ces problèmes de manière systématique, nous recommandons :
        )
        
        # Convertit les chemins complexes en chemins simples et uniques
+
    }
    ```
 
@@ -104,7 +108,9 @@ Pour résoudre ces problèmes de manière systématique, nous recommandons :
        )
        
        # Exécute le test dans un environnement isolé
+
        # Gère proprement les ressources
+
    }
    ```
 

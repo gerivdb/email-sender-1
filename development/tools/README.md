@@ -43,12 +43,13 @@ Pour utiliser un outil dans un script :
 
 ```powershell
 # Importer un module
+
 Import-Module -Name "$PSScriptRoot\..\..\tools\converters-tools\Format-Converters.psm1"
 
 # Utiliser une fonction du module
-Convert-FileFormat -Path "chemin/vers/fichier" -TargetFormat "json"
-```
 
+Convert-FileFormat -Path "chemin/vers/fichier" -TargetFormat "json"
+```plaintext
 ## Développement
 
 Pour ajouter un nouvel outil :

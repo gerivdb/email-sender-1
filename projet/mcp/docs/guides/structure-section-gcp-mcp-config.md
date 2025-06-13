@@ -16,9 +16,9 @@ Ce document décrit la structure attendue pour la section GCP dans le fichier de
     "enabled": true,
     "configPath": "config/servers/gcp.json"
 }
-```
-
+```plaintext
 ## Détail des champs
+
 - **command** : Commande à exécuter pour lancer le serveur GCP MCP (ici `npx`).
 - **args** : Arguments passés à la commande (ici le script ou package à lancer).
 - **env** : Variables d’environnement nécessaires (ici le chemin du service account Google).
@@ -26,6 +26,7 @@ Ce document décrit la structure attendue pour la section GCP dans le fichier de
 - **configPath** : Chemin relatif vers le fichier de configuration spécifique GCP (`gcp.json`).
 
 ## Fichier de configuration GCP (`gcp.json`)
+
 Exemple :
 ```json
 {
@@ -34,9 +35,9 @@ Exemple :
   "serviceAccount": "config/credentials/gcp-token.json",
   "features": { ... }
 }
-```
-
+```plaintext
 ## Bonnes pratiques
+
 - Vérifier que le chemin du service account est correct et accessible.
 - S’assurer que le champ `enabled` est à `true` pour activer le serveur.
 - Adapter les arguments selon le script ou le package utilisé pour le serveur GCP MCP.

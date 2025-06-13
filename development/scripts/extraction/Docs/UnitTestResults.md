@@ -89,23 +89,28 @@ Les tests unitaires couvrent les aspects suivants du module :
 Lors de l'exécution initiale des tests unitaires, plusieurs problèmes ont été identifiés et corrigés :
 
 ### Problèmes dans les fonctions de base
+
 - Génération incorrecte des identifiants uniques
 - Initialisation incorrecte des métadonnées
 - Problèmes de typage des paramètres
 
 ### Problèmes dans les fonctions de métadonnées
+
 - Vérifications insuffisantes de l'existence des métadonnées
 - Problèmes d'accès aux métadonnées
 
 ### Problèmes dans les fonctions de collection
+
 - Initialisation incorrecte des collections
 - Problèmes d'ajout et de suppression d'éléments
 
 ### Problèmes dans les fonctions de sérialisation
+
 - Problèmes de conversion en JSON et depuis JSON
 - Problèmes de sauvegarde et de chargement depuis des fichiers
 
 ### Problèmes dans les fonctions de validation
+
 - Vérifications insuffisantes des valeurs
 - Problèmes d'ajout de règles de validation personnalisées
 

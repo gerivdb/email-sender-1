@@ -6,7 +6,7 @@ Ce workspace contient l'implémentation d'un pipeline Go natif pour la détectio
 
 ## Structure du Projet
 
-```
+```plaintext
 error-resolution-pipeline/
 ├── roadmaps/
 │   └── plans/
@@ -15,31 +15,44 @@ error-resolution-pipeline/
 ├── src/
 │   ├── modules/
 │   │   ├── detector/        # Modules de détection d'erreurs
-│   │   ├── analyzer/        # Analyseurs AST et sémantiques
-│   │   ├── resolver/        # Moteur de résolution automatique
-│   │   ├── monitor/         # Système de monitoring et métriques
-│   │   └── shared/          # Composants partagés
-│   ├── config/              # Configurations et schémas
-│   ├── tests/               # Tests unitaires et d'intégration
-│   └── cmd/                 # Points d'entrée principaux
-├── docs/                    # Documentation technique
-├── scripts/                 # Scripts de build et déploiement
-└── examples/                # Exemples d'utilisation
-```
 
+│   │   ├── analyzer/        # Analyseurs AST et sémantiques
+
+│   │   ├── resolver/        # Moteur de résolution automatique
+
+│   │   ├── monitor/         # Système de monitoring et métriques
+
+│   │   └── shared/          # Composants partagés
+
+│   ├── config/              # Configurations et schémas
+
+│   ├── tests/               # Tests unitaires et d'intégration
+
+│   └── cmd/                 # Points d'entrée principaux
+
+├── docs/                    # Documentation technique
+
+├── scripts/                 # Scripts de build et déploiement
+
+└── examples/                # Exemples d'utilisation
+
+```plaintext
 ## Objectifs du Pipeline
 
 ### 1. Détection Intelligente
+
 - Analyse AST avancée avec go/ast et go/parser
 - Détection d'anti-patterns et erreurs de conception
 - Monitoring temps réel des métriques de code
 
 ### 2. Résolution Automatique
+
 - Base de connaissances des solutions
 - Génération automatique de patches sécurisés
 - Système de règles de transformation de code
 
 ### 3. Intégration Continue
+
 - Pipeline CI/CD intégré
 - Tests de régression automatiques
 - Déploiement progressif avec monitoring

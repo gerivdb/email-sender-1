@@ -1,4 +1,4 @@
-﻿# web
+# web
 
 Interface web
 

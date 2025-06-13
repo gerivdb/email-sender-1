@@ -5,23 +5,41 @@ Ce document présente le plan détaillé pour la Phase 3 du plan de transition, 
 ## Table des matières
 
 1. [Plan de Développement Détaillé - Phase 3 : Intégration avec le Plan Magistral V5](#section-1)
+
     1.1. [Analyse préliminaire](#section-1-1)
+
     1.2. [Plan de Développement Détaillé - Phase 3](#section-1-2)
+
         1.2.1. [Vue d'ensemble de la Phase 3](#section-1-2-1)
+
     1.3. [Étape 3.1: Création des Structures de Base](#section-1-3)
+
         1.3.1. [Mise en Place des Piliers](#section-1-3-1)
+
         1.3.2. [Configuration des Webhooks et Points d'Intégration](#section-1-3-2)
+
         1.3.3. [Mise en Place du Système de Configuration Centralisé](#section-1-3-3)
+
     1.4. [Étape 3.2: Migration des Fonctionnalités Existantes](#section-1-4)
+
         1.4.1. [Cartographie des Fonctionnalités](#section-1-4-1)
+
         1.4.2. [Migration Progressive](#section-1-4-2)
+
         1.4.3. [Adaptation des Interfaces](#section-1-4-3)
+
     1.5. [Étape 3.3: Mise en Place du Système de Monitoring](#section-1-5)
+
         1.5.1. [Configuration des Alertes](#section-1-5-1)
+
         1.5.2. [Mise en Place des Tableaux de Bord](#section-1-5-2)
+
         1.5.3. [Implémentation des Mécanismes de Récupération](#section-1-5-3)
+
     1.6. [Conclusion et Recommandations](#section-1-6)
+
         1.6.1. [Points Clés à Retenir](#section-1-6-1)
+
         1.6.2. [Recommandations pour l'Implémentation](#section-1-6-2)
 
 ## 1. Plan de Développement Détaillé - Phase 3 : Intégration avec le Plan Magistral V5 <a name='section-1'></a>
@@ -72,7 +90,7 @@ PILIER\_1.mdplans/pour le futur
           "item": [  
               "mode": "manual"  
             }  
-```
+```plaintext
           \]  
       },  
       "name": "Déclencheur Manuel",  
@@ -310,7 +328,7 @@ WF-PILIER-STRUCTURE-VALIDATOR
           "item": [  
               "mode": "manual"  
             }  
-```
+```plaintext
           \]  
       },  
       "name": "Déclencheur Manuel",  
@@ -479,7 +497,7 @@ WF-PILIER-STRUCTURE-VALIDATOR
         "options": {  
           "encoding": "utf8"  
         }  
-```
+```plaintext
       "name": "Charger Configuration",  
       "type": "n8n-nodes-base.readBinaryFile",  
       "position": \[500, 300\]  
@@ -642,7 +660,7 @@ WF-PILIER-STRUCTURE-VALIDATOR
           "item": [  
               "mode": "manual"  
             }  
-```
+```plaintext
           \]  
       },  
       "name": "Déclencheur Manuel",  
@@ -685,9 +703,11 @@ WF-PILIER-STRUCTURE-VALIDATOR
   "type": "n8n-nodes-base.if",  
   "position": \[1100, 300\]  
     "functionCode": "// Créer un nouveau rapport Markdown\\nconst reports \= $input.all.map(item \=\> item.json);\\n\\n// En-tête du rapport\\nlet markdownContent \= \`\# Cartographie des Fonctionnalités vers le Plan Magistral V5\\n\\n\_Généré le ${new Date().toLocaleString('fr-FR')}\_\\n\\n\#\# Vue d'ensemble\\n\\nCe document présente la cartographie des fonctionnalités existantes du workflow Email Sender vers les piliers du Plan Magistral V5.\\n\\n\#\# Tableau de Cartographie\\n\\n| Fonctionnalité | Description | Emplacement Actuel | Dépendances | Pilier Principal | Piliers Secondaires | Complexité | Priorité |\\n|----------------|-------------|-------------------|-------------|-----------------|---------------------|------------|----------|\\n\`;\\n\\n// Ajouter chaque fonctionnalité\\nreports.forEach(report \=\> {\\n  markdownContent \+= \`| ${report.functionalityName} | ${report.description} | ${report.currentLocation} | ${report.dependencies} | ${report.targetPillar} | ${report.secondaryPillars} | ${report.migrationComplexity} | ${report.migrationPriority} |\\\\n\`;\\n});\\n\\n// Ajouter des sections supplémentaires\\nmarkdownContent \+= \`\\n\\n\#\# Analyse des Chevauchements\\n\\nCertaines fonctionnalités chevauchent plusieurs piliers :\\n\\n\`;\\n\\n// Identifier les fonctionnalités avec des piliers secondaires\\nconst overlappingFuncs \= reports.filter(r \=\> r.secondaryPillars && r.secondaryPillars \!== 'Aucun');\\noverlappingFuncs.forEach(func \=\> {\\n  markdownContent \+= \`- \*\*${func.functionalityName}\*\* : Principalement dans ${func.targetPillar}, mais aussi dans ${func.secondaryPillars}\\\\n\`;\\n});\\n\\n// Ajouter une section sur la séquence de migration\\nmarkdownContent \+= \`\\n\\n\#\# Séquence de Migration Recommandée\\n\\n\`;\\n\\n// Trier par priorité et complexité\\nconst sortedByPriority \= \[...reports\].sort((a, b) \=\> {\\n  const priorityOrder \= { high: 0, medium: 1, low: 2, 'Non évalué': 3 };\\n  const complexityOrder \= { low: 0, medium: 1, high: 2, 'Non évalué': 3 };\\n  \\n  if (priorityOrder\[a.migrationPriority\] \!== priorityOrder\[b.migrationPriority\]) {\\n    return priorityOrder\[a.migrationPriority\] \- priorityOrder\[b.migrationPriority\];\\n  }\\n  \\n  return complexityOrder\[a.migrationComplexity\] \- complexityOrder\[b.migrationComplexity\];\\n});\\n\\n// Ajouter la séquence recommandée\\nmarkdownContent \+= \`1. \*\*Phase 1 : Fonctionnalités Prioritaires et Simples\*\*\\\\n\`;\\nsortedByPriority\\n  .filter(r \=\> r.migrationPriority \=== 'high' && r.migrationComplexity \=== 'low')\\n  .forEach((r, i) \=\> markdownContent \+= \`   ${i+1}. ${r.functionalityName} (${r.targetPillar})\\\\n\`);\\n\\nmarkdownContent \+= \`\\\\n2. \*\*Phase 2 : Fonctionnalités Prioritaires mais Complexes\*\*\\\\n\`;\\nsortedByPriority\\n  .filter(r \=\> r.migrationPriority \=== 'high' && r.migrationComplexity \!== 'low')\\n  .forEach((r, i) \=\> markdownContent \+= \`   ${i+1}. ${r.functionalityName} (${r.targetPillar})\\\\n\`);\\n\\nmarkdownContent \+= \`\\\\n3. \*\*Phase 3 : Fonctionnalités Restantes\*\*\\\\n\`;\\nsortedByPriority\\n  .filter(r \=\> r.migrationPriority \!== 'high')\\n  .forEach((r, i) \=\> markdownContent \+= \`   ${i+1}. ${r.functionalityName} (${r.targetPillar})\\\\n\`);\\n\\nreturn {\\n  json: {\\n    markdownContent\\n  },\\n  binary: {\\n    data: {\\n      mimeType: 'text/markdown',\\n      data: Buffer.from(markdownContent).toString('base64'),\\n      fileName: 'functionality\_mapping.md'\\n    }\\n  }\\n};"  
+
   "name": "Créer Rapport Markdown",  
   "position": \[1300, 200\]  
     "functionCode": "// Mettre à jour le rapport Markdown existant\\nconst existingReport \= $binary.data.toString();\\nconst reports \= $input.all.map(item \=\> item.json);\\n\\n// Extraire l'en-tête et les sections existantes\\nconst headerMatch \= existingReport.match(/^(\[\\\\s\\\\S\]\*?\#\# Tableau de Cartographie)/m);\\nconst header \= headerMatch ? headerMatch\[1\] : '';\\n\\n// Créer le nouveau tableau\\nlet tableContent \= \`\\n\\n| Fonctionnalité | Description | Emplacement Actuel | Dépendances | Pilier Principal | Piliers Secondaires | Complexité | Priorité |\\n|----------------|-------------|-------------------|-------------|-----------------|---------------------|------------|----------|\\n\`;\\n\\n// Ajouter chaque fonctionnalité\\nreports.forEach(report \=\> {\\n  tableContent \+= \`| ${report.functionalityName} | ${report.description} | ${report.currentLocation} | ${report.dependencies} | ${report.targetPillar} | ${report.secondaryPillars} | ${report.migrationComplexity} | ${report.migrationPriority} |\\\\n\`;\\n});\\n\\n// Recréer les sections d'analyse\\nlet analysisContent \= \`\\n\\n\#\# Analyse des Chevauchements\\n\\nCertaines fonctionnalités chevauchent plusieurs piliers :\\n\\n\`;\\n\\n// Identifier les fonctionnalités avec des piliers secondaires\\nconst overlappingFuncs \= reports.filter(r \=\> r.secondaryPillars && r.secondaryPillars \!== 'Aucun');\\noverlappingFuncs.forEach(func \=\> {\\n  analysisContent \+= \`- \*\*${func.functionalityName}\*\* : Principalement dans ${func.targetPillar}, mais aussi dans ${func.secondaryPillars}\\\\n\`;\\n});\\n\\n// Ajouter une section sur la séquence de migration\\nlet sequenceContent \= \`\\n\\n\#\# Séquence de Migration Recommandée\\n\\n\`;\\n\\n// Trier par priorité et complexité\\nconst sortedByPriority \= \[...reports\].sort((a, b) \=\> {\\n  const priorityOrder \= { high: 0, medium: 1, low: 2, 'Non évalué': 3 };\\n  const complexityOrder \= { low: 0, medium: 1, high: 2, 'Non évalué': 3 };\\n  \\n  if (priorityOrder\[a.migrationPriority\] \!== priorityOrder\[b.migrationPriority\]) {\\n    return priorityOrder\[a.migrationPriority\] \- priorityOrder\[b.migrationPriority\];\\n  }\\n  \\n  return complexityOrder\[a.migrationComplexity\] \- complexityOrder\[b.migrationComplexity\];\\n});\\n\\n// Ajouter la séquence recommandée\\nsequenceContent \+= \`1. \*\*Phase 1 : Fonctionnalités Prioritaires et Simples\*\*\\\\n\`;\\nsortedByPriority\\n  .filter(r \=\> r.migrationPriority \=== 'high' && r.migrationComplexity \=== 'low')\\n  .forEach((r, i) \=\> sequenceContent \+= \`   ${i+1}. ${r.functionalityName} (${r.targetPillar})\\\\n\`);\\n\\nsequenceContent \+= \`\\\\n2. \*\*Phase 2 : Fonctionnalités Prioritaires mais Complexes\*\*\\\\n\`;\\nsortedByPriority\\n  .filter(r \=\> r.migrationPriority \=== 'high' && r.migrationComplexity \!== 'low')\\n  .forEach((r, i) \=\> sequenceContent \+= \`   ${i+1}. ${r.functionalityName} (${r.targetPillar})\\\\n\`);\\n\\nsequenceContent \+= \`\\\\n3. \*\*Phase 3 : Fonctionnalités Restantes\*\*\\\\n\`;\\nsortedByPriority\\n  .filter(r \=\> r.migrationPriority \!== 'high')\\n  .forEach((r, i) \=\> sequenceContent \+= \`   ${i+1}. ${r.functionalityName} (${r.targetPillar})\\\\n\`);\\n\\n// Ajouter une note de mise à jour\\nconst updateNote \= \`\\n\\n---\\n\\n\_Rapport mis à jour le ${new Date().toLocaleString('fr-FR')}\_\\n\`;\\n\\n// Assembler le rapport final\\nconst updatedReport \= header \+ tableContent \+ analysisContent \+ sequenceContent \+ updateNote;\\n\\nreturn {\\n  json: {\\n    markdownContent: updatedReport\\n  },\\n  binary: {\\n    data: {\\n      mimeType: 'text/markdown',\\n      data: Buffer.from(updatedReport).toString('base64'),\\n      fileName: 'functionality\_mapping.md'\\n    }\\n  }\\n};"  
+
   "name": "Mettre à Jour Rapport",  
   "position": \[1300, 400\]  
   "name": "Sauvegarder Rapport",  
@@ -705,6 +725,7 @@ WF-PILIER-STRUCTURE-VALIDATOR
       "name": "Analyser Dépendances",  
      
     "functionCode": "// Générer un rapport de dépendances\\nconst analysis \= $input.item.json;\\n\\n// Créer le contenu Markdown\\nlet markdownContent \= \`\# Analyse des Dépendances pour la Migration\\n\\n\_Généré le ${new Date().toLocaleString('fr-FR')}\_\\n\\n\#\# Vue d'ensemble\\n\\nCe document présente l'analyse des dépendances entre les fonctionnalités et les piliers pour planifier la séquence de migration.\\n\\n\#\# Dépendances entre Piliers\\n\\n\`;\\n\\n// Ajouter les dépendances entre piliers\\nObject.entries(analysis.pillarDependencies).forEach((\[pillar, deps\]) \=\> {\\n  markdownContent \+= \`\#\#\# ${pillar}\\n\\n\`;\\n  markdownContent \+= \`- \*\*Fonctionnalités\*\* : ${deps.functionalities.join(', ')}\\\\n\`;\\n  markdownContent \+= \`- \*\*Dépend de\*\* : ${deps.dependsOn.length ? deps.dependsOn.join(', ') : 'Aucun'}\\\\n\`;\\n  markdownContent \+= \`- \*\*Requis par\*\* : ${deps.requiredBy.length ? deps.requiredBy.join(', ') : 'Aucun'}\\\\n\\\\n\`;\\n});\\n\\n// Ajouter un diagramme ASCII des dépendances\\nmarkdownContent \+= \`\#\# Diagramme de Dépendances\\n\\n\\\\\`\\\\\`\\\\\`\\n\`;\\n\\n// Créer un diagramme ASCII simple\\nconst pillars \= Object.keys(analysis.pillarDependencies);\\nconst pillarSymbols \= {};\\npillars.forEach((pillar, index) \=\> {\\n  pillarSymbols\[pillar\] \= String.fromCharCode(65 \+ index); // A, B, C, D...\\n});\\n\\n// Légende\\nmarkdownContent \+= \`Légende:\\\\n\`;\\nObject.entries(pillarSymbols).forEach((\[pillar, symbol\]) \=\> {\\n  markdownContent \+= \`${symbol} \= ${pillar}\\\\n\`;\\n});\\nmarkdownContent \+= \`\\\\n\`;\\n\\n// Matrice de dépendances\\nmarkdownContent \+= \`Matrice de dépendances (ligne dépend de colonne):\\\\n\\\\n\`;\\nmarkdownContent \+= \`    \`;\\npillars.forEach(pillar \=\> {\\n  markdownContent \+= \`${pillarSymbols\[pillar\]} \`;\\n});\\nmarkdownContent \+= \`\\\\n\`;\\n\\npillars.forEach(sourcePillar \=\> {\\n  markdownContent \+= \`${pillarSymbols\[sourcePillar\]}   \`;\\n  pillars.forEach(targetPillar \=\> {\\n    const deps \= analysis.pillarDependencies\[sourcePillar\];\\n    const dependsOn \= deps.dependsOn.includes(targetPillar);\\n    markdownContent \+= dependsOn ? 'X ' : '- ';\\n  });\\n  markdownContent \+= \`\\\\n\`;\\n});\\n\\n// Graphe de dépendances\\nmarkdownContent \+= \`\\\\nGraphe de dépendances:\\\\n\\\\n\`;\\n\\n// Créer un graphe ASCII simple\\nconst graph \= {};\\npillars.forEach(pillar \=\> {\\n  graph\[pillarSymbols\[pillar\]\] \= {\\n    dependsOn: analysis.pillarDependencies\[pillar\].dependsOn.map(p \=\> pillarSymbols\[p\])\\n  };\\n});\\n\\n// Dessiner le graphe\\nObject.entries(graph).forEach((\[symbol, node\]) \=\> {\\n  markdownContent \+= \`${symbol} \`;\\n  if (node.dependsOn.length) {\\n    markdownContent \+= \`---\> ${node.dependsOn.join(', ')}\\\\n\`;\\n  } else {\\n    markdownContent \+= \`(indépendant)\\\\n\`;\\n  }\\n});\\n\\nmarkdownContent \+= \`\\\\\`\\\\\`\\\\\`\\n\\n\#\# Recommandations pour la Séquence de Migration\\n\\n\`;\\n\\n// Déterminer l'ordre de migration basé sur les dépendances\\nconst migrationOrder \= \[\];\\nconst visited \= new Set();\\n\\nfunction visit(pillar) {\\n  if (visited.has(pillar)) return;\\n  visited.add(pillar);\\n  \\n  const deps \= analysis.pillarDependencies\[pillar\].dependsOn;\\n  deps.forEach(dep \=\> visit(dep));\\n  \\n  migrationOrder.push(pillar);\\n}\\n\\n// Visiter tous les piliers\\npillars.forEach(pillar \=\> {\\n  if (\!visited.has(pillar)) {\\n    visit(pillar);\\n  }\\n});\\n\\n// Ajouter les recommandations\\nmarkdownContent \+= \`Basé sur l'analyse des dépendances, voici l'ordre de migration recommandé :\\\\n\\\\n\`;\\nmigrationOrder.forEach((pillar, index) \=\> {\\n  markdownContent \+= \`${index \+ 1}. \*\*${pillar}\*\* \- ${analysis.pillarDependencies\[pillar\].functionalities.length} fonctionnalités\\\\n\`;\\n});\\n\\nreturn {\\n  json: {\\n    markdownContent\\n  },\\n  binary: {\\n    data: {\\n      mimeType: 'text/markdown',\\n      data: Buffer.from(markdownContent).toString('base64'),\\n      fileName: 'dependency\_analysis.md'\\n    }\\n  }\\n};"  
+
   "name": "Générer Rapport Markdown",  
     "path": "reports/dependency\_analysis.md",  
 
@@ -752,7 +773,7 @@ LÉGENDE:
           "item": [  
               "mode": "manual"  
             }  
-```
+```plaintext
           \]  
       },  
       "name": "Déclencheur Manuel",  
@@ -786,6 +807,7 @@ LÉGENDE:
       "type": "n8n-nodes-base.writeBinaryFile",  
       "position": \[1100, 300\]  
     "functionCode": "// Générer un guide de migration\\nconst functionality \= $input.item.json.functionality;\\nconst targetPillar \= $input.item.json.targetPillar;\\nconst workflowName \= $input.item.json.workflowName;\\n\\n// Créer le contenu Markdown\\nlet markdownContent \= \`\# Guide de Migration : ${functionality}\\n\\n\#\# Vue d'ensemble\\n\\nCe document fournit les instructions pour migrer la fonctionnalité \\"${functionality}\\" vers le pilier ${targetPillar} du Plan Magistral V5.\\n\\n\#\# Étapes de Migration\\n\\n1. \*\*Préparation\*\*\\n   \- Créer un nouveau workflow basé sur le template \`${workflowName}.json\`\\n   \- Vérifier que toutes les dépendances sont disponibles\\n   \- Configurer les credentials nécessaires\\n\\n2. \*\*Adaptation du Code\*\*\\n   \- Localiser les sections marquées avec des commentaires \`// Code spécifique à...\`\\n   \- Adapter le code existant pour l'intégrer dans la nouvelle structure\\n   \- Mettre à jour les références aux autres workflows/piliers\\n\\n3. \*\*Tests\*\*\\n   \- Tester le workflow en isolation\\n   \- Vérifier les interactions avec les autres piliers\\n   \- Valider que toutes les fonctionnalités sont correctement migrées\\n\\n4. \*\*Déploiement\*\*\\n   \- Activer le nouveau workflow\\n   \- Désactiver l'ancien workflow après validation\\n   \- Mettre à jour la documentation\\n\\n\#\# Points d'Attention\\n\\n- Vérifier que les formats de données sont compatibles avec le Plan Magistral V5\\n- S'assurer que les webhooks et points d'intégration sont correctement configurés\\n- Mettre à jour les références dans les autres workflows\\n\\n\#\# Validation\\n\\nPour valider la migration, vérifier que :\\n\\n- Le workflow fonctionne correctement en isolation\\n- Les interactions avec les autres piliers sont fonctionnelles\\n- Les performances sont au moins équivalentes à l'ancienne implémentation\\n- Tous les cas d'utilisation sont couverts\\n\\n\#\# Rollback\\n\\nEn cas de problème, suivre ces étapes pour revenir à l'ancienne implémentation :\\n\\n1. Désactiver le nouveau workflow\\n2. Réactiver l'ancien workflow\\n3. Documenter les problèmes rencontrés pour une future tentative\\n\`;\\n\\nreturn {\\n  json: {\\n    markdownContent\\n  },\\n  binary: {\\n    data: {\\n      mimeType: 'text/markdown',\\n      data: Buffer.from(markdownContent).toString('base64'),\\n      fileName: \`migration\_guide\_${workflowName}.md\`\\n    }\\n  }\\n};"  
+
   "name": "Générer Guide Migration",  
   "position": \[1100, 500\]  
     "path": "guides/migration\_guide\_{{$json.workflowName}}.md",  
@@ -850,6 +872,7 @@ LÉGENDE:
       "name": "Test Échoué",  
       "position": \[1500, 500\]  
         "functionCode": "// Générer un rapport de test\\nconst status \= $input.item.json.status;\\nconst message \= $input.item.json.message;\\nconst workflowName \= $input.item.json.workflowName;\\nconst result \= $input.item.json.result || $input.item.json.error || {};\\n\\n// Créer le contenu Markdown\\nlet markdownContent \= \`\# Rapport de Test : ${workflowName}\\n\\n\#\# Résultat\\n\\n\*\*Statut\*\* : ${status \=== 'success' ? '✅ Succès' : '❌ Échec'}\\n\*\*Message\*\* : ${message}\\n\\n\#\# Détails\\n\\n\\\\\`\\\\\`\\\\\`json\\n${JSON.stringify(result, null, 2)}\\n\\\\\`\\\\\`\\\\\`\\n\\n\#\# Horodatage\\n\\nTest exécuté le ${new Date().toLocaleString('fr-FR')}\\n\`;\\n\\nreturn {\\n  json: {\\n    status,\\n    message,\\n    workflowName,\\n    markdownContent\\n  },\\n  binary: {\\n    data: {\\n      mimeType: 'text/markdown',\\n      data: Buffer.from(markdownContent).toString('base64'),\\n      fileName: \`test\_report\_${workflowName}.md\`\\n    }\\n  }\\n};"  
+
       "name": "Générer Rapport",  
       "position": \[1700, 400\]  
         "path": "reports/development/testing/tests/test\_report\_{{$json.workflowName}}.md",  
@@ -900,7 +923,7 @@ LÉGENDE:
           "item": [  
               "mode": "manual"  
             }  
-```
+```plaintext
           \]  
       },  
       "name": "Déclencheur Manuel",  
@@ -929,6 +952,7 @@ LÉGENDE:
       "type": "n8n-nodes-base.writeBinaryFile",  
       "position": \[700, 300\]  
         "functionCode": "// Générer un guide d'interface\\nconst sourceWorkflow \= $input.item.json.sourceWorkflow;\\nconst targetWorkflow \= $input.item.json.targetWorkflow;\\nconst adapterName \= $input.item.json.adapterName;\\nconst interfaceSpec \= $input.item.json.interfaceSpec || {};\\n\\n// Créer le contenu Markdown\\nlet markdownContent \= \`\# Guide d'Interface : ${sourceWorkflow} → ${targetWorkflow}\\n\\n\#\# Vue d'ensemble\\n\\nCe document décrit l'interface entre les workflows ${sourceWorkflow} et ${targetWorkflow}, et explique comment utiliser l'adaptateur ${adapterName}.\\n\\n\#\# Spécification de l'Interface\\n\\n\#\#\# Données d'Entrée (${sourceWorkflow})\\n\\n\`;\\n\\n// Ajouter les champs requis\\nconst requiredFields \= interfaceSpec.requiredFields || \['data'\];\\nmarkdownContent \+= \`\*\*Champs Requis :\*\*\\\\n\\\\n\`;\\nrequiredFields.forEach(field \=\> {\\n  markdownContent \+= \`- \\\\\`${field}\\\\\`\\\\n\`;\\n});\\n\\n// Ajouter les mappings de champs\\nmarkdownContent \+= \`\\\\n\#\#\# Mappings de Champs\\\\n\\\\n\`;\\nconst mappings \= interfaceSpec.fieldMappings || \[\];\\n\\nif (mappings.length \=== 0\) {\\n  markdownContent \+= \`Aucun mapping spécifique \- toutes les données sont transmises telles quelles.\\\\n\`;\\n} else {\\n  markdownContent \+= \`| Champ Source | Champ Cible | Transformation |\\\\n|-------------|------------|----------------|\\\\n\`;\\n  mappings.forEach(mapping \=\> {\\n    markdownContent \+= \`| \\\\\`${mapping.source}\\\\\` | \\\\\`${mapping.target}\\\\\` | ${mapping.transform ? mapping.transform.replace('$source', 'valeur source') : 'Aucune'} |\\\\n\`;\\n  });\\n}\\n\\n// Ajouter des exemples\\nmarkdownContent \+= \`\\\\n\#\# Exemples\\\\n\\\\n\#\#\# Exemple de Requête\\\\n\\\\n\\\\\`\\\\\`\\\\\`json\\\\n${JSON.stringify(generateExampleRequest(interfaceSpec), null, 2)}\\\\n\\\\\`\\\\\`\\\\\`\\\\n\\\\n\#\#\# Exemple de Réponse\\\\n\\\\n\\\\\`\\\\\`\\\\\`json\\\\n${JSON.stringify(generateExampleResponse(), null, 2)}\\\\n\\\\\`\\\\\`\\\\\`\\\\n\\\\n\#\# Utilisation\\\\n\\\\nPour utiliser cet adaptateur d'interface :\\\\n\\\\n1. Déployer le workflow ${adapterName}\\\\n2. Configurer ${sourceWorkflow} pour envoyer ses données à l'URL de webhook de l'adaptateur\\\\n3. Vérifier que ${targetWorkflow} est correctement configuré pour recevoir les données transformées\\\\n\\\\n\#\# Dépannage\\\\n\\\\nEn cas de problème :\\\\n\\\\n- Vérifier que tous les champs requis sont présents dans les données d'entrée\\\\n- S'assurer que les deux workflows sont actifs\\\\n- Consulter les logs d'exécution pour identifier les erreurs potentielles\\\\n\`;\\n\\n// Fonction pour générer un exemple de requête\\nfunction generateExampleRequest(spec) {\\n  const example \= {};\\n  const requiredFields \= spec.requiredFields || \['data'\];\\n  \\n  requiredFields.forEach(field \=\> {\\n    example\[field\] \= field \=== 'data' ? { example: 'value' } : \`example\_${field}\`;\\n  });\\n  \\n  return example;\\n}\\n\\n// Fonction pour générer un exemple de réponse\\nfunction generateExampleResponse() {\\n  return {\\n    success: true,\\n    source: sourceWorkflow,\\n    target: targetWorkflow,\\n    result: {\\n      status: 'success',\\n      message: 'Opération réussie',\\n      data: {\\n        id: '12345',\\n        timestamp: new Date().toISOString()\\n      }\\n    }\\n  };\\n}\\n\\nreturn {\\n  json: {\\n    sourceWorkflow,\\n    targetWorkflow,\\n    adapterName\\n  },\\n  binary: {\\n    data: {\\n      mimeType: 'text/markdown',\\n      data: Buffer.from(markdownContent).toString('base64'),\\n      fileName: \`interface\_guide\_${sourceWorkflow}\_to\_${targetWorkflow}.md\`\\n    }\\n  }\\n};"  
+
       "name": "Générer Guide Interface",  
       "position": \[700, 500\]  
         "path": "guides/interfaces/interface\_guide\_{{$json.sourceWorkflow}}\_to\_{{$json.targetWorkflow}}.md",  
@@ -970,7 +994,7 @@ LÉGENDE:
           "item": [  
               "mode": "manual"  
             }  
-```
+```plaintext
           \]  
       },  
       "name": "Déclencheur Manuel",  
@@ -1009,6 +1033,7 @@ LÉGENDE:
       "type": "n8n-nodes-base.writeBinaryFile",  
       "position": \[900, 200\]  
         "functionCode": "// Générer un guide de configuration des alertes\\nconst alertName \= $input.item.json.alertName;\\nconst config \= $input.item.json.config;\\n\\n// Créer le contenu Markdown\\nlet markdownContent \= \`\# Guide de Configuration d'Alerte : ${alertName}\\n\\n\#\# Vue d'ensemble\\n\\nCe document décrit la configuration de l'alerte \\"${alertName}\\" et explique comment la personnaliser.\\n\\n\#\# Configuration Actuelle\\n\\n\\\\\`\\\\\`\\\\\`json\\n${JSON.stringify(config, null, 2)}\\n\\\\\`\\\\\`\\\\\`\\n\\n\#\# Paramètres\\n\\n| Paramètre | Description | Valeur Actuelle |\\n|-----------|-------------|----------------|\\n| enabled | Active ou désactive l'alerte | ${config.enabled ? 'Activé' : 'Désactivé'} |\\n| severity | Niveau de sévérité de l'alerte | ${config.severity} |\\n| channels | Canaux de notification | ${config.channels.join(', ')} |\\n| recipients | Destinataires des notifications | ${config.recipients.length \> 0 ? config.recipients.join(', ') : 'Aucun'} |\\n| thresholds.critical | Seuil critique | ${config.thresholds.critical} |\\n| thresholds.warning | Seuil d'avertissement | ${config.thresholds.warning} |\\n| cooldownMinutes | Période de silence entre les alertes (minutes) | ${config.cooldownMinutes} |\\n\\n\#\# Personnalisation des Templates\\n\\n\#\#\# Sujet\\n\\n\\\\\`${config.template.subject}\\\\\`\\n\\n\#\#\# Corps\\n\\n\\\\\`\\\\\`\\\\\`\\n${config.template.body}\\n\\\\\`\\\\\`\\\\\`\\n\\n\#\# Variables Disponibles\\n\\nLes variables suivantes peuvent être utilisées dans les templates :\\n\\n- \\\\\`{{alertName}}\\\\\` \- Nom de l'alerte\\n- \\\\\`{{severity}}\\\\\` \- Niveau de sévérité\\n- \\\\\`{{details}}\\\\\` \- Détails de l'alerte\\n- \\\\\`{{timestamp}}\\\\\` \- Horodatage du déclenchement\\n- \\\\\`{{value}}\\\\\` \- Valeur qui a déclenché l'alerte (si applicable)\\n- \\\\\`{{threshold}}\\\\\` \- Seuil dépassé (si applicable)\\n\\n\#\# Exemple d'Utilisation\\n\\nPour déclencher cette alerte depuis un workflow :\\n\\n\\\\\`\\\\\`\\\\\`javascript\\n// Dans un nœud Function\\nreturn {\\n  json: {\\n    alertName: '${alertName}',\\n    severity: 'critical', // ou 'warning'\\n    details: 'Description du problème',\\n    value: 0.95, // valeur qui a déclenché l'alerte (si applicable)\\n    additionalData: {\\n      // Données supplémentaires spécifiques à l'alerte\\n    }\\n  }\\n};\\n\\\\\`\\\\\`\\\\\`\\n\\nPuis appeler le webhook de WF-MONITORING-ALERT-TRIGGER avec ces données.\\n\`;\\n\\nreturn {\\n  json: {\\n    alertName,\\n    markdownContent\\n  },\\n  binary: {\\n    data: {\\n      mimeType: 'text/markdown',\\n      data: Buffer.from(markdownContent).toString('base64'),\\n      fileName: \`alert\_guide\_${alertName}.md\`\\n    }\\n  }\\n};"  
+
       "name": "Générer Guide Alerte",  
       "position": \[900, 400\]  
         "path": "guides/alerts/alert\_guide\_{{$json.alertName}}.md",  
@@ -1130,7 +1155,7 @@ LÉGENDE:
               "field": "hours",  
               "hour": 6  
             }  
-```
+```plaintext
           \]  
       },  
       "name": "Déclencheur Cron",  
@@ -1185,6 +1210,7 @@ LÉGENDE:
   "name": "Agréger Métriques",  
   "position": \[1700, 200\]  
     "functionCode": "// Générer le HTML du tableau de bord\\nconst dashboardData \= $input.item.json.dashboardData;\\nconst config \= $node\['Sauvegarder Config'\].json.config;\\n\\n// Générer le HTML pour chaque dashboard\\nlet dashboardsHtml \= '';\\n\\nObject.entries(dashboardData).forEach((\[dashboardName, dashboard\]) \=\> {\\n  dashboardsHtml \+= \`\\n    \<div class=\\"dashboard\\" id=\\"${dashboardName}\\"\>\\n      \<h2\>${dashboard.title}\</h2\>\\n      \<p\>${dashboard.description}\</p\>\\n      \<div class=\\"metrics-container\\"\>\\n  \`;\\n  \\n  // Générer le HTML pour chaque métrique\\n  Object.entries(dashboard.metrics).forEach((\[metricName, metric\]) \=\> {\\n    dashboardsHtml \+= \`\\n        \<div class=\\"metric-card\\"\>\\n          \<h3\>${metric.title}\</h3\>\\n          \<div class=\\"metric-value\\"\>${formatValue(metric.aggregatedValue)}\</div\>\\n          \<div class=\\"metric-chart\\" id=\\"chart-${dashboardName}-${metricName}\\"\>\</div\>\\n        \</div\>\\n    \`;\\n  });\\n  \\n  dashboardsHtml \+= \`\\n      \</div\>\\n    \</div\>\\n  \`;\\n});\\n\\n// Générer le script pour les graphiques\\nlet chartsScript \= \`\\n\<script\>\\n  document.addEventListener('DOMContentLoaded', function() {\\n\`;\\n\\nObject.entries(dashboardData).forEach((\[dashboardName, dashboard\]) \=\> {\\n  Object.entries(dashboard.metrics).forEach((\[metricName, metric\]) \=\> {\\n    const chartData \= metric.timeSeriesData;\\n    const chartType \= metric.type;\\n    \\n    chartsScript \+= \`\\n    // Chart for ${metric.title}\\n    const ctx${dashboardName}${metricName} \= document.getElementById('chart-${dashboardName}-${metricName}').getContext('2d');\\n    new Chart(ctx${dashboardName}${metricName}, {\\n      type: '${chartType}',\\n      data: {\\n        labels: \[${chartData.map(d \=\> \`'${d.date}'\`).join(', ')}\],\\n        datasets: \[{\\n          label: '${metric.title}',\\n          data: \[${chartData.map(d \=\> d.value).join(', ')}\],\\n          backgroundColor: '${getChartColor(metricName, 0.2)}',\\n          borderColor: '${getChartColor(metricName, 1)}',\\n          borderWidth: 1\\n        }\]\\n      },\\n      options: {\\n        responsive: true,\\n        scales: {\\n          y: {\\n            beginAtZero: true\\n          }\\n        }\\n      }\\n    });\\n    \`;\\n  });\\n});\\n\\nchartsScript \+= \`\\n  });\\n\</script\>\\n\`;\\n\\n// Générer le HTML complet\\nconst html \= \`\\n\<\!DOCTYPE html\>\\n\<html lang=\\"fr\\"\>\\n\<head\>\\n  \<meta charset=\\"UTF-8\\"\>\\n  \<meta name=\\"viewport\\" content=\\"width=device-width, initial-scale=1.0\\"\>\\n  \<title\>Tableaux de Bord \- Plan Magistral V5\</title\>\\n  \<script src=\\"https://cdn.jsdelivr.net/npm/chart.js\\"\>\</script\>\\n  \<style\>\\n    body {\\n      font-family: Arial, sans-serif;\\n      margin: 0;\\n      padding: 20px;\\n      background-color: ${config.settings.theme \=== 'dark' ? '\#1e1e1e' : '\#f5f5f5'};\\n      color: ${config.settings.theme \=== 'dark' ? '\#ffffff' : '\#333333'};\\n    }\\n    .dashboard {\\n      background-color: ${config.settings.theme \=== 'dark' ? '\#2d2d2d' : '\#ffffff'};\\n      border-radius: 8px;\\n      padding: 20px;\\n      margin-bottom: 30px;\\n      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);\\n    }\\n    h2 {\\n      margin-top: 0;\\n      border-bottom: 1px solid ${config.settings.theme \=== 'dark' ? '\#444' : '\#eee'};\\n      padding-bottom: 10px;\\n    }\\n    .metrics-container {\\n      display: grid;\\n      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));\\n      gap: 20px;\\n      margin-top: 20px;\\n    }\\n    .metric-card {\\n      background-color: ${config.settings.theme \=== 'dark' ? '\#3d3d3d' : '\#f9f9f9'};\\n      border-radius: 6px;\\n      padding: 15px;\\n      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);\\n    }\\n    .metric-value {\\n      font-size: 24px;\\n      font-weight: bold;\\n      margin: 10px 0;\\n      color: \#4a90e2;\\n    }\\n    .metric-chart {\\n      height: 200px;\\n      margin-top: 15px;\\n    }\\n    .header {\\n      display: flex;\\n      justify-content: space-between;\\n      align-items: center;\\n      margin-bottom: 20px;\\n    }\\n    .export-buttons {\\n      display: flex;\\n      gap: 10px;\\n    }\\n    .export-button {\\n      padding: 8px 12px;\\n      background-color: \#4a90e2;\\n      color: white;\\n      border: none;\\n      border-radius: 4px;\\n      cursor: pointer;\\n    }\\n    .export-button:hover {\\n      background-color: \#3a80d2;\\n    }\\n    .last-updated {\\n      font-size: 12px;\\n      color: ${config.settings.theme \=== 'dark' ? '\#aaa' : '\#888'};\\n      text-align: right;\\n      margin-top: 5px;\\n    }\\n  \</style\>\\n\</head\>\\n\<body\>\\n  \<div class=\\"header\\"\>\\n    \<h1\>Tableaux de Bord \- Plan Magistral V5\</h1\>\\n    \<div class=\\"export-buttons\\"\>\\n      ${config.settings.exportFormats.includes('csv') ? '\<button class=\\"export-button\\" onclick=\\"exportCSV()\\"\>Exporter CSV\</button\>' : ''}\\n      ${config.settings.exportFormats.includes('json') ? '\<button class=\\"export-button\\" onclick=\\"exportJSON()\\"\>Exporter JSON\</button\>' : ''}\\n    \</div\>\\n  \</div\>\\n  \\n  ${dashboardsHtml}\\n  \\n  \<div class=\\"last-updated\\"\>\\n    Dernière mise à jour: ${new Date().toLocaleString('fr-FR')}\\n  \</div\>\\n  \\n  ${chartsScript}\\n  \\n  \<script\>\\n    // Export functions\\n    function exportCSV() {\\n      const dashboardData \= ${JSON.stringify(dashboardData)};\\n      let csv \= 'Dashboard,Metric,Date,Value\\\\n';\\n      \\n      Object.entries(dashboardData).forEach((\[dashboardName, dashboard\]) \=\> {\\n        Object.entries(dashboard.metrics).forEach((\[metricName, metric\]) \=\> {\\n          metric.timeSeriesData.forEach(point \=\> {\\n            csv \+= \`\\"${dashboard.title}\\",\\"${metric.title}\\",\\"${point.date}\\",${point.value}\\\\n\`;\\n          });\\n        });\\n      });\\n      \\n      downloadFile(csv, 'dashboard\_data.csv', 'text/csv');\\n    }\\n    \\n    function exportJSON() {\\n      const dashboardData \= ${JSON.stringify(dashboardData)};\\n      downloadFile(JSON.stringify(dashboardData, null, 2), 'dashboard\_data.json', 'application/json');\\n    }\\n    \\n    function downloadFile(content, fileName, contentType) {\\n      const a \= document.createElement('a');\\n      const file \= new Blob(\[content\], {type: contentType});\\n      a.href \= URL.createObjectURL(file);\\n      a.download \= fileName;\\n      a.click();\\n    }\\n  \</script\>\\n\</body\>\\n\</html\>\\n\`;\\n\\n// Fonctions utilitaires\\nfunction formatValue(value) {\\n  if (typeof value \=== 'number') {\\n    return value.toLocaleString('fr-FR', { maximumFractionDigits: 2 });\\n  }\\n  return value;\\n}\\n\\nfunction getChartColor(metricName, alpha) {\\n  // Générer une couleur basée sur le nom de la métrique\\n  const hash \= metricName.split('').reduce((acc, char) \=\> {\\n    return char.charCodeAt(0) \+ ((acc \<\< 5\) \- acc);\\n  }, 0);\\n  \\n  const h \= Math.abs(hash) % 360;\\n  return \`hsla(${h}, 70%, 60%, ${alpha})\`;\\n}\\n\\nreturn {\\n  json: {\\n    dashboardData\\n  },\\n  binary: {\\n    dashboard: {\\n      mimeType: 'text/html',\\n      data: Buffer.from(html).toString('base64'),\\n      fileName: 'dashboard.html'\\n    }\\n  }\\n};"  
+
   "name": "Générer Dashboard HTML",  
   "position": \[1900, 200\]  
     "path": "dashboards/dashboard.html",  
@@ -1221,7 +1247,7 @@ LÉGENDE:
               "operation": "equal",  
               "value2": "recover"  
             }  
-```
+```plaintext
           \]  
       "name": "Action?",  
       "type": "n8n-nodes-base.if",  

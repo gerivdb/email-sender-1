@@ -20,9 +20,11 @@ Le MCP Gateway (centralmind/gateway) est un serveur MCP (Model Context Protocol)
 2. Définissez la variable d'environnement pour autoriser l'utilisation des outils :
    ```bash
    # Windows (PowerShell)
+
    $env:N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE = "true"
    
    # Linux/macOS
+
    export N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
    ```
 
@@ -104,8 +106,7 @@ Le MCP Gateway offre de nombreuses fonctionnalités :
     "offset": 0
   }
 }
-```
-
+```plaintext
 ### Recherche avec filtres
 
 ```json
@@ -117,8 +118,7 @@ Le MCP Gateway offre de nombreuses fonctionnalités :
     "date_to": "2025-04-01"
   }
 }
-```
-
+```plaintext
 ## Dépannage
 
 Si vous rencontrez des problèmes :

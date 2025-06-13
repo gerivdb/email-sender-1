@@ -91,9 +91,11 @@ Avant d'évaluer la stratégie de partitionnement, il est important de comprendr
 ### Approche 1 : Fichier JSON unique pour tous les index
 
 #### Description
+
 Tous les index (ID, Type, Source, ProcessingState) sont stockés dans un seul fichier JSON.
 
 #### Exemple de structure
+
 ```json
 {
   "Indexes": {
@@ -126,14 +128,15 @@ Tous les index (ID, Type, Source, ProcessingState) sont stockés dans un seul fi
     "CollectionId": "12345"
   }
 }
-```
-
+```plaintext
 #### Avantages
+
 - **Simplicité** : Un seul fichier à gérer, à sauvegarder et à restaurer.
 - **Cohérence** : Garantie de cohérence entre les différents index.
 - **Atomicité** : Opérations atomiques de sauvegarde et de restauration.
 
 #### Inconvénients
+
 - **Performance** : Chargement complet nécessaire même pour accéder à un seul type d'index.
 - **Mémoire** : Consommation de mémoire élevée lors du chargement.
 - **Concurrence** : Risque de contention si plusieurs processus accèdent au même fichier.
@@ -142,18 +145,19 @@ Tous les index (ID, Type, Source, ProcessingState) sont stockés dans un seul fi
 ### Approche 2 : Fichiers JSON séparés pour chaque type d'index
 
 #### Description
+
 Chaque type d'index (ID, Type, Source, ProcessingState) est stocké dans un fichier JSON distinct.
 
 #### Exemple de structure
-```
+
+```plaintext
 Backup_20230515_123456/
 ├── metadata.json
 ├── index_id.json
 ├── index_type.json
 ├── index_source.json
 └── index_processingstate.json
-```
-
+```plaintext
 Contenu de `metadata.json` :
 ```json
 {
@@ -168,8 +172,7 @@ Contenu de `metadata.json` :
     "ProcessingState": "index_processingstate.json"
   }
 }
-```
-
+```plaintext
 Contenu de `index_id.json` :
 ```json
 {
@@ -177,8 +180,7 @@ Contenu de `index_id.json` :
   "ID2": { /* ... */ },
   "ID3": { /* ... */ }
 }
-```
-
+```plaintext
 Contenu de `index_type.json` :
 ```json
 {
@@ -186,11 +188,11 @@ Contenu de `index_type.json` :
   "StructuredDataExtractedInfo": ["ID2", "ID6"],
   "MediaExtractedInfo": ["ID4"]
 }
-```
-
+```plaintext
 Et ainsi de suite pour les autres fichiers d'index.
 
 #### Avantages
+
 - **Chargement sélectif** : Possibilité de charger uniquement les index nécessaires.
 - **Performance** : Meilleure performance pour les opérations ciblées sur un type d'index spécifique.
 - **Mémoire** : Consommation de mémoire réduite lors du chargement partiel.
@@ -198,6 +200,7 @@ Et ainsi de suite pour les autres fichiers d'index.
 - **Évolutivité** : Facilité d'ajout de nouveaux types d'index sans modifier la structure existante.
 
 #### Inconvénients
+
 - **Complexité** : Gestion plus complexe de plusieurs fichiers.
 - **Cohérence** : Risque d'incohérence entre les différents fichiers d'index.
 - **Atomicité** : Opérations de sauvegarde et de restauration non atomiques.
@@ -206,17 +209,18 @@ Et ainsi de suite pour les autres fichiers d'index.
 ### Approche 3 : Fichier principal + fichiers secondaires
 
 #### Description
+
 Un fichier principal contient les métadonnées et l'index ID, tandis que des fichiers secondaires contiennent les autres index (Type, Source, ProcessingState).
 
 #### Exemple de structure
-```
+
+```plaintext
 Backup_20230515_123456/
 ├── main.json
 ├── index_type.json
 ├── index_source.json
 └── index_processingstate.json
-```
-
+```plaintext
 Contenu de `main.json` :
 ```json
 {
@@ -239,15 +243,16 @@ Contenu de `main.json` :
     }
   }
 }
-```
-
+```plaintext
 #### Avantages
+
 - **Équilibre** : Bon équilibre entre simplicité et performance.
 - **Accès direct** : Accès direct aux éléments par ID sans chargement supplémentaire.
 - **Chargement sélectif** : Possibilité de charger sélectivement les index secondaires.
 - **Cohérence** : Meilleure garantie de cohérence avec un fichier principal.
 
 #### Inconvénients
+
 - **Redondance** : L'index ID étant généralement le plus volumineux, le fichier principal reste volumineux.
 - **Complexité modérée** : Gestion de plusieurs fichiers, mais avec une structure claire.
 - **Atomicité partielle** : Opérations atomiques pour le fichier principal, mais pas pour l'ensemble.
@@ -340,14 +345,17 @@ Pour le mécanisme de sauvegarde des index existants du module ExtractedInfoModu
 
 ### Structure de fichiers recommandée
 
-```
+```plaintext
 Backup_<timestamp>/
 ├── main.json           # Métadonnées + Index ID
-├── index_type.json     # Index Type
-├── index_source.json   # Index Source
-└── index_state.json    # Index ProcessingState
-```
 
+├── index_type.json     # Index Type
+
+├── index_source.json   # Index Source
+
+└── index_state.json    # Index ProcessingState
+
+```plaintext
 ### Exemple d'implémentation
 
 ```powershell
@@ -369,11 +377,13 @@ function Backup-CollectionIndexesToJson {
     )
     
     # Générer un ID de sauvegarde si non spécifié
+
     if ([string]::IsNullOrEmpty($BackupId)) {
         $BackupId = "Backup_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
     }
     
     # Déterminer le chemin de sauvegarde
+
     if ([string]::IsNullOrEmpty($BackupPath)) {
         $BackupPath = Join-Path $env:TEMP "ExtractedInfoBackups"
     }
@@ -381,17 +391,20 @@ function Backup-CollectionIndexesToJson {
     $backupDir = Join-Path $BackupPath $BackupId
     
     # Créer le répertoire de sauvegarde s'il n'existe pas
+
     if (-not (Test-Path $backupDir)) {
         New-Item -Path $backupDir -ItemType Directory -Force | Out-Null
     }
     
     # Préparer les chemins de fichiers
+
     $mainFilePath = Join-Path $backupDir "main.json"
     $typeFilePath = Join-Path $backupDir "index_type.json"
     $sourceFilePath = Join-Path $backupDir "index_source.json"
     $stateFilePath = Join-Path $backupDir "index_state.json"
     
     # Préparer l'objet principal
+
     $mainObject = @{
         Metadata = @{
             BackupId = $BackupId
@@ -410,6 +423,7 @@ function Backup-CollectionIndexesToJson {
     }
     
     # Sauvegarder le fichier principal
+
     try {
         $mainObject | ConvertTo-Json -Depth 10 | Set-Content -Path $mainFilePath -Encoding UTF8
         
@@ -423,6 +437,7 @@ function Backup-CollectionIndexesToJson {
     }
     
     # Sauvegarder l'index Type
+
     try {
         if ($Collection.Indexes.ContainsKey("Type")) {
             $Collection.Indexes.Type | ConvertTo-Json -Depth 5 | Set-Content -Path $typeFilePath -Encoding UTF8
@@ -437,6 +452,7 @@ function Backup-CollectionIndexesToJson {
     }
     
     # Sauvegarder l'index Source
+
     try {
         if ($Collection.Indexes.ContainsKey("Source")) {
             $Collection.Indexes.Source | ConvertTo-Json -Depth 5 | Set-Content -Path $sourceFilePath -Encoding UTF8
@@ -451,6 +467,7 @@ function Backup-CollectionIndexesToJson {
     }
     
     # Sauvegarder l'index ProcessingState
+
     try {
         if ($Collection.Indexes.ContainsKey("ProcessingState")) {
             $Collection.Indexes.ProcessingState | ConvertTo-Json -Depth 5 | Set-Content -Path $stateFilePath -Encoding UTF8
@@ -499,15 +516,18 @@ function Restore-CollectionIndexesFromJson {
     )
     
     # Vérifier si le chemin de sauvegarde existe
+
     if (-not (Test-Path $BackupPath)) {
         Write-Host "Le chemin de sauvegarde n'existe pas : $BackupPath" -ForegroundColor Red
         return $null
     }
     
     # Déterminer si le chemin est un fichier ou un répertoire
+
     $isDirectory = (Get-Item $BackupPath) -is [System.IO.DirectoryInfo]
     
     # Déterminer le chemin du fichier principal
+
     $mainFilePath = if ($isDirectory) {
         Join-Path $BackupPath "main.json"
     } else {
@@ -515,12 +535,14 @@ function Restore-CollectionIndexesFromJson {
     }
     
     # Vérifier si le fichier principal existe
+
     if (-not (Test-Path $mainFilePath)) {
         Write-Host "Le fichier principal n'existe pas : $mainFilePath" -ForegroundColor Red
         return $null
     }
     
     # Charger le fichier principal
+
     try {
         $mainObject = Get-Content -Path $mainFilePath -Encoding UTF8 | ConvertFrom-Json
         
@@ -534,11 +556,13 @@ function Restore-CollectionIndexesFromJson {
     }
     
     # Initialiser l'objet de restauration
+
     $restoredIndexes = @{
         ID = [PSCustomObject]$mainObject.Indexes.ID | ConvertTo-HashTable
     }
     
     # Déterminer le répertoire de base
+
     $baseDir = if ($isDirectory) {
         $BackupPath
     } else {
@@ -546,6 +570,7 @@ function Restore-CollectionIndexesFromJson {
     }
     
     # Charger l'index Type si demandé
+
     if ($LoadTypeIndex -and $mainObject.Metadata.IndexFiles.Type) {
         $typeFilePath = Join-Path $baseDir $mainObject.Metadata.IndexFiles.Type
         
@@ -568,6 +593,7 @@ function Restore-CollectionIndexesFromJson {
     }
     
     # Charger l'index Source si demandé
+
     if ($LoadSourceIndex -and $mainObject.Metadata.IndexFiles.Source) {
         $sourceFilePath = Join-Path $baseDir $mainObject.Metadata.IndexFiles.Source
         
@@ -590,6 +616,7 @@ function Restore-CollectionIndexesFromJson {
     }
     
     # Charger l'index ProcessingState si demandé
+
     if ($LoadStateIndex -and $mainObject.Metadata.IndexFiles.ProcessingState) {
         $stateFilePath = Join-Path $baseDir $mainObject.Metadata.IndexFiles.ProcessingState
         
@@ -612,6 +639,7 @@ function Restore-CollectionIndexesFromJson {
     }
     
     # Créer l'objet de sauvegarde
+
     $backup = @{
         BackupId = $mainObject.Metadata.BackupId
         Timestamp = [datetime]::Parse($mainObject.Metadata.Timestamp)
@@ -629,6 +657,7 @@ function Restore-CollectionIndexesFromJson {
 }
 
 # Fonction utilitaire pour convertir un PSCustomObject en HashTable
+
 function ConvertTo-HashTable {
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -659,8 +688,7 @@ function ConvertTo-HashTable {
         return $InputObject
     }
 }
-```
-
+```plaintext
 ## Conclusion
 
 L'évaluation de la séparation des index ID, Type, Source et ProcessingState dans les fichiers JSON a permis d'identifier trois approches principales : fichier unique, fichiers séparés, et fichier principal + fichiers secondaires.

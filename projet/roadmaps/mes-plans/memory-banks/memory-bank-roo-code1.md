@@ -12,7 +12,7 @@ Ce rapport analyse en détail cette implémentation, ses composants clés, son a
 
 Le Memory Bank de Roo Code est composé de plusieurs composants interconnectés qui fonctionnent ensemble pour maintenir le contexte du projet :
 
-```
+```plaintext
 +------------------+
 |                  |
 | Memory Bank      |
@@ -36,13 +36,12 @@ Le Memory Bank de Roo Code est composé de plusieurs composants interconnectés 
 |                  |  Mode Test       | Accès aux Outils|  Gestionnaire   |
 |                  |                  |                  |  de Synchro     |
 +------------------+------------------+------------------+------------------+
-```
-
+```plaintext
 ### 2.2 Structure du Memory Bank
 
 Le Memory Bank est organisé autour d'un répertoire `memory-bank/` contenant plusieurs fichiers clés :
 
-```
+```plaintext
 +------------------+
 |                  |
 | memory-bank/     |
@@ -64,8 +63,7 @@ Le Memory Bank est organisé autour d'un répertoire `memory-bank/` contenant pl
 |Questions ouvertes|Standards tech.   |Étapes suivantes  |Choix            |
 |Contexte session |Dépendances clés |Problèmes connus  |d'architecture   |
 +------------------+------------------+------------------+------------------+
-```
-
+```plaintext
 #### Fichiers Principaux
 
 1. **activeContext.md**
@@ -92,15 +90,14 @@ Le Memory Bank est organisé autour d'un répertoire `memory-bank/` contenant pl
 
 Le Memory Bank de Roo Code utilise un système de modes spécialisés pour différentes phases du développement :
 
-```
+```plaintext
 +---------------+     +---------------+     +---------------+     +---------------+     +---------------+
 |               |     |               |     |               |     |               |     |               |
 |   ARCHITECT   | --> |     CODE      | --> |      ASK      | --> |     DEBUG     | --> |     TEST      |
 |  Conception   |     |Implémentation |     | Information   |     | Résolution    |     |  Validation   |
 |               |     |               |     |               |     | de problèmes  |     |               |
 +---------------+     +---------------+     +---------------+     +---------------+     +---------------+
-```
-
+```plaintext
 #### Types de Modes
 
 1. **Mode Architect**
@@ -132,7 +129,7 @@ Le Memory Bank de Roo Code utilise un système de modes spécialisés pour diff�
 
 Le système prend en charge le changement de mode intelligent basé sur l'analyse des prompts et les besoins opérationnels :
 
-```
+```plaintext
 +---------------+
 |               |
 |   ARCHITECT   |
@@ -170,15 +167,14 @@ Le système prend en charge le changement de mode intelligent basé sur l'analys
 |     TEST      | -+--------+
 |               |
 +---------------+
-```
-
+```plaintext
 ## 3. Fonctionnement et Flux de Travail
 
 ### 3.1 Système de Mise à Jour en Temps Réel
 
 Le Memory Bank de Roo Code utilise un système de mise à jour en temps réel pour maintenir la cohérence du contexte :
 
-```
+```plaintext
 +------------------+
 |                  |
 | Événement Projet |
@@ -224,8 +220,7 @@ Le Memory Bank de Roo Code utilise un système de mise à jour en temps réel po
 |  de Cohérence    |
 |                  |
 +--------+---------+
-```
-
+```plaintext
 ### 3.2 Initialisation du Memory Bank
 
 Le processus d'initialisation du Memory Bank est largement automatique :
@@ -238,7 +233,7 @@ Le processus d'initialisation du Memory Bank est largement automatique :
 
 ### 3.3 Flux de Travail de Session
 
-```
+```plaintext
 +------------------+
 |                  |
 | Début de Session |
@@ -292,8 +287,7 @@ Le processus d'initialisation du Memory Bank est largement automatique :
 | (UMB)            |
 |                  |
 +--------+---------+
-```
-
+```plaintext
 1. **Début de Session**
    - Le système lit tous les fichiers du Memory Bank
    - Construction d'un contexte complet
@@ -343,7 +337,7 @@ Le Memory Bank offre une gestion des connaissances structurée avec :
 
 L'organisation des fichiers du Memory Bank de Roo Code est la suivante :
 
-```
+```plaintext
 racine-projet/
 ├── .clinerules-architect
 ├── .clinerules-code
@@ -356,8 +350,7 @@ racine-projet/
 │   ├── progress.md
 │   └── decisionLog.md
 └── projectBrief.md
-```
-
+```plaintext
 ### 5.2 Installation et Configuration
 
 Le Memory Bank de Roo Code peut être installé via des scripts d'installation fournis :

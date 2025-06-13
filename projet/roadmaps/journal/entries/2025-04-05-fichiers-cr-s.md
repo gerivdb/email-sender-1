@@ -6,6 +6,7 @@ related: []
 ---
 
 ## Fichiers créés
+
 - `development/scripts/maintenance/watch-and-organize.ps1` - Surveillance en temps réel des nouveaux fichiers
 - `development/scripts/maintenance/auto-organize.ps1` - Organisation interactive des fichiers
 - `development/scripts/maintenance/auto-organize-silent.ps1` - Organisation silencieuse pour les tâches planifiées
@@ -14,3 +15,4 @@ related: []
 - `projet/guides/GUIDE_DOSSIER_N8N.md` - Documentation détaillée sur le dossier .n8n
 
 #
+

@@ -1,11 +1,12 @@
 # Prompt de référence pour Augment
+
 *Version 1.1 - 2025-05-14*
 
 Ce document présente un exemple de prompt idéal pour Augment/Claude, servant de référence pour la formulation de requêtes optimales. Ce format est conçu pour maximiser l'efficacité et minimiser les erreurs d'interprétation, en s'inspirant des meilleures pratiques professionnelles de développement assisté par IA.
 
 ## Structure du prompt de référence
 
-```
+```plaintext
 MODE: DEVR
 
 TÂCHE: Implémenter un module de prédiction par régression linéaire simple
@@ -16,6 +17,7 @@ CONTEXTE:
 @projet/tasks/task_123_regression_lineaire.md
 
 # Informations supplémentaires
+
 - Module: development/scripts/monitoring/SimpleLinearRegression.psm1 (à créer)
 - Dépendances: Aucune externe, utilisation des fonctionnalités PowerShell standard
 - Contraintes: Compatible PowerShell 5.1+, pas de dépendances externes
@@ -97,8 +99,7 @@ APPROCHE RECOMMANDÉE:
 5. Ajouter la gestion des erreurs
 6. Créer les tests unitaires
 7. Finaliser la documentation
-```
-
+```plaintext
 ## Analyse des éléments clés
 
 ### 1. Spécification du mode
@@ -151,7 +152,7 @@ L'utilisation d'un PRD (Product Requirements Document) comme source de vérité 
 
 ### Exemple de prompt pour générer un PRD
 
-```
+```plaintext
 MODE: ARCHI
 
 TÂCHE: Générer un PRD pour le module de prédiction par régression linéaire
@@ -172,11 +173,10 @@ Générer un PRD structuré en Markdown avec les sections suivantes:
 
 Le PRD doit être suffisamment détaillé pour servir de base à la décomposition en tâches
 et à l'implémentation, tout en restant concis (max 2-3 pages).
-```
-
+```plaintext
 ### Exemple de prompt pour décomposer un PRD en tâches
 
-```
+```plaintext
 MODE: GRAN
 
 TÂCHE: Décomposer le PRD du module de prédiction en tâches gérables
@@ -196,14 +196,14 @@ Analyser ce PRD et créer une liste de tâches avec:
 
 Organiser les tâches en groupes logiques et identifier le chemin critique.
 Chaque tâche doit représenter environ 2-4 heures de travail.
-```
-
+```plaintext
 ## Adaptations selon les modes
 
 Ce format peut être adapté pour d'autres modes:
 
 ### Mode GRAN
-```
+
+```plaintext
 MODE: GRAN
 
 TÂCHE: Décomposer la fonctionnalité de prédiction en sous-tâches gérables
@@ -213,6 +213,7 @@ CONTEXTE:
 @projet/roadmaps/plans/plan-dev-v13.md
 
 # Informations supplémentaires
+
 - Fonctionnalité: Système de prédiction de charge
 - Complexité estimée: Élevée (40-60h)
 - Niveau de granularité souhaité: Tâches de 2-4h maximum
@@ -220,10 +221,10 @@ CONTEXTE:
 
 SPÉCIFICATIONS:
 [...]
-```
-
+```plaintext
 ### Mode DEBUG
-```
+
+```plaintext
 MODE: DEBUG
 
 TÂCHE: Corriger les erreurs dans le calcul du R² négatif
@@ -234,14 +235,14 @@ CONTEXTE:
 @projet/tasks/task_124_debug_r2.md
 
 # Informations supplémentaires
+
 - Fonction: New-SimpleLinearModel
 - Symptôme: R² négatif avec certaines données
 - Lignes concernées: 120-135
 
 SPÉCIFICATIONS:
 [...]
-```
-
+```plaintext
 ## Conclusion
 
 Ce format de prompt représente un équilibre optimal entre:

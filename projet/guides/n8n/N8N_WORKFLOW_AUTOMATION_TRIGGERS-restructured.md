@@ -3,20 +3,35 @@
 ## Table des matières
 
 1. [Automatisation de Workflow et Déclencheurs dans n8n](#section-1)
+
     1.1. [Déclencheur Cron (Planification)](#section-2)
+
         1.1.1. [Exemple : Exécution quotidienne à 9h00 et 17h00](#section-3)
+
     1.2. [Déclencheur Email (IMAP)](#section-4)
+
         1.2.1. [Exemple (avec des valeurs génériques)](#section-5)
+
     1.3. [Déclencheur Manuel](#section-6)
+
         1.3.1. [Exemple](#section-7)
+
     1.4. [Déclencheur de Workflow (Execute Workflow)](#section-8)
+
         1.4.1. [Exemple : Nœud Execute Workflow qui appelle un sous-workflow par ID et attend le résultat](#section-9)
+
     1.5. [Hooks Externes (n8n Trigger)](#section-10)
+
     1.6. [Autres Déclencheurs Spécialisés](#section-11)
+
         1.6.1. [Déclencheurs de Webhook](#section-12)
+
         1.6.2. [Déclencheurs de Base de Données](#section-13)
+
         1.6.3. [Déclencheurs de Services Cloud](#section-14)
+
         1.6.4. [Déclencheurs de Médias Sociaux](#section-15)
+
     1.7. [Bonnes Pratiques pour les Déclencheurs](#section-16)
 
 ## 1. Automatisation de Workflow et Déclencheurs dans n8n <a name='section-1'></a>
@@ -41,8 +56,7 @@ Le nœud Cron (également appelé Schedule Trigger) démarre les workflows selon
         { "hour": 17, "minute": 0 }
       ]
     }
-```
-
+```plaintext
 **Explication :** Cette configuration définit deux heures de déclenchement (Cron gère les deux). Le premier objet est 9h00, le second est 17h00 (5 PM). Par défaut, si vous spécifiez uniquement l'heure/minute, il s'exécute tous les jours à cette heure.
 
 Vous pouvez ajouter `"weekday": ["Monday","Tuesday",...]` ou `"dayOfMonth": [...]` pour affiner la planification.
@@ -77,8 +91,7 @@ Le nœud Email Trigger surveille une boîte de réception IMAP pour les nouveaux
   "credentials": {
     "imap": {
       "name": "My Email Account"
-```
-
+```plaintext
 **Explication :** Ce nœud vérifie la boîte de réception (INBOX) du compte email configuré pour les messages non lus et les marque comme lus (`postProcessAction: "read"`). Pour chaque nouvel email, il déclenche le workflow avec le contenu de l'email.
 
 Utilisez ce déclencheur pour des automatisations comme l'analyse des emails de support entrants ou les notifications de prospects. Vous pouvez le combiner avec un nœud IF pour filtrer les emails par sujet, etc., puis les acheminer (par exemple, créer des tickets, envoyer des alertes, etc.).
@@ -96,8 +109,7 @@ Le déclencheur Manuel est simplement un nœud pour démarrer le workflow en cli
   "typeVersion": 1,
   "parameters": {}
 }
-```
-
+```plaintext
 **Explication :** Vous n'incluriez généralement pas ce nœud dans un JSON de workflow exporté si vous prévoyez de l'exécuter automatiquement, mais il est utile pendant le développement. Il produit un élément vide pour démarrer le flux.
 
 ### 1.4. Déclencheur de Workflow (Execute Workflow) <a name='section-8'></a>
@@ -121,8 +133,7 @@ Dans le sous-workflow qui est appelé, vous utilisez un nœud Workflow Trigger p
     "inputs": {
       "inputData": "={{ $json[\"data\"] }}"
     }
-```
-
+```plaintext
 **Explication :** Ce nœud exécutera le workflow avec l'ID 123 (vous pouvez trouver l'ID d'un workflow dans son URL ou sa liste). Il transmet un champ d'entrée `inputData` au sous-workflow (le nœud Workflow Trigger du sous-workflow doit être configuré pour accepter ce champ).
 
 Si `waitForCompletion` est `true`, le workflow parent se met en pause jusqu'à ce que le sous-workflow se termine, puis reprend avec la sortie que le sous-workflow a retournée. Si `false`, il déclenche l'autre workflow et continue immédiatement (mode fire-and-forget).

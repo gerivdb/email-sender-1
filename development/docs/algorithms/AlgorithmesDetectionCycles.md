@@ -9,6 +9,7 @@ Ce document présente une analyse comparative des différents algorithmes de dé
 ### 1. Algorithme de recherche en profondeur (DFS - Depth-First Search)
 
 #### Principe
+
 L'algorithme DFS explore un graphe en profondeur d'abord, en suivant chaque chemin jusqu'à sa fin avant de revenir en arrière (backtracking). Pour détecter les cycles, on maintient deux ensembles :
 - Un ensemble des nœuds visités
 - Un ensemble des nœuds actuellement dans la pile de récursion
@@ -16,7 +17,8 @@ L'algorithme DFS explore un graphe en profondeur d'abord, en suivant chaque chem
 Si un nœud déjà présent dans la pile de récursion est rencontré, alors un cycle est détecté.
 
 #### Pseudocode
-```
+
+```plaintext
 function DFS_CycleDetection(graph):
     visited = set()
     recursion_stack = set()
@@ -25,6 +27,7 @@ function DFS_CycleDetection(graph):
         if node not in visited:
             if DFS_Visit(node, visited, recursion_stack, graph):
                 return true  # Cycle détecté
+
     
     return false  # Pas de cycle
 
@@ -38,32 +41,37 @@ function DFS_Visit(node, visited, recursion_stack, graph):
                 return true
         else if neighbor in recursion_stack:
             return true  # Cycle détecté
+
     
     recursion_stack.remove(node)
     return false
-```
-
+```plaintext
 #### Avantages
+
 - **Efficacité** : Complexité O(V+E) où V est le nombre de nœuds et E le nombre d'arêtes
 - **Simplicité** : Facile à implémenter, surtout avec la récursion
 - **Détection précise** : Identifie exactement les nœuds impliqués dans le cycle
 
 #### Inconvénients
+
 - **Consommation de la pile** : Peut causer un débordement de pile pour les graphes très profonds
 - **Non-parallélisable** : Difficile à paralléliser en raison de sa nature récursive
 
 ### 2. Algorithme de recherche en largeur (BFS - Breadth-First Search)
 
 #### Principe
+
 L'algorithme BFS explore un graphe niveau par niveau. Pour détecter les cycles, on peut utiliser une variante qui maintient les distances depuis le nœud source. Si un nœud déjà visité est rencontré avec une distance inférieure à celle attendue, alors un cycle est détecté.
 
 #### Pseudocode
-```
+
+```plaintext
 function BFS_CycleDetection(graph):
     for each node in graph:
         if node not in visited:
             if BFS_Visit(node, graph):
                 return true  # Cycle détecté
+
     
     return false  # Pas de cycle
 
@@ -85,33 +93,41 @@ function BFS_Visit(start, graph):
                 queue.enqueue(neighbor)
             else if parent[node] != neighbor:
                 return true  # Cycle détecté
+
     
     return false
-```
-
+```plaintext
 #### Avantages
+
 - **Efficacité** : Complexité O(V+E)
 - **Consommation mémoire** : Utilise une file au lieu d'une pile de récursion
 - **Cycles courts** : Trouve d'abord les cycles les plus courts
 
 #### Inconvénients
+
 - **Complexité d'implémentation** : Plus complexe pour la détection de cycles
 - **Identification des cycles** : Plus difficile d'identifier tous les nœuds d'un cycle
 
 ### 3. Algorithme de Tarjan
 
 #### Principe
+
 L'algorithme de Tarjan est une variante optimisée du DFS qui permet de trouver les composantes fortement connexes (SCC) d'un graphe dirigé. Une composante fortement connexe contenant plus d'un nœud ou une boucle sur un nœud indique la présence d'un cycle.
 
 #### Pseudocode
-```
+
+```plaintext
 function Tarjan(graph):
     index = 0
     stack = empty stack
     indices = map()  # Indice de découverte
+
     lowlinks = map() # Plus petit indice accessible
+
     onStack = set()  # Nœuds actuellement dans la pile
+
     sccs = []        # Composantes fortement connexes
+
     
     for each node in graph:
         if node not in indices:
@@ -142,20 +158,22 @@ function StrongConnect(node, index, stack, indices, lowlinks, onStack, sccs, gra
             if w == node:
                 break
         sccs.add(scc)
-```
-
+```plaintext
 #### Avantages
+
 - **Efficacité** : Complexité O(V+E)
 - **Complet** : Trouve toutes les composantes fortement connexes en une passe
 - **Information riche** : Fournit plus d'informations sur la structure du graphe
 
 #### Inconvénients
+
 - **Complexité d'implémentation** : Plus difficile à implémenter et à comprendre
 - **Overhead mémoire** : Utilise plus de structures de données auxiliaires
 
 ### 4. Algorithme de détection de cycle par coloration
 
 #### Principe
+
 Cet algorithme utilise trois couleurs pour marquer les nœuds :
 - Blanc : Nœud non visité
 - Gris : Nœud en cours de visite (dans la pile de récursion)
@@ -164,19 +182,23 @@ Cet algorithme utilise trois couleurs pour marquer les nœuds :
 Si un nœud gris est rencontré pendant la visite, alors un cycle est détecté.
 
 #### Pseudocode
-```
+
+```plaintext
 function ColorCycleDetection(graph):
     colors = map()  # Tous les nœuds sont initialement blancs
+
     
     for each node in graph:
         if node not in colors:
             if DFS_Color(node, colors, graph):
                 return true  # Cycle détecté
+
     
     return false  # Pas de cycle
 
 function DFS_Color(node, colors, graph):
     colors[node] = "GRAY"  # En cours de visite
+
     
     for each neighbor in graph[node]:
         if neighbor not in colors:
@@ -184,17 +206,20 @@ function DFS_Color(node, colors, graph):
                 return true
         else if colors[neighbor] == "GRAY":
             return true  # Cycle détecté
+
     
     colors[node] = "BLACK"  # Complètement visité
-    return false
-```
 
+    return false
+```plaintext
 #### Avantages
+
 - **Clarté** : Facile à comprendre conceptuellement
 - **Efficacité** : Complexité O(V+E)
 - **Détection précise** : Identifie exactement où se trouve le cycle
 
 #### Inconvénients
+
 - **Similaire au DFS standard** : N'offre pas d'avantages significatifs par rapport au DFS avec ensemble de récursion
 
 ## Comparaison des algorithmes

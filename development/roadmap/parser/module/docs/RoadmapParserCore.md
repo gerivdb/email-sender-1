@@ -112,45 +112,52 @@ Le module permet de personnaliser son comportement via des fichiers de configura
 
 ```powershell
 # Charger une configuration personnalisÃ©e
+
 $config = Get-Configuration -ConfigFile "chemin/vers/config.json"
 
 # Fusionner avec la configuration par dÃ©faut
+
 $mergedConfig = Merge-Configuration -DefaultConfig (Get-DefaultConfiguration) -CustomConfig $config
 
 # Utiliser la configuration fusionnÃ©e
-ConvertFrom-MarkdownToRoadmap -FilePath "roadmap.md" -Configuration $mergedConfig
-```
 
+ConvertFrom-MarkdownToRoadmap -FilePath "roadmap.md" -Configuration $mergedConfig
+```plaintext
 ### Journalisation avancÃ©e
 
 Le systÃ¨me de journalisation peut Ãªtre configurÃ© pour diffÃ©rents besoins :
 
 ```powershell
 # DÃ©finir le niveau de journalisation
+
 Set-RoadmapLogLevel -Level "DEBUG"
 
 # DÃ©finir la destination des journaux
+
 Set-RoadmapLogDestination -Destination "File" -FilePath "logs/roadmap.log"
 
 # DÃ©finir le format des messages
-Set-RoadmapLogFormat -Format "[{0}] {1} - {2}" # Niveau, Timestamp, Message
-```
 
+Set-RoadmapLogFormat -Format "[{0}] {1} - {2}" # Niveau, Timestamp, Message
+
+```plaintext
 ### Utilisation des modes opÃ©rationnels
 
 Les modes opÃ©rationnels peuvent Ãªtre utilisÃ©s pour des tÃ¢ches spÃ©cifiques :
 
 ```powershell
 # Mode ARCHI - GÃ©nÃ©rer des diagrammes d'architecture
+
 Invoke-RoadmapArchitecture -FilePath "roadmap.md" -ProjectPath "project" -OutputPath "output" -DiagramType "C4"
 
 # Mode DEBUG - DÃ©boguer un script avec simulation de contexte
+
 Invoke-RoadmapDebug -FilePath "roadmap.md" -ProjectPath "project" -ScriptPath "script.ps1" -OutputPath "output" -SimulateContext $true -ContextFile "context.json"
 
 # Mode TEST - ExÃ©cuter des tests avec couverture de code
-Invoke-RoadmapTest -FilePath "roadmap.md" -ModulePath "module" -TestsPath "tests" -OutputPath "output" -CoverageThreshold 80 -IncludeCodeCoverage $true
-```
 
+Invoke-RoadmapTest -FilePath "roadmap.md" -ModulePath "module" -TestsPath "tests" -OutputPath "output" -CoverageThreshold 80 -IncludeCodeCoverage $true
+```plaintext
 ## Extension du module
 
 ### Ajout de nouvelles fonctions
@@ -165,6 +172,7 @@ Exemple de nouvelle fonction :
 
 ```powershell
 <#
+
 .SYNOPSIS
     Exemple de nouvelle fonction.
 
@@ -177,6 +185,7 @@ Exemple de nouvelle fonction :
 .EXAMPLE
     New-ExampleFunction -InputObject "test"
 #>
+
 function New-ExampleFunction {
     [CmdletBinding()]
     param(
@@ -185,13 +194,14 @@ function New-ExampleFunction {
     )
     
     # ImplÃ©mentation de la fonction
+
     return $InputObject
 }
 
 # Exporter la fonction
-Export-ModuleMember -Function New-ExampleFunction
-```
 
+Export-ModuleMember -Function New-ExampleFunction
+```plaintext
 ### CrÃ©ation d'un nouveau mode opÃ©rationnel
 
 Pour crÃ©er un nouveau mode opÃ©rationnel :
@@ -215,12 +225,13 @@ Activez la journalisation dÃ©taillÃ©e pour diagnostiquer les problÃ¨mes :
 
 ```powershell
 # Activer la journalisation de dÃ©bogage
+
 Set-RoadmapLogLevel -Level "DEBUG"
 
 # ExÃ©cuter l'opÃ©ration problÃ©matique
-ConvertFrom-MarkdownToRoadmap -FilePath "roadmap.md"
-```
 
+ConvertFrom-MarkdownToRoadmap -FilePath "roadmap.md"
+```plaintext
 ## RÃ©fÃ©rences
 
 - [Documentation PowerShell](https://docs.microsoft.com/en-us/powershell/)

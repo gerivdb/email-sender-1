@@ -11,16 +11,20 @@
 ## Phase 0: Suppression du Nœud de Configuration Globale
 
 ### Action
+
 - Supprimer le nœud Set Global Config.
 
 ### Objectif
+
 - Simplifier le workflow et permettre le test pas-à-pas (Test Step) sans dépendance à un nœud de configuration initial.
 
 ### Implémentation
+
 - Retirer le nœud Set Global Config du canvas.
 - Configurer manuellement tous les paramètres directement dans les nœuds concernés.
 
 ### Avantages
+
 - Débogage plus facile
 - Compréhension directe de la configuration de chaque nœud
 - Pas besoin de référencer un nœud central
@@ -28,23 +32,28 @@
 ## Phase 1: Gestion des Disponibilités (Correction Critique)
 
 ### Action
+
 - Corriger la fusion des indisponibilités Notion & Google Calendar.
 
 ### Problème
+
 - Le nœud "Filtrer créneaux" ne reçoit que les données de Google Calendar; les indisponibilités Notion sont ignorées.
 
 ### Solution Proposée
 
 #### 1. Nœud Google Calendar (Get Events)
+
 - Configurer directement le Credential approprié
 - Entrer directement l'ID du Calendrier: f4641f... (BOOKING1)
 
 #### 2. Nœud Notion (Get Database Pages pour Dispo Membres)
+
 - Configurer directement le Credential approprié
 - Entrer directement l'ID de la Base de Données: 1c5814... (Dispo Membres)
 - Configurer les filtres et tris pour récupérer les indisponibilités pertinentes
 
 #### 3. Nouveau Nœud Code (Consolider Indisponibilités)
+
 - Connecter la sortie du nœud Google Calendar à l'entrée 0
 - Connecter la sortie du nœud Notion (Dispo Membres) à l'entrée 1
 - Logique du Code:
@@ -89,9 +98,9 @@ notionPages.forEach(item => {
 
 // Return a single item with the unique busy dates array
 return [{ json: { busyDates: Array.from(busyDatesSet) } }];
-```
-
+```plaintext
 #### 4. Modifier le Nœud Suivant (ancien Filtrer créneaux)
+
 - Renommer en "Calculer Plages Libres"
 - Adapter le Code:
 
@@ -124,9 +133,9 @@ if (availableSlots.length === 0) {
 
 // Return the list of available Friday/Saturday slots
 return availableSlots;
-```
-
+```plaintext
 #### 5. Nettoyage
+
 - Supprimer ou déconnecter clairement (avec une note) les anciens nœuds:
   - Analyse et sync...
   - Créer page Notion
@@ -137,9 +146,11 @@ return availableSlots;
 ### Action 1: Connecter les disponibilités dynamiques à l'IA
 
 #### Problème
+
 - L'IA utilisait des dates statiques.
 
 #### Solution
+
 1. Supprimer les nœuds statiques:
    - Set - Dates GCal Potentielles
    - Set - Dates Bloquées Membres
@@ -158,9 +169,11 @@ return availableSlots;
 ### Action 2: Réparer la logique de fusion IA + Contacts
 
 #### Problème
+
 - Le Merge en combineByPosition ne fonctionne pas bien.
 
 #### Solution
+
 1. Exécuter le flux IA une seule fois en amont:
    - Prepare DeepSeek Request → Call DeepSeek AI → Set Message Généré IA
 
@@ -204,8 +217,7 @@ return contacts.map(contact => {
     }
   };
 });
-```
-
+```plaintext
 4. Adapter le Nœud Personnalisation Message (Code):
    - Recevoir des items contenant: notionPageId, contactEmail, contactName, venueName, aiMessage
    - Ajuster le code pour utiliser item.json.aiMessage comme base et injecter les champs de personnalisation
@@ -214,9 +226,11 @@ return contacts.map(contact => {
 ### Action 3: Simplifier et corriger la séquence d'envoi
 
 #### Problème
+
 - Nœuds redondants ou mal placés.
 
 #### Solution
+
 1. Flux Principal:
    - Associer Message IA aux Contacts → Personnalisation Message → Get Gmail Template → Inject Message into HTML → Create Final Gmail Draft → Update Notion Status → Wait Anti-Spam
 
@@ -261,12 +275,15 @@ return contacts.map(contact => {
 ## Phase 3 et Suivantes: Structuration pour l'Avenir
 
 ### Action
+
 - Délimiter visuellement les phases futures.
 
 ### Problème
+
 - Les nœuds des phases 3+ sont présents mais déconnectés et mélangés.
 
 ### Solution
+
 - Regrouper physiquement les nœuds par phase future
 - Utiliser des grands Sticky Notes colorés pour encadrer chaque groupe
 - Placer le nœud déclencheur prévu pour chaque phase au début du groupe (désactivé pour l'instant)
@@ -274,11 +291,13 @@ return contacts.map(contact => {
 ## Améliorations & Potentiel IA
 
 ### Points d'amélioration par IA plus avancée
+
 - **Analyse des Réponses** (Phase 4 Future): Candidat idéal pour intégration DeepSeek dans un nœud Code
 - **Génération de Remerciements** (Phase 9 Future): IA pour email personnalisé
 - **Interactions complexes**: Pour les phases nécessitant des décisions sophistiquées
 
 ### Recommandation
+
 - Implémenter d'abord le flux de base corrigé
 - Attaquer ensuite l'analyse des réponses (Phase 4)
 

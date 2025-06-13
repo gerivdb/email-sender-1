@@ -1,0 +1,97 @@
+# Workflow Orchestrator Configuration
+# Unified workflow for Markdown ↔ Dynamic ↔ Roadmap Manager synchronization
+
+# Basic workflow settings
+sync_interval: "5m" # How often to run scheduled sync
+auto_sync: true # Enable automatic scheduled synchronization
+conflict_resolution: "hybrid" # "manual", "auto", "hybrid"
+max_retries: 3 # Maximum retry attempts for failed syncs
+backup_enabled: true # Create backups before sync operations
+alerts_enabled: true # Enable monitoring alerts
+
+# Synchronization points configuration
+sync_points:
+  markdown_to_dynamic: true # Enable Markdown → Dynamic sync
+  dynamic_to_markdown: true # Enable Dynamic → Markdown sync
+  roadmap_manager: true # Enable Roadmap Manager integration
+  taskmaster_cli: true # Enable TaskMaster CLI sync
+
+# File watching configuration
+file_watcher:
+  enabled: true
+  watch_paths:
+    - "./projet/roadmaps/plans/"
+    - "./projet/roadmaps/plans/consolidated/"
+  file_patterns:
+    - "*.md"
+    - "plan-dev-*.md"
+  debounce_interval: "2s" # Delay before triggering sync after file change
+
+# Sync engine configuration
+sync_engine:
+  batch_size: 100 # Number of tasks to process in one batch
+  timeout: "30s" # Timeout for individual sync operations
+  validate_before_sync: true # Run validation before each sync
+  create_diff_reports: true # Generate diff reports for changes
+
+# Roadmap Manager integration
+roadmap_manager:
+  enabled: true
+  base_url: "http://localhost:8080"
+  api_version: "v1"
+  timeout: "30s"
+  retry_attempts: 3
+
+# TaskMaster CLI integration
+taskmaster_cli:
+  enabled: true
+  cli_path: "./development/managers/roadmap-manager/roadmap-cli/roadmap-cli.exe"
+  config_path: "./config/taskmaster-config.yaml"
+  timeout: "60s"
+  sync_bidirectional: true
+
+# Monitoring and alerting
+monitoring:
+  enabled: true
+  metrics_interval: "30s" # How often to update metrics
+  health_check_interval: "1m" # How often to perform health checks
+
+  # Alert thresholds
+  alerts:
+    failure_rate_threshold: 10.0 # Alert if failure rate > 10%
+    sync_delay_threshold: "10m" # Alert if last sync > 10 minutes ago
+    conflict_threshold: 5 # Alert if > 5 unresolved conflicts
+    memory_usage_threshold: 512 # Alert if memory usage > 512MB
+
+# Performance settings
+performance:
+  max_concurrent_syncs: 5 # Maximum parallel sync operations
+  memory_limit: "1GB" # Memory limit for the orchestrator
+  cache_enabled: true # Enable caching for frequently accessed data
+  cache_ttl: "15m" # Cache time-to-live
+
+# Logging configuration
+logging:
+  level: "info" # debug, info, warn, error
+  output: "console" # console, file, both
+  log_file: "./logs/workflow-orchestrator.log"
+  max_file_size: "100MB"
+  max_backup_files: 5
+  compress_backups: true
+
+# Security settings
+security:
+  enable_api_auth: true # Require authentication for API endpoints
+  api_key_header: "X-API-Key"
+  allowed_origins: # CORS origins for web dashboard
+    - "http://localhost:3000"
+    - "http://localhost:8080"
+
+# Database configuration (for metrics and state persistence)
+database:
+  enabled: true
+  type: "sqlite" # sqlite, postgres, mysql
+  connection_string: "./data/workflow-orchestrator.db"
+  migration_path: "./migrations/"
+  max_connections: 10
+  connection_timeout: "5s"

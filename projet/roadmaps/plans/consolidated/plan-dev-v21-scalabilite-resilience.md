@@ -1,4 +1,5 @@
 # Plan de développement v21 - Scalabilité et résilience
+
 *Version 1.0 - 2025-05-25 - Progression globale : 5%*
 
 Ce plan définit une stratégie complète pour la scalabilité et la résilience du système. Il établit les fondations pour une architecture capable d'évoluer en fonction de la charge et de résister aux pannes. L'objectif est de créer un système hautement disponible, capable de s'adapter dynamiquement aux variations de charge, tout en maintenant des performances optimales et en assurant la continuité du service face aux défaillances.

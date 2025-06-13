@@ -7,6 +7,7 @@ Ce fichier regroupe les standards de codage, de nommage et d’organisation des 
 - Toujours documenter les actions importantes
 
 ### Extrait du README standards
+
 > « Ces documents visent à : maintenir la cohérence du code, faciliter la lecture, améliorer la maintenabilité, faciliter la collaboration, respecter les bonnes pratiques industrielles. »
 
 Checklist :

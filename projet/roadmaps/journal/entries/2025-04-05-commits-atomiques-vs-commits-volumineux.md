@@ -6,6 +6,7 @@ related: []
 ---
 
 ## Commits atomiques vs. commits volumineux
+
 - Les commits atomiques (petits et ciblés) sont généralement préférables aux commits volumineux
 - Pour une réorganisation majeure, segmenter les changements par catégorie :
   1. Modifications de structure de dossiers
@@ -15,3 +16,4 @@ related: []
 - Cette approche facilite le suivi des changements et les éventuels rollbacks
 
 ###
+

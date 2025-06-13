@@ -1,4 +1,4 @@
-﻿# mode-manager
+# mode-manager
 
 Ce rÃ©pertoire contient les fichiers du gestionnaire mode-manager.
 

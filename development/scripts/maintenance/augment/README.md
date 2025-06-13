@@ -1,4 +1,4 @@
-﻿# Gestionnaire de MEMORIES pour Augment
+# Gestionnaire de MEMORIES pour Augment
 
 Ce dossier contient des scripts et modules pour amÃ©liorer l'autonomie, la proactivitÃ© et la granularitÃ© des rÃ©ponses d'Augment en optimisant ses MEMORIES.
 
@@ -22,8 +22,7 @@ Pour installer le module, exÃ©cutez :
 
 ```powershell
 .\Install-AugmentMemoriesModule.ps1
-```
-
+```plaintext
 Cela copiera le module dans votre dossier de modules PowerShell et exÃ©cutera les tests pour vÃ©rifier son bon fonctionnement.
 
 ## Utilisation
@@ -34,55 +33,63 @@ Pour gÃ©nÃ©rer et mettre Ã  jour les MEMORIES d'Augment :
 
 ```powershell
 # GÃ©nÃ©rer dans le dossier courant
+
 .\Update-AugmentMemories.ps1
 
 # GÃ©nÃ©rer dans un emplacement spÃ©cifique
+
 .\Update-AugmentMemories.ps1 -OutputPath "C:\chemin\vers\memories.json"
 
 # Exporter directement vers VS Code
-.\Update-AugmentMemories.ps1 -ExportToVSCode
-```
 
+.\Update-AugmentMemories.ps1 -ExportToVSCode
+```plaintext
 ### Utiliser les fonctions du module
 
 AprÃ¨s avoir importÃ© le module, vous pouvez utiliser les fonctions suivantes :
 
 ```powershell
 # Importer le module
+
 Import-Module AugmentMemoriesManager
 
 # Utiliser l'automate d'Ã©tat pour la roadmap
+
 $state = @{ CurrentTask = "T1"; Status = "Completed"; Roadmap = @("T1", "T2", "T3") }
 $newState = Move-NextTask -State $state
 # $newState.CurrentTask sera "T2"
 
 # Diviser un input volumineux
+
 $input = "Texte trÃ¨s long..."
 $segments = Split-LargeInput -Input $input -MaxSize 2000
 
 # Mettre Ã  jour les MEMORIES
+
 Update-AugmentMemories -OutputPath "C:\chemin\vers\memories.json"
 
 # Exporter vers VS Code
-Export-MemoriesToVSCode
-```
 
+Export-MemoriesToVSCode
+```plaintext
 ## Tests
 
 Le module inclut des tests TDD pour vÃ©rifier le bon fonctionnement des fonctions. Pour exÃ©cuter les tests :
 
 ```powershell
 # Via le script d'installation
+
 .\Install-AugmentMemoriesModule.ps1
 
 # Via le script de mise Ã  jour
+
 .\Update-AugmentMemories.ps1 -RunTests
 
 # Directement via le module
+
 Import-Module AugmentMemoriesManager
 Invoke-MemoriesManagerTests
-```
-
+```plaintext
 ## Structure des MEMORIES optimisÃ©es
 
 Les MEMORIES optimisÃ©es sont structurÃ©es en sections :

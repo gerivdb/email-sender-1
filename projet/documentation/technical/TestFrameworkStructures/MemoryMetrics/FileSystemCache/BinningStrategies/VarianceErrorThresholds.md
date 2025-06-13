@@ -202,13 +202,16 @@ def determine_empirical_variance_thresholds(real_data, bin_configurations, perce
     
     for config in bin_configurations:
         # Générer l'histogramme avec cette configuration
+
         bin_edges, bin_counts = generate_histogram(real_data, config)
         
         # Calculer la variance de l'histogramme
+
         hist_variance = calculate_histogram_variance(bin_edges, bin_counts)
         hist_std = np.sqrt(hist_variance)
         
         # Calculer la moyenne de l'histogramme
+
         bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
         total_count = np.sum(bin_counts)
         frequencies = bin_counts / total_count if total_count > 0 else np.zeros_like(bin_counts)
@@ -217,6 +220,7 @@ def determine_empirical_variance_thresholds(real_data, bin_configurations, perce
         hist_cv = hist_std / hist_mean if hist_mean != 0 else float('inf')
         
         # Calculer les erreurs
+
         relative_variance_error = abs(real_variance - hist_variance) / real_variance * 100
         relative_std_error = abs(real_std - hist_std) / real_std * 100
         normalized_variance_error = abs(real_variance - hist_variance) / (real_mean**2)
@@ -228,6 +232,7 @@ def determine_empirical_variance_thresholds(real_data, bin_configurations, perce
         relative_cv_errors.append(relative_cv_error)
     
     # Calculer les seuils basés sur les percentiles
+
     thresholds = {
         "ERV": {
             "excellent": np.percentile(relative_variance_errors, percentiles[0]),
@@ -252,8 +257,7 @@ def determine_empirical_variance_thresholds(real_data, bin_configurations, perce
     }
     
     return thresholds
-```
-
+```plaintext
 ### 8.2 Approche théorique
 
 Les seuils peuvent également être déterminés théoriquement en considérant l'erreur maximale acceptable pour différents cas d'utilisation :
@@ -276,6 +280,7 @@ def determine_theoretical_variance_thresholds(real_data, use_case):
     real_cv = real_std / real_mean if real_mean != 0 else float('inf')
     
     # Facteurs d'échelle par cas d'utilisation
+
     scale_factors = {
         "monitoring": {"excellent": 0.1, "good": 0.2, "acceptable": 0.3},
         "comparative": {"excellent": 0.05, "good": 0.1, "acceptable": 0.2},
@@ -286,14 +291,17 @@ def determine_theoretical_variance_thresholds(real_data, use_case):
     factors = scale_factors.get(use_case, scale_factors["comparative"])
     
     # Calculer les seuils
+
     thresholds = {
         "ERV": {
             "excellent": factors["excellent"] * 100,  # En pourcentage
+
             "good": factors["good"] * 100,
             "acceptable": factors["acceptable"] * 100
         },
         "ERET": {
             "excellent": factors["excellent"] * 50,  # Approximativement ERV/2
+
             "good": factors["good"] * 50,
             "acceptable": factors["acceptable"] * 50
         },
@@ -304,14 +312,14 @@ def determine_theoretical_variance_thresholds(real_data, use_case):
         },
         "ERCV": {
             "excellent": factors["excellent"] * 100,  # En pourcentage
+
             "good": factors["good"] * 100,
             "acceptable": factors["acceptable"] * 100
         }
     }
     
     return thresholds
-```
-
+```plaintext
 ## 9. Représentation JSON des seuils
 
 ```json
@@ -441,8 +449,7 @@ def determine_theoretical_variance_thresholds(real_data, use_case):
     }
   }
 }
-```
-
+```plaintext
 ## 10. Validation des seuils
 
 ### 10.1 Méthode de validation croisée
@@ -477,9 +484,11 @@ def validate_variance_thresholds_by_simulation(distribution_types, bin_configura
     
     for dist_type in distribution_types:
         # Générer des données synthétiques
+
         synthetic_data = generate_synthetic_data(dist_type)
         
         # Calculer les statistiques réelles
+
         real_variance = np.var(synthetic_data, ddof=1)
         real_std = np.sqrt(real_variance)
         real_mean = np.mean(synthetic_data)
@@ -502,17 +511,21 @@ def validate_variance_thresholds_by_simulation(distribution_types, bin_configura
         
         for config in bin_configurations:
             # Générer l'histogramme avec cette configuration
+
             bin_edges, bin_counts = generate_histogram(synthetic_data, config)
             
             # Calculer les erreurs
+
             errors = calculate_variance_conservation_errors(synthetic_data, bin_edges, bin_counts)
             
             # Enregistrer les distributions d'erreurs
+
             dist_results["error_distributions"]["ERV"].append(errors["relative_error_variance"])
             dist_results["error_distributions"]["ERET"].append(errors["relative_error_std"])
             dist_results["error_distributions"]["ERCV"].append(errors["relative_error_cv"])
             
             # Vérifier la conformité aux seuils
+
             for metric in ["ERV", "ERET", "ERCV"]:
                 error_value = errors[f"relative_error_{metric.lower()}"]
                 
@@ -527,16 +540,17 @@ def validate_variance_thresholds_by_simulation(distribution_types, bin_configura
                     dist_results["conformity_rates"][metric]["acceptable"] += 1
         
         # Calculer les taux de conformité
+
         for metric in ["ERV", "ERET", "ERCV"]:
             for level in ["excellent", "good", "acceptable"]:
                 dist_results["conformity_rates"][metric][level] /= total_configs
                 dist_results["conformity_rates"][metric][level] *= 100  # En pourcentage
+
         
         validation_results[dist_type] = dist_results
     
     return validation_results
-```
-
+```plaintext
 ## 11. Conclusion
 
 Les seuils d'acceptabilité pour les erreurs de variance fournissent un cadre objectif pour évaluer la fidélité avec laquelle un histogramme représente la dispersion d'une distribution de latence. Pour les distributions de latence de blocs de 2KB, ces seuils sont particulièrement importants car:

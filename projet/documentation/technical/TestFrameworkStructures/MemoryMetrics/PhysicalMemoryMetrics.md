@@ -16,8 +16,7 @@ Les métriques de mémoire physique sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 ## 3. Métriques principales
 
 ### 3.1 Utilisation globale
@@ -33,8 +32,7 @@ Les métriques de mémoire physique sont organisées dans une structure hiérarc
     "percentUsedByProcess": 3.05
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `total` | number | octets | Quantité totale de mémoire physique disponible sur le système |
@@ -61,8 +59,7 @@ Les métriques de mémoire physique sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `min` | number | octets | Utilisation minimale de mémoire physique pendant le test |
@@ -100,8 +97,7 @@ Les métriques de mémoire physique sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `interval` | number | Intervalle d'échantillonnage en millisecondes |
@@ -140,8 +136,7 @@ Les métriques de mémoire physique sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `allocation.total` | number | octets | Quantité totale de mémoire physique allouée pendant le test |
@@ -187,8 +182,7 @@ Les métriques de mémoire physique sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `byComponent.<component>.peak` | number | octets | Utilisation maximale de mémoire physique par le composant |
@@ -223,8 +217,7 @@ Les métriques de mémoire physique sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `pressure.swapUsage.total` | number | octets | Taille totale de l'espace d'échange utilisé |
@@ -255,8 +248,7 @@ Les métriques de mémoire physique sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `fragmentation.index` | number | - | Indice de fragmentation (0-1, où 1 est très fragmenté) |
@@ -278,8 +270,7 @@ Les métriques de mémoire physique sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `locality.cacheHitRate` | number | - | Taux de succès du cache (0-1) |
@@ -318,8 +309,7 @@ Les métriques de mémoire physique sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `numa.enabled` | boolean | - | Indique si NUMA est activé |
@@ -355,8 +345,7 @@ Les métriques de mémoire physique sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 ### 5.2 Exemple complet
 
 ```json
@@ -521,8 +510,7 @@ Les métriques de mémoire physique sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 ## 6. Bonnes pratiques
 
 ### 6.1 Collecte des métriques

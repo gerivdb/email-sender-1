@@ -1,10 +1,11 @@
-﻿To address the **Phase 2: Amélioration de la robustesse** as outlined in the **UnifiedParallel-Analyse-Technique.md** document, we will focus on resolving the P2 priority issues (UPM-005, UPM-006, UPM-007) identified in the technical analysis report. These issues affect the module's robustness, performance, and resource management. Additionally, we will implement the recommended tests for memory leaks and robustness under load, as specified in section **4.2 Tests supplémentaires à implémenter**. The approach will follow the **Augment Guidelines**, emphasizing *granularité adaptative, tests systématiques, documentation claire*, and will proceed incrementally to minimize regressions.
+To address the **Phase 2: Amélioration de la robustesse** as outlined in the **UnifiedParallel-Analyse-Technique.md** document, we will focus on resolving the P2 priority issues (UPM-005, UPM-006, UPM-007) identified in the technical analysis report. These issues affect the module's robustness, performance, and resource management. Additionally, we will implement the recommended tests for memory leaks and robustness under load, as specified in section **4.2 Tests supplémentaires à implémenter**. The approach will follow the **Augment Guidelines**, emphasizing *granularité adaptative, tests systématiques, documentation claire*, and will proceed incrementally to minimize regressions.
 
 ---
 
 ## Phase 2: Amélioration de la robustesse
 
 ### Objectives
+
 1. **Resolve P2 issues**:
    - **UPM-005**: Caractères accentués mal affichés malgré l'encodage UTF-8 avec BOM.
    - **UPM-006**: Dépassement de la profondeur des appels dans les tests de performance.
@@ -16,6 +17,7 @@
 4. **Update documentation** to reflect changes.
 
 ### Environment
+
 - **PowerShell**: Version 7.5.0
 - **Operating System**: Windows
 - **Pester**: Version 5.7.1 (remove 3.4.0 to avoid conflicts)
@@ -27,9 +29,11 @@
 ## 1. Resolution of UPM-005: Caractères accentués mal affichés (P2)
 
 ### Problem
+
 Despite using UTF-8 with BOM encoding, accented characters (e.g., "é", "à") are displayed incorrectly in console outputs (e.g., "Ã©" instead of "é"). This affects test readability and user experience in a francophone environment.
 
 ### Solution
+
 Standardize encoding across all files and configure the PowerShell console to use UTF-8. Add explicit encoding directives and validate console output settings.
 
 ### Steps
@@ -38,6 +42,7 @@ Standardize encoding across all files and configure the PowerShell console to us
    - Use a PowerShell script to ensure all `.psm1` and `.ps1` files are encoded correctly.
    ```powershell
    # Script to enforce UTF-8 with BOM
+
    $files = Get-ChildItem -Path "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization" -Include *.psm1, *.ps1 -Recurse
    $utf8WithBom = New-Object System.Text.UTF8Encoding $true
 
@@ -52,19 +57,23 @@ Standardize encoding across all files and configure the PowerShell console to us
    - Insert a comment at the top of each file to document the encoding.
    ```powershell
    # UnifiedParallel.psm1 (top of file)
+
    # Encodage: UTF-8 avec BOM
+
    ```
 
 3. **Configure PowerShell console encoding**:
    - Set the console output encoding to UTF-8 before running tests.
    ```powershell
    # Add to test scripts or module initialization
+
    [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
    ```
 
 4. **Update PerformanceTests.ps1 to use proper string handling**:
    ```powershell
    # PerformanceTests.ps1
+
    Describe "Tests de performance" {
        It "Affiche correctement les caractères accentués" {
            $output = "Test de performance pour différentes tailles de données"
@@ -82,6 +91,7 @@ Standardize encoding across all files and configure the PowerShell console to us
    - Verify that accented characters display correctly (e.g., "différentes" instead of "diffÃ©rentes").
 
 ### Validation
+
 - **Expected**: Console outputs display accented characters correctly.
 - **Hypothesis Confirmed**: The issue was likely due to inconsistent console encoding or mixed file encodings. Setting `[Console]::OutputEncoding` and standardizing file encoding resolves the problem.
 
@@ -90,9 +100,11 @@ Standardize encoding across all files and configure the PowerShell console to us
 ## 2. Resolution of UPM-006: Dépassement de la profondeur des appels dans les tests de performance (P2)
 
 ### Problem
+
 Performance tests fail with a `CallDepthOverflow` error, likely due to excessive recursion or deep call stacks in the `Measure-ExecutionTime` function, preventing performance validation.
 
 ### Solution
+
 Rewrite `Measure-ExecutionTime` to avoid deep recursion, simplify scriptblock execution, and add safeguards against stack overflow. Use `Invoke-Command` with explicit scope control and limit iterations.
 
 ### Steps
@@ -100,6 +112,7 @@ Rewrite `Measure-ExecutionTime` to avoid deep recursion, simplify scriptblock ex
 1. **Rewrite Measure-ExecutionTime**:
    ```powershell
    # PerformanceTests.ps1
+
    function Measure-ExecutionTime {
        [CmdletBinding()]
        param (
@@ -111,6 +124,7 @@ Rewrite `Measure-ExecutionTime` to avoid deep recursion, simplify scriptblock ex
        )
 
        # Limit iterations to prevent stack overflow
+
        if ($Iterations -gt 100) {
            Write-Warning "Iterations capped at 100 to prevent stack overflow."
            $Iterations = 100
@@ -122,6 +136,7 @@ Rewrite `Measure-ExecutionTime` to avoid deep recursion, simplify scriptblock ex
        for ($i = 0; $i -lt $Iterations; $i++) {
            try {
                # Use Invoke-Command with clean scope
+
                $null = Invoke-Command -ScriptBlock $ScriptBlock -NoNewScope
            } catch {
                Write-Error "Error executing scriptblock: $_"
@@ -144,6 +159,7 @@ Rewrite `Measure-ExecutionTime` to avoid deep recursion, simplify scriptblock ex
            $result = Measure-ExecutionTime -ScriptBlock $scriptBlock -Iterations 50
            $result | Should -BeGreaterThan 0
            $result | Should -BeLessThan 50  # Allow some overhead
+
        }
    }
    ```
@@ -156,6 +172,7 @@ Rewrite `Measure-ExecutionTime` to avoid deep recursion, simplify scriptblock ex
    - Verify that no `CallDepthOverflow` error occurs and the test returns a valid execution time.
 
 ### Validation
+
 - **Expected**: Performance tests complete without `CallDepthOverflow` and return reasonable execution times.
 - **Hypothesis Confirmed**: The issue was caused by excessive recursion or deep call stacks in scriptblock execution. Simplifying the execution logic and capping iterations resolves the problem.
 
@@ -164,9 +181,11 @@ Rewrite `Measure-ExecutionTime` to avoid deep recursion, simplify scriptblock ex
 ## 3. Resolution of UPM-007: Runspaces non correctement nettoyés dans Wait-ForCompletedRunspace (P2)
 
 ### Problem
+
 The `Wait-ForCompletedRunspace` function does not clean up incomplete runspaces after a timeout, leading to potential memory leaks and resource retention during long or repeated executions.
 
 ### Solution
+
 Add explicit cleanup logic for incomplete runspaces after a timeout, ensuring proper disposal of PowerShell instances and runspace resources.
 
 ### Steps
@@ -193,10 +212,12 @@ Add explicit cleanup logic for incomplete runspaces after a timeout, ensuring pr
            $elapsedTime = [datetime]::Now - $startTime
 
            # Check timeout
+
            if ($TimeoutSeconds -gt 0 -and $elapsedTime.TotalSeconds -ge $TimeoutSeconds) {
                Write-Verbose "Timeout atteint après $($elapsedTime.TotalSeconds) secondes."
 
                # Clean up incomplete runspaces
+
                foreach ($runspace in $Runspaces) {
                    if ($runspace.PowerShell) {
                        try {
@@ -213,6 +234,7 @@ Add explicit cleanup logic for incomplete runspaces after a timeout, ensuring pr
            }
 
            # Check completed runspaces
+
            for ($i = $Runspaces.Count - 1; $i -ge 0; $i--) {
                $runspace = $Runspaces[$i]
                if ($runspace.RunspaceStateInfo.State -eq 'Completed') {
@@ -235,6 +257,7 @@ Add explicit cleanup logic for incomplete runspaces after a timeout, ensuring pr
 2. **Add a test to verify cleanup**:
    ```powershell
    # Wait-ForCompletedRunspace.Tests.ps1
+
    Describe "Wait-ForCompletedRunspace Tests" {
        BeforeAll {
            Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force
@@ -249,6 +272,7 @@ Add explicit cleanup logic for incomplete runspaces after a timeout, ensuring pr
            $result = Wait-ForCompletedRunspace -Runspaces $runspaces -TimeoutSeconds 1
            $result.Count | Should -Be 0
            $runspaces.Count | Should -Be 0  # Verify cleanup
+
        }
    }
    ```
@@ -261,6 +285,7 @@ Add explicit cleanup logic for incomplete runspaces after a timeout, ensuring pr
    - Use Process Explorer to confirm that no PowerShell processes remain after the test.
 
 ### Validation
+
 - **Expected**: Incomplete runspaces are cleaned up after timeout, and no resources are left dangling.
 - **Hypothesis Confirmed**: The absence of cleanup logic caused resource leaks. Explicit disposal resolves the issue.
 
@@ -269,8 +294,10 @@ Add explicit cleanup logic for incomplete runspaces after a timeout, ensuring pr
 ## 4. Additional Tests
 
 ### 4.1 Test de fuite de mémoire
+
 ```powershell
 # MemoryLeak.Tests.ps1
+
 Describe "Tests de fuite de mémoire" {
     BeforeAll {
         Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force
@@ -289,14 +316,16 @@ Describe "Tests de fuite de mémoire" {
         $memoryDiff = $finalMemory - $initialMemory
 
         # Tolérer une augmentation de 10 Mo maximum
+
         $memoryDiff | Should -BeLessThan 10MB
     }
 }
-```
-
+```plaintext
 ### 4.2 Test de robustesse sous charge
+
 ```powershell
 # LoadTests.ps1
+
 Describe "Tests de robustesse sous charge" {
     BeforeAll {
         Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force
@@ -312,14 +341,13 @@ Describe "Tests de robustesse sous charge" {
         $result | ForEach-Object { $_.Success | Should -Be $true }
     }
 }
-```
-
+```plaintext
 ### Test Execution
+
 ```powershell
 Invoke-Pester -Path "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\MemoryLeak.Tests.ps1"
 Invoke-Pester -Path "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\LoadTests.ps1"
-```
-
+```plaintext
 ---
 
 ## 5. Testing Under Load Conditions
@@ -332,12 +360,12 @@ To ensure robustness, test the module under the following conditions:
 Example test script:
 ```powershell
 # StressTest.ps1
+
 $largeData = 1..100000
 $scriptBlock = { param($item) return $item }
 $result = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $largeData -MaxThreads 16 -UseRunspacePool
 $result.Count | Should -Be 100000
-```
-
+```plaintext
 ---
 
 ## 6. Documentation Update
@@ -345,13 +373,13 @@ $result.Count | Should -Be 100000
 Update `/docs/guides/augment/UnifiedParallel.md`:
 ```markdown
 ## Version 1.2.0
+
 - Corrigé : Caractères accentués mal affichés (UPM-005)
 - Corrigé : Dépassement de la profondeur des appels dans les tests de performance (UPM-006)
 - Corrigé : Runspaces non nettoyés après timeout (UPM-007)
 - Ajout : Tests de fuite de mémoire et de robustesse sous charge
 - Amélioration : Configuration de l'encodage console UTF-8
-```
-
+```plaintext
 ---
 
 ## 7. Deployment Strategy

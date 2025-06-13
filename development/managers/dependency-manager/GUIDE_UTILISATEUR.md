@@ -10,73 +10,83 @@ Le gestionnaire de dépendances Go pour EMAIL_SENDER_1 est un outil complet qui 
 
 ```powershell
 # Depuis la racine du projet
-.\development\managers\dependency-manager\scripts\install-dependency-manager.ps1
-```
 
+.\development\managers\dependency-manager\scripts\install-dependency-manager.ps1
+```plaintext
 ### Installation manuelle
 
 1. Naviguez vers le dossier du gestionnaire :
 ```powershell
 cd .\development\managers\dependency-manager
-```
-
+```plaintext
 2. Compilez le gestionnaire :
 ```powershell
 go build -o dependency-manager.exe modules\dependency_manager.go
-```
-
+```plaintext
 ## Utilisation
 
 ### Via l'exécutable direct
 
 ```powershell
 # Lister toutes les dépendances
+
 .\development\managers\dependency-manager\dependency-manager.exe list
 
 # Lister avec format JSON
+
 .\development\managers\dependency-manager\dependency-manager.exe list --json
 
 # Ajouter une dépendance
+
 .\development\managers\dependency-manager\dependency-manager.exe add --module "github.com/pkg/errors" --version "v0.9.1"
 
 # Supprimer une dépendance
+
 .\development\managers\dependency-manager\dependency-manager.exe remove --module "github.com/pkg/errors"
 
 # Mettre à jour une dépendance
+
 .\development\managers\dependency-manager\dependency-manager.exe update --module "github.com/gorilla/mux"
 
 # Audit de sécurité
+
 .\development\managers\dependency-manager\dependency-manager.exe audit
 
 # Nettoyage des dépendances inutilisées
-.\development\managers\dependency-manager\dependency-manager.exe cleanup
-```
 
+.\development\managers\dependency-manager\dependency-manager.exe cleanup
+```plaintext
 ### Via le script PowerShell
 
 ```powershell
 # Lister toutes les dépendances
+
 .\development\managers\dependency-manager\scripts\dependency-manager.ps1 -Action list
 
 # Ajouter une dépendance avec confirmation
+
 .\development\managers\dependency-manager\scripts\dependency-manager.ps1 -Action add -Module "github.com/pkg/errors" -Version "v0.9.1"
 
 # Supprimer une dépendance sans confirmation
+
 .\development\managers\dependency-manager\scripts\dependency-manager.ps1 -Action remove -Module "github.com/pkg/errors" -Force
 
 # Mettre à jour vers la dernière version
+
 .\development\managers\dependency-manager\scripts\dependency-manager.ps1 -Action update -Module "github.com/gorilla/mux"
 
 # Audit complet
+
 .\development\managers\dependency-manager\scripts\dependency-manager.ps1 -Action audit
 
 # Nettoyage automatique
-.\development\managers\dependency-manager\scripts\dependency-manager.ps1 -Action cleanup -Force
-```
 
+.\development\managers\dependency-manager\scripts\dependency-manager.ps1 -Action cleanup -Force
+```plaintext
 ## Commandes disponibles
 
 ### `list`
+
 Liste toutes les dépendances du projet.
 
 **Options :**
@@ -85,9 +95,9 @@ Liste toutes les dépendances du projet.
 **Exemple :**
 ```powershell
 .\dependency-manager.exe list --json
-```
-
+```plaintext
 ### `add`
+
 Ajoute une nouvelle dépendance au projet.
 
 **Paramètres obligatoires :**
@@ -99,9 +109,9 @@ Ajoute une nouvelle dépendance au projet.
 **Exemple :**
 ```powershell
 .\dependency-manager.exe add --module "github.com/fatih/color" --version "v1.18.0"
-```
-
+```plaintext
 ### `remove`
+
 Supprime une dépendance du projet.
 
 **Paramètres obligatoires :**
@@ -110,9 +120,9 @@ Supprime une dépendance du projet.
 **Exemple :**
 ```powershell
 .\dependency-manager.exe remove --module "github.com/pkg/errors"
-```
-
+```plaintext
 ### `update`
+
 Met à jour une dépendance vers sa dernière version.
 
 **Paramètres obligatoires :**
@@ -121,24 +131,23 @@ Met à jour une dépendance vers sa dernière version.
 **Exemple :**
 ```powershell
 .\dependency-manager.exe update --module "github.com/gorilla/mux"
-```
-
+```plaintext
 ### `audit`
+
 Effectue un audit de sécurité des dépendances.
 
 **Exemple :**
 ```powershell
 .\dependency-manager.exe audit
-```
-
+```plaintext
 ### `cleanup`
+
 Nettoie les dépendances inutilisées du projet.
 
 **Exemple :**
 ```powershell
 .\dependency-manager.exe cleanup
-```
-
+```plaintext
 ## Configuration
 
 Le gestionnaire utilise un fichier de configuration JSON situé dans :
@@ -159,8 +168,7 @@ Le gestionnaire utilise un fichier de configuration JSON situé dans :
     "backupOnChange": true
   }
 }
-```
-
+```plaintext
 ### Paramètres de configuration
 
 - **logPath** : Répertoire pour les fichiers de journalisation
@@ -194,10 +202,9 @@ Le gestionnaire crée automatiquement des sauvegardes du fichier `go.mod` avant 
 
 ### Format des sauvegardes
 
-```
+```plaintext
 go.mod.backup.YYYYMMDD_HHMMSS
-```
-
+```plaintext
 ### Localisation
 
 Les sauvegardes sont créées dans le même répertoire que le fichier `go.mod`.
@@ -237,13 +244,13 @@ Utilisez le gestionnaire dans vos pipelines :
 
 ```yaml
 # Exemple GitHub Actions
+
 - name: Audit dependencies
   run: .\development\managers\dependency-manager\dependency-manager.exe audit
 
 - name: Clean dependencies
   run: .\development\managers\dependency-manager\dependency-manager.exe cleanup
-```
-
+```plaintext
 ## Performance
 
 ### Benchmarks
@@ -283,56 +290,57 @@ Activez le mode debug pour plus d'informations :
 
 ```powershell
 .\dependency-manager.ps1 -Action list -LogLevel DEBUG
-```
-
+```plaintext
 ### Vérification de l'intégrité
 
 ```powershell
 # Vérifier la validité du go.mod
+
 go mod verify
 
 # Reconstruire les dépendances
-go mod download
-```
 
+go mod download
+```plaintext
 ### Support
 
 Pour obtenir de l'aide :
 
 ```powershell
 .\dependency-manager.exe help
-```
-
+```plaintext
 ## Exemples d'utilisation avancée
 
 ### Script de mise à jour de toutes les dépendances
 
 ```powershell
 # Obtenir la liste des dépendances en JSON
+
 $deps = .\dependency-manager.exe list --json | ConvertFrom-Json
 
 # Mettre à jour chaque dépendance
+
 foreach ($dep in $deps) {
     if (-not $dep.indirect) {
         Write-Host "Mise à jour de $($dep.name)..."
         .\dependency-manager.exe update --module $dep.name
     }
 }
-```
-
+```plaintext
 ### Audit automatisé avec rapport
 
 ```powershell
 # Exécuter l'audit et sauvegarder le rapport
+
 $auditResult = .\dependency-manager.exe audit
 $auditResult | Out-File -FilePath "audit-report-$(Get-Date -Format 'yyyyMMdd').txt"
-```
-
+```plaintext
 ### Nettoyage programmé
 
 ```powershell
 # Ajouter à une tâche planifiée Windows
+
 $action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-File C:\path\to\dependency-manager.ps1 -Action cleanup -Force"
 $trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Sunday -At 2AM
 Register-ScheduledTask -TaskName "Go Dependencies Cleanup" -Action $action -Trigger $trigger
-```
+```plaintext

@@ -11,16 +11,14 @@ Le module est disponible dans le dossier `modules` du projet. Pour l'importer :
 ```powershell
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "modules\PredictiveCache.psm1"
 Import-Module $modulePath -Force
-```
-
+```plaintext
 ## Initialisation
 
 Avant d'utiliser le module, il est nécessaire de l'initialiser avec les paramètres souhaités :
 
 ```powershell
 Initialize-PredictiveCache -Enabled $true -CachePath ".\cache" -ModelPath ".\models" -MaxCacheSize 100MB -DefaultTTL 3600
-```
-
+```plaintext
 ## Fonctions principales
 
 ### Set-PredictiveCache
@@ -31,8 +29,7 @@ Met en cache une valeur avec une clé spécifiée.
 
 ```powershell
 Set-PredictiveCache -Key <String> -Value <Object> [-TTL <Int32>]
-```
-
+```plaintext
 #### Paramètres
 
 - **Key** : Clé unique pour identifier la valeur en cache.
@@ -55,8 +52,7 @@ $value = @{
 }
 
 Set-PredictiveCache -Key "test-key" -Value $value -TTL 1800
-```
-
+```plaintext
 ### Get-PredictiveCache
 
 Récupère une valeur du cache.
@@ -65,8 +61,7 @@ Récupère une valeur du cache.
 
 ```powershell
 Get-PredictiveCache -Key <String>
-```
-
+```plaintext
 #### Paramètres
 
 - **Key** : Clé de la valeur à récupérer.
@@ -82,8 +77,7 @@ $value = Get-PredictiveCache -Key "test-key"
 if ($value -ne $null) {
     Write-Host "Valeur trouvée dans le cache: $($value | ConvertTo-Json -Compress)"
 }
-```
-
+```plaintext
 ### Remove-PredictiveCache
 
 Supprime une valeur du cache.
@@ -92,8 +86,7 @@ Supprime une valeur du cache.
 
 ```powershell
 Remove-PredictiveCache -Key <String> [-InvalidateRelated]
-```
-
+```plaintext
 #### Paramètres
 
 - **Key** : Clé de la valeur à supprimer.
@@ -110,8 +103,7 @@ $removed = Remove-PredictiveCache -Key "test-key" -InvalidateRelated
 if ($removed) {
     Write-Host "Valeur supprimée du cache."
 }
-```
-
+```plaintext
 ### Register-CacheAccess
 
 Enregistre un accès au cache pour l'apprentissage des modèles de prédiction.
@@ -120,8 +112,7 @@ Enregistre un accès au cache pour l'apprentissage des modèles de prédiction.
 
 ```powershell
 Register-CacheAccess -Key <String> -WorkflowId <String> -NodeId <String>
-```
-
+```plaintext
 #### Paramètres
 
 - **Key** : Clé de la valeur accédée.
@@ -132,8 +123,7 @@ Register-CacheAccess -Key <String> -WorkflowId <String> -NodeId <String>
 
 ```powershell
 Register-CacheAccess -Key "test-key" -WorkflowId "workflow1" -NodeId "node1"
-```
-
+```plaintext
 ### Get-PredictedCacheKeys
 
 Prédit les prochaines clés qui seront accédées en fonction des modèles d'utilisation passés.
@@ -142,8 +132,7 @@ Prédit les prochaines clés qui seront accédées en fonction des modèles d'ut
 
 ```powershell
 Get-PredictedCacheKeys -Key <String> -WorkflowId <String> -NodeId <String> [-MaxPredictions <Int32>]
-```
-
+```plaintext
 #### Paramètres
 
 - **Key** : Clé actuelle.
@@ -165,10 +154,10 @@ foreach ($prediction in $predictions) {
     Write-Host "Clé prédite: $($prediction.Key) (probabilité: $($prediction.Probability))"
     
     # Précharger la valeur prédite
+
     $predictedValue = Get-PredictiveCache -Key $prediction.Key
 }
-```
-
+```plaintext
 ### Optimize-CacheSize
 
 Optimise la taille du cache en supprimant les entrées les moins utilisées lorsque la taille maximale est dépassée.
@@ -177,14 +166,12 @@ Optimise la taille du cache en supprimant les entrées les moins utilisées lors
 
 ```powershell
 Optimize-CacheSize
-```
-
+```plaintext
 #### Exemple
 
 ```powershell
 Optimize-CacheSize
-```
-
+```plaintext
 ### Register-N8nCacheHook
 
 Enregistre les hooks nécessaires pour intégrer le cache prédictif avec n8n.
@@ -193,8 +180,7 @@ Enregistre les hooks nécessaires pour intégrer le cache prédictif avec n8n.
 
 ```powershell
 Register-N8nCacheHook -N8nApiUrl <String> [-ApiKey <String>]
-```
-
+```plaintext
 #### Paramètres
 
 - **N8nApiUrl** : URL de l'API n8n.
@@ -211,8 +197,7 @@ $hooksRegistered = Register-N8nCacheHook -N8nApiUrl "http://localhost:5678/api/v
 if ($hooksRegistered) {
     Write-Host "Hooks n8n enregistrés avec succès."
 }
-```
-
+```plaintext
 ## Intégration avec n8n
 
 Le module `PredictiveCache` s'intègre avec n8n via le script `Initialize-N8nPredictiveCache.ps1` qui configure le cache prédictif pour n8n et enregistre les hooks nécessaires.
@@ -221,10 +206,13 @@ Le module `PredictiveCache` s'intègre avec n8n via le script `Initialize-N8nPre
 
 ```powershell
 # Initialiser le cache prédictif pour n8n
+
 & ".\scripts\n8n\cache\Initialize-N8nPredictiveCache.ps1" -N8nApiUrl "http://localhost:5678/api/v1" -ApiKey "your_api_key" -MaxCacheSizeMB 200
 
 # Dans les workflows n8n, utiliser l'objet global $predictiveCache
+
 # Exemple de code JavaScript dans un nœud Function de n8n:
+
 /*
 const key = 'example-key';
 const value = { data: 'example-value' };
@@ -238,8 +226,7 @@ const cachedValue = $predictiveCache.get(key);
 // Obtenir des prédictions
 const predictions = $predictiveCache.predict(key);
 */
-```
-
+```plaintext
 ## Algorithmes de prédiction
 
 Le module utilise plusieurs algorithmes pour prédire les prochains accès au cache :
@@ -281,16 +268,20 @@ function Get-DataWithCache {
     )
     
     # Essayer de récupérer du cache
+
     $cachedValue = Get-PredictiveCache -Key $Key
     
     if ($cachedValue -ne $null) {
         # Enregistrer l'accès au cache
+
         Register-CacheAccess -Key $Key -WorkflowId $WorkflowId -NodeId $NodeId
         
         # Obtenir les prédictions
+
         $predictions = Get-PredictedCacheKeys -Key $Key -WorkflowId $WorkflowId -NodeId $NodeId
         
         # Précharger les valeurs prédites en arrière-plan
+
         Start-Job -ScriptBlock {
             param($predictions, $modulePath)
             
@@ -300,7 +291,9 @@ function Get-DataWithCache {
                 $predictedValue = Get-PredictiveCache -Key $prediction.Key
                 if ($predictedValue -eq $null) {
                     # La valeur n'est pas en cache, la récupérer
+
                     # (Ceci est un exemple, dans un cas réel, vous auriez besoin de plus d'informations)
+
                 }
             }
         } -ArgumentList $predictions, $modulePath
@@ -309,20 +302,25 @@ function Get-DataWithCache {
     }
     
     # La valeur n'est pas en cache, la récupérer
+
     $value = & $DataFetcher
     
     # Mettre en cache la valeur
+
     Set-PredictiveCache -Key $Key -Value $value
     
     # Enregistrer l'accès au cache
+
     Register-CacheAccess -Key $Key -WorkflowId $WorkflowId -NodeId $NodeId
     
     return $value
 }
 
 # Exemple d'utilisation
+
 $data = Get-DataWithCache -Key "user-123" -WorkflowId "user-workflow" -NodeId "fetch-user" -DataFetcher {
     # Simuler une requête API
+
     Start-Sleep -Seconds 2
     return @{
         id = 123
@@ -330,8 +328,7 @@ $data = Get-DataWithCache -Key "user-123" -WorkflowId "user-workflow" -NodeId "f
         email = "john.doe@example.com"
     }
 }
-```
-
+```plaintext
 ### Analyse des performances du cache
 
 ```powershell
@@ -343,9 +340,11 @@ function Analyze-CachePerformance {
     )
     
     # Obtenir les statistiques du cache
+
     $cacheStats = Get-PredictiveCacheStats
     
     # Calculer le taux de succès du cache
+
     $hitRate = if ($cacheStats.TotalRequests -gt 0) {
         $cacheStats.CacheHits / $cacheStats.TotalRequests
     } else {
@@ -353,6 +352,7 @@ function Analyze-CachePerformance {
     }
     
     # Calculer l'efficacité des prédictions
+
     $predictionAccuracy = if ($cacheStats.TotalPredictions -gt 0) {
         $cacheStats.SuccessfulPredictions / $cacheStats.TotalPredictions
     } else {
@@ -360,6 +360,7 @@ function Analyze-CachePerformance {
     }
     
     # Créer le rapport d'analyse
+
     $report = [PSCustomObject]@{
         GeneratedAt = (Get-Date).ToString("o")
         CacheSize = $cacheStats.CacheSize
@@ -377,6 +378,7 @@ function Analyze-CachePerformance {
     }
     
     # Enregistrer le rapport si demandé
+
     if ($OutputPath) {
         $report | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding utf8
     }
@@ -385,7 +387,8 @@ function Analyze-CachePerformance {
 }
 
 # Exemple d'utilisation
+
 $report = Analyze-CachePerformance -OutputPath ".\reports\cache_performance.json"
 Write-Host "Taux de succès du cache: $([Math]::Round($report.HitRate * 100, 2))%"
 Write-Host "Précision des prédictions: $([Math]::Round($report.PredictionAccuracy * 100, 2))%"
-```
+```plaintext

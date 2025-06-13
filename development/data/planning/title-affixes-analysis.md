@@ -1,4 +1,4 @@
-﻿# Analyse des PrÃ©fixes et Suffixes RÃ©currents dans les Titres
+# Analyse des PrÃ©fixes et Suffixes RÃ©currents dans les Titres
 
 ## RÃ©sumÃ©
 
@@ -13,6 +13,7 @@
   *Exemples:*
 
 ## Suffixes RÃ©currents
+
 - ****: 1 titres (4%)
   *Exemples:*
 - **E**: 0 titres (0%)
@@ -21,6 +22,7 @@
   *Exemples:*
 
 ## Phrases Communes
+
 - **"Niveaux d"**: 4 titres (16%)
   *Exemples:*
   - "Niveaux d'Expertise"
@@ -34,22 +36,27 @@
 #### PrÃ©fixes
 
 #### Suffixes
+
 - **Expertise**: 2 titres (100%)
 
 ### Niveau 2 (2 #)
 
 #### PrÃ©fixes
+
 - **Niveaux**: 2 titres (18.18%)
 
 #### Suffixes
+
 - **Évaluation**: 2 titres (18.18%)
 
 ### Niveau 3 (3 #)
 
 #### PrÃ©fixes
+
 - **Niveau**: 5 titres (41.67%)
 
 #### Suffixes
+
 ## Observations et Recommandations
 
 1. **PrÃ©fixes rÃ©currents**: Les prÃ©fixes les plus courants sont :  (0 titres),  (0 titres). Cela indique une certaine cohÃ©rence dans la formulation des titres.

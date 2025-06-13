@@ -4,30 +4,36 @@ Ce répertoire contient les templates Hygen utilisés pour générer les modes o
 
 ## Structure des templates
 
-```
+```plaintext
 _templates/
   mode/
     new/                      # Génération d'un nouveau mode
+
     add-command/              # Ajout d'une commande à un mode existant
+
     add-workflow/             # Création d'un nouveau workflow
+
   common/
     new/                      # Génération du module commun
+
   test/
     unit/                     # Génération de tests unitaires
+
     integration/              # Génération de tests d'intégration
+
   doc/
     user/                     # Documentation utilisateur
-    dev/                      # Documentation développeur
-```
 
+    dev/                      # Documentation développeur
+
+```plaintext
 ## Utilisation
 
 ### Création d'un nouveau mode
 
 ```bash
 hygen mode new --name MODE_NAME --description "Description du mode" --category "Catégorie"
-```
-
+```plaintext
 Options disponibles :
 - `--name` : Nom du mode (en majuscules, ex: DEBUG)
 - `--description` : Description du mode
@@ -38,8 +44,7 @@ Options disponibles :
 
 ```bash
 hygen mode add-command --mode MODE_NAME --name COMMAND_NAME --description "Description de la commande"
-```
-
+```plaintext
 Options disponibles :
 - `--mode` : Nom du mode existant
 - `--name` : Nom de la commande (en majuscules)
@@ -50,8 +55,7 @@ Options disponibles :
 
 ```bash
 hygen mode add-workflow --name WORKFLOW_NAME --modes "MODE1,MODE2,MODE3" --description "Description du workflow"
-```
-
+```plaintext
 Options disponibles :
 - `--name` : Nom du workflow (en majuscules)
 - `--modes` : Liste des modes impliqués (format: "MODE1,MODE2,MODE3")
@@ -64,20 +68,17 @@ Options disponibles :
 
 ```bash
 hygen mode new --name DEBUG --description "Résolution de bugs" --category "développement" --commands "TRACE,BREAK,STEP,VAR,FIX"
-```
-
+```plaintext
 ### Ajout d'une commande au mode DEBUG
 
 ```bash
 hygen mode add-command --mode DEBUG --name MEMORY --description "Analyse de l'utilisation mémoire" --params "process:string,depth:int"
-```
-
+```plaintext
 ### Création d'un workflow de correction de bug
 
 ```bash
 hygen mode add-workflow --name FIX_WORKFLOW --modes "DEBUG,TEST,REVIEW,GIT" --description "Cycle complet de correction de bug" --category "correction"
-```
-
+```plaintext
 ## Personnalisation
 
 Les templates peuvent être personnalisés en modifiant les fichiers .ejs dans les répertoires correspondants. Consultez la documentation de Hygen pour plus d'informations sur la syntaxe des templates.

@@ -1,4 +1,4 @@
-﻿# ACLAnalyzer
+# ACLAnalyzer
 
 ACLAnalyzer est un module PowerShell pour analyser, comparer, visualiser et gÃ©rer les listes de contrÃ´le d'accÃ¨s (ACL) sur diffÃ©rentes ressources du systÃ¨me, principalement les fichiers et dossiers NTFS.
 
@@ -20,8 +20,7 @@ ACLAnalyzer est un module PowerShell pour analyser, comparer, visualiser et gÃ�
 
 ```powershell
 . "C:\chemin\vers\ACLAnalyzer.ps1"
-```
-
+```plaintext
 ## Fonctions principales
 
 ### Get-NTFSPermission
@@ -30,72 +29,63 @@ Analyse les permissions NTFS d'un fichier ou dossier.
 
 ```powershell
 Get-NTFSPermission -Path "C:\Data" -Recurse $true -IncludeInherited $true
-```
-
+```plaintext
 ### Find-NTFSPermissionAnomaly
 
 DÃ©tecte les anomalies dans les permissions NTFS.
 
 ```powershell
 Find-NTFSPermissionAnomaly -Path "C:\Data" -Recurse $true
-```
-
+```plaintext
 ### Get-NTFSPermissionInheritance
 
 Analyse l'hÃ©ritage des permissions NTFS pour un fichier ou dossier.
 
 ```powershell
 Get-NTFSPermissionInheritance -Path "C:\Data" -Recurse $false
-```
-
+```plaintext
 ### Get-NTFSOwnershipInfo
 
 Analyse les propriÃ©taires et groupes principaux des fichiers et dossiers.
 
 ```powershell
 Get-NTFSOwnershipInfo -Path "C:\Data" -Recurse $true
-```
-
+```plaintext
 ### New-NTFSPermissionReport
 
 GÃ©nÃ¨re un rapport dÃ©taillÃ© des permissions NTFS.
 
 ```powershell
 New-NTFSPermissionReport -Path "C:\Data" -OutputFormat "HTML"
-```
-
+```plaintext
 ### Repair-NTFSPermissionAnomaly
 
 Corrige automatiquement les anomalies de permissions NTFS dÃ©tectÃ©es.
 
 ```powershell
 Repair-NTFSPermissionAnomaly -Path "C:\Data" -AnomalyType "HighRiskPermission" -WhatIf
-```
-
+```plaintext
 ### Compare-NTFSPermission
 
 Compare les permissions NTFS entre deux chemins.
 
 ```powershell
 Compare-NTFSPermission -ReferencePath "C:\Data\Reference" -DifferencePath "C:\Data\Target" -IncludeInherited $true
-```
-
+```plaintext
 ### Export-NTFSPermission
 
 Exporte les permissions NTFS d'un chemin vers un fichier.
 
 ```powershell
 Export-NTFSPermission -Path "C:\Data" -OutputPath "C:\Backup\DataPermissions.json" -Format "JSON" -Recurse $true
-```
-
+```plaintext
 ### Import-NTFSPermission
 
 Importe les permissions NTFS depuis un fichier et les applique Ã  un chemin.
 
 ```powershell
 Import-NTFSPermission -InputPath "C:\Backup\DataPermissions.json" -TargetPath "D:\Data" -Format "JSON" -WhatIf
-```
-
+```plaintext
 ## Types d'anomalies dÃ©tectÃ©es
 
 - **HighRiskPermission** : Permissions Ã  risque Ã©levÃ© accordÃ©es Ã  des groupes Ã  risque Ã©levÃ©
@@ -121,40 +111,45 @@ Import-NTFSPermission -InputPath "C:\Backup\DataPermissions.json" -TargetPath "D
 
 ```powershell
 # DÃ©tecter les anomalies
+
 $anomalies = Find-NTFSPermissionAnomaly -Path "C:\Data" -Recurse $true
 
 # Afficher les anomalies Ã  risque Ã©levÃ©
+
 $anomalies | Where-Object { $_.Severity -eq "Ã‰levÃ©e" } | Format-Table -AutoSize
 
 # Corriger les anomalies Ã  risque Ã©levÃ©
-Repair-NTFSPermissionAnomaly -Path "C:\Data" -AnomalyType "HighRiskPermission" -WhatIf
-```
 
+Repair-NTFSPermissionAnomaly -Path "C:\Data" -AnomalyType "HighRiskPermission" -WhatIf
+```plaintext
 ### Sauvegarder et restaurer des permissions
 
 ```powershell
 # Sauvegarder les permissions
+
 Export-NTFSPermission -Path "C:\Data" -OutputPath "C:\Backup\DataPermissions.json" -Format "JSON" -Recurse $true
 
 # Restaurer les permissions sur un autre chemin
-Import-NTFSPermission -InputPath "C:\Backup\DataPermissions.json" -TargetPath "D:\Data" -Format "JSON"
-```
 
+Import-NTFSPermission -InputPath "C:\Backup\DataPermissions.json" -TargetPath "D:\Data" -Format "JSON"
+```plaintext
 ### Comparer les permissions entre deux dossiers
 
 ```powershell
 $comparison = Compare-NTFSPermission -ReferencePath "C:\Data\Reference" -DifferencePath "C:\Data\Target"
 
 # Afficher les permissions manquantes
+
 $comparison.MissingPermissions | Format-Table -AutoSize
 
 # Afficher les permissions supplÃ©mentaires
+
 $comparison.AdditionalPermissions | Format-Table -AutoSize
 
 # Afficher les permissions modifiÃ©es
-$comparison.ModifiedPermissions | Format-Table -AutoSize
-```
 
+$comparison.ModifiedPermissions | Format-Table -AutoSize
+```plaintext
 ## Remarques
 
 - Certaines fonctions nÃ©cessitent des privilÃ¨ges d'administrateur pour fonctionner correctement

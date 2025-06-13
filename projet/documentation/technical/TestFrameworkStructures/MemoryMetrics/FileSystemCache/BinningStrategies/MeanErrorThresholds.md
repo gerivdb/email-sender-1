@@ -176,12 +176,15 @@ def determine_empirical_thresholds(real_data, bin_configurations, percentiles=[9
     
     for config in bin_configurations:
         # Générer l'histogramme avec cette configuration
+
         bin_edges, bin_counts = generate_histogram(real_data, config)
         
         # Calculer la moyenne de l'histogramme
+
         hist_mean = calculate_histogram_mean(bin_edges, bin_counts)
         
         # Calculer les erreurs
+
         absolute_error = abs(real_mean - hist_mean)
         relative_error = absolute_error / real_mean * 100
         normalized_error = absolute_error / real_std
@@ -191,6 +194,7 @@ def determine_empirical_thresholds(real_data, bin_configurations, percentiles=[9
         normalized_errors.append(normalized_error)
     
     # Calculer les seuils basés sur les percentiles
+
     thresholds = {
         "EAM": {
             "excellent": np.percentile(absolute_errors, percentiles[0]),
@@ -210,8 +214,7 @@ def determine_empirical_thresholds(real_data, bin_configurations, percentiles=[9
     }
     
     return thresholds
-```
-
+```plaintext
 ### 7.2 Approche théorique
 
 Les seuils peuvent également être déterminés théoriquement en considérant l'erreur maximale acceptable pour différents cas d'utilisation :
@@ -232,6 +235,7 @@ def determine_theoretical_thresholds(real_data, use_case):
     real_std = np.std(real_data)
     
     # Facteurs d'échelle par cas d'utilisation
+
     scale_factors = {
         "monitoring": {"excellent": 0.03, "good": 0.08, "acceptable": 0.15},
         "comparative": {"excellent": 0.015, "good": 0.04, "acceptable": 0.08},
@@ -242,6 +246,7 @@ def determine_theoretical_thresholds(real_data, use_case):
     factors = scale_factors.get(use_case, scale_factors["comparative"])
     
     # Calculer les seuils
+
     thresholds = {
         "EAM": {
             "excellent": factors["excellent"] * real_mean,
@@ -250,6 +255,7 @@ def determine_theoretical_thresholds(real_data, use_case):
         },
         "ERM": {
             "excellent": factors["excellent"] * 100,  # En pourcentage
+
             "good": factors["good"] * 100,
             "acceptable": factors["acceptable"] * 100
         },
@@ -261,8 +267,7 @@ def determine_theoretical_thresholds(real_data, use_case):
     }
     
     return thresholds
-```
-
+```plaintext
 ## 8. Représentation JSON des seuils
 
 ```json
@@ -440,8 +445,7 @@ def determine_theoretical_thresholds(real_data, use_case):
     }
   }
 }
-```
-
+```plaintext
 ## 9. Conclusion
 
 Les seuils d'acceptabilité pour les erreurs de moyenne fournissent un cadre objectif pour évaluer la fidélité avec laquelle un histogramme représente la tendance centrale d'une distribution de latence. Pour les distributions de latence de blocs de 2KB, ces seuils sont particulièrement importants car:

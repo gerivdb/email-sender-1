@@ -1,4 +1,4 @@
-﻿# Entree du 2025-04-07 03:52
+# Entree du 2025-04-07 03:52
 
 # Analyse de la phase : 1. Documentation et formation
 

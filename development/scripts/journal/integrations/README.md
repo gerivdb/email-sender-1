@@ -1,4 +1,4 @@
-﻿# integrations
+# integrations
 
 IntÃ©grations avec d'autres systÃ¨mes
 

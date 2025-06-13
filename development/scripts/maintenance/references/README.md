@@ -1,4 +1,4 @@
-﻿# Outils de gestion des rÃ©fÃ©rences
+# Outils de gestion des rÃ©fÃ©rences
 
 Ce rÃ©pertoire contient des scripts pour dÃ©tecter et mettre Ã  jour les rÃ©fÃ©rences brisÃ©es dans les fichiers du projet, notamment suite Ã  la rÃ©organisation des scripts et Ã  la centralisation de la roadmap.
 
@@ -18,15 +18,17 @@ Ce script analyse les fichiers du projet pour identifier les rÃ©fÃ©rences de
 
 ```powershell
 # Analyser le rÃ©pertoire courant
+
 .\Detect-BrokenReferences.ps1
 
 # Analyser un rÃ©pertoire spÃ©cifique
+
 .\Detect-BrokenReferences.ps1 -ScanPath "D:\Projets\EMAIL_SENDER_1"
 
 # Utiliser des mappages personnalisÃ©s
-.\Detect-BrokenReferences.ps1 -CustomMappings "path_mappings.json"
-```
 
+.\Detect-BrokenReferences.ps1 -CustomMappings "path_mappings.json"
+```plaintext
 ### Update-References.ps1
 
 Ce script analyse les fichiers du projet pour identifier les rÃ©fÃ©rences de chemins qui ne correspondent plus Ã  la nouvelle structure et peut effectuer les remplacements de maniÃ¨re sÃ©curisÃ©e.
@@ -42,12 +44,13 @@ Ce script analyse les fichiers du projet pour identifier les rÃ©fÃ©rences de
 
 ```powershell
 # Analyser le rÃ©pertoire courant et gÃ©nÃ©rer un rapport sans effectuer de modifications
+
 .\Update-References.ps1 -ReportOnly
 
 # Analyser un rÃ©pertoire spÃ©cifique, crÃ©er des sauvegardes et mettre Ã  jour les rÃ©fÃ©rences
-.\Update-References.ps1 -ScanPath "D:\Projets\EMAIL_SENDER_1" -BackupFiles
-```
 
+.\Update-References.ps1 -ScanPath "D:\Projets\EMAIL_SENDER_1" -BackupFiles
+```plaintext
 ### Test-ReferenceUpdater.ps1
 
 Ce script crÃ©e un environnement de test pour vÃ©rifier le bon fonctionnement des scripts Detect-BrokenReferences.ps1 et Update-References.ps1.
@@ -61,12 +64,13 @@ Ce script crÃ©e un environnement de test pour vÃ©rifier le bon fonctionnemen
 
 ```powershell
 # ExÃ©cuter les tests et conserver l'environnement pour inspection
+
 .\Test-ReferenceUpdater.ps1
 
 # ExÃ©cuter les tests et supprimer l'environnement aprÃ¨s l'exÃ©cution
-.\Test-ReferenceUpdater.ps1 -CleanupAfterTest
-```
 
+.\Test-ReferenceUpdater.ps1 -CleanupAfterTest
+```plaintext
 ## Format des mappages personnalisÃ©s
 
 Pour utiliser des mappages personnalisÃ©s avec le script Detect-BrokenReferences.ps1, crÃ©ez un fichier JSON avec le format suivant :
@@ -76,8 +80,7 @@ Pour utiliser des mappages personnalisÃ©s avec le script Detect-BrokenReferenc
   "chemin/obsolete1.md": "nouveau/chemin1.md",
   "chemin\\obsolete2.md": "nouveau\\chemin2.md"
 }
-```
-
+```plaintext
 ## Rapports gÃ©nÃ©rÃ©s
 
 Les scripts gÃ©nÃ¨rent deux types de rapports :

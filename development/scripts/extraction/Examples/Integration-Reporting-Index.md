@@ -81,15 +81,13 @@ Pour utiliser tous les modules, importez simplement le fichier principal :
 
 ```powershell
 . ".\Integration-Reporting.ps1"
-```
-
+```plaintext
 Pour utiliser un module spécifique, importez-le directement :
 
 ```powershell
 . ".\Integration-Reporting-Core.ps1"
 . ".\Integration-Reporting-Sections.ps1"
-```
-
+```plaintext
 ## Dépendances entre les modules
 
 - **Integration-Reporting-Core.ps1** - Aucune dépendance

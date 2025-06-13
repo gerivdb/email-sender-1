@@ -11,4 +11,4 @@ Ce dossier contient des scripts pour l''intégration avec des outils tiers.
 
 ```powershell
 .\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool SonarQube -ApiKey "your-api-key" -ApiUrl "https://sonarqube.example.com/api" -ProjectKey "your-project-key"
-```
+```plaintext

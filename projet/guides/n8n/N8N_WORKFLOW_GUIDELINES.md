@@ -65,8 +65,7 @@ for (let i = 0; i < 90; i++) {
 }
 
 return availableDates;
-```
-
+```plaintext
 ### Terminologie N8N
 
 Utiliser les termes techniques corrects :

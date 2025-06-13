@@ -16,12 +16,13 @@ $collection = @{
     Name = "NomDeLaCollection"
     Description = "Description de la collection"
     Items = @() # Tableau d'objets d'information extraite
+
     Metadata = @{} # Table de hachage pour les métadonnées
+
     CreationDate = Get-Date
     LastModifiedDate = Get-Date
 }
-```
-
+```plaintext
 ### Propriétés principales
 
 | Propriété | Type | Description | Utilisation |
@@ -61,8 +62,7 @@ function New-ExtractedInfoCollection {
     
     return $collection
 }
-```
-
+```plaintext
 #### Add-ExtractedInfoToCollection
 
 ```powershell
@@ -97,8 +97,7 @@ function Add-ExtractedInfoToCollection {
     
     return $Collection
 }
-```
-
+```plaintext
 #### Get-ExtractedInfoFromCollection
 
 ```powershell
@@ -132,6 +131,7 @@ function Get-ExtractedInfoFromCollection {
     $items = $Collection.Items
     
     # Appliquer les filtres
+
     if (-not [string]::IsNullOrEmpty($Source)) {
         $items = $items | Where-Object { $_.Source -eq $Source }
     }
@@ -150,8 +150,7 @@ function Get-ExtractedInfoFromCollection {
     
     return $items
 }
-```
-
+```plaintext
 #### Remove-ExtractedInfoFromCollection
 
 ```powershell
@@ -186,8 +185,7 @@ function Remove-ExtractedInfoFromCollection {
     
     return $Collection
 }
-```
-
+```plaintext
 ## Analyse des performances actuelles
 
 ### Complexité algorithmique

@@ -73,10 +73,12 @@ Le script détermine d'abord le répertoire racine du projet en utilisant le par
 
 ```powershell
 # Déterminer le chemin du projet
+
 if ($ProjectRoot -eq ".") {
     $ProjectRoot = $PWD.Path
     
     # Remonter jusqu'à trouver le répertoire .git
+
     while (-not (Test-Path -Path (Join-Path -Path $ProjectRoot -ChildPath ".git") -PathType Container) -and 
            -not [string]::IsNullOrEmpty($ProjectRoot)) {
         $ProjectRoot = Split-Path -Path $ProjectRoot -Parent
@@ -86,32 +88,33 @@ if ($ProjectRoot -eq ".") {
         $ProjectRoot = $PWD.Path
     }
 }
-```
-
+```plaintext
 ### 2. Vérification des fichiers source
 
 Le script vérifie ensuite que les fichiers source nécessaires existent :
 
 ```powershell
 # Chemins des fichiers source
+
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $integratedManagerScript = Join-Path -Path $scriptPath -ChildPath "integrated-manager.ps1"
 $integratedManagerDoc = Join-Path -Path $ProjectRoot -ChildPath "development\docs\guides\methodologies\integrated_manager.md"
 $unifiedConfigJson = Join-Path -Path $ProjectRoot -ChildPath "development\config\unified-config.json"
 
 # Vérifier que les fichiers source existent
+
 if (-not (Test-Path -Path $integratedManagerScript)) {
     Write-Error "Le script du gestionnaire intégré est introuvable : $integratedManagerScript"
     exit 1
 }
-```
-
+```plaintext
 ### 3. Création des répertoires nécessaires
 
 Le script crée ensuite les répertoires nécessaires s'ils n'existent pas :
 
 ```powershell
 # Créer les répertoires nécessaires
+
 $directories = @(
     "development\config",
     "development\docs\guides\methodologies",
@@ -126,14 +129,14 @@ foreach ($directory in $directories) {
         New-Item -Path $dirPath -ItemType Directory -Force | Out-Null
     }
 }
-```
-
+```plaintext
 ### 4. Copie des fichiers
 
 Le script copie ensuite les fichiers nécessaires aux emplacements appropriés :
 
 ```powershell
 # Copier les fichiers
+
 $filesToCopy = @{
     $integratedManagerScript = Join-Path -Path $ProjectRoot -ChildPath "development\\managers\\integrated-manager\\scripts\\integrated-manager\.ps1"
     $integratedManagerDoc = Join-Path -Path $ProjectRoot -ChildPath "development\docs\guides\methodologies\integrated_manager.md"
@@ -154,14 +157,14 @@ foreach ($source in $filesToCopy.Keys) {
         Write-Warning "Le fichier source est introuvable : $source"
     }
 }
-```
-
+```plaintext
 ### 5. Création des liens symboliques
 
 Le script crée des liens symboliques pour faciliter l'accès au Gestionnaire Intégré depuis différents emplacements :
 
 ```powershell
 # Créer les liens symboliques
+
 foreach ($link in $linkPaths.Keys) {
     $linkPath = Join-Path -Path $ProjectRoot -ChildPath $link
     $targetPath = $linkPaths[$link]
@@ -175,17 +178,21 @@ foreach ($link in $linkPaths.Keys) {
         
         try {
             # Créer un lien symbolique si possible
+
             if ($PSVersionTable.PSVersion.Major -ge 5) {
                 Write-Host "Création du lien symbolique : $linkPath -> $targetPath" -ForegroundColor Green
                 New-Item -Path $linkPath -ItemType SymbolicLink -Target $targetPath -Force | Out-Null
             } else {
                 # Sinon, créer un fichier de redirection
+
                 Write-Host "Création du fichier de redirection : $linkPath -> $targetPath" -ForegroundColor Green
                 @"
 # Ce fichier est une redirection vers le script du gestionnaire intégré
+
 # Le script réel se trouve à l'emplacement : $targetPath
 
 # Rediriger vers le script réel
+
 & "$targetPath" @args
 "@ | Set-Content -Path $linkPath -Encoding UTF8
             }
@@ -194,25 +201,28 @@ foreach ($link in $linkPaths.Keys) {
             Write-Warning "Erreur : $_"
             
             # Créer un fichier de redirection en cas d'échec
+
             Write-Host "Création du fichier de redirection : $linkPath -> $targetPath" -ForegroundColor Green
             @"
 # Ce fichier est une redirection vers le script du gestionnaire intégré
+
 # Le script réel se trouve à l'emplacement : $targetPath
 
 # Rediriger vers le script réel
+
 & "$targetPath" @args
 "@ | Set-Content -Path $linkPath -Encoding UTF8
         }
     }
 }
-```
-
+```plaintext
 ### 6. Création d'un raccourci dans le dossier principal
 
 Le script crée également un raccourci dans le dossier principal pour un accès facile :
 
 ```powershell
 # Créer un raccourci dans le dossier principal
+
 $shortcutPath = Join-Path -Path $ProjectRoot -ChildPath "integrated-manager.ps1"
 if ((Test-Path -Path $shortcutPath) -and -not $Force) {
     Write-Warning "Le raccourci existe déjà et ne sera pas écrasé : $shortcutPath"
@@ -220,20 +230,22 @@ if ((Test-Path -Path $shortcutPath) -and -not $Force) {
     Write-Host "Création du raccourci : $shortcutPath" -ForegroundColor Green
     @"
 # Ce fichier est un raccourci vers le script du gestionnaire intégré
+
 # Le script réel se trouve à l'emplacement : development\\managers\\integrated-manager\\scripts\\integrated-manager\.ps1
 
 # Rediriger vers le script réel
+
 & "development\\managers\\integrated-manager\\scripts\\integrated-manager\.ps1" @args
 "@ | Set-Content -Path $shortcutPath -Encoding UTF8
 }
-```
-
+```plaintext
 ### 7. Vérification de l'installation
 
 Enfin, le script vérifie que tous les fichiers ont été correctement installés :
 
 ```powershell
 # Vérifier que les fichiers ont été correctement installés
+
 $filesToCheck = @(
     "development\\managers\\integrated-manager\\scripts\\integrated-manager\.ps1",
     "development\docs\guides\methodologies\integrated_manager.md",
@@ -261,8 +273,7 @@ if ($allFilesExist) {
 } else {
     Write-Warning "Le gestionnaire intégré n'a pas été correctement installé."
 }
-```
-
+```plaintext
 ## Exemples d'utilisation
 
 ### Installation simple
@@ -271,41 +282,36 @@ Pour installer le Gestionnaire Intégré dans le répertoire courant :
 
 ```powershell
 .\install-integrated-manager.ps1
-```
-
+```plaintext
 ### Installation dans un répertoire spécifique
 
 Pour installer le Gestionnaire Intégré dans un répertoire spécifique :
 
 ```powershell
 .\install-integrated-manager.ps1 -ProjectRoot "D:\MonProjet"
-```
-
+```plaintext
 ### Réinstallation avec écrasement des fichiers existants
 
 Pour réinstaller le Gestionnaire Intégré en écrasant les fichiers existants :
 
 ```powershell
 .\install-integrated-manager.ps1 -Force
-```
-
+```plaintext
 ### Installation complète dans un répertoire spécifique avec écrasement
 
 Pour installer le Gestionnaire Intégré dans un répertoire spécifique en écrasant les fichiers existants :
 
 ```powershell
 .\install-integrated-manager.ps1 -ProjectRoot "D:\MonProjet" -Force
-```
-
+```plaintext
 ## Cas d'erreur et résolution
 
 ### Le script du gestionnaire intégré est introuvable
 
 **Erreur :**
-```
+```plaintext
 Le script du gestionnaire intégré est introuvable : C:\Chemin\vers\integrated-manager.ps1
-```
-
+```plaintext
 **Cause :** Le script `integrated-manager.ps1` n'est pas présent dans le même répertoire que le script d'installation.
 
 **Solution :**
@@ -315,10 +321,9 @@ Le script du gestionnaire intégré est introuvable : C:\Chemin\vers\integrated-
 ### Le répertoire du projet n'existe pas
 
 **Erreur :**
-```
+```plaintext
 Le répertoire du projet n'existe pas : D:\CheminInexistant
-```
-
+```plaintext
 **Cause :** Le répertoire spécifié par le paramètre `ProjectRoot` n'existe pas.
 
 **Solution :**
@@ -329,11 +334,10 @@ Le répertoire du projet n'existe pas : D:\CheminInexistant
 ### Impossible de créer le lien symbolique
 
 **Erreur :**
-```
+```plaintext
 Impossible de créer le lien symbolique : D:\MonProjet\tools\scripts\integrated-manager.ps1 -> C:\Chemin\vers\integrated-manager.ps1
 Erreur : Accès refusé
-```
-
+```plaintext
 **Cause :** Vous n'avez pas les droits d'administrateur nécessaires pour créer des liens symboliques.
 
 **Solution :**
@@ -344,10 +348,9 @@ Erreur : Accès refusé
 ### Le fichier existe déjà et ne sera pas écrasé
 
 **Avertissement :**
-```
+```plaintext
 Le fichier existe déjà et ne sera pas écrasé : D:\MonProjet\development\config\unified-config.json
-```
-
+```plaintext
 **Cause :** Le fichier existe déjà et le paramètre `-Force` n'a pas été spécifié.
 
 **Solution :**
@@ -369,6 +372,7 @@ Il est recommandé de sauvegarder les fichiers existants avant d'installer ou de
 
 ```powershell
 # Exemple de sauvegarde avant installation
+
 $backupFolder = "backup_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
 New-Item -Path $backupFolder -ItemType Directory -Force | Out-Null
 Copy-Item -Path "development\config\unified-config.json" -Destination $backupFolder -Force -ErrorAction SilentlyContinue
@@ -376,18 +380,18 @@ Copy-Item -Path "development\docs\guides\methodologies\integrated_manager.md" -D
 Copy-Item -Path "integrated-manager.ps1" -Destination $backupFolder -Force -ErrorAction SilentlyContinue
 
 # Installer le Gestionnaire Intégré
-.\install-integrated-manager.ps1 -Force
-```
 
+.\install-integrated-manager.ps1 -Force
+```plaintext
 ### Vérification après installation
 
 Après l'installation, vérifiez que le Gestionnaire Intégré fonctionne correctement en exécutant une commande simple :
 
 ```powershell
 # Vérifier que le Gestionnaire Intégré fonctionne correctement
-.\integrated-manager.ps1 -ListModes
-```
 
+.\integrated-manager.ps1 -ListModes
+```plaintext
 Si cette commande affiche la liste des modes disponibles, l'installation a réussi.
 
 ## Intégration avec d'autres scripts
@@ -398,45 +402,50 @@ Le script `install-integrated-manager.ps1` peut être intégré à d'autres scri
 
 ```powershell
 # Script d'installation global
+
 param (
     [string]$ProjectRoot = ".",
     [switch]$Force
 )
 
 # Installer le Gestionnaire Intégré
+
 Write-Host "Installation du Gestionnaire Intégré..." -ForegroundColor Cyan
 & ".\scripts\install-integrated-manager.ps1" -ProjectRoot $ProjectRoot -Force:$Force
 
 # Installer d'autres composants
+
 Write-Host "Installation d'autres composants..." -ForegroundColor Cyan
 # ...
 
 Write-Host "Installation terminée." -ForegroundColor Green
-```
-
+```plaintext
 ### Exemple d'intégration dans un workflow CI/CD
 
 ```powershell
 # Script de déploiement CI/CD
+
 param (
     [string]$DeploymentPath,
     [switch]$Force = $true
 )
 
 # Cloner le dépôt
+
 git clone https://github.com/mon-organisation/mon-projet.git $DeploymentPath
 
 # Installer le Gestionnaire Intégré
+
 Write-Host "Installation du Gestionnaire Intégré..." -ForegroundColor Cyan
 & "$DeploymentPath\scripts\install-integrated-manager.ps1" -ProjectRoot $DeploymentPath -Force:$Force
 
 # Configurer l'environnement
+
 Write-Host "Configuration de l'environnement..." -ForegroundColor Cyan
 # ...
 
 Write-Host "Déploiement terminé." -ForegroundColor Green
-```
-
+```plaintext
 ## Conclusion
 
 Le script `install-integrated-manager.ps1` est un outil essentiel pour installer et configurer le Gestionnaire Intégré dans votre projet. Il automatise la création des répertoires nécessaires, la copie des fichiers et la création des liens symboliques, ce qui facilite l'accès au Gestionnaire Intégré depuis différents emplacements.

@@ -1,4 +1,5 @@
 # Bonnes pratiques pour n8n dans EMAIL SENDER 1
+
 *Version 2025-05-15*
 
 Ce guide rassemble les bonnes pratiques pour l'utilisation de n8n dans le projet EMAIL SENDER 1, basées sur l'analyse des documents de référence et des exemples pratiques.
@@ -7,7 +8,7 @@ Ce guide rassemble les bonnes pratiques pour l'utilisation de n8n dans le projet
 
 ### 1.1 Pattern fondamental pour l'automatisation d'emails
 
-```
+```plaintext
 +---------+      +----------------+      +-------+      +---------+      +----------------+
 |  CRON   | ---> | Read Contacts  | ---> |  IF   | ---> |  Send   | ---> | Update Status  |
 | (Sched) |      | (Notion/GCal)  |      | Filter|      | Email 1 |      | (e.g., Contacted)|
@@ -21,8 +22,7 @@ Ce guide rassemble les bonnes pratiques pour l'utilisation de n8n dans le projet
      |
      V
   (End or Loop)
-```
-
+```plaintext
 Ce pattern `Trigger -> Read -> Filter -> Act -> Update -> Wait -> Re-check -> Conditional Act -> Update` est la base de nos workflows d'automatisation d'emails.
 
 ### 1.2 Modularité des workflows
@@ -61,7 +61,7 @@ Ce pattern `Trigger -> Read -> Filter -> Act -> Update -> Wait -> Re-check -> Co
 
 ### 3.1 Personnalisation des emails avec OpenRouter/DeepSeek
 
-```
+```plaintext
 +-----------------+      +--------------+      +-----------------+      +---------+
 | Read Contact    | ---> | Prepare Data | ---> | Call AI (MCP)   | ---> | Send    |
 | (Notion)        |      | (Name, Context)|      | (Get Persnlzd Txt)|      | Email   |
@@ -69,8 +69,7 @@ Ce pattern `Trigger -> Read -> Filter -> Act -> Update -> Wait -> Re-check -> Co
                                  |                     |
                                  +---------------------+
                                        (Pass Data)
-```
-
+```plaintext
 - **Préparation du contexte** : Utiliser le nœud "Set" pour préparer les données à envoyer à l'IA
 - **Prompts efficaces** : Structurer les prompts avec des instructions claires et des exemples
 - **Gestion des tokens** : Surveiller l'utilisation des tokens et optimiser les prompts
@@ -175,8 +174,7 @@ Ce pattern `Trigger -> Read -> Filter -> Act -> Update -> Wait -> Re-check -> Co
     ]
   }
 }
-```
-
+```plaintext
 ### 8.2 Exemple de vérification de réponse
 
 ```javascript
@@ -216,8 +214,7 @@ function processData(items) {
   }
   return items;
 }
-```
-
+```plaintext
 ## 9. Ressources additionnelles
 
 - [Documentation officielle n8n](https://docs.n8n.io/)

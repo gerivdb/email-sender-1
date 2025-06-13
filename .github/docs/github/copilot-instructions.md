@@ -1,6 +1,7 @@
 # Instructions Globales pour GitHub Copilot
 
 ## 🎯 Configuration Principale
+
 ```yaml
 version: 1.0
 project: EMAIL_SENDER_1
@@ -9,9 +10,9 @@ behavior:
   style: precise
   format: markdown
   verbosity: detailed
-```
-
+```plaintext
 ## 📊 Hiérarchie des Modes
+
 1. **Mode ARCHI** (Architecture & Design)
    - Conception système
    - Validation architecturale
@@ -39,6 +40,7 @@ behavior:
    - Optimisation
 
 ## 🔄 Flux de Travail Standard
+
 ```mermaid
 graph TD
     A[ARCHI] --> B[GRAN]
@@ -47,9 +49,9 @@ graph TD
     D -- Erreurs --> E[DEBUG]
     E --> C
     D -- OK --> F[Validation]
-```
-
+```plaintext
 ## 📋 Standards de Documentation
+
 - Format Markdown strict
 - Documentation inline
 - Tests documentés

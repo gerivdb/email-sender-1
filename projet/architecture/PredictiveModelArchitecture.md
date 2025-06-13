@@ -6,7 +6,7 @@ L'architecture des modèles prédictifs est conçue pour être modulaire, extens
 
 ## Diagramme d'architecture
 
-```
+```plaintext
 ┌─────────────────────────────────────────────────────────────────┐
 │                     Interface PowerShell                         │
 │                 (PerformancePredictor.psm1)                      │
@@ -31,8 +31,7 @@ L'architecture des modèles prédictifs est conçue pour être modulaire, extens
 │                  Stockage des Modèles                           │
 │                  (Fichiers .joblib)                             │
 └─────────────────────────────────────────────────────────────────┘
-```
-
+```plaintext
 ## Composants principaux
 
 ### 1. Interface PowerShell (PerformancePredictor.psm1)

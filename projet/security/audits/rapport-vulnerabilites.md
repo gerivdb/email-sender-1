@@ -1,4 +1,5 @@
 # Rapport de Vulnérabilités - organize-root-files.ps1
+
 **Plan Dev v41 - Phase 1.1.1.1 - Audit de Sécurité**
 *Date: 2025-06-03*
 *Analyseur: script-analyzer.ps1 v1.1*
@@ -8,6 +9,7 @@
 L'audit de sécurité du script `organize-root-files.ps1` révèle des **vulnérabilités critiques** qui présentent un risque immédiat de corruption du projet. Le script obtient un score de sécurité de **25/100**, classé comme **CRITIQUE**.
 
 ### Statistiques Clés
+
 - **Score de sécurité**: 25/100 (CRITIQUE)
 - **Vulnérabilités totales**: 6
 - **Vulnérabilités critiques**: 1
@@ -110,11 +112,13 @@ L'audit de sécurité du script `organize-root-files.ps1` révèle des **vulnér
 ## Analyse de la Protection des Fichiers
 
 ### État Actuel
+
 - **Fichiers protégés**: 6 sur 28 (21.4%)
 - **Statut global**: CRITIQUE
 - **Couverture**: 8.33%
 
 ### Fichiers Actuellement Protégés
+
 - README.md
 - .gitignore (partiellement)
 - package.json
@@ -125,11 +129,13 @@ L'audit de sécurité du script `organize-root-files.ps1` révèle des **vulnér
 ### ⚠️ Fichiers Critiques NON Protégés (22)
 
 #### Système Git (CRITIQUE)
+
 - `.gitmodules` - Risque de corruption des sous-modules
 - `.git/` - Risque de corruption complète du dépôt
 - `.github/` - Perte des workflows CI/CD
 
 #### Configuration Projet (CRITIQUE)
+
 - `go.mod` - Corruption des dépendances Go
 - `go.sum` - Corruption des checksums
 - `Makefile` - Perte des scripts de build
@@ -137,12 +143,14 @@ L'audit de sécurité du script `organize-root-files.ps1` révèle des **vulnér
 - `Dockerfile` - Perte configuration conteneur
 
 #### Sécurité (CRITIQUE)
+
 - `*.key`, `*.pem`, `*.cert` - Exposition de certificats
 - `*.p12` - Exposition de keystore
 - `secrets.*`, `credentials.*` - Exposition de secrets
 - `.env*` - Exposition d'environnement
 
 #### Build (MAJEUR)
+
 - `*.sln`, `*.csproj` - Projets Visual Studio
 - `CMakeLists.txt` - Configuration CMake
 - `build.gradle`, `pom.xml` - Configuration build
@@ -150,32 +158,39 @@ L'audit de sécurité du script `organize-root-files.ps1` révèle des **vulnér
 ## Cas d'Échec Identifiés
 
 ### Scénario 1: Auto-Suppression
+
 Si le script est exécuté et qu'un fichier du même nom existe dans un sous-dossier, le script pourrait se déplacer lui-même.
 
 ### Scénario 2: Corruption Git
+
 Déplacement accidentel des dossiers `.git` ou `.github` rendant le projet inutilisable.
 
 ### Scénario 3: Perte de Configuration
+
 Déplacement des fichiers `go.mod`, `package.json`, ou autres fichiers de configuration.
 
 ### Scénario 4: Exposition de Secrets
+
 Déplacement de fichiers `.env` ou autres contenant des secrets vers un dossier potentiellement public.
 
 ## Recommandations Immédiates
 
 ### 🔴 Actions Urgentes (Criticité CRITIQUE)
+
 1. **ARRÊTER** l'utilisation du script actuel immédiatement
 2. Développer le script sécurisé `organize-root-files-secure.ps1`
 3. Implémenter validation préalable de tous les déplacements
 4. Ajouter liste exhaustive de fichiers/dossiers protégés
 
 ### 🟡 Actions Prioritaires (Criticité MAJEURE)
+
 1. Implémenter gestion d'erreur complète
 2. Ajouter validation des variables
 3. Créer système de logging détaillé
 4. Développer système de simulation/preview
 
 ### 🟢 Améliorations Suggérées (Criticité MINEURE)
+
 1. Ajouter indicateurs de progression
 2. Améliorer la documentation
 3. Créer tests unitaires
@@ -184,16 +199,19 @@ Déplacement de fichiers `.env` ou autres contenant des secrets vers un dossier 
 ## Plan de Remediation
 
 ### Phase 1: Sécurisation Immédiate (1-2 jours)
+
 - [ ] Création du script sécurisé avec validation complète
 - [ ] Implémentation de la liste de protection étendue
 - [ ] Tests de sécurité complets
 
 ### Phase 2: Robustesse (3-5 jours)
+
 - [ ] Gestion d'erreur et rollback
 - [ ] Système de simulation
 - [ ] Logging et audit trail
 
 ### Phase 3: Amélioration UX (5-7 jours)
+
 - [ ] Interface utilisateur interactive
 - [ ] Documentation complète
 - [ ] Tests automatisés

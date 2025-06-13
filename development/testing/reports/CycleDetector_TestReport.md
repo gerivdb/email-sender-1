@@ -1,4 +1,4 @@
-﻿# Rapport d'exÃ©cution des tests - Module CycleDetector
+# Rapport d'exÃ©cution des tests - Module CycleDetector
 
 ## RÃ©sumÃ©
 

@@ -1,4 +1,4 @@
-﻿# Guide de Migration des Tests SimplifiÃ©s vers les Tests RÃ©els
+# Guide de Migration des Tests SimplifiÃ©s vers les Tests RÃ©els
 
 Ce guide explique comment migrer des tests simplifiÃ©s vers des tests rÃ©els pour le module Format-Converters.
 
@@ -19,8 +19,7 @@ Le script `Convert-SimplifiedTest.ps1` automatise la conversion des tests simpli
 
 ```powershell
 .\Convert-SimplifiedTest.ps1 -SimplifiedTestPath "MonTest.Simplified.ps1" -RealTestPath "MonTest.Tests.ps1"
-```
-
+```plaintext
 Ce script :
 - Lit le contenu du fichier de test simplifiÃ©
 - Ajoute l'importation explicite du module
@@ -34,8 +33,7 @@ AprÃ¨s la conversion, vÃ©rifiez que les tests fonctionnent correctement :
 
 ```powershell
 Invoke-Pester -Path .\MonTest.Tests.ps1 -Output Detailed
-```
-
+```plaintext
 ### Ã‰tape 3 : Ajouter des Tests SupplÃ©mentaires
 
 Les tests rÃ©els devraient couvrir plus de cas de test que les tests simplifiÃ©s. Ajoutez des tests pour :
@@ -55,15 +53,16 @@ It "GÃ¨re correctement les fichiers vides" {
     $result | Should -Not -BeNullOrEmpty
     $result.Size | Should -Be 0
 }
-```
-
+```plaintext
 ### Ã‰tape 4 : AmÃ©liorer la Documentation
 
 Ajoutez des commentaires pour expliquer le but de chaque test et les comportements attendus :
 
 ```powershell
 # Ce test vÃ©rifie que la fonction dÃ©tecte correctement le format JSON
+
 # mÃªme lorsque le fichier contient des caractÃ¨res spÃ©ciaux
+
 It "DÃ©tecte correctement le format JSON avec des caractÃ¨res spÃ©ciaux" {
     $specialJsonPath = Join-Path -Path $testTempDir -ChildPath "special.json"
     '{"name":"TÃ©st","version":"1.0.0"}' | Set-Content -Path $specialJsonPath -Encoding UTF8
@@ -71,8 +70,7 @@ It "DÃ©tecte correctement le format JSON avec des caractÃ¨res spÃ©ciaux" {
     $result = Get-FileFormatAnalysis -FilePath $specialJsonPath
     $result.Format | Should -Be "JSON"
 }
-```
-
+```plaintext
 ### Ã‰tape 5 : Optimiser les Tests
 
 Optimisez les tests pour qu'ils s'exÃ©cutent plus rapidement et utilisent moins de ressources :
@@ -86,6 +84,7 @@ Exemple d'optimisation :
 ```powershell
 Context "Analyse de diffÃ©rents formats de fichier" {
     # CrÃ©er tous les fichiers de test une seule fois
+
     BeforeAll {
         $formats = @{
             "json" = '{"name":"Test"}'
@@ -103,6 +102,7 @@ Context "Analyse de diffÃ©rents formats de fichier" {
     }
     
     # Tester chaque format
+
     It "Analyse correctement un fichier <format>" -TestCases @(
         @{ Format = "json"; ExpectedFormat = "JSON" }
         @{ Format = "xml"; ExpectedFormat = "XML" }
@@ -116,8 +116,7 @@ Context "Analyse de diffÃ©rents formats de fichier" {
         $result.Format | Should -Be $ExpectedFormat
     }
 }
-```
-
+```plaintext
 ## Bonnes Pratiques pour les Tests RÃ©els
 
 ### 1. Structure des Tests
@@ -129,11 +128,11 @@ Describe "Nom de la fonction" {
     Context "ScÃ©nario spÃ©cifique" {
         It "Comportement attendu" {
             # Test
+
         }
     }
 }
-```
-
+```plaintext
 ### 2. Nommage des Tests
 
 Utilisez des noms descriptifs pour vos tests :
@@ -177,8 +176,7 @@ It "DÃ©tecte correctement le format <format>" -TestCases @(
     $result = Get-FileFormatAnalysis -FilePath $filePath
     $result.Format | Should -Be $ExpectedFormat
 }
-```
-
+```plaintext
 ## RÃ©solution des ProblÃ¨mes Courants
 
 ### 1. Variables non dÃ©finies
@@ -190,23 +188,25 @@ It "DÃ©tecte correctement le format <format>" -TestCases @(
 ```powershell
 BeforeAll {
     # Variables accessibles dans tous les tests de ce Describe
+
     $script:testFiles = @{}
 }
 
 Context "Premier contexte" {
     BeforeAll {
         # Variables accessibles uniquement dans ce Context
+
         $contextVar = "Valeur"
     }
     
     It "Test" {
         # AccÃ¨s aux variables
+
         $script:testFiles | Should -Not -BeNullOrEmpty
         $contextVar | Should -Be "Valeur"
     }
 }
-```
-
+```plaintext
 ### 2. Importation du Module
 
 **ProblÃ¨me** : Le module n'est pas correctement importÃ©.
@@ -215,6 +215,7 @@ Context "Premier contexte" {
 
 ```powershell
 # Importer le module
+
 $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "Format-Converters.psm1"
 if (Test-Path -Path $modulePath) {
     Import-Module -Name $modulePath -Force
@@ -222,6 +223,7 @@ if (Test-Path -Path $modulePath) {
 
 BeforeAll {
     # S'assurer que le module est importÃ©
+
     if (-not (Get-Module -Name Format-Converters)) {
         $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "Format-Converters.psm1"
         if (Test-Path -Path $modulePath) {
@@ -229,8 +231,7 @@ BeforeAll {
         }
     }
 }
-```
-
+```plaintext
 ### 3. Nettoyage Incomplet
 
 **ProblÃ¨me** : Les fichiers temporaires ne sont pas correctement nettoyÃ©s.
@@ -245,17 +246,18 @@ BeforeAll {
 
 AfterEach {
     # Nettoyer les ressources aprÃ¨s chaque test
+
     Get-ChildItem -Path $testTempDir -File | Remove-Item -Force
 }
 
 AfterAll {
     # Nettoyer le rÃ©pertoire temporaire Ã  la fin
+
     if (Test-Path -Path $testTempDir) {
         Remove-Item -Path $testTempDir -Recurse -Force
     }
 }
-```
-
+```plaintext
 ## Conclusion
 
 La migration des tests simplifiÃ©s vers des tests rÃ©els est une Ã©tape importante pour amÃ©liorer la qualitÃ© et la robustesse de votre code. En suivant ce guide, vous pourrez convertir vos tests existants et crÃ©er de nouveaux tests qui couvrent plus de cas et de scÃ©narios.

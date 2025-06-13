@@ -14,14 +14,12 @@ Pour exécuter tous les tests et générer un rapport HTML :
 
 ```powershell
 .\Run-AugmentTests.ps1
-```
-
+```plaintext
 Par défaut, le rapport sera généré dans le dossier `development/testing/tests/augment/reports`. Vous pouvez spécifier un autre dossier avec le paramètre `-OutputPath` :
 
 ```powershell
 .\Run-AugmentTests.ps1 -OutputPath "D:\Reports"
-```
-
+```plaintext
 ## Prérequis
 
 - PowerShell 5.1 ou supérieur

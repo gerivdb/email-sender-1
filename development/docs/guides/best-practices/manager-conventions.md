@@ -120,44 +120,54 @@ Les variables doivent suivre les conventions suivantes :
 
 Tous les gestionnaires doivent suivre la structure standard suivante :
 
-```
+```plaintext
 development/managers/<DomaineManager>/
 ├── <DomaineManager>.psd1     # Manifeste du module
+
 ├── <DomaineManager>.psm1     # Module principal
+
 ├── Public/                   # Fonctions publiques
+
 │   └── ...
 ├── Private/                  # Fonctions privées
+
 │   └── ...
 ├── Classes/                  # Classes
+
 │   └── ...
 ├── Config/                   # Configuration locale
+
 │   └── ...
 ├── Data/                     # Données
+
 │   └── ...
 └── Tests/                    # Tests
-    ├── Unit/                 # Tests unitaires
-    ├── Integration/          # Tests d'intégration
-    ├── Performance/          # Tests de performance
-    └── Load/                 # Tests de charge
-```
 
+    ├── Unit/                 # Tests unitaires
+
+    ├── Integration/          # Tests d'intégration
+
+    ├── Performance/          # Tests de performance
+
+    └── Load/                 # Tests de charge
+
+```plaintext
 ### Emplacement des gestionnaires
 
 Tous les gestionnaires doivent être placés dans le répertoire suivant :
 
-```
+```plaintext
 development/managers/
-```
-
+```plaintext
 ### Configuration centralisée
 
 La configuration centralisée des gestionnaires doit être placée dans le répertoire suivant :
 
-```
+```plaintext
 projet/config/managers/<DomaineManager>/
 └── <DomaineManager>.config.json  # Fichier de configuration principal
-```
 
+```plaintext
 ## Manifestes
 
 ### Format des manifestes
@@ -171,45 +181,59 @@ Les manifestes doivent inclure les éléments suivants :
 ```powershell
 @{
     # Module principal associé à ce manifeste
+
     RootModule = '<DomaineManager>.psm1'
 
     # Numéro de version de ce module
+
     ModuleVersion = '1.0.0'
 
     # ID utilisé pour identifier de manière unique ce module
+
     GUID = '<GUID>'
 
     # Auteur de ce module
+
     Author = 'EMAIL_SENDER_1'
 
     # Société ou fournisseur de ce module
+
     CompanyName = 'EMAIL_SENDER_1'
 
     # Description de la fonctionnalité fournie par ce module
+
     Description = 'Description du gestionnaire <DomaineManager>'
 
     # Version minimale du moteur PowerShell requise par ce module
+
     PowerShellVersion = '5.1'
 
     # Modules qui doivent être importés dans l'environnement global avant d'importer ce module
+
     RequiredModules = @()
 
     # Assemblys qui doivent être chargés avant d'importer ce module
+
     RequiredAssemblies = @()
 
     # Fichiers de script (.ps1) qui sont exécutés dans l'environnement de l'appelant avant d'importer ce module
+
     ScriptsToProcess = @()
 
     # Fichiers de type (.ps1xml) à charger lors de l'importation de ce module
+
     TypesToProcess = @()
 
     # Fichiers de format (.ps1xml) à charger lors de l'importation de ce module
+
     FormatsToProcess = @()
 
     # Modules à importer en tant que modules imbriqués du module spécifié dans RootModule/ModuleToProcess
+
     NestedModules = @()
 
     # Fonctions à exporter à partir de ce module
+
     FunctionsToExport = @(
         'Start-<DomaineManager>',
         'Stop-<DomaineManager>',
@@ -217,42 +241,52 @@ Les manifestes doivent inclure les éléments suivants :
     )
 
     # Cmdlets à exporter à partir de ce module
+
     CmdletsToExport = @()
 
     # Variables à exporter à partir de ce module
+
     VariablesToExport = '*'
 
     # Alias à exporter à partir de ce module
+
     AliasesToExport = @()
 
     # Données privées à transmettre au module spécifié dans RootModule/ModuleToProcess
+
     PrivateData = @{
         PSData = @{
             # Tags appliqués à ce module
+
             Tags = @('Manager', '<Domaine>', 'EMAIL_SENDER_1')
 
             # URL vers la licence de ce module
+
             LicenseUri = ''
 
             # URL vers le site web principal de ce projet
+
             ProjectUri = ''
 
             # URL vers une icône représentant ce module
+
             IconUri = ''
 
             # Notes de version de ce module
+
             ReleaseNotes = ''
         }
     }
 
     # URI d'aide de ce module
+
     HelpInfoURI = ''
 
     # Préfixe par défaut pour les commandes exportées à partir de ce module
+
     DefaultCommandPrefix = ''
 }
-```
-
+```plaintext
 ## Fonctions standard
 
 Chaque gestionnaire doit implémenter les fonctions standard suivantes :
@@ -270,6 +304,7 @@ function Start-ModeManager {
     
     if ($PSCmdlet.ShouldProcess("ModeManager", "Start")) {
         # Code pour démarrer le gestionnaire
+
     }
 }
 
@@ -279,6 +314,7 @@ function Stop-ModeManager {
     
     if ($PSCmdlet.ShouldProcess("ModeManager", "Stop")) {
         # Code pour arrêter le gestionnaire
+
     }
 }
 
@@ -287,9 +323,9 @@ function Get-ModeManagerStatus {
     param()
     
     # Code pour récupérer l'état du gestionnaire
-}
-```
 
+}
+```plaintext
 ## Tests
 
 ### Framework de test
@@ -320,32 +356,36 @@ Les tests doivent suivre la structure suivante :
 Describe "<DomaineManager>" {
     BeforeAll {
         # Code d'initialisation
+
     }
     
     AfterAll {
         # Code de nettoyage
+
     }
     
     Context "Start-<DomaineManager>" {
         It "Should start the manager" {
             # Test
+
         }
     }
     
     Context "Stop-<DomaineManager>" {
         It "Should stop the manager" {
             # Test
+
         }
     }
     
     Context "Get-<DomaineManager>Status" {
         It "Should return the manager status" {
             # Test
+
         }
     }
 }
-```
-
+```plaintext
 ## Intégration avec le Process Manager
 
 ### Enregistrement des gestionnaires
@@ -354,8 +394,7 @@ Les gestionnaires doivent être enregistrés auprès du Process Manager en utili
 
 ```powershell
 Register-Manager -Name "<DomaineManager>" -Path "development\managers\<DomaineManager>\<DomaineManager>.ps1"
-```
-
+```plaintext
 ### Manifeste pour le Process Manager
 
 Chaque gestionnaire doit fournir un manifeste pour le Process Manager :
@@ -381,8 +420,7 @@ Chaque gestionnaire doit fournir un manifeste pour le Process Manager :
     "EntryPoint": "Start-<DomaineManager>",
     "StopFunction": "Stop-<DomaineManager>"
 }
-```
-
+```plaintext
 ## Migration vers les nouvelles conventions
 
 ### Étapes de migration

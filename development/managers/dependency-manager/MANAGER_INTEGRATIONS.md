@@ -26,8 +26,7 @@ The SecurityManager integration enhances the security capabilities of the Depend
 **Usage Example**:
 ```bash
 dependency-manager audit --enhanced
-```
-
+```plaintext
 ### 2.2 Monitoring Integration
 
 The MonitoringManager integration provides operational insights:
@@ -41,8 +40,7 @@ The MonitoringManager integration provides operational insights:
 ```bash
 dependency-manager add --module github.com/pkg/errors --version v0.9.1 --monitor
 dependency-manager update --module github.com/gorilla/mux --monitor
-```
-
+```plaintext
 ### 2.3 Storage Integration
 
 The StorageManager integration provides metadata persistence:
@@ -56,8 +54,7 @@ The StorageManager integration provides metadata persistence:
 ```bash
 dependency-manager metadata
 dependency-manager list --enhanced
-```
-
+```plaintext
 ### 2.4 Container Integration
 
 The ContainerManager integration provides container compatibility features:
@@ -70,8 +67,7 @@ The ContainerManager integration provides container compatibility features:
 **Usage Example**:
 ```bash
 dependency-manager container
-```
-
+```plaintext
 ### 2.5 Deployment Integration
 
 The DeploymentManager integration provides deployment readiness features:
@@ -84,8 +80,7 @@ The DeploymentManager integration provides deployment readiness features:
 **Usage Example**:
 ```bash
 dependency-manager deployment --env production
-```
-
+```plaintext
 ## 3. CLI Commands
 
 The following CLI commands leverage the manager integrations:
@@ -107,8 +102,7 @@ To initialize all manager integrations:
 
 ```bash
 dependency-manager --init-managers
-```
-
+```plaintext
 This will set up connections to all available managers in the system.
 
 ## 5. Error Handling
@@ -154,4 +148,4 @@ Manager integrations can be configured in the `dependency-manager.config.json` f
     }
   }
 }
-```
+```plaintext

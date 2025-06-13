@@ -53,11 +53,13 @@ Implémenter une fonction `Merge-ExtractedInfo` qui permettra de fusionner deux 
 
 ```powershell
 # Exemple 1: Fusion simple de deux objets TextExtractedInfo
+
 $text1 = New-TextExtractedInfo -Source "document.txt" -Text "Première partie du texte." -Language "fr"
 $text2 = New-TextExtractedInfo -Source "document.txt" -Text "Seconde partie du texte." -Language "fr"
 $mergedText = Merge-ExtractedInfo -PrimaryInfo $text1 -SecondaryInfo $text2 -MergeStrategy "Combine"
 
 # Exemple 2: Fusion avec priorité basée sur le score de confiance
+
 $data1 = New-StructuredDataExtractedInfo -Source "data.json" -Data @{ Name = "John"; Age = 30 } -DataFormat "Hashtable"
 $data1.ConfidenceScore = 70
 $data2 = New-StructuredDataExtractedInfo -Source "data.json" -Data @{ Name = "John Doe"; Email = "john@example.com" } -DataFormat "Hashtable"
@@ -65,6 +67,7 @@ $data2.ConfidenceScore = 90
 $mergedData = Merge-ExtractedInfo -PrimaryInfo $data1 -SecondaryInfo $data2 -MergeStrategy "HighestConfidence"
 
 # Exemple 3: Fusion de plusieurs objets
+
 $infoArray = @($text1, $text2, $text3)
 $mergedInfo = Merge-ExtractedInfo -InfoArray $infoArray -MergeStrategy "LastWins"
-```
+```plaintext

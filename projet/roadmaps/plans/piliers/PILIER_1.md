@@ -41,8 +41,7 @@ Ce pilier établit la fondation sur laquelle reposent tous les processus automat
   "telegramChatId": "telegram_chat_id_numeric", 
   "aiTeamStaticDataPrefix": "aiApiKeys_Gribitch_" 
 }
-```
-
+```plaintext
 > **Validation :** La structure et la validité de ce JSON doivent être vérifiées (manuellement ou via WF-Data-Quality-Checker). Une erreur ici bloque tous les workflows N8N pour l'artiste.
 
 - **Lien Espace Notion, Lien Dossier GDrive, Lien Portail CMS** (Type: URL). Utilitaires pour navigation rapide depuis Notion ou le CMS.
@@ -58,6 +57,7 @@ Ce pilier établit la fondation sur laquelle reposent tous les processus automat
 **Bases Types par Artiste (Détails Techniques) :**
 
 #### [Artiste]_LOT_Booking (DB principale du cycle de vente)
+
 - **AI Sentiment Réponse** (Type: Select). Populated by WF-Booking-Response-Handler (Team 1/3).
 - **AI Résumé Réponse** (Type: Text). Populated by WF-Booking-Response-Handler (Team 1/3).
 - **Lien GCal Event** (Type: URL). Populated by WF-Booking-Deal-Processor. Permet lien direct vers l'event GCal.
@@ -65,6 +65,7 @@ Ce pilier établit la fondation sur laquelle reposent tous les processus automat
 - **Statut Paiement Dépôt** (Type: Select). Mis à jour manuellement ou via futur WF Finance. Peut déclencher des rappels.
 
 #### [Artiste]_Agenda_Booking (DB des événements confirmés)
+
 - **Heure Arrivée, Heure Soundcheck, etc.** (Type: Date avec Time). Utilisé par WF-Musician-Itinerary-Sender.
 - **Contact Lieu Jour J** (Type: Text ou Relation -> Agence_Contacts). Utilisé par WF-Musician-Itinerary-Sender.
 - **Lien Itinéraire** (Type: URL). Potentiellement généré par Team 4 et stocké par N8N.
@@ -72,21 +73,25 @@ Ce pilier établit la fondation sur laquelle reposent tous les processus automat
 - **Feedback Post-Concert** (Type: Relation, Base liée: [Artiste]_Feedback).
 
 #### [Artiste]_Dispo_Membres (DB des indisponibilités)
+
 - **Validé Par Manager** (Type: Checkbox). Peut servir de trigger (via webhook Notion ou scan N8N) pour que WF-Disponibilites prenne en compte l'indispo.
 - **Impact Booking** (Type: Select). Utilisé par WF-Disponibilites pour évaluer si la date est réellement bloquée.
 
 #### [Artiste]_Projets (DB de suivi de production)
+
 - **Budget Prévisionnel vs Réel** (Type: Formula, nécessite champs Number pour prévisionnel et rollup des dépenses depuis Agence_Finance).
 - **Tâches Principales** (Type: Relation, Base liée: [Artiste]_Tâches).
 - **Fichiers Clés** (Type: Relation vers une DB [Artiste]_GDrive_Links? Ou Files & Media? Ou URL vers GDrive?). Stratégie à définir pour lier Notion à GDrive de manière robuste via N8N. Un WF WF-GDrive-Linker pourrait être nécessaire pour synchroniser les fichiers GDrive pertinents vers une DB Notion dédiée avec leurs liens.
 
 #### [Artiste]_Contrats (DB des contrats spécifiques)
+
 - **Date Expiration** (Type: Date). Trigger pour WF-HR-Compliance-Reminder.
 - **Renouvellement Auto** (Type: Checkbox). Logique pour WF-HR-Compliance-Reminder.
 - **Alertes Clés** (Type: Date). Peut être mis à jour par N8N (ex: alerte J-30).
 - **Parties Signataires** (Type: Text ou Relation -> Agence_Contacts / Agence_Lieux_Structures).
 
 #### [Artiste]_Tâches (DB de gestion de tâches)
+
 - **Responsable** (Type: Relation, Bases liées: Agence_Équipe, Artiste_Membres). Permet assignation flexible. Utilisé par WF-Task-Reminder.
 - **Échéance** (Type: Date). Trigger pour WF-Task-Reminder.
 - **Statut** (Type: Select). Peut déclencher d'autres workflows à la complétion.
@@ -94,16 +99,19 @@ Ce pilier établit la fondation sur laquelle reposent tous les processus automat
 - **Priorité** (Type: Select ou Number). Pour tri et priorisation (manuelle ou CMS).
 
 #### [Artiste]_Merch (DB de stock)
+
 - **Stock Actuel** (Type: Number). Mis à jour manuellement ou via future intégration e-commerce/POS.
 - **Seuil Alerte Stock** (Type: Number). Comparé au Stock Actuel par WF-Merch-Stock-Alert (Cron N8N).
 
 #### [Artiste]_Social_Content (DB calendrier éditorial)
+
 - **Plateforme** (Type: Select).
 - **Visuel/Vidéo** (Type: Files & Media ou URL vers GDrive).
 - **Statut** (Type: Select). Trigger pour WF-Social-Post-Scheduler quand "Prêt".
 - **Performance** (Type: Text). Mis à jour manuellement ou via future intégration API réseaux sociaux.
 
 #### [Artiste]_Feedback (DB retours qualitatifs)
+
 - **Type, Source** (Type: Select).
 - **Note** (Type: Number). Utilisé par Team 3 pour analyse de sentiment/satisfaction.
 - **Commentaire** (Type: Text). Source pour analyse qualitative Team 3.
@@ -115,6 +123,7 @@ Ce pilier établit la fondation sur laquelle reposent tous les processus automat
 **Bases Clés (Détails Techniques) :**
 
 #### Agence_Contacts (CRM Central)
+
 - **Source Contact** (Type: Select). Pour analyse efficacité canaux acquisition.
 - **Date Dernier Contact N8N** (Type: Date). Mis à jour par WF-Booking-Prospection, WF-Booking-Response-Handler, etc. pour suivi activité.
 - **Consentement GDPR** (Type: Checkbox + Date de consentement). Vérifié par WF-Booking-Prospection avant envoi email. Doit être géré rigoureusement (processus de collecte et de retrait).
@@ -122,6 +131,7 @@ Ce pilier établit la fondation sur laquelle reposent tous les processus automat
 - **Notes Confidentielles** (Type: Text). Accès restreint via permissions Notion (si possible au niveau propriété) ou géré via CMS (qui filtre l'accès).
 
 #### Agence_Lieux_Structures (Base de données lieux)
+
 - **Contact Booking/Technique/Com** (Type: Relation, Base liée: Agence_Contacts).
 - **Lien Fiche Technique** (Type: URL vers GDrive ou Files & Media). Utilisé par Team 4.
 - **Conditions Accueil Détaillées, Historique Incidents** (Type: Text). Source pour RAG Team 4.
@@ -129,6 +139,7 @@ Ce pilier établit la fondation sur laquelle reposent tous les processus automat
 - **Notes Internes Booker/Tech** (Type: Text). Pour partage d'infos équipe.
 
 #### Agence_Équipe (Annuaire interne agence)
+
 - **Spécialisations** (Type: Multi-Select). Pour routage tâches/infos.
 - **Accès CMS/Notion** (Type: Text). Documentation manuelle des rôles/permissions.
 - **Contact Urgence** (Type: Text).
@@ -136,6 +147,7 @@ Ce pilier établit la fondation sur laquelle reposent tous les processus automat
 - Relation vers Agence_HR_Personnel pour lier profil opérationnel et RH.
 
 #### Artiste_Membres (Annuaire musiciens/techniciens par artiste)
+
 - **Contact Principal** (Type: Email, Phone).
 - **Rôle Scène/Admin/Compo** (Type: Text).
 - **Allergies/Régime** (Type: Text). Donnée sensible (santé). Nécessite consentement explicite et accès restreint. Utilisé pour générer briefs catering.
@@ -143,6 +155,7 @@ Ce pilier établit la fondation sur laquelle reposent tous les processus automat
 - Relation vers Agence_HR_Personnel si contrat direct avec l'agence.
 
 #### Agence_Monitoring_N8N (Log des exécutions N8N)
+
 - **Workflow ID, Execution ID** (Type: Text). Récupérés depuis les variables d'environnement N8N ($workflow.id, $execution.id).
 - **Sévérité** (Type: Select). Définit l'urgence et le type de notification (WF-Notification-Dispatcher).
 - **Données Contextuelles** (Type: Text - JSON stringifié). Contient les données de l'item N8N au moment de l'erreur/log. Attention à la taille et aux données sensibles.
@@ -150,12 +163,14 @@ Ce pilier établit la fondation sur laquelle reposent tous les processus automat
 - Utilisé par Team 8 pour analyse performance/erreurs.
 
 #### Agence_Finance (Suivi financier global)
+
 - **Facture Liée** (Type: Files & Media ou URL vers GDrive).
 - **Centre de Coût** (Type: Select). Pour reporting financier.
 - **Statut Facturation** (Type: Select). Peut déclencher des workflows de relance.
 - **Méthode Paiement** (Type: Select/Text).
 
 #### Agence_HR_Personnel (Base RH centrale - Accès Ultra-Restreint)
+
 - **Sécurité :** Doit être dans un espace Notion séparé avec permissions minimales. L'intégration N8N doit avoir un token spécifique avec accès uniquement à cette base si nécessaire (et idéalement en lecture seule sauf pour WFs RH spécifiques). Le CMS doit gérer l'accès via des rôles RH stricts.
 - **Type Contrat** (Type: Select).
 - **Date Début/Fin Contrat** (Type: Date). Trigger pour WF-HR-Compliance-Reminder.
@@ -168,6 +183,7 @@ Ce pilier établit la fondation sur laquelle reposent tous les processus automat
 - **Préférences Communication Interne** (Type: Select). Utilisé par WF-Notification-Dispatcher pour comms RH.
 
 #### Agencedevelopment/templates (Bibliothèque de modèles)
+
 - **Nom Template** (Type: Title).
 - **Type** (Type: Select). Utilisé par les workflows N8N pour récupérer le bon template (ex: WF-Booking-Prospection cherche Type="Email Prospection").
 - **Contenu** (Type: Text - Markdown/HTML ou Files & Media pour .docx/.pdf). Si texte, N8N peut l'utiliser directement. Si fichier, N8N doit le télécharger.
@@ -187,15 +203,18 @@ Ce pilier établit la fondation sur laquelle reposent tous les processus automat
 ### 1.5. Conventions de Nommage, Validation Rigoureuse & Qualité Données
 
 #### Nommage
+
 Établir un document de conventions strict pour :
 - **Bases de données :** [Scope]_[Entité] (ex: Agence_Contacts, Gribitch_LOT_Booking).
 - **Propriétés :** CamelCase ou Snake_Case (être cohérent), préfixe optionnel pour type/fonction (ex: link_GCalEvent, config_N8N).
 - **Pages Titre :** Format standardisé (ex: [Nom Contact] - [Société], [Date] - [Nom Lieu] - [Artiste]).
 
 #### Validation Notion
+
 Utiliser les types de propriétés (Email, URL, Phone, Date, Number). Formules pour validations simples (ex: prop("Date Fin") > prop("Date Début")). Utiliser Person pour relations vers Agence_Équipe. Les validations complexes (regex, unicité conditionnelle) ne sont pas possibles nativement.
 
 #### Validation N8N (WF-Data-Quality-Checker)
+
 - **Trigger :** Cron (ex: quotidien/hebdomadaire).
 - **Logique :**
   1. Lire les bases critiques (Agence_Contacts, Agence_Lieux_Structures...).
@@ -210,25 +229,30 @@ Utiliser les types de propriétés (Email, URL, Phone, Date, Number). Formules p
   4. Utiliser WF-Notion-Helper pour créer une page dans Agence_Data_Quality_Issues (ou Agence_Tâches_Admin) avec détails de l'anomalie et lien vers l'item Notion concerné.
 
 #### Qualité Données
+
 Responsabilisation via vues Notion filtrées ("Contacts sans email", "Lieux sans fiche tech", "Deals sans date GCal"). Intégrer la validation comme étape dans les processus métier (ex: un Booker doit valider un contact avant de l'utiliser en prospection).
 
 ### 1.6. Sécurité et Gestion Fine des Accès Notion
 
 #### Permissions Notion
+
 - **Niveau Workspace :** Définir admins généraux.
 - **Niveau Teamspace/Espace :** Isoler données par artiste/fonction (RH, Finance). Inviter utilisateurs avec rôle approprié (Member, Guest).
 - **Niveau Page/Database :** Affiner permissions (Full access, Can edit, Can comment, Can view). Utiliser pour restreindre accès aux bases sensibles (Agence_HR_Personnel, Agence_Finance).
 - **Limitations :** Pas de permissions au niveau propriété nativement. Pas de véritable sécurité au niveau ligne (un utilisateur avec accès DB voit tout).
 
 #### Groupes d'utilisateurs
+
 Créer groupes Notion (Booking Team, Managers, RH Admins, Artiste Gribitch Members) pour simplifier l'attribution des permissions aux espaces/pages.
 
 #### Accès Intégration N8N
+
 - Créer un token d'intégration Notion spécifique pour N8N.
 - Partager EXPLICITEMENT et MINIMALEMENT les bases de données nécessaires avec cette intégration. Ne pas donner accès à tout le workspace.
 - Envisager plusieurs tokens N8N si des niveaux de privilèges différents sont requis par les workflows (ex: un token lecture seule pour reporting, un token écriture pour booking). Stocker ces tokens de manière sécurisée dans les Credentials N8N.
 
 #### Audit
+
 Utiliser l'Audit Log de Notion (si plan Enterprise) pour surveiller les accès et modifications sensibles. Compléter par logs N8N (Agence_Monitoring_N8N) et logs CMS (Pilier 4). Révisions périodiques manuelles des partages.
 
 ## 2. Stockage Documentaire Centralisé et Structuré (Google Drive)
@@ -239,7 +263,7 @@ Utiliser l'Audit Log de Notion (si plan Enterprise) pour surveiller les accès e
 
 La structure proposée est logique et granulaire. Elle permet une bonne organisation et facilite la gestion des permissions au niveau dossier.
 
-```
+```plaintext
 Agence/
 ├── Admin_Finance/ (Factures, Bilans...)
 ├── Admin_HR/ (Contrats équipe, Politiques...)
@@ -255,8 +279,7 @@ Agence/
         ├── 04_Technique/ (Fiches Tech, Plans de scène...)
         ├── 05_Legal_Admin/ (Contrats Label/Edition, Sacem...)
         └── 06_Archives/
-```
-
+```plaintext
 **Considération :** Assurer la création automatique de cette arborescence pour chaque nouvel artiste via WF-HR-Onboarding ou un workflow dédié.
 
 ### 2.2. Nommage Cohérent & Versioning
@@ -268,6 +291,7 @@ Agence/
 ### 2.3. Intégration N8N Robuste (Détails Techniques)
 
 #### WF-Contract-Archiver
+
 - **Trigger :** Notion Trigger (sur update de page [Artiste]_Contrats où Statut = "Signé") ou Webhook depuis CMS.
 - **Étapes N8N :**
   1. Read Trigger Data: Récupérer l'ID de la page Notion et le champ Fichier/URL du contrat.
@@ -283,6 +307,7 @@ Agence/
   11. WF-Monitoring (Log): Logger succès ou échec avec détails.
 
 #### WF-PressKit-Generator
+
 - **Trigger :** Manual Trigger, Cron, ou Webhook depuis CMS.
 - **Étapes N8N :**
   1. WF-Core-Config: Obtenir IDs Notion/GDrive artiste.
@@ -299,6 +324,7 @@ Agence/
   9. WF-Monitoring (Log).
 
 #### WF-GDrive-Permissions-Manager
+
 - **Trigger :** Webhook depuis CMS/Système RH lors d'onboarding/offboarding.
 - **Input :** `{ "userEmail": "...", "artistFolderId": "...", "permissionRole": "viewer/commenter/editor/owner/none" }`.
 - **Étapes N8N :**

@@ -1,0 +1,21 @@
+{
+  "commits": [
+    {
+      "id": "ghi789",
+      "message": "docs: update API documentation with new examples",
+      "timestamp": "2025-06-10T14:40:00Z",
+      "author": {
+        "name": "Test User",
+        "email": "test@example.com"
+      },
+      "added": ["docs/api.md"],
+      "removed": [],
+      "modified": ["README.md"]
+    }
+  ],
+  "repository": {
+    "name": "test-repo",
+    "full_name": "user/test-repo"
+  },
+  "ref": "refs/heads/main"
+}

@@ -6,6 +6,7 @@ related: []
 ---
 
 ## 5. Avantages d'une structure standardisée
+
 - Réduction du temps de recherche des fichiers
 - Facilitation de l'intégration de nouveaux membres dans l'équipe
 - Amélioration de la maintenabilité à long terme
@@ -13,3 +14,4 @@ related: []
 - Meilleure visibilité sur l'architecture globale du projet
 
 #
+

@@ -1,4 +1,4 @@
-﻿# Guide du Gestionnaire Mcp Manager
+# Guide du Gestionnaire Mcp Manager
 
 ## Introduction
 
@@ -19,30 +19,36 @@ L'objectif principal du gestionnaire Mcp Manager est de fournir des fonctionnali
 
 Le gestionnaire Mcp Manager est organisÃ© selon la structure de rÃ©pertoires suivante :
 
-```
+```plaintext
 development/managers/mcp-manager/
 â”œâ”€â”€ scripts/
 â”‚   â”œâ”€â”€ mcp-manager.ps1           # Script principal
+
 â”‚   â”œâ”€â”€ install-mcp-manager.ps1   # Script d'installation (si applicable)
+
 â”‚   â””â”€â”€ ...                                 # Autres scripts
+
 â”œâ”€â”€ modules/
 â”‚   â””â”€â”€ ...                                 # Modules PowerShell
+
 â”œâ”€â”€ tests/
 â”‚   â”œâ”€â”€ Test-[NomDuGestionnaire].ps1        # Tests unitaires
+
 â”‚   â””â”€â”€ ...                                 # Autres tests
+
 â””â”€â”€ config/
     â””â”€â”€ ...                                 # Fichiers de configuration locaux
-```
 
+```plaintext
 ### Fichiers de configuration
 
 Les fichiers de configuration du gestionnaire sont stockÃ©s dans :
 
-```
+```plaintext
 projet/config/managers/mcp-manager/
 â””â”€â”€ mcp-manager.config.json       # Configuration principale
-```
 
+```plaintext
 ## PrÃ©requis
 
 Avant d'utiliser le gestionnaire Mcp Manager, assurez-vous que :
@@ -59,8 +65,7 @@ Pour installer le gestionnaire Mcp Manager, utilisez le script d'installation :
 
 ```powershell
 .\development\managers\mcp-manager\scripts\install-mcp-manager.ps1
-```
-
+```plaintext
 ### Installation manuelle
 
 Si vous prÃ©fÃ©rez une installation manuelle, suivez ces Ã©tapes :
@@ -75,10 +80,9 @@ Si vous prÃ©fÃ©rez une installation manuelle, suivez ces Ã©tapes :
 
 Le fichier de configuration principal du gestionnaire est situÃ© Ã  :
 
-```
+```plaintext
 projet/config/managers/mcp-manager/mcp-manager.config.json
-```
-
+```plaintext
 Voici un exemple de configuration :
 
 ```json
@@ -94,8 +98,7 @@ Voici un exemple de configuration :
     "DataPath": "data/mcp-manager"
   }
 }
-```
-
+```plaintext
 ### Options de configuration
 
 | Option | Type | Description | Valeur par dÃ©faut |
@@ -115,8 +118,7 @@ Le gestionnaire Mcp Manager expose les commandes suivantes :
 
 ```powershell
 .\development\managers\mcp-manager\scripts\mcp-manager.ps1 -Command [NOM_COMMANDE_1] -Parameter1 Value1 -Parameter2 Value2
-```
-
+```plaintext
 **Description :** [DESCRIPTION_COMMANDE_1]
 
 **ParamÃ¨tres :**
@@ -126,14 +128,12 @@ Le gestionnaire Mcp Manager expose les commandes suivantes :
 **Exemple :**
 ```powershell
 .\development\managers\mcp-manager\scripts\mcp-manager.ps1 -Command [NOM_COMMANDE_1] -Parameter1 "Exemple" -Parameter2 10
-```
-
+```plaintext
 #### Commande 2 : [NOM_COMMANDE_2]
 
 ```powershell
 .\development\managers\mcp-manager\scripts\mcp-manager.ps1 -Command [NOM_COMMANDE_2] -Parameter3 Value3
-```
-
+```plaintext
 **Description :** [DESCRIPTION_COMMANDE_2]
 
 **ParamÃ¨tres :**
@@ -142,24 +142,23 @@ Le gestionnaire Mcp Manager expose les commandes suivantes :
 **Exemple :**
 ```powershell
 .\development\managers\mcp-manager\scripts\mcp-manager.ps1 -Command [NOM_COMMANDE_2] -Parameter3 "Exemple"
-```
-
+```plaintext
 ### Exemples d'utilisation
 
 #### Exemple 1 : [TITRE_EXEMPLE_1]
 
 ```powershell
 # [DESCRIPTION_EXEMPLE_1]
-.\development\managers\mcp-manager\scripts\mcp-manager.ps1 -Command [NOM_COMMANDE] -Parameter1 "Valeur1" -Parameter2 "Valeur2"
-```
 
+.\development\managers\mcp-manager\scripts\mcp-manager.ps1 -Command [NOM_COMMANDE] -Parameter1 "Valeur1" -Parameter2 "Valeur2"
+```plaintext
 #### Exemple 2 : [TITRE_EXEMPLE_2]
 
 ```powershell
 # [DESCRIPTION_EXEMPLE_2]
-.\development\managers\mcp-manager\scripts\mcp-manager.ps1 -Command [NOM_COMMANDE] -Parameter3 "Valeur3"
-```
 
+.\development\managers\mcp-manager\scripts\mcp-manager.ps1 -Command [NOM_COMMANDE] -Parameter3 "Valeur3"
+```plaintext
 ## IntÃ©gration avec d'autres gestionnaires
 
 Le gestionnaire Mcp Manager s'intÃ¨gre avec les autres gestionnaires du systÃ¨me :
@@ -168,16 +167,16 @@ Le gestionnaire Mcp Manager s'intÃ¨gre avec les autres gestionnaires du systÃ
 
 ```powershell
 # Utiliser le gestionnaire Mcp Manager via le gestionnaire intÃ©grÃ©
-.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Manager Mcp Manager -Command [NOM_COMMANDE] -Parameter1 "Valeur1"
-```
 
+.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Manager Mcp Manager -Command [NOM_COMMANDE] -Parameter1 "Valeur1"
+```plaintext
 ### IntÃ©gration avec le gestionnaire de modes
 
 ```powershell
 # Utiliser le gestionnaire Mcp Manager via le gestionnaire de modes
-.\development\managers\mode-manager\scripts\mode-manager.ps1 -Mode [NOM_MODE] -UseManager Mcp Manager -Command [NOM_COMMANDE]
-```
 
+.\development\managers\mode-manager\scripts\mode-manager.ps1 -Mode [NOM_MODE] -UseManager Mcp Manager -Command [NOM_COMMANDE]
+```plaintext
 ## DÃ©pannage
 
 ### ProblÃ¨mes courants et solutions
@@ -214,10 +213,9 @@ Le gestionnaire Mcp Manager s'intÃ¨gre avec les autres gestionnaires du systÃ
 
 Le gestionnaire Mcp Manager gÃ©nÃ¨re des journaux dans le rÃ©pertoire suivant :
 
-```
+```plaintext
 logs/mcp-manager/
-```
-
+```plaintext
 Les niveaux de journalisation peuvent Ãªtre configurÃ©s dans le fichier de configuration principal.
 
 ## Tests
@@ -228,8 +226,7 @@ Pour exÃ©cuter les tests du gestionnaire Mcp Manager, utilisez la commande sui
 
 ```powershell
 .\development\managers\mcp-manager\tests\Test-[NomDuGestionnaire].ps1
-```
-
+```plaintext
 ### Types de tests disponibles
 
 - **Tests unitaires :** Testent les fonctions individuelles du gestionnaire

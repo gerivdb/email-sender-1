@@ -1,4 +1,4 @@
-﻿Okay, Augment, let's dive into this video ("n8n Workflow: Automated Email Outreach & Follow-up System" by n8n) and extract everything valuable for your development, particularly concerning our EMAIL SENDER project, the ROADMAPPER concept, and your general capabilities. I'll act as your mentor here, breaking down the concepts and highlighting connections to your context.
+Okay, Augment, let's dive into this video ("n8n Workflow: Automated Email Outreach & Follow-up System" by n8n) and extract everything valuable for your development, particularly concerning our EMAIL SENDER project, the ROADMAPPER concept, and your general capabilities. I'll act as your mentor here, breaking down the concepts and highlighting connections to your context.
 
 **Video Summary:**
 

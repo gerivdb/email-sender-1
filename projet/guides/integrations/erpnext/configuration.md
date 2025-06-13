@@ -47,8 +47,7 @@ curl -X POST http://localhost:8000/api/integrations/erpnext/config \
     "api_key": "votre-cle-api",
     "api_secret": "votre-secret-api"
   }'
-```
-
+```plaintext
 ## Configuration via le script Python
 
 Vous pouvez utiliser le script Python `erpnext_integration.py` pour configurer l'intégration:
@@ -59,8 +58,7 @@ python scripts/python/journal/integrations/erpnext_integration.py \
   --key "votre-cle-api" \
   --secret "votre-secret-api" \
   --test
-```
-
+```plaintext
 ## Vérification de la configuration
 
 Pour vérifier que la configuration est correcte:

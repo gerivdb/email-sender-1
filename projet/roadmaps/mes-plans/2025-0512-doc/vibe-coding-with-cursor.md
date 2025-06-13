@@ -1,4 +1,4 @@
-﻿Absolument ! Cette vidéo est une mine d'or pour illustrer et enrichir tes "EMAIL SENDER 1 – Augment Guidelines". Le speaker, Dan Mindru, y détaille une méthodologie très pragmatique pour utiliser l'IA (principalement via Cursor, qui est ton équivalent d'AugmentCode) afin de développer une application de A à Z.
+Absolument ! Cette vidéo est une mine d'or pour illustrer et enrichir tes "EMAIL SENDER 1 – Augment Guidelines". Le speaker, Dan Mindru, y détaille une méthodologie très pragmatique pour utiliser l'IA (principalement via Cursor, qui est ton équivalent d'AugmentCode) afin de développer une application de A à Z.
 
 Analysons cela point par point, en faisant le lien avec tes directives.
 
@@ -216,8 +216,7 @@ APPLICATION FONCTIONNELLE / FEATURE
        |
        v
 DÉPLOIEMENT (GitHub Actions)
-```
-
+```plaintext
 Cette vidéo valide fortement l'approche que tu as définie dans tes guidelines et offre des exemples concrets, notamment pour la partie MCP et la gestion de projet/tâches assistée par IA. L'accent mis sur un PRD formel et un système de tâches piloté par l'IA via MCP sont les deux plus grands enseignements à en tirer pour ton projet EMAIL SENDER.C'est une excellente vidéo qui illustre parfaitement comment une méthodologie structurée, combinée à des outils IA comme Cursor (ton AugmentCode), peut décupler la productivité. Analysons cela en détail et faisons le lien avec tes "EMAIL SENDER 1 – Augment Guidelines".
 
 ## Analyse Globale de la Méthodologie Présentée
@@ -288,8 +287,7 @@ AugmentCode Core
   |
   v
 Utilisateur (Revue, Test, Itération)
-```
-
+```plaintext
 ---
 
 ## 2. MCP (Model Context Protocol) et "Taskmaster AI"
@@ -331,8 +329,7 @@ AugmentCode (IDE)           Serveur MCP (ex: Taskmaster)      LLM (ex: Claude)
       |                             |                             |
       |<--Final Response------------|                             |
       |                             |                             |
-```
-
+```plaintext
 ---
 
 ## 3. ROADMAPPER et Gestion de Projet

@@ -7,6 +7,7 @@ Ce document présente différentes architectures d'agents IA qui peuvent être i
 ## Architectures applicables
 
 ### 1. Agent unique + Outils
+
 Architecture de base où un seul agent IA (comme DeepSeek via OpenRouter) peut accéder à différents outils (Gmail, Google Calendar, Notion).
 
 **Implémentation n8n:**
@@ -19,6 +20,7 @@ Architecture de base où un seul agent IA (comme DeepSeek via OpenRouter) peut a
 - Utilisation de variables n8n pour maintenir le contexte entre les appels
 
 ### 2. Agents séquentiels
+
 Chaîne de workflows n8n où chaque étape utilise un agent IA spécialisé.
 
 **Implémentation n8n:**
@@ -28,10 +30,12 @@ Chaîne de workflows n8n où chaque étape utilise un agent IA spécialisé.
 
 **Structure du workflow:**
 - Webhook → Agent IA #1 → Webhook → Agent IA #2 → Webhook → Agent IA #3
+
 - Chaque agent a accès à ses propres outils spécifiques (OpenAI, Google Chat Model, etc.)
 - Transfert de contexte enrichi à chaque étape
 
 ### 3. Agent + MCP Servers + Outils
+
 Architecture intégrant les serveurs MCP pour fournir du contexte aux modèles IA.
 
 **Implémentation n8n:**
@@ -44,6 +48,7 @@ Architecture intégrant les serveurs MCP pour fournir du contexte aux modèles I
 - Enrichissement du contexte avant l'appel à l'agent IA
 
 ### 4. Agent + Router
+
 Système de routage intelligent des emails selon leur contenu.
 
 **Implémentation n8n:**
@@ -57,6 +62,7 @@ Système de routage intelligent des emails selon leur contenu.
 - Redirection vers différents webhooks selon la classification
 
 ### 5. Agent + Human in the Loop
+
 Architecture avec validation humaine dans le processus.
 
 **Implémentation n8n:**
@@ -70,6 +76,7 @@ Architecture avec validation humaine dans le processus.
 - Boucle de feedback avec possibilité de modifications avant approbation
 
 ### 6. Agent unique + Appel dynamique d'autres agents
+
 Architecture permettant à un agent principal d'appeler d'autres agents spécialisés selon les besoins.
 
 **Implémentation n8n:**
@@ -83,6 +90,7 @@ Architecture permettant à un agent principal d'appeler d'autres agents spécial
 - Agrégation des résultats des agents spécialisés
 
 ### 7. Hiérarchie d'agents + Agents parallèles + Outils partagés
+
 Architecture complexe avec une hiérarchie d'agents travaillant en parallèle et partageant des outils.
 
 **Implémentation n8n:**
@@ -96,6 +104,7 @@ Architecture complexe avec une hiérarchie d'agents travaillant en parallèle et
 - Accès partagé aux outils et ressources (OpenAI, Memory, Gmail, Telegram)
 
 ### 8. Hiérarchie d'agents + Boucle + Agents parallèles + RAG partagé
+
 Architecture avancée combinant hiérarchie, boucles de feedback, traitement parallèle et système RAG partagé.
 
 **Implémentation n8n:**
@@ -113,26 +122,31 @@ Architecture avancée combinant hiérarchie, boucles de feedback, traitement par
 ## Applications pratiques pour Email Sender 1
 
 ### Phase 1: Prospection initiale
+
 - **Architecture recommandée:** Agent + MCP Servers + Outils
 - **Workflow:** Génération de messages personnalisés avec contexte riche
 - **Template:** Webhook → MCP Context → OpenAI → Gmail
 
 ### Phase 2: Suivi des propositions
+
 - **Architecture recommandée:** Agents séquentiels
 - **Workflow:** Analyse des réponses → Génération de suivi → Planification
 - **Template:** Gmail Trigger → Analyse Agent → Suivi Agent → Calendar Agent
 
 ### Phase 3: Traitement des réponses
+
 - **Architecture recommandée:** Agent + Router
 - **Workflow:** Classification des réponses → Routage vers workflows appropriés
 - **Template:** Gmail Trigger → Classification Agent → Switch → Workflows spécifiques
 
 ### Phase 4: Confirmation et finalisation
+
 - **Architecture recommandée:** Agent + Human in the Loop
 - **Workflow:** Génération de contrats → Validation humaine → Envoi final
 - **Template:** Trigger → Contract Agent → Slack Approval → Gmail
 
 ### Phase 5: Analyse et optimisation
+
 - **Architecture recommandée:** Hiérarchie d'agents + RAG partagé
 - **Workflow:** Analyse des performances → Optimisation des messages → Amélioration continue
 - **Template:** Trigger périodique → Analyse Agent → RAG → Optimisation Agent
@@ -140,6 +154,7 @@ Architecture avancée combinant hiérarchie, boucles de feedback, traitement par
 ## Templates prêts à l'emploi
 
 ### Template 1: Prospection automatisée
+
 ```json
 {
   "name": "Prospection IA automatisée",
@@ -152,9 +167,9 @@ Architecture avancée combinant hiérarchie, boucles de feedback, traitement par
   ],
   "connections": {/* Connexions entre les nœuds */}
 }
-```
-
+```plaintext
 ### Template 2: Validation humaine des emails
+
 ```json
 {
   "name": "Validation humaine des emails",
@@ -168,9 +183,9 @@ Architecture avancée combinant hiérarchie, boucles de feedback, traitement par
   ],
   "connections": {/* Connexions entre les nœuds */}
 }
-```
-
+```plaintext
 ### Template 3: Classification et routage des réponses
+
 ```json
 {
   "name": "Classification et routage des réponses",
@@ -185,8 +200,7 @@ Architecture avancée combinant hiérarchie, boucles de feedback, traitement par
   ],
   "connections": {/* Connexions entre les nœuds */}
 }
-```
-
+```plaintext
 ## Bonnes pratiques d'implémentation
 
 1. **Isolation des responsabilités:** Chaque agent doit avoir un rôle clairement défini

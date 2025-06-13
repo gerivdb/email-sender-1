@@ -51,10 +51,9 @@ L'estimation de base fournie par la matrice peut être ajustée en fonction de f
 
 L'effort total estimé peut être calculé selon la formule suivante :
 
-```
+```plaintext
 Effort total = Effort de base × Multiplicateur 1 × Multiplicateur 2 × ... × Multiplicateur n
-```
-
+```plaintext
 Où :
 - Effort de base est la valeur issue de la matrice d'estimation
 - Multiplicateur 1, 2, ..., n sont les facteurs d'ajustement applicables
@@ -101,10 +100,9 @@ Où :
 
 Pour convertir l'effort en jours-personnes en durée calendaire, on peut utiliser la formule suivante :
 
-```
+```plaintext
 Durée calendaire = Effort total / (Nombre de personnes × Productivité)
-```
-
+```plaintext
 Où :
 - Nombre de personnes est le nombre de personnes travaillant simultanément sur l'amélioration
 - Productivité est un facteur qui tient compte du temps effectif de travail (généralement entre 0.6 et 0.8)
@@ -113,10 +111,9 @@ Où :
 
 Pour une amélioration nécessitant 20 jours-personnes avec une équipe de 4 personnes et une productivité de 0.7 :
 
-```
+```plaintext
 Durée calendaire = 20 / (4 × 0.7) = 7.14 jours
-```
-
+```plaintext
 ## Considérations Importantes
 
 - **Fourchettes d'estimation** : Les estimations sont fournies sous forme de fourchettes pour refléter l'incertitude inhérente à l'estimation d'effort.

@@ -31,6 +31,7 @@ Le mode analyse les dépendances entre fichiers pour différents langages de pro
 - **Python** : Détecte les instructions `import` et `from ... import`.
 - **JavaScript/TypeScript** : Détecte les instructions `import` et `require()`.
 - **C#** : Détecte les instructions `using` et les références de namespace.
+
 - **Java** : Détecte les instructions `import`.
 
 ### Stratégies de Résolution
@@ -58,8 +59,7 @@ Le mode peut générer des graphes de dépendances et des rapports détaillés d
 
 ```powershell
 .\tools\scripts\c-break.ps1 -Path <chemin_du_projet> -OutputPath <chemin_rapport>
-```
-
+```plaintext
 ### Paramètres
 
 - `-Path` : Chemin du projet à analyser (obligatoire)
@@ -81,26 +81,22 @@ Le mode peut générer des graphes de dépendances et des rapports détaillés d
 
 ```powershell
 .\tools\scripts\c-break.ps1 -Path "D:\MonProjet" -Verbose
-```
-
+```plaintext
 #### Générer un rapport détaillé
 
 ```powershell
 .\tools\scripts\c-break.ps1 -Path "D:\MonProjet" -OutputPath "D:\Rapports\cycles.json" -Algorithm TARJAN
-```
-
+```plaintext
 #### Corriger automatiquement les cycles
 
 ```powershell
 .\tools\scripts\c-break.ps1 -Path "D:\MonProjet" -FixCycles -FixStrategy INVERSION -MinimumSeverity 5
-```
-
+```plaintext
 #### Analyser un sous-répertoire spécifique
 
 ```powershell
 .\tools\scripts\c-break.ps1 -Path "D:\MonProjet" -IncludePatterns "src\core\*.ps1" -MaxDepth 5
-```
-
+```plaintext
 ## Format du Rapport
 
 Le rapport généré contient les informations suivantes :
@@ -123,8 +119,7 @@ Le rapport généré contient les informations suivantes :
     // ...
   ]
 }
-```
-
+```plaintext
 ## Intégration avec d'autres Modes
 
 Le mode C-BREAK s'intègre avec d'autres modes du système :

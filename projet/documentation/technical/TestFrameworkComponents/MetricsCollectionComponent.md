@@ -35,7 +35,9 @@ function Start-MetricsCollection {
     )
     
     # Démarre la collecte des métriques pour un test
+
     # Retourne un identifiant de session de collecte
+
 }
 
 function Stop-MetricsCollection {
@@ -52,10 +54,11 @@ function Stop-MetricsCollection {
     )
     
     # Arrête la collecte des métriques
-    # Retourne les métriques collectées si PassThru est spécifié
-}
-```
 
+    # Retourne les métriques collectées si PassThru est spécifié
+
+}
+```plaintext
 ### 3.2 Interfaces secondaires
 
 ```powershell
@@ -73,6 +76,7 @@ function Add-MetricsCollector {
     )
     
     # Ajoute un collecteur de métriques personnalisé
+
 }
 
 function Get-AvailableMetrics {
@@ -80,6 +84,7 @@ function Get-AvailableMetrics {
     param ()
     
     # Retourne la liste des métriques disponibles
+
 }
 
 function Add-MetricDataPoint {
@@ -102,6 +107,7 @@ function Add-MetricDataPoint {
     )
     
     # Ajoute un point de données à une métrique
+
 }
 
 function Get-MetricsSnapshot {
@@ -115,27 +121,33 @@ function Get-MetricsSnapshot {
     )
     
     # Récupère un instantané des métriques en cours de collecte
-}
-```
 
+}
+```plaintext
 ## 4. Sous-composants
 
 ### 4.1 TimeMetricsCollector
+
 Collecte les métriques de temps d'exécution, de latence et de débit.
 
 ### 4.2 MemoryMetricsCollector
+
 Collecte les métriques d'utilisation mémoire, d'allocation et de libération.
 
 ### 4.3 CpuMetricsCollector
+
 Collecte les métriques d'utilisation CPU, de temps processeur et de contexte.
 
 ### 4.4 IoMetricsCollector
+
 Collecte les métriques d'entrées/sorties disque et réseau.
 
 ### 4.5 MetricsAggregator
+
 Agrège les métriques collectées et calcule des statistiques.
 
 ### 4.6 MetricsStorage
+
 Stocke les métriques collectées dans différents formats.
 
 ## 5. Flux de données
@@ -217,8 +229,7 @@ Le composant utilise un format de configuration JSON/YAML avec la structure suiv
     "statistics": ["min", "max", "avg", "p50", "p95", "p99"]
   }
 }
-```
-
+```plaintext
 ## 7. Dépendances
 
 - **System.Diagnostics**: Pour la mesure des performances
@@ -248,22 +259,25 @@ Le composant est conçu pour être extensible via:
 
 ```powershell
 # Démarrer la collecte des métriques standard
+
 $sessionId = Start-MetricsCollection -TestId "index-loading-test-001" -OutputPath ".\metrics\"
 
 # Exécuter le test...
 
 # Arrêter la collecte et récupérer les métriques
-$metrics = Stop-MetricsCollection -SessionId $sessionId -PassThru
-```
 
+$metrics = Stop-MetricsCollection -SessionId $sessionId -PassThru
+```plaintext
 ### 10.2 Collecte avec métriques personnalisées
 
 ```powershell
 # Ajouter un collecteur personnalisé
+
 Add-MetricsCollector -Name "QueryPerformance" -CollectorScript {
     param($parameters)
     
     # Logique de collecte des performances de requête
+
     $metrics = @{
         QueryCount = Get-QueryCounter
         AvgQueryTime = Get-AverageQueryTime
@@ -274,21 +288,24 @@ Add-MetricsCollector -Name "QueryPerformance" -CollectorScript {
 }
 
 # Démarrer la collecte avec le collecteur personnalisé
+
 $sessionId = Start-MetricsCollection -TestId "query-performance-test" -Metrics @("time", "memory", "QueryPerformance")
 
 # Ajouter manuellement un point de données
+
 Add-MetricDataPoint -SessionId $sessionId -MetricName "QueryLatency" -Value 42.5 -Tags @{
     QueryType = "Lookup"
     IndexType = "Hashtable"
 }
-```
-
+```plaintext
 ### 10.3 Récupération d'un instantané en temps réel
 
 ```powershell
 # Récupérer un instantané des métriques en cours de collecte
+
 $snapshot = Get-MetricsSnapshot -SessionId $sessionId -MetricNames @("memory", "cpu")
 
 # Afficher l'utilisation mémoire actuelle
+
 Write-Host "Utilisation mémoire actuelle: $($snapshot.memory.currentUsage) MB"
-```
+```plaintext

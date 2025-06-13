@@ -1,4 +1,4 @@
-﻿# RoadmapParser Module
+# RoadmapParser Module
 
 ## Description
 

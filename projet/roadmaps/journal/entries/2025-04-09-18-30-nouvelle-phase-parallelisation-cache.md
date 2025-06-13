@@ -7,21 +7,25 @@ tags: [roadmap, parallélisation, cache, python, powershell, performance]
 # Nouvelle phase prioritaire : Intégration de la parallélisation avec la gestion des caches
 
 ## Contexte
+
 Suite à l'achèvement réussi de la phase d'optimisation de la gestion des caches, j'ai identifié une opportunité majeure d'amélioration des performances en intégrant la parallélisation avec notre système de cache. Cette nouvelle phase prioritaire vise à exploiter pleinement les capacités de traitement parallèle tout en tirant parti de notre infrastructure de cache optimisée.
 
 ## Actions réalisées
 
 ### 1. Analyse des besoins et opportunités
+
 - Identification des goulots d'étranglement dans les traitements intensifs
 - Évaluation des possibilités d'intégration entre PowerShell et Python
 - Analyse des défis liés au partage de cache entre différents langages et processus
 
 ### 2. Mise à jour de la roadmap
+
 - Ajout d'une nouvelle section prioritaire (1.1) pour l'intégration de la parallélisation avec la gestion des caches
 - Définition de sous-tâches détaillées couvrant l'architecture, l'intégration, les cas d'usage et les tests
 - Réorganisation des priorités pour refléter cette nouvelle orientation
 
 ### 3. Élaboration d'un document de conception
+
 - Création d'une architecture hybride PowerShell-Python pour le traitement parallèle
 - Conception d'un système de cache partagé compatible avec les deux langages
 - Définition des mécanismes de communication et d'échange de données

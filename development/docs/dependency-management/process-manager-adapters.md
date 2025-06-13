@@ -10,7 +10,7 @@ Le Process Manager utilise un système d'adaptateurs pour standardiser les inter
 
 Le système d'adaptateurs est organisé selon la structure suivante:
 
-```
+```plaintext
 development/managers/process-manager/
 ├── adapters/
 │   ├── mode-manager-adapter.ps1
@@ -21,8 +21,7 @@ development/managers/process-manager/
 └── scripts/
     ├── process-manager.ps1
     └── integrate-managers.ps1
-```
-
+```plaintext
 Chaque gestionnaire dispose de son propre adaptateur qui sert d'interface standardisée pour interagir avec lui via le Process Manager.
 
 ### 1.2 Gestionnaires intégrés
@@ -53,15 +52,18 @@ param (
 )
 
 # Définir le chemin vers le gestionnaire
+
 $managerPath = "chemin/vers/le/gestionnaire.ps1"
 
 # Vérifier que le gestionnaire existe
+
 if (-not (Test-Path -Path $managerPath)) {
     Write-Error "Le gestionnaire est introuvable à l'emplacement : $managerPath"
     exit 1
 }
 
 # Fonction pour exécuter une commande sur le gestionnaire
+
 function Invoke-ManagerCommand {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -73,22 +75,26 @@ function Invoke-ManagerCommand {
     )
 
     # Logique d'exécution de la commande
+
 }
 
 # Exécuter la commande spécifiée
+
 switch ($Command) {
     "Command1" {
         # Logique pour Command1
+
     }
     "Command2" {
         # Logique pour Command2
+
     }
     "Command3" {
         # Logique pour Command3
+
     }
 }
-```
-
+```plaintext
 Cette structure standardisée permet une interface cohérente pour tous les gestionnaires.
 
 ### 2.2 Analyse de l'adaptateur du Mode Manager
@@ -98,8 +104,7 @@ L'adaptateur du Mode Manager (`mode-manager-adapter.ps1`) expose les fonctionnal
 ```powershell
 [ValidateSet("GetMode", "SetMode", "ListModes", "GetModeInfo")]
 [string]$Command
-```
-
+```plaintext
 Cet adaptateur permet de:
 - Obtenir le mode actuel
 - Définir le mode actuel
@@ -113,8 +118,7 @@ L'adaptateur du Script Manager (`script-manager-adapter.ps1`) expose les fonctio
 ```powershell
 [ValidateSet("ExecuteScript", "ListScripts", "GetScriptInfo", "OrganizeScripts")]
 [string]$Command
-```
-
+```plaintext
 Cet adaptateur permet de:
 - Exécuter un script
 - Lister tous les scripts disponibles
@@ -128,8 +132,7 @@ L'adaptateur de l'Error Manager (`error-manager-adapter.ps1`) expose les fonctio
 ```powershell
 [ValidateSet("LogError", "GetErrors", "ClearErrors", "AnalyzeErrors")]
 [string]$Command
-```
-
+```plaintext
 Cet adaptateur permet de:
 - Enregistrer une erreur
 - Obtenir les erreurs enregistrées
@@ -142,8 +145,7 @@ Les adaptateurs utilisent un mécanisme de résolution de chemins pour localiser
 
 ```powershell
 $managerPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path))) -ChildPath "manager-name\scripts\manager-name.ps1"
-```
-
+```plaintext
 Ce mécanisme permet de localiser les gestionnaires de manière relative à l'emplacement de l'adaptateur, ce qui facilite la portabilité du code.
 
 Certains adaptateurs incluent également une logique de fallback pour localiser les gestionnaires à des emplacements alternatifs:
@@ -152,8 +154,7 @@ Certains adaptateurs incluent également une logique de fallback pour localiser 
 if (-not (Test-Path -Path $roadmapManagerPath)) {
     $roadmapManagerPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path))) -ChildPath "roadmap\parser\module\Functions\Public\Invoke-RoadmapCheck.ps1"
 }
-```
-
+```plaintext
 ## 3. Mécanismes d'intégration
 
 ### 3.1 Enregistrement des gestionnaires
@@ -175,18 +176,21 @@ function Register-Manager {
     )
 
     # Vérifier que le fichier du gestionnaire existe
+
     if (-not (Test-Path -Path $Path)) {
         Write-Log -Message "Le fichier du gestionnaire n'existe pas : $Path" -Level Error
         return $false
     }
 
     # Vérifier si le gestionnaire est déjà enregistré
+
     if ($config.Managers.$Name -and -not $Force) {
         Write-Log -Message "Le gestionnaire '$Name' est déjà enregistré. Utilisez -Force pour le remplacer." -Level Warning
         return $false
     }
 
     # Enregistrer le gestionnaire
+
     $config.Managers.$Name = @{
         Path = $Path
         Enabled = $true
@@ -194,13 +198,13 @@ function Register-Manager {
     }
 
     # Sauvegarder la configuration
+
     Save-Configuration
 
     Write-Log -Message "Le gestionnaire '$Name' a été enregistré avec succès." -Level Info
     return $true
 }
-```
-
+```plaintext
 Ce mécanisme permet de:
 - Vérifier l'existence du gestionnaire
 - Éviter les enregistrements en double
@@ -222,6 +226,7 @@ function Discover-Managers {
     $managersRegistered = 0
 
     # Rechercher les gestionnaires dans le répertoire des managers
+
     $managersRoot = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "managers"
     if (Test-Path -Path $managersRoot) {
         $managerDirs = Get-ChildItem -Path $managersRoot -Directory | Where-Object { $_.Name -like "*-manager" }
@@ -235,6 +240,7 @@ function Discover-Managers {
                 Write-Log -Message "Gestionnaire trouvé : $managerName ($managerScriptPath)" -Level Debug
                 
                 # Enregistrer le gestionnaire
+
                 if (Register-Manager -Name $managerName -Path $managerScriptPath -Force:$Force) {
                     $managersRegistered++
                 }
@@ -245,8 +251,7 @@ function Discover-Managers {
     Write-Log -Message "$managersFound gestionnaires trouvés, $managersRegistered gestionnaires enregistrés." -Level Info
     return $managersRegistered
 }
-```
-
+```plaintext
 Ce mécanisme permet de:
 - Rechercher automatiquement les gestionnaires dans le répertoire des managers
 - Normaliser les noms des gestionnaires
@@ -258,6 +263,7 @@ Le script `integrate-managers.ps1` facilite l'intégration des gestionnaires ave
 
 ```powershell
 # Définir les gestionnaires à intégrer
+
 $managers = @(
     @{
         Name = "ModeManager"
@@ -265,25 +271,28 @@ $managers = @(
         AdapterPath = Join-Path -Path $adaptersPath -ChildPath "mode-manager-adapter.ps1"
     },
     # Autres gestionnaires...
+
 )
 
 # Intégrer les gestionnaires
+
 foreach ($manager in $managers) {
     Write-Host "Intégration du gestionnaire '$($manager.Name)'..." -ForegroundColor Cyan
     
     # Vérifier que l'adaptateur existe
+
     if (-not (Test-Path -Path $manager.AdapterPath)) {
         Write-Warning "L'adaptateur pour le gestionnaire '$($manager.Name)' est introuvable à l'emplacement : $($manager.AdapterPath)"
         continue
     }
     
     # Enregistrer le gestionnaire
+
     if (Register-Manager -Name $manager.Name -Path $manager.Path -Force:$Force) {
         $integratedManagers++
     }
 }
-```
-
+```plaintext
 Ce script permet de:
 - Définir explicitement les gestionnaires à intégrer
 - Vérifier l'existence des adaptateurs
@@ -305,7 +314,9 @@ Certains composants du projet, comme le proxy MCP, implémentent des mécanismes
 
 ```python
 # Si le serveur actif est le proxy et qu'il y a une erreur,
+
 # essayer les fallbacks configurés
+
 if (server_name or self.active_server) == "unified_proxy" and "fallbacks" in self.config["mcpServers"]["unified_proxy"]:
     for fallback in self.config["mcpServers"]["unified_proxy"]["fallbacks"]:
         try:
@@ -325,8 +336,7 @@ if (server_name or self.active_server) == "unified_proxy" and "fallbacks" in sel
             return response
         except requests.RequestException:
             continue
-```
-
+```plaintext
 Ce type de mécanisme pourrait être adapté pour gérer les dépendances entre gestionnaires.
 
 ## 5. Tests des adaptateurs
@@ -335,6 +345,7 @@ Le projet inclut des tests pour vérifier le bon fonctionnement des adaptateurs:
 
 ```powershell
 # Ajouter un test pour vérifier que l'adaptateur existe
+
 $tests += @{
     Name = "Test de l'existence de l'adaptateur $adapterName"
     Test = {
@@ -343,6 +354,7 @@ $tests += @{
 }
 
 # Ajouter un test pour vérifier que l'adaptateur peut être chargé
+
 $tests += @{
     Name = "Test du chargement de l'adaptateur $adapterName"
     Test = {
@@ -355,8 +367,7 @@ $tests += @{
         }
     }
 }
-```
-
+```plaintext
 Ces tests permettent de:
 - Vérifier l'existence des adaptateurs
 - Vérifier que les adaptateurs peuvent être chargés
@@ -396,6 +407,7 @@ Implémenter un système de dépendances explicites entre gestionnaires:
 
 ```powershell
 # Dans le manifeste du gestionnaire
+
 @{
     Name = "ModeManager"
     Version = "1.0.0"
@@ -410,8 +422,7 @@ Implémenter un système de dépendances explicites entre gestionnaires:
         }
     )
 }
-```
-
+```plaintext
 ### 7.2 Vérification des dépendances
 
 Implémenter un mécanisme de vérification des dépendances lors de l'enregistrement des gestionnaires:
@@ -419,14 +430,17 @@ Implémenter un mécanisme de vérification des dépendances lors de l'enregistr
 ```powershell
 function Register-Manager {
     # ...
+
     
     # Vérifier les dépendances
+
     if ($managerManifest.Dependencies) {
         foreach ($dependency in $managerManifest.Dependencies) {
             $dependencyName = $dependency.Name
             $dependencyVersion = $dependency.MinimumVersion
             
             # Vérifier si la dépendance est enregistrée
+
             if (-not $config.Managers.$dependencyName) {
                 Write-Log -Message "La dépendance '$dependencyName' n'est pas enregistrée." -Level Warning
                 $missingDependencies += $dependencyName
@@ -434,6 +448,7 @@ function Register-Manager {
             }
             
             # Vérifier la version de la dépendance
+
             if ($dependencyVersion) {
                 $dependencyPath = $config.Managers.$dependencyName.Path
                 $dependencyManifest = Get-ManagerManifest -Path $dependencyPath
@@ -447,9 +462,9 @@ function Register-Manager {
     }
     
     # ...
-}
-```
 
+}
+```plaintext
 ### 7.3 Résolution des dépendances
 
 Implémenter un mécanisme de résolution des dépendances:
@@ -469,16 +484,19 @@ function Resolve-ManagerDependencies {
     )
     
     # Vérifier si le gestionnaire est enregistré
+
     if (-not $config.Managers.$ManagerName) {
         Write-Log -Message "Le gestionnaire '$ManagerName' n'est pas enregistré." -Level Error
         return $false
     }
     
     # Obtenir le manifeste du gestionnaire
+
     $managerPath = $config.Managers.$ManagerName.Path
     $managerManifest = Get-ManagerManifest -Path $managerPath
     
     # Résoudre les dépendances
+
     $resolvedDependencies = @()
     $unresolvedDependencies = @()
     
@@ -488,6 +506,7 @@ function Resolve-ManagerDependencies {
             $dependencyVersion = $dependency.MinimumVersion
             
             # Vérifier si la dépendance est enregistrée
+
             if (-not $config.Managers.$dependencyName) {
                 Write-Log -Message "La dépendance '$dependencyName' n'est pas enregistrée." -Level Warning
                 $unresolvedDependencies += $dependencyName
@@ -495,6 +514,7 @@ function Resolve-ManagerDependencies {
             }
             
             # Vérifier la version de la dépendance
+
             if ($dependencyVersion) {
                 $dependencyPath = $config.Managers.$dependencyName.Path
                 $dependencyManifest = Get-ManagerManifest -Path $dependencyPath
@@ -509,6 +529,7 @@ function Resolve-ManagerDependencies {
             $resolvedDependencies += $dependencyName
             
             # Résoudre récursivement les dépendances
+
             if ($Recursive) {
                 $subDependencies = Resolve-ManagerDependencies -ManagerName $dependencyName -Recursive -Force:$Force
                 $resolvedDependencies += $subDependencies.Resolved
@@ -522,8 +543,7 @@ function Resolve-ManagerDependencies {
         Unresolved = $unresolvedDependencies | Select-Object -Unique
     }
 }
-```
-
+```plaintext
 ### 7.4 Mécanisme de fallback
 
 Implémenter un mécanisme de fallback pour gérer les gestionnaires indisponibles:
@@ -546,10 +566,12 @@ function Invoke-ManagerCommand {
     )
     
     # Vérifier si le gestionnaire est enregistré
+
     if (-not $config.Managers.$ManagerName) {
         Write-Log -Message "Le gestionnaire '$ManagerName' n'est pas enregistré." -Level Error
         
         # Essayer les fallbacks
+
         foreach ($fallback in $Fallbacks) {
             if ($config.Managers.$fallback) {
                 Write-Log -Message "Tentative de fallback vers le gestionnaire '$fallback'." -Level Warning
@@ -561,13 +583,16 @@ function Invoke-ManagerCommand {
     }
     
     # Obtenir le chemin de l'adaptateur
+
     $adapterPath = Join-Path -Path $adaptersPath -ChildPath "$($ManagerName.ToLower() -replace 'manager', '-manager')-adapter.ps1"
     
     # Vérifier que l'adaptateur existe
+
     if (-not (Test-Path -Path $adapterPath)) {
         Write-Log -Message "L'adaptateur pour le gestionnaire '$ManagerName' est introuvable à l'emplacement : $adapterPath" -Level Error
         
         # Essayer les fallbacks
+
         foreach ($fallback in $Fallbacks) {
             if ($config.Managers.$fallback) {
                 Write-Log -Message "Tentative de fallback vers le gestionnaire '$fallback'." -Level Warning
@@ -579,6 +604,7 @@ function Invoke-ManagerCommand {
     }
     
     # Exécuter la commande
+
     try {
         $result = & $adapterPath -Command $Command @Parameters
         return $result
@@ -587,6 +613,7 @@ function Invoke-ManagerCommand {
         Write-Log -Message "Erreur lors de l'exécution de la commande '$Command' sur le gestionnaire '$ManagerName' : $_" -Level Error
         
         # Essayer les fallbacks
+
         foreach ($fallback in $Fallbacks) {
             if ($config.Managers.$fallback) {
                 Write-Log -Message "Tentative de fallback vers le gestionnaire '$fallback'." -Level Warning
@@ -597,8 +624,7 @@ function Invoke-ManagerCommand {
         return $null
     }
 }
-```
-
+```plaintext
 ### 7.5 Documentation des dépendances
 
 Créer une documentation complète des dépendances entre gestionnaires:
@@ -620,6 +646,7 @@ function Get-ManagerDependencyGraph {
     $graph = @{}
     
     # Construire le graphe des dépendances explicites
+
     foreach ($managerName in $config.Managers.Keys) {
         $managerPath = $config.Managers.$managerName.Path
         $managerManifest = Get-ManagerManifest -Path $managerPath
@@ -644,8 +671,10 @@ function Get-ManagerDependencyGraph {
     }
     
     # Ajouter les dépendances implicites
+
     if ($IncludeImplicit) {
         # Analyser les adaptateurs pour détecter les dépendances implicites
+
         $adapters = Get-ChildItem -Path $adaptersPath -Filter "*-adapter.ps1"
         
         foreach ($adapter in $adapters) {
@@ -655,6 +684,7 @@ function Get-ManagerDependencyGraph {
             $adapterContent = Get-Content -Path $adapter.FullName -Raw
             
             # Rechercher les appels à d'autres gestionnaires
+
             $otherManagers = $config.Managers.Keys | Where-Object { $_ -ne $managerName }
             
             foreach ($otherManager in $otherManagers) {
@@ -672,6 +702,7 @@ function Get-ManagerDependencyGraph {
     }
     
     # Formater la sortie
+
     switch ($OutputFormat) {
         "Text" {
             $output = "Graphe des dépendances des gestionnaires:`n"
@@ -743,8 +774,7 @@ function Get-ManagerDependencyGraph {
         }
     }
 }
-```
-
+```plaintext
 ## 8. Conclusion
 
 Le système d'adaptateurs du Process Manager fournit une base solide pour l'intégration et la gestion des dépendances entre gestionnaires. Cependant, il présente certaines limitations, notamment en ce qui concerne la gestion explicite des dépendances et les mécanismes de fallback.

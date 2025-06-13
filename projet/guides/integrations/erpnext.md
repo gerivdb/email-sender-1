@@ -162,6 +162,7 @@ tags: [erpnext, task, project:Journal RAG, status:Open, priority:High]
 # Tâche ERPNext: Implémenter l'authentification
 
 ## Détails de la tâche
+
 - **ID**: TASK-001
 - **Sujet**: Implémenter l'authentification
 - **Projet**: Journal RAG
@@ -171,16 +172,18 @@ tags: [erpnext, task, project:Journal RAG, status:Open, priority:High]
 - **Date de fin**: 2023-04-12
 
 ## Description
+
 Implémenter un système d'authentification pour l'application Journal RAG. Utiliser JWT pour l'authentification API et sessions pour l'interface web.
 
 ## Actions réalisées
+
 - Synchronisation depuis ERPNext le 2023-04-05 15:30
 
 ## Notes
+
 - Cette entrée a été générée automatiquement à partir d'une tâche ERPNext.
 - Pour mettre à jour la tâche dans ERPNext, modifiez cette entrée et exécutez la synchronisation vers ERPNext.
-```
-
+```plaintext
 ### Exemple de mise à jour d'une tâche ERPNext à partir d'une entrée de journal
 
 ```markdown
@@ -193,6 +196,7 @@ tags: [erpnext, task, project:Journal RAG, status:In Progress, priority:High]
 # Tâche ERPNext: Implémenter l'authentification
 
 ## Détails de la tâche
+
 - **ID**: TASK-001
 - **Sujet**: Implémenter l'authentification
 - **Projet**: Journal RAG
@@ -202,14 +206,17 @@ tags: [erpnext, task, project:Journal RAG, status:In Progress, priority:High]
 - **Date de fin**: 2023-04-12
 
 ## Description
+
 Implémenter un système d'authentification pour l'application Journal RAG. Utiliser JWT pour l'authentification API et sessions pour l'interface web.
 
 ## Actions réalisées
+
 - Synchronisation depuis ERPNext le 2023-04-05 15:30
 - Implémentation de l'authentification JWT pour l'API
 - Configuration des routes protégées
 
 ## Notes
+
 - Cette entrée a été générée automatiquement à partir d'une tâche ERPNext.
 - Pour mettre à jour la tâche dans ERPNext, modifiez cette entrée et exécutez la synchronisation vers ERPNext.
-```
+```plaintext

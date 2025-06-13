@@ -23,8 +23,7 @@ Le fichier `memory_schema.json` définit le schéma pour les mémoires du systè
   "related_memories": ["string"], // Identifiants des mémoires liées
   "version": number         // Version de la mémoire
 }
-```
-
+```plaintext
 ### Métadonnées
 
 Les métadonnées sont structurées pour permettre une recherche et un filtrage efficaces :
@@ -49,8 +48,7 @@ Les métadonnées sont structurées pour permettre une recherche et un filtrage 
   "content_stats": { ... }, // Statistiques sur le contenu
   "custom_metadata": { ... } // Métadonnées personnalisées
 }
-```
-
+```plaintext
 ### Types de mémoires
 
 Le système supporte différents types de mémoires, chacun avec des métadonnées spécifiques :
@@ -70,14 +68,12 @@ Pour valider une mémoire par rapport au schéma, utilisez le script `validate_m
 
 ```bash
 python validate_memory_schema.py --schema path/to/memory_schema.json --memory path/to/memory.json
-```
-
+```plaintext
 Pour générer un exemple de mémoire valide :
 
 ```bash
 python validate_memory_schema.py --output path/to/output.json
-```
-
+```plaintext
 ## Utilisation avec Qdrant
 
 Le schéma est compatible avec Qdrant pour le stockage vectoriel. Les champs importants pour Qdrant sont :

@@ -17,10 +17,9 @@ La vérification de la présence des workflows n8n permet de :
 
 Le script `verify-workflows.cmd` permet de vérifier la présence des workflows n8n :
 
-```
+```plaintext
 .\verify-workflows.cmd -ReferenceFolder "path/to/reference" -WorkflowFolder "path/to/workflows"
-```
-
+```plaintext
 Options disponibles :
 
 - `-WorkflowFolder` : Dossier contenant les workflows cibles (par défaut: n8n/data/.n8n/workflows)
@@ -42,10 +41,9 @@ Options disponibles :
 
 Le script `send-notification.cmd` permet d'envoyer des notifications :
 
-```
+```plaintext
 .\send-notification.cmd -Subject "Test" -Message "Ceci est un test" -Level "INFO"
-```
-
+```plaintext
 Options disponibles :
 
 - `-Subject` : Sujet de la notification
@@ -96,8 +94,7 @@ Les workflows de référence doivent être stockés dans des fichiers JSON avec 
   "settings": {...},
   "tags": [...]
 }
-```
-
+```plaintext
 Les fichiers peuvent être organisés dans des dossiers et sous-dossiers. Le script parcourt récursivement tous les dossiers par défaut.
 
 ## Notifications
@@ -135,8 +132,7 @@ Les notifications sont configurées dans le fichier `n8n/config/notification-con
     "WebhookUrl": "https://hooks.slack.com/services/..."
   }
 }
-```
-
+```plaintext
 Pour activer un canal de notification, définissez `Enabled` à `true` et configurez les paramètres correspondants.
 
 ### Niveaux de notification
@@ -153,34 +149,29 @@ Le niveau minimum pour envoyer une notification peut être configuré avec l'opt
 
 ### Vérification simple
 
-```
+```plaintext
 .\verify-workflows.cmd -ReferenceFolder "n8n/core/workflows/local" -WorkflowFolder "n8n/data/.n8n/workflows"
-```
-
+```plaintext
 ### Vérification via l'API
 
-```
+```plaintext
 .\verify-workflows.cmd -ApiMethod $true -Hostname "localhost" -Port 5678
-```
-
+```plaintext
 ### Vérification avec notifications
 
-```
+```plaintext
 .\verify-workflows.cmd -NotificationEnabled $true -NotificationLevel "WARNING"
-```
-
+```plaintext
 ### Vérification détaillée
 
-```
+```plaintext
 .\verify-workflows.cmd -DetailLevel 3 -OutputFile "n8n/logs/detailed-workflow-report.json"
-```
-
+```plaintext
 ### Envoi d'une notification de test
 
-```
+```plaintext
 .\send-notification.cmd -Subject "Test" -Message "Ceci est un test" -Level "INFO" -Channel "Email"
-```
-
+```plaintext
 ## Intégration avec des tâches planifiées
 
 Le script peut être intégré avec des tâches planifiées pour vérifier régulièrement la présence des workflows n8n.
@@ -196,10 +187,9 @@ Le script peut être intégré avec des tâches planifiées pour vérifier régu
 
 ### Cron (Linux)
 
-```
+```plaintext
 0 8 * * * cd /path/to/project && ./verify-workflows.cmd
-```
-
+```plaintext
 ## Résolution des problèmes
 
 ### Erreur "Le dossier n'existe pas"
@@ -235,7 +225,7 @@ Les logs sont enregistrés dans le fichier spécifié par l'option `-LogFile` (p
 
 Exemple de log :
 
-```
+```plaintext
 [2025-04-22 10:15:30] [INFO] === Vérification de la présence des workflows n8n ===
 [2025-04-22 10:15:30] [INFO] Dossier des workflows: n8n/data/.n8n/workflows
 [2025-04-22 10:15:30] [INFO] Dossier de référence: n8n/core/workflows/local
@@ -257,8 +247,7 @@ Exemple de log :
 [2025-04-22 10:15:35] [INFO] Nombre de workflows cibles: 8
 [2025-04-22 10:15:35] [WARNING] Nombre de workflows manquants: 2
 [2025-04-22 10:15:35] [INFO] Nombre de workflows présents: 8
-```
-
+```plaintext
 ## Résultats de la vérification
 
 Les résultats de la vérification sont enregistrés dans le fichier spécifié par l'option `-OutputFile` (par défaut: n8n/logs/missing-workflows.json). Les résultats contiennent les informations suivantes :
@@ -305,4 +294,4 @@ Exemple de résultats :
   "MissingCount": 2,
   "PresentCount": 8
 }
-```
+```plaintext

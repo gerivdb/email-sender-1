@@ -1,4 +1,4 @@
-﻿# ConvertFrom-MarkdownToRoadmapExtended
+# ConvertFrom-MarkdownToRoadmapExtended
 
 ## SYNOPSIS
 

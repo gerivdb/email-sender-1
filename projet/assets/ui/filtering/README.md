@@ -19,8 +19,7 @@ Le composant `FilterPanel` est un composant réutilisable qui fournit une interf
 >
   <!-- Contenu des filtres -->
 </filter-panel>
-```
-
+```plaintext
 ### AnalysisFilters
 
 Le composant `AnalysisFilters` est un composant spécifique pour les visualisations d'analyse. Il utilise le composant `FilterPanel` et ajoute des filtres spécifiques pour les analyses.
@@ -33,8 +32,7 @@ Le composant `AnalysisFilters` est un composant spécifique pour les visualisati
   @apply="applyFilters"
   @reset="resetFilters"
 />
-```
-
+```plaintext
 ## Types de filtres
 
 ### Filtres de période
@@ -137,8 +135,7 @@ export default {
     }
   }
 }
-```
-
+```plaintext
 ### Filtres actifs
 
 Le composant `AnalysisFilters` affiche les filtres actifs et permet de les supprimer:
@@ -172,8 +169,7 @@ Le composant `AnalysisFilters` affiche les filtres actifs et permet de les suppr
     <!-- Autres filtres actifs -->
   </div>
 </div>
-```
-
+```plaintext
 ## Animations
 
 Le système de filtrage utilise des animations pour améliorer l'expérience utilisateur:
@@ -188,8 +184,7 @@ Le système de filtrage utilise des animations pour améliorer l'expérience uti
     <!-- Contenu des filtres -->
   </div>
 </transition>
-```
-
+```plaintext
 ## Personnalisation
 
 Le système de filtrage peut être personnalisé en modifiant les composants `FilterPanel` et `AnalysisFilters`. Vous pouvez:

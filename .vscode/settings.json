@@ -37,10 +37,14 @@
       "source.organizeImports": "always",
       "source.fixAll": "always"
     }
-  },
-  "editor.formatOnSave": true,
+  },  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    
     "source.fixAll": "always"
+  },  "[markdown]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.markdownlint": "always"
+    }
   }
 }

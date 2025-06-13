@@ -82,23 +82,24 @@ Pour ajouter de nouveaux documents à cette structure, utilisez Hygen :
 
 ```powershell
 # Créer un nouveau document dans la structure
-hygen doc-structure new --docType "development" --category "api" --subcategory "examples"
-```
 
+hygen doc-structure new --docType "development" --category "api" --subcategory "examples"
+```plaintext
 ### Création de scripts
 
 Pour créer un nouveau script PowerShell, utilisez le script `new-script.ps1` :
 
 ```powershell
 # Créer un nouveau script PowerShell
-.\development\scripts\maintenance\repo\new-script.ps1 -Name "nom-du-script" -Category "maintenance/sous-dossier" -Description "Description du script" -Author "Votre Nom"
-```
 
+.\development\scripts\maintenance\repo\new-script.ps1 -Name "nom-du-script" -Category "maintenance/sous-dossier" -Description "Description du script" -Author "Votre Nom"
+```plaintext
 ### Organisation des scripts
 
 Pour organiser automatiquement les scripts, utilisez le script `organize-scripts.ps1` :
 
 ```powershell
 # Organiser les scripts
+
 .\development\scripts\maintenance\repo\organize-scripts.ps1
-```
+```plaintext

@@ -8,10 +8,9 @@ Ce document définit des métriques quantitatives pour évaluer la précision de
 
 ### 2.1 Erreur absolue de localisation (EAL)
 
-```
+```plaintext
 EAL = |position_mode_réel - position_mode_histogramme|
-```
-
+```plaintext
 | Plage | Interprétation |
 |-------|----------------|
 | 0-0.1×W | Excellente précision |
@@ -23,10 +22,9 @@ Où W est la largeur du mode (FWHM).
 
 ### 2.2 Erreur relative de localisation (ERL)
 
-```
+```plaintext
 ERL = |position_mode_réel - position_mode_histogramme| / position_mode_réel
-```
-
+```plaintext
 | Plage | Interprétation |
 |-------|----------------|
 | 0-1% | Excellente précision |
@@ -36,10 +34,9 @@ ERL = |position_mode_réel - position_mode_histogramme| / position_mode_réel
 
 ### 2.3 Erreur normalisée par la largeur de bin (ENB)
 
-```
+```plaintext
 ENB = |position_mode_réel - position_mode_histogramme| / largeur_bin
-```
-
+```plaintext
 | Plage | Interprétation |
 |-------|----------------|
 | 0-0.25 | Excellente précision |
@@ -51,10 +48,9 @@ ENB = |position_mode_réel - position_mode_histogramme| / largeur_bin
 
 ### 3.1 Indice de précision multimodale (IPM)
 
-```
+```plaintext
 IPM = 1 - (Σ|position_mode_i_réel - position_mode_i_histogramme| / Σ|position_mode_i_réel|)
-```
-
+```plaintext
 | Plage | Interprétation |
 |-------|----------------|
 | 0.95-1.0 | Excellente précision |
@@ -64,10 +60,9 @@ IPM = 1 - (Σ|position_mode_i_réel - position_mode_i_histogramme| / Σ|position
 
 ### 3.2 Ratio de conservation des distances inter-modes (RCDIM)
 
-```
+```plaintext
 RCDIM = (distance_inter_modes_histogramme / distance_inter_modes_réelle)
-```
-
+```plaintext
 | Plage | Interprétation |
 |-------|----------------|
 | 0.95-1.05 | Excellente conservation |
@@ -77,10 +72,9 @@ RCDIM = (distance_inter_modes_histogramme / distance_inter_modes_réelle)
 
 ### 3.3 Coefficient de corrélation des positions (CCP)
 
-```
+```plaintext
 CCP = corr(positions_modes_réels, positions_modes_histogramme)
-```
-
+```plaintext
 | Plage | Interprétation |
 |-------|----------------|
 | 0.98-1.0 | Excellente corrélation |
@@ -94,10 +88,9 @@ CCP = corr(positions_modes_réels, positions_modes_histogramme)
 
 Métrique pondérée qui accorde plus d'importance aux modes de latence faible:
 
-```
+```plaintext
 PLH = Σ(wi × (1 - |position_mode_i_réel - position_mode_i_histogramme| / position_mode_i_réel))
-```
-
+```plaintext
 Où wi = (max_position / position_mode_i_réel)^α, avec α = 0.5 typiquement.
 
 | Plage | Interprétation |
@@ -111,10 +104,9 @@ Où wi = (max_position / position_mode_i_réel)^α, avec α = 0.5 typiquement.
 
 Évalue la préservation des points de transition entre niveaux de cache:
 
-```
+```plaintext
 ICT = 1 - Σ|transition_i_réelle - transition_i_histogramme| / Σ|transition_i_réelle|
-```
-
+```plaintext
 | Plage | Interprétation |
 |-------|----------------|
 | 0.95-1.0 | Excellente conservation des transitions |
@@ -139,16 +131,20 @@ def detect_modes_in_histogram(bin_edges, bin_counts):
         mode_positions: Positions estimées des modes
     """
     # Calculer les centres des bins
+
     bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
     
     # Identifier les maxima locaux
+
     is_peak = np.r_[True, bin_counts[1:] < bin_counts[:-1]] & np.r_[bin_counts[:-1] < bin_counts[1:], True]
     peak_indices = np.where(is_peak)[0]
     
     # Filtrer les pics insignifiants (< 10% du pic maximal)
+
     significant_peaks = peak_indices[bin_counts[peak_indices] > 0.1 * np.max(bin_counts)]
     
     # Affiner la position des pics par interpolation parabolique
+
     refined_positions = []
     for idx in significant_peaks:
         if idx > 0 and idx < len(bin_counts) - 1:
@@ -156,17 +152,18 @@ def detect_modes_in_histogram(bin_edges, bin_counts):
             y = bin_counts[idx-1:idx+2]
             
             # Ajustement parabolique
+
             a, b, c = np.polyfit(x, y, 2)
             
             # Position du maximum: -b/(2*a)
+
             refined_position = -b / (2 * a) if a != 0 else bin_centers[idx]
             refined_positions.append(refined_position)
         else:
             refined_positions.append(bin_centers[idx])
     
     return np.array(refined_positions)
-```
-
+```plaintext
 ### 5.2 Calcul des métriques de localisation
 
 ```python
@@ -184,24 +181,29 @@ def calculate_location_metrics(real_modes, histogram_modes, bin_width, mode_widt
         metrics: Dictionnaire des métriques calculées
     """
     # Associer chaque mode réel au mode histogramme le plus proche
+
     mode_pairs = []
     for real_mode in real_modes:
         closest_idx = np.argmin(np.abs(histogram_modes - real_mode))
         mode_pairs.append((real_mode, histogram_modes[closest_idx]))
     
     # Calculer les métriques de base
+
     abs_errors = [abs(real - hist) for real, hist in mode_pairs]
     rel_errors = [abs(real - hist) / real for real, hist in mode_pairs]
     bin_norm_errors = [abs(real - hist) / bin_width for real, hist in mode_pairs]
     
     # Métriques avancées
+
     ipm = 1 - sum(abs_errors) / sum([real for real, _ in mode_pairs])
     
     # Distances inter-modes
+
     real_distances = [real_modes[i+1] - real_modes[i] for i in range(len(real_modes)-1)]
     hist_distances = [histogram_modes[i+1] - histogram_modes[i] for i in range(len(histogram_modes)-1)]
     
     # Ajuster les listes à la même longueur
+
     min_len = min(len(real_distances), len(hist_distances))
     real_distances = real_distances[:min_len]
     hist_distances = hist_distances[:min_len]
@@ -209,20 +211,24 @@ def calculate_location_metrics(real_modes, histogram_modes, bin_width, mode_widt
     rcdim_values = [hist / real for hist, real in zip(hist_distances, real_distances)]
     
     # Coefficient de corrélation
+
     if len(mode_pairs) > 1:
         real_positions = [real for real, _ in mode_pairs]
         hist_positions = [hist for _, hist in mode_pairs]
         ccp = np.corrcoef(real_positions, hist_positions)[0, 1]
     else:
         ccp = 1.0  # Par défaut pour un seul mode
+
     
     # Métriques spécifiques aux latences 2KB
+
     max_position = max([real for real, _ in mode_pairs])
     weights = [(max_position / real)**0.5 for real, _ in mode_pairs]
     weight_sum = sum(weights)
     plh = sum([w * (1 - abs(real - hist) / real) for w, (real, hist) in zip(weights, mode_pairs)]) / weight_sum
     
     # Résultats
+
     metrics = {
         "EAL": {
             "values": abs_errors,
@@ -249,6 +255,7 @@ def calculate_location_metrics(real_modes, histogram_modes, bin_width, mode_widt
     }
     
     # Ajouter les métriques basées sur la largeur si disponible
+
     if mode_widths is not None:
         width_norm_errors = [abs(real - hist) / width for (real, hist), width 
                             in zip(mode_pairs, mode_widths)]
@@ -259,8 +266,7 @@ def calculate_location_metrics(real_modes, histogram_modes, bin_width, mode_widt
         }
     
     return metrics
-```
-
+```plaintext
 ## 6. Seuils recommandés pour les latences de blocs de 2KB
 
 | Métrique | Monitoring | Analyse standard | Analyse détaillée |
@@ -333,8 +339,7 @@ def calculate_location_metrics(real_modes, histogram_modes, bin_width, mode_widt
     }
   }
 }
-```
-
+```plaintext
 ## 8. Conclusion
 
 Les métriques de précision de localisation des modes fournissent un cadre quantitatif pour évaluer la fidélité avec laquelle un histogramme représente les positions des modes dans une distribution de latence. Pour les distributions de latence de blocs de 2KB, ces métriques sont particulièrement importantes car les positions des modes correspondent directement aux différents niveaux de la hiérarchie de stockage.

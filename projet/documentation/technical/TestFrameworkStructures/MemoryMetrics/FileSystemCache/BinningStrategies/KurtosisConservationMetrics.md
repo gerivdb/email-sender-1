@@ -10,10 +10,9 @@ Ce document définit des métriques pour évaluer la conservation de l'aplatisse
 
 Pour une distribution continue avec fonction de densité de probabilité f(x), l'aplatissement est défini par :
 
-```
+```plaintext
 β₂ = μ₄/σ⁴
-```
-
+```plaintext
 où :
 - μ₄ est le quatrième moment centré : μ₄ = ∫ (x - μ)⁴·f(x) dx
 - σ est l'écart-type de la distribution
@@ -21,20 +20,18 @@ où :
 
 L'excès d'aplatissement (kurtosis excess) est souvent utilisé pour comparer avec la distribution normale :
 
-```
+```plaintext
 γ₂ = β₂ - 3
-```
-
+```plaintext
 Une distribution normale a un aplatissement β₂ = 3, donc un excès d'aplatissement γ₂ = 0.
 
 ### 2.2 Aplatissement d'un échantillon
 
 Pour un échantillon de n observations {x₁, x₂, ..., xₙ}, l'aplatissement empirique est :
 
-```
+```plaintext
 g₂ = (m₄/m₂²) · [(n+1)n/((n-1)(n-2)(n-3))] - 3(n-1)²/((n-2)(n-3))
-```
-
+```plaintext
 où :
 - m₄ = (1/n) · Σ (xᵢ - x̄)⁴
 - m₂ = (1/n) · Σ (xᵢ - x̄)²
@@ -44,20 +41,18 @@ où :
 
 Pour un histogramme avec k bins, où chaque bin i a une valeur centrale xᵢ et une fréquence relative fᵢ, l'aplatissement est :
 
-```
+```plaintext
 β₂ₕ = Σ fᵢ·(xᵢ - μₕ)⁴ / (Σ fᵢ·(xᵢ - μₕ)²)²
-```
-
+```plaintext
 où μₕ est la moyenne de l'histogramme.
 
 ## 3. Métriques pour la conservation de l'aplatissement
 
 ### 3.1 Erreur absolue de l'aplatissement (EAK)
 
-```
+```plaintext
 EAK = |β₂ - β₂ₕ|
-```
-
+```plaintext
 où :
 - β₂ est l'aplatissement de la distribution réelle
 - β₂ₕ est l'aplatissement de l'histogramme
@@ -66,18 +61,16 @@ où :
 
 ### 3.2 Erreur relative de l'aplatissement (ERK)
 
-```
+```plaintext
 ERK = |β₂ - β₂ₕ| / β₂ × 100%
-```
-
+```plaintext
 **Unités** : Pourcentage (%)
 
 ### 3.3 Erreur absolue de l'excès d'aplatissement (EAEK)
 
-```
+```plaintext
 EAEK = |γ₂ - γ₂ₕ|
-```
-
+```plaintext
 où :
 - γ₂ est l'excès d'aplatissement de la distribution réelle
 - γ₂ₕ est l'excès d'aplatissement de l'histogramme
@@ -86,10 +79,9 @@ où :
 
 ### 3.4 Erreur de caractérisation des queues (ECQ)
 
-```
+```plaintext
 ECQ = |P₉₅/P₅₀ - P₉₅ₕ/P₅₀ₕ| / (P₉₅/P₅₀)
-```
-
+```plaintext
 où :
 - P₉₅ et P₅₀ sont les 95ème et 50ème percentiles de la distribution réelle
 - P₉₅ₕ et P₅₀ₕ sont les 95ème et 50ème percentiles de l'histogramme
@@ -98,20 +90,18 @@ où :
 
 ### 3.5 Indice de conservation de l'aplatissement (ICK)
 
-```
+```plaintext
 ICK = 1 - min(|β₂ - β₂ₕ| / max(β₂, 3), 1)
-```
-
+```plaintext
 **Unités** : Sans unité, normalisé entre 0 et 1
 
 ## 4. Métriques spécifiques pour les distributions de latence
 
 ### 4.1 Ratio de conservation des valeurs extrêmes (RCVE)
 
-```
+```plaintext
 RCVE = (N₉₅ₕ/N) / (N₉₅/N)
-```
-
+```plaintext
 où :
 - N₉₅ est le nombre d'observations au-dessus du 95ème percentile dans les données réelles
 - N₉₅ₕ est le nombre d'observations estimé au-dessus du 95ème percentile dans l'histogramme
@@ -121,10 +111,9 @@ où :
 
 ### 4.2 Indice de conservation de forme des queues (ICFQ)
 
-```
+```plaintext
 ICFQ = (1 - |γ₂ - γ₂ₕ| / max(|γ₂|, 1)) · (1 - ECQ)
-```
-
+```plaintext
 **Unités** : Sans unité, normalisé entre 0 et 1
 
 ## 5. Implémentation et calcul
@@ -146,8 +135,7 @@ def calculate_real_kurtosis(data):
     kurtosis = scipy.stats.kurtosis(data, fisher=False, bias=False)
     excess_kurtosis = scipy.stats.kurtosis(data, fisher=True, bias=False)
     return kurtosis, excess_kurtosis
-```
-
+```plaintext
 ### 5.2 Calcul de l'aplatissement d'un histogramme
 
 ```python
@@ -164,9 +152,11 @@ def calculate_histogram_kurtosis(bin_edges, bin_counts):
         excess_kurtosis: Excès d'aplatissement de l'histogramme
     """
     # Calculer les centres des bins
+
     bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
     
     # Calculer les fréquences relatives
+
     total_count = np.sum(bin_counts)
     if total_count == 0:
         return 3.0, 0.0
@@ -174,13 +164,16 @@ def calculate_histogram_kurtosis(bin_edges, bin_counts):
     frequencies = bin_counts / total_count
     
     # Calculer la moyenne
+
     mean = np.sum(bin_centers * frequencies)
     
     # Calculer les moments centrés
+
     m2 = np.sum(frequencies * (bin_centers - mean)**2)
     m4 = np.sum(frequencies * (bin_centers - mean)**4)
     
     # Calculer l'aplatissement
+
     if m2 > 0:
         kurtosis = m4 / (m2**2)
         excess_kurtosis = kurtosis - 3
@@ -189,8 +182,7 @@ def calculate_histogram_kurtosis(bin_edges, bin_counts):
         excess_kurtosis = 0.0
     
     return kurtosis, excess_kurtosis
-```
-
+```plaintext
 ### 5.3 Calcul des métriques de conservation de l'aplatissement
 
 ```python
@@ -207,10 +199,12 @@ def calculate_kurtosis_conservation_metrics(real_data, bin_edges, bin_counts):
         metrics: Dictionnaire des métriques calculées
     """
     # Calculer les aplatissements
+
     real_kurtosis, real_excess = calculate_real_kurtosis(real_data)
     hist_kurtosis, hist_excess = calculate_histogram_kurtosis(bin_edges, bin_counts)
     
     # Calculer les erreurs
+
     absolute_error = abs(real_kurtosis - hist_kurtosis)
     
     if real_kurtosis > 0:
@@ -221,13 +215,16 @@ def calculate_kurtosis_conservation_metrics(real_data, bin_edges, bin_counts):
     excess_absolute_error = abs(real_excess - hist_excess)
     
     # Indice de conservation
+
     ick = 1 - min(absolute_error / max(real_kurtosis, 3), 1)
     
     # Calcul des percentiles pour ECQ
+
     real_p50 = np.percentile(real_data, 50)
     real_p95 = np.percentile(real_data, 95)
     
     # Calculer les percentiles de l'histogramme
+
     cum_freq = np.cumsum(bin_counts) / np.sum(bin_counts)
     p50_idx = np.searchsorted(cum_freq, 0.5)
     p95_idx = np.searchsorted(cum_freq, 0.95)
@@ -247,9 +244,11 @@ def calculate_kurtosis_conservation_metrics(real_data, bin_edges, bin_counts):
             ecq = float('inf')
     
     # Calcul de l'ICFQ
+
     icfq = (1 - min(excess_absolute_error / max(abs(real_excess), 1), 1)) * (1 - min(ecq, 1))
     
     # Résultats
+
     metrics = {
         "real_kurtosis": real_kurtosis,
         "histogram_kurtosis": hist_kurtosis,
@@ -264,8 +263,7 @@ def calculate_kurtosis_conservation_metrics(real_data, bin_edges, bin_counts):
     }
     
     return metrics
-```
-
+```plaintext
 ## 6. Seuils recommandés
 
 | Métrique | Excellent | Bon | Acceptable | Insuffisant |
@@ -357,8 +355,7 @@ def calculate_kurtosis_conservation_metrics(real_data, bin_edges, bin_counts):
     }
   }
 }
-```
-
+```plaintext
 ## 8. Exemples d'application
 
 ### 8.1 Distribution leptokurtique modérée

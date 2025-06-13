@@ -5,15 +5,15 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 ## Structure commune
 
 ### 1. En-tête
-```
+
+```plaintext
 +--------------------------------------------------+
 | LOGO                                    DATE     |
 | TITRE DU RAPPORT                                 |
 | Période: [début] - [fin]                         |
 | Généré le: [date/heure]                          |
 +--------------------------------------------------+
-```
-
+```plaintext
 **Éléments**:
 - Logo de l'entreprise
 - Titre du rapport
@@ -22,7 +22,8 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 - Version du rapport
 
 ### 2. Résumé exécutif
-```
+
+```plaintext
 +--------------------------------------------------+
 | RÉSUMÉ EXÉCUTIF                                  |
 +--------------------------------------------------+
@@ -43,15 +44,15 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 | | +/-% vs période|  | +/-% vs période|           |
 | +----------------+  +----------------+           |
 +--------------------------------------------------+
-```
-
+```plaintext
 **Éléments**:
 - 3-5 points clés à retenir
 - 4-6 indicateurs principaux avec comparaison
 - Code couleur pour indiquer les tendances (vert: positif, rouge: négatif)
 
 ### 3. Table des matières
-```
+
+```plaintext
 +--------------------------------------------------+
 | TABLE DES MATIÈRES                               |
 +--------------------------------------------------+
@@ -63,10 +64,10 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 | 4. [Section 4] ........................... p.X   |
 | Annexes .................................. p.X   |
 +--------------------------------------------------+
-```
-
+```plaintext
 ### 4. Section d'analyse des anomalies
-```
+
+```plaintext
 +--------------------------------------------------+
 | ANALYSE DES ANOMALIES                            |
 +--------------------------------------------------+
@@ -81,8 +82,7 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 |   Impact: [Description de l'impact]              |
 |   Cause probable: [Description de la cause]      |
 +--------------------------------------------------+
-```
-
+```plaintext
 **Éléments**:
 - Graphique montrant les anomalies sur une ligne temporelle
 - Liste des anomalies détectées avec:
@@ -93,7 +93,8 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
   - Sévérité (code couleur)
 
 ### 5. Section de recommandations
-```
+
+```plaintext
 +--------------------------------------------------+
 | RECOMMANDATIONS                                  |
 +--------------------------------------------------+
@@ -112,8 +113,7 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 |   Impact estimé: [Description]                   |
 |   Effort estimé: [Faible/Moyen/Élevé]            |
 +--------------------------------------------------+
-```
-
+```plaintext
 **Éléments**:
 - Recommandations classées par priorité
 - Pour chaque recommandation:
@@ -123,20 +123,21 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
   - Délai suggéré
 
 ### 6. Pied de page
-```
+
+```plaintext
 +--------------------------------------------------+
 | Généré par [Nom du système] v[Version]           |
 | Page [X] sur [Y]                                 |
 | Confidentiel - Usage interne uniquement          |
 +--------------------------------------------------+
-```
-
+```plaintext
 ## Structures spécifiques par type de rapport
 
 ### 1. Rapport système
 
 #### 1.1. Vue d'ensemble des ressources
-```
+
+```plaintext
 +--------------------------------------------------+
 | VUE D'ENSEMBLE DES RESSOURCES                    |
 +--------------------------------------------------+
@@ -156,10 +157,10 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 | | +/-% vs période|  | +/-% vs période|           |
 | +----------------+  +----------------+           |
 +--------------------------------------------------+
-```
-
+```plaintext
 #### 1.2. Analyse CPU
-```
+
+```plaintext
 +--------------------------------------------------+
 | ANALYSE CPU                                      |
 +--------------------------------------------------+
@@ -178,10 +179,10 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 | [Proc 1] | XX%                | XX%            |
 | [Proc 2] | XX%                | XX%            |
 +--------------------------------------------------+
-```
-
+```plaintext
 #### 1.3. Analyse mémoire
-```
+
+```plaintext
 +--------------------------------------------------+
 | ANALYSE MÉMOIRE                                  |
 +--------------------------------------------------+
@@ -200,10 +201,10 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 | [Proc 1] | XX MB              | XX MB          |
 | [Proc 2] | XX MB              | XX MB          |
 +--------------------------------------------------+
-```
-
+```plaintext
 #### 1.4. Analyse disque
-```
+
+```plaintext
 +--------------------------------------------------+
 | ANALYSE DISQUE                                   |
 +--------------------------------------------------+
@@ -221,12 +222,12 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 | [Rep 1]   | XX GB  | XX%        | XX% par jour  |
 | [Rep 2]   | XX GB  | XX%        | XX% par jour  |
 +--------------------------------------------------+
-```
-
+```plaintext
 ### 2. Rapport application
 
 #### 2.1. Vue d'ensemble des performances
-```
+
+```plaintext
 +--------------------------------------------------+
 | VUE D'ENSEMBLE DES PERFORMANCES                  |
 +--------------------------------------------------+
@@ -246,10 +247,10 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 | | +/-% vs période|  | +/-% vs période|           |
 | +----------------+  +----------------+           |
 +--------------------------------------------------+
-```
-
+```plaintext
 #### 2.2. Analyse du temps de réponse
-```
+
+```plaintext
 +--------------------------------------------------+
 | ANALYSE DU TEMPS DE RÉPONSE                      |
 +--------------------------------------------------+
@@ -264,14 +265,15 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 |                                                  |
 | [Tableau des endpoints les plus lents]           |
 | Endpoint | Temps moyen | P95 | # Requêtes        |
+
 | ---------|-----------|-----|----------------|
 | [URL 1]  | XX ms      | XX ms| XX              |
 | [URL 2]  | XX ms      | XX ms| XX              |
 +--------------------------------------------------+
-```
-
+```plaintext
 #### 2.3. Analyse des erreurs
-```
+
+```plaintext
 +--------------------------------------------------+
 | ANALYSE DES ERREURS                              |
 +--------------------------------------------------+
@@ -288,12 +290,12 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 | 500  | [Desc]      | XX          | XX%          |
 | 404  | [Desc]      | XX          | XX%          |
 +--------------------------------------------------+
-```
-
+```plaintext
 ### 3. Rapport métier
 
 #### 3.1. Vue d'ensemble des KPIs
-```
+
+```plaintext
 +--------------------------------------------------+
 | VUE D'ENSEMBLE DES KPIs                          |
 +--------------------------------------------------+
@@ -311,10 +313,10 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 | | +/-% vs période|  | +/-% vs période|           |
 | +----------------+  +----------------+           |
 +--------------------------------------------------+
-```
-
+```plaintext
 #### 3.2. Analyse de l'engagement
-```
+
+```plaintext
 +--------------------------------------------------+
 | ANALYSE DE L'ENGAGEMENT                          |
 +--------------------------------------------------+
@@ -332,10 +334,10 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 | [Camp 1] | XX%        | XX%   | XX%            |
 | [Camp 2] | XX%        | XX%   | XX%            |
 +--------------------------------------------------+
-```
-
+```plaintext
 #### 3.3. Analyse des conversions
-```
+
+```plaintext
 +--------------------------------------------------+
 | ANALYSE DES CONVERSIONS                          |
 +--------------------------------------------------+
@@ -353,11 +355,11 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
 | [Src 1]| XX         | XX%  | XX €             |
 | [Src 2]| XX         | XX%  | XX €             |
 +--------------------------------------------------+
-```
-
+```plaintext
 ## Types de visualisations par section
 
 ### 1. Graphiques de tendances
+
 - **Type**: Graphique linéaire
 - **Utilisation**: Évolution des métriques dans le temps
 - **Sections**: Analyse CPU, Analyse mémoire, Analyse du temps de réponse, etc.
@@ -367,6 +369,7 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
   - Annotations pour les événements importants
 
 ### 2. Graphiques de comparaison
+
 - **Type**: Graphique à barres
 - **Utilisation**: Comparaison entre périodes ou entre éléments
 - **Sections**: Vue d'ensemble des KPIs, Analyse des conversions, etc.
@@ -376,6 +379,7 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
   - Code couleur pour les variations positives/négatives
 
 ### 3. Graphiques de distribution
+
 - **Type**: Histogramme, boîte à moustaches
 - **Utilisation**: Distribution des valeurs d'une métrique
 - **Sections**: Analyse du temps de réponse, Analyse des erreurs, etc.
@@ -385,6 +389,7 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
   - Mise en évidence des valeurs aberrantes
 
 ### 4. Graphiques de proportion
+
 - **Type**: Graphique circulaire, graphique en anneau
 - **Utilisation**: Répartition proportionnelle
 - **Sections**: Analyse disque, Analyse des erreurs, etc.
@@ -394,6 +399,7 @@ Ce document définit la structure détaillée des rapports automatiques pour le 
   - Regroupement des petites valeurs
 
 ### 5. Tableaux de données
+
 - **Type**: Tableau avec formatage conditionnel
 - **Utilisation**: Présentation détaillée des données
 - **Sections**: Toutes les sections d'analyse

@@ -1,4 +1,4 @@
-﻿# Get-TaskDependencies
+# Get-TaskDependencies
 
 ## SYNOPSIS
 

@@ -5,6 +5,7 @@ Ce module fournit des fonctionnalités avancées pour la conversion, la validati
 ## Caractéristiques principales
 
 ### 1. Système de conversion bidirectionnelle entre formats
+
 Le module implémente un système sophistiqué de conversion qui préserve la sémantique des données :
 
 - **Mapping sémantique** : Préservation des relations et significations, pas seulement de la syntaxe
@@ -13,6 +14,7 @@ Le module implémente un système sophistiqué de conversion qui préserve la s�
 - **Rapports multiformat** : Génération de rapports en texte ou HTML selon les besoins
 
 ### 2. Validation avancée
+
 Le module fournit des outils puissants pour valider les documents dans différents formats :
 
 - **Validation syntaxique** : Vérification de la conformité aux règles syntaxiques
@@ -21,6 +23,7 @@ Le module fournit des outils puissants pour valider les documents dans différen
 - **Rapports détaillés** : Génération de rapports de validation complets
 
 ### 3. Analyse structurelle
+
 Le module permet d'analyser en profondeur la structure des documents :
 
 - **Détection d'éléments** : Identification et catégorisation des éléments
@@ -29,6 +32,7 @@ Le module permet d'analyser en profondeur la structure des documents :
 - **Visualisation** : Représentation graphique de la structure
 
 ### 4. Transformation intelligente
+
 Le module offre des capacités de transformation qui vont au-delà de la simple conversion :
 
 - **Transformation contextuelle** : Adaptations basées sur le contexte
@@ -38,37 +42,51 @@ Le module offre des capacités de transformation qui vont au-delà de la simple 
 
 ## Structure du module
 
-```
+```plaintext
 FormatSupport/
 ├── XML_HTML/
 │   ├── XmlSupport.ps1              # Support principal pour XML
+
 │   ├── HtmlSupport.ps1             # Support principal pour HTML
+
 │   ├── Implementation/
 │   │   ├── RoadmapXmlConverter.ps1 # Convertisseur Roadmap-XML
+
 │   │   ├── XmlElementDetector.ps1  # Détecteur d'éléments XML
+
 │   │   └── XmlValidator.ps1        # Validateur XML
+
 │   └── Tests/
 │       ├── Test-RoadmapXmlConverter.ps1
 │       └── Test-XmlTools.ps1
 ├── JSON/
 │   ├── JsonSupport.ps1             # Support principal pour JSON
+
 │   └── Implementation/
 │       ├── JsonConverter.ps1       # Convertisseur JSON
+
 │       └── JsonValidator.ps1       # Validateur JSON
+
 ├── Markdown/
 │   ├── MarkdownSupport.ps1         # Support principal pour Markdown
+
 │   └── Implementation/
 │       ├── MarkdownConverter.ps1   # Convertisseur Markdown
+
 │       └── MarkdownValidator.ps1   # Validateur Markdown
+
 └── Common/
     ├── FormatDetector.ps1          # Détection automatique de format
-    ├── SchemaGenerator.ps1         # Générateur de schémas
-    └── ReportGenerator.ps1         # Générateur de rapports
-```
 
+    ├── SchemaGenerator.ps1         # Générateur de schémas
+
+    └── ReportGenerator.ps1         # Générateur de rapports
+
+```plaintext
 ## Innovations clés
 
 ### Système de conversion bidirectionnelle avec préservation sémantique
+
 Le module implémente une approche de conversion qui va bien au-delà des convertisseurs traditionnels :
 
 - **Préservation du sens** : Conservation de la signification et des relations, pas seulement du contenu
@@ -76,6 +94,7 @@ Le module implémente une approche de conversion qui va bien au-delà des conver
 - **Adaptabilité contextuelle** : Ajustements basés sur le contexte spécifique des données
 
 ### Architecture de validation multi-niveaux
+
 Le module implémente une architecture sophistiquée pour la validation des documents :
 
 - **Validation progressive** : Approche par étapes, de la syntaxe à la sémantique
@@ -83,6 +102,7 @@ Le module implémente une architecture sophistiquée pour la validation des docu
 - **Feedback intelligent** : Suggestions de correction basées sur l'analyse des erreurs
 
 ### Système d'analyse structurelle avancé
+
 Le module utilise des techniques avancées pour analyser la structure des documents :
 
 - **Analyse sémantique** : Compréhension du sens et de l'intention des éléments
@@ -92,20 +112,25 @@ Le module utilise des techniques avancées pour analyser la structure des docume
 ## Utilisation
 
 ### Conversion entre formats
+
 ```powershell
 # Importer le module
+
 . .\FormatSupport\XML_HTML\XmlSupport.ps1
 
 # Convertir un fichier Roadmap en XML
+
 ConvertFrom-RoadmapFileToXmlFile -RoadmapPath ".\roadmap.md" -XmlPath ".\roadmap.xml"
 
 # Convertir un fichier XML en Roadmap
-ConvertFrom-XmlFileToRoadmapFile -XmlPath ".\roadmap.xml" -RoadmapPath ".\roadmap_converted.md"
-```
 
+ConvertFrom-XmlFileToRoadmapFile -XmlPath ".\roadmap.xml" -RoadmapPath ".\roadmap_converted.md"
+```plaintext
 ### Validation de documents
+
 ```powershell
 # Valider un fichier XML
+
 $validationResult = Test-XmlFile -XmlPath ".\roadmap.xml"
 if ($validationResult.IsValid) {
     Write-Host "Le document XML est valide" -ForegroundColor Green
@@ -115,25 +140,28 @@ if ($validationResult.IsValid) {
 }
 
 # Générer un rapport de validation
-Test-XmlFileWithReport -XmlPath ".\roadmap.xml" -OutputPath ".\validation.html" -AsHtml
-```
 
+Test-XmlFileWithReport -XmlPath ".\roadmap.xml" -OutputPath ".\validation.html" -AsHtml
+```plaintext
 ### Analyse de structure
+
 ```powershell
 # Analyser la structure d'un document XML
+
 $elements = Get-XmlElementsFromFile -XmlPath ".\roadmap.xml"
 $elements | Format-Table Name, Path, Depth
 
 # Générer un rapport de structure
-Get-XmlStructureReportFromFile -XmlPath ".\roadmap.xml" -OutputPath ".\structure.html" -AsHtml
-```
 
+Get-XmlStructureReportFromFile -XmlPath ".\roadmap.xml" -OutputPath ".\structure.html" -AsHtml
+```plaintext
 ### Génération de schéma
+
 ```powershell
 # Générer un schéma XSD à partir d'un fichier XML
-New-XsdSchemaFromXml -XmlPath ".\roadmap.xml" -OutputPath ".\roadmap.xsd"
-```
 
+New-XsdSchemaFromXml -XmlPath ".\roadmap.xml" -OutputPath ".\roadmap.xsd"
+```plaintext
 ## Intégration avec d'autres modules
 
 Le module de support de formats s'intègre avec d'autres modules du projet :

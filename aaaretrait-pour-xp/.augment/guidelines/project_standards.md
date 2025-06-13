@@ -5,6 +5,7 @@ Ce document définit les standards et bonnes pratiques générales pour tout le 
 ## Principes fondamentaux
 
 ### SOLID
+
 - **S**ingle Responsibility Principle : Une classe ne doit avoir qu'une seule raison de changer
 - **O**pen/Closed Principle : Les entités doivent être ouvertes à l'extension mais fermées à la modification
 - **L**iskov Substitution Principle : Les objets d'une classe dérivée doivent pouvoir remplacer les objets de la classe de base
@@ -12,6 +13,7 @@ Ce document définit les standards et bonnes pratiques générales pour tout le 
 - **D**ependency Inversion Principle : Dépendre des abstractions, pas des implémentations
 
 ### Autres principes
+
 - **DRY** (Don't Repeat Yourself) : Éviter la duplication de code
 - **KISS** (Keep It Simple, Stupid) : Privilégier les solutions simples
 - **YAGNI** (You Aren't Gonna Need It) : N'implémenter que ce qui est nécessaire
@@ -19,11 +21,13 @@ Ce document définit les standards et bonnes pratiques générales pour tout le 
 ## Conventions de nommage
 
 ### Général
+
 - Noms descriptifs et significatifs
 - Éviter les abréviations sauf si elles sont standard
 - Utiliser l'anglais pour le code et les commentaires techniques
 
 ### Par langage
+
 - **PowerShell** : 
   - Verbes-Noms pour les fonctions (ex: `Get-User`)
   - PascalCase pour les variables publiques

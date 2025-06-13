@@ -48,37 +48,44 @@ Même lorsque vous utilisez des fonctions compatibles, il peut y avoir des diff�
 
 ```powershell
 # Fonction pour détecter la version de PowerShell et charger le module approprié
+
 function Import-UnifiedParallelModule {
     # Vérifier la version de PowerShell
+
     $isPSCore = $PSVersionTable.PSVersion.Major -ge 6
     
     # Chemin du module
+
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "UnifiedParallel.psm1"
     $ps51ModulePath = Join-Path -Path $PSScriptRoot -ChildPath "UnifiedParallel.PS51.psm1"
     
     # Charger le module approprié
+
     if ($isPSCore) {
         # PowerShell 7.x
+
         Import-Module $modulePath -Force
     } else {
         # PowerShell 5.1
+
         if (Test-Path -Path $ps51ModulePath) {
             Import-Module $ps51ModulePath -Force
         } else {
             # Générer une version compatible avec PowerShell 5.1
+
             $makePS51CompatiblePath = Join-Path -Path $PSScriptRoot -ChildPath "tests\Make-PS51Compatible-Improved.ps1"
             if (Test-Path -Path $makePS51CompatiblePath) {
                 & $makePS51CompatiblePath
                 Import-Module $ps51ModulePath -Force
             } else {
                 # Fallback: utiliser la version standard
+
                 Import-Module $modulePath -Force
             }
         }
     }
 }
-```
-
+```plaintext
 ## Limitations connues
 
 ### PowerShell 5.1

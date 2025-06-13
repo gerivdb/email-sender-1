@@ -32,6 +32,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 ### Efficacité
 
 #### EMAIL_DELIVERY_RATE
+
 - **Nom** : Taux de livraison des emails
 - **Description** : Pourcentage d'emails correctement livrés
 - **Formule** : (Nombre d'emails livrés / Nombre total d'emails envoyés) * 100
@@ -43,6 +44,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 - **Interprétation** : Un taux de livraison élevé indique une bonne qualité de la liste d'emails et une bonne réputation d'expéditeur. Un taux faible peut signaler des problèmes de qualité de la liste, de configuration technique ou de réputation.
 
 #### CAMPAIGN_COMPLETION_RATE
+
 - **Nom** : Taux de complétion des campagnes
 - **Description** : Pourcentage de campagnes terminées avec succès
 - **Formule** : (Nombre de campagnes terminées avec succès / Nombre total de campagnes) * 100
@@ -54,6 +56,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 - **Interprétation** : Un taux de complétion élevé indique que les campagnes s'exécutent correctement sans erreurs techniques. Un taux faible peut signaler des problèmes dans les processus d'exécution des campagnes.
 
 #### WORKFLOW_COMPLETION_RATE
+
 - **Nom** : Taux de complétion des workflows
 - **Description** : Pourcentage de workflows terminés avec succès
 - **Formule** : (Nombre de workflows terminés avec succès / Nombre total de workflows) * 100
@@ -67,6 +70,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 ### Engagement
 
 #### EMAIL_OPEN_RATE
+
 - **Nom** : Taux d'ouverture des emails
 - **Description** : Pourcentage d'emails ouverts par les destinataires
 - **Formule** : (Nombre d'emails ouverts / Nombre d'emails livrés) * 100
@@ -78,6 +82,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 - **Interprétation** : Un taux d'ouverture élevé indique un bon niveau d'engagement et d'intérêt des destinataires. Il est influencé par la pertinence de l'objet de l'email, la réputation de l'expéditeur et le moment d'envoi.
 
 #### EMAIL_CLICK_RATE
+
 - **Nom** : Taux de clic des emails
 - **Description** : Pourcentage d'emails ayant généré au moins un clic
 - **Formule** : (Nombre d'emails cliqués / Nombre d'emails livrés) * 100
@@ -89,6 +94,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 - **Interprétation** : Un taux de clic élevé indique que le contenu de l'email est pertinent et incite à l'action. Il est influencé par la qualité du contenu, la clarté des appels à l'action et la pertinence de l'offre.
 
 #### UNSUBSCRIBE_RATE
+
 - **Nom** : Taux de désabonnement
 - **Description** : Pourcentage d'abonnés qui se désabonnent
 - **Formule** : (Nombre de désabonnements / Nombre total d'abonnés) * 100
@@ -102,6 +108,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 ### Qualité
 
 #### EMAIL_BOUNCE_RATE
+
 - **Nom** : Taux de rebond des emails
 - **Description** : Pourcentage d'emails ayant généré un rebond
 - **Formule** : (Nombre d'emails ayant rebondi / Nombre total d'emails envoyés) * 100
@@ -113,6 +120,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 - **Interprétation** : Un taux de rebond faible indique une bonne qualité de la liste d'emails. Un taux élevé peut signaler des problèmes de qualité de la liste, d'adresses obsolètes ou de problèmes techniques.
 
 #### EMAIL_COMPLAINT_RATE
+
 - **Nom** : Taux de plainte
 - **Description** : Pourcentage d'emails ayant généré une plainte (spam)
 - **Formule** : (Nombre de plaintes / Nombre d'emails livrés) * 100
@@ -126,6 +134,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 ### Performance
 
 #### EMAIL_PROCESSING_TIME
+
 - **Nom** : Temps de traitement des emails
 - **Description** : Temps moyen de traitement d'un email (de la demande à l'envoi)
 - **Formule** : Moyenne des temps de traitement sur la période d'analyse
@@ -137,6 +146,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 - **Interprétation** : Un temps de traitement faible indique un processus d'envoi efficace. Un temps élevé peut signaler des problèmes de performance du système, de configuration ou de surcharge.
 
 #### CAMPAIGN_EXECUTION_TIME
+
 - **Nom** : Temps d'exécution des campagnes
 - **Description** : Temps moyen d'exécution d'une campagne
 - **Formule** : Moyenne des temps d'exécution sur la période d'analyse
@@ -150,6 +160,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 ### Croissance
 
 #### SUBSCRIBER_GROWTH_RATE
+
 - **Nom** : Taux de croissance des abonnés
 - **Description** : Pourcentage de croissance du nombre d'abonnés
 - **Formule** : ((Nombre actuel d'abonnés - Nombre précédent d'abonnés) / Nombre précédent d'abonnés) * 100
@@ -163,6 +174,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 ### Coût
 
 #### COST_PER_EMAIL
+
 - **Nom** : Coût par email
 - **Description** : Coût moyen d'envoi d'un email
 - **Formule** : Coût total / Nombre total d'emails envoyés
@@ -176,6 +188,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 ### Valeur
 
 #### ROI
+
 - **Nom** : Retour sur investissement
 - **Description** : Retour sur investissement des campagnes email
 - **Formule** : ((Revenu - Coût total) / Coût total) * 100
@@ -187,6 +200,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 - **Interprétation** : Un ROI élevé indique que les campagnes génèrent un bon retour sur investissement. Un ROI faible peut signaler des problèmes d'efficacité des campagnes ou des coûts trop élevés.
 
 #### REVENUE_PER_EMAIL
+
 - **Nom** : Revenu par email
 - **Description** : Revenu moyen généré par email envoyé
 - **Formule** : Revenu total / Nombre total d'emails envoyés
@@ -198,6 +212,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 - **Interprétation** : Un revenu par email élevé indique une bonne efficacité commerciale des campagnes. Un revenu faible peut signaler des problèmes de conversion ou de valeur des offres.
 
 #### CONVERSION_RATE
+
 - **Nom** : Taux de conversion
 - **Description** : Pourcentage d'emails ayant généré une conversion
 - **Formule** : (Nombre de conversions / Nombre d'emails livrés) * 100
@@ -211,6 +226,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 ### KPIs composites
 
 #### EMAIL_DELIVERABILITY_INDEX
+
 - **Nom** : Indice de délivrabilité
 - **Description** : Indice composite de la délivrabilité des emails
 - **Formule** : 0.5 * (EMAIL_DELIVERY_RATE normalisé) + 0.3 * (EMAIL_BOUNCE_RATE normalisé) + 0.2 * (EMAIL_COMPLAINT_RATE normalisé)
@@ -222,6 +238,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 - **Interprétation** : Cet indice fournit une vue d'ensemble de la délivrabilité des emails. Un score élevé indique des problèmes potentiels qui nécessitent une attention immédiate.
 
 #### EMAIL_ENGAGEMENT_INDEX
+
 - **Nom** : Indice d'engagement
 - **Description** : Indice composite de l'engagement des destinataires
 - **Formule** : 0.4 * (EMAIL_OPEN_RATE normalisé) + 0.4 * (EMAIL_CLICK_RATE normalisé) + 0.2 * (UNSUBSCRIBE_RATE normalisé)
@@ -233,6 +250,7 @@ Les KPIs métier sont organisés en plusieurs catégories :
 - **Interprétation** : Cet indice fournit une vue d'ensemble de l'engagement des destinataires. Un score élevé indique des problèmes potentiels d'engagement qui nécessitent une attention.
 
 #### EMAIL_BUSINESS_VALUE_INDEX
+
 - **Nom** : Indice de valeur métier
 - **Description** : Indice composite de la valeur métier des campagnes email
 - **Formule** : 0.3 * (CONVERSION_RATE normalisé) + 0.4 * (ROI normalisé) + 0.3 * (REVENUE_PER_EMAIL normalisé)

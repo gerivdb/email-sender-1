@@ -1,4 +1,4 @@
-﻿# references
+# references
 
 Documentation de rÃ©fÃ©rence
 

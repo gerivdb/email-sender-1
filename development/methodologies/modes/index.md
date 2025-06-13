@@ -1,4 +1,4 @@
-﻿# Modes Opérationnels
+# Modes Opérationnels
 
 Ce document présente les différents modes opérationnels utilisés dans le projet.
 
@@ -60,11 +60,13 @@ Les modes opérationnels sont étroitement intégrés avec la roadmap du projet.
 - Prédire les anomalies ([PREDIC](mode_predic.md))
 
 ## Principes fondamentaux
+
 - [16 bases de programmation](../programmation_16_bases.md) : Les 16 bases de programmation du projet
 - [Principes SOLID](../solid_principles.md) : Les principes SOLID appliqués au projet
 - [Principes DRY, KISS, YAGNI](../dry_kiss_yagni.md) : Les principes DRY, KISS et YAGNI appliqués au projet
 
 ## Processus de développement
+
 - [Gestion de projet](../project_management.md) : Méthodologie de gestion de projet
 - [Cycle de vie du développement](../development_lifecycle.md) : Cycle de vie du développement logiciel
 - [Revue de code](../code_review.md) : Processus de revue de code
@@ -76,32 +78,36 @@ Les modes opérationnels sont étroitement intégrés avec la roadmap du projet.
 
 ```powershell
 # Décomposer une tâche complexe
+
 dev\tools\scripts\gran-mode.ps1 -RoadmapPath "projet/documentation/roadmap/roadmap.md" -TaskId "1.2.3"
 
 # Implémenter les sous-tâches
+
 dev\tools\scripts\dev-r-mode.ps1 -RoadmapPath "projet/documentation/roadmap/roadmap.md" -TaskId "1.2.3.1"
 dev\tools\scripts\dev-r-mode.ps1 -RoadmapPath "projet/documentation/roadmap/roadmap.md" -TaskId "1.2.3.2"
 dev\tools\scripts\dev-r-mode.ps1 -RoadmapPath "projet/documentation/roadmap/roadmap.md" -TaskId "1.2.3.3"
 
 # Vérifier l'état d'avancement
-dev\tools\scripts\check.ps1 -FilePath "projet/documentation/roadmap/roadmap.md" -TaskIdentifier "1.2.3"
-```
 
+dev\tools\scripts\check.ps1 -FilePath "projet/documentation/roadmap/roadmap.md" -TaskIdentifier "1.2.3"
+```plaintext
 ### Utilisation du mode MANAGER
 
 Le mode MANAGER permet de gérer et d'orchestrer les différents modes de manière cohérente.
 
 ```powershell
 # Exécuter un mode spécifique
+
 development\scripts\mode-manager\mode-manager.ps1 -Mode CHECK -FilePath "docs\plans\plan-modes-stepup.md" -TaskIdentifier "1.2.3" -Force
 
 # Exécuter une chaîne de modes (workflow de développement complet)
+
 development\scripts\mode-manager\mode-manager.ps1 -Chain "GRAN,DEV-R,TEST,CHECK" -FilePath "docs\plans\plan-modes-stepup.md" -TaskIdentifier "1.2.3"
 
 # Afficher la liste des modes disponibles
-development\scripts\mode-manager\mode-manager.ps1 -ListModes
-```
 
+development\scripts\mode-manager\mode-manager.ps1 -ListModes
+```plaintext
 Pour plus d'informations sur le mode MANAGER, consultez la [documentation du mode MANAGER](mode_manager.md).
 
 ## Annexes et documentation technique

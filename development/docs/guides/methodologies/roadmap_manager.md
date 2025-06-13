@@ -19,30 +19,36 @@ L'objectif principal du gestionnaire de roadmap est de fournir une interface uni
 
 Le gestionnaire de roadmap est organisé selon la structure de répertoires suivante :
 
-```
+```plaintext
 development/managers/roadmap-manager/
 ├── scripts/
 │   ├── roadmap-manager.ps1           # Script principal
+
 │   ├── install-roadmap-manager.ps1   # Script d'installation
+
 │   └── ...                           # Autres scripts
+
 ├── modules/
 │   └── ...                           # Modules PowerShell
+
 ├── tests/
 │   ├── Test-RoadmapManager.ps1       # Tests unitaires
+
 │   └── ...                           # Autres tests
+
 └── config/
     └── ...                           # Fichiers de configuration locaux
-```
 
+```plaintext
 ### Fichiers de configuration
 
 Les fichiers de configuration du gestionnaire sont stockés dans :
 
-```
+```plaintext
 projet/config/managers/roadmap-manager/
 └── roadmap-manager.config.json       # Configuration principale
-```
 
+```plaintext
 ## Prérequis
 
 Avant d'utiliser le gestionnaire de roadmap, assurez-vous que :
@@ -59,8 +65,7 @@ Pour installer le gestionnaire de roadmap, utilisez le script d'installation :
 
 ```powershell
 .\development\managers\roadmap-manager\scripts\install-roadmap-manager.ps1
-```
-
+```plaintext
 ### Installation manuelle
 
 Si vous préférez une installation manuelle, suivez ces étapes :
@@ -75,10 +80,9 @@ Si vous préférez une installation manuelle, suivez ces étapes :
 
 Le fichier de configuration principal du gestionnaire est situé à :
 
-```
+```plaintext
 projet/config/managers/roadmap-manager/roadmap-manager.config.json
-```
-
+```plaintext
 Voici un exemple de configuration :
 
 ```json
@@ -99,8 +103,7 @@ Voici un exemple de configuration :
     "OutputPath": "logs/performance/roadmap-manager"
   }
 }
-```
-
+```plaintext
 ### Options de configuration
 
 | Option | Type | Description | Valeur par défaut |
@@ -125,8 +128,7 @@ Le gestionnaire de roadmap expose les commandes suivantes :
 
 ```powershell
 .\development\managers\roadmap-manager\scripts\roadmap-manager.ps1 -Command ParseRoadmap -FilePath "projet/roadmaps/roadmap_complete_converted.md"
-```
-
+```plaintext
 **Description :** Analyse un fichier de roadmap
 
 **Paramètres :**
@@ -136,14 +138,12 @@ Le gestionnaire de roadmap expose les commandes suivantes :
 **Exemple :**
 ```powershell
 .\development\managers\roadmap-manager\scripts\roadmap-manager.ps1 -Command ParseRoadmap -FilePath "projet/roadmaps/roadmap_complete_converted.md" -OutputFormat "JSON"
-```
-
+```plaintext
 #### Commande 2 : UpdateTaskStatus
 
 ```powershell
 .\development\managers\roadmap-manager\scripts\roadmap-manager.ps1 -Command UpdateTaskStatus -FilePath "projet/roadmaps/roadmap_complete_converted.md" -TaskId "1.2.3" -Status "Completed"
-```
-
+```plaintext
 **Description :** Met à jour le statut d'une tâche
 
 **Paramètres :**
@@ -154,24 +154,23 @@ Le gestionnaire de roadmap expose les commandes suivantes :
 **Exemple :**
 ```powershell
 .\development\managers\roadmap-manager\scripts\roadmap-manager.ps1 -Command UpdateTaskStatus -FilePath "projet/roadmaps/roadmap_complete_converted.md" -TaskId "1.2.3" -Status "Completed"
-```
-
+```plaintext
 ### Exemples d'utilisation
 
 #### Exemple 1 : Génération d'un rapport d'avancement
 
 ```powershell
 # Générer un rapport d'avancement
-.\development\managers\roadmap-manager\scripts\roadmap-manager.ps1 -Command GenerateReport -FilePath "projet/roadmaps/roadmap_complete_converted.md" -OutputFormat "HTML" -OutputPath "projet/reports/roadmap/progress_report.html"
-```
 
+.\development\managers\roadmap-manager\scripts\roadmap-manager.ps1 -Command GenerateReport -FilePath "projet/roadmaps/roadmap_complete_converted.md" -OutputFormat "HTML" -OutputPath "projet/reports/roadmap/progress_report.html"
+```plaintext
 #### Exemple 2 : Vérification des tâches complétées
 
 ```powershell
 # Vérifier les tâches complétées
-.\development\managers\roadmap-manager\scripts\roadmap-manager.ps1 -Command GetCompletedTasks -FilePath "projet/roadmaps/roadmap_complete_converted.md"
-```
 
+.\development\managers\roadmap-manager\scripts\roadmap-manager.ps1 -Command GetCompletedTasks -FilePath "projet/roadmaps/roadmap_complete_converted.md"
+```plaintext
 ## Intégration avec d'autres gestionnaires
 
 Le gestionnaire de roadmap s'intègre avec les autres gestionnaires du système :
@@ -180,16 +179,16 @@ Le gestionnaire de roadmap s'intègre avec les autres gestionnaires du système 
 
 ```powershell
 # Utiliser le gestionnaire de roadmap via le gestionnaire intégré
-.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Manager RoadmapManager -Command ParseRoadmap -FilePath "projet/roadmaps/roadmap_complete_converted.md"
-```
 
+.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Manager RoadmapManager -Command ParseRoadmap -FilePath "projet/roadmaps/roadmap_complete_converted.md"
+```plaintext
 ### Intégration avec le gestionnaire de modes
 
 ```powershell
 # Utiliser le gestionnaire de roadmap avec le gestionnaire de modes
-.\development\managers\mode-manager\scripts\mode-manager.ps1 -Mode CHECK -UseManager RoadmapManager -Command UpdateTaskStatus -FilePath "projet/roadmaps/roadmap_complete_converted.md" -TaskId "1.2.3" -Status "Completed"
-```
 
+.\development\managers\mode-manager\scripts\mode-manager.ps1 -Mode CHECK -UseManager RoadmapManager -Command UpdateTaskStatus -FilePath "projet/roadmaps/roadmap_complete_converted.md" -TaskId "1.2.3" -Status "Completed"
+```plaintext
 ## Dépannage
 
 ### Problèmes courants et solutions
@@ -230,10 +229,9 @@ Le gestionnaire de roadmap s'intègre avec les autres gestionnaires du système 
 
 Le gestionnaire de roadmap génère des journaux dans le répertoire suivant :
 
-```
+```plaintext
 logs/roadmap-manager/
-```
-
+```plaintext
 Les niveaux de journalisation peuvent être configurés dans le fichier de configuration principal.
 
 ## Tests
@@ -244,8 +242,7 @@ Pour exécuter les tests du gestionnaire de roadmap, utilisez la commande suivan
 
 ```powershell
 .\development\managers\roadmap-manager\tests\Test-RoadmapManager.ps1
-```
-
+```plaintext
 ### Types de tests disponibles
 
 - **Tests unitaires :** Testent les fonctions individuelles du gestionnaire

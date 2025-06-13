@@ -10,30 +10,27 @@ Ce document établit les formules d'erreur absolue et relative pour évaluer la 
 
 Pour une distribution continue avec fonction de densité de probabilité f(x), la variance est définie par :
 
-```
+```plaintext
 σ² = ∫ (x - μ)²·f(x) dx
-```
-
+```plaintext
 où μ est la moyenne de la distribution et l'intégration est effectuée sur l'ensemble du domaine.
 
 ### 2.2 Variance d'un échantillon
 
 Pour un échantillon de n observations {x₁, x₂, ..., xₙ}, la variance empirique est :
 
-```
+```plaintext
 s² = (1/(n-1)) · Σ (xᵢ - x̄)²
-```
-
+```plaintext
 où x̄ est la moyenne de l'échantillon.
 
 ### 2.3 Variance d'un histogramme
 
 Pour un histogramme avec k bins, où chaque bin i a une valeur centrale xᵢ et une fréquence relative fᵢ, la variance est :
 
-```
+```plaintext
 σ²ₕ = Σ (xᵢ - μₕ)²·fᵢ
-```
-
+```plaintext
 où μₕ est la moyenne de l'histogramme et la somme est effectuée sur tous les bins.
 
 ## 3. Formules d'erreur pour la conservation de la variance
@@ -42,10 +39,9 @@ où μₕ est la moyenne de l'histogramme et la somme est effectuée sur tous le
 
 L'erreur absolue de la variance quantifie la différence absolue entre la variance de la distribution réelle et celle de l'histogramme :
 
-```
+```plaintext
 EAV = |σ² - σ²ₕ|
-```
-
+```plaintext
 où :
 - σ² est la variance de la distribution réelle
 - σ²ₕ est la variance de l'histogramme
@@ -61,10 +57,9 @@ où :
 
 L'erreur relative de la variance exprime l'erreur absolue en pourcentage de la variance réelle :
 
-```
+```plaintext
 ERV = |σ² - σ²ₕ| / σ² × 100%
-```
-
+```plaintext
 #### 3.2.1 Unités et interprétation
 
 - **Unités** : Pourcentage (%)
@@ -76,10 +71,9 @@ ERV = |σ² - σ²ₕ| / σ² × 100%
 
 L'erreur sur l'écart-type est souvent plus intuitive que l'erreur sur la variance :
 
-```
+```plaintext
 EET = |σ - σₕ|
-```
-
+```plaintext
 où :
 - σ est l'écart-type de la distribution réelle
 - σₕ est l'écart-type de l'histogramme
@@ -95,10 +89,9 @@ où :
 
 L'erreur relative sur l'écart-type exprime l'erreur absolue sur l'écart-type en pourcentage de l'écart-type réel :
 
-```
+```plaintext
 ERET = |σ - σₕ| / σ × 100%
-```
-
+```plaintext
 #### 3.4.1 Unités et interprétation
 
 - **Unités** : Pourcentage (%)
@@ -110,10 +103,9 @@ ERET = |σ - σₕ| / σ × 100%
 
 Pour de petites erreurs relatives, la relation approximative est :
 
-```
+```plaintext
 ERV ≈ 2 × ERET
-```
-
+```plaintext
 Cette relation découle du développement au premier ordre de la fonction racine carrée.
 
 ## 4. Propriétés théoriques
@@ -127,10 +119,9 @@ Pour un histogramme à largeur de bin fixe, la variance est théoriquement biais
 
 Le biais théorique pour un histogramme à k bins de largeur h est approximativement :
 
-```
+```plaintext
 Biais(σ²ₕ) ≈ -h²/12
-```
-
+```plaintext
 Ce biais est négatif, indiquant que l'histogramme tend à sous-estimer la variance réelle.
 
 ### 4.2 Erreur théorique due à la discrétisation
@@ -141,10 +132,9 @@ Pour une distribution continue f(x) discrétisée en k bins de largeur h, l'erre
 
 L'erreur sur la variance diminue généralement avec l'augmentation du nombre de bins, suivant approximativement une relation :
 
-```
+```plaintext
 EAV ∝ 1/k²
-```
-
+```plaintext
 où k est le nombre de bins.
 
 ## 5. Formules spécifiques pour les distributions de latence de blocs de 2KB
@@ -153,30 +143,27 @@ où k est le nombre de bins.
 
 Pour les distributions de latence, il est utile de normaliser l'erreur de variance par le carré de la moyenne :
 
-```
+```plaintext
 EVN = |σ² - σ²ₕ| / μ²
-```
-
+```plaintext
 Cette métrique est particulièrement pertinente pour comparer la conservation de la variance entre différentes distributions de latence.
 
 ### 5.2 Erreur sur le coefficient de variation (ECV)
 
 Le coefficient de variation (CV = σ/μ) est une mesure importante de la variabilité relative pour les distributions de latence :
 
-```
+```plaintext
 ECV = |CV - CVₕ| = |(σ/μ) - (σₕ/μₕ)|
-```
-
+```plaintext
 où :
 - CV est le coefficient de variation réel
 - CVₕ est le coefficient de variation de l'histogramme
 
 ### 5.3 Erreur relative sur le coefficient de variation (ERCV)
 
-```
+```plaintext
 ERCV = |CV - CVₕ| / CV × 100%
-```
-
+```plaintext
 Cette métrique est particulièrement utile pour évaluer la conservation de la variabilité relative, indépendamment de l'échelle absolue des latences.
 
 ## 6. Implémentation et calcul
@@ -195,8 +182,8 @@ def calculate_real_variance(data):
         variance: Variance des données
     """
     return np.var(data, ddof=1)  # ddof=1 pour variance non biaisée
-```
 
+```plaintext
 ### 6.2 Calcul de la variance d'un histogramme
 
 ```python
@@ -212,9 +199,11 @@ def calculate_histogram_variance(bin_edges, bin_counts):
         variance: Variance de l'histogramme
     """
     # Calculer les centres des bins
+
     bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
     
     # Calculer les fréquences relatives
+
     total_count = np.sum(bin_counts)
     if total_count == 0:
         return 0
@@ -222,21 +211,25 @@ def calculate_histogram_variance(bin_edges, bin_counts):
     frequencies = bin_counts / total_count
     
     # Calculer la moyenne
+
     mean = np.sum(bin_centers * frequencies)
     
     # Calculer la variance
+
     variance = np.sum(frequencies * (bin_centers - mean)**2)
     
     # Correction du biais de groupement (Sheppard's correction)
+
     bin_width = bin_edges[1] - bin_edges[0]  # Supposant des bins de largeur fixe
+
     variance_correction = bin_width**2 / 12
     
     # Appliquer la correction
+
     corrected_variance = variance + variance_correction
     
     return corrected_variance
-```
-
+```plaintext
 ### 6.3 Calcul des erreurs de conservation de la variance
 
 ```python
@@ -253,16 +246,19 @@ def calculate_variance_conservation_errors(real_data, bin_edges, bin_counts):
         errors: Dictionnaire des erreurs calculées
     """
     # Calculer les statistiques réelles
+
     real_mean = np.mean(real_data)
     real_variance = np.var(real_data, ddof=1)
     real_std = np.sqrt(real_variance)
     real_cv = real_std / real_mean if real_mean != 0 else float('inf')
     
     # Calculer les statistiques de l'histogramme
+
     hist_variance = calculate_histogram_variance(bin_edges, bin_counts)
     hist_std = np.sqrt(hist_variance)
     
     # Calculer la moyenne de l'histogramme
+
     bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
     total_count = np.sum(bin_counts)
     frequencies = bin_counts / total_count if total_count > 0 else np.zeros_like(bin_counts)
@@ -271,6 +267,7 @@ def calculate_variance_conservation_errors(real_data, bin_edges, bin_counts):
     hist_cv = hist_std / hist_mean if hist_mean != 0 else float('inf')
     
     # Calculer les erreurs
+
     absolute_error_variance = abs(real_variance - hist_variance)
     relative_error_variance = absolute_error_variance / real_variance * 100 if real_variance != 0 else float('inf')
     
@@ -283,6 +280,7 @@ def calculate_variance_conservation_errors(real_data, bin_edges, bin_counts):
     relative_error_cv = error_cv / real_cv * 100 if real_cv != 0 else float('inf')
     
     # Résultats
+
     errors = {
         "real_variance": real_variance,
         "histogram_variance": hist_variance,
@@ -300,8 +298,7 @@ def calculate_variance_conservation_errors(real_data, bin_edges, bin_counts):
     }
     
     return errors
-```
-
+```plaintext
 ## 7. Seuils recommandés pour les latences de blocs de 2KB
 
 | Métrique | Excellent | Bon | Acceptable | Insuffisant |
@@ -404,8 +401,7 @@ Ces seuils peuvent varier selon le contexte d'utilisation :
     }
   }
 }
-```
-
+```plaintext
 ## 9. Exemples d'application
 
 ### 9.1 Cas d'étude: Histogramme à 20 bins uniformes

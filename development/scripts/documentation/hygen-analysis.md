@@ -6,19 +6,27 @@ Ce document prÃ©sente l'analyse de la structure du dossier scripts pour l'impl
 
 La structure actuelle du dossier scripts est la suivante :
 
-```
+```plaintext
 development/scripts/
   â”œâ”€â”€ agent-auto/        # Scripts d'agent automatisÃ©
-  â”œâ”€â”€ analysis/          # Scripts d'analyse
-  â”‚   â”œâ”€â”€ plugins/       # Plugins d'analyse
-  â”‚   â””â”€â”€ development/testing/tests/         # Tests d'analyse
-  â”œâ”€â”€ api/               # Scripts d'API
-  â”œâ”€â”€ automation/        # Scripts d'automatisation
-  â”œâ”€â”€ integration/       # Scripts d'intÃ©gration
-  â”œâ”€â”€ development/testing/tests/             # Scripts de test
-  â””â”€â”€ utils/             # Scripts utilitaires
-```
 
+  â”œâ”€â”€ analysis/          # Scripts d'analyse
+
+  â”‚   â”œâ”€â”€ plugins/       # Plugins d'analyse
+
+  â”‚   â””â”€â”€ development/testing/tests/         # Tests d'analyse
+
+  â”œâ”€â”€ api/               # Scripts d'API
+
+  â”œâ”€â”€ automation/        # Scripts d'automatisation
+
+  â”œâ”€â”€ integration/       # Scripts d'intÃ©gration
+
+  â”œâ”€â”€ development/testing/tests/             # Scripts de test
+
+  â””â”€â”€ utils/             # Scripts utilitaires
+
+```plaintext
 ## Types de fichiers identifiÃ©s
 
 ### Scripts d'automatisation
@@ -28,6 +36,7 @@ Les scripts d'automatisation sont des scripts PowerShell qui automatisent des t�
 CaractÃ©ristiques :
 - Extension : `.ps1`
 - Directive : `#Requires -Version 5.1`
+
 - ParamÃ¨tres communs : `Path`, `Force`
 - Fonctions communes : `Start-*`, `Write-Success`, `Write-Error`, `Write-Info`, `Write-Warning`
 - Attribut : `[CmdletBinding(SupportsShouldProcess=$true)]`
@@ -39,6 +48,7 @@ Les scripts d'analyse sont des scripts PowerShell qui analysent des donnÃ©es. 
 CaractÃ©ristiques :
 - Extension : `.ps1`
 - Directive : `#Requires -Version 5.1`
+
 - ParamÃ¨tres communs : `InputPath`, `OutputPath`, `Format`
 - Fonctions communes : `Analyze-*`, `Export-Results`, `Write-ColorMessage`
 - Sous-dossiers : `plugins`, `tests`
@@ -50,6 +60,7 @@ Les scripts de test sont des scripts PowerShell qui testent d'autres scripts. Il
 CaractÃ©ristiques :
 - Extension : `.ps1` (gÃ©nÃ©ralement avec le suffixe `.Tests.ps1`)
 - Directive : `#Requires -Version 5.1`
+
 - Utilisation de Pester : `Describe`, `Context`, `It`, `Should`
 - Blocs communs : `BeforeAll`, `AfterAll`
 - Fonctions communes : `Invoke-*Tests`
@@ -61,6 +72,7 @@ Les scripts d'intÃ©gration sont des scripts PowerShell qui intÃ¨grent diffÃ
 CaractÃ©ristiques :
 - Extension : `.ps1`
 - Directive : `#Requires -Version 5.1`
+
 - ParamÃ¨tres communs : `TargetSystem`, `ConfigPath`, `Force`
 - Fonctions communes : `Connect-*`, `Execute-*`, `Generate-Report`, `Write-ColorMessage`
 - Attribut : `[CmdletBinding(SupportsShouldProcess=$true)]`
@@ -131,18 +143,21 @@ Pour utiliser les templates Hygen, deux options sont disponibles :
 
 ```powershell
 # GÃ©nÃ©rer un script d'automatisation
+
 .\development\scripts\utils\Generate-Script.ps1 -Type automation -Name "Auto-ProcessFiles" -Description "Script d'automatisation pour traiter des fichiers" -Author "John Doe"
 
 # GÃ©nÃ©rer un script d'analyse
+
 .\development\scripts\utils\Generate-Script.ps1 -Type analysis -Name "Analyze-CodeQuality" -Description "Script d'analyse de la qualitÃ© du code" -SubFolder "plugins" -Author "Jane Smith"
 
 # GÃ©nÃ©rer un script de test
+
 .\development\scripts\utils\Generate-Script.ps1 -Type test -Name "Example-Script" -Description "Tests pour Example-Script" -ScriptToTest "automation/Example-Script.ps1" -FunctionName "ExampleScript" -Author "Dev Team"
 
 # GÃ©nÃ©rer un script d'intÃ©gration
-.\development\scripts\utils\Generate-Script.ps1 -Type integration -Name "Sync-GitHubIssues" -Description "Script d'intÃ©gration avec GitHub Issues" -Author "Integration Team"
-```
 
+.\development\scripts\utils\Generate-Script.ps1 -Type integration -Name "Sync-GitHubIssues" -Description "Script d'intÃ©gration avec GitHub Issues" -Author "Integration Team"
+```plaintext
 ## Conclusion
 
 L'implÃ©mentation de Hygen pour le dossier scripts permet de gÃ©nÃ©rer rapidement et de maniÃ¨re cohÃ©rente des scripts. Les templates sont conÃ§us pour s'intÃ©grer parfaitement avec la structure existante et respecter les conventions de codage du projet.

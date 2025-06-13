@@ -1,4 +1,4 @@
-﻿# Sauvegardes de maintenance
+# Sauvegardes de maintenance
 
 Ce rÃ©pertoire contient les sauvegardes crÃ©Ã©es avant les opÃ©rations de maintenance.
 

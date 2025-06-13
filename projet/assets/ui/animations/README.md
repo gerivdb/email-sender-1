@@ -44,8 +44,7 @@ Pour utiliser les transitions avec Vue.js:
 <transition name="fade">
   <div v-if="show">Contenu</div>
 </transition>
-```
-
+```plaintext
 ### Classes CSS
 
 Pour utiliser les animations avec des classes CSS:
@@ -53,8 +52,7 @@ Pour utiliser les animations avec des classes CSS:
 ```html
 <div class="spin">Chargement...</div>
 <div class="hover-lift">Survol moi</div>
-```
-
+```plaintext
 ### Animations JavaScript
 
 Pour utiliser les animations avec JavaScript:
@@ -71,8 +69,7 @@ element.classList.add('shake')
 setTimeout(() => {
   element.classList.remove('shake')
 }, 1000)
-```
-
+```plaintext
 ## Exemples d'utilisation
 
 ### Transition de chargement
@@ -87,8 +84,7 @@ setTimeout(() => {
     Contenu chargé
   </div>
 </transition>
-```
-
+```plaintext
 ### Animation de liste
 
 ```html
@@ -97,16 +93,14 @@ setTimeout(() => {
     {{ item.name }}
   </li>
 </transition-group>
-```
-
+```plaintext
 ### Animation de bouton
 
 ```html
 <button class="btn-pulse" @click="submit">
   Soumettre
 </button>
-```
-
+```plaintext
 ## Performance
 
 Pour optimiser les performances des animations:

@@ -1,4 +1,4 @@
-﻿# Tâches complétées
+# Tâches complétées
 
 Ce fichier contient les tâches complétées du roadmap.
 

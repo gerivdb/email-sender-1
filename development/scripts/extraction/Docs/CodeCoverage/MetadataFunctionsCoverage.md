@@ -24,6 +24,7 @@ Cette fonction ajoute ou met à jour une métadonnée dans une information extra
 **Couverture des branches :** 100% (3/3)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification de l'objet d'information
 - Vérification de la clé de métadonnée
@@ -32,11 +33,13 @@ Cette fonction ajoute ou met à jour une métadonnée dans une information extra
 - Retour de l'objet d'information modifié
 
 #### Branches couvertes :
+
 - Vérification de l'objet d'information null
 - Vérification de la clé de métadonnée vide
 - Vérification de l'existence des métadonnées
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests avec différents types de valeurs de métadonnées (chaînes, nombres, objets complexes)
 - Tests de mise à jour de métadonnées existantes
@@ -50,6 +53,7 @@ Cette fonction récupère la valeur d'une métadonnée d'une information extrait
 **Couverture des branches :** 100% (4/4)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification de l'objet d'information
 - Vérification de la clé de métadonnée
@@ -59,12 +63,14 @@ Cette fonction récupère la valeur d'une métadonnée d'une information extrait
 - Retour de la valeur de la métadonnée
 
 #### Branches couvertes :
+
 - Vérification de l'objet d'information null
 - Vérification de la clé de métadonnée vide
 - Vérification de l'existence des métadonnées
 - Vérification de l'existence de la clé de métadonnée
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests de récupération de métadonnées existantes
 - Tests de récupération de métadonnées inexistantes avec valeur par défaut
@@ -78,6 +84,7 @@ Cette fonction supprime une métadonnée d'une information extraite.
 **Couverture des branches :** 100% (3/3)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification de l'objet d'information
 - Vérification de la clé de métadonnée
@@ -86,11 +93,13 @@ Cette fonction supprime une métadonnée d'une information extraite.
 - Retour de l'objet d'information modifié
 
 #### Branches couvertes :
+
 - Vérification de l'objet d'information null
 - Vérification de la clé de métadonnée vide
 - Vérification de l'existence des métadonnées et de la clé
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests de suppression de métadonnées existantes
 - Tests de suppression de métadonnées inexistantes
@@ -104,16 +113,19 @@ Cette fonction supprime toutes les métadonnées d'une information extraite.
 **Couverture des branches :** 100% (2/2)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification de l'objet d'information
 - Réinitialisation des métadonnées
 - Retour de l'objet d'information modifié
 
 #### Branches couvertes :
+
 - Vérification de l'objet d'information null
 - Vérification de l'existence des métadonnées
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests de suppression de toutes les métadonnées
 - Tests avec des objets d'information sans métadonnées

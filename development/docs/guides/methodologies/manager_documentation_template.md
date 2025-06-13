@@ -19,30 +19,36 @@ L'objectif principal du gestionnaire [NOM_DU_GESTIONNAIRE] est de [OBJECTIF_PRIN
 
 Le gestionnaire [NOM_DU_GESTIONNAIRE] est organisé selon la structure de répertoires suivante :
 
-```
+```plaintext
 development/managers/[nom-du-gestionnaire]/
 ├── scripts/
 │   ├── [nom-du-gestionnaire].ps1           # Script principal
+
 │   ├── install-[nom-du-gestionnaire].ps1   # Script d'installation (si applicable)
+
 │   └── ...                                 # Autres scripts
+
 ├── modules/
 │   └── ...                                 # Modules PowerShell
+
 ├── tests/
 │   ├── Test-[NomDuGestionnaire].ps1        # Tests unitaires
+
 │   └── ...                                 # Autres tests
+
 └── config/
     └── ...                                 # Fichiers de configuration locaux
-```
 
+```plaintext
 ### Fichiers de configuration
 
 Les fichiers de configuration du gestionnaire sont stockés dans :
 
-```
+```plaintext
 projet/config/managers/[nom-du-gestionnaire]/
 └── [nom-du-gestionnaire].config.json       # Configuration principale
-```
 
+```plaintext
 ## Prérequis
 
 Avant d'utiliser le gestionnaire [NOM_DU_GESTIONNAIRE], assurez-vous que :
@@ -59,8 +65,7 @@ Pour installer le gestionnaire [NOM_DU_GESTIONNAIRE], utilisez le script d'insta
 
 ```powershell
 .\development\managers\[nom-du-gestionnaire]\scripts\install-[nom-du-gestionnaire].ps1
-```
-
+```plaintext
 ### Installation manuelle
 
 Si vous préférez une installation manuelle, suivez ces étapes :
@@ -75,10 +80,9 @@ Si vous préférez une installation manuelle, suivez ces étapes :
 
 Le fichier de configuration principal du gestionnaire est situé à :
 
-```
+```plaintext
 projet/config/managers/[nom-du-gestionnaire]/[nom-du-gestionnaire].config.json
-```
-
+```plaintext
 Voici un exemple de configuration :
 
 ```json
@@ -94,8 +98,7 @@ Voici un exemple de configuration :
     "DataPath": "data/[nom-du-gestionnaire]"
   }
 }
-```
-
+```plaintext
 ### Options de configuration
 
 | Option | Type | Description | Valeur par défaut |
@@ -115,8 +118,7 @@ Le gestionnaire [NOM_DU_GESTIONNAIRE] expose les commandes suivantes :
 
 ```powershell
 .\development\managers\[nom-du-gestionnaire]\scripts\[nom-du-gestionnaire].ps1 -Command [NOM_COMMANDE_1] -Parameter1 Value1 -Parameter2 Value2
-```
-
+```plaintext
 **Description :** [DESCRIPTION_COMMANDE_1]
 
 **Paramètres :**
@@ -126,14 +128,12 @@ Le gestionnaire [NOM_DU_GESTIONNAIRE] expose les commandes suivantes :
 **Exemple :**
 ```powershell
 .\development\managers\[nom-du-gestionnaire]\scripts\[nom-du-gestionnaire].ps1 -Command [NOM_COMMANDE_1] -Parameter1 "Exemple" -Parameter2 10
-```
-
+```plaintext
 #### Commande 2 : [NOM_COMMANDE_2]
 
 ```powershell
 .\development\managers\[nom-du-gestionnaire]\scripts\[nom-du-gestionnaire].ps1 -Command [NOM_COMMANDE_2] -Parameter3 Value3
-```
-
+```plaintext
 **Description :** [DESCRIPTION_COMMANDE_2]
 
 **Paramètres :**
@@ -142,24 +142,23 @@ Le gestionnaire [NOM_DU_GESTIONNAIRE] expose les commandes suivantes :
 **Exemple :**
 ```powershell
 .\development\managers\[nom-du-gestionnaire]\scripts\[nom-du-gestionnaire].ps1 -Command [NOM_COMMANDE_2] -Parameter3 "Exemple"
-```
-
+```plaintext
 ### Exemples d'utilisation
 
 #### Exemple 1 : [TITRE_EXEMPLE_1]
 
 ```powershell
 # [DESCRIPTION_EXEMPLE_1]
-.\development\managers\[nom-du-gestionnaire]\scripts\[nom-du-gestionnaire].ps1 -Command [NOM_COMMANDE] -Parameter1 "Valeur1" -Parameter2 "Valeur2"
-```
 
+.\development\managers\[nom-du-gestionnaire]\scripts\[nom-du-gestionnaire].ps1 -Command [NOM_COMMANDE] -Parameter1 "Valeur1" -Parameter2 "Valeur2"
+```plaintext
 #### Exemple 2 : [TITRE_EXEMPLE_2]
 
 ```powershell
 # [DESCRIPTION_EXEMPLE_2]
-.\development\managers\[nom-du-gestionnaire]\scripts\[nom-du-gestionnaire].ps1 -Command [NOM_COMMANDE] -Parameter3 "Valeur3"
-```
 
+.\development\managers\[nom-du-gestionnaire]\scripts\[nom-du-gestionnaire].ps1 -Command [NOM_COMMANDE] -Parameter3 "Valeur3"
+```plaintext
 ## Intégration avec d'autres gestionnaires
 
 Le gestionnaire [NOM_DU_GESTIONNAIRE] s'intègre avec les autres gestionnaires du système :
@@ -168,16 +167,16 @@ Le gestionnaire [NOM_DU_GESTIONNAIRE] s'intègre avec les autres gestionnaires d
 
 ```powershell
 # Utiliser le gestionnaire [NOM_DU_GESTIONNAIRE] via le gestionnaire intégré
-.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Manager [NOM_DU_GESTIONNAIRE] -Command [NOM_COMMANDE] -Parameter1 "Valeur1"
-```
 
+.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Manager [NOM_DU_GESTIONNAIRE] -Command [NOM_COMMANDE] -Parameter1 "Valeur1"
+```plaintext
 ### Intégration avec le gestionnaire de modes
 
 ```powershell
 # Utiliser le gestionnaire [NOM_DU_GESTIONNAIRE] via le gestionnaire de modes
-.\development\managers\mode-manager\scripts\mode-manager.ps1 -Mode [NOM_MODE] -UseManager [NOM_DU_GESTIONNAIRE] -Command [NOM_COMMANDE]
-```
 
+.\development\managers\mode-manager\scripts\mode-manager.ps1 -Mode [NOM_MODE] -UseManager [NOM_DU_GESTIONNAIRE] -Command [NOM_COMMANDE]
+```plaintext
 ## Dépannage
 
 ### Problèmes courants et solutions
@@ -214,10 +213,9 @@ Le gestionnaire [NOM_DU_GESTIONNAIRE] s'intègre avec les autres gestionnaires d
 
 Le gestionnaire [NOM_DU_GESTIONNAIRE] génère des journaux dans le répertoire suivant :
 
-```
+```plaintext
 logs/[nom-du-gestionnaire]/
-```
-
+```plaintext
 Les niveaux de journalisation peuvent être configurés dans le fichier de configuration principal.
 
 ## Tests
@@ -228,8 +226,7 @@ Pour exécuter les tests du gestionnaire [NOM_DU_GESTIONNAIRE], utilisez la comm
 
 ```powershell
 .\development\managers\[nom-du-gestionnaire]\tests\Test-[NomDuGestionnaire].ps1
-```
-
+```plaintext
 ### Types de tests disponibles
 
 - **Tests unitaires :** Testent les fonctions individuelles du gestionnaire

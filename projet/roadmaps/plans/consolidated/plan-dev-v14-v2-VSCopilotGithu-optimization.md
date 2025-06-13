@@ -1,4 +1,5 @@
 # Plan de développement v14 - Optimisation des pratiques avec GitHub Copilot
+
 *Version 2.0 - 2025-05-26*
 
 Ce plan détaille les améliorations à apporter aux pratiques de développement avec GitHub Copilot pour maximiser l'efficacité et minimiser les erreurs, en utilisant Go comme langage principal.

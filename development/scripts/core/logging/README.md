@@ -1,4 +1,4 @@
-﻿# logging
+# logging
 
 Journalisation et rapports
 

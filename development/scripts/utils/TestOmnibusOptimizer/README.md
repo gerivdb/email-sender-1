@@ -1,4 +1,4 @@
-﻿# TestOmnibusOptimizer
+# TestOmnibusOptimizer
 
 Ce module intÃ¨gre TestOmnibus et le SystÃ¨me d'Optimisation Proactive pour crÃ©er une solution complÃ¨te d'analyse, de test et d'optimisation des scripts PowerShell.
 
@@ -16,31 +16,30 @@ Ce module intÃ¨gre TestOmnibus et le SystÃ¨me d'Optimisation Proactive pour 
 
 ```powershell
 Import-Module "chemin\vers\TestOmnibusOptimizer\TestOmnibusOptimizer.psm1" -Force
-```
-
+```plaintext
 ## Utilisation
 
 ### ExÃ©cution optimisÃ©e de TestOmnibus
 
 ```powershell
 # ExÃ©cuter TestOmnibus avec des paramÃ¨tres optimisÃ©s
-Invoke-OptimizedTestOmnibus -TestPath "C:\Tests" -UsageDataPath "C:\UsageData\usage_data.xml" -OutputPath "C:\Reports" -GenerateCombinedReport
-```
 
+Invoke-OptimizedTestOmnibus -TestPath "C:\Tests" -UsageDataPath "C:\UsageData\usage_data.xml" -OutputPath "C:\Reports" -GenerateCombinedReport
+```plaintext
 ### GÃ©nÃ©ration d'un rapport combinÃ©
 
 ```powershell
 # GÃ©nÃ©rer un rapport combinÃ©
-New-CombinedReport -TestReportPath "C:\Reports\TestResults\report.html" -UsageStats $usageStats -OutputPath "C:\Reports\combined_report.html"
-```
 
+New-CombinedReport -TestReportPath "C:\Reports\TestResults\report.html" -UsageStats $usageStats -OutputPath "C:\Reports\combined_report.html"
+```plaintext
 ### GÃ©nÃ©ration de suggestions d'optimisation
 
 ```powershell
 # GÃ©nÃ©rer des suggestions d'optimisation
-Get-CombinedOptimizationSuggestions -TestResultsPath "C:\Reports\TestResults\results.xml" -UsageDataPath "C:\UsageData\usage_data.xml" -OutputPath "C:\Reports\Suggestions"
-```
 
+Get-CombinedOptimizationSuggestions -TestResultsPath "C:\Reports\TestResults\results.xml" -UsageDataPath "C:\UsageData\usage_data.xml" -OutputPath "C:\Reports\Suggestions"
+```plaintext
 ## Exemple complet
 
 Voir le script `Example-Integration.ps1` pour un exemple complet d'utilisation du module.

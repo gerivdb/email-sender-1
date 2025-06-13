@@ -46,18 +46,18 @@ Le module adhère aux principes suivants :
 
 ```powershell
 Import-Module -Path "chemin\vers\UnifiedParallel.psm1"
-```
-
+```plaintext
 Ou, pour une installation permanente, copiez le module dans un des répertoires de modules PowerShell :
 
 ```powershell
 # Obtenir les chemins des modules
+
 $env:PSModulePath -split ';'
 
 # Copier le module dans un des répertoires (exemple)
-Copy-Item -Path "UnifiedParallel.psm1" -Destination "$env:USERPROFILE\Documents\WindowsPowerShell\Modules\UnifiedParallel\"
-```
 
+Copy-Item -Path "UnifiedParallel.psm1" -Destination "$env:USERPROFILE\Documents\WindowsPowerShell\Modules\UnifiedParallel\"
+```plaintext
 ## 3. Utilisation de base
 
 ### 3.1 Initialisation du module
@@ -66,52 +66,53 @@ Avant d'utiliser le module, vous devez l'initialiser :
 
 ```powershell
 Initialize-UnifiedParallel
-```
-
+```plaintext
 Options d'initialisation courantes :
 
 ```powershell
 # Initialisation avec options personnalisées
-Initialize-UnifiedParallel -LogPath "C:\Logs\UnifiedParallel" -DefaultTimeout 600 -EnableBackpressure -EnableThrottling
-```
 
+Initialize-UnifiedParallel -LogPath "C:\Logs\UnifiedParallel" -DefaultTimeout 600 -EnableBackpressure -EnableThrottling
+```plaintext
 ### 3.2 Exécution de tâches en parallèle
 
 La fonction principale du module est `Invoke-UnifiedParallel`, qui permet d'exécuter un script block en parallèle sur une collection d'objets :
 
 ```powershell
 # Définir les données et le script block
+
 $data = 1..100
 $scriptBlock = {
     param($item)
     # Traitement de l'élément
+
     return $item * 2
 }
 
 # Exécuter en parallèle
-$results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -MaxThreads 8
-```
 
+$results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -MaxThreads 8
+```plaintext
 ### 3.3 Récupération des résultats
 
 Les résultats sont retournés sous forme de collection d'objets :
 
 ```powershell
 # Afficher les résultats
+
 $results | Format-Table
 
 # Accéder aux valeurs
-$values = $results | Select-Object -ExpandProperty Value
-```
 
+$values = $results | Select-Object -ExpandProperty Value
+```plaintext
 ### 3.4 Nettoyage des ressources
 
 Après utilisation, nettoyez les ressources pour libérer la mémoire :
 
 ```powershell
 Clear-UnifiedParallel
-```
-
+```plaintext
 ## 4. Fonctionnalités avancées
 
 ### 4.1 Gestion des ressources système et backpressure
@@ -120,12 +121,13 @@ Le module surveille l'utilisation des ressources système et peut ajuster son co
 
 ```powershell
 # Initialiser avec backpressure activé
+
 Initialize-UnifiedParallel -EnableBackpressure
 
 # Exécuter avec surveillance des ressources
-$results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -TaskType 'CPU'
-```
 
+$results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -TaskType 'CPU'
+```plaintext
 Le mécanisme de backpressure contrôle le flux des tâches en fonction de la charge du système :
 - Limite le nombre de tâches en file d'attente
 - Rejette les nouvelles tâches si la charge est trop élevée
@@ -137,12 +139,13 @@ Le throttling adaptatif ajuste dynamiquement le nombre de threads en fonction de
 
 ```powershell
 # Initialiser avec throttling activé
+
 Initialize-UnifiedParallel -EnableThrottling
 
 # Exécuter avec throttling adaptatif
-$results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -Dynamic
-```
 
+$results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -Dynamic
+```plaintext
 Avantages du throttling adaptatif :
 - Optimise l'utilisation des ressources
 - Évite la surcharge du système
@@ -155,35 +158,38 @@ Le module offre une gestion des erreurs standardisée via la fonction `New-Unifi
 ```powershell
 try {
     # Code qui peut générer une erreur
+
 } catch {
     # Créer une erreur standardisée
+
     New-UnifiedError -Message "Une erreur s'est produite" -Source "MonScript" -ErrorRecord $_ -WriteError
 }
-```
-
+```plaintext
 Options de gestion des erreurs dans `Invoke-UnifiedParallel` :
 
 ```powershell
 # Ignorer les erreurs et continuer
+
 $results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -IgnoreErrors
 
 # Obtenir des informations détaillées sur les erreurs
+
 $detailedResults = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -PassThru
 $errors = $detailedResults.Errors
-```
-
+```plaintext
 ### 4.4 Utilisation du cache de runspaces
 
 Le module utilise un cache de pools de runspaces pour optimiser les performances :
 
 ```powershell
 # Obtenir des informations sur le cache
+
 $cacheInfo = Get-RunspacePoolCacheInfo -Detailed
 
 # Nettoyer le cache
-Clear-RunspacePoolCache -MaxIdleTimeMinutes 15 -MaxCacheSize 5
-```
 
+Clear-RunspacePoolCache -MaxIdleTimeMinutes 15 -MaxCacheSize 5
+```plaintext
 Avantages du cache de runspaces :
 - Réduit le temps de création des runspaces
 - Améliore les performances pour les exécutions répétées
@@ -221,9 +227,11 @@ Avantages du cache de runspaces :
 
 ```powershell
 # Obtenir la liste des fichiers
+
 $files = Get-ChildItem -Path "C:\Data" -Filter "*.txt"
 
 # Définir le script block
+
 $scriptBlock = {
     param($file)
     $content = Get-Content -Path $file.FullName
@@ -236,13 +244,14 @@ $scriptBlock = {
 }
 
 # Exécuter en parallèle (optimisé pour les opérations I/O)
-$results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $files -TaskType 'IO'
-```
 
+$results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $files -TaskType 'IO'
+```plaintext
 ### 6.2 Requêtes API
 
 ```powershell
 # Définir les URLs à interroger
+
 $urls = @(
     "https://jsonplaceholder.typicode.com/posts/1",
     "https://jsonplaceholder.typicode.com/posts/2",
@@ -252,6 +261,7 @@ $urls = @(
 )
 
 # Définir le script block
+
 $scriptBlock = {
     param($url)
     try {
@@ -273,13 +283,14 @@ $scriptBlock = {
 }
 
 # Exécuter en parallèle (optimisé pour les opérations I/O)
-$results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $urls -TaskType 'IO' -MaxThreads 10
-```
 
+$results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $urls -TaskType 'IO' -MaxThreads 10
+```plaintext
 ### 6.3 Calculs intensifs
 
 ```powershell
 # Fonction pour vérifier si un nombre est premier
+
 function Test-IsPrime {
     param([int]$number)
     if ($number -lt 2) { return $false }
@@ -290,9 +301,11 @@ function Test-IsPrime {
 }
 
 # Définir les nombres à traiter
+
 $numbers = 1..1000
 
 # Définir le script block
+
 $scriptBlock = {
     param($range)
     $primes = @()
@@ -310,6 +323,7 @@ $scriptBlock = {
 }
 
 # Diviser les nombres en segments
+
 $segments = @()
 $segmentSize = 100
 for ($i = 0; $i -lt $numbers.Count; $i += $segmentSize) {
@@ -318,16 +332,18 @@ for ($i = 0; $i -lt $numbers.Count; $i += $segmentSize) {
 }
 
 # Exécuter en parallèle (optimisé pour les opérations CPU)
-$results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $segments -TaskType 'CPU'
-```
 
+$results = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $segments -TaskType 'CPU'
+```plaintext
 ### 6.4 Gestion des erreurs
 
 ```powershell
 # Définir les données
+
 $data = 1..10
 
 # Définir un script block qui génère des erreurs pour les nombres pairs
+
 $scriptBlock = {
     param($item)
     if ($item % 2 -eq 0) {
@@ -337,9 +353,11 @@ $scriptBlock = {
 }
 
 # Exécuter avec gestion des erreurs détaillée
+
 $detailedResults = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -PassThru -IgnoreErrors
 
 # Analyser les résultats
+
 $successResults = $detailedResults.Results | Where-Object { $_.Success }
 $errorResults = $detailedResults.Results | Where-Object { -not $_.Success }
 
@@ -347,11 +365,11 @@ Write-Host "Succès: $($successResults.Count) éléments"
 Write-Host "Erreurs: $($errorResults.Count) éléments"
 
 # Afficher les erreurs
+
 foreach ($error in $detailedResults.Errors) {
     Write-Host "Erreur: $($error.Exception.Message)"
 }
-```
-
+```plaintext
 ## 7. Compatibilité et différences entre PowerShell 5.1 et 7.x
 
 ### 7.1 Compatibilité

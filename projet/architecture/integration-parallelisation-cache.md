@@ -15,7 +15,7 @@ Ce document présente la conception détaillée de l'intégration de la parallé
 
 L'architecture proposée repose sur un modèle hybride où PowerShell joue le rôle d'orchestrateur tandis que Python gère les traitements intensifs en parallèle. Le tout est unifié par un système de cache partagé.
 
-```
+```plaintext
 ┌─────────────────────────────────────────────────────────────────┐
 │                     PowerShell (Orchestrateur)                   │
 │                                                                 │
@@ -45,8 +45,7 @@ L'architecture proposée repose sur un modèle hybride où PowerShell joue le r�
 │  │ / Threading     │    │ données         │    │ des calculs  │ │
 │  └─────────────────┘    └─────────────────┘    └──────────────┘ │
 └─────────────────────────────────────────────────────────────────┘
-```
-
+```plaintext
 ## Composants clés
 
 ### 1. Framework d'orchestration PowerShell
@@ -59,6 +58,7 @@ Le framework d'orchestration en PowerShell sera responsable de :
 
 ```powershell
 # Exemple de framework d'orchestration
+
 function Invoke-ParallelTask {
     [CmdletBinding()]
     param (
@@ -79,17 +79,21 @@ function Invoke-ParallelTask {
     )
     
     # Initialiser le cache si nécessaire
+
     $cache = Initialize-SharedCache -Config $CacheConfig
     
     # Partitionner les données
+
     $batches = Split-DataIntoBatches -InputData $InputData -BatchSize $BatchSize
     
     # Déterminer le niveau de concurrence optimal
+
     if ($MaxConcurrency -le 0) {
         $MaxConcurrency = [Environment]::ProcessorCount
     }
     
     # Exécuter les tâches en parallèle
+
     $results = @()
     $runspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxConcurrency)
     $runspacePool.Open()
@@ -100,29 +104,35 @@ function Invoke-ParallelTask {
         $runspace.RunspacePool = $runspacePool
         
         # Configurer la tâche
+
         [void]$runspace.AddScript({
             param($script, $data, $cacheDir)
             
             # Préparer les arguments pour Python
+
             $dataJson = ConvertTo-Json -InputObject $data -Compress
             $dataFile = Join-Path -Path $env:TEMP -ChildPath "data_$([Guid]::NewGuid()).json"
             $dataJson | Out-File -FilePath $dataFile -Encoding utf8
             
             # Exécuter le script Python
+
             $output = python $script --data $dataFile --cache-dir $cacheDir
             
             # Nettoyer
+
             Remove-Item -Path $dataFile -Force
             
             return $output
         })
         
         # Passer les paramètres
+
         [void]$runspace.AddArgument($PythonScript)
         [void]$runspace.AddArgument($batch)
         [void]$runspace.AddArgument($cache.CachePath)
         
         # Démarrer la tâche
+
         $handle = $runspace.BeginInvoke()
         $runspaces += [PSCustomObject]@{
             Runspace = $runspace
@@ -132,6 +142,7 @@ function Invoke-ParallelTask {
     }
     
     # Collecter les résultats
+
     foreach ($rs in $runspaces) {
         $results += $rs.Runspace.EndInvoke($rs.Handle)
         $rs.Runspace.Dispose()
@@ -141,10 +152,10 @@ function Invoke-ParallelTask {
     $runspacePool.Dispose()
     
     # Agréger les résultats
+
     return Merge-Results -Results $results
 }
-```
-
+```plaintext
 ### 2. Modules Python pour le traitement parallèle
 
 Les modules Python seront optimisés pour :
@@ -154,6 +165,7 @@ Les modules Python seront optimisés pour :
 
 ```python
 # parallel_processor.py
+
 import argparse
 import json
 import multiprocessing as mp
@@ -164,6 +176,7 @@ from functools import lru_cache
 from typing import Dict, List, Any
 
 # Configuration du cache partagé
+
 class SharedCache:
     def __init__(self, cache_dir: str):
         self.cache_dir = cache_dir
@@ -172,6 +185,7 @@ class SharedCache:
     def get_cache_path(self, key: str) -> str:
         """Génère un chemin de fichier pour une clé de cache."""
         # Normaliser la clé pour éviter les problèmes de caractères spéciaux
+
         import hashlib
         key_hash = hashlib.md5(key.encode()).hexdigest()
         return os.path.join(self.cache_dir, f"{key_hash}.cache")
@@ -184,6 +198,7 @@ class SharedCache:
                 with open(cache_path, 'rb') as f:
                     item = pickle.load(f)
                 # Vérifier si l'élément est expiré
+
                 if hasattr(item, 'expiration') and item.expiration < time.time():
                     os.remove(cache_path)
                     return default
@@ -198,6 +213,7 @@ class SharedCache:
         cache_path = self.get_cache_path(key)
         try:
             # Créer un objet avec métadonnées
+
             item = {
                 'value': value,
                 'created': time.time(),
@@ -211,47 +227,58 @@ class SharedCache:
             return False
 
 # Fonction de traitement parallèle avec cache
+
 def process_data_parallel(data: List[Any], cache_dir: str, max_workers: int = None) -> List[Any]:
     """Traite les données en parallèle avec mise en cache."""
     if max_workers is None:
         max_workers = mp.cpu_count()
     
     # Initialiser le cache partagé
+
     cache = SharedCache(cache_dir)
     
     # Fonction de traitement avec cache local
+
     @lru_cache(maxsize=1000)
     def process_item(item):
         # Générer une clé de cache unique
+
         cache_key = f"item_{hash(str(item))}"
         
         # Vérifier si le résultat est déjà en cache
+
         result = cache.get(cache_key)
         if result is not None:
             return result
         
         # Effectuer le traitement coûteux
+
         result = expensive_computation(item)
         
         # Mettre en cache le résultat
+
         cache.set(cache_key, result)
         
         return result
     
     # Fonction de calcul coûteux (à remplacer par le traitement réel)
+
     def expensive_computation(item):
         # Simuler un traitement intensif
+
         import time
         time.sleep(0.1)
         return item * 2
     
     # Traiter les données en parallèle
+
     with mp.Pool(processes=max_workers) as pool:
         results = pool.map(process_item, data)
     
     return results
 
 # Point d'entrée principal
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Traitement parallèle avec cache")
     parser.add_argument("--data", required=True, help="Chemin vers le fichier de données JSON")
@@ -260,16 +287,18 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     # Charger les données
+
     with open(args.data, 'r', encoding='utf-8') as f:
         input_data = json.load(f)
     
     # Traiter les données
+
     results = process_data_parallel(input_data, args.cache_dir, args.max_workers)
     
     # Afficher les résultats
-    print(json.dumps(results))
-```
 
+    print(json.dumps(results))
+```plaintext
 ### 3. Système de cache partagé
 
 Le système de cache partagé sera basé sur PSCacheManager avec des extensions pour :
@@ -279,6 +308,7 @@ Le système de cache partagé sera basé sur PSCacheManager avec des extensions 
 
 ```powershell
 # Exemple d'extension de PSCacheManager pour le partage avec Python
+
 function Initialize-SharedCache {
     [CmdletBinding()]
     [OutputType([PSCustomObject])]
@@ -288,6 +318,7 @@ function Initialize-SharedCache {
     )
     
     # Paramètres par défaut
+
     $defaultConfig = @{
         Name = "SharedCache"
         CachePath = Join-Path -Path $env:TEMP -ChildPath "PSPythonSharedCache"
@@ -295,23 +326,28 @@ function Initialize-SharedCache {
         DefaultTTLSeconds = 3600
         EnableDiskCache = $true
         SerializationFormat = "CliXml" # ou "JSON" pour une meilleure compatibilité avec Python
+
     }
     
     # Fusionner avec la configuration fournie
+
     $finalConfig = $defaultConfig.Clone()
     foreach ($key in $Config.Keys) {
         $finalConfig[$key] = $Config[$key]
     }
     
     # Créer le répertoire de cache si nécessaire
+
     if (-not (Test-Path -Path $finalConfig.CachePath)) {
         New-Item -Path $finalConfig.CachePath -ItemType Directory -Force | Out-Null
     }
     
     # Initialiser le cache
+
     $cache = New-PSCache -Name $finalConfig.Name -CachePath $finalConfig.CachePath -MaxMemoryItems $finalConfig.MaxMemoryItems -DefaultTTLSeconds $finalConfig.DefaultTTLSeconds
     
     # Ajouter des métadonnées pour Python
+
     $metadataPath = Join-Path -Path $finalConfig.CachePath -ChildPath "metadata.json"
     $metadata = @{
         Format = $finalConfig.SerializationFormat
@@ -323,6 +359,7 @@ function Initialize-SharedCache {
     $metadata | ConvertTo-Json | Out-File -FilePath $metadataPath -Encoding utf8
     
     # Retourner l'objet cache avec des informations supplémentaires
+
     return [PSCustomObject]@{
         Cache = $cache
         CachePath = $finalConfig.CachePath
@@ -330,8 +367,7 @@ function Initialize-SharedCache {
         Config = $finalConfig
     }
 }
-```
-
+```plaintext
 ## Cas d'utilisation spécifiques
 
 ### 1. Analyse de scripts à grande échelle

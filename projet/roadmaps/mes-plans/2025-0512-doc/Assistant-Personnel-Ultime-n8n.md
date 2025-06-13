@@ -1,4 +1,4 @@
-﻿Absolument. Voici une analyse technique de la vidéo, axée sur les éléments utiles pour votre projet EMAIL_SENDER_1.
+Absolument. Voici une analyse technique de la vidéo, axée sur les éléments utiles pour votre projet EMAIL_SENDER_1.
 
 ---
 
@@ -60,17 +60,20 @@ La vidéo présente la création et la démonstration d'un assistant personnel a
                                                                         |
                                                                         v
                                                             [Telegram Send Message (Réponse)]
-```
-
+```plaintext
 **Détails des Composants et Logiques Pertinents pour EMAIL_SENDER_1:**
 
 1.  **Assistant Principal ("Ultimate Assistant" - Node Agent n8n):**
     *   **Rôle:** Cerveau central qui reçoit la commande textuelle normalisée et décide quel outil ou sous-agent utiliser.
     *   **Prompt Système:** Essentiel pour définir son comportement. Structure observée:
         *   `# Overview`: Description du rôle de l'assistant ("You are the ultimate personal assistant... Your job is to send the user's query to the correct tool...").
+
         *   `## Tools`: Liste des outils/sous-agents disponibles avec une description de leur fonction. Ex: `emailAgent: Use this tool to take action in email`. La précision de cette description est clé pour le bon routage.
+
         *   `## Rules`: Règles spécifiques. Ex: "Some actions require you to look up contact information first. For the following actions, you must get contact information and send that to the agent who needs it: - sending emails - drafting emails - creating calendar event with attendee".
+
         *   `## Examples`: Scénarios `Input:`, `Action:`, `Output:` pour guider le LLM par des exemples concrets (few-shot learning). Ex: Envoi d'email à Nate Herkelman.
+
         *   `## Final Reminders`: Informations contextuelles injectées dynamiquement. Ex: `Here is the current date/time: {{$now}}`.
 
 2.  **Agent Email (Sous-Workflow `_Email_Agent`):**

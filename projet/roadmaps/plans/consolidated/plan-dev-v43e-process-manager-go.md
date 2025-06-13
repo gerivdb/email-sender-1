@@ -1,9 +1,11 @@
 # Plan de développement v43e - Création d'un Gestionnaire de Processus en Go
+
 *Version 1.0 - 2025-06-04 - Progression globale : 0%*
 
 Ce plan de développement détaille la conception et l'implémentation d'un nouveau `ProcessManager` en Go natif pour le projet EMAIL SENDER 1. Ce gestionnaire remplacera la version PowerShell existante et s'alignera sur les nouveaux standards v43+ du projet, en privilégiant Go pour la performance, la robustesse et l'harmonisation avec les autres gestionnaires Go (ConfigManager, ErrorManager, DependencyManager). L'objectif est de fournir un orchestrateur centralisé capable de découvrir, exécuter et gérer les processus et les tâches des différents managers du projet.
 
 ## Table des matières
+
 - [1] Phase 1 : Conception et Architecture du ProcessManager en Go
 - [2] Phase 2 : Implémentation du Noyau du ProcessManager
 - [3] Phase 3 : Intégration avec les Gestionnaires Standards (ErrorManager, ConfigManager)
@@ -14,9 +16,11 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
 - [8] Phase 8 : Documentation et Déploiement
 
 ## Phase 1 : Conception et Architecture du ProcessManager en Go
+
 *Progression : 0%*
 
 ### 1.1 Définition des Responsabilités et du Périmètre
+
 *Progression : 0%*
 - [ ] Objectif : Clarifier les fonctionnalités clés du `ProcessManager` Go.
   - [ ] Étape 1.1 : Définir les capacités principales.
@@ -32,6 +36,7 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Document de spécifications fonctionnelles pour le `ProcessManager` Go.
 
 ### 1.2 Conception de l'Architecture Interne
+
 *Progression : 0%*
 - [ ] Objectif : Définir les modules internes du `ProcessManager` Go.
   - [ ] Étape 2.1 : Définir les composants principaux.
@@ -48,6 +53,7 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Diagramme d'architecture, description des modules et des structures de données (`development/managers/process-manager-go/architecture.md`).
 
 ### 1.3 Conception des Interfaces et des Contrats
+
 *Progression : 0%*
 - [ ] Objectif : Définir comment le `ProcessManager` sera invoqué et comment il interagira.
   - [ ] Étape 3.1 : Définir l'interface CLI du `ProcessManager` Go.
@@ -59,9 +65,11 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Spécifications de l'interface CLI, format du manifeste (`development/managers/process-manager-go/api_spec.md`).
 
 ## Phase 2 : Implémentation du Noyau du ProcessManager
+
 *Progression : 0%*
 
 ### 2.1 Initialisation du Projet Go
+
 *Progression : 0%*
 - [ ] Objectif : Mettre en place la structure du projet Go pour le `ProcessManager`.
   - [ ] Étape 1.1 : Créer le répertoire `development/managers/process-manager-go`.
@@ -71,6 +79,7 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Structure de projet Go initialisée.
 
 ### 2.2 Implémentation des Structures de Données de Base
+
 *Progression : 0%*
 - [ ] Objectif : Coder les structures de données définies en Phase 1.
   - [ ] Étape 2.1 : Implémenter `ManagedProcess`, `TaskDefinition`, `ManagerManifest` dans des fichiers Go appropriés (ex: `internal/core/types.go`).
@@ -78,6 +87,7 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Fichiers Go avec les types de base.
 
 ### 2.3 Implémentation du Moteur d'Exécution (Basique)
+
 *Progression : 0%*
 - [ ] Objectif : Capacité à lancer et superviser un processus externe simple.
   - [ ] Étape 3.1 : Implémenter les fonctions de base dans `internal/execution/engine.go`.
@@ -88,9 +98,11 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Module d'exécution capable de lancer des commandes simples.
 
 ## Phase 3 : Intégration avec les Gestionnaires Standards (ErrorManager, ConfigManager)
+
 *Progression : 0%*
 
 ### 3.1 Intégration avec ErrorManager
+
 *Progression : 0%*
 - [ ] Objectif : Standardiser la journalisation et la gestion des erreurs.
   - [ ] Étape 1.1 : Intégrer le client `ErrorManager` (ou son logger Zap configuré).
@@ -100,6 +112,7 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : `ProcessManager` utilisant la journalisation et la gestion d'erreurs standardisées.
 
 ### 3.2 Intégration avec ConfigManager
+
 *Progression : 0%*
 - [ ] Objectif : Gérer la configuration du `ProcessManager` de manière centralisée.
   - [ ] Étape 2.1 : Définir le schéma de configuration du `ProcessManager` (ex: chemin des manifestes, timeouts par défaut).
@@ -109,9 +122,11 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : `ProcessManager` chargeant sa configuration depuis `ConfigManager`.
 
 ## Phase 4 : Découverte et Exécution des Managers
+
 *Progression : 0%*
 
 ### 4.1 Implémentation du Service de Découverte
+
 *Progression : 0%*
 - [ ] Objectif : Permettre au `ProcessManager` de trouver les managers disponibles.
   - [ ] Étape 1.1 : Implémenter le parsing des fichiers manifestes (`ManagerManifest`).
@@ -121,6 +136,7 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Service de découverte fonctionnel.
 
 ### 4.2 Implémentation de l'Interface Manager
+
 *Progression : 0%*
 - [ ] Objectif : Abstraire l'interaction avec différents types de managers.
   - [ ] Étape 2.1 : Définir une interface Go `ManagerAdapter` (ex: `ExecuteTask(task TaskDefinition) (output string, err error)`).
@@ -130,6 +146,7 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Adaptateurs pour les types de managers cibles.
 
 ### 4.3 Exécution de Tâches Spécifiques aux Managers
+
 *Progression : 0%*
 - [ ] Objectif : Permettre d'exécuter des commandes définies dans les manifestes des managers.
   - [ ] Étape 3.1 : Modifier `ExecutionEngine` pour utiliser les `ManagerAdapter`.
@@ -138,9 +155,11 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Capacité à exécuter des tâches ciblées sur des managers spécifiques.
 
 ## Phase 5 : Gestion des Tâches et des Workflows (Basique)
+
 *Progression : 0%*
 
 ### 5.1 Suivi de l'État des Tâches
+
 *Progression : 0%*
 - [ ] Objectif : Garder une trace des tâches en cours, terminées, ou en erreur.
   - [ ] Étape 1.1 : Implémenter un gestionnaire d'état des tâches en mémoire.
@@ -150,6 +169,7 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Système de suivi d'état des tâches.
 
 ### 5.2 Orchestration Séquentielle Simple
+
 *Progression : 0%*
 - [ ] Objectif : Exécuter une série de tâches dans un ordre défini.
   - [ ] Étape 2.1 : Définir un format simple pour décrire une séquence de tâches (ex: un fichier JSON ou YAML).
@@ -158,9 +178,11 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Fonctionnalité basique d'orchestration.
 
 ## Phase 6 : Interface CLI et API (Optionnel)
+
 *Progression : 0%*
 
 ### 6.1 Implémentation de l'Interface CLI
+
 *Progression : 0%*
 - [ ] Objectif : Fournir une interface en ligne de commande pour interagir avec le `ProcessManager`.
   - [ ] Étape 1.1 : Utiliser une bibliothèque Go pour la CLI (ex: `cobra`, `urfave/cli`).
@@ -169,6 +191,7 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Binaire `process-manager.exe` fonctionnel.
 
 ### 6.2 (Optionnel) Implémentation d'une API gRPC/REST
+
 *Progression : 0%*
 - [ ] Objectif : Exposer les fonctionnalités du `ProcessManager` via une API programmatique.
   - [ ] Étape 2.1 : Définir les services et messages Protobuf (pour gRPC) ou les endpoints OpenAPI (pour REST).
@@ -177,9 +200,11 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Serveur API fonctionnel.
 
 ## Phase 7 : Tests Approfondis et Validation
+
 *Progression : 0%*
 
 ### 7.1 Tests Unitaires
+
 *Progression : 0%*
 - [ ] Objectif : Assurer la qualité et la robustesse de chaque module.
   - [ ] Étape 1.1 : Écrire des tests unitaires pour le service de découverte, le moteur d'exécution, les adaptateurs, etc.
@@ -188,6 +213,7 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Suite de tests unitaires complète.
 
 ### 7.2 Tests d'Intégration
+
 *Progression : 0%*
 - [ ] Objectif : Valider l'interaction entre les modules du `ProcessManager` et avec les managers externes.
   - [ ] Étape 2.1 : Tester la découverte et l'exécution de managers Go mockés.
@@ -197,9 +223,11 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Scénarios de tests d'intégration validés.
 
 ## Phase 8 : Documentation et Déploiement
+
 *Progression : 0%*
 
 ### 8.1 Documentation Technique et Utilisateur
+
 *Progression : 0%*
 - [ ] Objectif : Documenter le fonctionnement, l'API et l'utilisation du `ProcessManager`.
   - [ ] Étape 1.1 : Rédiger un `README.md` pour `development/managers/process-manager-go/`.
@@ -210,6 +238,7 @@ Ce plan de développement détaille la conception et l'implémentation d'un nouv
   - [ ] Sorties : Documentation complète.
 
 ### 8.2 Préparation au Déploiement
+
 *Progression : 0%*
 - [ ] Objectif : Rendre le `ProcessManager` Go déployable.
   - [ ] Étape 2.1 : Créer un `Makefile` ou des scripts de build pour compiler le binaire.

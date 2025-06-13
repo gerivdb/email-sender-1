@@ -102,8 +102,7 @@ Le script de préparation des données peut être exécuté avec la commande sui
 
 ```powershell
 .\development\scripts\analytics\data_preparation.ps1 -SourcePath "logs" -OutputPath "data/performance" -StartDate "2025-01-01" -EndDate "2025-03-31" -LogLevel "Info"
-```
-
+```plaintext
 ### Paramètres
 
 - `SourcePath` : Chemin vers les sources de données (logs, métriques, etc.).

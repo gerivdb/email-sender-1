@@ -15,4 +15,4 @@ Ce dossier contient des scripts pour l''analyse de code source avec différents 
 
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts" -Tools PSScriptAnalyzer -GenerateHtmlReport -Recurse
-```
+```plaintext

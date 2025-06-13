@@ -310,8 +310,7 @@ La structure de données suivante est proposée pour représenter les métriques
     }
   }
 }
-```
-
+```plaintext
 ## 7. Considérations pour la collecte des métriques
 
 ### 7.1 Disponibilité des métriques

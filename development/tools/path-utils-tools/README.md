@@ -28,113 +28,135 @@ Le module Path-Manager est un gestionnaire de chemins pour les projets PowerShel
 
 ```powershell
 # Initialisation simple avec le répertoire courant comme racine
+
 Initialize-PathManager
 
 # Initialisation avec un répertoire spécifique comme racine
+
 Initialize-PathManager -ProjectRootPath "C:\Projects\MonProjet"
 
 # Initialisation avec découverte automatique des répertoires de premier niveau
+
 Initialize-PathManager -DiscoverDirectories
 
 # Initialisation avec des mappings personnalisés
+
 Initialize-PathManager -InitialMappings @{
     "src" = "source"
     "docs" = "documentation"
 }
 
 # Initialisation avec journalisation
-Initialize-PathManager -EnableLogging -LogLevel "Debug"
-```
 
+Initialize-PathManager -EnableLogging -LogLevel "Debug"
+```plaintext
 ### Gestion des mappings
 
 ```powershell
 # Ajouter un mapping
+
 Add-PathMapping -Name "scripts" -Path "scripts"
 
 # Ajouter un mapping et créer le répertoire s'il n'existe pas
+
 Add-PathMapping -Name "logs" -Path "logs" -CreateIfNotExists
 
 # Remplacer un mapping existant
+
 Add-PathMapping -Name "scripts" -Path "new-scripts" -Force
 
 # Obtenir tous les mappings
+
 Get-PathMappings
 
 # Obtenir les mappings avec des détails
+
 Get-PathMappings -IncludeDetails
 
 # Obtenir les mappings sous forme d'objet
-Get-PathMappings -AsObject
-```
 
+Get-PathMappings -AsObject
+```plaintext
 ### Résolution de chemins
 
 ```powershell
 # Résoudre un chemin relatif à la racine du projet
+
 Get-ProjectPath -PathOrMappingName "docs\index.html"
 
 # Résoudre un chemin relatif à un mapping
+
 Get-ProjectPath -PathOrMappingName "helper.ps1" -BaseMappingName "scripts"
 
 # Résoudre un chemin et vérifier son existence
+
 Get-ProjectPath -PathOrMappingName "config.json" -VerifyExists
 
 # Calculer un chemin relatif par rapport à la racine
+
 Get-RelativePath -AbsolutePath "C:\Projects\MonProjet\docs\index.html"
 
 # Calculer un chemin relatif par rapport à un mapping
-Get-RelativePath -AbsolutePath "C:\Projects\MonProjet\scripts\helper.ps1" -BaseMappingName "scripts"
-```
 
+Get-RelativePath -AbsolutePath "C:\Projects\MonProjet\scripts\helper.ps1" -BaseMappingName "scripts"
+```plaintext
 ### Utilitaires de chemins
 
 ```powershell
 # Vérifier si un chemin est dans le projet
+
 Test-PathIsWithinProject -Path "C:\Projects\MonProjet\docs"
 
 # Normaliser un chemin avec le style Windows
+
 ConvertTo-NormalizedPath -Path "docs/images\logo.png" -ForceWindowsStyle
 
 # Normaliser un chemin avec le style Unix
+
 ConvertTo-NormalizedPath -Path "scripts\\utils//helper.ps1" -ForceUnixStyle
 
 # Normaliser un chemin et ajouter un slash de fin
+
 ConvertTo-NormalizedPath -Path "docs\images" -AddTrailingSlash
 
 # Normaliser un chemin et supprimer un slash de fin
-ConvertTo-NormalizedPath -Path "docs\images\" -RemoveTrailingSlash
-```
 
+ConvertTo-NormalizedPath -Path "docs\images\" -RemoveTrailingSlash
+```plaintext
 ### Journalisation
 
 ```powershell
 # Activer la journalisation
+
 Enable-PathManagerLogging -Enable $true -LogPath "C:\Logs\path-manager.log" -LogLevel "Debug"
 
 # Désactiver la journalisation
-Enable-PathManagerLogging -Enable $false
-```
 
+Enable-PathManagerLogging -Enable $false
+```plaintext
 ### Gestion du cache
 
 ```powershell
 # Configurer le cache
+
 Set-PathManagerCache -Enable $true -MaxCacheSize 2000
 
 # Désactiver le cache
+
 Set-PathManagerCache -Enable $false
 
 # Vider le cache
+
 Set-PathManagerCache -ClearCache
 
 # Vider uniquement le cache des chemins relatifs
+
 Set-PathManagerCache -ClearCache -CacheType "RelativePath"
 
 # Résoudre un chemin sans utiliser le cache
-Get-ProjectPath -PathOrMappingName "docs\index.html" -NoCache
-```
 
+Get-ProjectPath -PathOrMappingName "docs\index.html" -NoCache
+```plaintext
 ## Gestion des erreurs
 
 Le module utilise des types d'exceptions personnalisés pour une meilleure gestion des erreurs :
@@ -159,8 +181,7 @@ catch [PathManagerException] {
 catch {
     Write-Host "Erreur inattendue : $($_.Exception.Message)"
 }
-```
-
+```plaintext
 ## Tests
 
 Le module est livré avec une suite de tests Pester. Pour exécuter les tests :
@@ -168,4 +189,4 @@ Le module est livré avec une suite de tests Pester. Pour exécuter les tests :
 ```powershell
 cd tools\path-utils\tests
 .\Run-Tests.ps1
-```
+```plaintext

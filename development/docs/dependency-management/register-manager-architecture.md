@@ -8,7 +8,7 @@ Ce document présente une architecture améliorée pour le mécanisme d'enregist
 
 L'architecture proposée s'articule autour de plusieurs composants clés :
 
-```
+```plaintext
 ┌─────────────────────────────────────────────────────────────────┐
 │                      Process Manager                             │
 │                                                                 │
@@ -31,8 +31,7 @@ L'architecture proposée s'articule autour de plusieurs composants clés :
 │                         │     Store       │                     │
 │                         └─────────────────┘                     │
 └─────────────────────────────────────────────────────────────────┘
-```
-
+```plaintext
 ### 1.1 Composants principaux
 
 1. **Registration Service** : Service central responsable de l'enregistrement des gestionnaires.
@@ -48,6 +47,7 @@ L'architecture proposée s'articule autour de plusieurs composants clés :
 ### 2.1 Registration Service
 
 #### 2.1.1 Responsabilités
+
 - Coordonner le processus d'enregistrement
 - Interagir avec les autres services
 - Gérer le cycle de vie des gestionnaires
@@ -120,11 +120,11 @@ function Update-Manager {
         [switch]$SkipSecurityCheck
     )
 }
-```
-
+```plaintext
 ### 2.2 Validation Service
 
 #### 2.2.1 Responsabilités
+
 - Vérifier l'existence et l'accessibilité des fichiers
 - Valider la syntaxe et la structure des scripts
 - Vérifier la conformité aux interfaces requises
@@ -165,11 +165,11 @@ function Test-ManagerFunctionality {
         [hashtable]$TestParameters
     )
 }
-```
-
+```plaintext
 ### 2.3 Dependency Resolver
 
 #### 2.3.1 Responsabilités
+
 - Analyser les dépendances déclarées
 - Vérifier la disponibilité des dépendances
 - Résoudre les conflits de dépendances
@@ -209,11 +209,11 @@ function Get-ManagerLoadOrder {
         [string[]]$ManagerNames
     )
 }
-```
-
+```plaintext
 ### 2.4 Version Manager
 
 #### 2.4.1 Responsabilités
+
 - Gérer les versions des gestionnaires
 - Vérifier la compatibilité des versions
 - Maintenir l'historique des versions
@@ -268,11 +268,11 @@ function Restore-PreviousVersion {
         [string]$Version
     )
 }
-```
-
+```plaintext
 ### 2.5 Security Service
 
 #### 2.5.1 Responsabilités
+
 - Vérifier les signatures numériques
 - Analyser les risques de sécurité
 - Gérer les autorisations
@@ -327,11 +327,11 @@ function Write-SecurityLog {
         [string]$Level = "Info"
     )
 }
-```
-
+```plaintext
 ### 2.6 Manifest Parser
 
 #### 2.6.1 Responsabilités
+
 - Analyser les manifestes des gestionnaires
 - Extraire les métadonnées
 - Valider la structure des manifestes
@@ -366,11 +366,11 @@ function Convert-ToManifest {
         [string]$OutputPath
     )
 }
-```
-
+```plaintext
 ### 2.7 Configuration Store
 
 #### 2.7.1 Responsabilités
+
 - Stocker les configurations des gestionnaires
 - Gérer les métadonnées
 - Assurer la persistance des données
@@ -419,8 +419,7 @@ function Find-Managers {
         [hashtable]$Criteria
     )
 }
-```
-
+```plaintext
 ## 3. Format du manifeste standardisé
 
 ### 3.1 Structure du manifeste
@@ -473,8 +472,7 @@ function Find-Managers {
         "AllowNetworkAccess": true
     }
 }
-```
-
+```plaintext
 ### 3.2 Emplacement du manifeste
 
 Le manifeste peut être défini de plusieurs façons :
@@ -490,6 +488,7 @@ Le manifeste peut être défini de plusieurs façons :
 2. **En-tête de script** : Commentaires spéciaux dans l'en-tête du script
    ```powershell
    <#
+
    .MANIFEST
    {
        "Name": "ExampleManager",
@@ -497,6 +496,7 @@ Le manifeste peut être défini de plusieurs façons :
        ...
    }
    #>
+
    ```
 
 3. **Module PowerShell** : Utilisation du fichier PSD1 standard pour les modules
@@ -506,6 +506,7 @@ Le manifeste peut être défini de plusieurs façons :
        GUID = '12345678-1234-1234-1234-123456789012'
        Author = 'EMAIL_SENDER_1'
        # Propriétés spécifiques au Process Manager
+
        ProcessManagerCapabilities = @('Logging', 'ErrorHandling')
        ...
    }
@@ -515,7 +516,7 @@ Le manifeste peut être défini de plusieurs façons :
 
 ### 4.1 Diagramme de séquence
 
-```
+```plaintext
 ┌──────────┐  ┌─────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐
 │  Client  │  │Registration │  │ Manifest   │  │ Validation │  │ Dependency │  │  Security  │  │   Config   │
 │          │  │  Service    │  │  Parser    │  │  Service   │  │  Resolver  │  │  Service   │  │   Store    │
@@ -557,8 +558,7 @@ Le manifeste peut être défini de plusieurs façons :
      │ Result        │                │               │               │               │               │
      │<──────────────│                │               │               │               │               │
      │               │                │               │               │               │               │
-```
-
+```plaintext
 ### 4.2 Description du flux
 
 1. **Initiation** : Le client appelle `Register-Manager` avec les paramètres requis.

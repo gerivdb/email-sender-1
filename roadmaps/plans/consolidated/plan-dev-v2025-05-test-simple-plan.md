@@ -1,6 +1,7 @@
 
 
 # Plan de développement v2025-05 - Test Simple Plan
+
 *Version 1.0 - 2025-05-28 - Progression globale : 0 / 9*
 
 A test plan with 3 phases
@@ -24,9 +25,11 @@ A test plan with 3 phases
 
 
 ## 🎯 Phase 1
+
 *Progression: 0%*
 
 ### 📦 Scripts et Tâches
+
 - [ ] Analyse des besoins
 - [ ] Conception technique
 - [ ] Implémentation
@@ -35,9 +38,11 @@ A test plan with 3 phases
 
 
 ## 🎯 Phase 2
+
 *Progression: 0%*
 
 ### 📦 Scripts et Tâches
+
 - [ ] Analyse des besoins
 - [ ] Conception technique
 - [ ] Implémentation
@@ -46,9 +51,11 @@ A test plan with 3 phases
 
 
 ## 🎯 Phase 3
+
 *Progression: 0%*
 
 ### 📦 Scripts et Tâches
+
 - [ ] Analyse des besoins
 - [ ] Conception technique
 - [ ] Implémentation
@@ -61,15 +68,17 @@ A test plan with 3 phases
 
 ```powershell
 # Mettre à jour une tâche
+
 hygen plan-dev update task-status --task "1.1.1" --status "done"
 
 # Générer un rapport de progression
+
 hygen plan-dev report progress --phase 1
 
 # Visualiser les métriques de performance
-hygen plan-dev metrics view
-```
 
+hygen plan-dev metrics view
+```plaintext
 ---
 
 *Plan généré le 29/05/2025 01:00:25 | Auteur: test-user*

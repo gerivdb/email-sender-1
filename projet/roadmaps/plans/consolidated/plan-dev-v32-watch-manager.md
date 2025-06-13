@@ -29,18 +29,21 @@ Concevoir, développer et intégrer un **watch-manager** Go ultra-performant, in
 ## Plan de développement détaillé
 
 ### 1. Analyse et cadrage
+
 - [ ] Recenser tous les types de fichiers et dossiers à surveiller.
 - [ ] Identifier les actions de maintenance automatisables (génération, tests, lint, docs, etc.).
 - [ ] Définir les règles de mapping extension/action.
 - [ ] Rédiger la documentation d’architecture.
 
 ### 2. Prototype du watcher Go
+
 - [ ] Initialiser le projet Go et intégrer `fsnotify`.
 - [ ] Développer la surveillance récursive multi-dossiers.
 - [ ] Implémenter le mapping extension/action (switch-case ou config).
 - [ ] Tester la robustesse et la performance sur le dépôt.
 
 ### 3. Configuration dynamique
+
 - [ ] Concevoir un fichier de configuration (YAML/JSON) listant :
     - Extensions surveillées
     - Dossiers surveillés
@@ -50,6 +53,7 @@ Concevoir, développer et intégrer un **watch-manager** Go ultra-performant, in
 - [ ] Permettre l’ajout de nouvelles règles sans recompilation.
 
 ### 4. Intégration des domaines de compétence
+
 - [ ] Génération Hygen automatique sur modif `.ejs.t`
 - [ ] Lancement de scripts Python sur modif `.py`
 - [ ] Lint/format/check sur modif `.json`, `.md`, `.ps1`, etc.
@@ -57,16 +61,19 @@ Concevoir, développer et intégrer un **watch-manager** Go ultra-performant, in
 - [ ] Lancement de tests sur modif dans `tests/`, `scripts/`, etc.
 
 ### 5. Centralisation des logs et alertes
+
 - [ ] Intégrer un système de logs détaillé (fichier + console).
 - [ ] Ajouter des alertes (mail, Slack, etc.) en cas d’erreur critique.
 - [ ] Générer des rapports d’activité automatique.
 
 ### 6. Documentation et standards Copilot
+
 - [ ] Rédiger un guide d’utilisation et d’extension du watch-manager.
 - [ ] Documenter les prompts Copilot efficaces pour piloter le watcher et la maintenance.
 - [ ] Intégrer les standards dans `docs/guides/standards/copilot-instuctions.md`.
 
 ### 7. Déploiement et amélioration continue
+
 - [ ] Déployer le binaire sur les environnements de dev.
 - [ ] Mettre en place un monitoring de la performance.
 - [ ] Recueillir les retours et améliorer le système.

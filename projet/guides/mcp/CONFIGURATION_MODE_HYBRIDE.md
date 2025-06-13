@@ -1,9 +1,11 @@
 # Configuration du mode hybride pour Qdrant
+
 *Généré le 2025-05-20*
 
 ## Collection: roadmap_tasks_test_vector_update
 
 ### Configuration actuelle
+
 - **on_disk**: true
 - **Quantification**: true
 - **Type de quantification**: int8
@@ -39,4 +41,4 @@ Le mode hybride combine les avantages de la quantification et du stockage sur di
         }
     }
 }
-```
+```plaintext

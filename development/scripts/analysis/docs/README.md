@@ -25,59 +25,68 @@ Le systÃ¨me d'analyse de code est composÃ© des scripts suivants :
 
 ```powershell
 # Installer PSScriptAnalyzer
+
 Install-Module -Name PSScriptAnalyzer -Force
 
 # Installer ESLint (si vous souhaitez analyser des fichiers JavaScript)
+
 npm install -g eslint
 
 # Installer Pylint (si vous souhaitez analyser des fichiers Python)
-pip install pylint
-```
 
+pip install pylint
+```plaintext
 ## Utilisation
 
 ### Analyse de code
 
 ```powershell
 # Analyser un fichier avec PSScriptAnalyzer
+
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts\test.ps1" -Tools PSScriptAnalyzer
 
 # Analyser un rÃ©pertoire avec PSScriptAnalyzer et TodoAnalyzer
+
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts" -Tools PSScriptAnalyzer, TodoAnalyzer -Recurse
 
 # Analyser un fichier avec tous les outils disponibles et gÃ©nÃ©rer un rapport HTML
+
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts\test.ps1" -Tools All -GenerateHtmlReport
 
 # Analyser un rÃ©pertoire avec tous les outils disponibles, gÃ©nÃ©rer un rapport HTML et l'ouvrir
-.\Start-CodeAnalysis.ps1 -Path ".\development\scripts" -Tools All -GenerateHtmlReport -OpenReport -Recurse
-```
 
+.\Start-CodeAnalysis.ps1 -Path ".\development\scripts" -Tools All -GenerateHtmlReport -OpenReport -Recurse
+```plaintext
 ### Correction des problÃ¨mes d'encodage dans les rapports HTML
 
 ```powershell
 # Corriger l'encodage d'un fichier HTML
+
 .\Fix-HtmlReportEncoding.ps1 -Path ".\results\report.html"
 
 # Corriger l'encodage de tous les fichiers HTML dans un rÃ©pertoire
+
 .\Fix-HtmlReportEncoding.ps1 -Path ".\results"
 
 # Corriger l'encodage de tous les fichiers HTML dans un rÃ©pertoire et ses sous-rÃ©pertoires
-.\Fix-HtmlReportEncoding.ps1 -Path ".\results" -Recurse
-```
 
+.\Fix-HtmlReportEncoding.ps1 -Path ".\results" -Recurse
+```plaintext
 ### IntÃ©gration avec des outils tiers
 
 ```powershell
 # IntÃ©grer les rÃ©sultats avec GitHub Actions
+
 .\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool GitHub -OutputPath ".\github-annotations.json"
 
 # IntÃ©grer les rÃ©sultats avec SonarQube
+
 .\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool SonarQube -OutputPath ".\sonarqube-issues.json" -ProjectKey "my-project"
 
 # IntÃ©grer les rÃ©sultats avec Azure DevOps
-.\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool AzureDevOps -OutputPath ".\azuredevops-issues.json"
-```
 
+.\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool AzureDevOps -OutputPath ".\azuredevops-issues.json"
+```plaintext
 ## Outils d'analyse pris en charge
 
 - **PSScriptAnalyzer** - Outil d'analyse statique pour les scripts PowerShell

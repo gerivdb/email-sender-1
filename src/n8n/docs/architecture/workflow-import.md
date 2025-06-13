@@ -17,10 +17,9 @@ L'importation automatique des workflows n8n permet de :
 
 Le script `import-workflows-auto.cmd` permet d'importer des workflows de manière standard :
 
-```
+```plaintext
 .\import-workflows-auto.cmd -SourceFolder "path/to/workflows" -Method "API" -Tags "imported,auto" -Active $true
-```
-
+```plaintext
 Options disponibles :
 
 - `-SourceFolder` : Dossier contenant les workflows à importer (par défaut: n8n/core/workflows/local)
@@ -41,10 +40,9 @@ Options disponibles :
 
 Le script `import-workflows-bulk.cmd` permet d'importer un grand nombre de workflows en parallèle :
 
-```
+```plaintext
 .\import-workflows-bulk.cmd -SourceFolder "path/to/workflows" -Method "API" -MaxConcurrent 10 -BatchSize 20
-```
-
+```plaintext
 Options supplémentaires :
 
 - `-MaxConcurrent` : Nombre maximum d'importations simultanées (par défaut: 5)
@@ -92,8 +90,7 @@ Les workflows doivent être stockés dans des fichiers JSON avec la structure su
   "settings": {...},
   "tags": [...]
 }
-```
-
+```plaintext
 Les fichiers peuvent être organisés dans des dossiers et sous-dossiers. Le script parcourt récursivement tous les dossiers par défaut.
 
 ## Gestion des erreurs
@@ -129,34 +126,29 @@ Le script `import-workflows-bulk.ps1` est optimisé pour l'importation de grands
 
 ### Importation simple
 
-```
+```plaintext
 .\import-workflows-auto.cmd -SourceFolder "n8n/core/workflows/local" -Method "CLI"
-```
-
+```plaintext
 ### Importation avec tags et activation
 
-```
+```plaintext
 .\import-workflows-auto.cmd -SourceFolder "n8n/core/workflows/local" -Method "CLI" -Tags "imported,local" -Active $true
-```
-
+```plaintext
 ### Importation via API
 
-```
+```plaintext
 .\import-workflows-auto.cmd -SourceFolder "n8n/core/workflows/local" -Method "API" -Hostname "localhost" -Port 5678 -Protocol "http"
-```
-
+```plaintext
 ### Importation en masse
 
-```
+```plaintext
 .\import-workflows-bulk.cmd -SourceFolder "n8n/core/workflows/local" -Method "CLI" -MaxConcurrent 10 -BatchSize 20
-```
-
+```plaintext
 ### Importation forcée (écrase les workflows existants)
 
-```
+```plaintext
 .\import-workflows-auto.cmd -SourceFolder "n8n/core/workflows/local" -Method "CLI" -Force
-```
-
+```plaintext
 ## Résolution des problèmes
 
 ### Erreur "Le fichier n'est pas un workflow n8n valide"
@@ -196,7 +188,7 @@ Les logs sont enregistrés dans le fichier spécifié par l'option `-LogFile` (p
 
 Exemple de log :
 
-```
+```plaintext
 [2025-04-22 10:15:30] [INFO] === Importation automatique des workflows n8n ===
 [2025-04-22 10:15:30] [INFO] Dossier source: n8n/core/workflows/local
 [2025-04-22 10:15:30] [INFO] Dossier cible: n8n/data/.n8n/workflows
@@ -211,4 +203,4 @@ Exemple de log :
 [2025-04-22 10:15:35] [SUCCESS] Succès: 9
 [2025-04-22 10:15:35] [ERROR] Échecs: 1
 [2025-04-22 10:15:35] [INFO] Taux de réussite: 90%
-```
+```plaintext

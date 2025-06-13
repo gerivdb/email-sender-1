@@ -1,4 +1,4 @@
-﻿# Rapport d'intÃ©gration avec TestOmnibus
+# Rapport d'intÃ©gration avec TestOmnibus
 
 ## RÃ©sumÃ©
 

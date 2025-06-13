@@ -5,10 +5,15 @@ Ce document fournit une référence complète de toutes les fonctions disponible
 ## Table des matières
 
 1. [Module RoadmapXmlConverter](#module-roadmapxmlconverter)
+
 2. [Module XmlElementDetector](#module-xmlelementdetector)
+
 3. [Module XmlValidator](#module-xmlvalidator)
+
 4. [Module HTMLFormatHandler](#module-htmlformathandler)
+
 5. [Module FormatConverter](#module-formatconverter)
+
 6. [Module XmlSupport](#module-xmlsupport)
 
 ## Module RoadmapXmlConverter
@@ -21,8 +26,7 @@ Convertit une chaîne Roadmap en XML.
 
 ```powershell
 ConvertFrom-RoadmapToXml -RoadmapContent <string> [-Settings <hashtable>]
-```
-
+```plaintext
 #### Paramètres
 
 - **RoadmapContent** : Le contenu de la roadmap au format Markdown.
@@ -33,16 +37,14 @@ ConvertFrom-RoadmapToXml -RoadmapContent <string> [-Settings <hashtable>]
 ```powershell
 $roadmapContent = Get-Content -Path "roadmap.md" -Raw
 $xmlContent = ConvertFrom-RoadmapToXml -RoadmapContent $roadmapContent
-```
-
+```plaintext
 ### ConvertFrom-XmlToRoadmap
 
 Convertit une chaîne XML en Roadmap.
 
 ```powershell
 ConvertFrom-XmlToRoadmap -XmlContent <string> [-Settings <hashtable>]
-```
-
+```plaintext
 #### Paramètres
 
 - **XmlContent** : Le contenu XML à convertir.
@@ -53,16 +55,14 @@ ConvertFrom-XmlToRoadmap -XmlContent <string> [-Settings <hashtable>]
 ```powershell
 $xmlContent = Get-Content -Path "roadmap.xml" -Raw
 $roadmapContent = ConvertFrom-XmlToRoadmap -XmlContent $xmlContent
-```
-
+```plaintext
 ### ConvertFrom-RoadmapFileToXmlFile
 
 Convertit un fichier Roadmap en fichier XML.
 
 ```powershell
 ConvertFrom-RoadmapFileToXmlFile -RoadmapPath <string> -XmlPath <string> [-Settings <hashtable>]
-```
-
+```plaintext
 #### Paramètres
 
 - **RoadmapPath** : Le chemin du fichier Roadmap à convertir.
@@ -73,16 +73,14 @@ ConvertFrom-RoadmapFileToXmlFile -RoadmapPath <string> -XmlPath <string> [-Setti
 
 ```powershell
 ConvertFrom-RoadmapFileToXmlFile -RoadmapPath "roadmap.md" -XmlPath "roadmap.xml"
-```
-
+```plaintext
 ### ConvertFrom-XmlFileToRoadmapFile
 
 Convertit un fichier XML en fichier Roadmap.
 
 ```powershell
 ConvertFrom-XmlFileToRoadmapFile -XmlPath <string> -RoadmapPath <string> [-Settings <hashtable>]
-```
-
+```plaintext
 #### Paramètres
 
 - **XmlPath** : Le chemin du fichier XML à convertir.
@@ -93,8 +91,7 @@ ConvertFrom-XmlFileToRoadmapFile -XmlPath <string> -RoadmapPath <string> [-Setti
 
 ```powershell
 ConvertFrom-XmlFileToRoadmapFile -XmlPath "roadmap.xml" -RoadmapPath "roadmap.md"
-```
-
+```plaintext
 ## Module XmlElementDetector
 
 Ce module fournit des fonctions pour détecter et analyser les éléments XML.
@@ -105,8 +102,7 @@ Détecte les éléments XML dans une chaîne.
 
 ```powershell
 Get-XmlElements -XmlContent <string> [-Settings <hashtable>]
-```
-
+```plaintext
 #### Paramètres
 
 - **XmlContent** : Le contenu XML à analyser.
@@ -117,16 +113,14 @@ Get-XmlElements -XmlContent <string> [-Settings <hashtable>]
 ```powershell
 $xmlContent = Get-Content -Path "roadmap.xml" -Raw
 $elements = Get-XmlElements -XmlContent $xmlContent
-```
-
+```plaintext
 ### Get-XmlElementsFromFile
 
 Détecte les éléments XML dans un fichier.
 
 ```powershell
 Get-XmlElementsFromFile -XmlPath <string> [-Settings <hashtable>]
-```
-
+```plaintext
 #### Paramètres
 
 - **XmlPath** : Le chemin du fichier XML à analyser.
@@ -136,16 +130,14 @@ Get-XmlElementsFromFile -XmlPath <string> [-Settings <hashtable>]
 
 ```powershell
 $elements = Get-XmlElementsFromFile -XmlPath "roadmap.xml"
-```
-
+```plaintext
 ### Get-XmlStructureReport
 
 Génère un rapport sur la structure XML.
 
 ```powershell
 Get-XmlStructureReport -XmlContent <string> [-Settings <hashtable>] [-AsHtml]
-```
-
+```plaintext
 #### Paramètres
 
 - **XmlContent** : Le contenu XML à analyser.
@@ -157,16 +149,14 @@ Get-XmlStructureReport -XmlContent <string> [-Settings <hashtable>] [-AsHtml]
 ```powershell
 $xmlContent = Get-Content -Path "roadmap.xml" -Raw
 $report = Get-XmlStructureReport -XmlContent $xmlContent -AsHtml
-```
-
+```plaintext
 ### Get-XmlStructureReportFromFile
 
 Génère un rapport sur la structure XML d'un fichier.
 
 ```powershell
 Get-XmlStructureReportFromFile -XmlPath <string> [-Settings <hashtable>] [-AsHtml] [-OutputPath <string>]
-```
-
+```plaintext
 #### Paramètres
 
 - **XmlPath** : Le chemin du fichier XML à analyser.
@@ -178,16 +168,14 @@ Get-XmlStructureReportFromFile -XmlPath <string> [-Settings <hashtable>] [-AsHtm
 
 ```powershell
 $report = Get-XmlStructureReportFromFile -XmlPath "roadmap.xml" -OutputPath "report.html" -AsHtml
-```
-
+```plaintext
 ### ConvertTo-RoadmapMapping
 
 Mappe les éléments XML vers la structure de roadmap.
 
 ```powershell
 ConvertTo-RoadmapMapping -XmlContent <string>
-```
-
+```plaintext
 #### Paramètres
 
 - **XmlContent** : Le contenu XML à mapper.
@@ -197,8 +185,7 @@ ConvertTo-RoadmapMapping -XmlContent <string>
 ```powershell
 $xmlContent = Get-Content -Path "roadmap.xml" -Raw
 $mapping = ConvertTo-RoadmapMapping -XmlContent $xmlContent
-```
-
+```plaintext
 ## Module XmlValidator
 
 Ce module fournit des fonctions pour valider les fichiers XML.
@@ -209,8 +196,7 @@ Valide une chaîne XML.
 
 ```powershell
 Test-XmlContent -XmlContent <string> [-Settings <hashtable>]
-```
-
+```plaintext
 #### Paramètres
 
 - **XmlContent** : Le contenu XML à valider.
@@ -221,16 +207,14 @@ Test-XmlContent -XmlContent <string> [-Settings <hashtable>]
 ```powershell
 $xmlContent = Get-Content -Path "roadmap.xml" -Raw
 $result = Test-XmlContent -XmlContent $xmlContent
-```
-
+```plaintext
 ### Test-XmlFile
 
 Valide un fichier XML.
 
 ```powershell
 Test-XmlFile -XmlPath <string> [-Settings <hashtable>]
-```
-
+```plaintext
 #### Paramètres
 
 - **XmlPath** : Le chemin du fichier XML à valider.
@@ -240,16 +224,14 @@ Test-XmlFile -XmlPath <string> [-Settings <hashtable>]
 
 ```powershell
 $result = Test-XmlFile -XmlPath "roadmap.xml"
-```
-
+```plaintext
 ### Get-XmlValidationReport
 
 Génère un rapport de validation XML.
 
 ```powershell
 Get-XmlValidationReport -ValidationResult <XmlValidationResult> [-AsHtml]
-```
-
+```plaintext
 #### Paramètres
 
 - **ValidationResult** : Le résultat de la validation XML.
@@ -260,16 +242,14 @@ Get-XmlValidationReport -ValidationResult <XmlValidationResult> [-AsHtml]
 ```powershell
 $result = Test-XmlFile -XmlPath "roadmap.xml"
 $report = Get-XmlValidationReport -ValidationResult $result -AsHtml
-```
-
+```plaintext
 ### Test-XmlFileWithReport
 
 Valide un fichier XML et génère un rapport.
 
 ```powershell
 Test-XmlFileWithReport -XmlPath <string> [-Settings <hashtable>] [-AsHtml] [-OutputPath <string>]
-```
-
+```plaintext
 #### Paramètres
 
 - **XmlPath** : Le chemin du fichier XML à valider.
@@ -281,16 +261,14 @@ Test-XmlFileWithReport -XmlPath <string> [-Settings <hashtable>] [-AsHtml] [-Out
 
 ```powershell
 $result = Test-XmlFileWithReport -XmlPath "roadmap.xml" -OutputPath "validation.html" -AsHtml
-```
-
+```plaintext
 ### Test-XmlFileAgainstSchema
 
 Valide un fichier XML par rapport à un schéma XSD.
 
 ```powershell
 Test-XmlFileAgainstSchema -XmlPath <string> -SchemaPath <string> [-Settings <hashtable>]
-```
-
+```plaintext
 #### Paramètres
 
 - **XmlPath** : Le chemin du fichier XML à valider.
@@ -301,16 +279,14 @@ Test-XmlFileAgainstSchema -XmlPath <string> -SchemaPath <string> [-Settings <has
 
 ```powershell
 $result = Test-XmlFileAgainstSchema -XmlPath "roadmap.xml" -SchemaPath "roadmap.xsd"
-```
-
+```plaintext
 ### New-XsdSchemaFromXml
 
 Génère un schéma XSD à partir d'un fichier XML.
 
 ```powershell
 New-XsdSchemaFromXml -XmlPath <string> -SchemaPath <string>
-```
-
+```plaintext
 #### Paramètres
 
 - **XmlPath** : Le chemin du fichier XML à analyser.
@@ -320,8 +296,7 @@ New-XsdSchemaFromXml -XmlPath <string> -SchemaPath <string>
 
 ```powershell
 New-XsdSchemaFromXml -XmlPath "roadmap.xml" -SchemaPath "roadmap.xsd"
-```
-
+```plaintext
 ## Module HTMLFormatHandler
 
 Ce module fournit des fonctions pour travailler avec les fichiers HTML.
@@ -332,8 +307,7 @@ Convertit une chaîne HTML en document HTML.
 
 ```powershell
 ConvertFrom-Html -HtmlString <string> [-Sanitize]
-```
-
+```plaintext
 #### Paramètres
 
 - **HtmlString** : La chaîne HTML à convertir.
@@ -344,16 +318,14 @@ ConvertFrom-Html -HtmlString <string> [-Sanitize]
 ```powershell
 $htmlString = Get-Content -Path "page.html" -Raw
 $htmlDoc = ConvertFrom-Html -HtmlString $htmlString -Sanitize
-```
-
+```plaintext
 ### Import-HtmlFile
 
 Importe un fichier HTML.
 
 ```powershell
 Import-HtmlFile -FilePath <string> [-Sanitize]
-```
-
+```plaintext
 #### Paramètres
 
 - **FilePath** : Le chemin du fichier HTML à importer.
@@ -363,16 +335,14 @@ Import-HtmlFile -FilePath <string> [-Sanitize]
 
 ```powershell
 $htmlDoc = Import-HtmlFile -FilePath "page.html" -Sanitize
-```
-
+```plaintext
 ### Export-HtmlFile
 
 Exporte un document HTML vers un fichier.
 
 ```powershell
 Export-HtmlFile -HtmlDocument <HtmlDocument> -FilePath <string>
-```
-
+```plaintext
 #### Paramètres
 
 - **HtmlDocument** : Le document HTML à exporter.
@@ -382,16 +352,14 @@ Export-HtmlFile -HtmlDocument <HtmlDocument> -FilePath <string>
 
 ```powershell
 Export-HtmlFile -HtmlDocument $htmlDoc -FilePath "page.html"
-```
-
+```plaintext
 ### Invoke-CssQuery
 
 Exécute une requête CSS sur un document HTML.
 
 ```powershell
 Invoke-CssQuery -HtmlDocument <HtmlDocument> -CssSelector <string>
-```
-
+```plaintext
 #### Paramètres
 
 - **HtmlDocument** : Le document HTML à interroger.
@@ -401,16 +369,14 @@ Invoke-CssQuery -HtmlDocument <HtmlDocument> -CssSelector <string>
 
 ```powershell
 $elements = Invoke-CssQuery -HtmlDocument $htmlDoc -CssSelector "h1, h2, h3"
-```
-
+```plaintext
 ### ConvertTo-PlainText
 
 Convertit un document HTML en texte brut.
 
 ```powershell
 ConvertTo-PlainText -HtmlDocument <HtmlDocument>
-```
-
+```plaintext
 #### Paramètres
 
 - **HtmlDocument** : Le document HTML à convertir.
@@ -419,8 +385,7 @@ ConvertTo-PlainText -HtmlDocument <HtmlDocument>
 
 ```powershell
 $text = ConvertTo-PlainText -HtmlDocument $htmlDoc
-```
-
+```plaintext
 ## Module FormatConverter
 
 Ce module fournit des fonctions pour convertir entre différents formats.
@@ -431,8 +396,7 @@ Convertit un document XML en HTML.
 
 ```powershell
 ConvertFrom-XmlToHtml -XmlDocument <XmlDocument> [-Settings <hashtable>]
-```
-
+```plaintext
 #### Paramètres
 
 - **XmlDocument** : Le document XML à convertir.
@@ -443,16 +407,14 @@ ConvertFrom-XmlToHtml -XmlDocument <XmlDocument> [-Settings <hashtable>]
 ```powershell
 $xmlDoc = Import-XmlFile -FilePath "data.xml"
 $htmlDoc = ConvertFrom-XmlToHtml -XmlDocument $xmlDoc
-```
-
+```plaintext
 ### ConvertFrom-HtmlToXml
 
 Convertit un document HTML en XML.
 
 ```powershell
 ConvertFrom-HtmlToXml -HtmlDocument <HtmlDocument> [-Settings <hashtable>]
-```
-
+```plaintext
 #### Paramètres
 
 - **HtmlDocument** : Le document HTML à convertir.
@@ -463,16 +425,14 @@ ConvertFrom-HtmlToXml -HtmlDocument <HtmlDocument> [-Settings <hashtable>]
 ```powershell
 $htmlDoc = Import-HtmlFile -FilePath "page.html"
 $xmlDoc = ConvertFrom-HtmlToXml -HtmlDocument $htmlDoc
-```
-
+```plaintext
 ### ConvertFrom-XmlToJson
 
 Convertit un document XML en JSON.
 
 ```powershell
 ConvertFrom-XmlToJson -XmlDocument <XmlDocument> [-Settings <hashtable>]
-```
-
+```plaintext
 #### Paramètres
 
 - **XmlDocument** : Le document XML à convertir.
@@ -483,16 +443,14 @@ ConvertFrom-XmlToJson -XmlDocument <XmlDocument> [-Settings <hashtable>]
 ```powershell
 $xmlDoc = Import-XmlFile -FilePath "data.xml"
 $json = ConvertFrom-XmlToJson -XmlDocument $xmlDoc
-```
-
+```plaintext
 ### ConvertFrom-JsonToXml
 
 Convertit une chaîne JSON en XML.
 
 ```powershell
 ConvertFrom-JsonToXml -JsonString <string> [-Settings <hashtable>]
-```
-
+```plaintext
 #### Paramètres
 
 - **JsonString** : La chaîne JSON à convertir.
@@ -503,8 +461,7 @@ ConvertFrom-JsonToXml -JsonString <string> [-Settings <hashtable>]
 ```powershell
 $jsonString = Get-Content -Path "data.json" -Raw
 $xmlDoc = ConvertFrom-JsonToXml -JsonString $jsonString
-```
-
+```plaintext
 ## Module XmlSupport
 
 Ce module sert de point d'entrée pour utiliser toutes les fonctionnalités XML et HTML.
@@ -515,36 +472,31 @@ Affiche l'aide pour le module XmlSupport.
 
 ```powershell
 Show-XmlSupportHelp
-```
-
+```plaintext
 #### Exemple
 
 ```powershell
 Show-XmlSupportHelp
-```
-
+```plaintext
 ### Invoke-XmlSupportTests
 
 Exécute les tests du module XmlSupport.
 
 ```powershell
 Invoke-XmlSupportTests
-```
-
+```plaintext
 #### Exemple
 
 ```powershell
 Invoke-XmlSupportTests
-```
-
+```plaintext
 ### Convert-FormatFile
 
 Convertit un fichier d'un format à un autre.
 
 ```powershell
 Convert-FormatFile -InputPath <string> -OutputPath <string> -InputFormat <string> -OutputFormat <string> [-ConversionSettings <hashtable>]
-```
-
+```plaintext
 #### Paramètres
 
 - **InputPath** : Le chemin du fichier d'entrée.
@@ -557,16 +509,14 @@ Convert-FormatFile -InputPath <string> -OutputPath <string> -InputFormat <string
 
 ```powershell
 Convert-FormatFile -InputPath "roadmap.md" -OutputPath "roadmap.xml" -InputFormat "roadmap" -OutputFormat "xml"
-```
-
+```plaintext
 ### Invoke-XmlAnalysis
 
 Analyse un fichier XML.
 
 ```powershell
 Invoke-XmlAnalysis -XmlPath <string> [-OutputPath <string>] [-AsHtml] [-IncludeValidation] [-IncludeStructure] [-IncludeMapping]
-```
-
+```plaintext
 #### Paramètres
 
 - **XmlPath** : Le chemin du fichier XML à analyser.
@@ -580,4 +530,4 @@ Invoke-XmlAnalysis -XmlPath <string> [-OutputPath <string>] [-AsHtml] [-IncludeV
 
 ```powershell
 Invoke-XmlAnalysis -XmlPath "roadmap.xml" -OutputPath "analysis.html" -AsHtml -IncludeValidation -IncludeStructure -IncludeMapping
-```
+```plaintext

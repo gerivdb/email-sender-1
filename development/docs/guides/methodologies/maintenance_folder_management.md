@@ -71,34 +71,32 @@ Un hook pre-commit Git a été installé pour vérifier et organiser automatique
 Pour réinstaller le hook pre-commit :
 ```powershell
 .\development\scripts\maintenance\git\Install-PreCommitHook.ps1 -Force
-```
-
+```plaintext
 ### 2. Scripts d'organisation
 
 Deux scripts sont disponibles pour organiser les fichiers :
 
 #### Organize-MaintenanceScripts.ps1
+
 Ce script analyse les fichiers PowerShell à la racine du dossier maintenance et les déplace dans les sous-dossiers appropriés en fonction de leur contenu et de leur nom.
 
 ```powershell
 .\development\scripts\maintenance\organize\Organize-MaintenanceScripts.ps1 -Force
-```
-
+```plaintext
 #### Move-ExistingScripts.ps1
+
 Ce script utilise une classification prédéfinie pour déplacer les scripts dans les bons sous-dossiers.
 
 ```powershell
 .\development\scripts\maintenance\organize\Move-ExistingScripts.ps1 -Force
-```
-
+```plaintext
 ### 3. Script de vérification
 
 Un script de vérification est disponible pour s'assurer que l'organisation est correcte :
 
 ```powershell
 .\development\scripts\maintenance\monitoring\Check-ScriptsOrganization.ps1
-```
-
+```plaintext
 Ce script vérifie s'il reste des scripts à la racine du dossier maintenance et génère un rapport sur l'organisation des scripts.
 
 ### 4. Génération de nouveaux scripts avec Hygen
@@ -107,8 +105,7 @@ Pour créer de nouveaux scripts avec une structure standardisée, utilisez Hygen
 
 ```powershell
 npx hygen script new
-```
-
+```plaintext
 Suivez les instructions pour spécifier le nom, la description et la catégorie du script.
 
 ## Initialisation de l'environnement
@@ -117,8 +114,7 @@ Pour configurer l'environnement de maintenance, exécutez :
 
 ```powershell
 .\development\scripts\maintenance\Initialize-MaintenanceEnvironment.ps1 -Force
-```
-
+```plaintext
 Ce script effectue les actions suivantes :
 1. Vérifie les prérequis (Node.js, Git)
 2. Installe Hygen si nécessaire
@@ -135,8 +131,7 @@ Des tests unitaires et d'intégration sont disponibles pour vérifier le bon fon
 
 ```powershell
 .\development\scripts\maintenance\test\Run-TestSuite.ps1 -OutputPath ".\reports" -GenerateHTML
-```
-
+```plaintext
 ## Bonnes pratiques
 
 1. **Créez toujours de nouveaux scripts avec Hygen** pour assurer une structure cohérente

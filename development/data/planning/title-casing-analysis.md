@@ -1,4 +1,4 @@
-﻿# Analyse des Conventions de Casse dans les Titres
+# Analyse des Conventions de Casse dans les Titres
 
 ## RÃ©sumÃ©
 

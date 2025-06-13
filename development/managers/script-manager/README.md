@@ -1,4 +1,4 @@
-﻿# script-manager
+# script-manager
 
 Ce rÃ©pertoire contient les fichiers du gestionnaire script-manager.
 

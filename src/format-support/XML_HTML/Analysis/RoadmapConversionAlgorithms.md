@@ -5,7 +5,8 @@ Ce document détaille les algorithmes spécifiques pour convertir entre le forma
 ## 1. Algorithme de conversion de Roadmap vers XML
 
 ### Étape 1: Parsing du Markdown
-```
+
+```plaintext
 Fonction ParseRoadmapMarkdown(markdownText):
     roadmapData = {
         title: "",
@@ -14,17 +15,23 @@ Fonction ParseRoadmapMarkdown(markdownText):
     }
     
     # Extraire le titre
+
     titleMatch = RegexMatch(markdownText, "^# (.+)$", MultiLine)
+
     if titleMatch:
         roadmapData.title = titleMatch.group(1)
     
     # Extraire la vue d'ensemble
+
     overviewMatch = RegexMatch(markdownText, "^## Vue d'ensemble.+?\n\n(.+?)(?=\n\n## )", DotAll)
+
     if overviewMatch:
         roadmapData.overview = overviewMatch.group(1)
     
     # Extraire les sections
+
     sectionMatches = RegexMatchAll(markdownText, "^## (\d+)\. (.+?)\n(.+?)(?=\n\n## |$)", MultiLine | DotAll)
+
     
     pour chaque sectionMatch dans sectionMatches:
         sectionId = sectionMatch.group(1)
@@ -39,6 +46,7 @@ Fonction ParseRoadmapMarkdown(markdownText):
         }
         
         # Extraire les métadonnées
+
         metadataMatches = RegexMatchAll(sectionContent, "\*\*(.+?)\*\*: (.+?)(?=\n\*\*|\n\n)", MultiLine | DotAll)
         pour chaque metadataMatch dans metadataMatches:
             metadataKey = metadataMatch.group(1)
@@ -46,6 +54,7 @@ Fonction ParseRoadmapMarkdown(markdownText):
             section.metadata[metadataKey] = metadataValue
         
         # Extraire les phases
+
         phaseMatches = RegexMatchAll(sectionContent, "- \[([ x])\] \*\*Phase (\d+): (.+?)\*\*(.+?)(?=\n- \[|$)", MultiLine | DotAll)
         
         pour chaque phaseMatch dans phaseMatches:
@@ -63,6 +72,7 @@ Fonction ParseRoadmapMarkdown(markdownText):
             }
             
             # Extraire les tâches
+
             taskMatches = RegexMatchAll(phaseContent, "\n  - \[([ x])\] (.+?)(?=\n  - \[|\n\n|$)", MultiLine | DotAll)
             
             pour chaque taskMatch dans taskMatches:
@@ -70,6 +80,7 @@ Fonction ParseRoadmapMarkdown(markdownText):
                 taskContent = taskMatch.group(2)
                 
                 # Extraire le titre, le temps estimé et la date de début
+
                 taskTitleMatch = RegexMatch(taskContent, "(.+?)(?:\s+\((.+?)\))?(?:\s+-\s+\*(.+?)\*)?$")
                 
                 task = {
@@ -81,6 +92,7 @@ Fonction ParseRoadmapMarkdown(markdownText):
                 }
                 
                 # Extraire les sous-tâches
+
                 subtaskMatches = RegexMatchAll(phaseContent, "\n    - \[([ x])\] (.+?)(?=\n    - \[|\n  - \[|\n\n|$)", MultiLine | DotAll)
                 
                 pour chaque subtaskMatch dans subtaskMatches:
@@ -97,6 +109,7 @@ Fonction ParseRoadmapMarkdown(markdownText):
                 phase.tasks.push(task)
             
             # Extraire les notes
+
             noteMatches = RegexMatchAll(phaseContent, "\n  > \*Note: (.+?)\*(?=\n  >|\n\n|$)", MultiLine | DotAll)
             
             pour chaque noteMatch dans noteMatches:
@@ -108,31 +121,36 @@ Fonction ParseRoadmapMarkdown(markdownText):
         roadmapData.sections.push(section)
     
     retourner roadmapData
-```
-
+```plaintext
 ### Étape 2: Génération du XML
-```
+
+```plaintext
 Fonction GenerateXML(roadmapData):
     # Créer un document XML
+
     xmlDoc = CreateXMLDocument()
     
     # Créer l'élément racine
+
     rootElement = xmlDoc.createElement("roadmap")
     rootElement.setAttribute("title", roadmapData.title)
     xmlDoc.appendChild(rootElement)
     
     # Ajouter la vue d'ensemble
+
     overviewElement = xmlDoc.createElement("overview")
     overviewElement.textContent = roadmapData.overview
     rootElement.appendChild(overviewElement)
     
     # Ajouter les sections
+
     pour chaque section dans roadmapData.sections:
         sectionElement = xmlDoc.createElement("section")
         sectionElement.setAttribute("id", section.id)
         sectionElement.setAttribute("title", section.title)
         
         # Ajouter les métadonnées
+
         metadataElement = xmlDoc.createElement("metadata")
         
         pour chaque key, value dans section.metadata:
@@ -143,6 +161,7 @@ Fonction GenerateXML(roadmapData):
         sectionElement.appendChild(metadataElement)
         
         # Ajouter les phases
+
         pour chaque phase dans section.phases:
             phaseElement = xmlDoc.createElement("phase")
             phaseElement.setAttribute("id", phase.id)
@@ -150,6 +169,7 @@ Fonction GenerateXML(roadmapData):
             phaseElement.setAttribute("completed", phase.completed.toString())
             
             # Ajouter les tâches
+
             pour chaque task dans phase.tasks:
                 taskElement = xmlDoc.createElement("task")
                 taskElement.setAttribute("title", task.title)
@@ -163,6 +183,7 @@ Fonction GenerateXML(roadmapData):
                 taskElement.setAttribute("completed", task.completed.toString())
                 
                 # Ajouter les sous-tâches
+
                 pour chaque subtask dans task.subtasks:
                     subtaskElement = xmlDoc.createElement("subtask")
                     subtaskElement.setAttribute("title", subtask.title)
@@ -172,6 +193,7 @@ Fonction GenerateXML(roadmapData):
                 phaseElement.appendChild(taskElement)
             
             # Ajouter les notes
+
             pour chaque note dans phase.notes:
                 noteElement = xmlDoc.createElement("note")
                 noteElement.textContent = note
@@ -182,22 +204,25 @@ Fonction GenerateXML(roadmapData):
         rootElement.appendChild(sectionElement)
     
     retourner xmlDoc
-```
-
+```plaintext
 ## 2. Algorithme de conversion de Roadmap vers HTML
 
 ### Étape 1: Parsing du Markdown
-```
-# Utiliser la même fonction ParseRoadmapMarkdown que pour la conversion vers XML
-```
 
+```plaintext
+# Utiliser la même fonction ParseRoadmapMarkdown que pour la conversion vers XML
+
+```plaintext
 ### Étape 2: Génération du HTML
-```
+
+```plaintext
 Fonction GenerateHTML(roadmapData):
     # Créer un document HTML
+
     htmlDoc = CreateHTMLDocument()
     
     # Ajouter le titre et les styles CSS
+
     htmlDoc.head.innerHTML = `
         <title>${roadmapData.title}</title>
         <style>
@@ -208,32 +233,39 @@ Fonction GenerateHTML(roadmapData):
             .task { margin-left: 40px; margin-bottom: 10px; }
             .subtask { margin-left: 60px; margin-bottom: 5px; }
             .completed { color: #666; }
+
             .completed h3, .completed p { text-decoration: line-through; }
             .note { margin-left: 40px; color: #888; font-style: italic; }
+
         </style>
     `
     
     # Ajouter le titre
+
     titleElement = htmlDoc.createElement("h1")
     titleElement.textContent = roadmapData.title
     htmlDoc.body.appendChild(titleElement)
     
     # Ajouter la vue d'ensemble
+
     overviewElement = htmlDoc.createElement("p")
     overviewElement.textContent = roadmapData.overview
     htmlDoc.body.appendChild(overviewElement)
     
     # Ajouter les sections
+
     pour chaque section dans roadmapData.sections:
         sectionElement = htmlDoc.createElement("div")
         sectionElement.className = "section"
         
         # Ajouter le titre de la section
+
         sectionTitleElement = htmlDoc.createElement("h2")
         sectionTitleElement.textContent = section.id + ". " + section.title
         sectionElement.appendChild(sectionTitleElement)
         
         # Ajouter les métadonnées
+
         metadataElement = htmlDoc.createElement("div")
         metadataElement.className = "metadata"
         
@@ -245,6 +277,7 @@ Fonction GenerateHTML(roadmapData):
         sectionElement.appendChild(metadataElement)
         
         # Ajouter les phases
+
         pour chaque phase dans section.phases:
             phaseElement = htmlDoc.createElement("div")
             phaseElement.className = "phase"
@@ -253,6 +286,7 @@ Fonction GenerateHTML(roadmapData):
                 phaseElement.classList.add("completed")
             
             # Ajouter le titre de la phase
+
             phaseTitleElement = htmlDoc.createElement("h3")
             phaseTitleElement.innerHTML = `
                 <input type="checkbox" ${phase.completed ? "checked" : ""} disabled>
@@ -261,6 +295,7 @@ Fonction GenerateHTML(roadmapData):
             phaseElement.appendChild(phaseTitleElement)
             
             # Ajouter les tâches
+
             pour chaque task dans phase.tasks:
                 taskElement = htmlDoc.createElement("div")
                 taskElement.className = "task"
@@ -269,6 +304,7 @@ Fonction GenerateHTML(roadmapData):
                     taskElement.classList.add("completed")
                 
                 # Ajouter le titre de la tâche
+
                 taskTitleElement = htmlDoc.createElement("p")
                 taskTitleText = task.title
                 
@@ -285,6 +321,7 @@ Fonction GenerateHTML(roadmapData):
                 taskElement.appendChild(taskTitleElement)
                 
                 # Ajouter les sous-tâches
+
                 pour chaque subtask dans task.subtasks:
                     subtaskElement = htmlDoc.createElement("div")
                     subtaskElement.className = "subtask"
@@ -293,6 +330,7 @@ Fonction GenerateHTML(roadmapData):
                         subtaskElement.classList.add("completed")
                     
                     # Ajouter le titre de la sous-tâche
+
                     subtaskTitleElement = htmlDoc.createElement("p")
                     subtaskTitleElement.innerHTML = `
                         <input type="checkbox" ${subtask.completed ? "checked" : ""} disabled>
@@ -305,6 +343,7 @@ Fonction GenerateHTML(roadmapData):
                 phaseElement.appendChild(taskElement)
             
             # Ajouter les notes
+
             pour chaque note dans phase.notes:
                 noteElement = htmlDoc.createElement("div")
                 noteElement.className = "note"
@@ -320,12 +359,12 @@ Fonction GenerateHTML(roadmapData):
         htmlDoc.body.appendChild(sectionElement)
     
     retourner htmlDoc
-```
-
+```plaintext
 ## 3. Algorithme de conversion de XML vers Roadmap
 
 ### Étape 1: Parsing du XML
-```
+
+```plaintext
 Fonction ParseRoadmapXML(xmlDoc):
     roadmapData = {
         title: "",
@@ -334,15 +373,18 @@ Fonction ParseRoadmapXML(xmlDoc):
     }
     
     # Extraire le titre
+
     rootElement = xmlDoc.documentElement
     roadmapData.title = rootElement.getAttribute("title")
     
     # Extraire la vue d'ensemble
+
     overviewElement = rootElement.getElementsByTagName("overview")[0]
     si overviewElement:
         roadmapData.overview = overviewElement.textContent
     
     # Extraire les sections
+
     sectionElements = rootElement.getElementsByTagName("section")
     
     pour chaque sectionElement dans sectionElements:
@@ -354,6 +396,7 @@ Fonction ParseRoadmapXML(xmlDoc):
         }
         
         # Extraire les métadonnées
+
         metadataElement = sectionElement.getElementsByTagName("metadata")[0]
         si metadataElement:
             pour chaque metadataItemElement dans metadataElement.childNodes:
@@ -361,6 +404,7 @@ Fonction ParseRoadmapXML(xmlDoc):
                     section.metadata[metadataItemElement.nodeName] = metadataItemElement.textContent
         
         # Extraire les phases
+
         phaseElements = sectionElement.getElementsByTagName("phase")
         
         pour chaque phaseElement dans phaseElements:
@@ -373,6 +417,7 @@ Fonction ParseRoadmapXML(xmlDoc):
             }
             
             # Extraire les tâches
+
             taskElements = phaseElement.getElementsByTagName("task")
             
             pour chaque taskElement dans taskElements:
@@ -385,6 +430,7 @@ Fonction ParseRoadmapXML(xmlDoc):
                 }
                 
                 # Extraire les sous-tâches
+
                 subtaskElements = taskElement.getElementsByTagName("subtask")
                 
                 pour chaque subtaskElement dans subtaskElements:
@@ -398,6 +444,7 @@ Fonction ParseRoadmapXML(xmlDoc):
                 phase.tasks.push(task)
             
             # Extraire les notes
+
             noteElements = phaseElement.getElementsByTagName("note")
             
             pour chaque noteElement dans noteElements:
@@ -408,36 +455,45 @@ Fonction ParseRoadmapXML(xmlDoc):
         roadmapData.sections.push(section)
     
     retourner roadmapData
-```
-
+```plaintext
 ### Étape 2: Génération du Markdown
-```
+
+```plaintext
 Fonction GenerateMarkdown(roadmapData):
     markdown = ""
     
     # Ajouter le titre
+
     markdown += "# " + roadmapData.title + "\n\n"
+
     
     # Ajouter la vue d'ensemble
+
     si roadmapData.overview:
         markdown += "## Vue d'ensemble des taches par priorite et complexite\n\n"
+
         markdown += roadmapData.overview + "\n\n"
     
     # Ajouter les sections
+
     pour chaque section dans roadmapData.sections:
         markdown += "## " + section.id + ". " + section.title + "\n"
+
         
         # Ajouter les métadonnées
+
         pour chaque key, value dans section.metadata:
             markdown += "**" + key + "**: " + value + "\n"
         
         markdown += "\n"
         
         # Ajouter les phases
+
         pour chaque phase dans section.phases:
             markdown += "- [" + (phase.completed ? "x" : " ") + "] **Phase " + phase.id + ": " + phase.title + "**\n"
             
             # Ajouter les tâches
+
             pour chaque task dans phase.tasks:
                 markdown += "  - [" + (task.completed ? "x" : " ") + "] " + task.title
                 
@@ -450,22 +506,24 @@ Fonction GenerateMarkdown(roadmapData):
                 markdown += "\n"
                 
                 # Ajouter les sous-tâches
+
                 pour chaque subtask dans task.subtasks:
                     markdown += "    - [" + (subtask.completed ? "x" : " ") + "] " + subtask.title + "\n"
             
             # Ajouter les notes
+
             pour chaque note dans phase.notes:
                 markdown += "  > *Note: " + note + "*\n"
             
             markdown += "\n"
     
     retourner markdown
-```
-
+```plaintext
 ## 4. Algorithme de conversion de HTML vers Roadmap
 
 ### Étape 1: Parsing du HTML
-```
+
+```plaintext
 Fonction ParseRoadmapHTML(htmlDoc):
     roadmapData = {
         title: "",
@@ -474,20 +532,24 @@ Fonction ParseRoadmapHTML(htmlDoc):
     }
     
     # Extraire le titre
+
     titleElement = htmlDoc.querySelector("h1")
     si titleElement:
         roadmapData.title = titleElement.textContent
     
     # Extraire la vue d'ensemble
+
     overviewElement = htmlDoc.querySelector("h1 + p")
     si overviewElement:
         roadmapData.overview = overviewElement.textContent
     
     # Extraire les sections
+
     sectionElements = htmlDoc.querySelectorAll(".section")
     
     pour chaque sectionElement dans sectionElements:
         # Extraire l'ID et le titre
+
         sectionTitleElement = sectionElement.querySelector("h2")
         sectionTitleMatch = RegexMatch(sectionTitleElement.textContent, "^(\d+)\. (.+)$")
         
@@ -499,6 +561,7 @@ Fonction ParseRoadmapHTML(htmlDoc):
         }
         
         # Extraire les métadonnées
+
         metadataElement = sectionElement.querySelector(".metadata")
         si metadataElement:
             metadataItemElements = metadataElement.querySelectorAll("p")
@@ -509,10 +572,12 @@ Fonction ParseRoadmapHTML(htmlDoc):
                     section.metadata[metadataMatch.group(1)] = metadataMatch.group(2)
         
         # Extraire les phases
+
         phaseElements = sectionElement.querySelectorAll(".phase")
         
         pour chaque phaseElement dans phaseElements:
             # Extraire le titre et l'état
+
             phaseTitleElement = phaseElement.querySelector("h3")
             phaseCheckbox = phaseTitleElement.querySelector("input[type=checkbox]")
             phaseTitleMatch = RegexMatch(phaseTitleElement.textContent.trim(), "^Phase (\d+): (.+)$")
@@ -526,17 +591,21 @@ Fonction ParseRoadmapHTML(htmlDoc):
             }
             
             # Extraire les tâches
+
             taskElements = phaseElement.querySelectorAll(".task")
             
             pour chaque taskElement dans taskElements:
                 # Extraire le titre, l'état et les métadonnées
+
                 taskTitleElement = taskElement.querySelector("p")
                 taskCheckbox = taskTitleElement.querySelector("input[type=checkbox]")
                 
                 # Extraire le texte sans les éléments enfants
+
                 taskTitleText = taskTitleElement.textContent.trim()
                 
                 # Extraire le temps estimé et la date de début
+
                 taskTitleMatch = RegexMatch(taskTitleText, "^(.+?)(?:\s+\((.+?)\))?(?:\s+-\s+(.+?))?$")
                 
                 task = {
@@ -548,10 +617,12 @@ Fonction ParseRoadmapHTML(htmlDoc):
                 }
                 
                 # Extraire les sous-tâches
+
                 subtaskElements = taskElement.querySelectorAll(".subtask")
                 
                 pour chaque subtaskElement dans subtaskElements:
                     # Extraire le titre et l'état
+
                     subtaskTitleElement = subtaskElement.querySelector("p")
                     subtaskCheckbox = subtaskTitleElement.querySelector("input[type=checkbox]")
                     
@@ -565,6 +636,7 @@ Fonction ParseRoadmapHTML(htmlDoc):
                 phase.tasks.push(task)
             
             # Extraire les notes
+
             noteElements = phaseElement.querySelectorAll(".note")
             
             pour chaque noteElement dans noteElements:
@@ -578,31 +650,35 @@ Fonction ParseRoadmapHTML(htmlDoc):
         roadmapData.sections.push(section)
     
     retourner roadmapData
-```
-
+```plaintext
 ### Étape 2: Génération du Markdown
-```
-# Utiliser la même fonction GenerateMarkdown que pour la conversion depuis XML
-```
 
+```plaintext
+# Utiliser la même fonction GenerateMarkdown que pour la conversion depuis XML
+
+```plaintext
 ## 5. Optimisations et considérations
 
 ### 5.1 Optimisation des expressions régulières
+
 - Utiliser des expressions régulières compilées pour améliorer les performances
 - Limiter l'utilisation de constructions coûteuses comme les lookbehinds et lookaheads
 - Utiliser des groupes de capture nommés pour améliorer la lisibilité
 
 ### 5.2 Gestion de la mémoire
+
 - Utiliser des techniques de streaming pour les fichiers volumineux
 - Libérer les ressources non utilisées dès que possible
 - Éviter de charger l'intégralité du document en mémoire pour les fichiers très volumineux
 
 ### 5.3 Gestion des erreurs
+
 - Valider les entrées avant de commencer la conversion
 - Gérer les cas où les expressions régulières ne correspondent pas
 - Fournir des messages d'erreur clairs et utiles
 
 ### 5.4 Extensibilité
+
 - Concevoir les algorithmes de manière à pouvoir facilement ajouter de nouveaux formats
 - Utiliser des interfaces communes pour les différents parsers et générateurs
 - Séparer clairement les étapes de parsing et de génération

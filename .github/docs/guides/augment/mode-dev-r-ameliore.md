@@ -17,42 +17,46 @@ Le mode DEV-R (Roadmap Delivery) amélioré est un mode opérationnel qui permet
 
 ```powershell
 # Traiter une tâche spécifique
+
 .\dev-r-mode-enhanced.ps1 -FilePath "roadmap.md" -TaskIdentifier "1.2.3" -ProjectPath "project" -TestsPath "tests"
 
 # Traiter la sélection actuelle
-.\dev-r-mode-enhanced.ps1 -FilePath "roadmap.md" -ProcessSelection -Selection "- [ ] 1.1 Tâche parent`n  - [ ] 1.1.1 Tâche enfant" -ChildrenFirst -StepByStep
-```
 
+.\dev-r-mode-enhanced.ps1 -FilePath "roadmap.md" -ProcessSelection -Selection "- [ ] 1.1 Tâche parent`n  - [ ] 1.1.1 Tâche enfant" -ChildrenFirst -StepByStep
+```plaintext
 ### Depuis le script d'intégration
 
 ```powershell
 # Traiter une tâche spécifique
+
 .\Invoke-DevRMode.ps1 -FilePath "roadmap.md" -TaskIdentifier "1.2.3" -ProjectPath "project" -TestsPath "tests"
 
 # Traiter la sélection actuelle
-.\Invoke-DevRMode.ps1 -FilePath "roadmap.md" -Selection "- [ ] 1.1 Tâche parent`n  - [ ] 1.1.1 Tâche enfant" -ChildrenFirst -StepByStep
-```
 
+.\Invoke-DevRMode.ps1 -FilePath "roadmap.md" -Selection "- [ ] 1.1 Tâche parent`n  - [ ] 1.1.1 Tâche enfant" -ChildrenFirst -StepByStep
+```plaintext
 ### Depuis Augment
 
 ```powershell
 # Traiter une tâche spécifique
+
 .\Invoke-AugmentDevRMode.ps1 -FilePath "roadmap.md" -TaskIdentifier "1.2.3" -ProjectPath "project" -TestsPath "tests"
 
 # Traiter la sélection actuelle
-.\Invoke-AugmentDevRMode.ps1 -FilePath "roadmap.md" -UseSelection -ChildrenFirst -StepByStep
-```
 
+.\Invoke-AugmentDevRMode.ps1 -FilePath "roadmap.md" -UseSelection -ChildrenFirst -StepByStep
+```plaintext
 ### Depuis le module AugmentIntegration
 
 ```powershell
 # Traiter une tâche spécifique
+
 Invoke-AugmentMode -Mode DEV-R -FilePath "roadmap.md" -TaskIdentifier "1.2.3" -ProjectPath "project" -TestsPath "tests"
 
 # Traiter la sélection actuelle
-Invoke-AugmentMode -Mode DEV-R -FilePath "roadmap.md" -UseSelection -ChildrenFirst -StepByStep
-```
 
+Invoke-AugmentMode -Mode DEV-R -FilePath "roadmap.md" -UseSelection -ChildrenFirst -StepByStep
+```plaintext
 ## Paramètres
 
 ### Paramètres communs
@@ -81,24 +85,21 @@ Invoke-AugmentMode -Mode DEV-R -FilePath "roadmap.md" -UseSelection -ChildrenFir
 
 ```powershell
 Invoke-AugmentMode -Mode DEV-R -FilePath "roadmap.md" -TaskIdentifier "1.2.3" -ProjectPath "project" -TestsPath "tests"
-```
-
+```plaintext
 Cette commande traite la tâche 1.2.3 du fichier roadmap.md, implémente la fonctionnalité dans le répertoire "project" et génère les tests dans le répertoire "tests".
 
 ### Traiter la sélection actuelle
 
 ```powershell
 Invoke-AugmentMode -Mode DEV-R -FilePath "roadmap.md" -UseSelection -ChildrenFirst -StepByStep
-```
-
+```plaintext
 Cette commande traite la sélection actuelle dans le document Augment en commençant par les tâches enfants, avec une pause entre chaque tâche.
 
 ### Traiter la sélection actuelle et mettre à jour les mémoires d'Augment
 
 ```powershell
 Invoke-AugmentMode -Mode DEV-R -FilePath "roadmap.md" -UseSelection -ChildrenFirst -StepByStep -UpdateMemories
-```
-
+```plaintext
 Cette commande traite la sélection actuelle dans le document Augment en commençant par les tâches enfants, avec une pause entre chaque tâche, et met à jour les mémoires d'Augment.
 
 ## Bonnes pratiques

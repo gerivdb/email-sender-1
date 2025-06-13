@@ -1,0 +1,90 @@
+{
+  "server": {
+    "port": 8080,
+    "host": "0.0.0.0",
+    "read_timeout": 15,
+    "write_timeout": 15,
+    "shutdown_timeout": 30
+  },
+  "git": {
+    "default_branch": "main",
+    "protected_branches": ["main", "master", "production", "staging"],
+    "remote_name": "origin",
+    "auto_fetch": true
+  },
+  "routing": {
+    "rules": {
+      "feature": {
+        "patterns": ["feat:", "feature:", "add:", "implement"],
+        "target_branch": "feature/*",
+        "create_branch": true,
+        "merge_strategy": "manual",
+        "priority": "medium"
+      },
+      "fix": {
+        "patterns": ["fix:", "bug:", "hotfix:", "resolve"],
+        "target_branch": "hotfix/*",
+        "create_branch": true,
+        "merge_strategy": "manual",
+        "priority": "high"
+      },
+      "refactor": {
+        "patterns": ["refactor:", "clean:", "optimize:", "restructure"],
+        "target_branch": "develop",
+        "create_branch": false,
+        "merge_strategy": "auto",
+        "priority": "medium"
+      },
+      "docs": {
+        "patterns": ["docs:", "doc:", "documentation:", "readme"],
+        "target_branch": "develop",
+        "create_branch": false,
+        "merge_strategy": "auto",
+        "priority": "low"
+      },
+      "style": {
+        "patterns": ["style:", "format:", "lint:", "formatting"],
+        "target_branch": "develop",
+        "create_branch": false,
+        "merge_strategy": "auto",
+        "priority": "low"
+      },
+      "test": {
+        "patterns": ["test:", "tests:", "spec:", "testing"],
+        "target_branch": "develop",
+        "create_branch": false,
+        "merge_strategy": "auto",
+        "priority": "low"
+      },
+      "chore": {
+        "patterns": ["chore:", "maintenance:", "deps:", "config:"],
+        "target_branch": "develop",
+        "create_branch": false,
+        "merge_strategy": "auto",
+        "priority": "low"
+      }
+    },
+    "default_strategy": "manual",
+    "conflict_strategy": "abort",
+    "auto_merge_enabled": false
+  },
+  "notifications_enabled": true,
+  "webhooks": {
+    "enabled": true,
+    "endpoints": {
+      "jules_google": "https://api.jules-google.com/webhooks/branching",
+      "slack": "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+    },
+    "auth_tokens": {
+      "jules_google": "${JULES_GOOGLE_TOKEN}",
+      "slack": "${SLACK_TOKEN}"
+    },
+    "timeout": 30
+  },
+  "logging": {
+    "level": "info",
+    "format": "json",
+    "output_file": "logs/commit-interceptor.log"
+  },
+  "test_mode": true
+}

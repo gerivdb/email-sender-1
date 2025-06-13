@@ -14,8 +14,7 @@ Initialise le détecteur de cycles avec les paramètres spécifiés.
 
 ```powershell
 Initialize-CycleDetector [-Enabled <Boolean>] [-MaxDepth <Int32>] [-CacheEnabled <Boolean>]
-```
-
+```plaintext
 #### Paramètres
 
 | Nom | Type | Obligatoire | Description |
@@ -32,9 +31,9 @@ Aucune valeur de retour.
 
 ```powershell
 # Initialiser le détecteur de cycles avec une profondeur maximale de 500
-Initialize-CycleDetector -Enabled $true -MaxDepth 500 -CacheEnabled $true
-```
 
+Initialize-CycleDetector -Enabled $true -MaxDepth 500 -CacheEnabled $true
+```plaintext
 ### Detect-Cycle
 
 Détecte les cycles dans un graphe générique.
@@ -43,8 +42,7 @@ Détecte les cycles dans un graphe générique.
 
 ```powershell
 Detect-Cycle -Graph <Hashtable> [-MaxDepth <Int32>]
-```
-
+```plaintext
 #### Paramètres
 
 | Nom | Type | Obligatoire | Description |
@@ -74,8 +72,7 @@ $result = Detect-Cycle -Graph $graph
 if ($result.HasCycle) {
     Write-Host "Cycle détecté: $($result.CyclePath -join ' -> ')"
 }
-```
-
+```plaintext
 ### Find-GraphCycle
 
 Fonction interne qui implémente l'algorithme DFS pour détecter les cycles. Cette fonction est utilisée par Detect-Cycle mais peut également être appelée directement pour des cas d'utilisation avancés.
@@ -84,8 +81,7 @@ Fonction interne qui implémente l'algorithme DFS pour détecter les cycles. Cet
 
 ```powershell
 Find-GraphCycle -Graph <Hashtable> [-MaxDepth <Int32>] [-UseIterative]
-```
-
+```plaintext
 #### Paramètres
 
 | Nom | Type | Obligatoire | Description |
@@ -104,8 +100,7 @@ Un objet PSCustomObject avec les propriétés suivantes :
 
 ```powershell
 $result = Find-GraphCycle -Graph $graph -UseIterative
-```
-
+```plaintext
 ### Find-DependencyCycles
 
 Analyse les dépendances entre les scripts PowerShell pour détecter les cycles.
@@ -114,8 +109,7 @@ Analyse les dépendances entre les scripts PowerShell pour détecter les cycles.
 
 ```powershell
 Find-DependencyCycles -Path <String> [-Recursive] [-OutputPath <String>]
-```
-
+```plaintext
 #### Paramètres
 
 | Nom | Type | Obligatoire | Description |
@@ -141,8 +135,7 @@ if ($result.HasCycles) {
         Write-Host "Cycle de dépendance détecté: $($cycle -join ' -> ')"
     }
 }
-```
-
+```plaintext
 ### Test-WorkflowCycles
 
 Analyse les workflows n8n pour détecter les cycles.
@@ -151,8 +144,7 @@ Analyse les workflows n8n pour détecter les cycles.
 
 ```powershell
 Test-WorkflowCycles -WorkflowPath <String>
-```
-
+```plaintext
 #### Paramètres
 
 | Nom | Type | Obligatoire | Description |
@@ -175,8 +167,7 @@ if ($result.HasCycles) {
         Write-Host "Cycle de workflow détecté: $($cycle -join ' -> ')"
     }
 }
-```
-
+```plaintext
 ### Remove-Cycle
 
 Supprime un cycle d'un graphe en retirant une arête.
@@ -185,8 +176,7 @@ Supprime un cycle d'un graphe en retirant une arête.
 
 ```powershell
 Remove-Cycle -Graph <Hashtable> -Cycle <String[]>
-```
-
+```plaintext
 #### Paramètres
 
 | Nom | Type | Obligatoire | Description |
@@ -211,12 +201,12 @@ $cycle = @("A", "B", "C")
 $modifiedGraph = Remove-Cycle -Graph $graph -Cycle $cycle
 
 # Vérifier que le cycle a été supprimé
+
 $result = Detect-Cycle -Graph $modifiedGraph
 if (-not $result.HasCycle) {
     Write-Host "Le cycle a été supprimé avec succès."
 }
-```
-
+```plaintext
 ### Get-CycleDetectionStatistics
 
 Récupère les statistiques d'utilisation du détecteur de cycles.
@@ -225,8 +215,7 @@ Récupère les statistiques d'utilisation du détecteur de cycles.
 
 ```powershell
 Get-CycleDetectionStatistics
-```
-
+```plaintext
 #### Paramètres
 
 Aucun.
@@ -246,8 +235,7 @@ Un objet PSCustomObject avec les propriétés suivantes :
 $stats = Get-CycleDetectionStatistics
 Write-Host "Nombre total de cycles détectés: $($stats.TotalCycles)"
 Write-Host "Temps d'exécution moyen: $($stats.AverageExecutionTime) ms"
-```
-
+```plaintext
 ### Clear-CycleDetectionCache
 
 Efface le cache du détecteur de cycles.
@@ -256,8 +244,7 @@ Efface le cache du détecteur de cycles.
 
 ```powershell
 Clear-CycleDetectionCache
-```
-
+```plaintext
 #### Paramètres
 
 Aucun.
@@ -270,8 +257,7 @@ Aucune valeur de retour.
 
 ```powershell
 Clear-CycleDetectionCache
-```
-
+```plaintext
 ## Variables globales
 
 Le module utilise les variables globales suivantes :

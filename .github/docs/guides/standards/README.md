@@ -5,9 +5,11 @@ Ce dossier contient les documents de référence pour les standards et conventio
 ## 📋 Documents disponibles
 
 ### 🏷️ Conventions de nommage
+
 - **[Conventions-Nommage.md](./Conventions-Nommage.md)** - Guide complet des conventions de nommage pour tous les langages utilisés dans le projet
 
 ### 🔧 PowerShell
+
 - **[PowerShell-Verbes-Approuves.md](./PowerShell-Verbes-Approuves.md)** - Guide exhaustif des verbes approuvés PowerShell avec exemples pratiques et outils de validation
 
 ## 🎯 Objectifs
@@ -46,11 +48,13 @@ Pour proposer des améliorations aux standards :
 ## 🎯 Priorités Techniques
 
 ### Environnements Principaux
+
 - **Golang 1.21+** : Environnement principal (10-1000x plus rapide que PowerShell/Python)
 - **PowerShell 7 + Python 3.11** : Scripts d'intégration et compatibilité legacy
 - **TypeScript** : Composants n8n personnalisés
 
 ### Framework d'Automatisation
+
 - 7 Time-Saving Methods avec ROI de ,320/an
 - Code generation et templates haute performance
 - Pipeline-as-Code avec validation fail-fast

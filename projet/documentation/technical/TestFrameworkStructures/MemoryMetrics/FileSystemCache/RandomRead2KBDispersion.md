@@ -102,8 +102,7 @@ Ce document définit les métriques de dispersion (écart-type, variance) pour l
     }
   }
 }
-```
-
+```plaintext
 ## 4. Ratios et relations entre métriques de dispersion
 
 ### 4.1 Ratios typiques
@@ -121,15 +120,14 @@ Ce document définit les métriques de dispersion (écart-type, variance) pour l
 
 Ces formules permettent d'estimer approximativement les métriques de dispersion à partir d'autres métriques connues :
 
-```
+```plaintext
 stdDev ≈ avg * 1.2
 variance ≈ stdDev²
 coefficientOfVariation ≈ stdDev / avg
 range ≈ stdDev * 11.4
 interquartileRange ≈ stdDev * 0.7
 meanAbsoluteDeviation ≈ stdDev * 0.8
-```
-
+```plaintext
 ### 4.3 Relations avec les percentiles
 
 | Relation | Formule approximative | Valeur typique |
@@ -184,8 +182,7 @@ Environnements optimisés pour les E/S (serveurs dédiés, workstations haut de 
     }
   }
 }
-```
-
+```plaintext
 ### 6.2 Systèmes standards
 
 Environnements génériques (ordinateurs de bureau, serveurs polyvalents)
@@ -207,8 +204,7 @@ Environnements génériques (ordinateurs de bureau, serveurs polyvalents)
     }
   }
 }
-```
-
+```plaintext
 ### 6.3 Systèmes contraints
 
 Environnements limités en ressources (systèmes embarqués, machines virtuelles partagées)
@@ -230,8 +226,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ## 7. Métriques de dispersion par système de fichiers
 
 ### 7.1 NTFS (Windows)
@@ -253,8 +248,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 7.2 ext4 (Linux)
 
 ```json
@@ -274,8 +268,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 7.3 APFS (macOS)
 
 ```json
@@ -295,8 +288,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 7.4 ZFS
 
 ```json
@@ -316,8 +308,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ## 8. Métriques de dispersion par type de stockage
 
 ### 8.1 SSD NVMe
@@ -339,8 +330,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 8.2 SSD SATA
 
 ```json
@@ -360,8 +350,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 8.3 HDD (7200 RPM)
 
 ```json
@@ -381,8 +370,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 8.4 Stockage réseau (NAS/SAN)
 
 ```json
@@ -402,8 +390,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ## 9. Évolution des métriques de dispersion dans le temps
 
 ### 9.1 Tendances à court terme
@@ -446,8 +433,7 @@ Sur une période de mois à années, les métriques de dispersion peuvent change
     }
   }
 }
-```
-
+```plaintext
 ### 10.2 Métriques de dispersion pour les tests d'intégration
 
 ```json
@@ -465,8 +451,7 @@ Sur une période de mois à années, les métriques de dispersion peuvent change
     }
   }
 }
-```
-
+```plaintext
 ### 10.3 Métriques de dispersion pour les tests de performance
 
 ```json
@@ -492,8 +477,7 @@ Sur une période de mois à années, les métriques de dispersion peuvent change
     }
   }
 }
-```
-
+```plaintext
 ## 11. Interprétation des métriques de dispersion
 
 ### 11.1 Signification opérationnelle
@@ -566,8 +550,7 @@ Sur une période de mois à années, les métriques de dispersion peuvent change
     }
   }
 }
-```
-
+```plaintext
 ### 12.2 Métriques de stabilité temporelle
 
 ```json
@@ -585,8 +568,7 @@ Sur une période de mois à années, les métriques de dispersion peuvent change
     }
   }
 }
-```
-
+```plaintext
 ## 13. Conclusion
 
 Les métriques de dispersion pour les lectures aléatoires de blocs de 2KB présentent les caractéristiques suivantes :

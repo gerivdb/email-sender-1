@@ -8,21 +8,27 @@ Ce guide explique comment créer un nouveau gestionnaire compatible avec le Proc
 
 Un gestionnaire est un script PowerShell qui implémente un ensemble de fonctions standard pour interagir avec le Process Manager. La structure de base d'un gestionnaire est la suivante :
 
-```
+```plaintext
 development/managers/<nom-du-gestionnaire>/
 ├── scripts/
 │   ├── <nom-du-gestionnaire>.ps1         # Script principal du gestionnaire
+
 │   ├── <nom-du-gestionnaire>.manifest.json # Manifeste du gestionnaire (optionnel)
+
 │   └── ...                               # Autres scripts
+
 ├── modules/
 │   └── ...                               # Modules PowerShell spécifiques au gestionnaire
+
 ├── tests/
 │   ├── Test-<NomDuGestionnaire>.ps1      # Tests unitaires
+
 │   └── ...                               # Autres tests
+
 └── config/
     └── ...                               # Fichiers de configuration locaux
-```
 
+```plaintext
 ## Fonctions requises
 
 Un gestionnaire doit implémenter les fonctions suivantes :
@@ -37,6 +43,7 @@ Voici un exemple de gestionnaire simple :
 
 ```powershell
 <#
+
 .SYNOPSIS
     Exemple de gestionnaire pour le Process Manager.
 
@@ -89,6 +96,7 @@ function Get-ExampleManagerStatus {
 }
 
 # Exécuter la commande spécifiée
+
 switch ($Command) {
     "Start" {
         Start-ExampleManager
@@ -103,8 +111,7 @@ switch ($Command) {
         Write-Host "Commande inconnue : $Command"
     }
 }
-```
-
+```plaintext
 ## Manifeste du gestionnaire
 
 Un manifeste de gestionnaire est un objet JSON qui décrit les métadonnées et les dépendances du gestionnaire. Il peut être défini de plusieurs façons :
@@ -158,8 +165,7 @@ Un manifeste de gestionnaire est un objet JSON qui décrit les métadonnées et 
         "RequireElevation": false
     }
 }
-```
-
+```plaintext
 ### Propriétés du manifeste
 
 | Propriété | Type | Description | Requis |
@@ -186,16 +192,14 @@ Une fois le gestionnaire créé, vous devez l'enregistrer dans le Process Manage
 
 ```powershell
 .\development\managers\process-manager\scripts\process-manager.ps1 -Command Register -ManagerName "ExampleManager" -ManagerPath "development\managers\example-manager\scripts\example-manager.ps1"
-```
-
+```plaintext
 ### Découverte automatique
 
 Si votre gestionnaire suit la convention de nommage et la structure de répertoires standard, vous pouvez utiliser la commande Discover pour l'enregistrer automatiquement :
 
 ```powershell
 .\development\managers\process-manager\scripts\process-manager.ps1 -Command Discover
-```
-
+```plaintext
 ## Validation du gestionnaire
 
 Avant d'enregistrer votre gestionnaire, vous pouvez le valider pour vous assurer qu'il est compatible avec le Process Manager. Vous pouvez utiliser les fonctions du module ValidationService pour cela :
@@ -203,8 +207,7 @@ Avant d'enregistrer votre gestionnaire, vous pouvez le valider pour vous assurer
 ```powershell
 Import-Module ProcessManager
 Test-ManagerValidity -Path "development\managers\example-manager\scripts\example-manager.ps1"
-```
-
+```plaintext
 ## Gestion des dépendances
 
 Si votre gestionnaire dépend d'autres gestionnaires, vous devez spécifier ces dépendances dans le manifeste. Vous pouvez utiliser les fonctions du module DependencyResolver pour vérifier la disponibilité des dépendances :
@@ -213,8 +216,7 @@ Si votre gestionnaire dépend d'autres gestionnaires, vous devez spécifier ces 
 Import-Module ProcessManager
 $dependencies = Get-ManagerDependencies -Path "development\managers\example-manager\scripts\example-manager.ps1"
 Test-DependenciesAvailability -Dependencies $dependencies
-```
-
+```plaintext
 ## Tests
 
 Il est recommandé de créer des tests unitaires pour votre gestionnaire. Vous pouvez utiliser le framework de test Pester pour cela. Voici un exemple de test unitaire pour un gestionnaire :
@@ -223,30 +225,35 @@ Il est recommandé de créer des tests unitaires pour votre gestionnaire. Vous p
 Describe "ExampleManager" {
     BeforeAll {
         # Charger le gestionnaire
+
         . "development\managers\example-manager\scripts\example-manager.ps1"
     }
 
     It "Should start correctly" {
         # Tester la fonction Start-ExampleManager
+
         Start-ExampleManager
         # Vérifier que le gestionnaire a démarré correctement
+
     }
 
     It "Should stop correctly" {
         # Tester la fonction Stop-ExampleManager
+
         Stop-ExampleManager
         # Vérifier que le gestionnaire s'est arrêté correctement
+
     }
 
     It "Should return status correctly" {
         # Tester la fonction Get-ExampleManagerStatus
+
         $status = Get-ExampleManagerStatus
         $status | Should -Not -BeNullOrEmpty
         $status.Status | Should -Be "Running"
     }
 }
-```
-
+```plaintext
 ## Bonnes pratiques
 
 ### Conception du gestionnaire

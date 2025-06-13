@@ -11,26 +11,41 @@ Ce document présente une analyse technique détaillée de l'écosystème des ma
 L'architecture de l'écosystème des managers adopte une approche modulaire centralisée où chaque manager encapsule une responsabilité spécifique. Cette conception s'articule autour de trois niveaux hiérarchiques et d'un package d'interfaces centralisé :
 
 **Architecture Modulaire avec Package Interfaces Centralisé** :
-```
+```plaintext
 development/managers/
 ├── interfaces/                    # Package central pour toutes les interfaces
-│   ├── common.go                 # Interfaces partagées (HealthChecker, Initializer, etc.)
-│   ├── security.go               # Interfaces spécifiques SecurityManager
-│   ├── storage.go                # Interfaces spécifiques StorageManager
-│   ├── monitoring.go             # Interfaces spécifiques MonitoringManager
-│   ├── container.go              # Interfaces spécifiques ContainerManager
-│   ├── deployment.go             # Interfaces spécifiques DeploymentManager
-│   └── types.go                  # Types de données partagés
-├── error-manager/                # Manager fondamental
-├── integrated-manager/           # Coordinateur central
-├── dependency-manager/           # Manager de dépendances
-├── security-manager/             # Manager de sécurité
-├── storage-manager/              # Manager de stockage
-├── monitoring-manager/           # Manager de surveillance
-├── container-manager/            # Manager de conteneurs
-└── deployment-manager/           # Manager de déploiement
-```
 
+│   ├── common.go                 # Interfaces partagées (HealthChecker, Initializer, etc.)
+
+│   ├── security.go               # Interfaces spécifiques SecurityManager
+
+│   ├── storage.go                # Interfaces spécifiques StorageManager
+
+│   ├── monitoring.go             # Interfaces spécifiques MonitoringManager
+
+│   ├── container.go              # Interfaces spécifiques ContainerManager
+
+│   ├── deployment.go             # Interfaces spécifiques DeploymentManager
+
+│   └── types.go                  # Types de données partagés
+
+├── error-manager/                # Manager fondamental
+
+├── integrated-manager/           # Coordinateur central
+
+├── dependency-manager/           # Manager de dépendances
+
+├── security-manager/             # Manager de sécurité
+
+├── storage-manager/              # Manager de stockage
+
+├── monitoring-manager/           # Manager de surveillance
+
+├── container-manager/            # Manager de conteneurs
+
+└── deployment-manager/           # Manager de déploiement
+
+```plaintext
 **Niveaux hiérarchiques** :
 
 1. **Core Managers** : Composants fondamentaux (ErrorManager, IntegratedManager)
@@ -48,7 +63,7 @@ L'IntegratedManager joue le rôle de coordinateur central tandis que l'ErrorMana
 
 ### Hiérarchie
 
-```
+```plaintext
 IntegratedManager
 ├── ErrorManager (Utilisé par tous)
 ├── Core Services
@@ -70,8 +85,7 @@ IntegratedManager
     ├── DeploymentManager
     ├── DependencyManager
     └── RoadmapManager
-```
-
+```plaintext
 Les dépendances sont gérées de manière à minimiser les couplages tout en favorisant la cohésion. Chaque manager expose des interfaces claires permettant l'interopérabilité sans créer de dépendances circulaires. L'isolation des responsabilités permet les tests unitaires et facilite la maintenance.
 
 ### Architecture des Interfaces Centralisées
@@ -110,8 +124,7 @@ type BaseManager interface {
     Initializer
     Cleaner
 }
-```
-
+```plaintext
 #### Interfaces Spécialisées par Domaine
 
 ```go
@@ -155,8 +168,7 @@ type MonitoringManager interface {
     StartOperationMonitoring(ctx context.Context, operation string) (*OperationMetrics, error)
     StopOperationMonitoring(ctx context.Context, metrics *OperationMetrics) error
 }
-```
-
+```plaintext
 #### Types de Données Centralisés
 
 ```go
@@ -196,8 +208,7 @@ type VulnerabilityReport struct {
     Timestamp            time.Time                     `json:"timestamp"`
     Details              map[string]*VulnerabilityInfo `json:"details"`
 }
-```
-
+```plaintext
 #### Avantages de cette Architecture
 
 1. **Ségrégation des Interfaces (SOLID-I)** : Chaque manager n'implémente que les interfaces nécessaires
@@ -238,8 +249,7 @@ type VulnerabilityReport struct {
 │ └──────────────┘ └───────────────┘ └───────────────┘ └─────────────┘ │
 │                                                                       │
 └───────────────────────────────────────────────────────────────────────┘
-```
-
+```plaintext
 #### Diagramme 2: Flux de Données Entre Managers
 
 ```ascii
@@ -266,8 +276,7 @@ type VulnerabilityReport struct {
 │ErrorManager │◄────────────────────►│MonitoringMgr│
 │             │                       │             │
 └─────────────┘                       └─────────────┘
-```
-
+```plaintext
 #### Diagramme 3: Intégration avec ErrorManager
 
 ```ascii
@@ -288,8 +297,7 @@ type VulnerabilityReport struct {
    │DeployMgr│  │ContainMgr  │MCPMgr   │  │ProcessMgr
 │  └────────┘   └────────┘   └────────┘   └────────┘   │
  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘
-```
-
+```plaintext
 ## 2. Analyse des Managers
 
 ### Tableau Comparatif des Managers
@@ -317,6 +325,7 @@ type VulnerabilityReport struct {
 ### Description Détaillée des Nouveaux Managers
 
 #### StorageManager
+
 **Rôle principal**: Abstraction pour l'accès aux bases de données PostgreSQL et Qdrant.
 
 **Interfaces clés**:
@@ -333,8 +342,7 @@ type StorageManager interface {
     HealthCheck(ctx context.Context) error
     Cleanup() error
 }
-```
-
+```plaintext
 **État d'avancement**: ⚡ 75% implémenté
 - Abstraction PostgreSQL complète
 - Migrations de schéma fonctionnelles
@@ -345,6 +353,7 @@ type StorageManager interface {
 **Intégration ErrorManager**: Interface d'erreurs en place, contexts d'erreurs précis
 
 #### SecurityManager
+
 **Rôle principal**: Gestion de la sécurité et des secrets.
 
 **Interfaces clés**:
@@ -362,8 +371,7 @@ type SecurityManager interface {
     HealthCheck(ctx context.Context) error
     Cleanup() error
 }
-```
-
+```plaintext
 **État d'avancement**: ⚡ 65% implémenté
 - Chiffrement/déchiffrement fonctionnel (AES)
 - Gestion des secrets basique implémentée
@@ -374,6 +382,7 @@ type SecurityManager interface {
 **Intégration ErrorManager**: Interface implémentée, contextes d'erreurs prévus
 
 #### ContainerManager
+
 **Rôle principal**: Gestion des conteneurs Docker.
 
 **Interfaces clés**:
@@ -395,8 +404,7 @@ type ContainerManager interface {
     HealthCheck(ctx context.Context) error
     Cleanup() error
 }
-```
-
+```plaintext
 **État d'avancement**: ⚡ 70% implémenté
 - Cycle de vie des conteneurs géré
 - Intégration Docker API opérationnelle
@@ -407,6 +415,7 @@ type ContainerManager interface {
 **Intégration ErrorManager**: Interface prête, hooks d'erreur implémentés
 
 #### DeploymentManager
+
 **Rôle principal**: Gestion des builds et déploiements d'applications.
 
 **Interfaces clés**:
@@ -421,8 +430,7 @@ type DeploymentManager interface {
     HealthCheck(ctx context.Context) error
     Cleanup() error
 }
-```
-
+```plaintext
 **État d'avancement**: ⚡ 60% implémenté
 - Build d'application fonctionnel
 - Multi-environnements configurés
@@ -432,6 +440,7 @@ type DeploymentManager interface {
 **Intégration ErrorManager**: Interface prête, mécanisme de propagation implémenté
 
 #### MonitoringManager
+
 **Rôle principal**: Surveillance système et collecte de métriques.
 
 **Interfaces clés**:
@@ -451,8 +460,7 @@ type MonitoringManager interface {
     HealthCheck(ctx context.Context) error
     Cleanup() error
 }
-```
-
+```plaintext
 **État d'avancement**: ⚡ 70% implémenté
 - Collecte de métriques système opérationnelle
 - Health checks implémentés
@@ -525,30 +533,48 @@ type MonitoringManager interface {
    ```
 
 **Structure standard des fichiers avec architecture modulaire**:
-```
+```plaintext
 development/managers/
 ├── interfaces/                     # Package central d'interfaces (NOUVEAU)
+
 │   ├── common.go                  # Interfaces de base (HealthChecker, Initializer, Cleaner)
+
 │   ├── security.go                # Interfaces SecurityManager
+
 │   ├── storage.go                 # Interfaces StorageManager
+
 │   ├── monitoring.go              # Interfaces MonitoringManager
+
 │   ├── container.go               # Interfaces ContainerManager
+
 │   ├── deployment.go              # Interfaces DeploymentManager
+
 │   └── types.go                   # Types de données partagés
+
 ├── manager-name/                   # Structure d'un manager individuel
+
 │   ├── README.md                  # Documentation fonctionnelle et technique
+
 │   ├── manifest.json              # Métadonnées + configuration
+
 │   ├── API_DOCUMENTATION.md       # Documentation API publique
+
 │   ├── development/
 │   │   ├── manager_name.go        # Implémentation Go principale
-│   │   ├── integration.go         # Intégration ErrorManager
-│   │   └── repository.go          # Accès aux données (si applicable)
-│   ├── modules/                   # Modules PowerShell
-│   ├── scripts/                   # Scripts d'automatisation
-│   └── tests/                     # Tests unitaires et d'intégration
-└── MANAGER_ECOSYSTEM_SETUP_COMPLETE.md  # Documentation centrale
-```
 
+│   │   ├── integration.go         # Intégration ErrorManager
+
+│   │   └── repository.go          # Accès aux données (si applicable)
+
+│   ├── modules/                   # Modules PowerShell
+
+│   ├── scripts/                   # Scripts d'automatisation
+
+│   └── tests/                     # Tests unitaires et d'intégration
+
+└── MANAGER_ECOSYSTEM_SETUP_COMPLETE.md  # Documentation centrale
+
+```plaintext
 **Changements clés de l'architecture modulaire** :
 - **Package `interfaces/` centralisé** : Élimine toutes les duplications d'interfaces
 - **Suppression de `types.go` individuels** : Types centralisés dans `interfaces/types.go`
@@ -586,11 +612,11 @@ func (m *GoModManager) HealthCheck(ctx context.Context) error {
 func (m *GoModManager) Cleanup() error {
     // Implementation
 }
-```
-
+```plaintext
 ### Conformité ACRI, SOLID, DRY
 
 #### Principes ACRI
+
 | Principe | Application | Évaluation |
 |----------|------------|------------|
 | **Accountability** | Traçage des erreurs via ErrorManager | ✅ Forte |
@@ -599,6 +625,7 @@ func (m *GoModManager) Cleanup() error {
 | **Integration** | Hooks, interfaces adaptées | ✅ Forte |
 
 #### Principes SOLID (Améliorés par l'Architecture Modulaire)
+
 | Principe | Application | Évaluation | Amélioration Modulaire |
 |----------|------------|------------|----------------------|
 | **Single Responsibility** | Chaque manager a une responsabilité unique | ✅ Forte | Package `interfaces/` sépare les préoccupations |
@@ -608,6 +635,7 @@ func (m *GoModManager) Cleanup() error {
 | **Dependency Inversion** | Injection des dépendances | ✅ Forte | Import centralisé d'interfaces abstraites |
 
 #### Principes DRY (Considérablement Améliorés)
+
 | Aspect | Application | Évaluation | Amélioration Modulaire |
 |--------|------------|------------|----------------------|
 | **Gestion d'erreurs** | Centralisée via ErrorManager | ✅ Forte | Interfaces dans `interfaces/common.go` |
@@ -653,8 +681,7 @@ type StorageManager interface {
     
     // Additional methods...
 }
-```
-
+```plaintext
 **Structure de gestion d'erreur**:
 ```go
 // Exemple d'intégration ErrorManager
@@ -672,8 +699,7 @@ func (sm *storageManagerImpl) SaveDependencyMetadata(ctx context.Context, metada
     // Logic for saving dependency metadata
     // ...
 }
-```
-
+```plaintext
 ## 4. Roadmap et Évolution
 
 ### État Actuel vs État Visé
@@ -700,7 +726,7 @@ func (sm *storageManagerImpl) SaveDependencyMetadata(ctx context.Context, metada
 
 ### Calendrier Indicatif (Mis à Jour avec Architecture Modulaire)
 
-```
+```plaintext
 Phase 1 (Immédiate): Architecture Modulaire
 - Création du package interfaces/ centralisé
 - Migration des interfaces existantes
@@ -714,18 +740,18 @@ Phase 3-4: Configuration YAML + Scripts PowerShell
 Phase 5-6: StorageManager Qdrant + MonitoringManager améliorations
 Phase 7-8: SecurityManager (Vault) + ContainerManager (orchestration)
 Phase 9-10: DeploymentManager (CI/CD) + Tests système complets
-```
-
+```plaintext
 ## **PHASE 1 PRIORITAIRE : Implémentation Architecture Modulaire**
 
 ### Étapes d'Implémentation Immédiate
 
 #### Étape 1.1 : Création du Package Interfaces Centralisé
+
 ```bash
 # Structure à créer immédiatement
-mkdir -p development/managers/interfaces
-```
 
+mkdir -p development/managers/interfaces
+```plaintext
 **Fichiers à créer** :
 1. `interfaces/common.go` - Interfaces de base
 2. `interfaces/security.go` - SecurityManager
@@ -736,6 +762,7 @@ mkdir -p development/managers/interfaces
 7. `interfaces/types.go` - Types partagés
 
 #### Étape 1.2 : Migration des Interfaces Existantes
+
 **Action immédiate** : Identifier et éliminer toutes les duplications dans :
 - `dependency-manager/modules/manager_interfaces.go`
 - `dependency-manager/modules/security_integration.go`
@@ -744,13 +771,15 @@ mkdir -p development/managers/interfaces
 - `dependency-manager/modules/deployment_integration.go`
 
 #### Étape 1.3 : Validation de la Migration
+
 **Tests de compilation** :
 ```bash
 cd development/managers/dependency-manager/modules
 go build -v  # Doit compiler sans erreurs de redéclaration
-```
 
+```plaintext
 #### Étape 1.4 : Standardisation des Imports
+
 **Remplacer dans tous les managers** :
 ```go
 // AVANT (problématique)
@@ -759,8 +788,7 @@ type SecurityManagerInterface interface { ... } // Redéfini partout
 // APRÈS (modulaire)
 import "../interfaces"
 var securityManager interfaces.SecurityManager
-```
-
+```plaintext
 ### Bénéfices Immédiats Attendus
 
 | Problème Actuel | Solution Modulaire | Impact |
@@ -807,30 +835,39 @@ L'écosystème actuel offre une excellente base technique avec 75% des fonctionn
 │ - GetCatalog   │ - ValidateFormat │ - WrapError    │ - OnWarn  │
 │ - SearchErrors │ - ValidateSeverity│ - LogError     │ - OnInfo  │
 └───────────────┴─────────────────┴───────────────┴───────────┘
-```
-
+```plaintext
 **Arborescence détaillée**:
-```
+```plaintext
 error-manager/
 ├── processor/
 │   ├── error_processor.go      # Traitement des erreurs
+
 │   └── error_context.go        # Contexte d'erreur
+
 ├── catalog/
 │   ├── catalog.go              # Catalogage des erreurs
+
 │   └── error_entry.go          # Structure d'entrée
+
 ├── validator/
 │   └── validator.go            # Validation des erreurs
+
 ├── storage/
 │   ├── postgres.go             # Stockage PostgreSQL
+
 │   └── qdrant.go               # Stockage vectoriel
+
 ├── analyzer/
 │   ├── pattern.go              # Analyse de patterns
+
 │   ├── frequency.go            # Métriques de fréquence
+
 │   └── correlation.go          # Corrélation temporelle
+
 └── hooks/
     └── hook_system.go          # Système de hooks
-```
 
+```plaintext
 **Intégration**: L'ErrorManager est le fondement du système de gestion d'erreurs avec:
 - Interface standard implémentée par tous les managers
 - Centralisation des logs et erreurs
@@ -848,26 +885,32 @@ error-manager/
 │- RegisterManager│- PropagateError│- EmitEvent  │- GetConfig     │
 │- GetManager     │- CentralizeError│- Subscribe  │- LoadConfig    │
 └────────────────┴───────────────┴─────────────┴───────────────┘
-```
-
+```plaintext
 **Arborescence détaillée**:
-```
+```plaintext
 integrated-manager/
 ├── registry/
 │   ├── manager_registry.go     # Registre des managers
+
 │   └── manager_factory.go      # Création de managers
+
 ├── error/
 │   ├── error_integration.go    # Intégration ErrorManager
+
 │   └── error_hooks.go          # Hooks d'erreurs
+
 ├── events/
 │   ├── event_broker.go         # Courtier d'événements
+
 │   └── event_types.go          # Types d'événements
+
 ├── config/
 │   └── config_provider.go      # Fournisseur de configuration
+
 └── lifecycle/
     └── manager_lifecycle.go    # Cycle de vie des managers
-```
 
+```plaintext
 **Intégration**: IntegratedManager constitue la colonne vertébrale du système:
 - Point d'entrée centralisé pour tous les managers
 - Gestion du cycle de vie des managers
@@ -887,8 +930,7 @@ integrated-manager/
 │- GetString    │- LoadYaml   │- Validate      │- CacheConfig │
 │- GetInt       │- LoadJson   │- RequiredKeys  │- Invalidate  │
 └───────────────┴─────────────┴───────────────┴─────────────┘
-```
-
+```plaintext
 **Architecture interne**: ConfigManager utilise un système de providers pour charger les configurations depuis différentes sources, avec validation automatique des schémas et mise en cache pour optimiser les performances.
 
 #### ProcessManager
@@ -902,8 +944,7 @@ integrated-manager/
 │- StartProcess  │- MonitorStatus │- CleanupProc │- RunScript   │
 │- StopProcess   │- GetResources  │- ReapZombies │- ValidateScr │
 └────────────────┴────────────────┴─────────────┴─────────────┘
-```
-
+```plaintext
 **Mécanismes de communication**: ProcessManager implémente un système de notifications bidirectionnel:
 - Communication avec les processus via stdin/stdout/stderr
 - Signaux OS pour la gestion du cycle de vie
@@ -923,8 +964,7 @@ integrated-manager/
 │- GetConnection │- RunMigrations │- BuildQuery │- SaveEntity  │
 │- ReleaseConn   │- VersionCheck  │- Execute    │- FindByID    │
 └────────────────┴────────────────┴─────────────┴─────────────┘
-```
-
+```plaintext
 **État d'intégration**: Le StorageManager présente une intégration avancée avec:
 - Pooling de connexions optimisé
 - Transaction management cohérent
@@ -951,8 +991,7 @@ integrated-manager/
                      │   (Storage)   │
                      │               │
                      └───────────────┘
-```
-
+```plaintext
 ### Pattern d'erreur normalisé
 
 Chaque manager utilise le même pattern d'erreur:
@@ -979,8 +1018,7 @@ if err != nil {
         },
     })
 }
-```
-
+```plaintext
 ### Analyse des hooks par manager
 
 | Manager           | Hooks Spécifiques                                  | Récupération Automatique                    |
@@ -996,7 +1034,7 @@ if err != nil {
 
 **Communication inter-managers**:
 
-```
+```plaintext
                    ┌───┬───┬───┬───┬───┬───┬───┬───┬───┐
                    │ E │ I │ C │ P │ S │ Sc│ Sec│ M │ D │
 ┌───────────────┬──┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
@@ -1018,7 +1056,7 @@ if err != nil {
 ├───────────────┼──┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
 │ DeploymentMgr │ D │ ✓ │ ✓ │ ✓ │ ✓ │ ○ │ ✓ │ ✓ │ ○ │ - │
 └───────────────┴──┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
-```
+```plaintext
 Légende: ✓ (forte intégration), ○ (intégration partielle)
 
 ### Pipeline de développement des managers
@@ -1039,8 +1077,7 @@ Légende: ✓ (forte intégration), ○ (intégration partielle)
 │  Publique      │─────────────┘             │                │
 │                │                           └────────────────┘
 └────────────────┘
-```
-
+```plaintext
 ### Modèle de maturité par manager
 
 | Niveau | Critères | Managers |

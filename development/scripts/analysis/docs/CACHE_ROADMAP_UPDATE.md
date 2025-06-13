@@ -1,4 +1,4 @@
-﻿# Mise Ã  jour de la Roadmap - SystÃ¨me de Cache pour l'Analyse de Code
+# Mise Ã  jour de la Roadmap - SystÃ¨me de Cache pour l'Analyse de Code
 
 Cette mise Ã  jour concerne la section "D. Mise en cache des rÃ©sultats" de la roadmap complÃ¨te. Elle ajoute les nouvelles fonctionnalitÃ©s de cache que nous avons dÃ©veloppÃ©es pour amÃ©liorer les performances des analyses de code.
 
@@ -21,8 +21,7 @@ Ajouter les sous-sections suivantes aprÃ¨s les Ã©lÃ©ments existants :
     - [x] Ajouter la dÃ©tection automatique des modifications de fichiers
     - [x] Optimiser la sÃ©rialisation des rÃ©sultats d'analyse
     - [x] AmÃ©liorer les performances avec un taux d'accÃ©lÃ©ration de 5x pour les analyses rÃ©pÃ©tÃ©es
-```
-
+```plaintext
 ## DÃ©tails des nouvelles fonctionnalitÃ©s
 
 ### 1. Invoke-CachedPSScriptAnalyzer.ps1

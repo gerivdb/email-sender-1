@@ -1,4 +1,4 @@
-﻿# RAG System - 7 Time-Saving Methods Implementation Report
+# RAG System - 7 Time-Saving Methods Implementation Report
 
 ## Execution Summary
 

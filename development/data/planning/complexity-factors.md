@@ -5,8 +5,11 @@ Ce document identifie et décrit les facteurs qui influencent la complexité des
 ## Table des Matières
 
 - [Facteurs liés à la complexité technique de l'amélioration](#technicalcomplexity)
+
 - [Facteurs liés à la complexité fonctionnelle de l'amélioration](#functionalcomplexity)
+
 - [Facteurs liés à la complexité du projet](#projectcomplexity)
+
 - [Facteurs liés aux exigences de qualité](#qualitycomplexity)
 
 ## Utilisation
@@ -15,10 +18,9 @@ Pour chaque amélioration à estimer, évaluez sa complexité selon chacun des f
 
 La formule générale est :
 
-```
+```plaintext
 Score de complexité = Somme(Score du facteur * Poids du facteur)
-```
-
+```plaintext
 ## <a name='technicalcomplexity'></a>Facteurs liés à la complexité technique de l'amélioration
 
 ### Complexité algorithmique (Poids: 0.20)

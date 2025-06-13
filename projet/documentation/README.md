@@ -40,9 +40,9 @@ Pour créer de nouveaux documents dans la structure, utilisez Hygen :
 
 ```powershell
 # Créer un nouveau document dans la structure
-hygen doc-structure new --docType "projet" --category "guides" --subcategory "installation"
-```
 
+hygen doc-structure new --docType "projet" --category "guides" --subcategory "installation"
+```plaintext
 ## Scripts de Maintenance
 
 Les scripts suivants sont disponibles pour maintenir la structure de documentation :
@@ -56,15 +56,17 @@ Pour exécuter la réorganisation complète :
 
 ```powershell
 # Exécuter avec confirmation
+
 .\scripts\execute-doc-reorganization.ps1
 
 # Exécuter sans confirmation
+
 .\scripts\execute-doc-reorganization.ps1 -Force
 
 # Simuler l'exécution (WhatIf)
-.\scripts\execute-doc-reorganization.ps1 -WhatIf
-```
 
+.\scripts\execute-doc-reorganization.ps1 -WhatIf
+```plaintext
 ## Contribution
 
 Pour contribuer à la documentation, suivez les conventions décrites dans le guide du développeur.

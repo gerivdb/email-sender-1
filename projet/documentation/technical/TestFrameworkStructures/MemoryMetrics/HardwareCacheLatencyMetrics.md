@@ -45,8 +45,7 @@ Les métriques de latence pour les caches matériels mesurent le temps nécessai
     }
   }
 }
-```
-
+```plaintext
 ### 3.2 Métriques de latence en cas de succès
 
 ```json
@@ -74,8 +73,7 @@ Les métriques de latence pour les caches matériels mesurent le temps nécessai
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `min` | number | cycles/ns | Latence minimale en cas de succès |
@@ -117,8 +115,7 @@ Les métriques de latence pour les caches matériels mesurent le temps nécessai
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `min` | number | cycles/ns | Latence minimale en cas d'échec |
@@ -156,8 +153,7 @@ Les métriques de latence pour les caches matériels mesurent le temps nécessai
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `avg` | number | cycles/ns | Pénalité d'échec moyenne |
@@ -226,8 +222,7 @@ Les métriques de latence pour les caches matériels mesurent le temps nécessai
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `histogram` | array | Histogramme de distribution des latences |
@@ -262,8 +257,7 @@ Les métriques de latence pour les caches matériels mesurent le temps nécessai
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `interval` | number | Intervalle d'échantillonnage en millisecondes |
@@ -313,8 +307,7 @@ Les métriques de latence pour les caches matériels mesurent le temps nécessai
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `unit` | string | - | Unité de mesure de la latence (cycles, ns) |
@@ -368,8 +361,7 @@ Les métriques de latence pour les caches matériels mesurent le temps nécessai
     }
   }
 }
-```
-
+```plaintext
 ### 4.3 Cache L3
 
 ```json
@@ -414,8 +406,7 @@ Les métriques de latence pour les caches matériels mesurent le temps nécessai
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `hit.bySharing.exclusive` | number | cycles/ns | Latence pour les données exclusives à un cœur |
@@ -457,8 +448,7 @@ Les métriques de latence pour les caches matériels mesurent le temps nécessai
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `miss.byPageSize` | object | - | Latence par taille de page |
@@ -483,8 +473,7 @@ Les métriques de latence pour les caches matériels mesurent le temps nécessai
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `l2ToL1` | number | ratio | Rapport entre la latence L2 et L1 |
@@ -507,8 +496,7 @@ Les métriques de latence pour les caches matériels mesurent le temps nécessai
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `averageCyclesPerInstruction` | number | cycles | Nombre moyen de cycles par instruction |
@@ -531,8 +519,7 @@ Les métriques de latence pour les caches matériels mesurent le temps nécessai
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `jitter` | number | cycles/ns | Variation moyenne de la latence |
@@ -586,8 +573,7 @@ Les métriques de latence pour les caches matériels mesurent le temps nécessai
     }
   }
 }
-```
-
+```plaintext
 ### 6.2 Exemple complet
 
 ```json
@@ -830,8 +816,7 @@ Les métriques de latence pour les caches matériels mesurent le temps nécessai
     }
   }
 }
-```
-
+```plaintext
 ## 7. Bonnes pratiques
 
 ### 7.1 Collecte des métriques

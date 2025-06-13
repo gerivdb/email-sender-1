@@ -1,4 +1,5 @@
 # Plan de développement v24 - Intégration n8n
+
 *Version 1.0 - 2025-05-30 - Progression globale : 35%*
 
 Ce plan définit une stratégie complète pour l'intégration de n8n avec les différents composants du système, notamment MCP, Qdrant et les autres services. L'objectif est de créer une couche d'automatisation puissante et flexible permettant d'orchestrer les flux de travail, de connecter les différentes parties du système et d'intégrer des services externes. Cette intégration facilitera la création de workflows complexes, l'automatisation des tâches répétitives et l'extension des fonctionnalités du système sans développement lourd.

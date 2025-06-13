@@ -1,0 +1,139 @@
+# Configuration validation rules for planning ecosystem sync
+# Based on plan-dev-v55 requirements and audit findings
+
+ecosystem:
+  markdown_path:
+    required: true
+    type: "string"
+    pattern: "^\\./projet/roadmaps/plans/?$"
+    description: "Path to markdown plans directory"
+
+  dynamic_endpoint:
+    required: true
+    type: "string"
+    pattern: "^https?://[\\w.-]+:[0-9]+/api/plans$"
+    description: "TaskMaster-CLI API endpoint"
+
+  validation_rules:
+    required: true
+    type: "string"
+    pattern: "^\\./config/validation-rules\\.yaml$"
+    description: "Path to this validation rules file"
+
+storage:
+  qdrant:
+    url:
+      required: true
+      type: "string"
+      pattern: "^https?://[\\w.-]+:[0-9]+$"
+      test_endpoint: "/collections"
+      description: "QDrant vector database URL"
+    collection:
+      required: true
+      type: "string"
+      pattern: "^[a-z_]+$"
+      description: "QDrant collection name for development plans"
+
+  sql:
+    driver:
+      required: true
+      type: "string"
+      allowed_values: ["postgres", "mysql", "sqlite"]
+      description: "SQL database driver"
+    connection:
+      required: true
+      type: "string"
+      pattern: "^(postgresql|mysql|sqlite)://.*"
+      description: "SQL database connection string"
+
+synchronization:
+  interval:
+    required: true
+    type: "string"
+    pattern: "^[0-9]+[smh]$"
+    description: "Sync interval (s=seconds, m=minutes, h=hours)"
+    default: "5m"
+
+  conflict_resolution:
+    required: true
+    type: "string"
+    allowed_values: ["manual", "auto_merge", "latest_wins"]
+    description: "Strategy for resolving sync conflicts"
+    default: "manual"
+
+  backup_enabled:
+    required: true
+    type: "boolean"
+    description: "Enable backup before sync operations"
+    default: true
+
+monitoring:
+  supabase:
+    url:
+      required: false
+      type: "string"
+      pattern: "^https://[\\w.-]+\\.supabase\\.co$"
+      description: "Supabase project URL"
+    key:
+      required: false
+      type: "string"
+      description: "Supabase anonymous key"
+    table:
+      required: false
+      type: "string"
+      pattern: "^[a-z_]+$"
+      description: "Supabase table for sync metrics"
+
+notifications:
+  slack:
+    webhook_url:
+      required: false
+      type: "string"
+      pattern: "^https://hooks\\.slack\\.com/services/.*"
+      description: "Slack webhook URL for notifications"
+    channel:
+      required: false
+      type: "string"
+      pattern: "^#[a-z-]+$"
+      description: "Slack channel for notifications"
+    alert_levels:
+      required: false
+      type: "array"
+      allowed_values: ["info", "warning", "error", "critical"]
+      description: "Alert levels to send to Slack"
+
+logging:
+  level:
+    required: true
+    type: "string"
+    allowed_values: ["debug", "info", "warning", "error", "critical"]
+    description: "Logging level"
+    default: "info"
+
+  output:
+    required: true
+    type: "string"
+    allowed_values: ["stdout", "stderr", "file"]
+    description: "Log output destination"
+    default: "stdout"
+
+  file_rotation:
+    required: false
+    type: "boolean"
+    description: "Enable log file rotation"
+    default: true
+
+  max_size:
+    required: false
+    type: "string"
+    pattern: "^[0-9]+[KMGT]?B$"
+    description: "Maximum log file size"
+    default: "100MB"
+
+  backup_count:
+    required: false
+    type: "integer"
+    min: 1
+    max: 100
+    description: "Number of backup log files to keep"
+    default: 5

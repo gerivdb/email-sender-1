@@ -10,39 +10,43 @@ L'interface du générateur de données définit le contrat que doivent respecte
 
 ```powershell
 # Interface ITestDataGenerator
+
 # Définit le contrat pour les générateurs de données de test
+
 interface ITestDataGenerator {
     # Méthodes principales
+
     [object] GenerateData([hashtable]$configuration)
     [hashtable] GetCapabilities()
     [bool] ValidateConfiguration([hashtable]$configuration)
     
     # Méthodes de gestion du cycle de vie
+
     [void] Initialize()
     [void] Cleanup()
     
     # Propriétés
+
     [string] $Name
     [string] $Version
     [string[]] $SupportedDataTypes
     [hashtable] $DefaultConfiguration
     
     # Événements
+
     [event] DataGenerationStarted
     [event] DataGenerationProgress
     [event] DataGenerationCompleted
     [event] DataGenerationError
 }
-```
-
+```plaintext
 ## 3. Méthodes
 
 ### 3.1 GenerateData
 
 ```powershell
 [object] GenerateData([hashtable]$configuration)
-```
-
+```plaintext
 **Description**: Génère un jeu de données selon la configuration spécifiée.
 
 **Paramètres**:
@@ -66,8 +70,7 @@ interface ITestDataGenerator {
 
 ```powershell
 [hashtable] GetCapabilities()
-```
-
+```plaintext
 **Description**: Retourne les capacités du générateur de données.
 
 **Paramètres**: Aucun.
@@ -89,8 +92,7 @@ interface ITestDataGenerator {
         MemoryFootprint = "medium"
     }
 }
-```
-
+```plaintext
 **Exceptions**: Aucune.
 
 **Comportement**:
@@ -101,8 +103,7 @@ interface ITestDataGenerator {
 
 ```powershell
 [bool] ValidateConfiguration([hashtable]$configuration)
-```
-
+```plaintext
 **Description**: Valide la configuration fournie pour s'assurer qu'elle est compatible avec le générateur.
 
 **Paramètres**:
@@ -122,8 +123,7 @@ interface ITestDataGenerator {
 
 ```powershell
 [void] Initialize()
-```
-
+```plaintext
 **Description**: Initialise le générateur de données.
 
 **Paramètres**: Aucun.
@@ -141,8 +141,7 @@ interface ITestDataGenerator {
 
 ```powershell
 [void] Cleanup()
-```
-
+```plaintext
 **Description**: Nettoie les ressources utilisées par le générateur.
 
 **Paramètres**: Aucun.
@@ -161,8 +160,7 @@ interface ITestDataGenerator {
 
 ```powershell
 [string] $Name
-```
-
+```plaintext
 **Description**: Nom du générateur de données.
 
 **Type**: String.
@@ -175,8 +173,7 @@ interface ITestDataGenerator {
 
 ```powershell
 [string] $Version
-```
-
+```plaintext
 **Description**: Version du générateur de données.
 
 **Type**: String.
@@ -189,8 +186,7 @@ interface ITestDataGenerator {
 
 ```powershell
 [string[]] $SupportedDataTypes
-```
-
+```plaintext
 **Description**: Types de données supportés par le générateur.
 
 **Type**: Array de strings.
@@ -203,8 +199,7 @@ interface ITestDataGenerator {
 
 ```powershell
 [hashtable] $DefaultConfiguration
-```
-
+```plaintext
 **Description**: Configuration par défaut du générateur.
 
 **Type**: Hashtable.
@@ -219,8 +214,7 @@ interface ITestDataGenerator {
 
 ```powershell
 [event] DataGenerationStarted
-```
-
+```plaintext
 **Description**: Déclenché lorsque la génération de données commence.
 
 **Arguments**:
@@ -230,14 +224,12 @@ interface ITestDataGenerator {
     Timestamp = Get-Date
     Configuration = $configuration
 }
-```
-
+```plaintext
 ### 5.2 DataGenerationProgress
 
 ```powershell
 [event] DataGenerationProgress
-```
-
+```plaintext
 **Description**: Déclenché périodiquement pendant la génération de données pour indiquer la progression.
 
 **Arguments**:
@@ -251,14 +243,12 @@ interface ITestDataGenerator {
     ElapsedTime = [TimeSpan]::FromSeconds(10)
     EstimatedTimeRemaining = [TimeSpan]::FromSeconds(10)
 }
-```
-
+```plaintext
 ### 5.3 DataGenerationCompleted
 
 ```powershell
 [event] DataGenerationCompleted
-```
-
+```plaintext
 **Description**: Déclenché lorsque la génération de données est terminée.
 
 **Arguments**:
@@ -271,14 +261,12 @@ interface ITestDataGenerator {
     DataSize = 1048576
     Success = $true
 }
-```
-
+```plaintext
 ### 5.4 DataGenerationError
 
 ```powershell
 [event] DataGenerationError
-```
-
+```plaintext
 **Description**: Déclenché lorsqu'une erreur survient pendant la génération de données.
 
 **Arguments**:
@@ -290,34 +278,38 @@ interface ITestDataGenerator {
     ErrorType = "DataGenerationException"
     StackTrace = $exception.StackTrace
 }
-```
-
+```plaintext
 ## 6. Interface ITestDataSet
 
 ```powershell
 # Interface ITestDataSet
+
 # Définit le contrat pour les jeux de données générés
+
 interface ITestDataSet {
     # Méthodes
+
     [object] GetData()
     [object] GetData([hashtable]$filter)
     [void] SaveToFile([string]$path, [string]$format)
     [int] Count()
     
     # Propriétés
+
     [string] $Name
     [datetime] $GenerationTime
     [hashtable] $Metadata
     [string] $DataType
 }
-```
-
+```plaintext
 ## 7. Implémentation de référence
 
 ```powershell
 # Implémentation de référence de l'interface ITestDataGenerator
+
 class TextDataGenerator : ITestDataGenerator {
     # Propriétés
+
     [string] $Name = "TextDataGenerator"
     [string] $Version = "1.0"
     [string[]] $SupportedDataTypes = @("text", "markdown", "html")
@@ -329,34 +321,42 @@ class TextDataGenerator : ITestDataGenerator {
     }
     
     # Événements
+
     [event] $DataGenerationStarted
     [event] $DataGenerationProgress
     [event] $DataGenerationCompleted
     [event] $DataGenerationError
     
     # Constructeur
+
     TextDataGenerator() {
         # Initialisation
+
     }
     
     # Méthodes
+
     [object] GenerateData([hashtable]$configuration) {
         try {
             # Valider la configuration
+
             if (-not $this.ValidateConfiguration($configuration)) {
                 throw [System.ArgumentException]::new("Invalid configuration")
             }
             
             # Fusionner avec la configuration par défaut
+
             $config = $this.DefaultConfiguration.Clone()
             foreach ($key in $configuration.Keys) {
                 $config[$key] = $configuration[$key]
             }
             
             # Déclencher l'événement de début
+
             $this.OnDataGenerationStarted($config)
             
             # Générer les données
+
             $dataSet = [TextDataSet]::new()
             $dataSet.Name = "TextDataSet_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
             $dataSet.GenerationTime = Get-Date
@@ -368,6 +368,7 @@ class TextDataGenerator : ITestDataGenerator {
             }
             
             # Logique de génération selon la configuration
+
             $totalItems = switch ($config.Size) {
                 "small" { 100 }
                 "medium" { 1000 }
@@ -378,10 +379,12 @@ class TextDataGenerator : ITestDataGenerator {
             $data = @()
             for ($i = 0; $i -lt $totalItems; $i++) {
                 # Générer un élément de texte
+
                 $text = $this.GenerateTextItem($config)
                 $data += $text
                 
                 # Déclencher l'événement de progression tous les 10%
+
                 if ($i % [math]::Max(1, $totalItems / 10) -eq 0) {
                     $percentComplete = [math]::Min(100, [math]::Floor(($i / $totalItems) * 100))
                     $this.OnDataGenerationProgress($percentComplete, $i, $totalItems)
@@ -389,15 +392,18 @@ class TextDataGenerator : ITestDataGenerator {
             }
             
             # Stocker les données dans le jeu de données
+
             $dataSet.SetData($data)
             
             # Déclencher l'événement de fin
+
             $this.OnDataGenerationCompleted($totalItems)
             
             return $dataSet
         }
         catch {
             # Déclencher l'événement d'erreur
+
             $this.OnDataGenerationError($_.Exception)
             throw
         }
@@ -427,6 +433,7 @@ class TextDataGenerator : ITestDataGenerator {
         }
         
         # Vérifier les champs requis
+
         $requiredFields = @()
         foreach ($field in $requiredFields) {
             if (-not $configuration.ContainsKey($field)) {
@@ -435,6 +442,7 @@ class TextDataGenerator : ITestDataGenerator {
         }
         
         # Vérifier les valeurs des champs
+
         if ($configuration.ContainsKey("Size") -and -not @("small", "medium", "large") -contains $configuration.Size) {
             return $false
         }
@@ -448,19 +456,24 @@ class TextDataGenerator : ITestDataGenerator {
     
     [void] Initialize() {
         # Initialisation du générateur
+
     }
     
     [void] Cleanup() {
         # Nettoyage des ressources
+
     }
     
     # Méthodes privées
+
     hidden [string] GenerateTextItem([hashtable]$config) {
         # Logique de génération d'un élément de texte
+
         $complexity = $config.Complexity
         $language = $config.Language
         
         # Exemple simple
+
         $text = "This is a sample text with $complexity complexity in $language language."
         
         return $text
@@ -484,7 +497,9 @@ class TextDataGenerator : ITestDataGenerator {
             ItemsGenerated = $itemsGenerated
             TotalItems = $totalItems
             ElapsedTime = [TimeSpan]::FromSeconds(10) # À remplacer par le temps réel
+
             EstimatedTimeRemaining = [TimeSpan]::FromSeconds(10) # À calculer
+
         }
         
         $this.DataGenerationProgress.Invoke($this, $eventArgs)
@@ -496,7 +511,9 @@ class TextDataGenerator : ITestDataGenerator {
             Timestamp = Get-Date
             ItemsGenerated = $itemsGenerated
             TotalTime = [TimeSpan]::FromSeconds(20) # À remplacer par le temps réel
+
             DataSize = 1048576 # À calculer
+
             Success = $true
         }
         
@@ -517,22 +534,27 @@ class TextDataGenerator : ITestDataGenerator {
 }
 
 # Implémentation de référence de l'interface ITestDataSet
+
 class TextDataSet : ITestDataSet {
     # Propriétés
+
     [string] $Name
     [datetime] $GenerationTime
     [hashtable] $Metadata
     [string] $DataType
     
     # Propriété privée pour stocker les données
+
     hidden [object[]] $Data
     
     # Constructeur
+
     TextDataSet() {
         $this.Data = @()
     }
     
     # Méthodes
+
     [object] GetData() {
         return $this.Data
     }
@@ -543,12 +565,14 @@ class TextDataSet : ITestDataSet {
         }
         
         # Filtrage simple (à adapter selon les besoins)
+
         $result = $this.Data
         
         foreach ($key in $filter.Keys) {
             $value = $filter[$key]
             
             # Exemple de filtrage pour des chaînes de texte
+
             $result = $result | Where-Object { $_ -match $value }
         }
         
@@ -582,43 +606,50 @@ class TextDataSet : ITestDataSet {
     }
     
     # Méthode interne pour définir les données
+
     [void] SetData([object[]]$data) {
         $this.Data = $data
     }
 }
-```
-
+```plaintext
 ## 8. Exemples d'utilisation
 
 ### 8.1 Utilisation de base
 
 ```powershell
 # Créer une instance du générateur
+
 $generator = [TextDataGenerator]::new()
 
 # Initialiser le générateur
+
 $generator.Initialize()
 
 # Générer des données avec la configuration par défaut
+
 $dataSet = $generator.GenerateData(@{})
 
 # Accéder aux données générées
+
 $data = $dataSet.GetData()
 
 # Sauvegarder les données dans un fichier
+
 $dataSet.SaveToFile("C:\Temp\test_data.json", "json")
 
 # Nettoyer les ressources
-$generator.Cleanup()
-```
 
+$generator.Cleanup()
+```plaintext
 ### 8.2 Utilisation avec configuration personnalisée
 
 ```powershell
 # Créer une instance du générateur
+
 $generator = [TextDataGenerator]::new()
 
 # Définir une configuration personnalisée
+
 $config = @{
     Size = "large"
     Complexity = "high"
@@ -627,25 +658,29 @@ $config = @{
 }
 
 # Valider la configuration
+
 if ($generator.ValidateConfiguration($config)) {
     # Générer les données
+
     $dataSet = $generator.GenerateData($config)
     
     # Utiliser les données
+
     Write-Host "Generated $($dataSet.Count()) items"
 }
 else {
     Write-Error "Invalid configuration"
 }
-```
-
+```plaintext
 ### 8.3 Utilisation avec événements
 
 ```powershell
 # Créer une instance du générateur
+
 $generator = [TextDataGenerator]::new()
 
 # S'abonner aux événements
+
 Register-ObjectEvent -InputObject $generator -EventName DataGenerationStarted -Action {
     Write-Host "Generation started with configuration: $($Event.MessageData.Configuration)"
 }
@@ -663,15 +698,16 @@ Register-ObjectEvent -InputObject $generator -EventName DataGenerationError -Act
 }
 
 # Générer les données
+
 try {
     $dataSet = $generator.GenerateData(@{ Size = "medium" })
 }
 finally {
     # Désabonner des événements
+
     Get-EventSubscriber | Unregister-Event
 }
-```
-
+```plaintext
 ## 9. Considérations d'implémentation
 
 ### 9.1 Performance

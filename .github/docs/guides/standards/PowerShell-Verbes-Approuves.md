@@ -7,12 +7,19 @@ Ce document fournit une référence complète des verbes approuvés PowerShell e
 ## 📚 Table des matières
 
 - [Introduction](#introduction)
+
 - [Importance des verbes approuvés](#importance-des-verbes-approuvés)
+
 - [Liste complète des verbes approuvés](#liste-complète-des-verbes-approuvés)
+
 - [Verbes par catégorie](#verbes-par-catégorie)
+
 - [Correspondances communes](#correspondances-communes)
+
 - [Bonnes pratiques](#bonnes-pratiques)
+
 - [Exemples pratiques](#exemples-pratiques)
+
 - [Outils de validation](#outils-de-validation)
 
 ## 🎯 Introduction
@@ -39,6 +46,7 @@ PowerShell utilise un système de verbes approuvés pour maintenir la cohérence
 ## 📋 Liste complète des verbes approuvés
 
 ### Verbes Common (Courants)
+
 Les verbes les plus fréquemment utilisés dans PowerShell :
 
 | Verbe | Description | Exemple d'usage |
@@ -79,6 +87,7 @@ Les verbes les plus fréquemment utilisés dans PowerShell :
 | `Watch` | Surveiller une ressource | `Watch-EmailQueue` |
 
 ### Verbes Communications
+
 Pour les opérations de communication :
 
 | Verbe | Description | Exemple d'usage |
@@ -91,6 +100,7 @@ Pour les opérations de communication :
 | `Write` | Écrire des données | `Write-EmailLog` |
 
 ### Verbes Data (Données)
+
 Pour la manipulation des données :
 
 | Verbe | Description | Exemple d'usage |
@@ -121,6 +131,7 @@ Pour la manipulation des données :
 | `Update` | Mettre à jour des données | `Update-EmailTemplate` |
 
 ### Verbes Diagnostic
+
 Pour le diagnostic et le débogage :
 
 | Verbe | Description | Exemple d'usage |
@@ -134,6 +145,7 @@ Pour le diagnostic et le débogage :
 | `Trace` | Tracer l'exécution | `Trace-EmailDelivery` |
 
 ### Verbes Lifecycle (Cycle de vie)
+
 Pour la gestion du cycle de vie :
 
 | Verbe | Description | Exemple d'usage |
@@ -160,6 +172,7 @@ Pour la gestion du cycle de vie :
 | `Wait` | Attendre une condition | `Wait-EmailDelivery` |
 
 ### Verbes Security (Sécurité)
+
 Pour les opérations de sécurité :
 
 | Verbe | Description | Exemple d'usage |
@@ -172,6 +185,7 @@ Pour les opérations de sécurité :
 | `Unprotect` | Déprotéger une ressource | `Unprotect-EmailData` |
 
 ### Verbes Other (Autres)
+
 Verbes spéciaux :
 
 | Verbe | Description | Exemple d'usage |
@@ -212,70 +226,78 @@ Voici les correspondances entre verbes non approuvés couramment utilisés et le
 
 ```powershell
 # ✅ Bon
+
 function Get-EmailTemplate { ... }
 function Send-NotificationEmail { ... }
 function Test-EmailAddress { ... }
 
 # ❌ Mauvais
+
 function Retrieve-EmailTemplate { ... }
 function Transmit-NotificationEmail { ... }
 function Validate-EmailAddress { ... }
-```
-
+```plaintext
 ### 2. Cohérence dans le module
 
 ```powershell
 # ✅ Bon - Cohérence dans les opérations CRUD
+
 function Get-EmailTemplate { ... }
 function New-EmailTemplate { ... }
 function Set-EmailTemplate { ... }
 function Remove-EmailTemplate { ... }
 
 # ❌ Mauvais - Incohérence
+
 function Get-EmailTemplate { ... }
 function Create-EmailTemplate { ... }
 function Modify-EmailTemplate { ... }
 function Delete-EmailTemplate { ... }
-```
-
+```plaintext
 ### 3. Utilisation des groupes de verbes
 
 Regroupez les fonctions logiquement selon leur groupe de verbes :
 
 ```powershell
 # Groupe Communications
+
 Connect-EmailServer
 Send-Email
 Receive-Email
 Disconnect-EmailServer
 
 # Groupe Data
+
 Import-EmailContacts
 Export-EmailReport
 Convert-EmailToHtml
 Backup-EmailDatabase
 
 # Groupe Diagnostic
+
 Test-EmailConnection
 Debug-EmailDelivery
 Measure-EmailPerformance
 Trace-EmailFlow
-```
-
+```plaintext
 ### 4. Conventions de nommage
 
 ```powershell
 # ✅ Format correct : Verbe-Nom (PascalCase)
+
 function Send-BulkEmail { ... }
 function Get-EmailStatistics { ... }
 function New-EmailTemplate { ... }
 
 # ❌ Format incorrect
-function sendBulkEmail { ... }          # camelCase
-function Get_EmailStatistics { ... }    # underscore
-function new-emailtemplate { ... }      # lowercase
-```
 
+function sendBulkEmail { ... }          # camelCase
+
+function Get_EmailStatistics { ... }    # underscore
+
+function new-emailtemplate { ... }      # lowercase
+
+```plaintext
 ## 🛠️ Exemples pratiques
 
 ### Exemple complet d'un module Email avec verbes approuvés
@@ -284,6 +306,7 @@ function new-emailtemplate { ... }      # lowercase
 #Requires -Version 5.1
 
 <#
+
 .SYNOPSIS
     Module de gestion des emails avec verbes approuvés PowerShell.
 
@@ -293,47 +316,56 @@ function new-emailtemplate { ... }      # lowercase
 #>
 
 # Verbes Common
+
 function Get-EmailTemplate {
     [CmdletBinding()]
     param([string]$Name)
     # Récupérer un modèle d'email
+
 }
 
 function New-EmailTemplate {
     [CmdletBinding()]
     param([string]$Name, [string]$Content)
     # Créer un nouveau modèle d'email
+
 }
 
 function Set-EmailTemplate {
     [CmdletBinding()]
     param([string]$Name, [string]$Content)
     # Modifier un modèle d'email existant
+
 }
 
 function Remove-EmailTemplate {
     [CmdletBinding()]
     param([string]$Name)
     # Supprimer un modèle d'email
+
 }
 
 function Copy-EmailTemplate {
     [CmdletBinding()]
     param([string]$Source, [string]$Destination)
     # Copier un modèle d'email
+
 }
 
 function Find-EmailTemplate {
     [CmdletBinding()]
     param([string]$Pattern)
     # Rechercher des modèles d'email
+
 }
 
 # Verbes Communications
+
 function Connect-EmailServer {
     [CmdletBinding()]
     param([string]$Server, [int]$Port = 587)
     # Se connecter au serveur email
+
 }
 
 function Send-Email {
@@ -345,151 +377,178 @@ function Send-Email {
         [string[]]$Attachments
     )
     # Envoyer un email
+
 }
 
 function Receive-Email {
     [CmdletBinding()]
     param([string]$Folder = "INBOX")
     # Recevoir des emails
+
 }
 
 function Disconnect-EmailServer {
     [CmdletBinding()]
     param()
     # Se déconnecter du serveur email
+
 }
 
 # Verbes Data
+
 function Import-EmailContacts {
     [CmdletBinding()]
     param([string]$Path)
     # Importer des contacts depuis un fichier
+
 }
 
 function Export-EmailReport {
     [CmdletBinding()]
     param([string]$Path, [datetime]$StartDate, [datetime]$EndDate)
     # Exporter un rapport d'emails
+
 }
 
 function Convert-EmailToHtml {
     [CmdletBinding()]
     param([string]$TextEmail)
     # Convertir un email texte en HTML
+
 }
 
 function Backup-EmailDatabase {
     [CmdletBinding()]
     param([string]$BackupPath)
     # Sauvegarder la base de données des emails
+
 }
 
 function Restore-EmailDatabase {
     [CmdletBinding()]
     param([string]$BackupPath)
     # Restaurer la base de données des emails
+
 }
 
 # Verbes Diagnostic
+
 function Test-EmailConnection {
     [CmdletBinding()]
     param([string]$Server, [int]$Port = 587)
     # Tester la connexion au serveur email
+
 }
 
 function Test-EmailAddress {
     [CmdletBinding()]
     param([string]$Email)
     # Valider une adresse email
+
 }
 
 function Measure-EmailPerformance {
     [CmdletBinding()]
     param([datetime]$StartDate, [datetime]$EndDate)
     # Mesurer les performances d'envoi d'emails
+
 }
 
 function Debug-EmailDelivery {
     [CmdletBinding()]
     param([string]$MessageId)
     # Déboguer la livraison d'un email
+
 }
 
 function Repair-EmailQueue {
     [CmdletBinding()]
     param()
     # Réparer la file d'attente des emails
+
 }
 
 # Verbes Lifecycle
+
 function Start-EmailMonitoring {
     [CmdletBinding()]
     param([int]$IntervalSeconds = 60)
     # Démarrer la surveillance des emails
+
 }
 
 function Stop-EmailMonitoring {
     [CmdletBinding()]
     param()
     # Arrêter la surveillance des emails
+
 }
 
 function Enable-EmailNotifications {
     [CmdletBinding()]
     param([string[]]$Types)
     # Activer les notifications email
+
 }
 
 function Disable-EmailNotifications {
     [CmdletBinding()]
     param([string[]]$Types)
     # Désactiver les notifications email
+
 }
 
 function Invoke-EmailWorkflow {
     [CmdletBinding()]
     param([string]$WorkflowName, [hashtable]$Parameters)
     # Exécuter un workflow d'email
+
 }
 
 function Register-EmailProvider {
     [CmdletBinding()]
     param([string]$ProviderName, [hashtable]$Configuration)
     # Enregistrer un fournisseur d'email
+
 }
 
 # Verbes Security
+
 function Block-EmailAddress {
     [CmdletBinding()]
     param([string[]]$Addresses)
     # Bloquer des adresses email
+
 }
 
 function Unblock-EmailAddress {
     [CmdletBinding()]
     param([string[]]$Addresses)
     # Débloquer des adresses email
+
 }
 
 function Grant-EmailAccess {
     [CmdletBinding()]
     param([string]$User, [string[]]$Permissions)
     # Accorder l'accès aux emails
+
 }
 
 function Revoke-EmailAccess {
     [CmdletBinding()]
     param([string]$User, [string[]]$Permissions)
     # Révoquer l'accès aux emails
+
 }
 
 function Protect-EmailData {
     [CmdletBinding()]
     param([string]$EncryptionKey)
     # Protéger les données d'email
-}
-```
 
+}
+```plaintext
 ## 🔧 Outils de validation
 
 ### 1. PSScriptAnalyzer
@@ -498,16 +557,18 @@ Utilisez PSScriptAnalyzer pour détecter l'utilisation de verbes non approuvés 
 
 ```powershell
 # Installer PSScriptAnalyzer
+
 Install-Module -Name PSScriptAnalyzer -Scope CurrentUser
 
 # Analyser un script
+
 Invoke-ScriptAnalyzer -Path "MonScript.ps1" -IncludeRule PSUseApprovedVerbs
 
 # Analyser tout un dossier
+
 Get-ChildItem -Path ".\MonModule" -Filter "*.ps1" -Recurse | 
     Invoke-ScriptAnalyzer -IncludeRule PSUseApprovedVerbs
-```
-
+```plaintext
 ### 2. Vérification automatique
 
 Script pour vérifier les verbes non approuvés :
@@ -563,14 +624,14 @@ function Get-VerbSuggestion {
     
     return $suggestions[$Verb] ?? "Consultez Get-Verb"
 }
-```
-
+```plaintext
 ### 3. Intégration CI/CD
 
 Exemple de validation dans un pipeline CI/CD :
 
 ```yaml
 # .github/workflows/powershell-validation.yml
+
 name: PowerShell Validation
 
 on: [push, pull_request]
@@ -593,43 +654,52 @@ jobs:
           $results | Format-Table
           exit 1
         }
-```
-
+```plaintext
 ## 📚 Ressources supplémentaires
 
 ### Documentation officielle
+
 - [PowerShell Approved Verbs](https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands)
 - [PowerShell Cmdlet Development Guidelines](https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/cmdlet-development-guidelines)
 
 ### Commandes utiles
+
 ```powershell
 # Obtenir tous les verbes approuvés
+
 Get-Verb
 
 # Obtenir les verbes par groupe
+
 Get-Verb | Group-Object Group
 
 # Rechercher un verbe spécifique
+
 Get-Verb | Where-Object Verb -like "*Send*"
 
 # Obtenir les verbes d'un groupe spécifique
-Get-Verb | Where-Object Group -eq "Communications"
-```
 
+Get-Verb | Where-Object Group -eq "Communications"
+```plaintext
 ### Vérification rapide
+
 ```powershell
 # Vérifier si un verbe est approuvé
+
 function Test-VerbApproved {
     param([string]$Verb)
     $Verb -in (Get-Verb).Verb
 }
 
 # Exemples
-Test-VerbApproved "Get"      # True
-Test-VerbApproved "Create"   # False
-Test-VerbApproved "New"      # True
-```
 
+Test-VerbApproved "Get"      # True
+
+Test-VerbApproved "Create"   # False
+
+Test-VerbApproved "New"      # True
+
+```plaintext
 ---
 
 *Ce document est maintenu dans le cadre du projet EMAIL_SENDER_1. Pour toute question ou suggestion d'amélioration, veuillez consulter l'équipe de développement.*

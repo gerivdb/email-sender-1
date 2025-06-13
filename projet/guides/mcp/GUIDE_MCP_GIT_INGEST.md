@@ -44,9 +44,11 @@ Le MCP Git Ingest fournit deux outils principaux :
 Cet outil permet d'obtenir la structure d'un dépôt GitHub sous forme d'arborescence.
 
 #### Paramètres :
+
 - **repo_url** : URL du dépôt GitHub (ex: https://github.com/mem0ai/mem0)
 
 #### Exemple d'utilisation :
+
 ```json
 {
   "tool": "github_directory_structure",
@@ -54,17 +56,18 @@ Cet outil permet d'obtenir la structure d'un dépôt GitHub sous forme d'arbores
     "repo_url": "https://github.com/mem0ai/mem0"
   }
 }
-```
-
+```plaintext
 ### 2. github_read_important_files
 
 Cet outil permet de lire le contenu de fichiers spécifiques dans un dépôt GitHub.
 
 #### Paramètres :
+
 - **repo_url** : URL du dépôt GitHub (ex: https://github.com/mem0ai/mem0)
 - **file_paths** : Liste des chemins de fichiers à lire (ex: ["README.md", "mem0/main.py"])
 
 #### Exemple d'utilisation :
+
 ```json
 {
   "tool": "github_read_important_files",
@@ -73,31 +76,30 @@ Cet outil permet de lire le contenu de fichiers spécifiques dans un dépôt Git
     "file_paths": ["README.md", "mem0/main.py"]
   }
 }
-```
-
+```plaintext
 ### Script d'analyse de dépôt
 
 Un script d'analyse de dépôt GitHub est disponible dans `projet/mcp/scripts/analyze-github-repo.cmd`. Ce script permet d'analyser un dépôt GitHub et de générer un rapport d'analyse.
 
 #### Utilisation :
+
 ```powershell
 .\analyze-github-repo.cmd <repo-url> [output-dir] [max-files]
-```
-
+```plaintext
 #### Exemple :
+
 ```powershell
 .\analyze-github-repo.cmd https://github.com/mem0ai/mem0 output/mem0-analysis 200
-```
-
+```plaintext
 ### Analyse du dépôt mem0ai/mem0
 
 Un script spécifique pour analyser le dépôt mem0ai/mem0 est disponible dans `projet/mcp/scripts/analyze-mem0.cmd`. Ce script permet d'analyser le dépôt mem0ai/mem0 et de générer un rapport d'analyse.
 
 #### Utilisation :
+
 ```powershell
 .\analyze-mem0.cmd
-```
-
+```plaintext
 ## Démarrage du serveur
 
 ### 1. Mode STDIO
@@ -106,16 +108,14 @@ Ce mode est utilisé pour l'intégration avec n8n et Augment. Pour démarrer le 
 
 ```powershell
 .\start-git-ingest-mcp.cmd
-```
-
+```plaintext
 ### 2. Mode HTTP
 
 Ce mode expose une API HTTP pour interagir avec le serveur. Pour démarrer le serveur en mode HTTP :
 
 ```powershell
 .\start-git-ingest-mcp.cmd --http [--port <port>]
-```
-
+```plaintext
 Par défaut, le serveur écoute sur le port 8001. Vous pouvez spécifier un port différent avec l'option `--port`.
 
 ## Intégration avec n8n
@@ -161,8 +161,7 @@ Pour utiliser le MCP Git Ingest avec Augment, ajoutez la configuration suivante 
     }
   ]
 }
-```
-
+```plaintext
 ## Dépannage
 
 Si vous rencontrez des problèmes avec le MCP Git Ingest :

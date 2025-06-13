@@ -1,4 +1,4 @@
-﻿# Tests du systÃ¨me d'apprentissage des erreurs PowerShell
+# Tests du systÃ¨me d'apprentissage des erreurs PowerShell
 
 Ce rÃ©pertoire contient les tests unitaires et d'intÃ©gration pour le systÃ¨me d'apprentissage des erreurs PowerShell.
 
@@ -56,32 +56,28 @@ Pour exÃ©cuter tous les tests (unitaires et d'intÃ©gration), utilisez la com
 
 ```powershell
 .\Run-AllTests.ps1
-```
-
+```plaintext
 ### ExÃ©cuter uniquement les tests unitaires
 
 Pour exÃ©cuter uniquement les tests unitaires, utilisez la commande suivante :
 
 ```powershell
 .\Run-AllTests.ps1 -TestType Unit
-```
-
+```plaintext
 ### ExÃ©cuter uniquement les tests d'intÃ©gration
 
 Pour exÃ©cuter uniquement les tests d'intÃ©gration, utilisez la commande suivante :
 
 ```powershell
 .\Run-AllTests.ps1 -TestType Integration
-```
-
+```plaintext
 ### ExÃ©cuter tous les tests qui fonctionnent correctement
 
 Pour exÃ©cuter tous les tests qui fonctionnent correctement, utilisez la commande suivante :
 
 ```powershell
 .\Run-AllWorkingTests.ps1
-```
-
+```plaintext
 ## Automatisation des tests
 
 Des scripts sont disponibles pour automatiser l'exÃ©cution des tests dans un pipeline CI/CD :
@@ -93,8 +89,7 @@ Pour exÃ©cuter les tests dans un pipeline CI/CD, utilisez la commande suivante
 
 ```powershell
 .\CI-CD\Run-TestsInCI.ps1
-```
-
+```plaintext
 Ce script gÃ©nÃ¨re des rapports XML des rÃ©sultats des tests et de la couverture de code, qui peuvent Ãªtre utilisÃ©s par des outils d'intÃ©gration continue comme GitHub Actions.
 
 ## RÃ©sultats des tests

@@ -96,8 +96,7 @@ Ce document définit les intervalles de confiance statistique pour les métrique
     }
   }
 }
-```
-
+```plaintext
 ## 4. Facteurs influençant la largeur des intervalles de confiance
 
 ### 4.1 Taille d'échantillon
@@ -164,8 +163,7 @@ Environnements optimisés pour les E/S (serveurs dédiés, workstations haut de 
     }
   }
 }
-```
-
+```plaintext
 ### 5.2 Systèmes standards
 
 Environnements génériques (ordinateurs de bureau, serveurs polyvalents)
@@ -191,8 +189,7 @@ Environnements génériques (ordinateurs de bureau, serveurs polyvalents)
     }
   }
 }
-```
-
+```plaintext
 ### 5.3 Systèmes contraints
 
 Environnements limités en ressources (systèmes embarqués, machines virtuelles partagées)
@@ -218,8 +215,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ## 6. Intervalles de confiance par système de fichiers
 
 ### 6.1 NTFS (Windows)
@@ -237,8 +233,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 6.2 ext4 (Linux)
 
 ```json
@@ -254,8 +249,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 6.3 APFS (macOS)
 
 ```json
@@ -271,8 +265,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 6.4 ZFS
 
 ```json
@@ -288,8 +281,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ## 7. Intervalles de confiance par type de stockage
 
 ### 7.1 SSD NVMe
@@ -307,8 +299,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 7.2 SSD SATA
 
 ```json
@@ -324,8 +315,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 7.3 HDD (7200 RPM)
 
 ```json
@@ -341,8 +331,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 7.4 Stockage réseau (NAS/SAN)
 
 ```json
@@ -358,8 +347,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ## 8. Utilisation des intervalles de confiance
 
 ### 8.1 Tests de régression
@@ -416,8 +404,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 9.2 Intervalles de confiance bayésiens
 
 ```json
@@ -445,8 +432,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 9.3 Intervalles de prédiction
 
 ```json
@@ -469,8 +455,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ## 10. Intervalles de confiance de référence pour les tests
 
 ### 10.1 Intervalles de confiance pour les tests unitaires
@@ -500,8 +485,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 10.2 Intervalles de confiance pour les tests d'intégration
 
 ```json
@@ -529,8 +513,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ### 10.3 Intervalles de confiance pour les tests de performance
 
 ```json
@@ -560,8 +543,7 @@ Environnements limités en ressources (systèmes embarqués, machines virtuelles
     }
   }
 }
-```
-
+```plaintext
 ## 11. Interprétation et bonnes pratiques
 
 ### 11.1 Interprétation correcte des intervalles de confiance

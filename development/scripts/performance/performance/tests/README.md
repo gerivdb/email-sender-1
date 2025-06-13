@@ -1,4 +1,4 @@
-﻿# Tests de performance pour l'architecture hybride PowerShell-Python
+# Tests de performance pour l'architecture hybride PowerShell-Python
 
 ## Test du script AutoHotkey - Test final
 
@@ -25,8 +25,7 @@ Pour exÃ©cuter tous les tests, utilisez le script `Run-AllTests.ps1` :
 
 ```powershell
 .\Run-AllTests.ps1
-```
-
+```plaintext
 Par dÃ©faut, ce script exÃ©cute tous les tests et gÃ©nÃ¨re un rapport HTML des rÃ©sultats.
 
 ### Options d'exÃ©cution
@@ -40,16 +39,14 @@ Exemple :
 
 ```powershell
 .\Run-AllTests.ps1 -GenerateReport $true -OutputPath "C:\TestResults"
-```
-
+```plaintext
 ### ExÃ©cution dans un environnement CI/CD
 
 Pour exÃ©cuter les tests dans un environnement CI/CD, utilisez le script `Run-CITests.ps1` :
 
 ```powershell
 .\Run-CITests.ps1 -ThresholdPercent 70
-```
-
+```plaintext
 Ce script exÃ©cute tous les tests, gÃ©nÃ¨re des rapports de couverture et de rÃ©sultats au format compatible avec les systÃ¨mes CI/CD, et vÃ©rifie que la couverture de code est supÃ©rieure au seuil spÃ©cifiÃ©.
 
 ## Types de tests
@@ -65,11 +62,11 @@ Describe "Fonctions communes des scripts de performance" {
     Context "New-DirectoryIfNotExists" {
         It "CrÃ©e un rÃ©pertoire s'il n'existe pas" {
             # Test code here
+
         }
     }
 }
-```
-
+```plaintext
 ### Tests d'intÃ©gration
 
 Les tests d'intÃ©gration vÃ©rifient l'interaction entre les diffÃ©rentes fonctions et le flux de travail complet.
@@ -81,11 +78,11 @@ Describe "Tests d'intÃ©gration des scripts de performance" {
     Context "Flux de travail complet" {
         It "ExÃ©cute correctement le flux de travail complet" {
             # Test code here
+
         }
     }
 }
-```
-
+```plaintext
 ### Tests de performance
 
 Les tests de performance mesurent les performances des fonctions et comparent les diffÃ©rentes implÃ©mentations.
@@ -97,11 +94,11 @@ Describe "Tests de performance" {
     Context "Mesure des performances des fonctions" {
         It "Compare les performances des fonctions de tri" {
             # Test code here
+
         }
     }
 }
-```
-
+```plaintext
 ### Tests de benchmark
 
 Les tests de benchmark comparent les performances de diffÃ©rentes implÃ©mentations et mesurent la scalabilitÃ© des fonctions avec diffÃ©rentes tailles de donnÃ©es.
@@ -113,11 +110,11 @@ Describe "Tests de benchmark de performance" {
     Context "Comparaison des performances entre diffÃ©rentes implÃ©mentations" {
         It "Compare les performances du tri avec diffÃ©rentes approches" {
             # Test code here
+
         }
     }
 }
-```
-
+```plaintext
 ## Couverture de code
 
 Les tests sont configurÃ©s pour mesurer la couverture de code. Le rapport de couverture est gÃ©nÃ©rÃ© au format JaCoCo et enregistrÃ© dans le rÃ©pertoire des rÃ©sultats des tests.
@@ -143,20 +140,22 @@ Describe "Ma fonctionnalitÃ©" {
     Context "Dans un contexte spÃ©cifique" {
         BeforeAll {
             # Code d'initialisation
+
             $testData = @(1, 2, 3)
         }
 
         It "Fait quelque chose de spÃ©cifique" {
             # Appeler la fonction Ã  tester
+
             $result = Do-Something -Data $testData
 
             # VÃ©rifier le rÃ©sultat
+
             $result | Should -Be 6
         }
     }
 }
-```
-
+```plaintext
 ### Bonnes pratiques pour les tests
 
 1. **Nommage explicite** : Donnez des noms clairs et descriptifs Ã  vos tests pour faciliter la comprÃ©hension de ce qu'ils testent.
@@ -190,25 +189,24 @@ Pour ajouter un nouveau fichier de test :
 
 ```powershell
 Invoke-Pester -Path ".\MyTest.Tests.ps1" -Name "Ma fonctionnalitÃ©"
-```
-
+```plaintext
 2. **DÃ©boguer un test** : Pour dÃ©boguer un test, utilisez Write-Host pour afficher des informations de dÃ©bogage ou utilisez le dÃ©bogueur de PowerShell :
 
 ```powershell
 It "Mon test" {
     Write-Host "Valeur de la variable : $myVariable"
     # Test code here
-}
-```
 
+}
+```plaintext
 3. **Ignorer un test** : Pour ignorer temporairement un test, utilisez le paramÃ¨tre Skip :
 
 ```powershell
 It "Mon test" -Skip {
     # Test code here
-}
-```
 
+}
+```plaintext
 ## Ressources
 
 - [Documentation Pester](https://pester.dev/docs/quick-start)

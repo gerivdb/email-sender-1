@@ -16,12 +16,11 @@ Les métriques de taux de succès du cache (cache hit rate) sont essentielles po
 
 ### 2.2 Formules de calcul
 
-```
+```plaintext
 Taux de succès = Nombre de succès / Nombre total d'accès
 Taux d'échec = Nombre d'échecs / Nombre total d'accès
 Taux d'échec = 1 - Taux de succès
-```
-
+```plaintext
 ### 2.3 Types d'accès
 
 - **Accès en lecture** : Tentative de lecture de données depuis le cache.
@@ -50,8 +49,7 @@ Taux d'échec = 1 - Taux de succès
     }
   }
 }
-```
-
+```plaintext
 ### 3.2 Métriques globales
 
 ```json
@@ -64,8 +62,7 @@ Taux d'échec = 1 - Taux de succès
     "data": 0.82
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `overall` | number | ratio (0-1) | Taux de succès global pour tous les types d'accès |
@@ -88,8 +85,7 @@ Taux d'échec = 1 - Taux de succès
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `sequential` | number | ratio (0-1) | Taux de succès pour les accès séquentiels |
@@ -124,8 +120,7 @@ Taux d'échec = 1 - Taux de succès
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `interval` | number | Intervalle d'échantillonnage en millisecondes |
@@ -166,8 +161,7 @@ Taux d'échec = 1 - Taux de succès
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `min` | number | ratio (0-1) | Valeur minimale du taux de succès observée |
@@ -209,8 +203,7 @@ Taux d'échec = 1 - Taux de succès
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `overall` | number | ratio (0-1) | Taux de succès global du cache L1 |
@@ -250,8 +243,7 @@ Structure similaire à celle du cache L1, avec des métriques supplémentaires p
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `sharedHits` | number | ratio (0-1) | Taux de succès pour les données partagées entre cœurs |
@@ -281,8 +273,7 @@ Structure similaire à celle du cache L1, avec des métriques supplémentaires p
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `overall` | number | ratio (0-1) | Taux de succès global du TLB |
@@ -322,8 +313,7 @@ Structure similaire à celle du cache L1, avec des métriques supplémentaires p
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `metadata` | number | ratio (0-1) | Taux de succès pour les accès aux métadonnées |
@@ -361,8 +351,7 @@ Structure similaire à celle du cache L1, avec des métriques supplémentaires p
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `byComponent` | object | - | Taux de succès par composant de l'application |
@@ -404,8 +393,7 @@ Structure similaire à celle du cache L1, avec des métriques supplémentaires p
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `local` | number | ratio (0-1) | Taux de succès pour les accès au cache local |
@@ -434,8 +422,7 @@ Structure similaire à celle du cache L1, avec des métriques supplémentaires p
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `l1ToL2` | number | ratio | Rapport entre le taux de succès L1 et L2 |
@@ -455,8 +442,7 @@ Structure similaire à celle du cache L1, avec des métriques supplémentaires p
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `overall` | number | ratio (0-1) | Efficacité globale du cache |
@@ -476,8 +462,7 @@ Structure similaire à celle du cache L1, avec des métriques supplémentaires p
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `latencyReduction` | number | ratio (0-1) | Réduction de latence due au cache |
@@ -519,8 +504,7 @@ Structure similaire à celle du cache L1, avec des métriques supplémentaires p
     }
   }
 }
-```
-
+```plaintext
 ### 6.2 Exemple complet
 
 ```json
@@ -704,8 +688,7 @@ Structure similaire à celle du cache L1, avec des métriques supplémentaires p
     }
   }
 }
-```
-
+```plaintext
 ## 7. Bonnes pratiques
 
 ### 7.1 Collecte des métriques

@@ -21,10 +21,9 @@ Pour collecter les retours des utilisateurs, nous avons utilisé les méthodes s
 
 Le graphique suivant présente la satisfaction globale des utilisateurs concernant l'utilisation de Hygen, évaluée sur une échelle de 1 à 10 :
 
-```
+```plaintext
 Satisfaction globale : 8.2/10
-```
-
+```plaintext
 | Niveau de satisfaction | Pourcentage d'utilisateurs |
 |------------------------|----------------------------|
 | Très satisfait (9-10)  | 60%                        |

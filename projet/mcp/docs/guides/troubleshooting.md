@@ -8,8 +8,7 @@ Avant de commencer le dépannage, exécutez le script de diagnostic pour obtenir
 
 ```powershell
 .\projet\mcp\monitoring\scripts\check-mcp-health.ps1 -OutputFormat HTML
-```
-
+```plaintext
 Ce script générera un rapport détaillé sur l'état des serveurs MCP, ce qui vous aidera à identifier les problèmes potentiels.
 
 ## Problèmes de démarrage des serveurs
@@ -64,6 +63,7 @@ Ce script générera un rapport détaillé sur l'état des serveurs MCP, ce qui 
 2. **Vérifiez les permissions :**
    ```powershell
    # Exécutez PowerShell en tant qu'administrateur
+
    Start-Process powershell -Verb RunAs
    ```
 
@@ -90,9 +90,11 @@ Ce script générera un rapport détaillé sur l'état des serveurs MCP, ce qui 
 2. **Réinitialisez la configuration :**
    ```powershell
    # Sauvegardez d'abord la configuration actuelle
+
    .\projet\mcp\scripts\maintenance\backup-mcp-config.ps1 -CreateZip
    
    # Réinitialisez la configuration
+
    Remove-Item .\projet\mcp\config\mcp-config.json -Force
    .\projet\mcp\scripts\setup\setup-mcp.ps1 -Force
    ```
@@ -113,12 +115,14 @@ Ce script générera un rapport détaillé sur l'état des serveurs MCP, ce qui 
 1. **Vérifiez les chemins dans la configuration :**
    ```powershell
    # Ouvrez le fichier de configuration
+
    notepad .\projet\mcp\config\mcp-config.json
    ```
 
 2. **Utilisez des chemins absolus :**
    ```powershell
    # Exemple de correction dans la configuration
+
    $config = Get-Content .\projet\mcp\config\mcp-config.json -Raw | ConvertFrom-Json
    $config.mcpServers.filesystem.args[1] = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
    $config | ConvertTo-Json -Depth 10 | Set-Content .\projet\mcp\config\mcp-config.json
@@ -153,7 +157,9 @@ Ce script générera un rapport détaillé sur l'état des serveurs MCP, ce qui 
 4. **Augmentez les ressources allouées :**
    ```powershell
    # Modifiez la configuration pour allouer plus de ressources
+
    # Par exemple, augmentez la mémoire maximale pour Node.js
+
    $env:NODE_OPTIONS="--max-old-space-size=4096"
    ```
 
@@ -173,6 +179,7 @@ Ce script générera un rapport détaillé sur l'état des serveurs MCP, ce qui 
 2. **Redémarrez régulièrement les serveurs :**
    ```powershell
    # Créez une tâche planifiée pour redémarrer les serveurs
+
    $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -Command `"Import-Module .\projet\mcp\modules\MCPManager; Restart-MCPServer -Force`""
    $trigger = New-ScheduledTaskTrigger -Daily -At 3AM
    Register-ScheduledTask -TaskName "RestartMCPServers" -Action $action -Trigger $trigger
@@ -191,9 +198,11 @@ Ce script générera un rapport détaillé sur l'état des serveurs MCP, ce qui 
 1. **Vérifiez que n8n est en cours d'exécution :**
    ```powershell
    # Vérifiez si n8n est en cours d'exécution
+
    Get-Process | Where-Object { $_.ProcessName -like "*n8n*" }
    
    # Démarrez n8n si nécessaire
+
    cd <chemin_vers_n8n>
    npm run start
    ```
@@ -223,18 +232,21 @@ Ce script générera un rapport détaillé sur l'état des serveurs MCP, ce qui 
 1. **Vérifiez les tokens d'API :**
    ```powershell
    # Vérifiez les fichiers de configuration des serveurs
+
    Get-ChildItem .\projet\mcp\config\servers\
    ```
 
 2. **Vérifiez la connectivité réseau :**
    ```powershell
    # Testez la connexion aux API externes
+
    Test-NetConnection -ComputerName api.github.com -Port 443
    ```
 
 3. **Mettez à jour les tokens d'API :**
    ```powershell
    # Modifiez les fichiers de configuration des serveurs
+
    notepad .\projet\mcp\config\servers\github.json
    ```
 
@@ -261,6 +273,7 @@ Ce script générera un rapport détaillé sur l'état des serveurs MCP, ce qui 
 3. **Vérifiez les erreurs de syntaxe :**
    ```powershell
    # Vérifiez la syntaxe du module
+
    $errors = $null
    $null = [System.Management.Automation.PSParser]::Tokenize((Get-Content .\projet\mcp\modules\MCPManager\MCPManager.psm1 -Raw), [ref]$errors)
    $errors
@@ -284,6 +297,7 @@ Ce script générera un rapport détaillé sur l'état des serveurs MCP, ce qui 
 1. **Vérifiez les permissions :**
    ```powershell
    # Exécutez PowerShell en tant qu'administrateur
+
    Start-Process powershell -Verb RunAs
    ```
 
@@ -308,9 +322,11 @@ Ce script générera un rapport détaillé sur l'état des serveurs MCP, ce qui 
 1. **Vérifiez l'intégrité de la sauvegarde :**
    ```powershell
    # Pour les sauvegardes ZIP
+
    Test-Path .\projet\mcp\versioning\backups\<date>-<version>.zip
    
    # Pour les sauvegardes en répertoire
+
    Get-ChildItem .\projet\mcp\versioning\backups\<date>-<version>\
    ```
 
@@ -322,9 +338,11 @@ Ce script générera un rapport détaillé sur l'état des serveurs MCP, ce qui 
 3. **Essayez une restauration manuelle :**
    ```powershell
    # Extrayez la sauvegarde ZIP
+
    Expand-Archive .\projet\mcp\versioning\backups\<date>-<version>.zip -DestinationPath .\temp\
    
    # Copiez les fichiers manuellement
+
    Copy-Item .\temp\config\* .\projet\mcp\config\ -Recurse -Force
    ```
 
@@ -336,37 +354,39 @@ Pour activer une journalisation plus détaillée :
 
 ```powershell
 # Modifiez la configuration globale
+
 $config = Get-Content .\projet\mcp\config\mcp-config.json -Raw | ConvertFrom-Json
 $config.global.logLevel = "debug"
 $config | ConvertTo-Json -Depth 10 | Set-Content .\projet\mcp\config\mcp-config.json
 
 # Redémarrez les serveurs
-Restart-MCPServer -Force
-```
 
+Restart-MCPServer -Force
+```plaintext
 ### Analyser les journaux
 
 Pour analyser les journaux :
 
 ```powershell
 # Afficher les dernières entrées du journal
+
 Get-Content .\projet\mcp\monitoring\logs\mcp.log -Tail 100
 
 # Rechercher des erreurs spécifiques
+
 Select-String -Path .\projet\mcp\monitoring\logs\mcp.log -Pattern "ERROR"
 
 # Exporter les journaux pour analyse
-Copy-Item .\projet\mcp\monitoring\logs\mcp.log .\mcp-logs-$(Get-Date -Format 'yyyyMMdd').log
-```
 
+Copy-Item .\projet\mcp\monitoring\logs\mcp.log .\mcp-logs-$(Get-Date -Format 'yyyyMMdd').log
+```plaintext
 ### Générer un rapport de diagnostic complet
 
 Pour générer un rapport de diagnostic complet :
 
 ```powershell
 .\projet\mcp\monitoring\scripts\generate-health-report.ps1 -OutputFormat HTML -IncludeTests
-```
-
+```plaintext
 ## Réinitialisation complète
 
 Si tous les autres dépannages échouent, vous pouvez effectuer une réinitialisation complète :
@@ -394,10 +414,13 @@ Si tous les autres dépannages échouent, vous pouvez effectuer une réinitialis
 5. **Restaurez vos données si nécessaire :**
    ```powershell
    # Restaurez uniquement les données, pas la configuration
+
    # Extrayez la sauvegarde ZIP
+
    Expand-Archive .\projet\mcp\versioning\backups\<date>-<version>.zip -DestinationPath .\temp\
    
    # Copiez uniquement les données
+
    Copy-Item .\temp\data\* .\projet\mcp\data\ -Recurse -Force
    ```
 

@@ -11,21 +11,31 @@ Le dossier `development\managers\tools` a été réorganisé pour suivre les pri
 
 ## 📁 Nouvelle structure des dossiers
 
-```
+```plaintext
 tools/
 ├── cmd/manager-toolkit/     # Point d'entrée de l'application
-├── core/registry/          # Registre centralisé des outils
-├── core/toolkit/           # Fonctionnalités centrales partagées  
-├── docs/                   # Documentation complète
-├── internal/test/          # Tests et mocks internes
-├── legacy/                 # Fichiers archivés/legacy
-├── operations/analysis/    # Outils d'analyse statique
-├── operations/correction/  # Outils de correction automatisée
-├── operations/migration/   # Outils de migration de code
-├── operations/validation/  # Outils de validation de structures
-└── testdata/               # Données de test
-```
 
+├── core/registry/          # Registre centralisé des outils
+
+├── core/toolkit/           # Fonctionnalités centrales partagées  
+
+├── docs/                   # Documentation complète
+
+├── internal/test/          # Tests et mocks internes
+
+├── legacy/                 # Fichiers archivés/legacy
+
+├── operations/analysis/    # Outils d'analyse statique
+
+├── operations/correction/  # Outils de correction automatisée
+
+├── operations/migration/   # Outils de migration de code
+
+├── operations/validation/  # Outils de validation de structures
+
+└── testdata/               # Données de test
+
+```plaintext
 ## 📦 Nouveaux packages
 
 Les déclarations de package ont été adaptées pour refléter la nouvelle structure:
@@ -45,8 +55,7 @@ Les déclarations de package ont été adaptées pour refléter la nouvelle stru
 Remplacez vos imports de:
 ```go
 import "tools"
-```
-
+```plaintext
 Par:
 ```go
 import (
@@ -55,8 +64,7 @@ import (
     "github.com/email-sender/tools/operations/analysis"  // Pour les outils d'analyse
     // etc. selon les besoins
 )
-```
-
+```plaintext
 ### 2. Références aux types
 
 Qualifiez vos références aux types:
@@ -66,15 +74,13 @@ Avant:
 func MyFunc() *Logger {
     // ...
 }
-```
-
+```plaintext
 Après:
 ```go
 func MyFunc() *toolkit.Logger {
     // ...
 }
-```
-
+```plaintext
 ### 3. Scripts d'aide
 
 Plusieurs scripts ont été créés pour vous aider:
@@ -102,6 +108,7 @@ Toute la documentation sur le projet se trouve maintenant dans le répertoire `d
 ## 🔍 Exemples concrets
 
 ### Ancien code:
+
 ```go
 package main
 
@@ -114,9 +121,9 @@ func main() {
     validator := &StructValidator{Logger: logger}
     // ...
 }
-```
-
+```plaintext
 ### Nouveau code:
+
 ```go
 package main
 
@@ -130,8 +137,7 @@ func main() {
     validator := &validation.StructValidator{Logger: logger}
     // ...
 }
-```
-
+```plaintext
 ## 📞 Besoin d'aide?
 
 Si vous rencontrez des difficultés avec la nouvelle structure, vous pouvez:

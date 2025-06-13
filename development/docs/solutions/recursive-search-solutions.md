@@ -10,8 +10,7 @@ Actuellement, le mécanisme de découverte des gestionnaires du Process Manager 
 
 ```powershell
 $managerDirs = Get-ChildItem -Path $fullSearchPath -Directory | Where-Object { $_.Name -like "*-manager" }
-```
-
+```plaintext
 ## Solutions proposées
 
 ### Solution 1 : Ajouter un paramètre de recherche récursive
@@ -51,6 +50,7 @@ function Discover-Managers {
     $managersRegistered = 0
 
     # Parcourir les chemins de recherche
+
     foreach ($searchPath in $SearchPaths) {
         $fullSearchPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $scriptPath))) -ChildPath $searchPath
         
@@ -58,6 +58,7 @@ function Discover-Managers {
             Write-Log -Message "Recherche dans $fullSearchPath..." -Level Debug
             
             # Rechercher les répertoires de gestionnaires
+
             if ($Recursive) {
                 $managerDirs = Get-ChildItem -Path $fullSearchPath -Directory -Recurse | Where-Object { $_.Name -like "*-manager" }
             } else {
@@ -66,6 +67,7 @@ function Discover-Managers {
             
             foreach ($managerDir in $managerDirs) {
                 # Code existant pour traiter chaque répertoire de gestionnaire
+
             }
         }
     }
@@ -73,8 +75,7 @@ function Discover-Managers {
     Write-Log -Message "$managersFound gestionnaires trouvés, $managersRegistered gestionnaires enregistrés." -Level Info
     return $managersRegistered
 }
-```
-
+```plaintext
 #### Avantages
 
 - Simple à implémenter
@@ -130,20 +131,24 @@ function Find-ManagerDirectories {
         )
         
         # Vérifier si la profondeur maximale est atteinte
+
         if ($MaxDepth -ne -1 -and $CurrentDepth -gt $MaxDepth) {
             return
         }
         
         # Rechercher les répertoires correspondant au modèle
+
         $directories = Get-ChildItem -Path $CurrentPath -Directory | Where-Object {
             $match = $_.Name -like $Pattern
             
             # Exclure les répertoires de sauvegarde si demandé
+
             if ($ExcludeBackups -and ($_.Name -like "*backup*" -or $_.Name -like "*bak*")) {
                 $match = $false
             }
             
             # Exclure les répertoires de test si demandé
+
             if ($ExcludeTests -and ($_.Name -like "*test*" -or $_.Name -like "*Test*")) {
                 $match = $false
             }
@@ -152,19 +157,23 @@ function Find-ManagerDirectories {
         }
         
         # Ajouter les répertoires trouvés à la liste
+
         $items += $directories
         
         # Rechercher les fichiers correspondant au modèle si demandé
+
         if ($IncludeFiles) {
             $files = Get-ChildItem -Path $CurrentPath -File | Where-Object {
                 $match = $_.Name -like $Pattern
                 
                 # Exclure les fichiers de sauvegarde si demandé
+
                 if ($ExcludeBackups -and ($_.Name -like "*backup*" -or $_.Name -like "*bak*")) {
                     $match = $false
                 }
                 
                 # Exclure les fichiers de test si demandé
+
                 if ($ExcludeTests -and ($_.Name -like "*test*" -or $_.Name -like "*Test*")) {
                     $match = $false
                 }
@@ -173,10 +182,12 @@ function Find-ManagerDirectories {
             }
             
             # Ajouter les fichiers trouvés à la liste
+
             $items += $files
         }
         
         # Rechercher récursivement dans les sous-répertoires
+
         $subdirectories = Get-ChildItem -Path $CurrentPath -Directory
         foreach ($subdirectory in $subdirectories) {
             Search-Directory -CurrentPath $subdirectory.FullName -CurrentDepth ($CurrentDepth + 1)
@@ -184,6 +195,7 @@ function Find-ManagerDirectories {
     }
     
     # Démarrer la recherche
+
     Search-Directory -CurrentPath $Path -CurrentDepth $currentDepth
     
     return $items
@@ -229,6 +241,7 @@ function Discover-Managers {
     $managersRegistered = 0
 
     # Parcourir les chemins de recherche
+
     foreach ($searchPath in $SearchPaths) {
         $fullSearchPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $scriptPath))) -ChildPath $searchPath
         
@@ -236,6 +249,7 @@ function Discover-Managers {
             Write-Log -Message "Recherche dans $fullSearchPath..." -Level Debug
             
             # Rechercher les répertoires de gestionnaires
+
             if ($Recursive) {
                 $findParams = @{
                     Path = $fullSearchPath
@@ -265,6 +279,7 @@ function Discover-Managers {
             
             foreach ($managerDir in $managerDirs) {
                 # Code existant pour traiter chaque répertoire de gestionnaire
+
             }
         }
     }
@@ -272,8 +287,7 @@ function Discover-Managers {
     Write-Log -Message "$managersFound gestionnaires trouvés, $managersRegistered gestionnaires enregistrés." -Level Info
     return $managersRegistered
 }
-```
-
+```plaintext
 #### Avantages
 
 - Permet un contrôle plus fin sur la recherche récursive
@@ -323,6 +337,7 @@ function Discover-Managers {
     $managersRegistered = 0
 
     # Vérifier si le module PathManager est disponible
+
     $pathManagerAvailable = $false
     try {
         if (Get-Module -Name PathManager -ListAvailable) {
@@ -334,6 +349,7 @@ function Discover-Managers {
     }
 
     # Parcourir les chemins de recherche
+
     foreach ($searchPath in $SearchPaths) {
         $fullSearchPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $scriptPath))) -ChildPath $searchPath
         
@@ -341,6 +357,7 @@ function Discover-Managers {
             Write-Log -Message "Recherche dans $fullSearchPath..." -Level Debug
             
             # Rechercher les répertoires de gestionnaires
+
             if ($Recursive -and $pathManagerAvailable) {
                 try {
                     $managerDirs = Find-PathItems -Path $fullSearchPath -Pattern "*-manager" -ItemType Directory -Recurse
@@ -362,6 +379,7 @@ function Discover-Managers {
             
             foreach ($managerDir in $managerDirs) {
                 # Code existant pour traiter chaque répertoire de gestionnaire
+
             }
         }
     }
@@ -369,8 +387,7 @@ function Discover-Managers {
     Write-Log -Message "$managersFound gestionnaires trouvés, $managersRegistered gestionnaires enregistrés." -Level Info
     return $managersRegistered
 }
-```
-
+```plaintext
 #### Avantages
 
 - Réutilise un module existant
@@ -428,6 +445,7 @@ function Discover-Managers {
     $managersRegistered = 0
 
     # Vérifier si le module PathManager est disponible
+
     $pathManagerAvailable = $false
     if ($UsePathManager) {
         try {
@@ -441,6 +459,7 @@ function Discover-Managers {
     }
 
     # Parcourir les chemins de recherche
+
     foreach ($searchPath in $SearchPaths) {
         $fullSearchPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $scriptPath))) -ChildPath $searchPath
         
@@ -448,12 +467,15 @@ function Discover-Managers {
             Write-Log -Message "Recherche dans $fullSearchPath..." -Level Debug
             
             # Rechercher les répertoires de gestionnaires
+
             if ($Recursive) {
                 if ($UseCustomSearch) {
                     # Utiliser la recherche personnalisée
+
                     $managerDirs = Find-ManagerDirectories -Path $fullSearchPath -Pattern "*-manager" -MaxDepth $MaxDepth
                 } elseif ($pathManagerAvailable) {
                     # Utiliser le module PathManager
+
                     try {
                         $managerDirs = Find-PathItems -Path $fullSearchPath -Pattern "*-manager" -ItemType Directory -Recurse
                     } catch {
@@ -462,15 +484,18 @@ function Discover-Managers {
                     }
                 } else {
                     # Utiliser la méthode standard
+
                     $managerDirs = Get-ChildItem -Path $fullSearchPath -Directory -Recurse | Where-Object { $_.Name -like "*-manager" }
                 }
             } else {
                 # Utiliser la méthode standard non récursive
+
                 $managerDirs = Get-ChildItem -Path $fullSearchPath -Directory | Where-Object { $_.Name -like "*-manager" }
             }
             
             foreach ($managerDir in $managerDirs) {
                 # Code existant pour traiter chaque répertoire de gestionnaire
+
             }
         }
     }
@@ -478,8 +503,7 @@ function Discover-Managers {
     Write-Log -Message "$managersFound gestionnaires trouvés, $managersRegistered gestionnaires enregistrés." -Level Info
     return $managersRegistered
 }
-```
-
+```plaintext
 #### Avantages
 
 - Combine les avantages des différentes approches
@@ -503,6 +527,7 @@ Pour valider l'implémentation de la solution choisie, nous recommandons de cré
 
 ```powershell
 # Créer une structure de test
+
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ProcessManagerTest"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 $managerDir = Join-Path -Path $testDir -ChildPath "test-manager"
@@ -520,22 +545,26 @@ function Start-TestManager {
 "@ | Set-Content -Path $scriptPath -Encoding UTF8
 
 # Exécuter la fonction Discover-Managers sans l'option Recursive
+
 $result = & $processManagerPath -Command Discover -SearchPaths $testDir
 
 # Vérifier que le gestionnaire a été découvert
+
 $registeredManager = & $processManagerPath -Command List | Where-Object { $_ -like "*TestManager*" }
 
 # Nettoyer
+
 Remove-Item -Path $testDir -Recurse -Force
 
 # Le test est réussi si le gestionnaire a été découvert
-return $registeredManager -ne $null
-```
 
+return $registeredManager -ne $null
+```plaintext
 ### Test 2 : Recherche récursive
 
 ```powershell
 # Créer une structure de test
+
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ProcessManagerTest"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 $subDir = Join-Path -Path $testDir -ChildPath "subdir"
@@ -555,22 +584,26 @@ function Start-TestManager {
 "@ | Set-Content -Path $scriptPath -Encoding UTF8
 
 # Exécuter la fonction Discover-Managers avec l'option Recursive
+
 $result = & $processManagerPath -Command Discover -SearchPaths $testDir -Recursive
 
 # Vérifier que le gestionnaire a été découvert
+
 $registeredManager = & $processManagerPath -Command List | Where-Object { $_ -like "*TestManager*" }
 
 # Nettoyer
+
 Remove-Item -Path $testDir -Recurse -Force
 
 # Le test est réussi si le gestionnaire a été découvert
-return $registeredManager -ne $null
-```
 
+return $registeredManager -ne $null
+```plaintext
 ### Test 3 : Recherche récursive avec profondeur limitée
 
 ```powershell
 # Créer une structure de test
+
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ProcessManagerTest"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 $subDir1 = Join-Path -Path $testDir -ChildPath "subdir1"
@@ -606,19 +639,22 @@ function Start-TestManager2 {
 "@ | Set-Content -Path $scriptPath2 -Encoding UTF8
 
 # Exécuter la fonction Discover-Managers avec l'option Recursive et MaxDepth=1
+
 $result = & $processManagerPath -Command Discover -SearchPaths $testDir -Recursive -MaxDepth 1
 
 # Vérifier que seul le premier gestionnaire a été découvert
+
 $registeredManager1 = & $processManagerPath -Command List | Where-Object { $_ -like "*TestManager1*" }
 $registeredManager2 = & $processManagerPath -Command List | Where-Object { $_ -like "*TestManager2*" }
 
 # Nettoyer
+
 Remove-Item -Path $testDir -Recurse -Force
 
 # Le test est réussi si le premier gestionnaire a été découvert et le second non
-return $registeredManager1 -ne $null -and $registeredManager2 -eq $null
-```
 
+return $registeredManager1 -ne $null -and $registeredManager2 -eq $null
+```plaintext
 ## Conclusion
 
 La recherche récursive des gestionnaires est une fonctionnalité importante pour améliorer la flexibilité et la robustesse du Process Manager. Les solutions proposées dans ce document permettent d'implémenter cette fonctionnalité de différentes manières, en fonction des besoins et des contraintes du système.

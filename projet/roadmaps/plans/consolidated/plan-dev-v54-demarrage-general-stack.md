@@ -12,6 +12,7 @@ Ce plan décrit l'implémentation d'un système de démarrage automatisé pour l
 ## 🎯 Objectifs
 
 ### Objectif Principal
+
 Créer un système d'orchestration automatisé qui :
 - Lance automatiquement l'infrastructure au démarrage de l'IDE
 - Gère l'ordre de démarrage des services selon leurs dépendances
@@ -20,6 +21,7 @@ Créer un système d'orchestration automatisé qui :
 - Assure la résilience et la récupération automatique
 
 ### Objectifs Spécifiques
+
 1. **Orchestration Intelligente** : Le **AdvancedAutonomyManager** coordonne le démarrage
 2. **Démarrage Séquentiel** : Les services démarrent dans l'ordre optimal
 3. **Surveillance Continue** : Monitoring temps réel de l'état des services
@@ -53,8 +55,7 @@ Services Critiques:
 
 Services Applicatifs:
 └── RAG Server - Port 8080/9090
-```
-
+```plaintext
 ### Managers Impliqués
 
 1. **AdvancedAutonomyManager** : Orchestrateur principal
@@ -68,6 +69,7 @@ Services Applicatifs:
 ### ✅ Composants Existants
 
 #### AdvancedAutonomyManager
+
 - **État** : 100% implémenté et opérationnel
 - **Capacités** :
   - Service de découverte des 20 managers
@@ -77,6 +79,7 @@ Services Applicatifs:
   - Couche de coordination maître
 
 #### ContainerManager  
+
 - **État** : 70% implémenté
 - **Fonctionnalités disponibles** :
   - `StartContainers()` et `StopContainers()`
@@ -85,6 +88,7 @@ Services Applicatifs:
   - Health checks des conteneurs
 
 #### Infrastructure Docker
+
 - **docker-compose.yml** : Configuré avec QDrant, Redis, Prometheus, Grafana
 - **Réseaux** : `rag-network` avec subnet dédié
 - **Volumes** : Persistance pour tous les services
@@ -101,6 +105,7 @@ Services Applicatifs:
 ### Phase 1 : Configuration de l'Orchestrateur Principal (Priorité Haute)
 
 #### Étape 1.1 : Extension AdvancedAutonomyManager
+
 - [x] **1.1.1** Ajouter module `InfrastructureOrchestrator` dans AdvancedAutonomyManager
   - Créer `internal/infrastructure/infrastructure_orchestrator.go`
   - Définir interface `InfrastructureManager`
@@ -117,6 +122,7 @@ Services Applicatifs:
   - Créer mécanisme de validation des prérequis
 
 #### Étape 1.2 : Intégration ContainerManager  
+
 - [ ] **1.2.1** Améliorer ContainerManager pour orchestration
   - Implémenter `StartInfrastructureStack()`
   - Ajouter support pour démarrage conditionnel par service
@@ -128,6 +134,7 @@ Services Applicatifs:
   - Configurer timeouts et retry policies
 
 #### Étape 1.3 : Point d'entrée IntegratedManager
+
 - [ ] **1.3.1** Créer hook de démarrage automatique
   - Implémenter `AutoStartInfrastructure()` dans IntegratedManager
   - Détecter démarrage IDE/projet via VS Code API
@@ -136,6 +143,7 @@ Services Applicatifs:
 ### Phase 2 : Système de Surveillance et Santé (Priorité Haute)
 
 #### Étape 2.1 : Monitoring Infrastructure
+
 - [ ] **2.1.1** Étendre Real-Time Monitoring Dashboard
   - Ajouter surveillance spécifique infrastructure dans AdvancedAutonomyManager
   - Créer métriques de santé pour chaque service (QDrant, Redis, etc.)
@@ -148,6 +156,7 @@ Services Applicatifs:
   - Vérification Prometheus/Grafana : Endpoints health
 
 #### Étape 2.2 : Auto-Healing Infrastructure  
+
 - [ ] **2.2.1** Étendre Neural Auto-Healing System
   - Détection panne service → Redémarrage automatique
   - Escalade vers AdvancedAutonomyManager si échec répété
@@ -156,6 +165,7 @@ Services Applicatifs:
 ### Phase 3 : Intégration IDE et Expérience Développeur (Priorité Moyenne)
 
 #### Étape 3.1 : Hooks VS Code
+
 - [ ] **3.1.1** Créer extension/script de démarrage
   - Détecter ouverture workspace EMAIL_SENDER_1
   - Lancer automatiquement `IntegratedManager.AutoStartInfrastructure()`
@@ -167,6 +177,7 @@ Services Applicatifs:
   - Logs streamés dans terminal VS Code
 
 #### Étape 3.2 : Scripts PowerShell Complémentaires
+
 - [ ] **3.2.1** Scripts de contrôle manuel
   - `scripts/Start-FullStack.ps1` : Démarrage manuel complet
   - `scripts/Stop-FullStack.ps1` : Arrêt propre de la stack
@@ -175,6 +186,7 @@ Services Applicatifs:
 ### Phase 4 : Optimisations et Sécurité (Priorité Faible)
 
 #### Étape 4.1 : Performance et Optimisation
+
 - [ ] **4.1.1** Démarrage parallèle intelligent
   - Services indépendants en parallèle (QDrant + Redis)
   - Optimisation des temps de démarrage
@@ -186,6 +198,7 @@ Services Applicatifs:
   - Nettoyage automatique des ressources inutilisées
 
 #### Étape 4.2 : Sécurité et Isolation
+
 - [ ] **4.2.1** Intégration SecurityManager
   - Validation des configurations avant démarrage
   - Chiffrement des communications inter-services
@@ -228,8 +241,7 @@ type StartupResult struct {
     Warnings          []string
     HealthChecks      map[string]bool
 }
-```
-
+```plaintext
 ### Graphe de Dépendances Services
 
 ```yaml
@@ -263,17 +275,18 @@ dependencies:
     requires: ["qdrant", "redis", "prometheus"]
     health_check: "http://localhost:8080/health"
     startup_timeout: "60s"
-```
-
+```plaintext
 ### Configuration AdvancedAutonomyManager
 
 Ajout dans `config.yaml` :
 
 ```yaml
 # Configuration infrastructure orchestration
+
 infrastructure_config:
   auto_start_enabled: true
   startup_mode: "smart"  # smart, fast, minimal
+
   environment: "development"
   
   service_discovery:
@@ -293,57 +306,75 @@ infrastructure_config:
     alert_on_failure: true
     auto_healing_enabled: true
     performance_metrics: true
-```
-
+```plaintext
 ## 📁 Structure des Fichiers
 
 ### Nouveaux Fichiers à Créer
 
-```
+```plaintext
 development/managers/advanced-autonomy-manager/
 ├── internal/infrastructure/
 │   ├── infrastructure_orchestrator.go      # Orchestrateur principal
+
 │   ├── service_dependency_graph.go         # Graphe de dépendances
+
 │   ├── health_monitoring.go               # Surveillance santé
+
 │   └── startup_sequencer.go               # Séquenceur de démarrage
+
 ├── config/
 │   └── infrastructure_config.yaml         # Configuration infrastructure
+
 └── scripts/
     ├── ide_startup_hook.ps1               # Hook démarrage IDE
+
     ├── manual_stack_control.ps1           # Contrôle manuel
+
     └── health_dashboard.ps1               # Dashboard de santé
 
 development/managers/container-manager/
 ├── infrastructure/
 │   ├── stack_manager.go                   # Gestionnaire de stack
+
 │   ├── compose_orchestrator.go            # Orchestrateur compose
+
 │   └── health_checker.go                  # Vérificateur santé
+
 └── config/
     └── docker-compose.infrastructure.yml  # Compose infrastructure
 
 development/managers/integrated-manager/
 ├── startup/
 │   ├── auto_startup_manager.go            # Gestionnaire démarrage auto
+
 │   ├── ide_integration.go                 # Intégration IDE
+
 │   └── lifecycle_coordinator.go           # Coordinateur cycle de vie
+
 └── hooks/
     └── vscode_workspace_hooks.js          # Hooks VS Code
 
 scripts/infrastructure/
 ├── Start-FullStack.ps1                    # Script démarrage complet
-├── Stop-FullStack.ps1                     # Script arrêt complet
-├── Status-FullStack.ps1                   # Script statut
-└── Monitor-Infrastructure.ps1             # Script monitoring
-```
 
+├── Stop-FullStack.ps1                     # Script arrêt complet
+
+├── Status-FullStack.ps1                   # Script statut
+
+└── Monitor-Infrastructure.ps1             # Script monitoring
+
+```plaintext
 ### Modifications des Fichiers Existants
 
 #### docker-compose.yml (Extension)
+
 ```yaml
 # Ajout de health checks et profils
+
 services:
   qdrant:
     # ... configuration existante ...
+
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
       interval: 10s
@@ -354,6 +385,7 @@ services:
     
   redis:
     # ... configuration existante ...
+
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -362,29 +394,32 @@ services:
     profiles: ["infrastructure", "full", "dev"]
 
 # Ajout réseau dédié infrastructure
+
 networks:
   infrastructure-network:
     driver: bridge
     internal: false
-```
-
+```plaintext
 ## 🧪 Tests et Validation
 
 ### Phase de Tests
 
 #### Tests Unitaires
+
 - [ ] **Test 1** : Validation du graphe de dépendances
 - [ ] **Test 2** : Simulation démarrage/arrêt services
 - [ ] **Test 3** : Health checks automatiques
 - [ ] **Test 4** : Récupération après panne simulée
 
 #### Tests d'Intégration  
+
 - [ ] **Test 5** : Démarrage complet de la stack
 - [ ] **Test 6** : Intégration AdvancedAutonomyManager ↔ ContainerManager
 - [ ] **Test 7** : Surveillance temps réel
 - [ ] **Test 8** : Auto-healing en conditions réelles
 
 #### Tests de Performance
+
 - [ ] **Test 9** : Temps de démarrage optimal
 - [ ] **Test 10** : Impact ressources système
 - [ ] **Test 11** : Charge CPU/RAM pendant démarrage
@@ -412,7 +447,7 @@ networks:
 
 Via AdvancedAutonomyManager Real-Time Monitoring Dashboard :
 
-```
+```plaintext
 🚀 INFRASTRUCTURE STATUS
 ┌─────────────────────────────────────┐
 │ ✅ QDrant      │ 🟢 Healthy │ 15s  │
@@ -423,31 +458,34 @@ Via AdvancedAutonomyManager Real-Time Monitoring Dashboard :
 │ ✅ RAG Server  │ 🟢 Healthy │ 34s  │
 └─────────────────────────────────────┘
 📊 Total Startup: 89s | Health: 100% | Auto-healing: Active
-```
-
+```plaintext
 ## 🔄 Processus de Déploiement
 
 ### Déploiement par Phases
 
 #### Phase 1 : Infrastructure Core (Semaine 1-2)
+
 1. Implémentation InfrastructureOrchestrator
 2. Extension ContainerManager
 3. Configuration graphe de dépendances
 4. Tests unitaires et validation
 
 #### Phase 2 : Surveillance et Santé (Semaine 3)
+
 1. Health checks automatiques
 2. Auto-healing infrastructure
 3. Monitoring temps réel
 4. Tests d'intégration
 
 #### Phase 3 : Intégration IDE (Semaine 4)
+
 1. Hooks VS Code
 2. Scripts PowerShell
 3. Interface utilisateur
 4. Tests de bout en bout
 
 #### Phase 4 : Optimisation (Semaine 5)
+
 1. Performance tuning
 2. Sécurité avancée
 3. Documentation finale
@@ -479,6 +517,7 @@ Via AdvancedAutonomyManager Real-Time Monitoring Dashboard :
 ## 📋 Checklist de Réalisation
 
 ### Phase 1 : Infrastructure Core
+
 - [x] Création module InfrastructureOrchestrator dans AdvancedAutonomyManager
 - [ ] Extension ContainerManager avec méthodes orchestration  
 - [x] Configuration graphe de dépendances services
@@ -487,6 +526,7 @@ Via AdvancedAutonomyManager Real-Time Monitoring Dashboard :
 - [x] Documentation interfaces créées
 
 ### Phase 2 : Surveillance et Santé
+
 - [ ] Health checks automatiques pour tous services
 - [ ] Auto-healing via Neural Auto-Healing System
 - [ ] Monitoring temps réel dashboard
@@ -495,6 +535,7 @@ Via AdvancedAutonomyManager Real-Time Monitoring Dashboard :
 - [ ] Validation métriques performance
 
 ### Phase 3 : Intégration IDE
+
 - [ ] Hooks démarrage VS Code workspace
 - [ ] Scripts PowerShell contrôle manuel
 - [ ] Interface utilisateur commandes VS Code
@@ -503,6 +544,7 @@ Via AdvancedAutonomyManager Real-Time Monitoring Dashboard :
 - [ ] Documentation guide utilisateur
 
 ### Phase 4 : Optimisation et Finalisation  
+
 - [ ] Optimisation temps démarrage
 - [ ] Intégration SecurityManager
 - [ ] Gestion ressources système avancée

@@ -1,0 +1,21 @@
+{
+  "commits": [
+    {
+      "id": "def456",
+      "message": "fix: resolve null pointer exception in email validator",
+      "timestamp": "2025-06-10T14:35:00Z",
+      "author": {
+        "name": "Test User",
+        "email": "test@example.com"
+      },
+      "added": [],
+      "removed": [],
+      "modified": ["src/validator.go", "tests/validator_test.go"]
+    }
+  ],
+  "repository": {
+    "name": "test-repo",
+    "full_name": "user/test-repo"
+  },
+  "ref": "refs/heads/main"
+}

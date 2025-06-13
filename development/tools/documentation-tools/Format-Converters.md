@@ -1,4 +1,4 @@
-﻿# Module Format-Converters
+# Module Format-Converters
 
 ## Vue d'ensemble
 
@@ -18,8 +18,7 @@ Le module Format-Converters est un outil puissant pour la dÃ©tection, la conve
 
 ```powershell
 Import-Module -Path "chemin\vers\Format-Converters\Format-Converters.psm1"
-```
-
+```plaintext
 ## Commandes disponibles
 
 ### Detect-FileFormat
@@ -28,8 +27,7 @@ DÃ©tecte le format d'un fichier.
 
 ```powershell
 Detect-FileFormat -FilePath "chemin\vers\fichier.txt" [-AutoResolve] [-ShowDetails] [-RememberChoices]
-```
-
+```plaintext
 #### ParamÃ¨tres
 
 - **FilePath** : Le chemin du fichier Ã  analyser.
@@ -42,16 +40,14 @@ Detect-FileFormat -FilePath "chemin\vers\fichier.txt" [-AutoResolve] [-ShowDetai
 ```powershell
 $result = Detect-FileFormat -FilePath "data.txt" -ShowDetails
 Write-Host "Format dÃ©tectÃ© : $($result.DetectedFormat)"
-```
-
+```plaintext
 ### Convert-FileFormat
 
 Convertit un fichier d'un format Ã  un autre.
 
 ```powershell
 Convert-FileFormat -InputPath "chemin\vers\fichier.json" -OutputPath "chemin\vers\fichier.xml" -OutputFormat "XML" [-InputFormat "JSON"] [-AutoDetect] [-Force] [-ShowProgress]
-```
-
+```plaintext
 #### ParamÃ¨tres
 
 - **InputPath** : Le chemin du fichier d'entrÃ©e.
@@ -69,16 +65,14 @@ $result = Convert-FileFormat -InputPath "data.json" -OutputPath "data.xml" -Outp
 if ($result.Success) {
     Write-Host "Conversion rÃ©ussie !"
 }
-```
-
+```plaintext
 ### Analyze-FileFormat
 
 Analyse un fichier pour obtenir des informations dÃ©taillÃ©es sur son format.
 
 ```powershell
 Analyze-FileFormat -FilePath "chemin\vers\fichier.json" [-Format "JSON"] [-AutoDetect] [-IncludeContent] [-ExportReport] [-ReportPath "chemin\vers\rapport.json"]
-```
-
+```plaintext
 #### ParamÃ¨tres
 
 - **FilePath** : Le chemin du fichier Ã  analyser.
@@ -93,8 +87,7 @@ Analyze-FileFormat -FilePath "chemin\vers\fichier.json" [-Format "JSON"] [-AutoD
 ```powershell
 $result = Analyze-FileFormat -FilePath "data.json" -AutoDetect -ExportReport
 $result | Format-List
-```
-
+```plaintext
 ## Gestion des cas ambigus
 
 Le module Format-Converters inclut un systÃ¨me avancÃ© de gestion des cas ambigus, oÃ¹ plusieurs formats sont possibles pour un mÃªme fichier. Ce systÃ¨me utilise un score de confiance pour chaque format potentiel et peut rÃ©soudre les ambiguÃ¯tÃ©s de plusieurs faÃ§ons :
@@ -107,8 +100,7 @@ Le module Format-Converters inclut un systÃ¨me avancÃ© de gestion des cas am
 
 ```powershell
 $result = Detect-FileFormat -FilePath "data.txt" -ShowDetails -RememberChoices
-```
-
+```plaintext
 Si le fichier a un format ambigu, l'utilisateur sera invitÃ© Ã  choisir le format correct. Ce choix sera mÃ©morisÃ© pour les cas similaires.
 
 ## Formats pris en charge

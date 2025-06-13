@@ -14,7 +14,7 @@ L'implémentation des modèles prédictifs repose sur une architecture hybride P
 
 ## Diagramme d'architecture
 
-```
+```plaintext
 ┌─────────────────────────────────────────────────────────────────┐
 │                     Interface PowerShell                         │
 │                 (PerformancePredictor.psm1)                      │
@@ -39,8 +39,7 @@ L'implémentation des modèles prédictifs repose sur une architecture hybride P
 │                  Stockage des Modèles                           │
 │                  (Fichiers .joblib)                             │
 └─────────────────────────────────────────────────────────────────┘
-```
-
+```plaintext
 ## Composants principaux
 
 ### 1. Interface PowerShell (PerformancePredictor.psm1)
@@ -122,8 +121,7 @@ La configuration est stockée dans un fichier JSON avec les paramètres suivants
     "metrics_to_predict": ["CPU.Usage", "Memory.Usage", "Disk.Usage", "Network.BandwidthUsage"],
     "retraining_interval": 7
 }
-```
-
+```plaintext
 ## Flux de données
 
 ### Flux d'entraînement

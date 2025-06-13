@@ -1,4 +1,4 @@
-﻿# Scripts
+# Scripts
 
 Cette section contient la documentation relative Ã  Scripts.
 

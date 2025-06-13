@@ -9,10 +9,10 @@ L'objectif de ce plan de transition est de préparer le terrain pour la mise en 
 ## Phase 1 : Analyse et Préparation
 
 ### Étape 1.1 : Audit des Workflows Existants
-```
-Durée estimée : 1 jour
-```
 
+```plaintext
+Durée estimée : 1 jour
+```plaintext
 1. **Inventaire des Nœuds et Fonctionnalités**
    - Documenter tous les nœuds utilisés dans les 6 phases actuelles
    - Identifier les fonctionnalités clés et les flux de données
@@ -29,10 +29,10 @@ Durée estimée : 1 jour
    - Repérer les expressions qui pourraient nécessiter une adaptation
 
 ### Étape 1.2 : Création d'un Environnement de Test
-```
-Durée estimée : 0.5 jour
-```
 
+```plaintext
+Durée estimée : 0.5 jour
+```plaintext
 1. **Duplication des Workflows**
    - Créer des copies des workflows existants pour les tests
    - Préfixer les noms avec "TEST_" pour les distinguer
@@ -50,10 +50,10 @@ Durée estimée : 0.5 jour
 ## Phase 2 : Refactorisation et Standardisation
 
 ### Étape 2.1 : Standardisation des Noms et Conventions
-```
-Durée estimée : 0.5 jour
-```
 
+```plaintext
+Durée estimée : 0.5 jour
+```plaintext
 1. **Nomenclature des Nœuds**
    - Adopter une convention de nommage cohérente pour tous les nœuds
    - Format recommandé : `[Phase]_[Action]_[Ressource]`
@@ -70,10 +70,10 @@ Durée estimée : 0.5 jour
    - Inclure des références aux fichiers de documentation pertinents
 
 ### Étape 2.2 : Optimisation des Nœuds Code
-```
-Durée estimée : 1 jour
-```
 
+```plaintext
+Durée estimée : 1 jour
+```plaintext
 1. **Refactorisation du Code JavaScript**
    - Standardiser le style de code dans tous les nœuds Code
    - Ajouter des commentaires explicatifs
@@ -90,10 +90,10 @@ Durée estimée : 1 jour
    - Utiliser "Run Once for All Items" lorsque c'est approprié
 
 ### Étape 2.3 : Standardisation des Structures de Données
-```
-Durée estimée : 1 jour
-```
 
+```plaintext
+Durée estimée : 1 jour
+```plaintext
 1. **Définition des Schémas de Données**
    - Documenter les structures de données attendues à chaque étape
    - Créer des nœuds de validation pour vérifier la conformité
@@ -112,10 +112,10 @@ Durée estimée : 1 jour
 ## Phase 3 : Intégration avec le Plan Magistral V5
 
 ### Étape 3.1 : Création des Structures de Base
-```
-Durée estimée : 1 jour
-```
 
+```plaintext
+Durée estimée : 1 jour
+```plaintext
 1. **Mise en Place des Piliers**
    - Créer un workflow pour chaque pilier du Plan Magistral V5
    - Configurer les déclencheurs appropriés
@@ -132,10 +132,10 @@ Durée estimée : 1 jour
    - Mettre en place un mécanisme de partage de configuration
 
 ### Étape 3.2 : Migration des Fonctionnalités Existantes
-```
-Durée estimée : 2 jours
-```
 
+```plaintext
+Durée estimée : 2 jours
+```plaintext
 1. **Cartographie des Fonctionnalités**
    - Associer chaque fonctionnalité existante à un pilier du Plan Magistral
    - Identifier les fonctionnalités qui chevauchent plusieurs piliers
@@ -152,10 +152,10 @@ Durée estimée : 2 jours
    - Vérifier la compatibilité avec les autres composants
 
 ### Étape 3.3 : Mise en Place du Système de Monitoring
-```
-Durée estimée : 1 jour
-```
 
+```plaintext
+Durée estimée : 1 jour
+```plaintext
 1. **Configuration des Alertes**
    - Définir les seuils d'alerte pour chaque métrique importante
    - Configurer les notifications (email, Slack, etc.)
@@ -174,10 +174,10 @@ Durée estimée : 1 jour
 ## Phase 4 : Tests et Validation
 
 ### Étape 4.1 : Tests Unitaires
-```
-Durée estimée : 1 jour
-```
 
+```plaintext
+Durée estimée : 1 jour
+```plaintext
 1. **Création des Cas de Test**
    - Définir des cas de test pour chaque fonctionnalité
    - Préparer les données de test
@@ -194,10 +194,10 @@ Durée estimée : 1 jour
    - Mettre à jour la documentation si nécessaire
 
 ### Étape 4.2 : Tests d'Intégration
-```
-Durée estimée : 1 jour
-```
 
+```plaintext
+Durée estimée : 1 jour
+```plaintext
 1. **Définition des Scénarios de Test**
    - Créer des scénarios qui traversent plusieurs piliers
    - Préparer les données de test pour ces scénarios
@@ -214,10 +214,10 @@ Durée estimée : 1 jour
    - Retester après optimisation
 
 ### Étape 4.3 : Validation Finale
-```
-Durée estimée : 0.5 jour
-```
 
+```plaintext
+Durée estimée : 0.5 jour
+```plaintext
 1. **Revue Complète**
    - Vérifier que toutes les fonctionnalités sont correctement implémentées
    - S'assurer que la documentation est à jour
@@ -236,10 +236,10 @@ Durée estimée : 0.5 jour
 ## Phase 5 : Déploiement et Suivi
 
 ### Étape 5.1 : Déploiement
-```
-Durée estimée : 0.5 jour
-```
 
+```plaintext
+Durée estimée : 0.5 jour
+```plaintext
 1. **Sauvegarde des Workflows Existants**
    - Exporter tous les workflows actuels
    - Stocker les sauvegardes dans un emplacement sécurisé
@@ -256,10 +256,10 @@ Durée estimée : 0.5 jour
    - S'assurer que les données sont correctement traitées
 
 ### Étape 5.2 : Formation et Documentation
-```
-Durée estimée : 0.5 jour
-```
 
+```plaintext
+Durée estimée : 0.5 jour
+```plaintext
 1. **Mise à Jour de la Documentation**
    - Finaliser la documentation technique
    - Créer des guides d'utilisation
@@ -276,10 +276,10 @@ Durée estimée : 0.5 jour
    - Partager les leçons apprises
 
 ### Étape 5.3 : Suivi et Amélioration Continue
-```
-Durée estimée : Continu
-```
 
+```plaintext
+Durée estimée : Continu
+```plaintext
 1. **Surveillance des Performances**
    - Suivre les métriques clés
    - Identifier les opportunités d'amélioration
@@ -325,8 +325,7 @@ Durée estimée : Continu
   ],
   "webhookId": "pilier1-to-pilier2-webhook"
 }
-```
-
+```plaintext
 ### Nœud de Configuration Centralisée
 
 ```javascript
@@ -384,8 +383,7 @@ Durée estimée : Continu
     480
   ]
 }
-```
-
+```plaintext
 ### Nœud de Validation des Données
 
 ```javascript
@@ -402,8 +400,7 @@ Durée estimée : Continu
     300
   ]
 }
-```
-
+```plaintext
 ### Nœud de Journalisation Centralisée
 
 ```javascript
@@ -420,8 +417,7 @@ Durée estimée : Continu
     300
   ]
 }
-```
-
+```plaintext
 ### Nœud de Gestion des Erreurs
 
 ```javascript
@@ -438,8 +434,7 @@ Durée estimée : Continu
     300
   ]
 }
-```
-
+```plaintext
 ## Calendrier de Mise en Œuvre
 
 | Phase | Étape | Durée | Date de Début | Date de Fin |

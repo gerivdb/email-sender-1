@@ -6,6 +6,7 @@ related: []
 ---
 
 ## Conflits avec les hooks Git
+
 - **Problème identifié** : Erreur d'accès au fichier pre-commit pendant le processus de commit
   ```
   Set-Content : Le processus ne peut pas accéder au fichier '.git/hooks/pre-commit', car il est en cours d'utilisation par un autre processus.
@@ -17,3 +18,4 @@ related: []
   - Implémenter un mécanisme de verrouillage pour éviter les accès concurrents
 
 ###
+

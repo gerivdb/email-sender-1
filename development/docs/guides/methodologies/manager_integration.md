@@ -20,7 +20,7 @@ L'objectif de l'intégration des gestionnaires est de :
 
 Chaque gestionnaire est intégré au Process Manager via un adaptateur dédié. Les adaptateurs sont organisés selon la structure suivante :
 
-```
+```plaintext
 development/managers/process-manager/
 ├── adapters/
 │   ├── mode-manager-adapter.ps1
@@ -31,8 +31,7 @@ development/managers/process-manager/
 └── scripts/
     ├── process-manager.ps1
     └── integrate-managers.ps1
-```
-
+```plaintext
 ### Fonctionnement des adaptateurs
 
 Les adaptateurs agissent comme des ponts entre le Process Manager et les gestionnaires spécifiques. Ils :
@@ -57,8 +56,7 @@ Exemple d'utilisation via le Process Manager :
 
 ```powershell
 .\process-manager.ps1 -Command Run -ManagerName "ModeManager" -ManagerCommand "SetMode" -Mode "CHECK"
-```
-
+```plaintext
 ### Roadmap Manager
 
 Le Roadmap Manager est responsable de la gestion des roadmaps et des tâches. Son adaptateur expose les fonctionnalités suivantes :
@@ -72,8 +70,7 @@ Exemple d'utilisation via le Process Manager :
 
 ```powershell
 .\process-manager.ps1 -Command Run -ManagerName "RoadmapManager" -ManagerCommand "ParseRoadmap" -FilePath "projet/roadmaps/roadmap_complete_converted.md"
-```
-
+```plaintext
 ### Integrated Manager
 
 L'Integrated Manager est responsable de l'intégration avec les systèmes externes. Son adaptateur expose les fonctionnalités suivantes :
@@ -87,8 +84,7 @@ Exemple d'utilisation via le Process Manager :
 
 ```powershell
 .\process-manager.ps1 -Command Run -ManagerName "IntegratedManager" -ManagerCommand "ExecuteWorkflow" -WorkflowName "ProcessEmail"
-```
-
+```plaintext
 ### Script Manager
 
 Le Script Manager est responsable de la gestion des scripts. Son adaptateur expose les fonctionnalités suivantes :
@@ -102,8 +98,7 @@ Exemple d'utilisation via le Process Manager :
 
 ```powershell
 .\process-manager.ps1 -Command Run -ManagerName "ScriptManager" -ManagerCommand "ExecuteScript" -ScriptName "update-roadmap-checkboxes.ps1" -RoadmapPath "projet/roadmaps/roadmap_complete_converted.md" -Force
-```
-
+```plaintext
 ### Error Manager
 
 L'Error Manager est responsable de la gestion des erreurs. Son adaptateur expose les fonctionnalités suivantes :
@@ -117,8 +112,7 @@ Exemple d'utilisation via le Process Manager :
 
 ```powershell
 .\process-manager.ps1 -Command Run -ManagerName "ErrorManager" -ManagerCommand "LogError" -ErrorMessage "Une erreur est survenue" -ErrorSource "Process Manager" -ErrorCode "PM001"
-```
-
+```plaintext
 ## Installation et configuration
 
 ### Installation automatique
@@ -127,8 +121,7 @@ Pour installer et intégrer tous les gestionnaires, utilisez le script d'intégr
 
 ```powershell
 .\development\managers\process-manager\scripts\integrate-managers.ps1
-```
-
+```plaintext
 Ce script :
 1. Découvre automatiquement les gestionnaires disponibles
 2. Enregistre chaque gestionnaire avec le Process Manager
@@ -143,20 +136,17 @@ Si vous préférez une installation manuelle, suivez ces étapes pour chaque ges
 
 ```powershell
 .\process-manager.ps1 -Command Register -ManagerName "NomDuGestionnaire" -ManagerPath "chemin/vers/le/gestionnaire.ps1"
-```
-
+```plaintext
 2. Vérifiez que le gestionnaire est correctement enregistré :
 
 ```powershell
 .\process-manager.ps1 -Command List
-```
-
+```plaintext
 3. Testez l'intégration en exécutant une commande sur le gestionnaire :
 
 ```powershell
 .\process-manager.ps1 -Command Run -ManagerName "NomDuGestionnaire" -ManagerCommand "CommandeDuGestionnaire"
-```
-
+```plaintext
 ## Développement de nouveaux adaptateurs
 
 ### Structure d'un adaptateur
@@ -175,9 +165,11 @@ param (
 )
 
 # Définir le chemin vers le gestionnaire
+
 $managerPath = "chemin/vers/le/gestionnaire.ps1"
 
 # Fonction pour exécuter une commande sur le gestionnaire
+
 function Invoke-ManagerCommand {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -189,24 +181,28 @@ function Invoke-ManagerCommand {
     )
 
     # Logique d'exécution de la commande
+
 }
 
 # Exécuter la commande spécifiée
+
 switch ($Command) {
     "Commande1" {
         # Logique pour la commande 1
+
     }
     
     "Commande2" {
         # Logique pour la commande 2
+
     }
     
     "Commande3" {
         # Logique pour la commande 3
+
     }
 }
-```
-
+```plaintext
 ### Bonnes pratiques
 
 Lors du développement d'un nouvel adaptateur, suivez ces bonnes pratiques :
@@ -225,8 +221,7 @@ Pour exécuter les tests unitaires des adaptateurs, utilisez la commande suivant
 
 ```powershell
 .\development\managers\process-manager\tests\Test-ManagerAdapters.ps1
-```
-
+```plaintext
 Ces tests vérifient :
 - L'existence des adaptateurs
 - La syntaxe des adaptateurs
@@ -239,8 +234,7 @@ Pour tester l'intégration complète des gestionnaires, utilisez la commande sui
 
 ```powershell
 .\process-manager.ps1 -Command List
-```
-
+```plaintext
 Cette commande liste tous les gestionnaires enregistrés et vérifie qu'ils sont correctement intégrés.
 
 ## Dépannage
@@ -282,10 +276,9 @@ Cette commande liste tous les gestionnaires enregistrés et vérifie qu'ils sont
 
 Le Process Manager génère des journaux dans le répertoire suivant :
 
-```
+```plaintext
 logs/process-manager/
-```
-
+```plaintext
 Les niveaux de journalisation peuvent être configurés dans le fichier de configuration principal.
 
 ## Références

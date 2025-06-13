@@ -10,10 +10,9 @@ Ce document présente les formules mathématiques et l'implémentation des métr
 
 Pour chaque moment statistique, l'erreur pondérée est définie par :
 
-```
+```plaintext
 Erreur_pondérée(M) = w_M × Erreur_relative(M)
-```
-
+```plaintext
 où :
 - M est le moment statistique (moyenne, variance, asymétrie ou aplatissement)
 - w_M est le poids attribué au moment M
@@ -23,20 +22,18 @@ où :
 
 L'erreur totale pondérée combine les erreurs de tous les moments :
 
-```
+```plaintext
 Erreur_totale = Σ w_M × Erreur_relative(M)
-```
-
+```plaintext
 où la somme est effectuée sur tous les moments statistiques.
 
 ## 3. Formules spécifiques pour chaque moment
 
 ### 3.1 Erreur pondérée pour la moyenne (1er moment)
 
-```
+```plaintext
 Erreur_moyenne = w₁ × |μ - μₕ| / |μ| × 100%
-```
-
+```plaintext
 où :
 - w₁ est le poids attribué à la moyenne
 - μ est la moyenne réelle
@@ -44,10 +41,9 @@ où :
 
 ### 3.2 Erreur pondérée pour la variance (2ème moment)
 
-```
+```plaintext
 Erreur_variance = w₂ × |σ² - σ²ₕ| / |σ²| × 100%
-```
-
+```plaintext
 où :
 - w₂ est le poids attribué à la variance
 - σ² est la variance réelle
@@ -55,18 +51,16 @@ où :
 
 La correction de Sheppard pour la variance est :
 
-```
+```plaintext
 σ²ₕ_corrigée = σ²ₕ_non_corrigée + h²/12
-```
-
+```plaintext
 où h est la largeur du bin (ou la largeur moyenne pondérée pour les bins à largeur variable).
 
 ### 3.3 Erreur pondérée pour l'asymétrie (3ème moment)
 
-```
+```plaintext
 Erreur_asymétrie = w₃ × |γ₁ - γ₁ₕ| / |γ₁| × 100%
-```
-
+```plaintext
 où :
 - w₃ est le poids attribué à l'asymétrie
 - γ₁ est l'asymétrie réelle
@@ -74,10 +68,9 @@ où :
 
 L'asymétrie de l'histogramme est calculée par :
 
-```
+```plaintext
 γ₁ₕ = m₃ / (m₂)^(3/2)
-```
-
+```plaintext
 où :
 - m₂ = Σ fᵢ·(xᵢ - μₕ)²
 - m₃ = Σ fᵢ·(xᵢ - μₕ)³
@@ -87,10 +80,9 @@ où :
 
 ### 3.4 Erreur pondérée pour l'aplatissement (4ème moment)
 
-```
+```plaintext
 Erreur_aplatissement = w₄ × |β₂ - β₂ₕ| / |β₂| × 100%
-```
-
+```plaintext
 où :
 - w₄ est le poids attribué à l'aplatissement
 - β₂ est l'aplatissement réel
@@ -98,10 +90,9 @@ où :
 
 L'aplatissement de l'histogramme est calculé par :
 
-```
+```plaintext
 β₂ₕ = m₄ / (m₂)²
-```
-
+```plaintext
 où :
 - m₂ = Σ fᵢ·(xᵢ - μₕ)²
 - m₄ = Σ fᵢ·(xᵢ - μₕ)⁴
@@ -155,12 +146,15 @@ def weighted_mean_error(real_data, bin_edges, bin_counts, weight=1.0):
         raw_error: Erreur brute (non pondérée)
     """
     # Calculer la moyenne réelle
+
     real_mean = np.mean(real_data)
     
     # Calculer les centres des bins
+
     bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
     
     # Calculer les fréquences relatives
+
     total_count = np.sum(bin_counts)
     if total_count == 0:
         return weight * 100.0, 100.0
@@ -168,20 +162,22 @@ def weighted_mean_error(real_data, bin_edges, bin_counts, weight=1.0):
     frequencies = bin_counts / total_count
     
     # Calculer la moyenne de l'histogramme
+
     hist_mean = np.sum(bin_centers * frequencies)
     
     # Calculer l'erreur relative en pourcentage
+
     if abs(real_mean) > 1e-10:
         relative_error = abs(real_mean - hist_mean) / abs(real_mean) * 100
     else:
         relative_error = 100.0 if abs(hist_mean) > 1e-10 else 0.0
     
     # Appliquer la pondération
+
     weighted_error = weight * relative_error
     
     return weighted_error, relative_error
-```
-
+```plaintext
 ### 5.2 Calcul de l'erreur totale pondérée
 
 ```python
@@ -200,26 +196,33 @@ def calculate_total_weighted_error(real_data, bin_edges, bin_counts, weights=Non
         component_errors: Dictionnaire des erreurs par composante
     """
     # Définir les poids par défaut si non spécifiés
+
     if weights is None:
         weights = [0.40, 0.30, 0.20, 0.10]  # [moyenne, variance, asymétrie, aplatissement]
+
     
     # Normaliser les poids
+
     sum_weights = sum(weights)
     if sum_weights > 0:
         weights = [w / sum_weights for w in weights]
     else:
         weights = [0.25, 0.25, 0.25, 0.25]  # Poids égaux par défaut
+
     
     # Calculer les erreurs pondérées pour chaque moment
+
     mean_error, mean_raw = weighted_mean_error(real_data, bin_edges, bin_counts, weights[0])
     variance_error, variance_raw = weighted_variance_error(real_data, bin_edges, bin_counts, weights[1])
     skewness_error, skewness_raw = weighted_skewness_error(real_data, bin_edges, bin_counts, weights[2])
     kurtosis_error, kurtosis_raw = weighted_kurtosis_error(real_data, bin_edges, bin_counts, weights[3])
     
     # Calculer l'erreur totale pondérée
+
     total_weighted_error = mean_error + variance_error + skewness_error + kurtosis_error
     
     # Préparer le dictionnaire des erreurs par composante
+
     component_errors = {
         "mean": {
             "raw_error": mean_raw,
@@ -244,8 +247,7 @@ def calculate_total_weighted_error(real_data, bin_edges, bin_counts, weights=Non
     }
     
     return total_weighted_error, component_errors
-```
-
+```plaintext
 ## 6. Exemples d'application
 
 ### 6.1 Comparaison des différentes stratégies de pondération

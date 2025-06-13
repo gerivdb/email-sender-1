@@ -1,6 +1,7 @@
-﻿﻿# Plan de développement v9 : Intégration des modèles LWM et LCM pour la gestion avancée des roadmaps
+﻿# Plan de développement v9 : Intégration des modèles LWM et LCM pour la gestion avancée des roadmaps
 
 ## 1. Implémentation du framework LWM (Large Workflow Models)
+
 - [ ] **1.1** Concevoir l'architecture d'orchestration des workflows
   - [ ] **1.1.1** Définir le modèle de données pour les workflows
     - [ ] **1.1.1.1** Créer le schéma de représentation des workflows
@@ -42,6 +43,7 @@
     - [ ] **1.3.3.3** Développer le système de recommandation d'optimisations
 
 ## 2. Implémentation du framework LCM (Large Concept Models)
+
 - [ ] **2.1** Développer le système de traitement basé sur les concepts
   - [ ] **2.1.1** Créer le modèle de représentation des concepts
     - [ ] **2.1.1.1** Définir la structure des unités conceptuelles
@@ -83,6 +85,7 @@
     - [ ] **2.3.3.3** Implémenter la prédiction des tendances temporelles
 
 ## 3. Intégration avec le système RAG existant
+
 - [ ] **3.1** Améliorer le système de recherche vectorielle
   - [ ] **3.1.1** Intégrer les embeddings conceptuels dans Qdrant
     - [ ] **3.1.1.1** Adapter le schéma de collection pour les concepts
@@ -124,6 +127,7 @@
     - [ ] **3.3.3.3** Développer la prédiction des besoins futurs
 
 ## 4. Interface utilisateur et expérience utilisateur
+
 - [ ] **4.1** Développer l'interface de gestion des workflows
   - [ ] **4.1.1** Créer l'éditeur visuel de workflows
     - [ ] **4.1.1.1** Implémenter l'interface drag-and-drop
@@ -165,6 +169,7 @@
     - [ ] **4.3.3.3** Créer le système de distribution programmée
 
 ## 5. Déploiement et intégration
+
 - [ ] **5.1** Développer l'infrastructure de déploiement
   - [ ] **5.1.1** Créer le système de déploiement automatisé
     - [ ] **5.1.1.1** Implémenter les pipelines CI/CD

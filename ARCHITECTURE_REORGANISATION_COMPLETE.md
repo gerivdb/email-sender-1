@@ -9,7 +9,8 @@
 ## 🔄 Changements effectués
 
 ### 1. **Déplacement et réorganisation**
-```
+
+```plaintext
 AVANT:
 📁 cmd/roadmap-cli/                    ❌ Incohérent
 📁 tools/dependency_manager.go         ❌ Doublon
@@ -25,9 +26,9 @@ APRÈS:
 📁 scripts/
 ├── dep.ps1                           ✅ Scripts utilitaires
 └── roadmap.ps1                       ✅ Interface simplifiée
-```
-
+```plaintext
 ### 2. **Scripts mis à jour**
+
 - ✅ `scripts/dep.ps1` - Pointé vers le nouveau gestionnaire de dépendances
 - ✅ `scripts/roadmap.ps1` - Nouvelle interface pour TaskMaster
 - ✅ `test-robust.ps1` - Chemin mis à jour
@@ -35,12 +36,13 @@ APRÈS:
 - ✅ `test-all-consolidated.ps1` - Chemin mis à jour
 
 ### 3. **Documentation mise à jour**
+
 - ✅ `development/managers/README.md` - Architecture unifiée documentée
 - ✅ `scripts/README.md` - Guide d'utilisation des scripts utilitaires
 
 ## 🎯 Architecture cible atteinte
 
-```
+```plaintext
 📁 development/managers/               🎯 CENTRE DE CONTRÔLE
 ├── dependency-manager/               ✅ Gestionnaire de dépendances Go
 ├── roadmap-manager/                  ✅ TaskMaster (ex cmd/roadmap-cli)
@@ -60,24 +62,31 @@ APRÈS:
 ├── dependency-manager/              ✅ Config dépendances
 ├── integrated-manager/              ✅ Config orchestrateur
 └── [autres configs...]
-```
-
+```plaintext
 ## ✅ Fonctionnalités validées
 
 ### Scripts utilitaires
+
 ```powershell
 # ✅ Gestionnaire de dépendances
+
 .\scripts\dep.ps1 help                # Interface claire
+
 .\scripts\dep.ps1 list                # Fonctionne
+
 .\scripts\dep.ps1 build               # Compilation OK
 
 # ✅ Gestionnaire de roadmap  
-.\scripts\roadmap.ps1 help            # Interface claire
-.\scripts\roadmap.ps1 view            # TUI disponible
-.\scripts\roadmap.ps1 build           # Compilation OK
-```
 
+.\scripts\roadmap.ps1 help            # Interface claire
+
+.\scripts\roadmap.ps1 view            # TUI disponible
+
+.\scripts\roadmap.ps1 build           # Compilation OK
+
+```plaintext
 ### Vérifications techniques
+
 - ✅ Binaires correctement localisés
 - ✅ Chemins mis à jour dans tous les scripts
 - ✅ Tests de validation passés
@@ -86,21 +95,25 @@ APRÈS:
 ## 🚀 Avantages de la nouvelle architecture
 
 ### **1. Cohérence**
+
 - Tous les gestionnaires dans un seul endroit
 - Structure uniforme et prévisible
 - Nommage standardisé
 
 ### **2. Maintenabilité**
+
 - Scripts utilitaires simplifiés dans `scripts/`
 - Documentation centralisée
 - Moins de duplication
 
 ### **3. Évolutivité**
+
 - Facilité d'ajout de nouveaux gestionnaires
 - Architecture modulaire
 - Interfaces standardisées
 
 ### **4. Accessibilité**
+
 - Scripts simples pour les utilisateurs : `.\scripts\dep.ps1`
 - Accès avancé pour les développeurs : `development/managers/`
 - Documentation claire à chaque niveau

@@ -1,4 +1,4 @@
-﻿Absolument ! Voici une analyse du contenu audio de la vidéo et son utilité potentielle pour votre projet, le tout en français.
+Absolument ! Voici une analyse du contenu audio de la vidéo et son utilité potentielle pour votre projet, le tout en français.
 
 ## Analyse du Contenu Audio de la Vidéo
 

@@ -1,4 +1,4 @@
-﻿# CompÃ©tences Communes Ã  Plusieurs AmÃ©liorations
+# CompÃ©tences Communes Ã  Plusieurs AmÃ©liorations
 
 Ce document prÃ©sente les compÃ©tences qui sont communes Ã  plusieurs amÃ©liorations, ce qui permet de dÃ©terminer les compÃ©tences les plus importantes et polyvalentes.
 
@@ -9,35 +9,65 @@ Une compÃ©tence est considÃ©rÃ©e comme commune si elle apparaÃ®t dans au
 ## Table des MatiÃ¨res
 
 - [RÃ©sumÃ©](#rÃ©sumÃ©)
+
 - [CompÃ©tences Communes](#compÃ©tences-communes)
+
   - [PowerShell](#powershell)
+
   - [Tests unitaires](#tests-unitaires)
+
   - [Conception de fonctionnalitÃ©s](#conception-de-fonctionnalitã©s)
+
   - [Tests de rÃ©gression](#tests-de-rã©gression)
+
   - [Refactoring](#refactoring)
+
   - [Journalisation](#journalisation)
+
   - [JSON](#json)
+
   - [IntÃ©gration de systÃ¨mes](#intã©gration-de-systã¨mes)
+
   - [Tests de performance](#tests-de-performance)
+
   - [Architecture logicielle](#architecture-logicielle)
+
   - [Optimisation](#optimisation)
+
   - [Profilage](#profilage)
+
   - [Optimisation de performances](#optimisation-de-performances)
+
   - [API REST](#api-rest)
+
   - [YAML](#yaml)
+
   - [Modules PowerShell](#modules-powershell)
+
   - [Gestion de configuration](#gestion-de-configuration)
+
   - [Gestion d'erreurs](#gestion-d'erreurs)
+
   - [Diagnostic](#diagnostic)
+
   - [Gestion d'Ã©tats](#gestion-d'ã©tats)
+
   - [Machines Ã  Ã©tats](#machines-ã -ã©tats)
+
   - [Gestion de processus](#gestion-de-processus)
+
   - [Programmation concurrente](#programmation-concurrente)
+
   - [Runspace Pools](#runspace-pools)
+
   - [Parsing de Markdown](#parsing-de-markdown)
+
   - [Rotation de logs](#rotation-de-logs)
+
   - [Graphes](#graphes)
+
   - [API](#api)
+
   - [Tests d'intÃ©gration](#tests-d'intã©gration)
 
 ## <a name='rÃ©sumÃ©'></a>RÃ©sumÃ©

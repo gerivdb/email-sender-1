@@ -2,7 +2,7 @@
 
 ## 🎯 **Vue Architecturale Globale**
 
-```
+```plaintext
                     🌐 User Interface Layer
                     ┌─────────────────────────────────────┐
                     │         rag-cli Enhanced            │
@@ -33,13 +33,12 @@
                     │      Storage & Indexing             │
                     │ Vectors │ Metadata │ Transformations │
                     └─────────────────────────────────────┘
-```
-
+```plaintext
 ---
 
 ## 🔄 **Flux de Transformation de Mémoire**
 
-```
+```plaintext
                     📝 Plaintext Memory
                          (QDrant Docs)
                               ↗ ↙
@@ -48,9 +47,9 @@
                               ↘ ↗
                          💾 MemCube
                       (Unified Abstraction)
-```
-
+```plaintext
 ### **Déclencheurs de Transformation**
+
 - **Plaintext → Activation :** Accès > 10x en 24h
 - **Activation → Parametric :** Pattern stable > 30 jours  
 - **Parametric → Plaintext :** Usage < 1x en 90 jours
@@ -59,7 +58,7 @@
 
 ## 🛡️ **Couches de Protection Anti-Hallucination**
 
-```
+```plaintext
 User Query
     ↓
 ┌─────────────────┐
@@ -83,13 +82,12 @@ User Query
 └─────────────────┘
     ↓
 Trusted Response
-```
-
+```plaintext
 ---
 
 ## 🌐 **Memory Marketplace Ecosystem**
 
-```
+```plaintext
                     🏪 Decentralized Marketplace
                     ┌─────────────────────────────────────┐
                     │         Blockchain Ledger           │
@@ -108,13 +106,12 @@ Trusted Response
   📤 Export                      🔍 Validate                       📥 Import
   MemCubes                       Quality                          Compatible
                                                                   Assets
-```
-
+```plaintext
 ---
 
 ## 📊 **Dashboard de Monitoring MemOS**
 
-```
+```plaintext
 🖥️  MemOS-QDrant System Dashboard
 ══════════════════════════════════════════════════════════════════
 
@@ -147,30 +144,33 @@ Trusted Response
 │ Parametric → Plaintext: 2 transformations                              │
 │ Auto-optimization efficiency: 96.8%                                     │
 └─────────────────────────────────────────────────────────────────────────┘
-```
-
+```plaintext
 ---
 
 ## 🚀 **Commandes rag-cli Avancées**
 
 ### **Recherche et Récupération**
+
 ```bash
 # Recherche enrichie MemOS
+
 rag-cli memo-search "risques financiers produit X" \
   --memory-types=all \
   --min-sufficiency=0.7 \
   --max-latency=2s
 
 # Protection anti-hallucination stricte
+
 rag-cli anti-hallucination "prédiction future marché" \
   --strict-attribution \
   --conflict-detection \
   --provenance-tracking
-```
-
+```plaintext
 ### **Memory Marketplace**
+
 ```bash
 # Publication de connaissances
+
 rag-cli memo-publish \
   --collection=financial_docs \
   --domain=risk_management \
@@ -178,16 +178,18 @@ rag-cli memo-publish \
   --pricing=premium
 
 # Import de connaissances complémentaires
+
 rag-cli memo-import \
   --domain=compliance \
   --budget=1000 \
   --compatibility-check \
   --trust-threshold=0.9
-```
-
+```plaintext
 ### **Monitoring et Gouvernance**
+
 ```bash
 # Dashboard temps réel
+
 rag-cli dashboard \
   --show-memory-distribution \
   --show-transformations \
@@ -195,19 +197,20 @@ rag-cli dashboard \
   --refresh=5s
 
 # Audit et compliance
+
 rag-cli audit \
   --period=7d \
   --export=compliance_report.json \
   --check-gdpr \
   --check-internal-policies
-```
-
+```plaintext
 ---
 
 ## 🎯 **Métriques de Succès Quantifiées**
 
 ### **Phase 1 : Fondations (Semaines 1-4)**
-```
+
+```plaintext
 ┌─────────────────────────────────────────────────────────────────┐
 │ ✅ Objectifs Phase 1                     │ Status │ Target      │
 ├─────────────────────────────────────────┼────────┼─────────────┤
@@ -216,10 +219,10 @@ rag-cli audit \
 │ Enhanced QDrant Metadata                │   ✅   │ Implemented │
 │ Advanced Metrics Dashboard              │   ✅   │ Functional  │
 └─────────────────────────────────────────┴────────┴─────────────┘
-```
-
+```plaintext
 ### **Phase 2 : MemOS Core (Semaines 5-8)**
-```
+
+```plaintext
 ┌─────────────────────────────────────────────────────────────────┐
 │ 🔄 Objectifs Phase 2                     │ Status │ Target      │
 ├─────────────────────────────────────────┼────────┼─────────────┤
@@ -228,10 +231,10 @@ rag-cli audit \
 │ Automatic Versioning                    │   🔄   │ Deployed    │
 │ Advanced Monitoring Dashboard           │   🔄   │ Live        │
 └─────────────────────────────────────────┴────────┴─────────────┘
-```
-
+```plaintext
 ### **Phase 3 : Intelligence (Semaines 9-12)**
-```
+
+```plaintext
 ┌─────────────────────────────────────────────────────────────────┐
 │ 🚀 Objectifs Phase 3                     │ Status │ Target      │
 ├─────────────────────────────────────────┼────────┼─────────────┤
@@ -240,8 +243,7 @@ rag-cli audit \
 │ Memory Marketplace Integration          │   🚀   │ Beta Launch │
 │ Continuous Optimization Engine          │   🚀   │ Production  │
 └─────────────────────────────────────────┴────────┴─────────────┘
-```
-
+```plaintext
 ---
 
 *Cette architecture représente l'évolution vers un système RAG de nouvelle génération, intégrant les concepts les plus avancés en matière de gestion de mémoire et d'intelligence artificielle.*

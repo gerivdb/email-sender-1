@@ -1,15 +1,21 @@
-﻿# Matrice de CompÃ©tences par Gestionnaire
+# Matrice de CompÃ©tences par Gestionnaire
 
 Ce document prÃ©sente une matrice de compÃ©tences par gestionnaire, ce qui permet de visualiser les compÃ©tences requises pour chaque gestionnaire et d'identifier les synergies potentielles.
 
 ## Table des MatiÃ¨res
 
 - [RÃ©sumÃ©](#rÃ©sumÃ©)
+
 - [Matrice de CompÃ©tences](#matrice-de-compÃ©tences)
+
 - [Matrice par CatÃ©gorie](#matrice-par-catÃ©gorie)
+
 - [Matrice par Niveau d'Expertise](#matrice-par-niveau-dexpertise)
+
 - [Synergies entre Gestionnaires](#synergies-entre-gestionnaires)
+
 - [AmÃ©liorations par Gestionnaire](#amÃ©liorations-par-gestionnaire)
+
 - [Implications pour la Planification](#implications-pour-la-planification)
 
 ## <a name='rÃ©sumÃ©'></a>RÃ©sumÃ©

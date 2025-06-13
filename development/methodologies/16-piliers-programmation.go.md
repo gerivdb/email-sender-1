@@ -37,8 +37,7 @@ func FileExists(filename string) bool {
     _, err := os.Stat(filename)
     return !os.IsNotExist(err)
 }
-```
-
+```plaintext
 ## 2. Abstraction
 
 L'abstraction en Go utilise les interfaces pour masquer les détails d'implémentation complexes derrière des contrats simples.
@@ -111,8 +110,7 @@ func GetData(ctx context.Context, source DataSource, query string) ([]byte, erro
     
     return source.Query(ctx, query)
 }
-```
-
+```plaintext
 ## 3. Encapsulation
 
 L'encapsulation en Go utilise les conventions de nommage (majuscule/minuscule) et les packages pour contrôler l'accès aux données.
@@ -189,8 +187,7 @@ func (u *User) ValidatePassword(inputPassword string) bool {
 func (u *User) HasPassword() bool {
     return u.password != ""
 }
-```
-
+```plaintext
 ## 4. Héritage et Composition
 
 Go privilégie la composition à l'héritage. On utilise l'embedding pour réutiliser le code.
@@ -286,8 +283,7 @@ func (m *Motorcycle) Start() {
     fmt.Println("Démarrage de la moto")
     m.Vehicle.Start()
 }
-```
-
+```plaintext
 ## 5. Polymorphisme
 
 Le polymorphisme en Go s'appuie sur les interfaces pour traiter différents types de manière uniforme.
@@ -409,8 +405,7 @@ func GetShapesByType(shapes []Shape, shapeType string) []Shape {
     
     return result
 }
-```
-
+```plaintext
 ## 6. Composition
 
 La composition en Go permet de créer des objets complexes en combinant des objets plus simples.
@@ -572,8 +567,7 @@ func (c *Car) GetStatus() string {
         c.GPS.IsEnabled,
     )
 }
-```
-
+```plaintext
 ## 7. Interfaces
 
 Les interfaces en Go définissent des contrats que les types doivent respecter, permettant le polymorphisme et le découplage.
@@ -741,8 +735,7 @@ func (sm *StorageManager) Close() error {
     }
     return sm.secondary.Close()
 }
-```
-
+```plaintext
 ## 8. Gestion des erreurs
 
 Go utilise des valeurs d'erreur explicites pour une gestion robuste des erreurs.
@@ -1000,8 +993,7 @@ func (s *UserService) UpdateUser(ctx context.Context, id int, updates map[string
     
     return nil
 }
-```
-
+```plaintext
 ## 9. Tests unitaires
 
 Go propose un framework de test intégré avec le package `testing`.
@@ -1043,8 +1035,7 @@ func (c Calculator) Divide(a, b float64) (float64, error) {
     }
     return a / b, nil
 }
-```
-
+```plaintext
 ```go
 // calculator_test.go
 package calculator
@@ -1247,8 +1238,7 @@ func TestCalculatorOperations(t *testing.T) {
         })
     })
 }
-```
-
+```plaintext
 ## 10. Documentation
 
 Go utilise `godoc` pour générer automatiquement la documentation à partir des commentaires.
@@ -1401,8 +1391,7 @@ func (c *Calculator) addToHistory(opType string, input []float64, result float64
         c.history = c.history[len(c.history)-c.maxHistory:]
     }
 }
-```
-
+```plaintext
 ## 11. Gestion de la configuration
 
 Go utilise diverses approches pour la gestion de configuration : variables d'environnement, fichiers JSON/YAML, flags de ligne de commande.
@@ -1655,8 +1644,7 @@ func contains(slice []string, item string) bool {
     }
     return false
 }
-```
-
+```plaintext
 ## 12. Journalisation
 
 Go utilise des packages de journalisation comme le package standard `log` ou des bibliothèques tierces comme `logrus` ou `zap`.
@@ -2083,8 +2071,7 @@ func ExampleLogging() {
     duration := time.Since(start)
     userLogger.Info("Opération terminée", Duration("duration", duration))
 }
-```
-
+```plaintext
 ## 13. Performance
 
 L'optimisation des performances en Go s'appuie sur les outils intégrés de profiling et les bonnes pratiques du langage.
@@ -2498,8 +2485,7 @@ func PrintMemStats() {
     fmt.Printf("GC Runs: %d\n", m.NumGC)
     fmt.Printf("===========================\n")
 }
-```
-
+```plaintext
 ## 14. Sécurité
 
 La sécurité en Go implique la validation des entrées, la cryptographie, l'authentification et la protection contre les vulnérabilités communes.
@@ -3004,8 +2990,7 @@ func (rl *RateLimiter) cleanup() {
         }
     }
 }
-```
-
+```plaintext
 ## 15. Concurrence
 
 Go excelle dans la gestion de la concurrence avec les goroutines et les channels.
@@ -3510,8 +3495,7 @@ func (bc *BroadcastChannel) Close() {
     
     bc.listeners = nil
 }
-```
-
+```plaintext
 ## 16. Versionnement
 
 Go utilise go.mod pour la gestion des dépendances et le versionnement sémantique.
@@ -3538,8 +3522,7 @@ require (
 require (
     golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
 )
-```
-
+```plaintext
 ```go
 package version
 
@@ -3874,8 +3857,7 @@ func ExampleVersionManagement() {
         Description: "Version majeure avec changements breaking",
     })
 }
-```
-
+```plaintext
 ## Conclusion
 
 Ces 16 bases de la programmation en Go forment un socle solide pour développer des applications robustes, maintenables et performantes. Go, avec sa philosophie de simplicité et d'efficacité, offre des outils intégrés et des patterns idiomatiques qui facilitent l'application de ces principes.

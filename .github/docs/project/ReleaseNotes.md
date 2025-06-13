@@ -93,14 +93,12 @@ Pour installer cette version, téléchargez le module et importez-le avec :
 
 ```powershell
 Import-Module -Path "chemin\vers\UnifiedParallel.psm1"
-```
-
+```plaintext
 Pour vérifier la version installée :
 
 ```powershell
 Get-UnifiedParallelVersion
-```
-
+```plaintext
 ## Remerciements
 
 Merci à tous les contributeurs qui ont participé à cette version, notamment pour les tests, les suggestions d'amélioration et les rapports de bugs.

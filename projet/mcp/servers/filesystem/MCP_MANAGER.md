@@ -19,8 +19,7 @@
     }
   ]
 }
-```
-
+```plaintext
 ## Documentation API
 
 Voir le README du package dans `node_modules/@modelcontextprotocol/server-filesystem/README.md`.

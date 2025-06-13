@@ -3,16 +3,27 @@
 ## Table des matières
 
 1. [Email Sender - Structure Modulaire](#section-1)
+
         1.0.1. [Phase 1: Gestion des Disponibilités](#section-2)
+
         1.0.2. [Phase 2: Génération & Envoi des Emails](#section-3)
+
         1.0.3. [Phase 3: Traitement des Réponses](#section-4)
+
         1.0.4. [Phase 4: Gestion des Concerts Confirmés](#section-5)
+
         1.0.5. [Phase 5: Suivi Post-Concert](#section-6)
+
         1.0.6. [Phase 6: Évaluation et Planification Future](#section-7)
+
     1.1. [Communication entre les phases](#section-8)
+
     1.2. [Flux de données](#section-9)
+
     1.3. [Installation et configuration](#section-10)
+
     1.4. [Maintenance](#section-11)
+
     1.5. [Avantages de cette structure modulaire](#section-12)
 
 ## 1. Email Sender - Structure Modulaire <a name='section-1'></a>
@@ -76,11 +87,10 @@ Les phases communiquent entre elles de deux manières principales:
 
 ### 1.2. Flux de données <a name='section-9'></a>
 
-```
+```plaintext
 Phase 1 (Disponibilités) → Phase 2 (Emails) → Phase 3 (Réponses) → Phase 4 (Confirmations) → Phase 5 (Post-Concert) → Phase 6 (Évaluation)
 
-```
-
+```plaintext
 ### 1.3. Installation et configuration <a name='section-10'></a>
 
 1. Importez chaque fichier JSON dans n8n

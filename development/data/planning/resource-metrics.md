@@ -122,10 +122,9 @@ L'estimation des ressources est divisée en plusieurs catégories principales :
 
 Le coût total d'une amélioration peut être calculé selon la formule suivante :
 
-```
+```plaintext
 Coût total = Coût personnel + Coût matériel + Coût logiciel + Coût services + Coût formation
-```
-
+```plaintext
 Où :
 - Coût personnel = Nombre de personnes × Taux journalier × Durée (jours)
 - Coût matériel = Coût d'acquisition + Coût d'exploitation

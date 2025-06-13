@@ -7,24 +7,28 @@ Le serveur MCP Roadmap est une implémentation du Model Context Protocol (MCP) s
 ## Fonctionnalités
 
 ### Gestion des roadmaps
+
 - Lecture et écriture de roadmaps au format Markdown et JSON
 - Création, modification et suppression de tâches
 - Gestion des dépendances entre tâches
 - Suivi de l'avancement des tâches
 
 ### Analyse et recherche
+
 - Recherche par mots-clés dans les roadmaps
 - Recherche sémantique avec embeddings vectoriels
 - Analyse de la structure des roadmaps
 - Détection des dépendances implicites
 
 ### Visualisation
+
 - Génération de graphes de dépendances
 - Création de diagrammes de Gantt
 - Visualisation de l'avancement global
 - Représentation des chemins critiques
 
 ### Intégration
+
 - Synchronisation avec Notion
 - Intégration avec GitHub Issues
 - Connexion avec n8n pour l'automatisation
@@ -32,7 +36,7 @@ Le serveur MCP Roadmap est une implémentation du Model Context Protocol (MCP) s
 
 ## Architecture
 
-```
+```plaintext
 ┌─────────────────────┐      ┌─────────────────────┐
 │                     │      │                     │
 │  Interface MCP      │◄────►│  Gestionnaire de    │
@@ -48,8 +52,7 @@ Le serveur MCP Roadmap est une implémentation du Model Context Protocol (MCP) s
 │  (Fichiers/DB)      │      │  (Parser/Validator) │
 │                     │      │                     │
 └─────────────────────┘      └─────────────────────┘
-```
-
+```plaintext
 ### Composants
 
 1. **Interface MCP** : Implémente le protocole MCP pour communiquer avec les modèles d'IA
@@ -60,6 +63,7 @@ Le serveur MCP Roadmap est une implémentation du Model Context Protocol (MCP) s
 ## Installation
 
 ### Prérequis
+
 - Node.js 16 ou supérieur
 - npm ou yarn
 - Accès au système de fichiers pour le stockage des roadmaps
@@ -68,29 +72,33 @@ Le serveur MCP Roadmap est une implémentation du Model Context Protocol (MCP) s
 
 ```bash
 # Installation via npm
+
 npm install -g @email-sender-1/mcp-roadmap-server
 
 # Installation via le script d'installation
-./projet/mcp/scripts/setup/setup-mcp-roadmap.ps1
-```
 
+./projet/mcp/scripts/setup/setup-mcp-roadmap.ps1
+```plaintext
 ### Installation manuelle
 
 ```bash
 # Cloner le dépôt
+
 git clone https://github.com/email-sender-1/mcp-roadmap-server.git
 
 # Installer les dépendances
+
 cd mcp-roadmap-server
 npm install
 
 # Construire le projet
+
 npm run build
 
 # Lier globalement
-npm link
-```
 
+npm link
+```plaintext
 ## Configuration
 
 Le serveur MCP Roadmap peut être configuré via un fichier de configuration JSON ou des variables d'environnement.
@@ -122,11 +130,10 @@ Le serveur MCP Roadmap peut être configuré via un fichier de configuration JSO
     }
   }
 }
-```
-
+```plaintext
 ### Variables d'environnement
 
-```
+```plaintext
 MCP_ROADMAP_PORT=3000
 MCP_ROADMAP_HOST=localhost
 MCP_ROADMAP_STORAGE_TYPE=filesystem
@@ -137,23 +144,24 @@ MCP_ROADMAP_NOTION_ENABLED=true
 MCP_ROADMAP_NOTION_API_KEY=your-notion-api-key
 MCP_ROADMAP_GITHUB_ENABLED=true
 MCP_ROADMAP_GITHUB_TOKEN=your-github-token
-```
-
+```plaintext
 ## Utilisation
 
 ### Démarrage du serveur
 
 ```bash
 # Démarrage avec la configuration par défaut
+
 mcp-roadmap-server
 
 # Démarrage avec un fichier de configuration personnalisé
+
 mcp-roadmap-server --config ./config.json
 
 # Démarrage avec des options en ligne de commande
-mcp-roadmap-server --port 3000 --storage-type filesystem --storage-path ./roadmaps
-```
 
+mcp-roadmap-server --port 3000 --storage-type filesystem --storage-path ./roadmaps
+```plaintext
 ### Intégration avec n8n
 
 Pour utiliser le serveur MCP Roadmap dans n8n, configurez un nœud MCP avec les paramètres suivants :
@@ -170,8 +178,7 @@ Pour utiliser le serveur MCP Roadmap dans n8n, configurez un nœud MCP avec les 
     }
   }
 }
-```
-
+```plaintext
 ### Intégration avec Cursor/VS Code
 
 Pour utiliser le serveur MCP Roadmap dans Cursor ou VS Code, ajoutez la configuration suivante :
@@ -185,8 +192,7 @@ Pour utiliser le serveur MCP Roadmap dans Cursor ou VS Code, ajoutez la configur
     }
   }
 }
-```
-
+```plaintext
 ## API MCP
 
 Le serveur MCP Roadmap expose les fonctions suivantes via le protocole MCP :
@@ -229,8 +235,7 @@ Le serveur MCP Roadmap expose les fonctions suivantes via le protocole MCP :
 ```javascript
 const response = await mcp.invoke("roadmap", "listRoadmaps");
 console.log(response.data);
-```
-
+```plaintext
 ### Exemple 2 : Créer une tâche
 
 ```javascript
@@ -248,8 +253,7 @@ const response = await mcp.invoke("roadmap", "createTask", {
   }
 });
 console.log(response.data);
-```
-
+```plaintext
 ### Exemple 3 : Rechercher des tâches
 
 ```javascript
@@ -261,8 +265,7 @@ const response = await mcp.invoke("roadmap", "searchTasks", {
   }
 });
 console.log(response.data);
-```
-
+```plaintext
 ### Exemple 4 : Générer un graphe de dépendances
 
 ```javascript
@@ -271,26 +274,33 @@ const response = await mcp.invoke("roadmap", "generateDependencyGraph", {
   format: "svg"
 });
 console.log(response.data);
-```
-
+```plaintext
 ## Développement
 
 ### Structure du projet
 
-```
+```plaintext
 mcp-roadmap-server/
 ├── src/
 │   ├── api/           # API MCP
-│   ├── core/          # Logique métier
-│   ├── storage/       # Gestion du stockage
-│   ├── analysis/      # Analyse et recherche
-│   ├── visualization/ # Génération de visualisations
-│   └── integrations/  # Intégrations externes
-├── config/            # Configuration
-├── tests/             # Tests
-└── docs/              # Documentation
-```
 
+│   ├── core/          # Logique métier
+
+│   ├── storage/       # Gestion du stockage
+
+│   ├── analysis/      # Analyse et recherche
+
+│   ├── visualization/ # Génération de visualisations
+
+│   └── integrations/  # Intégrations externes
+
+├── config/            # Configuration
+
+├── tests/             # Tests
+
+└── docs/              # Documentation
+
+```plaintext
 ### Contribuer
 
 1. Forker le dépôt

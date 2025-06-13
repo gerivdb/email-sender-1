@@ -1,4 +1,4 @@
-﻿# mcp-manager
+# mcp-manager
 
 Ce rÃ©pertoire contient les fichiers du gestionnaire mcp-manager.
 

@@ -22,28 +22,34 @@ Cette approche résout plusieurs problèmes :
 
 Chaque instance n8n est stockée dans un dossier séparé sous `n8n/instances/{nom_instance}` avec la structure suivante :
 
-```
+```plaintext
 n8n/instances/{nom_instance}/
 ├── data/                  # Données de l'instance
-│   ├── .n8n/             # Dossier de données n8n
-│   │   └── database.sqlite  # Base de données
-│   └── workflows/        # Workflows de l'instance
-├── n8n-{nom_instance}.pid  # Fichier PID
-├── n8n-{nom_instance}.log  # Fichier log
-├── n8n-{nom_instance}-error.log  # Fichier log d'erreurs
-└── .env                  # Variables d'environnement
-```
 
+│   ├── .n8n/             # Dossier de données n8n
+
+│   │   └── database.sqlite  # Base de données
+
+│   └── workflows/        # Workflows de l'instance
+
+├── n8n-{nom_instance}.pid  # Fichier PID
+
+├── n8n-{nom_instance}.log  # Fichier log
+
+├── n8n-{nom_instance}-error.log  # Fichier log d'erreurs
+
+└── .env                  # Variables d'environnement
+
+```plaintext
 ## Scripts disponibles
 
 ### Démarrage d'une instance
 
 Pour démarrer une instance n8n, utilisez :
 
-```
+```plaintext
 .\start-n8n-instance.cmd -InstanceName "dev" -Port 5679
-```
-
+```plaintext
 Options disponibles :
 
 - `-InstanceName` : Nom de l'instance (par défaut: "default")
@@ -59,10 +65,9 @@ Si le port spécifié est déjà utilisé, le script trouvera automatiquement un
 
 Pour arrêter une instance n8n, utilisez :
 
-```
+```plaintext
 .\stop-n8n-instance.cmd -InstanceName "dev" -Force
-```
-
+```plaintext
 Options disponibles :
 
 - `-InstanceName` : Nom de l'instance à arrêter (par défaut: "default")
@@ -72,10 +77,9 @@ Options disponibles :
 
 Pour lister toutes les instances n8n, utilisez :
 
-```
+```plaintext
 .\list-n8n-instances.cmd
-```
-
+```plaintext
 Ce script affiche :
 
 - La liste de toutes les instances
@@ -88,10 +92,9 @@ Ce script affiche :
 
 Pour vérifier les ports utilisés par n8n et trouver des ports disponibles, utilisez :
 
-```
+```plaintext
 .\check-n8n-ports.cmd -StartPort 5678 -EndPort 5700 -FindAvailable 3
-```
-
+```plaintext
 Options disponibles :
 
 - `-StartPort` : Port de départ pour la recherche de ports disponibles (par défaut: 5678)
@@ -102,44 +105,48 @@ Options disponibles :
 
 ### Démarrer plusieurs instances
 
-```
+```plaintext
 # Démarrer l'instance par défaut
+
 .\start-n8n-instance.cmd
 
 # Démarrer une instance de développement sur le port 5679
+
 .\start-n8n-instance.cmd -InstanceName "dev" -Port 5679
 
 # Démarrer une instance de test sur le port 5680
-.\start-n8n-instance.cmd -InstanceName "test" -Port 5680
-```
 
+.\start-n8n-instance.cmd -InstanceName "test" -Port 5680
+```plaintext
 ### Arrêter des instances
 
-```
+```plaintext
 # Arrêter l'instance par défaut
+
 .\stop-n8n-instance.cmd
 
 # Arrêter l'instance de développement
+
 .\stop-n8n-instance.cmd -InstanceName "dev"
 
 # Forcer l'arrêt de l'instance de test
-.\stop-n8n-instance.cmd -InstanceName "test" -Force
-```
 
+.\stop-n8n-instance.cmd -InstanceName "test" -Force
+```plaintext
 ### Vérifier l'état des instances
 
-```
+```plaintext
 # Lister toutes les instances
-.\list-n8n-instances.cmd
-```
 
+.\list-n8n-instances.cmd
+```plaintext
 ### Trouver des ports disponibles
 
-```
+```plaintext
 # Trouver 3 ports disponibles
-.\check-n8n-ports.cmd -FindAvailable 3
-```
 
+.\check-n8n-ports.cmd -FindAvailable 3
+```plaintext
 ## Bonnes pratiques
 
 1. **Nommage des instances** : Utilisez des noms descriptifs pour les instances (ex: "dev", "test", "prod")
@@ -170,6 +177,6 @@ Si une instance ne s'arrête pas, essayez les solutions suivantes :
 
 Si vous rencontrez un conflit de port, le script trouvera automatiquement un port disponible. Vous pouvez également vérifier les ports disponibles avec :
 
-```
+```plaintext
 .\check-n8n-ports.cmd -FindAvailable 5
-```
+```plaintext

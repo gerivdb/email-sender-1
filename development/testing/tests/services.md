@@ -51,8 +51,7 @@ describe('getConfig', () => {
     expect(axios.get).toHaveBeenCalledWith('http://localhost:8000/api/integrations/erpnext/config')
   })
 })
-```
-
+```plaintext
 ## AnalysisService
 
 Le fichier `development/testing/tests/unit/services/AnalysisService.spec.js` contient les tests pour le service AnalysisService.
@@ -113,8 +112,7 @@ describe('getWordCloud', () => {
     expect(result).toEqual(mockWordCloud)
   })
 })
-```
-
+```plaintext
 ## Mocking des dépendances
 
 Les tests utilisent Jest pour mocker les dépendances externes:
@@ -127,8 +125,7 @@ jest.mock('axios')
 beforeEach(() => {
   jest.clearAllMocks()
 })
-```
-
+```plaintext
 ## Gestion des erreurs
 
 Les tests vérifient également la gestion des erreurs:
@@ -147,8 +144,7 @@ it('should handle errors when fetching word cloud', async () => {
     params: {}
   })
 })
-```
-
+```plaintext
 ## Bonnes pratiques
 
 - Mocker toutes les dépendances externes

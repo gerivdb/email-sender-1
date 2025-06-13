@@ -7,7 +7,7 @@
 
 ## TÃ¢ches avec dÃ©pendances
 
-### 2.1.2.2.2.1: Détecter les schémas de numérotation (1.2.3, etc.)
+### 2.1.2.2.2.1: Dï¿½tecter les schï¿½mas de numï¿½rotation (1.2.3, etc.)
 
 - RÃ©fÃ©rences directes: 1.2.3
 

@@ -1,4 +1,5 @@
 # Seuils d'alerte et d'erreur pour les métriques de complexité
+
 *Version 1.0 - 2025-05-15*
 
 Ce document explique les seuils définis pour chaque métrique de complexité et leur justification.

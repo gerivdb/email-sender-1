@@ -1,4 +1,5 @@
 # Principes de Langchain pour EMAIL SENDER 1
+
 *Version 2025-05-16*
 
 Ce guide présente les principes fondamentaux de Langchain et leur application dans le projet EMAIL SENDER 1, en se concentrant sur l'intégration avec AugmentCode, MCP et n8n.
@@ -24,8 +25,7 @@ Langchain est un framework open-source permettant aux développeurs IA de combin
                       Permet :
                   1. Accès aux données
                   2. Prise d'actions
-```
-
+```plaintext
 Les LLMs ont une connaissance générale impressionnante, mais ils n'ont pas accès à vos données spécifiques (documents internes, bases de données propriétaires, code source, etc.). Langchain permet de connecter un LLM à ces sources de données propriétaires et de lui permettre de prendre des actions basées sur les informations traitées.
 
 ### 1.3 Pertinence pour EMAIL SENDER 1
@@ -62,8 +62,7 @@ Permettent aux LLMs d'interagir avec leur environnement (ex: faire une requête 
 |   Stores, Embed.) |   | Ex: LLMChain,        |   | Ex: Python Agent,   |
 |                   |   | SimpleSequentialChain|   | API Agent.          |
 +-------------------+   +----------------------+   +---------------------+
-```
-
+```plaintext
 ## 3. Pipeline RAG (Retrieval Augmented Generation)
 
 Le pipeline RAG est le cœur du système pour interroger ses propres données.
@@ -73,8 +72,7 @@ Le pipeline RAG est le cœur du système pour interroger ses propres données.
 ```ascii
 [Document Source] ----> [Découpage en Chunks] ----> [Création d'Embeddings] ----> [Stockage en VectorStore]
 (ex: roadmap.md)      (morceaux de texte)         (vecteurs numériques)         (ex: Pinecone, Qdrant)
-```
-
+```plaintext
 1. **Document** : Votre source de données (ex: un fichier `.md` de roadmap, une base Notion)
 2. **Chunking (Découpage)** : Le document est découpé en plus petits morceaux (chunks)
 3. **Embeddings (Plongements Vectoriels)** : Chaque chunk est transformé en une représentation vectorielle numérique
@@ -105,8 +103,7 @@ Le pipeline RAG est le cœur du système pour interroger ses propres données.
               +-----------------+
               | Réponse/Action  |
               +-----------------+
-```
-
+```plaintext
 1. **Question Utilisateur** : L'utilisateur pose une question
 2. **Embedding de la Question** : La question est transformée en embedding
 3. **Similarity Search** : L'embedding de la question est comparé aux embeddings des chunks dans le VectorStore
@@ -125,8 +122,7 @@ Le pipeline RAG est le cœur du système pour interroger ses propres données.
                                          |
 [Template Email Perso]-------------------+---LLMChain (Langchain)--> [Email Prêt] --> [Gmail]
 (PromptTemplate)                           (OpenRouter/DeepSeek)
-```
-
+```plaintext
 1. **Données d'entrée** : Fiche contact Notion (via MCP)
 2. **PromptTemplate Langchain** : Template d'email avec variables
 3. **LLMChain (avec OpenRouter/DeepSeek)** : Génère le brouillon d'email
@@ -189,8 +185,7 @@ User Command (Invoke-AugmentMode)
           V
 Actions (Modification de fichiers,
          Appel API, etc.)
-```
-
+```plaintext
 MCP sert de couche d'abstraction pour l'accès aux données (filesystem, github, gcp). Langchain, au sein d'AugmentCode, utilisera MCP comme un "Tool" ou un "Document Loader" pour récupérer le contexte nécessaire avant de le passer aux LLMs.
 
 ### 6.3 Intégration avec n8n
@@ -209,22 +204,26 @@ MCP sert de couche d'abstraction pour l'accès aux données (filesystem, github,
 
 ```python
 # Installation
+
 pip install langchain langchain-openai pinecone-client python-dotenv
 
 # Configuration
+
 from dotenv import load_dotenv
 load_dotenv()  # Charge les variables d'environnement depuis .env
-```
 
+```plaintext
 ### 7.2 LLM Wrappers
 
 ```python
 # Pour les modèles OpenAI standard
+
 from langchain.llms import OpenAI
 llm = OpenAI(model_name="text-davinci-003")
 result = llm("explain large language models in one sentence")
 
 # Pour les modèles de chat (GPT-3.5, GPT-4)
+
 from langchain.schema import AIMessage, HumanMessage, SystemMessage
 from langchain.chat_models import ChatOpenAI
 chat = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.3)
@@ -234,8 +233,7 @@ messages = [
 ]
 response = chat(messages)
 print(response.content)
-```
-
+```plaintext
 ### 7.3 Prompt Templates
 
 ```python
@@ -260,8 +258,7 @@ formatted_prompt = prompt.format(
     product="AI Email Assistant",
     dates="June 15, June 22, July 10"
 )
-```
-
+```plaintext
 ### 7.4 Chains
 
 ```python
@@ -275,29 +272,33 @@ email = chain.run({
     "product": "AI Email Assistant",
     "dates": "June 15, June 22, July 10"
 })
-```
-
+```plaintext
 ### 7.5 RAG (Retrieval Augmented Generation)
 
 ```python
 # Text Splitting
+
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
 docs = text_splitter.create_documents([long_text])
 
 # Embeddings
+
 from langchain.embeddings import OpenAIEmbeddings
 embeddings = OpenAIEmbeddings(model_name="text-embedding-ada-002")
 
 # VectorStore
+
 from langchain.vectorstores import Chroma
 vectorstore = Chroma.from_documents(docs, embeddings)
 
 # Retrieval
+
 query = "What are the key features of our product?"
 relevant_docs = vectorstore.similarity_search(query, k=3)
 
 # RAG
+
 from langchain.chains import RetrievalQA
 qa_chain = RetrievalQA.from_chain_type(
     llm=chat,
@@ -305,8 +306,7 @@ qa_chain = RetrievalQA.from_chain_type(
     retriever=vectorstore.as_retriever()
 )
 answer = qa_chain.run(query)
-```
-
+```plaintext
 ## 8. Conclusion
 
 Langchain n'est pas juste un outil de plus ; c'est un paradigme de construction pour les applications IA modernes. Pour EMAIL SENDER 1 :

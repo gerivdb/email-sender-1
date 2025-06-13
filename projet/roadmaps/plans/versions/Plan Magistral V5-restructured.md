@@ -39,8 +39,7 @@ N8N Config (Texte multiligne \- JSON) :
   "telegramChatId": "ID\_Chat\_Telegram\_Artiste", // Nouveau  
   "aiTeamStaticDataPrefix": "aiApiKeys\_\[Artiste\]\_" // Si rotation par artiste  
 }
-```
-
+```plaintext
 *      
   * Lien Espace Notion (URL)  
     * Lien Dossier GDrive (URL)  

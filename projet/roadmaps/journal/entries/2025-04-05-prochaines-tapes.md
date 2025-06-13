@@ -6,6 +6,7 @@ related: []
 ---
 
 ## Prochaines étapes
+
 - Intégrer le serveur MCP dans notre workflow quotidien
 - Explorer d'autres serveurs MCP potentiellement utiles (PostgreSQL, Git, GitHub)
 - Développer des prompts optimisés pour tirer le meilleur parti du serveur MCP

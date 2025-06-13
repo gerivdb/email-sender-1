@@ -13,4 +13,4 @@ Ce dossier contient des scripts pour l''analyse de données et la détection d''
 
 ```powershell
 .\Detect-Anomalies.ps1 -DataPath "data/performance" -OutputPath "data/analysis"
-```
+```plaintext

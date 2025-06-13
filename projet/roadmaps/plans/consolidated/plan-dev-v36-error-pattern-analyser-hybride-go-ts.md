@@ -8,6 +8,7 @@ template: hygen/plan-dev/new/new.ejs.t
 # Plan de développement v36 granularisé : Error Pattern Analyzer Hybride Go/TypeScript
 
 ## Objectif
+
 Développer un analyseur de patterns d'erreur hybride performant, combinant Go (backend d'analyse) et TypeScript (extension VS Code/UI), avec 100% de couverture de tests unitaires et debug à chaque étape.
 
 ---
@@ -15,7 +16,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
 ## 1. Initialisation du projet
 
 ### 1.1 Créer la structure du projet Go
+
 #### 1.1.1 Architecture des dossiers Go
+
 - [x] Créer `/cmd/analyzer/` pour l'exécutable principal
   - [x] Générer `main.go` avec gestion des flags CLI
   - [ ] Configurer le point d'entrée pour le serveur HTTP
@@ -31,6 +34,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [x] Créer `/internal/storage/` pour la persistance des résultats
 
 #### 1.1.2 Configuration du projet Go
+
 - [x] Générer `go.mod` avec les dépendances principales
   - [x] Ajouter `github.com/gin-gonic/gin` pour l'API HTTP
   - [x] Ajouter `github.com/stretchr/testify` pour les tests
@@ -44,7 +48,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [x] Exclure les fichiers de test (`*.test`, `coverage.out`)
 
 ### 1.2 Créer la structure de l'extension VS Code
+
 #### 1.2.1 Architecture TypeScript de l'extension
+
 - [x] Créer `/src/extension/` pour le code principal
   - [x] Créer `extension.ts` comme point d'entrée
   - [x] Créer `/src/extension/commands/` pour les commandes VS Code
@@ -58,6 +64,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [x] Créer `config.service.ts` pour la configuration
 
 #### 1.2.2 Configuration de l'extension VS Code
+
 - [x] Générer `package.json` avec métadonnées extension
   - [x] Configurer les activationEvents et contributes
   - [x] Définir les commandes exposées à VS Code
@@ -70,7 +77,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [x] Exclure `/src/`, `tsconfig.json`, `*.test.ts`
 
 ### 1.3 Générer les fichiers de configuration
+
 #### 1.3.1 Configuration des tests
+
 - [x] Configurer Jest pour TypeScript
   - [x] Créer `jest.config.js` avec preset ts-jest
   - [x] Configurer collectCoverageFrom et thresholds
@@ -79,6 +88,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [x] Configurer mocks et stubs pour les tests d'intégration
 
 #### 1.3.2 Configuration CI/CD
+
 - [x] Créer `.github/workflows/go.yml`
   - [x] Jobs : build, test, lint, security-scan
   - [x] Matrix pour Go 1.21, 1.22
@@ -87,12 +97,15 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [x] Matrix pour Node 18, 20
 
 ### 1.4 Tests unitaires & debug initial
+
 #### 1.4.1 Validation structure Go
+
 - [x] Tester que `go mod tidy` fonctionne sans erreur
 - [x] Vérifier que `make build` produit un exécutable fonctionnel
 - [x] Tester l'import des packages internes entre eux
 
 #### 1.4.2 Validation structure TypeScript
+
 - [x] Tester que `npm install` s'exécute sans conflit
 - [x] Vérifier que `tsc` compile sans erreur
 - [x] Tester l'activation de l'extension dans un workspace VS Code
@@ -102,7 +115,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
 ## 2. Développement du backend Go
 
 ### 2.1 Définir les interfaces d'analyse de patterns
+
 #### 2.1.1 Interface Pattern Matcher
+
 - [x] Créer `internal/engine/interfaces.go`
   - [x] Définir `PatternMatcher` interface avec méthodes Match(), Score()
   - [x] Définir `PatternResult` struct avec position, message, severity
@@ -113,6 +128,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [x] Gestion des options regex (multiline, case-insensitive)
 
 #### 2.1.2 Interface File Analyzer
+
 - [x] Créer `internal/parser/analyzer.go`
   - [x] Définir `FileAnalyzer` interface avec Analyze(path string)
   - [x] Définir `AnalysisResult` struct avec erreurs, warnings, infos
@@ -123,6 +139,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [x] Gestion des erreurs de lecture et timeout
 
 #### 2.1.3 Interface Pattern Repository
+
 - [x] Créer `pkg/patterns/repository.go`
   - [x] Définir `PatternRepository` interface avec Load(), Save(), List()
   - [x] Support des formats JSON et YAML pour les patterns
@@ -133,7 +150,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [x] Hot-reload des patterns modifiés
 
 ### 2.2 Implémenter le moteur d'analyse
+
 #### 2.2.1 Core Engine
+
 - [ ] Créer `internal/engine/core.go`
   - [ ] Implémenter `AnalysisEngine` struct principal
   - [ ] Méthode `AnalyzeFile(path string) AnalysisResult`
@@ -144,6 +163,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Phase 3 : Post-processing (scoring, filtrage)
 
 #### 2.2.2 Pattern Engine
+
 - [ ] Créer `internal/engine/pattern_engine.go`
   - [ ] Orchestrateur pour appliquer tous les patterns
   - [ ] Gestion des priorités et conflits entre patterns
@@ -154,6 +174,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Seuils configurables pour filtrer les faux positifs
 
 #### 2.2.3 Context Analyzer
+
 - [ ] Créer `internal/engine/context.go`
   - [ ] Analyse du contexte autour des patterns détectés
   - [ ] Extraction des variables et valeurs liées à l'erreur
@@ -164,7 +185,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Détection de patterns imbriqués ou chaînés
 
 ### 2.3 Ajouter la gestion de la concurrence
+
 #### 2.3.1 Worker Pool Pattern
+
 - [ ] Créer `internal/engine/workers.go`
   - [ ] Implémenter `WorkerPool` avec channels buffered
   - [ ] Gestion du nombre de workers selon CPU cores
@@ -175,6 +198,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Retry mechanism pour les jobs échoués
 
 #### 2.3.2 Concurrency Safety
+
 - [ ] Thread-safe access aux patterns repository
   - [ ] Utilisation de sync.RWMutex pour lecture/écriture
   - [ ] Channel-based communication pour éviter les race conditions
@@ -184,6 +208,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Memory pooling pour réduire les allocations
 
 #### 2.3.3 Performance Monitoring
+
 - [ ] Métriques en temps réel
   - [ ] Nombre de jobs en cours, complétés, échoués
   - [ ] Temps moyen d'analyse par fichier/taille
@@ -194,7 +219,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Alertes automatiques en cas de dégradation
 
 ### 2.4 Exposer une API HTTP/CLI
+
 #### 2.4.1 Serveur HTTP
+
 - [ ] Créer `internal/server/http.go`
   - [ ] Gin router avec middleware de logging et recovery
   - [ ] Endpoints REST pour analyse (/analyze, /patterns, /health)
@@ -206,6 +233,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] `GET /api/v1/health` pour health check
 
 #### 2.4.2 Interface CLI
+
 - [ ] Créer `cmd/analyzer/cli.go`
   - [ ] Commands avec cobra : analyze, patterns, server
   - [ ] Flags globaux : --verbose, --output-format, --config
@@ -216,6 +244,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] `analyzer server` pour lancer le serveur HTTP
 
 #### 2.4.3 Configuration et Middleware
+
 - [ ] Configuration via fichier YAML/JSON
   - [ ] Ports, timeouts, limites de taille de fichier
   - [ ] Chemins vers patterns repository
@@ -226,7 +255,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Validation stricte des inputs (taille, format)
 
 ### 2.5 Tests unitaires & debug backend Go
+
 #### 2.5.1 Tests des interfaces
+
 - [ ] Tests pour `PatternMatcher` avec patterns réels
   - [ ] Cas nominaux avec regex simples et complexes
   - [ ] Cas limites : patterns malformés, contenu vide
@@ -237,6 +268,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Gestion des erreurs I/O et permissions
 
 #### 2.5.2 Tests d'intégration
+
 - [ ] Tests end-to-end de l'API HTTP
   - [ ] Utilisation de httptest pour simuler requêtes
   - [ ] Validation des réponses JSON et codes de statut
@@ -247,6 +279,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Validation des exit codes en cas d'erreur
 
 #### 2.5.3 Tests de performance et concurrence
+
 - [ ] Benchmarks pour mesurer les performances
   - [ ] `go test -bench` pour mesurer throughput
   - [ ] Memory profiling pour détecter les fuites
@@ -261,7 +294,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
 ## 3. Développement de l'extension VS Code (TypeScript)
 
 ### 3.1 Créer les commandes VS Code
+
 #### 3.1.1 Structure des commandes
+
 - [ ] Créer `src/extension/commands/index.ts`
   - [ ] Registry central pour toutes les commandes
   - [ ] Gestion des erreurs et logging uniforme
@@ -272,6 +307,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Affichage de progress indicator pendant analyse
 
 #### 3.1.2 Commandes d'analyse
+
 - [ ] Créer `src/extension/commands/analyze.ts`
   - [ ] `analyzeCurrentFile()` pour le fichier ouvert
   - [ ] `analyzeSelection()` pour analyser seulement la sélection
@@ -282,6 +318,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Invalidation du cache lors de modification fichier
 
 #### 3.1.3 Commandes de configuration
+
 - [ ] Créer `src/extension/commands/config.ts`
   - [ ] `openSettings()` pour ouvrir les paramètres extension
   - [ ] `reloadPatterns()` pour recharger les patterns depuis Go
@@ -292,7 +329,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Validation des settings avec JSON schema
 
 ### 3.2 Implémenter la communication avec le backend Go
+
 #### 3.2.1 Service de communication
+
 - [ ] Créer `src/services/analyzer.service.ts`
   - [ ] Classe `GoAnalyzerService` pour encapsuler communication
   - [ ] Méthodes async pour tous les appels API
@@ -303,6 +342,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Configuration des timeouts selon taille fichier
 
 #### 3.2.2 Appels HTTP vers Go API
+
 - [ ] Implémenter les appels fetch avec fetch API
   - [ ] `analyzeFile(path: string): Promise<AnalysisResult>`
   - [ ] `analyzeContent(content: string): Promise<AnalysisResult>`
@@ -313,6 +353,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Fallback gracieux vers mode dégradé
 
 #### 3.2.3 Communication via CLI
+
 - [ ] Wrapper pour child_process.spawn
   - [ ] Exécution du binaire Go avec arguments appropriés
   - [ ] Streaming des résultats pour gros fichiers
@@ -323,7 +364,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Validation des résultats avec io-ts ou zod
 
 ### 3.3 Afficher les diagnostics et suggestions dans l'éditeur
+
 #### 3.3.1 Diagnostic Provider
+
 - [ ] Créer `src/extension/providers/diagnostics.ts`
   - [ ] Classe `ErrorPatternDiagnosticProvider`
   - [ ] Implémentation de `vscode.DiagnosticCollection`
@@ -334,6 +377,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Rich messages avec markdown et code actions
 
 #### 3.3.2 Code Actions Provider
+
 - [ ] Créer `src/extension/providers/codeActions.ts`
   - [ ] Suggestions de correction automatique
   - [ ] Quick fixes basés sur les patterns détectés
@@ -344,6 +388,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] "Fix all similar issues" pour corrections en batch
 
 #### 3.3.3 Interface utilisateur avancée
+
 - [ ] Créer WebView pour résultats détaillés
   - [ ] Vue d'ensemble avec statistiques et graphiques
   - [ ] Navigation dans les résultats avec filtres
@@ -354,7 +399,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Quick access aux commandes principales
 
 ### 3.4 Tests unitaires & debug extension TypeScript
+
 #### 3.4.1 Tests des commandes
+
 - [ ] Mock VS Code API avec @types/vscode
   - [ ] Simulation des TextDocument et TextEditor
   - [ ] Mock des settings et configuration
@@ -365,6 +412,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Gestion des erreurs et edge cases
 
 #### 3.4.2 Tests de communication
+
 - [ ] Mock du service Go avec jest
   - [ ] Simulation réponses API HTTP
   - [ ] Tests des timeouts et retry logic
@@ -375,6 +423,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Validation parsing des outputs
 
 #### 3.4.3 Tests d'interface utilisateur
+
 - [ ] Tests des diagnostic providers
   - [ ] Validation du mapping résultats → diagnostics
   - [ ] Tests de mise à jour incrémentale
@@ -389,7 +438,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
 ## 4. Intégration Go <-> TypeScript
 
 ### 4.1 Définir le protocole d'échange
+
 #### 4.1.1 Schéma de données JSON
+
 - [ ] Créer `shared/api.schema.json`
   - [ ] Définition OpenAPI 3.0 complète
   - [ ] Types pour requests et responses
@@ -400,6 +451,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Types TypeScript avec io-ts ou zod
 
 #### 4.1.2 Format des messages
+
 - [ ] Standardisation des messages d'erreur
   - [ ] Code d'erreur numérique + message lisible
   - [ ] Stacktrace et contexte en mode debug
@@ -410,6 +462,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Compression optionnelle (gzip)
 
 #### 4.1.3 Versioning et compatibilité
+
 - [ ] Versioning de l'API avec semantic versioning
   - [ ] Headers X-API-Version dans toutes les requêtes
   - [ ] Support de multiple versions en parallèle
@@ -420,7 +473,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Fallback gracieux si format non supporté
 
 ### 4.2 Implémenter l'appel Go depuis TypeScript
+
 #### 4.2.1 Client HTTP robuste
+
 - [ ] Créer `src/services/http-client.ts`
   - [ ] Classe avec pool de connexions
   - [ ] Support des interceptors pour auth/logging
@@ -431,6 +486,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Circuit breaker avec état persistant
 
 #### 4.2.2 Execution de process CLI
+
 - [ ] Wrapper robuste pour child_process
   - [ ] Gestion mémoire pour éviter memory leaks
   - [ ] Streaming bi-directionnel pour gros volumes
@@ -441,6 +497,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Health checking des process
 
 #### 4.2.3 Fallback et mode dégradé
+
 - [ ] Auto-switch entre HTTP et CLI
   - [ ] Health check HTTP → fallback CLI automatique
   - [ ] Préférence utilisateur configurable
@@ -451,7 +508,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Synchronisation différée quand backend disponible
 
 ### 4.3 Gérer les erreurs et les cas limites
+
 #### 4.3.1 Stratégies de retry
+
 - [ ] Exponential backoff avec jitter
   - [ ] Configuration des délais min/max
   - [ ] Jitter pour éviter synchronization
@@ -462,6 +521,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Retry avec nouvelle stratégie si changement context
 
 #### 4.3.2 Timeouts et limites
+
 - [ ] Timeouts adaptatifs selon taille fichier
   - [ ] Calcul dynamique basé sur historique
   - [ ] Timeout différent pour HTTP vs CLI
@@ -472,6 +532,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Rate limiting pour éviter spam du backend
 
 #### 4.3.3 Monitoring et observabilité
+
 - [ ] Métriques détaillées des appels
   - [ ] Latence, success rate, error rate
   - [ ] Distribution des tailles de requête/réponse
@@ -482,7 +543,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Intégration avec VS Code output channel
 
 ### 4.4 Tests unitaires & debug intégration
+
 #### 4.4.1 Tests bout-en-bout
+
 - [ ] Tests avec serveur Go réel
   - [ ] Setup/teardown automatique du serveur
   - [ ] Tests avec données réelles et edge cases
@@ -493,6 +556,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Validation des arguments et environment
 
 #### 4.4.2 Tests de robustesse
+
 - [ ] Chaos engineering
   - [ ] Simulation de pannes réseau
   - [ ] Latence variable et timeouts
@@ -503,6 +567,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Performance sous charge CPU élevée
 
 #### 4.4.3 Tests de compatibilité
+
 - [ ] Tests multi-versions
   - [ ] Compatibilité Go backend v1.x avec TS extension v2.x
   - [ ] Migration de données entre versions
@@ -517,7 +582,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
 ## 5. Scénarios avancés et optimisation
 
 ### 5.1 Ajouter des patterns d'erreur complexes
+
 #### 5.1.1 Patterns multi-lignes
+
 - [ ] Détection de stack traces complètes
   - [ ] Parser les formats Java, .NET, Python, Go
   - [ ] Extraction du point d'origine vs propagation
@@ -528,6 +595,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Patterns dans logs d'application
 
 #### 5.1.2 Patterns sémantiques
+
 - [ ] Analyse de sentiment dans messages d'erreur
   - [ ] Classification gravité par NLP basique
   - [ ] Détection de patterns émotionnels (frustration, urgence)
@@ -538,6 +606,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Patterns de memory leaks et resource usage
 
 #### 5.1.3 Patterns intelligents avec ML
+
 - [ ] Learning from user feedback
   - [ ] Correction des faux positifs/négatifs
   - [ ] Adaptation aux préférences utilisateur
@@ -548,7 +617,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Priorisation basée sur fréquence et impact
 
 ### 5.2 Optimiser la performance Go
+
 #### 5.2.1 Profiling et benchmarking
+
 - [ ] Profiling CPU avec pprof
   - [ ] Identification des hot paths
   - [ ] Optimisation des algorithmes de regex
@@ -559,6 +630,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Memory mapping pour gros fichiers
 
 #### 5.2.2 Optimisations algorithmiques
+
 - [ ] Indexation des patterns pour recherche rapide
   - [ ] Trie ou autre structure optimisée
   - [ ] Précompilation des regex complexes
@@ -569,6 +641,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Early termination si pattern critique trouvé
 
 #### 5.2.3 Optimisations système
+
 - [ ] Multi-threading optimal
   - [ ] Worker pool dimensionné selon CPU cores
   - [ ] Work stealing entre workers
@@ -579,7 +652,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Memory mapped files pour access rapide
 
 ### 5.3 Optimiser l'UX VS Code
+
 #### 5.3.1 Performance de l'interface
+
 - [ ] Virtualisation pour grandes listes de résultats
   - [ ] Rendering seulement des éléments visibles
   - [ ] Lazy loading des détails au clic
@@ -590,6 +665,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Accessibilité ARIA complète
 
 #### 5.3.2 User experience avancée
+
 - [ ] Contextual help et onboarding
   - [ ] Tour guidé pour première utilisation
   - [ ] Tooltips avec exemples concrets
@@ -600,6 +676,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Workflow multi-step avec wizard
 
 #### 5.3.3 Collaboration et sharing
+
 - [ ] Export et partage des résultats
   - [ ] Formats HTML, PDF, CSV pour reports
   - [ ] Deep links vers résultats spécifiques
@@ -610,7 +687,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Permissions et roles pour patterns
 
 ### 5.4 Tests unitaires & debug scénarios avancés
+
 #### 5.4.1 Tests de patterns complexes
+
 - [ ] Jeux de données réels anonymisés
   - [ ] Logs d'applications production
   - [ ] Crash dumps et core dumps
@@ -621,6 +700,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] A/B testing sur différents algorithmes
 
 #### 5.4.2 Tests de performance
+
 - [ ] Load testing avec données réalistes
   - [ ] Scaling jusqu'à limites système
   - [ ] Memory profiling sous charge
@@ -631,6 +711,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Graceful degradation
 
 #### 5.4.3 Tests d'utilisabilité
+
 - [ ] User testing avec développeurs réels
   - [ ] Task completion rate et time
   - [ ] Satisfaction et friction points
@@ -645,7 +726,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
 ## 6. Documentation et livraison
 
 ### 6.1 Documenter l'architecture hybride
+
 #### 6.1.1 Architecture Decision Records (ADRs)
+
 - [ ] ADR-001: Choix Go vs autres langages backend
   - [ ] Comparaison performance/memory avec Rust, Java
   - [ ] Justification écosystème et tooling
@@ -656,6 +739,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Évolutivité et versioning
 
 #### 6.1.2 Diagrammes d'architecture
+
 - [ ] Diagramme de composants
   - [ ] Interfaces et dépendances entre modules
   - [ ] Flow de données de bout-en-bout
@@ -666,6 +750,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Scenarios de performance critique
 
 #### 6.1.3 Documentation technique détaillée
+
 - [ ] API Reference avec OpenAPI
   - [ ] Documentation générative à partir du code
   - [ ] Exemples d'usage pour chaque endpoint
@@ -676,7 +761,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Performance characteristics
 
 ### 6.2 Rédiger les guides d'utilisation
+
 #### 6.2.1 Guide utilisateur VS Code
+
 - [ ] Getting started avec screenshots
   - [ ] Installation depuis VS Code marketplace
   - [ ] Configuration initiale et first run
@@ -687,6 +774,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Team workflows et best practices
 
 #### 6.2.2 Guide administrateur
+
 - [ ] Déploiement en production
   - [ ] Docker images et orchestration
   - [ ] Scaling et load balancing
@@ -697,6 +785,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Audit logging et compliance reporting
 
 #### 6.2.3 Guide développeur
+
 - [ ] Contributing guidelines
   - [ ] Code style et linting rules
   - [ ] Pull request process
@@ -707,7 +796,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Debugging et troubleshooting
 
 ### 6.3 Préparer les scripts de build et déploiement
+
 #### 6.3.1 Build automation
+
 - [ ] Multi-platform builds avec GitHub Actions
   - [ ] Windows, Linux, macOS pour Go binary
   - [ ] VS Code extension packaging (.vsix)
@@ -718,6 +809,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Publishing automatique sur marketplaces
 
 #### 6.3.2 Déploiement et distribution
+
 - [ ] Container images optimisées
   - [ ] Multi-stage builds pour size minimal
   - [ ] Security scanning avec Trivy/Snyk
@@ -728,6 +820,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] APT/YUM repositories pour Linux
 
 #### 6.3.3 Quality gates et automation
+
 - [ ] Pre-commit hooks
   - [ ] Code formatting avec gofmt/prettier
   - [ ] Linting avec golangci-lint/eslint
@@ -738,7 +831,9 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Failure notifications et rollback
 
 ### 6.4 Tests unitaires & debug documentation
+
 #### 6.4.1 Validation de la documentation
+
 - [ ] Tests de la documentation code
   - [ ] Compilation de tous les exemples
   - [ ] Validation des liens et références
@@ -749,6 +844,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] A/B testing sur different approaches
 
 #### 6.4.2 Tests d'installation et setup
+
 - [ ] Clean environment testing
   - [ ] Installation depuis zéro sur VM fresh
   - [ ] Different OS versions et configurations
@@ -759,6 +855,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
   - [ ] Compatibility matrix
 
 #### 6.4.3 Tests de déploiement
+
 - [ ] Production-like environment testing
   - [ ] Load balancer et multiple instances
   - [ ] Database persistence et backups
@@ -784,12 +881,14 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
 ## Métriques de succès
 
 ### Métriques techniques
+
 - **Performance**: < 100ms pour fichiers < 1KB, < 1s pour fichiers < 1MB
 - **Reliability**: 99.9% uptime, < 0.1% false positive rate
 - **Scalability**: Support jusqu'à 1000 fichiers simultanés
 - **Maintainability**: Complexity cyclomatique < 10, documentation > 80%
 
 ### Métriques utilisateur
+
 - **Adoption**: > 1000 installations actives en 3 mois
 - **Satisfaction**: > 4.5/5 rating sur VS Code marketplace
 - **Engagement**: > 50% DAU/MAU ratio
@@ -809,6 +908,7 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
 # v36 – Plan de développement : Analyseur de patterns d’erreur hybride Go/TypeScript
 
 ## 1. Structure Go
+
 - [x] Création des dossiers : `/cmd/analyzer/`, `/pkg/patterns/`, `/pkg/api/`, `/pkg/config/`, `/internal/parser/`, `/internal/engine/`, `/internal/server/`, `/internal/storage/`
 - [x] Fichier `main.go` initial dans `/cmd/analyzer/`
 - [x] Initialisation de `go.mod` et ajout des dépendances principales (`gin-gonic/gin`, `stretchr/testify`, `sirupsen/logrus`)
@@ -816,17 +916,20 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
 - [x] `.gitignore` adapté pour Go
 
 ## 2. Structure extension VS Code (TypeScript)
+
 - [x] Création des dossiers : `/src/extension/`, `/src/extension/commands/`, `/src/extension/providers/`, `/src/extension/ui/`, `/src/types/`, `/src/services/`
 - [x] Fichier principal `extension.ts` (point d’entrée)
 - [x] Squelettes : `commands/index.ts`, `providers/errorPatternDiagnosticsProvider.ts`, `services/analyzerService.ts`, `types/errorPattern.ts`
 - [x] Fichiers de configuration : `package.json`, `tsconfig.json`, `.vscodeignore`
 
 ## 3. Implémentation extension VS Code
+
 - [ ] Remplir les fichiers TypeScript (logique commandes, provider, UI, services)
 - [ ] Ajouter des tests unitaires TypeScript (Jest ou équivalent)
 - [ ] Scripts npm pour build/lint/test
 
 ## 4. Développement backend Go
+
 - [ ] Implémenter `/pkg/patterns/` (gestion des patterns)
 - [ ] Implémenter `/internal/parser/` (parsing des logs)
 - [ ] Implémenter `/internal/engine/` (moteur d’analyse)
@@ -834,11 +937,13 @@ Développer un analyseur de patterns d'erreur hybride performant, combinant Go (
 - [ ] Tests unitaires Go (coverage > 80%)
 
 ## 5. Intégration Go/TypeScript
+
 - [ ] Service TypeScript pour communiquer avec le backend Go
 - [ ] Commande VS Code pour lancer l’analyse et afficher les résultats
 - [ ] UI de feedback (diagnostics, panel, notifications)
 
 ## 6. Qualité, debug, documentation
+
 - [ ] Debug TypeScript (launch.json, etc.)
 - [ ] Debug Go (launch.json, etc.)
 - [ ] Documentation utilisateur et développeur

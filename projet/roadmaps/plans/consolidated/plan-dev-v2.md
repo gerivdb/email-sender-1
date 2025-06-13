@@ -75,37 +75,49 @@ Ensemble, ils créent un cercle vertueux :
 
 #### 3.2.1 Structure des fichiers du Memory Bank
 
-```
+```plaintext
 Repository/
 ├── memory-bank/                # Dossier principal du Memory Bank
-│   ├── projectbrief.md        # Document fondamental définissant le projet
-│   ├── productContext.md      # Contexte du produit (pourquoi, problèmes, fonctionnement)
-│   ├── systemPatterns.md      # Architecture, décisions techniques, patterns
-│   ├── techContext.md         # Technologies, configuration, contraintes
-│   ├── activeContext.md       # Focus actuel, changements récents, prochaines étapes
-│   ├── progress.md            # État d'avancement, éléments fonctionnels, à construire
-│   ├── components/            # Documentation des composants spécifiques
-│   │   ├── n8n/               # Documentation des workflows n8n
-│   │   ├── mcp/               # Documentation des composants MCP
-│   │   └── api/               # Documentation des API
-│   ├── integrations/          # Documentation des intégrations
-│   ├── testing/               # Stratégies et documentation de test
-│   └── deployment/            # Procédures de déploiement
-```
 
+│   ├── projectbrief.md        # Document fondamental définissant le projet
+
+│   ├── productContext.md      # Contexte du produit (pourquoi, problèmes, fonctionnement)
+
+│   ├── systemPatterns.md      # Architecture, décisions techniques, patterns
+
+│   ├── techContext.md         # Technologies, configuration, contraintes
+
+│   ├── activeContext.md       # Focus actuel, changements récents, prochaines étapes
+
+│   ├── progress.md            # État d'avancement, éléments fonctionnels, à construire
+
+│   ├── components/            # Documentation des composants spécifiques
+
+│   │   ├── n8n/               # Documentation des workflows n8n
+
+│   │   ├── mcp/               # Documentation des composants MCP
+
+│   │   └── api/               # Documentation des API
+
+│   ├── integrations/          # Documentation des intégrations
+
+│   ├── testing/               # Stratégies et documentation de test
+
+│   └── deployment/            # Procédures de déploiement
+
+```plaintext
 #### 3.2.2 Flux de travail du Memory Bank
 
-```
+```plaintext
 +---------------+     +--------------------+     +----------------+     +-------------------+     +----------------------+     +-------------+
 |               |     |                    |     |                |     |                   |     |                      |     |             |
 | Session Starts| --> | Read Memory Bank  | --> | Rebuild Context| --> | Continue Work    | --> | Update Documentation | --> | Session Ends|
 |               |     | Files              |     |                |     |                   |     |                      |     |             |
 +---------------+     +--------------------+     +----------------+     +-------------------+     +----------------------+     +-------------+
-```
-
+```plaintext
 #### 3.2.3 Hiérarchie des fichiers du Memory Bank
 
-```
+```plaintext
                                   +------------------+
                                   |                  |
                                   | projectbrief.md  |
@@ -136,8 +148,7 @@ Repository/
                                   |   progress.md    |
                                   |                  |
                                   +------------------+
-```
-
+```plaintext
 #### 3.2.4 Intégration avec Hygen
 
 Le Memory Bank sera intégré avec Hygen de plusieurs façons :
@@ -149,83 +160,155 @@ Le Memory Bank sera intégré avec Hygen de plusieurs façons :
 
 ### 3.3 Architecture globale du dépôt
 
-```
+```plaintext
 Repository/
 ├── development/templates/              # Templates Hygen pour tous les composants
-│   ├── memory-bank/          # Templates pour le Memory Bank
-│   ├── roadmap/              # Templates pour la roadmap
-│   ├── journal/              # Templates pour les journaux
-│   ├── error/                # Templates pour la gestion des erreurs
-│   ├── rag/                  # Templates pour le système RAG
-│   ├── web/                  # Templates pour l'interface web
-│   ├── n8n/                  # Templates pour les workflows n8n
-│   ├── mcp/                  # Templates pour les composants MCP
-│   ├── development/testing/tests/                # Templates pour les tests
-│   ├── projet/config/               # Templates pour les configurations
-│   ├── ci-cd/                # Templates pour CI/CD
-│   └── projet/documentation/                 # Templates pour la documentation
-├── memory-bank/              # Système Memory Bank (documentation structurée)
-├── Roadmap/                  # Roadmap unifiée et standardisée
-│   ├── Current/              # Version actuelle de la roadmap
-│   ├── Archive/              # Versions archivées
-│   ├── Templates/            # Templates standardisés
-│   └── development/scripts/              # Scripts de gestion de la roadmap
-├── Journal/                  # Système de journalisation unifié
-│   ├── DailyLogs/            # Journaux quotidiens
-│   ├── ErrorLogs/            # Journaux d'erreurs
-│   ├── ActivityLogs/         # Journaux d'activité
-│   └── development/scripts/              # Scripts de gestion des journaux
-├── ErrorManagement/          # Système de gestion des erreurs
-│   ├── Framework/            # Framework de gestion des erreurs
-│   ├── Analysis/             # Outils d'analyse des erreurs
-│   ├── Patterns/             # Patterns d'erreurs connus
-│   └── Integration/          # Intégration avec d'autres systèmes
-├── RAG/                      # Système de Retrieval-Augmented Generation
-│   ├── Indexer/              # Indexation des connaissances
-│   ├── Retriever/            # Récupération des connaissances
-│   ├── Generator/            # Génération de contenu
-│   └── API/                  # API pour l'accès aux connaissances
-├── Web/                      # Interface web pour la base de connaissances
-│   ├── Dashboard/            # Tableau de bord principal
-│   ├── RoadmapViewer/        # Visualisation de la roadmap
-│   ├── JournalViewer/        # Visualisation des journaux
-│   └── ErrorViewer/          # Visualisation des erreurs
-├── n8n/                      # Composants n8n centralisés
-│   ├── workflows/            # Workflows n8n
-│   ├── custom-nodes/         # Nœuds personnalisés
-│   ├── credentials/          # Configurations des identifiants
-│   └── integrations/         # Scripts d'intégration
-├── mcp/                      # Composants MCP
-│   ├── core/                 # Composants principaux
-│   ├── modules/              # Modules réutilisables
-│   ├── development/scripts/              # Scripts utilitaires
-│   └── projet/documentation/                 # Documentation MCP
-├── development/scripts/                  # Scripts utilitaires centralisés
-│   ├── setup/                # Scripts d'installation et configuration
-│   ├── utils/                # Scripts utilitaires
-│   ├── generators/           # Scripts de génération
-│   └── analysis/             # Scripts d'analyse
-├── development/testing/tests/                    # Tests centralisés
-│   ├── unit/                 # Tests unitaires
-│   ├── integration/          # Tests d'intégration
-│   ├── performance/          # Tests de performance
-│   └── fixtures/             # Données de test
-├── projet/config/                   # Configurations centralisées
-│   ├── env/                  # Variables d'environnement
-│   ├── app/                  # Configurations d'application
-│   ├── ci-cd/                # Configurations CI/CD
-│   └── linting/              # Configurations de linting
-├── projet/documentation/                     # Documentation centralisée
-│   ├── guides/               # Guides d'utilisation
-│   ├── api/                  # Documentation API
-│   ├── architecture/         # Documentation architecture
-│   └── tutorials/            # Tutoriels
-└── .github/                  # Configurations GitHub
-    ├── workflows/            # Workflows GitHub Actions
-    ├── ISSUE_TEMPLATE/       # Templates pour les issues
-    └── PULL_REQUEST_TEMPLATE/ # Templates pour les pull requests
-```
 
+│   ├── memory-bank/          # Templates pour le Memory Bank
+
+│   ├── roadmap/              # Templates pour la roadmap
+
+│   ├── journal/              # Templates pour les journaux
+
+│   ├── error/                # Templates pour la gestion des erreurs
+
+│   ├── rag/                  # Templates pour le système RAG
+
+│   ├── web/                  # Templates pour l'interface web
+
+│   ├── n8n/                  # Templates pour les workflows n8n
+
+│   ├── mcp/                  # Templates pour les composants MCP
+
+│   ├── development/testing/tests/                # Templates pour les tests
+
+│   ├── projet/config/               # Templates pour les configurations
+
+│   ├── ci-cd/                # Templates pour CI/CD
+
+│   └── projet/documentation/                 # Templates pour la documentation
+
+├── memory-bank/              # Système Memory Bank (documentation structurée)
+
+├── Roadmap/                  # Roadmap unifiée et standardisée
+
+│   ├── Current/              # Version actuelle de la roadmap
+
+│   ├── Archive/              # Versions archivées
+
+│   ├── Templates/            # Templates standardisés
+
+│   └── development/scripts/              # Scripts de gestion de la roadmap
+
+├── Journal/                  # Système de journalisation unifié
+
+│   ├── DailyLogs/            # Journaux quotidiens
+
+│   ├── ErrorLogs/            # Journaux d'erreurs
+
+│   ├── ActivityLogs/         # Journaux d'activité
+
+│   └── development/scripts/              # Scripts de gestion des journaux
+
+├── ErrorManagement/          # Système de gestion des erreurs
+
+│   ├── Framework/            # Framework de gestion des erreurs
+
+│   ├── Analysis/             # Outils d'analyse des erreurs
+
+│   ├── Patterns/             # Patterns d'erreurs connus
+
+│   └── Integration/          # Intégration avec d'autres systèmes
+
+├── RAG/                      # Système de Retrieval-Augmented Generation
+
+│   ├── Indexer/              # Indexation des connaissances
+
+│   ├── Retriever/            # Récupération des connaissances
+
+│   ├── Generator/            # Génération de contenu
+
+│   └── API/                  # API pour l'accès aux connaissances
+
+├── Web/                      # Interface web pour la base de connaissances
+
+│   ├── Dashboard/            # Tableau de bord principal
+
+│   ├── RoadmapViewer/        # Visualisation de la roadmap
+
+│   ├── JournalViewer/        # Visualisation des journaux
+
+│   └── ErrorViewer/          # Visualisation des erreurs
+
+├── n8n/                      # Composants n8n centralisés
+
+│   ├── workflows/            # Workflows n8n
+
+│   ├── custom-nodes/         # Nœuds personnalisés
+
+│   ├── credentials/          # Configurations des identifiants
+
+│   └── integrations/         # Scripts d'intégration
+
+├── mcp/                      # Composants MCP
+
+│   ├── core/                 # Composants principaux
+
+│   ├── modules/              # Modules réutilisables
+
+│   ├── development/scripts/              # Scripts utilitaires
+
+│   └── projet/documentation/                 # Documentation MCP
+
+├── development/scripts/                  # Scripts utilitaires centralisés
+
+│   ├── setup/                # Scripts d'installation et configuration
+
+│   ├── utils/                # Scripts utilitaires
+
+│   ├── generators/           # Scripts de génération
+
+│   └── analysis/             # Scripts d'analyse
+
+├── development/testing/tests/                    # Tests centralisés
+
+│   ├── unit/                 # Tests unitaires
+
+│   ├── integration/          # Tests d'intégration
+
+│   ├── performance/          # Tests de performance
+
+│   └── fixtures/             # Données de test
+
+├── projet/config/                   # Configurations centralisées
+
+│   ├── env/                  # Variables d'environnement
+
+│   ├── app/                  # Configurations d'application
+
+│   ├── ci-cd/                # Configurations CI/CD
+
+│   └── linting/              # Configurations de linting
+
+├── projet/documentation/                     # Documentation centralisée
+
+│   ├── guides/               # Guides d'utilisation
+
+│   ├── api/                  # Documentation API
+
+│   ├── architecture/         # Documentation architecture
+
+│   └── tutorials/            # Tutoriels
+
+└── .github/                  # Configurations GitHub
+
+    ├── workflows/            # Workflows GitHub Actions
+
+    ├── ISSUE_TEMPLATE/       # Templates pour les issues
+
+    └── PULL_REQUEST_TEMPLATE/ # Templates pour les pull requests
+
+```plaintext
 Cette architecture assure que :
 
 1. **Aucun fichier n'est placé à la racine** du dépôt (sauf les fichiers de configuration essentiels comme .gitignore)
@@ -567,6 +650,7 @@ Cette architecture assure que :
 ### 5.2 Ressources nécessaires
 
 #### 5.2.1 Ressources humaines
+
 - **Développeurs PowerShell** : 2 développeurs à temps plein
 - **Développeurs Python** : 1 développeur à temps plein
 - **Développeur frontend** : 1 développeur à temps plein
@@ -576,6 +660,7 @@ Cette architecture assure que :
 - **Rédacteur technique** : 1 rédacteur à mi-temps
 
 #### 5.2.2 Ressources techniques
+
 - **Environnement de développement** : VS Code avec extensions spécifiques
 - **Environnement de test** : Serveur dédié pour les tests
 - **Outils de CI/CD** : GitHub Actions ou équivalent

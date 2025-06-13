@@ -15,18 +15,16 @@ This example demonstrates how to build a Todo List API using Flask and expose it
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
 
+```plaintext
 2. Install dependencies:
 ```bash
 pip install -r requirements.txt
-```
-
+```plaintext
 3. Run the server:
 ```bash
 python app.py
-```
-
+```plaintext
 The server will start at:
 - HTTP: http://localhost:5000
 - MCP: ws://localhost:8765
@@ -37,19 +35,21 @@ The server will start at:
 
 ```bash
 # Get access token
+
 curl -X POST http://localhost:5000/login \
   -H "Content-Type: application/json" \
   -d '{"username": "demo", "password": "demo123"}'
-```
-
+```plaintext
 ### Todos
 
 ```bash
 # Get all todos
+
 curl http://localhost:5000/todos \
   -H "Authorization: Bearer YOUR_TOKEN"
 
 # Create todo
+
 curl -X POST http://localhost:5000/todos \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
@@ -60,6 +60,7 @@ curl -X POST http://localhost:5000/todos \
   }'
 
 # Update todo
+
 curl -X PUT http://localhost:5000/todos/1 \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
@@ -68,10 +69,10 @@ curl -X PUT http://localhost:5000/todos/1 \
   }'
 
 # Delete todo
+
 curl -X DELETE http://localhost:5000/todos/1 \
   -H "Authorization: Bearer YOUR_TOKEN"
-```
-
+```plaintext
 ## MCP Integration
 
 Connect to the MCP server and interact with the API:
@@ -81,6 +82,7 @@ from mcp import MCPClient
 
 async with MCPClient("ws://localhost:8765") as client:
     # Login
+
     response = await client.call_function(
         "login",
         {"username": "demo", "password": "demo123"}
@@ -88,6 +90,7 @@ async with MCPClient("ws://localhost:8765") as client:
     token = response["access_token"]
     
     # Create todo
+
     todo = await client.call_function(
         "create_todo",
         {
@@ -99,12 +102,14 @@ async with MCPClient("ws://localhost:8765") as client:
     )
     
     # Get todos
+
     todos = await client.call_function(
         "get_todos",
         headers={"Authorization": f"Bearer {token}"}
     )
     
     # Update todo
+
     updated_todo = await client.call_function(
         "update_todo",
         {"done": True},
@@ -113,13 +118,13 @@ async with MCPClient("ws://localhost:8765") as client:
     )
     
     # Delete todo
+
     result = await client.call_function(
         "delete_todo",
         headers={"Authorization": f"Bearer {token}"},
         params={"todo_id": todo["id"]}
     )
-```
-
+```plaintext
 ## Database
 
 The application uses SQLite with SQLAlchemy. The database file (`todos.db`) will be created automatically when you run the application for the first time.

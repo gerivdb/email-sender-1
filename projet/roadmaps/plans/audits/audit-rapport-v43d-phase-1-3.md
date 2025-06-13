@@ -43,8 +43,7 @@ func (em *ErrorManager) ProcessError(ctx context.Context, err error, hooks *Erro
     errormanager.CatalogError(entry) // Référence externe simplifiée
     return err
 }
-```
-
+```plaintext
 **VS ConfigManager (Référence 100% testée):**
 ```go
 // RÉFÉRENCE - ConfigManager ErrorManager (Complet)
@@ -53,8 +52,7 @@ type ErrorManager interface {
     CatalogError(entry ErrorEntry) error
     ValidateErrorEntry(entry ErrorEntry) error
 }
-```
-
+```plaintext
 ### 1.3 Gestion d'Erreurs dans les Opérations
 
 **Opérations Critiques Analysées:**
@@ -74,8 +72,7 @@ return m.errorManager.ProcessError(ctx, fmt.Errorf("erreur lecture go.mod: %v", 
             zap.String("operation", "list_dependencies"))
     },
 })
-```
-
+```plaintext
 ### 1.4 Scripts PowerShell - Gestion d'Erreurs
 
 **❌ Écarts Majeurs Identifiés:**
@@ -112,8 +109,7 @@ entry := ErrorEntry{
     Component:      component,
     Operation:      operation,
 }
-```
-
+```plaintext
 **DependencyManager (Actuel - À adapter):**
 ```go
 entry := errormanager.ErrorEntry{
@@ -126,20 +122,22 @@ entry := errormanager.ErrorEntry{
     Severity:       "medium", // ⚡ À ajuster
     StackTrace:     fmt.Sprintf("%+v", err), // ⚡ À améliorer
 }
-```
-
+```plaintext
 ## 3. Points de Défaillance Critiques
 
 ### 3.1 Opérations Go Mod
+
 - **go get failures** - Réseau, versions incompatibles
 - **go.mod parsing errors** - Fichier corrompu, syntaxe invalide
 - **File I/O errors** - Permissions, espace disque
 
 ### 3.2 Sauvegardes
+
 - **Backup failures** - Warning seulement, pas d'erreur critique
 - **Restoration procedures** - Pas de mécanisme de récupération automatique
 
 ### 3.3 Scripts PowerShell
+
 - **Command execution failures** - Pas de gestion robuste
 - **Permission errors** - Pas de détection/handling
 
@@ -156,8 +154,7 @@ type ErrorManager interface {
     CatalogError(entry ErrorEntry) error
     ValidateErrorEntry(entry ErrorEntry) error
 }
-```
-
+```plaintext
 ### 4.2 Phase 2 - Codes d'Erreur Spécialisés
 
 **Codes DependencyManager à définir:**
@@ -181,6 +178,7 @@ function Send-ErrorToManager {
     )
     
     # Appel vers ErrorManager Go via JSON API
+
     $errorData = @{
         message = $ErrorMessage
         code = $ErrorCode
@@ -190,9 +188,9 @@ function Send-ErrorToManager {
     }
     
     # Envoyer vers système ErrorManager
-}
-```
 
+}
+```plaintext
 ## 5. Estimation d'Effort
 
 ### 5.1 Complexité d'Adaptation

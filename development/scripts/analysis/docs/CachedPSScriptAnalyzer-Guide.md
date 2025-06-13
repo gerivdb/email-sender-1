@@ -16,8 +16,7 @@ Aucune installation n'est nÃ©cessaire. Le script peut Ãªtre exÃ©cutÃ© di
 
 ```powershell
 .\Invoke-CachedPSScriptAnalyzer.ps1 -Path ".\development\scripts" -OutputPath "results.json" -Recurse -UseCache
-```
-
+```plaintext
 ## ParamÃ¨tres
 
 - **Path** (obligatoire) : Chemin du fichier ou du rÃ©pertoire Ã  analyser.
@@ -36,32 +35,27 @@ Aucune installation n'est nÃ©cessaire. Le script peut Ãªtre exÃ©cutÃ© di
 
 ```powershell
 .\Invoke-CachedPSScriptAnalyzer.ps1 -Path ".\script.ps1" -OutputPath "results.json" -UseCache
-```
-
+```plaintext
 ### Analyser un rÃ©pertoire et ses sous-rÃ©pertoires
 
 ```powershell
 .\Invoke-CachedPSScriptAnalyzer.ps1 -Path ".\development\scripts" -OutputPath "results.json" -Recurse -UseCache
-```
-
+```plaintext
 ### Analyser avec des rÃ¨gles spÃ©cifiques
 
 ```powershell
 .\Invoke-CachedPSScriptAnalyzer.ps1 -Path ".\development\scripts" -IncludeRule "PSAvoidUsingCmdletAliases", "PSAvoidUsingPositionalParameters" -OutputPath "results.json" -Recurse -UseCache
-```
-
+```plaintext
 ### Analyser sans utiliser le cache
 
 ```powershell
 .\Invoke-CachedPSScriptAnalyzer.ps1 -Path ".\development\scripts" -OutputPath "results.json" -Recurse -UseCache:$false
-```
-
+```plaintext
 ### Forcer l'actualisation du cache
 
 ```powershell
 .\Invoke-CachedPSScriptAnalyzer.ps1 -Path ".\development\scripts" -OutputPath "results.json" -Recurse -UseCache -ForceRefresh
-```
-
+```plaintext
 ## Fonctionnement du cache
 
 Le script utilise le module PRAnalysisCache pour mettre en cache les rÃ©sultats de l'analyse. Le cache est stockÃ© Ã  la fois en mÃ©moire et sur disque :
@@ -83,8 +77,7 @@ Pour tester les performances de l'analyse avec et sans cache, utilisez le script
 
 ```powershell
 .\Test-CachedPSScriptAnalyzer.ps1 -Path ".\development\scripts"
-```
-
+```plaintext
 Ce script exÃ©cute l'analyse trois fois :
 1. Sans cache
 2. Avec cache (premier accÃ¨s)

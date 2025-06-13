@@ -18,8 +18,7 @@ function Register-Manager {
         [switch]$Force
     )
 }
-```
-
+```plaintext
 ### Analyse des paramètres
 
 1. **Name** (string, obligatoire)
@@ -84,6 +83,7 @@ La fonction `Register-Manager` effectue les opérations suivantes :
        } -Force
 
        # Enregistrer la configuration
+
        $config | ConvertTo-Json -Depth 10 | Set-Content -Path $configFilePath -Encoding UTF8
        Write-Log -Message "Gestionnaire '$Name' enregistré avec succès." -Level Info
        return $true

@@ -1,4 +1,4 @@
-﻿# Guide des bonnes pratiques pour les tests unitaires
+# Guide des bonnes pratiques pour les tests unitaires
 
 ## Introduction
 
@@ -12,6 +12,7 @@ Les tests doivent Ãªtre indÃ©pendants les uns des autres. Un test ne doit pa
 
 ```powershell
 # Mauvaise pratique
+
 Describe "Tests dÃ©pendants" {
     It "Test 1" {
         $global:variable = "valeur"
@@ -24,6 +25,7 @@ Describe "Tests dÃ©pendants" {
 }
 
 # Bonne pratique
+
 Describe "Tests indÃ©pendants" {
     It "Test 1" {
         $variable = "valeur"
@@ -35,14 +37,14 @@ Describe "Tests indÃ©pendants" {
         $variable | Should -Be "valeur"
     }
 }
-```
-
+```plaintext
 ### 2. Tests isolÃ©s
 
 Les tests doivent Ãªtre isolÃ©s de l'environnement extÃ©rieur. Utilisez des mocks pour simuler les dÃ©pendances externes.
 
 ```powershell
 # Mauvaise pratique
+
 function Get-FileContent {
     param($path)
     Get-Content -Path $path
@@ -56,6 +58,7 @@ Describe "Test non isolÃ©" {
 }
 
 # Bonne pratique
+
 function Get-FileContent {
     param($path)
     Get-Content -Path $path
@@ -69,14 +72,14 @@ Describe "Test isolÃ©" {
         Assert-MockCalled Get-Content -Times 1 -Exactly
     }
 }
-```
-
+```plaintext
 ### 3. Tests dÃ©terministes
 
 Les tests doivent toujours produire le mÃªme rÃ©sultat lorsqu'ils sont exÃ©cutÃ©s dans les mÃªmes conditions.
 
 ```powershell
 # Mauvaise pratique
+
 Describe "Test non dÃ©terministe" {
     It "GÃ©nÃ¨re un nombre alÃ©atoire" {
         $random = Get-Random -Minimum 1 -Maximum 10
@@ -85,6 +88,7 @@ Describe "Test non dÃ©terministe" {
 }
 
 # Bonne pratique
+
 Describe "Test dÃ©terministe" {
     It "GÃ©nÃ¨re un nombre alÃ©atoire" {
         Mock Get-Random { return 5 }
@@ -92,14 +96,14 @@ Describe "Test dÃ©terministe" {
         $random | Should -Be 5
     }
 }
-```
-
+```plaintext
 ### 4. Tests rapides
 
 Les tests doivent s'exÃ©cuter rapidement pour encourager leur exÃ©cution frÃ©quente.
 
 ```powershell
 # Mauvaise pratique
+
 Describe "Test lent" {
     It "Attend 5 secondes" {
         Start-Sleep -Seconds 5
@@ -108,6 +112,7 @@ Describe "Test lent" {
 }
 
 # Bonne pratique
+
 Describe "Test rapide" {
     It "Simule une attente" {
         Mock Start-Sleep {}
@@ -116,14 +121,14 @@ Describe "Test rapide" {
         Assert-MockCalled Start-Sleep -Times 1 -Exactly
     }
 }
-```
-
+```plaintext
 ### 5. Tests lisibles
 
 Les tests doivent Ãªtre faciles Ã  lire et Ã  comprendre.
 
 ```powershell
 # Mauvaise pratique
+
 Describe "Test peu lisible" {
     It "t" {
         $x = 1; $y = 2; $z = $x + $y; $z | Should -Be 3
@@ -131,21 +136,24 @@ Describe "Test peu lisible" {
 }
 
 # Bonne pratique
+
 Describe "Test lisible" {
     It "Additionne deux nombres" {
         # Arrange
+
         $nombre1 = 1
         $nombre2 = 2
         
         # Act
+
         $resultat = $nombre1 + $nombre2
         
         # Assert
+
         $resultat | Should -Be 3
     }
 }
-```
-
+```plaintext
 ## Structure des tests
 
 ### 1. Arrange-Act-Assert (AAA)
@@ -159,17 +167,19 @@ Structurez vos tests selon le pattern AAA :
 Describe "Test avec pattern AAA" {
     It "Convertit une chaÃ®ne en majuscules" {
         # Arrange
+
         $chaine = "test"
         
         # Act
+
         $resultat = $chaine.ToUpper()
         
         # Assert
+
         $resultat | Should -Be "TEST"
     }
 }
-```
-
+```plaintext
 ### 2. Given-When-Then (GWT)
 
 Une alternative au pattern AAA est le pattern GWT :
@@ -181,17 +191,19 @@ Une alternative au pattern AAA est le pattern GWT :
 Describe "Test avec pattern GWT" {
     It "Convertit une chaÃ®ne en majuscules" {
         # Given
+
         $chaine = "test"
         
         # When
+
         $resultat = $chaine.ToUpper()
         
         # Then
+
         $resultat | Should -Be "TEST"
     }
 }
-```
-
+```plaintext
 ### 3. Utilisation de Context et Describe
 
 Utilisez `Describe` pour regrouper les tests liÃ©s Ã  une mÃªme fonction et `Context` pour regrouper les tests liÃ©s Ã  un mÃªme scÃ©nario.
@@ -210,8 +222,7 @@ Describe "Get-ScriptCategory" {
         }
     }
 }
-```
-
+```plaintext
 ## Techniques avancÃ©es
 
 ### 1. Tests paramÃ©trÃ©s
@@ -231,8 +242,7 @@ Describe "Tests paramÃ©trÃ©s" {
         Get-ScriptCategory -FileName $FileName | Should -Be $ExpectedCategory
     }
 }
-```
-
+```plaintext
 ### 2. Fixtures
 
 Utilisez `BeforeAll`, `AfterAll`, `BeforeEach` et `AfterEach` pour prÃ©parer et nettoyer l'environnement de test.
@@ -241,23 +251,28 @@ Utilisez `BeforeAll`, `AfterAll`, `BeforeEach` et `AfterEach` pour prÃ©parer e
 Describe "Tests avec fixtures" {
     BeforeAll {
         # PrÃ©paration globale avant tous les tests
+
         $script:tempFile = [System.IO.Path]::GetTempFileName()
         "Contenu initial" | Out-File -FilePath $script:tempFile -Encoding utf8
     }
     
     AfterAll {
         # Nettoyage global aprÃ¨s tous les tests
+
         Remove-Item -Path $script:tempFile -Force -ErrorAction SilentlyContinue
     }
     
     BeforeEach {
         # PrÃ©paration avant chaque test
+
         "Contenu initial" | Out-File -FilePath $script:tempFile -Encoding utf8
     }
     
     AfterEach {
         # Nettoyage aprÃ¨s chaque test
+
         # (rien Ã  faire ici dans cet exemple)
+
     }
     
     It "Lit le contenu du fichier" {
@@ -271,8 +286,7 @@ Describe "Tests avec fixtures" {
         $content | Should -Be "Nouveau contenu"
     }
 }
-```
-
+```plaintext
 ### 3. Mocks avancÃ©s
 
 Utilisez des mocks avancÃ©s pour simuler des comportements complexes.
@@ -302,20 +316,21 @@ Describe "Mocks avancÃ©s" {
         { Get-Content -Path "C:\fichier3.txt" } | Should -Throw "Fichier non trouvÃ©: C:\fichier3.txt"
     }
 }
-```
-
+```plaintext
 ### 4. Tests de mutation
 
 Les tests de mutation modifient lÃ©gÃ¨rement le code source et vÃ©rifient si les tests dÃ©tectent ces modifications.
 
 ```powershell
 # Exemple conceptuel de test de mutation
+
 function Add-Numbers {
     param($a, $b)
     return $a + $b
 }
 
 # Test original
+
 Describe "Add-Numbers" {
     It "Additionne deux nombres" {
         Add-Numbers -a 2 -b 3 | Should -Be 5
@@ -323,22 +338,26 @@ Describe "Add-Numbers" {
 }
 
 # Mutation 1: Changer l'opÃ©rateur + en -
+
 function Add-Numbers {
     param($a, $b)
     return $a - $b  # Mutation
+
 }
 
 # Le test devrait Ã©chouer avec cette mutation
 
 # Mutation 2: Inverser les paramÃ¨tres
+
 function Add-Numbers {
     param($a, $b)
     return $b + $a  # Mutation (sans effet dans ce cas)
+
 }
 
 # Le test devrait rÃ©ussir avec cette mutation (ce qui indique un test insuffisant)
-```
 
+```plaintext
 ## Bonnes pratiques spÃ©cifiques Ã  PowerShell
 
 ### 1. Utilisation de ShouldProcess
@@ -380,8 +399,7 @@ Describe "Remove-TempFile" {
         Assert-MockCalled ShouldProcess -Times 1 -Exactly -ModuleName "MyModule"
     }
 }
-```
-
+```plaintext
 ### 2. Tests de modules
 
 Testez les modules PowerShell en utilisant `Import-Module` avec le paramÃ¨tre `-Force`.
@@ -390,6 +408,7 @@ Testez les modules PowerShell en utilisant `Import-Module` avec le paramÃ¨tre 
 Describe "Tests de module" {
     BeforeAll {
         # Importer le module avec -Force pour s'assurer d'avoir la derniÃ¨re version
+
         Import-Module -Name "MyModule" -Force
     }
     
@@ -401,8 +420,7 @@ Describe "Tests de module" {
         Get-Something -Param "Value" | Should -Be "Expected Result"
     }
 }
-```
-
+```plaintext
 ## IntÃ©gration avec le processus de dÃ©veloppement
 
 ### 1. Tests automatisÃ©s
@@ -411,46 +429,54 @@ IntÃ©grez les tests dans le processus de dÃ©veloppement continu en utilisant
 
 ```powershell
 # Exemple de hook pre-commit
+
 #!/bin/sh
+
 # Hook pre-commit pour exÃ©cuter les tests unitaires avant chaque commit
 
 # Sauvegarder les fichiers modifiÃ©s
+
 git stash -q --keep-index
 
 # ExÃ©cuter les tests unitaires
+
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "development/scripts/mode-manager/testing/Run-SimplifiedTests.ps1"
 
 # RÃ©cupÃ©rer le code de sortie
+
 RESULT=$?
 
 # Restaurer les fichiers modifiÃ©s
+
 git stash pop -q
 
 # Si les tests ont Ã©chouÃ©, annuler le commit
+
 if [ $RESULT -ne 0 ]; then
     echo "Les tests unitaires ont Ã©chouÃ©. Le commit a Ã©tÃ© annulÃ©."
     exit 1
 fi
 
 # Si tout va bien, continuer avec le commit
-exit 0
-```
 
+exit 0
+```plaintext
 ### 2. Tests pÃ©riodiques
 
 Planifiez l'exÃ©cution pÃ©riodique des tests pour dÃ©tecter les rÃ©gressions.
 
 ```powershell
 # Exemple de tÃ¢che planifiÃ©e
-Register-ScheduledTask -TaskName "TestsQuotidiens" -Action (New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"D:\Scripts\Run-Tests.ps1`"") -Trigger (New-ScheduledTaskTrigger -Daily -At "22:00")
-```
 
+Register-ScheduledTask -TaskName "TestsQuotidiens" -Action (New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"D:\Scripts\Run-Tests.ps1`"") -Trigger (New-ScheduledTaskTrigger -Daily -At "22:00")
+```plaintext
 ### 3. Rapports de tests
 
 GÃ©nÃ©rez des rapports de tests pour suivre l'Ã©volution de la qualitÃ© du code.
 
 ```powershell
 # Exemple de gÃ©nÃ©ration de rapport HTML
+
 $pesterConfig = New-PesterConfiguration
 $pesterConfig.Run.Path = ".\tests"
 $pesterConfig.Output.Verbosity = "Detailed"
@@ -461,9 +487,9 @@ $pesterConfig.TestResult.OutputFormat = "NUnitXml"
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
 # Convertir le rapport XML en HTML
-ConvertTo-Html -InputObject $testResults -Title "Rapport de tests" -Body "<h1>Rapport de tests</h1>" | Out-File -FilePath ".\reports\TestResults.html"
-```
 
+ConvertTo-Html -InputObject $testResults -Title "Rapport de tests" -Body "<h1>Rapport de tests</h1>" | Out-File -FilePath ".\reports\TestResults.html"
+```plaintext
 ## Conclusion
 
 Les tests unitaires sont un investissement qui paie sur le long terme. En suivant ces bonnes pratiques, vous amÃ©liorerez la qualitÃ© de votre code et faciliterez sa maintenance.

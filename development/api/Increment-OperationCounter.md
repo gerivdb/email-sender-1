@@ -1,4 +1,4 @@
-﻿# Increment-OperationCounter
+# Increment-OperationCounter
 
 ## RÃ©sumÃ©
 
@@ -16,6 +16,7 @@ Increment-OperationCounter [-Name <>]  [-IncrementBy <>]  [-LogResult <>]
 `
 
 ## ParamÃ¨tres
+
 ### -Name
 
 Le nom du compteur Ã  incrÃ©menter.
@@ -49,6 +50,7 @@ Par dÃ©faut, c'est $false.
 
 [int] La nouvelle valeur du compteur.
 ## Exemples
+
 ### Exemple 1
 
 `powershell

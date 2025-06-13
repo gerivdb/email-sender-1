@@ -31,18 +31,21 @@ Les fichiers de configuration du gestionnaire sont centralisés dans le réperto
 
 ```powershell
 # Démarrer la surveillance
+
 .\scripts\Start-Monitoring.ps1
 
 # Vérifier la santé du système
+
 .\scripts\Check-SystemHealth.ps1
 
 # Générer un rapport de performance
+
 .\scripts\Generate-PerformanceReport.ps1
 
 # Configurer les alertes
-.\scripts\Configure-Alerts.ps1
-```
 
+.\scripts\Configure-Alerts.ps1
+```plaintext
 ## Intégration ErrorManager
 
 Ce manager intègre l'ErrorManager pour la gestion centralisée des erreurs, la journalisation structurée et le catalogage des erreurs.

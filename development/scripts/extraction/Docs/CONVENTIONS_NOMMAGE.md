@@ -28,10 +28,9 @@ Toutes les fonctions doivent commencer par un verbe approuvé par PowerShell. Vo
 
 Les noms de fonctions suivent généralement cette structure :
 
-```
+```plaintext
 Verbe-[Type]Nom[Action]
-```
-
+```plaintext
 - **Verbe** : Un verbe approuvé par PowerShell
 - **Type** (optionnel) : Le type d'objet sur lequel la fonction opère
 - **Nom** : Le nom de l'objet principal
@@ -189,24 +188,30 @@ function Process-ExtractedInfo {
     )
 
     # Variables de base
+
     $isValid = Test-ExtractedInfo -Info $Info
     $processingResult = @{}
 
     # Traitement conditionnel
+
     if ($isValid) {
         # Variables de collection
+
         $metadataKeys = $Info.Metadata.Keys
         $processedItems = @()
 
         # Boucle avec compteur
+
         for ($i = 0; $i -lt $metadataKeys.Count; $i++) {
             $currentKey = $metadataKeys[$i]
             $currentValue = $Info.Metadata[$currentKey]
 
             # Variable temporaire
+
             $tempProcessedValue = Convert-Value -Value $currentValue
 
             # Ajout à la collection
+
             $processedItems += @{
                 Key = $currentKey
                 Value = $tempProcessedValue
@@ -215,6 +220,7 @@ function Process-ExtractedInfo {
         }
 
         # Résultat final
+
         $processingResult = @{
             OriginalInfo = $Info
             ProcessedItems = $processedItems
@@ -225,8 +231,7 @@ function Process-ExtractedInfo {
 
     return $processingResult
 }
-```
-
+```plaintext
 ## Préfixes et suffixes standards
 
 Les préfixes et suffixes sont utilisés pour indiquer le type, la portée ou la fonction d'un élément. Voici les conventions à suivre pour le module ExtractedInfoModuleV2.
@@ -295,21 +300,26 @@ Les préfixes et suffixes sont utilisés pour indiquer le type, la portée ou la
 
 ```powershell
 # Fonction avec préfixe New-
+
 function New-ExtractedInfoCollection {
     param (
         [string]$Name
     )
 
     # Variable avec préfixe script:
+
     $script:collectionCount++
 
     # Variable avec suffixe Map
+
     $itemsMap = @{}
 
     # Variable avec préfixe is
+
     $isNameValid = -not [string]::IsNullOrWhiteSpace($Name)
 
     # Objet avec suffixe Collection
+
     $collection = @{
         _Type = "ExtractedInfoCollection"
         Id = [guid]::NewGuid().ToString()
@@ -320,4 +330,4 @@ function New-ExtractedInfoCollection {
 
     return $collection
 }
-```
+```plaintext

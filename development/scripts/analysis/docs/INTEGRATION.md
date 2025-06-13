@@ -23,48 +23,55 @@ Pour analyser du code avec diffÃ©rents outils, utilisez le script `Start-CodeA
 
 ```powershell
 # Analyser un fichier avec PSScriptAnalyzer
+
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts\test.ps1" -Tools PSScriptAnalyzer
 
 # Analyser un rÃ©pertoire avec PSScriptAnalyzer et TodoAnalyzer
+
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts" -Tools PSScriptAnalyzer, TodoAnalyzer -Recurse
 
 # Analyser un fichier avec tous les outils disponibles et gÃ©nÃ©rer un rapport HTML
+
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts\test.ps1" -Tools All -GenerateHtmlReport
 
 # Analyser un rÃ©pertoire avec tous les outils disponibles, gÃ©nÃ©rer un rapport HTML et l'ouvrir
-.\Start-CodeAnalysis.ps1 -Path ".\development\scripts" -Tools All -GenerateHtmlReport -OpenReport -Recurse
-```
 
+.\Start-CodeAnalysis.ps1 -Path ".\development\scripts" -Tools All -GenerateHtmlReport -OpenReport -Recurse
+```plaintext
 ### Correction des problÃ¨mes d'encodage dans les rapports HTML
 
 Pour corriger les problÃ¨mes d'encodage dans les rapports HTML, utilisez le script `Fix-HtmlReportEncoding.ps1` :
 
 ```powershell
 # Corriger l'encodage d'un fichier HTML
+
 .\Fix-HtmlReportEncoding.ps1 -Path ".\results\report.html"
 
 # Corriger l'encodage de tous les fichiers HTML dans un rÃ©pertoire
+
 .\Fix-HtmlReportEncoding.ps1 -Path ".\results"
 
 # Corriger l'encodage de tous les fichiers HTML dans un rÃ©pertoire et ses sous-rÃ©pertoires
-.\Fix-HtmlReportEncoding.ps1 -Path ".\results" -Recurse
-```
 
+.\Fix-HtmlReportEncoding.ps1 -Path ".\results" -Recurse
+```plaintext
 ### IntÃ©gration avec des outils tiers
 
 Pour intÃ©grer les rÃ©sultats d'analyse avec des outils tiers, utilisez le script `Integrate-ThirdPartyTools.ps1` :
 
 ```powershell
 # IntÃ©grer les rÃ©sultats avec GitHub Actions
+
 .\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool GitHub -OutputPath ".\github-annotations.json"
 
 # IntÃ©grer les rÃ©sultats avec SonarQube
+
 .\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool SonarQube -OutputPath ".\sonarqube-issues.json" -ProjectKey "my-project"
 
 # IntÃ©grer les rÃ©sultats avec Azure DevOps
-.\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool AzureDevOps -OutputPath ".\azuredevops-issues.json"
-```
 
+.\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool AzureDevOps -OutputPath ".\azuredevops-issues.json"
+```plaintext
 ## Format de rÃ©sultats unifiÃ©
 
 Tous les outils d'analyse utilisent un format de rÃ©sultats unifiÃ© dÃ©fini dans le module `UnifiedResultsFormat.psm1`. Ce format permet de comparer, fusionner et traiter les rÃ©sultats de diffÃ©rents outils de maniÃ¨re cohÃ©rente.
@@ -95,8 +102,7 @@ Pour installer PSScriptAnalyzer :
 
 ```powershell
 Install-Module -Name PSScriptAnalyzer -Force
-```
-
+```plaintext
 ### ESLint
 
 ESLint est un outil d'analyse statique pour les fichiers JavaScript, TypeScript, etc. Il permet de dÃ©tecter les problÃ¨mes de style, de performance, de sÃ©curitÃ©, etc.
@@ -106,9 +112,9 @@ Pour installer ESLint :
 ```bash
 npm install -g eslint
 # ou
-npm install eslint --save-dev
-```
 
+npm install eslint --save-dev
+```plaintext
 ### Pylint
 
 Pylint est un outil d'analyse statique pour les fichiers Python. Il permet de dÃ©tecter les problÃ¨mes de style, de performance, de sÃ©curitÃ©, etc.
@@ -117,8 +123,7 @@ Pour installer Pylint :
 
 ```bash
 pip install pylint
-```
-
+```plaintext
 ### TodoAnalyzer
 
 TodoAnalyzer est un outil d'analyse intÃ©grÃ© qui permet de dÃ©tecter les commentaires TODO, FIXME, HACK, NOTE, etc. dans le code source.
@@ -161,8 +166,7 @@ jobs:
       with:
         name: analysis-results
         path: .\github-annotations.json
-```
-
+```plaintext
 ### SonarQube
 
 Les rÃ©sultats d'analyse peuvent Ãªtre convertis au format SonarQube et envoyÃ©s Ã  l'API SonarQube pour Ãªtre affichÃ©s dans l'interface web.
@@ -171,15 +175,17 @@ Exemple d'utilisation avec SonarQube :
 
 ```powershell
 # Analyser le code
+
 .\development\scripts\analysis\Start-CodeAnalysis.ps1 -Path ".\development\scripts" -Tools All -OutputPath ".\results\analysis-results.json" -Recurse
 
 # Convertir les rÃ©sultats au format SonarQube
+
 .\development\scripts\analysis\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool SonarQube -OutputPath ".\sonarqube-issues.json" -ProjectKey "my-project"
 
 # Envoyer les rÃ©sultats Ã  SonarQube
-.\development\scripts\analysis\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool SonarQube -ApiKey "your-api-key" -ApiUrl "https://sonarqube.example.com/api" -ProjectKey "my-project"
-```
 
+.\development\scripts\analysis\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool SonarQube -ApiKey "your-api-key" -ApiUrl "https://sonarqube.example.com/api" -ProjectKey "my-project"
+```plaintext
 ### Azure DevOps
 
 Les rÃ©sultats d'analyse peuvent Ãªtre convertis au format Azure DevOps et utilisÃ©s dans un pipeline Azure DevOps pour afficher les problÃ¨mes dans les pull requests.
@@ -220,8 +226,7 @@ steps:
   inputs:
     pathtoPublish: '.\azuredevops-issues.json'
     artifactName: 'analysis-results'
-```
-
+```plaintext
 ## Personnalisation
 
 Le systÃ¨me d'intÃ©gration peut Ãªtre personnalisÃ© pour prendre en charge d'autres outils d'analyse ou d'autres formats de rÃ©sultats.
@@ -241,6 +246,7 @@ function Invoke-MyAnalyzerAnalysis {
     Write-Verbose "Analyse de '$FilePath' avec MyAnalyzer..."
     
     # VÃ©rifier si MyAnalyzer est disponible
+
     $myAnalyzer = Get-Command -Name myanalyzer -ErrorAction SilentlyContinue
     if ($null -eq $myAnalyzer) {
         Write-Warning "MyAnalyzer n'est pas disponible. Installez-le avec 'npm install -g myanalyzer'."
@@ -248,13 +254,16 @@ function Invoke-MyAnalyzerAnalysis {
     }
     
     # ExÃ©cuter MyAnalyzer
+
     try {
         $output = & $myAnalyzer.Source --format json $FilePath 2>&1
         
         # Convertir la sortie JSON en objet PowerShell
+
         $results = $output | ConvertFrom-Json
         
         # Convertir les rÃ©sultats vers le format unifiÃ©
+
         $unifiedResults = @()
         
         foreach ($result in $results) {
@@ -278,8 +287,7 @@ function Invoke-MyAnalyzerAnalysis {
         return @()
     }
 }
-```
-
+```plaintext
 Ensuite, modifiez la fonction `Invoke-FileAnalysis` pour utiliser le nouvel outil d'analyse :
 
 ```powershell
@@ -296,16 +304,20 @@ function Invoke-FileAnalysis {
     $results = @()
     
     # DÃ©terminer les outils Ã  utiliser
+
     $useAll = $Tools -contains "All"
     $usePSScriptAnalyzer = $useAll -or ($Tools -contains "PSScriptAnalyzer")
     $useESLint = $useAll -or ($Tools -contains "ESLint")
     $usePylint = $useAll -or ($Tools -contains "Pylint")
     $useTodoAnalyzer = $useAll -or ($Tools -contains "TodoAnalyzer")
     $useMyAnalyzer = $useAll -or ($Tools -contains "MyAnalyzer") # Ajouter le nouvel outil
+
     
     # ... code existant ...
+
     
     # Analyser avec MyAnalyzer si applicable
+
     if ($useMyAnalyzer) {
         $myAnalyzerResults = Invoke-MyAnalyzerAnalysis -FilePath $FilePath
         $results += $myAnalyzerResults
@@ -313,8 +325,7 @@ function Invoke-FileAnalysis {
     
     return $results
 }
-```
-
+```plaintext
 ### Ajouter un nouveau format de rÃ©sultats
 
 Pour ajouter un nouveau format de rÃ©sultats, modifiez le script `Integrate-ThirdPartyTools.ps1` et ajoutez une nouvelle fonction pour convertir les rÃ©sultats vers ce format. Par exemple, pour ajouter un format appelÃ© "MyFormat" :
@@ -349,12 +360,12 @@ function ConvertTo-MyFormat {
         timestamp = Get-Date -Format "yyyy-MM-ddTHH:mm:ss"
     }
 }
-```
-
+```plaintext
 Ensuite, modifiez le script principal pour utiliser le nouveau format :
 
 ```powershell
 # Convertir les rÃ©sultats vers le format appropriÃ©
+
 try {
     $convertedResults = switch ($Tool) {
         "SonarQube" {
@@ -371,6 +382,7 @@ try {
             ConvertTo-AzureDevOpsFormat -Results $results
         }
         "MyFormat" { # Ajouter le nouveau format
+
             ConvertTo-MyFormat -Results $results
         }
         default {
@@ -379,9 +391,9 @@ try {
     }
     
     # ... code existant ...
-}
-```
 
+}
+```plaintext
 ## DÃ©pannage
 
 ### ProblÃ¨mes d'encodage
@@ -390,8 +402,7 @@ Si vous rencontrez des problÃ¨mes d'encodage dans les rapports HTML, utilisez 
 
 ```powershell
 .\Fix-HtmlReportEncoding.ps1 -Path ".\results\report.html"
-```
-
+```plaintext
 ### ProblÃ¨mes d'analyse
 
 Si vous rencontrez des problÃ¨mes lors de l'analyse du code, vÃ©rifiez les points suivants :
@@ -403,8 +414,7 @@ Si vous rencontrez des problÃ¨mes lors de l'analyse du code, vÃ©rifiez les p
 
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts" -Tools All -Verbose
-```
-
+```plaintext
 ### ProblÃ¨mes d'intÃ©gration
 
 Si vous rencontrez des problÃ¨mes lors de l'intÃ©gration avec des outils tiers, vÃ©rifiez les points suivants :
@@ -415,8 +425,7 @@ Si vous rencontrez des problÃ¨mes lors de l'intÃ©gration avec des outils tie
 
 ```powershell
 .\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool SonarQube -ApiKey "your-api-key" -ApiUrl "https://sonarqube.example.com/api" -ProjectKey "my-project" -Verbose
-```
-
+```plaintext
 ## Conclusion
 
 Le systÃ¨me d'intÃ©gration avec des outils d'analyse tiers permet d'amÃ©liorer la qualitÃ© du code en dÃ©tectant les problÃ¨mes potentiels et en les signalant de maniÃ¨re cohÃ©rente. Il peut Ãªtre utilisÃ© dans un pipeline CI/CD pour automatiser l'analyse du code et l'intÃ©gration avec des outils tiers.

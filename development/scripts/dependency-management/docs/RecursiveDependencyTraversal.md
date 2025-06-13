@@ -30,8 +30,7 @@ $dependencyGraph = @{
     'ModuleD' = @()
     'ModuleE' = @('ModuleB')
 }
-```
-
+```plaintext
 ### Suivi des modules visités
 
 Pour éviter de traiter plusieurs fois les mêmes modules, nous utiliserons une table de hachage pour suivre les modules déjà visités:
@@ -41,9 +40,9 @@ $visitedModules = @{
     'ModuleA' = $true
     'ModuleB' = $true
     # ...
-}
-```
 
+}
+```plaintext
 ### Suivi de la profondeur de récursion
 
 Pour limiter la profondeur de récursion, nous utiliserons une variable globale:
@@ -51,13 +50,12 @@ Pour limiter la profondeur de récursion, nous utiliserons une variable globale:
 ```powershell
 $script:MaxRecursionDepth = 10
 $script:CurrentRecursionDepth = 0
-```
-
+```plaintext
 ## Algorithme de parcours récursif
 
 L'algorithme de parcours récursif des dépendances peut être décrit comme suit:
 
-```
+```plaintext
 Fonction ExploreModuleDependencies(moduleName, currentDepth)
     Si currentDepth > MaxRecursionDepth Alors
         Retourner // Limite de profondeur atteinte
@@ -80,8 +78,7 @@ Fonction ExploreModuleDependencies(moduleName, currentDepth)
         ExploreModuleDependencies(dependency, currentDepth + 1)
     Fin Pour
 Fin Fonction
-```
-
+```plaintext
 ## Détection des dépendances directes
 
 La détection des dépendances directes d'un module sera effectuée en analysant:
@@ -89,7 +86,7 @@ La détection des dépendances directes d'un module sera effectuée en analysant
 1. Le manifeste du module (.psd1) pour les dépendances explicites (RequiredModules, NestedModules)
 2. Le code du module (.psm1) pour les dépendances implicites (Import-Module, using module)
 
-```
+```plaintext
 Fonction GetDirectDependencies(moduleName)
     dependencies = []
     
@@ -103,13 +100,12 @@ Fonction GetDirectDependencies(moduleName)
     
     Retourner dependencies
 Fin Fonction
-```
-
+```plaintext
 ## Détection des cycles
 
 La détection des cycles sera effectuée en utilisant l'algorithme de détection de cycles dans un graphe orienté:
 
-```
+```plaintext
 Fonction DetectCycles(dependencyGraph)
     visited = {}
     recursionStack = {}
@@ -139,8 +135,7 @@ Fonction DetectCyclesUtil(node, visited, recursionStack, cycles)
     
     Retirer node de recursionStack
 Fin Fonction
-```
-
+```plaintext
 ## Interface publique
 
 L'interface publique de l'algorithme de parcours récursif des dépendances sera la suivante:
@@ -163,18 +158,22 @@ function Get-ModuleDependencies {
     )
     
     # Initialiser les variables globales
+
     $script:VisitedModules = @{}
     $script:DependencyGraph = @{}
     $script:MaxRecursionDepth = $MaxDepth
     $script:CurrentRecursionDepth = 0
     
     # Explorer les dépendances du module
+
     Explore-ModuleDependencies -ModuleName $ModuleName -CurrentDepth 0
     
     # Détecter les cycles
+
     $cycles = Find-DependencyCycles -DependencyGraph $script:DependencyGraph
     
     # Retourner le résultat
+
     return [PSCustomObject]@{
         ModuleName = $ModuleName
         DependencyGraph = $script:DependencyGraph
@@ -182,8 +181,7 @@ function Get-ModuleDependencies {
         VisitedModules = $script:VisitedModules.Keys
     }
 }
-```
-
+```plaintext
 ## Conclusion
 
 L'algorithme de parcours récursif des dépendances proposé permettra d'explorer efficacement les dépendances directes et indirectes des modules PowerShell, tout en évitant les problèmes de boucles infinies et en respectant les contraintes de performance. La structure de données et les fonctions auxiliaires proposées faciliteront l'implémentation et l'utilisation de cet algorithme.

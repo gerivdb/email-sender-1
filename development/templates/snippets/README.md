@@ -7,9 +7,13 @@ Ce dossier contient des snippets de code pour faciliter le développement du pro
 ## Table des matières
 
 1. [Installation](#installation)
+
 2. [Snippets disponibles](#snippets-disponibles)
+
 3. [Utilisation](#utilisation)
+
 4. [Exemples](#exemples)
+
 5. [Personnalisation](#personnalisation)
 
 ## Installation
@@ -97,6 +101,7 @@ Par exemple, pour créer une fonction PowerShell de base :
 
 ```powershell
 # Tapez func-get puis Tab
+
 function Get-EmailStatus {
     [CmdletBinding()]
     param (
@@ -116,10 +121,12 @@ function Get-EmailStatus {
         try {
             if ($All) {
                 # Get all items
+
                 $result = Get-AllEmailStatus
             }
             else {
                 # Get specific item
+
                 $result = Get-SpecificEmailStatus -Id $Id
             }
             $results += $result
@@ -134,15 +141,16 @@ function Get-EmailStatus {
         return $results
     }
 }
-```
-
+```plaintext
 ### Exemple 2 : Création d'un test Pester
 
 ```powershell
 # Tapez test-function puis Tab
+
 Describe 'Get-EmailStatus' {
     BeforeAll {
         # Import the module
+
         $modulePath = Join-Path -Path $PSScriptRoot -ChildPath '..\EmailSender.psm1'
         Import-Module -Name $modulePath -Force
     }
@@ -160,12 +168,15 @@ Describe 'Get-EmailStatus' {
     Context 'Functionality' {
         It 'Should return expected results' {
             # Arrange
+
             Mock -CommandName Get-SpecificEmailStatus -MockWith { return @{ Id = '12345'; Status = 'Sent' } }
             
             # Act
+
             $result = Get-EmailStatus -Id '12345'
             
             # Assert
+
             $result | Should -Not -BeNull
             $result.Status | Should -Be 'Sent'
         }
@@ -173,16 +184,18 @@ Describe 'Get-EmailStatus' {
     
     AfterAll {
         # Clean up
+
         Remove-Module -Name 'EmailSender' -Force -ErrorAction SilentlyContinue
     }
 }
-```
-
+```plaintext
 ### Exemple 3 : Création d'une documentation de fonction
 
 ```powershell
 # Tapez doc-function puis Tab
+
 <#
+
 .SYNOPSIS
     Récupère le statut d'un ou plusieurs emails.
 
@@ -209,8 +222,8 @@ Describe 'Get-EmailStatus' {
     Date: 2025-05-15
     Version: 1.0
 #>
-```
 
+```plaintext
 ## Personnalisation
 
 Vous pouvez personnaliser ces snippets en modifiant les fichiers JSON correspondants. Chaque snippet est défini par :

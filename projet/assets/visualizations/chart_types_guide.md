@@ -16,10 +16,9 @@ Ce document décrit les différents types de graphiques disponibles pour visuali
 - Comparaison de l'évolution de plusieurs métriques
 
 **Exemple**:
-```
+```plaintext
 CPU Usage (%) au fil du temps
-```
-
+```plaintext
 ### 2. Graphique multi-séries (Multi-Series Line Chart)
 
 **ID**: `multi_series_line`
@@ -32,10 +31,9 @@ CPU Usage (%) au fil du temps
 - Visualisation des impacts d'une métrique sur une autre
 
 **Exemple**:
-```
+```plaintext
 CPU, Mémoire et Disque au fil du temps
-```
-
+```plaintext
 ### 3. Graphique de zone (Area Chart)
 
 **ID**: `area_chart`
@@ -48,10 +46,9 @@ CPU, Mémoire et Disque au fil du temps
 - Représentation des volumes
 
 **Exemple**:
-```
+```plaintext
 Volume de requêtes au fil du temps
-```
-
+```plaintext
 ### 4. Graphique à barres (Bar Chart)
 
 **ID**: `bar_chart`
@@ -64,10 +61,9 @@ Volume de requêtes au fil du temps
 - Représentation de données agrégées
 
 **Exemple**:
-```
+```plaintext
 Temps de réponse moyen par service
-```
-
+```plaintext
 ### 5. Nuage de points (Scatter Plot)
 
 **ID**: `scatter_plot`
@@ -80,10 +76,9 @@ Temps de réponse moyen par service
 - Identification de patterns dans les données
 
 **Exemple**:
-```
+```plaintext
 Temps de réponse vs Nombre de requêtes
-```
-
+```plaintext
 ## Bonnes pratiques
 
 ### Choix du type de graphique
@@ -115,18 +110,15 @@ Le script `trend_charts.ps1` permet de générer des graphiques de tendances à 
 1. Générer tous les types de graphiques pour toutes les métriques:
 ```powershell
 .\scripts\visualization\trend_charts.ps1 -ChartType all -MetricType all
-```
-
+```plaintext
 2. Générer des graphiques linéaires pour les métriques système:
 ```powershell
 .\scripts\visualization\trend_charts.ps1 -ChartType line -MetricType system
-```
-
+```plaintext
 3. Générer des graphiques pour une période spécifique:
 ```powershell
 .\scripts\visualization\trend_charts.ps1 -StartDate (Get-Date).AddDays(-30) -EndDate (Get-Date)
-```
-
+```plaintext
 ### Personnalisation
 
 Le script utilise des templates de graphiques définis dans le fichier `templates/charts/chart_templates.json`. Vous pouvez personnaliser ces templates pour adapter les graphiques à vos besoins spécifiques.

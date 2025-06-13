@@ -42,27 +42,26 @@ Le script propose trois modes d'apprentissage :
 
 ```powershell
 .\Learn-NewTagFormats.ps1 -FilePath "path\to\roadmap.md" -ConfigPath "path\to\config.json" -Mode "Interactive"
-```
-
+```plaintext
 #### Apprentissage automatique à partir d'un contenu
 
 ```powershell
 $content = Get-Content -Path "path\to\roadmap.md" -Raw
 .\Learn-NewTagFormats.ps1 -Content $content -ConfigPath "path\to\config.json" -Mode "Auto" -ConfidenceThreshold 0.7
-```
-
+```plaintext
 #### Apprentissage silencieux avec rapport
 
 ```powershell
 .\Learn-NewTagFormats.ps1 -FilePath "path\to\roadmap.md" -ConfigPath "path\to\config.json" -Mode "Silent" -OutputPath "path\to\report.md"
-```
-
+```plaintext
 ## Détection des potentiels nouveaux formats
 
 Le système utilise plusieurs patterns génériques pour détecter les potentiels nouveaux formats de tags :
 
 - **Format général** : `#tag:value` ou `#tag(value)`
+
 - **Format de durée** : `#tag:Xunit` ou `#tag(Xunit)`
+
 - **Format composite** : `#tag:Xunit1Yunit2`
 
 Ces patterns permettent de détecter une grande variété de formats de tags, même s'ils n'ont pas été définis explicitement dans la configuration.
@@ -116,47 +115,56 @@ Exemple de rapport :
 ### Type: temps, Format: temps_1
 
 - Description: Format #temps:Xj (jours)
+
 - Exemple: #temps:2j
 
 ### Type: duration, Format: duration_2
 
 - Description: Format #duration:XdYh (jours et heures)
+
 - Exemple: #duration:2d4h
 
 ### Type: priority, Format: priority_1
 
 - Description: Format #priority:value
-- Exemple: #priority:high
-```
 
+- Exemple: #priority:high
+
+```plaintext
 ## Utilisation programmatique
 
 Vous pouvez également utiliser les fonctions du script dans vos propres scripts PowerShell.
 
 ```powershell
 # Charger les fonctions du script
+
 . "path\to\Learn-NewTagFormats.ps1"
 
 # Charger la configuration
+
 $config = Get-TagFormatsConfig -ConfigPath "path\to\config.json"
 
 # Détecter les tâches dans le contenu
+
 $content = Get-Content -Path "path\to\roadmap.md" -Raw
 $tasks = Get-TasksFromContent -Content $content
 
 # Détecter les potentiels nouveaux formats
+
 $detectedFormats = Detect-PotentialTagFormats -Tasks $tasks -TagFormats $config
 
 # Créer des patterns regex
+
 $newPatterns = Create-RegexPatterns -DetectedFormats $detectedFormats
 
 # Ajouter les nouveaux formats à la configuration
+
 $addedFormats = Add-NewFormatsToConfig -Config $config -NewPatterns $newPatterns -Mode "Silent"
 
 # Sauvegarder la configuration mise à jour
-Save-TagFormatsConfig -Config $config -ConfigPath "path\to\config.json"
-```
 
+Save-TagFormatsConfig -Config $config -ConfigPath "path\to\config.json"
+```plaintext
 ## Bonnes pratiques
 
 ### Apprentissage initial

@@ -22,8 +22,7 @@ Le nœud Cron (également appelé Schedule Trigger) démarre les workflows selon
     }
   }
 }
-```
-
+```plaintext
 **Explication :** Cette configuration définit deux heures de déclenchement (Cron gère les deux). Le premier objet est 9h00, le second est 17h00 (5 PM). Par défaut, si vous spécifiez uniquement l'heure/minute, il s'exécute tous les jours à cette heure.
 
 Vous pouvez ajouter `"weekday": ["Monday","Tuesday",...]` ou `"dayOfMonth": [...]` pour affiner la planification.
@@ -35,8 +34,7 @@ Alternativement, Cron peut être configuré en modes simples :
 Par exemple, pour déclencher toutes les 15 minutes :
 ```json
 {"item": [ { "mode": "everyX", "value": 15, "unit": "minutes" } ] }
-```
-
+```plaintext
 Les déclencheurs Cron sont parfaits pour les rapports quotidiens, les synchronisations de données de routine, etc. Ce nœud n'a pas d'entrée ; il se déclenche simplement selon la planification et transmet un élément vide pour démarrer le workflow.
 
 ## Déclencheur Email (IMAP)
@@ -63,8 +61,7 @@ Le nœud Email Trigger surveille une boîte de réception IMAP pour les nouveaux
     }
   }
 }
-```
-
+```plaintext
 **Explication :** Ce nœud vérifie la boîte de réception (INBOX) du compte email configuré pour les messages non lus et les marque comme lus (`postProcessAction: "read"`). Pour chaque nouvel email, il déclenche le workflow avec le contenu de l'email.
 
 Utilisez ce déclencheur pour des automatisations comme l'analyse des emails de support entrants ou les notifications de prospects. Vous pouvez le combiner avec un nœud IF pour filtrer les emails par sujet, etc., puis les acheminer (par exemple, créer des tickets, envoyer des alertes, etc.).
@@ -82,8 +79,7 @@ Le déclencheur Manuel est simplement un nœud pour démarrer le workflow en cli
   "typeVersion": 1,
   "parameters": {}
 }
-```
-
+```plaintext
 **Explication :** Vous n'incluriez généralement pas ce nœud dans un JSON de workflow exporté si vous prévoyez de l'exécuter automatiquement, mais il est utile pendant le développement. Il produit un élément vide pour démarrer le flux.
 
 ## Déclencheur de Workflow (Execute Workflow)
@@ -109,8 +105,7 @@ Dans le sous-workflow qui est appelé, vous utilisez un nœud Workflow Trigger p
     }
   }
 }
-```
-
+```plaintext
 **Explication :** Ce nœud exécutera le workflow avec l'ID 123 (vous pouvez trouver l'ID d'un workflow dans son URL ou sa liste). Il transmet un champ d'entrée `inputData` au sous-workflow (le nœud Workflow Trigger du sous-workflow doit être configuré pour accepter ce champ).
 
 Si `waitForCompletion` est `true`, le workflow parent se met en pause jusqu'à ce que le sous-workflow se termine, puis reprend avec la sortie que le sous-workflow a retournée. Si `false`, il déclenche l'autre workflow et continue immédiatement (mode fire-and-forget).

@@ -6,43 +6,75 @@ Ce rÃ©pertoire contient des outils pour l'analyse, la manipulation et la gesti
 
 La structure est organisÃ©e de maniÃ¨re modulaire pour faciliter la maintenance et l'Ã©volution des outils :
 
-```
+```plaintext
 development/roadmap/scripts-parser/
 â”œâ”€â”€ core/                        # FonctionnalitÃ©s de base
-â”‚   â”œâ”€â”€ parser/                  # Parseurs de roadmap
-â”‚   â”œâ”€â”€ model/                   # ModÃ¨les de donnÃ©es
-â”‚   â”œâ”€â”€ converter/               # Convertisseurs de format
-â”‚   â””â”€â”€ structure/               # Gestion de structure
-â”œâ”€â”€ modes/                       # Modes opÃ©rationnels
-â”‚   â”œâ”€â”€ debug/                   # Mode de dÃ©bogage
-â”‚   â”œâ”€â”€ test/                    # Mode de test
-â”‚   â”œâ”€â”€ archi/                   # Mode d'architecture
-â”‚   â”œâ”€â”€ check/                   # Mode de vÃ©rification
-â”‚   â”œâ”€â”€ gran/                    # Mode de granularisation
-â”‚   â”œâ”€â”€ dev-r/                   # Mode de dÃ©veloppement roadmap
-â”‚   â”œâ”€â”€ review/                  # Mode de revue
-â”‚   â””â”€â”€ opti/                    # Mode d'optimisation
-â”œâ”€â”€ analysis/                    # Outils d'analyse
-â”‚   â”œâ”€â”€ dependencies/            # Analyse de dÃ©pendances
-â”‚   â”œâ”€â”€ performance/             # Analyse de performance
-â”‚   â”œâ”€â”€ validation/              # Validation de roadmap
-â”‚   â””â”€â”€ reporting/               # GÃ©nÃ©ration de rapports
-â”œâ”€â”€ utils/                       # Utilitaires
-â”‚   â”œâ”€â”€ encoding/                # Gestion d'encodage
-â”‚   â”œâ”€â”€ export/                  # Export vers diffÃ©rents formats
-â”‚   â”œâ”€â”€ import/                  # Import depuis diffÃ©rents formats
-â”‚   â””â”€â”€ helpers/                 # Fonctions d'aide
-â”œâ”€â”€ development/testing/tests/                       # Tests
-â”‚   â”œâ”€â”€ unit/                    # Tests unitaires
-â”‚   â”œâ”€â”€ integration/             # Tests d'intÃ©gration
-â”‚   â”œâ”€â”€ performance/             # Tests de performance
-â”‚   â””â”€â”€ validation/              # Tests de validation
-â””â”€â”€ docs/                        # Documentation
-    â”œâ”€â”€ examples/                # Exemples d'utilisation
-    â”œâ”€â”€ guides/                  # Guides d'utilisation
-    â””â”€â”€ api/                     # Documentation de l'API
-```
 
+â”‚   â”œâ”€â”€ parser/                  # Parseurs de roadmap
+
+â”‚   â”œâ”€â”€ model/                   # ModÃ¨les de donnÃ©es
+
+â”‚   â”œâ”€â”€ converter/               # Convertisseurs de format
+
+â”‚   â””â”€â”€ structure/               # Gestion de structure
+
+â”œâ”€â”€ modes/                       # Modes opÃ©rationnels
+
+â”‚   â”œâ”€â”€ debug/                   # Mode de dÃ©bogage
+
+â”‚   â”œâ”€â”€ test/                    # Mode de test
+
+â”‚   â”œâ”€â”€ archi/                   # Mode d'architecture
+
+â”‚   â”œâ”€â”€ check/                   # Mode de vÃ©rification
+
+â”‚   â”œâ”€â”€ gran/                    # Mode de granularisation
+
+â”‚   â”œâ”€â”€ dev-r/                   # Mode de dÃ©veloppement roadmap
+
+â”‚   â”œâ”€â”€ review/                  # Mode de revue
+
+â”‚   â””â”€â”€ opti/                    # Mode d'optimisation
+
+â”œâ”€â”€ analysis/                    # Outils d'analyse
+
+â”‚   â”œâ”€â”€ dependencies/            # Analyse de dÃ©pendances
+
+â”‚   â”œâ”€â”€ performance/             # Analyse de performance
+
+â”‚   â”œâ”€â”€ validation/              # Validation de roadmap
+
+â”‚   â””â”€â”€ reporting/               # GÃ©nÃ©ration de rapports
+
+â”œâ”€â”€ utils/                       # Utilitaires
+
+â”‚   â”œâ”€â”€ encoding/                # Gestion d'encodage
+
+â”‚   â”œâ”€â”€ export/                  # Export vers diffÃ©rents formats
+
+â”‚   â”œâ”€â”€ import/                  # Import depuis diffÃ©rents formats
+
+â”‚   â””â”€â”€ helpers/                 # Fonctions d'aide
+
+â”œâ”€â”€ development/testing/tests/                       # Tests
+
+â”‚   â”œâ”€â”€ unit/                    # Tests unitaires
+
+â”‚   â”œâ”€â”€ integration/             # Tests d'intÃ©gration
+
+â”‚   â”œâ”€â”€ performance/             # Tests de performance
+
+â”‚   â””â”€â”€ validation/              # Tests de validation
+
+â””â”€â”€ docs/                        # Documentation
+
+    â”œâ”€â”€ examples/                # Exemples d'utilisation
+
+    â”œâ”€â”€ guides/                  # Guides d'utilisation
+
+    â””â”€â”€ api/                     # Documentation de l'API
+
+```plaintext
 ## Utilisation de Hygen pour gÃ©nÃ©rer de nouveaux scripts
 
 Ce projet utilise [Hygen](https://www.hygen.io/) pour gÃ©nÃ©rer de nouveaux scripts selon un modÃ¨le standardisÃ©.
@@ -53,16 +85,14 @@ Si Hygen n'est pas dÃ©jÃ  installÃ©, vous pouvez l'installer globalement a
 
 ```bash
 npm install -g hygen
-```
-
+```plaintext
 ### GÃ©nÃ©ration d'un nouveau script
 
 Pour gÃ©nÃ©rer un nouveau script, utilisez la commande suivante :
 
 ```bash
 hygen roadmap-parser new script
-```
-
+```plaintext
 Vous serez guidÃ© par une sÃ©rie de questions pour configurer votre script :
 - Nom du script
 - Description

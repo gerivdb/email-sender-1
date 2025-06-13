@@ -12,9 +12,9 @@ La principale approche de versionnement utilisée dans le projet est le versionn
 
 ```powershell
 # Exemple dans un fichier .psd1
-ModuleVersion = '1.0.0'
-```
 
+ModuleVersion = '1.0.0'
+```plaintext
 Cette convention est utilisée dans la plupart des manifestes de modules (.psd1) du projet, comme:
 - `development\roadmap\parser\core\parser\RoadmapParser.psd1` (version 0.1.0)
 - `development\roadmap\scripts\parser\module\RoadmapParserCore.psd1` (version 0.2.0)
@@ -27,6 +27,7 @@ Une autre approche consiste à documenter les versions dans les commentaires d'e
 
 ```powershell
 <#
+
 .SYNOPSIS
     Module de résolution automatique des cycles de dépendances.
 .DESCRIPTION
@@ -37,8 +38,8 @@ Une autre approche consiste à documenter les versions dans les commentaires d'e
     Auteur: EMAIL_SENDER_1 Team
     Date de création: 2025-04-20
 #>
-```
 
+```plaintext
 Cette approche est utilisée dans plusieurs modules, notamment:
 - `src\modules\DependencyCycleResolver.psm1`
 - Divers scripts utilitaires
@@ -49,6 +50,7 @@ Certains modules incluent un historique des versions directement dans les commen
 
 ```powershell
 <#
+
 .NOTES
     Version: 1.2.3
     Auteur: Équipe de développement
@@ -58,8 +60,8 @@ Certains modules incluent un historique des versions directement dans les commen
     - 1.1.0: Ajout de Update-User
     - 1.0.0: Version initiale avec Get-User et New-User
 #>
-```
 
+```plaintext
 Cette approche est documentée dans:
 - `development\methodologies\programmation_16_bases.md`
 - `projet\guides\methodologies\programmation_16_bases.md`
@@ -85,8 +87,7 @@ function Get-CurrentVersion {
         return "1.0.0"
     }
 }
-```
-
+```plaintext
 Cette approche est utilisée dans:
 - `projet\mcp\versioning\scripts\update-mcp-components.ps1`
 
@@ -99,9 +100,9 @@ La méthode la plus courante pour vérifier les versions est la comparaison dire
 ```powershell
 if ($module.Version -lt $MinimumVersion) {
     # Version insuffisante
-}
-```
 
+}
+```plaintext
 Cette approche est utilisée dans plusieurs fonctions de vérification de modules.
 
 ### 2.2 Tri des versions
@@ -110,8 +111,7 @@ Pour sélectionner la version la plus récente ou la plus ancienne, le projet ut
 
 ```powershell
 $versions | Sort-Object { [version]$_ } -Descending | Select-Object -First 1
-```
-
+```plaintext
 Cette approche est utilisée dans:
 - `development\scripts\journal\ConflictResolver.ps1`
 
@@ -126,10 +126,10 @@ MAP_REPO_TO_VERSION_PATTERNS = {
         "dbt-labs/dbt-core",
         "django/django",
         # ...
+
     ]
 }
-```
-
+```plaintext
 Cette approche est utilisée dans:
 - `development\tools\swe-bench-tools\swebench\versioning\constants.py`
 
@@ -139,10 +139,10 @@ Le projet inclut des mécanismes pour vérifier la compatibilité entre différe
 
 ```powershell
 # Détecter la version de PowerShell
+
 $script:isPowerShell7 = $PSVersionTable.PSVersion.Major -ge 7
 $script:isPowerShell5 = $PSVersionTable.PSVersion.Major -eq 5
-```
-
+```plaintext
 Cette approche est utilisée dans:
 - `development\scripts\utils\CompatibleCode\FileContentIndexer.psm1`
 - `development\tools\utilities-tools\FileContentIndexer.psm1`
@@ -163,8 +163,7 @@ $script:ConflictResolverConfig = @{
     }
     DefaultStrategy = "HighestVersion"
 }
-```
-
+```plaintext
 Ces stratégies sont:
 - **HighestVersion**: Utiliser la version la plus récente (stratégie par défaut)
 - **LowestVersion**: Utiliser la version la plus ancienne
@@ -192,15 +191,17 @@ function Resolve-DependencyConflicts {
     )
     
     # ...
+
     
     # Journaliser le conflit
+
     $logEntry = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Conflit résolu pour '$name': Versions en conflit: $($versions -join ', ') -> Version choisie: $($resolutions[$name])"
     Add-Content -Path $script:ConflictResolverConfig.ConflictLog -Value $logEntry
     
     # ...
-}
-```
 
+}
+```plaintext
 Cette approche permet de:
 - Résoudre les conflits selon une stratégie spécifiée
 - Journaliser les résolutions pour référence future
@@ -214,8 +215,8 @@ Le projet inclut également des mécanismes pour résoudre les cycles de dépend
 $script:CycleResolverEnabled = $true
 $script:CycleResolverMaxIterations = 10
 $script:CycleResolverStrategy = "MinimumImpact" # Stratégies: MinimumImpact, WeightBased, Random
-```
 
+```plaintext
 Ces stratégies sont:
 - **MinimumImpact**: Minimiser l'impact sur le système
 - **WeightBased**: Utiliser des poids pour déterminer les dépendances à rompre
@@ -234,8 +235,7 @@ Le projet utilise plusieurs approches pour spécifier les versions requises:
 
 ```powershell
 $moduleResult = Test-ModuleAvailable -ModuleName $moduleName -MinimumVersion $minimumVersion
-```
-
+```plaintext
 Cette approche est utilisée pour s'assurer qu'un module respecte une version minimale.
 
 #### 4.1.2 Version exacte
@@ -243,9 +243,9 @@ Cette approche est utilisée pour s'assurer qu'un module respecte une version mi
 ```powershell
 if ($RequiredVersion -and $module.Version -ne $RequiredVersion) {
     # Version incorrecte
-}
-```
 
+}
+```plaintext
 Cette approche est utilisée pour s'assurer qu'un module a exactement la version spécifiée.
 
 #### 4.1.3 Plage de versions
@@ -253,13 +253,14 @@ Cette approche est utilisée pour s'assurer qu'un module a exactement la version
 ```powershell
 if ($MinimumVersion -and $module.Version -lt $MinimumVersion) {
     # Version insuffisante
+
 }
 
 if ($MaximumVersion -and $module.Version -gt $MaximumVersion) {
     # Version trop récente
-}
-```
 
+}
+```plaintext
 Cette approche est utilisée pour s'assurer qu'un module a une version dans une plage spécifiée.
 
 ### 4.2 Installation et mise à jour des modules
@@ -276,8 +277,7 @@ if ($null -eq $module) {
     Install-Module -Name $ModuleName -Force:$Force -SkipPublisherCheck -MinimumVersion $MinimumVersion
     return $true
 }
-```
-
+```plaintext
 Cette approche permet de:
 - Installer un module s'il n'est pas disponible
 - Mettre à jour un module s'il ne respecte pas la version minimale
@@ -345,6 +345,7 @@ function Get-ModuleVersion {
     )
     
     # Initialiser le résultat
+
     $result = [PSCustomObject]@{
         Name = $ModuleName
         Version = $null
@@ -359,6 +360,7 @@ function Get-ModuleVersion {
     }
     
     # Trouver le module
+
     if ($ModulePath) {
         $module = $null
         if (Test-Path -Path $ModulePath -PathType Container) {
@@ -399,11 +401,13 @@ function Get-ModuleVersion {
     }
     
     # Module trouvé
+
     if ($module) {
         $result.Version = $module.Version
         $result.Path = $module.Path
         
         # Analyser la version
+
         $versionString = $module.Version.ToString()
         $versionParts = $versionString -split '\.'
         $result.Major = [int]$versionParts[0]
@@ -414,12 +418,14 @@ function Get-ModuleVersion {
         }
         
         # Vérifier s'il s'agit d'une version préliminaire
+
         if ($versionString -match '-(.+)$') {
             $result.IsPrerelease = $true
             $result.PrereleaseSuffix = $matches[1]
         }
         
         # Récupérer le manifeste
+
         $manifestPath = $module.Path -replace '\.psm1$', '.psd1'
         if (Test-Path -Path $manifestPath) {
             try {
@@ -433,8 +439,7 @@ function Get-ModuleVersion {
     
     return $result
 }
-```
-
+```plaintext
 ### 6.3 Système avancé de comparaison de versions
 
 Implémenter un système avancé de comparaison de versions:
@@ -454,10 +459,12 @@ function Compare-ModuleVersions {
     )
     
     # Analyser les versions
+
     $v1 = Parse-Version -Version $Version1
     $v2 = Parse-Version -Version $Version2
     
     # Comparer les versions
+
     if ($v1.Major -ne $v2.Major) {
         return $v1.Major.CompareTo($v2.Major)
     }
@@ -481,6 +488,7 @@ function Compare-ModuleVersions {
     }
     
     # Si on ne prend pas en compte les versions préliminaires
+
     if (-not $IncludePrerelease) {
         if ($v1.IsPrerelease -and -not $v2.IsPrerelease) {
             return -1
@@ -491,16 +499,21 @@ function Compare-ModuleVersions {
     }
     
     # Comparer les suffixes préliminaires
+
     if ($v1.IsPrerelease -and $v2.IsPrerelease) {
         # Comparer les suffixes selon les règles SemVer
+
         $s1 = $v1.PrereleaseSuffix
         $s2 = $v2.PrereleaseSuffix
         
         # Règles de comparaison SemVer pour les suffixes préliminaires
+
         # ...
+
     }
     
     # Versions égales
+
     return 0
 }
 
@@ -522,16 +535,19 @@ function Parse-Version {
     }
     
     # Séparer la version et le suffixe préliminaire
+
     $versionParts = $Version -split '-'
     $versionNumbers = $versionParts[0]
     
     # Vérifier s'il s'agit d'une version préliminaire
+
     if ($versionParts.Count -gt 1) {
         $result.IsPrerelease = $true
         $result.PrereleaseSuffix = $versionParts[1]
     }
     
     # Analyser les numéros de version
+
     $numberParts = $versionNumbers -split '\.'
     $result.Major = [int]$numberParts[0]
     $result.Minor = if ($numberParts.Count -gt 1) { [int]$numberParts[1] } else { 0 }
@@ -540,8 +556,7 @@ function Parse-Version {
     
     return $result
 }
-```
-
+```plaintext
 ### 6.4 Système de résolution des conflits de versions
 
 Implémenter un système avancé de résolution des conflits de versions:
@@ -571,6 +586,7 @@ function Resolve-VersionConflict {
     )
     
     # Initialiser le résultat
+
     $result = [PSCustomObject]@{
         Versions = $Versions
         Strategy = $Strategy
@@ -579,6 +595,7 @@ function Resolve-VersionConflict {
     }
     
     # Appliquer la stratégie
+
     switch ($Strategy) {
         "HighestVersion" {
             $result.SelectedVersion = $Versions | Sort-Object { [version]$_ } -Descending | Select-Object -First 1
@@ -649,6 +666,7 @@ function Resolve-VersionConflict {
     }
     
     # Journaliser le résultat
+
     if ($Log) {
         $logEntry = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Conflit résolu: Versions en conflit: $($Versions -join ', ') -> Version choisie: $($result.SelectedVersion) (Stratégie: $Strategy, Raison: $($result.Reason))"
         Add-Content -Path (Join-Path -Path $PSScriptRoot -ChildPath "version_conflict_log.txt") -Value $logEntry
@@ -656,8 +674,7 @@ function Resolve-VersionConflict {
     
     return $result
 }
-```
-
+```plaintext
 ### 6.5 Documentation complète
 
 Créer une documentation complète sur la gestion des versions:

@@ -1020,9 +1020,13 @@ Généré le 2025-05-02 18:02:39
         - [x] **1.2.2.2.3.2.4** ImplÃ©menter la dÃ©tection des formats alternatifs d'assignation
         - [x] **1.2.2.2.3.2.5** CrÃ©er la rÃ©solution des alias et groupes d'utilisateurs
       - [x] **1.2.2.2.3.3** CrÃ©er l'extraction des tags et catÃ©gories (#tag)
+
         - [x] **1.2.2.2.3.3.1** DÃ©velopper les patterns pour la syntaxe #tag standard
+
         - [x] **1.2.2.2.3.3.2** ImplÃ©menter la gestion des tags composÃ©s (#tag-composÃ©)
+
         - [x] **1.2.2.2.3.3.3** CrÃ©er la dÃ©tection des tags hiÃ©rarchiques (#parent/enfant)
+
         - [x] **1.2.2.2.3.3.4** DÃ©velopper la reconnaissance des formats alternatifs de tags
         - [x] **1.2.2.2.3.3.5** ImplÃ©menter la normalisation et validation des tags
       - [x] **1.2.2.2.3.4** ImplÃ©menter la reconnaissance des prioritÃ©s et autres attributs

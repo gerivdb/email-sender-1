@@ -47,10 +47,9 @@ L'indice global de conservation des moments (IGCM) doit satisfaire plusieurs cri
 
 L'IGCM est défini comme une moyenne pondérée des indices de conservation de chaque moment :
 
-```
+```plaintext
 IGCM = w₁·ICM + w₂·ICV + w₃·ICA + w₄·ICK
-```
-
+```plaintext
 où :
 - ICM est l'indice de conservation de la moyenne : `ICM = 1 - min(ERM/100, 1)`
 - ICV est l'indice de conservation de la variance : `ICV = 1 - min(ERV/100, 1)`
@@ -62,10 +61,9 @@ où :
 
 Pour améliorer la robustesse de l'indice, nous introduisons une normalisation adaptative qui tient compte des seuils d'acceptabilité pour chaque moment :
 
-```
+```plaintext
 IGCM = Σ wᵢ·(1 - min(ERᵢ/Tᵢ, 1))
-```
-
+```plaintext
 où :
 - ERᵢ est l'erreur relative pour le moment i
 - Tᵢ est le seuil d'acceptabilité pour le moment i
@@ -81,20 +79,18 @@ Les seuils d'acceptabilité par défaut sont :
 
 Pour accentuer l'impact des erreurs importantes, nous introduisons une fonction de pénalité exponentielle :
 
-```
+```plaintext
 IGCM = Σ wᵢ·exp(-αᵢ·(ERᵢ/Tᵢ)²)
-```
-
+```plaintext
 où αᵢ est un paramètre de sensibilité pour le moment i, typiquement αᵢ = 2.3 pour que exp(-αᵢ) ≈ 0.1 lorsque ERᵢ = Tᵢ.
 
 ### 3.5 Formulation finale avec robustesse aux cas particuliers
 
 La formulation finale intègre des mécanismes de robustesse pour gérer les cas particuliers :
 
-```
+```plaintext
 IGCM = Σ wᵢ·f(ERᵢ, Tᵢ, Sᵢ)
-```
-
+```plaintext
 où :
 - f(ERᵢ, Tᵢ, Sᵢ) = exp(-αᵢ·(min(ERᵢ, Sᵢ)/Tᵢ)²)
 - Sᵢ est une valeur de saturation pour l'erreur du moment i
@@ -166,6 +162,7 @@ def calculate_global_moment_conservation_index(real_data, bin_edges, bin_counts,
         component_indices: Indices individuels pour chaque moment
     """
     # Définir les poids par défaut ou selon le contexte
+
     if weights is None:
         if context == "monitoring":
             weights = [0.50, 0.30, 0.15, 0.05]
@@ -177,19 +174,26 @@ def calculate_global_moment_conservation_index(real_data, bin_edges, bin_counts,
             weights = [0.25, 0.25, 0.25, 0.25]
         else:
             weights = [0.40, 0.30, 0.20, 0.10]  # Défaut
+
     
     # Normaliser les poids
+
     weights = [w / sum(weights) for w in weights]
     
     # Définir les seuils d'acceptabilité par défaut
+
     if thresholds is None:
         thresholds = [5.0, 20.0, 30.0, 40.0]  # En pourcentage
+
     
     # Définir les valeurs de saturation par défaut
+
     if saturation_values is None:
         saturation_values = [20.0, 50.0, 100.0, 150.0]  # En pourcentage
+
     
     # Calculer les erreurs relatives pour chaque moment
+
     mean_error = calculate_mean_relative_error(real_data, bin_edges, bin_counts)
     variance_error = calculate_variance_relative_error(real_data, bin_edges, bin_counts)
     skewness_error = calculate_skewness_relative_error(real_data, bin_edges, bin_counts)
@@ -198,22 +202,26 @@ def calculate_global_moment_conservation_index(real_data, bin_edges, bin_counts,
     errors = [mean_error, variance_error, skewness_error, kurtosis_error]
     
     # Calculer les indices individuels avec fonction exponentielle
+
     alpha = 2.3  # Paramètre de sensibilité
+
     component_indices = []
     
     for i in range(4):
         # Limiter l'erreur à la valeur de saturation
+
         capped_error = min(errors[i], saturation_values[i])
         # Calculer l'indice normalisé avec pénalité exponentielle
+
         index = math.exp(-alpha * (capped_error / thresholds[i])**2)
         component_indices.append(index)
     
     # Calculer l'indice global comme moyenne pondérée
+
     igcm = sum(w * idx for w, idx in zip(weights, component_indices))
     
     return igcm, component_indices
-```
-
+```plaintext
 ### 5.2 Fonctions auxiliaires pour le calcul des erreurs relatives
 
 ```python
@@ -222,20 +230,21 @@ def calculate_mean_relative_error(real_data, bin_edges, bin_counts):
     real_mean = np.mean(real_data)
     
     # Calculer la moyenne de l'histogramme
+
     bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
     total_count = np.sum(bin_counts)
     frequencies = bin_counts / total_count if total_count > 0 else np.zeros_like(bin_counts)
     hist_mean = np.sum(bin_centers * frequencies)
     
     # Calculer l'erreur relative en pourcentage
+
     if abs(real_mean) > 1e-10:
         relative_error = abs(real_mean - hist_mean) / abs(real_mean) * 100
     else:
         relative_error = 100.0 if abs(hist_mean) > 1e-10 else 0.0
     
     return relative_error
-```
-
+```plaintext
 Les fonctions pour les autres moments suivent un schéma similaire.
 
 ## 6. Interprétation de l'indice global
@@ -307,8 +316,7 @@ L'analyse des indices individuels permet d'identifier les aspects spécifiques n
     }
   }
 }
-```
-
+```plaintext
 ## 8. Exemples d'application
 
 ### 8.1 Distribution asymétrique positive (typique des latences)

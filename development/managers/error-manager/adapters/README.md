@@ -4,17 +4,23 @@ Ce package contient les adaptateurs pour intégrer le gestionnaire d'erreurs Go 
 
 ## Structure
 
-```
+```plaintext
 adapters/
 ├── script_inventory_adapter.go    # Adaptateur principal pour ScriptInventoryManager.psm1
-├── duplication_handler.go         # Gestionnaire d'erreurs de duplication
-├── enhanced_types.go              # Types enrichis avec contexte de duplication
-├── adapters_test.go               # Tests unitaires
-├── ScriptInventoryManager.psm1    # Module PowerShell d'exemple
-├── example_usage.go               # Exemple d'utilisation
-└── README.md                      # Cette documentation
-```
 
+├── duplication_handler.go         # Gestionnaire d'erreurs de duplication
+
+├── enhanced_types.go              # Types enrichis avec contexte de duplication
+
+├── adapters_test.go               # Tests unitaires
+
+├── ScriptInventoryManager.psm1    # Module PowerShell d'exemple
+
+├── example_usage.go               # Exemple d'utilisation
+
+└── README.md                      # Cette documentation
+
+```plaintext
 ## Fonctionnalités
 
 ### 1. ScriptInventoryAdapter
@@ -77,8 +83,7 @@ func main() {
     
     log.Printf("Inventaire terminé: %d scripts trouvés", len(result.Scripts))
 }
-```
-
+```plaintext
 ### Gestionnaire de duplication
 
 ```go
@@ -99,8 +104,7 @@ dupHandler.SetErrorCallback(func(err adapters.DuplicationError) {
 
 // Démarrer la surveillance
 go dupHandler.WatchDuplicationReports()
-```
-
+```plaintext
 ### Création d'erreurs enrichies
 
 ```go
@@ -125,8 +129,7 @@ dupContext := &adapters.DuplicationContext{
 
 // Créer une erreur enrichie
 enhanced := adapters.CreateEnhancedErrorEntry(baseError, dupContext)
-```
-
+```plaintext
 ## Tests
 
 Exécuter les tests :
@@ -134,8 +137,7 @@ Exécuter les tests :
 ```bash
 cd adapters
 go test -v
-```
-
+```plaintext
 Les tests couvrent :
 - ✅ Configuration des adaptateurs
 - ✅ Validation des chemins
@@ -156,16 +158,18 @@ Les tests couvrent :
 
 ```powershell
 # Copier le module dans un répertoire de modules
+
 $modulePath = "$env:PSModulePath".Split(';')[0]
 Copy-Item "ScriptInventoryManager.psm1" "$modulePath\ScriptInventoryManager\"
 
 # Importer le module
+
 Import-Module ScriptInventoryManager -Force
 
 # Tester le module
-Get-ScriptInventory -Path "C:\Scripts" -Detailed
-```
 
+Get-ScriptInventory -Path "C:\Scripts" -Detailed
+```plaintext
 ## Surveillance en temps réel
 
 Le système peut être étendu pour surveiller :

@@ -1,4 +1,5 @@
 # Plan de développement v2 - Plan de Développement Magistral V2 : Intégration du Memory Bank et Normalisation Intégrale du Dépôt
+
 *Version 1.0 - 2025-05-16 - Progression globale : 0%*
 
 ## 1. Introduction et Vision

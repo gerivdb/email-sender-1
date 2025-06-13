@@ -1,4 +1,4 @@
-﻿---
+---
 title: ProblÃ¨mes de gestion des chemins de fichiers dans le cache disque de PSCacheManager
 date: 2025-04-09T16:50:00
 severity: medium
@@ -9,6 +9,7 @@ resolution: fixed
 # ProblÃ¨mes de gestion des chemins de fichiers dans le cache disque de PSCacheManager
 
 ## Description du problÃ¨me
+
 Lors de l'intÃ©gration du module PSCacheManager dans des scripts manipulant des chemins de fichiers complexes, plusieurs problÃ¨mes ont Ã©tÃ© identifiÃ©s :
 
 1. **Chemins trop longs** : Les clÃ©s de cache basÃ©es sur des chemins complets dÃ©passaient souvent la limite de 260 caractÃ¨res de Windows, provoquant des erreurs `PathTooLongException`.
@@ -18,17 +19,20 @@ Lors de l'intÃ©gration du module PSCacheManager dans des scripts manipulant de
 3. **Performances dÃ©gradÃ©es** : L'accumulation de nombreux fichiers dans un seul rÃ©pertoire de cache entraÃ®nait une dÃ©gradation des performances du systÃ¨me de fichiers.
 
 ## Impact
+
 Ces problÃ¨mes limitaient l'utilisation du cache disque dans des scÃ©narios rÃ©els, particuliÃ¨rement lors de l'analyse de scripts avec des chemins profondÃ©ment imbriquÃ©s ou des noms de fichiers contenant des caractÃ¨res spÃ©ciaux.
 
 ## Solution appliquÃ©e
 
 ### 1. Normalisation des noms de fichiers
+
 ImplÃ©mentation d'une mÃ©thode `GetNormalizedCachePath` qui :
 - Remplace les caractÃ¨res invalides par des underscores
 - Tronque les chemins trop longs et ajoute un hash MD5 pour garantir l'unicitÃ©
 
 ```powershell
 # Remplacer les caractÃ¨res invalides
+
 $invalidChars = [System.IO.Path]::GetInvalidFileNameChars()
 $safeKey = $key
 foreach ($char in $invalidChars) {
@@ -36,23 +40,25 @@ foreach ($char in $invalidChars) {
 }
 
 # Si le chemin est trop long, utiliser un hash
+
 if ($safeKey.Length -gt 100) {
     $hash = Get-ShortHash -InputString $key
     $shortKey = $safeKey.Substring(0, 90) + "_" + $hash
     $safeKey = $shortKey
 }
-```
-
+```plaintext
 ### 2. Structure de dossiers Ã  deux niveaux
+
 CrÃ©ation d'une structure de dossiers Ã  deux niveaux pour Ã©viter d'avoir trop de fichiers dans un seul rÃ©pertoire :
 
 ```powershell
 # CrÃ©er une structure de dossiers Ã  deux niveaux
+
 $firstLevel = $safeKey.Substring(0, [Math]::Min(2, $safeKey.Length))
 $cachePath = Join-Path -Path $CacheBasePath -ChildPath $firstLevel
-```
-
+```plaintext
 ### 3. Modification des mÃ©thodes de persistance
+
 Mise Ã  jour des mÃ©thodes `SaveToDisk`, `LoadFromDisk` et `RemoveFromDisk` pour utiliser la nouvelle mÃ©thode de normalisation des chemins.
 
 ## LeÃ§ons apprises

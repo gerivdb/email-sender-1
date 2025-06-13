@@ -55,8 +55,7 @@ L'audit de la configuration du DependencyManager révèle une **implémentation 
         "cleanup": { "enabled": true, "confirmation": true }
     }
 }
-```
-
+```plaintext
 ### 1.3 Code de Chargement Actuel (Défaillant)
 
 ```go
@@ -67,8 +66,7 @@ if err != nil {
 }
 
 manager := NewGoModManager(modFilePath, config)
-```
-
+```plaintext
 **Analyse**:
 - ❌ **`loadConfig` n'existe pas** - Erreur de compilation potentielle
 - ❌ **Pas de fallback** - Application ne peut pas fonctionner sans config
@@ -93,8 +91,7 @@ type ConfigManager interface {
     SetRequiredKeys(keys []string)
     // ... plus de fonctionnalités avancées
 }
-```
-
+```plaintext
 **ConfigManager ErrorManager Integration (Validé):**
 ```go
 type configManagerImpl struct {
@@ -104,8 +101,7 @@ type configManagerImpl struct {
     logger       *zap.Logger
     errorManager *ErrorManagerImpl
 }
-```
-
+```plaintext
 ### 2.2 Écarts DependencyManager vs ConfigManager
 
 | Fonctionnalité | DependencyManager | ConfigManager | Action Requise |
@@ -130,8 +126,7 @@ type configManagerImpl struct {
   "capabilities": [...],
   "interfaces": {...}
 }
-```
-
+```plaintext
 **Configuration Path**: Correctement défini et cohérent avec la structure du projet
 
 ### 3.2 Configuration JSON - Structure Logique
@@ -184,8 +179,7 @@ func loadConfig(configPath string) (*Config, error) {
     
     return &config, nil
 }
-```
-
+```plaintext
 ### 5.2 Phase 2 - Intégration ConfigManager Complète
 
 **Migration vers ConfigManager centralisé:**
@@ -207,14 +201,14 @@ func NewGoModManager(modFilePath string, cm configmanager.ConfigManager) *GoModM
         errorManager:  cm.GetErrorManager(),
     }
 }
-```
-
+```plaintext
 ### 5.3 Phase 3 - Configuration Centralisée
 
 **Migration de `dependency-manager.config.json` vers système ConfigManager:**
 
 ```yaml
 # Configuration YAML pour ConfigManager
+
 dependency-manager:
   settings:
     logPath: "logs/dependency-manager.log"
@@ -230,8 +224,7 @@ dependency-manager:
       enabled: true
       requiresModule: true
       defaultVersion: "latest"
-```
-
+```plaintext
 ## 6. Estimation d'Effort
 
 ### 6.1 Complexité d'Implémentation
@@ -305,8 +298,7 @@ func loadConfig(configPath string) (*Config, error) {
 
     return &config, nil
 }
-```
-
+```plaintext
 ## 9. Conclusions
 
 **❌ ÉTAT CRITIQUE**: Fonction de configuration manquante rend le DependencyManager non-fonctionnel  

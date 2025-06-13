@@ -4,23 +4,33 @@ Ce dossier contient des prompts structurés pour guider Copilot dans différents
 
 ## 📂 Structure des Prompts
 
-```
+```plaintext
 prompts/
 ├── modes/                       # Prompts des modes opérationnels
+
 │   ├── ARCHI-mode.prompt.md    # Architecture & Design
+
 │   ├── DEBUG-mode.prompt.md    # Débogage avancé
+
 │   ├── DEV-mode.prompt.md      # Développement récursif
+
 │   ├── UNIT-TEST-mode.prompt.md # Tests unitaires cycliques
+
 │   ├── N8N-mode.prompt.md      # Intégration n8n
+
 │   ├── METRICS-mode.prompt.md   # Analyse métriques
+
 │   ├── augment-mode.prompt.md  # Intégration IA
+
 │   └── standard-mode.prompt.md # Standards projet
+
 ├── analysis/                   # Prompts d'analyse
+
 │   └── analyse-standards.prompt.md
 └── planning/                   # Prompts de planification
-    └── plan-dev.prompt.md
-```
 
+    └── plan-dev.prompt.md
+```plaintext
 ## 🔄 Cycle de Vie des Modes
 
 ```mermaid
@@ -36,8 +46,7 @@ graph TD
     DEBUG -- Support --> C
     DEBUG -- Support --> D
     DEBUG -- Support --> F
-```
-
+```plaintext
 ## 📋 Standards d'Écriture des Prompts
 
 1. **En-tête Obligatoire**
@@ -50,8 +59,7 @@ behavior:
   maxTokens: 1024-2048
 tags: ["tag1", "tag2"]
 ---
-```
-
+```plaintext
 2. **Sections Requises**
 - Objectif
 - Paramètres
@@ -60,6 +68,7 @@ tags: ["tag1", "tag2"]
 - Intégration
 
 ## 🔗 Intégration des Modes
+
 - Chaque mode peut être utilisé seul ou en combinaison
 - Les transitions entre modes sont documentées
 - Les dépendances sont explicites

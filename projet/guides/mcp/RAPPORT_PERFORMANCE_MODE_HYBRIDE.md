@@ -1,7 +1,9 @@
 # Rapport de test de performance du mode hybride Qdrant
+
 *Généré le 2025-05-20*
 
 ## Configuration du test
+
 - Dimensions des vecteurs: 384
 - Nombre de requêtes par test: 5
 - Top-K: 10
@@ -106,4 +108,4 @@ Le mode hybride (on_disk=true + quantization=true + always_ram=true) offre les m
         }
     }
 }
-```
+```plaintext

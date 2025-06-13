@@ -39,8 +39,7 @@ Hygen est déjà installé dans le projet MCP. Si vous avez besoin de le réinst
 
 ```batch
 .\mcp\cmd\utils\setup-hygen-environment.cmd
-```
-
+```plaintext
 Ce script vérifie et configure l'environnement de développement pour Hygen.
 
 ### Vérification de l'installation
@@ -49,8 +48,7 @@ Pour vérifier que Hygen est correctement installé, exécutez :
 
 ```powershell
 npx hygen --version
-```
-
+```plaintext
 Vous devriez voir la version de Hygen s'afficher.
 
 ## 3. Génération de composants MCP
@@ -70,8 +68,7 @@ La méthode la plus simple pour générer des composants est d'utiliser le scrip
 
 ```batch
 .\mcp\cmd\utils\generate-component.cmd
-```
-
+```plaintext
 Ce script vous présentera un menu avec les options suivantes :
 
 1. Générer un script serveur MCP
@@ -86,39 +83,46 @@ Vous pouvez également utiliser directement le script PowerShell :
 
 ```powershell
 # Générer un composant en mode interactif
+
 .\mcp\scripts\utils\Generate-MCPComponent.ps1
 
 # Générer un script serveur
+
 .\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type server -Name "api-server" -Description "Serveur API MCP" -Author "John Doe"
 
 # Générer un script client
+
 .\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type client -Name "admin-client" -Description "Client d'administration MCP" -Author "Jane Smith"
 
 # Générer un module
+
 .\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type module -Name "MCPUtils" -Description "Utilitaires MCP" -Author "Dev Team"
 
 # Générer une documentation
-.\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type doc -Name "installation-guide" -Category "guides" -Description "Guide d'installation MCP" -Author "Doc Team"
-```
 
+.\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type doc -Name "installation-guide" -Category "guides" -Description "Guide d'installation MCP" -Author "Doc Team"
+```plaintext
 ### Utilisation des alias PowerShell
 
 Si vous avez exécuté le script d'intégration du workflow, vous pouvez utiliser les alias PowerShell suivants :
 
 ```powershell
 # Générer un script serveur
+
 gmcps -Name "api-server" -Description "Serveur API MCP" -Author "John Doe"
 
 # Générer un script client
+
 gmcpc -Name "admin-client" -Description "Client d'administration MCP" -Author "Jane Smith"
 
 # Générer un module
+
 gmcpm -Name "MCPUtils" -Description "Utilitaires MCP" -Author "Dev Team"
 
 # Générer une documentation
-gmcpd -Name "installation-guide" -Category "guides" -Description "Guide d'installation MCP" -Author "Doc Team"
-```
 
+gmcpd -Name "installation-guide" -Category "guides" -Description "Guide d'installation MCP" -Author "Doc Team"
+```plaintext
 ### Utilisation des tâches VS Code
 
 Si vous avez exécuté le script d'intégration du workflow, vous pouvez utiliser les tâches VS Code suivantes :
@@ -137,7 +141,7 @@ Si vous avez exécuté le script d'intégration du workflow, vous pouvez utilise
 
 Les templates sont stockés dans le dossier `mcp/_templates`. Chaque générateur a son propre dossier avec des templates spécifiques.
 
-```
+```plaintext
 mcp/_templates/
   mcp-server/
     new/
@@ -155,8 +159,7 @@ mcp/_templates/
     new/
       hello.ejs.t
       prompt.js
-```
-
+```plaintext
 ### Modification des templates
 
 Pour modifier un template existant, ouvrez le fichier `hello.ejs.t` correspondant dans votre éditeur de texte.
@@ -168,7 +171,9 @@ Les templates utilisent la syntaxe EJS (Embedded JavaScript) pour générer du c
 to: mcp/core/server/<%= name %>.ps1
 ---
 #!/usr/bin/env pwsh
+
 <#
+
 .SYNOPSIS
     <%= description %>
 
@@ -202,16 +207,15 @@ param (
 )
 
 # Reste du code...
-```
 
+```plaintext
 ### Création de nouveaux templates
 
 Pour créer un nouveau générateur :
 
 ```bash
 npx hygen generator new mon-generateur
-```
-
+```plaintext
 Cela créera un nouveau dossier `mcp/_templates/mon-generateur` avec les fichiers nécessaires.
 
 ## 5. Intégration dans le workflow de développement
@@ -293,5 +297,6 @@ Si vous avez exécuté le script d'intégration du workflow, des alias PowerShel
 Si vous rencontrez des problèmes avec Hygen, vous pouvez contacter l'équipe MCP ou consulter les ressources suivantes :
 
 - [Guide de résolution des problèmes](hygen-guide.md#résolution-des-problèmes)
+
 - [Forum de discussion MCP](https://example.com/mcp-forum)
 - [Canal Slack MCP](https://example.com/mcp-slack)

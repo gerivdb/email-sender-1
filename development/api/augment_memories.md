@@ -14,7 +14,7 @@ Augment Memories est un système qui permet aux modèles d'IA d'accéder à des 
 
 L'intégration est basée sur une architecture de synchronisation:
 
-```
+```plaintext
 ┌─────────────────┐                 ┌─────────────────┐
 │                 │                 │                 │
 │  Journal de     │ ◄─── Export ─── │    Augment      │
@@ -31,8 +31,7 @@ L'intégration est basée sur une architecture de synchronisation:
 │  (via RAG)      │                 │  (via Augment)  │
 │                 │                 │                 │
 └─────────────────┘                 └─────────────────┘
-```
-
+```plaintext
 ## Implémentation
 
 ### Script principal: augment_integration.py
@@ -41,15 +40,17 @@ Ce script implémente l'intégration avec Augment Memories:
 
 ```python
 # Exporter les entrées du journal vers Augment Memories
+
 python development/scripts/python/journal/augment_integration.py export
 
 # Importer les Memories d'Augment vers le journal
+
 python development/scripts/python/journal/augment_integration.py import
 
 # Créer une Memory Augment à partir d'une entrée spécifique
-python development/scripts/python/journal/augment_integration.py create --entry projet/roadmaps/journal/entries/2025-04-05-14-30-implementation-du-systeme-rag.md
-```
 
+python development/scripts/python/journal/augment_integration.py create --entry projet/roadmaps/journal/entries/2025-04-05-14-30-implementation-du-systeme-rag.md
+```plaintext
 ### Classe AugmentJournalIntegration
 
 La classe `AugmentJournalIntegration` implémente toutes les fonctionnalités:
@@ -73,8 +74,7 @@ class AugmentJournalIntegration:
     def create_augment_memory_from_entry(self, entry_path):
         """Crée une memory Augment à partir d'une entrée de journal spécifique."""
         ...
-```
-
+```plaintext
 ## Export vers Augment Memories
 
 ### Format d'export
@@ -93,8 +93,7 @@ Les entrées du journal sont exportées dans le format attendu par Augment Memor
   },
   ...
 ]
-```
-
+```plaintext
 ### Algorithme d'export
 
 1. Charger l'index RAG du journal
@@ -108,8 +107,7 @@ Les entrées du journal sont exportées dans le format attendu par Augment Memor
 ```python
 integration = AugmentJournalIntegration()
 integration.export_journal_to_augment()
-```
-
+```plaintext
 ## Import depuis Augment Memories
 
 ### Format d'import
@@ -128,31 +126,37 @@ related: []
 # Augment Memories: Concept important
 
 ## Actions réalisées
+
 - Import automatique depuis Augment Memories
 
 ## Contenu des Memories
+
 - Concept important: Il est essentiel de comprendre que...
 - Application du concept: Ce concept peut être appliqué à...
 
 ## Résolution des erreurs, déductions tirées
+
 - 
 
 ## Optimisations identifiées
+
 - Pour le système: Intégration entre Augment Memories et le journal de bord
 - Pour le code: Possibilité d'extraire des snippets de code des memories
 - Pour la gestion des erreurs: Identification des problèmes récurrents mentionnés dans les memories
 - Pour les workflows: Opportunités d'automatisation basées sur les patterns identifiés
 
 ## Enseignements techniques
+
 - 
 
 ## Impact sur le projet musical
+
 - 
 
 ## Références et ressources
-- 
-```
 
+- 
+```plaintext
 ### Algorithme d'import
 
 1. Rechercher tous les fichiers de Memories Augment
@@ -170,8 +174,7 @@ related: []
 ```python
 integration = AugmentJournalIntegration()
 integration.import_augment_to_journal()
-```
-
+```plaintext
 ## Création de Memories à partir d'entrées
 
 ### Algorithme de création
@@ -186,8 +189,7 @@ integration.import_augment_to_journal()
 ```python
 integration = AugmentJournalIntegration()
 integration.create_augment_memory_from_entry("projet/roadmaps/journal/entries/2025-04-05-14-30-implementation-du-systeme-rag.md")
-```
-
+```plaintext
 ## Configuration d'Augment
 
 Pour que Augment utilise les Memories exportées, vous devez configurer Augment avec le fichier `.augment/config.json`:
@@ -213,8 +215,7 @@ Pour que Augment utilise les Memories exportées, vous devez configurer Augment 
     }
   ]
 }
-```
-
+```plaintext
 ## Automatisation de la synchronisation
 
 La synchronisation entre le journal et Augment Memories peut être automatisée:
@@ -225,23 +226,23 @@ Le script `sync-journal-ecosystem.ps1` synchronise le journal avec l'écosystèm
 
 ```powershell
 # Synchroniser le journal avec l'écosystème
-.\development\scripts\cmd\sync-journal-ecosystem.ps1
-```
 
+.\development\scripts\cmd\sync-journal-ecosystem.ps1
+```plaintext
 ### Tâche planifiée
 
 Vous pouvez configurer une tâche planifiée pour synchroniser automatiquement:
 
 ```powershell
 # Configurer une tâche planifiée
-.\development\scripts\cmd\setup-journal-sync-task.ps1
-```
 
+.\development\scripts\cmd\setup-journal-sync-task.ps1
+```plaintext
 ## Utilisation dans les conversations avec Augment
 
 Une fois l'intégration configurée, Augment peut utiliser les connaissances du journal dans ses conversations:
 
-```
+```plaintext
 Utilisateur: Quelles optimisations avons-nous identifiées pour le système RAG?
 
 Augment: D'après le journal de bord, plusieurs optimisations ont été identifiées pour le système RAG:
@@ -253,8 +254,7 @@ Augment: D'après le journal de bord, plusieurs optimisations ont été identifi
 5. Support de requêtes structurées plus complexes (SQL-like)
 
 Ces optimisations ont été documentées dans l'entrée du 2025-04-05 intitulée "Implémentation du système RAG".
-```
-
+```plaintext
 ## Considérations techniques
 
 ### Gestion des doublons

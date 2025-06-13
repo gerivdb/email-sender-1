@@ -16,12 +16,13 @@ Cette documentation détaille l'API publique du module PerformanceAnalyzer, qui 
 
 ```powershell
 # Importer le module
+
 Import-Module -Name ".\modules\PerformanceAnalyzer.psm1"
 
 # Vérifier que le module est correctement importé
-Get-Command -Module PerformanceAnalyzer
-```
 
+Get-Command -Module PerformanceAnalyzer
+```plaintext
 ## Vue d'ensemble des fonctions
 
 Le module PerformanceAnalyzer expose les fonctions principales suivantes :
@@ -47,8 +48,7 @@ Initialise le module PerformanceAnalyzer avec les paramètres spécifiés.
 
 ```powershell
 Initialize-PerformanceAnalyzer [[-Enabled] <bool>] [[-ConfigPath] <string>] [[-LogPath] <string>] [[-LogLevel] <string>]
-```
-
+```plaintext
 #### Paramètres
 
 | Paramètre | Type | Description | Défaut |
@@ -66,12 +66,13 @@ Retourne un objet hashtable contenant la configuration actuelle du module.
 
 ```powershell
 # Initialisation avec les paramètres par défaut
+
 Initialize-PerformanceAnalyzer
 
 # Initialisation avec des paramètres personnalisés
-Initialize-PerformanceAnalyzer -ConfigPath "C:\Config\perf_config.json" -LogPath "C:\Logs\perf.log" -LogLevel "DEBUG"
-```
 
+Initialize-PerformanceAnalyzer -ConfigPath "C:\Config\perf_config.json" -LogPath "C:\Logs\perf.log" -LogLevel "DEBUG"
+```plaintext
 ### Start-PerformanceAnalysis
 
 Collecte et analyse les métriques de performance du système.
@@ -80,8 +81,7 @@ Collecte et analyse les métriques de performance du système.
 
 ```powershell
 Start-PerformanceAnalysis [[-Duration] <int>] [[-CollectionInterval] <int>] [[-OutputPath] <string>]
-```
-
+```plaintext
 #### Paramètres
 
 | Paramètre | Type | Description | Défaut |
@@ -98,12 +98,13 @@ Retourne un objet hashtable contenant les résultats de l'analyse, incluant les 
 
 ```powershell
 # Analyse avec les paramètres par défaut
+
 $results = Start-PerformanceAnalysis
 
 # Analyse personnalisée
-$results = Start-PerformanceAnalysis -Duration 300 -CollectionInterval 10 -OutputPath "C:\Results"
-```
 
+$results = Start-PerformanceAnalysis -Duration 300 -CollectionInterval 10 -OutputPath "C:\Results"
+```plaintext
 ### Get-PerformanceReport
 
 Génère un rapport de performance basé sur les métriques collectées.
@@ -112,8 +113,7 @@ Génère un rapport de performance basé sur les métriques collectées.
 
 ```powershell
 Get-PerformanceReport [[-ReportType] <string>] [[-TimeRange] <string>] [[-Format] <string>]
-```
-
+```plaintext
 #### Paramètres
 
 | Paramètre | Type | Description | Défaut |
@@ -130,12 +130,13 @@ Retourne un objet contenant le rapport de performance dans le format spécifié.
 
 ```powershell
 # Rapport sommaire au format texte
+
 $report = Get-PerformanceReport
 
 # Rapport détaillé au format HTML
-$report = Get-PerformanceReport -ReportType "Detailed" -TimeRange "Last24Hours" -Format "HTML"
-```
 
+$report = Get-PerformanceReport -ReportType "Detailed" -TimeRange "Last24Hours" -Format "HTML"
+```plaintext
 ### Export-PerformanceData
 
 Exporte les données de performance dans différents formats.
@@ -144,8 +145,7 @@ Exporte les données de performance dans différents formats.
 
 ```powershell
 Export-PerformanceData [[-OutputPath] <string>] [[-Format] <string>] [[-TimeRange] <string>] [[-MetricTypes] <array>]
-```
-
+```plaintext
 #### Paramètres
 
 | Paramètre | Type | Description | Défaut |
@@ -163,12 +163,13 @@ Retourne un objet FileInfo représentant le fichier exporté.
 
 ```powershell
 # Exporter toutes les métriques au format CSV
+
 Export-PerformanceData -OutputPath "C:\Exports\metrics.csv"
 
 # Exporter uniquement les métriques CPU et mémoire au format JSON
-Export-PerformanceData -OutputPath "C:\Exports\cpu_memory.json" -Format "JSON" -MetricTypes @("CPU", "Memory")
-```
 
+Export-PerformanceData -OutputPath "C:\Exports\cpu_memory.json" -Format "JSON" -MetricTypes @("CPU", "Memory")
+```plaintext
 ### Set-PerformanceThreshold
 
 Définit des seuils d'alerte pour les métriques de performance.
@@ -177,8 +178,7 @@ Définit des seuils d'alerte pour les métriques de performance.
 
 ```powershell
 Set-PerformanceThreshold [-MetricName] <string> [-Threshold] <double> [[-Duration] <int>] [[-Action] <scriptblock>]
-```
-
+```plaintext
 #### Paramètres
 
 | Paramètre | Type | Description | Défaut |
@@ -196,14 +196,15 @@ Retourne un objet représentant le seuil configuré.
 
 ```powershell
 # Définir un seuil d'alerte pour l'utilisation CPU
+
 Set-PerformanceThreshold -MetricName "CPU.Usage" -Threshold 90 -Duration 300
 
 # Définir un seuil avec une action personnalisée
+
 Set-PerformanceThreshold -MetricName "Memory.Available" -Threshold 500 -Duration 120 -Action {
     Send-MailMessage -To "admin@example.com" -Subject "Alerte mémoire" -Body "Mémoire disponible faible"
 }
-```
-
+```plaintext
 ### Get-PerformanceTrend
 
 Analyse les tendances des métriques de performance.
@@ -212,8 +213,7 @@ Analyse les tendances des métriques de performance.
 
 ```powershell
 Get-PerformanceTrend [-MetricName] <string> [[-TimeRange] <string>] [[-Resolution] <string>]
-```
-
+```plaintext
 #### Paramètres
 
 | Paramètre | Type | Description | Défaut |
@@ -230,12 +230,13 @@ Retourne un objet contenant l'analyse de tendance pour la métrique spécifiée.
 
 ```powershell
 # Analyser la tendance d'utilisation CPU
+
 $trend = Get-PerformanceTrend -MetricName "CPU.Usage"
 
 # Analyser la tendance de mémoire disponible avec une résolution fine
-$trend = Get-PerformanceTrend -MetricName "Memory.Available" -TimeRange "Last1Hour" -Resolution "Minute"
-```
 
+$trend = Get-PerformanceTrend -MetricName "Memory.Available" -TimeRange "Last1Hour" -Resolution "Minute"
+```plaintext
 ### Find-PerformanceAnomaly
 
 Détecte les anomalies dans les métriques de performance.
@@ -244,8 +245,7 @@ Détecte les anomalies dans les métriques de performance.
 
 ```powershell
 Find-PerformanceAnomaly [[-TimeRange] <string>] [[-MetricTypes] <array>] [[-Sensitivity] <string>]
-```
-
+```plaintext
 #### Paramètres
 
 | Paramètre | Type | Description | Défaut |
@@ -262,12 +262,13 @@ Retourne un tableau d'objets représentant les anomalies détectées.
 
 ```powershell
 # Détecter toutes les anomalies
+
 $anomalies = Find-PerformanceAnomaly
 
 # Détecter les anomalies CPU avec une sensibilité élevée
-$anomalies = Find-PerformanceAnomaly -MetricTypes @("CPU") -Sensitivity "High"
-```
 
+$anomalies = Find-PerformanceAnomaly -MetricTypes @("CPU") -Sensitivity "High"
+```plaintext
 ### Get-OptimizationRecommendation
 
 Fournit des recommandations d'optimisation basées sur l'analyse des métriques de performance.
@@ -276,8 +277,7 @@ Fournit des recommandations d'optimisation basées sur l'analyse des métriques 
 
 ```powershell
 Get-OptimizationRecommendation [[-TimeRange] <string>] [[-Categories] <array>] [[-Priority] <string>]
-```
-
+```plaintext
 #### Paramètres
 
 | Paramètre | Type | Description | Défaut |
@@ -294,12 +294,13 @@ Retourne un tableau d'objets représentant les recommandations d'optimisation.
 
 ```powershell
 # Obtenir toutes les recommandations
+
 $recommendations = Get-OptimizationRecommendation
 
 # Obtenir uniquement les recommandations de haute priorité pour le disque
-$recommendations = Get-OptimizationRecommendation -Categories @("Disk") -Priority "High"
-```
 
+$recommendations = Get-OptimizationRecommendation -Categories @("Disk") -Priority "High"
+```plaintext
 ## Fonctions d'analyse spécialisées
 
 ### Measure-CPUMetrics
@@ -310,8 +311,7 @@ Analyse les métriques CPU pour identifier les tendances, les anomalies et les p
 
 ```powershell
 Measure-CPUMetrics [-CPUMetrics] <array>
-```
-
+```plaintext
 #### Paramètres
 
 | Paramètre | Type | Description |
@@ -326,9 +326,9 @@ Retourne un objet hashtable contenant l'analyse détaillée des métriques CPU, 
 
 ```powershell
 # Analyser les métriques CPU collectées
-$cpuAnalysis = Measure-CPUMetrics -CPUMetrics $metrics.CPU
-```
 
+$cpuAnalysis = Measure-CPUMetrics -CPUMetrics $metrics.CPU
+```plaintext
 ### Measure-MemoryMetrics
 
 Analyse les métriques mémoire pour identifier les tendances, les anomalies et les problèmes de performance.
@@ -337,8 +337,7 @@ Analyse les métriques mémoire pour identifier les tendances, les anomalies et 
 
 ```powershell
 Measure-MemoryMetrics [-MemoryMetrics] <array>
-```
-
+```plaintext
 #### Paramètres
 
 | Paramètre | Type | Description |
@@ -353,9 +352,9 @@ Retourne un objet hashtable contenant l'analyse détaillée des métriques mémo
 
 ```powershell
 # Analyser les métriques mémoire collectées
-$memoryAnalysis = Measure-MemoryMetrics -MemoryMetrics $metrics.Memory
-```
 
+$memoryAnalysis = Measure-MemoryMetrics -MemoryMetrics $metrics.Memory
+```plaintext
 ### Measure-DiskMetrics
 
 Analyse les métriques disque pour identifier les tendances, les anomalies et les problèmes de performance.
@@ -364,8 +363,7 @@ Analyse les métriques disque pour identifier les tendances, les anomalies et le
 
 ```powershell
 Measure-DiskMetrics [-DiskMetrics] <array>
-```
-
+```plaintext
 #### Paramètres
 
 | Paramètre | Type | Description |
@@ -380,9 +378,9 @@ Retourne un objet hashtable contenant l'analyse détaillée des métriques disqu
 
 ```powershell
 # Analyser les métriques disque collectées
-$diskAnalysis = Measure-DiskMetrics -DiskMetrics $metrics.Disk
-```
 
+$diskAnalysis = Measure-DiskMetrics -DiskMetrics $metrics.Disk
+```plaintext
 ### Measure-NetworkMetrics
 
 Analyse les métriques réseau pour identifier les tendances, les anomalies et les problèmes de performance.
@@ -391,8 +389,7 @@ Analyse les métriques réseau pour identifier les tendances, les anomalies et l
 
 ```powershell
 Measure-NetworkMetrics [-NetworkMetrics] <array>
-```
-
+```plaintext
 #### Paramètres
 
 | Paramètre | Type | Description |
@@ -407,9 +404,9 @@ Retourne un objet hashtable contenant l'analyse détaillée des métriques rése
 
 ```powershell
 # Analyser les métriques réseau collectées
-$networkAnalysis = Measure-NetworkMetrics -NetworkMetrics $metrics.Network
-```
 
+$networkAnalysis = Measure-NetworkMetrics -NetworkMetrics $metrics.Network
+```plaintext
 ### Measure-Metrics
 
 Analyse l'ensemble des métriques collectées pour identifier les tendances, les anomalies et les problèmes de performance.
@@ -418,8 +415,7 @@ Analyse l'ensemble des métriques collectées pour identifier les tendances, les
 
 ```powershell
 Measure-Metrics [-Metrics] <array>
-```
-
+```plaintext
 #### Paramètres
 
 | Paramètre | Type | Description |
@@ -434,9 +430,9 @@ Retourne un objet hashtable contenant l'analyse détaillée de toutes les métri
 
 ```powershell
 # Analyser toutes les métriques collectées
-$analysis = Measure-Metrics -Metrics $metrics
-```
 
+$analysis = Measure-Metrics -Metrics $metrics
+```plaintext
 ### Get-MetricTrend
 
 Calcule la tendance (croissante, décroissante ou stable) d'une série de valeurs.
@@ -445,8 +441,7 @@ Calcule la tendance (croissante, décroissante ou stable) d'une série de valeur
 
 ```powershell
 Get-MetricTrend [-Values] <array>
-```
-
+```plaintext
 #### Paramètres
 
 | Paramètre | Type | Description |
@@ -461,9 +456,9 @@ Retourne une chaîne indiquant la tendance : "Croissante", "Décroissante" ou "S
 
 ```powershell
 # Calculer la tendance d'une série de valeurs
-$trend = Get-MetricTrend -Values @(10, 15, 20, 25, 30)
-```
 
+$trend = Get-MetricTrend -Values @(10, 15, 20, 25, 30)
+```plaintext
 ## Intégration avec MetricsCollector
 
 Le module PerformanceAnalyzer s'intègre étroitement avec le module MetricsCollector pour la collecte des métriques. Voici les principales fonctions du module MetricsCollector utilisées par PerformanceAnalyzer :
@@ -476,8 +471,7 @@ Initialise le collecteur de métriques avec les paramètres spécifiés.
 
 ```powershell
 Initialize-MetricsCollector [[-Enabled] <bool>] [[-CollectionInterval] <int>] [[-StoragePath] <string>] [[-MaxStorageSize] <int>] [[-CollectCPU] <bool>] [[-CollectMemory] <bool>] [[-CollectDisk] <bool>] [[-CollectNetwork] <bool>] [[-CollectApplication] <bool>] [[-TopProcessCount] <int>]
-```
-
+```plaintext
 ### Start-MetricsCollection
 
 Démarre la collecte de métriques en arrière-plan.
@@ -486,8 +480,7 @@ Démarre la collecte de métriques en arrière-plan.
 
 ```powershell
 Start-MetricsCollection [[-NoBackground] <switch>]
-```
-
+```plaintext
 ### Stop-MetricsCollection
 
 Arrête la collecte de métriques en arrière-plan.
@@ -496,8 +489,7 @@ Arrête la collecte de métriques en arrière-plan.
 
 ```powershell
 Stop-MetricsCollection
-```
-
+```plaintext
 ### Get-CPUMetrics
 
 Collecte les métriques CPU.
@@ -506,8 +498,7 @@ Collecte les métriques CPU.
 
 ```powershell
 Get-CPUMetrics
-```
-
+```plaintext
 ### Get-MemoryMetrics
 
 Collecte les métriques mémoire.
@@ -516,8 +507,7 @@ Collecte les métriques mémoire.
 
 ```powershell
 Get-MemoryMetrics
-```
-
+```plaintext
 ### Get-DiskMetrics
 
 Collecte les métriques disque.
@@ -526,8 +516,7 @@ Collecte les métriques disque.
 
 ```powershell
 Get-DiskMetrics
-```
-
+```plaintext
 ### Get-NetworkMetrics
 
 Collecte les métriques réseau.
@@ -536,42 +525,48 @@ Collecte les métriques réseau.
 
 ```powershell
 Get-NetworkMetrics
-```
-
+```plaintext
 ## Exemples d'utilisation
 
 ### Analyse rapide des performances
 
 ```powershell
 # Importer le module
+
 Import-Module -Name ".\modules\PerformanceAnalyzer.psm1"
 
 # Initialiser le module
+
 Initialize-PerformanceAnalyzer
 
 # Effectuer une analyse rapide (1 minute)
+
 $results = Start-PerformanceAnalysis -Duration 60 -CollectionInterval 5
 
 # Afficher les résultats
+
 $results.Analysis.CPU.Usage
 $results.Analysis.Memory.Usage
 $results.Analysis.Disk.Usage
 $results.Analysis.Network.BandwidthUsage
 
 # Afficher les recommandations
-$results.Analysis.Recommendations
-```
 
+$results.Analysis.Recommendations
+```plaintext
 ### Surveillance continue avec alertes
 
 ```powershell
 # Importer le module
+
 Import-Module -Name ".\modules\PerformanceAnalyzer.psm1"
 
 # Initialiser le module
+
 Initialize-PerformanceAnalyzer
 
 # Définir des seuils d'alerte
+
 Set-PerformanceThreshold -MetricName "CPU.Usage" -Threshold 90 -Duration 300 -Action {
     Send-MailMessage -To "admin@example.com" -Subject "Alerte CPU" -Body "Utilisation CPU élevée"
 }
@@ -581,47 +576,55 @@ Set-PerformanceThreshold -MetricName "Memory.Available" -Threshold 500 -Duration
 }
 
 # Démarrer la collecte en arrière-plan
-Start-MetricsCollection
-```
 
+Start-MetricsCollection
+```plaintext
 ### Analyse des tendances et détection d'anomalies
 
 ```powershell
 # Importer le module
+
 Import-Module -Name ".\modules\PerformanceAnalyzer.psm1"
 
 # Initialiser le module
+
 Initialize-PerformanceAnalyzer
 
 # Analyser les tendances CPU sur les dernières 24 heures
+
 $cpuTrend = Get-PerformanceTrend -MetricName "CPU.Usage" -TimeRange "Last24Hours"
 
 # Détecter les anomalies
+
 $anomalies = Find-PerformanceAnomaly -TimeRange "Last24Hours" -Sensitivity "High"
 
 # Obtenir des recommandations d'optimisation
-$recommendations = Get-OptimizationRecommendation -TimeRange "Last7Days" -Priority "High"
-```
 
+$recommendations = Get-OptimizationRecommendation -TimeRange "Last7Days" -Priority "High"
+```plaintext
 ### Génération de rapports
 
 ```powershell
 # Importer le module
+
 Import-Module -Name ".\modules\PerformanceAnalyzer.psm1"
 
 # Initialiser le module
+
 Initialize-PerformanceAnalyzer
 
 # Générer un rapport sommaire au format texte
+
 $summaryReport = Get-PerformanceReport -ReportType "Summary" -TimeRange "Last24Hours" -Format "Text"
 
 # Générer un rapport détaillé au format HTML
+
 $detailedReport = Get-PerformanceReport -ReportType "Detailed" -TimeRange "Last7Days" -Format "HTML"
 
 # Exporter les données de performance au format CSV
-Export-PerformanceData -OutputPath "C:\Reports\performance_data.csv" -Format "CSV" -TimeRange "Last7Days"
-```
 
+Export-PerformanceData -OutputPath "C:\Reports\performance_data.csv" -Format "CSV" -TimeRange "Last7Days"
+```plaintext
 ## Bonnes pratiques
 
 ### Performance
@@ -659,12 +662,13 @@ Le module PerformanceAnalyzer génère des logs détaillés qui peuvent être ut
 
 ```powershell
 # Initialiser le module avec journalisation détaillée
+
 Initialize-PerformanceAnalyzer -LogLevel "DEBUG" -LogPath "C:\Logs\performance_analyzer.log"
 
 # Consulter les logs
-Get-Content -Path "C:\Logs\performance_analyzer.log" -Tail 50
-```
 
+Get-Content -Path "C:\Logs\performance_analyzer.log" -Tail 50
+```plaintext
 ## Conclusion
 
 L'API du module PerformanceAnalyzer offre un ensemble complet de fonctionnalités pour la collecte, l'analyse et la visualisation des métriques de performance. Elle est conçue pour être flexible, extensible et facile à utiliser, tout en fournissant des informations détaillées sur les performances du système et des applications.

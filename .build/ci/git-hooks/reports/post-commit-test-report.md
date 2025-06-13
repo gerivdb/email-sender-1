@@ -425,6 +425,7 @@ Date: 2025-04-14 08:10:13
 **Exemple de code**:
 `powershell
 \ = \ # ou une valeur par défaut
+
 `
 
 ### Conversion de type potentiellement invalide [type-conversion]

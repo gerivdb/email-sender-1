@@ -4,11 +4,13 @@ Je vais créer un plan de développement détaillé pour l'écosystème modulair
 
 ```markdown
 # Plan de développement v51 - Écosystème modulaire pour harmonisation des roadmaps
+
 *Version 1.0 - 2025-06-06 - Progression globale : 0%*
 
 Ce plan détaille l'implémentation d'un écosystème modulaire pour harmoniser les fichiers de roadmap Markdown dans `projet/roadmaps/plans/consolidated`, gérer les tâches via une base PostgreSQL avec QDrant, exposer les tâches via une API REST (FastAPI), et générer un meta-roadmap centralisé. L'écosystème respecte les principes DRY, KISS, et SOLID, avec une architecture modulaire et des tests unitaires pour chaque composant.
 
 ## Table des matières
+
 - [1] Phase 1: Module Parsing
 - [2] Phase 2: Module DB
 - [3] Phase 3: Module CLI
@@ -18,15 +20,19 @@ Ce plan détaille l'implémentation d'un écosystème modulaire pour harmoniser 
 - [7] Phase 7: Validation Finale et Déploiement
 
 ## Phase 1: Module Parsing
+
 *Progression: 0%*
 
 ### 1.1 Développement du script de parsing
+
 *Progression: 0%*
 
 #### 1.1.1 Analyse des fichiers Markdown
+
 *Progression: 0%*
 
 ##### 1.1.1.1 Implémentation de `ParseMarkdown` en Go
+
 - [ ] Développer `ParseMarkdown` dans `pkg/parsing/parser.go` pour extraire les tâches des fichiers `.md`
   - [ ] Extraire les sections (phases, sous-étapes, micro-étapes, nano-étapes) via regex et parsing hiérarchique
   - [ ] Créer une structure `Task` avec champs : `ID`, `Title`, `Description`, `Progress`, `Dependencies`
@@ -64,9 +70,9 @@ func ParseMarkdown(ctx context.Context, filePath string, config *Config) ([]Task
     }
     return tasks, nil
 }
-```
-
+```plaintext
 ##### 1.1.1.2 Configuration du parsing
+
 - [ ] Créer `parsing_config.yaml` pour définir les regex et les règles de parsing
   - [ ] Définir `task_regex` pour extraire les cases à cocher et pourcentages
   - [ ] Définir `max_depth` pour limiter la profondeur des tâches
@@ -87,12 +93,13 @@ parsing:
 qdrant:
   url: http://qdrant:6333
   api_key: your-qdrant-key
-```
-
+```plaintext
 #### 1.1.2 Gestion des dépendances
+
 *Progression: 0%*
 
 ##### 1.1.2.1 Analyse des dépendances entre tâches
+
 - [ ] Implémenter `AnalyzeDependencies` pour identifier les dépendances des tâches
   - [ ] Extraire les références aux autres tâches dans `Description`
   - [ ] Construire un graphe de dépendances
@@ -108,12 +115,15 @@ qdrant:
 - [ ] Ajuster les pourcentages de progression pour la Phase 1
 
 ## Phase 2: Module DB
+
 *Progression: 0%*
 
 ### 2.1 Intégration avec PostgreSQL
+
 *Progression: 0%*
 
 #### 2.1.1 Création du schéma de base de données
+
 - [ ] Définir la table `tasks` dans `schema.sql`
   - [ ] Champs : `id` (UUID), `title` (VARCHAR), `description` (TEXT), `progress` (INT), `dependencies` (JSONB)
   - [ ] Index sur `id` et `progress` pour optimiser les requêtes
@@ -136,9 +146,9 @@ CREATE TABLE tasks (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 CREATE INDEX idx_tasks_progress ON tasks(progress);
-```
-
+```plaintext
 #### 2.1.2 Intégration avec QDrant
+
 - [ ] Implémenter `IndexTasks` dans `pkg/db/qdrant.go` pour indexer les tâches dans QDrant
   - [ ] Convertir `Description` en vecteurs via un modèle d'embedding
   - [ ] Stocker les vecteurs avec `id` comme clé
@@ -154,12 +164,15 @@ CREATE INDEX idx_tasks_progress ON tasks(progress);
 - [ ] Ajuster les pourcentages de progression pour la Phase 2
 
 ## Phase 3: Module CLI
+
 *Progression: 0%*
 
 ### 3.1 Développement de Roadmap-CLI
+
 *Progression: 0%*
 
 #### 3.1.1 Implémentation des commandes CLI
+
 - [ ] Développer `cmd/roadmap-cli/main.go` avec Cobra pour les commandes
   - [ ] Commande `list` : Afficher les tâches prioritaires (progress < 100%)
   - [ ] Commande `show` : Afficher les détails d'une tâche par ID
@@ -195,9 +208,9 @@ func listCmd() *cobra.Command {
         },
     }
 }
-```
-
+```plaintext
 #### 3.1.2 Configuration CLI
+
 - [ ] Créer `cli_config.yaml` pour les paramètres (DB URL, QDrant URL, verbosity)
 - [ ] Valider la configuration via un dry-run
 
@@ -211,12 +224,15 @@ func listCmd() *cobra.Command {
 - [ ] Ajuster les pourcentages de progression pour la Phase 3
 
 ## Phase 4: Module API
+
 *Progression: 0%*
 
 ### 4.1 Développement de l'API REST avec FastAPI
+
 *Progression: 0%*
 
 #### 4.1.1 Implémentation des endpoints
+
 - [ ] Développer `api/main.py` avec FastAPI
   - [ ] GET `/tasks` : Lister les tâches prioritaires
   - [ ] GET `/tasks/{id}` : Détails d'une tâche
@@ -247,9 +263,9 @@ class Task(BaseModel):
 async def list_tasks():
     tasks = await db.get_priority_tasks()
     return tasks
-```
-
+```plaintext
 #### 4.1.2 Configuration API
+
 - [ ] Créer `api_config.yaml` pour DB, QDrant, et Redis
 - [ ] Valider la configuration via un dry-run
 
@@ -263,12 +279,15 @@ async def list_tasks():
 - [ ] Ajuster les pourcentages de progression pour la Phase 4
 
 ## Phase 5: Module Meta-Roadmap
+
 *Progression: 0%*
 
 ### 5.1 Génération du meta-roadmap
+
 *Progression: 0%*
 
 #### 5.1.1 Implémentation de `GenerateMetaRoadmap`
+
 - [ ] Développer `pkg/meta/roadmap.go` pour générer `plan-dev-v25-meta-roadmap-sync-updated.md`
   - [ ] Agréger les tâches depuis PostgreSQL
   - [ ] Formatter en Markdown avec hiérarchie (phases, sous-étapes)
@@ -287,14 +306,15 @@ package meta
 func GenerateMetaRoadmap(ctx context.Context, tasks []Task) (string, error) {
     var sb strings.Builder
     sb.WriteString("# Meta-Roadmap\n*Generated: 2025-06-06*\n\n")
+
     for _, task := range tasks {
         sb.WriteString(fmt.Sprintf("- [ ] %s (%d%%)\n", task.Title, task.Progress))
     }
     return sb.String(), nil
 }
-```
-
+```plaintext
 #### 5.1.2 Sauvegarde Git
+
 - [ ] Implémenter `CommitMetaRoadmap` pour versionner dans Git
   - [ ] Commit automatique avec message standard
   - [ ] Valider via un dry-run
@@ -309,12 +329,15 @@ func GenerateMetaRoadmap(ctx context.Context, tasks []Task) (string, error) {
 - [ ] Ajuster les pourcentages de progression pour la Phase 5
 
 ## Phase 6: Documentation et Intégration CI/CD
+
 *Progression: 0%*
 
 ### 6.1 Documentation utilisateur
+
 *Progression: 0%*
 
 #### 6.1.1 Génération des guides
+
 - [ ] Créer `docs/user-guide.md` avec instructions pour `roadmap-cli`
 - [ ] Créer `docs/api-guide.md` pour l'API REST
 - [ ] Inclure des exemples input/output
@@ -325,9 +348,11 @@ func GenerateMetaRoadmap(ctx context.Context, tasks []Task) (string, error) {
 - Erreur simulée : Simuler un format Markdown invalide
 
 ### 6.2 Pipeline CI/CD
+
 *Progression: 0%*
 
 #### 6.2.1 Configuration GitHub Actions
+
 - [ ] Créer `.github/workflows/ci-cd.yaml`
   - [ ] Build et tests Go (`go test ./...`)
   - [ ] Build et tests Python (`pytest`)
@@ -364,19 +389,21 @@ jobs:
         run: pytest
       - name: Deploy
         run: kubectl apply -f k8s/deployment.yaml
-```
-
+```plaintext
 **Mise à jour**:
 - [ ] Mettre à jour `plan-dev-v25-meta-roadmap-sync-updated.md` en cochant les tâches terminées
 - [ ] Ajuster les pourcentages de progression pour la Phase 6
 
 ## Phase 7: Validation Finale et Déploiement
+
 *Progression: 0%*
 
 ### 7.1 Revue globale
+
 *Progression: 0%*
 
 #### 7.1.1 Validation de l'écosystème
+
 - [ ] Exécuter un dry-run complet (parsing, DB, CLI, API, meta-roadmap)
 - [ ] Vérifier l'intégration entre modules
 - [ ] Valider la scalabilité (100+ tâches)
@@ -387,9 +414,11 @@ jobs:
 - Erreur simulée : Simuler une panne DB/QDrant
 
 ### 7.2 Déploiement final
+
 *Progression: 0%*
 
 #### 7.2.1 Déploiement Kubernetes
+
 - [ ] Déployer l'API FastAPI sur Kubernetes
 - [ ] Configurer le monitoring Prometheus
 - [ ] Valider via un dry-run
@@ -406,14 +435,14 @@ jobs:
 ---
 
 ## Recommandations
+
 - **DRY** : Réutiliser les configurations YAML (`parsing_config.yaml`, `cli_config.yaml`, `api_config.yaml`) pour éviter la duplication.
 - **KISS** : Simplifier les interfaces (`ParseMarkdown`, `StoreTasks`, `GenerateMetaRoadmap`) pour une clarté maximale.
 - **SOLID** : Chaque module (Parsing, DB, CLI, API, Meta-Roadmap) a une responsabilité unique avec des interfaces claires (`TaskProvider`, `DBClient`).
 - **Performances** : Utiliser des goroutines pour le parsing et des workers pour l'API, avec un cache Redis pour réduire la latence.
 - **Sécurité** : Stocker les clés (PostgreSQL, QDrant) dans un `SecurityManager`.
 - **Documentation** : Générer des guides utilisateur clairs avec exemples concrets.
-```
-
+```plaintext
 ---
 
 ### Explications du Plan

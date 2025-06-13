@@ -6,45 +6,40 @@ Ce document fournit des exemples détaillés de requêtes pour filtrer les tâch
 
 ### Requête simple
 
-```
+```plaintext
 priority:high
-```
-
+```plaintext
 Cette requête trouve toutes les tâches dont la priorité est "high" (haute).
 
 ### Variantes de syntaxe
 
-```
+```plaintext
 priority=high
 priority==high
-```
-
+```plaintext
 Ces variantes sont équivalentes à la syntaxe standard `priority:high`.
 
 ### Exemples avec contexte
 
 #### Trouver toutes les tâches de haute priorité à faire
 
-```
+```plaintext
 priority:high AND status:todo
-```
-
+```plaintext
 Cette requête trouve toutes les tâches de haute priorité qui sont également à faire.
 
 #### Trouver toutes les tâches de haute priorité dans une catégorie spécifique
 
-```
+```plaintext
 priority:high AND category:development
-```
-
+```plaintext
 Cette requête trouve toutes les tâches de haute priorité dans la catégorie "development".
 
 #### Trouver toutes les tâches de haute priorité avec une date d'échéance proche
 
-```
+```plaintext
 priority:high AND due_date<2025-06-30
-```
-
+```plaintext
 Cette requête trouve toutes les tâches de haute priorité dont la date d'échéance est antérieure au 30 juin 2025.
 
 ### Résultats attendus
@@ -61,45 +56,40 @@ Les tâches avec d'autres niveaux de priorité (moyenne, basse, etc.) ne seront 
 
 ### Requête simple
 
-```
+```plaintext
 priority:medium
-```
-
+```plaintext
 Cette requête trouve toutes les tâches dont la priorité est "medium" (moyenne).
 
 ### Variantes de syntaxe
 
-```
+```plaintext
 priority=medium
 priority==medium
-```
-
+```plaintext
 Ces variantes sont équivalentes à la syntaxe standard `priority:medium`.
 
 ### Exemples avec contexte
 
 #### Trouver toutes les tâches de priorité moyenne en cours
 
-```
+```plaintext
 priority:medium AND status:in_progress
-```
-
+```plaintext
 Cette requête trouve toutes les tâches de priorité moyenne qui sont également en cours.
 
 #### Trouver toutes les tâches de priorité moyenne dans plusieurs catégories
 
-```
+```plaintext
 priority:medium AND (category:development OR category:testing)
-```
-
+```plaintext
 Cette requête trouve toutes les tâches de priorité moyenne qui sont soit dans la catégorie "development", soit dans la catégorie "testing".
 
 #### Trouver toutes les tâches de priorité moyenne assignées à une personne spécifique
 
-```
+```plaintext
 priority:medium AND assignee:john
-```
-
+```plaintext
 Cette requête trouve toutes les tâches de priorité moyenne qui sont assignées à "john".
 
 ### Résultats attendus
@@ -116,45 +106,40 @@ Les tâches avec d'autres niveaux de priorité (haute, basse, etc.) ne seront pa
 
 ### Requête simple
 
-```
+```plaintext
 priority:low
-```
-
+```plaintext
 Cette requête trouve toutes les tâches dont la priorité est "low" (basse).
 
 ### Variantes de syntaxe
 
-```
+```plaintext
 priority=low
 priority==low
-```
-
+```plaintext
 Ces variantes sont équivalentes à la syntaxe standard `priority:low`.
 
 ### Exemples avec contexte
 
 #### Trouver toutes les tâches de basse priorité terminées
 
-```
+```plaintext
 priority:low AND status:done
-```
-
+```plaintext
 Cette requête trouve toutes les tâches de basse priorité qui sont également terminées.
 
 #### Trouver toutes les tâches de basse priorité dans une catégorie spécifique
 
-```
+```plaintext
 priority:low AND category:documentation
-```
-
+```plaintext
 Cette requête trouve toutes les tâches de basse priorité dans la catégorie "documentation".
 
 #### Trouver toutes les tâches de basse priorité créées récemment
 
-```
+```plaintext
 priority:low AND created_at>2025-05-01
-```
-
+```plaintext
 Cette requête trouve toutes les tâches de basse priorité qui ont été créées après le 1er mai 2025.
 
 ### Résultats attendus
@@ -171,39 +156,34 @@ Les tâches avec d'autres niveaux de priorité (haute, moyenne, etc.) ne seront 
 
 ### Trouver les tâches de haute ou moyenne priorité
 
-```
+```plaintext
 priority:high OR priority:medium
-```
-
+```plaintext
 Cette requête trouve toutes les tâches qui sont soit de haute priorité, soit de priorité moyenne.
 
 Variante avec liste (si supportée) :
-```
+```plaintext
 priority:[high,medium]
-```
-
+```plaintext
 ### Trouver les tâches qui ne sont pas de basse priorité
 
-```
+```plaintext
 priority!=low
-```
-
+```plaintext
 ou
 
-```
+```plaintext
 NOT priority:low
-```
-
+```plaintext
 Ces requêtes trouvent toutes les tâches dont la priorité n'est pas "low" (basse).
 
 ### Trouver les tâches de priorité supérieure ou égale à moyenne
 
 Si les priorités sont ordonnées (par exemple, high > medium > low), vous pouvez utiliser les opérateurs de comparaison :
 
-```
+```plaintext
 priority>=medium
-```
-
+```plaintext
 Cette requête trouve toutes les tâches dont la priorité est supérieure ou égale à "medium", c'est-à-dire les tâches de priorité moyenne ou haute.
 
 ## Cas particuliers et astuces
@@ -212,37 +192,37 @@ Cette requête trouve toutes les tâches dont la priorité est supérieure ou é
 
 Dans la plupart des implémentations, les valeurs de priorité sont sensibles à la casse. Assurez-vous d'utiliser exactement la même casse que celle définie dans le système :
 
-```
+```plaintext
 priority:high  # Correct si le système utilise "high" en minuscules
-priority:High  # Peut ne pas fonctionner si le système utilise "high" en minuscules
-```
 
+priority:High  # Peut ne pas fonctionner si le système utilise "high" en minuscules
+
+```plaintext
 ### Valeurs de priorité numériques
 
 Si votre système utilise des valeurs numériques pour les priorités (par exemple, 1 = basse, 2 = moyenne, 3 = haute), vous pouvez utiliser les opérateurs de comparaison numérique :
 
-```
+```plaintext
 priority>2  # Trouve les tâches de priorité supérieure à 2 (haute)
-priority<=2  # Trouve les tâches de priorité inférieure ou égale à 2 (basse ou moyenne)
-```
 
+priority<=2  # Trouve les tâches de priorité inférieure ou égale à 2 (basse ou moyenne)
+
+```plaintext
 ### Priorités avec espaces ou caractères spéciaux
 
 Si les valeurs de priorité contiennent des espaces ou des caractères spéciaux, utilisez des guillemets :
 
-```
+```plaintext
 priority:"very high"
 priority:"P1 - Critical"
-```
-
+```plaintext
 ### Combinaison avec d'autres critères
 
 Les filtres de priorité sont souvent plus utiles lorsqu'ils sont combinés avec d'autres critères :
 
-```
+```plaintext
 priority:high AND status:todo AND due_date<2025-06-30
-```
-
+```plaintext
 Cette requête trouve les tâches de haute priorité, à faire, avec une date d'échéance avant le 30 juin 2025.
 
 ## Bonnes pratiques

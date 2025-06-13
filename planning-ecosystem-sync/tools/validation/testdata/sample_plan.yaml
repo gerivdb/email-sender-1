@@ -1,0 +1,279 @@
+metadata:
+  title: "Email Sender Project Development Plan"
+  version: "1.0.0"
+  description: "Comprehensive development plan for the Email Sender application"
+  author: "Development Team"
+  created: "2025-01-06"
+  updated: "2025-01-06"
+  tags:
+    - "email"
+    - "automation"
+    - "nodejs"
+    - "backend"
+  category: "development"
+  priority: "high"
+  status: "active"
+
+phases:
+  - id: "phase-1"
+    name: "Foundation Setup"
+    description: "Establish core infrastructure and basic functionality"
+    status: "in-progress"
+    progress: 75.0
+    start_date: "2025-01-01"
+    end_date: "2025-01-31"
+    dependencies: []
+    tasks:
+      - id: "task-1-1"
+        name: "Project Structure Setup"
+        description: "Create initial project structure and configuration"
+        status: "completed"
+        priority: "high"
+        progress: 100.0
+        estimated_hours: 8
+        actual_hours: 6
+        assignee: "dev-team"
+        dependencies: []
+        tags: ["setup", "infrastructure"]
+        start_date: "2025-01-01"
+        end_date: "2025-01-03"
+        created_at: "2025-01-01T09:00:00Z"
+        updated_at: "2025-01-03T17:30:00Z"
+
+      - id: "task-1-2"
+        name: "Environment Configuration"
+        description: "Configure development and production environments"
+        status: "in-progress"
+        priority: "high"
+        progress: 80.0
+        estimated_hours: 12
+        actual_hours: 10
+        assignee: "devops-team"
+        dependencies: ["task-1-1"]
+        tags: ["environment", "config"]
+        start_date: "2025-01-03"
+        end_date: "2025-01-10"
+        created_at: "2025-01-03T09:00:00Z"
+        updated_at: "2025-01-08T14:20:00Z"
+
+      - id: "task-1-3"
+        name: "Basic Email Service"
+        description: "Implement core email sending functionality"
+        status: "in-progress"
+        priority: "medium"
+        progress: 60.0
+        estimated_hours: 16
+        actual_hours: 12
+        assignee: "backend-dev"
+        dependencies: ["task-1-2"]
+        tags: ["email", "core"]
+        start_date: "2025-01-08"
+        end_date: "2025-01-20"
+        created_at: "2025-01-08T09:00:00Z"
+        updated_at: "2025-01-15T16:45:00Z"
+
+    milestones:
+      - id: "milestone-1-1"
+        name: "Infrastructure Ready"
+        description: "Basic project infrastructure is fully operational"
+        date: "2025-01-15"
+        status: "completed"
+        type: "technical"
+
+      - id: "milestone-1-2"
+        name: "Email Service MVP"
+        description: "Minimum viable email service is functional"
+        date: "2025-01-25"
+        status: "in-progress"
+        type: "feature"
+
+    resources:
+      - id: "res-1-1"
+        name: "Backend Developer"
+        type: "human"
+        allocation: 0.8
+        cost: 5000.0
+        availability: "full-time"
+
+      - id: "res-1-2"
+        name: "DevOps Engineer"
+        type: "human"
+        allocation: 0.5
+        cost: 3000.0
+        availability: "part-time"
+
+  - id: "phase-2"
+    name: "Advanced Features"
+    description: "Implement advanced email features and automation"
+    status: "pending"
+    progress: 0.0
+    start_date: "2025-02-01"
+    end_date: "2025-03-31"
+    dependencies: ["phase-1"]
+    tasks:
+      - id: "task-2-1"
+        name: "Template Engine"
+        description: "Implement email template system with dynamic content"
+        status: "pending"
+        priority: "high"
+        progress: 0.0
+        estimated_hours: 24
+        actual_hours: 0
+        assignee: "backend-dev"
+        dependencies: ["task-1-3"]
+        tags: ["templates", "features"]
+        start_date: "2025-02-01"
+        end_date: "2025-02-15"
+        created_at: "2025-01-06T09:00:00Z"
+        updated_at: "2025-01-06T09:00:00Z"
+
+      - id: "task-2-2"
+        name: "Scheduling System"
+        description: "Add email scheduling and automation capabilities"
+        status: "pending"
+        priority: "medium"
+        progress: 0.0
+        estimated_hours: 32
+        actual_hours: 0
+        assignee: "backend-dev"
+        dependencies: ["task-2-1"]
+        tags: ["scheduling", "automation"]
+        start_date: "2025-02-15"
+        end_date: "2025-03-10"
+        created_at: "2025-01-06T09:00:00Z"
+        updated_at: "2025-01-06T09:00:00Z"
+
+      - id: "task-2-3"
+        name: "Analytics Dashboard"
+        description: "Create dashboard for email analytics and reporting"
+        status: "pending"
+        priority: "low"
+        progress: 0.0
+        estimated_hours: 28
+        actual_hours: 0
+        assignee: "frontend-dev"
+        dependencies: ["task-2-2"]
+        tags: ["analytics", "dashboard"]
+        start_date: "2025-03-01"
+        end_date: "2025-03-25"
+        created_at: "2025-01-06T09:00:00Z"
+        updated_at: "2025-01-06T09:00:00Z"
+
+    milestones:
+      - id: "milestone-2-1"
+        name: "Template System Complete"
+        description: "Email template system is fully functional"
+        date: "2025-02-20"
+        status: "pending"
+        type: "feature"
+
+      - id: "milestone-2-2"
+        name: "Full Feature Set"
+        description: "All advanced features are implemented"
+        date: "2025-03-30"
+        status: "pending"
+        type: "major"
+
+    resources:
+      - id: "res-2-1"
+        name: "Backend Developer"
+        type: "human"
+        allocation: 1.0
+        cost: 6000.0
+        availability: "full-time"
+
+      - id: "res-2-2"
+        name: "Frontend Developer"
+        type: "human"
+        allocation: 0.7
+        cost: 4200.0
+        availability: "part-time"
+
+  - id: "phase-3"
+    name: "Testing & Deployment"
+    description: "Comprehensive testing and production deployment"
+    status: "pending"
+    progress: 0.0
+    start_date: "2025-04-01"
+    end_date: "2025-04-30"
+    dependencies: ["phase-2"]
+    tasks:
+      - id: "task-3-1"
+        name: "Unit Testing"
+        description: "Implement comprehensive unit test suite"
+        status: "pending"
+        priority: "high"
+        progress: 0.0
+        estimated_hours: 20
+        actual_hours: 0
+        assignee: "qa-engineer"
+        dependencies: ["task-2-3"]
+        tags: ["testing", "quality"]
+        start_date: "2025-04-01"
+        end_date: "2025-04-10"
+        created_at: "2025-01-06T09:00:00Z"
+        updated_at: "2025-01-06T09:00:00Z"
+
+      - id: "task-3-2"
+        name: "Integration Testing"
+        description: "Test system integration and end-to-end workflows"
+        status: "pending"
+        priority: "high"
+        progress: 0.0
+        estimated_hours: 16
+        actual_hours: 0
+        assignee: "qa-engineer"
+        dependencies: ["task-3-1"]
+        tags: ["testing", "integration"]
+        start_date: "2025-04-10"
+        end_date: "2025-04-18"
+        created_at: "2025-01-06T09:00:00Z"
+        updated_at: "2025-01-06T09:00:00Z"
+
+      - id: "task-3-3"
+        name: "Production Deployment"
+        description: "Deploy application to production environment"
+        status: "pending"
+        priority: "critical"
+        progress: 0.0
+        estimated_hours: 12
+        actual_hours: 0
+        assignee: "devops-team"
+        dependencies: ["task-3-2"]
+        tags: ["deployment", "production"]
+        start_date: "2025-04-20"
+        end_date: "2025-04-30"
+        created_at: "2025-01-06T09:00:00Z"
+        updated_at: "2025-01-06T09:00:00Z"
+
+    milestones:
+      - id: "milestone-3-1"
+        name: "Testing Complete"
+        description: "All testing phases are successfully completed"
+        date: "2025-04-18"
+        status: "pending"
+        type: "quality"
+
+      - id: "milestone-3-2"
+        name: "Production Launch"
+        description: "Application is successfully deployed to production"
+        date: "2025-04-30"
+        status: "pending"
+        type: "delivery"
+
+    resources:
+      - id: "res-3-1"
+        name: "QA Engineer"
+        type: "human"
+        allocation: 1.0
+        cost: 4500.0
+        availability: "full-time"
+
+      - id: "res-3-2"
+        name: "DevOps Engineer"
+        type: "human"
+        allocation: 0.8
+        cost: 4800.0
+        availability: "full-time"
+
+format: "yaml"

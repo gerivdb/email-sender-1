@@ -1,4 +1,5 @@
 ### 1.1.2.5 Améliorations avancées du système d'inventaire et de classification
+
 **Complexité**: Moyenne
 **Temps estimé**: 3-5 jours
 **Progression**: 100% - *Terminé*
@@ -19,6 +20,7 @@
 - `development/scripts/automation/Auto-ClassifyScripts.ps1`
 
 #### A. Amélioration de la détection des scripts dupliqués
+
 - [x] Implémenter des algorithmes de similarité avancés
   - [x] Développer un module `TextSimilarity.psm1` avec des algorithmes avancés
   - [x] Implémenter l'algorithme de Levenshtein amélioré
@@ -34,6 +36,7 @@
   - [x] Générer des rapports détaillés avec visualisations
 
 #### B. Amélioration de l'interface utilisateur
+
 - [x] Créer une interface graphique WPF
   - [x] Développer `Show-ScriptInventoryGUI.ps1` pour visualiser l'inventaire
   - [x] Ajouter des filtres interactifs pour rechercher des scripts
@@ -50,6 +53,7 @@
   - [x] Implémenter l'exportation des rapports et graphiques
 
 #### C. Intégration avec d'autres systèmes
+
 - [x] Intégrer avec le système de documentation
   - [x] Développer `Sync-ScriptDocumentation.ps1` pour générer la documentation
   - [x] Extraire automatiquement les commentaires et métadonnées des scripts
@@ -62,6 +66,7 @@
   - [x] Ajouter un hook post-merge pour synchroniser l'inventaire
 
 #### D. Automatisation
+
 - [x] Automatiser la mise à jour de l'inventaire
   - [x] Développer `Register-InventoryWatcher.ps1` pour surveiller les modifications
   - [x] Utiliser FileSystemWatcher pour détecter les changements de fichiers

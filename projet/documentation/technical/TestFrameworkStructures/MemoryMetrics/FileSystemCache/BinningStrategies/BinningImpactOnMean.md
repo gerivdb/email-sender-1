@@ -10,10 +10,9 @@ Ce document analyse l'impact des différentes stratégies de binning sur la cons
 
 Pour une distribution continue f(x) discrétisée en k bins, la moyenne de l'histogramme μₕ est donnée par :
 
-```
+```plaintext
 μₕ = Σ xᵢ·pᵢ
-```
-
+```plaintext
 où xᵢ est le centre du bin i et pᵢ est la probabilité associée au bin i.
 
 L'erreur sur la moyenne due au binning peut être décomposée en deux composantes :
@@ -25,10 +24,9 @@ L'erreur sur la moyenne due au binning peut être décomposée en deux composant
 
 Pour un bin [a, b] avec une distribution f(x) à l'intérieur du bin, l'erreur de discrétisation est :
 
-```
+```plaintext
 ε_disc = ∫[a,b] (x - (a+b)/2)·f(x) dx
-```
-
+```plaintext
 Cette erreur est minimisée lorsque le centre du bin coïncide avec la moyenne locale de la distribution dans ce bin.
 
 ### 2.3 Erreur de placement
@@ -169,45 +167,59 @@ def select_optimal_binning_for_mean_conservation(data, target_erm=0.01):
         binning_strategy: Dictionnaire décrivant la stratégie optimale
     """
     # Calculer les statistiques de base
+
     mean = np.mean(data)
     std = np.std(data)
     skewness = scipy.stats.skew(data)
     
     # Détecter la multimodalité
+
     is_multimodal, modes = detect_multimodality(data)
     
     # Sélectionner la stratégie de base selon les caractéristiques
+
     if skewness > 1.0 or (max(data) / min(data) > 10):
         # Distribution asymétrique ou grande plage dynamique
+
         base_strategy = "logarithmic"
     elif is_multimodal:
         # Distribution multimodale
+
         base_strategy = "variable_width"
     else:
         # Distribution simple
+
         base_strategy = "fixed_width"
     
     # Estimer le nombre de bins nécessaire
+
     if base_strategy == "fixed_width":
         # Règle empirique basée sur l'ERM cible
+
         num_bins = int(0.25 / target_erm)
     elif base_strategy == "logarithmic":
         # Règle empirique pour bins logarithmiques
+
         num_bins = int(0.15 / target_erm)
     else:
         # Pour largeur variable, tenir compte des modes
+
         num_bins = max(30, len(modes) * 5)
     
     # Ajuster selon la complexité
+
     if is_multimodal:
         num_bins = max(num_bins, len(modes) * 5)
     
     # Déterminer les limites
+
     if is_multimodal:
         # Alignement sur les modes et points d'inflexion
+
         bin_edges = generate_mode_aligned_bins(data, modes, num_bins)
     else:
         # Limites robustes
+
         p01, p99 = np.percentile(data, [1, 99])
         if base_strategy == "logarithmic":
             bin_edges = np.logspace(np.log10(max(p01, 1)), np.log10(p99), num_bins+1)
@@ -215,11 +227,14 @@ def select_optimal_binning_for_mean_conservation(data, target_erm=0.01):
             bin_edges = np.linspace(p01, p99, num_bins+1)
     
     # Vérifier l'ERM attendue
+
     expected_erm = estimate_mean_relative_error(data, bin_edges, base_strategy)
     
     # Ajuster si nécessaire
+
     if expected_erm > target_erm:
         # Augmenter le nombre de bins
+
         adjustment_factor = expected_erm / target_erm
         return select_optimal_binning_for_mean_conservation(
             data, target_erm, num_bins=int(num_bins * adjustment_factor))
@@ -230,8 +245,7 @@ def select_optimal_binning_for_mean_conservation(data, target_erm=0.01):
         "bin_edges": bin_edges,
         "expected_erm": expected_erm
     }
-```
-
+```plaintext
 ### 7.3 Vérification de la conservation de la moyenne
 
 Pour vérifier si un histogramme conserve fidèlement la moyenne :
@@ -250,23 +264,29 @@ def verify_mean_conservation(data, bin_edges, bin_counts):
         result: Dictionnaire des résultats de vérification
     """
     # Calculer les moyennes
+
     real_mean = np.mean(data)
     
     # Calculer les centres des bins
+
     bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
     
     # Calculer les fréquences relatives
+
     total_count = np.sum(bin_counts)
     frequencies = bin_counts / total_count if total_count > 0 else np.zeros_like(bin_counts)
     
     # Calculer la moyenne de l'histogramme
+
     hist_mean = np.sum(bin_centers * frequencies)
     
     # Calculer les erreurs
+
     absolute_error = abs(real_mean - hist_mean)
     relative_error = absolute_error / real_mean * 100 if real_mean != 0 else float('inf')
     
     # Évaluer selon les seuils
+
     if relative_error < 1:
         quality = "Excellent"
     elif relative_error < 3:
@@ -277,6 +297,7 @@ def verify_mean_conservation(data, bin_edges, bin_counts):
         quality = "Insuffisant"
     
     # Résultats
+
     result = {
         "real_mean": real_mean,
         "histogram_mean": hist_mean,
@@ -287,6 +308,7 @@ def verify_mean_conservation(data, bin_edges, bin_counts):
     }
     
     # Ajouter des recommandations si nécessaire
+
     if quality == "Insuffisant":
         if len(bin_edges) - 1 < 20:
             result["recommendations"].append("Augmenter le nombre de bins (minimum 20 recommandé)")
@@ -295,13 +317,13 @@ def verify_mean_conservation(data, bin_edges, bin_counts):
             result["recommendations"].append("Utiliser des bins logarithmiques ou à largeur variable")
         
         # Vérifier si les modes sont bien capturés
+
         modes = detect_modes(data)
         if len(modes) > 1:
             result["recommendations"].append("Utiliser un binning aligné sur les modes détectés")
     
     return result
-```
-
+```plaintext
 ## 8. Représentation JSON
 
 ```json
@@ -373,8 +395,7 @@ def verify_mean_conservation(data, bin_edges, bin_counts):
     }
   }
 }
-```
-
+```plaintext
 ## 9. Conclusion
 
 L'analyse de l'impact du binning sur la conservation de la moyenne révèle plusieurs points clés pour les distributions de latence de blocs de 2KB :

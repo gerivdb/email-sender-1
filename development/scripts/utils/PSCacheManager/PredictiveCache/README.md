@@ -1,4 +1,4 @@
-﻿# Mise en Cache PrÃ©dictive et Adaptative
+# Mise en Cache PrÃ©dictive et Adaptative
 
 Ce module Ã©tend le PSCacheManager avec des capacitÃ©s de mise en cache prÃ©dictive et adaptative, permettant d'optimiser proactivement le cache en fonction des patterns d'utilisation.
 
@@ -34,21 +34,25 @@ Le module s'intÃ¨gre avec :
 
 ```powershell
 # Importer le module
+
 Import-Module .\PSCacheManager\PredictiveCache\PredictiveCache.psm1
 
 # CrÃ©er un cache prÃ©dictif
+
 $cache = New-PredictiveCache -Name "ScriptCache" -UsageDatabase "path\to\usage.db"
 
 # Configurer les options prÃ©dictives
+
 Set-PredictiveCacheOptions -Cache $cache -PreloadEnabled $true -AdaptiveTTL $true
 
 # Utiliser le cache comme d'habitude
+
 $result = Get-PSCacheItem -Cache $cache -Key "MyKey" -GenerateValue { ... }
 
 # DÃ©clencher une analyse et optimisation manuelle
-Optimize-PredictiveCache -Cache $cache
-```
 
+Optimize-PredictiveCache -Cache $cache
+```plaintext
 ## MÃ©triques et Monitoring
 
 Le module fournit des mÃ©triques dÃ©taillÃ©es sur l'efficacitÃ© du cache prÃ©dictif :

@@ -8,14 +8,12 @@ Pour exécuter la suite complète de tests, utilisez la commande suivante depuis
 
 ```powershell
 .\development\scripts\maintenance\test\Run-TestSuite.ps1 -OutputPath ".\reports" -GenerateHTML
-```
-
+```plaintext
 Ou depuis le dossier `development\scripts\maintenance`:
 
 ```powershell
 .\test\Run-TestSuite.ps1 -OutputPath ".\reports" -GenerateHTML
-```
-
+```plaintext
 ## Types de tests
 
 ### Tests unitaires
@@ -24,24 +22,21 @@ Pour exécuter uniquement les tests unitaires:
 
 ```powershell
 .\development\scripts\maintenance\test\Run-AllTests.ps1 -OutputPath ".\reports\tests" -GenerateHTML
-```
-
+```plaintext
 ### Couverture de code
 
 Pour générer un rapport de couverture de code:
 
 ```powershell
 .\development\scripts\maintenance\test\Get-CodeCoverage.ps1 -OutputPath ".\reports\coverage" -GenerateHTML
-```
-
+```plaintext
 ### Tests d'intégration
 
 Pour exécuter les tests d'intégration:
 
 ```powershell
 .\development\scripts\maintenance\test\Test-Integration.ps1 -OutputPath ".\reports\integration"
-```
-
+```plaintext
 ## Rapports
 
 Les rapports sont générés dans le dossier spécifié par le paramètre `-OutputPath`. Par défaut, les rapports sont générés dans le dossier `.\reports`.

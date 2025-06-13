@@ -8,10 +8,9 @@ Les parenthèses sont utilisées dans le langage de requête pour contrôler l'o
 
 ### Format général
 
-```
+```plaintext
 (expression)
-```
-
+```plaintext
 Où `expression` peut être :
 - Une condition simple (par exemple, `status:todo`)
 - Une combinaison de conditions avec des opérateurs logiques (par exemple, `status:todo AND priority:high`)
@@ -32,63 +31,55 @@ Les parenthèses permettent de modifier cet ordre d'évaluation et de créer des
 ### Modification de la précédence par défaut
 
 Sans parenthèses :
-```
+```plaintext
 status:todo OR status:in_progress AND priority:high
-```
-
+```plaintext
 Cette requête est évaluée comme :
-```
+```plaintext
 status:todo OR (status:in_progress AND priority:high)
-```
-
+```plaintext
 Elle trouve les tâches qui sont soit à faire, soit en cours et de haute priorité.
 
 Avec parenthèses pour modifier la précédence :
-```
+```plaintext
 (status:todo OR status:in_progress) AND priority:high
-```
-
+```plaintext
 Cette requête trouve les tâches qui sont à faire ou en cours, et qui sont également de haute priorité.
 
 ### Groupements multiples
 
-```
+```plaintext
 (status:todo AND priority:high) OR (status:in_progress AND priority:medium)
-```
-
+```plaintext
 Cette requête trouve les tâches qui sont soit (à faire et de haute priorité), soit (en cours et de priorité moyenne).
 
 ### Groupements imbriqués
 
-```
+```plaintext
 (status:todo AND (priority:high OR category:critical)) OR (status:in_progress AND priority:high)
-```
-
+```plaintext
 Cette requête trouve les tâches qui sont soit (à faire et soit de haute priorité, soit dans la catégorie critique), soit (en cours et de haute priorité).
 
 ## Utilisation avec l'opérateur NOT
 
 L'opérateur NOT peut être appliqué à des expressions groupées :
 
-```
+```plaintext
 NOT (status:done OR status:cancelled)
-```
-
+```plaintext
 Cette requête trouve les tâches qui ne sont ni terminées ni annulées.
 
 Équivalent sans parenthèses (mais moins lisible) :
-```
+```plaintext
 NOT status:done AND NOT status:cancelled
-```
-
+```plaintext
 ## Groupements complexes
 
 Les parenthèses permettent de construire des requêtes très précises et complexes :
 
-```
+```plaintext
 ((category:development OR category:testing) AND priority:high) OR (due_date<2025-06-30 AND status:todo)
-```
-
+```plaintext
 Cette requête trouve les tâches qui sont soit (dans la catégorie développement ou test, et de haute priorité), soit (avec une date d'échéance avant le 30 juin 2025 et à faire).
 
 ## Bonnes pratiques
@@ -125,34 +116,30 @@ Les requêtes très complexes avec de nombreux groupements peuvent être plus co
 
 ### Filtrage par statut et priorité
 
-```
+```plaintext
 (status:todo OR status:in_progress) AND priority:high
-```
-
+```plaintext
 Cette requête trouve les tâches à faire ou en cours qui sont de haute priorité.
 
 ### Exclusion de plusieurs catégories
 
-```
+```plaintext
 NOT (category:documentation OR category:maintenance)
-```
-
+```plaintext
 Cette requête trouve les tâches qui ne sont ni dans la catégorie documentation ni dans la catégorie maintenance.
 
 ### Filtrage par date avec conditions supplémentaires
 
-```
+```plaintext
 (due_date<2025-06-30 AND due_date>=2025-06-01) AND (priority:high OR has_children:true)
-```
-
+```plaintext
 Cette requête trouve les tâches dont la date d'échéance est en juin 2025 et qui sont soit de haute priorité, soit ont des sous-tâches.
 
 ### Combinaison de critères textuels et numériques
 
-```
+```plaintext
 (title~"interface" OR description~"API") AND (priority>=medium AND status!=done)
-```
-
+```plaintext
 Cette requête trouve les tâches dont le titre contient "interface" ou la description contient "API", et qui sont de priorité moyenne ou haute et non terminées.
 
 ## Résolution des problèmes courants
@@ -193,33 +180,29 @@ Cette requête trouve les tâches dont le titre contient "interface" ou la descr
 ### Exemple 1 : Simplification d'une requête complexe
 
 Requête complexe :
-```
+```plaintext
 (status:todo AND (priority:high OR (category:development AND has_children:true))) OR (status:in_progress AND priority:high AND due_date<2025-06-30)
-```
-
+```plaintext
 Peut être divisée en deux requêtes plus simples :
-```
+```plaintext
 (status:todo AND (priority:high OR (category:development AND has_children:true)))
-```
+```plaintext
 et
-```
+```plaintext
 (status:in_progress AND priority:high AND due_date<2025-06-30)
-```
-
+```plaintext
 ### Exemple 2 : Clarification avec parenthèses
 
 Requête ambiguë :
-```
+```plaintext
 status:todo AND priority:high OR category:critical
-```
-
+```plaintext
 Clarifiée avec parenthèses :
-```
+```plaintext
 (status:todo AND priority:high) OR category:critical
-```
+```plaintext
 ou
-```
+```plaintext
 status:todo AND (priority:high OR category:critical)
-```
-
+```plaintext
 selon l'intention.

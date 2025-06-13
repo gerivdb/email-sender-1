@@ -45,6 +45,7 @@
 > Ensemble des algorithmes utilisés pour la classification des emails.
 
 - [ ] **task-001** Implémenter l'algorithme de classification par mots-clés #priority:high #complexity:moderate
+
   > Développer l'algorithme de base pour la classification par mots-clés.
   > 
   > **Dimension temporelle**: Horizon: Court terme, Séquence: Début
@@ -64,6 +65,7 @@
         > Utiliser des structures de données optimisées pour la recherche rapide.
 
 - [~] **task-002** Implémenter l'algorithme de classification par embeddings #priority:high #complexity:complex
+
   > Développer l'algorithme avancé utilisant des embeddings vectoriels.
   > 
   > **Dimension temporelle**: Horizon: Court terme, Séquence: Milieu
@@ -81,11 +83,13 @@
 > Méthodes et outils pour évaluer la performance des algorithmes de classification.
 
 - [ ] **task-003** Définir les métriques d'évaluation #priority:medium
+
   > Identifier et définir les métriques pertinentes pour évaluer la performance.
   > 
   > **Dimension cognitive**: Complexité: Modérée, Abstraction: Conceptuelle
 
 - [ ] **task-004** Implémenter le système d'évaluation automatique #priority:medium
+
   > Développer un système pour évaluer automatiquement les performances.
   > 
   > **Dimension temporelle**: Horizon: Court terme, Séquence: Fin

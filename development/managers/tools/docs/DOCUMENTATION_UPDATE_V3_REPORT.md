@@ -7,6 +7,7 @@ Ce rapport documente la mise à jour de la documentation de l'écosystème Manag
 ## 🔄 Actions Réalisées
 
 ### 1. Création d'une Documentation Dédiée v3.0.0
+
 - **Fichier créé**: `TOOLS_ECOSYSTEM_DOCUMENTATION_V3.md`
 - **Contenu**: Documentation complète et à jour de l'écosystème Manager Toolkit v3.0.0
 - **Ajouts majeurs**: 
@@ -16,6 +17,7 @@ Ce rapport documente la mise à jour de la documentation de l'écosystème Manag
   - Ajout d'une section sur l'historique des versions
 
 ### 2. Mise à Jour du Document Existant
+
 - **Fichier modifié**: `TOOLS_ECOSYSTEM_DOCUMENTATION.md`
 - **Modifications**: 
   - Ajout d'une note en en-tête indiquant que le document est archivé
@@ -26,6 +28,7 @@ Ce rapport documente la mise à jour de la documentation de l'écosystème Manag
 ### Interface ToolkitOperation
 
 #### v2.0.0 (Ancienne Version)
+
 ```go
 type ToolkitOperation interface {
     Execute(ctx context.Context, options *OperationOptions) error
@@ -33,9 +36,9 @@ type ToolkitOperation interface {
     CollectMetrics() map[string]interface{}
     HealthCheck(ctx context.Context) error
 }
-```
-
+```plaintext
 #### v3.0.0 (Nouvelle Version)
+
 ```go
 type ToolkitOperation interface {
     // Méthodes existantes
@@ -49,8 +52,7 @@ type ToolkitOperation interface {
     GetDescription() string          // Description documentaire
     Stop(ctx context.Context) error  // Gestion des arrêts propres
 }
-```
-
+```plaintext
 ### Système d'Auto-Enregistrement (Nouveau dans v3.0.0)
 
 ```go
@@ -66,8 +68,7 @@ func init() {
     defaultTool := &MyToolName{...}
     RegisterGlobalTool(OpMyOperation, defaultTool)
 }
-```
-
+```plaintext
 ## 💡 Points d'Amélioration Documentés
 
 1. **Identification des Outils**: La méthode `String()` résout l'ambiguïté d'identification des outils

@@ -35,18 +35,19 @@ Trois méthodes principales :
 
 ```markdown
 # Plan de développement v{{version}} - {{title}}
+
 *Version 1.0 - 2025-05-22 - Progression globale : 0%*
 
 {{description}}
 
 ## 1. Phase 1 (Phase 1)
+
 - [ ] **1.1** Tâche principale 1
   - [ ] **1.1.1** Sous-tâche 1.1
     - [ ] **1.1.1.1** Sous-sous-tâche 1.1.1
       - [ ] **1.1.1.1.1** Action 1.1.1.1
       ...
-```
-
+```plaintext
 ## Personnalisation et modules EJS
 
 Ce template s’appuie sur des modules EJS situés dans le dossier parent (`plan-dev/`) :

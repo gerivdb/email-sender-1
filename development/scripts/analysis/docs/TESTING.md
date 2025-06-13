@@ -19,21 +19,21 @@ Pour exÃ©cuter tous les tests unitaires, utilisez le script `Run-AllTests.ps1`
 
 ```powershell
 .\development\scripts\analysis\tests\Run-AllTests.ps1
-```
-
+```plaintext
 Pour exÃ©cuter un test spÃ©cifique, utilisez Pester directement :
 
 ```powershell
 Invoke-Pester -Path ".\development\scripts\analysis\tests\Start-CodeAnalysis.Tests.ps1"
-```
-
+```plaintext
 ### Structure des tests unitaires
 
 Chaque fichier de test unitaire suit la structure suivante :
 
 ```powershell
 #Requires -Version 5.1
+
 <#
+
 .SYNOPSIS
     Tests unitaires pour le script <nom-du-script>.ps1.
 .DESCRIPTION
@@ -41,12 +41,14 @@ Chaque fichier de test unitaire suit la structure suivante :
 #>
 
 # Importer le module Pester
+
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Write-Warning "Le module Pester n'est pas disponible. Installez-le avec 'Install-Module -Name Pester -Force'."
     return
 }
 
 # Importer le module d'aide pour les tests
+
 $testHelpersPath = Join-Path -Path $PSScriptRoot -ChildPath "TestHelpers.psm1"
 if (Test-Path -Path $testHelpersPath) {
     Import-Module -Name $testHelpersPath -Force
@@ -55,6 +57,7 @@ if (Test-Path -Path $testHelpersPath) {
 }
 
 # Chemin du script Ã  tester
+
 $scriptPath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath "<nom-du-script>.ps1"
 if (-not (Test-Path -Path $scriptPath)) {
     throw "Le script <nom-du-script>.ps1 n'existe pas Ã  l'emplacement: $scriptPath"
@@ -63,20 +66,22 @@ if (-not (Test-Path -Path $scriptPath)) {
 Describe "Script <nom-du-script>" {
     BeforeAll {
         # CrÃ©er un environnement de test
+
         $testEnv = New-TestEnvironment -TestName "<nom-du-test>"
     }
     
     Context "ParamÃ¨tres et validation" {
         It "LÃ¨ve une exception si le chemin n'existe pas" {
             # Act & Assert
+
             { Invoke-ScriptWithParams -ScriptPath $scriptPath -Parameters @{ Path = "C:\chemin\inexistant" } } | Should -Throw
         }
     }
     
     # Autres contextes et tests...
-}
-```
 
+}
+```plaintext
 ### Module d'aide pour les tests
 
 Le module `TestHelpers.psm1` contient des fonctions d'aide pour les tests unitaires :
@@ -127,8 +132,7 @@ Pour exÃ©cuter les tests d'intÃ©gration, utilisez le script `Test-AnalysisIn
 
 ```powershell
 .\development\scripts\analysis\tests\Test-AnalysisIntegration.ps1 -TestDirectory ".\development\scripts" -OutputPath ".\results"
-```
-
+```plaintext
 ### Structure des tests d'intÃ©gration
 
 Le script `Test-AnalysisIntegration.ps1` exÃ©cute une sÃ©rie de tests qui vÃ©rifient le comportement du systÃ¨me d'analyse de code dans son ensemble :
@@ -177,8 +181,7 @@ Pour exÃ©cuter les tests de performance, utilisez le script `Test-PerformanceO
 
 ```powershell
 .\development\scripts\analysis\tests\Test-PerformanceOptimization.ps1 -TestDirectory ".\development\scripts" -OutputPath ".\results" -NumberOfFiles 100 -MaxThreads 8
-```
-
+```plaintext
 ### Structure des tests de performance
 
 Le script `Test-PerformanceOptimization.ps1` exÃ©cute une sÃ©rie de tests qui mesurent les performances du systÃ¨me d'analyse de code :

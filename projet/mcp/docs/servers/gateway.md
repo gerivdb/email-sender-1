@@ -23,8 +23,7 @@ Utilisez le script d'installation automatique :
 
 ```powershell
 .\projet\mcp\scripts\setup\setup-mcp-gateway.ps1
-```
-
+```plaintext
 ### Installation manuelle
 
 1. Téléchargez la dernière version de Gateway depuis GitHub :
@@ -42,6 +41,7 @@ La configuration du serveur Gateway se fait via un fichier YAML. Voici un exempl
 
 ```yaml
 # Configuration du serveur Gateway MCP
+
 server:
   host: localhost
   port: 8080
@@ -102,8 +102,7 @@ logging:
   file: "monitoring/logs/gateway.log"
   max_size: 10485760
   max_files: 5
-```
-
+```plaintext
 ## Utilisation
 
 ### Démarrage du serveur
@@ -112,24 +111,21 @@ Pour démarrer le serveur Gateway :
 
 ```powershell
 .\projet\mcp\scripts\utils\start-mcp-server.ps1 -Server gateway
-```
-
+```plaintext
 ### Vérification de l'état
 
 Pour vérifier l'état du serveur Gateway :
 
 ```powershell
 .\projet\mcp\scripts\utils\check-mcp-status.ps1 -Server gateway
-```
-
+```plaintext
 ### Arrêt du serveur
 
 Pour arrêter le serveur Gateway :
 
 ```powershell
 .\projet\mcp\scripts\utils\stop-mcp-server.ps1 -Server gateway
-```
-
+```plaintext
 ## Intégration avec n8n
 
 Pour utiliser le serveur Gateway dans n8n, vous devez configurer un nœud MCP Client API avec les paramètres suivants :
@@ -143,8 +139,7 @@ Vous pouvez utiliser le script de configuration automatique :
 
 ```powershell
 .\projet\mcp\integrations\n8n\scripts\configure-n8n-mcp.ps1 -Server gateway
-```
-
+```plaintext
 ## Exemples d'utilisation
 
 ### Exemple de workflow n8n
@@ -176,8 +171,7 @@ Voici un exemple de workflow n8n qui utilise le serveur Gateway pour récupérer
   ],
   "connections": {}
 }
-```
-
+```plaintext
 ## Dépannage
 
 ### Problèmes courants

@@ -1,6 +1,7 @@
 ## PHASE 5 : Tests et Validation
 
 ### 5.1 Tests unitaires
+
 - [ ] **5.1** Tests unitaires
   - [ ] **5.1.1** Coverage complète
     - [ ] **5.1.1.1** Tests pour chaque module
@@ -90,6 +91,7 @@
           - [ ] **5.1.1.3.2.3.3** Temps de re-ranking local
 
 ### 5.2 Tests d'intégration
+
 - [ ] **5.2** Tests d'intégration
   - [ ] **5.2.1** Tests bout-en-bout
     - [ ] **5.2.1.1** Tests avec QDrant réel

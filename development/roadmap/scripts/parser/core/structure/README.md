@@ -1,4 +1,4 @@
-﻿# structure - core
+# structure - core
 
 Cette section contient les scripts liÃ©s Ã  structure dans la catÃ©gorie core.
 
@@ -12,6 +12,7 @@ Cette section contient les scripts liÃ©s Ã  structure dans la catÃ©gorie c
 
 `powershell
 # Exemple d'utilisation
+
 .\<nom-du-script>.ps1 -InputPath "Roadmap/roadmap.md" -OutputPath "Roadmap/output.md"
 `
 

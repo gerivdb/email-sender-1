@@ -10,37 +10,43 @@ Nous avons développé un module PowerShell pour faciliter l'intégration avec A
 
 ```powershell
 # Importer le module
+
 Import-Module "development\scripts\maintenance\augment\AugmentIntegration.psm1"
 
 # Vérifier que le module est chargé
-Get-Module AugmentIntegration
-```
 
+Get-Module AugmentIntegration
+```plaintext
 ### Fonctions principales
 
 ```powershell
 # Initialiser l'intégration avec Augment Code
+
 Initialize-AugmentIntegration -StartServers
 
 # Exécuter un mode spécifique
+
 Invoke-AugmentMode -Mode GRAN -FilePath "docs\plans\plan-modes-stepup.md" -TaskIdentifier "1.2.3" -UpdateMemories
 
 # Mettre à jour les Memories pour un mode spécifique
+
 Update-AugmentMemoriesForMode -Mode GRAN
 
 # Mesurer la taille d'un input
+
 $inputSize = Measure-AugmentInputSize -Input "Votre texte ici"
 if ($inputSize.IsOverLimit) {
     Write-Warning "Input trop volumineux: $($inputSize.KiloBytes) KB"
 }
 
 # Diviser un input volumineux
+
 $segments = Split-AugmentInput -Input "Votre texte volumineux ici" -MaxSize 3000
 
 # Analyser les performances d'Augment Code
-Analyze-AugmentPerformance
-```
 
+Analyze-AugmentPerformance
+```plaintext
 ## Techniques avancées
 
 ### 1. Chaînage de modes
@@ -49,20 +55,20 @@ Vous pouvez enchaîner plusieurs modes pour automatiser des workflows complexes:
 
 ```powershell
 # Exemple: GRAN → DEV-R → CHECK
+
 Invoke-AugmentMode -Mode GRAN -FilePath $filePath -TaskIdentifier $taskId -UpdateMemories
 Invoke-AugmentMode -Mode "DEV-R" -FilePath $filePath -TaskIdentifier $taskId -UpdateMemories
 Invoke-AugmentMode -Mode CHECK -FilePath $filePath -TaskIdentifier $taskId -UpdateMemories
-```
-
+```plaintext
 ### 2. Intégration avec n8n
 
 Vous pouvez utiliser n8n pour enrichir les Memories d'Augment:
 
 ```powershell
 # Synchroniser les Memories avec n8n
-.\development\scripts\maintenance\augment\sync-memories-with-n8n.ps1
-```
 
+.\development\scripts\maintenance\augment\sync-memories-with-n8n.ps1
+```plaintext
 Créez un workflow n8n qui:
 1. Reçoit les Memories en entrée
 2. Enrichit les Memories avec des données externes
@@ -74,12 +80,13 @@ Vous pouvez analyser les performances d'Augment Code pour optimiser son utilisat
 
 ```powershell
 # Analyser les performances
+
 Analyze-AugmentPerformance
 
 # Ouvrir le rapport dans un navigateur
-Start-Process "reports\augment\performance.html"
-```
 
+Start-Process "reports\augment\performance.html"
+```plaintext
 Le rapport vous aidera à identifier:
 - Les modes les plus utilisés
 - Les temps de réponse moyens par mode
@@ -91,17 +98,20 @@ Pour les inputs volumineux, utilisez la segmentation intelligente:
 
 ```powershell
 # Diviser un fichier volumineux en segments
+
 $filePath = "path\to\large\file.ps1"
 $fileContent = Get-Content -Path $filePath -Raw
 $segments = Split-AugmentInput -Input $fileContent
 
 # Traiter chaque segment
+
 foreach ($segment in $segments) {
     # Envoyer le segment à Augment Code
-    # ...
-}
-```
 
+    # ...
+
+}
+```plaintext
 ## Optimisation des Memories par contexte
 
 ### 1. Memories spécifiques au projet
@@ -110,6 +120,7 @@ Créez des Memories spécifiques au projet en cours:
 
 ```powershell
 # Générer des Memories spécifiques au projet
+
 $projectInfo = @{
     Name = "EMAIL_SENDER_1"
     Structure = "..."
@@ -117,35 +128,37 @@ $projectInfo = @{
 }
 
 # Mettre à jour les Memories
-Update-AugmentMemories -Content ($projectInfo | ConvertTo-Json)
-```
 
+Update-AugmentMemories -Content ($projectInfo | ConvertTo-Json)
+```plaintext
 ### 2. Memories contextuelles par tâche
 
 Adaptez les Memories au contexte de la tâche en cours:
 
 ```powershell
 # Pour une tâche de développement backend
+
 Update-AugmentMemoriesForMode -Mode "DEV-R" -OutputPath ".augment\memories\backend_dev.json"
 
 # Pour une tâche d'optimisation
-Update-AugmentMemoriesForMode -Mode OPTI -OutputPath ".augment\memories\optimization.json"
-```
 
+Update-AugmentMemoriesForMode -Mode OPTI -OutputPath ".augment\memories\optimization.json"
+```plaintext
 ### 3. Rotation des Memories
 
 Implémentez une rotation des Memories pour éviter la surcharge:
 
 ```powershell
 # Archiver les anciennes Memories
+
 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $archivePath = ".augment\memories\archive\memories-$timestamp.json"
 Copy-Item ".augment\memories\journal_memories.json" -Destination $archivePath
 
 # Générer de nouvelles Memories
-Update-AugmentMemoriesForMode -Mode ALL
-```
 
+Update-AugmentMemoriesForMode -Mode ALL
+```plaintext
 ## Intégration avec le système de gestion de versions
 
 ### 1. Hooks Git
@@ -154,24 +167,25 @@ Créez des hooks Git pour mettre à jour les Memories automatiquement:
 
 ```powershell
 # Dans .git\hooks\post-checkout
+
 Import-Module "development\scripts\maintenance\augment\AugmentIntegration.psm1"
 Update-AugmentMemoriesForMode -Mode ALL
-```
-
+```plaintext
 ### 2. Synchronisation des Memories entre équipes
 
 Partagez les Memories entre les membres de l'équipe:
 
 ```powershell
 # Exporter les Memories
+
 $memories = Get-Content ".augment\memories\journal_memories.json" -Raw
 $memories | Out-File "shared\memories\team_memories.json"
 
 # Importer les Memories partagées
+
 $sharedMemories = Get-Content "shared\memories\team_memories.json" -Raw
 $sharedMemories | Out-File ".augment\memories\journal_memories.json"
-```
-
+```plaintext
 ## Automatisation avec des scripts
 
 ### 1. Script de préparation de session
@@ -180,6 +194,7 @@ Créez un script pour préparer une session de travail:
 
 ```powershell
 # prepare-session.ps1
+
 param (
     [Parameter(Mandatory = $true)]
     [string]$TaskId,
@@ -189,37 +204,41 @@ param (
 )
 
 # Initialiser l'intégration
+
 Import-Module "development\scripts\maintenance\augment\AugmentIntegration.psm1"
 Initialize-AugmentIntegration -StartServers
 
 # Mettre à jour les Memories pour le mode spécifié
+
 Update-AugmentMemoriesForMode -Mode $Mode
 
 # Exécuter le mode
-Invoke-AugmentMode -Mode $Mode -TaskIdentifier $TaskId -UpdateMemories
-```
 
+Invoke-AugmentMode -Mode $Mode -TaskIdentifier $TaskId -UpdateMemories
+```plaintext
 ### 2. Script de fin de session
 
 Créez un script pour terminer une session de travail:
 
 ```powershell
 # end-session.ps1
+
 # Arrêter les serveurs MCP
+
 Import-Module "development\scripts\maintenance\augment\AugmentIntegration.psm1"
 Stop-AugmentMCPServers
 
 # Analyser les performances
-Analyze-AugmentPerformance
-```
 
+Analyze-AugmentPerformance
+```plaintext
 ## Bonnes pratiques
 
 ### 1. Structurer les prompts
 
 Structurez vos prompts pour obtenir des réponses plus précises:
 
-```
+```plaintext
 [CONTEXTE]
 Je travaille sur le module de gestion des modes.
 
@@ -233,29 +252,25 @@ Implémenter une fonction pour détecter automatiquement la complexité d'une t�
 
 [DEMANDE]
 Peux-tu implémenter cette fonction?
-```
-
+```plaintext
 ### 2. Utiliser des références explicites
 
 Utilisez des références explicites aux fichiers et aux fonctions:
 
-```
+```plaintext
 Peux-tu analyser la fonction Get-TaskComplexityAndDomain dans le fichier development/scripts/maintenance/modes/gran-mode.ps1 et suggérer des améliorations?
-```
-
+```plaintext
 ### 3. Fournir des exemples concrets
 
 Fournissez des exemples concrets pour clarifier vos attentes:
 
-```
+```plaintext
 Voici un exemple de tâche:
-```
+```plaintext
 **1.2.3** Implémenter le système de détection de complexité
-```
-
+```plaintext
 Je voudrais que la fonction détecte automatiquement que cette tâche est de complexité "Medium".
-```
-
+```plaintext
 ## Ressources supplémentaires
 
 - [Guide d'intégration avec Augment Code](./integration_guide.md)

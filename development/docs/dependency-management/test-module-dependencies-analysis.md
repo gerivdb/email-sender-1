@@ -22,8 +22,7 @@ D'après la documentation, la fonction a la signature suivante:
 
 ```powershell
 Test-ModuleDependencies -ModulePath <String> [-IncludeVersion] [-CheckAvailability]
-```
-
+```plaintext
 Paramètres:
 - `ModulePath`: Chemin vers le module à analyser (obligatoire)
 - `IncludeVersion`: Inclut les informations de version dans les résultats (optionnel)
@@ -45,9 +44,11 @@ Les exemples d'utilisation dans la documentation suggèrent que la fonction devr
 
 ```powershell
 # Exemple d'utilisation
+
 $moduleDeps = Test-ModuleDependencies -ModulePath ".\modules\MyModule" -IncludeVersion -CheckAvailability
 
 # Afficher les dépendances
+
 Write-Host "Dépendances du module $($moduleDeps.ModuleName):"
 foreach ($dep in $moduleDeps.Dependencies) {
     Write-Host "- $($dep.Name) $(if ($dep.Version) { "($($dep.Version))" })"
@@ -59,8 +60,7 @@ if ($moduleDeps.MissingDependencies.Count -gt 0) {
         Write-Host "- $($missingDep.Name) $(if ($missingDep.Version) { "($($missingDep.Version))" })"
     }
 }
-```
-
+```plaintext
 Propriétés attendues:
 - `ModuleName`: Nom du module analysé
 - `Dependencies`: Liste des dépendances du module
@@ -84,19 +84,21 @@ La fonction devrait être capable d'analyser les fichiers de manifeste PowerShel
 
 ```powershell
 # Analyser le manifeste
+
 try {
     $manifest = Import-PowerShellDataFile -Path $manifestPath
     
     # Extraire les RequiredModules
+
     if ($manifest.ContainsKey('RequiredModules') -and $manifest.RequiredModules) {
         # Traitement des dépendances...
+
     }
 }
 catch {
     Write-Warning "Erreur lors de l'analyse du manifeste: $_"
 }
-```
-
+```plaintext
 ### 3.2 Gestion des Différents Formats de RequiredModules
 
 La fonction devrait gérer les différents formats de la propriété `RequiredModules`:
@@ -128,8 +130,7 @@ if ($CheckAvailability) {
         $result.MissingDependencies += $dependency
     }
 }
-```
-
+```plaintext
 ### 3.4 Gestion des Versions
 
 La fonction devrait gérer les contraintes de version:
@@ -137,6 +138,7 @@ La fonction devrait gérer les contraintes de version:
 ```powershell
 if ($IncludeVersion) {
     # Extraire et vérifier les informations de version
+
     $moduleVersion = $module.ModuleVersion -or $module.RequiredVersion
     
     $dependency = [PSCustomObject]@{
@@ -144,8 +146,7 @@ if ($IncludeVersion) {
         Version = $moduleVersion
     }
 }
-```
-
+```plaintext
 ## 4. Implémentation Recommandée
 
 ### 4.1 Structure de Base
@@ -165,6 +166,7 @@ function Test-ModuleDependencies {
     )
     
     # Initialiser les résultats
+
     $result = [PSCustomObject]@{
         ModuleName = [System.IO.Path]::GetFileNameWithoutExtension($ModulePath)
         ModulePath = $ModulePath
@@ -173,12 +175,14 @@ function Test-ModuleDependencies {
     }
     
     # Vérifier si le chemin existe
+
     if (-not (Test-Path -Path $ModulePath)) {
         Write-Warning "Le chemin du module n'existe pas: $ModulePath"
         return $result
     }
     
     # Déterminer le chemin du manifeste
+
     $manifestPath = $ModulePath
     if (Test-Path -Path $ModulePath -PathType Container) {
         $psd1Files = Get-ChildItem -Path $ModulePath -Filter "*.psd1"
@@ -190,14 +194,17 @@ function Test-ModuleDependencies {
     }
     
     # Analyser le manifeste
+
     try {
         $manifest = Import-PowerShellDataFile -Path $manifestPath
         
         # Extraire les RequiredModules
+
         if ($manifest.ContainsKey('RequiredModules') -and $manifest.RequiredModules) {
             foreach ($module in $manifest.RequiredModules) {
                 if ($module -is [string]) {
                     # Format simple: nom du module
+
                     $dependency = [PSCustomObject]@{
                         Name = $module
                         Version = $null
@@ -205,6 +212,7 @@ function Test-ModuleDependencies {
                     $result.Dependencies += $dependency
                     
                     # Vérifier la disponibilité si demandé
+
                     if ($CheckAvailability) {
                         $moduleInfo = Get-Module -Name $module -ListAvailable
                         if (-not $moduleInfo) {
@@ -214,6 +222,7 @@ function Test-ModuleDependencies {
                 }
                 elseif ($module -is [hashtable] -or $module -is [System.Collections.Specialized.OrderedDictionary]) {
                     # Format avancé: hashtable avec ModuleName et Version
+
                     $moduleName = $module.ModuleName
                     $moduleVersion = $module.ModuleVersion -or $module.RequiredVersion
                     
@@ -224,6 +233,7 @@ function Test-ModuleDependencies {
                     $result.Dependencies += $dependency
                     
                     # Vérifier la disponibilité si demandé
+
                     if ($CheckAvailability) {
                         $moduleInfo = Get-Module -Name $moduleName -ListAvailable
                         if (-not $moduleInfo) {
@@ -243,25 +253,27 @@ function Test-ModuleDependencies {
     
     return $result
 }
-```
-
+```plaintext
 ### 4.2 Fonctionnalités Avancées
 
 #### 4.2.1 Détection des Dépendances Implicites
 
 ```powershell
 # Analyser le contenu du module pour les dépendances implicites
+
 if ($IncludeImplicit) {
     $moduleFiles = Get-ChildItem -Path $ModulePath -Recurse -Include "*.ps1", "*.psm1"
     foreach ($file in $moduleFiles) {
         $content = Get-Content -Path $file.FullName -Raw
         
         # Détecter les Import-Module
+
         $importMatches = [regex]::Matches($content, 'Import-Module\s+([a-zA-Z0-9_\.-]+)')
         foreach ($match in $importMatches) {
             $moduleName = $match.Groups[1].Value
             
             # Vérifier si cette dépendance est déjà connue
+
             if (-not ($result.Dependencies | Where-Object { $_.Name -eq $moduleName })) {
                 $dependency = [PSCustomObject]@{
                     Name = $moduleName
@@ -271,6 +283,7 @@ if ($IncludeImplicit) {
                 $result.Dependencies += $dependency
                 
                 # Vérifier la disponibilité si demandé
+
                 if ($CheckAvailability) {
                     $moduleInfo = Get-Module -Name $moduleName -ListAvailable
                     if (-not $moduleInfo) {
@@ -281,12 +294,12 @@ if ($IncludeImplicit) {
         }
     }
 }
-```
-
+```plaintext
 #### 4.2.2 Détection des Dépendances Transitives
 
 ```powershell
 # Analyser les dépendances transitives
+
 if ($IncludeTransitive) {
     $processedModules = @($result.ModuleName)
     $modulesToProcess = @($result.Dependencies | Select-Object -ExpandProperty Name)
@@ -302,6 +315,7 @@ if ($IncludeTransitive) {
         $processedModules += $currentModule
         
         # Trouver le module
+
         $moduleInfo = Get-Module -Name $currentModule -ListAvailable
         if ($moduleInfo) {
             $moduleManifest = $moduleInfo.Path -replace '\.psm1$', '.psd1'
@@ -319,16 +333,17 @@ if ($IncludeTransitive) {
         }
     }
 }
-```
-
+```plaintext
 #### 4.2.3 Détection des Cycles
 
 ```powershell
 # Détecter les cycles de dépendances
+
 if ($DetectCycles) {
     $graph = @{}
     
     # Construire le graphe de dépendances
+
     foreach ($dep in $result.Dependencies) {
         if (-not $graph.ContainsKey($result.ModuleName)) {
             $graph[$result.ModuleName] = @()
@@ -341,6 +356,7 @@ if ($DetectCycles) {
     }
     
     # Fonction pour détecter les cycles
+
     function Find-Cycle {
         param (
             [hashtable]$Graph,
@@ -371,11 +387,13 @@ if ($DetectCycles) {
     }
     
     # Rechercher les cycles
+
     $cycles = @()
     foreach ($node in $graph.Keys) {
         $cycle = Find-Cycle -Graph $graph -Node $node
         if ($cycle) {
             # Trouver le début du cycle
+
             $startIndex = [array]::IndexOf($cycle, $cycle[-1])
             $cycles += $cycle[$startIndex..($cycle.Length - 2)]
             break
@@ -386,8 +404,7 @@ if ($DetectCycles) {
         $result | Add-Member -NotePropertyName "CyclicDependencies" -NotePropertyValue $cycles
     }
 }
-```
-
+```plaintext
 ## 5. Intégration avec le Process Manager
 
 ### 5.1 Intégration avec le Système de Gestion de Dépendances
@@ -396,6 +413,7 @@ La fonction `Test-ModuleDependencies` devrait être intégrée avec le système 
 
 ```powershell
 # Dans le module DependencyManager.psm1
+
 function Initialize-DependencyManager {
     [CmdletBinding()]
     param (
@@ -413,12 +431,14 @@ function Initialize-DependencyManager {
     )
     
     # Initialiser les variables globales
+
     $script:DependencyManagerEnabled = $Enabled
     $script:DependencyManagerCacheEnabled = $CacheEnabled
     $script:DependencyManagerMaxDepth = $MaxDepth
     $script:DependencyCache = @{}
     
     # Charger la configuration si spécifiée
+
     if ($ConfigPath -and (Test-Path -Path $ConfigPath)) {
         $script:DependencyManagerConfig = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
     }
@@ -433,9 +453,9 @@ function Initialize-DependencyManager {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Initialize-DependencyManager, Test-ModuleDependencies, Get-ScriptDependencies, Resolve-DependencyOrder
-```
 
+Export-ModuleMember -Function Initialize-DependencyManager, Test-ModuleDependencies, Get-ScriptDependencies, Resolve-DependencyOrder
+```plaintext
 ### 5.2 Intégration avec le Système de Cache
 
 Pour améliorer les performances, la fonction devrait utiliser un système de cache:
@@ -458,22 +478,24 @@ function Test-ModuleDependencies {
     )
     
     # Vérifier si le résultat est dans le cache
+
     $cacheKey = "$ModulePath|$IncludeVersion|$CheckAvailability"
     if (-not $NoCache -and $script:DependencyManagerCacheEnabled -and $script:DependencyCache.ContainsKey($cacheKey)) {
         return $script:DependencyCache[$cacheKey]
     }
     
     # [Implémentation de la fonction]
+
     
     # Mettre en cache le résultat
+
     if (-not $NoCache -and $script:DependencyManagerCacheEnabled) {
         $script:DependencyCache[$cacheKey] = $result
     }
     
     return $result
 }
-```
-
+```plaintext
 ### 5.3 Intégration avec le Système de Journalisation
 
 La fonction devrait utiliser le système de journalisation du Process Manager:
@@ -483,11 +505,13 @@ function Test-ModuleDependencies {
     [CmdletBinding()]
     param (
         # [Paramètres]
+
     )
     
     Write-Log "Analyse des dépendances du module: $ModulePath" -Level "INFO"
     
     # [Implémentation de la fonction]
+
     
     if ($result.MissingDependencies.Count -gt 0) {
         Write-Log "Dépendances manquantes détectées: $($result.MissingDependencies.Count)" -Level "WARNING"
@@ -501,8 +525,7 @@ function Test-ModuleDependencies {
     
     return $result
 }
-```
-
+```plaintext
 ## 6. Tests Unitaires Recommandés
 
 ### 6.1 Tests de Base
@@ -511,10 +534,12 @@ function Test-ModuleDependencies {
 Describe "Test-ModuleDependencies" {
     BeforeAll {
         # Créer des modules de test
+
         $testRoot = Join-Path -Path $TestDrive -ChildPath "Modules"
         New-Item -Path $testRoot -ItemType Directory -Force
         
         # Module sans dépendances
+
         $moduleA = Join-Path -Path $testRoot -ChildPath "ModuleA"
         New-Item -Path $moduleA -ItemType Directory -Force
         @"
@@ -528,6 +553,7 @@ Describe "Test-ModuleDependencies" {
 "@ | Out-File -FilePath (Join-Path -Path $moduleA -ChildPath "ModuleA.psd1")
         
         # Module avec dépendances simples
+
         $moduleB = Join-Path -Path $testRoot -ChildPath "ModuleB"
         New-Item -Path $moduleB -ItemType Directory -Force
         @"
@@ -542,6 +568,7 @@ Describe "Test-ModuleDependencies" {
 "@ | Out-File -FilePath (Join-Path -Path $moduleB -ChildPath "ModuleB.psd1")
         
         # Module avec dépendances avancées
+
         $moduleC = Join-Path -Path $testRoot -ChildPath "ModuleC"
         New-Item -Path $moduleC -ItemType Directory -Force
         @"
@@ -591,6 +618,7 @@ Describe "Test-ModuleDependencies" {
     
     It "Vérifie correctement la disponibilité des modules" {
         # Simuler un module disponible
+
         Mock Get-Module -ParameterFilter { $Name -eq "ModuleA" -and $ListAvailable } -MockWith {
             [PSCustomObject]@{
                 Name = "ModuleA"
@@ -600,6 +628,7 @@ Describe "Test-ModuleDependencies" {
         }
         
         # Simuler un module manquant
+
         Mock Get-Module -ParameterFilter { $Name -eq "ModuleB" -and $ListAvailable } -MockWith { $null }
         
         $result = Test-ModuleDependencies -ModulePath (Join-Path -Path $testRoot -ChildPath "ModuleB\ModuleB.psd1") -CheckAvailability
@@ -607,14 +636,14 @@ Describe "Test-ModuleDependencies" {
         $result.MissingDependencies[0].Name | Should -Be "ModuleB"
     }
 }
-```
-
+```plaintext
 ### 6.2 Tests Avancés
 
 ```powershell
 Describe "Test-ModuleDependencies Advanced" {
     BeforeAll {
         # [Configuration des tests]
+
     }
     
     It "Gère correctement les chemins de répertoire" {
@@ -635,14 +664,14 @@ Describe "Test-ModuleDependencies Advanced" {
     
     It "Détecte correctement les dépendances cycliques" {
         # [Configuration des modules avec dépendances cycliques]
+
         
         $result = Test-ModuleDependencies -ModulePath (Join-Path -Path $testRoot -ChildPath "ModuleD\ModuleD.psd1") -DetectCycles
         $result.PSObject.Properties.Name | Should -Contain "CyclicDependencies"
         $result.CyclicDependencies.Count | Should -BeGreaterThan 0
     }
 }
-```
-
+```plaintext
 ## 7. Conclusion
 
 La fonction `Test-ModuleDependencies` est un composant essentiel du système de gestion des dépendances du Process Manager. Bien que son implémentation complète n'ait pas été trouvée dans le code examiné, les exemples d'utilisation et la documentation fournissent une base solide pour son développement.

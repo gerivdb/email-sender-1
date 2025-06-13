@@ -38,8 +38,7 @@ $info = @{
     ConfidenceScore = $ConfidenceScore -or 50
     Metadata = @{}
 }
-```
-
+```plaintext
 #### 1.1.3 Contraintes et validation
 
 Le type de base `ExtractedInfo` est soumis à plusieurs contraintes de validation :
@@ -54,15 +53,18 @@ Le type de base `ExtractedInfo` est soumis à plusieurs contraintes de validatio
 
 ```powershell
 # Création d'un objet ExtractedInfo avec les valeurs par défaut
+
 $info = New-ExtractedInfo
 
 # Création d'un objet ExtractedInfo avec des valeurs spécifiques
+
 $info = New-ExtractedInfo -Source "document.pdf" -ExtractorName "PDFExtractor" -ProcessingState "Raw" -ConfidenceScore 75
 
 # Vérification du type de l'objet
-$info._Type # Retourne "ExtractedInfo"
-```
 
+$info._Type # Retourne "ExtractedInfo"
+
+```plaintext
 #### 1.1.5 Importance du type de base
 
 Le type de base `ExtractedInfo` est fondamental pour le module car :
@@ -98,6 +100,7 @@ function New-SpecializedExtractedInfo {
         [string]$SpecialProperty,
 
         # Paramètres communs hérités du type de base
+
         [string]$Source = "Unknown",
         [string]$ExtractorName = "SpecializedExtractor",
         [string]$ProcessingState = "Raw",
@@ -105,18 +108,20 @@ function New-SpecializedExtractedInfo {
     )
 
     # 1. Créer d'abord un objet du type de base
+
     $info = New-ExtractedInfo -Source $Source -ExtractorName $ExtractorName -ProcessingState $ProcessingState -ConfidenceScore $ConfidenceScore
 
     # 2. Modifier le type pour refléter le type spécialisé
+
     $info._Type = "SpecializedExtractedInfo"
 
     # 3. Ajouter les propriétés spécifiques au type spécialisé
+
     $info.SpecialProperty = $SpecialProperty
 
     return $info
 }
-```
-
+```plaintext
 #### 1.2.3 Avantages de l'héritage par hashtable
 
 Ce mécanisme d'héritage présente plusieurs avantages :
@@ -143,12 +148,15 @@ L'héritage par hashtable peut également être utilisé pour créer des hiérar
 
 ```powershell
 # Niveau 1 : Type de base
+
 $baseInfo = New-ExtractedInfo -Source "base.txt"
 
 # Niveau 2 : Type spécialisé
+
 $specializedInfo = New-SpecializedExtractedInfo -Source "specialized.txt" -SpecialProperty "Value"
 
 # Niveau 3 : Type encore plus spécialisé
+
 function New-VerySpecializedExtractedInfo {
     param (
         [string]$SpecialProperty,
@@ -157,20 +165,22 @@ function New-VerySpecializedExtractedInfo {
     )
 
     # Hériter du type spécialisé
+
     $info = New-SpecializedExtractedInfo -SpecialProperty $SpecialProperty -Source $Source
 
     # Modifier le type
+
     $info._Type = "VerySpecializedExtractedInfo"
 
     # Ajouter les propriétés spécifiques
+
     $info.VerySpecialProperty = $VerySpecialProperty
 
     return $info
 }
 
 $verySpecializedInfo = New-VerySpecializedExtractedInfo -Source "very_specialized.txt" -SpecialProperty "Value" -VerySpecialProperty "SpecialValue"
-```
-
+```plaintext
 Cette approche permet de créer des types de plus en plus spécialisés tout en maintenant la compatibilité avec les fonctions qui traitent les types parents.
 
 ### 1.3 Types spécialisés existants
@@ -203,24 +213,25 @@ function New-TextExtractedInfo {
     )
 
     # Créer un objet du type de base
+
     $info = New-ExtractedInfo -Source $Source -ExtractorName $ExtractorName -ProcessingState $ProcessingState -ConfidenceScore $ConfidenceScore
 
     # Modifier le type
+
     $info._Type = "TextExtractedInfo"
 
     # Ajouter les propriétés spécifiques
+
     $info.Text = $Text
     $info.Language = $Language
 
     return $info
 }
-```
-
+```plaintext
 **Exemple d'utilisation :**
 ```powershell
 $textInfo = New-TextExtractedInfo -Source "document.txt" -Text "Ceci est un exemple de texte extrait." -Language "fr"
-```
-
+```plaintext
 #### 1.3.2 StructuredDataExtractedInfo
 
 Le type `StructuredDataExtractedInfo` est conçu pour stocker et manipuler des données structurées extraites, comme des objets JSON, XML, ou des structures de données hiérarchiques.
@@ -247,19 +258,21 @@ function New-StructuredDataExtractedInfo {
     )
 
     # Créer un objet du type de base
+
     $info = New-ExtractedInfo -Source $Source -ExtractorName $ExtractorName -ProcessingState $ProcessingState -ConfidenceScore $ConfidenceScore
 
     # Modifier le type
+
     $info._Type = "StructuredDataExtractedInfo"
 
     # Ajouter les propriétés spécifiques
+
     $info.Data = $Data
     $info.DataFormat = $DataFormat
 
     return $info
 }
-```
-
+```plaintext
 **Exemple d'utilisation :**
 ```powershell
 $data = @{
@@ -275,8 +288,7 @@ $data = @{
 }
 
 $structuredInfo = New-StructuredDataExtractedInfo -Source "data.json" -Data $data -DataFormat "JSON"
-```
-
+```plaintext
 #### 1.3.3 MediaExtractedInfo
 
 Le type `MediaExtractedInfo` est conçu pour stocker et manipuler des références à des fichiers média comme des images, des vidéos, des fichiers audio ou des documents.
@@ -305,25 +317,26 @@ function New-MediaExtractedInfo {
     )
 
     # Créer un objet du type de base
+
     $info = New-ExtractedInfo -Source $Source -ExtractorName $ExtractorName -ProcessingState $ProcessingState -ConfidenceScore $ConfidenceScore
 
     # Modifier le type
+
     $info._Type = "MediaExtractedInfo"
 
     # Ajouter les propriétés spécifiques
+
     $info.MediaPath = $MediaPath
     $info.MediaType = $MediaType
     $info.MediaSize = $MediaSize
 
     return $info
 }
-```
-
+```plaintext
 **Exemple d'utilisation :**
 ```powershell
 $mediaInfo = New-MediaExtractedInfo -Source "image.jpg" -MediaPath "C:\Images\photo.jpg" -MediaType "Image" -MediaSize 1048576
-```
-
+```plaintext
 #### 1.3.4 Règles de validation spécifiques
 
 Chaque type spécialisé possède ses propres règles de validation qui s'ajoutent aux règles du type de base :
@@ -429,6 +442,7 @@ Voici un exemple de structure conforme pour un nouveau type `EmailExtractedInfo`
 ```powershell
 function New-EmailExtractedInfo {
     <#
+
     .SYNOPSIS
     Crée un nouvel objet d'information extraite de type email.
 
@@ -462,6 +476,7 @@ function New-EmailExtractedInfo {
     .EXAMPLE
     $email = New-EmailExtractedInfo -Subject "Réunion hebdomadaire" -Sender "john.doe@example.com" -Recipients @("team@example.com")
     #>
+
     param (
         [Parameter(Mandatory = $true)]
         [string]$Subject,
@@ -480,12 +495,15 @@ function New-EmailExtractedInfo {
     )
 
     # Créer un objet du type de base
+
     $info = New-ExtractedInfo -Source $Source -ExtractorName $ExtractorName -ProcessingState $ProcessingState -ConfidenceScore $ConfidenceScore
 
     # Modifier le type
+
     $info._Type = "EmailExtractedInfo"
 
     # Ajouter les propriétés spécifiques
+
     $info.Subject = $Subject
     $info.Sender = $Sender
     $info.Recipients = $Recipients
@@ -493,8 +511,7 @@ function New-EmailExtractedInfo {
 
     return $info
 }
-```
-
+```plaintext
 En suivant ces conventions, vous assurez que vos nouveaux types d'informations extraites s'intégreront harmonieusement avec le reste du module et seront faciles à comprendre et à utiliser pour les autres développeurs.
 
 ## 2. Exemple d'implémentation d'un nouveau type
@@ -566,6 +583,7 @@ Maintenant que nous avons défini le cas d'utilisation et les propriétés du no
 ```powershell
 function New-GeoLocationExtractedInfo {
     <#
+
     .SYNOPSIS
     Crée un nouvel objet d'information extraite de type géolocalisation.
 
@@ -616,6 +634,7 @@ function New-GeoLocationExtractedInfo {
     .EXAMPLE
     $geoInfo = New-GeoLocationExtractedInfo -Latitude 40.7128 -Longitude -74.0060 -Address "New York, NY 10004" -Accuracy 10 -Source "GoogleMaps" -ConfidenceScore 90
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -652,16 +671,20 @@ function New-GeoLocationExtractedInfo {
     )
 
     # Créer un objet du type de base
+
     $info = New-ExtractedInfo -Source $Source -ExtractorName $ExtractorName -ProcessingState $ProcessingState -ConfidenceScore $ConfidenceScore
 
     # Modifier le type
+
     $info._Type = "GeoLocationExtractedInfo"
 
     # Ajouter les propriétés spécifiques
+
     $info.Latitude = $Latitude
     $info.Longitude = $Longitude
 
     # Ajouter les propriétés optionnelles si elles sont spécifiées
+
     if ($PSBoundParameters.ContainsKey('Altitude')) {
         $info.Altitude = $Altitude
     }
@@ -686,8 +709,7 @@ function New-GeoLocationExtractedInfo {
 
     return $info
 }
-```
-
+```plaintext
 #### 2.2.2 Caractéristiques clés de l'implémentation
 
 Cette implémentation présente plusieurs caractéristiques importantes :
@@ -728,22 +750,25 @@ Voici quelques exemples d'utilisation de la fonction `New-GeoLocationExtractedIn
 
 ```powershell
 # Exemple 1 : Création d'un objet avec les propriétés minimales
+
 $geoInfo1 = New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 2.3522
 
 # Exemple 2 : Création d'un objet avec des informations contextuelles
+
 $geoInfo2 = New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 2.3522 -City "Paris" -Country "France" -LocationType "GPS"
 
 # Exemple 3 : Création d'un objet avec toutes les propriétés
+
 $geoInfo3 = New-GeoLocationExtractedInfo -Latitude 40.7128 -Longitude -74.0060 -Altitude 10 -Accuracy 5 -Address "New York, NY 10004" -City "New York" -Country "USA" -LocationType "GPS" -Source "GoogleMaps" -ConfidenceScore 90
 
 # Exemple 4 : Vérification du type et des propriétés
+
 $geoInfo4 = New-GeoLocationExtractedInfo -Latitude 51.5074 -Longitude -0.1278
 Write-Host "Type: $($geoInfo4._Type)"
 Write-Host "Latitude: $($geoInfo4.Latitude)"
 Write-Host "Longitude: $($geoInfo4.Longitude)"
 Write-Host "LocationType: $($geoInfo4.LocationType)"
-```
-
+```plaintext
 ### 2.3 Ajout des règles de validation spécifiques
 
 Pour garantir l'intégrité des données et la cohérence du nouveau type, nous devons ajouter des règles de validation spécifiques qui seront appliquées lors de l'utilisation des fonctions `Test-ExtractedInfo` et `Get-ExtractedInfoValidationErrors`.
@@ -753,6 +778,7 @@ Pour garantir l'intégrité des données et la cohérence du nouveau type, nous 
 ```powershell
 function Add-GeoLocationValidationRule {
     <#
+
     .SYNOPSIS
     Ajoute une règle de validation pour les objets GeoLocationExtractedInfo.
 
@@ -765,17 +791,21 @@ function Add-GeoLocationValidationRule {
     #>
 
     # Définir la règle de validation
+
     $geoLocationValidationRule = {
         param($Info)
 
         $errors = @()
 
         # Vérifier que l'objet est bien du type GeoLocationExtractedInfo
+
         if ($Info._Type -ne "GeoLocationExtractedInfo") {
             return $errors # Ne pas appliquer cette règle aux autres types
+
         }
 
         # Vérifier les propriétés obligatoires
+
         if (-not $Info.ContainsKey('Latitude')) {
             $errors += "Missing required property: Latitude"
         }
@@ -791,6 +821,7 @@ function Add-GeoLocationValidationRule {
         }
 
         # Vérifier les propriétés optionnelles si elles sont présentes
+
         if ($Info.ContainsKey('Altitude') -and $null -ne $Info.Altitude -and -not ($Info.Altitude -is [double] -or $Info.Altitude -is [int])) {
             $errors += "Altitude must be a number (current type: $($Info.Altitude.GetType().Name))"
         }
@@ -812,6 +843,7 @@ function Add-GeoLocationValidationRule {
         }
 
         # Vérifier la cohérence des données
+
         if ($Info.ContainsKey('City') -and $Info.ContainsKey('Country') -and $Info.City -and -not $Info.Country) {
             $errors += "Country should be specified when City is provided"
         }
@@ -820,10 +852,10 @@ function Add-GeoLocationValidationRule {
     }
 
     # Ajouter la règle au système de validation
+
     Add-ExtractedInfoValidationRule -Name "GeoLocationValidationRule" -Rule $geoLocationValidationRule -TargetType "GeoLocationExtractedInfo" -Description "Validation rules for GeoLocationExtractedInfo objects" -Force
 }
-```
-
+```plaintext
 #### 2.3.2 Caractéristiques de la règle de validation
 
 La règle de validation pour le type `GeoLocationExtractedInfo` vérifie plusieurs aspects :
@@ -847,25 +879,29 @@ La règle de validation est enregistrée avec la fonction `Add-ExtractedInfoVali
 
 ```powershell
 # Enregistrer la règle de validation
-Add-GeoLocationValidationRule
-```
 
+Add-GeoLocationValidationRule
+```plaintext
 #### 2.3.4 Exemples de validation
 
 Voici quelques exemples d'utilisation de la validation avec le nouveau type :
 
 ```powershell
 # Créer un objet valide
+
 $validGeoInfo = New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 2.3522 -City "Paris" -Country "France"
 
 # Valider l'objet
+
 $isValid = Test-ExtractedInfo -Info $validGeoInfo
 Write-Host "L'objet est valide : $isValid"
 
 # Créer un objet invalide (latitude hors limites)
+
 $invalidGeoInfo = New-GeoLocationExtractedInfo -Latitude 100 -Longitude 2.3522 -City "Paris" -Country "France"
 
 # Obtenir les erreurs de validation
+
 $errors = Get-ExtractedInfoValidationErrors -Info $invalidGeoInfo
 Write-Host "Erreurs de validation :"
 foreach ($error in $errors) {
@@ -873,6 +909,7 @@ foreach ($error in $errors) {
 }
 
 # Créer un objet avec des données incohérentes (ville sans pays)
+
 $inconsistentGeoInfo = @{
     _Type = "GeoLocationExtractedInfo"
     Id = [guid]::NewGuid().ToString()
@@ -887,17 +924,18 @@ $inconsistentGeoInfo = @{
     Longitude = 2.3522
     City = "Paris"
     # Country manquant
+
     LocationType = "Manual"
 }
 
 # Obtenir les erreurs de validation
+
 $errors = Get-ExtractedInfoValidationErrors -Info $inconsistentGeoInfo
 Write-Host "Erreurs de validation pour l'objet incohérent :"
 foreach ($error in $errors) {
     Write-Host "- $error"
 }
-```
-
+```plaintext
 #### 2.3.5 Intégration avec les règles de validation existantes
 
 La règle de validation spécifique au type `GeoLocationExtractedInfo` s'intègre avec les règles de validation existantes du module :
@@ -918,47 +956,56 @@ Pour s'assurer que le nouveau type `GeoLocationExtractedInfo` s'intègre correct
 
 ```powershell
 # Créer une collection
+
 $collection = New-ExtractedInfoCollection -Name "GeoLocations" -Description "Collection of geographical locations" -CreateIndexes
 
 # Créer plusieurs objets GeoLocationExtractedInfo
+
 $paris = New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 2.3522 -City "Paris" -Country "France" -LocationType "GPS"
 $newYork = New-GeoLocationExtractedInfo -Latitude 40.7128 -Longitude -74.0060 -City "New York" -Country "USA" -LocationType "GPS"
 $tokyo = New-GeoLocationExtractedInfo -Latitude 35.6762 -Longitude 139.6503 -City "Tokyo" -Country "Japan" -LocationType "GPS"
 
 # Ajouter les objets à la collection
+
 $collection = Add-ExtractedInfoToCollection -Collection $collection -InfoList @($paris, $newYork, $tokyo)
 
 # Vérifier que les objets ont été ajoutés correctement
+
 $count = $collection.Items.Count
 Write-Host "Nombre d'éléments dans la collection : $count"
 
 # Récupérer un objet spécifique
+
 $parisFromCollection = Get-ExtractedInfoFromCollection -Collection $collection -Filter { $_.City -eq "Paris" }
 Write-Host "Objet récupéré : $($parisFromCollection.City), $($parisFromCollection.Country)"
 
 # Récupérer tous les objets d'un certain type
+
 $geoLocations = Get-ExtractedInfoFromCollection -Collection $collection -Filter { $_._Type -eq "GeoLocationExtractedInfo" }
 Write-Host "Nombre d'objets GeoLocationExtractedInfo : $($geoLocations.Count)"
 
 # Obtenir des statistiques sur la collection
+
 $stats = Get-ExtractedInfoCollectionStatistics -Collection $collection
 Write-Host "Statistiques de la collection :"
 Write-Host "- Nombre total d'éléments : $($stats.TotalItems)"
 Write-Host "- Types d'éléments : $($stats.TypeCounts | ForEach-Object { "$($_.Key): $($_.Value)" } | Join-String -Separator ', ')"
-```
-
+```plaintext
 #### 2.4.2 Tests avec les fonctions de sérialisation
 
 ```powershell
 # Créer un objet GeoLocationExtractedInfo
+
 $london = New-GeoLocationExtractedInfo -Latitude 51.5074 -Longitude -0.1278 -City "London" -Country "UK" -LocationType "GPS" -Accuracy 5
 
 # Convertir l'objet en JSON
+
 $json = ConvertTo-ExtractedInfoJson -Info $london -Indent
 Write-Host "Objet sérialisé en JSON :"
 Write-Host $json
 
 # Désérialiser le JSON en objet
+
 $deserializedLondon = ConvertFrom-ExtractedInfoJson -Json $json
 Write-Host "Objet désérialisé :"
 Write-Host "- Type : $($deserializedLondon._Type)"
@@ -967,26 +1014,29 @@ Write-Host "- Latitude : $($deserializedLondon.Latitude)"
 Write-Host "- Longitude : $($deserializedLondon.Longitude)"
 
 # Sauvegarder l'objet dans un fichier
+
 $filePath = Join-Path $env:TEMP "london_geo.json"
 $result = Save-ExtractedInfoToFile -Info $london -FilePath $filePath -Indent -Force
 Write-Host "Sauvegarde dans un fichier : $result"
 
 # Charger l'objet depuis le fichier
+
 $loadedLondon = Load-ExtractedInfoFromFile -FilePath $filePath
 Write-Host "Objet chargé depuis le fichier :"
 Write-Host "- Type : $($loadedLondon._Type)"
 Write-Host "- Ville : $($loadedLondon.City)"
 Write-Host "- Latitude : $($loadedLondon.Latitude)"
 Write-Host "- Longitude : $($loadedLondon.Longitude)"
-```
-
+```plaintext
 #### 2.4.3 Tests avec les fonctions de métadonnées
 
 ```powershell
 # Créer un objet GeoLocationExtractedInfo
+
 $berlin = New-GeoLocationExtractedInfo -Latitude 52.5200 -Longitude 13.4050 -City "Berlin" -Country "Germany" -LocationType "GPS"
 
 # Ajouter des métadonnées
+
 $berlin = Add-ExtractedInfoMetadata -Info $berlin -Metadata @{
     Population = 3645000
     TimeZone = "Europe/Berlin"
@@ -995,13 +1045,16 @@ $berlin = Add-ExtractedInfoMetadata -Info $berlin -Metadata @{
 }
 
 # Ajouter une métadonnée individuelle
+
 $berlin = Add-ExtractedInfoMetadata -Info $berlin -Key "IsCapital" -Value $true
 
 # Récupérer une métadonnée spécifique
+
 $population = Get-ExtractedInfoMetadata -Info $berlin -Key "Population"
 Write-Host "Population de Berlin : $population"
 
 # Récupérer toutes les métadonnées
+
 $metadata = Get-ExtractedInfoMetadata -Info $berlin
 Write-Host "Métadonnées de Berlin :"
 foreach ($key in $metadata.Keys) {
@@ -1009,20 +1062,22 @@ foreach ($key in $metadata.Keys) {
 }
 
 # Supprimer une métadonnée
+
 $berlin = Remove-ExtractedInfoMetadata -Info $berlin -Key "Currency"
 $hasMetadata = Get-ExtractedInfoMetadata -Info $berlin -Key "Currency" -ErrorAction SilentlyContinue
 Write-Host "La métadonnée 'Currency' existe toujours : $($null -ne $hasMetadata)"
 
 # Obtenir un résumé de l'objet
+
 $summary = Get-ExtractedInfoSummary -Info $berlin
 Write-Host "Résumé de l'objet :"
 Write-Host $summary
-```
-
+```plaintext
 #### 2.4.4 Tests de validation complets
 
 ```powershell
 # Créer plusieurs objets pour tester la validation
+
 $validObject = New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 2.3522 -City "Paris" -Country "France"
 $invalidLatitude = New-GeoLocationExtractedInfo -Latitude 100 -Longitude 2.3522 -City "Paris" -Country "France"
 $invalidLongitude = New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 200 -City "Paris" -Country "France"
@@ -1056,6 +1111,7 @@ $invalidLocationType = @{
 }
 
 # Fonction pour tester et afficher les résultats de validation
+
 function Test-AndReport {
     param (
         $Info,
@@ -1078,13 +1134,13 @@ function Test-AndReport {
 }
 
 # Exécuter les tests
+
 Test-AndReport -Info $validObject -Description "l'objet valide"
 Test-AndReport -Info $invalidLatitude -Description "l'objet avec latitude invalide"
 Test-AndReport -Info $invalidLongitude -Description "l'objet avec longitude invalide"
 Test-AndReport -Info $negativeAccuracy -Description "l'objet avec précision négative"
 Test-AndReport -Info $invalidLocationType -Description "l'objet avec type de localisation invalide"
-```
-
+```plaintext
 #### 2.4.5 Résultats des tests
 
 Les tests d'intégration montrent que le nouveau type `GeoLocationExtractedInfo` s'intègre correctement avec les fonctions existantes du module :
@@ -1148,30 +1204,35 @@ Toutes les fonctions de collection suivantes sont compatibles avec les nouveaux 
 
 ```powershell
 # Créer une collection
+
 $mixedCollection = New-ExtractedInfoCollection -Name "MixedCollection" -CreateIndexes
 
 # Créer des objets de différents types
+
 $textInfo = New-TextExtractedInfo -Source "document.txt" -Text "Exemple de texte"
 $geoInfo = New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 2.3522 -City "Paris"
 $mediaInfo = New-MediaExtractedInfo -Source "image.jpg" -MediaPath "C:\Images\photo.jpg" -MediaType "Image"
 
 # Ajouter tous les objets à la collection
+
 $mixedCollection = Add-ExtractedInfoToCollection -Collection $mixedCollection -InfoList @($textInfo, $geoInfo, $mediaInfo)
 
 # Vérifier le contenu de la collection
+
 $stats = Get-ExtractedInfoCollectionStatistics -Collection $mixedCollection
 Write-Host "Statistiques de la collection mixte :"
 Write-Host "- Nombre total d'éléments : $($stats.TotalItems)"
 Write-Host "- Types d'éléments : $($stats.TypeCounts | ForEach-Object { "$($_.Key): $($_.Value)" } | Join-String -Separator ', ')"
-```
-
+```plaintext
 ##### Exemple 2 : Filtrage sur des propriétés spécifiques
 
 ```powershell
 # Créer une collection de localisations
+
 $geoCollection = New-ExtractedInfoCollection -Name "GeoCollection" -CreateIndexes
 
 # Ajouter plusieurs objets GeoLocationExtractedInfo
+
 $locations = @(
     (New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 2.3522 -City "Paris" -Country "France"),
     (New-GeoLocationExtractedInfo -Latitude 40.7128 -Longitude -74.0060 -City "New York" -Country "USA"),
@@ -1181,6 +1242,7 @@ $locations = @(
 $geoCollection = Add-ExtractedInfoToCollection -Collection $geoCollection -InfoList $locations
 
 # Filtrer sur des propriétés spécifiques au type GeoLocationExtractedInfo
+
 $europeanLocations = Get-ExtractedInfoFromCollection -Collection $geoCollection -Filter {
     $_._Type -eq "GeoLocationExtractedInfo" -and
     $_.Longitude -gt -20 -and $_.Longitude -lt 40 -and
@@ -1191,23 +1253,26 @@ Write-Host "Localisations européennes :"
 foreach ($location in $europeanLocations) {
     Write-Host "- $($location.City), $($location.Country) ($($location.Latitude), $($location.Longitude))"
 }
-```
-
+```plaintext
 ##### Exemple 3 : Création d'index personnalisés
 
 ```powershell
 # Créer une collection avec des index personnalisés
+
 $indexedCollection = New-ExtractedInfoCollection -Name "IndexedGeoCollection"
 
 # Ajouter des index pour les propriétés spécifiques au type GeoLocationExtractedInfo
+
 $indexedCollection.Indexes = @{
     "City" = @{}
     "Country" = @{}
     "LocationType" = @{}
     "LatitudeRange" = @{} # Index personnalisé pour les plages de latitude
+
 }
 
 # Ajouter plusieurs objets GeoLocationExtractedInfo
+
 $moreLocations = @(
     (New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 2.3522 -City "Paris" -Country "France" -LocationType "GPS"),
     (New-GeoLocationExtractedInfo -Latitude 40.7128 -Longitude -74.0060 -City "New York" -Country "USA" -LocationType "GPS"),
@@ -1217,6 +1282,7 @@ $moreLocations = @(
 $indexedCollection = Add-ExtractedInfoToCollection -Collection $indexedCollection -InfoList $moreLocations
 
 # Créer l'index personnalisé pour les plages de latitude
+
 $indexedCollection.Indexes.LatitudeRange = @{}
 foreach ($item in $indexedCollection.Items) {
     if ($item._Type -eq "GeoLocationExtractedInfo") {
@@ -1238,13 +1304,13 @@ foreach ($item in $indexedCollection.Items) {
 }
 
 # Utiliser l'index personnalisé pour récupérer des objets
+
 $northernLocations = Get-ExtractedInfoFromCollection -Collection $indexedCollection -IndexName "LatitudeRange" -IndexValue "30-60"
 Write-Host "Localisations dans la plage de latitude 30-60 :"
 foreach ($location in $northernLocations) {
     Write-Host "- $($location.City), $($location.Country) (Latitude: $($location.Latitude))"
 }
-```
-
+```plaintext
 #### 3.1.4 Bonnes pratiques pour l'intégration avec les collections
 
 Pour assurer une intégration optimale de vos nouveaux types avec les fonctions de collection, suivez ces bonnes pratiques :
@@ -1294,9 +1360,11 @@ Toutes les fonctions de sérialisation suivantes sont compatibles avec les nouve
 
 ```powershell
 # Créer un objet GeoLocationExtractedInfo
+
 $sydney = New-GeoLocationExtractedInfo -Latitude -33.8688 -Longitude 151.2093 -City "Sydney" -Country "Australia" -LocationType "GPS" -Accuracy 10
 
 # Ajouter des métadonnées
+
 $sydney = Add-ExtractedInfoMetadata -Info $sydney -Metadata @{
     Population = 5312000
     TimeZone = "Australia/Sydney"
@@ -1304,14 +1372,17 @@ $sydney = Add-ExtractedInfoMetadata -Info $sydney -Metadata @{
 }
 
 # Convertir en JSON avec indentation
+
 $json = ConvertTo-ExtractedInfoJson -Info $sydney -Indent
 Write-Host "JSON sérialisé :"
 Write-Host $json
 
 # Désérialiser le JSON
+
 $deserializedSydney = ConvertFrom-ExtractedInfoJson -Json $json
 
 # Vérifier que l'objet a été correctement reconstitué
+
 Write-Host "Objet désérialisé :"
 Write-Host "- Type : $($deserializedSydney._Type)"
 Write-Host "- Ville : $($deserializedSydney.City)"
@@ -1320,12 +1391,12 @@ Write-Host "- Métadonnées :"
 foreach ($key in $deserializedSydney.Metadata.Keys) {
     Write-Host "  * $key : $($deserializedSydney.Metadata[$key])"
 }
-```
-
+```plaintext
 ##### Exemple 2 : Sérialisation avec exclusion de métadonnées
 
 ```powershell
 # Créer un objet avec beaucoup de métadonnées
+
 $rome = New-GeoLocationExtractedInfo -Latitude 41.9028 -Longitude 12.4964 -City "Rome" -Country "Italy"
 $rome = Add-ExtractedInfoMetadata -Info $rome -Metadata @{
     Population = 2873000
@@ -1342,10 +1413,12 @@ $rome = Add-ExtractedInfoMetadata -Info $rome -Metadata @{
 }
 
 # Sérialiser avec et sans métadonnées
+
 $jsonWithMetadata = ConvertTo-ExtractedInfoJson -Info $rome -Indent
 $jsonWithoutMetadata = ConvertTo-ExtractedInfoJson -Info $rome -Indent -ExcludeMetadata
 
 # Comparer les tailles
+
 $withSize = $jsonWithMetadata.Length
 $withoutSize = $jsonWithoutMetadata.Length
 $reduction = [Math]::Round(100 - ($withoutSize / $withSize * 100), 2)
@@ -1353,12 +1426,12 @@ $reduction = [Math]::Round(100 - ($withoutSize / $withSize * 100), 2)
 Write-Host "Taille avec métadonnées : $withSize caractères"
 Write-Host "Taille sans métadonnées : $withoutSize caractères"
 Write-Host "Réduction : $reduction%"
-```
-
+```plaintext
 ##### Exemple 3 : Sauvegarde et chargement depuis un fichier
 
 ```powershell
 # Créer plusieurs objets GeoLocationExtractedInfo
+
 $capitals = @(
     (New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 2.3522 -City "Paris" -Country "France" -LocationType "GPS"),
     (New-GeoLocationExtractedInfo -Latitude 51.5074 -Longitude -0.1278 -City "London" -Country "UK" -LocationType "GPS"),
@@ -1367,18 +1440,22 @@ $capitals = @(
 )
 
 # Créer une collection
+
 $capitalsCollection = New-ExtractedInfoCollection -Name "EuropeanCapitals" -CreateIndexes
 $capitalsCollection = Add-ExtractedInfoToCollection -Collection $capitalsCollection -InfoList $capitals
 
 # Sauvegarder la collection dans un fichier
+
 $filePath = Join-Path $env:TEMP "european_capitals.json"
 $result = Save-ExtractedInfoToFile -Collection $capitalsCollection -FilePath $filePath -Indent -Force
 Write-Host "Sauvegarde de la collection : $result"
 
 # Charger la collection depuis le fichier
+
 $loadedCollection = Load-ExtractedInfoFromFile -FilePath $filePath
 
 # Vérifier que la collection a été correctement chargée
+
 Write-Host "Collection chargée :"
 Write-Host "- Nom : $($loadedCollection.Name)"
 Write-Host "- Nombre d'éléments : $($loadedCollection.Items.Count)"
@@ -1386,8 +1463,7 @@ Write-Host "- Villes :"
 foreach ($item in $loadedCollection.Items) {
     Write-Host "  * $($item.City), $($item.Country)"
 }
-```
-
+```plaintext
 #### 3.2.4 Considérations spéciales pour les types personnalisés
 
 Lors de la création de nouveaux types d'informations extraites, certaines considérations spéciales doivent être prises en compte pour assurer une sérialisation et une désérialisation correctes :
@@ -1454,13 +1530,16 @@ Toutes les fonctions de validation suivantes sont compatibles avec les nouveaux 
 
 ```powershell
 # Créer un objet GeoLocationExtractedInfo valide
+
 $validLocation = New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 2.3522 -City "Paris" -Country "France"
 
 # Valider l'objet
+
 $isValid = Test-ExtractedInfo -Info $validLocation
 Write-Host "L'objet est valide : $isValid"
 
 # Créer un objet GeoLocationExtractedInfo invalide
+
 $invalidLocation = @{
     _Type = "GeoLocationExtractedInfo"
     Id = [guid]::NewGuid().ToString()
@@ -1472,32 +1551,36 @@ $invalidLocation = @{
     ConfidenceScore = 50
     Metadata = @{}
     Latitude = 100 # Invalide : doit être entre -90 et 90
+
     Longitude = 2.3522
 }
 
 # Obtenir les erreurs de validation
+
 $errors = Get-ExtractedInfoValidationErrors -Info $invalidLocation
 Write-Host "Erreurs de validation :"
 foreach ($error in $errors) {
     Write-Host "- $error"
 }
-```
-
+```plaintext
 ##### Exemple 2 : Ajout d'une règle de validation personnalisée
 
 ```powershell
 # Définir une règle de validation personnalisée pour les objets GeoLocationExtractedInfo
+
 $customRule = {
     param($Info)
 
     $errors = @()
 
     # Ne s'applique qu'aux objets GeoLocationExtractedInfo
+
     if ($Info._Type -ne "GeoLocationExtractedInfo") {
         return $errors
     }
 
     # Règle : Les coordonnées de l'Antarctique doivent avoir une précision élevée
+
     if ($Info.Latitude -lt -60) {
         if (-not $Info.ContainsKey('Accuracy') -or $Info.Accuracy -gt 10) {
             $errors += "Les coordonnées en Antarctique doivent avoir une précision d'au moins 10 mètres"
@@ -1505,6 +1588,7 @@ $customRule = {
     }
 
     # Règle : Les villes doivent avoir un pays spécifié
+
     if ($Info.ContainsKey('City') -and $Info.City -and (-not $Info.ContainsKey('Country') -or -not $Info.Country)) {
         $errors += "Le pays doit être spécifié pour la ville '$($Info.City)'"
     }
@@ -1513,6 +1597,7 @@ $customRule = {
 }
 
 # Valider un objet avec la règle personnalisée
+
 $antarctica = New-GeoLocationExtractedInfo -Latitude -75.2509 -Longitude -0.0713 -City "Research Station" -Accuracy 20
 $validationResult = Test-ExtractedInfo -Info $antarctica -CustomValidationRule $customRule -Detailed
 
@@ -1524,23 +1609,25 @@ if (-not $validationResult.IsValid) {
         Write-Host "  * $error"
     }
 }
-```
-
+```plaintext
 ##### Exemple 3 : Enregistrement d'une règle de validation globale
 
 ```powershell
 # Définir une règle de validation globale pour les objets GeoLocationExtractedInfo
+
 $globalRule = {
     param($Info)
 
     $errors = @()
 
     # Ne s'applique qu'aux objets GeoLocationExtractedInfo
+
     if ($Info._Type -ne "GeoLocationExtractedInfo") {
         return $errors
     }
 
     # Règle : Les coordonnées doivent avoir une précision cohérente avec le type de localisation
+
     if ($Info.ContainsKey('LocationType') -and $Info.ContainsKey('Accuracy')) {
         switch ($Info.LocationType) {
             "GPS" {
@@ -1565,19 +1652,23 @@ $globalRule = {
 }
 
 # Enregistrer la règle globale
+
 Add-ExtractedInfoValidationRule -Name "GeoLocationAccuracyRule" -Rule $globalRule -TargetType "GeoLocationExtractedInfo" -Description "Règles de précision pour les types de localisation"
 
 # Tester la règle globale avec différents objets
+
 $gpsLocation = New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 2.3522 -LocationType "GPS" -Accuracy 50
 $cellLocation = New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 2.3522 -LocationType "Cell" -Accuracy 50
 $wifiLocation = New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 2.3522 -LocationType "WiFi" -Accuracy 50
 
 # Valider les objets
+
 $gpsValid = Test-ExtractedInfo -Info $gpsLocation -Detailed
 $cellValid = Test-ExtractedInfo -Info $cellLocation -Detailed
 $wifiValid = Test-ExtractedInfo -Info $wifiLocation -Detailed
 
 # Afficher les résultats
+
 Write-Host "Validation GPS : $($gpsValid.IsValid)"
 if (-not $gpsValid.IsValid) {
     foreach ($error in $gpsValid.Errors) {
@@ -1600,9 +1691,9 @@ if (-not $wifiValid.IsValid) {
 }
 
 # Supprimer la règle globale
-Remove-ExtractedInfoValidationRule -Name "GeoLocationAccuracyRule"
-```
 
+Remove-ExtractedInfoValidationRule -Name "GeoLocationAccuracyRule"
+```plaintext
 #### 3.3.4 Création de règles de validation pour les types personnalisés
 
 Lors de la création d'un nouveau type d'information extraite, il est recommandé de créer une fonction dédiée pour ajouter les règles de validation spécifiques à ce type. Cette fonction peut être appelée lors de l'initialisation du module ou lorsque le type est utilisé pour la première fois.
@@ -1610,6 +1701,7 @@ Lors de la création d'un nouveau type d'information extraite, il est recommand�
 ```powershell
 function Add-GeoLocationValidationRules {
     <#
+
     .SYNOPSIS
     Ajoute les règles de validation pour les objets GeoLocationExtractedInfo.
 
@@ -1622,17 +1714,20 @@ function Add-GeoLocationValidationRules {
     #>
 
     # Règle de validation principale
+
     $geoLocationRule = {
         param($Info)
 
         $errors = @()
 
         # Ne s'applique qu'aux objets GeoLocationExtractedInfo
+
         if ($Info._Type -ne "GeoLocationExtractedInfo") {
             return $errors
         }
 
         # Vérifier les propriétés obligatoires
+
         if (-not $Info.ContainsKey('Latitude')) {
             $errors += "Missing required property: Latitude"
         }
@@ -1648,6 +1743,7 @@ function Add-GeoLocationValidationRules {
         }
 
         # Vérifier les propriétés optionnelles
+
         if ($Info.ContainsKey('Altitude') -and $null -ne $Info.Altitude -and -not ($Info.Altitude -is [double] -or $Info.Altitude -is [int])) {
             $errors += "Altitude must be a number (current type: $($Info.Altitude.GetType().Name))"
         }
@@ -1669,6 +1765,7 @@ function Add-GeoLocationValidationRules {
         }
 
         # Vérifier la cohérence des données
+
         if ($Info.ContainsKey('City') -and $Info.City -and $Info.ContainsKey('Country') -and -not $Info.Country) {
             $errors += "Country should be specified when City is provided"
         }
@@ -1677,19 +1774,23 @@ function Add-GeoLocationValidationRules {
     }
 
     # Règle de validation pour les relations spatiales
+
     $spatialRelationRule = {
         param($Info)
 
         $errors = @()
 
         # Ne s'applique qu'aux objets GeoLocationExtractedInfo
+
         if ($Info._Type -ne "GeoLocationExtractedInfo") {
             return $errors
         }
 
         # Vérifier la cohérence entre les coordonnées et le pays (exemples simplifiés)
+
         if ($Info.ContainsKey('Country') -and $Info.Country -eq "France" -and $Info.ContainsKey('Latitude') -and $Info.ContainsKey('Longitude')) {
             # Vérification simplifiée pour la France métropolitaine
+
             if ($Info.Latitude -lt 41 -or $Info.Latitude -gt 52 -or $Info.Longitude -lt -5 -or $Info.Longitude -gt 10) {
                 $errors += "Les coordonnées ($($Info.Latitude), $($Info.Longitude)) ne semblent pas correspondre à la France métropolitaine"
             }
@@ -1699,11 +1800,11 @@ function Add-GeoLocationValidationRules {
     }
 
     # Enregistrer les règles
+
     Add-ExtractedInfoValidationRule -Name "GeoLocationMainRule" -Rule $geoLocationRule -TargetType "GeoLocationExtractedInfo" -Description "Règles principales pour les objets GeoLocationExtractedInfo" -Force
     Add-ExtractedInfoValidationRule -Name "GeoLocationSpatialRule" -Rule $spatialRelationRule -TargetType "GeoLocationExtractedInfo" -Description "Règles de cohérence spatiale pour les objets GeoLocationExtractedInfo" -Force
 }
-```
-
+```plaintext
 #### 3.3.5 Bonnes pratiques pour l'intégration avec la validation
 
 Pour assurer une intégration optimale de vos nouveaux types avec les fonctions de validation, suivez ces bonnes pratiques :
@@ -1781,6 +1882,7 @@ Lorsque vous mettez à jour vos types personnalisés, vous devez prévoir des m�
 ```powershell
 function Update-GeoLocationExtractedInfoSchema {
     <#
+
     .SYNOPSIS
     Met à jour un objet GeoLocationExtractedInfo d'une version antérieure vers la version actuelle.
 
@@ -1794,38 +1896,47 @@ function Update-GeoLocationExtractedInfoSchema {
     .EXAMPLE
     $updatedInfo = Update-GeoLocationExtractedInfoSchema -Info $oldInfo
     #>
+
     param (
         [Parameter(Mandatory = $true)]
         [hashtable]$Info
     )
 
     # Vérifier que c'est bien un objet GeoLocationExtractedInfo
+
     if ($Info._Type -ne "GeoLocationExtractedInfo") {
         throw "L'objet fourni n'est pas un GeoLocationExtractedInfo"
     }
 
     # Créer une copie de l'objet pour ne pas modifier l'original
+
     $updatedInfo = $Info.Clone()
 
     # Ajouter la propriété SchemaVersion si elle n'existe pas
+
     if (-not $updatedInfo.ContainsKey('SchemaVersion')) {
         $updatedInfo.SchemaVersion = 1
     }
 
     # Mettre à jour de la version 1 à la version 2
+
     if ($updatedInfo.SchemaVersion -eq 1) {
         # Ajouter les nouvelles propriétés de la version 2
+
         if (-not $updatedInfo.ContainsKey('LocationType')) {
             $updatedInfo.LocationType = "Unknown"
         }
 
         # Mettre à jour la version
+
         $updatedInfo.SchemaVersion = 2
     }
 
     # Mettre à jour de la version 2 à la version 3
+
     if ($updatedInfo.SchemaVersion -eq 2) {
         # Renommer la propriété Accuracy en HorizontalAccuracy
+
         if ($updatedInfo.ContainsKey('Accuracy')) {
             $updatedInfo.HorizontalAccuracy = $updatedInfo.Accuracy
             $updatedInfo.Remove('Accuracy')
@@ -1835,23 +1946,25 @@ function Update-GeoLocationExtractedInfoSchema {
         }
 
         # Ajouter la nouvelle propriété VerticalAccuracy
+
         if (-not $updatedInfo.ContainsKey('VerticalAccuracy')) {
             $updatedInfo.VerticalAccuracy = 0
         }
 
         # Mettre à jour la version
+
         $updatedInfo.SchemaVersion = 3
     }
 
     return $updatedInfo
 }
-```
-
+```plaintext
 2. **Détection automatique de version** : Implémentez des mécanismes pour détecter automatiquement la version d'un objet et le mettre à jour si nécessaire.
 
 ```powershell
 function Get-GeoLocationExtractedInfo {
     <#
+
     .SYNOPSIS
     Récupère un objet GeoLocationExtractedInfo et le met à jour si nécessaire.
 
@@ -1865,20 +1978,24 @@ function Get-GeoLocationExtractedInfo {
     .EXAMPLE
     $info = Get-GeoLocationExtractedInfo -FilePath "location.json"
     #>
+
     param (
         [Parameter(Mandatory = $true)]
         [string]$FilePath
     )
 
     # Charger l'objet depuis le fichier
+
     $info = Load-ExtractedInfoFromFile -FilePath $FilePath
 
     # Vérifier que c'est bien un objet GeoLocationExtractedInfo
+
     if ($info._Type -ne "GeoLocationExtractedInfo") {
         throw "Le fichier ne contient pas un objet GeoLocationExtractedInfo"
     }
 
     # Vérifier la version et mettre à jour si nécessaire
+
     $currentSchemaVersion = 3 # Version actuelle du schéma
 
     if (-not $info.ContainsKey('SchemaVersion') -or $info.SchemaVersion -lt $currentSchemaVersion) {
@@ -1888,8 +2005,7 @@ function Get-GeoLocationExtractedInfo {
 
     return $info
 }
-```
-
+```plaintext
 3. **Documentation des migrations** : Documentez clairement les changements entre les versions et les étapes nécessaires pour migrer les données.
 
 4. **Tests de migration** : Testez soigneusement les migrations pour vous assurer que les données sont correctement préservées.

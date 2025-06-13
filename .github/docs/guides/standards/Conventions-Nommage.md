@@ -7,16 +7,19 @@ Ce document définit les conventions de nommage standardisées pour le projet EM
 ## Principes généraux
 
 ### Lisibilité et clarté
+
 - Utiliser des noms descriptifs qui expliquent clairement le but de l'élément
 - Éviter les abréviations sauf si elles sont très courantes et claires
 - Préférer la clarté à la concision
 
 ### Cohérence
+
 - Utiliser les mêmes termes pour les mêmes concepts dans tout le projet
 - Suivre les conventions spécifiques à chaque langage
 - Maintenir la cohérence entre les différents modules et composants
 
 ### Spécificité
+
 - Éviter les noms génériques comme `data`, `temp`, `obj`, etc.
 - Utiliser des noms spécifiques qui décrivent précisément le contenu ou le but
 - Inclure des informations sur le type ou la nature de l'élément quand c'est pertinent
@@ -26,6 +29,7 @@ Ce document définit les conventions de nommage standardisées pour le projet EM
 ### Fonctions et cmdlets
 
 #### Verbes approuvés
+
 Toutes les fonctions doivent commencer par un verbe approuvé par PowerShell. Voici les principaux verbes à utiliser :
 
 | Verbe | Utilisation | Exemple |
@@ -49,15 +53,16 @@ Toutes les fonctions doivent commencer par un verbe approuvé par PowerShell. Vo
 Pour la liste complète des verbes approuvés, utiliser la commande `Get-Verb` dans PowerShell.
 
 #### Format des noms de fonctions
+
 Les noms de fonctions doivent suivre le format `Verbe-Nom` en utilisant le PascalCase :
 
 ```powershell
 function Get-EmailTemplate { ... }
 function Send-NotificationEmail { ... }
 function Test-SmtpConnection { ... }
-```
-
+```plaintext
 #### Paramètres
+
 Les paramètres doivent utiliser le PascalCase et être descriptifs :
 
 ```powershell
@@ -79,12 +84,13 @@ function Send-Email {
         [switch]$IsHtml
     )
     # ...
-}
-```
 
+}
+```plaintext
 ### Variables
 
 #### Variables globales et de script
+
 - Utiliser le PascalCase pour les variables globales et de script
 - Préfixer les variables de script avec `$script:`
 - Préfixer les variables globales avec `$global:`
@@ -92,9 +98,9 @@ function Send-Email {
 ```powershell
 $script:ConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "config.json"
 $global:EmailSenderVersion = "1.0.0"
-```
-
+```plaintext
 #### Variables locales
+
 - Utiliser le camelCase pour les variables locales
 - Utiliser des noms descriptifs qui indiquent le contenu ou le but
 
@@ -102,9 +108,9 @@ $global:EmailSenderVersion = "1.0.0"
 $emailTemplate = Get-EmailTemplate -Name "Welcome"
 $recipientList = Import-Csv -Path $RecipientPath
 $isValidEmail = Test-EmailAddress -Email $email
-```
-
+```plaintext
 #### Constantes
+
 - Utiliser MAJUSCULES_AVEC_UNDERSCORES pour les constantes
 - Préfixer les constantes de script avec `$script:`
 
@@ -112,9 +118,9 @@ $isValidEmail = Test-EmailAddress -Email $email
 $script:DEFAULT_SENDER = "noreply@example.com"
 $script:MAX_RETRY_COUNT = 3
 $script:EMAIL_TYPES = @("Notification", "Newsletter", "Transactional")
-```
-
+```plaintext
 #### Variables spéciales
+
 Utiliser des préfixes spécifiques pour certains types de variables :
 
 | Préfixe | Type | Exemple |
@@ -124,6 +130,7 @@ Utiliser des préfixes spécifiques pour certains types de variables :
 | `_` | Variables privées dans une fonction | `$_config`, `$_state` |
 
 #### Collections
+
 - Utiliser des noms au pluriel pour les collections
 - Utiliser des noms au singulier pour les éléments d'itération
 
@@ -132,11 +139,11 @@ $emails = Get-PendingEmails
 foreach ($email in $emails) {
     Send-Email -Email $email
 }
-```
-
+```plaintext
 ## Conventions pour Python
 
 ### Fonctions et méthodes
+
 - Utiliser snake_case pour les noms de fonctions et méthodes
 - Commencer par un verbe qui décrit l'action
 
@@ -149,9 +156,10 @@ def get_email_status(email_id):
 
 def validate_email_address(email):
     # ...
-```
 
+```plaintext
 ### Classes
+
 - Utiliser PascalCase pour les noms de classes
 - Utiliser des noms descriptifs qui représentent ce que la classe modélise
 
@@ -164,9 +172,10 @@ class EmailTemplate:
 
 class SmtpConnection:
     # ...
-```
 
+```plaintext
 ### Variables et attributs
+
 - Utiliser snake_case pour les variables et attributs
 - Utiliser des noms descriptifs
 
@@ -174,20 +183,20 @@ class SmtpConnection:
 recipient_email = "user@example.com"
 email_subject = "Welcome to our service"
 is_valid_email = validate_email_address(recipient_email)
-```
-
+```plaintext
 ### Constantes
+
 - Utiliser MAJUSCULES_AVEC_UNDERSCORES pour les constantes
 
 ```python
 DEFAULT_SENDER = "noreply@example.com"
 MAX_RETRY_COUNT = 3
 EMAIL_TYPES = ["Notification", "Newsletter", "Transactional"]
-```
-
+```plaintext
 ## Conventions pour JavaScript/TypeScript
 
 ### Fonctions et méthodes
+
 - Utiliser camelCase pour les noms de fonctions et méthodes
 - Commencer par un verbe qui décrit l'action
 
@@ -203,9 +212,9 @@ function getEmailStatus(emailId) {
 function validateEmailAddress(email) {
     // ...
 }
-```
-
+```plaintext
 ### Classes et composants React
+
 - Utiliser PascalCase pour les noms de classes et composants React
 - Utiliser des noms descriptifs
 
@@ -221,9 +230,9 @@ function EmailTemplate(props) {
 const EmailList = () => {
     // ...
 };
-```
-
+```plaintext
 ### Variables
+
 - Utiliser camelCase pour les variables
 - Utiliser des noms descriptifs
 
@@ -231,9 +240,9 @@ const EmailList = () => {
 const recipientEmail = "user@example.com";
 const emailSubject = "Welcome to our service";
 const isValidEmail = validateEmailAddress(recipientEmail);
-```
-
+```plaintext
 ### Constantes
+
 - Utiliser MAJUSCULES_AVEC_UNDERSCORES pour les constantes globales
 - Utiliser camelCase pour les constantes locales
 
@@ -241,52 +250,51 @@ const isValidEmail = validateEmailAddress(recipientEmail);
 const DEFAULT_SENDER = "noreply@example.com";
 const MAX_RETRY_COUNT = 3;
 const EMAIL_TYPES = ["Notification", "Newsletter", "Transactional"];
-```
-
+```plaintext
 ## Conventions pour les fichiers et dossiers
 
 ### Fichiers PowerShell
+
 - Utiliser PascalCase pour les noms de fichiers de module (`.psm1`, `.psd1`)
 - Utiliser le format `Verbe-Nom` pour les noms de fichiers de script (`.ps1`), identique au nom de la fonction principale qu'ils contiennent
 - Utiliser l'extension `.ps1` pour les scripts, `.psm1` pour les modules et `.psd1` pour les manifestes
 
-```
+```plaintext
 EmailSender.psm1
 Send-BulkEmail.ps1
 EmailSender.psd1
-```
-
+```plaintext
 ### Fichiers Python
+
 - Utiliser snake_case pour les noms de fichiers
 - Utiliser l'extension `.py`
 
-```
+```plaintext
 email_sender.py
 smtp_connection.py
 email_template.py
-```
-
+```plaintext
 ### Fichiers JavaScript/TypeScript
+
 - Utiliser kebab-case pour les noms de fichiers
 - Utiliser l'extension `.js` pour JavaScript et `.ts` pour TypeScript
 - Utiliser l'extension `.jsx` pour les composants React en JavaScript et `.tsx` pour les composants React en TypeScript
 
-```
+```plaintext
 email-sender.js
 email-template.tsx
 smtp-connection.ts
-```
-
+```plaintext
 ### Dossiers
+
 - Utiliser kebab-case pour les noms de dossiers
 - Utiliser des noms descriptifs qui indiquent le contenu ou le but
 
-```
+```plaintext
 email-templates/
 smtp-connections/
 email-logs/
-```
-
+```plaintext
 ## Exemples pratiques
 
 ### Exemple PowerShell
@@ -332,8 +340,7 @@ function Send-NotificationEmail {
 
     Send-MailMessage @emailParams -SmtpServer $smtpConfig.Server -Port $smtpConfig.Port
 }
-```
-
+```plaintext
 ### Exemple Python
 
 ```python
@@ -357,21 +364,24 @@ class EmailSender:
 
     def _validate_email_address(self, email):
         # Validation logic
+
         return True
 
     def _create_email_message(self, recipient, subject, body, is_html):
         # Create email message
+
         return {}
 
     def _add_attachment(self, email_message, attachment_path):
         # Add attachment
+
         pass
 
     def _send_email(self, email_message):
         # Send email
-        return True
-```
 
+        return True
+```plaintext
 ### Exemple JavaScript
 
 ```javascript
@@ -417,4 +427,4 @@ class EmailSender {
         return true;
     }
 }
-```
+```plaintext

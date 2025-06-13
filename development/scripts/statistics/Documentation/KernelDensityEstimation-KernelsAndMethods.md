@@ -10,10 +10,9 @@ A kernel function is a symmetric function that integrates to one. It is used to 
 
 The Gaussian kernel is the standard normal probability density function.
 
-```
+```plaintext
 K(x) = (1/√(2π)) * exp(-x²/2)
-```
-
+```plaintext
 **Characteristics:**
 - Smooth and infinitely differentiable
 - Has infinite support (non-zero everywhere)
@@ -23,16 +22,14 @@ K(x) = (1/√(2π)) * exp(-x²/2)
 **Usage:**
 ```powershell
 Get-KernelDensityEstimateBasic -Data $data -KernelType Gaussian
-```
-
+```plaintext
 ### 1.2 Epanechnikov Kernel
 
 The Epanechnikov kernel is optimal in terms of minimizing the mean integrated squared error.
 
-```
+```plaintext
 K(x) = (3/4) * (1 - x²) for |x| ≤ 1, 0 otherwise
-```
-
+```plaintext
 **Characteristics:**
 - Has finite support (zero outside [-1, 1])
 - Optimal in terms of efficiency
@@ -42,16 +39,14 @@ K(x) = (3/4) * (1 - x²) for |x| ≤ 1, 0 otherwise
 **Usage:**
 ```powershell
 Get-KernelDensityEstimate -Data $data -KernelType Epanechnikov
-```
-
+```plaintext
 ### 1.3 Triangular Kernel
 
 The triangular kernel is a simple kernel with a triangular shape.
 
-```
+```plaintext
 K(x) = (1 - |x|) for |x| ≤ 1, 0 otherwise
-```
-
+```plaintext
 **Characteristics:**
 - Has finite support (zero outside [-1, 1])
 - Simple to compute
@@ -61,16 +56,14 @@ K(x) = (1 - |x|) for |x| ≤ 1, 0 otherwise
 **Usage:**
 ```powershell
 Get-KernelDensityEstimate -Data $data -KernelType Triangular
-```
-
+```plaintext
 ### 1.4 Uniform Kernel (Rectangular)
 
 The uniform kernel gives equal weight to all points within a fixed distance.
 
-```
+```plaintext
 K(x) = 0.5 for |x| ≤ 1, 0 otherwise
-```
-
+```plaintext
 **Characteristics:**
 - Has finite support (zero outside [-1, 1])
 - Simplest kernel
@@ -80,16 +73,14 @@ K(x) = 0.5 for |x| ≤ 1, 0 otherwise
 **Usage:**
 ```powershell
 Get-KernelDensityEstimate -Data $data -KernelType Uniform
-```
-
+```plaintext
 ### 1.5 Biweight Kernel (Quartic)
 
 The biweight kernel is a higher-order kernel that provides a smoother estimate than the Epanechnikov kernel.
 
-```
+```plaintext
 K(x) = (15/16) * (1 - x²)² for |x| ≤ 1, 0 otherwise
-```
-
+```plaintext
 **Characteristics:**
 - Has finite support (zero outside [-1, 1])
 - Smoother than Epanechnikov
@@ -99,16 +90,14 @@ K(x) = (15/16) * (1 - x²)² for |x| ≤ 1, 0 otherwise
 **Usage:**
 ```powershell
 Get-KernelDensityEstimate -Data $data -KernelType Biweight
-```
-
+```plaintext
 ### 1.6 Triweight Kernel
 
 The triweight kernel is a higher-order kernel that provides an even smoother estimate than the biweight kernel.
 
-```
+```plaintext
 K(x) = (35/32) * (1 - x²)³ for |x| ≤ 1, 0 otherwise
-```
-
+```plaintext
 **Characteristics:**
 - Has finite support (zero outside [-1, 1])
 - Very smooth
@@ -118,16 +107,14 @@ K(x) = (35/32) * (1 - x²)³ for |x| ≤ 1, 0 otherwise
 **Usage:**
 ```powershell
 Get-KernelDensityEstimate -Data $data -KernelType Triweight
-```
-
+```plaintext
 ### 1.7 Cosine Kernel
 
 The cosine kernel uses a cosine function to weight the data points.
 
-```
+```plaintext
 K(x) = (π/4) * cos(πx/2) for |x| ≤ 1, 0 otherwise
-```
-
+```plaintext
 **Characteristics:**
 - Has finite support (zero outside [-1, 1])
 - Smooth and differentiable
@@ -137,8 +124,7 @@ K(x) = (π/4) * cos(πx/2) for |x| ≤ 1, 0 otherwise
 **Usage:**
 ```powershell
 Get-KernelDensityEstimate -Data $data -KernelType Cosine
-```
-
+```plaintext
 ### 1.8 Optimal Kernel Selection
 
 The optimal kernel depends on the characteristics of the data and the specific application. In practice, the choice of kernel often has less impact on the quality of the density estimate than the choice of bandwidth.
@@ -147,8 +133,7 @@ The `OptimalKernel` option automatically selects the most appropriate kernel bas
 
 ```powershell
 Get-KernelDensityEstimate -Data $data -KernelType OptimalKernel
-```
-
+```plaintext
 ## 2. Bandwidth Selection Methods
 
 The bandwidth is a smoothing parameter that controls the width of the kernel function. It determines the trade-off between bias and variance in the density estimate. A larger bandwidth results in a smoother estimate but may obscure important features of the data, while a smaller bandwidth can reveal more detail but may introduce noise.
@@ -157,10 +142,9 @@ The bandwidth is a smoothing parameter that controls the width of the kernel fun
 
 Silverman's rule of thumb is a simple and widely used method for bandwidth selection. It assumes that the underlying density is Gaussian.
 
-```
+```plaintext
 h = 0.9 * min(σ, IQR/1.34) * n^(-1/5)
-```
-
+```plaintext
 where:
 - σ is the standard deviation of the data
 - IQR is the interquartile range
@@ -175,16 +159,14 @@ where:
 **Usage:**
 ```powershell
 Get-KernelDensityEstimate -Data $data -Method Silverman
-```
-
+```plaintext
 ### 2.2 Scott's Rule
 
 Scott's rule is similar to Silverman's rule but uses a different constant.
 
-```
+```plaintext
 h = 1.06 * σ * n^(-1/5)
-```
-
+```plaintext
 **Characteristics:**
 - Simple and fast
 - Works well for unimodal, roughly symmetric distributions
@@ -194,8 +176,7 @@ h = 1.06 * σ * n^(-1/5)
 **Usage:**
 ```powershell
 Get-KernelDensityEstimate -Data $data -Method Scott
-```
-
+```plaintext
 ### 2.3 Leave-One-Out Cross-Validation
 
 Leave-one-out cross-validation selects the bandwidth that minimizes the integrated squared error between the density estimate and the true density.
@@ -209,8 +190,7 @@ Leave-one-out cross-validation selects the bandwidth that minimizes the integrat
 **Usage:**
 ```powershell
 Get-KernelDensityEstimate -Data $data -Method LeaveOneOut
-```
-
+```plaintext
 ### 2.4 K-Fold Cross-Validation
 
 K-fold cross-validation divides the data into K subsets and uses each subset as a validation set.
@@ -224,8 +204,7 @@ K-fold cross-validation divides the data into K subsets and uses each subset as 
 **Usage:**
 ```powershell
 Get-KernelDensityEstimate -Data $data -Method KFold -KFolds 5
-```
-
+```plaintext
 ### 2.5 Optimized Cross-Validation
 
 Optimized cross-validation uses numerical optimization to find the bandwidth that minimizes a specific criterion.
@@ -239,16 +218,14 @@ Optimized cross-validation uses numerical optimization to find the bandwidth tha
 **Usage:**
 ```powershell
 Get-KernelDensityEstimate -Data $data -Method Optimized -Objective Accuracy
-```
-
+```plaintext
 ### 2.6 Automatic Selection
 
 The `Auto` method automatically selects the most appropriate bandwidth selection method based on the data characteristics.
 
 ```powershell
 Get-KernelDensityEstimate -Data $data -Method Auto
-```
-
+```plaintext
 ## 3. Objectives for Bandwidth Selection
 
 When using optimized cross-validation or the automatic selection method, you can specify an objective to prioritize.
@@ -259,40 +236,35 @@ Prioritizes the accuracy of the density estimate, even at the cost of computatio
 
 ```powershell
 Get-KernelDensityEstimate -Data $data -Method Optimized -Objective Accuracy
-```
-
+```plaintext
 ### 3.2 Speed
 
 Prioritizes computational speed, even at the cost of some accuracy.
 
 ```powershell
 Get-KernelDensityEstimate -Data $data -Method Optimized -Objective Speed
-```
-
+```plaintext
 ### 3.3 Robustness
 
 Prioritizes robustness to outliers and unusual data patterns.
 
 ```powershell
 Get-KernelDensityEstimate -Data $data -Method Optimized -Objective Robustness
-```
-
+```plaintext
 ### 3.4 Adaptability
 
 Prioritizes adaptability to different types of distributions.
 
 ```powershell
 Get-KernelDensityEstimate -Data $data -Method Optimized -Objective Adaptability
-```
-
+```plaintext
 ### 3.5 Balanced
 
 Balances all objectives for a good overall performance.
 
 ```powershell
 Get-KernelDensityEstimate -Data $data -Method Optimized -Objective Balanced
-```
-
+```plaintext
 ## 4. Recommendations
 
 ### 4.1 For Exploratory Analysis

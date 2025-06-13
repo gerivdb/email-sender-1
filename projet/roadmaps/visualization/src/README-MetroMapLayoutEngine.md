@@ -29,8 +29,7 @@ Aucune installation n'est nécessaire, il suffit d'importer le module dans votre
 
 ```javascript
 import MetroMapLayoutEngine from './MetroMapLayoutEngine.js';
-```
-
+```plaintext
 ### Utilisation basique
 
 ```javascript
@@ -48,8 +47,7 @@ const layoutResult = layoutEngine.applyLayout(graph);
 layoutResult.nodes.forEach(node => {
   console.log(`Node ${node.id} at position (${node.position.x}, ${node.position.y})`);
 });
-```
-
+```plaintext
 ### Format du graphe d'entrée
 
 Le graphe d'entrée doit avoir la structure suivante :
@@ -67,12 +65,13 @@ const graph = {
   ],
   lines: [
     { id: 'L1', name: 'Ligne 1', color: '#FF6B6B' },
+
     { id: 'L2', name: 'Ligne 2', color: '#4ECDC4' },
+
     // ...
   ]
 };
-```
-
+```plaintext
 ### Options de configuration
 
 Le moteur de layout accepte les options suivantes :
@@ -113,8 +112,7 @@ const visualizer = new MetroMapVisualizerEnhanced('container-id', {
 // Initialiser et visualiser
 await visualizer.initialize();
 await visualizer.visualizeRoadmaps(['roadmap1', 'roadmap2']);
-```
-
+```plaintext
 ## Algorithmes
 
 ### Ordonnancement topologique
@@ -150,13 +148,13 @@ const graph = {
   ],
   lines: [
     { id: 'L1', name: 'Ligne 1', color: '#FF6B6B' }
+
   ]
 };
 
 const layoutEngine = new MetroMapLayoutEngine();
 const result = layoutEngine.applyLayout(graph);
-```
-
+```plaintext
 ### Exemple 2 : Layout avec multiples lignes
 
 ```javascript
@@ -174,7 +172,9 @@ const graph = {
   ],
   lines: [
     { id: 'L1', name: 'Ligne 1', color: '#FF6B6B' },
+
     { id: 'L2', name: 'Ligne 2', color: '#4ECDC4' }
+
   ]
 };
 
@@ -182,8 +182,7 @@ const layoutEngine = new MetroMapLayoutEngine({
   preferredDirection: 'vertical'
 });
 const result = layoutEngine.applyLayout(graph);
-```
-
+```plaintext
 ## Démonstration
 
 Une démonstration interactive est disponible dans le fichier `test-metro-layout.html`. Elle permet de tester différentes configurations de layout sur des graphes prédéfinis.

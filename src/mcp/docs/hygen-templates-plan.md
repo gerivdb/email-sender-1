@@ -18,6 +18,7 @@ Ce document présente le plan des templates Hygen à développer pour le dossier
 
 **Structure du script généré** :
 - Shebang : `#!/usr/bin/env pwsh`
+
 - Documentation : Synopsis, Description, Paramètres, Exemples, Notes
 - Paramètres : `Port`, `LogLevel`
 - Importation des modules nécessaires
@@ -41,6 +42,7 @@ Ce document présente le plan des templates Hygen à développer pour le dossier
 
 **Structure du script généré** :
 - Directive : `#Requires -Version 5.1`
+
 - Documentation : Synopsis, Description, Paramètres, Exemples, Notes
 - Paramètres : `ServerUrl`, `Timeout`
 - Importation des modules nécessaires
@@ -64,6 +66,7 @@ Ce document présente le plan des templates Hygen à développer pour le dossier
 
 **Structure du module généré** :
 - Directive : `#Requires -Version 5.1`
+
 - Documentation : Synopsis, Description, Notes
 - Variables globales : `$script:<name>Config`
 - Cache : `$script:<name>Cache`
@@ -88,6 +91,7 @@ Ce document présente le plan des templates Hygen à développer pour le dossier
 
 **Structure du document généré** :
 - Titre : `# <name>`
+
 - Description
 - Table des matières
 - Sections : Introduction, Prérequis, Installation, Utilisation, Exemples, Configuration, Dépannage, Références
@@ -120,18 +124,21 @@ Pour utiliser ces templates, deux options sont disponibles :
 
 ```powershell
 # Générer un script serveur
+
 .\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type server -Name "api-server" -Description "Serveur API MCP" -Author "John Doe"
 
 # Générer un script client
+
 .\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type client -Name "admin-client" -Description "Client d'administration MCP" -Author "Jane Smith"
 
 # Générer un module
+
 .\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type module -Name "MCPUtils" -Description "Utilitaires MCP" -Author "Dev Team"
 
 # Générer une documentation
-.\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type doc -Name "installation-guide" -Category "guides" -Description "Guide d'installation MCP" -Author "Doc Team"
-```
 
+.\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type doc -Name "installation-guide" -Category "guides" -Description "Guide d'installation MCP" -Author "Doc Team"
+```plaintext
 ## Prochaines étapes
 
 1. **Tests** : Tester les templates avec différents paramètres

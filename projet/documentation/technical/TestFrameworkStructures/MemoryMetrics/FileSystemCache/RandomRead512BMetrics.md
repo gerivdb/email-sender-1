@@ -32,8 +32,7 @@ Les lectures aléatoires de blocs de 512B présentent plusieurs caractéristique
     ]
   }
 }
-```
-
+```plaintext
 ### 3.2 Métriques de base
 
 ```json
@@ -57,8 +56,7 @@ Les lectures aléatoires de blocs de 512B présentent plusieurs caractéristique
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Valeur typique |
 |-------|------|-------|-------------|----------------|
 | `unit` | string | - | Unité de mesure de la latence | "microseconds" |
@@ -123,8 +121,7 @@ Les lectures aléatoires de blocs de 512B présentent plusieurs caractéristique
     "kurtosis": 12.5
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description | Particularité pour 512B |
 |-------|------|-------------|-------------------------|
 | `histogram` | array | Histogramme de distribution | Bins plus fins pour capturer la variabilité |
@@ -189,8 +186,7 @@ Les lectures aléatoires de blocs de 512B présentent plusieurs caractéristique
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Particularité pour 512B |
 |-------|------|-------|-------------|-------------------------|
 | `alignment` | object | - | Métriques liées à l'alignement | Critique pour 512B |
@@ -247,8 +243,7 @@ Les lectures aléatoires de blocs de 512B présentent plusieurs caractéristique
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Particularité pour 512B |
 |-------|------|-------|-------------|-------------------------|
 | `cacheEfficiency` | object | - | Métriques d'efficacité du cache | Généralement favorable pour 512B |
@@ -285,8 +280,7 @@ Les lectures aléatoires de blocs de 512B présentent plusieurs caractéristique
     "dataTransferRatio": 0.15
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Particularité pour 512B |
 |-------|------|-------|-------------|-------------------------|
 | `throughput` | object | - | Métriques de débit | Débit en octets faible, IOPS élevés |
@@ -324,8 +318,7 @@ Les lectures aléatoires de blocs de 512B présentent plusieurs caractéristique
     "fixedToVariableRatio": 4.0
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Particularité pour 512B |
 |-------|------|-------|-------------|-------------------------|
 | `overhead` | object | - | Métriques d'overhead | Critique pour 512B |
@@ -364,8 +357,7 @@ Les lectures aléatoires de blocs de 512B présentent plusieurs caractéristique
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Particularité pour 512B |
 |-------|------|-------|-------------|-------------------------|
 | `sizeComparison` | object | - | Comparaison avec d'autres tailles | Référence pour les autres tailles |
@@ -419,8 +411,7 @@ Les lectures aléatoires de blocs de 512B présentent plusieurs caractéristique
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description | Particularité pour 512B |
 |-------|------|-------------|-------------------------|
 | `useCases` | object | - | Métriques par cas d'utilisation | Cas d'utilisation spécifiques à 512B |
@@ -466,8 +457,7 @@ Les lectures aléatoires de blocs de 512B présentent plusieurs caractéristique
     ]
   }
 }
-```
-
+```plaintext
 ### 4.2 Exemple complet (partiel)
 
 ```json
@@ -638,8 +628,7 @@ Les lectures aléatoires de blocs de 512B présentent plusieurs caractéristique
     ]
   }
 }
-```
-
+```plaintext
 ## 5. Bonnes pratiques pour les métriques de blocs de 512B
 
 ### 5.1 Collecte des métriques

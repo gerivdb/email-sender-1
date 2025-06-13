@@ -14,12 +14,12 @@ Cette analyse détaille ces mécanismes et leur implémentation dans le Process 
 
 ```powershell
 # Vérifier que le fichier du gestionnaire existe
+
 if (-not (Test-Path -Path $Path)) {
     Write-Log -Message "Le fichier du gestionnaire n'existe pas : $Path" -Level Error
     return $false
 }
-```
-
+```plaintext
 ### Fonctionnement
 
 1. **Utilisation de Test-Path**
@@ -55,12 +55,12 @@ if (-not (Test-Path -Path $Path)) {
 
 ```powershell
 # Vérifier si le gestionnaire est déjà enregistré
+
 if ($config.Managers.$Name -and -not $Force) {
     Write-Log -Message "Le gestionnaire '$Name' est déjà enregistré. Utilisez -Force pour le remplacer." -Level Warning
     return $false
 }
-```
-
+```plaintext
 ### Fonctionnement
 
 1. **Accès à la configuration**
@@ -116,25 +116,27 @@ En plus des vérifications lors de l'enregistrement, le Process Manager effectue
 
 ```powershell
 # Vérifier que le gestionnaire est enregistré
+
 if (-not $config.Managers.$ManagerName) {
     Write-Log -Message "Le gestionnaire '$ManagerName' n'est pas enregistré." -Level Error
     return $false
 }
 
 # Vérifier que le gestionnaire est activé
+
 if (-not $config.Managers.$ManagerName.Enabled) {
     Write-Log -Message "Le gestionnaire '$ManagerName' est désactivé." -Level Warning
     return $false
 }
 
 # Vérifier que le fichier du gestionnaire existe
+
 $managerPath = $config.Managers.$ManagerName.Path
 if (-not (Test-Path -Path $managerPath)) {
     Write-Log -Message "Le fichier du gestionnaire '$ManagerName' n'existe pas : $managerPath" -Level Error
     return $false
 }
-```
-
+```plaintext
 ### Fonctionnement
 
 1. **Vérification d'enregistrement**
@@ -176,12 +178,12 @@ if (Test-Path -Path $managerScriptPath) {
     Write-Log -Message "Gestionnaire trouvé : $managerName ($managerScriptPath)" -Level Debug
     
     # Enregistrer le gestionnaire
+
     if (Register-Manager -Name $managerName -Path $managerScriptPath -Force:$Force) {
         $managersRegistered++
     }
 }
-```
-
+```plaintext
 ### Fonctionnement
 
 1. **Détection de structure**

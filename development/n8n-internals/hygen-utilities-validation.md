@@ -28,8 +28,7 @@ La méthode la plus simple pour valider les scripts d'utilitaires est d'utiliser
 
 ```batch
 .\n8n\cmd\utils\validate-utilities.cmd
-```
-
+```plaintext
 Ce script vous présentera un menu avec les options suivantes :
 
 1. Tester tous les scripts d'utilitaires
@@ -45,39 +44,46 @@ Vous pouvez également utiliser directement le script PowerShell :
 
 ```powershell
 # Tester tous les scripts d'utilitaires
+
 .\n8n\scripts\setup\validate-hygen-utilities.ps1
 
 # Tester en mode interactif
+
 .\n8n\scripts\setup\validate-hygen-utilities.ps1 -Interactive
 
 # Tester avec tests de performance
+
 .\n8n\scripts\setup\validate-hygen-utilities.ps1 -PerformanceTest
 
 # Spécifier le nombre d'itérations pour les tests de performance
+
 .\n8n\scripts\setup\validate-hygen-utilities.ps1 -PerformanceTest -Iterations 10
 
 # Conserver les fichiers générés
+
 .\n8n\scripts\setup\validate-hygen-utilities.ps1 -KeepGeneratedFiles
 
 # Spécifier un dossier de sortie personnalisé
-.\n8n\scripts\setup\validate-hygen-utilities.ps1 -OutputFolder "C:\Temp\HygenTest"
-```
 
+.\n8n\scripts\setup\validate-hygen-utilities.ps1 -OutputFolder "C:\Temp\HygenTest"
+```plaintext
 ### Tests individuels
 
 Vous pouvez également exécuter les tests individuels pour chaque script d'utilitaire :
 
 ```powershell
 # Tester le script Generate-N8nComponent.ps1
+
 .\n8n\scripts\setup\test-generate-component.ps1
 
 # Tester les scripts CMD
+
 .\n8n\scripts\setup\test-cmd-scripts.ps1
 
 # Tester les performances
-.\n8n\scripts\setup\test-performance.ps1
-```
 
+.\n8n\scripts\setup\test-performance.ps1
+```plaintext
 ## Critères de validation
 
 ### Script Generate-N8nComponent.ps1
@@ -110,18 +116,16 @@ Les tests de performance vérifient les critères suivants :
 
 Après l'exécution des tests, un rapport de validation est généré dans le fichier :
 
-```
+```plaintext
 n8n\projet/documentation\hygen-utilities-validation-report.md
-```
-
+```plaintext
 Ce rapport contient les résultats des tests pour chaque script d'utilitaire et le résultat global.
 
 Si des tests de performance ont été exécutés, un rapport de performance est également généré dans le fichier :
 
-```
+```plaintext
 n8n\projet/documentation\hygen-performance-report.md
-```
-
+```plaintext
 Ce rapport contient les résultats des tests de performance pour chaque type de composant.
 
 ## Résolution des problèmes
@@ -152,6 +156,6 @@ Une fois les scripts d'utilitaires validés, vous pouvez passer aux étapes suiv
 
 Pour plus d'informations, consultez le guide d'utilisation de Hygen :
 
-```
+```plaintext
 n8n\projet/documentation\hygen-guide.md
-```
+```plaintext

@@ -48,6 +48,7 @@ Les caractères suivants sont utilisés pour le formatage ou ont une significati
 | `?` | Caractère joker pour exactement un caractère | `title:impl?ment` |
 | `\` | Caractère d'échappement | `title:\"Interface\"` |
 | `#` | Commentaire (dans certaines implémentations) | `status:todo # Tâches à faire` |
+
 | `@` | Référence (dans certaines implémentations) | `assignee:@john` |
 
 ## Méthodes d'échappement
@@ -56,20 +57,18 @@ Les caractères suivants sont utilisés pour le formatage ou ont une significati
 
 La méthode principale pour échapper les caractères spéciaux est d'utiliser le caractère backslash (`\`) devant le caractère à échapper :
 
-```
+```plaintext
 title:Interface \(version 1\)
 description:Comment utiliser les opérateurs \> et \< ?
-```
-
+```plaintext
 ### Échappement par guillemets
 
 Une autre méthode pour échapper les caractères spéciaux est d'entourer la valeur entière de guillemets :
 
-```
+```plaintext
 title:"Interface (version 1)"
 description:"Comment utiliser les opérateurs > et < ?"
-```
-
+```plaintext
 Cette méthode est généralement plus lisible et moins sujette aux erreurs que l'utilisation du backslash.
 
 ### Séquences d'échappement spéciales
@@ -86,77 +85,71 @@ Certaines implémentations supportent des séquences d'échappement spéciales q
 | `\'` | Guillemet simple littéral |
 
 Exemple :
-```
+```plaintext
 description:"Première ligne\nDeuxième ligne"
-```
-
+```plaintext
 ## Exemples et cas d'utilisation
 
 ### Échappement des caractères d'opérateurs
 
 #### Utilisation du caractère `:` dans une valeur
 
-```
+```plaintext
 title:"Rapport: Analyse des performances"
-```
+```plaintext
 ou
-```
+```plaintext
 title:Rapport\: Analyse des performances
-```
-
+```plaintext
 #### Utilisation des caractères `>` et `<` dans une valeur
 
-```
+```plaintext
 description:"Utiliser les opérateurs > et < pour les comparaisons"
-```
+```plaintext
 ou
-```
+```plaintext
 description:Utiliser les opérateurs \> et \< pour les comparaisons
-```
-
+```plaintext
 ### Échappement des caractères de structure
 
 #### Utilisation des parenthèses dans une valeur
 
-```
+```plaintext
 title:"Module (version 1.2.3)"
-```
+```plaintext
 ou
-```
+```plaintext
 title:Module \(version 1.2.3\)
-```
-
+```plaintext
 #### Utilisation des guillemets dans une valeur
 
-```
+```plaintext
 description:"L'utilisateur doit cliquer sur \"Enregistrer\""
-```
+```plaintext
 ou
-```
+```plaintext
 description:'L\'utilisateur doit cliquer sur "Enregistrer"'
-```
-
+```plaintext
 ### Échappement des caractères de formatage
 
 #### Utilisation des caractères jokers comme caractères littéraux
 
-```
+```plaintext
 title:"Comment utiliser les caractères * et ?"
-```
+```plaintext
 ou
-```
+```plaintext
 title:Comment utiliser les caractères \* et \?
-```
-
+```plaintext
 #### Utilisation du backslash comme caractère littéral
 
-```
+```plaintext
 description:"Chemin d'accès: C:\\Program Files\\App"
-```
+```plaintext
 ou
-```
+```plaintext
 description:Chemin d'accès: C:\\\\Program Files\\\\App
-```
+```plaintext
 (notez le double échappement nécessaire)
 
 ## Erreurs courantes d'échappement
@@ -164,73 +157,64 @@ description:Chemin d'accès: C:\\\\Program Files\\\\App
 ### Oubli d'échapper les caractères spéciaux
 
 **Erreur :**
-```
+```plaintext
 title:Interface (version 1)
-```
-
+```plaintext
 Cette requête sera interprétée comme la recherche de "Interface" suivie d'une expression entre parenthèses, ce qui provoquera probablement une erreur de syntaxe.
 
 **Correction :**
-```
+```plaintext
 title:"Interface (version 1)"
-```
+```plaintext
 ou
-```
+```plaintext
 title:Interface \(version 1\)
-```
-
+```plaintext
 ### Double échappement inutile
 
 **Erreur :**
-```
+```plaintext
 title:"Interface \(version 1\)"
-```
-
+```plaintext
 À l'intérieur des guillemets, les parenthèses n'ont pas besoin d'être échappées (sauf dans certaines implémentations spécifiques).
 
 **Correction :**
-```
+```plaintext
 title:"Interface (version 1)"
-```
-
+```plaintext
 ### Échappement incomplet des guillemets
 
 **Erreur :**
-```
+```plaintext
 description:"L'utilisateur doit cliquer sur "Enregistrer""
-```
-
+```plaintext
 Les guillemets internes ne sont pas échappés, ce qui provoquera une erreur de syntaxe.
 
 **Correction :**
-```
+```plaintext
 description:"L'utilisateur doit cliquer sur \"Enregistrer\""
-```
+```plaintext
 ou
-```
+```plaintext
 description:'L\'utilisateur doit cliquer sur "Enregistrer"'
-```
-
+```plaintext
 ## Exemples de requêtes complexes avec échappement
 
 ### Recherche avec caractères spéciaux dans le titre et la description
 
-```
+```plaintext
 title:"Interface (v1.2)" AND description:"Utiliser les opérateurs > et < pour filtrer"
-```
-
+```plaintext
 ### Combinaison de conditions avec caractères spéciaux échappés
 
-```
+```plaintext
 (title:"Module [principal]" OR description:"Composant *essentiel*") AND status:todo
-```
-
+```plaintext
 ### Utilisation de caractères spéciaux dans les valeurs de différents champs
 
-```
+```plaintext
 title:"Rapport: Q1 2025" AND category:"Finance & Administration" AND priority:high
-```
-
+```plaintext
 ## Bonnes pratiques
 
 1. **Préférez les guillemets à l'échappement par backslash** : L'utilisation des guillemets est généralement plus lisible et moins sujette aux erreurs que l'échappement individuel des caractères spéciaux.

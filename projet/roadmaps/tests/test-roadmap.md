@@ -29,6 +29,7 @@
 > Management of OAuth tokens.
 
 - [ ] **task-001** Implement token generation #priority:high #complexity:moderate
+
   > Generate OAuth tokens for authenticated users.
   >
   > **Dimension temporelle**: Horizon: Court terme, Séquence: Début

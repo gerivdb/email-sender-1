@@ -65,56 +65,49 @@ Pour détecter manuellement les tâches dans un fichier de conversation :
 
 ```powershell
 .\Process-Conversation.ps1 -ConversationFile "chemin/vers/conversation.txt" [-AddToRoadmap] [-Verbose]
-```
-
+```plaintext
 ### Surveillance automatique des conversations
 
 Pour surveiller automatiquement un dossier de conversations :
 
 ```powershell
 .\Watch-Conversations.ps1 -ConversationsFolder "chemin/vers/dossier" [-AddToRoadmap] [-Verbose]
-```
-
+```plaintext
 ### Confirmation des tâches détectées
 
 Pour confirmer ou rejeter les tâches détectées :
 
 ```powershell
 .\Confirm-Tasks.ps1 [-Verbose]
-```
-
+```plaintext
 ### Affichage des journaux
 
 Pour afficher les journaux des tâches détectées et traitées :
 
 ```powershell
 .\Show-TaskLogs.ps1 [-LastEntries 10] [-Export] [-ExportFile "chemin/vers/export.csv"]
-```
-
+```plaintext
 ### Tests automatiques
 
 Pour tester automatiquement le système :
 
 ```powershell
 .\Run-Tests.ps1 [-Verbose]
-```
-
+```plaintext
 ### Optimisation du prompt système
 
 Pour optimiser le prompt système en fonction des résultats des tests :
 
 ```powershell
 .\Optimize-Prompt.ps1 [-ApplyChanges]
-```
-
+```plaintext
 ### Optimisation des performances
 
 Pour optimiser les performances du système :
 
 ```powershell
 .\Optimize-Performance.ps1 -BatchSize 5 [-Verbose]
-```
-
+```plaintext
 ## Intégration avec l'IA
 
 Pour intégrer ce système avec l'IA, vous devez ajouter le contenu du fichier `task-detection-prompt.md` au prompt système de l'IA. Cela permettra à l'IA de détecter et de marquer automatiquement les tâches dans les conversations.
@@ -127,8 +120,7 @@ Les tâches sont marquées à l'aide de balises XML spéciales dans le format su
 <task category="X" priority="Y" estimate="Z" start="true|false">
 Description de la tâche
 </task>
-```
-
+```plaintext
 Pour plus de détails, consultez le fichier `task-tags-syntax.md`.
 
 ## Dépannage
