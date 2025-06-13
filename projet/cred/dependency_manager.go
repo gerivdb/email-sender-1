@@ -939,7 +939,7 @@ func (cm *DepConfigManagerImpl) UnmarshalKey(key string, targetStruct interface{
 			return json.Unmarshal(data, targetStruct)
 		}
 	}
-	return fmt.Errorf("key not supported for unmarshal: % Got", key)
+	return fmt.Errorf("key not supported for unmarshal: %s", key)
 }
 
 func (cm *DepConfigManagerImpl) IsSet(key string) bool {
