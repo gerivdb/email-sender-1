@@ -14,25 +14,34 @@ func main() {
 	fmt.Println("   ✅ Interface DependencyManager étendue avec import management")
 	fmt.Println("   ✅ Implémentation complète des méthodes d'import management")
 	fmt.Println("   ✅ Documentation de référence créée")
-
-	fmt.Println("\n🎯 Managers disponibles:")
+	fmt.Println("\n🎯 Managers disponibles (26 au total):")
 	managers := []string{
 		"dependency-manager (avec import management)",
 		"advanced-autonomy-manager",
 		"ai-template-manager",
 		"branching-manager",
-		"git-workflow-manager",
-		"smart-variable-manager",
-		"template-performance-manager",
-		"maintenance-manager",
-		"contextual-memory-manager",
-		"n8n-manager",
-		"mcp-manager",
-		"notification-manager",
-		"monitoring-manager",
 		"config-manager",
+		"container-manager",
+		"contextual-memory-manager",
+		"deployment-manager",
+		"email-manager",
 		"error-manager",
+		"git-workflow-manager",
+		"integrated-manager",
+		"integration-manager",
+		"maintenance-manager",
+		"mcp-manager",
+		"mode-manager",
+		"monitoring-manager",
+		"n8n-manager",
+		"notification-manager",
+		"process-manager",
+		"roadmap-manager",
+		"script-manager",
+		"security-manager",
+		"smart-variable-manager",
 		"storage-manager",
+		"template-performance-manager",
 	}
 
 	for i, manager := range managers {
