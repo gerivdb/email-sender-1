@@ -1,13 +1,19 @@
 [submodule "projet/mcp/servers/gcp-mcp"]
     path = projet/mcp/servers/gcp-mcp
     url = https://github.com/eniayomi/gcp-mcp.git
+    ignore = dirty
 
 [submodule "projet/mcp/servers/gateway"]
 	path = projet/mcp/servers/gateway
 	url = https://github.com/mcp-ecosystem/mcp-gateway.git
+	ignore = dirty
+
 [submodule "mem0-analysis/repo"]
 	path = mem0-analysis/repo
 	url = https://github.com/your-org/mem0-analysis-repo.git
+	ignore = dirty
+
 [submodule "submodules/context7"]
 	path = submodules/context7
 	url = https://github.com/upstash/context7
+	ignore = dirty
