@@ -12,15 +12,15 @@
 | Standardiser les paramètres de configuration dans un fichier central | P0 | Moyen | Faible |
 
 #### Formule recommandée pour les tâches CPU-bound
+
 ```powershell
 $optimalThreads = [Math]::Max(1, [Math]::Floor([Environment]::ProcessorCount * 0.75))
-```
-
+```plaintext
 #### Formule recommandée pour les tâches IO-bound
+
 ```powershell
 $optimalThreads = [Math]::Max(2, [Environment]::ProcessorCount * 2)
-```
-
+```plaintext
 ### 1.2 Ajustements de ThrottleLimit
 
 | Recommandation | Priorité | Impact estimé | Complexité |
@@ -31,6 +31,7 @@ $optimalThreads = [Math]::Max(2, [Environment]::ProcessorCount * 2)
 | Développer un système de prédiction de charge | P2 | Moyen | Élevée |
 
 #### Algorithme recommandé pour le throttling dynamique
+
 ```powershell
 $factor = [Math]::Min(
     (1 - ($cpuUsage - $cpuThreshold) / 100),
@@ -38,8 +39,7 @@ $factor = [Math]::Min(
     (1 - ($diskIOUsage - $diskIOThreshold) / 100)
 )
 $optimalThrottle = [Math]::Max(1, [Math]::Floor($maxThreads * $factor))
-```
-
+```plaintext
 ### 1.3 Mécanismes de scaling dynamique
 
 | Recommandation | Priorité | Impact estimé | Complexité |
@@ -61,6 +61,7 @@ $optimalThrottle = [Math]::Max(1, [Math]::Floor($maxThreads * $factor))
 | Développer des métriques de performance des files d'attente | P2 | Faible | Faible |
 
 #### Implémentation recommandée
+
 ```powershell
 class PriorityQueue {
     [System.Collections.Generic.List[PSObject]]$Items
@@ -115,8 +116,7 @@ class PriorityQueue {
         }
     }
 }
-```
-
+```plaintext
 ### 2.2 Mécanismes de backpressure
 
 | Recommandation | Priorité | Impact estimé | Complexité |

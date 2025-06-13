@@ -11,6 +11,7 @@ L'API Planning Ecosystem Sync expose un ensemble d'endpoints REST pour la synchr
 ## Authentication
 
 ### Obtenir un Token
+
 ```http
 POST /api/v1/auth/token
 Content-Type: application/json
@@ -19,8 +20,7 @@ Content-Type: application/json
     "username": "sync_user",
     "password": "your_password"
 }
-```
-
+```plaintext
 **Response :**
 ```json
 {
@@ -28,16 +28,16 @@ Content-Type: application/json
     "expires_in": 3600,
     "token_type": "Bearer"
 }
-```
-
+```plaintext
 ### Utilisation du Token
+
 ```http
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-```
-
+```plaintext
 ## Endpoints Synchronisation
 
 ### Synchroniser Markdown vers Système Dynamique
+
 ```http
 POST /api/v1/sync/markdown-to-dynamic
 Content-Type: application/json
@@ -52,8 +52,7 @@ Authorization: Bearer <token>
         "conflict_strategy": "manual"
     }
 }
-```
-
+```plaintext
 **Response Success (202) :**
 ```json
 {
@@ -68,9 +67,9 @@ Authorization: Bearer <token>
         "conflict_strategy": "manual"
     }
 }
-```
-
+```plaintext
 ### Synchroniser Système Dynamique vers Markdown
+
 ```http
 POST /api/v1/sync/dynamic-to-markdown
 Content-Type: application/json
@@ -83,13 +82,12 @@ Content-Type: application/json
         "update_metadata": true
     }
 }
-```
-
+```plaintext
 ### Statut d'un Job de Synchronisation
+
 ```http
 GET /api/v1/sync/jobs/{job_id}
-```
-
+```plaintext
 **Response :**
 ```json
 {
@@ -106,9 +104,9 @@ GET /api/v1/sync/jobs/{job_id}
         "warnings": []
     }
 }
-```
-
+```plaintext
 ### Synchronisation en Lot
+
 ```http
 POST /api/v1/sync/batch
 Content-Type: application/json
@@ -129,15 +127,14 @@ Content-Type: application/json
         "stop_on_error": false
     }
 }
-```
-
+```plaintext
 ## Endpoints Validation
 
 ### Valider un Plan
+
 ```http
 GET /api/v1/validate/plan/{plan_id}
-```
-
+```plaintext
 **Response :**
 ```json
 {
@@ -160,18 +157,18 @@ GET /api/v1/validate/plan/{plan_id}
         "estimated_completion": "2025-06-20"
     }
 }
-```
-
+```plaintext
 ### Validation par Fichier
+
 ```http
 POST /api/v1/validate/file
 Content-Type: multipart/form-data
 
 file: <plan.md>
 options: {"strict_mode": true, "schema_version": "v55"}
-```
-
+```plaintext
 ### Validation en Lot
+
 ```http
 POST /api/v1/validate/batch
 Content-Type: application/json
@@ -187,15 +184,14 @@ Content-Type: application/json
         "fail_fast": false
     }
 }
-```
-
+```plaintext
 ## Endpoints Conflits
 
 ### Lister Conflits Actifs
+
 ```http
 GET /api/v1/conflicts/active?page=1&limit=20&severity=high
-```
-
+```plaintext
 **Response :**
 ```json
 {
@@ -219,13 +215,12 @@ GET /api/v1/conflicts/active?page=1&limit=20&severity=high
         "total_pages": 1
     }
 }
-```
-
+```plaintext
 ### Détails d'un Conflit
+
 ```http
 GET /api/v1/conflicts/{conflict_id}
-```
-
+```plaintext
 **Response :**
 ```json
 {
@@ -234,7 +229,9 @@ GET /api/v1/conflicts/{conflict_id}
     "type": "content_divergence",
     "details": {
         "source_content": "## Phase 3.2: Implementation...",
+
         "target_content": "## Phase 3.2: Enhanced Implementation...",
+
         "diff": "@@ -1,3 +1,3 @@\n-Implementation\n+Enhanced Implementation"
     },
     "resolution_options": [
@@ -256,9 +253,9 @@ GET /api/v1/conflicts/{conflict_id}
         }
     ]
 }
-```
-
+```plaintext
 ### Résoudre un Conflit
+
 ```http
 POST /api/v1/conflicts/{conflict_id}/resolve
 Content-Type: application/json
@@ -268,15 +265,14 @@ Content-Type: application/json
     "custom_resolution": null,
     "comment": "Merging enhanced implementation details"
 }
-```
-
+```plaintext
 ## Endpoints Monitoring
 
 ### État de Santé Général
+
 ```http
 GET /api/v1/health
-```
-
+```plaintext
 **Response :**
 ```json
 {
@@ -296,13 +292,12 @@ GET /api/v1/health
         "last_sync": "2025-06-12T14:28:15Z"
     }
 }
-```
-
+```plaintext
 ### Métriques Performance
+
 ```http
 GET /api/v1/metrics?period=1h&granularity=5m
-```
-
+```plaintext
 **Response :**
 ```json
 {
@@ -332,25 +327,24 @@ GET /api/v1/metrics?period=1h&granularity=5m
         }
     ]
 }
-```
-
+```plaintext
 ### Logs Système
+
 ```http
 GET /api/v1/logs?level=error&since=1h&limit=50
-```
-
+```plaintext
 ## Endpoints Plans
 
 ### Lister Plans
+
 ```http
 GET /api/v1/plans?status=active&sort=modified_desc&page=1&limit=20
-```
-
+```plaintext
 ### Détails d'un Plan
+
 ```http
 GET /api/v1/plans/{plan_id}
-```
-
+```plaintext
 **Response :**
 ```json
 {
@@ -375,16 +369,16 @@ GET /api/v1/plans/{plan_id}
         "priority": "critical"
     }
 }
-```
-
+```plaintext
 ### Historique des Modifications
+
 ```http
 GET /api/v1/plans/{plan_id}/history?limit=10
-```
-
+```plaintext
 ## SDK et Clients
 
 ### SDK Go
+
 ```go
 package main
 
@@ -410,9 +404,9 @@ func main() {
     // Attendre completion
     result, err := client.WaitForJob(job.JobID, 60*time.Second)
 }
-```
-
+```plaintext
 ### Client JavaScript/Node.js
+
 ```javascript
 const { PlanningEcosystemClient } = require('@planning-ecosystem/sync-client');
 
@@ -432,9 +426,9 @@ const job = await client.syncMarkdownToDynamic({
 
 // Surveiller le progress
 const result = await client.waitForJob(job.jobId, { timeout: 60000 });
-```
-
+```plaintext
 ### Client Python
+
 ```python
 from planning_ecosystem import SyncClient
 
@@ -444,6 +438,7 @@ client = SyncClient(
 )
 
 # Synchroniser un plan
+
 job = client.sync_markdown_to_dynamic(
     plan_path="roadmaps/plans/plan-dev-v55.md",
     options={
@@ -453,9 +448,9 @@ job = client.sync_markdown_to_dynamic(
 )
 
 # Attendre completion
-result = client.wait_for_job(job.job_id, timeout=60)
-```
 
+result = client.wait_for_job(job.job_id, timeout=60)
+```plaintext
 ## Codes d'Erreur
 
 | Code | Message | Description |
@@ -484,6 +479,7 @@ result = client.wait_for_job(job.job_id, timeout=60)
 ## Webhooks
 
 ### Configuration Webhook
+
 ```http
 POST /api/v1/webhooks
 Content-Type: application/json
@@ -493,8 +489,7 @@ Content-Type: application/json
     "events": ["sync.completed", "conflict.detected", "validation.failed"],
     "secret": "webhook-secret-key"
 }
-```
-
+```plaintext
 ### Événements Webhook
 
 **sync.completed**
@@ -509,8 +504,7 @@ Content-Type: application/json
         "tasks_processed": 247
     }
 }
-```
-
+```plaintext
 **conflict.detected**
 ```json
 {
@@ -523,4 +517,4 @@ Content-Type: application/json
         "auto_resolvable": false
     }
 }
-```
+```plaintext

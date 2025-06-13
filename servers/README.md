@@ -20,12 +20,10 @@ Add `use context7` to your prompt in Cursor:
 
 ```txt
 Create a basic Next.js project with app router. use context7
-```
-
+```plaintext
 ```txt
 Create a script to delete the rows where the city is "" given PostgreSQL credentials. use context7
-```
-
+```plaintext
 Context7 fetches up-to-date code examples and documentation right into your LLM's context.
 
 - 1️⃣ Write your prompt naturally
@@ -52,8 +50,7 @@ To install Context7 MCP Server for any client automatically via [Smithery](https
 
 ```bash
 npx -y @smithery/cli@latest install @upstash/context7-mcp --client <CLIENT_NAME> --key <YOUR_SMITHERY_KEY>
-```
-
+```plaintext
 You can find your Smithery key in the [Smithery.ai webpage](https://smithery.ai/server/@upstash/context7-mcp).
 
 </details>
@@ -75,8 +72,7 @@ Pasting the following configuration into your Cursor `~/.cursor/mcp.json` file i
     }
   }
 }
-```
-
+```plaintext
 #### Cursor Local Server Connection
 
 ```json
@@ -88,8 +84,7 @@ Pasting the following configuration into your Cursor `~/.cursor/mcp.json` file i
     }
   }
 }
-```
-
+```plaintext
 <details>
 <summary>Alternative: Use Bun</summary>
 
@@ -102,8 +97,7 @@ Pasting the following configuration into your Cursor `~/.cursor/mcp.json` file i
     }
   }
 }
-```
-
+```plaintext
 </details>
 
 <details>
@@ -118,8 +112,7 @@ Pasting the following configuration into your Cursor `~/.cursor/mcp.json` file i
     }
   }
 }
-```
-
+```plaintext
 </details>
 
 </details>
@@ -139,8 +132,7 @@ Add this to your Windsurf MCP config file. See [Windsurf MCP docs](https://docs.
     }
   }
 }
-```
-
+```plaintext
 #### Windsurf Local Server Connection
 
 ```json
@@ -152,8 +144,7 @@ Add this to your Windsurf MCP config file. See [Windsurf MCP docs](https://docs.
     }
   }
 }
-```
-
+```plaintext
 </details>
 
 <details>
@@ -175,8 +166,7 @@ Add this to your VS Code MCP config file. See [VS Code MCP docs](https://code.vi
     }
   }
 }
-```
-
+```plaintext
 #### VS Code Local Server Connection
 
 ```json
@@ -189,8 +179,7 @@ Add this to your VS Code MCP config file. See [VS Code MCP docs](https://code.vi
     }
   }
 }
-```
-
+```plaintext
 </details>
 
 <details>
@@ -210,8 +199,7 @@ It can be installed via [Zed Extensions](https://zed.dev/extensions?query=Contex
     }
   }
 }
-```
-
+```plaintext
 </details>
 
 <details>
@@ -223,14 +211,12 @@ Run this command. See [Claude Code MCP docs](https://docs.anthropic.com/en/docs/
 
 ```sh
 claude mcp add --transport sse context7 https://mcp.context7.com/sse
-```
-
+```plaintext
 #### Claude Code Local Server Connection
 
 ```sh
 claude mcp add context7 -- npx -y @upstash/context7-mcp
-```
-
+```plaintext
 </details>
 
 <details>
@@ -247,8 +233,7 @@ Add this to your Claude Desktop `claude_desktop_config.json` file. See [Claude D
     }
   }
 }
-```
-
+```plaintext
 </details>
 
 <details>
@@ -265,8 +250,7 @@ Open the "Settings" page of the app, navigate to "Plugins," and enter the follow
     }
   }
 }
-```
-
+```plaintext
 Once saved, enter in the chat `get-library-docs` followed by your Context7 documentation ID (e.g., `get-library-docs /nuxt/ui`). More information is available on [BoltAI's Documentation site](https://docs.boltai.com/docs/plugins/mcp-servers). For BoltAI on iOS, [see this guide](https://docs.boltai.com/docs/boltai-mobile/mcp-servers).
 
 </details>
@@ -289,12 +273,15 @@ If you prefer to run the MCP server in a Docker container:
    WORKDIR /app
 
    # Install the latest version globally
+
    RUN npm install -g @upstash/context7-mcp
 
    # Expose default port if needed (optional, depends on MCP client interaction)
+
    # EXPOSE 3000
 
    # Default command to run the server
+
    CMD ["context7-mcp"]
    ```
 
@@ -347,8 +334,7 @@ The configuration on Windows is slightly different compared to Linux or macOS (_
     }
   }
 }
-```
-
+```plaintext
 </details>
 
 <details>
@@ -371,8 +357,7 @@ To configure Context7 MCP in Augment Code, follow these steps:
         }
     ]
 }
-```
-
+```plaintext
 Once the MCP server is added, restart your editor. If you receive any errors, check the syntax to make sure closing brackets or commas are not missing.
 
 </details>
@@ -397,8 +382,7 @@ Example configuration with environment variables:
     }
   }
 }
-```
-
+```plaintext
 ## 🔨 Available Tools
 
 Context7 MCP provides the following tools that LLMs can use:
@@ -418,14 +402,12 @@ Clone the project and install dependencies:
 
 ```bash
 bun i
-```
-
+```plaintext
 Build:
 
 ```bash
 bun run build
-```
-
+```plaintext
 <details>
 <summary><b>Local Configuration Example</b></summary>
 
@@ -438,8 +420,7 @@ bun run build
     }
   }
 }
-```
-
+```plaintext
 </details>
 
 <details>
@@ -447,8 +428,7 @@ bun run build
 
 ```bash
 npx -y @modelcontextprotocol/inspector npx @upstash/context7-mcp
-```
-
+```plaintext
 </details>
 
 ## 🚨 Troubleshooting
@@ -467,8 +447,7 @@ If you encounter `ERR_MODULE_NOT_FOUND`, try using `bunx` instead of `npx`:
     }
   }
 }
-```
-
+```plaintext
 This often resolves module resolution issues in environments where `npx` doesn't properly install or resolve packages.
 
 </details>
@@ -487,8 +466,7 @@ For errors like `Error: Cannot find module 'uriTemplate.js'`, try the `--experim
     }
   }
 }
-```
-
+```plaintext
 </details>
 
 <details>
@@ -505,8 +483,7 @@ Use the `--experimental-fetch` flag to bypass TLS-related problems:
     }
   }
 }
-```
-
+```plaintext
 </details>
 
 <details>

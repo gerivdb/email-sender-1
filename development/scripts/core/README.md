@@ -1,4 +1,4 @@
-﻿# core
+# core
 
 FonctionnalitÃ©s essentielles et modules de base
 

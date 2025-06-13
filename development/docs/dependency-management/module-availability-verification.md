@@ -44,11 +44,12 @@ La méthode la plus courante pour vérifier la disponibilité d'un module est l'
 $module = Get-Module -Name $ModuleName -ListAvailable
 if ($null -eq $module) {
     # Module non disponible
+
 } else {
     # Module disponible
-}
-```
 
+}
+```plaintext
 Cette approche est simple et efficace pour les vérifications de base, mais ne gère pas les versions ou les modules corrompus.
 
 ### 2.2 Vérification avec gestion des versions
@@ -59,13 +60,15 @@ Pour les cas où la version du module est importante, le projet utilise des comp
 $module = Get-Module -Name $ModuleName -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1
 if ($null -eq $module) {
     # Module non disponible
+
 } elseif ($MinimumVersion -and $module.Version -lt $MinimumVersion) {
     # Version insuffisante
+
 } else {
     # Module disponible avec version suffisante
-}
-```
 
+}
+```plaintext
 Cette approche est plus robuste et permet de s'assurer que les dépendances respectent les contraintes de version.
 
 ### 2.3 Vérification avancée avec Test-ModuleManifest
@@ -77,11 +80,12 @@ try {
     $manifestPath = Join-Path -Path $Path -ChildPath "$ModuleName.psd1"
     $moduleValid = Test-ModuleManifest -Path $manifestPath -ErrorAction Stop
     # Module valide
+
 } catch {
     # Module invalide ou corrompu
-}
-```
 
+}
+```plaintext
 Cette approche permet de détecter les modules corrompus ou mal configurés, pas seulement leur absence.
 
 ### 2.4 Vérification en ligne avec Find-Module
@@ -94,12 +98,13 @@ try {
     $OnlineVersion = [version]$OnlineModule.Version
     if ($OnlineVersion -gt $CurrentVersion) {
         # Mise à jour disponible
+
     }
 } catch {
     # Impossible de vérifier les mises à jour
-}
-```
 
+}
+```plaintext
 Cette approche nécessite une connexion Internet mais permet de maintenir les modules à jour.
 
 ### 2.5 Vérification multi-plateforme
@@ -108,6 +113,7 @@ Pour les modules qui doivent fonctionner sur différentes versions de PowerShell
 
 ```powershell
 # Vérifier la compatibilité avec PowerShell 5
+
 $modulePS5 = Get-Module -Name $ModuleName -ListAvailable -ErrorAction SilentlyContinue
 if ($modulePS5) {
     $result.PS5Compatible = $true
@@ -115,6 +121,7 @@ if ($modulePS5) {
 }
 
 # Vérifier la compatibilité avec PowerShell 7
+
 $ps7Command = "$PowerShellPath -Command `"Get-Module -Name $ModuleName -ListAvailable | Select-Object -First 1 | ConvertTo-Json`""
 $modulePS7Json = Invoke-Expression -Command $ps7Command -ErrorAction SilentlyContinue
 if ($modulePS7Json) {
@@ -122,8 +129,7 @@ if ($modulePS7Json) {
     $result.PS7Compatible = $true
     $result.PS7Version = $modulePS7.Version.ToString()
 }
-```
-
+```plaintext
 Cette approche est plus complexe mais essentielle pour les projets qui doivent fonctionner sur plusieurs versions de PowerShell.
 
 ## 3. Stratégies de gestion des modules manquants
@@ -138,8 +144,7 @@ if ($null -eq $module) {
     Install-Module -Name $ModuleName -Force:$Force -SkipPublisherCheck
     return $true
 }
-```
-
+```plaintext
 Cette approche est simple et efficace, mais peut nécessiter des privilèges administratifs et une connexion Internet.
 
 ### 3.2 Installation avec confirmation
@@ -156,8 +161,7 @@ if ($null -eq $module) {
         return $false
     }
 }
-```
-
+```plaintext
 Cette approche est plus respectueuse de l'utilisateur mais nécessite une intervention manuelle.
 
 ### 3.3 Dégradation gracieuse
@@ -169,8 +173,7 @@ if (-not (Get-Module -Name $ModuleName -ListAvailable)) {
     Write-Log "Module $ModuleName non disponible. Certaines fonctionnalités seront limitées." -Level "WARNING"
     $script:FeatureEnabled = $false
 }
-```
-
+```plaintext
 Cette approche permet au code de continuer à fonctionner avec des fonctionnalités réduites plutôt que d'échouer complètement.
 
 ### 3.4 Rapport détaillé
@@ -193,8 +196,7 @@ foreach ($module in $Prerequisites.Modules) {
         $report.MissingPrerequisites += "Module: $($module.Name) (version $($module.MinimumVersion) minimum)"
     }
 }
-```
-
+```plaintext
 Cette approche permet de présenter à l'utilisateur un résumé clair des dépendances manquantes.
 
 ## 4. Évaluation des approches
@@ -277,6 +279,7 @@ function Test-ModuleAvailability {
     )
     
     # Initialiser le résultat
+
     $result = [PSCustomObject]@{
         Name = $ModuleName
         Available = $false
@@ -295,12 +298,14 @@ function Test-ModuleAvailability {
     }
     
     # Vérifier si le module est disponible
+
     $module = Get-Module -Name $ModuleName -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1
     
     if ($null -eq $module) {
         $result.InstallCommand = "Install-Module -Name $ModuleName -Scope CurrentUser -Force"
         
         # Vérifier en ligne si demandé
+
         if ($CheckOnline) {
             try {
                 $onlineModule = Find-Module -Name $ModuleName -ErrorAction Stop
@@ -316,11 +321,13 @@ function Test-ModuleAvailability {
     }
     
     # Module trouvé
+
     $result.Available = $true
     $result.Version = $module.Version
     $result.Path = $module.Path
     
     # Vérifier les contraintes de version
+
     $versionConstraintsMet = $true
     
     if ($MinimumVersion -and $module.Version -lt $MinimumVersion) {
@@ -344,6 +351,7 @@ function Test-ModuleAvailability {
     $result.VersionConstraintsMet = $versionConstraintsMet
     
     # Vérifier si le module est valide
+
     try {
         $manifestPath = $module.Path -replace '\.psm1$', '.psd1'
         if (Test-Path -Path $manifestPath) {
@@ -352,6 +360,7 @@ function Test-ModuleAvailability {
         }
         else {
             $result.Valid = $true  # Pas de manifeste, mais le module existe
+
         }
     }
     catch {
@@ -360,6 +369,7 @@ function Test-ModuleAvailability {
     }
     
     # Vérifier les mises à jour en ligne
+
     if ($CheckOnline) {
         try {
             $onlineModule = Find-Module -Name $ModuleName -ErrorAction Stop
@@ -372,6 +382,7 @@ function Test-ModuleAvailability {
     }
     
     # Vérifier les dépendances
+
     if ($CheckDependencies) {
         $manifestPath = $module.Path -replace '\.psm1$', '.psd1'
         if (Test-Path -Path $manifestPath) {
@@ -412,11 +423,14 @@ function Test-ModuleAvailability {
     }
     
     # Vérifier la compatibilité
+
     if ($CheckCompatibility) {
         # Vérifier la compatibilité avec PowerShell 5
+
         $ps5Compatible = $true
         try {
             # Vérification simplifiée pour PS5 (nous sommes probablement déjà dans PS5)
+
             $ps5Compatible = $true
         }
         catch {
@@ -425,6 +439,7 @@ function Test-ModuleAvailability {
         }
         
         # Vérifier la compatibilité avec PowerShell 7
+
         $ps7Compatible = $false
         try {
             $ps7Path = Get-Command -Name pwsh -ErrorAction SilentlyContinue
@@ -446,6 +461,7 @@ function Test-ModuleAvailability {
     }
     
     # Retourner le résultat complet ou simplifié
+
     if ($Detailed) {
         return $result
     }
@@ -462,8 +478,7 @@ function Test-ModuleAvailability {
         }
     }
 }
-```
-
+```plaintext
 ### 5.3 Système de cache intelligent
 
 Implémenter un système de cache pour éviter de répéter les vérifications coûteuses:
@@ -483,23 +498,28 @@ function Get-CachedModuleAvailability {
     )
     
     # Générer une clé de cache
+
     $cacheKey = "$ModuleName|" + ($Parameters.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" } | Sort-Object | Join-String -Separator "|")
     
     # Vérifier si le résultat est dans le cache
+
     if (-not $ForceRefresh -and $script:ModuleAvailabilityCache.ContainsKey($cacheKey)) {
         $cachedResult = $script:ModuleAvailabilityCache[$cacheKey]
         $cacheAge = (Get-Date) - $cachedResult.Timestamp
         
         # Utiliser le cache si moins de 1 heure
+
         if ($cacheAge.TotalHours -lt 1) {
             return $cachedResult.Result
         }
     }
     
     # Effectuer la vérification
+
     $result = Test-ModuleAvailability @Parameters -ModuleName $ModuleName
     
     # Mettre en cache le résultat
+
     $script:ModuleAvailabilityCache[$cacheKey] = @{
         Result = $result
         Timestamp = Get-Date
@@ -507,8 +527,7 @@ function Get-CachedModuleAvailability {
     
     return $result
 }
-```
-
+```plaintext
 ### 5.4 Gestion intelligente des modules manquants
 
 Implémenter une fonction qui gère intelligemment les modules manquants:
@@ -552,9 +571,11 @@ function Resolve-ModuleDependency {
     )
     
     # Vérifier la disponibilité du module
+
     $moduleStatus = Test-ModuleAvailability -ModuleName $ModuleName -MinimumVersion $MinimumVersion -RequiredVersion $RequiredVersion -MaximumVersion $MaximumVersion -CheckOnline -CheckDependencies:$CheckDependencies -Detailed
     
     # Module non disponible
+
     if (-not $moduleStatus.Available) {
         switch ($MissingAction) {
             "Install" {
@@ -563,6 +584,7 @@ function Resolve-ModuleDependency {
                     Invoke-Expression -Command $moduleStatus.InstallCommand
                     
                     # Vérifier si l'installation a réussi
+
                     $moduleStatus = Test-ModuleAvailability -ModuleName $ModuleName -MinimumVersion $MinimumVersion -RequiredVersion $RequiredVersion -MaximumVersion $MaximumVersion -Detailed
                     if (-not $moduleStatus.Available) {
                         Write-Error "L'installation du module $ModuleName a échoué."
@@ -593,6 +615,7 @@ function Resolve-ModuleDependency {
     }
     
     # Module disponible mais version incorrecte
+
     if (-not $moduleStatus.VersionConstraintsMet) {
         switch ($VersionMismatchAction) {
             "Install" {
@@ -601,6 +624,7 @@ function Resolve-ModuleDependency {
                     Invoke-Expression -Command $moduleStatus.InstallCommand
                     
                     # Vérifier si l'installation a réussi
+
                     $moduleStatus = Test-ModuleAvailability -ModuleName $ModuleName -MinimumVersion $MinimumVersion -RequiredVersion $RequiredVersion -MaximumVersion $MaximumVersion -Detailed
                     if (-not $moduleStatus.VersionConstraintsMet) {
                         Write-Error "L'installation de la version requise du module $ModuleName a échoué."
@@ -631,6 +655,7 @@ function Resolve-ModuleDependency {
     }
     
     # Mise à jour disponible
+
     if ($moduleStatus.UpdateAvailable) {
         switch ($UpdateAction) {
             "Install" {
@@ -656,12 +681,14 @@ function Resolve-ModuleDependency {
     }
     
     # Vérifier les dépendances si demandé
+
     if ($CheckDependencies -and $moduleStatus.MissingDependencies.Count -gt 0) {
         Write-Warning "Le module $ModuleName a des dépendances manquantes:"
         foreach ($dep in $moduleStatus.MissingDependencies) {
             Write-Warning "  - $($dep.Name) $(if ($dep.Version) { "($($dep.Version))" })"
             
             # Résoudre récursivement les dépendances
+
             if ($Recurse) {
                 $depParams = @{
                     ModuleName = $dep.Name
@@ -687,8 +714,7 @@ function Resolve-ModuleDependency {
     
     return $true
 }
-```
-
+```plaintext
 ### 5.5 Documentation complète
 
 Créer une documentation complète sur la vérification de disponibilité des modules:

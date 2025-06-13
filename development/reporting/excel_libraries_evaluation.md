@@ -156,31 +156,36 @@ Des tests de performance ont été réalisés pour comparer les bibliothèques s
 
 ```powershell
 # Installation
+
 Install-Module -Name ImportExcel -Scope CurrentUser
 
 # Création d'un fichier Excel simple
+
 $data = Get-Process | Select-Object -Property Name, CPU, WorkingSet
 $data | Export-Excel -Path ".\Processes.xlsx" -AutoSize -TableName "Processes"
 
 # Ajout de formatage conditionnel
+
 $data | Export-Excel -Path ".\Processes.xlsx" -AutoSize -TableName "Processes" -ConditionalFormat $(
     New-ConditionalText -Text "chrome" -BackgroundColor Yellow
     New-ConditionalFormattingIconSet -Range "C:C" -ConditionalFormat ThreeIconSet -IconType Arrows
 )
 
 # Création d'un graphique
+
 $data | Export-Excel -Path ".\Processes.xlsx" -AutoSize -TableName "Processes" -ExcelChartDefinition $(
     New-ExcelChartDefinition -Title "CPU Usage" -ChartType Pie -XRange "Name" -YRange "CPU"
 )
-```
-
+```plaintext
 ### EPPlus
 
 ```powershell
 # Installation du package NuGet
+
 Install-Package EPPlus -Scope CurrentUser
 
 # Utilisation dans PowerShell
+
 Add-Type -Path ".\packages\EPPlus.6.2.4\lib\net35\EPPlus.dll"
 
 $excel = New-Object OfficeOpenXml.ExcelPackage
@@ -191,11 +196,13 @@ $data = Get-Process | Select-Object -Property Name, CPU, WorkingSet
 $row = 1
 
 # En-têtes
+
 $worksheet.Cells[1, 1].Value = "Name"
 $worksheet.Cells[1, 2].Value = "CPU"
 $worksheet.Cells[1, 3].Value = "WorkingSet"
 
 # Données
+
 $row = 2
 foreach ($item in $data) {
     $worksheet.Cells[$row, 1].Value = $item.Name
@@ -205,17 +212,19 @@ foreach ($item in $data) {
 }
 
 # Sauvegarde
+
 $excel.SaveAs(".\Processes.xlsx")
 $excel.Dispose()
-```
-
+```plaintext
 ### NPOI
 
 ```powershell
 # Installation du package NuGet
+
 Install-Package NPOI -Scope CurrentUser
 
 # Utilisation dans PowerShell
+
 Add-Type -Path ".\packages\NPOI.2.5.6\lib\net45\NPOI.dll"
 Add-Type -Path ".\packages\NPOI.2.5.6\lib\net45\NPOI.OOXML.dll"
 
@@ -225,12 +234,14 @@ $sheet = $workbook.CreateSheet("Processes")
 $data = Get-Process | Select-Object -Property Name, CPU, WorkingSet
 
 # En-têtes
+
 $headerRow = $sheet.CreateRow(0)
 $headerRow.CreateCell(0).SetCellValue("Name")
 $headerRow.CreateCell(1).SetCellValue("CPU")
 $headerRow.CreateCell(2).SetCellValue("WorkingSet")
 
 # Données
+
 $rowIndex = 1
 foreach ($item in $data) {
     $row = $sheet.CreateRow($rowIndex)
@@ -241,15 +252,16 @@ foreach ($item in $data) {
 }
 
 # Sauvegarde
+
 $fileStream = New-Object System.IO.FileStream(".\Processes.xlsx", [System.IO.FileMode]::Create)
 $workbook.Write($fileStream)
 $fileStream.Close()
-```
-
+```plaintext
 ### Excel COM Object
 
 ```powershell
 # Création d'une instance Excel
+
 $excel = New-Object -ComObject Excel.Application
 $excel.Visible = $false
 $workbook = $excel.Workbooks.Add()
@@ -258,11 +270,13 @@ $worksheet = $workbook.Worksheets.Item(1)
 $data = Get-Process | Select-Object -Property Name, CPU, WorkingSet
 
 # En-têtes
+
 $worksheet.Cells.Item(1, 1) = "Name"
 $worksheet.Cells.Item(1, 2) = "CPU"
 $worksheet.Cells.Item(1, 3) = "WorkingSet"
 
 # Données
+
 $row = 2
 foreach ($item in $data) {
     $worksheet.Cells.Item($row, 1) = $item.Name
@@ -272,18 +286,19 @@ foreach ($item in $data) {
 }
 
 # Sauvegarde
+
 $workbook.SaveAs("$pwd\Processes.xlsx")
 $workbook.Close()
 $excel.Quit()
 
 # Libération des ressources COM
+
 [System.Runtime.Interopservices.Marshal]::ReleaseComObject($worksheet) | Out-Null
 [System.Runtime.Interopservices.Marshal]::ReleaseComObject($workbook) | Out-Null
 [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
 [System.GC]::Collect()
 [System.GC]::WaitForPendingFinalizers()
-```
-
+```plaintext
 ## Conclusion et recommandation
 
 Après évaluation des différentes bibliothèques, **ImportExcel** est recommandé pour notre projet pour les raisons suivantes:

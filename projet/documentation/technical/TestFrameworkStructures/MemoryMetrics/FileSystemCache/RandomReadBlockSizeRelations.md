@@ -10,7 +10,7 @@ Ce document définit les relations entre les différentes métriques de latence 
 
 Les relations hiérarchiques définissent la structure d'imbrication des métriques dans le schéma JSON.
 
-```
+```plaintext
 byBlockSize
   ├── blockSizes[]
   │     ├── metrics
@@ -23,8 +23,7 @@ byBlockSize
   ├── summary
   ├── scaling
   └── optimal
-```
-
+```plaintext
 ### 2.2 Relations mathématiques
 
 Les relations mathématiques définissent comment certaines métriques peuvent être calculées à partir d'autres.
@@ -69,7 +68,7 @@ Les relations inter-tailles de bloc définissent comment les métriques évoluen
 
 Le graphe de dépendances ci-dessous illustre comment les métriques sont dérivées les unes des autres. Les nœuds représentent les métriques et les arêtes indiquent les dépendances.
 
-```
+```plaintext
                                  ┌─────────────┐
                                  │ Données brutes │
                                  └───────┬─────┘
@@ -114,8 +113,7 @@ Le graphe de dépendances ci-dessous illustre comment les métriques sont dériv
                                ┌────────▼────────┐
                                │  stabilityScore  │
                                └─────────────────┘
-```
-
+```plaintext
 ## 4. Relations entre métriques et tailles de bloc
 
 ### 4.1 Modèles de scaling typiques
@@ -185,10 +183,9 @@ Les points d'inflexion dans les courbes de performance correspondent souvent à 
 
 La relation entre la latence et le débit pour une taille de bloc donnée est généralement inversement proportionnelle :
 
-```
+```plaintext
 throughput ≈ blockSize / latency * concurrencyFactor
-```
-
+```plaintext
 Où :
 - `throughput` est le débit en octets par seconde
 - `blockSize` est la taille du bloc en octets
@@ -199,36 +196,31 @@ Où :
 
 La latence moyenne est une combinaison pondérée des latences en cas de succès et d'échec du cache :
 
-```
+```plaintext
 avg = hitRate * hitLatency + missRate * missLatency
-```
-
+```plaintext
 Cette relation permet de dériver l'une des métriques si les autres sont connues.
 
 ### 5.3 Relations entre stabilité et distribution
 
 Les métriques de stabilité sont dérivées des caractéristiques de la distribution :
 
-```
+```plaintext
 variationCoefficient = stdDev / avg
-```
-
-```
+```plaintext
+```plaintext
 stabilityScore = 1 / (1 + variationCoefficient)
-```
-
+```plaintext
 ### 5.4 Relations entre métriques comparatives
 
 Les métriques comparatives entre lectures aléatoires et séquentielles sont directement liées aux métriques absolues :
 
-```
+```plaintext
 latencyRatio.avg = randomLatency.avg / sequentialLatency.avg
-```
-
-```
+```plaintext
+```plaintext
 throughputRatio = randomThroughput.avg / sequentialThroughput.avg
-```
-
+```plaintext
 ## 6. Utilisation des relations pour la validation et la dérivation
 
 ### 6.1 Validation des données
@@ -296,8 +288,7 @@ Dans un système avec un cache de système de fichiers efficace, les relations t
     }
   }
 }
-```
-
+```plaintext
 ### 7.2 Système de fichiers avec cache inefficace
 
 Dans un système avec un cache de système de fichiers inefficace, les relations typiques sont :
@@ -334,8 +325,7 @@ Dans un système avec un cache de système de fichiers inefficace, les relations
     }
   }
 }
-```
-
+```plaintext
 ## 8. Conclusion
 
 Les relations entre les métriques de latence par taille de bloc pour les lectures aléatoires sont complexes mais prévisibles. La compréhension de ces relations permet :

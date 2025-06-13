@@ -10,12 +10,12 @@ La gestion des conflits et des doublons est un aspect crucial du Process Manager
 
 ```powershell
 # Vérifier si le gestionnaire est déjà enregistré
+
 if ($config.Managers.$Name -and -not $Force) {
     Write-Log -Message "Le gestionnaire '$Name' est déjà enregistré. Utilisez -Force pour le remplacer." -Level Warning
     return $false
 }
-```
-
+```plaintext
 #### Fonctionnement
 
 1. **Détection de doublon**
@@ -54,8 +54,7 @@ $config.Managers | Add-Member -NotePropertyName $Name -NotePropertyValue @{
     Enabled = $true
     RegisteredAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 } -Force
-```
-
+```plaintext
 #### Fonctionnement
 
 1. **Ajout ou remplacement**
@@ -141,12 +140,12 @@ if (Test-Path -Path $managerScriptPath) {
     Write-Log -Message "Gestionnaire trouvé : $managerName ($managerScriptPath)" -Level Debug
     
     # Enregistrer le gestionnaire
+
     if (Register-Manager -Name $managerName -Path $managerScriptPath -Force:$Force) {
         $managersRegistered++
     }
 }
-```
-
+```plaintext
 1. **Transmission du paramètre -Force**
    - Le paramètre `-Force` est transmis à la fonction `Register-Manager`
    - Permet de contrôler le comportement en cas de conflit lors de la découverte
@@ -273,6 +272,7 @@ if (Test-Path -Path $managerScriptPath) {
 1. **Vérification des chemins en double**
    ```powershell
    # Vérifier si le chemin est déjà utilisé par un autre gestionnaire
+
    $existingManager = $config.Managers.PSObject.Properties | Where-Object {
        $_.Value.Path -eq $Path -and $_.Name -ne $Name
    } | Select-Object -First 1
@@ -286,6 +286,7 @@ if (Test-Path -Path $managerScriptPath) {
 2. **Vérification de similarité des noms**
    ```powershell
    # Vérifier si un gestionnaire avec un nom similaire existe déjà
+
    $similarManagers = $config.Managers.PSObject.Properties | Where-Object {
        $_.Name -ne $Name -and ($_.Name -like "*$Name*" -or $Name -like "*$_.Name*")
    }
@@ -323,12 +324,17 @@ if (Test-Path -Path $managerScriptPath) {
        $existingManager = $config.Managers.$Name
        $mergedManager = @{
            Path = $Path  # Utiliser le nouveau chemin
+
            Enabled = $existingManager.Enabled  # Conserver l'état d'activation
+
            RegisteredAt = $existingManager.RegisteredAt  # Conserver la date d'enregistrement original
+
            UpdatedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"  # Ajouter une date de mise à jour
+
        }
        
        # Ajouter les propriétés personnalisées
+
        foreach ($property in $existingManager.PSObject.Properties) {
            if ($property.Name -notin @("Path", "Enabled", "RegisteredAt")) {
                $mergedManager[$property.Name] = $property.Value
@@ -353,6 +359,7 @@ if (Test-Path -Path $managerScriptPath) {
 2. **Historique des modifications**
    ```powershell
    # Ajouter un historique des modifications
+
    if (-not $config.History) {
        $config | Add-Member -NotePropertyName History -NotePropertyValue @() -Force
    }

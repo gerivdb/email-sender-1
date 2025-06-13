@@ -1,4 +1,4 @@
-﻿# Scripts CMD
+# Scripts CMD
 
 Ce dossier contient les scripts CMD utilisÃ©s dans le projet Email Sender.
 
@@ -26,4 +26,4 @@ Les scripts CMD peuvent Ãªtre exÃ©cutÃ©s directement depuis l'explorateur 
 ```cmd
 cd scripts\cmd\augment
 augment-mcp-notion.cmd
-```
+```plaintext

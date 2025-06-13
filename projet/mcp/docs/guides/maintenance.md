@@ -11,22 +11,19 @@ Pour vérifier l'état des serveurs MCP, utilisez la commande suivante :
 ```powershell
 Import-Module .\projet\mcp\modules\MCPManager
 Get-MCPServerStatus
-```
-
+```plaintext
 Ou utilisez le script de vérification de l'état :
 
 ```powershell
 .\projet\mcp\monitoring\scripts\check-mcp-status.ps1
-```
-
+```plaintext
 ### Génération de rapports de santé
 
 Pour générer un rapport de santé complet des serveurs MCP :
 
 ```powershell
 .\projet\mcp\monitoring\scripts\generate-health-report.ps1 -OutputFormat HTML -IncludeTests
-```
-
+```plaintext
 Options disponibles :
 - `-OutputFormat` : Format de sortie (HTML, JSON, Text)
 - `-IncludeTests` : Inclut les résultats des tests dans le rapport
@@ -39,8 +36,7 @@ Pour collecter des métriques de performance des serveurs MCP :
 
 ```powershell
 .\projet\mcp\monitoring\scripts\collect-metrics.ps1 -Interval 60 -Duration 60
-```
-
+```plaintext
 Options disponibles :
 - `-Interval` : Intervalle de collecte en secondes
 - `-Duration` : Durée de collecte en minutes
@@ -52,8 +48,7 @@ Pour vérifier l'état de santé des serveurs MCP :
 
 ```powershell
 .\projet\mcp\monitoring\scripts\check-mcp-health.ps1 -OutputFormat HTML -SendAlert
-```
-
+```plaintext
 Options disponibles :
 - `-OutputFormat` : Format de sortie (Text, JSON, HTML)
 - `-SendAlert` : Envoie une alerte en cas de problème détecté
@@ -66,8 +61,7 @@ Pour sauvegarder manuellement la configuration MCP :
 
 ```powershell
 .\projet\mcp\scripts\maintenance\backup-mcp-config.ps1 -CreateZip -IncludeData
-```
-
+```plaintext
 Options disponibles :
 - `-BackupDir` : Répertoire de sauvegarde
 - `-CreateZip` : Crée un fichier ZIP au lieu d'un répertoire
@@ -79,8 +73,7 @@ Pour planifier des sauvegardes automatiques :
 
 ```powershell
 .\projet\mcp\scripts\maintenance\schedule-mcp-backups.ps1 -Frequency Daily -Time 02:00 -CreateZip
-```
-
+```plaintext
 Options disponibles :
 - `-Frequency` : Fréquence des sauvegardes (Daily, Weekly, Monthly)
 - `-DayOfWeek` : Jour de la semaine pour les sauvegardes hebdomadaires
@@ -94,8 +87,7 @@ Pour nettoyer les anciennes sauvegardes :
 
 ```powershell
 .\projet\mcp\scripts\maintenance\cleanup-mcp-backups.ps1 -MaxAge 30 -MaxCount 10
-```
-
+```plaintext
 Options disponibles :
 - `-BackupDir` : Répertoire de sauvegarde
 - `-MaxAge` : Âge maximum des sauvegardes en jours
@@ -107,8 +99,7 @@ Pour restaurer une sauvegarde :
 
 ```powershell
 .\projet\mcp\versioning\scripts\rollback-mcp-update.ps1 -BackupDate 20250501 -Version 1.0.0
-```
-
+```plaintext
 Options disponibles :
 - `-BackupDate` : Date de la sauvegarde au format 'yyyyMMdd'
 - `-Version` : Version à restaurer
@@ -121,8 +112,7 @@ Pour mettre à jour manuellement les composants MCP :
 
 ```powershell
 .\projet\mcp\versioning\scripts\update-mcp-components.ps1 -Components Npm,Pip
-```
-
+```plaintext
 Options disponibles :
 - `-SkipBackup` : Ignore la création d'une sauvegarde avant la mise à jour
 - `-Components` : Liste des composants à mettre à jour (All, Npm, Pip, Binary)
@@ -133,8 +123,7 @@ Pour planifier des mises à jour automatiques :
 
 ```powershell
 .\projet\mcp\scripts\maintenance\schedule-mcp-updates.ps1 -Frequency Weekly -DayOfWeek Sunday -Time 03:00
-```
-
+```plaintext
 Options disponibles :
 - `-Frequency` : Fréquence des mises à jour (Daily, Weekly, Monthly)
 - `-DayOfWeek` : Jour de la semaine pour les mises à jour hebdomadaires
@@ -149,54 +138,46 @@ Pour démarrer tous les serveurs MCP :
 ```powershell
 Import-Module .\projet\mcp\modules\MCPManager
 Start-MCPServer
-```
-
+```plaintext
 Pour démarrer un serveur spécifique :
 
 ```powershell
 Start-MCPServer -ServerName filesystem
-```
-
+```plaintext
 Pour arrêter tous les serveurs MCP :
 
 ```powershell
 Stop-MCPServer
-```
-
+```plaintext
 Pour arrêter un serveur spécifique :
 
 ```powershell
 Stop-MCPServer -ServerName filesystem
-```
-
+```plaintext
 Pour redémarrer un serveur :
 
 ```powershell
 Restart-MCPServer -ServerName filesystem
-```
-
+```plaintext
 ### Activation et désactivation des serveurs
 
 Pour activer un serveur :
 
 ```powershell
 Enable-MCPServer -ServerName filesystem
-```
-
+```plaintext
 Pour désactiver un serveur :
 
 ```powershell
 Disable-MCPServer -ServerName filesystem
-```
-
+```plaintext
 ### Configuration du démarrage automatique
 
 Pour configurer le démarrage automatique des serveurs MCP :
 
 ```powershell
 .\projet\mcp\scripts\utils\register-mcp-startup.ps1 -StartupType User
-```
-
+```plaintext
 Options disponibles :
 - `-StartupType` : Type de démarrage (System, User)
 
@@ -208,20 +189,17 @@ Pour exécuter tous les tests :
 
 ```powershell
 .\projet\mcp\tests\Run-AllTests.ps1
-```
-
+```plaintext
 Pour exécuter uniquement les tests unitaires :
 
 ```powershell
 .\projet\mcp\tests\Run-AllTests.ps1 -SkipIntegrationTests -SkipPerformanceTests
-```
-
+```plaintext
 Pour exécuter uniquement les tests d'intégration :
 
 ```powershell
 .\projet\mcp\tests\Run-AllTests.ps1 -SkipUnitTests -SkipPerformanceTests
-```
-
+```plaintext
 ### Tests spécifiques
 
 Pour exécuter des tests spécifiques :
@@ -230,16 +208,14 @@ Pour exécuter des tests spécifiques :
 .\projet\mcp\tests\unit\Test-MCPConfig.ps1
 .\projet\mcp\tests\unit\Test-MCPManager.ps1
 .\projet\mcp\tests\integration\Test-MCPServerIntegration.ps1 -Server filesystem
-```
-
+```plaintext
 ## Désinstallation
 
 Pour désinstaller les serveurs MCP :
 
 ```powershell
 .\projet\mcp\scripts\maintenance\uninstall-mcp.ps1 -RemoveFiles
-```
-
+```plaintext
 Options disponibles :
 - `-RemoveFiles` : Supprime les fichiers MCP après la désinstallation
 

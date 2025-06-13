@@ -26,8 +26,7 @@ Le schéma JSON pour les métriques par taille de bloc s'intègre dans la struct
     }
   }
 }
-```
-
+```plaintext
 ## 3. Schéma détaillé pour les métriques par taille de bloc
 
 ### 3.1 Structure principale
@@ -50,8 +49,7 @@ Le schéma JSON pour les métriques par taille de bloc s'intègre dans la struct
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description | Obligatoire |
 |-------|------|-------------|-------------|
 | `unit` | string | Unité de mesure de la latence (microseconds, milliseconds, etc.) | Oui |
@@ -89,8 +87,7 @@ Chaque élément de l'array `blockSizes` suit la structure suivante :
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description | Obligatoire |
 |-------|------|-------------|-------------|
 | `size` | string | Représentation lisible de la taille de bloc (ex: "4KB") | Oui |
@@ -120,8 +117,7 @@ Chaque élément de l'array `blockSizes` suit la structure suivante :
     "samples": 10000
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Obligatoire |
 |-------|------|-------|-------------|-------------|
 | `min` | number | µs/ms | Latence minimale | Oui |
@@ -156,8 +152,7 @@ Chaque élément de l'array `blockSizes` suit la structure suivante :
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description | Obligatoire |
 |-------|------|-------------|-------------|
 | `histogram` | array | Histogramme de distribution des latences | Non |
@@ -180,8 +175,7 @@ Chaque élément de l'array `blockSizes` suit la structure suivante :
     "stabilityScore": 0.35
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Obligatoire |
 |-------|------|-------|-------------|-------------|
 | `variationCoefficient` | number | - | Coefficient de variation (écart-type / moyenne) | Non |
@@ -200,8 +194,7 @@ Chaque élément de l'array `blockSizes` suit la structure suivante :
     "hitLatencyToMissLatency": 0.08
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Obligatoire |
 |-------|------|-------|-------------|-------------|
 | `hitRate` | number | ratio (0-1) | Taux de succès du cache | Non |
@@ -224,8 +217,7 @@ Chaque élément de l'array `blockSizes` suit la structure suivante :
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Obligatoire |
 |-------|------|-------|-------------|-------------|
 | `avg` | number | MB/s | Débit moyen | Oui (si throughput présent) |
@@ -248,8 +240,7 @@ Chaque élément de l'array `blockSizes` suit la structure suivante :
     "iopsRatio": 0.18
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Obligatoire |
 |-------|------|-------|-------------|-------------|
 | `latencyRatio.avg` | number | ratio | Rapport entre la latence moyenne aléatoire et séquentielle | Non |
@@ -280,8 +271,7 @@ Chaque élément de l'array `blockSizes` suit la structure suivante :
     ]
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description | Obligatoire |
 |-------|------|-------------|-------------|
 | `smallestBlockSize` | string | Plus petite taille de bloc mesurée | Non |
@@ -318,8 +308,7 @@ Chaque élément de l'array `blockSizes` suit la structure suivante :
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description | Obligatoire |
 |-------|------|-------------|-------------|
 | `model` | string | Modèle mathématique de scaling (linear, logarithmic, etc.) | Non |
@@ -354,8 +343,7 @@ Chaque élément de l'array `blockSizes` suit la structure suivante :
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description | Obligatoire |
 |-------|------|-------------|-------------|
 | `overall` | string | Taille de bloc globalement optimale | Non |
@@ -415,8 +403,7 @@ Chaque élément de l'array `blockSizes` suit la structure suivante :
     }
   }
 }
-```
-
+```plaintext
 ### 4.2 Exemple complet (partiel)
 
 ```json
@@ -580,8 +567,7 @@ Chaque élément de l'array `blockSizes` suit la structure suivante :
     }
   }
 }
-```
-
+```plaintext
 ## 5. Bonnes pratiques
 
 ### 5.1 Implémentation du schéma

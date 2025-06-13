@@ -5,6 +5,7 @@
 > **🔄 Suivi**: ✅ Traçabilité activée
 
 ## Points de vigilance
+
 - ⚠️ (HAUTE) Configuration SMTP à sécuriser
 - ⚠️ (MOYENNE) Tests de performance à prévoir
 - ⚠️ (BASSE) Documentation utilisateur à maintenir
@@ -26,6 +27,7 @@
 ### ⚙️ Scripts d'initialisation
 
 ##### 🛠️ Script 1: `env-setup.sh`
+
 **📋 Tracking ID**: `phase-1-setup-env-setup-sh`
 **📊 Statut**:
 - [x] Planifié ⏳
@@ -46,6 +48,7 @@
 ### 💻 Scripts de développement
 
 ##### 🛠️ Script 1: `email-sender.ts`
+
 **📋 Tracking ID**: `phase-2-dev-email-sender`
 **📊 Statut**:
 - [x] Planifié ⏳
@@ -62,6 +65,7 @@
 ### 🧪 Scripts de tests
 
 ##### 🛠️ Script 1: `email-sender.test.ts`
+
 **📋 Tracking ID**: `phase-3-test-email-sender`
 **📊 Statut**:
 - [x] Planifié ⏳
@@ -73,6 +77,7 @@
 ### 📦 Scripts de déploiement
 
 ##### 🛠️ Script 1: `deploy.ps1`
+
 **📋 Tracking ID**: `phase-4-deploy-script`
 **📊 Statut**:
 - [x] Planifié ⏳
@@ -83,15 +88,17 @@
 
 ```powershell
 # Mettre à jour un script
+
 hygen plan-dev update add-script
 
 # Logger une décision
+
 hygen plan-dev update log-decision
 
 # Rapport hebdomadaire
-hygen plan-dev report weekly
-```
 
+hygen plan-dev report weekly
+```plaintext
 ---
 
 *Plan généré le 2025-05-28 | Version 2.0 Traceable*

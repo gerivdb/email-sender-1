@@ -27,8 +27,7 @@ Pour analyser les dépendances entre vos scripts PowerShell :
 
 ```powershell
 .\scripts\maintenance\error-prevention\Detect-CyclicDependencies.ps1 -Path ".\scripts" -Recursive
-```
-
+```plaintext
 3. Examinez les résultats pour identifier les cycles.
 
 ### Détecter les cycles dans les workflows n8n
@@ -40,8 +39,7 @@ Pour analyser vos workflows n8n :
 
 ```powershell
 .\scripts\n8n\workflow-validation\Validate-WorkflowCycles.ps1 -WorkflowsPath ".\workflows"
-```
-
+```plaintext
 3. Examinez les résultats pour identifier les cycles.
 
 ## Options avancées
@@ -52,8 +50,7 @@ Pour générer un rapport détaillé des cycles détectés :
 
 ```powershell
 .\scripts\maintenance\error-prevention\Detect-CyclicDependencies.ps1 -Path ".\scripts" -Recursive -OutputPath ".\reports\dependency_cycles.json"
-```
-
+```plaintext
 Le rapport JSON contiendra des informations détaillées sur les cycles détectés.
 
 ### Corriger automatiquement les cycles dans les workflows n8n
@@ -62,8 +59,7 @@ Pour corriger automatiquement les cycles dans les workflows n8n :
 
 ```powershell
 .\scripts\n8n\workflow-validation\Validate-WorkflowCycles.ps1 -WorkflowsPath ".\workflows" -FixCycles
-```
-
+```plaintext
 Cette commande tentera de corriger les cycles en supprimant les connexions problématiques.
 
 ### Valider tous les workflows n8n
@@ -72,8 +68,7 @@ Pour valider tous les workflows n8n et générer un rapport HTML :
 
 ```powershell
 .\scripts\n8n\workflow-validation\Validate-AllWorkflows.ps1 -WorkflowsPath ".\workflows" -ReportsPath ".\reports\workflows" -GenerateReport
-```
-
+```plaintext
 ## Exemples pratiques
 
 ### Exemple 1 : Détecter les cycles dans un projet
@@ -97,8 +92,7 @@ if ($result.HasCycles) {
 else {
     Write-Host "Aucun cycle détecté."
 }
-```
-
+```plaintext
 ### Exemple 2 : Corriger un workflow n8n spécifique
 
 Si vous avez un workflow n8n spécifique qui pose problème :
@@ -113,8 +107,7 @@ if ($result.FixedWorkflows -gt 0) {
 else {
     Write-Host "Aucune correction n'a été nécessaire ou possible."
 }
-```
-
+```plaintext
 ## Bonnes pratiques
 
 ### Pour éviter les cycles dans les scripts PowerShell
@@ -153,8 +146,7 @@ Vous pouvez configurer une tâche planifiée pour exécuter régulièrement la d
 
 ```powershell
 .\scripts\monitoring\Register-MonitoringTasks.ps1
-```
-
+```plaintext
 Cette commande enregistrera une tâche planifiée qui exécutera la détection de cycles quotidiennement.
 
 ### Intégration avec le système de feedback
@@ -164,8 +156,7 @@ Si vous trouvez des problèmes avec la détection de cycles, vous pouvez soumett
 ```powershell
 Import-Module .\modules\FeedbackCollection.psm1
 Submit-Feedback -Component "CycleDetector" -FeedbackType "Bug" -Description "Description du problème"
-```
-
+```plaintext
 ## Conclusion
 
 La détection et la correction des cycles sont essentielles pour maintenir des scripts et des workflows robustes. En utilisant régulièrement les outils de détection de cycles, vous pouvez éviter de nombreux problèmes et améliorer la qualité de votre code.

@@ -1,4 +1,4 @@
-﻿# Scripts de gestion de la roadmap
+# Scripts de gestion de la roadmap
 
 Ce dossier contient les scripts principaux pour la gestion de la roadmap du projet.
 
@@ -16,8 +16,7 @@ Pour accÃ©der Ã  toutes les fonctionnalitÃ©s, exÃ©cutez :
 
 ```powershell
 .\roadmap-manager.ps1
-```
-
+```plaintext
 ## Structure des dossiers
 
 - `scripts/` - Scripts principaux

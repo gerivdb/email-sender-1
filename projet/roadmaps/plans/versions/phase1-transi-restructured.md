@@ -3,25 +3,45 @@
 ## Table des matières
 
 1. [Développement Détaillé de la Phase 1 : Analyse et Préparation](#section-1)
+
     1.1. [Vue d'ensemble de la Phase 1](#section-2)
+
             1.1.0.1. [Workflow d'Inventaire Automatisé](#section-3)
+
             1.1.0.2. [Diagramme de Flux pour l'Inventaire](#section-4)
+
             1.1.0.3. [Workflow d'Analyse des Credentials](#section-5)
+
             1.1.0.4. [Diagramme de Flux pour l'Analyse des Credentials](#section-6)
+
             1.1.0.5. [Workflow d'Analyse des Expressions](#section-7)
+
             1.1.0.6. [Diagramme de Flux pour l'Analyse des Expressions](#section-8)
+
             1.1.0.7. [Diagramme de Flux pour l'Analyse des Expressions](#section-9)
+
             1.1.0.8. [Workflow de Duplication Automatisée](#section-10)
+
             1.1.0.9. [Diagramme de Flux pour la Duplication des Workflows](#section-11)
+
             1.1.0.10. [Workflow de Configuration des Bases de Données de Test](#section-12)
+
             1.1.0.11. [Diagramme de Flux pour la Configuration des Bases de Données de Test](#section-13)
+
             1.1.0.12. [Workflow de Création du Système de Journalisation](#section-14)
+
             1.1.0.13. [Diagramme de Flux pour le Système de Journalisation](#section-15)
+
             1.1.0.14. [Diagramme d'Intégration du Système de Journalisation dans les Workflows de Test](#section-16)
+
         1.1.1. [Liens avec les Phases Précédentes](#section-17)
+
         1.1.2. [Liens avec les Phases Suivantes](#section-18)
+
         1.1.3. [Tâches Régulières Répétitives](#section-19)
+
         1.1.4. [Événements de Fond](#section-20)
+
     1.2. [Conclusion](#section-21)
 
 ## 1. Développement Détaillé de la Phase 1 : Analyse et Préparation <a name='section-1'></a>
@@ -127,17 +147,21 @@ Nœuds nécessaires :
    * // Générer un rapport d'inventaire au format Markdown  
    * const workflowsData \= items.map(item \=\> item.json);  
    * let report \= \`\# Inventaire des Workflows Email Sender\\n\\n\`;  
+
    * report \+= \`Date de génération: ${new Date().toISOString()}\\n\\n\`;  
    * report \+= \`\#\# Vue d'ensemble\\n\\n\`;  
+
    * report \+= \`Nombre total de workflows: ${workflowsData.length}\\n\\n\`;  
    * // Tableau des workflows  
    * report \+= \`\#\# Liste des Workflows\\n\\n\`;  
+
    * report \+= \`| ID | Nom | Nombre de Nœuds |\\n\`;  
    * report \+= \`|-----|-----|---------------|\\n\`;  
    * workflowsData.forEach(wf \=\> {  
    *   report \+= \`| ${wf.workflowId} | ${wf.workflowName} | ${wf.nodeCount} |\\n\`;  
    * // Statistiques sur les types de nœuds  
    * report \+= \`\\n\#\# Types de Nœuds Utilisés\\n\\n\`;  
+
    * const allNodeTypes \= {};  
    *   Object.entries(wf.nodeTypes).forEach((\[type, count\]) \=\> {  
    *     allNodeTypes\[type\] \= (allNodeTypes\[type\] || 0\) \+ count;  
@@ -149,6 +173,7 @@ Nœuds nécessaires :
    *     report \+= \`| ${type} | ${count} |\\n\`;  
    * // Credentials utilisés  
    * report \+= \`\\n\#\# Credentials Utilisés\\n\\n\`;  
+
    * const allCredentials \= {};  
    *   Object.entries(wf.credentials).forEach((\[type, names\]) \=\> {  
    *     allCredentials\[type\] \= allCredentials\[type\] || new Set();  
@@ -160,6 +185,7 @@ Nœuds nécessaires :
    *   report \+= \`| ${type} | ${names} |\\n\`;  
    * // Expressions utilisées  
    * report \+= \`\\n\#\# Expressions Couramment Utilisées\\n\\n\`;  
+
    * const expressionCount \= {};  
    *   wf.expressions.forEach(expr \=\> {  
    *     expressionCount\[expr\] \= (expressionCount\[expr\] || 0\) \+ 1;  
@@ -171,19 +197,24 @@ Nœuds nécessaires :
    *     report \+= \`| \\\`${expr}\\\` | ${count} |\\n\`;  
    * // Analyse des dépendances entre workflows  
    * report \+= \`\\n\#\# Dépendances entre Workflows\\n\\n\`;  
+
    * // Cette partie nécessiterait une analyse plus approfondie des connexions  
    * // entre les workflows, ce qui pourrait être complexe à automatiser.  
    * report \+= \`\*Cette section nécessite une analyse manuelle approfondie.\*\\n\\n\`;  
    * // Détails par workflow  
    * report \+= \`\\n\#\# Détails par Workflow\\n\\n\`;  
+
    *   report \+= \`\#\#\# ${wf.workflowName}\\n\\n\`;  
+
    *   report \+= \`- \*\*ID\*\*: ${wf.workflowId}\\n\`;  
    *   report \+= \`- \*\*Nombre de nœuds\*\*: ${wf.nodeCount}\\n\\n\`;  
    *   report \+= \`\#\#\#\# Types de Nœuds\\n\\n\`;  
+
    *   report \+= \`| Type | Nombre |\\n\`;  
    *   report \+= \`|------|--------|\\n\`;  
    *   Object.entries(wf.nodeTypes)  
    *   report \+= \`\\n\#\#\#\# Flux de Données\\n\\n\`;  
+
    *   report \+= \`\\\`\\\`\\\`\\n\`;  
    *   // Représentation ASCII du flux de données  
    *   const processedNodes \= new Set();  
@@ -301,11 +332,14 @@ Nœuds nécessaires :
    * // Générer un rapport sur l'utilisation des credentials  
    * const usageData \= items.map(item \=\> item.json);  
    * let report \= \`\# Analyse des Credentials pour Email Sender\\n\\n\`;  
+
    * report \+= \`Date de génération: ${new Date().toISOString()}\\n\\n\`;  
    * report \+= \`\#\# Vue d'ensemble\\n\\n\`;  
+
    * report \+= \`Nombre total de credentials analysés: ${usageData.length}\\n\\n\`;  
    * // Tableau des credentials  
    * report \+= \`\#\# Liste des Credentials\\n\\n\`;  
+
    * report \+= \`| ID | Nom | Type | Nombre de Workflows |\\n\`;  
    * report \+= \`|-----|-----|------|--------------------|\\n\`;  
    * usageData.forEach(cred \=\> {  
@@ -313,22 +347,28 @@ Nœuds nécessaires :
    *   credentialType} | ${cred.workflowCount} |\\n\`;  
    * // Détails par credential  
    * report \+= \`\\n\#\# Détails par Credential\\n\\n\`;  
+
    *   report \+= \`\#\#\# ${cred.credentialName} (${cred.credentialType})\\n\\n\`;  
+
    *   report \+= \`- \*\*ID\*\*: ${cred.credentialId}\\n\`;  
    *   report \+= \`- \*\*Utilisé dans ${cred.workflowCount} workflow(s)\*\*\\n\\n\`;  
    *   report \+= \`\#\#\#\# Workflows\\n\\n\`;  
+
    *   cred.workflows.forEach(wf \=\> {  
    *     report \+= \`- ${wf}\\n\`;  
    *   report \+= \`\\n\#\#\#\# Types de Nœuds\\n\\n\`;  
+
    *   cred.nodeTypes.forEach(nodeType \=\> {  
    *     report \+= \`- ${nodeType}\\n\`;  
    *   report \+= \`\\n\`;  
    * // Recommandations  
    * report \+= \`\#\# Recommandations\\n\\n\`;  
+
    * // Identifier les credentials potentiellement réutilisables  
    * const reusableCredentials \= usageData.filter(cred \=\> cred.workflowCount \=== 1);  
    * if (reusableCredentials.length \> 0\) {  
    *   report \+= \`\#\#\# Credentials Potentiellement Réutilisables\\n\\n\`;  
+
    *   report \+= \`Les credentials suivants ne sont utilisés que dans un seul   
    *   workflow et pourraient être réutilisés dans la nouvelle architecture:\\n\\n\`;  
    *   reusableCredentials.forEach(cred \=\> {  
@@ -338,6 +378,7 @@ Nœuds nécessaires :
    * const serviceTypes \= new Set();  
    *   serviceTypes.add(cred.credentialType);  
    * report \+= \`\\n\#\#\# Services Externes Utilisés\\n\\n\`;  
+
    * Array.from(serviceTypes).forEach(service \=\> {  
    *   report \+= \`- ${service}\\n\`;  
    * return \[{ json: { report } }\];  
@@ -462,11 +503,14 @@ Nœuds nécessaires :
    * // Générer un rapport sur les expressions utilisées  
    * const workflowsData \= items.map(item \=\> item.json);  
    * let report \= \`\# Analyse des Expressions pour Email Sender\\n\\n\`;  
+
    * report \+= \`Date de génération: ${new Date().toISOString()}\\n\\n\`;  
    * report \+= \`\#\# Vue d'ensemble\\n\\n\`;  
+
    * report \+= \`Nombre total de workflows analysés: ${workflowsData.length}\\n\\n\`;  
    * // Tableau des workflows  
    * report \+= \`\#\# Expressions par Workflow\\n\\n\`;  
+
    * report \+= \`| Workflow | Nombre d'Expressions | $json | $node | $input |   
    * $item | $parameter | $env | $workflow | Autres |\\n\`;  
    * report \+= \`|----------|---------------------|-------|-------|--------|-------|  
@@ -479,6 +523,7 @@ Nœuds nécessaires :
    *   workflow.length} | ${types.other.length} |\\n\`;  
    * // Expressions courantes  
    * report \+= \`\\n\#\# Expressions $json Courantes\\n\\n\`;  
+
    * const allJsonExpressions \= {};  
    *   wf.expressionTypes.json.forEach(expr \=\> {  
    *     allJsonExpressions\[cleaned\] \= (allJsonExpressions\[cleaned\] || 0\) \+ 1;  
@@ -491,29 +536,36 @@ Nœuds nécessaires :
    *     report \+= \`| \\\`${expr}\\\` | ${count} |\\n\`;  
    * // Expressions $node  
    * report \+= \`\\n\#\# Expressions $node Courantes\\n\\n\`;  
+
    * const allNodeExpressions \= {};  
    *   wf.expressionTypes.node.forEach(expr \=\> {  
    *     allNodeExpressions\[cleaned\] \= (allNodeExpressions\[cleaned\] || 0\) \+ 1;  
    * Object.entries(allNodeExpressions)  
    * // Variables et leur portée  
    * report \+= \`\\n\#\# Variables et leur Portée\\n\\n\`;  
+
    * report \+= \`\#\#\# Variables $json\\n\\n\`;  
+
    * report \+= \`Les variables $json sont limitées au contexte de l'item courant   
    * dans le workflow.\\n\\n\`;  
    * report \+= \`\#\#\# Variables $node\\n\\n\`;  
+
    * report \+= \`Les variables $node permettent d'accéder aux données d'un nœud   
    * spécifique, indépendamment du flux de données.\\n\\n\`;  
    * report \+= \`\#\#\# Variables $input\\n\\n\`;  
+
    * report \+= \`Les variables $input sont utilisées principalement dans les nœuds   
    * Code pour accéder aux données d'entrée.\\n\\n\`;  
    * // Expressions qui pourraient nécessiter une adaptation  
    * report \+= \`\\n\#\# Expressions Nécessitant Potentiellement une Adaptation\\n\\n\`;  
+
    * // Expressions faisant référence à des nœuds spécifiques  
    * const nodeReferences \= new Set();  
    *     const match \= expr.cleaned.match(/\\$node\\\["(\[^"\]+)"\\\]/);  
    *     if (match) {  
    *       nodeReferences.add(match\[1\]);  
    * report \+= \`\#\#\# Références à des Nœuds Spécifiques\\n\\n\`;  
+
    * report \+= \`Les expressions suivantes font référence à des nœuds spécifiques et   
    * pourraient nécessiter une adaptation dans la nouvelle architecture:\\n\\n\`;  
    * Array.from(nodeReferences).forEach(nodeName \=\> {  
@@ -525,6 +577,7 @@ Nœuds nécessaires :
    *       envVariables.add(match\[1\]);  
    * if (envVariables.size \> 0\) {  
    *   report \+= \`\\n\#\#\# Variables d'Environnement\\n\\n\`;  
+
    *   report \+= \`Les variables d'environnement suivantes sont utilisées et devront   
    *   être configurées dans le nouvel environnement:\\n\\n\`;  
    *   Array.from(envVariables).forEach(envVar \=\> {  
@@ -618,13 +671,16 @@ Nœuds nécessaires :
    *   newId: item.json.id  
    * }));  
    * let report \= \`\# Rapport de Duplication des Workflows Email Sender\\n\\n\`;  
+
    * report \+= \`Date de génération: ${new Date().toISOString()}\\n\\n\`;  
    * report \+= \`\#\# Workflows Dupliqués\\n\\n\`;  
+
    * report \+= \`| Workflow Original | Workflow de Test | ID |\\n\`;  
    * report \+= \`|------------------|-----------------|----|\\n\`;  
    * duplicatedWorkflows.forEach(wf \=\> {  
    *   report \+= \`| ${wf.originalName} | ${wf.newName} | ${wf.newId} |\\n\`;  
    * report \+= \`\\n\#\# Prochaines Étapes\\n\\n\`;  
+
    * report \+= \`1. Configurer les bases de données Notion de test\\n\`;  
    * report \+= \`2. Configurer un calendrier Google de test\\n\`;  
    * report \+= \`3. Mettre en place des comptes email de test\\n\`;  
@@ -706,13 +762,16 @@ Nœuds nécessaires :
    * // Générer un guide de configuration pour les bases de données de test  
    * const databases \= items.map(item \=\> item.json);  
    * let guide \= \`\# Guide de Configuration des Bases de Données de Test\\n\\n\`;  
+
    * guide \+= \`Date de génération: ${new Date().toISOString()}\\n\\n\`;  
    * guide \+= \`\#\# Bases de Données à Dupliquer\\n\\n\`;  
+
    * guide \+= \`| Base de Données Originale | ID | URL |\\n\`;  
    * guide \+= \`|---------------------------|----|----|\`;  
    * databases.forEach(db \=\> {  
    *   guide \+= \`\\n| ${db.originalTitle} | ${db.originalId} | ${db.url} |\`;  
    * guide \+= \`\\n\\n\#\# Instructions de Duplication\\n\\n\`;  
+
    * guide \+= \`Pour chaque base de données listée ci-dessus, suivez ces   
    * étapes:\\n\\n\`;  
    * guide \+= \`1. Ouvrez la base de données dans Notion en utilisant l'URL   
@@ -725,6 +784,7 @@ Nœuds nécessaires :
    * toutes les entrées)\\n\`;  
    * guide \+= \`6. Ajoutez quelques entrées de test\\n\\n\`;  
    * guide \+= \`\#\# Configuration des Credentials Notion\\n\\n\`;  
+
    * guide \+= \`Après avoir dupliqué toutes les bases de données, vous devrez:\\n\\n\`;  
    * guide \+= \`1. Créer un nouvel intégration Notion pour l'environnement de   
    * test\\n\`;  
@@ -735,6 +795,7 @@ Nœuds nécessaires :
    * guide \+= \`4. Mettre à jour les workflows de test pour utiliser ce nouveau   
    * credential\\n\\n\`;  
    * guide \+= \`\#\# Mise à Jour des IDs de Base de Données\\n\\n\`;  
+
    * guide \+= \`Après avoir dupliqué les bases de données, vous devrez mettre à jour   
    * les IDs dans les workflows de test:\\n\\n\`;  
    *   guide \+= \`- Remplacer l'ID \\\`${db.originalId}\\\` par l'ID de la nouvelle base   

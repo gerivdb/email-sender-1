@@ -1,4 +1,4 @@
-﻿# ConvertFrom-MarkdownToRoadmapWithDependencies
+# ConvertFrom-MarkdownToRoadmapWithDependencies
 
 ## SYNOPSIS
 

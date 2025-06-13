@@ -6,6 +6,7 @@ related: []
 ---
 
 ## Gestion des fins de ligne (LF/CRLF)
+
 - **Problème identifié** : Nombreux avertissements sur les fins de ligne lors du commit
   ```
   warning: in the working copy of 'file.md', LF will be replaced by CRLF the next time Git touches it
@@ -17,3 +18,4 @@ related: []
   - Standardiser l'environnement de développement pour éviter les problèmes de compatibilité
 
 ##
+

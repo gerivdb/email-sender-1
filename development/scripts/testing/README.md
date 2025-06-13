@@ -1,4 +1,4 @@
-﻿# Tests avec des pull requests rÃ©elles
+# Tests avec des pull requests rÃ©elles
 
 Ce dossier contient les scripts nÃ©cessaires pour tester le systÃ¨me d'analyse des pull requests avec des pull requests rÃ©elles.
 
@@ -15,32 +15,28 @@ Ce dossier contient les scripts nÃ©cessaires pour tester le systÃ¨me d'analy
 
 ```powershell
 .\New-TestRepository.ps1 -Path "D:\TestRepos\PR-Test" -SourceRepo "D:\MyProject"
-```
-
+```plaintext
 Ce script crÃ©e un dÃ©pÃ´t Git isolÃ© pour les tests de pull requests. Il configure le dÃ©pÃ´t avec la mÃªme structure que le dÃ©pÃ´t principal et met en place les branches nÃ©cessaires.
 
 ### GÃ©nÃ©ration d'une pull request de test
 
 ```powershell
 .\New-TestPullRequest.ps1 -FileCount 10 -ErrorCount 5 -ErrorTypes "Syntax,Style" -ModificationTypes "Mixed"
-```
-
+```plaintext
 Ce script crÃ©e une pull request de test avec diffÃ©rents types de modifications (ajouts, modifications, suppressions) et injecte des erreurs connues pour tester le systÃ¨me d'analyse.
 
 ### Mesure des performances
 
 ```powershell
 .\Measure-PRAnalysisPerformance.ps1 -PullRequestNumber 42 -DetailedReport $true
-```
-
+```plaintext
 Ce script mesure les performances du systÃ¨me d'analyse des pull requests en collectant des mÃ©triques sur les temps d'exÃ©cution, la prÃ©cision des dÃ©tections d'erreurs et l'utilisation des ressources.
 
 ### ExÃ©cution de la suite de tests complÃ¨te
 
 ```powershell
 .\Start-PRTestSuite.ps1 -CreateRepository $true -RunAllTests $true -GenerateReport $true
-```
-
+```plaintext
 Ce script exÃ©cute une suite complÃ¨te de tests pour le systÃ¨me d'analyse des pull requests en gÃ©nÃ©rant diffÃ©rents types de pull requests et en mesurant les performances de l'analyse.
 
 ## Types de modifications
@@ -78,16 +74,14 @@ Les rapports de performance sont gÃ©nÃ©rÃ©s dans le dossier `reports` et c
 .\New-TestPullRequest.ps1 -ModificationTypes "Modify" -FileCount 5 -ErrorCount 3
 .\New-TestPullRequest.ps1 -ModificationTypes "Delete" -FileCount 3
 .\New-TestPullRequest.ps1 -ModificationTypes "Mixed" -FileCount 8 -ErrorCount 3
-```
-
+```plaintext
 ### Test avec diffÃ©rents volumes
 
 ```powershell
 .\New-TestPullRequest.ps1 -ModificationTypes "Mixed" -FileCount 3 -ErrorCount 2
 .\New-TestPullRequest.ps1 -ModificationTypes "Mixed" -FileCount 10 -ErrorCount 2
 .\New-TestPullRequest.ps1 -ModificationTypes "Mixed" -FileCount 20 -ErrorCount 2
-```
-
+```plaintext
 ### Test avec diffÃ©rents types d'erreurs
 
 ```powershell
@@ -95,4 +89,4 @@ Les rapports de performance sont gÃ©nÃ©rÃ©s dans le dossier `reports` et c
 .\New-TestPullRequest.ps1 -ModificationTypes "Mixed" -FileCount 5 -ErrorCount 3 -ErrorTypes "Style"
 .\New-TestPullRequest.ps1 -ModificationTypes "Mixed" -FileCount 5 -ErrorCount 3 -ErrorTypes "Performance"
 .\New-TestPullRequest.ps1 -ModificationTypes "Mixed" -FileCount 5 -ErrorCount 3 -ErrorTypes "Security"
-```
+```plaintext

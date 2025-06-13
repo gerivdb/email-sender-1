@@ -22,8 +22,11 @@ La configuration des formats de tags est stockée dans un fichier JSON avec la s
         {
           "name": "DurationDays",
           "pattern": "#duration:(\\d+(?:\\.\\d+)?)d\\b",
+
           "description": "Format #duration:Xd (jours)",
+
           "example": "#duration:5d",
+
           "value_group": 1,
           "unit": "days"
         },
@@ -33,8 +36,7 @@ La configuration des formats de tags est stockée dans un fichier JSON avec la s
     // Autres types de tags...
   }
 }
-```
-
+```plaintext
 ### Éléments de la configuration
 
 - **name** : Nom de la configuration
@@ -84,71 +86,68 @@ Le script `Manage-TagFormats.ps1` permet de gérer la configuration des formats 
 
 ```powershell
 .\Manage-TagFormats.ps1 -Action Get -TagType duration -FormatName DurationDays -ConfigPath "path\to\config.json"
-```
-
+```plaintext
 #### Ajouter un nouveau format
 
 ```powershell
 .\Manage-TagFormats.ps1 -Action Add -TagType duration -FormatName DurationHours -Pattern "#duration:(\d+(?:\.\d+)?)h\b" -Description "Format #duration:Xh (heures)" -Example "#duration:3h" -Unit "hours" -ValueGroup 1 -ConfigPath "path\to\config.json"
-```
 
+```plaintext
 #### Mettre à jour un format existant
 
 ```powershell
 .\Manage-TagFormats.ps1 -Action Update -TagType duration -FormatName DurationDays -Description "Nouvelle description" -ConfigPath "path\to\config.json"
-```
-
+```plaintext
 #### Supprimer un format
 
 ```powershell
 .\Manage-TagFormats.ps1 -Action Remove -TagType duration -FormatName DurationDays -ConfigPath "path\to\config.json"
-```
-
+```plaintext
 #### Lister tous les formats
 
 ```powershell
 .\Manage-TagFormats.ps1 -Action List -ConfigPath "path\to\config.json"
-```
-
+```plaintext
 #### Lister les formats d'un type spécifique
 
 ```powershell
 .\Manage-TagFormats.ps1 -Action List -TagType duration -ConfigPath "path\to\config.json"
-```
-
+```plaintext
 #### Exporter la configuration
 
 ```powershell
 .\Manage-TagFormats.ps1 -Action Export -ConfigPath "path\to\config.json" -OutputPath "path\to\export.json"
-```
-
+```plaintext
 #### Importer une configuration
 
 ```powershell
 .\Manage-TagFormats.ps1 -Action Import -ConfigPath "path\to\config.json" -ImportPath "path\to\import.json"
-```
-
+```plaintext
 ## Utilisation programmatique
 
 Vous pouvez également utiliser les fonctions du script dans vos propres scripts PowerShell.
 
 ```powershell
 # Charger les fonctions du script
+
 . "path\to\Manage-TagFormats.ps1"
 
 # Charger la configuration
+
 $config = Get-TagFormatsConfig -ConfigPath "path\to\config.json"
 
 # Obtenir un format spécifique
+
 $format = Get-TagFormat -Config $config -TagType "duration" -FormatName "DurationDays"
 
 # Ajouter un nouveau format
+
 $result = Add-TagFormat -Config $config -TagType "duration" -FormatName "DurationHours" -Pattern "#duration:(\d+(?:\.\d+)?)h\b" -Description "Format #duration:Xh (heures)" -Example "#duration:3h" -Unit "hours" -ValueGroup 1
 
 # Sauvegarder la configuration
-Save-TagFormatsConfig -Config $config -ConfigPath "path\to\config.json"
-```
 
+Save-TagFormatsConfig -Config $config -ConfigPath "path\to\config.json"
+```plaintext
 ## Bonnes pratiques
 
 ### Nommage des formats

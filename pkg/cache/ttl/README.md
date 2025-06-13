@@ -13,15 +13,19 @@ The TTL management system provides intelligent cache optimization through:
 
 ## 🏗️ Architecture
 
-```
+```plaintext
 pkg/cache/ttl/
 ├── manager.go        # Core TTL management and Redis integration
-├── analyzer.go       # Usage pattern analysis and optimization
-├── invalidation.go   # Cache invalidation strategies
-├── monitoring.go     # Metrics collection and alerting
-└── ttl_test.go      # Comprehensive test suite
-```
 
+├── analyzer.go       # Usage pattern analysis and optimization
+
+├── invalidation.go   # Cache invalidation strategies
+
+├── monitoring.go     # Metrics collection and alerting
+
+└── ttl_test.go      # Comprehensive test suite
+
+```plaintext
 ## 🚀 Quick Start
 
 ### Basic Usage
@@ -44,8 +48,7 @@ found, err := manager.Get("user:123", &user)
 if err != nil {
     log.Fatal(err)
 }
-```
-
+```plaintext
 ### Advanced Configuration
 
 ```go
@@ -59,8 +62,7 @@ go analyzer.StartAutoOptimization(ctx, 30*time.Minute)
 // Set up monitoring
 monitor := ttl.NewCacheMetrics(redisClient)
 go monitor.StartMetricsCollection(ctx, 10*time.Second)
-```
-
+```plaintext
 ## 📊 Data Types & TTL Defaults
 
 | Data Type | Default TTL | Use Case |
@@ -82,8 +84,7 @@ manager.SetTTL(ttl.UserSessions, 2*time.Hour)
 
 // Automatic optimization based on usage patterns
 analyzer.OptimizeTTL("user_data_pattern")
-```
-
+```plaintext
 ### 2. Cache Analysis & Optimization
 
 ```go
@@ -94,8 +95,7 @@ fmt.Printf("Recommended TTL: %v\n", analysis.RecommendedTTL)
 
 // Get optimization recommendations
 recommendations := analyzer.GetOptimizationRecommendations()
-```
-
+```plaintext
 ### 3. Smart Invalidation Strategies
 
 ```go
@@ -108,8 +108,7 @@ invalidator.InvalidateByEvent("user_update", "user:*")
 
 // Version-based invalidation
 invalidator.InvalidateByVersion("config", 2)
-```
-
+```plaintext
 ### 4. Comprehensive Monitoring
 
 ```go
@@ -124,26 +123,27 @@ alert := ttl.AlertConfig{
     Action:     ttl.LogAlert,
 }
 metrics.AddAlert(alert)
-```
-
+```plaintext
 ## 🛠️ CLI Tools
 
 ### Cache Analyzer Tool
 
 ```bash
 # Build the analyzer tool
+
 go build -o cache-analyzer tools/cache-analyzer/main.go
 
 # Run analysis
+
 ./cache-analyzer -redis-addr="localhost:6379" -analysis-type="comprehensive"
 
 # Generate recommendations
-./cache-analyzer -redis-addr="localhost:6379" -analysis-type="recommendations"
-```
 
+./cache-analyzer -redis-addr="localhost:6379" -analysis-type="recommendations"
+```plaintext
 ### Example Output
 
-```
+```plaintext
 Cache Analysis Report
 ====================
 Overall Hit Rate: 89.2%
@@ -155,8 +155,7 @@ Recommendations:
 - Increase TTL for 'user_sessions' pattern (current: 2h, recommended: 3h)
 - Consider implementing preloading for 'email_templates' pattern
 - Monitor 'ml_models' pattern - high eviction rate detected
-```
-
+```plaintext
 ## 📈 Performance Metrics
 
 The system tracks comprehensive metrics:
@@ -189,46 +188,47 @@ Run the comprehensive test suite:
 
 ```bash
 # Run all tests
+
 go test ./pkg/cache/ttl/... -v
 
 # Run with Redis integration (requires Redis server)
+
 go test ./pkg/cache/ttl/... -v -tags=integration
 
 # Run benchmarks
-go test ./pkg/cache/ttl/... -bench=. -benchmem
-```
 
+go test ./pkg/cache/ttl/... -bench=. -benchmem
+```plaintext
 ## 📋 Demo Scripts
 
 ### Simple Demo
 
 ```bash
 go run demo/ttl-demo-simple.go
-```
-
+```plaintext
 ### Comprehensive Demo
 
 ```bash
 go run demo/ttl-system-demo.go
-```
-
+```plaintext
 ### Working Demo with Fallback
 
 ```bash
 go run demo/ttl-demo-working.go
-```
-
+```plaintext
 ## ⚙️ Configuration
 
 ### Environment Variables
 
 ```bash
 # Redis Configuration
+
 REDIS_ADDR=localhost:6379
 REDIS_PASSWORD=
 REDIS_DB=0
 
 # TTL Configuration
+
 TTL_DEFAULT_VALUES=1h
 TTL_STATISTICS=24h
 TTL_ML_MODELS=1h
@@ -236,10 +236,10 @@ TTL_CONFIGURATION=30m
 TTL_USER_SESSIONS=2h
 
 # Monitoring Configuration
+
 METRICS_COLLECTION_INTERVAL=10s
 OPTIMIZATION_INTERVAL=30m
-```
-
+```plaintext
 ### Programmatic Configuration
 
 ```go
@@ -257,8 +257,7 @@ config := ttl.Config{
 }
 
 manager := ttl.NewTTLManagerWithConfig(config)
-```
-
+```plaintext
 ## 🔧 Production Deployment
 
 ### Docker Deployment
@@ -274,8 +273,7 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 COPY --from=builder /app/email-sender .
 CMD ["./email-sender"]
-```
-
+```plaintext
 ### Kubernetes Configuration
 
 ```yaml
@@ -301,8 +299,7 @@ spec:
           value: "redis-service:6379"
         - name: TTL_OPTIMIZATION_INTERVAL
           value: "30m"
-```
-
+```plaintext
 ### Performance Tuning
 
 1. **Memory Optimization**
@@ -333,8 +330,7 @@ manager.Set("user:preferences:123", userPrefs, ttl.UserSessions)
 
 // Cache ML model results
 manager.Set("ml:sentiment:abc", sentimentResult, ttl.MLModels)
-```
-
+```plaintext
 ### Metrics Integration
 
 ```go
@@ -350,8 +346,7 @@ go func() {
         time.Sleep(30 * time.Second)
     }
 }()
-```
-
+```plaintext
 ## 📚 API Reference
 
 ### TTLManager
@@ -405,8 +400,7 @@ Enable debug logging:
 ```go
 manager.SetDebugMode(true)
 analyzer.SetDebugMode(true)
-```
-
+```plaintext
 ## 📄 License
 
 This TTL management system is part of the EMAIL_SENDER_1 project.

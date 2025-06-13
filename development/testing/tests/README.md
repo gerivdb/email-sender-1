@@ -15,12 +15,15 @@ Ce répertoire contient les tests du projet.
 
 `powershell
 # Exécuter tous les tests
+
 Invoke-Pester
 
 # Exécuter les tests unitaires
+
 Invoke-Pester -Path ./unit
 
 # Exécuter les tests d'intégration
+
 Invoke-Pester -Path ./integration
 `
 "@

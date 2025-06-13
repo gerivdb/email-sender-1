@@ -1,4 +1,4 @@
-﻿# Configuration des gestionnaires
+# Configuration des gestionnaires
 
 Ce rÃ©pertoire contient les fichiers de configuration de tous les gestionnaires du projet.
 

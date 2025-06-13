@@ -186,8 +186,7 @@ Le profil minimal inclut uniquement les champs strictement obligatoires, suffisa
     ]
   }
 }
-```
-
+```plaintext
 ### 4.2 Profil standard
 
 Le profil standard inclut les champs obligatoires ainsi que les champs optionnels les plus couramment utilisés, offrant un bon équilibre entre complétude et simplicité.
@@ -236,8 +235,7 @@ Le profil standard inclut les champs obligatoires ainsi que les champs optionnel
     }
   }
 }
-```
-
+```plaintext
 ### 4.3 Profil complet
 
 Le profil complet inclut tous les champs définis dans le schéma, fournissant une analyse exhaustive des performances par taille de bloc.
@@ -319,8 +317,7 @@ Le profil complet inclut tous les champs définis dans le schéma, fournissant u
     }
   }
 }
-```
-
+```plaintext
 ### 4.4 Profil analytique
 
 Le profil analytique se concentre sur les métriques avancées et les analyses comparatives, en omettant certains détails de base.
@@ -380,8 +377,7 @@ Le profil analytique se concentre sur les métriques avancées et les analyses c
     }
   }
 }
-```
-
+```plaintext
 ## 5. Validation des données
 
 ### 5.1 Règles de validation pour les champs obligatoires
@@ -428,8 +424,7 @@ Le profil analytique se concentre sur les métriques avancées et les analyses c
     ]
   }
 }
-```
-
+```plaintext
 ### 6.2 Exemple invalide (champ obligatoire manquant)
 
 ```json
@@ -452,8 +447,7 @@ Le profil analytique se concentre sur les métriques avancées et les analyses c
     ]
   }
 }
-```
-
+```plaintext
 ### 6.3 Exemple invalide (incohérence de données)
 
 ```json
@@ -476,8 +470,7 @@ Le profil analytique se concentre sur les métriques avancées et les analyses c
     ]
   }
 }
-```
-
+```plaintext
 ## 7. Conclusion
 
 La classification des champs en obligatoires et optionnels permet une implémentation flexible du schéma de métriques par taille de bloc pour les lectures aléatoires. Les différents profils d'implémentation offrent des options adaptées à divers besoins, de l'analyse de base à l'analyse exhaustive. Les règles de validation garantissent la cohérence et l'intégrité des données, assurant ainsi la fiabilité des analyses et des comparaisons basées sur ces métriques.

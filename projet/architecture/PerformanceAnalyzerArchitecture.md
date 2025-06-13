@@ -15,7 +15,7 @@ Le module PerformanceAnalyzer est conçu pour collecter, analyser et visualiser 
 
 ## Architecture globale
 
-```
+```plaintext
 +---------------------+     +----------------------+     +----------------------+
 |                     |     |                      |     |                      |
 | MetricsCollector    |---->| PerformanceAnalyzer  |---->| MetricsVisualizer   |
@@ -29,8 +29,7 @@ Le module PerformanceAnalyzer est conçu pour collecter, analyser et visualiser 
 | MetricsStorage      |<--->| AnalyticsEngine      |<--->| ReportGenerator     |
 |                     |     |                      |     |                      |
 +---------------------+     +----------------------+     +----------------------+
-```
-
+```plaintext
 ## Composants principaux
 
 ### MetricsCollector
@@ -49,6 +48,7 @@ Le composant MetricsCollector est responsable de la collecte des métriques de p
 
 ```powershell
 # Interface principale
+
 function Initialize-MetricsCollector
 function Start-MetricsCollection
 function Stop-MetricsCollection
@@ -57,13 +57,13 @@ function Register-CustomCollector
 function Set-CollectionInterval
 
 # Interfaces spécifiques
+
 function Get-CPUMetrics
 function Get-MemoryMetrics
 function Get-DiskMetrics
 function Get-NetworkMetrics
 function Get-ApplicationMetrics
-```
-
+```plaintext
 ### PerformanceAnalyzer
 
 Le composant PerformanceAnalyzer est le module principal qui coordonne la collecte, l'analyse et la visualisation des métriques.
@@ -79,6 +79,7 @@ Le composant PerformanceAnalyzer est le module principal qui coordonne la collec
 
 ```powershell
 # Interface principale
+
 function Initialize-PerformanceAnalyzer
 function Start-PerformanceAnalysis
 function Stop-PerformanceAnalysis
@@ -87,11 +88,11 @@ function Set-PerformanceThreshold
 function Register-PerformanceAlert
 
 # Interfaces de configuration
+
 function Import-PerformanceConfiguration
 function Export-PerformanceConfiguration
 function New-PerformanceProfile
-```
-
+```plaintext
 ### AnalyticsEngine
 
 Le composant AnalyticsEngine est responsable de l'analyse des métriques collectées pour identifier les tendances, les anomalies et les opportunités d'optimisation.
@@ -108,19 +109,20 @@ Le composant AnalyticsEngine est responsable de l'analyse des métriques collect
 
 ```powershell
 # Interface principale
+
 function Initialize-AnalyticsEngine
 function Start-MetricsAnalysis
 function Get-AnalysisResult
 function Export-AnalysisResult
 
 # Interfaces spécifiques
+
 function Get-PerformanceTrend
 function Find-PerformanceAnomaly
 function Get-MetricCorrelation
 function Get-PerformancePrediction
 function Get-OptimizationRecommendation
-```
-
+```plaintext
 ### MetricsStorage
 
 Le composant MetricsStorage est responsable du stockage temporaire et persistant des métriques collectées.
@@ -136,6 +138,7 @@ Le composant MetricsStorage est responsable du stockage temporaire et persistant
 
 ```powershell
 # Interface principale
+
 function Initialize-MetricsStorage
 function Save-Metrics
 function Get-StoredMetrics
@@ -144,11 +147,11 @@ function Export-StoredMetrics
 function Import-StoredMetrics
 
 # Interfaces spécifiques
+
 function Get-MetricsByTimeRange
 function Get-MetricsByType
 function Get-MetricsStatistics
-```
-
+```plaintext
 ### MetricsVisualizer
 
 Le composant MetricsVisualizer est responsable de la visualisation des métriques et des résultats d'analyse.
@@ -164,19 +167,20 @@ Le composant MetricsVisualizer est responsable de la visualisation des métrique
 
 ```powershell
 # Interface principale
+
 function Initialize-MetricsVisualizer
 function New-PerformanceChart
 function New-PerformanceDashboard
 function Export-Visualization
 
 # Interfaces spécifiques
+
 function New-LineChart
 function New-BarChart
 function New-HeatMap
 function New-Gauge
 function New-DataTable
-```
-
+```plaintext
 ### ReportGenerator
 
 Le composant ReportGenerator est responsable de la génération de rapports détaillés sur les performances.
@@ -192,18 +196,19 @@ Le composant ReportGenerator est responsable de la génération de rapports dét
 
 ```powershell
 # Interface principale
+
 function Initialize-ReportGenerator
 function New-PerformanceReport
 function Export-Report
 function Send-Report
 
 # Interfaces spécifiques
+
 function New-ExecutiveSummary
 function New-DetailedReport
 function New-CustomReport
 function Get-ReportTemplate
-```
-
+```plaintext
 ## Flux de données
 
 ### Collecte des métriques
@@ -282,7 +287,7 @@ function Get-ReportTemplate
 
 ## Diagramme de classes
 
-```
+```plaintext
 +-------------------+       +-------------------+       +-------------------+
 | PerformanceAnalyzer|<----->| MetricsCollector  |<----->| MetricsStorage   |
 +-------------------+       +-------------------+       +-------------------+
@@ -298,8 +303,7 @@ function Get-ReportTemplate
 +-------------------+       +-------------------+       +-------------------+
 | AlertManager      |       | DashboardManager  |       | TemplateManager  |
 +-------------------+       +-------------------+       +-------------------+
-```
-
+```plaintext
 ## Conclusion
 
 L'architecture du module PerformanceAnalyzer est conçue pour être modulaire, extensible et performante. Elle permet la collecte, l'analyse et la visualisation des métriques de performance du système et des applications, tout en offrant des fonctionnalités avancées comme la détection d'anomalies, l'analyse prédictive et les recommandations d'optimisation. Cette architecture facilite également l'intégration avec d'autres modules du projet EMAIL_SENDER_1 pour une solution complète de gestion des performances.

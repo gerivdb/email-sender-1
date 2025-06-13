@@ -32,10 +32,11 @@ function New-TestDataSet {
     )
     
     # Génère un jeu de données selon la configuration spécifiée
-    # Retourne un objet DataSet si PassThru est spécifié
-}
-```
 
+    # Retourne un objet DataSet si PassThru est spécifié
+
+}
+```plaintext
 ### 3.2 Interfaces secondaires
 
 ```powershell
@@ -44,6 +45,7 @@ function Get-DataGeneratorCapabilities {
     param ()
     
     # Retourne les capacités du générateur de données
+
 }
 
 function Register-CustomDataGenerator {
@@ -60,24 +62,29 @@ function Register-CustomDataGenerator {
     )
     
     # Enregistre un générateur de données personnalisé
-}
-```
 
+}
+```plaintext
 ## 4. Sous-composants
 
 ### 4.1 TextDataGenerator
+
 Génère des données textuelles avec différents niveaux de complexité, longueurs et structures.
 
 ### 4.2 StructuredDataGenerator
+
 Génère des données structurées (objets, tableaux, hiérarchies) selon des schémas définis.
 
 ### 4.3 RandomDataGenerator
+
 Génère des données aléatoires selon différentes distributions statistiques.
 
 ### 4.4 FileBasedDataGenerator
+
 Génère des données basées sur des fichiers existants, avec des transformations et variations.
 
 ### 4.5 MetadataGenerator
+
 Génère des métadonnées cohérentes et réalistes pour les données principales.
 
 ## 5. Flux de données
@@ -145,8 +152,7 @@ Le composant utilise un format de configuration JSON/YAML avec la structure suiv
     "splitSize": 1000
   }
 }
-```
-
+```plaintext
 ## 7. Dépendances
 
 - **System.Random**: Pour la génération de valeurs aléatoires
@@ -175,20 +181,23 @@ Le composant est conçu pour être extensible via:
 
 ```powershell
 # Générer un jeu de données à partir d'une configuration
+
 New-TestDataSet -ConfigurationPath ".\configs\small_dataset.json" -OutputPath ".\testdata\"
 
 # Générer et récupérer le jeu de données en mémoire
-$dataSet = New-TestDataSet -ConfigurationPath ".\configs\medium_dataset.json" -PassThru
-```
 
+$dataSet = New-TestDataSet -ConfigurationPath ".\configs\medium_dataset.json" -PassThru
+```plaintext
 ### 10.2 Enregistrement d'un générateur personnalisé
 
 ```powershell
 # Enregistrer un générateur personnalisé
+
 Register-CustomDataGenerator -Name "EmailGenerator" -GeneratorScript {
     param($config)
     
     # Logique de génération d'emails
+
     $domains = @("example.com", "test.org", "demo.net")
     $count = $config.Count
     
@@ -201,4 +210,4 @@ Register-CustomDataGenerator -Name "EmailGenerator" -GeneratorScript {
     
     return $emails
 }
-```
+```plaintext

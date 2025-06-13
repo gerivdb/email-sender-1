@@ -1,4 +1,5 @@
 # Plan de développement v25 - Système de gestion de méta-roadmap avec synchronisation bidirectionnelle
+
 *Version 1.1 - 2025-06-15 - Progression globale : 20%*
 
 Ce plan définit l'implémentation d'un système complet de gestion de méta-roadmap
@@ -9,6 +10,7 @@ en intégrant les 296 tâches fondamentales et 149 tâches core identifiées com
 ## 1. Optimisation des mécanismes de parallélisation (Priorité Haute)
 
 - [ ] **1.1** Standardisation des approches de parallélisation (P0) #MVP
+
   - [ ] **1.1.1** Créer un module unifié de parallélisation
     - [ ] **1.1.1.1** Développer UnifiedParallel.psm1 avec interfaces standardisées
       - [x] **1.1.1.1.1** Créer la structure de base du module
@@ -16,18 +18,24 @@ en intégrant les 296 tâches fondamentales et 149 tâches core identifiées com
           - [x] **1.1.1.1.1.1.1** Créer le fichier de module UnifiedParallel.psm1 avec en-tête de documentation
             - [x] **1.1.1.1.1.1.1.1** Créer le répertoire de destination pour le module dans development/tools/parallelization
             - [x] **1.1.1.1.1.1.1.2** Initialiser le fichier avec la directive #Requires -Version 5.1
+
               - [x] **1.1.1.1.1.1.1.2.1** Rechercher les meilleures pratiques pour les directives #Requires
+
                 - [x] **1.1.1.1.1.1.1.2.1.1** Consulter la documentation officielle PowerShell
                 - [x] **1.1.1.1.1.1.1.2.1.2** Analyser les exemples de modules existants
                 - [x] **1.1.1.1.1.1.1.2.1.3** Identifier les directives complémentaires pertinentes
               - [x] **1.1.1.1.1.1.1.2.2** Implémenter la directive de version minimale
                 - [x] **1.1.1.1.1.1.1.2.2.1** Ajouter la ligne #Requires -Version 5.1
+
                 - [x] **1.1.1.1.1.1.1.2.2.2** Documenter la raison de cette version minimale
                 - [x] **1.1.1.1.1.1.1.2.2.3** Vérifier la compatibilité avec PowerShell Core
               - [x] **1.1.1.1.1.1.1.2.3** Ajouter des directives complémentaires si nécessaire
                 - [x] **1.1.1.1.1.1.1.2.3.1** Évaluer le besoin de #Requires -RunAsAdministrator
+
                 - [x] **1.1.1.1.1.1.1.2.3.2** Considérer l'ajout de #Requires -Modules
+
                 - [x] **1.1.1.1.1.1.1.2.3.3** Vérifier la nécessité de #Requires -PSEdition
+
             - [x] **1.1.1.1.1.1.1.3** Ajouter le bloc de commentaires .SYNOPSIS décrivant le but du module
             - [x] **1.1.1.1.1.1.1.4** Implémenter le bloc .DESCRIPTION avec les détails de fonctionnalité
             - [x] **1.1.1.1.1.1.1.5** Ajouter le bloc .NOTES avec les informations d'auteur et de version
@@ -345,6 +353,7 @@ en intégrant les 296 tâches fondamentales et 149 tâches core identifiées com
         - [ ] **1.2.1.1.1.1** Définir l'architecture du module ResourceMonitor
           - [ ] **1.2.1.1.1.1.1** Créer le fichier ResourceMonitor.psm1 avec en-tête de documentation
             - [ ] **1.2.1.1.1.1.1.1** Initialiser le fichier avec la directive #Requires -Version 5.1
+
             - [ ] **1.2.1.1.1.1.1.2** Ajouter le bloc de commentaires .SYNOPSIS pour le module
             - [ ] **1.2.1.1.1.1.1.3** Implémenter le bloc .DESCRIPTION détaillant les fonctionnalités
             - [ ] **1.2.1.1.1.1.1.4** Créer le bloc .NOTES avec les informations d'auteur et version

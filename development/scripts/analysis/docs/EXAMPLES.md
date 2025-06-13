@@ -8,32 +8,28 @@ Ce document prÃ©sente des exemples concrets d'utilisation du systÃ¨me d'anal
 
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts\test.ps1" -Tools PSScriptAnalyzer
-```
-
+```plaintext
 Cet exemple analyse un fichier PowerShell avec PSScriptAnalyzer et gÃ©nÃ¨re un fichier JSON avec les rÃ©sultats.
 
 ### Analyser un rÃ©pertoire avec PSScriptAnalyzer et TodoAnalyzer
 
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts" -Tools PSScriptAnalyzer, TodoAnalyzer -Recurse
-```
-
+```plaintext
 Cet exemple analyse tous les fichiers PowerShell dans le rÃ©pertoire `.\development\scripts` et ses sous-rÃ©pertoires avec PSScriptAnalyzer et TodoAnalyzer.
 
 ### Analyser un fichier avec tous les outils disponibles et gÃ©nÃ©rer un rapport HTML
 
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts\test.ps1" -Tools All -GenerateHtmlReport
-```
-
+```plaintext
 Cet exemple analyse un fichier PowerShell avec tous les outils disponibles et gÃ©nÃ¨re un rapport HTML interactif.
 
 ### Analyser un rÃ©pertoire avec tous les outils disponibles, gÃ©nÃ©rer un rapport HTML et l'ouvrir
 
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts" -Tools All -GenerateHtmlReport -OpenReport -Recurse
-```
-
+```plaintext
 Cet exemple analyse tous les fichiers dans le rÃ©pertoire `.\development\scripts` et ses sous-rÃ©pertoires avec tous les outils disponibles, gÃ©nÃ¨re un rapport HTML interactif et l'ouvre dans le navigateur par dÃ©faut.
 
 ## Exemples avancÃ©s
@@ -42,8 +38,7 @@ Cet exemple analyse tous les fichiers dans le rÃ©pertoire `.\development\scrip
 
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts\test.ps1" -Tools PSScriptAnalyzer -OutputPath ".\results\test-analysis.json"
-```
-
+```plaintext
 Cet exemple analyse un fichier PowerShell avec PSScriptAnalyzer et gÃ©nÃ¨re un fichier JSON avec les rÃ©sultats Ã  l'emplacement spÃ©cifiÃ©.
 
 ### Analyser un rÃ©pertoire et filtrer les rÃ©sultats
@@ -57,8 +52,7 @@ $information = $results | Where-Object { $_.Severity -eq "Information" }
 Write-Host "Erreurs: $($errors.Count)"
 Write-Host "Avertissements: $($warnings.Count)"
 Write-Host "Informations: $($information.Count)"
-```
-
+```plaintext
 Cet exemple analyse tous les fichiers dans le rÃ©pertoire `.\development\scripts` et ses sous-rÃ©pertoires avec tous les outils disponibles, puis filtre les rÃ©sultats par sÃ©vÃ©ritÃ©.
 
 ### Analyser un fichier et intÃ©grer les rÃ©sultats avec GitHub Actions
@@ -66,8 +60,7 @@ Cet exemple analyse tous les fichiers dans le rÃ©pertoire `.\development\scrip
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts\test.ps1" -Tools All -OutputPath ".\results\test-analysis.json"
 .\Integrate-ThirdPartyTools.ps1 -Path ".\results\test-analysis.json" -Tool GitHub -OutputPath ".\results\github-annotations.json"
-```
-
+```plaintext
 Cet exemple analyse un fichier PowerShell avec tous les outils disponibles, puis convertit les rÃ©sultats au format d'annotations GitHub Actions.
 
 ### Analyser un rÃ©pertoire et intÃ©grer les rÃ©sultats avec SonarQube
@@ -75,8 +68,7 @@ Cet exemple analyse un fichier PowerShell avec tous les outils disponibles, puis
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts" -Tools All -OutputPath ".\results\analysis-results.json" -Recurse
 .\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool SonarQube -OutputPath ".\results\sonarqube-issues.json" -ProjectKey "my-project"
-```
-
+```plaintext
 Cet exemple analyse tous les fichiers dans le rÃ©pertoire `.\development\scripts` et ses sous-rÃ©pertoires avec tous les outils disponibles, puis convertit les rÃ©sultats au format SonarQube.
 
 ### Analyser un rÃ©pertoire et intÃ©grer les rÃ©sultats avec Azure DevOps
@@ -84,8 +76,7 @@ Cet exemple analyse tous les fichiers dans le rÃ©pertoire `.\development\scrip
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\development\scripts" -Tools All -OutputPath ".\results\analysis-results.json" -Recurse
 .\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool AzureDevOps -OutputPath ".\results\azuredevops-issues.json"
-```
-
+```plaintext
 Cet exemple analyse tous les fichiers dans le rÃ©pertoire `.\development\scripts` et ses sous-rÃ©pertoires avec tous les outils disponibles, puis convertit les rÃ©sultats au format Azure DevOps.
 
 ## Exemples d'intÃ©gration continue
@@ -120,8 +111,7 @@ jobs:
       with:
         name: analysis-results
         path: .\results\github-annotations.json
-```
-
+```plaintext
 Cet exemple montre comment intÃ©grer le systÃ¨me d'analyse dans un workflow GitHub Actions.
 
 ### Azure DevOps
@@ -160,8 +150,7 @@ steps:
   inputs:
     pathtoPublish: '.\results\azuredevops-issues.json'
     artifactName: 'analysis-results'
-```
-
+```plaintext
 Cet exemple montre comment intÃ©grer le systÃ¨me d'analyse dans un pipeline Azure DevOps.
 
 ### Jenkins
@@ -200,8 +189,7 @@ pipeline {
         }
     }
 }
-```
-
+```plaintext
 Cet exemple montre comment intÃ©grer le systÃ¨me d'analyse dans un pipeline Jenkins.
 
 ## Exemples de personnalisation
@@ -210,6 +198,7 @@ Cet exemple montre comment intÃ©grer le systÃ¨me d'analyse dans un pipeline 
 
 ```powershell
 # Ajouter une fonction pour analyser les fichiers avec le nouvel outil
+
 function Invoke-MyAnalyzerAnalysis {
     [CmdletBinding()]
     param (
@@ -220,6 +209,7 @@ function Invoke-MyAnalyzerAnalysis {
     Write-Verbose "Analyse de '$FilePath' avec MyAnalyzer..."
     
     # VÃ©rifier si MyAnalyzer est disponible
+
     $myAnalyzer = Get-Command -Name myanalyzer -ErrorAction SilentlyContinue
     if ($null -eq $myAnalyzer) {
         Write-Warning "MyAnalyzer n'est pas disponible. Installez-le avec 'npm install -g myanalyzer'."
@@ -227,13 +217,16 @@ function Invoke-MyAnalyzerAnalysis {
     }
     
     # ExÃ©cuter MyAnalyzer
+
     try {
         $output = & $myAnalyzer.Source --format json $FilePath 2>&1
         
         # Convertir la sortie JSON en objet PowerShell
+
         $results = $output | ConvertFrom-Json
         
         # Convertir les rÃ©sultats vers le format unifiÃ©
+
         $unifiedResults = @()
         
         foreach ($result in $results) {
@@ -259,6 +252,7 @@ function Invoke-MyAnalyzerAnalysis {
 }
 
 # Modifier la fonction Invoke-FileAnalysis pour utiliser le nouvel outil
+
 function Invoke-FileAnalysis {
     [CmdletBinding()]
     param (
@@ -272,16 +266,20 @@ function Invoke-FileAnalysis {
     $results = @()
     
     # DÃ©terminer les outils Ã  utiliser
+
     $useAll = $Tools -contains "All"
     $usePSScriptAnalyzer = $useAll -or ($Tools -contains "PSScriptAnalyzer")
     $useESLint = $useAll -or ($Tools -contains "ESLint")
     $usePylint = $useAll -or ($Tools -contains "Pylint")
     $useTodoAnalyzer = $useAll -or ($Tools -contains "TodoAnalyzer")
     $useMyAnalyzer = $useAll -or ($Tools -contains "MyAnalyzer") # Ajouter le nouvel outil
+
     
     # ... code existant ...
+
     
     # Analyser avec MyAnalyzer si applicable
+
     if ($useMyAnalyzer) {
         $myAnalyzerResults = Invoke-MyAnalyzerAnalysis -FilePath $FilePath
         $results += $myAnalyzerResults
@@ -289,14 +287,14 @@ function Invoke-FileAnalysis {
     
     return $results
 }
-```
-
+```plaintext
 Cet exemple montre comment ajouter un nouvel outil d'analyse au systÃ¨me d'analyse.
 
 ### Ajouter un nouveau format de rÃ©sultats
 
 ```powershell
 # Ajouter une fonction pour convertir les rÃ©sultats vers le nouveau format
+
 function ConvertTo-MyFormat {
     [CmdletBinding()]
     param (
@@ -328,7 +326,9 @@ function ConvertTo-MyFormat {
 }
 
 # Modifier le script principal pour utiliser le nouveau format
+
 # Convertir les rÃ©sultats vers le format appropriÃ©
+
 try {
     $convertedResults = switch ($Tool) {
         "SonarQube" {
@@ -345,6 +345,7 @@ try {
             ConvertTo-AzureDevOpsFormat -Results $results
         }
         "MyFormat" { # Ajouter le nouveau format
+
             ConvertTo-MyFormat -Results $results
         }
         default {
@@ -353,9 +354,9 @@ try {
     }
     
     # ... code existant ...
-}
-```
 
+}
+```plaintext
 Cet exemple montre comment ajouter un nouveau format de rÃ©sultats au systÃ¨me d'analyse.
 
 ## Conclusion

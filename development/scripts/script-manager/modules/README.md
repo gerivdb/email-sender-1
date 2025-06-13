@@ -1,4 +1,4 @@
-﻿# modules
+# modules
 
 Modules du gestionnaire
 

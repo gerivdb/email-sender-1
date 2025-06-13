@@ -19,8 +19,7 @@ La méthode la plus simple pour installer le serveur de passerelle API MCP est d
 
 ```batch
 .\mcp\cmd\utils\install-api-gateway.cmd
-```
-
+```plaintext
 Ce script installera le serveur de passerelle API MCP et créera la structure de dossiers nécessaire.
 
 ### Installation manuelle
@@ -53,8 +52,7 @@ $serverConfig = @{
     AllowedIPs = @("127.0.0.1", "::1")
     EnableCompression = $true
 }
-```
-
+```plaintext
 ## Utilisation
 
 ### Démarrage du serveur
@@ -63,8 +61,7 @@ Pour démarrer le serveur de passerelle API MCP, exécutez la commande suivante 
 
 ```powershell
 .\mcp\core\server\api-gateway.ps1 -Port 8000 -LogLevel INFO
-```
-
+```plaintext
 ### Arrêt du serveur
 
 Pour arrêter le serveur, appuyez sur `Ctrl+C` dans la console où le serveur est en cours d'exécution.
@@ -75,8 +72,7 @@ Pour vérifier l'état du serveur, vous pouvez utiliser le client API MCP :
 
 ```powershell
 .\mcp\core\client\api-client.ps1 -ServerUrl "http://localhost:8000"
-```
-
+```plaintext
 ## API disponibles
 
 Le serveur de passerelle API MCP expose les API suivantes :
@@ -160,10 +156,9 @@ Le serveur de passerelle API MCP utilise un système de journalisation configura
 
 Exemple de message de journal :
 
-```
+```plaintext
 [2023-05-15 12:34:56] [INFO] Démarrage du serveur api-gateway sur le port 8000...
-```
-
+```plaintext
 ## Dépannage
 
 ### Le serveur ne démarre pas
@@ -189,29 +184,25 @@ Exemple de message de journal :
 
 ```powershell
 .\mcp\core\server\api-gateway.ps1 -Port 8080 -LogLevel DEBUG
-```
-
+```plaintext
 ### Exemple 2 : Obtenir des informations sur les API disponibles
 
 ```powershell
 $client = .\mcp\core\client\api-client.ps1 -ServerUrl "http://localhost:8000"
 $client.get-api-info
-```
-
+```plaintext
 ### Exemple 3 : Vérifier l'état d'une API
 
 ```powershell
 $client = .\mcp\core\client\api-client.ps1 -ServerUrl "http://localhost:8000"
 $client.check-api-status users
-```
-
+```plaintext
 ### Exemple 4 : Rediriger une requête vers une API
 
 ```powershell
 $client = .\mcp\core\client\api-client.ps1 -ServerUrl "http://localhost:8000"
 $client.proxy-request users /list
-```
-
+```plaintext
 ## Références
 
 - [Documentation MCP](../README.md)

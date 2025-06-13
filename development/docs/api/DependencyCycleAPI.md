@@ -14,8 +14,7 @@ Initialise le résolveur de cycles avec les paramètres spécifiés.
 
 ```powershell
 Initialize-DependencyCycleResolver [-Enabled <Boolean>] [-MaxIterations <Int32>] [-Strategy <String>]
-```
-
+```plaintext
 #### Paramètres
 
 | Nom | Type | Obligatoire | Description |
@@ -32,9 +31,9 @@ Booléen indiquant si l'initialisation a réussi.
 
 ```powershell
 # Initialiser le résolveur de cycles avec une stratégie basée sur le poids
-Initialize-DependencyCycleResolver -Enabled $true -MaxIterations 5 -Strategy "WeightBased"
-```
 
+Initialize-DependencyCycleResolver -Enabled $true -MaxIterations 5 -Strategy "WeightBased"
+```plaintext
 ### Resolve-DependencyCycle
 
 Résout automatiquement les cycles de dépendances dans un graphe.
@@ -43,8 +42,7 @@ Résout automatiquement les cycles de dépendances dans un graphe.
 
 ```powershell
 Resolve-DependencyCycle -CycleResult <PSObject> [-Strategy <String>] [-MaxIterations <Int32>] [-Force]
-```
-
+```plaintext
 #### Paramètres
 
 | Nom | Type | Obligatoire | Description |
@@ -67,6 +65,7 @@ Un objet PSCustomObject avec les propriétés suivantes :
 
 ```powershell
 # Détecter les cycles dans un graphe
+
 $graph = @{
     "A" = @("B")
     "B" = @("C")
@@ -75,12 +74,12 @@ $graph = @{
 $cycleResult = Find-Cycle -Graph $graph
 
 # Résoudre le cycle
+
 $resolveResult = Resolve-DependencyCycle -CycleResult $cycleResult -Strategy "MinimumImpact"
 if ($resolveResult.Success) {
     Write-Host "Cycle résolu en supprimant l'arête: $($resolveResult.RemovedEdges[0].Source) -> $($resolveResult.RemovedEdges[0].Target)"
 }
-```
-
+```plaintext
 ### Resolve-ScriptDependencyCycle
 
 Résout automatiquement les cycles de dépendances dans des scripts PowerShell.
@@ -89,8 +88,7 @@ Résout automatiquement les cycles de dépendances dans des scripts PowerShell.
 
 ```powershell
 Resolve-ScriptDependencyCycle -Path <String> [-Recursive] [-Strategy <String>] [-MaxIterations <Int32>] [-Force] [-GenerateReport] [-ReportPath <String>]
-```
-
+```plaintext
 #### Paramètres
 
 | Nom | Type | Obligatoire | Description |
@@ -116,12 +114,12 @@ Un objet PSCustomObject avec les propriétés suivantes :
 
 ```powershell
 # Résoudre les cycles de dépendances dans un dossier de scripts
+
 $result = Resolve-ScriptDependencyCycle -Path ".\development\scripts" -Recursive -GenerateReport -ReportPath ".\reports\cycle_resolution.json"
 if ($result.Success) {
     Write-Host "Cycles résolus: $($result.CyclesResolved)/$($result.CyclesDetected)"
 }
-```
-
+```plaintext
 ### Resolve-WorkflowCycle
 
 Résout automatiquement les cycles dans un workflow n8n.
@@ -130,8 +128,7 @@ Résout automatiquement les cycles dans un workflow n8n.
 
 ```powershell
 Resolve-WorkflowCycle -WorkflowPath <String> [-Strategy <String>] [-MaxIterations <Int32>] [-Force] [-GenerateReport] [-ReportPath <String>]
-```
-
+```plaintext
 #### Paramètres
 
 | Nom | Type | Obligatoire | Description |
@@ -156,12 +153,12 @@ Un objet PSCustomObject avec les propriétés suivantes :
 
 ```powershell
 # Résoudre les cycles dans un workflow n8n
+
 $result = Resolve-WorkflowCycle -WorkflowPath ".\workflows\my_workflow.json" -GenerateReport -ReportPath ".\reports\workflow_resolution.json"
 if ($result.Success) {
     Write-Host "Cycles résolus: $($result.CyclesResolved)/$($result.CyclesDetected)"
 }
-```
-
+```plaintext
 ### Get-CycleResolverStatistics
 
 Obtient les statistiques du résolveur de cycles.
@@ -170,8 +167,7 @@ Obtient les statistiques du résolveur de cycles.
 
 ```powershell
 Get-CycleResolverStatistics
-```
-
+```plaintext
 #### Paramètres
 
 Aucun.
@@ -193,11 +189,11 @@ Un objet PSCustomObject avec les propriétés suivantes :
 
 ```powershell
 # Obtenir les statistiques du résolveur de cycles
+
 $stats = Get-CycleResolverStatistics
 Write-Host "Taux de réussite: $($stats.SuccessRate)%"
 Write-Host "Nombre moyen d'itérations: $($stats.AverageIterations)"
-```
-
+```plaintext
 ## Stratégies de résolution
 
 Le module `DependencyCycleResolver` propose trois stratégies de résolution des cycles :
@@ -220,14 +216,17 @@ Cette stratégie sélectionne une arête aléatoire dans le cycle.
 
 ```powershell
 # Importer les modules
+
 Import-Module .\modules\CycleDetector.psm1
 Import-Module .\modules\DependencyCycleResolver.psm1
 
 # Initialiser les modules
+
 Initialize-CycleDetector -Enabled $true -MaxDepth 100 -CacheEnabled $true
 Initialize-DependencyCycleResolver -Enabled $true -MaxIterations 10 -Strategy "MinimumImpact"
 
 # Créer un graphe avec un cycle
+
 $graph = @{
     "A" = @("B")
     "B" = @("C")
@@ -235,38 +234,45 @@ $graph = @{
 }
 
 # Détecter le cycle
+
 $cycleResult = Find-Cycle -Graph $graph
 
 # Résoudre le cycle
+
 $resolveResult = Resolve-DependencyCycle -CycleResult $cycleResult
 
 # Afficher le résultat
+
 if ($resolveResult.Success) {
     Write-Host "Cycle résolu en supprimant l'arête: $($resolveResult.RemovedEdges[0].Source) -> $($resolveResult.RemovedEdges[0].Target)"
     
     # Vérifier que le graphe modifié n'a plus de cycle
+
     $newCycleCheck = Find-Cycle -Graph $resolveResult.Graph
     if (-not $newCycleCheck.HasCycle) {
         Write-Host "Le graphe ne contient plus de cycle."
     }
 }
-```
-
+```plaintext
 ### Résolution de cycles dans des scripts PowerShell
 
 ```powershell
 # Importer les modules
+
 Import-Module .\modules\CycleDetector.psm1
 Import-Module .\modules\DependencyCycleResolver.psm1
 
 # Initialiser les modules
+
 Initialize-CycleDetector -Enabled $true -MaxDepth 100 -CacheEnabled $true
 Initialize-DependencyCycleResolver -Enabled $true -MaxIterations 10 -Strategy "MinimumImpact"
 
 # Résoudre les cycles de dépendances dans un dossier de scripts
+
 $result = Resolve-ScriptDependencyCycle -Path ".\development\scripts" -Recursive -GenerateReport -ReportPath ".\reports\cycle_resolution.json"
 
 # Afficher le résultat
+
 if ($result.Success) {
     Write-Host "Cycles détectés: $($result.CyclesDetected)"
     Write-Host "Cycles résolus: $($result.CyclesResolved)"
@@ -275,23 +281,26 @@ if ($result.Success) {
         Write-Host "Arête supprimée: $($edge.Source) -> $($edge.Target)"
     }
 }
-```
-
+```plaintext
 ### Résolution de cycles dans des workflows n8n
 
 ```powershell
 # Importer les modules
+
 Import-Module .\modules\CycleDetector.psm1
 Import-Module .\modules\DependencyCycleResolver.psm1
 
 # Initialiser les modules
+
 Initialize-CycleDetector -Enabled $true -MaxDepth 100 -CacheEnabled $true
 Initialize-DependencyCycleResolver -Enabled $true -MaxIterations 10 -Strategy "MinimumImpact"
 
 # Résoudre les cycles dans un workflow n8n
+
 $result = Resolve-WorkflowCycle -WorkflowPath ".\workflows\my_workflow.json" -GenerateReport -ReportPath ".\reports\workflow_resolution.json"
 
 # Afficher le résultat
+
 if ($result.Success) {
     Write-Host "Cycles détectés: $($result.CyclesDetected)"
     Write-Host "Cycles résolus: $($result.CyclesResolved)"
@@ -300,8 +309,7 @@ if ($result.Success) {
         Write-Host "Connexion supprimée: $($edge.Source) -> $($edge.Target)"
     }
 }
-```
-
+```plaintext
 ## Intégration avec le module CycleDetector
 
 Le module `DependencyCycleResolver` s'intègre étroitement avec le module `CycleDetector` pour détecter et résoudre les cycles de dépendances. Voici comment les deux modules interagissent :

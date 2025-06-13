@@ -16,8 +16,7 @@ Les métriques de mémoire paginée sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 ## 3. Métriques principales
 
 ### 3.1 Configuration du système de pagination
@@ -38,8 +37,7 @@ Les métriques de mémoire paginée sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `system.pageSize` | number | octets | Taille standard d'une page mémoire |
@@ -73,8 +71,7 @@ Les métriques de mémoire paginée sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `pages.total` | number | - | Nombre total de pages utilisées par le processus |
@@ -128,8 +125,7 @@ Les métriques de mémoire paginée sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `pageFaults.total` | number | - | Nombre total de défauts de page |
@@ -180,8 +176,7 @@ Les métriques de mémoire paginée sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `operations.pageIns.total` | number | - | Nombre total de pages chargées depuis le disque |
@@ -253,8 +248,7 @@ Les métriques de mémoire paginée sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `performance.latency.minorFault.avg` | number | ms | Latence moyenne d'un défaut de page mineur |
@@ -319,8 +313,7 @@ Les métriques de mémoire paginée sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `locality.spatialLocality.score` | number | - | Score de localité spatiale (0-1, où 1 est optimal) |
@@ -355,8 +348,7 @@ Les métriques de mémoire paginée sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `thrashing.detected` | boolean | - | Indique si un thrashing a été détecté |
@@ -402,8 +394,7 @@ Les métriques de mémoire paginée sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description |
 |-------|------|-------|-------------|
 | `optimizations.prefetching.enabled` | boolean | - | Indique si le préchargement de pages est activé |
@@ -449,8 +440,7 @@ Les métriques de mémoire paginée sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 ### 5.2 Exemple complet
 
 ```json
@@ -668,8 +658,7 @@ Les métriques de mémoire paginée sont organisées dans une structure hiérarc
     }
   }
 }
-```
-
+```plaintext
 ## 6. Bonnes pratiques
 
 ### 6.1 Collecte des métriques

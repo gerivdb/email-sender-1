@@ -60,8 +60,7 @@ Le mode DEBUG permet de simuler différents contextes d'exécution :
 
 ```powershell
 .\debug-mode.ps1 -FilePath <string> [-TaskIdentifier <string>] -ErrorLog <string> -ScriptPath <string> [-OutputPath <string>] [-GeneratePatch <bool>] [-IncludeStackTrace <bool>] [-MaxStackTraceDepth <int>] [-AnalyzePerformance <bool>] [-SuggestFixes <bool>] [-SimulateContext <bool>]
-```
-
+```plaintext
 ### Paramètres
 
 | Paramètre | Description | Obligatoire | Valeur par défaut |
@@ -84,26 +83,22 @@ Le mode DEBUG permet de simuler différents contextes d'exécution :
 
 ```powershell
 .\debug-mode.ps1 -FilePath "roadmap.md" -ErrorLog "error.log" -ScriptPath "scripts" -OutputPath "output"
-```
-
+```plaintext
 #### Analyser une tâche spécifique avec analyse de performance
 
 ```powershell
 .\debug-mode.ps1 -FilePath "roadmap.md" -TaskIdentifier "1.2.3" -ErrorLog "error.log" -ScriptPath "scripts" -AnalyzePerformance $true
-```
-
+```plaintext
 #### Générer un patch correctif sans inclure les traces de pile
 
 ```powershell
 .\debug-mode.ps1 -FilePath "roadmap.md" -ErrorLog "error.log" -ScriptPath "scripts" -GeneratePatch $true -IncludeStackTrace $false
-```
-
+```plaintext
 #### Simuler un contexte d'exécution
 
 ```powershell
 .\debug-mode.ps1 -FilePath "roadmap.md" -ErrorLog "error.log" -ScriptPath "scripts" -SimulateContext $true
-```
-
+```plaintext
 ## Sorties
 
 Le mode DEBUG génère plusieurs fichiers de sortie :
@@ -130,40 +125,35 @@ Parse une stack trace PowerShell et extrait les informations pertinentes.
 
 ```powershell
 $error[0] | Get-StackTraceInfo
-```
-
+```plaintext
 ### Get-StackTraceLineInfo
 
 Extrait les informations de ligne et de fichier à partir d'une stack trace.
 
 ```powershell
 $error[0] | Get-StackTraceLineInfo -ContextLines 3
-```
-
+```plaintext
 ### Resolve-StackTracePaths
 
 Résout les chemins de fichiers dans une stack trace.
 
 ```powershell
 $error[0] | Resolve-StackTracePaths -BasePath "C:\Projects\MyProject"
-```
-
+```plaintext
 ### Get-StackTraceCallSequence
 
 Analyse la séquence d'appels dans une stack trace.
 
 ```powershell
 $error[0] | Get-StackTraceCallSequence
-```
-
+```plaintext
 ### Show-StackTraceHierarchy
 
 Génère une visualisation hiérarchique d'une stack trace.
 
 ```powershell
 $error[0] | Show-StackTraceHierarchy -Format HTML -IncludeLineContent $true
-```
-
+```plaintext
 ## Bonnes pratiques
 
 1. **Utiliser des fichiers de log détaillés** : Plus les logs sont détaillés, plus l'analyse sera précise.

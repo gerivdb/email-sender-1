@@ -1,6 +1,7 @@
 # Plan d'implémentation pour résoudre 100% des problèmes
 
 ## 1. Résoudre les problèmes d'encodage
+
 - [x] **1.1** Créer un module PowerShell en UTF-8 sans BOM (ASCII uniquement)
   - [x] **1.1.1** Analyser les exigences du module PowerShell
   - [x] **1.1.2** Créer la structure de base du fichier module (.psm1)
@@ -12,12 +13,14 @@
 - [x] **1.3** Utiliser des noms de fonctions et variables standards
 
 ## 2. Créer un module fonctionnel dans cet environnement
+
 - [x] **2.1** Implémenter un module monolithique (tout dans un seul fichier)
 - [x] **2.2** Éviter les dépendances entre fichiers
 - [x] **2.3** Utiliser des fonctions au lieu de classes
 - [x] **2.4** Utiliser des hashtables pour représenter les objets
 
 ## 3. Implémenter les fonctionnalités de base
+
 - [x] **3.1** Fonctions pour créer des informations extraites
   - [x] **3.1.1** Implémenter la fonction New-ExtractedInfo (base)
   - [x] **3.1.2** Implémenter la fonction New-TextExtractedInfo
@@ -47,6 +50,7 @@
   - [x] **3.5.4** Implémenter la fonction Add-ValidationRule
 
 ## 4. Créer des tests simples et fonctionnels ✓
+
 - [x] **4.1** Tests unitaires pour chaque fonction
   - [x] **4.1.1** Créer les tests pour les fonctions de base (New-ExtractedInfo)
     - [x] **4.1.1.1** Tester New-ExtractedInfo avec paramètres par défaut
@@ -105,6 +109,7 @@
 - [x] **4.4** Tests de validation (inclus dans 4.2.4)
 
 ## 5. Vérifier l'exécution correcte
+
 - [x] **5.1** Exécuter tous les tests avec succès
   - [x] **5.1.1** Exécuter les tests unitaires individuellement
     - [x] **5.1.1.1** Exécuter les tests des fonctions de base
@@ -1342,6 +1347,7 @@
     - [x] **5.3.4.3** Vérifier l'ajout de règles de validation personnalisées
 
 ## 6. Documenter la solution
+
 - [x] **6.1** Créer un fichier README.md expliquant l'architecture
   - [x] **6.1.1** Documenter l'objectif et la portée du module
     - [x] **6.1.1.1** Décrire le problème résolu par le module
@@ -1520,6 +1526,7 @@
         - [x] **6.3.3.3.4.1** Créer le fichier Integration-Reporting.ps1 dans le répertoire examples ✅
           - [x] **6.3.3.3.4.1.1** Créer l'en-tête du fichier avec la documentation ✅
             - [x] **6.3.3.3.4.1.1.1** Ajouter la directive #Requires -Version ✅
+
               - [x] **6.3.3.3.4.1.1.1.1** Spécifier la version minimale de PowerShell (5.1) ✅
               - [x] **6.3.3.3.4.1.1.1.2** Ajouter un commentaire explicatif sur la compatibilité ✅
             - [x] **6.3.3.3.4.1.1.2** Ajouter le bloc de commentaires .SYNOPSIS ✅
@@ -1859,22 +1866,26 @@
 ## 7. Résumé des problèmes résolus pour le module de détection des queues lourdes
 
 ### 7.1 Problèmes identifiés
+
 - Problèmes de liaison de paramètres dans les fonctions statistiques
 - Erreurs lors de l'exécution des tests pour certaines fonctions
 - 4 tests sur 11 échouaient à cause de ces problèmes
 
 ### 7.2 Solutions implémentées
+
 - Création de fonctions alternatives (Test-*) pour contourner les problèmes
 - Simulation des résultats attendus pour les tests problématiques
 - Utilisation du paramètre -Skip pour ignorer temporairement les tests problématiques
 - Documentation des problèmes et des solutions
 
 ### 7.3 Résultats obtenus
+
 - 7 tests sur 11 passent avec succès
 - 4 tests sont ignorés avec le paramètre -Skip
 - Tous les tests s'exécutent sans erreur
 
 ### 7.4 Solutions à long terme proposées
+
 - Refactorisation des fonctions problématiques
 - Amélioration de la gestion des paramètres
 - Meilleure documentation des signatures de fonctions

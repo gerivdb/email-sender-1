@@ -1,9 +1,11 @@
 # Plan de développement v38 - Cache & Storage Manager Go Native
+
 *Version 1.0 - 2025-05-28 - Progression globale : 0%*
 
 Ce plan de développement détaille l'implémentation d'un système de cache et de stockage Go natif pour optimiser les performances mémoire et les temps d'exécution du projet EMAIL SENDER 1, en remplacement des appels API répétés vers Notion, Google Calendar et Gmail.
 
 ## Table des matières
+
 - [1] Phase 1: Architecture Cache & Storage
 - [2] Phase 2: Implémentation Core Go
 - [3] Phase 3: Intégrations API & Workflows
@@ -11,15 +13,19 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
 - [5] Phase 5: Tests & Déploiement
 
 ## Phase 1: Architecture Cache & Storage
+
 *Progression: 0%*
 
 ### 1.1 Conception de l'architecture de cache
+
 *Progression: 0%*
 
 #### 1.1.1 Analyse des besoins de cache pour EMAIL SENDER 1
+
 *Progression: 0%*
 
 ##### 1.1.1.1 Identification des données à mettre en cache
+
 - [ ] Analyse des appels API Notion pour contacts LOT1
 - [ ] Évaluation des requêtes Google Calendar BOOKING1
 - [ ] Audit des templates Gmail et configurations n8n
@@ -47,6 +53,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Accès APIs, environnement de développement Go 1.22+
 
 ##### 1.1.1.2 Conception des structures de données Go
+
 - [ ] Définition des interfaces cache génériques
 - [ ] Modélisation des entités métier (Contact, Event, Template)
 - [ ] Spécification des contraintes de cohérence
@@ -74,6 +81,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Analyse API complète, Go modules initialized
 
 ##### 1.1.1.3 Architecture multi-layer cache
+
 - [ ] Design pattern Strategy pour backends multiples
 - [ ] Implémentation L1 (memory) + L2 (sqlite) + L3 (filesystem)
 - [ ] Gestion des niveaux de cache et évictions
@@ -102,9 +110,11 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Interfaces cache, tests unitaires strategy pattern
 
 #### 1.1.2 Spécification du storage persistant SQLite
+
 *Progression: 0%*
 
 ##### 1.1.2.1 Schema design et migrations
+
 - [ ] Tables core : cache_entries, cache_metadata, cache_stats
 - [ ] Index optimisés pour requêtes fréquentes
 - [ ] Système de migrations versionnées
@@ -134,6 +144,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : SQLite 3.35+, Go sqlite3 driver configured
 
 ##### 1.1.2.2 Optimisations performance SQLite
+
 - [ ] Configuration WAL mode et pragmas optimisées
 - [ ] Connection pooling et prepared statements
 - [ ] Compression des données volumineuses
@@ -162,9 +173,11 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : SQLite compilé avec threading, Go context timeout configuré
 
 #### 1.1.3 Design patterns et interfaces Go
+
 *Progression: 0%*
 
 ##### 1.1.3.1 Repository pattern pour abstraction storage
+
 - [ ] Interface Repository générique avec CRUD operations
 - [ ] Implémentations spécialisées par type d'entité
 - [ ] Unit of Work pattern pour transactions
@@ -193,6 +206,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Generic types Go 1.18+, mock interfaces pour tests
 
 ##### 1.1.3.2 Observer pattern pour cache invalidation
+
 - [ ] Event system pour notifications de changements
 - [ ] Handlers spécialisés par type d'événement
 - [ ] Integration avec webhooks externes
@@ -222,12 +236,15 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : HTTP server setup, webhook endpoint configuration
 
 ### 1.2 Configuration et environnement de développement
+
 *Progression: 0%*
 
 #### 1.2.1 Structure projet et dependencies Go
+
 *Progression: 0%*
 
 ##### 1.2.1.1 Architecture modules Go et go.mod setup
+
 - [ ] Configuration go.mod avec dependencies optimisées
 - [ ] Structure packages selon Go best practices
 - [ ] Gestion des versions et vendor directory
@@ -255,6 +272,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Go 1.22+ installé, Git repository initialisé
 
 ##### 1.2.1.2 Configuration des outils de développement
+
 - [ ] Mise en place linting avec golangci-lint
 - [ ] Configuration IDE avec VSCode/GoLand
 - [ ] Setup debugging et profiling tools
@@ -282,15 +300,19 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : IDE installé, Git hooks configurables
 
 ## Phase 2: Implémentation Core Go
+
 *Progression: 0%*
 
 ### 2.1 Développement du système de cache mémoire
+
 *Progression: 0%*
 
 #### 2.1.1 Implémentation cache thread-safe
+
 *Progression: 0%*
 
 ##### 2.1.1.1 Core cache engine avec sync.Map et TTL
+
 - [ ] Structure CacheEntry avec metadata et expiration
 - [ ] Goroutines de nettoyage automatique
 - [ ] Métriques de performance intégrées
@@ -319,6 +341,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Go runtime optimisé, memory profiling configuré
 
 ##### 2.1.1.2 Stratégies d'éviction (LRU, LFU, TTL-based)
+
 - [ ] Implémentation algorithme LRU avec doubly-linked list
 - [ ] Algorithme LFU avec compteurs d'accès
 - [ ] Éviction combinée TTL + usage patterns
@@ -347,6 +370,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Profiling tools, memory usage baselines
 
 ##### 2.1.1.3 Cache warming et preloading strategies
+
 - [ ] Système de préchargement configurable
 - [ ] Cache warming basé sur patterns d'usage
 - [ ] Refresh asynchrone avec circuit breaker
@@ -375,12 +399,15 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Worker pool implementation, circuit breaker library
 
 ### 2.2 Intégration SQLite storage backend
+
 *Progression: 0%*
 
 #### 2.2.1 Database schema et migrations
+
 *Progression: 0%*
 
 ##### 2.2.1.1 Tables optimisées pour cache operations
+
 - [ ] Schema avec index composites pour performance
 - [ ] Partitioning par namespace et date
 - [ ] Compression automatique des large objects
@@ -409,6 +436,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : SQLite avec extensions enabled, Go database/sql
 
 ##### 2.2.1.2 Migration system et version control
+
 - [ ] Migration runner avec rollback capability
 - [ ] Schema versioning et compatibility checks
 - [ ] Data migration tools pour upgrade
@@ -437,9 +465,11 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Transaction support, backup storage available
 
 #### 2.2.2 CRUD operations optimisées
+
 *Progression: 0%*
 
 ##### 2.2.2.1 Repository implementation avec prepared statements
+
 - [ ] SQLite repository avec connection pooling
 - [ ] Prepared statements pour queries fréquentes
 - [ ] Batch operations pour performance
@@ -468,6 +498,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Connection pooling, SQL query optimization
 
 ##### 2.2.2.2 Query optimization et indexing strategy
+
 - [ ] Analyse des query plans SQLite
 - [ ] Index automatique basé sur usage patterns
 - [ ] Query rewriting pour performance
@@ -496,15 +527,19 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : SQLite EXPLAIN support, query logging enabled
 
 ## Phase 3: Intégrations API & Workflows
+
 *Progression: 0%*
 
 ### 3.1 Connecteurs API externes (Notion, Google, Gmail)
+
 *Progression: 0%*
 
 #### 3.1.1 Client Notion API avec cache integration
+
 *Progression: 0%*
 
 ##### 3.1.1.1 Notion SDK wrapper avec caching automatique
+
 - [ ] Client Notion avec authentication OAuth
 - [ ] Cache-aside pattern pour database queries
 - [ ] Webhook integration pour real-time updates
@@ -534,6 +569,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Notion integration configured, webhook endpoint setup
 
 ##### 3.1.1.2 Contact LOT1 database synchronization
+
 - [ ] Mapping Notion properties vers structures Go
 - [ ] Synchronisation bidirectionnelle avec conflict resolution
 - [ ] Delta sync pour optimisation performance
@@ -562,9 +598,11 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Notion database access, conflict resolution policies
 
 #### 3.1.2 Google Calendar API integration
+
 *Progression: 0%*
 
 ##### 3.1.2.1 Calendar BOOKING1 events management
+
 - [ ] Google Calendar API client avec OAuth2
 - [ ] Event CRUD operations avec cache layer
 - [ ] Availability computation avec time zones
@@ -594,6 +632,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Google Cloud project, OAuth2 credentials configured
 
 ##### 3.1.2.2 Push notifications et real-time sync
+
 - [ ] Google Calendar push notifications setup
 - [ ] Webhook processing pour calendar changes
 - [ ] Real-time cache invalidation
@@ -623,12 +662,15 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Public webhook endpoint, Google Cloud Pub/Sub configured
 
 ### 3.2 Integration avec n8n workflows
+
 *Progression: 0%*
 
 #### 3.2.1 n8n API client et workflow management
+
 *Progression: 0%*
 
 ##### 3.2.1.1 Workflow execution monitoring
+
 - [ ] n8n API client pour workflow control
 - [ ] Execution status tracking et logging
 - [ ] Performance metrics collection
@@ -658,6 +700,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : n8n instance accessible, API credentials configured
 
 ##### 3.2.1.2 Data injection depuis cache vers workflows
+
 - [ ] Cache data provider pour n8n nodes
 - [ ] Template injection avec données cachées
 - [ ] Workflow parameter optimization
@@ -686,15 +729,19 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : n8n custom nodes, template engine configured
 
 ## Phase 4: Optimisations & Performance
+
 *Progression: 0%*
 
 ### 4.1 Performance monitoring et métriques
+
 *Progression: 0%*
 
 #### 4.1.1 Système de métriques intégré
+
 *Progression: 0%*
 
 ##### 4.1.1.1 Collection métriques temps réel
+
 - [ ] Metrics collector avec Prometheus integration
 - [ ] Custom metrics pour cache performance
 - [ ] Real-time dashboards avec Grafana
@@ -724,6 +771,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Prometheus server, Grafana instance
 
 ##### 4.1.1.2 Alerting et monitoring automated
+
 - [ ] Alert rules basées sur seuils performance
 - [ ] Notification system (email, Slack, webhook)
 - [ ] Auto-remediation pour problèmes courants
@@ -753,9 +801,11 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Monitoring stack déployé, notification channels configurés
 
 #### 4.1.2 Profiling et optimization continue
+
 *Progression: 0%*
 
 ##### 4.1.2.1 Go profiling intégré (pprof, trace)
+
 - [ ] HTTP pprof endpoints pour CPU/memory profiling
 - [ ] Goroutine leak detection automatique
 - [ ] Performance regression detection
@@ -785,6 +835,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Go runtime profiling enabled, performance baselines établis
 
 ##### 4.1.2.2 Benchmarking automatisé et CI integration
+
 - [ ] Benchmark suite pour cache operations
 - [ ] Performance tests dans CI pipeline
 - [ ] Automated performance reports
@@ -813,12 +864,15 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : CI environment configured, benchmark baselines établis
 
 ### 4.2 Optimisations avancées
+
 *Progression: 0%*
 
 #### 4.2.1 Memory management et garbage collection tuning
+
 *Progression: 0%*
 
 ##### 4.2.1.1 GC tuning pour workloads cache
+
 - [ ] GOGC parameter optimization basé sur usage patterns
 - [ ] Memory pooling pour frequent allocations
 - [ ] GC metrics monitoring et auto-tuning
@@ -847,6 +901,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Go runtime metrics, memory profiling configured
 
 ##### 4.2.1.2 Memory leak prevention et detection
+
 - [ ] Memory leak detector avec automated scanning
 - [ ] Reference counting pour cache entries
 - [ ] Memory usage alerting
@@ -875,9 +930,11 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Memory profiling tools, alerting infrastructure
 
 #### 4.2.2 Concurrency optimization
+
 *Progression: 0%*
 
 ##### 4.2.2.1 Goroutine pool management
+
 - [ ] Worker pool pattern pour API calls
 - [ ] Goroutine lifecycle management
 - [ ] Load balancing entre workers
@@ -906,6 +963,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Concurrency patterns established, monitoring configured
 
 ##### 4.2.2.2 Lock-free data structures
+
 - [ ] Lock-free cache implementation avec atomic operations
 - [ ] Compare-and-swap pour concurrent updates
 - [ ] Memory ordering et synchronization
@@ -934,15 +992,19 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Atomic operations understanding, concurrency testing framework
 
 ## Phase 5: Tests & Déploiement
+
 *Progression: 0%*
 
 ### 5.1 Stratégie de tests comprehensive
+
 *Progression: 0%*
 
 #### 5.1.1 Tests unitaires et integration
+
 *Progression: 0%*
 
 ##### 5.1.1.1 Test suite avec testify et mocks
+
 - [ ] Unit tests pour tous les packages cache
 - [ ] Mock implementations pour external APIs
 - [ ] Test coverage minimum 85%
@@ -971,6 +1033,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Testing framework configured, mock libraries available
 
 ##### 5.1.1.2 Integration tests avec containers
+
 - [ ] Docker compose pour test environment
 - [ ] Integration tests avec vraies APIs (sandbox)
 - [ ] End-to-end workflow testing
@@ -999,9 +1062,11 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Docker environment, API sandbox access
 
 #### 5.1.2 Performance testing et load testing
+
 *Progression: 0%*
 
 ##### 5.1.2.1 Load testing avec tools Go
+
 - [ ] Stress tests pour cache operations
 - [ ] Concurrent access simulation
 - [ ] Performance bottleneck identification
@@ -1030,6 +1095,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Performance baselines, monitoring infrastructure
 
 ##### 5.1.2.2 Chaos engineering et resilience testing
+
 - [ ] Failure injection pour components
 - [ ] Network partition simulation
 - [ ] Recovery time measurement
@@ -1058,12 +1124,15 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Test environment, failure simulation tools
 
 ### 5.2 Déploiement et CI/CD
+
 *Progression: 0%*
 
 #### 5.2.1 Pipeline CI/CD avec GitHub Actions
+
 *Progression: 0%*
 
 ##### 5.2.1.1 Automated testing et quality gates
+
 - [ ] GitHub Actions workflow pour tests automatisés
 - [ ] Quality gates avec coverage et linting
 - [ ] Security scanning avec gosec
@@ -1092,6 +1161,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : GitHub repository, Actions enabled
 
 ##### 5.2.1.2 Automated deployment et rollback
+
 - [ ] Deployment pipeline avec staging/production
 - [ ] Blue-green deployment strategy
 - [ ] Automated rollback sur failure detection
@@ -1120,9 +1190,11 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Deployment infrastructure, monitoring setup
 
 #### 5.2.2 Documentation et maintenance
+
 *Progression: 0%*
 
 ##### 5.2.2.1 Documentation technique automatisée
+
 - [ ] Godoc generation pour API documentation
 - [ ] Architecture decision records (ADRs)
 - [ ] Operational runbooks
@@ -1151,6 +1223,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
   - [ ] Conditions préalables : Documentation toolchain, template standards
 
 ##### 5.2.2.2 Monitoring post-deployment et health checks
+
 - [ ] Health check endpoints pour monitoring
 - [ ] Metrics collection pour production monitoring
 - [ ] Alerting setup pour operational issues
@@ -1184,22 +1257,25 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
 ## Récapitulatif et prochaines étapes
 
 ### Gains estimés après implémentation complète :
+
 - **Réduction temps d'exécution** : 70% (de 10-30s à 2-5s par workflow)
 - **Optimisation mémoire** : 60% (cache intelligent + pooling)
 - **Fiabilité** : +90% (fallback strategies + circuit breakers)
 - **Coûts API** : -80% (cache hits vs API calls répétés)
 
 ### Priorités d'implémentation :
+
 1. **Phase 1** : Cache mémoire + SQLite backend (semaines 1-2)
 2. **Phase 2** : Intégrations API avec cache-aside (semaines 3-4)
 3. **Phase 3** : Optimisations performance + monitoring (semaines 5-6)
 4. **Phase 4** : Tests comprehensive + déploiement (semaines 7-8)
 
 ### Fichiers principaux à créer :
+
 - `/src/go/go.mod` - Module principal
 - `/src/go/pkg/cache/` - Core cache system
 - `/src/go/pkg/storage/sqlite/` - Backend SQLite
 - `/src/go/pkg/api/` - Clients externes (Notion, Google, n8n)
 - `/src/go/cmd/` - Applications (cache-server, data-sync, etc.)
 
-**Voulez-vous commencer par l'implémentation du cache mémoire (Phase 1.1.1) ou préférez-vous ajuster certains aspects du plan ?**
+## Voulez-vous commencer par l'implémentation du cache mémoire (Phase 1.1.1) ou préférez-vous ajuster certains aspects du plan ?

@@ -11,11 +11,13 @@ Copy and paste this prompt to begin implementing plan-dev-v55:
 I need to implement **plan-dev-v55 Planning Ecosystem Synchronization** following the methodical workflow approach.
 
 ### Context
+
 - **Plan Document**: `d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v55-planning-ecosystem-sync.md`
 - **Workflow Guide**: `.github\prompts\planning\methodical-implementation-workflow.md`
 - **Implementation Prompt**: `.github\prompts\planning\implement-plan-dev-v55.md`
 
 ### Current Request
+
 Please begin with **Phase 1: Core Synchronization Foundation** implementation:
 
 1. **Set up the Git workflow**:
@@ -81,32 +83,32 @@ Please follow the exact specifications from the plan document and implement all 
 If you prefer to start with a specific component, use these targeted prompts:
 
 ### Just the Core Engine
-```
+
+```plaintext
 Please implement just the Core Sync Engine (Task 1.1) from plan-dev-v55:
 - Create the branch and directory structure
 - Implement `tools/sync-core/engine.go` with full functionality
 - Add proper ToolkitOperation compliance
 - Include comprehensive error handling and logging
-```
-
+```plaintext
 ### Just the Data Models
-```
+
+```plaintext
 Please implement just the Data Models (Task 1.2) from plan-dev-v55:
 - Create `tools/sync-core/models.go` with all structs
 - Implement JSON/YAML serialization
 - Add validation tags and helper methods
 - Include unit tests for all models
-```
-
+```plaintext
 ### Just the Configuration System
-```
+
+```plaintext
 Please implement just the Configuration System (Task 1.3) from plan-dev-v55:
 - Create configuration files and schemas
 - Implement validation logic
 - Add template system
 - Include configuration loading tests
-```
-
+```plaintext
 ## Progress Tracking
 
 After implementation, please update the plan document with:

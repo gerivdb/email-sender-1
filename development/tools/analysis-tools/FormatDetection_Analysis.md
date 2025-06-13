@@ -1,4 +1,4 @@
-﻿# Analyse des problÃ¨mes actuels de dÃ©tection automatique des formats
+# Analyse des problÃ¨mes actuels de dÃ©tection automatique des formats
 
 ## Introduction
 
@@ -62,30 +62,35 @@ Les formats binaires prÃ©sentent des dÃ©fis particuliers :
 ### 3.1 Formats texte
 
 #### 3.1.1 Texte brut
+
 - **Signatures** : Absence de signatures binaires
 - **Contenu** : Ratio Ã©levÃ© de caractÃ¨res imprimables
 - **Structure** : Lignes de longueur variable, terminÃ©es par des caractÃ¨res de fin de ligne
 - **Encodages** : UTF-8, UTF-16, ASCII, ISO-8859, etc.
 
 #### 3.1.2 CSV/TSV
+
 - **Signatures** : Absence de signatures binaires
 - **Contenu** : PrÃ©sence cohÃ©rente de dÃ©limiteurs (virgules, tabulations)
 - **Structure** : Nombre cohÃ©rent de champs par ligne
 - **En-tÃªtes** : PremiÃ¨re ligne potentiellement diffÃ©rente (en-tÃªtes)
 
 #### 3.1.3 XML/HTML
+
 - **Signatures** : DÃ©clarations XML/DOCTYPE
 - **Contenu** : PrÃ©sence de balises ouvrantes/fermantes
 - **Structure** : Structure hiÃ©rarchique avec imbrication de balises
 - **Validation** : ConformitÃ© aux rÃ¨gles de syntaxe XML/HTML
 
 #### 3.1.4 JSON
+
 - **Signatures** : DÃ©but avec { ou [
 - **Contenu** : Paires clÃ©-valeur, tableaux
 - **Structure** : Structure imbriquÃ©e conforme Ã  la syntaxe JSON
 - **Validation** : Analyse syntaxique complÃ¨te
 
 #### 3.1.5 Scripts
+
 - **PowerShell** : PrÃ©sence de cmdlets, syntaxe PowerShell
 - **Batch** : Commandes DOS, structure de batch
 - **Python** : Indentation, mots-clÃ©s Python
@@ -94,6 +99,7 @@ Les formats binaires prÃ©sentent des dÃ©fis particuliers :
 ### 3.2 Formats binaires
 
 #### 3.2.1 Images
+
 - **JPEG** : Signature FF D8 FF
 - **PNG** : Signature 89 50 4E 47 0D 0A 1A 0A
 - **GIF** : Signature GIF87a ou GIF89a
@@ -101,16 +107,19 @@ Les formats binaires prÃ©sentent des dÃ©fis particuliers :
 - **TIFF** : Signature 49 49 2A 00 ou 4D 4D 00 2A
 
 #### 3.2.2 Documents
+
 - **PDF** : Signature %PDF
 - **Office** : Signatures spÃ©cifiques ou structure ZIP+XML (formats Office modernes)
 - **RTF** : Signature {\\rtf
 
 #### 3.2.3 Archives
+
 - **ZIP** : Signature PK
 - **RAR** : Signature Rar!
 - **7Z** : Signature 7z
 
 #### 3.2.4 ExÃ©cutables
+
 - **EXE/DLL** : Signature MZ
 - **MSI** : En-tÃªte spÃ©cifique
 - **Scripts compilÃ©s** : Signatures spÃ©cifiques

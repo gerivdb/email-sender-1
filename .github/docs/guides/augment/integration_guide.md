@@ -12,8 +12,7 @@ Pour configurer l'intégration avec Augment Code, exécutez le script suivant :
 
 ```powershell
 .\development\scripts\maintenance\augment\configure-augment-mcp.ps1 -StartServers
-```
-
+```plaintext
 Ce script effectue les actions suivantes :
 1. Crée les fichiers de configuration nécessaires dans le répertoire `.augment`
 2. Configure les serveurs MCP (Model Context Protocol) pour l'intégration avec Augment
@@ -35,8 +34,7 @@ Pour démarrer manuellement ce serveur :
 
 ```powershell
 .\development\scripts\maintenance\augment\mcp-memories-server.ps1 -Port 7891
-```
-
+```plaintext
 ### 2. Adaptateur MCP pour le gestionnaire de modes
 
 L'adaptateur MCP pour le gestionnaire de modes permet à Augment d'interagir directement avec notre système de gestion de modes. Il expose les fonctionnalités suivantes :
@@ -50,44 +48,39 @@ Pour démarrer manuellement cet adaptateur :
 
 ```powershell
 .\development\scripts\maintenance\augment\mcp-mode-manager-adapter.ps1 -Port 7892
-```
-
+```plaintext
 ### 3. Script d'intégration pour le gestionnaire de modes
 
 Ce script permet d'exécuter un mode spécifique et de mettre à jour les Memories d'Augment avec les informations du mode :
 
 ```powershell
 .\development\scripts\maintenance\augment\mode-manager-augment-integration.ps1 -Mode GRAN -FilePath "docs\plans\plan-modes-stepup.md" -TaskIdentifier "1.2.3" -UpdateMemories
-```
-
+```plaintext
 ### 4. Script d'optimisation des Memories
 
 Ce script optimise les Memories d'Augment selon nos besoins spécifiques, en organisant les Memories par catégories fonctionnelles et en implémentant un système de sélection contextuelle des Memories basé sur le mode actif :
 
 ```powershell
 .\development\scripts\maintenance\augment\optimize-augment-memories.ps1 -Mode GRAN -OutputPath ".augment\memories\journal_memories.json"
-```
-
+```plaintext
 ## Utilisation avec Augment Code
 
 ### Activation des modes via Augment
 
 Pour activer un mode spécifique via Augment, vous pouvez utiliser les commandes suivantes :
 
-```
+```plaintext
 Peux-tu activer le mode GRAN pour décomposer la tâche 1.2.3 dans le fichier docs/plans/plan-modes-stepup.md ?
-```
-
+```plaintext
 Augment utilisera l'adaptateur MCP pour exécuter le mode GRAN et mettra à jour ses Memories en conséquence.
 
 ### Optimisation des inputs pour Augment
 
 Pour respecter la limite de taille de 5KB par input, vous pouvez utiliser la fonction de segmentation :
 
-```
+```plaintext
 Peux-tu diviser ce code en segments de moins de 5KB pour que je puisse te les envoyer ?
-```
-
+```plaintext
 Augment utilisera le serveur MCP pour diviser l'input en segments de taille appropriée.
 
 ### Utilisation des Memories optimisées
@@ -164,8 +157,7 @@ Pour intégrer les serveurs MCP d'Augment avec le MCP Manager existant, exécute
 
 ```powershell
 .\development\scripts\maintenance\augment\integrate-with-mcp-manager.ps1
-```
-
+```plaintext
 Ce script effectue les actions suivantes :
 1. Met à jour le module MCPManager pour inclure les serveurs MCP d'Augment
 2. Met à jour la configuration MCP globale
@@ -175,8 +167,7 @@ Après l'intégration, vous pouvez démarrer tous les serveurs MCP, y compris le
 
 ```powershell
 .\src\mcp\utils\scripts\start-all-mcp-servers.ps1
-```
-
+```plaintext
 Pour plus d'informations sur l'intégration MCP, consultez le [Guide d'intégration MCP](./mcp_integration.md).
 
 ## Module PowerShell d'intégration
@@ -185,24 +176,26 @@ Pour faciliter l'utilisation de l'intégration avec Augment Code, nous avons dé
 
 ```powershell
 .\development\scripts\maintenance\augment\Install-AugmentIntegration.ps1
-```
-
+```plaintext
 Une fois le module installé, vous pouvez l'utiliser dans n'importe quel script PowerShell :
 
 ```powershell
 # Importer le module
+
 Import-Module AugmentIntegration
 
 # Initialiser l'intégration avec Augment Code
+
 Initialize-AugmentIntegration -StartServers
 
 # Exécuter un mode spécifique
+
 Invoke-AugmentMode -Mode GRAN -FilePath "docs\plans\plan-modes-stepup.md" -TaskIdentifier "1.2.3" -UpdateMemories
 
 # Mettre à jour les Memories pour un mode spécifique
-Update-AugmentMemoriesForMode -Mode GRAN
-```
 
+Update-AugmentMemoriesForMode -Mode GRAN
+```plaintext
 Pour plus d'informations sur l'utilisation du module, consultez le [Guide d'utilisation avancée](./advanced_usage.md).
 
 ## Ressources supplémentaires

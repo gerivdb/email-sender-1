@@ -17,8 +17,7 @@ Ce module PowerShell fournit des fonctionnalites pour gerer les metadonnees des 
 
 ```powershell
 . "chemin/vers/MetadataManager.ps1"
-```
-
+```plaintext
 ## Utilisation
 
 ### Gestion des metadonnees des documents
@@ -37,16 +36,18 @@ $document = [PSCustomObject]@{
 }
 
 # Extraire toutes les metadonnees sauf le contenu
+
 $metadata = Get-DocumentMetadata -Document $document
 
 # Extraire uniquement les metadonnees specifiees
-$metadata = Get-DocumentMetadata -Document $document -IncludeFields @("title", "author", "status")
-```
 
+$metadata = Get-DocumentMetadata -Document $document -IncludeFields @("title", "author", "status")
+```plaintext
 #### Ajout et mise a jour des metadonnees
 
 ```powershell
 # Ajouter de nouvelles metadonnees
+
 $newMetadata = @{
     category = "documentation"
     tags = @("test", "metadata")
@@ -55,32 +56,31 @@ $newMetadata = @{
 $updatedDocument = Add-DocumentMetadata -Document $document -Metadata $newMetadata
 
 # Mettre a jour des metadonnees existantes
+
 $updateMetadata = @{
     status = "published"
     priority = "medium"
 }
 $updatedDocument = Add-DocumentMetadata -Document $document -Metadata $updateMetadata -Force
-```
-
+```plaintext
 #### Suppression des metadonnees
 
 ```powershell
 $fieldsToRemove = @("status", "priority", "tags")
 $updatedDocument = Remove-DocumentMetadata -Document $document -Fields $fieldsToRemove
-```
-
+```plaintext
 ### Gestion des metadonnees des fichiers markdown
 
 #### Extraction des metadonnees
 
 ```powershell
 $metadata = Get-MarkdownMetadata -FilePath "chemin/vers/document.md"
-```
-
+```plaintext
 Cette fonction extrait les metadonnees des sources suivantes :
 
 - YAML frontmatter (entre `---` au debut du fichier)
 - Tags inline (format `#key:value`)
+
 - Attributs entre parentheses (format `(key:value)`)
 - Metadonnees de base du fichier (chemin, nom, extension, taille, dates)
 
@@ -88,6 +88,7 @@ Cette fonction extrait les metadonnees des sources suivantes :
 
 ```powershell
 # Ajouter des metadonnees au format YAML
+
 $metadata = @{
     title = "Document mis a jour"
     author = "Marie Martin"
@@ -97,6 +98,7 @@ $metadata = @{
 Add-MarkdownMetadata -FilePath "chemin/vers/document.md" -Metadata $metadata -Format "YAML"
 
 # Ajouter des metadonnees au format inline
+
 $metadata = @{
     priority = "medium"
     team = "qa"
@@ -105,13 +107,13 @@ $metadata = @{
 Add-MarkdownMetadata -FilePath "chemin/vers/document.md" -Metadata $metadata -Format "Inline"
 
 # Ajouter des metadonnees aux deux formats
+
 $metadata = @{
     status = "published"
     priority = "high"
 }
 Add-MarkdownMetadata -FilePath "chemin/vers/document.md" -Metadata $metadata -Format "Both"
-```
-
+```plaintext
 ## Exemple complet
 
 Voir le fichier `ExempleUtilisation.ps1` pour un exemple complet d'utilisation du module.
@@ -171,6 +173,7 @@ Ajoute ou met a jour des metadonnees dans un fichier markdown.
 
 ```powershell
 # Fonction pour indexer un repertoire de fichiers markdown
+
 function Index-MarkdownDirectory {
     param (
         [string]$DirectoryPath,
@@ -179,9 +182,11 @@ function Index-MarkdownDirectory {
     )
     
     # Rechercher les fichiers markdown
+
     $markdownFiles = Get-ChildItem -Path $DirectoryPath -Filter "*.md" -Recurse:$Recursive
     
     # Indexer chaque fichier
+
     $documents = @()
     foreach ($file in $markdownFiles) {
         $metadata = Get-MarkdownMetadata -FilePath $file.FullName
@@ -195,6 +200,7 @@ function Index-MarkdownDirectory {
         }
         
         # Ajouter les metadonnees au document
+
         foreach ($key in $metadata.Keys) {
             if (-not $document.PSObject.Properties.Match($key).Count) {
                 $document | Add-Member -MemberType NoteProperty -Name $key -Value $metadata[$key]
@@ -205,17 +211,18 @@ function Index-MarkdownDirectory {
     }
     
     # Enregistrer l'index
+
     $indexPath = Join-Path -Path $OutputPath -ChildPath "index.json"
     $documents | ConvertTo-Json -Depth 10 | Set-Content -Path $indexPath -Encoding UTF8
     
     return $documents
 }
-```
-
+```plaintext
 ### Recherche dans l'index
 
 ```powershell
 # Fonction pour rechercher dans l'index
+
 function Search-Index {
     param (
         [string]$IndexPath,
@@ -225,9 +232,11 @@ function Search-Index {
     )
     
     # Charger l'index
+
     $documents = Get-Content -Path $IndexPath -Raw | ConvertFrom-Json
     
     # Filtrer les documents par terme de recherche
+
     if (-not [string]::IsNullOrEmpty($SearchTerm)) {
         $documents = $documents | Where-Object {
             $_.content -like "*$SearchTerm*" -or $_.title -like "*$SearchTerm*"
@@ -235,6 +244,7 @@ function Search-Index {
     }
     
     # Appliquer les filtres
+
     foreach ($key in $Filters.Keys) {
         $value = $Filters[$key]
         $documents = $documents | Where-Object {
@@ -243,12 +253,12 @@ function Search-Index {
     }
     
     # Limiter le nombre de resultats
+
     $documents = $documents | Select-Object -First $MaxResults
     
     return $documents
 }
-```
-
+```plaintext
 ## Licence
 
 Ce module est distribue sous licence MIT. Voir le fichier LICENSE pour plus d'informations.

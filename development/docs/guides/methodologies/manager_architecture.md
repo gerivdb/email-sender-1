@@ -22,24 +22,29 @@ L'architecture des gestionnaires repose sur les principes suivants :
 
 Les gestionnaires sont organisés selon la structure de répertoires suivante :
 
-```
+```plaintext
 development/managers/
 ├── integrated-manager/        # Gestionnaire intégré (point d'entrée central)
+
 ├── mode-manager/              # Gestionnaire de modes
+
 ├── roadmap-manager/           # Gestionnaire de roadmap
+
 ├── script-manager/            # Gestionnaire de scripts
+
 ├── error-manager/             # Gestionnaire d'erreurs
+
 └── ...                        # Autres gestionnaires
 
 projet/config/managers/        # Configuration des gestionnaires
+
 ├── integrated-manager/
 ├── mode-manager/
 ├── roadmap-manager/
 ├── script-manager/
 ├── error-manager/
 └── ...
-```
-
+```plaintext
 ## Gestionnaires principaux
 
 ### Gestionnaire Intégré
@@ -104,7 +109,7 @@ Le gestionnaire d'erreurs centralise la gestion, le traitement et la journalisat
 
 Les gestionnaires interagissent entre eux selon le schéma suivant :
 
-```
+```plaintext
                                  ┌─────────────────┐
                                  │                 │
                                  │  Gestionnaire   │
@@ -130,8 +135,7 @@ Les gestionnaires interagissent entre eux selon le schéma suivant :
                                  │    d'Erreurs    │
                                  │                 │
                                  └─────────────────┘
-```
-
+```plaintext
 ### Flux d'interactions typiques
 
 1. **Exécution d'une commande via le gestionnaire intégré :**
@@ -183,8 +187,7 @@ Chaque gestionnaire possède son propre fichier de configuration situé dans le 
     }
   }
 }
-```
-
+```plaintext
 ## Extension du système
 
 Le système peut être étendu en ajoutant de nouveaux gestionnaires. Pour créer un nouveau gestionnaire, suivez ces étapes :

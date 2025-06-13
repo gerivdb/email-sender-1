@@ -19,30 +19,36 @@ L'objectif principal du gestionnaire intégré est de fournir un point d'entrée
 
 Le gestionnaire intégré est organisé selon la structure de répertoires suivante :
 
-```
+```plaintext
 development/managers/integrated-manager/
 ├── scripts/
 │   ├── integrated-manager.ps1           # Script principal
+
 │   ├── install-integrated-manager.ps1   # Script d'installation
+
 │   └── ...                              # Autres scripts
+
 ├── modules/
 │   └── ...                              # Modules PowerShell
+
 ├── tests/
 │   ├── Test-IntegratedManager.ps1       # Tests unitaires
+
 │   └── ...                              # Autres tests
+
 └── config/
     └── ...                              # Fichiers de configuration locaux
-```
 
+```plaintext
 ### Fichiers de configuration
 
 Les fichiers de configuration du gestionnaire sont stockés dans :
 
-```
+```plaintext
 projet/config/managers/integrated-manager/
 └── integrated-manager.config.json       # Configuration principale
-```
 
+```plaintext
 ## Prérequis
 
 Avant d'utiliser le gestionnaire intégré, assurez-vous que :
@@ -59,8 +65,7 @@ Pour installer le gestionnaire intégré, utilisez le script d'installation :
 
 ```powershell
 .\development\managers\integrated-manager\scripts\install-integrated-manager.ps1
-```
-
+```plaintext
 ### Installation manuelle
 
 Si vous préférez une installation manuelle, suivez ces étapes :
@@ -75,10 +80,9 @@ Si vous préférez une installation manuelle, suivez ces étapes :
 
 Le fichier de configuration principal du gestionnaire est situé à :
 
-```
+```plaintext
 projet/config/managers/integrated-manager/integrated-manager.config.json
-```
-
+```plaintext
 Voici un exemple de configuration :
 
 ```json
@@ -104,8 +108,7 @@ Voici un exemple de configuration :
     }
   }
 }
-```
-
+```plaintext
 ### Options de configuration
 
 | Option | Type | Description | Valeur par défaut |
@@ -124,8 +127,7 @@ Le gestionnaire intégré expose les commandes suivantes :
 
 ```powershell
 .\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Command RunManager -Manager ModeManager -ManagerCommand SetMode -Mode CHECK
-```
-
+```plaintext
 **Description :** Exécute une commande sur un gestionnaire spécifique
 
 **Paramètres :**
@@ -136,37 +138,34 @@ Le gestionnaire intégré expose les commandes suivantes :
 **Exemple :**
 ```powershell
 .\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Command RunManager -Manager RoadmapManager -ManagerCommand ParseRoadmap -FilePath "projet/roadmaps/roadmap_complete_converted.md"
-```
-
+```plaintext
 #### Commande 2 : ListManagers
 
 ```powershell
 .\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Command ListManagers
-```
-
+```plaintext
 **Description :** Liste tous les gestionnaires disponibles
 
 **Exemple :**
 ```powershell
 .\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Command ListManagers -Detailed
-```
-
+```plaintext
 ### Exemples d'utilisation
 
 #### Exemple 1 : Utilisation du gestionnaire de modes
 
 ```powershell
 # Activer le mode CHECK via le gestionnaire intégré
-.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Command RunManager -Manager ModeManager -ManagerCommand SetMode -Mode CHECK
-```
 
+.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Command RunManager -Manager ModeManager -ManagerCommand SetMode -Mode CHECK
+```plaintext
 #### Exemple 2 : Utilisation du gestionnaire de roadmap
 
 ```powershell
 # Analyser une roadmap via le gestionnaire intégré
-.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Command RunManager -Manager RoadmapManager -ManagerCommand ParseRoadmap -FilePath "projet/roadmaps/roadmap_complete_converted.md"
-```
 
+.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Command RunManager -Manager RoadmapManager -ManagerCommand ParseRoadmap -FilePath "projet/roadmaps/roadmap_complete_converted.md"
+```plaintext
 ## Intégration avec d'autres gestionnaires
 
 Le gestionnaire intégré est conçu pour s'intégrer avec tous les autres gestionnaires du système :
@@ -175,16 +174,16 @@ Le gestionnaire intégré est conçu pour s'intégrer avec tous les autres gesti
 
 ```powershell
 # Utiliser le gestionnaire de modes via le gestionnaire intégré
-.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Command RunManager -Manager ModeManager -ManagerCommand RunMode -Mode CHECK -FilePath "projet/roadmaps/roadmap_complete_converted.md"
-```
 
+.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Command RunManager -Manager ModeManager -ManagerCommand RunMode -Mode CHECK -FilePath "projet/roadmaps/roadmap_complete_converted.md"
+```plaintext
 ### Intégration avec le gestionnaire de scripts
 
 ```powershell
 # Utiliser le gestionnaire de scripts via le gestionnaire intégré
-.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Command RunManager -Manager ScriptManager -ManagerCommand RunScript -ScriptPath "development/scripts/maintenance/find-managers.ps1"
-```
 
+.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Command RunManager -Manager ScriptManager -ManagerCommand RunScript -ScriptPath "development/scripts/maintenance/find-managers.ps1"
+```plaintext
 ## Dépannage
 
 ### Problèmes courants et solutions
@@ -224,10 +223,9 @@ Le gestionnaire intégré est conçu pour s'intégrer avec tous les autres gesti
 
 Le gestionnaire intégré génère des journaux dans le répertoire suivant :
 
-```
+```plaintext
 logs/integrated-manager/
-```
-
+```plaintext
 Les niveaux de journalisation peuvent être configurés dans le fichier de configuration principal.
 
 ## Tests
@@ -238,8 +236,7 @@ Pour exécuter les tests du gestionnaire intégré, utilisez la commande suivant
 
 ```powershell
 .\development\managers\integrated-manager\tests\Test-IntegratedManager.ps1
-```
-
+```plaintext
 ### Types de tests disponibles
 
 - **Tests unitaires :** Testent les fonctions individuelles du gestionnaire

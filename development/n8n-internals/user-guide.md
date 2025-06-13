@@ -5,15 +5,25 @@ Ce guide explique comment utiliser le système de remédiation n8n pour gérer, 
 ## Table des matières
 
 1. [Introduction](#introduction)
+
 2. [Installation](#installation)
+
 3. [Interface principale](#interface-principale)
+
 4. [Gestion du cycle de vie](#gestion-du-cycle-de-vie)
+
 5. [Surveillance et diagnostics](#surveillance-et-diagnostics)
+
 6. [Gestion des workflows](#gestion-des-workflows)
+
 7. [Maintenance](#maintenance)
+
 8. [Tests d'intégration](#tests-dintégration)
+
 9. [Configuration](#configuration)
+
 10. [Dépannage](#dépannage)
+
 11. [Références](#références)
 
 ## Introduction
@@ -42,7 +52,7 @@ Le système de remédiation n8n est un ensemble d'outils conçus pour gérer, su
 
 Le système de remédiation n8n est organisé selon la structure suivante :
 
-```
+```plaintext
 n8n/
 ├── automation/
 │   ├── deployment/
@@ -58,8 +68,7 @@ n8n/
 ├── data/
 ├── projet/documentation/
 └── logs/
-```
-
+```plaintext
 ### Premiers pas
 
 1. Assurez-vous que tous les prérequis sont installés
@@ -72,15 +81,14 @@ L'interface principale du système de remédiation n8n est accessible via le scr
 
 ### Lancement de l'interface
 
-```
+```plaintext
 .\n8n-manager.cmd
-```
-
+```plaintext
 ### Menu principal
 
 Le menu principal propose les options suivantes :
 
-```
+```plaintext
 ╔══════════════════════════════════════╗
 ║           n8n Manager v1.0           ║
 ╚══════════════════════════════════════╝
@@ -110,16 +118,14 @@ Configuration:
 
 Statut actuel:
   n8n est en cours d'exécution (PID: 1234)
-```
-
+```plaintext
 ### Exécution directe d'une action
 
 Pour exécuter directement une action sans passer par le menu, utilisez le paramètre `-Action` :
 
-```
+```plaintext
 .\n8n-manager.cmd -Action start
-```
-
+```plaintext
 Actions disponibles :
 - `start` : Démarre n8n
 - `stop` : Arrête n8n
@@ -257,10 +263,9 @@ Le script exécute les tâches de maintenance suivantes :
 
 Pour planifier les tâches de maintenance, utilisez le script `schedule-tasks.ps1` :
 
-```
+```plaintext
 .\n8n\automation\maintenance\schedule-tasks.ps1 -Install
-```
-
+```plaintext
 Le script installe des tâches planifiées pour exécuter automatiquement les tâches de maintenance.
 
 ## Tests d'intégration
@@ -288,11 +293,10 @@ Le script exécute les scénarios de test définis dans le fichier `test-scenari
 
 Pour exécuter uniquement certains scénarios, utilisez les options `-ScenarioFilter` et `-PriorityFilter` :
 
-```
+```plaintext
 .\n8n-test.cmd -ScenarioFilter "lifecycle-basic"
 .\n8n-test.cmd -PriorityFilter "high"
-```
-
+```plaintext
 ## Configuration
 
 La configuration permet de modifier les paramètres du système de remédiation n8n.
@@ -303,7 +307,7 @@ Pour accéder au menu de configuration, utilisez l'option C dans le menu princip
 
 Le menu de configuration propose les options suivantes :
 
-```
+```plaintext
 ╔══════════════════════════════════════╗
 ║       Configuration n8n Manager      ║
 ╚══════════════════════════════════════╝
@@ -323,8 +327,7 @@ Configuration actuelle:
   R. Réinitialiser la configuration
 
   0. Retour au menu principal
-```
-
+```plaintext
 ### Fichier de configuration
 
 Le fichier de configuration `n8n/projet/config/n8n-manager-config.json` contient les paramètres suivants :
@@ -341,8 +344,7 @@ Le fichier de configuration `n8n/projet/config/n8n-manager-config.json` contient
   "AutoRestart": false,
   "NotificationEnabled": true
 }
-```
-
+```plaintext
 ## Dépannage
 
 Cette section fournit des solutions aux problèmes courants rencontrés lors de l'utilisation du système de remédiation n8n.

@@ -24,8 +24,7 @@ Si vous avez déjà les dépendances Python installées globalement, vous pouvez
 ```powershell
 cd development\scripts\roadmap\rag\tests
 .\Invoke-AllTests.ps1 -TestType All -GenerateReport
-```
-
+```plaintext
 Options disponibles :
 - `-TestType` : Type de tests à exécuter (`All`, `ChangeDetection`, `VectorUpdate`, `Versioning`)
 - `-GenerateReport` : Générer un rapport HTML des résultats des tests
@@ -37,8 +36,7 @@ Si vous rencontrez des problèmes avec les dépendances Python, vous pouvez util
 ```powershell
 cd development\scripts\roadmap\rag\tests
 .\Run-TestsWithCompatibleDependencies.ps1 -TestType All -GenerateReport
-```
-
+```plaintext
 Options disponibles :
 - `-TestType` : Type de tests à exécuter (`All`, `ChangeDetection`, `VectorUpdate`, `Versioning`)
 - `-GenerateReport` : Générer un rapport HTML des résultats des tests
@@ -54,8 +52,7 @@ Pour une solution plus propre et isolée, vous pouvez créer un environnement vi
 ```powershell
 cd development\scripts\roadmap\rag
 .\Setup-VirtualEnvironment.ps1
-```
-
+```plaintext
 Options disponibles :
 - `-VenvPath` : Chemin de l'environnement virtuel (par défaut : `venv`)
 - `-Force` : Forcer la recréation de l'environnement virtuel s'il existe déjà
@@ -66,15 +63,13 @@ Options disponibles :
 ```powershell
 cd development\scripts\roadmap\rag
 .\Activate-RoadmapEnvironment.ps1
-```
-
+```plaintext
 ### 3.3. Exécution des tests dans l'environnement virtuel
 
 ```powershell
 cd development\scripts\roadmap\rag
 .\Run-TestsInVenv.ps1 -TestType All -GenerateReport
-```
-
+```plaintext
 Options disponibles :
 - `-TestType` : Type de tests à exécuter (`All`, `ChangeDetection`, `VectorUpdate`, `Versioning`)
 - `-GenerateReport` : Générer un rapport HTML des résultats des tests
@@ -83,16 +78,14 @@ Options disponibles :
 
 ```powershell
 deactivate
-```
-
+```plaintext
 ## Résolution des problèmes
 
 Si vous rencontrez des problèmes lors de l'exécution des tests, consultez le guide de dépannage :
 
 ```powershell
 notepad docs\guides\roadmap\TROUBLESHOOTING_DEPENDENCIES.md
-```
-
+```plaintext
 ### Problèmes courants
 
 1. **Erreurs d'importation avec `sentence-transformers`** : Incompatibilité entre les versions de `sentence-transformers`, `huggingface-hub` et `transformers`.
@@ -106,8 +99,7 @@ Si Qdrant n'est pas en cours d'exécution, démarrez-le avec :
 ```powershell
 cd development\scripts\roadmap
 .\Start-QdrantContainer.ps1 -Action Start
-```
-
+```plaintext
 ## Versions compatibles recommandées
 
 | Bibliothèque | Version |
@@ -149,4 +141,4 @@ Pour ouvrir le rapport :
 
 ```powershell
 Invoke-Item projet\roadmaps\analysis\test\output\test_report.html
-```
+```plaintext

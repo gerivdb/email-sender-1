@@ -1,4 +1,4 @@
-﻿# Base de connaissances des erreurs
+# Base de connaissances des erreurs
 
 Ce document centralise les erreurs rencontrÃ©es et leurs solutions pour faciliter le dÃ©pannage futur.
 
@@ -9,10 +9,9 @@ Ce document centralise les erreurs rencontrÃ©es et leurs solutions pour facili
 **Description** : Utilisation d'un verbe non approuvÃ© dans le nom d'une fonction ou cmdlet PowerShell.
 
 **Exemple d'erreur** :
-```
+```plaintext
 The cmdlet 'Fix-NullComparisons' uses an unapproved verb.
-```
-
+```plaintext
 **Solution** :
 - Remplacer le verbe non approuvÃ© par un verbe approuvÃ© de la liste `Get-Verb`
 - Correspondances courantes :
@@ -23,21 +22,21 @@ The cmdlet 'Fix-NullComparisons' uses an unapproved verb.
 **Code corrigÃ©** :
 ```powershell
 # Avant
+
 function Fix-NullComparisons { ... }
 
 # AprÃ¨s
-function Repair-NullComparisons { ... }
-```
 
+function Repair-NullComparisons { ... }
+```plaintext
 ### PSAvoidAssignmentToAutomaticVariable
 
 **Description** : Assignation Ã  une variable automatique de PowerShell, ce qui peut avoir des effets secondaires indÃ©sirables.
 
 **Exemple d'erreur** :
-```
+```plaintext
 The Variable 'Matches' is an automatic variable that is built into PowerShell, assigning to it might have undesired side effects.
-```
-
+```plaintext
 **Solution** :
 - Utiliser un nom de variable diffÃ©rent
 - Pour les expressions rÃ©guliÃ¨res, utiliser `$RegexMatches` au lieu de `$Matches`
@@ -45,12 +44,13 @@ The Variable 'Matches' is an automatic variable that is built into PowerShell, a
 **Code corrigÃ©** :
 ```powershell
 # Avant
+
 $Matches = [regex]::Matches($Content, $Pattern)
 
 # AprÃ¨s
-$RegexMatches = [regex]::Matches($Content, $Pattern)
-```
 
+$RegexMatches = [regex]::Matches($Content, $Pattern)
+```plaintext
 ### Missing closing '}' in statement block
 
 **Description** : Accolade fermante manquante dans un bloc de code.
@@ -65,16 +65,19 @@ $RegexMatches = [regex]::Matches($Content, $Pattern)
 **Code corrigÃ©** :
 ```powershell
 # Avant (problÃ©matique)
+
 if (-not ($Content -match "if\s+__name__\s*==\s*['""]__main__['""]")) {
     # Code
+
 }
 
 # AprÃ¨s (corrigÃ©)
+
 if (-not ($Content -match 'if\s+__name__\s*==\s*[''"]__main__[''"]')) {
     # Code
-}
-```
 
+}
+```plaintext
 ### Unexpected token in expression or statement
 
 **Description** : Token inattendu dans une expression ou une instruction.
@@ -124,6 +127,7 @@ if (-not ($Content -match 'if\s+__name__\s*==\s*[''"]__main__[''"]')) {
   ```powershell
   if (Test-Path -Path $FilePath -ErrorAction SilentlyContinue) {
       # OpÃ©rations sur le fichier
+
   }
   ```
 - Utiliser des blocs try/catch pour gÃ©rer les erreurs
@@ -138,6 +142,7 @@ if (-not ($Content -match 'if\s+__name__\s*==\s*[''"]__main__[''"]')) {
   ```powershell
   if (-not [string]::IsNullOrWhiteSpace($FilePath)) {
       # OpÃ©rations sur le fichier
+
   }
   ```
 
@@ -170,11 +175,11 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
     
     # Ã‰crire dans un fichier de log
+
     $LogFile = "scripts\\mode-manager\data\log_file.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
-```
-
+```plaintext
 ### Mode simulation avant application
 
 ImplÃ©menter un mode simulation pour tester les modifications avant de les appliquer :
@@ -187,30 +192,34 @@ function Update-Files {
     )
     
     # Logique de mise Ã  jour
+
     
     if ($Apply) {
         # Appliquer les modifications
+
         Set-Content -Path $FilePath -Value $NewContent
         Write-Log "Modifications appliquÃ©es" -Level "SUCCESS"
     } else {
         # Simuler les modifications
+
         Write-Log "Modifications simulÃ©es (non appliquÃ©es)" -Level "WARNING"
     }
 }
-```
-
+```plaintext
 ### Tests unitaires pour les fonctions critiques
 
 CrÃ©er des tests unitaires pour les fonctions critiques :
 
 ```powershell
 # Fonction Ã  tester
+
 function Repair-NullComparisons {
     param ([string]$Content)
     return $Content -replace "(\$[A-Za-z0-9_]+)\s+-eq\s+\$null", "`$null -eq `$1"
 }
 
 # Test unitaire
+
 $TestContent = '$variable -eq $null'
 $ExpectedResult = '$null -eq $variable'
 $ActualResult = Repair-NullComparisons -Content $TestContent
@@ -222,8 +231,7 @@ if ($ActualResult -eq $ExpectedResult) {
     Write-Host "Attendu: $ExpectedResult" -ForegroundColor Yellow
     Write-Host "Obtenu: $ActualResult" -ForegroundColor Yellow
 }
-```
-
+```plaintext
 ## Ressources
 
 - [PowerShell Approved Verbs](https://learn.microsoft.com/en-us/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands)

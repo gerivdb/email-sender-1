@@ -18,8 +18,7 @@ Le serveur MCP GitHub peut être installé globalement via npm :
 
 ```bash
 npm install -g @modelcontextprotocol/server-github
-```
-
+```plaintext
 ## Configuration
 
 ### Token GitHub
@@ -64,8 +63,7 @@ Pour utiliser le MCP GitHub dans n8n, exécutez le script de configuration :
 
 ```powershell
 .\scripts\setup\mcp\configure-mcp-github.ps1
-```
-
+```plaintext
 Ce script va :
 - Créer les fichiers batch nécessaires
 - Configurer les identifiants dans n8n
@@ -94,8 +92,7 @@ Pour utiliser le MCP GitHub avec Augment, ajoutez la configuration suivante à v
     }
   ]
 }
-```
-
+```plaintext
 ### Utilisation avec n8n
 
 Dans n8n, vous pouvez utiliser le MCP GitHub via le nœud "MCP Client" :
@@ -115,8 +112,7 @@ Dans n8n, vous pouvez utiliser le MCP GitHub via le nœud "MCP Client" :
     "repo_url": "https://github.com/utilisateur/depot"
   }
 }
-```
-
+```plaintext
 ### Lecture d'un fichier
 
 ```json
@@ -127,8 +123,7 @@ Dans n8n, vous pouvez utiliser le MCP GitHub via le nœud "MCP Client" :
     "file_path": "chemin/vers/fichier.txt"
   }
 }
-```
-
+```plaintext
 ### Recherche de code
 
 ```json
@@ -139,8 +134,7 @@ Dans n8n, vous pouvez utiliser le MCP GitHub via le nœud "MCP Client" :
     "query": "fonction recherchée"
   }
 }
-```
-
+```plaintext
 ## Dépannage
 
 ### Problèmes d'authentification

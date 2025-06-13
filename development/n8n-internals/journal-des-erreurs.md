@@ -5,6 +5,7 @@ Ce document recense les erreurs rencontrées lors de la consolidation et de la r
 ## Erreurs de consolidation
 
 ### Erreur 1: Échec du renommage des dossiers
+
 **Date**: 21/04/2023
 
 **Description**:  
@@ -25,6 +26,7 @@ Lors de la tentative de renommage des dossiers `n8n` et `n8n-new`, le script Pow
 Pour les opérations de fichiers complexes, en particulier avec des dossiers `node_modules`, il est préférable d'utiliser des commandes Windows natives ou des outils spécialisés plutôt que les cmdlets PowerShell standard.
 
 ### Erreur 2: Chemins incorrects dans la configuration n8n
+
 **Date**: 21/04/2023
 
 **Description**:  
@@ -43,6 +45,7 @@ Après la consolidation, n8n ne pouvait pas accéder aux workflows et aux donné
 Les configurations avec des chemins absolus doivent être systématiquement vérifiées et mises à jour lors de la réorganisation de la structure du projet.
 
 ### Erreur 3: Problèmes de suppression des dossiers avec chemins longs
+
 **Date**: 21/04/2023
 
 **Description**:  
@@ -63,6 +66,7 @@ Les dossiers `node_modules` nécessitent des approches spéciales pour la gestio
 ## Erreurs d'intégration
 
 ### Erreur 4: Synchronisation des workflows entre environnements
+
 **Date**: 21/04/2023
 
 **Description**:  
@@ -81,6 +85,7 @@ Les workflows créés dans l'IDE n'étaient pas correctement synchronisés avec 
 La synchronisation entre différents environnements nécessite une gestion soigneuse des métadonnées et des identifiants uniques.
 
 ### Erreur 5: Problèmes d'authentification avec l'API n8n
+
 **Date**: 21/04/2023
 
 **Description**:  
@@ -101,6 +106,7 @@ L'authentification API doit être configurée et testée dès le début du proce
 ## Erreurs de structure
 
 ### Erreur 6: Fichiers laissés à la racine du dépôt
+
 **Date**: 21/04/2023
 
 **Description**:  

@@ -1,4 +1,4 @@
-﻿# Analyse de l'Utilisation de la Ponctuation dans les Titres
+# Analyse de l'Utilisation de la Ponctuation dans les Titres
 
 ## RÃ©sumÃ©
 
@@ -11,19 +11,23 @@
 - **:**: 4 occurrences
 
 ## CaractÃ¨res SpÃ©ciaux
+
 - Aucun caractÃ¨re spÃ©cial dÃ©tectÃ© dans les titres
 
 ## Position des Marques de Ponctuation
 
 ### Titres CommenÃ§ant par une Ponctuation
+
 - Aucun titre ne commence par une ponctuation
 
 ### Titres Se Terminant par une Ponctuation
+
 - Aucun titre ne se termine par une ponctuation
 
 ## Analyse par Niveau de Titre
 
 ### Niveau 1 (1 #)
+
 - **Nombre total de titres**: 2
 - **Titres avec ponctuation**: 2 (100%)
 
@@ -31,6 +35,7 @@
 - **'**: 2 occurrences
 
 ### Niveau 2 (2 #)
+
 - **Nombre total de titres**: 11
 - **Titres avec ponctuation**: 5 (45.45%)
 
@@ -38,6 +43,7 @@
 - **'**: 5 occurrences
 
 ### Niveau 3 (3 #)
+
 - **Nombre total de titres**: 12
 - **Titres avec ponctuation**: 4 (33.33%)
 
@@ -47,6 +53,7 @@
 ## Exemples
 
 ### Titres avec Ponctuation
+
 - "Critères d'Évaluation"
 - "Processus d'Évaluation"
 - "Niveaux d'Expertise"
@@ -54,6 +61,7 @@
 - "Niveau 1 : Débutant"
 
 ### Titres sans Ponctuation
+
 - "Complexité Technique"
 - "Niveau de Supervision"
 - "Conclusion"
@@ -61,6 +69,7 @@
 - "Calcul du Score Global"
 
 ### Titres avec CaractÃ¨res SpÃ©ciaux
+
 - Aucun exemple disponible
 ## Observations et Recommandations
 

@@ -20,7 +20,7 @@ Ce document décrit l'architecture de l'écosystème de synchronisation entre le
 
 ## Diagramme Flux de Données
 
-```
+```plaintext
 ┌─────────────────┐    Parse    ┌─────────────────┐    Store    ┌─────────────────┐
 │  Plans Markdown │ ─────────→ │  Sync Engine    │ ─────────→ │  QDrant Vector  │
 │  (.md files)    │             │  (Go Tools)     │            │  Database       │
@@ -47,11 +47,10 @@ Ce document décrit l'architecture de l'écosystème de synchronisation entre le
 │ - CLI Commands  │             │ - Webhooks      │            │ - Transactions  │
 │ - 22/22 Tests   │             │ - Monitoring    │            │ - Audit Logs    │
 └─────────────────┘             └─────────────────┘            └─────────────────┘
-```
-
+```plaintext
 ### 🔄 Flux de Synchronisation Bidirectionnelle
 
-```
+```plaintext
 Markdown Plans                    Dynamic System
       │                                 │
       │ 1. Parse & Extract              │
@@ -71,11 +70,11 @@ Markdown Plans                    Dynamic System
       │                                 │
       │ 6. Update Progress & Status     │
       ├─────────────────────────────────→
-```
-
+```plaintext
 ## Architecture des Composants
 
 ### 1. Couche de Parsage et Synchronisation
+
 - **MarkdownParser**: Analyse des plans `.md` existants
 - **SyncEngine**: Orchestration de la synchronisation bidirectionnelle
 - **DataConverter**: Transformation entre formats Markdown et dynamique
@@ -83,6 +82,7 @@ Markdown Plans                    Dynamic System
 ## Architecture des Composants
 
 ### 1. Couche de Parsage et Synchronisation
+
 - **MarkdownParser**: Analyse des plans `.md` existants (107,450+ tâches détectées)
 - **SyncEngine**: Orchestration de la synchronisation bidirectionnelle
 - **DataConverter**: Transformation entre formats Markdown et dynamique
@@ -90,6 +90,7 @@ Markdown Plans                    Dynamic System
 - **ResolutionEngine**: Résolution automatique et manuelle des conflits
 
 ### 2. Couche de Validation et Cohérence
+
 - **ConsistencyValidator**: Validation de la cohérence entre systèmes
 - **MetadataValidator**: Vérification des métadonnées (version, progression)
 - **TaskValidator**: Validation des tâches et statuts
@@ -97,12 +98,14 @@ Markdown Plans                    Dynamic System
 - **TimestampValidator**: Détection des modifications désynchronisées
 
 ### 3. Couche de Stockage et Persistence
+
 - **QDrant Vector Store**: Stockage des embeddings pour recherche sémantique
 - **SQL Database**: Persistance des métadonnées et relations
 - **TaskMaster-CLI**: Système dynamique de gestion des tâches
 - **Backup Manager**: Sauvegarde et restauration automatique
 
 ### 4. Couche d'Interface et Monitoring
+
 - **CLI Interface**: Commands `roadmap-cli sync`, `roadmap-cli validate`
 - **TUI Interface**: Interface textuelle interactive (TaskMaster-CLI)
 - **REST API**: Points d'accès pour intégrations externes
@@ -113,6 +116,7 @@ Markdown Plans                    Dynamic System
 ### 🔗 Points d'Intégration Principaux
 
 #### 1. Markdown ↔ TaskMaster-CLI
+
 ```yaml
 Interface: FileSystem + CLI Commands
 Protocole: File parsing + Command execution
@@ -120,9 +124,9 @@ Endpoints:
   - roadmap-cli sync markdown --import --source <path>
   - roadmap-cli sync markdown --export --target <path>
   - roadmap-cli validate consistency --format all
-```
-
+```plaintext
 #### 2. TaskMaster-CLI ↔ QDrant
+
 ```yaml
 Interface: HTTP REST API
 Protocole: gRPC + HTTP/2
@@ -130,9 +134,9 @@ Endpoints:
   - POST /collections/{collection}/points
   - GET /collections/{collection}/points/search
   - PUT /collections/{collection}/points/{id}
-```
-
+```plaintext
 #### 3. TaskMaster-CLI ↔ SQL Database
+
 ```yaml
 Interface: Database Driver (PostgreSQL/MySQL/SQLite)
 Protocole: SQL over TCP/Unix Socket
@@ -141,9 +145,9 @@ Operations:
   - UPDATE: Modification statut/progression
   - SELECT: Récupération données
   - TRANSACTION: Cohérence atomique
-```
-
+```plaintext
 #### 4. Roadmap Manager ↔ Planning Ecosystem
+
 ```yaml
 Interface: REST API + Webhooks
 Protocole: HTTP/HTTPS + JSON
@@ -152,11 +156,11 @@ Endpoints:
   - GET /api/plans/{id}/status
   - PUT /api/plans/{id}/update
   - webhook: /notify/plan-change
-```
-
+```plaintext
 ### 🔄 Patterns de Synchronisation
 
 #### 1. Synchronisation Temps Réel
+
 - **Webhooks**: Notifications automatiques des changements
 - **File Watchers**: Surveillance des modifications de fichiers Markdown
 - **Event Streaming**: Flux d'événements en temps réel
@@ -180,9 +184,9 @@ func (fw *FileWatcher) HandleEvent(event fsnotify.Event) {
         fw.syncEngine.TriggerSync(event.Name)
     }
 }
-```
-
+```plaintext
 #### 2. Synchronisation Batch (Schedulée/Manuelle)
+
 - **Scheduled Sync**: Synchronisation périodique (5 min par défaut)
 - **Manual Trigger**: Déclenchement manuel via CLI
 - **Bulk Operations**: Traitement par lots pour performance
@@ -205,9 +209,9 @@ func (ss *SyncScheduler) Start() {
         }
     }()
 }
-```
-
+```plaintext
 #### 3. Gestion des Conflits (Détection, Résolution, Escalade)
+
 - **Detection Automatique**: Comparaison de checksums et timestamps
 - **Résolution par Règles**: Stratégies configurables (latest wins, manual, merge)
 - **Résolution Manuelle**: Interface utilisateur pour choix manuel
@@ -231,13 +235,13 @@ conflict_resolution_strategies:
   backup_and_restore:
     priority: 4
     rule: "Create backup before applying changes"
-```
-
+```plaintext
 ## Dépendances avec les Systèmes Existants
 
 ### 📦 Dépendances Système
 
 #### 1. TaskMaster-CLI (Production Ready)
+
 ```yaml
 Statut: ✅ Opérationnel
 Version: v3.0.0
@@ -245,9 +249,9 @@ Tests: 22/22 passing
 Capacité: 107,450+ tâches validées
 Performance: < 30s pour 84 plans
 Localisation: development/managers/roadmap-manager/roadmap-cli/
-```
-
+```plaintext
 #### 2. QDrant Vector Database
+
 ```yaml
 Statut: ✅ Configuré
 Version: v1.7.0+
@@ -255,29 +259,28 @@ URL: http://localhost:6333
 Collection: development_plans
 Dimension: 384 (embeddings)
 Index: HNSW + Payload
-```
-
+```plaintext
 #### 3. SQL Database (Flexible)
+
 ```yaml
 Statut: ✅ Configuré
 Drivers: PostgreSQL, MySQL, SQLite
 Connection: Configurable via YAML
 Schema: Auto-migration supportée
 Backup: Automatique avant sync
-```
-
+```plaintext
 #### 4. Roadmap Manager API
+
 ```yaml
 Statut: ✅ Intégré
 Localisation: development/managers/roadmap-manager/
 Protocol: REST API + Webhooks
 Authentication: API Key + HMAC
 Monitoring: Health checks activés
-```
-
+```plaintext
 ### 🔗 Chaîne de Dépendances
 
-```
+```plaintext
 Planning Ecosystem Sync
         │
         ├── TaskMaster-CLI (Core Engine)
@@ -294,13 +297,13 @@ Planning Ecosystem Sync
             ├── YAML Config Files
             ├── Environment Variables
             └── Validation Rules
-```
-
+```plaintext
 ## Métriques de Performance Attendues
 
 ### 📊 Objectifs de Performance
 
 #### 1. Synchronisation Markdown → Dynamique
+
 ```yaml
 Volume_Target: 50 plans
 Volume_Achieved: ✅ 84 plans (168% de l'objectif)
@@ -308,35 +311,34 @@ Time_Target: < 30 secondes
 Time_Achieved: ✅ < 30 secondes (objectif atteint)
 Tasks_Processed: ✅ 107,450+ tâches
 Success_Rate: ✅ 100% (22/22 tests passing)
-```
-
+```plaintext
 #### 2. Validation de Cohérence
+
 ```yaml
 Detection_Speed: < 5 secondes par plan
 Accuracy_Rate: > 95% de précision
 False_Positives: < 2% taux de faux positifs
 Coverage: 100% des composants validés
 Rapport_Generation: < 10 secondes
-```
-
+```plaintext
 #### 3. Résolution de Conflits
+
 ```yaml
 Auto_Resolution: > 80% de conflits résolus automatiquement
 Manual_Resolution: < 3 minutes temps moyen
 Rollback_Time: < 30 secondes en cas d'erreur
 Backup_Creation: < 15 secondes
 Data_Integrity: 100% conservation des données
-```
-
+```plaintext
 #### 4. Monitoring et Alertes
+
 ```yaml
 Real_Time_Monitoring: Latence < 100ms
 Alert_Response: < 5 secondes pour alertes critiques
 Dashboard_Update: Temps réel (WebSocket)
 Log_Rotation: Automatique (100MB max par fichier)
 Health_Checks: Interval 30 secondes
-```
-
+```plaintext
 ### 🎯 KPIs Système
 
 | Métrique | Objectif | Réalisé | Status |
@@ -366,11 +368,13 @@ Health_Checks: Interval 30 secondes
 - **ResolutionEngine**: Résolution automatique et manuelle des conflits
 
 ### 3. Couche de Stockage et Persistance
+
 - **QDrant Integration**: Stockage vectoriel pour recherche sémantique
 - **SQL Database**: Données relationnelles et métadonnées
 - **File System**: Sauvegarde et versioning des plans Markdown
 
 ### 4. Couche d'Intégration
+
 - **TaskMaster-CLI Adapter**: Interface avec le système dynamique
 - **Roadmap Manager Connector**: Intégration avec le gestionnaire de roadmap
 - **Notification System**: Alertes et monitoring
@@ -378,16 +382,19 @@ Health_Checks: Interval 30 secondes
 ## Patterns de Synchronisation
 
 ### 1. Synchronisation Temps Réel
+
 - **Webhooks**: Notifications de changements instantanées
 - **File Watchers**: Surveillance des modifications de fichiers
 - **API Callbacks**: Retours automatiques du système dynamique
 
 ### 2. Synchronisation Batch
+
 - **Scheduled Sync**: Synchronisation périodique programmée
 - **Manual Triggers**: Déclenchement manuel par l'utilisateur
 - **Bulk Operations**: Traitement par lots pour performances
 
 ### 3. Gestion des Conflits
+
 - **Detection**: Identification automatique des divergences
 - **Resolution**: Stratégies de résolution configurables
 - **Escalation**: Interface manuelle pour conflits complexes
@@ -419,12 +426,14 @@ Health_Checks: Interval 30 secondes
 ## Dépendances avec Systèmes Existants
 
 ### Systèmes Requis
+
 - **TaskMaster-CLI**: Système de gestion de tâches dynamique
 - **QDrant**: Base de données vectorielle pour embeddings
 - **PostgreSQL**: Base de données relationnelle
 - **Roadmap Manager**: Gestionnaire de roadmaps existant
 
 ### Intégrations Optionnelles
+
 - **Supabase**: Métriques et analytics
 - **Slack**: Notifications et alertes
 - **GitHub**: Versioning et collaboration
@@ -432,12 +441,14 @@ Health_Checks: Interval 30 secondes
 ## Métriques de Performance Attendues
 
 ### Performance Targets
+
 - **Sync Speed**: Sub-second pour datasets < 1000 tâches
 - **Memory Usage**: <100MB pour workloads typiques
 - **Response Time**: <200ms pour dashboard
 - **Throughput**: >1000 tâches/minute en synchronisation batch
 
 ### Indicateurs de Qualité
+
 - **Consistency Score**: >95% de cohérence entre systèmes
 - **Conflict Resolution**: <5% de conflits nécessitant intervention manuelle
 - **Data Integrity**: 100% de préservation des données critiques
@@ -446,11 +457,13 @@ Health_Checks: Interval 30 secondes
 ## Patterns de Conception
 
 ### Principes Appliqués
+
 - **DRY**: Éviter la duplication de logique métier
 - **KISS**: Simplicité dans les interfaces et APIs
 - **SOLID**: Architecture modulaire et extensible
 
 ### Design Patterns
+
 - **Observer**: Surveillance des changements de fichiers
 - **Strategy**: Stratégies de résolution de conflits
 - **Adapter**: Intégration avec systèmes hétérogènes
@@ -459,12 +472,14 @@ Health_Checks: Interval 30 secondes
 ## Sécurité et Authentification
 
 ### Mesures de Sécurité
+
 - **API Keys**: Authentification pour services externes
 - **HMAC Signatures**: Intégrité des communications
 - **Input Validation**: Validation stricte des données
 - **Access Control**: Permissions granulaires
 
 ### Backup et Récupération
+
 - **Automatic Backups**: Sauvegarde avant toute modification
 - **Point-in-Time Recovery**: Restauration à un état spécifique
 - **Rollback Capability**: Annulation des synchronisations

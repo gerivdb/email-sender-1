@@ -1,4 +1,4 @@
-﻿# Tests Unitaires pour le Module ProactiveOptimization
+# Tests Unitaires pour le Module ProactiveOptimization
 
 Ce dossier contient des tests unitaires pour le module ProactiveOptimization, utilisant le framework Pester.
 
@@ -34,6 +34,7 @@ Pour faire fonctionner les tests, vous devez:
 
 ```powershell
 # Exemple de mock simple
+
 Mock Get-ScriptUsageStatistics {
     return [PSCustomObject]@{
         TopUsedScripts = @{
@@ -41,10 +42,10 @@ Mock Get-ScriptUsageStatistics {
             "C:\Scripts\Test2.ps1" = 5
         }
         # Autres propriÃ©tÃ©s...
+
     }
 }
-```
-
+```plaintext
 3. S'assurer que toutes les fonctions testÃ©es sont correctement dÃ©finies et chargÃ©es avant d'exÃ©cuter les tests.
 
 ## ExÃ©cution des Tests
@@ -53,18 +54,21 @@ Une fois les problÃ¨mes ci-dessus rÃ©solus, vous pouvez exÃ©cuter les test
 
 ```powershell
 # ExÃ©cuter tous les tests
+
 .\Run-AllTests.ps1
 
 # ExÃ©cuter les tests avec gÃ©nÃ©ration de rapport de couverture
+
 .\Run-AllTests.ps1 -GenerateCodeCoverage
 
 # ExÃ©cuter les tests avec affichage dÃ©taillÃ© des rÃ©sultats
+
 .\Run-AllTests.ps1 -ShowDetailedResults
 
 # ExÃ©cuter un test spÃ©cifique
-Invoke-Pester -Path .\MonitorScriptUsage.Tests.ps1
-```
 
+Invoke-Pester -Path .\MonitorScriptUsage.Tests.ps1
+```plaintext
 ## Approche de Test
 
 Les tests unitaires suivent une approche AAA (Arrange-Act-Assert) :
@@ -93,6 +97,7 @@ Une fois les tests corrigÃ©s, ils pourront Ãªtre intÃ©grÃ©s dans un pipe
 
 ```yaml
 # Exemple pour Azure DevOps
+
 steps:
 - task: PowerShell@2
   displayName: 'Run Pester Tests'
@@ -114,4 +119,4 @@ steps:
     codeCoverageTool: 'JaCoCo'
     summaryFileLocation: 'scripts\utils\ProactiveOptimization\tests\coverage.xml'
     failIfCoverageEmpty: true
-```
+```plaintext

@@ -8,16 +8,16 @@ Ce document décrit l'architecture proposée pour le composant de parsing markdo
 
 Le parsing markdown sera implémenté selon une architecture en pipeline à trois étapes principales :
 
-```
+```plaintext
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
 │  Lecture    │────▶│ Tokenization│────▶│  Analyse    │────▶│ Construction │
 │  du Fichier │     │             │     │ Syntaxique  │     │  de l'Arbre  │
 └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
-```
-
+```plaintext
 ### 1.1 Composants Principaux
 
 #### 1.1.1 Lecture du Fichier
+
 - **Responsabilité** : Lire le contenu du fichier markdown avec gestion des encodages
 - **Entrée** : Chemin du fichier
 - **Sortie** : Contenu textuel du fichier
@@ -26,6 +26,7 @@ Le parsing markdown sera implémenté selon une architecture en pipeline à troi
   - `Get-FileEncoding` : Détecte l'encodage d'un fichier
 
 #### 1.1.2 Tokenization
+
 - **Responsabilité** : Décomposer le contenu en tokens (lignes, éléments markdown)
 - **Entrée** : Contenu textuel
 - **Sortie** : Collection de tokens
@@ -34,6 +35,7 @@ Le parsing markdown sera implémenté selon une architecture en pipeline à troi
   - `Get-LineType` : Détermine le type d'une ligne (titre, liste, tâche, etc.)
 
 #### 1.1.3 Analyse Syntaxique
+
 - **Responsabilité** : Analyser les tokens pour extraire la structure et les métadonnées
 - **Entrée** : Collection de tokens
 - **Sortie** : Structure intermédiaire avec métadonnées
@@ -44,6 +46,7 @@ Le parsing markdown sera implémenté selon une architecture en pipeline à troi
   - `Get-TaskId` : Extrait l'identifiant d'une tâche
 
 #### 1.1.4 Construction de l'Arbre
+
 - **Responsabilité** : Construire l'arbre des tâches avec relations et dépendances
 - **Entrée** : Structure intermédiaire
 - **Sortie** : Arbre des tâches (RoadmapTree)
@@ -58,17 +61,23 @@ Le parsing markdown sera implémenté selon une architecture en pipeline à troi
 ### 2.1 Types de Données Principaux
 
 #### 2.1.1 MarkdownToken
+
 ```powershell
 [PSCustomObject]@{
     Type        = [string]  # Type de token (Heading, Task, Text, etc.)
-    Content     = [string]  # Contenu textuel du token
-    LineNumber  = [int]     # Numéro de ligne dans le fichier
-    Indentation = [int]     # Niveau d'indentation
-    Metadata    = [hashtable] # Métadonnées extraites
-}
-```
 
+    Content     = [string]  # Contenu textuel du token
+
+    LineNumber  = [int]     # Numéro de ligne dans le fichier
+
+    Indentation = [int]     # Niveau d'indentation
+
+    Metadata    = [hashtable] # Métadonnées extraites
+
+}
+```plaintext
 #### 2.1.2 TaskStatus (Enumération)
+
 ```powershell
 enum TaskStatus {
     Incomplete
@@ -76,9 +85,9 @@ enum TaskStatus {
     Complete
     Blocked
 }
-```
-
+```plaintext
 #### 2.1.3 RoadmapTask
+
 ```powershell
 [PSCustomObject]@{
     Id               = [string]
@@ -93,9 +102,9 @@ enum TaskStatus {
     OriginalMarkdown = [string]
     Metadata         = [hashtable]
 }
-```
-
+```plaintext
 #### 2.1.4 RoadmapTree
+
 ```powershell
 [PSCustomObject]@{
     Title        = [string]
@@ -105,8 +114,7 @@ enum TaskStatus {
     AllTasks     = [System.Collections.ArrayList]
     TasksById    = [hashtable]
 }
-```
-
+```plaintext
 ## 3. Flux de Traitement
 
 ### 3.1 Parsing Initial

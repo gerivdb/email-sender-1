@@ -23,8 +23,7 @@ La fonction est disponible dans le module `roadmap-parser` du projet. Pour l'uti
 
 ```powershell
 Import-Module .\tools\scripts\roadmap-parser\module\roadmap-parser.psd1
-```
-
+```plaintext
 ## Utilisation
 
 ### Exemple de base
@@ -33,8 +32,7 @@ Pour analyser les permissions d'une instance SQL Server locale avec l'authentifi
 
 ```powershell
 Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS"
-```
-
+```plaintext
 ### Avec authentification SQL Server
 
 Pour utiliser l'authentification SQL Server :
@@ -42,22 +40,19 @@ Pour utiliser l'authentification SQL Server :
 ```powershell
 $credential = Get-Credential
 Analyze-SqlServerPermission -ServerInstance "SqlServer01" -Credential $credential
-```
-
+```plaintext
 ### Génération de rapports
 
 Pour générer un rapport HTML des permissions :
 
 ```powershell
 Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath "C:\Reports\SqlPermissions.html"
-```
-
+```plaintext
 Pour générer un rapport dans un autre format (CSV, JSON, XML) :
 
 ```powershell
 Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath "C:\Reports\SqlPermissions.json" -OutputFormat "JSON"
-```
-
+```plaintext
 ## Informations analysées
 
 ### Rôles serveur
@@ -153,26 +148,31 @@ Si vous n'avez pas les permissions nécessaires pour analyser les permissions :
 
 ```powershell
 # Analyser les permissions
+
 $result = Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS"
 
 # Afficher les anomalies de sévérité élevée
+
 $result.PermissionAnomalies | Where-Object { $_.Severity -eq "Élevée" } | Format-Table
 
 # Générer un rapport des anomalies
-$result.PermissionAnomalies | Export-Csv -Path "C:\Reports\SqlAnomalies.csv" -NoTypeInformation
-```
 
+$result.PermissionAnomalies | Export-Csv -Path "C:\Reports\SqlAnomalies.csv" -NoTypeInformation
+```plaintext
 ### Comparaison des permissions entre deux instances
 
 ```powershell
 # Analyser les permissions sur deux instances
+
 $instance1 = Analyze-SqlServerPermission -ServerInstance "Server1\SQLEXPRESS"
 $instance2 = Analyze-SqlServerPermission -ServerInstance "Server2\SQLEXPRESS"
 
 # Comparer les rôles sysadmin
+
 $sysadmin1 = $instance1.ServerRoles | Where-Object { $_.RoleName -eq "sysadmin" } | Select-Object -ExpandProperty Members
 $sysadmin2 = $instance2.ServerRoles | Where-Object { $_.RoleName -eq "sysadmin" } | Select-Object -ExpandProperty Members
 
 # Afficher les différences
+
 Compare-Object -ReferenceObject $sysadmin1 -DifferenceObject $sysadmin2 -Property MemberName
-```
+```plaintext

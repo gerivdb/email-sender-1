@@ -1,4 +1,4 @@
-﻿# Merge-Configuration
+# Merge-Configuration
 
 ## RÃ©sumÃ©
 
@@ -17,6 +17,7 @@ Merge-Configuration [-DefaultConfig <>]  [-CustomConfig <>]  [-Strategy <>]  [-E
 `
 
 ## ParamÃ¨tres
+
 ### -DefaultConfig
 
 Configuration par dÃ©faut.
@@ -69,6 +70,7 @@ Sections Ã  inclure dans la fusion. Si spÃ©cifiÃ©, seules ces sections ser
 
 System.Collections.Hashtable
 ## Exemples
+
 ### Exemple 1
 
 `powershell

@@ -31,5 +31,6 @@ Pour ajouter de nouveaux documents à cette structure, utilisez Hygen :
 
 ```powershell
 # Créer un nouveau document dans la structure
+
 hygen doc-structure new --docType "projet" --category "guides" --subcategory "installation"
-```
+```plaintext

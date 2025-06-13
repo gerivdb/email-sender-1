@@ -1,11 +1,13 @@
 # Analyse de la roadmap et proposition de scripts Python open-source
 
 ## Objectif
+
 Analyser la roadmap EMAIL_SENDER_1 pour identifier les fonctionnalités clés et proposer des scripts Python open-source adaptés à un environnement local, en respectant les principes SOLID, les standards de codage, et les contraintes de développement (TDD, documentation claire, modularité).
 
 ---
 
 ## Étape 1 : Analyse des besoins fonctionnels
+
 La roadmap met en avant plusieurs domaines où des scripts Python peuvent être utiles pour un dépôt local :
 1. **Intelligence (1.1, 1.2, 1.3)** :
    - Détection de cycles (1.1.1) : Nécessite des algorithmes graphiques comme DFS.
@@ -27,9 +29,11 @@ La roadmap met en avant plusieurs domaines où des scripts Python peuvent être 
 Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python open-source, adaptés à un environnement local, avec une justification basée sur leur pertinence, leur maturité, et leur compatibilité avec les principes SOLID et TDD.
 
 ### 1. Détection de cycles (1.1.1)
+
 **Besoin** : Implémenter un algorithme DFS pour détecter les cycles dans les graphes, applicable aux dépendances de scripts.
 
 #### Script/Bibliothèque proposée : `networkx`
+
 - **Description** : Bibliothèque Python pour l'analyse de graphes, avec des algorithmes intégrés pour la détection de cycles (DFS, Tarjan).
 - **Licence** : BSD-3-Clause.
 - **Pertinence** :
@@ -41,6 +45,7 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
   import networkx as nx
 
   # Créer un graphe dirigé
+
   G = nx.DiGraph()
   G.add_edges_from([(1, 2), (2, 3), (3, 1)])  # Cycle 1->2->3->1
 
@@ -56,6 +61,7 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
   - Documenter avec des exemples dans `projet/documentation/graph/cycle_detector.md`.
 
 #### Script supplémentaire : Analyse des dépendances de scripts
+
 - **Nom** : `dependency_analyzer.py`
 - **Description** : Script personnalisé pour analyser les dépendances des scripts Python en parsant les imports.
 - **Code** :
@@ -108,9 +114,11 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
   - Ajouter à `projet/documentation/development/scripts/dependency_analyzer.md` avec exemples.
 
 ### 2. Segmentation d'entrées (1.2.3)
+
 **Besoin** : Parser et segmenter des fichiers JSON, XML, et texte pour gérer de grands volumes de données.
 
 #### Bibliothèque proposée : `orjson`
+
 - **Description** : Bibliothèque JSON ultra-rapide avec support pour la sérialisation/désérialisation.
 - **Licence** : Apache-2.0/MIT.
 - **Pertinence** :
@@ -129,6 +137,7 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
           yield data[i:i + chunk_size]
 
   # Exemple
+
   for chunk in parse_json_file("large_data.json"):
       print(f"Segment : {chunk}")
   ```
@@ -138,6 +147,7 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
   - Documenter dans `projet/documentation/parsers/json_parser.md`.
 
 #### Bibliothèque proposée : `lxml`
+
 - **Description** : Bibliothèque pour parser et manipuler XML avec support XPath.
 - **Licence** : BSD.
 - **Pertinence** :
@@ -162,6 +172,7 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
           yield chunk
 
   # Exemple
+
   for chunk in parse_xml_file("large_data.xml"):
       print(f"Segment : {[etree.tostring(e).decode() for e in chunk]}")
   ```
@@ -171,6 +182,7 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
   - Documenter dans `projet/documentation/parsers/xml_parser.md`.
 
 #### Script personnalisé : Analyseur de texte
+
 - **Nom** : `text_parser.py`
 - **Description** : Script pour segmenter des fichiers texte en blocs logiques (par lignes ou motifs).
 - **Code** :
@@ -198,9 +210,11 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
   - Ajouter à `projet/documentation/parsers/text_parser.md` avec exemples.
 
 ### 3. Cache prédictif (1.3.1)
+
 **Besoin** : Implémenter un système de caching local pour éviter les calculs redondants.
 
 #### Bibliothèque proposée : `diskcache`
+
 - **Description** : Cache persistant sur disque avec support TTL et mémoïsation.
 - **Licence** : Apache-2.0.
 - **Pertinence** :
@@ -218,12 +232,16 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
       return x * x
 
   @cache.memoize(expire=3600)  # Cache pendant 1 heure
+
   def cached_expensive_function(x):
       return expensive_function(x)
 
   # Exemple
+
   print(cached_expensive_function(5))  # Calcul
+
   print(cached_expensive_function(5))  # Depuis le cache
+
   ```
 - **Intégration** :
   - Utiliser dans `development/scripts/utils/cache/local_cache.py` (déjà partiellement implémenté dans la roadmap).
@@ -231,9 +249,11 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
   - Mettre à jour `projet/documentation/utils/cache/README.md`.
 
 ### 4. Gestion des scripts (2.3.1)
+
 **Besoin** : Créer un inventaire des scripts avec extraction de métadonnées et détection des duplications.
 
 #### Bibliothèque proposée : `python-lsp-server`
+
 - **Description** : Fournit des outils pour analyser le code Python (AST, imports, documentation).
 - **Licence** : MIT.
 - **Pertinence** :
@@ -258,6 +278,7 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
       }
 
   # Exemple
+
   print(extract_metadata("script.py"))
   ```
 - **Intégration** :
@@ -266,6 +287,7 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
   - Documenter dans `projet/documentation/inventory/script_metadata.md`.
 
 #### Script personnalisé : Détection des duplications
+
 - **Nom** : `duplicate_detector.py`
 - **Description** : Script pour identifier les scripts dupliqués en comparant leur contenu (hash ou AST).
 - **Code** :
@@ -300,9 +322,11 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
   - Ajouter à `projet/documentation/inventory/duplicate_detector.md` avec exemples.
 
 ### 5. Tests unitaires (2.2.1)
+
 **Besoin** : Configurer un framework de test pour les scripts Python.
 
 #### Bibliothèque proposée : `pytest`
+
 - **Description** : Framework de test flexible et puissant pour Python.
 - **Licence** : MIT.
 - **Pertinence** :
@@ -312,11 +336,14 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
 - **Exemple d'utilisation** :
   ```python
   # development/testing/tests/unit/test_example.py
+
   def test_add():
       assert 1 + 1 == 2
 
   # Lancer les tests
+
   # pytest development/testing/tests/unit --cov=scripts --cov-report=html
+
   ```
 - **Intégration** :
   - Configurer dans `pytest.ini` avec les paramètres de couverture.
@@ -324,9 +351,11 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
   - Documenter dans `projet/documentation/development/testing/tests/pytest_setup.md`.
 
 ### 6. Monitoring et alertes (3.1.1, 3.1.3)
+
 **Besoin** : Collecter des métriques locales et envoyer des alertes (email, fichiers).
 
 #### Bibliothèque proposée : `psutil`
+
 - **Description** : Bibliothèque pour collecter des métriques système (CPU, mémoire, disque).
 - **Licence** : BSD-3-Clause.
 - **Pertinence** :
@@ -347,6 +376,7 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
       }
 
   # Exemple
+
   print(collect_metrics())
   ```
 - **Intégration** :
@@ -355,6 +385,7 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
   - Documenter dans `projet/documentation/monitoring/system_metrics.md`.
 
 #### Script personnalisé : Alertes par email
+
 - **Nom** : `alert_manager.py`
 - **Description** : Script pour envoyer des alertes par email en utilisant un serveur SMTP local.
 - **Code** :
@@ -402,9 +433,11 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
   - Ajouter à `projet/documentation/monitoring/alert_manager.md` avec exemples.
 
 ### 7. Gestion des emails (6.1.1, 6.1.3)
+
 **Besoin** : Configurer un client SMTP et gérer une file d'attente pour les emails.
 
 #### Bibliothèque proposée : `smtplib` (stdlib) + `queue`
+
 - **Description** : `smtplib` pour l'envoi d'emails, `queue` pour gérer une file d'attente locale.
 - **Licence** : PSF (Python standard library).
 - **Pertinence** :
@@ -450,6 +483,7 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
                   continue
 
   # Exemple
+
   smtp_config = {
       "smtp_server": "localhost",
       "smtp_port": 25,
@@ -469,7 +503,8 @@ Pour chaque besoin identifié, je propose des scripts ou bibliothèques Python o
 ## Étape 3 : Intégration dans le dépôt
 
 ### Structure proposée
-```
+
+```plaintext
 repo/
 ├── development/scripts/
 │   ├── graph/
@@ -506,20 +541,20 @@ repo/
 ├── projet/config/
 │   └── smtp.json
 ├── pytest.ini
-```
-
+```plaintext
 ### Configuration pytest
+
 **Fichier** : `pytest.ini`
 ```ini
 [pytest]
 python_files = test_*.py
 python_functions = test_*
 addopts = --cov=scripts --cov-report=html
-```
-
+```plaintext
 ### Dépendances
+
 **Fichier** : `requirements.txt`
-```
+```plaintext
 networkx>=3.1
 orjson>=3.9
 lxml>=4.9
@@ -528,11 +563,11 @@ python-lsp-server>=1.7
 pytest>=7.4
 pytest-cov>=4.1
 psutil>=5.9
-```
-
+```plaintext
 ---
 
 ## Étape 4 : Tests et validation
+
 - **Tests unitaires** : Chaque script/bibliothèque inclut des tests `pytest` pour couvrir 100 % des cas (simples, complexes, limites).
 - **Tests d'intégration** : Créer des scénarios dans `development/testing/tests/integration` pour valider les interactions entre modules (ex. : analyseur de dépendances + détection de cycles).
 - **Documentation** : Chaque module est documenté avec des exemples dans `projet/documentation/`.
@@ -541,6 +576,7 @@ psutil>=5.9
 ---
 
 ## Étape 5 : Justification via Tree of Thoughts (ToT)
+
 - **Options envisagées** :
   1. Utiliser uniquement des bibliothèques standard (ex. : `json`, `xml.etree`) : Rejeté car moins performant et moins robuste.
   2. Développer des scripts from scratch : Rejeté car long et redondant avec les bibliothèques existantes.
@@ -553,6 +589,7 @@ psutil>=5.9
 ---
 
 ## Résumé des scripts proposés
+
 | Fonctionnalité | Script/Bibliothèque | Chemin dans le dépôt | Tests | Documentation |
 |----------------|---------------------|----------------------|-------|---------------|
 | Détection de cycles | `networkx`, `dependency_analyzer.py` | `development/scripts/graph/` | `development/testing/tests/unit/graph/` | `projet/documentation/graph/` |
@@ -570,6 +607,7 @@ psutil>=5.9
 ---
 
 ## Prochaines étapes
+
 1. **Implémentation** : Ajouter les scripts et bibliothèques au dépôt en suivant la structure proposée.
 2. **Tests** : Exécuter les tests unitaires et d'intégration, viser 100 % de couverture.
 3. **Documentation** : Compléter les fichiers Markdown dans `projet/documentation/`.
@@ -580,11 +618,13 @@ Si vous avez des contraintes spécifiques (ex. : taille maximale des fichiers, d
 # Proposition de scripts et bibliothèques Python open-source pour la parallélisation
 
 ## Objectif
+
 Identifier et proposer des scripts ou bibliothèques Python open-source pour implémenter le **traitement parallèle** dans le cadre de la roadmap EMAIL_SENDER_1, spécifiquement pour la section **2.1 Traitement parallèle** (implémentation et optimisation du traitement parallèle, support de PowerShell 7). Les solutions doivent respecter les principes SOLID, être adaptées à un environnement local, suivre les standards de codage (TDD, documentation claire), et minimiser les dépendances externes.
 
 ---
 
 ## Étape 1 : Analyse des besoins (Roadmap 2.1)
+
 La section **2.1 Traitement parallèle** de la roadmap met en avant :
 - **Implémentation du traitement parallèle (2.1.1)** : Nécessite des mécanismes pour exécuter des tâches en parallèle, similaires aux Runspace Pools en PowerShell.
 - **Optimisation des performances (2.1.2)** : Nécessite des stratégies de gestion des ressources (CPU, mémoire) et de load balancing.
@@ -604,6 +644,7 @@ Pour un environnement local, les scripts doivent :
 Je propose des bibliothèques Python open-source pour la parallélisation, accompagnées d'exemples de scripts personnalisés pour répondre aux besoins spécifiques de la roadmap. Chaque proposition inclut une justification, un exemple d'utilisation, et des instructions d'intégration dans le dépôt.
 
 ### 1. Bibliothèque : `multiprocessing`
+
 - **Description** : Module de la bibliothèque standard Python pour exécuter des processus en parallèle, idéal pour les tâches CPU-bound.
 - **Licence** : PSF (Python Software Foundation).
 - **Pertinence** :
@@ -615,12 +656,14 @@ Je propose des bibliothèques Python open-source pour la parallélisation, accom
 - **Exemple d'utilisation** :
   ```python
   # development/scripts/parallel/multiprocessing_task.py
+
   from multiprocessing import Pool
   import time
 
   def process_task(item):
       """Traite un élément (ex. : simulation d'un calcul lourd)."""
       time.sleep(1)  # Simule une tâche longue
+
       return f"Résultat pour {item}: {item * item}"
 
   def run_parallel_tasks(items, num_processes=4):
@@ -639,6 +682,7 @@ Je propose des bibliothèques Python open-source pour la parallélisation, accom
   - **Tests** : Créer `development/testing/tests/unit/parallel/test_multiprocessing_task.py` avec `pytest` pour tester les cas simples (petite liste), complexes (grande liste), et limites (liste vide, erreurs dans les tâches).
     ```python
     # development/testing/tests/unit/parallel/test_multiprocessing_task.py
+
     from scripts.parallel.multiprocessing_task import run_parallel_tasks
 
     def test_parallel_tasks():
@@ -649,6 +693,7 @@ Je propose des bibliothèques Python open-source pour la parallélisation, accom
   - **Documentation** : Ajouter `projet/documentation/parallel/multiprocessing_task.md` avec des exemples et des instructions pour l'appel depuis PowerShell.
     ```powershell
     # Exemple PowerShell pour appeler le script Python
+
     python development/scripts/parallel/multiprocessing_task.py
     ```
 - **Optimisation** :
@@ -656,6 +701,7 @@ Je propose des bibliothèques Python open-source pour la parallélisation, accom
   - Implémenter un mécanisme de gestion des erreurs (ex. : relancer les tâches échouées).
 
 ### 2. Bibliothèque : `concurrent.futures`
+
 - **Description** : Module de la bibliothèque standard Python offrant une interface de haut niveau pour le parallélisme via des threads (`ThreadPoolExecutor`) ou des processus (`ProcessPoolExecutor`).
 - **Licence** : PSF.
 - **Pertinence** :
@@ -667,6 +713,7 @@ Je propose des bibliothèques Python open-source pour la parallélisation, accom
 - **Exemple d'utilisation** :
   ```python
   # development/scripts/parallel/futures_task.py
+
   from concurrent.futures import ProcessPoolExecutor
   import time
 
@@ -691,6 +738,7 @@ Je propose des bibliothèques Python open-source pour la parallélisation, accom
   - **Tests** : Créer `development/testing/tests/unit/parallel/test_futures_task.py` avec `pytest`.
     ```python
     # development/testing/tests/unit/parallel/test_futures_task.py
+
     from scripts.parallel.futures_task import run_parallel_futures
 
     def test_futures_tasks():
@@ -701,6 +749,7 @@ Je propose des bibliothèques Python open-source pour la parallélisation, accom
   - **Documentation** : Ajouter `projet/documentation/parallel/futures_task.md` avec des exemples et une note sur l'intégration avec PowerShell.
     ```powershell
     # Exemple PowerShell
+
     $items = 1..8
     $items | ForEach-Object -Parallel {
         python development/scripts/parallel/futures_task.py $_
@@ -711,6 +760,7 @@ Je propose des bibliothèques Python open-source pour la parallélisation, accom
   - Implémenter une gestion dynamique de `max_workers` basée sur la charge système (via `psutil`).
 
 ### 3. Bibliothèque : `joblib`
+
 - **Description** : Bibliothèque open-source pour la parallélisation légère, particulièrement adaptée aux tâches scientifiques et au caching des résultats.
 - **Licence** : BSD-3-Clause.
 - **Pertinence** :
@@ -721,6 +771,7 @@ Je propose des bibliothèques Python open-source pour la parallélisation, accom
 - **Exemple d'utilisation** :
   ```python
   # development/scripts/parallel/joblib_task.py
+
   from joblib import Parallel, delayed
   import time
 
@@ -744,6 +795,7 @@ Je propose des bibliothèques Python open-source pour la parallélisation, accom
   - **Tests** : Créer `development/testing/tests/unit/parallel/test_joblib_task.py` avec `pytest`.
     ```python
     # development/testing/tests/unit/parallel/test_joblib_task.py
+
     from scripts.parallel.joblib_task import run_parallel_joblib
 
     def test_joblib_tasks():
@@ -758,11 +810,13 @@ Je propose des bibliothèques Python open-source pour la parallélisation, accom
   - Activer le caching avec `joblib.Memory` pour les tâches répétitives.
 
 ### 4. Script personnalisé : Gestionnaire de tâches parallèles
+
 - **Nom** : `parallel_task_manager.py`
 - **Description** : Script personnalisé combinant `concurrent.futures` et une file d'attente pour gérer des tâches parallèles avec priorités, adapté à des workflows comme l'envoi d'emails (6.1.3).
 - **Code** :
   ```python
   # development/scripts/parallel/parallel_task_manager.py
+
   from concurrent.futures import ProcessPoolExecutor
   from queue import PriorityQueue
   import threading
@@ -809,12 +863,14 @@ Je propose des bibliothèques Python open-source pour la parallélisation, accom
       for i in range(10):
           manager.add_task(priority=i, task_func=example_task, item=i)
       time.sleep(5)  # Simule l'exécution
+
       manager.stop()
   ```
 - **Tests** :
   - Créer `development/testing/tests/unit/parallel/test_parallel_task_manager.py` avec `pytest`.
     ```python
     # development/testing/tests/unit/parallel/test_parallel_task_manager.py
+
     from scripts.parallel.parallel_task_manager import ParallelTaskManager
 
     def test_task_manager():
@@ -823,10 +879,12 @@ Je propose des bibliothèques Python open-source pour la parallélisation, accom
         manager.add_task(1, lambda x: x * x, 5)
         manager.add_task(0, lambda x: x * x, 3)
         # Attendre l'exécution
+
         import time
         time.sleep(2)
         manager.stop()
         assert True  # Vérifier que les tâches sont ajoutées sans erreur
+
     ```
   - Tester les cas limites : file vide, tâches échouant, priorité négative.
 - **Documentation** :
@@ -845,7 +903,8 @@ Je propose des bibliothèques Python open-source pour la parallélisation, accom
 ## Étape 3 : Intégration dans le dépôt
 
 ### Structure proposée
-```
+
+```plaintext
 repo/
 ├── development/scripts/
 │   ├── parallel/
@@ -868,28 +927,28 @@ repo/
 │   │   └── parallel_task_manager.md
 ├── requirements.txt
 ├── pytest.ini
-```
-
+```plaintext
 ### Configuration pytest
+
 **Fichier** : `pytest.ini`
 ```ini
 [pytest]
 python_files = test_*.py
 python_functions = test_*
 addopts = --cov=development/scripts/parallel --cov-report=html
-```
-
+```plaintext
 ### Dépendances
+
 **Fichier** : `requirements.txt`
-```
+```plaintext
 joblib>=1.3
 pytest>=7.4
 pytest-cov>=4.1
-```
-
+```plaintext
 ---
 
 ## Étape 4 : Tests et validation
+
 - **Tests unitaires** : Chaque script/bibliothèque inclut des tests `pytest` pour couvrir :
   - Cas simples : Petites listes de tâches.
   - Cas complexes : Grandes listes avec des tâches lourdes.
@@ -901,6 +960,7 @@ pytest-cov>=4.1
 ---
 
 ## Étape 5 : Justification via Tree of Thoughts (ToT)
+
 - **Options envisagées** :
   1. **Utiliser uniquement `multiprocessing`** : Bonne pour les tâches CPU-bound, mais moins flexible pour les tâches I/O-bound.
   2. **Utiliser `threading`** : Rejeté car limité par le GIL pour les tâches CPU-bound.
@@ -915,6 +975,7 @@ pytest-cov>=4.1
 ---
 
 ## Résumé des scripts proposés
+
 | Bibliothèque/Script | Cas d'utilisation | Chemin dans le dépôt | Tests | Documentation |
 |---------------------|-------------------|----------------------|-------|---------------|
 | `multiprocessing` | Tâches CPU-bound | `development/scripts/parallel/multiprocessing_task.py` | `development/testing/tests/unit/parallel/test_multiprocessing_task.py` | `projet/documentation/parallel/multiprocessing_task.md` |
@@ -925,6 +986,7 @@ pytest-cov>=4.1
 ---
 
 ## Prochaines étapes
+
 1. **Implémentation** : Ajouter les scripts et bibliothèques au dépôt selon la structure proposée.
 2. **Tests** : Exécuter les tests unitaires et d'intégration, viser 100 % de couverture avec `pytest-cov`.
 3. **Optimisation** : Profiler les performances avec `psutil` pour ajuster `max_workers` et éviter la surcharge CPU/mémoire.
@@ -936,11 +998,13 @@ Si vous avez des contraintes supplémentaires (ex. : types de tâches spécifiqu
 # Proposition de scripts open-source intéressants pour n8n
 
 ## Objectif
+
 Identifier et proposer des scripts open-source ou des ressources compatibles avec **n8n** (plateforme d'automatisation fair-code) pour répondre à des besoins d'automatisation, en s'alignant sur les principes SOLID, les standards de codage (TDD, documentation claire), et les contraintes de la roadmap EMAIL_SENDER_1 (ex. : parallélisation, gestion des emails, intégration locale). Les scripts doivent être adaptés à un environnement local, extensibles, et bien documentés.
 
 ---
 
 ## Étape 1 : Analyse des besoins
+
 La roadmap EMAIL_SENDER_1 met en avant des fonctionnalités où n8n peut être utilisé :
 - **Parallélisation (2.1)** : Automatisation de tâches en parallèle (ex. : traitement de données, envoi d'emails).
 - **Gestion des emails (6.1.1, 6.1.3)** : Envoi d'emails via SMTP et gestion de files d'attente.
@@ -968,6 +1032,7 @@ La roadmap EMAIL_SENDER_1 met en avant des fonctionnalités où n8n peut être u
 Je propose une sélection de scripts open-source et de ressources (nœuds personnalisés, templates, utilitaires) pour n8n, tirés de dépôts GitHub, de la communauté n8n, et de projets associés. Chaque proposition inclut une description, un cas d'utilisation, et des instructions d'intégration dans le dépôt local.
 
 ### 1. Script : Intégration Langfuse pour le suivi des interactions LLM
+
 - **Source** : `eti88/my-n8n-utils-scripts` (GitHub)[](https://github.com/eti88/my-n8n-utils-scripts)
 - **Description** : Script JavaScript pour les nœuds Code de n8n, intégrant **Langfuse** (observabilité pour LLMs) afin de suivre les interactions avec des modèles d'IA (ex. : chatbots, traitement de texte).
 - **Licence** : MIT.
@@ -1040,6 +1105,7 @@ Je propose une sélection de scripts open-source et de ressources (nœuds person
   - **3.1.1 (Monitoring)** : Suivi des performances des modèles IA utilisés dans les workflows.
 
 ### 2. Nœud personnalisé : ScrapeNinja pour le scraping web
+
 - **Source** : `n8n-io/n8n-nodes-starter` (GitHub, adapté pour ScrapeNinja)[](https://pixeljets.com/blog/n8n/)
 - **Description** : Nœud personnalisé pour intégrer **ScrapeNinja** (outil de scraping web) dans n8n, avec des fonctionnalités comme l'extraction de contenu et la conversion HTML vers Markdown.
 - **Licence** : MIT.
@@ -1120,6 +1186,7 @@ Je propose une sélection de scripts open-source et de ressources (nœuds person
   - **3.1.1 (Monitoring)** : Surveiller les changements de contenu sur des sites (ex. : prix, stocks).
 
 ### 3. Template : Automatisation d'envoi d'emails avec file d'attente
+
 - **Source** : Communauté n8n (n8n.io/templates)[](https://medium.com/sourcescribes/n8n-open-source-workflow-automation-e423e9fccc4)
 - **Description** : Template de workflow pour gérer une file d'attente d'emails avec un nœud **SMTP** et un nœud **Wait** pour limiter la charge sur le serveur.
 - **Licence** : Fair-code (Sustainable Use License, alignée avec n8n).
@@ -1232,6 +1299,7 @@ Je propose une sélection de scripts open-source et de ressources (nœuds person
   - **2.1 (Parallélisation)** : Le nœud `Wait` simule une exécution séquentielle, mais peut être combiné avec des nœuds parallèles dans des workflows complexes.
 
 ### 4. Script : Parallélisation légère avec nœud Code
+
 - **Source** : Inspiré de la communauté n8n et adapté pour la roadmap 2.1
 - **Description** : Script JavaScript pour un nœud Code, utilisant `Promise.all` pour exécuter des tâches en parallèle (ex. : appels API, traitement de données).
 - **Licence** : MIT (proposé comme script personnalisé).
@@ -1288,7 +1356,8 @@ Je propose une sélection de scripts open-source et de ressources (nœuds person
 ## Étape 3 : Intégration dans le dépôt
 
 ### Structure proposée
-```
+
+```plaintext
 repo/
 ├── development/scripts/
 │   ├── n8n/
@@ -1317,9 +1386,9 @@ repo/
 │   │   └── email_queue.md
 ├── requirements.txt
 ├── .env
-```
-
+```plaintext
 ### Configuration n8n
+
 - **Installation locale** :
   ```bash
   docker run -it --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n
@@ -1327,6 +1396,7 @@ repo/
 - **Variables d'environnement** :
   ```bash
   # .env
+
   LANGFUSE_PUBLIC_KEY=your_key
   LANGFUSE_SECRET_KEY=your_key
   LANGFUSE_BASE_URL=https://your-langfuse-instance
@@ -1335,6 +1405,7 @@ repo/
 - **Dépendances** :
   ```bash
   # requirements.txt
+
   langfuse-langchain>=2.0
   uuid>=1.30
   axios>=1.6
@@ -1342,6 +1413,7 @@ repo/
   ```
 
 ### Tests
+
 - **Tests unitaires** : Utiliser `jest` pour tester les scripts JavaScript (nœuds Code et nœuds personnalisés).
 - **Tests d'intégration** : Simuler des workflows avec des données mockées pour valider l'envoi d'emails et le scraping.
 - **Couverture** : Viser 100 % avec `jest --coverage`.
@@ -1349,6 +1421,7 @@ repo/
 ---
 
 ## Étape 4 : Justification via Tree of Thoughts (ToT)
+
 - **Options envisagées** :
   1. **Utiliser uniquement les nœuds natifs de n8n** : Limité pour des cas complexes comme le suivi LLM ou le scraping avancé.
   2. **Développer des scripts from scratch** : Long et redondant avec les ressources communautaires existantes.
@@ -1362,6 +1435,7 @@ repo/
 ---
 
 ## Résumé des scripts proposés
+
 | Script/Ressource | Cas d'utilisation | Chemin dans le dépôt | Tests | Documentation | Roadmap |
 |------------------|-------------------|----------------------|-------|---------------|---------|
 | Langfuse Tracker | Suivi des interactions LLM | `development/scripts/n8n/langfuse_tracker.js` | `development/testing/tests/unit/n8n/test_langfuse_tracker.js` | `projet/documentation/n8n/langfuse_tracker.md` | 1.2.3, 3.1.1 |
@@ -1372,6 +1446,7 @@ repo/
 ---
 
 ## Prochaines étapes
+
 1. **Implémentation** : Intégrer les scripts et nœuds dans le dépôt selon la structure proposée.
 2. **Tests** : Exécuter les tests unitaires et d'intégration pour valider les workflows.
 3. **Déploiement** : Configurer n8n en local avec Docker et tester les scripts dans un environnement réel.
@@ -1383,11 +1458,13 @@ Si vous avez des besoins spécifiques (ex. : automatisation d'une tâche particu
 # Proposition de scripts open-source pour le rangement de dépôts Git
 
 ## Objectif
+
 Proposer des scripts Python open-source pour organiser et ranger un dépôt Git local, en s'alignant sur les besoins de la roadmap EMAIL_SENDER_1 (ex. : gestion des scripts (2.3.1), détection des duplications, modularité) et les contraintes de développement (principes SOLID, TDD, documentation claire, environnement local). Les scripts doivent automatiser le nettoyage, la restructuration, et l'optimisation des fichiers dans un dépôt, tout en étant bien testés et documentés.
 
 ---
 
 ## Étape 1 : Analyse des besoins
+
 Le rangement d'un dépôt implique :
 - **Nettoyage des fichiers inutiles** : Supprimer les fichiers temporaires, les doublons, ou les fichiers obsolètes (aligné avec 2.3.1 - gestion des scripts).
 - **Organisation des fichiers** : Regrouper les fichiers par type ou fonction (ex. : scripts, tests, projet/documentation) pour une structure claire.
@@ -1409,6 +1486,7 @@ Le rangement d'un dépôt implique :
 Je propose une combinaison de scripts personnalisés et de bibliothèques Python open-source pour répondre aux besoins de rangement d'un dépôt Git. Chaque script est modulaire, testé, et accompagné d'instructions d'intégration dans le dépôt.
 
 ### 1. Script : Nettoyage des fichiers inutiles
+
 - **Nom** : `clean_repo.py`
 - **Description** : Script pour supprimer les fichiers temporaires, les dossiers de cache, et les fichiers non suivis par Git, avec des règles personnalisables.
 - **Licence** : MIT (proposé comme script personnalisé).
@@ -1477,11 +1555,12 @@ if __name__ == "__main__":
     cleaner = RepoCleaner(".")
     result = cleaner.run()
     logging.info(f"Résultat : {result}")
-```
+```plaintext
 - **Tests** :
   - Créer `development/testing/tests/unit/repo/test_clean_repo.py` avec `pytest`.
     ```python
     # development/testing/tests/unit/repo/test_clean_repo.py
+
     from scripts.repo.clean_repo import RepoCleaner
     from pathlib import Path
     import pytest
@@ -1520,6 +1599,7 @@ if __name__ == "__main__":
   - **2.3.1 (Gestion des scripts)** : Nettoie les fichiers temporaires générés par les scripts Python.
 
 ### 2. Script : Organisation des fichiers par type
+
 - **Nom** : `organize_repo.py`
 - **Description** : Script pour regrouper les fichiers dans des dossiers selon leur type ou leur fonction (ex. : scripts, tests, projet/documentation).
 - **Licence** : MIT (proposé comme script personnalisé).
@@ -1575,11 +1655,12 @@ if __name__ == "__main__":
     organizer = RepoOrganizer(".")
     result = organizer.run()
     logging.info(f"Résultat : {result}")
-```
+```plaintext
 - **Tests** :
   - Créer `development/testing/tests/unit/repo/test_organize_repo.py` avec `pytest`.
     ```python
     # development/testing/tests/unit/repo/test_organize_repo.py
+
     from scripts.repo.organize_repo import RepoOrganizer
     from pathlib import Path
     import pytest
@@ -1588,6 +1669,7 @@ if __name__ == "__main__":
     def temp_repo(tmp_path):
         (tmp_path / "script.py").write_text("print('test')")
         (tmp_path / "readme.md").write_text("# Readme")
+
         (tmp_path / "test_script.py").write_text("def test(): pass")
         return tmp_path
 
@@ -1610,6 +1692,7 @@ if __name__ == "__main__":
   - **2.3.1 (Gestion des scripts)** : Organise les scripts et autres fichiers pour une structure cohérente.
 
 ### 3. Bibliothèque : `dupeGuru` (intégration via script)
+
 - **Description** : Outil open-source pour détecter et gérer les fichiers dupliqués, avec une API Python accessible pour une intégration dans un script.
 - **Source** : `hardcoded-software/dupeguru` (GitHub)
 - **Licence** : GPL-3.0.
@@ -1653,11 +1736,12 @@ if __name__ == "__main__":
     detector = DupeDetector(".")
     result = detector.run()
     logging.info(f"Résultat : {result}")
-```
+```plaintext
 - **Tests** :
   - Créer `development/testing/tests/unit/repo/test_dupe_detector.py` avec `pytest`.
     ```python
     # development/testing/tests/unit/repo/test_dupe_detector.py
+
     from scripts.repo.dupe_detector import DupeDetector
     from pathlib import Path
     import pytest
@@ -1689,6 +1773,7 @@ if __name__ == "__main__":
   - **2.3.1 (Gestion des scripts)** : Identifie les scripts dupliqués pour les fusionner ou les supprimer.
 
 ### 4. Script : Validation de la structure du dépôt
+
 - **Nom** : `validate_repo_structure.py`
 - **Description** : Script pour vérifier que la structure du dépôt respecte les conventions définies (ex. : présence de dossiers, conventions de nommage).
 - **Licence** : MIT (proposé comme script personnalisé).
@@ -1739,7 +1824,7 @@ if __name__ == "__main__":
     validator = RepoValidator(".")
     result = validator.run()
     logging.info(f"Résultat : {result}")
-```
+```plaintext
 - **Configuration** :
   ```json
   // projet/config/repo_structure.json
@@ -1755,6 +1840,7 @@ if __name__ == "__main__":
   - Créer `development/testing/tests/unit/repo/test_validate_repo_structure.py` avec `pytest`.
     ```python
     # development/testing/tests/unit/repo/test_validate_repo_structure.py
+
     from scripts.repo.validate_repo_structure import RepoValidator
     from pathlib import Path
     import pytest
@@ -1796,7 +1882,8 @@ if __name__ == "__main__":
 ## Étape 3 : Intégration dans le dépôt
 
 ### Structure proposée
-```
+
+```plaintext
 repo/
 ├── development/scripts/
 │   ├── repo/
@@ -1821,29 +1908,29 @@ repo/
 │   └── repo_structure.json
 ├── requirements.txt
 ├── pytest.ini
-```
-
+```plaintext
 ### Configuration pytest
+
 **Fichier** : `pytest.ini`
 ```ini
 [pytest]
 python_files = test_*.py
 python_functions = test_*
 addopts = --cov=development/scripts/repo --cov-report=html
-```
-
+```plaintext
 ### Dépendances
+
 **Fichier** : `requirements.txt`
-```
+```plaintext
 pygit2>=1.12
 dupeguru>=4.3
 pytest>=7.4
 pytest-cov>=4.1
-```
-
+```plaintext
 ---
 
 ## Étape 4 : Tests et validation
+
 - **Tests unitaires** : Chaque script inclut des tests `pytest` pour couvrir :
   - Cas simples : Petits dépôts avec quelques fichiers.
   - Cas complexes : Dépôts avec des fichiers dupliqués ou mal organisés.
@@ -1861,6 +1948,7 @@ pytest-cov>=4.1
 ---
 
 ## Étape 5 : Justification via Tree of Thoughts (ToT)
+
 - **Options envisagées** :
   1. **Utiliser des outils CLI comme `git clean`** : Limité pour l'organisation et la validation personnalisées.
   2. **Développer tous les scripts from scratch** : Long et redondant avec des bibliothèques comme `dupeGuru`.
@@ -1874,6 +1962,7 @@ pytest-cov>=4.1
 ---
 
 ## Résumé des scripts proposés
+
 | Script/Bibliothèque | Cas d'utilisation | Chemin dans le dépôt | Tests | Documentation | Roadmap |
 |---------------------|-------------------|----------------------|-------|---------------|---------|
 | `clean_repo.py` | Supprimer fichiers temporaires | `development/scripts/repo/clean_repo.py` | `development/testing/tests/unit/repo/test_clean_repo.py` | `projet/documentation/repo/clean_repo.md` | 2.3.1 |
@@ -1884,6 +1973,7 @@ pytest-cov>=4.1
 ---
 
 ## Prochaines étapes
+
 1. **Implémentation** : Ajouter les scripts au dépôt selon la structure proposée.
 2. **Tests** : Exécuter les tests unitaires et d'intégration, viser 100 % de couverture avec `pytest-cov`.
 3. **CI/CD** : Configurer un pipeline (ex. : GitHub Actions) pour exécuter les scripts automatiquement à chaque commit.
@@ -1896,11 +1986,13 @@ Si vous avez des besoins spécifiques (ex. : types de fichiers à cibler, conven
 # Proposition de scripts open-source utiles pour Notion
 
 ## Objectif
+
 Identifier et proposer des scripts Python ou JavaScript open-source pour interagir avec **Notion** via son API, en s'alignant sur les besoins de la roadmap EMAIL_SENDER_1 (ex. : gestion des scripts (2.3.1), automatisation, intégration avec n8n) et les contraintes de développement (principes SOLID, TDD, documentation claire, environnement local). Les scripts doivent faciliter l'organisation, l'automatisation, ou le rangement des données dans Notion, être bien testés, et s'intégrer dans un dépôt Git local.
 
 ---
 
 ## Étape 1 : Analyse des besoins
+
 Les scripts pour Notion doivent répondre aux besoins suivants :
 - **Automatisation des tâches** : Créer, mettre à jour, ou supprimer des pages et bases de données dans Notion (aligné avec 2.3.1 - gestion des scripts).
 - **Organisation des données** : Nettoyer les bases de données, archiver les pages obsolètes, ou réorganiser les contenus.
@@ -1927,6 +2019,7 @@ Les scripts pour Notion doivent répondre aux besoins suivants :
 Je propose une sélection de scripts open-source et personnalisés pour Notion, tirés de dépôts GitHub, de la communauté Notion, et adaptés aux besoins de la roadmap. Chaque script est accompagné d'un exemple, de tests, et d'instructions d'intégration.
 
 ### 1. Script : Exportation de bases de données Notion vers Markdown
+
 - **Source** : Inspiré de `dragonman225/notion-md-exporter` (GitHub) et adapté pour une utilisation modulaire.
 - **Description** : Script Python pour exporter une base de données Notion vers des fichiers Markdown, utile pour archiver ou migrer des données.
 - **Licence** : MIT.
@@ -1992,11 +2085,12 @@ if __name__ == "__main__":
     exporter = NotionToMarkdown(token)
     result = exporter.run(db_id)
     logging.info(f"Résultat : {result}")
-```
+```plaintext
 - **Tests** :
   - Créer `development/testing/tests/unit/notion/test_notion_to_markdown.py` avec `pytest`.
     ```python
     # development/testing/tests/unit/notion/test_notion_to_markdown.py
+
     from scripts.notion.notion_to_markdown import NotionToMarkdown
     from pathlib import Path
     import pytest
@@ -2051,6 +2145,7 @@ if __name__ == "__main__":
   - **6.1.3 (Gestion des emails)** : Exporter des données pour générer des rapports ou des emails.
 
 ### 2. Script : Synchronisation Notion avec GitHub Issues
+
 - **Source** : Inspiré de `notion-sdk-js` (GitHub) et adapté pour la synchronisation bidirectionnelle.
 - **Description** : Script JavaScript pour synchroniser les problèmes GitHub avec une base de données Notion, utile pour le suivi de projets.
 - **Licence** : MIT.
@@ -2136,7 +2231,7 @@ if (require.main === module) {
   );
   sync.syncIssues().then(result => logger.info(`Résultat : ${JSON.stringify(result)}`));
 }
-```
+```plaintext
 - **Tests** :
   - Créer `development/testing/tests/unit/notion/test_sync_notion_github.js` avec `jest`.
     ```javascript
@@ -2183,6 +2278,7 @@ if (require.main === module) {
   - **2.1 (Parallélisation)** : Peut être adapté pour traiter les issues en parallèle avec `Promise.all`.
 
 ### 3. Script : Nettoyage des pages Notion obsolètes
+
 - **Source** : Script personnalisé inspiré des bonnes pratiques de l'API Notion.
 - **Description** : Script Python pour archiver ou supprimer les pages Notion obsolètes (ex. : pages non modifiées depuis X jours).
 - **Licence** : MIT.
@@ -2219,6 +2315,7 @@ class NotionCleaner:
                     logging.info(f"Archivé : {page['id']}")
                 else:
                     self.client.pages.update(page_id=page["id"], archived=True)  # Notion ne permet pas de suppression directe
+
                     logging.info(f"Supprimé (archivé) : {page['id']}")
                 count += 1
         return count
@@ -2235,11 +2332,12 @@ if __name__ == "__main__":
     cleaner = NotionCleaner(token)
     result = cleaner.run(db_id)
     logging.info(f"Résultat : {result}")
-```
+```plaintext
 - **Tests** :
   - Créer `development/testing/tests/unit/notion/test_clean_notion_pages.py` avec `pytest`.
     ```python
     # development/testing/tests/unit/notion/test_clean_notion_pages.py
+
     from scripts.notion.clean_notion_pages import NotionCleaner
     from datetime import datetime, timedelta
     import pytest
@@ -2277,6 +2375,7 @@ if __name__ == "__main__":
   - **3.1.1 (Monitoring)** : Peut être adapté pour signaler les pages obsolètes.
 
 ### 4. Script : Importation de données CSV dans Notion
+
 - **Source** : Script personnalisé inspiré des exemples de `notion-client`.
 - **Description** : Script Python pour importer des données CSV dans une base de données Notion, utile pour migrer des données locales.
 - **Licence** : MIT.
@@ -2335,7 +2434,7 @@ if __name__ == "__main__":
     importer = CSVToNotion(token)
     result = importer.run(csv_path, db_id)
     logging.info(f"Résultat : {result}")
-```
+```plaintext
 - **Exemple de CSV** :
   ```csv
   Name,Description,URL
@@ -2346,6 +2445,7 @@ if __name__ == "__main__":
   - Créer `development/testing/tests/unit/notion/test_csv_to_notion.py` avec `pytest`.
     ```python
     # development/testing/tests/unit/notion/test_csv_to_notion.py
+
     from scripts.notion.csv_to_notion import CSVToNotion
     from pathlib import Path
     import pytest
@@ -2389,7 +2489,8 @@ if __name__ == "__main__":
 ## Étape 3 : Intégration dans le dépôt
 
 ### Structure proposée
-```
+
+```plaintext
 repo/
 ├── development/scripts/
 │   ├── notion/
@@ -2417,18 +2518,18 @@ repo/
 ├── requirements.txt
 ├── package.json
 ├── pytest.ini
-```
-
+```plaintext
 ### Configuration pytest
+
 **Fichier** : `pytest.ini`
 ```ini
 [pytest]
 python_files = test_*.py
 python_functions = test_*
 addopts = --cov=development/scripts/notion --cov-report=html
-```
-
+```plaintext
 ### Configuration Jest
+
 **Fichier** : `package.json`
 ```json
 {
@@ -2443,19 +2544,19 @@ addopts = --cov=development/scripts/notion --cov-report=html
     "@octokit/rest": "^20.0.0"
   }
 }
-```
-
+```plaintext
 ### Dépendances
+
 **Fichier** : `requirements.txt`
-```
+```plaintext
 notion-client>=2.2
 pytest>=7.4
 pytest-cov>=4.1
-```
-
+```plaintext
 ---
 
 ## Étape 4 : Tests et validation
+
 - **Tests unitaires** :
   - Python : Utiliser `pytest` pour tester les scripts Python, en mockant les appels API.
   - JavaScript : Utiliser `jest` pour tester le script JavaScript, en mockant les APIs Notion et GitHub.
@@ -2479,6 +2580,7 @@ pytest-cov>=4.1
 ---
 
 ## Étape 5 : Justification via Tree of Thoughts (ToT)
+
 - **Options envisagées** :
   1. **Utiliser uniquement les intégrations natives de Notion** : Limité pour des cas complexes comme le nettoyage ou l'importation CSV.
   2. **Développer des scripts from scratch sans bibliothèques** : Long et redondant avec des bibliothèques comme `notion-client`.
@@ -2492,6 +2594,7 @@ pytest-cov>=4.1
 ---
 
 ## Résumé des scripts proposés
+
 | Script | Cas d'utilisation | Chemin dans le dépôt | Tests | Documentation | Roadmap |
 |--------|-------------------|----------------------|-------|---------------|---------|
 | `notion_to_markdown.py` | Exporter bases de données vers Markdown | `development/scripts/notion/notion_to_markdown.py` | `development/testing/tests/unit/notion/test_notion_to_markdown.py` | `projet/documentation/notion/notion_to_markdown.md` | 2.3.1 |
@@ -2502,6 +2605,7 @@ pytest-cov>=4.1
 ---
 
 ## Prochaines étapes
+
 1. **Implémentation** : Ajouter les scripts au dépôt selon la structure proposée.
 2. **Tests** : Exécuter les tests unitaires et d'intégration, viser 100 % de couverture avec `pytest-cov` et `jest --coverage`.
 3. **CI/CD** : Configurer un pipeline (ex. : GitHub Actions) pour exécuter les tests automatiquement.

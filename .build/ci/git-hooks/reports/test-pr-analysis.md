@@ -1,4 +1,4 @@
-﻿# Rapport d'analyse de pull request (test)
+# Rapport d'analyse de pull request (test)
 
 ## RÃ©sumÃ© de l'analyse
 
@@ -84,6 +84,7 @@
 **Exemple de code**:
 `powershell
 \ = \ # ou une valeur par défaut
+
 ``n
 
 ### null-reference

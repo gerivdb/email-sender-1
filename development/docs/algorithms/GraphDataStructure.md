@@ -16,12 +16,11 @@ Cette représentation est connue sous le nom de **liste d'adjacence**.
 
 ### Exemple de graphe simple
 
-```
+```plaintext
 A → B → C
 ↓   ↑
 D → E
-```
-
+```plaintext
 Ce graphe serait représenté par la table de hachage suivante :
 
 ```powershell
@@ -32,8 +31,7 @@ $graph = @{
     "D" = @("E")
     "E" = @("B")
 }
-```
-
+```plaintext
 ### Avantages de cette représentation
 
 1. **Efficacité spatiale** : Pour les graphes clairsemés (peu d'arêtes par rapport au nombre de nœuds), cette représentation est économe en mémoire.
@@ -58,8 +56,7 @@ $directedGraph = @{
     "B" = @("C")
     "C" = @()
 }
-```
-
+```plaintext
 ### Graphes non dirigés
 
 Pour les graphes non dirigés, chaque arête est représentée deux fois : une fois dans chaque direction.
@@ -70,8 +67,7 @@ $undirectedGraph = @{
     "B" = @("A", "C")
     "C" = @("B")
 }
-```
-
+```plaintext
 ### Graphes pondérés
 
 Pour les graphes pondérés, nous utilisons une structure légèrement différente où les voisins sont représentés par des objets contenant l'identifiant du nœud et le poids de l'arête.
@@ -88,8 +84,7 @@ $weightedGraph = @{
     "C" = @()
     "D" = @()
 }
-```
-
+```plaintext
 ## Représentations spécifiques
 
 ### Dépendances de scripts
@@ -103,8 +98,7 @@ $scriptDependencies = @{
     ".\development\scripts\C.ps1" = @()
     ".\development\scripts\D.ps1" = @(".\development\scripts\C.ps1")
 }
-```
-
+```plaintext
 ### Workflows n8n
 
 Pour les workflows n8n, les nœuds sont les identifiants des nœuds du workflow et les arêtes représentent les connexions entre les nœuds.
@@ -116,8 +110,7 @@ $n8nWorkflow = @{
     "node3" = @("node4")
     "node4" = @()
 }
-```
-
+```plaintext
 ## Opérations sur les graphes
 
 ### Création d'un graphe
@@ -129,8 +122,7 @@ function New-Graph {
     
     return @{}
 }
-```
-
+```plaintext
 ### Ajout d'un nœud
 
 ```powershell
@@ -150,8 +142,7 @@ function Add-GraphNode {
     
     return $Graph
 }
-```
-
+```plaintext
 ### Ajout d'une arête
 
 ```powershell
@@ -169,6 +160,7 @@ function Add-GraphEdge {
     )
     
     # Ajouter les nœuds s'ils n'existent pas
+
     if (-not $Graph.ContainsKey($FromNode)) {
         $Graph[$FromNode] = @()
     }
@@ -178,14 +170,14 @@ function Add-GraphEdge {
     }
     
     # Ajouter l'arête si elle n'existe pas déjà
+
     if ($Graph[$FromNode] -notcontains $ToNode) {
         $Graph[$FromNode] = $Graph[$FromNode] + $ToNode
     }
     
     return $Graph
 }
-```
-
+```plaintext
 ### Suppression d'une arête
 
 ```powershell
@@ -208,8 +200,7 @@ function Remove-GraphEdge {
     
     return $Graph
 }
-```
-
+```plaintext
 ### Conversion d'un graphe en chaîne
 
 ```powershell
@@ -229,8 +220,7 @@ function ConvertTo-GraphString {
     
     return $result
 }
-```
-
+```plaintext
 ## Optimisations
 
 ### Mise en cache des résultats
@@ -266,8 +256,7 @@ function Set-CachedCycleResult {
     
     $script:CycleCache[$GraphKey] = $Result
 }
-```
-
+```plaintext
 ### Hachage de graphe
 
 Pour utiliser efficacement le cache, nous avons besoin d'une fonction de hachage pour les graphes.
@@ -301,8 +290,7 @@ function Get-GraphHash {
     
     return [System.Convert]::ToBase64String($hash)
 }
-```
-
+```plaintext
 ## Considérations de performance
 
 ### Taille des graphes

@@ -18,8 +18,7 @@ Le script `New-PowerShellModuleFromTemplate.ps1` permet de générer facilement 
 
 ```powershell
 .\development\scripts\utils\New-PowerShellModuleFromTemplate.ps1 -Name <nom_du_module> -Description <description> -Category <catégorie> -Type <type> [-Author <auteur>] [-Force]
-```
-
+```plaintext
 ### Paramètres
 
 - **Name** (obligatoire) : Nom du module PowerShell à générer.
@@ -35,75 +34,82 @@ Le script `New-PowerShellModuleFromTemplate.ps1` permet de générer facilement 
 
 ```powershell
 .\development\scripts\utils\New-PowerShellModuleFromTemplate.ps1 -Name "ConfigManager" -Description "Module de gestion de configuration" -Category "core" -Type "standard"
-```
-
+```plaintext
 #### Générer un module avancé avec gestion d'état
 
 ```powershell
 .\development\scripts\utils\New-PowerShellModuleFromTemplate.ps1 -Name "StateManager" -Description "Module de gestion d'état" -Category "utils" -Type "advanced"
-```
-
+```plaintext
 #### Générer un module d'extension
 
 ```powershell
 .\development\scripts\utils\New-PowerShellModuleFromTemplate.ps1 -Name "ExtensionManager" -Description "Module d'extension" -Category "integration" -Type "extension"
-```
-
+```plaintext
 #### Écraser un module existant
 
 ```powershell
 .\development\scripts\utils\New-PowerShellModuleFromTemplate.ps1 -Name "ConfigManager" -Description "Module de gestion de configuration amélioré" -Category "core" -Type "standard" -Force
-```
-
+```plaintext
 ## Structure des modules générés
 
 ### Module standard
 
-```
+```plaintext
 ModuleName/
 ├── ModuleName.psd1     # Manifeste du module
+
 ├── ModuleName.psm1     # Module principal
+
 ├── Public/             # Fonctions publiques
+
 │   └── README.md       # Documentation des fonctions publiques
+
 ├── Private/            # Fonctions privées
+
 │   └── README.md       # Documentation des fonctions privées
+
 ├── Tests/              # Tests Pester
+
 │   └── ModuleName.Tests.ps1
 ├── config/             # Fichiers de configuration
+
 │   └── ModuleName.config.json
 ├── logs/               # Fichiers de logs
+
 │   └── ...
 ├── data/               # Données du module
+
 │   └── ...
 └── README.md           # Documentation du module
-```
 
+```plaintext
 ### Module avancé
 
 En plus de la structure du module standard, le module avancé inclut :
 
-```
+```plaintext
 ModuleName/
 ├── ...
 ├── state/              # État persistant du module
+
 │   ├── ModuleName.state.json
 │   └── backup/         # Sauvegardes de l'état
+
 │       └── ...
 └── ...
-```
-
+```plaintext
 ### Module d'extension
 
 En plus de la structure du module standard, le module d'extension inclut :
 
-```
+```plaintext
 ModuleName/
 ├── ...
 ├── extensions/         # Extensions du module
+
 │   └── ...
 └── ...
-```
-
+```plaintext
 ## Fonctionnalités spécifiques
 
 ### Module standard

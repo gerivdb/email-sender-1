@@ -1,4 +1,4 @@
-﻿# Handle-Error
+# Handle-Error
 
 ## RÃ©sumÃ©
 
@@ -16,6 +16,7 @@ Handle-Error [-ErrorRecord <>]  [-ErrorMessage <>]  [-Context <>]  [-LogFile <>]
 `
 
 ## ParamÃ¨tres
+
 ### -ErrorRecord
 
 L'enregistrement d'erreur Ã  gÃ©rer.
@@ -98,6 +99,7 @@ Indique si l'exception doit Ãªtre relancÃ©e aprÃ¨s avoir Ã©tÃ© journal
 - Accepte les entrÃ©es de pipeline: false
 - Accepte les caractÃ¨res gÃ©nÃ©riques: false
 ## Exemples
+
 ### Exemple 1
 
 `powershell
@@ -105,6 +107,7 @@ try {
 `
 
 # Code qui peut gÃ©nÃ©rer une erreur
+
 } catch {
     Handle-Error -ErrorRecord $_ -ErrorMessage "Erreur lors du traitement du fichier" -Context "Traitement de donnÃ©es" -LogFile ".\logs\app.log"
 }    

@@ -8,13 +8,14 @@ Pour utiliser ce module, vous devez d'abord l'importer :
 
 ```powershell
 # Importer le module principal
+
 $scriptPath = "chemin/vers/FormatSupport/XML_HTML"
 . "$scriptPath/XmlSupport.ps1"
 
 # Afficher l'aide
-Show-XmlSupportHelp
-```
 
+Show-XmlSupportHelp
+```plaintext
 ## Fonctionnalités principales
 
 ### Support XML
@@ -78,38 +79,33 @@ Ce module peut être intégré avec le module Format-Converters et l'interface u
 
 ```powershell
 ConvertFrom-RoadmapFileToXmlFile -RoadmapPath "roadmap.md" -XmlPath "roadmap.xml"
-```
-
+```plaintext
 ### Convertir un fichier XML en Roadmap
 
 ```powershell
 ConvertFrom-XmlFileToRoadmapFile -XmlPath "roadmap.xml" -RoadmapPath "roadmap.md"
-```
-
+```plaintext
 ### Analyser un fichier XML
 
 ```powershell
 Get-XmlStructureReportFromFile -XmlPath "roadmap.xml" -OutputPath "structure_report.html" -AsHtml
-```
-
+```plaintext
 ### Valider un fichier XML
 
 ```powershell
 Test-XmlFileWithReport -XmlPath "roadmap.xml" -OutputPath "validation_report.html" -AsHtml
-```
-
+```plaintext
 ### Convertir un fichier XML en HTML
 
 ```powershell
 $xmlDoc = Import-XmlFile -FilePath "data.xml"
 $htmlDoc = ConvertFrom-XmlToHtml -XmlDocument $xmlDoc
 Export-HtmlFile -HtmlDocument $htmlDoc -FilePath "data.html"
-```
-
+```plaintext
 ### Extraire le texte d'un fichier HTML
 
 ```powershell
 $htmlDoc = Import-HtmlFile -FilePath "page.html"
 $text = ConvertTo-PlainText -HtmlDocument $htmlDoc
 $text | Out-File -FilePath "page.txt" -Encoding UTF8
-```
+```plaintext

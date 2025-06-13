@@ -1,4 +1,5 @@
 # Plan de développement v23 - Admin Core Framework
+
 *Version 1.0 - 2025-05-25 - Progression globale : 0%*
 
 Ce plan définit une stratégie complète pour développer un framework d'administration modulaire inspiré de WordPress. Il établit les fondations pour une interface d'administration unifiée qui servira de surcouche logicielle permettant de gérer toutes les extensions du système (roadmapper, email sender, etc.) à travers une expérience utilisateur cohérente et intuitive. L'objectif est de créer un "Admin Core Framework" extensible qui permettra d'ajouter facilement de nouvelles fonctionnalités administratives tout en maintenant une expérience utilisateur cohérente.

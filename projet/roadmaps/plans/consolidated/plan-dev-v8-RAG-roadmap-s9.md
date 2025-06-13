@@ -1,7 +1,8 @@
-﻿# Plan de développement v8b : Système de gestion modulaire des roadmaps avec RAG et classification automatique
+# Plan de développement v8b : Système de gestion modulaire des roadmaps avec RAG et classification automatique
 
 
 ## 9. Intégration avec n8n pour l'automatisation des roadmaps
+
 - [ ] **9.1** Développer le système d'intégration avec n8n
   - [ ] **9.1.1** Créer l'API REST pour n8n
     - [ ] **9.1.1.1** Développer le module d'intégration principal

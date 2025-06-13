@@ -18,20 +18,29 @@ RoadmapParserCore est un module PowerShell conÃ§u pour analyser, manipuler et 
 
 ## Structure du module
 
-```
+```plaintext
 RoadmapParserCore/
 â”œâ”€â”€ RoadmapParserCore.psd1       # Manifeste du module
-â”œâ”€â”€ RoadmapParserCore.psm1       # Fichier principal du module
-â”œâ”€â”€ Functions/                   # RÃ©pertoire des fonctions
-â”‚   â”œâ”€â”€ Common/                  # Fonctions communes
-â”‚   â”œâ”€â”€ Private/                 # Fonctions privÃ©es
-â”‚   â””â”€â”€ Public/                  # Fonctions publiques
-â”œâ”€â”€ Exceptions/                  # Classes d'exceptions personnalisÃ©es
-â”œâ”€â”€ projet/config/                      # Fichiers de configuration
-â”œâ”€â”€ Resources/                   # Ressources du module
-â””â”€â”€ docs/                        # Documentation
-```
 
+â”œâ”€â”€ RoadmapParserCore.psm1       # Fichier principal du module
+
+â”œâ”€â”€ Functions/                   # RÃ©pertoire des fonctions
+
+â”‚   â”œâ”€â”€ Common/                  # Fonctions communes
+
+â”‚   â”œâ”€â”€ Private/                 # Fonctions privÃ©es
+
+â”‚   â””â”€â”€ Public/                  # Fonctions publiques
+
+â”œâ”€â”€ Exceptions/                  # Classes d'exceptions personnalisÃ©es
+
+â”œâ”€â”€ projet/config/                      # Fichiers de configuration
+
+â”œâ”€â”€ Resources/                   # Ressources du module
+
+â””â”€â”€ docs/                        # Documentation
+
+```plaintext
 ## Installation
 
 1. TÃ©lÃ©chargez ou clonez le dÃ©pÃ´t
@@ -44,41 +53,49 @@ RoadmapParserCore/
 
 ```powershell
 # Importer le module
+
 Import-Module RoadmapParserCore
 
 # Analyser un fichier markdown de roadmap
+
 $roadmap = ConvertFrom-MarkdownToRoadmap -FilePath "chemin/vers/roadmap.md"
 
 # Obtenir toutes les tÃ¢ches
+
 $tasks = Get-RoadmapTask -Roadmap $roadmap
 
 # Afficher les tÃ¢ches terminÃ©es
+
 $completedTasks = Get-RoadmapTasksByStatus -Roadmap $roadmap -Status "Complete"
 $completedTasks | Format-Table -Property Id, Title, Status
 
 # Exporter la roadmap au format JSON
-Export-RoadmapToJson -Roadmap $roadmap -FilePath "chemin/vers/export.json"
-```
 
+Export-RoadmapToJson -Roadmap $roadmap -FilePath "chemin/vers/export.json"
+```plaintext
 ### Utilisation des modes opÃ©rationnels
 
 ```powershell
 # Mode ARCHI - GÃ©nÃ©rer des diagrammes d'architecture
+
 Invoke-RoadmapArchitecture -FilePath "roadmap.md" -ProjectPath "project" -OutputPath "output"
 
 # Mode DEBUG - DÃ©boguer un script
+
 Invoke-RoadmapDebug -FilePath "roadmap.md" -ProjectPath "project" -ScriptPath "script.ps1" -OutputPath "output"
 
 # Mode TEST - ExÃ©cuter des tests
+
 Invoke-RoadmapTest -FilePath "roadmap.md" -ModulePath "module" -TestsPath "tests" -OutputPath "output"
 
 # Mode CHECK - VÃ©rifier l'Ã©tat des tÃ¢ches
+
 Invoke-RoadmapCheck -FilePath "roadmap.md" -OutputPath "output"
 
 # Mode GRAN - Granulariser les tÃ¢ches
-Invoke-RoadmapGranularization -FilePath "roadmap.md" -OutputPath "output"
-```
 
+Invoke-RoadmapGranularization -FilePath "roadmap.md" -OutputPath "output"
+```plaintext
 ## Fonctions principales
 
 Le module exporte de nombreuses fonctions, regroupÃ©es par catÃ©gories :

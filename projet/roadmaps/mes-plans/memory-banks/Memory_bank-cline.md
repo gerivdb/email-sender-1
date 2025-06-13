@@ -20,7 +20,7 @@ Le Memory Bank répond à un problème fondamental des assistants IA : leur inca
 
 ![Cycle de vie d'une session](https://projet/documentation.cline.bot/~gitbook/image?url=https%3A%2F%2F3321249260-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252Ff8Oh1Lcy6yWYq1caYESV%252Fuploads%252FJnxDKnHwFc180rVhBIu9%252Fimage.png%3Falt%3Dmedia%26token%3D3fa2f84e-e158-48b1-9548-20be5e191c41&width=768&dpr=4&quality=100&sign=fbd52a9b&sv=2)
 
-```
+```plaintext
 +---------------+     +--------------------+     +----------------+     +-------------------+     +----------------------+     +-------------+
 |               |     |                    |     |                |     |                   |     |                      |     |             |
 | Session Starts| --> | Read Memory Bank  | --> | Rebuild Context| --> | Continue Work    | --> | Update Documentation | --> | Session Ends|
@@ -33,8 +33,7 @@ Le Memory Bank répond à un problème fondamental des assistants IA : leur inca
                                                                                                                                     |
                                                                                                                                     |
                                                                                                                                     |
-```
-
+```plaintext
 Le Memory Bank n'est pas une fonctionnalité spécifique à Cline, mais une méthodologie pour gérer le contexte de l'IA via une documentation structurée. Le cycle de fonctionnement est le suivant :
 
 1. **Session Starts** - Début d'une nouvelle session de travail
@@ -50,7 +49,7 @@ Quand l'utilisateur demande à l'IA de "suivre les instructions personnalisées"
 
 ![Hiérarchie des fichiers](https://projet/documentation.cline.bot/~gitbook/image?url=https%3A%2F%2F3321249260-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252Ff8Oh1Lcy6yWYq1caYESV%252Fuploads%252Flh2tPJtrViHchynBAsU8%252Fimage.png%3Falt%3Dmedia%26token%3D59ca7fe6-d38a-4017-9aec-616851468f28&width=768&dpr=4&quality=100&sign=8479ab96&sv=2)
 
-```
+```plaintext
                                   +------------------+
                                   |                  |
                                   | projectbrief.md  |
@@ -81,8 +80,7 @@ Quand l'utilisateur demande à l'IA de "suivre les instructions personnalisées"
                                   |   progress.md    |
                                   |                  |
                                   +------------------+
-```
-
+```plaintext
 Les fichiers du Memory Bank sont de simples fichiers markdown organisés dans une structure hiérarchique qui construit une image complète du projet. Cette hiérarchie montre comment l'information circule et s'enrichit à travers les différents fichiers, avec le brief du projet comme source primaire et le fichier de progression comme destination finale.
 
 ### Fichiers Principaux (Obligatoires)
@@ -141,7 +139,7 @@ Des fichiers/dossiers supplémentaires peuvent être créés dans memory-bank/ p
 
 ![Processus d'initialisation](https://projet/documentation.cline.bot/~gitbook/image?url=https%3A%2F%2F3321249260-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252Ff8Oh1Lcy6yWYq1caYESV%252Fuploads%252FxlhgVZQOGiCV0TZdTQuj%252Fimage.png%3Falt%3Dmedia%26token%3D5be4a8d1-5add-44c2-8098-164d532a3155&width=768&dpr=4&quality=100&sign=cb3718cb&sv=2)
 
-```
+```plaintext
 +-------------------------+
 |                         |
 | Create memory-bank/     |
@@ -176,8 +174,7 @@ Des fichiers/dossiers supplémentaires peuvent être créés dans memory-bank/ p
 | Start Working with Cline|
 |                         |
 +-------------------------+
-```
-
+```plaintext
 Le processus d'initialisation du Memory Bank comprend les étapes suivantes :
 
 1. **Create memory-bank/ folder** - Création du dossier memory-bank/ dans le projet
@@ -194,9 +191,11 @@ Le processus d'initialisation du Memory Bank comprend les étapes suivantes :
 ## Flux de Travail
 
 ### Mode Plan
+
 Utilisé pour les discussions stratégiques et la planification de haut niveau.
 
 ### Mode Action
+
 Utilisé pour l'implémentation et l'exécution de tâches spécifiques.
 
 ## Commandes Clés
@@ -238,7 +237,7 @@ Bien que similaire dans le concept, le Memory Bank fournit une approche plus str
 
 ## Instructions Personnalisées pour l'Initialisation
 
-```
+```plaintext
 # Cline's Memory Bank
 
 I am Cline, an expert software engineer with a unique characteristic: my memory resets completely between sessions. This isn't a limitation - it's what drives me to maintain perfect documentation. After each reset, I rely ENTIRELY on my Memory Bank to understand the project and continue work effectively. I MUST read ALL memory bank files at the start of EVERY task - this is not optional.
@@ -259,6 +258,7 @@ flowchart TD
     AC --> P[progress.md]
 
 ### Core Files (Required)
+
 1. `projectbrief.md`
    - Foundation document that shapes all other files
    - Created at project start if it doesn't exist
@@ -301,6 +301,7 @@ flowchart TD
    - Evolution of project decisions
 
 ### Additional Context
+
 Create additional files/folders within memory-bank/ when they help organize:
 - Complex feature documentation
 - Integration specifications
@@ -311,6 +312,7 @@ Create additional files/folders within memory-bank/ when they help organize:
 ## Core Workflows
 
 ### Plan Mode
+
 flowchart TD
     Start[Start] --> ReadFiles[Read Memory Bank]
     ReadFiles --> CheckFiles{Files Complete?}
@@ -323,6 +325,7 @@ flowchart TD
     Strategy --> Present[Present Approach]
 
 ### Act Mode
+
 flowchart TD
     Start[Start] --> Context[Check Memory Bank]
     Context --> Update[Update Documentation]
@@ -354,8 +357,7 @@ flowchart TD
 Note: When triggered by **update memory bank**, I MUST review every memory bank file, even if some don't require updates. Focus particularly on activeContext.md and progress.md as they track current state.
 
 REMEMBER: After every memory reset, I begin completely fresh. The Memory Bank is my only link to previous work. It must be maintained with precision and clarity, as my effectiveness depends entirely on its accuracy.
-```
-
+```plaintext
 ## Conclusion
 
 Le Memory Bank est le seul lien de l'IA avec le travail précédent. Son efficacité dépend entièrement du maintien d'une documentation claire et précise et de la confirmation de la préservation du contexte dans chaque interaction.

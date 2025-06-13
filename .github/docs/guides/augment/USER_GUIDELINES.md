@@ -1,4 +1,5 @@
 # EMAIL SENDER 1 – Guidelines
+
 *Version 2025-05-15 — à conserver dans `/docs/README_EMAIL_SENDER_1.md`*
 
 ---
@@ -6,6 +7,7 @@
 ## 1. Architecture du projet
 
 ### 1.1 Composants principaux
+
 - **Go (Golang)** : Langage privilégié pour tous les serveurs, outils système et API (remplace Python/PowerShell dès que possible)
 - **n8n workflows** : Automatisation des processus d'envoi d'emails et gestion des réponses
 - **MCP (Model Context Protocol)** : Serveurs pour fournir du contexte aux modèles IA (Go prioritaire)
@@ -14,7 +16,8 @@
 - **OpenRouter/DeepSeek** : Services IA pour personnalisation des messages
 
 ### 1.2 Structure des dossiers
-```
+
+```plaintext
 /src/go/                   → Code Go principal (API, serveurs, outils)
 /src/n8n/workflows/        → Workflows n8n actifs (*.json)
 /src/n8n/workflows/archive → Versions archivées
@@ -24,8 +27,7 @@
 /projet/config/            → Fichiers de configuration
 /development/scripts/      → Scripts d'automatisation et modes
 /docs/guides/augment/      → Guides spécifiques à Augment
-```
-
+```plaintext
 ---
 
 ## 2. Workflows n8n principaux
@@ -56,19 +58,23 @@
 ## 4. Intégrations principales
 
 ### 4.1 Notion
+
 - Base de données LOT1 (contacts programmateurs)
 - Suivi des disponibilités des membres
 - Gestion des lieux et salles de concert
 
 ### 4.2 Google Calendar
+
 - Calendrier BOOKING1 pour la gestion des disponibilités
 - Synchronisation avec Notion
 
 ### 4.3 Gmail
+
 - Templates d'emails personnalisés
 - Suivi des réponses automatisé
 
 ### 4.4 OpenRouter/DeepSeek
+
 - Personnalisation des messages par IA
 - Analyse des réponses
 
@@ -77,17 +83,21 @@
 ## 5. Axes de développement prioritaires
 
 ### 5.1 Automatisation complète du workflow de booking
+
 - Prospection initiale → Suivi → Confirmation → Post-concert
 
 ### 5.2 Intégration MCP avancée
+
 - Serveurs contextuels pour améliorer les réponses IA (Go prioritaire)
 - Intégration avec GitHub Actions
 
 ### 5.3 Optimisation des performances
+
 - Parallélisation des traitements (Go routines privilégiées)
 - Mise en cache prédictive
 
 ### 5.4 Amélioration de l'UX
+
 - Interface de configuration simplifiée
 - Tableaux de bord de suivi
 
@@ -108,6 +118,7 @@
 ## 7. Méthodologie de développement
 
 ### 7.1 Cycle par tâche
+
 1. **Analyze** : Décomposition et estimation
 2. **Learn** : Recherche de patterns existants
 3. **Explore** : Prototypage de solutions (ToT)
@@ -118,6 +129,7 @@
 8. **Segment** : Division des tâches complexes
 
 ### 7.2 Gestion des inputs volumineux
+
 - Segmentation automatique si > 5KB
 - Compression (suppression commentaires/espaces)
 - Implémentation incrémentale fonction par fonction
@@ -127,18 +139,22 @@
 ## 8. Intégration avec Augment
 
 ### 8.1 Module PowerShell
+
 ```powershell
 # Importer le module
+
 Import-Module AugmentIntegration
 
 # Initialiser l'intégration
+
 Initialize-AugmentIntegration -StartServers
 
 # Exécuter un mode spécifique
-Invoke-AugmentMode -Mode GRAN -FilePath "docs/plans/plan.md" -TaskIdentifier "1.2.3" -UpdateMemories
-```
 
+Invoke-AugmentMode -Mode GRAN -FilePath "docs/plans/plan.md" -TaskIdentifier "1.2.3" -UpdateMemories
+```plaintext
 ### 8.2 Gestion des Memories
+
 - Mise à jour après chaque changement de mode
 - Optimisation pour réduire la taille des contextes
 - Segmentation intelligente des inputs volumineux

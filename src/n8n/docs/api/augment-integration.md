@@ -10,32 +10,44 @@ Ce document décrit comment intégrer n8n avec Augment pour permettre la créati
 
 ## Structure des dossiers
 
-```
+```plaintext
 n8n/
 ├── cmd/                  # Scripts de commande Windows
-├── config/               # Configuration n8n
-├── data/                 # Données n8n
-├── docs/                 # Documentation
-├── integrations/         # Intégrations avec d'autres systèmes
-├── scripts/              # Scripts PowerShell
-│   ├── integrations/     # Scripts d'intégration
-│   ├── setup/            # Scripts d'installation
-│   ├── sync/             # Scripts de synchronisation
-│   └── utils/            # Utilitaires communs
-└── workflows/            # Workflows n8n
-    ├── archive/          # Workflows archivés
-    ├── ide/              # Workflows utilisés par l'IDE
-    └── local/            # Workflows utilisés par n8n local
-```
 
+├── config/               # Configuration n8n
+
+├── data/                 # Données n8n
+
+├── docs/                 # Documentation
+
+├── integrations/         # Intégrations avec d'autres systèmes
+
+├── scripts/              # Scripts PowerShell
+
+│   ├── integrations/     # Scripts d'intégration
+
+│   ├── setup/            # Scripts d'installation
+
+│   ├── sync/             # Scripts de synchronisation
+
+│   └── utils/            # Utilitaires communs
+
+└── workflows/            # Workflows n8n
+
+    ├── archive/          # Workflows archivés
+
+    ├── ide/              # Workflows utilisés par l'IDE
+
+    └── local/            # Workflows utilisés par n8n local
+
+```plaintext
 ## Démarrage de n8n avec synchronisation IDE
 
 Pour démarrer n8n avec la synchronisation automatique des workflows avec l'IDE, utilisez le script suivant :
 
 ```powershell
 .\n8n\cmd\start\start-n8n-with-ide-sync.cmd
-```
-
+```plaintext
 Ce script démarre n8n sans authentification et configure la synchronisation automatique des workflows entre n8n et l'IDE.
 
 ## Utilisation de l'intégration Augment
@@ -46,34 +58,29 @@ Le script `augment-integration.ps1` permet à Augment de créer et de modifier d
 
 ```powershell
 .\n8n\scripts\integrations\augment-integration.ps1 -Action "list-workflows"
-```
-
+```plaintext
 ### Récupérer un workflow
 
 ```powershell
 .\n8n\scripts\integrations\augment-integration.ps1 -Action "get-workflow" -WorkflowId "123" -OutputPath "workflow.json"
-```
-
+```plaintext
 ### Créer un workflow
 
 ```powershell
 .\n8n\scripts\integrations\augment-integration.ps1 -Action "create-workflow" -WorkflowName "Mon workflow" -WorkflowData '{"nodes":[],"connections":{}}'
-```
-
+```plaintext
 ### Mettre à jour un workflow
 
 ```powershell
 .\n8n\scripts\integrations\augment-integration.ps1 -Action "update-workflow" -WorkflowId "123" -WorkflowData '{"nodes":[],"connections":{}}'
-```
-
+```plaintext
 ## Synchronisation des workflows
 
 Le script `sync-workflows.ps1` permet de synchroniser les workflows entre n8n et l'IDE de manière bidirectionnelle.
 
 ```powershell
 .\n8n\scripts\sync\sync-workflows.ps1 -Direction "both" -Environment "all"
-```
-
+```plaintext
 ### Options de direction
 
 - `to-n8n` : Synchronise les workflows des dossiers locaux vers n8n
@@ -122,8 +129,7 @@ exec(`powershell -ExecutionPolicy Bypass -File "D:/DO/WEB/N8N_tests/PROJETS/EMAI
   }
   console.log(`Workflow créé: ${stdout}`);
 });
-```
-
+```plaintext
 ## Dépannage
 
 ### n8n n'est pas en cours d'exécution
@@ -132,8 +138,7 @@ Si vous recevez l'erreur "n8n n'est pas en cours d'exécution", assurez-vous que
 
 ```powershell
 .\n8n\cmd\start\start-n8n-local.cmd
-```
-
+```plaintext
 ### Erreur d'authentification
 
 Si vous recevez une erreur d'authentification, assurez-vous que vous avez configuré correctement l'API key dans le fichier `n8n/config/api-key.json`.
@@ -142,14 +147,12 @@ Si vous recevez une erreur d'authentification, assurez-vous que vous avez config
 {
   "apiKey": "votre-api-key"
 }
-```
-
+```plaintext
 Vous pouvez créer une API key en utilisant le script suivant :
 
 ```powershell
 .\n8n\scripts\setup\create-api-key.ps1
-```
-
+```plaintext
 ### Problèmes de synchronisation
 
 Si vous rencontrez des problèmes de synchronisation, vérifiez les points suivants :

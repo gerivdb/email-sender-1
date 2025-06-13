@@ -29,10 +29,9 @@ Ce dossier contient les outils nécessaires pour mettre à jour automatiquement 
 
 ### Mise à jour des tâches existantes
 
-```
+```plaintext
 roadmap-update [options]
-```
-
+```plaintext
 Options :
 - `-task <id>` : ID de la tâche à mettre à jour (ex: 1.1, 2.3, etc.)
 - `-complete` : Marque la tâche comme terminée
@@ -40,19 +39,21 @@ Options :
 - `-note "texte"` : Ajoute une note à la tâche
 
 Exemples :
-```
+```plaintext
 roadmap-update                         # Met à jour la roadmap
-roadmap-update -task 1.1 -start        # Marque la tâche 1.1 comme démarrée
-roadmap-update -task 1.1 -complete     # Marque la tâche 1.1 comme terminée
-roadmap-update -task 1.1 -note "Note"  # Ajoute une note à la tâche 1.1
-```
 
+roadmap-update -task 1.1 -start        # Marque la tâche 1.1 comme démarrée
+
+roadmap-update -task 1.1 -complete     # Marque la tâche 1.1 comme terminée
+
+roadmap-update -task 1.1 -note "Note"  # Ajoute une note à la tâche 1.1
+
+```plaintext
 ### Ajout de nouvelles tâches
 
-```
+```plaintext
 add-task [options]
-```
-
+```plaintext
 Options :
 - `-category <id>` : ID de la catégorie (obligatoire, ex: 1, 2, etc.)
 - `-description "texte"` : Description de la tâche (obligatoire)
@@ -61,18 +62,16 @@ Options :
 - `-note "texte"` : Ajouter une note à la tâche (optionnel)
 
 Exemples :
-```
+```plaintext
 add-task -category 1 -description "Ma nouvelle tâche"
 add-task -category 2 -description "Tâche complexe" -estimated "3-5" -start
 add-task -category 3 -description "Tâche avec note" -note "Priorité haute"
-```
-
+```plaintext
 ### Capture des demandes spontanées
 
-```
+```plaintext
 add-request [options]
-```
-
+```plaintext
 Options :
 - `-request "texte"` : Description de la demande (obligatoire)
 - `-category <id>` : ID de la catégorie (optionnel, défaut: 7)
@@ -81,20 +80,18 @@ Options :
 - `-note "texte"` : Ajouter une note à la demande (optionnel)
 
 Exemples :
-```
+```plaintext
 add-request -request "Ajouter une fonctionnalité X"
 add-request -request "Corriger le bug Y" -start -note "Urgent"
 add-request -request "Améliorer la performance" -category 3 -estimated "2-4"
-```
-
+```plaintext
 ### Via PowerShell directement
 
 ```powershell
 .\Update-Markdown.ps1 [-TaskId <id>] [-Complete] [-Start] [-Note <note>]
 .\Add-Task.ps1 -CategoryId <id> -Description <texte> [-EstimatedDays <jours>] [-Start] [-Note <note>]
 .\Capture-Request-Simple.ps1 -Request <texte> [-Category <id>] [-EstimatedDays <jours>] [-Start] [-Note <note>]
-```
-
+```plaintext
 ## Fonctionnement
 
 Le système fonctionne comme suit :
@@ -113,12 +110,15 @@ Pour une mise à jour automatique à chaque commit, vous pouvez ajouter un hook 
 
 ```bash
 #!/bin/sh
+
 # Hook pre-commit pour mettre à jour automatiquement la roadmap
 
 # Chemin relatif vers le script roadmap-update.bat
+
 ROADMAP_SCRIPT="./development/development/roadmap/tools/roadmap-update.bat"
 
 # Vérifier si le fichier roadmap_perso.md a été modifié
+
 if git diff --cached --name-only | grep -q "roadmap_perso.md"; then
     echo "Mise à jour automatique de la roadmap..."
     $ROADMAP_SCRIPT
@@ -126,14 +126,12 @@ if git diff --cached --name-only | grep -q "roadmap_perso.md"; then
 fi
 
 exit 0
-```
-
+```plaintext
 2. Rendez le hook exécutable :
 
 ```bash
 chmod +x .git/hooks/pre-commit
-```
-
+```plaintext
 Cela mettra à jour automatiquement la roadmap chaque fois que vous modifiez manuellement le fichier `roadmap_perso.md` et que vous le committez.
 
 ## Personnalisation
@@ -149,8 +147,7 @@ Vous pouvez personnaliser le système en modifiant directement le fichier `roadm
 Identifier les exigences
 Documenter les cas d'utilisation
 Définir les critères de succès" -SectionTitle "Exemple de formatage" -Complexity "Élevée" -TimeEstimate "10-15 jours"
-```
-
+```plaintext
 ### Utilisation de Add-FormattedTextToRoadmap.ps1
 
 ```powershell
@@ -158,14 +155,12 @@ Définir les critères de succès" -SectionTitle "Exemple de formatage" -Complex
 Identifier les exigences
 Documenter les cas d'utilisation
 Définir les critères de succès" -SectionTitle "Exemple de formatage" -Complexity "Élevée" -TimeEstimate "10-15 jours" -RoadmapFile "roadmap_perso.md"
-```
-
+```plaintext
 ### Utilisation de Roadmap-Text-Formatter.ps1
 
 ```powershell
 .\Roadmap-Text-Formatter.ps1
-```
-
+```plaintext
 Ce script affiche un menu interactif qui vous permet de :
 1. Formater du texte en format roadmap
 2. Ajouter une section à la roadmap
@@ -175,8 +170,7 @@ Ce script affiche un menu interactif qui vous permet de :
 
 ```powershell
 .\Roadmap-Text-Formatter-Enhanced.ps1
-```
-
+```plaintext
 Version améliorée avec une interface utilisateur plus conviviale et des fonctionnalités supplémentaires :
 1. Formater du texte en format roadmap
 2. Ajouter une section à la roadmap
@@ -190,17 +184,16 @@ Version améliorée avec une interface utilisateur plus conviviale et des foncti
 
 #### Exemple 1 : Liste simple
 
-```
+```plaintext
 Analyse des besoins
 Conception
 Développement
 Tests
 Déploiement
-```
-
+```plaintext
 #### Exemple 2 : Liste avec indentation
 
-```
+```plaintext
 Analyse des besoins
   Identifier les exigences
   Documenter les cas d'utilisation
@@ -213,11 +206,10 @@ Développement
   Mise en place de l'environnement
   Développement du backend
   Développement du frontend
-```
-
+```plaintext
 #### Exemple 3 : Liste avec phases
 
-```
+```plaintext
 PHASE 1: Analyse des besoins
 Identifier les exigences
 Documenter les cas d'utilisation
@@ -241,18 +233,16 @@ Développement du frontend
   Interface utilisateur
   Intégration avec le backend
   Tests unitaires
-```
-
+```plaintext
 #### Exemple 4 : Tâches prioritaires et estimations de temps
 
-```
+```plaintext
 Analyse des besoins (3 jours)
 Conception prioritaire (5 jours)
 Développement ! (2 semaines)
 Tests * (3 jours)
 Déploiement (urgent) (1 jour)
-```
-
+```plaintext
 Les tâches prioritaires peuvent être marquées de plusieurs façons :
 - En ajoutant le mot "prioritaire", "urgent" ou "important"
 - En ajoutant un point d'exclamation (!) ou un astérisque (*)
@@ -270,6 +260,7 @@ Le texte formaté sera au format suivant :
 
 ```markdown
 ## Titre de la section
+
 **Complexite**: Complexité
 **Temps estime**: Temps estimé
 **Progression**: 0%
@@ -282,8 +273,7 @@ Le texte formaté sera au format suivant :
 - [ ] **Phase: Phase 2**
   - [ ] **Tâche 3** 🔴 (5 jours)
   - [ ] Tâche 4 (2 semaines)
-```
-
+```plaintext
 Les tâches prioritaires sont mises en gras et marquées d'un point rouge 🔴.
 Les estimations de temps sont affichées entre parenthèses après le nom de la tâche.
 

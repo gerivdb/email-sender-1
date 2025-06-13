@@ -18,16 +18,14 @@ La transition `fade` fait apparaître/disparaître un élément en modifiant son
 .fade-leave-to {
   opacity: 0;
 }
-```
-
+```plaintext
 Utilisation:
 
 ```html
 <transition name="fade">
   <div v-if="show">Contenu</div>
 </transition>
-```
-
+```plaintext
 ### Slide
 
 Les transitions `slide-up`, `slide-down`, `slide-left` et `slide-right` font glisser un élément dans la direction spécifiée.
@@ -43,16 +41,14 @@ Les transitions `slide-up`, `slide-down`, `slide-left` et `slide-right` font gli
   transform: translateY(20px);
   opacity: 0;
 }
-```
-
+```plaintext
 Utilisation:
 
 ```html
 <transition name="slide-up">
   <div v-if="show">Contenu</div>
 </transition>
-```
-
+```plaintext
 ### Scale
 
 La transition `scale` agrandit/réduit un élément.
@@ -68,16 +64,14 @@ La transition `scale` agrandit/réduit un élément.
   transform: scale(0.95);
   opacity: 0;
 }
-```
-
+```plaintext
 Utilisation:
 
 ```html
 <transition name="scale">
   <div v-if="show">Contenu</div>
 </transition>
-```
-
+```plaintext
 ## Transitions de page
 
 La transition `page` est utilisée pour les transitions entre les pages.
@@ -97,8 +91,7 @@ La transition `page` est utilisée pour les transitions entre les pages.
   opacity: 0;
   transform: translateX(-10px);
 }
-```
-
+```plaintext
 Utilisation:
 
 ```html
@@ -107,8 +100,7 @@ Utilisation:
     <component :is="Component" />
   </transition>
 </router-view>
-```
-
+```plaintext
 ## Transitions de liste
 
 La transition `staggered-list` est utilisée pour les listes avec un effet décalé.
@@ -131,8 +123,7 @@ La transition `staggered-list` est utilisée pour les listes avec un effet déca
   opacity: 0;
   transform: translateY(15px);
 }
-```
-
+```plaintext
 Utilisation:
 
 ```html
@@ -141,8 +132,7 @@ Utilisation:
     {{ item.name }}
   </li>
 </transition-group>
-```
-
+```plaintext
 ## Transitions de filtre
 
 La transition `filter` est utilisée pour les panneaux de filtrage.
@@ -165,8 +155,7 @@ La transition `filter` est utilisée pour les panneaux de filtrage.
   opacity: 1;
   transform: translateY(0);
 }
-```
-
+```plaintext
 Utilisation:
 
 ```html
@@ -175,8 +164,7 @@ Utilisation:
     Contenu du filtre
   </div>
 </transition>
-```
-
+```plaintext
 ## Transitions d'accordéon
 
 La transition `accordion` est utilisée pour les panneaux d'accordéon.
@@ -198,8 +186,7 @@ La transition `accordion` est utilisée pour les panneaux d'accordéon.
   max-height: 1000px;
   opacity: 1;
 }
-```
-
+```plaintext
 Utilisation:
 
 ```html
@@ -213,8 +200,7 @@ Utilisation:
     </div>
   </transition>
 </div>
-```
-
+```plaintext
 ## Transitions de notification
 
 La transition `notification` est utilisée pour les notifications.
@@ -249,8 +235,7 @@ La transition `notification` est utilisée pour les notifications.
 .notification-leave-active {
   animation: slideOut 0.3s ease forwards;
 }
-```
-
+```plaintext
 Utilisation:
 
 ```html
@@ -259,8 +244,7 @@ Utilisation:
     {{ notification.message }}
   </div>
 </transition-group>
-```
-
+```plaintext
 ## Transitions de tooltip
 
 La transition `tooltip` est utilisée pour les tooltips.
@@ -275,8 +259,7 @@ La transition `tooltip` est utilisée pour les tooltips.
   opacity: 0;
   transform: translateY(5px);
 }
-```
-
+```plaintext
 Utilisation:
 
 ```html
@@ -285,8 +268,7 @@ Utilisation:
     Contenu du tooltip
   </div>
 </transition>
-```
-
+```plaintext
 ## Transitions de tab
 
 La transition `tab` est utilisée pour les onglets.
@@ -301,8 +283,7 @@ La transition `tab` est utilisée pour les onglets.
   opacity: 0;
   transform: translateY(10px);
 }
-```
-
+```plaintext
 Utilisation:
 
 ```html
@@ -318,4 +299,4 @@ Utilisation:
     </div>
   </transition>
 </div>
-```
+```plaintext

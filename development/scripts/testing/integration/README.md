@@ -1,4 +1,4 @@
-﻿# integration
+# integration
 
 Tests d'intÃ©gration
 

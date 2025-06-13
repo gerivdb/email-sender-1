@@ -30,15 +30,17 @@ Les fichiers de configuration du gestionnaire sont centralisés dans le réperto
 
 ```powershell
 # Initialiser les connexions de stockage
+
 .\scripts\Initialize-StorageConnections.ps1
 
 # Exécuter les migrations
+
 .\scripts\Run-Migrations.ps1
 
 # Tester les connexions
-.\scripts\Test-StorageConnections.ps1
-```
 
+.\scripts\Test-StorageConnections.ps1
+```plaintext
 ## Intégration ErrorManager
 
 Ce manager intègre l'ErrorManager pour la gestion centralisée des erreurs, la journalisation structurée et le catalogage des erreurs.

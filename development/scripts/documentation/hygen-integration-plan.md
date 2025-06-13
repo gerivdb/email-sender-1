@@ -1,4 +1,4 @@
-﻿# Plan d'intÃ©gration de Hygen pour scripts
+# Plan d'intÃ©gration de Hygen pour scripts
 
 Ce document prÃ©sente le plan d'intÃ©gration de Hygen dans le workflow de dÃ©veloppement scripts.
 

@@ -1,23 +1,37 @@
-﻿# Phase 2 : Analyse et organisation avancÃƒÂ©es
+# Phase 2 : Analyse et organisation avancÃƒÂ©es
 
 Cette documentation dÃƒÂ©crit la Phase 2 du Script Manager, qui se concentre sur l'analyse approfondie des scripts et leur organisation intelligente selon les principes SOLID, DRY, KISS et Clean Code.
 
 ## Table des matiÃƒÂ¨res
 
 1. [Vue d'ensemble](#vue-densemble)
+
 2. [Modules](#modules)
+
    - [Module d'analyse](#module-danalyse)
+
    - [Module d'organisation](#module-dorganisation)
+
 3. [FonctionnalitÃƒÂ©s](#fonctionnalitÃƒÂ©s)
+
    - [Analyse statique](#analyse-statique)
+
    - [DÃƒÂ©tection des dÃƒÂ©pendances](#dÃƒÂ©tection-des-dÃƒÂ©pendances)
+
    - [Analyse de la qualitÃƒÂ© du code](#analyse-de-la-qualitÃƒÂ©-du-code)
+
    - [DÃƒÂ©tection des problÃƒÂ¨mes](#dÃƒÂ©tection-des-problÃƒÂ¨mes)
+
    - [Classification des scripts](#classification-des-scripts)
+
    - [Organisation intelligente](#organisation-intelligente)
+
    - [Mise ÃƒÂ  jour des rÃƒÂ©fÃƒÂ©rences](#mise-ÃƒÂ -jour-des-rÃƒÂ©fÃƒÂ©rences)
+
 4. [Utilisation](#utilisation)
+
 5. [Tests](#tests)
+
 6. [Bonnes pratiques](#bonnes-pratiques)
 
 ## Vue d'ensemble
@@ -140,12 +154,13 @@ Pour utiliser la Phase 2 du Script Manager, exÃƒÂ©cutez le script `Phase2-An
 
 ```powershell
 # Mode simulation (sans appliquer les changements)
+
 .\Phase2-AnalyzeAndOrganize.ps1
 
 # Analyse approfondie et application des changements
-.\Phase2-AnalyzeAndOrganize.ps1 -AnalysisDepth Advanced -AutoApply
-```
 
+.\Phase2-AnalyzeAndOrganize.ps1 -AnalysisDepth Advanced -AutoApply
+```plaintext
 Options disponibles :
 
 - `-InventoryPath` : Chemin vers le fichier d'inventaire (par dÃƒÂ©faut : scripts\\mode-manager\data\inventory.json)
@@ -159,12 +174,13 @@ Des tests unitaires sont disponibles pour valider le fonctionnement des modules 
 
 ```powershell
 # Tester le module d'analyse
+
 .\development\testing\tests\Test-AnalysisModule.ps1
 
 # Tester le module d'organisation
-.\development\testing\tests\Test-OrganizationModule.ps1
-```
 
+.\development\testing\tests\Test-OrganizationModule.ps1
+```plaintext
 Ces tests utilisent le framework Pester et suivent une approche de Test-Driven Development.
 
 ## Bonnes pratiques

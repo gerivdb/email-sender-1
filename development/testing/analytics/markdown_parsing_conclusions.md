@@ -7,6 +7,7 @@ Cette analyse a permis d'identifier les besoins spécifiques du parsing markdown
 ## 1. Principales Exigences Identifiées
 
 ### 1.1 Fonctionnalités Essentielles
+
 - Support du markdown standard et des extensions GitHub Flavored Markdown
 - Détection des tâches avec différents formats de statut ([ ], [x], [~], [!])
 - Extraction des identifiants de tâches et construction de la hiérarchie
@@ -14,6 +15,7 @@ Cette analyse a permis d'identifier les besoins spécifiques du parsing markdown
 - Extraction des métadonnées (dates, assignations, tags, priorités)
 
 ### 1.2 Exigences Non-Fonctionnelles Critiques
+
 - Performance optimale pour les fichiers volumineux
 - Robustesse face aux variations de syntaxe et aux erreurs de formatage
 - Support de différents encodages et caractères internationaux

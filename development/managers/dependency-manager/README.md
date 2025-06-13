@@ -30,12 +30,14 @@ Les fichiers de configuration du gestionnaire sont centralisés dans le réperto
 
 ```powershell
 # Via le script PowerShell
+
 .\dependency-manager.ps1 -Action list
 .\dependency-manager.ps1 -Action add -Module "github.com/pkg/errors" -Version "v0.9.1"
 .\dependency-manager.ps1 -Action remove -Module "github.com/pkg/errors"
 .\dependency-manager.ps1 -Action update -Module "github.com/gorilla/mux"
 
 # Via le binaire Go directement
+
 go run .\modules\dependency_manager.go list
 go run .\modules\dependency_manager.go add --module github.com/pkg/errors --version v0.9.1
-```
+```plaintext

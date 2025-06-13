@@ -78,25 +78,30 @@ Fixes are classified into safety levels:
 
 ```bash
 # Basic usage - analyze and fix current directory
+
 autofix
 
 # Specify target directory
+
 autofix /path/to/project
 
 # Configuration options
+
 autofix --config=config.yaml --auto-apply-threshold=0.8
 
 # Dry run mode
+
 autofix --dry-run --verbose
 
 # Help information
-autofix --help
-```
 
+autofix --help
+```plaintext
 ### Configuration File
 
 ```yaml
 # config.yaml
+
 suggestion:
   max_suggestions_per_error: 5
   min_confidence_threshold: 0.3
@@ -113,13 +118,12 @@ cli:
   auto_apply_threshold: 0.8
   backup_before_apply: true
   show_progress_indicator: true
-```
-
+```plaintext
 ### Interactive Session
 
 When running in interactive mode, you'll see:
 
-```
+```plaintext
 Auto-Fix Session: /path/to/project
 Found 15 potential fixes
 
@@ -141,8 +145,7 @@ Safety: High
 Actions: (a)pply, (r)eject, (s)kip, (q)uit, (d)iff: a
 
 ✓ Applied fix: Remove unused import
-```
-
+```plaintext
 ## API Reference
 
 ### SuggestionEngine
@@ -157,8 +160,7 @@ func NewSuggestionEngine(config SuggestionConfig) *SuggestionEngine
 
 // Generate suggestions for a file
 func (se *SuggestionEngine) GenerateSuggestions(ctx context.Context, filePath string) ([]FixSuggestion, error)
-```
-
+```plaintext
 ### ValidationSystem
 
 ```go
@@ -174,8 +176,7 @@ func (vs *ValidationSystem) ValidateFix(ctx context.Context, filePath string, su
 
 // Validate an entire file
 func (vs *ValidationSystem) ValidateFile(ctx context.Context, filePath string) (ValidationResult, error)
-```
-
+```plaintext
 ### CLIInterface
 
 ```go
@@ -191,8 +192,7 @@ func (cli *CLIInterface) StartReviewSession(projectPath string, suggestions []Fi
 
 // Apply a fix
 func (cli *CLIInterface) ApplyFix(session *ReviewSession, suggestion FixSuggestion) error
-```
-
+```plaintext
 ## Data Structures
 
 ### FixSuggestion
@@ -211,8 +211,7 @@ type FixSuggestion struct {
     Context     FixContext  `json:"context"`
     Metadata    interface{} `json:"metadata,omitempty"`
 }
-```
-
+```plaintext
 ### ValidationResult
 
 ```go
@@ -227,8 +226,7 @@ type ValidationResult struct {
     ValidationTime      time.Duration `json:"validation_time"`
     ErrorMessages       []string    `json:"error_messages,omitempty"`
 }
-```
-
+```plaintext
 ### ReviewSession
 
 ```go
@@ -240,8 +238,7 @@ type ReviewSession struct {
     CurrentIndex   int            `json:"current_index"`
     ActionsHistory []ReviewAction  `json:"actions_history"`
 }
-```
-
+```plaintext
 ## Performance Characteristics
 
 ### Benchmarks
@@ -283,12 +280,12 @@ for _, error := range detectedErrors {
     // Store suggestions in error context
     error.FixSuggestions = suggestions
 }
-```
-
+```plaintext
 ### With CI/CD Pipelines
 
 ```yaml
 # GitHub Actions example
+
 - name: Auto-fix code issues
   run: |
     autofix --config=.autofix.yaml --auto-apply-threshold=0.9 --dry-run
@@ -297,8 +294,7 @@ for _, error := range detectedErrors {
       git add -A
       git commit -m "Auto-fix: Apply high-confidence fixes"
     fi
-```
-
+```plaintext
 ### With IDEs
 
 The system can be integrated with IDEs through:
@@ -339,8 +335,7 @@ func (se *SuggestionEngine) applyCustomRule(node ast.Node, fset *token.FileSet) 
     // Custom fix logic here
     return suggestions
 }
-```
-
+```plaintext
 ### Custom Validation Rules
 
 ```go
@@ -349,14 +344,14 @@ func (vs *ValidationSystem) customValidation(filePath string) (bool, error) {
     // Custom validation logic
     return true, nil
 }
-```
-
+```plaintext
 ### Template System
 
 Create fix templates in the templates directory:
 
 ```yaml
 # templates/unused_import.yaml
+
 name: "Remove unused import"
 pattern: 'import\s+"([^"]+)"'
 confidence: 0.9
@@ -365,39 +360,42 @@ fix_template: |
 validation:
   - compile_check
   - import_usage_check
-```
-
+```plaintext
 ## Testing
 
 ### Unit Tests
 
 ```bash
 # Run all tests
+
 go test ./...
 
 # Run with coverage
+
 go test -cover -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
 
 # Run specific test suites
+
 go test -run TestSuggestion ./...
 go test -run TestValidation ./...
 go test -run TestCLI ./...
-```
-
+```plaintext
 ### Integration Tests
 
 ```bash
 # Run integration tests
+
 go test -tags=integration ./...
 
 # Run with race detection
+
 go test -race ./...
 
 # Run benchmarks
-go test -bench=. ./...
-```
 
+go test -bench=. ./...
+```plaintext
 ### Test Coverage
 
 The system maintains >90% test coverage across all components:
@@ -434,34 +432,39 @@ The system maintains >90% test coverage across all components:
 
 ```bash
 # Enable debug logging
+
 autofix --debug --log-level=debug
 
 # Generate detailed reports
+
 autofix --report=detailed --output=report.json
 
 # Trace execution
-autofix --trace --trace-file=trace.log
-```
 
+autofix --trace --trace-file=trace.log
+```plaintext
 ## Contributing
 
 ### Development Setup
 
 ```bash
 # Clone the repository
+
 git clone <repository-url>
 cd error-manager
 
 # Install dependencies
+
 go mod download
 
 # Run tests
+
 make test
 
 # Build binary
-make build
-```
 
+make build
+```plaintext
 ### Code Style
 
 - Follow Go conventions and `gofmt` formatting
@@ -493,6 +496,7 @@ For support and questions:
 ## Changelog
 
 ### v1.0.0 (Current)
+
 - Initial release with core functionality
 - Suggestion engine with AST analysis
 - Validation system with sandbox testing

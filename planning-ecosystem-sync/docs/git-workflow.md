@@ -3,6 +3,7 @@
 ## Branch Protection Rules
 
 ### planning-ecosystem-sync (Main Branch)
+
 - **Require pull request reviews**: 1 reviewer minimum
 - **Dismiss stale reviews**: Enabled
 - **Require status checks**: All tests must pass
@@ -10,6 +11,7 @@
 - **Restrict pushes**: Only maintainers can push directly
 
 ### Feature Branches Pattern
+
 - `feature/phase-{n}-{component}`: Development features
 - `hotfix/planning-sync-{issue}`: Critical fixes
 - `experimental/sync-{feature}`: Experimental features
@@ -17,7 +19,8 @@
 ## Commit Standards
 
 ### Commit Message Format
-```
+
+```plaintext
 type(scope): brief description
 
 - Detailed description of changes
@@ -26,9 +29,9 @@ type(scope): brief description
 
 Refs: plan-dev-v55, Phase {n}, Task {x}.{y}
 Co-authored-by: Team Member <email@example.com>
-```
-
+```plaintext
 ### Commit Types
+
 - `feat`: New features and implementations
 - `fix`: Bug fixes and corrections
 - `docs`: Documentation updates
@@ -38,6 +41,7 @@ Co-authored-by: Team Member <email@example.com>
 - `ci`: CI/CD pipeline changes
 
 ### Scope Examples
+
 - `phase-1`: Phase 1 related changes
 - `sync-core`: Core synchronization engine
 - `config`: Configuration changes
@@ -46,29 +50,36 @@ Co-authored-by: Team Member <email@example.com>
 ## Workflow Configuration
 
 ### Pre-commit Hooks
+
 ```bash
 #!/bin/sh
+
 # .git/hooks/pre-commit
 
 # Run Go formatting
+
 gofmt -w .
 
 # Run linting
+
 golangci-lint run
 
 # Run unit tests
+
 go test ./tests/unit/... -short
 
 # Check for sensitive data
+
 git diff --cached --name-only | xargs grep -l "password\|secret\|key" && {
     echo "⚠️  Potential sensitive data detected in commit"
     exit 1
 }
-```
-
+```plaintext
 ### Automated Testing Pipeline
+
 ```yaml
 # .github/workflows/planning-sync-ci.yml
+
 name: Planning Ecosystem Sync CI
 
 on:
@@ -114,17 +125,18 @@ jobs:
       run: go test ./tests/integration/... -v
       env:
         DATABASE_URL: postgresql://postgres:postgres@localhost/plans_db
-```
-
+```plaintext
 ## Security Guidelines
 
 ### Access Control
+
 - **Repository Access**: Team members only
 - **Branch Protection**: Enforce on main branches
 - **Secret Management**: Use environment variables
 - **Code Review**: Mandatory for all changes
 
 ### Sensitive Data Prevention
+
 - **API Keys**: Store in environment variables only
 - **Database Credentials**: Never commit to repository
 - **Configuration Secrets**: Use external secret management
@@ -133,11 +145,14 @@ jobs:
 ## Development Workflow
 
 ### 1. Feature Development
+
 ```bash
 # Create feature branch
+
 git checkout -b feature/phase-1-sync-engine
 
 # Make changes and commit
+
 git add .
 git commit -m "feat(phase-1): implement core sync engine
 
@@ -148,10 +163,11 @@ git commit -m "feat(phase-1): implement core sync engine
 Refs: plan-dev-v55, Phase 1, Task 1.1"
 
 # Push and create PR
-git push origin feature/phase-1-sync-engine
-```
 
+git push origin feature/phase-1-sync-engine
+```plaintext
 ### 2. Code Review Process
+
 1. **Self Review**: Check code quality and tests
 2. **Automated Checks**: CI/CD pipeline validation
 3. **Peer Review**: Team member review and approval
@@ -159,21 +175,24 @@ git push origin feature/phase-1-sync-engine
 5. **Merge**: Squash and merge to main branch
 
 ### 3. Release Management
+
 ```bash
 # Tag releases for major milestones
+
 git tag -a v1.0.0-phase1 -m "Phase 1: Core Infrastructure Complete"
 git push origin v1.0.0-phase1
-```
-
+```plaintext
 ## Quality Gates
 
 ### Code Quality Standards
+
 - **Test Coverage**: Minimum 95%
 - **Linting**: Zero warnings or errors
 - **Documentation**: All public APIs documented
 - **Performance**: Benchmarks within target ranges
 
 ### Security Checks
+
 - **Dependency Scanning**: Automated vulnerability checks
 - **Secret Detection**: Pre-commit and CI validation
 - **Code Analysis**: Static analysis for security issues

@@ -204,19 +204,23 @@ Ce document présente l'analyse des besoins fonctionnels pour le framework de te
 L'architecture du framework de test sera basée sur une approche modulaire avec plusieurs couches :
 
 ### 5.1 Couche de présentation
+
 - Générateurs de rapports
 - Fournisseurs de visualisation
 
 ### 5.2 Couche métier
+
 - Exécuteur de tests
 - Modules d'analyse
 
 ### 5.3 Couche de données
+
 - Générateurs de données de test
 - Collecteurs de métriques
 - Service de stockage
 
 ### 5.4 Couche d'infrastructure
+
 - Configuration
 - Logging
 - Gestion des erreurs
@@ -226,15 +230,19 @@ L'architecture du framework de test sera basée sur une approche modulaire avec 
 Le framework suivra plusieurs principes d'extensibilité clés :
 
 ### 6.1 Interfaces bien définies
+
 Des interfaces claires pour chaque composant extensible, permettant l'ajout de nouvelles implémentations sans modifier le code existant.
 
 ### 6.2 Découverte automatique
+
 Mécanisme de découverte automatique des extensions basé sur la réflexion et les conventions de nommage.
 
 ### 6.3 Configuration déclarative
+
 Configuration des extensions via des fichiers de configuration déclaratifs, sans nécessiter de modifications du code.
 
 ### 6.4 Points d'extension
+
 Points d'extension bien définis pour les générateurs de données, collecteurs de métriques, analyseurs de résultats et générateurs de rapports.
 
 ## 7. Conclusion

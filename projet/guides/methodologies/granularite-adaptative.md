@@ -80,8 +80,7 @@ La structure hiérarchique recommandée est optimisée pour le système RAG (Ret
   - [ ] **1.1.1** Installer les dépendances requises
   - [ ] **1.1.2** Configurer les variables d'environnement
   - [ ] **1.1.3** Vérifier l'installation
-```
-
+```plaintext
 ### Exemple 2: Tâche de complexité moyenne (4-5 niveaux)
 
 ```markdown
@@ -94,8 +93,7 @@ La structure hiérarchique recommandée est optimisée pour le système RAG (Ret
     - [ ] **2.1.2.1** Développer les composants de base
     - [ ] **2.1.2.2** Implémenter les formulaires
     - [ ] **2.1.2.3** Créer les composants de navigation
-```
-
+```plaintext
 ### Exemple 3: Tâche complexe (5-6 niveaux)
 
 ```markdown
@@ -112,8 +110,7 @@ La structure hiérarchique recommandée est optimisée pour le système RAG (Ret
     - [ ] **3.1.2.2** Développer le stockage des vecteurs
       - [ ] **3.1.2.2.1** Implémenter la structure de données optimisée
       - [ ] **3.1.2.2.2** Créer les mécanismes de persistance
-```
-
+```plaintext
 ## Conclusion
 
 L'adoption d'une granularité adaptative de 4-6 niveaux permet d'optimiser la gestion des tâches tout en maintenant une structure claire et navigable. Cette approche équilibre le besoin de détails pour l'implémentation avec la nécessité de maintenir une vue d'ensemble cohérente, tout en étant parfaitement adaptée aux capacités du système RAG et aux modes de développement existants.

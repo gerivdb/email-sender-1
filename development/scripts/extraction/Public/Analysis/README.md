@@ -10,12 +10,10 @@ La fonction `Get-ExtractedInfoStatistics` génère des statistiques détaillées
 
 ```powershell
 Get-ExtractedInfoStatistics -Info <hashtable> [-StatisticsType <string>] [-IncludeMetadata] [-OutputFormat <string>]
-```
-
+```plaintext
 ```powershell
 Get-ExtractedInfoStatistics -Collection <hashtable> [-StatisticsType <string>] [-IncludeMetadata] [-OutputFormat <string>]
-```
-
+```plaintext
 ### Description
 
 La fonction `Get-ExtractedInfoStatistics` analyse un objet d'information extraite ou une collection d'objets d'information extraite et génère des statistiques sur ces objets. Les statistiques peuvent inclure des informations sur le nombre d'éléments, les types, les sources, la distribution temporelle, les scores de confiance, la taille et la complexité du contenu, ainsi que les métadonnées.
@@ -32,8 +30,7 @@ Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
-```
-
+```plaintext
 #### -Collection
 
 Une collection d'objets d'information extraite à analyser. Ce paramètre est mutuellement exclusif avec le paramètre Info.
@@ -44,8 +41,7 @@ Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
-```
-
+```plaintext
 #### -StatisticsType
 
 Le type de statistiques à générer. Les valeurs possibles sont :
@@ -64,8 +60,7 @@ Position: Named
 Default value: Basic
 Accept pipeline input: False
 Accept wildcard characters: False
-```
-
+```plaintext
 #### -IncludeMetadata
 
 Indique si les métadonnées doivent être incluses dans l'analyse statistique.
@@ -76,8 +71,7 @@ Position: Named
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
-```
-
+```plaintext
 #### -OutputFormat
 
 Le format de sortie des statistiques. Les valeurs possibles sont :
@@ -94,8 +88,7 @@ Position: Named
 Default value: Text
 Accept pipeline input: False
 Accept wildcard characters: False
-```
-
+```plaintext
 ### Types de statistiques
 
 #### Statistiques de base (Basic)
@@ -154,8 +147,7 @@ Génère une représentation JSON des statistiques, utile pour l'intégration av
 ```powershell
 $info = New-TextExtractedInfo -Source "document.txt" -Text "Contenu du document" -Language "fr"
 Get-ExtractedInfoStatistics -Info $info -StatisticsType Basic
-```
-
+```plaintext
 #### Exemple 2 : Générer toutes les statistiques sur une collection
 
 ```powershell
@@ -163,23 +155,20 @@ $collection = New-ExtractedInfoCollection -Name "Documents"
 $collection = Add-ExtractedInfoToCollection -Collection $collection -Info $info1
 $collection = Add-ExtractedInfoToCollection -Collection $collection -Info $info2
 Get-ExtractedInfoStatistics -Collection $collection -StatisticsType All -OutputFormat HTML
-```
-
+```plaintext
 #### Exemple 3 : Générer des statistiques de confiance au format JSON
 
 ```powershell
 $collection = Get-ExtractedInfoFromCollection -Collection $collection -Filter { $_.ProcessingState -eq "Processed" }
 $stats = Get-ExtractedInfoStatistics -Collection $collection -StatisticsType Confidence -OutputFormat JSON
 $stats | Out-File -FilePath "confidence_stats.json" -Encoding utf8
-```
-
+```plaintext
 #### Exemple 4 : Générer des statistiques avec métadonnées
 
 ```powershell
 $stats = Get-ExtractedInfoStatistics -Collection $collection -StatisticsType All -IncludeMetadata -OutputFormat Text
 $stats | Out-File -FilePath "full_stats_report.txt" -Encoding utf8
-```
-
+```plaintext
 ### Remarques
 
 - La fonction peut traiter tous les types d'objets d'information extraite (TextExtractedInfo, StructuredDataExtractedInfo, GeoLocationExtractedInfo, MediaExtractedInfo).

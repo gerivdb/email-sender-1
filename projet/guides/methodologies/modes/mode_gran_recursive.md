@@ -1,12 +1,15 @@
 # Mode GRAN Récursif
 
 ## Description
+
 Le mode GRAN Récursif est une extension du mode GRAN standard qui permet de granulariser automatiquement une tâche et toutes ses sous-tâches en une seule opération. Il analyse la complexité de chaque tâche et adapte le niveau de granularité en fonction de cette complexité et du domaine technique concerné.
 
 ## Objectif
+
 L'objectif principal du mode GRAN Récursif est d'éviter d'avoir à exécuter plusieurs fois le mode GRAN pour granulariser une hiérarchie complète de tâches. Il permet de décomposer automatiquement une tâche complexe en sous-tâches, puis de décomposer ces sous-tâches en sous-sous-tâches, et ainsi de suite jusqu'à une profondeur spécifiée.
 
 ## Fonctionnalités
+
 - Décomposition récursive des tâches complexes en sous-tâches
 - Analyse automatique de la complexité de chaque tâche et sous-tâche
 - Adaptation du niveau de granularité en fonction de la complexité détectée
@@ -19,24 +22,29 @@ L'objectif principal du mode GRAN Récursif est d'éviter d'avoir à exécuter p
 
 ```powershell
 # Granulariser récursivement une tâche avec détection automatique de la complexité
+
 .\development\scripts\maintenance\modes\gran-mode-recursive.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3"
 
 # Granulariser récursivement avec une profondeur spécifique (par défaut: 2)
+
 .\development\scripts\maintenance\modes\gran-mode-recursive.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -RecursionDepth 3
 
 # Granulariser récursivement avec analyse de complexité pour chaque sous-tâche
+
 .\development\scripts\maintenance\modes\gran-mode-recursive.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -AnalyzeComplexity
 
 # Granulariser récursivement avec un domaine spécifique
+
 .\development\scripts\maintenance\modes\gran-mode-recursive.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -Domain "Backend"
 
 # Granulariser récursivement avec estimation de temps
+
 .\development\scripts\maintenance\modes\gran-mode-recursive.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -AddTimeEstimation
 
 # Granulariser récursivement avec génération par IA
-.\development\scripts\maintenance\modes\gran-mode-recursive.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -UseAI
-```
 
+.\development\scripts\maintenance\modes\gran-mode-recursive.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -UseAI
+```plaintext
 ## Paramètres
 
 | Paramètre | Type | Description |
@@ -86,8 +94,7 @@ Le paramètre `RecursionDepth` permet de contrôler la profondeur maximale de r�
 
 ```powershell
 .\development\scripts\maintenance\modes\gran-mode-recursive.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3"
-```
-
+```plaintext
 Cette commande va :
 1. Granulariser la tâche 1.2.3 en fonction de sa complexité détectée
 2. Granulariser chaque sous-tâche générée en fonction de la même complexité
@@ -97,8 +104,7 @@ Cette commande va :
 
 ```powershell
 .\development\scripts\maintenance\modes\gran-mode-recursive.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -AnalyzeComplexity
-```
-
+```plaintext
 Cette commande va :
 1. Granulariser la tâche 1.2.3 en fonction de sa complexité détectée
 2. Analyser la complexité de chaque sous-tâche générée
@@ -109,8 +115,7 @@ Cette commande va :
 
 ```powershell
 .\development\scripts\maintenance\modes\gran-mode-recursive.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -RecursionDepth 3 -AnalyzeComplexity
-```
-
+```plaintext
 Cette commande va :
 1. Granulariser la tâche 1.2.3 en fonction de sa complexité détectée
 2. Analyser la complexité de chaque sous-tâche générée
@@ -160,10 +165,9 @@ Le mode GRAN Récursif peut être intégré au mode-manager en ajoutant une entr
     }
   }
 }
-```
-
+```plaintext
 Vous pourrez alors utiliser le mode GRAN Récursif via le mode-manager :
 
 ```powershell
 .\development\scripts\mode-manager\mode-manager.ps1 -Mode GRAN-R -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -RecursionDepth 3 -AnalyzeComplexity
-```
+```plaintext

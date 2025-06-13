@@ -1,4 +1,4 @@
-﻿# Guide de tests de performance - Test AutoHotkey
+# Guide de tests de performance - Test AutoHotkey
 
 Ce guide explique comment crÃ©er et exÃ©cuter des tests de performance pour l'architecture hybride PowerShell-Python. Il fournit des exemples et des bonnes pratiques pour mesurer et comparer les performances des diffÃ©rentes implÃ©mentations.
 
@@ -31,6 +31,7 @@ Describe "Tests de performance" {
     Context "Ma fonctionnalitÃ©" {
         BeforeAll {
             # Initialisation
+
             function Measure-Performance {
                 param (
                     [scriptblock]$ScriptBlock,
@@ -52,23 +53,27 @@ Describe "Tests de performance" {
 
         It "Mesure les performances de ma fonction" {
             # DÃ©finir la fonction Ã  tester
+
             $myFunction = {
                 # Code Ã  mesurer
+
             }
 
             # Mesurer les performances
+
             $avgTime = Measure-Performance -ScriptBlock $myFunction -Iterations 5
 
             # Afficher les rÃ©sultats
+
             Write-Host "Temps moyen : $avgTime ms"
 
             # VÃ©rifier que les performances sont acceptables
+
             $avgTime | Should -BeLessThan 100
         }
     }
 }
-```
-
+```plaintext
 ### Mesure prÃ©cise des performances
 
 Pour obtenir des mesures prÃ©cises, suivez ces bonnes pratiques :
@@ -77,9 +82,9 @@ Pour obtenir des mesures prÃ©cises, suivez ces bonnes pratiques :
 
 ```powershell
 # PrÃ©chauffage
-& $ScriptBlock
-```
 
+& $ScriptBlock
+```plaintext
 2. **RÃ©pÃ©tition** : ExÃ©cutez la fonction plusieurs fois et calculez la moyenne pour obtenir des rÃ©sultats plus fiables.
 
 ```powershell
@@ -91,14 +96,12 @@ for ($i = 0; $i -lt $Iterations; $i++) {
     $times += $stopwatch.Elapsed.TotalMilliseconds
 }
 $avgTime = ($times | Measure-Object -Average).Average
-```
-
+```plaintext
 3. **Nettoyage de la mÃ©moire** : Nettoyez la mÃ©moire avant chaque mesure pour Ã©viter les interfÃ©rences.
 
 ```powershell
 [System.GC]::Collect()
-```
-
+```plaintext
 4. **Isolation** : Isolez la fonction Ã  tester des autres fonctions pour mesurer uniquement les performances de la fonction cible.
 
 5. **Environnement stable** : ExÃ©cutez les tests dans un environnement stable pour Ã©viter les interfÃ©rences externes.
@@ -118,12 +121,15 @@ function Compare-Implementations {
     )
 
     # Mesurer les performances de la premiÃ¨re implÃ©mentation
+
     $result1 = Measure-FunctionPerformance -Name "$Name (ImplÃ©mentation 1)" -ScriptBlock $Implementation1 -Parameters $Parameters -Iterations $Iterations
 
     # Mesurer les performances de la seconde implÃ©mentation
+
     $result2 = Measure-FunctionPerformance -Name "$Name (ImplÃ©mentation 2)" -ScriptBlock $Implementation2 -Parameters $Parameters -Iterations $Iterations
 
     # Calculer l'amÃ©lioration en pourcentage
+
     $timeImprovement = ($result1.AverageExecutionTimeMs - $result2.AverageExecutionTimeMs) / $result1.AverageExecutionTimeMs * 100
 
     return [PSCustomObject]@{
@@ -133,28 +139,28 @@ function Compare-Implementations {
         TimeImprovementPercent = $timeImprovement
     }
 }
-```
-
+```plaintext
 Exemple d'utilisation :
 
 ```powershell
 $implementation1 = {
     param($data)
     # ImplÃ©mentation 1
+
     return $data | Sort-Object -Property Value
 }
 
 $implementation2 = {
     param($data)
     # ImplÃ©mentation 2
+
     return $data | Select-Object Id, Name, Value | Sort-Object -Property Value
 }
 
 $comparison = Compare-Implementations -Name "Tri de donnÃ©es" -Implementation1 $implementation1 -Implementation2 $implementation2 -Parameters @{ data = $testData } -Iterations 5
 
 Write-Host "AmÃ©lioration : $($comparison.TimeImprovementPercent) %"
-```
-
+```plaintext
 ### Tests de charge
 
 Pour mesurer les performances avec diffÃ©rentes tailles de donnÃ©es, utilisez la fonction `Measure-ScalabilityPerformance` :
@@ -172,9 +178,11 @@ function Measure-ScalabilityPerformance {
 
     foreach ($size in $DataSizes) {
         # GÃ©nÃ©rer les donnÃ©es de test
+
         $data = New-LargeDataArray -Size $size
 
         # Mesurer les performances
+
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
         for ($i = 1; $i -le $Iterations; $i++) {
@@ -185,6 +193,7 @@ function Measure-ScalabilityPerformance {
         $executionTime = $stopwatch.Elapsed.TotalMilliseconds / $Iterations
 
         # Enregistrer les rÃ©sultats
+
         $results += [PSCustomObject]@{
             Size = $size
             ExecutionTimeMs = $executionTime
@@ -194,8 +203,7 @@ function Measure-ScalabilityPerformance {
 
     return $results
 }
-```
-
+```plaintext
 Exemple d'utilisation :
 
 ```powershell
@@ -211,8 +219,7 @@ $results = Measure-ScalabilityPerformance -Name "Tri" -ScriptBlock $sortFunction
 foreach ($result in $results) {
     Write-Host "Taille: $($result.Size) Ã©lÃ©ments, Temps: $($result.ExecutionTimeMs) ms, DÃ©bit: $($result.ItemsPerMs) Ã©lÃ©ments/ms"
 }
-```
-
+```plaintext
 ## ExÃ©cution des tests de performance
 
 ### ExÃ©cution de tous les tests
@@ -221,24 +228,21 @@ Pour exÃ©cuter tous les tests de performance, utilisez le script `Run-AllTests
 
 ```powershell
 .\Run-AllTests.ps1
-```
-
+```plaintext
 ### ExÃ©cution d'un test spÃ©cifique
 
 Pour exÃ©cuter un test de performance spÃ©cifique, utilisez Invoke-Pester avec le paramÃ¨tre `-Path` :
 
 ```powershell
 Invoke-Pester -Path ".\PerformanceBenchmark.Tests.ps1"
-```
-
+```plaintext
 ### ExÃ©cution avec gÃ©nÃ©ration de rapport
 
 Pour exÃ©cuter les tests de performance et gÃ©nÃ©rer un rapport, utilisez le paramÃ¨tre `-GenerateReport` :
 
 ```powershell
 .\Run-AllTests.ps1 -GenerateReport $true -OutputPath "C:\TestResults"
-```
-
+```plaintext
 ## InterprÃ©tation des rÃ©sultats
 
 ### Temps d'exÃ©cution
@@ -284,9 +288,11 @@ Describe "Tests de performance" {
     Context "Tri de donnÃ©es" {
         BeforeAll {
             # GÃ©nÃ©rer des donnÃ©es de test
+
             $testData = 1..1000 | ForEach-Object { [PSCustomObject]@{ Value = Get-Random } }
 
             # DÃ©finir les implÃ©mentations Ã  comparer
+
             $implementation1 = {
                 param($data)
                 return $data | Sort-Object -Property Value
@@ -300,20 +306,22 @@ Describe "Tests de performance" {
 
         It "Compare les performances du tri" {
             # Comparer les implÃ©mentations
+
             $comparison = Compare-Implementations -Name "Tri" -Implementation1 $implementation1 -Implementation2 $implementation2 -Parameters @{ data = $testData } -Iterations 5
 
             # Afficher les rÃ©sultats
+
             Write-Host "Temps moyen (ImplÃ©mentation 1): $($comparison.Result1.AverageExecutionTimeMs) ms"
             Write-Host "Temps moyen (ImplÃ©mentation 2): $($comparison.Result2.AverageExecutionTimeMs) ms"
             Write-Host "AmÃ©lioration: $($comparison.TimeImprovementPercent) %"
 
             # VÃ©rifier que l'implÃ©mentation 2 est plus rapide
+
             $comparison.TimeImprovementPercent | Should -BeGreaterThan 0
         }
     }
 }
-```
-
+```plaintext
 ### Exemple 2 : Test de charge
 
 ```powershell
@@ -321,9 +329,11 @@ Describe "Tests de performance" {
     Context "ScalabilitÃ© du tri" {
         BeforeAll {
             # DÃ©finir les tailles de donnÃ©es Ã  tester
+
             $dataSizes = @(100, 1000, 10000)
 
             # DÃ©finir la fonction Ã  tester
+
             $sortFunction = {
                 param($data)
                 return $data | Sort-Object -Property Value
@@ -332,14 +342,17 @@ Describe "Tests de performance" {
 
         It "Mesure la scalabilitÃ© du tri" {
             # Mesurer les performances avec diffÃ©rentes tailles de donnÃ©es
+
             $results = Measure-ScalabilityPerformance -Name "Tri" -ScriptBlock $sortFunction -DataSizes $dataSizes -Iterations 3
 
             # Afficher les rÃ©sultats
+
             foreach ($result in $results) {
                 Write-Host "Taille: $($result.Size) Ã©lÃ©ments, Temps: $($result.ExecutionTimeMs) ms, DÃ©bit: $($result.ItemsPerMs) Ã©lÃ©ments/ms"
             }
 
             # VÃ©rifier que le dÃ©bit diminue avec l'augmentation de la taille des donnÃ©es
+
             $smallSizeItemsPerMs = $results[0].ItemsPerMs
             $largeSizeItemsPerMs = $results[-1].ItemsPerMs
 
@@ -347,8 +360,7 @@ Describe "Tests de performance" {
         }
     }
 }
-```
-
+```plaintext
 ### Exemple 3 : Test de parallÃ©lisme
 
 ```powershell
@@ -356,9 +368,11 @@ Describe "Tests de performance" {
     Context "Traitement parallÃ¨le" {
         BeforeAll {
             # GÃ©nÃ©rer des donnÃ©es de test
+
             $testFiles = New-TestFiles -OutputPath $testRootDir -FileCount 20
 
             # DÃ©finir les implÃ©mentations Ã  comparer
+
             $sequentialImplementation = {
                 param($files)
                 $results = @()
@@ -392,20 +406,22 @@ Describe "Tests de performance" {
 
         It "Compare les performances du traitement sÃ©quentiel et parallÃ¨le" -Skip:($PSVersionTable.PSVersion.Major -lt 7) {
             # Comparer les implÃ©mentations
+
             $comparison = Compare-Implementations -Name "Traitement de fichiers" -Implementation1 $sequentialImplementation -Implementation2 $parallelImplementation -Parameters @{ files = $testFiles } -Iterations 3
 
             # Afficher les rÃ©sultats
+
             Write-Host "Temps moyen (SÃ©quentiel): $($comparison.Result1.AverageExecutionTimeMs) ms"
             Write-Host "Temps moyen (ParallÃ¨le): $($comparison.Result2.AverageExecutionTimeMs) ms"
             Write-Host "AmÃ©lioration: $($comparison.TimeImprovementPercent) %"
 
             # VÃ©rifier que le traitement parallÃ¨le est plus rapide
+
             $comparison.TimeImprovementPercent | Should -BeGreaterThan 10
         }
     }
 }
-```
-
+```plaintext
 ## Conclusion
 
 Les tests de performance sont essentiels pour mesurer et amÃ©liorer les performances des scripts. En suivant les bonnes pratiques et en utilisant les outils appropriÃ©s, vous pouvez crÃ©er des tests de performance fiables et prÃ©cis qui vous aideront Ã  optimiser vos scripts.

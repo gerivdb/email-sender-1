@@ -1,4 +1,4 @@
-﻿Absolument ! Analysons en profondeur le document "EMAIL SENDER 1 – Augment Guidelines" et la vidéo pour en extraire toutes les informations pertinentes pour toi, AugmentCode, en mettant l'accent sur ce qui peut t'aider à mieux comprendre et exécuter tes tâches.
+Absolument ! Analysons en profondeur le document "EMAIL SENDER 1 – Augment Guidelines" et la vidéo pour en extraire toutes les informations pertinentes pour toi, AugmentCode, en mettant l'accent sur ce qui peut t'aider à mieux comprendre et exécuter tes tâches.
 
 Commençons par une vue d'ensemble. Le document que tu as fourni est une feuille de route et un guide de développement pour un projet spécifique nommé "EMAIL SENDER 1". La vidéo, quant à elle, montre la création d'une application de génération d'articles en mode "no-code/low-code" utilisant Lovable, Supabase et n8n. Bien que les projets soient différents, les principes architecturaux, les défis et les solutions présentés dans la vidéo sont très pertinents pour le projet EMAIL SENDER 1 et pour ta propre méthodologie de développement.
 
@@ -9,11 +9,13 @@ Voici une analyse détaillée :
 Ce document est ta bible pour le projet EMAIL SENDER 1. Il définit l'architecture, les outils, les méthodologies et les priorités.
 
 ### 1. Contexte du Projet : EMAIL SENDER 1
+
 *   **Objectif principal** : Automatiser l'envoi d'emails et la gestion des réponses pour la prospection (booking de concerts).
 *   **Phases** : Le projet est décomposé en phases (Phase 1: Prospection, Phase 2: Suivi, Phase 3: Réponses). Cela suggère une approche itérative et modulaire.
 *   **Sources de données clés** : Notion (contacts, disponibilités) et Google Calendar (disponibilités). La synchronisation et l'accès fiable à ces données sont cruciaux.
 
 ### 2. Architecture et Composants Clés pour EMAIL SENDER 1
+
 ```mermaid
 graph TD
     A[Utilisateur/Processus Augment] --> B{n8n Workflows};
@@ -50,7 +52,7 @@ graph TD
     subgraph "Utilitaires & Intégration"
         H
     end
-```
+```plaintext
 *   **n8n Workflows** : Cœur de l'automatisation. Tu devras probablement générer, modifier, et déployer ces workflows (`.json` files). La structure `/src/n8n/workflows/` et `/src/n8n/workflows/archive` est importante pour la gestion des versions.
 *   **MCP (Model Context Protocol)** : Fournit du contexte aux modèles IA. C'est une couche d'abstraction pour enrichir les prompts. Comprendre son fonctionnement et comment l'intégrer (serveurs filesystem, github, gcp) sera essentiel pour la personnalisation des emails.
 *   **Scripts PowerShell/Python** : Pour les tâches utilitaires, l'intégration, et potentiellement l'orchestration des modes Augment.
@@ -58,6 +60,7 @@ graph TD
 *   **OpenRouter/DeepSeek** : Pour la génération de texte personnalisé et l'analyse des réponses. Tu devras formuler des prompts efficaces et gérer les réponses de ces API.
 
 ### 3. Modes Opérationnels Augment (Crucial pour toi, AugmentCode)
+
 Ces modes définissent comment tu dois aborder différentes tâches.
 *   **GRAN** : Décomposition. Essentiel pour les tâches complexes. Tu dois être capable de prendre un item de roadmap et le subdiviser.
 *   **DEV-R** : Implémentation séquentielle. C'est ton mode de "codage" principal pour les tâches de la roadmap.
@@ -66,6 +69,7 @@ Ces modes définissent comment tu dois aborder différentes tâches.
 *   **PREDIC, C-BREAK** : Modes plus avancés pour l'analyse et la résolution de problèmes complexes.
 
 ### 4. Standards Techniques et Méthodologie
+
 *   **Langages** : PowerShell 7, Python 3.11, TypeScript (pour n8n custom). Tu dois être capable de générer du code dans ces langages.
 *   **Tests** : Pester (PS), pytest (Python). La génération de tests unitaires est une attente.
 *   **Documentation** : 20% du code. Tu devras générer des commentaires et de la documentation.
@@ -75,11 +79,13 @@ Ces modes définissent comment tu dois aborder différentes tâches.
 *   **Gestion des inputs volumineux** : Segmentation, compression, implémentation incrémentale.
 
 ### 5. Intégration Augment et Memories
+
 *   `Initialize-AugmentIntegration -StartServers` : Suggère que MCP et d'autres services de contexte doivent être actifs.
 *   `Invoke-AugmentMode` : La commande centrale pour te piloter.
 *   **Memories** : Mise à jour après chaque changement de mode. Optimisation de la taille des contextes. Tu dois être conscient de la taille du contexte que tu utilises et que tu génères.
 
 ### 6. Règle d'Or
+
 *   *Granularité adaptative, tests systématiques, documentation claire*. Ce sont tes principes directeurs.
 
 ## II. Analyse de la Vidéo et Pertinence pour EMAIL SENDER 1 & AugmentCode
@@ -87,6 +93,7 @@ Ces modes définissent comment tu dois aborder différentes tâches.
 La vidéo montre la création d'une application "ArticleGen" avec Lovable (front-end), Supabase (back-end/DB/Auth), et n8n (logique métier).
 
 ### 1. Architecture de l'Application Vidéo
+
 ```mermaid
 graph TD
     User --> LV[Lovable Frontend App];
@@ -115,13 +122,14 @@ graph TD
     N8N --> FalAI[Fal.ai Image Gen];
     N8N --> WordPress[WordPress API];
     N8N --> Anthropic[Anthropic Claude];
-```
+```plaintext
 *   **Pertinence pour EMAIL SENDER 1** :
     *   **n8n comme backend logique** : La vidéo valide l'utilisation de n8n pour des logiques complexes déclenchées par des webhooks. EMAIL SENDER 1 utilise n8n de manière similaire.
     *   **Sécurisation des secrets** : La vidéo utilise Supabase pour stocker les clés API et les URL de webhook n8n. EMAIL SENDER 1 devra avoir un mécanisme similaire (peut-être via les fichiers `/projet/config/` ou un gestionnaire de secrets si déployé en production). Le front-end (ou le déclencheur) ne doit jamais connaître directement les secrets du backend.
     *   **Modularité des workflows n8n** : La vidéo montre des workflows n8n distincts pour chaque tâche (créer un plan, générer l'article, générer l'image, publier). C'est une bonne pratique que EMAIL SENDER 1 adopte déjà (Phase 1, 2, 3, Config).
 
 ### 2. Décision Architecturale : Multi-Instance vs. Multi-Tenant (0:53)
+
 C'est une considération MAJEURE pour tout projet SaaS ou pour des clients multiples.
 *   **Multi-Instance** :
     *   Chaque client a son application isolée (Lovable, Supabase, n8n).
@@ -152,6 +160,7 @@ C'est une considération MAJEURE pour tout projet SaaS ou pour des clients multi
     ```
 
 ### 3. Processus de Développement avec des Outils IA (Lovable dans la vidéo)
+
 *   **Prompting Itératif** : Le présentateur interagit avec Lovable en langage naturel, affine les prompts, corrige les erreurs.
     *   *Pour AugmentCode* : C'est très similaire à la façon dont tu fonctionnes. Tu reçois des instructions, tu génères du code/des solutions, et tu peux recevoir des retours pour affiner. La qualité de tes prompts initiaux (ceux que tu reçois) et ta capacité à interpréter les retours sont clés.
 *   **Décomposition des tâches** : L'application est construite écran par écran, fonctionnalité par fonctionnalité.
@@ -162,6 +171,7 @@ C'est une considération MAJEURE pour tout projet SaaS ou pour des clients multi
     *   *Pour AugmentCode* : Tes modes "DEBUG" et "PREDIC" sont pertinents ici. Tu dois être capable d'analyser les erreurs et de proposer des corrections.
 
 ### 4. Intégration Backend (n8n)
+
 *   **Webhooks comme points d'entrée** : n8n est déclenché via des webhooks.
     *   *Pour AugmentCode* : Pour EMAIL SENDER 1, tu dois comprendre comment configurer et sécuriser ces webhooks. Si c'est multi-tenant, les webhooks doivent être génériques et le workflow n8n doit gérer l'identification du client/contexte.
 *   **Paramètres de Webhook** : Les données sont passées au webhook n8n via le corps de la requête (JSON).
@@ -170,6 +180,7 @@ C'est une considération MAJEURE pour tout projet SaaS ou pour des clients multi
     *   *Pour AugmentCode* : C'est un pattern de sécurité important. Pour EMAIL SENDER 1, si une interface utilisateur ou un autre service doit déclencher des workflows n8n, envisage une couche intermédiaire (comme une fonction serverless ou un endpoint API dédié) pour masquer et sécuriser l'accès direct aux webhooks n8n.
 
 ### 5. Points Spécifiques pour AugmentCode
+
 *   **Compréhension du "métier"** : Le présentateur souligne qu'il faut penser comme un "product manager" ou un "solutions architect".
     *   *Pour toi* : Cela signifie que tu ne dois pas seulement traduire des spécifications en code, mais aussi comprendre l'objectif global, les contraintes, et les implications des choix techniques. Les modes "ARCHI" et "PREDIC" sont là pour ça.
 *   **Génération de code et de configuration** :

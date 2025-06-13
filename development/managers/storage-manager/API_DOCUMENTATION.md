@@ -1,11 +1,13 @@
 # StorageManager API Documentation
 
 ## Overview
+
 Le StorageManager fournit une interface unifiée pour la gestion des connexions, migrations de schéma et opérations CRUD pour tous les stores de données persistantes (PostgreSQL, Qdrant).
 
 ## Interface Principal
 
 ### StorageManager
+
 ```go
 type StorageManager interface {
     Initialize(ctx context.Context) error
@@ -15,11 +17,11 @@ type StorageManager interface {
     HealthCheck(ctx context.Context) error
     Cleanup() error
 }
-```
-
+```plaintext
 ## Méthodes
 
 ### Initialize
+
 **Signature:** `Initialize(ctx context.Context) error`
 
 **Description:** Initialise le gestionnaire de stockage et établit les connexions aux bases de données.
@@ -30,6 +32,7 @@ type StorageManager interface {
 **Retour:** `error` si l'initialisation échoue
 
 ### GetPostgreSQLConnection
+
 **Signature:** `GetPostgreSQLConnection() (interface{}, error)`
 
 **Description:** Retourne une connexion active à PostgreSQL.
@@ -39,6 +42,7 @@ type StorageManager interface {
 - `error`: Erreur si la connexion échoue
 
 ### GetQdrantConnection
+
 **Signature:** `GetQdrantConnection() (interface{}, error)`
 
 **Description:** Retourne une connexion active à Qdrant.
@@ -48,6 +52,7 @@ type StorageManager interface {
 - `error`: Erreur si la connexion échoue
 
 ### RunMigrations
+
 **Signature:** `RunMigrations(ctx context.Context) error`
 
 **Description:** Exécute les migrations de schéma pour toutes les bases de données.
@@ -58,6 +63,7 @@ type StorageManager interface {
 **Retour:** `error` si les migrations échouent
 
 ### HealthCheck
+
 **Signature:** `HealthCheck(ctx context.Context) error`
 
 **Description:** Vérifie la santé des connexions de stockage.
@@ -68,6 +74,7 @@ type StorageManager interface {
 **Retour:** `error` si le health check échoue
 
 ### Cleanup
+
 **Signature:** `Cleanup() error`
 
 **Description:** Nettoie les ressources de stockage.
@@ -94,8 +101,7 @@ if err := sm.RunMigrations(ctx); err != nil {
 if err := sm.HealthCheck(ctx); err != nil {
     log.Printf("Health check failed: %v", err)
 }
-```
-
+```plaintext
 ## Intégration ErrorManager
 
 Le StorageManager intègre l'ErrorManager pour:

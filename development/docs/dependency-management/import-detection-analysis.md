@@ -12,45 +12,53 @@ La méthode principale utilisée dans le projet est l'analyse par expressions r�
 
 ```powershell
 # Pattern de base
+
 Import-Module\s+([a-zA-Z0-9_\.-]+)
 
 # Variantes
+
 # Avec chemin complet
+
 Import-Module\s+(['"]?[a-zA-Z0-9_\.-\\\/]+['"]?)
 
 # Avec paramètres nommés
-Import-Module\s+-Name\s+(['"]?[a-zA-Z0-9_\.-]+['"]?)
-```
 
+Import-Module\s+-Name\s+(['"]?[a-zA-Z0-9_\.-]+['"]?)
+```plaintext
 Ces expressions régulières capturent les appels à `Import-Module` suivis du nom du module ou du chemin vers le module.
 
 #### 1.1.2 Dot-Sourcing
 
 ```powershell
 # Pattern de base
+
 \.\s+([a-zA-Z0-9_\.-\\\/]+)
 
 # Variantes
+
 # Avec guillemets
+
 \.\s+(['"]?[a-zA-Z0-9_\.-\\\/]+['"]?)
 
 # Avec extension spécifique
-\.\s+(['"]?.*\.ps1['"]?)
-```
 
+\.\s+(['"]?.*\.ps1['"]?)
+```plaintext
 Ces expressions régulières capturent les appels de dot-sourcing (`.`) suivis du chemin vers le script à sourcer.
 
 #### 1.1.3 Using Module
 
 ```powershell
 # Pattern de base
+
 using\s+module\s+([a-zA-Z0-9_\.-]+)
 
 # Variantes
-# Avec guillemets
-using\s+module\s+(['"]?[a-zA-Z0-9_\.-]+['"]?)
-```
 
+# Avec guillemets
+
+using\s+module\s+(['"]?[a-zA-Z0-9_\.-]+['"]?)
+```plaintext
 Ces expressions régulières capturent les déclarations `using module` suivies du nom du module.
 
 ### 1.2 Résolution de Chemins
@@ -59,6 +67,7 @@ Après la détection des imports et dot-sourcing, certains modules du projet ten
 
 ```powershell
 # Exemple de résolution de chemin relatif
+
 $ResolvedPath = $null
 if (-not [System.IO.Path]::IsPathRooted($ScriptPath)) {
     $ResolvedPath = Join-Path -Path $ScriptDirectory -ChildPath $ScriptPath
@@ -68,8 +77,7 @@ if (-not [System.IO.Path]::IsPathRooted($ScriptPath)) {
 } elseif (Test-Path -Path $ScriptPath) {
     $ResolvedPath = $ScriptPath
 }
-```
-
+```plaintext
 Cette approche permet de:
 - Déterminer si le chemin est absolu ou relatif
 - Résoudre les chemins relatifs par rapport au répertoire du script
@@ -83,16 +91,17 @@ Bien que non utilisée directement pour la détection des dépendances dans le p
 
 ```powershell
 # Exemple d'utilisation de l'AST pour analyser un script
+
 $ast = [System.Management.Automation.Language.Parser]::ParseFile($filePath, [ref]$null, [ref]$null)
 
 # Trouver tous les appels à Import-Module
+
 $importModuleCalls = $ast.FindAll({
     param($node)
     $node -is [System.Management.Automation.Language.CommandAst] -and
     $node.CommandElements[0].Value -eq 'Import-Module'
 }, $true)
-```
-
+```plaintext
 Cette approche offre plusieurs avantages:
 - Plus précise que les regex
 - Comprend la structure réelle du code
@@ -105,12 +114,12 @@ Le module `StaticAnalyzer.psm1` utilise une approche hybride combinant regex et 
 
 ```powershell
 # Compter les imports
+
 $ImportMatches = [regex]::Matches($Content, "source\s+([a-zA-Z0-9_\.-]+)|.\s+([a-zA-Z0-9_\.-]+)")
 $Analysis.Imports = $ImportMatches | ForEach-Object { 
     if ($_.Groups[1].Value) { $_.Groups[1].Value } else { $_.Groups[2].Value }
 }
-```
-
+```plaintext
 Cette approche permet de:
 - Analyser différents types d'imports en une seule passe
 - Extraire des métadonnées supplémentaires
@@ -132,19 +141,24 @@ Cette approche permet de:
 1. **Faux Positifs**: Les regex peuvent capturer des chaînes qui ressemblent à des imports mais n'en sont pas:
    ```powershell
    # Ceci sera détecté comme un import alors que c'est un commentaire
+
    # Import-Module MyModule
+
    
    # Ceci sera détecté comme un dot-sourcing alors que c'est une chaîne
+
    $example = ". .\path\to\script.ps1"
    ```
 
 2. **Imports Dynamiques**: Les regex ne peuvent pas détecter correctement les imports dynamiques:
    ```powershell
    # Non détecté par regex simples
+
    $moduleName = "MyModule"
    Import-Module $moduleName
    
    # Non détecté par regex simples
+
    foreach ($module in $moduleList) {
        Import-Module $module
    }
@@ -153,6 +167,7 @@ Cette approche permet de:
 3. **Imports Conditionnels**: Les imports conditionnels peuvent être manqués:
    ```powershell
    # Difficile à détecter avec des regex simples
+
    if (Test-Path $modulePath) {
        Import-Module $modulePath
    }
@@ -161,6 +176,7 @@ Cette approche permet de:
 4. **Résolution de Chemins Complexes**: Les chemins construits dynamiquement sont difficiles à résoudre:
    ```powershell
    # Difficile à résoudre
+
    $scriptPath = Join-Path -Path $baseDir -ChildPath "scripts\$scriptName.ps1"
    . $scriptPath
    ```
@@ -205,13 +221,16 @@ function Get-ScriptDependencies {
     )
     
     # Étape 1: Analyse rapide par regex pour filtrer
+
     $content = Get-Content -Path $FilePath -Raw
     $potentialImports = [regex]::Matches($content, "(Import-Module|using\s+module|\.\s+).*")
     
     # Étape 2: Analyse précise par AST
+
     $ast = [System.Management.Automation.Language.Parser]::ParseFile($FilePath, [ref]$null, [ref]$null)
     
     # Trouver les imports de modules
+
     $moduleImports = $ast.FindAll({
         param($node)
         $node -is [System.Management.Automation.Language.CommandAst] -and
@@ -219,6 +238,7 @@ function Get-ScriptDependencies {
     }, $true)
     
     # Trouver les using module
+
     $usingModules = $ast.FindAll({
         param($node)
         $node -is [System.Management.Automation.Language.UsingStatementAst] -and
@@ -226,6 +246,7 @@ function Get-ScriptDependencies {
     }, $true)
     
     # Trouver les dot-sourcing
+
     $dotSourcing = $ast.FindAll({
         param($node)
         $node -is [System.Management.Automation.Language.CommandAst] -and
@@ -233,10 +254,11 @@ function Get-ScriptDependencies {
     }, $true)
     
     # Étape 3: Résoudre les chemins et retourner les résultats
-    # [Implémentation de la résolution de chemins]
-}
-```
 
+    # [Implémentation de la résolution de chemins]
+
+}
+```plaintext
 ### 6.2 Résolution de Chemins Robuste
 
 ```powershell
@@ -254,6 +276,7 @@ function Resolve-DependencyPath {
     )
     
     # Cas 1: Chemin absolu
+
     if ([System.IO.Path]::IsPathRooted($Path)) {
         if (Test-Path -Path $Path) {
             return $Path
@@ -262,12 +285,14 @@ function Resolve-DependencyPath {
     }
     
     # Cas 2: Chemin relatif au script
+
     $scriptRelativePath = Join-Path -Path $BaseDirectory -ChildPath $Path
     if (Test-Path -Path $scriptRelativePath) {
         return $scriptRelativePath
     }
     
     # Cas 3: Chemin relatif au projet
+
     if ($ProjectRoot) {
         $projectRelativePath = Join-Path -Path $ProjectRoot -ChildPath $Path
         if (Test-Path -Path $projectRelativePath) {
@@ -276,6 +301,7 @@ function Resolve-DependencyPath {
     }
     
     # Cas 4: Module dans PSModulePath
+
     if (-not $Path.Contains('\') -and -not $Path.Contains('/')) {
         $module = Get-Module -Name $Path -ListAvailable
         if ($module) {
@@ -284,6 +310,7 @@ function Resolve-DependencyPath {
     }
     
     # Aucune correspondance trouvée
+
     return $null
 }
-```
+```plaintext

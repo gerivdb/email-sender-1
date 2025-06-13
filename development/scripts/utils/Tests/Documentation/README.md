@@ -1,4 +1,4 @@
-﻿# Documentation des Tests Format-Converters
+# Documentation des Tests Format-Converters
 
 Ce document explique les diffÃ©rences entre les tests simplifiÃ©s et les tests rÃ©els du module Format-Converters, ainsi que les bonnes pratiques pour les utiliser.
 
@@ -48,41 +48,46 @@ Pour convertir un test simplifiÃ© en test rÃ©el, utilisez le script `Convert
 
 ```powershell
 .\Convert-SimplifiedTest.ps1 -SimplifiedTestPath "MonTest.Simplified.ps1" -RealTestPath "MonTest.Tests.ps1"
-```
-
+```plaintext
 ### ExÃ©cution des tests
 
 Pour exÃ©cuter les tests, utilisez le script `Bridge-Tests.ps1` :
 
 ```powershell
 # ExÃ©cuter uniquement les tests simplifiÃ©s
+
 .\Bridge-Tests.ps1 -Mode Simplified
 
 # ExÃ©cuter uniquement les tests rÃ©els
+
 .\Bridge-Tests.ps1 -Mode Real
 
 # ExÃ©cuter les deux types de tests et comparer les rÃ©sultats
+
 .\Bridge-Tests.ps1 -Mode Compare
 
 # ExÃ©cuter tous les tests sans comparaison
-.\Bridge-Tests.ps1 -Mode All
-```
 
+.\Bridge-Tests.ps1 -Mode All
+```plaintext
 ## Structure d'un Test
 
 ### Structure d'un Test SimplifiÃ©
 
 ```powershell
 # CrÃ©er un rÃ©pertoire temporaire pour les tests
+
 $global:testTempDir = Join-Path -Path $env:TEMP -ChildPath "FormatConvertersTests_$(Get-Random)"
 New-Item -Path $global:testTempDir -ItemType Directory -Force | Out-Null
 
 # CrÃ©er des fichiers de test
+
 $global:jsonFilePath = Join-Path -Path $global:testTempDir -ChildPath "test.json"
 $global:jsonContent = '{"name":"Test","version":"1.0.0"}'
 $global:jsonContent | Set-Content -Path $global:jsonFilePath -Encoding UTF8
 
 # Tests
+
 Describe "Fonction Get-FileFormatAnalysis" {
     Context "Analyse de fichiers avec format dÃ©tectÃ©" {
         It "Analyse correctement un fichier JSON" {
@@ -95,17 +100,18 @@ Describe "Fonction Get-FileFormatAnalysis" {
 }
 
 # Nettoyer les fichiers de test
+
 AfterAll {
     if (Test-Path -Path $global:testTempDir) {
         Remove-Item -Path $global:testTempDir -Recurse -Force
     }
 }
-```
-
+```plaintext
 ### Structure d'un Test RÃ©el
 
 ```powershell
 # Importer le module
+
 $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "Format-Converters.psm1"
 if (Test-Path -Path $modulePath) {
     Import-Module -Name $modulePath -Force
@@ -113,6 +119,7 @@ if (Test-Path -Path $modulePath) {
 
 BeforeAll {
     # S'assurer que le module est importÃ©
+
     if (-not (Get-Module -Name Format-Converters)) {
         $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "Format-Converters.psm1"
         if (Test-Path -Path $modulePath) {
@@ -121,16 +128,19 @@ BeforeAll {
     }
     
     # CrÃ©er un rÃ©pertoire temporaire pour les tests
+
     $testTempDir = Join-Path -Path $env:TEMP -ChildPath "FormatConvertersTests_$(Get-Random)"
     New-Item -Path $testTempDir -ItemType Directory -Force | Out-Null
     
     # CrÃ©er des fichiers de test
+
     $jsonFilePath = Join-Path -Path $testTempDir -ChildPath "test.json"
     $jsonContent = '{"name":"Test","version":"1.0.0"}'
     $jsonContent | Set-Content -Path $jsonFilePath -Encoding UTF8
 }
 
 # Tests
+
 Describe "Fonction Get-FileFormatAnalysis" {
     Context "Analyse de fichiers avec format dÃ©tectÃ©" {
         It "Analyse correctement un fichier JSON" {
@@ -143,13 +153,13 @@ Describe "Fonction Get-FileFormatAnalysis" {
 }
 
 # Nettoyer les fichiers de test
+
 AfterAll {
     if (Test-Path -Path $testTempDir) {
         Remove-Item -Path $testTempDir -Recurse -Force
     }
 }
-```
-
+```plaintext
 ## DÃ©pannage
 
 ### ProblÃ¨mes courants

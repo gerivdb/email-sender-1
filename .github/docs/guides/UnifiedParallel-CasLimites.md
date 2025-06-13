@@ -5,11 +5,17 @@ Ce document décrit en détail comment le module UnifiedParallel gère les cas l
 ## Table des matières
 
 1. [Tableaux vides](#tableaux-vides)
+
 2. [Valeurs null](#valeurs-null)
+
 3. [Objets uniques](#objets-uniques)
+
 4. [Formats de retour](#formats-de-retour)
+
 5. [Compatibilité entre fonctions](#compatibilité-entre-fonctions)
+
 6. [Optimisations de performance](#optimisations-de-performance)
+
 7. [Bonnes pratiques](#bonnes-pratiques)
 
 ## Tableaux vides
@@ -24,11 +30,17 @@ Lorsque vous passez un tableau vide à la fonction `Wait-ForCompletedRunspace`, 
   $result = Wait-ForCompletedRunspace -Runspaces $emptyRunspaces -WaitForAll
   
   # $result est un PSCustomObject avec les propriétés suivantes :
+
   # - Results : Liste vide
+
   # - Count : 0
+
   # - TimeoutOccurred : $false
+
   # - DeadlockDetected : $false
+
   # - StoppedRunspaces : Liste vide
+
   ```
 
 - Avec `ReturnFormat="Array"` :
@@ -37,7 +49,9 @@ Lorsque vous passez un tableau vide à la fonction `Wait-ForCompletedRunspace`, 
   $result = Wait-ForCompletedRunspace -Runspaces $emptyRunspaces -WaitForAll -ReturnFormat "Array"
   
   # $result est un tableau vide (@())
+
   # $result.Count est 0
+
   ```
 
 ### Optimisations pour les tableaux vides
@@ -58,16 +72,16 @@ Le paramètre `Runspaces` est marqué comme `[ValidateNotNull()]`, ce qui signif
 $runspaces = $null
 Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll
 # Erreur : Le paramètre Runspaces ne peut pas être null.
-```
 
+```plaintext
 Cependant, le module gère correctement les éléments null à l'intérieur d'un tableau :
 
 ```powershell
 $runspaces = @($null, $null)
 $result = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll
 # $result est un objet avec une liste Results vide
-```
 
+```plaintext
 ## Objets uniques
 
 ### Traitement des objets uniques
@@ -78,9 +92,10 @@ Si vous passez un objet unique (non-tableau) à la fonction, il sera traité com
 $singleRunspace = New-TestRunspace
 $result = Wait-ForCompletedRunspace -Runspaces $singleRunspace -WaitForAll
 # $result.Count est 1
-# $result.Results contient un seul élément
-```
 
+# $result.Results contient un seul élément
+
+```plaintext
 Cette fonctionnalité est utile lorsque vous avez un nombre variable de runspaces, y compris potentiellement un seul runspace.
 
 ## Formats de retour
@@ -104,8 +119,7 @@ $result = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll
 if ($result.HasTimeout()) {
     Write-Warning "Timeout détecté !"
 }
-```
-
+```plaintext
 #### Quand utiliser "Array"
 
 Utilisez le format `"Array"` lorsque :
@@ -116,8 +130,7 @@ Utilisez le format `"Array"` lorsque :
 ```powershell
 $results = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll -ReturnFormat "Array"
 $results | ForEach-Object { ... }
-```
-
+```plaintext
 ## Compatibilité entre fonctions
 
 ### Utilisation avec Invoke-RunspaceProcessor
@@ -127,8 +140,7 @@ La fonction `Wait-ForCompletedRunspace` est conçue pour fonctionner de manière
 ```powershell
 $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll
 $results = Invoke-RunspaceProcessor -CompletedRunspaces $completedRunspaces
-```
-
+```plaintext
 `Invoke-RunspaceProcessor` détecte automatiquement le format de l'objet retourné par `Wait-ForCompletedRunspace` et effectue les conversions nécessaires.
 
 ## Optimisations de performance
@@ -139,12 +151,13 @@ Le module met en cache les résultats pour les tableaux vides afin d'améliorer 
 
 ```powershell
 # Premier appel : crée et met en cache le résultat
+
 $result1 = Wait-ForCompletedRunspace -Runspaces @() -WaitForAll
 
 # Deuxième appel : utilise le résultat en cache
-$result2 = Wait-ForCompletedRunspace -Runspaces @() -WaitForAll
-```
 
+$result2 = Wait-ForCompletedRunspace -Runspaces @() -WaitForAll
+```plaintext
 ### Détection rapide des tableaux vides
 
 La détection des tableaux vides est optimisée pour éviter les traitements inutiles :
@@ -153,8 +166,8 @@ La détection des tableaux vides est optimisée pour éviter les traitements inu
 $emptyRunspaces = @()
 $result = Wait-ForCompletedRunspace -Runspaces $emptyRunspaces -WaitForAll -Verbose
 # Vous verrez un message "Détection rapide: Runspaces est null ou vide. Aucun runspace à traiter."
-```
 
+```plaintext
 ## Bonnes pratiques
 
 ### Recommandations générales
@@ -171,23 +184,25 @@ function Process-Runspaces {
     param([array]$runspaces)
     
     # Gérer le cas où $runspaces est vide
+
     if ($null -eq $runspaces -or $runspaces.Count -eq 0) {
         Write-Verbose "Aucun runspace à traiter."
         return @()
     }
     
     # Traiter les runspaces
+
     $result = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll
     
     # Vérifier les erreurs
+
     if ($result.HasTimeout() -or $result.HasDeadlock()) {
         Write-Warning "Des problèmes ont été détectés lors du traitement des runspaces."
     }
     
     return $result.GetList()
 }
-```
-
+```plaintext
 ---
 
 Pour plus d'informations, consultez la documentation complète du module UnifiedParallel.

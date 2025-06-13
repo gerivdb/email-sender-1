@@ -5,16 +5,27 @@ Ce document dÃ©crit comment utiliser le systÃ¨me d'intÃ©gration avec des o
 ## Table des matiÃ¨res
 
 1. [Introduction](#introduction)
+
 2. [Outils pris en charge](#outils-pris-en-charge)
+
 3. [Installation](#installation)
+
 4. [Utilisation](#utilisation)
+
    - [Analyse avec PSScriptAnalyzer](#analyse-avec-psscriptanalyzer)
+
    - [Analyse avec ESLint](#analyse-avec-eslint)
+
    - [Analyse avec Pylint](#analyse-avec-pylint)
+
    - [Analyse avec SonarQube](#analyse-avec-sonarqube)
+
 5. [Fusion des rÃ©sultats](#fusion-des-rÃ©sultats)
+
 6. [SystÃ¨me de plugins](#systÃ¨me-de-plugins)
+
 7. [CrÃ©ation de plugins personnalisÃ©s](#crÃ©ation-de-plugins-personnalisÃ©s)
+
 8. [DÃ©pannage](#dÃ©pannage)
 
 ## Introduction
@@ -45,22 +56,20 @@ D'autres outils peuvent Ãªtre ajoutÃ©s via le systÃ¨me de plugins.
 
 ```powershell
 Install-Module -Name PSScriptAnalyzer -Scope CurrentUser
-```
-
+```plaintext
 #### ESLint
 
 ```bash
 npm install -g eslint
 # ou localement dans votre projet
-npm install eslint --save-dev
-```
 
+npm install eslint --save-dev
+```plaintext
 #### Pylint
 
 ```bash
 pip install pylint
-```
-
+```plaintext
 #### SonarQube Scanner
 
 TÃ©lÃ©chargez et installez SonarQube Scanner depuis le site officiel : https://docs.sonarqube.org/latest/analysis/scan/sonarscanner/
@@ -73,8 +82,7 @@ Pour analyser un fichier ou un rÃ©pertoire avec PSScriptAnalyzer :
 
 ```powershell
 .\development\scripts\analysis\tools\Connect-PSScriptAnalyzer.ps1 -FilePath "chemin\vers\fichier.ps1" -OutputPath "resultats.json"
-```
-
+```plaintext
 Options disponibles :
 
 - `-FilePath` : Chemin du fichier ou du rÃ©pertoire Ã  analyser
@@ -90,8 +98,7 @@ Pour analyser un fichier ou un rÃ©pertoire avec ESLint :
 
 ```powershell
 .\development\scripts\analysis\tools\Connect-ESLint.ps1 -FilePath "chemin\vers\fichier.js" -OutputPath "resultats.json"
-```
-
+```plaintext
 Options disponibles :
 
 - `-FilePath` : Chemin du fichier ou du rÃ©pertoire Ã  analyser
@@ -105,8 +112,7 @@ Pour analyser un fichier ou un rÃ©pertoire avec Pylint :
 
 ```powershell
 .\development\scripts\analysis\tools\Connect-Pylint.ps1 -FilePath "chemin\vers\fichier.py" -OutputPath "resultats.json"
-```
-
+```plaintext
 Options disponibles :
 
 - `-FilePath` : Chemin du fichier ou du rÃ©pertoire Ã  analyser
@@ -121,8 +127,7 @@ Pour analyser un projet avec SonarQube Scanner :
 
 ```powershell
 .\development\scripts\analysis\tools\Connect-SonarQube.ps1 -ProjectKey "mon-projet" -ProjectName "Mon Projet" -ProjectVersion "1.0" -SourceDirectory "chemin\vers\sources" -OutputPath "resultats.json"
-```
-
+```plaintext
 Options disponibles :
 
 - `-ProjectKey` : ClÃ© du projet SonarQube
@@ -139,8 +144,7 @@ Pour fusionner les rÃ©sultats de plusieurs analyses :
 
 ```powershell
 .\development\scripts\analysis\Merge-AnalysisResults.ps1 -InputPath "resultats1.json", "resultats2.json" -OutputPath "resultats-fusionnes.json" -RemoveDuplicates -GenerateHtmlReport
-```
-
+```plaintext
 Options disponibles :
 
 - `-InputPath` : Chemin du fichier ou des fichiers contenant les rÃ©sultats d'analyse Ã  fusionner
@@ -161,16 +165,14 @@ Pour enregistrer les connecteurs intÃ©grÃ©s comme plugins :
 
 ```powershell
 .\development\scripts\analysis\Register-AnalysisPlugin.ps1
-```
-
+```plaintext
 ### Liste des plugins enregistrÃ©s
 
 Pour afficher la liste des plugins enregistrÃ©s :
 
 ```powershell
 .\development\scripts\analysis\Register-AnalysisPlugin.ps1 -ListPlugins
-```
-
+```plaintext
 ### Activation/dÃ©sactivation des plugins
 
 Pour activer ou dÃ©sactiver un plugin :
@@ -178,16 +180,14 @@ Pour activer ou dÃ©sactiver un plugin :
 ```powershell
 .\development\scripts\analysis\Register-AnalysisPlugin.ps1 -EnablePlugin "ESLint"
 .\development\scripts\analysis\Register-AnalysisPlugin.ps1 -DisablePlugin "ESLint"
-```
-
+```plaintext
 ### Exportation des plugins
 
 Pour exporter un plugin vers un fichier :
 
 ```powershell
 .\development\scripts\analysis\Register-AnalysisPlugin.ps1 -ExportPlugin "ESLint" -OutputDirectory "chemin\vers\repertoire"
-```
-
+```plaintext
 ## CrÃ©ation de plugins personnalisÃ©s
 
 Vous pouvez crÃ©er vos propres plugins pour intÃ©grer d'autres outils d'analyse. Un plugin est un script PowerShell qui enregistre une fonction d'analyse avec le systÃ¨me de plugins.
@@ -196,23 +196,28 @@ Exemple de plugin personnalisÃ© :
 
 ```powershell
 # MonPlugin.ps1
+
 #Requires -Version 5.1
 
 # Importer le module de gestion des plugins
+
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $pluginManagerPath = Join-Path -Path $modulesPath -ChildPath "AnalysisPluginManager.psm1"
 Import-Module -Name $pluginManagerPath -Force
 
 # Fonction d'analyse
+
 $analyzeFunction = {
     param (
         [string]$FilePath
     )
     
     # Analyser le fichier avec votre outil
+
     $results = @()
     
     # CrÃ©er un rÃ©sultat unifiÃ©
+
     $result = New-UnifiedAnalysisResult -ToolName "MonOutil" `
                                        -FilePath $FilePath `
                                        -Line 1 `
@@ -228,6 +233,7 @@ $analyzeFunction = {
 }
 
 # Enregistrer le plugin
+
 Register-AnalysisPlugin -Name "MonPlugin" `
                        -Description "Mon plugin personnalisÃ©" `
                        -Version "1.0" `
@@ -237,14 +243,12 @@ Register-AnalysisPlugin -Name "MonPlugin" `
                        -Configuration @{} `
                        -Dependencies @() `
                        -Force
-```
-
+```plaintext
 Pour enregistrer votre plugin :
 
 ```powershell
 .\development\scripts\analysis\Register-AnalysisPlugin.ps1 -Path "chemin\vers\MonPlugin.ps1"
-```
-
+```plaintext
 ## DÃ©pannage
 
 ### ProblÃ¨mes courants
@@ -255,40 +259,35 @@ Assurez-vous que PSScriptAnalyzer est installÃ© :
 
 ```powershell
 Install-Module -Name PSScriptAnalyzer -Scope CurrentUser
-```
-
+```plaintext
 #### ESLint n'est pas disponible
 
 VÃ©rifiez que ESLint est installÃ© et accessible dans le PATH :
 
 ```bash
 eslint --version
-```
-
+```plaintext
 #### Pylint n'est pas disponible
 
 VÃ©rifiez que Pylint est installÃ© et accessible dans le PATH :
 
 ```bash
 pylint --version
-```
-
+```plaintext
 #### SonarQube Scanner n'est pas disponible
 
 VÃ©rifiez que SonarQube Scanner est installÃ© et accessible dans le PATH :
 
 ```bash
 sonar-scanner --version
-```
-
+```plaintext
 ### Journalisation dÃ©taillÃ©e
 
 Pour obtenir des informations de dÃ©bogage dÃ©taillÃ©es, utilisez le paramÃ¨tre `-Verbose` :
 
 ```powershell
 .\development\scripts\analysis\tools\Connect-PSScriptAnalyzer.ps1 -FilePath "chemin\vers\fichier.ps1" -Verbose
-```
-
+```plaintext
 ### VÃ©rification des outils disponibles
 
 Pour vÃ©rifier quels outils d'analyse sont disponibles sur votre systÃ¨me :
@@ -299,4 +298,4 @@ Test-AnalysisTool -ToolName "PSScriptAnalyzer"
 Test-AnalysisTool -ToolName "ESLint"
 Test-AnalysisTool -ToolName "Pylint"
 Test-AnalysisTool -ToolName "SonarQube"
-```
+```plaintext

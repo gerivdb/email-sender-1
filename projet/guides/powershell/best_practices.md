@@ -5,11 +5,17 @@ Ce document présente les bonnes pratiques à suivre lors de l'écriture de scri
 ## Table des matières
 
 - [Structure des scripts](#structure-des-scripts)
+
 - [Gestion des erreurs](#gestion-des-erreurs)
+
 - [Paramètres et arguments](#paramètres-et-arguments)
+
 - [Exécution en mode batch](#exécution-en-mode-batch)
+
 - [Logging](#logging)
+
 - [Performance](#performance)
+
 - [Sécurité](#sécurité)
 
 ## Structure des scripts
@@ -55,6 +61,7 @@ if (-not $Force) {
     if (-not (Get-YesNo "OK to modify $Path ?")) { return }
 }
 # … modifications par lot ici …
+
 ```| `SupportsShouldProcess` active aussi `-Confirm` / `-WhatIf` |
 | 5 |**À l'intérieur** du script, pour les cmdlets natives :<br>`Remove-Item $file -Recurse -Force -Confirm:$false` | `-Confirm:$false` = aucun prompt même si `SupportsShouldProcess` |
 

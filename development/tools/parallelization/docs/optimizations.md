@@ -12,6 +12,7 @@ La vérification par lots consiste à traiter les runspaces par groupes (lots) p
 
 ```powershell
 # Déterminer la taille de lot optimale
+
 $batchSize = if ($null -ne $BatchSizeOverride) {
     $BatchSizeOverride
 } else {
@@ -19,18 +20,21 @@ $batchSize = if ($null -ne $BatchSizeOverride) {
 }
 
 # Traiter les runspaces par lots
+
 for ($i = 0; $i -lt $runspaceCount; $i += $batchSize) {
     $endIndex = [Math]::Min($i + $batchSize - 1, $runspaceCount - 1)
     $batch = $runspaces[$i..$endIndex]
     
     # Traiter le lot
+
     foreach ($runspace in $batch) {
         # Vérifier l'état du runspace
+
         # ...
+
     }
 }
-```
-
+```plaintext
 #### Gains de performance
 
 | Nombre de runspaces | Sans lots | Avec lots (20) | Amélioration |
@@ -47,6 +51,7 @@ Le délai adaptatif ajuste dynamiquement le temps d'attente entre les vérificat
 
 ```powershell
 # Initialiser le délai adaptatif
+
 $currentSleepMilliseconds = $SleepMilliseconds
 $minSleepMilliseconds = 10
 $maxSleepMilliseconds = 200
@@ -54,19 +59,22 @@ $sleepReductionFactor = 0.8
 $sleepIncreaseFactor = 1.2
 
 # Ajuster le délai en fonction du nombre de runspaces restants
+
 $remainingRatio = $remainingCount / $runspaceCount
 if ($remainingRatio -lt 0.2) {
     # Peu de runspaces restants, réduire le délai
+
     $currentSleepMilliseconds = [Math]::Max($minSleepMilliseconds, $currentSleepMilliseconds * $sleepReductionFactor)
 } elseif ($remainingRatio -gt 0.8) {
     # Beaucoup de runspaces restants, augmenter le délai
+
     $currentSleepMilliseconds = [Math]::Min($maxSleepMilliseconds, $currentSleepMilliseconds * $sleepIncreaseFactor)
 }
 
 # Appliquer le délai
-Start-Sleep -Milliseconds $currentSleepMilliseconds
-```
 
+Start-Sleep -Milliseconds $currentSleepMilliseconds
+```plaintext
 #### Gains de performance
 
 | Délai initial | Utilisation CPU (fixe) | Utilisation CPU (adaptatif) | Amélioration CPU | Temps d'exécution (fixe) | Temps d'exécution (adaptatif) | Amélioration temps |
@@ -83,14 +91,15 @@ L'utilisation de collections génériques et de types fortement typés améliore
 
 ```powershell
 # Utiliser des collections génériques
+
 $completedRunspaces = [System.Collections.Generic.List[object]]::new()
 $results = [System.Collections.Generic.List[object]]::new()
 
 # Utiliser des types fortement typés
+
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 $currentTime = [datetime]::Now
-```
-
+```plaintext
 #### Gains de performance
 
 | Optimisation | Temps d'exécution (avant) | Temps d'exécution (après) | Amélioration |
@@ -137,6 +146,7 @@ Les paramètres optimaux pour le délai adaptatif sont:
 
 ```powershell
 # Fonction pour déterminer les paramètres optimaux
+
 function Get-OptimalParameters {
     param(
         [int]$RunspaceCount,
@@ -145,6 +155,7 @@ function Get-OptimalParameters {
     )
     
     # Déterminer la taille de lot optimale
+
     $batchSize = if ($RunspaceCount -le 50) {
         20
     } elseif ($RunspaceCount -le 100) {
@@ -154,6 +165,7 @@ function Get-OptimalParameters {
     }
     
     # Déterminer le délai initial optimal
+
     $sleepMilliseconds = switch ($Priority) {
         "CPU" { 100 }
         "Time" { 10 }
@@ -167,10 +179,10 @@ function Get-OptimalParameters {
 }
 
 # Utilisation
+
 $params = Get-OptimalParameters -RunspaceCount $runspaceCount -Priority "Balanced"
 $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll -TimeoutSeconds 60 -BatchSize $params.BatchSize -SleepMilliseconds $params.SleepMilliseconds
-```
-
+```plaintext
 ### 3.2 Cas d'utilisation spécifiques
 
 #### 3.2.1 Environnements à ressources limitées

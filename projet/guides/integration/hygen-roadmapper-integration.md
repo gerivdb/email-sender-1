@@ -1,4 +1,5 @@
 # Plan d'intégration Hygen-Roadmapper
+
 *Version 1.0 - 2025-05-14*
 
 Ce document détaille l'intégration entre Hygen (générateur de templates), le roadmapper (visualiseur de roadmaps) et Qdrant (base de données vectorielle pour RAG), dans le cadre du plan de développement v14.
@@ -7,7 +8,7 @@ Ce document détaille l'intégration entre Hygen (générateur de templates), le
 
 ### 1.1 Composants principaux
 
-```
+```plaintext
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
 │    Hygen    │────▶│  Templates  │────▶│    Code     │
 └─────────────┘     └─────────────┘     └─────────────┘
@@ -24,8 +25,7 @@ Ce document détaille l'intégration entre Hygen (générateur de templates), le
                     ┌─────────────┐
                     │    Tâches   │
                     └─────────────┘
-```
-
+```plaintext
 ### 1.2 Flux de travail
 
 1. Les PRD sont créés et stockés dans `/projet/guides/prd/`
@@ -39,14 +39,18 @@ Ce document détaille l'intégration entre Hygen (générateur de templates), le
 
 ### 2.1 Structure des templates
 
-```
+```plaintext
 _templates/
 ├── module/
 │   ├── new/
 │   │   ├── index.js          # Logique de génération
+
 │   │   ├── module.ejs.t      # Template de module PowerShell
+
 │   │   ├── test.ejs.t        # Template de test unitaire
+
 │   │   └── readme.ejs.t      # Template de documentation
+
 │   └── with-state/
 │       ├── index.js
 │       └── module-state.ejs.t
@@ -62,27 +66,30 @@ _templates/
     └── new/
         ├── index.js
         └── task.ejs.t
-```
-
+```plaintext
 ### 2.2 Commandes Hygen
 
 ```bash
 # Générer un nouveau module PowerShell
+
 hygen module new --name MonModule --description "Description du module"
 
 # Générer un module avec gestion d'état
+
 hygen module with-state --name MonModule --description "Description du module"
 
 # Générer un test unitaire
+
 hygen test new --name MonTest --module MonModule
 
 # Générer un PRD
+
 hygen prd new --name "Nom du PRD" --description "Description du PRD"
 
 # Générer une tâche
-hygen task new --name "Nom de la tâche" --prd "Nom du PRD" --priority high
-```
 
+hygen task new --name "Nom de la tâche" --prd "Nom du PRD" --priority high
+```plaintext
 ### 2.3 Intégration avec le workflow de développement
 
 1. Création du PRD avec Hygen: `hygen prd new`
@@ -94,14 +101,17 @@ hygen task new --name "Nom de la tâche" --prd "Nom du PRD" --priority high
 
 ### 3.1 Structure des collections Qdrant
 
-```
+```plaintext
 qdrant/
 ├── prds/         # Collection des PRD
-├── tasks/        # Collection des tâches
-├── roadmaps/     # Collection des roadmaps
-└── code/         # Collection des modules de code
-```
 
+├── tasks/        # Collection des tâches
+
+├── roadmaps/     # Collection des roadmaps
+
+└── code/         # Collection des modules de code
+
+```plaintext
 ### 3.2 Schéma des points pour les PRD
 
 ```json
@@ -119,8 +129,7 @@ qdrant/
   },
   "vector": [0.1, 0.2, 0.3, ...]
 }
-```
-
+```plaintext
 ### 3.3 Schéma des points pour les tâches
 
 ```json
@@ -141,8 +150,7 @@ qdrant/
   },
   "vector": [0.4, 0.5, 0.6, ...]
 }
-```
-
+```plaintext
 ### 3.4 Processus d'indexation
 
 1. **Extraction** : Lecture des fichiers Markdown (PRD, tâches, roadmaps)
@@ -173,7 +181,7 @@ qdrant/
 
 ### 4.2 Interface utilisateur
 
-```
+```plaintext
 ┌─────────────────────────────────────────────────────────┐
 │ Roadmapper v2.0                                [Search] │
 ├─────────────┬───────────────────┬───────────────────────┤
@@ -193,8 +201,7 @@ qdrant/
 │             │                   │ [Éditer Tâche]        │
 │             │                   │                       │
 └─────────────┴───────────────────┴───────────────────────┘
-```
-
+```plaintext
 ### 4.3 API pour l'intégration
 
 ```javascript
@@ -219,8 +226,7 @@ const roadmapperAPI = {
     return { success: true };
   }
 };
-```
-
+```plaintext
 ## 5. Plan d'implémentation
 
 ### 5.1 Phase 1: Configuration de base

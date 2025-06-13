@@ -5,10 +5,15 @@ Ce document décrit le module de traitement parallèle (`ParallelProcessing.ps1`
 ## Table des matières
 
 1. [Introduction](#introduction)
+
 2. [Fonctions disponibles](#fonctions-disponibles)
+
 3. [Exemples d'utilisation](#exemples-dutilisation)
+
 4. [Performances](#performances)
+
 5. [Compatibilité](#compatibilité)
+
 6. [Bonnes pratiques](#bonnes-pratiques)
 
 ## Introduction
@@ -24,8 +29,7 @@ Le module de traitement parallèle permet d'exécuter des opérations sur plusie
 
 ```powershell
 Invoke-ParallelFileProcessing -FilePaths <string[]> -ScriptBlock <scriptblock> [-ThrottleLimit <int>] [-Parameters <hashtable>]
-```
-
+```plaintext
 Cette fonction exécute un script block sur plusieurs fichiers en parallèle.
 
 #### Paramètres
@@ -41,16 +45,15 @@ Cette fonction exécute un script block sur plusieurs fichiers en parallèle.
 $results = Invoke-ParallelFileProcessing -FilePaths $files -ScriptBlock {
     param($FilePath)
     # Traitement du fichier
+
     return "Traitement de $FilePath terminé"
 } -ThrottleLimit 3
-```
-
+```plaintext
 ### Convert-FilesInParallel
 
 ```powershell
 Convert-FilesInParallel -InputFiles <string[]> -OutputDir <string> [-InputFormat <string>] -OutputFormat <string> [-FlattenNestedObjects <bool>] [-NestedSeparator <string>] [-ThrottleLimit <int>]
-```
-
+```plaintext
 Cette fonction convertit plusieurs fichiers en parallèle d'un format à un autre.
 
 #### Paramètres
@@ -67,14 +70,12 @@ Cette fonction convertit plusieurs fichiers en parallèle d'un format à un autr
 
 ```powershell
 $results = Convert-FilesInParallel -InputFiles $csvFiles -OutputDir $outputDir -InputFormat "CSV" -OutputFormat "JSON" -ThrottleLimit 3
-```
-
+```plaintext
 ### Get-FileAnalysisInParallel
 
 ```powershell
 Get-FileAnalysisInParallel -FilePaths <string[]> [-Format <string>] -OutputDir <string> [-ThrottleLimit <int>]
-```
-
+```plaintext
 Cette fonction analyse plusieurs fichiers en parallèle et génère des rapports d'analyse.
 
 #### Paramètres
@@ -88,67 +89,79 @@ Cette fonction analyse plusieurs fichiers en parallèle et génère des rapports
 
 ```powershell
 $results = Get-FileAnalysisInParallel -FilePaths $jsonFiles -Format "JSON" -OutputDir $analysisDir -ThrottleLimit 3
-```
-
+```plaintext
 ## Exemples d'utilisation
 
 ### Conversion parallèle de fichiers CSV en JSON
 
 ```powershell
 # Importer le module
+
 . ".\modules\ParallelProcessing.ps1"
 
 # Définir les fichiers à traiter
+
 $csvFiles = Get-ChildItem -Path ".\data" -Filter "*.csv" | Select-Object -ExpandProperty FullName
 
 # Convertir les fichiers en parallèle
+
 $results = Convert-FilesInParallel -InputFiles $csvFiles -OutputDir ".\output" -InputFormat "CSV" -OutputFormat "JSON" -ThrottleLimit 3
 
 # Afficher les résultats
-$results | Format-Table -Property InputFile, OutputFile, Success
-```
 
+$results | Format-Table -Property InputFile, OutputFile, Success
+```plaintext
 ### Analyse parallèle de fichiers JSON
 
 ```powershell
 # Importer le module
+
 . ".\modules\ParallelProcessing.ps1"
 
 # Définir les fichiers à traiter
+
 $jsonFiles = Get-ChildItem -Path ".\data" -Filter "*.json" | Select-Object -ExpandProperty FullName
 
 # Analyser les fichiers en parallèle
+
 $results = Get-FileAnalysisInParallel -FilePaths $jsonFiles -Format "JSON" -OutputDir ".\analysis" -ThrottleLimit 3
 
 # Afficher les résultats
-$results | Format-Table -Property InputFile, OutputFile, Format, Success
-```
 
+$results | Format-Table -Property InputFile, OutputFile, Format, Success
+```plaintext
 ### Traitement personnalisé en parallèle
 
 ```powershell
 # Importer le module
+
 . ".\modules\ParallelProcessing.ps1"
 
 # Définir les fichiers à traiter
+
 $files = Get-ChildItem -Path ".\data" -Filter "*.txt" | Select-Object -ExpandProperty FullName
 
 # Définir le script block de traitement
+
 $scriptBlock = {
     param($FilePath, $OutputDir)
     
     # Lire le contenu du fichier
+
     $content = Get-Content -Path $FilePath -Raw
     
     # Traiter le contenu
+
     $processedContent = $content.ToUpper()
     
     # Enregistrer le résultat
+
     $fileName = [System.IO.Path]::GetFileNameWithoutExtension($FilePath)
     $outputPath = Join-Path -Path $OutputDir -ChildPath "$fileName-processed.txt"
     Set-Content -Path $outputPath -Value $processedContent -Encoding UTF8
     
     # Retourner le résultat
+
     return [PSCustomObject]@{
         InputFile = $FilePath
         OutputFile = $outputPath
@@ -157,15 +170,16 @@ $scriptBlock = {
 }
 
 # Traiter les fichiers en parallèle
+
 $parameters = @{
     OutputDir = ".\output"
 }
 $results = Invoke-ParallelFileProcessing -FilePaths $files -ScriptBlock $scriptBlock -ThrottleLimit 3 -Parameters $parameters
 
 # Afficher les résultats
-$results | Format-Table -Property InputFile, OutputFile, Success
-```
 
+$results | Format-Table -Property InputFile, OutputFile, Success
+```plaintext
 ## Performances
 
 Le traitement parallèle peut considérablement améliorer les performances, en particulier pour les opérations intensives sur de nombreux fichiers. Voici quelques résultats de performance typiques :

@@ -7,16 +7,19 @@ Ce document définit la structure standardisée des fichiers et dossiers pour le
 ## Principes généraux
 
 ### Séparation des préoccupations
+
 - Séparer clairement les différentes parties du projet selon leur fonction
 - Regrouper les fichiers liés par leur fonctionnalité plutôt que par leur type
 - Maintenir une hiérarchie logique et intuitive
 
 ### Modularité
+
 - Organiser le code en modules indépendants et réutilisables
 - Limiter les dépendances entre les modules
 - Faciliter l'ajout, la modification ou la suppression de fonctionnalités
 
 ### Cohérence
+
 - Appliquer les mêmes conventions d'organisation dans tout le projet
 - Utiliser des noms de dossiers et de fichiers cohérents
 - Maintenir une structure prévisible
@@ -25,165 +28,251 @@ Ce document définit la structure standardisée des fichiers et dossiers pour le
 
 La structure racine du projet EMAIL_SENDER_1 est organisée comme suit :
 
-```
+```plaintext
 EMAIL_SENDER_1/
 ├── development/        # Code de développement et outils
-├── docs/               # Documentation du projet
-├── projet/             # Configuration et planification du projet
-├── src/                # Code source principal
-└── tests/              # Tests automatisés
-```
 
+├── docs/               # Documentation du projet
+
+├── projet/             # Configuration et planification du projet
+
+├── src/                # Code source principal
+
+└── tests/              # Tests automatisés
+
+```plaintext
 ### Dossier `development/`
 
 Le dossier `development/` contient tous les scripts, outils et ressources utilisés pendant le développement mais qui ne font pas partie du code source principal.
 
-```
+```plaintext
 development/
 ├── scripts/            # Scripts utilitaires et d'automatisation
-│   ├── analysis/       # Scripts d'analyse de données
-│   ├── core/           # Scripts fondamentaux
-│   ├── extraction/     # Scripts d'extraction de données
-│   ├── integration/    # Scripts d'intégration avec d'autres systèmes
-│   ├── maintenance/    # Scripts de maintenance
-│   ├── optimization/   # Scripts d'optimisation
-│   ├── reporting/      # Scripts de génération de rapports
-│   ├── testing/        # Scripts de test
-│   └── utils/          # Scripts utilitaires généraux
-├── templates/          # Templates pour la génération de code
-│   ├── hygen/          # Templates Hygen
-│   ├── powershell/     # Templates PowerShell
-│   └── python/         # Templates Python
-└── tools/              # Outils de développement
-    ├── analyzers/      # Outils d'analyse de code
-    ├── generators/     # Générateurs de code
-    └── validators/     # Validateurs de code
-```
 
+│   ├── analysis/       # Scripts d'analyse de données
+
+│   ├── core/           # Scripts fondamentaux
+
+│   ├── extraction/     # Scripts d'extraction de données
+
+│   ├── integration/    # Scripts d'intégration avec d'autres systèmes
+
+│   ├── maintenance/    # Scripts de maintenance
+
+│   ├── optimization/   # Scripts d'optimisation
+
+│   ├── reporting/      # Scripts de génération de rapports
+
+│   ├── testing/        # Scripts de test
+
+│   └── utils/          # Scripts utilitaires généraux
+
+├── templates/          # Templates pour la génération de code
+
+│   ├── hygen/          # Templates Hygen
+
+│   ├── powershell/     # Templates PowerShell
+
+│   └── python/         # Templates Python
+
+└── tools/              # Outils de développement
+
+    ├── analyzers/      # Outils d'analyse de code
+
+    ├── generators/     # Générateurs de code
+
+    └── validators/     # Validateurs de code
+
+```plaintext
 #### Organisation des scripts
 
 Chaque sous-dossier de `development/scripts/` suit une structure commune :
 
-```
+```plaintext
 scripts/category/
 ├── modules/            # Modules PowerShell
-│   ├── ModuleName1/    # Module spécifique
-│   │   ├── ModuleName1.psd1    # Manifeste du module
-│   │   ├── ModuleName1.psm1    # Module principal
-│   │   ├── Public/             # Fonctions publiques
-│   │   ├── Private/            # Fonctions privées
-│   │   ├── Tests/              # Tests du module
-│   │   ├── config/             # Configuration du module
-│   │   └── data/               # Données du module
-│   └── ModuleName2/    # Autre module
-├── examples/           # Exemples d'utilisation
-└── standalone/         # Scripts autonomes
-```
 
+│   ├── ModuleName1/    # Module spécifique
+
+│   │   ├── ModuleName1.psd1    # Manifeste du module
+
+│   │   ├── ModuleName1.psm1    # Module principal
+
+│   │   ├── Public/             # Fonctions publiques
+
+│   │   ├── Private/            # Fonctions privées
+
+│   │   ├── Tests/              # Tests du module
+
+│   │   ├── config/             # Configuration du module
+
+│   │   └── data/               # Données du module
+
+│   └── ModuleName2/    # Autre module
+
+├── examples/           # Exemples d'utilisation
+
+└── standalone/         # Scripts autonomes
+
+```plaintext
 ### Dossier `docs/`
 
 Le dossier `docs/` contient toute la documentation du projet.
 
-```
+```plaintext
 docs/
 ├── api/                # Documentation de l'API
-├── architecture/       # Documentation de l'architecture
-├── guides/             # Guides d'utilisation
-│   ├── development/    # Guides pour les développeurs
-│   ├── installation/   # Guides d'installation
-│   ├── powershell/     # Guides spécifiques à PowerShell
-│   ├── python/         # Guides spécifiques à Python
-│   ├── standards/      # Standards et conventions
-│   └── usage/          # Guides d'utilisation
-├── references/         # Documents de référence
-└── tutorials/          # Tutoriels pas à pas
-```
 
+├── architecture/       # Documentation de l'architecture
+
+├── guides/             # Guides d'utilisation
+
+│   ├── development/    # Guides pour les développeurs
+
+│   ├── installation/   # Guides d'installation
+
+│   ├── powershell/     # Guides spécifiques à PowerShell
+
+│   ├── python/         # Guides spécifiques à Python
+
+│   ├── standards/      # Standards et conventions
+
+│   └── usage/          # Guides d'utilisation
+
+├── references/         # Documents de référence
+
+└── tutorials/          # Tutoriels pas à pas
+
+```plaintext
 ### Dossier `projet/`
 
 Le dossier `projet/` contient les fichiers de configuration et de planification du projet.
 
-```
+```plaintext
 projet/
 ├── config/             # Fichiers de configuration
-├── roadmaps/           # Plans de développement
-│   ├── plans/          # Plans détaillés
-│   └── visualizations/ # Visualisations des plans
-└── templates/          # Templates pour les documents du projet
-```
 
+├── roadmaps/           # Plans de développement
+
+│   ├── plans/          # Plans détaillés
+
+│   └── visualizations/ # Visualisations des plans
+
+└── templates/          # Templates pour les documents du projet
+
+```plaintext
 ### Dossier `src/`
 
 Le dossier `src/` contient le code source principal du projet.
 
-```
+```plaintext
 src/
 ├── core/               # Fonctionnalités fondamentales
-├── integrations/       # Intégrations avec d'autres systèmes
-├── mcp/                # Serveurs MCP (Model Context Protocol)
-│   ├── servers/        # Implémentations des serveurs
-│   └── clients/        # Clients pour les serveurs
-├── n8n/                # Workflows et configurations n8n
-│   ├── config/         # Configuration n8n
-│   ├── credentials/    # Credentials n8n (sécurisées)
-│   └── workflows/      # Workflows n8n
-│       ├── active/     # Workflows actifs
-│       └── archive/    # Workflows archivés
-└── web/                # Composants web
-    ├── api/            # API web
-    ├── client/         # Client web
-    └── dashboard/      # Tableau de bord
-```
 
+├── integrations/       # Intégrations avec d'autres systèmes
+
+├── mcp/                # Serveurs MCP (Model Context Protocol)
+
+│   ├── servers/        # Implémentations des serveurs
+
+│   └── clients/        # Clients pour les serveurs
+
+├── n8n/                # Workflows et configurations n8n
+
+│   ├── config/         # Configuration n8n
+
+│   ├── credentials/    # Credentials n8n (sécurisées)
+
+│   └── workflows/      # Workflows n8n
+
+│       ├── active/     # Workflows actifs
+
+│       └── archive/    # Workflows archivés
+
+└── web/                # Composants web
+
+    ├── api/            # API web
+
+    ├── client/         # Client web
+
+    └── dashboard/      # Tableau de bord
+
+```plaintext
 ### Dossier `tests/`
 
 Le dossier `tests/` contient tous les tests automatisés du projet.
 
-```
+```plaintext
 tests/
 ├── integration/        # Tests d'intégration
-├── performance/        # Tests de performance
-├── security/           # Tests de sécurité
-└── unit/               # Tests unitaires
-    ├── core/           # Tests des fonctionnalités fondamentales
-    ├── integrations/   # Tests des intégrations
-    └── n8n/            # Tests des workflows n8n
-```
 
+├── performance/        # Tests de performance
+
+├── security/           # Tests de sécurité
+
+└── unit/               # Tests unitaires
+
+    ├── core/           # Tests des fonctionnalités fondamentales
+
+    ├── integrations/   # Tests des intégrations
+
+    └── n8n/            # Tests des workflows n8n
+
+```plaintext
 ## Organisation des modules PowerShell
 
 Chaque module PowerShell suit une structure standardisée :
 
-```
+```plaintext
 ModuleName/
 ├── ModuleName.psd1     # Manifeste du module
-├── ModuleName.psm1     # Module principal
-├── Public/             # Fonctions publiques
-│   ├── Function1.ps1   # Fonction publique individuelle
-│   └── Function2.ps1   # Autre fonction publique
-├── Private/            # Fonctions privées
-│   ├── Function1.ps1   # Fonction privée individuelle
-│   └── Function2.ps1   # Autre fonction privée
-├── Tests/              # Tests du module
-│   ├── ModuleName.Tests.ps1       # Tests généraux
-│   ├── Function1.Tests.ps1        # Tests spécifiques à une fonction
-│   └── TestData/                  # Données de test
-├── config/             # Configuration du module
-│   └── ModuleName.config.json     # Configuration par défaut
-├── data/               # Données du module
-│   ├── templates/      # Templates
-│   └── schemas/        # Schémas de validation
-├── logs/               # Logs du module (générés)
-└── README.md           # Documentation du module
-```
 
+├── ModuleName.psm1     # Module principal
+
+├── Public/             # Fonctions publiques
+
+│   ├── Function1.ps1   # Fonction publique individuelle
+
+│   └── Function2.ps1   # Autre fonction publique
+
+├── Private/            # Fonctions privées
+
+│   ├── Function1.ps1   # Fonction privée individuelle
+
+│   └── Function2.ps1   # Autre fonction privée
+
+├── Tests/              # Tests du module
+
+│   ├── ModuleName.Tests.ps1       # Tests généraux
+
+│   ├── Function1.Tests.ps1        # Tests spécifiques à une fonction
+
+│   └── TestData/                  # Données de test
+
+├── config/             # Configuration du module
+
+│   └── ModuleName.config.json     # Configuration par défaut
+
+├── data/               # Données du module
+
+│   ├── templates/      # Templates
+
+│   └── schemas/        # Schémas de validation
+
+├── logs/               # Logs du module (générés)
+
+└── README.md           # Documentation du module
+
+```plaintext
 ### Fichier de module principal (`.psm1`)
 
 Le fichier de module principal (`.psm1`) suit une structure standardisée :
 
 ```powershell
 #Requires -Version 5.1
+
 <#
+
 .SYNOPSIS
     Description courte du module.
 .DESCRIPTION
@@ -195,6 +284,7 @@ Le fichier de module principal (`.psm1`) suit une structure standardisée :
 #>
 
 #region Variables globales
+
 $script:ModuleName = 'NomDuModule'
 $script:ModuleRoot = $PSScriptRoot
 $script:ModuleVersion = '1.0.0'
@@ -203,7 +293,9 @@ $script:LogPath = Join-Path -Path $PSScriptRoot -ChildPath "logs\$script:ModuleN
 #endregion
 
 #region Fonctions privées
+
 # Importer toutes les fonctions privées
+
 $PrivateFunctions = @(Get-ChildItem -Path "$PSScriptRoot\Private\*.ps1" -ErrorAction SilentlyContinue)
 foreach ($Function in $PrivateFunctions) {
     try {
@@ -217,7 +309,9 @@ foreach ($Function in $PrivateFunctions) {
 #endregion
 
 #region Fonctions publiques
+
 # Importer toutes les fonctions publiques
+
 $PublicFunctions = @(Get-ChildItem -Path "$PSScriptRoot\Public\*.ps1" -ErrorAction SilentlyContinue)
 foreach ($Function in $PublicFunctions) {
     try {
@@ -231,11 +325,13 @@ foreach ($Function in $PublicFunctions) {
 #endregion
 
 #region Initialisation du module
+
 function Initialize-ModuleName {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param()
 
     # Créer les dossiers nécessaires s'ils n'existent pas
+
     $Folders = @(
         (Join-Path -Path $script:ModuleRoot -ChildPath "config"),
         (Join-Path -Path $script:ModuleRoot -ChildPath "logs"),
@@ -252,6 +348,7 @@ function Initialize-ModuleName {
     }
 
     # Initialiser le fichier de configuration s'il n'existe pas
+
     if (-not (Test-Path -Path $script:ConfigPath)) {
         if ($PSCmdlet.ShouldProcess($script:ConfigPath, "Créer le fichier de configuration")) {
             $DefaultConfig = @{
@@ -270,100 +367,152 @@ function Initialize-ModuleName {
 #endregion
 
 #region Exportation des fonctions
+
 # Exporter uniquement les fonctions publiques
+
 Export-ModuleMember -Function $PublicFunctions.BaseName -Variable @()
 #endregion
 
 # Initialiser le module lors du chargement
-Initialize-ModuleName
-```
 
+Initialize-ModuleName
+```plaintext
 ## Organisation des packages Python
 
 Les packages Python suivent une structure standardisée :
 
-```
+```plaintext
 package_name/
 ├── __init__.py         # Initialisation du package
-├── main.py             # Point d'entrée principal
-├── core/               # Fonctionnalités fondamentales
-│   ├── __init__.py     # Initialisation du sous-package
-│   └── module1.py      # Module spécifique
-├── utils/              # Utilitaires
-│   ├── __init__.py     # Initialisation du sous-package
-│   └── helpers.py      # Fonctions d'aide
-├── models/             # Modèles de données
-│   ├── __init__.py     # Initialisation du sous-package
-│   └── user.py         # Modèle spécifique
-├── config/             # Configuration
-│   ├── __init__.py     # Initialisation du sous-package
-│   └── settings.py     # Paramètres de configuration
-├── tests/              # Tests
-│   ├── __init__.py     # Initialisation du package de tests
-│   ├── test_main.py    # Tests du module principal
-│   └── test_utils.py   # Tests des utilitaires
-├── docs/               # Documentation
-│   └── index.md        # Documentation principale
-├── setup.py            # Script d'installation
-└── README.md           # Documentation du package
-```
 
+├── main.py             # Point d'entrée principal
+
+├── core/               # Fonctionnalités fondamentales
+
+│   ├── __init__.py     # Initialisation du sous-package
+
+│   └── module1.py      # Module spécifique
+
+├── utils/              # Utilitaires
+
+│   ├── __init__.py     # Initialisation du sous-package
+
+│   └── helpers.py      # Fonctions d'aide
+
+├── models/             # Modèles de données
+
+│   ├── __init__.py     # Initialisation du sous-package
+
+│   └── user.py         # Modèle spécifique
+
+├── config/             # Configuration
+
+│   ├── __init__.py     # Initialisation du sous-package
+
+│   └── settings.py     # Paramètres de configuration
+
+├── tests/              # Tests
+
+│   ├── __init__.py     # Initialisation du package de tests
+
+│   ├── test_main.py    # Tests du module principal
+
+│   └── test_utils.py   # Tests des utilitaires
+
+├── docs/               # Documentation
+
+│   └── index.md        # Documentation principale
+
+├── setup.py            # Script d'installation
+
+└── README.md           # Documentation du package
+
+```plaintext
 ## Organisation des projets JavaScript/TypeScript
 
 Les projets JavaScript/TypeScript suivent une structure standardisée :
 
-```
+```plaintext
 project-name/
 ├── src/                # Code source
-│   ├── components/     # Composants React
-│   │   ├── common/     # Composants communs
-│   │   └── specific/   # Composants spécifiques
-│   ├── services/       # Services
-│   │   ├── api.js      # Service API
-│   │   └── auth.js     # Service d'authentification
-│   ├── utils/          # Utilitaires
-│   │   └── helpers.js  # Fonctions d'aide
-│   ├── models/         # Modèles de données
-│   │   └── user.js     # Modèle spécifique
-│   ├── config/         # Configuration
-│   │   └── settings.js # Paramètres de configuration
-│   └── index.js        # Point d'entrée principal
-├── public/             # Fichiers statiques
-│   ├── index.html      # Page HTML principale
-│   └── assets/         # Ressources statiques
-│       ├── images/     # Images
-│       └── styles/     # Styles CSS
-├── tests/              # Tests
-│   ├── components/     # Tests des composants
-│   └── services/       # Tests des services
-├── docs/               # Documentation
-├── package.json        # Configuration npm
-└── README.md           # Documentation du projet
-```
 
+│   ├── components/     # Composants React
+
+│   │   ├── common/     # Composants communs
+
+│   │   └── specific/   # Composants spécifiques
+
+│   ├── services/       # Services
+
+│   │   ├── api.js      # Service API
+
+│   │   └── auth.js     # Service d'authentification
+
+│   ├── utils/          # Utilitaires
+
+│   │   └── helpers.js  # Fonctions d'aide
+
+│   ├── models/         # Modèles de données
+
+│   │   └── user.js     # Modèle spécifique
+
+│   ├── config/         # Configuration
+
+│   │   └── settings.js # Paramètres de configuration
+
+│   └── index.js        # Point d'entrée principal
+
+├── public/             # Fichiers statiques
+
+│   ├── index.html      # Page HTML principale
+
+│   └── assets/         # Ressources statiques
+
+│       ├── images/     # Images
+
+│       └── styles/     # Styles CSS
+
+├── tests/              # Tests
+
+│   ├── components/     # Tests des composants
+
+│   └── services/       # Tests des services
+
+├── docs/               # Documentation
+
+├── package.json        # Configuration npm
+
+└── README.md           # Documentation du projet
+
+```plaintext
 ## Bonnes pratiques
 
 ### Taille des fichiers
+
 - Limiter la taille des fichiers à environ 300-500 lignes
 - Diviser les fichiers volumineux en modules plus petits et plus spécifiques
 - Un fichier = une responsabilité
 
 ### Profondeur de l'arborescence
+
 - Limiter la profondeur de l'arborescence à 4-5 niveaux maximum
 - Éviter les structures trop profondes qui rendent la navigation difficile
 - Privilégier une structure plate mais organisée
 
 ### Fichiers README
+
 - Chaque module ou composant important doit avoir un fichier README.md
 - Le README doit expliquer le but, l'utilisation et les dépendances du module
 - Inclure des exemples d'utilisation dans le README
 
 ### Fichiers de configuration
+
 - Centraliser les configurations dans des fichiers dédiés
 - Séparer les configurations par environnement (dev, test, prod)
 - Éviter les valeurs codées en dur dans le code
 
 ### Gestion des dépendances
+
 - Documenter clairement les dépendances externes
 - Minimiser les dépendances entre les modules
 - Utiliser des gestionnaires de dépendances appropriés (npm, pip, etc.)
@@ -372,7 +521,7 @@ project-name/
 
 ### Exemple de structure pour un module PowerShell
 
-```
+```plaintext
 EmailSender/
 ├── EmailSender.psd1
 ├── EmailSender.psm1
@@ -400,11 +549,10 @@ EmailSender/
 │       └── email-schema.json
 ├── logs/
 └── README.md
-```
-
+```plaintext
 ### Exemple de structure pour un package Python
 
-```
+```plaintext
 email_sender/
 ├── __init__.py
 ├── main.py
@@ -431,11 +579,10 @@ email_sender/
 │   └── index.md
 ├── setup.py
 └── README.md
-```
-
+```plaintext
 ### Exemple de structure pour un projet JavaScript/TypeScript
 
-```
+```plaintext
 email-dashboard/
 ├── src/
 │   ├── components/
@@ -466,4 +613,4 @@ email-dashboard/
 ├── docs/
 ├── package.json
 └── README.md
-```
+```plaintext

@@ -11,9 +11,9 @@ Cette section contient les scripts liÃ©s Ã  la conversion de format dans la 
 
 ```powershell
 # Exemple d'utilisation
-.\Convert-Roadmap.ps1 -SourcePath "Roadmap/roadmap_complete.md" -TemplatePath "Roadmap/roadmap_template.md" -OutputPath "Roadmap/roadmap_complete_new.md"
-```
 
+.\Convert-Roadmap.ps1 -SourcePath "Roadmap/roadmap_complete.md" -TemplatePath "Roadmap/roadmap_template.md" -OutputPath "Roadmap/roadmap_complete_new.md"
+```plaintext
 ## DÃ©pendances
 
 Ces scripts peuvent dÃ©pendre des modules suivants :

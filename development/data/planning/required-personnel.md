@@ -1,16 +1,23 @@
-﻿# DÃ©termination du Nombre de Personnes NÃ©cessaires pour les AmÃ©liorations
+# DÃ©termination du Nombre de Personnes NÃ©cessaires pour les AmÃ©liorations
 
 Ce document prÃ©sente la dÃ©termination du nombre de personnes nÃ©cessaires pour les amÃ©liorations identifiÃ©es pour les diffÃ©rents gestionnaires.
 
 ## Table des MatiÃ¨res
 
 - [Process Manager](#process-manager)
+
 - [Mode Manager](#mode-manager)
+
 - [Roadmap Manager](#roadmap-manager)
+
 - [Integrated Manager](#integrated-manager)
+
 - [Script Manager](#script-manager)
+
 - [Error Manager](#error-manager)
+
 - [Configuration Manager](#configuration-manager)
+
 - [Logging Manager](#logging-manager)
 
 ## MÃ©thodologie

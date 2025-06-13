@@ -19,8 +19,7 @@ La méthode la plus simple pour installer Desktop Commander est d'utiliser notre
 
 ```powershell
 .\projet\mcp\scripts\setup-desktop-commander-mcp.ps1
-```
-
+```plaintext
 Ce script va :
 1. Vérifier que Node.js est installé
 2. Installer le package npm `@wonderwhy-er/desktop-commander`
@@ -64,71 +63,61 @@ Le MCP Desktop Commander peut être configuré via le fichier `projet/mcp/config
 
 Desktop Commander permet d'exécuter des commandes dans le terminal et de récupérer leur sortie :
 
-```
+```plaintext
 execute_command({ "command": "dir", "timeout": 30000 })
-```
-
+```plaintext
 Options disponibles :
 - `command` : La commande à exécuter
 - `timeout` : Délai d'attente en millisecondes (défaut : 30000)
 - `shell` : Shell à utiliser (ex: "powershell", "cmd", "bash")
 
 Pour les commandes longues, vous pouvez utiliser :
-```
+```plaintext
 read_output({ "pid": 1234 })
-```
-
+```plaintext
 ### Gestion des processus
 
 Lister les processus en cours :
-```
+```plaintext
 list_processes({})
-```
-
+```plaintext
 Terminer un processus :
-```
+```plaintext
 kill_process({ "pid": 1234 })
-```
-
+```plaintext
 ### Opérations sur les fichiers
 
 Lire un fichier :
-```
+```plaintext
 read_file({ "path": "chemin/vers/fichier.txt" })
-```
-
+```plaintext
 Écrire dans un fichier :
-```
+```plaintext
 write_file({ "path": "chemin/vers/fichier.txt", "content": "Nouveau contenu" })
-```
-
+```plaintext
 Lister un répertoire :
-```
+```plaintext
 list_directory({ "path": "chemin/vers/dossier" })
-```
-
+```plaintext
 ### Recherche de fichiers et de code
 
 Rechercher des fichiers par nom :
-```
+```plaintext
 search_files({ "directory": "chemin/vers/dossier", "pattern": "*.txt" })
-```
-
+```plaintext
 Rechercher du texte dans les fichiers :
-```
+```plaintext
 search_code({ "directory": "chemin/vers/dossier", "pattern": "fonction()" })
-```
-
+```plaintext
 ### Édition de code
 
 Desktop Commander offre une fonctionnalité puissante d'édition de code avec le format de bloc suivant :
 
-```
+```plaintext
 edit_block({
   "content": "chemin/vers/fichier.js\n<<<<<<< SEARCH\nancien code\n=======\nnouveau code\n>>>>>>> REPLACE"
 })
-```
-
+```plaintext
 Ce format permet de faire des modifications chirurgicales dans les fichiers sans avoir à les réécrire entièrement.
 
 ## Intégration avec n8n

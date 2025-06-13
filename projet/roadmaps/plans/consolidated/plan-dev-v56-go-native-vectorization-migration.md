@@ -108,8 +108,7 @@ type Point struct {
     Vector  []float32              `json:"vector"`
     Payload map[string]interface{} `json:"payload"`
 }
-```
-
+```plaintext
 #### 1.2.2 Analyse du Client RAG (`tools/qdrant/rag-go/pkg/client/qdrant.go`)
 
 - [ ] **1.2.2.1** Comparer avec le client principal
@@ -165,8 +164,7 @@ type QdrantInterface interface {
     DeleteCollection(ctx context.Context, name string) error
     HealthCheck(ctx context.Context) error
 }
-```
-
+```plaintext
 #### 2.1.2 Implémentation des Fonctionnalités Avancées
 
 - [ ] **2.1.2.1** Intégrer les patterns de performance
@@ -232,8 +230,7 @@ type EmbeddingClient interface {
     GenerateEmbedding(ctx context.Context, text string) ([]float32, error)
     BatchGenerateEmbeddings(ctx context.Context, texts []string) ([][]float32, error)
 }
-```
-
+```plaintext
 #### 3.1.2 Migration de `vectorize_tasks.py`
 
 - [ ] **3.1.2.1** Créer `planning-ecosystem-sync/cmd/vectorize/main.go`
@@ -303,8 +300,7 @@ func (dm *DependencyManager) OnDependencyAdded(dep *Dependency) error {
         },
     }})
 }
-```
-
+```plaintext
 #### 4.1.2 Harmonisation avec Planning Ecosystem Sync
 
 - [ ] **4.1.2.1** Créer `planning-ecosystem-sync/pkg/managers/dependency-connector.go`
@@ -347,8 +343,7 @@ func (dm *DependencyManager) OnDependencyAdded(dep *Dependency) error {
 // Proposed: planning-ecosystem-sync/pkg/coordinator/manager-coordinator.go
 //
 // SOLUTION DRY : Étendre l'integrated-manager existant au lieu de dupliquer
-```
-
+```plaintext
 #### 4.3.2 Stratégie de Consolidation (Principe DRY)
 
 - [ ] **4.3.2.1** Étendre l'integrated-manager existant pour vectorisation
@@ -371,8 +366,7 @@ type VectorizationOrchestrator interface {
     IMetricsCollector          // EXISTING: Preserved
     VectorizationCoordinator   // NEW: Vectorisation capabilities
 }
-```
-
+```plaintext
 - [ ] **4.3.2.2** Consolidation des managers redondants dans l'écosystème
   - Micro-étape 4.3.2.2.1: **AUDIT COMPLET** des 20+ managers dans `development/managers/`
   - Micro-étape 4.3.2.2.2: Identifier les responsabilités qui se chevauchent (violation SRP)
@@ -417,8 +411,7 @@ func TestIntegratedManagerBackwardCompatibility(t *testing.T) {
     assert.NoError(t, err)
     assert.NotNil(t, vectorReport)
 }
-```
-
+```plaintext
 #### 4.3.4 Validation des Principes SOLID
 
 - [ ] **4.3.4.1** Audit SOLID de l'écosystème managers

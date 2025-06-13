@@ -1,4 +1,5 @@
 # Rapport de déplacement des fichiers de visualisation
+
 *Généré le 17/05/2025 02:10:00*
 
 ## Résumé
@@ -11,6 +12,7 @@
 ## Liste des fichiers déplacés par type
 
 ### Fichiers HTML (8)
+
 - combined-visualization.html (8.12 KB)
 - cosmos-example.html (20.94 KB)
 - custom-filters-demo.html (11.10 KB)
@@ -21,6 +23,7 @@
 - test-metro-layout.html (15.27 KB)
 
 ### Fichiers JavaScript (16)
+
 - cosmos-data-converter.js (8.12 KB)
 - cosmos-visualization.js (12.60 KB)
 - CustomFiltersManager.js (10.31 KB)
@@ -38,20 +41,24 @@
 - ThematicTemporalFilter.js (14.98 KB)
 
 ### Fichiers CSS (2)
+
 - cosmos-visualization.css (6.72 KB)
 - metro-map-cognitive.css (9.05 KB)
 
 ### Autres fichiers (1)
+
 - README-MetroMapLayoutEngine.md (7.16 KB)
 
 ## Vérification des références
 
 ### Références dans les fichiers HTML
+
 Les références aux fichiers JavaScript et CSS ont été maintenues dans les fichiers HTML. Par exemple, dans `combined-visualization.html`, les références suivantes sont toujours présentes :
 - `<link rel="stylesheet" href="cosmos-visualization.css">`
 - `<script src="cosmos-visualization.js"></script>`
 
 ### Imports dans les fichiers JavaScript
+
 Les imports relatifs dans les fichiers JavaScript ont été maintenus. Par exemple, dans `CustomFiltersManager.js`, les imports suivants sont toujours présents :
 - `import HierarchyLevelFilter from './HierarchyLevelFilter.js';`
 - `import { ThematicFilter, TemporalFilter } from './ThematicTemporalFilter.js';`
@@ -59,7 +66,7 @@ Les imports relatifs dans les fichiers JavaScript ont été maintenus. Par exemp
 
 ## Structure finale du dossier
 
-```
+```plaintext
 projet/roadmaps/visualization/
 ├── babel.config.js
 ├── jest.config.js
@@ -98,8 +105,7 @@ projet/roadmaps/visualization/
 │   └── ThematicTemporalFilter.js
 ├── test/
 └── tests/
-```
-
+```plaintext
 ## Conclusion
 
 Le déplacement des fichiers de visualisation a été effectué avec succès. Tous les fichiers source (HTML, JavaScript, CSS) ont été déplacés dans le dossier `src`, tandis que les fichiers de configuration sont restés à la racine. Les références entre les fichiers ont été maintenues, ce qui garantit que les fonctionnalités de visualisation continueront à fonctionner correctement.

@@ -1,4 +1,4 @@
-﻿# Analyse des erreurs et optimisations pour Augment Memories
+# Analyse des erreurs et optimisations pour Augment Memories
 
 ## Description du problÃ¨me
 
@@ -78,3 +78,4 @@ Lors de l'implÃ©mentation des amÃ©liorations pour les MEMORIES d'Augment, pl
 ## Tags
 
 #augment #memories #optimisation #powershell #json #tests #erreurs
+

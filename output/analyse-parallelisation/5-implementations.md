@@ -4,26 +4,35 @@
 
 ### 1.1 Structure du module
 
-```
+```plaintext
 development/
   └── tools/
       └── parallelization/
           ├── UnifiedParallel.psm1       # Module principal
+
           ├── ResourceMonitor.psm1       # Surveillance des ressources
+
           ├── PriorityQueue.psm1         # File d'attente prioritaire
+
           ├── BackpressureManager.psm1   # Gestion de la backpressure
+
           ├── DistributedLock.psm1       # Verrous distribués
+
           ├── ErrorHandling.psm1         # Gestion des erreurs
+
           ├── Throttling.psm1            # Limitation dynamique
+
           └── config/
               └── parallel_config.json   # Configuration centralisée
-```
 
+```plaintext
 ### 1.2 Module principal (UnifiedParallel.psm1)
 
 ```powershell
 #Requires -Version 5.1
+
 <#
+
 .SYNOPSIS
     Module unifié pour la parallélisation optimisée.
 .DESCRIPTION
@@ -36,6 +45,7 @@ development/
 #>
 
 # Importer les sous-modules
+
 $modulePath = Split-Path -Path $PSCommandPath -Parent
 Import-Module "$modulePath\ResourceMonitor.psm1" -Force
 Import-Module "$modulePath\PriorityQueue.psm1" -Force
@@ -45,12 +55,14 @@ Import-Module "$modulePath\ErrorHandling.psm1" -Force
 Import-Module "$modulePath\Throttling.psm1" -Force
 
 # Variables globales
+
 $script:Config = $null
 $script:ResourceMonitor = $null
 $script:BackpressureManager = $null
 $script:ThrottlingManager = $null
 
 # Fonction d'initialisation
+
 function Initialize-UnifiedParallel {
     [CmdletBinding()]
     param (
@@ -68,10 +80,12 @@ function Initialize-UnifiedParallel {
     )
     
     # Charger la configuration
+
     if (Test-Path -Path $ConfigPath) {
         $script:Config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
     } else {
         # Configuration par défaut
+
         $script:Config = [PSCustomObject]@{
             DefaultMaxThreads = [Environment]::ProcessorCount
             DefaultThrottleLimit = [Environment]::ProcessorCount + 2
@@ -96,16 +110,19 @@ function Initialize-UnifiedParallel {
     }
     
     # Initialiser le moniteur de ressources
+
     if ($StartResourceMonitor) {
         $script:ResourceMonitor = Start-ResourceMonitoring -IntervalSeconds 5
     }
     
     # Initialiser le gestionnaire de backpressure
+
     if ($EnableBackpressure) {
         $script:BackpressureManager = New-BackpressureManager -Config $script:Config.BackpressureSettings
     }
     
     # Initialiser le gestionnaire de throttling
+
     if ($EnableDynamicThrottling) {
         $script:ThrottlingManager = Start-DynamicThrottling -Config $script:Config
     }
@@ -114,6 +131,7 @@ function Initialize-UnifiedParallel {
 }
 
 # Fonction principale pour l'exécution parallèle
+
 function Invoke-UnifiedParallel {
     [CmdletBinding()]
     param (
@@ -148,11 +166,13 @@ function Invoke-UnifiedParallel {
     
     begin {
         # Initialiser si ce n'est pas déjà fait
+
         if ($null -eq $script:Config) {
             Initialize-UnifiedParallel
         }
         
         # Déterminer le nombre optimal de threads
+
         if ($MaxThreads -le 0) {
             if ($TaskType -eq "CPU") {
                 $MaxThreads = [Math]::Max(1, [Math]::Floor([Environment]::ProcessorCount * 0.75))
@@ -162,35 +182,42 @@ function Invoke-UnifiedParallel {
                 $MaxThreads = [Environment]::ProcessorCount
             } else {
                 # Auto: utiliser la configuration par défaut
+
                 $MaxThreads = $script:Config.DefaultMaxThreads
             }
         }
         
         # Déterminer la limite de throttling
+
         if ($ThrottleLimit -le 0) {
             $ThrottleLimit = $MaxThreads
         }
         
         # Utiliser le throttling dynamique si demandé
+
         if ($UseDynamicThrottling -and $null -ne $script:ThrottlingManager) {
             $ThrottleLimit = Get-DynamicThrottleLimit -MaxThreads $MaxThreads
         }
         
         # Initialiser les collections pour les résultats et les erreurs
+
         $results = [System.Collections.Generic.List[object]]::new()
         $errors = [System.Collections.Generic.List[object]]::new()
         
         # Créer une file d'attente prioritaire si la backpressure est activée
+
         if ($UseBackpressure -and $null -ne $script:BackpressureManager) {
             $queue = New-PriorityQueue
         }
         
         # Initialiser le pool de runspaces
+
         $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
         $pool = [runspacefactory]::CreateRunspacePool(1, $ThrottleLimit, $sessionState, $Host)
         $pool.Open()
         
         # Initialiser les collections pour les runspaces
+
         $runspaces = [System.Collections.Generic.List[object]]::new()
         $totalItems = 0
     }
@@ -200,6 +227,7 @@ function Invoke-UnifiedParallel {
             $totalItems++
             
             # Vérifier la backpressure
+
             if ($UseBackpressure -and $null -ne $script:BackpressureManager) {
                 $backpressureStatus = Get-BackpressureStatus -QueueSize $runspaces.Count
                 if ($backpressureStatus -eq "Reject") {
@@ -213,22 +241,27 @@ function Invoke-UnifiedParallel {
             }
             
             # Créer un PowerShell runspace
+
             $ps = [powershell]::Create()
             $ps.RunspacePool = $pool
             
             # Ajouter le script et les paramètres
+
             [void]$ps.AddScript($ScriptBlock)
             [void]$ps.AddArgument($item)
             
             # Ajouter les variables partagées
+
             foreach ($key in $SharedVariables.Keys) {
                 [void]$ps.AddArgument($SharedVariables[$key])
             }
             
             # Démarrer l'exécution asynchrone
+
             $handle = $ps.BeginInvoke()
             
             # Ajouter à la liste des runspaces actifs
+
             $runspaces.Add([PSCustomObject]@{
                 PowerShell = $ps
                 Handle = $handle
@@ -238,10 +271,12 @@ function Invoke-UnifiedParallel {
             })
             
             # Attendre si nécessaire (throttling)
+
             while ($runspaces.Count -ge $ThrottleLimit) {
                 $completed = Wait-ForCompletedRunspace -Runspaces $runspaces -Timeout 100
                 if ($completed) {
                     # Traiter les runspaces terminés
+
                     Process-CompletedRunspaces -Runspaces $runspaces -Results $results -Errors $errors
                 }
             }
@@ -250,19 +285,23 @@ function Invoke-UnifiedParallel {
     
     end {
         # Attendre que tous les runspaces soient terminés
+
         while ($runspaces.Count -gt 0) {
             $completed = Wait-ForCompletedRunspace -Runspaces $runspaces -Timeout 500
             if ($completed) {
                 # Traiter les runspaces terminés
+
                 Process-CompletedRunspaces -Runspaces $runspaces -Results $results -Errors $errors
             }
         }
         
         # Fermer le pool
+
         $pool.Close()
         $pool.Dispose()
         
         # Retourner les résultats et les erreurs
+
         return [PSCustomObject]@{
             Results = $results
             Errors = $errors
@@ -274,16 +313,18 @@ function Invoke-UnifiedParallel {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Initialize-UnifiedParallel, Invoke-UnifiedParallel
-```
 
+Export-ModuleMember -Function Initialize-UnifiedParallel, Invoke-UnifiedParallel
+```plaintext
 ## 2. Système de surveillance des ressources
 
 ### ResourceMonitor.psm1
 
 ```powershell
 #Requires -Version 5.1
+
 <#
+
 .SYNOPSIS
     Module de surveillance des ressources système.
 .DESCRIPTION
@@ -296,10 +337,12 @@ Export-ModuleMember -Function Initialize-UnifiedParallel, Invoke-UnifiedParallel
 #>
 
 # Variables globales
+
 $script:ResourceMonitors = @{}
 $script:MonitorCounter = 0
 
 # Fonction pour démarrer la surveillance des ressources
+
 function Start-ResourceMonitoring {
     [CmdletBinding()]
     param (
@@ -311,10 +354,12 @@ function Start-ResourceMonitoring {
     )
     
     # Incrémenter le compteur
+
     $script:MonitorCounter++
     $monitorId = $script:MonitorCounter
     
     # Créer un objet pour stocker les métriques
+
     $metrics = [PSCustomObject]@{
         CPU = @{
             TotalUsage = 0
@@ -340,6 +385,7 @@ function Start-ResourceMonitoring {
     }
     
     # Créer un runspace pour la surveillance en arrière-plan
+
     $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
     $pool = [runspacefactory]::CreateRunspacePool(1, 1, $sessionState, $Host)
     $pool.Open()
@@ -348,22 +394,27 @@ function Start-ResourceMonitoring {
     $ps.RunspacePool = $pool
     
     # Ajouter le script de surveillance
+
     [void]$ps.AddScript({
         param($monitorId, $intervalSeconds, $callback)
         
         # Fonction pour obtenir les métriques système
+
         function Get-SystemMetrics {
             # CPU
+
             $cpuCounter = Get-Counter '\Processor(_Total)\% Processor Time' -ErrorAction SilentlyContinue
             $cpuUsage = if ($null -ne $cpuCounter) { [Math]::Round($cpuCounter.CounterSamples[0].CookedValue, 2) } else { 0 }
             
             # Mémoire
+
             $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem -ErrorAction SilentlyContinue
             $memoryTotal = if ($null -ne $osInfo) { $osInfo.TotalVisibleMemorySize * 1KB } else { 0 }
             $memoryAvailable = if ($null -ne $osInfo) { $osInfo.FreePhysicalMemory * 1KB } else { 0 }
             $memoryUsagePercent = if ($memoryTotal -gt 0) { [Math]::Round(100 - ($memoryAvailable / $memoryTotal * 100), 2) } else { 0 }
             
             # Disque
+
             $diskCounter = Get-Counter '\PhysicalDisk(_Total)\% Disk Time' -ErrorAction SilentlyContinue
             $diskUsage = if ($null -ne $diskCounter) { [Math]::Round($diskCounter.CounterSamples[0].CookedValue, 2) } else { 0 }
             $diskReadCounter = Get-Counter '\PhysicalDisk(_Total)\Disk Read Bytes/sec' -ErrorAction SilentlyContinue
@@ -374,16 +425,19 @@ function Start-ResourceMonitoring {
             $diskQueue = if ($null -ne $diskQueueCounter) { $diskQueueCounter.CounterSamples[0].CookedValue } else { 0 }
             
             # Réseau
+
             $netReceivedCounter = Get-Counter '\Network Interface(*)\Bytes Received/sec' -ErrorAction SilentlyContinue
             $netReceived = if ($null -ne $netReceivedCounter) { ($netReceivedCounter.CounterSamples | Measure-Object -Property CookedValue -Sum).Sum } else { 0 }
             $netSentCounter = Get-Counter '\Network Interface(*)\Bytes Sent/sec' -ErrorAction SilentlyContinue
             $netSent = if ($null -ne $netSentCounter) { ($netSentCounter.CounterSamples | Measure-Object -Property CookedValue -Sum).Sum } else { 0 }
             $netUsage = 0 # Difficile à calculer sans connaître la capacité maximale
+
             
             return [PSCustomObject]@{
                 CPU = @{
                     TotalUsage = $cpuUsage
                     PerCore = @() # À implémenter si nécessaire
+
                 }
                 Memory = @{
                     TotalBytes = $memoryTotal
@@ -406,38 +460,47 @@ function Start-ResourceMonitoring {
         }
         
         # Boucle de surveillance
+
         while ($true) {
             try {
                 # Obtenir les métriques
+
                 $metrics = Get-SystemMetrics
                 
                 # Stocker les métriques dans une variable globale
+
                 $global:ResourceMetrics_$monitorId = $metrics
                 
                 # Exécuter le callback si fourni
+
                 if ($null -ne $callback) {
                     & $callback -Metrics $metrics
                 }
                 
                 # Attendre l'intervalle
+
                 Start-Sleep -Seconds $intervalSeconds
             }
             catch {
                 # Ignorer les erreurs et continuer
+
                 Start-Sleep -Seconds 1
             }
         }
     })
     
     # Ajouter les paramètres
+
     [void]$ps.AddArgument($monitorId)
     [void]$ps.AddArgument($IntervalSeconds)
     [void]$ps.AddArgument($Callback)
     
     # Démarrer l'exécution asynchrone
+
     $handle = $ps.BeginInvoke()
     
     # Stocker les informations du moniteur
+
     $script:ResourceMonitors[$monitorId] = [PSCustomObject]@{
         Id = $monitorId
         PowerShell = $ps
@@ -455,6 +518,7 @@ function Start-ResourceMonitoring {
 }
 
 # Fonction pour arrêter la surveillance des ressources
+
 function Stop-ResourceMonitoring {
     [CmdletBinding()]
     param (
@@ -466,12 +530,14 @@ function Stop-ResourceMonitoring {
         $monitor = $script:ResourceMonitors[$MonitorId]
         
         # Arrêter le runspace
+
         $monitor.PowerShell.Stop()
         $monitor.PowerShell.Dispose()
         $monitor.Pool.Close()
         $monitor.Pool.Dispose()
         
         # Supprimer le moniteur
+
         $script:ResourceMonitors.Remove($MonitorId)
         
         return $true
@@ -481,6 +547,7 @@ function Stop-ResourceMonitoring {
 }
 
 # Fonction pour obtenir les métriques actuelles
+
 function Get-ResourceMetrics {
     [CmdletBinding()]
     param (
@@ -490,6 +557,7 @@ function Get-ResourceMetrics {
     
     if ($MonitorId -eq 0) {
         # Retourner les métriques du premier moniteur
+
         if ($script:ResourceMonitors.Count -gt 0) {
             $firstMonitor = $script:ResourceMonitors.Values | Select-Object -First 1
             $monitorId = $firstMonitor.Id
@@ -501,6 +569,7 @@ function Get-ResourceMetrics {
     
     if ($script:ResourceMonitors.ContainsKey($MonitorId)) {
         # Récupérer les métriques de la variable globale
+
         $variableName = "ResourceMetrics_$MonitorId"
         $metrics = Get-Variable -Name $variableName -Scope Global -ValueOnly -ErrorAction SilentlyContinue
         
@@ -509,6 +578,7 @@ function Get-ResourceMetrics {
         }
         
         # Retourner les métriques stockées localement
+
         return $script:ResourceMonitors[$MonitorId].Metrics
     }
     
@@ -516,16 +586,18 @@ function Get-ResourceMetrics {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Start-ResourceMonitoring, Stop-ResourceMonitoring, Get-ResourceMetrics
-```
 
+Export-ModuleMember -Function Start-ResourceMonitoring, Stop-ResourceMonitoring, Get-ResourceMetrics
+```plaintext
 ## 3. Système de file d'attente prioritaire
 
 ### PriorityQueue.psm1
 
 ```powershell
 #Requires -Version 5.1
+
 <#
+
 .SYNOPSIS
     Module de gestion des files d'attente prioritaires.
 .DESCRIPTION
@@ -538,6 +610,7 @@ Export-ModuleMember -Function Start-ResourceMonitoring, Stop-ResourceMonitoring,
 #>
 
 # Classe pour les tâches prioritaires
+
 class PriorityTask {
     [string]$Id
     [string]$Name
@@ -569,6 +642,7 @@ class PriorityTask {
 }
 
 # Classe pour la file d'attente prioritaire
+
 class PriorityQueue {
     [System.Collections.Generic.List[PriorityTask]]$Tasks
     [int]$PromotionThreshold
@@ -657,6 +731,7 @@ class PriorityQueue {
 }
 
 # Fonction pour créer une nouvelle file d'attente prioritaire
+
 function New-PriorityQueue {
     [CmdletBinding()]
     [OutputType([PriorityQueue])]
@@ -672,6 +747,7 @@ function New-PriorityQueue {
 }
 
 # Fonction pour créer une nouvelle tâche prioritaire
+
 function New-PriorityTask {
     [CmdletBinding()]
     [OutputType([PriorityTask])]
@@ -695,6 +771,7 @@ function New-PriorityTask {
 }
 
 # Exporter les fonctions et classes
+
 Export-ModuleMember -Function New-PriorityQueue, New-PriorityTask
 Export-ModuleMember -Variable @()
-```
+```plaintext

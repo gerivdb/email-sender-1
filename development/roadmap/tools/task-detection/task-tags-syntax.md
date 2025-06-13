@@ -10,8 +10,7 @@ Les tâches sont marquées à l'aide de balises XML spéciales dans le format su
 <task category="X" priority="Y" estimate="Z">
 Description de la tâche
 </task>
-```
-
+```plaintext
 ## Attributs
 
 Les balises de tâches peuvent inclure les attributs suivants :
@@ -26,26 +25,26 @@ Les balises de tâches peuvent inclure les attributs suivants :
 ## Exemples
 
 ### Tâche simple
+
 ```xml
 <task category="1">
 Créer une documentation pour la nouvelle API
 </task>
-```
-
+```plaintext
 ### Tâche prioritaire
+
 ```xml
 <task category="3" priority="high" estimate="2-4" start="true">
 Corriger le bug d'authentification dans le module de connexion
 </task>
-```
-
+```plaintext
 ### Tâche avec estimation précise
+
 ```xml
 <task category="2" estimate="1">
 Ajouter une fonction de validation des chemins
 </task>
-```
-
+```plaintext
 ## Règles d'utilisation
 
 1. L'IA doit utiliser ces balises lorsqu'elle identifie une demande qui constitue une tâche à implémenter.

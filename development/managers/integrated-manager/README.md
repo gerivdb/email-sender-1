@@ -1,4 +1,4 @@
-﻿# integrated-manager
+# integrated-manager
 
 Ce rÃ©pertoire contient les fichiers du gestionnaire integrated-manager.
 

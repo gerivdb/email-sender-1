@@ -19,30 +19,36 @@ L'objectif principal du gestionnaire de scripts est de fournir une interface uni
 
 Le gestionnaire de scripts est organisé selon la structure de répertoires suivante :
 
-```
+```plaintext
 development/managers/script-manager/
 ├── scripts/
 │   ├── script-manager.ps1           # Script principal
+
 │   ├── install-script-manager.ps1   # Script d'installation
+
 │   └── ...                          # Autres scripts
+
 ├── modules/
 │   └── ...                          # Modules PowerShell
+
 ├── tests/
 │   ├── Test-ScriptManager.ps1       # Tests unitaires
+
 │   └── ...                          # Autres tests
+
 └── config/
     └── ...                          # Fichiers de configuration locaux
-```
 
+```plaintext
 ### Fichiers de configuration
 
 Les fichiers de configuration du gestionnaire sont stockés dans :
 
-```
+```plaintext
 projet/config/managers/script-manager/
 └── script-manager.config.json       # Configuration principale
-```
 
+```plaintext
 ## Prérequis
 
 Avant d'utiliser le gestionnaire de scripts, assurez-vous que :
@@ -59,8 +65,7 @@ Pour installer le gestionnaire de scripts, utilisez le script d'installation :
 
 ```powershell
 .\development\managers\script-manager\scripts\install-script-manager.ps1
-```
-
+```plaintext
 ### Installation manuelle
 
 Si vous préférez une installation manuelle, suivez ces étapes :
@@ -75,10 +80,9 @@ Si vous préférez une installation manuelle, suivez ces étapes :
 
 Le fichier de configuration principal du gestionnaire est situé à :
 
-```
+```plaintext
 projet/config/managers/script-manager/script-manager.config.json
-```
-
+```plaintext
 Voici un exemple de configuration :
 
 ```json
@@ -99,8 +103,7 @@ Voici un exemple de configuration :
     "TemplatesPath": "development/_templates"
   }
 }
-```
-
+```plaintext
 ### Options de configuration
 
 | Option | Type | Description | Valeur par défaut |
@@ -123,8 +126,7 @@ Le gestionnaire de scripts expose les commandes suivantes :
 
 ```powershell
 .\development\managers\script-manager\scripts\script-manager.ps1 -Command RunScript -ScriptPath "development/scripts/maintenance/find-managers.ps1"
-```
-
+```plaintext
 **Description :** Exécute un script spécifique
 
 **Paramètres :**
@@ -134,14 +136,12 @@ Le gestionnaire de scripts expose les commandes suivantes :
 **Exemple :**
 ```powershell
 .\development\managers\script-manager\scripts\script-manager.ps1 -Command RunScript -ScriptPath "development/scripts/maintenance/find-managers.ps1" -ScriptParameters @{ProjectRoot="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"}
-```
-
+```plaintext
 #### Commande 2 : OrganizeScripts
 
 ```powershell
 .\development\managers\script-manager\scripts\script-manager.ps1 -Command OrganizeScripts
-```
-
+```plaintext
 **Description :** Organise les scripts selon la structure définie
 
 **Paramètres :**
@@ -150,24 +150,23 @@ Le gestionnaire de scripts expose les commandes suivantes :
 **Exemple :**
 ```powershell
 .\development\managers\script-manager\scripts\script-manager.ps1 -Command OrganizeScripts -Force
-```
-
+```plaintext
 ### Exemples d'utilisation
 
 #### Exemple 1 : Exécution d'un script de maintenance
 
 ```powershell
 # Exécuter un script de maintenance
-.\development\managers\script-manager\scripts\script-manager.ps1 -Command RunScript -ScriptPath "development/scripts/maintenance/find-managers.ps1"
-```
 
+.\development\managers\script-manager\scripts\script-manager.ps1 -Command RunScript -ScriptPath "development/scripts/maintenance/find-managers.ps1"
+```plaintext
 #### Exemple 2 : Création d'un nouveau script à partir d'un modèle
 
 ```powershell
 # Créer un nouveau script à partir d'un modèle
-.\development\managers\script-manager\scripts\script-manager.ps1 -Command CreateScript -TemplateName "maintenance" -ScriptName "cleanup-logs" -OutputPath "development/scripts/maintenance"
-```
 
+.\development\managers\script-manager\scripts\script-manager.ps1 -Command CreateScript -TemplateName "maintenance" -ScriptName "cleanup-logs" -OutputPath "development/scripts/maintenance"
+```plaintext
 ## Intégration avec d'autres gestionnaires
 
 Le gestionnaire de scripts s'intègre avec les autres gestionnaires du système :
@@ -176,16 +175,16 @@ Le gestionnaire de scripts s'intègre avec les autres gestionnaires du système 
 
 ```powershell
 # Utiliser le gestionnaire de scripts via le gestionnaire intégré
-.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Manager ScriptManager -Command RunScript -ScriptPath "development/scripts/maintenance/find-managers.ps1"
-```
 
+.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Manager ScriptManager -Command RunScript -ScriptPath "development/scripts/maintenance/find-managers.ps1"
+```plaintext
 ### Intégration avec le gestionnaire de modes
 
 ```powershell
 # Utiliser le gestionnaire de scripts avec le gestionnaire de modes
-.\development\managers\mode-manager\scripts\mode-manager.ps1 -Mode DEV-R -UseManager ScriptManager -Command RunScript -ScriptPath "development/scripts/maintenance/find-managers.ps1"
-```
 
+.\development\managers\mode-manager\scripts\mode-manager.ps1 -Mode DEV-R -UseManager ScriptManager -Command RunScript -ScriptPath "development/scripts/maintenance/find-managers.ps1"
+```plaintext
 ## Dépannage
 
 ### Problèmes courants et solutions
@@ -225,10 +224,9 @@ Le gestionnaire de scripts s'intègre avec les autres gestionnaires du système 
 
 Le gestionnaire de scripts génère des journaux dans le répertoire suivant :
 
-```
+```plaintext
 logs/script-manager/
-```
-
+```plaintext
 Les niveaux de journalisation peuvent être configurés dans le fichier de configuration principal.
 
 ## Tests
@@ -239,8 +237,7 @@ Pour exécuter les tests du gestionnaire de scripts, utilisez la commande suivan
 
 ```powershell
 .\development\managers\script-manager\tests\Test-ScriptManager.ps1
-```
-
+```plaintext
 ### Types de tests disponibles
 
 - **Tests unitaires :** Testent les fonctions individuelles du gestionnaire

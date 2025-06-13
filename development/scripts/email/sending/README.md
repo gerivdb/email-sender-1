@@ -1,4 +1,4 @@
-﻿# sending
+# sending
 
 Envoi d'emails
 

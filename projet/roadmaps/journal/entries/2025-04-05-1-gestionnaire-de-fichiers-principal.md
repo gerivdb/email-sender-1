@@ -6,6 +6,7 @@ related: []
 ---
 
 ## 1. Gestionnaire de fichiers principal
+
 - `file_manager.py` - Classe utilitaire complète pour la gestion des fichiers du projet
   - Scan de répertoires et création d'inventaires
   - Analyse de fichiers JSON, notamment les workflows n8n
@@ -13,3 +14,4 @@ related: []
   - Organisation des fichiers par type, extension ou date
 
 ##
+

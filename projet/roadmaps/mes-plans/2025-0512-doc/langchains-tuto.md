@@ -1,4 +1,4 @@
-﻿Absolument ! Analysons cette vidéo sur Langchain et extrayons toutes les informations pertinentes pour votre projet EMAIL SENDER, votre ROADMAPPER et, plus globalement, pour AugmentCode. Je vais adopter une approche pédagogique, comme si nous étions dans un cours magistral, en utilisant des schémas ASCII pour illustrer les concepts.
+Absolument ! Analysons cette vidéo sur Langchain et extrayons toutes les informations pertinentes pour votre projet EMAIL SENDER, votre ROADMAPPER et, plus globalement, pour AugmentCode. Je vais adopter une approche pédagogique, comme si nous étions dans un cours magistral, en utilisant des schémas ASCII pour illustrer les concepts.
 
 ---
 

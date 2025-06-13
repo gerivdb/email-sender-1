@@ -1,4 +1,4 @@
-﻿# Rapport d'analyse de la roadmap
+# Rapport d'analyse de la roadmap
 
 *GÃ©nÃ©rÃ© le 2025-04-17 05:08:43*
 

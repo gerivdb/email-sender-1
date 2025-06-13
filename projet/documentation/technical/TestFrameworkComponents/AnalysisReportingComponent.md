@@ -38,10 +38,11 @@ function Invoke-PerformanceAnalysis {
     )
     
     # Analyse les métriques de performance et génère un rapport
-    # Retourne les résultats de l'analyse si PassThru est spécifié
-}
-```
 
+    # Retourne les résultats de l'analyse si PassThru est spécifié
+
+}
+```plaintext
 ### 3.2 Interfaces secondaires
 
 ```powershell
@@ -65,6 +66,7 @@ function Compare-TestResults {
     )
     
     # Compare les résultats de deux tests et génère un rapport de comparaison
+
 }
 
 function New-PerformanceReport {
@@ -87,6 +89,7 @@ function New-PerformanceReport {
     )
     
     # Génère un rapport de performance à partir des résultats d'analyse
+
 }
 
 function New-PerformanceVisualization {
@@ -109,6 +112,7 @@ function New-PerformanceVisualization {
     )
     
     # Crée une visualisation des métriques de performance
+
 }
 
 function New-AnalysisConfiguration {
@@ -128,27 +132,33 @@ function New-AnalysisConfiguration {
     )
     
     # Crée une nouvelle configuration d'analyse
-}
-```
 
+}
+```plaintext
 ## 4. Sous-composants
 
 ### 4.1 StatisticalAnalyzer
+
 Effectue des analyses statistiques sur les métriques collectées.
 
 ### 4.2 ComparisonEngine
+
 Compare les résultats entre différentes exécutions de tests.
 
 ### 4.3 RegressionDetector
+
 Détecte les régressions de performance par rapport aux références.
 
 ### 4.4 TrendAnalyzer
+
 Analyse les tendances de performance sur plusieurs exécutions.
 
 ### 4.5 VisualizationGenerator
+
 Génère des visualisations graphiques des métriques et analyses.
 
 ### 4.6 ReportGenerator
+
 Génère des rapports détaillés dans différents formats.
 
 ## 5. Flux de données
@@ -256,11 +266,11 @@ Le composant utilise un format de configuration JSON/YAML avec la structure suiv
     "recipients": {
       "email": ["team@example.com"],
       "slack": ["#performance-monitoring"]
+
     }
   }
 }
-```
-
+```plaintext
 ## 7. Dépendances
 
 - **System.Math**: Pour les calculs statistiques
@@ -292,19 +302,22 @@ Le composant est conçu pour être extensible via:
 
 ```powershell
 # Analyser les métriques d'un test
+
 Invoke-PerformanceAnalysis -MetricsPath ".\metrics\test-20250515-001\" -OutputPath ".\reports\"
 
 # Analyser avec une référence
-Invoke-PerformanceAnalysis -MetricsPath ".\metrics\test-20250515-001\" -BaselinePath ".\metrics\baseline\" -OutputPath ".\reports\"
-```
 
+Invoke-PerformanceAnalysis -MetricsPath ".\metrics\test-20250515-001\" -BaselinePath ".\metrics\baseline\" -OutputPath ".\reports\"
+```plaintext
 ### 10.2 Comparaison de résultats de tests
 
 ```powershell
 # Comparer deux résultats de test
+
 Compare-TestResults -TestResultPath ".\results\test-20250515-001.json" -BaselineResultPath ".\results\test-20250514-001.json" -OutputPath ".\reports\comparison.html"
 
 # Comparer avec des paramètres personnalisés
+
 Compare-TestResults -TestResultPath ".\results\test-20250515-001.json" -BaselineResultPath ".\results\test-20250514-001.json" -ComparisonParameters @{
     IgnoreMetrics = @("setupTime", "teardownTime")
     Thresholds = @{
@@ -314,27 +327,29 @@ Compare-TestResults -TestResultPath ".\results\test-20250515-001.json" -Baseline
         }
     }
 }
-```
-
+```plaintext
 ### 10.3 Génération de rapports personnalisés
 
 ```powershell
 # Générer un rapport à partir des résultats d'analyse
+
 $analysisResults = Invoke-PerformanceAnalysis -MetricsPath ".\metrics\test-20250515-001\" -PassThru
 New-PerformanceReport -AnalysisResults $analysisResults -TemplatePath ".\templates\executive_summary.html" -OutputPath ".\reports\executive_summary.html"
 
 # Générer un rapport au format PDF
-New-PerformanceReport -AnalysisResults $analysisResults -Format "PDF" -OutputPath ".\reports\performance_report.pdf"
-```
 
+New-PerformanceReport -AnalysisResults $analysisResults -Format "PDF" -OutputPath ".\reports\performance_report.pdf"
+```plaintext
 ### 10.4 Création de visualisations
 
 ```powershell
 # Créer une visualisation des métriques
+
 $metricsData = Import-MetricsData -Path ".\metrics\test-20250515-001\time.json"
 New-PerformanceVisualization -MetricsData $metricsData -VisualizationType "LineChart" -OutputPath ".\reports\time_metrics.png"
 
 # Créer une visualisation comparative
+
 $comparisonData = Compare-TestResults -TestResultPath ".\results\test-20250515-001.json" -BaselineResultPath ".\results\test-20250514-001.json" -PassThru
 New-PerformanceVisualization -MetricsData $comparisonData -VisualizationType "BarChart" -OutputPath ".\reports\comparison.png"
-```
+```plaintext

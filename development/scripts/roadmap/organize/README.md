@@ -12,38 +12,49 @@ Ce script déplace les fichiers de la racine du répertoire roadmap vers des sou
 
 ```powershell
 # Exécuter en mode simulation (dry run)
+
 .\Organize-RoadmapFiles.ps1 -DryRun
 
 # Exécuter avec confirmation pour chaque action
+
 .\Organize-RoadmapFiles.ps1
 
 # Exécuter sans confirmation
-.\Organize-RoadmapFiles.ps1 -Force
-```
 
+.\Organize-RoadmapFiles.ps1 -Force
+```plaintext
 ## Structure organisée
 
 Le script organise les fichiers selon la structure suivante :
 
-```
+```plaintext
 development/scripts/roadmap/
 ├── ai/                  # Fichiers liés à l'intelligence artificielle
-├── core/                # Fichiers liés à la gestion des tâches
-├── docs/                # Documentation
-├── integration/         # Fichiers liés à l'intégration
-├── maintenance/         # Fichiers liés à l'archivage et à la maintenance
-├── modules/             # Fichiers liés aux managers
-├── rag/                 # Fichiers liés à Retrieval Augmented Generation
-├── security/            # Fichiers liés à la sécurité
-├── visualization/       # Fichiers liés à la visualisation
-└── ... (autres dossiers existants)
-```
 
+├── core/                # Fichiers liés à la gestion des tâches
+
+├── docs/                # Documentation
+
+├── integration/         # Fichiers liés à l'intégration
+
+├── maintenance/         # Fichiers liés à l'archivage et à la maintenance
+
+├── modules/             # Fichiers liés aux managers
+
+├── rag/                 # Fichiers liés à Retrieval Augmented Generation
+
+├── security/            # Fichiers liés à la sécurité
+
+├── visualization/       # Fichiers liés à la visualisation
+
+└── ... (autres dossiers existants)
+```plaintext
 ## Mappages de fichiers
 
 Le script utilise les mappages suivants pour organiser les fichiers :
 
 ### Fichiers liés à l'archivage → dossier `maintenance`
+
 - Archive-CompletedTasks.ps1
 - ArchiveTask.xml
 - Execute-ArchiveIfNeeded.ps1
@@ -61,6 +72,7 @@ Le script utilise les mappages suivants pour organiser les fichiers :
 - Cleanup-OldArchiveScripts.ps1
 
 ### Fichiers liés à la gestion des tâches → dossier `core`
+
 - Filter-Tasks.ps1
 - Fix-ParentTaskStatus.ps1
 - Simple-Split-Roadmap.ps1
@@ -68,11 +80,13 @@ Le script utilise les mappages suivants pour organiser les fichiers :
 - update-roadmap-checkboxes.ps1
 
 ### Fichiers liés à la visualisation → dossier `visualization`
+
 - Generate-ActiveRoadmapView.ps1
 - Generate-CompletedTasksView.ps1
 - Generate-PriorityTasksView.ps1
 
 ### Fichiers liés à l'IA et RAG → dossiers `ai` et `rag`
+
 - Apply-ThematicAttribution.ps1 → ai
 - Explore-QdrantWebUI.ps1 → rag
 - Index-PlanDevQdrant.ps1 → rag
@@ -86,17 +100,21 @@ Le script utilise les mappages suivants pour organiser les fichiers :
 - Use-AIFeatures.ps1 → ai
 
 ### Fichiers liés à la sécurité → dossier `security`
+
 - Manage-SecurityCompliance.ps1
 
 ### Fichiers liés à l'intégration → dossier `integration`
+
 - Sync-RoadmapServices.ps1
 
 ### Fichiers liés aux managers → dossier `modules`
+
 - define-manager-structure.ps1
 - reorganize-manager-files.ps1
 - standardize-manager-names.ps1
 
 ### Documentation → dossier `docs`
+
 - README.md
 - README_RAG.md
 

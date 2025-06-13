@@ -65,26 +65,22 @@ Le workflow GitHub Actions est configuré pour s'exécuter automatiquement sur l
 
 ```powershell
 .\git-hooks\Analyze-PullRequest.ps1 -Action List -State Open
-```
-
+```plaintext
 ### Analyser une pull request
 
 ```powershell
 .\git-hooks\Analyze-PullRequest.ps1 -Action Analyze -PullRequestNumber 123
-```
-
+```plaintext
 ### Commenter une pull request
 
 ```powershell
 .\git-hooks\Analyze-PullRequest.ps1 -Action Comment -PullRequestNumber 123
-```
-
+```plaintext
 ### Tester l'analyse localement
 
 ```powershell
 .\git-hooks\Test-PullRequestAnalysis.ps1
-```
-
+```plaintext
 ## Rapports d'analyse
 
 Les rapports d'analyse sont générés au format Markdown et contiennent les informations suivantes :

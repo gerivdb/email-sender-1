@@ -159,36 +159,42 @@ Cette définition des niveaux d'expertise fournit un cadre objectif pour évalue
 ## Critères d'Évaluation
 
 ### Complexité Technique
+
 - **Débutant (1)**: Tâches simples et routinières
 - **Intermédiaire (2)**: Problèmes de complexité moyenne
 - **Avancé (3)**: Problèmes complexes nécessitant une expertise technique
 - **Expert (4)**: Problèmes très complexes avec multiples interactions
 
 ### Niveau de Supervision
+
 - **Débutant (1)**: Supervision constante requise
 - **Intermédiaire (2)**: Supervision périodique nécessaire
 - **Avancé (3)**: Supervision minimale, autonomie élevée
 - **Expert (4)**: Autonomie complète, peut superviser les autres
 
 ### Résolution de Problèmes
+
 - **Débutant (1)**: Résout des problèmes simples avec guidance
 - **Intermédiaire (2)**: Résout des problèmes standards de manière autonome
 - **Avancé (3)**: Résout des problèmes complexes, propose des solutions innovantes
 - **Expert (4)**: Résout des problèmes critiques, développe des stratégies
 
 ### Connaissances Théoriques
+
 - **Débutant (1)**: Connaissances de base
 - **Intermédiaire (2)**: Bonne compréhension des concepts
 - **Avancé (3)**: Maîtrise approfondie du domaine
 - **Expert (4)**: Expertise complète, peut former les autres
 
 ### Autonomie Décisionnelle
+
 - **Débutant (1)**: Suit les procédures établies
 - **Intermédiaire (2)**: Prend des décisions dans son périmètre
 - **Avancé (3)**: Prend des décisions complexes avec impact significatif
 - **Expert (4)**: Influence stratégique, définit les orientations
 
 ## Pondération des Critères
+
 - Complexité Technique: 30%
 - Niveau de Supervision: 20%
 - Résolution de Problèmes: 25%
@@ -196,9 +202,11 @@ Cette définition des niveaux d'expertise fournit un cadre objectif pour évalue
 - Autonomie Décisionnelle: 10%
 
 ## Calcul du Score Global
+
 Score = Somme(CritèreScore × CritèrePoids)
 
 ## Niveaux d'Expertise Globaux
+
 - Débutant: 1.0 - 1.75
 - Intermédiaire: 1.76 - 2.5
 - Avancé: 2.51 - 3.25

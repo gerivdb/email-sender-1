@@ -1,12 +1,15 @@
-﻿# Mode TEST
+# Mode TEST
 
 ## Description
+
 Le mode TEST est un mode opÃ©rationnel qui se concentre sur la crÃ©ation, l'exÃ©cution et la validation des tests pour assurer la qualitÃ© du code.
 
 ## Objectif
+
 L'objectif principal du mode TEST est de garantir que le code fonctionne correctement, rÃ©pond aux exigences et maintient sa qualitÃ© au fil du temps.
 
 ## FonctionnalitÃ©s
+
 - CrÃ©ation de tests unitaires
 - CrÃ©ation de tests d'intÃ©gration
 - CrÃ©ation de tests de performance
@@ -18,16 +21,19 @@ L'objectif principal du mode TEST est de garantir que le code fonctionne correct
 
 ```powershell
 # CrÃ©er des tests pour un script spÃ©cifique
+
 .\test-mode.ps1 -ScriptPath "tools/scripts/roadmap/parser.ps1" -GenerateTests
 
 # ExÃ©cuter les tests pour un script spÃ©cifique
+
 .\test-mode.ps1 -ScriptPath "tools/scripts/roadmap/parser.ps1" -RunTests
 
 # Analyser la couverture de code
-.\test-mode.ps1 -ScriptPath "tools/scripts/roadmap/parser.ps1" -AnalyzeCoverage
-```
 
+.\test-mode.ps1 -ScriptPath "tools/scripts/roadmap/parser.ps1" -AnalyzeCoverage
+```plaintext
 ## Types de tests
+
 Le mode TEST prend en charge diffÃ©rents types de tests :
 - **Tests unitaires** : Tester des fonctions individuelles
 - **Tests d'intÃ©gration** : Tester l'interaction entre composants
@@ -35,16 +41,19 @@ Le mode TEST prend en charge diffÃ©rents types de tests :
 - **Tests de rÃ©gression** : VÃ©rifier que les modifications ne cassent pas le code existant
 
 ## IntÃ©gration avec d'autres modes
+
 Le mode TEST peut Ãªtre utilisÃ© en combinaison avec d'autres modes :
 - **DEV-R** : Pour tester les fonctionnalitÃ©s implÃ©mentÃ©es
 - **DEBUG** : Pour identifier et rÃ©soudre les problÃ¨mes dans les tests
 - **CHECK** : Pour vÃ©rifier que tous les tests passent avant de marquer une tÃ¢che comme complÃ¨te
 
 ## ImplÃ©mentation
+
 Le mode TEST est implÃ©mentÃ© dans le script `test-mode.ps1` qui se trouve dans le dossier `tools/scripts/roadmap/modes/test`.
 
 ## Exemple de rapport de test
-```
+
+```plaintext
 Rapport de test :
 - Tests exÃ©cutÃ©s : 42
 - Tests rÃ©ussis : 40
@@ -54,9 +63,9 @@ Rapport de test :
 Tests Ã©chouÃ©s :
 - Test-Parser-InvalidInput : Expected exception not thrown
 - Test-Parser-LargeFile : Timeout exceeded
-```
-
+```plaintext
 ## Bonnes pratiques
+
 - Ã‰crire les tests avant ou pendant l'implÃ©mentation (TDD)
 - Viser une couverture de code d'au moins 80%
 - Tester les cas limites et les cas d'erreur

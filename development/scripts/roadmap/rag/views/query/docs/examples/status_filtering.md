@@ -6,45 +6,40 @@ Ce document fournit des exemples détaillés de requêtes pour filtrer les tâch
 
 ### Requête simple
 
-```
+```plaintext
 status:todo
-```
-
+```plaintext
 Cette requête trouve toutes les tâches dont le statut est "todo" (à faire).
 
 ### Variantes de syntaxe
 
-```
+```plaintext
 status=todo
 status==todo
-```
-
+```plaintext
 Ces variantes sont équivalentes à la syntaxe standard `status:todo`.
 
 ### Exemples avec contexte
 
 #### Trouver toutes les tâches à faire de haute priorité
 
-```
+```plaintext
 status:todo AND priority:high
-```
-
+```plaintext
 Cette requête trouve toutes les tâches à faire qui ont également une priorité élevée.
 
 #### Trouver toutes les tâches à faire dans une catégorie spécifique
 
-```
+```plaintext
 status:todo AND category:development
-```
-
+```plaintext
 Cette requête trouve toutes les tâches à faire dans la catégorie "development".
 
 #### Trouver toutes les tâches à faire avec une date d'échéance proche
 
-```
+```plaintext
 status:todo AND due_date<2025-06-30
-```
-
+```plaintext
 Cette requête trouve toutes les tâches à faire dont la date d'échéance est antérieure au 30 juin 2025.
 
 ### Résultats attendus
@@ -61,45 +56,40 @@ Les tâches avec d'autres statuts (en cours, terminées, bloquées, etc.) ne ser
 
 ### Requête simple
 
-```
+```plaintext
 status:in_progress
-```
-
+```plaintext
 Cette requête trouve toutes les tâches dont le statut est "in_progress" (en cours).
 
 ### Variantes de syntaxe
 
-```
+```plaintext
 status=in_progress
 status==in_progress
-```
-
+```plaintext
 Ces variantes sont équivalentes à la syntaxe standard `status:in_progress`.
 
 ### Exemples avec contexte
 
 #### Trouver toutes les tâches en cours assignées à une personne spécifique
 
-```
+```plaintext
 status:in_progress AND assignee:john
-```
-
+```plaintext
 Cette requête trouve toutes les tâches en cours qui sont assignées à "john".
 
 #### Trouver toutes les tâches en cours avec une progression supérieure à 50%
 
-```
+```plaintext
 status:in_progress AND progress>50
-```
-
+```plaintext
 Cette requête trouve toutes les tâches en cours dont la progression est supérieure à 50%.
 
 #### Trouver toutes les tâches en cours dans plusieurs catégories
 
-```
+```plaintext
 status:in_progress AND (category:development OR category:testing)
-```
-
+```plaintext
 Cette requête trouve toutes les tâches en cours qui sont soit dans la catégorie "development", soit dans la catégorie "testing".
 
 ### Résultats attendus
@@ -116,45 +106,40 @@ Les tâches avec d'autres statuts (à faire, terminées, bloquées, etc.) ne ser
 
 ### Requête simple
 
-```
+```plaintext
 status:done
-```
-
+```plaintext
 Cette requête trouve toutes les tâches dont le statut est "done" (terminé).
 
 ### Variantes de syntaxe
 
-```
+```plaintext
 status=done
 status==done
-```
-
+```plaintext
 Ces variantes sont équivalentes à la syntaxe standard `status:done`.
 
 ### Exemples avec contexte
 
 #### Trouver toutes les tâches terminées dans une période spécifique
 
-```
+```plaintext
 status:done AND completion_date>=2025-01-01 AND completion_date<=2025-03-31
-```
-
+```plaintext
 Cette requête trouve toutes les tâches terminées au premier trimestre 2025.
 
 #### Trouver toutes les tâches terminées dans une catégorie spécifique
 
-```
+```plaintext
 status:done AND category:documentation
-```
-
+```plaintext
 Cette requête trouve toutes les tâches de documentation qui sont terminées.
 
 #### Trouver toutes les tâches terminées avec une certaine étiquette
 
-```
+```plaintext
 status:done AND tags~"release-1.0"
-```
-
+```plaintext
 Cette requête trouve toutes les tâches terminées qui sont étiquetées avec "release-1.0".
 
 ### Résultats attendus
@@ -171,37 +156,32 @@ Les tâches avec d'autres statuts (à faire, en cours, bloquées, etc.) ne seron
 
 ### Trouver les tâches à faire ou en cours
 
-```
+```plaintext
 status:todo OR status:in_progress
-```
-
+```plaintext
 Cette requête trouve toutes les tâches qui sont soit à faire, soit en cours.
 
 Variante avec liste (si supportée) :
-```
+```plaintext
 status:[todo,in_progress]
-```
-
+```plaintext
 ### Trouver les tâches qui ne sont pas terminées
 
-```
+```plaintext
 status!=done
-```
-
+```plaintext
 ou
 
-```
+```plaintext
 NOT status:done
-```
-
+```plaintext
 Ces requêtes trouvent toutes les tâches dont le statut n'est pas "done" (terminé).
 
 ### Trouver les tâches à faire, en cours ou bloquées
 
-```
+```plaintext
 status:todo OR status:in_progress OR status:blocked
-```
-
+```plaintext
 Cette requête trouve toutes les tâches qui sont soit à faire, soit en cours, soit bloquées.
 
 ## Cas particuliers et astuces
@@ -210,36 +190,35 @@ Cette requête trouve toutes les tâches qui sont soit à faire, soit en cours, 
 
 Dans la plupart des implémentations, les valeurs de statut sont sensibles à la casse. Assurez-vous d'utiliser exactement la même casse que celle définie dans le système :
 
-```
+```plaintext
 status:todo  # Correct si le système utilise "todo" en minuscules
-status:Todo  # Peut ne pas fonctionner si le système utilise "todo" en minuscules
-```
 
+status:Todo  # Peut ne pas fonctionner si le système utilise "todo" en minuscules
+
+```plaintext
 ### Valeurs de statut avec espaces
 
 Si les valeurs de statut contiennent des espaces, utilisez des guillemets :
 
-```
+```plaintext
 status:"in review"
 status:"pending approval"
-```
-
+```plaintext
 ### Recherche par préfixe de statut
 
 Si vous n'êtes pas sûr de la valeur exacte du statut, vous pouvez utiliser l'opérateur "commence par" :
 
-```
+```plaintext
 status^"in"  # Trouve les statuts commençant par "in", comme "in_progress", "in review", etc.
-```
 
+```plaintext
 ### Combinaison avec d'autres critères
 
 Les filtres de statut sont souvent plus utiles lorsqu'ils sont combinés avec d'autres critères :
 
-```
+```plaintext
 status:todo AND due_date<2025-06-30 AND priority:high
-```
-
+```plaintext
 Cette requête trouve les tâches à faire, avec une date d'échéance avant le 30 juin 2025, et de haute priorité.
 
 ## Bonnes pratiques

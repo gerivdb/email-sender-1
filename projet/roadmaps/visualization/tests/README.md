@@ -20,48 +20,42 @@ Avant d'exécuter les tests, assurez-vous d'avoir installé les dépendances né
 
 ```bash
 npm install
-```
-
+```plaintext
 ### Exécuter tous les tests
 
 Pour exécuter tous les tests :
 
 ```bash
 npm test
-```
-
+```plaintext
 ### Exécuter les tests unitaires
 
 Pour exécuter uniquement les tests unitaires :
 
 ```bash
 npm run test:unit
-```
-
+```plaintext
 ### Exécuter les tests d'intégration
 
 Pour exécuter uniquement les tests d'intégration :
 
 ```bash
 npm run test:integration
-```
-
+```plaintext
 ### Exécuter les tests avec surveillance
 
 Pour exécuter les tests en mode surveillance (les tests sont réexécutés automatiquement lorsque les fichiers sont modifiés) :
 
 ```bash
 npm run test:watch
-```
-
+```plaintext
 ### Générer un rapport de couverture
 
 Pour générer un rapport de couverture de code :
 
 ```bash
 npm run test:coverage
-```
-
+```plaintext
 Le rapport de couverture sera généré dans le dossier `coverage`.
 
 ## Mocks

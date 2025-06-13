@@ -1,31 +1,57 @@
 # Sommaire
 
 - [Démarrage rapide](#démarrage-rapide)
+
 - [Déploiement en un clic de MCP Gateway](#déploiement-en-un-clic-de-mcp-gateway)
+
 - [Configuration du stockage](#configuration-du-stockage)
+
 - [Configuration des notifications](#configuration-des-notifications)
+
 - [Configuration de l’API OpenAI](#configuration-de-lapi-openai)
+
 - [Configuration du super administrateur](#configuration-du-super-administrateur)
+
 - [Configuration JWT](#configuration-jwt)
+
 - [Fichier de configuration mcp-gateway.yaml](#mcp-gatewayyaml)
+
 - [Configuration de base](#configuration-de-base)
+
 - [Configuration du stockage](#configuration-du-stockage-1)
+
 - [Configuration du notificateur](#configuration-du-notificateur)
+
 - [Configuration du stockage des sessions](#configuration-du-stockage-des-sessions)
+
 - [Exemple de configuration complète](#exemple-de-configuration)
+
 - [Détails de configuration](#détails-de-configuration)
+
   - [Configuration du routeur](#configuration-du-routeur)
+
   - [Configuration CORS](#configuration-cors)
+
   - [Configuration du serveur](#configuration-du-serveur)
+
   - [Configuration d’outils](#configuration-doutils)
+
 - [Assemblage des paramètres de requête](#assemblage-des-paramètres-de-requête)
+
 - [Assemblage des paramètres de réponse](#assemblage-des-paramètres-de-réponse)
+
 - [Stockage de configuration](#stockage-de-configuration)
+
 - [Configuration du proxy de service MCP](#configuration-du-proxy-de-service-mcp)
+
 - [Exemple de configuration de proxy de service MCP](#exemple-de-configuration-de-proxy-de-service-mcp)
+
 - [Guide d’utilisation de Go Template](#guide-dutilisation-de-go-template)
+
 - [Guide de configuration de l’environnement de développement local](#guide-de-configuration-de-lenvironnement-de-développement-local)
+
 - [Problèmes courants](#problèmes-courants)
+
 - [Flux de travail pour contribuer au code](#flux-de-travail-pour-contribuer-au-code)
 
 Démarrage rapide
@@ -161,26 +187,31 @@ vX.Y.Z : Version spécifique
 
 Images Disponibles
 # Version Tout-en-Un
+
 docker pull docker.io/ifuryst/mcp-gateway-allinone:latest
 docker pull ghcr.io/mcp-ecosystem/mcp-gateway/allinone:latest
 docker pull registry.ap-southeast-1.aliyuncs.com/mcp-ecosystem/mcp-gateway-allinone:latest
 
 # Serveur API
+
 docker pull docker.io/ifuryst/mcp-gateway-apiserver:latest
 docker pull ghcr.io/mcp-ecosystem/mcp-gateway/apiserver:latest
 docker pull registry.ap-southeast-1.aliyuncs.com/mcp-ecosystem/mcp-gateway-apiserver:latest
 
 # MCP Gateway
+
 docker pull docker.io/ifuryst/mcp-gateway-mcp-gateway:latest
 docker pull ghcr.io/mcp-ecosystem/mcp-gateway/mcp-gateway:latest
 docker pull registry.ap-southeast-1.aliyuncs.com/mcp-ecosystem/mcp-gateway-mcp-gateway:latest
 
 # Service Utilisateur Mock
+
 docker pull docker.io/ifuryst/mcp-gateway-mock-server:latest
 docker pull ghcr.io/mcp-ecosystem/mcp-gateway/mock-server:latest
 docker pull registry.ap-southeast-1.aliyuncs.com/mcp-ecosystem/mcp-gateway-mock-server:latest
 
 # Interface Web
+
 docker pull docker.io/ifuryst/mcp-gateway-web:latest
 docker pull ghcr.io/mcp-ecosystem/mcp-gateway/web:latest
 docker pull registry.ap-southeast-1.aliyuncs.com/mcp-ecosystem/mcp-gateway-web:latest
@@ -225,6 +256,7 @@ OPENAI_MODEL=qwen-turbo
 
 Exécutez MCP Gateway avec Docker :
 # Utilisation du registre Alibaba Cloud (recommandé pour les serveurs/appareils en Chine)
+
 docker run -d \
            --name mcp-gateway \
            -p 8080:80 \
@@ -240,6 +272,7 @@ docker run -d \
            registry.ap-southeast-1.aliyuncs.com/mcp-ecosystem/mcp-gateway-allinone:latest
 
 # Utilisation du GitHub Container Registry
+
 docker run -d \
            --name mcp-gateway \
            -p 8080:80 \
@@ -280,11 +313,17 @@ Si vous avez besoin d'ajouter la prise en charge de bases de données supplémen
 
 database:
   type: "${APISERVER_DB_TYPE:sqlite}"               # Type de base de données (sqlite, postgres, mysql)
+
   host: "${APISERVER_DB_HOST:localhost}"            # Adresse de l'hôte de la base de données
+
   port: ${APISERVER_DB_PORT:5432}                   # Port de la base de données
+
   user: "${APISERVER_DB_USER:postgres}"             # Nom d'utilisateur de la base de données
+
   password: "${APISERVER_DB_PASSWORD:example}"      # Mot de passe de la base de données
+
   dbname: "${APISERVER_DB_NAME:./mcp-gateway.db}"   # Nom de la base de données ou chemin du fichier
+
   sslmode: "${APISERVER_DB_SSL_MODE:disable}"       # Mode SSL pour la connexion à la base de données
 
 Configuration du Stockage du Proxy Gateway
@@ -301,18 +340,28 @@ PostgreSQL
 MySQL
 storage:
   type: "${GATEWAY_STORAGE_TYPE:db}"                    # Type de stockage : db, disk
+
   
   # Configuration de la base de données (utilisé lorsque type est 'db')
+
   database:
     type: "${GATEWAY_DB_TYPE:sqlite}"                   # Type de base de données (sqlite, postgres, mysql)
+
     host: "${GATEWAY_DB_HOST:localhost}"                # Adresse de l'hôte de la base de données
+
     port: ${GATEWAY_DB_PORT:5432}                       # Port de la base de données
+
     user: "${GATEWAY_DB_USER:postgres}"                 # Nom d'utilisateur de la base de données
+
     password: "${GATEWAY_DB_PASSWORD:example}"          # Mot de passe de la base de données
+
     dbname: "${GATEWAY_DB_NAME:./data/mcp-gateway.db}"  # Nom de la base de données ou chemin du fichier
+
     sslmode: "${GATEWAY_DB_SSL_MODE:disable}"           # Mode SSL pour la connexion à la base de données
+
   
   # Configuration du disque (utilisé lorsque type est 'disk')
+
   disk:
     path: "${GATEWAY_STORAGE_DISK_PATH:}"               # Chemin de stockage des fichiers de données
 
@@ -332,23 +381,32 @@ receiver : Rôle de récepteur, responsable de la réception des notifications. 
 both : À la fois rôle d'expéditeur et de récepteur. mcp-gateway déployé en cluster peut utiliser ce mode
 notifier:
   role: "${APISERVER_NOTIFIER_ROLE:sender}"              # Rôle : sender, receiver, ou both
+
   type: "${APISERVER_NOTIFIER_TYPE:signal}"              # Type : signal, api, redis, ou composite
 
   # Configuration du signal (utilisé lorsque type est 'signal')
+
   signal:
     signal: "${APISERVER_NOTIFIER_SIGNAL:SIGHUP}"                       # Signal à envoyer
+
     pid: "${APISERVER_NOTIFIER_SIGNAL_PID:/var/run/mcp-gateway.pid}"    # Chemin du fichier PID
 
   # Configuration de l'API (utilisé lorsque type est 'api')
+
   api:
     port: ${APISERVER_NOTIFIER_API_PORT:5235}                                           # Port de l'API
+
     target_url: "${APISERVER_NOTIFIER_API_TARGET_URL:http://localhost:5235/_reload}"    # Point de terminaison de rechargement
 
   # Configuration de Redis (utilisé lorsque type est 'redis')
+
   redis:
     addr: "${APISERVER_NOTIFIER_REDIS_ADDR:localhost:6379}"                             # Adresse Redis
+
     password: "${APISERVER_NOTIFIER_REDIS_PASSWORD:UseStrongPasswordIsAGoodPractice}"   # Mot de passe Redis
+
     db: ${APISERVER_NOTIFIER_REDIS_DB:0}                                                # Numéro de base de données Redis
+
     topic: "${APISERVER_NOTIFIER_REDIS_TOPIC:mcp-gateway:reload}"                       # Sujet de publication/abonnement Redis
 
 
@@ -357,7 +415,9 @@ Le bloc de configuration OpenAI définit les paramètres pour l'intégration de 
 
 openai:
   api_key: "${OPENAI_API_KEY}"                                  # Clé API OpenAI (requise)
+
   model: "${OPENAI_MODEL:gpt-4.1}"                              # Modèle à utiliser
+
   base_url: "${OPENAI_BASE_URL:https://api.openai.com/v1/}"     # URL de base de l'API
 
 Actuellement, seuls les appels LLMs compatibles avec l'API OpenAI sont intégrés
@@ -367,6 +427,7 @@ La configuration du super administrateur est utilisée pour configurer le compte
 
 super_admin:
   username: "${SUPER_ADMIN_USERNAME:admin}"     # Nom d'utilisateur du super administrateur
+
   password: "${SUPER_ADMIN_PASSWORD:admin}"     # Mot de passe du super administrateur (à changer en production)
 
 
@@ -377,6 +438,7 @@ La configuration JWT est utilisée pour configurer les paramètres d'authentific
 
 jwt:
   secret_key: "${APISERVER_JWT_SECRET_KEY:Pls-Change-Me!}"  # Clé JWT (à changer en production)
+
   duration: "${APISERVER_JWT_DURATION:24h}"                  # Durée de validité du token
 
 Il est fortement recommandé d'utiliser des mots de passe forts dans les environnements de production ou les réseaux publics !
@@ -389,6 +451,7 @@ La pratique courante consiste à injecter via différents fichiers .env, .env.de
 
 Configuration de Base
 port: ${MCP_GATEWAY_PORT:5235}                      # Port d'écoute du service
+
 pid: "${MCP_GATEWAY_PID:/var/run/mcp-gateway.pid}"  # Chemin du fichier PID
 
 Le PID ici doit être cohérent avec le PID mentionné ci-dessous
@@ -403,18 +466,28 @@ PostgreSQL
 MySQL
 storage:
   type: "${GATEWAY_STORAGE_TYPE:db}"                    # Type de stockage : db, disk
+
   
   # Configuration de la base de données (utilisée lorsque le type est 'db')
+
   database:
     type: "${GATEWAY_DB_TYPE:sqlite}"                   # Type de base de données (sqlite, postgres, mysql)
+
     host: "${GATEWAY_DB_HOST:localhost}"                # Adresse de l'hôte de la base de données
+
     port: ${GATEWAY_DB_PORT:5432}                       # Port de la base de données
+
     user: "${GATEWAY_DB_USER:postgres}"                 # Nom d'utilisateur de la base de données
+
     password: "${GATEWAY_DB_PASSWORD:example}"          # Mot de passe de la base de données
+
     dbname: "${GATEWAY_DB_NAME:./data/mcp-gateway.db}"  # Nom de la base de données ou chemin du fichier
+
     sslmode: "${GATEWAY_DB_SSL_MODE:disable}"           # Mode SSL de la base de données
+
   
   # Configuration du disque (utilisée lorsque le type est 'disk')
+
   disk:
     path: "${GATEWAY_STORAGE_DISK_PATH:}"               # Chemin de stockage des fichiers de données
 
@@ -434,23 +507,32 @@ receiver : Récepteur, responsable de la réception des notifications, il est re
 both : À la fois expéditeur et récepteur, mcp-gateway déployé en cluster peut utiliser ce mode
 notifier:
   role: "${NOTIFIER_ROLE:receiver}" # Rôle : 'sender' ou 'receiver'
+
   type: "${NOTIFIER_TYPE:signal}"   # Type : 'signal', 'api', 'redis', ou 'composite'
 
   # Configuration du signal (utilisée lorsque le type est 'signal')
+
   signal:
     signal: "${NOTIFIER_SIGNAL:SIGHUP}"                     # Signal à envoyer
+
     pid: "${NOTIFIER_SIGNAL_PID:/var/run/mcp-gateway.pid}"  # Chemin du fichier PID
 
   # Configuration de l'API (utilisée lorsque le type est 'api')
+
   api:
     port: ${NOTIFIER_API_PORT:5235}                                         # Port de l'API
+
     target_url: "${NOTIFIER_API_TARGET_URL:http://localhost:5235/_reload}"  # Point de terminaison de rechargement
 
   # Configuration de Redis (utilisée lorsque le type est 'redis')
+
   redis:
     addr: "${NOTIFIER_REDIS_ADDR:localhost:6379}"                               # Adresse Redis
+
     password: "${NOTIFIER_REDIS_PASSWORD:UseStrongPasswordIsAGoodPractice}"     # Mot de passe Redis
+
     db: ${NOTIFIER_REDIS_DB:0}                                                  # Numéro de la base de données Redis
+
     topic: "${NOTIFIER_REDIS_TOPIC:mcp-gateway:reload}"                         # Sujet pub/sub Redis
 
 
@@ -461,10 +543,14 @@ memory : Stockage en mémoire, adapté au déploiement sur une seule machine (no
 redis : Stockage Redis, adapté au déploiement sur une seule machine et en cluster
 session:
   type: "${SESSION_STORAGE_TYPE:memory}"                    # Type de stockage : memory, redis
+
   redis:
     addr: "${SESSION_REDIS_ADDR:localhost:6379}"            # Adresse Redis
+
     password: "${SESSION_REDIS_PASSWORD:}"                  # Mot de passe Redis
+
     db: ${SESSION_REDIS_DB:0}                               # Numéro de la base de données Redis
+
     topic: "${SESSION_REDIS_TOPIC:mcp-gateway:session}"     # Sujet pub/sub Redis
 
 
@@ -476,56 +562,88 @@ Voici un exemple complet de configuration, incluant le routage, CORS, le traitem
 name: "mock-server"             # Nom du service proxy, unique globalement
 
 # Configuration du Routeur
+
 routers:
   - server: "mock-server"       # Nom du service
+
     prefix: "/mcp/user"         # Préfixe de route, unique globalement, ne peut pas être répété, recommandé de distinguer par service ou domaine+module
 
     # Configuration CORS
+
     cors:
       allowOrigins:             # Pour les environnements de développement et de test, tout peut être ouvert ; pour la production, il est préférable d'ouvrir selon les besoins. (La plupart des Clients MCP n'ont pas besoin de CORS)
+
         - "*"
       allowMethods:             # Méthodes de requête autorisées, à ouvrir selon les besoins. Pour MCP (SSE et Streamable), généralement seules ces 3 méthodes sont nécessaires
+
         - "GET"
         - "POST"
         - "OPTIONS"
       allowHeaders:
         - "Content-Type"        # Doit être autorisé
+
         - "Authorization"       # Besoin de supporter cette clé dans la requête pour les besoins d'authentification
+
         - "Mcp-Session-Id"      # Pour MCP, il est nécessaire de supporter cette clé dans la requête, sinon Streamable HTTP ne peut pas être utilisé normalement
+
       exposeHeaders:
         - "Mcp-Session-Id"      # Pour MCP, cette clé doit être exposée lorsque CORS est activé, sinon Streamable HTTP ne peut pas être utilisé normalement
+
       allowCredentials: true    # Si l'en-tête Access-Control-Allow-Credentials: true doit être ajouté
 
 # Configuration du Serveur
+
 servers:
   - name: "mock-server"               # Nom du service, doit être cohérent avec le serveur dans routers
+
     namespace: "user-service"         # Espace de noms du service, utilisé pour le regroupement des services
+
     description: "Mock User Service"  # Description du service
+
     allowedTools:                     # Liste des outils autorisés (sous-ensemble d'outils)
+
       - "register_user"
       - "get_user_by_email"
       - "update_user_preferences"
     config:                                           # Configuration au niveau du service, peut être référencée dans les outils via {{.Config}}
+
       Cookie: 123                                     # Configuration codée en dur
+
       Authorization: 'Bearer {{ env "AUTH_TOKEN" }}'  # Configuration à partir des variables d'environnement, usage : '{{ env "ENV_VAR_NAME" }}'
 
 # Configuration d'Outils
+
 tools:
   - name: "register_user"                                   # Nom de l'outil
+
     description: "Register a new user"                      # Description de l'outil
+
     method: "POST"                                          # Méthode HTTP pour le service cible (amont, backend)
+
     endpoint: "http://localhost:5236/users"                 # Adresse du service cible
+
     headers:                                                # Configuration d'en-tête de requête, utilisée pour les en-têtes transportés lors de la demande au service cible
+
       Content-Type: "application/json"                      # En-tête de requête codé en dur
+
       Authorization: "{{.Request.Headers.Authorization}}"   # Utilisation de l'en-tête Authorization extrait de la requête client (pour les scénarios de transfert)
+
       Cookie: "{{.Config.Cookie}}"                          # Utilisation de la valeur de la configuration du service
+
     args:                         # Configuration des paramètres
+
       - name: "username"          # Nom du paramètre
+
         position: "body"          # Position du paramètre : header, query, path, body, form-data
+
         required: true            # Si le paramètre est requis
+
         type: "string"            # Type de paramètre
+
         description: "Username"   # Description du paramètre
+
         default: ""               # Valeur par défaut
+
       - name: "email"
         position: "body"
         required: true
@@ -533,11 +651,13 @@ tools:
         description: "Email"
         default: ""
     requestBody: |-                       # Modèle de corps de requête, utilisé pour générer dynamiquement le corps de la requête, ex: valeurs extraites des paramètres (arguments de requête MCP)
+
       {
         "username": "{{.Args.username}}",
         "email": "{{.Args.email}}"
       }
     responseBody: |-                      # Modèle de corps de réponse, utilisé pour générer dynamiquement le corps de la réponse, ex: valeurs extraites de la réponse
+
       {
         "id": "{{.Response.Data.id}}",
         "username": "{{.Response.Data.username}}",
@@ -667,6 +787,7 @@ La configuration du routeur est utilisée pour définir les règles de transfert
 
 routers:
   - server: "mock-server"       # Nom du service, doit être cohérent avec le nom dans servers
+
     prefix: "/mcp/user"         # Préfixe de route, unique globalement, ne peut pas être répété
 
 Par défaut, trois points d'accès sont dérivés du prefix :
@@ -679,17 +800,23 @@ La configuration Cross-Origin Resource Sharing (CORS) est utilisée pour contrô
 
 cors:
   allowOrigins:             # Pour les environnements de développement et de test, tout peut être ouvert ; pour la production, il est préférable d'ouvrir selon les besoins. (La plupart des Clients MCP n'ont pas besoin de CORS)
+
     - "*"
   allowMethods:             # Méthodes de requête autorisées, à ouvrir selon les besoins. Pour MCP (SSE et Streamable), généralement seules ces 3 méthodes sont nécessaires
+
     - "GET"
     - "POST"
     - "OPTIONS"
   allowHeaders:
     - "Content-Type"        # Doit être autorisé
+
     - "Authorization"       # Besoin de supporter cette clé dans la requête pour les besoins d'authentification
+
     - "Mcp-Session-Id"      # Pour MCP, il est nécessaire de supporter cette clé dans la requête, sinon Streamable HTTP ne peut pas être utilisé normalement
+
   exposeHeaders:
     - "Mcp-Session-Id"      # Pour MCP, cette clé doit être exposée lorsque CORS est activé, sinon Streamable HTTP ne peut pas être utilisé normalement
+
   allowCredentials: true    # Si l'en-tête Access-Control-Allow-Credentials: true doit être ajouté
 
 
@@ -700,14 +827,20 @@ La configuration du serveur est utilisée pour définir les métadonnées du ser
 
 servers:
   - name: "mock-server"               # Nom du service, doit être cohérent avec le serveur dans routers
+
     namespace: "user-service"         # Espace de noms du service, utilisé pour le regroupement des services
+
     description: "Mock User Service"  # Description du service
+
     allowedTools:                     # Liste des outils autorisés (sous-ensemble d'outils)
+
       - "register_user"
       - "get_user_by_email"
       - "update_user_preferences"
     config:                                           # Configuration au niveau du service, peut être référencée dans les outils via {{.Config}}
+
       Cookie: 123                                     # Configuration codée en dur
+
       Authorization: 'Bearer {{ env "AUTH_TOKEN" }}'  # Configuration à partir des variables d'environnement, usage : '{{ env "ENV_VAR_NAME" }}'
 
 
@@ -718,20 +851,35 @@ La configuration d'outils est utilisée pour définir des règles d'appel API sp
 
 tools:
   - name: "register_user"                                   # Nom de l'outil
+
     description: "Register a new user"                      # Description de l'outil
+
     method: "POST"                                          # Méthode HTTP pour le service cible (amont, backend)
+
     endpoint: "http://localhost:5236/users"                 # Adresse du service cible
+
     headers:                                                # Configuration d'en-tête de requête, utilisée pour les en-têtes transportés lors de la demande au service cible
+
       Content-Type: "application/json"                      # En-tête de requête codé en dur
+
       Authorization: "{{.Request.Headers.Authorization}}"   # Utilisation de l'en-tête Authorization extrait de la requête client (pour les scénarios de transfert)
+
       Cookie: "{{.Config.Cookie}}"                          # Utilisation de la valeur de la configuration du service
+
     args:                         # Configuration des paramètres
+
       - name: "username"          # Nom du paramètre
+
         position: "body"          # Position du paramètre : header, query, path, body, form-data
+
         required: true            # Si le paramètre est requis
+
         type: "string"            # Type de paramètre
+
         description: "Username"   # Description du paramètre
+
         default: ""               # Valeur par défaut
+
       - name: "email"
         position: "body"
         required: true
@@ -739,11 +887,13 @@ tools:
         description: "Email"
         default: ""
     requestBody: |-                       # Modèle de corps de requête, utilisé pour générer dynamiquement le corps de la requête, ex: valeurs extraites des paramètres (arguments de requête MCP)
+
       {
         "username": "{{.Args.username}}",
         "email": "{{.Args.email}}"
       }
     responseBody: |-                      # Modèle de corps de réponse, utilisé pour générer dynamiquement le corps de la réponse, ex: valeurs extraites de la réponse
+
       {
         "id": "{{.Response.Data.id}}",
         "username": "{{.Response.Data.username}}",
@@ -1038,11 +1188,15 @@ Exemple de configuration pour le service MCP de type stdio :
 mcpServers:
   - type: "stdio"
     name: "amap-maps"                                   # Nom du service
+
     command: "npx"                                      # Commande à exécuter
+
     args:                                               # Arguments de commande
+
       - "-y"
       - "@amap/amap-maps-mcp-server"
     env:                                                # Variables d'environnement
+
       AMAP_MAPS_API_KEY: "{{.Request.Headers.Apikey}}"  # Extraire la valeur de l'en-tête de requête
 
 Les variables d'environnement peuvent être définies via le champ env, et les valeurs peuvent être extraites de la requête, par exemple {{.Request.Headers.Apikey}} extrait la valeur de Apikey de l'en-tête de requête.
@@ -1053,6 +1207,7 @@ Exemple de configuration pour le service MCP de type SSE :
 mcpServers:
   - type: "sse"
     name: "mock-user-sse"                       # Nom du service
+
     url: "http://localhost:3000/mcp/user/sse"   # Adresse du service SSE en amont, se terminant généralement par /sse, selon le service en amont
 
 
@@ -1062,6 +1217,7 @@ Exemple de configuration pour le service MCP de type streamable-http :
 mcpServers:
   - type: "streamable-http"
     name: "mock-user-mcp"                       # Nom du service
+
     url: "http://localhost:3000/mcp/user/mcp"   # Adresse du service MCP en amont, se terminant généralement par /mcp, selon le service en amont
 
 
@@ -1070,7 +1226,9 @@ Pour les proxys de service MCP, la configuration du routeur est similaire aux pr
 
 routers:
   - server: "amap-maps"           # Nom du service, doit être cohérent avec le nom dans mcpServers
+
     prefix: "/mcp/stdio-proxy"    # Préfixe de route, unique globalement
+
     cors:
       allowOrigins:
         - "*"
@@ -1082,8 +1240,10 @@ routers:
         - "Content-Type"
         - "Authorization"
         - "Mcp-Session-Id"        # Le service MCP doit inclure cet en-tête
+
       exposeHeaders:
         - "Mcp-Session-Id"        # Le service MCP doit exposer cet en-tête
+
       allowCredentials: true
 
 Pour les services MCP, Mcp-Session-Id dans les en-têtes de requête et de réponse doit être pris en charge, sinon le client ne peut pas l'utiliser normalement.
@@ -1109,6 +1269,7 @@ config:
 2. Extraction des valeurs depuis les en-têtes de requête
 headers:
   Authorization: "{{.Request.Headers.Authorization}}"   # Transmettre l'en-tête Authorization du client
+
   Cookie: "{{.Config.Cookie}}"                         # Utiliser la valeur de la configuration du service
 
 3. Construction du corps de la requête
@@ -1422,6 +1583,7 @@ Paramètres des Variables d'Environnement
 Certains services peuvent nécessiter des variables d'environnement spécifiques pour fonctionner correctement. Vous pouvez créer un fichier .env ou définir ces variables avant de démarrer la commande :
 
 # Exemple
+
 export OPENAI_API_KEY="votre_clé_api"
 export OPENAI_MODEL="gpt-4o-mini"
 export APISERVER_JWT_SECRET_KEY="votre_clé_secrète"

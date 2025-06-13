@@ -10,10 +10,9 @@ L'intégration ERPNext expose plusieurs endpoints API pour interagir avec ERPNex
 
 #### Récupérer la configuration
 
-```
+```plaintext
 GET /api/integrations/erpnext/config
-```
-
+```plaintext
 Récupère la configuration actuelle de l'intégration ERPNext.
 
 **Réponse**:
@@ -24,14 +23,12 @@ Récupère la configuration actuelle de l'intégration ERPNext.
   "api_key": "votre-cle-api",
   "api_secret": "votre-secret-api"
 }
-```
-
+```plaintext
 #### Mettre à jour la configuration
 
-```
+```plaintext
 POST /api/integrations/erpnext/config
-```
-
+```plaintext
 Met à jour la configuration de l'intégration ERPNext.
 
 **Corps de la requête**:
@@ -42,22 +39,19 @@ Met à jour la configuration de l'intégration ERPNext.
   "api_key": "votre-cle-api",
   "api_secret": "votre-secret-api"
 }
-```
-
+```plaintext
 **Réponse**:
 ```json
 {
   "success": true,
   "message": "Configuration updated"
 }
-```
-
+```plaintext
 #### Tester la connexion
 
-```
+```plaintext
 POST /api/integrations/erpnext/test-connection
-```
-
+```plaintext
 Teste la connexion à ERPNext avec la configuration actuelle.
 
 **Réponse**:
@@ -66,16 +60,14 @@ Teste la connexion à ERPNext avec la configuration actuelle.
   "success": true,
   "message": "Connection successful"
 }
-```
-
+```plaintext
 ### Projets et tâches
 
 #### Récupérer les projets
 
-```
+```plaintext
 GET /api/integrations/erpnext/projects
-```
-
+```plaintext
 Récupère la liste des projets ERPNext.
 
 **Réponse**:
@@ -94,14 +86,12 @@ Récupère la liste des projets ERPNext.
     "description": "Description du projet 2"
   }
 ]
-```
-
+```plaintext
 #### Récupérer les tâches
 
-```
+```plaintext
 GET /api/integrations/erpnext/tasks
-```
-
+```plaintext
 Récupère la liste des tâches ERPNext.
 
 **Paramètres de requête**:
@@ -127,14 +117,12 @@ Récupère la liste des tâches ERPNext.
     "description": "Description de la tâche 2"
   }
 ]
-```
-
+```plaintext
 #### Récupérer une tâche
 
-```
+```plaintext
 GET /api/integrations/erpnext/tasks/{task_id}
-```
-
+```plaintext
 Récupère une tâche ERPNext spécifique.
 
 **Réponse**:
@@ -149,14 +137,12 @@ Récupère une tâche ERPNext spécifique.
   "exp_start_date": "2023-04-05",
   "exp_end_date": "2023-04-12"
 }
-```
-
+```plaintext
 #### Créer une tâche
 
-```
+```plaintext
 POST /api/integrations/erpnext/tasks
-```
-
+```plaintext
 Crée une nouvelle tâche ERPNext.
 
 **Corps de la requête**:
@@ -168,22 +154,19 @@ Crée une nouvelle tâche ERPNext.
   "status": "Open",
   "priority": "Medium"
 }
-```
-
+```plaintext
 **Réponse**:
 ```json
 {
   "success": true,
   "task_id": "task3"
 }
-```
-
+```plaintext
 #### Mettre à jour une tâche
 
-```
+```plaintext
 PUT /api/integrations/erpnext/tasks/{task_id}
-```
-
+```plaintext
 Met à jour une tâche ERPNext existante.
 
 **Corps de la requête**:
@@ -194,24 +177,21 @@ Met à jour une tâche ERPNext existante.
   "status": "Working",
   "priority": "High"
 }
-```
-
+```plaintext
 **Réponse**:
 ```json
 {
   "success": true,
   "message": "Task updated"
 }
-```
-
+```plaintext
 ### Synchronisation
 
 #### Synchroniser ERPNext vers le journal
 
-```
+```plaintext
 POST /api/integrations/erpnext/sync-to-journal
-```
-
+```plaintext
 Synchronise les tâches ERPNext vers le journal.
 
 **Réponse**:
@@ -221,14 +201,12 @@ Synchronise les tâches ERPNext vers le journal.
   "count": 5,
   "message": "5 tasks synchronized to journal"
 }
-```
-
+```plaintext
 #### Synchroniser le journal vers ERPNext
 
-```
+```plaintext
 POST /api/integrations/erpnext/sync-from-journal
-```
-
+```plaintext
 Synchronise les entrées de journal vers ERPNext.
 
 **Réponse**:
@@ -238,14 +216,12 @@ Synchronise les entrées de journal vers ERPNext.
   "count": 3,
   "message": "3 entries synchronized to ERPNext"
 }
-```
-
+```plaintext
 #### Créer une note à partir d'une entrée
 
-```
+```plaintext
 POST /api/integrations/erpnext/create-note
-```
-
+```plaintext
 Crée une note ERPNext à partir d'une entrée de journal.
 
 **Corps de la requête**:
@@ -253,8 +229,7 @@ Crée une note ERPNext à partir d'une entrée de journal.
 {
   "filename": "2023-04-05-task-example.md"
 }
-```
-
+```plaintext
 **Réponse**:
 ```json
 {
@@ -262,8 +237,7 @@ Crée une note ERPNext à partir d'une entrée de journal.
   "note_id": "note1",
   "message": "Note created"
 }
-```
-
+```plaintext
 ## Utilisation avec JavaScript
 
 Exemple d'utilisation de l'API avec JavaScript:
@@ -294,8 +268,7 @@ async function syncToJournal() {
   });
   return response.json();
 }
-```
-
+```plaintext
 ## Utilisation avec Python
 
 Exemple d'utilisation de l'API avec Python:
@@ -304,11 +277,13 @@ Exemple d'utilisation de l'API avec Python:
 import requests
 
 # Récupérer la configuration
+
 def get_config():
     response = requests.get('http://localhost:8000/api/integrations/erpnext/config')
     return response.json()
 
 # Mettre à jour la configuration
+
 def update_config(config):
     response = requests.post(
         'http://localhost:8000/api/integrations/erpnext/config',
@@ -317,7 +292,8 @@ def update_config(config):
     return response.json()
 
 # Synchroniser ERPNext vers le journal
+
 def sync_to_journal():
     response = requests.post('http://localhost:8000/api/integrations/erpnext/sync-to-journal')
     return response.json()
-```
+```plaintext

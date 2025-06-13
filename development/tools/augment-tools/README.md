@@ -28,14 +28,15 @@ Pour synchroniser les fichiers après une modification, utilisez le script suiva
 
 ```powershell
 # Mettre à jour le fichier à la racine depuis le fichier dans development
+
 .\development\scripts\maintenance\augment\sync-augment-settings.ps1 -Direction ToRoot
 
 # OU
 
 # Mettre à jour le fichier dans development depuis le fichier à la racine
-.\development\scripts\maintenance\augment\sync-augment-settings.ps1 -Direction FromRoot
-```
 
+.\development\scripts\maintenance\augment\sync-augment-settings.ps1 -Direction FromRoot
+```plaintext
 ## Maintenance
 
 Lorsque vous mettez à jour les paramètres d'Augment, assurez-vous de mettre à jour ce fichier plutôt que d'en créer un nouveau à la racine du projet.

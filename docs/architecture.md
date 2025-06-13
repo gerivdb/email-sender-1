@@ -4,7 +4,7 @@
 
 Le Planning Ecosystem Sync est un système distribué conçu pour maintenir la cohérence entre les plans de développement Markdown statiques et un système de gestion dynamique (TaskMaster CLI + QDrant + PostgreSQL).
 
-```
+```plaintext
 ┌─────────────────────────────────────────────────────────────────────┐
 │                    Planning Ecosystem Sync                         │
 ├─────────────────┬───────────────────────┬─────────────────────────┤
@@ -44,8 +44,7 @@ Le Planning Ecosystem Sync est un système distribué conçu pour maintenir la c
                     │   ├─ Monitoring      │
                     │   └─ Real-time Alerts│
                     └──────────────────────┘
-```
-
+```plaintext
 ## Composants Principaux
 
 ### 1. Couche Plans Markdown
@@ -56,35 +55,39 @@ Le Planning Ecosystem Sync est un système distribué conçu pour maintenir la c
 - Interface humaine pour édition
 
 **Structure des Fichiers :**
-```
+```plaintext
 roadmaps/plans/
 ├── consolidated/
 │   ├── plan-dev-v55-planning-ecosystem-sync.md  # Plan principal
+
 │   ├── plan-dev-v48.md                          # Plans historiques
+
 │   └── ...
 ├── templates/
 │   ├── plan-template-v55.md
 │   └── phase-template.md
 └── archived/
     └── old-plans/
-```
-
+```plaintext
 **Format Standard :**
 ```markdown
 # Plan de développement v55 - Titre
+
 **Version X.Y - Date - Progression: Z%**
 
 ## Phase N: Nom de Phase
+
 **Progression: X%**
 
 ### N.X Sous-section
+
 - [x] Tâche complétée
 - [ ] Tâche en cours
-```
-
+```plaintext
 ### 2. Moteur de Synchronisation (Sync Engine)
 
 #### 2.1 Parser Module
+
 ```go
 // Parsing des plans Markdown
 type PlanParser struct {
@@ -100,8 +103,7 @@ func (p *PlanParser) ParsePlan(filePath string) (*Plan, error) {
     // 4. Validation schéma
     // 5. Calcul métriques
 }
-```
-
+```plaintext
 **Fonctionnalités :**
 - Parsing Markdown avec extensions
 - Extraction automatique métadonnées
@@ -110,6 +112,7 @@ func (p *PlanParser) ParsePlan(filePath string) (*Plan, error) {
 - Calcul progression automatique
 
 #### 2.2 Sync Controller
+
 ```go
 type SyncController struct {
     markdownRepo MarkdownRepository
@@ -126,8 +129,7 @@ func (s *SyncController) SyncMarkdownToDynamic(planPath string) error {
     // 5. Update dynamic system
     // 6. Record changes
 }
-```
-
+```plaintext
 **Algorithme de Synchronisation :**
 1. **Detection des Changements**
    - Checksum MD5 des fichiers
@@ -145,6 +147,7 @@ func (s *SyncController) SyncMarkdownToDynamic(planPath string) error {
    - Fallback vers résolution manuelle
 
 #### 2.3 Conflict Manager
+
 ```go
 type ConflictManager struct {
     detector     ConflictDetector
@@ -162,8 +165,7 @@ type Conflict struct {
     Resolution   ResolutionStrategy
     AutoResolve  bool
 }
-```
-
+```plaintext
 **Types de Conflits :**
 - **Content Divergence :** Contenu modifié simultanément
 - **Structure Change :** Modification structure hiérarchique
@@ -173,11 +175,14 @@ type Conflict struct {
 ### 3. Couche Système Dynamique
 
 #### 3.1 QDrant Vector Database
+
 ```yaml
 # Configuration QDrant
+
 collections:
   plans:
     vector_size: 384        # Sentence transformers
+
     distance: cosine
     on_disk_payload: true
     
@@ -187,8 +192,7 @@ collections:
     
   metadata:
     vector_size: 256
-```
-
+```plaintext
 **Usage :**
 - Recherche sémantique dans les plans
 - Détection similarités tâches
@@ -196,6 +200,7 @@ collections:
 - Recommandations basées contenu
 
 #### 3.2 PostgreSQL Database
+
 ```sql
 -- Schema principal
 CREATE TABLE plans (
@@ -238,9 +243,9 @@ CREATE TABLE sync_operations (
     completed_at TIMESTAMP,
     metadata JSONB
 );
-```
-
+```plaintext
 #### 3.3 TaskMaster CLI Integration
+
 ```go
 type TaskMasterConnector struct {
     binaryPath   string
@@ -255,11 +260,11 @@ func (t *TaskMasterConnector) SyncPlan(plan *Plan) error {
     // 3. Update local cache
     // 4. Verify synchronization
 }
-```
-
+```plaintext
 ### 4. Couche Validation
 
 #### 4.1 Validation Engine
+
 ```go
 type ValidationEngine struct {
     schemaValidator   SchemaValidator
@@ -275,8 +280,7 @@ type ValidationResult struct {
     Warnings    []ValidationWarning
     Metrics     ValidationMetrics
 }
-```
-
+```plaintext
 **Niveaux de Validation :**
 1. **Schema :** Structure Markdown conforme
 2. **Consistency :** Cohérence interne données
@@ -284,8 +288,10 @@ type ValidationResult struct {
 4. **Performance :** Impact sur performance système
 
 #### 4.2 Business Rules Engine
+
 ```yaml
 # config/validation-rules.yaml
+
 rules:
   progress_calculation:
     - rule: "phase_progress <= 100"
@@ -298,12 +304,12 @@ rules:
   metadata_requirements:
     - rule: "version_format: vXX"
     - rule: "date_format: YYYY-MM-DD"
-```
-
+```plaintext
 ### 5. Dashboard et API
 
 #### 5.1 Architecture Web
-```
+
+```plaintext
 Frontend (React + TypeScript)
 ├── Dashboard Overview
 ├── Plan Management
@@ -317,9 +323,9 @@ Backend (Go + Gin)
 ├── Authentication
 ├── Rate Limiting
 └── Monitoring Endpoints
-```
-
+```plaintext
 #### 5.2 API Layer
+
 ```go
 type APIServer struct {
     syncController    *SyncController
@@ -346,11 +352,11 @@ func (a *APIServer) setupRoutes() {
         }
     }
 }
-```
-
+```plaintext
 ## Patterns Architecturaux
 
 ### 1. Event-Driven Architecture
+
 ```go
 type EventBus struct {
     subscribers map[EventType][]EventHandler
@@ -371,9 +377,9 @@ const (
     ConflictDetected EventType = "conflict.detected"
     ValidationFailed EventType = "validation.failed"
 )
-```
-
+```plaintext
 ### 2. Repository Pattern
+
 ```go
 type PlanRepository interface {
     GetByID(id string) (*Plan, error)
@@ -391,9 +397,9 @@ type DynamicPlanRepository struct {
     postgres *sql.DB
     qdrant   QDrantClient
 }
-```
-
+```plaintext
 ### 3. Strategy Pattern (Conflict Resolution)
+
 ```go
 type ConflictResolutionStrategy interface {
     Resolve(conflict *Conflict) (*Resolution, error)
@@ -404,11 +410,11 @@ type AutoMergeStrategy struct{}
 type SourcePriorityStrategy struct{}
 type TargetPriorityStrategy struct{}
 type ManualResolutionStrategy struct{}
-```
-
+```plaintext
 ## Monitoring et Observabilité
 
 ### 1. Métriques Principales
+
 ```go
 var (
     syncOperationsTotal = prometheus.NewCounterVec(
@@ -435,9 +441,9 @@ var (
         []string{"severity"},
     )
 )
-```
-
+```plaintext
 ### 2. Logging Structure
+
 ```go
 type StructuredLogger struct {
     logger *logrus.Logger
@@ -452,9 +458,9 @@ func (l *StructuredLogger) LogSyncOperation(op *SyncOperation) {
         "status":       op.Status,
     }).Info("Sync operation completed")
 }
-```
-
+```plaintext
 ### 3. Health Checks
+
 ```go
 type HealthChecker struct {
     postgres PostgresHealthChecker
@@ -472,11 +478,11 @@ func (h *HealthChecker) CheckHealth() HealthStatus {
         },
     }
 }
-```
-
+```plaintext
 ## Sécurité
 
 ### 1. Authentication & Authorization
+
 ```go
 type AuthMiddleware struct {
     tokenValidator TokenValidator
@@ -492,9 +498,9 @@ type Role struct {
     Name        string
     Permissions []Permission
 }
-```
-
+```plaintext
 ### 2. Input Validation
+
 ```go
 type InputSanitizer struct {
     markdownSanitizer MarkdownSanitizer
@@ -508,9 +514,9 @@ func (i *InputSanitizer) SanitizePlanContent(content string) (string, error) {
     // 3. Check for injection patterns
     // 4. Normalize encoding
 }
-```
-
+```plaintext
 ### 3. Audit Trail
+
 ```sql
 CREATE TABLE audit_logs (
     id UUID PRIMARY KEY,
@@ -522,11 +528,11 @@ CREATE TABLE audit_logs (
     ip_address INET,
     details JSONB
 );
-```
-
+```plaintext
 ## Performance et Scalabilité
 
 ### 1. Optimisations Base de Données
+
 ```sql
 -- Index pour requêtes fréquentes
 CREATE INDEX CONCURRENTLY idx_plans_status_modified 
@@ -538,9 +544,9 @@ ON tasks(phase_id, status);
 -- Partitioning pour sync_operations
 CREATE TABLE sync_operations_2025_06 PARTITION OF sync_operations
 FOR VALUES FROM ('2025-06-01') TO ('2025-07-01');
-```
-
+```plaintext
 ### 2. Caching Strategy
+
 ```go
 type CacheManager struct {
     redis      redis.Client
@@ -552,9 +558,9 @@ func (c *CacheManager) GetPlan(id string) (*Plan, error) {
     // 2. Check Redis (5ms)
     // 3. Load from database (50ms)
 }
-```
-
+```plaintext
 ### 3. Worker Pool Pattern
+
 ```go
 type SyncWorkerPool struct {
     workers    int
@@ -568,13 +574,14 @@ func (w *SyncWorkerPool) Start() {
         go w.worker()
     }
 }
-```
-
+```plaintext
 ## Déploiement et Infrastructure
 
 ### 1. Architecture de Déploiement
+
 ```yaml
 # docker-compose.yml
+
 version: '3.8'
 services:
   sync-engine:
@@ -598,9 +605,9 @@ services:
     image: nginx:alpine
     ports:
       - "8080:80"
-```
-
+```plaintext
 ### 2. Kubernetes Deployment
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -623,28 +630,33 @@ spec:
           limits:
             memory: "1Gi"
             cpu: "500m"
-```
-
+```plaintext
 ## Maintenance et Opérations
 
 ### 1. Backup Strategy
+
 ```bash
 #!/bin/bash
+
 # Backup quotidien automatisé
 
 # PostgreSQL
+
 pg_dump planning_sync | gzip > backup_$(date +%Y%m%d).sql.gz
 
 # QDrant snapshots
+
 curl -X POST "http://qdrant:6333/collections/plans/snapshots"
 
 # Git repository
-git bundle create backup_$(date +%Y%m%d).bundle --all
-```
 
+git bundle create backup_$(date +%Y%m%d).bundle --all
+```plaintext
 ### 2. Monitoring Alerts
+
 ```yaml
 # prometheus-alerts.yml
+
 groups:
 - name: planning-sync
   rules:
@@ -655,6 +667,5 @@ groups:
   - alert: HighConflictRate
     expr: conflicts_active_total > 10
     for: 5m
-```
-
+```plaintext
 Cette architecture assure une haute disponibilité, une performance optimale et une maintenance simplifiée du système de synchronisation Planning Ecosystem.

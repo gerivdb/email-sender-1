@@ -23,6 +23,7 @@ Cette fonction valide une information extraite selon un ensemble de règles pré
 **Couverture des branches :** 100% (12/12)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification de l'objet d'information
 - Initialisation du tableau d'erreurs
@@ -34,6 +35,7 @@ Cette fonction valide une information extraite selon un ensemble de règles pré
 - Retour du résultat de validation
 
 #### Branches couvertes :
+
 - Vérification de l'objet d'information null
 - Vérification de l'ID vide ou null
 - Vérification de la source vide ou null
@@ -48,6 +50,7 @@ Cette fonction valide une information extraite selon un ensemble de règles pré
 - Vérification de l'initialisation des métadonnées
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests avec différents types d'informations extraites
 - Tests avec des informations valides et invalides
@@ -62,6 +65,7 @@ Cette fonction récupère les erreurs de validation d'une information extraite.
 **Couverture des branches :** 100% (4/4)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification de l'objet d'information
 - Vérification de l'existence des métadonnées
@@ -70,12 +74,14 @@ Cette fonction récupère les erreurs de validation d'une information extraite.
 - Retour des erreurs de validation
 
 #### Branches couvertes :
+
 - Vérification de l'objet d'information null
 - Vérification de l'existence des métadonnées
 - Vérification de l'existence de la clé d'erreurs de validation
 - Vérification du type des erreurs de validation
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests avec des informations avec et sans erreurs de validation
 - Tests avec des informations sans métadonnées
@@ -89,6 +95,7 @@ Cette fonction ajoute une règle de validation personnalisée au module.
 **Couverture des branches :** 100% (5/5)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification des paramètres obligatoires
 - Initialisation du tableau de règles de validation
@@ -97,6 +104,7 @@ Cette fonction ajoute une règle de validation personnalisée au module.
 - Retour de l'objet de règle créé
 
 #### Branches couvertes :
+
 - Vérification du nom de la règle vide ou null
 - Vérification du type d'information vide ou null
 - Vérification du script de validation null
@@ -104,6 +112,7 @@ Cette fonction ajoute une règle de validation personnalisée au module.
 - Vérification de l'initialisation du tableau de règles
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests d'ajout de règles pour différents types d'informations
 - Tests d'ajout de règles avec différents scripts de validation

@@ -5,27 +5,35 @@ Ce dossier contient des templates de workflows n8n implémentant différentes ar
 ## Templates disponibles
 
 ### 1. agent-single-tools.json
+
 Template implémentant l'architecture "Agent unique + Outils".
 
 ### 2. agents-sequential.json
+
 Template implémentant l'architecture "Agents séquentiels".
 
 ### 3. agent-mcp-tools.json
+
 Template implémentant l'architecture "Agent + MCP Servers + Outils".
 
 ### 4. agent-router.json
+
 Template implémentant l'architecture "Agent + Router".
 
 ### 5. agent-human-loop.json
+
 Template implémentant l'architecture "Agent + Human in the Loop".
 
 ### 6. agent-dynamic-call.json
+
 Template implémentant l'architecture "Agent unique + Appel dynamique d'autres agents".
 
 ### 7. agents-hierarchy-parallel.json
+
 Template implémentant l'architecture "Hiérarchie d'agents + Agents parallèles + Outils partagés".
 
 ### 8. agents-hierarchy-loop-rag.json
+
 Template implémentant l'architecture "Hiérarchie d'agents + Boucle + Agents parallèles + RAG partagé".
 
 ## Utilisation

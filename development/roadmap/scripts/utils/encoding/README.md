@@ -12,12 +12,13 @@ Cette section contient les scripts liÃ©s Ã  la gestion d'encodage dans la ca
 
 ```powershell
 # Exemple d'utilisation PowerShell
+
 .\Fix-RoadmapEncoding.ps1 -FilePath "Roadmap/roadmap_complete.md" -Encoding "UTF8"
 
 # Exemple d'utilisation Python
-python fix_encoding.py "Roadmap/roadmap_complete.md"
-```
 
+python fix_encoding.py "Roadmap/roadmap_complete.md"
+```plaintext
 ## DÃ©pendances
 
 Ces scripts peuvent dÃ©pendre des modules suivants :

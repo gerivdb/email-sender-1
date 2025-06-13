@@ -20,23 +20,27 @@ La taxonomie est représentée par deux classes principales :
 Cette classe représente une entrée individuelle dans la taxonomie pour un type d'exception spécifique.
 
 #### Informations d'identification
+
 - **TypeName** : Nom complet du type d'exception (ex: System.ArgumentException)
 - **ShortName** : Nom court de l'exception (ex: ArgumentException)
 - **Namespace** : Namespace de l'exception (ex: System)
 - **Id** : Identifiant unique pour cette exception dans la taxonomie
 
 #### Informations de classification
+
 - **Category** : Catégorie principale (ex: Argument, IO, Security)
 - **Severity** : Sévérité (ex: Critical, Error, Warning)
 - **Tags** : Tags pour la recherche et le filtrage
 - **IsPowerShellSpecific** : Indique si l'exception est spécifique à PowerShell
 
 #### Informations de hiérarchie
+
 - **ParentType** : Type parent dans la hiérarchie d'héritage
 - **ChildTypes** : Types enfants dans la hiérarchie d'héritage
 - **HierarchyLevel** : Niveau dans la hiérarchie (0 = System.Exception)
 
 #### Informations de diagnostic
+
 - **DefaultMessage** : Message d'erreur par défaut ou modèle
 - **ErrorCategory** : Catégorie d'erreur PowerShell associée
 - **ErrorId** : ID d'erreur PowerShell associé (si applicable)
@@ -45,16 +49,19 @@ Cette classe représente une entrée individuelle dans la taxonomie pour un type
 - **PreventionTips** : Conseils pour éviter cette exception
 
 #### Informations de correction
+
 - **ResolutionSteps** : Étapes pour résoudre cette exception
 - **CodeExample** : Exemple de code qui peut générer cette exception
 - **FixExample** : Exemple de code pour corriger l'exception
 
 #### Informations de contexte
+
 - **RelatedCmdlets** : Cmdlets qui peuvent générer cette exception
 - **RelatedModules** : Modules qui peuvent générer cette exception
 - **RelatedExceptions** : Exceptions similaires ou liées
 
 #### Informations de documentation
+
 - **DocumentationUrl** : URL vers la documentation officielle
 - **AdditionalNotes** : Notes supplémentaires
 - **LastUpdated** : Date de dernière mise à jour de cette entrée
@@ -64,6 +71,7 @@ Cette classe représente une entrée individuelle dans la taxonomie pour un type
 Cette classe représente la taxonomie complète des exceptions et fournit des méthodes pour manipuler et interroger les données.
 
 #### Tables de hachage
+
 - **Exceptions** : Table de hachage des exceptions par TypeName
 - **Categories** : Table de hachage des exceptions par catégorie
 - **Tags** : Table de hachage des exceptions par tag
@@ -71,6 +79,7 @@ Cette classe représente la taxonomie complète des exceptions et fournit des m�
 - **Cmdlets** : Table de hachage des exceptions par cmdlet
 
 #### Méthodes principales
+
 - **AddException** : Ajoute une exception à la taxonomie
 - **GetExceptionByType** : Récupère une exception par son nom de type
 - **GetExceptionsByCategory** : Récupère des exceptions par catégorie
@@ -98,9 +107,11 @@ Pour faciliter l'utilisation de la taxonomie, plusieurs fonctions sont fournies 
 
 ```powershell
 # Créer une nouvelle taxonomie
+
 $taxonomy = New-ExceptionTaxonomy
 
 # Créer une entrée d'exception
+
 $exception = New-ExceptionInfo -TypeName "System.ArgumentException" `
     -Category "Argument" -Severity "Error" `
     -Tags @("Argument", "Validation") -IsPowerShellSpecific $false `
@@ -111,18 +122,21 @@ $exception = New-ExceptionInfo -TypeName "System.ArgumentException" `
     -ResolutionSteps @("Vérifier la valeur de l'argument", "Consulter la documentation pour les valeurs acceptées")
 
 # Ajouter l'exception à la taxonomie
+
 Add-ExceptionToTaxonomy -Taxonomy $taxonomy -Exception $exception
 
 # Récupérer une exception par son type
+
 $retrievedException = $taxonomy.GetExceptionByType("System.ArgumentException")
 
 # Exporter la taxonomie vers un fichier JSON
+
 Export-ExceptionTaxonomy -Taxonomy $taxonomy -FilePath "exceptions.json"
 
 # Importer la taxonomie depuis un fichier JSON
-$importedTaxonomy = Import-ExceptionTaxonomy -FilePath "exceptions.json"
-```
 
+$importedTaxonomy = Import-ExceptionTaxonomy -FilePath "exceptions.json"
+```plaintext
 ## Avantages de cette structure
 
 1. **Complète** : Capture toutes les informations pertinentes sur les exceptions

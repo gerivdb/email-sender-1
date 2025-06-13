@@ -21,6 +21,7 @@ Augment Code a une limite stricte de 5KB par input. Cette limite est imposée pa
    ```powershell
    .\development\scripts\maintenance\augment\AugmentMemoriesManager.ps1
    # Puis utilisez la fonction Split-LargeInput
+
    ```
 
 2. **Référencement des fichiers**

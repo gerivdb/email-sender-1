@@ -1,4 +1,4 @@
-﻿<p align="center">
+<p align="center">
   <a href="https://github.com/mem0ai/mem0">
     <img src="docs/images/banner-sm.png" width="800px" alt="Mem0 - The Memory Layer for Personalized AI">
   </a>
@@ -48,6 +48,7 @@
 </p>
 
 ##  🔥 Research Highlights
+
 - **+26% Accuracy** over OpenAI Memory on the LOCOMO benchmark
 - **91% Faster Responses** than full-context, ensuring low-latency at scale
 - **90% Lower Token Usage** than full-context, cutting costs without compromise
@@ -86,13 +87,11 @@ Install the sdk via pip:
 
 ```bash
 pip install mem0ai
-```
-
+```plaintext
 Install sdk via npm:
 ```bash
 npm install mem0ai
-```
-
+```plaintext
 ### Basic Usage
 
 Mem0 requires an LLM to function, with `gpt-4o-mini` from OpenAI as the default. However, it supports a variety of LLMs; for details, refer to our [Supported LLMs documentation](https://docs.mem0.ai/components/llms/overview).
@@ -108,16 +107,19 @@ memory = Memory()
 
 def chat_with_memories(message: str, user_id: str = "default_user") -> str:
     # Retrieve relevant memories
+
     relevant_memories = memory.search(query=message, user_id=user_id, limit=3)
     memories_str = "\n".join(f"- {entry['memory']}" for entry in relevant_memories["results"])
 
     # Generate Assistant response
+
     system_prompt = f"You are a helpful AI. Answer the question based on query and memories.\nUser Memories:\n{memories_str}"
     messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": message}]
     response = openai_client.chat.completions.create(model="gpt-4o-mini", messages=messages)
     assistant_response = response.choices[0].message.content
 
     # Create new memories from the conversation
+
     messages.append({"role": "assistant", "content": assistant_response})
     memory.add(messages, user_id=user_id)
 
@@ -134,8 +136,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-```
-
+```plaintext
 For detailed integration steps, see the [Quickstart](https://docs.mem0.ai/quickstart) and [API Reference](https://docs.mem0.ai/api-reference).
 
 ## 🔗 Integrations & Demos
@@ -162,8 +163,7 @@ We now have a paper you can cite:
   journal={arXiv preprint arXiv:2504.19413},
   year={2025}
 }
-```
-
+```plaintext
 ## ⚖️ License
 
 Apache 2.0 — see the [LICENSE](LICENSE) file for details.

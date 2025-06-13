@@ -81,7 +81,7 @@ Les tests P4 se concentrent sur la validation des aspects avancés et des perfor
 
 ### Structure des Dossiers
 
-```
+```plaintext
 /development/tools/<module>/tests/
 ├── Pester/
 │   ├── <NomFonction>.P1.Tests.ps1
@@ -94,8 +94,7 @@ Les tests P4 se concentrent sur la validation des aspects avancés et des perfor
     ├── <NomFonction>.P1.Results.xml
     ├── <NomFonction>.P1.Coverage.xml
     └── ...
-```
-
+```plaintext
 ### Conventions de Nommage
 
 - **Fichiers de test :** `<NomFonction>.<Phase>.Tests.ps1`
@@ -117,13 +116,14 @@ Utiliser des tags dans les blocs Describe/Context pour faciliter le filtrage et 
 ```powershell
 Describe "Wait-ForCompletedRunspace - Tests basiques" -Tag "P1" {
     # Tests P1
+
 }
 
 Describe "Wait-ForCompletedRunspace - Tests de robustesse" -Tag "P2" {
     # Tests P2
-}
-```
 
+}
+```plaintext
 ## Configuration Pester 5.x Recommandée
 
 ### Configuration de Base
@@ -137,26 +137,27 @@ $pesterConfig.TestResult.OutputPath = $testResultPath
 $pesterConfig.CodeCoverage.Enabled = $true
 $pesterConfig.CodeCoverage.Path = $modulePath
 $pesterConfig.CodeCoverage.OutputPath = $coverageResultPath
-```
-
+```plaintext
 ### Exécution des Tests par Phase
 
 ```powershell
 $pesterConfig = [PesterConfiguration]::Default
 $pesterConfig.Run.Path = $testScriptPath
 $pesterConfig.Filter.Tag = "P1"  # Filtrer par tag P1, P2, P3 ou P4
-# Autres configurations...
-```
 
+# Autres configurations...
+
+```plaintext
 ### Exécution de Tous les Tests
 
 ```powershell
 $pesterConfig = [PesterConfiguration]::Default
 $pesterConfig.Run.Path = $testScriptPath
 # Sans filtre de tag pour exécuter tous les tests
-# Autres configurations...
-```
 
+# Autres configurations...
+
+```plaintext
 ## Techniques pour Tester les Fonctions Privées
 
 ### Utilisation de InModuleScope
@@ -166,13 +167,13 @@ InModuleScope "NomModule" {
     Describe "Test de fonction privée" {
         It "Devrait fonctionner correctement" {
             # Accès direct à la fonction privée
+
             $result = Private-Function -Param1 "Value"
             $result | Should -Be "Expected"
         }
     }
 }
-```
-
+```plaintext
 ### Injection de Fonctions de Test
 
 ```powershell
@@ -185,26 +186,26 @@ Describe "Test de fonction privée" {
         $result | Should -Be "Expected"
     }
 }
-```
-
+```plaintext
 ### Création de Wrappers Publics Temporaires
 
 ```powershell
 # Dans le module (temporairement)
+
 function Test-PrivateFunction {
     param($Param1)
     Private-Function -Param1 $Param1
 }
 
 # Dans le test
+
 Describe "Test de fonction privée via wrapper" {
     It "Devrait fonctionner correctement" {
         $result = Test-PrivateFunction -Param1 "Value"
         $result | Should -Be "Expected"
     }
 }
-```
-
+```plaintext
 ### Accès aux Variables de Script
 
 ```powershell
@@ -215,8 +216,7 @@ InModuleScope "NomModule" {
         }
     }
 }
-```
-
+```plaintext
 ## Techniques pour Maximiser la Couverture de Code
 
 ### Injection de Dépendances
@@ -233,8 +233,7 @@ Describe "Test avec injection de dépendances" {
         Should -Invoke Get-Something -Times 1
     }
 }
-```
-
+```plaintext
 ### Utilisation de TestDrive
 
 ```powershell
@@ -245,8 +244,7 @@ Describe "Test avec TestDrive" {
         $testPath | Should -Exist
     }
 }
-```
-
+```plaintext
 ### Tests Paramétriques
 
 ```powershell
@@ -261,8 +259,7 @@ Describe "Tests paramétriques" {
         $result | Should -Be $Expected
     }
 }
-```
-
+```plaintext
 ### Gestion des Dépendances Externes
 
 La gestion efficace des dépendances externes est essentielle pour créer des tests fiables, reproductibles et indépendants de l'environnement d'exécution.
@@ -282,6 +279,7 @@ La gestion efficace des dépendances externes est essentielle pour créer des te
 Describe "Test avec mock Pester" {
     BeforeAll {
         # Mock d'une fonction qui appelle un service externe
+
         Mock Invoke-RestMethod {
             return @{
                 StatusCode = 200
@@ -296,12 +294,12 @@ Describe "Test avec mock Pester" {
         Should -Invoke Invoke-RestMethod -Times 1 -Exactly
     }
 }
-```
-
+```plaintext
 ##### 2. Injection de Dépendances
 
 ```powershell
 # Fonction avec injection de dépendance
+
 function Get-ProcessedData {
     param(
         [Parameter(Mandatory)]
@@ -316,6 +314,7 @@ function Get-ProcessedData {
 }
 
 # Test avec mock injecté
+
 Describe "Test avec injection de dépendance" {
     It "Devrait utiliser le provider injecté" {
         $mockProvider = { param($url) return @{ data = "mocked data" } }
@@ -323,17 +322,18 @@ Describe "Test avec injection de dépendance" {
         $result | Should -Be "Test - mocked data"
     }
 }
-```
-
+```plaintext
 ##### 3. Interfaces de Test
 
 ```powershell
 # Interface pour les services externes
+
 class IDataService {
     [object] GetData([string]$url) { throw "Not implemented" }
 }
 
 # Implémentation réelle
+
 class RealDataService : IDataService {
     [object] GetData([string]$url) {
         return Invoke-RestMethod -Uri $url
@@ -341,6 +341,7 @@ class RealDataService : IDataService {
 }
 
 # Implémentation de test
+
 class MockDataService : IDataService {
     [object] GetData([string]$url) {
         return @{ data = "mocked data" }
@@ -348,6 +349,7 @@ class MockDataService : IDataService {
 }
 
 # Fonction utilisant l'interface
+
 function Get-ProcessedData {
     param(
         [Parameter(Mandatory)]
@@ -362,6 +364,7 @@ function Get-ProcessedData {
 }
 
 # Test avec mock via interface
+
 Describe "Test avec interface" {
     It "Devrait utiliser le service mocké" {
         $mockService = [MockDataService]::new()
@@ -369,14 +372,14 @@ Describe "Test avec interface" {
         $result | Should -Be "Test - mocked data"
     }
 }
-```
-
+```plaintext
 #### Mocking de Systèmes Spécifiques
 
 ##### Mocking de Bases de Données
 
 ```powershell
 # Mock pour SQL Server
+
 Mock Invoke-Sqlcmd {
     return @(
         [PSCustomObject]@{
@@ -388,17 +391,18 @@ Mock Invoke-Sqlcmd {
 }
 
 # Mock pour fichiers
+
 Mock Get-Content {
     return @(
         '{"id": 1, "name": "Test User", "email": "test@example.com"}'
     )
 } -ParameterFilter { $Path -eq "data.json" }
-```
-
+```plaintext
 ##### Mocking de Services Web
 
 ```powershell
 # Mock pour API REST
+
 Mock Invoke-RestMethod {
     $response = switch -Regex ($Uri) {
         '/users/\d+' { @{ name = "Test User"; email = "test@example.com" } }
@@ -407,12 +411,12 @@ Mock Invoke-RestMethod {
     }
     return $response
 } -ParameterFilter { $Method -eq 'GET' }
-```
-
+```plaintext
 ##### Mocking de Systèmes de Fichiers
 
 ```powershell
 # Utilisation de TestDrive
+
 Describe "Test avec système de fichiers" {
     It "Devrait créer un fichier" {
         $testPath = "TestDrive:\test.txt"
@@ -421,22 +425,23 @@ Describe "Test avec système de fichiers" {
         Get-Content $testPath | Should -Be "Test content"
     }
 }
-```
-
+```plaintext
 ### Analyse des Branches Non Testées
 
 ```powershell
 # Exécuter les tests avec couverture
+
 $results = Invoke-Pester -Configuration $pesterConfig
 
 # Analyser les résultats de couverture
+
 $coverage = $results.CodeCoverage
 $missedCommands = $coverage.MissedCommands
 
 # Afficher les lignes non couvertes
-$missedCommands | Format-Table -Property File, Line, Command
-```
 
+$missedCommands | Format-Table -Property File, Line, Command
+```plaintext
 ### Tests de Limites
 
 ```powershell
@@ -453,21 +458,18 @@ Describe "Tests de limites" {
         $result | Should -Be $Expected
     }
 }
-```
-
+```plaintext
 ## Standards de Documentation des Résultats
 
 ### Format de Mise à Jour des Tâches
 
 ```markdown
 - [x] Nom de la tâche (Tests: X/Y réussis, couverture: Z%)
-```
-
+```plaintext
 Exemple :
 ```markdown
 - [x] Implémenter un mécanisme de timeout interne (Tests: 5/5 réussis, couverture: 97%)
-```
-
+```plaintext
 ### Critères de Validation
 
 Une tâche est considérée comme complète uniquement lorsque :
@@ -481,41 +483,41 @@ Une tâche est considérée comme complète uniquement lorsque :
 Pour assurer la cohérence dans la documentation des résultats de test, le format suivant doit être utilisé dans tous les fichiers de plan (ex: plan-dev-v26.md) :
 
 #### Format pour les tâches complétées avec succès :
+
 ```markdown
 - [x] Nom de la tâche (Tests: X/X réussis, couverture: Y%)
-```
+```plaintext
 Exemple :
 ```markdown
 - [x] Implémenter un mécanisme de timeout interne (Tests: 5/5 réussis, couverture: 97%)
-```
-
+```plaintext
 #### Format pour les tâches avec tests skippés :
+
 ```markdown
 - [x] Nom de la tâche (Tests: X/Z réussis, couverture: Y%, skippés: N [raison])
-```
+```plaintext
 Exemple :
 ```markdown
 - [x] Implémenter la détection de deadlock (Tests: 4/5 réussis, couverture: 95%, skippés: 1 [environnement spécifique requis])
-```
-
+```plaintext
 #### Format pour les tâches en cours avec tests partiels :
+
 ```markdown
 - [ ] Nom de la tâche (Tests: X/Z réussis, couverture: Y%, en cours)
-```
+```plaintext
 Exemple :
 ```markdown
 - [ ] Optimiser la gestion des collections (Tests: 3/8 réussis, couverture: 78%, en cours)
-```
-
+```plaintext
 #### Format pour les tâches avec tests échoués :
+
 ```markdown
 - [ ] Nom de la tâche (Tests: X/Z réussis, échecs: N, couverture: Y%)
-```
+```plaintext
 Exemple :
 ```markdown
 - [ ] Corriger la gestion des erreurs (Tests: 2/5 réussis, échecs: 3, couverture: 65%)
-```
-
+```plaintext
 ### Traçabilité
 
 Chaque test doit être lié à une exigence fonctionnelle spécifique, soit via un commentaire, soit via un tag.
@@ -523,9 +525,9 @@ Chaque test doit être lié à une exigence fonctionnelle spécifique, soit via 
 ```powershell
 Describe "Test lié à l'exigence REQ-001" -Tag "REQ-001" {
     # Tests pour l'exigence REQ-001
-}
-```
 
+}
+```plaintext
 ### Documentation des Tests Skippés
 
 Dans le code de test, les tests skippés doivent être clairement documentés avec la raison du skip :
@@ -533,17 +535,17 @@ Dans le code de test, les tests skippés doivent être clairement documentés av
 ```powershell
 It "Devrait faire quelque chose" -Skip:$isNotSupportedEnvironment -Tag "EnvironmentSpecific" {
     # Test skippé dans certains environnements
-}
-```
 
+}
+```plaintext
 Ou avec une explication explicite :
 
 ```powershell
 It "Devrait faire quelque chose (nécessite un environnement spécifique)" -Skip {
     # Test skippé
-}
-```
 
+}
+```plaintext
 ## Intégration avec CI/CD
 
 La méthodologie de tests progressive en 4 phases s'intègre parfaitement avec les pipelines CI/CD via GitHub Actions pour automatiser l'exécution des tests et garantir la qualité du code.
@@ -552,6 +554,7 @@ La méthodologie de tests progressive en 4 phases s'intègre parfaitement avec l
 
 ```yaml
 # .github/workflows/test-pipeline.yml
+
 name: Test Pipeline
 
 on:
@@ -607,8 +610,7 @@ jobs:
         with:
           name: test-results
           path: ./TestResults/*.xml
-```
-
+```plaintext
 ### Stratégie d'Exécution des Tests
 
 - **Pull Requests** : Exécution des tests P1 et P2 pour validation rapide
@@ -638,14 +640,13 @@ Le mode GRAN est utilisé pour décomposer les fonctionnalités complexes en tâ
 - Définition de la portée des tests pour chaque phase (P1-P4) en fonction de la granularité des tâches
 
 **Exemple de workflow :**
-```
+```plaintext
 1. GRAN : Décomposer la fonctionnalité en tâches
 2. Pour chaque tâche :
    a. Identifier les scénarios de test pour P1, P2, P3 et P4
    b. Estimer l'effort de test pour chaque phase
    c. Planifier l'implémentation des tests dans le workflow COMBO
-```
-
+```plaintext
 ### Mode REVIEW
 
 Le mode REVIEW est essentiel pour garantir la qualité des tests eux-mêmes et s'assurer qu'ils couvrent correctement les fonctionnalités.
@@ -690,15 +691,14 @@ Le mode DEBUG est étroitement lié à la phase de correction des problèmes ide
 - Analyse des échecs de test pour identifier les causes profondes
 
 **Workflow de débogage :**
-```
+```plaintext
 1. Identifier un test échoué
 2. Analyser les logs et les résultats de test
 3. Reproduire le problème avec un test ciblé
 4. Corriger le problème
 5. Vérifier que tous les tests passent
 6. Ajouter un test de régression si nécessaire
-```
-
+```plaintext
 ## Métriques de Qualité Supplémentaires
 
 Au-delà de la couverture de code, d'autres métriques sont essentielles pour évaluer la qualité des tests et du code testé. Ces métriques doivent être suivies et améliorées continuellement.
@@ -714,12 +714,12 @@ La complexité cyclomatique mesure le nombre de chemins d'exécution indépendan
 **Mesure :**
 ```powershell
 # Utilisation de PSScriptAnalyzer pour mesurer la complexité
+
 Install-Module -Name PSScriptAnalyzer -Force
 $results = Invoke-ScriptAnalyzer -Path $modulePath -Recurse -Settings PSGallery
 $complexity = $results | Where-Object { $_.RuleName -eq 'PSAvoidUsingCmdletAliases' }
 $complexity | Format-Table -Property ScriptName, Line, Column, Message
-```
-
+```plaintext
 **Intégration avec les tests :**
 - Tester en priorité les fonctions à haute complexité
 - Décomposer les fonctions complexes en fonctions plus simples
@@ -736,10 +736,10 @@ La duplication de code peut indiquer des problèmes de conception et augmenter l
 **Mesure :**
 ```powershell
 # Utilisation d'un outil de détection de duplication
+
 $results = Invoke-DuplicationAnalysis -Path $modulePath
 $results | Where-Object { $_.DuplicationPercentage -gt 5 } | Format-Table
-```
-
+```plaintext
 **Intégration avec les tests :**
 - Refactoriser le code dupliqué en fonctions réutilisables
 - Utiliser des fixtures de test pour éviter la duplication dans les tests
@@ -758,13 +758,13 @@ Le temps d'exécution des tests est crucial pour l'intégration continue et le f
 **Mesure :**
 ```powershell
 # Mesure du temps d'exécution des tests
+
 $startTime = Get-Date
 Invoke-Pester -Configuration $pesterConfig
 $endTime = Get-Date
 $duration = ($endTime - $startTime).TotalSeconds
 Write-Host "Durée d'exécution des tests : $duration secondes"
-```
-
+```plaintext
 **Optimisation :**
 - Paralléliser les tests indépendants
 - Mocker les dépendances lentes
@@ -782,6 +782,7 @@ La stabilité des tests mesure leur fiabilité et leur déterminisme.
 **Mesure :**
 ```powershell
 # Exécution répétée des tests pour détecter l'instabilité
+
 $results = @()
 for ($i = 0; $i -lt 10; $i++) {
     $result = Invoke-Pester -Configuration $pesterConfig -PassThru
@@ -795,8 +796,7 @@ for ($i = 0; $i -lt 10; $i++) {
 $results | Format-Table
 $instabilityRate = ($results | Where-Object { $_.Failed -gt 0 }).Count / 10
 Write-Host "Taux d'instabilité : $($instabilityRate * 100)%"
-```
-
+```plaintext
 **Amélioration :**
 - Identifier et corriger les tests instables
 - Isoler les tests qui dépendent de l'état
@@ -814,12 +814,12 @@ La couverture des branches mesure si chaque branche conditionnelle a été exéc
 **Mesure :**
 ```powershell
 # Analyse de la couverture des branches avec Pester
+
 $pesterConfig.CodeCoverage.CoveragePercentTarget = 90
 $pesterConfig.CodeCoverage.CoverageMetrics = @('Statement', 'Branch')
 $results = Invoke-Pester -Configuration $pesterConfig -PassThru
 $results.CodeCoverage.BranchCoverage
-```
-
+```plaintext
 **Amélioration :**
 - Identifier les branches non couvertes
 - Ajouter des tests spécifiques pour les conditions limites

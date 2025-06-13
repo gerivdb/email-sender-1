@@ -14,7 +14,7 @@ Un proxy qui unifie l'accès aux systèmes MCP (Augment et Cline) avec gestion d
 
 ## Architecture
 
-```
+```plaintext
 Utilisateur
     │
     ▼
@@ -35,8 +35,7 @@ Utilisateur
 ┌─────────────────┐
 │ Base de données │
 └─────────────────┘
-```
-
+```plaintext
 ## Installation
 
 ### Prérequis
@@ -49,8 +48,7 @@ Utilisateur
 ```bash
 cd proxy_mcp
 npm install
-```
-
+```plaintext
 ### Configuration
 
 Modifiez le fichier `config/default.json` selon vos besoins :
@@ -89,22 +87,19 @@ Modifiez le fichier `config/default.json` selon vos besoins :
   },
   "lockFile": "../config/active_system.lock"
 }
-```
-
+```plaintext
 ## Utilisation
 
 ### Démarrage du serveur
 
 ```bash
 npm start
-```
-
+```plaintext
 Pour le développement avec rechargement automatique :
 
 ```bash
 npm run dev
-```
-
+```plaintext
 ### Interface web
 
 Accédez à l'interface web à l'adresse `http://localhost:4000/ui`.
@@ -115,15 +110,17 @@ Le proxy inclut un outil en ligne de commande pour la gestion :
 
 ```bash
 # Afficher l'état actuel
+
 node src/cli.js status
 
 # Lister les systèmes disponibles
+
 node src/cli.js list
 
 # Basculer vers un autre système
-node src/cli.js switch augment
-```
 
+node src/cli.js switch augment
+```plaintext
 ### API REST
 
 Le proxy expose une API REST pour la gestion :
@@ -139,20 +136,23 @@ Le module Python `mcp_manager.py` a été mis à jour pour prendre en charge le 
 
 ```python
 # Exemple d'utilisation
+
 from mcp_manager import MCPManager
 
 # Initialiser le gestionnaire MCP
+
 mcp = MCPManager()
 
 # Utiliser le proxy unifié par défaut
+
 health = mcp.check_health()
 print(f"Santé du proxy: {health}")
 
 # Envoyer une requête via le proxy
+
 response = mcp.send_request("/api/some-endpoint")
 print(f"Réponse: {response.json()}")
-```
-
+```plaintext
 ## Workflow de bascule
 
 1. **Automatique** : Le proxy vérifie périodiquement la santé des systèmes et bascule automatiquement en cas de panne
@@ -171,8 +171,7 @@ Les logs sont stockés dans le répertoire `logs` :
 
 ```bash
 npm test
-```
-
+```plaintext
 ## Licence
 
 ISC

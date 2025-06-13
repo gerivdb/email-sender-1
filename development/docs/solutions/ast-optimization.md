@@ -33,18 +33,20 @@ La fonction `Invoke-AstTraversalDFS-Optimized` est une version optimisée de la 
 
 ```powershell
 # Exemple 1 : Recherche de toutes les fonctions dans un script
+
 $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
 $functions = Invoke-AstTraversalDFS-Optimized -Ast $ast -NodeType "FunctionDefinition"
 
 # Exemple 2 : Recherche avec une profondeur maximale
+
 $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
 $nodes = Invoke-AstTraversalDFS-Optimized -Ast $ast -NodeType "VariableExpressionAst" -MaxDepth 5
 
 # Exemple 3 : Recherche avec un prédicat personnalisé
+
 $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
 $nodes = Invoke-AstTraversalDFS-Optimized -Ast $ast -Predicate { $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] -and $args[0].Name -like "Get-*" }
-```
-
+```plaintext
 ## Résultats des tests de performance
 
 Des tests de performance ont été effectués pour comparer les différentes implémentations de parcours AST. Voici un résumé des résultats :

@@ -1,4 +1,4 @@
-﻿# model - core
+# model - core
 
 Cette section contient les scripts liÃ©s Ã  model dans la catÃ©gorie core.
 
@@ -15,6 +15,7 @@ Cette section contient les scripts liÃ©s Ã  model dans la catÃ©gorie core.
 
 `powershell
 # Exemple d'utilisation
+
 .\<nom-du-script>.ps1 -InputPath "Roadmap/roadmap.md" -OutputPath "Roadmap/output.md"
 `
 

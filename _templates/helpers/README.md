@@ -26,8 +26,7 @@ const pathHelper = require('../helpers/path-helper');
 // Pour générer un chemin vers un plan de développement
 const planPath = pathHelper.generatePlanDevPath('v2025-05', 'Mon nouveau plan');
 // Résultat: <project_root>/roadmaps/plans/consolidated/plan-dev-v2025-05-mon-nouveau-plan.md
-```
-
+```plaintext
 ## Bonnes pratiques
 
 1. **Ne pas hardcoder les chemins** : Toujours utiliser les helpers pour construire des chemins

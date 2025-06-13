@@ -5,13 +5,21 @@ Cette documentation détaille l'architecture, les fonctionnalités et l'utilisat
 ## Table des matières
 
 1. [Vue d'ensemble](#vue-densemble)
+
 2. [Architecture du système](#architecture-du-système)
+
 3. [Composants principaux](#composants-principaux)
+
 4. [Installation et configuration](#installation-et-configuration)
+
 5. [Guide d'utilisation](#guide-dutilisation)
+
 6. [Intégrations](#intégrations)
+
 7. [Analyse et insights](#analyse-et-insights)
+
 8. [Dépannage](#dépannage)
+
 9. [Références](#références)
 
 ## Vue d'ensemble

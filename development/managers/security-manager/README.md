@@ -31,18 +31,21 @@ Les fichiers de configuration du gestionnaire sont centralisés dans le réperto
 
 ```powershell
 # Charger les secrets
+
 .\scripts\Load-Secrets.ps1
 
 # Générer une clé API
+
 .\scripts\Generate-ApiKey.ps1
 
 # Vérifier les permissions
+
 .\scripts\Check-Permissions.ps1
 
 # Audit de sécurité
-.\scripts\Run-SecurityAudit.ps1
-```
 
+.\scripts\Run-SecurityAudit.ps1
+```plaintext
 ## Intégration ErrorManager
 
 Ce manager intègre l'ErrorManager pour la gestion centralisée des erreurs, la journalisation structurée et le catalogage des erreurs.

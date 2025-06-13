@@ -31,18 +31,21 @@ Les fichiers de configuration du gestionnaire sont centralisés dans le réperto
 
 ```powershell
 # Démarrer tous les conteneurs
+
 .\scripts\Start-Containers.ps1
 
 # Arrêter tous les conteneurs
+
 .\scripts\Stop-Containers.ps1
 
 # Vérifier le statut des conteneurs
+
 .\scripts\Get-ContainerStatus.ps1
 
 # Afficher les logs des conteneurs
-.\scripts\Get-ContainerLogs.ps1
-```
 
+.\scripts\Get-ContainerLogs.ps1
+```plaintext
 ## Intégration ErrorManager
 
 Ce manager intègre l'ErrorManager pour la gestion centralisée des erreurs, la journalisation structurée et le catalogage des erreurs.

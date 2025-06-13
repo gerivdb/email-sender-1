@@ -23,30 +23,26 @@ n8n transmet les données entre les nœuds sous forme de tableau d'objets, suiva
     "binary": {}
   }
 ]
-```
-
+```plaintext
 Chaque entrée dans ce tableau est appelée un "item" et les nœuds traitent chaque item individuellement. Cette structure permet le traitement parallèle de plusieurs éléments de données à travers votre workflow. À partir de la version 0.166.0, lors de l'utilisation des nœuds Function ou Code, n8n ajoute automatiquement la clé json si elle est manquante et enveloppe les items dans un tableau si nécessaire.
 
 ## Travailler avec les Données JSON de n8n
 
 Lors de la manipulation de données dans n8n, vous aurez fréquemment besoin d'accéder aux propriétés des nœuds précédents. Vous pouvez utiliser des expressions pour cela :
 
-```
+```plaintext
 {{ $json.property1 }}
-```
-
+```plaintext
 Pour les propriétés imbriquées plus profondes :
 
-```
+```plaintext
 {{ $json.parent.child.property }}
-```
-
+```plaintext
 Pour accéder aux données d'un nœud précédent spécifique :
 
-```
+```plaintext
 {{ $node["NodeName"].json.property }}
-```
-
+```plaintext
 ## Configuration du Nœud Edit Fields (Set)
 
 Le nœud Edit Fields est essentiel pour manipuler les données du workflow. Il vous permet de définir de nouvelles données et d'écraser des données existantes.
@@ -59,8 +55,7 @@ Le nœud Edit Fields est essentiel pour manipuler les données du workflow. Il v
   "combinedField": "{{ $json.firstName }} {{ $json.lastName }}",
   "staticField": "This is a static value"
 }
-```
-
+```plaintext
 ### Mode de Sortie JSON
 
 ```json
@@ -74,8 +69,7 @@ Le nœud Edit Fields est essentiel pour manipuler les données du workflow. Il v
     }
   }
 }
-```
-
+```plaintext
 ### Support de la Notation par Points
 
 Par défaut, n8n prend en charge la notation par points dans les noms de champs. Définir un nom comme `number.one` avec la valeur 20 produit :
@@ -86,8 +80,7 @@ Par défaut, n8n prend en charge la notation par points dans les noms de champs.
     "one": 20
   }
 }
-```
-
+```plaintext
 Pour désactiver ce comportement, sélectionnez Add Option > Support Dot Notation et définissez-le sur off.
 
 ## Implémentation du Nœud Code
@@ -111,8 +104,7 @@ for (const item of inputData) {
   });
 }
 return newItems;
-```
-
+```plaintext
 ### Exécuter Une Fois pour Chaque Item
 
 Ce mode traite chaque item individuellement :
@@ -123,8 +115,7 @@ const item = $json;
 item.processed = true;
 item.modifiedAt = new Date().toISOString();
 return { json: item };
-```
-
+```plaintext
 ### Diviser le JSON en Items Séparés
 
 Une tâche courante est de diviser un JSON imbriqué en items individuels :
@@ -141,8 +132,7 @@ for (const item of $('Webhook').all()) {
   }
 }
 return results;
-```
-
+```plaintext
 ## Utiliser les Expressions dans n8n
 
 Les expressions permettent de définir des paramètres dynamiques basés sur les données des nœuds précédents, du workflow ou de votre environnement.
@@ -155,10 +145,9 @@ Toutes les expressions ont le format `{{ your expression here }}`.
 
 Pour obtenir des données d'un corps de webhook :
 
-```
+```plaintext
 {{ $json.city }}
-```
-
+```plaintext
 Cela accède aux données JSON entrantes en utilisant la variable $json de n8n et trouve la valeur de la propriété city.
 
 ## Configuration du Nœud AI Agent
@@ -181,8 +170,7 @@ Cet agent utilise des outils externes et des API pour effectuer des actions et r
   "memory": true,
   "verbose": true
 }
-```
-
+```plaintext
 ### Agent Conversationnel
 
 Cet agent maintient le contexte, comprend l'intention de l'utilisateur et fournit des réponses pertinentes. Idéal pour les chatbots et les assistants virtuels :
@@ -198,8 +186,7 @@ Cet agent maintient le contexte, comprend l'intention de l'utilisateur et fourni
   "systemMessage": "You are a helpful customer service agent for our company.",
   "memory": true
 }
-```
-
+```plaintext
 ### Construire un Agent IA avec Mémoire
 
 Pour créer un agent IA avec mémoire à long terme :
@@ -216,8 +203,7 @@ Pour créer un agent IA avec mémoire à long terme :
   "memory": true,
   "tools": ["memory-add", "memory-retrieve"]
 }
-```
-
+```plaintext
 ## Exporter et Importer des Workflows
 
 n8n sauvegarde les workflows au format JSON, permettant un partage et une réutilisation faciles.
@@ -245,10 +231,9 @@ Travailler avec des tableaux d'objets JSON est courant dans n8n :
 
 Pour diviser un tableau à partir de données entrantes :
 
-```
+```plaintext
 {{ $json.body.block }}
-```
-
+```plaintext
 Cela divise chaque bloc en items séparés qui peuvent être traités individuellement.
 
 ## Outils et Convertisseurs
@@ -264,8 +249,7 @@ n8n fournit plusieurs outils de conversion :
   "target": "json",
   "data": "{{ $json.xmlData }}"
 }
-```
-
+```plaintext
 ### Convertisseur CSV vers JSON
 
 ```json
@@ -275,8 +259,7 @@ n8n fournit plusieurs outils de conversion :
   "target": "json",
   "data": "{{ $json.csvData }}"
 }
-```
-
+```plaintext
 ## Intégration avec des Services Tiers
 
 n8n excelle dans la connexion de diverses plateformes et services.
@@ -290,8 +273,7 @@ n8n excelle dans la connexion de diverses plateformes et services.
   "range": "A:Z",
   "data": "{{ $json.rowData }}"
 }
-```
-
+```plaintext
 ### Automatiser la Génération de JSON avec OpenAI
 
 Vous pouvez utiliser le nœud OpenAI pour générer automatiquement du JSON structuré :
@@ -303,27 +285,24 @@ Vous pouvez utiliser le nœud OpenAI pour générer automatiquement du JSON stru
   "temperature": 0.2,
   "output": "json"
 }
-```
-
+```plaintext
 ## Fonctionnalités Avancées et Astuces
 
 ### Accéder aux Données d'un Webhook
 
 Lors de la réception de données via un webhook, accédez à des éléments spécifiques en utilisant des expressions :
 
-```
+```plaintext
 {{ $json.body.ticker }}
 {{ $json.body.tf }}
-```
-
+```plaintext
 Pour les représentations de chaînes de JSON, vous devrez d'abord analyser la chaîne :
 
 ```javascript
 // Dans un nœud Code
 const parsedBody = JSON.parse($json.body);
 return { json: parsedBody };
-```
-
+```plaintext
 ### Ajouter des Données du Nœud Précédent à Chaque Item
 
 Lorsque vous divisez des données mais que vous avez besoin de conserver des informations de la source originale :
@@ -341,8 +320,7 @@ for (const student of $json.body.students) {
   });
 }
 return results;
-```
-
+```plaintext
 ## Bonnes Pratiques pour la Manipulation de JSON dans n8n
 
 1. **Structure Cohérente** : Maintenez une structure de données cohérente tout au long de votre workflow pour faciliter le débogage et la maintenance.

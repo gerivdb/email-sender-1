@@ -20,21 +20,28 @@ La solution consiste à consolider ces deux dossiers en une structure unifiée s
 
 ### Nouvelle structure
 
-```
+```plaintext
 development/scripts/analysis/
 ├── code/                 # Analyse de code source
+
 ├── performance/          # Analyse de performance
+
 ├── data/                 # Analyse de données
+
 ├── reporting/            # Rapports
+
 ├── integration/          # Intégration avec des outils tiers
+
 ├── roadmap/              # Scripts liés à la roadmap
+
 ├── common/               # Modules et outils communs
+
 │   ├── modules/
 │   ├── tools/
 │   └── plugins/
 └── docs/                 # Documentation
-```
 
+```plaintext
 ## Implémentation
 
 Un script PowerShell a été créé pour effectuer cette consolidation : `development/scripts/maintenance/Consolidate-AnalysisDirectories.ps1`.
@@ -43,18 +50,21 @@ Un script PowerShell a été créé pour effectuer cette consolidation : `develo
 
 ```powershell
 # Exécuter en mode simulation (DryRun) pour voir les actions qui seraient effectuées
+
 .\Consolidate-AnalysisDirectories.ps1 -DryRun
 
 # Exécuter en mode réel avec confirmation pour chaque action
+
 .\Consolidate-AnalysisDirectories.ps1
 
 # Exécuter en mode réel sans confirmation
+
 .\Consolidate-AnalysisDirectories.ps1 -Force
 
 # Exécuter en mode réel avec un fichier de log personnalisé
-.\Consolidate-AnalysisDirectories.ps1 -Force -LogFile "consolidation.log"
-```
 
+.\Consolidate-AnalysisDirectories.ps1 -Force -LogFile "consolidation.log"
+```plaintext
 ### Fonctionnement du script
 
 1. Le script crée la nouvelle structure de dossiers sous `development/scripts/analysis`.
@@ -68,20 +78,20 @@ Un script de test a été créé pour vérifier le bon fonctionnement du script 
 
 ```powershell
 # Exécuter les tests en mode simulation
+
 .\Test-ConsolidateAnalysisDirectories.ps1 -DryRun
 
 # Exécuter les tests en mode réel
-.\Test-ConsolidateAnalysisDirectories.ps1
-```
 
+.\Test-ConsolidateAnalysisDirectories.ps1
+```plaintext
 ## Après la consolidation
 
 Une fois la consolidation effectuée et vérifiée, vous pouvez supprimer le dossier `analytics` :
 
 ```powershell
 Remove-Item -Path "development\scripts\analytics" -Recurse -Force
-```
-
+```plaintext
 ## Mise à jour des références
 
 Après la consolidation, vous devrez mettre à jour les références aux scripts dans d'autres parties du code. Voici quelques exemples de modifications à effectuer :

@@ -4,36 +4,61 @@ Ce dossier contient les scripts pour le système de gestion de roadmap du projet
 
 ## Structure des dossiers
 
-```
+```plaintext
 roadmap/
 ├── core/                   # Fonctionnalités fondamentales
-│   ├── parser/             # Scripts de parsing de roadmap
-│   ├── model/              # Modèles de données
-│   ├── converter/          # Convertisseurs de format
-│   └── manager/            # Scripts de gestion principale
-├── utils/                  # Utilitaires
-│   ├── helpers/            # Fonctions d'aide
-│   ├── export/             # Exportation vers différents formats
-│   └── import/             # Importation depuis différentes sources
-├── rag/                    # Système RAG
-│   ├── core/               # Fonctionnalités RAG principales
-│   ├── vectorization/      # Scripts de vectorisation
-│   ├── search/             # Scripts de recherche
-│   ├── metadata/           # Gestion des métadonnées
-│   └── config/             # Configuration du système RAG
-├── integration/            # Intégrations avec d'autres systèmes
-│   ├── n8n/                # Intégration avec n8n
-│   └── notion/             # Intégration avec Notion
-├── maintenance/            # Scripts de maintenance
-│   ├── cleanup/            # Nettoyage et archivage
-│   └── validation/         # Validation de structure
-├── visualization/          # Visualisation des roadmaps
-├── tests/                  # Tests unitaires et d'intégration
-└── docs/                   # Documentation
-    ├── examples/           # Exemples d'utilisation
-    └── guides/             # Guides d'utilisation
-```
 
+│   ├── parser/             # Scripts de parsing de roadmap
+
+│   ├── model/              # Modèles de données
+
+│   ├── converter/          # Convertisseurs de format
+
+│   └── manager/            # Scripts de gestion principale
+
+├── utils/                  # Utilitaires
+
+│   ├── helpers/            # Fonctions d'aide
+
+│   ├── export/             # Exportation vers différents formats
+
+│   └── import/             # Importation depuis différentes sources
+
+├── rag/                    # Système RAG
+
+│   ├── core/               # Fonctionnalités RAG principales
+
+│   ├── vectorization/      # Scripts de vectorisation
+
+│   ├── search/             # Scripts de recherche
+
+│   ├── metadata/           # Gestion des métadonnées
+
+│   └── config/             # Configuration du système RAG
+
+├── integration/            # Intégrations avec d'autres systèmes
+
+│   ├── n8n/                # Intégration avec n8n
+
+│   └── notion/             # Intégration avec Notion
+
+├── maintenance/            # Scripts de maintenance
+
+│   ├── cleanup/            # Nettoyage et archivage
+
+│   └── validation/         # Validation de structure
+
+├── visualization/          # Visualisation des roadmaps
+
+├── tests/                  # Tests unitaires et d'intégration
+
+└── docs/                   # Documentation
+
+    ├── examples/           # Exemples d'utilisation
+
+    └── guides/             # Guides d'utilisation
+
+```plaintext
 ## Scripts principaux
 
 ### Core
@@ -66,14 +91,12 @@ Pour utiliser le système de gestion de roadmap, exécutez le script principal:
 
 ```powershell
 .\core\manager\Manage-Roadmap.ps1 -Action <Action> [options]
-```
-
+```plaintext
 Pour utiliser le système RAG, exécutez:
 
 ```powershell
 .\rag\core\Invoke-RoadmapRAG.ps1 -Action <Action> [options]
-```
-
+```plaintext
 ## Documentation
 
 Pour plus d'informations sur le système RAG, consultez le guide dans `docs/guides/RAG-System.md`.

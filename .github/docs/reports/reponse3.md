@@ -5,6 +5,7 @@ Pour aborder la **Phase 3: Optimisation des performances** comme indiqué dans l
 ## Phase 3: Optimisation des performances
 
 ### Objectifs
+
 1. **Résoudre le problème P3**:
    - **UPM-009**: Inefficacité dans la gestion des collections
 2. **Optimiser les algorithmes critiques**:
@@ -18,6 +19,7 @@ Pour aborder la **Phase 3: Optimisation des performances** comme indiqué dans l
 4. **Mettre à jour la documentation** pour refléter les améliorations
 
 ### Environnement
+
 - **PowerShell**: Version 7.5.0
 - **Système d'exploitation**: Windows
 - **Pester**: Version 5.7.1
@@ -29,9 +31,11 @@ Pour aborder la **Phase 3: Optimisation des performances** comme indiqué dans l
 ## 1. Résolution de UPM-009: Inefficacité dans la gestion des collections (P3)
 
 ### Problème
+
 Le module utilise différents types de collections (`ArrayList`, `List<T>`, arrays) de manière incohérente, ce qui peut entraîner des conversions inutiles et des performances sous-optimales, particulièrement avec de grandes collections.
 
 ### Solution
+
 Standardiser l'utilisation des collections dans tout le module en utilisant `System.Collections.Concurrent.ConcurrentBag<T>` pour les collections partagées entre threads et `System.Collections.Generic.List<T>` pour les autres collections. Optimiser les opérations sur les collections pour minimiser les conversions et les copies.
 
 ### Étapes
@@ -39,16 +43,22 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
 1. **Standardiser les types de collections**:
    ```powershell
    # UnifiedParallel.psm1
+
    # Remplacer les ArrayList par des collections plus performantes
+
    
    # Variables globales
+
    $script:SharedVariables = [System.Collections.Concurrent.ConcurrentDictionary[string,object]]::new()
    
    function Initialize-UnifiedParallel {
        # ...
+
        # Utiliser ConcurrentDictionary pour les collections partagées
+
        $script:SharedVariables = [System.Collections.Concurrent.ConcurrentDictionary[string,object]]::new()
        # ...
+
    }
    ```
 
@@ -69,6 +79,7 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
        
        begin {
            # Utiliser des collections optimisées
+
            $results = [System.Collections.Generic.List[object]]::new()
            $errors = [System.Collections.Generic.List[object]]::new()
            $totalProcessed = 0
@@ -76,9 +87,11 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
            $totalErrors = 0
            
            # Convertir en List<T> si nécessaire (plus performant qu'ArrayList)
+
            $runspacesToProcess = [System.Collections.Generic.List[object]]::new()
            
            # Optimiser la détection du type et la conversion
+
            if ($null -eq $CompletedRunspaces) {
                Write-Verbose "CompletedRunspaces est null, aucun traitement nécessaire"
                return [PSCustomObject]@{
@@ -91,22 +104,26 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
            }
            elseif ($CompletedRunspaces -is [System.Collections.IEnumerable] -and -not ($CompletedRunspaces -is [string])) {
                # Traiter toute collection énumérable de manière uniforme
+
                foreach ($runspace in $CompletedRunspaces) {
                    $runspacesToProcess.Add($runspace)
                }
            }
            else {
                # Cas d'un objet unique
+
                $runspacesToProcess.Add($CompletedRunspaces)
            }
        }
        
        process {
            # Utiliser for au lieu de foreach pour de meilleures performances
+
            for ($i = 0; $i -lt $runspacesToProcess.Count; $i++) {
                $runspace = $runspacesToProcess[$i]
                
                # Afficher la progression si demandé
+
                if (-not $NoProgress -and $runspacesToProcess.Count -gt 10) {
                    $percentComplete = [math]::Min(100, [math]::Round(($i / $runspacesToProcess.Count) * 100))
                    Write-Progress -Activity "Traitement des runspaces" -Status "Traitement $($i+1)/$($runspacesToProcess.Count)" -PercentComplete $percentComplete
@@ -114,14 +131,17 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
                
                try {
                    # Vérifier si le runspace est valide
+
                    if ($null -eq $runspace -or $null -eq $runspace.PowerShell -or $null -eq $runspace.Handle) {
                        continue
                    }
                    
                    # Récupérer le résultat
+
                    $runspaceResult = $runspace.PowerShell.EndInvoke($runspace.Handle)
                    
                    # Ajouter le résultat à la collection
+
                    $results.Add([PSCustomObject]@{
                        Index = $i
                        Value = $runspaceResult
@@ -135,6 +155,7 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
                    $errorMessage = "Erreur lors du traitement du runspace $i : $_"
                    
                    # Ajouter l'erreur à la collection
+
                    $errors.Add([PSCustomObject]@{
                        Index = $i
                        Exception = $_.Exception
@@ -142,6 +163,7 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
                    })
                    
                    # Ajouter un résultat d'erreur si demandé
+
                    if (-not $IgnoreErrors) {
                        $results.Add([PSCustomObject]@{
                            Index = $i
@@ -155,6 +177,7 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
                }
                finally {
                    # Nettoyer les ressources
+
                    if ($null -ne $runspace -and $null -ne $runspace.PowerShell) {
                        $runspace.PowerShell.Dispose()
                    }
@@ -164,6 +187,7 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
            }
            
            # Terminer la barre de progression
+
            if (-not $NoProgress -and $runspacesToProcess.Count -gt 10) {
                Write-Progress -Activity "Traitement des runspaces" -Completed
            }
@@ -171,6 +195,7 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
        
        end {
            # Retourner un objet avec les statistiques
+
            return [PSCustomObject]@{
                Results = $results
                Errors = $errors
@@ -201,15 +226,18 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
        )
        
        # Utiliser List<T> pour de meilleures performances
+
        $completedRunspaces = [System.Collections.Generic.List[object]]::new()
        $pendingRunspaces = [System.Collections.Generic.List[object]]::new()
        
        # Vérifier si la liste des runspaces est vide
+
        if ($null -eq $Runspaces -or ($Runspaces -is [System.Collections.ICollection] -and $Runspaces.Count -eq 0)) {
            return $completedRunspaces
        }
        
        # Convertir en List<T> si nécessaire
+
        if ($Runspaces -is [System.Collections.IEnumerable] -and -not ($Runspaces -is [string])) {
            foreach ($runspace in $Runspaces) {
                $pendingRunspaces.Add($runspace)
@@ -227,15 +255,18 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
            $iteration++
            
            # Afficher la progression si demandé
+
            if (-not $NoProgress -and $pendingRunspaces.Count -gt 10) {
                $percentComplete = [math]::Min(100, [math]::Round(($completedRunspaces.Count / ($completedRunspaces.Count + $pendingRunspaces.Count)) * 100))
                Write-Progress -Activity "Attente des runspaces" -Status "Complétés: $($completedRunspaces.Count), En attente: $($pendingRunspaces.Count)" -PercentComplete $percentComplete
            }
            
            # Vérifier le timeout
+
            $elapsedTime = [datetime]::Now - $startTime
            if ($TimeoutSeconds -gt 0 -and $elapsedTime.TotalSeconds -ge $TimeoutSeconds) {
                # Nettoyer les runspaces non complétés
+
                for ($i = 0; $i -lt $pendingRunspaces.Count; $i++) {
                    $runspace = $pendingRunspaces[$i]
                    if ($runspace.PowerShell) {
@@ -245,6 +276,7 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
                        }
                        catch {
                            # Ignorer les erreurs de nettoyage
+
                        }
                    }
                }
@@ -254,10 +286,12 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
            }
            
            # Vérifier l'état de chaque runspace (parcourir à l'envers pour faciliter la suppression)
+
            for ($i = $pendingRunspaces.Count - 1; $i -ge 0; $i--) {
                $runspace = $pendingRunspaces[$i]
                
                # Vérifier si le runspace est complété
+
                if ($null -ne $runspace.Handle -and $runspace.Handle.IsCompleted) {
                    $completedRunspaces.Add($runspace)
                    $pendingRunspaces.RemoveAt($i)
@@ -265,6 +299,7 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
            }
            
            # Déterminer si on continue d'attendre
+
            if (-not $WaitForAll -and $completedRunspaces.Count -gt 0) {
                $continueWaiting = $false
            }
@@ -273,13 +308,16 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
            }
            else {
                # Attendre un peu avant de vérifier à nouveau
+
                # Utiliser un délai adaptatif pour réduire la charge CPU
+
                $sleepTime = [math]::Min(100, 10 * $iteration)
                Start-Sleep -Milliseconds $sleepTime
            }
        }
        
        # Terminer la barre de progression
+
        if (-not $NoProgress -and $pendingRunspaces.Count -gt 10) {
            Write-Progress -Activity "Attente des runspaces" -Completed
        }
@@ -291,6 +329,7 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
 4. **Tester les optimisations**:
    ```powershell
    # CollectionPerformance.Tests.ps1
+
    Describe "Tests de performance des collections" {
        BeforeAll {
            Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force
@@ -309,12 +348,14 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
            Write-Host "Durée de traitement pour 10000 éléments: $duration ms"
            
            # La durée dépend du matériel, mais nous vérifions que le traitement est terminé
+
            $duration | Should -BeGreaterThan 0
        }
    }
    ```
 
 ### Validation
+
 - **Attendu**: Les tests de performance montrent une amélioration des temps de traitement pour les grandes collections.
 - **Hypothèse confirmée**: L'utilisation cohérente de collections optimisées et la réduction des conversions améliorent les performances.
 
@@ -352,11 +393,13 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
        )
        
        # Déterminer le nombre optimal de threads
+
        if ($MaxThreads -le 0) {
            $MaxThreads = Get-OptimalThreadCount -TaskType $TaskType
        }
        
        # Convertir InputObject en tableau pour un accès indexé plus rapide
+
        $inputArray = @($InputObject)
        $itemCount = $inputArray.Count
        
@@ -365,15 +408,18 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
        }
        
        # Créer un pool de runspaces pour de meilleures performances
+
        if ($UseRunspacePool) {
            $runspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads)
            $runspacePool.Open()
        }
        
        # Utiliser List<T> pour de meilleures performances
+
        $runspaces = [System.Collections.Generic.List[object]]::new($itemCount)
        
        # Créer les runspaces en batch pour réduire l'overhead
+
        $batchSize = [Math]::Min(1000, $itemCount)
        for ($batchStart = 0; $batchStart -lt $itemCount; $batchStart += $batchSize) {
            $batchEnd = [Math]::Min($batchStart + $batchSize - 1, $itemCount - 1)
@@ -400,6 +446,7 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
                })
                
                # Afficher la progression si demandé
+
                if (-not $NoProgress -and $itemCount -gt 10) {
                    $percentComplete = [math]::Min(100, [math]::Round(($i / $itemCount) * 100))
                    Write-Progress -Activity "Création des runspaces" -Status "Création $($i+1)/$itemCount" -PercentComplete $percentComplete
@@ -408,26 +455,31 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
        }
        
        # Terminer la barre de progression
+
        if (-not $NoProgress -and $itemCount -gt 10) {
            Write-Progress -Activity "Création des runspaces" -Completed
        }
        
        # Attendre que les runspaces soient complétés
+
        $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll -NoProgress:$NoProgress
        
        # Traiter les résultats
+
        $results = [System.Collections.Generic.List[object]]::new($itemCount)
        $errors = [System.Collections.Generic.List[object]]::new()
        
        $processResult = Invoke-RunspaceProcessor -CompletedRunspaces $completedRunspaces -IgnoreErrors:$IgnoreErrors -NoProgress:$NoProgress
        
        # Nettoyer le pool de runspaces
+
        if ($UseRunspacePool) {
            $runspacePool.Close()
            $runspacePool.Dispose()
        }
        
        # Retourner les résultats
+
        return $processResult.Results
    }
    ```
@@ -435,6 +487,7 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
 2. **Tester les optimisations**:
    ```powershell
    # ParallelPerformance.Tests.ps1
+
    Describe "Tests de performance de parallélisation" {
        BeforeAll {
            Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force
@@ -452,6 +505,7 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
            }
            
            # Exécution séquentielle
+
            $startTime = [datetime]::Now
            $sequentialResults = foreach ($item in $data) {
                & $scriptBlock $item
@@ -459,11 +513,13 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
            $sequentialTime = ([datetime]::Now - $startTime).TotalMilliseconds
            
            # Exécution parallèle
+
            $startTime = [datetime]::Now
            $parallelResults = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -UseRunspacePool -NoProgress
            $parallelTime = ([datetime]::Now - $startTime).TotalMilliseconds
            
            # Calculer l'accélération
+
            $speedup = $sequentialTime / $parallelTime
            
            Write-Host "Temps séquentiel: $sequentialTime ms"
@@ -471,16 +527,20 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
            Write-Host "Accélération: $speedup x"
            
            # Vérifier que tous les résultats sont corrects
+
            $parallelResults.Count | Should -Be $data.Count
            
            # L'accélération dépend du matériel, mais devrait être > 1 sur un système multi-cœur
+
            # Sur un système mono-cœur, l'overhead peut rendre la parallélisation plus lente
+
            $speedup | Should -BeGreaterThan 0
        }
    }
    ```
 
 ### Validation
+
 - **Attendu**: Les tests de performance montrent une amélioration des temps de traitement pour les tâches parallélisées.
 - **Hypothèse confirmée**: L'optimisation des algorithmes et la réduction de l'overhead améliorent les performances.
 
@@ -490,6 +550,7 @@ Standardiser l'utilisation des collections dans tout le module en utilisant `Sys
 
 ```powershell
 # ComprehensivePerformance.Tests.ps1
+
 Describe "Tests de performance complets" {
     BeforeAll {
         Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force
@@ -556,11 +617,13 @@ Describe "Tests de performance complets" {
             $scriptBlock = { param($item) return $item * 2 }
             
             # Avec RunspacePool
+
             $startTime = [datetime]::Now
             $resultPool = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -UseRunspacePool -NoProgress
             $durationPool = ([datetime]::Now - $startTime).TotalMilliseconds
             
             # Sans RunspacePool
+
             $startTime = [datetime]::Now
             $resultNoPool = Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $data -NoProgress
             $durationNoPool = ([datetime]::Now - $startTime).TotalMilliseconds
@@ -573,8 +636,7 @@ Describe "Tests de performance complets" {
         }
     }
 }
-```
-
+```plaintext
 ---
 
 ## 4. Mise à jour de la documentation
@@ -582,6 +644,7 @@ Describe "Tests de performance complets" {
 Mettre à jour `/docs/guides/augment/UnifiedParallel.md`:
 ```markdown
 ## Version 1.3.0
+
 - Optimisé : Gestion des collections pour de meilleures performances (UPM-009)
 - Optimisé : Algorithmes de parallélisation dans Invoke-UnifiedParallel
 - Optimisé : Gestion des runspaces dans Wait-ForCompletedRunspace
@@ -590,8 +653,7 @@ Mettre à jour `/docs/guides/augment/UnifiedParallel.md`:
 - Amélioration : Utilisation de collections optimisées (List<T>, ConcurrentBag<T>)
 - Amélioration : Création des runspaces par batch pour réduire l'overhead
 - Amélioration : Délai d'attente adaptatif pour réduire la charge CPU
-```
-
+```plaintext
 ---
 
 ## 5. Stratégie de déploiement

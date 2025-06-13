@@ -16,7 +16,7 @@ La couche d'abstraction vise à :
 
 ### Diagramme UML
 
-```
+```plaintext
 +---------------------+      +----------------------+
 | IExcelExporter      |<---- | ExcelExporterFactory |
 +---------------------+      +----------------------+
@@ -47,8 +47,7 @@ La couche d'abstraction vise à :
 | + CreateTableStyle()|
 | + CreateChartStyle()|
 +---------------------+
-```
-
+```plaintext
 ### Interfaces et classes
 
 #### 1. IExcelExporter
@@ -57,101 +56,145 @@ Interface principale définissant les opérations de base pour la manipulation d
 
 ```powershell
 # Interface IExcelExporter
+
 # Définit les opérations de base pour la manipulation des fichiers Excel
+
 function Get-IExcelExporterInterface {
     return @{
         # Crée un nouveau classeur Excel
+
         # Retourne: Un objet représentant le classeur
+
         CreateWorkbook = { param([string]$Path) throw "Not Implemented" }
         
         # Ajoute une feuille de calcul au classeur
+
         # Retourne: Un objet représentant la feuille de calcul
+
         AddWorksheet = { param($Workbook, [string]$Name) throw "Not Implemented" }
         
         # Ajoute des données à une feuille de calcul
+
         # Retourne: Rien
+
         AddData = { param($Worksheet, $Data, [int]$StartRow, [int]$StartColumn) throw "Not Implemented" }
         
         # Ajoute un graphique à une feuille de calcul
+
         # Retourne: Un objet représentant le graphique
+
         AddChart = { param($Worksheet, [string]$ChartType, $DataRange, [hashtable]$Options) throw "Not Implemented" }
         
         # Applique un style à une plage de cellules
+
         # Retourne: Rien
+
         ApplyStyle = { param($Worksheet, $Range, [hashtable]$Style) throw "Not Implemented" }
         
         # Sauvegarde le classeur
+
         # Retourne: Le chemin du fichier sauvegardé
+
         SaveWorkbook = { param($Workbook, [string]$Path) throw "Not Implemented" }
         
         # Ferme le classeur et libère les ressources
+
         # Retourne: Rien
+
         CloseWorkbook = { param($Workbook) throw "Not Implemented" }
         
         # Lit les données d'une feuille de calcul
+
         # Retourne: Les données lues
+
         ReadData = { param($Worksheet, $Range) throw "Not Implemented" }
         
         # Applique un formatage conditionnel à une plage de cellules
+
         # Retourne: Rien
+
         ApplyConditionalFormatting = { param($Worksheet, $Range, [hashtable]$Rules) throw "Not Implemented" }
         
         # Crée un tableau à partir d'une plage de données
+
         # Retourne: Un objet représentant le tableau
+
         CreateTable = { param($Worksheet, $Range, [string]$TableName, [hashtable]$Options) throw "Not Implemented" }
         
         # Ajoute une formule à une cellule
+
         # Retourne: Rien
+
         AddFormula = { param($Worksheet, $Cell, [string]$Formula) throw "Not Implemented" }
         
         # Fusionne des cellules
+
         # Retourne: Rien
+
         MergeCells = { param($Worksheet, $Range) throw "Not Implemented" }
         
         # Définit la largeur d'une colonne
+
         # Retourne: Rien
+
         SetColumnWidth = { param($Worksheet, [int]$Column, [double]$Width) throw "Not Implemented" }
         
         # Définit la hauteur d'une ligne
+
         # Retourne: Rien
+
         SetRowHeight = { param($Worksheet, [int]$Row, [double]$Height) throw "Not Implemented" }
         
         # Ajoute une image à une feuille de calcul
+
         # Retourne: Rien
+
         AddImage = { param($Worksheet, [string]$ImagePath, $Position) throw "Not Implemented" }
         
         # Protège une feuille de calcul
+
         # Retourne: Rien
+
         ProtectWorksheet = { param($Worksheet, [string]$Password, [hashtable]$Options) throw "Not Implemented" }
         
         # Ajoute un en-tête ou un pied de page
+
         # Retourne: Rien
+
         AddHeaderFooter = { param($Worksheet, [hashtable]$HeaderFooter) throw "Not Implemented" }
         
         # Définit les options d'impression
+
         # Retourne: Rien
+
         SetPrintOptions = { param($Worksheet, [hashtable]$Options) throw "Not Implemented" }
         
         # Ajoute un commentaire à une cellule
+
         # Retourne: Rien
+
         AddComment = { param($Worksheet, $Cell, [string]$Comment, [hashtable]$Options) throw "Not Implemented" }
         
         # Définit les options de validation des données
+
         # Retourne: Rien
+
         SetDataValidation = { param($Worksheet, $Range, [hashtable]$ValidationOptions) throw "Not Implemented" }
     }
 }
-```
-
+```plaintext
 #### 2. ExcelExporterFactory
 
 Classe factory pour créer des instances d'exporteurs Excel selon la configuration.
 
 ```powershell
 # Classe ExcelExporterFactory
+
 # Crée des instances d'exporteurs Excel selon la configuration
+
 class ExcelExporterFactory {
     # Propriétés statiques
+
     static [hashtable] $Configuration = @{
         DefaultExporter = "ImportExcel"
         ExporterOptions = @{
@@ -163,19 +206,24 @@ class ExcelExporterFactory {
     }
     
     # Méthode statique pour créer un exporteur
+
     static [object] CreateExporter([string]$ExporterType = "") {
         # Si aucun type n'est spécifié, utiliser le type par défaut
+
         if ([string]::IsNullOrEmpty($ExporterType)) {
             $ExporterType = [ExcelExporterFactory]::Configuration.DefaultExporter
         }
         
         # Créer l'exporteur selon le type
+
         switch ($ExporterType) {
             "ImportExcel" {
                 # Vérifier si le module est installé
+
                 if (-not (Get-Module -Name "ImportExcel" -ListAvailable)) {
                     if ([ExcelExporterFactory]::Configuration.ExporterOptions.ImportExcel.AutoInstall) {
                         # Installer le module
+
                         $ScriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
                         $InstallerPath = Join-Path -Path $ScriptPath -ChildPath "install_excel_module.ps1"
                         
@@ -192,6 +240,7 @@ class ExcelExporterFactory {
                 }
                 
                 # Créer et retourner l'exporteur
+
                 return [ImportExcelExporter]::new()
             }
             default {
@@ -201,56 +250,68 @@ class ExcelExporterFactory {
     }
     
     # Méthode statique pour configurer la factory
+
     static [void] Configure([hashtable]$Configuration) {
         foreach ($Key in $Configuration.Keys) {
             [ExcelExporterFactory]::Configuration[$Key] = $Configuration[$Key]
         }
     }
 }
-```
-
+```plaintext
 #### 3. ImportExcelExporter
 
 Implémentation concrète de l'interface IExcelExporter utilisant le module ImportExcel.
 
 ```powershell
 # Classe ImportExcelExporter
+
 # Implémentation de l'interface IExcelExporter utilisant le module ImportExcel
+
 class ImportExcelExporter {
     # Propriétés privées
+
     hidden [object] $_module
     hidden [hashtable] $_workbooks = @{}
     hidden [hashtable] $_worksheets = @{}
     
     # Constructeur
+
     ImportExcelExporter() {
         # Importer le module ImportExcel
+
         $this._module = Import-Module -Name "ImportExcel" -PassThru -ErrorAction Stop
     }
     
     # Méthode pour créer un nouveau classeur
+
     [object] CreateWorkbook([string]$Path) {
         $ExcelPackage = New-Object OfficeOpenXml.ExcelPackage
         
         # Si un chemin est spécifié, créer un fichier
+
         if (-not [string]::IsNullOrEmpty($Path)) {
             $FileInfo = New-Object System.IO.FileInfo($Path)
             $ExcelPackage = New-Object OfficeOpenXml.ExcelPackage($FileInfo)
         }
         
         # Générer un ID unique pour le classeur
+
         $WorkbookId = [Guid]::NewGuid().ToString()
         
         # Stocker le classeur dans la collection
+
         $this._workbooks[$WorkbookId] = $ExcelPackage
         
         # Retourner l'ID du classeur
+
         return $WorkbookId
     }
     
     # Méthode pour ajouter une feuille de calcul
+
     [object] AddWorksheet([object]$Workbook, [string]$Name) {
         # Récupérer le classeur
+
         $ExcelPackage = $this._workbooks[$Workbook]
         
         if ($null -eq $ExcelPackage) {
@@ -258,29 +319,36 @@ class ImportExcelExporter {
         }
         
         # Vérifier si une feuille avec ce nom existe déjà
+
         $Worksheet = $ExcelPackage.Workbook.Worksheets | Where-Object { $_.Name -eq $Name }
         
         if ($null -eq $Worksheet) {
             # Créer une nouvelle feuille
+
             $Worksheet = $ExcelPackage.Workbook.Worksheets.Add($Name)
         }
         
         # Générer un ID unique pour la feuille
+
         $WorksheetId = [Guid]::NewGuid().ToString()
         
         # Stocker la feuille dans la collection
+
         $this._worksheets[$WorksheetId] = @{
             Worksheet = $Worksheet
             WorkbookId = $Workbook
         }
         
         # Retourner l'ID de la feuille
+
         return $WorksheetId
     }
     
     # Méthode pour ajouter des données à une feuille
+
     [void] AddData([object]$Worksheet, $Data, [int]$StartRow = 1, [int]$StartColumn = 1) {
         # Récupérer la feuille
+
         $WorksheetInfo = $this._worksheets[$Worksheet]
         
         if ($null -eq $WorksheetInfo) {
@@ -290,11 +358,14 @@ class ImportExcelExporter {
         $ExcelWorksheet = $WorksheetInfo.Worksheet
         
         # Ajouter les données à la feuille
+
         $Row = $StartRow
         
         # Si les données sont un tableau d'objets
+
         if ($Data -is [System.Collections.IEnumerable] -and $Data -isnot [string]) {
             # Ajouter les en-têtes si les données sont des objets
+
             $FirstItem = $Data | Select-Object -First 1
             
             if ($FirstItem -is [PSObject]) {
@@ -310,6 +381,7 @@ class ImportExcelExporter {
             }
             
             # Ajouter les données
+
             foreach ($Item in $Data) {
                 $Column = $StartColumn
                 
@@ -334,13 +406,16 @@ class ImportExcelExporter {
         }
         else {
             # Si les données sont une valeur simple
+
             $ExcelWorksheet.Cells[$Row, $StartColumn].Value = $Data
         }
     }
     
     # Méthode pour sauvegarder le classeur
+
     [string] SaveWorkbook([object]$Workbook, [string]$Path) {
         # Récupérer le classeur
+
         $ExcelPackage = $this._workbooks[$Workbook]
         
         if ($null -eq $ExcelPackage) {
@@ -348,8 +423,10 @@ class ImportExcelExporter {
         }
         
         # Si un chemin est spécifié, sauvegarder à cet emplacement
+
         if (-not [string]::IsNullOrEmpty($Path)) {
             # Créer le répertoire parent s'il n'existe pas
+
             $Directory = Split-Path -Parent $Path
             
             if (-not [string]::IsNullOrEmpty($Directory) -and -not (Test-Path -Path $Directory)) {
@@ -357,19 +434,23 @@ class ImportExcelExporter {
             }
             
             # Sauvegarder le classeur
+
             $ExcelPackage.SaveAs($Path)
             return $Path
         }
         else {
             # Sauvegarder le classeur à son emplacement actuel
+
             $ExcelPackage.Save()
             return $ExcelPackage.File.FullName
         }
     }
     
     # Méthode pour fermer le classeur et libérer les ressources
+
     [void] CloseWorkbook([object]$Workbook) {
         # Récupérer le classeur
+
         $ExcelPackage = $this._workbooks[$Workbook]
         
         if ($null -eq $ExcelPackage) {
@@ -377,12 +458,15 @@ class ImportExcelExporter {
         }
         
         # Fermer le classeur et libérer les ressources
+
         $ExcelPackage.Dispose()
         
         # Supprimer le classeur de la collection
+
         $this._workbooks.Remove($Workbook)
         
         # Supprimer les feuilles associées à ce classeur
+
         $WorksheetsToRemove = @()
         
         foreach ($Key in $this._worksheets.Keys) {
@@ -397,23 +481,28 @@ class ImportExcelExporter {
     }
     
     # Autres méthodes de l'interface IExcelExporter à implémenter...
-}
-```
 
+}
+```plaintext
 #### 4. ExcelConfiguration
 
 Classe de configuration pour les exporteurs Excel.
 
 ```powershell
 # Classe ExcelConfiguration
+
 # Configuration pour les exporteurs Excel
+
 class ExcelConfiguration {
     # Propriétés statiques
+
     static [hashtable] $DefaultStyles = @{
         Header = @{
             Bold = $true
             BackgroundColor = "#4472C4"
+
             ForegroundColor = "#FFFFFF"
+
             HorizontalAlignment = "Center"
             VerticalAlignment = "Center"
             BorderAround = $true
@@ -428,6 +517,7 @@ class ExcelConfiguration {
         Total = @{
             Bold = $true
             BackgroundColor = "#D9E1F2"
+
             BorderAround = $true
             FontSize = 11
         }
@@ -489,6 +579,7 @@ class ExcelConfiguration {
     }
     
     # Méthode statique pour configurer les styles
+
     static [void] ConfigureStyles([hashtable]$Styles) {
         foreach ($Key in $Styles.Keys) {
             [ExcelConfiguration]::DefaultStyles[$Key] = $Styles[$Key]
@@ -496,6 +587,7 @@ class ExcelConfiguration {
     }
     
     # Méthode statique pour configurer les options de graphique
+
     static [void] ConfigureChartOptions([hashtable]$Options) {
         foreach ($Key in $Options.Keys) {
             [ExcelConfiguration]::ChartOptions[$Key] = $Options[$Key]
@@ -503,41 +595,47 @@ class ExcelConfiguration {
     }
     
     # Méthode statique pour configurer les options d'export
+
     static [void] ConfigureExportOptions([hashtable]$Options) {
         foreach ($Key in $Options.Keys) {
             [ExcelConfiguration]::ExportOptions[$Key] = $Options[$Key]
         }
     }
 }
-```
-
+```plaintext
 #### 5. ExcelStyleManager
 
 Classe utilitaire pour appliquer des styles aux éléments Excel.
 
 ```powershell
 # Classe ExcelStyleManager
+
 # Utilitaire pour appliquer des styles aux éléments Excel
+
 class ExcelStyleManager {
     # Méthode statique pour appliquer un style d'en-tête
+
     static [void] ApplyHeaderStyle([object]$Exporter, [object]$Worksheet, $Range) {
         $Style = [ExcelConfiguration]::DefaultStyles.Header
         $Exporter.ApplyStyle($Worksheet, $Range, $Style)
     }
     
     # Méthode statique pour appliquer un style de données
+
     static [void] ApplyDataStyle([object]$Exporter, [object]$Worksheet, $Range) {
         $Style = [ExcelConfiguration]::DefaultStyles.Data
         $Exporter.ApplyStyle($Worksheet, $Range, $Style)
     }
     
     # Méthode statique pour appliquer un style de total
+
     static [void] ApplyTotalStyle([object]$Exporter, [object]$Worksheet, $Range) {
         $Style = [ExcelConfiguration]::DefaultStyles.Total
         $Exporter.ApplyStyle($Worksheet, $Range, $Style)
     }
     
     # Méthode statique pour appliquer un style de titre
+
     static [void] ApplyTitleStyle([object]$Exporter, [object]$Worksheet, $Range) {
         $Style = [ExcelConfiguration]::DefaultStyles.Title
         $Exporter.ApplyStyle($Worksheet, $Range, $Style)
@@ -548,6 +646,7 @@ class ExcelStyleManager {
     }
     
     # Méthode statique pour appliquer un style de sous-titre
+
     static [void] ApplySubtitleStyle([object]$Exporter, [object]$Worksheet, $Range) {
         $Style = [ExcelConfiguration]::DefaultStyles.Subtitle
         $Exporter.ApplyStyle($Worksheet, $Range, $Style)
@@ -558,6 +657,7 @@ class ExcelStyleManager {
     }
     
     # Méthode statique pour créer un style de tableau
+
     static [void] CreateTableStyle([object]$Exporter, [object]$Worksheet, $Range, [string]$TableName) {
         $Options = [ExcelConfiguration]::ExportOptions
         
@@ -573,10 +673,12 @@ class ExcelStyleManager {
         
         if ($Options.FreezeTopRow) {
             # Implémenter le gel de la première ligne
+
         }
     }
     
     # Méthode statique pour créer un style de graphique
+
     static [hashtable] CreateChartStyle([string]$ChartType) {
         $DefaultOptions = [ExcelConfiguration]::ChartOptions[$ChartType]
         
@@ -587,15 +689,14 @@ class ExcelStyleManager {
         return $DefaultOptions
     }
 }
-```
-
+```plaintext
 ## Contrats d'interface
 
 ### Méthodes principales
 
 #### CreateWorkbook
 
-```
+```plaintext
 Fonction: CreateWorkbook
 Description: Crée un nouveau classeur Excel
 Paramètres:
@@ -604,11 +705,10 @@ Retourne: Un identifiant unique pour le classeur
 Exceptions:
   - IOException: Si le fichier ne peut pas être créé
   - UnauthorizedAccessException: Si l'accès au fichier est refusé
-```
-
+```plaintext
 #### AddWorksheet
 
-```
+```plaintext
 Fonction: AddWorksheet
 Description: Ajoute une feuille de calcul au classeur
 Paramètres:
@@ -618,11 +718,10 @@ Retourne: Un identifiant unique pour la feuille de calcul
 Exceptions:
   - ArgumentException: Si le nom de la feuille est invalide
   - InvalidOperationException: Si le classeur n'existe pas
-```
-
+```plaintext
 #### AddData
 
-```
+```plaintext
 Fonction: AddData
 Description: Ajoute des données à une feuille de calcul
 Paramètres:
@@ -634,11 +733,10 @@ Retourne: Rien
 Exceptions:
   - ArgumentNullException: Si les données sont nulles
   - InvalidOperationException: Si la feuille n'existe pas
-```
-
+```plaintext
 #### SaveWorkbook
 
-```
+```plaintext
 Fonction: SaveWorkbook
 Description: Sauvegarde le classeur
 Paramètres:
@@ -649,11 +747,10 @@ Exceptions:
   - IOException: Si le fichier ne peut pas être sauvegardé
   - UnauthorizedAccessException: Si l'accès au fichier est refusé
   - InvalidOperationException: Si le classeur n'existe pas
-```
-
+```plaintext
 #### CloseWorkbook
 
-```
+```plaintext
 Fonction: CloseWorkbook
 Description: Ferme le classeur et libère les ressources
 Paramètres:
@@ -661,8 +758,7 @@ Paramètres:
 Retourne: Rien
 Exceptions:
   - InvalidOperationException: Si le classeur n'existe pas
-```
-
+```plaintext
 ## Gestion des erreurs
 
 La gestion des erreurs sera standardisée à travers la couche d'abstraction :
@@ -676,55 +772,68 @@ La gestion des erreurs sera standardisée à travers la couche d'abstraction :
 
 ```powershell
 # Classe ExcelException
+
 # Exception de base pour toutes les erreurs liées à Excel
+
 class ExcelException : System.Exception {
     ExcelException([string]$Message) : base($Message) {}
     ExcelException([string]$Message, [System.Exception]$InnerException) : base($Message, $InnerException) {}
 }
 
 # Classe ExcelWorkbookException
+
 # Exception liée aux opérations sur les classeurs
+
 class ExcelWorkbookException : ExcelException {
     ExcelWorkbookException([string]$Message) : base($Message) {}
     ExcelWorkbookException([string]$Message, [System.Exception]$InnerException) : base($Message, $InnerException) {}
 }
 
 # Classe ExcelWorksheetException
+
 # Exception liée aux opérations sur les feuilles de calcul
+
 class ExcelWorksheetException : ExcelException {
     ExcelWorksheetException([string]$Message) : base($Message) {}
     ExcelWorksheetException([string]$Message, [System.Exception]$InnerException) : base($Message, $InnerException) {}
 }
 
 # Classe ExcelDataException
+
 # Exception liée aux opérations sur les données
+
 class ExcelDataException : ExcelException {
     ExcelDataException([string]$Message) : base($Message) {}
     ExcelDataException([string]$Message, [System.Exception]$InnerException) : base($Message, $InnerException) {}
 }
 
 # Classe ExcelStyleException
+
 # Exception liée aux opérations de style
+
 class ExcelStyleException : ExcelException {
     ExcelStyleException([string]$Message) : base($Message) {}
     ExcelStyleException([string]$Message, [System.Exception]$InnerException) : base($Message, $InnerException) {}
 }
 
 # Classe ExcelChartException
+
 # Exception liée aux opérations sur les graphiques
+
 class ExcelChartException : ExcelException {
     ExcelChartException([string]$Message) : base($Message) {}
     ExcelChartException([string]$Message, [System.Exception]$InnerException) : base($Message, $InnerException) {}
 }
 
 # Classe ExcelFormulaException
+
 # Exception liée aux opérations sur les formules
+
 class ExcelFormulaException : ExcelException {
     ExcelFormulaException([string]$Message) : base($Message) {}
     ExcelFormulaException([string]$Message, [System.Exception]$InnerException) : base($Message, $InnerException) {}
 }
-```
-
+```plaintext
 ## Conclusion
 
 Cette conception de la couche d'abstraction pour l'export Excel fournit une base solide pour l'implémentation du module d'export de rapports. Elle offre :

@@ -171,8 +171,7 @@ Pour diagnostiquer les problèmes, consultez les logs n8n :
 
 ```bash
 tail -f ~/.n8n/logs/n8n.log
-```
-
+```plaintext
 ## Ressources supplémentaires
 
 - [Documentation MCP](../../mcp/docs/README.md)

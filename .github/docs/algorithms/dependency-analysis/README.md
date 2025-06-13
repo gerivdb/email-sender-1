@@ -1,27 +1,34 @@
 # 🔗 Dependency Graph Analysis EMAIL_SENDER_1
 
 ## 📝 Description
+
 Algorithm 3: Advanced dependency analysis system for EMAIL_SENDER_1 multi-stack architecture. Detects circular dependencies, analyzes component relationships, and provides architectural recommendations for the RAG Engine, N8N Workflows, Notion API, Gmail Processing, and automation layers.
 
 ## 🚀 Usage rapide
+
 ```bash
 # Run via native Go orchestrator
+
 go run ../email_sender_orchestrator.go /path/to/project dependency-analysis
 
 # Run algorithm directly
+
 go run email_sender_dependency_analyzer.go /path/to/project
 
 # Test with detailed analysis
+
 go run ../algorithms_implementations.go dependency-analysis ../../../
 
 # Generate dependency graph visualization
-go run email_sender_dependency_analyzer.go /path/to/project --generate-graph --output-dir "dependency-reports"
-```
 
+go run email_sender_dependency_analyzer.go /path/to/project --generate-graph --output-dir "dependency-reports"
+```plaintext
 ## 📊 Priorité
+
 **Niveau 3** dans le plan d'action EMAIL_SENDER_1 - **CRITICAL** for architectural stability
 
 ## 🔧 Fichiers (Native Go Implementation)
+
 - `README.md` - Documentation and usage guide
 - `email_sender_dependency_analyzer.go` - Core Go-based dependency analyzer (500+ lines)
 - **Note**: PowerShell orchestration eliminated - 10x performance improvement achieved
@@ -29,24 +36,28 @@ go run email_sender_dependency_analyzer.go /path/to/project --generate-graph --o
 ## 🎯 Fonctionnalités principales
 
 ### 🔍 Dependency Detection
+
 - **Multi-language support**: Go, Python, JavaScript, JSON, YAML, legacy scripts
 - **EMAIL_SENDER_1 components**: N8N workflows, RAG engine, Notion API, Gmail processor
 - **Pattern recognition**: Import statements, module references, file paths, configuration links
 - **Cross-component analysis**: Inter-stack dependency mapping
 
 ### 🔄 Circular Dependency Analysis
+
 - **Cycle detection**: Advanced DFS algorithm with recursion tracking
 - **Severity classification**: High (≤3 components), Medium (4-6), Low (7+)
 - **Impact assessment**: Architecture risk evaluation and stability analysis
 - **Component isolation**: Binary search for problematic dependencies
 
 ### 📊 Statistical Analysis
+
 - **Dependency depth**: Maximum dependency chain length calculation
 - **Component isolation**: Identification of orphaned and critical components  
 - **Coupling metrics**: Component interdependency measurements
 - **Architecture health**: Overall system stability assessment
 
 ### 🔧 Automated Recommendations
+
 - **Architecture patterns**: Dependency injection, event-driven design
 - **Component refactoring**: Abstraction layer suggestions
 - **EMAIL_SENDER_1 specific**: N8N webhook patterns, RAG async processing
@@ -80,8 +91,7 @@ type CircularDependency struct {
     Severity string    // high/medium/low
     Impact   string    // Architecture impact description
 }
-```
-
+```plaintext
 **Key Algorithms:**
 - **Project Scanning**: Recursive file system traversal with component type detection
 - **Dependency Extraction**: Multi-pattern regex analysis for import/reference detection
@@ -109,8 +119,7 @@ var dependencyPatterns = map[string]*regexp.Regexp{
     "n8n_workflow_ref":     regexp.MustCompile(`workflow[_-]?(?:id|name).*["'](.+)["']`),
     "notion_database_ref":  regexp.MustCompile(`database[_-]?(?:id|name).*["'](.+)["']`),
 }
-```
-
+```plaintext
 ### Native Go Analysis Implementation
 
 **Configuration Management:**
@@ -145,8 +154,7 @@ var config = AnalysisConfig{
         Low    int
     }{High: 3, Medium: 6, Low: 10},
 }
-```
-
+```plaintext
 **Analysis Workflow:**
 1. **Project Structure Scanning**: Recursive file system traversal
 2. **Dependency Extraction**: Multi-pattern analysis for imports and references  
@@ -176,8 +184,7 @@ var emailSenderRecommendations = []ComponentRecommendation{
         },
     },
 }
-```
-
+```plaintext
 ### Analysis Output Structure
 
 **JSON Results Format:**
@@ -207,8 +214,7 @@ var emailSenderRecommendations = []ComponentRecommendation{
     "critical_nodes": 12
   }
 }
-```
-
+```plaintext
 **Markdown Report Sections:**
 - **Executive Summary**: Component count, circular dependency summary, analysis status
 - **Circular Dependencies Analysis**: Detailed cycle breakdown with severity classification
@@ -242,6 +248,7 @@ var emailSenderRecommendations = []ComponentRecommendation{
 
 
 ## 🔗 Voir aussi
+
 - [Index des algorithmes](../README.md)
 - [Plan d'action EMAIL_SENDER_1](../action-plan.md)
 

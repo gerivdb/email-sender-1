@@ -1,4 +1,4 @@
-﻿# data
+# data
 
 DonnÃ©es gÃ©nÃ©rÃ©es
 

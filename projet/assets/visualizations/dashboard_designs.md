@@ -81,12 +81,14 @@ Chaque tableau de bord est composé de plusieurs panneaux organisés selon une g
   "unit": "%",
   "thresholds": [
     { "value": 0, "color": "#73BF69" },
+
     { "value": 70, "color": "#FADE2A" },
+
     { "value": 90, "color": "#F2495C" }
+
   ]
 }
-```
-
+```plaintext
 ### 2. Graphique linéaire (Line Chart)
 
 **Description**: Affiche l'évolution d'une ou plusieurs métriques dans le temps.
@@ -118,8 +120,7 @@ Chaque tableau de bord est composé de plusieurs panneaux organisés selon une g
     "yAxis": { "title": "Valeur" }
   }
 }
-```
-
+```plaintext
 ## Positionnement des panneaux
 
 Les panneaux sont positionnés sur une grille définie par un nombre de lignes et de colonnes. Chaque panneau a une position et une taille spécifiées par:
@@ -139,8 +140,7 @@ Les panneaux sont positionnés sur une grille définie par un nombre de lignes e
     "height": 1
   }
 }
-```
-
+```plaintext
 ## Bonnes pratiques
 
 ### Organisation des métriques
@@ -170,18 +170,15 @@ Le script `dashboard_generator.ps1` permet de générer des tableaux de bord à 
 1. Générer tous les types de tableaux de bord:
 ```powershell
 .\scripts\visualization\dashboard_generator.ps1 -DashboardType all
-```
-
+```plaintext
 2. Générer un tableau de bord système:
 ```powershell
 .\scripts\visualization\dashboard_generator.ps1 -DashboardType system
-```
-
+```plaintext
 3. Générer un tableau de bord pour une période spécifique:
 ```powershell
 .\scripts\visualization\dashboard_generator.ps1 -DashboardType all -TimeRange last_week
-```
-
+```plaintext
 ### Personnalisation
 
 Le script utilise des templates de tableaux de bord définis dans le fichier `templates/dashboards/dashboard_templates.json`. Vous pouvez personnaliser ces templates pour adapter les tableaux de bord à vos besoins spécifiques.

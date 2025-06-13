@@ -12,7 +12,7 @@ Le système RAG est composé de trois composants principaux:
 2. **Recherche**: Identification des entrées pertinentes pour une requête
 3. **Génération**: Création d'une réponse basée sur les entrées pertinentes
 
-```
+```plaintext
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
 │  Indexation │ ──> │  Recherche  │ ──> │ Génération  │
 └─────────────┘     └─────────────┘     └─────────────┘
@@ -22,8 +22,7 @@ Le système RAG est composé de trois composants principaux:
 │    Index    │     │   Entrées   │     │  Réponse    │
 │             │     │ pertinentes │     │ contextuelle│
 └─────────────┘     └─────────────┘     └─────────────┘
-```
-
+```plaintext
 ## Implémentation
 
 ### Script principal: journal_rag_simple.py
@@ -32,15 +31,17 @@ Ce script implémente une version simplifiée du système RAG:
 
 ```python
 # Interroger le système RAG
+
 python scripts/python/journal/journal_rag_simple.py --query "Quelles sont les optimisations identifiées pour le système?"
 
 # Reconstruire l'index
+
 python scripts/python/journal/journal_rag_simple.py --rebuild
 
 # Exporter l'index pour Augment Memories
-python scripts/python/journal/journal_rag_simple.py --export
-```
 
+python scripts/python/journal/journal_rag_simple.py --export
+```plaintext
 ### Classe SimpleJournalRAG
 
 La classe `SimpleJournalRAG` implémente le système RAG:
@@ -55,21 +56,24 @@ class SimpleJournalRAG:
     
     def _load_index(self):
         # Charge l'index ou le crée s'il n'existe pas
+
         ...
     
     def build_index(self):
         # Construit l'index à partir des entrées du journal
+
         ...
     
     def query(self, query, n=5):
         # Recherche les entrées pertinentes et génère une réponse
+
         ...
     
     def export_for_augment(self):
         # Exporte l'index pour Augment Memories
-        ...
-```
 
+        ...
+```plaintext
 ## Indexation
 
 L'indexation consiste à:
@@ -96,8 +100,7 @@ L'index est stocké au format JSON dans `docs/journal_de_bord/rag/index.json`.
   },
   ...
 ]
-```
-
+```plaintext
 ## Recherche
 
 La recherche utilise une approche simplifiée basée sur la correspondance de mots-clés:
@@ -123,7 +126,7 @@ La génération de réponse est basée sur un template simple:
 
 ### Template de réponse
 
-```
+```plaintext
 Voici ce que j'ai trouvé dans le journal de bord concernant votre question:
 
 [Résumé des informations trouvées]
@@ -136,8 +139,7 @@ Sources:
    [Extrait pertinent]
 
 ...
-```
-
+```plaintext
 ## Intégration avec Augment Memories
 
 Le système RAG peut exporter son index pour Augment Memories:
@@ -160,8 +162,7 @@ Le système RAG peut exporter son index pour Augment Memories:
   },
   ...
 ]
-```
-
+```plaintext
 ## Intégration avec MCP
 
 Le système RAG est exposé via MCP (Model Context Protocol) pour permettre aux modèles d'IA d'y accéder directement:
@@ -178,8 +179,7 @@ Le système RAG est exposé via MCP (Model Context Protocol) pour permettre aux 
     }
   ]
 }
-```
-
+```plaintext
 ## Limitations actuelles
 
 1. **Recherche simplifiée**: Utilise une correspondance de mots-clés plutôt que des embeddings vectoriels

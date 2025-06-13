@@ -1,4 +1,4 @@
-﻿# Test de performance du systÃ¨me d'analyse
+# Test de performance du systÃ¨me d'analyse
 
 Ce document prÃ©sente les rÃ©sultats des tests de performance du systÃ¨me d'analyse de code.
 

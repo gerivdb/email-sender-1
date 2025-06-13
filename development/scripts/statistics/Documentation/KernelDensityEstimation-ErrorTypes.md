@@ -125,6 +125,7 @@ The module defines custom exception classes for each category of errors:
 
 ```powershell
 # Base exception class for all kernel density estimation errors
+
 class KernelDensityEstimationException : Exception {
     [string]$ErrorCode
     
@@ -134,21 +135,23 @@ class KernelDensityEstimationException : Exception {
 }
 
 # Exception class for validation errors
+
 class KernelDensityEstimationValidationException : KernelDensityEstimationException {
     KernelDensityEstimationValidationException([string]$errorCode, [string]$message) : base($errorCode, $message) {}
 }
 
 # Exception class for calculation errors
+
 class KernelDensityEstimationCalculationException : KernelDensityEstimationException {
     KernelDensityEstimationCalculationException([string]$errorCode, [string]$message) : base($errorCode, $message) {}
 }
 
 # Exception class for memory errors
+
 class KernelDensityEstimationMemoryException : KernelDensityEstimationException {
     KernelDensityEstimationMemoryException([string]$errorCode, [string]$message) : base($errorCode, $message) {}
 }
-```
-
+```plaintext
 ## 7. Example Usage
 
 ```powershell
@@ -165,9 +168,9 @@ try {
 } catch {
     Write-Error "Unexpected error: $($_.Exception.Message)"
 }
-```
-
+```plaintext
 ## 8. References
 
 - PowerShell Error Handling: https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-exceptions
 - Custom Exceptions in PowerShell: https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-exceptions?view=powershell-7.1#custom-exceptions
+

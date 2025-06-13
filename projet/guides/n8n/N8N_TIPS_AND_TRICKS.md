@@ -5,10 +5,12 @@ Ce document combine une vue d'ensemble des structures JSON des nœuds n8n avec d
 ## 1. STRUCTURE JSON GÉNÉRALE DES NŒUDS N8N
 
 ### Vue d'ensemble :
+
 - Chaque nœud est défini comme un objet JSON avec un ensemble commun de clés.
 - Ces clés s'appliquent à tous les types de nœuds, qu'ils gèrent des déclencheurs, le traitement de données, la documentation ou des intégrations externes.
 
 ### Champs principaux de haut niveau :
+
 - **id :** Identifiant unique (généralement un UUID). Doit être unique au sein d'un workflow.
 - **name :** Étiquette lisible par l'humain (ex : "When Chat Message Received", "Airtable - Update Records").
 - **type :** Définit la fonctionnalité du nœud ; exemples :
@@ -20,6 +22,7 @@ Ce document combine une vue d'ensemble des structures JSON des nœuds n8n avec d
 - **parameters :** Un objet imbriqué contenant des configurations spécifiques au nœud (actions, identifiants, texte d'interface utilisateur, etc.).
 
 ### Meilleures pratiques :
+
 - Utilisez des noms descriptifs et des positions logiques pour maintenir un workflow organisé.
 - Exploitez le langage d'expression de n8n (ex : `={{ $json["field"] }}`) pour le contenu dynamique.
 - Validez votre JSON (ex : avec un linter) pour détecter les problèmes de valeur de propriété comme les guillemets inappropriés, les virgules traînantes ou les incompatibilités de type.
@@ -27,10 +30,12 @@ Ce document combine une vue d'ensemble des structures JSON des nœuds n8n avec d
 ## 2. NŒUDS DÉCLENCHEURS DE CHAT (@n8n/n8n-nodes-langchain.chatTrigger)
 
 ### Objectif :
+
 - Écouter les messages de chat entrants via des webhooks ou des widgets de chat intégrés.
 - Agir comme point d'entrée pour les workflows basés sur la conversation.
 
 ### Paramètres clés :
+
 - **webhookId :** Identifiant unique liant le nœud à son point de terminaison webhook.
 - **mode :** Généralement `"webhook"` pour indiquer le mode de réception d'événements.
 - **public (boolean) :** Détermine si le point de terminaison du chat est ouvert à l'accès public. Utilisez avec des `allowedOrigins` sécurisés.
@@ -43,6 +48,7 @@ Ce document combine une vue d'ensemble des structures JSON des nœuds n8n avec d
   - **loadPreviousSession :** Gère la persistance de session (ex : `"memory"`).
 
 ### Nuances :
+
 - Assurez-vous que le webhookId de chaque Chat Trigger est unique.
 - Les expressions dynamiques dans initialMessages permettent une personnalisation à l'exécution.
 - Différentes typeVersions (1 vs. 1.1) peuvent offrir des paramètres variables.
@@ -50,15 +56,18 @@ Ce document combine une vue d'ensemble des structures JSON des nœuds n8n avec d
 ## 3. NŒUDS STICKY NOTE (n8n-nodes-base.stickyNote)
 
 ### Objectif :
+
 - Fournir de la documentation, des annotations ou des rappels dans le workflow.
 - N'affectent pas le flux de données ; purement à usage informatif.
 
 ### Paramètres clés :
+
 - **content :** Le texte affiché (prend en charge Markdown pour les en-têtes, listes, blocs de code, liens, images).
 - **width & height :** Définissent les dimensions visuelles sur le canevas.
 - **color (optionnel) :** Code numérique pour attribuer une couleur de fond pour la différenciation visuelle.
 
 ### Conseils d'utilisation :
+
 - Placez les notes autocollantes près des nœuds associés pour ajouter du contexte.
 - Utilisez un formatage Markdown clair et concis.
 - Mettez à jour les notes régulièrement à mesure que les workflows évoluent.
@@ -66,10 +75,12 @@ Ce document combine une vue d'ensemble des structures JSON des nœuds n8n avec d
 ## 4. MODULE AGENT IA (n8n-nodes-langchain.agent)
 
 ### Objectif :
+
 - Traiter les entrées utilisateur et générer des réponses interactives contextuelles.
 - Invoquer dynamiquement d'autres outils en fonction du contexte de conversation et de la mémoire.
 
 ### Paramètres clés :
+
 - **text :** Entrée principale, généralement définie dynamiquement (ex : `={{ $json.chatInput }}`).
 - **options :** Contient un `systemMessage` détaillé qui :
   - Définit le rôle et le comportement de l'agent IA.
@@ -78,10 +89,12 @@ Ce document combine une vue d'ensemble des structures JSON des nœuds n8n avec d
 - **promptType :** Généralement `"define"`, appliquant les règles du message système.
 
 ### Intégration & Mémoire :
+
 - Se connecte avec des sous-fonctions via des ports comme `ai_tool`, `ai_memory`, et `ai_languageModel`.
 - Souvent associé à des nœuds de mémoire (ex : `memoryBufferWindow`) pour fournir l'historique de conversation.
 
 ### Nuances :
+
 - Élaborez soigneusement le systemMessage pour gérer divers scénarios.
 - Validez la sortie JSON pour les problèmes de valeur de propriété (voir Section 6).
 - Expérimentez avec différents modèles (ex : "gpt-4o" vs. "gpt-4o-mini") pour l'équilibre performance/coût.
@@ -102,8 +115,7 @@ Ce document combine une vue d'ensemble des structures JSON des nœuds n8n avec d
   },
   "typeVersion": 1.7
 }
-```
-
+```plaintext
 *Agent IA avec intégration de Calendrier :*
 ```json
 {
@@ -118,8 +130,7 @@ Ce document combine une vue d'ensemble des structures JSON des nœuds n8n avec d
   },
   "typeVersion": 1.7
 }
-```
-
+```plaintext
 *Agent IA avec intégration de Mémoire :*
 ```json
 {
@@ -134,18 +145,20 @@ Ce document combine une vue d'ensemble des structures JSON des nœuds n8n avec d
   },
   "typeVersion": 1.7
 }
-```
-
+```plaintext
 ## 5. NŒUDS DE MÉMOIRE TAMPON (n8n-nodes-langchain.memoryBufferWindow)
 
 ### Objectif :
+
 - Gérer l'historique temporaire de conversation pour l'agent IA.
 
 ### Paramètres clés :
+
 - **sessionKey :** Identifiant pour la session de mémoire (peut être dynamique).
 - **contextWindowLength :** Nombre de messages à conserver dans la fenêtre de contexte.
 
 ### Conseils d'utilisation :
+
 - Ajustez contextWindowLength en fonction de la complexité de la conversation.
 - Utilisez des clés de session cohérentes pour maintenir la continuité de la mémoire.
 

@@ -34,14 +34,16 @@ En raison de la cardinalité très faible de cette propriété (généralement 3
 ```powershell
 $typeIndex = @{
     # Clé : Valeur de la propriété _Type
+
     # Valeur : Liste des IDs des éléments ayant ce type
+
     "TextExtractedInfo" = @("ID1", "ID3", "ID5", ...)
     "StructuredDataExtractedInfo" = @("ID2", "ID6", "ID9", ...)
     "MediaExtractedInfo" = @("ID4", "ID7", "ID8", ...)
     # ...
-}
-```
 
+}
+```plaintext
 ### Intégration dans la structure de collection
 
 Cette structure d'index serait intégrée dans la structure de collection optimisée comme suit :
@@ -52,18 +54,23 @@ $collection = @{
     Name = "NomDeLaCollection"
     Description = "Description de la collection"
     ItemsById = @{} # Table de hachage des éléments indexés par ID
+
     ItemsList = @() # Liste ordonnée des éléments (pour la compatibilité)
+
     Indexes = @{
         Type = @{} # Index par Type (structure décrite ci-dessus)
+
         Source = @{} # Index par Source (si implémenté)
+
         # Autres index...
+
     }
     Metadata = @{} # Table de hachage pour les métadonnées
+
     CreationDate = Get-Date
     LastModifiedDate = Get-Date
 }
-```
-
+```plaintext
 ## Opérations sur l'index
 
 ### Création de l'index
@@ -98,8 +105,7 @@ function Create-TypeIndex {
     
     return $Collection
 }
-```
-
+```plaintext
 ### Mise à jour de l'index lors de l'ajout d'un élément
 
 Lorsqu'un nouvel élément est ajouté à la collection, l'index Type doit être mis à jour. Cependant, comme le type d'un élément ne change jamais après sa création, la mise à jour est relativement simple :
@@ -116,29 +122,36 @@ function Add-ExtractedInfoToCollection {
     )
     
     # Vérifications habituelles...
+
     
     # Vérifier si l'élément existe déjà
+
     $existingItem = $null
     if ($Collection.ItemsById.ContainsKey($Info.Id)) {
         $existingItem = $Collection.ItemsById[$Info.Id]
     }
     
     # Mettre à jour l'index Type si nécessaire
+
     if ($Collection.Indexes -ne $null -and $Collection.Indexes.ContainsKey("Type")) {
         $type = $Info._Type
         
         if ($existingItem -ne $null) {
             # Le type ne devrait pas changer, mais par sécurité, vérifier quand même
+
             if ($existingItem._Type -ne $type) {
                 # Supprimer l'ID de l'ancien type
+
                 $Collection.Indexes.Type[$existingItem._Type] = $Collection.Indexes.Type[$existingItem._Type] | Where-Object { $_ -ne $Info.Id }
                 
                 # Si la liste est vide, supprimer l'entrée
+
                 if ($Collection.Indexes.Type[$existingItem._Type].Count -eq 0) {
                     $Collection.Indexes.Type.Remove($existingItem._Type)
                 }
                 
                 # Ajouter l'ID au nouveau type
+
                 if (-not $Collection.Indexes.Type.ContainsKey($type)) {
                     $Collection.Indexes.Type[$type] = @()
                 }
@@ -147,6 +160,7 @@ function Add-ExtractedInfoToCollection {
             }
         } else {
             # Si c'est un nouvel élément
+
             if (-not $Collection.Indexes.Type.ContainsKey($type)) {
                 $Collection.Indexes.Type[$type] = @()
             }
@@ -156,9 +170,11 @@ function Add-ExtractedInfoToCollection {
     }
     
     # Ajouter ou mettre à jour l'élément dans la collection
+
     $Collection.ItemsById[$Info.Id] = $Info
     
     # Mettre à jour la liste des éléments
+
     if ($existingItem -eq $null) {
         $Collection.ItemsList += $Info
     } else {
@@ -172,8 +188,7 @@ function Add-ExtractedInfoToCollection {
     
     return $Collection
 }
-```
-
+```plaintext
 ### Mise à jour de l'index lors de la suppression d'un élément
 
 Lorsqu'un élément est supprimé de la collection, l'index Type doit être mis à jour :
@@ -190,23 +205,28 @@ function Remove-ExtractedInfoFromCollection {
     )
     
     # Vérifications habituelles...
+
     
     # Vérifier si l'élément existe
+
     if ($Collection.ItemsById.ContainsKey($InfoId)) {
         $item = $Collection.ItemsById[$InfoId]
         $type = $item._Type
         
         # Mettre à jour l'index Type
+
         if ($Collection.Indexes -ne $null -and $Collection.Indexes.ContainsKey("Type") -and $Collection.Indexes.Type.ContainsKey($type)) {
             $Collection.Indexes.Type[$type] = $Collection.Indexes.Type[$type] | Where-Object { $_ -ne $InfoId }
             
             # Si la liste est vide, supprimer l'entrée
+
             if ($Collection.Indexes.Type[$type].Count -eq 0) {
                 $Collection.Indexes.Type.Remove($type)
             }
         }
         
         # Supprimer l'élément de la collection
+
         $Collection.ItemsById.Remove($InfoId)
         $Collection.ItemsList = $Collection.ItemsList | Where-Object { $_.Id -ne $InfoId }
         
@@ -215,8 +235,7 @@ function Remove-ExtractedInfoFromCollection {
     
     return $Collection
 }
-```
-
+```plaintext
 ### Utilisation de l'index pour le filtrage
 
 L'index Type peut être utilisé pour améliorer les performances du filtrage par Type :
@@ -245,8 +264,10 @@ function Get-ExtractedInfoFromCollection {
     )
     
     # Vérifications habituelles...
+
     
     # Accès direct par ID si spécifié
+
     if (-not [string]::IsNullOrEmpty($Id)) {
         if ($Collection.ItemsById.ContainsKey($Id)) {
             return $Collection.ItemsById[$Id]
@@ -255,18 +276,22 @@ function Get-ExtractedInfoFromCollection {
     }
     
     # Utiliser l'index Type si disponible et si le filtrage par Type est demandé
+
     if (-not [string]::IsNullOrEmpty($Type) -and 
         $Collection.Indexes -ne $null -and 
         $Collection.Indexes.ContainsKey("Type") -and 
         $Collection.Indexes.Type.ContainsKey($Type)) {
         
         # Récupérer les IDs des éléments ayant le type spécifié
+
         $itemIds = $Collection.Indexes.Type[$Type]
         
         # Récupérer les éléments correspondants
+
         $items = $itemIds | ForEach-Object { $Collection.ItemsById[$_] }
         
         # Appliquer les autres filtres si nécessaire
+
         if (-not [string]::IsNullOrEmpty($Source)) {
             $items = $items | Where-Object { $_.Source -eq $Source }
         }
@@ -283,19 +308,21 @@ function Get-ExtractedInfoFromCollection {
     }
     
     # Fallback : filtrage traditionnel si l'index n'est pas disponible
+
     $items = $Collection.ItemsList
     
     # Appliquer les filtres
+
     if (-not [string]::IsNullOrEmpty($Type)) {
         $items = $items | Where-Object { $_._Type -eq $Type }
     }
     
     # Autres filtres...
+
     
     return $items
 }
-```
-
+```plaintext
 ## Analyse des performances
 
 ### Complexité algorithmique
@@ -345,8 +372,7 @@ $typeIndex = @{
     "StructuredDataExtractedInfo" = [System.Collections.Generic.List[string]]::new(1000)
     "MediaExtractedInfo" = [System.Collections.Generic.List[string]]::new(1000)
 }
-```
-
+```plaintext
 ### 2. Index avec comptage
 
 Pour les statistiques rapides, l'index pourrait inclure un comptage des éléments par type :
@@ -362,9 +388,9 @@ $typeIndex = @{
         Count = 3
     }
     # ...
-}
-```
 
+}
+```plaintext
 ### 3. Création paresseuse de l'index
 
 Pour éviter le coût initial de création de l'index, celui-ci pourrait être créé de manière paresseuse lors de la première utilisation :
@@ -372,8 +398,10 @@ Pour éviter le coût initial de création de l'index, celui-ci pourrait être c
 ```powershell
 function Get-ExtractedInfoFromCollection {
     # ...
+
     
     # Créer l'index Type s'il n'existe pas encore
+
     if (-not [string]::IsNullOrEmpty($Type) -and 
         ($Collection.Indexes -eq $null -or 
          -not $Collection.Indexes.ContainsKey("Type"))) {
@@ -382,9 +410,9 @@ function Get-ExtractedInfoFromCollection {
     }
     
     # ...
-}
-```
 
+}
+```plaintext
 ## Stratégie d'implémentation
 
 ### Phase 1 : Implémentation de base
@@ -410,12 +438,14 @@ function Get-ExtractedInfoFromCollection {
 
 ```powershell
 # Créer une nouvelle collection avec indexation
+
 $collection = New-ExtractedInfoCollection -Name "MaCollection" -Description "Une collection indexée"
 $collection.Indexes = @{
     Type = @{}
 }
 
 # Ajouter des éléments
+
 $info1 = New-TextExtractedInfo -Source "Web" -ExtractorName "Extracteur1" -Text "Texte 1" -Language "fr"
 $info2 = New-TextExtractedInfo -Source "Web" -ExtractorName "Extracteur2" -Text "Texte 2" -Language "en"
 $info3 = New-StructuredDataExtractedInfo -Source "API" -ExtractorName "Extracteur3" -Data @{Key="Value"} -DataFormat "JSON"
@@ -425,14 +455,16 @@ $collection = Add-ExtractedInfoToCollection -Collection $collection -Info $info2
 $collection = Add-ExtractedInfoToCollection -Collection $collection -Info $info3
 
 # Filtrer par Type (utilise l'index)
+
 $textItems = Get-ExtractedInfoFromCollection -Collection $collection -Type "TextExtractedInfo"
 # Retourne rapidement $info1 et $info2 sans parcourir toute la collection
 
 # Supprimer un élément
+
 $collection = Remove-ExtractedInfoFromCollection -Collection $collection -InfoId $info1.Id
 # L'index Type est automatiquement mis à jour
-```
 
+```plaintext
 ## Intégration avec l'index Source
 
 L'index Type peut être utilisé en combinaison avec l'index Source pour améliorer les performances des requêtes multi-critères :
@@ -440,10 +472,13 @@ L'index Type peut être utilisé en combinaison avec l'index Source pour amélio
 ```powershell
 function Get-ExtractedInfoFromCollection {
     # ...
+
     
     # Utiliser l'index le plus sélectif en premier
+
     if (-not [string]::IsNullOrEmpty($Type) -and -not [string]::IsNullOrEmpty($Source)) {
         # Déterminer quel index utiliser en premier
+
         $useTypeFirst = $false
         
         if ($Collection.Indexes -ne $null) {
@@ -451,6 +486,7 @@ function Get-ExtractedInfoFromCollection {
                 $Collection.Indexes.ContainsKey("Source") -and $Collection.Indexes.Source.ContainsKey($Source)) {
                 
                 # Comparer la sélectivité des deux index
+
                 $typeCount = $Collection.Indexes.Type[$Type].Count
                 $sourceCount = $Collection.Indexes.Source[$Source].Count
                 
@@ -463,25 +499,28 @@ function Get-ExtractedInfoFromCollection {
         
         if ($useTypeFirst) {
             # Utiliser l'index Type puis filtrer par Source
+
             $itemIds = $Collection.Indexes.Type[$Type]
             $items = $itemIds | ForEach-Object { $Collection.ItemsById[$_] }
             $items = $items | Where-Object { $_.Source -eq $Source }
         } else {
             # Utiliser l'index Source puis filtrer par Type
+
             $itemIds = $Collection.Indexes.Source[$Source]
             $items = $itemIds | ForEach-Object { $Collection.ItemsById[$_] }
             $items = $items | Where-Object { $_._Type -eq $Type }
         }
         
         # Appliquer les autres filtres...
+
         
         return $items
     }
     
     # ...
-}
-```
 
+}
+```plaintext
 ## Conclusion
 
 La structure d'index proposée pour la propriété Type offre des améliorations significatives de performance pour les opérations de filtrage par Type, tout en maintenant une consommation de mémoire et une complexité de maintenance minimales. Cette structure est particulièrement adaptée aux collections volumineuses et bénéficie de la cardinalité très faible et de la stabilité exceptionnelle de la propriété Type.

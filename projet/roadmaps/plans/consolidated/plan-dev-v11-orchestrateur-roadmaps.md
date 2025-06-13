@@ -1,6 +1,7 @@
 # Plan de développement v11 : Orchestrateur intelligent de roadmaps
 
 ## 1. Conception de l'architecture d'orchestration
+
 - [ ] **1.1** Définir le modèle de données de l'orchestrateur
   - [ ] **1.1.1** Concevoir le schéma de méta-roadmap
     - [ ] **1.1.1.1** Définir la structure de représentation unifiée
@@ -124,6 +125,7 @@
         - [ ] **1.1.3.3.3.3** Concevoir le système de correction automatique
 
 ## 2. Implémentation du service d'orchestration
+
 - [ ] **2.1** Développer le cœur du service d'orchestration
   - [ ] **2.1.1** Implémenter le module de surveillance (Watcher)
     - [ ] **2.1.1.1** Développer le système de détection des changements
@@ -247,6 +249,7 @@
         - [ ] **2.1.3.3.3.3** Ajouter l'amélioration continue des recommandations
 
 ## 3. Intégration avec l'écosystème existant
+
 - [ ] **3.1** Développer l'intégration avec le système de fichiers
   - [ ] **3.1.1** Implémenter les adaptateurs pour les roadmaps markdown
     - [ ] **3.1.1.1** Développer le parser de roadmaps
@@ -452,6 +455,7 @@
           - [ ] **3.3.1.3.3.3** Ajouter les templates personnalisables
 
 ## 4. Interface utilisateur et expérience utilisateur
+
 - [ ] **4.1** Développer l'interface de visualisation de la méta-roadmap
   - [ ] **4.1.1** Implémenter la visualisation en carte de métro
     - [ ] **4.1.1.1** Développer le moteur de rendu
@@ -535,6 +539,7 @@
         - [ ] **4.1.2.3.3.3** Ajouter l'export multi-format
 
 ## 5. Déploiement et maintenance
+
 - [ ] **5.1** Préparer le déploiement du système
   - [ ] **5.1.1** Développer les scripts de déploiement
     - [ ] **5.1.1.1** Implémenter les scripts d'installation

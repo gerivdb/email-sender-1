@@ -1,4 +1,4 @@
-﻿# Test-RoadmapParameter
+# Test-RoadmapParameter
 
 ## SYNOPSIS
 

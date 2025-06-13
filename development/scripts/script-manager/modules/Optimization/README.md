@@ -1,10 +1,11 @@
-﻿# Module d'optimisation et d'apprentissage automatique
+# Module d'optimisation et d'apprentissage automatique
 
 Ce module fournit des fonctionnalitÃƒÂ©s avancÃƒÂ©es d'optimisation de code et d'apprentissage automatique pour amÃƒÂ©liorer la qualitÃƒÂ© et la maintenabilitÃƒÂ© des scripts.
 
 ## CaractÃƒÂ©ristiques principales
 
 ### 1. Apprentissage automatique pour l'optimisation du code
+
 Le module `CodeLearning.psm1` implÃƒÂ©mente un systÃƒÂ¨me d'apprentissage automatique sophistiquÃƒÂ© :
 
 - **Apprentissage multi-dimensionnel** : Analyse simultanÃƒÂ©e de plusieurs aspects du code (nommage, structure, style, fonctions communes, imports, gestion d'erreurs)
@@ -12,6 +13,7 @@ Le module `CodeLearning.psm1` implÃƒÂ©mente un systÃƒÂ¨me d'apprentissag
 - **Persistance et ÃƒÂ©volution** : Les modÃƒÂ¨les sont sauvegardÃƒÂ©s dans des fichiers JSON, permettant leur rÃƒÂ©utilisation et leur amÃƒÂ©lioration continue
 
 ### 2. DÃƒÂ©tection d'anti-patterns avancÃƒÂ©e
+
 Le module `AntiPatternDetector.psm1` implÃƒÂ©mente une architecture sophistiquÃƒÂ©e pour la dÃƒÂ©tection des problÃƒÂ¨mes de code :
 
 - **DÃƒÂ©tection contextuelle** : Identification des anti-patterns en fonction du contexte spÃƒÂ©cifique du script
@@ -19,6 +21,7 @@ Le module `AntiPatternDetector.psm1` implÃƒÂ©mente une architecture sophisti
 - **Rapports structurÃƒÂ©s** : RÃƒÂ©sultats organisÃƒÂ©s en objets structurÃƒÂ©s facilitant l'intÃƒÂ©gration avec d'autres systÃƒÂ¨mes
 
 ### 3. Suggestions d'amÃƒÂ©lioration intelligentes
+
 Le module `SuggestionEngine.psm1` gÃƒÂ©nÃƒÂ¨re des recommandations contextuelles pour amÃƒÂ©liorer le code :
 
 - **Suggestions basÃƒÂ©es sur les modÃƒÂ¨les** : Recommandations dÃƒÂ©rivÃƒÂ©es des modÃƒÂ¨les d'apprentissage
@@ -26,6 +29,7 @@ Le module `SuggestionEngine.psm1` gÃƒÂ©nÃƒÂ¨re des recommandations conte
 - **Exemples concrets** : Fourniture d'exemples de code amÃƒÂ©liorÃƒÂ© pour faciliter l'implÃƒÂ©mentation
 
 ### 4. Refactoring assistÃƒÂ©
+
 Le module `RefactoringAssistant.psm1` aide ÃƒÂ  restructurer le code de maniÃƒÂ¨re sÃƒÂ©curisÃƒÂ©e :
 
 - **Analyse d'impact** : Ãƒâ€°valuation des consÃƒÂ©quences potentielles des modifications
@@ -34,28 +38,43 @@ Le module `RefactoringAssistant.psm1` aide ÃƒÂ  restructurer le code de mani
 
 ## Structure du module
 
-```
+```plaintext
 Optimization/
 Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ CodeLearning.psm1              # Apprentissage des modÃƒÂ¨les de code
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ AntiPatternDetector.psm1       # DÃƒÂ©tection des anti-patterns
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ SuggestionEngine.psm1          # GÃƒÂ©nÃƒÂ©ration de suggestions d'amÃƒÂ©lioration
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ RefactoringAssistant.psm1      # Assistance au refactoring
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ OptimizationModule.psm1        # Module principal d'optimisation
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Models/                        # ModÃƒÂ¨les d'apprentissage
-Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ PowerShell/                # ModÃƒÂ¨les spÃƒÂ©cifiques ÃƒÂ  PowerShell
-Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Python/                    # ModÃƒÂ¨les spÃƒÂ©cifiques ÃƒÂ  Python
-Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Batch/                     # ModÃƒÂ¨les spÃƒÂ©cifiques aux scripts Batch
-Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ Shell/                     # ModÃƒÂ¨les spÃƒÂ©cifiques aux scripts Shell
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ Patterns/                      # DÃƒÂ©finitions des patterns
-    Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ CommonPatterns/            # Patterns communs ÃƒÂ  tous les langages
-    Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ PowerShellPatterns/        # Patterns spÃƒÂ©cifiques ÃƒÂ  PowerShell
-    Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ PythonPatterns/            # Patterns spÃƒÂ©cifiques ÃƒÂ  Python
-    Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ ShellPatterns/             # Patterns spÃƒÂ©cifiques aux scripts Shell
-```
 
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ AntiPatternDetector.psm1       # DÃƒÂ©tection des anti-patterns
+
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ SuggestionEngine.psm1          # GÃƒÂ©nÃƒÂ©ration de suggestions d'amÃƒÂ©lioration
+
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ RefactoringAssistant.psm1      # Assistance au refactoring
+
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ OptimizationModule.psm1        # Module principal d'optimisation
+
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Models/                        # ModÃƒÂ¨les d'apprentissage
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ PowerShell/                # ModÃƒÂ¨les spÃƒÂ©cifiques ÃƒÂ  PowerShell
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Python/                    # ModÃƒÂ¨les spÃƒÂ©cifiques ÃƒÂ  Python
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Batch/                     # ModÃƒÂ¨les spÃƒÂ©cifiques aux scripts Batch
+
+Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ Shell/                     # ModÃƒÂ¨les spÃƒÂ©cifiques aux scripts Shell
+
+Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ Patterns/                      # DÃƒÂ©finitions des patterns
+
+    Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ CommonPatterns/            # Patterns communs ÃƒÂ  tous les langages
+
+    Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ PowerShellPatterns/        # Patterns spÃƒÂ©cifiques ÃƒÂ  PowerShell
+
+    Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ PythonPatterns/            # Patterns spÃƒÂ©cifiques ÃƒÂ  Python
+
+    Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ ShellPatterns/             # Patterns spÃƒÂ©cifiques aux scripts Shell
+
+```plaintext
 ## Innovations clÃƒÂ©s
 
 ### SystÃƒÂ¨me d'apprentissage automatique pour l'optimisation du code
+
 Le module implÃƒÂ©mente une approche d'apprentissage automatique qui va bien au-delÃƒÂ  des analyseurs de code traditionnels :
 
 - **Apprentissage holistique** : ComprÃƒÂ©hension globale du code plutÃƒÂ´t que focus sur des aspects isolÃƒÂ©s
@@ -63,6 +82,7 @@ Le module implÃƒÂ©mente une approche d'apprentissage automatique qui va bien
 - **Adaptation contextuelle** : Recommandations adaptÃƒÂ©es au contexte spÃƒÂ©cifique du projet
 
 ### Architecture de dÃƒÂ©tection d'anti-patterns avancÃƒÂ©e
+
 Le module implÃƒÂ©mente une architecture sophistiquÃƒÂ©e qui dÃƒÂ©passe les capacitÃƒÂ©s des linters traditionnels :
 
 - **DÃƒÂ©tection sÃƒÂ©mantique** : ComprÃƒÂ©hension du sens et de l'intention du code, pas seulement de sa syntaxe
@@ -70,6 +90,7 @@ Le module implÃƒÂ©mente une architecture sophistiquÃƒÂ©e qui dÃƒÂ©pa
 - **DÃƒÂ©tection de problÃƒÂ¨mes subtils** : Identification de problÃƒÂ¨mes qui seraient invisibles pour des outils d'analyse statique standard
 
 ### SystÃƒÂ¨me de suggestions prÃƒÂ©dictif
+
 Le module utilise l'apprentissage automatique pour prÃƒÂ©dire les amÃƒÂ©liorations les plus bÃƒÂ©nÃƒÂ©fiques :
 
 - **PrÃƒÂ©diction d'impact** : Estimation de l'effet des modifications sur la qualitÃƒÂ© du code
@@ -79,35 +100,41 @@ Le module utilise l'apprentissage automatique pour prÃƒÂ©dire les amÃƒÂ©
 ## Utilisation
 
 ### Apprentissage des modÃƒÂ¨les de code
+
 ```powershell
 # Importer le module
+
 Import-Module .\development\\scripts\\mode-manager\modules\Optimization\CodeLearning.psm1
 
 # DÃƒÂ©marrer l'apprentissage
+
 $analysis = Get-ScriptAnalysis -Path ".\development\scripts"
 $model = Start-CodeLearning -Analysis $analysis -OutputPath ".\models"
-```
-
+```plaintext
 ### DÃƒÂ©tection d'anti-patterns
+
 ```powershell
 # Importer le module
+
 Import-Module .\development\\scripts\\mode-manager\modules\Optimization\AntiPatternDetector.psm1
 
 # DÃƒÂ©tecter les anti-patterns
+
 $antiPatterns = Find-AntiPatterns -ScriptPath ".\development\scripts\example.ps1"
 $antiPatterns | Format-Table Name, Severity, Description
-```
-
+```plaintext
 ### Obtenir des suggestions d'amÃƒÂ©lioration
+
 ```powershell
 # Importer le module
+
 Import-Module .\development\\scripts\\mode-manager\modules\Optimization\SuggestionEngine.psm1
 
 # Obtenir des suggestions
+
 $suggestions = Get-CodeSuggestions -ScriptPath ".\development\scripts\example.ps1" -Model $model
 $suggestions | Sort-Object -Property Priority | Format-Table Title, Priority, Impact
-```
-
+```plaintext
 ## IntÃƒÂ©gration avec d'autres modules
 
 Le module d'optimisation s'intÃƒÂ¨gre avec d'autres modules du projet :

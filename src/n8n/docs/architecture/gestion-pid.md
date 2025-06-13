@@ -22,10 +22,9 @@ Cette approche résout plusieurs problèmes :
 
 Pour démarrer n8n avec gestion du PID, utilisez :
 
-```
+```plaintext
 .\start-n8n-with-pid.cmd
-```
-
+```plaintext
 Options disponibles :
 
 - `-Port` : Port sur lequel n8n sera accessible (par défaut: 5678)
@@ -35,18 +34,16 @@ Options disponibles :
 
 Exemple :
 
-```
+```plaintext
 .\start-n8n-with-pid.cmd -Port 5679 -PidFile "custom.pid"
-```
-
+```plaintext
 ### Arrêt de n8n
 
 Pour arrêter n8n proprement, utilisez :
 
-```
+```plaintext
 .\stop-n8n.cmd
-```
-
+```plaintext
 Options disponibles :
 
 - `-PidFile` : Chemin du fichier contenant le PID (par défaut: n8n.pid)
@@ -54,18 +51,16 @@ Options disponibles :
 
 Exemple :
 
-```
+```plaintext
 .\stop-n8n.cmd -PidFile "custom.pid" -Force
-```
-
+```plaintext
 ### Vérification de l'état de n8n
 
 Pour vérifier l'état de n8n, utilisez :
 
-```
+```plaintext
 .\check-n8n-status.cmd
-```
-
+```plaintext
 Options disponibles :
 
 - `-PidFile` : Chemin du fichier contenant le PID (par défaut: n8n.pid)
@@ -73,10 +68,9 @@ Options disponibles :
 
 Exemple :
 
-```
+```plaintext
 .\check-n8n-status.cmd -PidFile "custom.pid" -Port 5679
-```
-
+```plaintext
 ## Fonctionnement interne
 
 ### Démarrage de n8n

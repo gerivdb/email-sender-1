@@ -20,6 +20,7 @@ Ce document prÃ©sente le plan des templates Hygen Ã  dÃ©velopper pour le d
 
 **Structure du script gÃ©nÃ©rÃ©** :
 - Directive : `#Requires -Version 5.1`
+
 - Documentation : Synopsis, Description, ParamÃ¨tres, Exemples, Notes
 - ParamÃ¨tres : `Path`, `Force`
 - Attribut : `[CmdletBinding(SupportsShouldProcess=$true)]`
@@ -44,6 +45,7 @@ Ce document prÃ©sente le plan des templates Hygen Ã  dÃ©velopper pour le d
 
 **Structure du script gÃ©nÃ©rÃ©** :
 - Directive : `#Requires -Version 5.1`
+
 - Documentation : Synopsis, Description, ParamÃ¨tres, Exemples, Notes
 - ParamÃ¨tres : `InputPath`, `OutputPath`, `Format`
 - Fonction d'affichage : `Write-ColorMessage`
@@ -70,6 +72,7 @@ Ce document prÃ©sente le plan des templates Hygen Ã  dÃ©velopper pour le d
 
 **Structure du script gÃ©nÃ©rÃ©** :
 - Directive : `#Requires -Version 5.1`
+
 - Documentation : Synopsis, Description, Notes
 - Bloc `BeforeAll` : Importation du script Ã  tester
 - Bloc `Describe` : Tests principaux
@@ -94,6 +97,7 @@ Ce document prÃ©sente le plan des templates Hygen Ã  dÃ©velopper pour le d
 
 **Structure du script gÃ©nÃ©rÃ©** :
 - Directive : `#Requires -Version 5.1`
+
 - Documentation : Synopsis, Description, ParamÃ¨tres, Exemples, Notes
 - ParamÃ¨tres : `TargetSystem`, `ConfigPath`, `Force`
 - Attribut : `[CmdletBinding(SupportsShouldProcess=$true)]`
@@ -127,18 +131,21 @@ Pour utiliser ces templates, deux options sont disponibles :
 
 ```powershell
 # GÃ©nÃ©rer un script d'automatisation
+
 .\development\scripts\utils\Generate-Script.ps1 -Type automation -Name "Auto-ProcessFiles" -Description "Script d'automatisation pour traiter des fichiers" -Author "John Doe"
 
 # GÃ©nÃ©rer un script d'analyse
+
 .\development\scripts\utils\Generate-Script.ps1 -Type analysis -Name "Analyze-CodeQuality" -Description "Script d'analyse de la qualitÃ© du code" -SubFolder "plugins" -Author "Jane Smith"
 
 # GÃ©nÃ©rer un script de test
+
 .\development\scripts\utils\Generate-Script.ps1 -Type test -Name "Example-Script" -Description "Tests pour Example-Script" -ScriptToTest "automation/Example-Script.ps1" -FunctionName "ExampleScript" -Author "Dev Team"
 
 # GÃ©nÃ©rer un script d'intÃ©gration
-.\development\scripts\utils\Generate-Script.ps1 -Type integration -Name "Sync-GitHubIssues" -Description "Script d'intÃ©gration avec GitHub Issues" -Author "Integration Team"
-```
 
+.\development\scripts\utils\Generate-Script.ps1 -Type integration -Name "Sync-GitHubIssues" -Description "Script d'intÃ©gration avec GitHub Issues" -Author "Integration Team"
+```plaintext
 ## Prochaines Ã©tapes
 
 1. **Tests** : Tester les templates avec diffÃ©rents paramÃ¨tres

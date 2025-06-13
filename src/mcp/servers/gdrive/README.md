@@ -57,8 +57,7 @@ Assuming you have completed setting up the OAuth application on Google Cloud, yo
 
 ```bash
 docker run -i --rm --mount type=bind,source=/path/to/gcp-oauth.keys.json,target=/gcp-oauth.keys.json -v mcp-gdrive:/gdrive-server -e GDRIVE_OAUTH_PATH=/gcp-oauth.keys.json -e "GDRIVE_CREDENTIALS_PATH=/gdrive-server/credentials.json" -p 3000:3000 mcp/gdrive auth
-```
-
+```plaintext
 The command will print the URL to open in your browser. Open this URL in your browser and complete the authentication process. The credentials will be saved in the `mcp-gdrive` volume.
 
 Once authenticated, you can use the server in your app's server configuration:
@@ -72,8 +71,7 @@ Once authenticated, you can use the server in your app's server configuration:
     }
   }
 }
-```
-
+```plaintext
 #### NPX
 
 ```json
@@ -88,8 +86,7 @@ Once authenticated, you can use the server in your app's server configuration:
     }
   }
 }
-```
-
+```plaintext
 ## License
 
 This MCP server is licensed under the MIT License. This means you are free to use, modify, and distribute the software, subject to the terms and conditions of the MIT License. For more details, please see the LICENSE file in the project repository.

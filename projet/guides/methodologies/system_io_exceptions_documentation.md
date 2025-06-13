@@ -14,7 +14,7 @@ Cette documentation présente en détail les exceptions principales du namespace
 
 ### Hiérarchie
 
-```
+```plaintext
 System.Exception
 └── System.SystemException
     └── System.IO.IOException
@@ -26,8 +26,7 @@ System.Exception
         ├── System.IO.FileLoadException
         ├── System.IO.InternalBufferOverflowException
         └── System.IO.PipeException
-```
-
+```plaintext
 ### Description
 
 `IOException` est une exception générique qui indique qu'une erreur s'est produite lors d'une opération d'entrée/sortie. Elle peut être causée par diverses raisons, telles que des problèmes de périphérique, des erreurs de réseau, des problèmes de permissions, ou des erreurs de système de fichiers.
@@ -46,8 +45,7 @@ IOException(string message)
 IOException(string message, Exception innerException)
 IOException(string message, int hresult)
 IOException(string message, int hresult, Exception innerException)
-```
-
+```plaintext
 ### Cas d'utilisation typiques
 
 1. **Erreurs de lecture/écriture de fichier** : Problèmes lors de la lecture ou de l'écriture dans un fichier.
@@ -64,6 +62,7 @@ IOException(string message, int hresult, Exception innerException)
 
 ```powershell
 # Exemple 1: Erreur de lecture de fichier
+
 function Read-FileWithIOExceptionHandling {
     param (
         [string]$FilePath
@@ -86,9 +85,11 @@ function Read-FileWithIOExceptionHandling {
 }
 
 # Tentative de lecture d'un fichier qui est peut-être verrouillé ou inaccessible
+
 Read-FileWithIOExceptionHandling -FilePath "C:\Windows\System32\drivers\etc\hosts"
 
 # Exemple 2: Erreur d'écriture de fichier
+
 function Write-FileWithIOExceptionHandling {
     param (
         [string]$FilePath,
@@ -113,9 +114,11 @@ function Write-FileWithIOExceptionHandling {
 }
 
 # Tentative d'écriture dans un fichier qui est peut-être en lecture seule ou inaccessible
+
 Write-FileWithIOExceptionHandling -FilePath "C:\Windows\System32\test.txt" -Content "Test"
 
 # Exemple 3: Fichier verrouillé par un autre processus
+
 function Demonstrate-LockedFileIOException {
     param (
         [string]$FilePath
@@ -123,14 +126,17 @@ function Demonstrate-LockedFileIOException {
 
     try {
         # Créer un fichier et le garder ouvert
+
         $fileStream1 = [System.IO.FileStream]::new($FilePath, [System.IO.FileMode]::Create, [System.IO.FileAccess]::ReadWrite, [System.IO.FileShare]::None)
         Write-Host "Fichier créé et verrouillé: $FilePath"
 
         # Tenter d'ouvrir le même fichier dans un autre flux
+
         Write-Host "Tentative d'ouverture du fichier verrouillé..."
         $fileStream2 = [System.IO.FileStream]::new($FilePath, [System.IO.FileMode]::Open)
 
         # Cette ligne ne sera jamais exécutée
+
         Write-Host "Fichier ouvert avec succès (cela ne devrait pas se produire)"
         $fileStream2.Close()
     } catch [System.IO.IOException] {
@@ -149,12 +155,14 @@ Demonstrate-LockedFileIOException -FilePath $tempFile
 Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
 
 # Exemple 4: Espace disque insuffisant (simulation)
+
 function Simulate-DiskFullIOException {
     param (
         [string]$Message = "There is not enough space on the disk."
     )
 
     # Simuler une IOException avec un message d'espace disque insuffisant
+
     $exception = [System.IO.IOException]::new($Message, -2147024784)  # 0x80070070 (ERROR_DISK_FULL)
 
     try {
@@ -164,6 +172,7 @@ function Simulate-DiskFullIOException {
         Write-Host "HResult: $($_.Exception.HResult)"
 
         # Vérifier si c'est une erreur de disque plein
+
         if ($_.Exception.HResult -eq -2147024784) {
             Write-Host "Erreur spécifique: Espace disque insuffisant"
         }
@@ -173,6 +182,7 @@ function Simulate-DiskFullIOException {
 Simulate-DiskFullIOException
 
 # Exemple 5: Utilisation de la classe File avec gestion des IOException
+
 function Copy-FileWithIOExceptionHandling {
     param (
         [string]$SourcePath,
@@ -185,30 +195,35 @@ function Copy-FileWithIOExceptionHandling {
         return $true
     } catch [System.IO.FileNotFoundException] {
         # Gestion spécifique pour FileNotFoundException
+
         Write-Host "Le fichier source n'existe pas: $SourcePath"
         return $false
     } catch [System.IO.IOException] {
         # Gestion générique pour les autres IOException
+
         Write-Host "Erreur d'E/S lors de la copie du fichier: $($_.Exception.Message)"
         return $false
     }
 }
 
 # Créer un fichier temporaire pour le test
+
 $sourceFile = [System.IO.Path]::GetTempFileName()
 $destinationFile = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "copied_file.tmp")
 
 # Écrire du contenu dans le fichier source
+
 [System.IO.File]::WriteAllText($sourceFile, "Contenu de test")
 
 # Copier le fichier
+
 Copy-FileWithIOExceptionHandling -SourcePath $sourceFile -DestinationPath $destinationFile
 
 # Nettoyer
+
 Remove-Item -Path $sourceFile -Force -ErrorAction SilentlyContinue
 Remove-Item -Path $destinationFile -Force -ErrorAction SilentlyContinue
-```
-
+```plaintext
 ### Codes HResult courants pour IOException
 
 Les codes HResult peuvent fournir des informations plus précises sur la nature de l'erreur d'E/S. Voici quelques codes courants :
@@ -238,19 +253,20 @@ function Process-FileWithProperCleanup {
     try {
         $fileStream = [System.IO.FileStream]::new($FilePath, [System.IO.FileMode]::Open)
         # Traitement du fichier...
+
         return $true
     } catch [System.IO.IOException] {
         Write-Host "Erreur d'E/S: $($_.Exception.Message)"
         return $false
     } finally {
         # Toujours fermer et disposer des ressources, même en cas d'erreur
+
         if ($fileStream -ne $null) {
             $fileStream.Dispose()
         }
     }
 }
-```
-
+```plaintext
 #### 2. Utilisation de l'instruction using (en C#) ou de son équivalent en PowerShell
 
 ```powershell
@@ -261,10 +277,13 @@ function Process-FileWithUsing {
 
     try {
         # En PowerShell 7+, vous pouvez utiliser le mot-clé 'using'
+
         # Pour PowerShell 5.1, nous simulons le comportement
+
         $fileStream = [System.IO.FileStream]::new($FilePath, [System.IO.FileMode]::Open)
         try {
             # Traitement du fichier...
+
             return $true
         } finally {
             $fileStream.Dispose()
@@ -274,8 +293,7 @@ function Process-FileWithUsing {
         return $false
     }
 }
-```
-
+```plaintext
 #### 3. Vérification préalable des conditions
 
 ```powershell
@@ -286,6 +304,7 @@ function Write-FileWithPreCheck {
     )
 
     # Vérifier si le répertoire existe
+
     $directory = [System.IO.Path]::GetDirectoryName($FilePath)
     if (-not [System.IO.Directory]::Exists($directory)) {
         Write-Host "Le répertoire n'existe pas: $directory"
@@ -293,6 +312,7 @@ function Write-FileWithPreCheck {
     }
 
     # Vérifier si le fichier est en lecture seule
+
     if ([System.IO.File]::Exists($FilePath)) {
         $fileInfo = [System.IO.FileInfo]::new($FilePath)
         if ($fileInfo.IsReadOnly) {
@@ -302,6 +322,7 @@ function Write-FileWithPreCheck {
     }
 
     # Vérifier l'espace disque disponible
+
     $driveInfo = [System.IO.DriveInfo]::new([System.IO.Path]::GetPathRoot($FilePath))
     if ($driveInfo.AvailableFreeSpace -lt $Content.Length) {
         Write-Host "Espace disque insuffisant sur $($driveInfo.Name)"
@@ -309,6 +330,7 @@ function Write-FileWithPreCheck {
     }
 
     # Maintenant, tenter d'écrire dans le fichier
+
     try {
         [System.IO.File]::WriteAllText($FilePath, $Content)
         return $true
@@ -317,8 +339,7 @@ function Write-FileWithPreCheck {
         return $false
     }
 }
-```
-
+```plaintext
 #### 4. Utilisation de FileShare pour éviter les conflits
 
 ```powershell
@@ -329,9 +350,11 @@ function Open-FileWithSharing {
 
     try {
         # Ouvrir le fichier avec FileShare.ReadWrite pour permettre à d'autres processus de l'utiliser
+
         $fileStream = [System.IO.FileStream]::new($FilePath, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
 
         # Traitement du fichier...
+
         $fileStream.Close()
         return $true
     } catch [System.IO.IOException] {
@@ -339,8 +362,7 @@ function Open-FileWithSharing {
         return $false
     }
 }
-```
-
+```plaintext
 #### 5. Implémentation de mécanismes de retry
 
 ```powershell
@@ -367,12 +389,12 @@ function Read-FileWithRetry {
             }
 
             # Attendre avant de réessayer
+
             Start-Sleep -Milliseconds $RetryDelayMs
         }
     }
 }
-```
-
+```plaintext
 ### Débogage des IOException
 
 Lorsque vous rencontrez une `IOException`, voici quelques étapes pour la déboguer efficacement :
@@ -392,32 +414,38 @@ function Debug-IOException {
     param (
         [string]$FilePath,
         [string]$Operation = "Read"  # "Read" ou "Write"
+
     )
 
     Write-Host "Débogage d'opération d'E/S sur le fichier: $FilePath"
 
     # Vérifier si le fichier existe
+
     if (-not [System.IO.File]::Exists($FilePath)) {
         Write-Host "Le fichier n'existe pas"
         return
     }
 
     # Obtenir les informations sur le fichier
+
     $fileInfo = [System.IO.FileInfo]::new($FilePath)
     Write-Host "Taille du fichier: $($fileInfo.Length) octets"
     Write-Host "Dernière modification: $($fileInfo.LastWriteTime)"
     Write-Host "Attributs: $($fileInfo.Attributes)"
 
     # Vérifier si le fichier est en lecture seule
+
     if ($fileInfo.IsReadOnly) {
         Write-Host "ATTENTION: Le fichier est en lecture seule"
     }
 
     # Vérifier l'espace disque
+
     $driveInfo = [System.IO.DriveInfo]::new($fileInfo.Directory.Root.FullName)
     Write-Host "Espace disque disponible: $($driveInfo.AvailableFreeSpace) octets"
 
     # Tenter l'opération avec capture détaillée de l'exception
+
     try {
         if ($Operation -eq "Read") {
             $fileStream = [System.IO.FileStream]::new($FilePath, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read)
@@ -433,6 +461,7 @@ function Debug-IOException {
         Write-Host "  HResult: $($_.Exception.HResult) (0x$($_.Exception.HResult.ToString('X8')))"
 
         # Interpréter le code HResult
+
         switch ($_.Exception.HResult) {
             -2147024784 { Write-Host "  Interprétation: Espace disque insuffisant" }
             -2147024864 { Write-Host "  Interprétation: Le fichier est utilisé par un autre processus" }
@@ -445,11 +474,11 @@ function Debug-IOException {
 }
 
 # Exemple d'utilisation
+
 $tempFile = [System.IO.Path]::GetTempFileName()
 Debug-IOException -FilePath $tempFile -Operation "Write"
 Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
-```
-
+```plaintext
 ### Bonnes pratiques pour gérer les IOException
 
 1. **Toujours fermer les ressources** : Utilisez des blocs `try-finally` ou l'équivalent de `using` pour vous assurer que les ressources sont correctement fermées.
@@ -480,14 +509,13 @@ En comprenant les caractéristiques de `IOException`, ses codes HResult courants
 
 ### Hiérarchie
 
-```
+```plaintext
 System.Exception
 └── System.SystemException
     └── System.IO.IOException
         └── System.IO.FileNotFoundException
             └── System.IO.FileLoadException
-```
-
+```plaintext
 ### Description
 
 `FileNotFoundException` est levée lorsqu'une méthode qui nécessite l'accès à un fichier ne peut pas trouver le fichier à l'emplacement spécifié. Cette exception est couramment rencontrée lors de l'ouverture, de la lecture ou de la copie de fichiers qui n'existent pas.
@@ -507,8 +535,7 @@ FileNotFoundException(string message)
 FileNotFoundException(string message, Exception innerException)
 FileNotFoundException(string message, string fileName)
 FileNotFoundException(string message, string fileName, Exception innerException)
-```
-
+```plaintext
 ### Cas d'utilisation typiques
 
 1. **Fichier d'entrée manquant** : Tentative de lecture d'un fichier qui n'existe pas.
@@ -525,6 +552,7 @@ FileNotFoundException(string message, string fileName, Exception innerException)
 
 ```powershell
 # Exemple 1: Lecture d'un fichier inexistant
+
 function Read-NonExistentFile {
     param (
         [string]$FilePath
@@ -544,11 +572,15 @@ function Read-NonExistentFile {
 Read-NonExistentFile -FilePath "C:\fichier_inexistant.txt"
 
 # Sortie:
+
 # Erreur: Le fichier 'C:\fichier_inexistant.txt' n'existe pas
+
 # Détails: Could not find file 'C:\fichier_inexistant.txt'.
+
 # Nom du fichier: C:\fichier_inexistant.txt
 
 # Exemple 2: Ouverture d'un fichier avec un chemin incorrect
+
 function Open-FileWithIncorrectPath {
     param (
         [string]$FilePath
@@ -576,9 +608,11 @@ function Open-FileWithIncorrectPath {
 Open-FileWithIncorrectPath -FilePath "C:\Dossier_Inexistant\fichier.txt"
 
 # Sortie:
+
 # DirectoryNotFound: C:\Dossier_Inexistant\fichier.txt
 
 # Exemple 3: Vérification de l'existence d'un fichier avant de l'ouvrir
+
 function Open-FileWithCheck {
     param (
         [string]$FilePath
@@ -599,23 +633,30 @@ function Open-FileWithCheck {
 }
 
 # Créer un fichier temporaire pour le test
+
 $tempFile = [System.IO.Path]::GetTempFileName()
 [System.IO.File]::WriteAllText($tempFile, "Contenu de test")
 
 # Tester avec un fichier existant
+
 Open-FileWithCheck -FilePath $tempFile
 
 # Tester avec un fichier inexistant
+
 Open-FileWithCheck -FilePath "C:\fichier_inexistant.txt"
 
 # Nettoyer
+
 Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
 
 # Sortie:
+
 # Contenu de test
+
 # Le fichier 'C:\fichier_inexistant.txt' n'existe pas
 
 # Exemple 4: Création d'un fichier s'il n'existe pas
+
 function Get-OrCreateFile {
     param (
         [string]$FilePath,
@@ -637,25 +678,33 @@ function Get-OrCreateFile {
 $tempPath = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "test_file.txt")
 
 # Supprimer le fichier s'il existe déjà
+
 if ([System.IO.File]::Exists($tempPath)) {
     Remove-Item -Path $tempPath -Force
 }
 
 # Première appel - le fichier n'existe pas
+
 $content1 = Get-OrCreateFile -FilePath $tempPath -DefaultContent "Contenu par défaut"
 
 # Deuxième appel - le fichier existe maintenant
+
 $content2 = Get-OrCreateFile -FilePath $tempPath
 
 # Nettoyer
+
 Remove-Item -Path $tempPath -Force -ErrorAction SilentlyContinue
 
 # Sortie:
+
 # Le fichier '...\test_file.txt' n'existe pas. Création du fichier...
+
 # Contenu par défaut
+
 # Contenu par défaut
 
 # Exemple 5: Gestion des erreurs de chargement d'assembly
+
 function Load-Assembly {
     param (
         [string]$AssemblyPath
@@ -681,9 +730,10 @@ function Load-Assembly {
 Load-Assembly -AssemblyPath "C:\assembly_inexistant.dll"
 
 # Sortie:
-# Erreur: L'assembly 'C:\assembly_inexistant.dll' n'a pas pu être trouvé
-```
 
+# Erreur: L'assembly 'C:\assembly_inexistant.dll' n'a pas pu être trouvé
+
+```plaintext
 ### Différence entre FileNotFoundException et DirectoryNotFoundException
 
 Il est important de comprendre la différence entre `FileNotFoundException` et `DirectoryNotFoundException` :
@@ -702,9 +752,11 @@ function Demonstrate-FileVsDirectoryNotFound {
     try {
         if ($IsDirectory) {
             # Tenter d'accéder à un répertoire
+
             [System.IO.Directory]::GetFiles($Path)
         } else {
             # Tenter d'accéder à un fichier
+
             [System.IO.File]::ReadAllText($Path)
         }
         return "Succès (ne devrait pas se produire)"
@@ -718,30 +770,38 @@ function Demonstrate-FileVsDirectoryNotFound {
 }
 
 # Créer un répertoire temporaire pour le test
+
 $tempDir = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "test_dir")
 [System.IO.Directory]::CreateDirectory($tempDir)
 
 # Cas 1: Fichier inexistant dans un répertoire existant
+
 $nonExistentFile = [System.IO.Path]::Combine($tempDir, "fichier_inexistant.txt")
 Demonstrate-FileVsDirectoryNotFound -Path $nonExistentFile
 
 # Cas 2: Fichier dans un répertoire inexistant
+
 $nonExistentDir = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "dossier_inexistant")
 $fileInNonExistentDir = [System.IO.Path]::Combine($nonExistentDir, "fichier.txt")
 Demonstrate-FileVsDirectoryNotFound -Path $fileInNonExistentDir
 
 # Cas 3: Répertoire inexistant
+
 Demonstrate-FileVsDirectoryNotFound -Path $nonExistentDir -IsDirectory
 
 # Nettoyer
+
 Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
 
 # Sortie:
-# FileNotFoundException: Le fichier n'existe pas, mais le répertoire parent existe
-# DirectoryNotFoundException: Le répertoire parent n'existe pas
-# DirectoryNotFoundException: Le répertoire parent n'existe pas
-```
 
+# FileNotFoundException: Le fichier n'existe pas, mais le répertoire parent existe
+
+# DirectoryNotFoundException: Le répertoire parent n'existe pas
+
+# DirectoryNotFoundException: Le répertoire parent n'existe pas
+
+```plaintext
 ### Prévention des FileNotFoundException
 
 Voici plusieurs techniques pour éviter les `FileNotFoundException` :
@@ -761,8 +821,7 @@ function Read-FileIfExists {
 
     return [System.IO.File]::ReadAllText($FilePath)
 }
-```
-
+```plaintext
 #### 2. Création du fichier s'il n'existe pas
 
 ```powershell
@@ -774,19 +833,20 @@ function Ensure-FileExists {
 
     if (-not [System.IO.File]::Exists($FilePath)) {
         # Vérifier si le répertoire parent existe
+
         $directory = [System.IO.Path]::GetDirectoryName($FilePath)
         if (-not [System.IO.Directory]::Exists($directory)) {
             [System.IO.Directory]::CreateDirectory($directory)
         }
 
         # Créer le fichier avec le contenu par défaut
+
         [System.IO.File]::WriteAllText($FilePath, $DefaultContent)
     }
 
     return [System.IO.File]::ReadAllText($FilePath)
 }
-```
-
+```plaintext
 #### 3. Utilisation de chemins absolus
 
 ```powershell
@@ -796,6 +856,7 @@ function Get-AbsolutePath {
     )
 
     # Convertir le chemin relatif en chemin absolu
+
     $absolutePath = [System.IO.Path]::GetFullPath($RelativePath)
 
     Write-Host "Chemin relatif: $RelativePath"
@@ -803,8 +864,7 @@ function Get-AbsolutePath {
 
     return $absolutePath
 }
-```
-
+```plaintext
 #### 4. Recherche de fichiers dans plusieurs emplacements
 
 ```powershell
@@ -825,8 +885,7 @@ function Find-FileInMultipleLocations {
     Write-Host "Fichier '$FileName' non trouvé dans les chemins de recherche"
     return $null
 }
-```
-
+```plaintext
 #### 5. Gestion des problèmes de casse sur les systèmes sensibles à la casse
 
 ```powershell
@@ -842,12 +901,15 @@ function Find-FileIgnoreCase {
     }
 
     # Obtenir tous les fichiers dans le répertoire
+
     $files = [System.IO.Directory]::GetFiles($Directory)
 
     # Rechercher le fichier sans tenir compte de la casse
+
     foreach ($file in $files) {
         $currentFileName = [System.IO.Path]::GetFileName($file)
         if ($currentFileName -ieq $FileName) {  # -ieq pour une comparaison insensible à la casse
+
             Write-Host "Fichier trouvé (casse différente): $file"
             return $file
         }
@@ -856,8 +918,7 @@ function Find-FileIgnoreCase {
     Write-Host "Fichier '$FileName' non trouvé dans le répertoire '$Directory'"
     return $null
 }
-```
-
+```plaintext
 ### Débogage des FileNotFoundException
 
 Lorsque vous rencontrez une `FileNotFoundException`, voici quelques étapes pour la déboguer efficacement :
@@ -881,6 +942,7 @@ function Debug-FileNotFoundException {
     Write-Host "Débogage de FileNotFoundException pour le fichier: $FilePath"
 
     # Vérifier si le chemin est absolu ou relatif
+
     $isAbsolute = [System.IO.Path]::IsPathRooted($FilePath)
     Write-Host "Chemin absolu: $isAbsolute"
 
@@ -891,11 +953,13 @@ function Debug-FileNotFoundException {
     }
 
     # Vérifier si le fichier existe
+
     $fileExists = [System.IO.File]::Exists($FilePath)
     Write-Host "Le fichier existe: $fileExists"
 
     if (-not $fileExists) {
         # Vérifier si le répertoire parent existe
+
         $directory = [System.IO.Path]::GetDirectoryName($FilePath)
         $directoryExists = [System.IO.Directory]::Exists($directory)
         Write-Host "Répertoire parent: $directory"
@@ -903,6 +967,7 @@ function Debug-FileNotFoundException {
 
         if ($directoryExists) {
             # Lister les fichiers dans le répertoire
+
             Write-Host "Fichiers dans le répertoire:"
             $files = [System.IO.Directory]::GetFiles($directory)
             foreach ($file in $files) {
@@ -910,6 +975,7 @@ function Debug-FileNotFoundException {
             }
 
             # Vérifier si un fichier avec un nom similaire existe (problème de casse)
+
             $fileName = [System.IO.Path]::GetFileName($FilePath)
             foreach ($file in $files) {
                 $currentFileName = [System.IO.Path]::GetFileName($file)
@@ -925,12 +991,16 @@ function Debug-FileNotFoundException {
 }
 
 # Exemple d'utilisation
-Debug-FileNotFoundException -FilePath "C:\Windows\System32\notepad.exe"  # Devrait exister
-Debug-FileNotFoundException -FilePath "C:\Windows\System32\notepad.EXE"  # Test de casse
-Debug-FileNotFoundException -FilePath "C:\Windows\System32\fichier_inexistant.txt"  # Ne devrait pas exister
-Debug-FileNotFoundException -FilePath "C:\Dossier_Inexistant\fichier.txt"  # Répertoire inexistant
-```
 
+Debug-FileNotFoundException -FilePath "C:\Windows\System32\notepad.exe"  # Devrait exister
+
+Debug-FileNotFoundException -FilePath "C:\Windows\System32\notepad.EXE"  # Test de casse
+
+Debug-FileNotFoundException -FilePath "C:\Windows\System32\fichier_inexistant.txt"  # Ne devrait pas exister
+
+Debug-FileNotFoundException -FilePath "C:\Dossier_Inexistant\fichier.txt"  # Répertoire inexistant
+
+```plaintext
 ### Bonnes pratiques pour gérer les FileNotFoundException
 
 1. **Vérifier l'existence du fichier** : Utilisez `File.Exists()` pour vérifier si un fichier existe avant de tenter de l'ouvrir.
@@ -961,13 +1031,12 @@ En comprenant les détails de `FileNotFoundException`, ses cas d'utilisation typ
 
 ### Hiérarchie
 
-```
+```plaintext
 System.Exception
 └── System.SystemException
     └── System.IO.IOException
         └── System.IO.DirectoryNotFoundException
-```
-
+```plaintext
 ### Description
 
 `DirectoryNotFoundException` est levée lorsqu'une méthode qui nécessite l'accès à un répertoire ne peut pas trouver le répertoire à l'emplacement spécifié. Cette exception est couramment rencontrée lors de l'accès à des fichiers ou des répertoires dont le chemin parent n'existe pas.
@@ -982,8 +1051,7 @@ System.Exception
 DirectoryNotFoundException()
 DirectoryNotFoundException(string message)
 DirectoryNotFoundException(string message, Exception innerException)
-```
-
+```plaintext
 ### Contextes courants
 
 1. **Répertoire parent inexistant** : Tentative d'accès à un fichier dont le répertoire parent n'existe pas.
@@ -1000,6 +1068,7 @@ DirectoryNotFoundException(string message, Exception innerException)
 
 ```powershell
 # Exemple 1: Accès à un fichier dans un répertoire inexistant
+
 function Access-FileInNonExistentDirectory {
     param (
         [string]$FilePath
@@ -1024,10 +1093,13 @@ function Access-FileInNonExistentDirectory {
 Access-FileInNonExistentDirectory -FilePath "C:\Dossier_Inexistant\fichier.txt"
 
 # Sortie:
+
 # Erreur: Le répertoire parent du fichier 'C:\Dossier_Inexistant\fichier.txt' n'existe pas
+
 # Détails: Could not find a part of the path 'C:\Dossier_Inexistant\fichier.txt'.
 
 # Exemple 2: Création d'un répertoire s'il n'existe pas
+
 function Create-DirectoryIfNotExists {
     param (
         [string]$DirectoryPath
@@ -1035,6 +1107,7 @@ function Create-DirectoryIfNotExists {
 
     try {
         # Tenter d'obtenir les informations sur le répertoire
+
         $dirInfo = [System.IO.DirectoryInfo]::new($DirectoryPath)
         $files = $dirInfo.GetFiles()
         Write-Host "Le répertoire '$DirectoryPath' existe déjà et contient $($files.Count) fichiers"
@@ -1056,21 +1129,28 @@ function Create-DirectoryIfNotExists {
 }
 
 # Test avec un répertoire inexistant
+
 $tempDir = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "test_dir_" + [Guid]::NewGuid().ToString())
 Create-DirectoryIfNotExists -DirectoryPath $tempDir
 
 # Test avec un répertoire existant
+
 Create-DirectoryIfNotExists -DirectoryPath $tempDir
 
 # Nettoyer
+
 Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
 
 # Sortie:
+
 # Le répertoire '...\test_dir_...' n'existe pas. Création du répertoire...
+
 # Répertoire créé avec succès
+
 # Le répertoire '...\test_dir_...' existe déjà et contient 0 fichiers
 
 # Exemple 3: Accès à un lecteur ou partage réseau inexistant
+
 function Access-NonExistentDrive {
     param (
         [string]$DrivePath
@@ -1091,13 +1171,17 @@ function Access-NonExistentDrive {
 }
 
 # Test avec un lecteur inexistant (ajustez la lettre de lecteur selon votre système)
+
 Access-NonExistentDrive -DrivePath "Z:\Documents"
 
 # Sortie:
+
 # Erreur: Le lecteur ou répertoire 'Z:\Documents' n'existe pas
+
 # Détails: Could not find a part of the path 'Z:\Documents'.
 
 # Exemple 4: Vérification récursive de l'existence des répertoires parents
+
 function Verify-DirectoryPath {
     param (
         [string]$Path
@@ -1110,29 +1194,35 @@ function Verify-DirectoryPath {
     }
 
     # Vérifier si le chemin existe déjà
+
     if ([System.IO.Directory]::Exists($Path)) {
         $result.Exists = $true
         return $result
     }
 
     # Décomposer le chemin et vérifier chaque partie
+
     $parts = $result.FullPath.Split([System.IO.Path]::DirectorySeparatorChar)
     $currentPath = ""
 
     # Construire le chemin progressivement et vérifier chaque partie
+
     for ($i = 0; $i -lt $parts.Length; $i++) {
         $part = $parts[$i]
 
         # Ignorer les parties vides (comme après le séparateur de lecteur)
+
         if ([string]::IsNullOrEmpty($part)) {
             continue
         }
 
         # Ajouter le séparateur de lecteur pour le premier élément sous Windows
+
         if ($i -eq 0 -and $part.EndsWith(":")) {
             $currentPath = $part + [System.IO.Path]::DirectorySeparatorChar
         } else {
             # Pour les autres parties, ajouter le séparateur et la partie
+
             if (-not [string]::IsNullOrEmpty($currentPath)) {
                 $currentPath = [System.IO.Path]::Combine($currentPath, $part)
             } else {
@@ -1141,6 +1231,7 @@ function Verify-DirectoryPath {
         }
 
         # Vérifier si cette partie du chemin existe
+
         if (-not [System.IO.Directory]::Exists($currentPath)) {
             $result.MissingParts += $currentPath
         }
@@ -1150,6 +1241,7 @@ function Verify-DirectoryPath {
 }
 
 # Test avec un chemin à plusieurs niveaux
+
 $deepPath = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "level1", "level2", "level3")
 $verificationResult = Verify-DirectoryPath -Path $deepPath
 
@@ -1161,14 +1253,21 @@ foreach ($part in $verificationResult.MissingParts) {
 }
 
 # Sortie:
+
 # Chemin complet: ...\Temp\level1\level2\level3
+
 # Existe: False
+
 # Parties manquantes:
+
 #   - ...\Temp\level1
+
 #   - ...\Temp\level1\level2
+
 #   - ...\Temp\level1\level2\level3
 
 # Exemple 5: Création récursive de répertoires
+
 function Create-DirectoryRecursively {
     param (
         [string]$Path
@@ -1176,6 +1275,7 @@ function Create-DirectoryRecursively {
 
     try {
         # CreateDirectory crée automatiquement tous les répertoires parents nécessaires
+
         $dirInfo = [System.IO.Directory]::CreateDirectory($Path)
         Write-Host "Répertoire '$Path' créé avec succès"
         return $dirInfo
@@ -1186,10 +1286,12 @@ function Create-DirectoryRecursively {
 }
 
 # Test avec un chemin à plusieurs niveaux
+
 $deepPath = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "level1", "level2", "level3")
 Create-DirectoryRecursively -Path $deepPath
 
 # Vérifier que tous les répertoires ont été créés
+
 $level1 = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "level1")
 $level2 = [System.IO.Path]::Combine($level1, "level2")
 $level3 = [System.IO.Path]::Combine($level2, "level3")
@@ -1199,15 +1301,20 @@ Write-Host "level2 existe: $([System.IO.Directory]::Exists($level2))"
 Write-Host "level3 existe: $([System.IO.Directory]::Exists($level3))"
 
 # Nettoyer
+
 Remove-Item -Path $level1 -Recurse -Force -ErrorAction SilentlyContinue
 
 # Sortie:
-# Répertoire '...\Temp\level1\level2\level3' créé avec succès
-# level1 existe: True
-# level2 existe: True
-# level3 existe: True
-```
 
+# Répertoire '...\Temp\level1\level2\level3' créé avec succès
+
+# level1 existe: True
+
+# level2 existe: True
+
+# level3 existe: True
+
+```plaintext
 ### Différence entre DirectoryNotFoundException et FileNotFoundException
 
 Comme nous l'avons vu dans la section sur `FileNotFoundException`, il est important de comprendre la différence entre ces deux exceptions :
@@ -1237,8 +1344,7 @@ function Ensure-DirectoryExists {
 
     return $true
 }
-```
-
+```plaintext
 #### 2. Création du répertoire s'il n'existe pas
 
 ```powershell
@@ -1259,8 +1365,7 @@ function Create-DirectoryIfNotExists {
 
     return $true
 }
-```
-
+```plaintext
 #### 3. Utilisation de chemins absolus
 
 ```powershell
@@ -1270,6 +1375,7 @@ function Get-AbsoluteDirectoryPath {
     )
 
     # Convertir le chemin relatif en chemin absolu
+
     $absolutePath = [System.IO.Path]::GetFullPath($RelativePath)
 
     Write-Host "Chemin relatif: $RelativePath"
@@ -1277,8 +1383,7 @@ function Get-AbsoluteDirectoryPath {
 
     return $absolutePath
 }
-```
-
+```plaintext
 #### 4. Vérification de la disponibilité des lecteurs et partages réseau
 
 ```powershell
@@ -1288,6 +1393,7 @@ function Check-DriveAvailability {
     )
 
     # Extraire la lettre de lecteur ou le nom de partage réseau
+
     $root = [System.IO.Path]::GetPathRoot($DrivePath)
 
     if ([string]::IsNullOrEmpty($root)) {
@@ -1296,6 +1402,7 @@ function Check-DriveAvailability {
     }
 
     # Vérifier si le lecteur ou le partage réseau existe
+
     if (-not [System.IO.Directory]::Exists($root)) {
         Write-Host "Le lecteur ou partage réseau '$root' n'existe pas ou n'est pas accessible"
         return $false
@@ -1304,8 +1411,7 @@ function Check-DriveAvailability {
     Write-Host "Le lecteur ou partage réseau '$root' est disponible"
     return $true
 }
-```
-
+```plaintext
 #### 5. Utilisation de méthodes qui créent automatiquement les répertoires parents
 
 ```powershell
@@ -1317,15 +1423,18 @@ function Write-FileWithDirectoryCreation {
 
     try {
         # Extraire le répertoire parent
+
         $directory = [System.IO.Path]::GetDirectoryName($FilePath)
 
         # Créer le répertoire parent s'il n'existe pas
+
         if (-not [string]::IsNullOrEmpty($directory) -and -not [System.IO.Directory]::Exists($directory)) {
             [System.IO.Directory]::CreateDirectory($directory) | Out-Null
             Write-Host "Répertoire '$directory' créé avec succès"
         }
 
         # Écrire le fichier
+
         [System.IO.File]::WriteAllText($FilePath, $Content)
         Write-Host "Fichier '$FilePath' écrit avec succès"
 
@@ -1335,8 +1444,7 @@ function Write-FileWithDirectoryCreation {
         return $false
     }
 }
-```
-
+```plaintext
 ### Débogage des DirectoryNotFoundException
 
 Lorsque vous rencontrez une `DirectoryNotFoundException`, voici quelques étapes pour la déboguer efficacement :
@@ -1360,6 +1468,7 @@ function Debug-DirectoryNotFoundException {
     Write-Host "Débogage de DirectoryNotFoundException pour le chemin: $Path"
 
     # Vérifier si le chemin est absolu ou relatif
+
     $isAbsolute = [System.IO.Path]::IsPathRooted($Path)
     Write-Host "Chemin absolu: $isAbsolute"
 
@@ -1370,11 +1479,13 @@ function Debug-DirectoryNotFoundException {
     }
 
     # Vérifier si le chemin existe
+
     $pathExists = [System.IO.Directory]::Exists($Path)
     Write-Host "Le chemin existe: $pathExists"
 
     if (-not $pathExists) {
         # Décomposer le chemin et vérifier chaque partie
+
         $parts = $Path.Split([System.IO.Path]::DirectorySeparatorChar)
         $currentPath = ""
 
@@ -1384,11 +1495,13 @@ function Debug-DirectoryNotFoundException {
             $part = $parts[$i]
 
             # Ignorer les parties vides
+
             if ([string]::IsNullOrEmpty($part)) {
                 continue
             }
 
             # Construire le chemin progressivement
+
             if ($i -eq 0 -and $part.EndsWith(":")) {
                 $currentPath = $part + [System.IO.Path]::DirectorySeparatorChar
             } else {
@@ -1400,6 +1513,7 @@ function Debug-DirectoryNotFoundException {
             }
 
             # Vérifier si cette partie du chemin existe
+
             $exists = [System.IO.Directory]::Exists($currentPath)
             Write-Host "  $currentPath - Existe: $exists"
 
@@ -1410,6 +1524,7 @@ function Debug-DirectoryNotFoundException {
         }
 
         # Vérifier si le lecteur ou partage réseau existe
+
         $root = [System.IO.Path]::GetPathRoot($Path)
         $rootExists = [System.IO.Directory]::Exists($root)
         Write-Host "Racine du chemin: $root - Existe: $rootExists"
@@ -1421,11 +1536,14 @@ function Debug-DirectoryNotFoundException {
 }
 
 # Exemple d'utilisation
-Debug-DirectoryNotFoundException -Path "C:\Windows\System32"  # Devrait exister
-Debug-DirectoryNotFoundException -Path "C:\Dossier_Inexistant"  # Ne devrait pas exister
-Debug-DirectoryNotFoundException -Path "Z:\Documents"  # Lecteur inexistant
-```
 
+Debug-DirectoryNotFoundException -Path "C:\Windows\System32"  # Devrait exister
+
+Debug-DirectoryNotFoundException -Path "C:\Dossier_Inexistant"  # Ne devrait pas exister
+
+Debug-DirectoryNotFoundException -Path "Z:\Documents"  # Lecteur inexistant
+
+```plaintext
 ### Bonnes pratiques pour gérer les DirectoryNotFoundException
 
 1. **Vérifier l'existence du répertoire** : Utilisez `Directory.Exists()` pour vérifier si un répertoire existe avant de tenter d'y accéder.
@@ -1456,13 +1574,12 @@ En comprenant les contextes dans lesquels `DirectoryNotFoundException` peut êtr
 
 ### Hiérarchie
 
-```
+```plaintext
 System.Exception
 └── System.SystemException
     └── System.IO.IOException
         └── System.IO.PathTooLongException
-```
-
+```plaintext
 ### Description
 
 `PathTooLongException` est levée lorsqu'une opération sur un fichier ou un répertoire implique un chemin dont la longueur dépasse les limites du système d'exploitation. Cette exception est couramment rencontrée lors de la manipulation de fichiers dans des répertoires profondément imbriqués ou avec des noms très longs.
@@ -1477,8 +1594,7 @@ System.Exception
 PathTooLongException()
 PathTooLongException(string message)
 PathTooLongException(string message, Exception innerException)
-```
-
+```plaintext
 ### Limites de longueur des chemins
 
 Les limites de longueur des chemins varient selon le système d'exploitation et la méthode d'accès utilisée :
@@ -1503,22 +1619,27 @@ Les limites de longueur des chemins varient selon le système d'exploitation et 
 
 ```powershell
 # Exemple 1: Création d'un chemin trop long
+
 function Create-LongPath {
     param (
         [int]$Length = 300
     )
 
     # Créer un chemin de base dans le répertoire temporaire
+
     $basePath = [System.IO.Path]::GetTempPath()
 
     # Calculer la longueur nécessaire pour le nom de fichier
+
     $baseLength = $basePath.Length
     $fileNameLength = $Length - $baseLength - 1  # -1 pour le séparateur
 
     # Créer un nom de fichier de la longueur requise
+
     $fileName = "A" * $fileNameLength + ".txt"
 
     # Construire le chemin complet
+
     $longPath = [System.IO.Path]::Combine($basePath, $fileName)
 
     Write-Host "Longueur du chemin de base: $baseLength caractères"
@@ -1529,9 +1650,11 @@ function Create-LongPath {
 }
 
 # Créer un chemin qui dépasse la limite standard de Windows (260 caractères)
+
 $longPath = Create-LongPath -Length 300
 
 # Exemple 2: Tentative d'accès à un fichier avec un chemin trop long
+
 function Access-LongPath {
     param (
         [string]$FilePath
@@ -1539,6 +1662,7 @@ function Access-LongPath {
 
     try {
         # Tenter de créer le fichier
+
         [System.IO.File]::WriteAllText($FilePath, "Test content")
         Write-Host "Fichier créé avec succès: $FilePath"
         return $true
@@ -1555,17 +1679,25 @@ function Access-LongPath {
 }
 
 # Tenter d'accéder à un fichier avec un chemin trop long
+
 Access-LongPath -FilePath $longPath
 
 # Sortie:
+
 # Longueur du chemin de base: 9 caractères
+
 # Longueur du nom de fichier: 290 caractères
+
 # Longueur totale du chemin: 300 caractères
+
 # Erreur: Le chemin est trop long
+
 # Détails: The specified path, file name, or both are too long. The fully qualified file name must be less than 260 characters, and the directory name must be less than 248 characters.
+
 # Longueur du chemin: 300 caractères
 
 # Exemple 3: Utilisation du préfixe \\?\ pour contourner la limite standard sous Windows
+
 function Access-LongPathWithPrefix {
     param (
         [string]$FilePath
@@ -1573,11 +1705,15 @@ function Access-LongPathWithPrefix {
 
     try {
         # Ajouter le préfixe \\?\ pour contourner la limite standard
+
         $prefixedPath = "\\?\" + $FilePath
 
         # Tenter de créer le fichier avec le chemin préfixé
+
         # Note: Cela peut ne pas fonctionner dans toutes les versions de PowerShell
+
         # car certaines méthodes .NET ne supportent pas les chemins étendus
+
         [System.IO.File]::WriteAllText($prefixedPath, "Test content")
         Write-Host "Fichier créé avec succès avec le préfixe \\?\: $prefixedPath"
         return $true
@@ -1593,9 +1729,11 @@ function Access-LongPathWithPrefix {
 }
 
 # Tenter d'accéder à un fichier avec un chemin trop long en utilisant le préfixe \\?\
+
 Access-LongPathWithPrefix -FilePath $longPath
 
 # Exemple 4: Création de répertoires profondément imbriqués
+
 function Create-DeepNestedDirectories {
     param (
         [int]$Depth = 50,
@@ -1608,6 +1746,7 @@ function Create-DeepNestedDirectories {
 
     try {
         # Créer le répertoire de base
+
         if (-not [System.IO.Directory]::Exists($BasePath)) {
             [System.IO.Directory]::CreateDirectory($BasePath) | Out-Null
         }
@@ -1615,6 +1754,7 @@ function Create-DeepNestedDirectories {
         $currentPath = $BasePath
 
         # Créer des répertoires imbriqués
+
         for ($i = 1; $i -le $Depth; $i++) {
             $currentPath = [System.IO.Path]::Combine($currentPath, "Level$i")
 
@@ -1636,6 +1776,7 @@ function Create-DeepNestedDirectories {
         return $currentPath
     } finally {
         # Nettoyer (suppression du répertoire de base)
+
         if ([System.IO.Directory]::Exists($BasePath)) {
             try {
                 [System.IO.Directory]::Delete($BasePath, $true)
@@ -1647,9 +1788,11 @@ function Create-DeepNestedDirectories {
 }
 
 # Créer des répertoires profondément imbriqués jusqu'à atteindre la limite
+
 Create-DeepNestedDirectories -Depth 50
 
 # Exemple 5: Raccourcissement d'un chemin trop long
+
 function Shorten-Path {
     param (
         [string]$LongPath,
@@ -1657,20 +1800,24 @@ function Shorten-Path {
     )
 
     # Si le chemin est déjà assez court, le retourner tel quel
+
     if ($LongPath.Length -le $MaxLength) {
         return $LongPath
     }
 
     # Décomposer le chemin
+
     $directory = [System.IO.Path]::GetDirectoryName($LongPath)
     $fileName = [System.IO.Path]::GetFileName($LongPath)
     $extension = [System.IO.Path]::GetExtension($LongPath)
     $fileNameWithoutExt = [System.IO.Path]::GetFileNameWithoutExtension($LongPath)
 
     # Calculer la longueur maximale pour le nom de fichier
+
     $maxFileNameLength = $MaxLength - $directory.Length - $extension.Length - 1  # -1 pour le séparateur
 
     # Si le nom de fichier est trop long, le tronquer
+
     if ($fileNameWithoutExt.Length > $maxFileNameLength) {
         $shortenedFileName = $fileNameWithoutExt.Substring(0, $maxFileNameLength) + $extension
         $shortenedPath = [System.IO.Path]::Combine($directory, $shortenedFileName)
@@ -1684,14 +1831,15 @@ function Shorten-Path {
     }
 
     # Si le problème n'est pas le nom de fichier, utiliser une approche différente
+
     Write-Host "Le nom de fichier n'est pas le problème, le répertoire est trop profond"
     return $LongPath
 }
 
 # Raccourcir un chemin trop long
-$shortenedPath = Shorten-Path -LongPath $longPath -MaxLength 259
-```
 
+$shortenedPath = Shorten-Path -LongPath $longPath -MaxLength 259
+```plaintext
 ### Prévention des PathTooLongException
 
 Voici plusieurs techniques pour éviter les `PathTooLongException` :
@@ -1714,8 +1862,7 @@ function Validate-PathLength {
 
     return $true
 }
-```
-
+```plaintext
 #### 2. Utilisation de chemins relatifs courts
 
 ```powershell
@@ -1726,6 +1873,7 @@ function Use-RelativePath {
     )
 
     # Obtenir le chemin relatif
+
     $relativePath = [System.IO.Path]::GetRelativePath($BasePath, $TargetPath)
 
     Write-Host "Chemin absolu: $TargetPath"
@@ -1735,8 +1883,7 @@ function Use-RelativePath {
 
     return $relativePath
 }
-```
-
+```plaintext
 #### 3. Utilisation de chemins courts (8.3) sous Windows
 
 ```powershell
@@ -1746,6 +1893,7 @@ function Get-ShortPath {
     )
 
     # Cette fonction nécessite Windows et utilise la commande cmd.exe
+
     if (-not $IsWindows -and -not $env:OS.Contains("Windows")) {
         Write-Host "Cette fonction n'est disponible que sous Windows"
         return $LongPath
@@ -1765,8 +1913,7 @@ function Get-ShortPath {
         return $LongPath
     }
 }
-```
-
+```plaintext
 #### 4. Utilisation du préfixe \\?\ sous Windows
 
 ```powershell
@@ -1776,16 +1923,19 @@ function Use-ExtendedLengthPath {
     )
 
     # Vérifier si le chemin est déjà préfixé
+
     if ($Path.StartsWith("\\?\")) {
         return $Path
     }
 
     # Convertir en chemin absolu si ce n'est pas déjà le cas
+
     if (-not [System.IO.Path]::IsPathRooted($Path)) {
         $Path = [System.IO.Path]::GetFullPath($Path)
     }
 
     # Ajouter le préfixe
+
     $extendedPath = "\\?\" + $Path
 
     Write-Host "Chemin original: $Path"
@@ -1793,8 +1943,7 @@ function Use-ExtendedLengthPath {
 
     return $extendedPath
 }
-```
-
+```plaintext
 #### 5. Utilisation de mappages de lecteurs ou de jonctions
 
 ```powershell
@@ -1805,6 +1954,7 @@ function Create-DriveMapping {
     )
 
     # Cette fonction nécessite Windows et des privilèges administratifs
+
     if (-not $IsWindows -and -not $env:OS.Contains("Windows")) {
         Write-Host "Cette fonction n'est disponible que sous Windows"
         return $LongPath
@@ -1812,12 +1962,14 @@ function Create-DriveMapping {
 
     try {
         # Supprimer le mapping existant s'il existe
+
         $existingMapping = Get-PSDrive -Name $DriveLetter -ErrorAction SilentlyContinue
         if ($existingMapping) {
             Remove-PSDrive -Name $DriveLetter -Force
         }
 
         # Créer un nouveau mapping
+
         New-PSDrive -Name $DriveLetter -PSProvider FileSystem -Root $LongPath -Scope Global
 
         $shortPath = $DriveLetter + ":\"
@@ -1833,8 +1985,7 @@ function Create-DriveMapping {
         return $LongPath
     }
 }
-```
-
+```plaintext
 ### Débogage des PathTooLongException
 
 Lorsque vous rencontrez une `PathTooLongException`, voici quelques étapes pour la déboguer efficacement :
@@ -1859,6 +2010,7 @@ function Debug-PathTooLongException {
     Write-Host "Longueur totale du chemin: $($Path.Length) caractères"
 
     # Décomposer le chemin
+
     $directory = [System.IO.Path]::GetDirectoryName($Path)
     $fileName = [System.IO.Path]::GetFileName($Path)
     $extension = [System.IO.Path]::GetExtension($Path)
@@ -1872,10 +2024,12 @@ function Debug-PathTooLongException {
     Write-Host "Nom de fichier sans extension: $fileNameWithoutExt"
 
     # Analyser la profondeur du chemin
+
     $parts = $Path.Split([System.IO.Path]::DirectorySeparatorChar)
     Write-Host "Nombre de composants dans le chemin: $($parts.Length)"
 
     # Afficher les composants les plus longs
+
     $longComponents = $parts | Where-Object { $_.Length -gt 20 } | Sort-Object -Property Length -Descending
     if ($longComponents.Count -gt 0) {
         Write-Host "Composants les plus longs:"
@@ -1885,11 +2039,13 @@ function Debug-PathTooLongException {
     }
 
     # Vérifier si le préfixe \\?\ pourrait aider
+
     if (-not $Path.StartsWith("\\?\") -and $Path.Length -gt 259 -and $Path.Length -lt 32767) {
         Write-Host "Suggestion: Essayez d'utiliser le préfixe \\?\ pour contourner la limite standard"
     }
 
     # Vérifier si un chemin relatif pourrait aider
+
     $currentDirectory = (Get-Location).Path
     $relativePath = [System.IO.Path]::GetRelativePath($currentDirectory, $Path)
     if ($relativePath.Length < $Path.Length) {
@@ -1900,9 +2056,9 @@ function Debug-PathTooLongException {
 }
 
 # Exemple d'utilisation
-Debug-PathTooLongException -Path $longPath
-```
 
+Debug-PathTooLongException -Path $longPath
+```plaintext
 ### Bonnes pratiques pour gérer les PathTooLongException
 
 1. **Conception préventive** : Concevez votre structure de répertoires pour éviter les chemins trop longs.
@@ -1933,12 +2089,11 @@ En comprenant les limites de longueur des chemins sur différentes plateformes e
 
 ### Hiérarchie
 
-```
+```plaintext
 System.Exception
 └── System.SystemException
     └── System.UnauthorizedAccessException
-```
-
+```plaintext
 Contrairement aux exceptions précédentes, `UnauthorizedAccessException` n'est pas une sous-classe de `IOException`, mais plutôt une sous-classe directe de `SystemException`. Cela reflète le fait que les problèmes d'accès non autorisé peuvent survenir dans divers contextes, pas seulement dans les opérations d'entrée/sortie.
 
 ### Description
@@ -1980,8 +2135,7 @@ UnauthorizedAccessException(string message)
 
 UnauthorizedAccessException(string message, Exception innerException)
 // Initialise une nouvelle instance avec un message d'erreur spécifié et une référence à l'exception interne
-```
-
+```plaintext
 ### Différence avec SecurityException
 
 Il est important de distinguer `UnauthorizedAccessException` de `SecurityException` :
@@ -2005,8 +2159,7 @@ try {
 } catch [System.UnauthorizedAccessException] {
     Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour lire ce fichier"
 }
-```
-
+```plaintext
 - **Écriture dans un fichier en lecture seule** : Tentative de modification d'un fichier en lecture seule ou pour lequel l'utilisateur n'a pas de permissions d'écriture.
 
 ```powershell
@@ -2016,8 +2169,7 @@ try {
 } catch [System.UnauthorizedAccessException] {
     Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour modifier ce fichier"
 }
-```
-
+```plaintext
 - **Suppression d'un fichier verrouillé** : Tentative de suppression d'un fichier qui est en cours d'utilisation par un autre processus ou pour lequel l'utilisateur n'a pas de permissions de suppression.
 
 ```powershell
@@ -2029,8 +2181,7 @@ try {
 } catch [System.IO.IOException] {
     Write-Host "Le fichier est en cours d'utilisation par un autre processus"
 }
-```
-
+```plaintext
 - **Accès à un répertoire restreint** : Tentative d'accès à un répertoire pour lequel l'utilisateur n'a pas de permissions d'accès.
 
 ```powershell
@@ -2040,8 +2191,7 @@ try {
 } catch [System.UnauthorizedAccessException] {
     Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour accéder à ce répertoire"
 }
-```
-
+```plaintext
 - **Création d'un fichier dans un répertoire protégé** : Tentative de création d'un fichier dans un répertoire pour lequel l'utilisateur n'a pas de permissions d'écriture.
 
 ```powershell
@@ -2051,8 +2201,7 @@ try {
 } catch [System.UnauthorizedAccessException] {
     Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour créer un fichier dans ce répertoire"
 }
-```
-
+```plaintext
 #### 2. Accès au registre
 
 Les opérations sur le registre Windows peuvent également générer des `UnauthorizedAccessException` :
@@ -2070,8 +2219,7 @@ try {
 } catch [System.UnauthorizedAccessException] {
     Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour lire cette clé de registre"
 }
-```
-
+```plaintext
 - **Écriture dans une clé de registre protégée** : Tentative de modification d'une clé de registre pour laquelle l'utilisateur n'a pas de permissions d'écriture.
 
 ```powershell
@@ -2085,8 +2233,7 @@ try {
 } catch [System.UnauthorizedAccessException] {
     Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour modifier cette clé de registre"
 }
-```
-
+```plaintext
 #### 3. Opérations réseau
 
 Les opérations réseau peuvent également générer des `UnauthorizedAccessException` :
@@ -2102,8 +2249,7 @@ try {
 } catch [System.IO.IOException] {
     Write-Host "Erreur d'E/S lors de l'accès au partage réseau"
 }
-```
-
+```plaintext
 - **Liaison à un port réseau réservé** : Tentative de liaison à un port réseau inférieur à 1024 sans privilèges administratifs.
 
 ```powershell
@@ -2112,13 +2258,14 @@ try {
     $listener.Start()
     Write-Host "Écoute sur le port 80"
     # ... autres opérations ...
+
     $listener.Stop()
 } catch [System.Net.Sockets.SocketException] {
     # Sur Windows, cela génère généralement une SocketException plutôt qu'une UnauthorizedAccessException
+
     Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour écouter sur le port 80"
 }
-```
-
+```plaintext
 #### 4. Opérations de sécurité
 
 Les opérations liées à la sécurité peuvent également générer des `UnauthorizedAccessException` :
@@ -2128,6 +2275,7 @@ Les opérations liées à la sécurité peuvent également générer des `Unauth
 ```powershell
 try {
     # Tentative d'accès à des informations d'identification protégées
+
     $credential = [System.Security.Cryptography.ProtectedData]::Unprotect($protectedData, $null, [System.Security.Cryptography.DataProtectionScope]::LocalMachine)
     Write-Host "Informations d'identification déchiffrées avec succès"
 } catch [System.UnauthorizedAccessException] {
@@ -2135,23 +2283,23 @@ try {
 } catch [System.Security.Cryptography.CryptographicException] {
     Write-Host "Erreur de déchiffrement"
 }
-```
-
+```plaintext
 - **Modification des paramètres de sécurité** : Tentative de modification des paramètres de sécurité du système sans privilèges administratifs.
 
 ```powershell
 try {
     # Tentative de modification des paramètres de sécurité
+
     $securityPolicy = [System.Security.SecurityManager]::GetStandardSandbox($null)
     # ... opérations de modification ...
+
     Write-Host "Paramètres de sécurité modifiés avec succès"
 } catch [System.UnauthorizedAccessException] {
     Write-Host "Accès non autorisé : Vous n'avez pas les permissions pour modifier les paramètres de sécurité"
 } catch [System.Security.SecurityException] {
     Write-Host "Violation de la politique de sécurité"
 }
-```
-
+```plaintext
 ### Types de permissions et leurs implications
 
 Les `UnauthorizedAccessException` sont souvent liées à des problèmes de permissions. Comprendre les différents types de permissions est essentiel pour diagnostiquer et résoudre ces problèmes.
@@ -2195,6 +2343,7 @@ PowerShell offre plusieurs cmdlets pour vérifier et modifier les permissions :
 
 ```powershell
 # Vérifier les permissions d'un fichier
+
 function Get-FilePermissions {
     param (
         [string]$Path
@@ -2220,6 +2369,7 @@ function Get-FilePermissions {
 }
 
 # Ajouter une permission à un fichier
+
 function Add-FilePermission {
     param (
         [string]$Path,
@@ -2242,6 +2392,7 @@ function Add-FilePermission {
 }
 
 # Supprimer une permission d'un fichier
+
 function Remove-FilePermission {
     param (
         [string]$Path,
@@ -2264,27 +2415,32 @@ function Remove-FilePermission {
 }
 
 # Exemple d'utilisation
+
 $filePath = "C:\Temp\test.txt"
 if (-not (Test-Path -Path $filePath)) {
     Set-Content -Path $filePath -Value "Test content"
 }
 
 # Vérifier les permissions actuelles
+
 Get-FilePermissions -Path $filePath
 
 # Ajouter une permission de lecture pour tous les utilisateurs
+
 Add-FilePermission -Path $filePath -Identity "Everyone" -Rights "Read"
 
 # Vérifier les permissions après modification
+
 Get-FilePermissions -Path $filePath
 
 # Supprimer la permission de lecture pour tous les utilisateurs
+
 Remove-FilePermission -Path $filePath -Identity "Everyone" -Rights "Read"
 
 # Vérifier les permissions après suppression
-Get-FilePermissions -Path $filePath
-```
 
+Get-FilePermissions -Path $filePath
+```plaintext
 #### Permissions du registre Windows
 
 Les permissions du registre Windows sont similaires à celles du système de fichiers, mais s'appliquent aux clés de registre :
@@ -2332,21 +2488,25 @@ function Test-FilePermissions {
     )
 
     # Créer un répertoire de test
+
     if (-not (Test-Path -Path $TestDirectory)) {
         New-Item -Path $TestDirectory -ItemType Directory | Out-Null
         Write-Host "Répertoire de test créé : $TestDirectory" -ForegroundColor Green
     }
 
     # Créer un fichier de test
+
     $testFile = Join-Path -Path $TestDirectory -ChildPath "test_file.txt"
     Set-Content -Path $testFile -Value "Contenu de test" -Force
     Write-Host "Fichier de test créé : $testFile" -ForegroundColor Green
 
     # Obtenir l'utilisateur actuel
+
     $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
     Write-Host "Utilisateur actuel : $currentUser" -ForegroundColor Yellow
 
     # Afficher les permissions initiales
+
     Write-Host "`nPermissions initiales :" -ForegroundColor Yellow
     $acl = Get-Acl -Path $testFile
     foreach ($access in $acl.Access) {
@@ -2354,6 +2514,7 @@ function Test-FilePermissions {
     }
 
     # Retirer toutes les permissions pour l'utilisateur actuel
+
     Write-Host "`nRetrait des permissions pour l'utilisateur actuel..." -ForegroundColor Yellow
     $acl = Get-Acl -Path $testFile
     $accessRulesToRemove = $acl.Access | Where-Object { $_.IdentityReference.Value -eq $currentUser }
@@ -2363,6 +2524,7 @@ function Test-FilePermissions {
     Set-Acl -Path $testFile -AclObject $acl
 
     # Tenter de lire le fichier sans permissions
+
     Write-Host "`nTentative de lecture du fichier sans permissions :" -ForegroundColor Yellow
     try {
         $content = Get-Content -Path $testFile -ErrorAction Stop
@@ -2375,11 +2537,13 @@ function Test-FilePermissions {
     }
 
     # Restaurer les permissions
+
     Write-Host "`nRestauration des permissions..." -ForegroundColor Yellow
     $acl = Get-Acl -Path $TestDirectory
     Set-Acl -Path $testFile -AclObject $acl
 
     # Tenter de lire le fichier avec les permissions restaurées
+
     Write-Host "`nTentative de lecture du fichier avec permissions restaurées :" -ForegroundColor Yellow
     try {
         $content = Get-Content -Path $testFile -ErrorAction Stop
@@ -2389,6 +2553,7 @@ function Test-FilePermissions {
     }
 
     # Nettoyage
+
     Write-Host "`nNettoyage..." -ForegroundColor Yellow
     Remove-Item -Path $TestDirectory -Recurse -Force -ErrorAction SilentlyContinue
     if (-not (Test-Path -Path $TestDirectory)) {
@@ -2399,14 +2564,15 @@ function Test-FilePermissions {
 }
 
 # Exécuter le test
-Test-FilePermissions
-```
 
+Test-FilePermissions
+```plaintext
 #### Exemple 2 : Tentative d'accès à des fichiers système protégés
 
 ```powershell
 function Test-SystemFileAccess {
     # Liste de fichiers système protégés
+
     $protectedFiles = @(
         "$env:windir\System32\config\SAM",
         "$env:windir\System32\config\SECURITY",
@@ -2419,12 +2585,14 @@ function Test-SystemFileAccess {
         Write-Host "`nTest d'accès au fichier : $file" -ForegroundColor Yellow
 
         # Vérifier si le fichier existe
+
         if (-not (Test-Path -Path $file)) {
             Write-Host "Le fichier n'existe pas" -ForegroundColor Red
             continue
         }
 
         # Tenter de lire le fichier
+
         Write-Host "Tentative de lecture..." -ForegroundColor Yellow
         try {
             $content = Get-Content -Path $file -TotalCount 1 -ErrorAction Stop
@@ -2433,11 +2601,13 @@ function Test-SystemFileAccess {
             Write-Host "Erreur d'accès non autorisé : $($_.Exception.Message)" -ForegroundColor Red
 
             # Afficher les détails de l'exception
+
             Write-Host "  - Type d'exception : $($_.Exception.GetType().FullName)" -ForegroundColor Gray
             Write-Host "  - Message : $($_.Exception.Message)" -ForegroundColor Gray
             Write-Host "  - HResult : 0x$($_.Exception.HResult.ToString("X8"))" -ForegroundColor Gray
 
             # Afficher les permissions actuelles
+
             try {
                 $acl = Get-Acl -Path $file -ErrorAction Stop
                 Write-Host "  - Propriétaire : $($acl.Owner)" -ForegroundColor Gray
@@ -2454,6 +2624,7 @@ function Test-SystemFileAccess {
         }
 
         # Tenter de modifier le fichier
+
         Write-Host "Tentative d'écriture..." -ForegroundColor Yellow
         try {
             Set-Content -Path $file -Value "Test" -ErrorAction Stop
@@ -2467,14 +2638,15 @@ function Test-SystemFileAccess {
 }
 
 # Exécuter le test
-Test-SystemFileAccess
-```
 
+Test-SystemFileAccess
+```plaintext
 #### Exemple 3 : Tentative d'accès au registre protégé
 
 ```powershell
 function Test-RegistryAccess {
     # Liste de clés de registre protégées
+
     $protectedKeys = @(
         "HKLM:\SAM",
         "HKLM:\SECURITY",
@@ -2486,12 +2658,14 @@ function Test-RegistryAccess {
         Write-Host "`nTest d'accès à la clé de registre : $key" -ForegroundColor Yellow
 
         # Vérifier si la clé existe
+
         if (-not (Test-Path -Path $key)) {
             Write-Host "La clé n'existe pas" -ForegroundColor Red
             continue
         }
 
         # Tenter de lire la clé
+
         Write-Host "Tentative de lecture..." -ForegroundColor Yellow
         try {
             $values = Get-ItemProperty -Path $key -ErrorAction Stop
@@ -2504,12 +2678,14 @@ function Test-RegistryAccess {
         }
 
         # Tenter de créer une nouvelle valeur
+
         Write-Host "Tentative d'écriture..." -ForegroundColor Yellow
         try {
             Set-ItemProperty -Path $key -Name "TestValue" -Value "Test" -ErrorAction Stop
             Write-Host "Écriture réussie" -ForegroundColor Green
 
             # Supprimer la valeur de test si elle a été créée
+
             Remove-ItemProperty -Path $key -Name "TestValue" -ErrorAction SilentlyContinue
         } catch [System.UnauthorizedAccessException] {
             Write-Host "Erreur d'accès non autorisé : $($_.Exception.Message)" -ForegroundColor Red
@@ -2520,28 +2696,32 @@ function Test-RegistryAccess {
 }
 
 # Exécuter le test
-Test-RegistryAccess
-```
 
+Test-RegistryAccess
+```plaintext
 #### Exemple 4 : Élévation de privilèges et contournement des restrictions d'accès
 
 ```powershell
 function Test-PrivilegeElevation {
     # Vérifier si le script s'exécute avec des privilèges administratifs
+
     $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
     Write-Host "Exécution avec privilèges administratifs : $isAdmin" -ForegroundColor Yellow
 
     # Fichier de test dans un emplacement protégé
+
     $protectedFile = "$env:windir\System32\test_admin.txt"
 
     # Tenter d'accéder au fichier sans élévation
+
     Write-Host "`nTentative d'accès sans élévation :" -ForegroundColor Yellow
     try {
         Set-Content -Path $protectedFile -Value "Test" -ErrorAction Stop
         Write-Host "Écriture réussie" -ForegroundColor Green
 
         # Nettoyer
+
         Remove-Item -Path $protectedFile -ErrorAction SilentlyContinue
     } catch [System.UnauthorizedAccessException] {
         Write-Host "Erreur d'accès non autorisé : $($_.Exception.Message)" -ForegroundColor Red
@@ -2550,6 +2730,7 @@ function Test-PrivilegeElevation {
     }
 
     # Si nous ne sommes pas administrateur, suggérer une élévation
+
     if (-not $isAdmin) {
         Write-Host "`nPour contourner cette restriction, vous pouvez exécuter PowerShell en tant qu'administrateur :" -ForegroundColor Yellow
         Write-Host "Start-Process PowerShell -Verb RunAs" -ForegroundColor Gray
@@ -2558,6 +2739,7 @@ function Test-PrivilegeElevation {
     }
 
     # Démontrer l'utilisation de l'impersonation (nécessite des privilèges élevés)
+
     Write-Host "`nDémonstration d'impersonation (nécessite des privilèges élevés) :" -ForegroundColor Yellow
     try {
         Add-Type -TypeDefinition @"
@@ -2583,9 +2765,9 @@ public class Impersonation {
 }
 
 # Exécuter le test
-Test-PrivilegeElevation
-```
 
+Test-PrivilegeElevation
+```plaintext
 #### Exemple 5 : Utilisation de l'API Windows pour obtenir des informations détaillées sur les erreurs d'accès
 
 ```powershell
@@ -2595,6 +2777,7 @@ function Get-DetailedAccessError {
     )
 
     # Ajouter les types nécessaires
+
     Add-Type -TypeDefinition @"
 using System;
 using System.Runtime.InteropServices;
@@ -2622,6 +2805,7 @@ public class NativeMethods {
 
     try {
         # Tenter d'accéder au fichier
+
         $content = [System.IO.File]::ReadAllText($Path)
         Write-Host "Accès réussi au fichier : $Path" -ForegroundColor Green
         return $true
@@ -2629,10 +2813,12 @@ public class NativeMethods {
         Write-Host "Erreur d'accès non autorisé au fichier : $Path" -ForegroundColor Red
 
         # Obtenir le code d'erreur Windows
+
         $errorCode = [System.Runtime.InteropServices.Marshal]::GetHRForException($_.Exception)
         Write-Host "Code d'erreur HRESULT : 0x$($errorCode.ToString("X8"))" -ForegroundColor Gray
 
         # Obtenir le message d'erreur Windows détaillé
+
         $errorCode = [NativeMethods]::GetLastError()
         if ($errorCode -ne 0) {
             $buffer = New-Object System.Text.StringBuilder 1024
@@ -2645,6 +2831,7 @@ public class NativeMethods {
         }
 
         # Afficher les détails de l'exception
+
         Write-Host "Type d'exception : $($_.Exception.GetType().FullName)" -ForegroundColor Gray
         Write-Host "Message : $($_.Exception.Message)" -ForegroundColor Gray
         if ($_.Exception.InnerException) {
@@ -2662,9 +2849,9 @@ public class NativeMethods {
 }
 
 # Tester avec un fichier protégé
-Get-DetailedAccessError -Path "$env:windir\System32\config\SAM"
-```
 
+Get-DetailedAccessError -Path "$env:windir\System32\config\SAM"
+```plaintext
 ### Techniques de prévention des UnauthorizedAccessException
 
 Pour éviter les `UnauthorizedAccessException`, vous pouvez mettre en œuvre plusieurs techniques préventives :
@@ -2682,6 +2869,7 @@ function Test-FileAccess {
 
     try {
         # Vérifier si le fichier existe
+
         if (-not (Test-Path -Path $Path)) {
             return @{
                 HasAccess = $false
@@ -2691,12 +2879,15 @@ function Test-FileAccess {
         }
 
         # Obtenir l'utilisateur actuel
+
         $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
 
         # Obtenir les ACL du fichier
+
         $acl = Get-Acl -Path $Path
 
         # Vérifier si l'utilisateur a les droits demandés
+
         $hasAccess = $false
         foreach ($access in $acl.Access) {
             if ($access.IdentityReference.Value -eq $currentUser -or
@@ -2733,14 +2924,14 @@ function Test-FileAccess {
 }
 
 # Exemple d'utilisation
+
 $filePath = "C:\Windows\System32\drivers\etc\hosts"
 $readAccess = Test-FileAccess -Path $filePath -Rights ([System.Security.AccessControl.FileSystemRights]::Read)
 $writeAccess = Test-FileAccess -Path $filePath -Rights ([System.Security.AccessControl.FileSystemRights]::Write)
 
 Write-Host "Accès en lecture : $($readAccess.HasAccess) - $($readAccess.Message)"
 Write-Host "Accès en écriture : $($writeAccess.HasAccess) - $($writeAccess.Message)"
-```
-
+```plaintext
 #### 2. Utilisation de blocs try-catch spécifiques
 
 Utilisez des blocs try-catch spécifiques pour gérer les `UnauthorizedAccessException` de manière appropriée :
@@ -2750,6 +2941,7 @@ function Safe-FileOperation {
     param (
         [string]$Path,
         [string]$Operation = "Read", # Read, Write, Delete
+
         [string]$Content = $null
     )
 
@@ -2819,16 +3011,18 @@ function Safe-FileOperation {
 }
 
 # Exemple d'utilisation
+
 $result = Safe-FileOperation -Path "C:\Windows\System32\drivers\etc\hosts" -Operation "Read"
 if ($result.Success) {
     Write-Host "Opération réussie : $($result.Message)"
     # Traiter $result.Result
+
 } else {
     Write-Host "Échec de l'opération : $($result.Message)"
     # Gérer l'erreur
-}
-```
 
+}
+```plaintext
 #### 3. Élévation de privilèges contrôlée
 
 Pour les opérations nécessitant des privilèges élevés, utilisez une élévation de privilèges contrôlée :
@@ -2841,30 +3035,36 @@ function Invoke-ElevatedOperation {
     )
 
     # Vérifier si nous sommes déjà en mode administrateur
+
     $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
     if ($isAdmin) {
         # Exécuter directement le script block
+
         Write-Host "Exécution avec privilèges administratifs existants" -ForegroundColor Green
         return & $ScriptBlock
     } else {
         # Préparer le script à exécuter
+
         $scriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
         $ScriptBlock.ToString() | Out-File -FilePath $scriptPath -Encoding UTF8
 
         Write-Host "Élévation des privilèges requise. Lancement d'un nouveau processus PowerShell..." -ForegroundColor Yellow
 
         # Construire les arguments
+
         $arguments = "-File `"$scriptPath`""
         if ($NoExit) {
             $arguments = "-NoExit " + $arguments
         }
 
         # Lancer PowerShell en tant qu'administrateur
+
         try {
             $process = Start-Process PowerShell -ArgumentList $arguments -Verb RunAs -PassThru -Wait
 
             # Nettoyer
+
             Remove-Item -Path $scriptPath -Force -ErrorAction SilentlyContinue
 
             return @{
@@ -2874,6 +3074,7 @@ function Invoke-ElevatedOperation {
             }
         } catch {
             # Nettoyer
+
             Remove-Item -Path $scriptPath -Force -ErrorAction SilentlyContinue
 
             return @{
@@ -2886,15 +3087,16 @@ function Invoke-ElevatedOperation {
 }
 
 # Exemple d'utilisation
+
 $result = Invoke-ElevatedOperation -ScriptBlock {
     # Code nécessitant des privilèges administratifs
+
     Set-Content -Path "C:\Windows\System32\test_admin.txt" -Value "Test administrateur"
     return "Opération administrative réussie"
 }
 
 Write-Host "Résultat : $($result | ConvertTo-Json)"
-```
-
+```plaintext
 #### 4. Utilisation de chemins alternatifs
 
 Pour les fichiers système protégés, utilisez des chemins alternatifs ou des copies temporaires :
@@ -2907,15 +3109,18 @@ function Edit-ProtectedFile {
     )
 
     # Créer un répertoire temporaire
+
     $tempDir = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ([System.Guid]::NewGuid().ToString())
     New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
 
     try {
         # Obtenir le nom du fichier
+
         $fileName = [System.IO.Path]::GetFileName($ProtectedPath)
         $tempPath = Join-Path -Path $tempDir -ChildPath $fileName
 
         # Vérifier si le fichier protégé existe
+
         if (-not (Test-Path -Path $ProtectedPath)) {
             return @{
                 Success = $false
@@ -2924,6 +3129,7 @@ function Edit-ProtectedFile {
         }
 
         # Copier le fichier protégé vers le répertoire temporaire
+
         try {
             Copy-Item -Path $ProtectedPath -Destination $tempPath -ErrorAction Stop
         } catch [System.UnauthorizedAccessException] {
@@ -2939,6 +3145,7 @@ function Edit-ProtectedFile {
         }
 
         # Appliquer l'opération d'édition sur la copie temporaire
+
         try {
             & $EditOperation $tempPath
         } catch {
@@ -2949,6 +3156,7 @@ function Edit-ProtectedFile {
         }
 
         # Remplacer le fichier protégé par la copie modifiée (nécessite des privilèges élevés)
+
         $replaceResult = Invoke-ElevatedOperation -ScriptBlock {
             param($Source, $Destination)
 
@@ -2969,27 +3177,31 @@ function Edit-ProtectedFile {
         return $replaceResult
     } finally {
         # Nettoyer
+
         Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
     }
 }
 
 # Exemple d'utilisation
+
 $result = Edit-ProtectedFile -ProtectedPath "C:\Windows\System32\drivers\etc\hosts" -EditOperation {
     param($TempPath)
 
     # Lire le contenu actuel
+
     $content = Get-Content -Path $TempPath
 
     # Ajouter une ligne
+
     $content += "# Ligne ajoutée par Edit-ProtectedFile"
 
     # Écrire le contenu modifié
+
     Set-Content -Path $TempPath -Value $content
 }
 
 Write-Host "Résultat : $($result.Message)"
-```
-
+```plaintext
 #### 5. Utilisation de l'impersonation
 
 Pour les opérations nécessitant des permissions spécifiques, utilisez l'impersonation pour exécuter le code sous une autre identité :
@@ -3055,14 +3267,17 @@ public class Impersonation : IDisposable {
 
     try {
         # Convertir le mot de passe sécurisé en chaîne
+
         $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password)
         $PlainPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
 
         # Créer l'objet d'impersonation
+
         $impersonation = New-Object Impersonation -ArgumentList $Username, $Domain, $PlainPassword
 
         try {
             # Exécuter le script block sous l'identité de l'utilisateur spécifié
+
             Write-Host "Exécution sous l'identité de $Domain\$Username" -ForegroundColor Yellow
             $result = & $ScriptBlock
             return @{
@@ -3072,6 +3287,7 @@ public class Impersonation : IDisposable {
             }
         } finally {
             # Libérer l'impersonation
+
             $impersonation.Dispose()
         }
     } catch {
@@ -3082,6 +3298,7 @@ public class Impersonation : IDisposable {
         }
     } finally {
         # Nettoyer le mot de passe en mémoire
+
         if ($BSTR -ne [IntPtr]::Zero) {
             [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($BSTR)
         }
@@ -3089,20 +3306,22 @@ public class Impersonation : IDisposable {
 }
 
 # Exemple d'utilisation (nécessite des informations d'identification valides)
+
 $securePassword = ConvertTo-SecureString "MotDePasse" -AsPlainText -Force
 $result = Invoke-AsUser -Username "UtilisateurAvecPermissions" -Password $securePassword -ScriptBlock {
     # Code à exécuter sous l'identité de l'utilisateur spécifié
+
     Get-Content -Path "\\Server\PartageProtégé\fichier.txt"
 }
 
 if ($result.Success) {
     Write-Host "Opération réussie : $($result.Message)"
     # Traiter $result.Result
+
 } else {
     Write-Host "Échec de l'opération : $($result.Message)"
 }
-```
-
+```plaintext
 #### 6. Utilisation de services Windows
 
 Pour les opérations nécessitant des privilèges élevés de manière permanente, utilisez un service Windows :
@@ -3117,6 +3336,7 @@ function Register-PrivilegedService {
     )
 
     # Vérifier si nous sommes en mode administrateur
+
     $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
     if (-not $isAdmin) {
@@ -3127,6 +3347,7 @@ function Register-PrivilegedService {
     }
 
     # Vérifier si le service existe déjà
+
     $service = Get-Service -Name $ServiceName -ErrorAction SilentlyContinue
 
     if ($service) {
@@ -3137,6 +3358,7 @@ function Register-PrivilegedService {
     }
 
     # Créer le service
+
     try {
         $service = New-Service -Name $ServiceName -DisplayName $DisplayName -Description $Description -BinaryPathName $BinaryPath -StartupType Manual
 
@@ -3154,6 +3376,7 @@ function Register-PrivilegedService {
 }
 
 # Exemple d'utilisation (nécessite un exécutable de service valide)
+
 $servicePath = "C:\Path\To\PrivilegedService.exe"
 $result = Register-PrivilegedService -BinaryPath $servicePath
 
@@ -3162,8 +3385,7 @@ if ($result.Success) {
 } else {
     Write-Host "Échec de la création du service : $($result.Message)"
 }
-```
-
+```plaintext
 #### 7. Utilisation de tâches planifiées
 
 Pour les opérations nécessitant des privilèges élevés de manière ponctuelle, utilisez une tâche planifiée :
@@ -3177,11 +3399,13 @@ function Invoke-AsScheduledTask {
     )
 
     # Créer un fichier temporaire pour le script
+
     $scriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
     $outputPath = [System.IO.Path]::GetTempFileName() + ".txt"
 
     try {
         # Écrire le script dans le fichier temporaire
+
         $scriptContent = @"
 `$ErrorActionPreference = 'Stop'
 try {
@@ -3204,25 +3428,33 @@ $($ScriptBlock.ToString())
         Set-Content -Path $scriptPath -Value $scriptContent -Encoding UTF8
 
         # Créer une action pour exécuter PowerShell avec le script
+
         $action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-ExecutionPolicy Bypass -File `"$scriptPath`""
 
         # Créer un déclencheur pour exécuter la tâche immédiatement
+
         $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date)
 
         # Créer un principal pour exécuter la tâche avec les privilèges les plus élevés
+
         $principal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest
 
         # Créer la tâche
+
         $task = New-ScheduledTask -Action $action -Trigger $trigger -Principal $principal
 
         # Enregistrer la tâche
+
         Register-ScheduledTask -TaskName $TaskName -InputObject $task | Out-Null
 
         # Démarrer la tâche
+
         Start-ScheduledTask -TaskName $TaskName
 
         # Attendre que la tâche soit terminée
+
         $timeout = 60 # secondes
+
         $elapsed = 0
         $interval = 1 # secondes
 
@@ -3233,6 +3465,7 @@ $($ScriptBlock.ToString())
         } while ($taskInfo.LastTaskResult -eq 267009 -and $elapsed -lt $timeout) # 267009 = tâche en cours d'exécution
 
         # Lire le résultat
+
         if (Test-Path -Path $outputPath) {
             $resultJson = Get-Content -Path $outputPath -Raw
             try {
@@ -3270,6 +3503,7 @@ $($ScriptBlock.ToString())
         }
     } finally {
         # Nettoyer
+
         if ($DeleteTaskWhenDone) {
             Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false -ErrorAction SilentlyContinue
         }
@@ -3280,8 +3514,10 @@ $($ScriptBlock.ToString())
 }
 
 # Exemple d'utilisation
+
 $result = Invoke-AsScheduledTask -ScriptBlock {
     # Code nécessitant des privilèges SYSTEM
+
     Set-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "127.0.0.1 localhost"
     return "Fichier hosts modifié avec succès"
 }
@@ -3292,4 +3528,4 @@ if ($result.Success) {
 } else {
     Write-Host "Échec de l'opération : $($result.Message)"
 }
-```
+```plaintext

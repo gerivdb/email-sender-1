@@ -1,4 +1,5 @@
 # Décisions architecturales pour EMAIL SENDER 1
+
 *Version 2025-05-15*
 
 Ce document présente les principales décisions architecturales pour le projet EMAIL SENDER 1, leurs justifications et leurs implications.
@@ -12,6 +13,7 @@ Une décision architecturale majeure pour tout système qui sert plusieurs utili
 ### 1.2 Options
 
 #### Multi-Instance
+
 - **Description** : Chaque client a sa propre instance isolée de l'application (n8n, base de données, etc.)
 - **Avantages** :
   - Sécurité accrue (isolation complète des données)
@@ -25,6 +27,7 @@ Une décision architecturale majeure pour tout système qui sert plusieurs utili
   - Duplication des ressources
 
 #### Multi-Tenant
+
 - **Description** : Une seule instance de l'application sert tous les clients, avec séparation logique des données
 - **Avantages** :
   - Moins cher à scaler
@@ -104,7 +107,7 @@ La personnalisation des emails est un aspect critique du projet. L'utilisation d
 
 Nous avons choisi d'implémenter le Model Context Protocol (MCP) comme couche d'abstraction entre n8n et les services IA :
 
-```
+```plaintext
 +-----------------+      +--------------+      +-----------------+      +---------+
 | Read Contact    | ---> | Prepare Data | ---> | Call MCP        | ---> | Send    |
 | (Notion)        |      | (Context)    |      | (Get AI Text)   |      | Email   |
@@ -112,8 +115,7 @@ Nous avons choisi d'implémenter le Model Context Protocol (MCP) comme couche d'
                                  |                     |
                                  +---------------------+
                                        (Pass Data)
-```
-
+```plaintext
 ### 3.3 Justification
 
 Cette architecture :
@@ -172,7 +174,7 @@ L'organisation du code et la structure du projet impactent directement la produc
 
 Nous avons adopté la structure suivante :
 
-```
+```plaintext
 /src/n8n/workflows/       → Workflows n8n actifs (*.json)
 /src/n8n/workflows/archive → Versions archivées
 /src/mcp/servers/         → Serveurs MCP (filesystem, github, gcp)
@@ -181,8 +183,7 @@ Nous avons adopté la structure suivante :
 /projet/config/           → Fichiers de configuration
 /development/scripts/     → Scripts d'automatisation et modes
 /docs/guides/augment/     → Guides spécifiques à Augment
-```
-
+```plaintext
 ### 5.3 Justification
 
 Cette structure :

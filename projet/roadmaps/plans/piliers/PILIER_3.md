@@ -94,6 +94,7 @@ Ce pilier exploite la puissance des modèles de langage (LLMs) via OpenRouter po
     *   
     * *Outputs Attendus :*  
       * { aiResponse: { checklistMarkdown: "\# Transport\\n- ...", draftEmailCoord: "Bonjour..." }, error: false }.  
+
       * Pour extraction PDF (avancé): { aiResponse: { extractedData: { sound: { console: "Midas M32", ... }, lights: {...} } }, error: false }.  
     *   
     * *RAG/Cache Technique :*  

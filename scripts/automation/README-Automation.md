@@ -1,11 +1,13 @@
 # Automation Directory Organization
 
 ## Overview
+
 This directory contains all automation scripts and related files organized in a hierarchical, functional structure for better maintainability and functionality separation.
 
 ## Directory Structure
 
 ### `/core/`
+
 **Production-ready automation scripts and modules**
 - `Fix-PowerShellFunctionNames-Modular.ps1` - Main PowerShell function name fixing script
 - `modules/` - Core reusable modules and libraries
@@ -14,30 +16,37 @@ This directory contains all automation scripts and related files organized in a 
   - `ConfigManager.psm1` - Configuration management utilities
 
 ### `/agents/`
+
 **AI and agent-based automation scripts**
 
 #### `/agents/classification/`
+
 - `Auto-ClassifyScripts.ps1` - Automatic script classification system
 
 #### `/agents/segmentation/`
+
 - `Initialize-AgentAutoSegmentation.ps1` - Initialize automatic segmentation
 - `Segment-AgentAutoInput.ps1` - Process input segmentation
 - `Test-InputSegmentation.ps1` - Test segmentation functionality
 
 #### `/agents/monitoring/`
+
 - `Register-InventoryWatcher.ps1` - Register file inventory monitoring
 
 ### `/ui/`
+
 **User interface automation scripts**
 - `automate-chat-buttons.ps1` - Chat interface button automation
 
 ### `/testing/`
+
 **Test scripts and validation tools**
 - `test-modules.ps1` - Module testing framework
 - `test-script-with-violations.ps1` - Test script with known violations
 - `compare-versions.ps1` - Version comparison utilities
 
 ### `/docs/`
+
 **Documentation and planning files**
 - `README-Modular.md` - Modular system documentation
 - `RÉSUMÉ-MODULARISATION.md` - Modularization summary (French)
@@ -45,44 +54,52 @@ This directory contains all automation scripts and related files organized in a 
 - `PLAN-ORGANISATION-AVANCEE.md` - Advanced organization planning
 
 ### `/backups/`
+
 **Backup files and historical versions**
 - `Auto-ClassifyScripts.ps1.bak` - Backup of classification script
 - `Initialize-AgentAutoSegmentation.ps1.bak` - Backup of segmentation script
 
 ### `/archive/`
+
 **Legacy versions and archived files**
 - Contains historical versions of scripts for reference
 
 ## Usage Guidelines
 
 ### For Core Scripts
+
 ```powershell
 # Run the main fixing script
+
 .\core\Fix-PowerShellFunctionNames-Modular.ps1
 
 # Import core modules
-Import-Module .\core\modules\ModuleAnalyzer.psm1
-```
 
+Import-Module .\core\modules\ModuleAnalyzer.psm1
+```plaintext
 ### For Agent Scripts
+
 ```powershell
 # Classification
+
 .\agents\classification\Auto-ClassifyScripts.ps1
 
 # Segmentation workflow
+
 .\agents\segmentation\Initialize-AgentAutoSegmentation.ps1
 .\agents\segmentation\Segment-AgentAutoInput.ps1
-```
-
+```plaintext
 ### For Testing
+
 ```powershell
 # Run module tests
+
 .\testing\test-modules.ps1
 
 # Compare versions
-.\testing\compare-versions.ps1
-```
 
+.\testing\compare-versions.ps1
+```plaintext
 ## Development Workflow
 
 1. **Core Development**: Add production scripts to `/core/`

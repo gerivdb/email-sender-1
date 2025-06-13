@@ -1,8 +1,9 @@
-﻿# Journal des erreurs
+# Journal des erreurs
 
 ## 2025-04-08 20:45
 
 ### Erreur : Valeur null dans les expressions rÃ©guliÃ¨res
+
 - **Message d'erreur** : `Exception lors de l'appel de Â« Matches Â» avec Â« 2 Â» argument(s) : Â« La valeur ne peut pas Ãªtre null. Nom du paramÃ¨tre : input Â»`
 - **Fichiers concernÃ©s** : 
   - `scripts\maintenance\encoding\Detect-BrokenReferences.ps1`
@@ -12,6 +13,7 @@
 - **Pattern d'erreur inÃ©dit** : Erreur silencieuse dans l'analyse des expressions rÃ©guliÃ¨res qui ne se manifeste que lors du traitement de certains fichiers spÃ©cifiques, rendant le diagnostic difficile.
 
 ### Erreur : AccÃ¨s Ã  un objet Matches potentiellement vide
+
 - **Message d'erreur** : Erreur indirecte causÃ©e par l'accÃ¨s Ã  `$Matches[0]` lorsque `$Matches` est vide ou null.
 - **Fichiers concernÃ©s** : `scripts\maintenance\standards\Test-ScriptCompliance-v2.ps1`
 - **Cause** : AprÃ¨s une opÃ©ration de correspondance d'expression rÃ©guliÃ¨re, le script tentait d'accÃ©der Ã  `$Matches[0]` sans vÃ©rifier si `$Matches` contenait des Ã©lÃ©ments.

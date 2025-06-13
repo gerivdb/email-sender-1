@@ -9,6 +9,7 @@
 ## 1. Introduction et Contexte des Documents de Recherche
 
 ### 1.1 Vue d'ensemble
+
 Les deux documents analysés révèlent des aspects complémentaires cruciaux pour l'évolution des systèmes RAG :
 
 **Document 1 (arXiv:2411.06037v3)** se concentre sur l'évaluation de la performance des LLMs en tant que consommateurs d'outils, avec un accent particulier sur :
@@ -24,6 +25,7 @@ Les deux documents analysés révèlent des aspects complémentaires cruciaux po
 - Des **mécanismes de transformation** entre types de mémoire
 
 ### 1.2 Pertinence pour les Systèmes RAG Modernes
+
 Ces recherches convergent vers une conclusion fondamentale : les systèmes RAG actuels, bien qu'efficaces, restent limités par :
 1. **L'absence de gestion explicite de la mémoire** comme ressource programmable
 2. **Le manque de mécanismes d'évaluation** de la qualité du contexte récupéré
@@ -43,18 +45,21 @@ Le document arXiv:2505.22101v1 introduit **MemOS**, un système d'exploitation r
 **MemOS** catégorise la mémoire en trois types fondamentaux, chacun avec des caractéristiques de cycle de vie et d'invocation distinctes :
 
 ##### 1. **Mémoire Paramétrique** 
+
 - **Nature :** Connaissances encodées directement dans les poids du modèle
 - **Caractéristiques :** Persistante, efficace pour l'inférence, difficile à modifier
 - **Application RAG :** Connaissances fondamentales, capacités linguistiques, modules LoRA spécialisés
 - **Implémentation QDrant :** Intégration de modules fine-tunés pour domaines spécifiques
 
 ##### 2. **Mémoire d'Activation**
+
 - **Nature :** États cognitifs transitoires (activations, attention, KV-cache)
 - **Caractéristiques :** Dynamique, contextuelle, modulable en temps réel
 - **Application RAG :** "Mémoire de travail" pour la persistance contextuelle, contrôle comportemental
 - **Implémentation QDrant :** Cache intelligent des patterns d'attention, optimisation des requêtes récurrentes
 
 ##### 3. **Mémoire Plaintext** 
+
 - **Nature :** Connaissances explicites externes (documents, graphes, templates)
 - **Caractéristiques :** Éditable, partageable, gouvernable
 - **Application RAG :** Base de connaissances QDrant, métadonnées enrichies, templates personnalisés
@@ -65,6 +70,7 @@ Le document arXiv:2505.22101v1 introduit **MemOS**, un système d'exploitation r
 Le **MemCube** représente l'innovation centrale de MemOS : une abstraction standardisée qui encapsule toute unité mémoire avec :
 
 #### **Structure MemCube**
+
 ```json
 {
   "semantic_payload": "contenu de la mémoire",
@@ -90,12 +96,11 @@ Le **MemCube** représente l'innovation centrale de MemOS : une abstraction stan
     }
   }
 }
-```
-
+```plaintext
 #### **Application MemCube à QDrant**
 
 **Architecture QDrant-MemCube Intégrée :**
-```
+```plaintext
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   MemCube       │    │   QDrant        │    │   Lifecycle     │
 │   Abstraction   │ ◄──► │   Vector Store  │ ◄──► │   Manager       │
@@ -105,8 +110,7 @@ Le **MemCube** représente l'innovation centrale de MemOS : une abstraction stan
 ├─ Behavioral Patterns                         ├─ TTL Management  
 ├─ Transformation Tracking                     ├─ Priority Scheduling
 └─ Context Fingerprinting                      └─ Access Control
-```
-
+```plaintext
 ### 2.3 Transformations de Mémoire : Le Cœur de l'Évolution Adaptative
 
 MemOS introduit des **chemins de transformation** bidirectionnels entre types de mémoire, permettant une optimisation dynamique :
@@ -114,6 +118,7 @@ MemOS introduit des **chemins de transformation** bidirectionnels entre types de
 #### **Transformations Clés**
 
 ##### **Plaintext ⇒ Activation**
+
 - **Déclencheur :** Accès fréquent aux mêmes documents QDrant
 - **Processus :** Conversion en templates d'activation pour réduire les coûts de re-décodage
 - **Implémentation :** Cache intelligent des patterns de récupération QDrant
@@ -132,14 +137,15 @@ func (te *TransformationEngine) ProcessPlaintextToActivation(docID string) {
         te.optimizeRetrieval(docID, pattern)
     }
 }
-```
-
+```plaintext
 ##### **Plaintext/Activation ⇒ Parametric**
+
 - **Déclencheur :** Connaissances stables et réutilisables
 - **Processus :** Distillation en structures paramétriques
 - **Implémentation :** Fine-tuning de modules LoRA basés sur l'usage QDrant
 
 ##### **Parametric ⇒ Plaintext**
+
 - **Déclencheur :** Paramètres rarement utilisés ou obsolètes
 - **Processus :** Externalisation en texte éditable
 - **Implémentation :** Migration de connaissances figées vers QDrant
@@ -165,8 +171,7 @@ func (mp *MemoryPipeline) ExecuteQDrantWorkflow(query string) MemCubeResult {
     // Query → Retrieve → Evaluate → Transform → Generate
     return mp.processDAG(query)
 }
-```
-
+```plaintext
 #### **Couche Opération : Scheduling et Lifecycle**
 
 ```go
@@ -189,8 +194,7 @@ type MemOperator struct {
     MultiLayer      *PartitionManager
     QdrantBridge    *QdrantBridge
 }
-```
-
+```plaintext
 #### **Couche Infrastructure : Governance et Memory Store**
 
 ```go
@@ -212,11 +216,10 @@ type MemStore struct {
     KnowledgeSharing *SharingProtocol
     MemoryMarketplace *MarketplaceAPI
 }
-```
-
+```plaintext
 ### 2.5 Flux d'Exécution MemOS-QDrant Intégré
 
-```
+```plaintext
 User Query
     ↓
 MemReader (Parse Intent)
@@ -236,8 +239,7 @@ MemLifecycle (State Transition)
 MemVault (Persistence) + MemStore (Sharing)
     ↓
 Response + Memory Evolution
-```
-
+```plaintext
 #### **Implémentation Pratique dans rag-cli**
 
 ```go
@@ -266,8 +268,7 @@ func createMemOSCommand() *cobra.Command {
         },
     }
 }
-```
-
+```plaintext
 ---
 
 ## 3. Performance des LLM et Suffisance du Contexte : Implications Critiques
@@ -280,6 +281,7 @@ L'étude révèle que **54.8% des cas** présentent un contexte suffisant, mais 
 - Ne donnent une **réponse correcte** que dans 7-23% des cas
 
 #### Mécanismes d'Évaluation de la Suffisance
+
 Le document propose un "autorater" de contexte suffisant utilisant des prompts structurés qui :
 1. **Identifient les hypothèses implicites** dans les questions
 2. **Évaluent les calculs nécessaires** pour répondre
@@ -290,12 +292,11 @@ Le document propose un "autorater" de contexte suffisant utilisant des prompts s
 #### **Intégration d'un Évaluateur de Suffisance Contextuelle**
 
 **Architecture proposée pour QDrant :**
-```
+```plaintext
 Query → QDrant Retrieval → Context Sufficiency Evaluator → Confidence Score → LLM Generation
                                     ↓
                             Alternative Retrieval Strategy (si insuffisant)
-```
-
+```plaintext
 **Implémentation spécifique :**
 
 1. **Développement d'un Prompt d'Évaluation QDrant-spécifique :**
@@ -346,8 +347,7 @@ type SearchResult struct {
 // Flag pour l'évaluation de suffisance
 cmd.Flags().BoolVar(&evaluateSufficiency, "evaluate-context", true, "Evaluate context sufficiency before generation")
 cmd.Flags().Float64Var(&minConfidence, "min-confidence", 0.6, "Minimum confidence threshold")
-```
-
+```plaintext
 ---
 
 ## 4. Architecture MemOS : Révolution de la Gestion Mémoire pour RAG
@@ -357,16 +357,19 @@ cmd.Flags().Float64Var(&minConfidence, "min-confidence", 0.6, "Minimum confidenc
 Le framework MemOS révolutionne notre approche de la mémoire en définissant trois types fondamentaux :
 
 #### **Mémoire Paramétrique**
+
 - **Définition :** Connaissances encodées dans les poids du modèle
 - **Caractéristiques :** Persistante, difficile à modifier, efficace pour l'inférence
 - **Application QDrant :** Fine-tuning du modèle de génération avec des données spécifiques à votre domaine
 
 #### **Mémoire d'Activation**  
+
 - **Définition :** États cognitifs transitoires (KV-cache, attention, activations)
 - **Caractéristiques :** Temporaire, context-aware, guidage comportemental
 - **Application QDrant :** Optimisation des patterns d'attention pour les chunks récupérés
 
 #### **Mémoire Plaintext**
+
 - **Définition :** Connaissances externes explicites (documents, graphes de connaissances)
 - **Caractéristiques :** Éditable, partageable, gouvernable
 - **Application QDrant :** Base de données vectorielle actuelle, mais avec gouvernance avancée
@@ -376,6 +379,7 @@ Le framework MemOS révolutionne notre approche de la mémoire en définissant t
 Le **MemCube** propose une abstraction standardisée avec :
 
 #### **Métadonnées Descriptives**
+
 ```go
 {
   "timestamp": "2025-05-30T10:30:00Z",
@@ -383,9 +387,9 @@ Le **MemCube** propose une abstraction standardisée avec :
   "semantic_type": "user_preference|domain_knowledge|conversation_history",
   "source_signature": "qdrant_collection_name:document_id:chunk_id"
 }
-```
-
+```plaintext
 #### **Attributs de Gouvernance**
+
 ```go
 {
   "access_permissions": ["read", "write", "share"],
@@ -394,9 +398,9 @@ Le **MemCube** propose une abstraction standardisée avec :
   "sensitivity_tags": ["pii", "confidential", "public"],
   "compliance_watermark": "gdpr_compliant:true"
 }
-```
-
+```plaintext
 #### **Indicateurs Comportementaux**
+
 ```go
 {
   "access_frequency": 127,
@@ -404,13 +408,12 @@ Le **MemCube** propose une abstraction standardisée avec :
   "version_lineage": ["v1.0", "v1.1", "v2.0"],
   "transformation_history": ["plaintext→activation", "activation→parametric"]
 }
-```
-
+```plaintext
 ### 4.3 Application du Framework MemOS à QDrant
 
 #### **Architecture MemOS-QDrant Hybride**
 
-```
+```plaintext
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
 │   Interface     │    │    Operation     │    │ Infrastructure  │
 │     Layer       │    │      Layer       │    │     Layer       │
@@ -419,8 +422,7 @@ Le **MemCube** propose une abstraction standardisée avec :
 │ • Pipeline Ops  │    │ • MemLifecycle   │    │ • MemGovernance │
 │ • Context Eval  │    │ • MemOperator    │    │ • QDrant Store  │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
-```
-
+```plaintext
 **Implémentation Concrète :**
 
 1. **MemScheduler pour QDrant :**
@@ -470,6 +472,7 @@ Le **MemCube** propose une abstraction standardisée avec :
 Les données révèlent un **paradoxe critique** : même avec un contexte suffisant, les LLMs hallucinent dans 12-25% des cas selon le modèle. Cette observation remet en question les architectures RAG traditionnelles.
 
 #### **Patterns Identifiés par Modèle :**
+
 - **GPT-4o :** 14.3% hallucinations avec contexte suffisant
 - **Claude 3.5 Sonnet :** 12.7% hallucinations avec contexte suffisant  
 - **Gemini 1.5 Pro :** 3.2% hallucinations mais 11.1% abstentions excessives
@@ -479,10 +482,9 @@ Les données révèlent un **paradoxe critique** : même avec un contexte suffis
 #### **Mécanisme de Vérification de Source Intégrée**
 
 **Architecture proposée :**
-```
+```plaintext
 QDrant Retrieval → Source Attribution → LLM Generation → Source Verification → Confidence Adjustment
-```
-
+```plaintext
 **Implémentation :**
 
 1. **Prompt de Génération avec Attribution Obligatoire :**
@@ -549,8 +551,7 @@ func (am *AbstentionManager) ShouldAbstain(result SearchResult, response string)
     
     return false, ""
 }
-```
-
+```plaintext
 ---
 
 ## 6. Écosystème de Mémoire Décentralisé et Memory Marketplace
@@ -566,7 +567,7 @@ MemOS propose une vision révolutionnaire d'un **écosystème de mémoire décen
 #### **Memory Interchange Protocol (MIP)**
 
 **Architecture du Protocole :**
-```
+```plaintext
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │    Agent A      │    │  MemStore Hub   │    │    Agent B      │
 │   (QDrant)      │◄──►│   (Blockchain)  │◄──►│   (Vector DB)   │
@@ -576,8 +577,7 @@ MemOS propose une vision révolutionnaire d'un **écosystème de mémoire décen
 ├─ Semantic Mapping   ├─ Versioning         ├─ Compatibility Check
 ├─ Trust Verification ├─ Asset Tracking     ├─ Local Integration
 └─ Usage Analytics    └─ Revenue Sharing    └─ Performance Metrics
-```
-
+```plaintext
 #### **Implémentation QDrant-MIP**
 
 ```go
@@ -629,8 +629,7 @@ func (mm *MemoryMarketplace) ImportComplementaryKnowledge(domain string) error {
     
     return nil
 }
-```
-
+```plaintext
 ### 6.2 Self-Evolving MemBlocks : Mémoire Autonome
 
 #### **Mécanismes d'Auto-Évolution**
@@ -657,8 +656,7 @@ func (semb *SelfEvolvingMemBlock) EvolveBasedOnUsage() {
         semb.semanticAdaptation(feedback)
     }
 }
-```
-
+```plaintext
 **2. Intelligent Memory Merging**
 ```go
 func (semb *SelfEvolvingMemBlock) MergeWithComplementary(other MemCube) MemCube {
@@ -677,13 +675,12 @@ func (semb *SelfEvolvingMemBlock) MergeWithComplementary(other MemCube) MemCube 
     
     return semb.MemCube // Return original si fusion impossible
 }
-```
-
+```plaintext
 ### 6.3 Cross-LLM Memory Sharing : Interopérabilité Multi-Modèles
 
 #### **Architecture d'Interopérabilité**
 
-```
+```plaintext
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │    GPT-4o       │    │  MemOS Bridge   │    │   Claude-3.5    │
 │   + QDrant      │◄──►│    Adapter      │◄──►│   + Chroma      │
@@ -693,8 +690,7 @@ func (semb *SelfEvolvingMemBlock) MergeWithComplementary(other MemCube) MemCube 
 ├─ Activation Patterns ├─ Semantic Alignment ├─ Context Bridging
 ├─ QDrant Embeddings   ├─ Trust Verification ├─ Vector Conversion
 └─ Fine-tuned LoRA     └─ Performance Mapping └─ Domain Adaptation
-```
-
+```plaintext
 #### **Implémentation Multi-Modèle**
 
 ```go
@@ -723,8 +719,7 @@ func (bridge *CrossLLMMemoryBridge) TransferQDrantKnowledge(
     
     return errors.New("trust validation failed")
 }
-```
-
+```plaintext
 ### 6.4 Intégration rag-cli Memory Marketplace
 
 ```go
@@ -771,8 +766,7 @@ func createMemoryMarketplaceCommands() []*cobra.Command {
         },
     }
 }
-```
-
+```plaintext
 ---
 
 ## 7. Stratégies Anti-Hallucination Révolutionnaires avec MemOS
@@ -783,7 +777,7 @@ L'architecture MemOS offre des mécanismes révolutionnaires pour combattre les 
 
 #### **Architecture Anti-Hallucination MemOS-QDrant**
 
-```
+```plaintext
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Provenance    │    │   MemCube       │    │  Governance     │
 │   Tracking      │◄──►│   Validation    │◄──►│  Enforcement    │
@@ -793,8 +787,7 @@ L'architecture MemOS offre des mécanismes révolutionnaires pour combattre les 
 ├─ Transformation Log  ├─ Conflict Detection ├─ Audit Trail  
 ├─ Trust Scores        ├─ Version Control    ├─ Compliance Check
 └─ Quality Metrics     └─ Semantic Coherence └─ Risk Assessment
-```
-
+```plaintext
 #### **1. Provenance API Intégrée**
 
 ```go
@@ -839,8 +832,7 @@ func (pt *ProvenanceTracker) ValidateResponseProvenance(response string, sources
     
     return risk
 }
-```
-
+```plaintext
 #### **2. Source Attribution Enforcement**
 
 ```go
@@ -879,8 +871,7 @@ func (ae *AttributionEnforcer) EnforceAttribution(response string, sources []Qdr
     
     return enrichedResponse, nil
 }
-```
-
+```plaintext
 #### **3. Conflict Detection MemOS**
 
 ```go
@@ -916,8 +907,7 @@ func (cd *MemOSConflictDetector) DetectMemCubeConflicts(memcubes []MemCube) []Co
     
     return conflicts
 }
-```
-
+```plaintext
 ---
 
 ## 8. Métriques d'Évaluation Révolutionnaires pour RAG QDrant
@@ -927,6 +917,7 @@ func (cd *MemOSConflictDetector) DetectMemCubeConflicts(memcubes []MemCube) []Co
 Le document compare deux métriques fondamentalement différentes :
 
 #### **Contains Answer (Déterministe)**
+
 - **Avantages :** Reproductible, rapide
 - **Limitations :** Sensible au formatage, manque les équivalences sémantiques
 - **Exemple d'échec :** 
@@ -936,6 +927,7 @@ Le document compare deux métriques fondamentalement différentes :
   - Résultat : False (à cause du formatage)
 
 #### **LLMEval (Sémantique)**
+
 - **Avantages :** Capture les nuances, gère les variations
 - **Complexité :** Coût computationnel, possible biais du modèle évaluateur
 
@@ -943,7 +935,7 @@ Le document compare deux métriques fondamentalement différentes :
 
 #### **Architecture d'Évaluation Multi-Niveaux**
 
-```
+```plaintext
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Évaluation    │    │   Évaluation    │    │   Évaluation    │
 │   Récupération  │───▶│   Génération    │───▶│   Utilité       │
@@ -953,8 +945,7 @@ Le document compare deux métriques fondamentalement différentes :
 ├─ Precision@K        ├─ Attribution         ├─ Temps réponse
 ├─ Suffisance         ├─ Cohérence           ├─ Complétude
 └─ Diversité          └─ Abstention          └─ Actionabilité
-```
-
+```plaintext
 **Implémentation :**
 
 1. **Métriques de Récupération QDrant :**
@@ -1020,6 +1011,7 @@ Le document compare deux métriques fondamentalement différentes :
 L'étude révèle que le fine-tuning avec des exemples "Je ne sais pas" (Data Mix 2 et 3) améliore l'abstention mais **paradoxalement augmente les hallucinations** dans certains cas.
 
 #### **Résultats Critiques :**
+
 - **Data Mix 1** (standard) : 31.4% correct, 0% abstention, 68.6% hallucination
 - **Data Mix 2** (20% "Je ne sais pas" aléatoire) : 23% correct, 1.2% abstention, 75.8% hallucination  
 - **Data Mix 3** (20% "Je ne sais pas" contexte insuffisant) : 23% correct, 2.2% abstention, 74.8% hallucination
@@ -1029,10 +1021,9 @@ L'étude révèle que le fine-tuning avec des exemples "Je ne sais pas" (Data Mi
 #### **Collecte de Données Spécialisées**
 
 **Architecture de Collecte :**
-```
+```plaintext
 Interactions Utilisateur QDrant → Annotation Automatique → Validation Humaine → Dataset Fine-Tuning
-```
-
+```plaintext
 **Types de Données Critiques :**
 
 1. **Paires Query-Context-Response Optimales :**
@@ -1083,8 +1074,7 @@ func (ft *QDrantFineTuner) PrepareTrainingData() {
     // 3. Identifier les patterns d'erreur spécifiques
     // 4. Générer des exemples d'abstention contextuels
 }
-```
-
+```plaintext
 ---
 
 ## 10. Architecture MemOS-QDrant : Vision Unifiée
@@ -1093,7 +1083,7 @@ func (ft *QDrantFineTuner) PrepareTrainingData() {
 
 #### **Architecture Système Complète**
 
-```
+```plaintext
 ┌─────────────────────────────────────────────────────────────────┐
 │                        MemOS-QDrant Layer                      │
 ├─────────────────────────────────────────────────────────────────┤
@@ -1124,8 +1114,7 @@ func (ft *QDrantFineTuner) PrepareTrainingData() {
 │  │ • Snapshots │  │ • Compliance│  │ • Collaborative Updates │ │
 │  └─────────────┘  └─────────────┘  └─────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────┘
-```
-
+```plaintext
 #### **Implémentation MemCube pour QDrant**
 
 ```go
@@ -1156,20 +1145,18 @@ const (
     ActivationMemory  MemoryType = "activation"  
     PlaintextMemory   MemoryType = "plaintext"
 )
-```
-
+```plaintext
 ### 10.2 Flux d'Exécution MemOS-QDrant
 
 #### **Pipeline de Traitement Unifié**
 
-```
+```plaintext
 User Query → Memory API → Query Analysis → Strategy Selection → Multi-Type Retrieval → Context Assembly → Generation → Governance Check → Response
      ↓           ↓            ↓               ↓                    ↓                  ↓             ↓              ↓               ↓
    Natural    Structured   Query Type      Parametric/         QDrant Vector       MemCube       LLM with      Access Control   Final
    Language   Intent       Classification  Activation/         Plaintext          Assembly      Attribution   Audit Log       Response
    Input      Parsing                      Plaintext          Search                             Verification                  
-```
-
+```plaintext
 **Implémentation du Flux :**
 
 ```go
@@ -1209,8 +1196,7 @@ func (ms *MemOSQDrantSystem) ProcessQuery(query string, userContext UserContext)
     
     return response, nil
 }
-```
-
+```plaintext
 ---
 
 ## 11. Transformation et Évolution de la Mémoire
@@ -1220,16 +1206,19 @@ func (ms *MemOSQDrantSystem) ProcessQuery(query string, userContext UserContext)
 Le framework MemOS introduit des **voies de transformation** révolutionnaires entre types de mémoire :
 
 #### **Plaintext → Activation**
+
 - **Trigger :** Accès fréquent (>10 fois/jour)
 - **Mécanisme :** Conversion en templates d'activation réutilisables
 - **Avantage :** Réduction des coûts de décodage répétés
 
 #### **Plaintext/Activation → Parametric**  
+
 - **Trigger :** Stabilité et réutilisabilité sur longue période
 - **Mécanisme :** Distillation dans les structures paramétriques
 - **Avantage :** Efficacité d'inférence maximale
 
 #### **Parametric → Plaintext**
+
 - **Trigger :** Connaissances rarement utilisées ou obsolètes
 - **Mécanisme :** Externalisation vers mémoire éditable
 - **Avantage :** Flexibilité et mise à jour facilitée
@@ -1273,8 +1262,7 @@ type TransformationCandidate struct {
     Confidence              float64
     Reasoning               string
 }
-```
-
+```plaintext
 #### **Mécanismes de Stabilité et d'Évolution**
 
 ```go
@@ -1297,8 +1285,7 @@ func (sd *StabilityDetector) EvaluateStability(memCube QDrantMemCube, timeWindow
         FactualAccuracy:  sd.calculateFactualAccuracy(history),
     }
 }
-```
-
+```plaintext
 ---
 
 ## 12. Gouvernance et Sécurité Avancée
@@ -1331,8 +1318,7 @@ const (
     ConfidentialLevel SecurityLevel = "confidential"
     RestrictedLevel   SecurityLevel = "restricted"
 )
-```
-
+```plaintext
 #### **Traçabilité et Audit Complets**
 
 ```go
@@ -1358,8 +1344,7 @@ const (
     ExportAction AuditAction = "export"
     TransformAction AuditAction = "transform"
 )
-```
-
+```plaintext
 ### 12.2 Compliance et Réglementation
 
 #### **Intégration GDPR/CCPA**
@@ -1385,8 +1370,7 @@ func (dpc *DataProtectionCompliance) HandleDataSubjectRequest(request DataSubjec
     }
     return nil
 }
-```
-
+```plaintext
 ---
 
 ## 13. Implémentation Pratique pour `rag-cli`
@@ -1444,8 +1428,7 @@ func createMemoryListCommand() *cobra.Command {
 
     return cmd
 }
-```
-
+```plaintext
 #### **Commande `evaluate` pour l'Évaluation de Suffisance**
 
 ```go
@@ -1486,21 +1469,23 @@ func createEvaluateCommand() *cobra.Command {
 
     return cmd
 }
-```
-
+```plaintext
 ### 13.2 Configuration MemOS-QDrant
 
 #### **Fichier de Configuration Étendu**
 
 ```yaml
 # config/memOS-qdrant.yaml
+
 memOS:
   enabled: true
   
   # Configuration des types de mémoire
+
   memory_types:
     parametric:
       enabled: false  # Nécessite un modèle fine-tunable
+
       model_path: ""
     activation:
       enabled: true
@@ -1511,12 +1496,14 @@ memOS:
       primary_store: "qdrant"
 
   # Configuration MemCube
+
   memcube:
     enable_metadata_enrichment: true
     enable_behavioral_tracking: true
     enable_governance: true
     
   # Transformation automatique
+
   transformation:
     enabled: true
     policies:
@@ -1531,6 +1518,7 @@ memOS:
         evaluation_window: "30d"
 
   # Gouvernance
+
   governance:
     access_control: true
     audit_logging: true
@@ -1538,6 +1526,7 @@ memOS:
     compliance_mode: "gdpr"
 
 # Configuration QDrant enrichie
+
 qdrant:
   collections:
     default:
@@ -1556,6 +1545,7 @@ qdrant:
         distance: "Cosine"
 
   # Stratégies de récupération
+
   retrieval_strategies:
     default:
       top_k: 5
@@ -1568,6 +1558,7 @@ qdrant:
       decay_rate: 0.1
 
 # Évaluation de suffisance
+
 sufficiency_evaluation:
   enabled: true
   threshold: 0.6
@@ -1575,13 +1566,13 @@ sufficiency_evaluation:
   prompt_template: "templates/sufficiency_eval.txt"
 
 # Anti-hallucination
+
 anti_hallucination:
   enable_source_verification: true
   require_citations: true
   confidence_threshold: 0.8
   abstention_threshold: 0.4
-```
-
+```plaintext
 ---
 
 ## 14. Métriques et Monitoring Avancés
@@ -1630,8 +1621,7 @@ func createAdvancedDashboard() *cobra.Command {
         },
     }
 }
-```
-
+```plaintext
 ### 14.2 Alertes et Optimisation Automatique
 
 #### **Système d'Alertes Intelligent**
@@ -1678,8 +1668,7 @@ func (as *AlertingSystem) CheckAlerts(metrics MemOSQDrantMetrics) {
         as.executeAutomaticAction(alert)
     }
 }
-```
-
+```plaintext
 ---
 
 ## 15. Conclusion et Roadmap Stratégique
@@ -1689,26 +1678,31 @@ func (as *AlertingSystem) CheckAlerts(metrics MemOSQDrantMetrics) {
 L'analyse des deux documents de recherche révèle **cinq piliers fondamentaux** pour l'évolution de votre système RAG QDrant :
 
 #### **1. Évaluation de Suffisance Contextuelle**
+
 - **Impact Critique :** 45.2% des cas présentent un contexte insuffisant
 - **Solution :** Intégration d'un évaluateur automatique de suffisance
 - **ROI :** Réduction de 15-40% des hallucinations
 
 #### **2. Architecture Mémoire Unifiée (MemOS)**
+
 - **Révolution :** Traitement de la mémoire comme ressource programmable
 - **Implémentation :** MemCube pour standardisation et gouvernance
 - **Évolution :** Transformations automatiques entre types de mémoire
 
 #### **3. Mécanismes Anti-Hallucination Robustes**
+
 - **Nécessité :** Même avec contexte suffisant, 12-25% d'hallucinations
 - **Stratégie :** Vérification de source obligatoire et abstention intelligente
 - **Contrôle :** Attribution systématique aux chunks QDrant
 
 #### **4. Métriques d'Évaluation Sophistiquées**
+
 - **Limitation :** Métriques lexicales insuffisantes
 - **Solution :** LLMEval pour évaluation sémantique
 - **Bénéfice :** Détection nuancée des variations et équivalences
 
 #### **5. Gouvernance et Évolution Continue**
+
 - **Requirement :** Traçabilité, contrôle d'accès, compliance
 - **Framework :** Intégration GDPR/CCPA, audit automatique
 - **Adaptabilité :** Évolution basée sur les patterns d'usage
@@ -1716,29 +1710,29 @@ L'analyse des deux documents de recherche révèle **cinq piliers fondamentaux**
 ### 15.2 Roadmap d'Implémentation Prioritaire
 
 #### **Phase 1 : Fondations (Semaines 1-4)**
-```
+
+```plaintext
 ✅ Intégration évaluateur de suffisance contextuelle
 ✅ Enrichissement métadonnées QDrant avec gouvernance de base
 ✅ Implémentation mécanismes anti-hallucination
 ✅ Mise en place métriques avancées dans rag-cli
-```
-
+```plaintext
 #### **Phase 2 : Architecture MemOS (Semaines 5-8)**
-```
+
+```plaintext
 🔄 Développement structure MemCube pour QDrant
 🔄 Implémentation transformation Plaintext → Activation
 🔄 Système de versioning et rollback automatique
 🔄 Dashboard de monitoring avancé
-```
-
+```plaintext
 #### **Phase 3 : Évolution et Intelligence (Semaines 9-12)**
-```
+
+```plaintext
 🚀 Transformations automatiques entre types de mémoire
 🚀 Fine-tuning adaptatif basé sur les interactions
 🚀 Marketplace de mémoire pour partage inter-agents
 🚀 Optimisation continue basée sur les métriques
-```
-
+```plaintext
 ### 15.3 Impact Attendu sur les Performances
 
 #### **Amélioration Quantifiable Prévue :**
@@ -1752,6 +1746,7 @@ L'analyse des deux documents de recherche révèle **cinq piliers fondamentaux**
 | Satisfaction utilisateur | 72% | 90%+ | +25% |
 
 #### **ROI Estimé :**
+
 - **Réduction des erreurs coûteuses :** 65%
 - **Amélioration productivité utilisateurs :** 40%
 - **Réduction temps de maintenance :** 50%
@@ -1782,40 +1777,40 @@ Cette transformation représente un **investissement stratégique** dans l'aveni
 L'analyse des diagrammes révèle des insights architecturaux critiques pour l'implémentation :
 
 #### **Figure 1 : Évolution des Stages de Mémoire LLM**
-```
+
+```plaintext
 Memory Definition → Human-like Memory → Systematic Memory Management
 (Exploration)       (Emergence)       (MemOS Framework)
      ↓                   ↓                   ↓
 Classification      Brain-inspired      OS-inspired
 & Analysis          Architectures       Governance
-```
-
+```plaintext
 **Applications QDrant :**
 - **Stage 1 :** Catégorisation des embeddings par type de mémoire
 - **Stage 2 :** Implémentation de patterns cognitifs humains dans la récupération
 - **Stage 3 :** Gouvernance systématique des collections QDrant
 
 #### **Figure 2 : Paradigm Shift vers Memory Training**
-```
+
+```plaintext
 Data-Centric → Parameter-Centric → Memory-Centric
 Pretraining    Fine-tuning        Continuous Learning
      ↓              ↓                   ↓
 Scaling Laws   Alignment Focus    Memory Evolution
-```
-
+```plaintext
 **Impact sur QDrant :**
 - Transition d'une base de connaissances statique vers un système adaptatif
 - Intégration continue d'apprentissage basé sur les interactions utilisateurs
 - Évolution automatique des embeddings et métadonnées
 
 #### **Figure 3 : Transformations de Mémoire Tri-directionnelles**
-```
+
+```plaintext
     Parametric Memory
           ↗ ↙
 Activation ↔ Plaintext
     Memory    Memory
-```
-
+```plaintext
 **Implémentation QDrant-MemOS :**
 ```go
 type MemoryTransformationEngine struct {
@@ -1838,10 +1833,10 @@ func (mte *MemoryTransformationEngine) TransformActivationToParametric(pattern A
     parametricWeights := mte.distillToParametric(pattern)
     mte.ParametricStore.Integrate(parametricWeights)
 }
-```
-
+```plaintext
 #### **Figure 4 : Structure MemCube**
-```
+
+```plaintext
 ┌─────────────────────────────────────┐
 │            MemCube                  │
 ├─────────────────────────────────────┤
@@ -1853,17 +1848,17 @@ func (mte *MemoryTransformationEngine) TransformActivationToParametric(pattern A
 │  Semantic Payload                   │
 │  └─ Content + Embeddings            │
 └─────────────────────────────────────┘
-```
-
+```plaintext
 #### **Figure 5 : MemOS End-to-End Architecture**
-```
+
+```plaintext
 User Input → MemReader → Memory API → MemScheduler → QDrant Retrieval
      ↓
 Context Injection → LLM Generation → MemLifecycle → MemVault → Response
-```
-
+```plaintext
 #### **Figure 6 : Three-Layer MemOS Architecture**
-```
+
+```plaintext
 ┌─────────────────────────────────────┐
 │        Interface Layer              │
 │  MemReader │ Memory API │ Pipeline   │
@@ -1874,11 +1869,10 @@ Context Injection → LLM Generation → MemLifecycle → MemVault → Response
 │      Infrastructure Layer           │
 │ MemGovernance │ Vault │ Store      │
 └─────────────────────────────────────┘
-```
-
+```plaintext
 ### 16.2 Architecture Intégrée QDrant-MemOS Visualisée
 
-```
+```plaintext
                     ┌─────────────────────────────────────┐
                     │          MemOS Layer                │
                     │  ┌─────────────────────────────────┐ │
@@ -1911,12 +1905,12 @@ User Query ────────▶│  └───────────�
                     │  │ Vectors │ Metadata │ Indices    │ │
                     │  └─────────────────────────────────┘ │
                     └─────────────────────────────────────┘
-```
-
+```plaintext
 ### 16.3 Diagrammes d'Implémentation Pratique
 
 #### **Flux de Transformation Mémoire en Temps Réel**
-```
+
+```plaintext
 Real-time Usage Analytics
          ↓
 ┌─────────────────┐
@@ -1933,10 +1927,10 @@ Real-time Usage Analytics
 │  Rarely used    │ → Parametric → Plaintext
 │  < 1x in 90d    │
 └─────────────────┘
-```
-
+```plaintext
 #### **Memory Marketplace Ecosystem**
-```
+
+```plaintext
            ┌─────────────────┐
            │  Blockchain     │
            │  Ledger         │
@@ -1952,6 +1946,5 @@ Real-time Usage Analytics
      ↓            ↓            ↓
   Publish     Validate    Subscribe
   Knowledge   Quality     To Updates
-```
-
+```plaintext
 ---

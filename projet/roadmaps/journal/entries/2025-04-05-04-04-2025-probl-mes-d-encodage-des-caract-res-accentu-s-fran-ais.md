@@ -8,3 +8,4 @@ related: []
 ## 04/04/2025 - Problèmes d'encodage des caractères accentués français
 
 #
+

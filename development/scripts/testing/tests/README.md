@@ -1,4 +1,4 @@
-﻿# Tests unitaires pour les scripts de test de pull requests
+# Tests unitaires pour les scripts de test de pull requests
 
 Ce dossier contient les tests unitaires pour les scripts de test de pull requests.
 
@@ -13,8 +13,7 @@ Pour exÃ©cuter tous les tests et gÃ©nÃ©rer un rapport :
 
 ```powershell
 .\Test-PRScripts.ps1
-```
-
+```plaintext
 Le script gÃ©nÃ¨re automatiquement un rapport dans un dossier temporaire et affiche le chemin du rapport Ã  la fin de l'exÃ©cution.
 
 ## Rapports de tests
@@ -101,6 +100,5 @@ Pour exÃ©cuter les tests automatiquement dans un pipeline CI/CD :
 
 ```powershell
 powershell -ExecutionPolicy Bypass -Command ".\Test-PRScripts.ps1"
-```
-
+```plaintext
 Cette commande exÃ©cute les tests sans interaction utilisateur et retourne un code de sortie qui peut Ãªtre utilisÃ© pour dÃ©terminer si les tests ont rÃ©ussi ou Ã©chouÃ©.

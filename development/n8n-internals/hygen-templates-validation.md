@@ -26,8 +26,7 @@ La méthode la plus simple pour valider les templates est d'utiliser le script d
 
 ```batch
 .\n8n\cmd\utils\validate-templates.cmd
-```
-
+```plaintext
 Ce script vous présentera un menu avec les options suivantes :
 
 1. Tester tous les templates
@@ -44,39 +43,45 @@ Vous pouvez également utiliser directement le script PowerShell :
 
 ```powershell
 # Tester tous les templates
+
 .\n8n\scripts\setup\validate-hygen-templates.ps1
 
 # Tester un template spécifique
+
 .\n8n\scripts\setup\validate-hygen-templates.ps1 -TestPowerShell
 .\n8n\scripts\setup\validate-hygen-templates.ps1 -TestWorkflow
 .\n8n\scripts\setup\validate-hygen-templates.ps1 -TestDocumentation
 .\n8n\scripts\setup\validate-hygen-templates.ps1 -TestIntegration
 
 # Conserver les fichiers générés
+
 .\n8n\scripts\setup\validate-hygen-templates.ps1 -KeepGeneratedFiles
 
 # Spécifier un dossier de sortie personnalisé
-.\n8n\scripts\setup\validate-hygen-templates.ps1 -OutputFolder "C:\Temp\HygenTest"
-```
 
+.\n8n\scripts\setup\validate-hygen-templates.ps1 -OutputFolder "C:\Temp\HygenTest"
+```plaintext
 ### Tests individuels
 
 Vous pouvez également exécuter les tests individuels pour chaque template :
 
 ```powershell
 # Tester le template PowerShell
+
 .\n8n\scripts\setup\test-powershell-template.ps1
 
 # Tester le template Workflow
+
 .\n8n\scripts\setup\test-workflow-template.ps1
 
 # Tester le template Documentation
+
 .\n8n\scripts\setup\test-documentation-template.ps1
 
 # Tester le template Integration
-.\n8n\scripts\setup\test-integration-template.ps1
-```
 
+.\n8n\scripts\setup\test-integration-template.ps1
+```plaintext
 ## Critères de validation
 
 ### Template PowerShell
@@ -123,10 +128,9 @@ Le template pour les intégrations est validé selon les critères suivants :
 
 Après l'exécution des tests, un rapport de validation est généré dans le fichier :
 
-```
+```plaintext
 n8n\projet/documentation\hygen-templates-validation-report.md
-```
-
+```plaintext
 Ce rapport contient les résultats des tests pour chaque template et le résultat global.
 
 ## Résolution des problèmes
@@ -157,6 +161,6 @@ Une fois les templates validés, vous pouvez passer aux étapes suivantes :
 
 Pour plus d'informations, consultez le guide d'utilisation de Hygen :
 
-```
+```plaintext
 n8n\projet/documentation\hygen-guide.md
-```
+```plaintext

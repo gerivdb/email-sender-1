@@ -1,4 +1,4 @@
-﻿# Rapport d'Analyse de Structure de Roadmap
+# Rapport d'Analyse de Structure de Roadmap
 
 **Fichier analysÃ©:** D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete_converted.md
 **Date d'analyse:** 2025-04-24 00:12:07

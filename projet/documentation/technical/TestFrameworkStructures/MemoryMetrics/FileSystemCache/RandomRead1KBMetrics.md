@@ -32,8 +32,7 @@ Les lectures aléatoires de blocs de 1KB présentent plusieurs caractéristiques
     ]
   }
 }
-```
-
+```plaintext
 ### 3.2 Métriques de base
 
 ```json
@@ -57,8 +56,7 @@ Les lectures aléatoires de blocs de 1KB présentent plusieurs caractéristiques
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Valeur typique |
 |-------|------|-------|-------------|----------------|
 | `unit` | string | - | Unité de mesure de la latence | "microseconds" |
@@ -123,8 +121,7 @@ Les lectures aléatoires de blocs de 1KB présentent plusieurs caractéristiques
     "kurtosis": 10.2
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description | Particularité pour 1KB |
 |-------|------|-------------|------------------------|
 | `histogram` | array | Histogramme de distribution | Bins adaptés à la distribution |
@@ -189,8 +186,7 @@ Les lectures aléatoires de blocs de 1KB présentent plusieurs caractéristiques
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Particularité pour 1KB |
 |-------|------|-------|-------------|------------------------|
 | `alignment` | object | - | Métriques liées à l'alignement | Important mais moins que pour 512B |
@@ -247,8 +243,7 @@ Les lectures aléatoires de blocs de 1KB présentent plusieurs caractéristiques
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Particularité pour 1KB |
 |-------|------|-------|-------------|------------------------|
 | `cacheEfficiency` | object | - | Métriques d'efficacité du cache | Généralement favorable pour 1KB |
@@ -285,8 +280,7 @@ Les lectures aléatoires de blocs de 1KB présentent plusieurs caractéristiques
     "dataTransferRatio": 0.25
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Particularité pour 1KB |
 |-------|------|-------|-------------|------------------------|
 | `throughput` | object | - | Métriques de débit | Meilleur équilibre IOPS/débit que 512B |
@@ -324,8 +318,7 @@ Les lectures aléatoires de blocs de 1KB présentent plusieurs caractéristiques
     "fixedToVariableRatio": 2.67
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Particularité pour 1KB |
 |-------|------|-------|-------------|------------------------|
 | `overhead` | object | - | Métriques d'overhead | Important mais moins dominant que pour 512B |
@@ -371,8 +364,7 @@ Les lectures aléatoires de blocs de 1KB présentent plusieurs caractéristiques
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Unité | Description | Particularité pour 1KB |
 |-------|------|-------|-------------|------------------------|
 | `sizeComparison` | object | - | Comparaison avec d'autres tailles | Position intermédiaire |
@@ -425,8 +417,7 @@ Les lectures aléatoires de blocs de 1KB présentent plusieurs caractéristiques
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description | Particularité pour 1KB |
 |-------|------|-------------|------------------------|
 | `useCases` | object | - | Métriques par cas d'utilisation | Cas d'utilisation spécifiques à 1KB |
@@ -472,8 +463,7 @@ Les lectures aléatoires de blocs de 1KB présentent plusieurs caractéristiques
     ]
   }
 }
-```
-
+```plaintext
 ### 4.2 Exemple complet (partiel)
 
 ```json
@@ -650,8 +640,7 @@ Les lectures aléatoires de blocs de 1KB présentent plusieurs caractéristiques
     ]
   }
 }
-```
-
+```plaintext
 ## 5. Bonnes pratiques pour les métriques de blocs de 1KB
 
 ### 5.1 Collecte des métriques

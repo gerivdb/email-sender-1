@@ -22,28 +22,39 @@ Les informations extraites dans le module ExtractedInfoModuleV2 ont la structure
 ```powershell
 $info = @{
     _Type = "TextExtractedInfo" # ou "StructuredDataExtractedInfo", "MediaExtractedInfo"
+
     Id = [guid]::NewGuid().ToString()
     Source = "Source de l'information"
     ExtractorName = "Nom de l'extracteur"
     ExtractionDate = Get-Date
     LastModifiedDate = Get-Date
     ProcessingState = "Raw" # ou "Processed", "Validated", "Error"
+
     ConfidenceScore = 85 # 0-100
+
     Metadata = @{} # Métadonnées associées à l'information
+
     # Propriétés spécifiques au type d'information
+
     # Pour TextExtractedInfo :
+
     Text = "Texte extrait"
     Language = "fr"
     # Pour StructuredDataExtractedInfo :
+
     Data = @{} # Données structurées
+
     DataFormat = "JSON" # ou "XML", "CSV"
+
     # Pour MediaExtractedInfo :
+
     MediaPath = "chemin/vers/media"
     MediaType = "Image" # ou "Audio", "Video"
-    MediaSize = 1024 # Taille en octets
-}
-```
 
+    MediaSize = 1024 # Taille en octets
+
+}
+```plaintext
 ### Analyse des opérations de filtrage
 
 Pour identifier les propriétés candidates pour l'indexation, nous avons analysé les opérations de filtrage couramment effectuées sur les collections d'informations extraites :

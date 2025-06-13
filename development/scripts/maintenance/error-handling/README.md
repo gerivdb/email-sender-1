@@ -1,4 +1,4 @@
-﻿# Module de gestion d'erreurs
+# Module de gestion d'erreurs
 
 Ce rÃ©pertoire contient un module PowerShell pour la gestion d'erreurs dans les scripts, ainsi que des outils pour ajouter automatiquement des blocs try/catch et crÃ©er un systÃ¨me de journalisation centralisÃ©.
 
@@ -35,70 +35,73 @@ Le module ErrorHandling fournit les fonctionnalitÃ©s suivantes :
 
 ```powershell
 # Importer le module
+
 Import-Module .\ErrorHandling.psm1
 
 # Initialiser le module avec un rÃ©pertoire de journaux personnalisÃ©
-Initialize-ErrorHandling -LogPath "C:\Logs"
-```
 
+Initialize-ErrorHandling -LogPath "C:\Logs"
+```plaintext
 ### Ajout de blocs try/catch Ã  un script
 
 ```powershell
 # Ajouter des blocs try/catch Ã  un script
+
 Add-TryCatchBlock -ScriptPath "C:\Scripts\MonScript.ps1" -BackupFile
 
 # Ajouter des blocs try/catch Ã  plusieurs scripts
-.\Add-ErrorHandlingToScripts.ps1 -ScriptPath "C:\Scripts" -Recurse -BackupFiles
-```
 
+.\Add-ErrorHandlingToScripts.ps1 -ScriptPath "C:\Scripts" -Recurse -BackupFiles
+```plaintext
 ### Journalisation des erreurs
 
 ```powershell
 # Journaliser une erreur
+
 try {
     # Code qui peut gÃ©nÃ©rer une erreur
+
     Get-Content -Path "C:\fichier_inexistant.txt" -ErrorAction Stop
 }
 catch {
     # Journaliser l'erreur
+
     Write-Log-Error -ErrorRecord $_ -FunctionName "MaFonction" -Category "FileSystem"
 }
-```
-
+```plaintext
 ### CrÃ©ation d'un systÃ¨me de journalisation centralisÃ©
 
 ```powershell
 # CrÃ©er un systÃ¨me de journalisation centralisÃ©
-New-CentralizedLoggingSystem -LogPath "C:\Logs" -IncludeAnalytics
-```
 
+New-CentralizedLoggingSystem -LogPath "C:\Logs" -IncludeAnalytics
+```plaintext
 ## Tests unitaires
 
 Le module inclut des tests unitaires pour vÃ©rifier son bon fonctionnement. Pour exÃ©cuter les tests :
 
 ```powershell
 # ExÃ©cuter les tests unitaires
+
 .\Run-Tests.ps1
 
 # ExÃ©cuter les tests unitaires et gÃ©nÃ©rer un rapport HTML
-.\Run-Tests.ps1 -GenerateReport
-```
 
+.\Run-Tests.ps1 -GenerateReport
+```plaintext
 ## Exemples
 
 ### Exemple 1 : Ajouter la gestion d'erreurs Ã  tous les scripts d'un rÃ©pertoire
 
 ```powershell
 .\Add-ErrorHandlingToScripts.ps1 -ScriptPath "D:\Projets\Scripts" -Recurse -BackupFiles
-```
-
+```plaintext
 ### Exemple 2 : CrÃ©er un systÃ¨me de journalisation centralisÃ©
 
 ```powershell
 Import-Module .\ErrorHandling.psm1
 New-CentralizedLoggingSystem -LogPath "D:\Logs" -IncludeAnalytics
-```
-
+```plaintext
 ### Exemple 3 : Ajouter une solution Ã  une erreur connue
 
 ```powershell
@@ -106,12 +109,13 @@ Import-Module .\ErrorHandling.psm1
 Initialize-ErrorHandling -LogPath "D:\Logs"
 
 # Obtenir le hash d'une erreur
+
 $errorHash = "..."
 
 # Ajouter une solution
-Add-ErrorSolution -ErrorHash $errorHash -Solution "VÃ©rifier que le fichier existe avant d'appeler Get-Content"
-```
 
+Add-ErrorSolution -ErrorHash $errorHash -Solution "VÃ©rifier que le fichier existe avant d'appeler Get-Content"
+```plaintext
 ## Bonnes pratiques
 
 - Toujours initialiser le module avec un rÃ©pertoire de journaux appropriÃ©.

@@ -1,4 +1,4 @@
-﻿# validation
+# validation
 
 Validation de workflows
 

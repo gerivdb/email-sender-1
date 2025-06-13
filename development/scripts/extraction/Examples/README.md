@@ -14,9 +14,9 @@ Exemple d'exportation d'objets GeoLocationExtractedInfo.
 
 ```powershell
 # Exécution
-.\Export-GeoLocationExample.ps1
-```
 
+.\Export-GeoLocationExample.ps1
+```plaintext
 Fonctionnalités démontrées :
 - Création d'objets GeoLocationExtractedInfo
 - Exportation en HTML avec carte interactive
@@ -30,9 +30,9 @@ Exemple d'exportation d'objets TextExtractedInfo.
 
 ```powershell
 # Exécution
-.\Export-TextExample.ps1
-```
 
+.\Export-TextExample.ps1
+```plaintext
 Fonctionnalités démontrées :
 - Création d'objets TextExtractedInfo
 - Exportation en HTML, Markdown, JSON et XML
@@ -45,9 +45,9 @@ Exemple d'exportation d'objets StructuredDataExtractedInfo.
 
 ```powershell
 # Exécution
-.\Export-StructuredDataExample.ps1
-```
 
+.\Export-StructuredDataExample.ps1
+```plaintext
 Fonctionnalités démontrées :
 - Création d'objets StructuredDataExtractedInfo simples et complexes
 - Exportation en HTML, Markdown, JSON, XML, CSV et TXT
@@ -60,9 +60,9 @@ Exemple d'exportation d'objets MediaExtractedInfo.
 
 ```powershell
 # Exécution
-.\Export-MediaExample.ps1
-```
 
+.\Export-MediaExample.ps1
+```plaintext
 Fonctionnalités démontrées :
 - Création d'objets MediaExtractedInfo pour différents types de médias (image, vidéo, audio)
 - Exportation en HTML, Markdown, JSON, XML et TXT
@@ -75,9 +75,9 @@ Exemple d'utilisation d'options personnalisées pour l'exportation.
 
 ```powershell
 # Exécution
-.\Export-CustomOptionsExample.ps1
-```
 
+.\Export-CustomOptionsExample.ps1
+```plaintext
 Fonctionnalités démontrées :
 - Options JSON (indentation, profondeur)
 - Options HTML (thème, mise en page)
@@ -90,9 +90,9 @@ Exemple d'exportation par lot de plusieurs objets.
 
 ```powershell
 # Exécution
-.\Export-BatchExample.ps1
-```
 
+.\Export-BatchExample.ps1
+```plaintext
 Fonctionnalités démontrées :
 - Création et utilisation de collections d'objets
 - Exportation individuelle des éléments d'une collection
@@ -121,17 +121,21 @@ Fonctionnalités démontrées :
 ## Options personnalisées
 
 ### Options JSON
+
 - `JsonIndent` : Indentation du JSON (true/false)
 - `JsonDepth` : Profondeur maximale pour la sérialisation (1-100)
 
 ### Options HTML
+
 - `Theme` : Thème de la page ("Light"/"Dark")
 
 ### Options GeoLocation
+
 - `MapProvider` : Fournisseur de carte ("Leaflet")
 - `Theme` : Thème de la carte ("Light"/"Dark")
 
 ### Options CSV
+
 - `CsvOptions` : Options pour l'exportation CSV (délimiteur, etc.)
 
 ## Exemples de code
@@ -142,8 +146,7 @@ Fonctionnalités démontrées :
 $info = New-TextExtractedInfo -Source "document.txt" -Text "Contenu du document" -Language "fr"
 $html = Export-GenericExtractedInfo -Info $info -Format "HTML"
 $html | Out-File -FilePath "document.html" -Encoding utf8
-```
-
+```plaintext
 ### Exportation avec métadonnées
 
 ```powershell
@@ -151,12 +154,11 @@ $info = New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 2.3522 -City "
 $info = Add-ExtractedInfoMetadata -Info $info -Metadata @{ Population = 2161000 }
 $html = Export-GeoLocationExtractedInfo -Info $info -Format "HTML" -IncludeMetadata
 $html | Out-File -FilePath "paris.html" -Encoding utf8
-```
-
+```plaintext
 ### Exportation avec options personnalisées
 
 ```powershell
 $info = New-StructuredDataExtractedInfo -Source "data.json" -Data @{ Name = "Example"; Value = 42 }
 $json = Export-GenericExtractedInfo -Info $info -Format "JSON" -ExportOptions @{ JsonIndent = $true; JsonDepth = 5 }
 $json | Out-File -FilePath "data.json" -Encoding utf8
-```
+```plaintext

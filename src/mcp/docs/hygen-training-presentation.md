@@ -67,7 +67,7 @@
 
 ## Structure des templates
 
-```
+```plaintext
 mcp/_templates/
   mcp-server/
     new/
@@ -85,8 +85,7 @@ mcp/_templates/
     new/
       hello.ejs.t
       prompt.js
-```
-
+```plaintext
 ## Personnalisation des templates
 
 - **Modification des templates existants**

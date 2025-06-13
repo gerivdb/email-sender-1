@@ -18,14 +18,12 @@ Pour installer les hooks Git, exécutez le script `Install-GitHooks.ps1` :
 
 ```powershell
 .\git-hooks\Install-GitHooks.ps1
-```
-
+```plaintext
 Pour forcer la réinstallation des hooks existants, utilisez le paramètre `-Force` :
 
 ```powershell
 .\git-hooks\Install-GitHooks.ps1 -Force
-```
-
+```plaintext
 ## Configuration
 
 La configuration des hooks se trouve dans le répertoire `config`. Vous pouvez modifier les fichiers de configuration pour personnaliser le comportement des hooks.
@@ -51,8 +49,7 @@ Ce fichier contient la configuration du hook `pre-commit` :
         "examples"
     ]
 }
-```
-
+```plaintext
 - `IgnorePatterns` : Liste des patterns d'erreurs à ignorer
 - `SeverityLevel` : Niveau de sévérité minimum pour bloquer le commit (Error, Warning, Information)
 - `MaxErrors` : Nombre maximum d'erreurs autorisées avant de bloquer le commit
@@ -68,34 +65,29 @@ Des tests unitaires sont disponibles dans le répertoire `tests`. Pour exécuter
 
 ```powershell
 .\git-hooks\Run-Tests.ps1
-```
-
+```plaintext
 Pour afficher les résultats détaillés des tests, utilisez le paramètre `-ShowTestResults` :
 
 ```powershell
 .\git-hooks\Run-Tests.ps1 -ShowTestResults
-```
-
+```plaintext
 Pour générer un rapport de test au format HTML, utilisez le paramètre `-GenerateReport` :
 
 ```powershell
 .\git-hooks\Run-Tests.ps1 -GenerateReport
-```
-
+```plaintext
 Pour des tests plus simples, vous pouvez utiliser le script `Simple-Tests.ps1` :
 
 ```powershell
 .\git-hooks\tests\Simple-Tests.ps1
-```
-
+```plaintext
 ## Désactivation temporaire
 
 Pour désactiver temporairement un hook, vous pouvez utiliser l'option `--no-verify` lors de la commande Git :
 
 ```bash
 git commit --no-verify -m "Message de commit"
-```
-
+```plaintext
 ## Dépendances
 
 Les hooks dépendent du module `ErrorPatternAnalyzer` qui doit être présent dans le répertoire `development/scripts/maintenance/error-learning` du dépôt.

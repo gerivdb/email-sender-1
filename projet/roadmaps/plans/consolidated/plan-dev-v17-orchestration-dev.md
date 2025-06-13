@@ -1,4 +1,5 @@
 # Plan de développement v17 - Orchestration du développement
+
 *Version 1.18 - 2025-05-30 - Progression globale : 85%*
 
 Ce plan définit l'ordre stratégique d'implémentation des différents composants du système, en tenant compte des dépendances entre les plans de développement v2 à v23. L'objectif est de fournir une feuille de route claire pour le développement progressif du système, en identifiant les composants fondamentaux à développer en premier et en permettant le développement parallèle lorsque c'est possible. Ce plan assure la cohésion totale entre toutes les initiatives de développement, en intégrant les éléments essentiels de chaque plan dans une séquence logique et optimale, y compris les plans plus récents sur la gestion du dépôt (v18), la sécurité et conformité (v19), l'observabilité et monitoring (v20), la scalabilité et résilience (v21), l'architecture UI/UX modulaire (v22), et l'Admin Core Framework (v23).

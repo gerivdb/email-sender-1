@@ -1,4 +1,4 @@
-﻿# Analyse de la CohÃ©rence de la Ponctuation entre Niveaux de Titres
+# Analyse de la CohÃ©rence de la Ponctuation entre Niveaux de Titres
 
 ## RÃ©sumÃ©
 
@@ -63,6 +63,7 @@
 - **Verdict**: CohÃ©rent
 
 ## Recommandations
+
 La cohÃ©rence de la ponctuation entre les niveaux de titres pourrait Ãªtre amÃ©liorÃ©e (< 75%). Voici quelques recommandations:
 
 1. **Paires de niveaux incohÃ©rentes**: 1-2, 1-3

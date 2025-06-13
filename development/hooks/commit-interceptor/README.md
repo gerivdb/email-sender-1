@@ -29,15 +29,13 @@ Le Commit Interceptor est un système intelligent qui intercepte automatiquement
 cd development/hooks/commit-interceptor
 go mod init commit-interceptor
 go mod tidy
-```
-
+```plaintext
 ### Configuration
 
 1. Copiez le fichier de configuration d'exemple :
 ```bash
 cp config/branching-auto.json ./branching-auto.json
-```
-
+```plaintext
 2. Modifiez la configuration selon vos besoins :
    - Ports et endpoints
    - Règles de routage
@@ -53,16 +51,14 @@ export GIT_DEFAULT_BRANCH=main
 export WEBHOOK_URL=https://api.jules-google.com/webhooks/branching
 export WEBHOOK_AUTH_TOKEN=your_auth_token_here
 export LOG_LEVEL=info
-```
-
+```plaintext
 ## Utilisation
 
 ### Démarrage du serveur
 
 ```bash
 go run .
-```
-
+```plaintext
 Le serveur démarre sur le port 8080 par défaut.
 
 ### Endpoints disponibles
@@ -78,14 +74,15 @@ Pour intégrer avec votre repository Git, configurez les hooks :
 
 ```bash
 # Dans votre repository Git
+
 echo '#!/bin/bash
+
 curl -X POST http://localhost:8080/hooks/pre-commit \
   -H "Content-Type: application/json" \
   -d @payload.json' > .git/hooks/pre-commit
 
 chmod +x .git/hooks/pre-commit
-```
-
+```plaintext
 ## Fonctionnalités
 
 ### Analyse Automatique
@@ -132,8 +129,7 @@ Modifiez `routing.rules` dans la configuration :
     }
   }
 }
-```
-
+```plaintext
 ### Webhooks et Notifications
 
 Configuration des notifications externes :
@@ -148,27 +144,29 @@ Configuration des notifications externes :
     }
   }
 }
-```
-
+```plaintext
 ## Tests
 
 ### Exécution des tests
 
 ```bash
 # Tests unitaires
+
 go test ./... -v
 
 # Tests avec couverture
+
 go test ./... -cover
 
 # Tests de performance
-go test ./... -bench=.
-```
 
+go test ./... -bench=.
+```plaintext
 ### Tests d'intégration
 
 ```bash
 # Test avec payload réel
+
 curl -X POST http://localhost:8080/hooks/pre-commit \
   -H "Content-Type: application/json" \
   -d '{
@@ -182,8 +180,7 @@ curl -X POST http://localhost:8080/hooks/pre-commit \
     "repository": {"name": "test-repo"},
     "ref": "refs/heads/main"
   }'
-```
-
+```plaintext
 ## Monitoring
 
 ### Métriques disponibles
@@ -228,8 +225,7 @@ Activez le mode debug :
 ```bash
 export LOG_LEVEL=debug
 go run .
-```
-
+```plaintext
 ## Performance
 
 ### Objectifs de performance

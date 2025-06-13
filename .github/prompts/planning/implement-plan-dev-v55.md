@@ -1,14 +1,17 @@
 # Plan-dev-v55 Planning Ecosystem Synchronization Implementation Prompt
 
 ## Context
+
 This prompt is designed to guide the implementation of plan-dev-v55 Planning Ecosystem Synchronization, a comprehensive 8-phase project that creates a unified planning ecosystem with synchronized task management, roadmap integration, and intelligent monitoring.
 
 ## Plan Reference
+
 **Plan Document**: `d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v55-planning-ecosystem-sync.md`
 
 ## Implementation Strategy
 
 ### Phase-by-Phase Implementation Approach
+
 Execute each phase sequentially, ensuring completion before moving to the next:
 
 1. **Phase 1: Core Synchronization Foundation**
@@ -23,12 +26,14 @@ Execute each phase sequentially, ensuring completion before moving to the next:
 ### Git Workflow Requirements
 
 #### Branch Strategy
+
 - **Main branch**: `planning-ecosystem-sync`
 - **Feature branches**: `feature/phase-{n}-{component}`
 - **Hotfix branches**: `hotfix/planning-sync-{issue}`
 
 #### Commit Standards
-```
+
+```plaintext
 feat(phase-{n}): implement {component} for {micro-task}
 
 - Add {specific functionality}
@@ -36,12 +41,12 @@ feat(phase-{n}): implement {component} for {micro-task}
 - Include {tests/documentation}
 
 Refs: plan-dev-v55, Phase {n}, Task {x}.{y}
-```
-
+```plaintext
 ## Implementation Instructions
 
 ### Step 1: Environment Setup
-```
+
+```plaintext
 Please implement Phase 1 of plan-dev-v55 Planning Ecosystem Synchronization:
 
 1. **Create the branch structure**:
@@ -80,13 +85,12 @@ Please implement Phase 1 of plan-dev-v55 Planning Ecosystem Synchronization:
    - Create `go.mod` files for each tool component
    - Set up proper dependency management
    - Ensure ToolkitOperation v3.0.0 compliance
-```
-
+```plaintext
 ### Step 2: Core Implementation Loop
 
 For each phase, follow this pattern:
 
-```
+```plaintext
 I need to implement Phase {N} of plan-dev-v55. Please:
 
 1. **Read the phase details** from the plan document
@@ -99,13 +103,12 @@ I need to implement Phase {N} of plan-dev-v55. Please:
 8. **Commit changes** with proper Git workflow
 
 Focus on {specific micro-task} from Phase {N}, Task {X}.{Y}
-```
-
+```plaintext
 ### Step 3: Quality Assurance Loop
 
 After each phase implementation:
 
-```
+```plaintext
 Please validate the implementation of Phase {N}:
 
 1. **Run all tests** and ensure they pass
@@ -114,12 +117,12 @@ Please validate the implementation of Phase {N}:
 4. **Test configuration validation** and error handling
 5. **Update progress tracking** in the plan document
 6. **Document any issues** or deviations from the plan
-```
-
+```plaintext
 ## Specific Implementation Requests
 
 ### Phase 1: Core Synchronization Foundation
-```
+
+```plaintext
 Implement Phase 1 of plan-dev-v55:
 
 1. **Task 1.1: Core Sync Engine**
@@ -141,10 +144,10 @@ Implement Phase 1 of plan-dev-v55:
    - Create validation schemas
 
 Please ensure all code follows the patterns shown in the plan document.
-```
-
+```plaintext
 ### Phase 2: Task Management Integration
-```
+
+```plaintext
 Implement Phase 2 of plan-dev-v55:
 
 1. **Task 2.1: TaskMaster-CLI Integration**
@@ -160,45 +163,50 @@ Implement Phase 2 of plan-dev-v55:
    - Include audit logging and history tracking
 
 Continue with all micro-tasks as specified in the plan.
-```
-
+```plaintext
 ## Progress Tracking
 
 ### Implementation Checklist Template
+
 Use this template to track progress:
 
 ```markdown
 ## Phase {N} Implementation Progress
 
 ### Micro-tasks Completed:
+
 - [ ] Task {N}.1: {Name} - {Description}
 - [ ] Task {N}.2: {Name} - {Description}
 - [ ] Task {N}.3: {Name} - {Description}
 
 ### Files Created:
+
 - [ ] `{file-path}` - {purpose}
 - [ ] `{file-path}` - {purpose}
 
 ### Tests Added:
+
 - [ ] Unit tests for {component}
 - [ ] Integration tests for {feature}
 - [ ] Performance benchmarks
 
 ### Documentation Updated:
+
 - [ ] User guide for {feature}
 - [ ] Technical documentation
 - [ ] API reference
 
 ### Quality Checks:
+
 - [ ] All tests passing
 - [ ] Code linting clean
 - [ ] Performance benchmarks met
 - [ ] Integration points verified
-```
-
+```plaintext
 ## Success Criteria
 
 ### Phase Completion Requirements
+
 Each phase is considered complete when:
 
 1. **All micro-tasks implemented** with working code
@@ -210,6 +218,7 @@ Each phase is considered complete when:
 7. **Git workflow followed** with proper commits
 
 ### Overall Project Success
+
 The project is successful when:
 
 1. **All 8 phases completed** with full functionality
@@ -222,6 +231,7 @@ The project is successful when:
 ## Common Implementation Patterns
 
 ### Go Code Structure
+
 ```go
 type {Component}Tool struct {
     config *{Component}Config
@@ -241,37 +251,43 @@ func (t *{Component}Tool) Stop() error {
     // Cleanup logic
     return nil
 }
-```
-
+```plaintext
 ### Configuration Pattern
+
 ```yaml
 {component}:
   enabled: true
   settings:
     # Component-specific settings
+
   mappings:
     # Field mappings
+
   validation:
     # Validation rules
-```
 
+```plaintext
 ### PowerShell Script Pattern
+
 ```powershell
 # {Script-Name}.ps1
+
 # Purpose: {Description}
 
 param(
     [Parameter(Mandatory=$true)]
     [string]$TargetPath,
     # Other parameters
+
 )
 
 # Implementation with proper error handling
-```
 
+```plaintext
 ## Usage Instructions
 
 ### Starting Implementation
+
 1. Copy this prompt to a new conversation
 2. Reference the plan document location
 3. Request specific phase implementation
@@ -279,6 +295,7 @@ param(
 5. Track progress using the checklist template
 
 ### Continuing Implementation
+
 1. Check current branch status
 2. Review completed phases
 3. Request next phase implementation
@@ -286,6 +303,7 @@ param(
 5. Update documentation and tests
 
 ### Troubleshooting
+
 - Always reference the plan document for specifications
 - Follow the established patterns and conventions
 - Ensure proper error handling and logging

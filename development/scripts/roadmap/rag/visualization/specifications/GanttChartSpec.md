@@ -1,4 +1,5 @@
 # Spécification du Diagramme de Gantt Simplifié
+
 *Version 1.0 - 2025-05-15*
 
 ## 1. Description Générale
@@ -10,6 +11,7 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
 ### 2.1 Représentation de l'Axe Temporel
 
 #### 2.1.1 Structure de l'Axe
+
 - **Orientation**: Horizontale, de gauche à droite
 - **Unités de temps**:
   - Jours (vue détaillée)
@@ -25,6 +27,7 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
   - Mois: Nom complet ou abrégé à 3 lettres
 
 #### 2.1.2 Repères Temporels
+
 - **Aujourd'hui**: Ligne verticale rouge
 - **Jalons**: Diamants ou triangles à des dates clés
 - **Périodes spéciales**:
@@ -33,6 +36,7 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
   - Périodes de congés: Fond coloré spécifique
 
 #### 2.1.3 Navigation Temporelle
+
 - **Zoom**: 
   - Niveaux prédéfinis (jour, semaine, mois, trimestre)
   - Zoom continu via molette ou pincement
@@ -44,6 +48,7 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
 ### 2.2 Visualisation des Barres de Tâches
 
 #### 2.2.1 Apparence des Barres
+
 - **Forme**: Rectangles arrondis
 - **Dimensions**:
   - Hauteur: 30px par défaut (configurable)
@@ -57,6 +62,7 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
   - Sélectionné: 2px solide, couleur de mise en évidence
 
 #### 2.2.2 Contenu des Barres
+
 - **Texte principal**: Titre de la tâche (tronqué si nécessaire)
 - **Identifiant**: Code de la tâche (optionnel, petit)
 - **Indicateurs**:
@@ -65,6 +71,7 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
   - Priorité: Icône ou bande verticale
 
 #### 2.2.3 États des Barres
+
 - **Normal**: Opacité 100%
 - **Sélectionné**: Bordure épaisse, légère ombre
 - **Survolé**: Légère ombre, opacité augmentée
@@ -74,16 +81,19 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
 ### 2.3 Représentation des Dépendances
 
 #### 2.3.1 Types de Dépendances
+
 - **Fin-Début** (standard): La tâche B commence après la fin de la tâche A
 - **Début-Début**: La tâche B commence après le début de la tâche A
 - **Fin-Fin**: La tâche B finit après la fin de la tâche A
 - **Début-Fin**: La tâche B finit après le début de la tâche A
 
 #### 2.3.2 Apparence des Liens
+
 - **Lignes**: 
   - Style: Flèches courbes ou lignes brisées
   - Épaisseur: 1.5px par défaut
   - Couleur: Gris neutre (#888888) par défaut
+
 - **Marqueurs**:
   - Flèche à l'extrémité de destination
   - Points de contrôle aux coudes (pour manipulation)
@@ -94,6 +104,7 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
   - Problématique: Ligne pointillée rouge
 
 #### 2.3.3 Interaction avec les Dépendances
+
 - **Création**: Glisser-déposer entre barres
 - **Modification**: Points de contrôle déplaçables
 - **Suppression**: Clic droit ou bouton dédié
@@ -102,6 +113,7 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
 ## 3. Métadonnées à Afficher
 
 ### 3.1 Informations Essentielles par Tâche
+
 - **Identifiant**: Code hiérarchique (ex: 1.2.3)
 - **Titre**: Nom de la tâche
 - **Dates**:
@@ -113,6 +125,7 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
 - **Statut**: Représenté visuellement (couleur/motif)
 
 ### 3.2 Indicateurs de Progression
+
 - **Pourcentage d'avancement**:
   - Représentation visuelle: Portion remplie de la barre
   - Valeur numérique: Affichée dans ou à côté de la barre
@@ -124,6 +137,7 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
   - Couleur indiquant le statut (atteint/non atteint)
 
 ### 3.3 Informations de Retard/Avance
+
 - **Indicateur visuel**:
   - En avance: Bordure ou hachures vertes
   - Dans les temps: Normal
@@ -138,6 +152,7 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
 ## 4. Cas d'Utilisation Spécifiques
 
 ### 4.1 Planification Temporelle du Projet
+
 - **Objectif**: Visualiser et ajuster le planning du projet
 - **Fonctionnalités clés**:
   - Vue d'ensemble de toutes les tâches dans le temps
@@ -149,6 +164,7 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
   - Création de liens de dépendance
 
 ### 4.2 Suivi de l'Avancement par Rapport au Calendrier
+
 - **Objectif**: Évaluer l'état d'avancement du projet
 - **Fonctionnalités clés**:
   - Comparaison prévu/réel
@@ -160,6 +176,7 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
   - Génération de rapports d'avancement
 
 ### 4.3 Analyse de Chemin Critique
+
 - **Objectif**: Identifier et gérer les tâches critiques
 - **Fonctionnalités clés**:
   - Mise en évidence du chemin critique
@@ -173,16 +190,19 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
 ## 5. Exigences Techniques
 
 ### 5.1 Performance
+
 - **Nombre de tâches**: Support jusqu'à 200 tâches sans dégradation
 - **Temps de rendu**: < 1.5 secondes pour l'affichage initial
 - **Fluidité**: Réactivité immédiate lors des interactions
 
 ### 5.2 Compatibilité
+
 - **Navigateurs**: Chrome, Firefox, Safari, Edge (dernières versions)
 - **Appareils**: Desktop (optimal), tablette (supporté)
 - **Impression**: Mise en page optimisée pour l'impression
 
 ### 5.3 Intégration
+
 - **Export**: PNG, PDF, Excel/CSV (données)
 - **Import**: MS Project, formats iCalendar
 - **API**: Endpoints pour mise à jour programmatique
@@ -190,7 +210,8 @@ Le diagramme de Gantt simplifié est une représentation temporelle des tâches 
 ## 6. Exemples et Maquettes
 
 ### 6.1 Exemple de Structure Temporelle
-```
+
+```plaintext
 Mai 2025                 Juin 2025                Juillet 2025
 |---------------------|---------------------|---------------------|
 Task 1 [==============]
@@ -198,10 +219,10 @@ Task 2      [=========]
 Task 3                 [=======]
 Task 4                       [===============]
 Task 5                                [=======]
-```
-
+```plaintext
 ### 6.2 Représentation des Dépendances
-```
+
+```plaintext
 Task 1 [==============]
                      \
 Task 2                [=========]
@@ -212,9 +233,9 @@ Task 3                           [=======]
 Task 4    [===============]
                           \
 Task 5                     [=======]
-```
-
+```plaintext
 ### 6.3 Exemples d'Interactions
+
 - Glisser Task 3 vers la droite: Ajuste sa date de début et impacte Task 5
 - Clic sur Task 4: Affiche ses détails et met en évidence ses dépendances
 - Ajustement de la progression de Task 2 à 75%: Met à jour la barre interne

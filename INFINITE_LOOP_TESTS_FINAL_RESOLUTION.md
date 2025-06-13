@@ -7,10 +7,12 @@ Tous les problèmes de boucles infinies et de tests qui ne s'arrêtent pas ont �
 ## Problèmes Identifiés et Résolus
 
 ### 1. ✅ **Service Embedding - Valeurs Aléatoires**
+
 **Problème**: Le service d'embedding utilisait `rand.Float64()` générant des valeurs aléatoires non déterministes.
 **Solution**: Implémentation déterministe basée sur hash MD5 du texte d'entrée.
 
 ### 2. ✅ **Chunker - Boucles Infinies** 
+
 **Problème**: L'algorithme de chunking pouvait entrer dans des boucles infinies à cause de:
 - Logique défaillante dans `findWordBoundary`
 - Calculs d'overlap incorrects
@@ -22,39 +24,41 @@ Tous les problèmes de boucles infinies et de tests qui ne s'arrêtent pas ont �
 - Ajustement des attentes de test selon la réalité mathématique
 
 ### 3. ✅ **Tests d'Indexing - Attentes Incorrectes**
+
 **Problème**: Test `Long_text_with_multiple_chunks` s'attendait à 3 chunks pour un texte de 216 caractères avec chunks de 50 et overlap de 10.
 **Solution**: Correction de l'attente à 5 chunks selon le calcul mathématique correct: `(216-10)/40+1 ≈ 5.15 chunks`
 
 ## Tests Validés ✅
 
 ### **Tests d'Embedding**
-```
+
+```plaintext
 === RUN   TestGenerateEmbedding
 === RUN   TestGenerateEmbedding_Consistency  
 === RUN   TestGenerateEmbedding_ConcurrentAccess
 --- PASS: All embedding tests (0.00s)
-```
-
+```plaintext
 ### **Tests de Providers** 
-```
+
+```plaintext
 === RUN   TestMockEmbeddingProvider
 === RUN   TestMockEmbeddingProviderCache  
 === RUN   TestMockEmbeddingProviderAdvancedCache
 --- PASS: All provider tests (5.12s)
-```
-
+```plaintext
 ### **Tests de Chunking**
-```
+
+```plaintext
 === RUN   TestFixedSizeChunker
 === RUN   TestSemanticChunker
 === RUN   TestAdaptiveChunker  
 === RUN   TestChunkMetadata
 --- PASS: All chunking tests (1.82s)
-```
-
+```plaintext
 ## Algorithme de Chunking Corrigé
 
 ### Logique de Progression Sécurisée
+
 ```go
 // Calculate next start position with overlap
 nextStart := start + actualChunkSize - overlap
@@ -68,9 +72,9 @@ if nextStart <= start {
 if nextStart <= start {
     break
 }
-```
-
+```plaintext
 ### Calcul Mathématique d'Overlap
+
 - **Texte**: 216 caractères
 - **Chunk Size**: 50 caractères
 - **Overlap**: 10 caractères  
@@ -80,16 +84,19 @@ if nextStart <= start {
 ## Impact Final
 
 ### ✅ **Performance**
+
 - Tous les tests s'exécutent en moins de 30 secondes
 - Aucune boucle infinie détectée
 - Algorithmes déterministes et prévisibles
 
 ### ✅ **Stabilité**  
+
 - Tests reproductibles à 100%
 - Résultats cohérents entre les exécutions
 - Gestion d'erreurs robuste
 
 ### ✅ **Fiabilité**
+
 - Service embedding déterministe 
 - Chunker avec logique de progression sûre
 - Tests avec attentes mathématiquement correctes

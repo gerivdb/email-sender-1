@@ -11,6 +11,7 @@ Auteur : À compléter
 Ce document présente l’ensemble des modes opérationnels harmonisés pour la gestion des workflows roadmap. Chaque mode est autonome, modulaire et conçu pour être combiné avec les autres selon les besoins du projet. La logique modulaire permet d’assembler les modes dans des séquences adaptées (ex : GRAN → DEV-R → TEST → DEBUG → REVIEW → OPTI → CHECK), tout en évitant toute redondance fonctionnelle.
 
 ### Liste des modes harmonisés
+
 - ARCHI (Architecture)
 - GRAN (Granularisation)
 - DEV-R (Développement Roadmap)
@@ -69,32 +70,40 @@ Harmoniser, modulariser et rendre cohérents tous les modes opérationnels décr
 # Mode <NOM>
 
 ## Description
+
 Résumé du mode, son objectif principal et son rôle dans le workflow.
 
 ## Objectifs
+
 - Liste des objectifs spécifiques du mode.
 
 ## Commandes principales
+
 - <COMMANDE> : Description courte
 - ...
 
 ## Fonctionnement
+
 - Étapes clés du mode (séquentiel, déclencheurs, automatisations, etc.)
 
 ## Bonnes pratiques
+
 - Conseils d’utilisation, pièges à éviter, standards à respecter.
 
 ## Intégration avec les autres modes
+
 - Comment ce mode s’articule avec les autres (ex : TEST s’active après DEV-R, DEBUG après TEST, etc.)
 - Exemples de combinaisons typiques.
 
 ## Exemples d’utilisation
+
 ```powershell
 # Exemple d’appel du mode en CLI ou via snippet
-Invoke-AugmentMode -Mode "<NOM>" -FilePath "<roadmap>" -TaskIdentifier "<id>"
-```
 
+Invoke-AugmentMode -Mode "<NOM>" -FilePath "<roadmap>" -TaskIdentifier "<id>"
+```plaintext
 ## Snippet VS Code (optionnel)
+
 ```json
 {
   "Mode <NOM> (TODO: Remplacer <NOM> par le nom du mode)": {
@@ -105,9 +114,8 @@ Invoke-AugmentMode -Mode "<NOM>" -FilePath "<roadmap>" -TaskIdentifier "<id>"
     "description": "Insère le template du mode <NOM>. (TODO: Adapter la description)"
   }
 }
-```
-```
-
+```plaintext
+```plaintext
 ## Modes à harmoniser (liste indicative)
 
 - ARCHI (Architecture)
@@ -246,35 +254,45 @@ Invoke-AugmentMode -Mode "<NOM>" -FilePath "<roadmap>" -TaskIdentifier "<id>"
                 "prefix": "mode-check-ameliore",
                 "body": [
                   "# Mode CHECK Amélioré",
+
                   "",
                   "## Description",
+
                   "Le mode CHECK amélioré vérifie l’implémentation et les tests des tâches, puis met à jour les cases à cocher.",
                   "",
                   "## Objectifs",
+
                   "- Vérifier l’implémentation complète des tâches.",
                   "- S’assurer que les tests sont réussis à 100%.",
                   "- Mettre à jour automatiquement les cases à cocher.",
                   "",
                   "## Commandes principales",
+
                   "- check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche>",
                   "- check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche> -Force",
                   "- check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche> -ActiveDocumentPath <chemin_document>",
                   "",
                   "## Fonctionnement",
+
                   "- Analyse la roadmap, vérifie l’implémentation et les tests, met à jour les cases à cocher.",
                   "",
                   "## Bonnes pratiques",
+
                   "- Exécuter après chaque étape de développement/test.",
                   "- Vérifier l’encodage des fichiers.",
                   "- Utiliser -Force après validation.",
                   "",
                   "## Intégration avec les autres modes",
+
                   "- DEV-R, GRAN, TEST, REVIEW, OPTI, C-BREAK.",
                   "",
                   "## Exemples d’utilisation",
+
                   "# Vérification simple",
+
                   ".\\development\\tools\\scripts\\check.ps1 -FilePath \"projet/documentation/roadmap/roadmap.md\" -TaskIdentifier \"1.2.3\"",
                   "# Mise à jour automatique",
+
                   ".\\development\\tools\\scripts\\check.ps1 -FilePath \"projet/documentation/roadmap/roadmap.md\" -TaskIdentifier \"1.2.3\" -Force"
                 ],
                 "description": "Insère le template du mode CHECK Amélioré."
@@ -283,6 +301,7 @@ Invoke-AugmentMode -Mode "<NOM>" -FilePath "<roadmap>" -TaskIdentifier "<id>"
                 "prefix": "check",
                 "body": [
                   "# Vérification des lignes sélectionnées (mode CHECK)",
+
                   "${1:check.ps1} -FilePath ${2:projet/documentation/roadmap/roadmap.md} -Selection ${TM_SELECTED_TEXT}"
                 ],
                 "description": "Lance la vérification CHECK sur les lignes sélectionnées dans l'éditeur."
@@ -306,35 +325,45 @@ Invoke-AugmentMode -Mode "<NOM>" -FilePath "<roadmap>" -TaskIdentifier "<id>"
                             "prefix": "mode-check-ameliore",
                             "body": [
                               "# Mode CHECK Amélioré",
+
                               "",
                               "## Description",
+
                               "Le mode CHECK amélioré vérifie l’implémentation et les tests des tâches, puis met à jour les cases à cocher.",
                               "",
                               "## Objectifs",
+
                               "- Vérifier l’implémentation complète des tâches.",
                               "- S’assurer que les tests sont réussis à 100%.",
                               "- Mettre à jour automatiquement les cases à cocher.",
                               "",
                               "## Commandes principales",
+
                               "- check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche>",
                               "- check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche> -Force",
                               "- check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche> -ActiveDocumentPath <chemin_document>",
                               "",
                               "## Fonctionnement",
+
                               "- Analyse la roadmap, vérifie l’implémentation et les tests, met à jour les cases à cocher.",
                               "",
                               "## Bonnes pratiques",
+
                               "- Exécuter après chaque étape de développement/test.",
                               "- Vérifier l’encodage des fichiers.",
                               "- Utiliser -Force après validation.",
                               "",
                               "## Intégration avec les autres modes",
+
                               "- DEV-R, GRAN, TEST, REVIEW, OPTI, C-BREAK.",
                               "",
                               "## Exemples d’utilisation",
+
                               "# Vérification simple",
+
                               ".\\development\\tools\\scripts\\check.ps1 -FilePath \"projet/documentation/roadmap/roadmap.md\" -TaskIdentifier \"1.2.3\"",
                               "# Mise à jour automatique",
+
                               ".\\development\\tools\\scripts\\check.ps1 -FilePath \"projet/documentation/roadmap/roadmap.md\" -TaskIdentifier \"1.2.3\" -Force"
                             ],
                             "description": "Insère le template du mode CHECK Amélioré."
@@ -343,6 +372,7 @@ Invoke-AugmentMode -Mode "<NOM>" -FilePath "<roadmap>" -TaskIdentifier "<id>"
                             "prefix": "check",
                             "body": [
                               "# Vérification des lignes sélectionnées (mode CHECK)",
+
                               "${1:check.ps1} -FilePath ${2:projet/documentation/roadmap/roadmap.md} -Selection ${TM_SELECTED_TEXT}"
                             ],
                             "description": "Lance la vérification CHECK sur les lignes sélectionnées dans l'éditeur."

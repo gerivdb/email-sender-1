@@ -10,7 +10,7 @@ Ce rapport analyse en détail cette implémentation avancée, ses principes arch
 
 Le Memory Bank de vanzan01 (version 0.6-beta) représente une refonte complète de l'approche originale, passant d'un système monolithique à une architecture modulaire basée sur le chargement Just-In-Time (JIT) des règles.
 
-```
+```plaintext
 +------------------+                      +------------------+
 |                  |                      |                  |
 | Système Ancien   |       →→→       | Système Nouveau  |
@@ -26,8 +26,7 @@ Le Memory Bank de vanzan01 (version 0.6-beta) représente une refonte complète 
 |   chargées       |                      | • Intégration     |
 | • Workflow fixe  |                      |   modes Cursor    |
 +------------------+                      +------------------+
-```
-
+```plaintext
 ### 2.1 Limitations de l'Approche Monolithique
 
 L'approche originale présentait plusieurs limitations :
@@ -42,7 +41,7 @@ L'approche originale présentait plusieurs limitations :
 
 La nouvelle architecture repose sur le principe d'isolation des règles et le chargement Just-In-Time :
 
-```
+```plaintext
 +---------------+     +--------------------+     +------------------+
 |               |     |                    |     |                  |
 | Commande Mode | --> | Changement de Mode | --> | Chargement des   |
@@ -64,23 +63,21 @@ La nouvelle architecture repose sur le principe d'isolation des règles et le ch
                                                  | Memory Bank      |
                                                  |                  |
                                                  +------------------+
-```
-
+```plaintext
 ## 3. Caractéristiques Principales du Système
 
 ### 3.1 Intégration avec les Modes Personnalisés de Cursor
 
 Le système utilise quatre modes personnalisés de Cursor, chacun spécialisé pour une phase spécifique du développement :
 
-```
+```plaintext
 +---------------+     +---------------+     +---------------+     +---------------+     +---------------+
 |               |     |               |     |               |     |               |     |               |
 |   MODE VAN    | --> |   MODE PLAN   | --> | MODE CREATIVE | --> | MODE IMPLEMENT| --> |    MODE QA    |
 | Initialisation|     | Planification |     |   Conception  |     | Implémentation|     |  Validation   |
 |               |     |               |     |               |     |               |     |               |
 +---------------+     +---------------+     +---------------+     +---------------+     +---------------+
-```
-
+```plaintext
 #### Modes et Leurs Fonctions
 
 1. **MODE VAN** (Initialisation)
@@ -112,7 +109,7 @@ Le système utilise quatre modes personnalisés de Cursor, chacun spécialisé p
 
 Un aspect fondamental du système est son architecture basée sur les graphes :
 
-```
+```plaintext
 +---------------+
 |               |
 |  Point d'Entrée|
@@ -143,8 +140,7 @@ Un aspect fondamental du système est son architecture basée sur les graphes :
         | Étape Suivante |
         |               |
         +---------------+
-```
-
+```plaintext
 Cette approche permet :
 - **Navigation Optimisée** : Parcours efficace des arbres de décision complexes
 - **Relations Contextuelles** : Modélisation explicite des relations entre phases
@@ -155,7 +151,7 @@ Cette approche permet :
 
 Le MODE CREATIVE est conceptuellement basé sur la méthodologie de l'outil "Think" de Claude d'Anthropic, avec un processus structuré en 5 phases :
 
-```
+```plaintext
 +------------------+     +------------------+     +------------------+
 |                  |     |                  |     |                  |
 | 1. Décomposition | --> | 2. Exploration   | --> | 3. Analyse des   |
@@ -170,8 +166,7 @@ Le MODE CREATIVE est conceptuellement basé sur la méthodologie de l'outil "Thi
                       |    de la Décision |     |    de la Décision |
                       |                  |     |                  |
                       +------------------+     +------------------+
-```
-
+```plaintext
 Cette méthodologie permet :
 - Une exploration structurée des options de conception
 - Une documentation explicite des avantages et inconvénients
@@ -183,7 +178,7 @@ Cette méthodologie permet :
 
 Malgré la modularisation des règles, les fichiers du Memory Bank maintiennent la continuité entre les modes :
 
-```
+```plaintext
 +------------------+
 |                  |
 |    tasks.md      |
@@ -209,8 +204,7 @@ Malgré la modularisation des règles, les fichiers du Memory Bank maintiennent 
 |Contxt|  |Contxt|  |*.md  |  |ess.md|  |ess.md|
 |.md   |  |.md   |  |      |  |      |  |      |
 +------+  +------+  +------+  +------+  +------+
-```
-
+```plaintext
 Fichiers principaux :
 - **tasks.md** : Source centrale de vérité pour le suivi des tâches
 - **activeContext.md** : Maintient le focus de la phase de développement actuelle
@@ -223,7 +217,7 @@ Fichiers principaux :
 
 Après l'installation, la structure de répertoire est la suivante :
 
-```
+```plaintext
 votre-projet/
 ├── .cursor/
 │   └── rules/
@@ -244,20 +238,18 @@ votre-projet/
     ├── plan_instructions.md
     ├── creative_instructions.md
     └── implement_instructions.md
-```
-
+```plaintext
 ### 4.2 Commandes de Base
 
 Pour activer les différents modes dans le nouveau système :
 
-```
+```plaintext
 VAN - Initialiser le projet et déterminer la complexité
 PLAN - Créer un plan d'implémentation détaillé
 CREATIVE - Explorer les options de conception pour les composants complexes
 IMPLEMENT - Construire systématiquement les composants planifiés
 QA - Valider l'implémentation technique (peut être appelé depuis n'importe quel mode)
-```
-
+```plaintext
 ### 4.3 Flux de Travail Typique
 
 1. Commencer avec `VAN` pour initialiser le projet et déterminer la complexité

@@ -26,6 +26,7 @@ Les fonctions du module suivent une structure interne cohérente :
 ```powershell
 function Verb-NounExtractedInfo {
     <#
+
     .SYNOPSIS
     Brève description de la fonction (1-2 lignes).
 
@@ -39,6 +40,7 @@ function Verb-NounExtractedInfo {
     .EXAMPLE
     Exemple d'utilisation de la fonction.
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -51,6 +53,7 @@ function Verb-NounExtractedInfo {
 
     begin {
         # Code exécuté une fois au début, avant le traitement du pipeline
+
         Write-Verbose "Démarrage de Verb-NounExtractedInfo"
     }
 
@@ -58,27 +61,31 @@ function Verb-NounExtractedInfo {
         # Code exécuté pour chaque élément du pipeline
 
         # 1. Validation des paramètres
+
         if (-not $MainParameter.ContainsKey("RequiredProperty")) {
             throw "Le paramètre MainParameter doit contenir la propriété 'RequiredProperty'"
         }
 
         # 2. Traitement principal
+
         $result = $MainParameter.Clone() # Éviter de modifier l'objet original
 
         # 3. Modification de l'objet
+
         $result.NewProperty = "Value"
 
         # 4. Retour du résultat
+
         return $result
     }
 
     end {
         # Code exécuté une fois à la fin, après le traitement du pipeline
+
         Write-Verbose "Fin de Verb-NounExtractedInfo"
     }
 }
-```
-
+```plaintext
 #### 1.1.3 Principes de conception des fonctions
 
 Les fonctions du module suivent plusieurs principes de conception importants :
@@ -87,19 +94,21 @@ Les fonctions du module suivent plusieurs principes de conception importants :
 
 ```powershell
 # Exemple d'immutabilité
+
 function Add-PropertyToInfo {
     param ([hashtable]$Info, [string]$Key, [object]$Value)
 
     $result = $Info.Clone() # Créer une copie pour ne pas modifier l'original
+
     $result[$Key] = $Value
     return $result
 }
-```
-
+```plaintext
 2. **Support du pipeline** : Les fonctions qui traitent des objets d'information extraite acceptent les entrées via le pipeline, ce qui permet de créer des chaînes de traitement.
 
 ```powershell
 # Exemple de support du pipeline
+
 function Process-ExtractedInfo {
     [CmdletBinding()]
     param (
@@ -109,18 +118,20 @@ function Process-ExtractedInfo {
 
     process {
         # Traitement de chaque objet du pipeline
+
         return $Info
     }
 }
 
 # Utilisation avec le pipeline
-$info | Process-ExtractedInfo | Another-Function
-```
 
+$info | Process-ExtractedInfo | Another-Function
+```plaintext
 3. **Gestion des erreurs** : Les fonctions utilisent des mécanismes de gestion des erreurs cohérents, avec des messages d'erreur clairs et informatifs.
 
 ```powershell
 # Exemple de gestion des erreurs
+
 function Validate-RequiredProperties {
     param ([hashtable]$Info, [string[]]$RequiredProperties)
 
@@ -130,29 +141,31 @@ function Validate-RequiredProperties {
         }
     }
 }
-```
-
+```plaintext
 4. **Verbosité configurable** : Les fonctions utilisent `Write-Verbose` pour fournir des informations détaillées sur leur exécution, qui peuvent être activées ou désactivées selon les besoins.
 
 ```powershell
 # Exemple de verbosité configurable
+
 function Process-WithVerbosity {
     [CmdletBinding()]
     param ([hashtable]$Info)
 
     Write-Verbose "Traitement de l'objet avec ID : $($Info.Id)"
     # Traitement...
+
     Write-Verbose "Traitement terminé"
 }
 
 # Activation de la verbosité
-Process-WithVerbosity -Info $info -Verbose
-```
 
+Process-WithVerbosity -Info $info -Verbose
+```plaintext
 5. **Validation des paramètres** : Les fonctions utilisent des attributs de validation pour garantir que les paramètres respectent certaines contraintes.
 
 ```powershell
 # Exemple de validation des paramètres
+
 function Set-ConfidenceScore {
     param (
         [hashtable]$Info,
@@ -166,8 +179,7 @@ function Set-ConfidenceScore {
     $result.ConfidenceScore = $Score
     return $result
 }
-```
-
+```plaintext
 #### 1.1.4 Documentation des fonctions
 
 Toutes les fonctions du module sont documentées de manière cohérente avec des commentaires d'aide PowerShell :
@@ -181,6 +193,7 @@ Toutes les fonctions du module sont documentées de manière cohérente avec des
 
 ```powershell
 <#
+
 .SYNOPSIS
 Ajoute une métadonnée à un objet d'information extraite.
 
@@ -208,8 +221,8 @@ Cette fonction ne modifie pas l'objet original, mais retourne une nouvelle copie
 Get-ExtractedInfoMetadata
 Remove-ExtractedInfoMetadata
 #>
-```
 
+```plaintext
 #### 1.1.5 Tests unitaires
 
 Chaque fonction du module est accompagnée de tests unitaires qui vérifient son comportement dans différentes situations :
@@ -221,6 +234,7 @@ Chaque fonction du module est accompagnée de tests unitaires qui vérifient son
 
 ```powershell
 # Exemple de test unitaire avec Pester
+
 Describe "Add-ExtractedInfoMetadata" {
     BeforeAll {
         $info = New-ExtractedInfo -Source "test.txt"
@@ -247,8 +261,7 @@ Describe "Add-ExtractedInfoMetadata" {
         { Add-ExtractedInfoMetadata -Info $null -Key "Key" -Value "Value" } | Should -Throw
     }
 }
-```
-
+```plaintext
 #### 1.1.6 Intégration avec les autres fonctions
 
 Les nouvelles fonctions doivent s'intégrer harmonieusement avec les fonctions existantes du module :
@@ -261,6 +274,7 @@ Les nouvelles fonctions doivent s'intégrer harmonieusement avec les fonctions e
 
 ```powershell
 # Exemple d'intégration avec les fonctions existantes
+
 function Add-ExtractedInfoTag {
     [CmdletBinding()]
     param (
@@ -273,9 +287,11 @@ function Add-ExtractedInfoTag {
 
     process {
         # Réutilisation de Add-ExtractedInfoMetadata
+
         $result = Add-ExtractedInfoMetadata -Info $Info -Key "Tags" -Value @($Tag)
 
         # Si Tags existe déjà et est un tableau, ajouter le nouveau tag
+
         if ($Info.Metadata.ContainsKey("Tags") -and $Info.Metadata.Tags -is [array]) {
             $tags = $Info.Metadata.Tags + $Tag
             $result = Add-ExtractedInfoMetadata -Info $Info -Key "Tags" -Value $tags
@@ -286,9 +302,9 @@ function Add-ExtractedInfoTag {
 }
 
 # Utilisation avec le pipeline et d'autres fonctions
-$info | Add-ExtractedInfoTag -Tag "Important" | Save-ExtractedInfoToFile -FilePath "tagged_info.json"
-```
 
+$info | Add-ExtractedInfoTag -Tag "Important" | Save-ExtractedInfoToFile -FilePath "tagged_info.json"
+```plaintext
 En suivant ces principes et cette structure, vous pouvez créer de nouvelles fonctions qui s'intègrent parfaitement avec le module existant et qui maintiennent sa cohérence et sa qualité.
 
 ### 1.2 Conventions de paramètres et de retour
@@ -321,22 +337,19 @@ Les paramètres utilisent des attributs PowerShell pour définir leur comporteme
 ```powershell
 [Parameter(Mandatory = $true)]
 [hashtable]$Info
-```
-
+```plaintext
 2. **ValueFromPipeline** : Permet au paramètre de recevoir des valeurs via le pipeline.
 
 ```powershell
 [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
 [hashtable]$Info
-```
-
+```plaintext
 3. **Position** : Définit la position du paramètre dans l'appel de fonction (rarement utilisé dans le module).
 
 ```powershell
 [Parameter(Mandatory = $true, Position = 0)]
 [string]$Source
-```
-
+```plaintext
 4. **ParameterSetName** : Groupe les paramètres en ensembles mutuellement exclusifs.
 
 ```powershell
@@ -345,8 +358,7 @@ Les paramètres utilisent des attributs PowerShell pour définir leur comporteme
 
 [Parameter(Mandatory = $true, ParameterSetName = "ByPath")]
 [string]$FilePath
-```
-
+```plaintext
 ##### Validation des paramètres
 
 Les paramètres utilisent des attributs de validation pour garantir leur validité :
@@ -357,29 +369,25 @@ Les paramètres utilisent des attributs de validation pour garantir leur validit
 [Parameter(Mandatory = $true)]
 [ValidateNotNull()]
 [hashtable]$Info
-```
-
+```plaintext
 2. **ValidateRange** : Vérifie que la valeur est dans une plage spécifiée.
 
 ```powershell
 [ValidateRange(0, 100)]
 [int]$ConfidenceScore = 50
-```
-
+```plaintext
 3. **ValidateSet** : Vérifie que la valeur est l'une des valeurs spécifiées.
 
 ```powershell
 [ValidateSet("Raw", "Processed", "Validated", "Error")]
 [string]$ProcessingState = "Raw"
-```
-
+```plaintext
 4. **ValidateScript** : Utilise un script pour valider la valeur.
 
 ```powershell
 [ValidateScript({ Test-Path $_ -PathType Leaf })]
 [string]$FilePath
-```
-
+```plaintext
 ##### Valeurs par défaut
 
 Les paramètres optionnels ont généralement des valeurs par défaut raisonnables :
@@ -390,8 +398,7 @@ Les paramètres optionnels ont généralement des valeurs par défaut raisonnabl
 [string]$ProcessingState = "Raw",
 [int]$ConfidenceScore = 50,
 [switch]$Force = $false
-```
-
+```plaintext
 ##### Paramètres communs PowerShell
 
 Toutes les fonctions du module supportent les paramètres communs PowerShell grâce à l'attribut `[CmdletBinding()]` :
@@ -413,9 +420,9 @@ param (
 )
 
 # Utilisation
-Process-Info -Info $info -Verbose -ErrorAction Stop
-```
 
+Process-Info -Info $info -Verbose -ErrorAction Stop
+```plaintext
 #### 1.2.2 Conventions de retour
 
 ##### Types de retour
@@ -449,19 +456,22 @@ function Add-PropertyToExtractedInfo {
     )
 
     # Créer une copie de l'objet original
+
     $result = $Info.Clone()
 
     # Modifier la copie
+
     $result[$PropertyName] = $PropertyValue
 
     # Mettre à jour la date de dernière modification
+
     $result.LastModifiedDate = Get-Date
 
     # Retourner la copie modifiée
+
     return $result
 }
-```
-
+```plaintext
 ##### Retour de collections
 
 Les fonctions qui manipulent des collections retournent généralement la collection modifiée :
@@ -477,19 +487,22 @@ function Add-ItemToCollection {
     )
 
     # Créer une copie de la collection
+
     $result = $Collection.Clone()
 
     # Ajouter l'élément à la copie
+
     $result.Items += $Item
 
     # Mettre à jour les index si nécessaire
+
     # ...
 
     # Retourner la collection modifiée
+
     return $result
 }
-```
-
+```plaintext
 ##### Retour de résultats détaillés
 
 Certaines fonctions peuvent retourner des résultats détaillés sous forme de hashtable :
@@ -504,19 +517,20 @@ function Test-ExtractedInfoDetailed {
     $errors = @()
 
     # Effectuer des validations
+
     if (-not $Info.ContainsKey("Id")) {
         $errors += "Missing required property: Id"
     }
 
     # Retourner un résultat détaillé
+
     return @{
         IsValid = ($errors.Count -eq 0)
         ObjectType = $Info._Type
         Errors = $errors
     }
 }
-```
-
+```plaintext
 ##### Gestion des erreurs dans les valeurs de retour
 
 Les fonctions qui peuvent échouer utilisent généralement des exceptions plutôt que des codes de retour :
@@ -536,8 +550,7 @@ function Process-CriticalOperation {
 
     return $result
 }
-```
-
+```plaintext
 Cependant, certaines fonctions utilitaires peuvent retourner `$null` ou une valeur spéciale pour indiquer un échec :
 
 ```powershell
@@ -557,8 +570,7 @@ function Try-GetProperty {
         return $null
     }
 }
-```
-
+```plaintext
 #### 1.2.3 Exemples d'application des conventions
 
 ##### Exemple 1 : Fonction de création
@@ -566,6 +578,7 @@ function Try-GetProperty {
 ```powershell
 function New-CustomExtractedInfo {
     <#
+
     .SYNOPSIS
     Crée un nouvel objet d'information extraite personnalisé.
 
@@ -590,6 +603,7 @@ function New-CustomExtractedInfo {
     .EXAMPLE
     $info = New-CustomExtractedInfo -CustomProperty "Value" -Source "document.txt"
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -607,23 +621,26 @@ function New-CustomExtractedInfo {
     )
 
     # Créer un objet de base
+
     $info = New-ExtractedInfo -Source $Source -ExtractorName $ExtractorName -ProcessingState $ProcessingState -ConfidenceScore $ConfidenceScore
 
     # Modifier le type
+
     $info._Type = "CustomExtractedInfo"
 
     # Ajouter la propriété personnalisée
+
     $info.CustomProperty = $CustomProperty
 
     return $info
 }
-```
-
+```plaintext
 ##### Exemple 2 : Fonction de manipulation
 
 ```powershell
 function Set-ExtractedInfoProperty {
     <#
+
     .SYNOPSIS
     Définit une propriété dans un objet d'information extraite.
 
@@ -645,6 +662,7 @@ function Set-ExtractedInfoProperty {
     .EXAMPLE
     $modifiedInfo = Set-ExtractedInfoProperty -Info $info -PropertyName "Category" -PropertyValue "Document"
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -662,29 +680,33 @@ function Set-ExtractedInfoProperty {
 
     process {
         # Vérifier si la propriété existe déjà
+
         if ($Info.ContainsKey($PropertyName) -and -not $Force) {
             throw "La propriété '$PropertyName' existe déjà. Utilisez -Force pour la remplacer."
         }
 
         # Créer une copie de l'objet
+
         $result = $Info.Clone()
 
         # Définir la propriété
+
         $result[$PropertyName] = $PropertyValue
 
         # Mettre à jour la date de dernière modification
+
         $result.LastModifiedDate = Get-Date
 
         return $result
     }
 }
-```
-
+```plaintext
 ##### Exemple 3 : Fonction de validation
 
 ```powershell
 function Test-CustomExtractedInfo {
     <#
+
     .SYNOPSIS
     Vérifie si un objet est un objet CustomExtractedInfo valide.
 
@@ -704,6 +726,7 @@ function Test-CustomExtractedInfo {
     .EXAMPLE
     $validationResult = Test-CustomExtractedInfo -Info $info -Detailed
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -717,15 +740,18 @@ function Test-CustomExtractedInfo {
         $errors = @()
 
         # Vérifier le type
+
         if ($Info._Type -ne "CustomExtractedInfo") {
             $errors += "Type invalide : $($Info._Type) (attendu : CustomExtractedInfo)"
         }
 
         # Vérifier les propriétés de base (via la fonction existante)
+
         $baseValidation = Get-ExtractedInfoValidationErrors -Info $Info
         $errors += $baseValidation
 
         # Vérifier la propriété spécifique
+
         if (-not $Info.ContainsKey("CustomProperty")) {
             $errors += "Propriété requise manquante : CustomProperty"
         }
@@ -734,6 +760,7 @@ function Test-CustomExtractedInfo {
         }
 
         # Retourner le résultat
+
         if ($Detailed) {
             return @{
                 IsValid = ($errors.Count -eq 0)
@@ -746,8 +773,7 @@ function Test-CustomExtractedInfo {
         }
     }
 }
-```
-
+```plaintext
 En suivant ces conventions de paramètres et de retour, vous pouvez créer des fonctions qui s'intègrent parfaitement avec le module existant et qui offrent une expérience utilisateur cohérente.
 
 ### 1.3 Gestion des erreurs et validation
@@ -786,43 +812,41 @@ La validation des paramètres est effectuée à plusieurs niveaux :
 [ValidateNotNull()]
 [ValidateRange(0, 100)]
 [int]$ConfidenceScore
-```
-
+```plaintext
 2. **Validation manuelle dans le corps de la fonction** : Utilisée pour les validations plus complexes ou spécifiques.
 
 ```powershell
 if ($PropertyName -match '[^a-zA-Z0-9_]') {
     throw "Le nom de propriété '$PropertyName' contient des caractères non autorisés. Utilisez uniquement des lettres, des chiffres et des underscores."
 }
-```
-
+```plaintext
 3. **Validation conditionnelle** : Utilisée lorsque la validation dépend de certaines conditions.
 
 ```powershell
 if ($ProcessingState -eq "Validated" -and $ConfidenceScore -lt 80) {
     throw "Un objet avec l'état 'Validated' doit avoir un score de confiance d'au moins 80 (actuel : $ConfidenceScore)."
 }
-```
-
+```plaintext
 ##### Validation des objets
 
 La validation des objets d'information extraite est généralement effectuée à l'aide des fonctions de validation du module :
 
 ```powershell
 # Validation simple
+
 if (-not (Test-ExtractedInfo -Info $Info)) {
     throw "L'objet d'information extraite n'est pas valide."
 }
 
 # Validation détaillée
+
 $validationResult = Get-ExtractedInfoValidationErrors -Info $Info
 if ($validationResult.Count -gt 0) {
     $errorMessage = "L'objet d'information extraite n'est pas valide :`n"
     $errorMessage += $validationResult -join "`n"
     throw $errorMessage
 }
-```
-
+```plaintext
 Pour les types personnalisés, vous pouvez créer des fonctions de validation spécifiques :
 
 ```powershell
@@ -833,24 +857,26 @@ function Test-CustomExtractedInfo {
     )
 
     # Vérifier d'abord que c'est un objet d'information extraite valide
+
     if (-not (Test-ExtractedInfo -Info $Info)) {
         return $false
     }
 
     # Vérifier que c'est bien du type attendu
+
     if ($Info._Type -ne "CustomExtractedInfo") {
         return $false
     }
 
     # Vérifier les propriétés spécifiques
+
     if (-not $Info.ContainsKey("CustomProperty") -or [string]::IsNullOrEmpty($Info.CustomProperty)) {
         return $false
     }
 
     return $true
 }
-```
-
+```plaintext
 #### 1.3.4 Gestion des exceptions
 
 ##### Génération d'exceptions
@@ -874,6 +900,7 @@ function Process-CriticalOperation {
 
     try {
         # Opération qui peut échouer
+
         $result = Invoke-RiskyOperation -Input $Info
     }
     catch {
@@ -882,8 +909,7 @@ function Process-CriticalOperation {
 
     return $result
 }
-```
-
+```plaintext
 ##### Capture et gestion des exceptions
 
 Les fonctions qui appellent d'autres fonctions doivent gérer les exceptions de manière appropriée :
@@ -907,10 +933,12 @@ function Safe-ProcessMultipleItems {
             $errors += "Erreur lors du traitement de l'élément $($item.Id) : $_"
             Write-Warning "Échec du traitement de l'élément $($item.Id) : $_"
             # Continuer avec l'élément suivant
+
         }
     }
 
     # Journaliser les erreurs
+
     if ($errors.Count -gt 0) {
         $errorLog = Join-Path $env:TEMP "ProcessErrors_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
         $errors | Out-File -FilePath $errorLog -Encoding utf8
@@ -919,8 +947,7 @@ function Safe-ProcessMultipleItems {
 
     return $results
 }
-```
-
+```plaintext
 ##### Nettoyage des ressources
 
 Utilisez des blocs `try`/`finally` pour garantir que les ressources sont correctement libérées, même en cas d'erreur :
@@ -936,9 +963,11 @@ function Process-WithCleanup {
 
     try {
         # Créer le fichier temporaire
+
         "Contenu temporaire" | Out-File -FilePath $tempFile -Encoding utf8
 
         # Opération qui peut échouer
+
         $result = Process-File -InputPath $tempFile -OutputPath $FilePath
 
         return $result
@@ -949,14 +978,14 @@ function Process-WithCleanup {
     }
     finally {
         # Nettoyer, même en cas d'erreur
+
         if (Test-Path $tempFile) {
             Remove-Item -Path $tempFile -Force
             Write-Verbose "Fichier temporaire supprimé : $tempFile"
         }
     }
 }
-```
-
+```plaintext
 #### 1.3.5 Journalisation et débogage
 
 ##### Messages de journalisation
@@ -974,12 +1003,14 @@ function Process-WithLogging {
     Write-Verbose "Début du traitement de l'objet $($Info.Id)"
 
     # Validation
+
     if (-not (Test-ExtractedInfo -Info $Info)) {
         Write-Error "L'objet $($Info.Id) n'est pas valide"
         return $null
     }
 
     # Traitement
+
     Write-Verbose "Étape 1 : Préparation des données"
     # ...
 
@@ -993,8 +1024,7 @@ function Process-WithLogging {
     Write-Verbose "Traitement terminé avec succès"
     return $result
 }
-```
-
+```plaintext
 ##### Débogage
 
 Incluez des informations de débogage détaillées qui peuvent être activées avec le paramètre `-Debug` :
@@ -1010,6 +1040,7 @@ function Process-WithDebug {
     Write-Debug "Entrée : $($Info | ConvertTo-Json -Depth 2)"
 
     # Traitement
+
     $intermediateResult = Transform-Data -Input $Info.Data
     Write-Debug "Résultat intermédiaire : $($intermediateResult | ConvertTo-Json -Depth 2)"
 
@@ -1018,8 +1049,7 @@ function Process-WithDebug {
 
     return $finalResult
 }
-```
-
+```plaintext
 #### 1.3.6 Exemples complets de gestion des erreurs
 
 ##### Exemple 1 : Fonction avec validation complète
@@ -1027,6 +1057,7 @@ function Process-WithDebug {
 ```powershell
 function Update-ExtractedInfoStatus {
     <#
+
     .SYNOPSIS
     Met à jour l'état de traitement d'un objet d'information extraite.
 
@@ -1049,6 +1080,7 @@ function Update-ExtractedInfoStatus {
     .EXAMPLE
     $updatedInfo = Update-ExtractedInfoStatus -Info $info -ProcessingState "Processed" -ConfidenceScore 75
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -1074,6 +1106,7 @@ function Update-ExtractedInfoStatus {
     process {
         try {
             # Validation de l'objet d'entrée
+
             if (-not (Test-ExtractedInfo -Info $Info)) {
                 $errors = Get-ExtractedInfoValidationErrors -Info $Info
                 $errorMessage = "L'objet d'information extraite n'est pas valide :`n"
@@ -1084,6 +1117,7 @@ function Update-ExtractedInfoStatus {
             Write-Debug "Objet d'entrée valide : $($Info.Id), état actuel : $($Info.ProcessingState)"
 
             # Validation des paramètres en fonction de l'état
+
             if ($ProcessingState -eq "Error" -and [string]::IsNullOrEmpty($ErrorReason)) {
                 throw "Le paramètre ErrorReason est obligatoire lorsque ProcessingState est 'Error'."
             }
@@ -1099,18 +1133,22 @@ function Update-ExtractedInfoStatus {
             }
 
             # Créer une copie de l'objet
+
             $result = $Info.Clone()
 
             # Mettre à jour l'état
+
             $result.ProcessingState = $ProcessingState
             $result.LastModifiedDate = Get-Date
 
             # Mettre à jour le score de confiance si spécifié
+
             if ($PSBoundParameters.ContainsKey('ConfidenceScore')) {
                 $result.ConfidenceScore = $ConfidenceScore
             }
 
             # Gérer les métadonnées spécifiques à l'état
+
             if ($ProcessingState -eq "Error") {
                 $result = Add-ExtractedInfoMetadata -Info $result -Key "ErrorReason" -Value $ErrorReason
                 $result = Add-ExtractedInfoMetadata -Info $result -Key "ErrorDate" -Value (Get-Date)
@@ -1135,13 +1173,13 @@ function Update-ExtractedInfoStatus {
         Write-Verbose "Fin de Update-ExtractedInfoStatus"
     }
 }
-```
-
+```plaintext
 ##### Exemple 2 : Fonction avec gestion d'erreurs avancée
 
 ```powershell
 function Export-ExtractedInfoBatch {
     <#
+
     .SYNOPSIS
     Exporte un lot d'objets d'information extraite vers des fichiers.
 
@@ -1164,6 +1202,7 @@ function Export-ExtractedInfoBatch {
     .EXAMPLE
     Export-ExtractedInfoBatch -InfoList $infoList -OutputDirectory "C:\Exports" -Format "JSON"
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -1185,16 +1224,19 @@ function Export-ExtractedInfoBatch {
         Write-Verbose "Début de Export-ExtractedInfoBatch"
 
         # Initialiser les compteurs et les journaux
+
         $successCount = 0
         $errorCount = 0
         $errors = @()
 
         # Créer un journal d'exportation
+
         $logFile = Join-Path $OutputDirectory "Export_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
         "Début de l'exportation : $(Get-Date)" | Out-File -FilePath $logFile -Encoding utf8
         "Format : $Format" | Out-File -FilePath $logFile -Encoding utf8 -Append
 
         # Vérifier que le répertoire de sortie est accessible en écriture
+
         try {
             $testFile = Join-Path $OutputDirectory "test.tmp"
             "Test" | Out-File -FilePath $testFile -Encoding utf8
@@ -1212,17 +1254,20 @@ function Export-ExtractedInfoBatch {
         foreach ($info in $InfoList) {
             try {
                 # Valider l'objet
+
                 if (-not (Test-ExtractedInfo -Info $info)) {
                     throw "L'objet n'est pas un objet d'information extraite valide."
                 }
 
                 # Générer le nom de fichier
+
                 $fileName = "$($info.Id)_$($info._Type)"
                 $filePath = Join-Path $OutputDirectory "$fileName.$($Format.ToLower())"
 
                 Write-Verbose "Exportation de l'objet $($info.Id) vers $filePath"
 
                 # Exporter selon le format
+
                 switch ($Format) {
                     "JSON" {
                         $json = ConvertTo-ExtractedInfoJson -Info $info -Indent
@@ -1230,6 +1275,7 @@ function Export-ExtractedInfoBatch {
                     }
                     "CSV" {
                         # Convertir en format CSV (exemple simplifié)
+
                         $csvData = [PSCustomObject]@{
                             Id = $info.Id
                             Type = $info._Type
@@ -1242,6 +1288,7 @@ function Export-ExtractedInfoBatch {
                     }
                     "XML" {
                         # Convertir en format XML (exemple simplifié)
+
                         $xmlData = [PSCustomObject]@{
                             ExtractedInfo = $info
                         }
@@ -1250,6 +1297,7 @@ function Export-ExtractedInfoBatch {
                 }
 
                 # Journaliser le succès
+
                 "Exporté : $($info.Id) -> $filePath" | Out-File -FilePath $logFile -Encoding utf8 -Append
                 $successCount++
             }
@@ -1269,6 +1317,7 @@ function Export-ExtractedInfoBatch {
 
     end {
         # Journaliser le résumé
+
         $summary = @"
 Fin de l'exportation : $(Get-Date)
 Objets traités : $($successCount + $errorCount)
@@ -1278,6 +1327,7 @@ Erreurs : $errorCount
         $summary | Out-File -FilePath $logFile -Encoding utf8 -Append
 
         # Créer un fichier d'erreurs si nécessaire
+
         if ($errorCount -gt 0) {
             $errorFile = Join-Path $OutputDirectory "Export_Errors_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
             $errors | Out-File -FilePath $errorFile -Encoding utf8
@@ -1287,6 +1337,7 @@ Erreurs : $errorCount
         Write-Verbose "Fin de Export-ExtractedInfoBatch. Succès : $successCount, Erreurs : $errorCount"
 
         # Retourner un résumé
+
         return [PSCustomObject]@{
             SuccessCount = $successCount
             ErrorCount = $errorCount
@@ -1295,8 +1346,7 @@ Erreurs : $errorCount
         }
     }
 }
-```
-
+```plaintext
 #### 1.3.7 Bonnes pratiques pour la gestion des erreurs
 
 1. **Validation précoce** : Validez les entrées dès le début de la fonction pour éviter les erreurs en aval.
@@ -1345,14 +1395,15 @@ function Process-ExtractedInfo {
     )
 
     # Vérifier que c'est bien un objet ExtractedInfo
+
     if (-not $Info.ContainsKey("_Type") -or $Info._Type -notlike "*ExtractedInfo") {
         throw "L'objet fourni n'est pas un objet d'information extraite valide."
     }
 
     # Traitement...
-}
-```
 
+}
+```plaintext
 Pour une validation plus complète, utilisez la fonction `Test-ExtractedInfo` :
 
 ```powershell
@@ -1363,15 +1414,16 @@ function Process-ExtractedInfo {
     )
 
     # Validation complète
+
     if (-not (Test-ExtractedInfo -Info $Info)) {
         $errors = Get-ExtractedInfoValidationErrors -Info $Info
         throw "L'objet d'information extraite n'est pas valide : $($errors -join ', ')"
     }
 
     # Traitement...
-}
-```
 
+}
+```plaintext
 ##### Préservation de l'immutabilité
 
 Les fonctions qui modifient des objets `ExtractedInfo` doivent préserver l'immutabilité en créant une copie de l'objet avant de le modifier :
@@ -1390,18 +1442,20 @@ function Update-ExtractedInfoProperty {
     )
 
     # Créer une copie de l'objet
+
     $result = $Info.Clone()
 
     # Modifier la copie
+
     $result[$PropertyName] = $PropertyValue
 
     # Mettre à jour la date de dernière modification
+
     $result.LastModifiedDate = Get-Date
 
     return $result
 }
-```
-
+```plaintext
 ##### Mise à jour de la date de dernière modification
 
 Toute fonction qui modifie un objet `ExtractedInfo` doit mettre à jour la propriété `LastModifiedDate` :
@@ -1423,8 +1477,7 @@ function Set-ExtractedInfoConfidenceScore {
 
     return $result
 }
-```
-
+```plaintext
 ##### Accès aux propriétés
 
 Lorsque vous accédez aux propriétés d'un objet `ExtractedInfo`, utilisez la méthode `ContainsKey` pour vérifier l'existence de la propriété avant d'y accéder :
@@ -1442,8 +1495,7 @@ function Get-ExtractedInfoSourceSummary {
 
     return "Source: $($Info.Source), Extracteur: $($Info.ExtractorName)"
 }
-```
-
+```plaintext
 ##### Fonctions génériques vs. fonctions spécifiques
 
 Vous pouvez créer des fonctions qui fonctionnent avec tous les types d'informations extraites ou des fonctions spécifiques à certains types :
@@ -1457,6 +1509,7 @@ function Get-ExtractedInfoSummary {
     )
 
     # Fonctionne avec tous les types d'informations extraites
+
     $summary = "ID: $($Info.Id)`n"
     $summary += "Type: $($Info._Type)`n"
     $summary += "Source: $($Info.Source)`n"
@@ -1465,8 +1518,7 @@ function Get-ExtractedInfoSummary {
 
     return $summary
 }
-```
-
+```plaintext
 **Fonction avec comportement spécifique au type** :
 ```powershell
 function Get-ExtractedInfoDetailedSummary {
@@ -1476,11 +1528,13 @@ function Get-ExtractedInfoDetailedSummary {
     )
 
     # Base commune pour tous les types
+
     $summary = "ID: $($Info.Id)`n"
     $summary += "Type: $($Info._Type)`n"
     $summary += "Source: $($Info.Source)`n"
 
     # Comportement spécifique selon le type
+
     switch ($Info._Type) {
         "TextExtractedInfo" {
             $summary += "Texte: $($Info.Text.Substring(0, [Math]::Min(50, $Info.Text.Length)))...`n"
@@ -1501,8 +1555,7 @@ function Get-ExtractedInfoDetailedSummary {
 
     return $summary
 }
-```
-
+```plaintext
 ##### Exemples d'intégration avec le type de base
 
 **Exemple 1 : Fonction de filtrage générique**
@@ -1510,6 +1563,7 @@ function Get-ExtractedInfoDetailedSummary {
 ```powershell
 function Filter-ExtractedInfoByConfidence {
     <#
+
     .SYNOPSIS
     Filtre une liste d'objets d'information extraite selon leur score de confiance.
 
@@ -1526,6 +1580,7 @@ function Filter-ExtractedInfoByConfidence {
     .EXAMPLE
     $filteredList = Filter-ExtractedInfoByConfidence -InfoList $infoList -MinimumConfidence 75
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -1543,12 +1598,14 @@ function Filter-ExtractedInfoByConfidence {
     process {
         foreach ($info in $InfoList) {
             # Vérifier que c'est un objet ExtractedInfo valide
+
             if (-not (Test-ExtractedInfo -Info $info)) {
                 Write-Warning "Objet invalide ignoré : $($info.Id)"
                 continue
             }
 
             # Filtrer selon le score de confiance
+
             if ($info.ConfidenceScore -ge $MinimumConfidence) {
                 $results += $info
             }
@@ -1559,13 +1616,13 @@ function Filter-ExtractedInfoByConfidence {
         return $results
     }
 }
-```
-
+```plaintext
 **Exemple 2 : Fonction de transformation générique**
 
 ```powershell
 function Convert-ExtractedInfoToSummaryObject {
     <#
+
     .SYNOPSIS
     Convertit un objet d'information extraite en objet résumé simplifié.
 
@@ -1580,6 +1637,7 @@ function Convert-ExtractedInfoToSummaryObject {
     $summary = Convert-ExtractedInfoToSummaryObject -Info $info
     $summary | Format-Table
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -1588,11 +1646,13 @@ function Convert-ExtractedInfoToSummaryObject {
 
     process {
         # Vérifier que c'est un objet ExtractedInfo valide
+
         if (-not (Test-ExtractedInfo -Info $Info)) {
             throw "L'objet fourni n'est pas un objet d'information extraite valide."
         }
 
         # Créer un objet résumé de base
+
         $summary = [PSCustomObject]@{
             Id = $Info.Id
             Type = $Info._Type
@@ -1606,8 +1666,7 @@ function Convert-ExtractedInfoToSummaryObject {
         return $summary
     }
 }
-```
-
+```plaintext
 En suivant ces principes et bonnes pratiques pour l'interaction avec le type de base `ExtractedInfo`, vous pouvez créer des fonctions qui fonctionnent de manière cohérente et fiable avec tous les types d'informations extraites du module.
 
 #### 1.4.2 Interaction avec les types spécialisés
@@ -1636,33 +1695,38 @@ function Process-SpecificType {
     )
 
     # Vérifier que c'est un objet d'information extraite valide
+
     if (-not (Test-ExtractedInfo -Info $Info)) {
         throw "L'objet fourni n'est pas un objet d'information extraite valide."
     }
 
     # Traitement spécifique selon le type
+
     switch ($Info._Type) {
         "TextExtractedInfo" {
             # Traitement spécifique pour TextExtractedInfo
+
             return Process-TextInfo -Info $Info
         }
         "StructuredDataExtractedInfo" {
             # Traitement spécifique pour StructuredDataExtractedInfo
+
             return Process-StructuredDataInfo -Info $Info
         }
         "MediaExtractedInfo" {
             # Traitement spécifique pour MediaExtractedInfo
+
             return Process-MediaInfo -Info $Info
         }
         default {
             # Traitement par défaut pour les autres types
+
             Write-Warning "Type non pris en charge spécifiquement : $($Info._Type). Traitement générique appliqué."
             return Process-GenericInfo -Info $Info
         }
     }
 }
-```
-
+```plaintext
 ##### Vérification des propriétés spécifiques
 
 Lorsque vous travaillez avec des types spécialisés, vérifiez la présence des propriétés spécifiques à ce type :
@@ -1675,16 +1739,19 @@ function Process-TextInfo {
     )
 
     # Vérifier que c'est bien un TextExtractedInfo
+
     if ($Info._Type -ne "TextExtractedInfo") {
         throw "L'objet fourni n'est pas un TextExtractedInfo."
     }
 
     # Vérifier les propriétés spécifiques
+
     if (-not $Info.ContainsKey("Text")) {
         throw "Propriété 'Text' manquante dans l'objet TextExtractedInfo."
     }
 
     # Traitement spécifique
+
     $textLength = $Info.Text.Length
     $wordCount = ($Info.Text -split '\s+').Count
 
@@ -1695,8 +1762,7 @@ function Process-TextInfo {
         Language = if ($Info.ContainsKey("Language")) { $Info.Language } else { "unknown" }
     }
 }
-```
-
+```plaintext
 ##### Fonctions spécifiques à un type
 
 Vous pouvez créer des fonctions dédiées à un type spécifique :
@@ -1704,6 +1770,7 @@ Vous pouvez créer des fonctions dédiées à un type spécifique :
 ```powershell
 function Get-TextStatistics {
     <#
+
     .SYNOPSIS
     Obtient des statistiques sur un objet TextExtractedInfo.
 
@@ -1717,6 +1784,7 @@ function Get-TextStatistics {
     .EXAMPLE
     $stats = Get-TextStatistics -Info $textInfo
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -1725,16 +1793,19 @@ function Get-TextStatistics {
 
     process {
         # Vérifier que c'est bien un TextExtractedInfo
+
         if ($Info._Type -ne "TextExtractedInfo") {
             throw "L'objet fourni n'est pas un TextExtractedInfo."
         }
 
         # Vérifier la présence du texte
+
         if (-not $Info.ContainsKey("Text") -or [string]::IsNullOrEmpty($Info.Text)) {
             throw "L'objet TextExtractedInfo ne contient pas de texte valide."
         }
 
         # Analyser le texte
+
         $text = $Info.Text
         $charCount = $text.Length
         $wordCount = ($text -split '\s+').Count
@@ -1742,10 +1813,12 @@ function Get-TextStatistics {
         $sentenceCount = ($text -split '[.!?]+\s').Count
 
         # Calculer des statistiques supplémentaires
+
         $avgWordLength = if ($wordCount -gt 0) { $charCount / $wordCount } else { 0 }
         $avgSentenceLength = if ($sentenceCount -gt 0) { $wordCount / $sentenceCount } else { 0 }
 
         # Retourner les statistiques
+
         return [PSCustomObject]@{
             CharacterCount = $charCount
             WordCount = $wordCount
@@ -1757,8 +1830,7 @@ function Get-TextStatistics {
         }
     }
 }
-```
-
+```plaintext
 ##### Fonctions qui supportent plusieurs types spécifiques
 
 Vous pouvez également créer des fonctions qui supportent plusieurs types spécifiques avec des comportements adaptés :
@@ -1766,6 +1838,7 @@ Vous pouvez également créer des fonctions qui supportent plusieurs types spéc
 ```powershell
 function Export-ExtractedInfoContent {
     <#
+
     .SYNOPSIS
     Exporte le contenu principal d'un objet d'information extraite dans un fichier.
 
@@ -1785,6 +1858,7 @@ function Export-ExtractedInfoContent {
     .EXAMPLE
     Export-ExtractedInfoContent -Info $textInfo -OutputPath "C:\Exports\content.txt"
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -1798,11 +1872,13 @@ function Export-ExtractedInfoContent {
 
     process {
         # Vérifier que c'est un objet d'information extraite valide
+
         if (-not (Test-ExtractedInfo -Info $Info)) {
             throw "L'objet fourni n'est pas un objet d'information extraite valide."
         }
 
         # Vérifier si le fichier existe déjà
+
         if (Test-Path $OutputPath -PathType Leaf) {
             if (-not $Force) {
                 throw "Le fichier '$OutputPath' existe déjà. Utilisez -Force pour l'écraser."
@@ -1810,15 +1886,18 @@ function Export-ExtractedInfoContent {
         }
 
         # Créer le répertoire parent si nécessaire
+
         $parentDir = Split-Path -Parent $OutputPath
         if (-not (Test-Path $parentDir -PathType Container)) {
             New-Item -Path $parentDir -ItemType Directory -Force | Out-Null
         }
 
         # Exporter selon le type
+
         switch ($Info._Type) {
             "TextExtractedInfo" {
                 # Exporter le texte
+
                 if (-not $Info.ContainsKey("Text")) {
                     throw "L'objet TextExtractedInfo ne contient pas de texte."
                 }
@@ -1828,6 +1907,7 @@ function Export-ExtractedInfoContent {
             }
             "StructuredDataExtractedInfo" {
                 # Exporter les données structurées en JSON
+
                 if (-not $Info.ContainsKey("Data")) {
                     throw "L'objet StructuredDataExtractedInfo ne contient pas de données."
                 }
@@ -1837,6 +1917,7 @@ function Export-ExtractedInfoContent {
             }
             "MediaExtractedInfo" {
                 # Créer un lien symbolique ou copier le fichier média
+
                 if (-not $Info.ContainsKey("MediaPath")) {
                     throw "L'objet MediaExtractedInfo ne contient pas de chemin média."
                 }
@@ -1850,6 +1931,7 @@ function Export-ExtractedInfoContent {
             }
             default {
                 # Exporter un résumé pour les autres types
+
                 $summary = "ID: $($Info.Id)`n"
                 $summary += "Type: $($Info._Type)`n"
                 $summary += "Source: $($Info.Source)`n"
@@ -1863,11 +1945,11 @@ function Export-ExtractedInfoContent {
         }
 
         # Retourner le chemin du fichier exporté
+
         return $OutputPath
     }
 }
-```
-
+```plaintext
 ##### Extension pour les types personnalisés
 
 Lorsque vous créez des fonctions qui doivent prendre en charge des types personnalisés, utilisez une approche extensible :
@@ -1875,6 +1957,7 @@ Lorsque vous créez des fonctions qui doivent prendre en charge des types person
 ```powershell
 function Get-ExtractedInfoContentType {
     <#
+
     .SYNOPSIS
     Détermine le type de contenu d'un objet d'information extraite.
 
@@ -1888,6 +1971,7 @@ function Get-ExtractedInfoContentType {
     .EXAMPLE
     $contentType = Get-ExtractedInfoContentType -Info $info
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -1896,14 +1980,17 @@ function Get-ExtractedInfoContentType {
 
     process {
         # Vérifier que c'est un objet d'information extraite valide
+
         if (-not (Test-ExtractedInfo -Info $Info)) {
             throw "L'objet fourni n'est pas un objet d'information extraite valide."
         }
 
         # Déterminer le type de contenu selon le type d'information
+
         switch -Regex ($Info._Type) {
             "TextExtractedInfo" {
                 # Déterminer le type de contenu selon la langue
+
                 if ($Info.ContainsKey("Language") -and $Info.Language -eq "html") {
                     return "text/html"
                 }
@@ -1913,6 +2000,7 @@ function Get-ExtractedInfoContentType {
             }
             "StructuredDataExtractedInfo" {
                 # Déterminer le type de contenu selon le format des données
+
                 if ($Info.ContainsKey("DataFormat")) {
                     switch ($Info.DataFormat) {
                         "JSON" { return "application/json" }
@@ -1923,14 +2011,17 @@ function Get-ExtractedInfoContentType {
                 }
                 else {
                     return "application/json" # Par défaut pour les données structurées
+
                 }
             }
             "MediaExtractedInfo" {
                 # Déterminer le type de contenu selon le type de média
+
                 if ($Info.ContainsKey("MediaType")) {
                     switch ($Info.MediaType) {
                         "Image" {
                             # Déterminer le type d'image selon l'extension du fichier
+
                             if ($Info.ContainsKey("MediaPath")) {
                                 $extension = [System.IO.Path]::GetExtension($Info.MediaPath).ToLower()
                                 switch ($extension) {
@@ -1948,8 +2039,11 @@ function Get-ExtractedInfoContentType {
                             }
                         }
                         "Video" { return "video/mp4" } # Par défaut pour les vidéos
+
                         "Audio" { return "audio/mpeg" } # Par défaut pour les audios
+
                         "Document" { return "application/pdf" } # Par défaut pour les documents
+
                         default { return "application/octet-stream" }
                     }
                 }
@@ -1958,6 +2052,7 @@ function Get-ExtractedInfoContentType {
                 }
             }
             # Support pour les types personnalisés
+
             "GeoLocationExtractedInfo" {
                 return "application/geo+json"
             }
@@ -1966,13 +2061,13 @@ function Get-ExtractedInfoContentType {
             }
             default {
                 # Type par défaut pour les autres types
+
                 return "application/octet-stream"
             }
         }
     }
 }
-```
-
+```plaintext
 ##### Exemples d'intégration avec les types spécialisés
 
 **Exemple 1 : Fonction de traitement de texte**
@@ -1980,6 +2075,7 @@ function Get-ExtractedInfoContentType {
 ```powershell
 function Format-ExtractedText {
     <#
+
     .SYNOPSIS
     Formate le texte d'un objet TextExtractedInfo.
 
@@ -1996,6 +2092,7 @@ function Format-ExtractedText {
     .EXAMPLE
     $formattedInfo = Format-ExtractedText -Info $textInfo -Format "Title"
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -2008,19 +2105,23 @@ function Format-ExtractedText {
 
     process {
         # Vérifier que c'est bien un TextExtractedInfo
+
         if ($Info._Type -ne "TextExtractedInfo") {
             throw "L'objet fourni n'est pas un TextExtractedInfo."
         }
 
         # Vérifier la présence du texte
+
         if (-not $Info.ContainsKey("Text") -or $null -eq $Info.Text) {
             throw "L'objet TextExtractedInfo ne contient pas de texte."
         }
 
         # Créer une copie de l'objet
+
         $result = $Info.Clone()
 
         # Formater le texte selon l'option spécifiée
+
         switch ($Format) {
             "Upper" {
                 $result.Text = $Info.Text.ToUpper()
@@ -2034,6 +2135,7 @@ function Format-ExtractedText {
             }
             "Sentence" {
                 # Mettre la première lettre en majuscule et le reste en minuscules
+
                 if ($Info.Text.Length -gt 0) {
                     $firstChar = $Info.Text.Substring(0, 1).ToUpper()
                     $restOfText = if ($Info.Text.Length -gt 1) { $Info.Text.Substring(1).ToLower() } else { "" }
@@ -2046,18 +2148,19 @@ function Format-ExtractedText {
         }
 
         # Mettre à jour la date de dernière modification
+
         $result.LastModifiedDate = Get-Date
 
         return $result
     }
 }
-```
-
+```plaintext
 **Exemple 2 : Fonction de traitement de données structurées**
 
 ```powershell
 function Get-StructuredDataProperty {
     <#
+
     .SYNOPSIS
     Récupère une propriété spécifique dans les données structurées d'un objet StructuredDataExtractedInfo.
 
@@ -2077,6 +2180,7 @@ function Get-StructuredDataProperty {
     .EXAMPLE
     $value = Get-StructuredDataProperty -Info $dataInfo -PropertyPath "Person.Address.City" -DefaultValue "Unknown"
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -2091,16 +2195,19 @@ function Get-StructuredDataProperty {
 
     process {
         # Vérifier que c'est bien un StructuredDataExtractedInfo
+
         if ($Info._Type -ne "StructuredDataExtractedInfo") {
             throw "L'objet fourni n'est pas un StructuredDataExtractedInfo."
         }
 
         # Vérifier la présence des données
+
         if (-not $Info.ContainsKey("Data") -or $null -eq $Info.Data) {
             throw "L'objet StructuredDataExtractedInfo ne contient pas de données."
         }
 
         # Fonction récursive pour accéder à une propriété imbriquée
+
         function Get-NestedProperty {
             param (
                 [object]$Object,
@@ -2108,16 +2215,19 @@ function Get-StructuredDataProperty {
             )
 
             # Si l'objet est null, retourner la valeur par défaut
+
             if ($null -eq $Object) {
                 return $DefaultValue
             }
 
             # Analyser le chemin
+
             if ($Path -match '^([^\.\[\]]+)(\..+|\[\d+\].+)?$') {
                 $currentProp = $Matches[1]
                 $remainingPath = $Matches[2]
 
                 # Accéder à la propriété actuelle
+
                 $currentValue = if ($Object -is [hashtable] -or $Object -is [System.Collections.Specialized.OrderedDictionary]) {
                     if ($Object.ContainsKey($currentProp)) { $Object[$currentProp] } else { $null }
                 }
@@ -2134,13 +2244,16 @@ function Get-StructuredDataProperty {
                 }
 
                 # Si c'est la fin du chemin, retourner la valeur
+
                 if ([string]::IsNullOrEmpty($remainingPath)) {
                     return $currentValue ?? $DefaultValue
                 }
 
                 # Sinon, continuer avec le reste du chemin
+
                 if ($remainingPath -match '^\[(\d+)\](.*)$') {
                     # Accès à un élément de tableau
+
                     $index = [int]$Matches[1]
                     $nextPath = $Matches[2]
 
@@ -2153,6 +2266,7 @@ function Get-StructuredDataProperty {
                 }
                 elseif ($remainingPath -match '^\.(.+)$') {
                     # Accès à une propriété imbriquée
+
                     return Get-NestedProperty -Object $currentValue -Path $Matches[1]
                 }
             }
@@ -2161,16 +2275,17 @@ function Get-StructuredDataProperty {
         }
 
         # Récupérer la propriété
+
         return Get-NestedProperty -Object $Info.Data -Path $PropertyPath
     }
 }
-```
-
+```plaintext
 **Exemple 3 : Fonction de traitement de média**
 
 ```powershell
 function Get-MediaMetadata {
     <#
+
     .SYNOPSIS
     Récupère les métadonnées d'un fichier média référencé par un objet MediaExtractedInfo.
 
@@ -2184,6 +2299,7 @@ function Get-MediaMetadata {
     .EXAMPLE
     $metadata = Get-MediaMetadata -Info $mediaInfo
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -2192,24 +2308,29 @@ function Get-MediaMetadata {
 
     process {
         # Vérifier que c'est bien un MediaExtractedInfo
+
         if ($Info._Type -ne "MediaExtractedInfo") {
             throw "L'objet fourni n'est pas un MediaExtractedInfo."
         }
 
         # Vérifier la présence du chemin média
+
         if (-not $Info.ContainsKey("MediaPath") -or [string]::IsNullOrEmpty($Info.MediaPath)) {
             throw "L'objet MediaExtractedInfo ne contient pas de chemin média valide."
         }
 
         # Vérifier que le fichier existe
+
         if (-not (Test-Path $Info.MediaPath -PathType Leaf)) {
             throw "Le fichier média '$($Info.MediaPath)' n'existe pas."
         }
 
         # Récupérer les informations de base du fichier
+
         $fileInfo = Get-Item $Info.MediaPath
 
         # Créer un objet de métadonnées de base
+
         $metadata = [PSCustomObject]@{
             FileName = $fileInfo.Name
             FileExtension = $fileInfo.Extension
@@ -2220,10 +2341,12 @@ function Get-MediaMetadata {
         }
 
         # Récupérer des métadonnées spécifiques selon le type de média
+
         if ($Info.ContainsKey("MediaType")) {
             switch ($Info.MediaType) {
                 "Image" {
                     # Pour les images, récupérer les dimensions et d'autres métadonnées
+
                     try {
                         Add-Type -AssemblyName System.Drawing
                         $image = [System.Drawing.Image]::FromFile($Info.MediaPath)
@@ -2234,6 +2357,7 @@ function Get-MediaMetadata {
                         $metadata | Add-Member -MemberType NoteProperty -Name "Resolution" -Value "$($image.HorizontalResolution)x$($image.VerticalResolution) dpi"
 
                         # Libérer les ressources
+
                         $image.Dispose()
                     }
                     catch {
@@ -2241,14 +2365,14 @@ function Get-MediaMetadata {
                     }
                 }
                 # Ajouter d'autres types de média si nécessaire
+
             }
         }
 
         return $metadata
     }
 }
-```
-
+```plaintext
 En suivant ces principes et exemples pour l'interaction avec les types spécialisés, vous pouvez créer des fonctions qui exploitent pleinement les capacités spécifiques de chaque type d'information extraite tout en maintenant une cohérence globale dans le module.
 
 #### 1.4.3 Bonnes pratiques pour le traitement polymorphique
@@ -2278,32 +2402,37 @@ function Process-ExtractedInfo {
     )
 
     # Traitement commun à tous les types
+
     $result = $Info.Clone()
 
     # Traitement spécifique selon le type
+
     switch ($Info._Type) {
         "TextExtractedInfo" {
             # Traitement spécifique pour TextExtractedInfo
+
             $result.ProcessedText = $Info.Text.ToUpper()
         }
         "StructuredDataExtractedInfo" {
             # Traitement spécifique pour StructuredDataExtractedInfo
+
             $result.ProcessedData = ConvertTo-Json -InputObject $Info.Data -Depth 10
         }
         "MediaExtractedInfo" {
             # Traitement spécifique pour MediaExtractedInfo
+
             $result.ProcessedMedia = Get-FileHash -Path $Info.MediaPath -Algorithm SHA256
         }
         default {
             # Traitement par défaut pour les autres types
+
             $result.ProcessedGeneric = $true
         }
     }
 
     return $result
 }
-```
-
+```plaintext
 2. **Délégation à des fonctions spécifiques** : Délégation du traitement à des fonctions spécifiques à chaque type.
 
 ```powershell
@@ -2314,9 +2443,11 @@ function Process-ExtractedInfo {
     )
 
     # Traitement commun à tous les types
+
     $result = $Info.Clone()
 
     # Délégation à des fonctions spécifiques
+
     switch ($Info._Type) {
         "TextExtractedInfo" {
             $result = Process-TextExtractedInfo -Info $result
@@ -2352,8 +2483,8 @@ function Process-StructuredDataExtractedInfo {
 }
 
 # Autres fonctions spécifiques...
-```
 
+```plaintext
 3. **Utilisation d'expressions régulières** : Utilisation d'expressions régulières pour une correspondance plus flexible des types.
 
 ```powershell
@@ -2364,43 +2495,51 @@ function Process-ExtractedInfo {
     )
 
     # Traitement commun à tous les types
+
     $result = $Info.Clone()
 
     # Traitement spécifique selon le type avec expressions régulières
+
     switch -Regex ($Info._Type) {
         "^Text" {
             # Traitement pour tous les types commençant par "Text"
+
             $result.ProcessedText = $Info.Text.ToUpper()
         }
         "^StructuredData" {
             # Traitement pour tous les types commençant par "StructuredData"
+
             $result.ProcessedData = ConvertTo-Json -InputObject $Info.Data -Depth 10
         }
         "^Media" {
             # Traitement pour tous les types commençant par "Media"
+
             $result.ProcessedMedia = Get-FileHash -Path $Info.MediaPath -Algorithm SHA256
         }
         "^GeoLocation" {
             # Traitement pour tous les types commençant par "GeoLocation"
+
             $result.ProcessedLocation = "$($Info.Latitude),$($Info.Longitude)"
         }
         default {
             # Traitement par défaut pour les autres types
+
             $result.ProcessedGeneric = $true
         }
     }
 
     return $result
 }
-```
-
+```plaintext
 4. **Utilisation d'un registre de gestionnaires** : Utilisation d'un registre de fonctions de traitement pour chaque type.
 
 ```powershell
 # Registre global des gestionnaires de types
+
 $script:TypeHandlers = @{}
 
 # Fonction pour enregistrer un gestionnaire de type
+
 function Register-ExtractedInfoTypeHandler {
     param (
         [Parameter(Mandatory = $true)]
@@ -2414,6 +2553,7 @@ function Register-ExtractedInfoTypeHandler {
 }
 
 # Fonction pour traiter un objet avec le gestionnaire approprié
+
 function Process-ExtractedInfoWithHandlers {
     param (
         [Parameter(Mandatory = $true)]
@@ -2421,21 +2561,26 @@ function Process-ExtractedInfoWithHandlers {
     )
 
     # Vérifier que c'est un objet d'information extraite valide
+
     if (-not (Test-ExtractedInfo -Info $Info)) {
         throw "L'objet fourni n'est pas un objet d'information extraite valide."
     }
 
     # Traitement commun à tous les types
+
     $result = $Info.Clone()
 
     # Rechercher un gestionnaire pour ce type
+
     if ($script:TypeHandlers.ContainsKey($Info._Type)) {
         # Appeler le gestionnaire enregistré
+
         $handler = $script:TypeHandlers[$Info._Type]
         $result = & $handler $result
     }
     else {
         # Gestionnaire par défaut
+
         Write-Verbose "Aucun gestionnaire spécifique trouvé pour le type '$($Info._Type)'. Utilisation du gestionnaire par défaut."
         $result.ProcessedGeneric = $true
     }
@@ -2444,6 +2589,7 @@ function Process-ExtractedInfoWithHandlers {
 }
 
 # Enregistrer des gestionnaires pour différents types
+
 Register-ExtractedInfoTypeHandler -TypeName "TextExtractedInfo" -Handler {
     param ($Info)
 
@@ -2461,9 +2607,9 @@ Register-ExtractedInfoTypeHandler -TypeName "StructuredDataExtractedInfo" -Handl
 }
 
 # Utilisation
-$processedInfo = Process-ExtractedInfoWithHandlers -Info $info
-```
 
+$processedInfo = Process-ExtractedInfoWithHandlers -Info $info
+```plaintext
 ##### Bonnes pratiques pour le traitement polymorphique
 
 Pour créer des fonctions qui traitent efficacement différents types d'objets d'information extraite, suivez ces bonnes pratiques :
@@ -2474,22 +2620,23 @@ Pour créer des fonctions qui traitent efficacement différents types d'objets d
 if (-not (Test-ExtractedInfo -Info $Info)) {
     throw "L'objet fourni n'est pas un objet d'information extraite valide."
 }
-```
-
+```plaintext
 2. **Traitement commun d'abord** : Effectuez d'abord le traitement commun à tous les types, puis le traitement spécifique.
 
 ```powershell
 # Traitement commun
+
 $result = $Info.Clone()
 $result.LastModifiedDate = Get-Date
 $result.ProcessingState = "Processed"
 
 # Traitement spécifique selon le type
+
 switch ($Info._Type) {
     # ...
-}
-```
 
+}
+```plaintext
 3. **Gestion des types inconnus** : Prévoyez toujours un cas par défaut pour les types inconnus ou non pris en charge.
 
 ```powershell
@@ -2500,14 +2647,15 @@ switch ($Info._Type) {
     default {
         Write-Warning "Type non pris en charge spécifiquement : $($Info._Type). Traitement générique appliqué."
         # Traitement générique
+
     }
 }
-```
-
+```plaintext
 4. **Extensibilité** : Concevez vos fonctions pour qu'elles puissent être facilement étendues pour prendre en charge de nouveaux types.
 
 ```powershell
 # Approche extensible avec un registre de gestionnaires
+
 $script:TypeHandlers = @{}
 
 function Register-TypeHandler {
@@ -2527,14 +2675,15 @@ function Process-WithHandlers {
     }
     else {
         # Traitement par défaut
+
     }
 }
-```
-
+```plaintext
 5. **Cohérence des interfaces** : Maintenez une interface cohérente pour toutes les fonctions de traitement spécifiques.
 
 ```powershell
 # Interface cohérente pour toutes les fonctions de traitement
+
 function Process-TextExtractedInfo {
     param (
         [Parameter(Mandatory = $true)]
@@ -2545,8 +2694,11 @@ function Process-TextExtractedInfo {
     )
 
     # Validation
+
     # Traitement
+
     # Retour
+
 }
 
 function Process-StructuredDataExtractedInfo {
@@ -2559,13 +2711,14 @@ function Process-StructuredDataExtractedInfo {
     )
 
     # Même structure que Process-TextExtractedInfo
-}
-```
 
+}
+```plaintext
 6. **Documentation claire** : Documentez clairement les types pris en charge et le comportement spécifique pour chaque type.
 
 ```powershell
 <#
+
 .SYNOPSIS
 Traite un objet d'information extraite.
 
@@ -2580,12 +2733,13 @@ Types pris en charge :
 .PARAMETER Info
 L'objet d'information extraite à traiter.
 #>
-```
 
+```plaintext
 7. **Tests pour chaque type** : Testez votre fonction avec tous les types qu'elle prend en charge.
 
 ```powershell
 # Tests pour différents types
+
 Describe "Process-ExtractedInfo" {
     It "Traite correctement un TextExtractedInfo" {
         $textInfo = New-TextExtractedInfo -Source "test.txt" -Text "test"
@@ -2600,9 +2754,9 @@ Describe "Process-ExtractedInfo" {
     }
 
     # Tests pour d'autres types...
-}
-```
 
+}
+```plaintext
 ##### Exemple complet de traitement polymorphique
 
 Voici un exemple complet d'une fonction qui implémente un traitement polymorphique avancé :
@@ -2610,6 +2764,7 @@ Voici un exemple complet d'une fonction qui implémente un traitement polymorphi
 ```powershell
 function Convert-ExtractedInfoToHtml {
     <#
+
     .SYNOPSIS
     Convertit un objet d'information extraite en HTML pour l'affichage.
 
@@ -2638,6 +2793,7 @@ function Convert-ExtractedInfoToHtml {
     $html = Convert-ExtractedInfoToHtml -Info $textInfo -Theme "Light"
     $html | Out-File -FilePath "preview.html" -Encoding utf8
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -2653,6 +2809,7 @@ function Convert-ExtractedInfoToHtml {
 
     begin {
         # Fonction pour générer le HTML de base
+
         function Get-BaseHtml {
             param (
                 [hashtable]$Info,
@@ -2685,27 +2842,35 @@ function Convert-ExtractedInfoToHtml {
         /* Thème clair */
         .theme-light {
             background-color: #ffffff;
+
             color: #333333;
+
         }
 
         /* Thème sombre */
         .theme-dark {
             background-color: #222222;
+
             color: #f0f0f0;
+
         }
 
         /* Thème auto (basé sur les préférences du système) */
         @media (prefers-color-scheme: dark) {
             .theme-auto {
                 background-color: #222222;
+
                 color: #f0f0f0;
+
             }
         }
 
         @media (prefers-color-scheme: light) {
             .theme-auto {
                 background-color: #ffffff;
+
                 color: #333333;
+
             }
         }
 
@@ -2719,6 +2884,7 @@ function Convert-ExtractedInfoToHtml {
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 1px solid #ccc;
+
         }
 
         .content {
@@ -2729,6 +2895,7 @@ function Convert-ExtractedInfoToHtml {
             margin-top: 20px;
             padding-top: 10px;
             border-top: 1px solid #ccc;
+
         }
 
         table {
@@ -2741,6 +2908,7 @@ function Convert-ExtractedInfoToHtml {
             padding: 8px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+
         }
 
         /* Styles spécifiques aux types */
@@ -2748,6 +2916,7 @@ function Convert-ExtractedInfoToHtml {
             white-space: pre-wrap;
             padding: 10px;
             border: 1px solid #ddd;
+
             border-radius: 4px;
         }
 
@@ -2762,6 +2931,7 @@ function Convert-ExtractedInfoToHtml {
             height: 400px;
             width: 100%;
             border: 1px solid #ddd;
+
             border-radius: 4px;
         }
     </style>
@@ -2820,9 +2990,11 @@ function Convert-ExtractedInfoToHtml {
         }
 
         # Registre des gestionnaires de types
+
         $typeHandlers = @{}
 
         # Gestionnaire pour le type de base ExtractedInfo
+
         $typeHandlers["ExtractedInfo"] = {
             param ($Info)
 
@@ -2835,6 +3007,7 @@ function Convert-ExtractedInfoToHtml {
         }
 
         # Gestionnaire pour TextExtractedInfo
+
         $typeHandlers["TextExtractedInfo"] = {
             param ($Info)
 
@@ -2851,6 +3024,7 @@ function Convert-ExtractedInfoToHtml {
         }
 
         # Gestionnaire pour StructuredDataExtractedInfo
+
         $typeHandlers["StructuredDataExtractedInfo"] = {
             param ($Info)
 
@@ -2877,6 +3051,7 @@ function Convert-ExtractedInfoToHtml {
         }
 
         # Gestionnaire pour MediaExtractedInfo
+
         $typeHandlers["MediaExtractedInfo"] = {
             param ($Info)
 
@@ -2893,6 +3068,7 @@ function Convert-ExtractedInfoToHtml {
 
             if ($mediaType -eq "Image" -and (Test-Path $mediaPath -PathType Leaf)) {
                 # Convertir l'image en base64 pour l'inclure dans le HTML
+
                 try {
                     $imageBytes = [System.IO.File]::ReadAllBytes($mediaPath)
                     $base64Image = [System.Convert]::ToBase64String($imageBytes)
@@ -2922,6 +3098,7 @@ function Convert-ExtractedInfoToHtml {
         }
 
         # Gestionnaire pour GeoLocationExtractedInfo
+
         $typeHandlers["GeoLocationExtractedInfo"] = {
             param ($Info)
 
@@ -2994,11 +3171,13 @@ function Convert-ExtractedInfoToHtml {
 
     process {
         # Vérifier que c'est un objet d'information extraite valide
+
         if (-not (Test-ExtractedInfo -Info $Info)) {
             throw "L'objet fourni n'est pas un objet d'information extraite valide."
         }
 
         # Déterminer le gestionnaire à utiliser
+
         $handler = $null
 
         if ($typeHandlers.ContainsKey($Info._Type)) {
@@ -3006,18 +3185,19 @@ function Convert-ExtractedInfoToHtml {
         }
         else {
             # Utiliser le gestionnaire par défaut
+
             $handler = $typeHandlers["ExtractedInfo"]
             Write-Verbose "Aucun gestionnaire spécifique trouvé pour le type '$($Info._Type)'. Utilisation du gestionnaire par défaut."
         }
 
         # Appeler le gestionnaire
+
         $html = & $handler $Info
 
         return $html
     }
 }
-```
-
+```plaintext
 En suivant ces bonnes pratiques pour le traitement polymorphique, vous pouvez créer des fonctions qui traitent efficacement différents types d'objets d'information extraite tout en maintenant une architecture extensible et cohérente.
 
 #### 1.4.4 Exemples d'intégration avec différents types
@@ -3031,6 +3211,7 @@ L'exemple suivant montre une fonction de recherche qui peut trouver des informat
 ```powershell
 function Find-ExtractedInfoContent {
     <#
+
     .SYNOPSIS
     Recherche un terme dans le contenu d'objets d'information extraite.
 
@@ -3066,6 +3247,7 @@ function Find-ExtractedInfoContent {
     .EXAMPLE
     $results = Find-ExtractedInfoContent -InfoList $infoCollection.Items -SearchTerm "^\d{3}-\d{2}-\d{4}$" -UseRegex
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -3088,12 +3270,15 @@ function Find-ExtractedInfoContent {
         Write-Verbose "Début de Find-ExtractedInfoContent"
 
         # Résultats de la recherche
+
         $results = @()
 
         # Configurer les options de recherche
+
         $regexOptions = if ($CaseSensitive) { [System.Text.RegularExpressions.RegexOptions]::None } else { [System.Text.RegularExpressions.RegexOptions]::IgnoreCase }
 
         # Compiler l'expression régulière si nécessaire
+
         $regex = if ($UseRegex) {
             try {
                 [System.Text.RegularExpressions.Regex]::new($SearchTerm, $regexOptions)
@@ -3104,11 +3289,13 @@ function Find-ExtractedInfoContent {
         }
         else {
             # Échapper les caractères spéciaux pour une recherche de texte simple
+
             $escapedTerm = [System.Text.RegularExpressions.Regex]::Escape($SearchTerm)
             [System.Text.RegularExpressions.Regex]::new($escapedTerm, $regexOptions)
         }
 
         # Fonction pour rechercher dans une chaîne
+
         function Search-InString {
             param (
                 [string]$Text,
@@ -3138,6 +3325,7 @@ function Find-ExtractedInfoContent {
         }
 
         # Fonction pour obtenir le contexte autour d'une correspondance
+
         function Get-MatchContext {
             param (
                 [string]$Text,
@@ -3156,6 +3344,7 @@ function Find-ExtractedInfoContent {
         }
 
         # Fonction pour rechercher dans un objet hashtable ou PSCustomObject
+
         function Search-InObject {
             param (
                 [object]$Object,
@@ -3276,6 +3465,7 @@ function Find-ExtractedInfoContent {
     process {
         foreach ($info in $InfoList) {
             # Vérifier que c'est un objet d'information extraite valide
+
             if (-not (Test-ExtractedInfo -Info $info)) {
                 Write-Warning "Objet invalide ignoré : $($info.Id)"
                 continue
@@ -3284,12 +3474,15 @@ function Find-ExtractedInfoContent {
             Write-Verbose "Recherche dans l'objet $($info.Id) de type $($info._Type)"
 
             # Initialiser les correspondances pour cet objet
+
             $infoMatches = @()
 
             # Recherche spécifique selon le type
+
             switch ($info._Type) {
                 "TextExtractedInfo" {
                     # Rechercher dans le texte
+
                     if ($info.ContainsKey("Text") -and -not [string]::IsNullOrEmpty($info.Text)) {
                         $textMatches = Search-InString -Text $info.Text -Regex $regex
 
@@ -3303,6 +3496,7 @@ function Find-ExtractedInfoContent {
                     }
 
                     # Rechercher dans la langue
+
                     if ($info.ContainsKey("Language") -and -not [string]::IsNullOrEmpty($info.Language)) {
                         $languageMatches = Search-InString -Text $info.Language -Regex $regex
 
@@ -3317,6 +3511,7 @@ function Find-ExtractedInfoContent {
                 }
                 "StructuredDataExtractedInfo" {
                     # Rechercher dans les données structurées
+
                     if ($info.ContainsKey("Data") -and $null -ne $info.Data) {
                         $dataMatches = Search-InObject -Object $info.Data -Regex $regex
 
@@ -3330,6 +3525,7 @@ function Find-ExtractedInfoContent {
                     }
 
                     # Rechercher dans le format des données
+
                     if ($info.ContainsKey("DataFormat") -and -not [string]::IsNullOrEmpty($info.DataFormat)) {
                         $formatMatches = Search-InString -Text $info.DataFormat -Regex $regex
 
@@ -3344,6 +3540,7 @@ function Find-ExtractedInfoContent {
                 }
                 "MediaExtractedInfo" {
                     # Rechercher dans le chemin du média
+
                     if ($info.ContainsKey("MediaPath") -and -not [string]::IsNullOrEmpty($info.MediaPath)) {
                         $pathMatches = Search-InString -Text $info.MediaPath -Regex $regex
 
@@ -3357,6 +3554,7 @@ function Find-ExtractedInfoContent {
                     }
 
                     # Rechercher dans le type de média
+
                     if ($info.ContainsKey("MediaType") -and -not [string]::IsNullOrEmpty($info.MediaType)) {
                         $typeMatches = Search-InString -Text $info.MediaType -Regex $regex
 
@@ -3371,6 +3569,7 @@ function Find-ExtractedInfoContent {
                 }
                 "GeoLocationExtractedInfo" {
                     # Rechercher dans l'adresse
+
                     if ($info.ContainsKey("Address") -and -not [string]::IsNullOrEmpty($info.Address)) {
                         $addressMatches = Search-InString -Text $info.Address -Regex $regex
 
@@ -3384,6 +3583,7 @@ function Find-ExtractedInfoContent {
                     }
 
                     # Rechercher dans la ville
+
                     if ($info.ContainsKey("City") -and -not [string]::IsNullOrEmpty($info.City)) {
                         $cityMatches = Search-InString -Text $info.City -Regex $regex
 
@@ -3397,6 +3597,7 @@ function Find-ExtractedInfoContent {
                     }
 
                     # Rechercher dans le pays
+
                     if ($info.ContainsKey("Country") -and -not [string]::IsNullOrEmpty($info.Country)) {
                         $countryMatches = Search-InString -Text $info.Country -Regex $regex
 
@@ -3411,6 +3612,7 @@ function Find-ExtractedInfoContent {
                 }
                 default {
                     # Pour les autres types, rechercher dans les propriétés de base
+
                     if ($info.ContainsKey("Source") -and -not [string]::IsNullOrEmpty($info.Source)) {
                         $sourceMatches = Search-InString -Text $info.Source -Regex $regex
 
@@ -3438,6 +3640,7 @@ function Find-ExtractedInfoContent {
             }
 
             # Rechercher dans les métadonnées si demandé
+
             if ($IncludeMetadata -and $info.ContainsKey("Metadata") -and $null -ne $info.Metadata) {
                 $metadataMatches = Search-InObject -Object $info.Metadata -Regex $regex
 
@@ -3451,6 +3654,7 @@ function Find-ExtractedInfoContent {
             }
 
             # Si des correspondances ont été trouvées, ajouter l'objet aux résultats
+
             if ($infoMatches.Count -gt 0) {
                 $results += [PSCustomObject]@{
                     Info = $info
@@ -3465,8 +3669,7 @@ function Find-ExtractedInfoContent {
         return $results
     }
 }
-```
-
+```plaintext
 **Caractéristiques clés de cette fonction :**
 
 1. **Traitement polymorphique** : La fonction adapte son comportement en fonction du type d'objet d'information extraite, en recherchant dans les propriétés spécifiques à chaque type.
@@ -3483,9 +3686,11 @@ function Find-ExtractedInfoContent {
 
 ```powershell
 # Créer une collection d'objets d'information extraite de différents types
+
 $collection = New-ExtractedInfoCollection -Name "MixedCollection"
 
 # Ajouter des objets de différents types
+
 $collection = Add-ExtractedInfoToCollection -Collection $collection -InfoList @(
     (New-TextExtractedInfo -Source "document.txt" -Text "Ceci est un exemple de texte contenant des informations importantes." -Language "fr"),
     (New-StructuredDataExtractedInfo -Source "data.json" -Data @{
@@ -3505,9 +3710,11 @@ $collection = Add-ExtractedInfoToCollection -Collection $collection -InfoList @(
 )
 
 # Rechercher le terme "important" dans tous les objets
+
 $results = Find-ExtractedInfoContent -InfoList $collection.Items -SearchTerm "important"
 
 # Afficher les résultats
+
 foreach ($result in $results) {
     Write-Host "Correspondances trouvées dans l'objet $($result.Info.Id) de type $($result.Info._Type) :"
     foreach ($match in $result.Matches) {
@@ -3519,9 +3726,11 @@ foreach ($result in $results) {
 }
 
 # Rechercher une adresse e-mail avec une expression régulière
+
 $emailResults = Find-ExtractedInfoContent -InfoList $collection.Items -SearchTerm "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" -UseRegex
 
 # Afficher les résultats
+
 foreach ($result in $emailResults) {
     Write-Host "Adresse e-mail trouvée dans l'objet $($result.Info.Id) de type $($result.Info._Type) :"
     foreach ($match in $result.Matches) {
@@ -3531,8 +3740,7 @@ foreach ($result in $emailResults) {
     }
     Write-Host ""
 }
-```
-
+```plaintext
 Cette fonction illustre comment créer une fonctionnalité qui s'intègre avec différents types d'informations extraites, en adaptant son comportement en fonction du type tout en maintenant une interface cohérente et une architecture extensible.
 
 ##### 1.4.4.2 Exemple d'une fonction de transformation adaptative
@@ -3542,6 +3750,7 @@ L'exemple suivant montre une fonction de transformation qui applique des transfo
 ```powershell
 function Convert-ExtractedInfoToStandardFormat {
     <#
+
     .SYNOPSIS
     Convertit des objets d'information extraite en un format standard.
 
@@ -3574,6 +3783,7 @@ function Convert-ExtractedInfoToStandardFormat {
     .EXAMPLE
     $collection.Items | Convert-ExtractedInfoToStandardFormat -OutputFormat "CSV" | Out-File -FilePath "export.csv"
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -3594,6 +3804,7 @@ function Convert-ExtractedInfoToStandardFormat {
         Write-Verbose "Début de Convert-ExtractedInfoToStandardFormat"
 
         # Fonction pour formater les dates
+
         function Format-Date {
             param ([datetime]$Date)
 
@@ -3601,6 +3812,7 @@ function Convert-ExtractedInfoToStandardFormat {
         }
 
         # Fonction pour aplatir un objet imbriqué
+
         function Flatten-Object {
             param (
                 [Parameter(Mandatory = $true)]
@@ -3699,6 +3911,7 @@ function Convert-ExtractedInfoToStandardFormat {
 
     process {
         # Vérifier que c'est un objet d'information extraite valide
+
         if (-not (Test-ExtractedInfo -Info $Info)) {
             throw "L'objet fourni n'est pas un objet d'information extraite valide."
         }
@@ -3706,6 +3919,7 @@ function Convert-ExtractedInfoToStandardFormat {
         Write-Verbose "Conversion de l'objet $($Info.Id) de type $($Info._Type)"
 
         # Créer un objet standard de base avec les propriétés communes
+
         $standardInfo = [ordered]@{
             Id = $Info.Id
             Type = $Info._Type
@@ -3717,11 +3931,14 @@ function Convert-ExtractedInfoToStandardFormat {
         }
 
         # Ajouter les propriétés spécifiques selon le type
+
         switch ($Info._Type) {
             "TextExtractedInfo" {
                 # Ajouter les propriétés spécifiques au texte
+
                 if ($Info.ContainsKey("Text")) {
                     # Limiter la taille du texte pour éviter des sorties trop volumineuses
+
                     $maxTextLength = 1000
                     $text = $Info.Text
 
@@ -3734,6 +3951,7 @@ function Convert-ExtractedInfoToStandardFormat {
                     $standardInfo["ContentLength"] = $Info.Text.Length
 
                     # Ajouter des statistiques sur le texte
+
                     $wordCount = ($Info.Text -split '\s+').Count
                     $lineCount = ($Info.Text -split '\r?\n').Count
 
@@ -3747,6 +3965,7 @@ function Convert-ExtractedInfoToStandardFormat {
             }
             "StructuredDataExtractedInfo" {
                 # Aplatir les données structurées
+
                 if ($Info.ContainsKey("Data") -and $null -ne $Info.Data) {
                     $flattenedData = Flatten-Object -Object $Info.Data -Prefix "Data"
 
@@ -3766,6 +3985,7 @@ function Convert-ExtractedInfoToStandardFormat {
             }
             "MediaExtractedInfo" {
                 # Ajouter les propriétés spécifiques au média
+
                 if ($Info.ContainsKey("MediaPath")) {
                     $standardInfo["ContentPath"] = $Info.MediaPath
                 }
@@ -3773,6 +3993,7 @@ function Convert-ExtractedInfoToStandardFormat {
                 if ($Info.ContainsKey("MediaType")) {
                     $standardInfo["ContentType"] = switch ($Info.MediaType) {
                         "Image" { "image/jpeg" } # Par défaut
+
                         "Video" { "video/mp4" }
                         "Audio" { "audio/mpeg" }
                         "Document" { "application/pdf" }
@@ -3787,15 +4008,18 @@ function Convert-ExtractedInfoToStandardFormat {
             }
             "GeoLocationExtractedInfo" {
                 # Formater les coordonnées géographiques
+
                 if ($Info.ContainsKey("Latitude") -and $Info.ContainsKey("Longitude")) {
                     $standardInfo["Coordinates"] = "$($Info.Latitude),$($Info.Longitude)"
                     $standardInfo["ContentType"] = "application/geo+json"
 
                     # Créer une URL Google Maps
+
                     $standardInfo["MapUrl"] = "https://www.google.com/maps?q=$($Info.Latitude),$($Info.Longitude)"
                 }
 
                 # Ajouter l'adresse formatée
+
                 $addressParts = @()
 
                 if ($Info.ContainsKey("Address") -and -not [string]::IsNullOrEmpty($Info.Address)) {
@@ -3816,6 +4040,7 @@ function Convert-ExtractedInfoToStandardFormat {
                 }
 
                 # Ajouter l'altitude si disponible
+
                 if ($Info.ContainsKey("Altitude")) {
                     $standardInfo["Altitude"] = $Info.Altitude
                     $standardInfo["AltitudeFormatted"] = "{0:N2} m" -f $Info.Altitude
@@ -3823,12 +4048,14 @@ function Convert-ExtractedInfoToStandardFormat {
             }
             default {
                 # Pour les autres types, ajouter un message générique
+
                 $standardInfo["ContentType"] = "application/octet-stream"
                 $standardInfo["Note"] = "Type personnalisé ou non pris en charge spécifiquement : $($Info._Type)"
             }
         }
 
         # Ajouter les métadonnées si demandé
+
         if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata) {
             $flattenedMetadata = Flatten-Object -Object $Info.Metadata -Prefix "Metadata"
 
@@ -3838,6 +4065,7 @@ function Convert-ExtractedInfoToStandardFormat {
         }
 
         # Convertir au format de sortie demandé
+
         switch ($OutputFormat) {
             "JSON" {
                 return ConvertTo-Json -InputObject $standardInfo -Depth 10
@@ -3850,6 +4078,7 @@ function Convert-ExtractedInfoToStandardFormat {
             }
             default {
                 # PSObject est le format par défaut
+
                 return [PSCustomObject]$standardInfo
             }
         }
@@ -3859,8 +4088,7 @@ function Convert-ExtractedInfoToStandardFormat {
         Write-Verbose "Fin de Convert-ExtractedInfoToStandardFormat"
     }
 }
-```
-
+```plaintext
 **Caractéristiques clés de cette fonction :**
 
 1. **Transformation adaptative** : La fonction applique des transformations spécifiques à chaque type d'objet d'information extraite, tout en produisant une structure de sortie cohérente.
@@ -3877,6 +4105,7 @@ function Convert-ExtractedInfoToStandardFormat {
 
 ```powershell
 # Créer des objets d'information extraite de différents types
+
 $textInfo = New-TextExtractedInfo -Source "document.txt" -Text "Ceci est un exemple de texte." -Language "fr"
 $dataInfo = New-StructuredDataExtractedInfo -Source "data.json" -Data @{
     Person = @{
@@ -3892,11 +4121,13 @@ $dataInfo = New-StructuredDataExtractedInfo -Source "data.json" -Data @{
 $geoInfo = New-GeoLocationExtractedInfo -Latitude 48.8566 -Longitude 2.3522 -City "Paris" -Country "France"
 
 # Convertir chaque objet en format standard
+
 $standardTextInfo = Convert-ExtractedInfoToStandardFormat -Info $textInfo -OutputFormat "PSObject"
 $standardDataInfo = Convert-ExtractedInfoToStandardFormat -Info $dataInfo -OutputFormat "JSON"
 $standardGeoInfo = Convert-ExtractedInfoToStandardFormat -Info $geoInfo -OutputFormat "PSObject"
 
 # Afficher les résultats
+
 Write-Host "Informations textuelles standardisées :"
 $standardTextInfo | Format-List
 
@@ -3907,12 +4138,12 @@ Write-Host "`nInformations géographiques standardisées :"
 $standardGeoInfo | Format-List
 
 # Exporter tous les objets en CSV
+
 $allObjects = @($textInfo, $dataInfo, $geoInfo)
 $csvOutput = $allObjects | Convert-ExtractedInfoToStandardFormat -OutputFormat "CSV" -IncludeMetadata
 $csvOutput | Out-File -FilePath "extracted_info_export.csv" -Encoding utf8
 Write-Host "`nExportation CSV créée : extracted_info_export.csv"
-```
-
+```plaintext
 Cette fonction illustre comment créer une fonctionnalité de transformation qui s'adapte à différents types d'objets d'information extraite, tout en produisant une sortie cohérente et structurée qui peut être facilement intégrée à d'autres systèmes.
 
 ##### 1.4.4.3 Exemple d'une fonction d'exportation universelle
@@ -3924,6 +4155,7 @@ L'exemple suivant montre une fonction d'exportation universelle qui peut exporte
 ```powershell
 function Export-ExtractedInfo {
     <#
+
     .SYNOPSIS
     Exporte des objets d'information extraite vers différents formats de fichiers.
 
@@ -3974,6 +4206,7 @@ function Export-ExtractedInfo {
     .EXAMPLE
     $textInfo | Export-ExtractedInfo -OutputPath "C:\Exports\text_export.txt" -Format "TXT"
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -4000,15 +4233,18 @@ function Export-ExtractedInfo {
         Write-Verbose "Début de Export-ExtractedInfo"
 
         # Vérifier si le chemin de sortie existe
+
         $isDirectory = Test-Path -Path $OutputPath -PathType Container
         $isFile = Test-Path -Path $OutputPath -PathType Leaf
 
         if (-not $isDirectory -and -not $isFile) {
             # Le chemin n'existe pas, vérifier s'il s'agit d'un fichier ou d'un dossier
+
             $hasExtension = [System.IO.Path]::HasExtension($OutputPath)
 
             if ($hasExtension) {
                 # C'est un fichier, créer le dossier parent
+
                 $parentDir = [System.IO.Path]::GetDirectoryName($OutputPath)
                 if (-not (Test-Path -Path $parentDir -PathType Container)) {
                     New-Item -Path $parentDir -ItemType Directory -Force | Out-Null
@@ -4016,12 +4252,14 @@ function Export-ExtractedInfo {
             }
             else {
                 # C'est un dossier, le créer
+
                 New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
                 $isDirectory = $true
             }
         }
 
         # Obtenir l'extension de fichier pour le format spécifié
+
         $extension = switch ($Format) {
             "TXT" { ".txt" }
             "JSON" { ".json" }
@@ -4035,9 +4273,11 @@ function Export-ExtractedInfo {
         }
 
         # Initialiser la liste des fichiers exportés
+
         $exportedFiles = @()
 
         # Fonction pour générer un nom de fichier unique
+
         function Get-UniqueFileName {
             param (
                 [string]$BasePath,
@@ -4060,6 +4300,7 @@ function Export-ExtractedInfo {
     process {
         foreach ($info in $InfoList) {
             # Vérifier que c'est un objet d'information extraite valide
+
             if (-not (Test-ExtractedInfo -Info $info)) {
                 Write-Warning "Objet invalide ignoré : $($info.Id)"
                 continue
@@ -4068,17 +4309,21 @@ function Export-ExtractedInfo {
             Write-Verbose "Exportation de l'objet $($info.Id) de type $($info._Type) au format $Format"
 
             # Déterminer le chemin de sortie pour cet objet
+
             $outputFilePath = if ($isDirectory) {
                 # Générer un nom de fichier basé sur l'ID et le type
+
                 $fileName = "$($info._Type)_$($info.Id)"
                 Get-UniqueFileName -BasePath $OutputPath -FileName $fileName -Extension $extension
             }
             else {
                 # Utiliser le chemin spécifié
+
                 $OutputPath
             }
 
             # Vérifier si le fichier existe déjà
+
             if (Test-Path -Path $outputFilePath -PathType Leaf) {
                 if (-not $Overwrite) {
                     Write-Warning "Le fichier '$outputFilePath' existe déjà et l'option Overwrite n'est pas spécifiée. Objet ignoré."
@@ -4087,10 +4332,12 @@ function Export-ExtractedInfo {
             }
 
             # Exporter l'objet selon son type et le format demandé
+
             try {
                 $content = $null
 
                 # Appeler la fonction d'exportation appropriée selon le type et le format
+
                 switch ($info._Type) {
                     "TextExtractedInfo" {
                         $content = Export-TextExtractedInfo -Info $info -Format $Format -IncludeMetadata:$IncludeMetadata -ExportOptions $ExportOptions
@@ -4106,11 +4353,13 @@ function Export-ExtractedInfo {
                     }
                     default {
                         # Pour les types non pris en charge spécifiquement, utiliser une exportation générique
+
                         $content = Export-GenericExtractedInfo -Info $info -Format $Format -IncludeMetadata:$IncludeMetadata -ExportOptions $ExportOptions
                     }
                 }
 
                 # Écrire le contenu dans le fichier
+
                 if ($null -ne $content) {
                     $encoding = if ($ExportOptions.ContainsKey("Encoding")) { $ExportOptions.Encoding } else { "utf8" }
                     $content | Out-File -FilePath $outputFilePath -Encoding $encoding -Force
@@ -4133,8 +4382,7 @@ function Export-ExtractedInfo {
         return $exportedFiles
     }
 }
-```
-
+```plaintext
 Cette structure de fonction d'exportation définit :
 
 1. **Une interface cohérente** : La fonction principale `Export-ExtractedInfo` fournit une interface cohérente pour exporter tous les types d'objets d'information extraite.
@@ -4158,6 +4406,7 @@ Pour que la fonction d'exportation universelle fonctionne correctement, nous dev
 ```powershell
 function Export-TextExtractedInfo {
     <#
+
     .SYNOPSIS
     Exporte un objet TextExtractedInfo vers différents formats.
 
@@ -4176,6 +4425,7 @@ function Export-TextExtractedInfo {
     .PARAMETER ExportOptions
     Options supplémentaires pour l'exportation.
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -4192,22 +4442,27 @@ function Export-TextExtractedInfo {
     )
 
     # Vérifier que c'est bien un TextExtractedInfo
+
     if ($Info._Type -ne "TextExtractedInfo") {
         throw "L'objet fourni n'est pas un TextExtractedInfo."
     }
 
     # Vérifier la présence du texte
+
     if (-not $Info.ContainsKey("Text") -or $null -eq $Info.Text) {
         throw "L'objet TextExtractedInfo ne contient pas de texte."
     }
 
     # Exporter selon le format demandé
+
     switch ($Format) {
         "TXT" {
             # Format texte brut
+
             $content = $Info.Text
 
             # Ajouter des informations de base si demandé
+
             if ($ExportOptions.ContainsKey("IncludeBasicInfo") -and $ExportOptions.IncludeBasicInfo) {
                 $header = "ID: $($Info.Id)`n"
                 $header += "Source: $($Info.Source)`n"
@@ -4221,6 +4476,7 @@ function Export-TextExtractedInfo {
             }
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata -and $Info.Metadata.Count -gt 0) {
                 $metadataText = "`n`n---`nMétadonnées:`n"
 
@@ -4235,6 +4491,7 @@ function Export-TextExtractedInfo {
         }
         "JSON" {
             # Format JSON
+
             $jsonObject = @{
                 Id = $Info.Id
                 Type = $Info._Type
@@ -4247,16 +4504,19 @@ function Export-TextExtractedInfo {
             }
 
             # Ajouter la langue si disponible
+
             if ($Info.ContainsKey("Language") -and -not [string]::IsNullOrEmpty($Info.Language)) {
                 $jsonObject["Language"] = $Info.Language
             }
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata) {
                 $jsonObject["Metadata"] = $Info.Metadata
             }
 
             # Convertir en JSON avec la profondeur et l'indentation spécifiées
+
             $depth = if ($ExportOptions.ContainsKey("JsonDepth")) { $ExportOptions.JsonDepth } else { 10 }
             $indent = if ($ExportOptions.ContainsKey("JsonIndent")) { $ExportOptions.JsonIndent } else { $false }
 
@@ -4264,6 +4524,7 @@ function Export-TextExtractedInfo {
         }
         "XML" {
             # Format XML
+
             $xmlObject = [PSCustomObject]@{
                 Id = $Info.Id
                 Type = $Info._Type
@@ -4276,11 +4537,13 @@ function Export-TextExtractedInfo {
             }
 
             # Ajouter la langue si disponible
+
             if ($Info.ContainsKey("Language") -and -not [string]::IsNullOrEmpty($Info.Language)) {
                 $xmlObject | Add-Member -MemberType NoteProperty -Name "Language" -Value $Info.Language
             }
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata) {
                 $metadataObject = [PSCustomObject]@{}
 
@@ -4292,12 +4555,14 @@ function Export-TextExtractedInfo {
             }
 
             # Convertir en XML
+
             $xmlOptions = if ($ExportOptions.ContainsKey("XmlOptions")) { $ExportOptions.XmlOptions } else { @{} }
             $xmlOptions["NoTypeInformation"] = $true
 
             $xml = $xmlObject | ConvertTo-Xml -As String @xmlOptions
 
             # Ajouter une déclaration XML si elle n'est pas présente
+
             if (-not $xml.StartsWith("<?xml")) {
                 $xml = '<?xml version="1.0" encoding="UTF-8"?>' + "`n" + $xml
             }
@@ -4306,6 +4571,7 @@ function Export-TextExtractedInfo {
         }
         "CSV" {
             # Format CSV
+
             $csvObject = [PSCustomObject]@{
                 Id = $Info.Id
                 Type = $Info._Type
@@ -4317,11 +4583,13 @@ function Export-TextExtractedInfo {
             }
 
             # Ajouter la langue si disponible
+
             if ($Info.ContainsKey("Language") -and -not [string]::IsNullOrEmpty($Info.Language)) {
                 $csvObject | Add-Member -MemberType NoteProperty -Name "Language" -Value $Info.Language
             }
 
             # Pour le texte, limiter la taille pour éviter des problèmes avec CSV
+
             $maxTextLength = if ($ExportOptions.ContainsKey("MaxTextLength")) { $ExportOptions.MaxTextLength } else { 1000 }
             $text = $Info.Text
 
@@ -4332,11 +4600,13 @@ function Export-TextExtractedInfo {
             $csvObject | Add-Member -MemberType NoteProperty -Name "Text" -Value $text
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata) {
                 foreach ($key in $Info.Metadata.Keys) {
                     $metadataValue = $Info.Metadata[$key]
 
                     # Convertir les valeurs complexes en chaînes
+
                     if ($metadataValue -is [hashtable] -or $metadataValue -is [array]) {
                         $metadataValue = ConvertTo-Json -InputObject $metadataValue -Compress
                     }
@@ -4346,6 +4616,7 @@ function Export-TextExtractedInfo {
             }
 
             # Convertir en CSV
+
             $csvOptions = if ($ExportOptions.ContainsKey("CsvOptions")) { $ExportOptions.CsvOptions } else { @{} }
             $csvOptions["NoTypeInformation"] = $true
 
@@ -4353,6 +4624,7 @@ function Export-TextExtractedInfo {
         }
         "HTML" {
             # Format HTML
+
             $title = if ($ExportOptions.ContainsKey("HtmlTitle")) {
                 $ExportOptions.HtmlTitle
             } else {
@@ -4369,6 +4641,7 @@ body {
     margin: 0;
     padding: 20px;
     color: #333;
+
 }
 .container {
     max-width: 800px;
@@ -4378,19 +4651,23 @@ body {
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
+
 }
 .content {
     margin-bottom: 20px;
     white-space: pre-wrap;
     padding: 15px;
     background-color: #f9f9f9;
+
     border: 1px solid #ddd;
+
     border-radius: 4px;
 }
 .metadata {
     margin-top: 20px;
     padding-top: 10px;
     border-top: 1px solid #eee;
+
 }
 table {
     width: 100%;
@@ -4401,9 +4678,11 @@ th, td {
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+
 }
 th {
     background-color: #f2f2f2;
+
 }
 "@
             }
@@ -4466,6 +4745,7 @@ $css
 "@
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata -and $Info.Metadata.Count -gt 0) {
                 $html += @"
 
@@ -4482,6 +4762,7 @@ $css
                     $value = $Info.Metadata[$key]
 
                     # Convertir les valeurs complexes en chaînes
+
                     if ($value -is [hashtable] -or $value -is [array]) {
                         $value = ConvertTo-Json -InputObject $value -Compress
                     }
@@ -4510,9 +4791,11 @@ $css
         }
         "MARKDOWN" {
             # Format Markdown
+
             $markdown = "# TextExtractedInfo - $($Info.Id)`n`n"
 
             $markdown += "## Informations générales`n`n"
+
             $markdown += "| Propriété | Valeur |`n"
             $markdown += "| --- | --- |`n"
             $markdown += "| ID | $($Info.Id) |`n"
@@ -4529,6 +4812,7 @@ $css
             $markdown += "`n## Contenu`n`n"
 
             # Déterminer si le contenu doit être mis en forme comme un bloc de code
+
             $formatAsCodeBlock = if ($ExportOptions.ContainsKey("FormatTextAsCodeBlock")) {
                 $ExportOptions.FormatTextAsCodeBlock
             } else {
@@ -4549,8 +4833,10 @@ $css
             }
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata -and $Info.Metadata.Count -gt 0) {
                 $markdown += "`n`n## Métadonnées`n`n"
+
                 $markdown += "| Clé | Valeur |`n"
                 $markdown += "| --- | --- |`n"
 
@@ -4558,6 +4844,7 @@ $css
                     $value = $Info.Metadata[$key]
 
                     # Convertir les valeurs complexes en chaînes
+
                     if ($value -is [hashtable] -or $value -is [array]) {
                         $value = ConvertTo-Json -InputObject $value -Compress
                     }
@@ -4570,13 +4857,13 @@ $css
         }
         default {
             # Pour les formats non pris en charge spécifiquement, utiliser JSON
+
             Write-Warning "Format '$Format' non pris en charge spécifiquement pour TextExtractedInfo. Utilisation de JSON."
             return Export-TextExtractedInfo -Info $Info -Format "JSON" -IncludeMetadata:$IncludeMetadata -ExportOptions $ExportOptions
         }
     }
 }
-```
-
+```plaintext
 Cet adaptateur pour `TextExtractedInfo` prend en charge plusieurs formats d'exportation :
 
 1. **TXT** : Exporte le texte brut, avec des options pour inclure des informations de base et des métadonnées.
@@ -4593,6 +4880,7 @@ Pour chaque format, l'adaptateur prend en compte les spécificités du type `Tex
 ```powershell
 function Export-StructuredDataExtractedInfo {
     <#
+
     .SYNOPSIS
     Exporte un objet StructuredDataExtractedInfo vers différents formats.
 
@@ -4611,6 +4899,7 @@ function Export-StructuredDataExtractedInfo {
     .PARAMETER ExportOptions
     Options supplémentaires pour l'exportation.
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -4627,19 +4916,23 @@ function Export-StructuredDataExtractedInfo {
     )
 
     # Vérifier que c'est bien un StructuredDataExtractedInfo
+
     if ($Info._Type -ne "StructuredDataExtractedInfo") {
         throw "L'objet fourni n'est pas un StructuredDataExtractedInfo."
     }
 
     # Vérifier la présence des données
+
     if (-not $Info.ContainsKey("Data") -or $null -eq $Info.Data) {
         throw "L'objet StructuredDataExtractedInfo ne contient pas de données."
     }
 
     # Exporter selon le format demandé
+
     switch ($Format) {
         "JSON" {
             # Format JSON
+
             $jsonObject = @{
                 Id = $Info.Id
                 Type = $Info._Type
@@ -4652,16 +4945,19 @@ function Export-StructuredDataExtractedInfo {
             }
 
             # Ajouter le format des données si disponible
+
             if ($Info.ContainsKey("DataFormat") -and -not [string]::IsNullOrEmpty($Info.DataFormat)) {
                 $jsonObject["DataFormat"] = $Info.DataFormat
             }
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata) {
                 $jsonObject["Metadata"] = $Info.Metadata
             }
 
             # Convertir en JSON avec la profondeur et l'indentation spécifiées
+
             $depth = if ($ExportOptions.ContainsKey("JsonDepth")) { $ExportOptions.JsonDepth } else { 10 }
             $indent = if ($ExportOptions.ContainsKey("JsonIndent")) { $ExportOptions.JsonIndent } else { $true }
 
@@ -4669,6 +4965,7 @@ function Export-StructuredDataExtractedInfo {
         }
         "XML" {
             # Format XML
+
             $xmlObject = [PSCustomObject]@{
                 Id = $Info.Id
                 Type = $Info._Type
@@ -4680,27 +4977,32 @@ function Export-StructuredDataExtractedInfo {
             }
 
             # Ajouter le format des données si disponible
+
             if ($Info.ContainsKey("DataFormat") -and -not [string]::IsNullOrEmpty($Info.DataFormat)) {
                 $xmlObject | Add-Member -MemberType NoteProperty -Name "DataFormat" -Value $Info.DataFormat
             }
 
             # Convertir les données en PSCustomObject pour une meilleure sérialisation XML
+
             $dataObject = ConvertTo-PSCustomObject -InputObject $Info.Data
             $xmlObject | Add-Member -MemberType NoteProperty -Name "Data" -Value $dataObject
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata) {
                 $metadataObject = ConvertTo-PSCustomObject -InputObject $Info.Metadata
                 $xmlObject | Add-Member -MemberType NoteProperty -Name "Metadata" -Value $metadataObject
             }
 
             # Convertir en XML
+
             $xmlOptions = if ($ExportOptions.ContainsKey("XmlOptions")) { $ExportOptions.XmlOptions } else { @{} }
             $xmlOptions["NoTypeInformation"] = $true
 
             $xml = $xmlObject | ConvertTo-Xml -As String @xmlOptions
 
             # Ajouter une déclaration XML si elle n'est pas présente
+
             if (-not $xml.StartsWith("<?xml")) {
                 $xml = '<?xml version="1.0" encoding="UTF-8"?>' + "`n" + $xml
             }
@@ -4709,9 +5011,11 @@ function Export-StructuredDataExtractedInfo {
         }
         "CSV" {
             # Format CSV - Aplatir les données structurées
+
             $flattenedData = Flatten-Object -Object $Info.Data -Prefix "Data"
 
             # Créer l'objet de base
+
             $csvObject = [PSCustomObject]@{
                 Id = $Info.Id
                 Type = $Info._Type
@@ -4723,15 +5027,18 @@ function Export-StructuredDataExtractedInfo {
             }
 
             # Ajouter le format des données si disponible
+
             if ($Info.ContainsKey("DataFormat") -and -not [string]::IsNullOrEmpty($Info.DataFormat)) {
                 $csvObject | Add-Member -MemberType NoteProperty -Name "DataFormat" -Value $Info.DataFormat
             }
 
             # Ajouter les données aplaties
+
             foreach ($key in $flattenedData.Keys) {
                 $value = $flattenedData[$key]
 
                 # Convertir les valeurs complexes en chaînes
+
                 if ($value -is [hashtable] -or $value -is [array]) {
                     $value = ConvertTo-Json -InputObject $value -Compress
                 }
@@ -4740,6 +5047,7 @@ function Export-StructuredDataExtractedInfo {
             }
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata) {
                 $flattenedMetadata = Flatten-Object -Object $Info.Metadata -Prefix "Metadata"
 
@@ -4747,6 +5055,7 @@ function Export-StructuredDataExtractedInfo {
                     $value = $flattenedMetadata[$key]
 
                     # Convertir les valeurs complexes en chaînes
+
                     if ($value -is [hashtable] -or $value -is [array]) {
                         $value = ConvertTo-Json -InputObject $value -Compress
                     }
@@ -4756,6 +5065,7 @@ function Export-StructuredDataExtractedInfo {
             }
 
             # Convertir en CSV
+
             $csvOptions = if ($ExportOptions.ContainsKey("CsvOptions")) { $ExportOptions.CsvOptions } else { @{} }
             $csvOptions["NoTypeInformation"] = $true
 
@@ -4763,6 +5073,7 @@ function Export-StructuredDataExtractedInfo {
         }
         "HTML" {
             # Format HTML
+
             $title = if ($ExportOptions.ContainsKey("HtmlTitle")) {
                 $ExportOptions.HtmlTitle
             } else {
@@ -4779,6 +5090,7 @@ body {
     margin: 0;
     padding: 20px;
     color: #333;
+
 }
 .container {
     max-width: 800px;
@@ -4788,13 +5100,16 @@ body {
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
+
 }
 .content {
     margin-bottom: 20px;
 }
 .data-container {
     background-color: #f9f9f9;
+
     border: 1px solid #ddd;
+
     border-radius: 4px;
     padding: 15px;
     overflow: auto;
@@ -4807,6 +5122,7 @@ pre {
     margin-top: 20px;
     padding-top: 10px;
     border-top: 1px solid #eee;
+
 }
 table {
     width: 100%;
@@ -4817,9 +5133,11 @@ th, td {
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+
 }
 th {
     background-color: #f2f2f2;
+
 }
 "@
             }
@@ -4831,6 +5149,7 @@ th {
             }
 
             # Convertir les données en JSON formaté pour l'affichage
+
             $jsonData = ConvertTo-Json -InputObject $Info.Data -Depth 10 -Compress:$false
 
             $html = @"
@@ -4887,6 +5206,7 @@ $css
 "@
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata -and $Info.Metadata.Count -gt 0) {
                 $html += @"
 
@@ -4903,6 +5223,7 @@ $css
                     $value = $Info.Metadata[$key]
 
                     # Convertir les valeurs complexes en chaînes
+
                     if ($value -is [hashtable] -or $value -is [array]) {
                         $value = ConvertTo-Json -InputObject $value -Compress
                     }
@@ -4931,9 +5252,11 @@ $css
         }
         "MARKDOWN" {
             # Format Markdown
+
             $markdown = "# StructuredDataExtractedInfo - $($Info.Id)`n`n"
 
             $markdown += "## Informations générales`n`n"
+
             $markdown += "| Propriété | Valeur |`n"
             $markdown += "| --- | --- |`n"
             $markdown += "| ID | $($Info.Id) |`n"
@@ -4950,13 +5273,16 @@ $css
             $markdown += "`n## Données structurées`n`n"
 
             # Convertir les données en JSON formaté
+
             $jsonData = ConvertTo-Json -InputObject $Info.Data -Depth 10 -Compress:$false
 
             $markdown += "```json`n$jsonData`n```"
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata -and $Info.Metadata.Count -gt 0) {
                 $markdown += "`n`n## Métadonnées`n`n"
+
                 $markdown += "| Clé | Valeur |`n"
                 $markdown += "| --- | --- |`n"
 
@@ -4964,6 +5290,7 @@ $css
                     $value = $Info.Metadata[$key]
 
                     # Convertir les valeurs complexes en chaînes
+
                     if ($value -is [hashtable] -or $value -is [array]) {
                         $value = ConvertTo-Json -InputObject $value -Compress
                     }
@@ -4976,6 +5303,7 @@ $css
         }
         "TXT" {
             # Format texte brut
+
             $content = "ID: $($Info.Id)`n"
             $content += "Type: $($Info._Type)`n"
             $content += "Source: $($Info.Source)`n"
@@ -4991,10 +5319,12 @@ $css
             $content += "`n--- Données structurées ---`n`n"
 
             # Convertir les données en JSON formaté
+
             $jsonData = ConvertTo-Json -InputObject $Info.Data -Depth 10 -Compress:$false
             $content += $jsonData
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata -and $Info.Metadata.Count -gt 0) {
                 $content += "`n`n--- Métadonnées ---`n`n"
 
@@ -5002,6 +5332,7 @@ $css
                     $value = $Info.Metadata[$key]
 
                     # Convertir les valeurs complexes en chaînes
+
                     if ($value -is [hashtable] -or $value -is [array]) {
                         $value = ConvertTo-Json -InputObject $value -Compress
                     }
@@ -5014,6 +5345,7 @@ $css
         }
         default {
             # Pour les formats non pris en charge spécifiquement, utiliser JSON
+
             Write-Warning "Format '$Format' non pris en charge spécifiquement pour StructuredDataExtractedInfo. Utilisation de JSON."
             return Export-StructuredDataExtractedInfo -Info $Info -Format "JSON" -IncludeMetadata:$IncludeMetadata -ExportOptions $ExportOptions
         }
@@ -5021,6 +5353,7 @@ $css
 }
 
 # Fonction utilitaire pour convertir un objet en PSCustomObject
+
 function ConvertTo-PSCustomObject {
     param (
         [Parameter(Mandatory = $true)]
@@ -5070,10 +5403,12 @@ function ConvertTo-PSCustomObject {
     }
 
     # Pour les autres types, retourner tel quel
+
     return $InputObject
 }
 
 # Fonction utilitaire pour aplatir un objet imbriqué
+
 function Flatten-Object {
     param (
         [Parameter(Mandatory = $true)]
@@ -5168,8 +5503,7 @@ function Flatten-Object {
 
     return $result
 }
-```
-
+```plaintext
 Cet adaptateur pour `StructuredDataExtractedInfo` prend en charge plusieurs formats d'exportation, avec une attention particulière aux spécificités des données structurées :
 
 1. **JSON** : Format naturel pour les données structurées, avec des options pour la profondeur et l'indentation.
@@ -5189,6 +5523,7 @@ L'adaptateur inclut également deux fonctions utilitaires importantes :
 ```powershell
 function Export-MediaExtractedInfo {
     <#
+
     .SYNOPSIS
     Exporte un objet MediaExtractedInfo vers différents formats.
 
@@ -5207,6 +5542,7 @@ function Export-MediaExtractedInfo {
     .PARAMETER ExportOptions
     Options supplémentaires pour l'exportation.
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -5223,16 +5559,19 @@ function Export-MediaExtractedInfo {
     )
 
     # Vérifier que c'est bien un MediaExtractedInfo
+
     if ($Info._Type -ne "MediaExtractedInfo") {
         throw "L'objet fourni n'est pas un MediaExtractedInfo."
     }
 
     # Vérifier la présence du chemin média
+
     if (-not $Info.ContainsKey("MediaPath") -or [string]::IsNullOrEmpty($Info.MediaPath)) {
         throw "L'objet MediaExtractedInfo ne contient pas de chemin média valide."
     }
 
     # Obtenir les métadonnées du fichier média si possible
+
     $mediaMetadata = @{}
 
     if (Test-Path -Path $Info.MediaPath -PathType Leaf) {
@@ -5248,6 +5587,7 @@ function Export-MediaExtractedInfo {
         }
 
         # Essayer d'obtenir des métadonnées supplémentaires selon le type de média
+
         if ($Info.ContainsKey("MediaType")) {
             switch ($Info.MediaType) {
                 "Image" {
@@ -5261,6 +5601,7 @@ function Export-MediaExtractedInfo {
                         $mediaMetadata["Resolution"] = "$($image.HorizontalResolution)x$($image.VerticalResolution) dpi"
 
                         # Libérer les ressources
+
                         $image.Dispose()
                     }
                     catch {
@@ -5268,6 +5609,7 @@ function Export-MediaExtractedInfo {
                     }
                 }
                 # Ajouter d'autres types de média si nécessaire
+
             }
         }
     }
@@ -5276,9 +5618,11 @@ function Export-MediaExtractedInfo {
     }
 
     # Exporter selon le format demandé
+
     switch ($Format) {
         "JSON" {
             # Format JSON
+
             $jsonObject = @{
                 Id = $Info.Id
                 Type = $Info._Type
@@ -5291,24 +5635,29 @@ function Export-MediaExtractedInfo {
             }
 
             # Ajouter le type de média si disponible
+
             if ($Info.ContainsKey("MediaType") -and -not [string]::IsNullOrEmpty($Info.MediaType)) {
                 $jsonObject["MediaType"] = $Info.MediaType
             }
 
             # Ajouter la taille du média si disponible
+
             if ($Info.ContainsKey("MediaSize")) {
                 $jsonObject["MediaSize"] = $Info.MediaSize
             }
 
             # Ajouter les métadonnées du fichier
+
             $jsonObject["FileMetadata"] = $mediaMetadata
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata) {
                 $jsonObject["Metadata"] = $Info.Metadata
             }
 
             # Convertir en JSON avec la profondeur et l'indentation spécifiées
+
             $depth = if ($ExportOptions.ContainsKey("JsonDepth")) { $ExportOptions.JsonDepth } else { 10 }
             $indent = if ($ExportOptions.ContainsKey("JsonIndent")) { $ExportOptions.JsonIndent } else { $true }
 
@@ -5316,6 +5665,7 @@ function Export-MediaExtractedInfo {
         }
         "XML" {
             # Format XML
+
             $xmlObject = [PSCustomObject]@{
                 Id = $Info.Id
                 Type = $Info._Type
@@ -5328,32 +5678,38 @@ function Export-MediaExtractedInfo {
             }
 
             # Ajouter le type de média si disponible
+
             if ($Info.ContainsKey("MediaType") -and -not [string]::IsNullOrEmpty($Info.MediaType)) {
                 $xmlObject | Add-Member -MemberType NoteProperty -Name "MediaType" -Value $Info.MediaType
             }
 
             # Ajouter la taille du média si disponible
+
             if ($Info.ContainsKey("MediaSize")) {
                 $xmlObject | Add-Member -MemberType NoteProperty -Name "MediaSize" -Value $Info.MediaSize
             }
 
             # Ajouter les métadonnées du fichier
+
             $fileMetadataObject = ConvertTo-PSCustomObject -InputObject $mediaMetadata
             $xmlObject | Add-Member -MemberType NoteProperty -Name "FileMetadata" -Value $fileMetadataObject
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata) {
                 $metadataObject = ConvertTo-PSCustomObject -InputObject $Info.Metadata
                 $xmlObject | Add-Member -MemberType NoteProperty -Name "Metadata" -Value $metadataObject
             }
 
             # Convertir en XML
+
             $xmlOptions = if ($ExportOptions.ContainsKey("XmlOptions")) { $ExportOptions.XmlOptions } else { @{} }
             $xmlOptions["NoTypeInformation"] = $true
 
             $xml = $xmlObject | ConvertTo-Xml -As String @xmlOptions
 
             # Ajouter une déclaration XML si elle n'est pas présente
+
             if (-not $xml.StartsWith("<?xml")) {
                 $xml = '<?xml version="1.0" encoding="UTF-8"?>' + "`n" + $xml
             }
@@ -5362,6 +5718,7 @@ function Export-MediaExtractedInfo {
         }
         "CSV" {
             # Format CSV
+
             $csvObject = [PSCustomObject]@{
                 Id = $Info.Id
                 Type = $Info._Type
@@ -5374,16 +5731,19 @@ function Export-MediaExtractedInfo {
             }
 
             # Ajouter le type de média si disponible
+
             if ($Info.ContainsKey("MediaType") -and -not [string]::IsNullOrEmpty($Info.MediaType)) {
                 $csvObject | Add-Member -MemberType NoteProperty -Name "MediaType" -Value $Info.MediaType
             }
 
             # Ajouter la taille du média si disponible
+
             if ($Info.ContainsKey("MediaSize")) {
                 $csvObject | Add-Member -MemberType NoteProperty -Name "MediaSize" -Value $Info.MediaSize
             }
 
             # Ajouter les métadonnées du fichier
+
             $flattenedFileMetadata = Flatten-Object -Object $mediaMetadata -Prefix "FileMetadata"
 
             foreach ($key in $flattenedFileMetadata.Keys) {
@@ -5391,6 +5751,7 @@ function Export-MediaExtractedInfo {
             }
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata) {
                 $flattenedMetadata = Flatten-Object -Object $Info.Metadata -Prefix "Metadata"
 
@@ -5400,6 +5761,7 @@ function Export-MediaExtractedInfo {
             }
 
             # Convertir en CSV
+
             $csvOptions = if ($ExportOptions.ContainsKey("CsvOptions")) { $ExportOptions.CsvOptions } else { @{} }
             $csvOptions["NoTypeInformation"] = $true
 
@@ -5407,6 +5769,7 @@ function Export-MediaExtractedInfo {
         }
         "HTML" {
             # Format HTML
+
             $title = if ($ExportOptions.ContainsKey("HtmlTitle")) {
                 $ExportOptions.HtmlTitle
             } else {
@@ -5423,6 +5786,7 @@ body {
     margin: 0;
     padding: 20px;
     color: #333;
+
 }
 .container {
     max-width: 800px;
@@ -5432,6 +5796,7 @@ body {
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
+
 }
 .content {
     margin-bottom: 20px;
@@ -5442,6 +5807,7 @@ body {
     display: block;
     margin: 0 auto;
     border: 1px solid #ddd;
+
     border-radius: 4px;
     padding: 5px;
 }
@@ -5449,6 +5815,7 @@ body {
     margin-top: 20px;
     padding-top: 10px;
     border-top: 1px solid #eee;
+
 }
 table {
     width: 100%;
@@ -5459,9 +5826,11 @@ th, td {
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+
 }
 th {
     background-color: #f2f2f2;
+
 }
 "@
             }
@@ -5535,8 +5904,10 @@ $css
 "@
 
             # Ajouter un aperçu du média si c'est une image et que le fichier existe
+
             if ($Info.ContainsKey("MediaType") -and $Info.MediaType -eq "Image" -and (Test-Path -Path $Info.MediaPath -PathType Leaf)) {
                 # Déterminer si on doit inclure l'image directement ou juste un lien
+
                 $includeImage = if ($ExportOptions.ContainsKey("IncludeImagePreview")) {
                     $ExportOptions.IncludeImagePreview
                 } else {
@@ -5546,6 +5917,7 @@ $css
                 if ($includeImage) {
                     try {
                         # Convertir l'image en base64 pour l'inclure dans le HTML
+
                         $imageBytes = [System.IO.File]::ReadAllBytes($Info.MediaPath)
                         $base64Image = [System.Convert]::ToBase64String($imageBytes)
                         $extension = [System.IO.Path]::GetExtension($Info.MediaPath).TrimStart('.')
@@ -5582,6 +5954,7 @@ $css
             }
 
             # Ajouter les métadonnées du fichier
+
             if ($mediaMetadata.Count -gt 0) {
                 $html += @"
 
@@ -5610,6 +5983,7 @@ $css
             }
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata -and $Info.Metadata.Count -gt 0) {
                 $html += @"
 
@@ -5626,6 +6000,7 @@ $css
                     $value = $Info.Metadata[$key]
 
                     # Convertir les valeurs complexes en chaînes
+
                     if ($value -is [hashtable] -or $value -is [array]) {
                         $value = ConvertTo-Json -InputObject $value -Compress
                     }
@@ -5654,9 +6029,11 @@ $css
         }
         "MARKDOWN" {
             # Format Markdown
+
             $markdown = "# MediaExtractedInfo - $($Info.Id)`n`n"
 
             $markdown += "## Informations générales`n`n"
+
             $markdown += "| Propriété | Valeur |`n"
             $markdown += "| --- | --- |`n"
             $markdown += "| ID | $($Info.Id) |`n"
@@ -5677,6 +6054,7 @@ $css
             $markdown += "| Chemin du média | $($Info.MediaPath) |`n"
 
             # Ajouter un lien vers le fichier média
+
             $markdown += "`n## Fichier média`n`n"
 
             if (Test-Path -Path $Info.MediaPath -PathType Leaf) {
@@ -5687,8 +6065,10 @@ $css
             }
 
             # Ajouter les métadonnées du fichier
+
             if ($mediaMetadata.Count -gt 0) {
                 $markdown += "`n## Métadonnées du fichier`n`n"
+
                 $markdown += "| Propriété | Valeur |`n"
                 $markdown += "| --- | --- |`n"
 
@@ -5699,8 +6079,10 @@ $css
             }
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata -and $Info.Metadata.Count -gt 0) {
                 $markdown += "`n## Métadonnées`n`n"
+
                 $markdown += "| Clé | Valeur |`n"
                 $markdown += "| --- | --- |`n"
 
@@ -5708,6 +6090,7 @@ $css
                     $value = $Info.Metadata[$key]
 
                     # Convertir les valeurs complexes en chaînes
+
                     if ($value -is [hashtable] -or $value -is [array]) {
                         $value = ConvertTo-Json -InputObject $value -Compress
                     }
@@ -5720,6 +6103,7 @@ $css
         }
         "TXT" {
             # Format texte brut
+
             $content = "ID: $($Info.Id)`n"
             $content += "Type: $($Info._Type)`n"
             $content += "Source: $($Info.Source)`n"
@@ -5739,6 +6123,7 @@ $css
             $content += "Chemin du média: $($Info.MediaPath)`n"
 
             # Ajouter des informations sur le fichier média
+
             $content += "`n--- Informations sur le fichier média ---`n`n"
 
             if (Test-Path -Path $Info.MediaPath -PathType Leaf) {
@@ -5749,6 +6134,7 @@ $css
             }
 
             # Ajouter les métadonnées du fichier
+
             if ($mediaMetadata.Count -gt 0) {
                 $content += "`n--- Métadonnées du fichier ---`n`n"
 
@@ -5758,6 +6144,7 @@ $css
             }
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata -and $Info.Metadata.Count -gt 0) {
                 $content += "`n--- Métadonnées ---`n`n"
 
@@ -5765,6 +6152,7 @@ $css
                     $value = $Info.Metadata[$key]
 
                     # Convertir les valeurs complexes en chaînes
+
                     if ($value -is [hashtable] -or $value -is [array]) {
                         $value = ConvertTo-Json -InputObject $value -Compress
                     }
@@ -5777,13 +6165,13 @@ $css
         }
         default {
             # Pour les formats non pris en charge spécifiquement, utiliser JSON
+
             Write-Warning "Format '$Format' non pris en charge spécifiquement pour MediaExtractedInfo. Utilisation de JSON."
             return Export-MediaExtractedInfo -Info $Info -Format "JSON" -IncludeMetadata:$IncludeMetadata -ExportOptions $ExportOptions
         }
     }
 }
-```
-
+```plaintext
 Cet adaptateur pour `MediaExtractedInfo` prend en charge plusieurs formats d'exportation, avec une attention particulière aux spécificités des fichiers média :
 
 1. **JSON** : Conversion de l'objet en format JSON, incluant les métadonnées du fichier média.
@@ -5808,6 +6196,7 @@ L'adaptateur pour `GeoLocationExtractedInfo` est conçu pour exporter des inform
 ```powershell
 function Export-GeoLocationExtractedInfo {
     <#
+
     .SYNOPSIS
     Exporte un objet GeoLocationExtractedInfo vers différents formats.
 
@@ -5827,6 +6216,7 @@ function Export-GeoLocationExtractedInfo {
     .PARAMETER ExportOptions
     Options supplémentaires pour l'exportation.
     #>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -5844,22 +6234,26 @@ function Export-GeoLocationExtractedInfo {
     )
 
     # Vérifier que c'est bien un GeoLocationExtractedInfo
+
     if ($Info._Type -ne "GeoLocationExtractedInfo") {
         throw "L'objet fourni n'est pas un GeoLocationExtractedInfo."
     }
 
     # Vérifier la présence des coordonnées géographiques
+
     if (-not $Info.ContainsKey("Latitude") -or -not $Info.ContainsKey("Longitude")) {
         throw "L'objet GeoLocationExtractedInfo ne contient pas de coordonnées géographiques valides."
     }
 
     # Extraire les propriétés géographiques
+
     $latitude = $Info.Latitude
     $longitude = $Info.Longitude
     $altitude = if ($Info.ContainsKey("Altitude")) { $Info.Altitude } else { $null }
     $accuracy = if ($Info.ContainsKey("Accuracy")) { $Info.Accuracy } else { $null }
 
     # Extraire les propriétés d'adresse
+
     $address = if ($Info.ContainsKey("Address")) { $Info.Address } else { $null }
     $city = if ($Info.ContainsKey("City")) { $Info.City } else { $null }
     $region = if ($Info.ContainsKey("Region")) { $Info.Region } else { $null }
@@ -5867,6 +6261,7 @@ function Export-GeoLocationExtractedInfo {
     $postalCode = if ($Info.ContainsKey("PostalCode")) { $Info.PostalCode } else { $null }
 
     # Créer une adresse formatée si elle n'existe pas déjà
+
     $formattedAddress = if ($Info.ContainsKey("FormattedAddress")) {
         $Info.FormattedAddress
     } else {
@@ -5900,6 +6295,7 @@ function Export-GeoLocationExtractedInfo {
     }
 
     # Créer un nom pour le point géographique
+
     $locationName = if ($Info.ContainsKey("LocationName")) {
         $Info.LocationName
     } else {
@@ -5911,9 +6307,11 @@ function Export-GeoLocationExtractedInfo {
     }
 
     # Exporter selon le format demandé
+
     switch ($Format) {
         "JSON" {
             # Format JSON
+
             $jsonObject = @{
                 Id = $Info.Id
                 Type = $Info._Type
@@ -5929,16 +6327,19 @@ function Export-GeoLocationExtractedInfo {
             }
 
             # Ajouter l'altitude si disponible
+
             if ($null -ne $altitude) {
                 $jsonObject.Coordinates["Altitude"] = $altitude
             }
 
             # Ajouter la précision si disponible
+
             if ($null -ne $accuracy) {
                 $jsonObject.Coordinates["Accuracy"] = $accuracy
             }
 
             # Ajouter les informations d'adresse si disponibles
+
             $addressInfo = @{}
             $hasAddress = $false
 
@@ -5977,16 +6378,19 @@ function Export-GeoLocationExtractedInfo {
             }
 
             # Ajouter le nom du lieu si disponible
+
             if (-not [string]::IsNullOrEmpty($locationName)) {
                 $jsonObject["LocationName"] = $locationName
             }
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata) {
                 $jsonObject["Metadata"] = $Info.Metadata
             }
 
             # Convertir en JSON avec la profondeur et l'indentation spécifiées
+
             $depth = if ($ExportOptions.ContainsKey("JsonDepth")) { $ExportOptions.JsonDepth } else { 10 }
             $indent = if ($ExportOptions.ContainsKey("JsonIndent")) { $ExportOptions.JsonIndent } else { $true }
 
@@ -5994,6 +6398,7 @@ function Export-GeoLocationExtractedInfo {
         }
         "XML" {
             # Format XML
+
             $xmlObject = [PSCustomObject]@{
                 Id = $Info.Id
                 Type = $Info._Type
@@ -6009,16 +6414,19 @@ function Export-GeoLocationExtractedInfo {
             }
 
             # Ajouter l'altitude si disponible
+
             if ($null -ne $altitude) {
                 $xmlObject.Coordinates | Add-Member -MemberType NoteProperty -Name "Altitude" -Value $altitude
             }
 
             # Ajouter la précision si disponible
+
             if ($null -ne $accuracy) {
                 $xmlObject.Coordinates | Add-Member -MemberType NoteProperty -Name "Accuracy" -Value $accuracy
             }
 
             # Ajouter les informations d'adresse si disponibles
+
             $addressInfo = [PSCustomObject]@{}
             $hasAddress = $false
 
@@ -6057,23 +6465,27 @@ function Export-GeoLocationExtractedInfo {
             }
 
             # Ajouter le nom du lieu si disponible
+
             if (-not [string]::IsNullOrEmpty($locationName)) {
                 $xmlObject | Add-Member -MemberType NoteProperty -Name "LocationName" -Value $locationName
             }
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata) {
                 $metadataObject = ConvertTo-PSCustomObject -InputObject $Info.Metadata
                 $xmlObject | Add-Member -MemberType NoteProperty -Name "Metadata" -Value $metadataObject
             }
 
             # Convertir en XML
+
             $xmlOptions = if ($ExportOptions.ContainsKey("XmlOptions")) { $ExportOptions.XmlOptions } else { @{} }
             $xmlOptions["NoTypeInformation"] = $true
 
             $xml = $xmlObject | ConvertTo-Xml -As String @xmlOptions
 
             # Ajouter une déclaration XML si elle n'est pas présente
+
             if (-not $xml.StartsWith("<?xml")) {
                 $xml = '<?xml version="1.0" encoding="UTF-8"?>' + "`n" + $xml
             }
@@ -6082,6 +6494,7 @@ function Export-GeoLocationExtractedInfo {
         }
         "CSV" {
             # Format CSV
+
             $csvObject = [PSCustomObject]@{
                 Id = $Info.Id
                 Type = $Info._Type
@@ -6095,16 +6508,19 @@ function Export-GeoLocationExtractedInfo {
             }
 
             # Ajouter l'altitude si disponible
+
             if ($null -ne $altitude) {
                 $csvObject | Add-Member -MemberType NoteProperty -Name "Altitude" -Value $altitude
             }
 
             # Ajouter la précision si disponible
+
             if ($null -ne $accuracy) {
                 $csvObject | Add-Member -MemberType NoteProperty -Name "Accuracy" -Value $accuracy
             }
 
             # Ajouter les informations d'adresse si disponibles
+
             if (-not [string]::IsNullOrEmpty($address)) {
                 $csvObject | Add-Member -MemberType NoteProperty -Name "Address" -Value $address
             }
@@ -6130,11 +6546,13 @@ function Export-GeoLocationExtractedInfo {
             }
 
             # Ajouter le nom du lieu si disponible
+
             if (-not [string]::IsNullOrEmpty($locationName)) {
                 $csvObject | Add-Member -MemberType NoteProperty -Name "LocationName" -Value $locationName
             }
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata) {
                 $flattenedMetadata = Flatten-Object -Object $Info.Metadata -Prefix "Metadata"
 
@@ -6142,6 +6560,7 @@ function Export-GeoLocationExtractedInfo {
                     $value = $flattenedMetadata[$key]
 
                     # Convertir les valeurs complexes en chaînes
+
                     if ($value -is [hashtable] -or $value -is [array]) {
                         $value = ConvertTo-Json -InputObject $value -Compress
                     }
@@ -6151,6 +6570,7 @@ function Export-GeoLocationExtractedInfo {
             }
 
             # Convertir en CSV
+
             $csvOptions = if ($ExportOptions.ContainsKey("CsvOptions")) { $ExportOptions.CsvOptions } else { @{} }
             $csvOptions["NoTypeInformation"] = $true
 
@@ -6158,6 +6578,7 @@ function Export-GeoLocationExtractedInfo {
         }
         "TXT" {
             # Format texte brut
+
             $content = "ID: $($Info.Id)`n"
             $content += "Type: $($Info._Type)`n"
             $content += "Source: $($Info.Source)`n"
@@ -6179,6 +6600,7 @@ function Export-GeoLocationExtractedInfo {
             }
 
             # Ajouter les informations d'adresse si disponibles
+
             $hasAddress = $false
 
             if (-not [string]::IsNullOrEmpty($address) -or
@@ -6217,6 +6639,7 @@ function Export-GeoLocationExtractedInfo {
             }
 
             # Ajouter le nom du lieu si disponible
+
             if (-not [string]::IsNullOrEmpty($locationName) -and $locationName -ne $formattedAddress) {
                 if (-not $hasAddress) {
                     $content += "`n--- Informations sur le lieu ---`n`n"
@@ -6226,6 +6649,7 @@ function Export-GeoLocationExtractedInfo {
             }
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata -and $Info.Metadata.Count -gt 0) {
                 $content += "`n--- Métadonnées ---`n`n"
 
@@ -6233,6 +6657,7 @@ function Export-GeoLocationExtractedInfo {
                     $value = $Info.Metadata[$key]
 
                     # Convertir les valeurs complexes en chaînes
+
                     if ($value -is [hashtable] -or $value -is [array]) {
                         $value = ConvertTo-Json -InputObject $value -Compress
                     }
@@ -6242,6 +6667,7 @@ function Export-GeoLocationExtractedInfo {
             }
 
             # Ajouter un lien Google Maps
+
             $content += "`n--- Liens utiles ---`n`n"
             $content += "Google Maps: https://www.google.com/maps?q=$latitude,$longitude`n"
 
@@ -6249,6 +6675,7 @@ function Export-GeoLocationExtractedInfo {
         }
         "KML" {
             # Format KML (Keyhole Markup Language)
+
             $kml = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
@@ -6265,9 +6692,11 @@ function Export-GeoLocationExtractedInfo {
     <Placemark>
       <name>$([System.Security.SecurityElement]::Escape($locationName))</name>
       <styleUrl>#defaultStyle</styleUrl>
+
 "@
 
             # Ajouter la description si des informations d'adresse sont disponibles
+
             if (-not [string]::IsNullOrEmpty($formattedAddress)) {
                 $kml += @"
       <description>$([System.Security.SecurityElement]::Escape($formattedAddress))</description>
@@ -6275,11 +6704,13 @@ function Export-GeoLocationExtractedInfo {
             }
 
             # Ajouter les coordonnées
+
             $kml += @"
       <Point>
 "@
 
             # Ajouter l'altitude si disponible
+
             if ($null -ne $altitude) {
                 $kml += @"
         <altitudeMode>absolute</altitudeMode>
@@ -6298,12 +6729,14 @@ function Export-GeoLocationExtractedInfo {
 "@
 
             # Ajouter des données étendues si demandé
+
             if ($IncludeMetadata -or $ExportOptions.ContainsKey("IncludeExtendedData") -and $ExportOptions.IncludeExtendedData) {
                 $kml += @"
       <ExtendedData>
 "@
 
                 # Ajouter les propriétés de base
+
                 $kml += @"
         <Data name="Id">
           <value>$($Info.Id)</value>
@@ -6323,6 +6756,7 @@ function Export-GeoLocationExtractedInfo {
 "@
 
                 # Ajouter la précision si disponible
+
                 if ($null -ne $accuracy) {
                     $kml += @"
         <Data name="Accuracy">
@@ -6332,6 +6766,7 @@ function Export-GeoLocationExtractedInfo {
                 }
 
                 # Ajouter les informations d'adresse si disponibles
+
                 if (-not [string]::IsNullOrEmpty($address)) {
                     $kml += @"
         <Data name="Address">
@@ -6373,11 +6808,13 @@ function Export-GeoLocationExtractedInfo {
                 }
 
                 # Ajouter les métadonnées si demandé
+
                 if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata) {
                     foreach ($key in $Info.Metadata.Keys) {
                         $value = $Info.Metadata[$key]
 
                         # Convertir les valeurs complexes en chaînes
+
                         if ($value -is [hashtable] -or $value -is [array]) {
                             $value = ConvertTo-Json -InputObject $value -Compress
                         }
@@ -6405,6 +6842,7 @@ function Export-GeoLocationExtractedInfo {
         }
         "GEOJSON" {
             # Format GeoJSON
+
             $geoJson = @{
                 type = "FeatureCollection"
                 features = @(
@@ -6433,11 +6871,13 @@ function Export-GeoLocationExtractedInfo {
             }
 
             # Ajouter la précision si disponible
+
             if ($null -ne $accuracy) {
                 $geoJson.features[0].properties["accuracy"] = $accuracy
             }
 
             # Ajouter les informations d'adresse si disponibles
+
             if (-not [string]::IsNullOrEmpty($formattedAddress)) {
                 $geoJson.features[0].properties["formattedAddress"] = $formattedAddress
             }
@@ -6463,24 +6903,26 @@ function Export-GeoLocationExtractedInfo {
             }
 
             # Ajouter les métadonnées si demandé
+
             if ($IncludeMetadata -and $Info.ContainsKey("Metadata") -and $null -ne $Info.Metadata) {
                 $geoJson.features[0].properties["metadata"] = $Info.Metadata
             }
 
             # Convertir en JSON avec la profondeur et l'indentation spécifiées
+
             $depth = if ($ExportOptions.ContainsKey("JsonDepth")) { $ExportOptions.JsonDepth } else { 10 }
             $indent = if ($ExportOptions.ContainsKey("JsonIndent")) { $ExportOptions.JsonIndent } else { $true }
 
             return ConvertTo-Json -InputObject $geoJson -Depth $depth -Compress:(-not $indent)
         }
         # Les implémentations pour les autres formats seront ajoutées dans les sections suivantes
+
         default {
             throw "Format d'exportation '$Format' non implémenté pour GeoLocationExtractedInfo."
         }
     }
 }
-```
-
+```plaintext
 Cette structure de base définit :
 
 1. **Paramètres d'entrée** : L'objet `GeoLocationExtractedInfo` à exporter, le format d'exportation, et des options supplémentaires.

@@ -1,4 +1,4 @@
-﻿# Rapport de la suite de tests d'analyse des pull requests
+# Rapport de la suite de tests d'analyse des pull requests
 
 ## RÃ©sumÃ©
 

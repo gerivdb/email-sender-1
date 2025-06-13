@@ -20,8 +20,7 @@ type ToolkitOperation interface {
     CollectMetrics() map[string]interface{}
     HealthCheck(ctx context.Context) error
 }
-```
-
+```plaintext
 **Après (v3.0.0) :**
 ```go
 type ToolkitOperation interface {
@@ -36,8 +35,7 @@ type ToolkitOperation interface {
     GetDescription() string          // Description documentaire
     Stop(ctx context.Context) error  // Gestion des arrêts propres
 }
-```
-
+```plaintext
 ### 2. Structure OperationOptions Étendue
 
 **Avant (v2.0.0) :**
@@ -47,8 +45,7 @@ type OperationOptions struct {
     Output string  // Output file for reports
     Force  bool    // Force operations without confirmation
 }
-```
-
+```plaintext
 **Après (v3.0.0) :**
 ```go
 type OperationOptions struct {
@@ -68,8 +65,7 @@ type OperationOptions struct {
     Context   context.Context `json:"-"`      // Contexte d'exécution
     Config    *ToolkitConfig  `json:"config"` // Configuration d'exécution
 }
-```
-
+```plaintext
 ### 3. Système d'Auto-enregistrement des Outils
 
 **Nouveau dans v3.0.0 :**
@@ -90,8 +86,7 @@ func init() {
 // Utilisation du registre global
 registry := GetGlobalRegistry()
 tool, err := registry.GetTool(OpValidateStructs)
-```
-
+```plaintext
 ## Détail des Modifications par Section
 
 ### Section 1: Phase 1 - Analyse et Conception
@@ -123,19 +118,23 @@ tool, err := registry.GetTool(OpValidateStructs)
 ## Nouvelles Fonctionnalités Intégrées
 
 ### 1. Identification et Documentation Automatique
+
 - Méthode `String()` : Identification unique de chaque outil
 - Méthode `GetDescription()` : Description automatique pour la documentation
 
 ### 2. Gestion Robuste des Arrêts
+
 - Méthode `Stop()` : Arrêt propre des opérations longues
 - Support des timeouts et interruptions gracieuses
 
 ### 3. Système d'Auto-enregistrement
+
 - Enregistrement automatique via `init()` functions
 - Registre global accessible via `GetGlobalRegistry()`
 - Découverte dynamique des outils disponibles
 
 ### 4. Options de Contrôle Avancées
+
 - `DryRun` : Mode simulation sans modification
 - `Verbose` : Contrôle granulaire du logging
 - `Timeout` : Limitation de durée d'exécution
@@ -145,6 +144,7 @@ tool, err := registry.GetTool(OpValidateStructs)
 ## Tests et Validation
 
 ### Tests Unitaires Mis à Jour
+
 ```go
 // Test conformité interface v3.0.0
 func TestStructValidator_ImplementsToolkitOperation(t *testing.T) {
@@ -165,9 +165,9 @@ func TestStructValidator_AutoRegistration(t *testing.T) {
     assert.NotNil(t, tool)
     assert.Equal(t, "StructValidator", tool.String())
 }
-```
-
+```plaintext
 ### Tests d'Intégration Étendus
+
 - Support des nouvelles options OperationOptions
 - Validation du système d'auto-enregistrement
 - Tests de timeout et d'arrêt gracieux
@@ -176,16 +176,19 @@ func TestStructValidator_AutoRegistration(t *testing.T) {
 ## Impact sur l'Écosystème
 
 ### Compatibilité
+
 - ✅ **Rétrocompatibilité** : Les méthodes existantes restent inchangées
 - ✅ **Extension progressive** : Les nouvelles méthodes peuvent être adoptées graduellement
 - ✅ **Auto-détection** : Le système détecte automatiquement les capacités des outils
 
 ### Performance
+
 - ✅ **Optimisations** : Nouvelles options de parallélisation (Workers)
 - ✅ **Contrôle ressources** : Timeouts configurables
 - ✅ **Monitoring amélioré** : Métriques plus détaillées
 
 ### Maintenance
+
 - ✅ **Documentation automatique** : Via GetDescription()
 - ✅ **Identification claire** : Via String()
 - ✅ **Debugging facilité** : Via options de logging étendues

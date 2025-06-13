@@ -27,8 +27,7 @@ Ce nœud peut prendre un prompt système et un prompt utilisateur pour générer
     }
   }
 }
-```
-
+```plaintext
 **Explication :** Cette configuration définit le nœud Chat OpenAI pour utiliser le modèle GPT-3.5 avec un message système fournissant le contexte et un message utilisateur. La réponse sera disponible en tant que sortie du nœud. Assurez-vous d'avoir configuré des identifiants API OpenAI nommés "OpenAI API", référencés dans les credentials. Vous pouvez ajuster la température pour le caractère aléatoire et maxTokens pour la longueur.
 
 ## Complétion de Texte OpenAI
@@ -52,8 +51,7 @@ Pour les modèles de complétion de texte GPT-3 (comme text-davinci-003), vous p
     }
   }
 }
-```
-
+```plaintext
 **Explication :** Cela enverra un prompt au point de terminaison de complétion d'OpenAI pour résumer un contenu provenant des données d'entrée. La syntaxe `{{$json["content"]}}` insère des données du nœud précédent. Le nœud utilise les identifiants API OpenAI. La sortie apparaît dans le JSON du nœud (champ result contenant le texte de complétion).
 
 ## Agents IA (avec Outils)
@@ -79,8 +77,7 @@ Voici un exemple simplifié de configuration de nœud Agent IA utilisant un mod�
     ]
   }
 }
-```
-
+```plaintext
 **Explication :** Cet agent est configuré pour utiliser la stratégie ReAct avec GPT-4. Le tableau tools correspondrait à des nœuds Outil réels connectés au nœud Agent (par exemple, un nœud Google Search dans le workflow). En pratique, vous ajoutez des outils via l'interface utilisateur de l'éditeur (ils deviennent des sous-nœuds). L'agent décidera quand utiliser l'outil. Par exemple, il pourrait utiliser l'outil Google Search pour récupérer des informations nécessaires pour répondre à une question.
 
 **Note :** Le cluster de nœuds agent gère la logique ; assurez-vous d'avoir configuré les nœuds d'outils appropriés et les identifiants (comme les clés API Google). Les agents peuvent également utiliser d'autres modes comme l'Agent de Fonctions OpenAI, l'Agent Plan-and-Execute, ou l'Agent SQL, chacun permettant à l'IA d'effectuer des tâches complexes spécifiques (par exemple, appeler des fonctions définies, décomposer une tâche en sous-tâches, ou exécuter des requêtes SQL via des identifiants de base de données fournis).
@@ -108,8 +105,7 @@ Exemple pour un nœud Embedding OpenAI :
     }
   }
 }
-```
-
+```plaintext
 **Explication :** Cela prend le champ content du JSON d'entrée et génère un embedding de 1536 dimensions en utilisant le modèle ada d'OpenAI. Vous enverriez généralement ce vecteur à un stockage ou l'utiliseriez dans une recherche de similarité.
 
 Pour le stockage, un nœud Pinecone (ou autre base de données vectorielle) peut être utilisé, avec des opérations comme Insert Vector ou Query Vector (vous fournissez le nom de l'index, les données vectorielles, et toutes les métadonnées ou vecteurs de requête nécessaires).

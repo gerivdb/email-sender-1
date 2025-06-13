@@ -17,10 +17,9 @@ L'automatisation des tâches récurrentes permet de :
 
 Le script `maintenance.ps1` exécute toutes les tâches de maintenance en une seule fois :
 
-```
+```plaintext
 .\n8n-maintenance.cmd
-```
-
+```plaintext
 Options disponibles :
 
 - `-N8nRootFolder` : Dossier racine de n8n (par défaut: n8n)
@@ -33,10 +32,9 @@ Options disponibles :
 
 Le script `rotate-logs.ps1` effectue la rotation des logs n8n :
 
-```
+```plaintext
 .\n8n\automation\maintenance\rotate-logs.ps1
-```
-
+```plaintext
 Options disponibles :
 
 - `-LogFolder` : Dossier contenant les logs n8n (par défaut: n8n/logs)
@@ -50,10 +48,9 @@ Options disponibles :
 
 Le script `backup-workflows.ps1` effectue la sauvegarde des workflows n8n :
 
-```
+```plaintext
 .\n8n\automation\maintenance\backup-workflows.ps1
-```
-
+```plaintext
 Options disponibles :
 
 - `-WorkflowFolder` : Dossier contenant les workflows n8n (par défaut: n8n/data/.n8n/workflows)
@@ -66,10 +63,9 @@ Options disponibles :
 
 Le script `cleanup-temp.ps1` nettoie les fichiers temporaires créés par n8n :
 
-```
+```plaintext
 .\n8n\automation\maintenance\cleanup-temp.ps1
-```
-
+```plaintext
 Options disponibles :
 
 - `-N8nRootFolder` : Dossier racine de n8n (par défaut: n8n)
@@ -80,10 +76,9 @@ Options disponibles :
 
 Le script `schedule-tasks.ps1` installe, désinstalle ou vérifie les tâches planifiées pour la maintenance de n8n :
 
-```
+```plaintext
 .\n8n\automation\maintenance\schedule-tasks.ps1 -Action Install
-```
-
+```plaintext
 Options disponibles :
 
 - `-Action` : Action à effectuer (Install, Uninstall, Check)
@@ -106,44 +101,39 @@ Les tâches planifiées suivantes sont créées par le script `schedule-tasks.ps
 
 Pour exécuter manuellement toutes les tâches de maintenance :
 
-```
+```plaintext
 .\n8n-maintenance.cmd
-```
-
+```plaintext
 Pour exécuter manuellement une tâche spécifique :
 
-```
+```plaintext
 .\n8n\automation\maintenance\rotate-logs.ps1
 .\n8n\automation\maintenance\backup-workflows.ps1
 .\n8n\automation\maintenance\cleanup-temp.ps1
-```
-
+```plaintext
 ### Installation des tâches planifiées
 
 Pour installer les tâches planifiées :
 
-```
+```plaintext
 .\n8n\automation\maintenance\schedule-tasks.ps1 -Action Install
-```
-
+```plaintext
 **Note** : Ce script doit être exécuté en tant qu'administrateur.
 
 ### Vérification des tâches planifiées
 
 Pour vérifier les tâches planifiées :
 
-```
+```plaintext
 .\n8n\automation\maintenance\schedule-tasks.ps1 -Action Check
-```
-
+```plaintext
 ### Désinstallation des tâches planifiées
 
 Pour désinstaller les tâches planifiées :
 
-```
+```plaintext
 .\n8n\automation\maintenance\schedule-tasks.ps1 -Action Uninstall
-```
-
+```plaintext
 ## Personnalisation
 
 ### Modification des paramètres par défaut
@@ -190,34 +180,29 @@ Vérifiez que les tâches planifiées sont correctement installées et activées
 
 ### Rotation des logs avec des paramètres personnalisés
 
-```
+```plaintext
 .\n8n\automation\maintenance\rotate-logs.ps1 -LogFolder "C:\n8n\logs" -MaxLogSizeMB 20 -MaxLogAgeDays 14
-```
-
+```plaintext
 ### Sauvegarde des workflows sans horodatage
 
-```
+```plaintext
 .\n8n\automation\maintenance\backup-workflows.ps1 -IncludeTimestamp $false
-```
-
+```plaintext
 ### Nettoyage des fichiers temporaires plus anciens
 
-```
+```plaintext
 .\n8n\automation\maintenance\cleanup-temp.ps1 -MaxTempAgeDays 14
-```
-
+```plaintext
 ### Installation des tâches planifiées avec un préfixe personnalisé
 
-```
+```plaintext
 .\n8n\automation\maintenance\schedule-tasks.ps1 -Action Install -TaskPrefix "MyN8N_"
-```
-
+```plaintext
 ### Exécution de toutes les tâches de maintenance sans confirmation
 
-```
+```plaintext
 .\n8n-maintenance.cmd -NoInteractive
-```
-
+```plaintext
 ## Conclusion
 
 L'automatisation des tâches récurrentes permet de maintenir votre installation n8n en bon état de fonctionnement sans intervention manuelle. Les scripts fournis effectuent les tâches de maintenance essentielles et peuvent être personnalisés selon vos besoins.

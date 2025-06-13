@@ -29,10 +29,9 @@ Pour utiliser l'intégration n8n:
 
 ```powershell
 .\n8n\Connect-N8nRoadmap.ps1 -RoadmapPath "projet\roadmaps\active\roadmap_active.md" -N8nUrl "http://localhost:5678"
-```
-
+```plaintext
 Pour utiliser l'intégration Notion:
 
 ```powershell
 .\notion\Connect-NotionRoadmap.ps1 -RoadmapPath "projet\roadmaps\active\roadmap_active.md" -NotionDatabaseId "your-database-id"
-```
+```plaintext

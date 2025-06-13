@@ -21,8 +21,7 @@ results = get_approximate_expressions(text, "French")
 
 for result in results:
     print(f"{result.expression}: {result.info['Value']} (±{result.info['Precision'] * 100}%)")
-```
-
+```plaintext
 ### Textual Numbers
 
 ```python
@@ -33,8 +32,7 @@ results = get_textual_numbers(text, "French")
 
 for result in results:
     print(f"{result.textual_number}: {result.numeric_value}")
-```
-
+```plaintext
 ### Time Units
 
 ```python
@@ -45,8 +43,7 @@ results = get_time_units(text, "French")
 
 for result in results:
     print(f"{result.expression}: {result.info['Value']} {result.info['Unit']}")
-```
-
+```plaintext
 ### Tag Normalization
 
 ```python
@@ -58,8 +55,7 @@ result = normalizer.normalize_tag(tag)
 
 print(f"Tag original: {tag}")
 print(f"Tag normalisé: {result['normalized_tag']}")
-```
-
+```plaintext
 ## Supported Languages
 
 - French

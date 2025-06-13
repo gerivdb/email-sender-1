@@ -1,4 +1,5 @@
 # Plan de Développement v43k - MCP Manager
+
 *Version 1.0 - 2025-06-04 - Progression globale : 0%*
 
 Ce plan détaille l'implémentation du MCPManager pour le projet EMAIL_SENDER_1, chargé de lister et gérer tous les fichiers de configuration (MCP), de transmettre les configurations depuis le ConfigManager, et d'offrir des capacités avancées par rapport à Visual Studio Code (VS Code) et GitHub Copilot. Il vise à améliorer le développement, la maintenance, et la gestion du dépôt, en utilisant Go natif, avec des intégrations aux managers définis dans plan-dev-v43-managers-plan.md.
@@ -6,34 +7,52 @@ Ce plan détaille l'implémentation du MCPManager pour le projet EMAIL_SENDER_1,
 ## Table des matières
 
 - [Phase 1: Analyse et Inventaire des MCP](#phase-1-analyse-et-inventaire-des-mcp)
+
 - [Phase 2: Intégration avec ConfigManager](#phase-2-intégration-avec-configmanager)
+
 - [Phase 3: Fonctionnalités Avancées par Rapport à VS Code et Copilot](#phase-3-fonctionnalités-avancées-par-rapport-à-vs-code-et-copilot)
+
 - [Phase 4: Intégrations avec les Autres Managers](#phase-4-intégrations-avec-les-autres-managers)
+
 - [Phase 5: Tests et Validation](#phase-5-tests-et-validation)
+
 - [Phase 6: Documentation et Guides](#phase-6-documentation-et-guides)
+
 - [Phase 7: Déploiement et Maintenance](#phase-7-déploiement-et-maintenance)
 
 ## Structure du projet intégrée dans l'écosystème
 
 Le MCP Manager s'intègre parfaitement dans l'architecture managers existante :
 
-```
+```plaintext
 development/managers/mcp-manager/
 ├── config/                  # Configuration locale du gestionnaire
-├── scripts/                 # Scripts d'interface (PowerShell compatibilité)
-├── modules/                 # Modules Go natifs
-│   ├── MCPManager.go       # Module principal
-│   ├── scan_mcp.go         # Scanner de fichiers MCP
-│   ├── validate_mcp.go     # Validation des configurations
-│   ├── config_interface.go # Interface avec ConfigManager
-│   └── integrations/       # Intégrations avec autres managers
-├── tests/                  # Tests unitaires et d'intégration
-├── docs/                   # Documentation spécifique
-├── go.mod                  # Dépendances Go
-├── go.sum                  # Checksums
-└── README.md               # Documentation du gestionnaire
-```
 
+├── scripts/                 # Scripts d'interface (PowerShell compatibilité)
+
+├── modules/                 # Modules Go natifs
+
+│   ├── MCPManager.go       # Module principal
+
+│   ├── scan_mcp.go         # Scanner de fichiers MCP
+
+│   ├── validate_mcp.go     # Validation des configurations
+
+│   ├── config_interface.go # Interface avec ConfigManager
+
+│   └── integrations/       # Intégrations avec autres managers
+
+├── tests/                  # Tests unitaires et d'intégration
+
+├── docs/                   # Documentation spécifique
+
+├── go.mod                  # Dépendances Go
+
+├── go.sum                  # Checksums
+
+└── README.md               # Documentation du gestionnaire
+
+```plaintext
 Configuration centralisée : `projet/config/managers/mcp-manager/mcp-manager.config.json`
 
 ## Intégrations managers harmonieuses
@@ -46,9 +65,11 @@ Configuration centralisée : `projet/config/managers/mcp-manager/mcp-manager.con
 - **ContainerManager** : Configurations Docker automatiques
 - **DeploymentManager** : Intégration CI/CD native
 ## Phase 1: Analyse et Inventaire des MCP
+
 *Progression: 0%*
 
 ### 1.1 Analyse des fichiers de configuration existants
+
 *Progression: 0%*
 
 #### 1.1.1 Identification des MCP dans le dépôt
@@ -147,9 +168,11 @@ Configuration centralisée : `projet/config/managers/mcp-manager/mcp-manager.con
 - [ ] Valider cohérence avec IntegratedManager
 
 ## Phase 2: Intégration avec ConfigManager
+
 *Progression: 0%*
 
 ### 2.1 Transmission des configurations dans l'écosystème
+
 *Progression: 0%*
 
 #### 2.1.1 Interface native avec ConfigManager
@@ -227,9 +250,11 @@ Configuration centralisée : `projet/config/managers/mcp-manager/mcp-manager.con
 - [ ] Tester coordination avec IntegratedManager
 
 ## Phase 3: Fonctionnalités Avancées par Rapport à VS Code et Copilot
+
 *Progression: 0%*
 
 ### 3.1 Améliorations au-delà de VS Code et Copilot avec intégration managers
+
 *Progression: 0%*
 
 #### 3.1.1 Validation automatique des MCP avec SecurityManager
@@ -344,9 +369,11 @@ Configuration centralisée : `projet/config/managers/mcp-manager/mcp-manager.con
 - [ ] Tester génération mcp-maintenance-report.md avec MonitoringManager
 
 ## Phase 4: Intégrations avec les Autres Managers
+
 *Progression: 0%*
 
 ### 4.1 Intégration native avec ContainerManager
+
 *Progression: 0%*
 
 #### 4.1.1 Gestion configurations Docker intégrée
@@ -387,6 +414,7 @@ Configuration centralisée : `projet/config/managers/mcp-manager/mcp-manager.con
 - [ ] Tester intégration complète avec ContainerManager
 
 ### 4.2 Intégration native avec DeploymentManager
+
 *Progression: 0%*
 
 #### 4.2.1 Configurations CI/CD intégrées
@@ -427,6 +455,7 @@ Configuration centralisée : `projet/config/managers/mcp-manager/mcp-manager.con
 - [ ] Tester intégration complète avec DeploymentManager
 
 ### 4.3 Intégration native avec SecurityManager
+
 *Progression: 0%*
 
 #### 4.3.1 Gestion sécurisée des secrets intégrée
@@ -467,9 +496,11 @@ Configuration centralisée : `projet/config/managers/mcp-manager/mcp-manager.con
 - [ ] Tester chiffrement avec SecurityManager complet
 
 ## Phase 5: Tests et Validation
+
 *Progression: 0%*
 
 ### 5.1 Tests unitaires et d'intégration avec écosystème managers
+
 *Progression: 0%*
 
 #### 5.1.1 Tests unitaires MCPManager avec tous managers
@@ -528,9 +559,11 @@ Configuration centralisée : `projet/config/managers/mcp-manager/mcp-manager.con
 **Tests unitaires** : (couvrant tous scénarios multi-managers)
 
 ## Phase 6: Documentation et Guides
+
 *Progression: 0%*
 
 ### 6.1 Documentation technique intégrée écosystème
+
 *Progression: 0%*
 
 #### 6.1.1 Générer documentation Go avec intégrations managers
@@ -582,9 +615,11 @@ Configuration centralisée : `projet/config/managers/mcp-manager/mcp-manager.con
 - [ ] Simuler erreurs utilisation commandes
 
 ## Phase 7: Déploiement et Maintenance
+
 *Progression: 0%*
 
 ### 7.1 Intégration CI/CD avec DeploymentManager
+
 *Progression: 0%*
 
 #### 7.1.1 Configurer pipelines CI/CD intégrés
@@ -619,6 +654,7 @@ Configuration centralisée : `projet/config/managers/mcp-manager/mcp-manager.con
 - [ ] Simuler erreurs pipeline avec ErrorManager
 
 ### 7.2 Maintenance continue avec MonitoringManager
+
 *Progression: 0%*
 
 #### 7.2.1 Surveillance MCP avec MonitoringManager

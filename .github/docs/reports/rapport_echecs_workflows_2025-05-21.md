@@ -1,6 +1,7 @@
 # Rapport des Échecs Workflows – gerivdb/email-sender-1
 
 ## 1. Error Analysis (run 327, ref : 0912aa2)
+
 - **Erreur principale** :  
   `Missing download info for actions/setup-powershell@v1`
 - **Contexte** :  
@@ -9,6 +10,7 @@
 ---
 
 ## 2. PowerShell et Node.js Workflow (run 243, ref : 0912aa2)
+
 - **Erreur principale** :  
   `Missing download info for actions/upload-artifact@v3`
 - **Contexte** :  
@@ -17,6 +19,7 @@
 ---
 
 ## 3. Email Notification (run 323, ref : 0912aa2)
+
 - **Erreur principale** :  
   - `cd: mcp-servers/gcp-mcp: No such file or directory`
   - `fatal: No url found for submodule path 'development/tools/swe-bench-tools' in .gitmodules`
@@ -26,6 +29,7 @@
 ---
 
 ## 4. Validate (run 349, ref : 0912aa2)
+
 - **Erreur principale** :  
   - `npm ci` échoue car package.json et lock file ne sont pas synchronisés
   - Packages manquants dans le lock file (ex : minimatch, zod-to-json-schema)
@@ -36,6 +40,7 @@
 ---
 
 ## 5. Validate (run 348, ref : 39f426f)
+
 - **Erreur principale** :  
   - Même problème de synchronisation npm ci/package-lock.json
   - Packages manquants (glob, minimatch)
@@ -46,6 +51,7 @@
 ---
 
 ## 6. PowerShell et Node.js Workflow (run 242, ref : 39f426f)
+
 - **Erreur principale** :  
   `Missing download info for actions/upload-artifact@v3`
 - **Contexte** :  
@@ -54,6 +60,7 @@
 ---
 
 ## 7. Error Analysis (run 326, ref : 39f426f)
+
 - **Erreur principale** :  
   `Missing download info for actions/setup-powershell@v1`
 - **Contexte** :  
@@ -62,6 +69,7 @@
 ---
 
 ## 8. Email Notification (run 322, ref : 39f426f)
+
 - **Erreur principale** :  
   - `cd: mcp-servers/gcp-mcp: No such file or directory`
   - `fatal: No url found for submodule path 'development/tools/swe-bench-tools' in .gitmodules`
@@ -98,6 +106,7 @@ Pour corriger ces erreurs, il est recommandé de :
 # Analyse détaillée des échecs et pistes de résolution
 
 ## 1. Error Analysis (run 327, ref : 0912aa2)
+
 - **Problème** : L'action GitHub `actions/setup-powershell@v1` n'a pas pu être téléchargée.
 - **Causes possibles** :
   - L'action a été supprimée ou renommée sur GitHub Marketplace.
@@ -109,6 +118,7 @@ Pour corriger ces erreurs, il est recommandé de :
   - S'assurer que le runner a accès à internet et à GitHub.
 
 ## 2. PowerShell et Node.js Workflow (run 243, ref : 0912aa2)
+
 - **Problème** : L'action `actions/upload-artifact@v3` est introuvable.
 - **Causes possibles** :
   - Même causes que ci-dessus (action supprimée, renommée, ou problème réseau).
@@ -119,6 +129,7 @@ Pour corriger ces erreurs, il est recommandé de :
   - Nettoyer le cache du runner si nécessaire.
 
 ## 3. Email Notification (run 323, ref : 0912aa2)
+
 - **Problème** :
   - Le dossier `mcp-servers/gcp-mcp` est manquant.
   - Problème de sous-module git non configuré (`.gitmodules` incomplet ou absent).
@@ -131,6 +142,7 @@ Pour corriger ces erreurs, il est recommandé de :
   - Vérifier l'existence du dossier attendu dans le repo.
 
 ## 4. Validate (run 349, ref : 0912aa2)
+
 - **Problème** :
   - `npm ci` échoue à cause d'une désynchronisation entre `package.json` et `package-lock.json`.
   - Packages manquants dans le lock file.
@@ -145,6 +157,7 @@ Pour corriger ces erreurs, il est recommandé de :
   - Vérifier les sous-modules git.
 
 ## 5. Validate (run 348, ref : 39f426f)
+
 - **Problème** :
   - Même désynchronisation npm ci/package-lock.json.
   - Packages manquants (glob, minimatch).
@@ -154,18 +167,21 @@ Pour corriger ces erreurs, il est recommandé de :
   - Idem que pour le run 349.
 
 ## 6. PowerShell et Node.js Workflow (run 242, ref : 39f426f)
+
 - **Problème** :
   - `actions/upload-artifact@v3` introuvable.
 - **Pistes de résolution** :
   - Idem que pour le run 243.
 
 ## 7. Error Analysis (run 326, ref : 39f426f)
+
 - **Problème** :
   - `actions/setup-powershell@v1` introuvable.
 - **Pistes de résolution** :
   - Idem que pour le run 327.
 
 ## 8. Email Notification (run 322, ref : 39f426f)
+
 - **Problème** :
   - Dossier `mcp-servers/gcp-mcp` manquant.
   - Problème de sous-module git.

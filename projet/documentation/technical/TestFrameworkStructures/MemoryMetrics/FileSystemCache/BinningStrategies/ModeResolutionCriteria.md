@@ -112,8 +112,7 @@ Pour les distributions de latence de blocs de 2KB, qui présentent typiquement 3
     }
   }
 }
-```
-
+```plaintext
 ## 4. Facteurs influençant les besoins en résolution
 
 ### 4.1 Caractéristiques des modes
@@ -231,6 +230,7 @@ def calculate_optimal_bins_for_2kb_latency(latency_data, use_case="performance_a
         bin_edges: Limites des bins optimisées
     """
     # Paramètres de résolution par cas d'utilisation
+
     resolution_params = {
         "monitoring": {
             "l1l2": {"bins_per_mode": 4, "approx_width": 25},
@@ -261,6 +261,7 @@ def calculate_optimal_bins_for_2kb_latency(latency_data, use_case="performance_a
     params = resolution_params.get(use_case, resolution_params["performance_analysis"])
     
     # Définir les régions approximatives pour chaque mode
+
     regions = [
         {"name": "l1l2", "start": 50, "end": 100},
         {"name": "l3mem", "start": 150, "end": 250},
@@ -269,7 +270,9 @@ def calculate_optimal_bins_for_2kb_latency(latency_data, use_case="performance_a
     ]
     
     # Calculer les largeurs de bin optimales pour chaque région
+
     bin_edges = [0]  # Commencer à 0
+
     
     for region in regions:
         region_name = region["name"]
@@ -277,28 +280,32 @@ def calculate_optimal_bins_for_2kb_latency(latency_data, use_case="performance_a
         region_end = region["end"]
         
         # Ajouter une bin de transition si nécessaire
+
         if bin_edges[-1] < region_start:
             bin_edges.append(region_start)
         
         # Calculer la largeur de bin optimale pour cette région
+
         mode_width = params[region_name]["approx_width"]
         bins_per_mode = params[region_name]["bins_per_mode"]
         bin_width = mode_width / bins_per_mode
         
         # Créer les bins pour cette région
+
         current = bin_edges[-1]
         while current < region_end:
             current += bin_width
             bin_edges.append(current)
     
     # Ajouter une bin finale pour les valeurs extrêmes
+
     max_val = np.max(latency_data)
     if bin_edges[-1] < max_val:
         bin_edges.append(max_val * 1.1)  # 10% de marge
+
     
     return np.array(bin_edges)
-```
-
+```plaintext
 ## 7. Conclusion
 
 L'établissement de critères de résolution minimale pour les modes dans les histogrammes de latence est essentiel pour garantir une représentation fidèle et informative des distributions de performance. Les points clés à retenir sont :

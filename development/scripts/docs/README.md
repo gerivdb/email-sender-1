@@ -133,8 +133,7 @@ Pour gérer ces scripts, utilisez le système de gestion de scripts dans le doss
 Exemple:
 ```powershell
 .\manager\ScriptManager.ps1 -Action inventory
-```
-
+```plaintext
 ## Principes de développement
 
 Les scripts de ce projet suivent les principes suivants:

@@ -15,19 +15,27 @@ Merci de votre intérêt pour contribuer au projet Email Sender pour n8n ! Voici
 
 Veuillez respecter la structure de répertoires existante :
 
-```
+```plaintext
 ├── workflows/            # Workflows n8n finaux
-├── credentials/          # Informations d'identification
-├── config/               # Fichiers de configuration
-├── mcp/                  # Configurations MCP
-├── src/                  # Code source principal
-│   ├── workflows/        # Workflows n8n (développement)
-│   └── mcp/              # Fichiers MCP
-├── scripts/              # Scripts utilitaires
-├── docs/                 # Documentation
-└── ...
-```
 
+├── credentials/          # Informations d'identification
+
+├── config/               # Fichiers de configuration
+
+├── mcp/                  # Configurations MCP
+
+├── src/                  # Code source principal
+
+│   ├── workflows/        # Workflows n8n (développement)
+
+│   └── mcp/              # Fichiers MCP
+
+├── scripts/              # Scripts utilitaires
+
+├── docs/                 # Documentation
+
+└── ...
+```plaintext
 ## Normes de codage
 
 - Utilisez des noms de variables et de fonctions descriptifs

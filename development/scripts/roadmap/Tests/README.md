@@ -21,18 +21,16 @@ Pour exécuter tous les tests:
 
 ```powershell
 Invoke-Pester -Path "development\scripts\roadmap\tests"
-```
-
+```plaintext
 Pour exécuter un test spécifique:
 
 ```powershell
 Invoke-Pester -Path "development\scripts\roadmap\tests\Search-Tasks.Tests.ps1"
-```
-
+```plaintext
 ## Couverture de code
 
 Pour générer un rapport de couverture de code:
 
 ```powershell
 Invoke-Pester -Path "development\scripts\roadmap\tests" -CodeCoverage "development\scripts\roadmap\**\*.ps1" -CodeCoverageOutputFile "coverage.xml" -CodeCoverageOutputFileFormat JaCoCo
-```
+```plaintext

@@ -12,12 +12,12 @@ Le mécanisme actuel vérifie uniquement l'existence du fichier du gestionnaire 
 
 ```powershell
 # Vérifier que le fichier du gestionnaire existe
+
 if (-not (Test-Path -Path $Path)) {
     Write-Log -Message "Le fichier du gestionnaire n'existe pas : $Path" -Level Error
     return $false
 }
-```
-
+```plaintext
 **Limitations** :
 - Absence de validation du contenu du fichier
 - Pas de vérification que le fichier est un script PowerShell valide
@@ -46,8 +46,7 @@ $config.Managers | Add-Member -NotePropertyName $Name -NotePropertyValue @{
     Enabled = $true
     RegisteredAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 } -Force
-```
-
+```plaintext
 **Limitations** :
 - Absence d'informations sur la version du gestionnaire
 - Pas de description ou de documentation intégrée

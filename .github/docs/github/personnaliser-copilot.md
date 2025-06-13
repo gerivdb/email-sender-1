@@ -135,12 +135,14 @@ applyTo: "**"
 # Project general coding standards
 
 ## Naming Conventions
+
 - Use PascalCase for component names, interfaces, and type aliases
 - Use camelCase for variables, functions, and methods
 - Prefix private class members with underscore (_)
 - Use ALL_CAPS for constants
 
 ## Error Handling
+
 - Use try/catch blocks for async operations
 - Implement proper error boundaries in React components
 - Always log errors with contextual information
@@ -155,6 +157,7 @@ applyTo: "**/*.ts,**/*.tsx"
 Apply the [general coding guidelines](./general-coding.instructions.md) to all code.
 
 ## TypeScript Guidelines
+
 - Use TypeScript for all new code
 - Follow functional programming principles where possible
 - Use interfaces for data structures and type definitions
@@ -162,6 +165,7 @@ Apply the [general coding guidelines](./general-coding.instructions.md) to all c
 - Use optional chaining (?.) and nullish coalescing (??) operators
 
 ## React Guidelines
+
 - Use functional components with hooks
 - Follow the React hooks rules (no conditional hooks)
 - Use React.FC type for components with children
@@ -204,6 +208,7 @@ Le fichier d'invite se compose de deux sections :
 Propriété	Description
 mode	Le mode de discussion à utiliser lors de l'exécution de l'invite : ask, edit, ou agent(par défaut).
 tools	Liste des outils utilisables en mode agent. Tableau de noms d'outils, par exemple terminalLastCommandou githubRepo. Le nom de l'outil s'affiche lorsque vous saisissez du texte #dans le champ de saisie du chat.
+
 Si un outil n'est pas disponible, il est ignoré lors de l'exécution de l'invite.
 description	Une brève description de l'invite.
 Corps avec le contenu de l'invite

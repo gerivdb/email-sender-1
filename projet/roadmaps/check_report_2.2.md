@@ -1,4 +1,4 @@
-﻿# Rapport de vÃƒÂ©rification pour la tÃƒÂ¢che 2.2
+# Rapport de vÃƒÂ©rification pour la tÃƒÂ¢che 2.2
 
 ## RÃƒÂ©sumÃƒÂ©
 

@@ -10,7 +10,7 @@ Le Model Context Protocol (MCP) est un protocole qui permet aux modèles d'IA d'
 
 L'intégration est basée sur une architecture de provider MCP:
 
-```
+```plaintext
 ┌─────────────────┐                 ┌─────────────────┐
 │                 │                 │                 │
 │  Modèle d'IA    │ ◄─── Query ──── │  MCP Server     │
@@ -36,8 +36,7 @@ L'intégration est basée sur une architecture de provider MCP:
                                     │  Bord RAG       │
                                     │                 │
                                     └─────────────────┘
-```
-
+```plaintext
 ## Implémentation
 
 ### Script principal: journal_provider.js
@@ -90,8 +89,7 @@ class JournalProvider {
 }
 
 module.exports = JournalProvider;
-```
-
+```plaintext
 ### Configuration MCP
 
 Le fichier `development/scripts/mcp/config.js` configure le provider MCP:
@@ -193,8 +191,7 @@ module.exports = {
     }
   ]
 };
-```
-
+```plaintext
 ## Méthodes exposées
 
 ### listEntries
@@ -219,8 +216,7 @@ const entries = await mcp.invoke('journal', 'listEntries', {
   sortBy: 'date',
   sortOrder: 'desc'
 });
-```
-
+```plaintext
 ### getEntry
 
 Récupère le contenu d'une entrée spécifique.
@@ -233,8 +229,7 @@ Récupère le contenu d'une entrée spécifique.
 
 ```javascript
 const entry = await mcp.invoke('journal', 'getEntry', '2025-04-05-14-30-implementation-du-systeme-rag.md');
-```
-
+```plaintext
 ### searchJournal
 
 Recherche dans le journal.
@@ -248,8 +243,7 @@ Recherche dans le journal.
 
 ```javascript
 const results = await mcp.invoke('journal', 'searchJournal', 'système rag', 5);
-```
-
+```plaintext
 ### queryRag
 
 Interroge le système RAG du journal.
@@ -262,8 +256,7 @@ Interroge le système RAG du journal.
 
 ```javascript
 const response = await mcp.invoke('journal', 'queryRag', 'Quelles sont les optimisations identifiées pour le système RAG?');
-```
-
+```plaintext
 ### createEntry
 
 Crée une nouvelle entrée dans le journal.
@@ -286,8 +279,7 @@ const result = await mcp.invoke('journal', 'createEntry', {
     'Enseignements techniques': '- MCP permet aux modèles d\'IA d\'interagir avec le journal'
   }
 });
-```
-
+```plaintext
 ### annotateEntry
 
 Ajoute une annotation à une entrée existante.
@@ -306,17 +298,16 @@ const result = await mcp.invoke('journal', 'annotateEntry',
   'Enseignements techniques',
   'Cette implémentation pourrait être améliorée en utilisant des embeddings vectoriels.'
 );
-```
-
+```plaintext
 ## Démarrage du serveur MCP
 
 Le script `start-journal-mcp.ps1` permet de démarrer le serveur MCP avec le provider du journal:
 
 ```powershell
 # Démarrer le serveur MCP
-.\development\scripts\cmd\start-journal-mcp.ps1
-```
 
+.\development\scripts\cmd\start-journal-mcp.ps1
+```plaintext
 Ce script:
 1. Vérifie si le module MCP est installé
 2. Installe les dépendances nécessaires
@@ -326,7 +317,7 @@ Ce script:
 
 Une fois le serveur MCP démarré, Claude peut interagir avec le journal:
 
-```
+```plaintext
 Utilisateur: Peux-tu me lister les 3 entrées les plus récentes du journal de bord?
 
 Claude: Je vais utiliser MCP pour accéder au journal de bord et lister les entrées les plus récentes.
@@ -345,8 +336,7 @@ Voici les 3 entrées les plus récentes du journal de bord:
    Tags: rag, implementation, python
 
 Souhaitez-vous que j'affiche le contenu d'une de ces entrées?
-```
-
+```plaintext
 ## Considérations techniques
 
 ### Dépendances

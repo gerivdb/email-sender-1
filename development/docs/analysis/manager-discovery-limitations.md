@@ -29,9 +29,9 @@ function Discover-Managers {
     )
 
     # Code de la fonction...
-}
-```
 
+}
+```plaintext
 ## Limitations techniques identifiées
 
 ### 1. Recherche non récursive
@@ -48,8 +48,7 @@ Cette limitation empêche la découverte de gestionnaires qui pourraient être o
 
 ```powershell
 $managerDirs = Get-ChildItem -Path $fullSearchPath -Directory | Where-Object { $_.Name -like "*-manager" }
-```
-
+```plaintext
 ### 2. Recherche basée uniquement sur les répertoires
 
 #### Description
@@ -64,8 +63,7 @@ Cette limitation empêche la découverte de gestionnaires qui pourraient être i
 
 ```powershell
 $managerDirs = Get-ChildItem -Path $fullSearchPath -Directory | Where-Object { $_.Name -like "*-manager" }
-```
-
+```plaintext
 ### 3. Convention de nommage rigide pour les répertoires
 
 #### Description
@@ -80,8 +78,7 @@ Cette limitation empêche la découverte de gestionnaires qui pourraient utilise
 
 ```powershell
 $managerDirs = Get-ChildItem -Path $fullSearchPath -Directory | Where-Object { $_.Name -like "*-manager" }
-```
-
+```plaintext
 ### 4. Structure de dossiers rigide
 
 #### Description
@@ -96,8 +93,7 @@ Cette limitation empêche la découverte de gestionnaires qui pourraient utilise
 
 ```powershell
 $managerScriptPath = Join-Path -Path $managerDir.FullName -ChildPath "scripts\$($managerDir.Name).ps1"
-```
-
+```plaintext
 ### 5. Convention de nommage rigide pour les scripts
 
 #### Description
@@ -112,8 +108,7 @@ Cette limitation empêche la découverte de gestionnaires dont le script princip
 
 ```powershell
 $managerScriptPath = Join-Path -Path $managerDir.FullName -ChildPath "scripts\$($managerDir.Name).ps1"
-```
-
+```plaintext
 ### 6. Emplacement rigide pour les manifestes
 
 #### Description
@@ -128,8 +123,7 @@ Cette limitation empêche la découverte des manifestes qui pourraient être sit
 
 ```powershell
 $manifestPath = Join-Path -Path $managerDir.FullName -ChildPath "scripts\$($managerDir.Name).manifest.json"
-```
-
+```plaintext
 ### 7. Format rigide pour les manifestes
 
 #### Description
@@ -144,8 +138,7 @@ Cette limitation empêche l'extraction des informations des manifestes qui pourr
 
 ```powershell
 $manifest = Get-Content -Path $manifestPath -Raw | ConvertFrom-Json
-```
-
+```plaintext
 ### 8. Pas de gestion des dépendances circulaires
 
 #### Description
@@ -174,8 +167,7 @@ Cette limitation peut entraîner la découverte et l'enregistrement de gestionna
 
 ```powershell
 $managerDirs = Get-ChildItem -Path $fullSearchPath -Directory | Where-Object { $_.Name -like "*-manager" }
-```
-
+```plaintext
 ### 10. Pas de gestion des conflits de noms
 
 #### Description
@@ -190,8 +182,7 @@ Cette limitation peut entraîner des comportements imprévisibles si deux gestio
 
 ```powershell
 $managerName = $managerDir.Name -replace "-manager", "Manager" -replace "^.", { $args[0].ToString().ToUpper() }
-```
-
+```plaintext
 ### 11. Calcul rigide du chemin complet
 
 #### Description
@@ -206,8 +197,7 @@ Cette limitation peut empêcher la découverte de gestionnaires si le Process Ma
 
 ```powershell
 $fullSearchPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $scriptPath))) -ChildPath $searchPath
-```
-
+```plaintext
 ### 12. Pas de recherche de fichiers de configuration
 
 #### Description

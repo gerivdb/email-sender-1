@@ -3,27 +3,49 @@
 ## Table des matières
 
 1. [Plan de Transition : Workflow Email Sender vers Plan Magistral V5](#section-1)
+
     1.1. [Contexte et Objectifs](#section-2)
+
         1.1.1. [Étape 1.1 : Audit des Workflows Existants](#section-3)
+
         1.1.2. [Étape 1.2 : Création d'un Environnement de Test](#section-4)
+
         1.1.3. [Étape 2.1 : Standardisation des Noms et Conventions](#section-5)
+
         1.1.4. [Étape 2.2 : Optimisation des Nœuds Code](#section-6)
+
         1.1.5. [Étape 2.3 : Standardisation des Structures de Données](#section-7)
+
         1.1.6. [Étape 3.1 : Création des Structures de Base](#section-8)
+
         1.1.7. [Étape 3.2 : Migration des Fonctionnalités Existantes](#section-9)
+
         1.1.8. [Étape 3.3 : Mise en Place du Système de Monitoring](#section-10)
+
         1.1.9. [Étape 4.1 : Tests Unitaires](#section-11)
+
         1.1.10. [Étape 4.2 : Tests d'Intégration](#section-12)
+
         1.1.11. [Étape 4.3 : Validation Finale](#section-13)
+
         1.1.12. [Étape 5.1 : Déploiement](#section-14)
+
         1.1.13. [Étape 5.2 : Formation et Documentation](#section-15)
+
         1.1.14. [Étape 5.3 : Suivi et Amélioration Continue](#section-16)
+
         1.1.15. [Configuration des Webhooks pour la Communication Inter-Piliers](#section-17)
+
         1.1.16. [Nœud de Configuration Centralisée](#section-18)
+
         1.1.17. [Nœud de Validation des Données](#section-19)
+
         1.1.18. [Nœud de Journalisation Centralisée](#section-20)
+
         1.1.19. [Nœud de Gestion des Erreurs](#section-21)
+
     1.2. [Calendrier de Mise en Œuvre](#section-22)
+
     1.3. [Conclusion](#section-23)
 
 ## 1. Plan de Transition : Workflow Email Sender vers Plan Magistral V5 <a name='section-1'></a>
@@ -36,7 +58,7 @@ L'objectif de ce plan de transition est de préparer le terrain pour la mise en 
 
 #### 1.1.1. Étape 1.1 : Audit des Workflows Existants <a name='section-3'></a>
 
-```
+```plaintext
 Durée estimée : 1 jour
 
 1. **Inventaire des Nœuds et Fonctionnalités**
@@ -54,11 +76,10 @@ Durée estimée : 1 jour
    - Documenter les variables et leur portée
    - Repérer les expressions qui pourraient nécessiter une adaptation
 
-```
-
+```plaintext
 #### 1.1.2. Étape 1.2 : Création d'un Environnement de Test <a name='section-4'></a>
 
-```
+```plaintext
 Durée estimée : 0.5 jour
 
 1. **Duplication des Workflows**
@@ -75,11 +96,10 @@ Durée estimée : 0.5 jour
    - Configurer un mécanisme de capture des erreurs
    - Préparer des outils de surveillance des performances
 
-```
-
+```plaintext
 #### 1.1.3. Étape 2.1 : Standardisation des Noms et Conventions <a name='section-5'></a>
 
-```
+```plaintext
 Durée estimée : 0.5 jour
 
 1. **Nomenclature des Nœuds**
@@ -97,11 +117,10 @@ Durée estimée : 0.5 jour
    - Documenter les entrées/sorties attendues pour chaque nœud
    - Inclure des références aux fichiers de documentation pertinents
 
-```
-
+```plaintext
 #### 1.1.4. Étape 2.2 : Optimisation des Nœuds Code <a name='section-6'></a>
 
-```
+```plaintext
 Durée estimée : 1 jour
 
 1. **Refactorisation du Code JavaScript**
@@ -119,11 +138,10 @@ Durée estimée : 1 jour
    - Optimiser les boucles et les opérations sur les données
    - Utiliser "Run Once for All Items" lorsque c'est approprié
 
-```
-
+```plaintext
 #### 1.1.5. Étape 2.3 : Standardisation des Structures de Données <a name='section-7'></a>
 
-```
+```plaintext
 Durée estimée : 1 jour
 
 1. **Définition des Schémas de Données**
@@ -141,11 +159,10 @@ Durée estimée : 1 jour
    - Implémenter des chemins alternatifs pour ces scénarios
    - Documenter les comportements attendus dans ces cas
 
-```
-
+```plaintext
 #### 1.1.6. Étape 3.1 : Création des Structures de Base <a name='section-8'></a>
 
-```
+```plaintext
 Durée estimée : 1 jour
 
 1. **Mise en Place des Piliers**
@@ -163,11 +180,10 @@ Durée estimée : 1 jour
    - Définir les variables d'environnement nécessaires
    - Mettre en place un mécanisme de partage de configuration
 
-```
-
+```plaintext
 #### 1.1.7. Étape 3.2 : Migration des Fonctionnalités Existantes <a name='section-9'></a>
 
-```
+```plaintext
 Durée estimée : 2 jours
 
 1. **Cartographie des Fonctionnalités**
@@ -185,11 +201,10 @@ Durée estimée : 2 jours
    - S'assurer que les données circulent correctement
    - Vérifier la compatibilité avec les autres composants
 
-```
-
+```plaintext
 #### 1.1.8. Étape 3.3 : Mise en Place du Système de Monitoring <a name='section-10'></a>
 
-```
+```plaintext
 Durée estimée : 1 jour
 
 1. **Configuration des Alertes**
@@ -207,11 +222,10 @@ Durée estimée : 1 jour
    - Mettre en place des sauvegardes automatiques
    - Tester les scénarios de récupération
 
-```
-
+```plaintext
 #### 1.1.9. Étape 4.1 : Tests Unitaires <a name='section-11'></a>
 
-```
+```plaintext
 Durée estimée : 1 jour
 
 1. **Création des Cas de Test**
@@ -229,11 +243,10 @@ Durée estimée : 1 jour
    - Retester après correction
    - Mettre à jour la documentation si nécessaire
 
-```
-
+```plaintext
 #### 1.1.10. Étape 4.2 : Tests d'Intégration <a name='section-12'></a>
 
-```
+```plaintext
 Durée estimée : 1 jour
 
 1. **Définition des Scénarios de Test**
@@ -251,11 +264,10 @@ Durée estimée : 1 jour
    - Optimiser les workflows concernés
    - Retester après optimisation
 
-```
-
+```plaintext
 #### 1.1.11. Étape 4.3 : Validation Finale <a name='section-13'></a>
 
-```
+```plaintext
 Durée estimée : 0.5 jour
 
 1. **Revue Complète**
@@ -273,11 +285,10 @@ Durée estimée : 0.5 jour
    - Obtenir l'approbation pour le déploiement
    - Planifier la date de déploiement
 
-```
-
+```plaintext
 #### 1.1.12. Étape 5.1 : Déploiement <a name='section-14'></a>
 
-```
+```plaintext
 Durée estimée : 0.5 jour
 
 1. **Sauvegarde des Workflows Existants**
@@ -295,11 +306,10 @@ Durée estimée : 0.5 jour
    - Vérifier que toutes les fonctionnalités sont opérationnelles
    - S'assurer que les données sont correctement traitées
 
-```
-
+```plaintext
 #### 1.1.13. Étape 5.2 : Formation et Documentation <a name='section-15'></a>
 
-```
+```plaintext
 Durée estimée : 0.5 jour
 
 1. **Mise à Jour de la Documentation**
@@ -317,11 +327,10 @@ Durée estimée : 0.5 jour
    - Expliquer les choix techniques
    - Partager les leçons apprises
 
-```
-
+```plaintext
 #### 1.1.14. Étape 5.3 : Suivi et Amélioration Continue <a name='section-16'></a>
 
-```
+```plaintext
 Durée estimée : Continu
 
 1. **Surveillance des Performances**
@@ -339,8 +348,7 @@ Durée estimée : Continu
    - Planifier les futures fonctionnalités
    - Maintenir une feuille de route à jour
 
-```
-
+```plaintext
 #### 1.1.15. Configuration des Webhooks pour la Communication Inter-Piliers <a name='section-17'></a>
 
 ```javascript
@@ -365,8 +373,7 @@ Durée estimée : Continu
     300
   ],
   "webhookId": "pilier1-to-pilier2-webhook"
-```
-
+```plaintext
 #### 1.1.16. Nœud de Configuration Centralisée <a name='section-18'></a>
 
 ```javascript
@@ -404,8 +411,7 @@ Durée estimée : Continu
   "position": [
     240,
     480
-```
-
+```plaintext
 #### 1.1.17. Nœud de Validation des Données <a name='section-19'></a>
 
 ```javascript
@@ -422,8 +428,7 @@ Durée estimée : Continu
     300
   ]
 }
-```
-
+```plaintext
 #### 1.1.18. Nœud de Journalisation Centralisée <a name='section-20'></a>
 
 ```javascript
@@ -440,8 +445,7 @@ Durée estimée : Continu
     300
   ]
 }
-```
-
+```plaintext
 #### 1.1.19. Nœud de Gestion des Erreurs <a name='section-21'></a>
 
 ```javascript
@@ -458,8 +462,7 @@ Durée estimée : Continu
     300
   ]
 }
-```
-
+```plaintext
 ### 1.2. Calendrier de Mise en Œuvre <a name='section-22'></a>
 
 | Phase | Étape | Durée | Date de Début | Date de Fin |

@@ -1,4 +1,5 @@
 ## 1.1.2 Système de gestion centralisée des scripts
+
 **Complexité**: Élevée
 **Temps estimé**: 2 semaines
 **Progression**: 0% - *À commencer*
@@ -8,11 +9,13 @@
 **Objectif**: Résoudre les problèmes de prolifération de scripts, de duplication et d'organisation dans le dépôt pour améliorer la maintenabilité et la qualité du code.
 
 ### 1.1.2.1 Système d'inventaire et de classification des scripts
+
 **Complexité**: Moyenne
 **Temps estimé**: 3-5 jours
 **Progression**: 0% - *À commencer*
 
 #### A. Mise en place d'un système d'inventaire complet
+
 - [ ] Développer un module PowerShell `ScriptInventoryManager.psm1` pour centraliser l'inventaire
   - [ ] Intégrer les fonctionnalités de `script_inventory.py` et `script_database.py` existants
   - [ ] Ajouter la détection automatique des métadonnées (auteur, version, description)
@@ -25,6 +28,7 @@
   - [ ] Intégrer avec le système de documentation
 
 #### B. Analyse et détection des scripts redondants
+
 - [ ] Développer un module `ScriptAnalyzer.psm1` pour l'analyse des scripts
   - [ ] Implémenter la détection des scripts similaires par analyse de contenu
   - [ ] Créer un algorithme de comparaison basé sur la similarité de Levenshtein
@@ -37,6 +41,7 @@
   - [ ] Implémenter un assistant de fusion semi-automatique
 
 #### C. Système de classification hiérarchique
+
 - [ ] Créer un module `ScriptClassifier.psm1` pour la classification des scripts
   - [ ] Définir une taxonomie claire pour les types de scripts
   - [ ] Implémenter un système de classification automatique basé sur le contenu
@@ -49,11 +54,13 @@
   - [ ] Générer des rapports de conformité des métadonnées
 
 ### 1.1.2.2 Réorganisation et standardisation du dépôt
+
 **Complexité**: Élevée
 **Temps estimé**: 5-7 jours
 **Progression**: 0% - *À commencer*
 
 #### A. Définition d'une structure de dossiers standardisée
+
 - [ ] Créer un document `RepoStructureStandard.md` définissant la structure
   - [ ] Définir les dossiers principaux (scripts, tools, projet/documentation, tests, etc.)
   - [ ] Établir des sous-dossiers par domaine fonctionnel
@@ -66,6 +73,7 @@
   - [ ] Intégrer avec le système de CI/CD
 
 #### B. Migration des scripts vers la nouvelle structure
+
 - [ ] Développer un script `Reorganize-Repository.ps1` pour la migration
   - [ ] Implémenter la création automatique de la structure de dossiers
   - [ ] Ajouter la migration des scripts avec préservation de l'historique Git
@@ -78,6 +86,7 @@
   - [ ] Prévoir des procédures de rollback en cas de problème
 
 #### C. Nettoyage des scripts obsolètes et redondants
+
 - [ ] Créer un script `Clean-Repository.ps1` pour le nettoyage
   - [ ] Implémenter la détection et l'archivage des scripts obsolètes
   - [ ] Ajouter la consolidation des scripts redondants
@@ -90,11 +99,13 @@
   - [ ] Établir des politiques de rétention
 
 ### 1.1.2.3 Système de gestion des versions et de documentation
+
 **Complexité**: Moyenne
 **Temps estimé**: 3-4 jours
 **Progression**: 0% - *À commencer*
 
 #### A. Mise en place d'un système de versionnage standardisé
+
 - [ ] Développer un module `ScriptVersionManager.psm1` pour la gestion des versions
   - [ ] Implémenter un système de versionnage sémantique (MAJOR.MINOR.PATCH)
   - [ ] Créer des fonctions pour incrémenter automatiquement les versions
@@ -107,6 +118,7 @@
   - [ ] Intégrer avec le système de CI/CD
 
 #### B. Génération automatique de documentation
+
 - [ ] Créer un script `Generate-ScriptDocumentation.ps1` pour la documentation
   - [ ] Extraire automatiquement les commentaires et métadonnées des scripts
   - [ ] Générer des fichiers Markdown pour chaque script
@@ -119,6 +131,7 @@
   - [ ] Intégrer avec le système de CI/CD
 
 #### C. Intégration avec le système de roadmap
+
 - [ ] Développer un script `Sync-ScriptWithRoadmap.ps1` pour l'intégration
   - [ ] Lier les scripts aux tâches de la roadmap
   - [ ] Mettre à jour automatiquement l'état d'avancement
@@ -131,11 +144,13 @@
   - [ ] Générer des rapports périodiques
 
 ### 1.1.2.4 Automatisation et intégration continue
+
 **Complexité**: Moyenne
 **Temps estimé**: 2-3 jours
 **Progression**: 0% - *À commencer*
 
 #### A. Développement de hooks Git pour la standardisation
+
 - [ ] Créer un script `Install-GitHooks.ps1` pour l'installation des hooks
   - [ ] Implémenter un hook pre-commit pour la validation des scripts
   - [ ] Ajouter la vérification automatique du style de code
@@ -148,6 +163,7 @@
   - [ ] Développer un système de configuration des hooks
 
 #### B. Validation automatique des scripts
+
 - [ ] Développer un module `ScriptValidator.psm1` pour la validation
   - [ ] Implémenter des vérifications de syntaxe pour PowerShell et Python
   - [ ] Ajouter des vérifications de style de code

@@ -6,8 +6,10 @@ related: []
 ---
 
 ## 1. Gestion optimisée des workflows
+
 - Accès direct aux fichiers JSON de workflows n8n sans chargement préalable
 - Analyse et modification des workflows en temps réel
 - Correction automatique des problèmes d'encodage des caractères accentués
 
 ##
+

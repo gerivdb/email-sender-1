@@ -1,4 +1,4 @@
-﻿# journal
+# journal
 
 SystÃ¨me de journal
 

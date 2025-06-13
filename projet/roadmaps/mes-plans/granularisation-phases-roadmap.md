@@ -3,6 +3,7 @@
 ## Squelette Initial des 5 Phases
 
 ### Phase 1: Automatisation de la Mise à Jour de la Roadmap
+
 - **Objectif**: Réduire de 90% le temps consacré à la mise à jour manuelle de la roadmap
 - **Durée**: 2 semaines
 - **Composants principaux**:
@@ -16,6 +17,7 @@
 ### 1. Parser de Roadmap (3 jours)
 
 #### 1.1 Analyse et Conception (1 jour)
+
 - **1.1.1** Étude de la structure actuelle du fichier markdown de roadmap
   - **1.1.1.1** Identifier les patterns de formatage des tâches
     - **1.1.1.1.1** Analyser les marqueurs de liste (-, *, +)
@@ -315,6 +317,7 @@
       - [ ] **1.1.3.3.4.4** Définir l'utilisation de la journalisation dans les fonctions
 
 #### 1.2 Implémentation du Parser (1.5 jour)
+
 - **1.2.1** Création du module PowerShell de base
   - **1.2.1.1** Créer la structure du module (fichiers .psm1 et .psd1)
     - **1.2.1.1.1** Définir le manifeste du module (.psd1) avec les métadonnées
@@ -367,6 +370,7 @@
     - **1.2.3.3.4** Implémenter la visualisation des dépendances
 
 #### 1.3 Tests et Validation (0.5 jour)
+
 - **1.3.1** Création des tests unitaires
   - **1.3.1.1** Développer des tests pour la fonction de parsing
     - **1.3.1.1.1** Créer des tests pour la lecture et l'analyse du markdown
@@ -404,6 +408,7 @@
 ### 2. Updater Automatique (3 jours)
 
 #### 2.1 Analyse et Conception (1 jour)
+
 - **2.1.1** Définition des opérations de mise à jour
   - **2.1.1.1** Identifier les types de modifications possibles (statut, description, etc.)
     - **2.1.1.1.1** Cataloguer les modifications de statut (terminé, en cours, bloqué)
@@ -439,6 +444,7 @@
     - **2.1.2.3.4** Planifier la journalisation des modifications appliquées
 
 #### 2.2 Implémentation de l'Updater (1.5 jour)
+
 - **2.2.1** Développement des fonctions de modification
   - **2.2.1.1** Implémenter la fonction de changement de statut
     - **2.2.1.1.1** Développer la fonction de base pour modifier le statut d'une tâche
@@ -491,6 +497,7 @@
     - **2.2.3.3.4** Développer la journalisation des opérations de rollback
 
 #### 2.3 Tests et Validation (0.5 jour)
+
 - **2.3.1** Création des tests unitaires
   - **2.3.1.1** Développer des tests pour les fonctions de modification
     - **2.3.1.1.1** Créer des tests pour la fonction de changement de statut
@@ -528,6 +535,7 @@
 ### 3. Intégration Git (2 jours)
 
 #### 3.1 Analyse et Conception (0.5 jour)
+
 - **3.1.1** Étude des hooks Git disponibles
   - **3.1.1.1** Identifier les hooks appropriés pour la détection des modifications
     - **3.1.1.1.1** Analyser les hooks pre-commit pour la validation
@@ -563,6 +571,7 @@
     - **3.1.2.3.4** Établir les règles de priorité pour les commits concurrents
 
 #### 3.2 Implémentation de l'Intégration (1 jour)
+
 - **3.2.1** Développement des scripts de hooks Git
   - **3.2.1.1** Implémenter le hook post-commit pour la détection des modifications
     - **3.2.1.1.1** Développer le script de base du hook post-commit
@@ -598,6 +607,7 @@
     - **3.2.2.3.4** Implémenter la journalisation des actions automatiques
 
 #### 3.3 Tests et Validation (0.5 jour)
+
 - **3.3.1** Création des tests d'intégration
   - **3.3.1.1** Développer des tests pour les hooks Git
     - **3.3.1.1.1** Créer des tests pour le hook post-commit
@@ -635,6 +645,7 @@
 ### 4. Interface CLI (2 jours)
 
 #### 4.1 Analyse et Conception (0.5 jour)
+
 - **4.1.1** Définition des commandes et paramètres
   - **4.1.1.1** Identifier les opérations principales à exposer
     - **4.1.1.1.1** Définir les commandes de gestion des tâches (ajout, modification, suppression)
@@ -670,6 +681,7 @@
     - **4.1.2.3.4** Définir les paramètres de contrôle de la verbosité
 
 #### 4.2 Implémentation de l'Interface (1 jour)
+
 - **4.2.1** Développement des commandes principales
   - **4.2.1.1** Implémenter la commande de mise à jour de statut
     - **4.2.1.1.1** Développer la structure de base de la commande
@@ -705,6 +717,7 @@
     - **4.2.2.3.4** Implémenter les mécanismes d'annulation sélective
 
 #### 4.3 Tests et Validation (0.5 jour)
+
 - **4.3.1** Création des tests fonctionnels
   - **4.3.1.1** Développer des tests pour les commandes principales
     - **4.3.1.1.1** Créer des tests pour la commande de mise à jour de statut
@@ -742,6 +755,7 @@
 ### 5. Intégration et Tests Système (2 jours)
 
 #### 5.1 Intégration des Composants (1 jour)
+
 - **5.1.1** Assemblage des modules
   - **5.1.1.1** Intégrer le parser avec l'updater
     - **5.1.1.1.1** Développer les interfaces de communication entre modules
@@ -777,6 +791,7 @@
     - **5.1.2.3.4** Développer les options de rollback des mises à jour
 
 #### 5.2 Tests Système (0.5 jour)
+
 - **5.2.1** Création des tests de bout en bout
   - **5.2.1.1** Développer des scénarios de test complets
     - **5.2.1.1.1** Créer des scénarios couvrant le workflow complet
@@ -812,6 +827,7 @@
     - **5.2.2.3.4** Valider les performances après optimisation
 
 #### 5.3 Documentation et Formation (0.5 jour)
+
 - **5.3.1** Rédaction de la documentation
   - **5.3.1.1** Créer le manuel utilisateur
     - **5.3.1.1.1** Rédiger l'introduction et la présentation du système
@@ -847,6 +863,7 @@
     - **5.3.2.3.4** Développer les mécanismes de feedback post-formation
 
 ### Phase 2: Système de Navigation et Visualisation
+
 - **Objectif**: Réduire de 80% le temps de recherche des tâches dans la roadmap
 - **Durée**: 3 semaines
 - **Composants principaux**:
@@ -860,6 +877,7 @@
 ### 1. Explorateur de Roadmap (5 jours)
 
 #### 1.1 Analyse et Conception (1 jour)
+
 - **1.1.1** Étude des besoins utilisateurs
   - **1.1.1.1** Identifier les cas d'utilisation principaux
     - **1.1.1.1.1** Recueillir les besoins des utilisateurs finaux
@@ -912,6 +930,7 @@
     - **1.1.3.3.4** Définir les stratégies de gestion des erreurs d'intégration
 
 #### 1.2 Développement de l'Interface de Base (2 jours)
+
 - **1.2.1** Création de la structure de l'application
   - **1.2.1.1** Mettre en place le projet et les dépendances
     - **1.2.1.1.1** Créer la structure de répertoires du projet
@@ -964,6 +983,7 @@
     - **1.2.3.3.4** Implémenter les liens directs vers des sections spécifiques
 
 #### 1.3 Implémentation des Fonctionnalités de Recherche et Filtrage (1.5 jour)
+
 - **1.3.1** Développement du moteur de recherche
   - **1.3.1.1** Implémenter la recherche par texte
     - **1.3.1.1.1** Développer l'algorithme de recherche textuelle
@@ -1016,6 +1036,7 @@
     - **1.3.3.3.4** Développer l'accès rapide aux raccourcis
 
 #### 1.4 Tests et Validation (0.5 jour)
+
 - **1.4.1** Création des tests unitaires
   - **1.4.1.1** Développer des tests pour l'affichage hiérarchique
     - **1.4.1.1.1** Créer des tests pour le rendu de l'arborescence
@@ -1053,6 +1074,7 @@
 ### 2. Dashboard Dynamique (5 jours)
 
 #### 2.1 Analyse et Conception (1 jour)
+
 - **2.1.1** Définition des métriques et indicateurs
   - **2.1.1.1** Identifier les KPIs pertinents
     - **2.1.1.1.1** Analyser les besoins de suivi de progression
@@ -1105,6 +1127,7 @@
     - **2.1.3.3.4** Planifier la gestion des conflits de mise à jour
 
 #### 2.2 Développement des Visualisations de Base (2 jours)
+
 - **2.2.1** Implémentation des graphiques d'avancement
   - **2.2.1.1** Développer les graphiques de progression globale
     - **2.2.1.1.1** Implémenter les graphiques circulaires de progression
@@ -1157,6 +1180,7 @@
     - **2.2.3.3.4** Implémenter les prévisions basées sur la vélocité
 
 #### 2.3 Développement des Fonctionnalités Avancées (1.5 jour)
+
 - **2.3.1** Implémentation de l'interactivité
   - **2.3.1.1** Développer les fonctionnalités de drill-down
     - **2.3.1.1.1** Implémenter le mécanisme de navigation hiérarchique
@@ -1209,6 +1233,7 @@
     - **2.3.3.3.4** Implémenter le suivi des modifications entre mises à jour
 
 #### 2.4 Tests et Validation (0.5 jour)
+
 - **2.4.1** Création des tests unitaires
   - **2.4.1.1** Développer des tests pour les visualisations
     - **2.4.1.1.1** Créer des tests pour les graphiques d'avancement
@@ -1246,6 +1271,7 @@
 ### 3. Système de Notifications (3 jours)
 
 #### 3.1 Analyse et Conception (0.5 jour)
+
 - **3.1.1** Définition des types de notifications
   - **3.1.1.1** Identifier les événements déclencheurs
   - **3.1.1.2** Déterminer les niveaux de priorité
@@ -1257,6 +1283,7 @@
   - **3.1.2.3** Planifier les mécanismes de confirmation
 
 #### 3.2 Implémentation du Moteur de Notifications (1.5 jour)
+
 - **3.2.1** Développement du système d'événements
   - **3.2.1.1** Implémenter les écouteurs d'événements
   - **3.2.1.2** Développer les déclencheurs automatiques
@@ -1273,6 +1300,7 @@
   - **3.2.3.3** Créer les intégrations avec d'autres systèmes
 
 #### 3.3 Implémentation des Préférences et Configurations (0.5 jour)
+
 - **3.3.1** Développement des paramètres utilisateur
   - **3.3.1.1** Implémenter les préférences de notification
   - **3.3.1.2** Développer les options de fréquence
@@ -1284,6 +1312,7 @@
   - **3.3.2.3** Créer les options de suppression/archivage
 
 #### 3.4 Tests et Validation (0.5 jour)
+
 - **3.4.1** Création des tests unitaires
   - **3.4.1.1** Développer des tests pour le moteur d'événements
   - **3.4.1.2** Créer des tests pour les générateurs de notifications
@@ -1297,6 +1326,7 @@
 ### 4. Générateur de Rapports (4 jours)
 
 #### 4.1 Analyse et Conception (1 jour)
+
 - **4.1.1** Définition des types de rapports
   - **4.1.1.1** Identifier les rapports standards nécessaires
   - **4.1.1.2** Déterminer les formats de sortie (PDF, Excel, etc.)
@@ -1313,6 +1343,7 @@
   - **4.1.3.3** Planifier le système de templates
 
 #### 4.2 Implémentation des Rapports Standards (1.5 jour)
+
 - **4.2.1** Développement du rapport d'avancement
   - **4.2.1.1** Implémenter les métriques de progression
   - **4.2.1.2** Développer les visualisations d'avancement
@@ -1329,6 +1360,7 @@
   - **4.2.3.3** Créer les recommandations de priorisation
 
 #### 4.3 Implémentation du Système de Personnalisation (1 jour)
+
 - **4.3.1** Développement de l'éditeur de templates
   - **4.3.1.1** Implémenter l'interface d'édition
   - **4.3.1.2** Développer les options de mise en page
@@ -1340,6 +1372,7 @@
   - **4.3.2.3** Créer les options d'export spécifiques
 
 #### 4.4 Tests et Validation (0.5 jour)
+
 - **4.4.1** Création des tests unitaires
   - **4.4.1.1** Développer des tests pour les générateurs de rapports
   - **4.4.1.2** Créer des tests pour le système de templates
@@ -1353,6 +1386,7 @@
 ### 5. Intégration et Tests Système (3 jours)
 
 #### 5.1 Intégration des Composants (1.5 jour)
+
 - **5.1.1** Intégration de l'explorateur et du dashboard
   - **5.1.1.1** Implémenter la navigation croisée
   - **5.1.1.2** Développer le partage de contexte
@@ -1369,6 +1403,7 @@
   - **5.1.3.3** Créer les liens avec l'interface CLI
 
 #### 5.2 Tests Système (1 jour)
+
 - **5.2.1** Tests d'intégration complets
   - **5.2.1.1** Développer des scénarios de test de bout en bout
   - **5.2.1.2** Créer des jeux de données de test réalistes
@@ -1380,6 +1415,7 @@
   - **5.2.2.3** Identifier et corriger les goulots d'étranglement
 
 #### 5.3 Documentation et Formation (0.5 jour)
+
 - **5.3.1** Rédaction de la documentation
   - **5.3.1.1** Créer le manuel utilisateur
   - **5.3.1.2** Développer la documentation technique
@@ -1391,6 +1427,7 @@
   - **5.3.2.3** Planifier les sessions de formation
 
 ### Phase 3: Système de Templates et Génération de Code
+
 - **Objectif**: Réduire de 70% le temps de configuration pour les nouvelles tâches
 - **Durée**: 2 semaines
 - **Composants principaux**:
@@ -1404,6 +1441,7 @@
 ### 1. Intégration Hygen Avancée (4 jours)
 
 #### 1.1 Analyse et Conception (1 jour)
+
 - **1.1.1** Étude de l'architecture Hygen
   - **1.1.1.1** Analyser le fonctionnement des templates Hygen
     - **1.1.1.1.1** Étudier la structure des templates EJS de Hygen
@@ -1456,6 +1494,7 @@
     - **1.1.3.3.4** Établir les mécanismes de validation du format
 
 #### 1.2 Développement des Templates de Base (1.5 jour)
+
 - **1.2.1** Création des templates pour les modules PowerShell
   - **1.2.1.1** Développer le template de module de base
     - **1.2.1.1.1** Créer le template du fichier .psm1 principal
@@ -1508,6 +1547,7 @@
     - **1.2.3.3.4** Développer les templates de manifestes de compatibilité
 
 #### 1.3 Implémentation du Système d'Extraction de Métadonnées (1 jour)
+
 - **1.3.1** Développement du parser de métadonnées
   - **1.3.1.1** Implémenter l'extraction des identifiants de tâches
     - **1.3.1.1.1** Développer les expressions régulières pour les identifiants
@@ -1543,6 +1583,7 @@
     - **1.3.2.3.4** Implémenter la gestion des erreurs de validation
 
 #### 1.4 Tests et Validation (0.5 jour)
+
 - **1.4.1** Création des tests unitaires
   - **1.4.1.1** Développer des tests pour les templates
     - **1.4.1.1.1** Créer des tests pour les templates de modules PowerShell
@@ -1580,6 +1621,7 @@
 ### 2. Générateur de Tests (3 jours)
 
 #### 2.1 Analyse et Conception (0.5 jour)
+
 - **2.1.1** Étude des frameworks de test
   - **2.1.1.1** Analyser les spécificités de Pester pour PowerShell
     - **2.1.1.1.1** Étudier la syntaxe et les fonctionnalités de Pester
@@ -1615,6 +1657,7 @@
     - **2.1.2.3.4** Concevoir les mécanismes de reporting de performance
 
 #### 2.2 Implémentation des Générateurs de Tests Unitaires (1 jour)
+
 - **2.2.1** Développement des templates de tests pour les fonctions
   - **2.2.1.1** Implémenter les templates de tests de validation d'entrées
     - **2.2.1.1.1** Développer les templates de validation de types
@@ -1667,6 +1710,7 @@
     - **2.2.3.3.4** Développer les templates de données de test pour cas limites
 
 #### 2.3 Implémentation des Générateurs de Tests d'Intégration (1 jour)
+
 - **2.3.1** Développement des templates de tests de flux
   - **2.3.1.1** Implémenter les templates de tests de scénarios
     - **2.3.1.1.1** Développer les templates de scénarios utilisateur
@@ -1702,6 +1746,7 @@
     - **2.3.2.3.4** Développer les templates de configuration d'environnement
 
 #### 2.4 Tests et Validation (0.5 jour)
+
 - **2.4.1** Création des tests pour le générateur
   - **2.4.1.1** Développer des tests pour les templates de tests unitaires
     - **2.4.1.1.1** Créer des tests pour les templates de fonctions
@@ -1739,6 +1784,7 @@
 ### 3. Documentation Automatique (3 jours)
 
 #### 3.1 Analyse et Conception (0.5 jour)
+
 - **3.1.1** Étude des formats de documentation
   - **3.1.1.1** Analyser les standards de documentation PowerShell
   - **3.1.1.2** Identifier les formats de sortie nécessaires (Markdown, HTML, etc.)
@@ -1750,6 +1796,7 @@
   - **3.1.2.3** Planifier l'intégration avec la roadmap
 
 #### 3.2 Implémentation des Templates de Documentation (1.5 jour)
+
 - **3.2.1** Développement des templates pour les fonctions
   - **3.2.1.1** Implémenter les templates de documentation de fonctions
   - **3.2.1.2** Développer les templates de documentation de paramètres
@@ -1766,6 +1813,7 @@
   - **3.2.3.3** Créer les templates de documentation de dépannage
 
 #### 3.3 Implémentation du Système de Vérification (0.5 jour)
+
 - **3.3.1** Développement du vérificateur de couverture
   - **3.3.1.1** Implémenter la vérification de couverture des fonctions
   - **3.3.1.2** Développer la vérification de couverture des paramètres
@@ -1777,6 +1825,7 @@
   - **3.3.2.3** Créer la validation de la cohérence
 
 #### 3.4 Tests et Validation (0.5 jour)
+
 - **3.4.1** Création des tests unitaires
   - **3.4.1.1** Développer des tests pour les templates de documentation
   - **3.4.1.2** Créer des tests pour le vérificateur de couverture
@@ -1790,6 +1839,7 @@
 ### 4. Assistant d'Implémentation (3 jours)
 
 #### 4.1 Analyse et Conception (0.5 jour)
+
 - **4.1.1** Étude des besoins des développeurs
   - **4.1.1.1** Identifier les points de friction dans le processus d'implémentation
   - **4.1.1.2** Analyser les patterns d'implémentation fréquents
@@ -1801,6 +1851,7 @@
   - **4.1.2.3** Planifier les mécanismes de feedback
 
 #### 4.2 Implémentation du Guide d'Étapes (1 jour)
+
 - **4.2.1** Développement du système de workflow
   - **4.2.1.1** Implémenter le moteur de workflow
   - **4.2.1.2** Développer les étapes prédéfinies
@@ -1812,6 +1863,7 @@
   - **4.2.2.3** Créer l'assistant de configuration
 
 #### 4.3 Implémentation du Système de Suggestions (1 jour)
+
 - **4.3.1** Développement du moteur de suggestions
   - **4.3.1.1** Implémenter l'analyse de code existant
   - **4.3.1.2** Développer la détection de patterns
@@ -1823,6 +1875,7 @@
   - **4.3.2.3** Créer le détecteur de problèmes potentiels
 
 #### 4.4 Tests et Validation (0.5 jour)
+
 - **4.4.1** Création des tests unitaires
   - **4.4.1.1** Développer des tests pour le guide d'étapes
   - **4.4.1.2** Créer des tests pour le moteur de suggestions
@@ -1836,6 +1889,7 @@
 ### 5. Intégration et Tests Système (2 jours)
 
 #### 5.1 Intégration des Composants (1 jour)
+
 - **5.1.1** Intégration de Hygen avec les générateurs
   - **5.1.1.1** Intégrer Hygen avec le générateur de tests
   - **5.1.1.2** Connecter Hygen avec la documentation automatique
@@ -1847,6 +1901,7 @@
   - **5.1.2.3** Créer les mécanismes de mise à jour de la roadmap
 
 #### 5.2 Tests Système (0.5 jour)
+
 - **5.2.1** Tests d'intégration complets
   - **5.2.1.1** Développer des scénarios de test de bout en bout
   - **5.2.1.2** Créer des jeux de données de test réalistes
@@ -1858,6 +1913,7 @@
   - **5.2.2.3** Identifier et corriger les goulots d'étranglement
 
 #### 5.3 Documentation et Formation (0.5 jour)
+
 - **5.3.1** Rédaction de la documentation
   - **5.3.1.1** Créer le manuel utilisateur
   - **5.3.1.2** Développer la documentation technique
@@ -1869,6 +1925,7 @@
   - **5.3.2.3** Planifier les sessions de formation
 
 ### Phase 4: Intégration CI/CD et Validation Automatique
+
 - **Objectif**: Automatiser à 100% la validation des tâches terminées
 - **Durée**: 2 semaines
 - **Composants principaux**:
@@ -1882,6 +1939,7 @@
 ### 1. Pipelines CI/CD Spécifiques (4 jours)
 
 #### 1.1 Analyse et Conception (1 jour)
+
 - **1.1.1** Étude des workflows GitHub Actions
   - **1.1.1.1** Analyser les fonctionnalités de GitHub Actions
     - **1.1.1.1.1** Étudier la syntaxe YAML des workflows GitHub Actions
@@ -1934,6 +1992,7 @@
     - **1.1.3.3.4** Concevoir les mécanismes de notification et reporting de rollback
 
 #### 1.2 Implémentation des Workflows de Base (1.5 jour)
+
 - **1.2.1** Développement du workflow de validation
   - **1.2.1.1** Implémenter la validation de syntaxe
     - **1.2.1.1.1** Développer la validation de syntaxe PowerShell
@@ -1986,6 +2045,7 @@
     - **1.2.3.3.4** Développer la génération de changelogs
 
 #### 1.3 Implémentation des Workflows Avancés (1 jour)
+
 - **1.3.1** Développement du workflow de déploiement
   - **1.3.1.1** Implémenter le déploiement en environnement de test
     - **1.3.1.1.1** Développer le script de déploiement en environnement de test
@@ -2021,6 +2081,7 @@
     - **1.3.2.3.4** Développer l'intégration des rapports avec les notifications
 
 #### 1.4 Tests et Validation (0.5 jour)
+
 - **1.4.1** Création des tests pour les workflows
   - **1.4.1.1** Développer des tests pour les workflows de base
     - **1.4.1.1.1** Créer des tests pour le workflow de validation
@@ -2058,6 +2119,7 @@
 ### 2. Système de Validation Automatique (3 jours)
 
 #### 2.1 Analyse et Conception (0.5 jour)
+
 - **2.1.1** Définition des règles de validation
   - **2.1.1.1** Identifier les règles spécifiques aux types de tâches
     - **2.1.1.1.1** Analyser les critères de validation pour les tâches de développement
@@ -2093,6 +2155,7 @@
     - **2.1.2.3.4** Concevoir la documentation des extensions
 
 #### 2.2 Implémentation des Validateurs de Code (1 jour)
+
 - **2.2.1** Développement du validateur de syntaxe
   - **2.2.1.1** Implémenter l'analyse syntaxique PowerShell
     - **2.2.1.1.1** Développer l'intégration avec le parser PowerShell
@@ -2145,6 +2208,7 @@
     - **2.2.3.3.4** Développer les recommandations d'amélioration
 
 #### 2.3 Implémentation des Validateurs de Tâches (1 jour)
+
 - **2.3.1** Développement du validateur de complétude
   - **2.3.1.1** Implémenter la vérification des critères d'acceptation
     - **2.3.1.1.1** Développer le parser de critères d'acceptation
@@ -2180,6 +2244,7 @@
     - **2.3.2.3.4** Développer la détection des incompatibilités d'intégration
 
 #### 2.4 Tests et Validation (0.5 jour)
+
 - **2.4.1** Création des tests unitaires
   - **2.4.1.1** Développer des tests pour les validateurs de code
     - **2.4.1.1.1** Créer des tests pour le validateur de syntaxe
@@ -2217,6 +2282,7 @@
 ### 3. Système de Métriques (3 jours)
 
 #### 3.1 Analyse et Conception (0.5 jour)
+
 - **3.1.1** Définition des métriques clés
   - **3.1.1.1** Identifier les métriques de performance
     - **3.1.1.1.1** Définir les métriques de temps d'exécution
@@ -2252,6 +2318,7 @@
     - **3.1.2.3.4** Concevoir les méthodes d'accès aux données historiques
 
 #### 3.2 Implémentation des Collecteurs de Métriques (1 jour)
+
 - **3.2.1** Développement des collecteurs de performance
   - **3.2.1.1** Implémenter la mesure des temps d'exécution
     - **3.2.1.1.1** Développer les instruments de mesure de temps
@@ -2304,6 +2371,7 @@
     - **3.2.3.3.4** Développer les rapports de tendance des délais
 
 #### 3.3 Implémentation des Dashboards (1 jour)
+
 - **3.3.1** Développement du dashboard de performance
   - **3.3.1.1** Implémenter les visualisations de performance
     - **3.3.1.1.1** Développer les graphiques de temps d'exécution
@@ -2356,6 +2424,7 @@
     - **3.3.3.3.4** Développer les rapports de retard
 
 #### 3.4 Tests et Validation (0.5 jour)
+
 - **3.4.1** Création des tests unitaires
   - **3.4.1.1** Développer des tests pour les collecteurs
     - **3.4.1.1.1** Créer des tests pour les collecteurs de performance
@@ -2393,6 +2462,7 @@
 ### 4. Système de Rollback Intelligent (3 jours)
 
 #### 4.1 Analyse et Conception (0.5 jour)
+
 - **4.1.1** Étude des stratégies de rollback
   - **4.1.1.1** Analyser les différentes stratégies de rollback
     - **4.1.1.1.1** Étudier les stratégies de rollback complet
@@ -2428,6 +2498,7 @@
     - **4.1.2.3.4** Concevoir les procédures de vérification post-récupération
 
 #### 4.2 Implémentation du Détecteur de Problèmes (1 jour)
+
 - **4.2.1** Développement du détecteur d'erreurs
   - **4.2.1.1** Implémenter la détection des erreurs d'exécution
     - **4.2.1.1.1** Développer les mécanismes de capture d'exceptions
@@ -2480,6 +2551,7 @@
     - **4.2.3.3.4** Développer les rapports de dépendances cassées
 
 #### 4.3 Implémentation du Système de Rollback (1 jour)
+
 - **4.3.1** Développement du mécanisme de sauvegarde
   - **4.3.1.1** Implémenter la sauvegarde automatique avant déploiement
     - **4.3.1.1.1** Développer les scripts de sauvegarde pré-déploiement
@@ -2532,6 +2604,7 @@
     - **4.3.3.3.4** Développer les analyses post-récupération
 
 #### 4.4 Tests et Validation (0.5 jour)
+
 - **4.4.1** Création des tests unitaires
   - **4.4.1.1** Développer des tests pour le détecteur de problèmes
     - **4.4.1.1.1** Créer des tests pour le détecteur d'erreurs
@@ -2569,6 +2642,7 @@
 ### 5. Intégration et Tests Système (2 jours)
 
 #### 5.1 Intégration des Composants (1 jour)
+
 - **5.1.1** Intégration des pipelines avec les validateurs
   - **5.1.1.1** Intégrer les validateurs dans les workflows CI/CD
   - **5.1.1.2** Connecter les validateurs au système de métriques
@@ -2585,6 +2659,7 @@
   - **5.1.3.3** Lier avec le système de templates (Phase 3)
 
 #### 5.2 Tests Système (0.5 jour)
+
 - **5.2.1** Tests d'intégration complets
   - **5.2.1.1** Développer des scénarios de test de bout en bout
   - **5.2.1.2** Créer des jeux de données de test réalistes
@@ -2596,6 +2671,7 @@
   - **5.2.2.3** Identifier et corriger les goulots d'étranglement
 
 #### 5.3 Documentation et Formation (0.5 jour)
+
 - **5.3.1** Rédaction de la documentation
   - **5.3.1.1** Créer le manuel utilisateur
   - **5.3.1.2** Développer la documentation technique
@@ -2607,6 +2683,7 @@
   - **5.3.2.3** Planifier les sessions de formation
 
 ### Phase 5: Système d'Intelligence et d'Optimisation
+
 - **Objectif**: Réduire de 50% le temps d'estimation des tâches
 - **Durée**: 3 semaines
 - **Composants principaux**:
@@ -2620,6 +2697,7 @@
 ### 1. Système d'Analyse Prédictive (5 jours)
 
 #### 1.1 Analyse et Conception (1 jour)
+
 - **1.1.1** Étude des modèles prédictifs
   - **1.1.1.1** Analyser les différents algorithmes de prédiction
     - **1.1.1.1.1** Étudier les algorithmes de régression linéaire et polynomiale
@@ -2672,6 +2750,7 @@
     - **1.1.3.3.4** Concevoir les mécanismes de gestion des interruptions
 
 #### 1.2 Implémentation du Collecteur de Données (1 jour)
+
 - **1.2.1** Développement des extracteurs de données historiques
   - **1.2.1.1** Implémenter l'extraction des temps d'implémentation passés
     - **1.2.1.1.1** Développer les connecteurs pour les systèmes de suivi de temps
@@ -2724,6 +2803,7 @@
     - **1.2.3.3.4** Développer les mécanismes de restauration
 
 #### 1.3 Implémentation du Modèle Prédictif (2 jours)
+
 - **1.3.1** Développement du modèle de base
   - **1.3.1.1** Implémenter l'algorithme de régression
     - **1.3.1.1.1** Développer l'algorithme de régression linéaire
@@ -2776,6 +2856,7 @@
     - **1.3.3.3.4** Développer les métriques d'évaluation de calibration
 
 #### 1.4 Tests et Validation (1 jour)
+
 - **1.4.1** Création des tests unitaires
   - **1.4.1.1** Développer des tests pour le collecteur de données
     - **1.4.1.1.1** Créer des tests pour les extracteurs de données
@@ -2813,6 +2894,7 @@
 ### 2. Système de Recommandation (5 jours)
 
 #### 2.1 Analyse et Conception (1 jour)
+
 - **2.1.1** Étude des algorithmes de recommandation
   - **2.1.1.1** Analyser les différents types d'algorithmes de recommandation
     - **2.1.1.1.1** Étudier les algorithmes de filtrage collaboratif
@@ -2865,6 +2947,7 @@
     - **2.1.3.3.4** Établir les recommandations de documentation de code
 
 #### 2.2 Implémentation du Moteur de Recommandation (2 jours)
+
 - **2.2.1** Développement de l'algorithme de base
   - **2.2.1.1** Implémenter le filtrage collaboratif
     - **2.2.1.1.1** Développer l'algorithme de filtrage basé sur les utilisateurs
@@ -2917,6 +3000,7 @@
     - **2.2.3.3.4** Développer les mécanismes de recommandation basés sur la popularité
 
 #### 2.3 Implémentation de l'Interface de Recommandation (1 jour)
+
 - **2.3.1** Développement de l'interface utilisateur
   - **2.3.1.1** Implémenter l'affichage des recommandations
     - **2.3.1.1.1** Développer les composants d'affichage des recommandations
@@ -2952,6 +3036,7 @@
     - **2.3.2.3.4** Développer la documentation interactive (Swagger)
 
 #### 2.4 Tests et Validation (1 jour)
+
 - **2.4.1** Création des tests unitaires
   - **2.4.1.1** Développer des tests pour le moteur de recommandation
     - **2.4.1.1.1** Créer des tests pour l'algorithme de base
@@ -2989,6 +3074,7 @@
 ### 3. Système d'Apprentissage (4 jours)
 
 #### 3.1 Analyse et Conception (1 jour)
+
 - **3.1.1** Étude des mécanismes d'apprentissage
   - **3.1.1.1** Analyser les différentes approches d'apprentissage automatique
     - **3.1.1.1.1** Étudier les approches d'apprentissage supervisé
@@ -3024,6 +3110,7 @@
     - **3.1.2.3.4** Concevoir les mécanismes de rollback d'adaptation
 
 #### 3.2 Implémentation du Moteur d'Apprentissage (1.5 jour)
+
 - **3.2.1** Développement de l'analyseur de patterns
   - **3.2.1.1** Implémenter la détection de patterns de code
     - **3.2.1.1.1** Développer les algorithmes d'analyse syntaxique
@@ -3059,6 +3146,7 @@
     - **3.2.2.3.4** Développer les mécanismes d'optimisation multi-objectifs
 
 #### 3.3 Implémentation du Système de Feedback (1 jour)
+
 - **3.3.1** Développement des mécanismes de collecte
   - **3.3.1.1** Implémenter la collecte de feedback explicite
     - **3.3.1.1.1** Développer les interfaces de feedback utilisateur
@@ -3094,6 +3182,7 @@
     - **3.3.2.3.4** Développer les mécanismes de recommandation d'actions
 
 #### 3.4 Tests et Validation (0.5 jour)
+
 - **3.4.1** Création des tests unitaires
   - **3.4.1.1** Développer des tests pour le moteur d'apprentissage
     - **3.4.1.1.1** Créer des tests pour l'analyseur de patterns
@@ -3131,6 +3220,7 @@
 ### 4. Assistant IA pour la Granularisation (5 jours)
 
 #### 4.1 Analyse et Conception (1 jour)
+
 - **4.1.1** Étude des approches de granularisation
   - **4.1.1.1** Analyser les différentes stratégies de décomposition de tâches
     - **4.1.1.1.1** Étudier les méthodes de décomposition hiérarchique
@@ -3166,6 +3256,7 @@
     - **4.1.2.3.4** Concevoir les intégrations avec les outils externes
 
 #### 4.2 Implémentation du Moteur de Granularisation (2 jours)
+
 - **4.2.1** Développement de l'analyseur de tâches
   - **4.2.1.1** Implémenter l'analyse sémantique des descriptions
     - **4.2.1.1.1** Développer les algorithmes d'analyse de texte
@@ -3218,6 +3309,7 @@
     - **4.2.3.3.4** Développer les stratégies de normalisation de descriptions
 
 #### 4.3 Implémentation de l'Interface Utilisateur (1.5 jour)
+
 - **4.3.1** Développement de l'interface interactive
   - **4.3.1.1** Implémenter l'interface de saisie des tâches
     - **4.3.1.1.1** Développer les formulaires de saisie de tâches
@@ -3253,6 +3345,7 @@
     - **4.3.2.3.4** Développer les mécanismes d'application de templates
 
 #### 4.4 Tests et Validation (0.5 jour)
+
 - **4.4.1** Création des tests unitaires
   - **4.4.1.1** Développer des tests pour le moteur de granularisation
     - **4.4.1.1.1** Créer des tests pour l'analyseur de tâches
@@ -3290,6 +3383,7 @@
 ### 5. Intégration et Tests Système (2 jours)
 
 #### 5.1 Intégration des Composants (1 jour)
+
 - **5.1.1** Intégration des systèmes d'analyse et de recommandation
   - **5.1.1.1** Intégrer l'analyse prédictive avec les recommandations
   - **5.1.1.2** Connecter les prédictions au système d'apprentissage
@@ -3302,6 +3396,7 @@
   - **5.1.2.4** Intégrer avec le système de validation (Phase 4)
 
 #### 5.2 Tests Système (0.5 jour)
+
 - **5.2.1** Tests d'intégration complets
   - **5.2.1.1** Développer des scénarios de test de bout en bout
   - **5.2.1.2** Créer des jeux de données de test réalistes
@@ -3313,6 +3408,7 @@
   - **5.2.2.3** Identifier et corriger les goulots d'étranglement
 
 #### 5.3 Documentation et Formation (0.5 jour)
+
 - **5.3.1** Rédaction de la documentation
   - **5.3.1.1** Créer le manuel utilisateur
   - **5.3.1.2** Développer la documentation technique

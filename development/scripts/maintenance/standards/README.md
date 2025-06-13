@@ -23,59 +23,68 @@ Ce module fournit des outils pour inspecter prÃ©ventivement les scripts PowerS
 
 ```powershell
 # Analyser un script spÃ©cifique
+
 .\Inspect-ScriptPreventively.ps1 -Path .\MonScript.ps1
 
 # Analyser et corriger automatiquement un script
+
 .\Inspect-ScriptPreventively.ps1 -Path .\MonScript.ps1 -Fix
 
 # Analyser tous les scripts dans un dossier
+
 .\Inspect-ScriptPreventively.ps1 -Path .\development\scripts\*.ps1 -Recurse
 
 # Analyser et corriger tous les scripts dans un dossier
+
 .\Inspect-ScriptPreventively.ps1 -Path .\development\scripts\*.ps1 -Recurse -Fix
 
 # Filtrer par sÃ©vÃ©ritÃ©
+
 .\Inspect-ScriptPreventively.ps1 -Path .\MonScript.ps1 -Severity Warning
 
 # Filtrer par rÃ¨gle incluse
+
 .\Inspect-ScriptPreventively.ps1 -Path .\MonScript.ps1 -IncludeRule PSPossibleIncorrectComparisonWithNull
 
 # Filtrer par rÃ¨gle exclue
-.\Inspect-ScriptPreventively.ps1 -Path .\MonScript.ps1 -ExcludeRule PSAvoidUsingWriteHost
-```
 
+.\Inspect-ScriptPreventively.ps1 -Path .\MonScript.ps1 -ExcludeRule PSAvoidUsingWriteHost
+```plaintext
 ### Correction automatique des problÃ¨mes PSScriptAnalyzer
 
 ```powershell
 # Analyser un script spÃ©cifique
+
 .\Repair-PSScriptAnalyzerIssues.ps1 -ScriptPath .\MonScript.ps1
 
 # Analyser et corriger automatiquement un script
+
 .\Repair-PSScriptAnalyzerIssues.ps1 -ScriptPath .\MonScript.ps1 -Fix
 
 # Analyser et corriger tous les scripts dans un dossier, avec sauvegarde
-.\Repair-PSScriptAnalyzerIssues.ps1 -ScriptPath .\development\scripts\*.ps1 -Fix -CreateBackup
-```
 
+.\Repair-PSScriptAnalyzerIssues.ps1 -ScriptPath .\development\scripts\*.ps1 -Fix -CreateBackup
+```plaintext
 ### ExÃ©cution des tests unitaires
 
 ```powershell
 # ExÃ©cuter tous les tests
+
 .\development\testing\tests\Run-Tests.ps1
 
 # ExÃ©cuter un test spÃ©cifique
-Invoke-Pester -Path .\development\testing\tests\Inspect-ScriptPreventively.Tests.ps1
-```
 
+Invoke-Pester -Path .\development\testing\tests\Inspect-ScriptPreventively.Tests.ps1
+```plaintext
 ### DÃ©monstration
 
 Pour voir les outils en action :
 
 ```powershell
 # ExÃ©cuter la dÃ©monstration
-.\Demo-PreventiveInspection.ps1
-```
 
+.\Demo-PreventiveInspection.ps1
+```plaintext
 ## ProblÃ¨mes dÃ©tectÃ©s et corrigÃ©s
 
 Les outils peuvent dÃ©tecter et corriger automatiquement plusieurs types de problÃ¨mes :

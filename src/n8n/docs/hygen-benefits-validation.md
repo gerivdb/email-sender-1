@@ -48,14 +48,12 @@ Pour mesurer les bénéfices de Hygen, exécutez :
 
 ```powershell
 .\n8n\scripts\setup\measure-hygen-benefits.ps1
-```
-
+```plaintext
 Ou utilisez le script de commande :
 
 ```batch
 .\n8n\cmd\utils\validate-benefits.cmd
-```
-
+```plaintext
 Et sélectionnez l'option 1.
 
 Ce script mesure le temps de génération de composants avec Hygen, compare avec le temps de création manuelle, et analyse la standardisation du code et l'organisation des fichiers.
@@ -66,14 +64,12 @@ Pour collecter les retours des utilisateurs, exécutez :
 
 ```powershell
 .\n8n\scripts\setup\collect-user-feedback.ps1 -Interactive
-```
-
+```plaintext
 Ou utilisez le script de commande :
 
 ```batch
 .\n8n\cmd\utils\validate-benefits.cmd
-```
-
+```plaintext
 Et sélectionnez l'option 2.
 
 Ce script collecte les retours des utilisateurs sur leur expérience avec Hygen et génère un rapport de satisfaction.
@@ -84,14 +80,12 @@ Pour générer le rapport global de validation, exécutez :
 
 ```powershell
 .\n8n\scripts\setup\generate-validation-report.ps1
-```
-
+```plaintext
 Ou utilisez le script de commande :
 
 ```batch
 .\n8n\cmd\utils\validate-benefits.cmd
-```
-
+```plaintext
 Et sélectionnez l'option 3.
 
 Ce script combine les résultats des mesures de bénéfices et des retours utilisateurs pour générer un rapport global de validation.
@@ -102,8 +96,7 @@ Pour exécuter toutes les étapes en une seule fois, utilisez le script de comma
 
 ```batch
 .\n8n\cmd\utils\validate-benefits.cmd
-```
-
+```plaintext
 Et sélectionnez l'option 4.
 
 ## Rapports générés

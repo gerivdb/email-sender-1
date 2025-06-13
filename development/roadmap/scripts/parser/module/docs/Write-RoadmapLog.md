@@ -1,4 +1,4 @@
-﻿# Write-RoadmapLog
+# Write-RoadmapLog
 
 ## SYNOPSIS
 

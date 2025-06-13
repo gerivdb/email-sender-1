@@ -9,18 +9,19 @@
 ## 🎯 DIRECTIVES ABSOLUES D'EXÉCUTION
 
 ### 1. **FOCUS EXCLUSIF ÉDITEUR MARKDOWN**
-```
+
+```plaintext
 ACTION: Remplacer UNIQUEMENT la sélection active dans l'éditeur VS Code
 INTERDICTION: 
 - ❌ Terminal (ignoré complètement)
 - ❌ Autres fichiers non sélectionnés
 - ❌ Suggestions générales
 VALIDATION: Vérifier que l'action s'applique à l'éditeur principal markdown
-```
-
+```plaintext
 ### 2. **CONTRAINTES DE COHÉRENCE DOCUMENTAIRE**
 
 #### A. **Identification Automatique des Fichiers de Référence**
+
 ```yaml
 detection_automatique:
   patterns_recherche:
@@ -38,9 +39,9 @@ validation_coherence:
   - "Contrôler nommage selon conventions détectées"
   - "Valider intégration avec écosystème identifié"
   - "Respecter hiérarchie documentée"
-```
-
+```plaintext
 #### B. **Standards Architecturaux DÉTECTÉS AUTOMATIQUEMENT**
+
 ```go
 detection_principes:
   solid_indicators: ["interface", "struct", "dependency injection", "single responsibility"]
@@ -59,6 +60,7 @@ reusability: "Réutiliser composants existants détectés"
 ```### 3. **SPÉCIFICATION DE GRANULARISATION EXÉCUTABLE**
 
 #### A. **Structure Hiérarchique OBLIGATOIRE**
+
 ```markdown
 NIVEAU 1: 🏗️ ARCHITECTURE PRINCIPALE (Composant système)
 └── NIVEAU 2: 🔧 SOUS-SYSTÈMES SPÉCIALISÉS (Modules fonctionnels)
@@ -68,9 +70,9 @@ NIVEAU 1: 🏗️ ARCHITECTURE PRINCIPALE (Composant système)
                 └── NIVEAU 6: 🎯 INSTRUCTIONS EXÉCUTABLES (Commandes directes)
                     └── NIVEAU 7: 🔬 MICRO-OPÉRATIONS (Actions unitaires)
                         └── NIVEAU 8: ⚡ ÉTAPES ATOMIQUES (Indivisibles)
-```
-
+```plaintext
 #### B. **Modèle de Tâche Atomique UNIVERSELLE**
+
 ```yaml
 tache_atomique:
   titre: "[COMPOSANT] Action précise sur élément spécifique"
@@ -135,13 +137,14 @@ tache_atomique:
     duree_max: "Basée sur patterns similaires dans projet"
     complexite: "ATOMIQUE|COMPOSEE|COMPLEXE (déterminée automatiquement)"
     dependances: "Extraites de l'analyse de dépendances"
-```
-
+```plaintext
 ### 4. **DÉTECTION AUTOMATIQUE CONVENTIONS ET ÉVITEMENT REDONDANCE**
 
 #### A. **Extraction Automatique Conventions**
+
 ```bash
 # Détection automatique des patterns
+
 detection_commands:
   - "find . -name '*.go' -o -name '*.js' -o -name '*.py' -o -name '*.java' | head -20"
   - "grep -r 'interface.*{' . | head -10"
@@ -154,6 +157,7 @@ extraction_patterns:
   - "Identifier architecture (MVC, microservices, monolith)"
   - "Détecter standards équipe via commits/code"
 ```#### B. **Vérification Anti-Redondance UNIVERSELLE**
+
 ```bash
 verification_universelle:
   - "find . -name '*[nouveau_composant]*' -type f"
@@ -165,11 +169,11 @@ validation_rules:
   - "Aucune collision namespace/module"
   - "Respect conventions nommage extraites"
   - "Cohérence avec architecture identifiée"
-```
-
+```plaintext
 ### 5. **INTÉGRATION ÉCOSYSTÈME DÉTECTÉE AUTOMATIQUEMENT**
 
 #### A. **Mapping Automatique Dépendances**
+
 ```yaml
 detection_dependances:
   package_managers:
@@ -190,11 +194,11 @@ integration_points:
   - "Patterns d'injection de dépendances identifiés"
   - "Points d'extension existants"
   - "Hubs/Coordinateurs centraux"
-```
-
+```plaintext
 ### 6. **OUTILS ET SCRIPTS DÉTECTION AUTOMATIQUE**
 
 #### A. **Scripts Disponibles Détectés**
+
 ```yaml
 detection_scripts:
   npm_scripts: "package.json scripts section"
@@ -210,6 +214,7 @@ utilisation_automatique:
 ```### 7. **VALIDATION ET MÉTRIQUES UNIVERSELLES**
 
 #### A. **Critères Validation ADAPTÉS AU PROJET**
+
 ```yaml
 validation_adaptative:
   build_system:
@@ -230,9 +235,9 @@ validation_adaptative:
     - "Linting selon outils projet (eslint, golangci-lint, etc.)"
     - "Coverage selon standards projet"
     - "Performance selon benchmarks existants"
-```
-
+```plaintext
 #### B. **Métriques Contextuelles**
+
 ```yaml
 metriques_adaptees:
   complexity_metrics:
@@ -244,12 +249,11 @@ metriques_adaptees:
     - "Compatibilité avec architecture détectée"
     - "Respect patterns existants"
     - "Non-régression fonctionnalités"
-```
-
+```plaintext
 ## 🎯 ACTION DEMANDÉE
 
 **INSTRUCTION EXÉCUTABLE UNIVERSELLE**:
-```
+```plaintext
 1. ANALYSER le contexte de l'éditeur actif :
    - Détecter le type d'écosystème/projet
    - Identifier les conventions et patterns
@@ -285,6 +289,7 @@ Pour utiliser ce prompt sur n'importe quelle sélection :
 ## 🔧 EXEMPLES D'USAGE CONTEXTUELS
 
 ### Pour Écosystème Go
+
 ```yaml
 detection_automatique:
   - go.mod présent
@@ -297,9 +302,9 @@ application_specifique:
   - Patterns interface satisfaction
   - Gestion erreurs Go idiomatique
   - Tests unitaires et benchmarks
-```
-
+```plaintext
 ### Pour Écosystème Node.js
+
 ```yaml
 detection_automatique:
   - package.json présent
@@ -312,9 +317,9 @@ application_specifique:
   - Patterns async/await
   - Gestion erreurs Promise-based
   - Tests unitaires et intégration
-```
-
+```plaintext
 ### Pour Écosystème Python
+
 ```yaml
 detection_automatique:
   - requirements.txt ou pyproject.toml
@@ -327,8 +332,7 @@ application_specifique:
   - Type hints et annotations
   - Gestion exceptions Python
   - Tests unitaires et doctests
-```
-
+```plaintext
 ## 📚 MÉTADONNÉES DOCUMENT
 
 - **Version**: 1.0.0

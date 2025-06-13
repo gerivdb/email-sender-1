@@ -26,8 +26,7 @@ Pour configurer le cache prédictif pour n8n :
 
 ```powershell
 .\scripts\n8n\cache\Initialize-N8nPredictiveCache.ps1 -N8nApiUrl "http://localhost:5678/api/v1" -ApiKey "your_api_key" -MaxCacheSizeMB 200
-```
-
+```plaintext
 3. Cette commande initialisera le cache prédictif avec une taille maximale de 200 MB et enregistrera les hooks nécessaires pour l'intégration avec n8n.
 
 ## Utilisation de base
@@ -49,8 +48,7 @@ $value = @{
 }
 
 Set-PredictiveCache -Key "test-key" -Value $value -TTL 1800
-```
-
+```plaintext
 ### Récupérer une valeur du cache
 
 Pour récupérer une valeur du cache :
@@ -63,8 +61,7 @@ if ($value -ne $null) {
 else {
     Write-Host "Valeur non trouvée dans le cache."
 }
-```
-
+```plaintext
 ### Supprimer une valeur du cache
 
 Pour supprimer une valeur du cache :
@@ -77,16 +74,14 @@ if ($removed) {
 else {
     Write-Host "Valeur non trouvée dans le cache."
 }
-```
-
+```plaintext
 ### Enregistrer un accès au cache
 
 Pour enregistrer un accès au cache (pour l'apprentissage des modèles de prédiction) :
 
 ```powershell
 Register-CacheAccess -Key "test-key" -WorkflowId "workflow1" -NodeId "node1"
-```
-
+```plaintext
 ### Obtenir des prédictions
 
 Pour obtenir des prédictions sur les prochains accès au cache :
@@ -97,10 +92,10 @@ foreach ($prediction in $predictions) {
     Write-Host "Clé prédite: $($prediction.Key) (probabilité: $($prediction.Probability))"
     
     # Précharger la valeur prédite
+
     $predictedValue = Get-PredictiveCache -Key $prediction.Key
 }
-```
-
+```plaintext
 ## Utilisation avec n8n
 
 ### Dans les workflows n8n
@@ -130,8 +125,7 @@ return {
     predictions
   }
 };
-```
-
+```plaintext
 ### Exemple de workflow n8n
 
 Un workflow d'exemple est créé automatiquement lors de l'initialisation du cache prédictif. Vous pouvez l'utiliser comme référence pour intégrer le cache prédictif dans vos propres workflows.
@@ -144,24 +138,22 @@ Pour spécifier une durée de vie personnalisée pour une entrée de cache :
 
 ```powershell
 Set-PredictiveCache -Key "test-key" -Value $value -TTL 3600  # 1 heure
-```
 
+```plaintext
 ### Invalider les entrées liées
 
 Pour supprimer une entrée du cache et toutes les entrées liées :
 
 ```powershell
 Remove-PredictiveCache -Key "test-key" -InvalidateRelated
-```
-
+```plaintext
 ### Optimiser la taille du cache
 
 Pour optimiser manuellement la taille du cache :
 
 ```powershell
 Optimize-CacheSize
-```
-
+```plaintext
 Cette fonction est également appelée automatiquement lorsque la taille du cache dépasse la taille maximale configurée.
 
 ## Exemples pratiques
@@ -178,10 +170,12 @@ function Get-ApiData {
     )
     
     # Créer une clé de cache basée sur l'endpoint et les paramètres
+
     $paramString = ($Parameters.GetEnumerator() | Sort-Object Name | ForEach-Object { "$($_.Name)=$($_.Value)" }) -join "&"
     $cacheKey = "api:$Endpoint:$paramString"
     
     # Essayer de récupérer du cache
+
     $cachedData = Get-PredictiveCache -Key $cacheKey
     
     if ($cachedData -ne $null) {
@@ -190,6 +184,7 @@ function Get-ApiData {
     }
     
     # Récupérer les données de l'API
+
     $uri = "https://api.example.com/$Endpoint"
     if ($Parameters) {
         $uri += "?" + $paramString
@@ -198,18 +193,20 @@ function Get-ApiData {
     $response = Invoke-RestMethod -Uri $uri -Method Get
     
     # Mettre en cache les données (TTL de 30 minutes)
+
     Set-PredictiveCache -Key $cacheKey -Value $response -TTL 1800
     
     # Enregistrer l'accès au cache
+
     Register-CacheAccess -Key $cacheKey -WorkflowId "api-workflow" -NodeId "get-data"
     
     return $response
 }
 
 # Utilisation
-$data = Get-ApiData -Endpoint "users" -Parameters @{ limit = 10; offset = 0 }
-```
 
+$data = Get-ApiData -Endpoint "users" -Parameters @{ limit = 10; offset = 0 }
+```plaintext
 ### Exemple 2 : Préchargement intelligent
 
 Pour précharger intelligemment les données susceptibles d'être demandées prochainement :
@@ -223,18 +220,22 @@ function Get-UserData {
     $cacheKey = "user:$UserId"
     
     # Essayer de récupérer du cache
+
     $userData = Get-PredictiveCache -Key $cacheKey
     
     if ($userData -ne $null) {
         Write-Host "Données utilisateur récupérées du cache."
         
         # Enregistrer l'accès au cache
+
         Register-CacheAccess -Key $cacheKey -WorkflowId "user-workflow" -NodeId "get-user"
         
         # Obtenir des prédictions et précharger
+
         $predictions = Get-PredictedCacheKeys -Key $cacheKey -WorkflowId "user-workflow" -NodeId "get-user"
         
         # Précharger en arrière-plan
+
         Start-Job -ScriptBlock {
             param($predictions, $modulePath)
             
@@ -245,14 +246,17 @@ function Get-UserData {
                 $predictedUserId = $predictedKey -replace "user:", ""
                 
                 # Vérifier si déjà en cache
+
                 $predictedData = Get-PredictiveCache -Key $predictedKey
                 
                 if ($predictedData -eq $null) {
                     # Récupérer les données
+
                     $uri = "https://api.example.com/users/$predictedUserId"
                     $response = Invoke-RestMethod -Uri $uri -Method Get
                     
                     # Mettre en cache
+
                     Set-PredictiveCache -Key $predictedKey -Value $response -TTL 1800
                 }
             }
@@ -262,22 +266,25 @@ function Get-UserData {
     }
     
     # Récupérer les données de l'API
+
     $uri = "https://api.example.com/users/$UserId"
     $response = Invoke-RestMethod -Uri $uri -Method Get
     
     # Mettre en cache les données
+
     Set-PredictiveCache -Key $cacheKey -Value $response -TTL 1800
     
     # Enregistrer l'accès au cache
+
     Register-CacheAccess -Key $cacheKey -WorkflowId "user-workflow" -NodeId "get-user"
     
     return $response
 }
 
 # Utilisation
-$user = Get-UserData -UserId 123
-```
 
+$user = Get-UserData -UserId 123
+```plaintext
 ### Exemple 3 : Utilisation dans un workflow n8n
 
 Voici un exemple de code JavaScript à utiliser dans un nœud Function de n8n :
@@ -326,8 +333,7 @@ if (userData) {
 }
 
 return items;
-```
-
+```plaintext
 ## Bonnes pratiques
 
 ### Pour une utilisation efficace du cache
@@ -389,10 +395,10 @@ function Get-CachePerformanceMetrics {
 }
 
 # Enregistrer les métriques
+
 $metrics = Get-CachePerformanceMetrics
 $metrics | Export-Csv -Path ".\logs\cache_metrics_$(Get-Date -Format 'yyyyMMdd').csv" -Append -NoTypeInformation
-```
-
+```plaintext
 ### Intégration avec le système de feedback
 
 Si vous trouvez des problèmes avec le cache prédictif, vous pouvez soumettre un feedback :
@@ -400,8 +406,7 @@ Si vous trouvez des problèmes avec le cache prédictif, vous pouvez soumettre u
 ```powershell
 Import-Module .\modules\FeedbackCollection.psm1
 Submit-Feedback -Component "PredictiveCache" -FeedbackType "Performance Issue" -Description "Description du problème"
-```
-
+```plaintext
 ## Conclusion
 
 Le cache prédictif est un outil puissant pour optimiser les performances de vos workflows et scripts. En mettant en cache les données fréquemment utilisées et en prédisant les prochains accès, vous pouvez réduire considérablement les temps de réponse et la charge sur les systèmes externes.

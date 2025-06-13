@@ -1,4 +1,4 @@
-﻿# Mode CHECK AmÃ©liorÃ©
+# Mode CHECK AmÃ©liorÃ©
 
 ## Description
 
@@ -24,32 +24,28 @@ Le mode CHECK amÃ©liorÃ© est installÃ© automatiquement avec les autres mod
 
 ```powershell
 .\tools\scripts\check.ps1 [-FilePath <chemin_roadmap>] [-TaskIdentifier <id_tÃ¢che>] [-ActiveDocumentPath <chemin_document>] [-Force]
-```
-
+```plaintext
 ### VÃ©rification simple (mode simulation)
 
 Pour vÃ©rifier si les tÃ¢ches sÃ©lectionnÃ©es ont Ã©tÃ© implÃ©mentÃ©es Ã  100% et testÃ©es avec succÃ¨s Ã  100% sans appliquer les modifications :
 
 ```powershell
 .\tools\scripts\check.ps1 -FilePath "docs/roadmap/roadmap.md" -TaskIdentifier "1.2.3"
-```
-
+```plaintext
 ### Mise Ã  jour automatique des cases Ã  cocher
 
 Pour mettre Ã  jour automatiquement les cases Ã  cocher dans le document actif :
 
 ```powershell
 .\tools\scripts\check.ps1 -FilePath "docs/roadmap/roadmap.md" -TaskIdentifier "1.2.3" -Force
-```
-
+```plaintext
 ### SpÃ©cification du document actif
 
 Si le document actif ne peut pas Ãªtre dÃ©tectÃ© automatiquement, vous pouvez le spÃ©cifier manuellement :
 
 ```powershell
 .\tools\scripts\check.ps1 -FilePath "docs/roadmap/roadmap.md" -TaskIdentifier "1.2.3" -ActiveDocumentPath "docs/roadmap/roadmap.md" -Force
-```
-
+```plaintext
 ### Mode simulation et mode force
 
 Par dÃ©faut, le mode CHECK amÃ©liorÃ© fonctionne en mode simulation (`-Force` non spÃ©cifiÃ©) :
@@ -59,8 +55,7 @@ Par dÃ©faut, le mode CHECK amÃ©liorÃ© fonctionne en mode simulation (`-For
 Pour appliquer rÃ©ellement les modifications, utilisez le paramÃ¨tre `-Force` :
 ```powershell
 .\tools\scripts\check.ps1 -FilePath "docs/roadmap/roadmap.md" -TaskIdentifier "1.2.3" -Force
-```
-
+```plaintext
 ### ParamÃ¨tres complets
 
 - **FilePath** : Chemin vers le fichier de roadmap Ã  vÃ©rifier (par dÃ©faut : "docs/plans/plan-modes-stepup.md")

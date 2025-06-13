@@ -1,7 +1,9 @@
 # Plan de développement v43a - Gestionnaire de Configuration (ConfigManager)
+
 *Version 1.0 - 2025-06-04 - Progression globale : 0%*
 
 ## Introduction
+
 Ce document détaille le plan de développement pour le `ConfigManager` du projet `EMAIL_SENDER_1`. Ce manager sera responsable de la centralisation et de la fourniture de toutes les configurations nécessaires à l'application et à ses différents modules. Il chargera les configurations depuis diverses sources (fichiers, variables d'environnement), permettra un accès typé et sécurisé, et gérera les priorités entre les sources.
 
 Le `ConfigManager` respectera les principes DRY (en évitant la duplication de la logique de configuration), KISS (en offrant une API simple et claire), et SOLID (en ayant une responsabilité unique et bien définie, et en étant extensible pour de nouvelles sources de configuration).
@@ -9,15 +11,18 @@ Le `ConfigManager` respectera les principes DRY (en évitant la duplication de l
 Il sera situé dans `development/managers/config-manager/`.
 
 ## Table des matières
+
 - [1] Phase 1 : Conception et Initialisation
 - [2] Phase 2 : Implémentation des Fonctionnalités Clés
 - [3] Phase 3 : Intégration et Tests Avancés
 - [4] Phase 4 : Documentation et Finalisation
 
 ## Phase 1 : Conception et Initialisation
+
 *Progression : 0%*
 
 ### 1.1 Définition détaillée des responsabilités et du périmètre
+
 *Progression : 0%*
 - [ ] Micro-étape 1.1.1 : Lister les fonctionnalités exactes :
     - [ ] Chargement depuis fichiers (JSON, YAML, TOML).
@@ -45,6 +50,7 @@ Il sera situé dans `development/managers/config-manager/`.
     - [ ] `ErrorManager` : Pour logger les erreurs de chargement ou d'accès à la configuration.
 
 ### 1.2 Initialisation de la structure du module Go
+
 *Progression : 0%*
 - [ ] Micro-étape 1.2.1 : Créer le répertoire `development/managers/config-manager/`.
     - [ ] Entrées : Structure de projet existante.
@@ -62,6 +68,7 @@ Il sera situé dans `development/managers/config-manager/`.
     - [ ] Sorties : `go.mod` mis à jour si nécessaire (généralement pas pour un package interne).
 
 ### 1.3 Conception de la gestion des erreurs internes
+
 *Progression : 0%*
 - [ ] Micro-étape 1.3.1 : Définir des erreurs spécifiques (ex: `ErrKeyNotFound`, `ErrConfigParse`, `ErrInvalidType`).
     - [ ] Utiliser `fmt.Errorf` avec wrapping (`%w`) ou des types d'erreurs custom.
@@ -71,6 +78,7 @@ Il sera situé dans `development/managers/config-manager/`.
     - [ ] Sorties : Stratégie de logging d'erreur.
 
 ### 1.4 Planification des tests unitaires initiaux
+
 *Progression : 0%*
 - [ ] Micro-étape 1.4.1 : Identifier les premiers composants à tester :
     - [ ] Chargement d'un fichier JSON simple.
@@ -79,9 +87,11 @@ Il sera situé dans `development/managers/config-manager/`.
     - [ ] Récupération d'une valeur typée (string, int).
 
 ## Phase 2 : Implémentation des Fonctionnalités Clés
+
 *Progression : 0%*
 
 ### 2.1 Implémentation du chargement des valeurs par défaut
+
 *Progression : 0%*
 - [ ] Micro-étape 2.1.1 : Implémenter `RegisterDefaults(defaults map[string]interface{})`.
     - [ ] Stocker les valeurs par défaut en interne.
@@ -91,6 +101,7 @@ Il sera situé dans `development/managers/config-manager/`.
     - [ ] Conditions préalables : Structure de base du manager.
 
 ### 2.2 Implémentation du chargement depuis fichiers (JSON, YAML, TOML)
+
 *Progression : 0%*
 - [ ] Micro-étape 2.2.1 : Implémenter le chargement pour JSON.
     - [ ] Utiliser `encoding/json`.
@@ -112,6 +123,7 @@ Il sera situé dans `development/managers/config-manager/`.
     - [ ] Conditions préalables : Fonctionnalité 2.1.
 
 ### 2.3 Implémentation du chargement depuis variables d'environnement
+
 *Progression : 0%*
 - [ ] Micro-étape 2.3.1 : Implémenter `LoadFromEnv(prefix string)`.
     - [ ] Lire toutes les variables d'environnement.
@@ -124,6 +136,7 @@ Il sera situé dans `development/managers/config-manager/`.
     - [ ] Scripts : `config_manager_test.go`
 
 ### 2.4 Implémentation de la fusion et de la priorité des sources
+
 *Progression : 0%*
 - [ ] Micro-étape 2.4.1 : Définir l'ordre de priorité (ex: Env > Fichier spécifique > Fichier général > Défauts).
 - [ ] Micro-étape 2.4.2 : Implémenter la logique de fusion qui écrase les valeurs selon la priorité.
@@ -133,6 +146,7 @@ Il sera situé dans `development/managers/config-manager/`.
     - [ ] Conditions préalables : Fonctionnalités 2.1, 2.2, 2.3.
 
 ### 2.5 Implémentation des méthodes d'accès typées
+
 *Progression : 0%*
 - [ ] Micro-étape 2.5.1 : Implémenter `GetString`, `GetInt`, `GetBool`.
     - [ ] Gérer la conversion de type si la valeur stockée est d'un type différent mais compatible.
@@ -145,6 +159,7 @@ Il sera situé dans `development/managers/config-manager/`.
     - [ ] Scripts : `config_manager_test.go`
 
 ### 2.6 Implémentation de la validation de base des configurations
+
 *Progression : 0%*
 - [ ] Micro-étape 2.6.1 : Ajouter une méthode pour valider la configuration chargée (ex: `Validate() error`).
     - [ ] Vérifier la présence de clés requises.
@@ -153,9 +168,11 @@ Il sera situé dans `development/managers/config-manager/`.
     - [ ] Scripts : `config_manager_test.go`
 
 ## Phase 3 : Intégration et Tests Avancés
+
 *Progression : 0%*
 
 ### 3.1 Intégration avec `IntegratedManager`
+
 *Progression : 0%*
 - [ ] Micro-étape 3.1.1 : `IntegratedManager` initialise `ConfigManager` au démarrage.
     - [ ] `IntegratedManager` appelle les méthodes de chargement de `ConfigManager` dans l'ordre approprié.
@@ -165,6 +182,7 @@ Il sera situé dans `development/managers/config-manager/`.
     - [ ] Scripts : `development/managers/integrated-manager/manager.go`
 
 ### 3.2 Utilisation par d'autres managers (Exemple : `StorageManager`)
+
 *Progression : 0%*
 - [ ] Micro-étape 3.2.1 : `StorageManager` récupère ses configurations (ex: DSN de base de données) depuis `ConfigManager`.
     - [ ] `dbHost := cfgManager.GetString("database.host")`
@@ -173,36 +191,43 @@ Il sera situé dans `development/managers/config-manager/`.
     - [ ] Sorties : Managers modifiés.
 
 ### 3.3 Développement des tests d'intégration
+
 *Progression : 0%*
 - [ ] Micro-étape 3.3.1 : Créer des scénarios de test où `IntegratedManager` initialise `ConfigManager`, et un autre manager (mock ou réel simple) lit une configuration.
 - [ ] Micro-étape 3.3.2 : Tester le cycle de vie complet du chargement et de l'accès.
     - [ ] Scripts : `development/managers/integrated-manager/integration_test.go` (ou un fichier de test dédié)
 
 ### 3.4 Tests de robustesse et de gestion des cas limites
+
 *Progression : 0%*
 - [ ] Micro-étape 3.4.1 : Tester avec des fichiers de configuration manquants, corrompus, ou avec des permissions incorrectes.
 - [ ] Micro-étape 3.4.2 : Tester avec des variables d'environnement non définies ou mal formatées.
 - [ ] Micro-étape 3.4.3 : Vérifier le comportement pour des clés de configuration très imbriquées ou avec des noms complexes.
 
 ### 3.5 Raffinement de la gestion des erreurs et logging via `ErrorManager`
+
 *Progression : 0%*
 - [ ] Micro-étape 3.5.1 : S'assurer que toutes les erreurs critiques de configuration (ex: fichier principal introuvable) sont loggées avec une sévérité appropriée via `ErrorManager`.
 - [ ] Micro-étape 3.5.2 : Vérifier que les messages d'erreur sont clairs et informatifs.
 
 ## Phase 4 : Documentation et Finalisation
+
 *Progression : 0%*
 
 ### 4.1 Documentation du code (GoDoc)
+
 *Progression : 0%*
 - [ ] Micro-étape 4.1.1 : Commenter toutes les fonctions publiques, structs, et interfaces dans `config_manager.go`, `loader.go`, etc.
 - [ ] Micro-étape 4.1.2 : Générer la documentation GoDoc et la vérifier.
 
 ### 4.2 Rédaction de la documentation d'architecture
+
 *Progression : 0%*
 - [ ] Micro-étape 4.2.1 : Créer un diagramme simple dans le `README.md` du module expliquant le flux de chargement et de priorité.
 - [ ] Micro-étape 4.2.2 : Expliquer les choix de conception majeurs (ex: pourquoi telle librairie de parsing a été choisie, comment la priorité est gérée).
 
 ### 4.3 Rédaction d'un guide d'utilisation (`README.md` dans `development/managers/config-manager/`)
+
 *Progression : 0%*
 - [ ] Micro-étape 4.3.1 : Expliquer comment initialiser et utiliser le `ConfigManager`.
     - [ ] Ordre d'appel des méthodes de chargement.
@@ -213,6 +238,7 @@ Il sera situé dans `development/managers/config-manager/`.
 - [ ] Micro-étape 4.3.4 : Documenter les formats de fichiers supportés.
 
 ### 4.4 Validation finale et couverture de tests
+
 *Progression : 0%*
 - [ ] Micro-étape 4.4.1 : Exécuter tous les tests et viser une couverture de code d'au moins 90%.
     - [ ] Utiliser `go test -coverprofile=coverage.out && go tool cover -html=coverage.out`.
@@ -220,6 +246,7 @@ Il sera situé dans `development/managers/config-manager/`.
 - [ ] Micro-étape 4.4.3 : S'assurer de l'absence d'erreurs de linting (`golangci-lint run`).
 
 ### 4.5 Scripts et Conditions
+
 *Progression : 0%*
 - [ ] Scripts principaux :
     - `development/managers/config-manager/config_manager.go`

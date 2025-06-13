@@ -1,4 +1,5 @@
 # Standards de mesure de complexité pour PowerShell
+
 *Version 1.0 - 2025-05-15*
 
 Ce document présente les résultats de recherche sur les standards de mesure de complexité applicables au code PowerShell.
@@ -126,9 +127,11 @@ En PowerShell, les facteurs suivants augmentent la complexité cognitive:
 ### 2.3 Couplage et cohésion
 
 #### Couplage afférent (Ca)
+
 Nombre de modules qui dépendent du module mesuré.
 
 #### Couplage efférent (Ce)
+
 Nombre de modules dont dépend le module mesuré.
 
 #### Seuils recommandés

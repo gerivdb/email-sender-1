@@ -1,4 +1,4 @@
-﻿# Guide de migration vers PowerShell 7 pour le module FileContentIndexer
+# Guide de migration vers PowerShell 7 pour le module FileContentIndexer
 
 Ce guide explique comment migrer votre code du module FileContentIndexer de PowerShell 5.1 vers PowerShell 7, en mettant en Ã©vidence les diffÃ©rences clÃ©s et les meilleures pratiques.
 
@@ -54,8 +54,10 @@ Utilisez des conditions pour exÃ©cuter diffÃ©rent code selon la version:
 `powershell
 if (System.Management.Automation.PSVersionHashTable.PSVersion.Major -ge 7) {
     # Code PowerShell 7
+
 } else {
     # Code PowerShell 5.1
+
 }
 `
 
@@ -72,9 +74,11 @@ function New-MyObject {
     }
 
     # Ajouter des mÃ©thodes
+
      | Add-Member -MemberType ScriptMethod -Name "DoSomething" -Value {
         param([string])
         # ImplÃ©mentation
+
     }
 
     return 
@@ -95,10 +99,13 @@ function Invoke-Parallel {
 
     if (System.Management.Automation.PSVersionHashTable.PSVersion.Major -ge 7) {
         # Utiliser ForEach-Object -Parallel
+
         return  | ForEach-Object -Parallel  -ThrottleLimit 
     } else {
         # ImplÃ©mentation compatible PS 5.1 avec Runspaces
+
         # ...
+
     }
 }
 `

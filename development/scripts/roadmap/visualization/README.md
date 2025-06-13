@@ -22,20 +22,17 @@ Ce module permet de visualiser les roadmaps sous forme de carte de métro, en me
 
 ```bash
 docker run -p 6333:6333 -p 6334:6334 -v $(pwd)/qdrant_storage:/qdrant/storage qdrant/qdrant
-```
-
+```plaintext
 2. Installez les dépendances Python pour le script d'initialisation :
 
 ```bash
 pip install qdrant-client numpy
-```
-
+```plaintext
 3. Initialisez la collection Qdrant avec des données de test :
 
 ```bash
 python init_qdrant.py
-```
-
+```plaintext
 ## Utilisation
 
 1. Ouvrez le fichier `index.html` dans un navigateur web.
@@ -84,8 +81,7 @@ Chaque point dans la collection `roadmaps` a la structure suivante :
     ]
   }
 }
-```
-
+```plaintext
 ## Personnalisation
 
 Vous pouvez personnaliser l'apparence et le comportement du visualiseur en modifiant les options dans le constructeur de la classe `MetroMapVisualizer` :
@@ -97,9 +93,9 @@ const visualizer = new MetroMapVisualizer('metro-map', {
   nodeSize: 30,
   lineWidth: 4,
   metroColors: ['#FF6B6B', '#4ECDC4', '#45B7D1', ...]
-});
-```
 
+});
+```plaintext
 ## Intégration avec l'infrastructure existante
 
 Ce module s'intègre parfaitement avec l'infrastructure existante :
@@ -140,8 +136,7 @@ const roadmapIds = ['roadmap_1', 'roadmap_2', 'roadmap_3'];
 
 // Visualiser les roadmaps sélectionnées
 visualizer.visualizeRoadmaps(roadmapIds);
-```
-
+```plaintext
 ### Création d'une nouvelle roadmap
 
 ```javascript
@@ -169,8 +164,7 @@ const newRoadmap = {
 
 // Ajouter la roadmap à Qdrant
 visualizer.createRoadmap(newRoadmap);
-```
-
+```plaintext
 ## Limitations actuelles et améliorations futures
 
 - **Performance** : La visualisation peut devenir lente avec un grand nombre de roadmaps et de tâches.

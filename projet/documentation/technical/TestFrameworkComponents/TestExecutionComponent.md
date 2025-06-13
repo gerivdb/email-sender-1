@@ -38,10 +38,11 @@ function Invoke-PerformanceTest {
     )
     
     # Exécute un test de performance selon la configuration spécifiée
-    # Retourne les résultats du test si PassThru est spécifié
-}
-```
 
+    # Retourne les résultats du test si PassThru est spécifié
+
+}
+```plaintext
 ### 3.2 Interfaces secondaires
 
 ```powershell
@@ -62,6 +63,7 @@ function New-TestConfiguration {
     )
     
     # Crée une nouvelle configuration de test
+
 }
 
 function Get-TestStatus {
@@ -72,6 +74,7 @@ function Get-TestStatus {
     )
     
     # Récupère le statut d'un test en cours ou terminé
+
 }
 
 function Stop-PerformanceTest {
@@ -85,24 +88,29 @@ function Stop-PerformanceTest {
     )
     
     # Arrête un test en cours d'exécution
-}
-```
 
+}
+```plaintext
 ## 4. Sous-composants
 
 ### 4.1 TestScenarioManager
+
 Gère les scénarios de test, leur chargement et leur validation.
 
 ### 4.2 TestEnvironmentManager
+
 Prépare, configure et nettoie l'environnement de test.
 
 ### 4.3 TestExecutor
+
 Exécute les étapes du scénario de test et collecte les résultats.
 
 ### 4.4 TestParameterManager
+
 Gère les paramètres de test, leur validation et leur substitution.
 
 ### 4.5 TestScheduler
+
 Planifie et orchestre l'exécution des tests, notamment pour les tests en parallèle.
 
 ## 5. Flux de données
@@ -175,8 +183,7 @@ Le composant utilise un format de configuration JSON/YAML avec la structure suiv
     "priority": "normal"
   }
 }
-```
-
+```plaintext
 ## 7. Dépendances
 
 - **System.Diagnostics**: Pour la mesure des performances
@@ -206,33 +213,36 @@ Le composant est conçu pour être extensible via:
 
 ```powershell
 # Exécuter un test avec la configuration par défaut
+
 Invoke-PerformanceTest -TestConfigurationPath ".\configs\index_loading_test.json"
 
 # Exécuter un test avec des paramètres personnalisés
+
 Invoke-PerformanceTest -TestConfigurationPath ".\configs\index_loading_test.json" -Parameters @{
     indexType = "dictionary"
     cacheSize = 2048
     parallelism = 2
 }
-```
-
+```plaintext
 ### 10.2 Création d'une configuration de test
 
 ```powershell
 # Créer une nouvelle configuration de test
+
 New-TestConfiguration -Name "CustomIndexLoadingTest" -ScenarioPath ".\scenarios\custom_index_loading.ps1" -Parameters @{
     indexType = "hashtable"
     cacheSize = 1024
     parallelism = 4
 } -OutputPath ".\configs\custom_index_loading_test.json"
-```
-
+```plaintext
 ### 10.3 Gestion des tests en cours
 
 ```powershell
 # Vérifier le statut d'un test
+
 $status = Get-TestStatus -TestId "test-20250515-001"
 
 # Arrêter un test en cours
+
 Stop-PerformanceTest -TestId "test-20250515-001"
-```
+```plaintext

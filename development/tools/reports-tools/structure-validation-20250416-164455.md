@@ -1,4 +1,4 @@
-﻿# Rapport de Validation de Structure du DÃ©pÃ´t
+# Rapport de Validation de Structure du DÃ©pÃ´t
 
 Date: 2025-04-16 16:44:56
 Chemin: D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1

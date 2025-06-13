@@ -26,8 +26,7 @@ Le hook pre-commit est installé automatiquement lors de l'initialisation de l'e
 
 ```powershell
 .\development\scripts\maintenance\git\Install-PreCommitHook.ps1 -Force
-```
-
+```plaintext
 Ce script :
 1. Vérifie si le dossier `.git/hooks` existe, sinon le crée
 2. Crée le fichier `.git/hooks/pre-commit` avec le contenu approprié
@@ -39,11 +38,15 @@ Voici le contenu du hook pre-commit :
 
 ```bash
 #!/bin/sh
+
 #
+
 # Pre-commit hook pour organiser les scripts de maintenance
+
 #
 
 # Vérifier si des fichiers PowerShell ont été ajoutés à la racine du dossier maintenance
+
 MAINTENANCE_DIR="development/scripts/maintenance"
 ADDED_PS_FILES=$(git diff --cached --name-only --diff-filter=A | grep -E "^$MAINTENANCE_DIR/[^/]+\.(ps1|psm1|psd1)$")
 
@@ -52,27 +55,28 @@ if [ -n "$ADDED_PS_FILES" ]; then
     echo "$ADDED_PS_FILES"
     
     # Exécuter le script d'organisation
+
     echo "Organisation automatique des scripts..."
     powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$MAINTENANCE_DIR/organize/Organize-MaintenanceScripts.ps1" -Force
     
     # Ajouter les fichiers déplacés au commit
+
     git add "$MAINTENANCE_DIR/*"
     
     echo "Les scripts ont été organisés automatiquement."
 fi
 
 # Continuer avec le commit
-exit 0
-```
 
+exit 0
+```plaintext
 ## Vérification de l'installation
 
 Pour vérifier que le hook pre-commit est correctement installé :
 
 ```powershell
 Get-Content -Path ".git\hooks\pre-commit"
-```
-
+```plaintext
 Vous devriez voir le contenu du hook pre-commit.
 
 ## Test du hook
@@ -82,6 +86,7 @@ Pour tester le hook pre-commit :
 1. Créez un script PowerShell à la racine du dossier maintenance :
    ```powershell
    Set-Content -Path "development\scripts\maintenance\test-hook.ps1" -Value "# Test du hook pre-commit"
+
    ```
 
 2. Ajoutez le fichier à Git :
@@ -105,8 +110,7 @@ Si vous avez besoin de désactiver temporairement le hook pre-commit, vous pouve
 
 ```powershell
 git commit --no-verify -m "Commit sans vérification"
-```
-
+```plaintext
 Cependant, cette pratique est déconseillée car elle contourne les mécanismes d'organisation automatique.
 
 ## Résolution des problèmes
@@ -124,8 +128,7 @@ Si vous modifiez le script d'organisation `Organize-MaintenanceScripts.ps1`, vou
 
 ```powershell
 .\development\scripts\maintenance\git\Install-PreCommitHook.ps1 -Force
-```
-
+```plaintext
 ## Conclusion
 
 Le hook pre-commit est un outil essentiel pour maintenir une organisation rigoureuse des scripts de maintenance. Il garantit que tous les scripts sont correctement organisés dans les sous-dossiers appropriés, même si un développeur oublie de le faire manuellement. Cela facilite la recherche et la maintenance des scripts, tout en assurant une structure cohérente et une documentation claire.

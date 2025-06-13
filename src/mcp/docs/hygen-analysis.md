@@ -6,18 +6,25 @@ Ce document présente l'analyse de la structure du dossier MCP pour l'implément
 
 La structure actuelle du dossier MCP est la suivante :
 
-```
+```plaintext
 mcp/
   ├── config/           # Configuration MCP
-  ├── core/             # Composants principaux
-  │   ├── client/       # Scripts client
-  │   └── server/       # Scripts serveur
-  ├── docs/             # Documentation
-  ├── integrations/     # Intégrations avec d'autres systèmes
-  ├── modules/          # Modules PowerShell
-  └── server/           # Serveurs MCP
-```
 
+  ├── core/             # Composants principaux
+
+  │   ├── client/       # Scripts client
+
+  │   └── server/       # Scripts serveur
+
+  ├── docs/             # Documentation
+
+  ├── integrations/     # Intégrations avec d'autres systèmes
+
+  ├── modules/          # Modules PowerShell
+
+  └── server/           # Serveurs MCP
+
+```plaintext
 ## Types de fichiers identifiés
 
 ### Scripts serveur
@@ -27,6 +34,7 @@ Les scripts serveur sont des scripts PowerShell qui implémentent des serveurs M
 Caractéristiques :
 - Extension : `.ps1`
 - Shebang : `#!/usr/bin/env pwsh`
+
 - Paramètres communs : `Port`, `LogLevel`
 - Fonctions communes : `Start-Server`, `Register-MCPTools`, `Write-Log`
 
@@ -37,6 +45,7 @@ Les scripts client sont des scripts PowerShell qui se connectent à des serveurs
 Caractéristiques :
 - Extension : `.ps1`
 - Directive : `#Requires -Version 5.1`
+
 - Paramètres communs : `ServerUrl`, `Timeout`
 - Fonctions communes : `Start-Client`
 - Dépendances : Module `MCPClient.psm1`
@@ -48,6 +57,7 @@ Les modules sont des modules PowerShell qui fournissent des fonctionnalités ré
 Caractéristiques :
 - Extension : `.psm1`
 - Directive : `#Requires -Version 5.1`
+
 - Variables globales : `$script:<ModuleName>Config`
 - Fonctions communes : `Initialize-<ModuleName>Config`, `Clear-<ModuleName>Cache`, `Write-<ModuleName>Log`
 - Export : `Export-ModuleMember`
@@ -117,18 +127,21 @@ Pour utiliser les templates Hygen, deux options sont disponibles :
 
 ```powershell
 # Générer un script serveur
+
 .\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type server -Name "api-server" -Description "Serveur API MCP" -Author "John Doe"
 
 # Générer un script client
+
 .\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type client -Name "admin-client" -Description "Client d'administration MCP" -Author "Jane Smith"
 
 # Générer un module
+
 .\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type module -Name "MCPUtils" -Description "Utilitaires MCP" -Author "Dev Team"
 
 # Générer une documentation
-.\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type doc -Name "installation-guide" -Category "guides" -Description "Guide d'installation MCP" -Author "Doc Team"
-```
 
+.\mcp\scripts\utils\Generate-MCPComponent.ps1 -Type doc -Name "installation-guide" -Category "guides" -Description "Guide d'installation MCP" -Author "Doc Team"
+```plaintext
 ## Conclusion
 
 L'implémentation de Hygen pour le dossier MCP permet de générer rapidement et de manière cohérente des composants MCP. Les templates sont conçus pour s'intégrer parfaitement avec la structure existante et respecter les conventions de codage du projet.

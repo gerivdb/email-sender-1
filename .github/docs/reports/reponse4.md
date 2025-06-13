@@ -5,6 +5,7 @@ Pour aborder la **Phase 4: Amélioration de la compatibilité** comme indiqué d
 ## Phase 4: Amélioration de la compatibilité
 
 ### Objectifs
+
 1. **Finaliser la résolution des problèmes restants**:
    - **UPM-005**: Caractères accentués mal affichés (vérification finale)
    - **UPM-008**: Gestion incohérente des erreurs entre les fonctions
@@ -18,6 +19,7 @@ Pour aborder la **Phase 4: Amélioration de la compatibilité** comme indiqué d
 4. **Mettre à jour la documentation** pour refléter les améliorations
 
 ### Environnement
+
 - **PowerShell**: Versions 5.1 et 7.5.0
 - **Systèmes d'exploitation**: Windows (principal), Linux et macOS (compatibilité)
 - **Pester**: Version 5.7.1
@@ -29,9 +31,11 @@ Pour aborder la **Phase 4: Amélioration de la compatibilité** comme indiqué d
 ## 1. Résolution finale de UPM-005: Caractères accentués mal affichés (P2)
 
 ### Problème
+
 Malgré les corrections précédentes, certains caractères accentués peuvent encore s'afficher incorrectement dans certains environnements, particulièrement lors de l'exécution sur différentes plateformes ou avec différentes configurations de console.
 
 ### Solution
+
 Mettre en place une solution robuste pour garantir l'affichage correct des caractères accentués dans tous les environnements, en utilisant des directives d'encodage explicites et en ajoutant des tests de compatibilité spécifiques.
 
 ### Étapes
@@ -39,17 +43,20 @@ Mettre en place une solution robuste pour garantir l'affichage correct des carac
 1. **Ajouter une fonction d'initialisation d'encodage**:
    ```powershell
    # UnifiedParallel.psm1
+
    function Initialize-EncodingSettings {
        [CmdletBinding()]
        param()
        
        # Définir l'encodage de sortie de la console
+
        try {
            [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
            $PSDefaultParameterValues['Out-File:Encoding'] = 'utf8'
            $PSDefaultParameterValues['*:Encoding'] = 'utf8'
            
            # Pour PowerShell 5.1, utiliser une approche différente
+
            if ($PSVersionTable.PSVersion.Major -eq 5) {
                $OutputEncoding = [System.Text.Encoding]::UTF8
                [System.Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -64,6 +71,7 @@ Mettre en place une solution robuste pour garantir l'affichage correct des carac
    }
    
    # Appeler cette fonction lors de l'importation du module
+
    Initialize-EncodingSettings
    ```
 
@@ -73,18 +81,22 @@ Mettre en place une solution robuste pour garantir l'affichage correct des carac
        [CmdletBinding()]
        param(
            # Paramètres existants...
+
        )
        
        # Initialiser l'encodage
+
        Initialize-EncodingSettings
        
        # Reste de la fonction...
+
    }
    ```
 
 3. **Créer un test d'encodage complet**:
    ```powershell
    # Encoding.Tests.ps1
+
    Describe "Tests d'encodage" {
        BeforeAll {
            Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force
@@ -105,6 +117,7 @@ Mettre en place une solution robuste pour garantir l'affichage correct des carac
        
        It "Affiche correctement les caractères accentués dans la console" {
            # Capturer la sortie de la console
+
            $output = & {
                Write-Output "Test d'affichage: éèàçôù"
            } | Out-String
@@ -117,12 +130,15 @@ Mettre en place une solution robuste pour garantir l'affichage correct des carac
            $testContent = "Contenu avec caractères accentués: éèàçôù"
            
            # Écrire dans un fichier
+
            $testContent | Out-File -FilePath $testFilePath -Encoding utf8
            
            # Lire le fichier
+
            $readContent = Get-Content -Path $testFilePath -Raw
            
            # Nettoyer
+
            Remove-Item -Path $testFilePath -Force
            
            $readContent | Should -Be $testContent
@@ -133,13 +149,16 @@ Mettre en place une solution robuste pour garantir l'affichage correct des carac
 4. **Tester sur différentes versions de PowerShell**:
    ```powershell
    # Exécuter sur PowerShell 5.1
+
    powershell.exe -Command "Invoke-Pester -Path 'D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Encoding.Tests.ps1'"
    
    # Exécuter sur PowerShell 7.x
+
    pwsh -Command "Invoke-Pester -Path 'D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Encoding.Tests.ps1'"
    ```
 
 ### Validation
+
 - **Attendu**: Les tests d'encodage passent sur toutes les versions de PowerShell, et les caractères accentués s'affichent correctement.
 - **Hypothèse confirmée**: L'initialisation explicite de l'encodage et la standardisation des approches entre les versions de PowerShell résolvent les problèmes d'affichage des caractères accentués.
 
@@ -148,9 +167,11 @@ Mettre en place une solution robuste pour garantir l'affichage correct des carac
 ## 2. Résolution de UPM-008: Gestion incohérente des erreurs entre les fonctions (P3)
 
 ### Problème
+
 Les différentes fonctions du module gèrent les erreurs de manière incohérente. Certaines utilisent `Write-Error`, d'autres `throw`, et d'autres encore retournent simplement un objet avec une propriété `Success = $false`. Cette incohérence rend difficile la gestion des erreurs par les utilisateurs du module.
 
 ### Solution
+
 Standardiser la gestion des erreurs dans tout le module en utilisant une approche cohérente basée sur des objets d'erreur structurés et des mécanismes de propagation d'erreurs prévisibles.
 
 ### Étapes
@@ -158,6 +179,7 @@ Standardiser la gestion des erreurs dans tout le module en utilisant une approch
 1. **Créer une fonction d'aide pour la gestion des erreurs**:
    ```powershell
    # UnifiedParallel.psm1
+
    function New-UnifiedError {
        [CmdletBinding()]
        param(
@@ -181,6 +203,7 @@ Standardiser la gestion des erreurs dans tout le module en utilisant une approch
        )
        
        # Créer un objet d'erreur standardisé
+
        $errorRecord = [PSCustomObject]@{
            Message = $Message
            Source = $Source
@@ -191,6 +214,7 @@ Standardiser la gestion des erreurs dans tout le module en utilisant une approch
        }
        
        # Créer un ErrorRecord pour Write-Error ou throw
+
        if ($WriteError -or $ThrowError) {
            $exception = if ($Exception) { $Exception } else { [System.Exception]::new($Message) }
            $errorRecord.PSError = [System.Management.Automation.ErrorRecord]::new(
@@ -202,11 +226,13 @@ Standardiser la gestion des erreurs dans tout le module en utilisant une approch
        }
        
        # Écrire l'erreur si demandé
+
        if ($WriteError) {
            Write-Error -ErrorRecord $errorRecord.PSError
        }
        
        # Lancer l'erreur si demandé
+
        if ($ThrowError) {
            throw $errorRecord.PSError
        }
@@ -218,6 +244,7 @@ Standardiser la gestion des erreurs dans tout le module en utilisant une approch
 2. **Mettre à jour les fonctions pour utiliser la nouvelle gestion d'erreurs**:
    ```powershell
    # Exemple pour Initialize-UnifiedParallel
+
    function Initialize-UnifiedParallel {
        [CmdletBinding()]
        param(
@@ -225,9 +252,11 @@ Standardiser la gestion des erreurs dans tout le module en utilisant une approch
            [string]$ConfigPath,
            
            # Autres paramètres...
+
        )
        
        # Vérifier si le fichier de configuration existe
+
        if ($ConfigPath -and -not (Test-Path -Path $ConfigPath)) {
            $errorMessage = "Le fichier de configuration '$ConfigPath' n'existe pas."
            $error = New-UnifiedError -Message $errorMessage -Source "Initialize-UnifiedParallel" -Category InvalidArgument -WriteError
@@ -235,20 +264,25 @@ Standardiser la gestion des erreurs dans tout le module en utilisant une approch
        }
        
        # Reste de la fonction...
+
    }
    
    # Exemple pour Invoke-UnifiedParallel
+
    function Invoke-UnifiedParallel {
        [CmdletBinding()]
        param(
            # Paramètres...
+
            [Parameter(Mandatory = $false)]
            [switch]$IgnoreErrors
        )
        
        # Traitement...
+
        
        # Gestion des erreurs
+
        if (-not $IgnoreErrors -and $errors.Count -gt 0) {
            $errorMessage = "Des erreurs se sont produites lors de l'exécution parallèle:"
            foreach ($error in $errors) {
@@ -259,6 +293,7 @@ Standardiser la gestion des erreurs dans tout le module en utilisant une approch
        }
        
        # Retourner les résultats
+
        return $results
    }
    ```
@@ -266,6 +301,7 @@ Standardiser la gestion des erreurs dans tout le module en utilisant une approch
 3. **Créer des tests pour la gestion des erreurs**:
    ```powershell
    # ErrorHandling.Tests.ps1
+
    Describe "Tests de gestion des erreurs" {
        BeforeAll {
            Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force
@@ -304,6 +340,7 @@ Standardiser la gestion des erreurs dans tout le module en utilisant une approch
    ```
 
 ### Validation
+
 - **Attendu**: Les tests de gestion d'erreurs passent, et toutes les fonctions du module gèrent les erreurs de manière cohérente.
 - **Hypothèse confirmée**: L'utilisation d'une fonction d'aide standardisée pour la gestion des erreurs résout les incohérences entre les fonctions.
 
@@ -313,6 +350,7 @@ Standardiser la gestion des erreurs dans tout le module en utilisant une approch
 
 ```powershell
 # Compatibility.Tests.ps1
+
 Describe "Tests de compatibilité PowerShell" {
     BeforeAll {
         Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force
@@ -357,18 +395,20 @@ Describe "Tests de compatibilité PowerShell" {
             
             if ($psVersion.Major -eq 5) {
                 # Tester les fonctionnalités spécifiques à PS 5.1
+
                 { [runspacefactory]::CreateRunspacePool(1, 2) } | Should -Not -Throw
             } elseif ($psVersion.Major -ge 7) {
                 # Tester les fonctionnalités spécifiques à PS 7.x
+
                 { [runspacefactory]::CreateRunspacePool(1, 2) } | Should -Not -Throw
                 # ForEach-Object -Parallel est disponible uniquement dans PS 7+
+
                 { 1..5 | ForEach-Object -Parallel { $_ } } | Should -Not -Throw
             }
         }
     }
 }
-```
-
+```plaintext
 ---
 
 ## 4. Mise à jour de la documentation
@@ -376,6 +416,7 @@ Describe "Tests de compatibilité PowerShell" {
 Mettre à jour `/docs/guides/augment/UnifiedParallel.md`:
 ```markdown
 ## Version 1.4.0
+
 - Corrigé : Gestion incohérente des erreurs entre les fonctions (UPM-008)
 - Amélioré : Gestion des caractères accentués (UPM-005)
 - Ajout : Fonction New-UnifiedError pour standardiser la gestion des erreurs
@@ -385,18 +426,19 @@ Mettre à jour `/docs/guides/augment/UnifiedParallel.md`:
 - Amélioration : Documentation des erreurs et des messages
 
 ## Compatibilité
+
 - PowerShell 5.1 : Entièrement compatible
 - PowerShell 7.x : Entièrement compatible, avec optimisations spécifiques
 - Windows : Entièrement compatible
 - Linux/macOS : Compatible avec PowerShell 7.x
 
 ## Gestion des erreurs
+
 Le module utilise désormais une approche standardisée pour la gestion des erreurs :
 - Toutes les fonctions utilisent New-UnifiedError pour créer des objets d'erreur cohérents
 - Les erreurs peuvent être écrites (Write-Error) ou lancées (throw) selon le contexte
 - Les objets d'erreur contiennent des informations détaillées (message, source, horodatage)
-```
-
+```plaintext
 ---
 
 ## 5. Stratégie de déploiement

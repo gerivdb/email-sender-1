@@ -16,24 +16,21 @@ Ce guide vous aidera à démarrer rapidement avec le système de journal de bord
 
 ```bash
 pip install -r requirements.txt
-```
-
+```plaintext
 3. **Installer les dépendances Node.js**
 
 ```bash
 cd frontend
 npm install
 cd ..
-```
-
+```plaintext
 ## Démarrage rapide
 
 Pour démarrer rapidement le système complet (backend et frontend), exécutez :
 
 ```bash
 run_journal_rag.cmd
-```
-
+```plaintext
 Cela lancera :
 - Le backend FastAPI sur http://localhost:8000
 - Le frontend Vue.js sur http://localhost:8080
@@ -54,8 +51,7 @@ Vous pouvez créer une entrée de journal de deux façons :
 **Via la ligne de commande** :
 ```bash
 python development/scripts/python/journal/journal_entry.py --create --title "Titre de l'entrée" --tags "tag1,tag2"
-```
-
+```plaintext
 ### 2. Interroger le système RAG
 
 Vous pouvez interroger le système RAG de deux façons :
@@ -67,8 +63,7 @@ Vous pouvez interroger le système RAG de deux façons :
 **Via la ligne de commande** :
 ```bash
 python development/scripts/python/journal/journal_rag_simple.py --query "Comment résoudre les problèmes d'encodage?"
-```
-
+```plaintext
 ### 3. Visualiser les analyses
 
 Pour accéder aux visualisations et analyses :
@@ -100,32 +95,37 @@ related: [autre-entree.md]
 # Titre de l'entrée
 
 ## Actions réalisées
+
 - Action 1
 - Action 2
 
 ## Résolution des erreurs, déductions tirées
+
 - Problème 1 résolu en...
 - J'ai découvert que...
 
 ## Optimisations identifiées
+
 - Pour le système: 
 - Pour le code: 
 - Pour la gestion des erreurs: 
 - Pour les workflows: 
 
 ## Enseignements techniques
+
 - Enseignement 1
 - Enseignement 2
 
 ## Impact sur le projet musical
+
 - Impact 1
 - Impact 2
 
 ## Références et ressources
+
 - [Lien 1](https://example.com)
 - [Lien 2](https://example.com)
-```
-
+```plaintext
 ## Fonctionnalités avancées
 
 ### Détection de patterns
@@ -134,8 +134,7 @@ Le système peut détecter automatiquement des patterns dans vos entrées :
 
 ```bash
 python development/scripts/python/journal/notifications/detector.py --all
-```
-
+```plaintext
 ### Synchronisation avec Notion
 
 Pour synchroniser vos entrées avec Notion :
@@ -143,8 +142,7 @@ Pour synchroniser vos entrées avec Notion :
 ```bash
 python development/scripts/python/journal/integrations/notion_integration.py --sync-to-journal
 python development/scripts/python/journal/integrations/notion_integration.py --sync-from-journal
-```
-
+```plaintext
 ### Synchronisation avec Jira
 
 Pour synchroniser vos entrées avec Jira :
@@ -152,8 +150,7 @@ Pour synchroniser vos entrées avec Jira :
 ```bash
 python development/scripts/python/journal/integrations/jira_integration.py --sync-to-journal
 python development/scripts/python/journal/integrations/jira_integration.py --sync-from-journal
-```
-
+```plaintext
 ## Dépannage
 
 ### Le backend ne démarre pas

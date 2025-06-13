@@ -15,45 +15,68 @@ Ce dossier contient un ensemble d'outils pour gérer, surveiller et maintenir un
 
 La structure du dossier est organisée de manière à séparer clairement les différents composants et à faciliter la maintenance et l'intégration avec d'autres systèmes.
 
-```
+```plaintext
 n8n/
 ├── automation/           # Scripts d'automatisation
-│   ├── deployment/      # Scripts de déploiement
-│   ├── monitoring/      # Scripts de surveillance
-│   ├── diagnostics/     # Scripts de diagnostic
-│   ├── notification/    # Scripts de notification
-│   ├── tests/           # Tests d'intégration
-│   ├── maintenance/     # Scripts de maintenance
-│   ├── dashboard/       # Tableau de bord
-│   └── n8n-manager.ps1  # Script d'orchestration principal
-├── config/              # Fichiers de configuration
-├── core/                # Composants principaux
-│   ├── workflows/       # Workflows n8n
-│   └── n8n-config.json  # Configuration n8n
-├── data/                # Données n8n
-│   ├── .n8n/           # Dossier .n8n
-│   │   └── workflows/  # Workflows n8n
-│   └── n8n.pid         # Fichier PID
-├── docs/                # Documentation
-│   ├── architecture/   # Documentation technique
-│   ├── examples/       # Exemples d'utilisation
-│   └── user-guide.md   # Guide d'utilisation
-└── logs/                # Fichiers de log
-    ├── n8n.log         # Log n8n
-    ├── n8n-status.log  # Log de surveillance
-    └── history/        # Historique des logs
-```
 
+│   ├── deployment/      # Scripts de déploiement
+
+│   ├── monitoring/      # Scripts de surveillance
+
+│   ├── diagnostics/     # Scripts de diagnostic
+
+│   ├── notification/    # Scripts de notification
+
+│   ├── tests/           # Tests d'intégration
+
+│   ├── maintenance/     # Scripts de maintenance
+
+│   ├── dashboard/       # Tableau de bord
+
+│   └── n8n-manager.ps1  # Script d'orchestration principal
+
+├── config/              # Fichiers de configuration
+
+├── core/                # Composants principaux
+
+│   ├── workflows/       # Workflows n8n
+
+│   └── n8n-config.json  # Configuration n8n
+
+├── data/                # Données n8n
+
+│   ├── .n8n/           # Dossier .n8n
+
+│   │   └── workflows/  # Workflows n8n
+
+│   └── n8n.pid         # Fichier PID
+
+├── docs/                # Documentation
+
+│   ├── architecture/   # Documentation technique
+
+│   ├── examples/       # Exemples d'utilisation
+
+│   └── user-guide.md   # Guide d'utilisation
+
+└── logs/                # Fichiers de log
+
+    ├── n8n.log         # Log n8n
+
+    ├── n8n-status.log  # Log de surveillance
+
+    └── history/        # Historique des logs
+
+```plaintext
 ## Utilisation
 
 ### Interface principale
 
 Pour lancer l'interface principale, exécutez :
 
-```
+```plaintext
 .\n8n-manager.cmd
-```
-
+```plaintext
 ### Scripts de raccourcis
 
 Des scripts de raccourcis sont disponibles pour les actions les plus courantes :
@@ -69,10 +92,9 @@ Des scripts de raccourcis sont disponibles pour les actions les plus courantes :
 
 Pour exécuter directement une action sans passer par le menu, utilisez le paramètre `-Action` :
 
-```
+```plaintext
 .\n8n-manager.cmd -Action start
-```
-
+```plaintext
 Actions disponibles :
 - `start` : Démarre n8n
 - `stop` : Arrête n8n

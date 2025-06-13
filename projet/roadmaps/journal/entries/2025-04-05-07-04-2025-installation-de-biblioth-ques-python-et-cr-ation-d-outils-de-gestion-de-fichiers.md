@@ -8,3 +8,4 @@ related: []
 ## 07/04/2025 - Installation de bibliothèques Python et création d'outils de gestion de fichiers
 
 #
+

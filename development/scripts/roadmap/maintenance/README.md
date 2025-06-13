@@ -27,10 +27,9 @@ Pour archiver les tâches terminées:
 
 ```powershell
 .\cleanup\Archive-CompletedTasks.ps1 -RoadmapPath "projet\roadmaps\active\roadmap_active.md" -ArchivePath "projet\roadmaps\archive\roadmap_completed.md"
-```
-
+```plaintext
 Pour valider la structure de la roadmap:
 
 ```powershell
 .\validation\Test-RoadmapStructure.ps1 -RoadmapPath "projet\roadmaps\active\roadmap_active.md"
-```
+```plaintext

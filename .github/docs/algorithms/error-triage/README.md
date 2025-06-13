@@ -1,24 +1,30 @@
 # 🔍 Error Triage & Classification EMAIL_SENDER_1
 
 ## 📝 Description
+
 Native Go implementation for automatic multi-stack error classification
 
 ## 🚀 Usage rapide
+
 ```bash
 # Run via native Go orchestrator
+
 go run ../email_sender_orchestrator.go /path/to/project error-triage
 
 # Run algorithm directly
+
 go run email_sender_error_classifier.go /path/to/project
 
 # Test with example project
-go run ../algorithms_implementations.go error-triage ../../../
-```
 
+go run ../algorithms_implementations.go error-triage ../../../
+```plaintext
 ## 📊 Priorité
+
 **Niveau 1** dans le plan d'action EMAIL_SENDER_1 - **CRITICAL PRIORITY**
 
 ## 🔧 Fichiers (Native Go Implementation)
+
 - `README.md` - This documentation
 - `email_sender_error_classifier.go` - Native Go error classifier (500+ lines)
 - **Note**: All PowerShell files eliminated for 10x performance improvement
@@ -27,6 +33,7 @@ go run ../algorithms_implementations.go error-triage ../../../
 ## 📋 Contenu détaillé
 
 ### 🎯 Algorithme 1: EMAIL_SENDER_1 Error Triage & Classification
+
 *"Divide and conquer EMAIL_SENDER_1 - 400 errors → 5-10 root causes"*
 
 #### Classification automatique spécialisée EMAIL_SENDER_1:
@@ -57,6 +64,7 @@ go run ../algorithms_implementations.go error-triage ../../../
 - `GO_UNUSED_VAR` - Variables non utilisées (auto-corrigeable)
 
 #### Résolution estimée:
+
 - **RAG Engine**: ~40% des erreurs (effet cascade)
 - **Config Files**: ~30% des erreurs (infrastructure)
 - **n8n Workflows**: ~20% des erreurs (orchestration)
@@ -65,6 +73,7 @@ go run ../algorithms_implementations.go error-triage ../../../
 
 
 ## 🔗 Voir aussi
+
 - [Index des algorithmes](../README.md)
 - [Plan d'action EMAIL_SENDER_1](../action-plan.md)
 

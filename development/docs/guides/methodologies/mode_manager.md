@@ -19,30 +19,36 @@ L'objectif principal du gestionnaire Mode Manager est de fournir une interface u
 
 Le gestionnaire Mode Manager est organisé selon la structure de répertoires suivante :
 
-```
+```plaintext
 development/managers/mode-manager/
 ├── scripts/
 │   ├── mode-manager.ps1           # Script principal
+
 │   ├── install-mode-manager.ps1   # Script d'installation
+
 │   └── ...                        # Autres scripts
+
 ├── modules/
 │   └── ...                        # Modules PowerShell
+
 ├── tests/
 │   ├── Test-ModeManager.ps1       # Tests unitaires
+
 │   └── ...                        # Autres tests
+
 └── config/
     └── ...                        # Fichiers de configuration locaux
-```
 
+```plaintext
 ### Fichiers de configuration
 
 Les fichiers de configuration du gestionnaire sont stockés dans :
 
-```
+```plaintext
 projet/config/managers/mode-manager/
 └── mode-manager.config.json       # Configuration principale
-```
 
+```plaintext
 ## Prérequis
 
 Avant d'utiliser le gestionnaire Mode Manager, assurez-vous que :
@@ -59,8 +65,7 @@ Pour installer le gestionnaire Mode Manager, utilisez le script d'installation :
 
 ```powershell
 .\development\managers\mode-manager\scripts\install-mode-manager.ps1
-```
-
+```plaintext
 ### Installation manuelle
 
 Si vous préférez une installation manuelle, suivez ces étapes :
@@ -75,10 +80,9 @@ Si vous préférez une installation manuelle, suivez ces étapes :
 
 Le fichier de configuration principal du gestionnaire est situé à :
 
-```
+```plaintext
 projet/config/managers/mode-manager/mode-manager.config.json
-```
-
+```plaintext
 Voici un exemple de configuration :
 
 ```json
@@ -101,8 +105,7 @@ Voici un exemple de configuration :
     }
   }
 }
-```
-
+```plaintext
 ### Options de configuration
 
 | Option | Type | Description | Valeur par défaut |
@@ -122,8 +125,7 @@ Le gestionnaire Mode Manager expose les commandes suivantes :
 
 ```powershell
 .\development\managers\mode-manager\scripts\mode-manager.ps1 -Command SetMode -Mode CHECK
-```
-
+```plaintext
 **Description :** Définit le mode opérationnel actif
 
 **Paramètres :**
@@ -132,14 +134,12 @@ Le gestionnaire Mode Manager expose les commandes suivantes :
 **Exemple :**
 ```powershell
 .\development\managers\mode-manager\scripts\mode-manager.ps1 -Command SetMode -Mode GRAN
-```
-
+```plaintext
 #### Commande 2 : RunMode
 
 ```powershell
 .\development\managers\mode-manager\scripts\mode-manager.ps1 -Command RunMode -Mode CHECK -FilePath "path/to/file.md"
-```
-
+```plaintext
 **Description :** Exécute une opération dans le mode spécifié
 
 **Paramètres :**
@@ -149,24 +149,23 @@ Le gestionnaire Mode Manager expose les commandes suivantes :
 **Exemple :**
 ```powershell
 .\development\managers\mode-manager\scripts\mode-manager.ps1 -Command RunMode -Mode CHECK -FilePath "projet/roadmaps/roadmap_complete_converted.md"
-```
-
+```plaintext
 ### Exemples d'utilisation
 
 #### Exemple 1 : Utilisation du mode GRAN
 
 ```powershell
 # Décomposer une tâche en sous-tâches
-.\development\managers\mode-manager\scripts\mode-manager.ps1 -Command RunMode -Mode GRAN -FilePath "projet/roadmaps/roadmap_complete_converted.md" -Selection "1.2.3"
-```
 
+.\development\managers\mode-manager\scripts\mode-manager.ps1 -Command RunMode -Mode GRAN -FilePath "projet/roadmaps/roadmap_complete_converted.md" -Selection "1.2.3"
+```plaintext
 #### Exemple 2 : Vérification des tâches complétées
 
 ```powershell
 # Vérifier et mettre à jour l'état des tâches
-.\development\managers\mode-manager\scripts\mode-manager.ps1 -Command RunMode -Mode CHECK -FilePath "projet/roadmaps/roadmap_complete_converted.md"
-```
 
+.\development\managers\mode-manager\scripts\mode-manager.ps1 -Command RunMode -Mode CHECK -FilePath "projet/roadmaps/roadmap_complete_converted.md"
+```plaintext
 ## Intégration avec d'autres gestionnaires
 
 Le gestionnaire Mode Manager s'intègre avec les autres gestionnaires du système :
@@ -175,16 +174,16 @@ Le gestionnaire Mode Manager s'intègre avec les autres gestionnaires du systèm
 
 ```powershell
 # Utiliser le gestionnaire Mode Manager via le gestionnaire intégré
-.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Manager ModeManager -Command SetMode -Mode CHECK
-```
 
+.\development\managers\integrated-manager\scripts\integrated-manager.ps1 -Manager ModeManager -Command SetMode -Mode CHECK
+```plaintext
 ### Intégration avec le gestionnaire de roadmap
 
 ```powershell
 # Utiliser le gestionnaire Mode Manager avec le gestionnaire de roadmap
-.\development\managers\roadmap-manager\scripts\roadmap-manager.ps1 -UseMode CHECK -FilePath "projet/roadmaps/roadmap_complete_converted.md"
-```
 
+.\development\managers\roadmap-manager\scripts\roadmap-manager.ps1 -UseMode CHECK -FilePath "projet/roadmaps/roadmap_complete_converted.md"
+```plaintext
 ## Dépannage
 
 ### Problèmes courants et solutions
@@ -224,10 +223,9 @@ Le gestionnaire Mode Manager s'intègre avec les autres gestionnaires du systèm
 
 Le gestionnaire Mode Manager génère des journaux dans le répertoire suivant :
 
-```
+```plaintext
 logs/mode-manager/
-```
-
+```plaintext
 Les niveaux de journalisation peuvent être configurés dans le fichier de configuration principal.
 
 ## Tests
@@ -238,8 +236,7 @@ Pour exécuter les tests du gestionnaire Mode Manager, utilisez la commande suiv
 
 ```powershell
 .\development\managers\mode-manager\tests\Test-ModeManager.ps1
-```
-
+```plaintext
 ### Types de tests disponibles
 
 - **Tests unitaires :** Testent les fonctions individuelles du gestionnaire

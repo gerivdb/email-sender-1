@@ -65,8 +65,7 @@ Pour configurer l'environnement de maintenance, exécutez:
 
 ```powershell
 .\Initialize-MaintenanceEnvironment.ps1 -Force
-```
-
+```plaintext
 Ce script effectue les actions suivantes:
 
 1. Vérifie les prérequis (Node.js, Git)
@@ -110,8 +109,7 @@ Pour créer un nouveau script avec Hygen:
 
 ```powershell
 npx hygen script new
-```
-
+```plaintext
 Suivez les instructions pour spécifier:
 - Le nom du script (sans extension .ps1)
 - La description du script
@@ -125,8 +123,7 @@ Pour organiser les scripts existants:
 
 ```powershell
 .\organize\Organize-MaintenanceScripts.ps1 -Force
-```
-
+```plaintext
 Ce script analyse les fichiers PowerShell à la racine du dossier maintenance et les déplace dans les sous-dossiers appropriés en fonction de leur contenu et de leur nom.
 
 ### Déplacement des scripts existants
@@ -135,8 +132,7 @@ Pour déplacer les scripts existants selon une classification prédéfinie:
 
 ```powershell
 .\organize\Move-ExistingScripts.ps1 -Force
-```
-
+```plaintext
 Ce script utilise une classification prédéfinie pour déplacer les scripts dans les bons sous-dossiers.
 
 ### Vérification de l'organisation
@@ -145,8 +141,7 @@ Pour vérifier l'organisation des scripts:
 
 ```powershell
 .\monitoring\Check-ScriptsOrganization.ps1
-```
-
+```plaintext
 Ce script vérifie si des scripts PowerShell se trouvent à la racine du dossier maintenance et génère un rapport sur l'organisation des scripts.
 
 ### Utilisation de MCP Desktop Commander
@@ -155,8 +150,7 @@ Pour utiliser MCP Desktop Commander:
 
 ```powershell
 npx -y @wonderwhy-er/desktop-commander
-```
-
+```plaintext
 Sélectionnez la commande `maintenance` pour accéder aux commandes de maintenance:
 - `organize`: Organiser les scripts de maintenance
 - `create-script`: Créer un nouveau script avec Hygen
@@ -232,6 +226,7 @@ L'organisation des scripts est maintenue par:
 2. Mettez à jour le script d'organisation pour prendre en compte la nouvelle catégorie:
    ```powershell
    # Dans Organize-MaintenanceScripts.ps1, ajoutez une règle pour la nouvelle catégorie
+
    if ($lowerName -match 'nouveau-mot-cle') { return 'nouvelle-categorie' }
    ```
 

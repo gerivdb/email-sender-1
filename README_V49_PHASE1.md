@@ -32,14 +32,13 @@ Quatre nouveaux outils ont été intégrés au Manager Toolkit:
 
 Tous les nouveaux outils sont implémentés selon l'architecture standardisée:
 
-```
+```plaintext
 [ManagerToolkit] --> [ExecuteOperation] --> [Nouvel Outil]
                                                 |
                                             (Implémente)
                                                 |
                                         [ToolkitOperation]
-```
-
+```plaintext
 - Chaque outil implémente l'interface `ToolkitOperation`
 - L'intégration se fait via `ManagerToolkit.ExecuteOperation()`
 - Les métriques sont collectées dans `ToolkitStats`
@@ -55,21 +54,21 @@ type ToolkitOperation interface {
     CollectMetrics() map[string]interface{}
     HealthCheck(ctx context.Context) error
 }
-```
-
+```plaintext
 ## 🚀 Utilisation
 
 Voici comment utiliser les nouveaux outils:
 
 ### En ligne de commande
-```
+
+```plaintext
 go run manager_toolkit.go -op validate-structs -dir ./my_project -output report.json
 go run manager_toolkit.go -op resolve-imports -dir ./my_project -output imports.json
 go run manager_toolkit.go -op detect-duplicates -dir ./my_project -output duplicates.json
 go run manager_toolkit.go -op analyze-dependencies -dir ./my_project -output dependencies.json
-```
-
+```plaintext
 ### Dans le code
+
 ```go
 toolkit, _ := tools.NewManagerToolkit(baseDir, "", false)
 defer toolkit.Close()
@@ -86,15 +85,13 @@ toolkit.ExecuteOperation(ctx, tools.OpValidateStructs, opts)
 
 // Analyse des dépendances
 toolkit.ExecuteOperation(ctx, tools.OpAnalyzeDeps, opts)
-```
-
+```plaintext
 ## 🧪 Tests
 
 Pour valider l'implémentation, exécutez:
-```
+```plaintext
 go run ./tests/test_runners/validation_test_phase1.1.go
-```
-
+```plaintext
 ## 📈 Progression du Plan v49
 
 - **Phase 1.1.1** (Analyse des problèmes): ✅ **100%**

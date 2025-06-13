@@ -5,15 +5,18 @@
 ### ✅ ERREURS POWERSHELL CORRIGÉES
 
 #### 1. **Variables non utilisées** 
+
 - **`$DepManagerPath`** dans `dep.ps1` (racine) → ✅ **SUPPRIMÉE**
 - **`$result`** dans scripts de test → ✅ **REMPLACÉE par redirection directe**
 
 #### 2. **Conflits de paramètres PowerShell**
+
 - **`$Args`** paramètre en conflit avec variable automatique → ✅ **RENOMMÉ**
   - `scripts/roadmap.ps1`: `$Args` → `$Parameters`
   - `dep.ps1` (racine): `$Args` → `$Parameters`
 
 #### 3. **Imports Go relatifs**
+
 - **`keybind-tester/main.go`**: Import relatif `../../keybinds` → ✅ **CORRIGÉ**
   - Remplacé par: `email_sender/cmd/roadmap-cli/keybinds`
 
@@ -22,11 +25,13 @@
 ## 📊 ÉTAT ACTUEL DES ERREURS
 
 ### ✅ **ERREURS POWERSHELL** - TOUTES CORRIGÉES
+
 - ✅ Variables non utilisées: **0 erreur**
 - ✅ Conflits de paramètres: **0 erreur**  
 - ✅ Syntaxe PowerShell: **0 erreur critique**
 
 ### ⚠️ **ERREURS GO** - EN COURS
+
 Les erreurs Go restantes sont liées à la logique métier, pas aux problèmes d'IDE initiaux :
 
 **`keybinds/validator.go`:**
@@ -44,66 +49,79 @@ Les erreurs Go restantes sont liées à la logique métier, pas aux problèmes d
 ### **1. Scripts PowerShell**
 
 #### **`dep.ps1` (racine)**
+
 ```powershell
 # AVANT
+
 $DepManagerPath = ".\tools\dependency_manager.go"  # ❌ Non utilisée
+
 param($Args)  # ❌ Conflit
 
 # APRÈS  
-param($Parameters)  # ✅ Pas de conflit
-# Variable supprimée ✅
-```
 
+param($Parameters)  # ✅ Pas de conflit
+
+# Variable supprimée ✅
+
+```plaintext
 #### **`scripts/roadmap.ps1`**
+
 ```powershell
 # AVANT
+
 function Invoke-RoadmapManager {
    param($Args)  # ❌ Conflit
+
    & ".\roadmap-cli.exe" @Args
 }
 
 # APRÈS
+
 function Invoke-RoadmapManager {
    param($Parameters)  # ✅ Pas de conflit  
+
    & ".\roadmap-cli.exe" @Parameters
 }
-```
-
+```plaintext
 #### **Scripts de test**
+
 ```powershell
 # AVANT
+
 $result = & "commande" 2>&1  # ❌ Variable non utilisée
 
 # APRÈS
-& "commande" 2>&1 | Out-Null  # ✅ Pas de variable
-```
 
+& "commande" 2>&1 | Out-Null  # ✅ Pas de variable
+
+```plaintext
 ### **2. Code Go**
 
 #### **`keybind-tester/main.go`**
+
 ```go
 // AVANT
 import "../../keybinds"  // ❌ Import relatif
 
 // APRÈS
 import "email_sender/cmd/roadmap-cli/keybinds"  // ✅ Import absolu
-```
-
+```plaintext
 ---
 
 ## 📈 RÉSULTATS DES ANALYSES
 
 ### **PSScriptAnalyzer Results**
-```
+
+```plaintext
 ✅ dep.ps1: 0 erreurs critiques
 ✅ scripts/dep.ps1: 0 erreurs critiques  
 ✅ scripts/roadmap.ps1: 0 erreurs critiques
 ✅ test-*.ps1: 0 erreurs critiques
-```
-
+```plaintext
 *Note: Seuls des avertissements `Write-Host` restent (non critiques)*
 
 ### **Go Vet Results**  
+
 - ✅ Import relatif corrigé
 - ⚠️ Erreurs métier restantes (hors scope corrections IDE)
 
@@ -112,6 +130,7 @@ import "email_sender/cmd/roadmap-cli/keybinds"  // ✅ Import absolu
 ## 🏆 MISSION ACCOMPLIE - ERREURS IDE
 
 ### **OBJECTIF INITIAL**: Corriger 14 erreurs signalées par l'IDE
+
 ### **RÉSULTAT**: ✅ **TOUTES LES ERREURS IDE CORRIGÉES**
 
 **Erreurs IDE PowerShell**: `14 → 0` ✅  

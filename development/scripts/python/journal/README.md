@@ -1,4 +1,4 @@
-﻿# journal
+# journal
 
 Journal en Python
 

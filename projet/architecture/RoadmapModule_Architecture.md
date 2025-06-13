@@ -5,6 +5,7 @@
 ### 1.1 Fonctions de parsing du markdown
 
 #### 1.1.1 `ConvertFrom-MarkdownToRoadmapTree`
+
 - **Description**: Convertit un fichier markdown en un arbre de roadmap.
 - **Paramètres**:
   - `FilePath` (string, obligatoire): Chemin vers le fichier markdown à convertir.
@@ -18,6 +19,7 @@
   5. Retourne l'arbre de roadmap.
 
 #### 1.1.2 `Parse-MarkdownTask`
+
 - **Description**: Parse une ligne de markdown pour extraire les informations d'une tâche.
 - **Paramètres**:
   - `Line` (string, obligatoire): Ligne de markdown à parser.
@@ -30,6 +32,7 @@
   5. Retourne un objet avec les informations extraites.
 
 #### 1.1.3 `Get-MarkdownTaskIndentation`
+
 - **Description**: Calcule le niveau d'indentation d'une ligne de markdown.
 - **Paramètres**:
   - `Line` (string, obligatoire): Ligne de markdown.
@@ -40,6 +43,7 @@
   3. Retourne le niveau d'indentation.
 
 #### 1.1.4 `Extract-MarkdownTaskStatus`
+
 - **Description**: Extrait le statut d'une tâche à partir de son marqueur.
 - **Paramètres**:
   - `StatusMarker` (string, obligatoire): Marqueur de statut (espace, x, ~, !).
@@ -49,6 +53,7 @@
   2. Retourne le statut.
 
 #### 1.1.5 `Extract-MarkdownTaskId`
+
 - **Description**: Extrait l'ID d'une tâche à partir d'une ligne de markdown.
 - **Paramètres**:
   - `Line` (string, obligatoire): Ligne de markdown.
@@ -58,6 +63,7 @@
   2. Retourne l'ID ou null si aucun ID n'est trouvé.
 
 #### 1.1.6 `Extract-MarkdownTaskTitle`
+
 - **Description**: Extrait le titre d'une tâche à partir d'une ligne de markdown.
 - **Paramètres**:
   - `Line` (string, obligatoire): Ligne de markdown.
@@ -67,6 +73,7 @@
   2. Retourne le titre.
 
 #### 1.1.7 `Extract-MarkdownTaskDescription`
+
 - **Description**: Extrait la description d'une tâche à partir des lignes suivantes.
 - **Paramètres**:
   - `Lines` (string[], obligatoire): Lignes de markdown.
@@ -80,6 +87,7 @@
 ### 1.2 Fonctions de manipulation de l'arbre
 
 #### 1.2.1 `New-RoadmapTree`
+
 - **Description**: Crée un nouvel arbre de roadmap.
 - **Paramètres**:
   - `Title` (string, obligatoire): Titre de la roadmap.
@@ -91,6 +99,7 @@
   3. Retourne l'objet RoadmapTree.
 
 #### 1.2.2 `New-RoadmapTask`
+
 - **Description**: Crée une nouvelle tâche pour l'arbre de roadmap.
 - **Paramètres**:
   - `Id` (string, obligatoire): Identifiant unique de la tâche.
@@ -104,6 +113,7 @@
   3. Retourne l'objet RoadmapTask.
 
 #### 1.2.3 `Add-RoadmapTask`
+
 - **Description**: Ajoute une tâche à l'arbre de roadmap.
 - **Paramètres**:
   - `RoadmapTree` (RoadmapTree, obligatoire): Arbre de roadmap.
@@ -116,6 +126,7 @@
   3. Met à jour les collections de l'arbre.
 
 #### 1.2.4 `Remove-RoadmapTask`
+
 - **Description**: Supprime une tâche de l'arbre de roadmap.
 - **Paramètres**:
   - `RoadmapTree` (RoadmapTree, obligatoire): Arbre de roadmap.
@@ -127,6 +138,7 @@
   3. Met à jour les collections de l'arbre.
 
 #### 1.2.5 `Get-RoadmapTask`
+
 - **Description**: Récupère une tâche de l'arbre de roadmap par son ID.
 - **Paramètres**:
   - `RoadmapTree` (RoadmapTree, obligatoire): Arbre de roadmap.
@@ -137,6 +149,7 @@
   2. Retourne la tâche si elle est trouvée, sinon null.
 
 #### 1.2.6 `Set-RoadmapTaskStatus`
+
 - **Description**: Modifie le statut d'une tâche.
 - **Paramètres**:
   - `Task` (RoadmapTask, obligatoire): Tâche à modifier.
@@ -147,6 +160,7 @@
   2. Met à jour la date de modification de la tâche.
 
 #### 1.2.7 `Add-RoadmapTaskDependency`
+
 - **Description**: Ajoute une dépendance entre deux tâches.
 - **Paramètres**:
   - `Task` (RoadmapTask, obligatoire): Tâche qui dépend d'une autre.
@@ -157,6 +171,7 @@
   2. Met à jour les collections de dépendances des deux tâches.
 
 #### 1.2.8 `Remove-RoadmapTaskDependency`
+
 - **Description**: Supprime une dépendance entre deux tâches.
 - **Paramètres**:
   - `Task` (RoadmapTask, obligatoire): Tâche qui dépend d'une autre.
@@ -167,6 +182,7 @@
   2. Met à jour les collections de dépendances des deux tâches.
 
 #### 1.2.9 `Get-RoadmapTaskDependencies`
+
 - **Description**: Récupère les dépendances d'une tâche.
 - **Paramètres**:
   - `Task` (RoadmapTask, obligatoire): Tâche dont on veut récupérer les dépendances.
@@ -176,6 +192,7 @@
   2. Retourne les dépendances.
 
 #### 1.2.10 `Get-RoadmapTaskDependents`
+
 - **Description**: Récupère les tâches qui dépendent d'une tâche.
 - **Paramètres**:
   - `Task` (RoadmapTask, obligatoire): Tâche dont on veut récupérer les dépendants.
@@ -187,6 +204,7 @@
 ### 1.3 Fonctions d'export et de génération
 
 #### 1.3.1 `Export-RoadmapTreeToJson`
+
 - **Description**: Exporte un arbre de roadmap au format JSON.
 - **Paramètres**:
   - `RoadmapTree` (RoadmapTree, obligatoire): Arbre de roadmap à exporter.
@@ -198,6 +216,7 @@
   2. Écrit l'objet JSON dans le fichier spécifié.
 
 #### 1.3.2 `Export-RoadmapTreeToMarkdown`
+
 - **Description**: Exporte un arbre de roadmap au format Markdown.
 - **Paramètres**:
   - `RoadmapTree` (RoadmapTree, obligatoire): Arbre de roadmap à exporter.
@@ -209,6 +228,7 @@
   2. Écrit le texte Markdown dans le fichier spécifié.
 
 #### 1.3.3 `ConvertTo-MarkdownTask`
+
 - **Description**: Convertit une tâche en texte Markdown.
 - **Paramètres**:
   - `Task` (RoadmapTask, obligatoire): Tâche à convertir.
@@ -220,6 +240,7 @@
   3. Retourne le texte Markdown.
 
 #### 1.3.4 `ConvertTo-JsonTask`
+
 - **Description**: Convertit une tâche en objet JSON.
 - **Paramètres**:
   - `Task` (RoadmapTask, obligatoire): Tâche à convertir.
@@ -230,6 +251,7 @@
   3. Retourne l'objet PSCustomObject.
 
 #### 1.3.5 `Import-RoadmapTreeFromJson`
+
 - **Description**: Importe un arbre de roadmap à partir d'un fichier JSON.
 - **Paramètres**:
   - `FilePath` (string, obligatoire): Chemin du fichier JSON à importer.
@@ -241,6 +263,7 @@
   3. Retourne l'objet RoadmapTree.
 
 #### 1.3.6 `Generate-RoadmapReport`
+
 - **Description**: Génère un rapport sur l'état de la roadmap.
 - **Paramètres**:
   - `RoadmapTree` (RoadmapTree, obligatoire): Arbre de roadmap.
@@ -254,6 +277,7 @@
   4. Sinon, retourne le rapport sous forme de chaîne.
 
 #### 1.3.7 `Generate-RoadmapStatistics`
+
 - **Description**: Génère des statistiques sur l'état de la roadmap.
 - **Paramètres**:
   - `RoadmapTree` (RoadmapTree, obligatoire): Arbre de roadmap.
@@ -263,6 +287,7 @@
   2. Retourne un objet PSCustomObject contenant les statistiques.
 
 #### 1.3.8 `Generate-RoadmapVisualization`
+
 - **Description**: Génère une visualisation de la roadmap.
 - **Paramètres**:
   - `RoadmapTree` (RoadmapTree, obligatoire): Arbre de roadmap.
@@ -277,6 +302,7 @@
 ### 1.4 Fonctions utilitaires et helpers
 
 #### 1.4.1 `Test-RoadmapTreeValidity`
+
 - **Description**: Vérifie la validité d'un arbre de roadmap.
 - **Paramètres**:
   - `RoadmapTree` (RoadmapTree, obligatoire): Arbre de roadmap à vérifier.
@@ -288,6 +314,7 @@
   4. Retourne true si l'arbre est valide, sinon false.
 
 #### 1.4.2 `Test-RoadmapTaskValidity`
+
 - **Description**: Vérifie la validité d'une tâche.
 - **Paramètres**:
   - `Task` (RoadmapTask, obligatoire): Tâche à vérifier.
@@ -299,6 +326,7 @@
   4. Retourne true si la tâche est valide, sinon false.
 
 #### 1.4.3 `Find-RoadmapTaskCycles`
+
 - **Description**: Recherche les cycles dans les dépendances des tâches.
 - **Paramètres**:
   - `RoadmapTree` (RoadmapTree, obligatoire): Arbre de roadmap à vérifier.
@@ -308,6 +336,7 @@
   2. Retourne les cycles trouvés.
 
 #### 1.4.4 `Get-RoadmapTaskPath`
+
 - **Description**: Récupère le chemin d'une tâche dans l'arbre de roadmap.
 - **Paramètres**:
   - `Task` (RoadmapTask, obligatoire): Tâche dont on veut récupérer le chemin.
@@ -317,6 +346,7 @@
   2. Retourne le chemin.
 
 #### 1.4.5 `Get-RoadmapTaskLevel`
+
 - **Description**: Récupère le niveau d'une tâche dans l'arbre de roadmap.
 - **Paramètres**:
   - `Task` (RoadmapTask, obligatoire): Tâche dont on veut récupérer le niveau.
@@ -326,6 +356,7 @@
   2. Retourne le niveau.
 
 #### 1.4.6 `Get-RoadmapTaskChildren`
+
 - **Description**: Récupère les enfants d'une tâche.
 - **Paramètres**:
   - `Task` (RoadmapTask, obligatoire): Tâche dont on veut récupérer les enfants.
@@ -337,6 +368,7 @@
   3. Retourne les enfants.
 
 #### 1.4.7 `Get-RoadmapTaskParents`
+
 - **Description**: Récupère les parents d'une tâche.
 - **Paramètres**:
   - `Task` (RoadmapTask, obligatoire): Tâche dont on veut récupérer les parents.
@@ -346,6 +378,7 @@
   2. Retourne les parents.
 
 #### 1.4.8 `Get-RoadmapTasksByStatus`
+
 - **Description**: Récupère les tâches d'un arbre de roadmap par statut.
 - **Paramètres**:
   - `RoadmapTree` (RoadmapTree, obligatoire): Arbre de roadmap.
@@ -356,6 +389,7 @@
   2. Retourne les tâches.
 
 #### 1.4.9 `Get-RoadmapTasksByFilter`
+
 - **Description**: Récupère les tâches d'un arbre de roadmap selon un filtre.
 - **Paramètres**:
   - `RoadmapTree` (RoadmapTree, obligatoire): Arbre de roadmap.
@@ -366,6 +400,7 @@
   2. Retourne les tâches.
 
 #### 1.4.10 `Get-RoadmapTasksBySearch`
+
 - **Description**: Recherche des tâches dans un arbre de roadmap.
 - **Paramètres**:
   - `RoadmapTree` (RoadmapTree, obligatoire): Arbre de roadmap.
@@ -510,8 +545,7 @@ Les paramètres obligatoires sont validés à l'aide de l'attribut `[Parameter(M
 ```powershell
 [Parameter(Mandatory = $true)]
 [string]$Title
-```
-
+```plaintext
 #### 2.3.2 Validations de types
 
 Les validations de types sont utilisées pour s'assurer que les paramètres sont du type attendu. Elles sont implémentées à l'aide des attributs de type.
@@ -520,8 +554,7 @@ Les validations de types sont utilisées pour s'assurer que les paramètres sont
 [string]$Title
 [int]$Level
 [TaskStatus]$Status
-```
-
+```plaintext
 #### 2.3.3 Validations de valeurs
 
 Les validations de valeurs sont utilisées pour s'assurer que les paramètres ont des valeurs valides. Elles sont implémentées à l'aide des attributs de validation.
@@ -535,8 +568,7 @@ Les validations de valeurs sont utilisées pour s'assurer que les paramètres on
 
 [ValidateSet("Markdown", "HTML", "Text")]
 [string]$Format
-```
-
+```plaintext
 #### 2.3.4 Validations personnalisées
 
 Les validations personnalisées sont utilisées pour des validations plus complexes. Elles sont implémentées à l'aide de code personnalisé dans la fonction.
@@ -553,8 +585,7 @@ if ($null -eq $RoadmapTree) {
 if ($null -eq $Task) {
     throw "La tâche ne peut pas être null."
 }
-```
-
+```plaintext
 #### 2.3.5 Validations de paramètres pour chaque fonction
 
 | Fonction | Paramètre | Validation |
@@ -678,8 +709,7 @@ Les valeurs par défaut sont implémentées dans la déclaration des paramètres
 
 [Parameter(Mandatory = $false)]
 [string[]]$SearchIn = @("Id", "Title", "Description")
-```
-
+```plaintext
 ## 3. Gestion des erreurs et exceptions
 
 ### 3.1 Scénarios d'erreur potentiels
@@ -854,8 +884,7 @@ class RoadmapException : System.Exception {
         $this.AdditionalInfo = $additionalInfo
     }
 }
-```
-
+```plaintext
 #### 3.2.2 Exceptions de validation de paramètres
 
 ```powershell
@@ -924,8 +953,7 @@ class RoadmapValidationException : RoadmapException {
         $this.ActualValue = $actualValue
     }
 }
-```
-
+```plaintext
 #### 3.2.3 Exceptions d'accès aux fichiers
 
 ```powershell
@@ -985,8 +1013,7 @@ class RoadmapFileException : RoadmapException {
         $this.FileOperation = $fileOperation
     }
 }
-```
-
+```plaintext
 #### 3.2.4 Exceptions de logique métier
 
 ```powershell
@@ -1046,8 +1073,7 @@ class RoadmapBusinessLogicException : RoadmapException {
         $this.Context = $context
     }
 }
-```
-
+```plaintext
 #### 3.2.5 Exceptions spécifiques
 
 ```powershell
@@ -1194,51 +1220,56 @@ class RoadmapParseException : RoadmapException {
         $this.LineNumber = $lineNumber
     }
 }
-```
-
+```plaintext
 #### 3.2.6 Utilisation des exceptions
 
 Les exceptions personnalisées sont utilisées pour fournir des informations détaillées sur les erreurs. Voici quelques exemples d'utilisation :
 
 ```powershell
 # Validation de paramètres
+
 if ([string]::IsNullOrEmpty($Title)) {
     throw [RoadmapValidationException]::new("Le titre de la roadmap ne peut pas être null ou vide.", "Title", "Non-empty string", $Title)
 }
 
 # Accès aux fichiers
+
 if (-not (Test-Path -Path $FilePath)) {
     throw [RoadmapFileException]::new("Le fichier n'existe pas: $FilePath", $FilePath, "Read")
 }
 
 # Logique métier
+
 if ($null -ne $Task.Parent) {
     throw [RoadmapBusinessLogicException]::new("La tâche a déjà un parent.", "AddTask")
 }
 
 # Tâche non trouvée
+
 $task = $RoadmapTree.TasksById[$Id]
 if ($null -eq $task) {
     throw [RoadmapTaskNotFoundException]::new("Aucune tâche avec cet ID n'existe dans l'arbre.", $Id)
 }
 
 # ID de tâche en double
+
 if ($RoadmapTree.TasksById.ContainsKey($Task.Id)) {
     throw [RoadmapTaskDuplicateIdException]::new("L'ID de la tâche existe déjà dans l'arbre.", $Task.Id)
 }
 
 # Cycle de dépendances
+
 $cycles = Find-RoadmapTaskCycles -RoadmapTree $RoadmapTree
 if ($cycles.Count -gt 0) {
     throw [RoadmapTaskCycleException]::new("La dépendance créerait un cycle.", $cycles[0])
 }
 
 # Erreur de parsing
+
 if (-not ($Line -match $taskPattern)) {
     throw [RoadmapParseException]::new("La ligne n'est pas une tâche valide.", $Line, $LineNumber)
 }
-```
-
+```plaintext
 ### 3.3 Stratégies de récupération
 
 Les stratégies de récupération sont utilisées pour gérer les erreurs et tenter de récupérer d'une situation d'erreur. Elles sont implémentées à l'aide de blocs try-catch et de code de récupération.
@@ -1263,6 +1294,7 @@ Les stratégies de récupération sont implémentées à l'aide de blocs try-cat
 
 ```powershell
 # Stratégie de récupération pour un paramètre invalide
+
 function Get-RoadmapTasksByStatus {
     [CmdletBinding()]
     param(
@@ -1276,22 +1308,26 @@ function Get-RoadmapTasksByStatus {
 
     try {
         # Code principal
+
         $tasks = $RoadmapTree.AllTasks | Where-Object { $_.Status -eq $Status }
         return $tasks
     }
     catch [RoadmapValidationException] {
         # Récupération pour un paramètre invalide
+
         Write-Warning "Paramètre invalide: $($_.Exception.ParameterName). Utilisation de la valeur par défaut."
         $tasks = $RoadmapTree.AllTasks | Where-Object { $_.Status -eq [TaskStatus]::Incomplete }
         return $tasks
     }
     catch {
         # Autres erreurs
+
         throw
     }
 }
 
 # Stratégie de récupération pour un fichier inexistant
+
 function Import-RoadmapTreeFromJson {
     [CmdletBinding()]
     param(
@@ -1306,6 +1342,7 @@ function Import-RoadmapTreeFromJson {
 
     try {
         # Code principal
+
         if (-not (Test-Path -Path $FilePath)) {
             throw [RoadmapFileException]::new("Le fichier n'existe pas: $FilePath", $FilePath, "Read")
         }
@@ -1313,21 +1350,25 @@ function Import-RoadmapTreeFromJson {
         $content = Get-Content -Path $FilePath -Encoding $Encoding -Raw
         $json = ConvertFrom-Json -InputObject $content
         # ...
+
         return $roadmapTree
     }
     catch [RoadmapFileException] {
         # Récupération pour un fichier inexistant
+
         Write-Warning "Le fichier n'existe pas: $FilePath. Création d'un nouvel arbre de roadmap."
         $roadmapTree = New-RoadmapTree -Title "Nouvelle Roadmap" -Description "Créée automatiquement."
         return $roadmapTree
     }
     catch {
         # Autres erreurs
+
         throw
     }
 }
 
 # Stratégie de récupération pour un répertoire inexistant
+
 function Export-RoadmapTreeToJson {
     [CmdletBinding()]
     param(
@@ -1346,6 +1387,7 @@ function Export-RoadmapTreeToJson {
 
     try {
         # Code principal
+
         $directory = Split-Path -Path $FilePath -Parent
         if (-not (Test-Path -Path $directory)) {
             throw [RoadmapFileException]::new("Le répertoire du fichier n'existe pas: $directory", $FilePath, "Write")
@@ -1356,6 +1398,7 @@ function Export-RoadmapTreeToJson {
     }
     catch [RoadmapFileException] {
         # Récupération pour un répertoire inexistant
+
         Write-Warning "Le répertoire du fichier n'existe pas: $directory. Création du répertoire."
         New-Item -Path $directory -ItemType Directory -Force | Out-Null
         $json = ConvertTo-Json -InputObject $RoadmapTree -Depth 10
@@ -1363,11 +1406,13 @@ function Export-RoadmapTreeToJson {
     }
     catch {
         # Autres erreurs
+
         throw
     }
 }
 
 # Stratégie de récupération pour une erreur de parsing
+
 function Parse-MarkdownTask {
     [CmdletBinding()]
     param(
@@ -1378,6 +1423,7 @@ function Parse-MarkdownTask {
 
     try {
         # Code principal
+
         $taskPattern = '^\s*[-*+]\s*(?:\[([ xX~!])\])?\s*(?:\*\*([^*]+)\*\*)?\s*(.*)$'
         if (-not ($Line -match $taskPattern)) {
             throw [RoadmapParseException]::new("La ligne n'est pas une tâche valide.", $Line)
@@ -1401,16 +1447,19 @@ function Parse-MarkdownTask {
     }
     catch [RoadmapParseException] {
         # Récupération pour une erreur de parsing
+
         Write-Warning "La ligne n'est pas une tâche valide: $Line. Ignorée."
         return $null
     }
     catch {
         # Autres erreurs
+
         throw
     }
 }
 
 # Stratégie de récupération pour une tâche non trouvée
+
 function Get-RoadmapTask {
     [CmdletBinding()]
     param(
@@ -1425,6 +1474,7 @@ function Get-RoadmapTask {
 
     try {
         # Code principal
+
         $task = $RoadmapTree.TasksById[$Id]
         if ($null -eq $task) {
             throw [RoadmapTaskNotFoundException]::new("Aucune tâche avec cet ID n'existe dans l'arbre.", $Id)
@@ -1434,16 +1484,19 @@ function Get-RoadmapTask {
     }
     catch [RoadmapTaskNotFoundException] {
         # Récupération pour une tâche non trouvée
+
         Write-Warning "Aucune tâche avec l'ID '$Id' n'existe dans l'arbre. Retourne null."
         return $null
     }
     catch {
         # Autres erreurs
+
         throw
     }
 }
 
 # Stratégie de récupération pour un ID de tâche en double
+
 function Add-RoadmapTask {
     [CmdletBinding()]
     param(
@@ -1461,29 +1514,37 @@ function Add-RoadmapTask {
 
     try {
         # Code principal
+
         if ($RoadmapTree.TasksById.ContainsKey($Task.Id)) {
             throw [RoadmapTaskDuplicateIdException]::new("L'ID de la tâche existe déjà dans l'arbre.", $Task.Id)
         }
 
         # Ajouter la tâche à l'arbre
+
         # ...
+
     }
     catch [RoadmapTaskDuplicateIdException] {
         # Récupération pour un ID de tâche en double
+
         Write-Warning "L'ID de la tâche '$($Task.Id)' existe déjà dans l'arbre. Génération d'un nouvel ID."
         $newId = "$($Task.Id)_$(Get-Random -Minimum 1000 -Maximum 9999)"
         $Task.Id = $newId
 
         # Ajouter la tâche à l'arbre
+
         # ...
+
     }
     catch {
         # Autres erreurs
+
         throw
     }
 }
 
 # Stratégie de récupération pour un cycle de dépendances
+
 function Add-RoadmapTaskDependency {
     [CmdletBinding()]
     param(
@@ -1498,11 +1559,13 @@ function Add-RoadmapTaskDependency {
 
     try {
         # Code principal
+
         if ($Task -eq $DependsOn) {
             throw [RoadmapBusinessLogicException]::new("Une tâche ne peut pas dépendre d'elle-même.", "AddDependency")
         }
 
         # Vérifier si la dépendance créerait un cycle
+
         $visited = @{}
         $path = @()
         $hasCycle = Test-DependencyCycle -Task $DependsOn -TargetTask $Task -Visited $visited -Path $path
@@ -1511,21 +1574,24 @@ function Add-RoadmapTaskDependency {
         }
 
         # Ajouter la dépendance
+
         $Task.Dependencies.Add($DependsOn)
         $DependsOn.DependentTasks.Add($Task)
     }
     catch [RoadmapTaskCycleException] {
         # Récupération pour un cycle de dépendances
+
         Write-Warning "La dépendance créerait un cycle. Dépendance non ajoutée."
         # Ne pas ajouter la dépendance
+
     }
     catch {
         # Autres erreurs
+
         throw
     }
 }
-```
-
+```plaintext
 ### 3.4 Mécanismes de journalisation des erreurs
 
 Les mécanismes de journalisation des erreurs sont utilisés pour enregistrer les erreurs et les informations de débogage. Ils sont implémentés à l'aide de fonctions de journalisation et de variables de préférence.
@@ -1536,17 +1602,21 @@ Les variables de préférence sont utilisées pour contrôler le comportement de
 
 ```powershell
 # Variables de préférence pour la journalisation
-$script:RoadmapLogLevel = "Info"  # Valeurs possibles: "Debug", "Info", "Warning", "Error"
-$script:RoadmapLogFile = $null    # Chemin du fichier de journal, ou $null pour désactiver la journalisation dans un fichier
-$script:RoadmapLogToConsole = $true  # Indique si les messages de journal doivent être affichés dans la console
-```
 
+$script:RoadmapLogLevel = "Info"  # Valeurs possibles: "Debug", "Info", "Warning", "Error"
+
+$script:RoadmapLogFile = $null    # Chemin du fichier de journal, ou $null pour désactiver la journalisation dans un fichier
+
+$script:RoadmapLogToConsole = $true  # Indique si les messages de journal doivent être affichés dans la console
+
+```plaintext
 #### 3.4.2 Fonctions de journalisation
 
 Les fonctions de journalisation sont utilisées pour enregistrer les messages de journal.
 
 ```powershell
 # Fonction de journalisation principale
+
 function Write-RoadmapLog {
     [CmdletBinding()]
     param(
@@ -1566,6 +1636,7 @@ function Write-RoadmapLog {
     )
 
     # Vérifier si le niveau de journalisation est suffisant
+
     $levelValue = @{
         "Debug" = 0
         "Info" = 1
@@ -1578,10 +1649,12 @@ function Write-RoadmapLog {
     }
 
     # Construire le message de journal
+
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logMessage = "[$timestamp] [$Level] [$Source] $Message"
 
     # Ajouter les informations d'exception si disponibles
+
     if ($null -ne $Exception) {
         $logMessage += "`nException: $($Exception.GetType().FullName): $($Exception.Message)"
         if ($Exception -is [RoadmapException]) {
@@ -1630,6 +1703,7 @@ function Write-RoadmapLog {
     }
 
     # Journaliser dans la console si activé
+
     if ($script:RoadmapLogToConsole) {
         switch ($Level) {
             "Debug" { Write-Debug $logMessage }
@@ -1640,6 +1714,7 @@ function Write-RoadmapLog {
     }
 
     # Journaliser dans un fichier si activé
+
     if ($null -ne $script:RoadmapLogFile) {
         try {
             $logMessage | Out-File -FilePath $script:RoadmapLogFile -Append -Encoding UTF8
@@ -1651,6 +1726,7 @@ function Write-RoadmapLog {
 }
 
 # Fonctions de journalisation spécifiques
+
 function Write-RoadmapDebug {
     [CmdletBinding()]
     param(
@@ -1718,14 +1794,14 @@ function Write-RoadmapError {
 
     Write-RoadmapLog -Message $Message -Level "Error" -Source $Source -Exception $Exception
 }
-```
-
+```plaintext
 #### 3.4.3 Configuration de la journalisation
 
 La configuration de la journalisation est effectuée au début du module.
 
 ```powershell
 # Configuration de la journalisation
+
 function Set-RoadmapLogLevel {
     [CmdletBinding()]
     param(
@@ -1776,14 +1852,14 @@ function Set-RoadmapLogToConsole {
     $script:RoadmapLogToConsole = $Enabled
     Write-RoadmapInfo "Journalisation dans la console $(if ($Enabled) { 'activée' } else { 'désactivée' })."
 }
-```
-
+```plaintext
 #### 3.4.4 Utilisation de la journalisation
 
 La journalisation est utilisée dans les fonctions pour enregistrer les informations importantes.
 
 ```powershell
 # Exemple d'utilisation de la journalisation
+
 function Add-RoadmapTask {
     [CmdletBinding()]
     param(
@@ -1803,6 +1879,7 @@ function Add-RoadmapTask {
 
     try {
         # Validation des paramètres
+
         if ($null -eq $RoadmapTree) {
             $ex = [RoadmapValidationException]::new("L'arbre de roadmap ne peut pas être null.", "RoadmapTree")
             Write-RoadmapError "Erreur de validation des paramètres." -Exception $ex
@@ -1816,6 +1893,7 @@ function Add-RoadmapTask {
         }
 
         # Vérifier si la tâche a déjà un parent
+
         if ($null -ne $Task.Parent) {
             $ex = [RoadmapBusinessLogicException]::new("La tâche a déjà un parent.", "AddTask")
             Write-RoadmapError "Erreur de logique métier." -Exception $ex
@@ -1823,6 +1901,7 @@ function Add-RoadmapTask {
         }
 
         # Vérifier si l'ID de la tâche existe déjà dans l'arbre
+
         if ($RoadmapTree.TasksById.ContainsKey($Task.Id)) {
             $ex = [RoadmapTaskDuplicateIdException]::new("L'ID de la tâche existe déjà dans l'arbre.", $Task.Id)
             Write-RoadmapError "Erreur de logique métier." -Exception $ex
@@ -1830,20 +1909,24 @@ function Add-RoadmapTask {
         }
 
         # Ajouter la tâche à l'arbre
+
         if ($null -eq $ParentTask) {
             # Ajouter la tâche à la racine de l'arbre
+
             $Task.Parent = $RoadmapTree.Root
             $RoadmapTree.Root.Children.Add($Task)
             $Task.Level = 0
         }
         else {
             # Ajouter la tâche comme enfant de la tâche parente
+
             $Task.Parent = $ParentTask
             $ParentTask.Children.Add($Task)
             $Task.Level = $ParentTask.Level + 1
         }
 
         # Ajouter la tâche aux collections de l'arbre
+
         $RoadmapTree.AllTasks.Add($Task)
         $RoadmapTree.TasksById[$Task.Id] = $Task
 
@@ -1854,4 +1937,4 @@ function Add-RoadmapTask {
         throw
     }
 }
-```
+```plaintext

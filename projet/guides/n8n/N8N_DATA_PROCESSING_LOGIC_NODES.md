@@ -17,8 +17,7 @@ Le nœud Code (anciennement appelé Function) permet d'écrire du JavaScript per
     "functionCode": "for (const item of items) {\n item.json.newField = item.json.someField + 100;\n}\nreturn items;"
   }
 }
-```
-
+```plaintext
 **Explication :** Ce code JavaScript parcourt chaque élément d'entrée (`items` est un tableau d'objets `{ json: {...}, binary: {...} }`) et ajoute un nouveau champ. Ici, nous définissons `newField` comme `someField + 100`. Le nœud doit retourner `items;` à la fin. Après l'exécution, les nœuds en aval voient les éléments modifiés.
 
 Vous pouvez utiliser `console.log()` ou effectuer des transformations plus complexes. Si vous configurez "Pas d'entrées", le nœud Code peut agir comme un générateur de données (par exemple, créer un tableau d'objets à partir de zéro).
@@ -52,8 +51,7 @@ Le nœud IF achemine les données en fonction de conditions (vrai/faux). Il poss
     }
   }
 }
-```
-
+```plaintext
 **Explication :** Ce nœud IF dirigera tout élément entrant vers la branche vrai si le champ `status` de l'élément est la chaîne "success". Tous les autres éléments vont vers la branche faux.
 
 La structure JSON sous `parameters.conditions` peut inclure plusieurs règles ; ici, nous avons une règle comparant une chaîne. `leftValue` utilise une expression pour extraire le statut de l'élément. Nous définissons le type d'opérateur sur "string" et l'opération "equals".
@@ -85,8 +83,7 @@ Le nœud Switch est comme un multi-IF ou une instruction switch/case. Il vous pe
     "fallbackOutput": 2
   }
 }
-```
-
+```plaintext
 **Explication :** Ce nœud Switch examine la valeur de `category`. Si elle est égale à "support", l'élément sort via la sortie 0 (première sortie) ; si "sales", via la sortie 1 ; tout le reste passe par la sortie 2 (la sortie par défaut).
 
 Nous définissons `dataType: "string"` puisque nous comparons des chaînes. Le tableau `rules` définit deux cas. `fallbackOutput: 2` signifie que nous avons configuré une troisième sortie pour "aucune des options ci-dessus". Dans l'éditeur, vous définiriez le nombre de sorties à 3 dans ce cas.
@@ -124,8 +121,7 @@ Le nœud Set permet d'ajouter, supprimer ou renommer des champs dans les donnée
     }
   }
 }
-```
-
+```plaintext
 **Explication :** Ce nœud Set ajoutera un champ numérique `year` avec la valeur 2025 et un champ chaîne `statusMessage` avec un texte statique. Comme `keepOnlySet` est false, il conservera tous les champs existants des éléments d'entrée et ajoutera simplement ces deux-là.
 
 Si `keepOnlySet` était true, la sortie n'aurait que les champs que nous définissons explicitement (utile si vous voulez écarter d'autres données).
@@ -153,8 +149,7 @@ Le nœud Merge prend deux flux d'entrée et les combine. Il peut fonctionner dan
     "outputDataFrom": "both"
   }
 }
-```
-
+```plaintext
 **Explication :** Ce Merge est configuré pour `mergeByKey` sur le champ `id`. Il s'attend à ce que chaque entrée ait des éléments avec une propriété `id`. Il produira un flux unique d'éléments fusionnés : chaque élément de sortie combine le JSON de input1 et input2 où l'id correspondait.
 
 Le `outputDataFrom: "both"` signifie que l'élément de sortie inclura les champs des deux entrées (vous pourriez également choisir de ne sortir que les données d'un côté, l'autre étant juste utilisé pour la correspondance).
@@ -184,8 +179,7 @@ Le nœud Item Lists (précédemment appelé Aggregate dans certains contextes) a
     "property": "results"
   }
 }
-```
-
+```plaintext
 **Explication :** Si un élément entrant a un champ `results` qui est un tableau (par exemple, d'une réponse HTTP ou d'un calcul précédent), ce nœud produira chaque élément de `results` comme un élément n8n séparé. L'opération `"splitIntoItems"` et la spécification de la propriété à diviser font cela.
 
 L'inverse peut être fait avec `operation: "aggregateItems"` qui peut collecter toutes les données des éléments d'entrée dans un seul tableau sur un élément (vous spécifiez comment agréger, comme collecter toutes les valeurs d'un champ dans un tableau).
@@ -209,8 +203,7 @@ n8n n'utilise pas de boucles traditionnelles ; à la place, il traite plusieurs 
     "batchSize": 10
   }
 }
-```
-
+```plaintext
 **Explication :** Connectez le nœud SplitInBatches dans votre flux où vous voulez limiter ou parcourir des éléments. Lors de la première exécution, il passera les 10 premiers éléments et retiendra le reste.
 
 À la fin de la boucle (vous devez connecter le dernier nœud de la boucle à l'entrée 2 du nœud SplitInBatches), le nœud SplitInBatches enverra le prochain lot lorsqu'il sera déclenché depuis cette deuxième entrée. Cela crée essentiellement une boucle : après le dernier nœud, connectez-le à nouveau au SplitInBatches (sélectionnez l'entrée "Execute Next Batch").
@@ -236,8 +229,7 @@ Dans le JSON du workflow, vous pouvez définir `"continueOnFail": true` sur les 
     "message": "Terminating workflow due to business rule X"
   }
 }
-```
-
+```plaintext
 **Explication :** Si ce nœud s'exécute, il arrêtera le workflow et produira une erreur avec le message donné. Utilisez-le après un IF ou une autre vérification si vous voulez arrêter gracieusement lorsque quelque chose ne va pas (au lieu de continuer).
 
 Pour capturer les erreurs, l'Error Trigger est placé dans un workflow séparé ; lorsqu'un workflow génère une erreur, il peut capturer les détails et, par exemple, envoyer une alerte par email ou Slack.

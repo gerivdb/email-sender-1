@@ -20,43 +20,62 @@ L'objectif principal du gestionnaire de processus est de fournir une interface u
 
 Le gestionnaire de processus est organisé selon la structure de répertoires suivante :
 
-```
+```plaintext
 development/managers/process-manager/
 ├── scripts/
 │   ├── process-manager.ps1           # Script principal
+
 │   ├── install-modules.ps1           # Script d'installation des modules
+
 │   ├── integrate-modules.ps1         # Script d'intégration des modules
+
 │   └── ...                           # Autres scripts
+
 ├── modules/
 │   ├── ManagerRegistrationService/   # Service d'enregistrement des gestionnaires
+
 │   ├── ManifestParser/               # Analyseur de manifestes
+
 │   ├── ValidationService/            # Service de validation
+
 │   ├── DependencyResolver/           # Résolveur de dépendances
+
 │   └── ...                           # Autres modules PowerShell
+
 ├── tests/
 │   ├── Test-ProcessManager.ps1       # Tests unitaires de base
+
 │   ├── Test-ProcessManagerAll.ps1    # Tests complets
+
 │   ├── Test-ManifestParser.ps1       # Tests du module ManifestParser
+
 │   ├── Test-ValidationService.ps1    # Tests du module ValidationService
+
 │   ├── Test-DependencyResolver.ps1   # Tests du module DependencyResolver
+
 │   ├── Test-Integration.ps1          # Tests d'intégration
+
 │   ├── Test-ProcessManagerFunctionality.ps1 # Tests fonctionnels
+
 │   ├── Test-ProcessManagerPerformance.ps1  # Tests de performance
+
 │   ├── Test-ProcessManagerLoad.ps1   # Tests de charge
+
 │   └── ...                           # Autres tests
+
 └── config/
     └── ...                           # Fichiers de configuration locaux
-```
 
+```plaintext
 ### Fichiers de configuration
 
 Les fichiers de configuration du gestionnaire sont stockés dans :
 
-```
+```plaintext
 projet/config/managers/process-manager/
 └── process-manager.config.json       # Configuration principale
-```
 
+```plaintext
 ## Prérequis
 
 Avant d'utiliser le gestionnaire de processus, assurez-vous que :
@@ -73,8 +92,7 @@ Pour installer le gestionnaire de processus, utilisez le script d'installation :
 
 ```powershell
 .\development\managers\process-manager\scripts\install-process-manager.ps1
-```
-
+```plaintext
 ### Installation des modules améliorés
 
 Pour installer les modules améliorés (ManagerRegistrationService, ManifestParser, ValidationService, DependencyResolver), suivez ces étapes :
@@ -83,15 +101,13 @@ Pour installer les modules améliorés (ManagerRegistrationService, ManifestPars
 
 ```powershell
 .\development\managers\process-manager\scripts\install-modules.ps1
-```
-
+```plaintext
 2. Vérifiez l'installation des modules :
 
 ```powershell
 Import-Module ProcessManager
 Get-Module ProcessManager
-```
-
+```plaintext
 ### Installation manuelle
 
 Si vous préférez une installation manuelle, suivez ces étapes :
@@ -110,14 +126,12 @@ Si vous préférez installer les modules manuellement :
 $modulesPath = Join-Path -Path $env:PSModulePath.Split(';')[0] -ChildPath "ProcessManager"
 New-Item -Path $modulesPath -ItemType Directory -Force
 Copy-Item -Path "development\managers\process-manager\modules\*" -Destination $modulesPath -Recurse -Force
-```
-
+```plaintext
 2. Importez le module :
 
 ```powershell
 Import-Module ProcessManager
-```
-
+```plaintext
 ### Intégration des modules
 
 Pour intégrer les modules au Process Manager existant :
@@ -126,24 +140,21 @@ Pour intégrer les modules au Process Manager existant :
 
 ```powershell
 .\development\managers\process-manager\scripts\integrate-modules.ps1
-```
-
+```plaintext
 2. Vérifiez l'intégration :
 
 ```powershell
 .\development\managers\process-manager\scripts\process-manager.ps1 -Command List
-```
-
+```plaintext
 ## Configuration
 
 ### Fichier de configuration principal
 
 Le fichier de configuration principal du gestionnaire est situé à :
 
-```
+```plaintext
 projet/config/managers/process-manager/process-manager.config.json
-```
-
+```plaintext
 Voici un exemple de configuration :
 
 ```json
@@ -179,8 +190,7 @@ Voici un exemple de configuration :
     }
   }
 }
-```
-
+```plaintext
 ### Options de configuration
 
 | Option | Type | Description | Valeur par défaut |
@@ -211,8 +221,7 @@ Ce module gère l'enregistrement, la mise à jour et la suppression des gestionn
 ```powershell
 Import-Module ProcessManager
 Register-Manager -Name "ModeManager" -Path "development\managers\mode-manager\scripts\mode-manager.ps1" -Version "1.0.0"
-```
-
+```plaintext
 ### Module ManifestParser
 
 Ce module analyse, valide et manipule les manifestes des gestionnaires.
@@ -229,8 +238,7 @@ Ce module analyse, valide et manipule les manifestes des gestionnaires.
 Import-Module ProcessManager
 $manifest = Get-ManagerManifest -Path "development\managers\mode-manager\scripts\mode-manager.ps1"
 Test-ManifestValidity -Manifest $manifest
-```
-
+```plaintext
 ### Module ValidationService
 
 Ce module valide les gestionnaires avant leur enregistrement dans le Process Manager.
@@ -246,8 +254,7 @@ Ce module valide les gestionnaires avant leur enregistrement dans le Process Man
 ```powershell
 Import-Module ProcessManager
 Test-ManagerValidity -Path "development\managers\mode-manager\scripts\mode-manager.ps1"
-```
-
+```plaintext
 ### Module DependencyResolver
 
 Ce module analyse, valide et résout les dépendances entre gestionnaires.
@@ -265,8 +272,7 @@ Ce module analyse, valide et résout les dépendances entre gestionnaires.
 Import-Module ProcessManager
 $dependencies = Get-ManagerDependencies -Path "development\managers\mode-manager\scripts\mode-manager.ps1"
 Test-DependenciesAvailability -Dependencies $dependencies
-```
-
+```plaintext
 ## Utilisation
 
 ### Commandes principales
@@ -277,8 +283,7 @@ Le gestionnaire de processus expose les commandes suivantes :
 
 ```powershell
 .\development\managers\process-manager\scripts\process-manager.ps1 -Command Register -ManagerName "ModeManager" -ManagerPath "development\managers\mode-manager\scripts\mode-manager.ps1"
-```
-
+```plaintext
 **Description :** Enregistre un nouveau gestionnaire
 
 **Paramètres :**
@@ -289,14 +294,12 @@ Le gestionnaire de processus expose les commandes suivantes :
 **Exemple :**
 ```powershell
 .\development\managers\process-manager\scripts\process-manager.ps1 -Command Register -ManagerName "ModeManager" -ManagerPath "development\managers\mode-manager\scripts\mode-manager.ps1" -Force
-```
-
+```plaintext
 #### Commande 2 : Discover
 
 ```powershell
 .\development\managers\process-manager\scripts\process-manager.ps1 -Command Discover
-```
-
+```plaintext
 **Description :** Découvre automatiquement les gestionnaires disponibles
 
 **Paramètres :**
@@ -305,24 +308,23 @@ Le gestionnaire de processus expose les commandes suivantes :
 **Exemple :**
 ```powershell
 .\development\managers\process-manager\scripts\process-manager.ps1 -Command Discover -Force
-```
-
+```plaintext
 ### Exemples d'utilisation
 
 #### Exemple 1 : Lister les gestionnaires enregistrés
 
 ```powershell
 # Lister tous les gestionnaires enregistrés
-.\development\managers\process-manager\scripts\process-manager.ps1 -Command List
-```
 
+.\development\managers\process-manager\scripts\process-manager.ps1 -Command List
+```plaintext
 #### Exemple 2 : Exécuter une commande sur un gestionnaire
 
 ```powershell
 # Exécuter la commande SetMode sur le gestionnaire de modes
-.\development\managers\process-manager\scripts\process-manager.ps1 -Command Run -ManagerName "ModeManager" -ManagerCommand "SetMode" -Mode "CHECK"
-```
 
+.\development\managers\process-manager\scripts\process-manager.ps1 -Command Run -ManagerName "ModeManager" -ManagerCommand "SetMode" -Mode "CHECK"
+```plaintext
 ## Intégration avec d'autres gestionnaires
 
 Le gestionnaire de processus s'intègre avec tous les autres gestionnaires du système :
@@ -331,16 +333,16 @@ Le gestionnaire de processus s'intègre avec tous les autres gestionnaires du sy
 
 ```powershell
 # Utiliser le gestionnaire de modes via le gestionnaire de processus
-.\development\managers\process-manager\scripts\process-manager.ps1 -Command Run -ManagerName "ModeManager" -ManagerCommand "SetMode" -Mode "CHECK"
-```
 
+.\development\managers\process-manager\scripts\process-manager.ps1 -Command Run -ManagerName "ModeManager" -ManagerCommand "SetMode" -Mode "CHECK"
+```plaintext
 ### Intégration avec le gestionnaire de roadmap
 
 ```powershell
 # Utiliser le gestionnaire de roadmap via le gestionnaire de processus
-.\development\managers\process-manager\scripts\process-manager.ps1 -Command Run -ManagerName "RoadmapManager" -ManagerCommand "ParseRoadmap" -FilePath "projet/roadmaps/roadmap_complete_converted.md"
-```
 
+.\development\managers\process-manager\scripts\process-manager.ps1 -Command Run -ManagerName "RoadmapManager" -ManagerCommand "ParseRoadmap" -FilePath "projet/roadmaps/roadmap_complete_converted.md"
+```plaintext
 ## Dépannage
 
 ### Problèmes courants et solutions
@@ -380,10 +382,9 @@ Le gestionnaire de processus s'intègre avec tous les autres gestionnaires du sy
 
 Le gestionnaire de processus génère des journaux dans le répertoire suivant :
 
-```
+```plaintext
 logs/process-manager/
-```
-
+```plaintext
 Les niveaux de journalisation peuvent être configurés dans le fichier de configuration principal.
 
 ## Tests
@@ -394,20 +395,17 @@ Pour exécuter tous les tests du gestionnaire de processus, utilisez la commande
 
 ```powershell
 .\development\managers\process-manager\tests\Test-ProcessManagerAll.ps1
-```
-
+```plaintext
 Pour exécuter un type de test spécifique :
 
 ```powershell
 .\development\managers\process-manager\tests\Test-ProcessManagerAll.ps1 -TestType Functional
-```
-
+```plaintext
 Pour générer un rapport HTML des résultats des tests :
 
 ```powershell
 .\development\managers\process-manager\tests\Test-ProcessManagerAll.ps1 -GenerateReport
-```
-
+```plaintext
 ### Types de tests disponibles
 
 - **Tests unitaires :** Testent les fonctions individuelles du gestionnaire et des modules

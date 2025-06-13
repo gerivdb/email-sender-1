@@ -6,7 +6,7 @@ Ce document présente l'architecture globale du projet EMAIL_SENDER_1, ses compo
 
 EMAIL_SENDER_1 est un système d'automatisation d'envoi d'emails pour la gestion de booking de concerts, basé sur une architecture modulaire intégrant plusieurs technologies :
 
-```
+```plaintext
 ┌─────────────────────────────────────────────────────────────────┐
 │                       EMAIL_SENDER_1                            │
 ├─────────────┬─────────────┬────────────────┬──────────────────┐
@@ -14,8 +14,7 @@ EMAIL_SENDER_1 est un système d'automatisation d'envoi d'emails pour la gestion
 │  Workflows  │  Servers    │  PowerShell/   │  Google Calendar │
 │             │             │  Python        │                  │
 └─────────────┴─────────────┴────────────────┴──────────────────┘
-```
-
+```plaintext
 ## 2. Composants principaux
 
 ### 2.1 n8n Workflows
@@ -28,13 +27,12 @@ Les workflows n8n constituent le cœur du système, organisés en phases :
 - **Email Sender - Config** : Configuration centralisée
 
 Architecture interne des workflows :
-```
+```plaintext
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
 │ Déclencheur │────▶│ Récupération│────▶│ Traitement  │────▶│   Action    │
 │  (Trigger)  │     │  de données │     │  des données│     │  (Envoi)    │
 └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
-```
-
+```plaintext
 ### 2.2 MCP (Model Context Protocol)
 
 Les serveurs MCP fournissent du contexte aux modèles IA :
@@ -63,7 +61,7 @@ Utilitaires et intégrations pour :
 
 ## 3. Flux de données
 
-```
+```plaintext
 ┌───────────┐    ┌───────────┐    ┌───────────┐    ┌───────────┐
 │  Sources  │───▶│    n8n    │───▶│  Services │───▶│ Destinat. │
 │de données │    │ Workflows │    │    IA     │    │  (Email)  │
@@ -72,11 +70,10 @@ Utilitaires et intégrations pour :
       │                │                               │
       └────────────────┴───────────────────────────────┘
                       Feedback Loop
-```
-
+```plaintext
 ## 4. Architecture des dossiers
 
-```
+```plaintext
 /src/n8n/workflows/       → Workflows n8n actifs (*.json)
 /src/n8n/workflows/archive → Versions archivées
 /src/mcp/servers/         → Serveurs MCP
@@ -85,23 +82,26 @@ Utilitaires et intégrations pour :
 /projet/config/           → Fichiers de configuration
 /development/scripts/     → Scripts d'automatisation
 /docs/guides/augment/     → Guides spécifiques à Augment
-```
-
+```plaintext
 ## 5. Intégrations externes
 
 ### 5.1 Notion
+
 - API Notion pour la gestion des bases de données
 - Webhooks pour les notifications en temps réel
 
 ### 5.2 Google Calendar
+
 - API Google Calendar pour la gestion des disponibilités
 - Synchronisation bidirectionnelle avec Notion
 
 ### 5.3 Gmail
+
 - API Gmail pour l'envoi et la réception d'emails
 - Gestion des templates et des pièces jointes
 
 ### 5.4 OpenRouter/DeepSeek
+
 - API OpenRouter pour l'accès aux modèles IA
 - Personnalisation des messages et analyse des réponses
 

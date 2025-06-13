@@ -1,4 +1,4 @@
-﻿# external
+# external
 
 Autres APIs externes
 

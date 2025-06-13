@@ -5,10 +5,15 @@ Ce document décrit le module de sécurité (`FileSecurityUtils.ps1`) qui permet
 ## Table des matières
 
 1. [Introduction](#introduction)
+
 2. [Fonctions disponibles](#fonctions-disponibles)
+
 3. [Exemples d'utilisation](#exemples-dutilisation)
+
 4. [Menaces courantes](#menaces-courantes)
+
 5. [Bonnes pratiques](#bonnes-pratiques)
+
 6. [Intégration avec d'autres modules](#intégration-avec-dautres-modules)
 
 ## Introduction
@@ -21,8 +26,7 @@ Le module de sécurité pour le traitement de fichiers fournit des fonctions pou
 
 ```powershell
 Test-SecurePath -Path <string> [-AllowRelativePaths] [-AllowedExtensions <string[]>] [-BlockedExtensions <string[]>]
-```
-
+```plaintext
 Cette fonction valide un chemin de fichier pour s'assurer qu'il est sûr.
 
 #### Paramètres
@@ -36,14 +40,12 @@ Cette fonction valide un chemin de fichier pour s'assurer qu'il est sûr.
 
 ```powershell
 $isValidPath = Test-SecurePath -Path "C:\temp\data.json" -AllowedExtensions @(".json", ".csv", ".yaml")
-```
-
+```plaintext
 ### Test-SecureContent
 
 ```powershell
 Test-SecureContent -FilePath <string> [-MaxFileSizeKB <int>] [-CheckForExecutableContent]
-```
-
+```plaintext
 Cette fonction vérifie le contenu d'un fichier pour s'assurer qu'il ne contient pas de code potentiellement malveillant.
 
 #### Paramètres
@@ -56,14 +58,12 @@ Cette fonction vérifie le contenu d'un fichier pour s'assurer qu'il ne contient
 
 ```powershell
 $isSecureContent = Test-SecureContent -FilePath "C:\temp\data.json" -MaxFileSizeKB 1024 -CheckForExecutableContent
-```
-
+```plaintext
 ### Test-FileSecurely
 
 ```powershell
 Test-FileSecurely -FilePath <string> [-Format <string>] [-SchemaFile <string>] [-MaxFileSizeKB <int>] [-CheckForExecutableContent]
-```
-
+```plaintext
 Cette fonction combine la validation du chemin, la vérification du contenu et la validation du format pour s'assurer qu'un fichier est sûr et valide.
 
 #### Paramètres
@@ -78,17 +78,18 @@ Cette fonction combine la validation du chemin, la vérification du contenu et l
 
 ```powershell
 $isSecureFile = Test-FileSecurely -FilePath "C:\temp\data.json" -Format "JSON" -CheckForExecutableContent
-```
-
+```plaintext
 ## Exemples d'utilisation
 
 ### Validation sécurisée d'un chemin de fichier
 
 ```powershell
 # Importer le module
+
 . ".\modules\FileSecurityUtils.ps1"
 
 # Valider un chemin de fichier
+
 $path = "C:\temp\data.json"
 $isValidPath = Test-SecurePath -Path $path -AllowedExtensions @(".json", ".csv", ".yaml")
 
@@ -97,15 +98,16 @@ if ($isValidPath) {
 } else {
     Write-Host "Le chemin n'est pas valide : $path"
 }
-```
-
+```plaintext
 ### Vérification du contenu d'un fichier
 
 ```powershell
 # Importer le module
+
 . ".\modules\FileSecurityUtils.ps1"
 
 # Vérifier le contenu d'un fichier
+
 $filePath = "C:\temp\data.json"
 $isSecureContent = Test-SecureContent -FilePath $filePath -CheckForExecutableContent
 
@@ -114,15 +116,16 @@ if ($isSecureContent) {
 } else {
     Write-Host "Le contenu du fichier n'est pas sûr : $filePath"
 }
-```
-
+```plaintext
 ### Validation complète d'un fichier
 
 ```powershell
 # Importer le module
+
 . ".\modules\FileSecurityUtils.ps1"
 
 # Valider un fichier de manière sécurisée
+
 $filePath = "C:\temp\data.json"
 $isSecureFile = Test-FileSecurely -FilePath $filePath -Format "JSON" -CheckForExecutableContent
 
@@ -130,24 +133,28 @@ if ($isSecureFile) {
     Write-Host "Le fichier est sûr et valide : $filePath"
     
     # Traiter le fichier
+
     $content = Get-Content -Path $filePath -Raw | ConvertFrom-Json
     # ...
+
 } else {
     Write-Host "Le fichier n'est pas sûr ou n'est pas valide : $filePath"
 }
-```
-
+```plaintext
 ### Intégration avec le module UnifiedSegmenter
 
 ```powershell
 # Importer les modules
+
 . ".\modules\FileSecurityUtils.ps1"
 . ".\modules\UnifiedSegmenter.ps1"
 
 # Initialiser le segmenteur unifié
+
 Initialize-UnifiedSegmenter | Out-Null
 
 # Fonction pour traiter un fichier de manière sécurisée
+
 function Process-FileSecurely {
     param (
         [Parameter(Mandatory = $true)]
@@ -164,6 +171,7 @@ function Process-FileSecurely {
     )
     
     # Valider le fichier de manière sécurisée
+
     $isSecureFile = Test-FileSecurely -FilePath $InputFile -Format $InputFormat -CheckForExecutableContent
     
     if (-not $isSecureFile) {
@@ -172,15 +180,16 @@ function Process-FileSecurely {
     }
     
     # Convertir le fichier
+
     $result = Convert-FileFormat -InputFile $InputFile -OutputFile $OutputFile -InputFormat $InputFormat -OutputFormat $OutputFormat
     
     return $result
 }
 
 # Utiliser la fonction
-$result = Process-FileSecurely -InputFile "C:\temp\data.csv" -OutputFile "C:\temp\data.json" -InputFormat "CSV" -OutputFormat "JSON"
-```
 
+$result = Process-FileSecurely -InputFile "C:\temp\data.csv" -OutputFile "C:\temp\data.json" -InputFormat "CSV" -OutputFormat "JSON"
+```plaintext
 ## Menaces courantes
 
 Le module de sécurité protège contre plusieurs types de menaces courantes :
@@ -232,13 +241,16 @@ Le module de sécurité peut être intégré avec d'autres modules pour sécuris
 
 ```powershell
 # Importer les modules
+
 . ".\modules\FileSecurityUtils.ps1"
 . ".\modules\UnifiedSegmenter.ps1"
 
 # Initialiser le segmenteur unifié
+
 Initialize-UnifiedSegmenter | Out-Null
 
 # Fonction pour convertir un fichier de manière sécurisée
+
 function Convert-FileSecurely {
     param (
         [Parameter(Mandatory = $true)]
@@ -255,6 +267,7 @@ function Convert-FileSecurely {
     )
     
     # Valider le fichier de manière sécurisée
+
     $isSecureFile = Test-FileSecurely -FilePath $InputFile -Format $InputFormat -CheckForExecutableContent
     
     if (-not $isSecureFile) {
@@ -263,23 +276,26 @@ function Convert-FileSecurely {
     }
     
     # Convertir le fichier
+
     $result = Convert-FileFormat -InputFile $InputFile -OutputFile $OutputFile -InputFormat $InputFormat -OutputFormat $OutputFormat
     
     return $result
 }
-```
-
+```plaintext
 ### Intégration avec FileProcessingFacade
 
 ```powershell
 # Importer les modules
+
 . ".\modules\FileSecurityUtils.ps1"
 . ".\modules\FileProcessingFacade.ps1"
 
 # Initialiser la façade
+
 Initialize-FileProcessingFacade | Out-Null
 
 # Fonction pour traiter un fichier de manière sécurisée
+
 function Get-SecureFileInfo {
     param (
         [Parameter(Mandatory = $true)]
@@ -293,6 +309,7 @@ function Get-SecureFileInfo {
     )
     
     # Valider le fichier de manière sécurisée
+
     $isSecureFile = Test-FileSecurely -FilePath $FilePath -CheckForExecutableContent:$CheckForExecutableContent
     
     if (-not $isSecureFile) {
@@ -301,24 +318,27 @@ function Get-SecureFileInfo {
     }
     
     # Obtenir les informations sur le fichier
+
     $fileInfo = Get-FileInfo -FilePath $FilePath -IncludeAnalysis:$IncludeAnalysis
     
     return $fileInfo
 }
-```
-
+```plaintext
 ### Intégration avec ParallelProcessing
 
 ```powershell
 # Importer les modules
+
 . ".\modules\FileSecurityUtils.ps1"
 . ".\modules\ParallelProcessing.ps1"
 . ".\modules\UnifiedSegmenter.ps1"
 
 # Initialiser le segmenteur unifié
+
 Initialize-UnifiedSegmenter | Out-Null
 
 # Fonction pour convertir des fichiers en parallèle de manière sécurisée
+
 function Convert-FilesSecurelyInParallel {
     param (
         [Parameter(Mandatory = $true)]
@@ -341,6 +361,7 @@ function Convert-FilesSecurelyInParallel {
     )
     
     # Valider les fichiers de manière sécurisée
+
     $secureFiles = @()
     foreach ($file in $InputFiles) {
         $isSecureFile = Test-FileSecurely -FilePath $file -Format $InputFormat -CheckForExecutableContent:$CheckForExecutableContent
@@ -358,8 +379,9 @@ function Convert-FilesSecurelyInParallel {
     }
     
     # Convertir les fichiers en parallèle
+
     $results = Convert-FilesInParallel -InputFiles $secureFiles -OutputDir $OutputDir -InputFormat $InputFormat -OutputFormat $OutputFormat -ThrottleLimit $ThrottleLimit
     
     return $results
 }
-```
+```plaintext

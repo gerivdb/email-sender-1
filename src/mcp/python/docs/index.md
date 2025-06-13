@@ -39,7 +39,7 @@ Welcome to the PyMCPfy documentation! PyMCPfy is a Python library that enables d
 
 PyMCPfy is built with a modular architecture:
 
-```
+```plaintext
 ┌─────────────────┐
 │    Your API     │
 └────────┬────────┘
@@ -56,8 +56,7 @@ PyMCPfy is built with a modular architecture:
 ┌────────┴────────┐
 │  MCP Protocol   │
 └─────────────────┘
-```
-
+```plaintext
 - **Your API**: Your existing web API endpoints
 - **Framework Integration**: Framework-specific adapters (Django, Flask, FastAPI)
 - **PyMCPfy Core**: Core protocol implementation and schema generation

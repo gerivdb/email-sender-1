@@ -30,10 +30,9 @@ Chaque critère est évalué sur une échelle de 1 à 10, où 10 représente l'i
 
 Le score de priorité est calculé selon la formule suivante :
 
-```
+```plaintext
 Score = (Impact * 0.4) + ((10 - Effort) * 0.2) + (Dépendances * 0.2) + (Urgence * 0.2)
-```
-
+```plaintext
 Cette formule donne un score entre 0 et 10, où un score plus élevé indique une priorité plus élevée.
 
 ### Outils de priorisation

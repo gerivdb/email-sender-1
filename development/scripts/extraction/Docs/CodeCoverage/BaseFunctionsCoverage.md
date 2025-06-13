@@ -25,6 +25,7 @@ Cette fonction crée une nouvelle information extraite de base avec les proprié
 **Couverture des branches :** 100% (4/4)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Génération d'un identifiant unique
 - Initialisation des métadonnées
@@ -33,12 +34,14 @@ Cette fonction crée une nouvelle information extraite de base avec les proprié
 - Retour de l'objet créé
 
 #### Branches couvertes :
+
 - Vérification de la présence de la source
 - Vérification de la présence du nom de l'extracteur
 - Vérification de la validité du score de confiance
 - Vérification de la validité de l'état de traitement
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests couvrant tous les cas d'utilisation possibles
 - Tests avec différentes combinaisons de paramètres
@@ -51,6 +54,7 @@ Cette fonction crée une nouvelle information extraite de type texte.
 **Couverture des branches :** 100% (2/2)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Création d'une information extraite de base
 - Ajout des propriétés spécifiques au texte (Text, Language)
@@ -58,10 +62,12 @@ Cette fonction crée une nouvelle information extraite de type texte.
 - Retour de l'objet créé
 
 #### Branches couvertes :
+
 - Vérification de la présence du texte
 - Vérification de la validité de la langue
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests avec différentes langues et formats de texte
 - Tests de validation des paramètres
@@ -74,6 +80,7 @@ Cette fonction crée une nouvelle information extraite de type données structur
 **Couverture des branches :** 100% (2/2)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Création d'une information extraite de base
 - Ajout des propriétés spécifiques aux données structurées (Data, DataFormat)
@@ -81,10 +88,12 @@ Cette fonction crée une nouvelle information extraite de type données structur
 - Retour de l'objet créé
 
 #### Branches couvertes :
+
 - Vérification de la présence des données
 - Vérification de la validité du format de données
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests avec différents formats de données (JSON, XML, CSV, etc.)
 - Tests avec des structures de données complexes
@@ -97,6 +106,7 @@ Cette fonction crée une nouvelle information extraite de type média.
 **Couverture des branches :** 100% (2/2)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Création d'une information extraite de base
 - Ajout des propriétés spécifiques aux médias (MediaPath, MediaType, MediaSize)
@@ -104,10 +114,12 @@ Cette fonction crée une nouvelle information extraite de type média.
 - Retour de l'objet créé
 
 #### Branches couvertes :
+
 - Vérification de la présence du chemin du média
 - Vérification de la validité du type de média
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests avec différents types de médias (image, audio, vidéo)
 - Tests avec différentes tailles de médias
@@ -120,6 +132,7 @@ Cette fonction crée une copie d'une information extraite existante.
 **Couverture des branches :** 100% (3/3)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification de l'objet source
 - Création d'un nouvel objet avec les mêmes propriétés
@@ -128,11 +141,13 @@ Cette fonction crée une copie d'une information extraite existante.
 - Retour de l'objet copié
 
 #### Branches couvertes :
+
 - Vérification de la présence de l'objet source
 - Vérification du type d'information
 - Gestion des métadonnées nulles
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests de copie pour tous les types d'informations
 - Tests de préservation des métadonnées

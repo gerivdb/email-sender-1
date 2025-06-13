@@ -26,64 +26,67 @@ Le module implémente les fonctionnalités suivantes :
 
 ```powershell
 Import-Module -Path "chemin\vers\WorkflowAnalyzer.psm1" -Force
-```
-
+```plaintext
 ## Utilisation
 
 ### Analyser un workflow n8n
 
 ```powershell
 # Analyser un workflow n8n
-.\Analyze-N8nWorkflow.ps1 -WorkflowPath "chemin\vers\workflow.json" -OutputFolder "chemin\vers\rapports"
-```
 
+.\Analyze-N8nWorkflow.ps1 -WorkflowPath "chemin\vers\workflow.json" -OutputFolder "chemin\vers\rapports"
+```plaintext
 ### Détecter les activités de workflow
 
 ```powershell
 # Charger le workflow
+
 $workflow = Get-N8nWorkflow -WorkflowPath "chemin\vers\workflow.json"
 
 # Détecter les activités
-$activities = Get-N8nWorkflowActivities -Workflow $workflow -IncludeDetails
-```
 
+$activities = Get-N8nWorkflowActivities -Workflow $workflow -IncludeDetails
+```plaintext
 ### Extraire les transitions de workflow
 
 ```powershell
 # Charger le workflow
+
 $workflow = Get-N8nWorkflow -WorkflowPath "chemin\vers\workflow.json"
 
 # Extraire les transitions
-$transitions = Get-N8nWorkflowTransitions -Workflow $workflow
-```
 
+$transitions = Get-N8nWorkflowTransitions -Workflow $workflow
+```plaintext
 ### Analyser les conditions de workflow
 
 ```powershell
 # Charger le workflow
+
 $workflow = Get-N8nWorkflow -WorkflowPath "chemin\vers\workflow.json"
 
 # Analyser les conditions
-$conditions = Get-N8nWorkflowConditions -Workflow $workflow -IncludeTransitions
-```
 
+$conditions = Get-N8nWorkflowConditions -Workflow $workflow -IncludeTransitions
+```plaintext
 ### Détecter les blocs try/catch/finally
 
 ```powershell
 # Charger le workflow
+
 $workflow = Get-N8nWorkflow -WorkflowPath "chemin\vers\workflow.json"
 
 # Détecter les blocs try/catch/finally
-$tryCatchBlocks = Get-N8nWorkflowTryCatchBlocks -Workflow $workflow
-```
 
+$tryCatchBlocks = Get-N8nWorkflowTryCatchBlocks -Workflow $workflow
+```plaintext
 ### Générer un rapport d'analyse
 
 ```powershell
 # Générer un rapport d'analyse
-$report = Get-N8nWorkflowAnalysisReport -WorkflowPath "chemin\vers\workflow.json" -OutputPath "chemin\vers\rapport.md" -Format "Markdown"
-```
 
+$report = Get-N8nWorkflowAnalysisReport -WorkflowPath "chemin\vers\workflow.json" -OutputPath "chemin\vers\rapport.md" -Format "Markdown"
+```plaintext
 ## Formats de sortie
 
 Le module prend en charge plusieurs formats de sortie :
@@ -99,28 +102,24 @@ Le module prend en charge plusieurs formats de sortie :
 
 ```powershell
 .\Analyze-N8nWorkflow.ps1 -WorkflowPath "chemin\vers\workflow.json" -OutputFolder "chemin\vers\rapports" -Format "Markdown"
-```
-
+```plaintext
 ### Exemple 2 : Analyser uniquement les activités et les transitions
 
 ```powershell
 .\Analyze-N8nWorkflow.ps1 -WorkflowPath "chemin\vers\workflow.json" -ActivitiesOnly -TransitionsOnly -Format "JSON"
-```
-
+```plaintext
 ### Exemple 3 : Utiliser le script de démonstration
 
 ```powershell
 .\Demo-WorkflowAnalysis.ps1 -WorkflowPath "chemin\vers\workflow.json" -OutputFolder "chemin\vers\rapports"
-```
-
+```plaintext
 ## Tests
 
 Pour tester le module, exécutez le script de test :
 
 ```powershell
 .\Test-WorkflowAnalyzer.ps1 -WorkflowPath "chemin\vers\workflow.json" -OutputFolder "chemin\vers\tests"
-```
-
+```plaintext
 ## Fonctions du module
 
 ### Get-N8nWorkflow
@@ -129,48 +128,42 @@ Charge un workflow n8n depuis un fichier JSON.
 
 ```powershell
 Get-N8nWorkflow -WorkflowPath "chemin\vers\workflow.json"
-```
-
+```plaintext
 ### Get-N8nWorkflowActivities
 
 Détecte les activités d'un workflow n8n.
 
 ```powershell
 Get-N8nWorkflowActivities -Workflow $workflow -IncludeDetails
-```
-
+```plaintext
 ### Get-N8nWorkflowTransitions
 
 Extrait les transitions d'un workflow n8n.
 
 ```powershell
 Get-N8nWorkflowTransitions -Workflow $workflow -IncludeNodeDetails
-```
-
+```plaintext
 ### Get-N8nWorkflowConditions
 
 Analyse les conditions d'un workflow n8n.
 
 ```powershell
 Get-N8nWorkflowConditions -Workflow $workflow -IncludeTransitions
-```
-
+```plaintext
 ### Get-N8nWorkflowAnalysisReport
 
 Génère un rapport d'analyse d'un workflow n8n.
 
 ```powershell
 Get-N8nWorkflowAnalysisReport -WorkflowPath "chemin\vers\workflow.json" -OutputPath "chemin\vers\rapport.md" -Format "Markdown"
-```
-
+```plaintext
 ### Get-N8nWorkflowTryCatchBlocks
 
 Détecte et analyse les blocs try/catch/finally dans les nœuds de fonction d'un workflow n8n.
 
 ```powershell
 Get-N8nWorkflowTryCatchBlocks -Workflow $workflow
-```
-
+```plaintext
 ## Catégories de nœuds
 
 Le module catégorise les nœuds en plusieurs catégories :

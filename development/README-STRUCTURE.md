@@ -62,6 +62,7 @@ Le dossier `development/scripts` contient tous les scripts utilisés pour le dé
 - **python/** - Scripts Python
 - **reporting/** - Scripts de reporting
 # Ces dossiers ont été déplacés vers development/roadmap/scripts et development/roadmap/parser
+
 - **setup/** - Scripts d'installation
 - **templates/** - Scripts de templates
 - **testing/** - Scripts de test

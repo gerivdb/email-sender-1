@@ -11,6 +11,7 @@
 This report provides a comprehensive adaptation strategy for migrating the TaskMaster-Ink-CLI architecture (React Ink + TypeScript) to a native Go CLI roadmap management system, fully integrated with the existing EMAIL_SENDER_1 ecosystem (RAG + QDrant + SQLite + n8n workflows).
 
 ### Key Deliverables
+
 - ✅ **Architecture Mapping**: TaskMaster patterns → Go CLI patterns
 - ✅ **TUI Framework**: bubbletea + lipgloss implementation strategy
 - ✅ **RAG Integration**: Intelligent roadmap recommendations and insights  
@@ -18,6 +19,7 @@ This report provides a comprehensive adaptation strategy for migrating the TaskM
 - ✅ **Implementation Roadmap**: Detailed development plan with timelines
 
 ### Strategic Impact
+
 - 🚀 **Performance**: 10x+ improvement through native Go implementation
 - 🔧 **Integration**: Deep RAG-powered roadmap intelligence
 - 📈 **Maintainability**: Unified codebase with existing EMAIL_SENDER_1 Go ecosystem
@@ -33,72 +35,126 @@ This report provides a comprehensive adaptation strategy for migrating the TaskM
 // TaskMaster Component Architecture
 src/
 ├── app.tsx                    # Main React Ink app
-├── components/                # Reusable UI components
-│   ├── TaskList.tsx          # Task display with navigation
-│   ├── Header.tsx            # Status and title bar
-│   ├── Controls.tsx          # Keyboard shortcuts display
-│   └── modes/                # Mode-specific components
-│       ├── AddTaskMode.tsx   # Task creation
-│       ├── EditTaskMode.tsx  # Task editing
-│       └── PriorityMode.tsx  # Priority management
-├── hooks/                    # React hooks for logic
-│   ├── useKeyboard.ts        # Keyboard navigation
-│   ├── useTaskStore.ts       # Zustand state management
-│   └── usePersistence.ts     # File-based storage
-└── stores/                   # Zustand state stores
-    ├── taskStore.ts          # Task management
-    ├── uiStore.ts           # UI state
-    └── settingsStore.ts     # App settings
-```
 
+├── components/                # Reusable UI components
+
+│   ├── TaskList.tsx          # Task display with navigation
+
+│   ├── Header.tsx            # Status and title bar
+
+│   ├── Controls.tsx          # Keyboard shortcuts display
+
+│   └── modes/                # Mode-specific components
+
+│       ├── AddTaskMode.tsx   # Task creation
+
+│       ├── EditTaskMode.tsx  # Task editing
+
+│       └── PriorityMode.tsx  # Priority management
+
+├── hooks/                    # React hooks for logic
+
+│   ├── useKeyboard.ts        # Keyboard navigation
+
+│   ├── useTaskStore.ts       # Zustand state management
+
+│   └── usePersistence.ts     # File-based storage
+
+└── stores/                   # Zustand state stores
+
+    ├── taskStore.ts          # Task management
+
+    ├── uiStore.ts           # UI state
+
+    └── settingsStore.ts     # App settings
+
+```plaintext
 ### Target Architecture: Go Native CLI Roadmap
 
 ```go
 // Go CLI Roadmap Architecture (EMAIL_SENDER_1 Integrated)
 cmd/roadmap-cli/
 ├── main.go                           # Cobra CLI entry point
+
 ├── commands/                         # CLI commands
+
 │   ├── create.go                    # Create roadmap/items
+
 │   ├── view.go                      # Interactive TUI viewer
+
 │   ├── export.go                    # Export/import roadmaps
+
 │   ├── sync.go                      # Sync with RAG + n8n
+
 │   └── ai.go                        # RAG-powered insights
+
 └── tui/                             # bubbletea TUI implementation
+
     ├── models/                      # bubbletea models
+
     │   ├── roadmap.go              # Main roadmap model
+
     │   ├── timeline.go             # Timeline view model
+
     │   ├── kanban.go               # Kanban view model
+
     │   └── details.go              # Detail panel model
+
     ├── views/                       # TUI view components
+
     │   ├── list.go                 # List view renderer
+
     │   ├── timeline.go             # Timeline visualization
+
     │   ├── gantt.go                # ASCII Gantt charts
+
     │   └── dependencies.go         # Dependency graph view
+
     └── components/                  # Reusable TUI components
+
         ├── progress.go             # Progress bars
+
         ├── status.go               # Status indicators
+
         ├── navigation.go           # Navigation helpers
+
         └── keyboard.go             # Keyboard handling
 
 internal/roadmap/                     # Core roadmap engine
-├── models/                          # Data models
-│   ├── roadmap.go                  # RoadmapItem, Milestone, Epic
-│   ├── dependency.go               # Dependency management
-│   └── team.go                     # Team and assignment models
-├── storage/                         # Persistence layer
-│   ├── sqlite.go                   # SQLite integration
-│   ├── qdrant.go                   # Vector storage for RAG
-│   └── cache.go                    # TTL caching layer
-├── rag/                            # RAG-powered intelligence
-│   ├── analyzer.go                 # Roadmap analysis
-│   ├── recommendations.go          # AI suggestions
-│   └── insights.go                 # Progress insights
-└── sync/                           # External integrations
-    ├── n8n.go                      # n8n workflow integration
-    ├── notion.go                   # Notion sync (EMAIL_SENDER_1)
-    └── gmail.go                    # Email notifications
-```
 
+├── models/                          # Data models
+
+│   ├── roadmap.go                  # RoadmapItem, Milestone, Epic
+
+│   ├── dependency.go               # Dependency management
+
+│   └── team.go                     # Team and assignment models
+
+├── storage/                         # Persistence layer
+
+│   ├── sqlite.go                   # SQLite integration
+
+│   ├── qdrant.go                   # Vector storage for RAG
+
+│   └── cache.go                    # TTL caching layer
+
+├── rag/                            # RAG-powered intelligence
+
+│   ├── analyzer.go                 # Roadmap analysis
+
+│   ├── recommendations.go          # AI suggestions
+
+│   └── insights.go                 # Progress insights
+
+└── sync/                           # External integrations
+
+    ├── n8n.go                      # n8n workflow integration
+
+    ├── notion.go                   # Notion sync (EMAIL_SENDER_1)
+
+    └── gmail.go                    # Email notifications
+
+```plaintext
 ---
 
 ## 🔀 Component Adaptation Strategy
@@ -124,8 +180,7 @@ export const useTaskStore = create<TaskState>()(
     { name: 'task-storage' }
   )
 );
-```
-
+```plaintext
 **Go Native Pattern:**
 ```go
 // Go equivalent with bubbletea + SQLite persistence
@@ -175,8 +230,7 @@ func (m RoadmapModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
     }
     return m, nil
 }
-```
-
+```plaintext
 ### 2. UI Components: React Ink → bubbletea + lipgloss
 
 **TaskMaster Pattern (React Ink):**
@@ -199,8 +253,7 @@ export const TaskList: React.FC = () => {
     </Box>
   );
 };
-```
-
+```plaintext
 **Go Native Pattern (bubbletea + lipgloss):**
 ```go
 // lipgloss styles replacing React Ink styling
@@ -260,8 +313,7 @@ func renderProgressBar(progress int) string {
     return filledStyle.Render(strings.Repeat("█", filled)) +
            emptyStyle.Render(strings.Repeat("░", empty))
 }
-```
-
+```plaintext
 ### 3. Navigation & Keyboard: Custom Hooks → bubbletea Msg Handling
 
 **TaskMaster Pattern:**
@@ -277,8 +329,7 @@ export const useKeyboard = () => {
     if (input === 'a') enterAddMode();
   });
 };
-```
-
+```plaintext
 **Go Native Pattern:**
 ```go
 // bubbletea message-based keyboard handling
@@ -322,8 +373,7 @@ func (m RoadmapModel) fetchRAGRecommendations() tea.Cmd {
         return RAGRecommendationMsg{recs}
     })
 }
-```
-
+```plaintext
 ---
 
 ## 🧠 RAG Intelligence Integration
@@ -384,8 +434,7 @@ type AIRecommendation struct {
     Confidence  float64           `json:"confidence"`
     ActionItems []string          `json:"action_items"`
 }
-```
-
+```plaintext
 ### Smart TUI with RAG Insights
 
 ```go
@@ -435,8 +484,7 @@ func (m RoadmapModel) renderRecommendations() string {
     
     return title + "\n" + strings.Join(recs, "\n")
 }
-```
-
+```plaintext
 ---
 
 ## 🔧 EMAIL_SENDER_1 Ecosystem Integration
@@ -488,8 +536,7 @@ func NewRoadmapService(config *Config) (*RoadmapService, error) {
         timeline:     NewTimelineRenderer(),
     }, nil
 }
-```
-
+```plaintext
 ### n8n Workflow Integration
 
 ```go
@@ -531,8 +578,7 @@ func (n *N8NWorkflowSync) getWorkflowForItem(item *RoadmapItem) string {
         return n.workflows["generic"]
     }
 }
-```
-
+```plaintext
 ---
 
 ## 🎨 TUI Design Patterns
@@ -622,8 +668,7 @@ func (m RoadmapModel) renderTimelineBar(item RoadmapItem) string {
     
     return style.Render(bar)
 }
-```
-
+```plaintext
 ### Kanban Board View
 
 ```go
@@ -695,8 +740,7 @@ func (m RoadmapModel) renderKanbanCard(item RoadmapItem, width int) string {
         Padding(1).
         Render(cardContent)
 }
-```
-
+```plaintext
 ---
 
 ## 📊 Advanced Features Implementation
@@ -769,8 +813,7 @@ func (m RoadmapModel) renderDependencyLine(item RoadmapItem, deps []string) stri
     depList := strings.Join(deps, ", ")
     return fmt.Sprintf("%s %s ← depends on: %s", icon, title, depList)
 }
-```
-
+```plaintext
 ### Gantt Chart ASCII Rendering
 
 ```go
@@ -850,8 +893,7 @@ func (m RoadmapModel) buildTimeScale(timeRange TimeRange) string {
     
     return scale.String()
 }
-```
-
+```plaintext
 ---
 
 ## 🚀 Implementation Roadmap
@@ -866,17 +908,23 @@ func (m RoadmapModel) buildTimeScale(timeRange TimeRange) string {
 
 ```bash
 # Sprint 1.1 deliverables
+
 ./cmd/roadmap-cli/
 ├── main.go              # Cobra root command
+
 ├── commands/
 │   ├── create.go        # roadmap create [name]
+
 │   ├── list.go          # roadmap list
+
 │   └── item.go          # roadmap item add/edit/delete
+
 └── internal/roadmap/
     ├── models.go        # RoadmapItem struct
-    └── storage.go       # SQLite persistence
-```
 
+    └── storage.go       # SQLite persistence
+
+```plaintext
 **Sprint 1.2: bubbletea TUI Foundation**
 - [ ] Setup bubbletea + lipgloss dependencies
 - [ ] Implement basic list view with navigation
@@ -888,14 +936,18 @@ func (m RoadmapModel) buildTimeScale(timeRange TimeRange) string {
 ./tui/
 ├── models/
 │   ├── roadmap.go      # Main TUI model
+
 │   └── list.go         # List view model
+
 ├── components/
 │   ├── progress.go     # Progress bars
+
 │   └── keyboard.go     # Input handling
+
 └── styles/
     └── theme.go        # lipgloss theme
-```
 
+```plaintext
 ### Phase 2: RAG Integration (Week 3-4)
 
 **Sprint 2.1: RAG Engine Integration**
@@ -914,11 +966,14 @@ func (m RoadmapModel) buildTimeScale(timeRange TimeRange) string {
 // Sprint 2.2 RAG integration
 ./internal/roadmap/rag/
 ├── analyzer.go         # Roadmap analysis engine
-├── recommendations.go  # AI suggestions
-├── insights.go         # Progress insights
-└── vectorstore.go      # QDrant integration
-```
 
+├── recommendations.go  # AI suggestions
+
+├── insights.go         # Progress insights
+
+└── vectorstore.go      # QDrant integration
+
+```plaintext
 ### Phase 3: Advanced Visualizations (Week 5-6)
 
 **Sprint 3.1: Multiple View Modes**
@@ -995,24 +1050,28 @@ require (
     go.uber.org/zap v1.25.0        // Existing logger
     github.com/prometheus/client_golang v1.16.0  // Existing metrics
 )
-```
-
+```plaintext
 ### Configuration Integration
 
 ```yaml
 # config.yaml - Extends EMAIL_SENDER_1 configuration
+
 roadmap:
   storage:
     database_path: "./data/email_sender.db"  # Reuse existing SQLite
+
     table_prefix: "roadmap_"
   
   rag:
     qdrant_url: "http://localhost:6333"      # Existing QDrant instance
+
     collection_name: "roadmap_items"
     embedding_model: "all-MiniLM-L6-v2"     # Same as EMAIL_SENDER_1
+
   
   n8n:
     base_url: "http://localhost:5678"        # Existing n8n instance
+
     workflows:
       roadmap_created: "workflow-id-1"
       milestone_reached: "workflow-id-2"
@@ -1020,11 +1079,12 @@ roadmap:
   
   ui:
     theme: "dark"                            # dark/light/auto
+
     default_view: "list"                     # list/timeline/kanban
+
     auto_save: true
     refresh_interval: "30s"
-```
-
+```plaintext
 ### Database Schema Extension
 
 ```sql
@@ -1074,8 +1134,7 @@ CREATE INDEX IF NOT EXISTS idx_roadmap_items_status ON roadmap_items(status);
 CREATE INDEX IF NOT EXISTS idx_roadmap_items_target_date ON roadmap_items(target_date);
 CREATE INDEX IF NOT EXISTS idx_roadmap_dependencies_item_id ON roadmap_dependencies(item_id);
 CREATE INDEX IF NOT EXISTS idx_roadmap_assignments_item_id ON roadmap_assignments(item_id);
-```
-
+```plaintext
 ---
 
 ## 🎯 Success Metrics & KPIs
@@ -1204,27 +1263,40 @@ CREATE INDEX IF NOT EXISTS idx_roadmap_assignments_item_id ON roadmap_assignment
 
 ### Code Repository Structure
 
-```
+```plaintext
 EMAIL_SENDER_1/
 ├── cmd/
 │   ├── cli/main.go                    # Existing RAG CLI
+
 │   ├── server/main.go                 # Existing HTTP server
+
 │   └── roadmap-cli/                   # NEW: Roadmap CLI
+
 │       ├── main.go                    # Entry point
+
 │       ├── commands/                  # Cobra commands
+
 │       └── tui/                       # bubbletea implementation
+
 ├── internal/
 │   ├── rag/                          # Existing RAG engine
+
 │   ├── storage/                      # Existing SQLite manager
+
 │   └── roadmap/                      # NEW: Roadmap core
+
 │       ├── models/                   # Data models
+
 │       ├── storage/                  # Roadmap storage layer
+
 │       ├── rag/                      # RAG integration
+
 │       └── sync/                     # n8n integration
+
 └── .github/docs/reports/
     └── taskmaster-to-go-roadmap-cli-adaptation-2025-01-08.md  # This report
-```
 
+```plaintext
 ### Additional Resources
 
 - **bubbletea Documentation**: https://github.com/charmbracelet/bubbletea

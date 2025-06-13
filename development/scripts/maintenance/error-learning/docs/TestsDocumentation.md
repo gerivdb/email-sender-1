@@ -39,19 +39,21 @@ Le problÃ¨me principal Ã©tait que plusieurs tests essayaient d'accÃ©der au
 
 ```powershell
 # DÃ©finir des chemins uniques pour ce test
+
 $testDbPath = Join-Path -Path $script:testRoot -ChildPath "test1-database.json"
 $testLogsPath = Join-Path -Path $script:testRoot -ChildPath "test1-logs"
 $testPatternsPath = Join-Path -Path $script:testRoot -ChildPath "test1-patterns"
 
 # DÃ©finir les variables globales du module pour ce test
+
 Set-Variable -Name ErrorDatabasePath -Value $testDbPath -Scope Script
 Set-Variable -Name ErrorLogsPath -Value $testLogsPath -Scope Script
 Set-Variable -Name ErrorPatternsPath -Value $testPatternsPath -Scope Script
 
 # Initialiser le systÃ¨me pour ce test
-Initialize-ErrorLearningSystem -Force
-```
 
+Initialize-ErrorLearningSystem -Force
+```plaintext
 ### 2.2. AmÃ©lioration de la gestion des erreurs dans le module principal
 
 Nous avons amÃ©liorÃ© la gestion des erreurs dans le module principal `ErrorLearningSystem.psm1` :
@@ -86,40 +88,35 @@ Pour exÃ©cuter un test individuel, utilisez la commande suivante :
 
 ```powershell
 Invoke-Pester -Path ".\development\testing\tests\NomDuTest.ps1" -Output Detailed
-```
-
+```plaintext
 ### 3.2. ExÃ©cution des tests d'intÃ©gration simplifiÃ©s
 
 Pour exÃ©cuter les tests d'intÃ©gration simplifiÃ©s, utilisez le script `Run-SimplifiedIntegrationTests.ps1` :
 
 ```powershell
 .\Run-SimplifiedIntegrationTests.ps1
-```
-
+```plaintext
 ### 3.3. ExÃ©cution des tests des scripts d'analyse et de correction
 
 Pour exÃ©cuter les tests des scripts d'analyse et de correction, utilisez le script `Run-ScriptAnalysisTests.ps1` :
 
 ```powershell
 .\Run-ScriptAnalysisTests.ps1
-```
-
+```plaintext
 ### 3.4. ExÃ©cution des tests des scripts d'apprentissage adaptatif et de validation des corrections
 
 Pour exÃ©cuter les tests des scripts d'apprentissage adaptatif et de validation des corrections, utilisez le script `Run-AdaptiveCorrectionTests.ps1` :
 
 ```powershell
 .\Run-AdaptiveCorrectionTests.ps1
-```
-
+```plaintext
 ### 3.5. ExÃ©cution de tous les tests qui fonctionnent
 
 Pour exÃ©cuter tous les tests qui fonctionnent correctement, utilisez le script `Run-AllWorkingTests.ps1` :
 
 ```powershell
 .\Run-AllWorkingTests.ps1
-```
-
+```plaintext
 ## 4. Bonnes pratiques pour les tests
 
 ### 4.1. Utilisation de chemins de fichiers uniques
@@ -129,8 +126,7 @@ Pour Ã©viter les problÃ¨mes d'accÃ¨s aux fichiers, utilisez des chemins de
 ```powershell
 $testId = [guid]::NewGuid().ToString().Substring(0, 8)
 $testRoot = Join-Path -Path $env:TEMP -ChildPath "TestDirectory_$testId"
-```
-
+```plaintext
 ### 4.2. Nettoyage aprÃ¨s les tests
 
 Assurez-vous de nettoyer les fichiers temporaires aprÃ¨s les tests :
@@ -138,15 +134,16 @@ Assurez-vous de nettoyer les fichiers temporaires aprÃ¨s les tests :
 ```powershell
 AfterAll {
     # Nettoyer
+
     Remove-Module -Name ErrorLearningSystem -Force -ErrorAction SilentlyContinue
     
     # Supprimer le rÃ©pertoire de test
+
     if (Test-Path -Path $script:testRoot) {
         Remove-Item -Path $script:testRoot -Recurse -Force -ErrorAction SilentlyContinue
     }
 }
-```
-
+```plaintext
 ### 4.3. Gestion des erreurs dans les tests
 
 Utilisez `try/catch` pour gÃ©rer les erreurs dans les tests :
@@ -154,13 +151,14 @@ Utilisez `try/catch` pour gÃ©rer les erreurs dans les tests :
 ```powershell
 try {
     # Code qui peut gÃ©nÃ©rer une erreur
+
 }
 catch {
     # GÃ©rer l'erreur
+
     Write-Warning "Erreur : $_"
 }
-```
-
+```plaintext
 ### 4.4. Utilisation de `-ErrorAction Stop`
 
 Utilisez `-ErrorAction Stop` pour que les erreurs soient capturÃ©es par `try/catch` :
@@ -171,9 +169,9 @@ try {
 }
 catch {
     # GÃ©rer l'erreur
-}
-```
 
+}
+```plaintext
 ## 5. Prochaines Ã©tapes
 
 ### 5.1. AmÃ©lioration de la couverture de code

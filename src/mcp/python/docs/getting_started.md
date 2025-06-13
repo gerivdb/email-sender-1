@@ -8,18 +8,21 @@ Install PyMCPfy with your preferred framework support:
 
 ```bash
 # For Django
+
 pip install "pymcpfy[django]"
 
 # For Flask
+
 pip install "pymcpfy[flask]"
 
 # For FastAPI
+
 pip install "pymcpfy[fastapi]"
 
 # For development (includes all frameworks and dev tools)
-pip install "pymcpfy[dev]"
-```
 
+pip install "pymcpfy[dev]"
+```plaintext
 ## Basic Configuration
 
 1. Create a `pymcpfy_config.yaml` file in your project root:
@@ -27,14 +30,14 @@ pip install "pymcpfy[dev]"
 ```yaml
 transport:
   type: websocket  # or 'http'
+
   host: localhost
   port: 8765
 backend_url: http://localhost:8000
 debug: true
 cors_origins:
   - http://localhost:3000
-```
-
+```plaintext
 2. Or use environment variables:
 
 ```bash
@@ -44,8 +47,7 @@ export PYMCPFY_PORT=8765
 export PYMCPFY_BACKEND_URL=http://localhost:8000
 export PYMCPFY_DEBUG=true
 export PYMCPFY_CORS_ORIGINS=http://localhost:3000
-```
-
+```plaintext
 ## Your First MCP API
 
 ### FastAPI Example
@@ -69,12 +71,12 @@ async def hello(name: str) -> dict:
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-```
-
+```plaintext
 ### Django Example
 
 ```python
 # views.py
+
 from django.http import JsonResponse
 from pymcpfy.django import mcpfy
 
@@ -84,14 +86,14 @@ def hello(request, name: str):
     return JsonResponse({"message": f"Hello, {name}!"})
 
 # urls.py
+
 from django.urls import path
 from . import views
 
 urlpatterns = [
     path('hello/<str:name>/', views.hello, name='hello'),
 ]
-```
-
+```plaintext
 ### Flask Example
 
 ```python
@@ -108,22 +110,19 @@ def hello(name: str):
 
 if __name__ == "__main__":
     app.run(debug=True)
-```
-
+```plaintext
 ## Running the MCP Server
 
 ### FastAPI/Flask
 
 ```bash
 python app.py --mcp
-```
-
+```plaintext
 ### Django
 
 ```bash
 python manage.py runmcp
-```
-
+```plaintext
 ## Verifying the Setup
 
 1. Your API will be available at its normal endpoint (e.g., `http://localhost:8000/hello/world`)
@@ -139,8 +138,8 @@ from mcp import MCPClient
 async with MCPClient("ws://localhost:8765") as client:
     result = await client.call_function("hello", {"name": "World"})
     print(result)  # {"message": "Hello, World!"}
-```
 
+```plaintext
 ## Next Steps
 
 - Learn about [Configuration Options](configuration.md)

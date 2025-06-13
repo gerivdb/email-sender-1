@@ -1,16 +1,23 @@
-﻿# Ã‰valuation de la DifficultÃ© d'ImplÃ©mentation des AmÃ©liorations
+# Ã‰valuation de la DifficultÃ© d'ImplÃ©mentation des AmÃ©liorations
 
 Ce document prÃ©sente l'Ã©valuation de la difficultÃ© d'implÃ©mentation des amÃ©liorations identifiÃ©es pour les diffÃ©rents gestionnaires.
 
 ## Table des MatiÃ¨res
 
 - [Process Manager](#process-manager)
+
 - [Mode Manager](#mode-manager)
+
 - [Roadmap Manager](#roadmap-manager)
+
 - [Integrated Manager](#integrated-manager)
+
 - [Script Manager](#script-manager)
+
 - [Error Manager](#error-manager)
+
 - [Configuration Manager](#configuration-manager)
+
 - [Logging Manager](#logging-manager)
 
 ## MÃ©thodologie

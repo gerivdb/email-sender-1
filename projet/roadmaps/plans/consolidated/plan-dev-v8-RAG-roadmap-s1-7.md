@@ -1,6 +1,7 @@
-﻿# Plan de développement v8 : Système de gestion modulaire des roadmaps avec RAG et classification automatique
+# Plan de développement v8 : Système de gestion modulaire des roadmaps avec RAG et classification automatique
 
 ## 0. Implémentation des scripts RAG pour les roadmaps (COMPLÉTÉ)
+
 - [x] **0.1** Développer les scripts de détection des changements
   - [x] **0.1.1** Créer le script principal de détection des changements
     - [x] **0.1.1.1** Implémenter `Detect-RoadmapChanges.ps1`
@@ -55,6 +56,7 @@
     - [x] **0.4.3.3** Ajouter les rapports d'utilisation et statistiques
 
 ## 1. Nettoyage et consolidation des plans (COMPLÉTÉ)
+
 - [x] **1.1** Analyser la structure actuelle des roadmaps et plans
   - [x] **1.1.1** Inventorier tous les fichiers de roadmap/plan existants
     - [x] **1.1.1.1** Parcourir le dossier `projet/roadmaps` et ses sous-dossiers
@@ -96,6 +98,7 @@
     - [x] **1.3.3.3** Vérifier la cohérence des métadonnées
 
 ## 2. Amélioration du système RAG pour les roadmaps (COMPLÉTÉ)
+
 - [x] **2.1** Optimiser la vectorisation des tâches de roadmap
   - [x] **2.1.1** Définir un schéma de données optimisé pour les tâches
     - [x] **2.1.1.1** Concevoir la structure des documents
@@ -171,6 +174,7 @@
     - [x] **2.1.2.3** Ajouter la gestion des métadonnées enrichies
       - [x] **2.1.2.3.1** Implémenter l'extraction des métadonnées inline
         - [x] **2.1.2.3.1.1** Développer la détection des tags (#priority:high)
+
         - [x] **2.1.2.3.1.2** Implémenter l'extraction des attributs entre parenthèses
         - [x] **2.1.2.3.1.3** Ajouter la reconnaissance des dates et durées
       - [x] **2.1.2.3.2** Développer l'extraction des blocs de métadonnées
@@ -600,6 +604,7 @@
                     - [x] **2.3.3.1.2.1.2.1.3.3.3.3** Fournir des exemples de requêtes complexes avec échappement
 
 ## 3. Implémentation de la classification automatique des tâches
+
 - [x] **3.1** Développer le système de classification automatique
   - [x] **3.1.1** Concevoir le modèle de classification
     - [x] **3.1.1.1** Définir la taxonomie des catégories de tâches
@@ -1503,6 +1508,7 @@
             - [x] **2.3.3.3.4.3.3.3** Ajouter les tableaux de bord analytiques
 
 ## 3. Visualisation graphique de la roadmap
+
 - [x] **3.1** Concevoir les visualisations graphiques
   - [x] **3.1.1** Définir les types de visualisations nécessaires
     - [x] **3.1.1.1** Diagramme hiérarchique (arborescence)
@@ -1834,6 +1840,7 @@
     - [x] **3.3.3.3** Synchroniser avec le système de cases à cocher
 
 ## 4. Compatibilité avec les modes existants (COMPLÉTÉ)
+
 - [x] **4.1** Adapter le mode dev-r au nouveau système
   - [x] **4.1.1** Analyser le fonctionnement actuel du mode dev-r
     - [x] **4.1.1.1** Documenter le workflow existant
@@ -1875,6 +1882,7 @@
     - [x] **4.3.3.3** Développer des tutoriels interactifs
 
 ## 5. Tests et déploiement (COMPLÉTÉ)
+
 - [x] **5.1** Développer une suite de tests complète
   - [x] **5.1.1** Créer les tests unitaires
     - [x] **5.1.1.1** Tests pour les parsers et extracteurs
@@ -1916,6 +1924,7 @@
     - [x] **5.3.3.3** Recueillir les retours et itérer
 
 ## 6. Amélioration continue et maintenance (COMPLÉTÉ)
+
 - [x] **6.1** Mettre en place un système de tests automatisés
   - [x] **6.1.1** Développer des scripts de test tout-en-un
     - [x] **6.1.1.1** Créer le script principal d'exécution des tests
@@ -1957,6 +1966,7 @@
     - [x] **6.3.3.3** Documenter les procédures d'urgence
 
 ## 7. Outils de test et validation (COMPLÉTÉ)
+
 - [x] **7.1** Développer des outils de test pour l'analyse de hiérarchie
   - [x] **7.1.1** Créer des scripts de test pour l'analyse d'indentation
     - [x] **7.1.1.1** Développer le script de test principal

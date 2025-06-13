@@ -43,14 +43,12 @@ Pour démarrer le serveur MCP PowerShell, exécutez le script `Start-MCPPowerShe
 
 ```powershell
 .\development\scripts\Start-MCPPowerShellServer.ps1
-```
-
+```plaintext
 Par défaut, le serveur écoute sur `localhost:8000`. Vous pouvez spécifier un port différent avec le paramètre `-Port` :
 
 ```powershell
 .\development\scripts\Start-MCPPowerShellServer.ps1 -Port 9000
-```
-
+```plaintext
 ### Utilisation avec Claude Desktop
 
 Pour utiliser le serveur MCP PowerShell avec Claude Desktop, vous devez ajouter la configuration suivante dans le fichier de configuration de Claude Desktop :
@@ -64,8 +62,7 @@ Pour utiliser le serveur MCP PowerShell avec Claude Desktop, vous devez ajouter 
     }
   }
 }
-```
-
+```plaintext
 Remplacez `chemin/vers/mcp_powershell_server.py` par le chemin absolu vers le script `mcp_powershell_server.py`.
 
 ### Exemple d'utilisation avec Python
@@ -76,17 +73,19 @@ Vous pouvez utiliser le client MCP Python pour interagir avec le serveur MCP Pow
 from mcp.client import Client
 
 # Créer un client MCP qui se connecte au serveur local
+
 client = Client("http://localhost:8000")
 
 # Exécuter une commande PowerShell
+
 result = client.run_powershell_command("Get-Date")
 print(f"Résultat: {result}")
 
 # Récupérer les informations système
+
 system_info = client.get_system_info()
 print(f"OS: {system_info.get('OsName', 'N/A')}")
-```
-
+```plaintext
 Un exemple complet est disponible dans le fichier `development/scripts/python/mcp_client_example.py`.
 
 ## Outils disponibles
@@ -105,8 +104,7 @@ Exécute une commande PowerShell et retourne le résultat.
 
 ```python
 result = client.run_powershell_command("Get-Process | Select-Object -First 5")
-```
-
+```plaintext
 ### get_system_info
 
 Récupère les informations système via PowerShell.
@@ -115,8 +113,7 @@ Récupère les informations système via PowerShell.
 
 ```python
 system_info = client.get_system_info()
-```
-
+```plaintext
 ### find_mcp_servers
 
 Détecte les serveurs MCP disponibles en utilisant le module MCPManager.
@@ -125,8 +122,7 @@ Détecte les serveurs MCP disponibles en utilisant le module MCPManager.
 
 ```python
 servers = client.find_mcp_servers()
-```
-
+```plaintext
 ### start_mcp_manager
 
 Démarre le gestionnaire de serveurs MCP ou un agent MCP.
@@ -140,8 +136,7 @@ Démarre le gestionnaire de serveurs MCP ou un agent MCP.
 
 ```python
 result = client.start_mcp_manager(agent=True, query="Trouve les meilleurs restaurants à Paris")
-```
-
+```plaintext
 ## Sécurité
 
 Le serveur MCP PowerShell exécute des commandes PowerShell, ce qui peut présenter des risques de sécurité. Assurez-vous de n'utiliser ce serveur que dans un environnement sécurisé et de limiter les commandes qui peuvent être exécutées.

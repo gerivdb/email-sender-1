@@ -3,18 +3,31 @@
 ## Table des matières
 
 1. [Workflow N8N "Email Sender 1" - Gestion Automatisée de Booking de Concerts](#section-1)
+
     1.1. [Vision Globale](#section-2)
+
         1.1.1. [. Gestion des Disponibilités](#section-3)
+
         1.1.2. [. Prospection et Campagne d'Emailing](#section-4)
+
         1.1.3. [. Suivi et Gestion des Réponses](#section-5)
+
         1.1.4. [. Phase de Négociation](#section-6)
+
         1.1.5. [. Confirmation et Planification (DEAL)](#section-7)
+
         1.1.6. [. Logistique Pré-Concert](#section-8)
+
         1.1.7. [. Rappels Concert](#section-9)
+
         1.1.8. [. Suivi Post-Concert](#section-10)
+
         1.1.9. [. Feedback et Analyse](#section-11)
+
     1.2. [Architecture Technique](#section-12)
+
     1.3. [Objectifs Futurs](#section-13)
+
     1.4. [Points d'Amélioration Potentiels](#section-14)
 
 ## 1. Workflow N8N "Email Sender 1" - Gestion Automatisée de Booking de Concerts <a name='section-1'></a>

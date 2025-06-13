@@ -12,28 +12,24 @@ Le mode complet exécute tous les tests unitaires réels pour chaque script. Ce 
 
 ```powershell
 .\development\tests\maintenance\Run-AllTests.ps1
-```
-
+```plaintext
 Pour générer un rapport de test et de couverture de code :
 
 ```powershell
 .\development\tests\maintenance\Run-AllTests.ps1 -GenerateReport
-```
-
+```plaintext
 ### 2. Mode simplifié
 
 Le mode simplifié exécute des tests simplifiés qui réussissent toujours. Ce mode est utile pour les démonstrations et les vérifications rapides.
 
 ```powershell
 .\development\tests\maintenance\Run-SimpleTests.ps1
-```
-
+```plaintext
 Pour générer un rapport de test simplifié :
 
 ```powershell
 .\development\tests\maintenance\Run-SimpleTests.ps1 -GenerateReport
-```
-
+```plaintext
 ## Structure des fichiers
 
 - `Split-Roadmap.Tests.ps1` : Tests pour le script de séparation de la roadmap
@@ -55,12 +51,14 @@ Pour générer un rapport de test simplifié :
 Les tests unitaires couvrent les aspects suivants du système de gestion de roadmap :
 
 ### Split-Roadmap.ps1
+
 - Validation des paramètres
 - Séparation de la roadmap en fichiers actif et complété
 - Archivage des sections complétées
 - Fonctions internes (Get-TaskStatus, Get-SectionLevel, etc.)
 
 ### Update-RoadmapStatus.ps1
+
 - Validation des paramètres
 - Mise à jour du statut des tâches
 - Archivage des tâches terminées
@@ -68,6 +66,7 @@ Les tests unitaires couvrent les aspects suivants du système de gestion de road
 - Fonctions internes (Get-TasksStatus, etc.)
 
 ### Navigate-Roadmap.ps1
+
 - Validation des paramètres
 - Navigation dans la roadmap active
 - Navigation dans la roadmap complétée
@@ -76,6 +75,7 @@ Les tests unitaires couvrent les aspects suivants du système de gestion de road
 - Fonctions internes (Get-SectionLevel, Get-SectionId, etc.)
 
 ### Manage-Roadmap.ps1
+
 - Action Split
 - Action Update
 - Action Navigate

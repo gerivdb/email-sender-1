@@ -16,7 +16,7 @@ Ce plan de développement propose d'intégrer les concepts du projet claude-task
 
 ### 2.1 Composants principaux
 
-```
+```plaintext
 ┌─────────────────────┐      ┌─────────────────────┐
 │                     │      │                     │
 │  Interface          │◄────►│  Serveur MCP        │
@@ -41,8 +41,7 @@ Ce plan de développement propose d'intégrer les concepts du projet claude-task
 │  Roadmaps           │      │  Visualisations     │
 │                     │      │                     │
 └─────────────────────┘      └─────────────────────┘
-```
-
+```plaintext
 ### 2.2 Structure des données
 
 #### 2.2.1 Format de tâche standardisé (JSON)
@@ -77,8 +76,7 @@ Ce plan de développement propose d'intégrer les concepts du projet claude-task
     }
   ]
 }
-```
-
+```plaintext
 #### 2.2.2 Format de roadmap standardisé
 
 ```json
@@ -114,8 +112,7 @@ Ce plan de développement propose d'intégrer les concepts du projet claude-task
     }
   }
 }
-```
-
+```plaintext
 ## 3. Plan d'implémentation
 
 ### 3.1 Phase 1: Standardisation du format (2 semaines)

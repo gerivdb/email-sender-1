@@ -18,8 +18,7 @@ require (
     github.com/gorilla/mux v1.8.0
     github.com/prometheus/client_golang v1.15.1
 )
-```
-
+```plaintext
 ### 2. Basic Integration
 
 ```go
@@ -48,8 +47,7 @@ func main() {
     
     fmt.Printf("Template: %+v\n", template)
 }
-```
-
+```plaintext
 ### 3. Advanced Configuration
 
 ```go
@@ -70,8 +68,7 @@ config := ttl.Config{
 }
 
 manager := ttl.NewTTLManagerWithConfig(config)
-```
-
+```plaintext
 ## 🏗️ Integration Examples
 
 ### Email Template Caching
@@ -101,8 +98,7 @@ func (s *EmailService) GetTemplate(id string) (*Template, error) {
     s.cacheManager.Set(cacheKey, template, ttl.Configuration)
     return &template, nil
 }
-```
-
+```plaintext
 ### User Session Caching
 
 ```go
@@ -127,8 +123,7 @@ func (s *EmailService) GetUserSession(userID string) (*Session, error) {
     s.cacheManager.Set(cacheKey, session, ttl.UserSessions)
     return &session, nil
 }
-```
-
+```plaintext
 ### ML Model Results Caching
 
 ```go
@@ -158,8 +153,7 @@ func (s *EmailService) GetSentimentAnalysis(text string) (*Sentiment, error) {
     s.cacheManager.Set(cacheKey, sentiment, ttl.MLModels)
     return &sentiment, nil
 }
-```
-
+```plaintext
 ## 🔧 Production Configuration
 
 ### Environment Variables
@@ -168,6 +162,7 @@ Create a `.env` file for production configuration:
 
 ```env
 # Redis Configuration
+
 REDIS_ADDR=redis-cluster:6379
 REDIS_PASSWORD=your_secure_password
 REDIS_DB=0
@@ -175,6 +170,7 @@ REDIS_MAX_RETRIES=3
 REDIS_POOL_SIZE=100
 
 # TTL Configuration
+
 TTL_DEFAULT_VALUES=1h
 TTL_STATISTICS=24h
 TTL_ML_MODELS=1h
@@ -182,17 +178,18 @@ TTL_CONFIGURATION=30m
 TTL_USER_SESSIONS=2h
 
 # Monitoring Configuration
+
 METRICS_COLLECTION_INTERVAL=10s
 OPTIMIZATION_INTERVAL=30m
 CACHE_MEMORY_LIMIT=1GB
 
 # Alert Configuration
+
 ALERT_HIT_RATE_THRESHOLD=0.80
 ALERT_MEMORY_THRESHOLD=800MB
 ALERT_LATENCY_THRESHOLD=5ms
 ALERT_EMAIL_WEBHOOK=https://your-webhook.com/alerts
-```
-
+```plaintext
 ### Docker Compose Configuration
 
 ```yaml
@@ -217,6 +214,7 @@ services:
     ports:
       - "8080:8080"
       - "9090:9090"  # Metrics port
+
     environment:
       - REDIS_ADDR=redis:6379
       - REDIS_PASSWORD=""
@@ -243,8 +241,7 @@ services:
 
 volumes:
   redis_data:
-```
-
+```plaintext
 ### Kubernetes Deployment
 
 ```yaml
@@ -318,8 +315,7 @@ spec:
     port: 9090
     targetPort: 9090
   type: LoadBalancer
-```
-
+```plaintext
 ## 📊 Monitoring Setup
 
 ### Prometheus Configuration
@@ -336,8 +332,7 @@ scrape_configs:
       - targets: ['email-sender:9090']
     metrics_path: '/metrics'
     scrape_interval: 10s
-```
-
+```plaintext
 ### Grafana Dashboard
 
 Import the provided Grafana dashboard for cache metrics visualization:
@@ -380,8 +375,7 @@ Import the provided Grafana dashboard for cache metrics visualization:
     ]
   }
 }
-```
-
+```plaintext
 ## 🧪 Testing Integration
 
 ### Unit Tests
@@ -415,23 +409,24 @@ func TestEmailServiceIntegration(t *testing.T) {
     metrics := service.GetCacheMetrics()
     assert.True(t, metrics.HitRate > 0)
 }
-```
-
+```plaintext
 ### Load Testing
 
 Use the provided load test script:
 
 ```bash
 # Install dependencies
+
 go get github.com/rakyll/hey
 
 # Run load test
+
 hey -n 10000 -c 100 -m GET http://localhost:8080/api/v1/templates/welcome
 
 # Monitor cache metrics during test
-curl http://localhost:8080/api/v1/cache/metrics
-```
 
+curl http://localhost:8080/api/v1/cache/metrics
+```plaintext
 ## 🚨 Troubleshooting
 
 ### Common Issues
@@ -439,27 +434,33 @@ curl http://localhost:8080/api/v1/cache/metrics
 1. **Redis Connection Errors**
    ```bash
    # Check Redis connectivity
+
    redis-cli -h localhost -p 6379 ping
    
    # Check Redis logs
+
    docker logs redis-container
    ```
 
 2. **High Memory Usage**
    ```bash
    # Check Redis memory usage
+
    redis-cli info memory
    
    # Analyze cache patterns
+
    ./cache-analyzer -redis-addr="localhost:6379" -analysis-type="memory"
    ```
 
 3. **Low Cache Hit Rates**
    ```bash
    # Get cache analysis
+
    curl http://localhost:8080/api/v1/cache/analysis
    
    # Get optimization recommendations
+
    curl http://localhost:8080/api/v1/cache/recommendations
    ```
 
@@ -474,8 +475,7 @@ analyzer.SetDebugMode(true)
 
 // Check cache operations
 log.Printf("Cache operation: %s", operation)
-```
-
+```plaintext
 ## 📈 Performance Optimization
 
 ### Redis Configuration
@@ -484,14 +484,15 @@ Optimize Redis for cache workload:
 
 ```conf
 # redis.conf
+
 maxmemory 1gb
 maxmemory-policy allkeys-lru
 save ""  # Disable persistence for cache
+
 appendonly no
 tcp-keepalive 60
 timeout 300
-```
-
+```plaintext
 ### TTL Optimization
 
 Monitor and adjust TTL values based on usage patterns:
@@ -503,8 +504,7 @@ if analysis.HitRate < 0.8 {
     // Increase TTL for better hit rate
     manager.SetTTL(ttl.Configuration, time.Hour)
 }
-```
-
+```plaintext
 ### Connection Pooling
 
 Optimize Redis connection pool:
@@ -519,8 +519,7 @@ redisClient := redis.NewClient(&redis.Options{
     ReadTimeout:  3 * time.Second,
     WriteTimeout: 3 * time.Second,
 })
-```
-
+```plaintext
 ## 📚 Best Practices
 
 1. **Cache Key Design**

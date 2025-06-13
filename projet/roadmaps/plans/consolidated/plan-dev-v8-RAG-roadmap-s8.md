@@ -1,7 +1,8 @@
-﻿# Plan de développement v8b : Système de gestion modulaire des roadmaps avec RAG et classification automatique
+# Plan de développement v8b : Système de gestion modulaire des roadmaps avec RAG et classification automatique
 
 
 ## 8. Extension et amélioration du système de roadmapping (TERMINÉ)
+
 - [x] **8.1** Optimisation des performances
   - [x] **8.1.1** Améliorer les performances pour les vues volumineuses
     - [x] **8.1.1.1** Analyser les goulots d'étranglement actuels
@@ -89,43 +90,76 @@
                                       - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1** Créer la détection des tags de durée explicites
                                         - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1** Implémenter la reconnaissance des formats de tags standards
                                           - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1** Développer la détection des tags de type #duration
+
                                             - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.1** Implémenter la reconnaissance des formats #duration:X
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.1.1** Créer la détection du format #duration:Xd (jours)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.1.2** Développer l'analyse du format #duration:Xw (semaines)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.1.3** Implémenter la détection du format #duration:Xm (mois)
+
                                             - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.2** Développer l'analyse des formats #duration(X)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.2.1** Créer la détection du format #duration(Xd) (jours)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.2.2** Implémenter l'analyse du format #duration(Xw) (semaines)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.2.3** Développer la détection du format #duration(Xm) (mois)
+
                                             - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.3** Implémenter la reconnaissance des formats composés
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.3.1** Créer la détection du format #duration:XdYh (jours et heures)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.3.2** Développer l'analyse du format #duration:XhYm (heures et minutes)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.3.3** Implémenter la détection des formats avec plusieurs unités
                                           - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2** Créer l'analyse des tags de type #temps
+
                                             - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.1** Implémenter la reconnaissance des formats #temps:X
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.1.1** Créer la détection du format #temps:Xj (jours)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.1.2** Développer l'analyse du format #temps:Xs (semaines)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.1.3** Implémenter la détection du format #temps:Xm (mois)
+
                                             - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.2** Développer l'analyse des formats #temps(X)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.2.1** Créer la détection du format #temps(Xj) (jours)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.2.2** Implémenter l'analyse du format #temps(Xs) (semaines)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.2.3** Développer la détection du format #temps(Xm) (mois)
+
                                             - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.3** Implémenter la reconnaissance des formats composés
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.3.1** Créer la détection du format #temps:XjYh (jours et heures)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.3.2** Développer l'analyse du format #temps:XhYm (heures et minutes)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.3.3** Implémenter la détection des formats avec plusieurs unités
                                           - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3** Implémenter la détection des tags de type #durée
+
                                             - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.1** Développer la reconnaissance des formats #durée:X
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.1.1** Créer la détection du format #durée:Xj (jours)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.1.2** Implémenter l'analyse du format #durée:Xs (semaines)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.1.3** Développer la détection du format #durée:Xm (mois)
+
                                             - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.2** Implémenter l'analyse des formats #durée(X)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.2.1** Créer la détection du format #durée(Xj) (jours)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.2.2** Développer l'analyse du format #durée(Xs) (semaines)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.2.3** Implémenter la détection du format #durée(Xm) (mois)
+
                                             - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.3** Développer la reconnaissance des formats composés
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.3.1** Créer la détection du format #durée:XjYh (jours et heures)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.3.2** Implémenter l'analyse du format #durée:XhYm (heures et minutes)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.3.3** Développer la détection des formats avec plusieurs unités
                                         - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2** Développer l'extraction des attributs de durée dans les tags
                                           - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1** Créer l'analyse des valeurs numériques dans les tags
@@ -177,6 +211,7 @@
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.2.3** Développer la gestion des conversions entre unités (jours en heures, etc.)
                                             - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.3** Implémenter la normalisation des formats de tags complets
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.3.1** Créer la standardisation des préfixes de tags (#duration, #temps, #durée)
+
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.3.2** Développer la normalisation des séparateurs de tags (:, parenthèses)
                                               - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.3.3** Implémenter la conversion entre formats de tags équivalents
                                         - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3** Implémenter la gestion des tags personnalisés

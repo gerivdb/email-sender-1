@@ -201,8 +201,7 @@ hist(latency_data, breaks = seq(min_val, max_val, length.out = num_bins + 1))
     }
   }
 }
-```
-
+```plaintext
 ### 5.3 Exemples de code optimisé
 
 #### 5.3.1 Python avec NumPy (haute performance)
@@ -225,29 +224,33 @@ def optimized_fixed_width_histogram(data, min_val, max_val, num_bins):
         hist: Array of bin counts
     """
     # Convert to numpy array if not already
+
     data_array = np.asarray(data)
     
     # Handle outliers separately
+
     in_range_mask = (data_array >= min_val) & (data_array < max_val)
     in_range_data = data_array[in_range_mask]
     
     # Count outliers
+
     below_min_count = np.sum(data_array < min_val)
     above_max_count = np.sum(data_array >= max_val)
     
     # Create histogram for in-range data
+
     hist, bin_edges = np.histogram(in_range_data, bins=num_bins, 
                                   range=(min_val, max_val))
     
     # Add outlier information
+
     outlier_info = {
         'below_min': below_min_count,
         'above_max': above_max_count
     }
     
     return bin_edges, hist, outlier_info
-```
-
+```plaintext
 #### 5.3.2 JavaScript avec optimisation (pour visualisation web)
 
 ```javascript
@@ -301,8 +304,7 @@ function createOptimizedHistogram(data, minVal, maxVal, numBins) {
         }
     };
 }
-```
-
+```plaintext
 ## 6. Conclusion
 
 Les histogrammes à largeur de bin fixe présentent un niveau exceptionnel de simplicité tant pour l'implémentation que pour l'interprétation, ce qui en fait une approche de premier choix pour de nombreux cas d'utilisation :

@@ -49,24 +49,31 @@ Les bonnes pratiques PowerShell recommandent les conventions suivantes pour les 
 
 Les bonnes pratiques PowerShell recommandent la structure suivante pour les modules :
 
-```
+```plaintext
 <ModuleName>/
 ├── <ModuleName>.psd1     # Manifeste du module
+
 ├── <ModuleName>.psm1     # Module principal
+
 ├── Public/               # Fonctions publiques
+
 │   └── ...
 ├── Private/              # Fonctions privées
+
 │   └── ...
 ├── Classes/              # Classes
+
 │   └── ...
 ├── Data/                 # Données
+
 │   └── ...
 ├── Tests/                # Tests
+
 │   └── ...
 └── en-US/                # Ressources de localisation
-    └── ...
-```
 
+    └── ...
+```plaintext
 Cette structure organise le code de manière logique et facilite la maintenance du module.
 
 ### Manifestes de module
@@ -186,18 +193,26 @@ Sur la base de la comparaison précédente, voici quelques recommandations pour 
      ```
      ModeManager/
      ├── ModeManager.psd1     # Manifeste du module
+
      ├── ModeManager.psm1     # Module principal
+
      ├── Public/              # Fonctions publiques
+
      │   └── ...
      ├── Private/             # Fonctions privées
+
      │   └── ...
      ├── Classes/             # Classes
+
      │   └── ...
      ├── Data/                # Données
+
      │   └── ...
      ├── Tests/               # Tests
+
      │   └── ...
      └── en-US/               # Ressources de localisation
+
          └── ...
      ```
 

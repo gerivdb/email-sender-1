@@ -6,7 +6,7 @@ Ce document décrit l'architecture du système MCP (Model Context Protocol) util
 
 Le système MCP est composé de plusieurs composants qui interagissent entre eux pour fournir un accès aux données et aux fonctionnalités via le protocole MCP.
 
-```
+```plaintext
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
 │                 │     │                 │     │                 │
 │  Applications   │     │      n8n        │     │   Agents IA     │
@@ -37,8 +37,7 @@ Le système MCP est composé de plusieurs composants qui interagissent entre eux
 │ fichiers        │     │ GitHub          │     │ données         │
 │                 │     │                 │     │                 │
 └─────────────────┘     └─────────────────┘     └─────────────────┘
-```
-
+```plaintext
 ## Composants principaux
 
 ### Client MCP
@@ -137,52 +136,90 @@ Le serveur GCP permet d'accéder aux services Google Cloud Platform. Il expose d
 
 La structure du code est organisée comme suit :
 
-```
+```plaintext
 projet/mcp/
 ├── core/                  # Composants principaux
-│   ├── client/            # Client MCP
-│   ├── server/            # Serveur MCP
-│   └── common/            # Composants communs
-├── servers/               # Serveurs spécifiques
-│   ├── filesystem/        # Serveur Filesystem
-│   ├── github/            # Serveur GitHub
-│   ├── gateway/           # Serveur Gateway
-│   ├── notion/            # Serveur Notion
-│   └── gcp/               # Serveur GCP
-├── scripts/               # Scripts d'utilisation
-│   ├── setup/             # Scripts d'installation
-│   ├── maintenance/       # Scripts de maintenance
-│   └── utils/             # Scripts utilitaires
-├── modules/               # Modules PowerShell
-├── python/                # Implémentations Python
-├── tests/                 # Tests
-│   ├── unit/              # Tests unitaires
-│   ├── integration/       # Tests d'intégration
-│   └── performance/       # Tests de performance
-├── config/                # Configuration
-│   ├── templates/         # Modèles de configuration
-│   ├── environments/      # Configurations par environnement
-│   └── servers/           # Configurations des serveurs
-├── docs/                  # Documentation
-│   ├── guides/            # Guides d'utilisation
-│   ├── api/               # Documentation API
-│   ├── servers/           # Documentation des serveurs
-│   └── development/       # Documentation pour les développeurs
-├── integrations/          # Intégrations
-│   └── n8n/               # Intégration avec n8n
-├── monitoring/            # Monitoring
-│   ├── scripts/           # Scripts de monitoring
-│   ├── dashboards/        # Dashboards
-│   └── alerts/            # Alertes
-└── dependencies/          # Dépendances
-    ├── npm/               # Dépendances npm
-    ├── pip/               # Dépendances pip
-    └── binary/            # Dépendances binaires
-```
 
+│   ├── client/            # Client MCP
+
+│   ├── server/            # Serveur MCP
+
+│   └── common/            # Composants communs
+
+├── servers/               # Serveurs spécifiques
+
+│   ├── filesystem/        # Serveur Filesystem
+
+│   ├── github/            # Serveur GitHub
+
+│   ├── gateway/           # Serveur Gateway
+
+│   ├── notion/            # Serveur Notion
+
+│   └── gcp/               # Serveur GCP
+
+├── scripts/               # Scripts d'utilisation
+
+│   ├── setup/             # Scripts d'installation
+
+│   ├── maintenance/       # Scripts de maintenance
+
+│   └── utils/             # Scripts utilitaires
+
+├── modules/               # Modules PowerShell
+
+├── python/                # Implémentations Python
+
+├── tests/                 # Tests
+
+│   ├── unit/              # Tests unitaires
+
+│   ├── integration/       # Tests d'intégration
+
+│   └── performance/       # Tests de performance
+
+├── config/                # Configuration
+
+│   ├── templates/         # Modèles de configuration
+
+│   ├── environments/      # Configurations par environnement
+
+│   └── servers/           # Configurations des serveurs
+
+├── docs/                  # Documentation
+
+│   ├── guides/            # Guides d'utilisation
+
+│   ├── api/               # Documentation API
+
+│   ├── servers/           # Documentation des serveurs
+
+│   └── development/       # Documentation pour les développeurs
+
+├── integrations/          # Intégrations
+
+│   └── n8n/               # Intégration avec n8n
+
+├── monitoring/            # Monitoring
+
+│   ├── scripts/           # Scripts de monitoring
+
+│   ├── dashboards/        # Dashboards
+
+│   └── alerts/            # Alertes
+
+└── dependencies/          # Dépendances
+
+    ├── npm/               # Dépendances npm
+
+    ├── pip/               # Dépendances pip
+
+    └── binary/            # Dépendances binaires
+
+```plaintext
 ## Diagramme de classes
 
-```
+```plaintext
 ┌───────────────────┐     ┌───────────────────┐     ┌───────────────────┐
 │   MCPClient       │     │   MCPServer       │     │   MCPManager      │
 ├───────────────────┤     ├───────────────────┤     ├───────────────────┤
@@ -206,8 +243,7 @@ projet/mcp/
 │ + execute()       │     │ + getData()       │     │ + save()          │
 │ + validate()      │     │ + setData()       │     │ + validate()      │
 └───────────────────┘     └───────────────────┘     └───────────────────┘
-```
-
+```plaintext
 ## Protocole MCP
 
 Le protocole MCP est basé sur JSON-RPC et permet la communication entre les clients et les serveurs MCP. Il définit les méthodes suivantes :

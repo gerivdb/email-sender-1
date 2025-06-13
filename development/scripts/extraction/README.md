@@ -107,19 +107,27 @@ Le module `ExtractedInfoModuleV2` est construit autour d'un système de types d'
 
 Tous les objets d'information extraite héritent d'un type de base commun, `ExtractedInfo`, qui définit les propriétés fondamentales :
 
-```
+```plaintext
 ExtractedInfo
 ├── _Type : string                 # Type de l'information extraite (ex: "ExtractedInfo")
-├── Id : string                    # Identifiant unique (GUID)
-├── Source : string                # Source de l'information (ex: "Web", "API", "File")
-├── ExtractorName : string         # Nom de l'extracteur utilisé
-├── ExtractionDate : datetime      # Date et heure de l'extraction initiale
-├── LastModifiedDate : datetime    # Date et heure de la dernière modification
-├── ProcessingState : string       # État de traitement (Raw, Processed, Validated, Error)
-├── ConfidenceScore : int          # Score de confiance (0-100)
-└── Metadata : hashtable           # Métadonnées additionnelles
-```
 
+├── Id : string                    # Identifiant unique (GUID)
+
+├── Source : string                # Source de l'information (ex: "Web", "API", "File")
+
+├── ExtractorName : string         # Nom de l'extracteur utilisé
+
+├── ExtractionDate : datetime      # Date et heure de l'extraction initiale
+
+├── LastModifiedDate : datetime    # Date et heure de la dernière modification
+
+├── ProcessingState : string       # État de traitement (Raw, Processed, Validated, Error)
+
+├── ConfidenceScore : int          # Score de confiance (0-100)
+
+└── Metadata : hashtable           # Métadonnées additionnelles
+
+```plaintext
 Chaque objet `ExtractedInfo` est représenté par une hashtable PowerShell avec ces propriétés, ce qui permet une manipulation flexible tout en maintenant une structure cohérente.
 
 #### 2.1.2 Types spécialisés
@@ -127,30 +135,34 @@ Chaque objet `ExtractedInfo` est représenté par une hashtable PowerShell avec 
 Le module définit plusieurs types spécialisés qui étendent le type de base pour des cas d'utilisation spécifiques :
 
 **TextExtractedInfo** : Pour les informations textuelles
-```
+```plaintext
 TextExtractedInfo (hérite de ExtractedInfo)
 ├── [Toutes les propriétés de ExtractedInfo]
 ├── Text : string                  # Contenu textuel extrait
-└── Language : string              # Code de langue du texte (ex: "en", "fr")
-```
 
+└── Language : string              # Code de langue du texte (ex: "en", "fr")
+
+```plaintext
 **StructuredDataExtractedInfo** : Pour les données structurées (JSON, XML, etc.)
-```
+```plaintext
 StructuredDataExtractedInfo (hérite de ExtractedInfo)
 ├── [Toutes les propriétés de ExtractedInfo]
 ├── Data : hashtable/array         # Données structurées extraites
-└── DataFormat : string            # Format des données (ex: "JSON", "XML")
-```
 
+└── DataFormat : string            # Format des données (ex: "JSON", "XML")
+
+```plaintext
 **MediaExtractedInfo** : Pour les références à des fichiers média
-```
+```plaintext
 MediaExtractedInfo (hérite de ExtractedInfo)
 ├── [Toutes les propriétés de ExtractedInfo]
 ├── MediaPath : string             # Chemin vers le fichier média
-├── MediaType : string             # Type de média (Image, Video, Audio, Document)
-└── MediaSize : long               # Taille du fichier en octets
-```
 
+├── MediaType : string             # Type de média (Image, Video, Audio, Document)
+
+└── MediaSize : long               # Taille du fichier en octets
+
+```plaintext
 #### 2.1.3 Extensibilité
 
 Le système est conçu pour être extensible, permettant la création de nouveaux types spécialisés selon les besoins spécifiques. Pour créer un nouveau type, il suffit de :
@@ -179,30 +191,40 @@ Le module `ExtractedInfoModuleV2` introduit le concept de collections pour organ
 
 Une collection d'informations extraites est représentée par une structure de données avec les propriétés suivantes :
 
-```
+```plaintext
 ExtractedInfoCollection
 ├── _Type : string                 # Type de la collection (toujours "ExtractedInfoCollection")
-├── Name : string                  # Nom de la collection
-├── Description : string           # Description de la collection
-├── Items : array                  # Tableau d'objets ExtractedInfo
-├── Indexes : hashtable            # Index pour accélérer les recherches (optionnel)
-├── Metadata : hashtable           # Métadonnées de la collection
-├── CreationDate : datetime        # Date et heure de création de la collection
-└── LastModifiedDate : datetime    # Date et heure de la dernière modification
-```
 
+├── Name : string                  # Nom de la collection
+
+├── Description : string           # Description de la collection
+
+├── Items : array                  # Tableau d'objets ExtractedInfo
+
+├── Indexes : hashtable            # Index pour accélérer les recherches (optionnel)
+
+├── Metadata : hashtable           # Métadonnées de la collection
+
+├── CreationDate : datetime        # Date et heure de création de la collection
+
+└── LastModifiedDate : datetime    # Date et heure de la dernière modification
+
+```plaintext
 #### 2.2.2 Système d'indexation
 
 Les collections peuvent être optimisées avec un système d'indexation qui accélère considérablement les opérations de recherche et de filtrage. Les index sont organisés par type de propriété :
 
-```
+```plaintext
 Indexes
 ├── ID : hashtable                 # Index par ID (clé: ID, valeur: objet ExtractedInfo)
-├── Type : hashtable               # Index par type (clé: type, valeur: tableau d'IDs)
-├── Source : hashtable             # Index par source (clé: source, valeur: tableau d'IDs)
-└── ProcessingState : hashtable    # Index par état (clé: état, valeur: tableau d'IDs)
-```
 
+├── Type : hashtable               # Index par type (clé: type, valeur: tableau d'IDs)
+
+├── Source : hashtable             # Index par source (clé: source, valeur: tableau d'IDs)
+
+└── ProcessingState : hashtable    # Index par état (clé: état, valeur: tableau d'IDs)
+
+```plaintext
 L'indexation est automatiquement maintenue à jour lors des opérations d'ajout, de mise à jour ou de suppression d'éléments dans la collection.
 
 #### 2.2.3 Opérations sur les collections
@@ -277,6 +299,7 @@ Les règles de validation intégrées couvrent plusieurs aspects :
 1. **Présence des propriétés requises** :
    ```powershell
    # Exemple de validation de propriétés requises
+
    if (-not $Info.ContainsKey("Source")) {
        $errors += "Missing required property: Source"
    }
@@ -285,6 +308,7 @@ Les règles de validation intégrées couvrent plusieurs aspects :
 2. **Types de données** :
    ```powershell
    # Exemple de validation de type de données
+
    if ($Info.ContainsKey("ConfidenceScore") -and $Info.ConfidenceScore -isnot [int]) {
        $errors += "Invalid property type: ConfidenceScore should be Integer"
    }
@@ -293,6 +317,7 @@ Les règles de validation intégrées couvrent plusieurs aspects :
 3. **Valeurs autorisées** :
    ```powershell
    # Exemple de validation de valeurs autorisées
+
    $validStates = @("Raw", "Processed", "Validated", "Error")
    if ($Info.ContainsKey("ProcessingState") -and -not $validStates.Contains($Info.ProcessingState)) {
        $errors += "Invalid ProcessingState value: $($Info.ProcessingState)"
@@ -302,6 +327,7 @@ Les règles de validation intégrées couvrent plusieurs aspects :
 4. **Contraintes de valeur** :
    ```powershell
    # Exemple de validation de contraintes de valeur
+
    if ($Info.ContainsKey("ConfidenceScore") -and ($Info.ConfidenceScore -lt 0 -or $Info.ConfidenceScore -gt 100)) {
        $errors += "ConfidenceScore must be between 0 and 100"
    }
@@ -313,12 +339,14 @@ Le système permet d'ajouter des règles de validation personnalisées pour rép
 
 ```powershell
 # Définition d'une règle de validation personnalisée
+
 $customRule = {
     param($Info)
 
     $errors = @()
 
     # Exemple : Vérifier que le texte a une longueur minimale
+
     if ($Info._Type -eq "TextExtractedInfo" -and $Info.Text.Length -lt 10) {
         $errors += "Text must be at least 10 characters long"
     }
@@ -327,9 +355,9 @@ $customRule = {
 }
 
 # Ajout de la règle au système de validation
-Add-ExtractedInfoValidationRule -Name "MinTextLength" -Rule $customRule -TargetType "TextExtractedInfo"
-```
 
+Add-ExtractedInfoValidationRule -Name "MinTextLength" -Rule $customRule -TargetType "TextExtractedInfo"
+```plaintext
 Les règles personnalisées peuvent être :
 - Globales (appliquées à tous les types)
 - Spécifiques à un type particulier
@@ -372,8 +400,7 @@ if (-not $validationResult.IsValid) {
         Write-Host "- $error"
     }
 }
-```
-
+```plaintext
 Cette approche détaillée est particulièrement utile pour le débogage et l'analyse des problèmes de validation complexes.
 
 ### 2.4 Mécanisme de sérialisation
@@ -395,12 +422,13 @@ La conversion des objets en JSON est réalisée par la fonction `ConvertTo-Extra
 
 ```powershell
 # Conversion d'un objet individuel
+
 $json = ConvertTo-ExtractedInfoJson -Info $info -Indent
 
 # Conversion d'une collection
-$json = ConvertTo-ExtractedInfoJson -Collection $collection -Indent -ExcludeIndexes
-```
 
+$json = ConvertTo-ExtractedInfoJson -Collection $collection -Indent -ExcludeIndexes
+```plaintext
 Options de configuration disponibles :
 
 - **Indent** : Formatage indenté pour une meilleure lisibilité.
@@ -414,12 +442,13 @@ La conversion depuis JSON vers des objets est réalisée par la fonction `Conver
 
 ```powershell
 # Conversion d'un JSON en objet
+
 $info = ConvertFrom-ExtractedInfoJson -Json $json
 
 # Conversion avec options
-$collection = ConvertFrom-ExtractedInfoJson -Json $json -AsHashtable
-```
 
+$collection = ConvertFrom-ExtractedInfoJson -Json $json -AsHashtable
+```plaintext
 Options disponibles :
 
 - **AsHashtable** : Conversion en hashtables plutôt qu'en objets PSCustomObject.
@@ -431,14 +460,15 @@ Pour faciliter la sauvegarde et le chargement des données, le module offre des 
 
 ```powershell
 # Sauvegarde dans un fichier
+
 Save-ExtractedInfoToFile -Info $info -FilePath "info.json" -Indent
 Save-ExtractedInfoToFile -Collection $collection -FilePath "collection.json" -CreateDirectories
 
 # Chargement depuis un fichier
+
 $info = Load-ExtractedInfoFromFile -FilePath "info.json"
 $collection = Load-ExtractedInfoFromFile -FilePath "collection.json"
-```
-
+```plaintext
 Options disponibles :
 
 - **CreateDirectories** : Création automatique des répertoires parents si nécessaire.
@@ -489,9 +519,11 @@ Voici un exemple complet illustrant l'extraction d'informations à partir d'une 
 
 ```powershell
 # Importer le module
+
 Import-Module .\ExtractedInfoModuleV2.psm1
 
 # Fonction d'extraction simple
+
 function Extract-WebPageInfo {
     param (
         [Parameter(Mandatory = $true)]
@@ -503,18 +535,22 @@ function Extract-WebPageInfo {
 
     try {
         # Télécharger le contenu de la page web
+
         $webClient = New-Object System.Net.WebClient
         $webClient.Encoding = [System.Text.Encoding]::UTF8
         $content = $webClient.DownloadString($Url)
 
         # Extraire le titre (exemple simple)
+
         $titleMatch = [regex]::Match($content, '<title>(.*?)</title>')
         $title = if ($titleMatch.Success) { $titleMatch.Groups[1].Value.Trim() } else { "Untitled" }
 
         # Extraire le texte principal (exemple simplifié)
+
         $bodyMatch = [regex]::Match($content, '<body.*?>(.*?)</body>', [System.Text.RegularExpressions.RegexOptions]::Singleline)
         $bodyText = if ($bodyMatch.Success) {
             # Supprimer les balises HTML (simplification)
+
             $text = $bodyMatch.Groups[1].Value
             $text = [regex]::Replace($text, '<script.*?</script>', '', [System.Text.RegularExpressions.RegexOptions]::Singleline)
             $text = [regex]::Replace($text, '<style.*?</style>', '', [System.Text.RegularExpressions.RegexOptions]::Singleline)
@@ -526,9 +562,11 @@ function Extract-WebPageInfo {
         }
 
         # Créer un objet TextExtractedInfo
+
         $extractedInfo = New-TextExtractedInfo -Source $Url -ExtractorName $ExtractorName -Text $bodyText
 
         # Ajouter des métadonnées
+
         $extractedInfo = Add-ExtractedInfoMetadata -Info $extractedInfo -Metadata @{
             Title = $title
             ExtractionDate = Get-Date
@@ -545,6 +583,7 @@ function Extract-WebPageInfo {
 }
 
 # Extraire des informations de plusieurs pages
+
 $urls = @(
     "https://example.com",
     "https://example.org",
@@ -561,12 +600,15 @@ foreach ($url in $urls) {
 }
 
 # Créer une collection pour stocker les informations extraites
+
 $collection = New-ExtractedInfoCollection -Name "WebPages" -Description "Collection of extracted web pages" -CreateIndexes
 
 # Ajouter les informations extraites à la collection
+
 $collection = Add-ExtractedInfoToCollection -Collection $collection -InfoList $extractedInfos
 
 # Afficher des statistiques sur la collection
+
 $stats = Get-ExtractedInfoCollectionStatistics -Collection $collection
 Write-Host "Collection statistics:"
 Write-Host "- Total items: $($stats.TotalCount)"
@@ -574,15 +616,18 @@ Write-Host "- Sources: $($stats.SourceDistribution.Keys -join ', ')"
 Write-Host "- Average confidence score: $($stats.ConfidenceScoreStatistics.Average)"
 
 # Sauvegarder la collection dans un fichier JSON
+
 $outputPath = Join-Path $env:TEMP "WebPagesCollection.json"
 Save-ExtractedInfoToFile -Collection $collection -FilePath $outputPath -Indent -CreateDirectories
 Write-Host "Collection saved to $outputPath"
 
 # Exemple de recherche dans la collection
+
 $processedItems = Get-ExtractedInfoFromCollection -Collection $collection -ProcessingState "Raw" -MinConfidenceScore 50
 Write-Host "Found $($processedItems.Count) items with raw processing state and confidence score >= 50"
 
 # Mettre à jour l'état de traitement d'un élément
+
 if ($processedItems.Count -gt 0) {
     $itemToUpdate = $processedItems[0]
     $updatedItem = Copy-ExtractedInfo -Info $itemToUpdate -ProcessingState "Processed" -ConfidenceScore 80
@@ -591,10 +636,10 @@ if ($processedItems.Count -gt 0) {
 }
 
 # Sauvegarder la collection mise à jour
+
 Save-ExtractedInfoToFile -Collection $collection -FilePath $outputPath -Force
 Write-Host "Updated collection saved to $outputPath"
-```
-
+```plaintext
 Cet exemple illustre plusieurs aspects clés du module :
 
 1. **Extraction d'informations** : Utilisation d'une fonction personnalisée pour extraire des informations de pages web.
@@ -612,12 +657,15 @@ Cet exemple illustre les opérations avancées sur les collections, notamment la
 
 ```powershell
 # Importer le module
+
 Import-Module .\ExtractedInfoModuleV2.psm1
 
 # Créer une collection vide avec indexation
+
 $collection = New-ExtractedInfoCollection -Name "DataCollection" -Description "Collection of various extracted data" -CreateIndexes
 
 # Créer différents types d'informations extraites
+
 $textInfo1 = New-TextExtractedInfo -Source "Document1.txt" -ExtractorName "TextExtractor" -Text "Ceci est un exemple de texte extrait." -Language "fr" -ProcessingState "Raw"
 $textInfo2 = New-TextExtractedInfo -Source "Document2.txt" -ExtractorName "TextExtractor" -Text "This is an example of extracted text." -Language "en" -ProcessingState "Processed" -ConfidenceScore 85
 
@@ -636,6 +684,7 @@ $mediaInfo1 = New-MediaExtractedInfo -Source "Image1.jpg" -ExtractorName "ImageE
 $mediaInfo2 = New-MediaExtractedInfo -Source "Video1.mp4" -ExtractorName "VideoExtractor" -MediaPath "C:\Videos\video1.mp4" -MediaType "Video" -ProcessingState "Error" -ConfidenceScore 40
 
 # Ajouter des métadonnées aux informations
+
 $textInfo1 = Add-ExtractedInfoMetadata -Info $textInfo1 -Metadata @{
     Category = "Documentation"
     Tags = @("example", "text", "french")
@@ -649,9 +698,11 @@ $mediaInfo1 = Add-ExtractedInfoMetadata -Info $mediaInfo1 -Metadata @{
 }
 
 # Ajouter les informations à la collection
+
 $collection = Add-ExtractedInfoToCollection -Collection $collection -InfoList @($textInfo1, $textInfo2, $structuredInfo1, $mediaInfo1, $mediaInfo2)
 
 # Afficher des statistiques sur la collection
+
 $stats = Get-ExtractedInfoCollectionStatistics -Collection $collection
 Write-Host "Collection Statistics:"
 Write-Host "- Total items: $($stats.TotalCount)"
@@ -660,50 +711,61 @@ Write-Host "- Processing states: $($stats.ProcessingStateDistribution | ConvertT
 Write-Host "- Confidence score range: $($stats.ConfidenceScoreStatistics.Min) - $($stats.ConfidenceScoreStatistics.Max)"
 
 # Filtrer la collection de différentes manières
+
 Write-Host "`nFiltering examples:"
 
 # 1. Filtrer par type
+
 $textItems = Get-ExtractedInfoFromCollection -Collection $collection -Type "TextExtractedInfo"
 Write-Host "Text items: $($textItems.Count)"
 
 # 2. Filtrer par état de traitement
+
 $rawItems = Get-ExtractedInfoFromCollection -Collection $collection -ProcessingState "Raw"
 Write-Host "Raw items: $($rawItems.Count)"
 
 # 3. Filtrer par score de confiance
+
 $highConfidenceItems = Get-ExtractedInfoFromCollection -Collection $collection -MinConfidenceScore 80
 Write-Host "High confidence items (>= 80): $($highConfidenceItems.Count)"
 
 # 4. Filtrer par source
+
 $documentItems = Get-ExtractedInfoFromCollection -Collection $collection -Source "Document1.txt"
 Write-Host "Items from Document1.txt: $($documentItems.Count)"
 
 # 5. Combinaison de filtres
+
 $processedTextItems = Get-ExtractedInfoFromCollection -Collection $collection -Type "TextExtractedInfo" -ProcessingState "Processed"
 Write-Host "Processed text items: $($processedTextItems.Count)"
 
 # Manipuler la collection
 
 # 1. Créer une sous-collection
+
 $highQualityCollection = New-ExtractedInfoCollection -Name "HighQualityData" -Description "High quality extracted data" -CreateIndexes
 $highQualityCollection = Add-ExtractedInfoToCollection -Collection $highQualityCollection -InfoList $highConfidenceItems
 Write-Host "`nCreated high quality collection with $($highQualityCollection.Items.Count) items"
 
 # 2. Mettre à jour un élément
+
 $itemToUpdate = $rawItems[0]
 $updatedItem = Copy-ExtractedInfo -Info $itemToUpdate -ProcessingState "Processed" -ConfidenceScore ($itemToUpdate.ConfidenceScore + 10)
 $collection = Add-ExtractedInfoToCollection -Collection $collection -Info $updatedItem
 Write-Host "Updated item $($updatedItem.Id) from Raw to Processed state"
 
 # 3. Statistiques après mise à jour
+
 $updatedStats = Get-ExtractedInfoCollectionStatistics -Collection $collection
 Write-Host "Updated processing states: $($updatedStats.ProcessingStateDistribution | ConvertTo-Json -Compress)"
 
 # 4. Copier la collection
+
 $collectionCopy = Copy-ExtractedInfoCollection -Collection $collection -Name "DataCollectionCopy"
 Write-Host "Created a copy of the collection with $($collectionCopy.Items.Count) items"
 
 # 5. Ajouter des métadonnées à la collection
+
 $collection.Metadata["CreatedBy"] = "Admin"
 $collection.Metadata["Purpose"] = "Example"
 $collection.Metadata["Tags"] = @("demo", "collection", "example")
@@ -711,6 +773,7 @@ $collection.LastModifiedDate = Get-Date
 Write-Host "Added metadata to the collection"
 
 # Sauvegarder les collections
+
 $mainPath = Join-Path $env:TEMP "DataCollection.json"
 $highQualityPath = Join-Path $env:TEMP "HighQualityCollection.json"
 
@@ -722,10 +785,12 @@ Write-Host "- Main collection: $mainPath"
 Write-Host "- High quality collection: $highQualityPath"
 
 # Charger une collection depuis un fichier
+
 $loadedCollection = Load-ExtractedInfoFromFile -FilePath $mainPath
 Write-Host "`nLoaded collection from file with $($loadedCollection.Items.Count) items"
 
 # Analyser les métadonnées
+
 $metadataTags = @{}
 foreach ($item in $collection.Items) {
     if ($item.Metadata.ContainsKey("Tags")) {
@@ -742,8 +807,7 @@ Write-Host "`nMetadata tags analysis:"
 foreach ($tag in $metadataTags.Keys | Sort-Object) {
     Write-Host "- $tag : $($metadataTags[$tag]) items"
 }
-```
-
+```plaintext
 Cet exemple illustre plusieurs aspects avancés de la gestion des collections :
 
 1. **Création de collections** : Création de collections avec indexation pour optimiser les performances.
@@ -763,9 +827,11 @@ Cet exemple illustre l'utilisation du système de validation pour vérifier l'in
 
 ```powershell
 # Importer le module
+
 Import-Module .\ExtractedInfoModuleV2.psm1
 
 # Fonction pour créer des informations extraites potentiellement invalides
+
 function New-TestInfo {
     param (
         [Parameter(Mandatory = $true)]
@@ -776,32 +842,38 @@ function New-TestInfo {
     switch ($Type) {
         "Valid" {
             # Créer une information valide
+
             return New-TextExtractedInfo -Source "ValidSource" -ExtractorName "TestExtractor" -Text "This is a valid text" -Language "en"
         }
         "MissingSource" {
             # Créer une information sans source (propriété requise)
+
             $info = New-TextExtractedInfo -Source "TempSource" -ExtractorName "TestExtractor" -Text "Text with missing source"
             $info.Remove("Source")
             return $info
         }
         "InvalidConfidence" {
             # Créer une information avec un score de confiance invalide
+
             return New-TextExtractedInfo -Source "InvalidConfidenceSource" -ExtractorName "TestExtractor" -Text "Text with invalid confidence" -ConfidenceScore 150
         }
         "InvalidState" {
             # Créer une information avec un état de traitement invalide
+
             $info = New-TextExtractedInfo -Source "InvalidStateSource" -ExtractorName "TestExtractor" -Text "Text with invalid state"
             $info.ProcessingState = "InvalidState"
             return $info
         }
         "MissingText" {
             # Créer une information de type texte sans texte (propriété requise pour ce type)
+
             $info = New-TextExtractedInfo -Source "MissingTextSource" -ExtractorName "TestExtractor" -Text "TempText"
             $info.Remove("Text")
             return $info
         }
         "InvalidMediaType" {
             # Créer une information média avec un type de média invalide
+
             $info = New-MediaExtractedInfo -Source "InvalidMediaTypeSource" -ExtractorName "MediaExtractor" -MediaPath "C:\path\to\media.xyz" -MediaType "InvalidType"
             return $info
         }
@@ -809,6 +881,7 @@ function New-TestInfo {
 }
 
 # Créer une collection d'informations à valider
+
 $infoTypes = @("Valid", "MissingSource", "InvalidConfidence", "InvalidState", "MissingText", "InvalidMediaType")
 $infosToValidate = @()
 
@@ -819,12 +892,14 @@ foreach ($type in $infoTypes) {
 }
 
 # Créer une collection
+
 $collection = New-ExtractedInfoCollection -Name "ValidationTestCollection"
 $collection = Add-ExtractedInfoToCollection -Collection $collection -InfoList $infosToValidate
 
 Write-Host "`nCollection created with $($collection.Items.Count) items"
 
 # 1. Validation simple
+
 Write-Host "`n1. Simple validation results:"
 foreach ($info in $infosToValidate) {
     $isValid = Test-ExtractedInfo -Info $info -ErrorAction SilentlyContinue
@@ -832,6 +907,7 @@ foreach ($info in $infosToValidate) {
 }
 
 # 2. Validation avec erreurs détaillées
+
 Write-Host "`n2. Detailed validation errors:"
 foreach ($info in $infosToValidate) {
     $errors = Get-ExtractedInfoValidationErrors -Info $info
@@ -847,11 +923,13 @@ foreach ($info in $infosToValidate) {
 }
 
 # 3. Validation de collection
+
 Write-Host "`n3. Collection validation:"
 $collectionValid = Test-ExtractedInfoCollection -Collection $collection -ErrorAction SilentlyContinue
 Write-Host "Collection is $(if ($collectionValid) { 'valid' } else { 'invalid' })"
 
 # 4. Validation de collection avec erreurs d'éléments
+
 $collectionErrors = Get-ExtractedInfoCollectionValidationErrors -Collection $collection -IncludeItemErrors
 Write-Host "`n4. Collection validation with item errors:"
 if ($collectionErrors.Count -gt 0) {
@@ -865,6 +943,7 @@ else {
 }
 
 # 5. Validation détaillée de collection
+
 $detailedResult = Test-ExtractedInfoCollection -Collection $collection -IncludeItemErrors -Detailed
 Write-Host "`n5. Detailed collection validation:"
 Write-Host "Collection structure is $(if ($detailedResult.IsValid) { 'valid' } else { 'invalid' })"
@@ -879,6 +958,7 @@ if ($detailedResult.ItemErrors -and $detailedResult.ItemErrors.Count -gt 0) {
 }
 
 # 6. Correction automatique des problèmes
+
 Write-Host "`n6. Automatic correction of validation issues:"
 
 $correctedInfos = @()
@@ -892,10 +972,12 @@ foreach ($info in $infosToValidate) {
     }
 
     # Créer une copie pour correction
+
     $correctedInfo = Copy-ExtractedInfo -Info $info
     $corrected = $false
 
     # Appliquer des corrections basées sur les erreurs
+
     foreach ($error in $errors) {
         if ($error -match "Missing required property: Source") {
             $correctedInfo.Source = "CorrectedSource"
@@ -923,6 +1005,7 @@ foreach ($info in $infosToValidate) {
         Write-Host "Corrected item $($info._Type) (ID: $($correctedInfo.Id))"
 
         # Vérifier si la correction a résolu tous les problèmes
+
         $remainingErrors = Get-ExtractedInfoValidationErrors -Info $correctedInfo
         if ($remainingErrors.Count -eq 0) {
             Write-Host "  All validation issues resolved"
@@ -943,10 +1026,12 @@ foreach ($info in $infosToValidate) {
 }
 
 # 7. Créer une collection corrigée
+
 $correctedCollection = New-ExtractedInfoCollection -Name "CorrectedCollection"
 $correctedCollection = Add-ExtractedInfoToCollection -Collection $correctedCollection -InfoList $correctedInfos
 
 # 8. Valider la collection corrigée
+
 $correctedValid = Test-ExtractedInfoCollection -Collection $correctedCollection -IncludeItemErrors
 Write-Host "`n7. Validation of corrected collection:"
 Write-Host "Corrected collection is $(if ($correctedValid) { 'valid' } else { 'still invalid' })"
@@ -960,20 +1045,24 @@ if (-not $correctedValid) {
 }
 
 # 9. Ajouter une règle de validation personnalisée
+
 Write-Host "`n8. Custom validation rules:"
 
 # Définir une règle personnalisée
+
 $customRule = {
     param($Info)
 
     $errors = @()
 
     # Règle : Les textes doivent avoir au moins 20 caractères
+
     if ($Info._Type -eq "TextExtractedInfo" -and $Info.ContainsKey("Text") -and $Info.Text.Length -lt 20) {
         $errors += "Text must be at least 20 characters long"
     }
 
     # Règle : Les sources doivent commencer par "Valid" ou "Corrected"
+
     if ($Info.ContainsKey("Source") -and -not ($Info.Source -match "^(Valid|Corrected)")) {
         $errors += "Source must start with 'Valid' or 'Corrected'"
     }
@@ -982,9 +1071,11 @@ $customRule = {
 }
 
 # Ajouter la règle au système de validation
+
 Add-ExtractedInfoValidationRule -Name "TextLengthAndSourceRule" -Rule $customRule
 
 # Valider avec la règle personnalisée
+
 foreach ($info in $correctedInfos) {
     $customErrors = Get-ExtractedInfoValidationErrors -Info $info
 
@@ -1000,10 +1091,12 @@ foreach ($info in $correctedInfos) {
 }
 
 # 10. Supprimer la règle personnalisée
+
 Remove-ExtractedInfoValidationRule -Name "TextLengthAndSourceRule"
 Write-Host "`nCustom validation rule removed"
 
 # Sauvegarder les collections pour référence
+
 $originalPath = Join-Path $env:TEMP "OriginalCollection.json"
 $correctedPath = Join-Path $env:TEMP "CorrectedCollection.json"
 
@@ -1013,8 +1106,7 @@ Save-ExtractedInfoToFile -Collection $correctedCollection -FilePath $correctedPa
 Write-Host "`nCollections saved to:"
 Write-Host "- Original collection: $originalPath"
 Write-Host "- Corrected collection: $correctedPath"
-```
-
+```plaintext
 Cet exemple illustre plusieurs aspects du système de validation :
 
 1. **Validation de base** : Vérification de la validité des objets d'information extraite.
@@ -1032,9 +1124,11 @@ Cet exemple illustre les fonctionnalités de sérialisation et désérialisation
 
 ```powershell
 # Importer le module
+
 Import-Module .\ExtractedInfoModuleV2.psm1
 
 # Créer des objets d'information extraite de différents types
+
 $textInfo = New-TextExtractedInfo -Source "Document.txt" -ExtractorName "TextExtractor" -Text "Ceci est un exemple de texte pour la sérialisation." -Language "fr" -ProcessingState "Processed" -ConfidenceScore 85
 $textInfo = Add-ExtractedInfoMetadata -Info $textInfo -Metadata @{
     Category = "Documentation"
@@ -1073,38 +1167,46 @@ $structuredInfo = New-StructuredDataExtractedInfo -Source "Data.json" -Extractor
 $mediaInfo = New-MediaExtractedInfo -Source "Image.jpg" -ExtractorName "ImageExtractor" -MediaPath "C:\Images\example.jpg" -MediaType "Image" -MediaSize 1024000 -ProcessingState "Raw" -ConfidenceScore 70
 
 # Créer une collection
+
 $collection = New-ExtractedInfoCollection -Name "SerializationExample" -Description "Collection for serialization demonstration" -CreateIndexes
 $collection = Add-ExtractedInfoToCollection -Collection $collection -InfoList @($textInfo, $structuredInfo, $mediaInfo)
 $collection.Metadata["CreatedBy"] = "SerializationDemo"
 $collection.Metadata["Purpose"] = "Demonstration"
 
 # 1. Sérialisation d'objets individuels
+
 Write-Host "1. Serializing individual objects to JSON:`n"
 
 # Sérialiser un objet TextExtractedInfo
+
 $textInfoJson = ConvertTo-ExtractedInfoJson -Info $textInfo -Indent
 Write-Host "TextExtractedInfo JSON (first 500 chars):"
 Write-Host ($textInfoJson.Substring(0, [Math]::Min(500, $textInfoJson.Length)) + "...")
 
 # Sérialiser un objet StructuredDataExtractedInfo
+
 $structuredInfoJson = ConvertTo-ExtractedInfoJson -Info $structuredInfo -Indent
 Write-Host "`nStructuredDataExtractedInfo JSON (first 500 chars):"
 Write-Host ($structuredInfoJson.Substring(0, [Math]::Min(500, $structuredInfoJson.Length)) + "...")
 
 # Sérialiser un objet MediaExtractedInfo
+
 $mediaInfoJson = ConvertTo-ExtractedInfoJson -Info $mediaInfo -Indent
 Write-Host "`nMediaExtractedInfo JSON (first 500 chars):"
 Write-Host ($mediaInfoJson.Substring(0, [Math]::Min(500, $mediaInfoJson.Length)) + "...")
 
 # 2. Sérialisation d'une collection
+
 Write-Host "`n2. Serializing a collection to JSON:`n"
 
 # Sérialiser la collection complète
+
 $collectionJson = ConvertTo-ExtractedInfoJson -Collection $collection -Indent
 Write-Host "Collection JSON (first 500 chars):"
 Write-Host ($collectionJson.Substring(0, [Math]::Min(500, $collectionJson.Length)) + "...")
 
 # Sérialiser la collection sans les index
+
 $collectionNoIndexesJson = ConvertTo-ExtractedInfoJson -Collection $collection -Indent -ExcludeIndexes
 Write-Host "`nCollection JSON without indexes (size comparison):"
 Write-Host "- With indexes: $($collectionJson.Length) chars"
@@ -1112,9 +1214,11 @@ Write-Host "- Without indexes: $($collectionNoIndexesJson.Length) chars"
 Write-Host "- Size reduction: $(100 - [Math]::Round(($collectionNoIndexesJson.Length / $collectionJson.Length) * 100, 2))%"
 
 # 3. Désérialisation d'objets individuels
+
 Write-Host "`n3. Deserializing individual objects from JSON:`n"
 
 # Désérialiser un objet TextExtractedInfo
+
 $deserializedTextInfo = ConvertFrom-ExtractedInfoJson -Json $textInfoJson
 Write-Host "Deserialized TextExtractedInfo:"
 Write-Host "- Type: $($deserializedTextInfo._Type)"
@@ -1123,6 +1227,7 @@ Write-Host "- Text (first 50 chars): $($deserializedTextInfo.Text.Substring(0, [
 Write-Host "- Metadata keys: $($deserializedTextInfo.Metadata.Keys -join ', ')"
 
 # Désérialiser un objet StructuredDataExtractedInfo
+
 $deserializedStructuredInfo = ConvertFrom-ExtractedInfoJson -Json $structuredInfoJson
 Write-Host "`nDeserialized StructuredDataExtractedInfo:"
 Write-Host "- Type: $($deserializedStructuredInfo._Type)"
@@ -1132,9 +1237,11 @@ Write-Host "- Person name: $($deserializedStructuredInfo.Data.Person.FirstName) 
 Write-Host "- Number of addresses: $($deserializedStructuredInfo.Data.Addresses.Count)"
 
 # 4. Désérialisation d'une collection
+
 Write-Host "`n4. Deserializing a collection from JSON:`n"
 
 # Désérialiser la collection
+
 $deserializedCollection = ConvertFrom-ExtractedInfoJson -Json $collectionJson
 Write-Host "Deserialized Collection:"
 Write-Host "- Name: $($deserializedCollection.Name)"
@@ -1147,22 +1254,27 @@ if ($deserializedCollection.Indexes) {
 Write-Host "- Metadata: $($deserializedCollection.Metadata | ConvertTo-Json -Compress)"
 
 # 5. Désérialisation avec options
+
 Write-Host "`n5. Deserialization with options:`n"
 
 # Désérialiser en hashtable
+
 $deserializedAsHashtable = ConvertFrom-ExtractedInfoJson -Json $textInfoJson -AsHashtable
 Write-Host "Deserialized as hashtable:"
 Write-Host "- Object type: $($deserializedAsHashtable.GetType().Name)"
 Write-Host "- Keys: $($deserializedAsHashtable.Keys -join ', ')"
 
 # Validation uniquement
+
 $isValidJson = ConvertFrom-ExtractedInfoJson -Json $structuredInfoJson -ValidateOnly
 Write-Host "`nJSON validation result: $(if ($isValidJson) { 'Valid' } else { 'Invalid' })"
 
 # 6. Persistance fichier
+
 Write-Host "`n6. File persistence:`n"
 
 # Définir les chemins de fichier
+
 $tempFolder = Join-Path $env:TEMP "ExtractedInfoDemo"
 if (-not (Test-Path $tempFolder)) {
     New-Item -Path $tempFolder -ItemType Directory | Out-Null
@@ -1174,6 +1286,7 @@ $collectionPath = Join-Path $tempFolder "Collection.json"
 $compactCollectionPath = Join-Path $tempFolder "CompactCollection.json"
 
 # Sauvegarder les objets dans des fichiers
+
 Save-ExtractedInfoToFile -Info $textInfo -FilePath $textInfoPath -Indent -CreateDirectories
 Save-ExtractedInfoToFile -Info $structuredInfo -FilePath $structuredInfoPath -Indent -CreateDirectories
 Save-ExtractedInfoToFile -Collection $collection -FilePath $collectionPath -Indent -CreateDirectories
@@ -1186,6 +1299,7 @@ Write-Host "- Collection (with indexes): $collectionPath"
 Write-Host "- Collection (compact, no indexes): $compactCollectionPath"
 
 # Afficher les tailles de fichier
+
 $textInfoSize = (Get-Item $textInfoPath).Length
 $structuredInfoSize = (Get-Item $structuredInfoPath).Length
 $collectionSize = (Get-Item $collectionPath).Length
@@ -1199,9 +1313,11 @@ Write-Host "- Collection (compact, no indexes): $([Math]::Round($compactCollecti
 Write-Host "- Size reduction: $(100 - [Math]::Round(($compactCollectionSize / $collectionSize) * 100, 2))%"
 
 # 7. Chargement depuis des fichiers
+
 Write-Host "`n7. Loading from files:`n"
 
 # Charger les objets depuis les fichiers
+
 $loadedTextInfo = Load-ExtractedInfoFromFile -FilePath $textInfoPath
 $loadedStructuredInfo = Load-ExtractedInfoFromFile -FilePath $structuredInfoPath
 $loadedCollection = Load-ExtractedInfoFromFile -FilePath $collectionPath
@@ -1214,14 +1330,17 @@ Write-Host "- Collection: $($loadedCollection.Name) with $($loadedCollection.Ite
 Write-Host "- Compact collection: $($loadedCompactCollection.Name) with $($loadedCompactCollection.Items.Count) items"
 
 # Vérifier si les index ont été chargés
+
 Write-Host "`nIndexes status:"
 Write-Host "- Collection with indexes: $(if ($loadedCollection.Indexes) { 'Present' } else { 'Missing' })"
 Write-Host "- Compact collection: $(if ($loadedCompactCollection.Indexes) { 'Present' } else { 'Missing' })"
 
 # 8. Validation de fichier
+
 Write-Host "`n8. File validation:`n"
 
 # Valider les fichiers sans les charger
+
 $textInfoValid = Load-ExtractedInfoFromFile -FilePath $textInfoPath -ValidateOnly
 $structuredInfoValid = Load-ExtractedInfoFromFile -FilePath $structuredInfoPath -ValidateOnly
 $collectionValid = Load-ExtractedInfoFromFile -FilePath $collectionPath -ValidateOnly
@@ -1232,49 +1351,58 @@ Write-Host "- Structured info: $(if ($structuredInfoValid) { 'Valid' } else { 'I
 Write-Host "- Collection: $(if ($collectionValid) { 'Valid' } else { 'Invalid' })"
 
 # 9. Gestion des caractères spéciaux
+
 Write-Host "`n9. Special characters handling:`n"
 
 # Créer un objet avec des caractères spéciaux
+
 $specialCharsInfo = New-TextExtractedInfo -Source "SpecialChars.txt" -ExtractorName "TextExtractor" -Text "Texte avec caractères spéciaux: àéèêëìíîïòóôõöùúûüýÿ et symboles: !@#$%^&*()_+-=[]{}|;':\",./<>?"
+
 $specialCharsJson = ConvertTo-ExtractedInfoJson -Info $specialCharsInfo -Indent
 
 Write-Host "Special characters JSON (excerpt):"
 Write-Host ($specialCharsJson.Substring(0, [Math]::Min(500, $specialCharsJson.Length)) + "...")
 
 # Désérialiser et vérifier
+
 $deserializedSpecialChars = ConvertFrom-ExtractedInfoJson -Json $specialCharsJson
 Write-Host "`nDeserialized special characters text:"
 Write-Host $deserializedSpecialChars.Text
 
 # 10. Sérialisation/désérialisation en boucle
+
 Write-Host "`n10. Round-trip serialization test:`n"
 
 # Effectuer plusieurs cycles de sérialisation/désérialisation
+
 $originalObject = $structuredInfo
 $currentObject = $originalObject
 $cycles = 5
 
 for ($i = 1; $i -le $cycles; $i++) {
     # Sérialiser
+
     $json = ConvertTo-ExtractedInfoJson -Info $currentObject
 
     # Désérialiser
+
     $currentObject = ConvertFrom-ExtractedInfoJson -Json $json
 
     # Vérifier l'intégrité
+
     $isValid = Test-ExtractedInfo -Info $currentObject
 
     Write-Host "Cycle $i - Object valid: $isValid, ID preserved: $(if ($currentObject.Id -eq $originalObject.Id) { 'Yes' } else { 'No' })"
 }
 
 # Vérifier les données complexes après plusieurs cycles
+
 $finalObject = $currentObject
 Write-Host "`nData integrity after $cycles cycles:"
 Write-Host "- Person name: $($finalObject.Data.Person.FirstName) $($finalObject.Data.Person.LastName)"
 Write-Host "- Number of addresses: $($finalObject.Data.Addresses.Count)"
 Write-Host "- First address: $($finalObject.Data.Addresses[0].Street), $($finalObject.Data.Addresses[0].City)"
-```
-
+```plaintext
 Cet exemple illustre les fonctionnalités complètes de sérialisation et désérialisation du module :
 
 1. **Sérialisation d'objets** : Conversion d'objets d'information extraite en JSON.

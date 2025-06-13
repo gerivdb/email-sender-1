@@ -1,12 +1,17 @@
 # Rapport d'??valuation des Comp??tences
 
 ## Table des Mati??res
+
 1. [M??thodologie](#m??thodologie)
+
 2. [R??sultats d'??valuation](#r??sultats-d??valuation)
+
 3. [Distribution des Niveaux](#distribution-des-niveaux)
+
 4. [Recommandations](#recommandations)
 
 ## M??thodologie
+
 L'??valuation des comp??tences est bas??e sur une analyse d??taill??e de chaque comp??tence selon plusieurs crit??res:
 - Complexit?? technique
 - Niveau de supervision requis
@@ -14,6 +19,7 @@ L'??valuation des comp??tences est bas??e sur une analyse d??taill??e de chaque 
 - Impact sur le projet
 
 ## R??sultats d'??valuation
+
 | Comp??tence | Cat??gorie | Manager | Am??lioration | Niveau | Justification |
 |------------|-----------|---------|--------------|--------|---------------|| Optimisation de code | D??veloppement | Manager 1 | Description | Avanc?? | Capacit?? ?? identifier et r??soudre des probl??mes de performance complexes n??cessitant une analyse approfondie |
 | Profiling | D??veloppement | Manager 1 | Description | Interm??diaire | Peut ex??cuter des t??ches courantes de mani??re autonome avec une supervision occasionnelle |
@@ -29,10 +35,12 @@ L'??valuation des comp??tences est bas??e sur une analyse d??taill??e de chaque 
 | Refactoring | D??veloppement | Manager 2 | Description | Interm??diaire | Bonnes connaissances th??oriques, n??cessite une supervision occasionnelle |
 
 ## Distribution des Niveaux- D??butant: 1 comp??tences (8.3%)
+
 - Interm??diaire: 4 comp??tences (33.3%)
 - Avanc??: 4 comp??tences (33.3%)
 - Expert: 3 comp??tences (25%)
 ## Recommandations
+
 Bas?? sur l'??valuation:
 - Concentrer la formation sur les comp??tences de niveau D??butant/Interm??diaire
 - Allouer les ressources seniors aux t??ches de niveau Expert

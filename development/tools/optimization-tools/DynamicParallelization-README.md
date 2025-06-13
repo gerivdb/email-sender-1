@@ -22,71 +22,82 @@ Ce module implÃ©mente un systÃ¨me d'optimisation dynamique de la parallÃ©l
 
 ```powershell
 # Importer le module
+
 Import-Module .\Dynamic-ThreadManager.psm1
 
 # Obtenir le nombre optimal de threads
+
 $optimalThreads = Get-OptimalThreadCount -CpuThreshold 80 -MemoryThreshold 20
 
 # DÃ©marrer le monitoring des threads avec un callback
+
 $monitoring = Start-ThreadMonitoring -IntervalSeconds 5 -AdjustmentCallback {
     param($optimalThreads)
     Write-Host "Nombre optimal de threads: $optimalThreads"
 }
 
 # ArrÃªter le monitoring
-Stop-ThreadMonitoring -MonitoringId $monitoring.MonitoringId
-```
 
+Stop-ThreadMonitoring -MonitoringId $monitoring.MonitoringId
+```plaintext
 ### Gestion de la file d'attente prioritaire
 
 ```powershell
 # Importer le module
+
 Import-Module .\TaskPriorityQueue.psm1
 
 # CrÃ©er une file d'attente prioritaire
+
 $queue = New-TaskPriorityQueue -PromotionThreshold 5 -MaxPriority 10
 
 # CrÃ©er une tÃ¢che
+
 $task = New-PriorityTask -Name "Ma tÃ¢che" -ScriptBlock {
     param($data)
     # Traitement de la tÃ¢che
+
     return "RÃ©sultat: $data"
 } -Priority 7 -Parameters @{ Data = "Test" }
 
 # Ajouter la tÃ¢che Ã  la file d'attente
+
 Add-TaskToQueue -Queue $queue -Task $task
 
 # Promouvoir les tÃ¢ches en attente
+
 Invoke-TaskPromotion -Queue $queue
 
 # Signaler qu'une tÃ¢che est bloquÃ©e
+
 Register-TaskBlocked -Queue $queue -TaskId $task.Id
 
 # RÃ©cupÃ©rer la prochaine tÃ¢che
-$nextTask = Get-NextTask -Queue $queue
-```
 
+$nextTask = Get-NextTask -Queue $queue
+```plaintext
 ## ExÃ©cution des tests
 
 Pour exÃ©cuter les tests unitaires :
 
 ```powershell
 # ExÃ©cuter tous les tests
+
 .\development\testing\tests\Run-ParallelizationTests.ps1
 
 # ExÃ©cuter un test spÃ©cifique
-Invoke-Pester -Path .\development\testing\tests\Dynamic-ThreadManager.Tests.ps1
-```
 
+Invoke-Pester -Path .\development\testing\tests\Dynamic-ThreadManager.Tests.ps1
+```plaintext
 ## DÃ©monstration
 
 Pour voir le systÃ¨me en action :
 
 ```powershell
 # ExÃ©cuter la dÃ©monstration
-.\Demo-DynamicParallelization.ps1
-```
 
+.\Demo-DynamicParallelization.ps1
+```plaintext
 ## IntÃ©gration avec d'autres modules
 
 Ce systÃ¨me d'optimisation dynamique peut Ãªtre intÃ©grÃ© avec d'autres modules du projet :

@@ -1,4 +1,4 @@
-﻿# Rapport de comparaison des tests de performance
+# Rapport de comparaison des tests de performance
 
 ## RÃ©sumÃ© des tests
 

@@ -16,6 +16,7 @@ tags: [erpnext, task, project:Journal RAG, status:Open, priority:High]
 # Tâche ERPNext: Implémenter l'authentification
 
 ## Détails de la tâche
+
 - **ID**: TASK-001
 - **Sujet**: Implémenter l'authentification
 - **Projet**: Journal RAG
@@ -25,16 +26,18 @@ tags: [erpnext, task, project:Journal RAG, status:Open, priority:High]
 - **Date de fin**: 2023-04-12
 
 ## Description
+
 Implémenter un système d'authentification pour l'application Journal RAG. Utiliser JWT pour l'authentification API et sessions pour l'interface web.
 
 ## Actions réalisées
+
 - Synchronisation depuis ERPNext le 2023-04-05 15:30
 
 ## Notes
+
 - Cette entrée a été générée automatiquement à partir d'une tâche ERPNext.
 - Pour mettre à jour la tâche dans ERPNext, modifiez cette entrée et exécutez la synchronisation vers ERPNext.
-```
-
+```plaintext
 ## Exemple 2: Mise à jour d'une tâche ERPNext à partir d'une entrée de journal
 
 Voici un exemple d'entrée de journal modifiée pour mettre à jour une tâche ERPNext:
@@ -49,6 +52,7 @@ tags: [erpnext, task, project:Journal RAG, status:In Progress, priority:High]
 # Tâche ERPNext: Implémenter l'authentification
 
 ## Détails de la tâche
+
 - **ID**: TASK-001
 - **Sujet**: Implémenter l'authentification
 - **Projet**: Journal RAG
@@ -58,18 +62,20 @@ tags: [erpnext, task, project:Journal RAG, status:In Progress, priority:High]
 - **Date de fin**: 2023-04-12
 
 ## Description
+
 Implémenter un système d'authentification pour l'application Journal RAG. Utiliser JWT pour l'authentification API et sessions pour l'interface web.
 
 ## Actions réalisées
+
 - Synchronisation depuis ERPNext le 2023-04-05 15:30
 - Implémentation de l'authentification JWT pour l'API
 - Configuration des routes protégées
 
 ## Notes
+
 - Cette entrée a été générée automatiquement à partir d'une tâche ERPNext.
 - Pour mettre à jour la tâche dans ERPNext, modifiez cette entrée et exécutez la synchronisation vers ERPNext.
-```
-
+```plaintext
 Après avoir modifié cette entrée et exécuté la synchronisation vers ERPNext, la tâche TASK-001 sera mise à jour avec:
 - Statut: "In Progress"
 - Description: Mise à jour pour inclure les actions réalisées
@@ -94,8 +100,7 @@ Après avoir travaillé sur le système d'authentification, j'ai quelques réfle
 3. Nous devrions utiliser un système de messagerie pour la communication entre les services
 
 Ces changements permettraient d'améliorer la scalabilité et la maintenabilité du système.
-```
-
+```plaintext
 Cette entrée sera convertie en note ERPNext avec:
 - Titre: "Réflexions sur l'architecture du système"
 - Contenu: Le contenu complet de l'entrée
@@ -106,34 +111,40 @@ Voici un exemple d'utilisation du script Python pour synchroniser les tâches ER
 
 ```bash
 # Configurer l'intégration
+
 python scripts/python/journal/integrations/erpnext_integration.py \
   --url "https://erpnext.example.com" \
   --key "votre-cle-api" \
   --secret "votre-secret-api"
 
 # Tester la connexion
+
 python scripts/python/journal/integrations/erpnext_integration.py --test
 
 # Synchroniser les tâches ERPNext vers le journal
+
 python scripts/python/journal/integrations/erpnext_integration.py --sync-to-journal
 
 # Synchroniser le journal vers ERPNext
+
 python scripts/python/journal/integrations/erpnext_integration.py --sync-from-journal
 
 # Récupérer les projets
+
 python scripts/python/journal/integrations/erpnext_integration.py --projects
 
 # Récupérer les tâches d'un projet
+
 python scripts/python/journal/integrations/erpnext_integration.py --tasks --project "Journal RAG"
 
 # Créer une tâche
+
 python scripts/python/journal/integrations/erpnext_integration.py \
   --create-task \
   --subject "Nouvelle tâche" \
   --description "Description de la nouvelle tâche" \
   --project "Journal RAG"
-```
-
+```plaintext
 ## Exemple 5: Utilisation de l'API pour la synchronisation
 
 Voici un exemple d'utilisation de l'API pour synchroniser les tâches ERPNext vers le journal:
@@ -179,8 +190,7 @@ async function syncFromJournal() {
   });
   return response.json();
 }
-```
-
+```plaintext
 ## Exemple 6: Workflow complet d'utilisation
 
 Voici un exemple de workflow complet d'utilisation de l'intégration ERPNext:

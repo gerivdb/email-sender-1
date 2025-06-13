@@ -5,11 +5,17 @@ Ce document décrit le module de gestion de cache (`CacheManager.ps1`) qui perme
 ## Table des matières
 
 1. [Introduction](#introduction)
+
 2. [Fonctions disponibles](#fonctions-disponibles)
+
 3. [Politiques d'éviction](#politiques-déviction)
+
 4. [Exemples d'utilisation](#exemples-dutilisation)
+
 5. [Statistiques de cache](#statistiques-de-cache)
+
 6. [Bonnes pratiques](#bonnes-pratiques)
+
 7. [Intégration avec d'autres modules](#intégration-avec-dautres-modules)
 
 ## Introduction
@@ -28,8 +34,7 @@ Le module offre plusieurs fonctionnalités :
 
 ```powershell
 Initialize-CacheManager [-Enabled <bool>] [-MaxItems <int>] [-DefaultTTL <int>] [-EvictionPolicy <string>]
-```
-
+```plaintext
 Cette fonction initialise le gestionnaire de cache avec les paramètres spécifiés.
 
 #### Paramètres
@@ -43,14 +48,12 @@ Cette fonction initialise le gestionnaire de cache avec les paramètres spécifi
 
 ```powershell
 Initialize-CacheManager -Enabled $true -MaxItems 500 -DefaultTTL 1800 -EvictionPolicy "LFU"
-```
-
+```plaintext
 ### Get-CacheItem
 
 ```powershell
 Get-CacheItem -Key <string>
-```
-
+```plaintext
 Cette fonction récupère un élément du cache à partir de sa clé.
 
 #### Paramètres
@@ -61,14 +64,12 @@ Cette fonction récupère un élément du cache à partir de sa clé.
 
 ```powershell
 $cachedResult = Get-CacheItem -Key "MyOperation_param1_param2"
-```
-
+```plaintext
 ### Set-CacheItem
 
 ```powershell
 Set-CacheItem -Key <string> -Value <object> [-TTL <int>]
-```
-
+```plaintext
 Cette fonction ajoute ou met à jour un élément dans le cache.
 
 #### Paramètres
@@ -81,14 +82,12 @@ Cette fonction ajoute ou met à jour un élément dans le cache.
 
 ```powershell
 Set-CacheItem -Key "MyOperation_param1_param2" -Value $result -TTL 7200
-```
-
+```plaintext
 ### Remove-CacheItem
 
 ```powershell
 Remove-CacheItem -Key <string>
-```
-
+```plaintext
 Cette fonction supprime un élément du cache.
 
 #### Paramètres
@@ -99,28 +98,24 @@ Cette fonction supprime un élément du cache.
 
 ```powershell
 Remove-CacheItem -Key "MyOperation_param1_param2"
-```
-
+```plaintext
 ### Clear-Cache
 
 ```powershell
 Clear-Cache
-```
-
+```plaintext
 Cette fonction vide complètement le cache.
 
 #### Exemple
 
 ```powershell
 Clear-Cache
-```
-
+```plaintext
 ### Get-CacheStatistics
 
 ```powershell
 Get-CacheStatistics
-```
-
+```plaintext
 Cette fonction retourne des statistiques sur l'utilisation du cache.
 
 #### Exemple
@@ -128,14 +123,12 @@ Cette fonction retourne des statistiques sur l'utilisation du cache.
 ```powershell
 $stats = Get-CacheStatistics
 $stats | Format-List
-```
-
+```plaintext
 ### Invoke-CachedFunction
 
 ```powershell
 Invoke-CachedFunction -ScriptBlock <scriptblock> -CacheKey <string> [-TTL <int>] [-Arguments <object[]>]
-```
-
+```plaintext
 Cette fonction exécute une fonction avec mise en cache des résultats.
 
 #### Paramètres
@@ -149,8 +142,7 @@ Cette fonction exécute une fonction avec mise en cache des résultats.
 
 ```powershell
 $result = Invoke-CachedFunction -ScriptBlock { param($a, $b) $a + $b } -CacheKey "Addition_2_3" -Arguments @(2, 3)
-```
-
+```plaintext
 ## Politiques d'éviction
 
 Le module prend en charge trois politiques d'éviction pour gérer la taille du cache :
@@ -173,24 +165,29 @@ La politique FIFO supprime les éléments les plus anciens lorsque le cache est 
 
 ```powershell
 # Initialiser le gestionnaire de cache
+
 Initialize-CacheManager -Enabled $true -MaxItems 100 -DefaultTTL 3600 -EvictionPolicy "LRU"
 
 # Fonction coûteuse à mettre en cache
+
 function Get-ExpensiveData {
     param($id)
     
     Write-Host "Calcul coûteux pour l'ID $id..."
     Start-Sleep -Seconds 2  # Simuler une opération coûteuse
+
     return "Données pour l'ID $id"
 }
 
 # Fonction avec mise en cache
+
 function Get-CachedData {
     param($id)
     
     $cacheKey = "ExpensiveData_$id"
     
     # Vérifier si le résultat est dans le cache
+
     $cachedResult = Get-CacheItem -Key $cacheKey
     
     if ($null -ne $cachedResult) {
@@ -199,76 +196,91 @@ function Get-CachedData {
     }
     
     # Exécuter la fonction coûteuse
+
     $result = Get-ExpensiveData -id $id
     
     # Mettre en cache le résultat
+
     Set-CacheItem -Key $cacheKey -Value $result -TTL 3600
     
     return $result
 }
 
 # Utilisation
-$result1 = Get-CachedData -id 123  # Calcul coûteux
-$result2 = Get-CachedData -id 123  # Récupéré du cache
-```
 
+$result1 = Get-CachedData -id 123  # Calcul coûteux
+
+$result2 = Get-CachedData -id 123  # Récupéré du cache
+
+```plaintext
 ### Utilisation de Invoke-CachedFunction
 
 ```powershell
 # Initialiser le gestionnaire de cache
+
 Initialize-CacheManager -Enabled $true -MaxItems 100 -DefaultTTL 3600 -EvictionPolicy "LRU"
 
 # Fonction coûteuse
+
 $expensiveFunction = {
     param($id)
     
     Write-Host "Calcul coûteux pour l'ID $id..."
     Start-Sleep -Seconds 2  # Simuler une opération coûteuse
+
     return "Données pour l'ID $id"
 }
 
 # Premier appel (sans cache)
+
 $result1 = Invoke-CachedFunction -ScriptBlock $expensiveFunction -CacheKey "ExpensiveFunction_123" -Arguments @(123)
 
 # Deuxième appel (avec cache)
+
 $result2 = Invoke-CachedFunction -ScriptBlock $expensiveFunction -CacheKey "ExpensiveFunction_123" -Arguments @(123)
 
 # Afficher les statistiques du cache
-Get-CacheStatistics | Format-List
-```
 
+Get-CacheStatistics | Format-List
+```plaintext
 ### Mise en cache avec expiration
 
 ```powershell
 # Initialiser le gestionnaire de cache
+
 Initialize-CacheManager -Enabled $true -MaxItems 100 -DefaultTTL 5 -EvictionPolicy "LRU"
 
 # Fonction coûteuse
+
 $expensiveFunction = {
     param($id)
     
     Write-Host "Calcul coûteux pour l'ID $id..."
     Start-Sleep -Seconds 1  # Simuler une opération coûteuse
+
     return "Données pour l'ID $id ($(Get-Date))"
 }
 
 # Premier appel
+
 $result1 = Invoke-CachedFunction -ScriptBlock $expensiveFunction -CacheKey "ExpensiveFunction_123" -Arguments @(123)
 Write-Host "Résultat 1: $result1"
 
 # Deuxième appel (avec cache)
+
 $result2 = Invoke-CachedFunction -ScriptBlock $expensiveFunction -CacheKey "ExpensiveFunction_123" -Arguments @(123)
 Write-Host "Résultat 2: $result2"
 
 # Attendre l'expiration du cache
+
 Write-Host "Attente de l'expiration du cache (5 secondes)..."
 Start-Sleep -Seconds 6
 
 # Troisième appel (après expiration)
+
 $result3 = Invoke-CachedFunction -ScriptBlock $expensiveFunction -CacheKey "ExpensiveFunction_123" -Arguments @(123)
 Write-Host "Résultat 3: $result3"
-```
-
+```plaintext
 ## Statistiques de cache
 
 Le module fournit des statistiques détaillées sur l'utilisation du cache via la fonction `Get-CacheStatistics`. Ces statistiques incluent :
@@ -312,27 +324,32 @@ Le module de gestion de cache peut être intégré avec d'autres modules pour am
 
 ```powershell
 # Importer les modules
+
 . ".\modules\CacheManager.ps1"
 . ".\modules\UnifiedFileProcessor.ps1"
 
 # Initialiser les modules
+
 Initialize-CacheManager -Enabled $true -MaxItems 100 -DefaultTTL 3600 -EvictionPolicy "LRU"
 Initialize-UnifiedFileProcessor -EnableCache
 
 # Utiliser la fonction de traitement avec mise en cache
-$result = Invoke-CachedFileProcessing -InputFile "input.json" -OutputFile "output.yaml" -InputFormat "JSON" -OutputFormat "YAML"
-```
 
+$result = Invoke-CachedFileProcessing -InputFile "input.json" -OutputFile "output.yaml" -InputFormat "JSON" -OutputFormat "YAML"
+```plaintext
 ### Intégration avec des fonctions personnalisées
 
 ```powershell
 # Importer le module
+
 . ".\modules\CacheManager.ps1"
 
 # Initialiser le gestionnaire de cache
+
 Initialize-CacheManager -Enabled $true -MaxItems 100 -DefaultTTL 3600 -EvictionPolicy "LRU"
 
 # Fonction personnalisée avec mise en cache
+
 function Get-CachedData {
     param(
         [Parameter(Mandatory = $true)]
@@ -346,17 +363,21 @@ function Get-CachedData {
     )
     
     # Générer une clé de cache
+
     $cacheKey = "Data_${Source}_${Query}"
     
     # Définir le script block pour récupérer les données
+
     $scriptBlock = {
         param($Source, $Query)
         
         # Simuler une requête coûteuse
+
         Write-Host "Récupération des données depuis $Source avec la requête $Query..."
         Start-Sleep -Seconds 2
         
         # Retourner les données
+
         return @{
             Source = $Source
             Query = $Query
@@ -366,12 +387,16 @@ function Get-CachedData {
     }
     
     # Exécuter avec mise en cache
+
     $result = Invoke-CachedFunction -ScriptBlock $scriptBlock -CacheKey $cacheKey -TTL $CacheTTL -Arguments @($Source, $Query)
     
     return $result
 }
 
 # Utilisation
+
 $data1 = Get-CachedData -Source "Database" -Query "SELECT * FROM users"  # Requête coûteuse
+
 $data2 = Get-CachedData -Source "Database" -Query "SELECT * FROM users"  # Récupéré du cache
-```
+
+```plaintext

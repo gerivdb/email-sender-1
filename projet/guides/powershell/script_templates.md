@@ -5,16 +5,22 @@ Ce document contient des modèles de scripts PowerShell réutilisables pour diff
 ## Table des matières
 
 - [Script de base](#script-de-base)
+
 - [Script avec paramètres](#script-avec-paramètres)
+
 - [Script avec gestion des erreurs](#script-avec-gestion-des-erreurs)
+
 - [Script avec logging](#script-avec-logging)
+
 - [Script avec exécution en mode batch](#script-avec-exécution-en-mode-batch)
+
 - [Module PowerShell](#module-powershell)
 
 ## Script de base
 
 ```powershell
 <#
+
 .SYNOPSIS
     Description courte du script.
 .DESCRIPTION
@@ -30,13 +36,14 @@ Ce document contient des modèles de scripts PowerShell réutilisables pour diff
 param()
 
 # Code du script
-Write-Verbose "Exécution du script"
-```
 
+Write-Verbose "Exécution du script"
+```plaintext
 ## Script avec paramètres
 
 ```powershell
 <#
+
 .SYNOPSIS
     Description courte du script.
 .DESCRIPTION
@@ -65,15 +72,16 @@ param(
 )
 
 # Code du script
+
 if ($Force -or $PSCmdlet.ShouldProcess($Path, "Traiter")) {
     Write-Verbose "Traitement de $Path"
 }
-```
-
+```plaintext
 ## Script avec gestion des erreurs
 
 ```powershell
 <#
+
 .SYNOPSIS
     Description courte du script.
 .DESCRIPTION
@@ -97,10 +105,12 @@ param(
 )
 
 # Définir la préférence d'action d'erreur sur Stop pour capturer les erreurs
+
 $ErrorActionPreference = 'Stop'
 
 try {
     # Code du script
+
     Write-Verbose "Traitement de $Path"
     
     if (-not (Test-Path -Path $Path)) {
@@ -108,6 +118,7 @@ try {
     }
     
     # Autres opérations...
+
 }
 catch {
     Write-Error "Une erreur s'est produite : $_"
@@ -115,14 +126,15 @@ catch {
 }
 finally {
     # Nettoyage
+
     Write-Verbose "Nettoyage des ressources"
 }
-```
-
+```plaintext
 ## Script avec logging
 
 ```powershell
 <#
+
 .SYNOPSIS
     Description courte du script.
 .DESCRIPTION
@@ -151,6 +163,7 @@ param(
 )
 
 # Fonction de logging
+
 function Write-Log {
     param(
         [Parameter(Mandatory=$true)]
@@ -165,6 +178,7 @@ function Write-Log {
     $logMessage = "[$timestamp] [$Level] $Message"
     
     # Afficher le message dans la console
+
     switch ($Level) {
         'INFO' { Write-Verbose $logMessage }
         'WARNING' { Write-Warning $Message }
@@ -172,10 +186,12 @@ function Write-Log {
     }
     
     # Écrire dans le fichier de log
+
     Add-Content -Path $LogFile -Value $logMessage
 }
 
 # Code du script
+
 try {
     Write-Log -Message "Début du script" -Level 'INFO'
     Write-Log -Message "Traitement de $Path" -Level 'INFO'
@@ -186,6 +202,7 @@ try {
     }
     
     # Autres opérations...
+
     
     Write-Log -Message "Fin du script" -Level 'INFO'
 }
@@ -193,12 +210,12 @@ catch {
     Write-Log -Message "Une erreur s'est produite : $_" -Level 'ERROR'
     exit 1
 }
-```
-
+```plaintext
 ## Script avec exécution en mode batch
 
 ```powershell
 <#
+
 .SYNOPSIS
     Description courte du script.
 .DESCRIPTION
@@ -227,6 +244,7 @@ param(
 )
 
 # Fonction pour demander une confirmation
+
 function Get-YesNo {
     param(
         [Parameter(Mandatory=$true)]
@@ -238,6 +256,7 @@ function Get-YesNo {
 }
 
 # Code du script
+
 if (-not $Force) {
     if (-not (Get-YesNo -Prompt "Voulez-vous traiter $Path ?")) {
         Write-Verbose "Opération annulée par l'utilisateur."
@@ -248,17 +267,19 @@ if (-not $Force) {
 Write-Verbose "Traitement de $Path"
 
 # Exemple d'opération avec suppression de confirmation
+
 if (Test-Path -Path "$Path\temp") {
     Remove-Item -Path "$Path\temp" -Recurse -Force -Confirm:$false
 }
 
 # Autres opérations...
-```
 
+```plaintext
 ## Module PowerShell
 
 ```powershell
 <#
+
 .SYNOPSIS
     Module PowerShell d'exemple.
 .DESCRIPTION
@@ -271,8 +292,10 @@ if (Test-Path -Path "$Path\temp") {
 #>
 
 # Fonction publique
+
 function Get-Something {
     <#
+
     .SYNOPSIS
         Récupère quelque chose.
     .DESCRIPTION
@@ -282,6 +305,7 @@ function Get-Something {
     .EXAMPLE
         Get-Something -Name "Test"
     #>
+
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true)]
@@ -293,6 +317,7 @@ function Get-Something {
 }
 
 # Fonction privée
+
 function private:Get-SomethingInternal {
     [CmdletBinding()]
     param(
@@ -304,49 +329,61 @@ function private:Get-SomethingInternal {
 }
 
 # Exporter uniquement les fonctions publiques
-Export-ModuleMember -Function Get-Something
-```
 
+Export-ModuleMember -Function Get-Something
+```plaintext
 ## Fichier de manifeste de module (.psd1)
 
 ```powershell
 @{
     # Version du module
+
     ModuleVersion = '1.0'
     
     # ID utilisé pour identifier de manière unique ce module
+
     GUID = '00000000-0000-0000-0000-000000000000'
     
     # Auteur de ce module
+
     Author = 'Votre nom'
     
     # Description de la fonctionnalité fournie par ce module
+
     Description = 'Description du module'
     
     # Version minimale du moteur PowerShell requise par ce module
+
     PowerShellVersion = '5.1'
     
     # Fonctions à exporter à partir de ce module
+
     FunctionsToExport = @('Get-Something')
     
     # Cmdlets à exporter à partir de ce module
+
     CmdletsToExport = @()
     
     # Variables à exporter à partir de ce module
+
     VariablesToExport = @()
     
     # Alias à exporter à partir de ce module
+
     AliasesToExport = @()
     
     # Fichiers privés du module
+
     PrivateData = @{
         PSData = @{
             # Tags appliqués à ce module pour faciliter la découverte
+
             Tags = @('Utility')
             
             # URL vers la page d'accueil de ce projet
+
             ProjectUri = 'https://github.com/username/project'
         }
     }
 }
-```
+```plaintext

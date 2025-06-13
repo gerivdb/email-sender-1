@@ -45,20 +45,20 @@ Ce document décrit les caractéristiques, limites et bonnes pratiques pour l'ut
 ## Exemples comparatifs
 
 ### Trop long (inefficace):
-```
+
+```plaintext
 "Pour optimiser la documentation de projets complexes, il est recommandé d'adopter une approche modulaire avec une hiérarchie claire de fichiers plus petits et indépendants plutôt que de créer un seul document volumineux qui devient rapidement ingérable, difficile à naviguer et à maintenir par plusieurs contributeurs simultanément."
-```
-
+```plaintext
 ### Bien calibré (efficace):
-```
+
+```plaintext
 "Pour optimiser la documentation volumineuse, utiliser une approche modulaire avec des fichiers plus petits organisés hiérarchiquement."
-```
-
+```plaintext
 ### Trop court (insuffisant):
-```
-"Documentation modulaire recommandée."
-```
 
+```plaintext
+"Documentation modulaire recommandée."
+```plaintext
 ## Limites techniques à considérer
 
 1. **Limite de contexte**:

@@ -1,4 +1,4 @@
-﻿# archi - modes
+# archi - modes
 
 Cette section contient les scripts liÃ©s Ã  archi dans la catÃ©gorie modes.
 
@@ -11,6 +11,7 @@ Cette section contient les scripts liÃ©s Ã  archi dans la catÃ©gorie modes
 
 `powershell
 # Exemple d'utilisation
+
 .\<nom-du-script>.ps1 -InputPath "Roadmap/roadmap.md" -OutputPath "Roadmap/output.md"
 `
 

@@ -16,10 +16,9 @@ L'API Key est un mécanisme d'authentification simple pour accéder à l'API RES
 
 Pour générer et configurer une API Key, utilisez le script `configure-n8n-api-key.ps1` :
 
-```
+```plaintext
 .\configure-n8n-api-key.cmd
-```
-
+```plaintext
 Ce script :
 1. Génère une API Key sécurisée (32 caractères hexadécimaux)
 2. Configure l'API Key dans le fichier `n8n/core/n8n-config.json`
@@ -27,10 +26,9 @@ Ce script :
 
 Vous pouvez également spécifier votre propre API Key :
 
-```
+```plaintext
 .\configure-n8n-api-key.cmd -ApiKey "votre-api-key"
-```
-
+```plaintext
 ### Configuration manuelle
 
 Si vous préférez configurer l'API Key manuellement, vous devez :
@@ -56,42 +54,37 @@ Si vous préférez configurer l'API Key manuellement, vous devez :
 
 Pour tester l'API Key, utilisez le script `test-n8n-api-key.ps1` :
 
-```
+```plaintext
 .\test-n8n-api-key.cmd
-```
-
+```plaintext
 Ce script teste l'accès à différents endpoints de l'API REST de n8n en utilisant l'API Key configurée.
 
 Vous pouvez également spécifier une API Key différente pour le test :
 
-```
+```plaintext
 .\test-n8n-api-key.cmd -ApiKey "votre-api-key"
-```
-
+```plaintext
 ## Utilisation de l'API Key
 
 ### En-tête HTTP
 
 Pour utiliser l'API Key avec l'API REST de n8n, ajoutez l'en-tête HTTP suivant à vos requêtes :
 
-```
+```plaintext
 X-N8N-API-KEY: votre-api-key
-```
-
+```plaintext
 ### Exemples d'utilisation
 
 #### Avec curl
 
 ```bash
 curl -X GET http://localhost:5678/api/v1/workflows -H "X-N8N-API-KEY: votre-api-key"
-```
-
+```plaintext
 #### Avec PowerShell
 
 ```powershell
 Invoke-RestMethod -Uri "http://localhost:5678/api/v1/workflows" -Method Get -Headers @{"X-N8N-API-KEY" = "votre-api-key"}
-```
-
+```plaintext
 #### Avec JavaScript (fetch)
 
 ```javascript
@@ -103,8 +96,7 @@ fetch('http://localhost:5678/api/v1/workflows', {
 })
 .then(response => response.json())
 .then(data => console.log(data));
-```
-
+```plaintext
 #### Avec Python (requests)
 
 ```python
@@ -117,38 +109,33 @@ headers = {
 response = requests.get('http://localhost:5678/api/v1/workflows', headers=headers)
 data = response.json()
 print(data)
-```
-
+```plaintext
 ## Scripts d'utilisation de l'API
 
 ### Importation de workflows
 
 Pour importer des workflows via l'API, utilisez le script `import-workflow-api.ps1` :
 
-```
+```plaintext
 .\import-workflow-api.cmd -WorkflowFile "path/to/workflow.json" -Tags "tag1,tag2" -Active $true
-```
-
+```plaintext
 Vous pouvez également importer tous les workflows d'un dossier :
 
-```
+```plaintext
 .\import-workflow-api.cmd -WorkflowFile "path/to/workflows/folder" -Tags "tag1,tag2" -Active $true
-```
-
+```plaintext
 ### Liste des workflows
 
 Pour lister les workflows via l'API, utilisez le script `list-workflows-api.ps1` :
 
-```
+```plaintext
 .\list-workflows-api.cmd
-```
-
+```plaintext
 Vous pouvez filtrer les workflows par état d'activation et par tags :
 
-```
+```plaintext
 .\list-workflows-api.cmd -Active $true -Tags "tag1,tag2"
-```
-
+```plaintext
 ## Résolution des problèmes
 
 ### L'API Key n'est pas reconnue

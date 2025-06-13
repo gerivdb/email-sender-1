@@ -3,6 +3,7 @@
 ## 21/04/2023 - Consolidation et réorganisation de la structure n8n
 
 ### Contexte
+
 Le projet comportait de multiples dossiers liés à n8n, créant de la confusion et rendant difficile la maintenance :
 - `n8n`
 - `n8n-data`
@@ -13,6 +14,7 @@ Le projet comportait de multiples dossiers liés à n8n, créant de la confusion
 - Nombreux fichiers `.cmd` à la racine du dépôt
 
 ### Actions réalisées
+
 1. **Analyse de l'existant**
    - Inventaire des dossiers n8n et de leur contenu
    - Identification des workflows dans chaque dossier
@@ -39,6 +41,7 @@ Le projet comportait de multiples dossiers liés à n8n, créant de la confusion
    - Documentation détaillée du processus d'intégration
 
 ### Leçons apprises
+
 1. **Importance de la structure de projet**
    - Une structure claire facilite la maintenance et l'évolution du projet
    - La séparation des préoccupations améliore la compréhension du code
@@ -60,6 +63,7 @@ Le projet comportait de multiples dossiers liés à n8n, créant de la confusion
    - Les scripts d'installation et de configuration doivent être séparés des scripts opérationnels
 
 ### Prochaines étapes
+
 1. **Tests d'intégration**
    - Vérifier le fonctionnement de n8n avec la nouvelle structure
    - Tester l'intégration avec Augment

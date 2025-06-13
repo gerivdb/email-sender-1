@@ -85,8 +85,7 @@ jobs:
         env:
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         run: node scripts/send-email.js
-```
-
+```plaintext
 ## Dépannage
 
 Si vous rencontrez des problèmes :

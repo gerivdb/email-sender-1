@@ -1,4 +1,5 @@
 # Plan de développement 1.0 - Intégration et orchestration du serveur GCP MCP
+
 *Version 1.0 - 2025-05-22 - Progression globale : 100%*
 
 Ce plan vise à garantir l’intégration harmonieuse du serveur GCP MCP avec le proxy et le module MCPManager, afin de permettre une gestion centralisée et l’accès à la console Google Cloud via l’infrastructure MCP.
@@ -61,6 +62,7 @@ Ce plan vise à garantir l’intégration harmonieuse du serveur GCP MCP avec le
 ---
 
 ## Historique des modifications
+
 - 2025-05-23 : Passage à 100%, ajout de l’état d’avancement global, centralisation des livrables, liste des points de vigilance restants.
 
 ## 1. Phase 1 (Phase 1)
@@ -134,14 +136,19 @@ Ce plan vise à garantir l’intégration harmonieuse du serveur GCP MCP avec le
         - **Exemple de commande pour Windows :**
             ```pwsh
             # Ajouter le sous-module
+
             git submodule add https://github.com/mcp-ecosystem/mcp-gateway.git projet/mcp/servers/gateway
             # Initialiser et mettre à jour les sous-modules
+
             git submodule update --init --recursive
             # Builder (exemple pour Go)
+
             cd projet/mcp/servers/gateway
             go build -o gateway.exe ./cmd/gateway
             # Copier le binaire si besoin
+
             # copy gateway.exe ..\..\bin\gateway.exe
+
             ```
 
         - **Exemple de vérification :**
@@ -185,6 +192,7 @@ Ce plan vise à garantir l’intégration harmonieuse du serveur GCP MCP avec le
                   type: disk
                   path: ./mcp-gateway-data
                 # ...routers, servers, tools...
+
                 ```
             - Tous les tests de démarrage et d'accessibilité des endpoints sont à refaire après chaque modification.
             - La documentation `projet/mcp/docs/guides/mpc-gateway-documentation.md` est la référence pour toute correction future.
@@ -277,7 +285,9 @@ Ce plan vise à garantir l’intégration harmonieuse du serveur GCP MCP avec le
         - S'assurer que le binaire est exécutable et affiche l'aide :  
           ```bash
           projet/mcp/bin/mcpmanager.exe --help   # Windows
+
           ./projet/mcp/bin/mcpmanager --help     # Linux/macOS
+
           ```
         - Documenter la version installée et le commit source dans le guide technique :  
           ```bash
@@ -426,6 +436,7 @@ Ce plan vise à garantir l’intégration harmonieuse du serveur GCP MCP avec le
         ```powershell
         projet\mcp\bin\mcpmanager.exe list servers
         # ou via le module PowerShell
+
         Import-Module .\projet\mcp\modules\MCPManager.psm1
         Find-MCPServers | Format-Table -Property Host,Port,Type,Status,Version
         ```
@@ -469,12 +480,16 @@ Ce plan vise à garantir l’intégration harmonieuse du serveur GCP MCP avec le
     - [x] Commandes de pilotage utilisées :
         ```powershell
         # Démarrer le serveur GCP MCP
+
         projet\mcp\bin\mcpmanager.exe start server --name gcp
         # Arrêter le serveur GCP MCP
+
         projet\mcp\bin\mcpmanager.exe stop server --name gcp
         # Redémarrer le serveur GCP MCP
+
         projet\mcp\bin\mcpmanager.exe restart server --name gcp
         # Ou via PowerShell
+
         Import-Module .\projet\mcp\modules\MCPManager.psm1
         Start-MCPServer -ServerName gcp
         Stop-MCPServer -ServerName gcp
@@ -556,6 +571,7 @@ Ce plan vise à garantir l’intégration harmonieuse du serveur GCP MCP avec le
         ```powershell
         curl http://localhost:8080/mcp/user/sse
         # ou via un navigateur ou Postman
+
         ```
     - Résultat attendu : réponse HTTP 200, structure JSON conforme, logs générés à chaque étape (proxy, MCPManager, GCP MCP).
     - Résultat obtenu : logs et captures d’écran archivés dans `logs/mcp/` et référencés dans le guide technique.

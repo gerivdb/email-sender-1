@@ -12,16 +12,14 @@ Le module est disponible dans le dossier `modules` du projet. Pour l'importer :
 
 ```powershell
 Import-Module -Path ".\modules\InputSegmentation.psm1" -Force
-```
-
+```plaintext
 ## Initialisation
 
 Avant d'utiliser le module, il est recommandé de l'initialiser avec les paramètres souhaités :
 
 ```powershell
 Initialize-InputSegmentation -MaxInputSizeKB 15 -DefaultChunkSizeKB 7 -StateFilePath ".\cache\segmentation_state.json"
-```
-
+```plaintext
 ## Architecture
 
 Le module `InputSegmentation` est conçu selon les principes SOLID et offre une architecture modulaire et extensible :
@@ -44,8 +42,7 @@ Initialise le module de segmentation avec les paramètres spécifiés.
 
 ```powershell
 Initialize-InputSegmentation [-MaxInputSizeKB <Int32>] [-DefaultChunkSizeKB <Int32>] [-StateFilePath <String>]
-```
-
+```plaintext
 #### Paramètres
 
 - **MaxInputSizeKB** : Taille maximale d'entrée en kilooctets avant segmentation. Par défaut : 10.
@@ -56,12 +53,13 @@ Initialize-InputSegmentation [-MaxInputSizeKB <Int32>] [-DefaultChunkSizeKB <Int
 
 ```powershell
 # Initialiser avec des valeurs personnalisées
+
 Initialize-InputSegmentation -MaxInputSizeKB 20 -DefaultChunkSizeKB 8 -StateFilePath ".\cache\segmentation_state.json"
 
 # Initialiser avec les valeurs par défaut
-Initialize-InputSegmentation
-```
 
+Initialize-InputSegmentation
+```plaintext
 ### Measure-InputSize
 
 Mesure la taille d'une entrée en kilooctets.
@@ -70,8 +68,7 @@ Mesure la taille d'une entrée en kilooctets.
 
 ```powershell
 Measure-InputSize -Input <Object>
-```
-
+```plaintext
 #### Paramètres
 
 - **Input** : L'entrée à mesurer (texte, JSON, fichier, etc.).
@@ -90,8 +87,7 @@ Write-Host "Taille de l'entrée: $size KB"
 $json = @{ "data" = @(1..1000) } | ConvertTo-Json
 $jsonSize = Measure-InputSize -Input $json
 Write-Host "Taille du JSON: $jsonSize KB"
-```
-
+```plaintext
 ### Split-TextInput
 
 Segmente une chaîne de texte en morceaux plus petits.
@@ -100,8 +96,7 @@ Segmente une chaîne de texte en morceaux plus petits.
 
 ```powershell
 Split-TextInput -Text <String> [-ChunkSizeKB <Int32>] [-PreserveLines]
-```
-
+```plaintext
 #### Paramètres
 
 - **Text** : Le texte à segmenter.
@@ -116,16 +111,17 @@ Un tableau de chaînes de texte représentant les segments.
 
 ```powershell
 # Segmenter un texte sans préserver les lignes
+
 $text = "A" * 20KB
 $segments = Split-TextInput -Text $text -ChunkSizeKB 5
 Write-Host "Nombre de segments: $($segments.Count)"
 
 # Segmenter un texte en préservant les lignes
+
 $multilineText = "Ligne 1`nLigne 2`nLigne 3" * 1000
 $segments = Split-TextInput -Text $multilineText -ChunkSizeKB 5 -PreserveLines
 Write-Host "Nombre de segments: $($segments.Count)"
-```
-
+```plaintext
 ### Split-JsonInput
 
 Segmente un objet JSON en morceaux plus petits.
@@ -134,8 +130,7 @@ Segmente un objet JSON en morceaux plus petits.
 
 ```powershell
 Split-JsonInput -JsonObject <Object> [-ChunkSizeKB <Int32>]
-```
-
+```plaintext
 #### Paramètres
 
 - **JsonObject** : L'objet JSON à segmenter.
@@ -149,19 +144,20 @@ Un tableau d'objets représentant les segments du JSON d'origine.
 
 ```powershell
 # Segmenter un tableau JSON
+
 $array = 1..1000 | ForEach-Object { @{ "id" = $_; "data" = "A" * 100 } }
 $segments = Split-JsonInput -JsonObject $array -ChunkSizeKB 5
 Write-Host "Nombre de segments: $($segments.Count)"
 
 # Segmenter un objet JSON
+
 $object = @{
     "header" = @{ "version" = "1.0"; "type" = "data" }
     "items" = 1..500 | ForEach-Object { @{ "id" = $_; "value" = "Item $_" } }
 }
 $segments = Split-JsonInput -JsonObject $object -ChunkSizeKB 5
 Write-Host "Nombre de segments: $($segments.Count)"
-```
-
+```plaintext
 ### Split-FileInput
 
 Segmente un fichier en morceaux plus petits.
@@ -170,8 +166,7 @@ Segmente un fichier en morceaux plus petits.
 
 ```powershell
 Split-FileInput -FilePath <String> [-ChunkSizeKB <Int32>] [-PreserveLines]
-```
-
+```plaintext
 #### Paramètres
 
 - **FilePath** : Chemin du fichier à segmenter.
@@ -186,18 +181,20 @@ Un tableau de chaînes ou d'objets représentant les segments du fichier.
 
 ```powershell
 # Segmenter un fichier texte
+
 $segments = Split-FileInput -FilePath ".\data\large_text_file.txt" -ChunkSizeKB 5 -PreserveLines
 Write-Host "Nombre de segments: $($segments.Count)"
 
 # Segmenter un fichier JSON
+
 $segments = Split-FileInput -FilePath ".\data\large_data.json" -ChunkSizeKB 5
 Write-Host "Nombre de segments: $($segments.Count)"
 
 # Segmenter un fichier CSV
+
 $segments = Split-FileInput -FilePath ".\data\large_data.csv" -ChunkSizeKB 5 -PreserveLines
 Write-Host "Nombre de segments: $($segments.Count)"
-```
-
+```plaintext
 ### Split-Input
 
 Fonction générique pour segmenter différents types d'entrées.
@@ -206,8 +203,7 @@ Fonction générique pour segmenter différents types d'entrées.
 
 ```powershell
 Split-Input -Input <Object> [-ChunkSizeKB <Int32>] [-PreserveLines]
-```
-
+```plaintext
 #### Paramètres
 
 - **Input** : L'entrée à segmenter (texte, JSON, fichier, etc.).
@@ -222,20 +218,22 @@ Un tableau d'objets représentant les segments de l'entrée.
 
 ```powershell
 # Segmenter une chaîne de texte
+
 $text = "A" * 20KB
 $segments = Split-Input -Input $text -ChunkSizeKB 5
 Write-Host "Nombre de segments: $($segments.Count)"
 
 # Segmenter un objet JSON
+
 $json = @{ "data" = @(1..1000) }
 $segments = Split-Input -Input $json -ChunkSizeKB 5
 Write-Host "Nombre de segments: $($segments.Count)"
 
 # Segmenter un fichier
+
 $segments = Split-Input -Input ".\data\large_file.txt" -ChunkSizeKB 5 -PreserveLines
 Write-Host "Nombre de segments: $($segments.Count)"
-```
-
+```plaintext
 ### Save-SegmentationState
 
 Sauvegarde l'état de segmentation pour une reprise ultérieure.
@@ -244,8 +242,7 @@ Sauvegarde l'état de segmentation pour une reprise ultérieure.
 
 ```powershell
 Save-SegmentationState -Id <String> -Segments <Array> -CurrentIndex <Int32>
-```
-
+```plaintext
 #### Paramètres
 
 - **Id** : Identifiant unique de l'état de segmentation.
@@ -262,8 +259,7 @@ $true si l'état a été sauvegardé avec succès, $false sinon.
 $id = "my-segmentation-task"
 $segments = Split-Input -Input $largeInput -ChunkSizeKB 5
 Save-SegmentationState -Id $id -Segments $segments -CurrentIndex 0
-```
-
+```plaintext
 ### Get-SegmentationState
 
 Récupère un état de segmentation sauvegardé.
@@ -272,8 +268,7 @@ Récupère un état de segmentation sauvegardé.
 
 ```powershell
 Get-SegmentationState -Id <String>
-```
-
+```plaintext
 #### Paramètres
 
 - **Id** : Identifiant unique de l'état de segmentation.
@@ -290,8 +285,7 @@ $state = Get-SegmentationState -Id $id
 if ($state) {
     Write-Host "État récupéré. Segments: $($state.Segments.Count), Index: $($state.CurrentIndex)"
 }
-```
-
+```plaintext
 ### Invoke-WithSegmentation
 
 Traite une entrée avec segmentation automatique.
@@ -300,8 +294,7 @@ Traite une entrée avec segmentation automatique.
 
 ```powershell
 Invoke-WithSegmentation -Input <Object> -ScriptBlock <ScriptBlock> [-Id <String>] [-ChunkSizeKB <Int32>] [-PreserveLines] [-ContinueFromLastState]
-```
-
+```plaintext
 #### Paramètres
 
 - **Input** : L'entrée à traiter.
@@ -319,21 +312,24 @@ Un tableau contenant les résultats du traitement de chaque segment.
 
 ```powershell
 # Traiter un texte volumineux
+
 $text = "A" * 50KB
 $results = Invoke-WithSegmentation -Input $text -ScriptBlock {
     param($segment)
     # Traiter le segment
+
     return "Segment traité: $($segment.Length) caractères"
 } -Id "text-processing" -ChunkSizeKB 5
 
 # Traiter un fichier JSON volumineux et continuer en cas d'interruption
+
 $results = Invoke-WithSegmentation -Input ".\data\large_data.json" -ScriptBlock {
     param($segment)
     # Traiter le segment
+
     return $segment | ConvertTo-Json -Depth 10
 } -Id "json-processing" -ChunkSizeKB 5 -ContinueFromLastState
-```
-
+```plaintext
 ## Intégration avec d'autres modules
 
 ### Intégration avec Agent Auto
@@ -342,13 +338,14 @@ Le module `InputSegmentation` s'intègre avec Agent Auto via le script `Initiali
 
 ```powershell
 # Initialiser la segmentation pour Agent Auto
+
 .\development\scripts\agent-auto\Initialize-AgentAutoSegmentation.ps1 -Enable -MaxInputSizeKB 15 -ChunkSizeKB 7 -PreserveLines
 
 # Utiliser la segmentation avec Agent Auto
+
 $largeInput = Get-Content -Path ".\data\large_file.txt" -Raw
 $result = .\development\scripts\agent-auto\Example-AgentAutoSegmentation.ps1 -Input $largeInput -InputType "Text" -OutputPath ".\output"
-```
-
+```plaintext
 ### Intégration avec le traitement parallèle
 
 Le module `InputSegmentation` peut être combiné avec le traitement parallèle pour une efficacité maximale :
@@ -363,10 +360,10 @@ $segments = Split-Input -Input $input -ChunkSizeKB 5
 $results = Optimize-ParallelExecution -Data $segments -ScriptBlock {
     param($segment)
     # Traiter le segment
+
     return "Processed: $($segment.Length) bytes"
 } -MaxThreads 4
-```
-
+```plaintext
 ### Intégration avec le cache prédictif
 
 Le module `InputSegmentation` peut être combiné avec le cache prédictif pour éviter de recalculer les segments :
@@ -389,9 +386,9 @@ if ($segments -eq $null) {
 
 foreach ($segment in $segments) {
     # Traiter le segment
-}
-```
 
+}
+```plaintext
 ### Intégration avec les segmenteurs de formats
 
 Le module `InputSegmentation` peut être étendu avec des segmenteurs spécifiques à certains formats via le module `FormatSegmentation` :
@@ -401,21 +398,24 @@ Import-Module .\modules\InputSegmentation.psm1
 Import-Module .\modules\FormatSegmentation.psm1
 
 # Segmenter un document XML avec préservation de la structure
+
 $xmlFile = ".\data\large_document.xml"
 $segments = Split-FormatAwareInput -Input $xmlFile -Format "XML" -ChunkSizeKB 5 -PreserveStructure -XPathExpression "//items/item"
 
 # Segmenter un document JSON avec préservation de la structure
+
 $jsonFile = ".\data\large_data.json"
 $segments = Split-FormatAwareInput -Input $jsonFile -Format "JSON" -ChunkSizeKB 5 -PreserveStructure
 
 # Traiter un document avec segmentation automatique selon le format
+
 $results = Invoke-WithFormatSegmentation -Input $largeDocument -Format "AUTO" -ScriptBlock {
     param($segment)
     # Traiter le segment
+
     return "Segment traité"
 } -ChunkSizeKB 5 -PreserveStructure
-```
-
+```plaintext
 ## Bonnes pratiques
 
 ### Pour une segmentation efficace
@@ -452,18 +452,20 @@ $segments = Split-FileInput -FilePath $csvFile -ChunkSizeKB 50 -PreserveLines
 $results = @()
 foreach ($segment in $segments) {
     # Convertir le segment en objet CSV
+
     $csvData = $segment | ConvertFrom-Csv
     
     # Traiter les données CSV
+
     foreach ($row in $csvData) {
         # Traitement...
+
         $results += $row
     }
 }
 
 Write-Host "Nombre total de lignes traitées: $($results.Count)"
-```
-
+```plaintext
 ### Exemple 2 : Appels API par lots
 
 ```powershell
@@ -476,17 +478,18 @@ $segments = Split-JsonInput -JsonObject $data -ChunkSizeKB 10
 $responses = @()
 foreach ($segment in $segments) {
     # Convertir le segment en JSON
+
     $jsonData = $segment | ConvertTo-Json -Depth 10
     
     # Appeler l'API
+
     $response = Invoke-RestMethod -Uri "https://api.example.com/data" -Method Post -Body $jsonData -ContentType "application/json"
     $responses += $response
 }
 
 Write-Host "Nombre de requêtes API: $($segments.Count)"
 Write-Host "Réponses reçues: $($responses.Count)"
-```
-
+```plaintext
 ### Exemple 3 : Traitement parallèle de fichiers volumineux
 
 ```powershell
@@ -504,6 +507,7 @@ foreach ($file in $files) {
         param($segment)
         
         # Analyser le segment pour trouver des erreurs
+
         $errorLines = $segment -split "`n" | Where-Object { $_ -match "ERROR" }
         
         return $errorLines
@@ -512,8 +516,7 @@ foreach ($file in $files) {
     $errorCount = ($results | Measure-Object).Count
     Write-Host "Nombre d'erreurs trouvées: $errorCount"
 }
-```
-
+```plaintext
 ## Auteur
 
 EMAIL_SENDER_1 Team

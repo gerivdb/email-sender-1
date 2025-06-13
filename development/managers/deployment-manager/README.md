@@ -31,18 +31,21 @@ Les fichiers de configuration du gestionnaire sont centralisés dans le réperto
 
 ```powershell
 # Construire l'application
+
 .\scripts\Build-Application.ps1
 
 # Déployer vers un environnement
+
 .\scripts\Deploy-ToEnvironment.ps1 -Environment "staging"
 
 # Construire une image Docker
+
 .\scripts\Build-DockerImage.ps1
 
 # Créer une release
-.\scripts\Create-Release.ps1 -Version "1.0.0"
-```
 
+.\scripts\Create-Release.ps1 -Version "1.0.0"
+```plaintext
 ## Intégration ErrorManager
 
 Ce manager intègre l'ErrorManager pour la gestion centralisée des erreurs, la journalisation structurée et le catalogage des erreurs.

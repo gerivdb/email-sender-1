@@ -1,4 +1,4 @@
-﻿# Scripts de migration
+# Scripts de migration
 
 Ce rÃ©pertoire contient des scripts pour migrer des fichiers d'un rÃ©pertoire Ã  un autre.
 
@@ -6,8 +6,7 @@ Ce rÃ©pertoire contient des scripts pour migrer des fichiers d'un rÃ©pertoir
 
 ```bash
 hygen maintenance migrate
-```
-
+```plaintext
 ## Bonnes pratiques
 
 1. Toujours exÃ©cuter les scripts en mode simulation (`-DryRun`) avant de les exÃ©cuter rÃ©ellement

@@ -17,7 +17,7 @@ The Contextual Memory Manager is a high-performance component of the EMAIL_SENDE
 
 ### 🏗️ Architecture
 
-```
+```plaintext
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
 │   Client Apps   │    │  MCP Gateway     │    │  N8N Workflows  │
 └─────────┬───────┘    └─────────┬────────┘    └─────────┬───────┘
@@ -40,7 +40,7 @@ The Contextual Memory Manager is a high-performance component of the EMAIL_SENDE
     │ PostgreSQL       │ │ SQLite      │ │ Monitoring    │
     │ (Main Storage)   │ │ (Cache)     │ │ (Prometheus)  │
     └──────────────────┘ └─────────────┘ └───────────────┘
-```
+```plaintext
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -55,41 +55,46 @@ The Contextual Memory Manager is a high-performance component of the EMAIL_SENDE
 
 ```powershell
 # Clone and navigate to the project
+
 git clone <repository-url>
 cd development/managers/contextual-memory-manager
 
 # Run automated setup
-.\setup-dev.bat
-```
 
+.\setup-dev.bat
+```plaintext
 ### 2. Quick Setup (Linux/macOS)
 
 ```bash
 # Clone and navigate to the project
+
 git clone <repository-url>
 cd development/managers/contextual-memory-manager
 
 # Run automated setup
+
 chmod +x setup-dev.sh
 ./setup-dev.sh
-```
-
+```plaintext
 ### 3. Manual Setup
 
 ```powershell
 # Start services
+
 docker-compose up -d
 
 # Build the application
+
 go build -o contextual-memory-manager.exe .\development\
 
 # Run tests
+
 go test .\tests\... -v
 
 # Run the integration example
-.\example_demo.exe
-```
 
+.\example_demo.exe
+```plaintext
 ## 📋 API Usage
 
 ### Basic Operations
@@ -175,8 +180,7 @@ func main() {
     
     log.Printf("Found %d similar actions", len(similarActions))
 }
-```
-
+```plaintext
 ### Advanced Session Management
 
 ```go
@@ -202,14 +206,14 @@ err = manager.UpdateSession(ctx, "session-123", updates)
 if err != nil {
     log.Printf("Error updating session: %v", err)
 }
-```
-
+```plaintext
 ## 🔧 Configuration
 
 ### Environment Variables
 
 ```bash
 # Database Configuration
+
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 POSTGRES_DATABASE=contextual_memory
@@ -217,18 +221,20 @@ POSTGRES_USERNAME=contextual_user
 POSTGRES_PASSWORD=contextual_pass
 
 # Vector Search
+
 QDRANT_URL=http://localhost:6333
 QDRANT_COLLECTION=contextual_actions
 
 # Caching
+
 REDIS_URL=redis://localhost:6379
 CACHE_TTL=24h
 
 # Monitoring
+
 PROMETHEUS_PORT=9090
 LOG_LEVEL=info
-```
-
+```plaintext
 ### Configuration Files
 
 - **`config/local.yaml`** - Development environment
@@ -241,15 +247,17 @@ LOG_LEVEL=info
 
 ```powershell
 # Run unit tests
+
 go test .\tests\... -v
 
 # Run performance tests
+
 go test .\tests -run TestPerformance -v
 
 # Run benchmarks
-go test .\tests -bench=Benchmark -v
-```
 
+go test .\tests -bench=Benchmark -v
+```plaintext
 ### Performance Benchmarks
 
 The system is designed to meet these performance targets:
@@ -263,10 +271,10 @@ The system is designed to meet these performance targets:
 
 ```powershell
 # Generate coverage report
+
 go test .\tests\... -coverprofile=coverage.out
 go tool cover -html=coverage.out -o coverage.html
-```
-
+```plaintext
 ## 📊 Monitoring & Metrics
 
 ### Prometheus Metrics
@@ -283,14 +291,15 @@ Available at `http://localhost:9090/metrics`:
 
 ```bash
 # Check system health
+
 curl http://localhost:8080/health
 
 # Check individual components
+
 curl http://localhost:8080/health/database
 curl http://localhost:8080/health/qdrant
 curl http://localhost:8080/health/cache
-```
-
+```plaintext
 ## 🔄 Integration
 
 ### MCP Gateway Integration
@@ -307,8 +316,7 @@ mcpConfig := map[string]interface{}{
 }
 
 err = manager.ConfigureIntegration("mcp_gateway", mcpConfig)
-```
-
+```plaintext
 ### N8N Workflow Integration
 
 ```go
@@ -320,14 +328,14 @@ n8nConfig := map[string]interface{}{
 }
 
 err = manager.ConfigureIntegration("n8n_webhooks", n8nConfig)
-```
-
+```plaintext
 ## 🚀 Production Deployment
 
 ### Docker Deployment
 
 ```yaml
 # docker-compose.prod.yml
+
 version: '3.8'
 services:
   contextual-memory:
@@ -343,8 +351,7 @@ services:
     ports:
       - "8080:8080"
       - "9090:9090"
-```
-
+```plaintext
 ### Kubernetes Deployment
 
 ```yaml
@@ -378,33 +385,45 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
-```
-
+```plaintext
 ## 🛠️ Development
 
 ### Project Structure
 
-```
+```plaintext
 contextual-memory-manager/
 ├── development/              # Main implementation
+
 │   └── contextual_memory_manager.go
 ├── interfaces/              # Go interfaces
+
 │   └── contextual_memory.go
 ├── internal/               # Internal components
+
 │   ├── indexing/          # Vector indexing (Qdrant)
+
 │   ├── retrieval/         # Data retrieval (PostgreSQL)
+
 │   ├── integration/       # External integrations
+
 │   └── monitoring/        # Metrics & health checks
+
 ├── tests/                 # Comprehensive test suite
+
 │   ├── unit/             # Unit tests
+
 │   ├── integration/      # Integration tests
+
 │   └── performance_test.go
 ├── migrations/           # Database migrations
-├── config/              # Configuration files
-├── example/             # Usage examples
-└── docs/               # Additional documentation
-```
 
+├── config/              # Configuration files
+
+├── example/             # Usage examples
+
+└── docs/               # Additional documentation
+
+```plaintext
 ### Adding New Features
 
 1. **Define Interface**: Add methods to `interfaces/contextual_memory.go`
@@ -436,8 +455,7 @@ type ContextualMemoryManager interface {
     UpdateSession(ctx context.Context, sessionID string, updates SessionUpdates) error
     GetMetrics(ctx context.Context) (*ManagerMetrics, error)
 }
-```
-
+```plaintext
 #### Data Structures
 
 ```go
@@ -461,8 +479,7 @@ type SessionContext struct {
     Tags        []string          `json:"tags"`
     Metadata    map[string]interface{} `json:"metadata"`
 }
-```
-
+```plaintext
 ## 🤝 Contributing
 
 1. Fork the repository

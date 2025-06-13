@@ -3,12 +3,19 @@
 ## Table des matières
 
 1. [Introduction](#introduction)
+
 2. [Installation](#installation)
+
 3. [Configuration](#configuration)
+
 4. [Utilisation](#utilisation)
+
 5. [Bonnes pratiques](#bonnes-pratiques)
+
 6. [Compatibilité cross-platform](#compatibilité-cross-platform)
+
 7. [Dépannage](#dépannage)
+
 8. [Tests](#tests)
 
 ## Introduction
@@ -28,8 +35,7 @@ const logger = createLogger({
   verbosity: 'info',
   useEmoji: true
 });
-```
-
+```plaintext
 ## Configuration
 
 ### Options disponibles
@@ -51,14 +57,15 @@ const logger = createLogger({
 ## Utilisation
 
 ### Exemple de base
+
 ```javascript
 logger.info('Démarrage du processus');
 logger.debug('Variable data:', data);
 logger.warn('Configuration manquante');
 logger.error('Erreur critique:', error);
-```
-
+```plaintext
 ### Validation dans les prompts
+
 ```javascript
 {
   type: 'input',
@@ -73,8 +80,7 @@ logger.error('Erreur critique:', error);
     return true;
   }
 }
-```
-
+```plaintext
 ## Bonnes pratiques
 
 1. **Niveaux appropriés**
@@ -96,23 +102,25 @@ logger.error('Erreur critique:', error);
 ## Compatibilité cross-platform
 
 ### Windows
+
 - Fallbacks automatiques pour les emojis
 - Support des chemins Windows
 - Gestion des encodages
 
 ### Unix/Linux
+
 - Support complet des emojis
 - Chemins compatibles POSIX
 - Couleurs natives du terminal
 
 ### Exemples de fallbacks
+
 ```javascript
 // Windows
 logger.info('[i] Message'); // Sans emoji
 // Unix
 logger.info('ℹ️ Message'); // Avec emoji
-```
-
+```plaintext
 ## Dépannage
 
 ### Problèmes courants
@@ -132,13 +140,14 @@ logger.info('ℹ️ Message'); // Avec emoji
 ## Tests
 
 ### Tests unitaires
+
 ```javascript
 // test-logger-cross-platform.js
 const logger = createLogger({...});
 // Voir les exemples de tests dans /test
-```
-
+```plaintext
 ### Tests manuels recommandés
+
 1. Vérification des niveaux de log
 2. Test des emojis sur différentes plateformes
 3. Validation des messages de couleur
@@ -147,11 +156,13 @@ const logger = createLogger({...});
 ## Support et maintenance
 
 ### Mise à jour
+
 - Vérifier régulièrement les mises à jour
 - Tester après chaque mise à jour
 - Maintenir la documentation à jour
 
 ### Contact
+
 Pour toute question ou problème :
 1. Consulter les tests
 2. Vérifier la documentation
@@ -160,6 +171,7 @@ Pour toute question ou problème :
 ## Exemples complets
 
 ### Template standard
+
 ```javascript
 const { createLogger } = require('../../helpers/logger-helper.js');
 const logger = createLogger({ verbosity: 'info' });
@@ -176,9 +188,9 @@ module.exports = {
     }
   }
 };
-```
-
+```plaintext
 ### Gestion avancée
+
 ```javascript
 const logger = createLogger({ 
   verbosity: 'debug',
@@ -191,4 +203,4 @@ logger.debug('Context:', { data, options });
 logger.info('Processing:', file.name);
 logger.warn('Missing:', ['config.json', '.env']);
 logger.error('Failed:', error.message, error.stack);
-```
+```plaintext

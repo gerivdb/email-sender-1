@@ -3,38 +3,71 @@
 ## Table des matières
 
 1. [GUIDE COMPLET : DÉFINITIONS JSON DES NŒUDS N8N, TOUS LES OUTILS, NUANCES D'INTÉGRATION ET MANIPULATION D'AGENT IA](#section-1)
+
         1.0.1. [Vue d'ensemble :](#section-2)
+
         1.0.2. [Champs principaux de haut niveau :](#section-3)
+
         1.0.3. [Meilleures pratiques :](#section-4)
+
         1.0.4. [Objectif :](#section-5)
+
         1.0.5. [Paramètres clés :](#section-6)
+
         1.0.6. [Nuances :](#section-7)
+
         1.0.7. [Objectif :](#section-8)
+
         1.0.8. [Paramètres clés :](#section-9)
+
         1.0.9. [Conseils d'utilisation :](#section-10)
+
         1.0.10. [Objectif :](#section-11)
+
         1.0.11. [Paramètres clés :](#section-12)
+
         1.0.12. [Intégration & Mémoire :](#section-13)
+
         1.0.13. [Nuances :](#section-14)
+
         1.0.14. [Exemples de snippets :](#section-15)
+
         1.0.15. [Objectif :](#section-16)
+
         1.0.16. [Paramètres clés :](#section-17)
+
         1.0.17. [Conseils d'utilisation :](#section-18)
+
     1.1. [. OUTILS D'INTÉGRATION & LEURS OPÉRATIONS](#section-19)
+
         1.1.1. [. PINECONE](#section-20)
+
         1.1.2. [. AIRTABLE](#section-21)
+
         1.1.3. [. POSTGRESQL](#section-22)
+
         1.1.4. [. GOOGLE DOCS](#section-23)
+
         1.1.5. [. GOOGLE CALENDAR](#section-24)
+
         1.1.6. [. TELEGRAM](#section-25)
+
         1.1.7. [. REQUÊTE HTTP](#section-26)
+
         1.1.8. [. OUTIL SERPAPI](#section-27)
+
         1.1.9. [. OUTIL WORKFLOW](#section-28)
+
         1.1.10. [. OUTIL GMAIL](#section-29)
+
         1.1.11. [. SUPABASE](#section-30)
+
         1.1.12. [. NŒUDS GÉNÉRIQUES & AUXILIAIRES](#section-31)
+
     1.2. [. NOTES SUPPLÉMENTAIRES SUR LA MANIPULATION D'AGENT IA & DE MÉMOIRE](#section-32)
+
     1.3. [. PROBLÈMES COURANTS DE VALEUR DE PROPRIÉTÉ AVEC LE JSON GÉNÉRÉ PAR LLM](#section-33)
+
     1.4. [. CONCLUSIONS FINALES](#section-34)
 
 ## 1. GUIDE COMPLET : DÉFINITIONS JSON DES NŒUDS N8N, TOUS LES OUTILS, NUANCES D'INTÉGRATION ET MANIPULATION D'AGENT IA <a name='section-1'></a>
@@ -146,8 +179,7 @@ Ce document combine une vue d'ensemble des structures JSON des nœuds n8n avec d
   },
   "typeVersion": 1.7
 }
-```
-
+```plaintext
 *Agent IA avec intégration de Calendrier :*
   "id": "agent-2",
   "name": "Calendar AI Agent",

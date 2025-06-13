@@ -1,64 +1,73 @@
-﻿# Guide de rÃ©fÃ©rence rapide - Format-Converters
+# Guide de rÃ©fÃ©rence rapide - Format-Converters
 
 ## Installation
 
 ```powershell
 Import-Module -Path "chemin\vers\Format-Converters\Format-Converters.psm1"
-```
-
+```plaintext
 ## Commandes principales
 
 ### DÃ©tection de format
 
 ```powershell
 # DÃ©tection simple
+
 Detect-FileFormat -FilePath "fichier.txt"
 
 # DÃ©tection avec rÃ©solution automatique des cas ambigus
+
 Detect-FileFormat -FilePath "fichier.txt" -AutoResolve
 
 # DÃ©tection avec affichage des dÃ©tails
+
 Detect-FileFormat -FilePath "fichier.txt" -ShowDetails
 
 # DÃ©tection avec mÃ©morisation des choix
+
 Detect-FileFormat -FilePath "fichier.txt" -RememberChoices
 
 # DÃ©tection avec export des rÃ©sultats
-Detect-FileFormat -FilePath "fichier.txt" -ShowDetails -ExportResults -ExportFormat "HTML"
-```
 
+Detect-FileFormat -FilePath "fichier.txt" -ShowDetails -ExportResults -ExportFormat "HTML"
+```plaintext
 ### Conversion de format
 
 ```powershell
 # Conversion avec dÃ©tection automatique du format d'entrÃ©e
+
 Convert-FileFormat -InputPath "fichier.json" -OutputPath "fichier.xml" -OutputFormat "XML" -AutoDetect
 
 # Conversion avec format d'entrÃ©e spÃ©cifiÃ©
+
 Convert-FileFormat -InputPath "fichier.json" -OutputPath "fichier.xml" -InputFormat "JSON" -OutputFormat "XML"
 
 # Conversion avec Ã©crasement du fichier de sortie
+
 Convert-FileFormat -InputPath "fichier.json" -OutputPath "fichier.xml" -OutputFormat "XML" -Force
 
 # Conversion avec affichage de la progression
-Convert-FileFormat -InputPath "fichier.json" -OutputPath "fichier.xml" -OutputFormat "XML" -ShowProgress
-```
 
+Convert-FileFormat -InputPath "fichier.json" -OutputPath "fichier.xml" -OutputFormat "XML" -ShowProgress
+```plaintext
 ### Analyse de format
 
 ```powershell
 # Analyse avec dÃ©tection automatique du format
+
 Analyze-FileFormat -FilePath "fichier.json" -AutoDetect
 
 # Analyse avec format spÃ©cifiÃ©
+
 Analyze-FileFormat -FilePath "fichier.json" -Format "JSON"
 
 # Analyse avec inclusion du contenu
+
 Analyze-FileFormat -FilePath "fichier.json" -IncludeContent
 
 # Analyse avec export du rapport
-Analyze-FileFormat -FilePath "fichier.json" -ExportReport
-```
 
+Analyze-FileFormat -FilePath "fichier.json" -ExportReport
+```plaintext
 ## Formats pris en charge
 
 | Format | Extensions | Description |
@@ -80,36 +89,41 @@ Analyze-FileFormat -FilePath "fichier.json" -ExportReport
 
 ```powershell
 # RÃ©solution automatique
+
 Detect-FileFormat -FilePath "fichier.txt" -AutoResolve
 
 # Confirmation utilisateur
+
 Detect-FileFormat -FilePath "fichier.txt"
 
 # MÃ©morisation des choix
+
 Detect-FileFormat -FilePath "fichier.txt" -RememberChoices
 
 # Personnalisation du seuil d'ambiguÃ¯tÃ©
-Handle-AmbiguousFormats -FilePath "fichier.txt" -AmbiguityThreshold 15
-```
 
+Handle-AmbiguousFormats -FilePath "fichier.txt" -AmbiguityThreshold 15
+```plaintext
 ## Exemples courants
 
 ```powershell
 # DÃ©tecter le format d'un fichier et afficher les dÃ©tails
+
 $result = Detect-FileFormat -FilePath "fichier.txt" -ShowDetails
 Write-Host "Format dÃ©tectÃ© : $($result.DetectedFormat) (Score : $($result.ConfidenceScore)%)"
 
 # Convertir un fichier JSON en XML
+
 $result = Convert-FileFormat -InputPath "data.json" -OutputPath "data.xml" -OutputFormat "XML" -AutoDetect
 if ($result.Success) {
     Write-Host "Conversion rÃ©ussie !"
 }
 
 # Analyser un fichier et exporter le rapport
+
 $result = Analyze-FileFormat -FilePath "data.json" -AutoDetect -ExportReport
 $result | Format-List
-```
-
+```plaintext
 ## Personnalisation
 
 Les critÃ¨res de dÃ©tection peuvent Ãªtre personnalisÃ©s en modifiant le fichier `Detectors\FormatDetectionCriteria.json`.

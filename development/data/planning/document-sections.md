@@ -1,6 +1,7 @@
-﻿# Rapport des Sections du Document
+# Rapport des Sections du Document
 
 ## Structure HiÃ©rarchique
+
 - **Définition des Niveaux d'Expertise** (Niveau 1, Ligne 1)
   - **Objectif** (Niveau 2, Ligne 5)
   - **Niveaux d'Expertise** (Niveau 2, Ligne 14)
@@ -30,10 +31,12 @@
 ## Analyse des Sections
 
 ### Distribution par Niveau- Niveau 1: 2 sections
+
 - Niveau 2: 11 sections
 - Niveau 3: 12 sections
 
 ### Sections Principales- **Définition des Niveaux d'Expertise** (Niveau 1, Ligne 1)
+
 - **Objectif** (Niveau 2, Ligne 5)
 - **Niveaux d'Expertise** (Niveau 2, Ligne 14)
 - **Matrice d'Évaluation des Compétences** (Niveau 2, Ligne 94)
@@ -48,6 +51,7 @@
 - **Niveaux d'Expertise Globaux** (Niveau 2, Ligne 201)
 
 ### Sections Potentiellement Importantes pour l'Ã‰valuation- **Définition des Niveaux d'Expertise** (Niveau 1, Ligne 1)
+
 - **Niveaux d'Expertise** (Niveau 2, Ligne 14)
 - **Matrice d'Évaluation des Compétences** (Niveau 2, Ligne 94)
 - **Niveaux d'Expertise** (Niveau 1, Ligne 157)

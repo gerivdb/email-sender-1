@@ -16,22 +16,24 @@ Ce dossier contient les tests unitaires pour l'implémentation de Hygen dans le 
 
 ```powershell
 # Exécuter tous les tests
+
 .\Run-HygenTests.ps1
 
 # Exécuter tous les tests avec un chemin de sortie personnalisé
+
 .\Run-HygenTests.ps1 -OutputPath "C:\Reports"
 
 # Exécuter un fichier de tests spécifique
-Invoke-Pester -Path .\Hygen.Tests.ps1 -Output Detailed
-```
 
+Invoke-Pester -Path .\Hygen.Tests.ps1 -Output Detailed
+```plaintext
 ### Via la ligne de commande
 
 ```batch
 # Exécuter tous les tests
-n8n\cmd\utils\run-hygen-tests.cmd
-```
 
+n8n\cmd\utils\run-hygen-tests.cmd
+```plaintext
 ## Rapports de tests
 
 Les rapports de tests sont générés dans le dossier `TestResults` par défaut. Deux types de rapports sont générés :

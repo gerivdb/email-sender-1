@@ -1,4 +1,5 @@
 # Spécification des Écrans d'Interface Utilisateur
+
 *Version 1.0 - 2025-05-15*
 
 ## 1. Introduction
@@ -10,7 +11,8 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ### 2.1 Structure Générale
 
 #### 2.1.1 Layout
-```
+
+```plaintext
 ┌─────────────────────────────────────────────────────────────┐
 │ [Logo] Roadmap Visualization Dashboard           [User Menu] │ <- Header
 ├─────────┬───────────────────────────────────────┬───────────┤
@@ -23,9 +25,9 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ├─────────┴───────────────────────────────────────┴───────────┤
 │ [Status Bar]     [Timeline Controls]     [View Options]     │ <- Footer
 └─────────────────────────────────────────────────────────────┘
-```
-
+```plaintext
 #### 2.1.2 Dimensions et Proportions
+
 - **Largeur totale**: 100% (responsive)
 - **Hauteur totale**: 100vh (plein écran)
 - **Header**: 60px de hauteur
@@ -35,6 +37,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 - **Main Area**: Reste de l'espace disponible
 
 #### 2.1.3 Comportement Responsive
+
 - **Desktop** (≥1024px): Layout complet comme ci-dessus
 - **Tablette** (768px-1023px): 
   - Panels rétractables (icônes d'expansion)
@@ -46,6 +49,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ### 2.2 Sélecteur de Visualisation
 
 #### 2.2.1 Composants
+
 - **Sélecteur de Type**:
   - Onglets ou boutons radio pour chaque type
   - Icône + libellé pour chaque option
@@ -64,12 +68,14 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
   - Gestion (renommer, supprimer)
 
 #### 2.2.2 Interactions
+
 - **Changement de Type**: Transition animée vers nouvelle visualisation
 - **Application de Filtres**: Mise à jour immédiate ou différée (bouton "Appliquer")
 - **Recherche**: Mise en évidence des résultats dans la visualisation
 - **Chargement de Vue**: Restauration complète de la configuration
 
 #### 2.2.3 États et Feedback
+
 - **Chargement**: Indicateur de progression
 - **Filtres Actifs**: Badges ou indicateurs visuels
 - **Résultats Vides**: Message explicatif et suggestions
@@ -78,6 +84,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ### 2.3 Zone Principale de Visualisation
 
 #### 2.3.1 Composants
+
 - **Conteneur de Visualisation**:
   - Zone de rendu principale
   - Contrôles de zoom/pan superposés
@@ -92,6 +99,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
   - Position: coin inférieur droit
 
 #### 2.3.2 Interactions
+
 - **Navigation**:
   - Zoom: Molette/pincement ou boutons +/-
   - Pan: Glisser-déposer ou flèches directionnelles
@@ -106,6 +114,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
   - Glisser-déposer: Réorganisation (si applicable)
 
 #### 2.3.3 Modes d'Affichage
+
 - **Standard**: Visualisation complète
 - **Focus**: Zoom sur élément sélectionné
 - **Comparaison**: Vue côte à côte (avant/après)
@@ -114,6 +123,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ### 2.4 Panneau de Détails
 
 #### 2.4.1 Composants
+
 - **En-tête**:
   - Titre de l'élément sélectionné
   - Identifiant
@@ -134,12 +144,14 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
   - Liens vers systèmes externes
 
 #### 2.4.2 États
+
 - **Aucune Sélection**: Message d'invite + statistiques globales
 - **Sélection Unique**: Détails complets de l'élément
 - **Sélection Multiple**: Résumé comparatif + actions groupées
 - **Mode Édition**: Formulaires et contrôles d'édition
 
 #### 2.4.3 Comportement
+
 - **Mise à Jour**: Automatique à la sélection
 - **Persistance**: Maintien des informations lors du défilement
 - **Redimensionnement**: Ajustable par l'utilisateur (drag)
@@ -150,7 +162,8 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ### 3.1 Structure Générale
 
 #### 3.1.1 Layout
-```
+
+```plaintext
 ┌─────────────────────────────────────────────────────────────┐
 │ [Back] Detailed View: [Title]                    [Actions]  │ <- Header
 ├─────────────────────────────────────────────────┬───────────┤
@@ -164,9 +177,9 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ├─────────────────────────────────────────────────┴───────────┤
 │ [Advanced Controls]                             [Export]    │ <- Footer
 └─────────────────────────────────────────────────────────────┘
-```
-
+```plaintext
 #### 3.1.2 Caractéristiques Spécifiques
+
 - **Visualisation Agrandie**: Occupe 75-80% de l'écran
 - **Panneau de Détails**: Fixe, non rétractable
 - **Contrôles Avancés**: Plus d'options que dans le dashboard
@@ -176,6 +189,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ### 3.2 Visualisation Plein Écran
 
 #### 3.2.1 Améliorations par Type
+
 - **Diagramme Hiérarchique**:
   - Niveaux de détail supplémentaires
   - Annotations visibles
@@ -194,6 +208,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
   - Comparaison temporelle
 
 #### 3.2.2 Contrôles Spécifiques
+
 - **Barre d'Outils Contextuelle**:
   - Apparaît près de la sélection
   - Options spécifiques au type
@@ -210,6 +225,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ### 3.3 Panneau Latéral de Détails
 
 #### 3.3.1 Contenu Enrichi
+
 - **Informations Complètes**:
   - Tous les champs disponibles
   - Métriques calculées
@@ -224,6 +240,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
   - Références externes
 
 #### 3.3.2 Actions Avancées
+
 - **Édition Directe**:
   - Modification des propriétés
   - Ajout/suppression de relations
@@ -242,7 +259,8 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ### 4.1 Structure Générale
 
 #### 4.1.1 Layout
-```
+
+```plaintext
 ┌─────────────────────────────────────────────────────────────┐
 │ [Back] Comparison Mode                          [Options]   │ <- Header
 ├─────────────────────────┬─────────────────────┬─────────────┤
@@ -255,9 +273,9 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ├─────────────────────────┴─────────────────────┴─────────────┤
 │ [Sync Controls]  [Difference Highlighting]    [Export]      │ <- Footer
 └─────────────────────────────────────────────────────────────┘
-```
-
+```plaintext
 #### 4.1.2 Modes de Comparaison
+
 - **Côte à Côte**: Deux visualisations parallèles
 - **Superposition**: Éléments des deux vues combinés
 - **Avant/Après**: Transition entre deux états
@@ -266,12 +284,14 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ### 4.2 Contrôles Synchronisés
 
 #### 4.2.1 Options de Synchronisation
+
 - **Navigation**: Zoom/pan synchronisé ou indépendant
 - **Sélection**: Mise en évidence croisée
 - **Filtres**: Application simultanée ou séparée
 - **Période**: Alignement temporel
 
 #### 4.2.2 Sélecteurs de Version
+
 - **Points de Comparaison**:
   - Versions historiques
   - Scénarios alternatifs
@@ -284,12 +304,14 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ### 4.3 Indicateurs de Différences
 
 #### 4.3.1 Mise en Évidence Visuelle
+
 - **Ajouts**: Vert ou bordure verte
 - **Suppressions**: Rouge ou bordure rouge
 - **Modifications**: Orange ou bordure orange
 - **Inchangés**: Gris ou transparence réduite
 
 #### 4.3.2 Résumé des Différences
+
 - **Statistiques Globales**:
   - Nombre d'éléments modifiés
   - Pourcentage de changement
@@ -308,6 +330,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ### 5.1 Contrôles de Filtrage
 
 #### 5.1.1 Types de Filtres
+
 - **Attributs**:
   - Statut (multiselect)
   - Priorité (multiselect)
@@ -323,6 +346,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
   - Groupes (appartenance)
 
 #### 5.1.2 Interface de Filtrage
+
 - **Filtres Rapides**:
   - Préréglages communs
   - Derniers filtres utilisés
@@ -337,6 +361,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
   - Import/export
 
 #### 5.1.3 Feedback de Filtrage
+
 - **Indicateurs Actifs**:
   - Badges sur filtres appliqués
   - Résumé textuel des conditions
@@ -349,6 +374,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ### 5.2 Contrôles de Navigation
 
 #### 5.2.1 Navigation Spatiale
+
 - **Zoom**:
   - Boutons +/- avec niveau actuel
   - Slider de niveau de zoom
@@ -363,6 +389,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
   - Breadcrumbs hiérarchiques
 
 #### 5.2.2 Navigation Temporelle
+
 - **Timeline**:
   - Slider avec marqueurs d'événements
   - Boutons avant/arrière
@@ -373,6 +400,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
   - Comparaison de périodes
 
 #### 5.2.3 Raccourcis et Gestes
+
 - **Clavier**:
   - Flèches: déplacement
   - +/-: zoom
@@ -392,6 +420,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
 ### 5.3 Contrôles de Personnalisation
 
 #### 5.3.1 Options Visuelles
+
 - **Thèmes**:
   - Clair/sombre
   - Impression
@@ -408,6 +437,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
   - Par assignation
 
 #### 5.3.2 Préférences Utilisateur
+
 - **Comportement**:
   - Auto-refresh (on/off + intervalle)
   - Animations (on/off + vitesse)
@@ -422,6 +452,7 @@ Ce document définit les spécifications pour les écrans d'interface utilisateu
   - Mentions et assignations
 
 #### 5.3.3 Sauvegarde de Configuration
+
 - **Profils**:
   - Création de profils nommés
   - Changement rapide entre profils

@@ -6,7 +6,7 @@ Le gestionnaire de dépendances est conçu selon les principes SOLID et utilise 
 
 ### Diagramme d'architecture
 
-```
+```plaintext
 ┌─────────────────────────────────────────────────────────────┐
 │                     CLI Interface                           │
 │                   (dependency_manager.go)                   │
@@ -23,8 +23,7 @@ Le gestionnaire de dépendances est conçu selon les principes SOLID et utilise 
 │               External Dependencies                         │
 │          (golang.org/x/mod, go toolchain)                  │
 └─────────────────────────────────────────────────────────────┘
-```
-
+```plaintext
 ## Interfaces principales
 
 ### DepManager Interface
@@ -38,8 +37,7 @@ type DepManager interface {
     Audit() error
     Cleanup() error
 }
-```
-
+```plaintext
 **Description :** Interface principale définissant les opérations de gestion des dépendances.
 
 #### Méthodes
@@ -62,8 +60,7 @@ if err != nil {
 for _, dep := range deps {
     fmt.Printf("%s@%s\n", dep.Name, dep.Version)
 }
-```
-
+```plaintext
 ##### `Add(module, version string) error`
 
 Ajoute une nouvelle dépendance au projet.
@@ -81,8 +78,7 @@ err := manager.Add("github.com/pkg/errors", "v0.9.1")
 if err != nil {
     log.Printf("Erreur lors de l'ajout: %v", err)
 }
-```
-
+```plaintext
 ##### `Remove(module string) error`
 
 Supprime une dépendance du projet.
@@ -99,8 +95,7 @@ err := manager.Remove("github.com/pkg/errors")
 if err != nil {
     log.Printf("Erreur lors de la suppression: %v", err)
 }
-```
-
+```plaintext
 ##### `Update(module string) error`
 
 Met à jour une dépendance vers sa dernière version.
@@ -117,8 +112,7 @@ err := manager.Update("github.com/gorilla/mux")
 if err != nil {
     log.Printf("Erreur lors de la mise à jour: %v", err)
 }
-```
-
+```plaintext
 ##### `Audit() error`
 
 Effectue un audit de sécurité des dépendances.
@@ -132,8 +126,7 @@ err := manager.Audit()
 if err != nil {
     log.Printf("Erreur lors de l'audit: %v", err)
 }
-```
-
+```plaintext
 ##### `Cleanup() error`
 
 Nettoie les dépendances inutilisées.
@@ -147,8 +140,7 @@ err := manager.Cleanup()
 if err != nil {
     log.Printf("Erreur lors du nettoyage: %v", err)
 }
-```
-
+```plaintext
 ## Structures de données
 
 ### Dependency
@@ -159,8 +151,7 @@ type Dependency struct {
     Version  string `json:"version"`
     Indirect bool   `json:"indirect,omitempty"`
 }
-```
-
+```plaintext
 **Description :** Représente une dépendance Go avec ses métadonnées.
 
 **Champs :**
@@ -183,8 +174,7 @@ type Config struct {
         BackupOnChange     bool   `json:"backupOnChange"`
     } `json:"settings"`
 }
-```
-
+```plaintext
 **Description :** Configuration du gestionnaire de dépendances.
 
 **Champs :**
@@ -207,16 +197,14 @@ type GoModManager struct {
     modFilePath string
     config      *Config
 }
-```
-
+```plaintext
 **Description :** Implémentation concrète de DepManager pour les projets Go.
 
 ### Constructeur
 
 ```go
 func NewGoModManager(modFilePath string, config *Config) *GoModManager
-```
-
+```plaintext
 **Paramètres :**
 - `modFilePath` : Chemin vers le fichier go.mod
 - `config` : Configuration du gestionnaire
@@ -326,8 +314,7 @@ param (
     [ValidateSet("DEBUG", "INFO", "WARNING", "ERROR")]
     [string]$LogLevel = "INFO"
 )
-```
-
+```plaintext
 ### Fonctions internes
 
 #### `Write-Log`
@@ -344,26 +331,27 @@ function Write-Log {
         [string]$Level = "INFO"
     )
 }
-```
-
+```plaintext
 #### `Test-Prerequisites`
 
 ```powershell
 function Test-Prerequisites {
     # Vérifie les prérequis (Go, go.mod)
-    # Retourne $true si OK, $false sinon
-}
-```
 
+    # Retourne $true si OK, $false sinon
+
+}
+```plaintext
 #### `Build-DependencyManager`
 
 ```powershell
 function Build-DependencyManager {
     # Compile le gestionnaire
-    # Retourne $true si succès, $false sinon
-}
-```
 
+    # Retourne $true si succès, $false sinon
+
+}
+```plaintext
 #### `Invoke-DependencyCommand`
 
 ```powershell
@@ -373,10 +361,11 @@ function Invoke-DependencyCommand {
         [string[]]$Arguments = @()
     )
     # Exécute une commande du gestionnaire
-    # Retourne $true si succès, $false sinon
-}
-```
 
+    # Retourne $true si succès, $false sinon
+
+}
+```plaintext
 ## Gestion des erreurs
 
 ### Types d'erreurs
@@ -428,16 +417,14 @@ func (c *CustomDepManager) List() ([]Dependency, error) {
 }
 
 // Implémentez toutes les méthodes de l'interface DepManager
-```
-
+```plaintext
 ### Ajout de nouvelles commandes CLI
 
 ```go
 // Dans runCLI()
 case "votre-commande":
     // Traitement de votre commande personnalisée
-```
-
+```plaintext
 ### Hooks et callbacks
 
 ```go
@@ -447,8 +434,7 @@ type Hooks struct {
     BeforeRemove func(module string) error
     AfterRemove  func(module string) error
 }
-```
-
+```plaintext
 ## Tests et validation
 
 ### Tests unitaires
@@ -461,8 +447,7 @@ func TestGoModManager_List(t *testing.T) {
 func TestGoModManager_Add(t *testing.T) {
     // Test de la méthode Add
 }
-```
-
+```plaintext
 ### Tests d'intégration
 
 ```go
@@ -470,16 +455,14 @@ func TestFullWorkflow(t *testing.T) {
     // Test du workflow complet
     // add -> list -> update -> remove -> cleanup
 }
-```
-
+```plaintext
 ### Benchmarks
 
 ```go
 func BenchmarkListDependencies(b *testing.B) {
     // Benchmark de performance
 }
-```
-
+```plaintext
 ## Monitoring et observabilité
 
 ### Métriques disponibles
@@ -512,8 +495,7 @@ func BenchmarkListDependencies(b *testing.B) {
   "duration_ms": 1234,
   "success": true
 }
-```
-
+```plaintext
 ## Sécurité
 
 ### Bonnes pratiques
@@ -572,8 +554,7 @@ import _ "net/http/pprof"
 go func() {
     log.Println(http.ListenAndServe("localhost:6060", nil))
 }()
-```
-
+```plaintext
 ## Migration et compatibilité
 
 ### Versions supportées

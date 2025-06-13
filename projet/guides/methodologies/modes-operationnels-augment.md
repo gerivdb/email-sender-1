@@ -1,4 +1,5 @@
 # Modes opérationnels Augment
+
 *Version 2025-05-15*
 
 Ce guide détaille les différents modes opérationnels d'Augment, leur utilisation et les bonnes pratiques associées, basés sur l'analyse des documents de référence et des exemples pratiques.
@@ -35,8 +36,7 @@ Les modes opérationnels Augment sont des approches structurées pour aborder di
 **Exemple d'utilisation** :
 ```powershell
 Invoke-AugmentMode -Mode GRAN -FilePath "projet/roadmaps/plans/plan-dev-v14-augment-optimization.md" -TaskIdentifier "1.2.3" -UpdateMemories
-```
-
+```plaintext
 **Bonnes pratiques** :
 - Viser une granularité de 30-50 lignes de code par fonction
 - Limiter la profondeur de décomposition à 2 niveaux
@@ -58,8 +58,7 @@ Invoke-AugmentMode -Mode GRAN -FilePath "projet/roadmaps/plans/plan-dev-v14-augm
 **Exemple d'utilisation** :
 ```powershell
 Invoke-AugmentMode -Mode "DEV-R" -FilePath "projet/roadmaps/plans/plan-dev-v14-augment-optimization.md" -TaskIdentifier "1.2.3.1"
-```
-
+```plaintext
 **Bonnes pratiques** :
 - Limiter chaque implémentation à 5KB de code maximum
 - Suivre les standards de codage du projet (PowerShell 7, Python 3.11)
@@ -80,8 +79,7 @@ Invoke-AugmentMode -Mode "DEV-R" -FilePath "projet/roadmaps/plans/plan-dev-v14-a
 **Exemple d'utilisation** :
 ```powershell
 Invoke-AugmentMode -Mode "ARCHI" -FilePath "projet/architecture/email-sender-architecture.md"
-```
-
+```plaintext
 **Bonnes pratiques** :
 - Utiliser des diagrammes ASCII ou mermaid pour la visualisation
 - Documenter clairement les interfaces entre les composants
@@ -103,8 +101,7 @@ Invoke-AugmentMode -Mode "ARCHI" -FilePath "projet/architecture/email-sender-arc
 **Exemple d'utilisation** :
 ```powershell
 Invoke-AugmentMode -Mode "DEBUG" -FilePath "development/scripts/modules/EmailSender.psm1"
-```
-
+```plaintext
 **Bonnes pratiques** :
 - Ajouter des instructions Write-Verbose pour les valeurs intermédiaires
 - Créer des tests unitaires simples pour isoler le problème
@@ -126,8 +123,7 @@ Invoke-AugmentMode -Mode "DEBUG" -FilePath "development/scripts/modules/EmailSen
 **Exemple d'utilisation** :
 ```powershell
 Invoke-AugmentMode -Mode "TEST" -FilePath "development/scripts/modules/EmailSender.psm1"
-```
-
+```plaintext
 **Bonnes pratiques** :
 - Viser une couverture de test élevée (>80%)
 - Tester les cas normaux, limites et d'erreur
@@ -178,15 +174,17 @@ Le module PowerShell AugmentIntegration permet d'invoquer les modes opérationne
 
 ```powershell
 # Importer le module
+
 Import-Module AugmentIntegration
 
 # Initialiser l'intégration
+
 Initialize-AugmentIntegration -StartServers
 
 # Exécuter un mode spécifique
-Invoke-AugmentMode -Mode GRAN -FilePath "docs/plans/plan.md" -TaskIdentifier "1.2.3" -UpdateMemories
-```
 
+Invoke-AugmentMode -Mode GRAN -FilePath "docs/plans/plan.md" -TaskIdentifier "1.2.3" -UpdateMemories
+```plaintext
 ## 7. Gestion des Memories
 
 Les Memories sont essentielles pour maintenir le contexte entre les sessions :
@@ -202,36 +200,41 @@ Les Memories sont essentielles pour maintenir le contexte entre les sessions :
 
 ```markdown
 # Tâche originale
+
 - [ ] **1.2.3** Implémenter l'analyse de complexité cyclomatique
 
 # Après GRAN
+
 - [ ] **1.2.3** Implémenter l'analyse de complexité cyclomatique
   - [ ] **1.2.3.1** Créer le module d'analyse AST PowerShell
   - [ ] **1.2.3.2** Implémenter la détection des structures de contrôle
   - [ ] **1.2.3.3** Développer l'algorithme de calcul de complexité
   - [ ] **1.2.3.4** Créer le rapport de complexité
   - [ ] **1.2.3.5** Intégrer avec le système de validation
-```
-
+```plaintext
 ### 8.2 Exemple de séquence complète
 
 ```powershell
 # 1. Décomposer la tâche
+
 Invoke-AugmentMode -Mode GRAN -FilePath "projet/roadmaps/plans/plan-dev-v14.md" -TaskIdentifier "1.2.3"
 
 # 2. Implémenter la première sous-tâche
+
 Invoke-AugmentMode -Mode "DEV-R" -FilePath "projet/roadmaps/plans/plan-dev-v14.md" -TaskIdentifier "1.2.3.1"
 
 # 3. Tester l'implémentation
+
 Invoke-AugmentMode -Mode "TEST" -FilePath "development/scripts/modules/ComplexityAnalyzer.psm1"
 
 # 4. Déboguer les problèmes
+
 Invoke-AugmentMode -Mode "DEBUG" -FilePath "development/scripts/modules/ComplexityAnalyzer.psm1"
 
 # 5. Vérifier la qualité
-Invoke-AugmentMode -Mode "REVIEW" -FilePath "development/scripts/modules/ComplexityAnalyzer.psm1"
-```
 
+Invoke-AugmentMode -Mode "REVIEW" -FilePath "development/scripts/modules/ComplexityAnalyzer.psm1"
+```plaintext
 ## 9. Ressources additionnelles
 
 - [Guide d'utilisation d'Augment](/docs/guides/augment/utilisation-augment.md)

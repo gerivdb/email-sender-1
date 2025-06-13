@@ -18,10 +18,9 @@ La surveillance du port et de l'API n8n permet de :
 
 Le script `check-n8n-status.cmd` permet de vérifier l'état du port et de l'API n8n :
 
-```
+```plaintext
 .\check-n8n-status.cmd -Hostname "localhost" -Port 5678 -Protocol "http"
-```
-
+```plaintext
 Options disponibles :
 
 - `-Hostname` : Nom d'hôte ou adresse IP du serveur n8n (par défaut: localhost)
@@ -48,10 +47,9 @@ Options disponibles :
 
 Le script `restart-n8n.cmd` permet de redémarrer n8n :
 
-```
+```plaintext
 .\restart-n8n.cmd
-```
-
+```plaintext
 Options disponibles :
 
 - `-LogFile` : Fichier de log pour le redémarrage (par défaut: n8n/logs/restart-n8n.log)
@@ -136,8 +134,7 @@ Exemple de structure du rapport JSON :
   "EndTime": "2025-04-22T10:15:32",
   "TotalTime": 2000.123
 }
-```
-
+```plaintext
 ### Rapport HTML
 
 Le rapport HTML présente les résultats des tests de manière plus visuelle et conviviale. Il est enregistré dans le fichier spécifié par l'option `-HtmlReportFile`.
@@ -179,40 +176,34 @@ Le niveau minimum pour envoyer une notification peut être configuré avec l'opt
 
 ### Surveillance simple
 
-```
+```plaintext
 .\check-n8n-status.cmd
-```
-
+```plaintext
 ### Surveillance avec redémarrage automatique
 
-```
+```plaintext
 .\check-n8n-status.cmd -AutoRestart $true -RestartThreshold 3
-```
-
+```plaintext
 ### Surveillance d'un serveur distant
 
-```
+```plaintext
 .\check-n8n-status.cmd -Hostname "n8n.example.com" -Port 5678 -Protocol "https"
-```
-
+```plaintext
 ### Surveillance avec API Key
 
-```
+```plaintext
 .\check-n8n-status.cmd -ApiKey "votre-api-key"
-```
-
+```plaintext
 ### Surveillance avec endpoints personnalisés
 
-```
+```plaintext
 .\check-n8n-status.cmd -Endpoints @("/", "/healthz", "/api/v1/workflows")
-```
-
+```plaintext
 ### Redémarrage manuel
 
-```
+```plaintext
 .\restart-n8n.cmd
-```
-
+```plaintext
 ## Intégration avec des tâches planifiées
 
 Le script peut être intégré avec des tâches planifiées pour surveiller régulièrement l'état de n8n.
@@ -228,10 +219,9 @@ Le script peut être intégré avec des tâches planifiées pour surveiller rég
 
 ### Cron (Linux)
 
-```
+```plaintext
 */5 * * * * cd /path/to/project && ./check-n8n-status.cmd -AutoRestart $true
-```
-
+```plaintext
 ## Résolution des problèmes
 
 ### Erreur "Le port n'est pas accessible"
@@ -267,7 +257,7 @@ Les logs sont enregistrés dans le fichier spécifié par l'option `-LogFile` (p
 
 Exemple de log :
 
-```
+```plaintext
 [2025-04-22 10:15:30] [INFO] === Surveillance du port et de l'API n8n ===
 [2025-04-22 10:15:30] [INFO] Hôte: localhost
 [2025-04-22 10:15:30] [INFO] Port: 5678
@@ -300,4 +290,4 @@ Exemple de log :
 [2025-04-22 10:15:35] [INFO] Temps total du test: 2000.123 ms
 [2025-04-22 10:15:35] [INFO] Rapport JSON: n8n/logs/n8n-status-report.json
 [2025-04-22 10:15:35] [INFO] Rapport HTML: n8n/logs/n8n-status-report.html
-```
+```plaintext

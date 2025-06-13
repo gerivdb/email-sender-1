@@ -48,17 +48,16 @@ $scriptBlockAst = [System.Management.Automation.Language.Parser]::ParseInput($co
 $scriptBlockAst.BeginBlock
 $scriptBlockAst.ProcessBlock
 $scriptBlockAst.EndBlock
-```
-
+```plaintext
 ### Ast
 
 La classe `Ast` est la classe de base pour tous les nœuds AST. Elle fournit des méthodes communes pour naviguer dans l'AST, comme `Find`, `FindAll` et `Visit`.
 
 ```powershell
 # Trouver tous les nœuds AST qui correspondent à un prédicat
-$ast.FindAll({ $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }, $true)
-```
 
+$ast.FindAll({ $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }, $true)
+```plaintext
 ## Accès à l'AST
 
 Il existe deux principales façons d'accéder à l'AST dans PowerShell :
@@ -76,24 +75,24 @@ $code = {
 }
 
 $ast = $code.Ast
-```
-
+```plaintext
 ### 2. Via les méthodes ParseInput et ParseFile de la classe Parser
 
 La classe `Parser` fournit des méthodes pour analyser le code PowerShell et générer un AST.
 
 ```powershell
 # Analyser une chaîne de caractères
+
 $code = 'function Get-Example { param($Parameter1) "Example: $Parameter1" }'
 $tokens = $errors = $null
 $ast = [System.Management.Automation.Language.Parser]::ParseInput($code, [ref]$tokens, [ref]$errors)
 
 # Analyser un fichier
+
 $filePath = "C:\path\to\script.ps1"
 $tokens = $errors = $null
 $ast = [System.Management.Automation.Language.Parser]::ParseFile($filePath, [ref]$tokens, [ref]$errors)
-```
-
+```plaintext
 ## Types de nœuds AST
 
 L'AST de PowerShell contient de nombreux types de nœuds qui représentent différentes constructions syntaxiques du langage. Voici quelques-uns des types de nœuds les plus couramment utilisés :
@@ -104,48 +103,42 @@ Représente une définition de fonction dans PowerShell.
 
 ```powershell
 $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }, $true)
-```
-
+```plaintext
 ### CommandAst
 
 Représente une commande PowerShell, y compris les appels de fonction, les appels de cmdlet, etc.
 
 ```powershell
 $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.CommandAst] }, $true)
-```
-
+```plaintext
 ### ParameterAst
 
 Représente un paramètre dans une définition de fonction ou de script.
 
 ```powershell
 $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.ParameterAst] }, $true)
-```
-
+```plaintext
 ### VariableExpressionAst
 
 Représente une référence à une variable dans PowerShell.
 
 ```powershell
 $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.VariableExpressionAst] }, $true)
-```
-
+```plaintext
 ### StringConstantExpressionAst
 
 Représente une chaîne de caractères littérale dans PowerShell.
 
 ```powershell
 $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.StringConstantExpressionAst] }, $true)
-```
-
+```plaintext
 ### ScriptBlockExpressionAst
 
 Représente un bloc de script dans PowerShell.
 
 ```powershell
 $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.ScriptBlockExpressionAst] }, $true)
-```
-
+```plaintext
 ## Méthodes de navigation dans l'AST
 
 L'AST fournit plusieurs méthodes pour naviguer dans l'arbre et trouver des nœuds spécifiques.
@@ -156,16 +149,14 @@ La méthode `Find` permet de trouver le premier nœud dans l'arbre qui correspon
 
 ```powershell
 $ast.Find({ $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] -and $args[0].Name -eq 'Get-Example' }, $true)
-```
-
+```plaintext
 ### FindAll
 
 La méthode `FindAll` permet de trouver tous les nœuds dans l'arbre qui correspondent à un prédicat donné.
 
 ```powershell
 $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }, $true)
-```
-
+```plaintext
 ### Visit
 
 La méthode `Visit` permet de visiter chaque nœud dans l'arbre et d'exécuter une action sur chaque nœud.
@@ -180,8 +171,7 @@ $visitor = [PSCustomObject]@{
 }
 
 $ast.Visit($visitor)
-```
-
+```plaintext
 ## Exemples d'utilisation de l'AST
 
 ### Exemple 1 : Trouver toutes les fonctions dans un script
@@ -205,8 +195,7 @@ function Get-ScriptFunction {
         }
     }
 }
-```
-
+```plaintext
 ### Exemple 2 : Trouver toutes les variables dans un script
 
 ```powershell
@@ -227,8 +216,7 @@ function Get-ScriptVariable {
         }
     }
 }
-```
-
+```plaintext
 ### Exemple 3 : Trouver toutes les commandes dans un script
 
 ```powershell
@@ -249,8 +237,7 @@ function Get-ScriptCommand {
         }
     }
 }
-```
-
+```plaintext
 ## Outils et modules basés sur l'AST
 
 ### PSScriptAnalyzer
@@ -260,8 +247,7 @@ function Get-ScriptCommand {
 ```powershell
 Install-Module -Name PSScriptAnalyzer
 Invoke-ScriptAnalyzer -Path script.ps1
-```
-
+```plaintext
 ### ShowPSAst
 
 [ShowPSAst](https://github.com/lzybkr/ShowPSAst) est un module qui fournit une interface graphique pour explorer l'AST d'un script PowerShell.
@@ -269,17 +255,16 @@ Invoke-ScriptAnalyzer -Path script.ps1
 ```powershell
 Install-Module -Name ShowPSAst
 Show-Ast -InputObject "C:\path\to\script.ps1"
-```
-
+```plaintext
 ### PSParser (obsolète)
 
 Avant PowerShell 3.0, l'analyse syntaxique était effectuée à l'aide de la classe `PSParser`. Cette classe est maintenant obsolète et ne doit plus être utilisée. Elle a été remplacée par les classes AST mentionnées ci-dessus.
 
 ```powershell
 # Obsolète - Ne pas utiliser
-[System.Management.Automation.PSParser]::Tokenize($code, [ref]$null)
-```
 
+[System.Management.Automation.PSParser]::Tokenize($code, [ref]$null)
+```plaintext
 ## Conclusion
 
 L'AST de PowerShell est un outil puissant pour analyser et manipuler le code PowerShell de manière programmatique. Il permet d'extraire des informations sur les fonctions, les variables, les commandes et d'autres éléments du code sans avoir à l'exécuter. Les classes AST fournissent des méthodes pour naviguer dans l'arbre et trouver des nœuds spécifiques, ce qui facilite l'analyse du code.

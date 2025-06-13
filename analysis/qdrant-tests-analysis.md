@@ -3,6 +3,7 @@
 ## 1.1 Tests d'intégration identifiés
 
 ### 1.1.1 Tests gRPC : AUCUN TROUVÉ
+
 - ❌ **Résultat** : Aucun test gRPC QDrant détecté dans le projet
 - ✅ **Constat** : Le projet utilise déjà HTTP/REST pour QDrant
 - 📝 **Impact** : Migration gRPC→HTTP non nécessaire
@@ -10,7 +11,8 @@
 ### 1.1.2 Fichiers de test HTTP existants
 
 #### A. Tests Go (21 fichiers identifiés)
-```
+
+```plaintext
 📁 Tests d'intégration principaux :
 ├── src/indexing/integration_test.go ⭐ (Tests complets)
 ├── src/indexing/indexing_test.go 
@@ -24,25 +26,24 @@
 📁 Tests RAG avancés :
 ├── tools/qdrant/rag-go/ (structure complète)
 └── debug_cache_test.go
-```
-
+```plaintext
 #### B. Tests Python (2 fichiers identifiés)
-```
+
+```plaintext
 📁 Tests MCP/Vector Storage :
 ├── development/scripts/mcp/test_vector_storage.py ⭐ (Tests complets)
 └── development/scripts/mcp/vector_storage.py (Code testé)
-```
-
+```plaintext
 #### C. Tests PowerShell (69+ fichiers identifiés)
-```
+
+```plaintext
 📁 Scripts de test QDrant :
 ├── development/scripts/roadmap/rag/tests/Test-QdrantSimple.ps1 ⭐
 ├── development/scripts/roadmap/rag/tests/Run-AllTests.ps1
 ├── tools/qdrant/Test-QdrantMigration*.ps1 (4 variantes)
 ├── tools/qdrant/rag/Test-*.ps1 (3 fichiers)
 └── development/scripts/roadmap/rag/tests/ (65+ scripts)
-```
-
+```plaintext
 ### 1.1.3 Analyse des dépendances entre tests
 
 #### A. Dépendances principales identifiées
@@ -53,8 +54,7 @@
 email_sender/src/qdrant (client principal)
 development/tools/qdrant/rag-go/pkg/client (client avancé)
 tools/qdrant/rag-go/pkg/client (client simplifié)
-```
-
+```plaintext
 **🔗 Configuration partagée :**
 ```go
 // Structures communes
@@ -62,15 +62,13 @@ tools/qdrant/rag-go/pkg/client (client simplifié)
 - CollectionConfig 
 - Point, SearchRequest, SearchResult
 - IntegrationTestSuite (framework test)
-```
-
+```plaintext
 **🔗 Ports et endpoints :**
-```
+```plaintext
 HTTP: localhost:6333 (standard)
 Collections: /collections
 Health: /healthz ou /
-```
-
+```plaintext
 #### B. Interdépendances critiques
 
 **⚠️ Tests dépendants d'instance QDrant live :**
@@ -92,22 +90,24 @@ QDRANT_PORT=6333
 QDRANT_API_KEY (optionnel)
 QDRANT_HTTPS=false
 QDRANT_TIMEOUT=10-30s
-```
-
+```plaintext
 ## 1.2 Recommandations pour tests HTTP
 
 ### 1.2.1 Tests fonctionnels (Prêts)
+
 ✅ Structure HTTP complète existe
 ✅ Mocks HTTP implémentés
 ✅ Tests d'intégration opérationnels
 
 ### 1.2.2 Tests à améliorer
+
 🔄 **Standardiser les endpoints** - Uniformiser /healthz vs /
 🔄 **Centraliser la configuration** - Variables d'environnement
 🔄 **Tests de charge** - Performance avec gros volumes
 🔄 **Tests d'erreur** - Timeout, connexion, format
 
 ### 1.2.3 Tests manquants identifiés
+
 ❌ **Tests de migration de données** - Backup/restore collections
 ❌ **Tests de haute disponibilité** - Résilience, failover
 ❌ **Tests de sécurité** - API keys, HTTPS, authentification
@@ -126,6 +126,7 @@ QDRANT_TIMEOUT=10-30s
 ### 1.3.1 Tests à risque élevé (Nécessitent QDrant live)
 
 #### A. Tests d'intégration Go - Risque ÉLEVÉ
+
 ```go
 📍 src/indexing/integration_test.go
 ├── Dépendances: QDrant live sur localhost:6333
@@ -137,9 +138,9 @@ QDRANT_TIMEOUT=10-30s
 ├── Dépendances: QDrant + données de test volumineuses
 ├── Impact: Tests longs (5-10min), ressources
 └── Recommandation: CI/CD séparée, environnement dédié
-```
-
+```plaintext
 #### B. Scripts PowerShell - Risque MOYEN à ÉLEVÉ
+
 ```powershell
 📍 development/scripts/roadmap/rag/tests/Test-QdrantSimple.ps1
 ├── Connectivité: Test direct HTTP vers QDrant
@@ -150,11 +151,11 @@ QDRANT_TIMEOUT=10-30s
 ├── Migration: Tests de compatibilité versions
 ├── Données: Backup/restore collections
 └── Risque: Corruption données si échec
-```
-
+```plaintext
 ### 1.3.2 Tests autonomes (Mocks) - Risque FAIBLE
 
 #### A. Tests unitaires Go avec mocks HTTP
+
 ```go
 📍 development/tools/qdrant/rag-go/pkg/client/client_test.go
 ├── Mock: httptest.NewServer()
@@ -166,20 +167,20 @@ QDRANT_TIMEOUT=10-30s
 ├── Mock: In-memory store
 ├── Couverture: CRUD operations basiques
 └── Limitation: Pas de test vectoriel réel
-```
-
+```plaintext
 #### B. Tests Python avec mocks
+
 ```python
 📍 development/scripts/mcp/test_vector_storage.py
 ├── Mock: requests library avec MagicMock
 ├── Couverture: HTTP calls, configuration, erreurs
 ├── Avantage: Tests isolés et rapides
 └── Usage: @patch("requests.get/post/put/delete")
-```
-
+```plaintext
 ### 1.3.3 Dépendances cachées identifiées
 
 #### A. Configuration partagée
+
 ```yaml
 🔗 Variables d'environnement critiques:
 ├── QDRANT_HOST=localhost (défaut)
@@ -187,19 +188,19 @@ QDRANT_TIMEOUT=10-30s
 ├── QDRANT_API_KEY (optionnel mais impact sécurité)
 ├── QDRANT_TIMEOUT=10-30s (varie selon tests)
 └── QDRANT_COLLECTION_PREFIX (tests isolés)
-```
-
+```plaintext
 #### B. Données de test partagées
-```
+
+```plaintext
 🔗 Fixtures communes:
 ├── 📁 data/qdrant/test-collections/ (collections pré-créées)
 ├── 📁 tests/fixtures/vectors/ (vecteurs de test)
 ├── 📁 development/testing/mocks/ (réponses HTTP)
 └── 🔧 Schema: test_collection_{timestamp} (éviter conflits)
-```
-
+```plaintext
 #### C. Ordre d'exécution critique
-```
+
+```plaintext
 ⚠️ Séquence obligatoire pour tests live:
 1️⃣ QDrant Health Check
 2️⃣ Collection cleanup (si existe)
@@ -207,8 +208,7 @@ QDRANT_TIMEOUT=10-30s
 4️⃣ Tests fonctionnels
 5️⃣ Collection suppression
 6️⃣ Vérification cleanup
-```
-
+```plaintext
 ---
 
 ## 1.4 Recommandations d'amélioration prioritaires
@@ -216,19 +216,23 @@ QDRANT_TIMEOUT=10-30s
 ### 1.4.1 Actions immédiates (Cette semaine)
 
 #### 🔧 Standardisation endpoints
+
 ```bash
 # Problème: Incohérence /healthz vs / vs /health
+
 # Solution: Uniformiser sur /healthz (standard QDrant)
 
 # Fichiers à corriger:
+
 - src/qdrant/qdrant.go: HealthCheck() endpoint
 - tools/qdrant/rag-go/pkg/client/client.go: même endpoint
 - Scripts PowerShell: Test-QdrantConnection functions
-```
-
+```plaintext
 #### 🔧 Variables d'environnement centralisées
+
 ```bash
 # Créer: .env.test.example
+
 QDRANT_HOST=localhost
 QDRANT_PORT=6333
 QDRANT_API_KEY=
@@ -236,13 +240,14 @@ QDRANT_HTTPS=false
 QDRANT_TIMEOUT=30
 QDRANT_TEST_COLLECTION_PREFIX=test_
 QDRANT_CLEANUP_ON_FAILURE=true
-```
-
+```plaintext
 ### 1.4.2 Actions à moyen terme (2-3 semaines)
 
 #### 🐳 Docker Compose pour tests
+
 ```yaml
 # Créer: docker-compose.test.yml
+
 version: '3.8'
 services:
   qdrant-test:
@@ -263,58 +268,69 @@ services:
 
 volumes:
   qdrant_test_data:
-```
-
+```plaintext
 #### 📊 Suite de tests consolidée
+
 ```bash
 # Créer: scripts/test/Run-QdrantTestSuite.ps1
-# ✅ Tests unitaires (mocks) - Rapide
-# ✅ Tests intégration (Docker) - Moyen
-# ✅ Tests performance (CI dédié) - Lent
-# ✅ Rapports coverage consolidés
-```
 
+# ✅ Tests unitaires (mocks) - Rapide
+
+# ✅ Tests intégration (Docker) - Moyen
+
+# ✅ Tests performance (CI dédié) - Lent
+
+# ✅ Rapports coverage consolidés
+
+```plaintext
 ### 1.4.3 Tests manquants critiques
 
 #### 🚨 Sécurité
+
 ```go
 // Tests API Key validation
 // Tests HTTPS/TLS configuration  
 // Tests rate limiting
 // Tests authorization headers
-```
-
+```plaintext
 #### 🚨 Résilience
+
 ```go
 // Tests timeout handling
 // Tests retry logic
 // Tests network failures
 // Tests partial failures
-```
-
+```plaintext
 #### 🚨 Performance
+
 ```bash
 # Tests charge (concurrent connections)
-# Tests volumes (millions vectors)
-# Tests memory usage
-# Tests index optimization
-```
 
+# Tests volumes (millions vectors)
+
+# Tests memory usage
+
+# Tests index optimization
+
+```plaintext
 ---
 
 ## 1.5 Plan d'action immédiat
 
 ### Phase 1: Consolidation (2-3 jours)
+
 1. ✅ **Standardiser endpoints** (/healthz partout)
 2. ✅ **Centraliser configuration** (.env.test)
 3. ✅ **Docker Compose** (environnement test isolé)
 
 ### Phase 2: Tests robustes (1 semaine)  
+
 1. 🔧 **Améliorer mocks** (plus de scénarios d'erreur)
 2. 🔧 **Tests sécurité** (API keys, HTTPS)
 3. 🔧 **Tests résilience** (timeout, retry)
 
 ### Phase 3: Performance (2 semaines)
+
 1. 📊 **Benchmarks** (baseline performance)
 2. 📊 **Tests charge** (concurrent users)
 3. 📊 **Optimisation** (index, mémoire)

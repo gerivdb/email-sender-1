@@ -22,28 +22,32 @@ Ce répertoire contient les tests automatisés pour les nodes MCP Client et MCP 
 
 ```bash
 # Exécuter tous les tests
+
 node run-all-tests.js
 
 # Exécuter uniquement les tests unitaires
+
 node test-mcp-nodes.js
 
 # Exécuter uniquement les tests de scénarios
-node test-scenarios.js
-```
 
+node test-scenarios.js
+```plaintext
 ### Sous Windows
 
 ```powershell
 # Exécuter tous les tests
+
 .\Run-MCPTests.ps1
 
 # Exécuter uniquement les tests unitaires
+
 node test-mcp-nodes.js
 
 # Exécuter uniquement les tests de scénarios
-node test-scenarios.js
-```
 
+node test-scenarios.js
+```plaintext
 ## Rapports de test
 
 Les rapports de test sont générés dans le répertoire `reports` au format Markdown. Chaque rapport contient :
@@ -126,18 +130,18 @@ Le serveur de test en ligne de commande (`mcp-cmd-server.js`) simule un serveur 
 
 ```bash
 # Démarrer le serveur HTTP
-node mcp-test-server.js 3000 test-api-key
-```
 
+node mcp-test-server.js 3000 test-api-key
+```plaintext
 Le serveur démarrera sur le port 3000 et utilisera la clé API `test-api-key`.
 
 ### Serveur en ligne de commande
 
 ```bash
 # Utiliser le serveur en ligne de commande
-echo '{"operation": "listTools"}' | node mcp-cmd-server.js
-```
 
+echo '{"operation": "listTools"}' | node mcp-cmd-server.js
+```plaintext
 ## Intégration avec n8n
 
 ### Configuration HTTP

@@ -24,6 +24,7 @@ Cette fonction convertit une information extraite ou une collection d'informatio
 **Couverture des branches :** 100% (3/3)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification de l'objet d'entrée
 - Gestion de la profondeur de sérialisation
@@ -32,11 +33,13 @@ Cette fonction convertit une information extraite ou une collection d'informatio
 - Retour de la chaîne JSON
 
 #### Branches couvertes :
+
 - Vérification de l'objet d'entrée null
 - Gestion des objets complexes
 - Gestion des erreurs de sérialisation
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests avec différents types d'objets (informations extraites, collections)
 - Tests avec différentes profondeurs de sérialisation
@@ -50,6 +53,7 @@ Cette fonction convertit une chaîne JSON en information extraite ou en collecti
 **Couverture des branches :** 100% (2/2)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification de la chaîne JSON
 - Conversion de la chaîne JSON en objet
@@ -57,10 +61,12 @@ Cette fonction convertit une chaîne JSON en information extraite ou en collecti
 - Retour de l'objet désérialisé
 
 #### Branches couvertes :
+
 - Vérification de la chaîne JSON vide ou null
 - Gestion des erreurs de désérialisation
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests avec différents formats JSON
 - Tests de désérialisation d'informations extraites et de collections
@@ -74,6 +80,7 @@ Cette fonction sauvegarde une information extraite ou une collection d'informati
 **Couverture des branches :** 100% (5/5)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification de l'objet d'information
 - Vérification du chemin du fichier
@@ -84,6 +91,7 @@ Cette fonction sauvegarde une information extraite ou une collection d'informati
 - Retour du chemin du fichier
 
 #### Branches couvertes :
+
 - Vérification de l'objet d'information null
 - Vérification du chemin du fichier vide ou null
 - Vérification de l'existence du répertoire parent
@@ -91,6 +99,7 @@ Cette fonction sauvegarde une information extraite ou une collection d'informati
 - Gestion des erreurs d'écriture dans le fichier
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests de sauvegarde dans différents répertoires
 - Tests avec différents types d'objets
@@ -105,6 +114,7 @@ Cette fonction charge une information extraite ou une collection d'informations 
 **Couverture des branches :** 100% (6/6)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification du chemin du fichier
 - Vérification de l'existence du fichier
@@ -115,6 +125,7 @@ Cette fonction charge une information extraite ou une collection d'informations 
 - Retour de l'objet chargé
 
 #### Branches couvertes :
+
 - Vérification du chemin du fichier vide ou null
 - Vérification de l'existence du fichier
 - Vérification du contenu du fichier vide
@@ -123,6 +134,7 @@ Cette fonction charge une information extraite ou une collection d'informations 
 - Vérification du type de l'objet désérialisé
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests de chargement depuis différents répertoires
 - Tests avec différents types d'objets

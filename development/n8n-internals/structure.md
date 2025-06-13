@@ -6,27 +6,43 @@ Ce document décrit la structure du dossier n8n et son organisation.
 
 La structure du dossier n8n est organisée de manière à séparer clairement les différents composants et à faciliter la maintenance et l'intégration avec d'autres systèmes.
 
-```
+```plaintext
 n8n/
 ├── projet/config/               # Configuration n8n
-├── data/                 # Données n8n (base de données, credentials, etc.)
-│   ├── credentials/      # Credentials chiffrées
-│   ├── database/         # Base de données SQLite
-│   └── storage/          # Stockage binaire
-├── workflows/            # Workflows n8n
-│   ├── local/            # Workflows utilisés par n8n local
-│   ├── ide/              # Workflows utilisés par l'IDE
-│   └── archive/          # Workflows archivés
-├── development/scripts/              # Scripts utilitaires
-│   ├── sync/             # Scripts de synchronisation
-│   ├── setup/            # Scripts d'installation et de configuration
-│   └── utils/            # Utilitaires communs
-├── integrations/         # Intégrations avec d'autres systèmes
-│   ├── ide/              # Intégration avec l'IDE
-│   └── mcp/              # Intégration avec MCP
-└── projet/documentation/                 # Documentation
-```
 
+├── data/                 # Données n8n (base de données, credentials, etc.)
+
+│   ├── credentials/      # Credentials chiffrées
+
+│   ├── database/         # Base de données SQLite
+
+│   └── storage/          # Stockage binaire
+
+├── workflows/            # Workflows n8n
+
+│   ├── local/            # Workflows utilisés par n8n local
+
+│   ├── ide/              # Workflows utilisés par l'IDE
+
+│   └── archive/          # Workflows archivés
+
+├── development/scripts/              # Scripts utilitaires
+
+│   ├── sync/             # Scripts de synchronisation
+
+│   ├── setup/            # Scripts d'installation et de configuration
+
+│   └── utils/            # Utilitaires communs
+
+├── integrations/         # Intégrations avec d'autres systèmes
+
+│   ├── ide/              # Intégration avec l'IDE
+
+│   └── mcp/              # Intégration avec MCP
+
+└── projet/documentation/                 # Documentation
+
+```plaintext
 ## Détails des dossiers
 
 ### projet/config/
@@ -83,24 +99,21 @@ Pour installer n8n, exécutez le script d'installation :
 
 ```powershell
 .\development\scripts\setup\install-n8n.ps1
-```
-
+```plaintext
 ### Démarrage
 
 Pour démarrer n8n, exécutez le script de démarrage :
 
 ```powershell
 .\development\scripts\start-n8n.ps1
-```
-
+```plaintext
 ### Synchronisation des workflows
 
 Pour synchroniser les workflows entre n8n et les fichiers locaux, exécutez le script de synchronisation :
 
 ```powershell
 .\development\scripts\sync\sync-workflows.ps1
-```
-
+```plaintext
 Options disponibles :
 
 - `-Direction` : Direction de la synchronisation (`to-n8n`, `from-n8n`, `both`)
@@ -110,4 +123,4 @@ Exemple :
 
 ```powershell
 .\development\scripts\sync\sync-workflows.ps1 -Direction "both" -Environment "all"
-```
+```plaintext

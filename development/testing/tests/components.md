@@ -40,8 +40,7 @@ describe('Component.vue', () => {
     expect(wrapper.exists()).toBe(true)
   })
 })
-```
-
+```plaintext
 ## ERPNextIntegration
 
 Le fichier `development/testing/tests/unit/components/integrations/ERPNextIntegration.spec.js` contient les tests pour le composant ERPNextIntegration.
@@ -80,8 +79,7 @@ it('loads configuration on creation', async () => {
   })
   expect(ERPNextService.testConnection).toHaveBeenCalled()
 })
-```
-
+```plaintext
 ## WordCloudVisualization
 
 Le fichier `development/testing/tests/unit/components/analysis/WordCloudVisualization.spec.js` contient les tests pour le composant WordCloudVisualization.
@@ -125,8 +123,7 @@ it('fetches word cloud data on mount', async () => {
     { text: 'word2', value: 8, frequency: 0.04, evolution: -5 }
   ])
 })
-```
-
+```plaintext
 ## Mocking des dépendances
 
 Les tests mockent les dépendances externes comme D3.js et d3-cloud:
@@ -146,8 +143,7 @@ jest.mock('d3-cloud', () => jest.fn().mockImplementation(() => ({
   words: jest.fn().mockReturnThis(),
   // ...
 })))
-```
-
+```plaintext
 ## Tests d'événements
 
 Les tests vérifient également la gestion des événements:
@@ -170,8 +166,7 @@ it('toggles configuration panel', async () => {
   await wrapper.vm.toggleConfig()
   expect(wrapper.vm.showConfig).toBe(false)
 })
-```
-
+```plaintext
 ## Tests de méthodes utilitaires
 
 Les tests vérifient également les méthodes utilitaires:
@@ -198,8 +193,7 @@ it('extracts excerpt containing the word', () => {
   const nullExcerpt = wrapper.vm.getExcerpt(null, 'word1')
   expect(nullExcerpt).toBe('')
 })
-```
-
+```plaintext
 ## Bonnes pratiques
 
 - Utiliser `shallowMount` pour les tests unitaires

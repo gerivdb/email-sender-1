@@ -22,14 +22,12 @@ Pour synchroniser les tâches ERPNext vers le journal:
 
 ```bash
 curl -X POST http://localhost:8000/api/integrations/erpnext/sync-to-journal
-```
-
+```plaintext
 ### Via le script Python
 
 ```bash
 python scripts/python/journal/integrations/erpnext_integration.py --sync-to-journal
-```
-
+```plaintext
 ### Comportement
 
 Lors de la synchronisation ERPNext → Journal:
@@ -55,14 +53,12 @@ Pour synchroniser les entrées de journal vers ERPNext:
 
 ```bash
 curl -X POST http://localhost:8000/api/integrations/erpnext/sync-from-journal
-```
-
+```plaintext
 ### Via le script Python
 
 ```bash
 python scripts/python/journal/integrations/erpnext_integration.py --sync-from-journal
-```
-
+```plaintext
 ### Comportement
 
 Lors de la synchronisation Journal → ERPNext:
@@ -92,15 +88,13 @@ curl -X POST http://localhost:8000/api/integrations/erpnext/create-entry \
   -d '{
     "task_id": "TASK-001"
   }'
-```
-
+```plaintext
 ### Via le script Python
 
 ```bash
 python scripts/python/journal/integrations/erpnext_integration.py \
   --create-entry --task-id "TASK-001"
-```
-
+```plaintext
 ## Fréquence de synchronisation
 
 Par défaut, la synchronisation est manuelle. Vous pouvez automatiser la synchronisation en:
@@ -113,8 +107,10 @@ Par défaut, la synchronisation est manuelle. Vous pouvez automatiser la synchro
 
 ```powershell
 # Créer une tâche planifiée pour synchroniser ERPNext vers le journal tous les jours à 9h
+
 schtasks /create /tn "SyncERPNextToJournal" /tr "python scripts/python/journal/integrations/erpnext_integration.py --sync-to-journal" /sc daily /st 09:00
 
 # Créer une tâche planifiée pour synchroniser le journal vers ERPNext tous les jours à 17h
+
 schtasks /create /tn "SyncJournalToERPNext" /tr "python scripts/python/journal/integrations/erpnext_integration.py --sync-from-journal" /sc daily /st 17:00
-```
+```plaintext

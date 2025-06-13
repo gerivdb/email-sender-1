@@ -1,9 +1,10 @@
-﻿# Rapport d'Analyse de Structure de Roadmap
+# Rapport d'Analyse de Structure de Roadmap
 
 **Fichier analysÃ©:** $RoadmapFilePath  
 **Date d'analyse:** 2025-04-23 23:38:56
 
 ## 1. Marqueurs de Liste
+
 Aucun marqueur de liste dÃ©tectÃ©.
 
 ## 2. Conventions d'Indentation
@@ -14,9 +15,11 @@ Aucun marqueur de liste dÃ©tectÃ©.
 ## 3. Formats de Titres et Sous-titres
 
 ### 3.1 Titres avec #
+
 Aucun titre avec # dÃ©tectÃ©.
 
 ### 3.2 Titres avec soulignement
+
 Aucun titre avec soulignement dÃ©tectÃ©.
 
 ## 4. Styles d'Emphase
@@ -42,9 +45,11 @@ Aucun titre avec soulignement dÃ©tectÃ©.
 - **Profondeur maximale:**  niveaux
 
 ### 5.1 Conventions de NumÃ©rotation
+
 Aucune convention de numÃ©rotation dÃ©tectÃ©e.
 
 ### 5.2 Relations Parent-Enfant
+
 Aucune relation parent-enfant dÃ©tectÃ©e.
 
 ## 6. Marqueurs de Statut
@@ -53,9 +58,11 @@ Aucune relation parent-enfant dÃ©tectÃ©e.
 - **Complet ([x]):**  occurrences
 
 ### 6.1 Marqueurs PersonnalisÃ©s
+
 Aucun marqueur personnalisÃ© dÃ©tectÃ©.
 
 ### 6.2 Indicateurs Textuels de Progression
+
 Aucun indicateur textuel dÃ©tectÃ©.
 
 ## 7. Recommandations

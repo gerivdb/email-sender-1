@@ -27,4 +27,4 @@ Ce dossier est géré par le script `development/scripts/archive_task.ps1`. Pour
 Exemple :
 ```powershell
 .\development\scripts\archive_task.ps1 -TaskId "5.1.3" -TaskName "Optimisation automatique des performances"
-```
+```plaintext

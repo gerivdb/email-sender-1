@@ -16,32 +16,28 @@ Ce répertoire contient des templates Hygen pour générer des scripts de mainte
 
 ```bash
 hygen maintenance init
-```
-
+```plaintext
 Cette commande génère un script PowerShell qui crée la structure de dossiers nécessaire pour la maintenance.
 
 ### Génération de scripts d'organisation
 
 ```bash
 hygen maintenance organize
-```
-
+```plaintext
 Cette commande génère un script PowerShell pour organiser les fichiers et dossiers selon une structure prédéfinie.
 
 ### Génération de scripts de nettoyage
 
 ```bash
 hygen maintenance cleanup
-```
-
+```plaintext
 Cette commande génère un script PowerShell pour nettoyer les fichiers inutiles dans un répertoire.
 
 ### Génération de scripts de migration
 
 ```bash
 hygen maintenance migrate
-```
-
+```plaintext
 Cette commande génère un script PowerShell pour migrer des fichiers d'un répertoire à un autre.
 
 ## Personnalisation

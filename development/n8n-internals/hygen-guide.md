@@ -19,8 +19,7 @@ La méthode la plus simple pour installer Hygen est d'utiliser le script d'insta
 
 ```batch
 .\n8n\cmd\utils\install-hygen.cmd
-```
-
+```plaintext
 Ce script installera Hygen et créera la structure de dossiers nécessaire.
 
 ### Installation manuelle
@@ -31,30 +30,26 @@ Si vous préférez installer Hygen manuellement, suivez ces étapes :
 
 ```bash
 npm install --save-dev hygen
-```
-
+```plaintext
 2. Créez la structure de dossiers nécessaire :
 
 ```powershell
 .\n8n\scripts\setup\ensure-hygen-structure.ps1
-```
-
+```plaintext
 ### Vérification de l'installation
 
 Pour vérifier que Hygen est correctement installé, exécutez :
 
 ```powershell
 .\n8n\scripts\setup\verify-hygen-installation.ps1
-```
-
+```plaintext
 ### Finalisation de l'installation
 
 Pour finaliser l'installation, exécutez :
 
 ```powershell
 .\n8n\scripts\setup\finalize-hygen-installation.ps1
-```
-
+```plaintext
 ## Générateurs disponibles
 
 ### 1. Script d'automatisation n8n
@@ -63,8 +58,7 @@ Génère un script PowerShell d'automatisation n8n avec une structure standardis
 
 ```bash
 npx hygen n8n-script new
-```
-
+```plaintext
 Vous serez invité à fournir :
 - Le nom du script (sans extension)
 - La catégorie du script (deployment, monitoring, diagnostics, etc.)
@@ -77,8 +71,7 @@ Génère un fichier JSON de workflow n8n avec une structure de base.
 
 ```bash
 npx hygen n8n-workflow new
-```
-
+```plaintext
 Vous serez invité à fournir :
 - Le nom du workflow
 - L'environnement du workflow (local, ide, archive)
@@ -90,8 +83,7 @@ Génère un fichier Markdown de documentation avec une structure standardisée.
 
 ```bash
 npx hygen n8n-doc new
-```
-
+```plaintext
 Vous serez invité à fournir :
 - Le nom du document (sans extension)
 - La catégorie du document (architecture, workflows, api, etc.)
@@ -104,8 +96,7 @@ Génère un script PowerShell d'intégration avec une structure standardisée.
 
 ```bash
 npx hygen n8n-integration new
-```
-
+```plaintext
 Vous serez invité à fournir :
 - Le nom du script d'intégration (sans extension)
 - Le système avec lequel s'intègre ce script (mcp, ide, api, augment)
@@ -116,7 +107,7 @@ Vous serez invité à fournir :
 
 Hygen utilise la structure de dossiers suivante :
 
-```
+```plaintext
 n8n/development/templates/
   n8n-script/
     new/
@@ -134,11 +125,10 @@ n8n/development/templates/
     new/
       hello.ejs.t
       prompt.js
-```
-
+```plaintext
 Les composants générés sont placés dans les dossiers suivants :
 
-```
+```plaintext
 n8n/
   automation/
     deployment/
@@ -164,8 +154,7 @@ n8n/
     api/
     guides/
     installation/
-```
-
+```plaintext
 ## Utilisation
 
 ### Génération de composants
@@ -176,8 +165,7 @@ La méthode la plus simple pour générer des composants est d'utiliser le scrip
 
 ```batch
 .\n8n\cmd\utils\generate-component.cmd
-```
-
+```plaintext
 Ce script vous présentera un menu avec les options suivantes :
 
 1. Générer un script PowerShell
@@ -192,21 +180,25 @@ Vous pouvez également utiliser directement le script PowerShell :
 
 ```powershell
 # Générer un composant en mode interactif
+
 .\n8n\scripts\utils\Generate-N8nComponent.ps1
 
 # Générer un script PowerShell
+
 .\n8n\scripts\utils\Generate-N8nComponent.ps1 -Type script -Name "My-Script" -Category "deployment" -Description "Mon script de déploiement"
 
 # Générer un workflow n8n
+
 .\n8n\scripts\utils\Generate-N8nComponent.ps1 -Type workflow -Name "my-workflow" -Category "local" -Description "Mon workflow"
 
 # Générer un document
+
 .\n8n\scripts\utils\Generate-N8nComponent.ps1 -Type doc -Name "my-doc" -Category "guides" -Description "Mon document"
 
 # Générer une intégration
-.\n8n\scripts\utils\Generate-N8nComponent.ps1 -Type integration -Name "My-Integration" -Category "mcp" -Description "Mon intégration"
-```
 
+.\n8n\scripts\utils\Generate-N8nComponent.ps1 -Type integration -Name "My-Integration" -Category "mcp" -Description "Mon intégration"
+```plaintext
 ## Structure des templates
 
 Les templates sont stockés dans le dossier `n8n/development/templates`. Chaque générateur a son propre dossier avec des templates spécifiques.
@@ -219,8 +211,7 @@ Pour créer un nouveau générateur :
 
 ```bash
 npx hygen generator new mon-generateur
-```
-
+```plaintext
 ## Validation et tests
 
 ### Validation des templates
@@ -229,42 +220,36 @@ Pour valider les templates Hygen, exécutez :
 
 ```powershell
 .\n8n\scripts\setup\validate-hygen-templates.ps1
-```
-
+```plaintext
 Ou utilisez le script de commande :
 
 ```batch
 .\n8n\cmd\utils\validate-templates.cmd
-```
-
+```plaintext
 ### Validation des scripts d'utilitaires
 
 Pour valider les scripts d'utilitaires Hygen, exécutez :
 
 ```powershell
 .\n8n\scripts\setup\validate-hygen-utilities.ps1
-```
-
+```plaintext
 Ou utilisez le script de commande :
 
 ```batch
 .\n8n\cmd\utils\validate-utilities.cmd
-```
-
+```plaintext
 ### Exécution de tous les tests
 
 Pour exécuter tous les tests Hygen, exécutez :
 
 ```powershell
 .\n8n\scripts\setup\run-all-hygen-tests.ps1
-```
-
+```plaintext
 Ou utilisez le script de commande :
 
 ```batch
 .\n8n\cmd\utils\run-all-tests.cmd
-```
-
+```plaintext
 ## Bonnes pratiques
 
 1. Utilisez toujours les générateurs pour créer de nouveaux composants afin de maintenir une structure cohérente.
@@ -281,40 +266,51 @@ Ou utilisez le script de commande :
 ```bash
 npx hygen n8n-script new
 # Nom: deploy-n8n
-# Catégorie: deployment
-# Description: Script de déploiement de n8n
-# Auteur: Équipe DevOps
-```
 
+# Catégorie: deployment
+
+# Description: Script de déploiement de n8n
+
+# Auteur: Équipe DevOps
+
+```plaintext
 ### Création d'un workflow d'envoi d'email
 
 ```bash
 npx hygen n8n-workflow new
 # Nom: email-sender
-# Environnement: local
-# Tags: email, notification
-```
 
+# Environnement: local
+
+# Tags: email, notification
+
+```plaintext
 ### Création d'une documentation d'architecture
 
 ```bash
 npx hygen n8n-doc new
 # Nom: system-architecture
-# Catégorie: architecture
-# Description: Documentation de l'architecture du système n8n
-# Auteur: Équipe Architecture
-```
 
+# Catégorie: architecture
+
+# Description: Documentation de l'architecture du système n8n
+
+# Auteur: Équipe Architecture
+
+```plaintext
 ### Création d'un script d'intégration MCP
 
 ```bash
 npx hygen n8n-integration new
 # Nom: sync-workflows
-# Système: mcp
-# Description: Script de synchronisation des workflows avec MCP
-# Auteur: Équipe Intégration
-```
 
+# Système: mcp
+
+# Description: Script de synchronisation des workflows avec MCP
+
+# Auteur: Équipe Intégration
+
+```plaintext
 ## Bénéfices
 
 L'utilisation de Hygen dans ce projet apporte plusieurs bénéfices :
@@ -363,16 +359,14 @@ Si Hygen n'est pas installé, exécutez :
 
 ```powershell
 npm install --save-dev hygen
-```
-
+```plaintext
 ### Structure de dossiers incomplète
 
 Si la structure de dossiers est incomplète, exécutez :
 
 ```powershell
 .\n8n\scripts\setup\ensure-hygen-structure.ps1
-```
-
+```plaintext
 ### Erreurs lors de la génération de composants
 
 Si vous rencontrez des erreurs lors de la génération de composants, vérifiez :

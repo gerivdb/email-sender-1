@@ -14,30 +14,26 @@ Pour installer les dépendances Python, exécutez le script d'installation :
 
 ```powershell
 .\scripts\setup\Install-PredictiveModelDependencies.ps1
-```
-
+```plaintext
 ## Installation
 
 1. Importez le module dans votre script PowerShell :
 
 ```powershell
 Import-Module -Path ".\modules\PerformancePredictor.psm1" -Force
-```
-
+```plaintext
 2. Initialisez le module avec la configuration souhaitée :
 
 ```powershell
 Initialize-PerformancePredictor -ConfigPath "C:\Config\perf_config.json" -LogPath "C:\Logs\perf.log" -ModelStoragePath "C:\Models"
-```
-
+```plaintext
 ## Fonctionnalités principales
 
 ### Initialisation du module
 
 ```powershell
 Initialize-PerformancePredictor -ConfigPath "C:\Config\perf_config.json" -LogPath "C:\Logs\perf.log" -ModelStoragePath "C:\Models" -PredictionHorizon 24 -AnomalySensitivity "Medium" -RetrainingInterval 7
-```
-
+```plaintext
 Paramètres :
 - `ConfigPath` : Chemin du fichier de configuration
 - `LogPath` : Chemin du fichier de log
@@ -51,8 +47,7 @@ Paramètres :
 
 ```powershell
 Start-ModelTraining -Metrics $metrics -Force
-```
-
+```plaintext
 Paramètres :
 - `Metrics` : Métriques à utiliser pour l'entraînement
 - `Force` : Force le réentraînement même si l'intervalle n'est pas atteint
@@ -62,8 +57,7 @@ Paramètres :
 
 ```powershell
 Get-PerformancePrediction -Metrics $metrics -MetricName "CPU.Usage" -Horizon 12
-```
-
+```plaintext
 Paramètres :
 - `Metrics` : Métriques historiques à utiliser pour la prédiction
 - `MetricName` : Nom de la métrique à prédire
@@ -73,8 +67,7 @@ Paramètres :
 
 ```powershell
 Find-PerformanceAnomaly -Metrics $metrics -MetricName "Memory.Usage" -Sensitivity "High"
-```
-
+```plaintext
 Paramètres :
 - `Metrics` : Métriques à analyser
 - `MetricName` : Nom de la métrique à analyser
@@ -84,8 +77,7 @@ Paramètres :
 
 ```powershell
 Get-PerformanceTrend -Metrics $metrics -MetricName "ResponseTime"
-```
-
+```plaintext
 Paramètres :
 - `Metrics` : Métriques à analyser
 - `MetricName` : Nom de la métrique à analyser
@@ -94,8 +86,7 @@ Paramètres :
 
 ```powershell
 Export-PredictionReport -Metrics $metrics -OutputPath "C:\Reports\rapport.html" -Format "HTML" -Horizon 24 -MetricNames @("CPU.Usage", "Memory.Usage")
-```
-
+```plaintext
 Paramètres :
 - `Metrics` : Métriques à analyser
 - `OutputPath` : Chemin du fichier de sortie pour le rapport
@@ -113,27 +104,33 @@ $metrics = @(
         Timestamp = Get-Date
         CPU = [PSCustomObject]@{
             Usage = 45.2  # Pourcentage d'utilisation CPU
+
         }
         Memory = [PSCustomObject]@{
             Physical = [PSCustomObject]@{
                 UsagePercent = 62.5  # Pourcentage d'utilisation mémoire
+
             }
         }
         Disk = [PSCustomObject]@{
             Usage = [PSCustomObject]@{
                 Average = 78.3  # Pourcentage d'utilisation disque
+
             }
         }
         Network = [PSCustomObject]@{
             BandwidthUsage = 35.7  # Pourcentage d'utilisation bande passante
+
         }
         ResponseTime = 120.5  # Temps de réponse en ms
+
         ErrorRate = 1.2  # Taux d'erreurs en %
+
         ThroughputRate = 1500.0  # Débit en requêtes/seconde
+
     }
 )
-```
-
+```plaintext
 ## Exemples d'utilisation
 
 ### Exemple complet
@@ -144,30 +141,37 @@ Voir le script d'exemple `scripts/examples/Use-PerformancePredictor.ps1` pour un
 
 ```powershell
 # Importer le module
+
 Import-Module -Path ".\modules\PerformancePredictor.psm1" -Force
 
 # Initialiser le module
+
 Initialize-PerformancePredictor -ModelStoragePath "C:\Models"
 
 # Collecter des métriques
+
 $metrics = Get-PerformanceMetrics -Days 7
 
 # Entraîner les modèles
+
 Start-ModelTraining -Metrics $metrics -Force
 
 # Faire des prédictions
+
 $cpuPrediction = Get-PerformancePrediction -Metrics $metrics -MetricName "CPU.Usage" -Horizon 24
 
 # Détecter les anomalies
+
 $memoryAnomalies = Find-PerformanceAnomaly -Metrics $metrics -MetricName "Memory.Usage" -Sensitivity "High"
 
 # Analyser les tendances
+
 $responseTrend = Get-PerformanceTrend -Metrics $metrics -MetricName "ResponseTime"
 
 # Générer un rapport
-Export-PredictionReport -Metrics $metrics -OutputPath "C:\Reports\rapport.html" -Format "HTML"
-```
 
+Export-PredictionReport -Metrics $metrics -OutputPath "C:\Reports\rapport.html" -Format "HTML"
+```plaintext
 ## Dépannage
 
 ### Problèmes courants

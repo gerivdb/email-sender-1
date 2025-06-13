@@ -21,32 +21,53 @@ Le Model Context Protocol (MCP) est un protocole qui permet aux modèles d'IA d'
 
 ## Structure des répertoires
 
-```
+```plaintext
 /projet/mcp/
 ├── _templates/           # Templates Hygen pour générer des serveurs MCP
-├── config/               # Configuration des serveurs MCP
-│   ├── mcp-config.json   # Configuration principale
-│   └── servers/          # Configuration spécifique à chaque serveur
-├── core/                 # Fonctionnalités de base
-├── dependencies/         # Dépendances des serveurs MCP
-├── docs/                 # Documentation technique
-├── integrations/         # Intégrations avec d'autres systèmes
-├── modules/              # Modules PowerShell
-├── monitoring/           # Surveillance des serveurs MCP
-├── python/               # Scripts Python
-├── scripts/              # Scripts de gestion
-├── servers/              # Serveurs MCP
-│   ├── filesystem/       # Serveur MCP Filesystem
-│   ├── gateway/          # Serveur MCP Gateway
-│   ├── gcp/              # Serveur MCP GCP
-│   ├── github/           # Serveur MCP GitHub
-│   ├── git-ingest/       # Serveur MCP Git Ingest
-│   ├── notion/           # Serveur MCP Notion
-│   └── desktop-commander/ # Serveur MCP Desktop Commander
-├── tests/                # Tests des serveurs MCP
-└── versioning/           # Gestion des versions
-```
 
+├── config/               # Configuration des serveurs MCP
+
+│   ├── mcp-config.json   # Configuration principale
+
+│   └── servers/          # Configuration spécifique à chaque serveur
+
+├── core/                 # Fonctionnalités de base
+
+├── dependencies/         # Dépendances des serveurs MCP
+
+├── docs/                 # Documentation technique
+
+├── integrations/         # Intégrations avec d'autres systèmes
+
+├── modules/              # Modules PowerShell
+
+├── monitoring/           # Surveillance des serveurs MCP
+
+├── python/               # Scripts Python
+
+├── scripts/              # Scripts de gestion
+
+├── servers/              # Serveurs MCP
+
+│   ├── filesystem/       # Serveur MCP Filesystem
+
+│   ├── gateway/          # Serveur MCP Gateway
+
+│   ├── gcp/              # Serveur MCP GCP
+
+│   ├── github/           # Serveur MCP GitHub
+
+│   ├── git-ingest/       # Serveur MCP Git Ingest
+
+│   ├── notion/           # Serveur MCP Notion
+
+│   └── desktop-commander/ # Serveur MCP Desktop Commander
+
+├── tests/                # Tests des serveurs MCP
+
+└── versioning/           # Gestion des versions
+
+```plaintext
 ## Scripts disponibles
 
 ### Gestion des serveurs MCP
@@ -77,26 +98,22 @@ Le Model Context Protocol (MCP) est un protocole qui permet aux modèles d'IA d'
 
 ```powershell
 .\scripts\start-all-mcp-servers.cmd
-```
-
+```plaintext
 ### Démarrer un serveur MCP spécifique
 
 ```powershell
 .\scripts\start-git-ingest-mcp.cmd
-```
-
+```plaintext
 ### Analyser un dépôt GitHub
 
 ```powershell
 .\scripts\analyze-github-repo.cmd https://github.com/mem0ai/mem0 output/mem0-analysis 200
-```
-
+```plaintext
 ### Générer un nouveau serveur MCP
 
 ```powershell
 .\scripts\generate-mcp-server.cmd nom-serveur "description du serveur" commande "arg1,arg2,arg3" "ENV_VAR=valeur" port
-```
-
+```plaintext
 ## Configuration
 
 La configuration principale des serveurs MCP se trouve dans le fichier `config/mcp-config.json`. Chaque serveur a également sa propre configuration dans le répertoire `config/servers/`.

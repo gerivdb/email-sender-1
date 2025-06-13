@@ -8,21 +8,27 @@ related: []
 # Mise en place du système RAG pour le journal de bord
 
 ## Contexte
+
 - 
 
 ## Implémentation
+
 - 
 
 ## Erreurs rencontrées
+
 - 
 
 ## Réflexions
+
 - 
 
 ## Code associé
-```
-# Exemple de code
-```
 
+```plaintext
+# Exemple de code
+
+```plaintext
 ## Références
+
 - 

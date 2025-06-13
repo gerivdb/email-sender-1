@@ -11,9 +11,9 @@ Cette section contient les scripts liÃ©s Ã  l'archivage des tÃ¢ches dans l
 
 ```powershell
 # Exemple d'utilisation
-.\Archive-CompletedTasks.ps1 -RoadmapPath "Roadmap/roadmap_complete.md" -ArchivePath "Roadmap/archive.md"
-```
 
+.\Archive-CompletedTasks.ps1 -RoadmapPath "Roadmap/roadmap_complete.md" -ArchivePath "Roadmap/archive.md"
+```plaintext
 ## DÃ©pendances
 
 Ces scripts peuvent dÃ©pendre des modules suivants :

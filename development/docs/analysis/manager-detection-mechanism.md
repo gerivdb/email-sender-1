@@ -36,6 +36,7 @@ function Discover-Managers {
     $managersRegistered = 0
 
     # Parcourir les chemins de recherche
+
     foreach ($searchPath in $SearchPaths) {
         $fullSearchPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $scriptPath))) -ChildPath $searchPath
         
@@ -43,6 +44,7 @@ function Discover-Managers {
             Write-Log -Message "Recherche dans $fullSearchPath..." -Level Debug
             
             # Rechercher les répertoires de gestionnaires
+
             $managerDirs = Get-ChildItem -Path $fullSearchPath -Directory | Where-Object { $_.Name -like "*-manager" }
             
             foreach ($managerDir in $managerDirs) {
@@ -55,6 +57,7 @@ function Discover-Managers {
                     Write-Log -Message "Gestionnaire trouvé : $managerName ($managerScriptPath)" -Level Debug
                     
                     # Préparer les paramètres d'enregistrement
+
                     $registerParams = @{
                         Name = $managerName
                         Path = $managerScriptPath
@@ -62,6 +65,7 @@ function Discover-Managers {
                     }
                     
                     # Ajouter les paramètres optionnels
+
                     if ($SkipDependencyCheck) {
                         $registerParams.SkipDependencyCheck = $true
                     }
@@ -75,6 +79,7 @@ function Discover-Managers {
                     }
                     
                     # Extraire la version du manifeste si disponible
+
                     if ($processManagerModuleAvailable -and (Test-Path -Path $manifestPath)) {
                         try {
                             $manifest = Get-Content -Path $manifestPath -Raw | ConvertFrom-Json
@@ -89,6 +94,7 @@ function Discover-Managers {
                     }
                     
                     # Enregistrer le gestionnaire
+
                     if (Register-Manager @registerParams) {
                         $managersRegistered++
                     }
@@ -100,8 +106,7 @@ function Discover-Managers {
     Write-Log -Message "$managersFound gestionnaires trouvés, $managersRegistered gestionnaires enregistrés." -Level Info
     return $managersRegistered
 }
-```
-
+```plaintext
 ### Processus de détection
 
 Le processus de détection automatique des gestionnaires suit les étapes suivantes :
@@ -153,8 +158,7 @@ foreach ($searchPath in $searchPaths) {
         $managers += $foundManagers
     }
 }
-```
-
+```plaintext
 Cette approche présente plusieurs différences par rapport à la fonction `Discover-Managers` :
 
 1. **Recherche récursive** : Le script recherche récursivement dans les sous-répertoires.
@@ -186,8 +190,7 @@ foreach ($searchPath in $configSearchPaths) {
         $configFiles += $foundConfigs
     }
 }
-```
-
+```plaintext
 Cette approche permet de découvrir les fichiers de configuration des gestionnaires, ce qui n'est pas fait par la fonction `Discover-Managers`.
 
 ## Intégration avec les modules améliorés
@@ -198,9 +201,9 @@ Le module `ManagerRegistrationService` fournit des fonctionnalités avancées po
 
 ```powershell
 # Exporter les fonctions publiques
-Export-ModuleMember -Function Register-Manager, Unregister-Manager, Update-Manager, Get-RegisteredManager, Find-Manager
-```
 
+Export-ModuleMember -Function Register-Manager, Unregister-Manager, Update-Manager, Get-RegisteredManager, Find-Manager
+```plaintext
 ### Module ManifestParser
 
 Le module `ManifestParser` permet d'analyser, valider et manipuler les manifestes des gestionnaires. Ce module est utilisé par la fonction `Discover-Managers` pour extraire la version du gestionnaire à partir du manifeste.
@@ -225,35 +228,40 @@ Le fichier `development\managers\process-manager\tests\Test-ProcessManagerFuncti
     Description = "Vérifie que le Process Manager peut découvrir automatiquement les gestionnaires."
     Test = {
         # Créer un répertoire de découverte
+
         $discoveryDir = Join-Path -Path $testDir -ChildPath "discovery\test-manager"
         New-Item -Path $discoveryDir -ItemType Directory -Force | Out-Null
         
         # Copier le gestionnaire simple dans le répertoire de découverte
+
         $discoveryScriptsDir = Join-Path -Path $discoveryDir -ChildPath "scripts"
         New-Item -Path $discoveryScriptsDir -ItemType Directory -Force | Out-Null
         $discoveryManagerPath = Join-Path -Path $discoveryScriptsDir -ChildPath "test-manager.ps1"
         Copy-Item -Path $testManagers[0].Path -Destination $discoveryManagerPath
         
         # Exécuter la découverte
+
         $result = & $processManagerPath -Command Discover -SearchPaths "discovery" -Force
         
         # Vérifier que le gestionnaire a été découvert
+
         $registeredManager = & $processManagerPath -Command List | Where-Object { $_ -like "*TestManager*" }
         
         # Nettoyer
+
         & $processManagerPath -Command Unregister -ManagerName "TestManager" -Force
         
         return $registeredManager -ne $null
     }
 }
-```
-
+```plaintext
 ### Tests complets
 
 Le fichier `development\managers\process-manager\tests\Test-ProcessManagerAll.ps1` exécute tous les tests du Process Manager, y compris les tests unitaires, d'intégration, fonctionnels, de performance et de charge :
 
 ```powershell
 # Définir les chemins des scripts de test
+
 $unitTestScripts = @(
     (Join-Path -Path $testsRoot -ChildPath "Test-ManifestParser.ps1"),
     (Join-Path -Path $testsRoot -ChildPath "Test-ValidationService.ps1"),
@@ -264,8 +272,7 @@ $integrationTestScript = Join-Path -Path $testsRoot -ChildPath "Test-Integration
 $functionalTestScript = Join-Path -Path $testsRoot -ChildPath "Test-ProcessManagerFunctionality.ps1"
 $performanceTestScript = Join-Path -Path $testsRoot -ChildPath "Test-ProcessManagerPerformance.ps1"
 $loadTestScript = Join-Path -Path $testsRoot -ChildPath "Test-ProcessManagerLoad.ps1"
-```
-
+```plaintext
 ## Analyse du mécanisme de détection
 
 ### Forces
@@ -297,8 +304,7 @@ Ajouter une option pour effectuer une recherche récursive dans les sous-répert
 ```powershell
 [Parameter(Mandatory = $false)]
 [switch]$Recursive
-```
-
+```plaintext
 Et modifier la recherche en conséquence :
 
 ```powershell
@@ -307,8 +313,7 @@ if ($Recursive) {
 } else {
     $managerDirs = Get-ChildItem -Path $fullSearchPath -Directory | Where-Object { $_.Name -like "*-manager" }
 }
-```
-
+```plaintext
 ### 2. Ajouter la recherche basée sur les fichiers
 
 Ajouter une option pour rechercher les gestionnaires en se basant sur les fichiers plutôt que sur les répertoires :
@@ -316,8 +321,7 @@ Ajouter une option pour rechercher les gestionnaires en se basant sur les fichie
 ```powershell
 [Parameter(Mandatory = $false)]
 [switch]$SearchFiles
-```
-
+```plaintext
 Et modifier la recherche en conséquence :
 
 ```powershell
@@ -337,12 +341,13 @@ if ($SearchFiles) {
         $manifestPath = Join-Path -Path (Split-Path -Parent $managerScriptPath) -ChildPath "$($managerFile.BaseName).manifest.json"
         
         # Traitement du gestionnaire...
+
     }
 } else {
     # Recherche basée sur les répertoires (code actuel)...
-}
-```
 
+}
+```plaintext
 ### 3. Ajouter la recherche basée sur les manifestes
 
 Ajouter une option pour découvrir les gestionnaires en se basant sur les manifestes :
@@ -350,8 +355,7 @@ Ajouter une option pour découvrir les gestionnaires en se basant sur les manife
 ```powershell
 [Parameter(Mandatory = $false)]
 [switch]$SearchManifests
-```
-
+```plaintext
 Et modifier la recherche en conséquence :
 
 ```powershell
@@ -372,6 +376,7 @@ if ($SearchManifests) {
             $managerScriptPath = Join-Path -Path (Split-Path -Parent $manifestFile.FullName) -ChildPath "$($manifestFile.BaseName -replace '\.manifest$', '').ps1"
             
             # Traitement du gestionnaire...
+
         }
         catch {
             Write-Log -Message "Erreur lors de l'extraction du manifeste : $_" -Level Warning
@@ -379,9 +384,9 @@ if ($SearchManifests) {
     }
 } else {
     # Recherche basée sur les répertoires ou les fichiers (code précédent)...
-}
-```
 
+}
+```plaintext
 ### 4. Ajouter la recherche de fichiers de configuration
 
 Ajouter une option pour rechercher les fichiers de configuration des gestionnaires :
@@ -389,8 +394,7 @@ Ajouter une option pour rechercher les fichiers de configuration des gestionnair
 ```powershell
 [Parameter(Mandatory = $false)]
 [switch]$SearchConfigs
-```
-
+```plaintext
 Et modifier la recherche en conséquence :
 
 ```powershell
@@ -411,6 +415,7 @@ if ($SearchConfigs) {
             $managerScriptPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $configFile.FullName)) -ChildPath "scripts\$($managerName -replace "Manager", "-manager").ps1"
             
             # Traitement du gestionnaire...
+
         }
         catch {
             Write-Log -Message "Erreur lors de l'extraction de la configuration : $_" -Level Warning
@@ -418,9 +423,9 @@ if ($SearchConfigs) {
     }
 } else {
     # Recherche basée sur les répertoires, les fichiers ou les manifestes (code précédent)...
-}
-```
 
+}
+```plaintext
 ### 5. Ajouter le filtrage des résultats
 
 Ajouter une option pour filtrer les résultats :
@@ -428,8 +433,7 @@ Ajouter une option pour filtrer les résultats :
 ```powershell
 [Parameter(Mandatory = $false)]
 [switch]$Filter
-```
-
+```plaintext
 Et modifier la recherche en conséquence :
 
 ```powershell
@@ -442,8 +446,7 @@ if ($Filter) {
         $_.FullName -notlike '*tmp*'
     }
 }
-```
-
+```plaintext
 ### 6. Ajouter la gestion des conflits de noms
 
 Ajouter une option pour gérer les conflits de noms :
@@ -452,12 +455,12 @@ Ajouter une option pour gérer les conflits de noms :
 [Parameter(Mandatory = $false)]
 [ValidateSet("Skip", "Force", "Rename")]
 [string]$ConflictResolution = "Skip"
-```
-
+```plaintext
 Et modifier l'enregistrement en conséquence :
 
 ```powershell
 # Vérifier si le gestionnaire est déjà enregistré
+
 $existingManager = Get-RegisteredManager -Name $managerName
 if ($existingManager) {
     switch ($ConflictResolution) {
@@ -480,8 +483,7 @@ if ($existingManager) {
         }
     }
 }
-```
-
+```plaintext
 ### 7. Améliorer la journalisation
 
 Améliorer la journalisation pour fournir plus d'informations sur le processus de détection :
@@ -491,8 +493,7 @@ Write-Log -Message "Début de la découverte des gestionnaires..." -Level Info
 Write-Log -Message "Chemins de recherche : $($SearchPaths -join ', ')" -Level Debug
 Write-Log -Message "Options de recherche : Recursive=$Recursive, SearchFiles=$SearchFiles, SearchManifests=$SearchManifests, SearchConfigs=$SearchConfigs, Filter=$Filter" -Level Debug
 Write-Log -Message "Résolution des conflits : $ConflictResolution" -Level Debug
-```
-
+```plaintext
 ### 8. Ajouter des statistiques détaillées
 
 Ajouter des statistiques détaillées sur le processus de détection :
@@ -512,6 +513,7 @@ $stats = @{
 }
 
 # À la fin de la fonction
+
 Write-Log -Message "Statistiques de découverte :" -Level Info
 Write-Log -Message "- Chemins parcourus : $($stats.PathsSearched)" -Level Info
 Write-Log -Message "- Répertoires trouvés : $($stats.DirectoriesFound)" -Level Info
@@ -523,8 +525,7 @@ Write-Log -Message "- Gestionnaires enregistrés : $($stats.ManagersRegistered)"
 Write-Log -Message "- Gestionnaires ignorés : $($stats.ManagersSkipped)" -Level Info
 Write-Log -Message "- Gestionnaires renommés : $($stats.ManagersRenamed)" -Level Info
 Write-Log -Message "- Erreurs : $($stats.Errors)" -Level Info
-```
-
+```plaintext
 ## Conclusion
 
 Le mécanisme de détection automatique des gestionnaires du Process Manager est simple et efficace, mais présente certaines limitations. Les recommandations proposées visent à améliorer la flexibilité, la couverture et la robustesse du mécanisme de détection, en s'inspirant des approches utilisées dans d'autres parties du système.

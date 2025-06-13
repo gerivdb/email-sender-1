@@ -1,4 +1,4 @@
-﻿# Analyse des erreurs recurrentes et patterns problematiques
+# Analyse des erreurs recurrentes et patterns problematiques
 
 *Genere le 07/04/2025 06:55*
 

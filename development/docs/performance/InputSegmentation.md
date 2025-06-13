@@ -11,16 +11,14 @@ Le module est disponible dans le dossier `modules` du projet. Pour l'importer :
 ```powershell
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "modules\InputSegmentation.psm1"
 Import-Module $modulePath -Force
-```
-
+```plaintext
 ## Initialisation
 
 Avant d'utiliser le module, il est recommandé de l'initialiser avec les paramètres souhaités :
 
 ```powershell
 Initialize-InputSegmentation -MaxInputSizeKB 15 -DefaultChunkSizeKB 7
-```
-
+```plaintext
 ## Fonctions principales
 
 ### Measure-InputSize
@@ -31,8 +29,7 @@ Mesure la taille d'une entrée en kilooctets.
 
 ```powershell
 Measure-InputSize -Input <Object>
-```
-
+```plaintext
 #### Paramètres
 
 - **Input** : L'entrée à mesurer (texte, JSON ou chemin de fichier).
@@ -47,8 +44,7 @@ La taille de l'entrée en kilooctets (KB).
 $text = "A" * 10KB
 $size = Measure-InputSize -Input $text
 Write-Host "Taille de l'entrée: $size KB"
-```
-
+```plaintext
 ### Split-TextInput
 
 Segmente une chaîne de texte en morceaux plus petits.
@@ -57,8 +53,7 @@ Segmente une chaîne de texte en morceaux plus petits.
 
 ```powershell
 Split-TextInput -Text <String> [-ChunkSizeKB <Int32>] [-PreserveLines]
-```
-
+```plaintext
 #### Paramètres
 
 - **Text** : Le texte à segmenter.
@@ -75,8 +70,7 @@ Un tableau de chaînes de texte représentant les segments.
 $text = "A" * 20KB
 $segments = Split-TextInput -Text $text -ChunkSizeKB 5 -PreserveLines
 Write-Host "Nombre de segments: $($segments.Count)"
-```
-
+```plaintext
 ### Split-JsonInput
 
 Segmente un objet JSON en morceaux plus petits.
@@ -85,8 +79,7 @@ Segmente un objet JSON en morceaux plus petits.
 
 ```powershell
 Split-JsonInput -JsonObject <Object> [-ChunkSizeKB <Int32>]
-```
-
+```plaintext
 #### Paramètres
 
 - **JsonObject** : L'objet JSON à segmenter.
@@ -112,8 +105,7 @@ for ($i = 0; $i -lt 500; $i++) {
 
 $segments = Split-JsonInput -JsonObject $json -ChunkSizeKB 5
 Write-Host "Nombre de segments: $($segments.Count)"
-```
-
+```plaintext
 ### Split-FileInput
 
 Segmente un fichier en morceaux plus petits.
@@ -122,8 +114,7 @@ Segmente un fichier en morceaux plus petits.
 
 ```powershell
 Split-FileInput -FilePath <String> [-ChunkSizeKB <Int32>] [-PreserveLines]
-```
-
+```plaintext
 #### Paramètres
 
 - **FilePath** : Chemin du fichier à segmenter.
@@ -139,8 +130,7 @@ Un tableau de chaînes de texte représentant les segments.
 ```powershell
 $segments = Split-FileInput -FilePath ".\data\large_file.txt" -ChunkSizeKB 5 -PreserveLines
 Write-Host "Nombre de segments: $($segments.Count)"
-```
-
+```plaintext
 ### Split-Input
 
 Fonction générique pour segmenter différents types d'entrées.
@@ -149,8 +139,7 @@ Fonction générique pour segmenter différents types d'entrées.
 
 ```powershell
 Split-Input -Input <Object> [-ChunkSizeKB <Int32>] [-PreserveLines]
-```
-
+```plaintext
 #### Paramètres
 
 - **Input** : L'entrée à segmenter (texte, JSON ou chemin de fichier).
@@ -167,8 +156,7 @@ Un tableau d'objets représentant les segments.
 $input = Get-Content -Path ".\data\large_file.txt" -Raw
 $segments = Split-Input -Input $input -ChunkSizeKB 5
 Write-Host "Nombre de segments: $($segments.Count)"
-```
-
+```plaintext
 ### Save-SegmentationState et Get-SegmentationState
 
 Fonctions pour sauvegarder et récupérer l'état de segmentation, permettant de reprendre le traitement.
@@ -178,8 +166,7 @@ Fonctions pour sauvegarder et récupérer l'état de segmentation, permettant de
 ```powershell
 Save-SegmentationState -Id <String> -Segments <Array> -CurrentIndex <Int32>
 $state = Get-SegmentationState -Id <String>
-```
-
+```plaintext
 #### Paramètres
 
 - **Id** : Identifiant unique pour l'état de segmentation.
@@ -194,22 +181,25 @@ $segments = Split-Input -Input $largeInput -ChunkSizeKB 5
 Save-SegmentationState -Id $id -Segments $segments -CurrentIndex 0
 
 # Plus tard, récupérer l'état
+
 $state = Get-SegmentationState -Id $id
 if ($state) {
     $currentIndex = $state.CurrentIndex
     $segments = $state.Segments
     
     # Continuer le traitement à partir de l'index actuel
+
     for ($i = $currentIndex; $i -lt $segments.Count; $i++) {
         # Traiter le segment
+
         Process-Segment -Segment $segments[$i]
         
         # Mettre à jour l'état
+
         Save-SegmentationState -Id $id -Segments $segments -CurrentIndex ($i + 1)
     }
 }
-```
-
+```plaintext
 ### Invoke-WithSegmentation
 
 Exécute un script avec segmentation automatique.
@@ -218,8 +208,7 @@ Exécute un script avec segmentation automatique.
 
 ```powershell
 Invoke-WithSegmentation -Input <Object> -ScriptBlock <ScriptBlock> [-Id <String>] [-ChunkSizeKB <Int32>] [-PreserveLines]
-```
-
+```plaintext
 #### Paramètres
 
 - **Input** : L'entrée à segmenter.
@@ -240,8 +229,7 @@ $results = Invoke-WithSegmentation -Input $input -ScriptBlock {
     param($segment)
     return "Processed: $($segment.Length) bytes"
 } -Id "my-task" -ChunkSizeKB 5
-```
-
+```plaintext
 ## Intégration avec Agent Auto
 
 Le module `InputSegmentation` s'intègre avec Agent Auto via le script `Initialize-AgentAutoSegmentation.ps1` qui configure la segmentation automatique pour Agent Auto.
@@ -250,13 +238,14 @@ Le module `InputSegmentation` s'intègre avec Agent Auto via le script `Initiali
 
 ```powershell
 # Initialiser la segmentation pour Agent Auto
+
 & ".\development\scripts\agent-auto\Initialize-AgentAutoSegmentation.ps1" -Enable -MaxInputSizeKB 15 -ChunkSizeKB 7 -PreserveLines
 
 # Utiliser la segmentation avec Agent Auto
+
 $largeInput = Get-Content -Path ".\data\large_file.txt" -Raw
 $result = & ".\development\scripts\agent-auto\Example-AgentAutoSegmentation.ps1" -Input $largeInput -InputType "Text"
-```
-
+```plaintext
 ## Performance
 
 Les performances du module dépendent de la taille et du type des entrées :
@@ -284,16 +273,19 @@ $input = Get-Content -Path ".\data\large_file.txt" -Raw
 $segments = Split-Input -Input $input -ChunkSizeKB 5
 
 # Créer un runspace pool
+
 $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
 $runspacePool = [runspacefactory]::CreateRunspacePool(1, 4, $sessionState, $Host)
 $runspacePool.Open()
 
 # Créer les runspaces
+
 $runspaces = @()
 foreach ($segment in $segments) {
     $powershell = [powershell]::Create().AddScript({
         param($segment)
         # Traiter le segment
+
         return "Processed: $($segment.Length) bytes"
     }).AddArgument($segment)
     
@@ -306,6 +298,7 @@ foreach ($segment in $segments) {
 }
 
 # Récupérer les résultats
+
 $results = @()
 foreach ($runspace in $runspaces) {
     $results += $runspace.PowerShell.EndInvoke($runspace.Handle)
@@ -313,10 +306,10 @@ foreach ($runspace in $runspaces) {
 }
 
 # Fermer le runspace pool
+
 $runspacePool.Close()
 $runspacePool.Dispose()
-```
-
+```plaintext
 ### Segmentation avec préservation du contexte
 
 ```powershell
@@ -336,12 +329,14 @@ for ($i = 0; $i -lt 500; $i++) {
 }
 
 # Segmenter l'objet JSON en préservant les métadonnées
+
 $segments = Split-JsonInput -JsonObject $json -ChunkSizeKB 5
 
 # Vérifier que chaque segment contient les métadonnées
+
 foreach ($segment in $segments) {
     if ($segment.metadata.title -ne "Test") {
         Write-Error "Les métadonnées n'ont pas été préservées correctement."
     }
 }
-```
+```plaintext

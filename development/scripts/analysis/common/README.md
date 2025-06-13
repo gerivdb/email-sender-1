@@ -16,4 +16,4 @@ Ce dossier contient des modules et outils communs utilisés par les différents 
 
 ```powershell
 .\Start-CachedAnalysis.ps1 -Path ".\development\scripts" -Tool "PSScriptAnalyzer" -CachePath ".\cache"
-```
+```plaintext

@@ -57,6 +57,7 @@ function Copy-CollectionIndexesDeep {
     
     begin {
         # Fonction interne pour la journalisation
+
         function Write-CloneLog {
             param (
                 [string]$Message,
@@ -78,6 +79,7 @@ function Copy-CollectionIndexesDeep {
         }
         
         # Fonction interne pour le clonage profond d'un objet
+
         function Copy-ObjectDeep {
             param (
                 [Parameter(Mandatory = $true)]
@@ -91,12 +93,15 @@ function Copy-CollectionIndexesDeep {
             $type = $InputObject.GetType()
             
             # Traitement selon le type d'objet
+
             if ($type.IsValueType -or $type.FullName -eq "System.String") {
                 # Les types valeur et les chaînes sont déjà copiés par valeur
+
                 return $InputObject
             }
             elseif ($type.IsArray) {
                 # Cloner un tableau
+
                 $elementType = $type.GetElementType()
                 $result = [System.Array]::CreateInstance($elementType, $InputObject.Length)
                 
@@ -108,6 +113,7 @@ function Copy-CollectionIndexesDeep {
             }
             elseif ($InputObject -is [System.Collections.IList]) {
                 # Cloner une liste
+
                 $result = New-Object $type
                 
                 foreach ($item in $InputObject) {
@@ -118,6 +124,7 @@ function Copy-CollectionIndexesDeep {
             }
             elseif ($InputObject -is [System.Collections.IDictionary]) {
                 # Cloner un dictionnaire ou une table de hachage
+
                 $result = New-Object $type
                 
                 foreach ($key in $InputObject.Keys) {
@@ -128,6 +135,7 @@ function Copy-CollectionIndexesDeep {
             }
             elseif ($InputObject -is [System.Collections.Generic.List`1]) {
                 # Cloner une liste générique
+
                 $result = New-Object $type
                 
                 foreach ($item in $InputObject) {
@@ -138,6 +146,7 @@ function Copy-CollectionIndexesDeep {
             }
             elseif ($InputObject -is [System.Collections.Generic.Dictionary`2]) {
                 # Cloner un dictionnaire générique
+
                 $result = New-Object $type
                 
                 foreach ($key in $InputObject.Keys) {
@@ -148,6 +157,7 @@ function Copy-CollectionIndexesDeep {
             }
             elseif ($InputObject -is [pscustomobject]) {
                 # Cloner un objet personnalisé PowerShell
+
                 $result = [pscustomobject]@{}
                 
                 foreach ($property in $InputObject.PSObject.Properties) {
@@ -158,6 +168,7 @@ function Copy-CollectionIndexesDeep {
             }
             else {
                 # Pour les autres types d'objets, essayer de créer une nouvelle instance et copier les propriétés
+
                 try {
                     $result = New-Object $type
                     
@@ -171,6 +182,7 @@ function Copy-CollectionIndexesDeep {
                 }
                 catch {
                     # Si la création d'une nouvelle instance échoue, retourner l'objet original
+
                     Write-CloneLog -Message "Impossible de cloner l'objet de type $($type.FullName). Utilisation de l'objet original." -Level "Warning"
                     return $InputObject
                 }
@@ -182,9 +194,11 @@ function Copy-CollectionIndexesDeep {
         Write-CloneLog -Message "Début du clonage profond des index." -Level "Info"
         
         # Créer une nouvelle table de hachage pour les index clonés
+
         $clonedIndexes = @{}
         
         # Déterminer les types d'index à cloner
+
         if ($null -eq $IndexTypes -or $IndexTypes.Count -eq 0) {
             $IndexTypes = $Indexes.Keys
             Write-CloneLog -Message "Aucun type d'index spécifié. Clonage de tous les index disponibles : $($IndexTypes -join ', ')" -Level "Info"
@@ -194,6 +208,7 @@ function Copy-CollectionIndexesDeep {
         }
         
         # Cloner chaque type d'index spécifié
+
         foreach ($indexType in $IndexTypes) {
             if (-not $Indexes.ContainsKey($indexType)) {
                 Write-CloneLog -Message "L'index '$indexType' n'existe pas dans la collection. Ignoré." -Level "Warning"
@@ -203,33 +218,41 @@ function Copy-CollectionIndexesDeep {
             Write-CloneLog -Message "Clonage de l'index '$indexType'..." -Level "Info"
             
             # Obtenir l'index original
+
             $originalIndex = $Indexes[$indexType]
             
             # Cloner l'index selon son type
+
             if ($indexType -eq "ID") {
                 # L'index ID est une table de hachage simple
+
                 $clonedIndexes[$indexType] = @{}
                 
                 foreach ($key in $originalIndex.Keys) {
                     if ($DeepCloneValues) {
                         # Cloner profondément les valeurs (les éléments eux-mêmes)
+
                         $clonedIndexes[$indexType][$key] = Copy-ObjectDeep -InputObject $originalIndex[$key]
                     }
                     else {
                         # Copier simplement les références aux éléments
+
                         $clonedIndexes[$indexType][$key] = $originalIndex[$key]
                     }
                 }
             }
             else {
                 # Les autres index sont des tables de hachage de listes d'IDs
+
                 $clonedIndexes[$indexType] = @{}
                 
                 foreach ($key in $originalIndex.Keys) {
                     # Créer une nouvelle liste pour les IDs
+
                     $clonedIndexes[$indexType][$key] = @()
                     
                     # Copier les IDs
+
                     foreach ($id in $originalIndex[$key]) {
                         $clonedIndexes[$indexType][$key] += $id
                     }
@@ -244,8 +267,7 @@ function Copy-CollectionIndexesDeep {
         return $clonedIndexes
     }
 }
-```
-
+```plaintext
 ### Optimisations
 
 1. **Clonage sélectif** : La fonction permet de cloner sélectivement certains index spécifiques, ce qui peut réduire significativement la consommation de mémoire et le temps de traitement.
@@ -262,21 +284,19 @@ function Copy-CollectionIndexesDeep {
 
 ```powershell
 $collection = Get-Collection # Obtenir une collection existante
-$clonedIndexes = Copy-CollectionIndexesDeep -Indexes $collection.Indexes -Verbose
-```
 
+$clonedIndexes = Copy-CollectionIndexesDeep -Indexes $collection.Indexes -Verbose
+```plaintext
 #### Exemple 2 : Clonage d'index spécifiques
 
 ```powershell
 $clonedIndexes = Copy-CollectionIndexesDeep -Indexes $collection.Indexes -IndexTypes @("Type", "Source") -Verbose
-```
-
+```plaintext
 #### Exemple 3 : Clonage profond des valeurs
 
 ```powershell
 $clonedIndexes = Copy-CollectionIndexesDeep -Indexes $collection.Indexes -DeepCloneValues -Verbose
-```
-
+```plaintext
 ## Analyse des performances
 
 ### Complexité algorithmique
@@ -315,6 +335,7 @@ La fonction `Copy-CollectionIndexesDeep` est conçue pour s'intégrer harmonieus
 
 ```powershell
 # Exemple d'intégration avec Backup-CollectionIndexes
+
 function Backup-CollectionIndexes {
     [CmdletBinding()]
     param (
@@ -330,15 +351,18 @@ function Backup-CollectionIndexes {
     )
     
     # Vérifier si la collection contient des index
+
     if ($null -eq $Collection.Indexes -or $Collection.Indexes.Count -eq 0) {
         Write-Host "La collection ne contient aucun index. Aucune sauvegarde nécessaire." -ForegroundColor Yellow
         return $null
     }
     
     # Cloner profondément les index
+
     $backupIndexes = Copy-CollectionIndexesDeep -Indexes $Collection.Indexes -IndexTypes $IndexTypes -Verbose:$Verbose
     
     # Ajouter des métadonnées à la sauvegarde
+
     $backup = @{
         Indexes = $backupIndexes
         Metadata = @{
@@ -351,14 +375,14 @@ function Backup-CollectionIndexes {
     
     return $backup
 }
-```
-
+```plaintext
 ### Intégration avec le mécanisme de restauration des index
 
 La fonction `Copy-CollectionIndexesDeep` peut également être utilisée dans le mécanisme de restauration des index :
 
 ```powershell
 # Exemple d'intégration avec Restore-CollectionIndexes
+
 function Restore-CollectionIndexes {
     [CmdletBinding()]
     param (
@@ -378,25 +402,30 @@ function Restore-CollectionIndexes {
     )
     
     # Vérifier si la sauvegarde contient des index
+
     if ($null -eq $Backup.Indexes -or $Backup.Indexes.Count -eq 0) {
         Write-Host "La sauvegarde ne contient aucun index. Aucune restauration possible." -ForegroundColor Yellow
         return $Collection
     }
     
     # Déterminer les types d'index à restaurer
+
     if ($null -eq $IndexTypes -or $IndexTypes.Count -eq 0) {
         $IndexTypes = $Backup.Indexes.Keys
     }
     
     # Cloner profondément les index de la sauvegarde
+
     $restoredIndexes = Copy-CollectionIndexesDeep -Indexes $Backup.Indexes -IndexTypes $IndexTypes -Verbose:$Verbose
     
     # Initialiser la structure d'index si nécessaire
+
     if ($null -eq $Collection.Indexes) {
         $Collection.Indexes = @{}
     }
     
     # Restaurer chaque type d'index
+
     foreach ($indexType in $IndexTypes) {
         if (-not $restoredIndexes.ContainsKey($indexType)) {
             Write-Host "L'index '$indexType' n'existe pas dans la sauvegarde. Ignoré." -ForegroundColor Yellow
@@ -407,6 +436,7 @@ function Restore-CollectionIndexes {
     }
     
     # Mettre à jour les métadonnées
+
     if ($null -eq $Collection.Metadata) {
         $Collection.Metadata = @{}
     }
@@ -421,8 +451,7 @@ function Restore-CollectionIndexes {
     
     return $Collection
 }
-```
-
+```plaintext
 ## Conclusion
 
 La fonction `Copy-CollectionIndexesDeep` fournit une base solide pour le clonage profond des index dans les collections d'informations extraites. Elle est conçue pour être efficace, configurable et robuste, tout en garantissant l'indépendance totale de la copie par rapport aux index originaux.

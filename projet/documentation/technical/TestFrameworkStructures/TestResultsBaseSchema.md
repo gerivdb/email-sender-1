@@ -37,8 +37,7 @@ Les résultats de test sont représentés sous forme de structure hiérarchique,
     // Métadonnées supplémentaires
   }
 }
-```
-
+```plaintext
 ## 3. Composants principaux
 
 ### 3.1 Identification et métadonnées de base
@@ -65,8 +64,7 @@ Les résultats de test sont représentés sous forme de structure hiérarchique,
     "powershell": "7.3.0"
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `testId` | string | Identifiant unique du test |
@@ -97,8 +95,7 @@ Les résultats de test sont représentés sous forme de structure hiérarchique,
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `configuration.original` | object | Configuration originale fournie pour le test |
@@ -173,8 +170,7 @@ Les résultats de test sont représentés sous forme de structure hiérarchique,
     }
   }
 }
-```
-
+```plaintext
 | Champ | Type | Description |
 |-------|------|-------------|
 | `summary.success` | boolean | Indique si le test a réussi |
@@ -207,8 +203,7 @@ La section `metrics` contient les métriques collectées pendant le test. La str
     }
   }
 }
-```
-
+```plaintext
 ### 3.5 Étapes
 
 La section `steps` contient les résultats détaillés pour chaque étape du test. La structure détaillée des résultats par étape est définie dans un document séparé.
@@ -238,8 +233,7 @@ La section `steps` contient les résultats détaillés pour chaque étape du tes
     // Autres étapes...
   ]
 }
-```
-
+```plaintext
 ### 3.6 Erreurs
 
 La section `errors` contient les erreurs rencontrées pendant l'exécution du test. La structure détaillée des erreurs est définie dans un document séparé.
@@ -266,8 +260,7 @@ La section `errors` contient les erreurs rencontrées pendant l'exécution du te
     // Autres erreurs...
   ]
 }
-```
-
+```plaintext
 ### 3.7 Métadonnées
 
 La section `metadata` contient des métadonnées supplémentaires sur le test, qui peuvent être utilisées pour l'analyse et le reporting.
@@ -297,8 +290,7 @@ La section `metadata` contient des métadonnées supplémentaires sur le test, q
     }
   }
 }
-```
-
+```plaintext
 ## 4. Extensions et personnalisation
 
 Le schéma de base des résultats est conçu pour être extensible. Des sections supplémentaires peuvent être ajoutées pour des besoins spécifiques.
@@ -315,8 +307,7 @@ Le schéma de base des résultats est conçu pour être extensible. Des sections
     // Métriques de sécurité
   }
 }
-```
-
+```plaintext
 ### 4.2 Extension par ajout de champs
 
 ```json
@@ -327,8 +318,7 @@ Le schéma de base des résultats est conçu pour être extensible. Des sections
   "customField2": 42,
   // Autres champs standard...
 }
-```
-
+```plaintext
 ## 5. Validation
 
 La validation des résultats de test est effectuée en plusieurs étapes :
@@ -355,8 +345,7 @@ La validation des résultats de test est effectuée en plusieurs étapes :
     "success": true
   }
 }
-```
-
+```plaintext
 ### 6.2 Exemple complet
 
 ```json
@@ -780,8 +769,7 @@ La validation des résultats de test est effectuée en plusieurs étapes :
     "notes": "Test executed as part of weekly performance testing"
   }
 }
-```
-
+```plaintext
 ## 7. Bonnes pratiques
 
 ### 7.1 Structure

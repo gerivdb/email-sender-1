@@ -23,32 +23,35 @@ PyMCPfy is a Python library that enables developers to easily expose their exist
 
 ```bash
 # For Django
+
 pip install "pymcpfy[django]"
 
 # For Flask
+
 pip install "pymcpfy[flask]"
 
 # For FastAPI
-pip install "pymcpfy[fastapi]"
-```
 
+pip install "pymcpfy[fastapi]"
+```plaintext
 2. Create a configuration file (pymcpfy_config.yaml):
 
 ```yaml
 transport:
   type: websocket  # or 'http'
+
   host: localhost
   port: 8765
 backend_url: http://localhost:8000
 debug: true
 cors_origins:
   - http://localhost:3000
-```
-
+```plaintext
 3. Expose your API endpoints via MCP:
 
 ```python
 # Django example
+
 from pymcpfy.django import mcpfy
 
 @mcpfy()
@@ -62,6 +65,7 @@ def get_user(request, user_id: int):
     return JsonResponse({"name": user.name, "email": user.email})
 
 # Flask example
+
 from pymcpfy.flask import mcpfy
 
 @app.route("/user/<int:user_id>")
@@ -72,6 +76,7 @@ def get_user(user_id: int):
     return jsonify({"name": user.name, "email": user.email})
 
 # FastAPI example
+
 from pymcpfy.fastapi import mcpfy
 
 @app.get("/user/{user_id}")
@@ -80,18 +85,18 @@ async def get_user(user_id: int):
     """Get user details by ID."""
     user = await User.get(id=user_id)
     return {"name": user.name, "email": user.email}
-```
-
+```plaintext
 4. Start your MCP server:
 
 ```bash
 # Django
+
 python manage.py runmcp
 
 # Flask/FastAPI
-python app.py --mcp
-```
 
+python app.py --mcp
+```plaintext
 ## Documentation
 
 Visit our [documentation](docs/index.md) for:
@@ -123,24 +128,21 @@ We welcome contributions! Here's how you can help:
 ```bash
 git clone https://github.com/nimeshkverma/pymcpfy.git
 cd pymcpfy
-```
-
+```plaintext
 2. Create a virtual environment:
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
 
+```plaintext
 3. Install development dependencies:
 ```bash
 pip install -e ".[dev]"
-```
-
+```plaintext
 4. Run tests:
 ```bash
 pytest tests/
-```
-
+```plaintext
 ### Development Guidelines
 
 1. **Code Style**:

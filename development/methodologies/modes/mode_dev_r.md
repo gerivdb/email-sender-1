@@ -1,11 +1,13 @@
-﻿# Mode DEV-R
+# Mode DEV-R
 
 ## Description
+
 Le mode DEV-R (Développement Roadmap) permet d’implémenter concrètement toutes les tâches d’un plan de développement : création, modification, tests, debug, documentation, automatisation, analyse, rapport, etc. Il s’appuie sur les autres modes (GRAN, TEST, REVIEW…) pour garantir la qualité, la traçabilité et l’automatisation du workflow.
 
 ---
 
 ## Objectifs
+
 - Implémenter toutes les tâches roadmap (création, modification, suppression, analyse, documentation, automatisation…)
 - Générer, exécuter et valider automatiquement les tests associés à chaque tâche.
 - Mettre à jour la roadmap et la documentation après chaque tâche complétée.
@@ -15,6 +17,7 @@ Le mode DEV-R (Développement Roadmap) permet d’implémenter concrètement tou
 ---
 
 ## Commandes principales
+
 - `devr start` : Démarre l’implémentation séquentielle des tâches de la roadmap.
 - `devr next` : Passe à la tâche suivante après validation.
 - `devr test` : Lance les tests associés à la tâche courante.
@@ -29,6 +32,7 @@ Le mode DEV-R (Développement Roadmap) permet d’implémenter concrètement tou
 ---
 
 ## Fonctionnement général
+
 1. **Sélection de la tâche** : Parcourt la roadmap et sélectionne la prochaine tâche à implémenter (filtrage/priorisation possible).
 2. **Granularisation (optionnelle)** : Si la tâche est complexe, utilise le mode GRAN (`gran + N`) pour la découper en sous-tâches actionnables.
 3. **Implémentation** : Réalise concrètement la tâche (création de fichier, modification de code, documentation, automatisation…).
@@ -43,6 +47,7 @@ Le mode DEV-R (Développement Roadmap) permet d’implémenter concrètement tou
 ## Exemples d’utilisation concrète
 
 ### Exemple 1 : Création d’une veille technique régulière
+
 - **Entrée (roadmap)** :
   - [ ] Mettre en place une veille technique régulière (analyse des besoins d’harmonisation, retours d’expérience, nouvelles pratiques) pour chaque mode et pour le Mode Manager.
 - **Action DEV-R** :
@@ -51,6 +56,7 @@ Le mode DEV-R (Développement Roadmap) permet d’implémenter concrètement tou
   - Met à jour la roadmap avec le lien vers le fichier et le statut.
 
 ### Exemple 2 : Modification ou harmonisation d’un mode
+
 - **Entrée (roadmap)** :
   - [ ] Identifier, documenter et prioriser les changements nécessaires : ajout, modification, suppression de modes, adaptation du Mode Manager, évolution des workflows.
 - **Action DEV-R** :
@@ -60,6 +66,7 @@ Le mode DEV-R (Développement Roadmap) permet d’implémenter concrètement tou
   - Ajoute les liens vers les commits/MR dans la roadmap.
 
 ### Exemple 3 : Automatisation ou génération de snippets
+
 - **Entrée (roadmap)** :
   - [ ] Mettre à jour les snippets VS Code et les scripts d’automatisation si besoin.
 - **Action DEV-R** :
@@ -71,6 +78,7 @@ Le mode DEV-R (Développement Roadmap) permet d’implémenter concrètement tou
 ---
 
 ## Format attendu des tâches et livrables
+
 - **Entrée** : Tâche en Markdown (checklist, tableau, ou liste à puces)
 - **Sortie** :  
   - Mise à jour de la roadmap (statut, commentaires, liens, date, responsable)
@@ -81,17 +89,21 @@ Le mode DEV-R (Développement Roadmap) permet d’implémenter concrètement tou
 ---
 
 ## Snippet VS Code (optionnel)
+
 ```json
 {
   "Mode DEV-R": {
     "prefix": "devr",
     "body": [
       "# Mode DEV-R",
+
       "",
       "## Description",
+
       "Le mode DEV-R (Développement Roadmap) permet d’implémenter concrètement toutes les tâches d’un plan de développement : création, modification, tests, debug, documentation, automatisation, etc.",
       "",
       "## Fonctionnement",
+
       "- Sélectionne la tâche dans la roadmap",
       "- Granularise si besoin (mode GRAN)",
       "- Implémente la tâche (création, modif, suppression…)",
@@ -102,11 +114,11 @@ Le mode DEV-R (Développement Roadmap) permet d’implémenter concrètement tou
     "description": "Insère le template du mode DEV-R pour l’implémentation concrète des tâches roadmap."
   }
 }
-```
-
+```plaintext
 ---
 
 ## Bonnes pratiques et intégration avec les autres modes
+
 - Toujours granulariser (`gran + N`) avant d’implémenter une tâche complexe.
 - Utiliser les modes TEST, DEBUG, REVIEW, OPTI, CHECK selon le contexte.
 - Documenter systématiquement chaque action (roadmap, changelog, doc).
@@ -116,6 +128,7 @@ Le mode DEV-R (Développement Roadmap) permet d’implémenter concrètement tou
 ---
 
 ## Panel d’adaptabilité
+
 - **Développement** : création, modification, suppression de code ou de fichiers.
 - **Documentation** : génération, mise à jour, validation de docs.
 - **Automatisation** : scripts, snippets, CI/CD, tests d’intégrité.
@@ -126,6 +139,7 @@ Le mode DEV-R (Développement Roadmap) permet d’implémenter concrètement tou
 ---
 
 ## Liens utiles et ressources associées
+
 - [Exemples de roadmaps consolidées](../../projet/roadmaps/plans/consolidated/)
 - [Scripts d’automatisation](../../development/tools/scripts/)
 - [Documentation des autres modes](../modes/)

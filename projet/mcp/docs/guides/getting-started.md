@@ -32,38 +32,33 @@ Pour démarrer tous les serveurs MCP :
 
 ```powershell
 .\projet\mcp\scripts\utils\start-mcp-server.ps1
-```
-
+```plaintext
 Pour démarrer un serveur spécifique :
 
 ```powershell
 .\projet\mcp\scripts\utils\start-mcp-server.ps1 -Server filesystem
-```
-
+```plaintext
 ## Vérification de l'état des serveurs
 
 Pour vérifier l'état des serveurs MCP :
 
 ```powershell
 .\projet\mcp\scripts\utils\check-mcp-status.ps1
-```
-
+```plaintext
 ## Arrêt des serveurs
 
 Pour arrêter tous les serveurs MCP :
 
 ```powershell
 .\projet\mcp\scripts\utils\stop-mcp-server.ps1
-```
-
+```plaintext
 ## Intégration avec n8n
 
 Pour configurer n8n avec les serveurs MCP :
 
 ```powershell
 .\projet\mcp\integrations\n8n\scripts\configure-n8n-mcp.ps1
-```
-
+```plaintext
 ## Étapes suivantes
 
 - [Guide d'installation complet](installation.md)

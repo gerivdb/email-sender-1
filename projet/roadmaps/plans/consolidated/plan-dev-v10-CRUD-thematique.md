@@ -1,6 +1,7 @@
 # Plan de développement v10 : Système CRUD modulaire thématique pour roadmaps
 
 ## 1. Analyse et cartographie des roadmaps existantes
+
 - [ ] **1.1** Analyser la structure thématique des roadmaps actuelles
   - [ ] **1.1.1** Inventorier les roadmaps existantes (v2 à v9)
     - [ ] **1.1.1.1** Analyser les fichiers dans le dossier `projet/roadmaps/plans`
@@ -61,6 +62,7 @@
         - [ ] **1.1.3.2.2.3** Créer des matrices d'adjacence
 
 ## 2. Conception du système de gestion modulaire
+
 - [ ] **2.1** Définir l'architecture du système CRUD
   - [ ] **2.1.1** Concevoir le modèle de données
     - [ ] **2.1.1.1** Définir la hiérarchie multi-niveaux des roadmaps
@@ -143,6 +145,7 @@
         - [ ] **2.1.3.2.2.3** Établir le système de navigation
 
 ## 3. Implémentation du système de gestion CRUD
+
 - [ ] **3.1** Développer les fonctionnalités de base CRUD
   - [ ] **3.1.1** Implémenter la création de roadmaps thématiques
     - [ ] **3.1.1.1** Développer le générateur de roadmaps
@@ -222,6 +225,7 @@
         - [x] **3.1.4.2.2.3** Ajouter la validation post-restauration
 
 ## 4. Développement de l'intégration avec Qdrant
+
 - [ ] **4.1** Implémenter la vectorisation thématique
   - [ ] **4.1.1** Développer le système d'embeddings thématiques
     - [ ] **4.1.1.1** Implémenter la génération d'embeddings par thème
@@ -344,6 +348,7 @@
         - [ ] **4.2.3.2.2.3** Ajouter les alertes et notifications
 
 ## 5. Développement de l'interface utilisateur
+
 - [ ] **5.1** Implémenter l'interface en ligne de commande
   - [ ] **5.1.1** Développer les commandes CRUD de base
     - [ ] **5.1.1.1** Implémenter les commandes de création
@@ -469,6 +474,7 @@
         - [ ] **5.2.2.4.2.3** Ajouter les tableaux de bord analytiques
 
 ## 6. Tests et déploiement
+
 - [ ] **6.1** Développer les tests automatisés
   - [ ] **6.1.1** Implémenter les tests unitaires
     - [ ] **6.1.1.1** Développer les tests pour les fonctions CRUD
@@ -510,6 +516,7 @@
       - [ ] **6.2.2.2.3** Créer les outils de monitoring
 
 ## 7. Implémentation de la hiérarchie multi-niveaux
+
 - [ ] **7.1** Développer le système de méta-roadmap
   - [ ] **7.1.1** Implémenter le modèle de méta-roadmap
     - [ ] **7.1.1.1** Développer la structure de données

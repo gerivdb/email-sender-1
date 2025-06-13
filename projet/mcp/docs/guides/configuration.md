@@ -6,22 +6,33 @@ Ce guide explique comment configurer les serveurs MCP (Model Context Protocol) d
 
 La configuration des serveurs MCP est centralisée dans le dossier `projet/mcp/config/`. La structure est la suivante :
 
-```
+```plaintext
 config/
 ├── mcp-config.json             # Configuration principale
-├── servers/                    # Configurations spécifiques aux serveurs
-│   ├── filesystem.json         # Configuration du serveur filesystem
-│   ├── github.json             # Configuration du serveur GitHub
-│   ├── gcp.json                # Configuration du serveur GCP
-│   ├── notion.json             # Configuration du serveur Notion
-│   └── gateway.yaml            # Configuration du serveur Gateway
-├── templates/                  # Modèles de configuration
-│   └── mcp-config-template.json # Modèle de configuration principale
-└── environments/               # Configurations par environnement
-    ├── development.json        # Configuration de développement
-    └── production.json         # Configuration de production
-```
 
+├── servers/                    # Configurations spécifiques aux serveurs
+
+│   ├── filesystem.json         # Configuration du serveur filesystem
+
+│   ├── github.json             # Configuration du serveur GitHub
+
+│   ├── gcp.json                # Configuration du serveur GCP
+
+│   ├── notion.json             # Configuration du serveur Notion
+
+│   └── gateway.yaml            # Configuration du serveur Gateway
+
+├── templates/                  # Modèles de configuration
+
+│   └── mcp-config-template.json # Modèle de configuration principale
+
+└── environments/               # Configurations par environnement
+
+    ├── development.json        # Configuration de développement
+
+    └── production.json         # Configuration de production
+
+```plaintext
 ## Configuration principale
 
 Le fichier `mcp-config.json` contient la configuration principale des serveurs MCP. Voici un exemple :
@@ -59,8 +70,7 @@ Le fichier `mcp-config.json` contient la configuration principale des serveurs M
     "maxLogFiles": 5
   }
 }
-```
-
+```plaintext
 ## Configuration des serveurs
 
 ### Serveur Filesystem
@@ -95,8 +105,7 @@ Le serveur Filesystem permet d'accéder aux fichiers locaux. Voici un exemple de
   "maxFileSize": 10485760,
   "readOnly": false
 }
-```
-
+```plaintext
 ### Serveur GitHub
 
 Le serveur GitHub permet d'accéder aux dépôts GitHub. Voici un exemple de configuration :
@@ -122,14 +131,14 @@ Le serveur GitHub permet d'accéder aux dépôts GitHub. Voici un exemple de con
     "__pycache__"
   ]
 }
-```
-
+```plaintext
 ### Serveur Gateway
 
 Le serveur Gateway permet d'accéder aux bases de données SQL. Voici un exemple de configuration :
 
 ```yaml
 # Configuration du serveur Gateway MCP
+
 server:
   host: localhost
   port: 8080
@@ -154,6 +163,7 @@ databases:
             type: TEXT
             description: "Nom d'utilisateur"
           # Autres colonnes...
+
       # Autres tables...
 
 security:
@@ -168,8 +178,7 @@ logging:
   file: "monitoring/logs/gateway.log"
   max_size: 10485760
   max_files: 5
-```
-
+```plaintext
 ## Configurations par environnement
 
 Les fichiers dans le dossier `environments/` contiennent des configurations spécifiques à chaque environnement. Ces configurations sont fusionnées avec la configuration principale.
@@ -197,8 +206,7 @@ Les fichiers dans le dossier `environments/` contiennent des configurations spé
     "logPath": "monitoring/logs/mcp-dev.log"
   }
 }
-```
-
+```plaintext
 ### Production
 
 ```json
@@ -222,28 +230,25 @@ Les fichiers dans le dossier `environments/` contiennent des configurations spé
     "logPath": "monitoring/logs/mcp-prod.log"
   }
 }
-```
-
+```plaintext
 ## Utilisation des configurations
 
 Pour utiliser une configuration spécifique à un environnement, utilisez le paramètre `-Environment` avec les scripts :
 
 ```powershell
 .\projet\mcp\scripts\utils\start-mcp-server.ps1 -Environment development
-```
-
+```plaintext
 ## Génération de configuration
 
 Pour générer une nouvelle configuration à partir du modèle :
 
 ```powershell
 .\projet\mcp\scripts\setup\generate-mcp-config.ps1 -Environment development
-```
-
+```plaintext
 ## Validation de configuration
 
 Pour valider une configuration :
 
 ```powershell
 .\projet\mcp\scripts\utils\validate-mcp-config.ps1 -ConfigPath "config/mcp-config.json"
-```
+```plaintext

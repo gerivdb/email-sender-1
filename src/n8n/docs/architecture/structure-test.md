@@ -16,10 +16,9 @@ Le test structurel de n8n permet de :
 
 Le script `test-structure.cmd` permet de vérifier la structure de n8n :
 
-```
+```plaintext
 .\test-structure.cmd -N8nRootFolder "n8n" -FixIssues $true
-```
-
+```plaintext
 Options disponibles :
 
 - `-N8nRootFolder` : Dossier racine de n8n (par défaut: n8n)
@@ -41,7 +40,7 @@ Le script vérifie la présence des éléments suivants :
 
 ### Dossiers
 
-```
+```plaintext
 n8n/automation
 n8n/automation/deployment
 n8n/automation/monitoring
@@ -57,25 +56,22 @@ n8n/data/.n8n/workflows
 n8n/docs
 n8n/docs/architecture
 n8n/logs
-```
-
+```plaintext
 ### Fichiers
 
-```
+```plaintext
 n8n/config/notification-config.json
 n8n/core/n8n-config.json
 n8n/.env
-```
-
+```plaintext
 ### Scripts
 
-```
+```plaintext
 n8n/automation/deployment/start-n8n.ps1
 n8n/automation/deployment/stop-n8n.ps1
 n8n/automation/monitoring/check-n8n-status.ps1
 n8n/automation/notification/send-notification.ps1
-```
-
+```plaintext
 ## Tests effectués
 
 Le script effectue les tests suivants :
@@ -166,8 +162,7 @@ Exemple de structure du rapport JSON :
     "FixIssues": true
   }
 }
-```
-
+```plaintext
 ### Rapport HTML
 
 Le rapport HTML présente les résultats des tests de manière plus visuelle et conviviale. Il est enregistré dans le fichier spécifié par l'option `-HtmlReportFile`.
@@ -193,34 +188,29 @@ Le niveau minimum pour envoyer une notification peut être configuré avec l'opt
 
 ### Test simple
 
-```
+```plaintext
 .\test-structure.cmd
-```
-
+```plaintext
 ### Test avec correction automatique
 
-```
+```plaintext
 .\test-structure.cmd -FixIssues $true
-```
-
+```plaintext
 ### Test détaillé
 
-```
+```plaintext
 .\test-structure.cmd -TestLevel 3 -HtmlReportFile "n8n/logs/detailed-structure-report.html"
-```
-
+```plaintext
 ### Test sans notifications
 
-```
+```plaintext
 .\test-structure.cmd -NotificationEnabled $false
-```
-
+```plaintext
 ### Test avec un dossier racine différent
 
-```
+```plaintext
 .\test-structure.cmd -N8nRootFolder "path/to/n8n"
-```
-
+```plaintext
 ## Intégration avec des tâches planifiées
 
 Le script peut être intégré avec des tâches planifiées pour vérifier régulièrement la structure de n8n.
@@ -236,10 +226,9 @@ Le script peut être intégré avec des tâches planifiées pour vérifier régu
 
 ### Cron (Linux)
 
-```
+```plaintext
 0 8 * * * cd /path/to/project && ./test-structure.cmd -FixIssues $true
-```
-
+```plaintext
 ## Résolution des problèmes
 
 ### Erreur "Le dossier n'existe pas"
@@ -271,7 +260,7 @@ Les logs sont enregistrés dans le fichier spécifié par l'option `-LogFile` (p
 
 Exemple de log :
 
-```
+```plaintext
 [2025-04-22 10:15:30] [INFO] === Test structurel n8n ===
 [2025-04-22 10:15:30] [INFO] Dossier racine: n8n
 [2025-04-22 10:15:30] [INFO] Dossier des workflows: n8n/data/.n8n/workflows
@@ -297,4 +286,4 @@ Exemple de log :
 [2025-04-22 10:15:32] [SUCCESS] Rapport JSON généré: n8n/logs/structure-test-report.json
 [2025-04-22 10:15:32] [SUCCESS] Rapport HTML généré: n8n/logs/structure-test-report.html
 [2025-04-22 10:15:33] [SUCCESS] Notification envoyée: Test structurel n8n: 93.33% de réussite
-```
+```plaintext

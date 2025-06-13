@@ -27,16 +27,14 @@ Pour exécuter tous les tests, utilisez le script `Run-AllTests.ps1` :
 
 ```powershell
 .\Run-AllTests.ps1
-```
-
+```plaintext
 ### Exécuter un type de test spécifique
 
 Pour exécuter un type de test spécifique, utilisez le paramètre `-TestType` :
 
 ```powershell
 .\Run-AllTests.ps1 -TestType Unit
-```
-
+```plaintext
 Les types de tests disponibles sont :
 
 - `All` : Tous les tests
@@ -67,8 +65,7 @@ Pour exécuter les tests avec couverture de code, utilisez le script `Run-TestsW
 
 ```powershell
 .\Run-TestsWithCoverage.ps1
-```
-
+```plaintext
 Ce script exécute les tests et génère un rapport de couverture de code. Le rapport est généré au format HTML et peut être ouvert automatiquement.
 
 ### Exécuter les tests dans un environnement CI/CD
@@ -77,8 +74,7 @@ Pour exécuter les tests dans un environnement CI/CD, utilisez le script `Run-Al
 
 ```powershell
 .\Run-AllTestsCI.ps1
-```
-
+```plaintext
 Ce script exécute les tests en parallèle et génère des rapports au format XML et HTML. Les rapports peuvent être publiés dans un pipeline CI/CD.
 
 ## Génération de rapports
@@ -89,8 +85,7 @@ Pour générer un rapport de couverture de code, utilisez le script `Generate-Co
 
 ```powershell
 .\Generate-CoverageReport.ps1
-```
-
+```plaintext
 Ce script génère un rapport de couverture de code au format HTML et un fichier de synthèse au format Markdown.
 
 ### Générer un badge de couverture de code
@@ -99,8 +94,7 @@ Pour générer un badge de couverture de code, utilisez le script `Generate-Cove
 
 ```powershell
 .\Generate-CoverageBadge.ps1
-```
-
+```plaintext
 Ce script génère un badge de couverture de code au format SVG et met à jour le fichier README.md avec le badge.
 
 ## Intégration CI/CD

@@ -48,14 +48,12 @@ Pour initialiser le système à partir de la roadmap originale :
 
 ```powershell
 .\development\scripts\maintenance\Manage-Roadmap.ps1 -Action Split -ArchiveSections -Force
-```
-
+```plaintext
 Pour afficher l'aide complète du système :
 
 ```powershell
 .\development\scripts\maintenance\Manage-Roadmap.ps1 -Action Help
-```
-
+```plaintext
 ## Note importante
 
 Les outils techniques pour gérer les roadmaps se trouvent dans le dossier `development\scripts\maintenance\`.

@@ -75,8 +75,7 @@ Ce document analyse les caractéristiques des valeurs aberrantes (outliers) dans
     "adaptiveParameters": true
   }
 }
-```
-
+```plaintext
 ## 3. Caractéristiques statistiques des valeurs aberrantes
 
 ### 3.1 Propriétés statistiques générales
@@ -135,8 +134,7 @@ Ce document analyse les caractéristiques des valeurs aberrantes (outliers) dans
     }
   }
 }
-```
-
+```plaintext
 ## 4. Causes et mécanismes des valeurs aberrantes
 
 ### 4.1 Causes systémiques principales
@@ -214,8 +212,7 @@ Ce document analyse les caractéristiques des valeurs aberrantes (outliers) dans
     }
   ]
 }
-```
-
+```plaintext
 ## 5. Impact des valeurs aberrantes sur les métriques globales
 
 ### 5.1 Influence sur les statistiques descriptives
@@ -294,8 +291,7 @@ Ce document analyse les caractéristiques des valeurs aberrantes (outliers) dans
     }
   }
 }
-```
-
+```plaintext
 ## 6. Stratégies de traitement des valeurs aberrantes
 
 ### 6.1 Approches de traitement pour l'analyse statistique
@@ -376,8 +372,7 @@ Ce document analyse les caractéristiques des valeurs aberrantes (outliers) dans
     }
   }
 }
-```
-
+```plaintext
 ## 7. Exemples de distributions de valeurs aberrantes
 
 ### 7.1 Scénario : Contention d'E/S
@@ -404,8 +399,7 @@ Ce document analyse les caractéristiques des valeurs aberrantes (outliers) dans
     ]
   }
 }
-```
-
+```plaintext
 ### 7.2 Scénario : Swapping mémoire
 
 ```json
@@ -430,8 +424,7 @@ Ce document analyse les caractéristiques des valeurs aberrantes (outliers) dans
     ]
   }
 }
-```
-
+```plaintext
 ### 7.3 Scénario : Interruptions système
 
 ```json
@@ -455,8 +448,7 @@ Ce document analyse les caractéristiques des valeurs aberrantes (outliers) dans
     ]
   }
 }
-```
-
+```plaintext
 ## 8. Conclusion
 
 Les valeurs aberrantes dans la distribution des latences pour les lectures aléatoires de blocs de 2KB présentent les caractéristiques suivantes :

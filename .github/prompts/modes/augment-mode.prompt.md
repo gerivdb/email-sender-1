@@ -10,25 +10,33 @@ tags: ["mode", "augment", "operation"]
 # Mode augment
 
 ## 🎯 Objectif
+
 [Description de l'objectif du mode]
 
 ## 📋 Paramètres
+
 [Liste des paramètres]
 
 ## 🔄 Workflow
+
 [Description du workflow]
 
 ## 🛠️ Commandes Principales
+
 `powershell
 # Exemple de commande
+
 .\augment-mode.ps1 -Parameter "value"
 `
 
 ## 📊 Métriques
+
 [Métriques et indicateurs]
 
 ## 🔗 Intégration
+
 [Intégration avec autres modes]
 
 ## ⚠️ Points d'Attention
+
 [Points importants à noter]

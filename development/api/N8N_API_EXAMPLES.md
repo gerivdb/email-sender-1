@@ -7,8 +7,11 @@ URL de base: http://localhost:5678
 ## Table des matieres
 
 - [Workflows](#workflows)
+
 - [Executions](#executions)
+
 - [Tags](#tags)
+
 - [Utilisateurs](#utilisateurs)
 
 ## Endpoints fonctionnels
@@ -170,12 +173,15 @@ ame - Nom du workflow
 
 `powershell
 # Recuperer tous les workflows
+
 $workflows = Invoke-RestMethod -Uri "http://localhost:5678/api/v1/workflows" -Method Get -Headers $headers
 
 # Afficher les noms des workflows
+
 $workflows.data | ForEach-Object { Write-Host $_.name }
 
 # Recuperer les IDs des workflows actifs
+
 $activeWorkflowIds = $workflows.data | Where-Object { $_.active -eq $true } | Select-Object -ExpandProperty id
 `
 
@@ -212,12 +218,15 @@ Invoke-RestMethod -Uri "http://localhost:5678/api/v1/executions" -Method Get -He
 
 `powershell
 # Recuperer toutes les executions
+
 $executions = Invoke-RestMethod -Uri "http://localhost:5678/api/v1/executions" -Method Get -Headers $headers
 
 # Afficher les executions recentes
+
 $executions.data | Sort-Object startedAt -Descending | Select-Object -First 5 | Format-Table id, workflowId, status
 
 # Recuperer les executions en erreur
+
 $failedExecutions = $executions.data | Where-Object { $_.status -eq "error" }
 `
 
@@ -258,12 +267,15 @@ ame - Nom du tag
 
 `powershell
 # Recuperer tous les tags
+
 $tags = Invoke-RestMethod -Uri "http://localhost:5678/api/v1/tags" -Method Get -Headers $headers
 
 # Afficher les noms des tags
+
 $tags.data | ForEach-Object { Write-Host $_.name }
 
 # Recuperer les IDs des tags
+
 $tagIds = $tags.data | Select-Object -ExpandProperty id
 `
 
@@ -300,6 +312,7 @@ ame - Nom du tag
 
 `powershell
 # Creer un nouveau tag
+
 $body = @{
     name = "Nouveau Tag"
 } | ConvertTo-Json
@@ -307,6 +320,7 @@ $body = @{
 $newTag = Invoke-RestMethod -Uri "http://localhost:5678/api/v1/tags" -Method Post -Headers $headers -Body $body -ContentType "application/json"
 
 # Afficher l'ID du tag cree
+
 Write-Host "Tag cree avec l'ID: $($newTag.id)"
 `
 
@@ -351,12 +365,15 @@ Invoke-RestMethod -Uri "http://localhost:5678/api/v1/users" -Method Get -Headers
 
 `powershell
 # Recuperer tous les utilisateurs
+
 $users = Invoke-RestMethod -Uri "http://localhost:5678/api/v1/users" -Method Get -Headers $headers
 
 # Afficher les emails des utilisateurs
+
 $users.data | ForEach-Object { Write-Host $_.email }
 
 # Recuperer les IDs des utilisateurs actifs (non en attente)
+
 $activeUserIds = $users.data | Where-Object { $_.isPending -eq $false } | Select-Object -ExpandProperty id
 `
 

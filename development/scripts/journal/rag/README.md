@@ -1,4 +1,4 @@
-﻿# rag
+# rag
 
 FonctionnalitÃ©s RAG
 

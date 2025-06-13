@@ -5,6 +5,7 @@ Ce document détaille la stack technique du projet, les APIs utilisées et les c
 ## Stack technique principale
 
 ### Automatisation et workflows
+
 - **n8n** : Plateforme d'automatisation pour les workflows
   - Version : dernière stable
   - Mode d'hébergement : local (développement), cloud (production)
@@ -12,16 +13,19 @@ Ce document détaille la stack technique du projet, les APIs utilisées et les c
   - Endpoints principaux : workflows, executions, tags, users
 
 ### Intelligence artificielle
+
 - **crewAI** : Framework pour la création d'agents IA collaboratifs
   - Utilisé pour l'orchestration des tâches complexes
   - Intégration avec les LLMs pour l'analyse et la génération de contenu
 
 ### Gestion des connaissances
+
 - **Notion** : Plateforme de gestion des connaissances et de collaboration
   - Utilisé pour la documentation et le suivi de projet
   - Intégration via API pour la synchronisation des données
 
 ### Futur
+
 - **ERPNext** : Système ERP open-source
   - Planifié pour la gestion des clients et la facturation
   - Intégration prévue via API REST
@@ -29,6 +33,7 @@ Ce document détaille la stack technique du projet, les APIs utilisées et les c
 ## Serveurs MCP (Model Context Protocol)
 
 ### Serveurs configurés
+
 - **@modelcontextprotocol/server-filesystem**
   - Accès au système de fichiers local
   - Configuration : chemin racine = répertoire du projet
@@ -44,6 +49,7 @@ Ce document détaille la stack technique du projet, les APIs utilisées et les c
 ## Langages et frameworks
 
 ### Backend
+
 - **PowerShell 5.1** : Scripts d'automatisation et utilitaires
   - Modules principaux : PSCacheManager, ErrorPatternAnalyzer
   - Standards : PSScriptAnalyzer, Pester pour les tests
@@ -53,6 +59,7 @@ Ce document détaille la stack technique du projet, les APIs utilisées et les c
   - Frameworks : FastAPI pour les services web légers
 
 ### Frontend (en développement)
+
 - **Node.js** : Runtime JavaScript
   - Version : LTS actuelle
   - Gestionnaire de paquets : npm
@@ -63,6 +70,7 @@ Ce document détaille la stack technique du projet, les APIs utilisées et les c
 ## APIs et intégrations
 
 ### Gmail API
+
 - **Scopes utilisés** :
   - gmail.send
   - gmail.compose
@@ -71,11 +79,13 @@ Ce document détaille la stack technique du projet, les APIs utilisées et les c
 - **Quotas** : 1000 emails/jour (limite standard)
 
 ### GitHub API
+
 - **Utilisé pour** : Gestion des repositories, pull requests, issues
 - **Authentification** : OAuth tokens
 - **Webhooks** : Configurés pour les événements de pull request
 
 ### n8n API locale
+
 - **URL** : http://localhost:5678/api/
 - **Endpoints principaux** :
   - `/workflows` : Gestion des workflows
@@ -86,15 +96,18 @@ Ce document détaille la stack technique du projet, les APIs utilisées et les c
 ## Environnements
 
 ### Développement
+
 - **OS** : Windows 10/11
 - **IDE** : VS Code avec extensions spécifiques
 - **Services locaux** : n8n, bases de données
 
 ### Test
+
 - **Environnement isolé** pour les tests d'intégration
 - **CI/CD** : GitHub Actions pour l'automatisation des tests
 
 ### Production (planifié)
+
 - **Hébergement** : Cloud (GCP ou AWS)
 - **Conteneurisation** : Docker pour les services
 - **Orchestration** : Kubernetes pour la gestion des conteneurs
@@ -102,6 +115,7 @@ Ce document détaille la stack technique du projet, les APIs utilisées et les c
 ## Configuration VS Code
 
 ### Extensions recommandées
+
 - PowerShell
 - Python
 - ESLint
@@ -110,6 +124,7 @@ Ce document détaille la stack technique du projet, les APIs utilisées et les c
 - Augment
 
 ### Paramètres spécifiques
+
 ```json
 {
   "files.maxMemoryForLargeFilesMB": 4096,
@@ -121,15 +136,16 @@ Ce document détaille la stack technique du projet, les APIs utilisées et les c
   "augment.chat.autoConfirmLargeMessages": true,
   "augment.chat.maxMessageSizeKB": 100
 }
-```
-
+```plaintext
 ## Bases de données
 
 ### Principales
+
 - **SQLite** : Stockage local pour le développement
   - Utilisé par n8n pour les workflows
   - Utilisé pour le cache et les métriques de performance
 
 ### Futures
+
 - **PostgreSQL** : Pour l'environnement de production
 - **Redis** : Pour le cache distribué

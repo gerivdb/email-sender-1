@@ -14,20 +14,17 @@ Ce document explique les optimisations mises en place pour améliorer l'utilisat
 
 ```powershell
 .\optimize-vscode-for-augment.ps1
-```
-
+```plaintext
 2. Pour forcer la création d'un nouveau fichier de configuration de l'espace de travail :
 
 ```powershell
 .\optimize-vscode-for-augment.ps1 -Force
-```
-
+```plaintext
 3. Pour désactiver la sauvegarde des fichiers de configuration existants :
 
 ```powershell
 .\optimize-vscode-for-augment.ps1 -Backup:$false
-```
-
+```plaintext
 4. Redémarrez VS Code pour appliquer les modifications.
 
 ## Optimisations appliquées

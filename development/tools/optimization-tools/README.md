@@ -1,4 +1,4 @@
-﻿# SystÃ¨me d'Optimisation Proactive
+# SystÃ¨me d'Optimisation Proactive
 
 Ce module fournit un ensemble d'outils pour le monitoring et l'analyse comportementale des scripts, permettant d'optimiser proactivement leur exÃ©cution en fonction de leur utilisation rÃ©elle.
 
@@ -18,10 +18,10 @@ Script principal pour le monitoring et l'analyse de l'utilisation des scripts.
 
 ```powershell
 # Exemple d'utilisation
+
 .\Monitor-ScriptUsage.ps1 -EnableRealTimeMonitoring
 .\Monitor-ScriptUsage.ps1 -GenerateReport -ReportPath "reports\usage"
-```
-
+```plaintext
 #### ParamÃ¨tres
 
 - `-DatabasePath` : Chemin vers la base de donnÃ©es d'utilisation (par dÃ©faut : usage_data.xml dans le dossier courant).
@@ -36,10 +36,10 @@ Script spÃ©cialisÃ© pour dÃ©tecter les goulots d'Ã©tranglement dans les 
 
 ```powershell
 # Exemple d'utilisation
+
 .\Detect-Bottlenecks.ps1 -DetailedAnalysis
 .\Detect-Bottlenecks.ps1 -GenerateReport -ReportPath "reports\bottlenecks"
-```
-
+```plaintext
 #### ParamÃ¨tres
 
 - `-DatabasePath` : Chemin vers la base de donnÃ©es d'utilisation (par dÃ©faut : usage_data.xml dans le dossier courant).
@@ -53,10 +53,10 @@ Script pour analyser les tendances d'utilisation des scripts au fil du temps.
 
 ```powershell
 # Exemple d'utilisation
+
 .\Analyze-UsageTrends.ps1 -PeriodDays 60
 .\Analyze-UsageTrends.ps1 -GenerateReport -ReportPath "reports\trends"
-```
-
+```plaintext
 #### ParamÃ¨tres
 
 - `-DatabasePath` : Chemin vers la base de donnÃ©es d'utilisation (par dÃ©faut : usage_data.xml dans le dossier courant).
@@ -70,10 +70,10 @@ Ce systÃ¨me s'appuie sur le module UsageMonitor existant pour collecter les do
 
 ```powershell
 # Ajouter le suivi d'utilisation Ã  un script ou Ã  un dossier de scripts
+
 ..\UsageMonitor\Add-UsageTracking.ps1 -Path "chemin\vers\votre\script.ps1"
 ..\UsageMonitor\Add-UsageTracking.ps1 -Path "chemin\vers\votre\dossier" -Recurse
-```
-
+```plaintext
 ## Rapports gÃ©nÃ©rÃ©s
 
 Les rapports HTML gÃ©nÃ©rÃ©s incluent :
@@ -88,28 +88,28 @@ Les rapports HTML gÃ©nÃ©rÃ©s incluent :
 
 ```powershell
 # DÃ©marrer le monitoring en temps rÃ©el
-.\Monitor-ScriptUsage.ps1 -EnableRealTimeMonitoring
-```
 
+.\Monitor-ScriptUsage.ps1 -EnableRealTimeMonitoring
+```plaintext
 ### Analyse hebdomadaire
 
 ```powershell
 # CrÃ©er un rapport hebdomadaire
+
 .\Monitor-ScriptUsage.ps1 -GenerateReport -ReportPath "reports\weekly"
 .\Detect-Bottlenecks.ps1 -DetailedAnalysis -GenerateReport -ReportPath "reports\weekly"
 .\Analyze-UsageTrends.ps1 -PeriodDays 7 -GenerateReport -ReportPath "reports\weekly"
-```
-
+```plaintext
 ### IntÃ©gration dans un pipeline CI/CD
 
 ```powershell
 # Exemple de script pour intÃ©grer l'analyse dans un pipeline CI/CD
+
 $reportPath = "reports\$(Get-Date -Format 'yyyy-MM-dd')"
 .\Monitor-ScriptUsage.ps1 -GenerateReport -ReportPath $reportPath
 .\Detect-Bottlenecks.ps1 -DetailedAnalysis -GenerateReport -ReportPath $reportPath
 .\Analyze-UsageTrends.ps1 -GenerateReport -ReportPath $reportPath
-```
-
+```plaintext
 ## Prochaines Ã©tapes
 
 - Optimisation dynamique de la parallÃ©lisation

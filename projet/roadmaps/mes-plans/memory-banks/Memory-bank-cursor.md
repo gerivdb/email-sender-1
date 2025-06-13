@@ -24,7 +24,7 @@ L'IA considère que sa "mémoire se réinitialise complètement entre les sessio
 
 Le Memory Bank est organisé selon une hiérarchie claire où les fichiers s'appuient les uns sur les autres :
 
-```
+```plaintext
                                   +------------------+
                                   |                  |
                                   | projectbrief.md  |
@@ -55,8 +55,7 @@ Le Memory Bank est organisé selon une hiérarchie claire où les fichiers s'app
                                   |   progress.md    |
                                   |                  |
                                   +------------------+
-```
-
+```plaintext
 ### 3.2 Fichiers Principaux (Obligatoires)
 
 1. **projectbrief.md**
@@ -110,7 +109,7 @@ Des fichiers/dossiers supplémentaires peuvent être créés dans memory-bank/ p
 
 Le mode Plan est utilisé pour les discussions stratégiques et la planification de haut niveau.
 
-```
+```plaintext
 +---------------+     +--------------------+     +------------------+
 |               |     |                    |     |                  |
 |     Start     | --> |  Read Memory Bank  | --> | Check if Files   |
@@ -152,13 +151,12 @@ Le mode Plan est utilisé pour les discussions stratégiques et la planification
                                           | Context  |
                                           |          |
                                           +----------+
-```
-
+```plaintext
 ### 4.2 Mode Action
 
 Le mode Action est utilisé pour l'implémentation et l'exécution de tâches spécifiques.
 
-```
+```plaintext
 +---------------+     +--------------------+     +------------------+
 |               |     |                    |     |                  |
 |     Start     | --> |  Check Memory Bank | --> | Update           |
@@ -179,8 +177,7 @@ Le mode Action est utilisé pour l'implémentation et l'exécution de tâches sp
                                                  | rules if needed  |
                                                  |                  |
                                                  +------------------+
-```
-
+```plaintext
 ### 4.3 Mises à Jour de la Documentation
 
 Les mises à jour du Memory Bank se produisent dans les situations suivantes :
@@ -189,7 +186,7 @@ Les mises à jour du Memory Bank se produisent dans les situations suivantes :
 3. Lorsque l'utilisateur le demande explicitement avec **"update memory bank"**
 4. Lorsque le contexte nécessite une clarification
 
-```
+```plaintext
 +---------------+
 |               |
 | Update Process|
@@ -227,13 +224,12 @@ Les mises à jour du Memory Bank se produisent dans les situations suivantes :
 | .cursorrules  |
 |               |
 +-------+-------+
-```
-
+```plaintext
 ## 5. Intelligence du Projet (.cursorrules)
 
 Le fichier .cursorrules est un journal d'apprentissage pour chaque projet. Il capture des patterns importants, des préférences et des informations sur le projet qui aident l'IA à travailler plus efficacement. Ce fichier évolue au fur et à mesure que l'IA travaille avec l'utilisateur et le projet.
 
-```
+```plaintext
 +------------------+
 |                  |
 | Discover New     |
@@ -286,8 +282,7 @@ Le fichier .cursorrules est un journal d'apprentissage pour chaque projet. Il ca
 | Work             |
 |                  |
 +--------+---------+
-```
-
+```plaintext
 ### 5.1 Éléments à Capturer
 
 Le fichier .cursorrules doit capturer :
@@ -357,3 +352,4 @@ Le système continue d'évoluer avec des contributions de la communauté, comme 
 - [Extension AI Memory](https://marketplace.visualstudio.com/items?itemName=CoderOne.aimemory)
 - [Version améliorée par vanzan01](https://github.com/vanzan01/cursor-memory-bank)
 - [Documentation officielle des règles Cursor](https://projet/documentation.cursor.com/context/rules-for-ai#cursorrules)
+

@@ -70,8 +70,7 @@ graph TB
     POSTGRES --> METRICS_COLLECTOR
     METRICS_COLLECTOR --> DASHBOARD
     DASHBOARD --> ALERTS
-```
-
+```plaintext
 ## Component Architecture
 
 ### 1. Error Collection Layer
@@ -105,8 +104,7 @@ graph LR
     ENRICH --> STRUCT_LOG
     STRUCT_LOG --> PERSIST
     PERSIST --> INDEX
-```
-
+```plaintext
 ### 2. Pattern Analysis Architecture
 
 ```mermaid
@@ -151,8 +149,7 @@ graph TB
     CLUSTERING --> CORRELATOR
     PREDICTION --> RECOMMENDER
     ANOMALY --> SCORER
-```
-
+```plaintext
 ### 3. Storage Architecture
 
 ```mermaid
@@ -205,8 +202,7 @@ graph TB
     QDRANT_DB --> SIMILARITY_INDEX
     FILE_SYSTEM --> REPORT_FILES
     FILE_SYSTEM --> EXPORT_FILES
-```
-
+```plaintext
 ## Data Flow Diagrams
 
 ### 1. Error Processing Flow
@@ -242,8 +238,7 @@ sequenceDiagram
     else Validation Failure
         EM-->>App: Validation Error
     end
-```
-
+```plaintext
 ### 2. Pattern Analysis Flow
 
 ```mermaid
@@ -276,8 +271,7 @@ sequenceDiagram
     File-->>Export: Confirmation
     Export-->>Rep: Export Success
     Rep-->>Ana: Report Complete
-```
-
+```plaintext
 ### 3. Real-time Monitoring Flow
 
 ```mermaid
@@ -305,8 +299,7 @@ sequenceDiagram
         Monitor->>Dash: Update Metrics
         Dash->>Dash: Refresh Dashboard
     end
-```
-
+```plaintext
 ## Database Schema
 
 ### PostgreSQL Schema
@@ -371,8 +364,7 @@ CREATE TABLE analysis_reports (
     status VARCHAR(20),
     metadata JSONB
 );
-```
-
+```plaintext
 ## Technology Stack
 
 ### Core Technologies
@@ -398,8 +390,7 @@ github.com/qdrant/go-client   // Qdrant vector database
 encoding/json                 // JSON processing
 html/template                 // Report templating
 time                         // Time handling
-```
-
+```plaintext
 ## Security Architecture
 
 ### Data Protection
@@ -433,8 +424,7 @@ graph TB
     RBAC --> DB_ENCRYPT
     API_KEY --> PII_MASK
     TLS --> AUDIT
-```
-
+```plaintext
 ### Security Measures
 
 1. **Data Encryption**
@@ -502,8 +492,7 @@ graph TB
     APP1 --> QUEUE
     QUEUE --> WORKER1
     QUEUE --> WORKER2
-```
-
+```plaintext
 ### Performance Optimizations
 
 1. **Database Optimization**
@@ -565,8 +554,7 @@ graph TB
 
     REPORTER_POD --> STORAGE
     EM_POD --> ALERTS
-```
-
+```plaintext
 ## Integration Points
 
 ### API Interfaces
@@ -608,21 +596,25 @@ graph TB
 ## Architecture Decision Records (ADRs)
 
 ### ADR-001: Database Choice
+
 **Decision**: Use PostgreSQL as primary database
 **Rationale**: ACID compliance, JSON support, mature ecosystem
 **Status**: Accepted
 
 ### ADR-002: Vector Database
+
 **Decision**: Use Qdrant for similarity search
 **Rationale**: High performance, Go client availability, cloud-native
 **Status**: Accepted
 
 ### ADR-003: Logging Framework
+
 **Decision**: Use Zap for structured logging
 **Rationale**: High performance, structured output, Uber ecosystem
 **Status**: Accepted
 
 ### ADR-004: Error Wrapping
+
 **Decision**: Use pkg/errors for error enhancement
 **Rationale**: Stack trace preservation, context addition, community standard
 **Status**: Accepted

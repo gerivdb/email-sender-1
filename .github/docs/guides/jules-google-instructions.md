@@ -8,21 +8,26 @@
 - Les utilisateurs apprécient son intégration GitHub et ses capacités asynchrones, mais certains signalent des lenteurs ou des limites dans des projets complexes.
 
 #### Configuration initiale
+
 Pour commencer, visitez [jules.google.com](https://jules.google.com), connectez-vous avec votre compte Google, acceptez l'avis de confidentialité, et liez votre compte GitHub. Sélectionnez les dépôts auxquels Jules peut accéder, puis choisissez un dépôt et une branche depuis le tableau de bord. Ce processus est rapide et intuitif, même pour les débutants.
 
 #### Assignation de tâches
+
 Interagissez avec Jules en rédigeant des prompts clairs dans le tableau de bord. Par exemple, demandez : « Corriger l'erreur de division par zéro dans `calc.js` » ou « Ajouter des tests Jest pour `utils.js` ». Jules génère un plan que vous devez approuver avant qu'il n'exécute la tâche. Une fonctionnalité future permettra d'assigner des tâches via des issues GitHub avec le label « assign-to-jules ».
 
 #### Gestion et validation
+
 Jules exécute les tâches dans une machine virtuelle cloud, clone votre dépôt, et propose les modifications via des pull requests sur GitHub. Vous pouvez examiner les diffs, tester le code, et approuver ou ajuster avant de fusionner. Activez les notifications pour suivre la progression et utilisez les journaux audio pour un résumé rapide des changements.
 
 #### Meilleures pratiques
+
 - Soyez précis dans vos prompts pour éviter les malentendus.
 - Commencez par des tâches simples, comme corriger des typos, avant de passer à des refactorisations complexes.
 - Vérifiez toujours les pull requests et exécutez vos tests pour valider les modifications.
 - Pour les projets en Python, TypeScript ou Go, assurez-vous que les dépendances sont bien documentées (ex. : `requirements.txt` ou `go.mod`).
 
 #### Limites
+
 Jules est limité à 5 tâches par jour en bêta publique et peut être lent avec des bases de code volumineuses. Des prompts ambigus peuvent entraîner des résultats incorrects, et des bugs occasionnels sont possibles en raison de son statut bêta.
 
 ---
@@ -126,8 +131,7 @@ Pour les utilisateurs avancés, automatisez la création d'issues GitHub avec de
 $issueTitle = "Corriger bug dans l'API"
 $issueBody = "Jules, corrige la fonction `getData` dans `api.ts` pour gérer les erreurs HTTP 500."
 gh issue create --title $issueTitle --body $issueBody --repo "votre/repo"
-```
-
+```plaintext
 ### Utiliser les fonctionnalités avancées
 
 - **Notifications** : Activez les notifications du navigateur pour suivre la progression des tâches.

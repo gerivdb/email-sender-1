@@ -34,15 +34,17 @@ En raison de la cardinalité très faible de cette propriété (généralement 4
 ```powershell
 $processingStateIndex = @{
     # Clé : Valeur de la propriété ProcessingState
+
     # Valeur : Liste des IDs des éléments ayant cet état
+
     "Raw" = @("ID1", "ID5", "ID9", ...)
     "Processed" = @("ID2", "ID6", "ID10", ...)
     "Validated" = @("ID3", "ID7", "ID11", ...)
     "Error" = @("ID4", "ID8", "ID12", ...)
     # ...
-}
-```
 
+}
+```plaintext
 ### Intégration dans la structure de collection
 
 Cette structure d'index serait intégrée dans la structure de collection optimisée comme suit :
@@ -53,19 +55,25 @@ $collection = @{
     Name = "NomDeLaCollection"
     Description = "Description de la collection"
     ItemsById = @{} # Table de hachage des éléments indexés par ID
+
     ItemsList = @() # Liste ordonnée des éléments (pour la compatibilité)
+
     Indexes = @{
         ProcessingState = @{} # Index par ProcessingState (structure décrite ci-dessus)
+
         Type = @{} # Index par Type (si implémenté)
+
         Source = @{} # Index par Source (si implémenté)
+
         # Autres index...
+
     }
     Metadata = @{} # Table de hachage pour les métadonnées
+
     CreationDate = Get-Date
     LastModifiedDate = Get-Date
 }
-```
-
+```plaintext
 ## Opérations sur l'index
 
 ### Création de l'index
@@ -100,8 +108,7 @@ function Create-ProcessingStateIndex {
     
     return $Collection
 }
-```
-
+```plaintext
 ### Mise à jour de l'index lors de l'ajout d'un élément
 
 Lorsqu'un nouvel élément est ajouté à la collection, l'index ProcessingState doit être mis à jour :
@@ -118,29 +125,36 @@ function Add-ExtractedInfoToCollection {
     )
     
     # Vérifications habituelles...
+
     
     # Vérifier si l'élément existe déjà
+
     $existingItem = $null
     if ($Collection.ItemsById.ContainsKey($Info.Id)) {
         $existingItem = $Collection.ItemsById[$Info.Id]
     }
     
     # Mettre à jour l'index ProcessingState si nécessaire
+
     if ($Collection.Indexes -ne $null -and $Collection.Indexes.ContainsKey("ProcessingState")) {
         $state = $Info.ProcessingState
         
         if ($existingItem -ne $null) {
             # Si l'état a changé
+
             if ($existingItem.ProcessingState -ne $state) {
                 # Supprimer l'ID de l'ancien état
+
                 $Collection.Indexes.ProcessingState[$existingItem.ProcessingState] = $Collection.Indexes.ProcessingState[$existingItem.ProcessingState] | Where-Object { $_ -ne $Info.Id }
                 
                 # Si la liste est vide, supprimer l'entrée
+
                 if ($Collection.Indexes.ProcessingState[$existingItem.ProcessingState].Count -eq 0) {
                     $Collection.Indexes.ProcessingState.Remove($existingItem.ProcessingState)
                 }
                 
                 # Ajouter l'ID au nouvel état
+
                 if (-not $Collection.Indexes.ProcessingState.ContainsKey($state)) {
                     $Collection.Indexes.ProcessingState[$state] = @()
                 }
@@ -149,6 +163,7 @@ function Add-ExtractedInfoToCollection {
             }
         } else {
             # Si c'est un nouvel élément
+
             if (-not $Collection.Indexes.ProcessingState.ContainsKey($state)) {
                 $Collection.Indexes.ProcessingState[$state] = @()
             }
@@ -158,9 +173,11 @@ function Add-ExtractedInfoToCollection {
     }
     
     # Ajouter ou mettre à jour l'élément dans la collection
+
     $Collection.ItemsById[$Info.Id] = $Info
     
     # Mettre à jour la liste des éléments
+
     if ($existingItem -eq $null) {
         $Collection.ItemsList += $Info
     } else {
@@ -174,8 +191,7 @@ function Add-ExtractedInfoToCollection {
     
     return $Collection
 }
-```
-
+```plaintext
 ### Mise à jour de l'index lors de la suppression d'un élément
 
 Lorsqu'un élément est supprimé de la collection, l'index ProcessingState doit être mis à jour :
@@ -192,23 +208,28 @@ function Remove-ExtractedInfoFromCollection {
     )
     
     # Vérifications habituelles...
+
     
     # Vérifier si l'élément existe
+
     if ($Collection.ItemsById.ContainsKey($InfoId)) {
         $item = $Collection.ItemsById[$InfoId]
         $state = $item.ProcessingState
         
         # Mettre à jour l'index ProcessingState
+
         if ($Collection.Indexes -ne $null -and $Collection.Indexes.ContainsKey("ProcessingState") -and $Collection.Indexes.ProcessingState.ContainsKey($state)) {
             $Collection.Indexes.ProcessingState[$state] = $Collection.Indexes.ProcessingState[$state] | Where-Object { $_ -ne $InfoId }
             
             # Si la liste est vide, supprimer l'entrée
+
             if ($Collection.Indexes.ProcessingState[$state].Count -eq 0) {
                 $Collection.Indexes.ProcessingState.Remove($state)
             }
         }
         
         # Supprimer l'élément de la collection
+
         $Collection.ItemsById.Remove($InfoId)
         $Collection.ItemsList = $Collection.ItemsList | Where-Object { $_.Id -ne $InfoId }
         
@@ -217,8 +238,7 @@ function Remove-ExtractedInfoFromCollection {
     
     return $Collection
 }
-```
-
+```plaintext
 ### Mise à jour de l'index lors du changement d'état
 
 Une fonction spécifique pour mettre à jour l'état de traitement d'un élément pourrait être implémentée pour maintenir l'index à jour :
@@ -238,31 +258,39 @@ function Update-ExtractedInfoProcessingState {
     )
     
     # Vérifications habituelles...
+
     
     # Vérifier si l'élément existe
+
     if ($Collection.ItemsById.ContainsKey($InfoId)) {
         $item = $Collection.ItemsById[$InfoId]
         $oldState = $item.ProcessingState
         
         # Si l'état a changé
+
         if ($oldState -ne $NewState) {
             # Mettre à jour l'état de l'élément
+
             $item.ProcessingState = $NewState
             $item.LastModifiedDate = Get-Date
             
             # Mettre à jour l'index ProcessingState
+
             if ($Collection.Indexes -ne $null -and $Collection.Indexes.ContainsKey("ProcessingState")) {
                 # Supprimer l'ID de l'ancien état
+
                 if ($Collection.Indexes.ProcessingState.ContainsKey($oldState)) {
                     $Collection.Indexes.ProcessingState[$oldState] = $Collection.Indexes.ProcessingState[$oldState] | Where-Object { $_ -ne $InfoId }
                     
                     # Si la liste est vide, supprimer l'entrée
+
                     if ($Collection.Indexes.ProcessingState[$oldState].Count -eq 0) {
                         $Collection.Indexes.ProcessingState.Remove($oldState)
                     }
                 }
                 
                 # Ajouter l'ID au nouvel état
+
                 if (-not $Collection.Indexes.ProcessingState.ContainsKey($NewState)) {
                     $Collection.Indexes.ProcessingState[$NewState] = @()
                 }
@@ -276,8 +304,7 @@ function Update-ExtractedInfoProcessingState {
     
     return $Collection
 }
-```
-
+```plaintext
 ### Utilisation de l'index pour le filtrage
 
 L'index ProcessingState peut être utilisé pour améliorer les performances du filtrage par ProcessingState :
@@ -306,8 +333,10 @@ function Get-ExtractedInfoFromCollection {
     )
     
     # Vérifications habituelles...
+
     
     # Accès direct par ID si spécifié
+
     if (-not [string]::IsNullOrEmpty($Id)) {
         if ($Collection.ItemsById.ContainsKey($Id)) {
             return $Collection.ItemsById[$Id]
@@ -316,18 +345,22 @@ function Get-ExtractedInfoFromCollection {
     }
     
     # Utiliser l'index ProcessingState si disponible et si le filtrage par ProcessingState est demandé
+
     if (-not [string]::IsNullOrEmpty($ProcessingState) -and 
         $Collection.Indexes -ne $null -and 
         $Collection.Indexes.ContainsKey("ProcessingState") -and 
         $Collection.Indexes.ProcessingState.ContainsKey($ProcessingState)) {
         
         # Récupérer les IDs des éléments ayant l'état spécifié
+
         $itemIds = $Collection.Indexes.ProcessingState[$ProcessingState]
         
         # Récupérer les éléments correspondants
+
         $items = $itemIds | ForEach-Object { $Collection.ItemsById[$_] }
         
         # Appliquer les autres filtres si nécessaire
+
         if (-not [string]::IsNullOrEmpty($Source)) {
             $items = $items | Where-Object { $_.Source -eq $Source }
         }
@@ -344,19 +377,21 @@ function Get-ExtractedInfoFromCollection {
     }
     
     # Fallback : filtrage traditionnel si l'index n'est pas disponible
+
     $items = $Collection.ItemsList
     
     # Appliquer les filtres
+
     if (-not [string]::IsNullOrEmpty($ProcessingState)) {
         $items = $items | Where-Object { $_.ProcessingState -eq $ProcessingState }
     }
     
     # Autres filtres...
+
     
     return $items
 }
-```
-
+```plaintext
 ## Analyse des performances
 
 ### Complexité algorithmique
@@ -412,8 +447,7 @@ $processingStateIndex = @{
     "Validated" = [System.Collections.Generic.List[string]]::new(500)
     "Error" = [System.Collections.Generic.List[string]]::new(100)
 }
-```
-
+```plaintext
 ### 2. Index avec comptage
 
 Pour les statistiques rapides, l'index pourrait inclure un comptage des éléments par état :
@@ -429,9 +463,9 @@ $processingStateIndex = @{
         Count = 3
     }
     # ...
-}
-```
 
+}
+```plaintext
 ### 3. Création paresseuse de l'index
 
 Pour éviter le coût initial de création de l'index, celui-ci pourrait être créé de manière paresseuse lors de la première utilisation :
@@ -439,8 +473,10 @@ Pour éviter le coût initial de création de l'index, celui-ci pourrait être c
 ```powershell
 function Get-ExtractedInfoFromCollection {
     # ...
+
     
     # Créer l'index ProcessingState s'il n'existe pas encore
+
     if (-not [string]::IsNullOrEmpty($ProcessingState) -and 
         ($Collection.Indexes -eq $null -or 
          -not $Collection.Indexes.ContainsKey("ProcessingState"))) {
@@ -449,9 +485,9 @@ function Get-ExtractedInfoFromCollection {
     }
     
     # ...
-}
-```
 
+}
+```plaintext
 ### 4. Mise à jour par lots
 
 Pour les opérations qui modifient l'état de plusieurs éléments à la fois, une fonction de mise à jour par lots pourrait être implémentée pour améliorer les performances :
@@ -471,8 +507,10 @@ function Update-ExtractedInfoProcessingStateInBatch {
     )
     
     # Vérifications habituelles...
+
     
     # Préparer les mises à jour de l'index
+
     $stateUpdates = @{}
     
     foreach ($infoId in $InfoIds) {
@@ -481,12 +519,15 @@ function Update-ExtractedInfoProcessingStateInBatch {
             $oldState = $item.ProcessingState
             
             # Si l'état a changé
+
             if ($oldState -ne $NewState) {
                 # Mettre à jour l'état de l'élément
+
                 $item.ProcessingState = $NewState
                 $item.LastModifiedDate = Get-Date
                 
                 # Enregistrer la mise à jour pour l'index
+
                 if (-not $stateUpdates.ContainsKey($oldState)) {
                     $stateUpdates[$oldState] = @()
                 }
@@ -497,15 +538,18 @@ function Update-ExtractedInfoProcessingStateInBatch {
     }
     
     # Mettre à jour l'index ProcessingState
+
     if ($Collection.Indexes -ne $null -and $Collection.Indexes.ContainsKey("ProcessingState") -and $stateUpdates.Count -gt 0) {
         foreach ($oldState in $stateUpdates.Keys) {
             $idsToRemove = $stateUpdates[$oldState]
             
             # Supprimer les IDs de l'ancien état
+
             if ($Collection.Indexes.ProcessingState.ContainsKey($oldState)) {
                 $Collection.Indexes.ProcessingState[$oldState] = $Collection.Indexes.ProcessingState[$oldState] | Where-Object { $idsToRemove -notcontains $_ }
                 
                 # Si la liste est vide, supprimer l'entrée
+
                 if ($Collection.Indexes.ProcessingState[$oldState].Count -eq 0) {
                     $Collection.Indexes.ProcessingState.Remove($oldState)
                 }
@@ -513,6 +557,7 @@ function Update-ExtractedInfoProcessingStateInBatch {
         }
         
         # Ajouter les IDs au nouvel état
+
         if (-not $Collection.Indexes.ProcessingState.ContainsKey($NewState)) {
             $Collection.Indexes.ProcessingState[$NewState] = @()
         }
@@ -525,8 +570,7 @@ function Update-ExtractedInfoProcessingStateInBatch {
     
     return $Collection
 }
-```
-
+```plaintext
 ## Stratégie d'implémentation
 
 ### Phase 1 : Implémentation de base
@@ -553,12 +597,14 @@ function Update-ExtractedInfoProcessingStateInBatch {
 
 ```powershell
 # Créer une nouvelle collection avec indexation
+
 $collection = New-ExtractedInfoCollection -Name "MaCollection" -Description "Une collection indexée"
 $collection.Indexes = @{
     ProcessingState = @{}
 }
 
 # Ajouter des éléments
+
 $info1 = New-ExtractedInfo -Source "Web" -ExtractorName "Extracteur1" -ProcessingState "Raw"
 $info2 = New-ExtractedInfo -Source "Web" -ExtractorName "Extracteur2" -ProcessingState "Raw"
 $info3 = New-ExtractedInfo -Source "API" -ExtractorName "Extracteur3" -ProcessingState "Processed"
@@ -568,18 +614,21 @@ $collection = Add-ExtractedInfoToCollection -Collection $collection -Info $info2
 $collection = Add-ExtractedInfoToCollection -Collection $collection -Info $info3
 
 # Filtrer par ProcessingState (utilise l'index)
+
 $rawItems = Get-ExtractedInfoFromCollection -Collection $collection -ProcessingState "Raw"
 # Retourne rapidement $info1 et $info2 sans parcourir toute la collection
 
 # Mettre à jour l'état d'un élément
+
 $collection = Update-ExtractedInfoProcessingState -Collection $collection -InfoId $info1.Id -NewState "Processed"
 # L'index ProcessingState est automatiquement mis à jour
 
 # Filtrer à nouveau
+
 $processedItems = Get-ExtractedInfoFromCollection -Collection $collection -ProcessingState "Processed"
 # Retourne rapidement $info1 et $info3 sans parcourir toute la collection
-```
 
+```plaintext
 ## Intégration avec d'autres index
 
 L'index ProcessingState peut être utilisé en combinaison avec d'autres index (Type, Source) pour améliorer les performances des requêtes multi-critères :
@@ -587,8 +636,10 @@ L'index ProcessingState peut être utilisé en combinaison avec d'autres index (
 ```powershell
 function Get-ExtractedInfoFromCollection {
     # ...
+
     
     # Déterminer l'index le plus sélectif à utiliser
+
     $indexToUse = $null
     $indexValue = $null
     $indexCount = [int]::MaxValue
@@ -632,11 +683,13 @@ function Get-ExtractedInfoFromCollection {
     }
     
     # Utiliser l'index le plus sélectif
+
     if ($indexToUse -ne $null) {
         $itemIds = $Collection.Indexes[$indexToUse][$indexValue]
         $items = $itemIds | ForEach-Object { $Collection.ItemsById[$_] }
         
         # Appliquer les autres filtres
+
         if (-not [string]::IsNullOrEmpty($Type) -and $indexToUse -ne "Type") {
             $items = $items | Where-Object { $_._Type -eq $Type }
         }
@@ -657,10 +710,11 @@ function Get-ExtractedInfoFromCollection {
     }
     
     # Fallback : filtrage traditionnel si aucun index n'est disponible
-    # ...
-}
-```
 
+    # ...
+
+}
+```plaintext
 ## Conclusion
 
 La structure d'index proposée pour la propriété ProcessingState offre des améliorations significatives de performance pour les opérations de filtrage par état de traitement, tout en maintenant une consommation de mémoire et une complexité de maintenance raisonnables. Cette structure est particulièrement adaptée aux collections volumineuses et bénéficie de la cardinalité très faible de la propriété ProcessingState.

@@ -26,8 +26,7 @@ Pour utiliser les fonctionnalités de traitement parallèle, importez d'abord le
 ```powershell
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "scripts\performance\Optimize-ParallelExecution.ps1"
 . $scriptPath
-```
-
+```plaintext
 ### Traitement séquentiel (référence)
 
 Pour établir une référence de performance, vous pouvez utiliser le traitement séquentiel :
@@ -37,13 +36,13 @@ $data = 1..10
 $scriptBlock = {
     param($item)
     Start-Sleep -Milliseconds 100  # Simuler une tâche longue
+
     return $item * 2
 }
 
 $result = Invoke-SequentialProcessing -Data $data -ScriptBlock $scriptBlock
 Write-Host "Temps d'exécution: $($result.ExecutionTime.TotalMilliseconds) ms"
-```
-
+```plaintext
 ### Traitement parallèle avec Runspace Pool
 
 Pour exécuter des tâches en parallèle à l'aide d'un pool de runspaces :
@@ -53,13 +52,13 @@ $data = 1..10
 $scriptBlock = {
     param($item)
     Start-Sleep -Milliseconds 100  # Simuler une tâche longue
+
     return $item * 2
 }
 
 $result = Invoke-RunspacePoolProcessing -Data $data -ScriptBlock $scriptBlock -MaxThreads 4
 Write-Host "Temps d'exécution: $($result.ExecutionTime.TotalMilliseconds) ms"
-```
-
+```plaintext
 ### Traitement parallèle par lots
 
 Pour exécuter des tâches en parallèle par lots (utile pour les tâches avec surcharge de démarrage) :
@@ -69,13 +68,13 @@ $data = 1..100
 $scriptBlock = {
     param($item)
     Start-Sleep -Milliseconds 10  # Simuler une tâche avec surcharge de démarrage
+
     return $item * 2
 }
 
 $result = Invoke-BatchParallelProcessing -Data $data -ScriptBlock $scriptBlock -MaxThreads 4 -ChunkSize 10
 Write-Host "Temps d'exécution: $($result.ExecutionTime.TotalMilliseconds) ms"
-```
-
+```plaintext
 ### Traitement parallèle avec ForEach-Object -Parallel (PowerShell 7+ uniquement)
 
 Si vous utilisez PowerShell 7 ou une version ultérieure, vous pouvez utiliser ForEach-Object -Parallel :
@@ -85,13 +84,13 @@ $data = 1..10
 $scriptBlock = {
     param($item)
     Start-Sleep -Milliseconds 100  # Simuler une tâche longue
+
     return $item * 2
 }
 
 $result = Invoke-ForEachParallelProcessing -Data $data -ScriptBlock $scriptBlock -MaxThreads 4
 Write-Host "Temps d'exécution: $($result.ExecutionTime.TotalMilliseconds) ms"
-```
-
+```plaintext
 ### Optimisation automatique
 
 Pour déterminer et utiliser automatiquement la méthode de parallélisation la plus efficace :
@@ -105,15 +104,16 @@ $scriptBlock = {
 }
 
 # Mesurer les performances des différentes méthodes
+
 $measurements = Optimize-ParallelExecution -Data $data -ScriptBlock $scriptBlock -MaxThreads 4 -ChunkSize 10 -Measure
 
 Write-Host "Méthode la plus rapide: $($measurements.FastestMethod)"
 Write-Host "Temps d'exécution: $($measurements.FastestTime) ms"
 
 # Exécuter avec la méthode optimale
-$result = Optimize-ParallelExecution -Data $data -ScriptBlock $scriptBlock -MaxThreads 4 -ChunkSize 10
-```
 
+$result = Optimize-ParallelExecution -Data $data -ScriptBlock $scriptBlock -MaxThreads 4 -ChunkSize 10
+```plaintext
 ## Options avancées
 
 ### Spécifier le nombre de threads
@@ -122,8 +122,7 @@ Pour contrôler le nombre de threads utilisés :
 
 ```powershell
 $result = Invoke-RunspacePoolProcessing -Data $data -ScriptBlock $scriptBlock -MaxThreads 8
-```
-
+```plaintext
 Par défaut, le nombre de threads est égal au nombre de processeurs logiques disponibles.
 
 ### Spécifier la taille des lots
@@ -132,8 +131,7 @@ Pour le traitement par lots, vous pouvez spécifier la taille des lots :
 
 ```powershell
 $result = Invoke-BatchParallelProcessing -Data $data -ScriptBlock $scriptBlock -MaxThreads 4 -ChunkSize 20
-```
-
+```plaintext
 Si vous ne spécifiez pas la taille des lots, elle sera calculée automatiquement en fonction du nombre d'éléments et du nombre de threads.
 
 ### Partager des variables entre les threads
@@ -152,27 +150,32 @@ $scriptBlock = {
     
     try {
         # Simuler une tâche
+
         Start-Sleep -Milliseconds 10
         $result = $item * 2
         
         # Mettre à jour l'état partagé
+
         $syncHash.TotalProcessed++
         
         return $result
     }
     catch {
         # Enregistrer l'erreur
+
         $syncHash.Errors += "Erreur sur l'élément $item : $_"
         return $null
     }
 }
 
 # Créer un runspace pool
+
 $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
 $runspacePool = [runspacefactory]::CreateRunspacePool(1, 4, $sessionState, $Host)
 $runspacePool.Open()
 
 # Créer les runspaces
+
 $runspaces = @()
 foreach ($item in $data) {
     $powershell = [powershell]::Create().AddScript($scriptBlock).AddArgument($item).AddArgument($syncHash)
@@ -185,6 +188,7 @@ foreach ($item in $data) {
 }
 
 # Récupérer les résultats
+
 $results = @()
 foreach ($runspace in $runspaces) {
     $results += $runspace.PowerShell.EndInvoke($runspace.Handle)
@@ -192,14 +196,15 @@ foreach ($runspace in $runspaces) {
 }
 
 # Fermer le runspace pool
+
 $runspacePool.Close()
 $runspacePool.Dispose()
 
 # Afficher les résultats
+
 Write-Host "Éléments traités: $($syncHash.TotalProcessed)"
 Write-Host "Erreurs: $($syncHash.Errors.Count)"
-```
-
+```plaintext
 ## Exemples pratiques
 
 ### Exemple 1 : Traitement parallèle de fichiers
@@ -208,16 +213,20 @@ Supposons que vous avez un grand nombre de fichiers à traiter :
 
 ```powershell
 # Obtenir tous les fichiers à traiter
+
 $files = Get-ChildItem -Path ".\data" -Filter "*.txt" -Recurse
 
 # Définir le script de traitement
+
 $scriptBlock = {
     param($file)
     
     # Lire le contenu du fichier
+
     $content = Get-Content -Path $file.FullName -Raw
     
     # Traiter le contenu (exemple : compter les mots)
+
     $wordCount = ($content -split '\W+' | Where-Object { $_ -ne '' }).Count
     
     return [PSCustomObject]@{
@@ -229,26 +238,30 @@ $scriptBlock = {
 }
 
 # Traiter les fichiers en parallèle
+
 $result = Optimize-ParallelExecution -Data $files -ScriptBlock $scriptBlock -MaxThreads 8
 
 # Afficher les résultats
-$result.Results | Sort-Object -Property WordCount -Descending | Format-Table -AutoSize
-```
 
+$result.Results | Sort-Object -Property WordCount -Descending | Format-Table -AutoSize
+```plaintext
 ### Exemple 2 : Requêtes API parallèles
 
 Si vous devez effectuer de nombreuses requêtes API :
 
 ```powershell
 # Liste des IDs à récupérer
+
 $userIds = 1..100
 
 # Définir le script de requête API
+
 $scriptBlock = {
     param($userId)
     
     try {
         # Simuler une requête API
+
         $uri = "https://jsonplaceholder.typicode.com/users/$userId"
         $response = Invoke-RestMethod -Uri $uri -Method Get
         
@@ -269,17 +282,18 @@ $scriptBlock = {
 }
 
 # Exécuter les requêtes en parallèle
+
 $result = Invoke-RunspacePoolProcessing -Data $userIds -ScriptBlock $scriptBlock -MaxThreads 10
 
 # Afficher les résultats
+
 $successCount = ($result.Results | Where-Object { $_.Success }).Count
 $failureCount = ($result.Results | Where-Object { -not $_.Success }).Count
 
 Write-Host "Requêtes réussies: $successCount"
 Write-Host "Requêtes échouées: $failureCount"
 Write-Host "Temps d'exécution: $($result.ExecutionTime.TotalSeconds) secondes"
-```
-
+```plaintext
 ### Exemple 3 : Traitement parallèle avec limitation de débit
 
 Si vous devez limiter le nombre de requêtes par seconde :
@@ -306,15 +320,18 @@ function Invoke-ThrottledParallelProcessing {
     $itemsProcessed = 0
     
     # Créer un runspace pool
+
     $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
     $runspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $sessionState, $Host)
     $runspacePool.Open()
     
     # Créer les runspaces
+
     $runspaces = @()
     
     foreach ($item in $Data) {
         # Limiter le débit si nécessaire
+
         if ($MaxItemsPerSecond -gt 0 -and $itemsProcessed -gt 0) {
             $expectedTime = $itemsProcessed / $MaxItemsPerSecond
             $actualTime = $stopwatch.Elapsed.TotalSeconds
@@ -339,6 +356,7 @@ function Invoke-ThrottledParallelProcessing {
     }
     
     # Récupérer les résultats
+
     foreach ($runspace in $runspaces) {
         $results += [PSCustomObject]@{
             Item = $runspace.Item
@@ -350,6 +368,7 @@ function Invoke-ThrottledParallelProcessing {
     }
     
     # Fermer le runspace pool
+
     $runspacePool.Close()
     $runspacePool.Dispose()
     
@@ -366,10 +385,12 @@ function Invoke-ThrottledParallelProcessing {
 }
 
 # Exemple d'utilisation
+
 $data = 1..100
 $scriptBlock = {
     param($item)
     # Simuler une API avec limite de débit
+
     Start-Sleep -Milliseconds 50
     return $item * 2
 }
@@ -377,8 +398,7 @@ $scriptBlock = {
 $result = Invoke-ThrottledParallelProcessing -Data $data -ScriptBlock $scriptBlock -MaxThreads 4 -MaxItemsPerSecond 20
 Write-Host "Temps d'exécution: $($result.ExecutionTime.TotalSeconds) secondes"
 Write-Host "Éléments par seconde: $($result.ItemsPerSecond)"
-```
-
+```plaintext
 ## Bonnes pratiques
 
 ### Pour un traitement parallèle efficace
@@ -445,10 +465,10 @@ $segments = Split-Input -Input $largeInput -ChunkSizeKB 5
 $results = Optimize-ParallelExecution -Data $segments -ScriptBlock {
     param($segment)
     # Traiter le segment
+
     return "Processed: $($segment.Length) bytes"
 } -MaxThreads 4
-```
-
+```plaintext
 ### Intégration avec le cache prédictif
 
 Vous pouvez combiner le traitement parallèle avec le cache prédictif pour optimiser les performances :
@@ -471,18 +491,19 @@ $scriptBlock = {
     }
     
     # Simuler une tâche longue
+
     Start-Sleep -Milliseconds 100
     $result = $item * 2
     
     # Mettre en cache le résultat
+
     Set-PredictiveCache -Key $cacheKey -Value $result -TTL 3600
     
     return $result
 }
 
 $result = Optimize-ParallelExecution -Data $data -ScriptBlock $scriptBlock -MaxThreads 4
-```
-
+```plaintext
 ## Conclusion
 
 Le traitement parallèle est un outil puissant pour améliorer les performances de vos scripts PowerShell. En choisissant la méthode appropriée et en suivant les bonnes pratiques, vous pouvez réduire considérablement les temps d'exécution et optimiser l'utilisation des ressources.

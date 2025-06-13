@@ -5,11 +5,17 @@ Ce document contient des fonctions utilitaires PowerShell couramment utilisées 
 ## Table des matières
 
 - [Gestion des fichiers](#gestion-des-fichiers)
+
 - [Manipulation de texte](#manipulation-de-texte)
+
 - [Gestion des erreurs](#gestion-des-erreurs)
+
 - [Interaction utilisateur](#interaction-utilisateur)
+
 - [Logging](#logging)
+
 - [Réseau](#réseau)
+
 - [Système](#système)
 
 ## Gestion des fichiers
@@ -21,6 +27,7 @@ Détecte l'encodage d'un fichier.
 ```powershell
 function Get-FileEncoding {
     <#
+
     .SYNOPSIS
         Détecte l'encodage d'un fichier.
     .DESCRIPTION
@@ -30,6 +37,7 @@ function Get-FileEncoding {
     .EXAMPLE
         Get-FileEncoding -Path "C:\Temp\file.txt"
     #>
+
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true)]
@@ -58,8 +66,7 @@ function Get-FileEncoding {
         return 'ASCII/UTF8'
     }
 }
-```
-
+```plaintext
 ### Convert-FileEncoding
 
 Convertit l'encodage d'un fichier.
@@ -67,6 +74,7 @@ Convertit l'encodage d'un fichier.
 ```powershell
 function Convert-FileEncoding {
     <#
+
     .SYNOPSIS
         Convertit l'encodage d'un fichier.
     .DESCRIPTION
@@ -80,6 +88,7 @@ function Convert-FileEncoding {
     .EXAMPLE
         Convert-FileEncoding -Path "C:\Temp\file.txt" -TargetEncoding "UTF8-BOM" -BackupPath "C:\Temp\Backup"
     #>
+
     [CmdletBinding(SupportsShouldProcess=$true)]
     param(
         [Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true)]
@@ -100,6 +109,7 @@ function Convert-FileEncoding {
     }
 
     # Créer une sauvegarde si demandé
+
     if ($BackupPath) {
         if (-not (Test-Path -Path $BackupPath)) {
             New-Item -Path $BackupPath -ItemType Directory -Force | Out-Null
@@ -110,9 +120,11 @@ function Convert-FileEncoding {
     }
 
     # Lire le contenu du fichier
+
     $content = Get-Content -Path $Path -Raw
 
     # Déterminer l'encodage cible
+
     $encoding = switch ($TargetEncoding) {
         'UTF8' { [System.Text.UTF8Encoding]::new($false) }
         'UTF8-BOM' { [System.Text.UTF8Encoding]::new($true) }
@@ -123,12 +135,12 @@ function Convert-FileEncoding {
     }
 
     # Écrire le contenu avec le nouvel encodage
+
     if ($PSCmdlet.ShouldProcess($Path, "Convertir l'encodage en $TargetEncoding")) {
         [System.IO.File]::WriteAllText($Path, $content, $encoding)
     }
 }
-```
-
+```plaintext
 ## Manipulation de texte
 
 ### Remove-Diacritics
@@ -138,6 +150,7 @@ Supprime les accents et autres signes diacritiques d'une chaîne de caractères.
 ```powershell
 function Remove-Diacritics {
     <#
+
     .SYNOPSIS
         Supprime les accents et autres signes diacritiques d'une chaîne de caractères.
     .DESCRIPTION
@@ -147,6 +160,7 @@ function Remove-Diacritics {
     .EXAMPLE
         Remove-Diacritics -String "Voilà un texte accentué"
     #>
+
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true)]
@@ -166,8 +180,7 @@ function Remove-Diacritics {
 
     return $sb.ToString().Normalize([System.Text.NormalizationForm]::FormC)
 }
-```
-
+```plaintext
 ### Format-Json
 
 Formate une chaîne JSON pour une meilleure lisibilité.
@@ -175,6 +188,7 @@ Formate une chaîne JSON pour une meilleure lisibilité.
 ```powershell
 function Format-Json {
     <#
+
     .SYNOPSIS
         Formate une chaîne JSON pour une meilleure lisibilité.
     .DESCRIPTION
@@ -186,6 +200,7 @@ function Format-Json {
     .EXAMPLE
         Format-Json -Json '{"name":"John","age":30}' -Indentation 4
     #>
+
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true)]
@@ -203,6 +218,7 @@ function Format-Json {
         $char = $Json[$i]
         
         # Gestion des chaînes de caractères
+
         if ($char -eq '"' -and ($i -eq 0 -or $Json[$i-1] -ne '\')) {
             $inString = -not $inString
             $result += $char
@@ -215,6 +231,7 @@ function Format-Json {
         }
         
         # Gestion de l'indentation
+
         switch ($char) {
             '{' {
                 $indent++
@@ -248,8 +265,7 @@ function Format-Json {
 
     return $result
 }
-```
-
+```plaintext
 ## Gestion des erreurs
 
 ### Invoke-WithRetry
@@ -259,6 +275,7 @@ Exécute une commande avec plusieurs tentatives en cas d'échec.
 ```powershell
 function Invoke-WithRetry {
     <#
+
     .SYNOPSIS
         Exécute une commande avec plusieurs tentatives en cas d'échec.
     .DESCRIPTION
@@ -274,6 +291,7 @@ function Invoke-WithRetry {
     .EXAMPLE
         Invoke-WithRetry -ScriptBlock { Invoke-RestMethod -Uri "https://api.example.com" } -MaxRetries 3 -RetryDelay 2 -RetryDelayType Exponential
     #>
+
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true, Position=0)]
@@ -320,8 +338,7 @@ function Invoke-WithRetry {
 
     return $result
 }
-```
-
+```plaintext
 ## Interaction utilisateur
 
 ### Get-YesNo
@@ -331,6 +348,7 @@ Demande une confirmation à l'utilisateur (Oui/Non).
 ```powershell
 function Get-YesNo {
     <#
+
     .SYNOPSIS
         Demande une confirmation à l'utilisateur (Oui/Non).
     .DESCRIPTION
@@ -342,6 +360,7 @@ function Get-YesNo {
     .EXAMPLE
         if (Get-YesNo -Prompt "Voulez-vous continuer ?") { ... }
     #>
+
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true, Position=0)]
@@ -358,8 +377,7 @@ function Get-YesNo {
     
     return $decision -eq 0
 }
-```
-
+```plaintext
 ### Show-Menu
 
 Affiche un menu interactif et retourne le choix de l'utilisateur.
@@ -367,6 +385,7 @@ Affiche un menu interactif et retourne le choix de l'utilisateur.
 ```powershell
 function Show-Menu {
     <#
+
     .SYNOPSIS
         Affiche un menu interactif et retourne le choix de l'utilisateur.
     .DESCRIPTION
@@ -378,6 +397,7 @@ function Show-Menu {
     .EXAMPLE
         $choice = Show-Menu -Title "Menu principal" -Options @("Option 1", "Option 2", "Quitter")
     #>
+
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true, Position=0)]
@@ -407,8 +427,7 @@ function Show-Menu {
 
     return [int]$choice
 }
-```
-
+```plaintext
 ## Logging
 
 ### Write-Log
@@ -418,6 +437,7 @@ function Show-Menu {
 ```powershell
 function Write-Log {
     <#
+
     .SYNOPSIS
         Écrit un message dans un fichier de log.
     .DESCRIPTION
@@ -431,6 +451,7 @@ function Write-Log {
     .EXAMPLE
         Write-Log -Message "Opération réussie" -Level INFO -LogFile "C:\Logs\script.log"
     #>
+
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true, Position=0)]
@@ -448,12 +469,14 @@ function Write-Log {
     $logMessage = "[$timestamp] [$Level] $Message"
     
     # Créer le dossier de log si nécessaire
+
     $logDir = Split-Path -Path $LogFile -Parent
     if ($logDir -and -not (Test-Path -Path $logDir)) {
         New-Item -Path $logDir -ItemType Directory -Force | Out-Null
     }
     
     # Afficher le message dans la console
+
     switch ($Level) {
         'INFO' { Write-Verbose $logMessage }
         'WARNING' { Write-Warning $Message }
@@ -461,10 +484,10 @@ function Write-Log {
     }
     
     # Écrire dans le fichier de log
+
     Add-Content -Path $LogFile -Value $logMessage
 }
-```
-
+```plaintext
 ## Réseau
 
 ### Test-Port
@@ -474,6 +497,7 @@ Teste si un port est ouvert sur un hôte distant.
 ```powershell
 function Test-Port {
     <#
+
     .SYNOPSIS
         Teste si un port est ouvert sur un hôte distant.
     .DESCRIPTION
@@ -487,6 +511,7 @@ function Test-Port {
     .EXAMPLE
         Test-Port -ComputerName "server.example.com" -Port 80 -Timeout 1000
     #>
+
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true, Position=0)]
@@ -517,8 +542,7 @@ function Test-Port {
         return $false
     }
 }
-```
-
+```plaintext
 ## Système
 
 ### Get-DiskSpace
@@ -528,6 +552,7 @@ Récupère l'espace disque disponible.
 ```powershell
 function Get-DiskSpace {
     <#
+
     .SYNOPSIS
         Récupère l'espace disque disponible.
     .DESCRIPTION
@@ -537,6 +562,7 @@ function Get-DiskSpace {
     .EXAMPLE
         Get-DiskSpace -Drive C
     #>
+
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$false, Position=0)]
@@ -571,8 +597,7 @@ function Get-DiskSpace {
 
     return $result
 }
-```
-
+```plaintext
 ### Get-InstalledSoftware
 
 Récupère la liste des logiciels installés.
@@ -580,6 +605,7 @@ Récupère la liste des logiciels installés.
 ```powershell
 function Get-InstalledSoftware {
     <#
+
     .SYNOPSIS
         Récupère la liste des logiciels installés.
     .DESCRIPTION
@@ -589,6 +615,7 @@ function Get-InstalledSoftware {
     .EXAMPLE
         Get-InstalledSoftware -Name "Microsoft*"
     #>
+
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$false, Position=0)]
@@ -625,4 +652,4 @@ function Get-InstalledSoftware {
 
     return $result | Sort-Object -Property Name
 }
-```
+```plaintext

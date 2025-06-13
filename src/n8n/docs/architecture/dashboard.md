@@ -25,10 +25,9 @@ Aucune installation spécifique n'est nécessaire. Le tableau de bord est inclus
 
 Pour générer et afficher le tableau de bord, exécutez simplement :
 
-```
+```plaintext
 .\n8n-dashboard.cmd
-```
-
+```plaintext
 Cela générera le tableau de bord HTML et l'ouvrira dans votre navigateur par défaut.
 
 ### Options de ligne de commande
@@ -43,18 +42,16 @@ Le script `n8n-dashboard.ps1` accepte les paramètres suivants :
 
 Exemples :
 
-```
+```plaintext
 .\n8n-dashboard.cmd -OutputFile "C:\temp\n8n-dashboard.html" -AutoRefreshInterval 0 -OpenBrowser $false
-```
-
+```plaintext
 ### Intégration avec n8n Manager
 
 Le tableau de bord est également accessible via l'interface n8n Manager :
 
-```
+```plaintext
 .\n8n-manager.cmd
-```
-
+```plaintext
 Puis sélectionnez l'option 5 dans le menu principal.
 
 ## Fonctionnalités
@@ -171,18 +168,16 @@ Pour surveiller en continu l'état de n8n, générez le tableau de bord et laiss
 
 Pour générer périodiquement le tableau de bord sans l'ouvrir dans le navigateur, créez une tâche planifiée qui exécute :
 
-```
+```plaintext
 .\n8n-dashboard.cmd -OpenBrowser $false
-```
-
+```plaintext
 ### Intégration avec d'autres outils
 
 Pour intégrer le tableau de bord avec d'autres outils, générez-le dans un emplacement accessible par ces outils :
 
-```
+```plaintext
 .\n8n-dashboard.cmd -OutputFile "C:\inetpub\wwwroot\n8n-dashboard.html" -OpenBrowser $false
-```
-
+```plaintext
 ## Conclusion
 
 Le tableau de bord de surveillance n8n est un outil puissant pour surveiller l'état de n8n. Il fournit une vue d'ensemble claire et détaillée de l'état du service, des performances, des workflows et des événements récents.

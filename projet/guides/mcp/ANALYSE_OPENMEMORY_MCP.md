@@ -49,8 +49,7 @@ Permet aux clients d'ajouter de nouvelles mémoires au système.
     ]
   }
 }
-```
-
+```plaintext
 ### 2.2 `search_memory`
 
 Permet aux clients de rechercher des mémoires pertinentes en fonction d'une requête.
@@ -66,8 +65,7 @@ Permet aux clients de rechercher des mémoires pertinentes en fonction d'une req
     }
   }
 }
-```
-
+```plaintext
 ### 2.3 `list_memories`
 
 Permet aux clients de lister toutes les mémoires stockées, avec options de pagination et de filtrage.
@@ -83,8 +81,7 @@ Permet aux clients de lister toutes les mémoires stockées, avec options de pag
     }
   }
 }
-```
-
+```plaintext
 ### 2.4 `delete_all_memories`
 
 Permet aux clients de supprimer toutes les mémoires stockées.
@@ -94,8 +91,7 @@ Permet aux clients de supprimer toutes les mémoires stockées.
   "tool": "delete_all_memories",
   "params": {}
 }
-```
-
+```plaintext
 ## 3. Meilleures pratiques pour la gestion de la mémoire
 
 L'analyse d'OpenMemory MCP révèle plusieurs meilleures pratiques pour la gestion efficace de la mémoire entre les serveurs MCP :

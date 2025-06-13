@@ -1,17 +1,25 @@
-﻿# Guide d'utilisation du gestionnaire intÃ©grÃ©
+# Guide d'utilisation du gestionnaire intÃ©grÃ©
 
 Ce guide prÃ©sente l'utilisation du gestionnaire intÃ©grÃ©, qui unifie les fonctionnalitÃ©s du Mode Manager et du Roadmap Manager pour offrir une interface unique pour la gestion des modes opÃ©rationnels et des roadmaps.
 
 ## Table des matiÃ¨res
 
 1. [Introduction](#introduction)
+
 2. [Installation](#installation)
+
 3. [Configuration](#configuration)
+
 4. [Utilisation des modes](#utilisation-des-modes)
+
 5. [Utilisation des workflows](#utilisation-des-workflows)
+
 6. [Automatisation](#automatisation)
+
 7. [IntÃ©gration avec d'autres outils](#intÃ©gration-avec-dautres-outils)
+
 8. [RÃ©solution des problÃ¨mes](#rÃ©solution-des-problÃ¨mes)
+
 9. [Ressources supplÃ©mentaires](#ressources-supplÃ©mentaires)
 
 ## Introduction
@@ -36,8 +44,7 @@ Pour vÃ©rifier que le gestionnaire intÃ©grÃ© est correctement installÃ©,
 
 ```powershell
 .\development\scripts\integrated-manager.ps1 -ListModes
-```
-
+```plaintext
 Cette commande devrait afficher la liste des modes disponibles.
 
 ## Configuration
@@ -48,10 +55,9 @@ Le gestionnaire intÃ©grÃ© utilise un fichier de configuration unifiÃ© pour
 
 Le fichier de configuration par dÃ©faut se trouve Ã  l'emplacement suivant :
 
-```
+```plaintext
 development\config\unified-config.json
-```
-
+```plaintext
 ### Structure du fichier de configuration
 
 Le fichier de configuration est au format JSON et contient les sections suivantes :
@@ -140,16 +146,14 @@ Le fichier de configuration est au format JSON et contient les sections suivante
     }
   }
 }
-```
-
+```plaintext
 ### Personnalisation de la configuration
 
 Vous pouvez personnaliser la configuration en modifiant le fichier `unified-config.json` ou en spÃ©cifiant un fichier de configuration personnalisÃ© avec le paramÃ¨tre `-ConfigPath` :
 
 ```powershell
 .\development\scripts\integrated-manager.ps1 -Mode CHECK -ConfigPath "my-config.json"
-```
-
+```plaintext
 ## Utilisation des modes
 
 Le gestionnaire intÃ©grÃ© prend en charge les modes opÃ©rationnels suivants :
@@ -179,56 +183,61 @@ Le gestionnaire intÃ©grÃ© prend en charge les modes opÃ©rationnels suivant
 
 ```powershell
 # VÃ©rifier l'Ã©tat d'avancement d'une tÃ¢che
+
 .\development\scripts\integrated-manager.ps1 -Mode CHECK -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3"
 
 # VÃ©rifier l'Ã©tat d'avancement d'une tÃ¢che et mettre Ã  jour la roadmap
-.\development\scripts\integrated-manager.ps1 -Mode CHECK -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -UpdateRoadmap
-```
 
+.\development\scripts\integrated-manager.ps1 -Mode CHECK -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -UpdateRoadmap
+```plaintext
 #### Mode GRAN
 
 ```powershell
 # DÃ©composer une tÃ¢che en sous-tÃ¢ches
+
 .\development\scripts\integrated-manager.ps1 -Mode GRAN -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3"
 
 # DÃ©composer une tÃ¢che en sous-tÃ¢ches avec un fichier de sous-tÃ¢ches
-.\development\scripts\integrated-manager.ps1 -Mode GRAN -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -SubTasksFile "templates\subtasks.txt"
-```
 
+.\development\scripts\integrated-manager.ps1 -Mode GRAN -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -SubTasksFile "templates\subtasks.txt"
+```plaintext
 #### Mode ROADMAP-SYNC
 
 ```powershell
 # Synchroniser une roadmap Markdown vers JSON
+
 .\development\scripts\integrated-manager.ps1 -Mode ROADMAP-SYNC -SourcePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TargetFormat "JSON"
 
 # Synchroniser plusieurs roadmaps en une seule opÃ©ration
+
 $sourcePaths = @(
     "projet\roadmaps\Roadmap\roadmap_complete_converted.md",
     "projet\roadmaps\mes-plans\roadmap_perso.md"
 )
 .\development\scripts\integrated-manager.ps1 -Mode ROADMAP-SYNC -SourcePath $sourcePaths -MultiSync -TargetFormat "JSON"
-```
-
+```plaintext
 #### Mode ROADMAP-REPORT
 
 ```powershell
 # GÃ©nÃ©rer un rapport HTML
+
 .\development\scripts\integrated-manager.ps1 -Mode ROADMAP-REPORT -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -ReportFormat "HTML"
 
 # GÃ©nÃ©rer des rapports dans tous les formats
-.\development\scripts\integrated-manager.ps1 -Mode ROADMAP-REPORT -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -ReportFormat "All"
-```
 
+.\development\scripts\integrated-manager.ps1 -Mode ROADMAP-REPORT -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -ReportFormat "All"
+```plaintext
 #### Mode ROADMAP-PLAN
 
 ```powershell
 # GÃ©nÃ©rer un plan d'action
+
 .\development\scripts\integrated-manager.ps1 -Mode ROADMAP-PLAN -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md"
 
 # GÃ©nÃ©rer un plan d'action avec une pÃ©riode de prÃ©vision personnalisÃ©e
-.\development\scripts\integrated-manager.ps1 -Mode ROADMAP-PLAN -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -DaysToForecast 60
-```
 
+.\development\scripts\integrated-manager.ps1 -Mode ROADMAP-PLAN -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -DaysToForecast 60
+```plaintext
 ## Utilisation des workflows
 
 Les workflows permettent d'exÃ©cuter plusieurs modes en sÃ©quence.
@@ -246,12 +255,13 @@ Les workflows permettent d'exÃ©cuter plusieurs modes en sÃ©quence.
 
 ```powershell
 # ExÃ©cuter le workflow de dÃ©veloppement
+
 .\development\scripts\integrated-manager.ps1 -Workflow "Development" -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3"
 
 # ExÃ©cuter le workflow de gestion de roadmap
-.\development\scripts\integrated-manager.ps1 -Workflow "RoadmapManagement" -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md"
-```
 
+.\development\scripts\integrated-manager.ps1 -Workflow "RoadmapManagement" -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md"
+```plaintext
 ### CrÃ©ation de workflows personnalisÃ©s
 
 Vous pouvez crÃ©er des workflows personnalisÃ©s en ajoutant une section dans le fichier de configuration :
@@ -265,8 +275,7 @@ Vous pouvez crÃ©er des workflows personnalisÃ©s en ajoutant une section dans
     "StopOnError": true
   }
 }
-```
-
+```plaintext
 ## Automatisation
 
 Le gestionnaire intÃ©grÃ© peut Ãªtre automatisÃ© Ã  l'aide de scripts PowerShell et de tÃ¢ches planifiÃ©es.
@@ -285,15 +294,17 @@ Pour installer les tÃ¢ches planifiÃ©es qui exÃ©cuteront automatiquement le
 
 ```powershell
 # Installer les tÃ¢ches planifiÃ©es avec les paramÃ¨tres par dÃ©faut
+
 .\development\scripts\workflows\install-scheduled-tasks.ps1
 
 # Installer les tÃ¢ches planifiÃ©es avec un prÃ©fixe personnalisÃ©
+
 .\development\scripts\workflows\install-scheduled-tasks.ps1 -TaskPrefix "MonProjet"
 
 # Remplacer les tÃ¢ches existantes
-.\development\scripts\workflows\install-scheduled-tasks.ps1 -Force
-```
 
+.\development\scripts\workflows\install-scheduled-tasks.ps1 -Force
+```plaintext
 ### TÃ¢ches planifiÃ©es
 
 Les tÃ¢ches planifiÃ©es suivantes sont installÃ©es :
@@ -312,12 +323,12 @@ Vous pouvez intÃ©grer le gestionnaire intÃ©grÃ© avec Git en ajoutant des c
 
 ```powershell
 # Ajouter Ã  la fin du workflow quotidien
+
 git add "projet\roadmaps\Roadmap\roadmap_complete_converted.md"
 git add "projet\roadmaps\Roadmap\roadmap_complete.json"
 git commit -m "Mise Ã  jour quotidienne de la roadmap - $(Get-Date -Format 'yyyy-MM-dd')"
 git push
-```
-
+```plaintext
 ### n8n
 
 Vous pouvez crÃ©er un workflow n8n qui exÃ©cute les scripts PowerShell et traite les rÃ©sultats :
@@ -331,14 +342,14 @@ Vous pouvez crÃ©er un workflow n8n qui exÃ©cute les scripts PowerShell et tr
     "executeOnce": true
   }
 }
-```
-
+```plaintext
 ### Notification par e-mail
 
 Vous pouvez ajouter des notifications par e-mail dans les scripts d'automatisation :
 
 ```powershell
 # Ajouter Ã  la fin du workflow hebdomadaire
+
 $emailParams = @{
     From = "roadmap@example.com"
     To = "equipe@example.com"
@@ -347,8 +358,7 @@ $emailParams = @{
     SmtpServer = "smtp.example.com"
 }
 Send-MailMessage @emailParams
-```
-
+```plaintext
 ## RÃ©solution des problÃ¨mes
 
 ### ProblÃ¨mes courants
@@ -361,12 +371,13 @@ Send-MailMessage @emailParams
 
 ```powershell
 # VÃ©rifier que le module RoadmapParser est installÃ©
+
 Get-Module -Name RoadmapParser -ListAvailable
 
 # Importer le module RoadmapParser
-Import-Module "development\roadmap\parser\module\RoadmapParser.psm1" -Force
-```
 
+Import-Module "development\roadmap\parser\module\RoadmapParser.psm1" -Force
+```plaintext
 #### Les modes ne s'exÃ©cutent pas correctement
 
 **SymptÃ´me** : Les modes ne s'exÃ©cutent pas correctement ou affichent des erreurs.
@@ -375,11 +386,11 @@ Import-Module "development\roadmap\parser\module\RoadmapParser.psm1" -Force
 
 ```powershell
 # VÃ©rifier que les scripts des modes existent
+
 Test-Path -Path "development\scripts\maintenance\modes\check.ps1"
 Test-Path -Path "development\scripts\maintenance\modes\gran-mode.ps1"
 Test-Path -Path "development\scripts\maintenance\modes\roadmap-sync-mode.ps1"
-```
-
+```plaintext
 #### Les workflows ne s'exÃ©cutent pas correctement
 
 **SymptÃ´me** : Les workflows ne s'exÃ©cutent pas correctement ou affichent des erreurs.
@@ -388,9 +399,9 @@ Test-Path -Path "development\scripts\maintenance\modes\roadmap-sync-mode.ps1"
 
 ```powershell
 # VÃ©rifier que les modes spÃ©cifiÃ©s dans les workflows existent
-.\development\scripts\integrated-manager.ps1 -ListModes
-```
 
+.\development\scripts\integrated-manager.ps1 -ListModes
+```plaintext
 #### Les tÃ¢ches planifiÃ©es ne s'exÃ©cutent pas
 
 **SymptÃ´me** : Les tÃ¢ches planifiÃ©es sont installÃ©es mais ne s'exÃ©cutent pas.
@@ -399,15 +410,17 @@ Test-Path -Path "development\scripts\maintenance\modes\roadmap-sync-mode.ps1"
 
 ```powershell
 # VÃ©rifier l'Ã©tat du service de planification des tÃ¢ches
+
 Get-Service -Name "Schedule"
 
 # VÃ©rifier les tÃ¢ches planifiÃ©es
+
 Get-ScheduledTask -TaskName "roadmap-manager-*"
 
 # VÃ©rifier l'historique d'exÃ©cution des tÃ¢ches
-Get-ScheduledTaskInfo -TaskName "roadmap-manager-Quotidien"
-```
 
+Get-ScheduledTaskInfo -TaskName "roadmap-manager-Quotidien"
+```plaintext
 ### Journalisation
 
 Tous les modes et workflows gÃ©nÃ¨rent des journaux dÃ©taillÃ©s qui peuvent Ãªtre utilisÃ©s pour diagnostiquer les problÃ¨mes.
@@ -420,9 +433,9 @@ Les journaux sont stockÃ©s dans le rÃ©pertoire spÃ©cifiÃ© dans le fichie
 
 ```powershell
 # Afficher les journaux
-Get-Content -Path "projet\roadmaps\Logs\workflow-quotidien-$(Get-Date -Format 'yyyy-MM-dd').log"
-```
 
+Get-Content -Path "projet\roadmaps\Logs\workflow-quotidien-$(Get-Date -Format 'yyyy-MM-dd').log"
+```plaintext
 ## Ressources supplÃ©mentaires
 
 ### Documentation

@@ -36,22 +36,19 @@ Cette architecture modulaire facilite la maintenance, le débogage et l'évoluti
 
 ```bash
 go build -o goplangen goplangen.go
-```
-
+```plaintext
 Ou utilisez le script PowerShell fourni :
 
 ```powershell
 ./build-and-run.ps1
-```
-
+```plaintext
 ## Utilisation
 
 ### En ligne de commande
 
-```
+```plaintext
 ./goplangen -version v33b -title "MCP Manager Centralisé" -description "Ce plan vise à..." -phases 5 -taskDepth 4 -output "./output"
-```
-
+```plaintext
 ### Hiérarchie des tâches
 
 L'option `-taskDepth` vous permet de contrôler la profondeur maximale des tâches dans le plan généré :
@@ -62,15 +59,13 @@ L'option `-taskDepth` vous permet de contrôler la profondeur maximale des tâch
 - **Niveau 6-7** : Structure très granulaire pour les projets nécessitant un découpage fin des tâches
 
 Exemple avec une profondeur minimale (niveau 1) :
-```
+```plaintext
 ./goplangen -version v40 -title "Plan Simple" -taskDepth 1
-```
-
+```plaintext
 Exemple avec une profondeur maximale (niveau 7) :
-```
+```plaintext
 ./goplangen -version v39 -title "Plan Détaillé" -taskDepth 7
-```
-
+```plaintext
 ### Options disponibles
 
 | Option | Description | Défaut |
@@ -90,51 +85,48 @@ Exemple avec une profondeur maximale (niveau 7) :
 ### Exemples
 
 Générer un plan simple :
-```
+```plaintext
 ./goplangen -version v33b -title "MCP Manager" -phases 3
-```
-
+```plaintext
 Générer un plan complet :
-```
+```plaintext
 ./goplangen -version v33b -title "MCP Manager Centralisé" -description "Ce plan vise à concevoir, développer et intégrer un MCP Manager centralisé pour orchestrer les serveurs MCP, gérer leurs capacités, et faciliter la communication avec le MCP Gateway." -phases 5 -phaseDetails "{\"1\":{\"inputs\":\"API Gateway\"}}" -output "./plans"
-```
-
+```plaintext
 Utiliser le mode interactif :
-```
+```plaintext
 ./goplangen -interactive
-```
-
+```plaintext
 Importer et mettre à jour un plan existant depuis un fichier Markdown :
-```
+```plaintext
 ./goplangen -importMD "./plans/plan-dev-v33b-mcp-manager.md" -version v33c -exportJSON
-```
-
+```plaintext
 Importer un plan depuis un fichier JSON :
-```
+```plaintext
 ./goplangen -import "./plans/plan-dev-v33b-mcp-manager.json" -progress 25
-```
-
+```plaintext
 ## Structure du plan généré
 
 Le plan généré est au format Markdown avec la structure suivante :
 
 ```markdown
 # Plan de développement v33b - MCP Manager Centralisé
+
 *Version 1.0 - 2025-05-23 - Progression globale : 0%*
 
 Description du plan...
 
 ## Table des matières
+
 - [1] Phase 1
 - [2] Phase 2
 ...
 
 ## 1. Phase 1 (Phase 1)
+
   - [ ] **1.1** Tâche principale 1 - Phase d'analyse et de conception.
   - Étape 1 : Définir les objectifs
   ...
-```
-
+```plaintext
 ## Personnalisation
 
 Le code source est organisé pour permettre facilement la personnalisation des templates. Vous pouvez modifier les fonctions suivantes pour adapter la génération :
@@ -146,30 +138,32 @@ Le code source est organisé pour permettre facilement la personnalisation des t
 ## Fonctionnalités avancées
 
 ### Import/Export JSON
+
 L'outil prend en charge l'import et l'export de plans au format JSON, permettant une interopérabilité avec d'autres systèmes et une édition facile.
 
-```
+```plaintext
 # Exporter un plan en JSON en plus du Markdown
+
 ./goplangen -title "Mon Plan" -exportJSON
 
 # Importer un plan existant depuis JSON
-./goplangen -import "./plans/mon-plan.json" 
-```
 
+./goplangen -import "./plans/mon-plan.json" 
+```plaintext
 ### Mode interactif
+
 Le mode interactif permet de guider l'utilisateur dans la création du plan via une interface en ligne de commande conviviale.
 
-```
+```plaintext
 ./goplangen -interactive
-```
-
+```plaintext
 ### Mise à jour de plans existants
+
 Vous pouvez importer un plan existant au format Markdown pour le mettre à jour avec de nouvelles informations.
 
-```
+```plaintext
 ./goplangen -importMD "./plans/plan-existant.md" -progress 25
-```
-
+```plaintext
 ## Évolutions futures
 
 - Interface web pour la génération de plans

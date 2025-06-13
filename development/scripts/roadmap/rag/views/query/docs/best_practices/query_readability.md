@@ -16,14 +16,15 @@ Une requête claire et simple est plus facile à comprendre, à maintenir et à 
 
 #### Exemple :
 
-```
+```plaintext
 # Moins lisible
+
 status:todo&&priority:high||category:critical&&due_date<2025-06-30
 
 # Plus lisible
-(status:todo AND priority:high) OR (category:critical AND due_date<2025-06-30)
-```
 
+(status:todo AND priority:high) OR (category:critical AND due_date<2025-06-30)
+```plaintext
 ### 2. Cohérence stylistique
 
 Une approche cohérente dans la formulation des requêtes facilite leur compréhension.
@@ -36,14 +37,15 @@ Une approche cohérente dans la formulation des requêtes facilite leur compréh
 
 #### Exemple :
 
-```
+```plaintext
 # Incohérent
+
 status:todo AND priority=high and Category:development
 
 # Cohérent
-status:todo AND priority:high AND category:development
-```
 
+status:todo AND priority:high AND category:development
+```plaintext
 ### 3. Utilisation des espaces
 
 Les espaces peuvent grandement améliorer la lisibilité des requêtes.
@@ -56,14 +58,15 @@ Les espaces peuvent grandement améliorer la lisibilité des requêtes.
 
 #### Exemple :
 
-```
+```plaintext
 # Sans espaces (moins lisible)
+
 status:todo AND priority:high AND(category:development OR category:testing)
 
 # Avec espaces (plus lisible)
-status:todo AND priority:high AND (category:development OR category:testing)
-```
 
+status:todo AND priority:high AND (category:development OR category:testing)
+```plaintext
 ## Structuration des requêtes complexes
 
 ### 1. Utilisation des parenthèses
@@ -78,14 +81,15 @@ Les parenthèses sont essentielles pour clarifier l'intention dans les requêtes
 
 #### Exemple :
 
-```
+```plaintext
 # Sans parenthèses (ambigu)
+
 status:todo AND priority:high OR category:critical
 
 # Avec parenthèses (clair)
-(status:todo AND priority:high) OR category:critical
-```
 
+(status:todo AND priority:high) OR category:critical
+```plaintext
 ### 2. Organisation hiérarchique
 
 Organisez les conditions de manière hiérarchique pour refléter leur importance relative.
@@ -98,14 +102,15 @@ Organisez les conditions de manière hiérarchique pour refléter leur importanc
 
 #### Exemple :
 
-```
+```plaintext
 # Organisation plate (moins lisible)
+
 status:todo AND priority:high AND category:development AND due_date<2025-06-30 OR status:in_progress AND priority:high AND category:development AND due_date<2025-06-30
 
 # Organisation hiérarchique (plus lisible)
-(status:todo OR status:in_progress) AND priority:high AND category:development AND due_date<2025-06-30
-```
 
+(status:todo OR status:in_progress) AND priority:high AND category:development AND due_date<2025-06-30
+```plaintext
 ### 3. Décomposition des requêtes complexes
 
 Pour les requêtes très complexes, envisagez de les décomposer en plusieurs parties.
@@ -118,12 +123,13 @@ Pour les requêtes très complexes, envisagez de les décomposer en plusieurs pa
 
 #### Exemple :
 
-```
+```plaintext
 # Avec commentaires (si supportés)
-# Tâches urgentes non assignées
-(status:todo OR status:blocked) AND priority:high AND due_date<2025-06-30 AND assignee:null
-```
 
+# Tâches urgentes non assignées
+
+(status:todo OR status:blocked) AND priority:high AND due_date<2025-06-30 AND assignee:null
+```plaintext
 ## Conventions de nommage et formatage
 
 ### 1. Noms de champs et valeurs
@@ -138,14 +144,15 @@ Choisissez des noms et des valeurs clairs et cohérents.
 
 #### Exemple :
 
-```
+```plaintext
 # Noms et valeurs non standardisés (confus)
+
 st:t AND pr:h
 
 # Noms et valeurs standardisés (clair)
-status:todo AND priority:high
-```
 
+status:todo AND priority:high
+```plaintext
 ### 2. Formatage des dates et nombres
 
 Adoptez un format cohérent pour les dates et les nombres.
@@ -158,14 +165,15 @@ Adoptez un format cohérent pour les dates et les nombres.
 
 #### Exemple :
 
-```
+```plaintext
 # Format de date incohérent (confus)
+
 due_date>06/30/2025 AND created_date<2025-01-01
 
 # Format de date cohérent (clair)
-due_date>2025-06-30 AND created_date<2025-01-01
-```
 
+due_date>2025-06-30 AND created_date<2025-01-01
+```plaintext
 ### 3. Utilisation des guillemets
 
 Utilisez les guillemets de manière cohérente et appropriée.
@@ -178,14 +186,15 @@ Utilisez les guillemets de manière cohérente et appropriée.
 
 #### Exemple :
 
-```
+```plaintext
 # Utilisation incohérente des guillemets (confus)
+
 title:"Interface utilisateur" AND description:'API REST'
 
 # Utilisation cohérente des guillemets (clair)
-title:"Interface utilisateur" AND description:"API REST"
-```
 
+title:"Interface utilisateur" AND description:"API REST"
+```plaintext
 ## Bonnes pratiques pour des cas spécifiques
 
 ### 1. Requêtes avec opérateurs logiques
@@ -200,7 +209,7 @@ Les opérateurs logiques (AND, OR, NOT) sont fondamentaux pour construire des re
 
 #### Exemple multi-lignes (si supporté) :
 
-```
+```plaintext
 status:todo 
 AND priority:high 
 AND (
@@ -208,8 +217,7 @@ AND (
     OR category:testing
 )
 AND due_date<2025-06-30
-```
-
+```plaintext
 ### 2. Requêtes avec recherche textuelle
 
 Les recherches textuelles peuvent être particulièrement complexes.
@@ -222,11 +230,11 @@ Les recherches textuelles peuvent être particulièrement complexes.
 
 #### Exemple :
 
-```
+```plaintext
 # Recherche textuelle claire
-(title~"interface" OR description~"interface") AND status:todo
-```
 
+(title~"interface" OR description~"interface") AND status:todo
+```plaintext
 ### 3. Requêtes avec filtres de date
 
 Les filtres de date sont courants et peuvent être complexes.
@@ -239,19 +247,18 @@ Les filtres de date sont courants et peuvent être complexes.
 
 #### Exemple :
 
-```
+```plaintext
 # Filtre de date clair
-created_at>=2025-01-01 AND created_at<=2025-03-31 AND status:done
-```
 
+created_at>=2025-01-01 AND created_at<=2025-03-31 AND status:done
+```plaintext
 ## Exemples de requêtes bien formatées
 
 ### Exemple 1 : Requête simple bien formatée
 
-```
+```plaintext
 status:todo AND priority:high
-```
-
+```plaintext
 Cette requête est lisible car :
 - Elle utilise la forme complète des opérateurs
 - Elle est simple et directe
@@ -259,10 +266,9 @@ Cette requête est lisible car :
 
 ### Exemple 2 : Requête combinée bien formatée
 
-```
+```plaintext
 (status:todo OR status:in_progress) AND priority:high AND category:development
-```
-
+```plaintext
 Cette requête est lisible car :
 - Elle utilise des parenthèses pour clarifier la structure
 - Elle groupe logiquement les conditions liées (statuts)
@@ -270,7 +276,7 @@ Cette requête est lisible car :
 
 ### Exemple 3 : Requête complexe bien formatée
 
-```
+```plaintext
 (
     (status:todo AND priority:high) 
     OR (status:blocked AND has_blockers:true)
@@ -278,8 +284,7 @@ Cette requête est lisible car :
 AND category:development 
 AND due_date<2025-06-30 
 AND (title~"interface" OR description~"API")
-```
-
+```plaintext
 Cette requête est lisible car :
 - Elle utilise une structure hiérarchique claire
 - Elle est formatée sur plusieurs lignes pour plus de clarté

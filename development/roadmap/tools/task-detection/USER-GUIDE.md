@@ -5,12 +5,19 @@ Ce guide vous explique comment utiliser le système de détection automatique de
 ## Table des matières
 
 1. [Introduction](#introduction)
+
 2. [Installation](#installation)
+
 3. [Configuration](#configuration)
+
 4. [Utilisation quotidienne](#utilisation-quotidienne)
+
 5. [Gestion des tâches](#gestion-des-tâches)
+
 6. [Maintenance](#maintenance)
+
 7. [Dépannage](#dépannage)
+
 8. [FAQ](#faq)
 
 ## Introduction
@@ -48,14 +55,12 @@ Le système de détection automatique des tâches est conçu pour capturer les d
 
 ```powershell
 .\development\tools\roadmap\task-detection\Integrate-TaskDetection.ps1
-```
-
+```plaintext
 4. Vérifiez que l'installation s'est bien déroulée :
 
 ```powershell
 .\development\tools\roadmap\task-detection\Test-TaskDetection.ps1 -InputText "<task category=\"1\">Test</task>"
-```
-
+```plaintext
 ## Configuration
 
 ### Configuration du prompt système
@@ -72,16 +77,14 @@ Par défaut, le système surveille le dossier `.\conversations` pour détecter l
 
 ```powershell
 .\development\tools\roadmap\task-detection\Watch-Conversations.ps1 -ConversationsFolder "chemin/vers/dossier"
-```
-
+```plaintext
 ### Configuration de l'ajout automatique à la roadmap
 
 Par défaut, le système ne fait que détecter les tâches sans les ajouter automatiquement à la roadmap. Pour activer l'ajout automatique :
 
 ```powershell
 .\development\tools\roadmap\task-detection\Watch-Conversations.ps1 -AddToRoadmap
-```
-
+```plaintext
 ## Utilisation quotidienne
 
 ### Démarrer la surveillance des conversations
@@ -90,8 +93,7 @@ Pour démarrer la surveillance automatique des conversations :
 
 ```powershell
 .\development\tools\roadmap\task-detection\Watch-Conversations.ps1 -AddToRoadmap
-```
-
+```plaintext
 Ce script s'exécutera en continu et traitera automatiquement les nouveaux fichiers de conversation.
 
 ### Traiter manuellement une conversation
@@ -100,16 +102,14 @@ Si vous préférez traiter manuellement les conversations :
 
 ```powershell
 .\development\tools\roadmap\task-detection\Process-Conversation.ps1 -ConversationFile "chemin/vers/conversation.txt" -AddToRoadmap
-```
-
+```plaintext
 ### Confirmer les tâches détectées
 
 Pour confirmer ou rejeter les tâches détectées :
 
 ```powershell
 .\development\tools\roadmap\task-detection\Confirm-Tasks.ps1
-```
-
+```plaintext
 Ce script vous présentera les tâches détectées une par une et vous permettra de les ajouter à la roadmap, de les modifier, de les ignorer ou de les supprimer.
 
 ### Consulter les journaux
@@ -118,20 +118,17 @@ Pour consulter les journaux des tâches détectées et traitées :
 
 ```powershell
 .\development\tools\roadmap\task-detection\Show-TaskLogs.ps1
-```
-
+```plaintext
 Pour voir uniquement les dernières entrées :
 
 ```powershell
 .\development\tools\roadmap\task-detection\Show-TaskLogs.ps1 -LastEntries 10
-```
-
+```plaintext
 Pour exporter les journaux au format CSV :
 
 ```powershell
 .\development\tools\roadmap\task-detection\Show-TaskLogs.ps1 -Export
-```
-
+```plaintext
 ## Gestion des tâches
 
 ### Catégories de tâches
@@ -176,8 +173,7 @@ Pour tester automatiquement le système :
 
 ```powershell
 .\development\tools\roadmap\task-detection\Run-Tests.ps1
-```
-
+```plaintext
 Ce script exécutera une série de tests pour vérifier que le système fonctionne correctement.
 
 ### Optimisation du prompt système
@@ -186,22 +182,19 @@ Pour optimiser le prompt système en fonction des résultats des tests :
 
 ```powershell
 .\development\tools\roadmap\task-detection\Optimize-Prompt.ps1
-```
-
+```plaintext
 Pour appliquer automatiquement les optimisations :
 
 ```powershell
 .\development\tools\roadmap\task-detection\Optimize-Prompt.ps1 -ApplyChanges
-```
-
+```plaintext
 ### Optimisation des performances
 
 Pour optimiser les performances du système :
 
 ```powershell
 .\development\tools\roadmap\task-detection\Optimize-Performance.ps1
-```
-
+```plaintext
 Ce script analysera les performances du système et vous proposera des optimisations.
 
 ### Nettoyage des journaux
@@ -210,8 +203,7 @@ Pour effacer les journaux :
 
 ```powershell
 .\development\tools\roadmap\task-detection\Show-TaskLogs.ps1 -Clear
-```
-
+```plaintext
 ## Dépannage
 
 ### Problèmes courants

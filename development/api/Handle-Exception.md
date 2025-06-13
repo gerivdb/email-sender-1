@@ -1,4 +1,4 @@
-﻿# Handle-Exception
+# Handle-Exception
 
 ## RÃ©sumÃ©
 
@@ -15,6 +15,7 @@ Handle-Exception [-Exception <>]  [-ErrorMessage <>]  [-LogFile <>]  [-ExitCode 
 `
 
 ## ParamÃ¨tres
+
 ### -Exception
 
 Exception Ã  gÃ©rer.
@@ -64,6 +65,7 @@ Indique si le script doit se terminer en cas d'erreur.
 
 None
 ## Exemples
+
 ### Exemple 1
 
 `powershell

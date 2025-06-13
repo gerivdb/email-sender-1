@@ -12,34 +12,30 @@ Les guillemets doubles sont le type de guillemets standard et recommandé pour d
 
 #### Syntaxe
 
-```
+```plaintext
 field:"valeur avec espaces"
-```
-
+```plaintext
 #### Exemples
 
-```
+```plaintext
 title:"Implémenter l'interface utilisateur"
 description:"Créer la documentation du projet"
-```
-
+```plaintext
 ### Guillemets simples (')
 
 Les guillemets simples sont également supportés comme alternative aux guillemets doubles.
 
 #### Syntaxe
 
-```
+```plaintext
 field:'valeur avec espaces'
-```
-
+```plaintext
 #### Exemples
 
-```
+```plaintext
 title:'Implémenter l'interface utilisateur'
 description:'Créer la documentation du projet'
-```
-
+```plaintext
 ### Différences et cas d'utilisation
 
 Les guillemets doubles et simples sont généralement interchangeables, mais il existe quelques différences et cas d'utilisation spécifiques :
@@ -60,38 +56,35 @@ Les guillemets doubles et simples sont généralement interchangeables, mais il 
 
 L'utilisation la plus courante des guillemets est pour délimiter des valeurs contenant des espaces :
 
-```
+```plaintext
 title:"Interface utilisateur"
 description:"Créer la documentation complète du projet"
-```
-
+```plaintext
 Sans guillemets, une valeur contenant des espaces serait interprétée comme plusieurs termes ou opérateurs :
 
-```
+```plaintext
 title:Interface utilisateur  # Incorrect, "utilisateur" serait interprété séparément
-```
 
+```plaintext
 ### Valeurs avec caractères spéciaux
 
 Les guillemets sont nécessaires pour les valeurs contenant des caractères spéciaux qui ont une signification particulière dans la syntaxe du langage :
 
-```
+```plaintext
 description:"Comment utiliser les opérateurs > et < ?"
 title:"Projet (phase 1)"
-```
-
+```plaintext
 Sans guillemets, ces caractères spéciaux pourraient être interprétés comme des opérateurs ou avoir un autre sens syntaxique.
 
 ### Valeurs multilignes
 
 Certaines implémentations du langage de requête supportent les valeurs multilignes entre guillemets :
 
-```
+```plaintext
 description:"Première ligne
 Deuxième ligne
 Troisième ligne"
-```
-
+```plaintext
 Cependant, le support des valeurs multilignes peut varier selon l'implémentation. Vérifiez la documentation spécifique de votre système.
 
 ## Règles d'échappement dans les guillemets
@@ -102,25 +95,22 @@ Pour inclure un guillemet du même type que ceux utilisés pour délimiter la va
 
 #### Guillemets doubles à l'intérieur de guillemets doubles
 
-```
+```plaintext
 title:"Module \"Authentification\" à implémenter"
-```
-
+```plaintext
 #### Guillemets simples à l'intérieur de guillemets simples
 
-```
+```plaintext
 description:'L\'utilisateur doit cliquer sur \'Enregistrer\''
-```
-
+```plaintext
 ### Échappement des caractères spéciaux
 
 Le backslash `\` est également utilisé pour échapper d'autres caractères spéciaux à l'intérieur des guillemets :
 
-```
+```plaintext
 description:"Utiliser les caractères \* et \? comme jokers"
 title:"Prix \$100"
-```
-
+```plaintext
 ### Séquences d'échappement spéciales
 
 Certaines implémentations supportent des séquences d'échappement spéciales à l'intérieur des guillemets :
@@ -131,10 +121,9 @@ Certaines implémentations supportent des séquences d'échappement spéciales �
 - `\\` : Backslash littéral
 
 Exemple :
-```
+```plaintext
 description:"Première ligne\nDeuxième ligne"
-```
-
+```plaintext
 ## Bonnes pratiques
 
 1. **Utilisez toujours des guillemets pour les valeurs complexes** : Même si une valeur ne contient qu'un seul espace ou caractère spécial, il est recommandé d'utiliser des guillemets pour éviter toute ambiguïté.
@@ -155,55 +144,54 @@ Un guillemet ouvrant sans guillemet fermant correspondant provoquera une erreur 
 
 L'imbrication de guillemets du même type peut être difficile à lire et à maintenir. Préférez alterner entre guillemets doubles et simples pour les valeurs imbriquées :
 
-```
+```plaintext
 description:"L'utilisateur doit cliquer sur 'Enregistrer'"  # Plus lisible
-```
 
+```plaintext
 plutôt que :
 
-```
+```plaintext
 description:"L'utilisateur doit cliquer sur \"Enregistrer\""  # Moins lisible
-```
 
+```plaintext
 ### Valeurs vides
 
 Les guillemets peuvent être utilisés pour représenter une chaîne vide :
 
-```
+```plaintext
 description:""
-```
-
+```plaintext
 Cette requête trouve les éléments dont la description est une chaîne vide (à ne pas confondre avec une description manquante ou nulle).
 
 ## Exemples de requêtes avec guillemets
 
 ### Recherche de texte avec espaces
 
-```
+```plaintext
 title:"Interface utilisateur" AND status:todo
-```
-
+```plaintext
 ### Recherche avec caractères spéciaux
 
-```
+```plaintext
 description:"Comment utiliser les opérateurs > et < ?" AND priority:high
-```
-
+```plaintext
 ### Combinaison de plusieurs conditions avec guillemets
 
-```
+```plaintext
 (title:"Interface utilisateur" OR description:"UI/UX") AND status:todo
-```
-
+```plaintext
 ### Utilisation de guillemets avec différents opérateurs
 
-```
+```plaintext
 title:"Interface"  # Égalité exacte
-title~"Interface"  # Contenance
-title^"Interface"  # Commence par
-title$"Interface"  # Termine par
-```
 
+title~"Interface"  # Contenance
+
+title^"Interface"  # Commence par
+
+title$"Interface"  # Termine par
+
+```plaintext
 ## Résolution des problèmes courants
 
 ### Problème : Erreur de syntaxe avec guillemets non fermés

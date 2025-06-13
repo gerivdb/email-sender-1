@@ -31,7 +31,7 @@ Qdrant est une base de données vectorielle open-source conçue pour la recherch
 
 Qdrant organise les données en **collections**, chaque collection contenant des **points**. Chaque point est composé d'un vecteur d'embedding et de métadonnées associées (payload).
 
-```
+```plaintext
 Qdrant
 └── Collections
     ├── Collection A
@@ -43,8 +43,7 @@ Qdrant
     │   ├── Point 2 (ID, Vector, Payload)
     │   └── ...
     └── ...
-```
-
+```plaintext
 ### API Qdrant
 
 Qdrant expose une API REST complète pour interagir avec les données. Voici quelques-unes des opérations principales :
@@ -110,8 +109,7 @@ Pour stocker nos index temporaires dans Qdrant, nous pourrions adopter la modél
     "ids": ["element_id_1", "element_id_3", "element_id_6", ...]
   }
 }
-```
-
+```plaintext
 ### Avantages potentiels de l'utilisation de Qdrant
 
 1. **Persistance robuste** : Qdrant offre des mécanismes de persistance fiables qui pourraient être utiles pour sauvegarder les index.
@@ -154,6 +152,7 @@ function Initialize-QdrantClient {
     )
     
     # Vérifier si Qdrant est accessible
+
     try {
         $response = Invoke-RestMethod -Uri "$QdrantUrl/collections" -Method Get -ErrorAction Stop
         
@@ -195,6 +194,7 @@ function Backup-CollectionIndexesToQdrant {
     )
     
     # Vérifier la connexion à Qdrant
+
     if (-not $script:QdrantClient -or -not $script:QdrantClient.Connected) {
         $connected = Initialize-QdrantClient -Verbose:$Verbose
         if (-not $connected) {
@@ -204,16 +204,19 @@ function Backup-CollectionIndexesToQdrant {
     }
     
     # Générer un ID de sauvegarde si non spécifié
+
     if ([string]::IsNullOrEmpty($BackupId)) {
         $BackupId = "Backup_$(Get-Date -Format 'yyyyMMdd_HHmmss')_$([guid]::NewGuid().ToString('N').Substring(0, 8))"
     }
     
     # Créer une nouvelle collection pour la sauvegarde
+
     try {
         $collectionConfig = @{
             name = $BackupId
             vectors = @{
                 size = 4  # Taille minimale pour les vecteurs factices
+
                 distance = "Dot"
             }
         }
@@ -230,10 +233,12 @@ function Backup-CollectionIndexesToQdrant {
     }
     
     # Sauvegarder les métadonnées de la collection
+
     try {
         $metadataPoint = @{
             id = "metadata"
             vector = @(0, 0, 0, 0)  # Vecteur factice
+
             payload = @{
                 BackupId = $BackupId
                 Timestamp = (Get-Date).ToString("o")
@@ -256,17 +261,20 @@ function Backup-CollectionIndexesToQdrant {
     catch {
         Write-Host "Erreur lors de la sauvegarde des métadonnées : $_" -ForegroundColor Red
         # Supprimer la collection en cas d'échec
+
         Invoke-RestMethod -Uri "$($script:QdrantClient.Url)/collections/$BackupId" -Method Delete | Out-Null
         return $null
     }
     
     # Sauvegarder les index
+
     foreach ($indexType in $Collection.Indexes.Keys) {
         try {
             $index = $Collection.Indexes[$indexType]
             
             if ($indexType -eq "ID") {
                 # Sauvegarder l'index ID (chaque élément comme un point)
+
                 $points = @()
                 
                 foreach ($id in $index.Keys) {
@@ -275,10 +283,12 @@ function Backup-CollectionIndexesToQdrant {
                     $points += @{
                         id = $id
                         vector = @(0, 0, 0, 0)  # Vecteur factice
+
                         payload = $element
                     }
                     
                     # Envoyer par lots de 100 points
+
                     if ($points.Count -ge 100) {
                         $pointsData = @{
                             points = $points
@@ -291,6 +301,7 @@ function Backup-CollectionIndexesToQdrant {
                 }
                 
                 # Envoyer les points restants
+
                 if ($points.Count -gt 0) {
                     $pointsData = @{
                         points = $points
@@ -301,6 +312,7 @@ function Backup-CollectionIndexesToQdrant {
             }
             else {
                 # Sauvegarder les autres index (Type, Source, ProcessingState)
+
                 $points = @()
                 
                 foreach ($key in $index.Keys) {
@@ -309,6 +321,7 @@ function Backup-CollectionIndexesToQdrant {
                     $points += @{
                         id = "${indexType}_${key}"
                         vector = @(0, 0, 0, 0)  # Vecteur factice
+
                         payload = @{
                             type = $indexType
                             key = $key
@@ -317,6 +330,7 @@ function Backup-CollectionIndexesToQdrant {
                     }
                     
                     # Envoyer par lots de 100 points
+
                     if ($points.Count -ge 100) {
                         $pointsData = @{
                             points = $points
@@ -329,6 +343,7 @@ function Backup-CollectionIndexesToQdrant {
                 }
                 
                 # Envoyer les points restants
+
                 if ($points.Count -gt 0) {
                     $pointsData = @{
                         points = $points
@@ -345,6 +360,7 @@ function Backup-CollectionIndexesToQdrant {
         catch {
             Write-Host "Erreur lors de la sauvegarde de l'index '$indexType' : $_" -ForegroundColor Red
             # Continuer avec les autres index malgré l'erreur
+
         }
     }
     
@@ -366,6 +382,7 @@ function Get-CollectionIndexesFromQdrant {
     )
     
     # Vérifier la connexion à Qdrant
+
     if (-not $script:QdrantClient -or -not $script:QdrantClient.Connected) {
         $connected = Initialize-QdrantClient -Verbose:$Verbose
         if (-not $connected) {
@@ -375,6 +392,7 @@ function Get-CollectionIndexesFromQdrant {
     }
     
     # Vérifier si la collection existe
+
     try {
         $response = Invoke-RestMethod -Uri "$($script:QdrantClient.Url)/collections/$BackupId" -Method Get -ErrorAction Stop
     }
@@ -384,6 +402,7 @@ function Get-CollectionIndexesFromQdrant {
     }
     
     # Récupérer les métadonnées
+
     try {
         $response = Invoke-RestMethod -Uri "$($script:QdrantClient.Url)/collections/$BackupId/points/metadata" -Method Get
         $metadata = $response.result.payload
@@ -398,9 +417,11 @@ function Get-CollectionIndexesFromQdrant {
     }
     
     # Reconstruire les index
+
     $indexes = @{}
     
     # Récupérer les index Type, Source, ProcessingState
+
     foreach ($indexType in $metadata.IndexTypes) {
         if ($indexType -ne "ID") {
             try {
@@ -417,7 +438,9 @@ function Get-CollectionIndexesFromQdrant {
                 
                 $searchData = @{
                     vector = @(0, 0, 0, 0)  # Vecteur factice
+
                     limit = 10000  # Limite élevée pour récupérer tous les points
+
                     filter = $filter
                 }
                 
@@ -439,15 +462,18 @@ function Get-CollectionIndexesFromQdrant {
             catch {
                 Write-Host "Erreur lors de la récupération de l'index '$indexType' : $_" -ForegroundColor Red
                 # Continuer avec les autres index malgré l'erreur
+
             }
         }
     }
     
     # Récupérer l'index ID
+
     try {
         $indexes["ID"] = @{}
         
         # Récupérer tous les points qui ne sont pas des métadonnées ou des index
+
         $filter = @{
             must_not = @(
                 @{
@@ -459,7 +485,9 @@ function Get-CollectionIndexesFromQdrant {
         
         $searchData = @{
             vector = @(0, 0, 0, 0)  # Vecteur factice
+
             limit = 10000  # Limite élevée pour récupérer tous les points
+
             filter = $filter
         }
         
@@ -480,6 +508,7 @@ function Get-CollectionIndexesFromQdrant {
     }
     
     # Créer l'objet de sauvegarde
+
     $backup = @{
         BackupId = $metadata.BackupId
         Timestamp = [datetime]::Parse($metadata.Timestamp)
@@ -507,6 +536,7 @@ function Remove-CollectionIndexesFromQdrant {
     )
     
     # Vérifier la connexion à Qdrant
+
     if (-not $script:QdrantClient -or -not $script:QdrantClient.Connected) {
         $connected = Initialize-QdrantClient -Verbose:$Verbose
         if (-not $connected) {
@@ -516,6 +546,7 @@ function Remove-CollectionIndexesFromQdrant {
     }
     
     # Supprimer la collection
+
     try {
         $response = Invoke-RestMethod -Uri "$($script:QdrantClient.Url)/collections/$BackupId" -Method Delete
         
@@ -539,6 +570,7 @@ function Get-AllIndexBackupsFromQdrant {
     )
     
     # Vérifier la connexion à Qdrant
+
     if (-not $script:QdrantClient -or -not $script:QdrantClient.Connected) {
         $connected = Initialize-QdrantClient -Verbose:$Verbose
         if (-not $connected) {
@@ -548,6 +580,7 @@ function Get-AllIndexBackupsFromQdrant {
     }
     
     # Récupérer toutes les collections
+
     try {
         $response = Invoke-RestMethod -Uri "$($script:QdrantClient.Url)/collections" -Method Get
         
@@ -555,9 +588,11 @@ function Get-AllIndexBackupsFromQdrant {
         
         foreach ($collection in $response.result.collections) {
             # Vérifier si c'est une collection de sauvegarde
+
             if ($collection.name -like "Backup_*") {
                 try {
                     # Récupérer les métadonnées
+
                     $pointResponse = Invoke-RestMethod -Uri "$($script:QdrantClient.Url)/collections/$($collection.name)/points/metadata" -Method Get -ErrorAction SilentlyContinue
                     
                     if ($pointResponse -and $pointResponse.result -and $pointResponse.result.payload) {
@@ -573,6 +608,7 @@ function Get-AllIndexBackupsFromQdrant {
                     }
                     else {
                         # Collection sans métadonnées valides
+
                         $backups += [PSCustomObject]@{
                             BackupId = $collection.name
                             Timestamp = $null
@@ -584,6 +620,7 @@ function Get-AllIndexBackupsFromQdrant {
                 }
                 catch {
                     # Ignorer les erreurs pour les collections individuelles
+
                     if ($Verbose) {
                         Write-Host "Erreur lors de la récupération des métadonnées pour la collection $($collection.name) : $_" -ForegroundColor Yellow
                     }
@@ -598,8 +635,7 @@ function Get-AllIndexBackupsFromQdrant {
         return @()
     }
 }
-```
-
+```plaintext
 ## Analyse comparative avec d'autres solutions
 
 ### Critères d'évaluation

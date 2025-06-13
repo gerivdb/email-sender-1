@@ -1,4 +1,5 @@
 # Plan de développement v16 - MCP Manager standardisé avec intégration Langchain et gestion de mémoire
+
 *Version 1.3 - 2025-05-19*
 
 Ce plan définit l'implémentation d'un MCP Manager robuste et standardisé, inspiré des meilleures pratiques de git-mcp, d'OpenMemory MCP et du framework Langchain, utilisant Hygen pour la génération de templates et suivant une méthodologie rigoureuse de développement (DEVR → TEST → DEBUG → CHECK → MAJ v16). L'objectif est de créer un système modulaire, extensible et facile à maintenir qui facilite la création et la gestion de serveurs MCP pour différentes sources de données, tout en offrant des capacités avancées de gestion de mémoire entre les serveurs MCP et d'intégration avec les LLMs via le pipeline RAG (Retrieval Augmented Generation) de Langchain.

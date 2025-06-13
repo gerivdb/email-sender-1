@@ -10,9 +10,12 @@ L'interface du moteur d'exécution des tests définit le contrat que doit respec
 
 ```powershell
 # Interface ITestExecutionEngine
+
 # Définit le contrat pour le moteur d'exécution des tests
+
 interface ITestExecutionEngine {
     # Méthodes principales
+
     [string] Initialize([hashtable]$configuration)
     [bool] ValidateConfiguration([hashtable]$configuration)
     [object] ExecuteTest([string]$testId, [hashtable]$parameters)
@@ -22,6 +25,7 @@ interface ITestExecutionEngine {
     [void] Cleanup([string]$testId)
     
     # Méthodes de gestion avancée
+
     [bool] PauseTest([string]$testId)
     [bool] ResumeTest([string]$testId)
     [bool] RestartTest([string]$testId, [hashtable]$parameters)
@@ -29,12 +33,14 @@ interface ITestExecutionEngine {
     [hashtable] GetEngineCapabilities()
     
     # Propriétés
+
     [string] $Name
     [string] $Version
     [hashtable] $DefaultConfiguration
     [int] $MaxConcurrentTests
     
     # Événements
+
     [event] TestStarted
     [event] TestCompleted
     [event] TestFailed
@@ -42,16 +48,14 @@ interface ITestExecutionEngine {
     [event] TestResumed
     [event] TestProgress
 }
-```
-
+```plaintext
 ## 3. Méthodes principales
 
 ### 3.1 Initialize
 
 ```powershell
 [string] Initialize([hashtable]$configuration)
-```
-
+```plaintext
 **Description**: Initialise le moteur d'exécution avec la configuration spécifiée.
 
 **Paramètres**:
@@ -73,8 +77,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [bool] ValidateConfiguration([hashtable]$configuration)
-```
-
+```plaintext
 **Description**: Valide la configuration fournie pour s'assurer qu'elle est compatible avec le moteur.
 
 **Paramètres**:
@@ -94,8 +97,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [object] ExecuteTest([string]$testId, [hashtable]$parameters)
-```
-
+```plaintext
 **Description**: Exécute un test avec les paramètres spécifiés.
 
 **Paramètres**:
@@ -119,8 +121,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [bool] StopTest([string]$testId, [bool]$force)
-```
-
+```plaintext
 **Description**: Arrête l'exécution d'un test en cours.
 
 **Paramètres**:
@@ -143,8 +144,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [object] GetTestStatus([string]$testId)
-```
-
+```plaintext
 **Description**: Récupère l'état actuel d'un test.
 
 **Paramètres**:
@@ -164,8 +164,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [object] GetTestResults([string]$testId)
-```
-
+```plaintext
 **Description**: Récupère les résultats d'un test terminé.
 
 **Paramètres**:
@@ -186,8 +185,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [void] Cleanup([string]$testId)
-```
-
+```plaintext
 **Description**: Nettoie les ressources utilisées par un test.
 
 **Paramètres**:
@@ -210,8 +208,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [bool] PauseTest([string]$testId)
-```
-
+```plaintext
 **Description**: Met en pause l'exécution d'un test en cours.
 
 **Paramètres**:
@@ -233,8 +230,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [bool] ResumeTest([string]$testId)
-```
-
+```plaintext
 **Description**: Reprend l'exécution d'un test en pause.
 
 **Paramètres**:
@@ -255,8 +251,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [bool] RestartTest([string]$testId, [hashtable]$parameters)
-```
-
+```plaintext
 **Description**: Redémarre un test avec de nouveaux paramètres.
 
 **Paramètres**:
@@ -280,8 +275,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [string[]] GetActiveTests()
-```
-
+```plaintext
 **Description**: Récupère la liste des tests actuellement actifs.
 
 **Paramètres**: Aucun.
@@ -298,8 +292,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [hashtable] GetEngineCapabilities()
-```
-
+```plaintext
 **Description**: Récupère les capacités du moteur d'exécution.
 
 **Paramètres**: Aucun.
@@ -318,8 +311,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [string] $Name
-```
-
+```plaintext
 **Description**: Nom du moteur d'exécution.
 
 **Type**: String.
@@ -332,8 +324,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [string] $Version
-```
-
+```plaintext
 **Description**: Version du moteur d'exécution.
 
 **Type**: String.
@@ -346,8 +337,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [hashtable] $DefaultConfiguration
-```
-
+```plaintext
 **Description**: Configuration par défaut du moteur.
 
 **Type**: Hashtable.
@@ -360,8 +350,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [int] $MaxConcurrentTests
-```
-
+```plaintext
 **Description**: Nombre maximum de tests pouvant être exécutés simultanément.
 
 **Type**: Integer.
@@ -376,8 +365,7 @@ interface ITestExecutionEngine {
 
 ```powershell
 [event] TestStarted
-```
-
+```plaintext
 **Description**: Déclenché lorsqu'un test démarre.
 
 **Arguments**:
@@ -387,14 +375,12 @@ interface ITestExecutionEngine {
     Timestamp = Get-Date
     Configuration = $configuration
 }
-```
-
+```plaintext
 ### 6.2 TestCompleted
 
 ```powershell
 [event] TestCompleted
-```
-
+```plaintext
 **Description**: Déclenché lorsqu'un test se termine avec succès.
 
 **Arguments**:
@@ -405,14 +391,12 @@ interface ITestExecutionEngine {
     Duration = [TimeSpan]::FromSeconds(10)
     Results = $results
 }
-```
-
+```plaintext
 ### 6.3 TestFailed
 
 ```powershell
 [event] TestFailed
-```
-
+```plaintext
 **Description**: Déclenché lorsqu'un test échoue.
 
 **Arguments**:
@@ -424,14 +408,12 @@ interface ITestExecutionEngine {
     ErrorType = "TimeoutException"
     StackTrace = $exception.StackTrace
 }
-```
-
+```plaintext
 ### 6.4 TestPaused
 
 ```powershell
 [event] TestPaused
-```
-
+```plaintext
 **Description**: Déclenché lorsqu'un test est mis en pause.
 
 **Arguments**:
@@ -442,14 +424,12 @@ interface ITestExecutionEngine {
     ElapsedTime = [TimeSpan]::FromSeconds(5)
     CurrentStep = "DataLoading"
 }
-```
-
+```plaintext
 ### 6.5 TestResumed
 
 ```powershell
 [event] TestResumed
-```
-
+```plaintext
 **Description**: Déclenché lorsqu'un test est repris après une pause.
 
 **Arguments**:
@@ -460,14 +440,12 @@ interface ITestExecutionEngine {
     PauseDuration = [TimeSpan]::FromSeconds(2)
     CurrentStep = "DataLoading"
 }
-```
-
+```plaintext
 ### 6.6 TestProgress
 
 ```powershell
 [event] TestProgress
-```
-
+```plaintext
 **Description**: Déclenché périodiquement pour indiquer la progression d'un test.
 
 **Arguments**:
@@ -480,14 +458,14 @@ interface ITestExecutionEngine {
     ElapsedTime = [TimeSpan]::FromSeconds(5)
     EstimatedTimeRemaining = [TimeSpan]::FromSeconds(5)
 }
-```
-
+```plaintext
 ## 7. Structures de données
 
 ### 7.1 TestConfiguration
 
 ```powershell
 # Structure de configuration d'un test
+
 class TestConfiguration {
     [string] $TestName
     [string] $Description
@@ -498,16 +476,17 @@ class TestConfiguration {
     [hashtable] $Timeouts
     [hashtable] $OutputSettings
 }
-```
-
+```plaintext
 ### 7.2 TestStatus
 
 ```powershell
 # Structure représentant l'état d'un test
+
 class TestStatus {
     [string] $TestId
     [string] $TestName
     [string] $State  # "NotStarted", "Running", "Paused", "Completed", "Failed", "Aborted"
+
     [datetime] $StartTime
     [datetime] $EndTime
     [TimeSpan] $ElapsedTime
@@ -516,12 +495,12 @@ class TestStatus {
     [string] $LastError
     [hashtable] $RuntimeMetrics
 }
-```
-
+```plaintext
 ### 7.3 TestResults
 
 ```powershell
 # Structure représentant les résultats d'un test
+
 class TestResults {
     [string] $TestId
     [string] $TestName
@@ -535,17 +514,18 @@ class TestResults {
     [hashtable] $Environment
     [hashtable] $Configuration
 }
-```
-
+```plaintext
 ## 8. Exemples d'utilisation
 
 ### 8.1 Initialisation et exécution d'un test simple
 
 ```powershell
 # Créer une instance du moteur
+
 $engine = [TestExecutionEngine]::new()
 
 # Initialiser le moteur
+
 $sessionId = $engine.Initialize(@{
     LogLevel = "Info"
     OutputPath = "C:\Tests\Results"
@@ -553,6 +533,7 @@ $sessionId = $engine.Initialize(@{
 })
 
 # Configurer un test
+
 $testConfig = @{
     TestName = "PerformanceTest"
     Description = "Test de performance de chargement d'index"
@@ -569,31 +550,37 @@ $testConfig = @{
 }
 
 # Valider la configuration
+
 if ($engine.ValidateConfiguration($testConfig)) {
     # Exécuter le test
+
     $testId = "test-" + [Guid]::NewGuid().ToString("N")
     $test = $engine.ExecuteTest($testId, $testConfig)
     
     # Attendre que le test soit terminé
+
     while ($engine.GetTestStatus($testId).State -eq "Running") {
         Start-Sleep -Seconds 1
     }
     
     # Récupérer les résultats
+
     $results = $engine.GetTestResults($testId)
     
     # Nettoyer
+
     $engine.Cleanup($testId)
 }
-```
-
+```plaintext
 ### 8.2 Exécution avec gestion des événements
 
 ```powershell
 # Créer une instance du moteur
+
 $engine = [TestExecutionEngine]::new()
 
 # S'abonner aux événements
+
 Register-ObjectEvent -InputObject $engine -EventName TestStarted -Action {
     Write-Host "Test started: $($Event.MessageData.TestId)"
 }
@@ -611,56 +598,65 @@ Register-ObjectEvent -InputObject $engine -EventName TestFailed -Action {
 }
 
 # Initialiser et exécuter le test
+
 $sessionId = $engine.Initialize(@{})
 $testId = "test-" + [Guid]::NewGuid().ToString("N")
 $test = $engine.ExecuteTest($testId, $testConfig)
 
 # Attendre que le test soit terminé
+
 while ($engine.GetTestStatus($testId).State -in @("Running", "Paused")) {
     Start-Sleep -Seconds 1
 }
 
 # Nettoyer
+
 $engine.Cleanup($testId)
 Get-EventSubscriber | Unregister-Event
-```
-
+```plaintext
 ### 8.3 Exécution avec pause et reprise
 
 ```powershell
 # Créer une instance du moteur
+
 $engine = [TestExecutionEngine]::new()
 
 # Initialiser et exécuter le test
+
 $sessionId = $engine.Initialize(@{})
 $testId = "test-" + [Guid]::NewGuid().ToString("N")
 $test = $engine.ExecuteTest($testId, $testConfig)
 
 # Attendre un peu
+
 Start-Sleep -Seconds 5
 
 # Mettre en pause le test
+
 if ($engine.PauseTest($testId)) {
     Write-Host "Test paused"
     
     # Faire quelque chose pendant la pause
+
     Start-Sleep -Seconds 2
     
     # Reprendre le test
+
     if ($engine.ResumeTest($testId)) {
         Write-Host "Test resumed"
     }
 }
 
 # Attendre que le test soit terminé
+
 while ($engine.GetTestStatus($testId).State -in @("Running", "Paused")) {
     Start-Sleep -Seconds 1
 }
 
 # Nettoyer
-$engine.Cleanup($testId)
-```
 
+$engine.Cleanup($testId)
+```plaintext
 ## 9. Considérations d'implémentation
 
 ### 9.1 Performance

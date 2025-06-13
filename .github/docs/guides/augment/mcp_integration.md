@@ -49,42 +49,36 @@ Pour exécuter le script d'intégration, utilisez la commande suivante :
 
 ```powershell
 .\development\scripts\maintenance\augment\integrate-with-mcp-manager.ps1
-```
-
+```plaintext
 Si les serveurs MCP d'Augment Code sont déjà intégrés, le script affichera un message et s'arrêtera. Pour forcer la mise à jour, utilisez le paramètre `-Force` :
 
 ```powershell
 .\development\scripts\maintenance\augment\integrate-with-mcp-manager.ps1 -Force
-```
-
+```plaintext
 ### Vérification de l'intégration
 
 Pour vérifier que l'intégration a réussi, vous pouvez exécuter les tests unitaires :
 
 ```powershell
 .\development\scripts\maintenance\augment\tests\Run-AllTests.ps1
-```
-
+```plaintext
 Ou exécuter spécifiquement le test d'intégration avec le MCP Manager :
 
 ```powershell
 Invoke-Pester -Path "development\scripts\maintenance\augment\tests\Test-IntegrateWithMCPManager.ps1"
-```
-
+```plaintext
 ## Démarrage des serveurs MCP
 
 Après l'intégration, vous pouvez démarrer tous les serveurs MCP, y compris les serveurs MCP d'Augment Code, en utilisant le script de démarrage global :
 
 ```powershell
 .\src\mcp\utils\scripts\start-all-mcp-servers.ps1
-```
-
+```plaintext
 Ou vous pouvez démarrer uniquement les serveurs MCP d'Augment Code en utilisant le script de démarrage spécifique :
 
 ```powershell
 .\development\scripts\maintenance\augment\start-mcp-servers.ps1
-```
-
+```plaintext
 ## Configuration
 
 ### Configuration du serveur MCP pour les Memories
@@ -98,8 +92,7 @@ Vous pouvez modifier ces paramètres en éditant le fichier de configuration ou 
 
 ```powershell
 .\development\scripts\maintenance\augment\mcp-memories-server.ps1 -Port 7893 -ConfigPath "config\custom-config.json"
-```
-
+```plaintext
 ### Configuration de l'adaptateur MCP pour le gestionnaire de modes
 
 L'adaptateur MCP pour le gestionnaire de modes utilise la configuration suivante :
@@ -111,8 +104,7 @@ Vous pouvez modifier ces paramètres en éditant le fichier de configuration ou 
 
 ```powershell
 .\development\scripts\maintenance\augment\mcp-mode-manager-adapter.ps1 -Port 7894 -ConfigPath "config\custom-config.json"
-```
-
+```plaintext
 ## Utilisation avec Augment Code
 
 Augment Code peut maintenant accéder aux fonctionnalités du gestionnaire de modes et des Memories via le protocole MCP. Par exemple, pour exécuter un mode spécifique, Augment Code peut envoyer une requête MCP à l'adaptateur MCP pour le gestionnaire de modes :
@@ -126,8 +118,7 @@ Augment Code peut maintenant accéder aux fonctionnalités du gestionnaire de mo
     "taskIdentifier": "1.2.3"
   }
 }
-```
-
+```plaintext
 Et pour récupérer les Memories, Augment Code peut envoyer une requête MCP au serveur MCP pour les Memories :
 
 ```json
@@ -135,8 +126,7 @@ Et pour récupérer les Memories, Augment Code peut envoyer une requête MCP au 
   "method": "getMemories",
   "params": {}
 }
-```
-
+```plaintext
 ## Dépannage
 
 ### Les serveurs MCP ne démarrent pas
@@ -161,8 +151,7 @@ Si vous rencontrez des problèmes avec la configuration, vous pouvez réinitiali
 
 ```powershell
 .\development\scripts\maintenance\augment\integrate-with-mcp-manager.ps1 -Force
-```
-
+```plaintext
 ## Ressources supplémentaires
 
 - [Guide d'intégration avec Augment Code](./integration_guide.md)

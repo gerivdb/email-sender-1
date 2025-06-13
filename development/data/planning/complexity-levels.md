@@ -119,10 +119,9 @@ Pour une amélioration donnée, on pourrait avoir l'évaluation suivante :
 
 Le score de complexité technique serait alors calculé en utilisant les poids définis dans le document des facteurs de complexité :
 
-```
+```plaintext
 Score = (3 * 0.20) + (4 * 0.15) + (2 * 0.15) + (1 * 0.10) + (3 * 0.10) = 0.6 + 0.6 + 0.3 + 0.1 + 0.3 = 1.9
-```
-
+```plaintext
 Ce score de 1.9 sur une échelle de 1 à 5 indiquerait une complexité technique entre "Très faible" et "Faible", plus proche de "Faible".
 
 ## Considérations Importantes

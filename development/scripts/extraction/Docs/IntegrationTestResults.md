@@ -81,21 +81,25 @@ Les tests d'intégration couvrent les workflows suivants du module :
 Lors de l'exécution initiale des tests d'intégration, plusieurs problèmes ont été identifiés et corrigés :
 
 ### Problèmes dans le workflow d'extraction et stockage
+
 - Problèmes d'extraction de texte avec certains formats
 - Problèmes de stockage des données structurées complexes
 - Problèmes de gestion des métadonnées lors de l'extraction
 
 ### Problèmes dans le workflow de collection et filtrage
+
 - Problèmes de création de collections avec de nombreux éléments
 - Problèmes de filtrage avec des critères complexes
 - Problèmes de performance lors du filtrage de grandes collections
 
 ### Problèmes dans le workflow de sérialisation et chargement
+
 - Problèmes de sérialisation d'objets complexes
 - Problèmes de gestion des chemins de fichiers
 - Problèmes de chargement de fichiers corrompus ou incomplets
 
 ### Problèmes dans le workflow de validation et correction
+
 - Problèmes de validation avec des règles complexes
 - Problèmes de correction automatique de certaines erreurs
 - Problèmes de performance lors de la validation de grandes collections
@@ -105,6 +109,7 @@ Lors de l'exécution initiale des tests d'intégration, plusieurs problèmes ont
 Les tests d'intégration ont été conçus pour couvrir des scénarios réels d'utilisation du module. Voici quelques exemples de scénarios testés :
 
 ### Scénario 1 : Extraction et validation de texte
+
 1. Extraire du texte à partir d'une source
 2. Ajouter des métadonnées au texte extrait
 3. Valider le texte extrait
@@ -112,6 +117,7 @@ Les tests d'intégration ont été conçus pour couvrir des scénarios réels d'
 5. Sauvegarder le texte validé dans un fichier
 
 ### Scénario 2 : Gestion d'une collection d'informations
+
 1. Créer une collection vide
 2. Extraire plusieurs types d'informations (texte, données, médias)
 3. Ajouter les informations extraites à la collection
@@ -121,6 +127,7 @@ Les tests d'intégration ont été conçus pour couvrir des scénarios réels d'
 7. Sauvegarder la collection dans un fichier
 
 ### Scénario 3 : Validation et correction d'une collection
+
 1. Charger une collection depuis un fichier
 2. Ajouter des règles de validation personnalisées
 3. Valider toutes les informations de la collection

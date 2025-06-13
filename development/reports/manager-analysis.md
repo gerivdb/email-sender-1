@@ -1,4 +1,4 @@
-﻿# Rapport d'Analyse des Gestionnaires
+# Rapport d'Analyse des Gestionnaires
 
 Date de gÃ©nÃ©ration : 2025-04-29 03:19:11
 

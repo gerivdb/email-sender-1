@@ -37,8 +37,7 @@ Pour configurer la segmentation automatique pour Agent Auto :
 
 ```powershell
 .\scripts\agent-auto\Initialize-AgentAutoSegmentation.ps1 -Enable -MaxInputSizeKB 15 -ChunkSizeKB 7
-```
-
+```plaintext
 3. Cette commande activera la segmentation automatique avec une taille maximale d'entrée de 15 KB et une taille de segment de 7 KB.
 
 ## Utilisation de base
@@ -52,11 +51,11 @@ Import-Module .\modules\InputSegmentation.psm1
 Initialize-InputSegmentation -MaxInputSizeKB 10 -DefaultChunkSizeKB 5
 
 $text = "A" * 20KB  # Texte de 20 KB
+
 $segments = Split-TextInput -Text $text -ChunkSizeKB 5
 
 Write-Host "Nombre de segments: $($segments.Count)"
-```
-
+```plaintext
 ### Segmenter un objet JSON
 
 Pour segmenter un objet JSON volumineux :
@@ -79,8 +78,7 @@ for ($i = 0; $i -lt 500; $i++) {
 $segments = Split-JsonInput -JsonObject $json -ChunkSizeKB 5
 
 Write-Host "Nombre de segments: $($segments.Count)"
-```
-
+```plaintext
 ### Segmenter un fichier
 
 Pour segmenter un fichier volumineux :
@@ -92,8 +90,7 @@ Initialize-InputSegmentation -MaxInputSizeKB 10 -DefaultChunkSizeKB 5
 $segments = Split-FileInput -FilePath ".\data\large_file.txt" -ChunkSizeKB 5
 
 Write-Host "Nombre de segments: $($segments.Count)"
-```
-
+```plaintext
 ### Utiliser la fonction générique
 
 Pour segmenter automatiquement différents types d'entrées :
@@ -106,8 +103,7 @@ $input = Get-Content -Path ".\data\large_file.txt" -Raw
 $segments = Split-Input -Input $input -ChunkSizeKB 5
 
 Write-Host "Nombre de segments: $($segments.Count)"
-```
-
+```plaintext
 ## Options avancées
 
 ### Préserver les sauts de ligne
@@ -117,8 +113,7 @@ Pour segmenter un texte en préservant les sauts de ligne :
 ```powershell
 $text = "Ligne 1`nLigne 2`nLigne 3" * 1KB
 $segments = Split-TextInput -Text $text -ChunkSizeKB 5 -PreserveLines
-```
-
+```plaintext
 Cette option garantit que les segments se terminent par des sauts de ligne complets.
 
 ### Exécuter un script avec segmentation
@@ -131,8 +126,7 @@ $results = Invoke-WithSegmentation -Input $input -ScriptBlock {
     param($segment)
     return "Processed: $($segment.Length) bytes"
 } -Id "my-task" -ChunkSizeKB 5
-```
-
+```plaintext
 ### Sauvegarder et récupérer l'état de segmentation
 
 Pour sauvegarder l'état de segmentation et le récupérer plus tard :
@@ -143,22 +137,25 @@ $segments = Split-Input -Input $largeInput -ChunkSizeKB 5
 Save-SegmentationState -Id $id -Segments $segments -CurrentIndex 0
 
 # Plus tard, récupérer l'état
+
 $state = Get-SegmentationState -Id $id
 if ($state) {
     $currentIndex = $state.CurrentIndex
     $segments = $state.Segments
 
     # Continuer le traitement à partir de l'index actuel
+
     for ($i = $currentIndex; $i -lt $segments.Count; $i++) {
         # Traiter le segment
+
         Process-Segment -Segment $segments[$i]
 
         # Mettre à jour l'état
+
         Save-SegmentationState -Id $id -Segments $segments -CurrentIndex ($i + 1)
     }
 }
-```
-
+```plaintext
 ## Exemples pratiques
 
 ### Exemple 1 : Traiter un fichier CSV volumineux
@@ -175,18 +172,20 @@ $segments = Split-FileInput -FilePath $csvFile -ChunkSizeKB 50 -PreserveLines
 $results = @()
 foreach ($segment in $segments) {
     # Convertir le segment en objet CSV
+
     $csvData = $segment | ConvertFrom-Csv
 
     # Traiter les données CSV
+
     foreach ($row in $csvData) {
         # Traitement...
+
         $results += $row
     }
 }
 
 Write-Host "Nombre total de lignes traitées: $($results.Count)"
-```
-
+```plaintext
 ### Exemple 2 : Appels API avec segmentation
 
 Si vous devez envoyer des données volumineuses à une API avec une limite de taille :
@@ -212,30 +211,32 @@ $segments = Split-JsonInput -JsonObject $data -ChunkSizeKB 5
 $responses = @()
 foreach ($segment in $segments) {
     # Convertir le segment en JSON
+
     $jsonData = $segment | ConvertTo-Json -Compress
 
     # Envoyer à l'API
+
     $response = Invoke-RestMethod -Uri "https://api.example.com/data" -Method Post -Body $jsonData -ContentType "application/json"
     $responses += $response
 }
 
 Write-Host "Nombre de requêtes API: $($segments.Count)"
 Write-Host "Réponses reçues: $($responses.Count)"
-```
-
+```plaintext
 ### Exemple 3 : Utilisation avec Agent Auto
 
 Pour utiliser la segmentation avec Agent Auto :
 
 ```powershell
 # Initialiser la segmentation pour Agent Auto
+
 .\scripts\agent-auto\Initialize-AgentAutoSegmentation.ps1 -Enable -MaxInputSizeKB 15 -ChunkSizeKB 7 -PreserveLines
 
 # Utiliser la segmentation avec Agent Auto
+
 $largeInput = Get-Content -Path ".\data\large_file.txt" -Raw
 $result = .\scripts\agent-auto\Example-AgentAutoSegmentation.ps1 -Input $largeInput -InputType "Text" -OutputPath ".\output"
-```
-
+```plaintext
 ## Bonnes pratiques
 
 ### Pour une segmentation efficace
@@ -290,10 +291,10 @@ $segments = Split-Input -Input $input -ChunkSizeKB 5
 $results = Optimize-ParallelExecution -Data $segments -ScriptBlock {
     param($segment)
     # Traiter le segment
+
     return "Processed: $($segment.Length) bytes"
 } -MaxThreads 4
-```
-
+```plaintext
 ### Intégration avec le cache prédictif
 
 Vous pouvez mettre en cache les résultats de segmentation pour éviter de recalculer les segments :
@@ -316,9 +317,9 @@ if ($segments -eq $null) {
 
 foreach ($segment in $segments) {
     # Traiter le segment
-}
-```
 
+}
+```plaintext
 ## Conclusion
 
 La segmentation d'entrées est un outil puissant pour traiter des données volumineuses de manière efficace. En utilisant les fonctionnalités de segmentation, vous pouvez surmonter les limites de taille et optimiser les performances de vos scripts.

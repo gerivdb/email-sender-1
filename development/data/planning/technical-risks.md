@@ -1,16 +1,23 @@
-﻿# Identification des Risques Techniques des AmÃ©liorations
+# Identification des Risques Techniques des AmÃ©liorations
 
 Ce document prÃ©sente l'identification des risques techniques associÃ©s aux amÃ©liorations identifiÃ©es pour les diffÃ©rents gestionnaires.
 
 ## Table des MatiÃ¨res
 
 - [Process Manager](#process-manager)
+
 - [Mode Manager](#mode-manager)
+
 - [Roadmap Manager](#roadmap-manager)
+
 - [Integrated Manager](#integrated-manager)
+
 - [Script Manager](#script-manager)
+
 - [Error Manager](#error-manager)
+
 - [Configuration Manager](#configuration-manager)
+
 - [Logging Manager](#logging-manager)
 
 ## MÃ©thodologie

@@ -1,7 +1,8 @@
-﻿# Plan de développement v8b : Système de gestion modulaire des roadmaps avec RAG et classification automatique
+# Plan de développement v8b : Système de gestion modulaire des roadmaps avec RAG et classification automatique
 
 
 ## 10. Extensions futures du système RAG pour les roadmaps (PLANIFIÉ)
+
 - [x] **10.1** Amélioration des performances et de l'évolutivité
   - [x] **10.1.1** Optimiser les performances pour les roadmaps volumineuses
     - [x] **10.1.1.1** Implémenter le chargement paresseux (lazy loading)

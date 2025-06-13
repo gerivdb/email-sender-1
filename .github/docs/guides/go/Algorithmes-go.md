@@ -17,6 +17,7 @@ EMAIL_SENDER_1 est un système hybride multi-stack nécessitant des algorithmes 
 > **📋 Référence Croisée:** Ce guide complète les [Algorithmes de Debug Avancés EMAIL_SENDER_1](./Algorithmes-debug-avances.md) avec des méthodes de validation proactive.
 
 ### Volume de validation EMAIL_SENDER_1:
+
 - **50-200 fichiers** analysés simultanément
 - **3 couches de validation**: Code → Configuration → Intégration
 - **Multi-langage**: Go, TypeScript, PowerShell, YAML, JSON
@@ -31,9 +32,11 @@ EMAIL_SENDER_1 est un système hybride multi-stack nécessitant des algorithmes 
 ---
 
 ## 🎯 **Algorithme 1: EMAIL_SENDER_1 Error Triage & Classification** 
+
 *"Divide and conquer EMAIL_SENDER_1 - 400 errors → 5-10 root causes"*
 
 ### Classification automatique spécialisée EMAIL_SENDER_1:
+
 ```go
 // File: tools/debug/email_sender_error_classifier.go
 package debug
@@ -83,16 +86,18 @@ func ClassifyEmailSenderErrors(buildOutput string) map[EmailSenderComponent]map[
     
     return classified
 }
-```
-
+```plaintext
 ### Script PowerShell de triage immédiat EMAIL_SENDER_1:
+
 ```powershell
 # File: tools/debug/Invoke-EmailSenderErrorTriage.ps1
+
 param([string]$ProjectPath = ".")
 
 Write-Host "🔍 TRIAGE 400+ ERREURS EMAIL_SENDER_1 - CLASSIFICATION MULTI-STACK" -ForegroundColor Red
 
 # Compilation pour capturer toutes les erreurs EMAIL_SENDER_1
+
 Write-Host "📊 Compilation complète EMAIL_SENDER_1..." -ForegroundColor Blue
 $buildOutput = @()
 $buildOutput += go build ./src/rag/... 2>&1 | Out-String
@@ -101,16 +106,24 @@ $buildOutput += npx n8n execute --workflow --validate 2>&1 | Out-String
 $buildOutput += pwsh -Command "Invoke-ScriptAnalyzer -Path ./scripts/ -Recurse" 2>&1 | Out-String
 
 # Classification automatique EMAIL_SENDER_1
+
 $classifier = go run tools/debug/email_sender_error_classifier.go -input ($buildOutput -join "`n")
 
 # Priorisation par composant EMAIL_SENDER_1
+
 $componentPriorities = @{
     "RAGEngine" = 1         # Core - Fixe souvent 100+ erreurs d'un coup
+
     "ConfigFiles" = 1       # Infrastructure - Bloque tout
+
     "N8NWorkflow" = 2       # Orchestration critique
+
     "NotionAPI" = 2         # Data persistence
+
     "GmailProcessing" = 3   # Email handling
+
     "PowerShellScript" = 4  # Automation - non-bloquant
+
 }
 
 Write-Host "📊 RÉSULTAT CLASSIFICATION EMAIL_SENDER_1:" -ForegroundColor Yellow
@@ -136,21 +149,23 @@ $classifier | ConvertFrom-Json | ForEach-Object {
 }
 
 # Plan d'action EMAIL_SENDER_1
+
 Write-Host "`n🎯 PLAN D'ACTION EMAIL_SENDER_1 RECOMMANDÉ:" -ForegroundColor Magenta
 Write-Host "1. RAG Engine (Priorité 1) - Résoudra ~40% des erreurs"
 Write-Host "2. Config Files (Priorité 1) - Résoudra ~30% des erreurs" 
 Write-Host "3. n8n Workflows (Priorité 2) - Résoudra ~20% des erreurs"
 Write-Host "4. APIs Notion/Gmail (Priorité 2-3) - Résoudra ~10% des erreurs"
-```
-
+```plaintext
 **ROI EMAIL_SENDER_1:** 400 erreurs → 5-10 catégories par composant en 10 minutes
 
 ---
 
 ## 🎯 **Algorithme 2: EMAIL_SENDER_1 Binary Search Debug**
+
 *"Isolate failing EMAIL_SENDER_1 components systematically"*
 
 ### Isolation par packages EMAIL_SENDER_1:
+
 ```go
 // File: tools/debug/email_sender_binary_search_debug.go
 package debug
@@ -224,9 +239,9 @@ func hasEmailSenderCompilationErrors(packages []string, component EmailSenderCom
     }
     return false
 }
-```
-
+```plaintext
 ### Script d'isolation automatique EMAIL_SENDER_1:
+
 ```powershell
 # File: tools/debug/Find-FailingEmailSenderComponents.ps1
 
@@ -293,6 +308,7 @@ foreach ($componentName in $emailSenderComponents.Keys) {
                 Write-Host "    ❌ ERREURS" -ForegroundColor Red
                 
                 # Count errors
+
                 $errorCount = if ($result -is [array]) { $result.Count } else { 1 }
                 Write-Host "      📊 $errorCount erreurs détectées"
             }
@@ -300,6 +316,7 @@ foreach ($componentName in $emailSenderComponents.Keys) {
     }
     
     # Calcul du score de santé EMAIL_SENDER_1
+
     $totalFiles = $componentFailing.Count + $componentWorking.Count
     $healthScore = if ($totalFiles -gt 0) { 
         [math]::Round(($componentWorking.Count / $totalFiles) * 100, 1) 
@@ -334,6 +351,7 @@ $componentHealthScores.GetEnumerator() | Sort-Object {$_.Value.Priority} | ForEa
 }
 
 # Recommandations EMAIL_SENDER_1
+
 Write-Host "`n🎯 RECOMMANDATIONS EMAIL_SENDER_1:" -ForegroundColor Cyan
 $worstComponents = $componentHealthScores.GetEnumerator() | Where-Object {$_.Value.HealthScore -lt 80} | Sort-Object {$_.Value.Priority}
 if ($worstComponents.Count -gt 0) {
@@ -344,16 +362,17 @@ if ($worstComponents.Count -gt 0) {
 } else {
     Write-Host "✅ Tous les composants EMAIL_SENDER_1 sont sains!"
 }
-```
-
+```plaintext
 **ROI EMAIL_SENDER_1:** Isole 80% des erreurs par composant en 15 minutes
 
 ---
 
 ## 🎯 **Algorithme 3: EMAIL_SENDER_1 Dependency Graph Analysis**
+
 *"Fix EMAIL_SENDER_1 root causes, not symptoms"*
 
 ### Analyse des dépendances circulaires EMAIL_SENDER_1:
+
 ```go
 // File: tools/debug/email_sender_dependency_analyzer.go
 package debug
@@ -422,15 +441,16 @@ func (dg *EmailSenderDependencyGraph) AnalyzeInterComponentDependencies() map[Em
     
     return dependencies
 }
-```
-
+```plaintext
 ### Detection automatique des cycles EMAIL_SENDER_1:
+
 ```powershell
 # File: tools/debug/Find-EmailSenderCircularDependencies.ps1
 
 Write-Host "🔄 DÉTECTION DÉPENDANCES CIRCULAIRES EMAIL_SENDER_1" -ForegroundColor Cyan
 
 # Analyse du graph de dépendances EMAIL_SENDER_1
+
 Write-Host "📊 Analyse du graphe de dépendances EMAIL_SENDER_1..." -ForegroundColor Blue
 $depGraph = go run tools/debug/email_sender_dependency_analyzer.go -project "."
 
@@ -446,6 +466,7 @@ if ($depGraph.CircularDependencies.Count -gt 0) {
             Write-Host "  🔄 $_" -ForegroundColor Red
             
             # Suggestions EMAIL_SENDER_1 spécialisées
+
             switch ($component) {
                 "RAGEngine" {
                     Write-Host "    💡 Suggestion: Extraire interface IVectorStore commune" -ForegroundColor Cyan
@@ -470,6 +491,7 @@ if ($depGraph.CircularDependencies.Count -gt 0) {
 }
 
 # Ordre de compilation optimal EMAIL_SENDER_1
+
 Write-Host "`n📋 ORDRE DE COMPILATION OPTIMAL EMAIL_SENDER_1:" -ForegroundColor Blue
 $depGraph.CompilationOrder | ForEach-Object {
     $priority = switch ($_) {
@@ -484,6 +506,7 @@ $depGraph.CompilationOrder | ForEach-Object {
 }
 
 # Analyse des dépendances inter-composants EMAIL_SENDER_1
+
 Write-Host "`n🔗 DÉPENDANCES INTER-COMPOSANTS EMAIL_SENDER_1:" -ForegroundColor Magenta
 $depGraph.InterComponentDependencies.GetEnumerator() | ForEach-Object {
     $component = $_.Key
@@ -492,22 +515,24 @@ $depGraph.InterComponentDependencies.GetEnumerator() | ForEach-Object {
 }
 
 # Recommandations EMAIL_SENDER_1
+
 Write-Host "`n🎯 STRATÉGIE DE RÉSOLUTION EMAIL_SENDER_1:" -ForegroundColor Green
 Write-Host "1. 🏗️ Valider ConfigFiles en premier (base de tout)"
 Write-Host "2. ⚙️ Stabiliser RAG Engine (core critique)" 
 Write-Host "3. 📝📧 Corriger APIs Notion/Gmail en parallèle"
 Write-Host "4. 🌊 Intégrer n8n Workflows"
 Write-Host "5. ⚡ Finaliser scripts PowerShell d'orchestration"
-```
-
+```plaintext
 **ROI EMAIL_SENDER_1:** Résout 60-80% des erreurs de dépendances inter-composants
 
 ---
 
 ## 🎯 **Algorithme 4: EMAIL_SENDER_1 Progressive Build Strategy**
+
 *"Build EMAIL_SENDER_1 incrementally, fix systematically"*
 
 ### Build progressif par couches EMAIL_SENDER_1:
+
 ```powershell
 # File: tools/debug/Progressive-EmailSenderBuild.ps1
 
@@ -516,6 +541,7 @@ param([switch]$AutoFix = $false)
 Write-Host "🏗️ BUILD PROGRESSIF EMAIL_SENDER_1 - STRATÉGIE MULTI-STACK" -ForegroundColor Cyan
 
 # Couches par ordre de dépendances EMAIL_SENDER_1
+
 $emailSenderLayers = @(
     @{
         Name = "📋 Configuration EMAIL_SENDER_1"
@@ -597,6 +623,7 @@ foreach ($layer in $emailSenderLayers) {
             Write-Host "  📦 Build: $($file.Name)" -ForegroundColor Blue
             
             # Sélection de la commande de test appropriée
+
             $testCommand = $null
             foreach ($pattern in $layer.TestCommands.Keys) {
                 if ($file.Name -like $pattern -or $file.FullName -like $pattern) {
@@ -607,6 +634,7 @@ foreach ($layer in $emailSenderLayers) {
             
             if (-not $testCommand) {
                 $testCommand = $layer.TestCommands["*.go"]  # Default
+
             }
             
             $buildResult = & $testCommand $file.FullName
@@ -624,6 +652,7 @@ foreach ($layer in $emailSenderLayers) {
                 
                 if ($AutoFix) {
                     # Auto-fix spécialisé EMAIL_SENDER_1
+
                     $fixed = Invoke-EmailSenderAutoFix -File $file.FullName -Component $layer.Name -Errors $buildResult
                     $fixedErrors += $fixed
                     $layerFixed += $fixed
@@ -633,6 +662,7 @@ foreach ($layer in $emailSenderLayers) {
                 }
                 
                 # Affiche les 3 premières erreurs pour focus
+
                 if ($buildResult -is [array]) {
                     $buildResult | Select-Object -First 3 | ForEach-Object {
                         Write-Host "      $_" -ForegroundColor DarkRed
@@ -645,6 +675,7 @@ foreach ($layer in $emailSenderLayers) {
     }
     
     # Calcul du score de santé de la couche
+
     $healthScore = if ($layerFiles -gt 0) { 
         [math]::Round((1 - ($layerErrors - $layerFixed) / $layerFiles) * 100, 1)
     } else { 100 }
@@ -661,6 +692,7 @@ foreach ($layer in $emailSenderLayers) {
     Write-Host "  $healthIcon Couche: $layerFiles fichiers | $layerErrors erreurs | $layerFixed fixées | Health: $healthScore%"
     
     # Stop si couche fondamentale échoue (Configuration ou RAG Core)
+
     if ($layer.Priority -eq 1 -and $layerErrors -gt ($layerFixed + 5)) {
         Write-Host "🚨 ÉCHEC COUCHE FONDAMENTALE EMAIL_SENDER_1 - ARRÊT" -ForegroundColor Red
         Write-Host "   ⚠️ Trop d'erreurs critiques dans $($layer.Name)" -ForegroundColor Yellow
@@ -682,6 +714,7 @@ Write-Host "Erreurs auto-fixées EMAIL_SENDER_1: $fixedErrors"
 Write-Host "Erreurs restantes EMAIL_SENDER_1: $($totalErrors - $fixedErrors)"
 
 # Recommandations EMAIL_SENDER_1
+
 $criticalLayers = $layerResults.GetEnumerator() | Where-Object {$_.Value.HealthScore -lt 70}
 if ($criticalLayers.Count -gt 0) {
     Write-Host "`n🎯 COUCHES CRITIQUES EMAIL_SENDER_1 À CORRIGER:" -ForegroundColor Red
@@ -689,9 +722,9 @@ if ($criticalLayers.Count -gt 0) {
         Write-Host "  🚨 $($_.Key) (Health: $($_.Value.HealthScore)%)"
     }
 }
-```
-
+```plaintext
 ### Fonction helper d'auto-fix EMAIL_SENDER_1:
+
 ```powershell
 function Invoke-EmailSenderAutoFix {
     param(
@@ -703,14 +736,17 @@ function Invoke-EmailSenderAutoFix {
     $fixed = 0
     
     # Auto-fix spécialisé par composant EMAIL_SENDER_1
+
     switch -Wildcard ($Component) {
         "*Configuration*" {
             # Corrections YAML/JSON
+
             if ($File -like "*.yml" -or $File -like "*.yaml") {
                 $content = Get-Content $File -Raw
                 $originalContent = $content
                 
                 # Fix indentation communes
+
                 $content = $content -replace '(\s+)- ', '$1  - '
                 $content = $content -replace '(\w+):\s*\n\s+(\w+):', '$1: $2:'
                 
@@ -723,6 +759,7 @@ function Invoke-EmailSenderAutoFix {
         
         "*RAG*" {
             # Corrections Go communes
+
             if ($File -like "*.go") {
                 go fmt $File | Out-Null
                 $fixed++
@@ -731,6 +768,7 @@ function Invoke-EmailSenderAutoFix {
         
         "*PowerShell*" {
             # Corrections PowerShell
+
             if ($File -like "*.ps1") {
                 try {
                     $formatted = Invoke-Formatter -ScriptDefinition (Get-Content $File -Raw)
@@ -738,12 +776,14 @@ function Invoke-EmailSenderAutoFix {
                     $fixed++
                 } catch {
                     # Ignore formatting errors
+
                 }
             }
         }
         
         "*n8n*" {
             # Corrections JSON workflows
+
             if ($File -like "*.json") {
                 try {
                     $json = Get-Content $File -Raw | ConvertFrom-Json
@@ -751,6 +791,7 @@ function Invoke-EmailSenderAutoFix {
                     $fixed++
                 } catch {
                     # Ignore malformed JSON
+
                 }
             }
         }
@@ -758,16 +799,17 @@ function Invoke-EmailSenderAutoFix {
     
     return $fixed
 }
-```
-
+```plaintext
 **ROI EMAIL_SENDER_1:** Réduit 400 erreurs à 50-80 erreurs critiques par couche
 
 ---
 
 ## 🎯 **Algorithme 5: EMAIL_SENDER_1 Auto-Fix Pattern Matching**
+
 *"Fix EMAIL_SENDER_1 repetitive errors automatically"*
 
 ### Patterns d'auto-correction EMAIL_SENDER_1:
+
 ```go
 // File: tools/debug/email_sender_auto_fixer.go
 package debug
@@ -839,6 +881,7 @@ var EmailSenderAutoFixRules = []EmailSenderFixRule{
     {
         Pattern:     regexp.MustCompile(`\$(\w+)\s+=\s+\$(\w+)\.(\w+)\s+\|\s+Out-Null`),
         Replacement: `$1 = $2.$3 | Out-Null # EMAIL_SENDER_1 fixed`,
+
         Description: "Fix PowerShell pipeline syntax",
         Safe:        true,
         Component:   PowerShellScript,
@@ -847,6 +890,7 @@ var EmailSenderAutoFixRules = []EmailSenderFixRule{
     {
         Pattern:     regexp.MustCompile(`Write-Host\s+"(.+)"\s+-ForegroundColor\s+(\w+)`),
         Replacement: `Write-Host "$1" -ForegroundColor $2 # EMAIL_SENDER_1 standardized`,
+
         Description: "Standardize Write-Host formatting",
         Safe:        true,
         Component:   PowerShellScript,
@@ -857,6 +901,7 @@ var EmailSenderAutoFixRules = []EmailSenderFixRule{
     {
         Pattern:     regexp.MustCompile(`(\s+)version:\s*"?3"?`),
         Replacement: `$1version: "3.8" # EMAIL_SENDER_1 docker-compose version`,
+
         Description: "Fix docker-compose version",
         Safe:        true,
         Component:   ConfigFiles,
@@ -865,6 +910,7 @@ var EmailSenderAutoFixRules = []EmailSenderFixRule{
     {
         Pattern:     regexp.MustCompile(`(\s+)ports:\s*\n\s+-\s+"(\d+)"`),
         Replacement: `$1ports:\n$1  - "$2:$2" # EMAIL_SENDER_1 port mapping`,
+
         Description: "Fix port mapping format",
         Safe:        true,
         Component:   ConfigFiles,
@@ -882,6 +928,7 @@ func AutoFixEmailSenderFile(filename string, component EmailSenderComponent) (in
     newContent := string(content)
     
     # Détermine le langage du fichier
+
     var language string
     switch {
     case strings.HasSuffix(filename, ".go"):
@@ -897,11 +944,13 @@ func AutoFixEmailSenderFile(filename string, component EmailSenderComponent) (in
     }
     
     # Applique les règles appropriées
+
     for _, rule := range EmailSenderAutoFixRules {
         if rule.Safe && (rule.Component == component || component == "") && rule.Language == language {
             matches := rule.Pattern.FindAllStringSubmatch(newContent, -1)
             for _, match := range matches {
                 # Apply fix
+
                 oldLine := match[0]
                 newLine := rule.Pattern.ReplaceAllString(oldLine, rule.Replacement)
                 newContent = strings.Replace(newContent, oldLine, newLine, 1)
@@ -921,11 +970,12 @@ func AutoFixEmailSenderFile(filename string, component EmailSenderComponent) (in
 
 func generateRandomId() string {
     # Génère un ID aléatoire pour les nodes n8n
+
     return fmt.Sprintf("node-%d", time.Now().UnixNano()%100000)
 }
-```
-
+```plaintext
 ### Script d'auto-correction massive EMAIL_SENDER_1:
+
 ```powershell
 # File: tools/debug/Auto-Fix-EmailSenderErrors.ps1
 
@@ -969,6 +1019,7 @@ $filesProcessed = 0
 $componentStats = @{}
 
 # Filtre les composants à traiter
+
 $componentsToProcess = if ($Components -contains "all") { 
     $emailSenderFilePatterns.Keys 
 } else { 
@@ -997,9 +1048,11 @@ foreach ($componentName in $componentsToProcess) {
                 
                 if ($DryRun) {
                     # Simulation uniquement
+
                     $fixCount = go run tools/debug/email_sender_auto_fixer.go -file $file.FullName -component $componentName -dry-run
                 } else {
                     # Application réelle des corrections EMAIL_SENDER_1
+
                     $fixCount = go run tools/debug/email_sender_auto_fixer.go -file $file.FullName -component $componentName
                 }
                 
@@ -1026,6 +1079,7 @@ Write-Host "Fichiers traités: $filesProcessed"
 Write-Host "Corrections appliquées: $totalFixed"
 
 # Statistiques par composant
+
 Write-Host "`n📈 DÉTAIL PAR COMPOSANT EMAIL_SENDER_1:" -ForegroundColor Cyan
 $componentStats.GetEnumerator() | Sort-Object {$_.Value.Fixed} -Descending | ForEach-Object {
     $name = $_.Key
@@ -1049,16 +1103,17 @@ if ($DryRun) {
     Write-Host "`n🎉 Auto-correction EMAIL_SENDER_1 terminée!" -ForegroundColor Green
     Write-Host "Recommandation: Exécuter les tests pour valider les corrections"
 }
-```
-
+```plaintext
 **ROI EMAIL_SENDER_1:** Fix automatique de 30-50% des erreurs répétitives multi-stack
 
 ---
 
 ## 🎯 **Algorithme 6: EMAIL_SENDER_1 Static Analysis Pipeline**
+
 *"Pipeline de validation multi-stack adapté à EMAIL_SENDER_1"*
 
 ### Implémentation spécialisée EMAIL_SENDER_1:
+
 ```go
 // File: tools/debug/email_sender_analysis_pipeline.go
 package debug
@@ -1149,9 +1204,9 @@ func RunEmailSenderAnalysisPipeline() (*EmailSenderAnalysisReport, error) {
     
     return report, nil
 }
-```
-
+```plaintext
 ### Script PowerShell orchestrateur EMAIL_SENDER_1:
+
 ```powershell
 # File: tools/debug/Invoke-EmailSenderAnalysisPipeline.ps1
 
@@ -1165,6 +1220,7 @@ param(
 Write-Host "🔬 PIPELINE D'ANALYSE EMAIL_SENDER_1 MULTI-STACK" -ForegroundColor Cyan
 
 # Installation automatique des outils manquants pour EMAIL_SENDER_1
+
 if ($InstallMissing) {
     $emailSenderTools = @{
         "staticcheck" = "honnef.co/go/tools/cmd/staticcheck@latest"
@@ -1191,11 +1247,13 @@ if ($InstallMissing) {
 }
 
 # Exécution du pipeline EMAIL_SENDER_1
+
 Write-Host "`n🔍 Démarrage analyse EMAIL_SENDER_1..." -ForegroundColor Green
 $results = go run tools/debug/email_sender_analysis_pipeline.go -components $($Components -join ",")
 $analysisData = $results | ConvertFrom-Json
 
 # Affichage résultats par composant EMAIL_SENDER_1
+
 Write-Host "`n📊 RÉSULTATS PAR COMPOSANT EMAIL_SENDER_1:" -ForegroundColor Magenta
 $analysisData.ComponentStats.PSObject.Properties | ForEach-Object {
     $component = $_.Name
@@ -1210,10 +1268,12 @@ $analysisData.ComponentStats.PSObject.Properties | ForEach-Object {
 }
 
 # Auto-correction spécialisée EMAIL_SENDER_1
+
 if ($AutoFix -and $analysisData.Summary.TotalErrors -gt 0) {
     Write-Host "`n🔧 AUTO-CORRECTION EMAIL_SENDER_1..." -ForegroundColor Blue
     
     # Corrections Go RAG Engine
+
     if ($analysisData.ComponentStats.RAGEngine.TotalErrors -gt 0) {
         Write-Host "  🔧 Correction RAG Engine..." -ForegroundColor Cyan
         go fmt ./src/rag/...
@@ -1221,12 +1281,14 @@ if ($AutoFix -and $analysisData.Summary.TotalErrors -gt 0) {
     }
     
     # Corrections n8n Workflows
+
     if ($analysisData.ComponentStats.N8NWorkflow.TotalErrors -gt 0) {
         Write-Host "  🔧 Correction n8n Workflows..." -ForegroundColor Cyan
         npx prettier --write "workflows/**/*.json"
     }
     
     # Corrections PowerShell Scripts
+
     if ($analysisData.ComponentStats.PowerShellScript.TotalErrors -gt 0) {
         Write-Host "  🔧 Correction PowerShell Scripts..." -ForegroundColor Cyan
         Get-ChildItem -Path "scripts/" -Filter "*.ps1" -Recurse | ForEach-Object {
@@ -1244,9 +1306,13 @@ if ($GenerateReport) {
 <style>
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; }
     h1 { color: #2E7BE4; }
+
     .component { margin: 20px 0; padding: 15px; border-left: 4px solid #2E7BE4; background: #f8f9fa; }
+
     .error { color: #dc3545; font-weight: bold; }
+
     .success { color: #28a745; font-weight: bold; }
+
 </style>
 "@ | Out-File $reportPath
     
@@ -1258,9 +1324,11 @@ if ($GenerateReport) {
 ---
 
 ## 🎯 **Algorithme 7: EMAIL_SENDER_1 Configuration Validator**
+
 *"Validation systématique des configurations EMAIL_SENDER_1"*
 
 ### Architecture de validation EMAIL_SENDER_1:
+
 ```powershell
 # File: tools/debug/Validate-EmailSenderConfigurations.ps1
 
@@ -1327,6 +1395,7 @@ foreach ($pattern in $emailSenderConfigFiles.Keys) {
         $componentHealth[$component].Files++
         
         # Validation spécialisée EMAIL_SENDER_1
+
         switch -Wildcard ($pattern) {
             "*.yml" {
                 $result = yamllint $file.FullName 2>&1
@@ -1360,6 +1429,7 @@ foreach ($pattern in $emailSenderConfigFiles.Keys) {
             
             "*email-sender-*.json" {
                 # Validation spécialisée workflows EMAIL_SENDER_1
+
                 try {
                     $workflowContent = Get-Content $file.FullName -Raw | ConvertFrom-Json
                     $emailSenderNodes = $workflowContent.nodes | Where-Object { $_.type -match "email|gmail|notion" }
@@ -1370,6 +1440,7 @@ foreach ($pattern in $emailSenderConfigFiles.Keys) {
                     }
                     
                     # Vérification connexions EMAIL_SENDER_1
+
                     $emailSenderConnections = $workflowContent.connections | Where-Object { 
                         $_.source -in $emailSenderNodes.name -or $_.destination -in $emailSenderNodes.name 
                     }
@@ -1392,10 +1463,12 @@ foreach ($pattern in $emailSenderConfigFiles.Keys) {
                     Write-Host "    ❌ $($analysis.Count) erreurs PowerShell EMAIL_SENDER_1" -ForegroundColor Red
                     
                     # Auto-correction PowerShell spécialisée EMAIL_SENDER_1
+
                     if ($AutoFix) {
                         $fixableErrors = $analysis | Where-Object { $_.RuleName -in @("PSAvoidUsingCmdletAliases", "PSUseDeclaredVarsMoreThanAssignments") }
                         if ($fixableErrors.Count -gt 0) {
                             # Appliquer corrections automatiques
+
                             $fixedPS = Invoke-EmailSenderPowerShellAutoFix -Path $file.FullName -Errors $fixableErrors
                             $componentHealth[$component].Fixed += $fixedPS
                             Write-Host "    🔧 $fixedPS erreurs PowerShell EMAIL_SENDER_1 corrigées" -ForegroundColor Blue
@@ -1408,6 +1481,7 @@ foreach ($pattern in $emailSenderConfigFiles.Keys) {
 }
 
 # Rapport final par composant EMAIL_SENDER_1
+
 Write-Host "`n📊 BILAN VALIDATION EMAIL_SENDER_1 PAR COMPOSANT:" -ForegroundColor Magenta
 $componentHealth.GetEnumerator() | ForEach-Object {
     $component = $_.Key
@@ -1425,9 +1499,9 @@ $componentHealth.GetEnumerator() | ForEach-Object {
 Write-Host "`nTotal erreurs EMAIL_SENDER_1: $totalErrors"
 Write-Host "Erreurs auto-fixées: $fixedErrors"
 Write-Host "Erreurs restantes: $($totalErrors - $fixedErrors)"
-```
-
+```plaintext
 ### Fonction helper pour YAML:
+
 ```powershell
 function Remove-DuplicateYamlKeys {
     param([string]$FilePath)
@@ -1457,13 +1531,13 @@ function Remove-DuplicateYamlKeys {
     
     return $fixed
 }
-```
-
+```plaintext
 **ROI:** Corrige 70% des erreurs de configuration automatiquement
 
 ---
 
 ## 🎯 **Algorithme 8: Dependency Resolution Matrix** *(Amélioré de Grok)*
+
 *"Smart dependency management with conflict resolution"*
 
 ```go
@@ -1538,9 +1612,9 @@ func ResolveDependencyConflicts(matrix *DependencyMatrix) []string {
     
     return resolutions
 }
-```
-
+```plaintext
 ### Script de résolution automatique:
+
 ```powershell
 # File: tools/debug/Resolve-DependencyConflicts.ps1
 
@@ -1549,6 +1623,7 @@ param([switch]$AutoResolve = $false)
 Write-Host "🔗 RÉSOLUTION MATRICE DÉPENDANCES" -ForegroundColor Cyan
 
 # Analyse des dépendances
+
 $analysis = go run tools/debug/dependency_resolver.go -gomod "go.mod"
 $matrix = $analysis | ConvertFrom-Json
 
@@ -1583,6 +1658,7 @@ if ($matrix.Missing.Count -gt 0) {
 }
 
 # Validation finale
+
 if ($AutoResolve) {
     Write-Host "`n✅ VALIDATION POST-RÉSOLUTION:" -ForegroundColor Green
     go mod tidy
@@ -1594,8 +1670,7 @@ if ($AutoResolve) {
         Write-Host "❌ Conflits persistants - intervention manuelle requise" -ForegroundColor Red
     }
 }
-```
-
+```plaintext
 **ROI:** Résout 80% des conflits de dépendances automatiquement
 
 ---
@@ -1603,38 +1678,51 @@ if ($AutoResolve) {
 ## 🚀 **Plan d'Action URGENCE EMAIL_SENDER_1 - 400+ Erreurs**
 
 ### Phase 1: Triage & Isolation EMAIL_SENDER_1 (45 min)
+
 ```powershell
 # Classification et isolation des erreurs EMAIL_SENDER_1
-./tools/debug/Invoke-EmailSenderErrorTriage.ps1          # Algorithme 1 - Classification
-./tools/debug/Find-FailingEmailSenderComponents.ps1      # Algorithme 2 - Isolation binaire
-./tools/debug/Find-EmailSenderCircularDependencies.ps1   # Algorithme 3 - Analyse dépendances
-```
 
+./tools/debug/Invoke-EmailSenderErrorTriage.ps1          # Algorithme 1 - Classification
+
+./tools/debug/Find-FailingEmailSenderComponents.ps1      # Algorithme 2 - Isolation binaire
+
+./tools/debug/Find-EmailSenderCircularDependencies.ps1   # Algorithme 3 - Analyse dépendances
+
+```plaintext
 ### Phase 2: Auto-Fix Massif EMAIL_SENDER_1 (90 min)  
+
 ```powershell
 # Correction automatique multi-stack
-./tools/debug/Auto-Fix-EmailSenderErrors.ps1 -DryRun:$true    # Preview corrections
-./tools/debug/Auto-Fix-EmailSenderErrors.ps1                  # Algorithme 5 - Auto-fix
-./tools/debug/Resolve-DependencyConflicts.ps1 -AutoResolve    # Algorithme 8 - Dépendances
-```
 
+./tools/debug/Auto-Fix-EmailSenderErrors.ps1 -DryRun:$true    # Preview corrections
+
+./tools/debug/Auto-Fix-EmailSenderErrors.ps1                  # Algorithme 5 - Auto-fix
+
+./tools/debug/Resolve-DependencyConflicts.ps1 -AutoResolve    # Algorithme 8 - Dépendances
+
+```plaintext
 ### Phase 3: Build Progressif EMAIL_SENDER_1 (120 min)
+
 ```powershell
 # Build par couches avec validation
-./tools/debug/Progressive-EmailSenderBuild.ps1 -AutoFix       # Algorithme 4 - Build progressif
-./tools/debug/Invoke-EmailSenderAnalysisPipeline.ps1          # Algorithme 6 - Analysis Pipeline
-./tools/debug/Validate-EmailSenderConfigurations.ps1 -AutoFix # Algorithme 7 - Config validator
-```
 
+./tools/debug/Progressive-EmailSenderBuild.ps1 -AutoFix       # Algorithme 4 - Build progressif
+
+./tools/debug/Invoke-EmailSenderAnalysisPipeline.ps1          # Algorithme 6 - Analysis Pipeline
+
+./tools/debug/Validate-EmailSenderConfigurations.ps1 -AutoFix # Algorithme 7 - Config validator
+
+```plaintext
 ### Phase 4: Validation & Report EMAIL_SENDER_1 (30 min)
+
 ```powershell
 # Tests et rapport final EMAIL_SENDER_1
+
 go test ./src/rag/... -v
 go test ./src/notion/... -v  
 npx n8n execute --workflow --test
 ./tools/debug/Generate-ConsolidatedEmailSenderReport.ps1
-```
-
+```plaintext
 ---
 
 ## 📊 **ROI Complet: Algorithmes Debug EMAIL_SENDER_1**
@@ -1651,6 +1739,7 @@ npx n8n execute --workflow --test
 ## 🏆 **Avantages Algorithmes EMAIL_SENDER_1**
 
 ### 🎯 **Spécialisation Multi-Stack:**
+
 1. **Classification intelligente** par composant (RAG, n8n, Notion, Gmail, PowerShell)
 2. **Isolation binaire** adaptée à l'architecture EMAIL_SENDER_1
 3. **Auto-fix patterns** spécialisés pour chaque langage/technologie
@@ -1658,12 +1747,14 @@ npx n8n execute --workflow --test
 5. **Pipeline d'analyse** multi-outils intégré
 
 ### 📈 **ROI Optimisé EMAIL_SENDER_1:**
+
 - **85-95% détection précoce** des erreurs multi-stack
 - **70-90% auto-correction** des erreurs répétitives  
 - **4h45 résolution** au lieu de 2-3 jours manuels
 - **Focus intelligent** sur les composants critiques (RAG Engine, Config)
 
 ### 🔧 **Innovation Technique:**
+
 - **Premier système** de debug spécialisé multi-stack Go+TypeScript+PowerShell
 - **Algorithmes adaptatifs** selon l'architecture EMAIL_SENDER_1
 - **Validation croisée** entre composants
@@ -1672,6 +1763,7 @@ npx n8n execute --workflow --test
 ## 🏆 **Synthèse Complète EMAIL_SENDER_1**
 
 ### 📋 **8 Algorithmes Intégrés:**
+
 1. **🔍 Error Triage & Classification** - Catégorisation intelligente multi-stack
 2. **🎯 Binary Search Debug** - Isolation systématique des composants défaillants  
 3. **🔗 Dependency Graph Analysis** - Résolution des cycles inter-composants
@@ -1682,12 +1774,14 @@ npx n8n execute --workflow --test
 8. **📊 Dependency Resolution Matrix** - Gestion intelligente des conflits
 
 ### 🎯 **Spécialisation EMAIL_SENDER_1 Unique:**
+
 - **Architecture hybride** : Go + TypeScript + PowerShell + YAML/JSON
 - **5 composants intégrés** : RAG Engine, n8n Workflows, Notion API, Gmail Processing, PowerShell Scripts
 - **Validation croisée** entre technologies
 - **Auto-correction adaptative** selon le contexte
 
 ### 📈 **Performance Exceptionnelle:**
+
 - **400+ erreurs → 50 erreurs critiques** en 4h45
 - **80-135% de résolution** (sur-performance due aux corrections en cascade)
 - **85-95% détection précoce** des problèmes systémiques

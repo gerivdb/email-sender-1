@@ -23,8 +23,7 @@ Ce répertoire contient des outils pour gérer et mettre à jour les fichiers de
 
 ```powershell
 .\Install-RoadmapCheckCommand.ps1
-```
-
+```plaintext
 ## Utilisation
 
 ### Interface utilisateur
@@ -33,8 +32,7 @@ Ce répertoire contient des outils pour gérer et mettre à jour les fichiers de
 
 ```powershell
 .\Invoke-RoadmapCheck.ps1
-```
-
+```plaintext
 2. Sélectionnez un fichier de roadmap dans la boîte de dialogue.
 3. Sélectionnez les lignes à vérifier dans la liste (utilisez Ctrl ou Shift pour sélectionner plusieurs lignes).
 4. Cliquez sur OK pour exécuter la vérification.
@@ -45,14 +43,12 @@ Vous pouvez également exécuter le script `Update-RoadmapStatus.ps1` directemen
 
 ```powershell
 .\Update-RoadmapStatus.ps1 -RoadmapPath ".\Roadmap\roadmap_complete_converted.md" -LineNumbers 42,43,44
-```
-
+```plaintext
 Ou en spécifiant les identifiants des tâches :
 
 ```powershell
 .\Update-RoadmapStatus.ps1 -RoadmapPath ".\Roadmap\roadmap_complete_converted.md" -TaskIds "2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.2","2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.3"
-```
-
+```plaintext
 ### VS Code
 
 Après avoir installé la commande, vous pouvez l'exécuter dans VS Code en appuyant sur `Ctrl+Alt+C` ou en ouvrant la palette de commandes (`Ctrl+Shift+P`) et en tapant `roadmap.check`.
@@ -73,8 +69,7 @@ Pour tester le fonctionnement du mode CHECK, exécutez le script de test :
 
 ```powershell
 .\Test-RoadmapCheck.ps1
-```
-
+```plaintext
 Ce script crée un fichier de roadmap de test, exécute le script de mise à jour de la roadmap, et vérifie que les tâches sont correctement mises à jour.
 
 ## Dépendances

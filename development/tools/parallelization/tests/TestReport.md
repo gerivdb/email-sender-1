@@ -14,9 +14,11 @@ Ce rapport présente les résultats des tests de robustesse effectués sur la fo
 ## 1. Test de la précision du délai adaptatif
 
 ### Objectif
+
 Vérifier que le délai adaptatif s'ajuste correctement en fonction de la charge et améliore les performances.
 
 ### Méthode
+
 - Tests avec différents délais initiaux (10ms, 50ms, 100ms)
 - Mesure de l'impact sur l'utilisation CPU
 - Mesure de l'impact sur le temps d'exécution
@@ -30,6 +32,7 @@ Vérifier que le délai adaptatif s'ajuste correctement en fonction de la charge
 | 100 ms | 47.22% | 19.34% | 59.03% | 611 ms | 708 ms | -15.87% |
 
 ### Conclusions
+
 - Le délai adaptatif améliore significativement l'utilisation CPU pour les délais moyens et longs
 - Pour les délais courts, le délai adaptatif peut augmenter légèrement l'utilisation CPU mais améliore considérablement le temps d'exécution
 - Le délai optimal dépend de la priorité (CPU vs temps d'exécution)
@@ -37,9 +40,11 @@ Vérifier que le délai adaptatif s'ajuste correctement en fonction de la charge
 ## 2. Test de la stabilité avec un nombre variable de runspaces
 
 ### Objectif
+
 Vérifier que Wait-ForCompletedRunspace fonctionne correctement avec différents nombres de runspaces.
 
 ### Méthode
+
 - Tests avec différents nombres de runspaces (10, 50, 100, 500)
 - Mesure du temps d'exécution et de l'utilisation des ressources
 - Vérification de la stabilité et de la fiabilité
@@ -54,6 +59,7 @@ Vérifier que Wait-ForCompletedRunspace fonctionne correctement avec différents
 | 500 | 3,542 ms | 1,562.50 ms | 15.67 MB | 100% |
 
 ### Conclusions
+
 - Wait-ForCompletedRunspace est stable avec différents nombres de runspaces
 - Les performances se dégradent de manière prévisible avec l'augmentation du nombre de runspaces
 - La taille de lot optimale varie en fonction du nombre de runspaces
@@ -61,9 +67,11 @@ Vérifier que Wait-ForCompletedRunspace fonctionne correctement avec différents
 ## 3. Test de la gestion des erreurs et des cas limites
 
 ### Objectif
+
 Vérifier que Wait-ForCompletedRunspace gère correctement les erreurs et les cas limites.
 
 ### Méthode
+
 - Tests avec des entrées invalides (null, vide, invalide)
 - Tests avec des runspaces qui génèrent des erreurs
 - Tests avec des timeouts
@@ -82,19 +90,23 @@ Vérifier que Wait-ForCompletedRunspace gère correctement les erreurs et les ca
 | Grand nombre de runspaces | Traitement correct | Traitement correct | ✅ |
 
 ### Problèmes identifiés
+
 - Problèmes d'exécution des tests Pester formels
 - Les tests manuels ont confirmé le bon fonctionnement
 
 ### Conclusions
+
 - Wait-ForCompletedRunspace gère correctement les erreurs et les cas limites
 - Des améliorations sont nécessaires pour les tests automatisés
 
 ## 4. Test de la compatibilité avec différentes versions de PowerShell
 
 ### Objectif
+
 Vérifier que Wait-ForCompletedRunspace fonctionne correctement sur PowerShell 5.1 et 7.x.
 
 ### Méthode
+
 - Analyse du code pour identifier les fonctionnalités spécifiques à PowerShell 7.x
 - Tests sur PowerShell 7.x
 - Création d'une version compatible avec PowerShell 5.1
@@ -107,21 +119,25 @@ Vérifier que Wait-ForCompletedRunspace fonctionne correctement sur PowerShell 5
 | Module complet | ❌ | ✅ |
 
 ### Problèmes identifiés
+
 - Le module complet utilise des fonctionnalités spécifiques à PowerShell 7.x (ForEach-Object -Parallel, ThrottleLimit)
 - La fonction Wait-ForCompletedRunspace elle-même est compatible avec PowerShell 5.1
 
 ### Conclusions
+
 - Wait-ForCompletedRunspace est compatible avec PowerShell 5.1 et 7.x
 - Pour utiliser le module complet sur PowerShell 5.1, une version compatible a été créée
 
 ## Recommandations
 
 ### 1. Délai adaptatif
+
 - Utiliser un délai initial de 50-100 ms pour optimiser l'utilisation CPU
 - Utiliser un délai initial de 10-20 ms pour optimiser le temps d'exécution
 - Ajuster le délai en fonction de la priorité (CPU vs temps d'exécution)
 
 ### 2. Taille de lot
+
 - Pour un petit nombre de runspaces (<= 50): Utiliser une taille de lot de 20
 - Pour un grand nombre de runspaces (> 50): Utiliser une taille de lot de 10-20
 - Ajuster la taille de lot en fonction du nombre de runspaces:
@@ -130,11 +146,13 @@ Vérifier que Wait-ForCompletedRunspace fonctionne correctement sur PowerShell 5
   ```
 
 ### 3. Gestion des erreurs
+
 - Améliorer la documentation sur la gestion des erreurs
 - Ajouter des exemples de code pour gérer les erreurs courantes
 - Améliorer les tests automatisés pour la gestion des erreurs
 
 ### 4. Compatibilité PowerShell 5.1
+
 - Utiliser la version compatible PS5.1 pour les environnements PowerShell 5.1
 - Utiliser une détection de version pour charger la version appropriée du module
 - Documenter les limitations et les contournements

@@ -1,4 +1,4 @@
-﻿# env
+# env
 
 Configuration d'environnement
 

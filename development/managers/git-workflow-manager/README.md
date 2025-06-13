@@ -17,7 +17,7 @@ The GitWorkflowManager is a comprehensive solution for managing Git workflows in
 
 ## Architecture
 
-```
+```plaintext
 GitWorkflowManager
 ├── Internal Managers
 │   ├── BranchManager - Git branch operations
@@ -31,21 +31,18 @@ GitWorkflowManager
 │   └── CustomWorkflow - User-defined workflow patterns
 ├── Configuration - YAML-based configuration management
 └── Tests - Comprehensive test suite
-```
-
+```plaintext
 ## Installation
 
 1. Add the module to your project:
 ```bash
 go mod init your-project
 go get github.com/email-sender/git-workflow-manager
-```
-
+```plaintext
 2. Install dependencies:
 ```bash
 go mod tidy
-```
-
+```plaintext
 ## Quick Start
 
 ### Basic Usage
@@ -118,8 +115,7 @@ func main() {
     
     log.Printf("Created pull request: %d", prID)
 }
-```
-
+```plaintext
 ## Workflows
 
 ### GitFlow Workflow
@@ -138,8 +134,7 @@ err = gitflow.CreateFeatureBranch(ctx, "user-authentication")
 
 // Finish feature (creates PR to develop)
 err = gitflow.FinishFeature(ctx, "user-authentication")
-```
-
+```plaintext
 **Branch Conventions:**
 - `feature/*` - Feature branches from `develop`
 - `release/*` - Release branches from `develop`
@@ -161,8 +156,7 @@ prID, err := githubFlow.CreatePullRequest(ctx, "add-user-profile", "Add user pro
 
 // Deploy branch (triggers webhooks)
 err = githubFlow.DeployBranch(ctx, "add-user-profile")
-```
-
+```plaintext
 ### Feature Branch Workflow
 
 A flexible workflow that allows various branch types with automated cleanup.
@@ -182,8 +176,7 @@ err = featureBranch.CreateTaskBranch(ctx, "TASK-123", "update documentation")
 
 // Cleanup stale branches
 err = featureBranch.CleanupStaleBranches(ctx)
-```
-
+```plaintext
 ### Custom Workflow
 
 Define your own workflow patterns with custom rules and conventions.
@@ -210,8 +203,7 @@ customWorkflow, err := factory.CreateWorkflow(interfaces.CustomWorkflow, customC
 // Add custom patterns
 err = customWorkflow.SetBranchPattern("epic", `^epic/[A-Z]+-\d+-.+$`)
 customWorkflow.SetMergeRule("epic/*", []string{"develop"})
-```
-
+```plaintext
 ## Configuration
 
 ### YAML Configuration
@@ -227,6 +219,7 @@ repository:
 
 workflow:
   type: "gitflow" # gitflow, githubflow, feature-branch, custom
+
   default_branch: "main"
   protected_branches:
     - "main"
@@ -288,8 +281,7 @@ logging:
   level: "info"
   format: "json"
   output: "stdout"
-```
-
+```plaintext
 ### Programmatic Configuration
 
 ```go
@@ -309,8 +301,7 @@ config := map[string]interface{}{
         },
     },
 }
-```
-
+```plaintext
 ## API Reference
 
 ### GitWorkflowManager Interface
@@ -358,8 +349,7 @@ type GitWorkflowManager interface {
     ValidateWorkflow() error
     GetWorkflowStatus() (WorkflowStatus, error)
 }
-```
-
+```plaintext
 ### Workflow Interface
 
 ```go
@@ -368,26 +358,28 @@ type Workflow interface {
     GetBranchingStrategy() string
     ValidateBranchName(branchName string) error
 }
-```
-
+```plaintext
 ## Testing
 
 ### Running Tests
 
 ```bash
 # Run unit tests
+
 go test ./...
 
 # Run tests with coverage
+
 go test -cover ./...
 
 # Run integration tests
+
 go test -tags=integration ./...
 
 # Run benchmarks
-go test -bench=. ./...
-```
 
+go test -bench=. ./...
+```plaintext
 ### Example Test
 
 ```go
@@ -415,8 +407,7 @@ func TestGitWorkflowManager(t *testing.T) {
         t.Errorf("Valid branch name failed validation: %v", err)
     }
 }
-```
-
+```plaintext
 ## Error Handling
 
 The GitWorkflowManager provides comprehensive error handling:
@@ -441,8 +432,7 @@ if err != nil {
         log.Printf("Unknown error: %v", err)
     }
 }
-```
-
+```plaintext
 ## Webhooks
 
 ### Configuration
@@ -459,8 +449,7 @@ webhooks:
         "X-Custom-Header": "value"
   timeout: 30
   retries: 3
-```
-
+```plaintext
 ### Usage
 
 ```go
@@ -475,8 +464,7 @@ webhook := interfaces.WebhookPayload{
 }
 
 err := manager.SendWebhook(ctx, webhook)
-```
-
+```plaintext
 ## Integration Examples
 
 ### CI/CD Integration
@@ -497,8 +485,7 @@ func handlePushEvent(ctx context.Context, manager interfaces.GitWorkflowManager,
         manager.SendWebhook(ctx, webhook)
     }
 }
-```
-
+```plaintext
 ### Slack Integration
 
 ```go
@@ -513,8 +500,7 @@ func setupSlackWebhook(manager interfaces.GitWorkflowManager) {
     
     manager.RegisterWebhook(context.Background(), endpoint)
 }
-```
-
+```plaintext
 ## Best Practices
 
 1. **Branch Naming**: Use consistent, descriptive branch names that follow your workflow conventions
@@ -543,8 +529,7 @@ config["logging"] = map[string]interface{}{
     "level": "debug",
     "format": "text",
 }
-```
-
+```plaintext
 ## Contributing
 
 1. Fork the repository

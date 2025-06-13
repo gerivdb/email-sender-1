@@ -3,21 +3,37 @@
 ## Table des matières
 
 1. [Intégrations Notables dans n8n (Applications et Services)](#section-1)
+
     1.1. [Nœud Slack (Envoi de Message)](#section-2)
+
         1.1.1. [Exemple : Publier un message dans un canal](#section-3)
+
     1.2. [Nœud Google Sheets](#section-4)
+
         1.2.1. [Exemple : Ajouter une nouvelle ligne de données à une feuille](#section-5)
+
     1.3. [Nœud Notion](#section-6)
+
         1.3.1. [Exemple : Interroger une base de données Notion pour les pages correspondant à un filtre](#section-7)
+
     1.4. [Nœud GitHub](#section-8)
+
         1.4.1. [Exemple : Créer un nouveau problème dans un dépôt GitHub](#section-9)
+
     1.5. [Nœuds de Base de Données (MySQL, Postgres, etc.)](#section-10)
+
         1.5.1. [Exemple : Utilisation du nœud MySQL pour exécuter une requête](#section-11)
+
     1.6. [Autres Intégrations](#section-12)
+
         1.6.1. [Expressions](#section-13)
+
         1.6.2. [Identifiants](#section-14)
+
         1.6.3. [IDs et Position des Nœuds](#section-15)
+
         1.6.4. [Connexion des Nœuds](#section-16)
+
         1.6.5. [Test et Itération](#section-17)
 
 ## 1. Intégrations Notables dans n8n (Applications et Services) <a name='section-1'></a>
@@ -45,8 +61,7 @@ Le nœud Slack vous permet de publier des messages, d'obtenir des informations s
     "slackApi": {
       "name": "Slack OAuth2"
     }
-```
-
+```plaintext
 **Explication :** Cela enverra le texte "Hello from n8n 🎉" au canal Slack spécifié. Nous avons choisi `resource: "message"` et `operation: "send"`. Les nœuds Slack ont souvent plusieurs ressources comme message, channel, etc. Le canal peut être l'ID du canal Slack ou son nom (si vous utilisez le nom, assurez-vous que l'identifiant a les autorisations appropriées pour le trouver).
 
 Les credentials pointent vers un identifiant OAuth2 Slack (avec des autorisations comme chat:write, etc. selon les besoins). Si vous souhaitez utiliser des blocs ou des pièces jointes, le nœud Slack permet un mode JSON pour ces champs (`jsonParameters: true` et fournir un objet JSON pour attachments ou blocks).
@@ -76,8 +91,7 @@ Ce nœud s'intègre à Google Sheets pour lire ou écrire des données de feuill
   "credentials": {
     "googleSheetsOAuth2Api": {
       "name": "Google Sheets OAuth2"
-```
-
+```plaintext
 **Explication :** Cette configuration est configurée pour ajouter une nouvelle ligne à la feuille nommée "Sheet1" dans le document Google Sheets avec l'ID donné. Nous avons utilisé `dataMode: "autoMap"`, ce qui signifie que le nœud mappera automatiquement les champs entrants aux colonnes avec le même nom d'en-tête.
 
 Par exemple, si les éléments entrants ont un JSON comme `{ "Name": "Alice", "Email": "alice@example.com" }`, et que la feuille Google a des colonnes "Name" et "Email", ces valeurs seront placées en conséquence.
@@ -112,8 +126,7 @@ Le nœud Notion se connecte à l'API de Notion, vous permettant de créer ou de 
   "credentials": {
     "notionApi": {
       "name": "Notion API"
-```
-
+```plaintext
 **Explication :** Cela récupérera toutes les pages de la base de données Notion spécifiée où la propriété Email est égale à la valeur `$json["email"]` du nœud précédent. Dans l'API de Notion, les filtres peuvent être complexes ; ici, nous avons utilisé un filtre à condition unique sur une propriété Email.
 
 La clé est formatée comme `PropertyName|propertyType` dans le nœud (le nœud Notion a besoin du type de propriété pour formater correctement le filtre, d'où "Email|email"). Le nœud Notion prend en charge la création de pages (vous spécifieriez les propriétés à définir), la mise à jour de pages, la recherche, etc.
@@ -150,8 +163,7 @@ Ce nœud permet des interactions avec GitHub, comme la création de problèmes, 
     "githubApi": {
       "name": "GitHub personal access token"
     }
-```
-
+```plaintext
 **Explication :** Ce nœud utilise le nœud GitHub pour créer un problème dans le dépôt octocat/Hello-World. L'identifiant githubApi doit être un Personal Access Token avec des autorisations repo (ou un jeton d'application OAuth). Le nœud pourrait également mettre à jour ou lire des problèmes (différentes opérations), lister les commits (`resource: "repository", operation: "getCommits"` par exemple), gérer les pull requests, etc.
 
 La sortie pour les opérations de création contient généralement les données de l'objet créé (détails du problème, y compris son numéro, URL, etc.). C'est utile pour l'automatisation comme la journalisation des erreurs ou des TODOs en tant que problèmes GitHub, ou la publication de notes de déploiement dans un dépôt.
@@ -176,8 +188,7 @@ n8n inclut des nœuds pour les bases de données populaires comme MySQL, Postgre
     "mySql": {
       "name": "My MySQL DB"
     }
-```
-
+```plaintext
 **Explication :** Cela exécutera la requête SQL donnée sur la base de données MySQL connectée (en utilisant les identifiants nommés "My MySQL DB"). Nous avons utilisé une expression pour injecter un user_id entrant dans la requête. Le résultat sera retourné sous forme d'éléments (chaque ligne comme un élément avec des colonnes comme champs).
 
 Vous pourriez également utiliser `operation: insert` et spécifier la table et les données de colonne de manière structurée, mais souvent le SQL brut (avec executeQuery ou execute) est le plus simple pour les opérations complexes. Assurez-vous que vos requêtes sont sécurisées (si vous utilisez des expressions, assurez-vous qu'elles sont assainies ou ne proviennent pas directement de l'entrée utilisateur pour éviter l'injection SQL).
@@ -223,8 +234,7 @@ Dans le JSON du workflow, il y a un objet "connections" qui relie les sorties de
   "GraphQL": { "main": [ [ { "node": "Summarize", "type": "main", "index": 0 } ] ] },
   "Summarize": { "main": [ [ { "node": "Slack", "type": "main", "index": 0 } ] ] }
 }
-```
-
+```plaintext
 Cela indique que la sortie de Cron se connecte à l'entrée de GraphQL, etc. Si vous créez des workflows via l'API, vous formulerez une structure similaire.
 
 #### 1.6.5. Test et Itération <a name='section-17'></a>

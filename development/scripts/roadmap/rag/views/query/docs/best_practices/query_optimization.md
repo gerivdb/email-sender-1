@@ -16,14 +16,15 @@ Plus une requête est spécifique, plus elle sera efficace en termes de performa
 
 #### Exemple :
 
-```
+```plaintext
 # Moins efficace
+
 title~"i"
 
 # Plus efficace
-title~"interface"
-```
 
+title~"interface"
+```plaintext
 ### 2. Ordre des conditions
 
 L'ordre des conditions dans une requête peut avoir un impact significatif sur les performances.
@@ -35,14 +36,15 @@ L'ordre des conditions dans une requête peut avoir un impact significatif sur l
 
 #### Exemple :
 
-```
+```plaintext
 # Moins efficace
+
 title~"interface" AND status:todo AND priority:high
 
 # Plus efficace
-status:todo AND priority:high AND title~"interface"
-```
 
+status:todo AND priority:high AND title~"interface"
+```plaintext
 ### 3. Utilisation des opérateurs
 
 Certains opérateurs sont plus coûteux en termes de performances que d'autres.
@@ -55,17 +57,19 @@ Certains opérateurs sont plus coûteux en termes de performances que d'autres.
 
 #### Exemple :
 
-```
+```plaintext
 # Moins efficace
+
 title~"*interface*"
 
 # Plus efficace
+
 title~"interface"
 
 # Encore plus efficace (si applicable)
-title:"Interface utilisateur"
-```
 
+title:"Interface utilisateur"
+```plaintext
 ## Optimisation par type de requête
 
 ### 1. Requêtes simples
@@ -80,11 +84,11 @@ Pour les requêtes simples, concentrez-vous sur la précision et l'utilisation d
 
 #### Exemple :
 
-```
+```plaintext
 # Optimal
-status:todo AND priority:high
-```
 
+status:todo AND priority:high
+```plaintext
 ### 2. Requêtes textuelles
 
 Les recherches textuelles sont généralement plus coûteuses que les recherches sur des champs structurés.
@@ -97,14 +101,15 @@ Les recherches textuelles sont généralement plus coûteuses que les recherches
 
 #### Exemple :
 
-```
+```plaintext
 # Moins efficace
+
 title~"interface" OR description~"interface"
 
 # Plus efficace
-(title~"interface" OR description~"interface") AND status:todo
-```
 
+(title~"interface" OR description~"interface") AND status:todo
+```plaintext
 ### 3. Requêtes combinées
 
 Les requêtes combinées peuvent devenir complexes et coûteuses si elles ne sont pas bien structurées.
@@ -117,21 +122,25 @@ Les requêtes combinées peuvent devenir complexes et coûteuses si elles ne son
 
 #### Exemple :
 
-```
+```plaintext
 # Complexe et potentiellement inefficace
+
 (status:todo OR status:in_progress) AND (priority:high OR (category:development AND has_blockers:true)) AND (title~"interface" OR description~"API") AND due_date<2025-06-30
 
 # Décomposé en requêtes plus simples
+
 # Requête 1 : Tâches à faire ou en cours de haute priorité
+
 (status:todo OR status:in_progress) AND priority:high
 
 # Requête 2 : Tâches à faire ou en cours bloquées dans la catégorie développement
+
 (status:todo OR status:in_progress) AND category:development AND has_blockers:true
 
 # Requête 3 : Tâches liées à l'interface ou à l'API avec une date d'échéance proche
-(title~"interface" OR description~"API") AND due_date<2025-06-30
-```
 
+(title~"interface" OR description~"API") AND due_date<2025-06-30
+```plaintext
 ## Techniques d'optimisation avancées
 
 ### 1. Utilisation des intervalles
@@ -145,14 +154,15 @@ Pour les recherches sur des plages de valeurs, utilisez la syntaxe d'intervalle 
 
 #### Exemple :
 
-```
+```plaintext
 # Moins efficace
+
 due_date>=2025-01-01 AND due_date<=2025-12-31
 
 # Plus efficace (si supporté)
-due_date:[2025-01-01 TO 2025-12-31]
-```
 
+due_date:[2025-01-01 TO 2025-12-31]
+```plaintext
 ### 2. Utilisation des listes
 
 Pour rechercher plusieurs valeurs pour un même champ, utilisez la syntaxe de liste si elle est supportée.
@@ -164,14 +174,15 @@ Pour rechercher plusieurs valeurs pour un même champ, utilisez la syntaxe de li
 
 #### Exemple :
 
-```
+```plaintext
 # Moins efficace
+
 status:todo OR status:in_progress OR status:blocked
 
 # Plus efficace (si supporté)
-status:[todo,in_progress,blocked]
-```
 
+status:[todo,in_progress,blocked]
+```plaintext
 ### 3. Mise en cache des requêtes
 
 Si vous utilisez fréquemment les mêmes requêtes, envisagez de les mettre en cache.
@@ -183,11 +194,11 @@ Si vous utilisez fréquemment les mêmes requêtes, envisagez de les mettre en c
 
 #### Exemple :
 
-```
+```plaintext
 # Modèle de requête pour les tâches urgentes
-status:todo AND priority:high AND due_date<{date_limite}
-```
 
+status:todo AND priority:high AND due_date<{date_limite}
+```plaintext
 ## Limitations et considérations
 
 ### 1. Complexité des requêtes
@@ -224,11 +235,11 @@ Certains opérateurs ont des limitations spécifiques.
 
 ### Exemple 1 : Trouver les tâches urgentes
 
-```
+```plaintext
 # Version optimisée
-status:todo AND priority:high AND due_date<2025-06-30
-```
 
+status:todo AND priority:high AND due_date<2025-06-30
+```plaintext
 Cette requête est efficace car :
 - Elle utilise des conditions précises avec l'opérateur d'égalité
 - Elle place les conditions les plus restrictives en premier
@@ -236,11 +247,11 @@ Cette requête est efficace car :
 
 ### Exemple 2 : Recherche de tâches liées à une fonctionnalité
 
-```
+```plaintext
 # Version optimisée
-status!=done AND (title~"authentification" OR category:security) AND priority>=medium
-```
 
+status!=done AND (title~"authentification" OR category:security) AND priority>=medium
+```plaintext
 Cette requête est relativement efficace car :
 - Elle combine des conditions structurées avec une recherche textuelle ciblée
 - Elle utilise des parenthèses pour clarifier l'intention
@@ -248,11 +259,11 @@ Cette requête est relativement efficace car :
 
 ### Exemple 3 : Analyse des tâches bloquées
 
-```
+```plaintext
 # Version optimisée
-status:blocked AND priority:high AND NOT assignee:null
-```
 
+status:blocked AND priority:high AND NOT assignee:null
+```plaintext
 Cette requête est efficace car :
 - Elle utilise des conditions très spécifiques
 - Elle utilise une négation ciblée (NOT assignee:null)

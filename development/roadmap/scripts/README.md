@@ -6,34 +6,57 @@ Ce rÃ©pertoire contient des outils pour la gestion, l'analyse et la manipulati
 
 La structure est organisÃ©e de maniÃ¨re modulaire pour faciliter la maintenance et l'Ã©volution des outils :
 
-```
+```plaintext
 development/roadmap/scripts/
 â”œâ”€â”€ development/templates/                  # Templates Hygen pour la gÃ©nÃ©ration de scripts
-â”œâ”€â”€ core/                        # FonctionnalitÃ©s de base
-â”‚   â”œâ”€â”€ conversion/              # Scripts de conversion de format
-â”‚   â”œâ”€â”€ structure/               # Scripts de gestion de structure
-â”‚   â””â”€â”€ validation/              # Scripts de validation
-â”œâ”€â”€ journal/                     # FonctionnalitÃ©s liÃ©es au journal
-â”‚   â”œâ”€â”€ entries/                 # Gestion des entrÃ©es de journal
-â”‚   â”œâ”€â”€ notifications/           # Notifications liÃ©es au journal
-â”‚   â””â”€â”€ reports/                 # GÃ©nÃ©ration de rapports
-â”œâ”€â”€ management/                  # Gestion des tÃ¢ches
-â”‚   â”œâ”€â”€ archive/                 # Archivage des tÃ¢ches
-â”‚   â”œâ”€â”€ creation/                # CrÃ©ation de tÃ¢ches
-â”‚   â””â”€â”€ progress/                # Suivi de progression
-â”œâ”€â”€ utils/                       # Utilitaires
-â”‚   â”œâ”€â”€ encoding/                # Gestion d'encodage
-â”‚   â”œâ”€â”€ export/                  # Export vers diffÃ©rents formats
-â”‚   â””â”€â”€ import/                  # Import depuis diffÃ©rents formats
-â”œâ”€â”€ development/testing/tests/                       # Tests unitaires et d'intÃ©gration
-â”‚   â”œâ”€â”€ core/                    # Tests des fonctionnalitÃ©s de base
-â”‚   â”œâ”€â”€ journal/                 # Tests des fonctionnalitÃ©s de journal
-â”‚   â””â”€â”€ management/              # Tests de gestion des tÃ¢ches
-â””â”€â”€ docs/                        # Documentation
-    â”œâ”€â”€ examples/                # Exemples d'utilisation
-    â””â”€â”€ guides/                  # Guides d'utilisation
-```
 
+â”œâ”€â”€ core/                        # FonctionnalitÃ©s de base
+
+â”‚   â”œâ”€â”€ conversion/              # Scripts de conversion de format
+
+â”‚   â”œâ”€â”€ structure/               # Scripts de gestion de structure
+
+â”‚   â””â”€â”€ validation/              # Scripts de validation
+
+â”œâ”€â”€ journal/                     # FonctionnalitÃ©s liÃ©es au journal
+
+â”‚   â”œâ”€â”€ entries/                 # Gestion des entrÃ©es de journal
+
+â”‚   â”œâ”€â”€ notifications/           # Notifications liÃ©es au journal
+
+â”‚   â””â”€â”€ reports/                 # GÃ©nÃ©ration de rapports
+
+â”œâ”€â”€ management/                  # Gestion des tÃ¢ches
+
+â”‚   â”œâ”€â”€ archive/                 # Archivage des tÃ¢ches
+
+â”‚   â”œâ”€â”€ creation/                # CrÃ©ation de tÃ¢ches
+
+â”‚   â””â”€â”€ progress/                # Suivi de progression
+
+â”œâ”€â”€ utils/                       # Utilitaires
+
+â”‚   â”œâ”€â”€ encoding/                # Gestion d'encodage
+
+â”‚   â”œâ”€â”€ export/                  # Export vers diffÃ©rents formats
+
+â”‚   â””â”€â”€ import/                  # Import depuis diffÃ©rents formats
+
+â”œâ”€â”€ development/testing/tests/                       # Tests unitaires et d'intÃ©gration
+
+â”‚   â”œâ”€â”€ core/                    # Tests des fonctionnalitÃ©s de base
+
+â”‚   â”œâ”€â”€ journal/                 # Tests des fonctionnalitÃ©s de journal
+
+â”‚   â””â”€â”€ management/              # Tests de gestion des tÃ¢ches
+
+â””â”€â”€ docs/                        # Documentation
+
+    â”œâ”€â”€ examples/                # Exemples d'utilisation
+
+    â””â”€â”€ guides/                  # Guides d'utilisation
+
+```plaintext
 ## Fichiers principaux
 
 - `RoadmapConverter.psm1` : Module PowerShell contenant les fonctions de conversion
@@ -49,8 +72,7 @@ Pour convertir une roadmap existante vers le nouveau format de template, utilise
 
 ```powershell
 .\Convert-Roadmap.ps1 -SourcePath "Roadmap/roadmap_complete.md" -TemplatePath "Roadmap/roadmap_template.md" -OutputPath "Roadmap/roadmap_complete_new.md"
-```
-
+```plaintext
 ParamÃ¨tres :
 - `SourcePath` : Chemin vers la roadmap existante
 - `TemplatePath` : Chemin vers le fichier de template
@@ -62,8 +84,7 @@ Pour tester le fonctionnement du convertisseur, utilisez le script `Test-Roadmap
 
 ```powershell
 .\Test-RoadmapConverter.ps1
-```
-
+```plaintext
 Ce script exÃ©cute une sÃ©rie de tests pour vÃ©rifier que le convertisseur fonctionne correctement.
 
 ## Fonctionnement
@@ -109,16 +130,14 @@ Si Hygen n'est pas dÃ©jÃ  installÃ©, vous pouvez l'installer globalement a
 
 ```bash
 npm install -g hygen
-```
-
+```plaintext
 ### GÃ©nÃ©ration d'un nouveau script
 
 Pour gÃ©nÃ©rer un nouveau script, utilisez la commande suivante :
 
 ```bash
 hygen roadmap new script
-```
-
+```plaintext
 Vous serez guidÃ© par une sÃ©rie de questions pour configurer votre script :
 - Nom du script
 - Description
@@ -132,16 +151,14 @@ Pour gÃ©nÃ©rer un nouveau module PowerShell, utilisez :
 
 ```bash
 hygen roadmap new module
-```
-
+```plaintext
 ### GÃ©nÃ©ration d'un test unitaire
 
 Pour gÃ©nÃ©rer un test unitaire pour un script existant :
 
 ```bash
 hygen roadmap new test
-```
-
+```plaintext
 ## Bonnes pratiques
 
 - Utilisez toujours Hygen pour crÃ©er de nouveaux scripts afin de maintenir une structure cohÃ©rente

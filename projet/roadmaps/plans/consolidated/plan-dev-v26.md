@@ -1,4 +1,5 @@
 # Plan de développement v26 - Module UnifiedParallel
+
 **Statut global** : [11.45/13] - 88% complété
 **Dernière mise à jour** : 2025-05-31 - Mise à jour des statuts des sections pour améliorer la cohérence structurelle et logique du plan.
 
@@ -14,14 +15,17 @@ Le module UnifiedParallel.psm1 présente plusieurs problèmes qui affectent sa f
 Ce plan de développement organise les tâches selon les 5 phases de correction identifiées dans les documents de réponse.
 
 ## 1. Phase 1 : Résolution des problèmes bloquants (P0)
+
 - **Statut global** : [1/1] - 100% complété
 
 ### 1.1. Correction des problèmes de portée des variables script [MVP]
+
 - **Priorité** : P0
 - **Estimation** : 4h
 - **Statut** : [x]
 
 #### 1.1.1. Créer des fonctions getter/setter pour les variables script
+
 - **Priorité** : P0
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -32,6 +36,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Implémenter Set-ModuleConfig
 
 #### 1.1.2. Exposer explicitement les variables script
+
 - **Priorité** : P0
 - **Estimation** : 1h
 - **Statut** : [x]
@@ -40,6 +45,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Mettre à jour les références aux variables script dans le module
 
 #### 1.1.3. Mettre à jour les tests pour utiliser les nouvelles fonctions
+
 - **Priorité** : P0
 - **Estimation** : 1h
 - **Statut** : [x]
@@ -48,14 +54,17 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Mettre à jour Initialize-UnifiedParallel.Tests.ps1
 
 ## 2. Phase 2 : Résolution des problèmes critiques (P1)
+
 - **Statut global** : [2/2] - 100% complété
 
 ### 2.1. Correction des problèmes de paramètres des fonctions [MVP]
+
 - **Priorité** : P1
 - **Estimation** : 6h
 - **Statut** : [x]
 
 #### 2.1.1. Mettre à jour les signatures de Get-OptimalThreadCount
+
 - **Priorité** : P1
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -65,6 +74,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Mettre à jour les tests pour vérifier le paramètre
 
 #### 2.1.2. Mettre à jour les signatures de Initialize-UnifiedParallel
+
 - **Priorité** : P1
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -74,6 +84,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Mettre à jour la documentation de la fonction
 
 #### 2.1.3. Vérifier la cohérence des paramètres dans toutes les fonctions
+
 - **Priorité** : P1
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -83,11 +94,13 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Vérifier les paramètres de Invoke-UnifiedParallel
 
 ### 2.2. Correction des problèmes de type de collection [MVP]
+
 - **Priorité** : P1
 - **Estimation** : 4h
 - **Statut** : [x]
 
 #### 2.2.1. Standardiser les types de paramètres dans Invoke-RunspaceProcessor
+
 - **Priorité** : P1
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -97,6 +110,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Mettre à jour la documentation des paramètres
 
 #### 2.2.2. Standardiser les types de retour dans Wait-ForCompletedRunspace
+
 - **Priorité** : P1
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -107,6 +121,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Ajouter des méthodes et propriétés pour faciliter l'accès aux résultats
 
 #### 2.2.3. Résolution des problèmes de tests Pester pour Wait-ForCompletedRunspace
+
 - **Priorité** : P1
 - **Estimation** : 3h
 - **Statut** : [x]
@@ -119,6 +134,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Obtenir 100% de réussite sur tous les tests Pester
 
 #### 2.2.4. Bénéfices des améliorations apportées
+
 - **Priorité** : P2
 - **Statut** : [x]
 - **Améliorations** :
@@ -130,14 +146,17 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] **Documentation complète** : Mise à jour de la documentation pour refléter les changements et faciliter l'utilisation
 
 ## 3. Phase 3 : Optimisation des performances (P3)
+
 - **Statut global** : [2/2] - 100% complété
 
 ### 3.1. Optimisation de la gestion des collections
+
 - **Priorité** : P3
 - **Estimation** : 8h
 - **Statut** : [3/3] - 100% complété
 
 #### 3.1.1. Standardiser l'utilisation des collections dans tout le module
+
 - **Priorité** : P3
 - **Estimation** : 4h
 - **Statut** : [x]
@@ -147,6 +166,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Optimiser les opérations sur les collections (Tests: 8/8 réussis, couverture: 99%)
 
 #### 3.1.2. Optimiser Invoke-RunspaceProcessor
+
 - **Priorité** : P3
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -156,6 +176,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Utiliser for au lieu de foreach pour de meilleures performances (Tests: 6/6 réussis, couverture: 100%)
 
 #### 3.1.3. Optimiser Wait-ForCompletedRunspace
+
 - **Priorité** : P3
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -178,6 +199,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - Documentation complète des différents formats de retour
 
 #### 3.1.3.1. Tests approfondis pour les optimisations de Wait-ForCompletedRunspace
+
 - **Priorité** : P2
 - **Estimation** : 3h
 - **Statut** : [x]
@@ -211,6 +233,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - [x] Tests de performance avec différents formats de retour
 
 #### 3.1.3.2. Correction des problèmes d'exécution des tests PowerShell
+
 - **Priorité** : P1
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -238,11 +261,13 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - [x] Fournir des recommandations pour améliorer la testabilité du code
 
 ### 3.2. Optimisation des algorithmes critiques
+
 - **Priorité** : P3
 - **Estimation** : 6h
 - **Statut** : [x]
 
 #### 3.2.1. Améliorer la création et la gestion des runspaces
+
 - **Priorité** : P3
 - **Estimation** : 3h
 - **Statut** : [x]
@@ -258,6 +283,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - Mise à jour par lots pour réduire l'overhead de Write-Progress
 
 #### 3.2.2. Développer des tests de performance
+
 - **Priorité** : P3
 - **Estimation** : 3h
 - **Statut** : [x]
@@ -274,14 +300,17 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - Comparaison délai adaptatif vs délai fixe
 
 ## 4. Phase 4 : Amélioration de la compatibilité (P2)
+
 - **Statut global** : [3/3] - 100% complété
 
 ### 4.1. Résolution des problèmes d'encodage [MVP]
+
 - **Priorité** : P2
 - **Estimation** : 4h
 - **Statut** : [x]
 
 #### 4.1.1. Ajouter une fonction d'initialisation d'encodage
+
 - **Priorité** : P2
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -291,6 +320,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Gérer les différences entre PowerShell 5.1 et 7.x
 
 #### 4.1.2. Créer des tests d'encodage
+
 - **Priorité** : P2
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -300,6 +330,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Tester la gestion des fichiers avec caractères accentués
 
 #### 4.1.3. Améliorations apportées à l'encodage
+
 - **Priorité** : P2
 - **Statut** : [x]
 - **Améliorations** :
@@ -311,11 +342,13 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] **Gestion robuste des erreurs** : Capture et reporting des erreurs d'encodage
 
 ### 4.2. Standardisation de la gestion des erreurs
+
 - **Priorité** : P2
 - **Estimation** : 6h
 - **Statut** : [3/3] - 100% complété
 
 #### 4.2.1. Créer une fonction d'aide pour la gestion des erreurs
+
 - **Priorité** : P2
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -325,6 +358,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Ajouter des options pour Write-Error et throw
 
 #### 4.2.2. Mettre à jour les fonctions pour utiliser la nouvelle gestion d'erreurs
+
 - **Priorité** : P2
 - **Estimation** : 3h
 - **Statut** : [x]
@@ -334,6 +368,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Mettre à jour les autres fonctions
 
 #### 4.2.3. Créer des tests pour la gestion des erreurs
+
 - **Priorité** : P2
 - **Estimation** : 1h
 - **Statut** : [x]
@@ -343,11 +378,13 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Tester les différentes options (WriteError, ThrowError)
 
 ### 4.3. Tests de compatibilité PowerShell
+
 - **Priorité** : P2
 - **Estimation** : 4h
 - **Statut** : [x]
 
 #### 4.3.1. Créer des tests de compatibilité
+
 - **Priorité** : P2
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -357,6 +394,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Vérifier les fonctionnalités spécifiques à chaque version
 
 #### 4.3.2. Optimiser pour différentes versions de PowerShell
+
 - **Priorité** : P2
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -366,14 +404,17 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Documenter les différences de comportement
 
 ## 5. Phase 5 : Documentation et finalisation
+
 - **Statut global** : [6/6] - 100% complété
 
 ### 5.1. Documentation des fonctions [MVP]
+
 - **Priorité** : P2
 - **Estimation** : 8h
 - **Statut** : [3/3] - 100% complété
 
 #### 5.1.1. Ajouter des commentaires based help à toutes les fonctions
+
 - **Priorité** : P2
 - **Estimation** : 4h
 - **Statut** : [x]
@@ -383,6 +424,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Ajouter des exemples d'utilisation
 
 #### 5.1.2. Créer un guide d'utilisation détaillé
+
 - **Priorité** : P2
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -397,6 +439,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - Recommandations pour la gestion des erreurs
 
 #### 5.1.3. Créer des exemples d'utilisation
+
 - **Priorité** : P2
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -406,11 +449,13 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Créer des exemples de requêtes API et calculs intensifs
 
 ### 5.2. Création d'une nouvelle version du module
+
 - **Priorité** : P2
 - **Estimation** : 4h
 - **Statut** : [3/3] - 100% complété
 
 #### 5.2.1. Mettre à jour le numéro de version
+
 - **Priorité** : P2
 - **Estimation** : 1h
 - **Statut** : [x]
@@ -420,6 +465,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Mettre à jour le manifeste du module
 
 #### 5.2.2. Générer les notes de version
+
 - **Priorité** : P2
 - **Estimation** : 1h
 - **Statut** : [x]
@@ -429,6 +475,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Documenter les corrections
 
 #### 5.2.3. Préparer le déploiement
+
 - **Priorité** : P2
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -438,14 +485,17 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Créer un package de distribution
 
 ## 6. Tâches transversales
+
 - **Statut global** : [3/3] - 100% complété
 
 ### 6.1. Gestion des runspaces non nettoyés [MVP]
+
 - **Priorité** : P2
 - **Estimation** : 3h
 - **Statut** : [2/2] - 100% complété
 
 #### 6.1.1. Améliorer Wait-ForCompletedRunspace
+
 - **Priorité** : P2
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -455,6 +505,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Améliorer la gestion des exceptions lors du nettoyage
 
 #### 6.1.2. Tester le nettoyage des ressources
+
 - **Priorité** : P2
 - **Estimation** : 1h
 - **Statut** : [x]
@@ -464,11 +515,13 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Vérifier le nettoyage en cas d'erreur
 
 ### 6.2. Résolution du dépassement de la profondeur des appels
+
 - **Priorité** : P2
 - **Estimation** : 4h
 - **Statut** : [2/2] - 100% complété
 
 #### 6.2.1. Corriger les tests de performance
+
 - **Priorité** : P2
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -478,6 +531,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Éviter les appels récursifs profonds
 
 #### 6.2.2. Créer des tests de performance simplifiés
+
 - **Priorité** : P2
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -487,15 +541,18 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [x] Tester avec différents types de tâches
 
 ## 7. Améliorations méthodologiques
+
 - **Statut global** : [2.95/9] - 33% complété
 
 ### 7.1. Standardisation des types et conversions
+
 - **Priorité** : P1
 - **Estimation** : 8h
 - **Statut** : [1.67/3] - 56% complété
 - **Impact** : Réduction de 70-80% des problèmes de typage et conversion
 
 #### 7.1.1. Créer une couche d'abstraction pour les types problématiques
+
 - **Priorité** : P1
 - **Estimation** : 3h
 - **Statut** : [3/3] - 100% complété
@@ -521,6 +578,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - [x] Développer des tests de performance comparant les différentes implémentations
 
 #### 7.1.1.1. Implémentation d'une approche progressive de tests
+
 - **Priorité** : P1
 - **Estimation** : 5h
 - **Statut** : [x]
@@ -555,6 +613,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
       - Documentation des raisons pour les tests ignorés (références circulaires, null)
 
 #### 7.1.2. Implémenter des méthodes d'extension pour les opérations courantes
+
 - **Priorité** : P1
 - **Estimation** : 3h
 - **Statut** : [⅓]
@@ -594,6 +653,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - [ ] Créer des tests de stress pour valider la sécurité des opérations concurrentes
 
 #### 7.1.3. Documenter les patterns de conversion recommandés
+
 - **Priorité** : P2
 - **Estimation** : 2h
 - **Statut** : [ ]
@@ -619,12 +679,14 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - [ ] Créer un repository de snippets réutilisables pour les conversions courantes
 
 ### 7.2. Framework de test unifié
+
 - **Priorité** : P1
 - **Estimation** : 10h
 - **Statut** : [ ]
 - **Impact** : Réduction de 40-50% du temps de développement des tests
 
 #### 7.2.1. Développer une bibliothèque de tests standardisée
+
 - **Priorité** : P1
 - **Estimation** : 4h
 - **Statut** : [ ]
@@ -644,6 +706,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - [ ] Implémenter des fixtures pour tester les timeouts et les conditions de course
 
 #### 7.2.2. Implémenter des outils de simulation
+
 - **Priorité** : P1
 - **Estimation** : 3h
 - **Statut** : [ ]
@@ -662,6 +725,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - [ ] Implémenter des générateurs de scénarios d'erreur contrôlés
 
 #### 7.2.3. Automatiser les tests de compatibilité
+
 - **Priorité** : P2
 - **Estimation** : 3h
 - **Statut** : [ ]
@@ -681,12 +745,14 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - [ ] Implémenter un tableau de bord de compatibilité avec historique
 
 ### 7.3. Gestion améliorée des ressources
+
 - **Priorité** : P1
 - **Estimation** : 6h
 - **Statut** : [ ]
 - **Impact** : Élimination des fuites de mémoire et amélioration de la stabilité
 
 #### 7.3.0. Résolution des problèmes critiques de synchronisation
+
 - **Priorité** : P0
 - **Estimation** : 4h
 - **Statut** : [x]
@@ -707,6 +773,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - [ ] Ajouter des mécanismes de fallback en cas d'échec de l'ajustement dynamique
 
 #### 7.3.1. Implémenter un pattern Disposable cohérent
+
 - **Priorité** : P1
 - **Estimation** : 2h
 - **Statut** : [ ]
@@ -717,6 +784,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [ ] Développer un mécanisme de suivi des ressources non libérées
 
 #### 7.3.2. Ajouter des vérifications automatiques d'état
+
 - **Priorité** : P1
 - **Estimation** : 2h
 - **Statut** : [ ]
@@ -727,6 +795,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [ ] Créer des assertions pour détecter l'utilisation de ressources disposées
 
 #### 7.3.3. Développer un système de nettoyage périodique
+
 - **Priorité** : P2
 - **Estimation** : 2h
 - **Statut** : [ ]
@@ -737,12 +806,14 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [ ] Créer des métriques pour suivre l'utilisation des ressources
 
 ### 7.4. Paramétrage adaptatif
+
 - **Priorité** : P2
 - **Estimation** : 8h
 - **Statut** : [ ]
 - **Impact** : Amélioration de 20-30% des performances et réduction du temps de calibration
 
 #### 7.4.1. Créer des mécanismes d'auto-calibration
+
 - **Priorité** : P2
 - **Estimation** : 3h
 - **Statut** : [ ]
@@ -753,6 +824,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [ ] Créer un système de profils de performance pour différents environnements
 
 #### 7.4.2. Implémenter des métriques en temps réel
+
 - **Priorité** : P2
 - **Estimation** : 3h
 - **Statut** : [ ]
@@ -763,6 +835,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [ ] Créer un tableau de bord pour visualiser les performances en temps réel
 
 #### 7.4.3. Développer des tests de sensibilité
+
 - **Priorité** : P3
 - **Estimation** : 2h
 - **Statut** : [ ]
@@ -773,18 +846,21 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [ ] Développer un générateur de recommandations de paramétrage
 
 ### 7.5. Documentation technique intégrée
+
 - **Priorité** : P2
 - **Estimation** : 6h
 - **Statut** : [ ]
 - **Impact** : Réduction de 30-40% du temps de maintenance et d'extension du code
 
 ### 7.6. Refactorisation modulaire du module UnifiedParallel [MVP]
+
 - **Priorité** : P0
 - **Estimation** : 12h
 - **Statut** : [0.5/4] - 12.5% complété
 - **Impact** : Amélioration significative de la maintenabilité et réduction de 50% du temps de développement futur
 
 #### 7.6.1. Analyse et planification de la refactorisation
+
 - **Priorité** : P0
 - **Estimation** : 2h
 - **Statut** : [x]
@@ -804,6 +880,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - [x] Planifier la stratégie de test pour chaque étape
 
 #### 7.6.2. Création de la structure modulaire
+
 - **Priorité** : P0
 - **Estimation** : 3h
 - **Statut** : [ ]
@@ -823,6 +900,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - [ ] Configurer les dépendances et prérequis
 
 #### 7.6.3. Extraction et migration des fonctions
+
 - **Priorité** : P0
 - **Estimation** : 5h
 - **Statut** : [ ]
@@ -843,6 +921,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - [ ] Migrer les autres classes et structures
 
 #### 7.6.4. Tests et validation de la refactorisation
+
 - **Priorité** : P0
 - **Estimation** : 2h
 - **Statut** : [ ]
@@ -862,6 +941,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
     - [ ] Documenter les améliorations de performance
 
 #### 7.5.1. Documenter les décisions de conception
+
 - **Priorité** : P2
 - **Estimation** : 2h
 - **Statut** : [ ]
@@ -872,6 +952,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [ ] Maintenir un journal des décisions de conception importantes
 
 #### 7.5.2. Ajouter des exemples de cas d'utilisation
+
 - **Priorité** : P2
 - **Estimation** : 2h
 - **Statut** : [ ]
@@ -882,6 +963,7 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
   - [ ] Documenter les patterns d'utilisation recommandés
 
 #### 7.5.3. Inclure des notes sur les pièges courants
+
 - **Priorité** : P3
 - **Estimation** : 2h
 - **Statut** : [ ]

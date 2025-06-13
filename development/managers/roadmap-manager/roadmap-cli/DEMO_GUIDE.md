@@ -3,23 +3,27 @@
 ## Guide de Démarrage Rapide
 
 ### 1. Construction du CLI
+
 ```powershell
 cd EMAIL_SENDER_1/cmd/roadmap-cli
 go build -o roadmap-cli.exe main.go
-```
-
+```plaintext
 ### 2. Aide et Navigation
+
 ```powershell
 # Aide générale
+
 .\roadmap-cli.exe --help
 
 # Aide commandes intelligence
-.\roadmap-cli.exe intelligence --help
-```
 
+.\roadmap-cli.exe intelligence --help
+```plaintext
 ### 3. Création d'Items de Roadmap
+
 ```powershell
 # Items de test pour la démo
+
 .\roadmap-cli.exe create item "Build API authentication" --description "Implement JWT-based authentication system" --priority high
 
 .\roadmap-cli.exe create item "Database schema design" --description "Design and implement user and session tables" --priority medium
@@ -29,54 +33,67 @@ go build -o roadmap-cli.exe main.go
 .\roadmap-cli.exe create item "User interface design" --description "Create responsive dashboard for user management" --priority medium
 
 .\roadmap-cli.exe create item "Deploy to production" --description "Set up CI/CD pipeline and production deployment" --priority high
-```
-
+```plaintext
 ### 4. Interface TUI Interactive
+
 ```powershell
 # Lancer l'interface TUI
+
 .\roadmap-cli.exe view
 
 # Navigation dans l'interface :
-# - j/k : naviguer entre les items
-# - v : basculer entre les vues (List → Timeline → Kanban)
-# - r : rafraîchir
-# - q : quitter
-```
 
+# - j/k : naviguer entre les items
+
+# - v : basculer entre les vues (List → Timeline → Kanban)
+
+# - r : rafraîchir
+
+# - q : quitter
+
+```plaintext
 ## Fonctionnalités Intelligence RAG
 
 ### Configuration QDrant (Optionnel)
+
 ```powershell
 # Démarrer QDrant avec Docker
+
 docker run -p 6333:6333 qdrant/qdrant
 
 # Ou utiliser QDrant existant EMAIL_SENDER_1
+
 $env:QDRANT_URL = "http://localhost:6333"
 $env:OPENAI_API_KEY = "your_openai_key"
-```
-
+```plaintext
 ### Commandes Intelligence
+
 ```powershell
 # Vérifier l'état du système RAG
+
 .\roadmap-cli.exe intelligence health
 
 # Synchroniser les données avec QDrant
+
 .\roadmap-cli.exe intelligence sync
 
 # Analyser des similarités
+
 .\roadmap-cli.exe intelligence analyze "API development"
 
 # Détecter les dépendances
+
 .\roadmap-cli.exe intelligence dependencies "Build authentication"
 
 # Obtenir des recommandations d'optimisation
-.\roadmap-cli.exe intelligence optimize
-```
 
+.\roadmap-cli.exe intelligence optimize
+```plaintext
 ## Exemples de Sortie
 
 ### Vue Liste
-```
+
+```plaintext
 ╔═════════════════════════════╗
 ║ 🗺️  Roadmap CLI - List View  ║
 ╚═════════════════════════════╝
@@ -88,10 +105,10 @@ $env:OPENAI_API_KEY = "your_openai_key"
 📋 Deploy to production ░░░░░░░░░░ (0%) [high]
 
 j/k: navigate • v: switch view • r: refresh • q: quit
-```
-
+```plaintext
 ### Vue Timeline
-```
+
+```plaintext
 ╔═════════════════════════════════╗
 ║ 🗺️  Roadmap CLI - Timeline View  ║
 ╚═════════════════════════════════╝
@@ -109,10 +126,10 @@ j/k: navigate • v: switch view • r: refresh • q: quit
 📋 ░░░░░░░░░░ Deploy to production [2025-06-30]
 
 j/k: navigate • v: switch view • r: refresh • q: quit
-```
-
+```plaintext
 ### Vue Kanban
-```
+
+```plaintext
 ╔═══════════════════════════════╗
 ║ 🗺️  Roadmap CLI - Kanban View  ║
 ╚═══════════════════════════════╝
@@ -128,10 +145,10 @@ j/k: navigate • v: switch view • r: refresh • q: quit
 • Deploy to production
 
 j/k: navigate • v: switch view • r: refresh • q: quit
-```
-
+```plaintext
 ### Health Check RAG
-```
+
+```plaintext
 🏥 Checking RAG system health...
 
 📊 QDrant Vector Database: ✅ HEALTHY
@@ -140,11 +157,11 @@ j/k: navigate • v: switch view • r: refresh • q: quit
 
 🎉 RAG system is fully operational!
 💡 Try: roadmap-cli intelligence analyze "your query here"
-```
-
+```plaintext
 ## Architecture de Données
 
 ### Structure JSON
+
 ```json
 {
   "items": [
@@ -163,8 +180,7 @@ j/k: navigate • v: switch view • r: refresh • q: quit
   "milestones": [],
   "last_update": "2025-05-31T..."
 }
-```
-
+```plaintext
 ### Intégration EMAIL_SENDER_1
 
 Le CLI s'intègre parfaitement avec l'écosystème EMAIL_SENDER_1 :

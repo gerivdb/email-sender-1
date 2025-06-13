@@ -24,12 +24,14 @@
 ### DFS (Depth-First Search)
 
 #### Avantages
+
 - Implémentation intuitive et directe
 - Faible empreinte mémoire pour la plupart des graphes
 - Détection précise des cycles avec leur chemin complet
 - Bien adapté aux graphes de dépendances de scripts
 
 #### Inconvénients
+
 - Peut atteindre la limite de récursion sur des graphes très profonds
 - Moins efficace pour trouver les cycles les plus courts
 - Nécessite une implémentation itérative pour les très grands graphes
@@ -37,11 +39,13 @@
 ### BFS (Breadth-First Search)
 
 #### Avantages
+
 - Trouve les cycles les plus courts en premier
 - Évite les problèmes de débordement de pile
 - Meilleure distribution de la charge pour les graphes déséquilibrés
 
 #### Inconvénients
+
 - Plus complexe pour identifier tous les nœuds d'un cycle
 - Consommation mémoire plus élevée pour les graphes larges
 - Moins intuitif pour la détection de cycles
@@ -49,11 +53,13 @@
 ### Algorithme de Tarjan
 
 #### Avantages
+
 - Trouve toutes les composantes fortement connexes en une seule passe
 - Très efficace pour les grands graphes complexes
 - Fournit plus d'informations sur la structure du graphe
 
 #### Inconvénients
+
 - Implémentation complexe et difficile à déboguer
 - Overhead mémoire pour les structures auxiliaires
 - Courbe d'apprentissage plus raide
@@ -61,11 +67,13 @@
 ### Détection par coloration
 
 #### Avantages
+
 - Conceptuellement clair et facile à comprendre
 - Similaire au DFS mais avec une sémantique plus explicite
 - Facile à adapter pour différents types de graphes
 
 #### Inconvénients
+
 - N'offre pas d'avantages significatifs par rapport au DFS standard
 - Mêmes limitations que le DFS pour les graphes très profonds
 - Légèrement plus de surcharge mémoire que le DFS pur

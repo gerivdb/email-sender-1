@@ -1,4 +1,5 @@
 # Plan de développement v22 - Architecture UI/UX modulaire
+
 *Version 1.0 - 2025-05-25 - Progression globale : 5%*
 
 Ce plan définit une stratégie complète pour transformer les pages HTML statiques actuelles en une architecture frontend modulaire et dynamique. Il établit les fondations pour un système extensible avec un core réutilisable et des extensions spécialisées (roadmapper, email sender, etc.). L'objectif est de créer une expérience utilisateur cohérente et intuitive, tout en permettant l'ajout facile de nouvelles fonctionnalités sous forme d'extensions, assurant ainsi l'évolutivité et la maintenabilité à long terme du système.

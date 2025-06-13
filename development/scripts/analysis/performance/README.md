@@ -14,4 +14,4 @@ Ce dossier contient des scripts pour l''analyse de performance et le calcul de K
 
 ```powershell
 .\Calculate-SystemKPIs.ps1 -DataPath "data/performance" -OutputPath "data/analysis"
-```
+```plaintext

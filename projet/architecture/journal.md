@@ -20,41 +20,48 @@ related: [fichier1.md, fichier2.md]
 # Titre de l'entrée
 
 ## Actions réalisées
+
 - Action 1
 - Action 2
 
 ## Résolution des erreurs, déductions tirées
+
 - Erreur 1: solution 1
 - Déduction 1
 
 ## Optimisations identifiées
+
 - Pour le système: optimisation 1
 - Pour le code: optimisation 2
 - Pour la gestion des erreurs: optimisation 3
 - Pour les workflows: optimisation 4
 
 ## Enseignements techniques
+
 - Enseignement 1
 - Enseignement 2
 
 ## Impact sur le projet musical
+
 - Impact 1
 - Impact 2
 
 ## Code associé
+
 ```python
 # Exemple de code
-```
 
+```plaintext
 ## Prochaines étapes
+
 - Étape 1
 - Étape 2
 
 ## Références et ressources
+
 - Référence 1
 - Référence 2
-```
-
+```plaintext
 ### Métadonnées
 
 - `date`: Date de création au format AAAA-MM-JJ
@@ -78,10 +85,9 @@ related: [fichier1.md, fichier2.md]
 
 Les fichiers sont nommés selon le format:
 
-```
+```plaintext
 AAAA-MM-JJ-HH-MM-slug-de-l-entree.md
-```
-
+```plaintext
 Où:
 - `AAAA-MM-JJ`: Date de création
 - `HH-MM`: Heure de création
@@ -101,9 +107,9 @@ Ce script gère la création d'entrées de journal:
 
 ```python
 # Créer une entrée avec titre et tags
-python scripts/python/journal/journal_entry.py "Titre de l'entrée" --tags tag1 tag2
-```
 
+python scripts/python/journal/journal_entry.py "Titre de l'entrée" --tags tag1 tag2
+```plaintext
 #### Fonctions principales
 
 - `create_journal_entry(title, tags=None, related=None)`: Crée une nouvelle entrée
@@ -116,15 +122,17 @@ Ce script permet de rechercher dans le journal:
 
 ```python
 # Rechercher par mots-clés
+
 python scripts/python/journal/journal_search_simple.py --query "terme de recherche"
 
 # Rechercher par tag
+
 python scripts/python/journal/journal_search_simple.py --tag "nom_du_tag"
 
 # Rechercher par date
-python scripts/python/journal/journal_search_simple.py --date "2025-04-05"
-```
 
+python scripts/python/journal/journal_search_simple.py --date "2025-04-05"
+```plaintext
 #### Fonctions principales
 
 - `search(query, n=5)`: Recherche par mots-clés

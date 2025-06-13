@@ -1,4 +1,4 @@
-﻿# Documentation de l'API n8n (Version locale)
+# Documentation de l'API n8n (Version locale)
 
 Cette documentation a ete generee automatiquement en testant les endpoints de l'API n8n disponibles sur votre instance locale.
 
@@ -7,13 +7,21 @@ URL de base: http://localhost:5678
 ## Table des matieres
 
 - [Authentification](#authentification)
+
 - [Endpoints testes](#endpoints-testes)
+
   - [Workflows](#workflows)
+
   - [Executions](#executions)
+
   - [Credentials](#credentials)
+
   - [Tags](#tags)
+
   - [Utilisateurs](#utilisateurs)
+
   - [Autres](#autres)
+
 - [Exemples d'utilisation](#exemples-dutilisation)
 
 ## Authentification
@@ -156,8 +164,7 @@ Voici la structure complète d'un workflow n8n telle que retournée par l'API :
     }
   ]
 }
-```
-
+```plaintext
 ### Propriétés principales d'un workflow
 
 - **id** : Identifiant unique du workflow
@@ -194,9 +201,9 @@ $headers = @{
 $response = Invoke-RestMethod -Uri "$n8nUrl/api/v1/workflows" -Method Get -Headers $headers
 
 # Afficher les workflows
-$response.data | Format-Table -Property id, name, active
-```
 
+$response.data | Format-Table -Property id, name, active
+```plaintext
 ### Créer un nouveau workflow
 
 ```powershell
@@ -220,9 +227,9 @@ $body = @{
 $response = Invoke-RestMethod -Uri "$n8nUrl/api/v1/workflows" -Method Post -Headers $headers -Body $body
 
 # Afficher le nouveau workflow
-$response | Format-Table -Property id, name
-```
 
+$response | Format-Table -Property id, name
+```plaintext
 ### Supprimer un workflow
 
 ```powershell
@@ -237,8 +244,7 @@ $headers = @{
 Invoke-RestMethod -Uri "$n8nUrl/api/v1/workflows/$workflowId" -Method Delete -Headers $headers
 
 Write-Host "Workflow supprimé avec succès"
-```
-
+```plaintext
 ### Exécuter un workflow
 
 ```powershell
@@ -254,9 +260,9 @@ $headers = @{
 $response = Invoke-RestMethod -Uri "$n8nUrl/api/v1/workflows/$workflowId/execute" -Method Post -Headers $headers
 
 # Afficher le résultat de l'exécution
-$response | Format-Table -Property id, finished, status
-```
 
+$response | Format-Table -Property id, finished, status
+```plaintext
 ## Remarques importantes
 
 - Certains endpoints peuvent necessiter des permissions specifiques.

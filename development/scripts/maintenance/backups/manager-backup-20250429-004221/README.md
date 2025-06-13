@@ -20,20 +20,20 @@ Pour installer le mode MANAGER, exécutez le script `install-mode-manager.ps1` :
 
 ```powershell
 # Mode simulation (n'applique pas les modifications)
+
 .\install-mode-manager.ps1
 
 # Mode installation (applique les modifications)
-.\install-mode-manager.ps1 -Force
-```
 
+.\install-mode-manager.ps1 -Force
+```plaintext
 ## Utilisation
 
 ### Commande de base
 
 ```powershell
 .\mode-manager.ps1 -Mode <MODE> -FilePath <FILEPATH> -TaskIdentifier <TASKID> [-Force]
-```
-
+```plaintext
 ### Paramètres
 
 | Paramètre | Description | Obligatoire | Valeur par défaut |
@@ -53,52 +53,55 @@ Pour installer le mode MANAGER, exécutez le script `install-mode-manager.ps1` :
 
 ```powershell
 # Exécuter le mode CHECK
+
 .\mode-manager.ps1 -Mode CHECK -FilePath "docs\plans\plan-modes-stepup.md" -TaskIdentifier "1.2.3" -Force
 
 # Exécuter le mode GRAN
-.\mode-manager.ps1 -Mode GRAN -FilePath "docs\plans\plan-modes-stepup.md" -TaskIdentifier "1.2.3"
-```
 
+.\mode-manager.ps1 -Mode GRAN -FilePath "docs\plans\plan-modes-stepup.md" -TaskIdentifier "1.2.3"
+```plaintext
 #### Afficher la liste des modes disponibles
 
 ```powershell
 .\mode-manager.ps1 -ListModes
-```
-
+```plaintext
 #### Afficher la configuration d'un mode
 
 ```powershell
 .\mode-manager.ps1 -ShowConfig -Mode CHECK
-```
-
+```plaintext
 #### Exécuter une chaîne de modes
 
 ```powershell
 # Exécuter GRAN, puis DEV-R, puis CHECK
-.\mode-manager.ps1 -Chain "GRAN,DEV-R,CHECK" -FilePath "docs\plans\plan-modes-stepup.md" -TaskIdentifier "1.2.3"
-```
 
+.\mode-manager.ps1 -Chain "GRAN,DEV-R,CHECK" -FilePath "docs\plans\plan-modes-stepup.md" -TaskIdentifier "1.2.3"
+```plaintext
 ## Tests
 
 Pour exécuter les tests du mode MANAGER, utilisez le script `tests/Run-AllTests.ps1` :
 
 ```powershell
 # Exécuter tous les tests
+
 .\tests\Run-AllTests.ps1 -OutputPath "reports" -GenerateHTML
 
 # Exécuter uniquement les tests unitaires
+
 .\tests\Run-AllTests.ps1 -TestType Unit -OutputPath "reports" -GenerateHTML
 
 # Exécuter uniquement les tests d'intégration
+
 .\tests\Run-AllTests.ps1 -TestType Integration -OutputPath "reports" -GenerateHTML
 
 # Exécuter uniquement les tests de performance
+
 .\tests\Run-AllTests.ps1 -TestType Performance -OutputPath "reports" -GenerateHTML
 
 # Exécuter tous les tests sauf les tests de performance
-.\tests\Run-AllTests.ps1 -SkipPerformanceTests -OutputPath "reports" -GenerateHTML
-```
 
+.\tests\Run-AllTests.ps1 -SkipPerformanceTests -OutputPath "reports" -GenerateHTML
+```plaintext
 ### Types de tests
 
 Le mode MANAGER dispose de plusieurs types de tests :
@@ -122,8 +125,10 @@ Pour mettre à jour les références aux modes dans les fichiers de documentatio
 
 ```powershell
 # Mode simulation (n'applique pas les modifications)
+
 .\update-mode-references.ps1
 
 # Mode mise à jour (applique les modifications)
+
 .\update-mode-references.ps1 -Force
-```
+```plaintext

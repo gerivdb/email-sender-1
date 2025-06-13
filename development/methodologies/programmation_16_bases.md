@@ -15,11 +15,11 @@ La modularité consiste à diviser le code en modules indépendants et réutilis
 **Exemple :**
 ```powershell
 # Module de gestion des fichiers
+
 function Get-FileContent { ... }
 function Save-FileContent { ... }
 function Test-FileExists { ... }
-```
-
+```plaintext
 ## 2. Abstraction
 
 L'abstraction consiste à masquer les détails d'implémentation complexes derrière des interfaces simples et intuitives.
@@ -33,6 +33,7 @@ L'abstraction consiste à masquer les détails d'implémentation complexes derri
 **Exemple :**
 ```powershell
 # Interface abstraite pour différentes sources de données
+
 function Get-Data {
     param (
         [string]$Source,
@@ -46,8 +47,7 @@ function Get-Data {
         default { throw "Source non supportée" }
     }
 }
-```
-
+```plaintext
 ## 3. Encapsulation
 
 L'encapsulation consiste à regrouper les données et les méthodes qui les manipulent dans une même unité, et à contrôler l'accès à ces données.
@@ -61,6 +61,7 @@ L'encapsulation consiste à regrouper les données et les méthodes qui les mani
 **Exemple :**
 ```powershell
 # Classe encapsulant les données d'un utilisateur
+
 class User {
     [string]$Name
     [int]$Age
@@ -68,6 +69,7 @@ class User {
     
     [void] SetPassword([string]$NewPassword) {
         # Validation et hachage du mot de passe
+
         $this.Password = (Get-Hash $NewPassword)
     }
     
@@ -75,8 +77,7 @@ class User {
         return (Get-Hash $InputPassword) -eq $this.Password
     }
 }
-```
-
+```plaintext
 ## 4. Héritage
 
 L'héritage permet à une classe de réutiliser les propriétés et méthodes d'une autre classe, facilitant la réutilisation du code et la création de hiérarchies.
@@ -90,6 +91,7 @@ L'héritage permet à une classe de réutiliser les propriétés et méthodes d'
 **Exemple :**
 ```powershell
 # Classe de base
+
 class Vehicle {
     [int]$Speed
     [string]$Color
@@ -99,19 +101,20 @@ class Vehicle {
 }
 
 # Classe dérivée
+
 class Car : Vehicle {
     [int]$Doors
     
     [void] Start() {
         # Surcharge de la méthode de base
+
         Write-Host "Démarrage de la voiture"
         ([Vehicle]$this).Start()
     }
     
     [void] OpenTrunk() { ... }
 }
-```
-
+```plaintext
 ## 5. Polymorphisme
 
 Le polymorphisme permet à des objets de différentes classes d'être traités comme des objets d'une classe commune, simplifiant le code et augmentant sa flexibilité.
@@ -125,12 +128,14 @@ Le polymorphisme permet à des objets de différentes classes d'être traités c
 **Exemple :**
 ```powershell
 # Interface commune
+
 class Shape {
     [double] Area() { return 0 }
     [double] Perimeter() { return 0 }
 }
 
 # Implémentations spécifiques
+
 class Circle : Shape {
     [double]$Radius
     
@@ -157,12 +162,12 @@ class Rectangle : Shape {
 }
 
 # Utilisation polymorphique
+
 function PrintShapeInfo([Shape]$Shape) {
     Write-Host "Aire: $($Shape.Area())"
     Write-Host "Périmètre: $($Shape.Perimeter())"
 }
-```
-
+```plaintext
 ## 6. Composition
 
 La composition consiste à créer des objets complexes en combinant des objets plus simples, plutôt qu'en utilisant l'héritage.
@@ -176,6 +181,7 @@ La composition consiste à créer des objets complexes en combinant des objets p
 **Exemple :**
 ```powershell
 # Composition d'objets
+
 class Engine {
     [int]$Power
     [void] Start() { ... }
@@ -206,8 +212,7 @@ class Car {
         $this.Transmission.ChangeGear($Gear)
     }
 }
-```
-
+```plaintext
 ## 7. Interfaces
 
 Les interfaces définissent un contrat que les classes doivent respecter, assurant qu'elles implémentent certaines méthodes et propriétés.
@@ -221,6 +226,7 @@ Les interfaces définissent un contrat que les classes doivent respecter, assura
 **Exemple :**
 ```powershell
 # Interface en PowerShell (simulation)
+
 function Test-ImplementsInterface {
     param (
         [object]$Object,
@@ -248,14 +254,15 @@ function Test-ImplementsInterface {
 }
 
 # Utilisation
+
 $requiredMethods = @("Connect", "Disconnect", "SendData")
 $requiredProperties = @("IsConnected", "Name")
 
 if (Test-ImplementsInterface -Object $device -RequiredMethods $requiredMethods -RequiredProperties $requiredProperties) {
     # L'objet implémente l'interface
-}
-```
 
+}
+```plaintext
 ## 8. Gestion des erreurs
 
 La gestion des erreurs consiste à anticiper, détecter et traiter les situations exceptionnelles pour assurer la robustesse du code.
@@ -275,35 +282,39 @@ function Get-UserData {
     )
     
     # Validation des entrées
+
     if (-not [Guid]::TryParse($UserId, [ref]$null)) {
         throw [ArgumentException]::new("L'ID utilisateur doit être un GUID valide")
     }
     
     try {
         # Tentative d'accès à la base de données
+
         $connection = Open-DatabaseConnection
         $userData = $connection.Query("SELECT * FROM Users WHERE Id = @UserId", @{UserId = $UserId})
         return $userData
     }
     catch [System.Data.SqlClient.SqlException] {
         # Erreur spécifique à la base de données
+
         Write-Log -Level Error -Message "Erreur de base de données: $_"
         throw
     }
     catch {
         # Autres erreurs
+
         Write-Log -Level Error -Message "Erreur lors de la récupération des données utilisateur: $_"
         throw
     }
     finally {
         # Nettoyage, toujours exécuté
+
         if ($connection) {
             $connection.Close()
         }
     }
 }
-```
-
+```plaintext
 ## 9. Tests unitaires
 
 Les tests unitaires vérifient que chaque unité de code fonctionne correctement de manière isolée, assurant la qualité et facilitant la maintenance.
@@ -317,6 +328,7 @@ Les tests unitaires vérifient que chaque unité de code fonctionne correctement
 **Exemple :**
 ```powershell
 # Fonction à tester
+
 function Add-Numbers {
     param (
         [int]$A,
@@ -327,6 +339,7 @@ function Add-Numbers {
 }
 
 # Tests unitaires avec Pester
+
 Describe "Add-Numbers" {
     It "Additionne correctement deux nombres positifs" {
         Add-Numbers -A 2 -B 3 | Should -Be 5
@@ -340,8 +353,7 @@ Describe "Add-Numbers" {
         Add-Numbers -A 2 -B -3 | Should -Be -1
     }
 }
-```
-
+```plaintext
 ## 10. Documentation
 
 La documentation explique comment utiliser et maintenir le code, facilitant la collaboration et la maintenance à long terme.
@@ -355,6 +367,7 @@ La documentation explique comment utiliser et maintenir le code, facilitant la c
 **Exemple :**
 ```powershell
 <#
+
 .SYNOPSIS
     Récupère les données d'un utilisateur à partir de son ID.
 
@@ -375,6 +388,7 @@ La documentation explique comment utiliser et maintenir le code, facilitant la c
     Version: 1.0
     Date de dernière modification: 2023-06-15
 #>
+
 function Get-UserData {
     [CmdletBinding()]
     param (
@@ -383,9 +397,9 @@ function Get-UserData {
     )
     
     # Implémentation...
-}
-```
 
+}
+```plaintext
 ## 11. Gestion de la configuration
 
 La gestion de la configuration permet d'adapter le comportement du code sans le modifier, facilitant le déploiement dans différents environnements.
@@ -399,6 +413,7 @@ La gestion de la configuration permet d'adapter le comportement du code sans le 
 **Exemple :**
 ```powershell
 # Chargement de la configuration
+
 function Get-Configuration {
     param (
         [string]$Environment = "Development"
@@ -413,11 +428,13 @@ function Get-Configuration {
     $config = Get-Content -Path $configPath -Raw | ConvertFrom-Json
     
     # Charger les secrets si nécessaire
+
     if ($config.UseSecrets) {
         $secretsPath = Join-Path -Path $PSScriptRoot -ChildPath "../projet/config/secrets.$Environment.json"
         if (Test-Path $secretsPath) {
             $secrets = Get-Content -Path $secretsPath -Raw | ConvertFrom-Json
             # Fusionner les secrets avec la configuration
+
             $config | Add-Member -NotePropertyMembers $secrets
         }
     }
@@ -426,10 +443,10 @@ function Get-Configuration {
 }
 
 # Utilisation
+
 $config = Get-Configuration -Environment "Production"
 $connectionString = $config.Database.ConnectionString
-```
-
+```plaintext
 ## 12. Journalisation
 
 La journalisation enregistre les événements et les erreurs pendant l'exécution du code, facilitant le débogage et la surveillance.
@@ -443,6 +460,7 @@ La journalisation enregistre les événements et les erreurs pendant l'exécutio
 **Exemple :**
 ```powershell
 # Module de journalisation
+
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -469,12 +487,15 @@ function Write-Log {
     }
     
     # Format JSON pour le fichier
+
     $jsonEntry = $logEntry | ConvertTo-Json -Compress
     
     # Ajouter au fichier
+
     Add-Content -Path $LogFile -Value $jsonEntry
     
     # Afficher dans la console si demandé
+
     if ($Console) {
         $color = switch ($Level) {
             "Debug" { "Gray" }
@@ -489,15 +510,16 @@ function Write-Log {
 }
 
 # Utilisation
+
 Write-Log -Message "Démarrage de l'application" -Level Info -Console
 try {
     # Code...
+
 }
 catch {
     Write-Log -Message "Erreur: $_" -Level Error -Console
 }
-```
-
+```plaintext
 ## 13. Performance
 
 L'optimisation des performances vise à améliorer la vitesse d'exécution, réduire l'utilisation des ressources et améliorer l'expérience utilisateur.
@@ -511,6 +533,7 @@ L'optimisation des performances vise à améliorer la vitesse d'exécution, réd
 **Exemple :**
 ```powershell
 # Mesure de performance
+
 function Measure-ExecutionTime {
     param (
         [Parameter(Mandatory = $true)]
@@ -526,6 +549,7 @@ function Measure-ExecutionTime {
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
         
         # Exécuter le code
+
         & $ScriptBlock
         
         $stopwatch.Stop()
@@ -533,6 +557,7 @@ function Measure-ExecutionTime {
     }
     
     # Calculer les statistiques
+
     $avg = ($results | Measure-Object -Average).Average
     $min = ($results | Measure-Object -Minimum).Minimum
     $max = ($results | Measure-Object -Maximum).Maximum
@@ -546,14 +571,15 @@ function Measure-ExecutionTime {
 }
 
 # Utilisation
+
 $result = Measure-ExecutionTime -ScriptBlock {
     # Code à mesurer
+
     Get-Process | Where-Object { $_.CPU -gt 10 }
 } -Iterations 10
 
 Write-Host "Temps moyen: $($result.AverageMs) ms"
-```
-
+```plaintext
 ## 14. Sécurité
 
 La sécurité protège le code et les données contre les accès non autorisés, les attaques et les vulnérabilités.
@@ -567,6 +593,7 @@ La sécurité protège le code et les données contre les accès non autorisés,
 **Exemple :**
 ```powershell
 # Validation des entrées
+
 function Invoke-SafeCommand {
     param (
         [Parameter(Mandatory = $true)]
@@ -577,6 +604,7 @@ function Invoke-SafeCommand {
     )
     
     # Liste blanche de commandes autorisées
+
     $allowedCommands = @("Get-Process", "Get-Service", "Get-ChildItem")
     
     if ($allowedCommands -notcontains $Command) {
@@ -584,6 +612,7 @@ function Invoke-SafeCommand {
     }
     
     # Valider les arguments
+
     foreach ($arg in $Arguments) {
         if ($arg -match "[;&|]") {
             throw "Argument non valide: $arg"
@@ -591,11 +620,13 @@ function Invoke-SafeCommand {
     }
     
     # Exécuter la commande
+
     $scriptBlock = [scriptblock]::Create("$Command $($Arguments -join ' ')")
     return & $scriptBlock
 }
 
 # Chiffrement des données sensibles
+
 function Protect-String {
     param (
         [Parameter(Mandatory = $true)]
@@ -619,8 +650,7 @@ function Unprotect-String {
     
     return $credential.GetNetworkCredential().Password
 }
-```
-
+```plaintext
 ## 15. Concurrence
 
 La gestion de la concurrence permet d'exécuter plusieurs tâches simultanément, améliorant les performances et la réactivité.
@@ -634,6 +664,7 @@ La gestion de la concurrence permet d'exécuter plusieurs tâches simultanément
 **Exemple :**
 ```powershell
 # Traitement parallèle
+
 function Invoke-ParallelProcessing {
     param (
         [Parameter(Mandatory = $true)]
@@ -647,6 +678,7 @@ function Invoke-ParallelProcessing {
     )
     
     # Créer un pool de runspaces
+
     $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
     $pool = [runspacefactory]::CreateRunspacePool(1, $ThrottleLimit, $sessionState, $Host)
     $pool.Open()
@@ -665,12 +697,14 @@ function Invoke-ParallelProcessing {
     }
     
     # Récupérer les résultats
+
     foreach ($job in $jobs) {
         $results += $job.Pipe.EndInvoke($job.Result)
         $job.Pipe.Dispose()
     }
     
     # Fermer le pool
+
     $pool.Close()
     $pool.Dispose()
     
@@ -678,6 +712,7 @@ function Invoke-ParallelProcessing {
 }
 
 # Utilisation
+
 $files = Get-ChildItem -Path "C:\Data" -Filter "*.txt"
 $results = Invoke-ParallelProcessing -Items $files -ScriptBlock {
     param($file)
@@ -689,8 +724,7 @@ $results = Invoke-ParallelProcessing -Items $files -ScriptBlock {
         Size = $file.Length
     }
 }
-```
-
+```plaintext
 ## 16. Versionnement
 
 Le versionnement permet de suivre les modifications du code, de gérer les dépendances et de faciliter la collaboration.
@@ -704,7 +738,9 @@ Le versionnement permet de suivre les modifications du code, de gérer les dépe
 **Exemple :**
 ```powershell
 # Module avec versionnement
+
 <#
+
 .SYNOPSIS
     Module de gestion des utilisateurs
 .DESCRIPTION
@@ -720,6 +756,7 @@ Le versionnement permet de suivre les modifications du code, de gérer les dépe
 #>
 
 # Vérification de compatibilité
+
 function Test-ModuleCompatibility {
     param (
         [Parameter(Mandatory = $true)]
@@ -758,12 +795,12 @@ function Test-ModuleCompatibility {
 }
 
 # Utilisation
+
 if (-not (Test-ModuleCompatibility -ModuleName "UserManagement" -RequiredVersion "1.2.0")) {
     Write-Error "Ce script nécessite le module UserManagement v1.2.0 ou supérieur"
     exit 1
 }
-```
-
+```plaintext
 ## Conclusion
 
 Ces 16 bases de la programmation forment le socle de notre approche de développement. En les appliquant systématiquement, nous assurons la qualité, la maintenabilité et l'évolutivité de notre code.

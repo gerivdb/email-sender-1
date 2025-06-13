@@ -8,3 +8,4 @@ related: []
 ## 05/04/2025 - Organisation automatique du dépôt et gestion des standards GitHub
 
 #
+

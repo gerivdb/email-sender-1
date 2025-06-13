@@ -19,24 +19,28 @@ Le moteur d'exécution des tests doit permettre de :
 ### 3.1 Exécution des tests
 
 #### 3.1.1 Chargement et validation des configurations
+
 - Le moteur doit pouvoir charger des configurations de test à partir de fichiers (JSON, YAML, etc.)
 - Il doit valider la configuration avant l'exécution pour s'assurer qu'elle est complète et cohérente
 - Il doit supporter des configurations par défaut pour les paramètres non spécifiés
 - Il doit permettre la surcharge des paramètres de configuration au moment de l'exécution
 
 #### 3.1.2 Préparation de l'environnement
+
 - Le moteur doit préparer l'environnement de test selon la configuration
 - Il doit gérer l'initialisation des ressources nécessaires (fichiers, bases de données, etc.)
 - Il doit vérifier les prérequis avant l'exécution (espace disque, mémoire, etc.)
 - Il doit pouvoir isoler l'environnement de test pour éviter les interférences
 
 #### 3.1.3 Exécution des scénarios
+
 - Le moteur doit exécuter les scénarios de test selon la séquence définie
 - Il doit supporter différents types de scénarios (scripts, fonctions, etc.)
 - Il doit gérer les dépendances entre les étapes du scénario
 - Il doit permettre l'exécution conditionnelle des étapes
 
 #### 3.1.4 Nettoyage post-exécution
+
 - Le moteur doit nettoyer l'environnement après l'exécution
 - Il doit libérer les ressources utilisées pendant le test
 - Il doit restaurer l'état initial si nécessaire
@@ -45,18 +49,21 @@ Le moteur d'exécution des tests doit permettre de :
 ### 3.2 Gestion du cycle de vie
 
 #### 3.2.1 États du test
+
 - Le moteur doit gérer les différents états du test (non démarré, en cours, terminé, échoué, etc.)
 - Il doit permettre de connaître l'état actuel d'un test
 - Il doit maintenir un historique des transitions d'état
 - Il doit fournir des mécanismes pour réagir aux changements d'état
 
 #### 3.2.2 Contrôle d'exécution
+
 - Le moteur doit permettre de démarrer, mettre en pause, reprendre et arrêter un test
 - Il doit supporter l'exécution programmée des tests
 - Il doit gérer les timeouts pour éviter les blocages
 - Il doit permettre l'annulation propre d'un test en cours
 
 #### 3.2.3 Gestion des erreurs
+
 - Le moteur doit détecter et gérer les erreurs pendant l'exécution
 - Il doit fournir des informations détaillées sur les erreurs
 - Il doit permettre de définir des stratégies de reprise après erreur
@@ -65,18 +72,21 @@ Le moteur d'exécution des tests doit permettre de :
 ### 3.3 Coordination avec les autres composants
 
 #### 3.3.1 Intégration avec le générateur de données
+
 - Le moteur doit pouvoir demander la génération de données de test
 - Il doit gérer le chargement des données générées
 - Il doit coordonner la génération de données avec l'exécution des tests
 - Il doit valider la compatibilité des données avec le scénario de test
 
 #### 3.3.2 Intégration avec le collecteur de métriques
+
 - Le moteur doit démarrer et arrêter la collecte des métriques
 - Il doit synchroniser les points de mesure avec les étapes du test
 - Il doit récupérer les métriques collectées
 - Il doit associer les métriques aux étapes correspondantes du test
 
 #### 3.3.3 Intégration avec le système d'analyse
+
 - Le moteur doit fournir les résultats au système d'analyse
 - Il doit déclencher l'analyse des résultats
 - Il doit récupérer les conclusions de l'analyse
@@ -85,18 +95,21 @@ Le moteur d'exécution des tests doit permettre de :
 ### 3.4 Collecte et agrégation des résultats
 
 #### 3.4.1 Capture des résultats
+
 - Le moteur doit capturer les résultats de chaque étape du test
 - Il doit enregistrer les valeurs de retour des scénarios
 - Il doit capturer les sorties standard et d'erreur
 - Il doit horodater les résultats pour permettre une analyse temporelle
 
 #### 3.4.2 Agrégation des résultats
+
 - Le moteur doit agréger les résultats des différentes étapes
 - Il doit calculer des statistiques de base (min, max, moyenne, etc.)
 - Il doit associer les résultats aux métriques correspondantes
 - Il doit structurer les résultats pour faciliter leur analyse
 
 #### 3.4.3 Stockage des résultats
+
 - Le moteur doit stocker les résultats dans un format persistant
 - Il doit supporter différents formats de stockage (JSON, CSV, base de données, etc.)
 - Il doit gérer les versions des résultats
@@ -105,18 +118,21 @@ Le moteur d'exécution des tests doit permettre de :
 ### 3.5 Contrôle et surveillance
 
 #### 3.5.1 Monitoring en temps réel
+
 - Le moteur doit fournir des informations sur l'état d'avancement du test
 - Il doit permettre de visualiser les métriques en temps réel
 - Il doit signaler les anomalies détectées pendant l'exécution
 - Il doit fournir des estimations du temps restant
 
 #### 3.5.2 Journalisation
+
 - Le moteur doit journaliser les événements importants
 - Il doit supporter différents niveaux de verbosité
 - Il doit permettre la configuration de la journalisation
 - Il doit fournir des mécanismes pour filtrer et rechercher dans les journaux
 
 #### 3.5.3 Notifications
+
 - Le moteur doit pouvoir envoyer des notifications sur les événements importants
 - Il doit supporter différents canaux de notification (email, webhook, etc.)
 - Il doit permettre la configuration des conditions de notification

@@ -1,4 +1,4 @@
-﻿# Modes OpÃ©rationnels
+# Modes OpÃ©rationnels
 
 Ce document prÃ©sente les diffÃ©rents modes opÃ©rationnels utilisÃ©s dans le projet.
 
@@ -51,13 +51,16 @@ Les modes opÃ©rationnels sont Ã©troitement intÃ©grÃ©s avec la roadmap du
 
 ```powershell
 # DÃ©composer une tÃ¢che complexe
+
 .\gran-mode.ps1 -RoadmapPath "docs/roadmap/roadmap.md" -TaskId "1.2.3"
 
 # ImplÃ©menter les sous-tÃ¢ches
+
 .\dev-r-mode.ps1 -RoadmapPath "docs/roadmap/roadmap.md" -TaskId "1.2.3.1"
 .\dev-r-mode.ps1 -RoadmapPath "docs/roadmap/roadmap.md" -TaskId "1.2.3.2"
 .\dev-r-mode.ps1 -RoadmapPath "docs/roadmap/roadmap.md" -TaskId "1.2.3.3"
 
 # VÃ©rifier l'Ã©tat d'avancement
+
 .\check-mode.ps1 -RoadmapPath "docs/roadmap/roadmap.md" -TaskId "1.2.3"
-```
+```plaintext

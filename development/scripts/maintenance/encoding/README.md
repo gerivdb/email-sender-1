@@ -1,4 +1,4 @@
-﻿# encoding
+# encoding
 
 Gestion d'encodage
 

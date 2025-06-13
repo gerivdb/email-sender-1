@@ -1,4 +1,4 @@
-﻿# Inspect-Variable
+# Inspect-Variable
 
 ## RÃ©sumÃ©
 
@@ -17,6 +17,7 @@ Inspect-Variable [-InputObject <>]  [-DetailLevel <>]  [-MaxDepth <>]  [-MaxArra
 `
 
 ## ParamÃ¨tres
+
 ### -InputObject
 
 La variable Ã  inspecter. Peut Ãªtre de n'importe quel type.
@@ -122,6 +123,7 @@ Le format de sortie.
 
 [PSCustomObject] ou [string] selon le paramÃ¨tre Format.
 ## Exemples
+
 ### Exemple 1
 
 `powershell

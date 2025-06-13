@@ -1,13 +1,17 @@
-﻿# CompÃ©tences CatÃ©gorisÃ©es par Domaine
+# CompÃ©tences CatÃ©gorisÃ©es par Domaine
 
 Ce document prÃ©sente les compÃ©tences requises catÃ©gorisÃ©es par domaine pour une meilleure organisation et analyse.
 
 ## Table des MatiÃ¨res
 
 - [Base de donnÃ©es](#base-de-donnã©es)
+
 - [DÃ©veloppement](#dã©veloppement)
+
 - [Gestion de projet](#gestion-de-projet)
+
 - [Tests et qualitÃ©](#tests-et-qualitã©)
+
 - [RÃ©sumÃ©](#rÃ©sumÃ©)
 
 ## <a name='base-de-donnã©es'></a>Base de donnÃ©es

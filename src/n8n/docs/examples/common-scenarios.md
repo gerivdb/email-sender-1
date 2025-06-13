@@ -5,11 +5,17 @@ Ce document présente des exemples d'utilisation courants du système de remédi
 ## Table des matières
 
 1. [Installation et configuration initiale](#installation-et-configuration-initiale)
+
 2. [Gestion quotidienne de n8n](#gestion-quotidienne-de-n8n)
+
 3. [Importation et gestion des workflows](#importation-et-gestion-des-workflows)
+
 4. [Surveillance et maintenance](#surveillance-et-maintenance)
+
 5. [Automatisation des tâches](#automatisation-des-tâches)
+
 6. [Intégration avec d'autres systèmes](#intégration-avec-dautres-systèmes)
+
 7. [Dépannage](#dépannage)
 
 ## Installation et configuration initiale
@@ -196,22 +202,28 @@ Cet exemple montre comment sauvegarder et restaurer les workflows n8n.
 2. Restaurez les workflows à partir d'une sauvegarde :
    ```powershell
    # Arrêter n8n
+
    .\n8n-stop.cmd
    
    # Restaurer les workflows
+
    $backupFile = "n8n/backups/workflows_20250425_101530.zip"
    $workflowFolder = "n8n/data/.n8n/workflows"
    
    # Extraire la sauvegarde
+
    Expand-Archive -Path $backupFile -DestinationPath "temp_restore" -Force
    
    # Copier les workflows
+
    Copy-Item -Path "temp_restore\*" -Destination $workflowFolder -Recurse -Force
    
    # Nettoyer
+
    Remove-Item -Path "temp_restore" -Recurse -Force
    
    # Démarrer n8n
+
    .\n8n-start.cmd
    ```
 
@@ -236,6 +248,7 @@ Cet exemple montre comment surveiller l'état de n8n.
 3. Configurez une surveillance automatique :
    ```powershell
    # Créer une tâche planifiée pour vérifier l'état de n8n toutes les 15 minutes
+
    $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File `"D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\n8n\automation\monitoring\check-n8n-status-main.ps1`" -AutoRestart `$true"
    $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) -RepetitionInterval (New-TimeSpan -Minutes 15)
    Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "N8N_StatusCheck" -Description "Vérification de l'état de n8n"
@@ -256,6 +269,7 @@ Cet exemple montre comment effectuer une maintenance de routine sur n8n.
 2. Configurez une maintenance automatique :
    ```powershell
    # Créer une tâche planifiée pour exécuter la maintenance tous les jours à 3h00
+
    $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File `"D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\n8n\automation\maintenance\maintenance.ps1`""
    $trigger = New-ScheduledTaskTrigger -Daily -At "3:00AM"
    Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "N8N_Maintenance" -Description "Maintenance de n8n"
@@ -272,6 +286,7 @@ Cet exemple montre comment automatiser le démarrage et l'arrêt de n8n selon un
 1. Créez un script pour démarrer n8n au démarrage du système :
    ```powershell
    # Créer une tâche planifiée pour démarrer n8n au démarrage du système
+
    $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File `"D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\n8n\automation\deployment\start-n8n.ps1`""
    $trigger = New-ScheduledTaskTrigger -AtStartup
    Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "N8N_StartAtBoot" -Description "Démarrer n8n au démarrage du système"
@@ -280,6 +295,7 @@ Cet exemple montre comment automatiser le démarrage et l'arrêt de n8n selon un
 2. Créez un script pour arrêter n8n à une heure spécifique :
    ```powershell
    # Créer une tâche planifiée pour arrêter n8n à 22h00
+
    $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File `"D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\n8n\automation\deployment\stop-n8n.ps1`""
    $trigger = New-ScheduledTaskTrigger -Daily -At "10:00PM"
    Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "N8N_StopAtNight" -Description "Arrêter n8n la nuit"
@@ -294,6 +310,7 @@ Cet exemple montre comment automatiser l'exécution des tests d'intégration.
 1. Créez un script pour exécuter les tests d'intégration chaque semaine :
    ```powershell
    # Créer une tâche planifiée pour exécuter les tests d'intégration chaque dimanche à 4h00
+
    $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File `"D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\n8n\automation\tests\integration-tests.ps1`""
    $trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Sunday -At "4:00AM"
    Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "N8N_IntegrationTests" -Description "Tests d'intégration n8n"
@@ -310,11 +327,14 @@ Cet exemple montre comment intégrer le système de remédiation n8n avec un sys
 1. Créez un script pour envoyer les résultats de surveillance à un système externe :
    ```powershell
    # Créer un script pour envoyer les résultats de surveillance à un système externe
+
    $monitoringScript = @"
    # Vérifier l'état de n8n
+
    `$result = & "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\n8n\automation\monitoring\check-n8n-status-main.ps1" -NoInteractive
    
    # Préparer les données pour le système externe
+
    `$data = @{
        status = `$result.OverallSuccess
        timestamp = Get-Date -Format "o"
@@ -323,13 +343,16 @@ Cet exemple montre comment intégrer le système de remédiation n8n avec un sys
    } | ConvertTo-Json
    
    # Envoyer les données au système externe
+
    Invoke-RestMethod -Uri "https://monitoring.example.com/api/status" -Method Post -Body `$data -ContentType "application/json"
    "@
    
    # Enregistrer le script
+
    Set-Content -Path "n8n/automation/monitoring/send-to-external.ps1" -Value $monitoringScript
    
    # Créer une tâche planifiée pour exécuter le script toutes les 5 minutes
+
    $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File `"D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\n8n\automation\monitoring\send-to-external.ps1`""
    $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) -RepetitionInterval (New-TimeSpan -Minutes 5)
    Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "N8N_ExternalMonitoring" -Description "Envoi des données de surveillance à un système externe"
@@ -369,6 +392,7 @@ Cet exemple montre comment intégrer le système de remédiation n8n avec un sys
 2. Modifiez le script de notification pour utiliser cette configuration :
    ```powershell
    # Modifier le script de notification
+
    $notificationScript = @"
    [CmdletBinding()]
    param (
@@ -384,10 +408,12 @@ Cet exemple montre comment intégrer le système de remédiation n8n avec un sys
    )
    
    # Charger la configuration
+
    `$configFile = "n8n/config/notification-config.json"
    `$config = Get-Content -Path `$configFile -Raw | ConvertFrom-Json
    
    # Envoyer un e-mail
+
    if (`$config.Email.Enabled) {
        `$emailParams = @{
            SmtpServer = `$config.Email.SmtpServer
@@ -404,6 +430,7 @@ Cet exemple montre comment intégrer le système de remédiation n8n avec un sys
    }
    
    # Envoyer une notification Teams
+
    if (`$config.Teams.Enabled) {
        `$teamsMessage = @{
            "@type" = "MessageCard"
@@ -429,6 +456,7 @@ Cet exemple montre comment intégrer le système de remédiation n8n avec un sys
    }
    
    # Envoyer une notification Slack
+
    if (`$config.Slack.Enabled) {
        `$slackMessage = @{
            text = `$Subject
@@ -450,6 +478,7 @@ Cet exemple montre comment intégrer le système de remédiation n8n avec un sys
    "@
    
    # Enregistrer le script
+
    Set-Content -Path "n8n/automation/notification/send-notification.ps1" -Value $notificationScript
    ```
 
@@ -469,12 +498,14 @@ Cet exemple montre comment résoudre les problèmes de démarrage de n8n.
 2. Vérifiez si le port est déjà utilisé :
    ```powershell
    # Vérifier si le port 5678 est déjà utilisé
+
    $portInUse = Get-NetTCPConnection -LocalPort 5678 -ErrorAction SilentlyContinue
    
    if ($portInUse) {
        Write-Host "Le port 5678 est déjà utilisé par le processus $($portInUse.OwningProcess)" -ForegroundColor Red
        
        # Obtenir des informations sur le processus
+
        $process = Get-Process -Id $portInUse.OwningProcess -ErrorAction SilentlyContinue
        
        if ($process) {
@@ -493,13 +524,16 @@ Cet exemple montre comment résoudre les problèmes de démarrage de n8n.
 4. Redémarrez n8n avec des options de débogage :
    ```powershell
    # Arrêter n8n
+
    .\n8n-stop.cmd
    
    # Démarrer n8n avec des options de débogage
+
    $env:DEBUG = "n8n:*"
    .\n8n-start.cmd
    
    # Vérifier les logs
+
    Get-Content -Path "n8n/logs/n8n.log" -Tail 50 -Wait
    ```
 
@@ -517,6 +551,7 @@ Cet exemple montre comment résoudre les problèmes d'importation de workflows.
 2. Vérifiez que l'API n8n est accessible :
    ```powershell
    # Vérifier que l'API n8n est accessible
+
    $response = Invoke-WebRequest -Uri "http://localhost:5678/healthz" -UseBasicParsing
    
    if ($response.StatusCode -eq 200) {
@@ -529,6 +564,7 @@ Cet exemple montre comment résoudre les problèmes d'importation de workflows.
 3. Vérifiez que les fichiers JSON sont valides :
    ```powershell
    # Vérifier que les fichiers JSON sont valides
+
    $referenceFolder = "n8n/core/workflows/local"
    $files = Get-ChildItem -Path $referenceFolder -Filter "*.json"
    
@@ -546,6 +582,7 @@ Cet exemple montre comment résoudre les problèmes d'importation de workflows.
 4. Importez un workflow spécifique manuellement :
    ```powershell
    # Importer un workflow spécifique manuellement
+
    $workflowFile = "n8n/core/workflows/local/workflow1.json"
    $workflowContent = Get-Content -Path $workflowFile -Raw
    $workflow = $workflowContent | ConvertFrom-Json

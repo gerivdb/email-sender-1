@@ -1,4 +1,4 @@
-﻿# Test-RoadmapReturnType
+# Test-RoadmapReturnType
 
 ## SYNOPSIS
 

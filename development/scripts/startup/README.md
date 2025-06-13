@@ -24,8 +24,7 @@ Pour utiliser ce script comme script de démarrage dans VS Code :
         ]
     }
 }
-```
-
+```plaintext
 6. Enregistrez le fichier et redémarrez VS Code
 
 ## Fonctionnalités

@@ -104,8 +104,7 @@ Un point d'inflexion ou une plage est considéré comme significatif s'il répon
     ]
   }
 }
-```
-
+```plaintext
 ### 3.3 Points d'inflexion secondaires
 
 | Point d'inflexion | Valeur typique (µs) | Interprétation | Signification |
@@ -239,8 +238,7 @@ Un point d'inflexion ou une plage est considéré comme significatif s'il répon
     }
   ]
 }
-```
-
+```plaintext
 ## 5. Variations contextuelles des points d'inflexion
 
 ### 5.1 Variations par environnement matériel
@@ -310,8 +308,7 @@ Un point d'inflexion ou une plage est considéré comme significatif s'il répon
     "rationale": "Bins alignés sur les points d'inflexion primaires et les limites des plages significatives pour capturer optimalement la structure multimodale"
   }
 }
-```
-
+```plaintext
 ## 7. Utilisation des points d'inflexion pour l'analyse opérationnelle
 
 ### 7.1 Établissement de seuils d'alerte

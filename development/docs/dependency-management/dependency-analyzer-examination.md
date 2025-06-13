@@ -38,9 +38,9 @@ function Find-ScriptDependencies {
         [switch]$Verbose
     )
 }
-```
-
+```plaintext
 #### Paramètres:
+
 - `FilePath`: Chemin du fichier à analyser (obligatoire)
 - `ScriptType`: Type de script à analyser (obligatoire, valeurs possibles: PowerShell, Python, Batch, Shell, Unknown)
 - `Verbose`: Affiche des informations détaillées pendant l'exécution (optionnel)
@@ -58,15 +58,18 @@ La fonction suit le processus suivant:
 ### 2.3 Méthodes de détection par type de script
 
 #### 2.3.1 PowerShell
+
 - Détection des `Import-Module` via regex: `Import-Module\s+([a-zA-Z0-9_\.-]+)`
 - Détection du dot-sourcing via regex: `\.\s+([a-zA-Z0-9_\.-\\\/]+)`
 - Détection des `using module` via regex: `using\s+module\s+([a-zA-Z0-9_\.-]+)`
 
 #### 2.3.2 Python
+
 - Détection des `import` via regex: `import\s+([a-zA-Z0-9_\.]+)`
 - Détection des `from ... import` via regex: `from\s+([a-zA-Z0-9_\.]+)\s+import`
 
 #### 2.3.3 Batch/Shell
+
 - Détection des `source` via regex: `source\s+([a-zA-Z0-9_\.-\\\/]+)`
 - Détection du dot-sourcing via regex: `\.\s+([a-zA-Z0-9_\.-\\\/]+)`
 
@@ -98,8 +101,7 @@ function Get-ScriptDependencies {
         [string]$Path
     )
 }
-```
-
+```plaintext
 Cette fonction diffère de `Find-ScriptDependencies` par:
 - Elle prend directement le contenu du script en paramètre plutôt que de le lire depuis un fichier
 - Elle utilise le chemin du script pour résoudre les chemins relatifs
@@ -116,6 +118,7 @@ Ce module, situé dans `development\roadmap\parser\module\Functions\Private\Cycl
 - `Get-PythonDependencies`: Analyse les dépendances d'un fichier Python
 - `Get-JavaScriptDependencies`: Analyse les dépendances d'un fichier JavaScript/TypeScript
 - `Get-CSharpDependencies`: Analyse les dépendances d'un fichier C#
+
 - `Get-JavaDependencies`: Analyse les dépendances d'un fichier Java
 - `Get-FileDependencies`: Fonction générique qui appelle la fonction appropriée en fonction du type de fichier
 
@@ -132,12 +135,14 @@ Un module Python, `ScriptAnalyzer.py`, est également disponible pour l'analyse 
 ## 5. Forces et faiblesses
 
 ### 5.1 Forces
+
 - Support de multiples langages de programmation
 - Détection des principaux types de dépendances
 - Intégration avec le système d'analyse de code
 - Approche modulaire et extensible
 
 ### 5.2 Faiblesses
+
 - Utilisation de regex pour l'analyse, ce qui peut conduire à des faux positifs ou négatifs
 - Pas de résolution complète des chemins relatifs dans `Find-ScriptDependencies`
 - Pas de détection des dépendances indirectes (transitives)

@@ -38,8 +38,7 @@ Le composant `FilterPanel` est un composant réutilisable qui fournit une interf
     </select>
   </div>
 </filter-panel>
-```
-
+```plaintext
 ### Implémentation
 
 ```vue
@@ -112,8 +111,7 @@ export default {
   }
 }
 </script>
-```
-
+```plaintext
 ## AnalysisFilters
 
 Le composant `AnalysisFilters` est un composant spécifique pour les visualisations d'analyse. Il utilise le composant `FilterPanel` et ajoute des filtres spécifiques pour les analyses.
@@ -139,8 +137,7 @@ Le composant `AnalysisFilters` est un composant spécifique pour les visualisati
   @apply="applyFilters"
   @reset="resetFilters"
 />
-```
-
+```plaintext
 ### Structure des filtres
 
 ```javascript
@@ -155,8 +152,7 @@ Le composant `AnalysisFilters` est un composant spécifique pour les visualisati
   sortBy: 'date',         // Tri (date, relevance, alphabetical)
   sortDirection: 'desc'   // Direction de tri (asc, desc)
 }
-```
-
+```plaintext
 ### Fonctionnalités
 
 - **Filtres de période**: Sélection de période prédéfinie ou personnalisée
@@ -258,8 +254,7 @@ export default {
     }
   }
 }
-```
-
+```plaintext
 ## Personnalisation
 
 ### Ajout de nouveaux filtres

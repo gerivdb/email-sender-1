@@ -22,20 +22,18 @@ Aucune installation spécifique n'est nécessaire. Le script est déjà inclus d
 
 Pour lancer l'interface interactive, exécutez simplement :
 
-```
+```plaintext
 .\n8n-manager.cmd
-```
-
+```plaintext
 Cela affichera un menu avec toutes les options disponibles.
 
 ### Exécution directe d'une action
 
 Pour exécuter directement une action sans passer par le menu, utilisez le paramètre `-Action` :
 
-```
+```plaintext
 .\n8n-manager.cmd -Action start
-```
-
+```plaintext
 Actions disponibles :
 - `start` : Démarre n8n
 - `stop` : Arrête n8n
@@ -122,52 +120,44 @@ Le fichier de configuration `n8n/config/n8n-manager-config.json` contient les pa
   "AutoRestart": false,
   "NotificationEnabled": true
 }
-```
-
+```plaintext
 ## Exemples d'utilisation
 
 ### Démarrer n8n
 
-```
+```plaintext
 .\n8n-manager.cmd -Action start
-```
-
+```plaintext
 ou
 
-```
+```plaintext
 .\n8n-start.cmd
-```
-
+```plaintext
 ### Vérifier l'état de n8n
 
-```
+```plaintext
 .\n8n-manager.cmd -Action status
-```
-
+```plaintext
 ou
 
-```
+```plaintext
 .\n8n-status.cmd
-```
-
+```plaintext
 ### Importer des workflows
 
-```
+```plaintext
 .\n8n-manager.cmd -Action import
-```
-
+```plaintext
 ou
 
-```
+```plaintext
 .\n8n-import.cmd
-```
-
+```plaintext
 ### Configurer n8n Manager
 
-```
+```plaintext
 .\n8n-manager.cmd
-```
-
+```plaintext
 Puis sélectionner l'option `C` dans le menu principal.
 
 ## Résolution des problèmes

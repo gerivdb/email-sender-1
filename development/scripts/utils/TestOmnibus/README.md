@@ -53,20 +53,17 @@ Tests pour le module de nettoyage de maintenance, qui inclut :
 
 ```powershell
 .\Run-AllTests.ps1 -GenerateHtmlReport
-```
-
+```plaintext
 ### ExÃ©cuter les tests d'un module spÃ©cifique
 
 ```powershell
 .\Invoke-TestOmnibus.ps1 -Path "D:/DO/WEB/N8N_development/testing/tests/PROJETS/EMAIL_SENDER_1/development/scripts/utils/ProactiveOptimization/tests"
-```
-
+```plaintext
 ### ExÃ©cuter les tests de maintenance
 
 ```powershell
 .\Run-MaintenanceTests.ps1 -GenerateHtmlReport
-```
-
+```plaintext
 ## Configuration
 
 Le fichier `testomnibus_config.json` contient la configuration principale de TestOmnibus :
@@ -101,8 +98,7 @@ Le fichier `testomnibus_config.json` contient la configuration principale de Tes
         }
     ]
 }
-```
-
+```plaintext
 ## Ajouter un nouveau module de test
 
 Pour ajouter un nouveau module de test Ã  TestOmnibus :

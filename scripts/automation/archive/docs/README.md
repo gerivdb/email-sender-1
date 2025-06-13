@@ -5,6 +5,7 @@ Ce dossier contient des scripts d'automatisation pour diverses tâches liées au
 ## Scripts disponibles
 
 ### `automate-chat-buttons.ps1`
+
 - **Description** : Ce script simule des clics sur les boutons dans les boîtes de dialogue de GitHub Copilot dans Visual Studio Code.
 - **Utilisation** :
   ```powershell
@@ -24,6 +25,7 @@ Ce dossier contient des scripts d'automatisation pour diverses tâches liées au
   - 🔧 **Support ShouldProcess** pour les opérations de modification d'état
 
 ## Notes
+
 - Assurez-vous que PowerShell est installé et configuré correctement.
 - Le script nécessite les droits pour interagir avec la fenêtre VS Code.
 - Si le script ne fonctionne pas correctement:
@@ -32,11 +34,13 @@ Ce dossier contient des scripts d'automatisation pour diverses tâches liées au
   - Sur certains systèmes, vous devrez peut-être exécuter PowerShell en mode administrateur
 
 ## Dépannage
+
 - **Le script ne semble pas cliquer sur le bon bouton**: VS Code pourrait avoir modifié son interface. Vérifiez l'ordre des boutons et ajustez le paramètre `TabCount` dans le script si nécessaire.
 - **VS Code n'est pas amené au premier plan**: Essayez de cliquer manuellement sur la fenêtre VS Code avant d'exécuter le script.
 - **Le script s'exécute mais ne fait rien**: Vérifiez que les boîtes de dialogue sont bien visibles avant de lancer le script.
 
 ## Qualité du code
+
 Le script a été optimisé pour respecter toutes les bonnes pratiques PowerShell :
 - ✅ **0 erreurs PSScriptAnalyzer** - Code conforme aux standards
 - ✅ **Verbes approuvés** - Utilisation de `Invoke-` au lieu de `Perform-`

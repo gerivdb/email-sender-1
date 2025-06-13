@@ -14,16 +14,17 @@ La propriété `RequiredModules` peut être définie de plusieurs façons dans u
 
 ```powershell
 # Format simple - liste de noms de modules
+
 RequiredModules = @('ModuleA', 'ModuleB', 'ModuleC')
 
 # Format avancé - avec versions spécifiques
+
 RequiredModules = @(
     'ModuleA',
     @{ModuleName = 'ModuleB'; ModuleVersion = '1.0.0'},
     @{ModuleName = 'ModuleC'; RequiredVersion = '2.0.0'}
 )
-```
-
+```plaintext
 ## 2. Analyse des Fichiers .psd1 dans le Projet
 
 ### 2.1 Exemples de Fichiers .psd1
@@ -41,9 +42,10 @@ Cependant, dans les exemples examinés, la propriété `RequiredModules` est com
 
 ```powershell
 # Modules that must be imported into the global environment prior to importing this module
-# RequiredModules = @()
-```
 
+# RequiredModules = @()
+
+```plaintext
 Cette absence d'utilisation active de `RequiredModules` suggère que les modules du projet sont soit autonomes, soit gèrent leurs dépendances d'une autre manière.
 
 ### 2.2 Méthodes Alternatives de Gestion des Dépendances
@@ -68,28 +70,29 @@ D'après les exemples d'utilisation, cette fonction semble:
 
 ```powershell
 # Exemple d'utilisation
+
 $moduleDeps = Test-ModuleDependencies -ModulePath ".\modules\MyModule" -IncludeVersion -CheckAvailability
 
 # Afficher les dépendances
+
 Write-Host "Dépendances du module $($moduleDeps.ModuleName):"
 foreach ($dep in $moduleDeps.Dependencies) {
     $status = if ($moduleDeps.MissingDependencies -contains $dep) { "Manquant" } else { "Disponible" }
     Write-Host "- $($dep.Name) $(if ($dep.Version) { "($($dep.Version))" }) - $status"
 }
-```
-
+```plaintext
 ### 3.2 Analyse par AST (Abstract Syntax Tree)
 
 Le projet utilise l'AST PowerShell pour analyser les dépendances dans certains contextes:
 
 ```powershell
 # Exemple d'extraction des #Requires -Modules via AST
+
 $requiresAst = $ast.ScriptRequirements
 if($requiresAst -and $requiresAst.RequiredModules) {
      $metrics.requires_modules = $requiresAst.RequiredModules | Select-Object -ExpandProperty ModuleName -Unique
 }
-```
-
+```plaintext
 Cette approche est plus robuste que l'analyse par expressions régulières, car elle comprend la structure réelle du code PowerShell.
 
 ### 3.3 Analyse par Expressions Régulières
@@ -98,12 +101,13 @@ Pour les cas où l'AST n'est pas utilisé, le projet emploie des expressions ré
 
 ```powershell
 # Extraction des #Requires -Modules via regex
+
 $requiresMatches = $content | Select-String -Pattern '^\s*#Requires\s+-Modules?\s+(@\(.*?\)|[^\s]+)' -AllMatches
+
 if ($requiresMatches) {
      $metrics.requires_modules = $requiresMatches.Matches.Groups[1].Value -replace "@\(|\)|'", "" -split '\s*,\s*' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Select-Object -Unique
 }
-```
-
+```plaintext
 ## 4. Gestion des Dépendances de Modules
 
 ### 4.1 Vérification de Disponibilité
@@ -112,6 +116,7 @@ Le projet inclut plusieurs fonctions pour vérifier la disponibilité des module
 
 ```powershell
 # Exemple de vérification de modules PowerShell
+
 function Install-ModuleIfNeeded {
     param (
         [string]$ModuleName,
@@ -123,20 +128,21 @@ function Install-ModuleIfNeeded {
     
     if (-not $module -or ($MinimumVersion -and ($module.Version -lt [version]$MinimumVersion))) {
         # Module manquant ou version insuffisante
+
         Install-Module -Name $ModuleName -Force:$Force -Scope CurrentUser
         return $true
     }
     
     return $false
 }
-```
-
+```plaintext
 ### 4.2 Installation Automatique
 
 Pour certaines dépendances, le projet implémente l'installation automatique:
 
 ```powershell
 # Installer les modules manquants si demandé
+
 if ($missingModules.Count -gt 0 -and $InstallMissing) {
     Write-Host "Installation des modules Python manquants..." -ForegroundColor Yellow
     foreach ($module in $missingModules) {
@@ -150,8 +156,7 @@ if ($missingModules.Count -gt 0 -and $InstallMissing) {
         }
     }
 }
-```
-
+```plaintext
 ## 5. Limitations et Problèmes Identifiés
 
 ### 5.1 Absence d'Utilisation Systématique
@@ -205,6 +210,7 @@ function Test-ModuleDependencies {
     )
     
     # Initialiser les résultats
+
     $result = [PSCustomObject]@{
         ModuleName = [System.IO.Path]::GetFileNameWithoutExtension($ModulePath)
         ModulePath = $ModulePath
@@ -213,12 +219,14 @@ function Test-ModuleDependencies {
     }
     
     # Vérifier si le chemin existe
+
     if (-not (Test-Path -Path $ModulePath)) {
         Write-Warning "Le chemin du module n'existe pas: $ModulePath"
         return $result
     }
     
     # Déterminer le chemin du manifeste
+
     $manifestPath = $ModulePath
     if (Test-Path -Path $ModulePath -PathType Container) {
         $psd1Files = Get-ChildItem -Path $ModulePath -Filter "*.psd1"
@@ -230,14 +238,17 @@ function Test-ModuleDependencies {
     }
     
     # Analyser le manifeste
+
     try {
         $manifest = Import-PowerShellDataFile -Path $manifestPath
         
         # Extraire les RequiredModules
+
         if ($manifest.ContainsKey('RequiredModules') -and $manifest.RequiredModules) {
             foreach ($module in $manifest.RequiredModules) {
                 if ($module -is [string]) {
                     # Format simple: nom du module
+
                     $dependency = [PSCustomObject]@{
                         Name = $module
                         Version = $null
@@ -245,6 +256,7 @@ function Test-ModuleDependencies {
                     $result.Dependencies += $dependency
                     
                     # Vérifier la disponibilité si demandé
+
                     if ($CheckAvailability) {
                         $moduleInfo = Get-Module -Name $module -ListAvailable
                         if (-not $moduleInfo) {
@@ -254,6 +266,7 @@ function Test-ModuleDependencies {
                 }
                 elseif ($module -is [hashtable] -or $module -is [System.Collections.Specialized.OrderedDictionary]) {
                     # Format avancé: hashtable avec ModuleName et Version
+
                     $moduleName = $module.ModuleName
                     $moduleVersion = $module.ModuleVersion -or $module.RequiredVersion
                     
@@ -264,6 +277,7 @@ function Test-ModuleDependencies {
                     $result.Dependencies += $dependency
                     
                     # Vérifier la disponibilité si demandé
+
                     if ($CheckAvailability) {
                         $moduleInfo = Get-Module -Name $moduleName -ListAvailable
                         if (-not $moduleInfo) {
@@ -283,8 +297,7 @@ function Test-ModuleDependencies {
     
     return $result
 }
-```
-
+```plaintext
 ### 6.3 Intégration avec le Système de Gestion de Dépendances
 
 Intégrer la gestion des `RequiredModules` avec le système plus large de gestion des dépendances:

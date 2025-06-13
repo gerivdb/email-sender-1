@@ -7,17 +7,20 @@
 ### Fonctionnalités Sémantiques Opérationnelles
 
 #### 1. **Système d'Embeddings Sémantiques**
+
 - ✅ Génération d'embeddings basée sur message + fichiers
 - ✅ Cache d'embeddings optimisé avec clés MD5
 - ✅ Dimensions standardisées (384) compatibles sentence-transformers
 - ✅ Boost sémantique par mots-clés (feat, fix, refactor, etc.)
 
 #### 2. **Prédiction Intelligente du Type de Commit**
+
 - ✅ Classification automatique basée sur l'analyse vectorielle
 - ✅ Scores de confiance (0.8-0.95) avec historique du projet
 - ✅ Types supportés : feature, fix, refactor, docs, test, chore
 
 #### 3. **Détection de Conflits Potentiels**
+
 - ✅ Analyse prédictive basée sur patterns de fichiers
 - ✅ Scores de risque par type de fichier :
   - `go.mod`: 0.8 (très haut risque)
@@ -26,6 +29,7 @@
   - `Dockerfile`: 0.5 (risque modéré)
 
 #### 4. **Mémoire Contextuelle Avancée**
+
 - ✅ Stockage des contextes de commits avec métadonnées complètes
 - ✅ Recherche de commits similaires par similarité vectorielle
 - ✅ Cache d'embeddings avec récupération rapide
@@ -34,7 +38,8 @@
 ## 🔬 Résultats des Tests
 
 ### Tests Sémantiques Réussis
-```
+
+```plaintext
 ✅ SemanticEmbeddingManager
    - Context ID: 4f04c73e7dc8893c3faa2eaff629cf8a
    - Predicted Type: chore (confidence: 0.93)
@@ -56,8 +61,7 @@
    - Stored contexts: 1
    - Cached embeddings: 1 
    - Retrieved similar commits: 1
-```
-
+```plaintext
 ## 🏗️ Architecture Technique
 
 ### Structure Complète Implémentée
@@ -80,8 +84,7 @@ type ContextualMemoryInterface interface {
     CacheEmbeddings(key string, embeddings []float64) error
     GetCachedEmbeddings(key string) ([]float64, bool)
 }
-```
-
+```plaintext
 ### Intégration avec l'Analyzer Existant
 
 ```go
@@ -102,28 +105,36 @@ func (ca *CommitAnalyzer) AnalyzeCommit(data *CommitData) (*CommitAnalysis, erro
     ca.calculateConfidence(analysis)
     ca.suggestBranch(analysis)
 }
-```
-
+```plaintext
 ## 🎯 Exemples d'Utilisation
 
 ### Commit avec Analyse Sémantique Complète
 
 ```bash
 # Commit d'exemple
+
 git add auth/user.go auth/middleware.go config/auth.yaml
 git commit -m "feat: add new user authentication system"
 
 # Résultat de l'analyse sémantique automatique :
-# ✅ Context ID: abc123def456
-# ✅ Embeddings: [384 dimensions générées]
-# ✅ Type prédit: feature (confiance: 0.95)
-# ✅ Score sémantique: 0.874
-# ✅ Probabilité de conflit: 0.6 (fichiers de config)
-# ✅ Commits similaires trouvés: 3
-# ✅ Branche suggérée: feature/add-new-user-authentication-*
-# ✅ Mots-clés extraits: [feat, add]
-```
 
+# ✅ Context ID: abc123def456
+
+# ✅ Embeddings: [384 dimensions générées]
+
+# ✅ Type prédit: feature (confiance: 0.95)
+
+# ✅ Score sémantique: 0.874
+
+# ✅ Probabilité de conflit: 0.6 (fichiers de config)
+
+# ✅ Commits similaires trouvés: 3
+
+# ✅ Branche suggérée: feature/add-new-user-authentication-*
+
+# ✅ Mots-clés extraits: [feat, add]
+
+```plaintext
 ### Amélioration de l'Analyse Traditionnelle
 
 ```go
@@ -135,21 +146,23 @@ analysis.Confidence = 0.85           // basé sur pattern matching
 analysis.ChangeType = "feature"      // confirmé par l'IA (confiance: 0.95)
 analysis.Confidence = 0.95           // boosted par l'analyse sémantique
 analysis.Keywords = [..., "feat", "add", "auth"]  // enrichi sémantiquement
-```
-
+```plaintext
 ## 📊 Métriques de Performance
 
 ### Cache d'Embeddings
+
 - ✅ **Hit rate** : Déterministe pour textes identiques
 - ✅ **Stockage** : Clés MD5 pour déduplication
 - ✅ **Récupération** : O(1) via map[string][]float64
 
 ### Prédictions ML
+
 - ✅ **Latence** : < 1ms pour prédiction type commit
 - ✅ **Précision** : 80-95% selon historique projet
 - ✅ **Cohérence** : Embeddings déterministes via hash MD5
 
 ### Détection de Conflits
+
 - ✅ **Couverture** : 15+ patterns de fichiers critiques
 - ✅ **Granularité** : Scores 0.0-1.0 par type fichier
 - ✅ **Performance** : O(n) où n = nombre de fichiers modifiés
@@ -157,6 +170,7 @@ analysis.Keywords = [..., "feat", "add", "auth"]  // enrichi sémantiquement
 ## 🚀 Prochaines Étapes (Phase 2.2)
 
 ### Phase 2.2: Classification Intelligente Multi-Critères
+
 - [ ] **Moteur de règles avancées** basé sur combinaison :
   - Analyse sémantique (embeddings)
   - Patterns traditionnels (regex)

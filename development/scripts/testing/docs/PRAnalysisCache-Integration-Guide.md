@@ -1,15 +1,21 @@
-﻿# Guide d'intÃ©gration du systÃ¨me de cache PRAnalysisCache
+# Guide d'intÃ©gration du systÃ¨me de cache PRAnalysisCache
 
 Ce guide explique comment intÃ©grer le systÃ¨me de cache PRAnalysisCache dans d'autres parties de l'application pour amÃ©liorer les performances des opÃ©rations coÃ»teuses.
 
 ## Table des matiÃ¨res
 
 1. [Introduction](#introduction)
+
 2. [Installation](#installation)
+
 3. [Utilisation de base](#utilisation-de-base)
+
 4. [IntÃ©gration dans des scripts existants](#intÃ©gration-dans-des-scripts-existants)
+
 5. [Bonnes pratiques](#bonnes-pratiques)
+
 6. [Exemples d'intÃ©gration](#exemples-dintÃ©gration)
+
 7. [DÃ©pannage](#dÃ©pannage)
 
 ## Introduction
@@ -36,8 +42,7 @@ if (-not (Test-Path -Path $cacheModulePath)) {
 }
 
 Import-Module $cacheModulePath -Force
-```
-
+```plaintext
 ## Utilisation de base
 
 ### CrÃ©ation d'un cache
@@ -46,67 +51,70 @@ Pour crÃ©er un nouveau cache, utilisez la fonction `New-PRAnalysisCache` :
 
 ```powershell
 # CrÃ©er un cache avec une limite de 1000 Ã©lÃ©ments en mÃ©moire
+
 $cache = New-PRAnalysisCache -MaxMemoryItems 1000
 
 # Configurer le chemin du cache sur disque
+
 $cachePath = Join-Path -Path $env:TEMP -ChildPath "MonCache"
 if (-not (Test-Path -Path $cachePath)) {
     New-Item -Path $cachePath -ItemType Directory -Force | Out-Null
 }
 $cache.DiskCachePath = $cachePath
-```
-
+```plaintext
 ### Ajout d'un Ã©lÃ©ment au cache
 
 Pour ajouter un Ã©lÃ©ment au cache, utilisez la mÃ©thode `SetItem` :
 
 ```powershell
 # Ajouter un Ã©lÃ©ment avec une durÃ©e de vie de 1 heure
+
 $cache.SetItem("MaCle", "MaValeur", (New-TimeSpan -Hours 1))
 
 # Ajouter un objet complexe avec une durÃ©e de vie de 24 heures
+
 $monObjet = @{
     Nom = "Test"
     Valeur = 42
     Date = Get-Date
 }
 $cache.SetItem("MonObjet", $monObjet, (New-TimeSpan -Hours 24))
-```
-
+```plaintext
 ### RÃ©cupÃ©ration d'un Ã©lÃ©ment du cache
 
 Pour rÃ©cupÃ©rer un Ã©lÃ©ment du cache, utilisez la mÃ©thode `GetItem` :
 
 ```powershell
 # RÃ©cupÃ©rer un Ã©lÃ©ment du cache
+
 $valeur = $cache.GetItem("MaCle")
 
 # VÃ©rifier si l'Ã©lÃ©ment existe
+
 if ($null -ne $valeur) {
     Write-Host "Ã‰lÃ©ment trouvÃ© dans le cache: $valeur"
 } else {
     Write-Host "Ã‰lÃ©ment non trouvÃ© dans le cache."
 }
-```
-
+```plaintext
 ### Suppression d'un Ã©lÃ©ment du cache
 
 Pour supprimer un Ã©lÃ©ment du cache, utilisez la mÃ©thode `RemoveItem` :
 
 ```powershell
 # Supprimer un Ã©lÃ©ment du cache
-$cache.RemoveItem("MaCle")
-```
 
+$cache.RemoveItem("MaCle")
+```plaintext
 ### Vidage du cache
 
 Pour vider complÃ¨tement le cache, utilisez la mÃ©thode `Clear` :
 
 ```powershell
 # Vider le cache
-$cache.Clear()
-```
 
+$cache.Clear()
+```plaintext
 ## IntÃ©gration dans des scripts existants
 
 Pour intÃ©grer le systÃ¨me de cache dans des scripts existants, suivez ces Ã©tapes :
@@ -135,6 +143,7 @@ function Invoke-CachedOperation {
     )
     
     # CrÃ©er un cache si demandÃ©
+
     $cache = $null
     if ($UseCache) {
         $cache = New-PRAnalysisCache -MaxMemoryItems 1000
@@ -146,9 +155,11 @@ function Invoke-CachedOperation {
     }
     
     # GÃ©nÃ©rer une clÃ© de cache unique
+
     $cacheKey = "Operation:$InputData:$(Get-Date -Format 'yyyyMMdd')"
     
     # VÃ©rifier le cache si activÃ©
+
     if ($UseCache -and -not $ForceRefresh -and $null -ne $cache) {
         $cachedResult = $cache.GetItem($cacheKey)
         if ($null -ne $cachedResult) {
@@ -158,10 +169,12 @@ function Invoke-CachedOperation {
     }
     
     # Effectuer l'opÃ©ration coÃ»teuse
+
     Write-Verbose "ExÃ©cution de l'opÃ©ration pour $InputData..."
     $result = Invoke-ExpensiveOperation -InputData $InputData
     
     # Stocker le rÃ©sultat dans le cache si activÃ©
+
     if ($UseCache -and $null -ne $cache) {
         $cache.SetItem($cacheKey, $result, (New-TimeSpan -Hours 24))
         Write-Verbose "RÃ©sultat stockÃ© dans le cache pour $InputData"
@@ -169,8 +182,7 @@ function Invoke-CachedOperation {
     
     return $result
 }
-```
-
+```plaintext
 ## Bonnes pratiques
 
 ### GÃ©nÃ©ration de clÃ©s de cache
@@ -217,15 +229,18 @@ function Invoke-CachedFileAnalysis {
     )
     
     # VÃ©rifier si le fichier existe
+
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Warning "Le fichier n'existe pas: $FilePath"
         return $null
     }
     
     # Obtenir les informations sur le fichier
+
     $fileInfo = Get-Item -Path $FilePath
     
     # CrÃ©er un cache si demandÃ©
+
     $cache = $null
     if ($UseCache) {
         $cache = New-PRAnalysisCache -MaxMemoryItems 1000
@@ -237,9 +252,11 @@ function Invoke-CachedFileAnalysis {
     }
     
     # GÃ©nÃ©rer une clÃ© de cache unique basÃ©e sur le chemin du fichier et sa date de modification
+
     $cacheKey = "FileAnalysis:$($FilePath):$($fileInfo.LastWriteTimeUtc.Ticks)"
     
     # VÃ©rifier le cache si activÃ©
+
     if ($UseCache -and -not $ForceRefresh -and $null -ne $cache) {
         $cachedResult = $cache.GetItem($cacheKey)
         if ($null -ne $cachedResult) {
@@ -249,10 +266,12 @@ function Invoke-CachedFileAnalysis {
     }
     
     # Analyser le fichier
+
     Write-Verbose "Analyse du fichier $FilePath..."
     $result = Invoke-FileAnalysis -FilePath $FilePath
     
     # Stocker les rÃ©sultats dans le cache si activÃ©
+
     if ($UseCache -and $null -ne $cache) {
         $cache.SetItem($cacheKey, $result, (New-TimeSpan -Hours 24))
         Write-Verbose "RÃ©sultats stockÃ©s dans le cache pour $FilePath"
@@ -260,8 +279,7 @@ function Invoke-CachedFileAnalysis {
     
     return $result
 }
-```
-
+```plaintext
 ### Exemple 2 : DÃ©tection de format
 
 ```powershell
@@ -279,15 +297,18 @@ function Invoke-CachedFormatDetection {
     )
     
     # VÃ©rifier si le fichier existe
+
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Warning "Le fichier n'existe pas: $FilePath"
         return $null
     }
     
     # Obtenir les informations sur le fichier
+
     $fileInfo = Get-Item -Path $FilePath
     
     # CrÃ©er un cache si demandÃ©
+
     $cache = $null
     if ($UseCache) {
         $cache = New-PRAnalysisCache -MaxMemoryItems 1000
@@ -299,9 +320,11 @@ function Invoke-CachedFormatDetection {
     }
     
     # GÃ©nÃ©rer une clÃ© de cache unique basÃ©e sur le chemin du fichier et sa date de modification
+
     $cacheKey = "FormatDetection:$($FilePath):$($fileInfo.LastWriteTimeUtc.Ticks)"
     
     # VÃ©rifier le cache si activÃ©
+
     if ($UseCache -and -not $ForceRefresh -and $null -ne $cache) {
         $cachedResult = $cache.GetItem($cacheKey)
         if ($null -ne $cachedResult) {
@@ -311,10 +334,12 @@ function Invoke-CachedFormatDetection {
     }
     
     # DÃ©tecter le format du fichier
+
     Write-Verbose "DÃ©tection du format du fichier $FilePath..."
     $result = Invoke-FormatDetection -FilePath $FilePath
     
     # Stocker les rÃ©sultats dans le cache si activÃ©
+
     if ($UseCache -and $null -ne $cache) {
         $cache.SetItem($cacheKey, $result, (New-TimeSpan -Hours 24))
         Write-Verbose "RÃ©sultats de dÃ©tection de format stockÃ©s dans le cache pour $FilePath"
@@ -322,8 +347,7 @@ function Invoke-CachedFormatDetection {
     
     return $result
 }
-```
-
+```plaintext
 ## DÃ©pannage
 
 ### ProblÃ¨mes courants
@@ -353,9 +377,11 @@ Pour faciliter le dÃ©bogage, ajoutez des messages de journalisation dÃ©taill
 
 ```powershell
 # Activer la journalisation dÃ©taillÃ©e
+
 $VerbosePreference = "Continue"
 
 # CrÃ©er un cache
+
 $cache = New-PRAnalysisCache -MaxMemoryItems 1000
 $cachePath = Join-Path -Path $env:TEMP -ChildPath "DebugCache"
 if (-not (Test-Path -Path $cachePath)) {
@@ -366,25 +392,27 @@ $cache.DiskCachePath = $cachePath
 Write-Verbose "Cache initialisÃ© avec 1000 Ã©lÃ©ments maximum en mÃ©moire et stockage sur disque dans $cachePath"
 
 # Ajouter un Ã©lÃ©ment au cache
+
 $cache.SetItem("TestKey", "TestValue", (New-TimeSpan -Hours 1))
 Write-Verbose "Ã‰lÃ©ment ajoutÃ© au cache: TestKey -> TestValue (durÃ©e de vie: 1 heure)"
 
 # RÃ©cupÃ©rer un Ã©lÃ©ment du cache
+
 $value = $cache.GetItem("TestKey")
 Write-Verbose "Ã‰lÃ©ment rÃ©cupÃ©rÃ© du cache: TestKey -> $value"
 
 # VÃ©rifier les fichiers de cache sur disque
+
 $diskCacheFiles = Get-ChildItem -Path $cachePath -Filter "*.xml"
 Write-Verbose "Nombre de fichiers de cache sur disque: $($diskCacheFiles.Count)"
-```
-
+```plaintext
 ### VÃ©rification de l'intÃ©gritÃ© du cache
 
 Pour vÃ©rifier l'intÃ©gritÃ© du cache, utilisez le script `Test-PRCacheIntegration.ps1` :
 
 ```powershell
 # ExÃ©cuter les tests d'intÃ©gration
-.\Test-PRCacheIntegration.ps1 -TestType All
-```
 
+.\Test-PRCacheIntegration.ps1 -TestType All
+```plaintext
 Ce script effectue des tests d'intÃ©gration pour vÃ©rifier que le systÃ¨me de cache fonctionne correctement avec diffÃ©rents types d'analyses.

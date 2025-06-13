@@ -1,13 +1,15 @@
-﻿Pour résoudre les problèmes identifiés dans le rapport d'analyse technique du module `UnifiedParallel.psm1`, je vais suivre les recommandations prioritaires décrites dans la section **4.1 Actions prioritaires** et proposer des solutions concrètes pour chaque problème critique (P0 et P1). Je vais également inclure des extraits de code corrigés et des étapes pour tester ces corrections, en respectant les standards techniques et la méthodologie décrite dans les **Augment Guidelines**. Les corrections seront abordées dans l'ordre de priorité (UPM-001 à UPM-004), avec une approche incrémentale et granulaire, conformément à la règle d'or : *Granularité adaptative, tests systématiques, documentation claire*.
+Pour résoudre les problèmes identifiés dans le rapport d'analyse technique du module `UnifiedParallel.psm1`, je vais suivre les recommandations prioritaires décrites dans la section **4.1 Actions prioritaires** et proposer des solutions concrètes pour chaque problème critique (P0 et P1). Je vais également inclure des extraits de code corrigés et des étapes pour tester ces corrections, en respectant les standards techniques et la méthodologie décrite dans les **Augment Guidelines**. Les corrections seront abordées dans l'ordre de priorité (UPM-001 à UPM-004), avec une approche incrémentale et granulaire, conformément à la règle d'or : *Granularité adaptative, tests systématiques, documentation claire*.
 
 ---
 
 ## 1. Résolution de UPM-001 : Variables script non accessibles dans les tests Pester (P0)
 
 ### Problème
+
 Les variables `$script:IsInitialized` et `$script:Config` ne sont pas accessibles dans les tests Pester, provoquant des échecs avec `$null` au lieu de `$true`. Cela est probablement dû à un problème de portée ou d'importation du module dans le contexte des tests.
 
 ### Solution
+
 Adopter l'approche recommandée : utiliser des fonctions getter/setter pour encapsuler l'accès aux variables script et les exporter explicitement via `Export-ModuleMember`. Cela garantit une gestion cohérente de l'état du module et une accessibilité dans les tests.
 
 ### Étapes de correction
@@ -17,6 +19,7 @@ Adopter l'approche recommandée : utiliser des fonctions getter/setter pour enca
    # UnifiedParallel.psm1
 
    # Variables de script globales (définies dans la portée du module)
+
    $script:IsInitialized = $false
    $script:Config = $null
    $script:ResourceMonitor = $null
@@ -25,6 +28,7 @@ Adopter l'approche recommandée : utiliser des fonctions getter/setter pour enca
    $script:SharedVariables = @{}
 
    # Fonctions getter/setter pour IsInitialized
+
    function Get-ModuleInitialized {
        [CmdletBinding()]
        param()
@@ -42,6 +46,7 @@ Adopter l'approche recommandée : utiliser des fonctions getter/setter pour enca
    }
 
    # Fonctions getter/setter pour Config
+
    function Get-ModuleConfig {
        [CmdletBinding()]
        param()
@@ -58,6 +63,7 @@ Adopter l'approche recommandée : utiliser des fonctions getter/setter pour enca
    }
 
    # Exporter les fonctions getter/setter
+
    Export-ModuleMember -Function Get-ModuleInitialized, Set-ModuleInitialized, Get-ModuleConfig, Set-ModuleConfig
    ```
 
@@ -71,6 +77,7 @@ Adopter l'approche recommandée : utiliser des fonctions getter/setter pour enca
        )
 
        # Charger la configuration
+
        if ($ConfigPath -and (Test-Path -Path $ConfigPath)) {
            $config = Get-Content -Path $ConfigPath | ConvertFrom-Json
            Set-ModuleConfig -Value $config
@@ -79,6 +86,7 @@ Adopter l'approche recommandée : utiliser des fonctions getter/setter pour enca
        }
 
        # Initialiser l'état
+
        Set-ModuleInitialized -Value $true
 
        Write-Verbose "Module initialisé avec succès."
@@ -88,6 +96,7 @@ Adopter l'approche recommandée : utiliser des fonctions getter/setter pour enca
 3. **Mettre à jour les tests Pester** pour utiliser les getters :
    ```powershell
    # Clear-UnifiedParallel.Tests.ps1
+
    Describe "Clear-UnifiedParallel Tests" {
        BeforeAll {
            Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force
@@ -112,6 +121,7 @@ Adopter l'approche recommandée : utiliser des fonctions getter/setter pour enca
    - Vérifier que les assertions passent sans erreur `$null`.
 
 ### Validation
+
 - **Attendu** : Les tests confirment que `Get-ModuleInitialized` retourne `$true` et `Get-ModuleConfig` retourne un objet non null.
 - **Hypothèse confirmée** : Le problème était dû à une portée incorrecte des variables script dans le contexte des tests. Les getters/setters résolvent ce problème en exposant les variables de manière contrôlée.
 
@@ -120,9 +130,11 @@ Adopter l'approche recommandée : utiliser des fonctions getter/setter pour enca
 ## 2. Résolution de UPM-002 : Paramètres non reconnus dans Get-OptimalThreadCount (P1)
 
 ### Problème
+
 La fonction `Get-OptimalThreadCount` génère une `ParameterBindingException` car le paramètre `TaskType` n'est pas correctement reconnu dans les tests.
 
 ### Solution
+
 Vérifier et corriger la signature de la fonction pour inclure explicitement le paramètre `TaskType` avec les valeurs attendues. Mettre à jour les tests pour garantir une correspondance exacte des paramètres.
 
 ### Étapes de correction
@@ -155,6 +167,7 @@ Vérifier et corriger la signature de la fonction pour inclure explicitement le 
 2. **Mettre à jour les tests Pester** :
    ```powershell
    # Get-OptimalThreadCount.Tests.ps1
+
    Describe "Get-OptimalThreadCount Tests" {
        BeforeAll {
            Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force
@@ -182,6 +195,7 @@ Vérifier et corriger la signature de la fonction pour inclure explicitement le 
    - Vérifier que les tests passent sans erreur `ParameterBindingException`.
 
 ### Validation
+
 - **Attendu** : Les tests confirment que `Get-OptimalThreadCount` accepte `TaskType` et retourne des valeurs cohérentes.
 - **Hypothèse confirmée** : Une signature de fonction incorrecte ou une incompatibilité entre la fonction et les tests causait l'erreur.
 
@@ -190,9 +204,11 @@ Vérifier et corriger la signature de la fonction pour inclure explicitement le 
 ## 3. Résolution de UPM-003 : Paramètres non reconnus dans Initialize-UnifiedParallel (P1)
 
 ### Problème
+
 La fonction `Initialize-UnifiedParallel` ne reconnaît pas les paramètres `EnableBackpressure` et `EnableThrottling`, provoquant une `ParameterBindingException`.
 
 ### Solution
+
 Ajouter les paramètres manquants à la signature de la fonction et mettre à jour les tests pour refléter ces changements. Implémenter une logique de base pour ces paramètres, même si leur fonctionnalité complète sera développée ultérieurement.
 
 ### Étapes de correction
@@ -213,6 +229,7 @@ Ajouter les paramètres manquants à la signature de la fonction et mettre à jo
        )
 
        # Charger la configuration
+
        if ($ConfigPath -and (Test-Path -Path $ConfigPath)) {
            $config = Get-Content -Path $ConfigPath | ConvertFrom-Json
            Set-ModuleConfig -Value $config
@@ -221,17 +238,21 @@ Ajouter les paramètres manquants à la signature de la fonction et mettre à jo
        }
 
        # Configurer les options
+
        if ($EnableBackpressure) {
            Write-Verbose "Backpressure activé."
            # Logique à implémenter ultérieurement
+
        }
 
        if ($EnableThrottling) {
            Write-Verbose "Throttling activé."
            # Logique à implémenter ultérieurement
+
        }
 
        # Initialiser l'état
+
        Set-ModuleInitialized -Value $true
 
        Write-Verbose "Module initialisé avec succès."
@@ -241,6 +262,7 @@ Ajouter les paramètres manquants à la signature de la fonction et mettre à jo
 2. **Mettre à jour les tests Pester** :
    ```powershell
    # Initialize-UnifiedParallel.Tests.ps1
+
    Describe "Initialize-UnifiedParallel Tests" {
        BeforeAll {
            Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force
@@ -266,6 +288,7 @@ Ajouter les paramètres manquants à la signature de la fonction et mettre à jo
    - Vérifier que les tests passent sans erreur `ParameterBindingException`.
 
 ### Validation
+
 - **Attendu** : Les tests confirment que `Initialize-UnifiedParallel` accepte `EnableBackpressure` et `EnableThrottling`.
 - **Hypothèse confirmée** : Les paramètres ont été omis ou renommés dans la fonction.
 
@@ -274,9 +297,11 @@ Ajouter les paramètres manquants à la signature de la fonction et mettre à jo
 ## 4. Résolution de UPM-004 : Incompatibilité de type de collection dans Invoke-RunspaceProcessor (P1)
 
 ### Problème
+
 La fonction `Invoke-RunspaceProcessor` attend un `System.Collections.ArrayList` pour `CompletedRunspaces`, mais reçoit parfois un `System.Collections.Generic.List[PSObject]`, provoquant des erreurs de type.
 
 ### Solution
+
 Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type générique `[object]` et convertir la collection en `ArrayList` si nécessaire. Standardiser les types de collections dans `Wait-ForCompletedRunspace` pour utiliser `ArrayList`.
 
 ### Étapes de correction
@@ -309,9 +334,11 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
            $totalErrors = 0
 
            # Convertir en ArrayList si nécessaire
+
            $runspacesToProcess = New-Object System.Collections.ArrayList
 
            # Vérifier le type de CompletedRunspaces et convertir si nécessaire
+
            if ($null -eq $CompletedRunspaces) {
                Write-Verbose "CompletedRunspaces est null, aucun traitement nécessaire"
                return
@@ -331,6 +358,7 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
            }
            else {
                # Cas d'un objet unique
+
                [void]$runspacesToProcess.Add($CompletedRunspaces)
            }
 
@@ -339,10 +367,12 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
 
        process {
            # Traiter chaque runspace
+
            for ($i = 0; $i -lt $runspacesToProcess.Count; $i++) {
                $runspace = $runspacesToProcess[$i]
 
                # Afficher la progression si demandé
+
                if (-not $NoProgress) {
                    $percentComplete = [math]::Min(100, [math]::Round(($i / $runspacesToProcess.Count) * 100))
                    Write-Progress -Activity "Traitement des runspaces" -Status "Traitement $($i+1)/$($runspacesToProcess.Count)" -PercentComplete $percentComplete
@@ -350,21 +380,25 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
 
                try {
                    # Vérifier si le runspace est valide
+
                    if ($null -eq $runspace -or $null -eq $runspace.PowerShell -or $null -eq $runspace.Handle) {
                        Write-Warning "Runspace invalide détecté à l'index $i. Ignoré."
                        continue
                    }
 
                    # Vérifier si le handle est complété
+
                    if (-not $runspace.Handle.IsCompleted) {
                        Write-Warning "Runspace non complété détecté à l'index $i. Ignoré."
                        continue
                    }
 
                    # Récupérer le résultat
+
                    $runspaceResult = $runspace.PowerShell.EndInvoke($runspace.Handle)
 
                    # Ajouter le résultat à la collection
+
                    [void]$Results.Add([PSCustomObject]@{
                        Index = $i
                        Value = $runspaceResult
@@ -379,6 +413,7 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
                    Write-Verbose $errorMessage
 
                    # Ajouter l'erreur à la collection
+
                    [void]$Errors.Add([PSCustomObject]@{
                        Index = $i
                        Exception = $_.Exception
@@ -386,6 +421,7 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
                    })
 
                    # Ajouter un résultat d'erreur si demandé
+
                    if (-not $IgnoreErrors) {
                        [void]$Results.Add([PSCustomObject]@{
                            Index = $i
@@ -399,6 +435,7 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
                }
                finally {
                    # Nettoyer les ressources
+
                    if ($null -ne $runspace -and $null -ne $runspace.PowerShell) {
                        $runspace.PowerShell.Dispose()
                    }
@@ -408,6 +445,7 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
            }
 
            # Terminer la barre de progression
+
            if (-not $NoProgress) {
                Write-Progress -Activity "Traitement des runspaces" -Completed
            }
@@ -417,6 +455,7 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
            Write-Verbose "Traitement terminé: $totalProcessed runspaces traités, $totalSuccess succès, $totalErrors erreurs"
 
            # Retourner un objet avec les statistiques
+
            return [PSCustomObject]@{
                Results = $Results
                Errors = $Errors
@@ -456,12 +495,14 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
            $pendingRunspaces = New-Object System.Collections.ArrayList
 
            # Vérifier si la liste des runspaces est vide
+
            if ($null -eq $Runspaces -or $Runspaces.Count -eq 0) {
                Write-Verbose "Aucun runspace à attendre."
                return $completedRunspaces
            }
 
            # Copier les runspaces dans la liste des runspaces en attente
+
            foreach ($runspace in $Runspaces) {
                [void]$pendingRunspaces.Add($runspace)
            }
@@ -477,17 +518,20 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
                $iteration++
 
                # Afficher la progression si demandé
+
                if (-not $NoProgress) {
                    $percentComplete = [math]::Min(100, [math]::Round(($completedRunspaces.Count / ($completedRunspaces.Count + $pendingRunspaces.Count)) * 100))
                    Write-Progress -Activity "Attente des runspaces" -Status "Complétés: $($completedRunspaces.Count), En attente: $($pendingRunspaces.Count)" -PercentComplete $percentComplete
                }
 
                # Vérifier le timeout
+
                $elapsedTime = [datetime]::Now - $startTime
                if ($TimeoutSeconds -gt 0 -and $elapsedTime.TotalSeconds -ge $TimeoutSeconds) {
                    Write-Verbose "Timeout atteint après $($elapsedTime.TotalSeconds) secondes."
 
                    # Nettoyer les runspaces non complétés si demandé
+
                    if ($CleanupOnTimeout) {
                        Write-Verbose "Nettoyage des runspaces non complétés..."
                        foreach ($runspace in $pendingRunspaces) {
@@ -507,10 +551,12 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
                }
 
                # Vérifier l'état de chaque runspace
+
                for ($i = $pendingRunspaces.Count - 1; $i -ge 0; $i--) {
                    $runspace = $pendingRunspaces[$i]
 
                    # Vérifier si le runspace est complété
+
                    if ($null -ne $runspace.Handle -and $runspace.Handle.IsCompleted) {
                        Write-Verbose "Runspace $i complété."
                        [void]$completedRunspaces.Add($runspace)
@@ -519,19 +565,24 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
                }
 
                # Déterminer si on continue d'attendre
+
                if (-not $WaitForAll -and $completedRunspaces.Count -gt 0) {
                    # Si on n'attend pas tous les runspaces et qu'au moins un est complété, on arrête
+
                    $continueWaiting = $false
                } elseif ($pendingRunspaces.Count -eq 0) {
                    # Si tous les runspaces sont complétés, on arrête
+
                    $continueWaiting = $false
                } else {
                    # Attendre un peu avant de vérifier à nouveau
+
                    Start-Sleep -Milliseconds 100
                }
            }
 
            # Terminer la barre de progression
+
            if (-not $NoProgress) {
                Write-Progress -Activity "Attente des runspaces" -Completed
            }
@@ -549,11 +600,13 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
 3. **Mettre à jour les tests Pester** :
    ```powershell
    # Invoke-RunspaceProcessor.Tests.ps1
+
    Describe "Invoke-RunspaceProcessor Tests" {
        BeforeAll {
            Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force
 
            # Fonction d'aide pour créer un runspace simulé
+
            function New-MockRunspace {
                param(
                    [Parameter(Mandatory = $false)]
@@ -567,6 +620,7 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
                )
 
                # Créer un mock PowerShell
+
                $mockPowerShell = [PSCustomObject]@{
                    EndInvoke = {
                        param($handle)
@@ -580,16 +634,19 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
                }
 
                # Créer un mock Handle
+
                $mockHandle = [PSCustomObject]@{
                    IsCompleted = ($State -eq 'Completed')
                }
 
                # Créer un mock RunspaceStateInfo
+
                $mockRunspaceStateInfo = [PSCustomObject]@{
                    State = $State
                }
 
                # Retourner le mock runspace
+
                return [PSCustomObject]@{
                    PowerShell = $mockPowerShell
                    Handle = $mockHandle
@@ -600,6 +657,7 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
 
        BeforeEach {
            # Réinitialiser les collections pour chaque test
+
            $script:results = New-Object System.Collections.ArrayList
            $script:errors = New-Object System.Collections.ArrayList
        }
@@ -607,13 +665,16 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
        Context "Tests de base" {
            It "Traite correctement une liste de runspaces" {
                # Créer une liste de runspaces simulés
+
                $runspaces = New-Object System.Collections.ArrayList
                [void]$runspaces.Add((New-MockRunspace))
 
                # Exécuter la fonction
+
                $result = Invoke-RunspaceProcessor -CompletedRunspaces $runspaces -Results $script:results -Errors $script:errors -NoProgress
 
                # Vérifier les résultats
+
                $result.TotalProcessed | Should -Be 1
                $result.TotalSuccess | Should -Be 1
                $result.TotalErrors | Should -Be 0
@@ -625,12 +686,15 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
 
            It "Gère correctement une liste vide" {
                # Créer une liste vide
+
                $runspaces = New-Object System.Collections.ArrayList
 
                # Exécuter la fonction
+
                $result = Invoke-RunspaceProcessor -CompletedRunspaces $runspaces -Results $script:results -Errors $script:errors -NoProgress
 
                # Vérifier les résultats
+
                $result.TotalProcessed | Should -Be 0
                $script:results.Count | Should -Be 0
                $script:errors.Count | Should -Be 0
@@ -638,9 +702,11 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
 
            It "Gère correctement un runspace null" {
                # Exécuter la fonction avec un runspace null
+
                $result = Invoke-RunspaceProcessor -CompletedRunspaces $null -Results $script:results -Errors $script:errors -NoProgress
 
                # Vérifier les résultats
+
                $result | Should -BeNullOrEmpty
                $script:results.Count | Should -Be 0
                $script:errors.Count | Should -Be 0
@@ -650,13 +716,16 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
        Context "Tests de gestion des erreurs" {
            It "Gère correctement les erreurs dans EndInvoke" {
                # Créer un runspace qui génère une erreur
+
                $runspaces = New-Object System.Collections.ArrayList
                [void]$runspaces.Add((New-MockRunspace -ThrowError))
 
                # Exécuter la fonction
+
                $result = Invoke-RunspaceProcessor -CompletedRunspaces $runspaces -Results $script:results -Errors $script:errors -NoProgress
 
                # Vérifier les résultats
+
                $result.TotalProcessed | Should -Be 1
                $result.TotalSuccess | Should -Be 0
                $result.TotalErrors | Should -Be 1
@@ -668,13 +737,16 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
 
            It "Ignore les erreurs si IgnoreErrors est spécifié" {
                # Créer un runspace qui génère une erreur
+
                $runspaces = New-Object System.Collections.ArrayList
                [void]$runspaces.Add((New-MockRunspace -ThrowError))
 
                # Exécuter la fonction avec IgnoreErrors
+
                $result = Invoke-RunspaceProcessor -CompletedRunspaces $runspaces -Results $script:results -Errors $script:errors -NoProgress -IgnoreErrors
 
                # Vérifier les résultats
+
                $result.TotalProcessed | Should -Be 1
                $result.TotalSuccess | Should -Be 0
                $result.TotalErrors | Should -Be 1
@@ -684,13 +756,16 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
 
            It "Gère correctement les runspaces invalides" {
                # Créer un runspace invalide (sans PowerShell ou Handle)
+
                $runspaces = New-Object System.Collections.ArrayList
                [void]$runspaces.Add([PSCustomObject]@{ RunspaceStateInfo = @{ State = 'Completed' } })
 
                # Exécuter la fonction
+
                $result = Invoke-RunspaceProcessor -CompletedRunspaces $runspaces -Results $script:results -Errors $script:errors -NoProgress
 
                # Vérifier les résultats
+
                $result.TotalProcessed | Should -Be 1
                $result.TotalSuccess | Should -Be 0
                $result.TotalErrors | Should -Be 0
@@ -702,13 +777,16 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
        Context "Tests de conversion de types" {
            It "Accepte un System.Collections.Generic.List[PSObject]" {
                # Créer une liste générique
+
                $runspaces = New-Object System.Collections.Generic.List[PSObject]
                $runspaces.Add((New-MockRunspace))
 
                # Exécuter la fonction
+
                $result = Invoke-RunspaceProcessor -CompletedRunspaces $runspaces -Results $script:results -Errors $script:errors -NoProgress
 
                # Vérifier les résultats
+
                $result.TotalProcessed | Should -Be 1
                $result.TotalSuccess | Should -Be 1
                $script:results.Count | Should -Be 1
@@ -716,12 +794,15 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
 
            It "Accepte un tableau" {
                # Créer un tableau
+
                $runspaces = @(New-MockRunspace)
 
                # Exécuter la fonction
+
                $result = Invoke-RunspaceProcessor -CompletedRunspaces $runspaces -Results $script:results -Errors $script:errors -NoProgress
 
                # Vérifier les résultats
+
                $result.TotalProcessed | Should -Be 1
                $result.TotalSuccess | Should -Be 1
                $script:results.Count | Should -Be 1
@@ -729,12 +810,15 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
 
            It "Accepte un objet unique" {
                # Créer un objet unique
+
                $runspace = New-MockRunspace
 
                # Exécuter la fonction
+
                $result = Invoke-RunspaceProcessor -CompletedRunspaces $runspace -Results $script:results -Errors $script:errors -NoProgress
 
                # Vérifier les résultats
+
                $result.TotalProcessed | Should -Be 1
                $result.TotalSuccess | Should -Be 1
                $script:results.Count | Should -Be 1
@@ -743,11 +827,13 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
    }
 
    # Wait-ForCompletedRunspace.Tests.ps1
+
    Describe "Wait-ForCompletedRunspace Tests" {
        BeforeAll {
            Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force
 
            # Fonction d'aide pour créer un runspace simulé
+
            function New-MockRunspace {
                param(
                    [Parameter(Mandatory = $false)]
@@ -758,22 +844,26 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
                )
 
                # Créer un mock PowerShell
+
                $mockPowerShell = [PSCustomObject]@{
                    Dispose = { }
                    Stop = { }
                }
 
                # Créer un mock Handle
+
                $mockHandle = [PSCustomObject]@{
                    IsCompleted = $IsCompleted
                }
 
                # Créer un mock RunspaceStateInfo
+
                $mockRunspaceStateInfo = [PSCustomObject]@{
                    State = $State
                }
 
                # Retourner le mock runspace
+
                return [PSCustomObject]@{
                    PowerShell = $mockPowerShell
                    Handle = $mockHandle
@@ -821,6 +911,7 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
                $result = Wait-ForCompletedRunspace -Runspaces $runspaces -NoProgress -TimeoutSeconds 1 -CleanupOnTimeout
                $result.Count | Should -Be 0
                # Note: Nous ne pouvons pas vraiment tester si Dispose a été appelé dans ce mock
+
            }
        }
 
@@ -864,6 +955,7 @@ Modifier la signature de `Invoke-RunspaceProcessor` pour accepter un type géné
    - Vérifier que les tests passent sans erreur de type.
 
 ### Validation
+
 - **Attendu** : Les tests confirment que `Invoke-RunspaceProcessor` accepte différents types de collections et fonctionne correctement.
 - **Hypothèse confirmée** : Une incohérence dans les types de collections causait les erreurs.
 
@@ -875,6 +967,7 @@ Pour valider les corrections, implémenter un test de bout en bout qui utilise t
 
 ```powershell
 # EndToEnd.Tests.ps1
+
 Describe "End-to-End Tests for UnifiedParallel" {
     BeforeAll {
         Import-Module -Name "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\UnifiedParallel.psm1" -Force
@@ -882,24 +975,29 @@ Describe "End-to-End Tests for UnifiedParallel" {
 
     AfterEach {
         # Nettoyer après chaque test
+
         Clear-UnifiedParallel
     }
 
     Context "Tests de base" {
         It "Exécute un workflow complet sans erreur" {
             # Initialiser le module avec les options
+
             Initialize-UnifiedParallel -EnableBackpressure -EnableThrottling
             Get-ModuleInitialized | Should -Be $true
 
             # Obtenir le nombre optimal de threads
+
             $threadCount = Get-OptimalThreadCount -TaskType 'Mixed'
             $threadCount | Should -BeGreaterThan 0
 
             # Créer des données de test
+
             $data = 1..10
             $scriptBlock = { param($item) return $item * 2 }
 
             # Créer des runspaces
+
             $runspaces = New-Object System.Collections.ArrayList
             foreach ($item in $data) {
                 $ps = [PowerShell]::Create()
@@ -914,27 +1012,32 @@ Describe "End-to-End Tests for UnifiedParallel" {
             }
 
             # Attendre les runspaces complétés
+
             $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -NoProgress -TimeoutSeconds 5
             $completedRunspaces.Count | Should -BeGreaterThan 0
 
             # Traiter les résultats
+
             $results = New-Object System.Collections.ArrayList
             $errors = New-Object System.Collections.ArrayList
             $result = Invoke-RunspaceProcessor -CompletedRunspaces $completedRunspaces -Results $results -Errors $errors -NoProgress
 
             # Vérifier les résultats
+
             $result.TotalProcessed | Should -Be $completedRunspaces.Count
             $result.TotalSuccess | Should -Be $completedRunspaces.Count
             $result.TotalErrors | Should -Be 0
             $results.Count | Should -Be $completedRunspaces.Count
 
             # Vérifier que les résultats sont corrects (item * 2)
+
             foreach ($resultItem in $results) {
                 $originalItem = $completedRunspaces[$resultItem.Index].Item
                 $resultItem.Value | Should -Be ($originalItem * 2)
             }
 
             # Nettoyer
+
             Clear-UnifiedParallel
             Get-ModuleInitialized | Should -Be $false
         }
@@ -943,12 +1046,15 @@ Describe "End-to-End Tests for UnifiedParallel" {
     Context "Tests de performance" {
         It "Parallélise efficacement un traitement CPU-bound" {
             # Initialiser le module
+
             Initialize-UnifiedParallel
 
             # Obtenir le nombre optimal de threads pour CPU
+
             $threadCount = Get-OptimalThreadCount -TaskType 'CPU'
 
             # Créer une tâche CPU-intensive
+
             $cpuIntensiveTask = {
                 param($item)
                 $result = 0
@@ -959,6 +1065,7 @@ Describe "End-to-End Tests for UnifiedParallel" {
             }
 
             # Mesurer le temps d'exécution séquentiel
+
             $data = 1..10
             $startTime = [datetime]::Now
             $sequentialResults = foreach ($item in $data) {
@@ -967,9 +1074,11 @@ Describe "End-to-End Tests for UnifiedParallel" {
             $sequentialTime = ([datetime]::Now - $startTime).TotalMilliseconds
 
             # Mesurer le temps d'exécution parallèle
+
             $startTime = [datetime]::Now
 
             # Créer des runspaces
+
             $runspaces = New-Object System.Collections.ArrayList
             foreach ($item in $data) {
                 $ps = [PowerShell]::Create()
@@ -983,9 +1092,11 @@ Describe "End-to-End Tests for UnifiedParallel" {
             }
 
             # Attendre tous les runspaces
+
             $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll -NoProgress
 
             # Traiter les résultats
+
             $results = New-Object System.Collections.ArrayList
             $errors = New-Object System.Collections.ArrayList
             $result = Invoke-RunspaceProcessor -CompletedRunspaces $completedRunspaces -Results $results -Errors $errors -NoProgress
@@ -993,16 +1104,20 @@ Describe "End-to-End Tests for UnifiedParallel" {
             $parallelTime = ([datetime]::Now - $startTime).TotalMilliseconds
 
             # Vérifier que l'exécution parallèle est plus rapide (ou au moins pas beaucoup plus lente)
+
             # Note: Sur un système mono-cœur, la parallélisation peut être plus lente en raison de l'overhead
+
             $speedupFactor = $sequentialTime / $parallelTime
             Write-Host "Temps séquentiel: $sequentialTime ms, Temps parallèle: $parallelTime ms, Facteur d'accélération: $speedupFactor"
 
             # Vérifier que tous les résultats sont corrects
+
             $result.TotalProcessed | Should -Be 10
             $result.TotalSuccess | Should -Be 10
             $result.TotalErrors | Should -Be 0
 
             # Nettoyer
+
             Clear-UnifiedParallel
         }
     }
@@ -1010,9 +1125,11 @@ Describe "End-to-End Tests for UnifiedParallel" {
     Context "Tests de gestion d'erreurs" {
         It "Gère correctement les erreurs dans les runspaces" {
             # Initialiser le module
+
             Initialize-UnifiedParallel
 
             # Créer une tâche qui génère des erreurs pour certains éléments
+
             $errorProneTask = {
                 param($item)
                 if ($item % 2 -eq 0) {
@@ -1022,6 +1139,7 @@ Describe "End-to-End Tests for UnifiedParallel" {
             }
 
             # Créer des runspaces
+
             $data = 1..10
             $runspaces = New-Object System.Collections.ArrayList
             foreach ($item in $data) {
@@ -1037,20 +1155,26 @@ Describe "End-to-End Tests for UnifiedParallel" {
             }
 
             # Attendre tous les runspaces
+
             $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll -NoProgress
 
             # Traiter les résultats
+
             $results = New-Object System.Collections.ArrayList
             $errors = New-Object System.Collections.ArrayList
             $result = Invoke-RunspaceProcessor -CompletedRunspaces $completedRunspaces -Results $results -Errors $errors -NoProgress
 
             # Vérifier que les erreurs sont correctement gérées
+
             $result.TotalProcessed | Should -Be 10
             $result.TotalSuccess | Should -Be 5  # Les éléments impairs réussissent
+
             $result.TotalErrors | Should -Be 5   # Les éléments pairs échouent
+
             $errors.Count | Should -Be 5
 
             # Vérifier que les résultats contiennent les succès et les échecs
+
             $successResults = $results | Where-Object { $_.Success -eq $true }
             $failureResults = $results | Where-Object { $_.Success -eq $false }
 
@@ -1058,28 +1182,35 @@ Describe "End-to-End Tests for UnifiedParallel" {
             $failureResults.Count | Should -Be 5
 
             # Vérifier que les éléments impairs ont réussi
+
             foreach ($successResult in $successResults) {
                 $originalItem = $completedRunspaces[$successResult.Index].Item
                 $originalItem % 2 | Should -Be 1  # Doit être impair
+
                 $successResult.Value | Should -Be $originalItem
             }
 
             # Vérifier que les éléments pairs ont échoué
+
             foreach ($failureResult in $failureResults) {
                 $originalItem = $completedRunspaces[$failureResult.Index].Item
                 $originalItem % 2 | Should -Be 0  # Doit être pair
+
                 $failureResult.Error | Should -Match "Erreur simulée pour l'élément $originalItem"
             }
 
             # Nettoyer
+
             Clear-UnifiedParallel
         }
 
         It "Respecte l'option IgnoreErrors" {
             # Initialiser le module
+
             Initialize-UnifiedParallel
 
             # Créer une tâche qui génère des erreurs pour certains éléments
+
             $errorProneTask = {
                 param($item)
                 if ($item % 2 -eq 0) {
@@ -1089,6 +1220,7 @@ Describe "End-to-End Tests for UnifiedParallel" {
             }
 
             # Créer des runspaces
+
             $data = 1..10
             $runspaces = New-Object System.Collections.ArrayList
             foreach ($item in $data) {
@@ -1103,37 +1235,42 @@ Describe "End-to-End Tests for UnifiedParallel" {
             }
 
             # Attendre tous les runspaces
+
             $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll -NoProgress
 
             # Traiter les résultats avec IgnoreErrors
+
             $results = New-Object System.Collections.ArrayList
             $errors = New-Object System.Collections.ArrayList
             $result = Invoke-RunspaceProcessor -CompletedRunspaces $completedRunspaces -Results $results -Errors $errors -NoProgress -IgnoreErrors
 
             # Vérifier que les erreurs sont correctement gérées
+
             $result.TotalProcessed | Should -Be 10
             $result.TotalSuccess | Should -Be 5  # Les éléments impairs réussissent
+
             $result.TotalErrors | Should -Be 5   # Les éléments pairs échouent
+
             $errors.Count | Should -Be 5
 
             # Vérifier que les résultats ne contiennent que les succès
+
             $results.Count | Should -Be 5
             foreach ($resultItem in $results) {
                 $resultItem.Success | Should -Be $true
             }
 
             # Nettoyer
+
             Clear-UnifiedParallel
         }
     }
 }
-```
-
+```plaintext
 Exécuter le test :
 ```powershell
 Invoke-Pester -Path "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\EndToEnd.Tests.ps1" -Output Detailed
-```
-
+```plaintext
 ---
 
 ## 6. Documentation
@@ -1144,14 +1281,14 @@ Ajouter une note dans `/docs/guides/augment/UnifiedParallel.md` pour documenter 
 # UnifiedParallel.psm1 - Notes de version
 
 ## Version 1.1.0
+
 - Corrigé : Problèmes de portée des variables script (UPM-001)
 - Corrigé : Paramètres non reconnus dans `Get-OptimalThreadCount` (UPM-002)
 - Corrigé : Paramètres non reconnus dans `Initialize-UnifiedParallel` (UPM-003)
 - Corrigé : Incompatibilité de type de collection dans `Invoke-RunspaceProcessor` (UPM-004)
 - Ajout : Fonctions getter/setter pour `$script:IsInitialized` et `$script:Config`
 - Ajout : Test de bout en bout pour valider les corrections
-```
-
+```plaintext
 ---
 
 ## 7. Stratégie de déploiement

@@ -1,12 +1,15 @@
 # Mode GRAN Unifié
 
 ## Description
+
 Le mode GRAN (Granularisation) est un mode opérationnel qui décompose les tâches complexes en sous-tâches plus petites et plus faciles à gérer. Cette version unifiée intègre le support pour la granularité adaptative, optimisée pour les besoins d'Augment.
 
 ## Objectif
+
 L'objectif principal du mode GRAN est de faciliter la gestion de tâches complexes en les décomposant en unités de travail plus petites, plus précises et plus faciles à estimer. La granularisation adaptative permet d'ajuster automatiquement le niveau de détail en fonction de la complexité de la tâche et du domaine technique.
 
 ## Fonctionnalités
+
 - Décomposition des tâches complexes en sous-tâches
 - Adaptation du niveau de granularité en fonction de la complexité
 - Détection automatique de la complexité des tâches
@@ -21,37 +24,44 @@ L'objectif principal du mode GRAN est de faciliter la gestion de tâches complex
 
 ```powershell
 # Granulariser une tâche avec détection automatique de la complexité
+
 .\development\scripts\maintenance\modes\gran-mode-unified.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3"
 
 # Granulariser une tâche avec granularité adaptative
+
 .\development\scripts\maintenance\modes\gran-mode-unified.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -AdaptiveGranularity
 
 # Granulariser une tâche avec un niveau de complexité spécifique
+
 .\development\scripts\maintenance\modes\gran-mode-unified.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -ComplexityLevel "Complex"
 
 # Granulariser une tâche avec un domaine spécifique
+
 .\development\scripts\maintenance\modes\gran-mode-unified.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -Domain "Backend"
 
 # Utiliser le mode-manager
-.\development\scripts\mode-manager\mode-manager.ps1 -Mode GRAN -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -AdaptiveGranularity
-```
 
+.\development\scripts\mode-manager\mode-manager.ps1 -Mode GRAN -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -AdaptiveGranularity
+```plaintext
 ### Mode GRAN récursif
 
 ```powershell
 # Granulariser récursivement une tâche avec granularité adaptative
+
 .\development\scripts\maintenance\modes\gran-mode-recursive-unified.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -AdaptiveGranularity
 
 # Granulariser récursivement avec une profondeur spécifique
+
 .\development\scripts\maintenance\modes\gran-mode-recursive-unified.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -RecursionDepth 3 -AdaptiveGranularity
 
 # Granulariser récursivement avec analyse de complexité pour chaque sous-tâche
+
 .\development\scripts\maintenance\modes\gran-mode-recursive-unified.ps1 -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -AnalyzeComplexity -AdaptiveGranularity
 
 # Utiliser le mode-manager
-.\development\scripts\mode-manager\mode-manager.ps1 -Mode GRAN-R -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -AdaptiveGranularity
-```
 
+.\development\scripts\mode-manager\mode-manager.ps1 -Mode GRAN-R -FilePath "projet\roadmaps\active\roadmap_active.md" -TaskIdentifier "1.2.3" -AdaptiveGranularity
+```plaintext
 ## Granularité adaptative
 
 Le mode GRAN unifié intègre un système de granularité adaptative qui ajuste automatiquement le niveau de détail en fonction de la complexité de la tâche et du domaine technique. Ce système est basé sur les recommandations définies dans le fichier de configuration `development\config\granularite-adaptative.json`.
@@ -121,8 +131,7 @@ La structure hiérarchique recommandée est optimisée pour le système RAG (Ret
   - [ ] **1.1.1** Installer les dépendances requises
   - [ ] **1.1.2** Configurer les variables d'environnement
   - [ ] **1.1.3** Vérifier l'installation
-```
-
+```plaintext
 ### Exemple 2: Tâche complexe (5-6 niveaux)
 
 ```markdown
@@ -139,8 +148,7 @@ La structure hiérarchique recommandée est optimisée pour le système RAG (Ret
     - [ ] **3.1.2.2** Développer le stockage des vecteurs
       - [ ] **3.1.2.2.1** Implémenter la structure de données optimisée
       - [ ] **3.1.2.2.2** Créer les mécanismes de persistance
-```
-
+```plaintext
 ## Bonnes pratiques
 
 - Utiliser la granularité adaptative pour maintenir une structure cohérente

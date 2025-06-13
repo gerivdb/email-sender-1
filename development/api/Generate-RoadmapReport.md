@@ -1,4 +1,4 @@
-﻿# Generate-RoadmapReport
+# Generate-RoadmapReport
 
 ## RÃ©sumÃ©
 
@@ -15,6 +15,7 @@ Generate-RoadmapReport [-FilePath <>]  [-OutputPath <>]  [-Format <>]  [-Include
 `
 
 ## ParamÃ¨tres
+
 ### -FilePath
 
 Chemin vers le fichier de roadmap.
@@ -55,6 +56,7 @@ Indique si les sous-tÃ¢ches doivent Ãªtre incluses dans le rapport.
 
 System.String
 ## Exemples
+
 ### Exemple 1
 
 `powershell

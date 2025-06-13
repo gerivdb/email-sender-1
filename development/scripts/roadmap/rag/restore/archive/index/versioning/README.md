@@ -17,8 +17,7 @@ Ce module PowerShell fournit des fonctionnalites pour gerer les versions des doc
 
 ```powershell
 . "chemin/vers/VersionManager.ps1"
-```
-
+```plaintext
 ## Utilisation
 
 ### Creation d'une nouvelle version
@@ -33,71 +32,80 @@ $document = [PSCustomObject]@{
 }
 
 # Creer une premiere version
+
 $document = New-DocumentVersion -Document $document -VersionLabel "Version initiale" -VersionNotes "Creation du document"
 
 # Modifier le document
+
 $document.title = "Document de test modifie"
 $document.content = "Contenu du document de test modifie"
 
 # Creer une deuxieme version
-$document = New-DocumentVersion -Document $document -VersionLabel "Version 2" -VersionNotes "Modification du document"
-```
 
+$document = New-DocumentVersion -Document $document -VersionLabel "Version 2" -VersionNotes "Modification du document"
+```plaintext
 ### Recuperation d'une version specifique
 
 ```powershell
 # Recuperer une version par numero
+
 $version = Get-DocumentVersion -Document $document -VersionNumber 1
 
 # Recuperer une version par label
+
 $version = Get-DocumentVersion -Document $document -VersionLabel "Version initiale"
 
 # Recuperer une version avec son historique
-$version = Get-DocumentVersion -Document $document -VersionNumber 1 -IncludeVersionHistory
-```
 
+$version = Get-DocumentVersion -Document $document -VersionNumber 1 -IncludeVersionHistory
+```plaintext
 ### Comparaison de versions
 
 ```powershell
 # Recuperer les versions a comparer
+
 $version1 = Get-DocumentVersion -Document $document -VersionNumber 1
 $version2 = Get-DocumentVersion -Document $document -VersionNumber 2
 
 # Comparer les versions
+
 $differences = Compare-DocumentVersions -Version1 $version1 -Version2 $version2 -Properties @("title", "content", "status")
 
 # Afficher les differences
+
 foreach ($change in $differences.changes) {
     Write-Output "Propriete: $($change.property)"
     Write-Output "Type de changement: $($change.change_type)"
     Write-Output "Ancienne valeur: $($change.old_value)"
     Write-Output "Nouvelle valeur: $($change.new_value)"
 }
-```
-
+```plaintext
 ### Restauration d'une version anterieure
 
 ```powershell
 # Restaurer une version par numero
+
 $restoredDocument = Restore-DocumentVersion -Document $document -VersionNumber 1 -RestoreNotes "Restauration de la version initiale"
 
 # Restaurer une version par label
-$restoredDocument = Restore-DocumentVersion -Document $document -VersionLabel "Version initiale" -RestoreNotes "Restauration de la version initiale"
-```
 
+$restoredDocument = Restore-DocumentVersion -Document $document -VersionLabel "Version initiale" -RestoreNotes "Restauration de la version initiale"
+```plaintext
 ### Purge de l'historique des versions
 
 ```powershell
 # Purger tout l'historique
+
 $purgedDocument = Clear-DocumentVersionHistory -Document $document
 
 # Purger l'historique en conservant les N dernieres versions
+
 $purgedDocument = Clear-DocumentVersionHistory -Document $document -KeepLastVersions 2
 
 # Purger l'historique en conservant la version actuelle
-$purgedDocument = Clear-DocumentVersionHistory -Document $document -KeepCurrentVersion
-```
 
+$purgedDocument = Clear-DocumentVersionHistory -Document $document -KeepCurrentVersion
+```plaintext
 ## Fonctions
 
 ### New-DocumentVersion
@@ -165,7 +173,7 @@ Voir le fichier `TestVersionManager.ps1` pour un exemple complet d'utilisation d
 
 ### Document avec historique des versions
 
-```
+```plaintext
 {
     "id": "doc1",
     "title": "Document de test",
@@ -207,8 +215,7 @@ Voir le fichier `TestVersionManager.ps1` pour un exemple complet d'utilisation d
         }
     ]
 }
-```
-
+```plaintext
 ## Licence
 
 Ce module est distribue sous licence MIT. Voir le fichier LICENSE pour plus d'informations.

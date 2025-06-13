@@ -6,6 +6,7 @@ related: []
 ---
 
 ## 4. Rôle du dossier .n8n
+
 - Le dossier `.n8n` est crucial pour le fonctionnement de l'application et contient :
   - La base de données SQLite avec tous les workflows
   - Les credentials chiffrées
@@ -15,3 +16,4 @@ related: []
 - La présence de ce dossier directement dans le projet facilite le développement et les tests
 
 ##
+

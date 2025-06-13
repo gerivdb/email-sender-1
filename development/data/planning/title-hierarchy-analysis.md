@@ -1,40 +1,51 @@
-﻿# Analyse de la HiÃ©rarchie des Titres et Sous-titres
+# Analyse de la HiÃ©rarchie des Titres et Sous-titres
 
 ## Structure HiÃ©rarchique
 
 ### Distribution par Niveau
+
 - **Niveau 1**: 2 sections
 - **Niveau 2**: 11 sections
 - **Niveau 3**: 12 sections
 ### Profondeur Maximale
+
 La profondeur maximale de la hiÃ©rarchie est de **3 niveaux**.
 
 ### Distribution de Profondeur
+
 - **Profondeur 1**: 2 sections
 - **Profondeur 2**: 11 sections
 - **Profondeur 3**: 12 sections
 ### Nombre Moyen d'Enfants par Niveau
+
 - **Niveau 1**: 5.5 enfants en moyenne
 - **Niveau 2**: 4 enfants en moyenne
 - **Niveau 3**: 0 enfants en moyenne
 ## Analyse des Formats de Titres
 
 ### Syntaxe des Titres
+
 #### Titres avec Syntaxe #
+
 - **Niveau 1** (#{'#' * 1}): 2 titres
+
 - **Niveau 2** (#{'#' * 2}): 11 titres
+
 - **Niveau 3** (#{'#' * 3}): 12 titres
 
 #### Titres avec Syntaxe de Soulignement
+
 - Aucun titre avec syntaxe de soulignement dÃ©tectÃ©
 
 ### Conventions de Nommage des Titres
+
 - **CamelCase**: 1 titres
 - **ColonSeparated**: 4 titres
 - **SentenceCase**: 2 titres
 ## Relations Parent-Enfant
 
 ### Sections de Niveau 1 et leurs Enfants Directs
+
 - **Définition des Niveaux d'Expertise**
   - Objectif
   - Niveaux d'Expertise
@@ -49,6 +60,7 @@ La profondeur maximale de la hiÃ©rarchie est de **3 niveaux**.
   - Calcul du Score Global
   - Niveaux d'Expertise Globaux
 ### Sections de Niveau 2 et leurs Enfants Directs
+
 - **Application aux Compétences Spécifiques**
   - PowerShell
   - Développement Web

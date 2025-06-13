@@ -1,4 +1,4 @@
-﻿# Organisation des scripts de maintenance
+# Organisation des scripts de maintenance
 
 Ce dossier contient les scripts de maintenance du projet EMAIL_SENDER_1. Une méthode hybride a été mise en place pour assurer une organisation rigoureuse des scripts.
 
@@ -59,16 +59,14 @@ Pour configurer l'environnement de maintenance, exécutez:
 
 ```powershell
 .\Initialize-MaintenanceEnvironment.ps1 -Force
-```
-
+```plaintext
 ### Création d'un nouveau script
 
 Pour créer un nouveau script avec Hygen:
 
 ```powershell
 npx hygen script new
-```
-
+```plaintext
 Suivez les instructions pour spécifier le nom, la description et la catégorie du script.
 
 ### Organisation des scripts existants
@@ -77,16 +75,14 @@ Pour organiser les scripts existants:
 
 ```powershell
 .\organize\Organize-MaintenanceScripts.ps1 -Force
-```
-
+```plaintext
 ### Utilisation de MCP Desktop Commander
 
 Pour utiliser MCP Desktop Commander:
 
 ```powershell
 npx -y @wonderwhy-er/desktop-commander
-```
-
+```plaintext
 Sélectionnez la commande `maintenance` pour accéder aux commandes de maintenance.
 
 ## Bonnes pratiques
@@ -120,16 +116,14 @@ Des tests unitaires et d'intégration sont disponibles pour vérifier le bon fon
 
 ```powershell
 .\test\Run-TestSuite.ps1 -OutputPath ".\reports" -GenerateHTML
-```
-
+```plaintext
 Pour exécuter uniquement les tests unitaires:
 
 ```powershell
 .\test\Run-AllTests.ps1 -OutputPath ".\reports\tests" -GenerateHTML
-```
-
+```plaintext
 Pour vérifier l'organisation des scripts:
 
 ```powershell
 .\monitoring\Check-ScriptsOrganization.ps1
-```
+```plaintext

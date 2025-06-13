@@ -6,7 +6,7 @@ Ce document détaille les workflows n8n utilisés dans le projet EMAIL_SENDER_1,
 
 Le projet EMAIL_SENDER_1 s'articule autour de quatre workflows n8n principaux, chacun responsable d'une phase spécifique du processus de booking :
 
-```
+```plaintext
 ┌─────────────────────┐     ┌─────────────────────┐     ┌─────────────────────┐
 │  Email Sender -     │────▶│  Email Sender -     │────▶│  Email Sender -     │
 │     Phase 1         │     │     Phase 2         │     │     Phase 3         │
@@ -22,14 +22,15 @@ Le projet EMAIL_SENDER_1 s'articule autour de quatre workflows n8n principaux, c
                   │     Config          │    │  (OpenRouter/       │
                   │                     │    │   DeepSeek)         │
                   └─────────────────────┘    └─────────────────────┘
-```
-
+```plaintext
 ## 2. Email Sender - Phase 1 (Prospection initiale)
 
 ### 2.1 Objectif
+
 Automatiser l'envoi d'emails de prospection initiale aux programmateurs de salles de concert.
 
 ### 2.2 Structure du workflow
+
 - **Déclencheur** : Planification temporelle ou déclenchement manuel
 - **Récupération des données** : Extraction des contacts depuis Notion
 - **Filtrage** : Sélection des contacts pertinents selon critères
@@ -38,6 +39,7 @@ Automatiser l'envoi d'emails de prospection initiale aux programmateurs de salle
 - **Suivi** : Enregistrement des actions dans Notion
 
 ### 2.3 Nœuds principaux
+
 - Schedule Trigger / Manual Trigger
 - Notion (Get Database Items)
 - Function (Filtering)
@@ -46,6 +48,7 @@ Automatiser l'envoi d'emails de prospection initiale aux programmateurs de salle
 - Notion (Update Database Item)
 
 ### 2.4 Variables et paramètres
+
 - `contactList` : Liste des contacts à prospecter
 - `emailTemplate` : Template de base pour les emails
 - `aiPrompt` : Instructions pour la personnalisation IA
@@ -54,9 +57,11 @@ Automatiser l'envoi d'emails de prospection initiale aux programmateurs de salle
 ## 3. Email Sender - Phase 2 (Suivi des propositions)
 
 ### 3.1 Objectif
+
 Assurer le suivi des propositions envoyées et relancer les contacts n'ayant pas répondu.
 
 ### 3.2 Structure du workflow
+
 - **Déclencheur** : Planification temporelle (hebdomadaire)
 - **Récupération** : Extraction des contacts en attente de réponse
 - **Analyse** : Vérification du délai depuis le dernier contact
@@ -65,6 +70,7 @@ Assurer le suivi des propositions envoyées et relancer les contacts n'ayant pas
 - **Mise à jour** : Actualisation du statut dans Notion
 
 ### 3.3 Nœuds principaux
+
 - Schedule Trigger
 - Notion (Get Database Items with Filter)
 - Function (Date Calculation)
@@ -73,6 +79,7 @@ Assurer le suivi des propositions envoyées et relancer les contacts n'ayant pas
 - Notion (Update Database Item)
 
 ### 3.4 Variables et paramètres
+
 - `followUpDelay` : Délai avant relance (jours)
 - `maxFollowUps` : Nombre maximum de relances
 - `followUpTemplate` : Template pour les emails de relance
@@ -80,9 +87,11 @@ Assurer le suivi des propositions envoyées et relancer les contacts n'ayant pas
 ## 4. Email Sender - Phase 3 (Traitement des réponses)
 
 ### 4.1 Objectif
+
 Traiter automatiquement les réponses reçues et préparer les actions de suivi appropriées.
 
 ### 4.2 Structure du workflow
+
 - **Déclencheur** : Webhook Gmail (réception d'email)
 - **Analyse** : Classification de la réponse via IA
 - **Traitement** : Actions spécifiques selon le type de réponse
@@ -90,6 +99,7 @@ Traiter automatiquement les réponses reçues et préparer les actions de suivi 
 - **Mise à jour** : Actualisation du statut dans Notion
 
 ### 4.3 Nœuds principaux
+
 - Webhook Trigger
 - Gmail (Get Emails)
 - HTTP Request (OpenRouter API for Classification)
@@ -98,6 +108,7 @@ Traiter automatiquement les réponses reçues et préparer les actions de suivi 
 - Notion (Update Database Item)
 
 ### 4.4 Variables et paramètres
+
 - `responseCategories` : Catégories de réponses (positif, négatif, question, etc.)
 - `humanInterventionThreshold` : Seuil de confiance pour intervention humaine
 - `notificationChannels` : Canaux de notification configurés
@@ -105,21 +116,25 @@ Traiter automatiquement les réponses reçues et préparer les actions de suivi 
 ## 5. Email Sender - Config (Configuration centralisée)
 
 ### 5.1 Objectif
+
 Centraliser la configuration des workflows et gérer les templates d'emails.
 
 ### 5.2 Structure du workflow
+
 - **Interface** : Formulaire de configuration
 - **Stockage** : Sauvegarde des paramètres dans n8n
 - **Validation** : Vérification de la cohérence des paramètres
 - **Distribution** : Mise à disposition des configurations pour les autres workflows
 
 ### 5.3 Nœuds principaux
+
 - Webhook Trigger (Configuration Interface)
 - Function (Validation)
 - n8n (Set Variables)
 - Respond to Webhook
 
 ### 5.4 Variables et paramètres
+
 - `globalConfig` : Configuration globale du système
 - `emailTemplates` : Collection de templates d'emails
 - `aiSettings` : Paramètres pour les services IA
@@ -128,6 +143,7 @@ Centraliser la configuration des workflows et gérer les templates d'emails.
 ## 6. Intégration avec les services IA
 
 ### 6.1 Architectures d'agents IA
+
 Plusieurs architectures sont implémentées dans les workflows :
 
 - **Agent unique + Outils** : Un seul agent IA accède à différents outils
@@ -137,6 +153,7 @@ Plusieurs architectures sont implémentées dans les workflows :
 - **Agent + Human in the Loop** : Collaboration IA-humain pour les cas complexes
 
 ### 6.2 Templates disponibles
+
 Des templates prêts à l'emploi sont disponibles dans `/src/n8n/workflows/templates/ai-agents/` :
 - `agent-single-tools.json`
 - `agents-sequential.json`

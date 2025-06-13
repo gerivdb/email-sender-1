@@ -74,21 +74,25 @@ Ce document présente l'analyse des besoins en rapports automatiques pour le sys
 ## Périodes d'analyse
 
 ### Rapports quotidiens
+
 - Période: Dernières 24 heures
 - Granularité: Données par heure
 - Comparaison: Jour précédent
 
 ### Rapports hebdomadaires
+
 - Période: 7 derniers jours
 - Granularité: Données par jour
 - Comparaison: Semaine précédente
 
 ### Rapports mensuels
+
 - Période: 30 derniers jours
 - Granularité: Données par jour
 - Comparaison: Mois précédent
 
 ### Rapports trimestriels
+
 - Période: 90 derniers jours
 - Granularité: Données par semaine
 - Comparaison: Trimestre précédent
@@ -96,24 +100,28 @@ Ce document présente l'analyse des besoins en rapports automatiques pour le sys
 ## Besoins spécifiques par destinataire
 
 ### Administrateurs système
+
 - Focus sur les métriques techniques détaillées
 - Besoin de données brutes pour analyse approfondie
 - Alertes sur les anomalies et dépassements de seuils
 - Format préféré: HTML, Excel
 
 ### Développeurs
+
 - Focus sur les performances applicatives
 - Besoin de données détaillées sur les erreurs et exceptions
 - Métriques de performance par composant
 - Format préféré: HTML, JSON
 
 ### Responsables produit/marketing
+
 - Focus sur les KPIs métier
 - Besoin de visualisations claires et synthétiques
 - Analyse des tendances et comparaisons
 - Format préféré: PDF, PowerPoint
 
 ### Direction
+
 - Focus sur les indicateurs stratégiques
 - Besoin de synthèses et recommandations
 - Visualisations simples et impactantes

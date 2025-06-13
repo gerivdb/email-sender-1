@@ -69,6 +69,7 @@ La structure du projet a été réorganisée pour une meilleure organisation et 
 Le projet inclut un système complet de gestion de cache TTL (Time-To-Live) optimisé pour Redis, offrant :
 
 #### ✨ Fonctionnalités clés
+
 - **Gestion automatique des TTL** - Configuration intelligente basée sur les types de données
 - **Analyse en temps réel** - Monitoring continu et optimisation automatique des performances
 - **Stratégies d'invalidation** - Invalidation temporelle, événementielle et basée sur les versions
@@ -76,6 +77,7 @@ Le projet inclut un système complet de gestion de cache TTL (Time-To-Live) opti
 - **Outils CLI** - Utilitaires en ligne de commande pour l'analyse et l'optimisation
 
 #### 📊 Types de données supportés
+
 | Type | TTL par défaut | Utilisation |
 |------|----------------|-------------|
 | `DefaultValues` | 1 heure | Données générales de cache |
@@ -85,6 +87,7 @@ Le projet inclut un système complet de gestion de cache TTL (Time-To-Live) opti
 | `UserSessions` | 2 heures | Données de session utilisateur |
 
 #### 🛠️ Utilisation rapide
+
 ```go
 import "pkg/cache/ttl"
 
@@ -97,18 +100,20 @@ err := manager.Set("user:123", userData, ttl.UserSessions)
 // Récupérer des données
 var user User
 found, err := manager.Get("user:123", &user)
-```
-
+```plaintext
 #### 📈 Outils de monitoring
+
 ```bash
 # Construire l'outil d'analyse
+
 go build -o cache-analyzer tools/cache-analyzer/main.go
 
 # Exécuter l'analyse
-./cache-analyzer -redis-addr="localhost:6379" -analysis-type="comprehensive"
-```
 
+./cache-analyzer -redis-addr="localhost:6379" -analysis-type="comprehensive"
+```plaintext
 #### 📚 Documentation complète
+
 Pour plus d'informations détaillées, consultez la [documentation TTL](pkg/cache/ttl/README.md).
 
 ---
@@ -124,8 +129,7 @@ Un script PowerShell est configuré pour déplacer automatiquement les fichiers 
 **Utilisation manuelle :**
 ```powershell
 .\development\scripts\maintenance\repo\organize-scripts.ps1
-```
-
+```plaintext
 ### 2. Création de nouveaux scripts
 
 Un script PowerShell est disponible pour créer facilement de nouveaux scripts au bon endroit dans la structure du projet :
@@ -133,8 +137,7 @@ Un script PowerShell est disponible pour créer facilement de nouveaux scripts a
 **Utilisation :**
 ```powershell
 .\development\scripts\maintenance\repo\new-script.ps1 -Name nom-du-script -Category maintenance/sous-dossier -Description "Description du script" -Author "Votre Nom"
-```
-
+```plaintext
 ### 3. Pre-commit Hook avec Husky
 
 Un hook pre-commit a été configuré pour exécuter automatiquement le script d'organisation avant chaque commit. Cela garantit que les scripts sont toujours placés au bon endroit.
@@ -149,8 +152,7 @@ Pour initialiser le projet pour le développement, exécutez le script suivant :
 
 ```powershell
 .\development\scripts\maintenance\repo\initialize-project.ps1
-```
-
+```plaintext
 Ce script installe les dépendances, configure les hooks Git et organise les fichiers.
 
 ## Scripts d'organisation automatique de la racine
@@ -164,12 +166,13 @@ Deux scripts PowerShell sont fournis pour maintenir la propreté de la racine du
 
 ```powershell
 # Organiser les dossiers de test
+
 pwsh -ExecutionPolicy Bypass -File organize-tests.ps1
 
 # Organiser les fichiers non essentiels de la racine
-pwsh -ExecutionPolicy Bypass -File organize-root-files.ps1
-```
 
+pwsh -ExecutionPolicy Bypass -File organize-root-files.ps1
+```plaintext
 Après exécution, la racine du projet ne contient plus que les fichiers essentiels, et tous les tests sont centralisés dans `tests/`.
 
 ## Gestionnaire intégré
@@ -187,36 +190,42 @@ Le projet utilise un gestionnaire intégré qui unifie les fonctionnalités du M
 
 ```powershell
 # Exécuter un mode
+
 .\development\scripts\integrated-manager.ps1 -Mode CHECK -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3"
 
 # Exécuter un workflow
+
 .\development\scripts\integrated-manager.ps1 -Workflow "RoadmapManagement" -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md"
 
 # Afficher la liste des modes disponibles
+
 .\development\scripts\integrated-manager.ps1 -ListModes
 
 # Afficher la liste des workflows disponibles
-.\development\scripts\integrated-manager.ps1 -ListWorkflows
-```
 
+.\development\scripts\integrated-manager.ps1 -ListWorkflows
+```plaintext
 ### Workflows automatisés
 
 Le gestionnaire intégré propose des workflows automatisés pour la gestion des roadmaps :
 
 ```powershell
 # Exécuter le workflow quotidien
+
 .\development\scripts\workflows\workflow-quotidien.ps1
 
 # Exécuter le workflow hebdomadaire
+
 .\development\scripts\workflows\workflow-hebdomadaire.ps1
 
 # Exécuter le workflow mensuel
+
 .\development\scripts\workflows\workflow-mensuel.ps1
 
 # Installer les tâches planifiées
-.\development\scripts\workflows\install-scheduled-tasks.ps1
-```
 
+.\development\scripts\workflows\install-scheduled-tasks.ps1
+```plaintext
 ### Documentation
 
 Pour plus d'informations sur le gestionnaire intégré, consultez les guides suivants :
@@ -236,15 +245,17 @@ Pour installer rapidement le gestionnaire intégré, exécutez le script d'insta
 
 ```powershell
 # Installation avec les paramètres par défaut
+
 .\development\scripts\maintenance\install-integrated-manager.ps1
 
 # Installation avec des paramètres personnalisés
+
 .\development\scripts\maintenance\install-integrated-manager.ps1 -RoadmapPath "projet\roadmaps\mes-plans\roadmap_perso.md" -InstallScheduledTasks $false
 
 # Installation avec remplacement des fichiers existants
-.\development\scripts\maintenance\install-integrated-manager.ps1 -Force
-```
 
+.\development\scripts\maintenance\install-integrated-manager.ps1 -Force
+```plaintext
 Ce script effectue les opérations suivantes :
 1. Vérifie que PowerShell 5.1 ou supérieur est installé
 2. Installe le module Pester s'il n'est pas déjà installé
@@ -260,8 +271,7 @@ Pour vérifier que le gestionnaire intégré est correctement installé, exécut
 
 ```powershell
 .\development\scripts\maintenance\verify-installation.ps1
-```
-
+```plaintext
 Ce script vérifie que tous les composants nécessaires sont correctement installés et configurés.
 
 ### Désinstallation
@@ -270,12 +280,13 @@ Pour désinstaller le gestionnaire intégré, exécutez le script de désinstall
 
 ```powershell
 # Désinstallation des tâches planifiées uniquement
+
 .\development\scripts\maintenance\uninstall-integrated-manager.ps1
 
 # Désinstallation complète (tâches planifiées et fichiers)
-.\development\scripts\maintenance\uninstall-integrated-manager.ps1 -RemoveFiles -Force
-```
 
+.\development\scripts\maintenance\uninstall-integrated-manager.ps1 -RemoveFiles -Force
+```plaintext
 Pour plus d'informations sur l'installation, consultez le guide d'installation dans `projet/guides/installation/`.
 
 ## Documentation

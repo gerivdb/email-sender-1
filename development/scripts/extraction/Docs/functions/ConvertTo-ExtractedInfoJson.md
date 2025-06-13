@@ -1,6 +1,7 @@
 # ConvertTo-ExtractedInfoJson
 
 ## SYNOPSIS
+
 Convertit un objet d'information extraite ou une collection en format JSON.
 
 ## SYNTAXE
@@ -12,8 +13,7 @@ ConvertTo-ExtractedInfoJson
     [-Depth <Int32>]
     [-ExcludeMetadata]
     [<CommonParameters>]
-```
-
+```plaintext
 ```powershell
 ConvertTo-ExtractedInfoJson
     -Collection <Hashtable>
@@ -22,9 +22,9 @@ ConvertTo-ExtractedInfoJson
     [-ExcludeMetadata]
     [-ExcludeIndexes]
     [<CommonParameters>]
-```
-
+```plaintext
 ## DESCRIPTION
+
 La fonction `ConvertTo-ExtractedInfoJson` convertit un objet d'information extraite ou une collection d'informations extraites en format JSON. Cette fonction prend en charge deux modes d'utilisation :
 
 1. Conversion d'un objet d'information extraite individuel en utilisant le paramètre `-Info`.
@@ -35,65 +35,71 @@ La fonction offre plusieurs options pour contrôler le format et le contenu de l
 ## PARAMÈTRES
 
 ### -Info
+
 Spécifie l'objet d'information extraite à convertir en JSON. Ce paramètre est obligatoire pour le premier jeu de paramètres.
 
 ```yaml
 Type: Hashtable
 Required: True (pour le premier jeu de paramètres)
-```
-
+```plaintext
 ### -Collection
+
 Spécifie la collection d'informations extraites à convertir en JSON. Ce paramètre est obligatoire pour le deuxième jeu de paramètres.
 
 ```yaml
 Type: Hashtable
 Required: True (pour le deuxième jeu de paramètres)
-```
-
+```plaintext
 ### -Indent
+
 Indique si le JSON généré doit être formaté avec des indentations et des sauts de ligne pour une meilleure lisibilité.
 
 ```yaml
 Type: SwitchParameter
 Default: False
-```
-
+```plaintext
 ### -Depth
+
 Spécifie la profondeur maximale de sérialisation pour les objets imbriqués.
 
 ```yaml
 Type: Int32
 Default: 100
-```
-
+```plaintext
 ### -ExcludeMetadata
+
 Indique si les métadonnées doivent être exclues de la sortie JSON.
 
 ```yaml
 Type: SwitchParameter
 Default: False
-```
-
+```plaintext
 ### -ExcludeIndexes
+
 Indique si les index de la collection doivent être exclus de la sortie JSON. Ce paramètre n'est applicable que lors de la conversion d'une collection.
 
 ```yaml
 Type: SwitchParameter
 Default: False
-```
-
+```plaintext
 ### <CommonParameters>
+
 Cette fonction prend en charge les paramètres communs : Verbose, Debug, ErrorAction, ErrorVariable, WarningAction, WarningVariable, OutBuffer, PipelineVariable, et OutVariable.
 
 ## ENTRÉES
+
 ### System.Collections.Hashtable
+
 Vous pouvez transmettre un objet d'information extraite ou une collection via le pipeline.
 
 ## SORTIES
+
 ### System.String
+
 Retourne une chaîne de caractères contenant la représentation JSON de l'objet d'information extraite ou de la collection.
 
 ## NOTES
+
 - Cette fonction ne modifie pas l'objet d'information extraite ou la collection originale.
 - Les dates (ExtractionDate, LastModifiedDate, CreationDate) sont converties en chaînes ISO 8601 pour assurer la compatibilité JSON.
 - Pour les objets de type StructuredDataExtractedInfo, les données structurées sont converties en JSON de manière récursive.
@@ -104,15 +110,16 @@ Retourne une chaîne de caractères contenant la représentation JSON de l'objet
 ## EXEMPLES
 
 ### Exemple 1 : Convertir un objet d'information extraite simple en JSON
+
 ```powershell
 $info = New-ExtractedInfo -Source "document.pdf" -ExtractorName "PDFExtractor" -ProcessingState "Processed" -ConfidenceScore 85
 $json = ConvertTo-ExtractedInfoJson -Info $info
 Write-Host $json
-```
-
+```plaintext
 Cet exemple convertit un objet d'information extraite simple en JSON sans indentation.
 
 ### Exemple 2 : Convertir un objet d'information extraite en JSON indenté
+
 ```powershell
 $info = New-TextExtractedInfo -Source "article.html" -Text "Ceci est un exemple de texte extrait d'un article." -Language "fr"
 $info = Add-ExtractedInfoMetadata -Info $info -Metadata @{
@@ -123,11 +130,11 @@ $info = Add-ExtractedInfoMetadata -Info $info -Metadata @{
 
 $json = ConvertTo-ExtractedInfoJson -Info $info -Indent
 Write-Host $json
-```
-
+```plaintext
 Cet exemple convertit un objet d'information extraite de type texte avec métadonnées en JSON indenté pour une meilleure lisibilité.
 
 ### Exemple 3 : Convertir un objet d'information extraite en JSON sans métadonnées
+
 ```powershell
 $info = New-StructuredDataExtractedInfo -Source "data.json" -Data @{
     Person = @{
@@ -157,35 +164,41 @@ $info = New-StructuredDataExtractedInfo -Source "data.json" -Data @{
 $info = Add-ExtractedInfoMetadata -Info $info -Key "DataSource" -Value "API"
 
 # Convertir en JSON sans métadonnées
+
 $json = ConvertTo-ExtractedInfoJson -Info $info -ExcludeMetadata -Indent
 Write-Host $json
-```
-
+```plaintext
 Cet exemple convertit un objet d'information extraite de type données structurées en JSON indenté, en excluant les métadonnées.
 
 ### Exemple 4 : Convertir une collection en JSON
+
 ```powershell
 # Créer une collection
+
 $collection = New-ExtractedInfoCollection -Name "JsonDemo" -Description "Collection pour démonstration JSON" -CreateIndexes
 
 # Ajouter quelques objets
+
 $info1 = New-TextExtractedInfo -Source "doc1.txt" -Text "Texte 1"
 $info2 = New-TextExtractedInfo -Source "doc2.txt" -Text "Texte 2"
 $collection = Add-ExtractedInfoToCollection -Collection $collection -InfoList @($info1, $info2)
 
 # Convertir en JSON
+
 $json = ConvertTo-ExtractedInfoJson -Collection $collection -Indent
 Write-Host $json
-```
-
+```plaintext
 Cet exemple convertit une collection d'informations extraites en JSON indenté.
 
 ### Exemple 5 : Convertir une collection en JSON sans index
+
 ```powershell
 # Créer une collection indexée
+
 $collection = New-ExtractedInfoCollection -Name "LargeCollection" -CreateIndexes
 
 # Ajouter de nombreux objets
+
 $infoList = @()
 for ($i = 1; $i -le 20; $i++) {
     $info = New-ExtractedInfo -Source "source$i" -ConfidenceScore ($i * 5)
@@ -194,10 +207,12 @@ for ($i = 1; $i -le 20; $i++) {
 $collection = Add-ExtractedInfoToCollection -Collection $collection -InfoList $infoList
 
 # Convertir en JSON avec et sans index
+
 $jsonWithIndexes = ConvertTo-ExtractedInfoJson -Collection $collection
 $jsonWithoutIndexes = ConvertTo-ExtractedInfoJson -Collection $collection -ExcludeIndexes
 
 # Comparer les tailles
+
 $withSize = $jsonWithIndexes.Length
 $withoutSize = $jsonWithoutIndexes.Length
 $reduction = [Math]::Round(100 - ($withoutSize / $withSize * 100), 2)
@@ -205,13 +220,14 @@ $reduction = [Math]::Round(100 - ($withoutSize / $withSize * 100), 2)
 Write-Host "Taille avec index : $withSize caractères"
 Write-Host "Taille sans index : $withoutSize caractères"
 Write-Host "Réduction : $reduction%"
-```
-
+```plaintext
 Cet exemple compare la taille du JSON généré pour une collection avec et sans index, montrant la réduction de taille obtenue en excluant les index.
 
 ### Exemple 6 : Contrôler la profondeur de sérialisation
+
 ```powershell
 # Créer un objet avec des données profondément imbriquées
+
 $deepData = @{
     Level1 = @{
         Level2 = @{
@@ -228,6 +244,7 @@ $deepData = @{
 $info = New-StructuredDataExtractedInfo -Source "deep.json" -Data $deepData
 
 # Convertir avec différentes profondeurs
+
 $jsonFullDepth = ConvertTo-ExtractedInfoJson -Info $info -Indent
 $jsonLimitedDepth = ConvertTo-ExtractedInfoJson -Info $info -Indent -Depth 3
 
@@ -235,13 +252,14 @@ Write-Host "JSON avec profondeur complète :"
 Write-Host $jsonFullDepth
 Write-Host "`nJSON avec profondeur limitée à 3 :"
 Write-Host $jsonLimitedDepth
-```
-
+```plaintext
 Cet exemple montre comment contrôler la profondeur de sérialisation pour des objets avec des structures de données profondément imbriquées.
 
 ### Exemple 7 : Utiliser ConvertTo-ExtractedInfoJson avec le pipeline
+
 ```powershell
 # Créer plusieurs objets
+
 $infos = @(
     (New-ExtractedInfo -Source "source1"),
     (New-TextExtractedInfo -Source "source2" -Text "Texte"),
@@ -249,6 +267,7 @@ $infos = @(
 )
 
 # Convertir tous les objets en JSON via le pipeline
+
 $jsons = $infos | ForEach-Object {
     $json = $_ | ConvertTo-ExtractedInfoJson -Indent
     [PSCustomObject]@{
@@ -260,12 +279,13 @@ $jsons = $infos | ForEach-Object {
 }
 
 # Afficher les résultats
-$jsons | Format-Table -Property Type, Id, JsonLength -AutoSize
-```
 
+$jsons | Format-Table -Property Type, Id, JsonLength -AutoSize
+```plaintext
 Cet exemple utilise le pipeline pour convertir plusieurs objets d'information extraite en JSON et analyser les résultats.
 
 ## LIENS CONNEXES
+
 - [ConvertFrom-ExtractedInfoJson](ConvertFrom-ExtractedInfoJson.md)
 - [Save-ExtractedInfoToFile](Save-ExtractedInfoToFile.md)
 - [Load-ExtractedInfoFromFile](Load-ExtractedInfoFromFile.md)

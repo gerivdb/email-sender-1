@@ -11,8 +11,7 @@ Le module est disponible dans le dossier `modules` du projet. Pour l'importer :
 ```powershell
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "modules\CycleDetector.psm1"
 Import-Module $modulePath -Force
-```
-
+```plaintext
 ## Fonctions principales
 
 ### Detect-Cycle
@@ -23,8 +22,7 @@ Détecte les cycles dans un graphe générique.
 
 ```powershell
 Detect-Cycle -Graph <Hashtable>
-```
-
+```plaintext
 #### Paramètres
 
 - **Graph** : Une table de hachage représentant le graphe. Les clés sont les nœuds et les valeurs sont des tableaux de nœuds adjacents.
@@ -51,8 +49,7 @@ $result = Detect-Cycle -Graph $graph
 if ($result.HasCycle) {
     Write-Host "Cycle détecté: $($result.CyclePath -join ' -> ')"
 }
-```
-
+```plaintext
 ### Find-DependencyCycles
 
 Analyse les dépendances entre les scripts PowerShell pour détecter les cycles.
@@ -61,8 +58,7 @@ Analyse les dépendances entre les scripts PowerShell pour détecter les cycles.
 
 ```powershell
 Find-DependencyCycles -Path <String> [-Recursive]
-```
-
+```plaintext
 #### Paramètres
 
 - **Path** : Chemin du dossier ou fichier à analyser.
@@ -85,8 +81,7 @@ if ($result.HasCycles) {
         Write-Host "Cycle de dépendance détecté: $($cycle -join ' -> ')"
     }
 }
-```
-
+```plaintext
 ### Test-WorkflowCycles
 
 Analyse les workflows n8n pour détecter les cycles.
@@ -95,8 +90,7 @@ Analyse les workflows n8n pour détecter les cycles.
 
 ```powershell
 Test-WorkflowCycles -WorkflowPath <String>
-```
-
+```plaintext
 #### Paramètres
 
 - **WorkflowPath** : Chemin du fichier de workflow n8n à analyser.
@@ -117,8 +111,7 @@ if ($result.HasCycles) {
         Write-Host "Cycle de workflow détecté: $($cycle -join ' -> ')"
     }
 }
-```
-
+```plaintext
 ### Remove-Cycle
 
 Supprime un cycle d'un graphe en retirant une arête.
@@ -127,8 +120,7 @@ Supprime un cycle d'un graphe en retirant une arête.
 
 ```powershell
 Remove-Cycle -Graph <Hashtable> -Cycle <String[]>
-```
-
+```plaintext
 #### Paramètres
 
 - **Graph** : Une table de hachage représentant le graphe.
@@ -151,12 +143,12 @@ $cycle = @("A", "B", "C")
 $modifiedGraph = Remove-Cycle -Graph $graph -Cycle $cycle
 
 # Vérifier que le cycle a été supprimé
+
 $result = Detect-Cycle -Graph $modifiedGraph
 if (-not $result.HasCycle) {
     Write-Host "Le cycle a été supprimé avec succès."
 }
-```
-
+```plaintext
 ## Intégration avec n8n
 
 Le module `CycleDetector` s'intègre avec n8n via le script `Validate-WorkflowCycles.ps1` qui permet de valider et corriger automatiquement les cycles dans les workflows n8n.
@@ -165,12 +157,13 @@ Le module `CycleDetector` s'intègre avec n8n via le script `Validate-WorkflowCy
 
 ```powershell
 # Valider un workflow n8n
+
 $result = & ".\development\scripts\n8n\workflow-validation\Validate-WorkflowCycles.ps1" -WorkflowsPath ".\workflows\my_workflow.json"
 
 # Valider et corriger automatiquement les cycles
-$result = & ".\development\scripts\n8n\workflow-validation\Validate-WorkflowCycles.ps1" -WorkflowsPath ".\workflows\my_workflow.json" -FixCycles
-```
 
+$result = & ".\development\scripts\n8n\workflow-validation\Validate-WorkflowCycles.ps1" -WorkflowsPath ".\workflows\my_workflow.json" -FixCycles
+```plaintext
 ## Algorithmes utilisés
 
 Le module utilise l'algorithme de recherche en profondeur (DFS) pour détecter les cycles dans les graphes. Cet algorithme est efficace pour les graphes de taille moyenne à grande.
@@ -199,9 +192,11 @@ Les performances du module dépendent de la taille et de la complexité des grap
 
 ```powershell
 # Analyser tous les scripts d'un projet
+
 $result = Find-DependencyCycles -Path ".\development\scripts" -Recursive
 
 # Générer un rapport
+
 $report = [PSCustomObject]@{
     HasCycles = $result.HasCycles
     CyclesCount = $result.Cycles.Count
@@ -211,15 +206,16 @@ $report = [PSCustomObject]@{
 }
 
 $report | ConvertTo-Json -Depth 10 | Out-File -FilePath ".\reports\dependency_cycles.json" -Encoding utf8
-```
-
+```plaintext
 ### Validation de tous les workflows n8n
 
 ```powershell
 # Obtenir tous les workflows n8n
+
 $workflows = Get-ChildItem -Path ".\workflows" -Filter "*.json" -Recurse
 
 # Valider chaque workflow
+
 $results = @()
 foreach ($workflow in $workflows) {
     $result = Test-WorkflowCycles -WorkflowPath $workflow.FullName
@@ -233,6 +229,7 @@ foreach ($workflow in $workflows) {
 }
 
 # Générer un rapport
+
 $report = [PSCustomObject]@{
     TotalWorkflows = $workflows.Count
     WorkflowsWithCycles = ($results | Where-Object { $_.HasCycles }).Count
@@ -240,4 +237,4 @@ $report = [PSCustomObject]@{
 }
 
 $report | ConvertTo-Json -Depth 10 | Out-File -FilePath ".\reports\workflow_cycles.json" -Encoding utf8
-```
+```plaintext

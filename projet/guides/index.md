@@ -69,6 +69,7 @@ Pour contribuer à cette documentation:
 Cette documentation suit les conventions suivantes:
 
 - **Titres**: Utilisez # pour les titres principaux, ## pour les sous-titres, etc.
+
 - **Code**: Utilisez des blocs de code avec la syntaxe appropriée (```python, ```javascript, etc.)
 - **Liens**: Utilisez des liens relatifs pour les références internes
 - **Images**: Stockez les images dans le répertoire `docs/documentation/images/`
@@ -80,8 +81,7 @@ Cette documentation est générée à partir des entrées du journal et des anal
 
 ```powershell
 python scripts/python/journal/docs_integration.py extract
-```
-
+```plaintext
 ## Dernière mise à jour
 
 Cette documentation a été générée le ${new Date().toISOString().split('T')[0]} à ${new Date().toTimeString().split(' ')[0]}.

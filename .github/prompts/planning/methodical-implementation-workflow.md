@@ -5,33 +5,40 @@
 ### **🔄 DÉBUT DE CHAQUE TÂCHE**
 
 #### **1. Vérification Pré-Tâche**
+
 ```bash
 # 1.1 Vérifier état des fichiers non suivis
+
 git status --porcelain | Where-Object { $_ -match "^\?\?" } | Measure-Object | ForEach-Object { if ($_.Count -eq 0) { Write-Host "✅ Aucun fichier non suivi" -ForegroundColor Green } else { Write-Host "⚠️ $($_.Count) fichiers non suivis détectés" -ForegroundColor Yellow } }
 
 # 1.2 Si fichiers non suivis détectés
+
 $untrackedFiles = git status --porcelain | Where-Object { $_ -match "^\?\?" }
 if ($untrackedFiles.Count -gt 0) {
     Write-Host "⚠️ Fichiers non suivis détectés - analyse requise" -ForegroundColor Yellow
     git status
 }
-```
-
+```plaintext
 #### **2. Classification et Commit des Untracked Files**
+
 ```powershell
 # Script PowerShell pour classification automatique
+
 $untrackedFiles = git status --porcelain | Where-Object { $_ -match "^\?\?" }
 
 if ($untrackedFiles.Count -gt 0) {
     Write-Host "📁 Classification des fichiers non suivis:" -ForegroundColor Cyan
     
     # Créer hashtable pour regrouper par domaine
+
     $domainGroups = @{}
     
     foreach ($file in $untrackedFiles) {
         $filePath = $file.Substring(3)  # Enlever "?? "
+
         
         # Déterminer domaine thématique
+
         $domain = switch -Regex ($filePath) {
             "^tools/" { "sync-tools" }
             "^config/" { "configuration" }
@@ -56,6 +63,7 @@ if ($untrackedFiles.Count -gt 0) {
     }
     
     # Proposition de commits thématiques
+
     Write-Host "`n💡 Commits thématiques suggérés:" -ForegroundColor Cyan
     foreach ($domain in $domainGroups.Keys) {
         $fileCount = $domainGroups[$domain].Count
@@ -66,6 +74,7 @@ if ($untrackedFiles.Count -gt 0) {
     }
     
     # Demander confirmation pour commits automatiques
+
     $autoCommit = Read-Host "Effectuer les commits automatiquement? (y/N)"
     if ($autoCommit -eq 'y' -or $autoCommit -eq 'Y') {
         foreach ($domain in $domainGroups.Keys) {
@@ -82,14 +91,16 @@ Refs: plan-dev-v55-planning-ecosystem-sync.md"
         }
     }
 }
-```
-
+```plaintext
 #### **3. Vérification de la Branche Appropriée**
+
 ```powershell
 # 3.1 Obtenir branche actuelle
+
 $currentBranch = git branch --show-current
 
 # 3.2 Déterminer branche appropriée selon la tâche
+
 $taskType = $env:TASK_TYPE
 if (-not $taskType) {
     $taskType = Read-Host "Type de tâche (plan-dev-v55/sync-tools/validation/documentation)"
@@ -106,10 +117,12 @@ $targetBranch = switch ($taskType) {
 }
 
 # 3.3 Vérifier et changer de branche si nécessaire
+
 if ($currentBranch -ne $targetBranch) {
     Write-Host "🔄 Changement de branche: $currentBranch → $targetBranch" -ForegroundColor Yellow
     
     # Vérifier si la branche existe
+
     $branchExists = git branch --list $targetBranch
     if ($branchExists) {
         git checkout $targetBranch
@@ -128,22 +141,25 @@ if ($currentBranch -ne $targetBranch) {
 
 $currentBranch = git branch --show-current
 Write-Host "✅ Branche active: $currentBranch" -ForegroundColor Green
-```
-
+```plaintext
 ---
 
 ### **✅ FIN DE CHAQUE TÂCHE**
 
 #### **4. Commit de la Tâche Terminée**
+
 ```powershell
 # 4.1 Vérifier modifications en cours
+
 git add .
 
 # 4.2 Status avant commit
+
 Write-Host "📊 État avant commit:" -ForegroundColor Cyan
 git status --short
 
 # 4.3 Paramètres du commit (à adapter selon la tâche)
+
 $taskId = $env:TASK_ID
 $section = $env:SECTION
 $description = $env:DESCRIPTION
@@ -153,6 +169,7 @@ if (-not $section) { $section = Read-Host "Section (ex: migration-assistant)" }
 if (-not $description) { $description = Read-Host "Description courte" }
 
 # 4.4 Commit avec message structuré
+
 $commitMessage = @"
 feat($section): complete $taskId - $description
 
@@ -162,6 +179,7 @@ feat($section): complete $taskId - $description
 - ✅ Code review effectué
 
 Refs: plan-dev-v55-planning-ecosystem-sync.md#phase-4
+
 "@
 
 git commit -m $commitMessage
@@ -173,15 +191,17 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "❌ Échec de la création du commit" -ForegroundColor Red
     exit 1
 }
-```
-
+```plaintext
 #### **5. Push vers la Branche Appropriée**
+
 ```powershell
 # 5.1 Push avec suivi de la branche distante
+
 $currentBranch = git branch --show-current
 git push -u origin $currentBranch
 
 # 5.2 Vérification push
+
 if ($LASTEXITCODE -eq 0) {
     Write-Host "🚀 Push réussi vers $currentBranch" -ForegroundColor Green
 } else {
@@ -190,18 +210,20 @@ if ($LASTEXITCODE -eq 0) {
 }
 
 # 5.3 Afficher hash du commit pour référence
+
 $commitHash = git rev-parse --short HEAD
 Write-Host "📝 Commit hash: $commitHash" -ForegroundColor Cyan
 Write-Host "🌐 URL commit: https://github.com/your-repo/commit/$commitHash" -ForegroundColor Blue
-```
-
+```plaintext
 ---
 
 ### **📊 FIN DE CHAQUE SECTION**
 
 #### **6. Mise à Jour du Plan-dev-v55**
+
 ```powershell
 # Script de mise à jour automatique des cases à cocher
+
 param(
     [string]$PlanFile = "projet\roadmaps\plans\consolidated\plan-dev-v55-planning-ecosystem-sync.md",
     [string]$Section,
@@ -211,20 +233,24 @@ param(
 Write-Host "📝 Mise à jour du plan: $Section" -ForegroundColor Green
 
 # Vérifier que le fichier existe
+
 if (-not (Test-Path $PlanFile)) {
     Write-Error "❌ Fichier plan non trouvé: $PlanFile"
     exit 1
 }
 
 # Lire le contenu du plan
+
 $content = Get-Content $PlanFile -Raw -Encoding UTF8
 
 # Sauvegarde avant modification
+
 $backupFile = "$PlanFile.backup.$(Get-Date -Format 'yyyyMMdd-HHmmss')"
 Copy-Item $PlanFile $backupFile
 Write-Host "💾 Backup créé: $backupFile" -ForegroundColor Blue
 
 # Mise à jour des cases à cocher pour les tâches terminées
+
 $updatedCount = 0
 foreach ($task in $CompletedTasks) {
     $pattern = "- \[ \] $([regex]::Escape($task))"
@@ -240,9 +266,12 @@ foreach ($task in $CompletedTasks) {
 }
 
 # Calculer nouvelle progression de la section si spécifiée
+
 if ($Section) {
     # Extraire la section spécifique pour calculer la progression
+
     $sectionPattern = "### $([regex]::Escape($Section)).*?(?=###|\z)"
+
     $sectionMatch = [regex]::Match($content, $sectionPattern, [System.Text.RegularExpressions.RegexOptions]::Singleline)
     
     if ($sectionMatch.Success) {
@@ -254,6 +283,7 @@ if ($Section) {
             $progressPercent = [math]::Round(($completedTasks / $totalTasks) * 100, 0)
             
             # Mettre à jour la progression de la section
+
             $progressPattern = "(\*Progression: )\d+(%)(\*)"
             $progressReplacement = "`${1}$progressPercent`${2}`${3}"
             $content = [regex]::Replace($content, $progressPattern, $progressReplacement)
@@ -264,22 +294,26 @@ if ($Section) {
 }
 
 # Calculer progression globale
+
 $allTasks = ([regex]::Matches($content, "- \[[x ]\]")).Count
 $allCompleted = ([regex]::Matches($content, "- \[x\]")).Count
 $globalProgress = if ($allTasks -gt 0) { [math]::Round(($allCompleted / $allTasks) * 100, 0) } else { 0 }
 
 # Mettre à jour progression globale
+
 $globalPattern = "(\*\*Version.*?Progression globale : )\d+(%)(\*\*)"
 $globalReplacement = "`${1}$globalProgress`${2}`${3}"
 $content = [regex]::Replace($content, $globalPattern, $globalReplacement)
 
 # Sauvegarder le fichier mis à jour
+
 Set-Content -Path $PlanFile -Value $content -Encoding UTF8
 
 Write-Host "✅ Plan mis à jour - Progression globale: $globalProgress%" -ForegroundColor Cyan
 Write-Host "📈 Tâches mises à jour: $updatedCount" -ForegroundColor Green
 
 # Commit de la mise à jour du plan
+
 git add $PlanFile
 $planCommitMessage = @"
 docs(planning): update progress for $Section - $globalProgress% global completion
@@ -297,6 +331,7 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "📊 Progression commitée avec succès" -ForegroundColor Green
     
     # Push automatique des mises à jour du plan
+
     git push origin $(git branch --show-current)
     
     if ($LASTEXITCODE -eq 0) {
@@ -305,8 +340,7 @@ if ($LASTEXITCODE -eq 0) {
 } else {
     Write-Host "❌ Échec du commit de la mise à jour" -ForegroundColor Red
 }
-```
-
+```plaintext
 ---
 
 ## 🎯 **Template de Prompt par Section**
@@ -317,6 +351,7 @@ if ($LASTEXITCODE -eq 0) {
 ## 🚀 IMPLÉMENTATION SECTION [X.Y] - [NOM_SECTION]
 
 ### PRÉ-REQUIS
+
 - [ ] Vérifier fichiers non suivis et les committer par domaine
 - [ ] Confirmer branche: `planning-ecosystem-sync`
 - [ ] État propre du workspace: `git status`
@@ -329,11 +364,13 @@ if ($LASTEXITCODE -eq 0) {
   ```
 
 ### TÂCHES À IMPLÉMENTER
+
 **Phase [X]**: [Nom Phase]
 **Section [X.Y]**: [Nom Section]  
 **Objectif**: [Description objectif]
 
 #### Tâche [X.Y.Z] - [Nom Tâche]
+
 - [ ] **Micro-étape [X.Y.Z.1]**: [Description]
   ```[language]
   [Code example avec contexte]
@@ -347,6 +384,7 @@ if ($LASTEXITCODE -eq 0) {
   - **Estimation**: [temps estimé]
 
 ### POST-IMPLÉMENTATION
+
 - [ ] **Tests unitaires passants**: `go test ./... -v`
 - [ ] **Linting propre**: `golangci-lint run`
 - [ ] **Commit structuré**: 
@@ -358,29 +396,33 @@ if ($LASTEXITCODE -eq 0) {
   - ✅ [Documentation mise à jour]
   
   Refs: plan-dev-v55-planning-ecosystem-sync.md#phase-X
+
   ```
 - [ ] **Push vers branche**: `planning-ecosystem-sync`
 - [ ] **Mise à jour plan**: Cases à cocher + progression
 - [ ] **Nettoyage**: Aucun fichier non suivi restant
 
 ### VALIDATION
+
 - [ ] **Fonctionnalité testée**: Manuel + automatique
 - [ ] **Code review**: Si requis par l'équipe
 - [ ] **Documentation à jour**: Inline + externe
 - [ ] **Intégration validée**: Avec composants existants
 - [ ] **Performance acceptable**: Selon métriques définies
-```
-
+```plaintext
 ---
 
 ## 📋 **Checklist Globale d'Application**
 
 ### **🔍 Avant de Commencer une Section**
+
 ```powershell
 # Checklist automatisée
+
 Write-Host "🔍 VÉRIFICATION PRÉ-IMPLÉMENTATION" -ForegroundColor Cyan
 
 # 1. État workspace propre
+
 $gitStatus = git status --porcelain
 if ($gitStatus) {
     Write-Host "⚠️ Workspace non propre - fichiers modifiés détectés" -ForegroundColor Yellow
@@ -390,6 +432,7 @@ if ($gitStatus) {
 }
 
 # 2. Branche correcte
+
 $currentBranch = git branch --show-current
 if ($currentBranch -eq "planning-ecosystem-sync") {
     Write-Host "✅ Branche correcte: $currentBranch" -ForegroundColor Green
@@ -398,6 +441,7 @@ if ($currentBranch -eq "planning-ecosystem-sync") {
 }
 
 # 3. Dernière version du plan
+
 $planFile = "projet\roadmaps\plans\consolidated\plan-dev-v55-planning-ecosystem-sync.md"
 if (Test-Path $planFile) {
     $lastModified = (Get-Item $planFile).LastWriteTime
@@ -407,6 +451,7 @@ if (Test-Path $planFile) {
 }
 
 # 4. Environnement Go fonctionnel
+
 $goVersion = go version 2>$null
 if ($goVersion) {
     Write-Host "✅ Go disponible: $goVersion" -ForegroundColor Green
@@ -415,20 +460,23 @@ if ($goVersion) {
 }
 
 Write-Host "`n🚀 PRÊT POUR L'IMPLÉMENTATION" -ForegroundColor Green
-```
-
+```plaintext
 ### **🔄 Pendant l'Implémentation**
+
 1. **🔄 Commits atomiques** - Une micro-tâche = un commit
 2. **🔄 Messages descriptifs** - Format standardisé avec référence
 3. **🔄 Tests continus** - Validation après chaque modification
 4. **🔄 Documentation inline** - Code auto-documenté + commentaires
 
 ### **✅ Fin de Section**
+
 ```powershell
 # Checklist automatisée de fin de section
+
 Write-Host "✅ VÉRIFICATION POST-IMPLÉMENTATION" -ForegroundColor Cyan
 
 # 1. Toutes tâches commitées
+
 $uncommittedFiles = git status --porcelain
 if (-not $uncommittedFiles) {
     Write-Host "✅ Toutes modifications commitées" -ForegroundColor Green
@@ -438,10 +486,12 @@ if (-not $uncommittedFiles) {
 }
 
 # 2. Push réussi
+
 $lastCommit = git log -1 --oneline
 Write-Host "📝 Dernier commit: $lastCommit" -ForegroundColor Cyan
 
 # 3. Tests section passent
+
 Write-Host "🧪 Exécution des tests..." -ForegroundColor Yellow
 go test ./... -short
 if ($LASTEXITCODE -eq 0) {
@@ -451,21 +501,23 @@ if ($LASTEXITCODE -eq 0) {
 }
 
 # 4. Plan mis à jour
+
 $planContent = Get-Content $planFile -Raw
 $completedTasks = ([regex]::Matches($planContent, "- \[x\]")).Count
 $totalTasks = ([regex]::Matches($planContent, "- \[[x ]\]")).Count
 $progress = [math]::Round(($completedTasks / $totalTasks) * 100, 0)
 
 Write-Host "📊 Progression globale: $completedTasks/$totalTasks ($progress%)" -ForegroundColor Cyan
-```
-
+```plaintext
 ---
 
 ## 🎯 **Application Pratique sur Plan-dev-v55**
 
 ### **Script Principal d'Exécution**
+
 ```powershell
 # implement-section.ps1
+
 param(
     [Parameter(Mandatory=$true)]
     [string]$Section,
@@ -485,29 +537,35 @@ Write-Host "🚀 IMPLÉMENTATION SECTION $Section - TÂCHE $TaskId" -ForegroundC
 Write-Host "📝 Description: $Description" -ForegroundColor White
 
 # Définir variables d'environnement
+
 $env:TASK_TYPE = "plan-dev-v55"
 $env:SECTION = $Section
 $env:TASK_ID = $TaskId
 $env:DESCRIPTION = $Description
 
 # 1. Vérifications pré-implémentation
+
 Write-Host "`n🔍 PHASE 1: Vérifications pré-implémentation" -ForegroundColor Yellow
 
 if ($ValidateUntracked) {
     # Exécuter script de gestion des fichiers non suivis
+
     & .\.github\prompts\planning\scripts\handle-untracked-files.ps1
 }
 
 # Vérifier/changer de branche
+
 & .\.github\prompts\planning\scripts\ensure-correct-branch.ps1 -TargetBranch $Branch
 
 # 2. Phase d'implémentation
+
 Write-Host "`n🛠️ PHASE 2: Implémentation" -ForegroundColor Yellow
 Write-Host "Veuillez implémenter la tâche $TaskId selon les spécifications du plan." -ForegroundColor White
 Write-Host "Appuyez sur Entrée quand l'implémentation est terminée..."
 Read-Host
 
 # 3. Post-implémentation
+
 Write-Host "`n✅ PHASE 3: Post-implémentation" -ForegroundColor Yellow
 
 if ($AutoCommit) {
@@ -519,11 +577,12 @@ if ($UpdateProgress) {
 }
 
 Write-Host "`n🎉 IMPLÉMENTATION TERMINÉE AVEC SUCCÈS!" -ForegroundColor Green
-```
-
+```plaintext
 ### **Utilisation Pratique**
+
 ```powershell
 # Exemple d'utilisation pour la micro-étape 4.1.1.2
+
 .\implement-section.ps1 `
   -Section "migration-assistant" `
   -TaskId "4.1.1.2" `
@@ -533,37 +592,41 @@ Write-Host "`n🎉 IMPLÉMENTATION TERMINÉE AVEC SUCCÈS!" -ForegroundColor Gre
   -UpdateProgress
 
 # Pour une section complète
+
 $tasks = @("4.1.1.1", "4.1.1.2", "4.1.1.3", "4.1.1.4")
 foreach ($task in $tasks) {
     .\implement-section.ps1 -Section "migration-assistant" -TaskId $task -ValidateUntracked -AutoCommit -UpdateProgress
     Write-Host "Tâche $task terminée - Continuez avec la suivante..." -ForegroundColor Green
     Read-Host
 }
-```
-
+```plaintext
 ---
 
 ## 📋 **Bénéfices de ce Workflow**
 
 ### **🔒 Traçabilité et Qualité**
+
 - **Historique complet** de chaque modification avec contexte
 - **Messages de commit standardisés** pour faciliter le suivi
 - **Branches thématiques** pour isoler les développements
 - **Validation automatique** à chaque étape
 
 ### **📊 Suivi et Reporting**
+
 - **Progression en temps réel** du plan de développement
 - **Métriques automatisées** (commits, tests, couverture)
 - **Dashboard** de l'état du projet
 - **Alertes** en cas de problème
 
 ### **🚀 Efficacité et Reproductibilité**
+
 - **Workflow automatisé** réduisant les erreurs manuelles
 - **Scripts réutilisables** pour toutes les sections
 - **Validation continue** évitant l'accumulation de dette technique
 - **Documentation maintenue** automatiquement
 
 ### **👥 Collaboration d'Équipe**
+
 - **Standards uniformes** pour tous les développeurs
 - **Code reviews** facilitées par les commits atomiques
 - **Intégration continue** avec validation automatique
@@ -571,4 +634,4 @@ foreach ($task in $tasks) {
 
 ---
 
-**Ce prompt garantit une implémentation méthodique, traçable et de haute qualité du plan-dev-v55 Planning Ecosystem Synchronization.**
+## Ce prompt garantit une implémentation méthodique, traçable et de haute qualité du plan-dev-v55 Planning Ecosystem Synchronization.

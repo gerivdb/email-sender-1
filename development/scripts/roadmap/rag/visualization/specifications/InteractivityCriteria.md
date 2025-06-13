@@ -1,4 +1,5 @@
 # Critères d'Interactivité pour les Visualisations
+
 *Version 1.0 - 2025-05-15*
 
 ## 1. Introduction
@@ -10,6 +11,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
 ### 2.1 Zoom et Navigation
 
 #### 2.1.1 Zoom
+
 - **Mécanismes**:
   - Molette de souris: Zoom avant/arrière centré sur le curseur
   - Pincement (tactile): Zoom avant/arrière centré sur le point de contact
@@ -27,6 +29,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
   - Minimap pour orientation
 
 #### 2.1.2 Pan (Déplacement)
+
 - **Mécanismes**:
   - Glisser-déposer: Déplacement direct de la vue
   - Barres de défilement: Déplacement contrôlé
@@ -39,6 +42,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
   - Mémorisation: Retour à la position précédente
 
 #### 2.1.3 Focus et Contexte
+
 - **Techniques**:
   - Vue fisheye: Distorsion pour focus local avec contexte
   - Vue bifocale: Séparation focus/contexte
@@ -53,6 +57,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
 ### 2.2 Filtrage et Sélection
 
 #### 2.2.1 Filtrage Dynamique
+
 - **Mécanismes**:
   - Contrôles dédiés: Sliders, checkboxes, dropdowns
   - Recherche textuelle: Filtrage par mots-clés
@@ -65,6 +70,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
   - Historique: Mémorisation des filtres récents
 
 #### 2.2.2 Sélection d'Éléments
+
 - **Mécanismes**:
   - Clic simple: Sélection unique
   - Ctrl+clic: Sélection multiple non contiguë
@@ -77,6 +83,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
   - Actions contextuelles: Menu d'actions sur sélection
 
 #### 2.2.3 Mise en Évidence
+
 - **Techniques**:
   - Changement de couleur: Contraste augmenté
   - Changement d'opacité: Éléments non sélectionnés estompés
@@ -91,6 +98,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
 ### 2.3 Détails au Survol et Interaction
 
 #### 2.3.1 Infobulles (Tooltips)
+
 - **Contenu**:
   - Informations de base: Titre, ID, statut
   - Métriques clés: Priorité, progression, dates
@@ -103,6 +111,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
   - Disparition: Délai après sortie ou immédiate
 
 #### 2.3.2 Interactions au Clic
+
 - **Actions primaires**:
   - Clic simple: Sélection/désélection
   - Double-clic: Zoom/focus sur l'élément
@@ -115,6 +124,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
   - Haptique: Vibration sur appareils compatibles
 
 #### 2.3.3 Drag-and-Drop
+
 - **Fonctionnalités**:
   - Réorganisation: Changement de position
   - Création de liens: Établissement de relations
@@ -129,6 +139,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
 ### 2.4 Expansion et Réduction
 
 #### 2.4.1 Contrôles d'Expansion
+
 - **Mécanismes**:
   - Icônes +/-: Contrôles explicites
   - Double-clic: Expansion/réduction implicite
@@ -141,6 +152,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
   - Mémorisation: Persistance de l'état entre sessions
 
 #### 2.4.2 Niveaux de Détail
+
 - **Progressivité**:
   - Niveau 1: Informations minimales (titre, statut)
   - Niveau 2: Informations standard (+ dates, priorité)
@@ -153,6 +165,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
   - Adaptative selon l'espace disponible
 
 #### 2.4.3 Agrégation et Désagrégation
+
 - **Mécanismes**:
   - Regroupement automatique: Par catégorie, statut, etc.
   - Regroupement manuel: Sélection puis groupe
@@ -167,6 +180,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
 ## 3. Niveaux d'Interactivité
 
 ### 3.1 Niveau 1: Interactivité Basique
+
 - **Fonctionnalités incluses**:
   - Survol pour afficher des détails (tooltips)
   - Clic pour sélection simple
@@ -184,6 +198,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
   - Compatible basse résolution
 
 ### 3.2 Niveau 2: Interactivité Intermédiaire
+
 - **Fonctionnalités incluses** (en plus du niveau 1):
   - Sélection multiple et filtrage avancé
   - Expansion/réduction des nœuds
@@ -202,6 +217,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
   - Résolution minimale 1024x768
 
 ### 3.3 Niveau 3: Interactivité Avancée
+
 - **Fonctionnalités incluses** (en plus du niveau 2):
   - Édition directe dans la visualisation
   - Drag-and-drop pour réorganiser
@@ -223,6 +239,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
 ## 4. Exigences Techniques
 
 ### 4.1 Dépendances Techniques
+
 - **Bibliothèques recommandées**:
   - D3.js: Visualisations complexes et personnalisées
   - Hammer.js: Gestion des interactions tactiles
@@ -235,6 +252,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
   - Support IE/anciens navigateurs: Non requis
 
 ### 4.2 Contraintes de Performance
+
 - **Temps de réponse**:
   - Interaction immédiate: < 100ms
   - Filtrage simple: < 300ms
@@ -252,6 +270,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
   - Rendu adaptatif selon performances détectées
 
 ### 4.3 Exigences de Compatibilité
+
 - **Appareils**:
   - Desktop: Support complet
   - Tablette: Support adapté (interactions tactiles)
@@ -271,6 +290,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
 ## 5. Implémentation et Tests
 
 ### 5.1 Stratégie d'Implémentation
+
 - **Approche progressive**:
   - Niveau 1: Implémentation prioritaire
   - Niveau 2: Ajout après validation du niveau 1
@@ -282,6 +302,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
   - Configuration déclarative
 
 ### 5.2 Tests d'Utilisabilité
+
 - **Métriques clés**:
   - Temps de complétion des tâches
   - Taux d'erreur
@@ -294,6 +315,7 @@ Ce document définit les critères d'interactivité pour les visualisations grap
   - Comparaison de différentes vues
 
 ### 5.3 Validation de Performance
+
 - **Benchmarks**:
   - Temps de rendu initial
   - FPS durant interactions

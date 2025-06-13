@@ -1,4 +1,5 @@
 # EMAIL SENDER 1 – Augment Guidelines
+
 *Version 2025-05-15 — à conserver dans `/docs/README_EMAIL_SENDER_1.md`*
 
 ---
@@ -6,6 +7,7 @@
 ## 1. Architecture du projet
 
 ### 1.1 Composants principaux
+
 - **n8n workflows** : Automatisation des processus d'envoi d'emails et gestion des réponses
 - **MCP (Model Context Protocol)** : Serveurs pour fournir du contexte aux modèles IA
 - **Scripts PowerShell/Python** : Utilitaires et intégrations
@@ -13,7 +15,8 @@
 - **OpenRouter/DeepSeek** : Services IA pour personnalisation des messages
 
 ### 1.2 Structure des dossiers
-```
+
+```plaintext
 /src/n8n/workflows/       → Workflows n8n actifs (*.json)
 /src/n8n/workflows/archive → Versions archivées
 /src/mcp/servers/         → Serveurs MCP (filesystem, github, gcp)
@@ -22,8 +25,7 @@
 /projet/config/           → Fichiers de configuration
 /development/scripts/     → Scripts d'automatisation et modes
 /docs/guides/augment/     → Guides spécifiques à Augment
-```
-
+```plaintext
 ---
 
 ## 2. Workflows n8n principaux
@@ -34,7 +36,8 @@
 - **Email Sender - Config** : Configuration centralisée (templates, calendriers)
 
 ### 2.1 Pattern de workflow recommandé
-```
+
+```plaintext
 +---------+      +----------------+      +-------+      +---------+      +----------------+
 |  CRON   | ---> | Read Contacts  | ---> |  IF   | ---> |  Send   | ---> | Update Status  |
 | (Sched) |      | (Notion/GCal)  |      | Filter|      | Email 1 |      | (e.g., Contacted)|
@@ -48,8 +51,7 @@
      |
      V
   (End or Loop)
-```
-
+```plaintext
 Ce pattern `Trigger -> Read -> Filter -> Act -> Update -> Wait -> Re-check -> Conditional Act -> Update` est fondamental pour les workflows d'automatisation d'emails.
 
 ---
@@ -73,19 +75,23 @@ Ce pattern `Trigger -> Read -> Filter -> Act -> Update -> Wait -> Re-check -> Co
 ## 4. Intégrations principales
 
 ### 4.1 Notion
+
 - Base de données LOT1 (contacts programmateurs)
 - Suivi des disponibilités des membres
 - Gestion des lieux et salles de concert
 
 ### 4.2 Google Calendar
+
 - Calendrier BOOKING1 pour la gestion des disponibilités
 - Synchronisation avec Notion
 
 ### 4.3 Gmail
+
 - Templates d'emails personnalisés
 - Suivi des réponses automatisé
 
 ### 4.4 OpenRouter/DeepSeek
+
 - Personnalisation des messages par IA
 - Analyse des réponses
 
@@ -94,17 +100,21 @@ Ce pattern `Trigger -> Read -> Filter -> Act -> Update -> Wait -> Re-check -> Co
 ## 5. Axes de développement prioritaires
 
 ### 5.1 Automatisation complète du workflow de booking
+
 - Prospection initiale → Suivi → Confirmation → Post-concert
 
 ### 5.2 Intégration MCP avancée
+
 - Serveurs contextuels pour améliorer les réponses IA
 - Intégration avec GitHub Actions
 
 ### 5.3 Optimisation des performances
+
 - Parallélisation des traitements
 - Mise en cache prédictive
 
 ### 5.4 Amélioration de l'UX
+
 - Interface de configuration simplifiée
 - Tableaux de bord de suivi
 
@@ -125,6 +135,7 @@ Ce pattern `Trigger -> Read -> Filter -> Act -> Update -> Wait -> Re-check -> Co
 ## 7. Méthodologie de développement
 
 ### 7.1 Cycle par tâche avec Framework Golang
+
 1. **Analyze** : Décomposition et estimation avec métriques automatisées
 2. **Learn** : Recherche de patterns existants dans templates Go
 3. **Explore** : Prototypage avec code generation (ToT)
@@ -135,6 +146,7 @@ Ce pattern `Trigger -> Read -> Filter -> Act -> Update -> Wait -> Re-check -> Co
 8. **Segment** : Division des tâches complexes avec codegen
 
 ### 7.2 Gestion des inputs volumineux
+
 - Segmentation automatique si > 5KB avec streaming Go
 - Compression haute performance (suppression commentaires/espaces)
 - Implémentation incrémentale fonction par fonction avec génération de templates
@@ -144,18 +156,22 @@ Ce pattern `Trigger -> Read -> Filter -> Act -> Update -> Wait -> Re-check -> Co
 ## 8. Intégration avec Augment
 
 ### 8.1 Module PowerShell
+
 ```powershell
 # Importer le module
+
 Import-Module AugmentIntegration
 
 # Initialiser l'intégration
+
 Initialize-AugmentIntegration -StartServers
 
 # Exécuter un mode spécifique
-Invoke-AugmentMode -Mode GRAN -FilePath "docs/plans/plan.md" -TaskIdentifier "1.2.3" -UpdateMemories
-```
 
+Invoke-AugmentMode -Mode GRAN -FilePath "docs/plans/plan.md" -TaskIdentifier "1.2.3" -UpdateMemories
+```plaintext
 ### 8.2 Gestion des Memories
+
 - Mise à jour après chaque changement de mode
 - Optimisation pour réduire la taille des contextes
 - Segmentation intelligente des inputs volumineux
@@ -165,6 +181,7 @@ Invoke-AugmentMode -Mode GRAN -FilePath "docs/plans/plan.md" -TaskIdentifier "1.
 ## 9. RAG System & Framework d'automatisation
 
 ### 9.1 Framework 7 Time-Saving Methods
+
 Le projet utilise un framework d'automatisation Golang haute performance implémentant 7 méthodes pour maximiser l'efficacité:
 
 1. **Fail-Fast Validation** (+72h immediate, +24h/month)
@@ -196,18 +213,22 @@ Le projet utilise un framework d'automatisation Golang haute performance implém
    - Infrastructure reproductible
 
 ### 9.2 Codegen CLI
+
 ```bash
 # Générer un service RAG complet
+
 ./cmd/codegen/codegen -type service -output ./generated/rag-service/
 
 # Générer une CLI avec commandes
+
 ./cmd/codegen/codegen -type cli -output ./generated/cli/
 
 # Générer des composants spécifiques
-./cmd/codegen/codegen -type component -spec embedding -output ./generated/
-```
 
+./cmd/codegen/codegen -type component -spec embedding -output ./generated/
+```plaintext
 ### 9.3 ROI du Framework
+
 - **Économies immédiates** : 218h (soit $18,530 en valeur)
 - **Économies annuelles** : 1,392h (soit $118,320 en valeur)
 - **Performance** : 10-1000x plus rapide que PowerShell/Python
@@ -220,18 +241,21 @@ Le projet utilise un framework d'automatisation Golang haute performance implém
 ### 9.1 Multi-Instance vs. Multi-Tenant
 
 #### Multi-Instance
+
 - Chaque client a sa propre instance isolée
 - **Avantages** : Sécurité accrue, simplicité, mises à jour indépendantes
 - **Inconvénients** : Coûts plus élevés, onboarding plus complexe
 - **Recommandé si** : Données sensibles, configurations très différentes par client
 
 #### Multi-Tenant
+
 - Base de données partagée avec séparation logique des données
 - **Avantages** : Moins cher à scaler, déploiement unique
 - **Inconvénients** : Plus complexe, webhooks n8n doivent être génériques
 - **Recommandé si** : Plateforme SaaS, nombreux clients avec configurations similaires
 
 ### 9.2 Sécurisation des secrets
+
 - Stockage sécurisé des clés API et webhooks
 - Utilisation d'une couche intermédiaire pour masquer les webhooks n8n
 - Configuration centralisée dans Email Sender - Config

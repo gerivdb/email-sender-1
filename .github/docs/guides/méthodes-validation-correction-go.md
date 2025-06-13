@@ -5,11 +5,17 @@ Ce rapport détaille les outils et commandes indispensables pour valider et corr
 ---
 
 # Pour garantir l'application continue de ces méthodes :
+
 #
+
 # 1. Ce guide est référencé dans le README du projet.
+
 # 2. Un workflow GitHub Actions (voir .github/workflows/go-quality.yml) applique ces méthodes à chaque push/PR.
+
 # 3. Le Makefile et la configuration VS Code sont alignés sur ces standards.
+
 #
+
 # Toute contribution doit respecter ce guide et passer les vérifications automatiques.
 
 ---
@@ -44,6 +50,7 @@ Ce rapport détaille les outils et commandes indispensables pour valider et corr
   ```sh
   golangci-lint run
   golangci-lint run --fix  # Correction automatique
+
   ```
 * **Utilité** : Linting complet + auto-corrections.
 * **Intégration** :
@@ -99,7 +106,9 @@ Ce rapport détaille les outils et commandes indispensables pour valider et corr
 
   ```sh
   go mod tidy      # Nettoie
+
   go mod verify    # Vérifie l’intégrité
+
   ```
 * **Utilité** : Corrige les erreurs liées aux dépendances.
 
@@ -185,8 +194,7 @@ check:
     go vet ./...
     golangci-lint run
     go build -o /dev/null
-```
-
+```plaintext
 ---
 
 ## ⚙️ Configuration VS Code pour GitHub Copilot
@@ -205,8 +213,7 @@ check:
     }
   }
 }
-```
-
+```plaintext
 ---
 
 ## 🧠 Notes pour GitHub Copilot

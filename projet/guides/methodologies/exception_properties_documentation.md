@@ -37,25 +37,32 @@ La structure du message d'erreur varie selon le type d'exception, mais suit gén
 
 ```powershell
 # Exemple 1: Accéder à la propriété Message d'une exception
+
 try {
     $null.ToString()
 } catch {
     Write-Host "Message d'erreur: $($_.Exception.Message)"
     # Affiche: "Message d'erreur: Object reference not set to an instance of an object."
+
 }
 
 # Exemple 2: Créer une exception personnalisée avec un message spécifique
+
 try {
     throw [System.ArgumentException]::new("La valeur fournie n'est pas valide.", "monParametre")
 } catch {
     Write-Host "Type d'exception: $($_.Exception.GetType().FullName)"
     Write-Host "Message d'erreur: $($_.Exception.Message)"
     # Affiche:
+
     # Type d'exception: System.ArgumentException
+
     # Message d'erreur: La valeur fournie n'est pas valide.
+
 }
 
 # Exemple 3: Accéder au message d'une exception interne
+
 try {
     try {
         [int]::Parse("abc")
@@ -66,11 +73,13 @@ try {
     Write-Host "Message d'erreur principal: $($_.Exception.Message)"
     Write-Host "Message d'erreur interne: $($_.Exception.InnerException.Message)"
     # Affiche:
-    # Message d'erreur principal: Opération échouée
-    # Message d'erreur interne: Input string was not in a correct format.
-}
-```
 
+    # Message d'erreur principal: Opération échouée
+
+    # Message d'erreur interne: Input string was not in a correct format.
+
+}
+```plaintext
 ### Bonnes pratiques
 
 1. **Messages descriptifs** : Créez des messages d'erreur descriptifs qui expliquent clairement ce qui s'est passé.
@@ -100,20 +109,23 @@ Dans PowerShell, la propriété `Message` est accessible via l'objet `ErrorRecor
 ```powershell
 try {
     # Code qui génère une exception
+
 } catch {
     # Accès direct au message via l'objet ErrorRecord
+
     $errorMessage = $_.Exception.Message
 
     # Ou via la propriété TargetObject si disponible
+
     if ($_.TargetObject -ne $null) {
         $contextInfo = $_.TargetObject.ToString()
     }
 
     # Utilisation du message pour la journalisation ou l'affichage
+
     Write-Error "Une erreur s'est produite: $errorMessage"
 }
-```
-
+```plaintext
 ### Intégration avec la taxonomie des exceptions
 
 Dans notre taxonomie des exceptions PowerShell, la propriété `Message` est utilisée pour :
@@ -148,10 +160,9 @@ La propriété `StackTrace` est une propriété importante de la classe `System.
 
 Le format typique d'une entrée dans la pile d'appels est le suivant :
 
-```
+```plaintext
    à NomEspace.NomClasse.NomMéthode(Type param1, Type param2) dans C:\Chemin\Vers\Fichier.cs:ligne 123
-```
-
+```plaintext
 Chaque ligne de la pile d'appels contient généralement :
 
 1. **Espace de noms et classe** : Le nom complet de la classe, y compris l'espace de noms.
@@ -164,26 +175,34 @@ Chaque ligne de la pile d'appels contient généralement :
 
 ```powershell
 # Exemple 1: Accéder à la propriété StackTrace d'une exception
+
 function Test-StackTrace {
     try {
         # Générer une exception
+
         [int]::Parse("abc")
     }
     catch {
         # Afficher la pile d'appels
+
         Write-Host "Pile d'appels:"
         Write-Host $_.Exception.StackTrace
 
         # Exemple de sortie:
+
         #   à System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+
         #   à System.Int32.Parse(String s)
+
         #   à <ScriptBlock>, <Aucun fichier>: ligne 4
+
     }
 }
 
 Test-StackTrace
 
 # Exemple 2: Comparer la pile d'appels avec et sans relance d'exception
+
 function Test-NestedStackTrace {
     try {
         Test-InnerFunction
@@ -200,18 +219,22 @@ function Test-InnerFunction {
     }
     catch {
         # Cas 1: Relancer l'exception d'origine (préserve la pile d'appels d'origine)
+
         Write-Host "Pile d'appels interne (avant relance):"
         Write-Host $_.Exception.StackTrace
         throw
 
         # Cas 2: Créer et lancer une nouvelle exception (crée une nouvelle pile d'appels)
+
         # throw [System.InvalidOperationException]::new("Opération échouée", $_.Exception)
+
     }
 }
 
 Test-NestedStackTrace
 
 # Exemple 3: Accéder à la pile d'appels complète avec Get-PSCallStack
+
 function Test-PSCallStack {
     try {
         [int]::Parse("abc")
@@ -226,8 +249,7 @@ function Test-PSCallStack {
 }
 
 Test-PSCallStack
-```
-
+```plaintext
 ### Différences entre StackTrace et Get-PSCallStack
 
 Dans PowerShell, il existe deux façons principales d'obtenir des informations sur la pile d'appels :
@@ -275,19 +297,22 @@ Dans PowerShell, la propriété `StackTrace` est accessible via l'objet `ErrorRe
 ```powershell
 try {
     # Code qui génère une exception
+
 } catch {
     # Accès à la pile d'appels via l'objet ErrorRecord
+
     $stackTrace = $_.Exception.StackTrace
 
     # Journalisation de la pile d'appels
+
     Write-Log -Level Error -Message "Une erreur s'est produite" -StackTrace $stackTrace
 
     # Obtention de la pile d'appels PowerShell complète
+
     $psCallStack = Get-PSCallStack | Format-Table -Property Command, Location -AutoSize | Out-String
     Write-Log -Level Error -Message "Pile d'appels PowerShell: $psCallStack"
 }
-```
-
+```plaintext
 ### Intégration avec la taxonomie des exceptions
 
 Dans notre taxonomie des exceptions PowerShell, la propriété `StackTrace` est utilisée pour :
@@ -334,14 +359,17 @@ La méthode `GetBaseException()` permet d'accéder directement à l'exception ra
 
 ```powershell
 # Exemple 1: Créer une exception avec une exception interne
+
 function Test-InnerException {
     try {
         try {
             # Générer une exception
+
             [int]::Parse("abc")
         }
         catch {
             # Capturer l'exception et la wrapper dans une nouvelle exception
+
             throw [System.InvalidOperationException]::new(
                 "Impossible de traiter la demande",
                 $_.Exception
@@ -350,6 +378,7 @@ function Test-InnerException {
     }
     catch {
         # Accéder à l'exception interne
+
         $primaryException = $_.Exception
         $innerException = $_.Exception.InnerException
 
@@ -359,26 +388,34 @@ function Test-InnerException {
         Write-Host "Message interne: $($innerException.Message)"
 
         # Sortie attendue:
+
         # Exception primaire: System.InvalidOperationException
+
         # Message primaire: Impossible de traiter la demande
+
         # Exception interne: System.FormatException
+
         # Message interne: Input string was not in a correct format.
+
     }
 }
 
 Test-InnerException
 
 # Exemple 2: Accéder à l'exception racine dans une hiérarchie profonde
+
 function Test-DeepExceptionHierarchy {
     try {
         try {
             try {
                 try {
                     # Exception de niveau 4 (la plus profonde)
+
                     [int]::Parse("abc")
                 }
                 catch {
                     # Exception de niveau 3
+
                     throw [System.IO.IOException]::new(
                         "Erreur de lecture des données",
                         $_.Exception
@@ -387,6 +424,7 @@ function Test-DeepExceptionHierarchy {
             }
             catch {
                 # Exception de niveau 2
+
                 throw [System.Security.SecurityException]::new(
                     "Accès non autorisé aux données",
                     $_.Exception
@@ -395,6 +433,7 @@ function Test-DeepExceptionHierarchy {
         }
         catch {
             # Exception de niveau 1 (la plus externe)
+
             throw [System.InvalidOperationException]::new(
                 "Opération impossible à compléter",
                 $_.Exception
@@ -403,6 +442,7 @@ function Test-DeepExceptionHierarchy {
     }
     catch {
         # Accéder à toute la hiérarchie d'exceptions
+
         $currentException = $_.Exception
         $level = 1
 
@@ -415,28 +455,40 @@ function Test-DeepExceptionHierarchy {
         }
 
         # Accéder directement à l'exception racine
+
         $rootException = $_.Exception.GetBaseException()
         Write-Host "`nException racine: $($rootException.GetType().FullName)"
         Write-Host "Message racine: $($rootException.Message)"
 
         # Sortie attendue:
+
         # Hiérarchie complète des exceptions:
+
         # Niveau 1 : System.InvalidOperationException - Opération impossible à compléter
+
         # Niveau 2 : System.Security.SecurityException - Accès non autorisé aux données
+
         # Niveau 3 : System.IO.IOException - Erreur de lecture des données
+
         # Niveau 4 : System.FormatException - Input string was not in a correct format.
+
         #
+
         # Exception racine: System.FormatException
+
         # Message racine: Input string was not in a correct format.
+
     }
 }
 
 Test-DeepExceptionHierarchy
 
 # Exemple 3: Utiliser AggregateException pour regrouper plusieurs exceptions
+
 function Test-AggregateException {
     try {
         # Créer une liste d'exceptions
+
         $exceptions = @(
             [System.ArgumentException]::new("Argument invalide"),
             [System.IO.FileNotFoundException]::new("Fichier introuvable"),
@@ -444,6 +496,7 @@ function Test-AggregateException {
         )
 
         # Regrouper les exceptions dans une AggregateException
+
         throw [System.AggregateException]::new(
             "Plusieurs erreurs se sont produites",
             $exceptions
@@ -451,6 +504,7 @@ function Test-AggregateException {
     }
     catch [System.AggregateException] {
         # Accéder aux exceptions internes via la propriété InnerExceptions (pluriel)
+
         $aggregateException = $_.Exception
 
         Write-Host "Exception agrégée: $($aggregateException.GetType().FullName)"
@@ -464,20 +518,28 @@ function Test-AggregateException {
         }
 
         # Sortie attendue:
+
         # Exception agrégée: System.AggregateException
+
         # Message: Plusieurs erreurs se sont produites
+
         # Nombre d'exceptions internes: 3
+
         #
+
         # Détail des exceptions internes:
+
         # [0] System.ArgumentException: Argument invalide
+
         # [1] System.IO.FileNotFoundException: Fichier introuvable
+
         # [2] System.DivideByZeroException: Division par zéro
+
     }
 }
 
 Test-AggregateException
-```
-
+```plaintext
 ### Différence entre InnerException et AggregateException
 
 Il est important de comprendre la différence entre la propriété `InnerException` standard et la classe `AggregateException` :
@@ -521,21 +583,26 @@ Dans PowerShell, la propriété `InnerException` est accessible via l'objet `Err
 ```powershell
 try {
     # Code qui peut générer une exception
+
 } catch {
     # Accès à l'exception primaire
+
     $primaryException = $_.Exception
 
     # Accès à l'exception interne (si elle existe)
+
     if ($primaryException.InnerException -ne $null) {
         $innerException = $primaryException.InnerException
         Write-Error "Exception interne: $($innerException.GetType().FullName) - $($innerException.Message)"
     }
 
     # Accès direct à l'exception racine
+
     $rootException = $primaryException.GetBaseException()
     Write-Error "Cause racine: $($rootException.GetType().FullName) - $($rootException.Message)"
 
     # Parcourir toute la hiérarchie d'exceptions
+
     $currentException = $primaryException
     $exceptionChain = @()
 
@@ -546,8 +613,7 @@ try {
 
     Write-Error "Chaîne d'exceptions: $($exceptionChain -join ' -> ')"
 }
-```
-
+```plaintext
 ### Intégration avec la taxonomie des exceptions
 
 Dans notre taxonomie des exceptions PowerShell, la propriété `InnerException` est utilisée pour :
@@ -596,26 +662,33 @@ La valeur de la propriété `Source` varie selon le contexte dans lequel l'excep
 
 ```powershell
 # Exemple 1: Accéder à la propriété Source d'une exception
+
 function Test-ExceptionSource {
     try {
         # Générer une exception
+
         [int]::Parse("abc")
     }
     catch {
         # Afficher la source de l'exception
+
         Write-Host "Source de l'exception: $($_.Exception.Source)"
 
         # Sortie typique:
+
         # Source de l'exception: System.Int32
+
     }
 }
 
 Test-ExceptionSource
 
 # Exemple 2: Définir manuellement la propriété Source
+
 function Test-CustomSource {
     try {
         # Créer une exception avec une source personnalisée
+
         $exception = [System.InvalidOperationException]::new("Opération non valide")
         $exception.Source = "MonModule.MaFonction"
         throw $exception
@@ -626,20 +699,27 @@ function Test-CustomSource {
         Write-Host "Source: $($_.Exception.Source)"
 
         # Sortie attendue:
+
         # Type d'exception: System.InvalidOperationException
+
         # Message: Opération non valide
+
         # Source: MonModule.MaFonction
+
     }
 }
 
 Test-CustomSource
 
 # Exemple 3: Comparer les sources d'exceptions dans différents contextes
+
 function Test-MultipleExceptionSources {
     try {
         # Tenter plusieurs opérations qui peuvent générer des exceptions
+
         try {
             # Exception du CLR
+
             [int]::Parse("abc")
         }
         catch {
@@ -647,6 +727,7 @@ function Test-MultipleExceptionSources {
 
             try {
                 # Exception PowerShell
+
                 Get-Item "fichier_inexistant.txt" -ErrorAction Stop
             }
             catch {
@@ -654,6 +735,7 @@ function Test-MultipleExceptionSources {
 
                 try {
                     # Exception personnalisée
+
                     $customEx = [System.ArgumentException]::new("Argument invalide")
                     $customEx.Source = "Script.Personnalisé"
                     throw $customEx
@@ -669,14 +751,17 @@ function Test-MultipleExceptionSources {
     }
 
     # Sortie typique:
+
     # Exception CLR - Source: System.Int32
+
     # Exception PowerShell - Source: Microsoft.PowerShell.Commands.GetItemCommand
+
     # Exception personnalisée - Source: Script.Personnalisé
+
 }
 
 Test-MultipleExceptionSources
-```
-
+```plaintext
 ### Différence entre Source et autres propriétés d'identification
 
 Il est important de comprendre comment la propriété `Source` se distingue des autres propriétés qui peuvent sembler similaires :
@@ -720,36 +805,41 @@ Dans PowerShell, la propriété `Source` est accessible via l'objet `ErrorRecord
 ```powershell
 try {
     # Code qui peut générer une exception
+
 } catch {
     # Accès à la source de l'exception
+
     $source = $_.Exception.Source
 
     # Journalisation avec la source
+
     Write-Log -Level Error -Message "Une erreur s'est produite" -Source $source
 
     # Définition d'une source personnalisée pour une nouvelle exception
+
     $newException = [System.Exception]::new("Erreur propagée", $_.Exception)
     $newException.Source = "MonScript.GestionErreurs"
     throw $newException
 }
-```
-
+```plaintext
 PowerShell fournit également des informations supplémentaires sur la source de l'erreur via d'autres propriétés de l'objet `ErrorRecord` :
 
 ```powershell
 try {
     # Code qui peut générer une exception
+
 } catch {
     # Source de l'exception
+
     Write-Host "Exception.Source: $($_.Exception.Source)"
 
     # Informations supplémentaires spécifiques à PowerShell
+
     Write-Host "ErrorRecord.CategoryInfo.Category: $($_.CategoryInfo.Category)"
     Write-Host "ErrorRecord.InvocationInfo.MyCommand: $($_.InvocationInfo.MyCommand)"
     Write-Host "ErrorRecord.FullyQualifiedErrorId: $($_.FullyQualifiedErrorId)"
 }
-```
-
+```plaintext
 ### Intégration avec la taxonomie des exceptions
 
 Dans notre taxonomie des exceptions PowerShell, la propriété `Source` est utilisée pour :
@@ -817,31 +907,40 @@ Voici quelques valeurs HResult communes pour les exceptions .NET :
 
 ```powershell
 # Exemple 1: Accéder à la propriété HResult d'une exception
+
 function Test-ExceptionHResult {
     try {
         # Générer une exception
+
         [int]::Parse("abc")
     }
     catch {
         # Afficher le HResult en décimal et hexadécimal
+
         $hresult = $_.Exception.HResult
         Write-Host "HResult (décimal): $hresult"
         Write-Host "HResult (hexadécimal): 0x$($hresult.ToString('X8'))"
 
         # Sortie typique:
+
         # HResult (décimal): -2146233033
+
         # HResult (hexadécimal): 0x80131537
+
     }
 }
 
 Test-ExceptionHResult
 
 # Exemple 2: Définir manuellement la propriété HResult
+
 function Test-CustomHResult {
     try {
         # Créer une exception avec un HResult personnalisé
+
         $exception = [System.InvalidOperationException]::new("Opération non valide")
         $exception.HResult = 0x80004005  # E_FAIL (erreur non spécifiée)
+
         throw $exception
     }
     catch {
@@ -851,16 +950,22 @@ function Test-CustomHResult {
         Write-Host "HResult (hexadécimal): 0x$($_.Exception.HResult.ToString('X8'))"
 
         # Sortie attendue:
+
         # Type d'exception: System.InvalidOperationException
+
         # Message: Opération non valide
+
         # HResult (décimal): -2147467259
+
         # HResult (hexadécimal): 0x80004005
+
     }
 }
 
 Test-CustomHResult
 
 # Exemple 3: Identifier le type d'exception à partir du HResult
+
 function Get-ExceptionTypeFromHResult {
     param (
         [int]$HResult
@@ -886,16 +991,20 @@ function Get-ExceptionTypeFromHResult {
 }
 
 # Tester la fonction avec différents HResult
+
 Write-Host "HResult -2147024894 correspond à: $(Get-ExceptionTypeFromHResult -HResult -2147024894)"
 Write-Host "HResult -2146233087 correspond à: $(Get-ExceptionTypeFromHResult -HResult -2146233087)"
 Write-Host "HResult -2146232800 correspond à: $(Get-ExceptionTypeFromHResult -HResult -2146232800)"
 
 # Sortie attendue:
-# HResult -2147024894 correspond à: System.IO.FileNotFoundException
-# HResult -2146233087 correspond à: System.ArgumentNullException
-# HResult -2146232800 correspond à: System.FormatException
-```
 
+# HResult -2147024894 correspond à: System.IO.FileNotFoundException
+
+# HResult -2146233087 correspond à: System.ArgumentNullException
+
+# HResult -2146232800 correspond à: System.FormatException
+
+```plaintext
 ### Décomposition d'un HResult
 
 Pour mieux comprendre un code HResult, on peut le décomposer en ses composantes :
@@ -907,9 +1016,11 @@ function Get-HResultComponents {
     )
 
     # Convertir en entier non signé pour faciliter les opérations bit à bit
+
     $uHResult = [uint32]$HResult
 
     # Extraire les composantes
+
     $severity = ($uHResult -shr 31) -band 1
     $reserved = ($uHResult -shr 30) -band 1
     $customerCode = ($uHResult -shr 29) -band 1
@@ -917,12 +1028,15 @@ function Get-HResultComponents {
     $errorCode = $uHResult -band 0xFFFF
 
     # Interpréter la sévérité
+
     $severityText = if ($severity -eq 1) { "Échec" } else { "Succès" }
 
     # Interpréter le type de code
+
     $codeTypeText = if ($customerCode -eq 1) { "Client" } else { "Microsoft" }
 
     # Interpréter la facilité (composant)
+
     $facilityText = switch ($facility) {
         0 { "FACILITY_NULL" }
         1 { "FACILITY_RPC" }
@@ -977,10 +1091,12 @@ function Get-HResultComponents {
         80 { "FACILITY_WINDOWS_DEFENDER" }
         81 { "FACILITY_OPC" }
         0x7FF { "FACILITY_CLR" }  # Spécifique à .NET
+
         default { "FACILITY_UNKNOWN ($facility)" }
     }
 
     # Créer et retourner un objet avec les composantes
+
     return [PSCustomObject]@{
         HResult = $HResult
         HResultHex = "0x$($HResult.ToString('X8'))"
@@ -995,7 +1111,9 @@ function Get-HResultComponents {
 }
 
 # Tester la fonction avec différents HResult
+
 $hresult1 = -2147024894  # 0x80070002 - FileNotFoundException
+
 $hresult2 = -2146233087  # 0x80131501 - ArgumentNullException
 
 Write-Host "Décomposition de HResult $hresult1 (0x$($hresult1.ToString('X8'))):"
@@ -1005,30 +1123,52 @@ Write-Host "`nDécomposition de HResult $hresult2 (0x$($hresult2.ToString('X8'))
 Get-HResultComponents -HResult $hresult2 | Format-List
 
 # Sortie attendue pour $hresult1:
-# Décomposition de HResult -2147024894 (0x80070002):
-# HResult     : -2147024894
-# HResultHex  : 0x80070002
-# Severity    : Échec
-# Reserved    : 0
-# CodeType    : Microsoft
-# Facility    : FACILITY_WIN32
-# FacilityCode: 7
-# ErrorCode   : 2
-# ErrorCodeHex: 0x0002
-#
-# Sortie attendue pour $hresult2:
-# Décomposition de HResult -2146233087 (0x80131501):
-# HResult     : -2146233087
-# HResultHex  : 0x80131501
-# Severity    : Échec
-# Reserved    : 0
-# CodeType    : Microsoft
-# Facility    : FACILITY_CLR
-# FacilityCode: 2047
-# ErrorCode   : 5377
-# ErrorCodeHex: 0x1501
-```
 
+# Décomposition de HResult -2147024894 (0x80070002):
+
+# HResult     : -2147024894
+
+# HResultHex  : 0x80070002
+
+# Severity    : Échec
+
+# Reserved    : 0
+
+# CodeType    : Microsoft
+
+# Facility    : FACILITY_WIN32
+
+# FacilityCode: 7
+
+# ErrorCode   : 2
+
+# ErrorCodeHex: 0x0002
+
+#
+
+# Sortie attendue pour $hresult2:
+
+# Décomposition de HResult -2146233087 (0x80131501):
+
+# HResult     : -2146233087
+
+# HResultHex  : 0x80131501
+
+# Severity    : Échec
+
+# Reserved    : 0
+
+# CodeType    : Microsoft
+
+# Facility    : FACILITY_CLR
+
+# FacilityCode: 2047
+
+# ErrorCode   : 5377
+
+# ErrorCodeHex: 0x1501
+
+```plaintext
 ### Bonnes pratiques
 
 1. **Préservation des valeurs standard** : Utilisez les valeurs HResult standard pour les exceptions standard afin de maintenir la compatibilité.
@@ -1060,24 +1200,31 @@ Dans PowerShell, la propriété `HResult` est accessible via l'objet `ErrorRecor
 ```powershell
 try {
     # Code qui peut générer une exception
+
 } catch {
     # Accès au HResult de l'exception
+
     $hresult = $_.Exception.HResult
 
     # Affichage en format hexadécimal
+
     $hresultHex = "0x$($hresult.ToString('X8'))"
 
     Write-Host "Une erreur s'est produite avec le code HResult: $hresult ($hresultHex)"
 
     # Utilisation du HResult pour un traitement spécifique
+
     switch ($hresult) {
         -2147024894 { # 0x80070002 - FileNotFoundException
+
             Write-Host "Fichier non trouvé. Vérifiez le chemin d'accès."
         }
         -2147024891 { # 0x80070005 - UnauthorizedAccessException
+
             Write-Host "Accès refusé. Vérifiez les permissions."
         }
         -2146233087 { # 0x80131501 - ArgumentNullException
+
             Write-Host "Un argument requis est null."
         }
         default {
@@ -1085,8 +1232,7 @@ try {
         }
     }
 }
-```
-
+```plaintext
 ### Intégration avec la taxonomie des exceptions
 
 Dans notre taxonomie des exceptions PowerShell, la propriété `HResult` est utilisée pour :
@@ -1131,7 +1277,7 @@ Ces méthodes sont essentielles pour obtenir des informations détaillées sur l
 
 Le format typique de la sortie de `ToString()` est le suivant :
 
-```
+```plaintext
 ExceptionType: ExceptionMessage
    at Method1(parameters) in File1:line xx
    at Method2(parameters) in File2:line yy
@@ -1141,8 +1287,7 @@ ExceptionType: ExceptionMessage
    at InnerMethod1(parameters) in InnerFile1:line aa
    at InnerMethod2(parameters) in InnerFile2:line bb
    ...
-```
-
+```plaintext
 ### Méthode GetBaseException()
 
 #### Caractéristiques principales
@@ -1167,42 +1312,55 @@ ExceptionType: ExceptionMessage
 
 ```powershell
 # Exemple 1: Utilisation de ToString() pour obtenir des informations complètes sur une exception
+
 function Test-ExceptionToString {
     try {
         # Générer une exception
+
         [int]::Parse("abc")
     }
     catch {
         # Utiliser ToString() pour obtenir une représentation complète de l'exception
+
         $exceptionString = $_.Exception.ToString()
 
         Write-Host "Représentation complète de l'exception:"
         Write-Host $exceptionString
 
         # Sortie typique:
+
         # Représentation complète de l'exception:
+
         # System.FormatException: Input string was not in a correct format.
+
         #    at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+
         #    at System.Int32.Parse(String s)
+
         #    at <ScriptBlock>, <Aucun fichier>: ligne 4
+
     }
 }
 
 Test-ExceptionToString
 
 # Exemple 2: Comparaison entre ToString() et les propriétés individuelles
+
 function Compare-ExceptionProperties {
     try {
         # Générer une exception
+
         [int]::Parse("abc")
     }
     catch {
         # Accéder aux propriétés individuelles
+
         $type = $_.Exception.GetType().FullName
         $message = $_.Exception.Message
         $stackTrace = $_.Exception.StackTrace
 
         # Utiliser ToString() pour obtenir une représentation complète
+
         $toString = $_.Exception.ToString()
 
         Write-Host "Type: $type"
@@ -1212,47 +1370,65 @@ function Compare-ExceptionProperties {
         Write-Host $toString
 
         # Sortie typique:
+
         # Type: System.FormatException
+
         # Message: Input string was not in a correct format.
+
         # StackTrace:    at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+
         #    at System.Int32.Parse(String s)
+
         #    at <ScriptBlock>, <Aucun fichier>: ligne 4
+
         #
+
         # ToString():
+
         # System.FormatException: Input string was not in a correct format.
+
         #    at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+
         #    at System.Int32.Parse(String s)
+
         #    at <ScriptBlock>, <Aucun fichier>: ligne 4
+
     }
 }
 
 Compare-ExceptionProperties
 
 # Exemple 3: Utilisation de GetBaseException() pour accéder à l'exception racine
+
 function Test-GetBaseException {
     try {
         try {
             try {
                 # Exception de niveau 3 (la plus profonde)
+
                 [int]::Parse("abc")
             }
             catch {
                 # Exception de niveau 2
+
                 throw [System.IO.IOException]::new("Erreur de lecture des données", $_.Exception)
             }
         }
         catch {
             # Exception de niveau 1 (la plus externe)
+
             throw [System.InvalidOperationException]::new("Opération impossible à compléter", $_.Exception)
         }
     }
     catch {
         # Accéder à l'exception la plus externe
+
         $topException = $_.Exception
         Write-Host "Exception la plus externe: $($topException.GetType().FullName)"
         Write-Host "Message: $($topException.Message)"
 
         # Parcourir manuellement la chaîne d'exceptions
+
         Write-Host "`nParcours manuel de la chaîne d'exceptions:"
         $current = $topException
         $level = 1
@@ -1264,59 +1440,82 @@ function Test-GetBaseException {
         }
 
         # Utiliser GetBaseException() pour accéder directement à l'exception racine
+
         $baseException = $topException.GetBaseException()
         Write-Host "`nException racine via GetBaseException(): $($baseException.GetType().FullName)"
         Write-Host "Message: $($baseException.Message)"
 
         # Sortie typique:
+
         # Exception la plus externe: System.InvalidOperationException
+
         # Message: Opération impossible à compléter
+
         #
+
         # Parcours manuel de la chaîne d'exceptions:
+
         # Niveau 1 : System.InvalidOperationException - Opération impossible à compléter
+
         # Niveau 2 : System.IO.IOException - Erreur de lecture des données
+
         # Niveau 3 : System.FormatException - Input string was not in a correct format.
+
         #
+
         # Exception racine via GetBaseException(): System.FormatException
+
         # Message: Input string was not in a correct format.
+
     }
 }
 
 Test-GetBaseException
 
 # Exemple 4: Utilisation de ToString() avec des exceptions imbriquées
+
 function Test-ToStringWithNestedExceptions {
     try {
         try {
             # Exception interne
+
             [int]::Parse("abc")
         }
         catch {
             # Exception externe avec exception interne
+
             throw [System.InvalidOperationException]::new("Opération échouée", $_.Exception)
         }
     }
     catch {
         # Utiliser ToString() pour obtenir une représentation complète
+
         $exceptionString = $_.Exception.ToString()
 
         Write-Host "Représentation complète des exceptions imbriquées:"
         Write-Host $exceptionString
 
         # Sortie typique:
+
         # Représentation complète des exceptions imbriquées:
+
         # System.InvalidOperationException: Opération échouée ---> System.FormatException: Input string was not in a correct format.
+
         #    at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+
         #    at System.Int32.Parse(String s)
+
         #    at <ScriptBlock>, <Aucun fichier>: ligne 4
+
         #    --- Fin de la trace de la pile d'exception interne ---
+
         #    at <ScriptBlock>, <Aucun fichier>: ligne 7
+
     }
 }
 
 Test-ToStringWithNestedExceptions
-```
-
+```plaintext
 ### Différences et complémentarités
 
 Les méthodes `ToString()` et `GetBaseException()` ont des objectifs différents mais complémentaires :
@@ -1385,15 +1584,19 @@ Dans PowerShell, ces méthodes sont accessibles via l'objet `ErrorRecord` dans l
 ```powershell
 try {
     # Code qui peut générer une exception
+
 } catch {
     # Utiliser ToString() pour la journalisation
+
     $exceptionDetails = $_.Exception.ToString()
     Write-Log -Level Error -Message "Une erreur s'est produite" -Details $exceptionDetails
 
     # Utiliser GetBaseException() pour le traitement ciblé
+
     $rootCause = $_.Exception.GetBaseException()
 
     # Traitement conditionnel basé sur le type de l'exception racine
+
     switch ($rootCause.GetType().FullName) {
         "System.IO.FileNotFoundException" {
             Write-Host "Fichier non trouvé. Vérifiez le chemin d'accès."
@@ -1409,8 +1612,7 @@ try {
         }
     }
 }
-```
-
+```plaintext
 ### Intégration avec la taxonomie des exceptions
 
 Dans notre taxonomie des exceptions PowerShell, les méthodes `ToString()` et `GetBaseException()` sont utilisées pour :
@@ -1497,9 +1699,11 @@ Via la propriété `TargetSite`, on peut accéder à diverses informations sur l
 
 ```powershell
 # Exemple 1: Utilisation de la propriété Data pour enrichir une exception
+
 function Test-ExceptionData {
     try {
         # Créer et enrichir une exception
+
         $exception = [System.InvalidOperationException]::new("Opération non valide")
         $exception.Data["Timestamp"] = Get-Date
         $exception.Data["OperationName"] = "Test-Operation"
@@ -1513,6 +1717,7 @@ function Test-ExceptionData {
     }
     catch {
         # Accéder aux données de l'exception
+
         $ex = $_.Exception
 
         Write-Host "Exception: $($ex.GetType().FullName)"
@@ -1524,6 +1729,7 @@ function Test-ExceptionData {
             Write-Host "  $key : $value"
 
             # Si la valeur est un hashtable, afficher son contenu
+
             if ($value -is [hashtable]) {
                 foreach ($subKey in $value.Keys) {
                     Write-Host "    $subKey : $($value[$subKey])"
@@ -1532,27 +1738,39 @@ function Test-ExceptionData {
         }
 
         # Sortie typique:
+
         # Exception: System.InvalidOperationException
+
         # Message: Opération non valide
+
         # Données supplémentaires:
+
         #   Timestamp : 01/01/2023 12:00:00
+
         #   OperationName : Test-Operation
+
         #   Parameters : System.Collections.Hashtable
+
         #     Param1 : Value1
+
         #     Param2 : 42
+
         #     Param3 : True
+
     }
 }
 
 Test-ExceptionData
 
 # Exemple 2: Utilisation de la propriété Data pour transmettre des informations à travers les couches d'appel
+
 function Test-ExceptionDataPropagation {
     try {
         Test-InnerFunction
     }
     catch {
         # Accéder aux données enrichies à chaque niveau
+
         $ex = $_.Exception
 
         Write-Host "Exception finale: $($ex.GetType().FullName)"
@@ -1564,12 +1782,19 @@ function Test-ExceptionDataPropagation {
         }
 
         # Sortie typique:
+
         # Exception finale: System.InvalidOperationException
+
         # Message: Erreur de niveau 1
+
         # Données accumulées:
+
         #   Niveau3 : Informations du niveau 3
+
         #   Niveau2 : Informations du niveau 2
+
         #   Niveau1 : Informations du niveau 1
+
     }
 }
 
@@ -1579,9 +1804,11 @@ function Test-InnerFunction {
     }
     catch {
         # Enrichir l'exception avec des informations de ce niveau
+
         $_.Exception.Data["Niveau2"] = "Informations du niveau 2"
 
         # Relancer l'exception enrichie
+
         throw [System.InvalidOperationException]::new("Erreur de niveau 1", $_.Exception)
     }
 }
@@ -1589,13 +1816,16 @@ function Test-InnerFunction {
 function Test-DeeperFunction {
     try {
         # Générer une exception
+
         throw [System.ArgumentException]::new("Argument invalide")
     }
     catch {
         # Enrichir l'exception avec des informations de ce niveau
+
         $_.Exception.Data["Niveau3"] = "Informations du niveau 3"
 
         # Relancer l'exception enrichie
+
         throw
     }
 }
@@ -1603,9 +1833,11 @@ function Test-DeeperFunction {
 Test-ExceptionDataPropagation
 
 # Exemple 3: Utilisation de la propriété TargetSite pour obtenir des informations sur la méthode qui a généré l'exception
+
 function Test-ExceptionTargetSite {
     try {
         # Générer une exception
+
         [int]::Parse("abc")
     }
     catch {
@@ -1623,25 +1855,38 @@ function Test-ExceptionTargetSite {
         }
 
         # Sortie typique:
+
         # Informations sur la méthode qui a généré l'exception:
+
         # Nom de la méthode: ParseInt32
+
         # Classe déclarante: System.Number
+
         # Est statique: True
+
         # Type de retour: System.Int32
+
         #
+
         # Paramètres:
+
         #   System.String s
+
         #   System.Globalization.NumberStyles style
+
         #   System.Globalization.NumberFormatInfo info
+
     }
 }
 
 Test-ExceptionTargetSite
 
 # Exemple 4: Combinaison des propriétés Data et TargetSite pour un diagnostic avancé
+
 function Test-CombinedExceptionProperties {
     try {
         # Appeler une fonction qui va générer une exception
+
         Test-FailingFunction -InputValue "abc" -MaxRetries 3
     }
     catch {
@@ -1649,6 +1894,7 @@ function Test-CombinedExceptionProperties {
         $targetSite = $ex.TargetSite
 
         # Créer un rapport de diagnostic
+
         $diagnosticReport = [PSCustomObject]@{
             ExceptionType = $ex.GetType().FullName
             Message = $ex.Message
@@ -1660,28 +1906,41 @@ function Test-CombinedExceptionProperties {
         }
 
         # Ajouter les paramètres de la méthode
+
         foreach ($param in $targetSite.GetParameters()) {
             $diagnosticReport.Parameters[$param.Name] = $null  # On ne peut pas accéder aux valeurs réelles
+
         }
 
         # Ajouter les données supplémentaires de l'exception
+
         foreach ($key in $ex.Data.Keys) {
             $diagnosticReport.AdditionalData[$key] = $ex.Data[$key]
         }
 
         # Afficher le rapport
+
         Write-Host "Rapport de diagnostic:"
         $diagnosticReport | Format-List
 
         # Sortie typique:
+
         # Rapport de diagnostic:
+
         # ExceptionType : System.FormatException
+
         # Message      : Input string was not in a correct format.
+
         # Timestamp    : 01/01/2023 12:00:00
+
         # MethodName   : ParseInt32
+
         # ClassName    : System.Number
+
         # Parameters   : {s, style, info}
+
         # AdditionalData : {InputValue, MaxRetries, AttemptCount}
+
     }
 }
 
@@ -1693,6 +1952,7 @@ function Test-FailingFunction {
 
     try {
         # Tenter de convertir la valeur en entier
+
         $attemptCount = 0
         while ($attemptCount -lt $MaxRetries) {
             try {
@@ -1701,24 +1961,26 @@ function Test-FailingFunction {
             }
             catch {
                 # Enrichir l'exception avec des informations contextuelles
+
                 $_.Exception.Data["InputValue"] = $InputValue
                 $_.Exception.Data["MaxRetries"] = $MaxRetries
                 $_.Exception.Data["AttemptCount"] = $attemptCount
 
                 if ($attemptCount -ge $MaxRetries) {
                     throw  # Relancer l'exception après le dernier essai
+
                 }
             }
         }
     }
     catch {
         throw  # Relancer l'exception enrichie
+
     }
 }
 
 Test-CombinedExceptionProperties
-```
-
+```plaintext
 ### Différences et complémentarités
 
 Les propriétés `Data` et `TargetSite` ont des objectifs différents mais complémentaires :
@@ -1787,8 +2049,10 @@ Dans PowerShell, ces propriétés sont accessibles via l'objet `ErrorRecord` dan
 ```powershell
 try {
     # Code qui peut générer une exception
+
 } catch {
     # Accéder à la propriété Data
+
     $exData = $_.Exception.Data
     if ($exData.Count -gt 0) {
         Write-Host "Informations supplémentaires:"
@@ -1798,27 +2062,31 @@ try {
     }
 
     # Accéder à la propriété TargetSite
+
     $targetSite = $_.Exception.TargetSite
     if ($targetSite -ne $null) {
         Write-Host "Méthode qui a généré l'exception: $($targetSite.DeclaringType.FullName).$($targetSite.Name)"
     }
 
     # Enrichir l'exception avant de la relancer
+
     $_.Exception.Data["HandledBy"] = "MonModule.GestionErreurs"
     $_.Exception.Data["Timestamp"] = Get-Date
 
     # Relancer l'exception enrichie
+
     throw
 }
-```
-
+```plaintext
 PowerShell offre également des moyens d'enrichir l'objet `ErrorRecord` lui-même :
 
 ```powershell
 try {
     # Code qui peut générer une exception
+
 } catch {
     # Créer un nouvel ErrorRecord avec des informations supplémentaires
+
     $errorRecord = [System.Management.Automation.ErrorRecord]::new(
         $_.Exception,
         "CustomErrorId",
@@ -1827,13 +2095,14 @@ try {
     )
 
     # Ajouter des informations supplémentaires à l'exception
+
     $errorRecord.Exception.Data["CustomInfo"] = "Information personnalisée"
 
     # Écrire l'erreur dans le pipeline d'erreur
+
     $PSCmdlet.WriteError($errorRecord)
 }
-```
-
+```plaintext
 ### Intégration avec la taxonomie des exceptions
 
 Dans notre taxonomie des exceptions PowerShell, les propriétés `Data` et `TargetSite` sont utilisées pour :
@@ -1924,12 +2193,14 @@ Le tableau suivant indique les scénarios d'utilisation recommandés pour chaque
    ```powershell
    try {
        # Code qui peut générer une exception
+
    }
    catch {
        $_.Exception.Data["Timestamp"] = Get-Date
        $_.Exception.Data["Operation"] = "NomOpération"
        $_.Exception.Data["Parameters"] = $parameters
        throw  # Relancer l'exception enrichie
+
    }
    ```
 
@@ -1947,13 +2218,19 @@ Le tableau suivant indique les scénarios d'utilisation recommandés pour chaque
        $ex = $_.Exception
        switch ($ex.GetBaseException().GetType().FullName) {
            "System.IO.FileNotFoundException" { # Traitement spécifique }
+
            "System.UnauthorizedAccessException" { # Traitement spécifique }
+
            default {
                # Traitement par défaut basé sur HResult
+
                switch ($ex.HResult) {
                    0x80070002 { # Traitement spécifique pour ERROR_FILE_NOT_FOUND }
+
                    0x80070005 { # Traitement spécifique pour ERROR_ACCESS_DENIED }
+
                    default { # Traitement par défaut }
+
                }
            }
        }

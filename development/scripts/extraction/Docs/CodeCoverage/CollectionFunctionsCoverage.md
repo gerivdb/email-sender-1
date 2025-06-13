@@ -25,6 +25,7 @@ Cette fonction crée une nouvelle collection d'informations extraites.
 **Couverture des branches :** 100% (3/3)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification du nom de la collection
 - Création de l'objet de collection
@@ -33,11 +34,13 @@ Cette fonction crée une nouvelle collection d'informations extraites.
 - Retour de l'objet de collection créé
 
 #### Branches couvertes :
+
 - Vérification du nom de la collection vide ou null
 - Vérification de la description de la collection
 - Initialisation des métadonnées
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests avec différentes combinaisons de paramètres
 - Tests de validation des paramètres obligatoires
@@ -51,6 +54,7 @@ Cette fonction ajoute une information extraite à une collection.
 **Couverture des branches :** 100% (4/4)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification de l'objet de collection
 - Vérification de l'objet d'information
@@ -60,12 +64,14 @@ Cette fonction ajoute une information extraite à une collection.
 - Retour de l'objet de collection modifié
 
 #### Branches couvertes :
+
 - Vérification de l'objet de collection null
 - Vérification de l'objet d'information null
 - Vérification du type de l'objet de collection
 - Vérification de l'initialisation du tableau d'items
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests d'ajout d'informations de différents types
 - Tests d'ajout à des collections vides et non vides
@@ -79,6 +85,7 @@ Cette fonction récupère les informations extraites d'une collection.
 **Couverture des branches :** 100% (3/3)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification de l'objet de collection
 - Vérification du type de l'objet de collection
@@ -87,11 +94,13 @@ Cette fonction récupère les informations extraites d'une collection.
 - Retour des informations extraites
 
 #### Branches couvertes :
+
 - Vérification de l'objet de collection null
 - Vérification du type de l'objet de collection
 - Vérification de l'existence des items
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests de récupération avec différents filtres
 - Tests avec des collections vides et non vides
@@ -105,6 +114,7 @@ Cette fonction supprime une information extraite d'une collection.
 **Couverture des branches :** 100% (5/5)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification de l'objet de collection
 - Vérification de l'ID de l'information à supprimer
@@ -115,6 +125,7 @@ Cette fonction supprime une information extraite d'une collection.
 - Retour de l'objet de collection modifié
 
 #### Branches couvertes :
+
 - Vérification de l'objet de collection null
 - Vérification de l'ID de l'information vide ou null
 - Vérification du type de l'objet de collection
@@ -122,6 +133,7 @@ Cette fonction supprime une information extraite d'une collection.
 - Vérification de l'existence de l'information à supprimer
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests de suppression d'informations existantes
 - Tests de suppression d'informations inexistantes
@@ -135,6 +147,7 @@ Cette fonction calcule des statistiques sur une collection d'informations extrai
 **Couverture des branches :** 100% (6/6)
 
 #### Lignes couvertes :
+
 - Déclaration de la fonction et des paramètres
 - Vérification de l'objet de collection
 - Vérification du type de l'objet de collection
@@ -146,6 +159,7 @@ Cette fonction calcule des statistiques sur une collection d'informations extrai
 - Retour de l'objet de statistiques
 
 #### Branches couvertes :
+
 - Vérification de l'objet de collection null
 - Vérification du type de l'objet de collection
 - Vérification de l'existence des items
@@ -154,6 +168,7 @@ Cette fonction calcule des statistiques sur une collection d'informations extrai
 - Vérification des scores de confiance
 
 #### Points forts :
+
 - Couverture complète de toutes les lignes et branches
 - Tests avec différentes compositions de collections
 - Tests avec des collections vides et non vides

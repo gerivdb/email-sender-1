@@ -1,4 +1,4 @@
-﻿# SystÃ¨me de rÃ¨gles pour l'analyse des permissions SQL Server
+# SystÃ¨me de rÃ¨gles pour l'analyse des permissions SQL Server
 
 Ce document dÃ©crit le systÃ¨me de rÃ¨gles pour l'analyse des permissions SQL Server implÃ©mentÃ© dans le module RoadmapParser.
 
@@ -15,35 +15,36 @@ $params = @{
     ServerInstance = "localhost\SQLEXPRESS"
     Database = "master"
     Credential = $null  # Utiliser l'authentification Windows
+
 }
 
 # Analyser avec toutes les rÃ¨gles
-$result = Analyze-SqlServerPermission @params -IncludeObjectLevel -OutputFormat "JSON"
-```
 
+$result = Analyze-SqlServerPermission @params -IncludeObjectLevel -OutputFormat "JSON"
+```plaintext
 ### Filtrer par sÃ©vÃ©ritÃ©
 
 ```powershell
 # Analyser uniquement avec les rÃ¨gles de sÃ©vÃ©ritÃ© Ã©levÃ©e
-$result = Analyze-SqlServerPermission @params -IncludeObjectLevel -Severity "Ã‰levÃ©e"
-```
 
+$result = Analyze-SqlServerPermission @params -IncludeObjectLevel -Severity "Ã‰levÃ©e"
+```plaintext
 ### Filtrer par ID de rÃ¨gle
 
 ```powershell
 # Analyser avec des rÃ¨gles spÃ©cifiques
+
 $specificRules = @("SVR-001", "DB-001", "OBJ-002")
 $result = Analyze-SqlServerPermission @params -IncludeObjectLevel -RuleIds $specificRules
-```
-
+```plaintext
 ### GÃ©nÃ©rer un rapport HTML
 
 ```powershell
 # GÃ©nÃ©rer un rapport HTML
+
 $outputPath = "C:\Temp\SqlPermissionReport.html"
 $result = Analyze-SqlServerPermission @params -IncludeObjectLevel -OutputFormat "HTML" -OutputPath $outputPath
-```
-
+```plaintext
 ## Liste des rÃ¨gles
 
 ### RÃ¨gles au niveau serveur
@@ -94,12 +95,12 @@ Exemple d'ajout d'une nouvelle rÃ¨gle au niveau serveur :
         $results = @()
         
         # Logique de dÃ©tection des anomalies
+
         
         return $results
     }
 }
-```
-
+```plaintext
 ## Bonnes pratiques
 
 1. Utilisez des rÃ¨gles de sÃ©vÃ©ritÃ© Ã©levÃ©e pour les audits de sÃ©curitÃ© critiques

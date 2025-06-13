@@ -18,7 +18,7 @@ Le système implémente cinq types d'analyses:
 
 Le système d'analyse est organisé en modules:
 
-```
+```plaintext
 ┌─────────────────┐
 │ JournalAnalyzer │
 └─────────────────┘
@@ -37,8 +37,7 @@ Le système d'analyse est organisé en modules:
 │  └───────────┘ └────────────┘                       │
 │                                                     │
 └─────────────────────────────────────────────────────┘
-```
-
+```plaintext
 ## Implémentation
 
 ### Script principal: journal_analyzer.py
@@ -47,16 +46,17 @@ Ce script implémente toutes les analyses:
 
 ```python
 # Exécuter toutes les analyses
+
 python scripts/python/journal/journal_analyzer.py --all
 
 # Exécuter des analyses spécifiques
+
 python scripts/python/journal/journal_analyzer.py --term-frequency
 python scripts/python/journal/journal_analyzer.py --word-cloud
 python scripts/python/journal/journal_analyzer.py --tag-evolution
 python scripts/python/journal/journal_analyzer.py --topic-trends
 python scripts/python/journal/journal_analyzer.py --cluster
-```
-
+```plaintext
 ### Classe JournalAnalyzer
 
 La classe `JournalAnalyzer` implémente toutes les analyses:
@@ -70,33 +70,39 @@ class JournalAnalyzer:
         self.analysis_dir.mkdir(exist_ok=True, parents=True)
         
         # Charger toutes les entrées
+
         self.entries = self._load_entries()
     
     def _load_entries(self):
         # Charge toutes les entrées du journal
+
         ...
     
     def analyze_term_frequency(self, period="month", top_n=20):
         # Analyse la fréquence des termes par période
+
         ...
     
     def generate_word_cloud(self, period_key=None):
         # Génère un nuage de mots
+
         ...
     
     def analyze_tag_evolution(self):
         # Analyse l'évolution des tags au fil du temps
+
         ...
     
     def analyze_topic_trends(self):
         # Analyse les tendances des sujets
+
         ...
     
     def cluster_entries(self, n_clusters=5):
         # Regroupe les entrées par similarité
-        ...
-```
 
+        ...
+```plaintext
 ## Analyse de fréquence des termes
 
 Cette analyse identifie les termes les plus fréquents dans le journal, regroupés par période (jour, semaine, mois).
@@ -129,8 +135,7 @@ Les résultats sont stockés dans `docs/journal_de_bord/analysis/term_frequency.
   },
   ...
 }
-```
-
+```plaintext
 ## Nuages de mots
 
 Cette analyse génère des visualisations des termes les plus fréquents sous forme de nuages de mots.
@@ -217,8 +222,7 @@ Les résultats sont stockés dans `docs/journal_de_bord/analysis/clusters.json`:
   },
   ...
 }
-```
-
+```plaintext
 ## Dépendances
 
 Le système d'analyse utilise plusieurs bibliothèques Python:
@@ -232,14 +236,13 @@ Le système d'analyse utilise plusieurs bibliothèques Python:
 
 Les résultats des analyses sont exposés via l'API FastAPI:
 
-```
+```plaintext
 GET /api/analysis/term-frequency
 GET /api/analysis/word-cloud
 GET /api/analysis/tag-evolution
 GET /api/analysis/topic-trends
 GET /api/analysis/clusters
-```
-
+```plaintext
 ## Automatisation
 
 Les analyses peuvent être automatisées via:

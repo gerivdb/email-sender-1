@@ -18,8 +18,7 @@ Pour une installation rapide, exécutez le script d'installation principal:
 
 ```powershell
 .\install-journal-system.ps1
-```
-
+```plaintext
 Ce script installera toutes les dépendances nécessaires et configurera les répertoires requis.
 
 ## Installation manuelle
@@ -33,49 +32,50 @@ Si ce n'est pas déjà fait, clonez le dépôt:
 ```powershell
 git clone https://github.com/votre-utilisateur/votre-repo.git
 cd votre-repo
-```
-
+```plaintext
 ### 2. Installer les dépendances Python
 
 Installez les dépendances Python nécessaires:
 
 ```powershell
 # Dépendances de base
+
 pip install requests python-dotenv
 
 # Dépendances pour l'analyse
+
 pip install numpy pandas matplotlib wordcloud scikit-learn
 
 # Dépendances pour l'application web
-pip install fastapi uvicorn
-```
 
+pip install fastapi uvicorn
+```plaintext
 ### 3. Créer les répertoires nécessaires
 
 Créez les répertoires nécessaires pour le système:
 
 ```powershell
 # Répertoires du journal
+
 mkdir -Force projet/documentation\journal_de_bord\entries
 mkdir -Force projet/documentation\journal_de_bord\analysis
 mkdir -Force projet/documentation\journal_de_bord\github
 mkdir -Force projet/documentation\journal_de_bord\rag
 
 # Répertoires de documentation
+
 mkdir -Force projet/documentation\documentation\technique
 mkdir -Force projet/documentation\documentation\workflow
 mkdir -Force projet/documentation\documentation\api
 mkdir -Force projet/documentation\documentation\journal_insights
-```
-
+```plaintext
 ### 4. Configurer l'intégration GitHub (optionnel)
 
 Si vous souhaitez utiliser l'intégration GitHub, configurez-la:
 
 ```powershell
 .\development\scripts\cmd\setup-github-integration.ps1
-```
-
+```plaintext
 Ce script vous demandera:
 - Votre token GitHub
 - Le nom du propriétaire du dépôt
@@ -89,8 +89,7 @@ Si vous souhaitez générer les analyses initiales:
 
 ```powershell
 .\development\scripts\cmd\setup-journal-analysis.ps1
-```
-
+```plaintext
 ### 6. Configurer les tâches planifiées (optionnel, nécessite des droits d'administrateur)
 
 Si vous souhaitez configurer les tâches planifiées pour l'automatisation:
@@ -98,33 +97,42 @@ Si vous souhaitez configurer les tâches planifiées pour l'automatisation:
 ```powershell
 .\development\scripts\cmd\setup-journal-tasks.ps1
 .\development\scripts\cmd\setup-journal-sync-task.ps1
-```
-
+```plaintext
 ## Structure des répertoires après installation
 
 Après l'installation, votre projet devrait avoir la structure suivante:
 
-```
+```plaintext
 .
 ├── .augment/
 │   └── memories/
 │       └── journal_memories.json
 ├── .env                           # Configuration GitHub (si configurée)
+
 ├── .git/
 │   └── hooks/
 │       └── pre-commit             # Hook Git pre-commit (si configuré)
+
 ├── projet/documentation/
 │   ├── documentation/             # Documentation du système
+
 │   └── journal_de_bord/
 │       ├── analysis/              # Résultats des analyses
+
 │       ├── entries/               # Entrées du journal
+
 │       ├── github/                # Données d'intégration GitHub
+
 │       └── rag/                   # Données du système RAG
+
 ├── development/scripts/
 │   ├── cmd/                       # Scripts PowerShell
+
 │   └── python/
 │       └── journal/               # Scripts Python
+
 │           ├── web_routes/        # Routes de l'API web
+
 │           ├── github_integration.py
 │           ├── journal_analyzer.py
 │           ├── journal_entry.py
@@ -132,8 +140,8 @@ Après l'installation, votre projet devrait avoir la structure suivante:
 │           ├── journal_search_simple.py
 │           └── web_app.py
 └── install-journal-system.ps1     # Script d'installation principal
-```
 
+```plaintext
 ## Vérification de l'installation
 
 Pour vérifier que l'installation a réussi, vous pouvez:
@@ -162,14 +170,16 @@ Si vous rencontrez des problèmes lors de l'installation des dépendances Python
 
 ```powershell
 # Mettre à jour pip
+
 python -m pip install --upgrade pip
 
 # Installer les dépendances une par une
+
 pip install requests
 pip install python-dotenv
 # etc.
-```
 
+```plaintext
 ### Problèmes de permissions
 
 Si vous rencontrez des problèmes de permissions:

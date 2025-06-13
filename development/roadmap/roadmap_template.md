@@ -8,17 +8,20 @@ Ce document sert de référence pour la création et la maintenance de la roadma
 # Roadmap [NOM_PROJET]
 
 ## 1. [SECTION_PRINCIPALE]
+
 **Description**: [Description concise de la section]
 **Responsable**: [Équipe ou personne responsable]
 **Statut global**: [Statut] - [Pourcentage]
 
 ### 1.1 [SOUS-SECTION]
+
 **Complexité**: [Faible/Moyenne/Élevée]
 **Temps estimé total**: [X jours]
 **Progression globale**: [Pourcentage]
 **Dépendances**: [Liste des dépendances]
 
 #### Outils et technologies
+
 - **Langages**: [Liste des langages de programmation]
 - **Frameworks**: [Liste des frameworks]
 - **Outils IA**: [Liste des outils d'IA]
@@ -26,12 +29,14 @@ Ce document sert de référence pour la création et la maintenance de la roadma
 - **Environnement**: [Description de l'environnement]
 
 #### Fichiers principaux
+
 | Chemin | Description |
 |--------|-------------|
 | `[chemin/vers/fichier]` | [Description du fichier] |
 | `[chemin/vers/fichier]` | [Description du fichier] |
 
 #### Guidelines
+
 - **Codage**: [Conventions de codage]
 - **Tests**: [Approche de test]
 - **Documentation**: [Standards de documentation]
@@ -39,6 +44,7 @@ Ce document sert de référence pour la création et la maintenance de la roadma
 - **Performance**: [Considérations de performance]
 
 #### 1.1.1 [TÂCHE]
+
 **Complexité**: [Faible/Moyenne/Élevée]
 **Temps estimé**: [X jours]
 **Progression**: [Pourcentage] - *[Statut]*
@@ -48,12 +54,14 @@ Ce document sert de référence pour la création et la maintenance de la roadma
 **Tags**: #[tag1] #[tag2] #[tag3]
 
 ##### Fichiers à créer/modifier
+
 | Chemin | Description | Statut |
 |--------|-------------|--------|
 | `[chemin/vers/fichier]` | [Description] | [À créer/À modifier/Terminé] |
 | `[chemin/vers/fichier]` | [Description] | [À créer/À modifier/Terminé] |
 
 ##### Format de journalisation
+
 ```json
 {
   "module": "[Nom du module]",
@@ -68,9 +76,9 @@ Ce document sert de référence pour la création et la maintenance de la roadma
     "[scénario2]": {"time_ms": [temps], "memory_mb": [mémoire]}
   }
 }
-```
-
+```plaintext
 ##### [Jour X] - [Description de la journée] (Xh)
+
 - [ ] **Sous-tâche X.1**: [Nom de la sous-tâche] (Xh)
   - **Description**: [Description détaillée]
   - **Livrable**: [Description du livrable]
@@ -81,19 +89,25 @@ Ce document sert de référence pour la création et la maintenance de la roadma
   ```[langage]
   [Exemple de code]
   ```
-```
-
+```plaintext
 ## Conventions de nommage et formatage
 
 ### Niveaux hiérarchiques
+
 1. **Niveau 1 (#)**: Titre du projet
+
 2. **Niveau 2 (##)**: Sections principales (numérotées: 1., 2., etc.)
+
 3. **Niveau 3 (###)**: Sous-sections (numérotées: 1.1, 1.2, etc.)
+
 4. **Niveau 4 (####)**: Tâches (numérotées: 1.1.1, 1.1.2, etc.)
+
 5. **Niveau 5 (#####)**: Journées ou catégories de sous-tâches
+
 6. **Niveau 6 (######)**: Groupes de sous-tâches
 
 ### Statuts standardisés
+
 - **Non commencé**: Tâche planifiée mais non démarrée
 - **En cours**: Tâche démarrée mais non terminée
 - **En attente**: Tâche bloquée par une dépendance
@@ -102,16 +116,19 @@ Ce document sert de référence pour la création et la maintenance de la roadma
 - **Annulé**: Tâche abandonnée ou reportée
 
 ### Complexité
+
 - **Faible**: Tâche simple, peu de risques, technologie maîtrisée
 - **Moyenne**: Tâche modérément complexe, quelques risques, technologie partiellement maîtrisée
 - **Élevée**: Tâche complexe, risques importants, nouvelle technologie ou approche
 
 ### Format des sous-tâches
+
 - Utiliser des cases à cocher pour indiquer l'état d'avancement: `- [ ]` ou `- [x]`
 - Inclure l'estimation de temps entre parenthèses: (2h)
 - Numéroter les sous-tâches pour faciliter la référence: X.1, X.2, etc.
 
 ### Chemins de fichiers
+
 - Toujours utiliser des chemins complets relatifs à la racine du projet
 - Utiliser des backticks pour encadrer les chemins: `chemin/vers/fichier`
 - Utiliser des barres obliques (/) comme séparateurs de chemin (pas de backslashes)
@@ -193,8 +210,7 @@ Chaque section de la roadmap doit être accompagnée d'une représentation JSON 
     }
   ]
 }
-```
-
+```plaintext
 ## Bonnes pratiques pour la maintenance de la roadmap
 
 1. **Mise à jour régulière**: Mettre à jour la roadmap au moins une fois par semaine
@@ -211,17 +227,20 @@ Chaque section de la roadmap doit être accompagnée d'une représentation JSON 
 # Roadmap EMAIL_SENDER_1
 
 ## 1. Intelligence
+
 **Description**: Modules et fonctionnalités d'intelligence artificielle et d'optimisation algorithmique.
 **Responsable**: Équipe IA
 **Statut global**: En cours - 60%
 
 ### 1.1 Détection de cycles
+
 **Complexité**: Moyenne
 **Temps estimé total**: 11 jours
 **Progression globale**: 70%
 **Dépendances**: Aucune
 
 #### Outils et technologies
+
 - **Langages**: PowerShell 5.1/7, Python 3.11+
 - **Frameworks**: Pester (tests PowerShell), pytest (tests Python)
 - **Outils IA**: MCP pour l'automatisation, Augment pour l'assistance au développement
@@ -229,6 +248,7 @@ Chaque section de la roadmap doit être accompagnée d'une représentation JSON 
 - **Environnement**: VS Code avec extensions PowerShell et Python
 
 #### Fichiers principaux
+
 | Chemin | Description |
 |--------|-------------|
 | `modules/CycleDetector.psm1` | Module principal de détection de cycles |
@@ -236,6 +256,7 @@ Chaque section de la roadmap doit être accompagnée d'une représentation JSON 
 | `projet/documentation/technical/CycleDetectorAPI.md` | Documentation de l'API |
 
 #### Guidelines
+
 - **Codage**: Suivre les conventions PowerShell (PascalCase pour fonctions, verbes approuvés)
 - **Tests**: Appliquer TDD avec Pester, viser 100% de couverture
 - **Documentation**: Utiliser le format d'aide PowerShell et XML pour la documentation
@@ -243,6 +264,7 @@ Chaque section de la roadmap doit être accompagnée d'une représentation JSON 
 - **Performance**: Optimiser pour les grands graphes, utiliser la mise en cache
 
 #### 1.1.1 Implémentation de l'algorithme de détection de cycles
+
 **Complexité**: Moyenne
 **Temps estimé**: 3 jours
 **Progression**: 90% - *Presque terminé*
@@ -252,12 +274,14 @@ Chaque section de la roadmap doit être accompagnée d'une représentation JSON 
 **Tags**: #algorithme #graphe #optimisation
 
 ##### Fichiers à créer/modifier
+
 | Chemin | Description | Statut |
 |--------|-------------|--------|
 | `modules/CycleDetector.psm1` | Module principal | À créer |
 | `development/testing/tests/unit/CycleDetector.Tests.ps1` | Tests unitaires | À créer |
 
 ##### Format de journalisation
+
 ```json
 {
   "module": "CycleDetector",
@@ -268,17 +292,16 @@ Chaque section de la roadmap doit être accompagnée d'une représentation JSON 
     {"feature": "Détection de cycles", "status": "Complété"}
   ]
 }
-```
-
+```plaintext
 ##### Jour 1 - Analyse et conception (8h)
+
 - [x] **Sous-tâche 1.1**: Recherche bibliographique sur les algorithmes de détection de cycles (1h)
   - **Description**: Étudier les algorithmes DFS, BFS, et algorithme de Tarjan
   - **Livrable**: Document de synthèse des algorithmes étudiés
   - **Fichier**: `projet/documentation/technical/AlgorithmesDetectionCycles.md`
   - **Outils**: MCP pour la recherche, Augment pour la synthèse
   - **Statut**: Terminé
-```
-
+```plaintext
 ## Scripts d'automatisation
 
 Des scripts d'automatisation sont disponibles pour faciliter la gestion de la roadmap:

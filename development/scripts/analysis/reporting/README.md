@@ -11,4 +11,4 @@ Ce dossier contient des scripts pour la génération et la gestion de rapports.
 
 ```powershell
 .\Fix-HtmlReportEncoding.ps1 -Path ".\results\report.html"
-```
+```plaintext

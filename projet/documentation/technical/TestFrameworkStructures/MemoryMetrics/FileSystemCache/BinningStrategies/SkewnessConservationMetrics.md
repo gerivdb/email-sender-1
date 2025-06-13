@@ -10,10 +10,9 @@ Ce document définit des métriques pour évaluer la conservation de l'asymétri
 
 Pour une distribution continue avec fonction de densité de probabilité f(x), l'asymétrie est définie par :
 
-```
+```plaintext
 γ₁ = μ₃/σ³
-```
-
+```plaintext
 où :
 - μ₃ est le troisième moment centré : μ₃ = ∫ (x - μ)³·f(x) dx
 - σ est l'écart-type de la distribution
@@ -23,10 +22,9 @@ où :
 
 Pour un échantillon de n observations {x₁, x₂, ..., xₙ}, l'asymétrie empirique est :
 
-```
+```plaintext
 g₁ = (m₃/m₂^(3/2)) · √(n(n-1))/(n-2)
-```
-
+```plaintext
 où :
 - m₃ = (1/n) · Σ (xᵢ - x̄)³
 - m₂ = (1/n) · Σ (xᵢ - x̄)²
@@ -37,10 +35,9 @@ où :
 
 Pour un histogramme avec k bins, où chaque bin i a une valeur centrale xᵢ et une fréquence relative fᵢ, l'asymétrie est :
 
-```
+```plaintext
 γ₁ₕ = Σ fᵢ·(xᵢ - μₕ)³ / (Σ fᵢ·(xᵢ - μₕ)²)^(3/2)
-```
-
+```plaintext
 où μₕ est la moyenne de l'histogramme.
 
 ## 3. Métriques pour la conservation de l'asymétrie
@@ -49,10 +46,9 @@ où μₕ est la moyenne de l'histogramme.
 
 L'erreur absolue de l'asymétrie quantifie la différence absolue entre l'asymétrie de la distribution réelle et celle de l'histogramme :
 
-```
+```plaintext
 EAA = |γ₁ - γ₁ₕ|
-```
-
+```plaintext
 où :
 - γ₁ est l'asymétrie de la distribution réelle
 - γ₁ₕ est l'asymétrie de l'histogramme
@@ -68,10 +64,9 @@ où :
 
 L'erreur relative de l'asymétrie exprime l'erreur absolue en pourcentage de l'asymétrie réelle :
 
-```
+```plaintext
 ERA = |γ₁ - γ₁ₕ| / |γ₁| × 100%
-```
-
+```plaintext
 #### 3.2.1 Unités et interprétation
 
 - **Unités** : Pourcentage (%)
@@ -83,13 +78,12 @@ ERA = |γ₁ - γ₁ₕ| / |γ₁| × 100%
 
 L'erreur de signe de l'asymétrie est une métrique binaire qui indique si l'histogramme préserve correctement le signe de l'asymétrie :
 
-```
+```plaintext
 ESA = {
     0 si sign(γ₁) = sign(γ₁ₕ)
     1 si sign(γ₁) ≠ sign(γ₁ₕ)
 }
-```
-
+```plaintext
 #### 3.3.1 Unités et interprétation
 
 - **Unités** : Binaire (0 ou 1)
@@ -101,10 +95,9 @@ ESA = {
 
 L'indice de conservation de l'asymétrie est une métrique normalisée qui évalue la fidélité globale de la représentation de l'asymétrie :
 
-```
+```plaintext
 ICA = 1 - min(|γ₁ - γ₁ₕ| / (|γ₁| + |γ₁ₕ| + ε), 1)
-```
-
+```plaintext
 où ε est une petite constante (typiquement 0.1) pour éviter la division par zéro dans le cas de distributions symétriques.
 
 #### 3.4.1 Unités et interprétation
@@ -120,10 +113,9 @@ où ε est une petite constante (typiquement 0.1) pour éviter la division par z
 
 Pour les distributions de latence, qui présentent typiquement une queue droite étendue, l'erreur de caractérisation de queue évalue spécifiquement la conservation de cette caractéristique :
 
-```
+```plaintext
 ECQ = |P₉₀ₕ/P₅₀ₕ - P₉₀/P₅₀| / (P₉₀/P₅₀)
-```
-
+```plaintext
 où :
 - P₉₀ et P₅₀ sont les 90ème et 50ème percentiles de la distribution réelle
 - P₉₀ₕ et P₅₀ₕ sont les 90ème et 50ème percentiles de l'histogramme
@@ -139,10 +131,9 @@ où :
 
 L'indice de conservation de forme asymétrique évalue la préservation de la forme globale de la distribution asymétrique :
 
-```
+```plaintext
 ICFA = (1 - |γ₁ - γ₁ₕ| / max(|γ₁|, 1)) · (1 - |CV - CVₕ| / max(CV, 0.1))
-```
-
+```plaintext
 où :
 - CV est le coefficient de variation de la distribution réelle
 - CVₕ est le coefficient de variation de l'histogramme
@@ -170,10 +161,9 @@ Le biais théorique dépend de la forme de la distribution et de la configuratio
 
 L'erreur sur l'asymétrie diminue généralement avec l'augmentation du nombre de bins, mais pas aussi rapidement que pour la moyenne ou la variance. La relation approximative est :
 
-```
+```plaintext
 EAA ∝ 1/k
-```
-
+```plaintext
 où k est le nombre de bins.
 
 ### 5.3 Sensibilité aux valeurs extrêmes
@@ -196,8 +186,7 @@ def calculate_real_skewness(data):
         skewness: Asymétrie des données
     """
     return scipy.stats.skew(data, bias=False)
-```
-
+```plaintext
 ### 6.2 Calcul de l'asymétrie d'un histogramme
 
 ```python
@@ -213,9 +202,11 @@ def calculate_histogram_skewness(bin_edges, bin_counts):
         skewness: Asymétrie de l'histogramme
     """
     # Calculer les centres des bins
+
     bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
     
     # Calculer les fréquences relatives
+
     total_count = np.sum(bin_counts)
     if total_count == 0:
         return 0
@@ -223,21 +214,23 @@ def calculate_histogram_skewness(bin_edges, bin_counts):
     frequencies = bin_counts / total_count
     
     # Calculer la moyenne
+
     mean = np.sum(bin_centers * frequencies)
     
     # Calculer les moments centrés
+
     m2 = np.sum(frequencies * (bin_centers - mean)**2)
     m3 = np.sum(frequencies * (bin_centers - mean)**3)
     
     # Calculer l'asymétrie
+
     if m2 > 0:
         skewness = m3 / (m2**(3/2))
     else:
         skewness = 0
     
     return skewness
-```
-
+```plaintext
 ### 6.3 Calcul des métriques de conservation de l'asymétrie
 
 ```python
@@ -254,10 +247,12 @@ def calculate_skewness_conservation_metrics(real_data, bin_edges, bin_counts):
         metrics: Dictionnaire des métriques calculées
     """
     # Calculer les asymétries
+
     real_skewness = calculate_real_skewness(real_data)
     hist_skewness = calculate_histogram_skewness(bin_edges, bin_counts)
     
     # Calculer les erreurs
+
     absolute_error = abs(real_skewness - hist_skewness)
     
     if abs(real_skewness) > 1e-10:
@@ -266,18 +261,22 @@ def calculate_skewness_conservation_metrics(real_data, bin_edges, bin_counts):
         relative_error = float('inf') if absolute_error > 1e-10 else 0
     
     # Erreur de signe
+
     sign_error = 0 if (real_skewness * hist_skewness > 0 or 
                        (abs(real_skewness) < 1e-10 and abs(hist_skewness) < 1e-10)) else 1
     
     # Indice de conservation
+
     epsilon = 0.1
     ica = 1 - min(absolute_error / (abs(real_skewness) + abs(hist_skewness) + epsilon), 1)
     
     # Calcul des percentiles pour ECQ
+
     real_p50 = np.percentile(real_data, 50)
     real_p90 = np.percentile(real_data, 90)
     
     # Calculer les percentiles de l'histogramme
+
     cum_freq = np.cumsum(bin_counts) / np.sum(bin_counts)
     p50_idx = np.searchsorted(cum_freq, 0.5)
     p90_idx = np.searchsorted(cum_freq, 0.9)
@@ -297,6 +296,7 @@ def calculate_skewness_conservation_metrics(real_data, bin_edges, bin_counts):
             ecq = float('inf')
     
     # Calcul de l'ICFA
+
     real_mean = np.mean(real_data)
     real_std = np.std(real_data)
     real_cv = real_std / real_mean if real_mean > 0 else float('inf')
@@ -313,6 +313,7 @@ def calculate_skewness_conservation_metrics(real_data, bin_edges, bin_counts):
         icfa = 0
     
     # Résultats
+
     metrics = {
         "real_skewness": real_skewness,
         "histogram_skewness": hist_skewness,
@@ -325,8 +326,7 @@ def calculate_skewness_conservation_metrics(real_data, bin_edges, bin_counts):
     }
     
     return metrics
-```
-
+```plaintext
 ## 7. Seuils recommandés pour les latences de blocs de 2KB
 
 | Métrique | Excellent | Bon | Acceptable | Insuffisant |
@@ -438,8 +438,7 @@ Ces seuils peuvent varier selon le contexte d'utilisation :
     }
   }
 }
-```
-
+```plaintext
 ## 10. Exemples d'application
 
 ### 10.1 Cas d'étude: Distribution à asymétrie modérée

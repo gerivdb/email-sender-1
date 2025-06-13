@@ -18,6 +18,7 @@ Exemple :
 ```powershell
 function Verb-Noun {
     <#
+
     .SYNOPSIS
         Description courte de la fonction.
     .DESCRIPTION
@@ -30,8 +31,10 @@ function Verb-Noun {
     .NOTES
         Informations supplémentaires sur la fonction.
     #>
+
     [CmdletBinding(SupportsShouldProcess = $true)]
     [OutputType([type])] # Spécifier le type de retour
+
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
         [ValidateNotNullOrEmpty()]
@@ -46,6 +49,7 @@ function Verb-Noun {
         try {
             if ($PSCmdlet.ShouldProcess("Target", "Operation")) {
                 # Code principal ici
+
             }
         }
         catch {
@@ -57,8 +61,7 @@ function Verb-Noun {
         Write-Verbose "Fin de l'exécution de Verb-Noun"
     }
 }
-```
-
+```plaintext
 ## Bonnes pratiques
 
 1. Utilisez des verbes approuvés par PowerShell (Get, Set, New, Remove, etc.)
