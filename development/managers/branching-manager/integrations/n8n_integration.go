@@ -9,49 +9,49 @@ import (
 	"net/http"
 	"time"
 
-	"../../pkg/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
 )
 
 // N8NIntegration handles integration with n8n workflow automation
 type N8NIntegration struct {
-	client      *http.Client
-	baseURL     string
-	apiKey      string
-	webhookURL  string
-	workflows   map[string]string
-	secret      string
+	client     *http.Client
+	baseURL    string
+	apiKey     string
+	webhookURL string
+	workflows  map[string]string
+	secret     string
 }
 
 // N8NConfig holds n8n integration configuration
 type N8NConfig struct {
-	BaseURL     string
-	APIKey      string
-	WebhookURL  string
-	Workflows   map[string]string
-	Secret      string
-	Timeout     time.Duration
+	BaseURL    string
+	APIKey     string
+	WebhookURL string
+	Workflows  map[string]string
+	Secret     string
+	Timeout    time.Duration
 }
 
 // N8NWorkflowExecution represents a workflow execution
 type N8NWorkflowExecution struct {
-	ID          string                 `json:"id"`
-	WorkflowID  string                 `json:"workflowId"`
-	Status      string                 `json:"status"`
-	StartedAt   time.Time              `json:"startedAt"`
-	FinishedAt  *time.Time             `json:"finishedAt,omitempty"`
-	Data        map[string]interface{} `json:"data"`
-	Error       string                 `json:"error,omitempty"`
+	ID         string                 `json:"id"`
+	WorkflowID string                 `json:"workflowId"`
+	Status     string                 `json:"status"`
+	StartedAt  time.Time              `json:"startedAt"`
+	FinishedAt *time.Time             `json:"finishedAt,omitempty"`
+	Data       map[string]interface{} `json:"data"`
+	Error      string                 `json:"error,omitempty"`
 }
 
 // N8NWebhookPayload represents webhook payload structure
 type N8NWebhookPayload struct {
-	EventType   string                 `json:"eventType"`
-	EntityType  string                 `json:"entityType"`
-	EntityID    string                 `json:"entityId"`
-	Timestamp   time.Time              `json:"timestamp"`
-	Data        map[string]interface{} `json:"data"`
-	Metadata    map[string]interface{} `json:"metadata"`
-	Signature   string                 `json:"signature,omitempty"`
+	EventType  string                 `json:"eventType"`
+	EntityType string                 `json:"entityType"`
+	EntityID   string                 `json:"entityId"`
+	Timestamp  time.Time              `json:"timestamp"`
+	Data       map[string]interface{} `json:"data"`
+	Metadata   map[string]interface{} `json:"metadata"`
+	Signature  string                 `json:"signature,omitempty"`
 }
 
 // NewN8NIntegration creates a new n8n integration
@@ -61,12 +61,12 @@ func NewN8NIntegration(config *N8NConfig) *N8NIntegration {
 	}
 
 	return &N8NIntegration{
-		client:      client,
-		baseURL:     config.BaseURL,
-		apiKey:      config.APIKey,
-		webhookURL:  config.WebhookURL,
-		workflows:   config.Workflows,
-		secret:      config.Secret,
+		client:     client,
+		baseURL:    config.BaseURL,
+		apiKey:     config.APIKey,
+		webhookURL: config.WebhookURL,
+		workflows:  config.Workflows,
+		secret:     config.Secret,
 	}
 }
 
@@ -88,7 +88,7 @@ func (n *N8NIntegration) TriggerSessionCreatedWorkflow(ctx context.Context, sess
 			"metadata":   session.Metadata,
 		},
 		"trigger_source": "branching_manager",
-		"timestamp":     time.Now(),
+		"timestamp":      time.Now(),
 	}
 
 	return n.executeWorkflow(ctx, workflowID, payload)
@@ -126,7 +126,7 @@ func (n *N8NIntegration) TriggerBranchCreatedWorkflow(ctx context.Context, branc
 			"metadata":    branch.Metadata,
 		},
 		"trigger_source": "branching_manager",
-		"timestamp":     time.Now(),
+		"timestamp":      time.Now(),
 	}
 
 	return n.executeWorkflow(ctx, workflowID, payload)
@@ -161,7 +161,7 @@ func (n *N8NIntegration) TriggerBranchMergedWorkflow(ctx context.Context, mergeR
 			"error_message":  mergeResult.ErrorMessage,
 		},
 		"trigger_source": "branching_manager",
-		"timestamp":     time.Now(),
+		"timestamp":      time.Now(),
 	}
 
 	return n.executeWorkflow(ctx, workflowID, payload)
@@ -196,7 +196,7 @@ func (n *N8NIntegration) TriggerSnapshotCreatedWorkflow(ctx context.Context, sna
 			"metadata":        snapshot.Metadata,
 		},
 		"trigger_source": "branching_manager",
-		"timestamp":     time.Now(),
+		"timestamp":      time.Now(),
 	}
 
 	return n.executeWorkflow(ctx, workflowID, payload)
@@ -215,7 +215,7 @@ func (n *N8NIntegration) TriggerQuantumBranchCreatedWorkflow(ctx context.Context
 	payload := map[string]interface{}{
 		"quantum_branch": n.serializeQuantumBranch(quantumBranch),
 		"trigger_source": "branching_manager",
-		"timestamp":     time.Now(),
+		"timestamp":      time.Now(),
 	}
 
 	return n.executeWorkflow(ctx, workflowID, payload)
@@ -228,16 +228,16 @@ func (n *N8NIntegration) TriggerApproachCompletedWorkflow(ctx context.Context, r
 	if !exists {
 		return n.sendWebhook(ctx, "approach_completed", "approach_result", result.ApproachID, map[string]interface{}{
 			"approach_result": map[string]interface{}{
-				"approach_id":   result.ApproachID,
-				"success":       result.Success,
-				"score":         result.Score,
-				"confidence":    result.Confidence,
-				"execution_time": result.ExecutionTime,
+				"approach_id":      result.ApproachID,
+				"success":          result.Success,
+				"score":            result.Score,
+				"confidence":       result.Confidence,
+				"execution_time":   result.ExecutionTime,
 				"branches_created": result.BranchesCreated,
-				"commits_made":  result.CommitsMade,
-				"tests_passed":  result.TestsPassed,
-				"error_message": result.ErrorMessage,
-				"metadata":      result.Metadata,
+				"commits_made":     result.CommitsMade,
+				"tests_passed":     result.TestsPassed,
+				"error_message":    result.ErrorMessage,
+				"metadata":         result.Metadata,
 			},
 		})
 	}
@@ -256,7 +256,7 @@ func (n *N8NIntegration) TriggerApproachCompletedWorkflow(ctx context.Context, r
 			"metadata":         result.Metadata,
 		},
 		"trigger_source": "branching_manager",
-		"timestamp":     time.Now(),
+		"timestamp":      time.Now(),
 	}
 
 	return n.executeWorkflow(ctx, workflowID, payload)
@@ -275,7 +275,7 @@ func (n *N8NIntegration) TriggerBranchingCodeExecutedWorkflow(ctx context.Contex
 			"metadata":         result.Metadata,
 		},
 		"trigger_source": "branching_manager",
-		"timestamp":     time.Now(),
+		"timestamp":      time.Now(),
 	}
 
 	return n.sendWebhook(ctx, "branching_code_executed", "execution_result", result.ConfigID, payload)

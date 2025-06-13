@@ -6,12 +6,12 @@ import (
 	"log"
 	"time"
 
-	"github.com/email-sender/development/managers/branching-manager/development"
-	"github.com/email-sender/development/managers/branching-manager/database"
-	"github.com/email-sender/development/managers/branching-manager/git"
-	"github.com/email-sender/development/managers/branching-manager/integrations"
-	"github.com/email-sender/development/managers/branching-manager/ai"
-	"github.com/email-sender/pkg/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/ai"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/database"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/development"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/git"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/integrations"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
 )
 
 func main() {
@@ -22,7 +22,7 @@ func main() {
 
 	// Initialize all components
 	fmt.Println("\n📦 Initializing components...")
-	
+
 	// PostgreSQL Storage
 	pgStorage, err := database.NewPostgreSQLStorage("postgres://user:pass@localhost/branching_db?sslmode=disable")
 	if err != nil {
@@ -97,7 +97,7 @@ func main() {
 					UserID:    "demo-user",
 					Timestamp: time.Now(),
 					Data: map[string]interface{}{
-						"feature": "new-email-template",
+						"feature":  "new-email-template",
 						"priority": "high",
 					},
 				}
@@ -207,13 +207,13 @@ branching_strategy:
 	for _, scenario := range demoScenarios {
 		fmt.Printf("\n🔸 %s\n", scenario.name)
 		fmt.Printf("   %s\n", scenario.description)
-		
+
 		if err := scenario.action(); err != nil {
 			fmt.Printf("   ❌ Error: %v\n", err)
 		} else {
 			fmt.Printf("   ✅ Success!\n")
 		}
-		
+
 		// Small delay for demonstration
 		time.Sleep(500 * time.Millisecond)
 	}
@@ -239,7 +239,7 @@ branching_strategy:
 	if mcpGateway != nil {
 		fmt.Println("🔸 Testing MCP Gateway Integration...")
 		if err := mcpGateway.NotifyBranchEvent(ctx, "demo-project", "branch_demo_complete", map[string]interface{}{
-			"demo": "complete",
+			"demo":      "complete",
 			"timestamp": time.Now(),
 		}); err != nil {
 			fmt.Printf("   ❌ MCP Error: %v\n", err)

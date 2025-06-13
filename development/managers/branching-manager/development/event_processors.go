@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"../interfaces"
-	"../../pkg/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
 )
 
 // CommitEventProcessor handles commit events for automatic branch creation
@@ -33,7 +33,7 @@ func (p *CommitEventProcessor) ProcessEvent(ctx context.Context, event interface
 	// Analyze commit message for automatic branching triggers
 	if shouldCreateBranch, branchType := p.analyzeCommitMessage(commitMessage); shouldCreateBranch {
 		branchName := p.generateEventDrivenBranchName(branchType, commitHash)
-		
+
 		// Create new branch
 		branchID, err := p.manager.createGitBranch(ctx, branchName, "main")
 		if err != nil {
@@ -49,10 +49,10 @@ func (p *CommitEventProcessor) ProcessEvent(ctx context.Context, event interface
 			UpdatedAt:  time.Now(),
 			Status:     interfaces.BranchStatusActive,
 			Metadata: map[string]string{
-				"trigger_type":    "commit",
-				"commit_hash":     commitHash,
-				"commit_message":  commitMessage,
-				"branch_type":     branchType,
+				"trigger_type":   "commit",
+				"commit_hash":    commitHash,
+				"commit_message": commitMessage,
+				"branch_type":    branchType,
 			},
 			EventID: event.Context["event_id"].(string),
 			Level:   2, // Level 2: Event-Driven
@@ -76,15 +76,15 @@ func (p *CommitEventProcessor) GetEventType() interfaces.EventType {
 func (p *CommitEventProcessor) analyzeCommitMessage(message string) (bool, string) {
 	// Simple keyword analysis for demonstration
 	keywords := map[string]string{
-		"fix":        "hotfix",
-		"bug":        "bugfix",
-		"feature":    "feature",
-		"feat":       "feature",
-		"refactor":   "refactor",
-		"docs":       "documentation",
-		"test":       "testing",
-		"security":   "security",
-		"perf":       "performance",
+		"fix":      "hotfix",
+		"bug":      "bugfix",
+		"feature":  "feature",
+		"feat":     "feature",
+		"refactor": "refactor",
+		"docs":     "documentation",
+		"test":     "testing",
+		"security": "security",
+		"perf":     "performance",
 	}
 	for keyword, branchType := range keywords {
 		if strings.Contains(strings.ToLower(message), keyword) {
@@ -165,7 +165,7 @@ func (p *PushEventProcessor) handleAutoMerge(ctx context.Context, branchName str
 
 func (p *PushEventProcessor) createBackupBranch(ctx context.Context, branchName string, event interfaces.BranchingEvent) error {
 	backupName := fmt.Sprintf("backup-%s-%s", branchName, time.Now().Format("20060102-1504"))
-	
+
 	branchID, err := p.manager.createGitBranch(ctx, backupName, branchName)
 	if err != nil {
 		return fmt.Errorf("failed to create backup branch: %w", err)
@@ -220,7 +220,7 @@ func (p *PullRequestEventProcessor) handlePROpened(ctx context.Context, source, 
 	// Create review branch if needed
 	if p.shouldCreateReviewBranch(source, target) {
 		reviewBranchName := fmt.Sprintf("review-%s-to-%s-%s", source, target, time.Now().Format("20060102-1504"))
-		
+
 		branchID, err := p.manager.createGitBranch(ctx, reviewBranchName, source)
 		if err != nil {
 			return fmt.Errorf("failed to create review branch: %w", err)

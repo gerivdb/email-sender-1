@@ -13,7 +13,7 @@ import (
 	"github.com/google/uuid"
 	"gopkg.in/yaml.v3"
 
-	"../interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
 )
 
 // BranchingManagerImpl implements the BranchingManager interface
@@ -2516,8 +2516,7 @@ func (bm *BranchingManagerImpl) linkBranchToMemory(ctx context.Context, branchID
 	return bm.LinkBranchToContext(ctx, branchID, contextID)
 }
 
-func (bm *BranchingManagerImpl) updateBranchMemoryMetadata(ctx context.Context, branchID string, memoryContext interfaces.MemoryContext) error {
-	// Update branch metadata with memory context information
+func (bm *BranchingManagerImpl) updateBranchMemoryMetadata(ctx context.Context, branchID string, memoryContext interfaces.MemoryContext) error { // Update branch metadata with memory context information
 	metadata := map[string]string{
 		"memory_context_id":  memoryContext.ContextID,
 		"memory_integration": "true",
@@ -2527,7 +2526,7 @@ func (bm *BranchingManagerImpl) updateBranchMemoryMetadata(ctx context.Context, 
 
 	// This would update the branch record in the database
 	// For now, just log the update
-	bm.logger.Printf("Updated memory metadata for branch %s", branchID)
+	bm.logger.Printf("Updated memory metadata for branch %s with metadata: %+v", branchID, metadata)
 	return nil
 }
 

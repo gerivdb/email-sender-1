@@ -5,13 +5,11 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"time"
 
 	"github.com/google/uuid"
-	"github.com/lib/pq"
 	_ "github.com/lib/pq"
 
-	"../../pkg/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
 )
 
 // PostgreSQLStorageManager implements StorageManager interface with PostgreSQL backend
