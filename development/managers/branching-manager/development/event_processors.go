@@ -1,4 +1,4 @@
-package main
+package development
 
 import (
 	"context"
@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"../interfaces"
-	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
 )
 
 // CommitEventProcessor handles commit events for automatic branch creation
@@ -309,6 +308,64 @@ func (p *TimerEventProcessor) handleSnapshotCreation(ctx context.Context) error 
 func (p *TimerEventProcessor) handleBranchCleanup(ctx context.Context) error {
 	p.manager.logger.Println("Running branch cleanup")
 	// Implementation for cleaning up old branches
+	return nil
+}
+
+// SessionEventProcessor handles session lifecycle events
+type SessionEventProcessor struct {
+	manager *BranchingManagerImpl
+}
+
+func (p *SessionEventProcessor) ProcessEvent(ctx context.Context, event interfaces.BranchingEvent) error {
+	p.manager.logger.Printf("Processing session event: %v", event.Type)
+
+	switch event.Type {
+	case interfaces.EventTypeSessionCreated:
+		return p.handleSessionCreated(ctx, event)
+	case interfaces.EventTypeSessionEnded:
+		return p.handleSessionEnded(ctx, event)
+	default:
+		return fmt.Errorf("unsupported session event type: %v", event.Type)
+	}
+}
+
+func (p *SessionEventProcessor) handleSessionCreated(ctx context.Context, event interfaces.BranchingEvent) error {
+	sessionID := event.Data.(*interfaces.Session).ID
+	p.manager.logger.Printf("Session created: %s", sessionID)
+	return nil
+}
+
+func (p *SessionEventProcessor) handleSessionEnded(ctx context.Context, event interfaces.BranchingEvent) error {
+	sessionID := event.Data.(*interfaces.Session).ID
+	p.manager.logger.Printf("Session ended: %s", sessionID)
+	return nil
+}
+
+// BranchEventProcessor handles branch lifecycle events
+type BranchEventProcessor struct {
+	manager *BranchingManagerImpl
+}
+
+func (p *BranchEventProcessor) ProcessEvent(ctx context.Context, event interfaces.BranchingEvent) error {
+	p.manager.logger.Printf("Processing branch event: %v", event.Type)
+
+	switch event.Type {
+	case interfaces.EventTypeBranchCreated:
+		return p.handleBranchCreated(ctx, event)
+	case interfaces.EventTypeBranchMerged:
+		return p.handleBranchMerged(ctx, event)
+	default:
+		return fmt.Errorf("unsupported branch event type: %v", event.Type)
+	}
+}
+
+func (p *BranchEventProcessor) handleBranchCreated(ctx context.Context, event interfaces.BranchingEvent) error {
+	p.manager.logger.Printf("Branch created: %v", event.Data)
+	return nil
+}
+
+func (p *BranchEventProcessor) handleBranchMerged(ctx context.Context, event interfaces.BranchingEvent) error {
+	p.manager.logger.Printf("Branch merged: %v", event.Data)
 	return nil
 }
 

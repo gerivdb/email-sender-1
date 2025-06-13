@@ -1,4 +1,4 @@
-package main
+package development
 
 import (
 	"context"
@@ -13,7 +13,7 @@ import (
 	"github.com/google/uuid"
 	"gopkg.in/yaml.v3"
 
-	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
+	"../interfaces"
 )
 
 // BranchingManagerImpl implements the BranchingManager interface
@@ -139,6 +139,25 @@ func NewBranchingManager(configPath string) (*BranchingManagerImpl, error) {
 	return manager, nil
 }
 
+// NewBranchingManagerImpl creates a new instance of the branching manager
+func NewBranchingManagerImpl(config *BranchingConfig) *BranchingManagerImpl {
+	bm := &BranchingManagerImpl{
+		config:            config,
+		activeSessions:    make(map[string]*interfaces.Session),
+		eventQueue:        make(chan interfaces.BranchingEvent, config.EventQueueSize),
+		eventProcessors:   make(map[interfaces.EventType]EventProcessor),
+		temporalSnapshots: make(map[string][]*interfaces.TemporalSnapshot),
+		quantumBranches:   make(map[string]*interfaces.QuantumBranch),
+		logger:            log.New(os.Stdout, "[BranchingManager] ", log.LstdFlags),
+		stopChan:          make(chan struct{}),
+	}
+
+	// Initialize event processors
+	bm.initializeEventProcessors()
+
+	return bm
+}
+
 // loadConfig loads the configuration from YAML file
 func loadConfig(configPath string) (*BranchingConfig, error) {
 	data, err := os.ReadFile(configPath)
@@ -162,9 +181,13 @@ func loadConfig(configPath string) (*BranchingConfig, error) {
 	return &config, nil
 }
 
-// initializeEventProcessors sets up event processors for different event types
+// initializeEventProcessors sets up the event processing system
 func (bm *BranchingManagerImpl) initializeEventProcessors() {
-	bm.eventProcessors[interfaces.EventTypeCommit] = &CommitEventProcessor{manager: bm}
+	bm.eventProcessors[interfaces.EventTypeSessionCreated] = &SessionEventProcessor{}
+	bm.eventProcessors[interfaces.EventTypeSessionEnded] = &SessionEventProcessor{}
+	bm.eventProcessors[interfaces.EventTypeBranchCreated] = &BranchEventProcessor{}
+	bm.eventProcessors[interfaces.EventTypeBranchMerged] = &BranchEventProcessor{}
+	bm.eventProcessors[interfaces.EventTypeCommitMade] = &CommitEventProcessor{}
 	bm.eventProcessors[interfaces.EventTypePush] = &PushEventProcessor{manager: bm}
 	bm.eventProcessors[interfaces.EventTypePullRequest] = &PullRequestEventProcessor{manager: bm}
 	bm.eventProcessors[interfaces.EventTypeTimer] = &TimerEventProcessor{manager: bm}
