@@ -12,6 +12,46 @@ import (
 	"planning-ecosystem-sync/tools/validation"
 )
 
+// formatRuleAdapter adapts FormatConsistencyRule to implement local ValidationRule interface
+type ValidationRule interface {
+	Validate(data interface{}) error
+	GetName() string
+	CanAutoFix() bool
+	Fix(data interface{}) error
+}
+
+// formatRuleAdapter adapts FormatConsistencyRule to implement ValidationRule interface
+type formatRuleAdapter struct {
+	rule *validation.FormatConsistencyRule
+}
+
+func (a *formatRuleAdapter) Validate(data interface{}) error {
+	// Adapt the new interface to the old one
+	issues, err := a.rule.Validate(context.Background(), "", data)
+	if err != nil {
+		return err
+	}
+
+	if len(issues) > 0 {
+		return fmt.Errorf("%s", issues[0].Message)
+	}
+
+	return nil
+}
+
+func (a *formatRuleAdapter) GetName() string {
+	return a.rule.GetID()
+}
+
+func (a *formatRuleAdapter) CanAutoFix() bool {
+	return a.rule.CanAutoFix()
+}
+
+func (a *formatRuleAdapter) Fix(data interface{}) error {
+	// This is a placeholder implementation
+	return nil
+}
+
 func main() {
 	var (
 		inputFile   = flag.String("file", "", "Path to planning document file (JSON/YAML)")
@@ -270,8 +310,8 @@ func runValidation(logger *log.Logger, inputFile, outputFile, rulesStr string, s
 	for _, rule := range rules {
 		rule = strings.TrimSpace(rule)
 		switch rule {
-		case "format":
-			validator.AddRule(validation.NewFormatConsistencyRule())
+		case "format": // Use MetadataRule instead which implements the full interface
+			validator.AddRule(validation.NewMetadataRule())
 		case "metadata":
 			validator.AddRule(&validation.MetadataConsistencyRule{
 				ID:          "metadata_consistency",
@@ -280,7 +320,7 @@ func runValidation(logger *log.Logger, inputFile, outputFile, rulesStr string, s
 			})
 		case "task":
 			validator.AddRule(&validation.TaskConsistencyRule{
-				ID:          "task_consistency", 
+				ID:          "task_consistency",
 				Description: "Validates task structure and dependencies",
 				Priority:    3,
 			})

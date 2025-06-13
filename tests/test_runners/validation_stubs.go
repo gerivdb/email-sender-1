@@ -4,40 +4,19 @@ import (
 	"context"
 )
 
-// StructValidatorFinal est un stub pour la validation des structures
-// Renommé pour éviter les conflits avec validation_stubs.go
-type StructValidatorFinal struct {
+// StructValidator est un stub pour la validation des structures
+type StructValidator struct {
 	path  string
 	debug bool
 }
 
-// Validate valide la structure
-func (sv *StructValidatorFinal) Validate(ctx context.Context) error {
-	return nil
-}
-
-// CollectMetrics collecte les métriques
-func (sv *StructValidatorFinal) CollectMetrics() interface{} {
-	return map[string]interface{}{
-		"validation_time_ms": 123,
-		"errors_detected":    0,
-	}
-}
-
-// HealthCheck effectue une vérification de l'état
-func (sv *StructValidatorFinal) HealthCheck(ctx context.Context) error {
-	return nil
-}
-
-// Using OperationOptions from toolkit_stubs.go
-
-// validationFinal est le namespace pour éviter les conflits de noms
-var validationFinal = struct {
-	NewStructValidator func(string, interface{}, bool) (*StructValidatorFinal, error)
+// Define validation namespace
+var validation = struct {
+	NewStructValidator func(string, interface{}, bool) (*StructValidator, error)
 	ValidateProject    func(context.Context, *OperationOptions) error
 }{
-	NewStructValidator: func(path string, config interface{}, debug bool) (*StructValidatorFinal, error) {
-		return &StructValidatorFinal{
+	NewStructValidator: func(path string, config interface{}, debug bool) (*StructValidator, error) {
+		return &StructValidator{
 			path:  path,
 			debug: debug,
 		}, nil
@@ -47,14 +26,36 @@ var validationFinal = struct {
 	},
 }
 
-// toolkitFinal est le namespace pour éviter les conflits de noms
-var toolkitFinal = struct {
+// Validate valide la structure
+func (sv *StructValidator) Validate(ctx context.Context) error {
+	return nil
+}
+
+// CollectMetrics collecte les métriques
+func (sv *StructValidator) CollectMetrics() interface{} {
+	return map[string]interface{}{
+		"validation_time_ms": 123,
+		"errors_detected":    0,
+	}
+}
+
+// HealthCheck effectue une vérification de l'état
+func (sv *StructValidator) HealthCheck(ctx context.Context) error {
+	return nil
+}
+
+// Define the toolkit namespace
+var toolkit = struct {
+	Operation        func(context.Context, *OperationOptions) error
 	ValidateStructs  func(context.Context, *OperationOptions) error
 	ResolveImports   func(context.Context, *OperationOptions) error
 	AnalyzeDeps      func(context.Context, *OperationOptions) error
 	DetectDuplicates func(context.Context, *OperationOptions) error
 	ExecuteOperation func(context.Context, func(context.Context, *OperationOptions) error, *OperationOptions) error
 }{
+	Operation: func(ctx context.Context, opts *OperationOptions) error {
+		return nil
+	},
 	ValidateStructs: func(ctx context.Context, opts *OperationOptions) error {
 		return nil
 	},
@@ -72,10 +73,8 @@ var toolkitFinal = struct {
 	},
 }
 
-// StatsCollectorFinal collects validation statistics
-type StatsCollectorFinal struct {
+// StatsCollector collects validation statistics
+type StatsCollector struct {
 	OperationsExecuted int
 	FilesAnalyzed      int
 }
-
-// Use NewManagerToolkitStub from toolkit_stubs.go

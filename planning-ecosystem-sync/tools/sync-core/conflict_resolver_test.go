@@ -1,6 +1,7 @@
-package main
+package core
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -12,7 +13,7 @@ func TestConflictResolverCreation(t *testing.T) {
 	defer sqlStorage.Close()
 
 	detector := NewConflictDetector(sqlStorage, nil)
-	
+
 	config := &ResolverConfig{
 		AutoResolveEnabled:  true,
 		BackupBeforeResolve: true,
@@ -108,7 +109,7 @@ func TestResolveConflicts(t *testing.T) {
 		t.Error("Expected at least one conflict to be resolved")
 	}
 
-	t.Logf("✅ ResolveConflicts test passed - %d resolved, %d failed", 
+	t.Logf("✅ ResolveConflicts test passed - %d resolved, %d failed",
 		len(result.ResolvedConflicts), len(result.FailedConflicts))
 }
 
@@ -216,7 +217,7 @@ func TestMergeMetadataConflict(t *testing.T) {
 		t.Errorf("Expected merged progression 75.0, got %v", resolvedProgression.Resolution.Result)
 	}
 
-	t.Logf("✅ Metadata conflict merge test passed - Version: %s, Progression: %v", 
+	t.Logf("✅ Metadata conflict merge test passed - Version: %s, Progression: %v",
 		resolved.Resolution.Result, resolvedProgression.Resolution.Result)
 }
 
@@ -273,7 +274,7 @@ func TestMergeContentConflict(t *testing.T) {
 		t.Error("Low similarity content merge should not succeed automatically")
 	}
 
-	t.Logf("✅ Content conflict merge test passed - High similarity: %t, Low similarity: %t", 
+	t.Logf("✅ Content conflict merge test passed - High similarity: %t, Low similarity: %t",
 		resolved.Success, resolvedLow.Success)
 }
 
@@ -282,15 +283,15 @@ func TestDetermineStrategy(t *testing.T) {
 	defer sqlStorage.Close()
 
 	detector := NewConflictDetector(sqlStorage, nil)
-	
+
 	config := &ResolverConfig{
 		DefaultStrategy: StrategyManual,
 		StrategyPriority: map[ConflictType][]ResolutionStrategy{
-			ConflictTypeTasks: {StrategyAutoMerge, StrategyUseDynamic},
+			ConflictTypeTasks:    {StrategyAutoMerge, StrategyUseDynamic},
 			ConflictTypeMetadata: {StrategyUseDynamic, StrategyUseMarkdown},
 		},
 	}
-	
+
 	resolver := NewConflictResolver(sqlStorage, detector, config)
 
 	// Test pour conflit de tâche
@@ -351,7 +352,7 @@ func TestDeterminePriorityStatus(t *testing.T) {
 	for _, test := range tests {
 		result := resolver.determinePriorityStatus(test.status1, test.status2)
 		if result != test.expected {
-			t.Errorf("determinePriorityStatus(%s, %s) = %s, expected %s", 
+			t.Errorf("determinePriorityStatus(%s, %s) = %s, expected %s",
 				test.status1, test.status2, result, test.expected)
 		}
 	}
@@ -380,7 +381,7 @@ func TestCompareVersions(t *testing.T) {
 	for _, test := range tests {
 		result := resolver.compareVersions(test.version1, test.version2)
 		if result != test.expected {
-			t.Errorf("compareVersions(%s, %s) = %s, expected %s", 
+			t.Errorf("compareVersions(%s, %s) = %s, expected %s",
 				test.version1, test.version2, result, test.expected)
 		}
 	}
@@ -393,7 +394,7 @@ func TestCreateBackup(t *testing.T) {
 	defer sqlStorage.Close()
 
 	detector := NewConflictDetector(sqlStorage, nil)
-	
+
 	// Utiliser un répertoire temporaire pour les tests
 	tempDir := filepath.Join(os.TempDir(), "conflict_resolver_test_backups")
 	defer os.RemoveAll(tempDir)
@@ -401,7 +402,7 @@ func TestCreateBackup(t *testing.T) {
 	config := &ResolverConfig{
 		BackupDirectory: tempDir,
 	}
-	
+
 	resolver := NewConflictResolver(sqlStorage, detector, config)
 
 	// Créer un plan de test
@@ -452,7 +453,7 @@ func TestAutoResolveConflicts(t *testing.T) {
 	defer sqlStorage.Close()
 
 	detector := NewConflictDetector(sqlStorage, nil)
-	
+
 	config := &ResolverConfig{
 		AutoResolveEnabled: true,
 		AutoResolveRules: []AutoResolveRule{
@@ -464,7 +465,7 @@ func TestAutoResolveConflicts(t *testing.T) {
 		},
 		BackupBeforeResolve: false,
 	}
-	
+
 	resolver := NewConflictResolver(sqlStorage, detector, config)
 
 	// Créer un plan de test
@@ -563,7 +564,7 @@ func TestResolverStats(t *testing.T) {
 		t.Error("Stats should be reset to 0")
 	}
 
-	t.Logf("✅ Resolver stats test passed - Resolutions: %d, Time: %v", 
+	t.Logf("✅ Resolver stats test passed - Resolutions: %d, Time: %v",
 		statsAfter.TotalResolutions, statsAfter.TotalResolutionTime)
 }
 

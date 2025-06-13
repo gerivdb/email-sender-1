@@ -1,6 +1,7 @@
-package main
+package core
 
 import (
+	"fmt"
 	"testing"
 	"time"
 )
@@ -221,8 +222,8 @@ func TestMetadataConflictDetection(t *testing.T) {
 		ID: basePlan.ID + "_markdown",
 		Metadata: PlanMetadata{
 			Title:       "Plan Test",
-			Version:     "2.0",    // Version différente
-			Progression: 75.0,    // Progression différente (>5% de différence)
+			Version:     "2.0", // Version différente
+			Progression: 75.0,  // Progression différente (>5% de différence)
 		},
 		Tasks:     []Task{},
 		UpdatedAt: time.Now(),
@@ -288,9 +289,9 @@ func TestTaskConflictDetection(t *testing.T) {
 		ID:       basePlan.ID + "_markdown",
 		Metadata: basePlan.Metadata,
 		Tasks: []Task{
-			{ID: "task_1", Title: "Tâche 1", Status: "completed"},    // Identique
-			{ID: "task_2", Title: "Tâche 2", Status: "blocked"},     // Différent
-			{ID: "task_3", Title: "Tâche 3", Status: "completed"},   // Différent
+			{ID: "task_1", Title: "Tâche 1", Status: "completed"}, // Identique
+			{ID: "task_2", Title: "Tâche 2", Status: "blocked"},   // Différent
+			{ID: "task_3", Title: "Tâche 3", Status: "completed"}, // Différent
 		},
 		UpdatedAt: time.Now(),
 	}

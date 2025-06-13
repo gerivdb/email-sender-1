@@ -1,6 +1,6 @@
 // advanced_classifier.go - Moteur de Classification Intelligente Multi-Critères
 // Phase 2.2 du Framework de Branchement Automatique
-package main
+package commitinterceptor
 
 import (
 	"context"

@@ -1,23 +1,21 @@
-package main
+package core
 
 import (
 	"crypto/sha256"
 	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
 	"strings"
 	"time"
 )
 
 // ConflictDetector handles detection of conflicts between Markdown and dynamic system
 type ConflictDetector struct {
-	sqlStorage   *SQLStorage
-	config       *ConflictConfig
-	logger       *log.Logger
-	stats        *ConflictStats
+	sqlStorage *SQLStorage
+	config     *ConflictConfig
+	logger     *log.Logger
+	stats      *ConflictStats
 }
 
 // ConflictConfig contains configuration for conflict detection
@@ -30,12 +28,12 @@ type ConflictConfig struct {
 
 // ConflictStats tracks conflict detection statistics
 type ConflictStats struct {
-	ConflictsDetected   int           `json:"conflicts_detected"`
-	ConflictsResolved   int           `json:"conflicts_resolved"`
-	AutoResolutions     int           `json:"auto_resolutions"`
-	ManualResolutions   int           `json:"manual_resolutions"`
-	TotalDetectionTime  time.Duration `json:"total_detection_time"`
-	LastDetectionTime   time.Time     `json:"last_detection_time"`
+	ConflictsDetected  int           `json:"conflicts_detected"`
+	ConflictsResolved  int           `json:"conflicts_resolved"`
+	AutoResolutions    int           `json:"auto_resolutions"`
+	ManualResolutions  int           `json:"manual_resolutions"`
+	TotalDetectionTime time.Duration `json:"total_detection_time"`
+	LastDetectionTime  time.Time     `json:"last_detection_time"`
 }
 
 // Conflict represents a conflict between Markdown and dynamic versions
@@ -75,32 +73,32 @@ const (
 
 // ConflictResolution represents the resolution of a conflict
 type ConflictResolution struct {
-	Strategy    ResolutionStrategy `json:"strategy"`
-	Action      string             `json:"action"`
-	Result      interface{}        `json:"result"`
-	Applied     bool               `json:"applied"`
-	AppliedAt   time.Time          `json:"applied_at"`
-	AppliedBy   string             `json:"applied_by"`
-	Backup      string             `json:"backup,omitempty"`
+	Strategy  ResolutionStrategy `json:"strategy"`
+	Action    string             `json:"action"`
+	Result    interface{}        `json:"result"`
+	Applied   bool               `json:"applied"`
+	AppliedAt time.Time          `json:"applied_at"`
+	AppliedBy string             `json:"applied_by"`
+	Backup    string             `json:"backup,omitempty"`
 }
 
 // ResolutionStrategy represents different resolution strategies
 type ResolutionStrategy string
 
 const (
-	StrategyManual       ResolutionStrategy = "manual"
-	StrategyAutoMerge    ResolutionStrategy = "auto_merge"
-	StrategyUseMarkdown  ResolutionStrategy = "use_markdown"
-	StrategyUseDynamic   ResolutionStrategy = "use_dynamic"
-	StrategyBackupBoth   ResolutionStrategy = "backup_both"
+	StrategyManual      ResolutionStrategy = "manual"
+	StrategyAutoMerge   ResolutionStrategy = "auto_merge"
+	StrategyUseMarkdown ResolutionStrategy = "use_markdown"
+	StrategyUseDynamic  ResolutionStrategy = "use_dynamic"
+	StrategyBackupBoth  ResolutionStrategy = "backup_both"
 )
 
 // ConflictDetectionResult represents the result of conflict detection
 type ConflictDetectionResult struct {
-	PlanID      string     `json:"plan_id"`
-	Conflicts   []Conflict `json:"conflicts"`
-	Summary     string     `json:"summary"`
-	DetectedAt  time.Time  `json:"detected_at"`
+	PlanID        string        `json:"plan_id"`
+	Conflicts     []Conflict    `json:"conflicts"`
+	Summary       string        `json:"summary"`
+	DetectedAt    time.Time     `json:"detected_at"`
 	DetectionTime time.Duration `json:"detection_time"`
 }
 
@@ -372,7 +370,7 @@ func (cd *ConflictDetector) detectTaskConflicts(planID string, markdownPlan, dyn
 // calculatePlanHash calcule un hash du plan pour détecter les changements
 func (cd *ConflictDetector) calculatePlanHash(plan *DynamicPlan) string {
 	data := fmt.Sprintf("%s-%s-%f-%d", plan.Metadata.Title, plan.Metadata.Version, plan.Metadata.Progression, len(plan.Tasks))
-	
+
 	// Ajouter les hashes des tâches
 	for _, task := range plan.Tasks {
 		data += fmt.Sprintf("-%s-%s-%s", task.ID, task.Title, task.Status)
@@ -464,12 +462,12 @@ func (cd *ConflictDetector) generateSummary(conflicts []Conflict) string {
 	}
 
 	summary := fmt.Sprintf("Found %d conflicts: ", len(conflicts))
-	
+
 	var parts []string
 	for conflictType, count := range typeCount {
 		parts = append(parts, fmt.Sprintf("%s (%d)", conflictType, count))
 	}
-	
+
 	summary += strings.Join(parts, ", ")
 	return summary
 }
@@ -484,9 +482,9 @@ func (cd *ConflictDetector) loadMarkdownPlan(planID string) (*DynamicPlan, error
 
 	// Créer une version modifiée pour simuler des différences
 	markdownPlan := &DynamicPlan{
-		ID:       basePlan.ID + "_markdown",
-		Metadata: basePlan.Metadata,
-		Tasks:    make([]Task, len(basePlan.Tasks)),
+		ID:        basePlan.ID + "_markdown",
+		Metadata:  basePlan.Metadata,
+		Tasks:     make([]Task, len(basePlan.Tasks)),
 		UpdatedAt: basePlan.UpdatedAt.Add(-10 * time.Minute), // Version plus ancienne
 	}
 
@@ -497,7 +495,7 @@ func (cd *ConflictDetector) loadMarkdownPlan(planID string) (*DynamicPlan, error
 		markdownPlan.Tasks[0].Status = "in_progress" // Différent du statut original
 	}
 
-	markdownPlan.Metadata.Version = "2.0" // Version différente
+	markdownPlan.Metadata.Version = "2.0"    // Version différente
 	markdownPlan.Metadata.Progression = 75.0 // Progression différente
 
 	return markdownPlan, nil
