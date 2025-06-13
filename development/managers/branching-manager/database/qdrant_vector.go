@@ -9,9 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/google/uuid"
-
-	"../../pkg/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
 )
 
 // QdrantVectorManager implements vector operations for AI-powered branching features
@@ -149,12 +147,12 @@ func (q *QdrantVectorManager) IndexSession(ctx context.Context, session *interfa
 		ID:     session.ID,
 		Vector: embedding,
 		Payload: map[string]interface{}{
-			"type":        "session",
-			"scope":       session.Scope,
-			"status":      session.Status,
-			"duration":    session.Duration.String(),
-			"created_at":  session.CreatedAt.Unix(),
-			"metadata":    session.Metadata,
+			"type":       "session",
+			"scope":      session.Scope,
+			"status":     session.Status,
+			"duration":   session.Duration.String(),
+			"created_at": session.CreatedAt.Unix(),
+			"metadata":   session.Metadata,
 		},
 	}
 
@@ -167,14 +165,14 @@ func (q *QdrantVectorManager) IndexBranch(ctx context.Context, branch *interface
 		ID:     branch.ID,
 		Vector: embedding,
 		Payload: map[string]interface{}{
-			"type":         "branch",
-			"name":         branch.Name,
-			"base_branch":  branch.BaseBranch,
-			"status":       branch.Status,
-			"session_id":   branch.SessionID,
-			"created_at":   branch.CreatedAt.Unix(),
-			"git_hash":     branch.GitHash,
-			"metadata":     branch.Metadata,
+			"type":        "branch",
+			"name":        branch.Name,
+			"base_branch": branch.BaseBranch,
+			"status":      branch.Status,
+			"session_id":  branch.SessionID,
+			"created_at":  branch.CreatedAt.Unix(),
+			"git_hash":    branch.GitHash,
+			"metadata":    branch.Metadata,
 		},
 	}
 
@@ -187,13 +185,13 @@ func (q *QdrantVectorManager) IndexBranchingPattern(ctx context.Context, pattern
 		ID:     pattern.ID,
 		Vector: embedding,
 		Payload: map[string]interface{}{
-			"type":           "pattern",
-			"pattern_type":   pattern.Type,
-			"frequency":      pattern.Frequency,
-			"success_rate":   pattern.SuccessRate,
-			"complexity":     pattern.Complexity,
-			"created_at":     pattern.CreatedAt.Unix(),
-			"metadata":       pattern.Metadata,
+			"type":         "pattern",
+			"pattern_type": pattern.Type,
+			"frequency":    pattern.Frequency,
+			"success_rate": pattern.SuccessRate,
+			"complexity":   pattern.Complexity,
+			"created_at":   pattern.CreatedAt.Unix(),
+			"metadata":     pattern.Metadata,
 		},
 	}
 
@@ -206,14 +204,14 @@ func (q *QdrantVectorManager) IndexQuantumApproach(ctx context.Context, approach
 		ID:     approach.ID,
 		Vector: embedding,
 		Payload: map[string]interface{}{
-			"type":        "quantum_approach",
-			"name":        approach.Name,
-			"strategy":    approach.Strategy,
-			"status":      approach.Status,
-			"score":       approach.Score,
-			"confidence":  approach.Confidence,
-			"created_at":  approach.CreatedAt.Unix(),
-			"metadata":    approach.Metadata,
+			"type":       "quantum_approach",
+			"name":       approach.Name,
+			"strategy":   approach.Strategy,
+			"status":     approach.Status,
+			"score":      approach.Score,
+			"confidence": approach.Confidence,
+			"created_at": approach.CreatedAt.Unix(),
+			"metadata":   approach.Metadata,
 		},
 	}
 
@@ -232,11 +230,11 @@ func (q *QdrantVectorManager) SearchSimilarSessions(ctx context.Context, embeddi
 	var similarities []*interfaces.SessionSimilarity
 	for _, result := range results {
 		similarity := &interfaces.SessionSimilarity{
-			SessionID:  result.ID,
-			Score:      result.Score,
-			Scope:      getStringFromPayload(result.Payload, "scope"),
-			Status:     getStringFromPayload(result.Payload, "status"),
-			Metadata:   getMapFromPayload(result.Payload, "metadata"),
+			SessionID: result.ID,
+			Score:     result.Score,
+			Scope:     getStringFromPayload(result.Payload, "scope"),
+			Status:    getStringFromPayload(result.Payload, "status"),
+			Metadata:  getMapFromPayload(result.Payload, "metadata"),
 		}
 		similarities = append(similarities, similarity)
 	}
@@ -281,13 +279,13 @@ func (q *QdrantVectorManager) SearchSimilarPatterns(ctx context.Context, embeddi
 	var similarities []*interfaces.PatternSimilarity
 	for _, result := range results {
 		similarity := &interfaces.PatternSimilarity{
-			PatternID:    result.ID,
-			Score:        result.Score,
-			Type:         getStringFromPayload(result.Payload, "pattern_type"),
-			Frequency:    getFloat32FromPayload(result.Payload, "frequency"),
-			SuccessRate:  getFloat32FromPayload(result.Payload, "success_rate"),
-			Complexity:   getFloat32FromPayload(result.Payload, "complexity"),
-			Metadata:     getMapFromPayload(result.Payload, "metadata"),
+			PatternID:   result.ID,
+			Score:       result.Score,
+			Type:        getStringFromPayload(result.Payload, "pattern_type"),
+			Frequency:   getFloat32FromPayload(result.Payload, "frequency"),
+			SuccessRate: getFloat32FromPayload(result.Payload, "success_rate"),
+			Complexity:  getFloat32FromPayload(result.Payload, "complexity"),
+			Metadata:    getMapFromPayload(result.Payload, "metadata"),
 		}
 		similarities = append(similarities, similarity)
 	}
@@ -307,14 +305,14 @@ func (q *QdrantVectorManager) SearchOptimalApproaches(ctx context.Context, embed
 	var similarities []*interfaces.ApproachSimilarity
 	for _, result := range results {
 		similarity := &interfaces.ApproachSimilarity{
-			ApproachID:  result.ID,
-			Score:       result.Score,
-			Name:        getStringFromPayload(result.Payload, "name"),
-			Strategy:    getStringFromPayload(result.Payload, "strategy"),
-			Status:      getStringFromPayload(result.Payload, "status"),
+			ApproachID:    result.ID,
+			Score:         result.Score,
+			Name:          getStringFromPayload(result.Payload, "name"),
+			Strategy:      getStringFromPayload(result.Payload, "strategy"),
+			Status:        getStringFromPayload(result.Payload, "status"),
 			ApproachScore: getFloat32FromPayload(result.Payload, "score"),
-			Confidence:  getFloat32FromPayload(result.Payload, "confidence"),
-			Metadata:    getMapFromPayload(result.Payload, "metadata"),
+			Confidence:    getFloat32FromPayload(result.Payload, "confidence"),
+			Metadata:      getMapFromPayload(result.Payload, "metadata"),
 		}
 		similarities = append(similarities, similarity)
 	}
@@ -333,8 +331,8 @@ func (q *QdrantVectorManager) upsertPoints(ctx context.Context, points []VectorP
 		return err
 	}
 
-	req, err := http.NewRequestWithContext(ctx, "PUT", 
-		fmt.Sprintf("%s/collections/%s/points", q.baseURL, q.collection), 
+	req, err := http.NewRequestWithContext(ctx, "PUT",
+		fmt.Sprintf("%s/collections/%s/points", q.baseURL, q.collection),
 		bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err
@@ -371,7 +369,7 @@ func (q *QdrantVectorManager) searchSimilar(ctx context.Context, embedding []flo
 		requestBody["filter"] = map[string]interface{}{
 			"must": []map[string]interface{}{
 				{
-					"key":   "type",
+					"key": "type",
 					"match": map[string]interface{}{
 						"value": filter["type"],
 					},
@@ -385,8 +383,8 @@ func (q *QdrantVectorManager) searchSimilar(ctx context.Context, embedding []flo
 		return nil, err
 	}
 
-	req, err := http.NewRequestWithContext(ctx, "POST", 
-		fmt.Sprintf("%s/collections/%s/points/search", q.baseURL, q.collection), 
+	req, err := http.NewRequestWithContext(ctx, "POST",
+		fmt.Sprintf("%s/collections/%s/points/search", q.baseURL, q.collection),
 		bytes.NewBuffer(jsonData))
 	if err != nil {
 		return nil, err
@@ -427,8 +425,8 @@ func (q *QdrantVectorManager) DeletePoint(ctx context.Context, pointID string) e
 		return err
 	}
 
-	req, err := http.NewRequestWithContext(ctx, "POST", 
-		fmt.Sprintf("%s/collections/%s/points/delete", q.baseURL, q.collection), 
+	req, err := http.NewRequestWithContext(ctx, "POST",
+		fmt.Sprintf("%s/collections/%s/points/delete", q.baseURL, q.collection),
 		bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err
@@ -455,7 +453,7 @@ func (q *QdrantVectorManager) DeletePoint(ctx context.Context, pointID string) e
 
 // GetCollectionInfo returns information about the collection
 func (q *QdrantVectorManager) GetCollectionInfo(ctx context.Context) (map[string]interface{}, error) {
-	req, err := http.NewRequestWithContext(ctx, "GET", 
+	req, err := http.NewRequestWithContext(ctx, "GET",
 		fmt.Sprintf("%s/collections/%s", q.baseURL, q.collection), nil)
 	if err != nil {
 		return nil, err
@@ -522,13 +520,13 @@ func getMapFromPayload(payload map[string]interface{}, key string) map[string]in
 func (q *QdrantVectorManager) GenerateEmbedding(ctx context.Context, text string) ([]float32, error) {
 	// Mock embedding generation - in production, integrate with actual embedding service
 	embedding := make([]float32, 384)
-	
+
 	// Simple hash-based mock embedding
 	hash := simpleHash(text)
 	for i := range embedding {
-		embedding[i] = float32((hash+(uint32(i)*7)) % 1000) / 1000.0 - 0.5
+		embedding[i] = float32((hash+(uint32(i)*7))%1000)/1000.0 - 0.5
 	}
-	
+
 	return embedding, nil
 }
 

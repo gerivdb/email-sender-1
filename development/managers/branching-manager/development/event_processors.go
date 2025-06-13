@@ -1,4 +1,4 @@
-package main
+package development
 
 import (
 	"context"
@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"../interfaces"
-	"../../pkg/interfaces"
 )
 
 // CommitEventProcessor handles commit events for automatic branch creation
@@ -33,7 +32,7 @@ func (p *CommitEventProcessor) ProcessEvent(ctx context.Context, event interface
 	// Analyze commit message for automatic branching triggers
 	if shouldCreateBranch, branchType := p.analyzeCommitMessage(commitMessage); shouldCreateBranch {
 		branchName := p.generateEventDrivenBranchName(branchType, commitHash)
-		
+
 		// Create new branch
 		branchID, err := p.manager.createGitBranch(ctx, branchName, "main")
 		if err != nil {
@@ -49,10 +48,10 @@ func (p *CommitEventProcessor) ProcessEvent(ctx context.Context, event interface
 			UpdatedAt:  time.Now(),
 			Status:     interfaces.BranchStatusActive,
 			Metadata: map[string]string{
-				"trigger_type":    "commit",
-				"commit_hash":     commitHash,
-				"commit_message":  commitMessage,
-				"branch_type":     branchType,
+				"trigger_type":   "commit",
+				"commit_hash":    commitHash,
+				"commit_message": commitMessage,
+				"branch_type":    branchType,
 			},
 			EventID: event.Context["event_id"].(string),
 			Level:   2, // Level 2: Event-Driven
@@ -76,15 +75,15 @@ func (p *CommitEventProcessor) GetEventType() interfaces.EventType {
 func (p *CommitEventProcessor) analyzeCommitMessage(message string) (bool, string) {
 	// Simple keyword analysis for demonstration
 	keywords := map[string]string{
-		"fix":        "hotfix",
-		"bug":        "bugfix",
-		"feature":    "feature",
-		"feat":       "feature",
-		"refactor":   "refactor",
-		"docs":       "documentation",
-		"test":       "testing",
-		"security":   "security",
-		"perf":       "performance",
+		"fix":      "hotfix",
+		"bug":      "bugfix",
+		"feature":  "feature",
+		"feat":     "feature",
+		"refactor": "refactor",
+		"docs":     "documentation",
+		"test":     "testing",
+		"security": "security",
+		"perf":     "performance",
 	}
 	for keyword, branchType := range keywords {
 		if strings.Contains(strings.ToLower(message), keyword) {
@@ -165,7 +164,7 @@ func (p *PushEventProcessor) handleAutoMerge(ctx context.Context, branchName str
 
 func (p *PushEventProcessor) createBackupBranch(ctx context.Context, branchName string, event interfaces.BranchingEvent) error {
 	backupName := fmt.Sprintf("backup-%s-%s", branchName, time.Now().Format("20060102-1504"))
-	
+
 	branchID, err := p.manager.createGitBranch(ctx, backupName, branchName)
 	if err != nil {
 		return fmt.Errorf("failed to create backup branch: %w", err)
@@ -220,7 +219,7 @@ func (p *PullRequestEventProcessor) handlePROpened(ctx context.Context, source, 
 	// Create review branch if needed
 	if p.shouldCreateReviewBranch(source, target) {
 		reviewBranchName := fmt.Sprintf("review-%s-to-%s-%s", source, target, time.Now().Format("20060102-1504"))
-		
+
 		branchID, err := p.manager.createGitBranch(ctx, reviewBranchName, source)
 		if err != nil {
 			return fmt.Errorf("failed to create review branch: %w", err)
@@ -309,6 +308,64 @@ func (p *TimerEventProcessor) handleSnapshotCreation(ctx context.Context) error 
 func (p *TimerEventProcessor) handleBranchCleanup(ctx context.Context) error {
 	p.manager.logger.Println("Running branch cleanup")
 	// Implementation for cleaning up old branches
+	return nil
+}
+
+// SessionEventProcessor handles session lifecycle events
+type SessionEventProcessor struct {
+	manager *BranchingManagerImpl
+}
+
+func (p *SessionEventProcessor) ProcessEvent(ctx context.Context, event interfaces.BranchingEvent) error {
+	p.manager.logger.Printf("Processing session event: %v", event.Type)
+
+	switch event.Type {
+	case interfaces.EventTypeSessionCreated:
+		return p.handleSessionCreated(ctx, event)
+	case interfaces.EventTypeSessionEnded:
+		return p.handleSessionEnded(ctx, event)
+	default:
+		return fmt.Errorf("unsupported session event type: %v", event.Type)
+	}
+}
+
+func (p *SessionEventProcessor) handleSessionCreated(ctx context.Context, event interfaces.BranchingEvent) error {
+	sessionID := event.Data.(*interfaces.Session).ID
+	p.manager.logger.Printf("Session created: %s", sessionID)
+	return nil
+}
+
+func (p *SessionEventProcessor) handleSessionEnded(ctx context.Context, event interfaces.BranchingEvent) error {
+	sessionID := event.Data.(*interfaces.Session).ID
+	p.manager.logger.Printf("Session ended: %s", sessionID)
+	return nil
+}
+
+// BranchEventProcessor handles branch lifecycle events
+type BranchEventProcessor struct {
+	manager *BranchingManagerImpl
+}
+
+func (p *BranchEventProcessor) ProcessEvent(ctx context.Context, event interfaces.BranchingEvent) error {
+	p.manager.logger.Printf("Processing branch event: %v", event.Type)
+
+	switch event.Type {
+	case interfaces.EventTypeBranchCreated:
+		return p.handleBranchCreated(ctx, event)
+	case interfaces.EventTypeBranchMerged:
+		return p.handleBranchMerged(ctx, event)
+	default:
+		return fmt.Errorf("unsupported branch event type: %v", event.Type)
+	}
+}
+
+func (p *BranchEventProcessor) handleBranchCreated(ctx context.Context, event interfaces.BranchingEvent) error {
+	p.manager.logger.Printf("Branch created: %v", event.Data)
+	return nil
+}
+
+func (p *BranchEventProcessor) handleBranchMerged(ctx context.Context, event interfaces.BranchingEvent) error {
+	p.manager.logger.Printf("Branch merged: %v", event.Data)
 	return nil
 }
 

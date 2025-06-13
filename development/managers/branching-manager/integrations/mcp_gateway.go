@@ -8,10 +8,9 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strconv"
 	"time"
 
-	"../../pkg/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
 )
 
 // MCPGatewayIntegration handles integration with MCP (Model Context Protocol) Gateway
@@ -25,11 +24,11 @@ type MCPGatewayIntegration struct {
 
 // MCPGatewayConfig holds MCP Gateway configuration
 type MCPGatewayConfig struct {
-	BaseURL    string
-	APIKey     string
-	Endpoints  map[string]string
-	Timeout    time.Duration
-	RateLimit  int // requests per minute
+	BaseURL   string
+	APIKey    string
+	Endpoints map[string]string
+	Timeout   time.Duration
+	RateLimit int // requests per minute
 }
 
 // MCPResponse represents a standard MCP Gateway response
@@ -43,39 +42,39 @@ type MCPResponse struct {
 
 // MCPSessionRequest represents a session creation request
 type MCPSessionRequest struct {
-	Scope       string                 `json:"scope"`
-	Duration    string                 `json:"duration"`
-	Metadata    map[string]interface{} `json:"metadata"`
-	UserID      string                 `json:"user_id,omitempty"`
-	ProjectID   string                 `json:"project_id,omitempty"`
+	Scope     string                 `json:"scope"`
+	Duration  string                 `json:"duration"`
+	Metadata  map[string]interface{} `json:"metadata"`
+	UserID    string                 `json:"user_id,omitempty"`
+	ProjectID string                 `json:"project_id,omitempty"`
 }
 
 // MCPBranchRequest represents a branch creation request
 type MCPBranchRequest struct {
-	Name        string                 `json:"name"`
-	BaseBranch  string                 `json:"base_branch"`
-	SessionID   string                 `json:"session_id"`
-	Dimensions  []string               `json:"dimensions,omitempty"`
-	Tags        []string               `json:"tags,omitempty"`
-	Metadata    map[string]interface{} `json:"metadata"`
+	Name       string                 `json:"name"`
+	BaseBranch string                 `json:"base_branch"`
+	SessionID  string                 `json:"session_id"`
+	Dimensions []string               `json:"dimensions,omitempty"`
+	Tags       []string               `json:"tags,omitempty"`
+	Metadata   map[string]interface{} `json:"metadata"`
 }
 
 // MCPEventRequest represents an event registration request
 type MCPEventRequest struct {
-	EventType   string                 `json:"event_type"`
-	Source      string                 `json:"source"`
-	BranchID    string                 `json:"branch_id,omitempty"`
-	SessionID   string                 `json:"session_id,omitempty"`
-	Payload     map[string]interface{} `json:"payload"`
+	EventType string                 `json:"event_type"`
+	Source    string                 `json:"source"`
+	BranchID  string                 `json:"branch_id,omitempty"`
+	SessionID string                 `json:"session_id,omitempty"`
+	Payload   map[string]interface{} `json:"payload"`
 }
 
 // MCPSnapshotRequest represents a snapshot creation request
 type MCPSnapshotRequest struct {
-	BranchID        string                 `json:"branch_id"`
-	GitHash         string                 `json:"git_hash"`
-	ChangesSummary  string                 `json:"changes_summary"`
-	TagName         string                 `json:"tag_name,omitempty"`
-	Metadata        map[string]interface{} `json:"metadata"`
+	BranchID       string                 `json:"branch_id"`
+	GitHash        string                 `json:"git_hash"`
+	ChangesSummary string                 `json:"changes_summary"`
+	TagName        string                 `json:"tag_name,omitempty"`
+	Metadata       map[string]interface{} `json:"metadata"`
 }
 
 // RateLimiter implements simple rate limiting
@@ -144,7 +143,7 @@ func NewMCPGatewayIntegration(config *MCPGatewayConfig) *MCPGatewayIntegration {
 // RegisterSession registers a session with MCP Gateway
 func (m *MCPGatewayIntegration) RegisterSession(ctx context.Context, session *interfaces.Session) error {
 	endpoint := m.getEndpoint("sessions")
-	
+
 	request := &MCPSessionRequest{
 		Scope:    session.Scope,
 		Duration: session.Duration.String(),
@@ -178,7 +177,7 @@ func (m *MCPGatewayIntegration) RegisterSession(ctx context.Context, session *in
 // RegisterBranch registers a branch with MCP Gateway
 func (m *MCPGatewayIntegration) RegisterBranch(ctx context.Context, branch *interfaces.Branch) error {
 	endpoint := m.getEndpoint("branches")
-	
+
 	request := &MCPBranchRequest{
 		Name:       branch.Name,
 		BaseBranch: branch.BaseBranch,
@@ -213,7 +212,7 @@ func (m *MCPGatewayIntegration) RegisterBranch(ctx context.Context, branch *inte
 // RegisterEvent registers an event with MCP Gateway
 func (m *MCPGatewayIntegration) RegisterEvent(ctx context.Context, event *interfaces.BranchingEvent) error {
 	endpoint := m.getEndpoint("events")
-	
+
 	request := &MCPEventRequest{
 		EventType: string(event.Type),
 		Source:    event.Source,
@@ -237,7 +236,7 @@ func (m *MCPGatewayIntegration) RegisterEvent(ctx context.Context, event *interf
 // RegisterSnapshot registers a temporal snapshot with MCP Gateway
 func (m *MCPGatewayIntegration) RegisterSnapshot(ctx context.Context, snapshot *interfaces.TemporalSnapshot) error {
 	endpoint := m.getEndpoint("snapshots")
-	
+
 	request := &MCPSnapshotRequest{
 		BranchID:       snapshot.BranchID,
 		GitHash:        snapshot.GitHash,
@@ -261,13 +260,13 @@ func (m *MCPGatewayIntegration) RegisterSnapshot(ctx context.Context, snapshot *
 // GetSessions retrieves sessions from MCP Gateway
 func (m *MCPGatewayIntegration) GetSessions(ctx context.Context, filters map[string]string) ([]*interfaces.Session, error) {
 	endpoint := m.getEndpoint("sessions")
-	
+
 	// Build query parameters
 	queryParams := url.Values{}
 	for key, value := range filters {
 		queryParams.Add(key, value)
 	}
-	
+
 	if len(queryParams) > 0 {
 		endpoint += "?" + queryParams.Encode()
 	}
@@ -300,13 +299,13 @@ func (m *MCPGatewayIntegration) GetSessions(ctx context.Context, filters map[str
 // GetBranches retrieves branches from MCP Gateway
 func (m *MCPGatewayIntegration) GetBranches(ctx context.Context, filters map[string]string) ([]*interfaces.Branch, error) {
 	endpoint := m.getEndpoint("branches")
-	
+
 	// Build query parameters
 	queryParams := url.Values{}
 	for key, value := range filters {
 		queryParams.Add(key, value)
 	}
-	
+
 	if len(queryParams) > 0 {
 		endpoint += "?" + queryParams.Encode()
 	}
@@ -339,13 +338,13 @@ func (m *MCPGatewayIntegration) GetBranches(ctx context.Context, filters map[str
 // GetEvents retrieves events from MCP Gateway
 func (m *MCPGatewayIntegration) GetEvents(ctx context.Context, filters map[string]string) ([]*interfaces.BranchingEvent, error) {
 	endpoint := m.getEndpoint("events")
-	
+
 	// Build query parameters
 	queryParams := url.Values{}
 	for key, value := range filters {
 		queryParams.Add(key, value)
 	}
-	
+
 	if len(queryParams) > 0 {
 		endpoint += "?" + queryParams.Encode()
 	}
@@ -378,7 +377,7 @@ func (m *MCPGatewayIntegration) GetEvents(ctx context.Context, filters map[strin
 // UpdateSessionStatus updates session status via MCP Gateway
 func (m *MCPGatewayIntegration) UpdateSessionStatus(ctx context.Context, sessionID string, status interfaces.SessionStatus) error {
 	endpoint := fmt.Sprintf("%s/%s/status", m.getEndpoint("sessions"), sessionID)
-	
+
 	request := map[string]interface{}{
 		"status": status,
 	}
@@ -398,7 +397,7 @@ func (m *MCPGatewayIntegration) UpdateSessionStatus(ctx context.Context, session
 // UpdateBranchStatus updates branch status via MCP Gateway
 func (m *MCPGatewayIntegration) UpdateBranchStatus(ctx context.Context, branchID string, status interfaces.BranchStatus) error {
 	endpoint := fmt.Sprintf("%s/%s/status", m.getEndpoint("branches"), branchID)
-	
+
 	request := map[string]interface{}{
 		"status": status,
 	}
@@ -418,14 +417,14 @@ func (m *MCPGatewayIntegration) UpdateBranchStatus(ctx context.Context, branchID
 // GetMetrics retrieves metrics from MCP Gateway
 func (m *MCPGatewayIntegration) GetMetrics(ctx context.Context, metricType string, timeRange *interfaces.TimeRange) (map[string]interface{}, error) {
 	endpoint := fmt.Sprintf("%s/metrics", m.baseURL)
-	
+
 	queryParams := url.Values{}
 	queryParams.Add("type", metricType)
 	if timeRange != nil {
 		queryParams.Add("start", timeRange.Start.Format(time.RFC3339))
 		queryParams.Add("end", timeRange.End.Format(time.RFC3339))
 	}
-	
+
 	endpoint += "?" + queryParams.Encode()
 
 	response, err := m.makeRequest(ctx, "GET", endpoint, nil)
@@ -447,7 +446,7 @@ func (m *MCPGatewayIntegration) GetMetrics(ctx context.Context, metricType strin
 // NotifyQuantumBranchCreated notifies MCP Gateway of quantum branch creation
 func (m *MCPGatewayIntegration) NotifyQuantumBranchCreated(ctx context.Context, quantumBranch *interfaces.QuantumBranch) error {
 	endpoint := fmt.Sprintf("%s/quantum-branches", m.baseURL)
-	
+
 	request := map[string]interface{}{
 		"id":          quantumBranch.ID,
 		"name":        quantumBranch.Name,
@@ -532,7 +531,7 @@ func (m *MCPGatewayIntegration) getEndpoint(endpointName string) string {
 // Health checks the MCP Gateway health
 func (m *MCPGatewayIntegration) Health(ctx context.Context) error {
 	endpoint := fmt.Sprintf("%s/health", m.baseURL)
-	
+
 	response, err := m.makeRequest(ctx, "GET", endpoint, nil)
 	if err != nil {
 		return fmt.Errorf("MCP Gateway health check failed: %v", err)
@@ -549,7 +548,7 @@ func (m *MCPGatewayIntegration) Health(ctx context.Context) error {
 
 func parseSessionFromMCP(data map[string]interface{}) *interfaces.Session {
 	session := &interfaces.Session{}
-	
+
 	if id, ok := data["id"].(string); ok {
 		session.ID = id
 	}
@@ -577,13 +576,13 @@ func parseSessionFromMCP(data map[string]interface{}) *interfaces.Session {
 	if metadata, ok := data["metadata"].(map[string]interface{}); ok {
 		session.Metadata = metadata
 	}
-	
+
 	return session
 }
 
 func parseBranchFromMCP(data map[string]interface{}) *interfaces.Branch {
 	branch := &interfaces.Branch{}
-	
+
 	if id, ok := data["id"].(string); ok {
 		branch.ID = id
 	}
@@ -615,13 +614,13 @@ func parseBranchFromMCP(data map[string]interface{}) *interfaces.Branch {
 	if metadata, ok := data["metadata"].(map[string]interface{}); ok {
 		branch.Metadata = metadata
 	}
-	
+
 	return branch
 }
 
 func parseEventFromMCP(data map[string]interface{}) *interfaces.BranchingEvent {
 	event := &interfaces.BranchingEvent{}
-	
+
 	if id, ok := data["id"].(string); ok {
 		event.ID = id
 	}
@@ -648,7 +647,7 @@ func parseEventFromMCP(data map[string]interface{}) *interfaces.BranchingEvent {
 	if processed, ok := data["processed"].(bool); ok {
 		event.Processed = processed
 	}
-	
+
 	return event
 }
 

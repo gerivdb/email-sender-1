@@ -7,38 +7,37 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"regexp"
 	"strings"
 	"time"
 
 	"github.com/google/uuid"
 
-	"../../pkg/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
 )
 
 // GitOperationsManager handles real Git operations
 type GitOperationsManager struct {
-	repoPath       string
-	gitExecutable  string
-	defaultBranch  string
-	remoteName     string
+	repoPath      string
+	gitExecutable string
+	defaultBranch string
+	remoteName    string
 }
 
 // GitConfig holds Git operation configuration
 type GitConfig struct {
-	RepoPath       string
-	GitExecutable  string
-	DefaultBranch  string
-	RemoteName     string
+	RepoPath      string
+	GitExecutable string
+	DefaultBranch string
+	RemoteName    string
 }
 
 // GitResult represents the result of a Git operation
 type GitResult struct {
-	Success    bool
-	Output     string
-	Error      string
-	ExitCode   int
-	Duration   time.Duration
+	Success  bool
+	Output   string
+	Error    string
+	ExitCode int
+	Duration time.Duration
 }
 
 // NewGitOperationsManager creates a new Git operations manager
@@ -60,10 +59,10 @@ func NewGitOperationsManager(config *GitConfig) (*GitOperationsManager, error) {
 	}
 
 	return &GitOperationsManager{
-		repoPath:       config.RepoPath,
-		gitExecutable:  config.GitExecutable,
-		defaultBranch:  config.DefaultBranch,
-		remoteName:     config.RemoteName,
+		repoPath:      config.RepoPath,
+		gitExecutable: config.GitExecutable,
+		defaultBranch: config.DefaultBranch,
+		remoteName:    config.RemoteName,
 	}, nil
 }
 
@@ -146,8 +145,8 @@ func (g *GitOperationsManager) MergeBranch(ctx context.Context, sourceBranch, ta
 	result := g.executeGitCommand(ctx, args...)
 	if !result.Success {
 		return &interfaces.GitMergeResult{
-			Success:      false,
-			ErrorMessage: result.Error,
+			Success:       false,
+			ErrorMessage:  result.Error,
 			ConflictFiles: g.getConflictFiles(ctx),
 		}, nil
 	}
@@ -301,17 +300,17 @@ func (g *GitOperationsManager) ListBranches(ctx context.Context, includeRemote b
 		if line == "" {
 			continue
 		}
-		
+
 		// Remove current branch indicator (*)
 		if strings.HasPrefix(line, "* ") {
 			line = strings.TrimSpace(line[2:])
 		}
-		
+
 		// Skip HEAD detached state
 		if strings.Contains(line, "HEAD detached") {
 			continue
 		}
-		
+
 		branches = append(branches, line)
 	}
 
@@ -357,7 +356,7 @@ func (g *GitOperationsManager) CreateTemporalSnapshot(ctx context.Context, branc
 	// Create snapshot tag for easy reference
 	snapshotID := uuid.New().String()
 	tagName := fmt.Sprintf("snapshot-%s-%d", branchName, time.Now().Unix())
-	
+
 	g.executeGitCommand(ctx, "tag", tagName, gitHash)
 
 	return &interfaces.TemporalSnapshot{
@@ -375,7 +374,7 @@ func (g *GitOperationsManager) CreateTemporalSnapshot(ctx context.Context, branc
 func (g *GitOperationsManager) TimeTravelToSnapshot(ctx context.Context, snapshot *interfaces.TemporalSnapshot) error {
 	// Create a new branch for the time-travel operation
 	timeTravelBranch := fmt.Sprintf("time-travel-%s-%d", snapshot.BranchID, time.Now().Unix())
-	
+
 	result := g.executeGitCommand(ctx, "checkout", "-b", timeTravelBranch, snapshot.GitHash)
 	if !result.Success {
 		return fmt.Errorf("failed to create time-travel branch: %s", result.Error)
@@ -461,7 +460,7 @@ func (g *GitOperationsManager) getAheadBehindInfo(ctx context.Context, branch, b
 // executeGitCommand executes a Git command and returns the result
 func (g *GitOperationsManager) executeGitCommand(ctx context.Context, args ...string) *GitResult {
 	startTime := time.Now()
-	
+
 	cmd := exec.CommandContext(ctx, g.gitExecutable, args...)
 	cmd.Dir = g.repoPath
 

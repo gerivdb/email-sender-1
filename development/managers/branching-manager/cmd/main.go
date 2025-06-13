@@ -2,52 +2,60 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/development"
 )
 
 func main() {
-	// Parse command line flags
-	configPath := flag.String("config", "./config/branching_config.yaml", "Path to configuration file")
-	flag.Parse()
+	fmt.Println("🚀 Starting Advanced 8-Level Branching Framework...")
 
-	// Create and initialize the branching manager
-	manager, err := NewBranchingManager(*configPath)
-	if err != nil {
-		log.Fatalf("Failed to create branching manager: %v", err)
+	// Create a new branching manager
+	config := &development.BranchingConfig{
+		DefaultSessionDuration: 3600,  // 1 hour in seconds
+		MaxSessionDuration:     86400, // 24 hours in seconds
+		SessionNamingPattern:   "session-{timestamp}",
+		AutoArchiveEnabled:     true,
+		EventQueueSize:         1000,
+		GitHooksEnabled:        true,
+		AutoBranchingEnabled:   true,
 	}
 
-	// Create context for graceful shutdown
+	manager := development.NewBranchingManagerImpl(config)
+
+	// Create context with cancellation
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	// Start the manager
+	// Handle graceful shutdown
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+
+	go func() {
+		<-sigChan
+		fmt.Println("\n🛑 Shutting down gracefully...")
+		cancel()
+	}()
+
+	// Start the branching manager
 	if err := manager.Start(ctx); err != nil {
 		log.Fatalf("Failed to start branching manager: %v", err)
 	}
 
-	// Setup graceful shutdown
-	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
-
-	fmt.Println("BranchingManager is running...")
-	fmt.Println("Press Ctrl+C to stop")
+	fmt.Println("✅ Branching Framework started successfully!")
+	fmt.Println("Press Ctrl+C to stop...")
 
 	// Wait for shutdown signal
-	<-sigChan
-	fmt.Println("\nReceived shutdown signal, stopping...")
-
-	// Cancel context to signal shutdown
-	cancel()
+	<-ctx.Done()
 
 	// Stop the manager
 	if err := manager.Stop(); err != nil {
-		log.Printf("Error stopping branching manager: %v", err)
+		log.Printf("Error stopping manager: %v", err)
 	}
 
-	fmt.Println("BranchingManager stopped successfully")
+	fmt.Println("👋 Branching Framework stopped.")
 }
