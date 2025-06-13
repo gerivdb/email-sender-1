@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/email-sender/development/managers/interfaces"
+	"./interfaces"
 )
 
 // initializeStorageIntegration sets up storage manager integration

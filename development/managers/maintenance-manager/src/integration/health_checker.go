@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
-	"github.com/email-sender/development/managers/interfaces"
+	"./interfaces"
 )
 
 // DefaultHealthChecker provides a concrete implementation of HealthChecker

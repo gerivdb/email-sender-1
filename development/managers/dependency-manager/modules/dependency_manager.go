@@ -13,7 +13,7 @@ import (
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
-	"github.com/email-sender/development/managers/interfaces"
+	"./interfaces"
 	"golang.org/x/mod/modfile"
 )
 

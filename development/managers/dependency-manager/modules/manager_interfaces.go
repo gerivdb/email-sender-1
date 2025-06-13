@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/email-sender/development/managers/interfaces"
+	"./interfaces"
 )
 
 // SecurityManagerInterface defines the interface for SecurityManager integration

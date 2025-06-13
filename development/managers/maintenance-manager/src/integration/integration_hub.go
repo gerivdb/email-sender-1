@@ -8,7 +8,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/email-sender/development/managers/interfaces"
+	"./interfaces"
 )
 
 // IntegrationHub coordinates with all 17 managers in the ecosystem

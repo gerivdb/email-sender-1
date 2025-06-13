@@ -4,10 +4,10 @@ import (
 	"context"
 	"time"
 
-	"github.com/email-sender/development/managers/interfaces"
+	"./interfaces"
 )
 
-// Action représente une action utilisateur capturée
+// Action reprÃ©sente une action utilisateur capturÃ©e
 type Action struct {
 	ID            string                 `json:"id"`
 	Type          string                 `json:"type"` // command, edit, search, etc.
@@ -19,7 +19,7 @@ type Action struct {
 	Metadata      map[string]interface{} `json:"metadata,omitempty"`
 }
 
-// ContextResult représente un résultat de recherche contextuelle
+// ContextResult reprÃ©sente un rÃ©sultat de recherche contextuelle
 type ContextResult struct {
 	ID             string                 `json:"id"`
 	Action         Action                 `json:"action"`
@@ -28,7 +28,7 @@ type ContextResult struct {
 	Context        map[string]interface{} `json:"context,omitempty"`
 }
 
-// ContextQuery représente une requête de recherche contextuelle
+// ContextQuery reprÃ©sente une requÃªte de recherche contextuelle
 type ContextQuery struct {
 	Text                string    `json:"text"`
 	WorkspacePath       string    `json:"workspace_path,omitempty"`
@@ -38,7 +38,7 @@ type ContextQuery struct {
 	SimilarityThreshold float64   `json:"similarity_threshold,omitempty"`
 }
 
-// TimeRange représente un intervalle de temps
+// TimeRange reprÃ©sente un intervalle de temps
 type TimeRange struct {
 	Start time.Time `json:"start,omitempty"`
 	End   time.Time `json:"end,omitempty"`
@@ -70,7 +70,7 @@ type ContextualMemoryManager interface {
 	AnalyzePatternsUsage(ctx context.Context, workspacePath string) (map[string]interface{}, error)
 	GetSimilarActions(ctx context.Context, actionID string, limit int) ([]ContextResult, error)
 
-	// Métriques
+	// MÃ©triques
 	GetMetrics(ctx context.Context) (ManagerMetrics, error)
 }
 
@@ -84,7 +84,7 @@ type IndexManager interface {
 	DeleteFromIndex(ctx context.Context, contextID string) error
 }
 
-// RetrievalManager interface pour la récupération
+// RetrievalManager interface pour la rÃ©cupÃ©ration
 type RetrievalManager interface {
 	interfaces.BaseManager
 	SearchContext(ctx context.Context, query ContextQuery) ([]ContextResult, error)
@@ -97,7 +97,7 @@ type RetrievalManager interface {
 	GetActionsBySession(ctx context.Context, sessionID string) ([]Action, error)
 }
 
-// IntegrationManager interface pour les intégrations externes
+// IntegrationManager interface pour les intÃ©grations externes
 type IntegrationManager interface {
 	interfaces.BaseManager
 	NotifyAction(ctx context.Context, action Action) error
@@ -121,13 +121,13 @@ type ContextEvent struct {
 	Timestamp time.Time              `json:"timestamp"`
 }
 
-// ContextUpdate représente une mise à jour de contexte
+// ContextUpdate reprÃ©sente une mise Ã  jour de contexte
 type ContextUpdate struct {
 	Text     string                 `json:"text,omitempty"`
 	Metadata map[string]interface{} `json:"metadata,omitempty"`
 }
 
-// ManagerMetrics représente les métriques du manager
+// ManagerMetrics reprÃ©sente les mÃ©triques du manager
 type ManagerMetrics struct {
 	TotalActions      int64             `json:"total_actions"`
 	CacheHitRatio     float64           `json:"cache_hit_ratio"`

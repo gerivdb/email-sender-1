@@ -7,12 +7,12 @@ import (
 	"time"
 
 	"github.com/email-sender/development/managers/contextual-memory-manager/interfaces"
-	baseInterfaces "github.com/email-sender/development/managers/interfaces"
+	baseInterfaces "./interfaces"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
 
-// monitoringManagerImpl implémente les métriques et monitoring
+// monitoringManagerImpl implÃ©mente les mÃ©triques et monitoring
 type monitoringManagerImpl struct {
 	storageManager baseInterfaces.StorageManager
 	configManager  baseInterfaces.ConfigManager
@@ -21,7 +21,7 @@ type monitoringManagerImpl struct {
 	initialized bool
 	mu          sync.RWMutex
 	
-	// Métriques Prometheus
+	// MÃ©triques Prometheus
 	actionsCaptured   prometheus.Counter
 	searchDuration    prometheus.Histogram
 	cacheHitRatio     prometheus.Gauge
@@ -29,11 +29,11 @@ type monitoringManagerImpl struct {
 	embeddingLatency  prometheus.Histogram
 	mcpNotifications  prometheus.Counter
 	
-	// États internes
+	// Ãtats internes
 	stats *ContextualMemoryStats
 }
 
-// ContextualMemoryStats représente les statistiques du système
+// ContextualMemoryStats reprÃ©sente les statistiques du systÃ¨me
 type ContextualMemoryStats struct {
 	TotalActions         int64     `json:"total_actions"`
 	TotalSearches        int64     `json:"total_searches"`
@@ -45,7 +45,7 @@ type ContextualMemoryStats struct {
 	SystemHealth         string    `json:"system_health"`
 }
 
-// NewMonitoringManager crée une nouvelle instance de MonitoringManager
+// NewMonitoringManager crÃ©e une nouvelle instance de MonitoringManager
 func NewMonitoringManager(
 	storageManager baseInterfaces.StorageManager,
 	errorManager baseInterfaces.ErrorManager,
@@ -67,23 +67,23 @@ func NewMonitoringManager(
 	}
 }
 
-// Initialize implémente BaseManager.Initialize
+// Initialize implÃ©mente BaseManager.Initialize
 func (mm *monitoringManagerImpl) Initialize(ctx context.Context) error {
 	if mm.initialized {
 		return nil
 	}
 
-	// Initialiser les métriques Prometheus
+	// Initialiser les mÃ©triques Prometheus
 	mm.initializeMetrics()
 	
-	// Démarrer la collecte périodique de métriques
+	// DÃ©marrer la collecte pÃ©riodique de mÃ©triques
 	go mm.startMetricsCollection(ctx)
 
 	mm.initialized = true
 	return nil
 }
 
-// RecordAction enregistre une action capturée
+// RecordAction enregistre une action capturÃ©e
 func (mm *monitoringManagerImpl) RecordAction(actionType string) {
 	if !mm.initialized {
 		return
@@ -116,7 +116,7 @@ func (mm *monitoringManagerImpl) RecordSearch(duration time.Duration, resultsCou
 	mm.mu.Unlock()
 }
 
-// RecordEmbeddingLatency enregistre la latence de génération d'embedding
+// RecordEmbeddingLatency enregistre la latence de gÃ©nÃ©ration d'embedding
 func (mm *monitoringManagerImpl) RecordEmbeddingLatency(duration time.Duration) {
 	if !mm.initialized {
 		return
@@ -134,7 +134,7 @@ func (mm *monitoringManagerImpl) RecordEmbeddingLatency(duration time.Duration) 
 	mm.mu.Unlock()
 }
 
-// UpdateCacheHitRatio met à jour le ratio de cache hits
+// UpdateCacheHitRatio met Ã  jour le ratio de cache hits
 func (mm *monitoringManagerImpl) UpdateCacheHitRatio(ratio float64) {
 	if !mm.initialized {
 		return
@@ -147,7 +147,7 @@ func (mm *monitoringManagerImpl) UpdateCacheHitRatio(ratio float64) {
 	mm.mu.Unlock()
 }
 
-// UpdateActiveSessions met à jour le nombre de sessions actives
+// UpdateActiveSessions met Ã  jour le nombre de sessions actives
 func (mm *monitoringManagerImpl) UpdateActiveSessions(count int64) {
 	if !mm.initialized {
 		return
@@ -174,7 +174,7 @@ func (mm *monitoringManagerImpl) RecordMCPNotification(success bool) {
 	mm.mcpNotifications.With(labels).Inc()
 }
 
-// RecordOperation enregistre une opération avec sa durée et status d'erreur
+// RecordOperation enregistre une opÃ©ration avec sa durÃ©e et status d'erreur
 func (mm *monitoringManagerImpl) RecordOperation(ctx context.Context, operation string, duration time.Duration, err error) error {
 	if !mm.initialized {
 		return fmt.Errorf("monitoring manager not initialized")
@@ -183,7 +183,7 @@ func (mm *monitoringManagerImpl) RecordOperation(ctx context.Context, operation 
 	// Enregistrer la latence
 	mm.searchLatency.WithLabelValues(operation).Observe(duration.Seconds())
 	
-	// Enregistrer l'opération
+	// Enregistrer l'opÃ©ration
 	if err != nil {
 		mm.operationsTotal.WithLabelValues(operation, "error").Inc()
 	} else {
@@ -200,7 +200,7 @@ func (mm *monitoringManagerImpl) RecordOperation(ctx context.Context, operation 
 	return nil
 }
 
-// GetMetrics retourne les métriques actuelles du système
+// GetMetrics retourne les mÃ©triques actuelles du systÃ¨me
 func (mm *monitoringManagerImpl) GetMetrics(ctx context.Context) (interfaces.ManagerMetrics, error) {
 	if !mm.initialized {
 		return interfaces.ManagerMetrics{}, fmt.Errorf("monitoring manager not initialized")
@@ -210,7 +210,7 @@ func (mm *monitoringManagerImpl) GetMetrics(ctx context.Context) (interfaces.Man
 	defer mm.mu.RUnlock()
 
 	// Calculer le ratio de cache hits (simulation)
-	cacheHitRatio := 0.85 // Dans un vrai système, cela viendrait du cache manager
+	cacheHitRatio := 0.85 // Dans un vrai systÃ¨me, cela viendrait du cache manager
 
 	return interfaces.ManagerMetrics{
 		TotalActions:      mm.stats.TotalActions,
@@ -241,7 +241,7 @@ func (mm *monitoringManagerImpl) RecordCacheHit(ctx context.Context, hit bool) e
 		mm.cacheMisses.Inc()
 	}
 
-	// Calculer et mettre à jour le ratio
+	// Calculer et mettre Ã  jour le ratio
 	hits := mm.cacheHits.Get()
 	misses := mm.cacheMisses.Get()
 	total := hits + misses
@@ -254,7 +254,7 @@ func (mm *monitoringManagerImpl) RecordCacheHit(ctx context.Context, hit bool) e
 	return nil
 }
 
-// IncrementActiveSession incrémente le compteur de sessions actives
+// IncrementActiveSession incrÃ©mente le compteur de sessions actives
 func (mm *monitoringManagerImpl) IncrementActiveSession(ctx context.Context) error {
 	if !mm.initialized {
 		return fmt.Errorf("monitoring manager not initialized")
@@ -269,7 +269,7 @@ func (mm *monitoringManagerImpl) IncrementActiveSession(ctx context.Context) err
 	return nil
 }
 
-// DecrementActiveSession décrémente le compteur de sessions actives
+// DecrementActiveSession dÃ©crÃ©mente le compteur de sessions actives
 func (mm *monitoringManagerImpl) DecrementActiveSession(ctx context.Context) error {
 	if !mm.initialized {
 		return fmt.Errorf("monitoring manager not initialized")
@@ -291,19 +291,19 @@ func (mm *monitoringManagerImpl) GetStats() *ContextualMemoryStats {
 	mm.mu.RLock()
 	defer mm.mu.RUnlock()
 	
-	// Créer une copie pour éviter les races
+	// CrÃ©er une copie pour Ã©viter les races
 	statsCopy := *mm.stats
 	return &statsCopy
 }
 
-// UpdateSystemHealth met à jour l'état de santé du système
+// UpdateSystemHealth met Ã  jour l'Ã©tat de santÃ© du systÃ¨me
 func (mm *monitoringManagerImpl) UpdateSystemHealth(health string) {
 	mm.mu.Lock()
 	mm.stats.SystemHealth = health
 	mm.mu.Unlock()
 }
 
-// GetHealthStatus retourne l'état de santé du système
+// GetHealthStatus retourne l'Ã©tat de santÃ© du systÃ¨me
 func (mm *monitoringManagerImpl) GetHealthStatus(ctx context.Context) map[string]interface{} {
 	mm.mu.RLock()
 	defer mm.mu.RUnlock()
@@ -321,24 +321,24 @@ func (mm *monitoringManagerImpl) GetHealthStatus(ctx context.Context) map[string
 	}
 }
 
-// Cleanup implémente BaseManager.Cleanup
+// Cleanup implÃ©mente BaseManager.Cleanup
 func (mm *monitoringManagerImpl) Cleanup() error {
-	// Rien à nettoyer spécifiquement
+	// Rien Ã  nettoyer spÃ©cifiquement
 	return nil
 }
 
-// HealthCheck implémente BaseManager.HealthCheck
+// HealthCheck implÃ©mente BaseManager.HealthCheck
 func (mm *monitoringManagerImpl) HealthCheck(ctx context.Context) error {
 	if !mm.initialized {
 		return fmt.Errorf("MonitoringManager not initialized")
 	}
 
-	// Vérifier que les métriques sont fonctionnelles
+	// VÃ©rifier que les mÃ©triques sont fonctionnelles
 	mm.mu.RLock()
 	lastActivity := mm.stats.LastActivity
 	mm.mu.RUnlock()
 
-	// Si aucune activité depuis plus de 5 minutes, considérer comme dégradé
+	// Si aucune activitÃ© depuis plus de 5 minutes, considÃ©rer comme dÃ©gradÃ©
 	if time.Since(lastActivity) > 5*time.Minute {
 		mm.UpdateSystemHealth("degraded")
 		return fmt.Errorf("no recent activity detected")
@@ -348,16 +348,16 @@ func (mm *monitoringManagerImpl) HealthCheck(ctx context.Context) error {
 	return nil
 }
 
-// Méthodes privées
+// MÃ©thodes privÃ©es
 
 func (mm *monitoringManagerImpl) initializeMetrics() {
-	// Compteur d'actions capturées
+	// Compteur d'actions capturÃ©es
 	mm.actionsCaptured = promauto.NewCounter(prometheus.CounterOpts{
 		Name: "contextual_memory_actions_total",
 		Help: "The total number of actions captured",
 	})
 
-	// Histogramme de durée de recherche
+	// Histogramme de durÃ©e de recherche
 	mm.searchDuration = promauto.NewHistogram(prometheus.HistogramOpts{
 		Name:    "contextual_memory_search_duration_seconds",
 		Help:    "The duration of context searches",
@@ -408,13 +408,13 @@ func (mm *monitoringManagerImpl) startMetricsCollection(ctx context.Context) {
 }
 
 func (mm *monitoringManagerImpl) collectMetrics() {
-	// Simulation de collecte de métriques système
-	// Dans un vrai système, ces valeurs viendraient des autres managers
+	// Simulation de collecte de mÃ©triques systÃ¨me
+	// Dans un vrai systÃ¨me, ces valeurs viendraient des autres managers
 	
 	mm.mu.Lock()
 	defer mm.mu.Unlock()
 	
-	// Simuler des mises à jour périodiques
+	// Simuler des mises Ã  jour pÃ©riodiques
 	if time.Since(mm.stats.LastActivity) < time.Minute {
 		mm.stats.SystemHealth = "healthy"
 	} else if time.Since(mm.stats.LastActivity) < 5*time.Minute {

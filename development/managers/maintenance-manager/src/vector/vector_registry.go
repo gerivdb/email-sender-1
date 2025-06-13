@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/qdrant/go-client/qdrant"
+	// "github.com/qdrant/go-client/qdrant" // Temporarily disabled
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

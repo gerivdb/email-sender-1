@@ -12,7 +12,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 
-	"github.com/email-sender/development/managers/interfaces"
+	"./interfaces"
 )
 
 // GoGenEngine - Native Go template system to replace Hygen with AI integration

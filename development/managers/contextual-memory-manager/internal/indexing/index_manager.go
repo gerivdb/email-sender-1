@@ -10,11 +10,11 @@ import (
 	"time"
 
 	"github.com/email-sender/development/managers/contextual-memory-manager/interfaces"
-	baseInterfaces "github.com/email-sender/development/managers/interfaces"
+	baseInterfaces "./interfaces"
 	"github.com/google/uuid"
 )
 
-// indexManagerImpl implémente IndexManager en utilisant Qdrant et SQLiteEmbeddingCache
+// indexManagerImpl implÃ©mente IndexManager en utilisant Qdrant et SQLiteEmbeddingCache
 type indexManagerImpl struct {
 	storageManager baseInterfaces.StorageManager
 	configManager  baseInterfaces.ConfigManager
@@ -30,7 +30,7 @@ type indexManagerImpl struct {
 	cacheDBPath    string
 }
 
-// NewIndexManager crée une nouvelle instance de IndexManager
+// NewIndexManager crÃ©e une nouvelle instance de IndexManager
 func NewIndexManager(
 	storageManager baseInterfaces.StorageManager,
 	errorManager baseInterfaces.ErrorManager,
@@ -47,13 +47,13 @@ func NewIndexManager(
 	}, nil
 }
 
-// Initialize implémente BaseManager.Initialize
+// Initialize implÃ©mente BaseManager.Initialize
 func (im *indexManagerImpl) Initialize(ctx context.Context) error {
 	if im.initialized {
 		return nil
 	}
 
-	// Récupérer la connexion Qdrant
+	// RÃ©cupÃ©rer la connexion Qdrant
 	qdrantConn, err := im.storageManager.GetQdrantConnection()
 	if err != nil {
 		return fmt.Errorf("failed to get Qdrant connection: %w", err)
@@ -66,7 +66,7 @@ func (im *indexManagerImpl) Initialize(ctx context.Context) error {
 		return fmt.Errorf("failed to initialize embedding cache: %w", err)
 	}
 
-	// Vérifier/créer la collection Qdrant
+	// VÃ©rifier/crÃ©er la collection Qdrant
 	err = im.ensureQdrantCollection(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to ensure Qdrant collection: %w", err)
@@ -82,13 +82,13 @@ func (im *indexManagerImpl) IndexAction(ctx context.Context, action interfaces.A
 		return fmt.Errorf("IndexManager not initialized")
 	}
 
-	// Générer ou récupérer l'embedding
+	// GÃ©nÃ©rer ou rÃ©cupÃ©rer l'embedding
 	vector, err := im.getOrCreateEmbedding(ctx, action.Text)
 	if err != nil {
 		return fmt.Errorf("failed to get embedding: %w", err)
 	}
 
-	// Créer le point Qdrant
+	// CrÃ©er le point Qdrant
 	point := map[string]interface{}{
 		"id":     action.ID,
 		"vector": vector,
@@ -143,13 +143,13 @@ func (im *indexManagerImpl) CacheEmbedding(ctx context.Context, text string, vec
 		return fmt.Errorf("IndexManager not initialized")
 	}
 
-	// Sérialiser le vecteur
+	// SÃ©rialiser le vecteur
 	vectorBytes, err := json.Marshal(vector)
 	if err != nil {
 		return fmt.Errorf("failed to marshal vector: %w", err)
 	}
 
-	// Insérer dans le cache SQLite
+	// InsÃ©rer dans le cache SQLite
 	query := `
 		INSERT OR REPLACE INTO embedding_cache 
 		(text_hash, text, vector, created_at, accessed_at) 
@@ -175,7 +175,7 @@ func (im *indexManagerImpl) GetCacheStats(ctx context.Context) (map[string]inter
 	var totalEntries, totalSize int64
 	var avgAccessTime float64
 
-	// Compter les entrées
+	// Compter les entrÃ©es
 	err := im.embeddingCache.QueryRowContext(ctx, "SELECT COUNT(*) FROM embedding_cache").Scan(&totalEntries)
 	if err != nil {
 		return nil, fmt.Errorf("failed to count cache entries: %w", err)
@@ -187,7 +187,7 @@ func (im *indexManagerImpl) GetCacheStats(ctx context.Context) (map[string]inter
 		return nil, fmt.Errorf("failed to calculate cache size: %w", err)
 	}
 
-	// Temps d'accès moyen (simulation)
+	// Temps d'accÃ¨s moyen (simulation)
 	avgAccessTime = 2.5 // ms
 
 	return map[string]interface{}{
@@ -198,7 +198,7 @@ func (im *indexManagerImpl) GetCacheStats(ctx context.Context) (map[string]inter
 	}, nil
 }
 
-// Cleanup implémente BaseManager.Cleanup
+// Cleanup implÃ©mente BaseManager.Cleanup
 func (im *indexManagerImpl) Cleanup() error {
 	if im.embeddingCache != nil {
 		return im.embeddingCache.Close()
@@ -206,19 +206,19 @@ func (im *indexManagerImpl) Cleanup() error {
 	return nil
 }
 
-// HealthCheck implémente BaseManager.HealthCheck
+// HealthCheck implÃ©mente BaseManager.HealthCheck
 func (im *indexManagerImpl) HealthCheck(ctx context.Context) error {
 	if !im.initialized {
 		return fmt.Errorf("IndexManager not initialized")
 	}
 
-	// Vérifier la connexion SQLite
+	// VÃ©rifier la connexion SQLite
 	err := im.embeddingCache.PingContext(ctx)
 	if err != nil {
 		return fmt.Errorf("embedding cache unhealthy: %w", err)
 	}
 
-	// Vérifier Qdrant (simulation)
+	// VÃ©rifier Qdrant (simulation)
 	if im.qdrantClient == nil {
 		return fmt.Errorf("Qdrant client not available")
 	}
@@ -226,7 +226,7 @@ func (im *indexManagerImpl) HealthCheck(ctx context.Context) error {
 	return nil
 }
 
-// Méthodes privées
+// MÃ©thodes privÃ©es
 
 func (im *indexManagerImpl) initializeEmbeddingCache(ctx context.Context) error {
 	db, err := sql.Open("sqlite3", im.cacheDBPath)
@@ -234,7 +234,7 @@ func (im *indexManagerImpl) initializeEmbeddingCache(ctx context.Context) error 
 		return fmt.Errorf("failed to open cache database: %w", err)
 	}
 
-	// Créer la table si elle n'existe pas
+	// CrÃ©er la table si elle n'existe pas
 	schema := `
 	CREATE TABLE IF NOT EXISTS embedding_cache (
 		text_hash TEXT PRIMARY KEY,
@@ -257,7 +257,7 @@ func (im *indexManagerImpl) initializeEmbeddingCache(ctx context.Context) error 
 }
 
 func (im *indexManagerImpl) ensureQdrantCollection(ctx context.Context) error {
-	// Simulation de création de collection Qdrant
+	// Simulation de crÃ©ation de collection Qdrant
 	log.Printf("Ensuring Qdrant collection '%s' exists with vector size %d", im.collectionName, im.vectorSize)
 	return nil
 }
@@ -271,14 +271,14 @@ func (im *indexManagerImpl) getOrCreateEmbedding(ctx context.Context, text strin
 		"SELECT vector FROM embedding_cache WHERE text_hash = ?", textHash).Scan(&vectorBytes)
 
 	if err == nil {
-		// Cache hit - désérialiser
+		// Cache hit - dÃ©sÃ©rialiser
 		var vector []float64
 		err = json.Unmarshal(vectorBytes, &vector)
 		if err != nil {
 			return nil, fmt.Errorf("failed to unmarshal cached vector: %w", err)
 		}
 
-		// Mettre à jour accessed_at
+		// Mettre Ã  jour accessed_at
 		_, _ = im.embeddingCache.ExecContext(ctx,
 			"UPDATE embedding_cache SET accessed_at = ? WHERE text_hash = ?",
 			time.Now(), textHash)
@@ -286,7 +286,7 @@ func (im *indexManagerImpl) getOrCreateEmbedding(ctx context.Context, text strin
 		return vector, nil
 	}
 
-	// Cache miss - générer l'embedding (simulation)
+	// Cache miss - gÃ©nÃ©rer l'embedding (simulation)
 	vector := im.generateEmbedding(text)
 
 	// Mettre en cache
@@ -299,7 +299,7 @@ func (im *indexManagerImpl) getOrCreateEmbedding(ctx context.Context, text strin
 }
 
 func (im *indexManagerImpl) generateEmbedding(text string) []float64 {
-	// Simulation d'embedding (dans un vrai système, utiliser sentence-transformers ou API OpenAI)
+	// Simulation d'embedding (dans un vrai systÃ¨me, utiliser sentence-transformers ou API OpenAI)
 	vector := make([]float64, im.vectorSize)
 	for i := 0; i < im.vectorSize; i++ {
 		vector[i] = math.Sin(float64(len(text)+i)) * 0.5
@@ -359,7 +359,7 @@ func (im *indexManagerImpl) DeleteFromIndex(ctx context.Context, contextID strin
 	// Supprimer du cache d'embeddings
 	if err := im.deleteFromEmbeddingCache(contextID); err != nil {
 		log.Printf("Warning: failed to delete from embedding cache: %v", err)
-		// Ne pas échouer pour un problème de cache
+		// Ne pas Ã©chouer pour un problÃ¨me de cache
 	}
 
 	return nil
@@ -372,7 +372,7 @@ func (im *indexManagerImpl) deleteFromQdrant(ctx context.Context, pointID string
 	return nil
 }
 
-// deleteFromEmbeddingCache supprime une entrée du cache d'embeddings
+// deleteFromEmbeddingCache supprime une entrÃ©e du cache d'embeddings
 func (im *indexManagerImpl) deleteFromEmbeddingCache(contextID string) error {
 	if im.embeddingCache == nil {
 		return fmt.Errorf("embedding cache not initialized")

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
-	"github.com/email-sender/development/managers/interfaces"
+	"./interfaces"
 )
 
 // DefaultManagerCoordinator provides a concrete implementation of ManagerCoordinator

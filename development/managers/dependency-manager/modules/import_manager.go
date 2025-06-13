@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/email-sender/development/managers/interfaces"
+	"./interfaces"
 	"go.uber.org/zap"
 )
 

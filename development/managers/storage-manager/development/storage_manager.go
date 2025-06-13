@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/email-sender/development/managers/interfaces" // Added import
+	"./interfaces" // Added import
 	"go.uber.org/zap"
 	_ "github.com/lib/pq" // PostgreSQL driver
 )

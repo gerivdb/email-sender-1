@@ -11,10 +11,10 @@ import (
 	"time"
 
 	"github.com/email-sender/development/managers/contextual-memory-manager/interfaces"
-	baseInterfaces "github.com/email-sender/development/managers/interfaces"
+	baseInterfaces "./interfaces"
 )
 
-// integrationManagerImpl implémente IntegrationManager pour les intégrations externes
+// integrationManagerImpl implÃ©mente IntegrationManager pour les intÃ©grations externes
 type integrationManagerImpl struct {
 	storageManager baseInterfaces.StorageManager
 	configManager  baseInterfaces.ConfigManager
@@ -28,7 +28,7 @@ type integrationManagerImpl struct {
 	httpClient *http.Client
 }
 
-// NewIntegrationManager crée une nouvelle instance de IntegrationManager
+// NewIntegrationManager crÃ©e une nouvelle instance de IntegrationManager
 func NewIntegrationManager(
 	storageManager baseInterfaces.StorageManager,
 	configManager baseInterfaces.ConfigManager,
@@ -56,7 +56,7 @@ func NewIntegrationManager(
 	}, nil
 }
 
-// Initialize implémente BaseManager.Initialize
+// Initialize implÃ©mente BaseManager.Initialize
 func (im *integrationManagerImpl) Initialize(ctx context.Context) error {
 	if im.initialized {
 		return nil
@@ -78,13 +78,13 @@ func (im *integrationManagerImpl) Initialize(ctx context.Context) error {
 	return nil
 }
 
-// NotifyMCPGateway notifie le MCP Gateway d'un événement contextuel
+// NotifyMCPGateway notifie le MCP Gateway d'un Ã©vÃ©nement contextuel
 func (im *integrationManagerImpl) NotifyMCPGateway(ctx context.Context, event interfaces.ContextEvent) error {
 	if !im.initialized {
 		return fmt.Errorf("IntegrationManager not initialized")
 	}
 
-	// Préparer le payload pour MCP Gateway
+	// PrÃ©parer le payload pour MCP Gateway
 	payload := map[string]interface{}{
 		"event_type": "contextual_action",
 		"data": map[string]interface{}{
@@ -103,13 +103,13 @@ func (im *integrationManagerImpl) NotifyMCPGateway(ctx context.Context, event in
 	return nil
 }
 
-// TriggerN8NWorkflow déclenche un workflow N8N avec des données
+// TriggerN8NWorkflow dÃ©clenche un workflow N8N avec des donnÃ©es
 func (im *integrationManagerImpl) TriggerN8NWorkflow(ctx context.Context, workflowID string, data interface{}) error {
 	if !im.initialized {
 		return fmt.Errorf("IntegrationManager not initialized")
 	}
 
-	// Préparer le payload pour N8N
+	// PrÃ©parer le payload pour N8N
 	payload := map[string]interface{}{
 		"workflow_id": workflowID,
 		"data":        data,
@@ -141,7 +141,7 @@ func (im *integrationManagerImpl) SyncToMCPDatabase(ctx context.Context, actions
 	}
 	defer tx.Rollback()
 
-	// Préparer la requête d'insertion
+	// PrÃ©parer la requÃªte d'insertion
 	query := `
 		INSERT OR REPLACE INTO mcp_contextual_actions 
 		(action_id, action_type, action_text, workspace_path, file_path, line_number, timestamp, metadata)
@@ -153,7 +153,7 @@ func (im *integrationManagerImpl) SyncToMCPDatabase(ctx context.Context, actions
 	}
 	defer stmt.Close()
 
-	// Insérer chaque action
+	// InsÃ©rer chaque action
 	for _, action := range actions {
 		metadataJSON, err := json.Marshal(action.Metadata)
 		if err != nil {
@@ -184,7 +184,7 @@ func (im *integrationManagerImpl) SyncToMCPDatabase(ctx context.Context, actions
 	return nil
 }
 
-// SendWebhook envoie un webhook générique
+// SendWebhook envoie un webhook gÃ©nÃ©rique
 func (im *integrationManagerImpl) SendWebhook(ctx context.Context, url string, payload interface{}) error {
 	if !im.initialized {
 		return fmt.Errorf("IntegrationManager not initialized")
@@ -193,7 +193,7 @@ func (im *integrationManagerImpl) SendWebhook(ctx context.Context, url string, p
 	return im.sendHTTPRequest(ctx, url, payload)
 }
 
-// Cleanup implémente BaseManager.Cleanup
+// Cleanup implÃ©mente BaseManager.Cleanup
 func (im *integrationManagerImpl) Cleanup() error {
 	if im.mcpDB != nil {
 		return im.mcpDB.Close()
@@ -201,19 +201,19 @@ func (im *integrationManagerImpl) Cleanup() error {
 	return nil
 }
 
-// HealthCheck implémente BaseManager.HealthCheck
+// HealthCheck implÃ©mente BaseManager.HealthCheck
 func (im *integrationManagerImpl) HealthCheck(ctx context.Context) error {
 	if !im.initialized {
 		return fmt.Errorf("IntegrationManager not initialized")
 	}
 
-	// Vérifier la connexion MCP SQLite
+	// VÃ©rifier la connexion MCP SQLite
 	err := im.mcpDB.PingContext(ctx)
 	if err != nil {
 		return fmt.Errorf("MCP database unhealthy: %w", err)
 	}
 
-	// Tester la connectivité MCP Gateway
+	// Tester la connectivitÃ© MCP Gateway
 	testCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
@@ -225,13 +225,13 @@ func (im *integrationManagerImpl) HealthCheck(ctx context.Context) error {
 	return nil
 }
 
-// NotifyAction notifie les systèmes externes d'une nouvelle action
+// NotifyAction notifie les systÃ¨mes externes d'une nouvelle action
 func (im *integrationManagerImpl) NotifyAction(ctx context.Context, action interfaces.Action) error {
 	if !im.initialized {
 		return fmt.Errorf("integration manager not initialized")
 	}
 
-	// Créer un événement contextuel
+	// CrÃ©er un Ã©vÃ©nement contextuel
 	event := interfaces.ContextEvent{
 		Action:    action,
 		Context:   map[string]interface{}{"source": "contextual_memory"},
@@ -243,10 +243,10 @@ func (im *integrationManagerImpl) NotifyAction(ctx context.Context, action inter
 		if im.errorManager != nil {
 			im.errorManager.LogError(ctx, "Failed to notify MCP Gateway", err)
 		}
-		// Ne pas échouer complètement si MCP Gateway n'est pas disponible
+		// Ne pas Ã©chouer complÃ¨tement si MCP Gateway n'est pas disponible
 	}
 
-	// Synchroniser avec la base de données MCP si disponible
+	// Synchroniser avec la base de donnÃ©es MCP si disponible
 	if im.mcpDB != nil {
 		if err := im.SyncToMCPDatabase(ctx, []interfaces.Action{action}); err != nil {
 			if im.errorManager != nil {
@@ -255,7 +255,7 @@ func (im *integrationManagerImpl) NotifyAction(ctx context.Context, action inter
 		}
 	}
 
-	// Déclencher les workflows N8N si configurés
+	// DÃ©clencher les workflows N8N si configurÃ©s
 	workflowID := im.configManager.GetString("n8n.default_workflow_id")
 	if workflowID != "" {
 		payload := map[string]interface{}{
@@ -272,7 +272,7 @@ func (im *integrationManagerImpl) NotifyAction(ctx context.Context, action inter
 	return nil
 }
 
-// Méthodes privées
+// MÃ©thodes privÃ©es
 
 func (im *integrationManagerImpl) initializeMCPDatabase(ctx context.Context) error {
 	// Utiliser SQLite pour la base MCP Gateway
@@ -281,7 +281,7 @@ func (im *integrationManagerImpl) initializeMCPDatabase(ctx context.Context) err
 		return fmt.Errorf("failed to open MCP database: %w", err)
 	}
 
-	// Créer la table si elle n'existe pas
+	// CrÃ©er la table si elle n'existe pas
 	schema := `
 	CREATE TABLE IF NOT EXISTS mcp_contextual_actions (
 		action_id TEXT PRIMARY KEY,
@@ -310,9 +310,9 @@ func (im *integrationManagerImpl) initializeMCPDatabase(ctx context.Context) err
 
 func (im *integrationManagerImpl) loadConfiguration(ctx context.Context) error {
 	// Charger la configuration depuis ConfigManager (simulation)
-	// Dans un vrai système, utiliser im.configManager.GetConfig()
+	// Dans un vrai systÃ¨me, utiliser im.configManager.GetConfig()
 
-	// Configuration par défaut
+	// Configuration par dÃ©faut
 	config := map[string]interface{}{
 		"mcp_gateway_url": "http://localhost:8080",
 		"n8n_webhook_url": "http://localhost:5678/webhook",
@@ -330,13 +330,13 @@ func (im *integrationManagerImpl) loadConfiguration(ctx context.Context) error {
 }
 
 func (im *integrationManagerImpl) sendHTTPRequest(ctx context.Context, url string, payload interface{}) error {
-	// Sérialiser le payload
+	// SÃ©rialiser le payload
 	jsonPayload, err := json.Marshal(payload)
 	if err != nil {
 		return fmt.Errorf("failed to marshal payload: %w", err)
 	}
 
-	// Créer la requête
+	// CrÃ©er la requÃªte
 	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(jsonPayload))
 	if err != nil {
 		return fmt.Errorf("failed to create request: %w", err)
@@ -345,14 +345,14 @@ func (im *integrationManagerImpl) sendHTTPRequest(ctx context.Context, url strin
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-Agent", "ContextualMemoryManager/1.0")
 
-	// Envoyer la requête
+	// Envoyer la requÃªte
 	resp, err := im.httpClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("failed to send request: %w", err)
 	}
 	defer resp.Body.Close()
 
-	// Vérifier le code de statut
+	// VÃ©rifier le code de statut
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		body, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("HTTP request failed with status %d: %s", resp.StatusCode, string(body))

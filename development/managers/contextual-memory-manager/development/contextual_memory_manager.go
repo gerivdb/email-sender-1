@@ -11,7 +11,7 @@ import (
 	"github.com/email-sender/development/managers/contextual-memory-manager/internal/integration"
 	"github.com/email-sender/development/managers/contextual-memory-manager/internal/monitoring"
 	"github.com/email-sender/development/managers/contextual-memory-manager/internal/retrieval"
-	baseInterfaces "github.com/email-sender/development/managers/interfaces"
+	baseInterfaces "./interfaces"
 )
 
 type contextualMemoryManagerImpl struct {
@@ -26,7 +26,7 @@ type contextualMemoryManagerImpl struct {
 	mu                 sync.RWMutex
 }
 
-// NewContextualMemoryManager crée une nouvelle instance du manager
+// NewContextualMemoryManager crÃ©e une nouvelle instance du manager
 func NewContextualMemoryManager(
 	sm baseInterfaces.StorageManager,
 	em baseInterfaces.ErrorManager,
@@ -48,9 +48,9 @@ func (cmm *contextualMemoryManagerImpl) Initialize(ctx context.Context) error {
 		return nil
 	}
 
-	// Initialiser les sous-managers dans l'ordre des dépendances
+	// Initialiser les sous-managers dans l'ordre des dÃ©pendances
 
-	// 1. Monitoring Manager (premier car utilisé par les autres)
+	// 1. Monitoring Manager (premier car utilisÃ© par les autres)
 	monitoringMgr, err := monitoring.NewMonitoringManager(
 		cmm.storageManager,
 		cmm.errorManager,
@@ -114,7 +114,7 @@ func (cmm *contextualMemoryManagerImpl) Initialize(ctx context.Context) error {
 
 	cmm.initialized = true
 
-	// Enregistrer les métriques d'initialisation
+	// Enregistrer les mÃ©triques d'initialisation
 	if err := cmm.monitoringManager.RecordOperation(ctx, "manager_initialization", time.Since(time.Now()), nil); err != nil {
 		cmm.errorManager.LogError(ctx, "contextual_memory", "Failed to record initialization metrics", err)
 	}
@@ -130,7 +130,7 @@ func (cmm *contextualMemoryManagerImpl) HealthCheck(ctx context.Context) error {
 		return fmt.Errorf("manager not initialized")
 	}
 
-	// Vérifier la santé de tous les sous-composants
+	// VÃ©rifier la santÃ© de tous les sous-composants
 	if err := cmm.monitoringManager.HealthCheck(ctx); err != nil {
 		return fmt.Errorf("monitoring manager health check failed: %w", err)
 	}
@@ -210,13 +210,13 @@ func (cmm *contextualMemoryManagerImpl) CaptureAction(ctx context.Context, actio
 		return fmt.Errorf("failed to index action: %w", err)
 	}
 
-	// 2. Notifier les intégrations (MCP Gateway, N8N)
+	// 2. Notifier les intÃ©grations (MCP Gateway, N8N)
 	if err := cmm.integrationManager.NotifyAction(ctx, action); err != nil {
 		cmm.errorManager.LogError(ctx, "contextual_memory", "Failed to notify integrations", err)
-		// Ne pas échouer la capture pour une erreur de notification
+		// Ne pas Ã©chouer la capture pour une erreur de notification
 	}
 
-	// 3. Enregistrer les métriques
+	// 3. Enregistrer les mÃ©triques
 	if err := cmm.monitoringManager.RecordOperation(ctx, "action_capture", time.Since(start), nil); err != nil {
 		cmm.errorManager.LogError(ctx, "contextual_memory", "Failed to record action capture metrics", err)
 	}
@@ -244,7 +244,7 @@ func (cmm *contextualMemoryManagerImpl) SearchContext(ctx context.Context, query
 		return nil, fmt.Errorf("context search failed: %w", err)
 	}
 
-	// Enregistrer les métriques de succès
+	// Enregistrer les mÃ©triques de succÃ¨s
 	if err := cmm.monitoringManager.RecordOperation(ctx, "context_search", time.Since(start), nil); err != nil {
 		cmm.errorManager.LogError(ctx, "contextual_memory", "Failed to record search metrics", err)
 	}
@@ -262,7 +262,7 @@ func (cmm *contextualMemoryManagerImpl) UpdateContext(ctx context.Context, conte
 
 	start := time.Now()
 
-	// Mettre à jour via le retrieval manager
+	// Mettre Ã  jour via le retrieval manager
 	if err := cmm.retrievalManager.UpdateContext(ctx, contextID, updates); err != nil {
 		cmm.errorManager.LogError(ctx, "contextual_memory", "Context update failed", err)
 		if err := cmm.monitoringManager.RecordOperation(ctx, "context_update", time.Since(start), err); err != nil {
@@ -271,13 +271,13 @@ func (cmm *contextualMemoryManagerImpl) UpdateContext(ctx context.Context, conte
 		return fmt.Errorf("context update failed: %w", err)
 	}
 
-	// Notifier les intégrations de la mise à jour
+	// Notifier les intÃ©grations de la mise Ã  jour
 	if err := cmm.integrationManager.NotifyContextUpdate(ctx, contextID, updates); err != nil {
 		cmm.errorManager.LogError(ctx, "contextual_memory", "Failed to notify context update", err)
-		// Ne pas échouer la mise à jour pour une erreur de notification
+		// Ne pas Ã©chouer la mise Ã  jour pour une erreur de notification
 	}
 
-	// Enregistrer les métriques
+	// Enregistrer les mÃ©triques
 	if err := cmm.monitoringManager.RecordOperation(ctx, "context_update", time.Since(start), nil); err != nil {
 		cmm.errorManager.LogError(ctx, "contextual_memory", "Failed to record update metrics", err)
 	}
@@ -295,7 +295,7 @@ func (cmm *contextualMemoryManagerImpl) GetContextHistory(ctx context.Context, u
 
 	start := time.Now()
 
-	// Récupérer l'historique via le retrieval manager
+	// RÃ©cupÃ©rer l'historique via le retrieval manager
 	history, err := cmm.retrievalManager.GetContextHistory(ctx, userID, limit)
 	if err != nil {
 		cmm.errorManager.LogError(ctx, "contextual_memory", "Failed to get context history", err)
@@ -305,7 +305,7 @@ func (cmm *contextualMemoryManagerImpl) GetContextHistory(ctx context.Context, u
 		return nil, fmt.Errorf("failed to get context history: %w", err)
 	}
 
-	// Enregistrer les métriques
+	// Enregistrer les mÃ©triques
 	if err := cmm.monitoringManager.RecordOperation(ctx, "get_history", time.Since(start), nil); err != nil {
 		cmm.errorManager.LogError(ctx, "contextual_memory", "Failed to record history metrics", err)
 	}
@@ -335,16 +335,16 @@ func (cmm *contextualMemoryManagerImpl) DeleteContext(ctx context.Context, conte
 	// Supprimer de l'index
 	if err := cmm.indexManager.DeleteFromIndex(ctx, contextID); err != nil {
 		cmm.errorManager.LogError(ctx, "contextual_memory", "Failed to delete from index", err)
-		// Ne pas échouer la suppression pour une erreur d'index
+		// Ne pas Ã©chouer la suppression pour une erreur d'index
 	}
 
-	// Notifier les intégrations
+	// Notifier les intÃ©grations
 	if err := cmm.integrationManager.NotifyContextDeletion(ctx, contextID); err != nil {
 		cmm.errorManager.LogError(ctx, "contextual_memory", "Failed to notify context deletion", err)
-		// Ne pas échouer la suppression pour une erreur de notification
+		// Ne pas Ã©chouer la suppression pour une erreur de notification
 	}
 
-	// Enregistrer les métriques
+	// Enregistrer les mÃ©triques
 	if err := cmm.monitoringManager.RecordOperation(ctx, "delete_context", time.Since(start), nil); err != nil {
 		cmm.errorManager.LogError(ctx, "contextual_memory", "Failed to record delete metrics", err)
 	}
@@ -360,11 +360,11 @@ func (cmm *contextualMemoryManagerImpl) GetMetrics(ctx context.Context) (interfa
 		return interfaces.ManagerMetrics{}, fmt.Errorf("manager not initialized")
 	}
 
-	// Récupérer les métriques du monitoring manager
+	// RÃ©cupÃ©rer les mÃ©triques du monitoring manager
 	return cmm.monitoringManager.GetMetrics(ctx)
 }
 
-// Méthodes manquantes pour l'interface complète
+// MÃ©thodes manquantes pour l'interface complÃ¨te
 func (cmm *contextualMemoryManagerImpl) BatchCaptureActions(ctx context.Context, actions []interfaces.Action) error {
 	cmm.mu.RLock()
 	defer cmm.mu.RUnlock()
@@ -390,7 +390,7 @@ func (cmm *contextualMemoryManagerImpl) GetActionHistory(ctx context.Context, wo
 		return nil, fmt.Errorf("manager not initialized")
 	}
 
-	// Convertir les résultats de contexte en actions
+	// Convertir les rÃ©sultats de contexte en actions
 	query := interfaces.ContextQuery{
 		WorkspacePath: workspacePath,
 		Limit:         limit,
@@ -417,7 +417,7 @@ func (cmm *contextualMemoryManagerImpl) StartSession(ctx context.Context, worksp
 		return "", fmt.Errorf("manager not initialized")
 	}
 
-	// Générer un ID de session unique
+	// GÃ©nÃ©rer un ID de session unique
 	sessionID := fmt.Sprintf("session_%d", time.Now().UnixNano())
 
 	// Incrementer le compteur de sessions actives
@@ -436,7 +436,7 @@ func (cmm *contextualMemoryManagerImpl) EndSession(ctx context.Context, sessionI
 		return fmt.Errorf("manager not initialized")
 	}
 
-	// Décrementer le compteur de sessions actives
+	// DÃ©crementer le compteur de sessions actives
 	if err := cmm.monitoringManager.DecrementActiveSession(ctx); err != nil {
 		cmm.errorManager.LogError(ctx, "contextual_memory", "Failed to decrement active session count", err)
 	}
@@ -453,7 +453,7 @@ func (cmm *contextualMemoryManagerImpl) GetSessionActions(ctx context.Context, s
 	}
 
 	// Pour l'instant, retourner une liste vide
-	// Dans une implémentation complète, cela rechercherait les actions par session
+	// Dans une implÃ©mentation complÃ¨te, cela rechercherait les actions par session
 	return []interfaces.Action{}, nil
 }
 
@@ -472,7 +472,7 @@ func (cmm *contextualMemoryManagerImpl) AnalyzePatternsUsage(ctx context.Context
 		"patterns":           map[string]interface{}{},
 	}
 
-	// Obtenir les métriques actuelles
+	// Obtenir les mÃ©triques actuelles
 	metrics, err := cmm.monitoringManager.GetMetrics(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get metrics for pattern analysis: %w", err)
@@ -495,7 +495,7 @@ func (cmm *contextualMemoryManagerImpl) GetSimilarActions(ctx context.Context, a
 
 	// Utiliser le retrieval manager pour trouver des actions similaires
 	// Pour l'instant, retourner une liste vide
-	// Dans une implémentation complète, cela utiliserait l'index manager pour la similarité vectorielle
+	// Dans une implÃ©mentation complÃ¨te, cela utiliserait l'index manager pour la similaritÃ© vectorielle
 
 	return []interfaces.ContextResult{}, nil
 }

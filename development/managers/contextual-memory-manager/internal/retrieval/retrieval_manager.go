@@ -7,10 +7,10 @@ import (
 	"strings"
 
 	"github.com/email-sender/development/managers/contextual-memory-manager/interfaces"
-	baseInterfaces "github.com/email-sender/development/managers/interfaces"
+	baseInterfaces "./interfaces"
 )
 
-// retrievalManagerImpl implémente RetrievalManager en utilisant PostgreSQL et SQLite
+// retrievalManagerImpl implÃ©mente RetrievalManager en utilisant PostgreSQL et SQLite
 type retrievalManagerImpl struct {
 	storageManager baseInterfaces.StorageManager
 	configManager  baseInterfaces.ConfigManager
@@ -20,7 +20,7 @@ type retrievalManagerImpl struct {
 	initialized bool
 }
 
-// NewRetrievalManager crée une nouvelle instance de RetrievalManager
+// NewRetrievalManager crÃ©e une nouvelle instance de RetrievalManager
 func NewRetrievalManager(
 	storageManager baseInterfaces.StorageManager,
 	errorManager baseInterfaces.ErrorManager,
@@ -35,13 +35,13 @@ func NewRetrievalManager(
 	}, nil
 }
 
-// Initialize implémente BaseManager.Initialize
+// Initialize implÃ©mente BaseManager.Initialize
 func (rm *retrievalManagerImpl) Initialize(ctx context.Context) error {
 	if rm.initialized {
 		return nil
 	}
 
-	// Récupérer la connexion PostgreSQL
+	// RÃ©cupÃ©rer la connexion PostgreSQL
 	pgConn, err := rm.storageManager.GetPostgreSQLConnection()
 	if err != nil {
 		return fmt.Errorf("failed to get PostgreSQL connection: %w", err)
@@ -53,7 +53,7 @@ func (rm *retrievalManagerImpl) Initialize(ctx context.Context) error {
 		return fmt.Errorf("invalid PostgreSQL connection type")
 	}
 
-	// Vérifier que les tables existent
+	// VÃ©rifier que les tables existent
 	err = rm.ensureTablesExist(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to ensure tables exist: %w", err)
@@ -63,13 +63,13 @@ func (rm *retrievalManagerImpl) Initialize(ctx context.Context) error {
 	return nil
 }
 
-// QueryContext recherche le contexte selon une requête
+// QueryContext recherche le contexte selon une requÃªte
 func (rm *retrievalManagerImpl) QueryContext(ctx context.Context, query interfaces.ContextQuery) ([]interfaces.ContextResult, error) {
 	if !rm.initialized {
 		return nil, fmt.Errorf("RetrievalManager not initialized")
 	}
 
-	// Construction de la requête SQL dynamique
+	// Construction de la requÃªte SQL dynamique
 	sqlQuery, args := rm.buildContextQuery(query)
 
 	rows, err := rm.pgDB.QueryContext(ctx, sqlQuery, args...)
@@ -106,7 +106,7 @@ func (rm *retrievalManagerImpl) QueryContext(ctx context.Context, query interfac
 	return results, nil
 }
 
-// GetActionMetadata récupère les métadonnées d'une action
+// GetActionMetadata rÃ©cupÃ¨re les mÃ©tadonnÃ©es d'une action
 func (rm *retrievalManagerImpl) GetActionMetadata(ctx context.Context, actionID string) (*interfaces.Action, error) {
 	if !rm.initialized {
 		return nil, fmt.Errorf("RetrievalManager not initialized")
@@ -144,7 +144,7 @@ func (rm *retrievalManagerImpl) SearchByText(ctx context.Context, text string, w
 		return nil, fmt.Errorf("RetrievalManager not initialized")
 	}
 
-	// Requête de recherche textuelle avec PostgreSQL full-text search
+	// RequÃªte de recherche textuelle avec PostgreSQL full-text search
 	query := `
 		SELECT 
 			a.id,
@@ -197,7 +197,7 @@ func (rm *retrievalManagerImpl) SearchByText(ctx context.Context, text string, w
 	return results, nil
 }
 
-// GetActionsBySession récupère les actions d'une session
+// GetActionsBySession rÃ©cupÃ¨re les actions d'une session
 func (rm *retrievalManagerImpl) GetActionsBySession(ctx context.Context, sessionID string) ([]interfaces.Action, error) {
 	if !rm.initialized {
 		return nil, fmt.Errorf("RetrievalManager not initialized")
@@ -238,7 +238,7 @@ func (rm *retrievalManagerImpl) GetActionsBySession(ctx context.Context, session
 	return actions, nil
 }
 
-// DeleteContext supprime un contexte de la base de données
+// DeleteContext supprime un contexte de la base de donnÃ©es
 func (rm *retrievalManagerImpl) DeleteContext(ctx context.Context, contextID string) error {
 	if !rm.initialized {
 		return fmt.Errorf("retrieval manager not initialized")
@@ -257,7 +257,7 @@ func (rm *retrievalManagerImpl) DeleteContext(ctx context.Context, contextID str
 		}
 	}()
 
-	// Supprimer toutes les actions liées à ce contexte
+	// Supprimer toutes les actions liÃ©es Ã  ce contexte
 	deleteActionsQuery := `
 		DELETE FROM contextual_actions 
 		WHERE id = $1 OR session_id = $1 OR metadata->>'context_id' = $1
@@ -273,7 +273,7 @@ func (rm *retrievalManagerImpl) DeleteContext(ctx context.Context, contextID str
 		return fmt.Errorf("failed to get rows affected: %w", err)
 	}
 
-	// Log du nombre d'enregistrements supprimés
+	// Log du nombre d'enregistrements supprimÃ©s
 	if rowsAffected > 0 {
 		if rm.errorManager != nil {
 			rm.errorManager.LogError(ctx, fmt.Sprintf("Deleted %d contextual actions for context ID: %s", rowsAffected, contextID), nil)
@@ -283,25 +283,25 @@ func (rm *retrievalManagerImpl) DeleteContext(ctx context.Context, contextID str
 	return nil
 }
 
-// Cleanup implémente BaseManager.Cleanup
+// Cleanup implÃ©mente BaseManager.Cleanup
 func (rm *retrievalManagerImpl) Cleanup() error {
-	// Les connexions DB sont gérées par StorageManager
+	// Les connexions DB sont gÃ©rÃ©es par StorageManager
 	return nil
 }
 
-// HealthCheck implémente BaseManager.HealthCheck
+// HealthCheck implÃ©mente BaseManager.HealthCheck
 func (rm *retrievalManagerImpl) HealthCheck(ctx context.Context) error {
 	if !rm.initialized {
 		return fmt.Errorf("RetrievalManager not initialized")
 	}
 
-	// Vérifier la connexion PostgreSQL
+	// VÃ©rifier la connexion PostgreSQL
 	err := rm.pgDB.PingContext(ctx)
 	if err != nil {
 		return fmt.Errorf("PostgreSQL connection unhealthy: %w", err)
 	}
 
-	// Test de requête simple
+	// Test de requÃªte simple
 	var count int
 	err = rm.pgDB.QueryRowContext(ctx, "SELECT COUNT(*) FROM contextual_actions").Scan(&count)
 	if err != nil {
@@ -311,10 +311,10 @@ func (rm *retrievalManagerImpl) HealthCheck(ctx context.Context) error {
 	return nil
 }
 
-// Méthodes privées
+// MÃ©thodes privÃ©es
 
 func (rm *retrievalManagerImpl) ensureTablesExist(ctx context.Context) error {
-	// Vérifier que la table contextual_actions existe
+	// VÃ©rifier que la table contextual_actions existe
 	var exists bool
 	err := rm.pgDB.QueryRowContext(ctx,
 		"SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'contextual_actions')").Scan(&exists)
@@ -387,7 +387,7 @@ func (rm *retrievalManagerImpl) buildContextQuery(query interfaces.ContextQuery)
 		argIndex++
 	}
 
-	// Construire la requête complète
+	// Construire la requÃªte complÃ¨te
 	var sqlQuery string
 	if len(whereClauses) > 0 {
 		sqlQuery = baseQuery + " WHERE " + strings.Join(whereClauses, " AND ")

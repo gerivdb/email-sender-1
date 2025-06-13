@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/qdrant/go-client/qdrant"
+	// "github.com/qdrant/go-client/qdrant" // Temporarily disabled
 	"go.uber.org/zap"
 
 	"github.com/email-sender/maintenance-manager/src/core"
