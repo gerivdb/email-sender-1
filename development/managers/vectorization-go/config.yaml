@@ -1,0 +1,40 @@
+vectorization:
+  client:
+    host: "localhost"
+    port: 6333
+    collection_name: "email_sender_vectors"
+    vector_size: 384
+    distance: "cosine"
+    timeout: "30s"
+    max_retries: 3
+    batch_size: 100
+
+  migration:
+    python_data_path: "./data/python_vectors"
+    batch_size: 50
+    max_workers: 4
+    input_format: "json"
+    validate_vectors: true
+    backup_before_migration: true
+    continue_on_error: false
+
+  error_handling:
+    max_attempts: 3
+    initial_delay: "1s"
+    max_delay: "30s"
+    backoff_factor: 2.0
+    enable_jitter: true
+
+  circuit_breaker:
+    max_failures: 5
+    reset_time: "60s"
+
+# Configuration pour les tests
+test:
+  vectorization:
+    client:
+      host: "localhost"
+      port: 6333
+      collection_name: "test_collection"
+      vector_size: 3
+      batch_size: 10
