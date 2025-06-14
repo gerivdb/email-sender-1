@@ -1,0 +1,124 @@
+{
+  "timestamp": "2025-06-14T13:53:48.8338321+02:00",
+  "total_tests": 14,
+  "passed_tests": 2,
+  "failed_tests": 12,
+  "total_score": 200,
+  "max_score": 1340,
+  "duration": 86542400,
+  "results": [
+    {
+      "test_name": "Architecture Go Native Complète",
+      "success": false,
+      "duration": 0,
+      "details": "Répertoire manquant: development/managers/central-coordinator",
+      "critical": true,
+      "score": 0
+    },
+    {
+      "test_name": "Documentation Technique",
+      "success": false,
+      "duration": 0,
+      "details": "Documentation manquante: docs/ARCHITECTURE_GO_NATIVE.md",
+      "critical": true,
+      "score": 0
+    },
+    {
+      "test_name": "Guides Utilisateur",
+      "success": true,
+      "duration": 0,
+      "details": "Guides utilisateur disponibles: 1/2",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "API Documentation",
+      "success": false,
+      "duration": 59679700,
+      "details": "API documentation non accessible (service probablement arrêté)",
+      "critical": false,
+      "score": 0
+    },
+    {
+      "test_name": "Performance Benchmarks",
+      "success": false,
+      "duration": 0,
+      "details": "Aucun test de performance trouvé",
+      "critical": true,
+      "score": 0
+    },
+    {
+      "test_name": "Tests d'Intégration",
+      "success": false,
+      "duration": 1000600,
+      "details": "Répertoire des tests d'intégration manquant",
+      "critical": true,
+      "score": 0
+    },
+    {
+      "test_name": "Infrastructure de Déploiement",
+      "success": false,
+      "duration": 0,
+      "details": "Fichier de déploiement manquant: deployment/Dockerfile.go",
+      "critical": true,
+      "score": 0
+    },
+    {
+      "test_name": "Monitoring et Observabilité",
+      "success": false,
+      "duration": 1003000,
+      "details": "Configuration monitoring incomplète: 0/2 fichiers",
+      "critical": false,
+      "score": 0
+    },
+    {
+      "test_name": "Sécurité et Conformité",
+      "success": false,
+      "duration": 0,
+      "details": "Vérifications sécurité insuffisantes: 1/3",
+      "critical": true,
+      "score": 0
+    },
+    {
+      "test_name": "Migration Python Terminée",
+      "success": true,
+      "duration": 999900,
+      "details": "Migration Python vers Go terminée",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Managers Opérationnels",
+      "success": false,
+      "duration": 0,
+      "details": "Manager principal manquant: development/managers/central-coordinator",
+      "critical": true,
+      "score": 0
+    },
+    {
+      "test_name": "Vectorisation Go Native",
+      "success": false,
+      "duration": 0,
+      "details": "Composant vectorisation manquant: development/managers/vectorization-go/vector_client.go",
+      "critical": true,
+      "score": 0
+    },
+    {
+      "test_name": "Qualité du Code",
+      "success": false,
+      "duration": 1524800,
+      "details": "Vérifications qualité échouées: 2/4",
+      "critical": false,
+      "score": 0
+    },
+    {
+      "test_name": "Préparation Production",
+      "success": false,
+      "duration": 0,
+      "details": "Fichier production manquant: deployment/docker-compose.production.yml",
+      "critical": true,
+      "score": 0
+    }
+  ],
+  "summary": "❌ ÉCHECS CRITIQUES DÉTECTÉS - INTERVENTION NÉCESSAIRE"
+}

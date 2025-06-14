@@ -1,0 +1,124 @@
+{
+  "timestamp": "2025-06-14T13:53:27.5745154+02:00",
+  "total_tests": 14,
+  "passed_tests": 12,
+  "failed_tests": 2,
+  "total_score": 1160,
+  "max_score": 1340,
+  "duration": 88473200,
+  "results": [
+    {
+      "test_name": "Architecture Go Native Complète",
+      "success": true,
+      "duration": 999600,
+      "details": "Architecture Go native complète et validée",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Documentation Technique",
+      "success": true,
+      "duration": 0,
+      "details": "Documentation technique complète et détaillée",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Guides Utilisateur",
+      "success": true,
+      "duration": 0,
+      "details": "Guides utilisateur disponibles: 1/2",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "API Documentation",
+      "success": false,
+      "duration": 73300200,
+      "details": "API documentation non accessible (service probablement arrêté)",
+      "critical": false,
+      "score": 0
+    },
+    {
+      "test_name": "Performance Benchmarks",
+      "success": true,
+      "duration": 997000,
+      "details": "Tests de performance disponibles: 2 fichiers",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Tests d'Intégration",
+      "success": true,
+      "duration": 1109700,
+      "details": "Tests d'intégration complets disponibles",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Infrastructure de Déploiement",
+      "success": true,
+      "duration": 328300,
+      "details": "Infrastructure de déploiement complète",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Monitoring et Observabilité",
+      "success": true,
+      "duration": 0,
+      "details": "Configuration monitoring disponible",
+      "critical": false,
+      "score": 80
+    },
+    {
+      "test_name": "Sécurité et Conformité",
+      "success": true,
+      "duration": 588700,
+      "details": "Configuration sécurité conforme",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Migration Python Terminée",
+      "success": false,
+      "duration": 0,
+      "details": "Fichier Python critique encore présent: misc/vectorize_tasks.py",
+      "critical": true,
+      "score": 0
+    },
+    {
+      "test_name": "Managers Opérationnels",
+      "success": true,
+      "duration": 1001100,
+      "details": "Tous les managers principaux sont présents",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Vectorisation Go Native",
+      "success": true,
+      "duration": 998100,
+      "details": "Vectorisation Go native complète",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Qualité du Code",
+      "success": true,
+      "duration": 1001900,
+      "details": "Qualité du code conforme",
+      "critical": false,
+      "score": 80
+    },
+    {
+      "test_name": "Préparation Production",
+      "success": true,
+      "duration": 0,
+      "details": "Environnement production prêt",
+      "critical": true,
+      "score": 100
+    }
+  ],
+  "summary": "❌ ÉCHECS CRITIQUES DÉTECTÉS - INTERVENTION NÉCESSAIRE"
+}
