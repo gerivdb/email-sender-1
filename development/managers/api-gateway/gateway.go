@@ -1,23 +1,38 @@
-package apigateway
+package main
 
 import (
 	"context"
 	"net/http"
+	"os"
+	"os/signal"
 	"strconv"
+	"syscall"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/zap"
 	"golang.org/x/time/rate"
-
-	"../interfaces"
 )
+
+// ManagerInterface définit l'interface commune pour tous les managers
+type ManagerInterface interface {
+	Initialize(ctx context.Context, config interface{}) error
+	Start(ctx context.Context) error
+	Stop(ctx context.Context) error
+	GetStatus() map[string]interface{}
+	GetMetrics() map[string]interface{}
+	ValidateConfig(config interface{}) error
+	GetID() string
+	GetName() string
+	GetVersion() string
+	Health(ctx context.Context) error
+}
 
 // APIGateway centralise tous les endpoints de l'écosystème
 type APIGateway struct {
-	managers    map[string]interfaces.ManagerInterface
+	managers    map[string]ManagerInterface
 	router      *gin.Engine
 	logger      *zap.Logger
 	rateLimiter *rate.Limiter
@@ -29,9 +44,9 @@ func NewAPIGateway(logger *zap.Logger) *APIGateway {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.New()
 	router.Use(gin.Recovery())
-	
+
 	return &APIGateway{
-		managers:    make(map[string]interfaces.ManagerInterface),
+		managers:    make(map[string]ManagerInterface),
 		router:      router,
 		logger:      logger,
 		rateLimiter: rate.NewLimiter(1000, 100), // 1000 req/s, burst 100
@@ -39,7 +54,7 @@ func NewAPIGateway(logger *zap.Logger) *APIGateway {
 }
 
 // RegisterManager enregistre un manager dans la gateway
-func (ag *APIGateway) RegisterManager(name string, manager interfaces.ManagerInterface) {
+func (ag *APIGateway) RegisterManager(name string, manager ManagerInterface) {
 	ag.managers[name] = manager
 	ag.logger.Info("Manager registered", zap.String("name", name))
 }
@@ -106,14 +121,14 @@ func (ag *APIGateway) SetupRoutes() {
 // Start démarre le serveur API Gateway
 func (ag *APIGateway) Start(ctx context.Context, port int) error {
 	ag.SetupRoutes()
-	
+
 	ag.server = &http.Server{
 		Addr:    ":" + strconv.Itoa(port),
 		Handler: ag.router,
 	}
 
 	ag.logger.Info("Starting API Gateway", zap.Int("port", port))
-	
+
 	go func() {
 		if err := ag.server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			ag.logger.Error("API Gateway server error", zap.Error(err))
@@ -196,11 +211,11 @@ func (ag *APIGateway) authMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Pour l'instant, authentification simple par header
 		authHeader := c.GetHeader("Authorization")
-		
+
 		// Skip auth pour les endpoints publics
-		if c.Request.URL.Path == "/health" || 
-		   c.Request.URL.Path == "/ready" ||
-		   c.Request.URL.Path == "/docs" {
+		if c.Request.URL.Path == "/health" ||
+			c.Request.URL.Path == "/ready" ||
+			c.Request.URL.Path == "/docs" {
 			c.Next()
 			return
 		}
@@ -224,4 +239,29 @@ func (ag *APIGateway) authMiddleware() gin.HandlerFunc {
 
 		c.Next()
 	}
+}
+
+func main() {
+	logger, _ := zap.NewProduction()
+	defer logger.Sync()
+
+	gateway := NewAPIGateway(logger)
+
+	// Start the server
+	logger.Info("Starting API Gateway on :8080")
+	if err := gateway.Start(context.Background(), 8080); err != nil {
+		logger.Fatal("Failed to start API Gateway", zap.Error(err))
+	}
+
+	// Wait for interrupt signal to gracefully shutdown the server
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+	<-sigChan
+
+	logger.Info("Shutting down API Gateway")
+	if err := gateway.Stop(context.Background()); err != nil {
+		logger.Fatal("Failed to stop API Gateway", zap.Error(err))
+	}
+
+	logger.Info("API Gateway stopped")
 }

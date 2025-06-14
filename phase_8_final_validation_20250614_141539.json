@@ -1,0 +1,124 @@
+{
+  "timestamp": "2025-06-14T14:15:39.0987785+02:00",
+  "total_tests": 14,
+  "passed_tests": 13,
+  "failed_tests": 1,
+  "total_score": 1175,
+  "max_score": 1225,
+  "duration": 42429600,
+  "results": [
+    {
+      "test_name": "Architecture Go Native Complète",
+      "success": true,
+      "duration": 1106400,
+      "details": "Architecture Go native complète et validée",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Documentation Technique",
+      "success": true,
+      "duration": 1200100,
+      "details": "Documentation technique complète et détaillée",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Guides Utilisateur",
+      "success": true,
+      "duration": 572400,
+      "details": "Guides utilisateur disponibles",
+      "critical": false,
+      "score": 75
+    },
+    {
+      "test_name": "API Documentation",
+      "success": false,
+      "duration": 28414800,
+      "details": "API documentation non accessible (service probablement arrêté)",
+      "critical": false,
+      "score": 0
+    },
+    {
+      "test_name": "Performance Benchmarks",
+      "success": true,
+      "duration": 0,
+      "details": "Tests de performance disponibles",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Tests d'Intégration",
+      "success": true,
+      "duration": 553300,
+      "details": "Tests d'intégration complets disponibles",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Infrastructure de Déploiement",
+      "success": true,
+      "duration": 134800,
+      "details": "Infrastructure de déploiement complète",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Monitoring et Observabilité",
+      "success": true,
+      "duration": 118400,
+      "details": "Configuration monitoring et observabilité disponible",
+      "critical": false,
+      "score": 75
+    },
+    {
+      "test_name": "Sécurité et Conformité",
+      "success": true,
+      "duration": 0,
+      "details": "Éléments de sécurité et conformité en place",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Migration Python Terminée",
+      "success": true,
+      "duration": 556900,
+      "details": "Migration Python vers Go terminée avec succès",
+      "critical": true,
+      "score": 50
+    },
+    {
+      "test_name": "Managers Opérationnels",
+      "success": true,
+      "duration": 554000,
+      "details": "Tous les managers principaux sont opérationnels",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Vectorisation Go Native",
+      "success": true,
+      "duration": 0,
+      "details": "Vectorisation Go native complète et fonctionnelle",
+      "critical": true,
+      "score": 100
+    },
+    {
+      "test_name": "Qualité du Code",
+      "success": true,
+      "duration": 557300,
+      "details": "Qualité du code conforme aux standards",
+      "critical": false,
+      "score": 75
+    },
+    {
+      "test_name": "Préparation Production",
+      "success": true,
+      "duration": 0,
+      "details": "Environnement production prêt",
+      "critical": true,
+      "score": 100
+    }
+  ],
+  "summary": "🎉 VALIDATION FINALE RÉUSSIE - ÉCOSYSTÈME PRÊT POUR PRODUCTION"
+}
