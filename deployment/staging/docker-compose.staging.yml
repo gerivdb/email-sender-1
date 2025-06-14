@@ -1,0 +1,98 @@
+version: '3.8'
+
+# Configuration spécifique pour l'environnement de staging
+# Utilisé en complément du docker-compose.production.yml
+
+services:
+  email-sender-go:
+    ports:
+      - "8080:8080"
+      - "8081:8081"  # Port pour métriques Prometheus
+    environment:
+      - GO_ENV=staging
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      - API_RATE_LIMIT=100  # Plus permissif en staging
+      - VECTOR_CACHE_SIZE=1000
+      - MAX_CONCURRENT_REQUESTS=50
+    volumes:
+      - ./logs:/app/logs
+    labels:
+      - "traefik.enable=false"  # Pas de load balancer en staging
+      
+  qdrant:
+    ports:
+      - "6333:6333"
+      - "6334:6334"  # gRPC port
+    environment:
+      - QDRANT__SERVICE__ENABLE_CORS=true
+      - QDRANT__LOG_LEVEL=DEBUG
+    volumes:
+      - qdrant_staging_data:/qdrant/storage
+      - ./config/qdrant/staging:/qdrant/config
+      
+  postgres:
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=email_sender_staging
+      - POSTGRES_USER=staging_user
+      - POSTGRES_PASSWORD=staging_password_secure_2024
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - postgres_staging_data:/var/lib/postgresql/data
+      - ./config/postgres/staging-init.sql:/docker-entrypoint-initdb.d/init.sql
+      
+  prometheus:
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus/staging.yml:/etc/prometheus/prometheus.yml
+      - prometheus_staging_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=7d'  # Rétention plus courte en staging
+      - '--web.enable-lifecycle'
+      
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=staging_admin_2024
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    volumes:
+      - grafana_staging_data:/var/lib/grafana
+      - ./config/grafana/staging-dashboards:/etc/grafana/provisioning/dashboards
+      - ./config/grafana/staging-datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - prometheus
+      
+  # Service de test de charge pour staging
+  load-tester:
+    image: loadimpact/k6:latest
+    volumes:
+      - ./tests/load:/scripts
+    environment:
+      - TARGET_URL=http://email-sender-go:8080
+    profiles:
+      - testing
+    command: run /scripts/staging-load-test.js
+
+volumes:
+  qdrant_staging_data:
+    driver: local
+  postgres_staging_data:
+    driver: local
+  prometheus_staging_data:
+    driver: local
+  grafana_staging_data:
+    driver: local
+
+networks:
+  default:
+    name: email-sender-staging
+    driver: bridge

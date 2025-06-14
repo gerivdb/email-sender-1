@@ -1,0 +1,88 @@
+{
+  "results": [
+    {
+      "test_name": "Infrastructure de Déploiement",
+      "success": false,
+      "message": "",
+      "duration": 1154700,
+      "error_message": "Fichiers manquants: [deployment/Dockerfile.go deployment/docker-compose.production.yml deployment/staging/docker-compose.staging.yml deployment/config/prometheus/prometheus.yml deployment/config/nginx/nginx.conf]"
+    },
+    {
+      "test_name": "Services Docker",
+      "success": false,
+      "message": "",
+      "duration": 681582400,
+      "error_message": "Erreur lors de la vérification des services: exit status 14"
+    },
+    {
+      "test_name": "Health Checks",
+      "success": false,
+      "message": "",
+      "duration": 25990500,
+      "error_message": "Impossible d'accéder au health check: Get \"http://localhost:8080/health\": dial tcp [::1]:8080: connectex: Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée."
+    },
+    {
+      "test_name": "Migration des Données",
+      "success": false,
+      "message": "",
+      "duration": 558800,
+      "error_message": "Script de migration non trouvé"
+    },
+    {
+      "test_name": "Stratégie de Backup",
+      "success": false,
+      "message": "",
+      "duration": 528100,
+      "error_message": "Scripts de backup manquants: 0/2"
+    },
+    {
+      "test_name": "Capacité de Rollback",
+      "success": false,
+      "message": "",
+      "duration": 0,
+      "error_message": "Script de rollback non trouvé"
+    },
+    {
+      "test_name": "Configuration Monitoring",
+      "success": false,
+      "message": "",
+      "duration": 0,
+      "error_message": "Configuration Prometheus manquante"
+    },
+    {
+      "test_name": "Préparation Production",
+      "success": false,
+      "message": "",
+      "duration": 556200,
+      "error_message": "Fichiers production manquants: 0/3"
+    },
+    {
+      "test_name": "Configuration Sécurité",
+      "success": true,
+      "message": "Configuration sécurité évaluée",
+      "duration": 0,
+      "details": {
+        "nginx_config_exists": false,
+        "recommendations": [
+          "Configurer HTTPS en production",
+          "Activer les headers de sécurité",
+          "Configurer rate limiting"
+        ],
+        "ssl_configured": false
+      }
+    },
+    {
+      "test_name": "Métriques de Performance",
+      "success": false,
+      "message": "",
+      "duration": 517017100,
+      "error_message": "Aucune requête réussie pour mesurer les performances"
+    }
+  ],
+  "start_time": "2025-06-14T13:39:38.725785+02:00",
+  "end_time": "2025-06-14T13:39:39.9577153+02:00",
+  "total_tests": 10,
+  "passed_tests": 1,
+  "failed_tests": 9,
+  "success": false
+}

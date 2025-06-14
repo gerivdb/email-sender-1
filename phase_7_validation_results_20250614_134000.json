@@ -1,0 +1,118 @@
+{
+  "results": [
+    {
+      "test_name": "Infrastructure de Déploiement",
+      "success": true,
+      "message": "Tous les fichiers de déploiement sont présents",
+      "duration": 1995900,
+      "details": {
+        "files_checked": 5,
+        "files_found": 5
+      }
+    },
+    {
+      "test_name": "Services Docker",
+      "success": false,
+      "message": "",
+      "duration": 1167503900,
+      "error_message": "Erreur lors de la vérification des services: exit status 1"
+    },
+    {
+      "test_name": "Health Checks",
+      "success": false,
+      "message": "",
+      "duration": 30995000,
+      "error_message": "Impossible d'accéder au health check: Get \"http://localhost:8080/health\": dial tcp [::1]:8080: connectex: Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée."
+    },
+    {
+      "test_name": "Migration des Données",
+      "success": true,
+      "message": "Migration des données validée",
+      "duration": 8999000,
+      "details": {
+        "collections_response": {
+          "result": {
+            "collections": [
+              {
+                "name": "roadmap_tasks"
+              }
+            ]
+          },
+          "status": "ok",
+          "time": 0.0000826
+        },
+        "migration_script_exists": true,
+        "qdrant_accessible": true
+      }
+    },
+    {
+      "test_name": "Stratégie de Backup",
+      "success": true,
+      "message": "Stratégie de backup complète",
+      "duration": 0,
+      "details": {
+        "backup_directory_exists": true,
+        "scripts_available": 2,
+        "total_scripts": 2
+      }
+    },
+    {
+      "test_name": "Capacité de Rollback",
+      "success": true,
+      "message": "Script de rollback disponible",
+      "duration": 0,
+      "details": {
+        "rollback_script_exists": true,
+        "test_executed": false
+      }
+    },
+    {
+      "test_name": "Configuration Monitoring",
+      "success": true,
+      "message": "Configuration monitoring validée",
+      "duration": 3000100,
+      "details": {
+        "metrics_endpoint_available": false,
+        "prometheus_config_exists": true
+      }
+    },
+    {
+      "test_name": "Préparation Production",
+      "success": true,
+      "message": "Configuration production complète",
+      "duration": 0,
+      "details": {
+        "production_files_count": 3,
+        "total_required_files": 3
+      }
+    },
+    {
+      "test_name": "Configuration Sécurité",
+      "success": true,
+      "message": "Configuration sécurité évaluée",
+      "duration": 999600,
+      "details": {
+        "nginx_config_exists": true,
+        "recommendations": [
+          "Configurer HTTPS en production",
+          "Activer les headers de sécurité",
+          "Configurer rate limiting"
+        ],
+        "ssl_configured": false
+      }
+    },
+    {
+      "test_name": "Métriques de Performance",
+      "success": false,
+      "message": "",
+      "duration": 515719500,
+      "error_message": "Aucune requête réussie pour mesurer les performances"
+    }
+  ],
+  "start_time": "2025-06-14T13:39:59.0075773+02:00",
+  "end_time": "2025-06-14T13:40:00.7407999+02:00",
+  "total_tests": 10,
+  "passed_tests": 7,
+  "failed_tests": 3,
+  "success": false
+}

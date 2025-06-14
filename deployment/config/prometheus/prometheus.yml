@@ -1,0 +1,70 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # EMAIL SENDER Go Application
+  - job_name: "email-sender-go"
+    static_configs:
+      - targets: ["email-sender-go:8081"]
+    metrics_path: "/metrics"
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # API Gateway metrics
+  - job_name: "api-gateway"
+    static_configs:
+      - targets: ["email-sender-go:8080"]
+    metrics_path: "/api/v1/monitoring/metrics"
+    scrape_interval: 15s
+    scrape_timeout: 5s
+
+  # Vector service metrics
+  - job_name: "vector-service"
+    static_configs:
+      - targets: ["email-sender-go:8082"]
+    metrics_path: "/vector/metrics"
+    scrape_interval: 15s
+    scrape_timeout: 5s
+
+  # Qdrant metrics
+  - job_name: "qdrant"
+    static_configs:
+      - targets: ["qdrant:6333"]
+    metrics_path: "/metrics"
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # PostgreSQL metrics (using postgres_exporter if installed)
+  - job_name: "postgres"
+    static_configs:
+      - targets: ["postgres:9187"]
+    metrics_path: "/metrics"
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # Redis metrics (using redis_exporter if installed)
+  - job_name: "redis"
+    static_configs:
+      - targets: ["redis:9121"]
+    metrics_path: "/metrics"
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # Node exporter for system metrics
+  - job_name: "node"
+    static_configs:
+      - targets: ["node-exporter:9100"]
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # Prometheus self-monitoring
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+    scrape_interval: 30s
+    scrape_timeout: 10s
