@@ -3,6 +3,7 @@ package vectorization
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 
 	"go.uber.org/zap"
@@ -152,6 +153,114 @@ func (vc *VectorClient) SearchVectors(ctx context.Context, query Vector, topK in
 	}
 
 	vc.logger.Info("Recherche terminée", zap.Int("results", len(results)))
+	return results, nil
+}
+
+// SearchVectorsParallel effectue des recherches vectorielles en parallèle
+func (vc *VectorClient) SearchVectorsParallel(ctx context.Context, queries []Vector, topK int) ([]SearchResult, error) {
+	if len(queries) == 0 {
+		return []SearchResult{}, nil
+	}
+
+	resultChan := make(chan SearchResult, len(queries)*topK)
+	errChan := make(chan error, len(queries))
+
+	var wg sync.WaitGroup
+	semaphore := make(chan struct{}, 10) // Limiter à 10 goroutines concurrentes
+
+	vc.logger.Info("Démarrage de la recherche vectorielle parallèle",
+		zap.Int("nombre_de_requêtes", len(queries)),
+		zap.Int("top_k", topK))
+
+	startTime := time.Now()
+
+	for i, query := range queries {
+		wg.Add(1)
+		go func(idx int, vec Vector) {
+			defer wg.Done()
+			semaphore <- struct{}{}
+			defer func() { <-semaphore }()
+
+			// Simuler la recherche vectorielle (remplacera l'appel Qdrant réel)
+			results, err := vc.searchVector(ctx, vec, topK)
+			if err != nil {
+				errChan <- fmt.Errorf("échec de la recherche pour la requête %d: %w", idx, err)
+				return
+			}
+
+			// Ajouter l'index de la requête aux résultats
+			for j, result := range results {
+				result.QueryIndex = idx
+				resultChan <- result
+
+				// Log pour les premiers résultats
+				if j < 3 {
+					vc.logger.Debug("Résultat de recherche",
+						zap.Int("index_requête", idx),
+						zap.String("id_résultat", result.Vector.ID),
+						zap.Float32("score", result.Score))
+				}
+			}
+		}(i, query)
+	}
+
+	wg.Wait()
+	close(resultChan)
+	close(errChan)
+
+	// Collecter les erreurs
+	var errors []error
+	for err := range errChan {
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return nil, fmt.Errorf("la recherche parallèle a échoué avec %d erreurs: %v", len(errors), errors[0])
+	}
+
+	// Collecter les résultats
+	var results []SearchResult
+	for result := range resultChan {
+		results = append(results, result)
+	}
+
+	duration := time.Since(startTime)
+	vc.logger.Info("Recherche vectorielle parallèle terminée",
+		zap.Int("résultats_totaux", len(results)),
+		zap.Duration("durée", duration),
+		zap.Float64("requêtes_par_seconde", float64(len(queries))/duration.Seconds()))
+
+	return results, nil
+}
+
+// searchVector effectue une recherche vectorielle simple (simulation)
+func (vc *VectorClient) searchVector(ctx context.Context, query Vector, topK int) ([]SearchResult, error) {
+	// Simulation de recherche vectorielle
+	// En production, ceci ferait appel à Qdrant
+	results := make([]SearchResult, topK)
+
+	for i := 0; i < topK; i++ {
+		results[i] = SearchResult{
+			Vector: Vector{
+				ID:     fmt.Sprintf("result_%s_%d", query.ID, i),
+				Values: make([]float32, len(query.Values)),
+				Metadata: map[string]interface{}{
+					"similarity_type": "cosine",
+					"source_query":    query.ID,
+				},
+			},
+			Score: 0.95 - float32(i)*0.1, // Score décroissant simulé
+		}
+
+		// Simuler quelques valeurs vectorielles
+		for j := range results[i].Vector.Values {
+			results[i].Vector.Values[j] = query.Values[j] + float32(i)*0.01
+		}
+	}
+
+	// Simuler un délai de réseau
+	time.Sleep(time.Millisecond * 10)
+
 	return results, nil
 }
 
