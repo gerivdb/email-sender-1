@@ -42,7 +42,7 @@
     "source.fixAll": "always"
   },  "[markdown]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "yzhang.markdown-all-in-one",
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
     "editor.codeActionsOnSave": {
       "source.fixAll.markdownlint": "always"
     }
