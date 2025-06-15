@@ -1,0 +1,208 @@
+{
+  "environment": "production",
+  "services": {
+    "qdrant": {
+      "host": "localhost",
+      "port": 6333,
+      "api_key": "${QDRANT_API_KEY}",
+      "collection_config": {
+        "vector_size": 384,
+        "distance": "Cosine",
+        "replicas": 3,
+        "shard_number": 6,
+        "payload_schema": {
+          "email_id": "keyword",
+          "sender": "keyword",
+          "recipient": "keyword",
+          "subject": "text",
+          "timestamp": "datetime",
+          "category": "keyword",
+          "priority": "integer",
+          "tags": "keyword"
+        }
+      },
+      "performance": {
+        "max_connections": 500,
+        "timeout": "20s",
+        "retry_attempts": 5
+      },
+      "optimization": {
+        "indexing_threshold": 1000,
+        "search_cache_size": "1GB",
+        "hnsw_config": {
+          "m": 16,
+          "ef_construct": 100,
+          "full_scan_threshold": 10000
+        }
+      }
+    },
+    "email_sender": {
+      "host": "0.0.0.0",
+      "port": 8080,
+      "workers": 8,
+      "batch_size": 500,
+      "queue_config": {
+        "max_size": 50000,
+        "timeout": "30m",
+        "retry_attempts": 10
+      },
+      "rate_limiting": {
+        "requests_per_minute": 5000,
+        "burst": 1000
+      }
+    },
+    "vector_processor": {
+      "workers": 8,
+      "batch_size": 200,
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "cache_config": {
+        "enabled": true,
+        "size": "2GB",
+        "ttl": "4h",
+        "eviction_policy": "lru"
+      },
+      "processing": {
+        "max_text_length": 100000,
+        "chunk_size": 512,
+        "overlap": 50
+      }
+    }
+  },
+  "logging": {
+    "level": "WARN",
+    "format": "json",
+    "output": "/var/log/email-sender/production.log",
+    "file_rotation": {
+      "enabled": true,
+      "max_size": "1GB",
+      "max_files": 30
+    },
+    "structured_logging": {
+      "enabled": true,
+      "include_stack_trace": false,
+      "correlation_id": true
+    }
+  },
+  "monitoring": {
+    "metrics_enabled": true,
+    "metrics_port": 9090,
+    "health_check_interval": "10s",
+    "profiling": {
+      "enabled": false,
+      "port": 6060
+    },
+    "alerting": {
+      "webhook_url": "${PRODUCTION_WEBHOOK_URL}",
+      "channels": ["#production-alerts", "#ops-critical"],
+      "email_alerts": ["ops@company.com", "devops@company.com"],
+      "escalation": {
+        "enabled": true,
+        "timeout": "15m",
+        "escalation_contacts": ["manager@company.com"]
+      }
+    },
+    "tracing": {
+      "enabled": true,
+      "jaeger_endpoint": "${JAEGER_ENDPOINT}",
+      "sampling_rate": 0.1
+    }
+  },
+  "backup": {
+    "enabled": true,
+    "interval": "1h",
+    "retention": "30d",
+    "path": "/backups/production",
+    "compression": true,
+    "verification": true,
+    "remote_backup": {
+      "enabled": true,
+      "provider": "s3",
+      "bucket": "${S3_BACKUP_BUCKET}",
+      "region": "${S3_REGION}",
+      "encryption": true,
+      "cross_region_replication": true
+    }
+  },
+  "security": {
+    "tls_enabled": true,
+    "api_key_required": true,
+    "cors": {
+      "enabled": true,
+      "allowed_origins": ["https://app.company.com", "https://admin.company.com"]
+    },
+    "rate_limiting": {
+      "requests_per_minute": 10000,
+      "burst": 2000,
+      "ip_whitelist": ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    },
+    "authentication": {
+      "jwt_secret": "${JWT_SECRET}",
+      "token_expiry": "24h",
+      "refresh_token_expiry": "7d"
+    },
+    "encryption": {
+      "enabled": true,
+      "algorithm": "AES-256-GCM",
+      "key_rotation_interval": "90d"
+    }
+  },
+  "database": {
+    "connection_pool": {
+      "max_connections": 200,
+      "max_idle": 50,
+      "connection_lifetime": "4h"
+    },
+    "read_replicas": {
+      "enabled": true,
+      "urls": ["${DB_READ_REPLICA_1}", "${DB_READ_REPLICA_2}"],
+      "load_balancing": "round_robin"
+    }
+  },
+  "external_services": {
+    "smtp": {
+      "host": "${SMTP_HOST}",
+      "port": 587,
+      "username": "${SMTP_USERNAME}",
+      "password": "${SMTP_PASSWORD}",
+      "use_tls": true,
+      "connection_pool": 10,
+      "timeout": "30s"
+    },
+    "redis": {
+      "url": "${REDIS_URL}",
+      "pool_size": 100,
+      "timeout": "3s",
+      "retry_attempts": 3,
+      "cluster_mode": true
+    },
+    "message_queue": {
+      "provider": "rabbitmq",
+      "url": "${RABBITMQ_URL}",
+      "exchange": "email_processing",
+      "queue_durability": true,
+      "prefetch_count": 100
+    }
+  },
+  "performance": {
+    "gc_percent": 100,
+    "max_procs": 0,
+    "memory_limit": "8GB",
+    "connection_timeouts": {
+      "read": "30s",
+      "write": "30s",
+      "idle": "90s"
+    }
+  },
+  "compliance": {
+    "data_retention": {
+      "logs": "90d",
+      "metrics": "1y",
+      "backups": "7y"
+    },
+    "audit_logging": {
+      "enabled": true,
+      "events": ["authentication", "data_access", "configuration_changes"],
+      "destination": "/var/log/audit/email-sender-audit.log"
+    }
+  }
+}

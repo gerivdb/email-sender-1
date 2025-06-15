@@ -1,0 +1,99 @@
+{
+  "environment": "development",
+  "services": {
+    "qdrant": {
+      "host": "localhost",
+      "port": 6333,
+      "api_key": "",
+      "collection_config": {
+        "vector_size": 384,
+        "distance": "Cosine",
+        "replicas": 1,
+        "shard_number": 1,
+        "payload_schema": {
+          "email_id": "keyword",
+          "sender": "keyword", 
+          "recipient": "keyword",
+          "subject": "text",
+          "timestamp": "datetime",
+          "category": "keyword"
+        }
+      },
+      "performance": {
+        "max_connections": 100,
+        "timeout": "30s",
+        "retry_attempts": 3
+      }
+    },
+    "email_sender": {
+      "host": "0.0.0.0",
+      "port": 8080,
+      "workers": 2,
+      "batch_size": 50,
+      "queue_config": {
+        "max_size": 1000,
+        "timeout": "5m",
+        "retry_attempts": 3
+      },
+      "rate_limiting": {
+        "requests_per_minute": 100,
+        "burst": 20
+      }
+    },
+    "vector_processor": {
+      "workers": 2,
+      "batch_size": 25,
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "cache_config": {
+        "enabled": true,
+        "size": "100MB",
+        "ttl": "1h"
+      },
+      "processing": {
+        "max_text_length": 10000,
+        "chunk_size": 512,
+        "overlap": 50
+      }
+    }
+  },
+  "logging": {
+    "level": "DEBUG",
+    "format": "text",
+    "output": "stdout",
+    "file_rotation": {
+      "enabled": false,
+      "max_size": "100MB",
+      "max_files": 5
+    }
+  },
+  "monitoring": {
+    "metrics_enabled": true,
+    "metrics_port": 9090,
+    "health_check_interval": "30s",
+    "profiling": {
+      "enabled": true,
+      "port": 6060
+    }
+  },
+  "backup": {
+    "enabled": false,
+    "interval": "24h",
+    "retention": "3d",
+    "path": "./backups/dev"
+  },
+  "security": {
+    "tls_enabled": false,
+    "api_key_required": false,
+    "cors": {
+      "enabled": true,
+      "allowed_origins": ["http://localhost:3000", "http://localhost:8080"]
+    }
+  },
+  "database": {
+    "connection_pool": {
+      "max_connections": 10,
+      "max_idle": 5,
+      "connection_lifetime": "1h"
+    }
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "environment": "staging",
+  "services": {
+    "qdrant": {
+      "host": "localhost",
+      "port": 6333,
+      "api_key": "${QDRANT_API_KEY}",
+      "collection_config": {
+        "vector_size": 384,
+        "distance": "Cosine",
+        "replicas": 2,
+        "shard_number": 2,
+        "payload_schema": {
+          "email_id": "keyword",
+          "sender": "keyword",
+          "recipient": "keyword", 
+          "subject": "text",
+          "timestamp": "datetime",
+          "category": "keyword",
+          "priority": "integer"
+        }
+      },
+      "performance": {
+        "max_connections": 200,
+        "timeout": "30s",
+        "retry_attempts": 3
+      }
+    },
+    "email_sender": {
+      "host": "0.0.0.0",
+      "port": 8080,
+      "workers": 4,
+      "batch_size": 100,
+      "queue_config": {
+        "max_size": 5000,
+        "timeout": "10m",
+        "retry_attempts": 5
+      },
+      "rate_limiting": {
+        "requests_per_minute": 500,
+        "burst": 100
+      }
+    },
+    "vector_processor": {
+      "workers": 4,
+      "batch_size": 50,
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "cache_config": {
+        "enabled": true,
+        "size": "500MB",
+        "ttl": "2h"
+      },
+      "processing": {
+        "max_text_length": 50000,
+        "chunk_size": 512,
+        "overlap": 50
+      }
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "json",
+    "output": "/var/log/email-sender/staging.log",
+    "file_rotation": {
+      "enabled": true,
+      "max_size": "500MB",
+      "max_files": 10
+    }
+  },
+  "monitoring": {
+    "metrics_enabled": true,
+    "metrics_port": 9090,
+    "health_check_interval": "30s",
+    "profiling": {
+      "enabled": false,
+      "port": 6060
+    },
+    "alerting": {
+      "webhook_url": "${STAGING_WEBHOOK_URL}",
+      "channels": ["#staging-alerts"]
+    }
+  },
+  "backup": {
+    "enabled": true,
+    "interval": "6h",
+    "retention": "7d",
+    "path": "/backups/staging",
+    "compression": true,
+    "verification": true
+  },
+  "security": {
+    "tls_enabled": true,
+    "api_key_required": true,
+    "cors": {
+      "enabled": true,
+      "allowed_origins": ["https://staging.company.com"]
+    },
+    "rate_limiting": {
+      "requests_per_minute": 1000,
+      "burst": 200
+    }
+  },
+  "database": {
+    "connection_pool": {
+      "max_connections": 50,
+      "max_idle": 10,
+      "connection_lifetime": "2h"
+    }
+  },
+  "external_services": {
+    "smtp": {
+      "host": "${SMTP_HOST}",
+      "port": 587,
+      "username": "${SMTP_USERNAME}",
+      "password": "${SMTP_PASSWORD}",
+      "use_tls": true
+    },
+    "redis": {
+      "url": "${REDIS_URL}",
+      "pool_size": 20,
+      "timeout": "5s"
+    }
+  }
+}
