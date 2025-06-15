@@ -2,7 +2,7 @@
 // Version: 3.0.0
 // This file provides exportable functions for the Manager Toolkit functionality
 
-package main
+package tools
 
 import (
 	"context"
