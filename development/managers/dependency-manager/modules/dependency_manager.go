@@ -76,6 +76,11 @@ type GoModManager struct {
 	deploymentManager   DeploymentManagerInterface
 	registryCredentials map[string]RegistryCredentials
 	managerIntegrator   *ManagerIntegrator
+	
+	// Phase 4.1.1.1: Ajout des capacités de vectorisation
+	vectorizer          VectorizationEngine  // Moteur de vectorisation
+	qdrant             QdrantInterface      // Interface Qdrant
+	vectorizationEnabled bool               // Flag d'activation
 }
 
 // ErrorManager interface for decoupling error handling.
@@ -1176,6 +1181,54 @@ func (cm *DepConfigManagerImpl) GetLogger() *zap.Logger {
 	return cm.logger
 }
 
+// Phase 4.1.1.1: Extension pour vectorisation
+// VectorizationSupport interface pour l'auto-vectorisation des dépendances
+type VectorizationSupport interface {
+	// OnDependencyAdded vectorise automatiquement une nouvelle dépendance
+	OnDependencyAdded(ctx context.Context, dep *Dependency) error
+	
+	// OnDependencyUpdated vectorise les changements de dépendance
+	OnDependencyUpdated(ctx context.Context, dep *Dependency, oldVersion string) error
+	
+	// OnDependencyRemoved supprime les vecteurs de dépendance
+	OnDependencyRemoved(ctx context.Context, depName string) error
+	
+	// SearchSimilarDependencies trouve des dépendances similaires
+	SearchSimilarDependencies(ctx context.Context, description string) ([]Dependency, error)
+}
+
+// VectorizationEngine interface pour la génération d'embeddings
+type VectorizationEngine interface {
+	GenerateEmbedding(ctx context.Context, text string) ([]float32, error)
+	BatchGenerateEmbeddings(ctx context.Context, texts []string) ([][]float32, error)
+}
+
+// QdrantInterface interface pour les opérations Qdrant
+type QdrantInterface interface {
+	UpsertPoints(ctx context.Context, collection string, points []Point) error
+	SearchPoints(ctx context.Context, collection string, req SearchRequest) (*SearchResponse, error)
+	DeletePoints(ctx context.Context, collection string, ids []interface{}) error
+}
+
+// Point représente un point vectoriel dans Qdrant
+type Point struct {
+	ID      interface{}            `json:"id"`
+	Vector  []float32              `json:"vector"`
+	Payload map[string]interface{} `json:"payload"`
+}
+
+// SearchRequest pour la recherche vectorielle
+type SearchRequest struct {
+	Vector []float32   `json:"vector"`
+	Limit  int         `json:"limit"`
+	Filter interface{} `json:"filter,omitempty"`
+}
+
+// SearchResponse pour les résultats de recherche
+type SearchResponse struct {
+	Result []Point `json:"result"`
+}
+
 // Advanced Integration Methods for Section 3.1
 
 // SetSecurityManager configures SecurityManager integration
@@ -1572,6 +1625,268 @@ func (m *GoModManager) DetectConflicts(ctx context.Context) ([]interfaces.Depend
 	return nil, nil
 }
 
-// Ensure this file primarily contains the GoModManager and its direct methods.
-// Other structs like DependencyManagerImpl, interfaces, and ManagerIntegrator related code
-// should be in their respective dedicated files if they are not already.
+// === PHASE 4.1.1: IMPLÉMENTATION DE VECTORIZATIONSUPPORT ===
+
+// OnDependencyAdded implements VectorizationSupport interface
+// Micro-étape 4.1.1.1.2: Implémenter auto-vectorisation des dépendances ajoutées
+func (m *GoModManager) OnDependencyAdded(ctx context.Context, dep *Dependency) error {
+	if !m.vectorizationEnabled || m.vectorizer == nil || m.qdrant == nil {
+		m.logger.Debug("Vectorization disabled or not configured", 
+			zap.String("dependency", dep.Name))
+		return nil
+	}
+
+	m.logger.Info("Auto-vectorizing new dependency", 
+		zap.String("name", dep.Name),
+		zap.String("version", dep.Version))
+
+	// Générer une description complète de la dépendance
+	description := m.buildDependencyDescription(dep)
+	
+	// Générer l'embedding
+	embedding, err := m.vectorizer.GenerateEmbedding(ctx, description)
+	if err != nil {
+		m.logger.Error("Failed to generate embedding for dependency",
+			zap.String("dependency", dep.Name),
+			zap.Error(err))
+		return err
+	}
+
+	// Créer le point vectoriel
+	point := Point{
+		ID:     dep.Name,
+		Vector: embedding,
+		Payload: map[string]interface{}{
+			"name":        dep.Name,
+			"version":     dep.Version,
+			"indirect":    dep.Indirect,
+			"repository":  dep.Repository,
+			"license":     dep.License,
+			"type":        "dependency",
+			"manager":     "dependency-manager",
+			"added_at":    time.Now().Format(time.RFC3339),
+			"description": description,
+		},
+	}
+
+	// Stocker dans Qdrant
+	err = m.qdrant.UpsertPoints(ctx, "dependencies", []Point{point})
+	if err != nil {
+		m.logger.Error("Failed to store dependency vector",
+			zap.String("dependency", dep.Name),
+			zap.Error(err))
+		return err
+	}
+
+	m.logger.Info("Dependency successfully vectorized",
+		zap.String("name", dep.Name),
+		zap.Int("vector_dimension", len(embedding)))
+
+	// Micro-étape 4.1.1.1.3: Intégrer avec le système de notifications existant
+	if m.monitoringManager != nil {
+		m.notifyVectorizationEvent("dependency_added", dep.Name, map[string]interface{
+			"vector_dimension": len(embedding),
+			"collection":       "dependencies",
+		})
+	}
+
+	return nil
+}
+
+// OnDependencyUpdated vectorise les changements de dépendance
+func (m *GoModManager) OnDependencyUpdated(ctx context.Context, dep *Dependency, oldVersion string) error {
+	if !m.vectorizationEnabled || m.vectorizer == nil || m.qdrant == nil {
+		return nil
+	}
+
+	m.logger.Info("Auto-vectorizing updated dependency", 
+		zap.String("name", dep.Name),
+		zap.String("old_version", oldVersion),
+		zap.String("new_version", dep.Version))
+
+	// Générer une nouvelle description avec l'information de mise à jour
+	description := m.buildDependencyDescription(dep) + 
+		fmt.Sprintf(" Updated from version %s to %s", oldVersion, dep.Version)
+	
+	// Générer le nouvel embedding
+	embedding, err := m.vectorizer.GenerateEmbedding(ctx, description)
+	if err != nil {
+		return err
+	}
+
+	// Mettre à jour le point vectoriel
+	point := Point{
+		ID:     dep.Name,
+		Vector: embedding,
+		Payload: map[string]interface{}{
+			"name":         dep.Name,
+			"version":      dep.Version,
+			"old_version":  oldVersion,
+			"indirect":     dep.Indirect,
+			"repository":   dep.Repository,
+			"license":      dep.License,
+			"type":         "dependency",
+			"manager":      "dependency-manager",
+			"updated_at":   time.Now().Format(time.RFC3339),
+			"description":  description,
+		},
+	}
+
+	err = m.qdrant.UpsertPoints(ctx, "dependencies", []Point{point})
+	if err != nil {
+		return err
+	}
+
+	if m.monitoringManager != nil {
+		m.notifyVectorizationEvent("dependency_updated", dep.Name, map[string]interface{
+			"old_version": oldVersion,
+			"new_version": dep.Version,
+		})
+	}
+
+	return nil
+}
+
+// OnDependencyRemoved supprime les vecteurs de dépendance
+func (m *GoModManager) OnDependencyRemoved(ctx context.Context, depName string) error {
+	if !m.vectorizationEnabled || m.qdrant == nil {
+		return nil
+	}
+
+	m.logger.Info("Removing dependency vectors", zap.String("name", depName))
+
+	err := m.qdrant.DeletePoints(ctx, "dependencies", []interface{}{depName})
+	if err != nil {
+		m.logger.Error("Failed to remove dependency vectors",
+			zap.String("dependency", depName),
+			zap.Error(err))
+		return err
+	}
+
+	if m.monitoringManager != nil {
+		m.notifyVectorizationEvent("dependency_removed", depName, nil)
+	}
+
+	return nil
+}
+
+// SearchSimilarDependencies trouve des dépendances similaires
+func (m *GoModManager) SearchSimilarDependencies(ctx context.Context, description string) ([]Dependency, error) {
+	if !m.vectorizationEnabled || m.vectorizer == nil || m.qdrant == nil {
+		return nil, fmt.Errorf("vectorization not enabled or configured")
+	}
+
+	// Générer l'embedding pour la description
+	embedding, err := m.vectorizer.GenerateEmbedding(ctx, description)
+	if err != nil {
+		return nil, err
+	}
+
+	// Rechercher dans Qdrant
+	searchReq := SearchRequest{
+		Vector: embedding,
+		Limit:  10,
+		Filter: map[string]interface{}{
+			"type": "dependency",
+		},
+	}
+
+	results, err := m.qdrant.SearchPoints(ctx, "dependencies", searchReq)
+	if err != nil {
+		return nil, err
+	}
+
+	// Convertir les résultats en dépendances
+	var dependencies []Dependency
+	for _, point := range results.Result {
+		if payload := point.Payload; payload != nil {
+			dep := Dependency{
+				Name:       getStringFromPayload(payload, "name"),
+				Version:    getStringFromPayload(payload, "version"),
+				Indirect:   getBoolFromPayload(payload, "indirect"),
+				Repository: getStringFromPayload(payload, "repository"),
+				License:    getStringFromPayload(payload, "license"),
+			}
+			dependencies = append(dependencies, dep)
+		}
+	}
+
+	return dependencies, nil
+}
+
+// === MÉTHODES UTILITAIRES POUR LA VECTORISATION ===
+
+// buildDependencyDescription construit une description textuelle pour une dépendance
+func (m *GoModManager) buildDependencyDescription(dep *Dependency) string {
+	var parts []string
+	
+	parts = append(parts, fmt.Sprintf("Dependency: %s", dep.Name))
+	parts = append(parts, fmt.Sprintf("Version: %s", dep.Version))
+	
+	if dep.Repository != "" {
+		parts = append(parts, fmt.Sprintf("Repository: %s", dep.Repository))
+	}
+	
+	if dep.License != "" {
+		parts = append(parts, fmt.Sprintf("License: %s", dep.License))
+	}
+	
+	if dep.Indirect {
+		parts = append(parts, "Type: Indirect dependency")
+	} else {
+		parts = append(parts, "Type: Direct dependency")
+	}
+	
+	return strings.Join(parts, ". ")
+}
+
+// notifyVectorizationEvent envoie une notification via le système de monitoring
+func (m *GoModManager) notifyVectorizationEvent(eventType, depName string, metadata map[string]interface{}) {
+	// Utilisation du monitoring manager existant pour les notifications
+	m.logger.Info("Vectorization event", 
+		zap.String("event_type", eventType),
+		zap.String("dependency", depName),
+		zap.Any("metadata", metadata))
+	
+	// TODO: Intégrer avec le système de notifications existant
+	// if m.monitoringManager != nil {
+	//     m.monitoringManager.SendEvent(eventType, depName, metadata)
+	// }
+}
+
+// Fonctions utilitaires pour extraire des données du payload
+func getStringFromPayload(payload map[string]interface{}, key string) string {
+	if val, ok := payload[key]; ok {
+		if str, ok := val.(string); ok {
+			return str
+		}
+	}
+	return ""
+}
+
+func getBoolFromPayload(payload map[string]interface{}, key string) bool {
+	if val, ok := payload[key]; ok {
+		if b, ok := val.(bool); ok {
+			return b
+		}
+	}
+	return false
+}
+
+// EnableVectorization active les capacités de vectorisation
+func (m *GoModManager) EnableVectorization(vectorizer VectorizationEngine, qdrant QdrantInterface) {
+	m.vectorizer = vectorizer
+	m.qdrant = qdrant
+	m.vectorizationEnabled = true
+	
+	m.logger.Info("Vectorization enabled for DependencyManager")
+}
+
+// DisableVectorization désactive les capacités de vectorisation
+func (m *GoModManager) DisableVectorization() {
+	m.vectorizationEnabled = false
+	m.vectorizer = nil
+	m.qdrant = nil
+	
+	m.logger.Info("Vectorization disabled for DependencyManager")
+}
