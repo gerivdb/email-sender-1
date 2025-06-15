@@ -1,7 +1,22 @@
-# 🐳 RAG System Development Environment
-# Complete docker-compose setup with all dependencies
+# 🐳 RAG System Multi-Environment Setup
+# Complete docker-compose setup with profiles and smart orchestration
 
 version: '3.8'
+
+# 🔧 Extension fields for reusable configurations
+x-common-variables: &common-variables
+  ENVIRONMENT: ${ENVIRONMENT:-development}
+  LOG_LEVEL: ${LOG_LEVEL:-info}
+  DEPLOYMENT_PROFILE: ${DEPLOYMENT_PROFILE:-development}
+
+x-healthcheck-defaults: &healthcheck-defaults
+  interval: 30s
+  timeout: 10s
+  retries: 3
+  start_period: 30s
+
+x-restart-policy: &restart-policy
+  restart: unless-stopped
 
 services:
   # 🔍 RAG Server
@@ -13,90 +28,112 @@ services:
         VERSION: ${VERSION:-dev}
         BUILD_DATE: ${BUILD_DATE:-unknown}
     ports:
-      - "8080:8080"   # HTTP API
-      - "9090:9090"   # Metrics
+      - "${RAG_HTTP_PORT:-8080}:8080"   # HTTP API
+      - "${RAG_METRICS_PORT:-9090}:9090"   # Metrics
     environment:
+      <<: *common-variables
       - QDRANT_URL=http://qdrant:6333
       - PROMETHEUS_URL=http://prometheus:9090
       - GRAFANA_URL=http://grafana:3000
-      - LOG_LEVEL=${LOG_LEVEL:-info}
-      - ENVIRONMENT=${ENVIRONMENT:-development}
+      - REDIS_URL=redis://redis:6379
       - NOTION_API_KEY=${NOTION_API_KEY}
+      - MAX_WORKERS=${RAG_MAX_WORKERS:-4}
+      - BATCH_SIZE=${RAG_BATCH_SIZE:-100}
     depends_on:
-      - qdrant
-      - prometheus
+      qdrant:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      prometheus:
+        condition: service_healthy
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
+      - ./config:/app/config:ro
     networks:
       - rag-network
-    restart: unless-stopped
+    <<: *restart-policy
     healthcheck:
+      <<: *healthcheck-defaults
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
+      start_period: 60s
+    profiles:
+      - development
+      - staging
+      - production
+      - full-stack
   # 🗄️ QDrant Vector Database
   qdrant:
-    image: qdrant/qdrant:v1.7.0
+    image: qdrant/qdrant:${QDRANT_VERSION:-v1.7.0}
     ports:
-      - "6333:6333"   # HTTP API
-      - "6334:6334"   # gRPC API
+      - "${QDRANT_HTTP_PORT:-6333}:6333"   # HTTP API
+      - "${QDRANT_GRPC_PORT:-6334}:6334"   # gRPC API
     environment:
       - QDRANT__SERVICE__HTTP_PORT=6333
       - QDRANT__SERVICE__GRPC_PORT=6334
-      - QDRANT__LOG_LEVEL=INFO
-            - QDRANT__STORAGE__OPTIMIZERS__DELETED_THRESHOLD=0.2
-      - QDRANT__STORAGE__OPTIMIZERS__VACUUM_MIN_VECTOR_NUMBER=1000
+      - QDRANT__LOG_LEVEL=${QDRANT_LOG_LEVEL:-INFO}
+      - QDRANT__STORAGE__OPTIMIZERS__DELETED_THRESHOLD=${QDRANT_DELETED_THRESHOLD:-0.2}
+      - QDRANT__STORAGE__OPTIMIZERS__VACUUM_MIN_VECTOR_NUMBER=${QDRANT_VACUUM_MIN:-1000}
+      - QDRANT__SERVICE__MAX_REQUEST_SIZE_MB=${QDRANT_MAX_REQUEST_SIZE:-32}
     volumes:
       - qdrant_storage:/qdrant/storage
     networks:
       - rag-network
-    restart: unless-stopped
+    <<: *restart-policy
     healthcheck:
+      <<: *healthcheck-defaults
       test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
-      interval: 30s
-      timeout: 10s
       retries: 5
-      start_period: 30s
-
+    profiles:
+      - development
+      - staging
+      - production
+      - full-stack
+      - vectorization
   # 📊 Prometheus Metrics
   prometheus:
-    image: prom/prometheus:v2.45.0
+    image: prom/prometheus:${PROMETHEUS_VERSION:-v2.45.0}
     ports:
-      - "9091:9090"   # Prometheus UI
+      - "${PROMETHEUS_PORT:-9091}:9090"   # Prometheus UI
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/etc/prometheus/console_libraries'
       - '--web.console.templates=/etc/prometheus/consoles'
-      - '--storage.tsdb.retention.time=200h'
+      - '--storage.tsdb.retention.time=${PROMETHEUS_RETENTION:-200h}'
       - '--web.enable-lifecycle'
       - '--web.enable-admin-api'
+      - '--web.enable-remote-write-receiver'
+      - '--storage.tsdb.max-block-duration=${PROMETHEUS_MAX_BLOCK:-2h}'
     volumes:
       - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./configs/prometheus/rules:/etc/prometheus/rules:ro
       - prometheus_data:/prometheus
     networks:
       - rag-network
-    restart: unless-stopped
+    <<: *restart-policy
     healthcheck:
+      <<: *healthcheck-defaults
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
+    profiles:
+      - development
+      - staging
+      - production
+      - full-stack
+      - monitoring
   # 📈 Grafana Dashboards
   grafana:
-    image: grafana/grafana:10.0.0
+    image: grafana/grafana:${GRAFANA_VERSION:-10.0.0}
     ports:
-      - "3000:3000"   # Grafana UI
+      - "${GRAFANA_PORT:-3000}:3000"   # Grafana UI
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USER:-admin}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin123}
       - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-clock-panel,grafana-simple-json-datasource
+      - GF_FEATURE_TOGGLES_ENABLE=publicDashboards
+      - GF_ANALYTICS_REPORTING_ENABLED=false
+      - GF_ANALYTICS_CHECK_FOR_UPDATES=false
     volumes:
       - ./configs/grafana/provisioning:/etc/grafana/provisioning:ro
       - ./configs/grafana/dashboards:/var/lib/grafana/dashboards:ro
@@ -104,30 +141,99 @@ services:
     networks:
       - rag-network
     depends_on:
-      - prometheus
-    restart: unless-stopped
+      prometheus:
+        condition: service_healthy
+    <<: *restart-policy
     healthcheck:
+      <<: *healthcheck-defaults
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
+    profiles:
+      - development
+      - staging
+      - production
+      - full-stack
+      - monitoring
   # 🔄 Redis Cache
   redis:
-    image: redis:7.2-alpine
+    image: redis:${REDIS_VERSION:-7.2-alpine}
     ports:
-      - "6379:6379"
-    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+      - "${REDIS_PORT:-6379}:6379"
+    command: >
+      redis-server 
+      --appendonly yes 
+      --maxmemory ${REDIS_MAX_MEMORY:-512mb} 
+      --maxmemory-policy allkeys-lru
+      --save 900 1
+      --save 300 10
+      --save 60 10000
+      --tcp-keepalive 60
+      --timeout 300
     volumes:
       - redis_data:/data
+      - ./configs/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
     networks:
       - rag-network
-    restart: unless-stopped
+    <<: *restart-policy
     healthcheck:
+      <<: *healthcheck-defaults
       test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
       timeout: 5s
-      retries: 3
+    profiles:
+      - development
+      - staging
+      - production
+      - full-stack
+      - cache
+
+  # 🔬 Development Tools (development profile only)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    hostname: redis-commander
+    ports:
+      - "${REDIS_COMMANDER_PORT:-8081}:8081"
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - rag-network
+    profiles:
+      - development
+      - full-stack
+
+  # 📊 Monitoring Exporters (monitoring profile)
+  node-exporter:
+    image: prom/node-exporter:${NODE_EXPORTER_VERSION:-v1.6.0}
+    ports:
+      - "${NODE_EXPORTER_PORT:-9100}:9100"
+    command:
+      - '--path.rootfs=/host'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    volumes:
+      - /:/host:ro,rslave
+    networks:
+      - rag-network
+    <<: *restart-policy
+    profiles:
+      - monitoring
+      - production
+
+  # 🔍 Log Management (production profile)
+  promtail:
+    image: grafana/promtail:${PROMTAIL_VERSION:-2.9.0}
+    volumes:
+      - ./logs:/var/log/app:ro
+      - ./configs/promtail:/etc/promtail:ro
+      - /var/log:/var/log/host:ro
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - rag-network
+    depends_on:
+      - rag-server
+    profiles:
+      - production
+      - logging
 
 # 🌐 Networks
 networks:
@@ -135,15 +241,57 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.20.0.0/16
+        - subnet: ${NETWORK_SUBNET:-172.20.0.0/16}
+    labels:
+      - "project=rag-system"
+      - "environment=${ENVIRONMENT:-development}"
 
 # 💾 Volumes
 volumes:
   qdrant_storage:
     driver: local
+    labels:
+      - "service=qdrant"
+      - "type=vector-database"
   prometheus_data:
     driver: local
+    labels:
+      - "service=prometheus"
+      - "type=metrics"
   grafana_data:
     driver: local
+    labels:
+      - "service=grafana"
+      - "type=dashboards"
   redis_data:
     driver: local
+    labels:
+      - "service=redis"
+      - "type=cache"
+
+# 🏷️ Default Environment Variables
+# Override these in .env file or environment
+# ENVIRONMENT=development|staging|production
+# DEPLOYMENT_PROFILE=development|staging|production
+# LOG_LEVEL=debug|info|warn|error
+# 
+# Service Versions:
+# QDRANT_VERSION=v1.7.0
+# PROMETHEUS_VERSION=v2.45.0
+# GRAFANA_VERSION=10.0.0
+# REDIS_VERSION=7.2-alpine
+#
+# Ports Configuration:
+# RAG_HTTP_PORT=8080
+# RAG_METRICS_PORT=9090
+# QDRANT_HTTP_PORT=6333
+# QDRANT_GRPC_PORT=6334
+# PROMETHEUS_PORT=9091
+# GRAFANA_PORT=3000
+# REDIS_PORT=6379
+#
+# Profiles Usage:
+# docker-compose --profile development up
+# docker-compose --profile production up
+# docker-compose --profile monitoring up
+# docker-compose --profile full-stack up

@@ -1,0 +1,207 @@
+# 🚨 Smart Infrastructure Alerting Rules
+# Alerting rules for Smart Infrastructure Orchestrator monitoring
+
+groups:
+  - name: smart_infrastructure_alerts
+    rules:
+      # Service availability alerts
+      - alert: SmartInfrastructureDown
+        expr: up{job="smart-infrastructure"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: smart-infrastructure
+        annotations:
+          summary: "Smart Infrastructure Orchestrator is down"
+          description: "Smart Infrastructure Orchestrator has been down for more than 1 minute."
+
+      - alert: QdrantServiceDown
+        expr: up{job="qdrant"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          component: qdrant
+        annotations:
+          summary: "QDrant service is down"
+          description: "QDrant vector database has been down for more than 2 minutes."
+
+      - alert: RedisServiceDown
+        expr: up{job="redis"} == 0
+        for: 2m
+        labels:
+          severity: high
+          component: redis
+        annotations:
+          summary: "Redis service is down"
+          description: "Redis cache service has been down for more than 2 minutes."
+
+      - alert: RAGServerDown
+        expr: up{job="rag-server"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: rag-server
+        annotations:
+          summary: "RAG Server is down"
+          description: "RAG Server has been down for more than 1 minute."
+
+      # Performance alerts
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is above 80% for more than 5 minutes on {{ $labels.instance }}"
+
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is above 85% for more than 5 minutes on {{ $labels.instance }}"
+
+      - alert: LowDiskSpace
+        expr: (node_filesystem_size_bytes{mountpoint="/"} - node_filesystem_free_bytes{mountpoint="/"}) / node_filesystem_size_bytes{mountpoint="/"} * 100 > 85
+        for: 10m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "Low disk space"
+          description: "Disk usage is above 85% for more than 10 minutes on {{ $labels.instance }}"
+
+  - name: application_performance_alerts
+    rules:
+      # Application-specific alerts
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.1
+        for: 3m
+        labels:
+          severity: high
+          component: application
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is above 10% for more than 3 minutes"
+
+      - alert: SlowResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 1
+        for: 5m
+        labels:
+          severity: warning
+          component: application
+        annotations:
+          summary: "Slow response time"
+          description: "95th percentile response time is above 1 second for more than 5 minutes"
+
+      - alert: QdrantHighMemoryUsage
+        expr: qdrant_memory_usage_bytes / qdrant_memory_limit_bytes > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          component: qdrant
+        annotations:
+          summary: "QDrant high memory usage"
+          description: "QDrant memory usage is above 80% for more than 5 minutes"
+
+      - alert: RedisHighMemoryUsage
+        expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          component: redis
+        annotations:
+          summary: "Redis high memory usage"
+          description: "Redis memory usage is above 80% for more than 5 minutes"
+
+  - name: auto_recovery_alerts
+    rules:
+      # Auto-recovery monitoring
+      - alert: AutoRecoveryTriggered
+        expr: increase(smart_infrastructure_auto_recovery_attempts_total[5m]) > 0
+        for: 0s
+        labels:
+          severity: info
+          component: smart-infrastructure
+        annotations:
+          summary: "Auto-recovery process triggered"
+          description: "Smart Infrastructure auto-recovery has been triggered {{ $value }} times in the last 5 minutes"
+
+      - alert: AutoRecoveryFailed
+        expr: increase(smart_infrastructure_auto_recovery_failures_total[10m]) > 3
+        for: 0s
+        labels:
+          severity: high
+          component: smart-infrastructure
+        annotations:
+          summary: "Auto-recovery failures detected"
+          description: "Auto-recovery has failed {{ $value }} times in the last 10 minutes"
+
+      - alert: ServiceRestartLoop
+        expr: increase(smart_infrastructure_service_restarts_total[15m]) > 5
+        for: 0s
+        labels:
+          severity: high
+          component: smart-infrastructure
+        annotations:
+          summary: "Service restart loop detected"
+          description: "Service {{ $labels.service }} has been restarted {{ $value }} times in the last 15 minutes"
+
+  - name: infrastructure_health_alerts
+    rules:
+      # Infrastructure health monitoring
+      - alert: DockerDaemonDown
+        expr: up{job="docker"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: docker
+        annotations:
+          summary: "Docker daemon is down"
+          description: "Docker daemon is not responding for more than 1 minute"
+
+      - alert: PrometheusTargetDown
+        expr: up == 0
+        for: 2m
+        labels:
+          severity: warning
+          component: monitoring
+        annotations:
+          summary: "Prometheus target down"
+          description: "Prometheus target {{ $labels.job }} on {{ $labels.instance }} has been down for more than 2 minutes"
+
+      - alert: GrafanaDown
+        expr: up{job="grafana"} == 0
+        for: 3m
+        labels:
+          severity: warning
+          component: grafana
+        annotations:
+          summary: "Grafana is down"
+          description: "Grafana dashboard service has been down for more than 3 minutes"
+
+      # Smart Infrastructure specific health checks
+      - alert: SmartInfrastructureHealthCheckFailed
+        expr: smart_infrastructure_health_check_success == 0
+        for: 2m
+        labels:
+          severity: high
+          component: smart-infrastructure
+        annotations:
+          summary: "Smart Infrastructure health check failed"
+          description: "Smart Infrastructure health check has been failing for more than 2 minutes"
+
+      - alert: ServiceDependencyBroken
+        expr: smart_infrastructure_service_dependency_check == 0
+        for: 1m
+        labels:
+          severity: high
+          component: smart-infrastructure
+        annotations:
+          summary: "Service dependency broken"
+          description: "Service dependency for {{ $labels.service }} is broken for more than 1 minute"
