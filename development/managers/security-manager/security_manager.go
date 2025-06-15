@@ -34,6 +34,14 @@ type SecurityManagerImpl struct {
 	isInitialized   bool
 	scanResults     map[string]*interfaces.SecurityScanResult
 	scanResultsMu   sync.RWMutex
+
+	// Phase 4.2.2: Ajout des capacités de vectorisation pour la sécurité
+	vectorizer              VectorizationEngine       // Moteur de vectorisation
+	qdrant                 QdrantInterface           // Interface Qdrant pour stockage vectoriel
+	policyVectorizer       *PolicyVectorizer         // Vectoriseur de politiques de sécurité
+	anomalyDetector        *AnomalyDetector          // Détecteur d'anomalies basé sur embeddings
+	vulnerabilityClassifier *VulnerabilityClassifier // Classificateur automatique de vulnérabilités
+	vectorizationEnabled   bool                      // Flag d'activation de la vectorisation
 }
 
 // Config pour le Security Manager

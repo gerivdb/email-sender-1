@@ -1,0 +1,9 @@
+{
+  "host": "localhost",
+  "port": 6333,
+  "collection_name": "email_vectors_v56",
+  "vector_size": 384,
+  "distance": "cosine",
+  "api_key": "",
+  "timeout": 30
+}

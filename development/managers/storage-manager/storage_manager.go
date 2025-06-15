@@ -31,6 +31,13 @@ type StorageManagerImpl struct {
 	migrations    *MigrationManager
 	isInitialized bool
 	mu            sync.RWMutex
+
+	// Phase 4.2.1: Ajout des capacités de vectorisation
+	vectorizer         VectorizationEngine     // Moteur de vectorisation pour auto-indexation
+	configIndexer      *ConfigurationIndexer   // Indexeur de fichiers de configuration
+	schemaVectorizer   *SchemaVectorizer       // Vectoriseur de schémas de base de données
+	semanticSearcher   *SemanticSearcher       // Recherche sémantique dans les configurations
+	vectorizationEnabled bool                  // Flag d'activation de la vectorisation
 }
 
 // StorageConfig configuration pour le gestionnaire de stockage
@@ -369,4 +376,158 @@ func (sm *StorageManagerImpl) GetDependencyMetadata(ctx context.Context, name st
 	sm.setCache(cacheKey, &metadata)
 
 	return &metadata, nil
+}
+
+// === PHASE 4.2.1: INTERFACES DE VECTORISATION POUR STORAGE MANAGER ===
+
+// VectorizationEngine interface pour le moteur de vectorisation
+type VectorizationEngine interface {
+	GenerateEmbedding(ctx context.Context, text string) ([]float32, error)
+	GenerateConfigEmbedding(ctx context.Context, config interface{}) ([]float32, error)
+	GenerateSchemaEmbedding(ctx context.Context, schema DatabaseSchema) ([]float32, error)
+}
+
+// ConfigurationIndexer gère l'auto-indexation des fichiers de configuration
+type ConfigurationIndexer struct {
+	vectorizer       VectorizationEngine
+	qdrant          QdrantClient
+	watchedPaths    []string
+	indexedConfigs  map[string]*ConfigMetadata
+	mu              sync.RWMutex
+	logger          *log.Logger
+}
+
+// ConfigMetadata métadonnées d'un fichier de configuration indexé
+type ConfigMetadata struct {
+	FilePath     string                 `json:"file_path"`
+	ConfigType   string                 `json:"config_type"`   // json, yaml, env, etc.
+	LastModified time.Time              `json:"last_modified"`
+	Embedding    []float32              `json:"embedding"`
+	Content      map[string]interface{} `json:"content"`
+	Tags         []string               `json:"tags"`
+	Schema       string                 `json:"schema,omitempty"`
+}
+
+// SchemaVectorizer gère la vectorisation des schémas de base de données
+type SchemaVectorizer struct {
+	vectorizer       VectorizationEngine
+	qdrant          QdrantClient
+	schemas         map[string]*DatabaseSchema
+	schemaEmbeddings map[string][]float32
+	mu              sync.RWMutex
+	logger          *log.Logger
+}
+
+// DatabaseSchema représente un schéma de base de données
+type DatabaseSchema struct {
+	Name        string              `json:"name"`
+	Tables      []TableSchema       `json:"tables"`
+	Relations   []RelationSchema    `json:"relations"`
+	Indexes     []IndexSchema       `json:"indexes"`
+	Constraints []ConstraintSchema  `json:"constraints"`
+	Version     string              `json:"version"`
+	CreatedAt   time.Time           `json:"created_at"`
+	UpdatedAt   time.Time           `json:"updated_at"`
+}
+
+// TableSchema représente un schéma de table
+type TableSchema struct {
+	Name        string         `json:"name"`
+	Columns     []ColumnSchema `json:"columns"`
+	PrimaryKey  []string       `json:"primary_key"`
+	ForeignKeys []ForeignKey   `json:"foreign_keys"`
+	Indexes     []string       `json:"indexes"`
+	Comment     string         `json:"comment,omitempty"`
+}
+
+// ColumnSchema représente un schéma de colonne
+type ColumnSchema struct {
+	Name         string `json:"name"`
+	Type         string `json:"type"`
+	Nullable     bool   `json:"nullable"`
+	DefaultValue string `json:"default_value,omitempty"`
+	Comment      string `json:"comment,omitempty"`
+}
+
+// RelationSchema représente une relation entre tables
+type RelationSchema struct {
+	FromTable  string `json:"from_table"`
+	ToTable    string `json:"to_table"`
+	FromColumn string `json:"from_column"`
+	ToColumn   string `json:"to_column"`
+	Type       string `json:"type"` // one-to-one, one-to-many, many-to-many
+}
+
+// IndexSchema représente un index
+type IndexSchema struct {
+	Name    string   `json:"name"`
+	Table   string   `json:"table"`
+	Columns []string `json:"columns"`
+	Unique  bool     `json:"unique"`
+	Type    string   `json:"type"`
+}
+
+// ConstraintSchema représente une contrainte
+type ConstraintSchema struct {
+	Name   string `json:"name"`
+	Table  string `json:"table"`
+	Type   string `json:"type"`   // CHECK, UNIQUE, NOT NULL, etc.
+	Detail string `json:"detail"` // détails de la contrainte
+}
+
+// ForeignKey représente une clé étrangère
+type ForeignKey struct {
+	Column          string `json:"column"`
+	ReferencedTable string `json:"referenced_table"`
+	ReferencedColumn string `json:"referenced_column"`
+	OnDelete        string `json:"on_delete,omitempty"`
+	OnUpdate        string `json:"on_update,omitempty"`
+}
+
+// SemanticSearcher gère la recherche sémantique dans les configurations
+type SemanticSearcher struct {
+	vectorizer     VectorizationEngine
+	qdrant        QdrantClient
+	configIndexer *ConfigurationIndexer
+	schemaVectorizer *SchemaVectorizer
+	logger        *log.Logger
+}
+
+// SearchResult représente un résultat de recherche sémantique
+type SearchResult struct {
+	Type        string                 `json:"type"`        // config, schema, table, etc.
+	ID          string                 `json:"id"`
+	Name        string                 `json:"name"`
+	Score       float32                `json:"score"`
+	Content     map[string]interface{} `json:"content"`
+	Metadata    map[string]interface{} `json:"metadata"`
+	Path        string                 `json:"path,omitempty"`
+	Description string                 `json:"description,omitempty"`
+}
+
+// StorageVectorization interface pour les capacités de vectorisation du Storage Manager
+type StorageVectorization interface {
+	// Phase 4.2.1.1: Auto-indexation des fichiers de configuration
+	IndexConfiguration(ctx context.Context, filePath string) error
+	UpdateConfigurationIndex(ctx context.Context, filePath string) error
+	RemoveConfigurationIndex(ctx context.Context, filePath string) error
+	WatchConfigurationDirectory(ctx context.Context, dirPath string) error
+	
+	// Phase 4.2.1.2: Vectorisation des schémas de base de données
+	IndexDatabaseSchema(ctx context.Context, schemaName string) error
+	UpdateSchemaIndex(ctx context.Context, schemaName string) error
+	GetSchemaEmbedding(ctx context.Context, schemaName string) ([]float32, error)
+	FindSimilarSchemas(ctx context.Context, schemaName string, threshold float64) ([]SearchResult, error)
+	
+	// Phase 4.2.1.3: Recherche sémantique dans les configurations
+	SearchConfigurations(ctx context.Context, query string, limit int) ([]SearchResult, error)
+	SearchSchemas(ctx context.Context, query string, limit int) ([]SearchResult, error)
+	SearchTables(ctx context.Context, query string, limit int) ([]SearchResult, error)
+	SearchAll(ctx context.Context, query string, limit int) ([]SearchResult, error)
+	
+	// Méthodes de gestion
+	EnableVectorization() error
+	DisableVectorization() error
+	GetVectorizationStatus() bool
+	GetVectorizationMetrics() VectorizationMetrics
 }
