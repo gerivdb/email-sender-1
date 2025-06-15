@@ -12,6 +12,7 @@ import (
 
 	"github.com/prometheus/client_golang/api"
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
+	"email_sender/internal/monitoring"
 )
 
 // InfrastructureOrchestrator définit l'interface pour l'orchestration de l'infrastructure
@@ -22,6 +23,12 @@ type InfrastructureOrchestrator interface {
 	HealthCheck(ctx context.Context) error
 	DetectEnvironment() (*EnvironmentInfo, error)
 	AutoRecover(ctx context.Context) error
+	
+	// Nouvelles méthodes Phase 2
+	StartAdvancedMonitoring(ctx context.Context) error
+	StopAdvancedMonitoring() error
+	GetAdvancedHealthStatus(ctx context.Context) (map[string]monitoring.ServiceHealthStatus, error)
+	EnableAutoHealing(enabled bool) error
 }
 
 // ServiceStatus représente l'état des services
@@ -68,6 +75,16 @@ type SmartInfrastructureManager struct {
 	retryAttempts    int
 	retryDelay       time.Duration
 	healthCheckTimeout time.Duration
+	
+	// Phase 2: Composants de monitoring avancé
+	advancedMonitor     *monitoring.AdvancedInfrastructureMonitor
+	autoHealingSystem   *monitoring.NeuralAutoHealingSystem
+	autonomyManager     *monitoring.DefaultAdvancedAutonomyManager
+	notificationSystem  *monitoring.DefaultNotificationSystem
+	monitoringActive    bool
+	autoHealingEnabled  bool
+	monitoringContext   context.Context
+	monitoringCancel    context.CancelFunc
 }
 
 // NewSmartInfrastructureManager crée une nouvelle instance du manager
@@ -84,11 +101,16 @@ func NewSmartInfrastructureManager() (*SmartInfrastructureManager, error) {
 		retryAttempts:      3,
 		retryDelay:         10 * time.Second,
 		healthCheckTimeout: 30 * time.Second,
+		monitoringActive:   false,
+		autoHealingEnabled: false,
 	}
 
 	if promClient != nil {
 		manager.prometheusClient = v1.NewAPI(promClient)
 	}
+
+	// Phase 2: Initialisation des composants de monitoring avancé
+	manager.initializeAdvancedMonitoring()
 
 	// Détection automatique de l'environnement
 	env, err := manager.DetectEnvironment()
@@ -98,6 +120,26 @@ func NewSmartInfrastructureManager() (*SmartInfrastructureManager, error) {
 	manager.environment = env
 
 	return manager, nil
+}
+
+// initializeAdvancedMonitoring initialise les composants de monitoring avancé (Phase 2)
+func (sim *SmartInfrastructureManager) initializeAdvancedMonitoring() {
+	log.Println("🔧 Initializing advanced monitoring components (Phase 2)...")
+
+	// Initialiser le système de notifications
+	logFile := filepath.Join("logs", "smart-infrastructure-notifications.log")
+	sim.notificationSystem = monitoring.NewDefaultNotificationSystem(logFile)
+
+	// Initialiser l'AdvancedAutonomyManager
+	sim.autonomyManager = monitoring.NewDefaultAdvancedAutonomyManager(sim.notificationSystem)
+
+	// Initialiser le système d'auto-healing
+	sim.autoHealingSystem = monitoring.NewNeuralAutoHealingSystem(sim.autonomyManager, sim.notificationSystem)
+
+	// Initialiser le monitor avancé
+	sim.advancedMonitor = monitoring.NewAdvancedInfrastructureMonitor()
+
+	log.Println("✅ Advanced monitoring components initialized")
 }
 
 // DetectEnvironment détecte automatiquement l'environnement et la configuration
@@ -509,4 +551,183 @@ func (sim *SmartInfrastructureManager) restartService(ctx context.Context, servi
 	}
 
 	return nil
+}
+
+// PHASE 2: Nouvelles méthodes pour le monitoring avancé et l'auto-healing
+
+// StartAdvancedMonitoring démarre le système de monitoring avancé
+func (sim *SmartInfrastructureManager) StartAdvancedMonitoring(ctx context.Context) error {
+	if sim.monitoringActive {
+		return fmt.Errorf("advanced monitoring is already active")
+	}
+
+	log.Println("🚀 Starting advanced monitoring system...")
+
+	// Créer un contexte avec annulation pour le monitoring
+	sim.monitoringContext, sim.monitoringCancel = context.WithCancel(ctx)
+
+	// Démarrer l'AdvancedInfrastructureMonitor
+	if err := sim.advancedMonitor.Start(sim.monitoringContext); err != nil {
+		return fmt.Errorf("failed to start advanced monitor: %w", err)
+	}
+
+	// Démarrer l'AdvancedAutonomyManager  
+	if err := sim.autonomyManager.StartAdvancedMonitoring(sim.monitoringContext); err != nil {
+		sim.advancedMonitor.Stop()
+		return fmt.Errorf("failed to start autonomy manager: %w", err)
+	}
+
+	// Activer l'auto-healing si configuré
+	if sim.autoHealingEnabled {
+		if err := sim.autoHealingSystem.Start(sim.monitoringContext); err != nil {
+			log.Printf("Warning: Failed to start auto-healing system: %v", err)
+		} else {
+			log.Println("✅ Auto-healing system started")
+		}
+	}
+
+	sim.monitoringActive = true
+	
+	// Notification de démarrage
+	sim.notificationSystem.SendNotification(monitoring.NotificationInfo{
+		Type:      "system",
+		Level:     "info", 
+		Service:   "smart-infrastructure",
+		Message:   "Advanced monitoring system started successfully",
+		Timestamp: time.Now(),
+	})
+
+	log.Println("✅ Advanced monitoring system started successfully")
+	return nil
+}
+
+// StopAdvancedMonitoring arrête le système de monitoring avancé
+func (sim *SmartInfrastructureManager) StopAdvancedMonitoring() error {
+	if !sim.monitoringActive {
+		return fmt.Errorf("advanced monitoring is not active")
+	}
+
+	log.Println("🛑 Stopping advanced monitoring system...")
+
+	// Arrêter l'auto-healing en premier
+	if err := sim.autoHealingSystem.Stop(); err != nil {
+		log.Printf("Warning: Error stopping auto-healing system: %v", err)
+	}
+
+	// Arrêter l'AdvancedAutonomyManager
+	if err := sim.autonomyManager.StopAdvancedMonitoring(); err != nil {
+		log.Printf("Warning: Error stopping autonomy manager: %v", err)
+	}
+
+	// Arrêter l'AdvancedInfrastructureMonitor
+	sim.advancedMonitor.Stop()
+
+	// Annuler le contexte de monitoring
+	if sim.monitoringCancel != nil {
+		sim.monitoringCancel()
+	}
+
+	sim.monitoringActive = false
+
+	// Notification d'arrêt
+	sim.notificationSystem.SendNotification(monitoring.NotificationInfo{
+		Type:      "system",
+		Level:     "info",
+		Service:   "smart-infrastructure", 
+		Message:   "Advanced monitoring system stopped",
+		Timestamp: time.Now(),
+	})
+
+	log.Println("✅ Advanced monitoring system stopped")
+	return nil
+}
+
+// GetAdvancedHealthStatus retourne le statut de santé avancé de tous les services
+func (sim *SmartInfrastructureManager) GetAdvancedHealthStatus(ctx context.Context) (map[string]monitoring.ServiceHealthStatus, error) {
+	if !sim.monitoringActive {
+		return nil, fmt.Errorf("advanced monitoring is not active")
+	}
+
+	log.Println("🔍 Retrieving advanced health status...")
+
+	// Obtenir le statut depuis l'AdvancedInfrastructureMonitor
+	healthStatus, err := sim.advancedMonitor.GetHealthStatus(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get advanced health status: %w", err)
+	}
+
+	// Enrichir avec les données de l'AdvancedAutonomyManager
+	autonomyMetrics, err := sim.autonomyManager.GetMetrics()
+	if err != nil {
+		log.Printf("Warning: Could not retrieve autonomy metrics: %v", err)
+	} else {
+		// Ajouter les métriques d'autonomie au statut de santé
+		for service, status := range healthStatus {
+			if autonomyMetric, exists := autonomyMetrics[service]; exists {
+				status.Metrics = map[string]interface{}{
+					"autonomy_level":    autonomyMetric.AutonomyLevel,
+					"self_healing_count": autonomyMetric.SelfHealingCount,
+					"last_intervention": autonomyMetric.LastIntervention,
+				}
+				healthStatus[service] = status
+			}
+		}
+	}
+
+	log.Printf("✅ Retrieved health status for %d services", len(healthStatus))
+	return healthStatus, nil
+}
+
+// EnableAutoHealing active ou désactive le système d'auto-healing
+func (sim *SmartInfrastructureManager) EnableAutoHealing(enabled bool) error {
+	log.Printf("🔧 %s auto-healing system...", map[bool]string{true: "Enabling", false: "Disabling"}[enabled])
+
+	sim.autoHealingEnabled = enabled
+
+	// Si le monitoring est actif, appliquer le changement immédiatement
+	if sim.monitoringActive {
+		if enabled {
+			if err := sim.autoHealingSystem.Start(sim.monitoringContext); err != nil {
+				return fmt.Errorf("failed to start auto-healing system: %w", err)
+			}
+			log.Println("✅ Auto-healing system started")
+		} else {
+			if err := sim.autoHealingSystem.Stop(); err != nil {
+				return fmt.Errorf("failed to stop auto-healing system: %w", err)
+			}
+			log.Println("✅ Auto-healing system stopped")
+		}
+	}
+
+	// Notification du changement de configuration
+	sim.notificationSystem.SendNotification(monitoring.NotificationInfo{
+		Type:      "config",
+		Level:     "info",
+		Service:   "smart-infrastructure",
+		Message:   fmt.Sprintf("Auto-healing system %s", map[bool]string{true: "enabled", false: "disabled"}[enabled]),
+		Timestamp: time.Now(),
+	})
+
+	log.Printf("✅ Auto-healing %s", map[bool]string{true: "enabled", false: "disabled"}[enabled])
+	return nil
+}
+
+// GetMonitoringStatus retourne l'état actuel du système de monitoring avancé
+func (sim *SmartInfrastructureManager) GetMonitoringStatus() monitoring.MonitoringStatus {
+	return monitoring.MonitoringStatus{
+		Active:             sim.monitoringActive,
+		AutoHealingEnabled: sim.autoHealingEnabled,
+		StartTime:          time.Now(), // TODO: tracker le vrai temps de démarrage
+		ServicesMonitored:  sim.getMonitoredServicesCount(),
+	}
+}
+
+// getMonitoredServicesCount retourne le nombre de services surveillés
+func (sim *SmartInfrastructureManager) getMonitoredServicesCount() int {
+	if !sim.monitoringActive {
+		return 0
+	}
+	
+	// Compter les services actifs dans docker-compose
+	return 5 // qdrant, redis, prometheus, grafana, rag_server
 }

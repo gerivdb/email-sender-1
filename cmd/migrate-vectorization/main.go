@@ -10,7 +10,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/email-sender-1/vectorization"
+	"email_sender/internal/vectorization"
 )
 
 func main() {

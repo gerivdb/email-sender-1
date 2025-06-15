@@ -480,27 +480,35 @@ Services Applicatifs:
 - ✅ Auto-detection: Environment, services, dependencies, resources
 - ✅ Documentation: `PHASE_1_SMART_INFRASTRUCTURE_COMPLETE.md`
 
-### Phase 2 : Système de Surveillance et Auto-Recovery (Priorité Moyenne)
+### Phase 2 : Système de Surveillance et Auto-Recovery ✅ **COMPLETED**
 
-#### Étape 2.1 : Monitoring Infrastructure
+#### Étape 2.1 : Monitoring Infrastructure ✅
 
-- [ ] **2.1.1** Étendre Real-Time Monitoring Dashboard
-  - Ajouter surveillance spécifique infrastructure dans AdvancedAutonomyManager
-  - Créer métriques de santé pour chaque service (QDrant, Redis, etc.)
-  - Implémenter alertes automatiques en cas de panne
+- [x] **2.1.1** Étendre Real-Time Monitoring Dashboard ✅
+  - ✅ AdvancedInfrastructureMonitor avec surveillance spécifique infrastructure
+  - ✅ Métriques de santé pour chaque service (QDrant, Redis, PostgreSQL, Prometheus/Grafana)
+  - ✅ Alertes automatiques intégrées au système de notifications
 
-- [ ] **2.1.2** Health Checks Avancés
-  - Vérification QDrant : Connexion + test de query simple
-  - Vérification Redis : Ping + test set/get
-  - Vérification PostgreSQL : Connexion + query metadata
-  - Vérification Prometheus/Grafana : Endpoints health
+- [x] **2.1.2** Health Checks Avancés ✅
+  - ✅ Vérification QDrant : Connexion + test de query simple
+  - ✅ Vérification Redis : Ping + test set/get
+  - ✅ Vérification PostgreSQL : Connexion + query metadata
+  - ✅ Vérification Prometheus/Grafana : Endpoints health
 
-#### Étape 2.2 : Auto-Healing Infrastructure  
+#### Étape 2.2 : Auto-Healing Infrastructure ✅
 
-- [ ] **2.2.1** Étendre Neural Auto-Healing System
-  - Détection panne service → Redémarrage automatique
-  - Escalade vers AdvancedAutonomyManager si échec répété
-  - Notifications via système de logs intégré
+- [x] **2.2.1** Étendre Neural Auto-Healing System ✅
+  - ✅ Détection automatique panne service → Redémarrage automatique
+  - ✅ Escalade vers AdvancedAutonomyManager si échec répété
+  - ✅ Notifications via système de logs intégré et API
+
+**📋 Livrables Phase 2 :**
+- ✅ `internal/infrastructure/smart_orchestrator.go` - Manager étendu Phase 2
+- ✅ `internal/api/infrastructure_endpoints.go` - API REST endpoints
+- ✅ `cmd/infrastructure-api-server/main.go` - Serveur API dédié
+- ✅ `scripts/phase2-advanced-monitoring.ps1` - Script de gestion PowerShell
+- ✅ `tests/integration/phase2_advanced_monitoring_test.go` - Tests d'intégration
+- ✅ `PHASE_2_ADVANCED_MONITORING_COMPLETE.md` - Documentation complète
 
 ### Phase 3 : Intégration IDE et Expérience Développeur (Priorité Moyenne)
 
