@@ -1,26 +1,68 @@
-# Configuration infrastructure orchestration
+# Configuration Infrastructure Orchestration - Phase 4 Complete
+# Smart Email Sender Infrastructure Management
+
+# Configuration générale
 infrastructure_config:
   auto_start_enabled: true
   startup_mode: "smart" # smart, fast, minimal
   environment: "development"
+  version: "4.0.0"
 
+  # Configuration du découpage de services
   service_discovery:
     docker_compose_path: "./docker-compose.yml"
     container_manager_endpoint: "localhost:8080"
     health_check_interval: "10s"
     max_startup_time: "5m"
+    health_check_timeout: "30s"
+    health_check_retries: 3
 
+  # Résolution des dépendances
   dependency_resolution:
     parallel_start_enabled: true
     retry_failed_services: true
     max_retries: 3
     retry_backoff: "exponential"
+    dependency_timeout: "2m"
+    validation_enabled: true
 
+  # Surveillance et monitoring
   monitoring:
     real_time_health_checks: true
     alert_on_failure: true
     auto_healing_enabled: true
     performance_metrics: true
+    metrics_interval: "15s"
+    history_retention: "24h"
+
+  # Optimisation des performances (Phase 4.1)
+  performance:
+    parallel_startup: true
+    max_concurrent_starts: 5
+    startup_timeout: "120s"
+    resource_check_enabled: true
+    cache_startup_state: true
+    optimize_boot_sequence: true
+
+# Configuration des ressources système (Phase 4.1.2)
+resource_management:
+  enable_resource_monitoring: true
+  resource_check_interval: "30s"
+
+  # Limites système
+  system_limits:
+    max_cpu_usage_percent: 80.0
+    max_ram_usage_percent: 85.0
+    max_disk_usage_percent: 90.0
+    min_free_ram_mb: 1024
+    min_free_disk_gb: 2
+
+  # Ajustement automatique
+  auto_adjustment:
+    enabled: true
+    scale_down_on_resource_pressure: true
+    cleanup_unused_resources: true
+    optimize_docker_resources: true
 
 # Services and their dependencies
 services:
@@ -48,8 +90,160 @@ services:
     requires: ["prometheus"]
     health_check: "http://localhost:3000/api/health"
     startup_timeout: "30s"
-
   rag-server:
     requires: ["qdrant", "redis", "prometheus"]
     health_check: "http://localhost:8080/health"
     startup_timeout: "60s"
+
+# Configuration de sécurité (Phase 4.2)
+security:
+  enable_security_manager: true
+  encryption:
+    enabled: true
+    algorithm: "AES-256-GCM"
+    tls_min_version: "1.3"
+    validate_certificates: true
+    auto_generate_certs: true
+
+  network_security:
+    restrict_network_access: true
+    allowed_networks:
+      - "127.0.0.0/8"
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+    block_suspicious_ips: true
+    rate_limiting_enabled: true
+
+  audit_logging:
+    enabled: true
+    log_level: "INFO"
+    retention_days: 30
+    log_security_events: true
+    log_access_attempts: true
+    log_configuration_changes: true
+
+  access_control:
+    enable_rbac: true
+    require_authentication: true
+    session_timeout: "8h"
+    max_failed_attempts: 3
+    lockout_duration: "15m"
+
+# Configuration d'alerting avancé
+alerting:
+  enabled: true
+  notification_channels:
+    - type: "webhook"
+      url: "http://localhost:8080/alerts"
+      enabled: true
+    - type: "email"
+      smtp_server: "smtp.example.com"
+      enabled: false
+
+  alert_rules:
+    - name: "high_cpu_usage"
+      condition: "cpu_usage > 90"
+      severity: "warning"
+      duration: "5m"
+    - name: "low_disk_space"
+      condition: "disk_free < 1GB"
+      severity: "critical"
+      duration: "1m"
+    - name: "service_down"
+      condition: "service_health == false"
+      severity: "critical"
+      duration: "30s"
+
+# Configuration des métriques détaillées
+metrics:
+  collection_enabled: true
+  export_interval: "30s"
+  retention_period: "7d"
+
+  system_metrics:
+    - cpu_usage
+    - memory_usage
+    - disk_usage
+    - network_io
+    - process_count
+
+  service_metrics:
+    - startup_time
+    - health_status
+    - request_count
+    - response_time
+    - error_rate
+
+  custom_metrics:
+    - infrastructure_availability
+    - security_score
+    - performance_index
+
+# Intégration avec l'IDE
+ide_integration:
+  vscode_integration: true
+  startup_hooks:
+    - name: "pre_startup"
+      script: "./scripts/infrastructure/pre-startup-hook.ps1"
+    - name: "post_startup"
+      script: "./scripts/infrastructure/post-startup-hook.ps1"
+
+  status_indicators:
+    show_in_status_bar: true
+    refresh_interval: "10s"
+    show_resource_usage: true
+
+  commands:
+    - name: "Start Infrastructure"
+      command: "infrastructure.start"
+      shortcut: "Ctrl+Shift+I"
+    - name: "Stop Infrastructure"
+      command: "infrastructure.stop"
+      shortcut: "Ctrl+Shift+S"
+    - name: "Infrastructure Status"
+      command: "infrastructure.status"
+      shortcut: "Ctrl+Shift+T"
+
+# Profils de démarrage optimisés
+startup_profiles:
+  minimal:
+    description: "Services essentiels uniquement"
+    services: ["qdrant", "redis"]
+    parallel_enabled: false
+
+  development:
+    description: "Environnement de développement complet"
+    services: ["qdrant", "redis", "postgresql", "prometheus", "grafana"]
+    parallel_enabled: true
+    max_parallel: 3
+
+  full:
+    description: "Stack complète avec monitoring"
+    services:
+      ["qdrant", "redis", "postgresql", "prometheus", "grafana", "rag-server"]
+    parallel_enabled: true
+    max_parallel: 5
+
+  testing:
+    description: "Configuration pour les tests"
+    services: ["qdrant", "redis", "postgresql"]
+    parallel_enabled: true
+    health_check_timeout: "10s"
+
+# Configuration avancée pour l'optimisation (Phase 4.1)
+optimization:
+  smart_startup_sequencing: true
+  resource_aware_scheduling: true
+  adaptive_timeouts: true
+  predictive_scaling: true
+
+  caching:
+    cache_service_states: true
+    cache_health_checks: true
+    cache_duration: "5m"
+
+  batch_processing:
+    enable_service_batching: true
+    optimal_batch_size: 3
+    batch_delay: "2s"
