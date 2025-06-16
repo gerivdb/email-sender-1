@@ -22,18 +22,18 @@ import (
 
 // HTTPWebhookServer implements WebhookServer interface using HTTP
 type HTTPWebhookServer struct {
-	config   types.WebhookServerConfig
-	server   *http.Server
-	mux      *http.ServeMux
-	logger   *zap.Logger
-	stats    WebhookServerStats
-	statsMu  sync.RWMutex
+	config  types.WebhookServerConfig
+	server  *http.Server
+	mux     *http.ServeMux
+	logger  *zap.Logger
+	stats   WebhookServerStats
+	statsMu sync.RWMutex
 }
 
 // NewHTTPWebhookServer creates a new HTTP webhook server
 func NewHTTPWebhookServer(config types.WebhookServerConfig, logger *zap.Logger) *HTTPWebhookServer {
 	mux := http.NewServeMux()
-	
+
 	server := &http.Server{
 		Addr:         fmt.Sprintf("%s:%d", config.Host, config.Port),
 		Handler:      mux,
@@ -66,16 +66,16 @@ func (s *HTTPWebhookServer) Start(ctx context.Context) error {
 		} else {
 			err = s.server.ListenAndServe()
 		}
-		
+
 		if err != nil && err != http.ErrServerClosed {
 			s.logger.Error("Webhook server error", zap.Error(err))
 		}
 	}()
 
-	s.logger.Info("Webhook server started", 
+	s.logger.Info("Webhook server started",
 		zap.String("address", s.server.Addr),
 		zap.Bool("tls", s.config.TLS))
-	
+
 	return nil
 }
 
@@ -88,11 +88,11 @@ func (s *HTTPWebhookServer) Stop(ctx context.Context) error {
 func (s *HTTPWebhookServer) RegisterHandler(path string, handler http.HandlerFunc) {
 	wrappedHandler := s.wrapHandler(handler)
 	s.mux.HandleFunc(path, wrappedHandler)
-	
+
 	s.statsMu.Lock()
 	s.stats.ActiveHandlers++
 	s.statsMu.Unlock()
-	
+
 	s.logger.Info("Webhook handler registered", zap.String("path", path))
 }
 
@@ -106,28 +106,27 @@ func (s *HTTPWebhookServer) GetStats() WebhookServerStats {
 func (s *HTTPWebhookServer) wrapHandler(handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
-		
+
 		s.statsMu.Lock()
 		s.stats.RequestsTotal++
 		s.stats.LastRequest = start
 		s.statsMu.Unlock()
-
 		// Create response writer wrapper to capture status
-		wrapper := &responseWriter{ResponseWriter: w, statusCode: 200}
-		
+		wrapper := &responseWriter{ResponseWriter: w, statusCode: 200, headerWritten: false}
+
 		defer func() {
 			duration := time.Since(start)
-			
+
 			s.statsMu.Lock()
 			if wrapper.statusCode >= 200 && wrapper.statusCode < 300 {
 				s.stats.RequestsSuccess++
 			} else {
 				s.stats.RequestsError++
 			}
-			
+
 			// Update average latency
 			totalRequests := s.stats.RequestsTotal
-			s.stats.AverageLatency = (s.stats.AverageLatency*float64(totalRequests-1) + 
+			s.stats.AverageLatency = (s.stats.AverageLatency*float64(totalRequests-1) +
 				duration.Seconds()*1000) / float64(totalRequests)
 			s.statsMu.Unlock()
 		}()
@@ -138,11 +137,16 @@ func (s *HTTPWebhookServer) wrapHandler(handler http.HandlerFunc) http.HandlerFu
 
 type responseWriter struct {
 	http.ResponseWriter
-	statusCode int
+	statusCode    int
+	headerWritten bool
 }
 
 func (rw *responseWriter) WriteHeader(code int) {
+	if rw.headerWritten {
+		return // Ignore subsequent calls
+	}
 	rw.statusCode = code
+	rw.headerWritten = true
 	rw.ResponseWriter.WriteHeader(code)
 }
 
@@ -208,10 +212,10 @@ func (c *HTTPWebhookClient) Send(ctx context.Context, endpoint *WebhookEndpoint,
 			if retryDelay > c.config.MaxRetryDelay {
 				retryDelay = c.config.MaxRetryDelay
 			}
-			
+
 			delivery.NextAttempt = time.Now().Add(retryDelay)
 			delivery.Status = "retrying"
-			
+
 			select {
 			case <-time.After(retryDelay):
 				continue
@@ -234,7 +238,7 @@ func (c *HTTPWebhookClient) SendAsync(ctx context.Context, endpoint *WebhookEndp
 	go func() {
 		_, err := c.Send(ctx, endpoint, payload)
 		if err != nil {
-			c.logger.Error("Async webhook delivery failed", 
+			c.logger.Error("Async webhook delivery failed",
 				zap.String("endpoint_id", endpoint.ID),
 				zap.String("url", endpoint.URL),
 				zap.Error(err))
@@ -259,7 +263,7 @@ func (c *HTTPWebhookClient) sendRequest(ctx context.Context, endpoint *WebhookEn
 	// Set headers
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-Agent", "FMOUA-WebhookManager/1.0")
-	
+
 	for key, value := range endpoint.Headers {
 		req.Header.Set(key, value)
 	}
@@ -311,7 +315,7 @@ func (c *HTTPWebhookClient) recordDelivery(success bool, duration time.Duration)
 
 	// Update average latency
 	total := c.stats.DeliveriesTotal
-	c.stats.AverageLatency = (c.stats.AverageLatency*float64(total-1) + 
+	c.stats.AverageLatency = (c.stats.AverageLatency*float64(total-1) +
 		duration.Seconds()*1000) / float64(total)
 }
 
