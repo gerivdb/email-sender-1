@@ -52,19 +52,34 @@ func LoadFMOUAConfig(configPath string) (*FMOUAConfig, error) {
 		config.Performance.TargetLatencyMs = viper.GetInt("performance.target_latency_ms")
 		config.Performance.MaxConcurrentOps = viper.GetInt("performance.max_concurrent_operations")
 		config.Performance.CacheEnabled = viper.GetBool("performance.cache_enabled")
-	} // Manual fix for managers config if needed
+	}	// Manual fix for managers config if needed
 	if len(config.ManagersConfig.Managers) == 0 {
 		log.Printf("DEBUG: Manual fix for managers config")
 		config.ManagersConfig.Managers = make(map[string]types.ManagerConfig)
+		// Try to get managers from the saved config
+		managersRaw := viper.Get("managers_config.managers")
+		if managersMap, ok := managersRaw.(map[string]interface{}); ok {
+			for managerName, managerData := range managersMap {
+				if _, ok := managerData.(map[string]interface{}); ok {
+					config.ManagersConfig.Managers[managerName] = types.ManagerConfig{
+						Enabled:  viper.GetBool(fmt.Sprintf("managers_config.managers.%s.enabled", managerName)),
+						Path:     viper.GetString(fmt.Sprintf("managers_config.managers.%s.path", managerName)),
+						Priority: viper.GetInt(fmt.Sprintf("managers_config.managers.%s.priority", managerName)),
+					}
+				}
+			}
+		}
 
-		// Extract direct manager configs from viper
-		managersKeys := []string{"error_manager", "storage_manager", "security_manager", "config_manager", "cache_manager", "logging_manager"}
-		for _, managerKey := range managersKeys {
-			if viper.GetBool("managers_config." + managerKey + ".enabled") {
-				config.ManagersConfig.Managers[managerKey] = types.ManagerConfig{
-					Enabled:  viper.GetBool("managers_config." + managerKey + ".enabled"),
-					Path:     viper.GetString("managers_config." + managerKey + ".path"),
-					Priority: viper.GetInt("managers_config." + managerKey + ".priority"),
+		// If still no managers, try old format
+		if len(config.ManagersConfig.Managers) == 0 {
+			managersKeys := []string{"error_manager", "storage_manager", "security_manager", "config_manager", "cache_manager", "logging_manager"}
+			for _, managerKey := range managersKeys {
+				if viper.GetBool("managers_config." + managerKey + ".enabled") {
+					config.ManagersConfig.Managers[managerKey] = types.ManagerConfig{
+						Enabled:  viper.GetBool("managers_config." + managerKey + ".enabled"),
+						Path:     viper.GetString("managers_config." + managerKey + ".path"),
+						Priority: viper.GetInt("managers_config." + managerKey + ".priority"),
+					}
 				}
 			}
 		}
@@ -80,8 +95,18 @@ func LoadFMOUAConfig(configPath string) (*FMOUAConfig, error) {
 			config.ManagersConfig.MaxRetries = 3
 		}
 	}
-
 	// Manual fix for AI and QDrant config if needed
+	if !config.AIConfig.Enabled {
+		log.Printf("DEBUG: Manual fix for AI config")
+		config.AIConfig.Enabled = viper.GetBool("ai_config.enabled")
+		config.AIConfig.Provider = viper.GetString("ai_config.provider")
+		config.AIConfig.Model = viper.GetString("ai_config.model")
+		config.AIConfig.ConfidenceThreshold = viper.GetFloat64("ai_config.confidence_threshold")
+		config.AIConfig.LearningEnabled = viper.GetBool("ai_config.learning_enabled")
+		config.AIConfig.PatternRecognition = viper.GetBool("ai_config.pattern_recognition")
+		config.AIConfig.DecisionAutonomyLevel = viper.GetInt("ai_config.decision_autonomy_level")
+	}
+
 	if config.AIConfig.QDrant == nil {
 		log.Printf("DEBUG: Manual fix for QDrant config")
 		config.AIConfig.QDrant = &types.QDrantConfig{
