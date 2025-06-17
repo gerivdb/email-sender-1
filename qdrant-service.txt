@@ -1,0 +1,32 @@
+
+  # 🗄️ QDrant Vector Database
+  qdrant:
+    image: qdrant/qdrant:${QDRANT_VERSION:-v1.7.0}
+    ports:
+      - "${QDRANT_HTTP_PORT:-6333}:6333"   # HTTP API
+      - "${QDRANT_GRPC_PORT:-6334}:6334"   # gRPC API
+    environment:
+      - QDRANT__SERVICE__HTTP_PORT=6333
+      - QDRANT__SERVICE__GRPC_PORT=6334
+      - QDRANT__LOG_LEVEL=${QDRANT_LOG_LEVEL:-INFO}
+      - QDRANT__STORAGE__OPTIMIZERS__DELETED_THRESHOLD=${QDRANT_DELETED_THRESHOLD:-0.2}
+      - QDRANT__STORAGE__OPTIMIZERS__VACUUM_MIN_VECTOR_NUMBER=${QDRANT_VACUUM_MIN:-1000}
+      - QDRANT__SERVICE__MAX_REQUEST_SIZE_MB=${QDRANT_MAX_REQUEST_SIZE:-32}
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    networks:
+      - rag-network
+    <<: *restart-policy
+    healthcheck:
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+      test: ["CMD", "/bin/sh", "-c", "echo > /dev/tcp/127.0.0.1/6333"]
+    profiles:
+      - development
+      - staging
+      - production
+      - full-stack
+      - vectorization
+

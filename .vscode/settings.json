@@ -20,16 +20,31 @@
   "go.lintTool": "golangci-lint",
   "go.lintFlags": [],
   "go.lintOnSave": "file",
-  "go.vetOnSave": "off",
-  "go.useLanguageServer": true,
-  "go.toolsManagement.autoUpdate": true,
-  "gopls": {
+  "go.vetOnSave": "off",  "go.useLanguageServer": true,
+  "go.languageServerFlags": [
+    "serve",
+    "--debug=localhost:6060"
+  ],
+  "go.toolsManagement.autoUpdate": true,  "gopls": {
     "build.buildFlags": ["-tags=database"],
     "analyses": {
       "unusedparams": true,
       "shadow": true
     },
-    "staticcheck": true
+    "staticcheck": true,
+    "experimentalWorkspaceModule": true,
+    "env": {
+      "GOPROXY": "direct",
+      "GOSUMDB": "off",
+      "GOCACHE": "",
+      "GOMODCACHE": ""
+    },
+    "directoryFilters": [
+      "-node_modules",
+      "-vendor"
+    ],
+    "buildFlags": ["-tags=database"],
+    "completionBudget": "10s"
   },
   "[go]": {
     "editor.formatOnSave": true,

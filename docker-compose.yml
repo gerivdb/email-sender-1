@@ -20,7 +20,7 @@ x-restart-policy: &restart-policy
 
 services:
   # 🔍 RAG Server
-  rag-server:
+  rag_server:
     build:
       context: .
       dockerfile: Dockerfile
@@ -32,15 +32,15 @@ services:
       - "${RAG_METRICS_PORT:-9090}:9090"   # Metrics
     environment:
       <<: *common-variables
-      - QDRANT_URL=http://qdrant:6333
-      - PROMETHEUS_URL=http://prometheus:9090
-      - GRAFANA_URL=http://grafana:3000
-      - REDIS_URL=redis://redis:6379
-      - NOTION_API_KEY=${NOTION_API_KEY}
-      - MAX_WORKERS=${RAG_MAX_WORKERS:-4}
-      - BATCH_SIZE=${RAG_BATCH_SIZE:-100}
+      QDRANT_URL: http://qdrant_proxy:6333
+      PROMETHEUS_URL: http://prometheus:9090
+      GRAFANA_URL: http://grafana:3000
+      REDIS_URL: redis://redis:6379
+      NOTION_API_KEY: ${NOTION_API_KEY}
+      MAX_WORKERS: ${RAG_MAX_WORKERS:-4}
+      BATCH_SIZE: ${RAG_BATCH_SIZE:-100}
     depends_on:
-      qdrant:
+      qdrant_proxy:
         condition: service_healthy
       redis:
         condition: service_healthy
@@ -62,11 +62,12 @@ services:
       - staging
       - production
       - full-stack
+      
   # 🗄️ QDrant Vector Database
   qdrant:
     image: qdrant/qdrant:${QDRANT_VERSION:-v1.7.0}
     ports:
-      - "${QDRANT_HTTP_PORT:-6333}:6333"   # HTTP API
+      - "6335:6333"   # HTTP API interne
       - "${QDRANT_GRPC_PORT:-6334}:6334"   # gRPC API
     environment:
       - QDRANT__SERVICE__HTTP_PORT=6333
@@ -80,16 +81,38 @@ services:
     networks:
       - rag-network
     <<: *restart-policy
-    healthcheck:
-      <<: *healthcheck-defaults
-      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
-      retries: 5
     profiles:
       - development
       - staging
       - production
       - full-stack
       - vectorization
+      # 🔄 QDrant Health Proxy
+  qdrant_proxy:
+    image: nginx:alpine
+    ports:
+      - "${QDRANT_HTTP_PORT:-6333}:6333"   # HTTP API publique
+    volumes:
+      - ./configs/qdrant/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./configs/qdrant/static:/usr/share/nginx/html:ro
+    networks:
+      - rag-network
+    <<: *restart-policy
+    depends_on:
+      - qdrant
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:6333/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    profiles:
+      - development
+      - staging
+      - production
+      - full-stack
+      - vectorization
+      
   # 📊 Prometheus Metrics
   prometheus:
     image: prom/prometheus:${PROMETHEUS_VERSION:-v2.45.0}
@@ -121,6 +144,7 @@ services:
       - production
       - full-stack
       - monitoring
+      
   # 📈 Grafana Dashboards
   grafana:
     image: grafana/grafana:${GRAFANA_VERSION:-10.0.0}
@@ -153,6 +177,7 @@ services:
       - production
       - full-stack
       - monitoring
+      
   # 🔄 Redis Cache
   redis:
     image: redis:${REDIS_VERSION:-7.2-alpine}
@@ -230,7 +255,7 @@ services:
     networks:
       - rag-network
     depends_on:
-      - rag-server
+      - rag_server
     profiles:
       - production
       - logging
@@ -241,7 +266,7 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: ${NETWORK_SUBNET:-172.20.0.0/16}
+        - subnet: ${NETWORK_SUBNET:-172.30.0.0/16}
     labels:
       - "project=rag-system"
       - "environment=${ENVIRONMENT:-development}"
