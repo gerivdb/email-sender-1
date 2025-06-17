@@ -43,6 +43,51 @@ function httpRequest(url, options = {}) {
 }
 const path = require("path");
 const fs = require("fs");
+class SystemHealthIndicator {
+    constructor(statusBarItem, outputChannel, apiBaseUrl) {
+        this.statusBarItem = statusBarItem;
+        this.outputChannel = outputChannel;
+        this.apiBaseUrl = apiBaseUrl;
+    }
+    async updateHealthStatus() {
+        try {
+            const health = await this.runQuickDiagnostic();
+            if (health.healthy) {
+                this.statusBarItem.text = "✅ System OK";
+                this.statusBarItem.backgroundColor = undefined;
+            }
+            else {
+                this.statusBarItem.text = "⚠️ Issues Detected";
+                this.statusBarItem.backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
+            }
+            this.statusBarItem.tooltip = `System Health: ${health.status}\nServices: ${health.servicesCount}\nLast Check: ${new Date().toLocaleTimeString()}`;
+        }
+        catch (error) {
+            this.statusBarItem.text = "❌ Health Check Failed";
+            this.statusBarItem.backgroundColor = new vscode.ThemeColor('statusBarItem.errorBackground');
+            this.outputChannel.appendLine(`Health check error: ${error}`);
+        }
+    }
+    async runQuickDiagnostic() {
+        try {
+            const response = await httpRequest(`${this.apiBaseUrl}/status/health`);
+            if (response.ok) {
+                const data = await response.json();
+                return {
+                    healthy: data.overall === 'healthy',
+                    status: data.overall,
+                    servicesCount: data.servicesMonitored || 0
+                };
+            }
+            else {
+                return { healthy: false, status: 'api_error', servicesCount: 0 };
+            }
+        }
+        catch (error) {
+            return { healthy: false, status: 'connection_error', servicesCount: 0 };
+        }
+    }
+}
 class SmartEmailSenderExtension {
     constructor(context) {
         this.isInfrastructureRunning = false;
@@ -55,11 +100,12 @@ class SmartEmailSenderExtension {
         this.autoStartEnabled = config.get('autoStart', true);
         this.autoHealingEnabled = config.get('autoHealing', false);
         const apiPort = config.get('apiPort', 8080);
-        this.apiBaseUrl = `http://localhost:${apiPort}`;
-        // Créer la status bar
+        this.apiBaseUrl = `http://localhost:${apiPort}`; // Créer la status bar
         this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
         this.statusBarItem.command = 'smartEmailSender.showStatus';
         this.statusBarItem.show();
+        // Initialiser le health indicator
+        this.healthIndicator = new SystemHealthIndicator(this.statusBarItem, this.outputChannel, this.apiBaseUrl);
         this.updateStatusBar('⏳', 'Initializing...', 'yellow');
         // Enregistrer les commandes
         this.registerCommands();
@@ -73,7 +119,8 @@ class SmartEmailSenderExtension {
             vscode.commands.registerCommand('smartEmailSender.restartStack', () => this.restartInfrastructure()),
             vscode.commands.registerCommand('smartEmailSender.showStatus', () => this.showDetailedStatus()),
             vscode.commands.registerCommand('smartEmailSender.enableAutoHealing', () => this.toggleAutoHealing()),
-            vscode.commands.registerCommand('smartEmailSender.showLogs', () => this.showLogs())
+            vscode.commands.registerCommand('smartEmailSender.showLogs', () => this.showLogs()),
+            vscode.commands.registerCommand('smartEmailSender.runEmergencyDiagnostic', () => this.runEmergencyDiagnostic())
         ];
         commands.forEach(cmd => this.context.subscriptions.push(cmd));
         this.context.subscriptions.push(this.statusBarItem);
@@ -233,6 +280,48 @@ class SmartEmailSenderExtension {
     showLogs() {
         this.outputChannel.show();
     }
+    async runEmergencyDiagnostic() {
+        try {
+            this.logOutput('🚨 Starting Emergency Diagnostic & Repair...');
+            vscode.window.showInformationMessage('🚨 Emergency Diagnostic starting...');
+            const workspaceRoot = vscode.workspace.workspaceFolders[0].uri.fsPath;
+            const scriptPath = path.join(workspaceRoot, 'Emergency-Diagnostic-Test.ps1');
+            // Vérifier si le script existe
+            if (!fs.existsSync(scriptPath)) {
+                throw new Error('Emergency diagnostic script not found');
+            }
+            // Demander le type de diagnostic à l'utilisateur
+            const action = await vscode.window.showQuickPick([
+                { label: '🔍 Full Diagnostic + Repair + Monitoring', value: '-AllPhases' },
+                { label: '🔬 Diagnostic Only', value: '-RunDiagnostic' },
+                { label: '🔧 Repair Only', value: '-RunRepair' },
+                { label: '🛑 Emergency Stop', value: '-EmergencyStop' }
+            ], {
+                placeHolder: 'Select emergency diagnostic action'
+            });
+            if (!action)
+                return;
+            this.updateStatusBar('🚨', 'Emergency Diagnostic Running...', 'red');
+            const command = `powershell.exe -ExecutionPolicy Bypass -File "${scriptPath}" ${action.value}`;
+            const terminal = vscode.window.createTerminal({
+                name: 'Emergency Diagnostic',
+                cwd: workspaceRoot
+            });
+            terminal.sendText(command);
+            terminal.show();
+            this.logOutput(`🚨 Emergency diagnostic launched with: ${action.label}`);
+            // Mettre à jour le health indicator après diagnostic
+            setTimeout(async () => {
+                await this.healthIndicator.updateHealthStatus();
+                await this.updateStatusFromApi();
+            }, 10000);
+        }
+        catch (error) {
+            this.logOutput(`❌ Emergency diagnostic failed: ${error}`);
+            vscode.window.showErrorMessage(`Emergency diagnostic failed: ${error}`);
+            this.updateStatusBar('❌', 'Emergency diagnostic failed', 'red');
+        }
+    }
     async checkApiServerStatus() {
         try {
             const response = await httpRequest(`${this.apiBaseUrl}/api/v1/infrastructure/status`, {
@@ -316,9 +405,14 @@ function activate(context) {
             await extension['updateStatusFromApi']();
         }
     }, 30000); // Toutes les 30 secondes
+    // Monitoring santé système plus fréquent
+    const healthInterval = setInterval(async () => {
+        await extension['healthIndicator']['updateHealthStatus']();
+    }, 15000); // Toutes les 15 secondes
     context.subscriptions.push({
         dispose: () => {
             clearInterval(statusInterval);
+            clearInterval(healthInterval);
             extension.dispose();
         }
     });

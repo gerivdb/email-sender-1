@@ -547,7 +547,9 @@ function Test-VSCodePerformance {
         TotalCPUTime  = $totalCPUTime
         TotalMemoryMB = $totalMemoryMB
     }
-}function Start-ResourceMonitoring {
+}
+
+function Start-ResourceMonitoring {
     Write-SectionHeader "STARTING RESOURCE MONITORING"
     
     $monitoringScript = {
