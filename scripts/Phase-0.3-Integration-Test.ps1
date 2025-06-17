@@ -45,7 +45,12 @@ foreach ($file in $REQUIRED_FILES.Keys) {
    }
 }
 
-$TEST_RESULTS["Files"] = "$filesOk/$($REQUIRED_FILES.Count) files OK"
+if ($filesOk -eq $REQUIRED_FILES.Count) {
+   $TEST_RESULTS["Files"] = "Files validation - SUCCESS"
+}
+else {
+   $TEST_RESULTS["Files"] = "Files validation - FAILED ($filesOk/$($REQUIRED_FILES.Count))"
+}
 Write-TestLog "Result: $($TEST_RESULTS["Files"])" "RESULT"
 
 # Test 2: Vérification des classes TypeScript Terminal Manager
@@ -75,7 +80,12 @@ if (Test-Path (Join-Path $TERMINAL_DIR "TerminalManager.ts")) {
    }
 }
 
-$TEST_RESULTS["TerminalMethods"] = "$terminalMethodsFound/$($TERMINAL_METHODS.Count) methods found"
+if ($terminalMethodsFound -eq $TERMINAL_METHODS.Count) {
+   $TEST_RESULTS["TerminalMethods"] = "Terminal methods validation - SUCCESS"
+}
+else {
+   $TEST_RESULTS["TerminalMethods"] = "Terminal methods validation - FAILED ($terminalMethodsFound/$($TERMINAL_METHODS.Count))"
+}
 Write-TestLog "Result: $($TEST_RESULTS["TerminalMethods"])" "RESULT"
 
 # Test 3: Vérification des classes TypeScript Environment Manager
@@ -107,7 +117,12 @@ if (Test-Path (Join-Path $ENVIRONMENT_DIR "EnvironmentVirtualManager.ts")) {
    }
 }
 
-$TEST_RESULTS["EnvironmentMethods"] = "$environmentMethodsFound/$($ENVIRONMENT_METHODS.Count) methods found"
+if ($environmentMethodsFound -eq $ENVIRONMENT_METHODS.Count) {
+   $TEST_RESULTS["EnvironmentMethods"] = "Environment methods validation - SUCCESS"
+}
+else {
+   $TEST_RESULTS["EnvironmentMethods"] = "Environment methods validation - FAILED ($environmentMethodsFound/$($ENVIRONMENT_METHODS.Count))"
+}
 Write-TestLog "Result: $($TEST_RESULTS["EnvironmentMethods"])" "RESULT"
 
 # Test 4: Terminal Management Simulation
