@@ -1,0 +1,26 @@
+{
+  "interaction": {
+    "debounceMs": 300,
+    "nonBlockingOperations": true,
+    "passiveListeners": true,
+    "throttleMs": 100
+  },
+  "memory": {
+    "gcOptimization": true,
+    "eventListenerCleanup": true,
+    "componentPooling": true,
+    "weakReferences": true
+  },
+  "rendering": {
+    "progressiveLoading": true,
+    "lazyComponentLoading": true,
+    "memoization": true,
+    "virtualScrolling": true
+  },
+  "dom": {
+    "documentFragments": true,
+    "batchUpdates": true,
+    "observerOptimization": true,
+    "cssContainment": true
+  }
+}
