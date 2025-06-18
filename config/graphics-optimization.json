@@ -1,0 +1,34 @@
+{
+  "canvas": {
+    "desynchronized": true,
+    "willReadFrequently": false,
+    "alpha": false
+  },
+  "ui": {
+    "debounceMs": 16,
+    "lazyLoading": true,
+    "virtualScrolling": true,
+    "throttleMs": 100
+  },
+  "animation": {
+    "maxFPS": 60,
+    "adaptiveFrameRate": true,
+    "frameSkipping": true,
+    "vsyncEnabled": true
+  },
+  "webgl": {
+    "depth": true,
+    "premultipliedAlpha": false,
+    "antialias": false,
+    "failIfMajorPerformanceCaveat": true,
+    "stencil": false,
+    "preserveDrawingBuffer": false,
+    "powerPreference": "high-performance"
+  },
+  "memory": {
+    "gcThreshold": 0.8,
+    "bufferPoolSize": "128MB",
+    "autoCleanup": true,
+    "texturePoolSize": "256MB"
+  }
+}

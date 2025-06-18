@@ -1,0 +1,238 @@
+{
+  "VSCodePerformance": {
+    "Responsive": false,
+    "TotalMemoryMB": 5842.765625,
+    "ProcessCount": 24,
+    "TotalCPUTime": 32005.1875,
+    "Running": true
+  },
+  "Timestamp": "2025-06-16T18:57:31.6245244+02:00",
+  "SystemResources": {
+    "Memory": {
+      "UsagePercent": 70.4,
+      "UsedGB": 16.88,
+      "TotalGB": 23.98,
+      "FreeGB": 7.1
+    },
+    "ProcessCount": 320,
+    "Disk": {
+      "UsagePercent": 87.0,
+      "TotalGB": 465.18,
+      "FreeGB": 60.45
+    },
+    "CPU": 100.0
+  },
+  "ProcessAnalysis": {
+    "HeavyProcesses": [
+      {
+        "Count": 4,
+        "ProcessName": "node",
+        "TotalMemoryMB": 134.05,
+        "TotalCPUTime": 73.47,
+        "PIDs": [
+          1128,
+          10040,
+          19244,
+          24604
+        ]
+      },
+      {
+        "Count": 14,
+        "ProcessName": "go",
+        "TotalMemoryMB": 687.57,
+        "TotalCPUTime": 4083.53,
+        "PIDs": [
+          692,
+          20828,
+          25532,
+          28024,
+          2924,
+          7428,
+          10680,
+          15736,
+          16664,
+          24620,
+          27560,
+          8756,
+          11360,
+          848
+        ]
+      },
+      {
+        "Count": 24,
+        "ProcessName": "code",
+        "TotalMemoryMB": 5523.62,
+        "TotalCPUTime": 31981.5,
+        "PIDs": [
+          944,
+          2584,
+          3524,
+          4544,
+          8104,
+          9400,
+          10012,
+          10896,
+          11012,
+          11916,
+          12996,
+          14576,
+          14888,
+          15688,
+          16856,
+          19020,
+          19200,
+          19624,
+          21560,
+          21940,
+          22444,
+          22908,
+          24840,
+          27612
+        ]
+      }
+    ],
+    "Conflicts": [
+      {
+        "Count": 2,
+        "ProcessName": "docker",
+        "TotalMemoryMB": 38.95,
+        "TotalCPUTime": 2.59,
+        "PIDs": [
+          23852,
+          26544
+        ]
+      },
+      {
+        "Count": 4,
+        "ProcessName": "node",
+        "TotalMemoryMB": 134.05,
+        "TotalCPUTime": 73.47,
+        "PIDs": [
+          1128,
+          10040,
+          19244,
+          24604
+        ]
+      },
+      {
+        "Count": 14,
+        "ProcessName": "go",
+        "TotalMemoryMB": 687.57,
+        "TotalCPUTime": 4083.53,
+        "PIDs": [
+          692,
+          20828,
+          25532,
+          28024,
+          2924,
+          7428,
+          10680,
+          15736,
+          16664,
+          24620,
+          27560,
+          8756,
+          11360,
+          848
+        ]
+      },
+      {
+        "Count": 24,
+        "ProcessName": "code",
+        "TotalMemoryMB": 5523.62,
+        "TotalCPUTime": 31981.5,
+        "PIDs": [
+          944,
+          2584,
+          3524,
+          4544,
+          8104,
+          9400,
+          10012,
+          10896,
+          11012,
+          11916,
+          12996,
+          14576,
+          14888,
+          15688,
+          16856,
+          19020,
+          19200,
+          19624,
+          21560,
+          21940,
+          22444,
+          22908,
+          24840,
+          27612
+        ]
+      }
+    ]
+  },
+  "ServiceHealth": [
+    {
+      "Status": "Port Timeout",
+      "Port": 8080,
+      "Accessible": false,
+      "Name": "API Server",
+      "Details": "Port connection timeout"
+    },
+    {
+      "Status": "Port Timeout",
+      "Port": 5432,
+      "Accessible": false,
+      "Name": "PostgreSQL",
+      "Details": "Port connection timeout"
+    },
+    {
+      "Status": "Port Timeout",
+      "Port": 6379,
+      "Accessible": false,
+      "Name": "Redis",
+      "Details": "Port connection timeout"
+    },
+    {
+      "Status": "HTTP Error",
+      "Port": 6333,
+      "Accessible": true,
+      "Name": "Qdrant",
+      "Details": "Response status code does not indicate success: 404 (Not Found)."
+    },
+    {
+      "Status": "Port Timeout",
+      "Port": 3000,
+      "Accessible": false,
+      "Name": "Development Server",
+      "Details": "Port connection timeout"
+    },
+    {
+      "Status": "Port Timeout",
+      "Port": 9000,
+      "Accessible": false,
+      "Name": "Monitoring",
+      "Details": "Port connection timeout"
+    }
+  ],
+  "Summary": {
+    "ResourceIssues": [
+      "High CPU usage: 100%",
+      "High RAM usage: 16.88GB",
+      "Heavy processes detected: 3",
+      "VSCode performance issues detected"
+    ],
+    "HealthyServices": 5,
+    "Recommendations": [
+      "Consider reducing CPU-intensive processes",
+      "Consider closing memory-intensive applications",
+      "Review and optimize heavy processes",
+      "Optimize VSCode extensions and tabs",
+      "API Server repair required - run with -RunRepair",
+      "Database server may need restart",
+      "Redis cache server may need restart"
+    ],
+    "UnhealthyServices": 5,
+    "ProcessConflicts": 4
+  },
+  "ProjectRoot": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
+}

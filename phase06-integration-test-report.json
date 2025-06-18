@@ -1,0 +1,39 @@
+﻿{
+    "Timestamp":  "2025-06-17 15:26:32",
+    "Results":  [
+                    {
+                        "Result":  "PASS",
+                        "Test":  "Script Existence"
+                    },
+                    {
+                        "Result":  "FAIL",
+                        "Test":  "Required Parameters"
+                    },
+                    {
+                        "Result":  "PASS",
+                        "Test":  "Diagnostic Execution"
+                    },
+                    {
+                        "Result":  "PASS",
+                        "Test":  "Extension Directory"
+                    },
+                    {
+                        "Result":  "PASS",
+                        "Test":  "Package.json Command"
+                    },
+                    {
+                        "Result":  "PASS",
+                        "Test":  "Extension Implementation"
+                    },
+                    {
+                        "Result":  "PASS",
+                        "Test":  "TypeScript Compilation"
+                    }
+                ],
+    "SuccessRate":  85.7,
+    "FailedTests":  1,
+    "PassedTests":  6,
+    "Description":  "Scripts et Outils AutomatisÃ©s",
+    "Phase":  "0.6",
+    "TotalTests":  7
+}

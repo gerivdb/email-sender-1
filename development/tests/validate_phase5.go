@@ -307,9 +307,9 @@ func (v *Phase5Validator) calculateSummary(results []TestResult) ValidationSumma
 
 // PrintReport affiche le rapport
 func (v *Phase5Validator) PrintReport(report ValidationReport) {
-	fmt.Println("=" * 60)
+	fmt.Println(strings.Repeat("=", 60))
 	fmt.Println("RAPPORT DE VALIDATION PHASE 5")
-	fmt.Println("=" * 60)
+	fmt.Println(strings.Repeat("=", 60))
 
 	fmt.Printf("Période: %s à %s\n",
 		report.StartTime.Format("15:04:05"),
@@ -318,7 +318,7 @@ func (v *Phase5Validator) PrintReport(report ValidationReport) {
 
 	// Résultats détaillés
 	fmt.Println("RÉSULTATS DÉTAILLÉS:")
-	fmt.Println("-" * 40)
+	fmt.Println(strings.Repeat("-", 40))
 
 	for _, result := range report.Results {
 		status := "❌ ÉCHEC"
@@ -331,10 +331,9 @@ func (v *Phase5Validator) PrintReport(report ValidationReport) {
 			fmt.Printf("   Erreur: %s\n", result.Error)
 		}
 	}
-
 	// Résumé
 	fmt.Println("\nRÉSUMÉ:")
-	fmt.Println("-" * 20)
+	fmt.Println(strings.Repeat("-", 20))
 	fmt.Printf("Total des suites: %d\n", report.Summary.TotalSuites)
 	fmt.Printf("Réussies: %d\n", report.Summary.PassedSuites)
 	fmt.Printf("Échouées: %d\n", report.Summary.FailedSuites)
@@ -344,7 +343,7 @@ func (v *Phase5Validator) PrintReport(report ValidationReport) {
 
 	// Recommendations
 	fmt.Println("\nRECOMMANDATIONS:")
-	fmt.Println("-" * 20)
+	fmt.Println(strings.Repeat("-", 20))
 
 	if report.Summary.SuccessRate >= 0.9 {
 		fmt.Println("✅ Excellente qualité de tests. Phase 5 validée avec succès.")

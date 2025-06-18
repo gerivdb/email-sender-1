@@ -1,0 +1,56 @@
+/* Graphics & UI Performance Optimizations */
+
+/* GPU Acceleration */
+.gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Efficient Animations */
+.smooth-animation {
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translate3d(0, 0, 0);
+}
+
+/* Layout Optimization */
+.layout-optimized {
+    contain: layout style paint;
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 500px;
+}
+
+/* Memory Efficient Images */
+.memory-efficient-img {
+    object-fit: cover;
+    object-position: center;
+    loading: lazy;
+    decoding: async;
+}
+
+/* Scroll Performance */
+.scroll-optimized {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High DPI Optimization */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .high-dpi-optimized {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}

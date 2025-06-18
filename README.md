@@ -59,10 +59,33 @@ La structure du projet a été réorganisée pour une meilleure organisation et 
   - **tutorials/** - Tutoriels
 
 - **.build/** - Fichiers de build et CI/CD
+- **development/docs/security/** - Documentation sur la sécurité (AVG, etc.)
 - **logs/** - Logs
 - **node_modules/** - Dépendances Node.js
+- **scripts/** - Scripts d'automatisation et utilitaires
 
-## 🚀 Fonctionnalités principales
+## �️ Système d'exclusion AVG
+
+Le projet intègre un système automatique d'exclusion AVG pour éviter les blocages lors de la compilation et l'exécution des fichiers `.exe` et autres artefacts de développement.
+
+### ✨ Fonctionnalités clés
+
+- **Configuration automatique** - Exclusions configurées automatiquement à l'ouverture du projet dans VS Code
+- **Focus sur les fichiers `.exe`** - Solution spécifiquement conçue pour résoudre les problèmes de blocage des fichiers `.exe`
+- **Intégration VS Code** - Tâches configurées pour gérer et tester les exclusions
+- **Scripts d'exclusion** - Génération de marqueurs et fichiers d'exclusion
+
+### 📚 Documentation
+
+Une documentation complète est disponible dans `development/docs/security/avg/` :
+
+- [Guide Rapide d'Exclusion AVG](development/docs/security/avg/quickguide.md)
+- [Documentation Système](development/docs/security/avg/system.md)
+- [Documentation Technique](development/docs/security/avg/technical.md)
+
+Pour plus de détails, consultez le guide dédié : [AVG-EXCLUSION-README.md](AVG-EXCLUSION-README.md)
+
+## �🚀 Fonctionnalités principales
 
 ### Système de gestion de cache TTL avancé
 

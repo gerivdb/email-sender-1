@@ -1,0 +1,77 @@
+# Docker Memory Configuration for EMAIL_SENDER_1
+# =============================================
+
+# Configuration recommandée pour respecter 20GB dev / 4GB système
+
+version: '3.8'
+
+services:
+  # API Server optimisé
+  api-server:
+    build: .
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 512M  # 512MB max
+        reservations:
+          memory: 256M  # 256MB réservé
+    environment:
+      - GO_MEMORY_LIMIT=400M
+      - GOGC=100
+    restart: unless-stopped
+
+  # Base de données optimisée
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    deploy:
+      resources:
+        limits:
+          memory: 1G  # 1GB max
+        reservations:
+          memory: 512M  # 512MB réservé
+    environment:
+      - POSTGRES_DB=email_sender
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=dev123
+      - shared_buffers=256MB
+      - max_connections=50
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Qdrant optimisé
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+    deploy:
+      resources:
+        limits:
+          memory: 1G  # 1GB max
+        reservations:
+          memory: 512M  # 512MB réservé
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  # Redis optimisé
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    deploy:
+      resources:
+        limits:
+          memory: 512M  # 512MB max
+        reservations:
+          memory: 128M  # 128MB réservé
+    command: redis-server --maxmemory 400mb --maxmemory-policy allkeys-lru
+
+volumes:
+  postgres_data:
+  qdrant_data:
+
+# Total Docker memory budget: ~3GB (512M + 1G + 1G + 512M)
+# Remaining for VSCode + Go/Python: ~17GB

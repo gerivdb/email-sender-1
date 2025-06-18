@@ -45,12 +45,17 @@
                 "title": "Enable Auto-Healing",
                 "category": "Smart Email Sender",
                 "icon": "$(heart)"
-            },
-            {
+            },            {
                 "command": "smartEmailSender.showLogs",
                 "title": "Show Infrastructure Logs",
                 "category": "Smart Email Sender",
                 "icon": "$(output)"
+            },
+            {
+                "command": "smartEmailSender.runEmergencyDiagnostic",
+                "title": "🚨 Emergency Diagnostic & Repair",
+                "category": "Smart Email Sender",
+                "icon": "$(tools)"
             }
         ],
         "statusBarItems": [
