@@ -115,7 +115,6 @@ type ContextualMemoryManager interface {
 
 	// MÃ©triques
 	GetMetrics(ctx context.Context) (ManagerMetrics, error)
-
 	// MÃ©thodes existantes
 	RecordAction(ctx context.Context, action Action) error
 	SearchSimilarActions(ctx context.Context, query ContextQuery) ([]ContextResult, error)
@@ -126,10 +125,21 @@ type ContextualMemoryManager interface {
 	SearchWithHybridMode(ctx context.Context, query ContextQuery) (*HybridSearchResult, error)
 	GetStructuralContext(ctx context.Context, filePath string, lineNumber int) (*StructuralContext, error)
 
+	// NOUVELLES MÉTHODES HYBRIDES PHASE 2.2
+	SearchContextHybrid(ctx context.Context, query ContextQuery) ([]ContextResult, error)
+	AnalyzeCodeStructure(ctx context.Context, filePath string) (*ASTAnalysisResult, error)
+	GetStructuralSimilarity(ctx context.Context, file1, file2 string) (*SimilarityAnalysis, error)
+	
+	// Enrichissement contextuel
+	EnrichActionWithAST(ctx context.Context, action Action) (*EnrichedAction, error)
+	GetRealTimeContext(ctx context.Context, filePath string, lineNumber int) (*RealTimeContext, error)
+	
 	// Configuration du mode hybride
-	SetHybridMode(ctx context.Context, enabled bool) error
+	SetHybridMode(ctx context.Context, mode HybridMode) error
 	GetHybridConfig(ctx context.Context) (*HybridConfig, error)
-	UpdateHybridConfig(ctx context.Context, config *HybridConfig) error
+	UpdateHybridConfig(ctx context.Context, config HybridConfig) error
+	GetHybridStats(ctx context.Context) (*HybridStatistics, error)
+	GetSupportedModes(ctx context.Context) ([]string, error)
 
 	// MÃ©triques et optimisation
 	GetPerformanceMetrics(ctx context.Context) (*PerformanceMetrics, error)
@@ -256,4 +266,140 @@ type RAGPerformanceMetrics struct {
 	VectorCacheHitRate float64       `json:"vector_cache_hit_rate"`
 	IndexSize          int64         `json:"index_size"`
 	EmbeddingQuality   float64       `json:"embedding_quality"`
+}
+
+// Nouveaux types pour le mode hybride - PHASE 2.2
+type EnrichedAction struct {
+	OriginalAction     Action                     `json:"original_action"`
+	ASTResult          *ASTAnalysisResult         `json:"ast_result,omitempty"`
+	StructuralContext  *StructuralContext         `json:"structural_context,omitempty"`
+	SemanticContext    string                     `json:"semantic_context,omitempty"`
+	RelatedFiles       []string                   `json:"related_files,omitempty"`
+	Dependencies       []DependencyRelation       `json:"dependencies,omitempty"`
+	UsagePatterns      []UsagePattern             `json:"usage_patterns,omitempty"`
+	QualityScore       float64                    `json:"quality_score"`
+	EnrichmentSource   string                     `json:"enrichment_source"`
+	ASTContext         map[string]interface{}     `json:"ast_context"`
+	Timestamp          time.Time                  `json:"timestamp"`
+}
+
+type RealTimeContext struct {
+	FilePath           string                     `json:"file_path"`
+	LineNumber         int                        `json:"line_number"`
+	CurrentFunction    *FunctionInfo              `json:"current_function,omitempty"`
+	CurrentType        *TypeInfo                  `json:"current_type,omitempty"`
+	LocalScope         *ScopeInfo                 `json:"local_scope"`
+	ImportedPackages   []ImportInfo               `json:"imported_packages"`
+	AvailableSymbols   []SymbolInfo               `json:"available_symbols"`
+	NearbyCode         string                     `json:"nearby_code"`
+	Documentation      string                     `json:"documentation,omitempty"`
+	Suggestions        []CodeSuggestion           `json:"suggestions,omitempty"`
+	Timestamp          time.Time                  `json:"timestamp"`
+}
+
+type HybridStatistics struct {
+	TotalQueries       int64                      `json:"total_queries"`
+	ASTQueries         int64                      `json:"ast_queries"`
+	RAGQueries         int64                      `json:"rag_queries"`
+	HybridQueries      int64                      `json:"hybrid_queries"`
+	ParallelQueries    int64                      `json:"parallel_queries"`
+	AverageLatency     map[string]time.Duration   `json:"average_latency"`
+	SuccessRates       map[string]float64         `json:"success_rates"`
+	QualityScores      map[string]float64         `json:"quality_scores"`
+	CacheHitRates      map[string]float64         `json:"cache_hit_rates"`
+	ErrorCounts        map[string]int64           `json:"error_counts"`
+	LastUpdated        time.Time                  `json:"last_updated"`
+}
+
+type SimilarityAnalysis struct {
+	File1              string                     `json:"file1"`
+	File2              string                     `json:"file2"`
+	StructuralSimilarity float64                 `json:"structural_similarity"`
+	SemanticSimilarity  float64                   `json:"semantic_similarity"`
+	SharedFunctions    []string                   `json:"shared_functions"`
+	SharedTypes        []string                   `json:"shared_types"`
+	SharedImports      []string                   `json:"shared_imports"`
+	DifferenceAnalysis *DifferenceAnalysis        `json:"difference_analysis"`
+	Recommendations    []string                   `json:"recommendations"`
+	AnalysisTime       time.Duration              `json:"analysis_time"`
+}
+
+type HybridMode string
+
+const (
+	HybridModeAutomatic  HybridMode = "automatic"
+	HybridModeASTFirst   HybridMode = "ast_first"
+	HybridModeRAGFirst   HybridMode = "rag_first"
+	HybridModeParallel   HybridMode = "parallel"
+	HybridModeASTOnly    HybridMode = "ast_only"
+	HybridModeRAGOnly    HybridMode = "rag_only"
+)
+
+// Types supplémentaires nécessaires
+type DependencyRelation struct {
+	Type         string    `json:"type"`
+	Target       string    `json:"target"`
+	Relationship string    `json:"relationship"`
+	Confidence   float64   `json:"confidence"`
+}
+
+type UsagePattern struct {
+	Pattern     string    `json:"pattern"`
+	Frequency   int       `json:"frequency"`
+	Context     string    `json:"context"`
+	Confidence  float64   `json:"confidence"`
+}
+
+type FunctionInfo struct {
+	Name       string   `json:"name"`
+	Parameters []string `json:"parameters"`
+	ReturnType string   `json:"return_type"`
+	Scope      string   `json:"scope"`
+}
+
+type TypeInfo struct {
+	Name    string   `json:"name"`
+	Kind    string   `json:"kind"`
+	Methods []string `json:"methods"`
+	Fields  []string `json:"fields"`
+}
+
+type ScopeInfo struct {
+	Variables []VariableInfo `json:"variables"`
+	Functions []FunctionInfo `json:"functions"`
+	Imports   []ImportInfo   `json:"imports"`
+	Level     int           `json:"level"`
+}
+
+type VariableInfo struct {
+	Name string `json:"name"`
+	Type string `json:"type"`
+	Line int    `json:"line"`
+}
+
+type ImportInfo struct {
+	Package string `json:"package"`
+	Alias   string `json:"alias,omitempty"`
+	Used    bool   `json:"used"`
+}
+
+type SymbolInfo struct {
+	Name        string `json:"name"`
+	Type        string `json:"type"`
+	Description string `json:"description,omitempty"`
+	Scope       string `json:"scope"`
+}
+
+type CodeSuggestion struct {
+	Text        string  `json:"text"`
+	Type        string  `json:"type"`
+	Confidence  float64 `json:"confidence"`
+	Description string  `json:"description"`
+}
+
+type DifferenceAnalysis struct {
+	AddedFunctions    []string `json:"added_functions"`
+	RemovedFunctions  []string `json:"removed_functions"`
+	ModifiedFunctions []string `json:"modified_functions"`
+	StructuralChanges []string `json:"structural_changes"`
 }
