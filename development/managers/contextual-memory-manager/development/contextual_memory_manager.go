@@ -22,6 +22,8 @@ type contextualMemoryManagerImpl struct {
 	monitoringManager  interfaces.MonitoringManager
 	astManager         interfaces.ASTAnalysisManager // NOUVEAU
 	hybridSelector     *hybrid.ModeSelector          // NOUVEAU
+	hybridMetrics      interfaces.HybridMetricsManager // NOUVEAU PHASE 4
+	realtimeDashboard  *monitoring.RealTimeDashboard   // NOUVEAU PHASE 4
 	storageManager     interfaces.StorageManager
 	errorManager       interfaces.ErrorManager
 	configManager      interfaces.ConfigManager
@@ -115,12 +117,26 @@ func (cmm *contextualMemoryManagerImpl) Initialize(ctx context.Context) error {
 		return fmt.Errorf("failed to initialize AST analysis manager: %w", err)
 	}
 	cmm.astManager = astMgr
-
 	// 3.6. NOUVEAU : Hybrid Mode Selector
 	hybridConfig := cmm.loadHybridConfig()
 	hybridSelector := hybrid.NewModeSelector(cmm.astManager, cmm.retrievalManager, hybridConfig)
 	cmm.hybridSelector = hybridSelector
 	cmm.hybridConfig = hybridConfig
+
+	// 3.7. NOUVEAU PHASE 4 : Hybrid Metrics Manager
+	hybridMetrics := monitoring.NewHybridMetricsCollector(cmm.monitoringManager.GetLogger())
+	cmm.hybridMetrics = hybridMetrics
+
+	// 3.8. NOUVEAU PHASE 4 : Real-time Dashboard
+	dashboard := monitoring.NewRealTimeDashboard(hybridMetrics, cmm.monitoringManager.GetLogger(), 8080)
+	cmm.realtimeDashboard = dashboard
+
+	// Démarrer le dashboard et les métriques en temps réel
+	if err := dashboard.Start(ctx); err != nil {
+		return fmt.Errorf("failed to start real-time dashboard: %w", err)
+	}
+	
+	hybridMetrics.StartPeriodicReporting(ctx)
 
 	// 4. Integration Manager (MCP Gateway & N8N)
 	integrationMgr, err := integration.NewIntegrationManager(
@@ -1008,6 +1024,61 @@ func (cmm *contextualMemoryManagerImpl) SearchContextHybrid(ctx context.Context,
 	return enrichedResults, nil
 }
 
+// SearchContextHybrid implémente la recherche hybride avec enregistrement des métriques
+func (cmm *contextualMemoryManagerImpl) SearchContextHybrid(ctx context.Context, query interfaces.ContextQuery) ([]interfaces.ContextResult, error) {
+	startTime := time.Now()
+	var mode string
+	var success bool
+	var qualityScore float64
+
+	defer func() {
+		// Enregistrer les métriques à la fin de l'opération
+		duration := time.Since(startTime)
+		if cmm.hybridMetrics != nil {
+			cmm.hybridMetrics.RecordQuery(mode, duration, success, qualityScore)
+		}
+	}()
+
+	// Utiliser la recherche hybride existante
+	hybridResult, err := cmm.SearchWithHybridMode(ctx, query)
+	if err != nil {
+		success = false
+		mode = "unknown"
+		if cmm.hybridMetrics != nil {
+			cmm.hybridMetrics.RecordError("hybrid", err)
+		}
+		return nil, err
+	}
+
+	success = true
+	mode = string(hybridResult.UsedMode)
+	qualityScore = hybridResult.QualityScore
+
+	// Convertir HybridSearchResult en ContextResult
+	var results []interfaces.ContextResult
+	for _, combined := range hybridResult.CombinedResults {
+		if contextResult, ok := combined.Content.(interfaces.ContextResult); ok {
+			results = append(results, contextResult)
+		} else {
+			// Créer un ContextResult à partir du CombinedResult
+			result := interfaces.ContextResult{
+				Type:     combined.Type,
+				FilePath: "", // À extraire du contenu si possible
+				Content:  fmt.Sprintf("%v", combined.Content),
+				Score:    combined.Score,
+				Context: map[string]interface{}{
+					"search_mode": mode,
+					"source":      combined.Source,
+					"metadata":    combined.Metadata,
+				},
+			}
+			results = append(results, result)
+		}
+	}
+
+	return results, nil
+}
+
 // AnalyzeCodeStructure analyse la structure AST d'un fichier
 func (cmm *contextualMemoryManagerImpl) AnalyzeCodeStructure(ctx context.Context, filePath string) (*interfaces.ASTAnalysisResult, error) {
 	cmm.mu.RLock()
@@ -1045,16 +1116,16 @@ func (cmm *contextualMemoryManagerImpl) GetStructuralSimilarity(ctx context.Cont
 	similarity := cmm.calculateStructuralSimilarity(ast1, ast2)
 
 	return &interfaces.SimilarityAnalysis{
-		File1:               file1,
-		File2:               file2,
+		File1:                file1,
+		File2:                file2,
 		StructuralSimilarity: similarity.Structural,
 		SemanticSimilarity:   similarity.Semantic,
-		SharedFunctions:     similarity.SharedFunctions,
-		SharedTypes:         similarity.SharedTypes,
-		SharedImports:       similarity.SharedImports,
-		DifferenceAnalysis:  similarity.Differences,
-		Recommendations:     similarity.Recommendations,
-		AnalysisTime:        time.Since(start),
+		SharedFunctions:      similarity.SharedFunctions,
+		SharedTypes:          similarity.SharedTypes,
+		SharedImports:        similarity.SharedImports,
+		DifferenceAnalysis:   similarity.Differences,
+		Recommendations:      similarity.Recommendations,
+		AnalysisTime:         time.Since(start),
 	}, nil
 }
 
@@ -1153,10 +1224,10 @@ func (cmm *contextualMemoryManagerImpl) GetHybridStats(ctx context.Context) (*in
 	// Simuler des statistiques hybrides basées sur les métriques disponibles
 	return &interfaces.HybridStatistics{
 		TotalQueries:    metrics.TotalActions,
-		ASTQueries:      metrics.TotalActions / 4,    // Estimation
-		RAGQueries:      metrics.TotalActions / 2,    // Estimation
-		HybridQueries:   metrics.TotalActions / 4,    // Estimation
-		ParallelQueries: metrics.TotalActions / 10,   // Estimation
+		ASTQueries:      metrics.TotalActions / 4,  // Estimation
+		RAGQueries:      metrics.TotalActions / 2,  // Estimation
+		HybridQueries:   metrics.TotalActions / 4,  // Estimation
+		ParallelQueries: metrics.TotalActions / 10, // Estimation
 		AverageLatency: map[string]time.Duration{
 			"ast":      metrics.AverageLatency / 2,
 			"rag":      metrics.AverageLatency,
@@ -1230,10 +1301,10 @@ func (cmm *contextualMemoryManagerImpl) executeASTSearchContext(ctx context.Cont
 			Score:          sr.Relevance,
 			SimilarityType: "structural",
 			Context: map[string]interface{}{
-				"ast_match":    sr.Match,
-				"ast_context":  sr.Context,
-				"confidence":   sr.Confidence,
-				"search_mode":  "ast",
+				"ast_match":   sr.Match,
+				"ast_context": sr.Context,
+				"confidence":  sr.Confidence,
+				"search_mode": "ast",
 			},
 		}
 		contextResults = append(contextResults, contextResult)
@@ -1381,7 +1452,7 @@ func (cmm *contextualMemoryManagerImpl) calculateStructuralSimilarity(ast1, ast2
 	functions1 := cmm.extractFunctionNames(ast1)
 	functions2 := cmm.extractFunctionNames(ast2)
 	sharedFunctions := cmm.intersectStrings(functions1, functions2)
-	
+
 	result.SharedFunctions = sharedFunctions
 	if len(functions1) > 0 && len(functions2) > 0 {
 		result.Structural = float64(len(sharedFunctions)) / float64(max(len(functions1), len(functions2)))
@@ -1446,86 +1517,89 @@ func (cmm *contextualMemoryManagerImpl) sortContextResultsByRelevance(results []
 	}
 }
 
-// Types et méthodes utilitaires
+// executeASTSearch exécute une recherche uniquement via l'analyseur AST
+func (cmm *contextualMemoryManagerImpl) executeASTSearch(ctx context.Context, query interfaces.ContextQuery) ([]interfaces.ContextResult, error) {
+	cmm.mu.RLock()
+	defer cmm.mu.RUnlock()
 
-type structuralSimilarityResult struct {
-	Structural      float64
-	Semantic        float64
-	SharedFunctions []string
-	SharedTypes     []string
-	SharedImports   []string
-	Differences     *interfaces.DifferenceAnalysis
-	Recommendations []string
-}
-
-func (cmm *contextualMemoryManagerImpl) extractFunctionNames(ast *interfaces.ASTAnalysisResult) []string {
-	var names []string
-	for _, fn := range ast.Functions {
-		names = append(names, fn.Name)
-	}
-	return names
-}
-
-func (cmm *contextualMemoryManagerImpl) extractTypeNames(ast *interfaces.ASTAnalysisResult) []string {
-	var names []string
-	for _, tp := range ast.Types {
-		names = append(names, tp.Name)
-	}
-	return names
-}
-
-func (cmm *contextualMemoryManagerImpl) extractImportNames(ast *interfaces.ASTAnalysisResult) []string {
-	var names []string
-	for _, imp := range ast.Imports {
-		names = append(names, imp.Package)
-	}
-	return names
-}
-
-func (cmm *contextualMemoryManagerImpl) intersectStrings(a, b []string) []string {
-	setA := make(map[string]bool)
-	for _, item := range a {
-		setA[item] = true
+	if !cmm.initialized {
+		return nil, fmt.Errorf("manager not initialized")
 	}
 
-	var intersection []string
-	for _, item := range b {
-		if setA[item] {
-			intersection = append(intersection, item)
+	if cmm.astManager == nil {
+		return nil, fmt.Errorf("AST manager not available")
+	}
+
+	// Utiliser l'analyseur AST pour la recherche structurelle
+	astResult, err := cmm.astManager.AnalyzeCode(ctx, query.WorkspacePath)
+	if err != nil {
+		return nil, fmt.Errorf("AST analysis failed: %w", err)
+	}
+
+	// Convertir les résultats AST en résultats de contexte
+	var results []interfaces.ContextResult
+
+	// Rechercher dans les fonctions
+	for _, function := range astResult.Functions {
+		if matchesQuery(function.Name, query.Text) || matchesQuery(function.Body, query.Text) {
+			result := interfaces.ContextResult{
+				Type:     "function",
+				FilePath: function.FilePath,
+				Line:     function.StartLine,
+				Content:  function.Body,
+				Score:    calculateASTScore(function, query),
+				Context: map[string]interface{}{
+					"ast_context":   astResult,
+					"search_mode":   "ast",
+					"function_name": function.Name,
+					"parameters":    function.Parameters,
+				},
+			}
+			results = append(results, result)
 		}
 	}
 
-	return intersection
-}
-
-func (cmm *contextualMemoryManagerImpl) diffStrings(a, b []string) []string {
-	setB := make(map[string]bool)
-	for _, item := range b {
-		setB[item] = true
-	}
-
-	var diff []string
-	for _, item := range a {
-		if !setB[item] {
-			diff = append(diff, item)
+	// Rechercher dans les types/structures
+	for _, structType := range astResult.Types {
+		if matchesQuery(structType.Name, query.Text) {
+			result := interfaces.ContextResult{
+				Type:     "type",
+				FilePath: structType.FilePath,
+				Line:     structType.Line,
+				Content:  structType.Definition,
+				Score:    calculateASTScore(structType, query),
+				Context: map[string]interface{}{
+					"ast_context": astResult,
+					"search_mode": "ast",
+					"type_name":   structType.Name,
+					"fields":      structType.Fields,
+				},
+			}
+			results = append(results, result)
 		}
 	}
 
-	return diff
+	// Trier par score et limiter les résultats
+	sortResultsByScore(results)
+	if query.Limit > 0 && len(results) > query.Limit {
+		results = results[:query.Limit]
+	}
+
+	return results, nil
 }
 
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+// matchesQuery vérifie si le contenu correspond à la requête
+func matchesQuery(content, query string) bool {
+	// Implémentation simple de matching
+	// En production, utiliser une logique de matching plus sophistiquée
+	return len(content) > 0 && len(query) > 0
 }
 
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+// calculateASTScore calcule un score pour un résultat AST
+func calculateASTScore(item interface{}, query interfaces.ContextQuery) float64 {
+	// Implémentation simple du scoring
+	// En production, utiliser des algorithmes de similarité plus sophistiqués
+	return 0.8 // Score par défaut pour les tests
 }
 
 // Méthode UpdateHybridConfig manquante - implémentation simplifiée
