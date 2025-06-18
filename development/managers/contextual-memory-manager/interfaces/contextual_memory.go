@@ -3,8 +3,6 @@ package interfaces
 import (
 	"context"
 	"time"
-
-	"./interfaces"
 )
 
 // Action reprÃ©sente une action utilisateur capturÃ©e
@@ -44,9 +42,54 @@ type TimeRange struct {
 	End   time.Time `json:"end,omitempty"`
 }
 
+// BaseManager interface de base pour tous les managers
+type BaseManager interface {
+	Initialize(ctx context.Context) error
+	Cleanup() error
+	HealthCheck(ctx context.Context) error
+}
+
+// StorageManager interface pour la gestion du stockage
+type StorageManager interface {
+	BaseManager
+	Store(ctx context.Context, key string, value interface{}) error
+	Retrieve(ctx context.Context, key string) (interface{}, error)
+	Delete(ctx context.Context, key string) error
+	List(ctx context.Context, prefix string) ([]string, error)
+}
+
+// ErrorManager interface pour la gestion des erreurs
+type ErrorManager interface {
+	BaseManager
+	LogError(ctx context.Context, component string, message string, err error)
+	LogWarning(ctx context.Context, component string, message string)
+	LogInfo(ctx context.Context, component string, message string)
+	GetErrors(ctx context.Context, component string) ([]ErrorRecord, error)
+}
+
+// ConfigManager interface pour la gestion de la configuration
+type ConfigManager interface {
+	BaseManager
+	GetString(key string) string
+	GetInt(key string) int
+	GetBool(key string) bool
+	GetFloat64(key string) float64
+	Set(key string, value interface{})
+	GetAll() map[string]interface{}
+}
+
+// ErrorRecord représente un enregistrement d'erreur
+type ErrorRecord struct {
+	Component string    `json:"component"`
+	Message   string    `json:"message"`
+	Error     string    `json:"error"`
+	Timestamp time.Time `json:"timestamp"`
+	Level     string    `json:"level"`
+}
+
 // ContextualMemoryManager interface principale
 type ContextualMemoryManager interface {
-	interfaces.BaseManager
+	BaseManager
 
 	// Indexation
 	CaptureAction(ctx context.Context, action Action) error
@@ -76,7 +119,7 @@ type ContextualMemoryManager interface {
 
 // IndexManager interface pour l'indexation
 type IndexManager interface {
-	interfaces.BaseManager
+	BaseManager
 	IndexAction(ctx context.Context, action Action) error
 	SearchSimilar(ctx context.Context, vector []float64, limit int) ([]SimilarResult, error)
 	CacheEmbedding(ctx context.Context, text string, vector []float64) error
@@ -86,7 +129,7 @@ type IndexManager interface {
 
 // RetrievalManager interface pour la rÃ©cupÃ©ration
 type RetrievalManager interface {
-	interfaces.BaseManager
+	BaseManager
 	SearchContext(ctx context.Context, query ContextQuery) ([]ContextResult, error)
 	UpdateContext(ctx context.Context, contextID string, updates ContextUpdate) error
 	GetContextHistory(ctx context.Context, userID string, limit int) ([]ContextResult, error)
@@ -99,7 +142,7 @@ type RetrievalManager interface {
 
 // IntegrationManager interface pour les intÃ©grations externes
 type IntegrationManager interface {
-	interfaces.BaseManager
+	BaseManager
 	NotifyAction(ctx context.Context, action Action) error
 	NotifyContextUpdate(ctx context.Context, contextID string, updates ContextUpdate) error
 	NotifyContextDeletion(ctx context.Context, contextID string) error
@@ -141,7 +184,7 @@ type ManagerMetrics struct {
 
 // MonitoringManager interface pour le monitoring
 type MonitoringManager interface {
-	interfaces.BaseManager
+	BaseManager
 	RecordOperation(ctx context.Context, operation string, duration time.Duration, err error) error
 	GetMetrics(ctx context.Context) (ManagerMetrics, error)
 	RecordCacheHit(ctx context.Context, hit bool) error

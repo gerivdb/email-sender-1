@@ -6,12 +6,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/email-sender/development/managers/contextual-memory-manager/interfaces"
-	"github.com/email-sender/development/managers/contextual-memory-manager/internal/indexing"
-	"github.com/email-sender/development/managers/contextual-memory-manager/internal/integration"
-	"github.com/email-sender/development/managers/contextual-memory-manager/internal/monitoring"
-	"github.com/email-sender/development/managers/contextual-memory-manager/internal/retrieval"
-	baseInterfaces "./interfaces"
+	"github.com/contextual-memory-manager/interfaces"
+	"github.com/contextual-memory-manager/internal/indexing"
+	"github.com/contextual-memory-manager/internal/integration"
+	"github.com/contextual-memory-manager/internal/monitoring"
+	"github.com/contextual-memory-manager/internal/retrieval"
 )
 
 type contextualMemoryManagerImpl struct {
@@ -19,18 +18,18 @@ type contextualMemoryManagerImpl struct {
 	retrievalManager   interfaces.RetrievalManager
 	integrationManager interfaces.IntegrationManager
 	monitoringManager  interfaces.MonitoringManager
-	storageManager     baseInterfaces.StorageManager
-	errorManager       baseInterfaces.ErrorManager
-	configManager      baseInterfaces.ConfigManager
+	storageManager     interfaces.StorageManager
+	errorManager       interfaces.ErrorManager
+	configManager      interfaces.ConfigManager
 	initialized        bool
 	mu                 sync.RWMutex
 }
 
 // NewContextualMemoryManager crÃ©e une nouvelle instance du manager
 func NewContextualMemoryManager(
-	sm baseInterfaces.StorageManager,
-	em baseInterfaces.ErrorManager,
-	cm baseInterfaces.ConfigManager,
+	sm interfaces.StorageManager,
+	em interfaces.ErrorManager,
+	cm interfaces.ConfigManager,
 ) interfaces.ContextualMemoryManager {
 	return &contextualMemoryManagerImpl{
 		storageManager: sm,
