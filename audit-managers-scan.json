@@ -1,0 +1,989 @@
+{
+  "total_managers": 109,
+  "total_size_kb": 1677.79,
+  "managers": [
+    {
+      "last_modified": "2025-06-18 20:17:40",
+      "has_constructor": true,
+      "complexity": "LOW",
+      "has_struct": false,
+      "size_kb": 0.53,
+      "has_interface": false,
+      "path": "basetools\\manager.go"
+    },
+    {
+      "last_modified": "2025-06-18 19:15:40",
+      "has_constructor": [],
+      "complexity": "LOW",
+      "has_struct": [],
+      "size_kb": 0.0,
+      "has_interface": [],
+      "path": "cmd\\hub-central\\cache_manager.go"
+    },
+    {
+      "last_modified": "2025-06-18 19:15:40",
+      "has_constructor": [],
+      "complexity": "LOW",
+      "has_struct": [],
+      "size_kb": 0.0,
+      "has_interface": [],
+      "path": "cmd\\hub-central\\database_manager.go"
+    },
+    {
+      "last_modified": "2025-06-18 19:15:40",
+      "has_constructor": [],
+      "complexity": "LOW",
+      "has_struct": [],
+      "size_kb": 0.0,
+      "has_interface": [],
+      "path": "cmd\\hub-central\\email_manager.go"
+    },
+    {
+      "last_modified": "2025-06-18 19:15:41",
+      "has_constructor": [],
+      "complexity": "LOW",
+      "has_struct": [],
+      "size_kb": 0.0,
+      "has_interface": [],
+      "path": "cmd\\hub-central\\mcp_manager.go"
+    },
+    {
+      "last_modified": "2025-06-18 19:15:41",
+      "has_constructor": [],
+      "complexity": "LOW",
+      "has_struct": [],
+      "size_kb": 0.0,
+      "has_interface": [],
+      "path": "cmd\\hub-central\\vector_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:17",
+      "has_constructor": false,
+      "complexity": "LOW",
+      "has_struct": false,
+      "size_kb": 0.15,
+      "has_interface": false,
+      "path": "development\\hooks\\commit-interceptor\\branching_manager_test_new.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:17",
+      "has_constructor": false,
+      "complexity": "LOW",
+      "has_struct": false,
+      "size_kb": 4.83,
+      "has_interface": false,
+      "path": "development\\hooks\\commit-interceptor\\branching_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:17",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 11.95,
+      "has_interface": false,
+      "path": "development\\hooks\\commit-interceptor\\branching_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "has_constructor": [],
+      "complexity": "LOW",
+      "has_struct": [],
+      "size_kb": 0.0,
+      "has_interface": [],
+      "path": "development\\managers\\advanced-autonomy-manager\\advanced_autonomy_manager_clean.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "has_constructor": [],
+      "complexity": "LOW",
+      "has_struct": [],
+      "size_kb": 0.0,
+      "has_interface": [],
+      "path": "development\\managers\\advanced-autonomy-manager\\advanced_autonomy_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 29.53,
+      "has_interface": false,
+      "path": "development\\managers\\advanced-autonomy-manager\\advanced_autonomy_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "has_constructor": false,
+      "complexity": "LOW",
+      "has_struct": false,
+      "size_kb": 2.62,
+      "has_interface": true,
+      "path": "development\\managers\\advanced-autonomy-manager\\interfaces\\advanced_autonomy_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "has_constructor": [],
+      "complexity": "LOW",
+      "has_struct": [],
+      "size_kb": 0.0,
+      "has_interface": [],
+      "path": "development\\managers\\advanced-autonomy-manager\\interfaces\\base_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 23.2,
+      "has_interface": false,
+      "path": "development\\managers\\advanced-autonomy-manager\\internal\\coordination\\cross_manager_event_bus.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 23.02,
+      "has_interface": false,
+      "path": "development\\managers\\advanced-autonomy-manager\\internal\\coordination\\global_state_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 16.66,
+      "has_interface": false,
+      "path": "development\\managers\\advanced-autonomy-manager\\internal\\discovery\\manager_discovery.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "has_constructor": false,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 15.84,
+      "has_interface": false,
+      "path": "development\\managers\\advanced-autonomy-manager\\internal\\discovery\\manager_proxies.go"
+    },
+    {
+      "last_modified": "2025-06-18 19:04:36",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 17.0,
+      "has_interface": false,
+      "path": "development\\managers\\advanced-autonomy-manager\\internal\\infrastructure\\security_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 29.36,
+      "has_interface": false,
+      "path": "development\\managers\\ai-template-manager\\ai_template_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "has_constructor": false,
+      "complexity": "MEDIUM",
+      "has_struct": false,
+      "size_kb": 8.42,
+      "has_interface": true,
+      "path": "development\\managers\\ai-template-manager\\interfaces\\ai_template_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 90.52,
+      "has_interface": false,
+      "path": "development\\managers\\branching-manager\\development\\branching_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": false,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 32.53,
+      "has_interface": false,
+      "path": "development\\managers\\branching-manager\\tests\\branching_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:18",
+      "has_constructor": false,
+      "complexity": "LOW",
+      "has_struct": false,
+      "size_kb": 4.0,
+      "has_interface": false,
+      "path": "development\\managers\\config-manager\\config_manager_error_integration_test.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:18",
+      "has_constructor": false,
+      "complexity": "MEDIUM",
+      "has_struct": false,
+      "size_kb": 7.65,
+      "has_interface": false,
+      "path": "development\\managers\\config-manager\\config_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:18",
+      "has_constructor": false,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 22.71,
+      "has_interface": true,
+      "path": "development\\managers\\config-manager\\config_manager.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:18",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 22.84,
+      "has_interface": true,
+      "path": "development\\managers\\container-manager\\development\\container_manager.go"
+    },
+    {
+      "last_modified": "2025-06-18 20:17:41",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 16.05,
+      "has_interface": false,
+      "path": "development\\managers\\contextual-memory-manager\\development\\contextual_memory_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 10.96,
+      "has_interface": false,
+      "path": "development\\managers\\contextual-memory-manager\\internal\\indexing\\index_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 10.59,
+      "has_interface": false,
+      "path": "development\\managers\\contextual-memory-manager\\internal\\integration\\integration_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 11.87,
+      "has_interface": false,
+      "path": "development\\managers\\contextual-memory-manager\\internal\\monitoring\\monitoring_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 10.83,
+      "has_interface": false,
+      "path": "development\\managers\\contextual-memory-manager\\internal\\retrieval\\retrieval_manager.go"
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "has_constructor": true,
+      "complexity": "MEDIUM",
+      "has_struct": false,
+      "size_kb": 8.57,
+      "has_interface": false,
+      "path": "development\\managers\\contextual-memory-manager\\pkg\\manager\\contextual_memory_manager.go"
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 14.32,
+      "has_interface": false,
+      "path": "development\\managers\\contextual-memory-manager\\pkg\\manager\\qdrant_retrieval_manager.go"
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 17.0,
+      "has_interface": false,
+      "path": "development\\managers\\contextual-memory-manager\\pkg\\manager\\sqlite_index_manager.go"
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 18.82,
+      "has_interface": false,
+      "path": "development\\managers\\contextual-memory-manager\\pkg\\manager\\webhook_integration_manager.go"
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "has_constructor": false,
+      "complexity": "MEDIUM",
+      "has_struct": true,
+      "size_kb": 9.97,
+      "has_interface": false,
+      "path": "development\\managers\\contextual-memory-manager\\tests\\contextual_memory_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "has_constructor": false,
+      "complexity": "MEDIUM",
+      "has_struct": true,
+      "size_kb": 6.7,
+      "has_interface": false,
+      "path": "development\\managers\\contextual-memory-manager\\tests\\index_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "has_constructor": false,
+      "complexity": "MEDIUM",
+      "has_struct": false,
+      "size_kb": 6.13,
+      "has_interface": false,
+      "path": "development\\managers\\contextual-memory-manager\\tests\\integration_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "has_constructor": false,
+      "complexity": "MEDIUM",
+      "has_struct": true,
+      "size_kb": 7.44,
+      "has_interface": false,
+      "path": "development\\managers\\contextual-memory-manager\\tests\\retrieval_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "has_constructor": false,
+      "complexity": "LOW",
+      "has_struct": false,
+      "size_kb": 0.5,
+      "has_interface": false,
+      "path": "development\\managers\\contextual-memory-manager\\tests\\unit\\contextual_memory_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": false,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 12.12,
+      "has_interface": false,
+      "path": "development\\managers\\dependency-manager\\dependency_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "MEDIUM",
+      "has_struct": false,
+      "size_kb": 7.88,
+      "has_interface": false,
+      "path": "development\\managers\\dependency-manager\\dependency_manager.go"
+    },
+    {
+      "last_modified": "2025-06-18 19:04:36",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 62.51,
+      "has_interface": true,
+      "path": "development\\managers\\dependency-manager\\modules\\dependency_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 34.72,
+      "has_interface": false,
+      "path": "development\\managers\\dependency-manager\\modules\\import_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 14.58,
+      "has_interface": false,
+      "path": "development\\managers\\dependency-manager\\modules\\manager_integration.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": false,
+      "complexity": "MEDIUM",
+      "has_struct": false,
+      "size_kb": 8.35,
+      "has_interface": false,
+      "path": "development\\managers\\dependency-manager\\modules\\manager_interfaces.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 16.04,
+      "has_interface": false,
+      "path": "development\\managers\\dependency-manager\\modules\\real_manager_integration.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 10.71,
+      "has_interface": false,
+      "path": "development\\managers\\dependency-manager\\tests\\dependency_manager_config_test.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:19",
+      "has_constructor": false,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 14.87,
+      "has_interface": false,
+      "path": "development\\managers\\dependency-manager\\tests\\dependency_manager_integration_test.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:19",
+      "has_constructor": false,
+      "complexity": "MEDIUM",
+      "has_struct": true,
+      "size_kb": 8.89,
+      "has_interface": false,
+      "path": "development\\managers\\dependency-manager\\tests\\dependency_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:19",
+      "has_constructor": false,
+      "complexity": "MEDIUM",
+      "has_struct": true,
+      "size_kb": 9.48,
+      "has_interface": false,
+      "path": "development\\managers\\dependency-manager\\tests\\integration_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "LOW",
+      "has_struct": false,
+      "size_kb": 3.43,
+      "has_interface": false,
+      "path": "development\\managers\\dependency-manager\\version_manager.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 28.79,
+      "has_interface": true,
+      "path": "development\\managers\\deployment-manager\\development\\deployment_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 16.76,
+      "has_interface": false,
+      "path": "development\\managers\\email-manager\\email_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 10.48,
+      "has_interface": false,
+      "path": "development\\managers\\email-manager\\queue_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 10.01,
+      "has_interface": false,
+      "path": "development\\managers\\email-manager\\template_manager.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "has_constructor": false,
+      "complexity": "LOW",
+      "has_struct": false,
+      "size_kb": 4.18,
+      "has_interface": false,
+      "path": "development\\managers\\error-manager\\error_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 15.51,
+      "has_interface": false,
+      "path": "development\\managers\\git-workflow-manager\\git_workflow_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 10.76,
+      "has_interface": false,
+      "path": "development\\managers\\git-workflow-manager\\internal\\branch\\manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 12.29,
+      "has_interface": false,
+      "path": "development\\managers\\git-workflow-manager\\internal\\commit\\manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 11.72,
+      "has_interface": false,
+      "path": "development\\managers\\git-workflow-manager\\internal\\pr\\manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 12.43,
+      "has_interface": false,
+      "path": "development\\managers\\git-workflow-manager\\internal\\webhook\\manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": false,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 14.21,
+      "has_interface": false,
+      "path": "development\\managers\\git-workflow-manager\\tests\\git_workflow_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "has_constructor": false,
+      "complexity": "MEDIUM",
+      "has_struct": true,
+      "size_kb": 9.67,
+      "has_interface": false,
+      "path": "development\\managers\\integrated-manager\\conformity_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 123.55,
+      "has_interface": false,
+      "path": "development\\managers\\integrated-manager\\conformity_manager.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "has_constructor": false,
+      "complexity": "MEDIUM",
+      "has_struct": false,
+      "size_kb": 8.41,
+      "has_interface": false,
+      "path": "development\\managers\\integrated-manager\\manager_hooks.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": false,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 17.85,
+      "has_interface": false,
+      "path": "development\\managers\\integration-manager\\integration_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 16.96,
+      "has_interface": false,
+      "path": "development\\managers\\integration-manager\\integration_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": false,
+      "complexity": "LOW",
+      "has_struct": false,
+      "size_kb": 3.65,
+      "has_interface": true,
+      "path": "development\\managers\\interfaces\\manager_common.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 38.16,
+      "has_interface": false,
+      "path": "development\\managers\\maintenance-manager\\src\\cleanup\\cleanup_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 16.48,
+      "has_interface": false,
+      "path": "development\\managers\\maintenance-manager\\src\\core\\maintenance_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "MEDIUM",
+      "has_struct": false,
+      "size_kb": 8.36,
+      "has_interface": false,
+      "path": "development\\managers\\maintenance-manager\\src\\integration\\manager_coordinator.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 15.8,
+      "has_interface": false,
+      "path": "development\\managers\\maintenance-manager\\src\\vector\\qdrant_manager.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 20.36,
+      "has_interface": true,
+      "path": "development\\managers\\monitoring-manager\\development\\monitoring_manager.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 14.2,
+      "has_interface": true,
+      "path": "development\\managers\\n8n-manager\\n8n_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 15.79,
+      "has_interface": false,
+      "path": "development\\managers\\notification-manager\\alert_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "MEDIUM",
+      "has_struct": false,
+      "size_kb": 9.94,
+      "has_interface": false,
+      "path": "development\\managers\\notification-manager\\channel_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 20.29,
+      "has_interface": false,
+      "path": "development\\managers\\notification-manager\\notification_manager.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 17.2,
+      "has_interface": false,
+      "path": "development\\managers\\process-manager\\process_manager.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 11.66,
+      "has_interface": false,
+      "path": "development\\managers\\roadmap-manager\\roadmap-cli\\keybinds\\config_manager.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:21",
+      "has_constructor": true,
+      "complexity": "LOW",
+      "has_struct": true,
+      "size_kb": 4.18,
+      "has_interface": false,
+      "path": "development\\managers\\roadmap-manager\\roadmap-cli\\storage\\manager.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:21",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 17.7,
+      "has_interface": false,
+      "path": "development\\managers\\roadmap-manager\\roadmap-cli\\tui\\navigation\\manager.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:21",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 55.45,
+      "has_interface": false,
+      "path": "development\\managers\\roadmap-manager\\roadmap-cli\\tui\\navigation\\mode_manager.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:22",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 25.99,
+      "has_interface": false,
+      "path": "development\\managers\\script-manager\\script_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 10.96,
+      "has_interface": true,
+      "path": "development\\managers\\security-manager\\development\\security_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "has_constructor": false,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 15.23,
+      "has_interface": false,
+      "path": "development\\managers\\security-manager\\security_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-18 19:04:36",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 16.09,
+      "has_interface": false,
+      "path": "development\\managers\\security-manager\\security_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "has_constructor": false,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 33.38,
+      "has_interface": true,
+      "path": "development\\managers\\smart-variable-manager\\interfaces\\smart_variable_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 27.5,
+      "has_interface": false,
+      "path": "development\\managers\\smart-variable-manager\\smart_variable_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 16.69,
+      "has_interface": true,
+      "path": "development\\managers\\storage-manager\\development\\storage_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "has_constructor": false,
+      "complexity": "LOW",
+      "has_struct": false,
+      "size_kb": 3.33,
+      "has_interface": false,
+      "path": "development\\managers\\storage-manager\\storage_manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-18 19:04:36",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 17.31,
+      "has_interface": false,
+      "path": "development\\managers\\storage-manager\\storage_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "has_constructor": false,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 13.3,
+      "has_interface": true,
+      "path": "development\\managers\\template-performance-manager\\interfaces\\template_performance_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "has_constructor": false,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 13.44,
+      "has_interface": false,
+      "path": "development\\managers\\template-performance-manager\\manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "has_constructor": false,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 19.4,
+      "has_interface": false,
+      "path": "development\\managers\\template-performance-manager\\tests\\manager_test.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:23",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 26.9,
+      "has_interface": false,
+      "path": "development\\managers\\tools\\cmd\\manager-toolkit\\manager_toolkit.go"
+    },
+    {
+      "last_modified": "2025-06-18 19:04:36",
+      "has_constructor": true,
+      "complexity": "LOW",
+      "has_struct": false,
+      "size_kb": 3.3,
+      "has_interface": false,
+      "path": "development\\managers\\tools\\manager_toolkit_lib.go"
+    },
+    {
+      "last_modified": "2025-06-07 13:31:23",
+      "has_constructor": false,
+      "complexity": "LOW",
+      "has_struct": false,
+      "size_kb": 0.01,
+      "has_interface": false,
+      "path": "development\\managers\\tools\\manager_toolkit.go"
+    },
+    {
+      "last_modified": "2025-06-03 10:19:09",
+      "has_constructor": true,
+      "complexity": "MEDIUM",
+      "has_struct": true,
+      "size_kb": 5.71,
+      "has_interface": false,
+      "path": "development\\tools\\qdrant\\rag-go\\pkg\\types\\collection_manager.go"
+    },
+    {
+      "last_modified": "2025-06-18 19:04:37",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 12.06,
+      "has_interface": false,
+      "path": "internal\\evolution\\manager.go"
+    },
+    {
+      "last_modified": "2025-06-18 19:04:38",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 14.45,
+      "has_interface": false,
+      "path": "internal\\monitoring\\advanced-autonomy-manager.go"
+    },
+    {
+      "last_modified": "2025-06-03 10:19:10",
+      "has_constructor": true,
+      "complexity": "MEDIUM",
+      "has_struct": true,
+      "size_kb": 9.88,
+      "has_interface": false,
+      "path": "pkg\\cache\\redis\\reconnection_manager.go"
+    },
+    {
+      "last_modified": "2025-06-03 10:19:10",
+      "has_constructor": false,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 10.97,
+      "has_interface": false,
+      "path": "pkg\\cache\\ttl\\invalidationmanager_test.go"
+    },
+    {
+      "last_modified": "2025-06-03 10:19:10",
+      "has_constructor": true,
+      "complexity": "MEDIUM",
+      "has_struct": true,
+      "size_kb": 6.78,
+      "has_interface": true,
+      "path": "pkg\\cache\\ttl\\invalidationmanager.go"
+    },
+    {
+      "last_modified": "2025-06-03 10:19:10",
+      "has_constructor": true,
+      "complexity": "MEDIUM",
+      "has_struct": true,
+      "size_kb": 8.24,
+      "has_interface": false,
+      "path": "pkg\\cache\\ttl\\manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:25",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": false,
+      "size_kb": 12.61,
+      "has_interface": false,
+      "path": "planning-ecosystem-sync\\tools\\roadmap-connector\\roadmap_manager_connector.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:26",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 30.98,
+      "has_interface": true,
+      "path": "projet\\cred\\dependency_manager.go"
+    },
+    {
+      "last_modified": "2025-06-14 16:35:31",
+      "has_constructor": true,
+      "complexity": "HIGH",
+      "has_struct": true,
+      "size_kb": 13.81,
+      "has_interface": false,
+      "path": "tools\\alert-manager.go"
+    }
+  ],
+  "scan_timestamp": "2025-06-18 20:35:44",
+  "average_size_kb": 15.39
+}

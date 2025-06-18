@@ -1,0 +1,34 @@
+﻿{
+    "phase":  "1.2.1",
+    "timestamp":  "2025-06-18 22:04:58",
+    "tasks":  {
+                  "011":  {
+                              "outputs":  [
+
+                                          ],
+                              "status":  "OUTPUT_MISSING",
+                              "name":  "Extraire Nodes Email Critiques"
+                          },
+                  "009":  {
+                              "outputs":  [
+                                              "output\\phase1\\n8n-workflows-export.json"
+                                          ],
+                              "status":  "MOCK_COMPLETED",
+                              "name":  "Scanner Workflows N8N"
+                          },
+                  "010":  {
+                              "outputs":  [
+
+                                          ],
+                              "status":  "PENDING",
+                              "name":  "Classifier Types Workflows"
+                          }
+              },
+    "summary":  {
+                    "tasks_completed":  1,
+                    "total_duration_seconds":  1.6317404,
+                    "outputs_generated":  1,
+                    "phase_status":  "PARTIAL",
+                    "tasks_total":  3
+                }
+}

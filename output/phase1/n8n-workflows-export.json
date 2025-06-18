@@ -1,0 +1,24 @@
+﻿{
+    "workflows_found":  [
+                            {
+                                "content_preview":  "{\"nodes\":[{\"type\":\"EmailSend\",\"name\":\"Send Email\"},{\"type\":\"SMTP\",\"name\":\"SMTP Config\"}]}",
+                                "name":  "Email Sender Workflow",
+                                "file_path":  "mock/email-sender.json",
+                                "node_count":  5,
+                                "has_connections":  true
+                            },
+                            {
+                                "content_preview":  "{\"nodes\":[{\"type\":\"Gmail\",\"name\":\"Gmail API\"},{\"type\":\"OAuth\",\"name\":\"Google Auth\"}]}",
+                                "name":  "Gmail Integration",
+                                "file_path":  "mock/gmail-integration.json",
+                                "node_count":  3,
+                                "has_connections":  true
+                            }
+                        ],
+    "timestamp":  "2025-06-18 22:04:59",
+    "task":  "009-scanner-workflows-n8n-mock",
+    "summary":  {
+                    "status":  "MOCK_DATA",
+                    "workflows_found":  2
+                }
+}

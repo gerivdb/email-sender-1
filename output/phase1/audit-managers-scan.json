@@ -1,0 +1,553 @@
+{
+  "total_managers": 109,
+  "total_size_kb": 1677.79,
+  "managers": [
+    {
+      "last_modified": "2025-06-18 20:17:40",
+      "path": "basetools\\manager.go",
+      "size_kb": 0.53
+    },
+    {
+      "last_modified": "2025-06-18 19:15:40",
+      "path": "cmd\\hub-central\\cache_manager.go",
+      "size_kb": 0.0
+    },
+    {
+      "last_modified": "2025-06-18 19:15:40",
+      "path": "cmd\\hub-central\\database_manager.go",
+      "size_kb": 0.0
+    },
+    {
+      "last_modified": "2025-06-18 19:15:40",
+      "path": "cmd\\hub-central\\email_manager.go",
+      "size_kb": 0.0
+    },
+    {
+      "last_modified": "2025-06-18 19:15:41",
+      "path": "cmd\\hub-central\\mcp_manager.go",
+      "size_kb": 0.0
+    },
+    {
+      "last_modified": "2025-06-18 19:15:41",
+      "path": "cmd\\hub-central\\vector_manager.go",
+      "size_kb": 0.0
+    },
+    {
+      "last_modified": "2025-06-14 16:35:17",
+      "path": "development\\hooks\\commit-interceptor\\branching_manager_test_new.go",
+      "size_kb": 0.15
+    },
+    {
+      "last_modified": "2025-06-14 16:35:17",
+      "path": "development\\hooks\\commit-interceptor\\branching_manager_test.go",
+      "size_kb": 4.83
+    },
+    {
+      "last_modified": "2025-06-14 16:35:17",
+      "path": "development\\hooks\\commit-interceptor\\branching_manager.go",
+      "size_kb": 11.95
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "path": "development\\managers\\advanced-autonomy-manager\\interfaces\\advanced_autonomy_manager.go",
+      "size_kb": 2.62
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "path": "development\\managers\\advanced-autonomy-manager\\interfaces\\base_manager.go",
+      "size_kb": 0.0
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "path": "development\\managers\\advanced-autonomy-manager\\internal\\coordination\\cross_manager_event_bus.go",
+      "size_kb": 23.2
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "path": "development\\managers\\advanced-autonomy-manager\\internal\\coordination\\global_state_manager.go",
+      "size_kb": 23.02
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "path": "development\\managers\\advanced-autonomy-manager\\internal\\discovery\\manager_discovery.go",
+      "size_kb": 16.66
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "path": "development\\managers\\advanced-autonomy-manager\\internal\\discovery\\manager_proxies.go",
+      "size_kb": 15.84
+    },
+    {
+      "last_modified": "2025-06-18 19:04:36",
+      "path": "development\\managers\\advanced-autonomy-manager\\internal\\infrastructure\\security_manager.go",
+      "size_kb": 17.0
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "path": "development\\managers\\advanced-autonomy-manager\\advanced_autonomy_manager_clean.go",
+      "size_kb": 0.0
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "path": "development\\managers\\advanced-autonomy-manager\\advanced_autonomy_manager_test.go",
+      "size_kb": 0.0
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "path": "development\\managers\\advanced-autonomy-manager\\advanced_autonomy_manager.go",
+      "size_kb": 29.53
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "path": "development\\managers\\ai-template-manager\\interfaces\\ai_template_manager.go",
+      "size_kb": 8.42
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "path": "development\\managers\\ai-template-manager\\ai_template_manager.go",
+      "size_kb": 29.36
+    },
+    {
+      "last_modified": "2025-06-14 16:35:18",
+      "path": "development\\managers\\branching-manager\\development\\branching_manager.go",
+      "size_kb": 90.52
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\branching-manager\\tests\\branching_manager_test.go",
+      "size_kb": 32.53
+    },
+    {
+      "last_modified": "2025-06-07 13:31:18",
+      "path": "development\\managers\\config-manager\\config_manager_error_integration_test.go",
+      "size_kb": 4.0
+    },
+    {
+      "last_modified": "2025-06-07 13:31:18",
+      "path": "development\\managers\\config-manager\\config_manager_test.go",
+      "size_kb": 7.65
+    },
+    {
+      "last_modified": "2025-06-07 13:31:18",
+      "path": "development\\managers\\config-manager\\config_manager.go",
+      "size_kb": 22.71
+    },
+    {
+      "last_modified": "2025-06-07 13:31:18",
+      "path": "development\\managers\\container-manager\\development\\container_manager.go",
+      "size_kb": 22.84
+    },
+    {
+      "last_modified": "2025-06-18 20:17:41",
+      "path": "development\\managers\\contextual-memory-manager\\development\\contextual_memory_manager.go",
+      "size_kb": 16.05
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\contextual-memory-manager\\internal\\indexing\\index_manager.go",
+      "size_kb": 10.96
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\contextual-memory-manager\\internal\\integration\\integration_manager.go",
+      "size_kb": 10.59
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\contextual-memory-manager\\internal\\monitoring\\monitoring_manager.go",
+      "size_kb": 11.87
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\contextual-memory-manager\\internal\\retrieval\\retrieval_manager.go",
+      "size_kb": 10.83
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "path": "development\\managers\\contextual-memory-manager\\pkg\\manager\\contextual_memory_manager.go",
+      "size_kb": 8.57
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "path": "development\\managers\\contextual-memory-manager\\pkg\\manager\\qdrant_retrieval_manager.go",
+      "size_kb": 14.32
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "path": "development\\managers\\contextual-memory-manager\\pkg\\manager\\sqlite_index_manager.go",
+      "size_kb": 17.0
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "path": "development\\managers\\contextual-memory-manager\\pkg\\manager\\webhook_integration_manager.go",
+      "size_kb": 18.82
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "path": "development\\managers\\contextual-memory-manager\\tests\\unit\\contextual_memory_manager_test.go",
+      "size_kb": 0.5
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "path": "development\\managers\\contextual-memory-manager\\tests\\contextual_memory_manager_test.go",
+      "size_kb": 9.97
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "path": "development\\managers\\contextual-memory-manager\\tests\\index_manager_test.go",
+      "size_kb": 6.7
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "path": "development\\managers\\contextual-memory-manager\\tests\\integration_manager_test.go",
+      "size_kb": 6.13
+    },
+    {
+      "last_modified": "2025-06-13 17:54:40",
+      "path": "development\\managers\\contextual-memory-manager\\tests\\retrieval_manager_test.go",
+      "size_kb": 7.44
+    },
+    {
+      "last_modified": "2025-06-18 19:04:36",
+      "path": "development\\managers\\dependency-manager\\modules\\dependency_manager.go",
+      "size_kb": 62.51
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\dependency-manager\\modules\\import_manager.go",
+      "size_kb": 34.72
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\dependency-manager\\modules\\manager_integration.go",
+      "size_kb": 14.58
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\dependency-manager\\modules\\manager_interfaces.go",
+      "size_kb": 8.35
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\dependency-manager\\modules\\real_manager_integration.go",
+      "size_kb": 16.04
+    },
+    {
+      "last_modified": "2025-06-07 13:31:19",
+      "path": "development\\managers\\dependency-manager\\tests\\dependency_manager_config_test.go",
+      "size_kb": 10.71
+    },
+    {
+      "last_modified": "2025-06-07 13:31:19",
+      "path": "development\\managers\\dependency-manager\\tests\\dependency_manager_integration_test.go",
+      "size_kb": 14.87
+    },
+    {
+      "last_modified": "2025-06-07 13:31:19",
+      "path": "development\\managers\\dependency-manager\\tests\\dependency_manager_test.go",
+      "size_kb": 8.89
+    },
+    {
+      "last_modified": "2025-06-07 13:31:19",
+      "path": "development\\managers\\dependency-manager\\tests\\integration_manager_test.go",
+      "size_kb": 9.48
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\dependency-manager\\dependency_manager_test.go",
+      "size_kb": 12.12
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\dependency-manager\\dependency_manager.go",
+      "size_kb": 7.88
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\dependency-manager\\version_manager.go",
+      "size_kb": 3.43
+    },
+    {
+      "last_modified": "2025-06-07 13:31:19",
+      "path": "development\\managers\\deployment-manager\\development\\deployment_manager.go",
+      "size_kb": 28.79
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\email-manager\\email_manager.go",
+      "size_kb": 16.76
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\email-manager\\queue_manager.go",
+      "size_kb": 10.48
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\email-manager\\template_manager.go",
+      "size_kb": 10.01
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "path": "development\\managers\\error-manager\\error_manager_test.go",
+      "size_kb": 4.18
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\git-workflow-manager\\internal\\branch\\manager.go",
+      "size_kb": 10.76
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\git-workflow-manager\\internal\\commit\\manager.go",
+      "size_kb": 12.29
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\git-workflow-manager\\internal\\pr\\manager.go",
+      "size_kb": 11.72
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\git-workflow-manager\\internal\\webhook\\manager.go",
+      "size_kb": 12.43
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\git-workflow-manager\\tests\\git_workflow_manager_test.go",
+      "size_kb": 14.21
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\git-workflow-manager\\git_workflow_manager.go",
+      "size_kb": 15.51
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "path": "development\\managers\\integrated-manager\\conformity_manager_test.go",
+      "size_kb": 9.67
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "path": "development\\managers\\integrated-manager\\conformity_manager.go",
+      "size_kb": 123.55
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "path": "development\\managers\\integrated-manager\\manager_hooks.go",
+      "size_kb": 8.41
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\integration-manager\\integration_manager_test.go",
+      "size_kb": 17.85
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\integration-manager\\integration_manager.go",
+      "size_kb": 16.96
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\interfaces\\manager_common.go",
+      "size_kb": 3.65
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\maintenance-manager\\src\\cleanup\\cleanup_manager.go",
+      "size_kb": 38.16
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\maintenance-manager\\src\\core\\maintenance_manager.go",
+      "size_kb": 16.48
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\maintenance-manager\\src\\integration\\manager_coordinator.go",
+      "size_kb": 8.36
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\maintenance-manager\\src\\vector\\qdrant_manager.go",
+      "size_kb": 15.8
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "path": "development\\managers\\monitoring-manager\\development\\monitoring_manager.go",
+      "size_kb": 20.36
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "path": "development\\managers\\n8n-manager\\n8n_manager.go",
+      "size_kb": 14.2
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\notification-manager\\alert_manager.go",
+      "size_kb": 15.79
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\notification-manager\\channel_manager.go",
+      "size_kb": 9.94
+    },
+    {
+      "last_modified": "2025-06-14 16:35:19",
+      "path": "development\\managers\\notification-manager\\notification_manager.go",
+      "size_kb": 20.29
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "path": "development\\managers\\process-manager\\process_manager.go",
+      "size_kb": 17.2
+    },
+    {
+      "last_modified": "2025-06-07 13:31:20",
+      "path": "development\\managers\\roadmap-manager\\roadmap-cli\\keybinds\\config_manager.go",
+      "size_kb": 11.66
+    },
+    {
+      "last_modified": "2025-06-07 13:31:21",
+      "path": "development\\managers\\roadmap-manager\\roadmap-cli\\storage\\manager.go",
+      "size_kb": 4.18
+    },
+    {
+      "last_modified": "2025-06-07 13:31:21",
+      "path": "development\\managers\\roadmap-manager\\roadmap-cli\\tui\\navigation\\manager.go",
+      "size_kb": 17.7
+    },
+    {
+      "last_modified": "2025-06-07 13:31:21",
+      "path": "development\\managers\\roadmap-manager\\roadmap-cli\\tui\\navigation\\mode_manager.go",
+      "size_kb": 55.45
+    },
+    {
+      "last_modified": "2025-06-07 13:31:22",
+      "path": "development\\managers\\script-manager\\script_manager.go",
+      "size_kb": 25.99
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "path": "development\\managers\\security-manager\\development\\security_manager.go",
+      "size_kb": 10.96
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "path": "development\\managers\\security-manager\\security_manager_test.go",
+      "size_kb": 15.23
+    },
+    {
+      "last_modified": "2025-06-18 19:04:36",
+      "path": "development\\managers\\security-manager\\security_manager.go",
+      "size_kb": 16.09
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "path": "development\\managers\\smart-variable-manager\\interfaces\\smart_variable_manager.go",
+      "size_kb": 33.38
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "path": "development\\managers\\smart-variable-manager\\smart_variable_manager.go",
+      "size_kb": 27.5
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "path": "development\\managers\\storage-manager\\development\\storage_manager.go",
+      "size_kb": 16.69
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "path": "development\\managers\\storage-manager\\storage_manager_test.go",
+      "size_kb": 3.33
+    },
+    {
+      "last_modified": "2025-06-18 19:04:36",
+      "path": "development\\managers\\storage-manager\\storage_manager.go",
+      "size_kb": 17.31
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "path": "development\\managers\\template-performance-manager\\interfaces\\template_performance_manager.go",
+      "size_kb": 13.3
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "path": "development\\managers\\template-performance-manager\\tests\\manager_test.go",
+      "size_kb": 19.4
+    },
+    {
+      "last_modified": "2025-06-14 16:35:20",
+      "path": "development\\managers\\template-performance-manager\\manager.go",
+      "size_kb": 13.44
+    },
+    {
+      "last_modified": "2025-06-07 13:31:23",
+      "path": "development\\managers\\tools\\cmd\\manager-toolkit\\manager_toolkit.go",
+      "size_kb": 26.9
+    },
+    {
+      "last_modified": "2025-06-18 19:04:36",
+      "path": "development\\managers\\tools\\manager_toolkit_lib.go",
+      "size_kb": 3.3
+    },
+    {
+      "last_modified": "2025-06-07 13:31:23",
+      "path": "development\\managers\\tools\\manager_toolkit.go",
+      "size_kb": 0.01
+    },
+    {
+      "last_modified": "2025-06-03 10:19:09",
+      "path": "development\\tools\\qdrant\\rag-go\\pkg\\types\\collection_manager.go",
+      "size_kb": 5.71
+    },
+    {
+      "last_modified": "2025-06-18 19:04:37",
+      "path": "internal\\evolution\\manager.go",
+      "size_kb": 12.06
+    },
+    {
+      "last_modified": "2025-06-18 19:04:38",
+      "path": "internal\\monitoring\\advanced-autonomy-manager.go",
+      "size_kb": 14.45
+    },
+    {
+      "last_modified": "2025-06-03 10:19:10",
+      "path": "pkg\\cache\\redis\\reconnection_manager.go",
+      "size_kb": 9.88
+    },
+    {
+      "last_modified": "2025-06-03 10:19:10",
+      "path": "pkg\\cache\\ttl\\invalidationmanager_test.go",
+      "size_kb": 10.97
+    },
+    {
+      "last_modified": "2025-06-03 10:19:10",
+      "path": "pkg\\cache\\ttl\\invalidationmanager.go",
+      "size_kb": 6.78
+    },
+    {
+      "last_modified": "2025-06-03 10:19:10",
+      "path": "pkg\\cache\\ttl\\manager.go",
+      "size_kb": 8.24
+    },
+    {
+      "last_modified": "2025-06-14 16:35:25",
+      "path": "planning-ecosystem-sync\\tools\\roadmap-connector\\roadmap_manager_connector.go",
+      "size_kb": 12.61
+    },
+    {
+      "last_modified": "2025-06-14 16:35:26",
+      "path": "projet\\cred\\dependency_manager.go",
+      "size_kb": 30.98
+    },
+    {
+      "last_modified": "2025-06-14 16:35:31",
+      "path": "tools\\alert-manager.go",
+      "size_kb": 13.81
+    }
+  ],
+  "scan_timestamp": "2025-06-18 20:38:34",
+  "branch": "dev"
+}
