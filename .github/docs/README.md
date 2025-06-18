@@ -35,6 +35,12 @@ docs/
 - [Méthodologie de Développement](github/development-methodology.md)
 - [Personnalisation Copilot](github/personnaliser-copilot.md)
 
+### Documentation Système d'Exclusion AVG
+
+- [Guide Rapide d'Exclusion AVG](avg-exclusion-quickguide.md) - Démarrage rapide pour les utilisateurs
+- [Documentation Système d'Exclusion AVG](avg-exclusion-system.md) - Vue d'ensemble complète
+- [Documentation Technique d'Exclusion AVG](avg-exclusion-technical.md) - Détails d'implémentation
+
 ## 📚 Standards de Documentation
 
 - Format Markdown

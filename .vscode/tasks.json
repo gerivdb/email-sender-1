@@ -7,8 +7,99 @@
       "PYTHON_PATH": "${workspaceFolder}/development/scripts/python",
       "POWERSHELL_PATH": "${workspaceFolder}/development/scripts/cmd"
     }
-  },
-  "tasks": [
+  },  "tasks": [
+    // === 🛡️ AVG EXCLUSION AUTOMATION ===
+    {
+      "label": "avg-exclusion.auto-start",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/avg-exclusion-vscode-hook.ps1",
+        "auto",
+        "-Background"
+      ],
+      "group": {
+        "kind": "none",
+        "isDefault": false
+      },
+      "problemMatcher": [],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated",
+        "group": "security"
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    },
+    {
+      "label": "avg-exclusion.start",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/avg-exclusion-vscode-hook.ps1",
+        "start"
+      ],
+      "group": "none",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "security"
+      }
+    },
+    {
+      "label": "avg-exclusion.status",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/avg-exclusion-vscode-hook.ps1",
+        "status"
+      ],
+      "group": "none",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "group": "security"
+      }
+    },    {
+      "label": "avg-exclusion.stop",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/avg-exclusion-vscode-hook.ps1",
+        "stop"
+      ],
+      "group": "none",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "group": "security"
+      }
+    },
+    {
+      "label": "avg-exclusion.test-exe",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/test-avg-exe-exclusion.ps1"
+      ],
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "security"
+      }
+    },
     // === 🚀 SMART INFRASTRUCTURE ORCHESTRATOR ===
     {
       "label": "smart-infrastructure.auto-start",

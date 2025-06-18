@@ -1,4 +1,16 @@
 {
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "icon": "terminal-powershell",
+      "args": ["-ExecutionPolicy", "Bypass"]
+    }
+  },
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "task.autoDetect": "on",
+  "tasks.runOn": {
+    "folderOpen": ["avg-exclusion.auto-start"]
+  },
   "chat.promptFiles": true,
   "github.copilot.chat.codeGeneration.useInstructionFiles": true,
   "github.copilot.chat.welcomeMessage": "always",

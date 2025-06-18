@@ -18,8 +18,8 @@ type UnifiedQdrantClient struct {
 	Timeout    time.Duration
 }
 
-// ClientConfig holds configuration for the unified client
-type ClientConfig struct {
+// UnifiedClientConfig holds configuration for the unified client
+type UnifiedClientConfig struct {
 	Host       string        `yaml:"host" json:"host"`
 	Port       int           `yaml:"port" json:"port"`
 	APIKey     string        `yaml:"api_key" json:"api_key"`
@@ -83,20 +83,20 @@ type BatchInsertRequest struct {
 }
 
 // NewUnifiedQdrantClient creates a new unified client
-func NewUnifiedQdrantClient(config ClientConfig) *UnifiedQdrantClient {
+func NewUnifiedQdrantClient(config UnifiedClientConfig) *UnifiedQdrantClient {
 	baseURL := fmt.Sprintf("http://%s:%d", config.Host, config.Port)
-	
+
 	httpClient := &http.Client{
 		Timeout: config.Timeout,
 	}
-	
+
 	if config.RetryCount == 0 {
 		config.RetryCount = 3
 	}
 	if config.Timeout == 0 {
 		config.Timeout = 30 * time.Second
 	}
-	
+
 	return &UnifiedQdrantClient{
 		BaseURL:    baseURL,
 		HTTPClient: httpClient,
@@ -113,29 +113,29 @@ func (c *UnifiedQdrantClient) CreateCollection(ctx context.Context, name string,
 			"distance": "Cosine",
 		},
 	}
-	
+
 	return c.makeRequest(ctx, "PUT", fmt.Sprintf("/collections/%s", name), payload, nil)
 }
 
 // InsertPoints inserts points in batches (migrated from Python batch logic)
 func (c *UnifiedQdrantClient) InsertPoints(ctx context.Context, collectionName string, points []TaskPoint) error {
 	const batchSize = 100 // Same as Python implementation
-	
+
 	for i := 0; i < len(points); i += batchSize {
 		end := i + batchSize
 		if end > len(points) {
 			end = len(points)
 		}
-		
+
 		batch := points[i:end]
 		request := BatchInsertRequest{Points: batch}
-		
+
 		err := c.makeRequest(ctx, "PUT", fmt.Sprintf("/collections/%s/points", collectionName), request, nil)
 		if err != nil {
 			return fmt.Errorf("batch insert failed at index %d: %w", i, err)
 		}
 	}
-	
+
 	return nil
 }
 
@@ -146,16 +146,16 @@ func (c *UnifiedQdrantClient) SearchPoints(ctx context.Context, collectionName s
 		Limit:       limit,
 		WithPayload: true,
 	}
-	
+
 	var response struct {
 		Result []SearchResult `json:"result"`
 	}
-	
+
 	err := c.makeRequest(ctx, "POST", fmt.Sprintf("/collections/%s/points/search", collectionName), request, &response)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return response.Result, nil
 }
 
@@ -164,19 +164,19 @@ func (c *UnifiedQdrantClient) GetCollectionInfo(ctx context.Context, collectionN
 	var response struct {
 		Result CollectionInfo `json:"result"`
 	}
-	
+
 	err := c.makeRequest(ctx, "GET", fmt.Sprintf("/collections/%s", collectionName), nil, &response)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return &response.Result, nil
 }
 
 // makeRequest is the internal HTTP request method with retry logic
 func (c *UnifiedQdrantClient) makeRequest(ctx context.Context, method, path string, body interface{}, result interface{}) error {
 	var lastErr error
-	
+
 	for attempt := 0; attempt <= c.RetryCount; attempt++ {
 		if attempt > 0 {
 			// Exponential backoff
@@ -187,25 +187,25 @@ func (c *UnifiedQdrantClient) makeRequest(ctx context.Context, method, path stri
 				return ctx.Err()
 			}
 		}
-		
+
 		lastErr = c.doRequest(ctx, method, path, body, result)
 		if lastErr == nil {
 			return nil
 		}
-		
+
 		// Don't retry on client errors (4xx)
 		if httpErr, ok := lastErr.(*HTTPError); ok && httpErr.StatusCode >= 400 && httpErr.StatusCode < 500 {
 			return lastErr
 		}
 	}
-	
+
 	return fmt.Errorf("request failed after %d attempts: %w", c.RetryCount, lastErr)
 }
 
 // doRequest performs the actual HTTP request
 func (c *UnifiedQdrantClient) doRequest(ctx context.Context, method, path string, body interface{}, result interface{}) error {
 	url := c.BaseURL + path
-	
+
 	var reqBody io.Reader
 	if body != nil {
 		jsonData, err := json.Marshal(body)
@@ -214,40 +214,40 @@ func (c *UnifiedQdrantClient) doRequest(ctx context.Context, method, path string
 		}
 		reqBody = bytes.NewBuffer(jsonData)
 	}
-	
+
 	req, err := http.NewRequestWithContext(ctx, method, url, reqBody)
 	if err != nil {
 		return fmt.Errorf("failed to create request: %w", err)
 	}
-	
+
 	if body != nil {
 		req.Header.Set("Content-Type", "application/json")
 	}
-	
+
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("HTTP request failed: %w", err)
 	}
 	defer resp.Body.Close()
-	
+
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("failed to read response body: %w", err)
 	}
-	
+
 	if resp.StatusCode >= 400 {
 		return &HTTPError{
 			StatusCode: resp.StatusCode,
 			Message:    string(respBody),
 		}
 	}
-	
+
 	if result != nil {
 		if err := json.Unmarshal(respBody, result); err != nil {
 			return fmt.Errorf("failed to unmarshal response: %w", err)
 		}
 	}
-	
+
 	return nil
 }
 

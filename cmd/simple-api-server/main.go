@@ -24,6 +24,39 @@ type StatusResponse struct {
 	Timestamp time.Time         `json:"timestamp"`
 }
 
+// ServiceInfo represents service information
+type ServiceInfo struct {
+	Status string `json:"status"`
+	Health string `json:"health"`
+}
+
+// InfrastructureStatusResponse for infrastructure status
+type InfrastructureStatusResponse struct {
+	Overall            string                 `json:"overall"`
+	Active             bool                   `json:"active"`
+	AutoHealingEnabled bool                   `json:"auto_healing_enabled"`
+	ServicesMonitored  int                    `json:"services_monitored"`
+	Services           map[string]ServiceInfo `json:"services"`
+	Timestamp          time.Time              `json:"timestamp"`
+}
+
+// MonitoringStatusResponse for monitoring status
+type MonitoringStatusResponse struct {
+	Overall            string    `json:"overall"`
+	Active             bool      `json:"active"`
+	AutoHealingEnabled bool      `json:"auto_healing_enabled"`
+	ServicesMonitored  int       `json:"services_monitored"`
+	Timestamp          time.Time `json:"timestamp"`
+}
+
+// AutoHealingResponse for auto-healing operations
+type AutoHealingResponse struct {
+	Status    string    `json:"status"`
+	Enabled   bool      `json:"enabled"`
+	Message   string    `json:"message"`
+	Timestamp time.Time `json:"timestamp"`
+}
+
 var startTime = time.Now()
 
 func main() {
