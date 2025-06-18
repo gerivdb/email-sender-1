@@ -115,6 +115,25 @@ type ContextualMemoryManager interface {
 
 	// MÃ©triques
 	GetMetrics(ctx context.Context) (ManagerMetrics, error)
+
+	// MÃ©thodes existantes
+	RecordAction(ctx context.Context, action Action) error
+	SearchSimilarActions(ctx context.Context, query ContextQuery) ([]ContextResult, error)
+	GetContext(ctx context.Context, query ContextQuery) ([]ContextResult, error)
+
+	// Nouvelles mÃ©thodes AST intÃ©grÃ©es
+	RecordActionWithAST(ctx context.Context, action Action) (*EnrichedAction, error)
+	SearchWithHybridMode(ctx context.Context, query ContextQuery) (*HybridSearchResult, error)
+	GetStructuralContext(ctx context.Context, filePath string, lineNumber int) (*StructuralContext, error)
+
+	// Configuration du mode hybride
+	SetHybridMode(ctx context.Context, enabled bool) error
+	GetHybridConfig(ctx context.Context) (*HybridConfig, error)
+	UpdateHybridConfig(ctx context.Context, config *HybridConfig) error
+
+	// MÃ©triques et optimisation
+	GetPerformanceMetrics(ctx context.Context) (*PerformanceMetrics, error)
+	OptimizeSearchStrategy(ctx context.Context) error
 }
 
 // IndexManager interface pour l'indexation
@@ -190,4 +209,51 @@ type MonitoringManager interface {
 	RecordCacheHit(ctx context.Context, hit bool) error
 	IncrementActiveSession(ctx context.Context) error
 	DecrementActiveSession(ctx context.Context) error
+}
+
+// Types pour les rÃ©sultats hybrides
+type HybridSearchResult struct {
+	Query            ContextQuery       `json:"query"`
+	UsedMode         AnalysisMode       `json:"used_mode"`
+	ASTResults       []StructuralResult `json:"ast_results,omitempty"`
+	RAGResults       []ContextResult    `json:"rag_results,omitempty"`
+	CombinedResults  []CombinedResult   `json:"combined_results"`
+	DecisionMetadata *ModeDecision      `json:"decision_metadata"`
+	ProcessingTime   time.Duration      `json:"processing_time"`
+	QualityScore     float64            `json:"quality_score"`
+}
+
+type CombinedResult struct {
+	ID        string                 `json:"id"`
+	Type      string                 `json:"type"` // ast, rag, hybrid
+	Content   interface{}            `json:"content"`
+	Score     float64                `json:"score"`
+	Relevance float64                `json:"relevance"`
+	Source    string                 `json:"source"`
+	Metadata  map[string]interface{} `json:"metadata"`
+}
+
+type PerformanceMetrics struct {
+	TotalQueries        int64                  `json:"total_queries"`
+	AverageResponseTime time.Duration          `json:"average_response_time"`
+	ModeDistribution    map[AnalysisMode]int64 `json:"mode_distribution"`
+	CacheHitRate        float64                `json:"cache_hit_rate"`
+	ASTPerformance      *ASTPerformanceMetrics `json:"ast_performance"`
+	RAGPerformance      *RAGPerformanceMetrics `json:"rag_performance"`
+	HybridEfficiency    float64                `json:"hybrid_efficiency"`
+	LastOptimization    time.Time              `json:"last_optimization"`
+}
+
+type ASTPerformanceMetrics struct {
+	AverageAnalysisTime time.Duration `json:"average_analysis_time"`
+	CacheHitRate        float64       `json:"cache_hit_rate"`
+	SuccessRate         float64       `json:"success_rate"`
+	FilesAnalyzed       int64         `json:"files_analyzed"`
+}
+
+type RAGPerformanceMetrics struct {
+	AverageSearchTime  time.Duration `json:"average_search_time"`
+	VectorCacheHitRate float64       `json:"vector_cache_hit_rate"`
+	IndexSize          int64         `json:"index_size"`
+	EmbeddingQuality   float64       `json:"embedding_quality"`
 }
