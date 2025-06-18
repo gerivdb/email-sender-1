@@ -1,0 +1,1789 @@
+{
+  "unique_packages": [
+    "\terrormanager ",
+    "../interfaces",
+    "./interfaces",
+    "advanced-autonomy-manager/interfaces",
+    "advanced-autonomy-manager/internal/coordination",
+    "advanced-autonomy-manager/internal/decision",
+    "advanced-autonomy-manager/internal/discovery",
+    "advanced-autonomy-manager/internal/healing",
+    "advanced-autonomy-manager/internal/monitoring",
+    "advanced-autonomy-manager/internal/predictive",
+    "bytes",
+    "context",
+    "crypto/aes",
+    "crypto/cipher",
+    "crypto/hmac",
+    "crypto/md5",
+    "crypto/rand",
+    "crypto/sha256",
+    "crypto/tls",
+    "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/interfaces",
+    "database/sql",
+    "email_sender/cmd/roadmap-cli/types",
+    "encoding/base64",
+    "encoding/hex",
+    "encoding/json",
+    "errors",
+    "flag",
+    "fmt",
+    "github.com/charmbracelet/bubbletea",
+    "github.com/chrlesur/Email_Sender/development/managers/ai-template-manager/interfaces",
+    "github.com/chrlesur/Email_Sender/development/managers/ai-template-manager/internal/ai",
+    "github.com/chrlesur/Email_Sender/development/managers/interfaces",
+    "github.com/chrlesur/Email_Sender/development/managers/smart-variable-manager/interfaces",
+    "github.com/chrlesur/Email_Sender/development/managers/smart-variable-manager/internal/analyzer",
+    "github.com/contextual-memory-manager/pkg/interfaces",
+    "github.com/email-sender-manager/interfaces",
+    "github.com/email-sender-notification-manager/interfaces",
+    "github.com/email-sender/development/managers/contextual-memory-manager/interfaces",
+    "github.com/email-sender/development/managers/contextual-memory-manager/internal/indexing",
+    "github.com/email-sender/development/managers/contextual-memory-manager/internal/integration",
+    "github.com/email-sender/development/managers/contextual-memory-manager/internal/monitoring",
+    "github.com/email-sender/development/managers/contextual-memory-manager/internal/retrieval",
+    "github.com/email-sender/git-workflow-manager/internal/branch",
+    "github.com/email-sender/git-workflow-manager/internal/commit",
+    "github.com/email-sender/git-workflow-manager/internal/pr",
+    "github.com/email-sender/git-workflow-manager/internal/webhook",
+    "github.com/email-sender/maintenance-manager/src/ai",
+    "github.com/email-sender/maintenance-manager/src/core",
+    "github.com/email-sender/managers/error-manager",
+    "github.com/email-sender/managers/interfaces",
+    "github.com/email-sender/tools/core/registry",
+    "github.com/email-sender/tools/core/toolkit",
+    "github.com/email-sender/tools/operations/analysis",
+    "github.com/email-sender/tools/operations/correction",
+    "github.com/email-sender/tools/operations/migration",
+    "github.com/email-sender/tools/operations/validation",
+    "github.com/fmoua/email-sender/development/managers/template-performance-manager/interfaces",
+    "github.com/fmoua/email-sender/development/managers/template-performance-manager/internal/analytics",
+    "github.com/fmoua/email-sender/development/managers/template-performance-manager/internal/neural",
+    "github.com/fmoua/email-sender/development/managers/template-performance-manager/internal/optimization",
+    "github.com/go-git/go-git/v5",
+    "github.com/go-git/go-git/v5/plumbing",
+    "github.com/go-git/go-git/v5/plumbing/object",
+    "github.com/google/go-github/v58/github",
+    "github.com/google/uuid",
+    "github.com/lib/pq",
+    "github.com/Masterminds/semver/v3",
+    "github.com/mattn/go-sqlite3",
+    "github.com/mitchellh/mapstructure",
+    "github.com/prometheus/client_golang/prometheus",
+    "github.com/prometheus/client_golang/prometheus/promauto",
+    "github.com/qdrant/go-client/qdrant",
+    "github.com/redis/go-redis/v9",
+    "github.com/robfig/cron/v3",
+    "github.com/sirupsen/logrus",
+    "github.com/your-org/email-sender/development/managers/interfaces",
+    "go.uber.org/zap",
+    "go/ast",
+    "go/parser",
+    "go/token",
+    "golang.org/x/crypto/bcrypt",
+    "golang.org/x/mod/modfile",
+    "golang.org/x/oauth2",
+    "golang.org/x/time/rate",
+    "gopkg.in/gomail.v2",
+    "gopkg.in/yaml.v3",
+    "html/template",
+    "io",
+    "io/ioutil",
+    "log",
+    "math",
+    "math/rand",
+    "net",
+    "net/http",
+    "net/smtp",
+    "net/url",
+    "os",
+    "os/exec",
+    "path/filepath",
+    "regexp",
+    "runtime",
+    "sort",
+    "strconv",
+    "strings",
+    "sync",
+    "syscall",
+    "testing",
+    "time"
+  ],
+  "branch": "dev",
+  "total_manager_files": 86,
+  "total_imports": 614,
+  "scan_timestamp": "2025-06-18 20:34:34",
+  "dependencies": [
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "log"
+      ],
+      "package": "basetools",
+      "file": "basetools\\manager.go",
+      "standard_count": 1,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 1
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "testing"
+      ],
+      "standard_imports": [],
+      "package": "commitinterceptor",
+      "file": "development\\hooks\\commit-interceptor\\branching_manager_test_new.go",
+      "standard_count": 0,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 1
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "fmt",
+        "os/exec",
+        "strings",
+        "time"
+      ],
+      "package": "main",
+      "file": "development\\hooks\\commit-interceptor\\branching_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 4
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "context",
+        "time"
+      ],
+      "package": "interfaces",
+      "file": "development\\managers\\advanced-autonomy-manager\\interfaces\\advanced_autonomy_manager.go",
+      "standard_count": 2,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 2
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "advanced-autonomy-manager/interfaces"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "sync",
+        "time"
+      ],
+      "package": "coordination",
+      "file": "development\\managers\\advanced-autonomy-manager\\internal\\coordination\\cross_manager_event_bus.go",
+      "standard_count": 4,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 5
+    },
+    {
+      "local_count": 4,
+      "local_imports": [
+        "crypto/sha256",
+        "encoding/hex",
+        "encoding/json",
+        "advanced-autonomy-manager/interfaces"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "sync",
+        "time"
+      ],
+      "package": "coordination",
+      "file": "development\\managers\\advanced-autonomy-manager\\internal\\coordination\\global_state_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 8
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "path/filepath",
+        "advanced-autonomy-manager/interfaces"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "net",
+        "net/http",
+        "os",
+        "strings",
+        "sync",
+        "time"
+      ],
+      "package": "discovery",
+      "file": "development\\managers\\advanced-autonomy-manager\\internal\\discovery\\manager_discovery.go",
+      "standard_count": 8,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 10
+    },
+    {
+      "local_count": 3,
+      "local_imports": [
+        "bytes",
+        "encoding/json",
+        "advanced-autonomy-manager/interfaces"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "net/http",
+        "time"
+      ],
+      "package": "discovery",
+      "file": "development\\managers\\advanced-autonomy-manager\\internal\\discovery\\manager_proxies.go",
+      "standard_count": 4,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 7
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "crypto/tls"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "sync",
+        "time"
+      ],
+      "package": "infrastructure",
+      "file": "development\\managers\\advanced-autonomy-manager\\internal\\infrastructure\\security_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 5
+    },
+    {
+      "local_count": 7,
+      "local_imports": [
+        "advanced-autonomy-manager/interfaces",
+        "advanced-autonomy-manager/internal/coordination",
+        "advanced-autonomy-manager/internal/decision",
+        "advanced-autonomy-manager/internal/discovery",
+        "advanced-autonomy-manager/internal/healing",
+        "advanced-autonomy-manager/internal/monitoring",
+        "advanced-autonomy-manager/internal/predictive"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "sync",
+        "time"
+      ],
+      "package": "advanced_autonomy_manager",
+      "file": "development\\managers\\advanced-autonomy-manager\\advanced_autonomy_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 11
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "time"
+      ],
+      "package": "interfaces",
+      "file": "development\\managers\\ai-template-manager\\interfaces\\ai_template_manager.go",
+      "standard_count": 1,
+      "third_party_imports": [
+        "github.com/chrlesur/Email_Sender/development/managers/interfaces"
+      ],
+      "third_party_count": 1,
+      "total_imports": 2
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "encoding/json",
+        "path/filepath"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "os",
+        "strings",
+        "sync",
+        "time"
+      ],
+      "package": "ai_template_manager",
+      "file": "development\\managers\\ai-template-manager\\ai_template_manager.go",
+      "standard_count": 6,
+      "third_party_imports": [
+        "github.com/chrlesur/Email_Sender/development/managers/ai-template-manager/interfaces",
+        "github.com/chrlesur/Email_Sender/development/managers/ai-template-manager/internal/ai"
+      ],
+      "third_party_count": 2,
+      "total_imports": 10
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "encoding/json",
+        "../interfaces"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "os",
+        "strings",
+        "sync",
+        "time"
+      ],
+      "package": "development",
+      "file": "development\\managers\\branching-manager\\development\\branching_manager.go",
+      "standard_count": 7,
+      "third_party_imports": [
+        "github.com/google/uuid",
+        "gopkg.in/yaml.v3"
+      ],
+      "third_party_count": 2,
+      "total_imports": 11
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "errors",
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "strconv",
+        "strings",
+        "time"
+      ],
+      "package": "configmanager",
+      "file": "development\\managers\\config-manager\\config_manager.go",
+      "standard_count": 5,
+      "third_party_imports": [
+        "github.com/google/uuid",
+        "github.com/mitchellh/mapstructure"
+      ],
+      "third_party_count": 2,
+      "total_imports": 9
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "os/exec",
+        "strings",
+        "time"
+      ],
+      "package": "main",
+      "file": "development\\managers\\container-manager\\development\\container_manager.go",
+      "standard_count": 6,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 7
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "./interfaces"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "sync",
+        "time"
+      ],
+      "package": "development",
+      "file": "development\\managers\\contextual-memory-manager\\development\\contextual_memory_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [
+        "github.com/email-sender/development/managers/contextual-memory-manager/interfaces",
+        "github.com/email-sender/development/managers/contextual-memory-manager/internal/indexing",
+        "github.com/email-sender/development/managers/contextual-memory-manager/internal/integration",
+        "github.com/email-sender/development/managers/contextual-memory-manager/internal/monitoring",
+        "github.com/email-sender/development/managers/contextual-memory-manager/internal/retrieval"
+      ],
+      "third_party_count": 5,
+      "total_imports": 10
+    },
+    {
+      "local_count": 4,
+      "local_imports": [
+        "database/sql",
+        "encoding/json",
+        "math",
+        "./interfaces"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "time"
+      ],
+      "package": "indexing",
+      "file": "development\\managers\\contextual-memory-manager\\internal\\indexing\\index_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [
+        "github.com/email-sender/development/managers/contextual-memory-manager/interfaces",
+        "github.com/google/uuid"
+      ],
+      "third_party_count": 2,
+      "total_imports": 10
+    },
+    {
+      "local_count": 4,
+      "local_imports": [
+        "bytes",
+        "database/sql",
+        "encoding/json",
+        "./interfaces"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "io",
+        "net/http",
+        "time"
+      ],
+      "package": "integration",
+      "file": "development\\managers\\contextual-memory-manager\\internal\\integration\\integration_manager.go",
+      "standard_count": 5,
+      "third_party_imports": [
+        "github.com/email-sender/development/managers/contextual-memory-manager/interfaces"
+      ],
+      "third_party_count": 1,
+      "total_imports": 10
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "./interfaces"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "sync",
+        "time"
+      ],
+      "package": "monitoring",
+      "file": "development\\managers\\contextual-memory-manager\\internal\\monitoring\\monitoring_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [
+        "github.com/email-sender/development/managers/contextual-memory-manager/interfaces",
+        "github.com/prometheus/client_golang/prometheus",
+        "github.com/prometheus/client_golang/prometheus/promauto"
+      ],
+      "third_party_count": 3,
+      "total_imports": 8
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "database/sql",
+        "./interfaces"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "strings"
+      ],
+      "package": "retrieval",
+      "file": "development\\managers\\contextual-memory-manager\\internal\\retrieval\\retrieval_manager.go",
+      "standard_count": 3,
+      "third_party_imports": [
+        "github.com/email-sender/development/managers/contextual-memory-manager/interfaces"
+      ],
+      "third_party_count": 1,
+      "total_imports": 6
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log"
+      ],
+      "package": "manager",
+      "file": "development\\managers\\contextual-memory-manager\\pkg\\manager\\contextual_memory_manager.go",
+      "standard_count": 3,
+      "third_party_imports": [
+        "github.com/contextual-memory-manager/pkg/interfaces"
+      ],
+      "third_party_count": 1,
+      "total_imports": 4
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "strings"
+      ],
+      "package": "manager",
+      "file": "development\\managers\\contextual-memory-manager\\pkg\\manager\\qdrant_retrieval_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [
+        "github.com/contextual-memory-manager/pkg/interfaces"
+      ],
+      "third_party_count": 1,
+      "total_imports": 5
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "database/sql",
+        "encoding/json"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "time"
+      ],
+      "package": "manager",
+      "file": "development\\managers\\contextual-memory-manager\\pkg\\manager\\sqlite_index_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [
+        "github.com/mattn/go-sqlite3",
+        "github.com/contextual-memory-manager/pkg/interfaces"
+      ],
+      "third_party_count": 2,
+      "total_imports": 8
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "bytes",
+        "encoding/json"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "io",
+        "log",
+        "net/http",
+        "time"
+      ],
+      "package": "manager",
+      "file": "development\\managers\\contextual-memory-manager\\pkg\\manager\\webhook_integration_manager.go",
+      "standard_count": 6,
+      "third_party_imports": [
+        "github.com/contextual-memory-manager/pkg/interfaces"
+      ],
+      "third_party_count": 1,
+      "total_imports": 9
+    },
+    {
+      "local_count": 5,
+      "local_imports": [
+        "encoding/json",
+        "flag",
+        "path/filepath",
+        "go.uber.org/zap",
+        "./interfaces"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "os",
+        "os/exec",
+        "strings",
+        "time"
+      ],
+      "package": "main",
+      "file": "development\\managers\\dependency-manager\\modules\\dependency_manager.go",
+      "standard_count": 6,
+      "third_party_imports": [
+        "github.com/google/uuid",
+        "golang.org/x/mod/modfile"
+      ],
+      "third_party_count": 2,
+      "total_imports": 13
+    },
+    {
+      "local_count": 8,
+      "local_imports": [
+        "go/ast",
+        "go/parser",
+        "go/token",
+        "path/filepath",
+        "regexp",
+        "sort",
+        "./interfaces",
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "os",
+        "strconv",
+        "strings",
+        "time"
+      ],
+      "package": "main",
+      "file": "development\\managers\\dependency-manager\\modules\\import_manager.go",
+      "standard_count": 6,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 14
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "./interfaces",
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "time"
+      ],
+      "package": "main",
+      "file": "development\\managers\\dependency-manager\\modules\\manager_integration.go",
+      "standard_count": 3,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 5
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "./interfaces"
+      ],
+      "standard_imports": [
+        "context",
+        "time"
+      ],
+      "package": "main",
+      "file": "development\\managers\\dependency-manager\\modules\\manager_interfaces.go",
+      "standard_count": 2,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 3
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "./interfaces",
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "os/exec",
+        "time"
+      ],
+      "package": "main",
+      "file": "development\\managers\\dependency-manager\\modules\\real_manager_integration.go",
+      "standard_count": 5,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 7
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "go.uber.org/zap",
+        "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/interfaces"
+      ],
+      "standard_imports": [
+        "sync",
+        "time"
+      ],
+      "package": "dependency",
+      "file": "development\\managers\\dependency-manager\\dependency_manager.go",
+      "standard_count": 2,
+      "third_party_imports": [
+        "github.com/google/uuid",
+        "github.com/Masterminds/semver/v3"
+      ],
+      "third_party_count": 2,
+      "total_imports": 6
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "strings"
+      ],
+      "package": "dependency",
+      "file": "development\\managers\\dependency-manager\\version_manager.go",
+      "standard_count": 3,
+      "third_party_imports": [
+        "github.com/Masterminds/semver/v3",
+        "github.com/email-sender-manager/interfaces"
+      ],
+      "third_party_count": 2,
+      "total_imports": 5
+    },
+    {
+      "local_count": 3,
+      "local_imports": [
+        "encoding/json",
+        "path/filepath",
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "io/ioutil",
+        "log",
+        "os",
+        "os/exec",
+        "strings",
+        "time"
+      ],
+      "package": "main",
+      "file": "development\\managers\\deployment-manager\\development\\deployment_manager.go",
+      "standard_count": 8,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 11
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "crypto/tls",
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "sync",
+        "time"
+      ],
+      "package": "email",
+      "file": "development\\managers\\email-manager\\email_manager.go",
+      "standard_count": 5,
+      "third_party_imports": [
+        "github.com/google/uuid",
+        "github.com/email-sender-manager/interfaces",
+        "gopkg.in/gomail.v2",
+        "github.com/robfig/cron/v3"
+      ],
+      "third_party_count": 4,
+      "total_imports": 11
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "sync",
+        "time"
+      ],
+      "package": "email",
+      "file": "development\\managers\\email-manager\\queue_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [
+        "github.com/google/uuid",
+        "github.com/email-sender-manager/interfaces",
+        "github.com/robfig/cron/v3"
+      ],
+      "third_party_count": 3,
+      "total_imports": 8
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "html/template",
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "strings",
+        "sync",
+        "time"
+      ],
+      "package": "email",
+      "file": "development\\managers\\email-manager\\template_manager.go",
+      "standard_count": 5,
+      "third_party_imports": [
+        "github.com/google/uuid",
+        "github.com/email-sender-manager/interfaces"
+      ],
+      "third_party_count": 2,
+      "total_imports": 9
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "strings",
+        "time"
+      ],
+      "package": "branch",
+      "file": "development\\managers\\git-workflow-manager\\internal\\branch\\manager.go",
+      "standard_count": 5,
+      "third_party_imports": [
+        "github.com/email-sender/managers/interfaces",
+        "github.com/go-git/go-git/v5",
+        "github.com/go-git/go-git/v5/plumbing"
+      ],
+      "third_party_count": 3,
+      "total_imports": 8
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "regexp"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "strings",
+        "time"
+      ],
+      "package": "commit",
+      "file": "development\\managers\\git-workflow-manager\\internal\\commit\\manager.go",
+      "standard_count": 5,
+      "third_party_imports": [
+        "github.com/go-git/go-git/v5",
+        "github.com/go-git/go-git/v5/plumbing",
+        "github.com/go-git/go-git/v5/plumbing/object",
+        "github.com/email-sender/managers/interfaces"
+      ],
+      "third_party_count": 4,
+      "total_imports": 10
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "strings",
+        "time"
+      ],
+      "package": "pr",
+      "file": "development\\managers\\git-workflow-manager\\internal\\pr\\manager.go",
+      "standard_count": 5,
+      "third_party_imports": [
+        "github.com/email-sender/managers/interfaces",
+        "github.com/google/go-github/v58/github",
+        "golang.org/x/oauth2"
+      ],
+      "third_party_count": 3,
+      "total_imports": 8
+    },
+    {
+      "local_count": 5,
+      "local_imports": [
+        "bytes",
+        "crypto/hmac",
+        "crypto/sha256",
+        "encoding/hex",
+        "encoding/json"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "io",
+        "log",
+        "net/http",
+        "strings",
+        "time"
+      ],
+      "package": "webhook",
+      "file": "development\\managers\\git-workflow-manager\\internal\\webhook\\manager.go",
+      "standard_count": 7,
+      "third_party_imports": [
+        "github.com/email-sender/managers/interfaces"
+      ],
+      "third_party_count": 1,
+      "total_imports": 13
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "sync",
+        "time"
+      ],
+      "package": "gitworkflowmanager",
+      "file": "development\\managers\\git-workflow-manager\\git_workflow_manager.go",
+      "standard_count": 5,
+      "third_party_imports": [
+        "github.com/email-sender/git-workflow-manager/internal/branch",
+        "github.com/email-sender/git-workflow-manager/internal/commit",
+        "github.com/email-sender/git-workflow-manager/internal/pr",
+        "github.com/email-sender/git-workflow-manager/internal/webhook",
+        "github.com/email-sender/managers/interfaces"
+      ],
+      "third_party_count": 5,
+      "total_imports": 10
+    },
+    {
+      "local_count": 3,
+      "local_imports": [
+        "encoding/json",
+        "math",
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "strings",
+        "sync",
+        "time"
+      ],
+      "package": "integratedmanager",
+      "file": "development\\managers\\integrated-manager\\conformity_manager.go",
+      "standard_count": 5,
+      "third_party_imports": [
+        "github.com/google/uuid"
+      ],
+      "third_party_count": 1,
+      "total_imports": 9
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "fmt",
+        "log",
+        "strings",
+        "time"
+      ],
+      "package": "integratedmanager",
+      "file": "development\\managers\\integrated-manager\\manager_hooks.go",
+      "standard_count": 4,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 4
+    },
+    {
+      "local_count": 5,
+      "local_imports": [
+        "crypto/rand",
+        "crypto/hmac",
+        "crypto/sha256",
+        "encoding/hex",
+        "encoding/json"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "io",
+        "net/http",
+        "net/url",
+        "strings",
+        "sync",
+        "time"
+      ],
+      "package": "integration_manager",
+      "file": "development\\managers\\integration-manager\\integration_manager.go",
+      "standard_count": 8,
+      "third_party_imports": [
+        "github.com/google/uuid",
+        "github.com/sirupsen/logrus",
+        "github.com/your-org/email-sender/development/managers/interfaces"
+      ],
+      "third_party_count": 3,
+      "total_imports": 16
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "context",
+        "time"
+      ],
+      "package": "interfaces",
+      "file": "development\\managers\\interfaces\\manager_common.go",
+      "standard_count": 2,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 2
+    },
+    {
+      "local_count": 3,
+      "local_imports": [
+        "crypto/md5",
+        "path/filepath",
+        "sort"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "io",
+        "os",
+        "strings",
+        "time"
+      ],
+      "package": "cleanup",
+      "file": "development\\managers\\maintenance-manager\\src\\cleanup\\cleanup_manager.go",
+      "standard_count": 6,
+      "third_party_imports": [
+        "github.com/email-sender/maintenance-manager/src/ai",
+        "github.com/email-sender/maintenance-manager/src/core"
+      ],
+      "third_party_count": 2,
+      "total_imports": 11
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "path/filepath"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "sync",
+        "time"
+      ],
+      "package": "core",
+      "file": "development\\managers\\maintenance-manager\\src\\core\\maintenance_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [
+        "github.com/sirupsen/logrus",
+        "gopkg.in/yaml.v3"
+      ],
+      "third_party_count": 2,
+      "total_imports": 7
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "./interfaces"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "sync",
+        "time"
+      ],
+      "package": "integration",
+      "file": "development\\managers\\maintenance-manager\\src\\integration\\manager_coordinator.go",
+      "standard_count": 4,
+      "third_party_imports": [
+        "github.com/sirupsen/logrus"
+      ],
+      "third_party_count": 1,
+      "total_imports": 6
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "net/http",
+        "time"
+      ],
+      "package": "vector",
+      "file": "development\\managers\\maintenance-manager\\src\\vector\\qdrant_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [
+        "github.com/qdrant/go-client/qdrant",
+        "github.com/email-sender/maintenance-manager/src/core"
+      ],
+      "third_party_count": 2,
+      "total_imports": 7
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "runtime",
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "sync",
+        "time"
+      ],
+      "package": "main",
+      "file": "development\\managers\\monitoring-manager\\development\\monitoring_manager.go",
+      "standard_count": 5,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 7
+    },
+    {
+      "local_count": 3,
+      "local_imports": [
+        "encoding/json",
+        "go.uber.org/zap",
+        "\terrormanager "
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "io",
+        "net/http",
+        "strings",
+        "sync",
+        "time"
+      ],
+      "package": "n8nmanager",
+      "file": "development\\managers\\n8n-manager\\n8n_manager.go",
+      "standard_count": 7,
+      "third_party_imports": [
+        "github.com/google/uuid"
+      ],
+      "third_party_count": 1,
+      "total_imports": 11
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "sync",
+        "time"
+      ],
+      "package": "notification",
+      "file": "development\\managers\\notification-manager\\alert_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [
+        "github.com/google/uuid",
+        "github.com/email-sender-notification-manager/interfaces"
+      ],
+      "third_party_count": 2,
+      "total_imports": 7
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "sync",
+        "time"
+      ],
+      "package": "notification",
+      "file": "development\\managers\\notification-manager\\channel_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [
+        "github.com/google/uuid",
+        "github.com/email-sender-notification-manager/interfaces"
+      ],
+      "third_party_count": 2,
+      "total_imports": 7
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "sync",
+        "time"
+      ],
+      "package": "notification",
+      "file": "development\\managers\\notification-manager\\notification_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [
+        "github.com/google/uuid",
+        "github.com/email-sender-notification-manager/interfaces",
+        "github.com/robfig/cron/v3"
+      ],
+      "third_party_count": 3,
+      "total_imports": 8
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "syscall",
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "os",
+        "os/exec",
+        "sync",
+        "time"
+      ],
+      "package": "processmanager",
+      "file": "development\\managers\\process-manager\\process_manager.go",
+      "standard_count": 6,
+      "third_party_imports": [
+        "github.com/email-sender/managers/error-manager",
+        "github.com/google/uuid"
+      ],
+      "third_party_count": 2,
+      "total_imports": 10
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "encoding/json",
+        "path/filepath"
+      ],
+      "standard_imports": [
+        "fmt",
+        "os",
+        "time"
+      ],
+      "package": "keybinds",
+      "file": "development\\managers\\roadmap-manager\\roadmap-cli\\keybinds\\config_manager.go",
+      "standard_count": 3,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 5
+    },
+    {
+      "local_count": 3,
+      "local_imports": [
+        "encoding/json",
+        "path/filepath",
+        "email_sender/cmd/roadmap-cli/types"
+      ],
+      "standard_imports": [
+        "os",
+        "time"
+      ],
+      "package": "storage",
+      "file": "development\\managers\\roadmap-manager\\roadmap-cli\\storage\\manager.go",
+      "standard_count": 2,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 5
+    },
+    {
+      "local_count": 3,
+      "local_imports": [
+        "encoding/json",
+        "path/filepath",
+        "sort"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "os",
+        "sync",
+        "time"
+      ],
+      "package": "navigation",
+      "file": "development\\managers\\roadmap-manager\\roadmap-cli\\tui\\navigation\\manager.go",
+      "standard_count": 5,
+      "third_party_imports": [
+        "github.com/charmbracelet/bubbletea"
+      ],
+      "third_party_count": 1,
+      "total_imports": 9
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "sync",
+        "time"
+      ],
+      "package": "navigation",
+      "file": "development\\managers\\roadmap-manager\\roadmap-cli\\tui\\navigation\\mode_manager.go",
+      "standard_count": 4,
+      "third_party_imports": [
+        "github.com/google/uuid",
+        "github.com/charmbracelet/bubbletea"
+      ],
+      "third_party_count": 2,
+      "total_imports": 7
+    },
+    {
+      "local_count": 3,
+      "local_imports": [
+        "encoding/json",
+        "runtime",
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "io/ioutil",
+        "os",
+        "os/exec",
+        "strings",
+        "sync",
+        "time"
+      ],
+      "package": "scriptmanager",
+      "file": "development\\managers\\script-manager\\script_manager.go",
+      "standard_count": 8,
+      "third_party_imports": [
+        "github.com/google/uuid",
+        "github.com/email-sender/managers/error-manager"
+      ],
+      "third_party_count": 2,
+      "total_imports": 13
+    },
+    {
+      "local_count": 10,
+      "local_imports": [
+        "go.uber.org/zap",
+        "crypto/aes",
+        "crypto/cipher",
+        "crypto/rand",
+        "crypto/sha256",
+        "encoding/base64",
+        "encoding/hex",
+        "regexp",
+        "./interfaces",
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "io",
+        "log",
+        "strings",
+        "time"
+      ],
+      "package": "main",
+      "file": "development\\managers\\security-manager\\development\\security_manager.go",
+      "standard_count": 6,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 16
+    },
+    {
+      "local_count": 8,
+      "local_imports": [
+        "crypto/aes",
+        "crypto/cipher",
+        "crypto/rand",
+        "crypto/sha256",
+        "encoding/base64",
+        "encoding/hex",
+        "regexp",
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "io",
+        "log",
+        "strings",
+        "sync",
+        "time"
+      ],
+      "package": "security",
+      "file": "development\\managers\\security-manager\\security_manager.go",
+      "standard_count": 7,
+      "third_party_imports": [
+        "github.com/email-sender-manager/interfaces",
+        "github.com/google/uuid",
+        "golang.org/x/crypto/bcrypt",
+        "golang.org/x/time/rate"
+      ],
+      "third_party_count": 4,
+      "total_imports": 19
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "context",
+        "time"
+      ],
+      "package": "interfaces",
+      "file": "development\\managers\\smart-variable-manager\\interfaces\\smart_variable_manager.go",
+      "standard_count": 2,
+      "third_party_imports": [
+        "github.com/chrlesur/Email_Sender/development/managers/interfaces"
+      ],
+      "third_party_count": 1,
+      "total_imports": 3
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "strings",
+        "sync",
+        "time"
+      ],
+      "package": "smart_variable_manager",
+      "file": "development\\managers\\smart-variable-manager\\smart_variable_manager.go",
+      "standard_count": 5,
+      "third_party_imports": [
+        "github.com/chrlesur/Email_Sender/development/managers/smart-variable-manager/interfaces",
+        "github.com/chrlesur/Email_Sender/development/managers/smart-variable-manager/internal/analyzer"
+      ],
+      "third_party_count": 2,
+      "total_imports": 7
+    },
+    {
+      "local_count": 5,
+      "local_imports": [
+        "go.uber.org/zap",
+        "database/sql",
+        "encoding/json",
+        "./interfaces",
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "net/http",
+        "time"
+      ],
+      "package": "main",
+      "file": "development\\managers\\storage-manager\\development\\storage_manager.go",
+      "standard_count": 5,
+      "third_party_imports": [
+        "github.com/lib/pq"
+      ],
+      "third_party_count": 1,
+      "total_imports": 11
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "database/sql",
+        "encoding/json"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "os",
+        "sync",
+        "time"
+      ],
+      "package": "storage",
+      "file": "development\\managers\\storage-manager\\storage_manager.go",
+      "standard_count": 6,
+      "third_party_imports": [
+        "github.com/google/uuid",
+        "github.com/lib/pq",
+        "github.com/lib/pq",
+        "github.com/email-sender-manager/interfaces"
+      ],
+      "third_party_count": 4,
+      "total_imports": 12
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "context",
+        "time"
+      ],
+      "package": "interfaces",
+      "file": "development\\managers\\template-performance-manager\\interfaces\\template_performance_manager.go",
+      "standard_count": 2,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 2
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "sync",
+        "time"
+      ],
+      "package": "template_performance_manager",
+      "file": "development\\managers\\template-performance-manager\\manager.go",
+      "standard_count": 4,
+      "third_party_imports": [
+        "github.com/fmoua/email-sender/development/managers/template-performance-manager/interfaces",
+        "github.com/fmoua/email-sender/development/managers/template-performance-manager/internal/analytics",
+        "github.com/fmoua/email-sender/development/managers/template-performance-manager/internal/neural",
+        "github.com/fmoua/email-sender/development/managers/template-performance-manager/internal/optimization"
+      ],
+      "third_party_count": 4,
+      "total_imports": 8
+    },
+    {
+      "local_count": 4,
+      "local_imports": [
+        "encoding/json",
+        "flag",
+        "go/token",
+        "path/filepath"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "os",
+        "time"
+      ],
+      "package": "main",
+      "file": "development\\managers\\tools\\cmd\\manager-toolkit\\manager_toolkit.go",
+      "standard_count": 5,
+      "third_party_imports": [
+        "github.com/email-sender/tools/core/registry",
+        "github.com/email-sender/tools/core/toolkit",
+        "github.com/email-sender/tools/operations/analysis",
+        "github.com/email-sender/tools/operations/correction",
+        "github.com/email-sender/tools/operations/migration",
+        "github.com/email-sender/tools/operations/validation"
+      ],
+      "third_party_count": 6,
+      "total_imports": 15
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "go/token"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "time"
+      ],
+      "package": "tools",
+      "file": "development\\managers\\tools\\manager_toolkit_lib.go",
+      "standard_count": 3,
+      "third_party_imports": [
+        "github.com/email-sender/tools/core/toolkit",
+        "github.com/email-sender/tools/operations/validation"
+      ],
+      "third_party_count": 2,
+      "total_imports": 6
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [],
+      "package": "tools",
+      "file": "development\\managers\\tools\\manager_toolkit.go",
+      "standard_count": 0,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 0
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "encoding/json"
+      ],
+      "standard_imports": [
+        "fmt",
+        "sync"
+      ],
+      "package": "types",
+      "file": "development\\tools\\qdrant\\rag-go\\pkg\\types\\collection_manager.go",
+      "standard_count": 2,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 3
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "time"
+      ],
+      "package": "evolution",
+      "file": "internal\\evolution\\manager.go",
+      "standard_count": 3,
+      "third_party_imports": [
+        "github.com/prometheus/client_golang/prometheus",
+        "github.com/prometheus/client_golang/prometheus/promauto"
+      ],
+      "third_party_count": 2,
+      "total_imports": 5
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "encoding/json"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "time"
+      ],
+      "package": "monitoring",
+      "file": "internal\\monitoring\\advanced-autonomy-manager.go",
+      "standard_count": 4,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 5
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "math",
+        "math/rand"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "sync",
+        "time"
+      ],
+      "package": "redis",
+      "file": "pkg\\cache\\redis\\reconnection_manager.go",
+      "standard_count": 5,
+      "third_party_imports": [
+        "github.com/redis/go-redis/v9"
+      ],
+      "third_party_count": 1,
+      "total_imports": 8
+    },
+    {
+      "local_count": 0,
+      "local_imports": [],
+      "standard_imports": [
+        "context",
+        "fmt"
+      ],
+      "package": "ttl",
+      "file": "pkg\\cache\\ttl\\invalidationmanager.go",
+      "standard_count": 2,
+      "third_party_imports": [
+        "github.com/redis/go-redis/v9"
+      ],
+      "third_party_count": 1,
+      "total_imports": 3
+    },
+    {
+      "local_count": 1,
+      "local_imports": [
+        "encoding/json"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "sync",
+        "time"
+      ],
+      "package": "ttl",
+      "file": "pkg\\cache\\ttl\\manager.go",
+      "standard_count": 4,
+      "third_party_imports": [
+        "github.com/redis/go-redis/v9"
+      ],
+      "third_party_count": 1,
+      "total_imports": 6
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "bytes",
+        "encoding/json"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "io",
+        "log",
+        "net/http",
+        "net/url",
+        "time"
+      ],
+      "package": "roadmapconnector",
+      "file": "planning-ecosystem-sync\\tools\\roadmap-connector\\roadmap_manager_connector.go",
+      "standard_count": 7,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 9
+    },
+    {
+      "local_count": 4,
+      "local_imports": [
+        "encoding/json",
+        "flag",
+        "path/filepath",
+        "go.uber.org/zap"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "os",
+        "os/exec",
+        "strings",
+        "time"
+      ],
+      "package": "main",
+      "file": "projet\\cred\\dependency_manager.go",
+      "standard_count": 6,
+      "third_party_imports": [
+        "github.com/google/uuid",
+        "golang.org/x/mod/modfile"
+      ],
+      "third_party_count": 2,
+      "total_imports": 12
+    },
+    {
+      "local_count": 2,
+      "local_imports": [
+        "bytes",
+        "encoding/json"
+      ],
+      "standard_imports": [
+        "context",
+        "fmt",
+        "log",
+        "net/http",
+        "net/smtp",
+        "sync",
+        "time"
+      ],
+      "package": "tools",
+      "file": "tools\\alert-manager.go",
+      "standard_count": 7,
+      "third_party_imports": [],
+      "third_party_count": 0,
+      "total_imports": 9
+    }
+  ]
+}

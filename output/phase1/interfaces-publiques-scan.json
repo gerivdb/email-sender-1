@@ -1,0 +1,2108 @@
+{
+  "interfaces_found": 210,
+  "branch": "dev",
+  "interfaces": [
+    {
+      "method_count": 0,
+      "line_number": 35,
+      "name": "QdrantClient",
+      "line_content": "type QdrantClient interface {",
+      "file": "main.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 62,
+      "name": "EmbeddingModel",
+      "line_content": "type EmbeddingModel interface {",
+      "file": "main.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 96,
+      "name": "Notifier",
+      "line_content": "type Notifier interface {",
+      "file": "main.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 55,
+      "name": "AdvancedAutonomyManagerInterface",
+      "line_content": "type AdvancedAutonomyManagerInterface interface {",
+      "file": "semantic_embeddings.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 64,
+      "name": "ContextualMemoryInterface",
+      "line_content": "type ContextualMemoryInterface interface {",
+      "file": "semantic_embeddings.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 162,
+      "name": "LoggerWithError",
+      "line_content": "type LoggerWithError interface {",
+      "file": "main.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 12,
+      "name": "AdvancedAutonomyManager",
+      "line_content": "type AdvancedAutonomyManager interface {",
+      "file": "advanced_autonomy_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 9,
+      "name": "Logger",
+      "line_content": "type Logger interface {",
+      "file": "types.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 29,
+      "name": "BaseManager",
+      "line_content": "type BaseManager interface {",
+      "file": "types.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 325,
+      "name": "NotificationChannel",
+      "line_content": "type NotificationChannel interface {",
+      "file": "emergency_response_system.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 672,
+      "name": "EventSubscriber",
+      "line_content": "type EventSubscriber interface {",
+      "file": "master_coordination_layer.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 28,
+      "name": "InfrastructureOrchestrator",
+      "line_content": "type InfrastructureOrchestrator interface {",
+      "file": "infrastructure_orchestrator.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 114,
+      "name": "InfrastructureManager",
+      "line_content": "type InfrastructureManager interface {",
+      "file": "infrastructure_orchestrator.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 143,
+      "name": "ContainerManagerClient",
+      "line_content": "type ContainerManagerClient interface {",
+      "file": "infrastructure_orchestrator.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 167,
+      "name": "Logger",
+      "line_content": "type Logger interface {",
+      "file": "infrastructure_orchestrator.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 12,
+      "name": "SecurityManagerInterface",
+      "line_content": "type SecurityManagerInterface interface {",
+      "file": "security_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 10,
+      "name": "AITemplateManager",
+      "line_content": "type AITemplateManager interface {",
+      "file": "ai_template_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 20,
+      "name": "ManagerInterface",
+      "line_content": "type ManagerInterface interface {",
+      "file": "gateway.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 54,
+      "name": "VectorManager",
+      "line_content": "type VectorManager interface {",
+      "file": "predictor.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 98,
+      "name": "EventProcessor",
+      "line_content": "type EventProcessor interface {",
+      "file": "branching_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 104,
+      "name": "BranchingPredictor",
+      "line_content": "type BranchingPredictor interface {",
+      "file": "branching_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 111,
+      "name": "PatternAnalyzer",
+      "line_content": "type PatternAnalyzer interface {",
+      "file": "branching_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 9,
+      "name": "BaseManager",
+      "line_content": "type BaseManager interface {",
+      "file": "branching_interfaces.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 17,
+      "name": "StorageManager",
+      "line_content": "type StorageManager interface {",
+      "file": "branching_interfaces.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 25,
+      "name": "ErrorManager",
+      "line_content": "type ErrorManager interface {",
+      "file": "branching_interfaces.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 33,
+      "name": "ContextualMemoryManager",
+      "line_content": "type ContextualMemoryManager interface {",
+      "file": "branching_interfaces.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 96,
+      "name": "BranchingManager",
+      "line_content": "type BranchingManager interface {",
+      "file": "branching_interfaces.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 29,
+      "name": "ManagerInterface",
+      "line_content": "type ManagerInterface interface {",
+      "file": "coordinator.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 20,
+      "name": "ManagerInterface",
+      "line_content": "type ManagerInterface interface {",
+      "file": "discovery.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 90,
+      "name": "ErrorManager",
+      "line_content": "type ErrorManager interface {",
+      "file": "circuit_breaker.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 25,
+      "name": "ErrorManager",
+      "line_content": "type ErrorManager interface {",
+      "file": "config_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 49,
+      "name": "ConfigManager",
+      "line_content": "type ConfigManager interface {",
+      "file": "config_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 10,
+      "name": "IntegrationManager",
+      "line_content": "type IntegrationManager interface {",
+      "file": "integration.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 21,
+      "name": "IntegratedErrorManagerInterface",
+      "line_content": "type IntegratedErrorManagerInterface interface {",
+      "file": "integration.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 10,
+      "name": "RealIntegratedErrorManager",
+      "line_content": "type RealIntegratedErrorManager interface {",
+      "file": "real_integration.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 15,
+      "name": "ContainerManager",
+      "line_content": "type ContainerManager interface {",
+      "file": "container_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 83,
+      "name": "ErrorManager",
+      "line_content": "type ErrorManager interface {",
+      "file": "container_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 48,
+      "name": "ContextualMemoryManager",
+      "line_content": "type ContextualMemoryManager interface {",
+      "file": "contextual_memory.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 78,
+      "name": "IndexManager",
+      "line_content": "type IndexManager interface {",
+      "file": "contextual_memory.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 88,
+      "name": "RetrievalManager",
+      "line_content": "type RetrievalManager interface {",
+      "file": "contextual_memory.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 101,
+      "name": "IntegrationManager",
+      "line_content": "type IntegrationManager interface {",
+      "file": "contextual_memory.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 143,
+      "name": "MonitoringManager",
+      "line_content": "type MonitoringManager interface {",
+      "file": "contextual_memory.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 25,
+      "name": "IndexManager",
+      "line_content": "type IndexManager interface {",
+      "file": "contextual_memory.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 49,
+      "name": "RetrievalManager",
+      "line_content": "type RetrievalManager interface {",
+      "file": "contextual_memory.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 67,
+      "name": "IntegrationManager",
+      "line_content": "type IntegrationManager interface {",
+      "file": "contextual_memory.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 88,
+      "name": "ContextualMemoryManager",
+      "line_content": "type ContextualMemoryManager interface {",
+      "file": "contextual_memory.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 163,
+      "name": "EmbeddingProvider",
+      "line_content": "type EmbeddingProvider interface {",
+      "file": "contextual_memory.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 178,
+      "name": "VectorStore",
+      "line_content": "type VectorStore interface {",
+      "file": "contextual_memory.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 210,
+      "name": "Cache",
+      "line_content": "type Cache interface {",
+      "file": "contextual_memory.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 56,
+      "name": "DepManager",
+      "line_content": "type DepManager interface {",
+      "file": "dependency_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 87,
+      "name": "ErrorManager",
+      "line_content": "type ErrorManager interface {",
+      "file": "dependency_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 94,
+      "name": "ConfigManager",
+      "line_content": "type ConfigManager interface {",
+      "file": "dependency_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 1186,
+      "name": "VectorizationSupport",
+      "line_content": "type VectorizationSupport interface {",
+      "file": "dependency_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 1201,
+      "name": "VectorizationEngine",
+      "line_content": "type VectorizationEngine interface {",
+      "file": "dependency_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 1207,
+      "name": "QdrantInterface",
+      "line_content": "type QdrantInterface interface {",
+      "file": "dependency_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 11,
+      "name": "SecurityManagerInterface",
+      "line_content": "type SecurityManagerInterface interface {",
+      "file": "manager_interfaces.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 18,
+      "name": "MonitoringManagerInterface",
+      "line_content": "type MonitoringManagerInterface interface {",
+      "file": "manager_interfaces.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 28,
+      "name": "StorageManagerInterface",
+      "line_content": "type StorageManagerInterface interface {",
+      "file": "manager_interfaces.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 40,
+      "name": "ContainerManagerInterface",
+      "line_content": "type ContainerManagerInterface interface {",
+      "file": "manager_interfaces.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 47,
+      "name": "DeploymentManagerInterface",
+      "line_content": "type DeploymentManagerInterface interface {",
+      "file": "manager_interfaces.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 123,
+      "name": "RegistryClient",
+      "line_content": "type RegistryClient interface {",
+      "file": "dependency_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 19,
+      "name": "DeploymentManager",
+      "line_content": "type DeploymentManager interface {",
+      "file": "deployment_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 65,
+      "name": "ErrorManager",
+      "line_content": "type ErrorManager interface {",
+      "file": "deployment_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 151,
+      "name": "SpecificFixer",
+      "line_content": "type SpecificFixer interface {",
+      "file": "suggestion_engine.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 147,
+      "name": "LintRule",
+      "line_content": "type LintRule interface {",
+      "file": "ast_analyzer.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 87,
+      "name": "Workflow",
+      "line_content": "type Workflow interface {",
+      "file": "factory.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 56,
+      "name": "Validator",
+      "line_content": "type Validator interface {",
+      "file": "integration_demo_new.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 19,
+      "name": "IConformityChecker",
+      "line_content": "type IConformityChecker interface {",
+      "file": "conformity_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 34,
+      "name": "IDocumentationValidator",
+      "line_content": "type IDocumentationValidator interface {",
+      "file": "conformity_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 49,
+      "name": "IMetricsCollector",
+      "line_content": "type IMetricsCollector interface {",
+      "file": "conformity_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 64,
+      "name": "IComplianceReporter",
+      "line_content": "type IComplianceReporter interface {",
+      "file": "conformity_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 16,
+      "name": "IConformityManager",
+      "line_content": "type IConformityManager interface {",
+      "file": "error_integration.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 63,
+      "name": "ErrorManager",
+      "line_content": "type ErrorManager interface {",
+      "file": "error_integration.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 88,
+      "name": "ManagerInterface",
+      "line_content": "type ManagerInterface interface {",
+      "file": "complete_ecosystem_integration.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 9,
+      "name": "BranchingManager",
+      "line_content": "type BranchingManager interface {",
+      "file": "branching.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 8,
+      "name": "BaseManager",
+      "line_content": "type BaseManager interface {",
+      "file": "common.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 15,
+      "name": "Initializer",
+      "line_content": "type Initializer interface {",
+      "file": "common.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 20,
+      "name": "HealthChecker",
+      "line_content": "type HealthChecker interface {",
+      "file": "common.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 25,
+      "name": "Cleaner",
+      "line_content": "type Cleaner interface {",
+      "file": "common.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 30,
+      "name": "ErrorManager",
+      "line_content": "type ErrorManager interface {",
+      "file": "common.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 37,
+      "name": "ConfigManager",
+      "line_content": "type ConfigManager interface {",
+      "file": "common.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 6,
+      "name": "ContainerManager",
+      "line_content": "type ContainerManager interface {",
+      "file": "container.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 6,
+      "name": "DependencyManager",
+      "line_content": "type DependencyManager interface {",
+      "file": "dependency.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 47,
+      "name": "PackageResolver",
+      "line_content": "type PackageResolver interface {",
+      "file": "dependency.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 54,
+      "name": "VersionManager",
+      "line_content": "type VersionManager interface {",
+      "file": "dependency.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 6,
+      "name": "DeploymentManager",
+      "line_content": "type DeploymentManager interface {",
+      "file": "deployment.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 57,
+      "name": "GitWorkflowManager",
+      "line_content": "type GitWorkflowManager interface {",
+      "file": "git_workflow.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 100,
+      "name": "GitWorkflowManagerFactory",
+      "line_content": "type GitWorkflowManagerFactory interface {",
+      "file": "git_workflow.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 9,
+      "name": "ManagerInterface",
+      "line_content": "type ManagerInterface interface {",
+      "file": "manager_common.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 30,
+      "name": "BaseManager",
+      "line_content": "type BaseManager interface {",
+      "file": "manager_common.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 69,
+      "name": "ManagerRegistry",
+      "line_content": "type ManagerRegistry interface {",
+      "file": "manager_common.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 78,
+      "name": "EventBus",
+      "line_content": "type EventBus interface {",
+      "file": "manager_common.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 98,
+      "name": "Coordinator",
+      "line_content": "type Coordinator interface {",
+      "file": "manager_common.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 6,
+      "name": "MonitoringManager",
+      "line_content": "type MonitoringManager interface {",
+      "file": "monitoring.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 11,
+      "name": "EmailManager",
+      "line_content": "type EmailManager interface {",
+      "file": "phase3.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 43,
+      "name": "TemplateManager",
+      "line_content": "type TemplateManager interface {",
+      "file": "phase3.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 57,
+      "name": "QueueManager",
+      "line_content": "type QueueManager interface {",
+      "file": "phase3.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 74,
+      "name": "NotificationManager",
+      "line_content": "type NotificationManager interface {",
+      "file": "phase3.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 104,
+      "name": "ChannelManager",
+      "line_content": "type ChannelManager interface {",
+      "file": "phase3.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 117,
+      "name": "AlertManager",
+      "line_content": "type AlertManager interface {",
+      "file": "phase3.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 133,
+      "name": "IntegrationManager",
+      "line_content": "type IntegrationManager interface {",
+      "file": "phase3.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 169,
+      "name": "APIManager",
+      "line_content": "type APIManager interface {",
+      "file": "phase3.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 184,
+      "name": "SyncManager",
+      "line_content": "type SyncManager interface {",
+      "file": "phase3.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 6,
+      "name": "SecurityManager",
+      "line_content": "type SecurityManager interface {",
+      "file": "security.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 6,
+      "name": "StorageManager",
+      "line_content": "type StorageManager interface {",
+      "file": "storage.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 196,
+      "name": "Manager",
+      "line_content": "type Manager interface {",
+      "file": "config.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 210,
+      "name": "Operation",
+      "line_content": "type Operation interface {",
+      "file": "config.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 35,
+      "name": "ManagerCoordinator",
+      "line_content": "type ManagerCoordinator interface {",
+      "file": "integration_hub.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 44,
+      "name": "HealthChecker",
+      "line_content": "type HealthChecker interface {",
+      "file": "integration_hub.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 616,
+      "name": "MetricCollector",
+      "line_content": "type MetricCollector interface {",
+      "file": "integration_hub.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 15,
+      "name": "MonitoringManager",
+      "line_content": "type MonitoringManager interface {",
+      "file": "monitoring_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 121,
+      "name": "ErrorManager",
+      "line_content": "type ErrorManager interface {",
+      "file": "monitoring_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 30,
+      "name": "ErrorManager",
+      "line_content": "type ErrorManager interface {",
+      "file": "n8n_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 30,
+      "name": "RAGClient",
+      "line_content": "type RAGClient interface {",
+      "file": "plans.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 884,
+      "name": "Storage",
+      "line_content": "type Storage interface {",
+      "file": "plans.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 54,
+      "name": "PriorityCalculator",
+      "line_content": "type PriorityCalculator interface {",
+      "file": "engine.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 61,
+      "name": "PriorityEngine",
+      "line_content": "type PriorityEngine interface {",
+      "file": "engine.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 27,
+      "name": "CircuitBreaker",
+      "line_content": "type CircuitBreaker interface {",
+      "file": "mode_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 162,
+      "name": "ContentSerializer",
+      "line_content": "type ContentSerializer interface {",
+      "file": "context.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 1549,
+      "name": "ValidationRule",
+      "line_content": "type ValidationRule interface {",
+      "file": "context.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 115,
+      "name": "ScriptExecutor",
+      "line_content": "type ScriptExecutor interface {",
+      "file": "script_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 23,
+      "name": "SecurityManager",
+      "line_content": "type SecurityManager interface {",
+      "file": "security_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 48,
+      "name": "ErrorManager",
+      "line_content": "type ErrorManager interface {",
+      "file": "security_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 19,
+      "name": "VectorizationEngine",
+      "line_content": "type VectorizationEngine interface {",
+      "file": "security_vectorization.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 27,
+      "name": "QdrantInterface",
+      "line_content": "type QdrantInterface interface {",
+      "file": "security_vectorization.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 185,
+      "name": "Logger",
+      "line_content": "type Logger interface {",
+      "file": "security_vectorization.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 193,
+      "name": "SecurityVectorization",
+      "line_content": "type SecurityVectorization interface {",
+      "file": "security_vectorization.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 11,
+      "name": "SmartVariableSuggestionManager",
+      "line_content": "type SmartVariableSuggestionManager interface {",
+      "file": "smart_variable_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 18,
+      "name": "StorageManager",
+      "line_content": "type StorageManager interface {",
+      "file": "storage_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 58,
+      "name": "ErrorManager",
+      "line_content": "type ErrorManager interface {",
+      "file": "storage_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 87,
+      "name": "QdrantClient",
+      "line_content": "type QdrantClient interface {",
+      "file": "storage_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 384,
+      "name": "VectorizationEngine",
+      "line_content": "type VectorizationEngine interface {",
+      "file": "storage_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 509,
+      "name": "StorageVectorization",
+      "line_content": "type StorageVectorization interface {",
+      "file": "storage_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 33,
+      "name": "NeuralPatternProcessor",
+      "line_content": "type NeuralPatternProcessor interface {",
+      "file": "neural_processor.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 62,
+      "name": "PerformanceMetricsEngine",
+      "line_content": "type PerformanceMetricsEngine interface {",
+      "file": "neural_processor.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 91,
+      "name": "AdaptiveOptimizationEngine",
+      "line_content": "type AdaptiveOptimizationEngine interface {",
+      "file": "neural_processor.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 9,
+      "name": "TemplatePerformanceAnalyticsManager",
+      "line_content": "type TemplatePerformanceAnalyticsManager interface {",
+      "file": "template_performance_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 28,
+      "name": "BaseManager",
+      "line_content": "type BaseManager interface {",
+      "file": "template_performance_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 31,
+      "name": "MetricsStore",
+      "line_content": "type MetricsStore interface {",
+      "file": "metrics_collector.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 39,
+      "name": "MetricsAggregator",
+      "line_content": "type MetricsAggregator interface {",
+      "file": "metrics_collector.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 46,
+      "name": "DataExporter",
+      "line_content": "type DataExporter interface {",
+      "file": "metrics_collector.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 30,
+      "name": "AIEngine",
+      "line_content": "type AIEngine interface {",
+      "file": "processor.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 37,
+      "name": "PatternDatabase",
+      "line_content": "type PatternDatabase interface {",
+      "file": "processor.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 45,
+      "name": "MetricsCollector",
+      "line_content": "type MetricsCollector interface {",
+      "file": "processor.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 32,
+      "name": "MLEngine",
+      "line_content": "type MLEngine interface {",
+      "file": "adaptive_engine.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 39,
+      "name": "OptimizerRegistry",
+      "line_content": "type OptimizerRegistry interface {",
+      "file": "adaptive_engine.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 46,
+      "name": "Optimizer",
+      "line_content": "type Optimizer interface {",
+      "file": "adaptive_engine.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 53,
+      "name": "FeedbackProcessor",
+      "line_content": "type FeedbackProcessor interface {",
+      "file": "adaptive_engine.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 13,
+      "name": "ToolkitOperation",
+      "line_content": "type ToolkitOperation interface {",
+      "file": "toolkit_core.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 63,
+      "name": "ManagerInterface",
+      "line_content": "type ManagerInterface interface {",
+      "file": "phase_3_integration_check.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 19,
+      "name": "ErrorManager",
+      "line_content": "type ErrorManager interface {",
+      "file": "test_import_management_integration.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 133,
+      "name": "QdrantError",
+      "line_content": "type QdrantError interface {",
+      "file": "client.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 15,
+      "name": "QDrantClient",
+      "line_content": "type QDrantClient interface {",
+      "file": "searchservice.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 21,
+      "name": "EmbeddingService",
+      "line_content": "type EmbeddingService interface {",
+      "file": "searchservice.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 26,
+      "name": "Cache",
+      "line_content": "type Cache interface {",
+      "file": "searchservice.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 33,
+      "name": "Metrics",
+      "line_content": "type Metrics interface {",
+      "file": "searchservice.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 15,
+      "name": "ServerInterface",
+      "line_content": "type ServerInterface interface {",
+      "file": "handlers.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 7,
+      "name": "PatternMatcher",
+      "line_content": "type PatternMatcher interface {",
+      "file": "interfaces.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 19,
+      "name": "InfrastructureOrchestrator",
+      "line_content": "type InfrastructureOrchestrator interface {",
+      "file": "smart_orchestrator.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 84,
+      "name": "AlertHandler",
+      "line_content": "type AlertHandler interface {",
+      "file": "alert-system.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 85,
+      "name": "AdvancedAutonomyManager",
+      "line_content": "type AdvancedAutonomyManager interface {",
+      "file": "neural-auto-healing.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 91,
+      "name": "NotificationSystem",
+      "line_content": "type NotificationSystem interface {",
+      "file": "neural-auto-healing.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 286,
+      "name": "MetricsCollector",
+      "line_content": "type MetricsCollector interface {",
+      "file": "vectorization-metrics.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 5,
+      "name": "FileAnalyzer",
+      "line_content": "type FileAnalyzer interface {",
+      "file": "analyzer.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 12,
+      "name": "TTLCacheManager",
+      "line_content": "type TTLCacheManager interface {",
+      "file": "invalidationmanager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 10,
+      "name": "Analyzer",
+      "line_content": "type Analyzer interface {",
+      "file": "types.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 9,
+      "name": "Repository",
+      "line_content": "type Repository interface {",
+      "file": "repository.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 5,
+      "name": "PatternRepository",
+      "line_content": "type PatternRepository interface {",
+      "file": "repository.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 390,
+      "name": "EmbeddingClient",
+      "line_content": "type EmbeddingClient interface {",
+      "file": "main.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 21,
+      "name": "QdrantInterface",
+      "line_content": "type QdrantInterface interface {",
+      "file": "client.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 31,
+      "name": "EmbeddingClient",
+      "line_content": "type EmbeddingClient interface {",
+      "file": "engine.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 38,
+      "name": "QdrantInterface",
+      "line_content": "type QdrantInterface interface {",
+      "file": "engine.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 49,
+      "name": "Cache",
+      "line_content": "type Cache interface {",
+      "file": "engine.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 82,
+      "name": "Logger",
+      "line_content": "type Logger interface {",
+      "file": "api_analyzer.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 39,
+      "name": "DataTransformer",
+      "line_content": "type DataTransformer interface {",
+      "file": "data_mapper.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 13,
+      "name": "QdrantInterface",
+      "line_content": "type QdrantInterface interface {",
+      "file": "qdrant_legacy.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 13,
+      "name": "QdrantInterface",
+      "line_content": "type QdrantInterface interface {",
+      "file": "qdrant.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 16,
+      "name": "ValidationRule",
+      "line_content": "type ValidationRule interface {",
+      "file": "main.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 87,
+      "name": "ValidationRule",
+      "line_content": "type ValidationRule interface {",
+      "file": "consistency-validator.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 19,
+      "name": "WorkflowOrchestrator",
+      "line_content": "type WorkflowOrchestrator interface {",
+      "file": "main.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 53,
+      "name": "DepManager",
+      "line_content": "type DepManager interface {",
+      "file": "dependency_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 72,
+      "name": "ErrorManager",
+      "line_content": "type ErrorManager interface {",
+      "file": "dependency_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 79,
+      "name": "ConfigManager",
+      "line_content": "type ConfigManager interface {",
+      "file": "dependency_manager.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 8,
+      "name": "Database",
+      "line_content": "type Database interface {",
+      "file": "database.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 11,
+      "name": "Client",
+      "line_content": "type Client interface {",
+      "file": "client.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 9,
+      "name": "Authenticator",
+      "line_content": "type Authenticator interface {",
+      "file": "authenticator.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 12,
+      "name": "Authenticator",
+      "line_content": "type Authenticator interface {",
+      "file": "authenticator.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 69,
+      "name": "Type",
+      "line_content": "type Type interface {",
+      "file": "config.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 25,
+      "name": "Transport",
+      "line_content": "type Transport interface {",
+      "file": "transport.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 31,
+      "name": "ResponseHandler",
+      "line_content": "type ResponseHandler interface {",
+      "file": "handler.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 9,
+      "name": "Storage",
+      "line_content": "type Storage interface {",
+      "file": "storage.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 32,
+      "name": "Connection",
+      "line_content": "type Connection interface {",
+      "file": "session.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 47,
+      "name": "Store",
+      "line_content": "type Store interface {",
+      "file": "session.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 10,
+      "name": "Notifier",
+      "line_content": "type Notifier interface {",
+      "file": "notifier.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 11,
+      "name": "Store",
+      "line_content": "type Store interface {",
+      "file": "store.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 63,
+      "name": "ErrorPattern",
+      "line_content": "type ErrorPattern interface {",
+      "file": "detector.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 37,
+      "name": "ErrorFixer",
+      "line_content": "type ErrorFixer interface {",
+      "file": "resolver.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 39,
+      "name": "ChunkingStrategy",
+      "line_content": "type ChunkingStrategy interface {",
+      "file": "chunk.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 10,
+      "name": "EmbeddingProvider",
+      "line_content": "type EmbeddingProvider interface {",
+      "file": "embeddings.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 25,
+      "name": "finder",
+      "line_content": "type finder interface {",
+      "file": "pdf_reader.go",
+      "is_exported": false,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 4,
+      "name": "DocumentReader",
+      "line_content": "type DocumentReader interface {",
+      "file": "reader.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 24,
+      "name": "QdrantInterface",
+      "line_content": "type QdrantInterface interface {",
+      "file": "factory.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 16,
+      "name": "QDrantClient",
+      "line_content": "type QDrantClient interface {",
+      "file": "searchservice.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 22,
+      "name": "EmbeddingService",
+      "line_content": "type EmbeddingService interface {",
+      "file": "searchservice.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 27,
+      "name": "Cache",
+      "line_content": "type Cache interface {",
+      "file": "searchservice.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 34,
+      "name": "Metrics",
+      "line_content": "type Metrics interface {",
+      "file": "searchservice.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 39,
+      "name": "ResolutionStrategy",
+      "line_content": "type ResolutionStrategy interface {",
+      "file": "mocktest.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 620,
+      "name": "ConsistencyRule",
+      "line_content": "type ConsistencyRule interface {",
+      "file": "test-stubs.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 18,
+      "name": "ISimulatable",
+      "line_content": "type ISimulatable interface {",
+      "file": "simulation-engine.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    },
+    {
+      "method_count": 0,
+      "line_number": 15,
+      "name": "SyncEngine",
+      "line_content": "type SyncEngine interface {",
+      "file": "sync_dashboard.go",
+      "is_exported": true,
+      "package": "unknown",
+      "methods": []
+    }
+  ],
+  "total_files_scanned": 761,
+  "scan_timestamp": "2025-06-18 20:31:50"
+}
