@@ -1,0 +1,106 @@
+{
+    "name": "smart-email-sender-workspace",
+    "displayName": "Smart Email Sender Workspace Extension",
+    "description": "Auto-start infrastructure and monitoring for Smart Email Sender project",
+    "version": "1.0.0",
+    "engines": {
+        "vscode": "^1.60.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "workspaceContains:**/EMAIL_SENDER_1/**",
+        "onStartupFinished"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "smartEmailSender.startStack",
+                "title": "Start Infrastructure Stack",
+                "category": "Smart Email Sender",
+                "icon": "$(play)"
+            },
+            {
+                "command": "smartEmailSender.stopStack",
+                "title": "Stop Infrastructure Stack",
+                "category": "Smart Email Sender",
+                "icon": "$(stop)"
+            },
+            {
+                "command": "smartEmailSender.restartStack",
+                "title": "Restart Infrastructure Stack",
+                "category": "Smart Email Sender",
+                "icon": "$(refresh)"
+            },
+            {
+                "command": "smartEmailSender.showStatus",
+                "title": "Show Infrastructure Status",
+                "category": "Smart Email Sender",
+                "icon": "$(info)"
+            },
+            {
+                "command": "smartEmailSender.enableAutoHealing",
+                "title": "Enable Auto-Healing",
+                "category": "Smart Email Sender",
+                "icon": "$(heart)"
+            },            {
+                "command": "smartEmailSender.showLogs",
+                "title": "Show Infrastructure Logs",
+                "category": "Smart Email Sender",
+                "icon": "$(output)"
+            },
+            {
+                "command": "smartEmailSender.runEmergencyDiagnostic",
+                "title": "🚨 Emergency Diagnostic & Repair",
+                "category": "Smart Email Sender",
+                "icon": "$(tools)"
+            }
+        ],
+        "statusBarItems": [
+            {
+                "id": "smartEmailSender.status",
+                "alignment": "left",
+                "priority": 100
+            }
+        ],
+        "configuration": {
+            "title": "Smart Email Sender",
+            "properties": {
+                "smartEmailSender.autoStart": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Automatically start infrastructure when workspace opens"
+                },
+                "smartEmailSender.autoHealing": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable auto-healing by default"
+                },
+                "smartEmailSender.apiPort": {
+                    "type": "number",
+                    "default": 8080,
+                    "description": "Port for infrastructure API server"
+                },
+                "smartEmailSender.showNotifications": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Show status notifications"
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./"
+    },    "devDependencies": {
+        "@types/node": "^16.11.7",
+        "@types/vscode": "^1.60.0",
+        "typescript": "^4.9.5"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}

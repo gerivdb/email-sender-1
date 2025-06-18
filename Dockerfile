@@ -2,7 +2,7 @@
 # Optimized for production with security best practices
 
 # Build stage
-FROM golang:1.21-alpine AS builder
+FROM golang:1.23-alpine AS builder
 
 # Install build dependencies
 RUN apk add --no-cache git ca-certificates tzdata
@@ -13,48 +13,66 @@ RUN adduser -D -g '' rag
 # Set working directory
 WORKDIR /build
 
-# Copy dependency files
+# Copy dependency files and local modules first
 COPY go.mod go.sum ./
+COPY development/managers/tools ./development/managers/tools/
 
 # Download dependencies
 RUN go mod download && go mod verify
 
-# Copy source code
+# Copy the rest of the source code
 COPY . .
+
+# Ensure config directory exists
+RUN mkdir -p /build/config
 
 # Build the RAG applications
 ARG VERSION=dev
 ARG BUILD_DATE
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
     -ldflags="-w -s -extldflags '-static' -X main.Version=${VERSION} -X main.BuildDate=${BUILD_DATE}" \
-    -o rag-server ./cmd/server/
+    -o rag-server ./cmd/server
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
     -ldflags="-w -s -extldflags '-static' -X main.Version=${VERSION}" \
-    -o rag-cli ./cmd/cli/
+    -o rag-cli ./cmd/cli
 
 # Runtime stage
-FROM scratch
+FROM alpine:3.18 AS runtime
 
-# Import certificates and timezone data
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
+# Create the same rag user in the runtime image
+RUN adduser -D -g '' rag
 
-# Import user
-COPY --from=builder /etc/passwd /etc/passwd
+# Install minimal runtime dependencies
+RUN apk add --no-cache ca-certificates tzdata && \
+    mkdir -p /logs /data /app /config && \
+    chown -R rag:rag /logs /data /app /config
 
 # Copy built binaries
-COPY --from=builder /build/rag-server /rag-server
-COPY --from=builder /build/rag-cli /rag-cli
+COPY --from=builder /build/rag-server /app/rag-server
+COPY --from=builder /build/rag-cli /app/rag-cli
 
 # Copy API specification
 COPY --from=builder /build/api/openapi.yaml /api/openapi.yaml
+# In the build stage, we will create a dummy config directory if it doesn't exist
 
 # Use non-root user
 USER rag
 
+# Create working directory
+WORKDIR /app
+
+# Set environment variables
+ENV PATH="/app:${PATH}"
+ENV LOG_LEVEL="info"
+
 # Expose ports (HTTP API and Metrics)
 EXPOSE 8080 9090
 
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD ["/app/rag-cli", "health"] || exit 1
+
 # Default command
-ENTRYPOINT ["/rag-server"]
+ENTRYPOINT ["/app/rag-server"]
+CMD ["serve"]

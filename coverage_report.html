@@ -1,0 +1,925 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>core: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">email_sender/pkg/fmoua/core/config.go (46.2%)</option>
+				
+				<option value="file1">email_sender/pkg/fmoua/core/orchestrator.go (95.3%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">// Package core - Configuration FMOUA selon spécifications plan-dev-v53
+// Implémente: DRY, KISS, SOLID, AI-First principles
+package core
+
+import (
+        "fmt"
+        "log"
+        "time"
+
+        "github.com/spf13/viper"
+
+        "email_sender/pkg/fmoua/types"
+)
+
+// FMOUAConfig represents the main configuration structure
+// Following KISS principle - simple, clear configuration
+type FMOUAConfig struct {
+        Performance        types.PerformanceConfig           `yaml:"performance"`
+        AIConfig           types.AIConfig                    `yaml:"ai_config"`
+        QdrantConfig       types.QDrantConfig                `yaml:"qdrant"`
+        ManagersConfig     types.ManagersConfig              `yaml:"managers_config"`
+        OrganizationConfig types.OrganizationConfig          `yaml:"organization"`
+        CleanupConfig      types.CleanupConfig               `yaml:"cleanup"`
+        GoGenConfig        types.GoGenConfig                 `yaml:"gogen"`
+        PowerShellConfig   types.PowerShellIntegrationConfig `yaml:"powershell_integration"`
+        MonitoringConfig   types.MonitoringConfig            `yaml:"monitoring"`
+        DatabaseConfig     types.DatabaseConfig              `yaml:"database"`
+        SecurityConfig     types.SecurityConfig              `yaml:"security"`
+        LoggingConfig      types.LoggingConfig               `yaml:"logging"`
+}
+
+// LoadFMOUAConfig loads configuration from file
+func LoadFMOUAConfig(configPath string) (*FMOUAConfig, error) <span class="cov8" title="1">{
+        viper.SetConfigFile(configPath)
+        viper.SetConfigType("yaml")
+
+        if err := viper.ReadInConfig(); err != nil </span><span class="cov8" title="1">{
+                return nil, fmt.Errorf("failed to read config file: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">log.Printf("DEBUG: Config file loaded successfully from: %s", configPath)
+        log.Printf("DEBUG: Viper keys: %v", viper.AllKeys())
+        log.Printf("DEBUG: Performance section: %v", viper.Get("performance"))
+
+        var config FMOUAConfig
+        if err := viper.Unmarshal(&amp;config); err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to unmarshal config: %w", err)
+        }</span>
+        // Manual fix for performance config if needed
+        <span class="cov0" title="0">if config.Performance.TargetLatencyMs == 0 </span><span class="cov0" title="0">{
+                log.Printf("DEBUG: Manual fix for performance config")
+                config.Performance.TargetLatencyMs = viper.GetInt("performance.target_latency_ms")
+                config.Performance.MaxConcurrentOps = viper.GetInt("performance.max_concurrent_operations")
+                config.Performance.CacheEnabled = viper.GetBool("performance.cache_enabled")
+        }</span>        // Manual fix for managers config if needed
+        <span class="cov0" title="0">if len(config.ManagersConfig.Managers) == 0 </span><span class="cov0" title="0">{
+                log.Printf("DEBUG: Manual fix for managers config")
+                config.ManagersConfig.Managers = make(map[string]types.ManagerConfig)
+                // Try to get managers from the saved config
+                managersRaw := viper.Get("managers_config.managers")
+                if managersMap, ok := managersRaw.(map[string]interface{}); ok </span><span class="cov0" title="0">{
+                        for managerName, managerData := range managersMap </span><span class="cov0" title="0">{
+                                if _, ok := managerData.(map[string]interface{}); ok </span><span class="cov0" title="0">{
+                                        config.ManagersConfig.Managers[managerName] = types.ManagerConfig{
+                                                Enabled:  viper.GetBool(fmt.Sprintf("managers_config.managers.%s.enabled", managerName)),
+                                                Path:     viper.GetString(fmt.Sprintf("managers_config.managers.%s.path", managerName)),
+                                                Priority: viper.GetInt(fmt.Sprintf("managers_config.managers.%s.priority", managerName)),
+                                        }
+                                }</span>
+                        }
+                }
+
+                // If still no managers, try old format
+                <span class="cov0" title="0">if len(config.ManagersConfig.Managers) == 0 </span><span class="cov0" title="0">{
+                        managersKeys := []string{"error_manager", "storage_manager", "security_manager", "config_manager", "cache_manager", "logging_manager"}
+                        for _, managerKey := range managersKeys </span><span class="cov0" title="0">{
+                                if viper.GetBool("managers_config." + managerKey + ".enabled") </span><span class="cov0" title="0">{
+                                        config.ManagersConfig.Managers[managerKey] = types.ManagerConfig{
+                                                Enabled:  viper.GetBool("managers_config." + managerKey + ".enabled"),
+                                                Path:     viper.GetString("managers_config." + managerKey + ".path"),
+                                                Priority: viper.GetInt("managers_config." + managerKey + ".priority"),
+                                        }
+                                }</span>
+                        }
+                }
+
+                // Set default values for missing fields
+                <span class="cov0" title="0">if config.ManagersConfig.HealthCheckInterval == 0 </span><span class="cov0" title="0">{
+                        config.ManagersConfig.HealthCheckInterval = 30 * time.Second
+                }</span>
+                <span class="cov0" title="0">if config.ManagersConfig.DefaultTimeout == 0 </span><span class="cov0" title="0">{
+                        config.ManagersConfig.DefaultTimeout = 10 * time.Second
+                }</span>
+                <span class="cov0" title="0">if config.ManagersConfig.MaxRetries == 0 </span><span class="cov0" title="0">{
+                        config.ManagersConfig.MaxRetries = 3
+                }</span>
+        }
+        // Manual fix for AI and QDrant config if needed
+        <span class="cov0" title="0">if !config.AIConfig.Enabled </span><span class="cov0" title="0">{
+                log.Printf("DEBUG: Manual fix for AI config")
+                config.AIConfig.Enabled = viper.GetBool("ai_config.enabled")
+                config.AIConfig.Provider = viper.GetString("ai_config.provider")
+                config.AIConfig.Model = viper.GetString("ai_config.model")
+                config.AIConfig.ConfidenceThreshold = viper.GetFloat64("ai_config.confidence_threshold")
+                config.AIConfig.LearningEnabled = viper.GetBool("ai_config.learning_enabled")
+                config.AIConfig.PatternRecognition = viper.GetBool("ai_config.pattern_recognition")
+                config.AIConfig.DecisionAutonomyLevel = viper.GetInt("ai_config.decision_autonomy_level")
+        }</span>
+
+        <span class="cov0" title="0">if config.AIConfig.QDrant == nil </span><span class="cov0" title="0">{
+                log.Printf("DEBUG: Manual fix for QDrant config")
+                config.AIConfig.QDrant = &amp;types.QDrantConfig{
+                        Host:           viper.GetString("qdrant.host"),
+                        Port:           viper.GetInt("qdrant.port"),
+                        CollectionName: viper.GetString("qdrant.collection_name"),
+                        VectorSize:     viper.GetInt("qdrant.vector_size"),
+                        DistanceMetric: viper.GetString("qdrant.distance_metric"),
+                }
+
+                // Set defaults if not configured
+                if config.AIConfig.QDrant.Host == "" </span><span class="cov0" title="0">{
+                        config.AIConfig.QDrant.Host = "localhost"
+                }</span>
+                <span class="cov0" title="0">if config.AIConfig.QDrant.Port == 0 </span><span class="cov0" title="0">{
+                        config.AIConfig.QDrant.Port = 6333
+                }</span>
+                <span class="cov0" title="0">if config.AIConfig.QDrant.CollectionName == "" </span><span class="cov0" title="0">{
+                        config.AIConfig.QDrant.CollectionName = "fmoua_repository_vectors"
+                }</span>
+                <span class="cov0" title="0">if config.AIConfig.QDrant.VectorSize == 0 </span><span class="cov0" title="0">{
+                        config.AIConfig.QDrant.VectorSize = 1536
+                }</span>
+                <span class="cov0" title="0">if config.AIConfig.QDrant.DistanceMetric == "" </span><span class="cov0" title="0">{
+                        config.AIConfig.QDrant.DistanceMetric = "cosine"
+                }</span>
+        }
+
+        <span class="cov0" title="0">log.Printf("DEBUG: Config unmarshaled. Performance: %+v", config.Performance)
+
+        // Validate configuration
+        if err := ValidateFMOUAConfig(&amp;config); err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("invalid configuration: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">return &amp;config, nil</span>
+}
+
+// ValidateFMOUAConfig validates FMOUA configuration
+func ValidateFMOUAConfig(config *FMOUAConfig) error <span class="cov8" title="1">{
+        if config == nil </span><span class="cov8" title="1">{
+                return fmt.Errorf("config cannot be nil")
+        }</span>
+        // Validate performance targets (&lt; 100ms requirement)
+        <span class="cov8" title="1">log.Printf("DEBUG: TargetLatencyMs = %d", config.Performance.TargetLatencyMs)
+        if config.Performance.TargetLatencyMs &lt;= 0 || config.Performance.TargetLatencyMs &gt; 100 </span><span class="cov8" title="1">{
+                return fmt.Errorf("target latency must be between 1-100ms for FMOUA compliance")
+        }</span>
+
+        // Validate AI configuration (AI-First principle)
+        <span class="cov8" title="1">if config.AIConfig.Enabled &amp;&amp; config.AIConfig.ConfidenceThreshold &lt;= 0 </span><span class="cov8" title="1">{
+                return fmt.Errorf("AI confidence threshold must be greater than 0 when AI is enabled")
+        }</span>
+
+        // Validate QDrant configuration for vectorization
+        <span class="cov8" title="1">if config.AIConfig.Enabled &amp;&amp; config.AIConfig.QDrant == nil </span><span class="cov8" title="1">{
+                return fmt.Errorf("QDrant configuration required when AI is enabled")
+        }</span>
+        // Validate managers configuration (17 managers integration)
+        <span class="cov8" title="1">log.Printf("DEBUG: ManagersConfig: %+v", config.ManagersConfig)
+        if len(config.ManagersConfig.Managers) == 0 </span><span class="cov8" title="1">{
+                return fmt.Errorf("at least one manager must be configured for FMOUA integration")
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+
+// GetDefaultFMOUAConfig returns default configuration following FMOUA specifications
+func GetDefaultFMOUAConfig() *FMOUAConfig <span class="cov8" title="1">{
+        return &amp;FMOUAConfig{
+                Performance: types.PerformanceConfig{
+                        TargetLatencyMs:  100, // FMOUA requirement: &lt; 100ms
+                        MaxConcurrentOps: 50,
+                        CacheEnabled:     true,
+                },
+                AIConfig: types.AIConfig{
+                        Enabled:               true, // AI-First principle
+                        Provider:              "openai",
+                        Model:                 "gpt-4",
+                        ConfidenceThreshold:   0.8,
+                        LearningEnabled:       true,
+                        PatternRecognition:    true,
+                        DecisionAutonomyLevel: 3,
+                        CacheSize:             1000,
+                        QDrant: &amp;types.QDrantConfig{
+                                Host:           "localhost",
+                                Port:           6333,
+                                CollectionName: "fmoua_vectors",
+                                VectorSize:     768,
+                                DistanceMetric: "cosine",
+                                Timeout:        time.Second * 30,
+                        },
+                },
+                ManagersConfig: types.ManagersConfig{
+                        HealthCheckInterval: time.Minute * 5,
+                        DefaultTimeout:      time.Second * 30,
+                        MaxRetries:          3,
+                        Managers: map[string]types.ManagerConfig{
+                                "ErrorManager":      {Enabled: true, Priority: 1},
+                                "StorageManager":    {Enabled: true, Priority: 2},
+                                "SecurityManager":   {Enabled: true, Priority: 3},
+                                "MonitoringManager": {Enabled: true, Priority: 4},
+                                "CacheManager":      {Enabled: true, Priority: 5},
+                                "ConfigManager":     {Enabled: true, Priority: 6},
+                                "LogManager":        {Enabled: true, Priority: 7},
+                                "MetricsManager":    {Enabled: true, Priority: 8},
+                                "HealthManager":     {Enabled: true, Priority: 9},
+                                "BackupManager":     {Enabled: true, Priority: 10},
+                                "ValidationManager": {Enabled: true, Priority: 11},
+                                "TestManager":       {Enabled: true, Priority: 12},
+                                "DeploymentManager": {Enabled: true, Priority: 13},
+                                "NetworkManager":    {Enabled: true, Priority: 14},
+                                "DatabaseManager":   {Enabled: true, Priority: 15},
+                                "AuthManager":       {Enabled: true, Priority: 16},
+                                "APIManager":        {Enabled: true, Priority: 17},
+                        },
+                },
+                OrganizationConfig: types.OrganizationConfig{
+                        MaxFilesPerFolder:   50,
+                        AutoCategorization:  true,
+                        PatternLearning:     true,
+                        SimilarityThreshold: 0.8,
+                        FilePatterns: map[string]types.FilePatternConfig{
+                                "go":         {Extensions: []string{".go"}, Organization: "by_domain"},
+                                "yaml":       {Extensions: []string{".yaml", ".yml"}, Organization: "by_function"},
+                                "powershell": {Extensions: []string{".ps1"}, Organization: "by_purpose"},
+                                "markdown":   {Extensions: []string{".md"}, Organization: "by_topic"},
+                        },
+                },
+                CleanupConfig: types.CleanupConfig{
+                        Levels: map[int]types.CleanupLevelConfig{
+                                1: {
+                                        Name:                   "Safe Cleanup",
+                                        AutoApprove:            true,
+                                        AIAnalysisRequired:     false,
+                                        ManualApprovalRequired: false,
+                                        BackupBefore:           true,
+                                        ConfidenceThreshold:    0.95,
+                                        Targets:                []string{"temp_files", "cache", "logs"},
+                                },
+                                2: {
+                                        Name:                   "Standard Cleanup",
+                                        AutoApprove:            false,
+                                        AIAnalysisRequired:     true,
+                                        ManualApprovalRequired: false,
+                                        BackupBefore:           true,
+                                        ConfidenceThreshold:    0.85,
+                                        Targets:                []string{"duplicate_files", "unused_imports", "old_versions"},
+                                },
+                                3: {
+                                        Name:                   "Deep Cleanup",
+                                        AutoApprove:            false,
+                                        AIAnalysisRequired:     true,
+                                        ManualApprovalRequired: true,
+                                        BackupBefore:           true,
+                                        ConfidenceThreshold:    0.90,
+                                        Targets:                []string{"dead_code", "obsolete_files", "restructure"},
+                                },
+                        },
+                },
+                GoGenConfig: types.GoGenConfig{
+                        TemplatesPath: "./templates",
+                        OutputPath:    "./generated",
+                        Templates: map[string]types.TemplateConfig{
+                                "manager": {
+                                        Description: "Generate a new manager",
+                                        Files: []types.FileTemplate{
+                                                {Path: "{{.Name}}_manager.go", Template: "manager.tmpl"},
+                                        },
+                                        Variables: map[string]string{
+                                                "package": "managers",
+                                        },
+                                },
+                        },
+                },
+                PowerShellConfig: types.PowerShellIntegrationConfig{
+                        Enabled:         true,
+                        ScriptsPath:     "./scripts",
+                        ExecutionPolicy: "RemoteSigned",
+                        Timeout:         time.Minute * 5,
+                        AllowedScripts: []string{
+                                "cleanup.ps1",
+                                "optimization.ps1",
+                                "dashboard.ps1",
+                        },
+                        Environment: map[string]string{
+                                "FMOUA_MODE": "production",
+                        },
+                },
+                MonitoringConfig: types.MonitoringConfig{
+                        Enabled:          true,
+                        MetricsInterval:  time.Minute,
+                        LogLevel:         "info",
+                        EnableProfiling:  true,
+                        HealthCheckPort:  8080,
+                        DashboardEnabled: true,
+                        AlertThresholds: map[string]float64{
+                                "latency_ms":   100,
+                                "error_rate":   0.05,
+                                "memory_usage": 80,
+                                "cpu_usage":    70,
+                        },
+                },
+                DatabaseConfig: types.DatabaseConfig{
+                        Type:              "postgres",
+                        Host:              "localhost",
+                        Port:              5432,
+                        Database:          "fmoua",
+                        MaxConnections:    25,
+                        ConnectionTimeout: time.Second * 30,
+                        QueryTimeout:      time.Second * 10,
+                        SSLMode:           "prefer",
+                        BackupEnabled:     true,
+                        BackupInterval:    time.Hour * 24,
+                },
+                SecurityConfig: types.SecurityConfig{
+                        EnabledChecks:   []string{"file_permissions", "code_analysis", "dependency_scan"},
+                        ScanIntervalMin: 60,
+                        ThreatDetection: true,
+                        AuthRequired:    true,
+                        EncryptionLevel: "AES256",
+                },
+                LoggingConfig: types.LoggingConfig{
+                        Level:           "info",
+                        Format:          "json",
+                        OutputPath:      "./logs/fmoua.log",
+                        ErrorOutputPath: "./logs/fmoua_error.log",
+                        EnableConsole:   true,
+                        EnableFile:      true,
+                        MaxSizeMB:       100,
+                        MaxBackups:      5,
+                        MaxAgeDays:      30,
+                        Compress:        true,
+                },
+        }
+}</span>
+
+// SaveFMOUAConfig saves configuration to file
+func SaveFMOUAConfig(config *FMOUAConfig, configPath string) error <span class="cov8" title="1">{
+        if err := ValidateFMOUAConfig(config); err != nil </span><span class="cov8" title="1">{
+                return fmt.Errorf("invalid configuration: %w", err)
+        }</span>
+
+        <span class="cov8" title="1">viper.SetConfigFile(configPath)
+        viper.SetConfigType("yaml")
+
+        // Set all config values
+        viper.Set("performance", config.Performance)
+        viper.Set("ai_config", config.AIConfig)
+        viper.Set("qdrant", config.QdrantConfig)
+        viper.Set("managers_config", config.ManagersConfig)
+        viper.Set("organization", config.OrganizationConfig)
+        viper.Set("cleanup", config.CleanupConfig)
+        viper.Set("gogen", config.GoGenConfig)
+        viper.Set("powershell_integration", config.PowerShellConfig)
+        viper.Set("monitoring", config.MonitoringConfig)
+        viper.Set("database", config.DatabaseConfig)
+        viper.Set("security", config.SecurityConfig)
+        viper.Set("logging", config.LoggingConfig)
+
+        if err := viper.WriteConfig(); err != nil </span><span class="cov8" title="1">{
+                return fmt.Errorf("failed to write config file: %w", err)
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+
+// Helper functions for configuration management
+
+// GetPerformanceTargets returns performance targets for monitoring
+func (c *FMOUAConfig) GetPerformanceTargets() map[string]interface{} <span class="cov8" title="1">{
+        return map[string]interface{}{
+                "target_latency_ms":       c.Performance.TargetLatencyMs,
+                "max_concurrent_ops":      c.Performance.MaxConcurrentOps,
+                "cache_enabled":           c.Performance.CacheEnabled,
+                "ai_confidence_threshold": c.AIConfig.ConfidenceThreshold,
+        }
+}</span>
+
+// IsAIEnabled returns true if AI functionality is enabled
+func (c *FMOUAConfig) IsAIEnabled() bool <span class="cov8" title="1">{
+        return c.AIConfig.Enabled
+}</span>
+
+// GetEnabledManagers returns list of enabled managers
+func (c *FMOUAConfig) GetEnabledManagers() []string <span class="cov8" title="1">{
+        var enabled []string
+        for name, config := range c.ManagersConfig.Managers </span><span class="cov8" title="1">{
+                if config.Enabled </span><span class="cov8" title="1">{
+                        enabled = append(enabled, name)
+                }</span>
+        }
+        <span class="cov8" title="1">return enabled</span>
+}
+
+// GetCleanupLevelConfig returns configuration for a specific cleanup level
+func (c *FMOUAConfig) GetCleanupLevelConfig(level int) (*types.CleanupLevelConfig, error) <span class="cov8" title="1">{
+        config, exists := c.CleanupConfig.Levels[level]
+        if !exists </span><span class="cov8" title="1">{
+                return nil, fmt.Errorf("cleanup level %d not configured", level)
+        }</span>
+        <span class="cov8" title="1">return &amp;config, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">// Package core - Main Orchestrator FMOUA selon spécifications plan-dev-v53
+// Implémente l'orchestration principale avec latence &lt; 100ms et AI-First
+package core
+
+import (
+        "context"
+        "fmt"
+        "sync"
+        "time"
+
+        "go.uber.org/zap"
+
+        "email_sender/pkg/fmoua/interfaces"
+        "email_sender/pkg/fmoua/types"
+)
+
+// MaintenanceOrchestrator represents the main orchestrator
+// Following SOLID Single Responsibility Principle
+type MaintenanceOrchestrator struct {
+        config           *FMOUAConfig
+        integrationHub   interfaces.ManagerHub
+        aiEngine         interfaces.IntelligenceEngine
+        logger           *zap.Logger
+        ctx              context.Context
+        cancel           context.CancelFunc
+        performanceStats *OrchestrationStats
+        mu               sync.RWMutex
+}
+
+// OrchestrationStats tracks orchestrator performance
+type OrchestrationStats struct {
+        TotalOperations   int64         `json:"total_operations"`
+        SuccessfulOps     int64         `json:"successful_operations"`
+        FailedOps         int64         `json:"failed_operations"`
+        AverageLatency    time.Duration `json:"average_latency"`
+        LastOperationTime time.Time     `json:"last_operation_time"`
+        LatencyUnder100ms int64         `json:"latency_under_100ms"`
+}
+
+// NewMaintenanceOrchestrator creates a new orchestrator instance
+func NewMaintenanceOrchestrator(
+        config *FMOUAConfig,
+        integrationHub interfaces.ManagerHub,
+        aiEngine interfaces.IntelligenceEngine,
+        logger *zap.Logger,
+) (*MaintenanceOrchestrator, error) <span class="cov8" title="1">{
+
+        ctx, cancel := context.WithCancel(context.Background())
+
+        orchestrator := &amp;MaintenanceOrchestrator{
+                config:           config,
+                integrationHub:   integrationHub,
+                aiEngine:         aiEngine,
+                logger:           logger,
+                ctx:              ctx,
+                cancel:           cancel,
+                performanceStats: &amp;OrchestrationStats{},
+        }
+
+        return orchestrator, nil
+}</span>
+
+// Start initializes and starts the orchestrator
+func (o *MaintenanceOrchestrator) Start(ctx context.Context) error <span class="cov8" title="1">{
+        o.logger.Info("Starting FMOUA Main Orchestrator")
+
+        startTime := time.Now()
+
+        // Validate configuration
+        if err := ValidateFMOUAConfig(o.config); err != nil </span><span class="cov8" title="1">{
+                return fmt.Errorf("invalid configuration: %w", err)
+        }</span>
+
+        // Start monitoring performance metrics
+        <span class="cov8" title="1">go o.performanceMonitoring()
+
+        startupTime := time.Since(startTime)
+        o.logger.Info("FMOUA Main Orchestrator started successfully",
+                zap.Duration("startup_time", startupTime),
+                zap.String("target_latency", "&lt;100ms"),
+                zap.Bool("ai_enabled", o.config.IsAIEnabled()))
+
+        return nil</span>
+}
+
+// performanceMonitoring monitors orchestrator performance
+func (o *MaintenanceOrchestrator) performanceMonitoring() <span class="cov8" title="1">{
+        ticker := time.NewTicker(time.Minute)
+        defer ticker.Stop()
+
+        for </span><span class="cov8" title="1">{
+                select </span>{
+                case &lt;-o.ctx.Done():<span class="cov8" title="1">
+                        return</span>
+                case &lt;-ticker.C:<span class="cov0" title="0">
+                        o.logPerformanceMetrics()</span>
+                }
+        }
+}
+
+// logPerformanceMetrics logs current performance statistics
+func (o *MaintenanceOrchestrator) logPerformanceMetrics() <span class="cov8" title="1">{
+        o.mu.RLock()
+        stats := *o.performanceStats
+        o.mu.RUnlock()
+
+        if stats.TotalOperations &gt; 0 </span><span class="cov8" title="1">{
+                successRate := float64(stats.SuccessfulOps) / float64(stats.TotalOperations) * 100
+                latencyCompliance := float64(stats.LatencyUnder100ms) / float64(stats.TotalOperations) * 100
+
+                o.logger.Info("FMOUA Performance Metrics",
+                        zap.Int64("total_operations", stats.TotalOperations),
+                        zap.Float64("success_rate_percent", successRate),
+                        zap.Duration("average_latency", stats.AverageLatency),
+                        zap.Float64("sub_100ms_compliance_percent", latencyCompliance))
+        }</span>
+}
+
+// ExecuteOrganization performs AI-powered repository organization
+func (o *MaintenanceOrchestrator) ExecuteOrganization(repoPath string) (*interfaces.AIDecision, error) <span class="cov8" title="1">{
+        startTime := time.Now()
+        defer func() </span><span class="cov8" title="1">{
+                o.updatePerformanceStats(time.Since(startTime), nil)
+        }</span>()
+
+        <span class="cov8" title="1">o.logger.Info("Starting AI-powered repository organization",
+                zap.String("repository", repoPath))
+
+        // Check if AI is enabled (AI-First principle)
+        if !o.config.IsAIEnabled() </span><span class="cov8" title="1">{
+                return nil, fmt.Errorf("AI is required for organization operations (AI-First principle)")
+        }</span>
+
+        // Get AI decision for organization
+        <span class="cov8" title="1">decision, err := o.aiEngine.AnalyzeRepository(repoPath)
+        if err != nil </span><span class="cov8" title="1">{
+                o.updatePerformanceStats(time.Since(startTime), err)
+                return nil, fmt.Errorf("AI analysis failed: %w", err)
+        }</span>
+
+        // Execute organization based on AI decision
+        <span class="cov8" title="1">if err := o.executeOrganizationActions(decision); err != nil </span><span class="cov8" title="1">{
+                o.updatePerformanceStats(time.Since(startTime), err)
+                return nil, fmt.Errorf("failed to execute organization actions: %w", err)
+        }</span>
+
+        <span class="cov8" title="1">executionTime := time.Since(startTime)
+        o.logger.Info("Repository organization completed",
+                zap.String("repository", repoPath),
+                zap.Duration("execution_time", executionTime),
+                zap.Float64("ai_confidence", decision.Confidence))
+
+        return decision, nil</span>
+}
+
+// executeOrganizationActions executes the actions recommended by AI
+func (o *MaintenanceOrchestrator) executeOrganizationActions(decision *interfaces.AIDecision) error <span class="cov8" title="1">{
+        for _, action := range decision.Actions </span><span class="cov8" title="1">{
+                o.logger.Info("Executing organization action",
+                        zap.String("type", action.Type),
+                        zap.String("target", action.Target),
+                        zap.Int("priority", action.Priority))
+
+                // Execute action through appropriate manager
+                if err := o.executeAction(action); err != nil </span><span class="cov8" title="1">{
+                        return fmt.Errorf("failed to execute action %s: %w", action.Type, err)
+                }</span>
+        }
+        <span class="cov8" title="1">return nil</span>
+}
+
+// executeAction executes a specific action through the integration hub
+func (o *MaintenanceOrchestrator) executeAction(action interfaces.RecommendedAction) error <span class="cov8" title="1">{
+        // Determine which manager should handle this action
+        managerName := o.getManagerForActionType(action.Type)
+
+        // Execute operation through integration hub
+        result, err := o.integrationHub.ExecuteManagerOperation(managerName, action.Type, action.Parameters)
+        if err != nil </span><span class="cov8" title="1">{
+                return fmt.Errorf("manager operation failed: %w", err)
+        }</span>
+
+        <span class="cov8" title="1">o.logger.Info("Action executed successfully",
+                zap.String("action", action.Type),
+                zap.String("manager", managerName),
+                zap.Any("result", result))
+
+        return nil</span>
+}
+
+// getManagerForActionType determines which manager should handle an action
+func (o *MaintenanceOrchestrator) getManagerForActionType(actionType string) string <span class="cov8" title="1">{
+        // Map action types to appropriate managers
+        actionManagerMap := map[string]string{
+                "reorganize":         "StorageManager",
+                "cleanup":            "StorageManager",
+                "optimize":           "PerformanceManager",
+                "security_scan":      "SecurityManager",
+                "cache_optimization": "CacheManager",
+                "log_cleanup":        "LogManager",
+                "backup":             "BackupManager",
+                "validate":           "ValidationManager",
+                "test":               "TestManager",
+                "deploy":             "DeploymentManager",
+                "monitor":            "MonitoringManager",
+        }
+
+        if manager, exists := actionManagerMap[actionType]; exists </span><span class="cov8" title="1">{
+                return manager
+        }</span>
+
+        // Default to StorageManager for unknown actions
+        <span class="cov8" title="1">return "StorageManager"</span>
+}
+
+// ExecuteCleanup performs multi-level cleanup according to FMOUA specifications
+func (o *MaintenanceOrchestrator) ExecuteCleanup(level int, targets []string) error <span class="cov8" title="1">{
+        startTime := time.Now()
+        defer func() </span><span class="cov8" title="1">{
+                o.updatePerformanceStats(time.Since(startTime), nil)
+        }</span>()
+
+        <span class="cov8" title="1">o.logger.Info("Starting FMOUA cleanup operation",
+                zap.Int("level", level),
+                zap.Strings("targets", targets))
+
+        // Get cleanup configuration for the specified level
+        cleanupConfig, err := o.config.GetCleanupLevelConfig(level)
+        if err != nil </span><span class="cov8" title="1">{
+                return fmt.Errorf("invalid cleanup level: %w", err)
+        }</span>
+
+        // AI analysis for levels 2 and 3
+        <span class="cov8" title="1">if cleanupConfig.AIAnalysisRequired </span><span class="cov8" title="1">{
+                decision, err := o.aiEngine.MakeOrganizationDecision(map[string]interface{}{
+                        "cleanup_level": level,
+                        "targets":       targets,
+                })
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("AI analysis failed for cleanup: %w", err)
+                }</span>
+
+                <span class="cov8" title="1">if decision.Confidence &lt; cleanupConfig.ConfidenceThreshold </span><span class="cov8" title="1">{
+                        return fmt.Errorf("AI confidence %.2f below threshold %.2f",
+                                decision.Confidence, cleanupConfig.ConfidenceThreshold)
+                }</span>
+        }
+
+        // Execute cleanup through appropriate managers
+        <span class="cov8" title="1">for _, target := range targets </span><span class="cov8" title="1">{
+                if err := o.executeCleanupTarget(target, cleanupConfig); err != nil </span><span class="cov0" title="0">{
+                        o.updatePerformanceStats(time.Since(startTime), err)
+                        return fmt.Errorf("cleanup failed for target %s: %w", target, err)
+                }</span>
+        }
+
+        <span class="cov8" title="1">executionTime := time.Since(startTime)
+        o.logger.Info("Cleanup operation completed successfully",
+                zap.Int("level", level),
+                zap.Strings("targets", targets),
+                zap.Duration("execution_time", executionTime))
+
+        return nil</span>
+}
+
+// executeCleanupTarget executes cleanup for a specific target
+func (o *MaintenanceOrchestrator) executeCleanupTarget(target string, config *types.CleanupLevelConfig) error <span class="cov8" title="1">{
+        // Backup before cleanup if required
+        if config.BackupBefore </span><span class="cov8" title="1">{
+                if err := o.createBackup(target); err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("backup failed: %w", err)
+                }</span>
+        }
+
+        // Execute cleanup operation
+        <span class="cov8" title="1">result, err := o.integrationHub.ExecuteManagerOperation("StorageManager", "cleanup", map[string]interface{}{
+                "target":  target,
+                "level":   config.Name,
+                "dry_run": false,
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">o.logger.Info("Cleanup target processed",
+                zap.String("target", target),
+                zap.String("level", config.Name),
+                zap.Any("result", result))
+
+        return nil</span>
+}
+
+// createBackup creates a backup before performing operations
+func (o *MaintenanceOrchestrator) createBackup(target string) error <span class="cov8" title="1">{
+        _, err := o.integrationHub.ExecuteManagerOperation("BackupManager", "create_backup", map[string]interface{}{
+                "target":    target,
+                "timestamp": time.Now().Unix(),
+        })
+        return err
+}</span>
+
+// GetHealth returns the health status of all integrated systems
+func (o *MaintenanceOrchestrator) GetHealth() map[string]interface{} <span class="cov8" title="1">{
+        health := make(map[string]interface{})
+
+        // Get manager health status
+        managerHealth := o.integrationHub.GetHealthStatus()
+        health["managers"] = managerHealth
+
+        // Get AI engine performance
+        if o.config.IsAIEnabled() </span><span class="cov8" title="1">{
+                aiStats := o.aiEngine.GetPerformanceStats()
+                health["ai_engine"] = aiStats
+        }</span>
+
+        // Get orchestrator stats
+        <span class="cov8" title="1">o.mu.RLock()
+        orchestratorStats := *o.performanceStats
+        o.mu.RUnlock()
+        health["orchestrator"] = orchestratorStats
+
+        // Overall health assessment
+        activeManagers := o.integrationHub.GetActiveManagers()
+        health["overall_status"] = map[string]interface{}{
+                "active_managers": len(activeManagers),
+                "total_managers":  len(o.config.GetEnabledManagers()),
+                "ai_enabled":      o.config.IsAIEnabled(),
+                "status":          o.determineOverallHealth(managerHealth),
+        }
+
+        return health</span>
+}
+
+// determineOverallHealth determines overall system health
+func (o *MaintenanceOrchestrator) determineOverallHealth(managerHealth map[string]interfaces.HealthStatus) string <span class="cov8" title="1">{
+        totalManagers := len(managerHealth)
+        healthyManagers := 0
+
+        for _, status := range managerHealth </span><span class="cov8" title="1">{
+                if status.IsHealthy </span><span class="cov8" title="1">{
+                        healthyManagers++
+                }</span>
+        }
+
+        <span class="cov8" title="1">healthPercentage := float64(healthyManagers) / float64(totalManagers) * 100
+
+        switch </span>{
+        case healthPercentage &gt;= 90:<span class="cov8" title="1">
+                return "healthy"</span>
+        case healthPercentage &gt;= 70:<span class="cov8" title="1">
+                return "warning"</span>
+        default:<span class="cov8" title="1">
+                return "critical"</span>
+        }
+}
+
+// updatePerformanceStats updates internal performance tracking
+func (o *MaintenanceOrchestrator) updatePerformanceStats(latency time.Duration, err error) <span class="cov8" title="1">{
+        o.mu.Lock()
+        defer o.mu.Unlock()
+
+        o.performanceStats.TotalOperations++
+        o.performanceStats.LastOperationTime = time.Now()
+
+        if err == nil </span><span class="cov8" title="1">{
+                o.performanceStats.SuccessfulOps++
+        }</span> else<span class="cov8" title="1"> {
+                o.performanceStats.FailedOps++
+        }</span>
+
+        // Track sub-100ms latency compliance
+        <span class="cov8" title="1">if latency &lt; 100*time.Millisecond </span><span class="cov8" title="1">{
+                o.performanceStats.LatencyUnder100ms++
+        }</span>
+
+        // Update average latency (simplified moving average)
+        <span class="cov8" title="1">if o.performanceStats.TotalOperations == 1 </span><span class="cov8" title="1">{
+                o.performanceStats.AverageLatency = latency
+        }</span> else<span class="cov8" title="1"> {
+                o.performanceStats.AverageLatency = time.Duration(
+                        (int64(o.performanceStats.AverageLatency) + int64(latency)) / 2,
+                )
+        }</span>
+}
+
+// Stop gracefully shuts down the orchestrator
+func (o *MaintenanceOrchestrator) Stop() error <span class="cov8" title="1">{
+        o.logger.Info("Stopping FMOUA Main Orchestrator")
+
+        o.cancel()
+
+        // Log final performance statistics
+        o.logPerformanceMetrics()
+
+        o.logger.Info("FMOUA Main Orchestrator stopped successfully")
+        return nil
+}</span>
+
+// GetPerformanceStats returns current orchestrator performance statistics
+func (o *MaintenanceOrchestrator) GetPerformanceStats() *OrchestrationStats <span class="cov8" title="1">{
+        o.mu.RLock()
+        defer o.mu.RUnlock()
+
+        stats := *o.performanceStats
+        return &amp;stats
+}</span>
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

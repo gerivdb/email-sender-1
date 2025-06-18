@@ -1,0 +1,59 @@
+{
+  // Configuration VSCode optimisée pour limiter la consommation mémoire
+  // Placez ce fichier dans .vscode/settings.json
+  
+  // Limitation des extensions
+  "extensions.autoCheckUpdates": false,
+  "extensions.autoUpdate": false,
+  
+  // Optimisation de l'éditeur
+  "editor.codeLens": false,
+  "editor.minimap.enabled": false,
+  "editor.occurrencesHighlight": false,
+  "editor.selectionHighlight": false,
+  "editor.wordBasedSuggestions": false,
+  
+  // Limitation des fichiers ouverts
+  "workbench.editor.limit.enabled": true,
+  "workbench.editor.limit.value": 10,
+  "workbench.editor.limit.perEditorGroup": true,
+  
+  // Optimisation de la recherche
+  "search.followSymlinks": false,
+  "search.maxResults": 1000,
+  
+  // Limitation du cache
+  "typescript.disableAutomaticTypeAcquisition": true,
+  "typescript.preferences.includePackageJsonAutoImports": "off",
+  
+  // Optimisation Git
+  "git.autoRepositoryDetection": false,
+  "git.decorations.enabled": false,
+  
+  // Limitation des langages actifs
+  "files.associations": {
+    "*.go": "go",
+    "*.py": "python",
+    "*.ts": "typescript",
+    "*.js": "javascript",
+    "*.md": "markdown"
+  },
+  
+  // Performance
+  "explorer.incrementalNaming": "disabled",
+  "workbench.startupEditor": "none",
+  "telemetry.telemetryLevel": "off",
+  
+  // Go optimizations
+  "go.useLanguageServer": true,
+  "go.languageServerFlags": ["-rpc.trace"],
+  "go.buildOnSave": "off",
+  
+  // Python optimizations  
+  "python.analysis.autoImportCompletions": false,
+  "python.analysis.indexing": false,
+  
+  // Memory monitoring
+  "workbench.editor.closeOnFileDelete": true,
+  "window.restoreFullscreen": false
+}

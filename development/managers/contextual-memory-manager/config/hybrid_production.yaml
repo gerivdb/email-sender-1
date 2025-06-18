@@ -1,0 +1,81 @@
+# Hybrid Memory Manager Production Configuration
+# Version: v6.1
+# Environment: Production
+
+hybrid_mode:
+  enabled: true
+  default_mode: "automatic"
+  ast_threshold: 0.8
+  rag_fallback_enabled: true
+  quality_score_min: 0.7
+  cache_decisions: true
+  decision_cache_ttl: "10m"
+  parallel_analysis: true
+  max_analysis_time: "2s"
+
+ast_analysis:
+  cache_size: 2000
+  cache_ttl: "15m"
+  worker_pool_size: 8
+  max_file_size: "20MB"
+  parallel_workers: 6
+  analysis_timeout: "10s"
+
+monitoring:
+  dashboard_port: 8090
+  update_interval: "10s"
+  retention_period: "7d"
+  enable_auth: true
+  predictive_alerts: true
+  alert_thresholds:
+    latency_warning: "1s"
+    latency_critical: "2s"
+    quality_warning: 0.7
+    quality_critical: 0.5
+    error_rate_warning: 0.03
+    error_rate_critical: 0.1
+
+performance:
+  target_latency: "500ms"
+  target_quality: 0.85
+  target_cache_hit_rate: 0.9
+  max_memory_usage: "1GB"
+  max_cpu_usage: "70%"
+
+# Database Configuration
+database:
+  qdrant:
+    url: "http://localhost:6333"
+    collection_name: "contextual_memory"
+    vector_size: 1536
+    distance: "cosine"
+    timeout: "30s"
+    max_retries: 3
+
+# Security Configuration
+security:
+  enable_tls: true
+  cert_file: "/etc/ssl/certs/contextual-memory.crt"
+  key_file: "/etc/ssl/private/contextual-memory.key"
+  auth_token_ttl: "24h"
+  rate_limit:
+    requests_per_minute: 1000
+    burst_size: 50
+
+# Logging Configuration
+logging:
+  level: "info"
+  format: "json"
+  output: "stdout"
+  file_rotation:
+    max_size: "100MB"
+    max_age: "7d"
+    max_backups: 5
+
+# Health Check Configuration
+health_check:
+  enabled: true
+  port: 8091
+  path: "/health"
+  interval: "30s"
+  timeout: "5s"

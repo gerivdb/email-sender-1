@@ -1,0 +1,272 @@
+# Framework de Maintenance et Organisation Ultra-Avancé (FMOUA)
+# Configuration principale - Implémentation des spécifications plan-dev-v53
+
+# Objectif: Latence < 100ms, AI-First, intégration 17 managers existants
+performance:
+  target_latency_ms: 50
+  max_concurrent_operations: 4
+  cache_enabled: true
+
+# AI-First: Intelligence artificielle au cœur des décisions
+ai_config:
+  enabled: true
+  provider: "openai" # ou "local" pour modèles locaux
+  model: "gpt-4"
+  confidence_threshold: 0.8
+  learning_enabled: true
+  pattern_recognition: true
+  decision_autonomy_level: 2 # 0=manual, 1=assisted, 2=autonomous
+
+# QDrant vectorisation pour l'organisation intelligente
+qdrant:
+  host: "localhost"
+  port: 6333
+  collection_name: "fmoua_repository_vectors"
+  vector_size: 1536
+  distance_metric: "cosine"
+
+# Intégration avec les 17 managers existants (DRY principle)
+managers_config:
+  # Core Managers
+  error_manager:
+    enabled: true
+    path: "development/managers/error-manager"
+    priority: 1
+
+  storage_manager:
+    enabled: true
+    path: "development/managers/storage-manager"
+    priority: 1
+
+  security_manager:
+    enabled: true
+    path: "development/managers/security-manager"
+    priority: 1
+
+  config_manager:
+    enabled: true
+    path: "development/managers/config-manager"
+    priority: 1
+
+  cache_manager:
+    enabled: true
+    path: "development/managers/cache-manager"
+    priority: 2
+
+  logging_manager:
+    enabled: true
+    path: "development/managers/logging-manager"
+    priority: 2
+
+  monitoring_manager:
+    enabled: true
+    path: "development/managers/monitoring-manager"
+    priority: 2
+
+  performance_manager:
+    enabled: true
+    path: "development/managers/performance-manager"
+    priority: 3
+
+  notification_manager:
+    enabled: true
+    path: "development/managers/notification-manager"
+    priority: 3
+
+  test_manager:
+    enabled: true
+    path: "development/managers/test-manager"
+    priority: 3
+
+  dependency_manager:
+    enabled: true
+    path: "development/managers/dependency-manager"
+    priority: 3
+
+  git_manager:
+    enabled: true
+    path: "development/managers/git-manager"
+    priority: 3
+
+  backup_manager:
+    enabled: true
+    path: "development/managers/backup-manager"
+    priority: 3
+
+  documentation_manager:
+    enabled: true
+    path: "development/managers/documentation-manager"
+    priority: 4
+
+  integrated_manager:
+    enabled: true
+    path: "development/managers/integrated-manager"
+    priority: 1
+
+  # Nouveaux managers spécifiques FMOUA
+  maintenance_manager:
+    enabled: true
+    path: "development/managers/maintenance-manager"
+    priority: 2
+
+  organization_manager:
+    enabled: true
+    path: "development/managers/organization-manager"
+    priority: 2
+
+# Organisation intelligente - Règles et patterns
+organization:
+  max_files_per_folder: 15 # Règle des 15 fichiers maximum
+  auto_categorization: true
+  pattern_learning: true
+  similarity_threshold: 0.85
+
+  # Types de fichiers et leur organisation automatique
+  file_patterns:
+    source_code:
+      extensions: [".go", ".ts", ".js", ".py", ".rs"]
+      organization: "by_functionality"
+
+    documentation:
+      extensions: [".md", ".txt", ".rst"]
+      organization: "by_category"
+
+    configuration:
+      extensions: [".yaml", ".yml", ".json", ".toml"]
+      organization: "by_environment"
+
+    tests:
+      extensions: ["_test.go", ".test.ts", ".spec.js"]
+      organization: "mirror_source_structure"
+
+# Nettoyage intelligent - 3 niveaux de sécurité
+cleanup:
+  levels:
+    1: # Safe - fichiers temporaires, caches
+      name: "safe"
+      auto_approve: true
+      targets: ["*.tmp", "*.cache", "*.log", "*~", ".DS_Store"]
+      backup_before: false
+
+    2: # Analyzed - imports inutilisés, configs orphelines
+      name: "analyzed"
+      auto_approve: false
+      ai_analysis_required: true
+      backup_before: true
+      confidence_threshold: 0.9
+
+    3: # AI-Verified - fichiers source potentiellement inutilisés
+      name: "ai_verified"
+      auto_approve: false
+      manual_approval_required: true
+      ai_analysis_required: true
+      backup_before: true
+      confidence_threshold: 0.95
+
+# GoGen - Remplacement natif de Hygen (KISS principle)
+gogen:
+  templates_path: "templates/gogen"
+  output_path: "generated"
+
+  # Templates disponibles
+  templates:
+    manager:
+      description: "Generate new manager with FMOUA integration"
+      files:
+        - "manager.go.tmpl"
+        - "interfaces.go.tmpl"
+        - "config.go.tmpl"
+        - "README.md.tmpl"
+
+    service:
+      description: "Generate microservice structure"
+      files:
+        - "main.go.tmpl"
+        - "handlers.go.tmpl"
+        - "models.go.tmpl"
+        - "docker-compose.yml.tmpl"
+
+    plan_dev:
+      description: "Generate development plan structure"
+      files:
+        - "plan-dev.md.tmpl"
+        - "roadmap.md.tmpl"
+        - "implementation.md.tmpl"
+
+# PowerShell Scripts existants (réutilisation DRY)
+powershell_integration:
+  enabled: true
+  scripts_path: "scripts"
+
+  # Scripts existants à intégrer
+  existing_scripts:
+    - name: "organize-root-files-secure"
+      path: "./organize-root-files-secure.ps1"
+      integration_priority: 1
+
+    - name: "organize-tests"
+      path: "./organize-tests.ps1"
+      integration_priority: 2
+
+# Monitoring et métriques (SOLID - Single Responsibility)
+monitoring:
+  enabled: true
+  metrics_collection: true
+  performance_tracking: true
+
+  # Métriques cibles
+  targets:
+    latency_ms: 100
+    success_rate_percent: 99.5
+    memory_usage_mb: 512
+    cpu_usage_percent: 50
+
+# Base de données et persistance
+database:
+  # PostgreSQL via StorageManager existant
+  postgres:
+    enabled: true
+    via_manager: "storage_manager"
+
+  # SQLite pour cache local
+  sqlite:
+    enabled: true
+    path: "./data/fmoua_cache.db"
+
+  # Redis optionnel via CacheManager
+  redis:
+    enabled: false
+    via_manager: "cache_manager"
+
+# Sécurité (via SecurityManager existant)
+security:
+  enabled: true
+  via_manager: "security_manager"
+
+  # Politiques de sécurité pour les opérations
+  policies:
+    cleanup_level_3:
+      approval_required: true
+      backup_mandatory: true
+      audit_log: true
+
+    ai_decisions:
+      confidence_threshold: 0.8
+      human_override: true
+
+    file_operations:
+      dry_run_first: true
+      rollback_available: true
+
+# Logging et audit (via LoggingManager existant)
+logging:
+  level: "info"
+  via_manager: "logging_manager"
+  structured: true
+
+  # Audit spécifique FMOUA
+  audit:
+    operations: true
+    ai_decisions: true
+    performance_metrics: true
+    security_events: true

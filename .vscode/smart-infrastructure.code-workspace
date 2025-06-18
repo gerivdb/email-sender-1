@@ -1,0 +1,69 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {    "terminal.integrated.profiles.windows": {
+      "Smart Infrastructure PowerShell": {
+        "source": "PowerShell",
+        "args": [
+          "-NoExit",
+          "-Command",
+          "Write-Host '🚀 Smart Infrastructure Workspace Ready!' -ForegroundColor Green; Write-Host 'Use: smart-infrastructure.auto-start task or run scripts/smart-infrastructure-vscode-hook.ps1' -ForegroundColor Cyan"
+        ]
+      }
+    },
+    "files.associations": {
+      "*.md": "markdown",
+      "docker-compose*.yml": "dockercompose",
+      "docker-compose*.yaml": "dockercompose"
+    },
+    "go.testFlags": ["-v"],
+    "go.buildFlags": ["-v"],
+    "python.defaultInterpreterPath": ".venv/Scripts/python.exe",
+    "smart-infrastructure.autoStart": true,
+    "smart-infrastructure.defaultProfile": "development",
+    "smart-infrastructure.monitoringEnabled": true
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-vscode.go",
+      "ms-python.python",
+      "ms-azuretools.vscode-docker",
+      "ms-vscode.powershell",
+      "yzhang.markdown-all-in-one",
+      "ms-vscode.vscode-json",
+      "redhat.vscode-yaml",
+      "formulahendry.auto-rename-tag",
+      "esbenp.prettier-vscode"
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Smart Infrastructure: Auto-Start on Workspace Open",
+        "type": "shell",
+        "command": "pwsh",
+        "args": [
+          "-File",
+          "${workspaceFolder}/scripts/smart-infrastructure-vscode-hook.ps1",
+          "auto",
+          "-Background",
+          "-Profile",
+          "development"
+        ],
+        "group": "build",
+        "presentation": {
+          "reveal": "silent",
+          "panel": "shared"
+        },
+        "problemMatcher": [],
+        "runOptions": {
+          "runOn": "folderOpen"
+        }
+      }
+    ]
+  }
+}

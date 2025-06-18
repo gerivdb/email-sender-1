@@ -1,0 +1,59 @@
+{
+  "scheduling": {
+    "backgroundTasks": {
+      "adaptiveScheduling": true,
+      "maxConcurrent": 3,
+      "priorityLevels": [
+        "high",
+        "normal",
+        "low",
+        "idle"
+      ]
+    },
+    "idleDetection": {
+      "timeoutMs": 300000,
+      "actions": [
+        "reduceCPU",
+        "suspendBackground",
+        "clearCache"
+      ]
+    }
+  },
+  "thermal": {
+    "temperatureThresholds": {
+      "warning": 75,
+      "shutdown": 95,
+      "throttle": 85
+    },
+    "coolingStrategies": {
+      "fanControl": true,
+      "cpuThrottling": true,
+      "backgroundReduction": true,
+      "gpuThrottling": true
+    }
+  },
+  "battery": {
+    "thresholds": {
+      "critical": 10,
+      "high": 80,
+      "low": 20
+    },
+    "profiles": {
+      "balanced": {
+        "gpuPowerLimit": 80,
+        "cpuScaling": "balanced",
+        "backgroundActivity": "reduced"
+      },
+      "powersave": {
+        "gpuPowerLimit": 60,
+        "cpuScaling": "powersave",
+        "backgroundActivity": "minimal"
+      },
+      "performance": {
+        "gpuPowerLimit": 100,
+        "cpuScaling": "performance",
+        "backgroundActivity": "normal"
+      }
+    }
+  }
+}

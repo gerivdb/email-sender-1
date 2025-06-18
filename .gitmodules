@@ -10,7 +10,7 @@
 
 [submodule "mem0-analysis/repo"]
 	path = mem0-analysis/repo
-	url = https://github.com/your-org/mem0-analysis-repo.git
+	url = https://github.com/mem0ai/mem0.git
 	ignore = dirty
 
 [submodule "submodules/context7"]

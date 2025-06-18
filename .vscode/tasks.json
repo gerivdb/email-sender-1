@@ -7,8 +7,249 @@
       "PYTHON_PATH": "${workspaceFolder}/development/scripts/python",
       "POWERSHELL_PATH": "${workspaceFolder}/development/scripts/cmd"
     }
-  },
-  "tasks": [
+  },  "tasks": [
+    // === 🛡️ AVG EXCLUSION AUTOMATION ===
+    {
+      "label": "avg-exclusion.auto-start",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/avg-exclusion-vscode-hook.ps1",
+        "auto",
+        "-Background"
+      ],
+      "group": {
+        "kind": "none",
+        "isDefault": false
+      },
+      "problemMatcher": [],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated",
+        "group": "security"
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    },
+    {
+      "label": "avg-exclusion.start",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/avg-exclusion-vscode-hook.ps1",
+        "start"
+      ],
+      "group": "none",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "security"
+      }
+    },
+    {
+      "label": "avg-exclusion.status",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/avg-exclusion-vscode-hook.ps1",
+        "status"
+      ],
+      "group": "none",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "group": "security"
+      }
+    },    {
+      "label": "avg-exclusion.stop",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/avg-exclusion-vscode-hook.ps1",
+        "stop"
+      ],
+      "group": "none",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "group": "security"
+      }
+    },
+    {
+      "label": "avg-exclusion.test-exe",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/test-avg-exe-exclusion.ps1"
+      ],
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "security"
+      }
+    },
+    // === 🚀 SMART INFRASTRUCTURE ORCHESTRATOR ===
+    {
+      "label": "smart-infrastructure.auto-start",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/smart-infrastructure-vscode-hook.ps1",
+        "auto",
+        "-Background",
+        "-Profile", "${input:deploymentProfile}"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": [],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "smart-infrastructure"
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    },
+    {
+      "label": "smart-infrastructure.start",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/smart-infrastructure-vscode-hook.ps1",
+        "start",
+        "-Profile", "${input:deploymentProfile}"
+      ],
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "smart-infrastructure"
+      }
+    },
+    {
+      "label": "smart-infrastructure.stop",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/smart-infrastructure-vscode-hook.ps1",
+        "stop"
+      ],
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "group": "smart-infrastructure"
+      }
+    },
+    {
+      "label": "smart-infrastructure.status",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/smart-infrastructure-vscode-hook.ps1",
+        "status"
+      ],
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "group": "smart-infrastructure"
+      }
+    },
+    {
+      "label": "smart-infrastructure.monitor",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/smart-infrastructure-vscode-hook.ps1",
+        "monitor",
+        "-Profile", "${input:deploymentProfile}"
+      ],
+      "group": "test",
+      "problemMatcher": [],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "smart-infrastructure"
+      }
+    },
+    {
+      "label": "smart-infrastructure.info",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/smart-infrastructure-vscode-hook.ps1",
+        "info"
+      ],
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "group": "smart-infrastructure"
+      }
+    },
+    {
+      "label": "smart-infrastructure.recover",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File", 
+        "${workspaceFolder}/scripts/smart-infrastructure-vscode-hook.ps1",
+        "recover"
+      ],
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "smart-infrastructure"
+      }
+    },
+    {
+      "label": "smart-infrastructure.build",
+      "type": "shell",
+      "command": "go",
+      "args": [
+        "build",
+        "-o", "smart-infrastructure.exe",
+        "./cmd/smart-infrastructure/"
+      ],
+      "group": "build",
+      "problemMatcher": ["$go"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "group": "smart-infrastructure"
+      }
+    },
+
     // === 🧼 MAINTENANCE ===
     {
       "label": "clean.all",
@@ -287,12 +528,18 @@
       "description": "Chemin du package Go à tester",
       "type": "promptString",
       "default": "./..."
-    },
-    {
+    },    {
       "id": "commitMessage",
       "description": "Message de commit Git",
       "type": "promptString",
       "default": "Mise à jour du projet"
+    },
+    {
+      "id": "deploymentProfile",
+      "description": "Profil de déploiement Smart Infrastructure",
+      "type": "pickString",
+      "options": ["development", "staging", "production", "monitoring", "vectorization", "cache", "full-stack"],
+      "default": "development"
     }
   ]
 }

@@ -1,16 +1,14 @@
 // Package infrastructure provides tools for automated infrastructure management
-// within the AdvancedAutonomyManager ecosystem.
+// within the AdvancedAutonomyManager ecosystem - Phase 4 Implementation.
 package infrastructure
 
 import (
+	"advanced-autonomy-manager/internal/config"
 	"context"
 	"errors"
 	"fmt"
 	"sync"
 	"time"
-
-	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/internal/config"
-	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/internal/monitoring"
 )
 
 // Common errors
@@ -22,7 +20,27 @@ var (
 	ErrInvalidConfiguration      = errors.New("invalid infrastructure configuration")
 	ErrStartupTimeout            = errors.New("service startup timed out")
 	ErrShutdownTimeout           = errors.New("service shutdown timed out")
+	ErrInsufficientResources     = errors.New("insufficient system resources")
+	ErrSecurityValidationFailed  = errors.New("security validation failed")
 )
+
+// InfrastructureOrchestrator - Interface principale pour l'orchestration infrastructure (Phase 4)
+type InfrastructureOrchestrator interface {
+	// Démarrage orchestré de l'infrastructure complète
+	StartInfrastructureStack(ctx context.Context, config *StackConfig) (*StartupResult, error)
+
+	// Arrêt propre de l'infrastructure
+	StopInfrastructureStack(ctx context.Context, graceful bool) (*ShutdownResult, error)
+
+	// Surveillance continue de l'état
+	MonitorInfrastructureHealth(ctx context.Context) (*HealthStatus, error)
+
+	// Récupération automatique en cas de panne
+	RecoverFailedServices(ctx context.Context, services []string) (*RecoveryResult, error)
+
+	// Gestion des mises à jour rolling
+	PerformRollingUpdate(ctx context.Context, updatePlan *UpdatePlan) error
+}
 
 // ServiceStatus represents the current status of an infrastructure service
 type ServiceStatus struct {
@@ -37,11 +55,11 @@ type ServiceStatus struct {
 
 // StackConfig defines configuration for starting the infrastructure stack
 type StackConfig struct {
-	Environment     string              `json:"environment"`      // dev, prod, test
+	Environment     string              `json:"environment"`       // dev, prod, test
 	ServicesToStart []string            `json:"services_to_start"` // Services to start or "all"
-	HealthTimeout   time.Duration       `json:"health_timeout"`   // Timeout for health checks
-	Dependencies    map[string][]string `json:"dependencies"`     // Graph of dependencies
-	ResourceLimits  *ResourceConfig     `json:"resource_limits"`  // CPU/RAM limits
+	HealthTimeout   time.Duration       `json:"health_timeout"`    // Timeout for health checks
+	Dependencies    map[string][]string `json:"dependencies"`      // Graph of dependencies
+	ResourceLimits  *ResourceConfig     `json:"resource_limits"`   // CPU/RAM limits
 }
 
 // ResourceConfig defines resource limits for services
@@ -53,10 +71,10 @@ type ResourceConfig struct {
 
 // StartupResult contains the results of starting up the infrastructure stack
 type StartupResult struct {
-	ServicesStarted   []ServiceStatus    `json:"services_started"`
-	TotalStartupTime  time.Duration      `json:"total_startup_time"`
-	Warnings          []string           `json:"warnings,omitempty"`
-	HealthChecks      map[string]bool    `json:"health_checks"`
+	ServicesStarted  []ServiceStatus `json:"services_started"`
+	TotalStartupTime time.Duration   `json:"total_startup_time"`
+	Warnings         []string        `json:"warnings,omitempty"`
+	HealthChecks     map[string]bool `json:"health_checks"`
 }
 
 // ShutdownResult contains the results of shutting down the infrastructure stack
@@ -68,44 +86,44 @@ type ShutdownResult struct {
 
 // HealthStatus represents the overall health of the infrastructure stack
 type HealthStatus struct {
-	Timestamp     time.Time              `json:"timestamp"`
-	OverallHealth bool                   `json:"overall_health"`
+	Timestamp     time.Time                `json:"timestamp"`
+	OverallHealth bool                     `json:"overall_health"`
 	ServiceHealth map[string]ServiceStatus `json:"service_health"`
-	Issues        []string               `json:"issues,omitempty"`
+	Issues        []string                 `json:"issues,omitempty"`
 }
 
 // RecoveryResult contains the result of an automatic recovery attempt
 type RecoveryResult struct {
-	Timestamp           time.Time      `json:"timestamp"`
-	ServicesRecovered   []string       `json:"services_recovered"`
+	Timestamp            time.Time     `json:"timestamp"`
+	ServicesRecovered    []string      `json:"services_recovered"`
 	ServicesNotRecovered []string      `json:"services_not_recovered,omitempty"`
-	TotalRecoveryTime   time.Duration  `json:"total_recovery_time"`
-	Actions             []string       `json:"actions_taken"`
+	TotalRecoveryTime    time.Duration `json:"total_recovery_time"`
+	Actions              []string      `json:"actions_taken"`
 }
 
 // UpdatePlan defines a plan for performing rolling updates
 type UpdatePlan struct {
-	Services          []string          `json:"services"`
-	UpdateOrder       []string          `json:"update_order"`
-	HealthCheckAfter  bool              `json:"health_check_after"`
-	BackupBeforeUpdate bool             `json:"backup_before_update"`
-	RollbackOnFailure bool              `json:"rollback_on_failure"`
+	Services           []string `json:"services"`
+	UpdateOrder        []string `json:"update_order"`
+	HealthCheckAfter   bool     `json:"health_check_after"`
+	BackupBeforeUpdate bool     `json:"backup_before_update"`
+	RollbackOnFailure  bool     `json:"rollback_on_failure"`
 }
 
 // InfrastructureManager defines the interface for managing infrastructure
 type InfrastructureManager interface {
 	// StartInfrastructureStack orchestrates the startup of the complete infrastructure
 	StartInfrastructureStack(ctx context.Context, config *StackConfig) (*StartupResult, error)
-	
+
 	// StopInfrastructureStack performs a clean shutdown of the infrastructure
 	StopInfrastructureStack(ctx context.Context, graceful bool) (*ShutdownResult, error)
-	
+
 	// MonitorInfrastructureHealth continuously monitors the health of the infrastructure
 	MonitorInfrastructureHealth(ctx context.Context) (*HealthStatus, error)
-	
+
 	// RecoverFailedServices attempts automatic recovery of failed services
 	RecoverFailedServices(ctx context.Context, services []string) (*RecoveryResult, error)
-	
+
 	// PerformRollingUpdate performs rolling updates with minimal downtime
 	PerformRollingUpdate(ctx context.Context, updatePlan *UpdatePlan) error
 }
@@ -214,8 +232,8 @@ func (io *InfrastructureOrchestrator) StartInfrastructureStack(
 	}
 
 	// Log startup plan
-	io.logger.Info("Infrastructure startup plan", 
-		"services", services, 
+	io.logger.Info("Infrastructure startup plan",
+		"services", services,
 		"environment", config.Environment,
 		"dependencies", len(config.Dependencies))
 
@@ -268,10 +286,10 @@ func (io *InfrastructureOrchestrator) StartInfrastructureStack(
 		result.HealthChecks[service] = serviceResult.HealthStatus
 
 		if serviceResult.Error != "" {
-			result.Warnings = append(result.Warnings, 
+			result.Warnings = append(result.Warnings,
 				fmt.Sprintf("Service %s error: %s", service, serviceResult.Error))
 		} else if !serviceResult.HealthStatus {
-			result.Warnings = append(result.Warnings, 
+			result.Warnings = append(result.Warnings,
 				fmt.Sprintf("Service %s started but not healthy", service))
 		}
 
@@ -282,7 +300,7 @@ func (io *InfrastructureOrchestrator) StartInfrastructureStack(
 	}
 
 	result.TotalStartupTime = sequenceResult.TotalTime
-	io.logger.Info("Infrastructure stack startup completed", 
+	io.logger.Info("Infrastructure stack startup completed",
 		"duration", result.TotalStartupTime,
 		"services_started", len(result.ServicesStarted),
 		"warnings", len(result.Warnings))
@@ -329,7 +347,7 @@ func (io *InfrastructureOrchestrator) StopInfrastructureStack(
 	}
 
 	result.TotalTime = time.Since(startTime)
-	io.logger.Info("Infrastructure stack shutdown completed", 
+	io.logger.Info("Infrastructure stack shutdown completed",
 		"duration", result.TotalTime,
 		"services_stopped", len(result.ServicesStopped),
 		"errors", len(result.Errors))
@@ -342,7 +360,7 @@ func (io *InfrastructureOrchestrator) MonitorInfrastructureHealth(
 	ctx context.Context,
 ) (*HealthStatus, error) {
 	io.logger.Debug("Checking infrastructure health")
-	
+
 	// Get current status from container manager
 	containerStatuses, err := io.containerClient.GetAllContainerStatuses(ctx)
 	if err != nil {
@@ -373,12 +391,12 @@ func (io *InfrastructureOrchestrator) MonitorInfrastructureHealth(
 		// Update overall health
 		if !status.HealthStatus {
 			healthStatus.OverallHealth = false
-			healthStatus.Issues = append(healthStatus.Issues, 
+			healthStatus.Issues = append(healthStatus.Issues,
 				fmt.Sprintf("Service %s is unhealthy", serviceName))
 		}
 	}
 
-	io.logger.Debug("Infrastructure health check completed", 
+	io.logger.Debug("Infrastructure health check completed",
 		"overall_health", healthStatus.OverallHealth,
 		"services_checked", len(healthStatus.ServiceHealth),
 		"issues", len(healthStatus.Issues))
@@ -395,15 +413,15 @@ func (io *InfrastructureOrchestrator) RecoverFailedServices(
 	io.logger.Info("Attempting recovery of failed services", "services", services)
 
 	result := &RecoveryResult{
-		Timestamp:           time.Now(),
-		ServicesRecovered:   make([]string, 0),
+		Timestamp:            time.Now(),
+		ServicesRecovered:    make([]string, 0),
 		ServicesNotRecovered: make([]string, 0),
-		Actions:             make([]string, 0),
+		Actions:              make([]string, 0),
 	}
 
 	for _, service := range services {
 		io.logger.Info("Attempting recovery of service", "service", service)
-		
+
 		// Check current status
 		status, err := io.containerClient.GetContainerStatus(ctx, service)
 		if err != nil {
@@ -447,7 +465,7 @@ func (io *InfrastructureOrchestrator) RecoverFailedServices(
 	}
 
 	result.TotalRecoveryTime = time.Since(startTime)
-	io.logger.Info("Service recovery completed", 
+	io.logger.Info("Service recovery completed",
 		"duration", result.TotalRecoveryTime,
 		"recovered", len(result.ServicesRecovered),
 		"failed", len(result.ServicesNotRecovered))
@@ -461,7 +479,7 @@ func (io *InfrastructureOrchestrator) PerformRollingUpdate(
 	updatePlan *UpdatePlan,
 ) error {
 	io.logger.Info("Starting rolling update", "services", updatePlan.Services)
-	
+
 	// Validate update plan
 	if updatePlan == nil || len(updatePlan.Services) == 0 {
 		return ErrInvalidConfiguration
@@ -487,7 +505,7 @@ func (io *InfrastructureOrchestrator) PerformRollingUpdate(
 	// Perform rolling update service by service
 	for _, service := range updateOrder {
 		io.logger.Info("Updating service", "service", service)
-		
+
 		// Stop service
 		if err := io.stopService(ctx, service, true); err != nil {
 			io.logger.Error("Failed to stop service for update", "service", service, "error", err)
@@ -522,10 +540,10 @@ func (io *InfrastructureOrchestrator) PerformRollingUpdate(
 				return fmt.Errorf("health check failed after update")
 			}
 		}
-		
+
 		io.logger.Info("Service updated successfully", "service", service)
 	}
-	
+
 	io.logger.Info("Rolling update completed successfully", "services", len(updatePlan.Services))
 	return nil
 }
@@ -544,8 +562,8 @@ func (io *InfrastructureOrchestrator) stopService(ctx context.Context, service s
 
 // waitForServiceHealth waits for a service to become healthy with timeout
 func (io *InfrastructureOrchestrator) waitForServiceHealth(
-	ctx context.Context, 
-	service string, 
+	ctx context.Context,
+	service string,
 	timeout time.Duration,
 ) bool {
 	deadline := time.Now().Add(timeout)
@@ -611,7 +629,7 @@ func (io *InfrastructureOrchestrator) getParallelServicesLimit() int {
 	if io.config == nil || !io.config.DependencyResolution.ParallelStartEnabled {
 		return 1 // Sequential startup
 	}
-	
+
 	// Default to 3 parallel services if not specified otherwise
 	return 3
 }
@@ -621,7 +639,7 @@ func (io *InfrastructureOrchestrator) getRetryAttemptsFromConfig() int {
 	if io.config == nil || !io.config.DependencyResolution.RetryFailedServices {
 		return 1 // No retries
 	}
-	
+
 	return io.config.DependencyResolution.MaxRetries
 }
 
@@ -630,7 +648,7 @@ func (io *InfrastructureOrchestrator) getRetryDelayFromConfig() time.Duration {
 	if io.config == nil {
 		return 5 * time.Second // Default delay
 	}
-	
+
 	// Calculate backoff based on configuration
 	// For simplicity we're using a fixed delay here, but this could be enhanced
 	// to implement exponential backoff based on the "exponential" setting
@@ -641,6 +659,6 @@ func (io *InfrastructureOrchestrator) getRetryDelayFromConfig() time.Duration {
 func (io *InfrastructureOrchestrator) updateRunningServiceStatus(service string, status *ServiceStatus) {
 	io.lock.Lock()
 	defer io.lock.Unlock()
-	
+
 	io.runningServices[service] = status
 }
