@@ -1,0 +1,44 @@
+{
+  "name": "n8n-nodes-go-cli",
+  "version": "1.0.0",
+  "description": "N8N custom node for Go CLI integration",
+  "license": "MIT",
+  "homepage": "https://github.com/n8n-io/n8n-nodes-go-cli",
+  "author": {
+    "name": "N8N Go CLI Integration",
+    "email": "dev@n8n.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n8n-io/n8n-nodes-go-cli.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "format": "prettier nodes --write",
+    "lint": "eslint nodes package.json",
+    "lintfix": "eslint nodes package.json --fix",
+    "prepublishOnly": "npm run build && npm run lint -s"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/GoCliApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/GoCli/GoCli.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.16",
+    "n8n-workflow": "*",
+    "typescript": "^4.8.4"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}

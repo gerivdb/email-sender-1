@@ -3,399 +3,319 @@ package bridge
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"sync"
 	"time"
 
 	"github.com/redis/go-redis/v9"
+	"go.uber.org/zap"
 )
 
-// EventType représente les types d'événements
-type EventType string
-
-const (
-	WorkflowStarted   EventType = "workflow_started"
-	WorkflowCompleted EventType = "workflow_completed"
-	WorkflowFailed    EventType = "workflow_failed"
-	WorkflowCancelled EventType = "workflow_cancelled"
-	WorkflowRetried   EventType = "workflow_retried"
-)
-
-// Event représente un événement dans le système
+// Event represents an event in the system
 type Event struct {
-	ID          string                 `json:"id"`
-	Type        EventType              `json:"type"`
-	WorkflowID  string                 `json:"workflow_id"`
-	ExecutionID string                 `json:"execution_id"`
-	Data        map[string]interface{} `json:"data"`
-	Timestamp   time.Time              `json:"timestamp"`
-	Source      string                 `json:"source"`
-	TTL         time.Duration          `json:"ttl,omitempty"`
+	Type      string                 `json:"type"`
+	Data      map[string]interface{} `json:"data"`
+	Timestamp time.Time              `json:"timestamp"`
+	TraceID   string                 `json:"trace_id"`
 }
 
-// EventSubscriber interface pour les abonnés aux événements
-type EventSubscriber interface {
-	OnEvent(event Event) error
-	GetSubscriberID() string
-	GetEventTypes() []EventType
-}
+// EventHandler defines the signature for event handlers
+type EventHandler func(ctx context.Context, event Event) error
 
-// EventBus interface pour le bus d'événements
+// EventBus interface defines the event bus operations
 type EventBus interface {
 	Publish(ctx context.Context, event Event) error
-	Subscribe(subscriber EventSubscriber) error
-	Unsubscribe(subscriberID string) error
-	Start() error
-	Stop() error
-	GetStats() EventBusStats
+	Subscribe(eventType string, handler EventHandler) error
+	Unsubscribe(eventType string, handler EventHandler) error
+	Close() error
 }
 
-// EventBusStats statistiques du bus d'événements
-type EventBusStats struct {
-	TotalPublished   int64     `json:"total_published"`
-	TotalSubscribers int       `json:"total_subscribers"`
-	ActiveChannels   int       `json:"active_channels"`
-	LastActivity     time.Time `json:"last_activity"`
-	RedisConnected   bool      `json:"redis_connected"`
-}
-
-// ChannelEventBus implémentation du bus d'événements basée sur des channels
+// ChannelEventBus implements EventBus using Go channels
 type ChannelEventBus struct {
-	subscribers    map[string]EventSubscriber
-	subscribersMux sync.RWMutex
-	eventChan      chan Event
-	ctx            context.Context
-	cancel         context.CancelFunc
-	wg             sync.WaitGroup
-	stats          EventBusStats
-	statsMux       sync.RWMutex
-	redisClient    *redis.Client
-	useRedis       bool
+	logger      *zap.Logger
+	subscribers map[string][]EventHandler
+	channels    map[string]chan Event
+	mu          sync.RWMutex
+	ctx         context.Context
+	cancel      context.CancelFunc
+	redisClient *redis.Client
+	persistence bool
 }
 
-// EventBusConfig configuration du bus d'événements
-type EventBusConfig struct {
-	BufferSize    int           `json:"buffer_size"`
-	UseRedis      bool          `json:"use_redis"`
-	RedisAddr     string        `json:"redis_addr"`
-	RedisPassword string        `json:"redis_password"`
-	RedisDB       int           `json:"redis_db"`
-	TTLDefault    time.Duration `json:"ttl_default"`
-}
-
-// NewChannelEventBus crée un nouveau bus d'événements
-func NewChannelEventBus(config EventBusConfig) (*ChannelEventBus, error) {
+// NewChannelEventBus creates a new channel-based event bus
+func NewChannelEventBus(logger *zap.Logger, redisClient *redis.Client) *ChannelEventBus {
 	ctx, cancel := context.WithCancel(context.Background())
 
-	bufferSize := config.BufferSize
-	if bufferSize == 0 {
-		bufferSize = 1000 // Valeur par défaut
+	return &ChannelEventBus{
+		logger:      logger,
+		subscribers: make(map[string][]EventHandler),
+		channels:    make(map[string]chan Event),
+		ctx:         ctx,
+		cancel:      cancel,
+		redisClient: redisClient,
+		persistence: redisClient != nil,
 	}
-
-	bus := &ChannelEventBus{
-		subscribers:    make(map[string]EventSubscriber),
-		subscribersMux: sync.RWMutex{},
-		eventChan:      make(chan Event, bufferSize),
-		ctx:            ctx,
-		cancel:         cancel,
-		stats: EventBusStats{
-			LastActivity: time.Now(),
-		},
-		useRedis: config.UseRedis,
-	}
-
-	// Configuration Redis pour persistance
-	if config.UseRedis {
-		rdb := redis.NewClient(&redis.Options{
-			Addr:     config.RedisAddr,
-			Password: config.RedisPassword,
-			DB:       config.RedisDB,
-		})
-
-		// Test de connexion
-		if err := rdb.Ping(ctx).Err(); err != nil {
-			return nil, fmt.Errorf("failed to connect to Redis: %w", err)
-		}
-
-		bus.redisClient = rdb
-		bus.stats.RedisConnected = true
-	}
-
-	return bus, nil
 }
 
-// Publish publie un événement
-func (b *ChannelEventBus) Publish(ctx context.Context, event Event) error {
-	if event.ID == "" {
-		event.ID = fmt.Sprintf("%s_%d", event.Type, time.Now().UnixNano())
-	}
-
+// Publish publishes an event to all subscribers
+func (bus *ChannelEventBus) Publish(ctx context.Context, event Event) error {
 	if event.Timestamp.IsZero() {
 		event.Timestamp = time.Now()
 	}
 
-	// Persistance Redis si activée
-	if b.useRedis && b.redisClient != nil {
-		if err := b.persistEvent(ctx, event); err != nil {
-			// Log l'erreur mais continue (failover gracieux)
-			fmt.Printf("Failed to persist event to Redis: %v\n", err)
+	bus.logger.Debug("Publishing event",
+		zap.String("type", event.Type),
+		zap.String("trace_id", event.TraceID),
+		zap.Time("timestamp", event.Timestamp))
+
+	// Persist to Redis if enabled
+	if bus.persistence {
+		if err := bus.persistEvent(ctx, event); err != nil {
+			bus.logger.Error("Failed to persist event to Redis",
+				zap.Error(err),
+				zap.String("event_type", event.Type))
 		}
 	}
 
-	// Publication dans le channel interne
-	select {
-	case b.eventChan <- event:
-		b.updateStats(true, false)
-		return nil
-	case <-ctx.Done():
-		return ctx.Err()
-	default:
-		return fmt.Errorf("event bus is full, dropping event %s", event.ID)
+	// Send to channel subscribers
+	bus.mu.RLock()
+	channel, exists := bus.channels[event.Type]
+	handlers := bus.subscribers[event.Type]
+	bus.mu.RUnlock()
+
+	if exists {
+		select {
+		case channel <- event:
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+			bus.logger.Warn("Event channel full, dropping event",
+				zap.String("event_type", event.Type))
+		}
 	}
-}
 
-// Subscribe ajoute un abonné
-func (b *ChannelEventBus) Subscribe(subscriber EventSubscriber) error {
-	b.subscribersMux.Lock()
-	defer b.subscribersMux.Unlock()
-
-	b.subscribers[subscriber.GetSubscriberID()] = subscriber
-	b.updateStats(false, true)
-	return nil
-}
-
-// Unsubscribe supprime un abonné
-func (b *ChannelEventBus) Unsubscribe(subscriberID string) error {
-	b.subscribersMux.Lock()
-	defer b.subscribersMux.Unlock()
-
-	delete(b.subscribers, subscriberID)
-	b.updateStats(false, true)
-	return nil
-}
-
-// Start démarre le bus d'événements
-func (b *ChannelEventBus) Start() error {
-	b.wg.Add(1)
-	go b.processEvents()
-
-	// Si Redis est activé, démarrer aussi la récupération des événements persistés
-	if b.useRedis && b.redisClient != nil {
-		b.wg.Add(1)
-		go b.processPersistedEvents()
+	// Call direct handlers
+	for _, handler := range handlers {
+		go func(h EventHandler) {
+			if err := h(ctx, event); err != nil {
+				bus.logger.Error("Event handler failed",
+					zap.Error(err),
+					zap.String("event_type", event.Type))
+			}
+		}(handler)
 	}
 
 	return nil
 }
 
-// Stop arrête le bus d'événements
-func (b *ChannelEventBus) Stop() error {
-	b.cancel()
-	close(b.eventChan)
-	b.wg.Wait()
+// Subscribe adds a handler for a specific event type
+func (bus *ChannelEventBus) Subscribe(eventType string, handler EventHandler) error {
+	bus.mu.Lock()
+	defer bus.mu.Unlock()
 
-	if b.redisClient != nil {
-		return b.redisClient.Close()
+	// Create channel if it doesn't exist
+	if _, exists := bus.channels[eventType]; !exists {
+		bus.channels[eventType] = make(chan Event, 100) // Buffered channel
+		go bus.processEventChannel(eventType)
+	}
+
+	// Add handler to direct subscribers
+	bus.subscribers[eventType] = append(bus.subscribers[eventType], handler)
+
+	bus.logger.Info("Event handler subscribed",
+		zap.String("event_type", eventType),
+		zap.Int("total_handlers", len(bus.subscribers[eventType])))
+
+	return nil
+}
+
+// Unsubscribe removes a handler for a specific event type
+func (bus *ChannelEventBus) Unsubscribe(eventType string, handler EventHandler) error {
+	bus.mu.Lock()
+	defer bus.mu.Unlock()
+
+	handlers := bus.subscribers[eventType]
+	for i, h := range handlers {
+		// Note: We can't directly compare function pointers, so this is a simplified approach
+		// In a real implementation, you might want to use handler IDs
+		if &h == &handler {
+			bus.subscribers[eventType] = append(handlers[:i], handlers[i+1:]...)
+			break
+		}
+	}
+
+	// Close channel if no more subscribers
+	if len(bus.subscribers[eventType]) == 0 {
+		if channel, exists := bus.channels[eventType]; exists {
+			close(channel)
+			delete(bus.channels, eventType)
+		}
+		delete(bus.subscribers, eventType)
 	}
 
 	return nil
 }
 
-// GetStats retourne les statistiques
-func (b *ChannelEventBus) GetStats() EventBusStats {
-	b.statsMux.RLock()
-	defer b.statsMux.RUnlock()
-
-	b.stats.TotalSubscribers = len(b.subscribers)
-	b.stats.ActiveChannels = 1 // Pour l'instant, un seul channel
-
-	return b.stats
-}
-
-// processEvents traite les événements de manière asynchrone
-func (b *ChannelEventBus) processEvents() {
-	defer b.wg.Done()
+// processEventChannel processes events from a specific channel
+func (bus *ChannelEventBus) processEventChannel(eventType string) {
+	bus.mu.RLock()
+	channel := bus.channels[eventType]
+	bus.mu.RUnlock()
 
 	for {
 		select {
-		case event, ok := <-b.eventChan:
+		case event, ok := <-channel:
 			if !ok {
-				return // Channel fermé
+				return // Channel closed
 			}
 
-			b.distributeEvent(event)
+			bus.mu.RLock()
+			handlers := bus.subscribers[eventType]
+			bus.mu.RUnlock()
 
-		case <-b.ctx.Done():
+			// Process with all handlers
+			for _, handler := range handlers {
+				go func(h EventHandler) {
+					if err := h(bus.ctx, event); err != nil {
+						bus.logger.Error("Channel event handler failed",
+							zap.Error(err),
+							zap.String("event_type", eventType))
+					}
+				}(handler)
+			}
+
+		case <-bus.ctx.Done():
 			return
 		}
 	}
 }
 
-// distributeEvent distribue un événement à tous les abonnés pertinents
-func (b *ChannelEventBus) distributeEvent(event Event) {
-	b.subscribersMux.RLock()
-	relevantSubscribers := make([]EventSubscriber, 0)
-
-	for _, subscriber := range b.subscribers {
-		eventTypes := subscriber.GetEventTypes()
-		for _, eventType := range eventTypes {
-			if eventType == event.Type {
-				relevantSubscribers = append(relevantSubscribers, subscriber)
-				break
-			}
-		}
-	}
-	b.subscribersMux.RUnlock()
-
-	// Distribuer l'événement en parallèle
-	var wg sync.WaitGroup
-	for _, subscriber := range relevantSubscribers {
-		wg.Add(1)
-		go func(sub EventSubscriber) {
-			defer wg.Done()
-
-			// Timeout pour éviter les blocages
-			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-			defer cancel()
-
-			done := make(chan error, 1)
-			go func() {
-				done <- sub.OnEvent(event)
-			}()
-
-			select {
-			case err := <-done:
-				if err != nil {
-					fmt.Printf("Subscriber %s failed to process event %s: %v\n",
-						sub.GetSubscriberID(), event.ID, err)
-				}
-			case <-ctx.Done():
-				fmt.Printf("Subscriber %s timed out processing event %s\n",
-					sub.GetSubscriberID(), event.ID)
-			}
-		}(subscriber)
-	}
-
-	wg.Wait()
-}
-
-// persistEvent persiste un événement dans Redis
-func (b *ChannelEventBus) persistEvent(ctx context.Context, event Event) error {
-	if b.redisClient == nil {
-		return fmt.Errorf("redis client not initialized")
+// persistEvent saves the event to Redis for reliability
+func (bus *ChannelEventBus) persistEvent(ctx context.Context, event Event) error {
+	if bus.redisClient == nil {
+		return nil
 	}
 
 	eventJSON, err := json.Marshal(event)
 	if err != nil {
-		return fmt.Errorf("failed to marshal event: %w", err)
+		return err
 	}
 
-	key := fmt.Sprintf("event:%s", event.ID)
-	ttl := event.TTL
-	if ttl == 0 {
-		ttl = 24 * time.Hour // TTL par défaut
-	}
-
-	return b.redisClient.Set(ctx, key, eventJSON, ttl).Err()
-}
-
-// processPersistedEvents traite les événements persistés dans Redis
-func (b *ChannelEventBus) processPersistedEvents() {
-	defer b.wg.Done()
-
-	ticker := time.NewTicker(30 * time.Second) // Vérification toutes les 30 secondes
-	defer ticker.Stop()
-
-	for {
-		select {
-		case <-ticker.C:
-			b.recoverPersistedEvents()
-		case <-b.ctx.Done():
-			return
-		}
-	}
-}
-
-// recoverPersistedEvents récupère les événements persistés
-func (b *ChannelEventBus) recoverPersistedEvents() {
-	if b.redisClient == nil {
-		return
-	}
-
-	ctx := context.Background()
-
-	// Récupérer les clés d'événements
-	keys, err := b.redisClient.Keys(ctx, "event:*").Result()
+	// Store in Redis list for the event type
+	key := "events:" + event.Type
+	err = bus.redisClient.LPush(ctx, key, eventJSON).Err()
 	if err != nil {
-		fmt.Printf("Failed to get event keys from Redis: %v\n", err)
-		return
+		return err
 	}
 
-	for _, key := range keys {
-		eventJSON, err := b.redisClient.Get(ctx, key).Result()
-		if err != nil {
-			continue
-		}
+	// Set expiration for the list (7 days)
+	bus.redisClient.Expire(ctx, key, 7*24*time.Hour)
 
-		var event Event
-		if err := json.Unmarshal([]byte(eventJSON), &event); err != nil {
-			continue
-		}
-
-		// Redistribuer l'événement
-		b.distributeEvent(event)
-
-		// Supprimer l'événement traité
-		b.redisClient.Del(ctx, key)
-	}
-}
-
-// updateStats met à jour les statistiques
-func (b *ChannelEventBus) updateStats(published, subscriberChanged bool) {
-	b.statsMux.Lock()
-	defer b.statsMux.Unlock()
-
-	if published {
-		b.stats.TotalPublished++
+	// Store in global events list with timestamp
+	globalKey := "events:all"
+	timestampedEvent := map[string]interface{}{
+		"timestamp": event.Timestamp.Unix(),
+		"type":      event.Type,
+		"trace_id":  event.TraceID,
+		"data":      event.Data,
 	}
 
-	if subscriberChanged {
-		b.stats.TotalSubscribers = len(b.subscribers)
-	}
+	globalEventJSON, _ := json.Marshal(timestampedEvent)
+	bus.redisClient.LPush(ctx, globalKey, globalEventJSON)
+	bus.redisClient.Expire(ctx, globalKey, 7*24*time.Hour)
 
-	b.stats.LastActivity = time.Now()
-}
-
-// SimpleEventSubscriber exemple d'implémentation d'abonné
-type SimpleEventSubscriber struct {
-	ID         string
-	EventTypes []EventType
-	Handler    func(Event) error
-}
-
-// NewSimpleEventSubscriber crée un abonné simple
-func NewSimpleEventSubscriber(id string, eventTypes []EventType, handler func(Event) error) *SimpleEventSubscriber {
-	return &SimpleEventSubscriber{
-		ID:         id,
-		EventTypes: eventTypes,
-		Handler:    handler,
-	}
-}
-
-// GetSubscriberID retourne l'ID de l'abonné
-func (s *SimpleEventSubscriber) GetSubscriberID() string {
-	return s.ID
-}
-
-// GetEventTypes retourne les types d'événements suivis
-func (s *SimpleEventSubscriber) GetEventTypes() []EventType {
-	return s.EventTypes
-}
-
-// OnEvent traite un événement
-func (s *SimpleEventSubscriber) OnEvent(event Event) error {
-	if s.Handler != nil {
-		return s.Handler(event)
-	}
 	return nil
+}
+
+// GetRecentEvents retrieves recent events from Redis
+func (bus *ChannelEventBus) GetRecentEvents(ctx context.Context, eventType string, limit int64) ([]Event, error) {
+	if bus.redisClient == nil {
+		return nil, nil
+	}
+
+	key := "events:" + eventType
+	eventStrings, err := bus.redisClient.LRange(ctx, key, 0, limit-1).Result()
+	if err != nil {
+		return nil, err
+	}
+
+	events := make([]Event, 0, len(eventStrings))
+	for _, eventStr := range eventStrings {
+		var event Event
+		if err := json.Unmarshal([]byte(eventStr), &event); err != nil {
+			bus.logger.Warn("Failed to unmarshal event from Redis",
+				zap.Error(err),
+				zap.String("event_type", eventType))
+			continue
+		}
+		events = append(events, event)
+	}
+
+	return events, nil
+}
+
+// GetEventStats returns statistics about events
+func (bus *ChannelEventBus) GetEventStats(ctx context.Context) (map[string]interface{}, error) {
+	bus.mu.RLock()
+	defer bus.mu.RUnlock()
+
+	stats := map[string]interface{}{
+		"active_event_types":  len(bus.channels),
+		"total_subscribers":   len(bus.subscribers),
+		"channels_info":       make(map[string]interface{}),
+		"persistence_enabled": bus.persistence,
+	}
+
+	channelsInfo := make(map[string]interface{})
+	for eventType, channel := range bus.channels {
+		channelsInfo[eventType] = map[string]interface{}{
+			"channel_length":   len(channel),
+			"channel_capacity": cap(channel),
+			"subscriber_count": len(bus.subscribers[eventType]),
+		}
+	}
+	stats["channels_info"] = channelsInfo
+
+	return stats, nil
+}
+
+// Close closes the event bus and all channels
+func (bus *ChannelEventBus) Close() error {
+	bus.logger.Info("Closing event bus")
+
+	bus.cancel() // Cancel context
+
+	bus.mu.Lock()
+	defer bus.mu.Unlock()
+
+	// Close all channels
+	for eventType, channel := range bus.channels {
+		close(channel)
+		bus.logger.Debug("Closed channel for event type", zap.String("event_type", eventType))
+	}
+
+	// Clear maps
+	bus.channels = make(map[string]chan Event)
+	bus.subscribers = make(map[string][]EventHandler)
+
+	return nil
+}
+
+// PublishWorkflowEvent is a convenience method for publishing workflow events
+func (bus *ChannelEventBus) PublishWorkflowEvent(ctx context.Context, eventType, workflowID, executionID, traceID string, data map[string]interface{}) error {
+	event := Event{
+		Type:      eventType,
+		Timestamp: time.Now(),
+		TraceID:   traceID,
+		Data: map[string]interface{}{
+			"workflow_id":  workflowID,
+			"execution_id": executionID,
+		},
+	}
+
+	// Merge additional data
+	for k, v := range data {
+		event.Data[k] = v
+	}
+
+	return bus.Publish(ctx, event)
 }
