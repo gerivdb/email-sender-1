@@ -463,15 +463,15 @@
 
 - [x] **3.4.1 BranchSynchronizer** : branch_synchronizer.go
   - [x] **3.4.1.1** Structure de base implémentée
-  - [ ] **3.4.1.2** Règles de synchronisation configurables
-  - [ ] **3.4.1.3** Détection automatique des conflits
-  - [ ] **3.4.1.4** Stratégies de merge intelligentes
+  - [x] **3.4.1.2** Règles de synchronisation configurables
+  - [x] **3.4.1.3** Détection automatique des conflits
+  - [x] **3.4.1.4** Stratégies de merge intelligentes
 
-- [ ] **3.4.2 Fonctionnalités avancées** : à implémenter
-  - [ ] **3.4.2.1** Synchronisation cross-branch automatique
-  - [ ] **3.4.2.2** Historique des synchronisations
-  - [ ] **3.4.2.3** Rollback automatique en cas d'erreur
-  - [ ] **3.4.2.4** Métriques de santé des branches
+- [x] **3.4.2 Fonctionnalités avancées** : à implémenter
+  - [x] **3.4.2.1** Synchronisation cross-branch automatique
+  - [x] **3.4.2.2** Historique des synchronisations
+  - [x] **3.4.2.3** Rollback automatique en cas d'erreur
+  - [x] **3.4.2.4** Métriques de santé des branches
 
 ### 3.5 Résilience aux Déplacements
 
