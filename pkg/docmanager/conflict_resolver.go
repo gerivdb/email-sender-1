@@ -276,6 +276,12 @@ func (cr *ConflictResolverImpl) Score(conflict *DocumentConflict) float64 {
 	return 1.0
 }
 
+// TODO: Implémenter la gestion précise de la durée d’implémentation (Durée: 10 min)
+// TODO: Ajouter un script ou une documentation pour les commandes build/test
+// TODO: Ajouter des hooks ou scripts pour go vet, go test, golangci-lint
+// TODO: Préparer un script ou une fonction de rollback (git checkout ...)
+// TODO: Ajouter des validations automatiques pour chaque étape
+
 // Interface contrat
 
 type ConflictResolverInterface interface {
