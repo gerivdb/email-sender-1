@@ -473,19 +473,315 @@
   - [x] **3.4.2.3** Rollback automatique en cas d'erreur
   - [x] **3.4.2.4** Métriques de santé des branches
 
-### 3.5 Résilience aux Déplacements
+### 🎯 RÉSILIENCE_AUX_DÉPLACEMENTS_SYSTÈME_INTELLIGENT
 
-- [x] **3.5.1 PathTracker** : path_tracker.go
-  - [x] **3.5.1.1** Structure de base implémentée
-  - [x] **3.5.1.2** Tracking par hash de contenu
-  - [ ] **3.5.1.3** Détection automatique des déplacements
-  - [ ] **3.5.1.4** Mise à jour des références automatique
+**ÉCOSYSTÈME DÉTECTÉ**: Go
 
-- [ ] **3.5.2 Fonctionnalités avancées** : à implémenter
-  - [ ] **3.5.2.1** Surveillance temps réel du système de fichiers
-  - [ ] **3.5.2.2** Récupération automatique des liens cassés
-  - [ ] **3.5.2.3** Historique complet des déplacements
-  - [ ] **3.5.2.4** Validation d'intégrité post-déplacement
+**FICHIER CIBLE**: pkg/docmanager/path_tracker.go
+
+**CONVENTIONS**: PascalCase pour types, camelCase pour méthodes
+
+#### 🏗️ NIVEAU 1: ARCHITECTURE_SYSTÈME_TRACKING_AVANCÉ
+
+- **Contexte**: Architecture DocManager existante avec PathTracker de base
+- **Intégration**: pkg/docmanager/path_tracker.go interface avec StatusTracker pattern du bridge
+
+##### 🔧 NIVEAU 2: MODULE_DÉTECTION_DÉPLACEMENTS
+
+- **Responsabilité**: Détection automatique et mise à jour des références après déplacement
+- **Interface**: DocumentMovementDetector + PathTracker interface existante
+
+###### ⚙️ NIVEAU 3: COMPOSANT_DÉTECTEUR_MOUVEMENT
+
+- **Type**: struct MovementDetector avec méthodes tracking avancées
+- **Localisation**: pkg/docmanager/path_tracker.go:ligne_150-300
+
+####### 📋 NIVEAU 4: INTERFACE_MOUVEMENT_INTELLIGENT
+
+```go
+// Interface pour la détection intelligente de mouvements
+type MovementDetector interface {
+    DetectMovedFile(newPath string) (*MovementResult, error)
+    UpdateAutomaticReferences(oldPath, newPath string) error
+    StartFileSystemWatcher() error
+    StopFileSystemWatcher() error
+    GetMovementHistory() []MovementEvent
+}
+
+type MovementResult struct {
+    OldPath    string
+    NewPath    string
+    Confidence float64
+    Timestamp  time.Time
+}
+```
+
+######## 🛠️ NIVEAU 5: MÉTHODE_DÉTECTION_AUTOMATIQUE
+
+```go
+// DetectMovedFile détecte automatiquement les déplacements via hash
+func (pt *PathTracker) DetectMovedFile(newPath string) (*MovementResult, error) {
+    pt.mu.RLock()
+    defer pt.mu.RUnlock()
+    
+    hash, err := pt.CalculateContentHash(newPath)
+    if err != nil {
+        return nil, fmt.Errorf("hash calculation failed: %w", err)
+    }
+    
+    for trackedPath, trackedHash := range pt.ContentHashes {
+        if trackedHash == hash && trackedPath != newPath {
+            confidence := pt.calculateMoveConfidence(trackedPath, newPath)
+            return &MovementResult{
+                OldPath:    trackedPath,
+                NewPath:    newPath,
+                Confidence: confidence,
+                Timestamp:  time.Now(),
+            }, nil
+        }
+    }
+    return nil, nil
+}
+```
+
+######### 🎯 NIVEAU 6: IMPLÉMENTATION_SURVEILLANCE_TEMPS_RÉEL
+
+- **Action**: Intégrer fsnotify pour surveillance système de fichiers
+- **Durée**: 10-15 min
+- **Commandes**:
+
+  ```bash
+  cd d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1
+  go get github.com/fsnotify/fsnotify
+  go mod tidy
+  ```
+
+########## 🔬 NIVEAU 7: ÉTAPE_AJOUT_WATCHER
+
+1. **Pré**: `go list -m github.com/fsnotify/fsnotify` → `module not found`
+2. **Exec**: `go get github.com/fsnotify/fsnotify@latest` → `dependency added`
+3. **Post**: `go mod tidy && go test ./pkg/docmanager` → `tests pass`
+
+########### ⚡ NIVEAU 8: ACTION_IMPORT_FSNOTIFY
+
+- **Instruction**: Ajouter import "github.com/fsnotify/fsnotify" dans path_tracker.go ligne 8
+- **Validation**: `go build ./pkg/docmanager`
+- **Rollback**: `git checkout -- pkg/docmanager/path_tracker.go`
+
+### 🎯 FONCTIONNALITÉS_AVANCÉES_RÉCUPÉRATION
+
+**ÉCOSYSTÈME DÉTECTÉ**: Go
+
+**FICHIER CIBLE**: pkg/docmanager/path_tracker.go
+
+**CONVENTIONS**: PascalCase pour types, camelCase pour méthodes
+
+#### 🏗️ NIVEAU 1: ARCHITECTURE_RÉCUPÉRATION_LIENS
+
+- **Contexte**: Extension PathTracker pour auto-récupération des liens cassés
+- **Intégration**: Utilise ContentHashes existants pour reconstruction intelligente
+
+##### 🔧 NIVEAU 2: MODULE_RÉCUPÉRATION_AUTOMATIQUE
+
+- **Responsabilité**: Récupération et réparation automatique des liens cassés
+- **Interface**: LinkRecoveryManager avec PathTracker
+
+###### ⚙️ NIVEAU 3: COMPOSANT_RÉPARATEUR_LIENS
+
+- **Type**: struct LinkRepairer avec mapping intelligent
+- **Localisation**: pkg/docmanager/path_tracker.go:ligne_400-550
+
+####### 📋 NIVEAU 4: INTERFACE_RÉCUPÉRATION_LIENS
+
+```go
+// Interface pour la récupération automatique de liens
+type LinkRecoveryManager interface {
+    ScanBrokenLinks(rootPath string) ([]BrokenLink, error)
+    RepairBrokenLink(link BrokenLink) (*RepairResult, error)
+    RepairAllBrokenLinks(links []BrokenLink) (*BatchRepairResult, error)
+    GetRecoveryHistory() []RecoveryEvent
+}
+
+type BrokenLink struct {
+    FilePath     string
+    LinkText     string
+    TargetPath   string
+    LineNumber   int
+    Confidence   float64
+}
+```
+
+######## 🛠️ NIVEAU 5: MÉTHODE_SCAN_LIENS_CASSÉS
+
+```go
+// ScanBrokenLinks scanne récursivement les liens cassés
+func (pt *PathTracker) ScanBrokenLinks(rootPath string) ([]BrokenLink, error) {
+    var brokenLinks []BrokenLink
+    
+    err := filepath.Walk(rootPath, func(path string, info os.FileInfo, err error) error {
+        if err != nil || !strings.HasSuffix(path, ".md") {
+            return err
+        }
+        
+        content, err := os.ReadFile(path)
+        if err != nil {
+            return err
+        }
+        
+        links := pt.extractMarkdownLinks(string(content))
+        for lineNum, link := range links {
+            if !pt.pathExists(link.TargetPath) {
+                brokenLinks = append(brokenLinks, BrokenLink{
+                    FilePath:   path,
+                    LinkText:   link.Text,
+                    TargetPath: link.TargetPath,
+                    LineNumber: lineNum,
+                    Confidence: pt.calculateRepairConfidence(link.TargetPath),
+                })
+            }
+        }
+        return nil
+    })
+    
+    return brokenLinks, err
+}
+```
+
+######### 🎯 NIVEAU 6: IMPLÉMENTATION_HISTORIQUE_MOUVEMENTS
+
+- **Action**: Implémenter système d'historique complet des déplacements
+- **Durée**: 12-18 min
+- **Commandes**:
+
+  ```bash
+  cd d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1
+  go test ./pkg/docmanager -run TestPathTracker_MovementHistory
+  go test ./pkg/docmanager -run TestPathTracker_RecoveryHistory
+  ```
+
+########## 🔬 NIVEAU 7: ÉTAPE_STRUCTURE_HISTORIQUE
+
+1. **Pré**: `grep -n "MovementEvent" pkg/docmanager/path_tracker.go` → `struct not found`
+2. **Exec**: `echo "type MovementEvent struct {}" >> pkg/docmanager/path_tracker.go` → `struct added`
+3. **Post**: `go build ./pkg/docmanager` → `compilation success`
+
+########### ⚡ NIVEAU 8: ACTION_AJOUTER_STRUCT_EVENT
+
+- **Instruction**: Ajouter struct MovementEvent après ligne 45 dans path_tracker.go
+- **Validation**: `go test ./pkg/docmanager -run TestMovementEvent`
+- **Rollback**: `git restore pkg/docmanager/path_tracker.go`
+
+### 🎯 VALIDATION_INTÉGRITÉ_POST_DÉPLACEMENT
+
+**ÉCOSYSTÈME DÉTECTÉ**: Go
+
+**FICHIER CIBLE**: pkg/docmanager/path_tracker.go
+
+**CONVENTIONS**: PascalCase pour types, camelCase pour méthodes
+
+#### 🏗️ NIVEAU 1: ARCHITECTURE_VALIDATION_INTÉGRITÉ
+
+- **Contexte**: Système de validation post-déplacement avec vérifications multi-niveaux
+- **Intégration**: Extension PathTracker avec checksums et validation croisée
+
+##### 🔧 NIVEAU 2: MODULE_VÉRIFICATION_INTÉGRITÉ
+
+- **Responsabilité**: Validation complète de l'intégrité après déplacements
+- **Interface**: IntegrityValidator avec PathTracker existant
+
+###### ⚙️ NIVEAU 3: COMPOSANT_VALIDATEUR_INTÉGRITÉ
+
+- **Type**: struct IntegrityValidator avec vérifications multi-étapes
+- **Localisation**: pkg/docmanager/path_tracker.go:ligne_600-750
+
+####### 📋 NIVEAU 4: INTERFACE_VALIDATION_INTÉGRITÉ
+
+```go
+// Interface pour validation d'intégrité post-déplacement
+type IntegrityValidator interface {
+    ValidatePostMove(oldPath, newPath string) (*IntegrityResult, error)
+    PerformFullIntegrityCheck(rootPath string) (*GlobalIntegrityResult, error)
+    ValidateReferenceConsistency() ([]InconsistencyError, error)
+    GenerateIntegrityReport() (*IntegrityReport, error)
+}
+
+type IntegrityResult struct {
+    Valid           bool
+    Hash            string
+    ReferenceCount  int
+    BrokenRefs      []string
+    ValidationTime  time.Duration
+}
+```
+
+######## 🛠️ NIVEAU 5: MÉTHODE_VALIDATION_POST_MOVE
+
+```go
+// ValidatePostMove valide l'intégrité après un déplacement
+func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResult, error) {
+    startTime := time.Now()
+    
+    // Vérification hash du nouveau fichier
+    newHash, err := pt.CalculateContentHash(newPath)
+    if err != nil {
+        return nil, fmt.Errorf("hash validation failed: %w", err)
+    }
+    
+    // Vérification que l'ancien hash correspond
+    oldHash, exists := pt.ContentHashes[oldPath]
+    if !exists || oldHash != newHash {
+        return &IntegrityResult{
+            Valid: false,
+            Hash:  newHash,
+            ValidationTime: time.Since(startTime),
+        }, nil
+    }
+    
+    // Validation des références mises à jour
+    brokenRefs := pt.scanForBrokenReferences(newPath)
+    refCount := pt.countReferencesToFile(newPath)
+    
+    return &IntegrityResult{
+        Valid:          len(brokenRefs) == 0,
+        Hash:           newHash,
+        ReferenceCount: refCount,
+        BrokenRefs:     brokenRefs,
+        ValidationTime: time.Since(startTime),
+    }, nil
+}
+```
+
+######### 🎯 NIVEAU 6: IMPLÉMENTATION_VÉRIFICATION_CROISÉE
+
+- **Action**: Implémenter validation croisée des références et checksums
+- **Durée**: 15-20 min
+- **Commandes**:
+
+  ```bash
+  cd d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1
+  go test ./pkg/docmanager -run TestIntegrityValidation -v
+  go test ./pkg/docmanager -run TestCrossReferenceValidation -v
+  ```
+
+########## 🔬 NIVEAU 7: ÉTAPE_TESTS_INTÉGRITÉ
+
+1. **Pré**: `go test ./pkg/docmanager -list TestIntegrity` → `no tests found`
+2. **Exec**: `go test ./pkg/docmanager -run TestPathTracker_ValidatePostMove` → `test created`
+3. **Post**: `go test ./pkg/docmanager -cover` → `coverage increased`
+
+########### ⚡ NIVEAU 8: ACTION_AJOUTER_TEST_INTÉGRITÉ
+
+- **Instruction**: Créer TestPathTracker_ValidatePostMove dans path_tracker_test.go
+- **Validation**: `go test ./pkg/docmanager -run TestPathTracker_ValidatePostMove -v`
+- **Rollback**: `git restore pkg/docmanager/path_tracker_test.go`
+
+### 📊 VALIDATION
+
+- [ ] **Build**: `go build ./pkg/docmanager` → Success  
+- [ ] **Tests**: `go test ./pkg/docmanager -v` → Pass
+- [ ] **Lint**: `golangci-lint run ./pkg/docmanager` → Clean
+
+**Rollback**: `git restore pkg/docmanager/path_tracker.go pkg/docmanager/path_tracker_test.go`
 
 ### 3.6 Résolution de Conflits
 

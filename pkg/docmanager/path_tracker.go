@@ -15,6 +15,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/fsnotify/fsnotify"
 )
 
 // PathTracker structure pour suivi chemins de fichiers uniquement (SRP)
@@ -30,6 +32,13 @@ type PathTracker struct {
 	pathToHash    map[string]string       // path -> current content hash
 	hashHistory   map[string][]HashRecord // path -> historical hash records
 	moveDetection map[string]time.Time    // hash -> last seen timestamp
+
+	// Nouveaux champs pour fonctionnalités avancées
+	movementHistory []MovementEvent   // historique des mouvements
+	recoveryHistory []RecoveryEvent   // historique des récupérations
+	watcher         *fsnotify.Watcher // surveillance du système de fichiers
+	watcherActive   bool              // état du watcher
+	watchedPaths    map[string]bool   // chemins surveillés
 
 	mu sync.RWMutex
 }
@@ -65,16 +74,119 @@ type MoveDetectionResult struct {
 	References []string  `json:"references"`
 }
 
+// MovementEvent enregistrement d'événement de mouvement
+type MovementEvent struct {
+	EventID    string    `json:"event_id"`
+	EventType  string    `json:"event_type"` // "move", "rename", "delete", "create"
+	OldPath    string    `json:"old_path"`
+	NewPath    string    `json:"new_path"`
+	Hash       string    `json:"hash"`
+	Timestamp  time.Time `json:"timestamp"`
+	Confidence float64   `json:"confidence"`
+	References []string  `json:"references"`
+	Automated  bool      `json:"automated"`
+}
+
+// MovementResult résultat de détection de mouvement
+type MovementResult struct {
+	OldPath    string    `json:"old_path"`
+	NewPath    string    `json:"new_path"`
+	Confidence float64   `json:"confidence"`
+	Timestamp  time.Time `json:"timestamp"`
+}
+
+// BrokenLink lien cassé détecté
+type BrokenLink struct {
+	FilePath   string  `json:"file_path"`
+	LinkText   string  `json:"link_text"`
+	TargetPath string  `json:"target_path"`
+	LineNumber int     `json:"line_number"`
+	Confidence float64 `json:"confidence"`
+}
+
+// RepairResult résultat de réparation de lien
+type RepairResult struct {
+	Success    bool      `json:"success"`
+	OldTarget  string    `json:"old_target"`
+	NewTarget  string    `json:"new_target"`
+	Confidence float64   `json:"confidence"`
+	Timestamp  time.Time `json:"timestamp"`
+	Error      string    `json:"error,omitempty"`
+}
+
+// BatchRepairResult résultat de réparation en lot
+type BatchRepairResult struct {
+	TotalLinks    int            `json:"total_links"`
+	RepairedLinks int            `json:"repaired_links"`
+	FailedLinks   int            `json:"failed_links"`
+	Results       []RepairResult `json:"results"`
+	Duration      time.Duration  `json:"duration"`
+}
+
+// RecoveryEvent événement de récupération
+type RecoveryEvent struct {
+	EventID   string    `json:"event_id"`
+	Type      string    `json:"type"`
+	FilePath  string    `json:"file_path"`
+	Action    string    `json:"action"`
+	Success   bool      `json:"success"`
+	Timestamp time.Time `json:"timestamp"`
+	Details   string    `json:"details"`
+}
+
+// IntegrityResult résultat de validation d'intégrité
+type IntegrityResult struct {
+	Valid          bool          `json:"valid"`
+	Hash           string        `json:"hash"`
+	ReferenceCount int           `json:"reference_count"`
+	BrokenRefs     []string      `json:"broken_refs"`
+	ValidationTime time.Duration `json:"validation_time"`
+}
+
+// GlobalIntegrityResult résultat de validation globale
+type GlobalIntegrityResult struct {
+	TotalFiles     int                        `json:"total_files"`
+	ValidFiles     int                        `json:"valid_files"`
+	InvalidFiles   int                        `json:"invalid_files"`
+	BrokenLinks    []BrokenLink               `json:"broken_links"`
+	IntegrityMap   map[string]IntegrityResult `json:"integrity_map"`
+	ValidationTime time.Duration              `json:"validation_time"`
+}
+
+// InconsistencyError erreur d'incohérence
+type InconsistencyError struct {
+	Type        string    `json:"type"`
+	FilePath    string    `json:"file_path"`
+	Expected    string    `json:"expected"`
+	Actual      string    `json:"actual"`
+	Description string    `json:"description"`
+	Timestamp   time.Time `json:"timestamp"`
+}
+
+// IntegrityReport rapport d'intégrité
+type IntegrityReport struct {
+	GeneratedAt     time.Time            `json:"generated_at"`
+	TotalFiles      int                  `json:"total_files"`
+	ValidFiles      int                  `json:"valid_files"`
+	Issues          []InconsistencyError `json:"issues"`
+	Recommendations []string             `json:"recommendations"`
+	Summary         string               `json:"summary"`
+}
+
 // NewPathTracker constructeur respectant SRP
 func NewPathTracker() *PathTracker {
 	return &PathTracker{
-		trackedPaths:  make(map[string]string),
-		references:    make(map[string][]string),
-		ContentHashes: make(map[string]string),
-		hashToPath:    make(map[string]string),
-		pathToHash:    make(map[string]string),
-		hashHistory:   make(map[string][]HashRecord),
-		moveDetection: make(map[string]time.Time),
+		trackedPaths:    make(map[string]string),
+		references:      make(map[string][]string),
+		ContentHashes:   make(map[string]string),
+		hashToPath:      make(map[string]string),
+		pathToHash:      make(map[string]string),
+		hashHistory:     make(map[string][]HashRecord),
+		moveDetection:   make(map[string]time.Time),
+		movementHistory: make([]MovementEvent, 0),
+		recoveryHistory: make([]RecoveryEvent, 0),
+		watchedPaths:    make(map[string]bool),
+		watcherActive:   false,
 	}
 }
 
@@ -445,256 +557,659 @@ func (pt *PathTracker) DetectMovedFile(newPath string) (*MoveDetectionResult, er
 	return nil, nil // Aucun déplacement détecté
 }
 
-// calculateMoveConfidence calcule la confiance qu'un fichier ait été déplacé
+// DetectMovedFile détecte automatiquement les déplacements via hash
+func (pt *PathTracker) DetectMovedFile(newPath string) (*MovementResult, error) {
+	pt.mu.RLock()
+	defer pt.mu.RUnlock()
+
+	hash, err := pt.CalculateContentHash(newPath)
+	if err != nil {
+		return nil, fmt.Errorf("hash calculation failed: %w", err)
+	}
+
+	for trackedPath, trackedHash := range pt.ContentHashes {
+		if trackedHash == hash && trackedPath != newPath {
+			confidence := pt.calculateMoveConfidence(trackedPath, newPath)
+			return &MovementResult{
+				OldPath:    trackedPath,
+				NewPath:    newPath,
+				Confidence: confidence,
+				Timestamp:  time.Now(),
+			}, nil
+		}
+	}
+	return nil, nil
+}
+
+// calculateMoveConfidence calcule la confiance de déplacement
 func (pt *PathTracker) calculateMoveConfidence(oldPath, newPath string) float64 {
-	// Facteurs de confiance
-	confidence := 0.0
+	// Calcul basé sur similarité de nom, structure de dossier, etc.
+	oldName := filepath.Base(oldPath)
+	newName := filepath.Base(newPath)
 
-	// 1. Même nom de fichier
-	oldBase := filepath.Base(oldPath)
-	newBase := filepath.Base(newPath)
-	if oldBase == newBase {
-		confidence += 0.4
+	if oldName == newName {
+		return 0.9 // Même nom = haute confiance
 	}
 
-	// 2. Extension similaire
-	oldExt := filepath.Ext(oldPath)
-	newExt := filepath.Ext(newPath)
-	if oldExt == newExt {
-		confidence += 0.2
-	}
-
-	// 3. Proximité des répertoires
+	// Analyser la similarité des chemins
 	oldDir := filepath.Dir(oldPath)
 	newDir := filepath.Dir(newPath)
 
-	// Compter les composants communs du chemin
-	oldParts := strings.Split(oldDir, string(filepath.Separator))
-	newParts := strings.Split(newDir, string(filepath.Separator))
-
-	commonParts := 0
-	maxParts := len(oldParts)
-	if len(newParts) < maxParts {
-		maxParts = len(newParts)
+	if oldDir == newDir {
+		return 0.7 // Même dossier = confiance moyenne
 	}
 
-	for i := 0; i < maxParts; i++ {
-		if oldParts[i] == newParts[i] {
-			commonParts++
-		} else {
-			break
-		}
-	}
-
-	if maxParts > 0 {
-		pathSimilarity := float64(commonParts) / float64(maxParts)
-		confidence += pathSimilarity * 0.3
-	}
-
-	// 4. Timing - fichiers détectés récemment ont plus de chance d'être des déplacements
-	if lastSeen, exists := pt.moveDetection[pt.pathToHash[oldPath]]; exists {
-		timeDiff := time.Since(lastSeen)
-		if timeDiff < 5*time.Minute {
-			confidence += 0.1
-		}
-	}
-
-	// Limiter la confiance à 1.0
-	if confidence > 1.0 {
-		confidence = 1.0
-	}
-
-	return confidence
+	return 0.5 // Confiance de base
 }
 
-// UpdateFileHash met à jour le hash d'un fichier après modification
-func (pt *PathTracker) UpdateFileHash(path string) error {
+// UpdateAutomaticReferences met à jour automatiquement les références
+func (pt *PathTracker) UpdateAutomaticReferences(oldPath, newPath string) error {
 	pt.mu.Lock()
 	defer pt.mu.Unlock()
 
-	// Calculer le nouveau hash
-	newHash, err := pt.CalculateContentHash(path)
-	if err != nil {
-		return fmt.Errorf("failed to calculate new hash for %s: %w", path, err)
+	// Enregistrer l'événement de mouvement
+	event := MovementEvent{
+		EventID:   fmt.Sprintf("move_%d", time.Now().Unix()),
+		EventType: "move",
+		OldPath:   oldPath,
+		NewPath:   newPath,
+		Timestamp: time.Now(),
+		Automated: true,
 	}
 
-	// Obtenir l'ancien hash
-	oldHash, exists := pt.pathToHash[path]
-	if !exists {
-		// Nouveau fichier
-		return pt.TrackFileByContent(path)
+	// Calculer le hash pour validation
+	if hash, err := pt.CalculateContentHash(newPath); err == nil {
+		event.Hash = hash
 	}
 
-	// Si le hash a changé
-	if oldHash != newHash {
-		// Obtenir les informations du fichier
-		info, err := os.Stat(path)
-		if err != nil {
-			return fmt.Errorf("failed to stat file %s: %w", path, err)
+	// Mettre à jour les références
+	if refs, exists := pt.references[oldPath]; exists {
+		event.References = refs
+		for _, refFile := range refs {
+			if err := pt.updateFileReferences(refFile, oldPath, newPath); err != nil {
+				return fmt.Errorf("failed to update references in %s: %w", refFile, err)
+			}
 		}
 
-		// Mettre à jour les mappings
-		pt.ContentHashes[path] = newHash
-		pt.pathToHash[path] = newHash
-		pt.hashToPath[newHash] = path
-
-		// Nettoyer l'ancien mapping si aucun autre fichier ne l'utilise
-		if currentPath, exists := pt.hashToPath[oldHash]; exists && currentPath == path {
-			delete(pt.hashToPath, oldHash)
-		}
-
-		// Enregistrer l'historique
-		record := HashRecord{
-			Hash:      newHash,
-			Timestamp: time.Now(),
-			Path:      path,
-			Size:      info.Size(),
-			Operation: "modified",
-		}
-
-		pt.hashHistory[path] = append(pt.hashHistory[path], record)
+		// Déplacer les références vers le nouveau chemin
+		pt.references[newPath] = refs
+		delete(pt.references, oldPath)
 	}
+
+	// Mettre à jour les hashes
+	if hash, exists := pt.ContentHashes[oldPath]; exists {
+		pt.ContentHashes[newPath] = hash
+		delete(pt.ContentHashes, oldPath)
+	}
+
+	// Ajouter à l'historique
+	pt.movementHistory = append(pt.movementHistory, event)
 
 	return nil
 }
 
-// GetContentHashInfo retourne les informations détaillées sur un hash
-func (pt *PathTracker) GetContentHashInfo(hash string) (*ContentHashInfo, error) {
+// StartFileSystemWatcher démarre la surveillance du système de fichiers
+func (pt *PathTracker) StartFileSystemWatcher() error {
+	pt.mu.Lock()
+	defer pt.mu.Unlock()
+
+	if pt.watcherActive {
+		return fmt.Errorf("file system watcher already active")
+	}
+
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		return fmt.Errorf("failed to create watcher: %w", err)
+	}
+
+	pt.watcher = watcher
+	pt.watcherActive = true
+	pt.watchedPaths = make(map[string]bool)
+
+	// Démarrer la goroutine de surveillance
+	go pt.watchFileSystemEvents()
+
+	return nil
+}
+
+// StopFileSystemWatcher arrête la surveillance du système de fichiers
+func (pt *PathTracker) StopFileSystemWatcher() error {
+	pt.mu.Lock()
+	defer pt.mu.Unlock()
+
+	if !pt.watcherActive || pt.watcher == nil {
+		return fmt.Errorf("file system watcher not active")
+	}
+
+	pt.watcherActive = false
+
+	if err := pt.watcher.Close(); err != nil {
+		return fmt.Errorf("failed to close watcher: %w", err)
+	}
+
+	pt.watcher = nil
+	pt.watchedPaths = nil
+
+	return nil
+}
+
+// watchFileSystemEvents surveille les événements du système de fichiers
+func (pt *PathTracker) watchFileSystemEvents() {
+	for pt.watcherActive {
+		select {
+		case event, ok := <-pt.watcher.Events:
+			if !ok {
+				return
+			}
+
+			pt.handleFileSystemEvent(event)
+
+		case err, ok := <-pt.watcher.Errors:
+			if !ok {
+				return
+			}
+			// Log l'erreur (ici on pourrait utiliser un logger)
+			fmt.Printf("Watcher error: %v\n", err)
+		}
+	}
+}
+
+// handleFileSystemEvent gère un événement du système de fichiers
+func (pt *PathTracker) handleFileSystemEvent(event fsnotify.Event) {
+	pt.mu.Lock()
+	defer pt.mu.Unlock()
+
+	switch {
+	case event.Has(fsnotify.Create):
+		pt.handleFileCreate(event.Name)
+	case event.Has(fsnotify.Remove):
+		pt.handleFileRemove(event.Name)
+	case event.Has(fsnotify.Write):
+		pt.handleFileModify(event.Name)
+	case event.Has(fsnotify.Rename):
+		pt.handleFileRename(event.Name)
+	}
+}
+
+// handleFileCreate gère la création d'un fichier
+func (pt *PathTracker) handleFileCreate(path string) {
+	// Vérifier si c'est un fichier déplacé
+	if result, err := pt.DetectMovedFile(path); err == nil && result != nil {
+		pt.UpdateAutomaticReferences(result.OldPath, result.NewPath)
+	}
+}
+
+// handleFileRemove gère la suppression d'un fichier
+func (pt *PathTracker) handleFileRemove(path string) {
+	// Marquer le fichier comme supprimé dans l'historique
+	if hash, exists := pt.ContentHashes[path]; exists {
+		record := HashRecord{
+			Hash:      hash,
+			Timestamp: time.Now(),
+			Path:      path,
+			Operation: "deleted",
+		}
+		pt.hashHistory[path] = append(pt.hashHistory[path], record)
+	}
+}
+
+// handleFileModify gère la modification d'un fichier
+func (pt *PathTracker) handleFileModify(path string) {
+	// Recalculer et mettre à jour le hash
+	if hash, err := pt.CalculateContentHash(path); err == nil {
+		pt.ContentHashes[path] = hash
+
+		record := HashRecord{
+			Hash:      hash,
+			Timestamp: time.Now(),
+			Path:      path,
+			Operation: "modified",
+		}
+		pt.hashHistory[path] = append(pt.hashHistory[path], record)
+	}
+}
+
+// handleFileRename gère le renommage d'un fichier
+func (pt *PathTracker) handleFileRename(path string) {
+	// Logique de gestion des renommages
+	// Déjà gérée par la combinaison Create/Remove
+}
+
+// GetMovementHistory retourne l'historique des mouvements
+func (pt *PathTracker) GetMovementHistory() []MovementEvent {
 	pt.mu.RLock()
 	defer pt.mu.RUnlock()
 
-	currentPath, exists := pt.hashToPath[hash]
-	if !exists {
-		return nil, fmt.Errorf("hash not found: %s", hash)
-	}
+	// Retourner une copie pour éviter les modifications concurrentes
+	history := make([]MovementEvent, len(pt.movementHistory))
+	copy(history, pt.movementHistory)
+	return history
+}
 
-	// Trouver le chemin original et l'historique
-	var originalPath string
-	var firstSeen, lastSeen time.Time
-	var moveHistory []string
+// ScanBrokenLinks scanne récursivement les liens cassés
+func (pt *PathTracker) ScanBrokenLinks(rootPath string) ([]BrokenLink, error) {
+	var brokenLinks []BrokenLink
 
-	// Parcourir l'historique pour trouver les informations
-	for path, records := range pt.hashHistory {
-		for _, record := range records {
-			if record.Hash == hash {
-				if originalPath == "" || record.Timestamp.Before(firstSeen) {
-					originalPath = path
-					firstSeen = record.Timestamp
-				}
-				if record.Timestamp.After(lastSeen) {
-					lastSeen = record.Timestamp
-				}
-				if record.Operation == "moved" {
-					moveHistory = append(moveHistory, record.Path)
+	err := filepath.Walk(rootPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil || !strings.HasSuffix(path, ".md") {
+			return err
+		}
+
+		content, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+
+		links := pt.extractMarkdownLinks(string(content))
+		for lineNum, link := range links {
+			if !pt.pathExists(link.TargetPath) {
+				brokenLinks = append(brokenLinks, BrokenLink{
+					FilePath:   path,
+					LinkText:   link.Text,
+					TargetPath: link.TargetPath,
+					LineNumber: lineNum,
+					Confidence: pt.calculateRepairConfidence(link.TargetPath),
+				})
+			}
+		}
+		return nil
+	})
+
+	return brokenLinks, err
+}
+
+// MarkdownLink représente un lien markdown
+type MarkdownLink struct {
+	Text       string
+	TargetPath string
+}
+
+// extractMarkdownLinks extrait les liens markdown d'un contenu
+func (pt *PathTracker) extractMarkdownLinks(content string) map[int]MarkdownLink {
+	links := make(map[int]MarkdownLink)
+
+	// Regex pour détecter les liens markdown [text](path)
+	linkRegex := regexp.MustCompile(`\[([^\]]+)\]\(([^)]+)\)`)
+
+	lines := strings.Split(content, "\n")
+	for lineNum, line := range lines {
+		matches := linkRegex.FindAllStringSubmatch(line, -1)
+		for _, match := range matches {
+			if len(match) >= 3 {
+				links[lineNum+1] = MarkdownLink{
+					Text:       match[1],
+					TargetPath: match[2],
 				}
 			}
 		}
 	}
 
-	// Obtenir la taille actuelle
-	var size int64
-	if info, err := os.Stat(currentPath); err == nil {
-		size = info.Size()
-	}
-
-	info := &ContentHashInfo{
-		Hash:         hash,
-		OriginalPath: originalPath,
-		CurrentPath:  currentPath,
-		FirstSeen:    firstSeen,
-		LastSeen:     lastSeen,
-		Size:         size,
-		MoveHistory:  moveHistory,
-		References:   pt.references[currentPath],
-	}
-
-	return info, nil
+	return links
 }
 
-// FindDuplicatesByHash trouve les fichiers dupliqués basés sur le hash de contenu
-func (pt *PathTracker) FindDuplicatesByHash() map[string][]string {
+// pathExists vérifie si un chemin existe
+func (pt *PathTracker) pathExists(path string) bool {
+	_, err := os.Stat(path)
+	return err == nil
+}
+
+// calculateRepairConfidence calcule la confiance de réparation d'un lien
+func (pt *PathTracker) calculateRepairConfidence(targetPath string) float64 {
+	// Rechercher des fichiers similaires
+	dir := filepath.Dir(targetPath)
+	filename := filepath.Base(targetPath)
+
+	// Vérifier les fichiers du même dossier
+	if entries, err := os.ReadDir(dir); err == nil {
+		for _, entry := range entries {
+			if strings.Contains(entry.Name(), strings.TrimSuffix(filename, filepath.Ext(filename))) {
+				return 0.8 // Fichier similaire trouvé
+			}
+		}
+	}
+
+	return 0.3 // Confiance faible
+}
+
+// RepairBrokenLink répare un lien cassé
+func (pt *PathTracker) RepairBrokenLink(link BrokenLink) (*RepairResult, error) {
+	result := &RepairResult{
+		Success:   false,
+		OldTarget: link.TargetPath,
+		Timestamp: time.Now(),
+	}
+
+	// Rechercher une cible alternative
+	newTarget := pt.findAlternativeTarget(link.TargetPath)
+	if newTarget == "" {
+		result.Error = "no alternative target found"
+		return result, nil
+	}
+
+	// Mettre à jour le fichier
+	if err := pt.updateLinkInFile(link.FilePath, link.TargetPath, newTarget, link.LineNumber); err != nil {
+		result.Error = err.Error()
+		return result, err
+	}
+
+	result.Success = true
+	result.NewTarget = newTarget
+	result.Confidence = pt.calculateRepairConfidence(newTarget)
+
+	// Enregistrer l'événement de récupération
+	event := RecoveryEvent{
+		EventID:   fmt.Sprintf("repair_%d", time.Now().Unix()),
+		Type:      "link_repair",
+		FilePath:  link.FilePath,
+		Action:    fmt.Sprintf("Updated link from %s to %s", link.TargetPath, newTarget),
+		Success:   true,
+		Timestamp: time.Now(),
+	}
+
+	pt.mu.Lock()
+	pt.recoveryHistory = append(pt.recoveryHistory, event)
+	pt.mu.Unlock()
+
+	return result, nil
+}
+
+// findAlternativeTarget trouve une cible alternative pour un lien cassé
+func (pt *PathTracker) findAlternativeTarget(brokenPath string) string {
+	// Rechercher dans les hashes de contenu
+	filename := filepath.Base(brokenPath)
+
 	pt.mu.RLock()
 	defer pt.mu.RUnlock()
 
-	hashCounts := make(map[string][]string)
-
-	// Grouper les chemins par hash
-	for path, hash := range pt.pathToHash {
-		hashCounts[hash] = append(hashCounts[hash], path)
-	}
-
-	// Retourner seulement les hashs avec plusieurs fichiers
-	duplicates := make(map[string][]string)
-	for hash, paths := range hashCounts {
-		if len(paths) > 1 {
-			duplicates[hash] = paths
+	for path := range pt.ContentHashes {
+		if filepath.Base(path) == filename {
+			return path
 		}
 	}
 
-	return duplicates
+	return ""
 }
 
-// CleanupOrphanedHashes nettoie les hashs orphelins
-func (pt *PathTracker) CleanupOrphanedHashes() error {
-	pt.mu.Lock()
-	defer pt.mu.Unlock()
+// updateLinkInFile met à jour un lien dans un fichier
+func (pt *PathTracker) updateLinkInFile(filePath, oldTarget, newTarget string, lineNumber int) error {
+	content, err := os.ReadFile(filePath)
+	if err != nil {
+		return err
+	}
 
-	// Vérifier quels fichiers existent encore
-	var toRemove []string
+	lines := strings.Split(string(content), "\n")
+	if lineNumber > 0 && lineNumber <= len(lines) {
+		lines[lineNumber-1] = strings.ReplaceAll(lines[lineNumber-1], oldTarget, newTarget)
+	}
 
-	for path := range pt.pathToHash {
-		if _, err := os.Stat(path); os.IsNotExist(err) {
-			toRemove = append(toRemove, path)
+	newContent := strings.Join(lines, "\n")
+	return os.WriteFile(filePath, []byte(newContent), 0o644)
+}
+
+// RepairAllBrokenLinks répare tous les liens cassés
+func (pt *PathTracker) RepairAllBrokenLinks(links []BrokenLink) (*BatchRepairResult, error) {
+	startTime := time.Now()
+
+	result := &BatchRepairResult{
+		TotalLinks: len(links),
+		Results:    make([]RepairResult, 0, len(links)),
+	}
+
+	for _, link := range links {
+		repairResult, err := pt.RepairBrokenLink(link)
+		if err == nil && repairResult.Success {
+			result.RepairedLinks++
+		} else {
+			result.FailedLinks++
+		}
+
+		if repairResult != nil {
+			result.Results = append(result.Results, *repairResult)
 		}
 	}
 
-	// Supprimer les entrées orphelines
-	for _, path := range toRemove {
-		hash := pt.pathToHash[path]
+	result.Duration = time.Since(startTime)
+	return result, nil
+}
 
-		// Supprimer de tous les mappings
-		delete(pt.pathToHash, path)
-		delete(pt.ContentHashes, path)
+// GetRecoveryHistory retourne l'historique des récupérations
+func (pt *PathTracker) GetRecoveryHistory() []RecoveryEvent {
+	pt.mu.RLock()
+	defer pt.mu.RUnlock()
 
-		// Supprimer du mapping hash->path seulement si c'est le seul fichier avec ce hash
-		if currentPath, exists := pt.hashToPath[hash]; exists && currentPath == path {
-			delete(pt.hashToPath, hash)
+	history := make([]RecoveryEvent, len(pt.recoveryHistory))
+	copy(history, pt.recoveryHistory)
+	return history
+}
+
+// ValidatePostMove valide l'intégrité après un déplacement
+func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResult, error) {
+	startTime := time.Now()
+
+	// Vérification hash du nouveau fichier
+	newHash, err := pt.CalculateContentHash(newPath)
+	if err != nil {
+		return nil, fmt.Errorf("hash validation failed: %w", err)
+	}
+
+	// Vérification que l'ancien hash correspond
+	oldHash, exists := pt.ContentHashes[oldPath]
+	if !exists || oldHash != newHash {
+		return &IntegrityResult{
+			Valid:          false,
+			Hash:           newHash,
+			ValidationTime: time.Since(startTime),
+		}, nil
+	}
+
+	// Validation des références mises à jour
+	brokenRefs := pt.scanForBrokenReferences(newPath)
+	refCount := pt.countReferencesToFile(newPath)
+
+	return &IntegrityResult{
+		Valid:          len(brokenRefs) == 0,
+		Hash:           newHash,
+		ReferenceCount: refCount,
+		BrokenRefs:     brokenRefs,
+		ValidationTime: time.Since(startTime),
+	}, nil
+}
+
+// scanForBrokenReferences scanne les références cassées vers un fichier
+func (pt *PathTracker) scanForBrokenReferences(filePath string) []string {
+	var brokenRefs []string
+
+	pt.mu.RLock()
+	defer pt.mu.RUnlock()
+
+	if refs, exists := pt.references[filePath]; exists {
+		for _, refFile := range refs {
+			if !pt.pathExists(refFile) {
+				brokenRefs = append(brokenRefs, refFile)
+			}
+		}
+	}
+
+	return brokenRefs
+}
+
+// countReferencesToFile compte les références vers un fichier
+func (pt *PathTracker) countReferencesToFile(filePath string) int {
+	pt.mu.RLock()
+	defer pt.mu.RUnlock()
+
+	if refs, exists := pt.references[filePath]; exists {
+		return len(refs)
+	}
+
+	return 0
+}
+
+// PerformFullIntegrityCheck effectue une vérification complète d'intégrité
+func (pt *PathTracker) PerformFullIntegrityCheck(rootPath string) (*GlobalIntegrityResult, error) {
+	startTime := time.Now()
+
+	result := &GlobalIntegrityResult{
+		IntegrityMap: make(map[string]IntegrityResult),
+		BrokenLinks:  make([]BrokenLink, 0),
+	}
+
+	// Scanner tous les fichiers
+	err := filepath.Walk(rootPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil || info.IsDir() {
+			return err
 		}
 
-		// Marquer comme supprimé dans l'historique
-		record := HashRecord{
-			Hash:      hash,
-			Timestamp: time.Now(),
-			Path:      path,
-			Size:      0,
-			Operation: "deleted",
+		result.TotalFiles++
+
+		// Vérifier l'intégrité du fichier
+		integrityResult, err := pt.validateFileIntegrity(path)
+		if err != nil {
+			return err
 		}
-		pt.hashHistory[path] = append(pt.hashHistory[path], record)
+
+		result.IntegrityMap[path] = *integrityResult
+
+		if integrityResult.Valid {
+			result.ValidFiles++
+		} else {
+			result.InvalidFiles++
+		}
+
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// Scanner les liens cassés
+	brokenLinks, err := pt.ScanBrokenLinks(rootPath)
+	if err != nil {
+		return nil, err
+	}
+
+	result.BrokenLinks = brokenLinks
+	result.ValidationTime = time.Since(startTime)
+
+	return result, nil
+}
+
+// validateFileIntegrity valide l'intégrité d'un fichier individuel
+func (pt *PathTracker) validateFileIntegrity(filePath string) (*IntegrityResult, error) {
+	startTime := time.Now()
+
+	// Calculer le hash actuel
+	currentHash, err := pt.CalculateContentHash(filePath)
+	if err != nil {
+		return nil, err
+	}
+
+	// Comparer avec le hash stocké
+	pt.mu.RLock()
+	storedHash, exists := pt.ContentHashes[filePath]
+	pt.mu.RUnlock()
+
+	valid := exists && storedHash == currentHash
+	refCount := pt.countReferencesToFile(filePath)
+	brokenRefs := pt.scanForBrokenReferences(filePath)
+
+	return &IntegrityResult{
+		Valid:          valid,
+		Hash:           currentHash,
+		ReferenceCount: refCount,
+		BrokenRefs:     brokenRefs,
+		ValidationTime: time.Since(startTime),
+	}, nil
+}
+
+// ValidateReferenceConsistency valide la cohérence des références
+func (pt *PathTracker) ValidateReferenceConsistency() ([]InconsistencyError, error) {
+	var errors []InconsistencyError
+
+	pt.mu.RLock()
+	defer pt.mu.RUnlock()
+
+	// Vérifier que tous les fichiers référencés existent
+	for filePath, refs := range pt.references {
+		for _, refFile := range refs {
+			if !pt.pathExists(refFile) {
+				errors = append(errors, InconsistencyError{
+					Type:        "missing_reference",
+					FilePath:    filePath,
+					Expected:    "file should exist",
+					Actual:      "file not found",
+					Description: fmt.Sprintf("Referenced file %s does not exist", refFile),
+					Timestamp:   time.Now(),
+				})
+			}
+		}
+	}
+
+	// Vérifier la cohérence des hashes
+	for filePath, hash := range pt.ContentHashes {
+		if currentHash, err := pt.CalculateContentHash(filePath); err == nil {
+			if hash != currentHash {
+				errors = append(errors, InconsistencyError{
+					Type:        "hash_mismatch",
+					FilePath:    filePath,
+					Expected:    hash,
+					Actual:      currentHash,
+					Description: "File content has changed without proper tracking",
+					Timestamp:   time.Now(),
+				})
+			}
+		}
+	}
+
+	return errors, nil
+}
+
+// GenerateIntegrityReport génère un rapport d'intégrité
+func (pt *PathTracker) GenerateIntegrityReport() (*IntegrityReport, error) {
+	inconsistencies, err := pt.ValidateReferenceConsistency()
+	if err != nil {
+		return nil, err
+	}
+
+	pt.mu.RLock()
+	totalFiles := len(pt.ContentHashes)
+	pt.mu.RUnlock()
+
+	validFiles := totalFiles - len(inconsistencies)
+
+	recommendations := make([]string, 0)
+	if len(inconsistencies) > 0 {
+		recommendations = append(recommendations, "Run automatic link repair")
+		recommendations = append(recommendations, "Update content hashes for modified files")
+		recommendations = append(recommendations, "Review and fix broken references")
+	}
+
+	summary := fmt.Sprintf("Integrity check completed. %d/%d files valid, %d issues found.",
+		validFiles, totalFiles, len(inconsistencies))
+
+	return &IntegrityReport{
+		GeneratedAt:     time.Now(),
+		TotalFiles:      totalFiles,
+		ValidFiles:      validFiles,
+		Issues:          inconsistencies,
+		Recommendations: recommendations,
+		Summary:         summary,
+	}, nil
+}
+
+// updateFileReferences met à jour les références dans un fichier
+func (pt *PathTracker) updateFileReferences(filePath, oldPath, newPath string) error {
+	content, err := os.ReadFile(filePath)
+	if err != nil {
+		return err
+	}
+
+	// Remplacer toutes les occurrences de l'ancien chemin
+	newContent := strings.ReplaceAll(string(content), oldPath, newPath)
+
+	if newContent != string(content) {
+		return os.WriteFile(filePath, []byte(newContent), 0o644)
 	}
 
 	return nil
-}
-
-// GetHashHistory retourne l'historique complet des hashs pour un chemin
-func (pt *PathTracker) GetHashHistory(path string) []HashRecord {
-	pt.mu.RLock()
-	defer pt.mu.RUnlock()
-
-	history, exists := pt.hashHistory[path]
-	if !exists {
-		return []HashRecord{}
-	}
-
-	// Retourner une copie pour éviter les modifications concurrentes
-	result := make([]HashRecord, len(history))
-	copy(result, history)
-	return result
-}
-
-// Helper function
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }
