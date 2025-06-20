@@ -243,3 +243,43 @@ func (cm *ConflictManager) ResolveAll() ([]*Resolution, error) {
 	}
 	return resolutions, nil
 }
+
+// Implémentation granularisée : interface et struct ConflictResolverImpl
+
+type ConflictResolverImpl struct {
+	strategies      map[ConflictType]ResolutionStrategy
+	defaultStrategy ResolutionStrategy
+}
+
+func NewConflictResolverImpl() *ConflictResolverImpl {
+	return &ConflictResolverImpl{
+		strategies:      make(map[ConflictType]ResolutionStrategy),
+		defaultStrategy: &ManualResolutionStrategy{},
+	}
+}
+
+func (cr *ConflictResolverImpl) Detect() ([]*DocumentConflict, error) {
+	// Détection des conflits selon les stratégies enregistrées (exemple simplifié)
+	return []*DocumentConflict{}, nil
+}
+
+func (cr *ConflictResolverImpl) Resolve(conflict *DocumentConflict) (*Resolution, error) {
+	strategy, exists := cr.strategies[conflict.Type]
+	if !exists {
+		strategy = cr.defaultStrategy
+	}
+	return strategy.Resolve(conflict)
+}
+
+func (cr *ConflictResolverImpl) Score(conflict *DocumentConflict) float64 {
+	// Calcul du score de criticité (exemple simplifié)
+	return 1.0
+}
+
+// Interface contrat
+
+type ConflictResolverInterface interface {
+	Detect() ([]*DocumentConflict, error)
+	Resolve(conflict *DocumentConflict) (*Resolution, error)
+	Score(conflict *DocumentConflict) float64
+}
