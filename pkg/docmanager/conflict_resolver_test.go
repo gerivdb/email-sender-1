@@ -183,3 +183,47 @@ func TestConflictManager_Orchestration(t *testing.T) {
 		t.Error("Should resolve at least one conflict")
 	}
 }
+
+// Test granularisé pour ConflictResolverImpl
+type DummyStrategy struct{}
+
+func (d *DummyStrategy) Resolve(conflict *DocumentConflict) (*Resolution, error) {
+	return &Resolution{Strategy: "dummy", Confidence: 1.0}, nil
+}
+
+func TestConflictResolverImpl_Behavior(t *testing.T) {
+	cr := NewConflictResolverImpl()
+	cr.strategies[ContentConflict] = &DummyStrategy{}
+
+	conflict := &DocumentConflict{
+		ID:           "c1",
+		Type:         ContentConflict,
+		LocalDoc:     &Document{ID: "doc1", Version: 1},
+		RemoteDoc:    &Document{ID: "doc1", Version: 2},
+		ConflictedAt: time.Now(),
+	}
+
+	// Test Resolve
+	res, err := cr.Resolve(conflict)
+	if err != nil {
+		t.Errorf("Resolve should not error: %v", err)
+	}
+	if res == nil || res.Strategy != "dummy" {
+		t.Error("Expected dummy strategy resolution")
+	}
+
+	// Test Score
+	score := cr.Score(conflict)
+	if score != 1.0 {
+		t.Errorf("Expected score 1.0, got %v", score)
+	}
+
+	// Test Detect (ici vide)
+	conflicts, err := cr.Detect()
+	if err != nil {
+		t.Errorf("Detect should not error: %v", err)
+	}
+	if len(conflicts) != 0 {
+		t.Errorf("Expected no conflicts, got %d", len(conflicts))
+	}
+}
