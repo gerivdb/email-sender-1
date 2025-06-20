@@ -3,6 +3,8 @@
 package docmanager
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"go/ast"
 	"go/parser"
@@ -12,6 +14,7 @@ import (
 	"regexp"
 	"strings"
 	"sync"
+	"time"
 )
 
 // PathTracker structure pour suivi chemins de fichiers uniquement (SRP)
@@ -21,14 +24,57 @@ type PathTracker struct {
 	trackedPaths  map[string]string   // oldPath -> newPath
 	references    map[string][]string // path -> list of referencing files
 	ContentHashes map[string]string   // path -> content hash pour détection changements
-	mu            sync.RWMutex
+
+	// TASK ATOMIQUE 3.5.1.2 - Tracking par hash de contenu
+	hashToPath    map[string]string       // content hash -> original path
+	pathToHash    map[string]string       // path -> current content hash
+	hashHistory   map[string][]HashRecord // path -> historical hash records
+	moveDetection map[string]time.Time    // hash -> last seen timestamp
+
+	mu sync.RWMutex
+}
+
+// HashRecord enregistrement historique des hashs
+type HashRecord struct {
+	Hash      string    `json:"hash"`
+	Timestamp time.Time `json:"timestamp"`
+	Path      string    `json:"path"`
+	Size      int64     `json:"size"`
+	Operation string    `json:"operation"` // "created", "modified", "moved", "deleted"
+}
+
+// ContentHashInfo information détaillée sur un hash de contenu
+type ContentHashInfo struct {
+	Hash         string    `json:"hash"`
+	OriginalPath string    `json:"original_path"`
+	CurrentPath  string    `json:"current_path"`
+	FirstSeen    time.Time `json:"first_seen"`
+	LastSeen     time.Time `json:"last_seen"`
+	Size         int64     `json:"size"`
+	MoveHistory  []string  `json:"move_history"`
+	References   []string  `json:"references"`
+}
+
+// MoveDetectionResult résultat de détection de déplacement
+type MoveDetectionResult struct {
+	Hash       string    `json:"hash"`
+	OldPath    string    `json:"old_path"`
+	NewPath    string    `json:"new_path"`
+	Confidence float64   `json:"confidence"`
+	Timestamp  time.Time `json:"timestamp"`
+	References []string  `json:"references"`
 }
 
 // NewPathTracker constructeur respectant SRP
 func NewPathTracker() *PathTracker {
 	return &PathTracker{
-		trackedPaths: make(map[string]string),
-		references:   make(map[string][]string),
+		trackedPaths:  make(map[string]string),
+		references:    make(map[string][]string),
+		ContentHashes: make(map[string]string),
+		hashToPath:    make(map[string]string),
+		pathToHash:    make(map[string]string),
+		hashHistory:   make(map[string][]HashRecord),
+		moveDetection: make(map[string]time.Time),
 	}
 }
 
@@ -295,17 +341,354 @@ func (pt *PathTracker) HealthCheck() (*PathHealthReport, error) {
 	return report, nil
 }
 
-// CalculateContentHash calcule le hash du contenu d'un fichier
+// TASK ATOMIQUE 3.5.1.2 - Enhanced content hash calculation
+// CalculateContentHash calcule le hash SHA256 du contenu d'un fichier
 func (pt *PathTracker) CalculateContentHash(path string) (string, error) {
 	content, err := os.ReadFile(path)
 	if err != nil {
 		return "", fmt.Errorf("failed to read file %s: %w", path, err)
 	}
 
-	// Simple hash basé sur la longueur et quelques caractères
-	// Pour une vraie implémentation, utiliser crypto/md5 ou sha256
-	hash := fmt.Sprintf("%d-%x", len(content), content[:min(len(content), 10)])
+	// Utilisation de SHA256 pour un hash robuste
+	hasher := sha256.New()
+	hasher.Write(content)
+	hash := hex.EncodeToString(hasher.Sum(nil))
+
 	return hash, nil
+}
+
+// TrackFileByContent enregistre un fichier par son contenu
+func (pt *PathTracker) TrackFileByContent(path string) error {
+	pt.mu.Lock()
+	defer pt.mu.Unlock()
+
+	// Calculer le hash du contenu
+	hash, err := pt.CalculateContentHash(path)
+	if err != nil {
+		return fmt.Errorf("failed to calculate hash for %s: %w", path, err)
+	}
+
+	// Obtenir les informations du fichier
+	info, err := os.Stat(path)
+	if err != nil {
+		return fmt.Errorf("failed to stat file %s: %w", path, err)
+	}
+
+	// Enregistrer le hash et le chemin
+	pt.ContentHashes[path] = hash
+	pt.pathToHash[path] = hash
+
+	// Enregistrer l'historique
+	record := HashRecord{
+		Hash:      hash,
+		Timestamp: time.Now(),
+		Path:      path,
+		Size:      info.Size(),
+		Operation: "tracked",
+	}
+
+	pt.hashHistory[path] = append(pt.hashHistory[path], record)
+
+	// Mettre à jour le mapping hash -> path
+	if existingPath, exists := pt.hashToPath[hash]; exists {
+		// Possible déplacement détecté
+		if existingPath != path {
+			pt.moveDetection[hash] = time.Now()
+			// Créer un enregistrement de déplacement
+			moveRecord := HashRecord{
+				Hash:      hash,
+				Timestamp: time.Now(),
+				Path:      path,
+				Size:      info.Size(),
+				Operation: "moved",
+			}
+			pt.hashHistory[path] = append(pt.hashHistory[path], moveRecord)
+		}
+	} else {
+		pt.hashToPath[hash] = path
+	}
+
+	return nil
+}
+
+// DetectMovedFile détecte si un fichier a été déplacé en comparant les hashs
+func (pt *PathTracker) DetectMovedFile(newPath string) (*MoveDetectionResult, error) {
+	pt.mu.RLock()
+	defer pt.mu.RUnlock()
+
+	// Calculer le hash du nouveau fichier
+	hash, err := pt.CalculateContentHash(newPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to calculate hash for %s: %w", newPath, err)
+	}
+
+	// Vérifier si ce hash existe déjà avec un autre chemin
+	if originalPath, exists := pt.hashToPath[hash]; exists && originalPath != newPath {
+		// Calculer la confiance basée sur la similarité des chemins
+		confidence := pt.calculateMoveConfidence(originalPath, newPath)
+
+		// Récupérer les références de l'ancien chemin
+		references := pt.references[originalPath]
+
+		result := &MoveDetectionResult{
+			Hash:       hash,
+			OldPath:    originalPath,
+			NewPath:    newPath,
+			Confidence: confidence,
+			Timestamp:  time.Now(),
+			References: references,
+		}
+
+		return result, nil
+	}
+
+	return nil, nil // Aucun déplacement détecté
+}
+
+// calculateMoveConfidence calcule la confiance qu'un fichier ait été déplacé
+func (pt *PathTracker) calculateMoveConfidence(oldPath, newPath string) float64 {
+	// Facteurs de confiance
+	confidence := 0.0
+
+	// 1. Même nom de fichier
+	oldBase := filepath.Base(oldPath)
+	newBase := filepath.Base(newPath)
+	if oldBase == newBase {
+		confidence += 0.4
+	}
+
+	// 2. Extension similaire
+	oldExt := filepath.Ext(oldPath)
+	newExt := filepath.Ext(newPath)
+	if oldExt == newExt {
+		confidence += 0.2
+	}
+
+	// 3. Proximité des répertoires
+	oldDir := filepath.Dir(oldPath)
+	newDir := filepath.Dir(newPath)
+
+	// Compter les composants communs du chemin
+	oldParts := strings.Split(oldDir, string(filepath.Separator))
+	newParts := strings.Split(newDir, string(filepath.Separator))
+
+	commonParts := 0
+	maxParts := len(oldParts)
+	if len(newParts) < maxParts {
+		maxParts = len(newParts)
+	}
+
+	for i := 0; i < maxParts; i++ {
+		if oldParts[i] == newParts[i] {
+			commonParts++
+		} else {
+			break
+		}
+	}
+
+	if maxParts > 0 {
+		pathSimilarity := float64(commonParts) / float64(maxParts)
+		confidence += pathSimilarity * 0.3
+	}
+
+	// 4. Timing - fichiers détectés récemment ont plus de chance d'être des déplacements
+	if lastSeen, exists := pt.moveDetection[pt.pathToHash[oldPath]]; exists {
+		timeDiff := time.Since(lastSeen)
+		if timeDiff < 5*time.Minute {
+			confidence += 0.1
+		}
+	}
+
+	// Limiter la confiance à 1.0
+	if confidence > 1.0 {
+		confidence = 1.0
+	}
+
+	return confidence
+}
+
+// UpdateFileHash met à jour le hash d'un fichier après modification
+func (pt *PathTracker) UpdateFileHash(path string) error {
+	pt.mu.Lock()
+	defer pt.mu.Unlock()
+
+	// Calculer le nouveau hash
+	newHash, err := pt.CalculateContentHash(path)
+	if err != nil {
+		return fmt.Errorf("failed to calculate new hash for %s: %w", path, err)
+	}
+
+	// Obtenir l'ancien hash
+	oldHash, exists := pt.pathToHash[path]
+	if !exists {
+		// Nouveau fichier
+		return pt.TrackFileByContent(path)
+	}
+
+	// Si le hash a changé
+	if oldHash != newHash {
+		// Obtenir les informations du fichier
+		info, err := os.Stat(path)
+		if err != nil {
+			return fmt.Errorf("failed to stat file %s: %w", path, err)
+		}
+
+		// Mettre à jour les mappings
+		pt.ContentHashes[path] = newHash
+		pt.pathToHash[path] = newHash
+		pt.hashToPath[newHash] = path
+
+		// Nettoyer l'ancien mapping si aucun autre fichier ne l'utilise
+		if currentPath, exists := pt.hashToPath[oldHash]; exists && currentPath == path {
+			delete(pt.hashToPath, oldHash)
+		}
+
+		// Enregistrer l'historique
+		record := HashRecord{
+			Hash:      newHash,
+			Timestamp: time.Now(),
+			Path:      path,
+			Size:      info.Size(),
+			Operation: "modified",
+		}
+
+		pt.hashHistory[path] = append(pt.hashHistory[path], record)
+	}
+
+	return nil
+}
+
+// GetContentHashInfo retourne les informations détaillées sur un hash
+func (pt *PathTracker) GetContentHashInfo(hash string) (*ContentHashInfo, error) {
+	pt.mu.RLock()
+	defer pt.mu.RUnlock()
+
+	currentPath, exists := pt.hashToPath[hash]
+	if !exists {
+		return nil, fmt.Errorf("hash not found: %s", hash)
+	}
+
+	// Trouver le chemin original et l'historique
+	var originalPath string
+	var firstSeen, lastSeen time.Time
+	var moveHistory []string
+
+	// Parcourir l'historique pour trouver les informations
+	for path, records := range pt.hashHistory {
+		for _, record := range records {
+			if record.Hash == hash {
+				if originalPath == "" || record.Timestamp.Before(firstSeen) {
+					originalPath = path
+					firstSeen = record.Timestamp
+				}
+				if record.Timestamp.After(lastSeen) {
+					lastSeen = record.Timestamp
+				}
+				if record.Operation == "moved" {
+					moveHistory = append(moveHistory, record.Path)
+				}
+			}
+		}
+	}
+
+	// Obtenir la taille actuelle
+	var size int64
+	if info, err := os.Stat(currentPath); err == nil {
+		size = info.Size()
+	}
+
+	info := &ContentHashInfo{
+		Hash:         hash,
+		OriginalPath: originalPath,
+		CurrentPath:  currentPath,
+		FirstSeen:    firstSeen,
+		LastSeen:     lastSeen,
+		Size:         size,
+		MoveHistory:  moveHistory,
+		References:   pt.references[currentPath],
+	}
+
+	return info, nil
+}
+
+// FindDuplicatesByHash trouve les fichiers dupliqués basés sur le hash de contenu
+func (pt *PathTracker) FindDuplicatesByHash() map[string][]string {
+	pt.mu.RLock()
+	defer pt.mu.RUnlock()
+
+	hashCounts := make(map[string][]string)
+
+	// Grouper les chemins par hash
+	for path, hash := range pt.pathToHash {
+		hashCounts[hash] = append(hashCounts[hash], path)
+	}
+
+	// Retourner seulement les hashs avec plusieurs fichiers
+	duplicates := make(map[string][]string)
+	for hash, paths := range hashCounts {
+		if len(paths) > 1 {
+			duplicates[hash] = paths
+		}
+	}
+
+	return duplicates
+}
+
+// CleanupOrphanedHashes nettoie les hashs orphelins
+func (pt *PathTracker) CleanupOrphanedHashes() error {
+	pt.mu.Lock()
+	defer pt.mu.Unlock()
+
+	// Vérifier quels fichiers existent encore
+	var toRemove []string
+
+	for path := range pt.pathToHash {
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			toRemove = append(toRemove, path)
+		}
+	}
+
+	// Supprimer les entrées orphelines
+	for _, path := range toRemove {
+		hash := pt.pathToHash[path]
+
+		// Supprimer de tous les mappings
+		delete(pt.pathToHash, path)
+		delete(pt.ContentHashes, path)
+
+		// Supprimer du mapping hash->path seulement si c'est le seul fichier avec ce hash
+		if currentPath, exists := pt.hashToPath[hash]; exists && currentPath == path {
+			delete(pt.hashToPath, hash)
+		}
+
+		// Marquer comme supprimé dans l'historique
+		record := HashRecord{
+			Hash:      hash,
+			Timestamp: time.Now(),
+			Path:      path,
+			Size:      0,
+			Operation: "deleted",
+		}
+		pt.hashHistory[path] = append(pt.hashHistory[path], record)
+	}
+
+	return nil
+}
+
+// GetHashHistory retourne l'historique complet des hashs pour un chemin
+func (pt *PathTracker) GetHashHistory(path string) []HashRecord {
+	pt.mu.RLock()
+	defer pt.mu.RUnlock()
+
+	history, exists := pt.hashHistory[path]
+	if !exists {
+		return []HashRecord{}
+	}
+
+	// Retourner une copie pour éviter les modifications concurrentes
+	result := make([]HashRecord, len(history))
+	copy(result, history)
+	return result
 }
 
 // Helper function

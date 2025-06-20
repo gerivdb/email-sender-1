@@ -4,6 +4,13 @@
 package docmanager
 
 import (
+	"context"
+	"fmt"
+	"net"
+	"net/url"
+	"os"
+	"regexp"
+	"strings"
 	"sync"
 	"time"
 )
@@ -13,11 +20,511 @@ type Config struct {
 	DatabaseURL   string
 	RedisURL      string
 	QDrantURL     string
+	InfluxDBURL   string // Added InfluxDB URL as mentioned in task
 	SyncInterval  time.Duration
 	PathTracking  bool
 	AutoResolve   bool
 	CrossBranch   bool
 	DefaultBranch string
+}
+
+// TASK ATOMIQUE 3.3.2.1 - Cache strategies per document type
+// DocumentTypeConfig configuration spécifique par type de document
+type DocumentTypeConfig struct {
+	Type          string        `json:"type" yaml:"type"`
+	CacheStrategy string        `json:"cache_strategy" yaml:"cache_strategy"`
+	TTL           time.Duration `json:"ttl" yaml:"ttl"`
+	Priority      int           `json:"priority" yaml:"priority"`
+	MaxSize       int64         `json:"max_size" yaml:"max_size"`
+	Compression   bool          `json:"compression" yaml:"compression"`
+}
+
+// QualityThresholds définit les seuils de qualité configurables
+type QualityThresholds struct {
+	MinLength        int                    `json:"min_length" yaml:"min_length"`
+	MaxComplexity    float64                `json:"max_complexity" yaml:"max_complexity"`
+	RequiredSections []string               `json:"required_sections" yaml:"required_sections"`
+	LinkDensity      float64                `json:"link_density" yaml:"link_density"`
+	KeywordDensity   float64                `json:"keyword_density" yaml:"keyword_density"`
+	ReadabilityScore float64                `json:"readability_score" yaml:"readability_score"`
+	CustomThresholds map[string]float64     `json:"custom_thresholds" yaml:"custom_thresholds"`
+	ValidationRules  map[string]interface{} `json:"validation_rules" yaml:"validation_rules"`
+}
+
+// AdvancedConfig configuration avancée avec stratégies par type
+type AdvancedConfig struct {
+	DocumentTypes     []DocumentTypeConfig `json:"document_types" yaml:"document_types"`
+	QualityThresholds map[string]float64   `json:"quality_thresholds" yaml:"quality_thresholds"`
+	DetailedQuality   QualityThresholds    `json:"detailed_quality" yaml:"detailed_quality"`
+	CacheDefaults     CacheDefaultConfig   `json:"cache_defaults" yaml:"cache_defaults"`
+	AutoGeneration    AutoGenerationConfig `json:"auto_generation" yaml:"auto_generation"`
+	Monitoring        MonitoringConfig     `json:"monitoring" yaml:"monitoring"`
+}
+
+// CacheDefaultConfig configuration par défaut du cache
+type CacheDefaultConfig struct {
+	DefaultTTL      time.Duration `json:"default_ttl" yaml:"default_ttl"`
+	DefaultStrategy string        `json:"default_strategy" yaml:"default_strategy"`
+	DefaultPriority int           `json:"default_priority" yaml:"default_priority"`
+	MaxMemoryUsage  int64         `json:"max_memory_usage" yaml:"max_memory_usage"`
+	EvictionPolicy  string        `json:"eviction_policy" yaml:"eviction_policy"`
+}
+
+// AutoGenerationConfig configuration pour la génération automatique
+type AutoGenerationConfig struct {
+	Enabled              bool                   `json:"enabled" yaml:"enabled"`
+	QualityGates         map[string]float64     `json:"quality_gates" yaml:"quality_gates"`
+	TriggerThresholds    map[string]interface{} `json:"trigger_thresholds" yaml:"trigger_thresholds"`
+	GenerationStrategies []string               `json:"generation_strategies" yaml:"generation_strategies"`
+	ValidationRequired   bool                   `json:"validation_required" yaml:"validation_required"`
+}
+
+// MonitoringConfig configuration pour le monitoring
+type MonitoringConfig struct {
+	Enabled         bool               `json:"enabled" yaml:"enabled"`
+	MetricsInterval time.Duration      `json:"metrics_interval" yaml:"metrics_interval"`
+	AlertThresholds map[string]float64 `json:"alert_thresholds" yaml:"alert_thresholds"`
+	HealthCheckURL  string             `json:"health_check_url" yaml:"health_check_url"`
+}
+
+// ConfigValidationError represents a configuration validation error
+type ConfigValidationError struct {
+	Field   string
+	Message string
+	Value   string
+}
+
+func (e *ConfigValidationError) Error() string {
+	return fmt.Sprintf("configuration validation error in field '%s': %s (value: %s)", e.Field, e.Message, e.Value)
+}
+
+// ConfigValidationResult holds the results of configuration validation
+type ConfigValidationResult struct {
+	IsValid  bool
+	Errors   []ConfigValidationError
+	Warnings []string
+}
+
+// TASK ATOMIQUE 3.3.1.1.2 - Configuration validation enhancement
+// Validate performs comprehensive validation of configuration
+func (c *Config) Validate() error {
+	result := c.ValidateDetailed()
+	if !result.IsValid {
+		errMsg := "configuration validation failed:"
+		for _, err := range result.Errors {
+			errMsg += fmt.Sprintf("\n  - %s", err.Error())
+		}
+		return fmt.Errorf(errMsg)
+	}
+	return nil
+}
+
+// ValidateDetailed performs detailed validation and returns comprehensive results
+func (c *Config) ValidateDetailed() ConfigValidationResult {
+	result := ConfigValidationResult{
+		IsValid:  true,
+		Errors:   []ConfigValidationError{},
+		Warnings: []string{},
+	}
+
+	// Substitute environment variables first
+	config := c.substituteEnvironmentVariables()
+
+	// Validate database URLs
+	if err := config.validateDatabaseURL(); err != nil {
+		result.Errors = append(result.Errors, *err)
+		result.IsValid = false
+	}
+
+	if err := config.validateRedisURL(); err != nil {
+		result.Errors = append(result.Errors, *err)
+		result.IsValid = false
+	}
+
+	if err := config.validateQDrantURL(); err != nil {
+		result.Errors = append(result.Errors, *err)
+		result.IsValid = false
+	}
+
+	if err := config.validateInfluxDBURL(); err != nil {
+		result.Errors = append(result.Errors, *err)
+		result.IsValid = false
+	}
+
+	// Validate sync interval
+	if err := config.validateSyncInterval(); err != nil {
+		result.Errors = append(result.Errors, *err)
+		result.IsValid = false
+	}
+
+	// Validate default branch
+	if err := config.validateDefaultBranch(); err != nil {
+		result.Errors = append(result.Errors, *err)
+		result.IsValid = false
+	}
+
+	// Add warnings for potentially problematic configurations
+	warnings := config.generateWarnings()
+	result.Warnings = append(result.Warnings, warnings...)
+
+	return result
+}
+
+// substituteEnvironmentVariables replaces environment variables in configuration
+func (c *Config) substituteEnvironmentVariables() *Config {
+	config := *c // Copy
+
+	config.DatabaseURL = substituteEnvVars(config.DatabaseURL)
+	config.RedisURL = substituteEnvVars(config.RedisURL)
+	config.QDrantURL = substituteEnvVars(config.QDrantURL)
+	config.InfluxDBURL = substituteEnvVars(config.InfluxDBURL)
+	config.DefaultBranch = substituteEnvVars(config.DefaultBranch)
+
+	return &config
+}
+
+// substituteEnvVars substitutes environment variables in a string
+func substituteEnvVars(s string) string {
+	envVarRegex := regexp.MustCompile(`\$\{([^}]+)\}|\$([A-Za-z_][A-Za-z0-9_]*)`)
+
+	return envVarRegex.ReplaceAllStringFunc(s, func(match string) string {
+		var envVar string
+		if strings.HasPrefix(match, "${") {
+			envVar = match[2 : len(match)-1]
+		} else {
+			envVar = match[1:]
+		}
+
+		if value := os.Getenv(envVar); value != "" {
+			return value
+		}
+		return match // Return original if env var not found
+	})
+}
+
+// validateDatabaseURL validates PostgreSQL database URL format and connectivity
+func (c *Config) validateDatabaseURL() *ConfigValidationError {
+	if c.DatabaseURL == "" {
+		return &ConfigValidationError{
+			Field:   "DatabaseURL",
+			Message: "database URL is required",
+			Value:   c.DatabaseURL,
+		}
+	}
+
+	// Parse URL
+	parsed, err := url.Parse(c.DatabaseURL)
+	if err != nil {
+		return &ConfigValidationError{
+			Field:   "DatabaseURL",
+			Message: "invalid URL format",
+			Value:   c.DatabaseURL,
+		}
+	}
+
+	// Validate scheme
+	if parsed.Scheme != "postgres" && parsed.Scheme != "postgresql" {
+		return &ConfigValidationError{
+			Field:   "DatabaseURL",
+			Message: "database URL must use postgres:// or postgresql:// scheme",
+			Value:   c.DatabaseURL,
+		}
+	}
+
+	// Validate host presence
+	if parsed.Host == "" {
+		return &ConfigValidationError{
+			Field:   "DatabaseURL",
+			Message: "database URL must include host",
+			Value:   c.DatabaseURL,
+		}
+	}
+
+	return nil
+}
+
+// validateRedisURL validates Redis URL format and connectivity
+func (c *Config) validateRedisURL() *ConfigValidationError {
+	if c.RedisURL == "" {
+		return &ConfigValidationError{
+			Field:   "RedisURL",
+			Message: "Redis URL is required",
+			Value:   c.RedisURL,
+		}
+	}
+
+	parsed, err := url.Parse(c.RedisURL)
+	if err != nil {
+		return &ConfigValidationError{
+			Field:   "RedisURL",
+			Message: "invalid URL format",
+			Value:   c.RedisURL,
+		}
+	}
+
+	if parsed.Scheme != "redis" && parsed.Scheme != "rediss" {
+		return &ConfigValidationError{
+			Field:   "RedisURL",
+			Message: "Redis URL must use redis:// or rediss:// scheme",
+			Value:   c.RedisURL,
+		}
+	}
+
+	if parsed.Host == "" {
+		return &ConfigValidationError{
+			Field:   "RedisURL",
+			Message: "Redis URL must include host",
+			Value:   c.RedisURL,
+		}
+	}
+
+	return nil
+}
+
+// validateQDrantURL validates QDrant URL format and connectivity
+func (c *Config) validateQDrantURL() *ConfigValidationError {
+	if c.QDrantURL == "" {
+		return &ConfigValidationError{
+			Field:   "QDrantURL",
+			Message: "QDrant URL is required",
+			Value:   c.QDrantURL,
+		}
+	}
+
+	parsed, err := url.Parse(c.QDrantURL)
+	if err != nil {
+		return &ConfigValidationError{
+			Field:   "QDrantURL",
+			Message: "invalid URL format",
+			Value:   c.QDrantURL,
+		}
+	}
+
+	if parsed.Scheme != "http" && parsed.Scheme != "https" {
+		return &ConfigValidationError{
+			Field:   "QDrantURL",
+			Message: "QDrant URL must use http:// or https:// scheme",
+			Value:   c.QDrantURL,
+		}
+	}
+
+	if parsed.Host == "" {
+		return &ConfigValidationError{
+			Field:   "QDrantURL",
+			Message: "QDrant URL must include host",
+			Value:   c.QDrantURL,
+		}
+	}
+
+	return nil
+}
+
+// validateInfluxDBURL validates InfluxDB URL format and connectivity
+func (c *Config) validateInfluxDBURL() *ConfigValidationError {
+	// InfluxDB URL is optional
+	if c.InfluxDBURL == "" {
+		return nil
+	}
+
+	parsed, err := url.Parse(c.InfluxDBURL)
+	if err != nil {
+		return &ConfigValidationError{
+			Field:   "InfluxDBURL",
+			Message: "invalid URL format",
+			Value:   c.InfluxDBURL,
+		}
+	}
+
+	if parsed.Scheme != "http" && parsed.Scheme != "https" {
+		return &ConfigValidationError{
+			Field:   "InfluxDBURL",
+			Message: "InfluxDB URL must use http:// or https:// scheme",
+			Value:   c.InfluxDBURL,
+		}
+	}
+
+	if parsed.Host == "" {
+		return &ConfigValidationError{
+			Field:   "InfluxDBURL",
+			Message: "InfluxDB URL must include host",
+			Value:   c.InfluxDBURL,
+		}
+	}
+
+	return nil
+}
+
+// validateSyncInterval validates synchronization interval
+func (c *Config) validateSyncInterval() *ConfigValidationError {
+	if c.SyncInterval <= 0 {
+		return &ConfigValidationError{
+			Field:   "SyncInterval",
+			Message: "sync interval must be positive",
+			Value:   c.SyncInterval.String(),
+		}
+	}
+
+	if c.SyncInterval < time.Second {
+		return &ConfigValidationError{
+			Field:   "SyncInterval",
+			Message: "sync interval too short (minimum 1 second)",
+			Value:   c.SyncInterval.String(),
+		}
+	}
+
+	return nil
+}
+
+// validateDefaultBranch validates default branch name
+func (c *Config) validateDefaultBranch() *ConfigValidationError {
+	if c.DefaultBranch == "" {
+		return &ConfigValidationError{
+			Field:   "DefaultBranch",
+			Message: "default branch is required",
+			Value:   c.DefaultBranch,
+		}
+	}
+
+	// Validate branch name format (basic Git branch name rules)
+	branchNameRegex := regexp.MustCompile(`^[a-zA-Z0-9._/-]+$`)
+	if !branchNameRegex.MatchString(c.DefaultBranch) {
+		return &ConfigValidationError{
+			Field:   "DefaultBranch",
+			Message: "invalid branch name format",
+			Value:   c.DefaultBranch,
+		}
+	}
+	// Check for invalid patterns
+	invalidPatterns := []string{"..", "//", ".", "/"}
+	for _, pattern := range invalidPatterns {
+		if strings.Contains(c.DefaultBranch, pattern) {
+			return &ConfigValidationError{
+				Field:   "DefaultBranch",
+				Message: fmt.Sprintf("branch name contains invalid pattern: %s", pattern),
+				Value:   c.DefaultBranch,
+			}
+		}
+	}
+
+	return nil
+}
+
+// generateWarnings generates warnings for potentially problematic configurations
+func (c *Config) generateWarnings() []string {
+	var warnings []string
+	// Warn about very short sync intervals
+	if c.SyncInterval < 10*time.Second {
+		warnings = append(warnings, fmt.Sprintf("Very short sync interval (%s) may impact performance", c.SyncInterval.String()))
+	}
+	// Warn about very long sync intervals
+	if c.SyncInterval > 1*time.Hour {
+		warnings = append(warnings, fmt.Sprintf("Very long sync interval (%s) may delay synchronization", c.SyncInterval.String()))
+	}
+
+	// Warn about non-standard default branch
+	if c.DefaultBranch != "main" && c.DefaultBranch != "master" && c.DefaultBranch != "dev" {
+		warnings = append(warnings, fmt.Sprintf("Non-standard default branch name: %s", c.DefaultBranch))
+	}
+
+	return warnings
+}
+
+// TestConnectivity performs actual connectivity tests to configured services
+func (c *Config) TestConnectivity(ctx context.Context) map[string]error {
+	config := c.substituteEnvironmentVariables()
+	results := make(map[string]error)
+
+	// Test database connectivity
+	if err := config.testDatabaseConnectivity(ctx); err != nil {
+		results["database"] = err
+	}
+
+	// Test Redis connectivity
+	if err := config.testRedisConnectivity(ctx); err != nil {
+		results["redis"] = err
+	}
+
+	// Test QDrant connectivity
+	if err := config.testQDrantConnectivity(ctx); err != nil {
+		results["qdrant"] = err
+	}
+
+	// Test InfluxDB connectivity (if configured)
+	if config.InfluxDBURL != "" {
+		if err := config.testInfluxDBConnectivity(ctx); err != nil {
+			results["influxdb"] = err
+		}
+	}
+
+	return results
+}
+
+// testDatabaseConnectivity tests PostgreSQL database connectivity
+func (c *Config) testDatabaseConnectivity(ctx context.Context) error {
+	parsed, err := url.Parse(c.DatabaseURL)
+	if err != nil {
+		return fmt.Errorf("invalid database URL: %w", err)
+	}
+
+	// Test basic TCP connectivity
+	conn, err := net.DialTimeout("tcp", parsed.Host, 5*time.Second)
+	if err != nil {
+		return fmt.Errorf("database connection failed: %w", err)
+	}
+	conn.Close()
+
+	return nil
+}
+
+// testRedisConnectivity tests Redis connectivity
+func (c *Config) testRedisConnectivity(ctx context.Context) error {
+	parsed, err := url.Parse(c.RedisURL)
+	if err != nil {
+		return fmt.Errorf("invalid Redis URL: %w", err)
+	}
+
+	// Test basic TCP connectivity
+	conn, err := net.DialTimeout("tcp", parsed.Host, 5*time.Second)
+	if err != nil {
+		return fmt.Errorf("Redis connection failed: %w", err)
+	}
+	conn.Close()
+
+	return nil
+}
+
+// testQDrantConnectivity tests QDrant connectivity
+func (c *Config) testQDrantConnectivity(ctx context.Context) error {
+	parsed, err := url.Parse(c.QDrantURL)
+	if err != nil {
+		return fmt.Errorf("invalid QDrant URL: %w", err)
+	}
+
+	// Test basic TCP connectivity
+	conn, err := net.DialTimeout("tcp", parsed.Host, 5*time.Second)
+	if err != nil {
+		return fmt.Errorf("QDrant connection failed: %w", err)
+	}
+	conn.Close()
+
+	return nil
+}
+
+// testInfluxDBConnectivity tests InfluxDB connectivity
+func (c *Config) testInfluxDBConnectivity(ctx context.Context) error {
+	parsed, err := url.Parse(c.InfluxDBURL)
+	if err != nil {
+		return fmt.Errorf("invalid InfluxDB URL: %w", err)
+	}
+
+	// Test basic TCP connectivity
+	conn, err := net.DialTimeout("tcp", parsed.Host, 5*time.Second)
+	if err != nil {
+		return fmt.Errorf("InfluxDB connection failed: %w", err)
+	}
+	conn.Close()
+
+	return nil
 }
 
 // DocManager structure principale - SRP: Coordination documentaire exclusive
@@ -408,4 +915,378 @@ Error Rate: ` + string(rune(int(metrics.ErrorRate*100))) + `%
 Cache Hit Ratio: ` + string(rune(int(metrics.CacheHitRatio*100))) + `%
 `
 	return []byte(text), nil
+}
+
+// TASK ATOMIQUE 3.3.2.1 - Advanced Config Methods
+// NewAdvancedConfig creates a new advanced configuration with defaults
+func NewAdvancedConfig() *AdvancedConfig {
+	return &AdvancedConfig{
+		DocumentTypes: []DocumentTypeConfig{
+			{
+				Type:          "markdown",
+				CacheStrategy: "lru",
+				TTL:           30 * time.Minute,
+				Priority:      5,
+				MaxSize:       1024 * 1024, // 1MB
+				Compression:   true,
+			},
+			{
+				Type:          "json",
+				CacheStrategy: "lfu",
+				TTL:           15 * time.Minute,
+				Priority:      7,
+				MaxSize:       512 * 1024, // 512KB
+				Compression:   false,
+			},
+			{
+				Type:          "yaml",
+				CacheStrategy: "fifo",
+				TTL:           20 * time.Minute,
+				Priority:      6,
+				MaxSize:       256 * 1024, // 256KB
+				Compression:   true,
+			},
+		},
+		QualityThresholds: map[string]float64{
+			"min_quality":    0.7,
+			"max_complexity": 0.8,
+			"readability":    0.6,
+		},
+		DetailedQuality: QualityThresholds{
+			MinLength:        100,
+			MaxComplexity:    0.8,
+			RequiredSections: []string{"title", "content"},
+			LinkDensity:      0.1,
+			KeywordDensity:   0.05,
+			ReadabilityScore: 0.6,
+			CustomThresholds: map[string]float64{
+				"semantic_similarity": 0.75,
+				"content_freshness":   0.8,
+			},
+			ValidationRules: map[string]interface{}{
+				"require_headers":      true,
+				"max_nesting_level":    5,
+				"min_paragraph_length": 50,
+			},
+		},
+		CacheDefaults: CacheDefaultConfig{
+			DefaultTTL:      20 * time.Minute,
+			DefaultStrategy: "lru",
+			DefaultPriority: 5,
+			MaxMemoryUsage:  100 * 1024 * 1024, // 100MB
+			EvictionPolicy:  "lru-expire",
+		},
+		AutoGeneration: AutoGenerationConfig{
+			Enabled: true,
+			QualityGates: map[string]float64{
+				"min_auto_quality":     0.8,
+				"confidence_threshold": 0.9,
+			},
+			TriggerThresholds: map[string]interface{}{
+				"missing_content_ratio": 0.3,
+				"outdated_content_days": 30,
+			},
+			GenerationStrategies: []string{"template", "ai", "extraction"},
+			ValidationRequired:   true,
+		},
+		Monitoring: MonitoringConfig{
+			Enabled:         true,
+			MetricsInterval: 5 * time.Minute,
+			AlertThresholds: map[string]float64{
+				"cache_hit_ratio":  0.8,
+				"error_rate":       0.05,
+				"response_time_ms": 500,
+			},
+			HealthCheckURL: "/health",
+		},
+	}
+}
+
+// ValidateAdvancedConfig validates advanced configuration
+func (ac *AdvancedConfig) Validate() error {
+	// Validate document type configurations
+	for i, docType := range ac.DocumentTypes {
+		if err := docType.Validate(); err != nil {
+			return fmt.Errorf("document type config [%d] validation failed: %w", i, err)
+		}
+	}
+
+	// Validate quality thresholds
+	if err := ac.DetailedQuality.Validate(); err != nil {
+		return fmt.Errorf("quality thresholds validation failed: %w", err)
+	}
+
+	// Validate cache defaults
+	if err := ac.CacheDefaults.Validate(); err != nil {
+		return fmt.Errorf("cache defaults validation failed: %w", err)
+	}
+
+	// Validate auto generation config
+	if err := ac.AutoGeneration.Validate(); err != nil {
+		return fmt.Errorf("auto generation config validation failed: %w", err)
+	}
+
+	// Validate monitoring config
+	if err := ac.Monitoring.Validate(); err != nil {
+		return fmt.Errorf("monitoring config validation failed: %w", err)
+	}
+
+	return nil
+}
+
+// Validate validates a document type configuration
+func (dtc *DocumentTypeConfig) Validate() error {
+	if dtc.Type == "" {
+		return fmt.Errorf("document type cannot be empty")
+	}
+
+	validStrategies := []string{"lru", "lfu", "fifo", "random", "ttl"}
+	isValidStrategy := false
+	for _, strategy := range validStrategies {
+		if dtc.CacheStrategy == strategy {
+			isValidStrategy = true
+			break
+		}
+	}
+	if !isValidStrategy {
+		return fmt.Errorf("invalid cache strategy '%s', must be one of: %v", dtc.CacheStrategy, validStrategies)
+	}
+
+	if dtc.TTL <= 0 {
+		return fmt.Errorf("TTL must be positive, got %s", dtc.TTL)
+	}
+
+	if dtc.Priority < 1 || dtc.Priority > 10 {
+		return fmt.Errorf("priority must be between 1 and 10, got %d", dtc.Priority)
+	}
+
+	if dtc.MaxSize <= 0 {
+		return fmt.Errorf("max size must be positive, got %d", dtc.MaxSize)
+	}
+
+	return nil
+}
+
+// Validate validates quality thresholds
+func (qt *QualityThresholds) Validate() error {
+	if qt.MinLength < 0 {
+		return fmt.Errorf("min length cannot be negative, got %d", qt.MinLength)
+	}
+
+	if qt.MaxComplexity < 0 || qt.MaxComplexity > 1 {
+		return fmt.Errorf("max complexity must be between 0 and 1, got %f", qt.MaxComplexity)
+	}
+
+	if qt.LinkDensity < 0 || qt.LinkDensity > 1 {
+		return fmt.Errorf("link density must be between 0 and 1, got %f", qt.LinkDensity)
+	}
+
+	if qt.KeywordDensity < 0 || qt.KeywordDensity > 1 {
+		return fmt.Errorf("keyword density must be between 0 and 1, got %f", qt.KeywordDensity)
+	}
+
+	if qt.ReadabilityScore < 0 || qt.ReadabilityScore > 1 {
+		return fmt.Errorf("readability score must be between 0 and 1, got %f", qt.ReadabilityScore)
+	}
+
+	// Validate required sections
+	if len(qt.RequiredSections) == 0 {
+		return fmt.Errorf("at least one required section must be specified")
+	}
+
+	// Validate custom thresholds
+	for key, value := range qt.CustomThresholds {
+		if value < 0 || value > 1 {
+			return fmt.Errorf("custom threshold '%s' must be between 0 and 1, got %f", key, value)
+		}
+	}
+
+	return nil
+}
+
+// Validate validates cache default configuration
+func (cdc *CacheDefaultConfig) Validate() error {
+	if cdc.DefaultTTL <= 0 {
+		return fmt.Errorf("default TTL must be positive, got %s", cdc.DefaultTTL)
+	}
+
+	validStrategies := []string{"lru", "lfu", "fifo", "random", "ttl"}
+	isValidStrategy := false
+	for _, strategy := range validStrategies {
+		if cdc.DefaultStrategy == strategy {
+			isValidStrategy = true
+			break
+		}
+	}
+	if !isValidStrategy {
+		return fmt.Errorf("invalid default strategy '%s', must be one of: %v", cdc.DefaultStrategy, validStrategies)
+	}
+
+	if cdc.DefaultPriority < 1 || cdc.DefaultPriority > 10 {
+		return fmt.Errorf("default priority must be between 1 and 10, got %d", cdc.DefaultPriority)
+	}
+
+	if cdc.MaxMemoryUsage <= 0 {
+		return fmt.Errorf("max memory usage must be positive, got %d", cdc.MaxMemoryUsage)
+	}
+
+	validPolicies := []string{"lru", "lfu", "fifo", "lru-expire", "ttl-expire"}
+	isValidPolicy := false
+	for _, policy := range validPolicies {
+		if cdc.EvictionPolicy == policy {
+			isValidPolicy = true
+			break
+		}
+	}
+	if !isValidPolicy {
+		return fmt.Errorf("invalid eviction policy '%s', must be one of: %v", cdc.EvictionPolicy, validPolicies)
+	}
+
+	return nil
+}
+
+// Validate validates auto generation configuration
+func (agc *AutoGenerationConfig) Validate() error {
+	// Validate quality gates
+	for key, value := range agc.QualityGates {
+		if value < 0 || value > 1 {
+			return fmt.Errorf("quality gate '%s' must be between 0 and 1, got %f", key, value)
+		}
+	}
+
+	// Validate generation strategies
+	if len(agc.GenerationStrategies) == 0 {
+		return fmt.Errorf("at least one generation strategy must be specified")
+	}
+
+	validStrategies := []string{"template", "ai", "extraction", "hybrid", "rule-based"}
+	for _, strategy := range agc.GenerationStrategies {
+		isValid := false
+		for _, valid := range validStrategies {
+			if strategy == valid {
+				isValid = true
+				break
+			}
+		}
+		if !isValid {
+			return fmt.Errorf("invalid generation strategy '%s', must be one of: %v", strategy, validStrategies)
+		}
+	}
+
+	return nil
+}
+
+// Validate validates monitoring configuration
+func (mc *MonitoringConfig) Validate() error {
+	if mc.MetricsInterval <= 0 {
+		return fmt.Errorf("metrics interval must be positive, got %s", mc.MetricsInterval)
+	}
+
+	// Validate alert thresholds
+	for key, value := range mc.AlertThresholds {
+		if value < 0 {
+			return fmt.Errorf("alert threshold '%s' cannot be negative, got %f", key, value)
+		}
+	}
+
+	return nil
+}
+
+// GetDocumentTypeConfig returns configuration for a specific document type
+func (ac *AdvancedConfig) GetDocumentTypeConfig(docType string) (*DocumentTypeConfig, error) {
+	for _, config := range ac.DocumentTypes {
+		if config.Type == docType {
+			return &config, nil
+		}
+	}
+
+	// Return default configuration if not found
+	return &DocumentTypeConfig{
+		Type:          docType,
+		CacheStrategy: ac.CacheDefaults.DefaultStrategy,
+		TTL:           ac.CacheDefaults.DefaultTTL,
+		Priority:      ac.CacheDefaults.DefaultPriority,
+		MaxSize:       1024 * 1024, // 1MB default
+		Compression:   false,
+	}, nil
+}
+
+// SetDocumentTypeConfig sets or updates configuration for a document type
+func (ac *AdvancedConfig) SetDocumentTypeConfig(config DocumentTypeConfig) error {
+	if err := config.Validate(); err != nil {
+		return fmt.Errorf("invalid document type config: %w", err)
+	}
+
+	// Find and update existing config
+	for i, existing := range ac.DocumentTypes {
+		if existing.Type == config.Type {
+			ac.DocumentTypes[i] = config
+			return nil
+		}
+	}
+
+	// Add new config if not found
+	ac.DocumentTypes = append(ac.DocumentTypes, config)
+	return nil
+}
+
+// EvaluateQuality evaluates content quality against configured thresholds
+func (ac *AdvancedConfig) EvaluateQuality(content string, metadata map[string]interface{}) (float64, map[string]float64, error) {
+	scores := make(map[string]float64)
+
+	// Basic length check
+	lengthScore := 1.0
+	if len(content) < ac.DetailedQuality.MinLength {
+		lengthScore = float64(len(content)) / float64(ac.DetailedQuality.MinLength)
+	}
+	scores["length"] = lengthScore
+
+	// Complexity estimation (simplified)
+	complexityScore := 1.0 - float64(strings.Count(content, "\n"))/1000.0
+	if complexityScore < 0 {
+		complexityScore = 0
+	}
+	scores["complexity"] = complexityScore
+
+	// Link density check
+	linkCount := strings.Count(content, "http")
+	linkDensity := float64(linkCount) / float64(len(strings.Fields(content)))
+	linkScore := 1.0
+	if linkDensity > ac.DetailedQuality.LinkDensity {
+		linkScore = ac.DetailedQuality.LinkDensity / linkDensity
+	}
+	scores["link_density"] = linkScore
+
+	// Required sections check
+	sectionScore := 0.0
+	for _, section := range ac.DetailedQuality.RequiredSections {
+		if strings.Contains(strings.ToLower(content), strings.ToLower(section)) {
+			sectionScore += 1.0 / float64(len(ac.DetailedQuality.RequiredSections))
+		}
+	}
+	scores["sections"] = sectionScore
+
+	// Calculate overall quality score
+	totalScore := 0.0
+	totalWeight := 0.0
+
+	weights := map[string]float64{
+		"length":       0.2,
+		"complexity":   0.3,
+		"link_density": 0.2,
+		"sections":     0.3,
+	}
+
+	for metric, score := range scores {
+		if weight, exists := weights[metric]; exists {
+			totalScore += score * weight
+			totalWeight += weight
+		}
+	}
+
+	if totalWeight > 0 {
+		totalScore /= totalWeight
+	}
+
+	return totalScore, scores, nil
 }

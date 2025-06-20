@@ -443,22 +443,21 @@
 - [x] **3.3.1.1 TASK ATOMIQUE: Database URLs Configuration** :
   - [x] **3.3.1.1.1** MICRO-TASK: Current configuration audit
     - [x] **Fichier** : `pkg/docmanager/doc_manager.go`
-    - [x] **Validation** : URLs PostgreSQL, Redis, QDrant, InfluxDB présentes
-  - [ ] **3.3.1.1.2** MICRO-TASK: Configuration validation enhancement
-    - [ ] **Code** : `func (c *Config) Validate() error { ... }`
-    - [ ] **Code** : URL format validation, connectivity tests
-    - [ ] **Code** : Environment variable substitution
-    - [ ] **Test** : `TestConfig_DatabaseURLValidation`
+    - [x] **Validation** : URLs PostgreSQL, Redis, QDrant, InfluxDB présentes  - [x] **3.3.1.1.2** MICRO-TASK: Configuration validation enhancement
+    - [x] **Code** : `func (c *Config) Validate() error { ... }`
+    - [x] **Code** : URL format validation, connectivity tests
+    - [x] **Code** : Environment variable substitution
+    - [x] **Test** : `TestConfig_DatabaseURLValidation`
 
-- [ ] **3.3.2 TASK ATOMIQUE: Configuration Avancée Implementation** :
-  - [ ] **3.3.2.1 MICRO-TASK: Cache strategies per document type** :
-    - [ ] **Code** : `type DocumentTypeConfig struct { Type string; CacheStrategy string; TTL time.Duration; Priority int }`
-    - [ ] **Code** : `type AdvancedConfig struct { DocumentTypes []DocumentTypeConfig; QualityThresholds map[string]float64 }`
-    - [ ] **Test** : Configuration loading, type-specific behavior
-  - [ ] **3.3.2.2 MICRO-TASK: Quality and complexity thresholds** :
-    - [ ] **Code** : `type QualityThresholds struct { MinLength int; MaxComplexity float64; RequiredSections []string; LinkDensity float64 }`
-    - [ ] **Code** : Configurable quality gates pour auto-generation
-    - [ ] **Test** : Threshold validation, quality scoring alignment
+- [x] **3.3.2 TASK ATOMIQUE: Configuration Avancée Implementation** :
+  - [x] **3.3.2.1 MICRO-TASK: Cache strategies per document type** :
+    - [x] **Code** : `type DocumentTypeConfig struct { Type string; CacheStrategy string; TTL time.Duration; Priority int }`
+    - [x] **Code** : `type AdvancedConfig struct { DocumentTypes []DocumentTypeConfig; QualityThresholds map[string]float64 }`
+    - [x] **Test** : Configuration loading, type-specific behavior
+  - [x] **3.3.2.2 MICRO-TASK: Quality and complexity thresholds** :
+    - [x] **Code** : `type QualityThresholds struct { MinLength int; MaxComplexity float64; RequiredSections []string; LinkDensity float64 }`
+    - [x] **Code** : Configurable quality gates pour auto-generation
+    - [x] **Test** : Threshold validation, quality scoring alignment
 
 ### 3.4 Gestion Multi-Branches
 
@@ -478,7 +477,7 @@
 
 - [x] **3.5.1 PathTracker** : path_tracker.go
   - [x] **3.5.1.1** Structure de base implémentée
-  - [ ] **3.5.1.2** Tracking par hash de contenu
+  - [x] **3.5.1.2** Tracking par hash de contenu
   - [ ] **3.5.1.3** Détection automatique des déplacements
   - [ ] **3.5.1.4** Mise à jour des références automatique
 
