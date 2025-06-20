@@ -162,3 +162,84 @@ func (mrs *ManualResolutionStrategy) Resolve(conflict *DocumentConflict) (*Resol
 		Metadata:    map[string]interface{}{"requires_manual": true},
 	}, nil
 }
+
+// Ajout : ConflictSeverity, ResolutionStatus, méthodes Detect et Score, et ConflictManager
+
+type ConflictSeverity int
+
+const (
+	Low ConflictSeverity = iota
+	Medium
+	High
+)
+
+type ResolutionStatus int
+
+const (
+	Pending ResolutionStatus = iota
+	Resolved
+	RolledBack
+)
+
+// Extension de l'interface ResolutionStrategy pour Score et Detect
+// (optionnel selon granularisation, mais Score utile pour priorisation)
+type ScoringStrategy interface {
+	Score(conflict *DocumentConflict) float64
+}
+
+type DetectingStrategy interface {
+	Detect() ([]*DocumentConflict, error)
+}
+
+// ConflictManager pour orchestration multi-conflits
+type ConflictManager struct {
+	Resolvers []ResolutionStrategy
+}
+
+func (cm *ConflictManager) AddResolver(r ResolutionStrategy) {
+	cm.Resolvers = append(cm.Resolvers, r)
+}
+
+func (cm *ConflictManager) DetectAll() ([]*DocumentConflict, error) {
+	var all []*DocumentConflict
+	for _, r := range cm.Resolvers {
+		if d, ok := r.(DetectingStrategy); ok {
+			conflicts, err := d.Detect()
+			if err != nil {
+				return nil, err
+			}
+			all = append(all, conflicts...)
+		}
+	}
+	return all, nil
+}
+
+func (cm *ConflictManager) ResolveAll() ([]*Resolution, error) {
+	conflicts, err := cm.DetectAll()
+	if err != nil {
+		return nil, err
+	}
+	var resolutions []*Resolution
+	for _, c := range conflicts {
+		var best ResolutionStrategy
+		var bestScore float64
+		for _, r := range cm.Resolvers {
+			if s, ok := r.(ScoringStrategy); ok {
+				score := s.Score(c)
+				if best == nil || score > bestScore {
+					best = r
+					bestScore = score
+				}
+			}
+		}
+		if best == nil {
+			best = cm.Resolvers[0]
+		}
+		res, err := best.Resolve(c)
+		if err != nil {
+			return nil, err
+		}
+		resolutions = append(resolutions, res)
+	}
+	return resolutions, nil
+}

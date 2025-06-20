@@ -134,3 +134,52 @@ func TestConflictResolver_StrategyPattern(t *testing.T) {
 		}
 	}
 }
+
+// DummyDetectStrategy pour tests d'orchestration
+
+type DummyDetectStrategy struct {
+	detectCalled *bool
+}
+
+func (d *DummyDetectStrategy) Resolve(conflict *DocumentConflict) (*Resolution, error) {
+	return &Resolution{Strategy: "dummy"}, nil
+}
+
+func (d *DummyDetectStrategy) Detect() ([]*DocumentConflict, error) {
+	if d.detectCalled != nil {
+		*d.detectCalled = true
+	}
+	return []*DocumentConflict{{ID: "dummy", Type: ContentConflict}}, nil
+}
+
+// Test ConflictManager orchestration multi-conflits
+func TestConflictManager_Orchestration(t *testing.T) {
+	cm := &ConflictManager{}
+	cm.AddResolver(&ContentMergeStrategy{})
+	cm.AddResolver(&MetadataPreferenceStrategy{})
+	cm.AddResolver(&VersionBasedStrategy{})
+	cm.AddResolver(&PathRenameStrategy{})
+
+	detectCalled := false
+	dummy := &DummyDetectStrategy{detectCalled: &detectCalled}
+	cm.AddResolver(dummy)
+
+	conflicts, err := cm.DetectAll()
+	if err != nil {
+		t.Fatalf("DetectAll should not error: %v", err)
+	}
+	if !detectCalled {
+		t.Error("Detect should be called on DummyDetectStrategy")
+	}
+	if len(conflicts) == 0 {
+		t.Error("Should detect at least one conflict")
+	}
+
+	resolutions, err := cm.ResolveAll()
+	if err != nil {
+		t.Fatalf("ResolveAll should not error: %v", err)
+	}
+	if len(resolutions) == 0 {
+		t.Error("Should resolve at least one conflict")
+	}
+}
