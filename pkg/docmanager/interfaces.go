@@ -210,7 +210,7 @@ type VectorizationConfig struct {
 
 // BranchAware interface spécialisée pour la gestion de branches
 type BranchAware interface {
-	SyncAcrossBranches(ctx context.Context) error
+	SyncAcrossBranches(ctx context.Context) ([]string, error) // Changed to match implementation
 	GetBranchStatus(branch string) (BranchDocStatus, error)
 	MergeDocumentation(fromBranch, toBranch string) error
 }

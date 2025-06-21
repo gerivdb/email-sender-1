@@ -192,15 +192,7 @@ func NewPathTracker() *PathTracker {
 	}
 }
 
-// PathHealthReport rapport de santé des chemins
-type PathHealthReport struct {
-	TotalPaths   int
-	BrokenLinks  int
-	MissingFiles int
-	UpdatedPaths int
-	Issues       []string
-}
-
+// PathHealthReport is defined in path_health_report.go
 // Structures précédentes inchangées...
 
 // --- LOT 16-31 : MICRO-TÂCHES ATOMIQUES NUMÉROTÉES --- //
@@ -419,39 +411,53 @@ func (pt *PathTracker) updateImportStatements(oldPath, newPath string) error {
 func (pt *PathTracker) HealthCheck() (*PathHealthReport, error) {
 	pt.mu.RLock()
 	defer pt.mu.RUnlock()
+
 	report := &PathHealthReport{
-		TotalPaths:   len(pt.ContentHashes),
-		BrokenLinks:  0,
-		MissingFiles: 0,
-		UpdatedPaths: 0,
-		Issues:       []string{},
+		TotalFiles:      len(pt.ContentHashes),
+		ValidPaths:      0,
+		BrokenPaths:     []string{},
+		OrphanedHashes:  []string{}, // Not fully implemented by original logic here
+		Recommendations: []string{},
+		Timestamp:       time.Now(),
 	}
-	for path, hash := range pt.ContentHashes {
+
+	var issuesForRecommendations []string
+
+	for path, storedHash := range pt.ContentHashes {
 		if _, err := os.Stat(path); os.IsNotExist(err) {
-			// 28. Ajout fichier manquant
-			report.MissingFiles++
-			report.Issues = append(report.Issues, fmt.Sprintf("Fichier manquant: %s", path))
+			issueMsg := fmt.Sprintf("Fichier manquant: %s (hash attendu: %s)", path, storedHash)
+			report.BrokenPaths = append(report.BrokenPaths, issueMsg)
+			issuesForRecommendations = append(issuesForRecommendations, issueMsg)
 			continue
 		}
 		actualHash, err := pt.CalculateContentHash(path)
 		if err != nil {
-			report.BrokenLinks++
-			report.Issues = append(report.Issues, fmt.Sprintf("Erreur de calcul de hash: %s", path))
+			issueMsg := fmt.Sprintf("Erreur de calcul de hash pour %s: %v", path, err)
+			report.BrokenPaths = append(report.BrokenPaths, issueMsg)
+			issuesForRecommendations = append(issuesForRecommendations, issueMsg)
 			continue
 		}
-		if actualHash != hash {
-			// 29. Ajout hash orphelin
-			report.BrokenLinks++
-			report.Issues = append(report.Issues, fmt.Sprintf("Hash orphelin détecté: %s", path))
+		if actualHash != storedHash {
+			issueMsg := fmt.Sprintf("Contenu modifié (hash mismatch) pour %s: attendu %s, obtenu %s", path, storedHash, actualHash)
+			report.BrokenPaths = append(report.BrokenPaths, issueMsg)
+			issuesForRecommendations = append(issuesForRecommendations, issueMsg)
 		} else {
-			report.UpdatedPaths++
+			report.ValidPaths++
 		}
 	}
-	// 30. Génération recommandations
-	if len(report.Issues) > 0 {
-		report.Issues = append(report.Issues, "Veuillez vérifier les problèmes signalés.")
+
+	if len(issuesForRecommendations) > 0 {
+		report.Recommendations = append(report.Recommendations, "Veuillez vérifier les problèmes signalés: "+strings.Join(issuesForRecommendations, "; "))
 	}
-	// 31. Retour rapport santé
+	if report.ValidPaths < report.TotalFiles {
+		report.Recommendations = append(report.Recommendations, fmt.Sprintf("%d fichiers sur %d présentent des problèmes d'intégrité.", report.TotalFiles-report.ValidPaths, report.TotalFiles))
+	}
+	if len(report.Recommendations) == 0 && report.TotalFiles > 0 {
+		report.Recommendations = append(report.Recommendations, "Aucun problème d'intégrité majeur détecté pour les chemins suivis.")
+	} else if report.TotalFiles == 0 {
+		report.Recommendations = append(report.Recommendations, "Aucun chemin n'est actuellement suivi.")
+	}
+
 	return report, nil
 }
 

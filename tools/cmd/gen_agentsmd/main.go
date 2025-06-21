@@ -17,7 +17,7 @@ func main() {
 		panic(err)
 	}
 
-	f, _ := os.Create("../AGENTS.md")
+	f, _ := os.Create("../../AGENTS.md") // Adjusted path for os.Create
 	defer f.Close()
 	fmt.Fprintln(f, "# AGENTS.md\n\n## Documentation générée automatiquement\n")
 

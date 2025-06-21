@@ -54,9 +54,19 @@ func (a *JWTAuthenticator) Middleware(next http.Handler) http.Handler {
 			http.Error(w, "Invalid issuer", http.StatusUnauthorized)
 			return
 		}
-		if a.config.Audience != "" && !claims.VerifyAudience(a.config.Audience, true) {
-			http.Error(w, "Invalid audience", http.StatusUnauthorized)
-			return
+		// Manual audience check
+		if a.config.Audience != "" {
+			validAudience := false
+			for _, aud := range claims.Audience {
+				if aud == a.config.Audience {
+					validAudience = true
+					break
+				}
+			}
+			if !validAudience {
+				http.Error(w, "Invalid audience", http.StatusUnauthorized)
+				return
+			}
 		}
 		if a.config.RequiredScope != "" && !strings.Contains(claims.Scope, a.config.RequiredScope) {
 			http.Error(w, "Insufficient scope", http.StatusForbidden)
@@ -78,8 +88,18 @@ func (a *JWTAuthenticator) ValidateToken(ctx context.Context, tokenStr string) (
 	if a.config.Issuer != "" && claims.Issuer != a.config.Issuer {
 		return nil, errors.New("invalid issuer")
 	}
-	if a.config.Audience != "" && !claims.VerifyAudience(a.config.Audience, true) {
-		return nil, errors.New("invalid audience")
+	// Manual audience check
+	if a.config.Audience != "" {
+		validAudience := false
+		for _, aud := range claims.Audience {
+			if aud == a.config.Audience {
+				validAudience = true
+				break
+			}
+		}
+		if !validAudience {
+			return nil, errors.New("invalid audience")
+		}
 	}
 	if a.config.RequiredScope != "" && !strings.Contains(claims.Scope, a.config.RequiredScope) {
 		return nil, errors.New("insufficient scope")

@@ -2,7 +2,6 @@ package docmanager
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 )
 

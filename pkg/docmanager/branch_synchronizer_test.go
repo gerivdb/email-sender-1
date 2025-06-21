@@ -2,6 +2,23 @@
 // Package docmanager - Tests unitaires BranchSynchronizer SRP
 package docmanager
 
+type dummyStrategy struct {
+	id   int
+	ct   ConflictType
+	prio int
+	can  bool
+	fail bool // Added fail field
+}
+
+func (ds *dummyStrategy) Resolve(dc *DocumentConflict) (*Document, error) {
+	if ds.fail {
+		return nil, fmt.Errorf("simulated resolve error for strategy %d", ds.id)
+	}
+	return &Document{Content: "ok"}, nil
+}
+func (ds *dummyStrategy) CanHandle(ct ConflictType) bool { return ds.can && ct == ds.ct }
+func (ds *dummyStrategy) Priority() int                   { return ds.prio }
+
 import (
 	"fmt"
 	"io"
@@ -728,16 +745,6 @@ func TestResolutionStrategyRegistration(t *testing.T) {
 	cr := &ConflictResolver{
 		strategies: make(map[ConflictType][]ResolutionStrategy),
 	}
-
-type dummyStrategy struct {
-	id      int
-	ct      ConflictType
-	prio    int
-	can     bool
-	}
-	func (ds *dummyStrategy) Resolve(dc *DocumentConflict) (*Document, error) { return &Document{Content: "ok"}, nil }
-	func (ds *dummyStrategy) CanHandle(ct ConflictType) bool { return ds.can && ct == ds.ct }
-	func (ds *dummyStrategy) Priority() int { return ds.prio }
 
 	ds1 := &dummyStrategy{id: 1, ct: "merge", prio: 10, can: true}
 	ds2 := &dummyStrategy{id: 2, ct: "merge", prio: 20, can: true}

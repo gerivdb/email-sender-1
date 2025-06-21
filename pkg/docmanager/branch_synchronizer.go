@@ -956,10 +956,8 @@ func (gh *GoFileHandler) CanHandle(filePath string) bool {
 func (gh *GoFileHandler) MergeFiles(sourceContent, targetContent, baseContent string) (MergeResult, error) {
 	// Logique de merge spécialisée pour Go (imports, fonctions, etc.)
 	result := MergeResult{
-		Content:         sourceContent, // Implémentation basique pour le moment
-		HasConflicts:    false,
-		ConflictMarkers: []ConflictMarker{},
-		Success:         true,
+		MergedContent: sourceContent, // Implémentation basique pour le moment
+		Success:       true,
 	}
 	return result, nil
 }
@@ -982,10 +980,8 @@ func (mh *MarkdownFileHandler) CanHandle(filePath string) bool {
 func (mh *MarkdownFileHandler) MergeFiles(sourceContent, targetContent, baseContent string) (MergeResult, error) {
 	// Logique de merge spécialisée pour Markdown (sections, listes, etc.)
 	result := MergeResult{
-		Content:         sourceContent, // Implémentation basique pour le moment
-		HasConflicts:    false,
-		ConflictMarkers: []ConflictMarker{},
-		Success:         true,
+		MergedContent: sourceContent, // Implémentation basique pour le moment
+		Success:       true,
 	}
 	return result, nil
 }
