@@ -154,18 +154,15 @@ func NewDefaultN8NManager(config *N8NManagerConfig, logger *zap.Logger) (*Defaul
 // initializeComponents initialise les composants du manager
 func (m *DefaultN8NManager) initializeComponents() error {
 	// Initialize converters
-	var err error
 
 	// N8N to Go converter
-	m.converter, err = converters.NewN8NToGoConverter(m.logger, converters.ConversionOptions{
+	m.converter = converters.NewN8NToGoConverter(m.logger, converters.ConversionOptions{
 		NullHandling:   converters.NullHandlingDefault,
 		TypeValidation: true,
 		SkipBinaryData: false,
 		MaxFieldDepth:  10,
 	})
-	if err != nil {
-		return fmt.Errorf("failed to create N8N to Go converter: %w", err)
-	}
+	// Removed error check as NewN8NToGoConverter returns only one value
 
 	// Go to N8N converter
 	m.goConverter = converters.NewGoToN8NConverter(m.logger, converters.GoToN8NOptions{
@@ -175,12 +172,8 @@ func (m *DefaultN8NManager) initializeComponents() error {
 	})
 
 	// Parameter mapper
-	m.mapper = mapping.NewParameterMapper(m.logger, mapping.MappingOptions{
-		StrictMode:          false,
-		ValidateTypes:       true,
-		AllowPartialMapping: true,
-		CustomMappings:      make(map[string]string),
-	})
+	m.mapper = mapping.NewParameterMapper(m.logger)
+	// MappingOptions removed as NewParameterMapper only takes a logger
 
 	// Schema validator
 	m.validator = converters.NewSchemaValidator(m.logger, converters.SchemaValidatorOptions{
@@ -190,9 +183,10 @@ func (m *DefaultN8NManager) initializeComponents() error {
 	})
 
 	// Initialize bridge components
-	m.eventBus = bridge.NewEventBus(m.logger)
-	m.statusTracker = bridge.NewStatusTracker(m.logger)
-	m.callbackHandler = bridge.NewCallbackHandler(m.logger)
+	// Assuming no Redis client for EventBus, and default TTL for StatusTracker
+	m.eventBus = bridge.NewChannelEventBus(m.logger, nil)
+	m.statusTracker = bridge.NewMemoryStatusTracker(m.logger, 24*time.Hour) // Default TTL
+	m.callbackHandler = bridge.NewCallbackHandler(m.logger, m.eventBus, m.statusTracker)
 
 	// Initialize default queue
 	m.initializeDefaultQueue()
@@ -237,17 +231,11 @@ func (m *DefaultN8NManager) Start(ctx context.Context) error {
 	m.logger.Info("Starting N8N Manager...")
 
 	// Start components
-	if err := m.eventBus.Start(ctx); err != nil {
-		return fmt.Errorf("failed to start event bus: %w", err)
-	}
-
-	if err := m.statusTracker.Start(ctx); err != nil {
-		return fmt.Errorf("failed to start status tracker: %w", err)
-	}
-
-	if err := m.callbackHandler.Start(ctx); err != nil {
-		return fmt.Errorf("failed to start callback handler: %w", err)
-	}
+	// m.eventBus.Start(ctx) - ChannelEventBus does not have Start, it's operational after creation.
+	// m.statusTracker.Start(ctx) - MemoryStatusTracker does not have Start. Starting cleanup routine.
+	go m.statusTracker.StartCleanupRoutine(10 * time.Minute) // Default interval for cleanup
+	// m.callbackHandler.Start(ctx) - CallbackHandler does not have Start. Starting timeout monitor.
+	go m.callbackHandler.StartTimeoutMonitor(m.ctx) // Use manager's context
 
 	// Start queue workers
 	m.startQueueWorkers(ctx)
@@ -288,9 +276,11 @@ func (m *DefaultN8NManager) Stop() error {
 	m.cancel()
 
 	// Stop components
-	m.eventBus.Stop()
-	m.statusTracker.Stop()
-	m.callbackHandler.Stop()
+	if m.eventBus != nil { // Add nil check before calling Close
+		m.eventBus.Close() // ChannelEventBus has Close()
+	}
+	// m.statusTracker.Stop() - MemoryStatusTracker cleanup is context-driven by m.cancel()
+	// m.callbackHandler.Stop() - CallbackHandler timeout monitor is context-driven by m.cancel()
 
 	// Stop queue workers
 	m.stopQueueWorkers()
@@ -321,13 +311,9 @@ func (m *DefaultN8NManager) IsHealthy() bool {
 	}
 
 	// Check components health
-	if !m.eventBus.IsHealthy() {
-		return false
-	}
-
-	if !m.statusTracker.IsHealthy() {
-		return false
-	}
+	// EventBus (ChannelEventBus) does not have IsHealthy(). Assume healthy if manager is running.
+	// StatusTracker (MemoryStatusTracker) does not have IsHealthy(). Assume healthy if manager is running.
+	// CallbackHandler does not have IsHealthy(). Assume healthy if manager is running.
 
 	// Check queue health
 	for _, queue := range m.queues {
@@ -345,20 +331,42 @@ func (m *DefaultN8NManager) GetStatus() ManagerStatus {
 	defer m.mu.RUnlock()
 
 	components := make(map[string]ComponentStatus)
+	// Bridge components do not have an IsHealthy method.
+	// Their status is tied to the manager's running state or requires specific checks.
+	eventBusStatus := "stopped"
+	eventBusHealthy := false
+	if m.running && m.eventBus != nil {
+		eventBusStatus = "running"
+		eventBusHealthy = true // Assuming healthy if manager is running and component exists
+	}
 	components["eventBus"] = ComponentStatus{
 		Name:    "EventBus",
-		Status:  m.getComponentStatus(m.eventBus.IsHealthy()),
-		Healthy: m.eventBus.IsHealthy(),
+		Status:  eventBusStatus,
+		Healthy: eventBusHealthy,
+	}
+
+	statusTrackerStatus := "stopped"
+	statusTrackerHealthy := false
+	if m.running && m.statusTracker != nil {
+		statusTrackerStatus = "running"
+		statusTrackerHealthy = true // Assuming healthy
 	}
 	components["statusTracker"] = ComponentStatus{
 		Name:    "StatusTracker",
-		Status:  m.getComponentStatus(m.statusTracker.IsHealthy()),
-		Healthy: m.statusTracker.IsHealthy(),
+		Status:  statusTrackerStatus,
+		Healthy: statusTrackerHealthy,
+	}
+
+	callbackHandlerStatus := "stopped"
+	callbackHandlerHealthy := false
+	if m.running && m.callbackHandler != nil {
+		callbackHandlerStatus = "running"
+		callbackHandlerHealthy = true // Assuming healthy
 	}
 	components["callbackHandler"] = ComponentStatus{
 		Name:    "CallbackHandler",
-		Status:  m.getComponentStatus(m.callbackHandler.IsHealthy()),
-		Healthy: m.callbackHandler.IsHealthy(),
+		Status:  callbackHandlerStatus,
+		Healthy: callbackHandlerHealthy,
 	}
 
 	return ManagerStatus{

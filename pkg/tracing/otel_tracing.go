@@ -6,9 +6,9 @@ import (
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/sdk/resource"
-	"go.opentelemetry.io/otel/sdk/trace"
+	sdktrace "go.opentelemetry.io/otel/sdk/trace" // Aliased to sdktrace
 	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
-	"go.opentelemetry.io/otel/trace"
+	"go.opentelemetry.io/otel/trace" // This will be the 'trace' package for API types like trace.Span
 )
 
 // InitTracer initialise OpenTelemetry TracerProvider (stdout ou OTLP)
@@ -17,9 +17,10 @@ func InitTracer(serviceName string) (func(context.Context) error, error) {
 	if err != nil {
 		return nil, err
 	}
-	tp := trace.NewTracerProvider(
-		trace.WithBatcher(exporter),
-		trace.WithResource(resource.NewWithAttributes(
+	// Use the aliased sdktrace for provider configuration
+	tp := sdktrace.NewTracerProvider(
+		sdktrace.WithBatcher(exporter),
+		sdktrace.WithResource(resource.NewWithAttributes(
 			semconv.SchemaURL,
 			semconv.ServiceName(serviceName),
 		)),
@@ -29,6 +30,7 @@ func InitTracer(serviceName string) (func(context.Context) error, error) {
 }
 
 // StartSpan démarre un span pour une opération
+// trace.Span here refers to go.opentelemetry.io/otel/trace.Span
 func StartSpan(ctx context.Context, name string) (context.Context, trace.Span) {
 	tracer := otel.Tracer("go-n8n-infra")
 	return tracer.Start(ctx, name)
