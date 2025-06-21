@@ -112,7 +112,7 @@ func (bs *BranchSynchronizer) ValidateSyncRules() []string {
 
 // SyncAcrossBranches implémente l'interface BranchAware
 func (bs *BranchSynchronizer) SyncAcrossBranches(ctx context.Context) error {
-	// 4.2.1.2.1 MICRO-TASK: Énumération branches actives
+	// 4.2.1.2.1 déjà implémenté
 	branchesIter, err := bs.repo.Branches()
 	if err != nil {
 		return err
@@ -121,7 +121,7 @@ func (bs *BranchSynchronizer) SyncAcrossBranches(ctx context.Context) error {
 	for {
 		ref, err := branchesIter.Next()
 		if err != nil {
-			break // fin de l'itérateur
+			break
 		}
 		branches = append(branches, ref.Name().Short())
 	}
@@ -129,9 +129,8 @@ func (bs *BranchSynchronizer) SyncAcrossBranches(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	currentBranch := currentBranchRef.Name().Short()
-
-	// Filtrage selon configuration (exemple: inclure/exclure selon SyncRules)
+	_ = currentBranchRef // évite l'erreur variable inutilisée
+	// currentBranch := currentBranchRef.Name().Short() // non utilisé pour l’instant
 	filteredBranches := []string{}
 	for _, branch := range branches {
 		if rule, ok := bs.SyncRules[branch]; ok && rule.SourceBranch != "" {
@@ -139,15 +138,58 @@ func (bs *BranchSynchronizer) SyncAcrossBranches(ctx context.Context) error {
 		}
 	}
 	if len(filteredBranches) == 0 {
-		filteredBranches = branches // fallback: toutes les branches
+		filteredBranches = branches
 	}
 
-	// (La suite de la logique sera ajoutée dans les micro-tâches suivantes)
+	// 4.2.1.2.2 MICRO-TASK: Analyse diff documentaire par branche
+	for _, branch := range filteredBranches {
+		diffResult, err := bs.analyzeBranchDocDiff(branch)
+		if err != nil {
+			return err
+		}
+		// Stocker ou utiliser diffResult selon besoin (ex: bs.BranchDiffs[branch] = diffResult)
+		bs.BranchDiffs[branch] = diffResult
+	}
 	return nil
+}
+
+// analyzeBranchDocDiff analyse les différences documentaires pour une branche
+func (bs *BranchSynchronizer) analyzeBranchDocDiff(branch string) (*BranchDiff, error) {
+	// Exemple simplifié : lister les fichiers modifiés .md, .txt, .adoc
+	worktree, err := bs.repo.Worktree()
+	if err != nil {
+		return nil, err
+	}
+	status, err := worktree.Status()
+	if err != nil {
+		return nil, err
+	}
+	filesChanged := []string{}
+	for file, s := range status {
+		if (s.Worktree != ' ' || s.Staging != ' ') && (strings.HasSuffix(file, ".md") || strings.HasSuffix(file, ".txt") || strings.HasSuffix(file, ".adoc")) {
+			filesChanged = append(filesChanged, file)
+		}
+	}
+	// Score de divergence documentaire : nombre de fichiers modifiés
+	score := len(filesChanged)
+	_ = score // évite l'erreur variable inutilisée
+	// On peut enrichir avec d’autres métriques si besoin
+	return &BranchDiff{
+		FilesChanged: filesChanged,
+		Conflicts:    []string{}, // à remplir dans la tâche suivante
+	}, nil
 }
 
 // GetBranchStatus implémente l'interface BranchAware
 func (bs *BranchSynchronizer) GetBranchStatus(branch string) (BranchDocStatus, error) {
+	// Gestion du cache status branches (4.2.1.1.3)
+	bs.cacheMutex.RLock()
+	cached, found := bs.branchStatusCache[branch]
+	bs.cacheMutex.RUnlock()
+	if found && time.Since(cached.LastSync) < bs.cacheExpiry {
+		return *cached, nil
+	}
+
 	status := BranchDocStatus{
 		Branch:        branch,
 		LastSync:      time.Now(),
@@ -162,6 +204,11 @@ func (bs *BranchSynchronizer) GetBranchStatus(branch string) (BranchDocStatus, e
 			status.Status = "conflicts"
 		}
 	}
+
+	// Mise à jour du cache
+	bs.cacheMutex.Lock()
+	bs.branchStatusCache[branch] = &status
+	bs.cacheMutex.Unlock()
 
 	return status, nil
 }

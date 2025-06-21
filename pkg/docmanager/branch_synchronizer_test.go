@@ -434,3 +434,47 @@ func TestValidationFunctions(t *testing.T) {
 		t.Error("Expected error for invalid detection rule")
 	}
 }
+
+// Test du cache status branches (4.2.1.1.3)
+func TestBranchStatusCache(t *testing.T) {
+	bs := NewBranchSynchronizer()
+	branch := "test-branch"
+
+	// Premier appel : calcule et met en cache
+	status1, err := bs.GetBranchStatus(branch)
+	if err != nil {
+		t.Fatalf("Erreur GetBranchStatus: %v", err)
+	}
+	if status1.Branch != branch {
+		t.Errorf("Nom de branche incorrect: attendu %s, obtenu %s", branch, status1.Branch)
+	}
+
+	// Modifie le cache pour simuler une valeur différente
+	bs.cacheMutex.Lock()
+	fake := status1
+	fake.Status = "conflicts"
+	fake.LastSync = time.Now()
+	bs.branchStatusCache[branch] = &fake
+	bs.cacheMutex.Unlock()
+
+	// Deuxième appel : doit retourner la valeur du cache
+	status2, err := bs.GetBranchStatus(branch)
+	if err != nil {
+		t.Fatalf("Erreur GetBranchStatus (cache): %v", err)
+	}
+	if status2.Status != "conflicts" {
+		t.Errorf("Le cache n'est pas utilisé correctement (attendu 'conflicts', obtenu '%s')", status2.Status)
+	}
+
+	// Expire le cache et vérifie le recalcul
+	bs.cacheMutex.Lock()
+	bs.branchStatusCache[branch].LastSync = time.Now().Add(-2 * bs.cacheExpiry)
+	bs.cacheMutex.Unlock()
+	status3, err := bs.GetBranchStatus(branch)
+	if err != nil {
+		t.Fatalf("Erreur GetBranchStatus (expiration): %v", err)
+	}
+	if status3.Status != "active" {
+		t.Errorf("Le cache n'est pas expiré correctement (attendu 'active', obtenu '%s')", status3.Status)
+	}
+}
