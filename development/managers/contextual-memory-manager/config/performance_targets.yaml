@@ -1,0 +1,106 @@
+# Objectifs de Performance v6.1
+# Configuration des KPIs et métriques de validation
+
+performance_targets:
+  latency:
+    target: "500ms"
+    warning: "800ms"
+    critical: "1.5s"
+
+  quality:
+    target: 0.85
+    warning: 0.7
+    critical: 0.5
+
+  cache_efficiency:
+    target: 0.9
+    warning: 0.7
+    critical: 0.5
+
+  accuracy:
+    ast_mode: 0.9
+    rag_mode: 0.8
+    hybrid_mode: 0.92
+
+  resource_usage:
+    memory_max: "1GB"
+    cpu_max: "70%"
+
+success_criteria:
+  - "25-40% amélioration qualité contextuelle vs RAG pur"
+  - "Latence < 500ms pour 95% des requêtes"
+  - "Cache hit rate > 85%"
+  - "Mode hybride sélectionné automatiquement dans 80% des cas appropriés"
+  - "Zero downtime pendant les migrations"
+
+validation_metrics:
+  performance:
+    - avg_latency_ms
+    - p95_latency_ms
+    - p99_latency_ms
+    - throughput_rps
+    - error_rate_percent
+
+  quality:
+    - context_relevance_score
+    - answer_accuracy_score
+    - user_satisfaction_rating
+    - semantic_similarity_score
+    - factual_correctness_rate
+
+  efficiency:
+    - cache_hit_rate_percent
+    - memory_usage_mb
+    - cpu_usage_percent
+    - disk_io_rate
+    - network_io_rate
+
+  reliability:
+    - uptime_percent
+    - mtbf_hours
+    - mttr_minutes
+    - availability_sla
+    - data_consistency_rate
+
+# Seuils d'alerte pour monitoring automatique
+alert_thresholds:
+  critical:
+    latency_ms: 1500
+    error_rate_percent: 10
+    memory_usage_percent: 90
+    cpu_usage_percent: 85
+    quality_score: 0.5
+
+  warning:
+    latency_ms: 800
+    error_rate_percent: 5
+    memory_usage_percent: 75
+    cpu_usage_percent: 70
+    quality_score: 0.7
+
+  info:
+    latency_ms: 500
+    error_rate_percent: 2
+    memory_usage_percent: 50
+    cpu_usage_percent: 50
+    quality_score: 0.85
+
+# Métriques de comparaison avec l'ancien système
+baseline_comparison:
+  legacy_rag:
+    avg_latency_ms: 1200
+    quality_score: 0.65
+    cache_hit_rate: 0.45
+    memory_usage_mb: 800
+
+  target_hybrid:
+    avg_latency_ms: 500
+    quality_score: 0.85
+    cache_hit_rate: 0.90
+    memory_usage_mb: 1000
+
+  improvement_targets:
+    latency_improvement_percent: 58
+    quality_improvement_percent: 31
+    cache_improvement_percent: 100
+    memory_overhead_percent: 25

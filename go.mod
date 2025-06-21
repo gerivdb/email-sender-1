@@ -7,13 +7,14 @@ require (
 	github.com/email-sender/tools v0.0.0
 	github.com/gin-gonic/gin v1.10.1
 	github.com/go-redis/redis/v8 v8.11.5
+	github.com/go-sql-driver/mysql v1.9.3
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/gomarkdown/markdown v0.0.0-20250311123330-531bef5e742b
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/mux v1.8.1
 	github.com/gorilla/websocket v1.5.0
 	github.com/lib/pq v1.10.9
-	github.com/mattn/go-sqlite3 v1.14.17
+	github.com/mattn/go-sqlite3 v1.14.28
 	github.com/pdfcpu/pdfcpu v0.11.0
 	github.com/prometheus/client_golang v1.17.0
 	github.com/qdrant/go-client v1.14.0
@@ -47,19 +48,6 @@ require (
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
-	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/kevinburke/ssh_config v1.2.0 // indirect
-	github.com/modern-go/reflect2 v1.0.2 // indirect
-	github.com/pjbgf/sha1cd v0.3.2 // indirect
-	github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 // indirect
-	github.com/skeema/knownhosts v1.3.1 // indirect
-	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
-	github.com/xanzy/ssh-agent v0.3.3 // indirect
-	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
-	go.opentelemetry.io/otel/metric v1.36.0 // indirect
-	golang.org/x/oauth2 v0.25.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20241223144023-3abc09e42ca8 // indirect
-	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
 
 require (
