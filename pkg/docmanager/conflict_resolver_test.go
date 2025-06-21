@@ -248,3 +248,41 @@ func TestConflictAndResolutionGranular(t *testing.T) {
 		t.Error("ResolutionGranular struct fields not set correctly")
 	}
 }
+
+func TestLastModifiedWins(t *testing.T) {
+	// Cas : timestamps identiques
+	timestamp := time.Now()
+	docA := &Document{ID: "A", Metadata: map[string]interface{}{"LastModified": timestamp, "tags": []string{"t1"}, "authors": []string{"a1"}}}
+	docB := &Document{ID: "B", Metadata: map[string]interface{}{"LastModified": timestamp, "tags": []string{"t2"}, "authors": []string{"a2"}}}
+	conflict := &DocumentConflict{LocalDoc: docA, RemoteDoc: docB}
+	lmw := &LastModifiedWins{}
+	res, err := lmw.Resolve(conflict)
+	if err != nil {
+		t.Fatalf("Erreur inattendue: %v", err)
+	}
+	if res.ResolvedDoc == nil {
+		t.Error("Document résolu manquant")
+	}
+	if res.ResolvedDoc.ID != "B" && res.ResolvedDoc.ID != "A" {
+		t.Errorf("Résolution inattendue: %v", res.ResolvedDoc.ID)
+	}
+	// Cas : différence microseconde
+	delta := time.Microsecond
+	docA.Metadata["LastModified"] = timestamp.Add(delta)
+	res, err = lmw.Resolve(conflict)
+	if err != nil {
+		t.Fatalf("Erreur inattendue: %v", err)
+	}
+	if res.ResolvedDoc.ID != "A" {
+		t.Errorf("A doit gagner (plus récent), obtenu: %v", res.ResolvedDoc.ID)
+	}
+	// Vérifier fusion métadonnées (tags, auteurs)
+	tags, ok := res.ResolvedDoc.Metadata["tags"].([]string)
+	if !ok || len(tags) < 2 {
+		t.Error("Fusion des tags incomplète")
+	}
+	authors, ok := res.ResolvedDoc.Metadata["authors"].([]string)
+	if !ok || len(authors) < 2 {
+		t.Error("Fusion des auteurs incomplète")
+	}
+}

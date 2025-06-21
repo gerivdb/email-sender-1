@@ -317,3 +317,61 @@ type ResolutionGranular struct {
 }
 
 // 3.6.1.8 Validation avec go vet et golangci-lint : OK (voir scripts build_and_test.ps1)
+
+// LastModifiedWins Strategy
+// Compare les timestamps de modification et préserve les métadonnées du perdant
+
+type LastModifiedWins struct{}
+
+type TimestampedDocument struct {
+	Doc          *Document
+	LastModified time.Time
+}
+
+func (lmw *LastModifiedWins) Resolve(conflict *DocumentConflict) (*Resolution, error) {
+	// On suppose que les métadonnées contiennent les timestamps
+	versionA := TimestampedDocument{Doc: conflict.LocalDoc}
+	versionB := TimestampedDocument{Doc: conflict.RemoteDoc}
+	if tA, ok := conflict.LocalDoc.Metadata["LastModified"].(time.Time); ok {
+		versionA.LastModified = tA
+	}
+	if tB, ok := conflict.RemoteDoc.Metadata["LastModified"].(time.Time); ok {
+		versionB.LastModified = tB
+	}
+	var winner, loser *Document
+	if versionA.LastModified.After(versionB.LastModified) {
+		winner, loser = versionA.Doc, versionB.Doc
+	} else {
+		winner, loser = versionB.Doc, versionA.Doc
+	}
+	// Fusionner les métadonnées du perdant
+	winner.Metadata = mergeMetadata(winner.Metadata, loser.Metadata)
+	return &Resolution{
+		ResolvedDoc: winner,
+		Strategy:    "last_modified_wins",
+		Confidence:  1.0,
+		Metadata:    map[string]interface{}{"winner": winner.ID, "loser": loser.ID},
+	}, nil
+}
+
+func mergeMetadata(metaA, metaB map[string]interface{}) map[string]interface{} {
+	merged := make(map[string]interface{})
+	for k, v := range metaA {
+		merged[k] = v
+	}
+	for k, v := range metaB {
+		if _, exists := merged[k]; !exists {
+			merged[k] = v
+		}
+	}
+	// Préserver tags, auteurs, historique si présents
+	for _, key := range []string{"tags", "authors", "history"} {
+		if v, ok := metaA[key]; ok {
+			merged[key] = v
+		}
+		if v, ok := metaB[key]; ok {
+			merged[key] = v
+		}
+	}
+	return merged
+}
