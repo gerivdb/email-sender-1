@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"sort"
+	"io"
 	"strings"
 	"sync"
 	"time"
@@ -152,46 +153,40 @@ func (bs *BranchSynchronizer) ValidateSyncRules() []string {
 
 // TASK ATOMIQUE 3.1.4.1.1 - Implementation BranchAware Interface
 
-<<<<<<< HEAD
-// SyncAcrossBranches implémente l'interface BranchAware
-func (bs *BranchSynchronizer) SyncAcrossBranches(ctx context.Context) error {
-	// 4.2.1.2.1 déjà implémenté
-=======
 // SyncAcrossBranches énumère et filtre les branches actives selon la configuration
 func (bs *BranchSynchronizer) SyncAcrossBranches(ctx context.Context) ([]string, error) {
+	if bs.repo == nil {
+		return nil, fmt.Errorf("repository not initialized in BranchSynchronizer")
+	}
 	branchesIter, err := bs.repo.Branches()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to get branches iterator: %w", err)
 	}
+
 	var branches []string
 	for {
 		ref, err := branchesIter.Next()
-		if err != nil {
+		if err == io.EOF { // End of branches
 			break
+		}
+		if err != nil { // Other error
+			return nil, fmt.Errorf("error iterating branches: %w", err)
 		}
 		branches = append(branches, ref.Name().Short())
 	}
-	currentBranchRef, err := bs.repo.Head()
-	if err != nil {
-		return nil, err
-	}
-	currentBranch := currentBranchRef.Name().Short()
-	_ = currentBranch // utilisé pour usage ultérieur, évite l'erreur non utilisé
 
-	// Filtrage selon configuration (exemple: inclure/exclure selon SyncRules)
-	filteredBranches := []string{}
-	for _, branch := range branches {
-		if rule, ok := bs.SyncRules[branch]; ok && rule.SourceBranch != "" {
-			filteredBranches = append(filteredBranches, branch)
+	var filteredBranches []string
+	if len(bs.SyncRules) == 0 {
+		filteredBranches = branches
+	} else {
+		for _, branchNameFromRepo := range branches {
+			if rule, ok := bs.SyncRules[branchNameFromRepo]; ok && rule.SourceBranch == branchNameFromRepo && rule.SourceBranch != "" {
+				filteredBranches = append(filteredBranches, branchNameFromRepo)
+			}
 		}
 	}
-	if len(filteredBranches) == 0 {
-		filteredBranches = branches
-	}
-
-	// Retourne la liste filtrée et la branche courante (pour usage ultérieur)
+	
 	return filteredBranches, nil
->>>>>>> consolidation-v65B
 }
 
 // analyzeBranchDocDiff analyse les différences documentaires pour une branche
