@@ -434,3 +434,53 @@ func TestValidationFunctions(t *testing.T) {
 		t.Error("Expected error for invalid detection rule")
 	}
 }
+// SPDX-License-Identifier: MIT
+// Test cache status branches dans BranchSynchronizer
+package docmanager
+
+import (
+	"testing"
+	"time"
+)
+
+func TestBranchStatusCache_SetGetExpiry(t *testing.T) {
+	bs := NewBranchSynchronizer()
+	bs.cacheExpiry = 100 * time.Millisecond
+
+	status := &BranchDocStatus{
+		Branch:        "feature/test",
+		LastSync:      time.Now(),
+		ConflictCount: 0,
+		Status:        "active",
+	}
+	bs.SetBranchStatusCache("feature/test", status)
+
+	// Lecture immédiate : doit exister
+	got, ok := bs.GetBranchStatusCache("feature/test")
+	if !ok || got.Branch != "feature/test" {
+		t.Error("Le cache doit retourner le status juste après set")
+	}
+
+	// Attendre l'expiration
+	time.Sleep(120 * time.Millisecond)
+	_, ok = bs.GetBranchStatusCache("feature/test")
+	if ok {
+		t.Error("Le cache doit expirer après cacheExpiry")
+	}
+}
+
+func TestBranchStatusCache_CleanExpired(t *testing.T) {
+	bs := NewBranchSynchronizer()
+	bs.cacheExpiry = 50 * time.Millisecond
+
+	bs.SetBranchStatusCache("b1", &BranchDocStatus{Branch: "b1", LastSync: time.Now().Add(-time.Minute)})
+	bs.SetBranchStatusCache("b2", &BranchDocStatus{Branch: "b2", LastSync: time.Now()})
+
+	bs.CleanExpiredBranchStatusCache()
+	if _, ok := bs.branchStatusCache["b1"]; ok {
+		t.Error("b1 doit être supprimé du cache car expiré")
+	}
+	if _, ok := bs.branchStatusCache["b2"]; !ok {
+		t.Error("b2 doit rester dans le cache car non expiré")
+	}
+}

@@ -474,6 +474,39 @@ func (csrm *ConfigurableSyncRuleManager) fileMatchesPatterns(fileName string, pa
 	return false
 }
 
+// --- Gestion du cache status branches ---
+// SetBranchStatusCache met à jour le cache pour une branche
+func (bs *BranchSynchronizer) SetBranchStatusCache(branch string, status *BranchDocStatus) {
+	bs.cacheMutex.Lock()
+	defer bs.cacheMutex.Unlock()
+	bs.branchStatusCache[branch] = status
+}
+
+// GetBranchStatusCache récupère le status de cache pour une branche (avec gestion d'expiration)
+func (bs *BranchSynchronizer) GetBranchStatusCache(branch string) (*BranchDocStatus, bool) {
+	bs.cacheMutex.RLock()
+	defer bs.cacheMutex.RUnlock()
+	status, exists := bs.branchStatusCache[branch]
+	if !exists {
+		return nil, false
+	}
+	if time.Since(status.LastSync) > bs.cacheExpiry {
+		return nil, false // Expiré
+	}
+	return status, true
+}
+
+// CleanExpiredBranchStatusCache supprime les entrées expirées du cache
+func (bs *BranchSynchronizer) CleanExpiredBranchStatusCache() {
+	bs.cacheMutex.Lock()
+	defer bs.cacheMutex.Unlock()
+	for branch, status := range bs.branchStatusCache {
+		if time.Since(status.LastSync) > bs.cacheExpiry {
+			delete(bs.branchStatusCache, branch)
+		}
+	}
+}
+
 // TASK ATOMIQUE 3.4.1.3 - Détection automatique des conflits
 
 // ConflictDetector détecteur automatique de conflits
