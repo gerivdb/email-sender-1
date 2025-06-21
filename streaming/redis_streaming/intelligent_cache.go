@@ -4,6 +4,8 @@ package redisstreaming
 import (
 	"context"
 	"time"
+
+	"github.com/go-redis/redis/v8"
 )
 
 type IntelligentCache struct {
