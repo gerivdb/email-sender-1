@@ -5,6 +5,7 @@ package docmanager
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -1984,3 +1985,5 @@ func (cr *ConflictResolver) extractConflictMetadata(conflict *DocumentConflict) 
 	// Exemple : retourne les métadonnées du conflit
 	return conflict.Details
 }
+
+// 4.3.1.2.2 Sélection stratégie optimale

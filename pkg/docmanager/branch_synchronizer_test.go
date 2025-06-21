@@ -3,8 +3,11 @@
 package docmanager
 
 import (
+	"fmt"
+	"os"
 	"testing"
 	"time"
+	"runtime"
 )
 
 // TestBranchSynchronizer_SRP valide le respect du principe SRP
@@ -434,14 +437,26 @@ func TestValidationFunctions(t *testing.T) {
 		t.Error("Expected error for invalid detection rule")
 	}
 }
-// SPDX-License-Identifier: MIT
-// Test cache status branches dans BranchSynchronizer
-package docmanager
 
-import (
-	"testing"
-	"time"
-)
+// LogMemoryUsage affiche la consommation mémoire courante (pour profiling)
+func LogMemoryUsage() {
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	fmt.Printf("Memory Usage: Alloc = %v MiB\n", m.Alloc/1024/1024)
+}
+
+// Exemple d'utilisation dans un test lourd
+func TestMemoryUsageDuringChunkProcessing(t *testing.T) {
+	LogMemoryUsage()
+	err := ProcessFileByChunks("testdata/largefile.txt", 1000, func(chunk []string) error {
+		// Simuler un traitement
+		return nil
+	})
+	if err != nil && !os.IsNotExist(err) { // ignore si le fichier n'existe pas
+		t.Errorf("Erreur inattendue lors du chunking: %v", err)
+	}
+	LogMemoryUsage()
+}
 
 func TestBranchStatusCache_SetGetExpiry(t *testing.T) {
 	bs := NewBranchSynchronizer()
