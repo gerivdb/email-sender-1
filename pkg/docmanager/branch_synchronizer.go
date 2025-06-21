@@ -1988,30 +1988,7 @@ func (bs *BranchSynchronizer) autoResolveConflicts(conflicts []DetectedConflict)
 
 // 4.3.1.1.1 Système stratégies pluggables
 // Définition de l’interface ResolutionStrategy et des structures associées
-
-type ConflictType string
-
-type Document struct {
-	Content  string
-	Metadata map[string]interface{}
-}
-
-type DocumentConflict struct {
-	Type     ConflictType
-	Details  map[string]interface{}
-	Severity string
-}
-
-type ResolutionStrategy interface {
-	Resolve(*DocumentConflict) (*Document, error)
-	CanHandle(ConflictType) bool
-	Priority() int
-}
-
-type ConflictResolver struct {
-	strategies      map[ConflictType][]ResolutionStrategy
-	defaultStrategy ResolutionStrategy
-}
+// [REMOVED DUPLICATE TYPE DEFINITIONS - These types are defined in conflict_resolver.go]
 
 // 4.3.1.2.1 Analyse et classification conflit
 func (cr *ConflictResolver) classifyConflict(conflict *DocumentConflict) ConflictType {
