@@ -1965,3 +1965,22 @@ type ConflictResolver struct {
 	strategies      map[ConflictType][]ResolutionStrategy
 	defaultStrategy ResolutionStrategy
 }
+
+// 4.3.1.2.1 Analyse et classification conflit
+func (cr *ConflictResolver) classifyConflict(conflict *DocumentConflict) ConflictType {
+	// Exemple : classification simple par champ Type
+	return conflict.Type
+}
+
+func (cr *ConflictResolver) assessConflictSeverity(conflict *DocumentConflict) string {
+	// Exemple : retourne la sévérité du conflit
+	if conflict.Severity != "" {
+		return conflict.Severity
+	}
+	return "medium"
+}
+
+func (cr *ConflictResolver) extractConflictMetadata(conflict *DocumentConflict) map[string]interface{} {
+	// Exemple : retourne les métadonnées du conflit
+	return conflict.Details
+}

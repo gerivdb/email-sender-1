@@ -660,3 +660,25 @@ type dummyStrategy struct {
 		t.Error("Les priorités ne sont pas respectées")
 	}
 }
+
+// TestConflictClassification vérifie la classification, sévérité et extraction de métadonnées
+func TestConflictClassification(t *testing.T) {
+	cr := &ConflictResolver{}
+	conflict := &DocumentConflict{
+		Type:     "merge",
+		Severity: "critical",
+		Details:  map[string]interface{}{ "file": "README.md" },
+	}
+	typeRes := cr.classifyConflict(conflict)
+	if typeRes != "merge" {
+		t.Errorf("Type attendu 'merge', obtenu '%s'", typeRes)
+	}
+	sev := cr.assessConflictSeverity(conflict)
+	if sev != "critical" {
+		t.Errorf("Sévérité attendue 'critical', obtenue '%s'", sev)
+	}
+	meta := cr.extractConflictMetadata(conflict)
+	if meta["file"] != "README.md" {
+		t.Errorf("Méta attendue 'README.md', obtenue '%v'", meta["file"])
+	}
+}
