@@ -572,3 +572,34 @@ func TestAnalyzeBranchDocDiff(t *testing.T) {
 		t.Errorf("Fichiers modifiés attendus: 3, obtenus: %d", len(res.ModifiedFiles))
 	}
 }
+
+// TestDetectDocumentationConflicts teste la détection automatique des conflits documentaires
+func TestDetectDocumentationConflicts(t *testing.T) {
+	bs := NewBranchSynchronizer()
+	bs.Conflicts = interface{}(NewConflictDetector()).(*ConflictResolver) // cast pour compatibilité
+
+	// Préparer des résultats d'analyse documentaire simulés
+	branchDiffs := map[string]*DiffResult{
+		"main": {Branch: "main", ModifiedFiles: []string{"README.md", "doc.adoc"}},
+		"dev":  {Branch: "dev", ModifiedFiles: []string{"README.md", "notes.txt"}},
+		"feature": {Branch: "feature", ModifiedFiles: []string{"doc.adoc", "notes.txt"}},
+	}
+
+	conflicts, err := bs.detectDocumentationConflicts(branchDiffs)
+	if err != nil {
+		t.Fatalf("Erreur inattendue: %v", err)
+	}
+	if len(conflicts) == 0 {
+		t.Error("Aucun conflit détecté alors qu'il devrait y en avoir")
+	}
+	// Vérifier la gravité/scoring
+	majorOrCritical := false
+	for _, c := range conflicts {
+		if c.Severity == "high" || c.Severity == "critical" {
+			majorOrCritical = true
+		}
+	}
+	if !majorOrCritical {
+		t.Error("Aucun conflit de gravité majeure/critique détecté")
+	}
+}

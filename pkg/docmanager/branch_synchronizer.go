@@ -47,6 +47,47 @@ type BranchDiff struct {
 
 // ConflictResolver à implémenter selon besoins
 
+// detectDocumentationConflicts analyse les modifications concurrentes sur les fichiers documentaires
+// et retourne la liste des conflits détectés avec un score de gravité.
+func (bs *BranchSynchronizer) detectDocumentationConflicts(branchDiffs map[string]*DiffResult) ([]DetectedConflict, error) {
+	// On suppose que bs.Conflicts est un ConflictDetector
+	conflictDetector, ok := interface{}(bs.Conflicts).(*ConflictDetector)
+	if !ok || conflictDetector == nil {
+		return nil, fmt.Errorf("ConflictDetector non initialisé dans BranchSynchronizer")
+	}
+
+	var allConflicts []DetectedConflict
+	branches := []string{}
+	for branch := range branchDiffs {
+		branches = append(branches, branch)
+	}
+	// Comparer chaque paire de branches pour détecter les conflits documentaires
+	for i := 0; i < len(branches); i++ {
+		for j := i + 1; j < len(branches); j++ {
+			b1, b2 := branches[i], branches[j]
+			files1 := branchDiffs[b1].ModifiedFiles
+			files2 := branchDiffs[b2].ModifiedFiles
+			// Intersection des fichiers modifiés
+			fileSet := map[string]struct{}{}
+			for _, f := range files1 {
+				fileSet[f] = struct{}{}
+			}
+			for _, f := range files2 {
+				if _, exists := fileSet[f]; exists {
+					// Conflit potentiel sur ce fichier documentaire
+					conflicts, err := conflictDetector.DetectConflicts(b1, b2, []string{f})
+					if err != nil {
+						continue // log possible
+					}
+					allConflicts = append(allConflicts, conflicts...)
+				}
+			}
+		}
+	}
+	// Scoring de gravité (ajouté dans DetectedConflict.Severity par le detector)
+	return allConflicts, nil
+}
+
 // NewBranchSynchronizer crée un nouveau synchronisateur de branches
 func NewBranchSynchronizer() *BranchSynchronizer {
 	return &BranchSynchronizer{
@@ -1826,108 +1867,43 @@ func (mshs *MemorySyncHistoryStorage) matchesFilter(entry SyncHistoryEntry, filt
 	return true
 }
 
-// NewSmartMergeManager crée un nouveau gestionnaire de merge intelligent
-func NewSmartMergeManager(conflictDetector *ConflictDetector) *SmartMergeManager {
-	manager := &SmartMergeManager{
-		strategies:       []IntelligentMergeStrategy{},
-		fileHandlers:     make(map[string]FileHandler),
-		conflictDetector: conflictDetector,
-		mergeHistory:     []MergeOperation{},
-	}
+// DiffResult contient le résultat d'une analyse documentaire
+// pour une branche donnée
+// 4.2.1.2.2
 
-	// Enregistrer les gestionnaires de fichiers par défaut
-	manager.RegisterFileHandler("go", &GoFileHandler{})
-	manager.RegisterFileHandler("markdown", &MarkdownFileHandler{})
-
-	// Ajouter des stratégies par défaut
-	manager.AddDefaultStrategies()
-
-	return manager
+type DiffResult struct {
+	Branch         string
+	ModifiedFiles  []string
+	DivergenceScore int
 }
 
-// RegisterFileHandler enregistre un gestionnaire de fichier
-func (smm *SmartMergeManager) RegisterFileHandler(fileType string, handler FileHandler) {
-	smm.mu.Lock()
-	defer smm.mu.Unlock()
-	smm.fileHandlers[fileType] = handler
-}
-
-// AddDefaultStrategies ajoute les stratégies de merge par défaut
-func (smm *SmartMergeManager) AddDefaultStrategies() {
-	smm.mu.Lock()
-	defer smm.mu.Unlock()
-
-	// Ajouter quelques stratégies par défaut
-	defaultStrategy := IntelligentMergeStrategy{
-		Name:        "default",
-		Priority:    100,
-		FilePattern: "*",
-		ConflictResolution: ResolutionMethod{
-			Type: "manual",
-			Parameters: map[string]interface{}{
-				"require_review": true,
-			},
-		},
-	}
-	smm.strategies = append(smm.strategies, defaultStrategy)
-}
-
-// PerformIntelligentMerge effectue un merge intelligent
-func (smm *SmartMergeManager) PerformIntelligentMerge(sourceContent, targetContent, baseContent string, filePath string) (MergeResult, error) {
-	smm.mu.RLock()
-	defer smm.mu.RUnlock()
-
-	// Déterminer le type de fichier
-	fileType := smm.getFileType(filePath)
-
-	// Obtenir le gestionnaire approprié
-	handler, exists := smm.fileHandlers[fileType]
-	if !exists {
-		// Utiliser un merge basique si aucun gestionnaire spécialisé
-		return MergeResult{
-			Content:         sourceContent,
-			HasConflicts:    false,
-			ConflictMarkers: []ConflictMarker{},
-			Success:         true,
-		}, nil
-	}
-
-	// Utiliser le gestionnaire spécialisé
-	return handler.MergeFiles(sourceContent, targetContent, baseContent)
-}
-
-// getFileType détermine le type de fichier basé sur son extension
-func (smm *SmartMergeManager) getFileType(filePath string) string {
-	ext := strings.ToLower(filePath)
-	if strings.HasSuffix(ext, ".go") {
-		return "go"
-	} else if strings.HasSuffix(ext, ".md") || strings.HasSuffix(ext, ".markdown") {
-		return "markdown"
-	}
-	return "generic"
-}
-
-// GetMergeStatistics retourne les statistiques de merge
-func (smm *SmartMergeManager) GetMergeStatistics() map[string]interface{} {
-	smm.mu.RLock()
-	defer smm.mu.RUnlock()
-
-	stats := make(map[string]interface{})
-	stats["total_merges"] = len(smm.mergeHistory)
-
-	successful := 0
-	for _, op := range smm.mergeHistory {
-		if op.Result.Success {
-			successful++
+// analyzeBranchDocDiff analyse les différences documentaires d'une branche
+func (bs *BranchSynchronizer) analyzeBranchDocDiff(branch string) (*DiffResult, error) {
+	// Simulation : dans un vrai repo, on comparerait les fichiers entre branches
+	// Ici, on simule avec des données fictives ou via un mock pour les tests
+	var modified []string
+	// Ex : on suppose que BranchDiffs contient la liste des fichiers modifiés
+	if diff, ok := bs.BranchDiffs[branch]; ok {
+		for _, f := range diff.FilesChanged {
+			if hasDocExtension(f) {
+				modified = append(modified, f)
+			}
 		}
 	}
-	stats["successful_merges"] = successful
+	return &DiffResult{
+		Branch: branch,
+		ModifiedFiles: modified,
+		DivergenceScore: len(modified),
+	}, nil
+}
 
-	if len(smm.mergeHistory) > 0 {
-		stats["success_rate"] = float64(successful) / float64(len(smm.mergeHistory))
-	} else {
-		stats["success_rate"] = 0.0
+func hasDocExtension(filename string) bool {
+	return hasSuffix(filename, ".md") || hasSuffix(filename, ".txt") || hasSuffix(filename, ".adoc")
+}
+
+func hasSuffix(s, suffix string) bool {
+	if len(s) < len(suffix) {
+		return false
 	}
-
-	return stats
+	return s[len(s)-len(suffix):] == suffix
 }
