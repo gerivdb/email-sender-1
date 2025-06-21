@@ -3,9 +3,12 @@
 package docmanager
 
 import (
+	"fmt"
+	"os"
 	"strings"
 	"testing"
 	"time"
+	"runtime"
 )
 
 // TestBranchSynchronizer_SRP valide le respect du principe SRP
@@ -506,5 +509,265 @@ func TestBranchSynchronizer_AnalyzeBranchDocDiff(t *testing.T) {
 		if !(strings.HasSuffix(f, ".md") || strings.HasSuffix(f, ".txt") || strings.HasSuffix(f, ".adoc")) {
 			t.Errorf("Fichier %s n'a pas une extension documentaire attendue", f)
 		}
+	}
+}
+
+// LogMemoryUsage affiche la consommation mémoire courante (pour profiling)
+func LogMemoryUsage() {
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	fmt.Printf("Memory Usage: Alloc = %v MiB\n", m.Alloc/1024/1024)
+}
+
+// Exemple d'utilisation dans un test lourd
+func TestMemoryUsageDuringChunkProcessing(t *testing.T) {
+	LogMemoryUsage()
+	err := ProcessFileByChunks("testdata/largefile.txt", 1000, func(chunk []string) error {
+		// Simuler un traitement
+		return nil
+	})
+	if err != nil && !os.IsNotExist(err) { // ignore si le fichier n'existe pas
+		t.Errorf("Erreur inattendue lors du chunking: %v", err)
+	}
+	LogMemoryUsage()
+}
+
+func TestBranchStatusCache_SetGetExpiry(t *testing.T) {
+	bs := NewBranchSynchronizer()
+	bs.cacheExpiry = 100 * time.Millisecond
+
+	status := &BranchDocStatus{
+		Branch:        "feature/test",
+		LastSync:      time.Now(),
+		ConflictCount: 0,
+		Status:        "active",
+	}
+	bs.SetBranchStatusCache("feature/test", status)
+
+	// Lecture immédiate : doit exister
+	got, ok := bs.GetBranchStatusCache("feature/test")
+	if !ok || got.Branch != "feature/test" {
+		t.Error("Le cache doit retourner le status juste après set")
+	}
+
+	// Attendre l'expiration
+	time.Sleep(120 * time.Millisecond)
+	_, ok = bs.GetBranchStatusCache("feature/test")
+	if ok {
+		t.Error("Le cache doit expirer après cacheExpiry")
+	}
+}
+
+func TestBranchStatusCache_CleanExpired(t *testing.T) {
+	bs := NewBranchSynchronizer()
+	bs.cacheExpiry = 50 * time.Millisecond
+
+	bs.SetBranchStatusCache("b1", &BranchDocStatus{Branch: "b1", LastSync: time.Now().Add(-time.Minute)})
+	bs.SetBranchStatusCache("b2", &BranchDocStatus{Branch: "b2", LastSync: time.Now()})
+
+	bs.CleanExpiredBranchStatusCache()
+	if _, ok := bs.branchStatusCache["b1"]; ok {
+		t.Error("b1 doit être supprimé du cache car expiré")
+	}
+	if _, ok := bs.branchStatusCache["b2"]; !ok {
+		t.Error("b2 doit rester dans le cache car non expiré")
+	}
+}
+func TestSyncAcrossBranches_EmptyAndMulti(t *testing.T) {
+	bs := NewBranchSynchronizer()
+	// Simule un repo git vide (mock minimal)
+	bs.repo = &mockRepo{branches: []string{}}
+	branches, err := bs.SyncAcrossBranches(nil)
+	if err != nil {
+		t.Errorf("Erreur inattendue sur repo vide: %v", err)
+	}
+	if len(branches) != 0 {
+		t.Errorf("Attendu 0 branche, obtenu %d", len(branches))
+	}
+
+	// Simule un repo avec plusieurs branches
+	bs.repo = &mockRepo{branches: []string{"main", "dev", "feature"}, head: "main"}
+	bs.AddSyncRule("main", BranchSyncRule{SourceBranch: "main", TargetBranches: []string{"dev"}})
+	bs.AddSyncRule("dev", BranchSyncRule{SourceBranch: "dev", TargetBranches: []string{"main"}})
+	branches, err = bs.SyncAcrossBranches(nil)
+	if err != nil {
+		t.Errorf("Erreur inattendue sur repo multi-branches: %v", err)
+	}
+	if len(branches) != 2 {
+		t.Errorf("Attendu 2 branches filtrées, obtenu %d", len(branches))
+	}
+}
+
+type mockRepo struct {
+	branches []string
+	head     string
+}
+
+func (m *mockRepo) Branches() (branchIter, error) {
+	return &mockBranchIter{branches: m.branches}, nil
+}
+func (m *mockRepo) Head() (ref, error) {
+	return &mockRef{name: m.head}, nil
+}
+// Mocks pour l'itérateur et ref
+type branchIter interface {
+	Next() (ref, error)
+}
+type ref interface {
+	Name() refName
+}
+type refName interface {
+	Short() string
+}
+type mockBranchIter struct {
+	branches []string
+	idx      int
+}
+func (it *mockBranchIter) Next() (ref, error) {
+	if it.idx >= len(it.branches) {
+		return nil, io.EOF
+	}
+	r := &mockRef{name: it.branches[it.idx]}
+	it.idx++
+	return r, nil
+}
+type mockRef struct {
+	name string
+}
+func (r *mockRef) Name() refName { return r }
+func (r *mockRef) Short() string { return r.name }
+func TestAnalyzeBranchDocDiff(t *testing.T) {
+	bs := NewBranchSynchronizer()
+	// Cas 1 : branches identiques (aucun fichier modifié)
+	bs.BranchDiffs["main"] = &BranchDiff{FilesChanged: []string{}}
+	res, err := bs.analyzeBranchDocDiff("main")
+	if err != nil {
+		t.Errorf("Erreur inattendue: %v", err)
+	}
+	if res.DivergenceScore != 0 {
+		t.Errorf("Score attendu 0, obtenu %d", res.DivergenceScore)
+	}
+
+	// Cas 2 : branche très divergente (plusieurs fichiers doc modifiés)
+	bs.BranchDiffs["dev"] = &BranchDiff{FilesChanged: []string{"README.md", "notes.txt", "doc.adoc", "main.go"}}
+	res, err = bs.analyzeBranchDocDiff("dev")
+	if err != nil {
+		t.Errorf("Erreur inattendue: %v", err)
+	}
+	if res.DivergenceScore != 3 {
+		t.Errorf("Score attendu 3, obtenu %d", res.DivergenceScore)
+	}
+	if len(res.ModifiedFiles) != 3 {
+		t.Errorf("Fichiers modifiés attendus: 3, obtenus: %d", len(res.ModifiedFiles))
+	}
+}
+
+// TestDetectDocumentationConflicts teste la détection automatique des conflits documentaires
+func TestDetectDocumentationConflicts(t *testing.T) {
+	bs := NewBranchSynchronizer()
+	bs.Conflicts = interface{}(NewConflictDetector()).(*ConflictResolver) // cast pour compatibilité
+
+	// Préparer des résultats d'analyse documentaire simulés
+	branchDiffs := map[string]*DiffResult{
+		"main": {Branch: "main", ModifiedFiles: []string{"README.md", "doc.adoc"}},
+		"dev":  {Branch: "dev", ModifiedFiles: []string{"README.md", "notes.txt"}},
+		"feature": {Branch: "feature", ModifiedFiles: []string{"doc.adoc", "notes.txt"}},
+	}
+
+	conflicts, err := bs.detectDocumentationConflicts(branchDiffs)
+	if err != nil {
+		t.Fatalf("Erreur inattendue: %v", err)
+	}
+	if len(conflicts) == 0 {
+		t.Error("Aucun conflit détecté alors qu'il devrait y en avoir")
+	}
+	// Vérifier la gravité/scoring
+	majorOrCritical := false
+	for _, c := range conflicts {
+		if c.Severity == "high" || c.Severity == "critical" {
+			majorOrCritical = true
+		}
+	}
+	if !majorOrCritical {
+		t.Error("Aucun conflit de gravité majeure/critique détecté")
+	}
+}
+
+// TestAutoResolveConflicts vérifie la résolution automatique des conflits documentaires
+func TestAutoResolveConflicts(t *testing.T) {
+	bs := NewBranchSynchronizer()
+	bs.Conflicts = interface{}(NewConflictDetector()).(*ConflictResolver)
+
+	// Simuler des conflits détectés
+	conflicts := []DetectedConflict{
+		{ID: "c1", Severity: "low", Status: "new"},
+		{ID: "c2", Severity: "medium", Status: "new"},
+		{ID: "c3", Severity: "high", Status: "new"},
+	}
+
+	resolvable := bs.filterAutoResolvable(conflicts)
+	if len(resolvable) != 2 {
+		t.Errorf("Attendu 2 conflits auto-résolvables, obtenu %d", len(resolvable))
+	}
+
+	// Injecter le detector réel pour la résolution
+	bs.Conflicts = interface{}(NewConflictDetector()).(*ConflictResolver)
+	// On simule la résolution (pas d'erreur attendue)
+	resolved, err := bs.autoResolveConflicts(resolvable)
+	if err != nil {
+		t.Fatalf("Erreur inattendue lors de la résolution auto: %v", err)
+	}
+	if resolved != 2 {
+		t.Errorf("Attendu 2 conflits résolus automatiquement, obtenu %d", resolved)
+	}
+}
+
+// TestResolutionStrategyRegistration vérifie l’enregistrement et la priorité des stratégies
+func TestResolutionStrategyRegistration(t *testing.T) {
+	cr := &ConflictResolver{
+		strategies: make(map[ConflictType][]ResolutionStrategy),
+	}
+
+type dummyStrategy struct {
+	id      int
+	ct      ConflictType
+	prio    int
+	can     bool
+	}
+	func (ds *dummyStrategy) Resolve(dc *DocumentConflict) (*Document, error) { return &Document{Content: "ok"}, nil }
+	func (ds *dummyStrategy) CanHandle(ct ConflictType) bool { return ds.can && ct == ds.ct }
+	func (ds *dummyStrategy) Priority() int { return ds.prio }
+
+	ds1 := &dummyStrategy{id: 1, ct: "merge", prio: 10, can: true}
+	ds2 := &dummyStrategy{id: 2, ct: "merge", prio: 20, can: true}
+	cr.strategies["merge"] = []ResolutionStrategy{ds1, ds2}
+
+	if len(cr.strategies["merge"]) != 2 {
+		t.Errorf("Attendu 2 stratégies enregistrées, obtenu %d", len(cr.strategies["merge"]))
+	}
+	if cr.strategies["merge"][1].Priority() <= cr.strategies["merge"][0].Priority() {
+		t.Error("Les priorités ne sont pas respectées")
+	}
+}
+
+// TestConflictClassification vérifie la classification, sévérité et extraction de métadonnées
+func TestConflictClassification(t *testing.T) {
+	cr := &ConflictResolver{}
+	conflict := &DocumentConflict{
+		Type:     "merge",
+		Severity: "critical",
+		Details:  map[string]interface{}{ "file": "README.md" },
+	}
+	typeRes := cr.classifyConflict(conflict)
+	if typeRes != "merge" {
+		t.Errorf("Type attendu 'merge', obtenu '%s'", typeRes)
+	}
+	sev := cr.assessConflictSeverity(conflict)
+	if sev != "critical" {
+		t.Errorf("Sévérité attendue 'critical', obtenue '%s'", sev)
+	}
+	meta := cr.extractConflictMetadata(conflict)
+	if meta["file"] != "README.md" {
+		t.Errorf("Méta attendue 'README.md', obtenue '%v'", meta["file"])
 	}
 }

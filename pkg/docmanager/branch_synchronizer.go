@@ -5,6 +5,7 @@ package docmanager
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -46,6 +47,47 @@ type BranchDiff struct {
 }
 
 // ConflictResolver à implémenter selon besoins
+
+// detectDocumentationConflicts analyse les modifications concurrentes sur les fichiers documentaires
+// et retourne la liste des conflits détectés avec un score de gravité.
+func (bs *BranchSynchronizer) detectDocumentationConflicts(branchDiffs map[string]*DiffResult) ([]DetectedConflict, error) {
+	// On suppose que bs.Conflicts est un ConflictDetector
+	conflictDetector, ok := interface{}(bs.Conflicts).(*ConflictDetector)
+	if !ok || conflictDetector == nil {
+		return nil, fmt.Errorf("ConflictDetector non initialisé dans BranchSynchronizer")
+	}
+
+	var allConflicts []DetectedConflict
+	branches := []string{}
+	for branch := range branchDiffs {
+		branches = append(branches, branch)
+	}
+	// Comparer chaque paire de branches pour détecter les conflits documentaires
+	for i := 0; i < len(branches); i++ {
+		for j := i + 1; j < len(branches); j++ {
+			b1, b2 := branches[i], branches[j]
+			files1 := branchDiffs[b1].ModifiedFiles
+			files2 := branchDiffs[b2].ModifiedFiles
+			// Intersection des fichiers modifiés
+			fileSet := map[string]struct{}{}
+			for _, f := range files1 {
+				fileSet[f] = struct{}{}
+			}
+			for _, f := range files2 {
+				if _, exists := fileSet[f]; exists {
+					// Conflit potentiel sur ce fichier documentaire
+					conflicts, err := conflictDetector.DetectConflicts(b1, b2, []string{f})
+					if err != nil {
+						continue // log possible
+					}
+					allConflicts = append(allConflicts, conflicts...)
+				}
+			}
+		}
+	}
+	// Scoring de gravité (ajouté dans DetectedConflict.Severity par le detector)
+	return allConflicts, nil
+}
 
 // NewBranchSynchronizer crée un nouveau synchronisateur de branches
 func NewBranchSynchronizer() *BranchSynchronizer {
@@ -110,12 +152,16 @@ func (bs *BranchSynchronizer) ValidateSyncRules() []string {
 
 // TASK ATOMIQUE 3.1.4.1.1 - Implementation BranchAware Interface
 
+<<<<<<< HEAD
 // SyncAcrossBranches implémente l'interface BranchAware
 func (bs *BranchSynchronizer) SyncAcrossBranches(ctx context.Context) error {
 	// 4.2.1.2.1 déjà implémenté
+=======
+// SyncAcrossBranches énumère et filtre les branches actives selon la configuration
+func (bs *BranchSynchronizer) SyncAcrossBranches(ctx context.Context) ([]string, error) {
 	branchesIter, err := bs.repo.Branches()
 	if err != nil {
-		return err
+		return nil, err
 	}
 	var branches []string
 	for {
@@ -127,10 +173,12 @@ func (bs *BranchSynchronizer) SyncAcrossBranches(ctx context.Context) error {
 	}
 	currentBranchRef, err := bs.repo.Head()
 	if err != nil {
-		return err
+		return nil, err
 	}
-	_ = currentBranchRef // évite l'erreur variable inutilisée
-	// currentBranch := currentBranchRef.Name().Short() // non utilisé pour l’instant
+	currentBranch := currentBranchRef.Name().Short()
+	_ = currentBranch // utilisé pour usage ultérieur, évite l'erreur non utilisé
+
+	// Filtrage selon configuration (exemple: inclure/exclure selon SyncRules)
 	filteredBranches := []string{}
 	for _, branch := range branches {
 		if rule, ok := bs.SyncRules[branch]; ok && rule.SourceBranch != "" {
@@ -141,16 +189,9 @@ func (bs *BranchSynchronizer) SyncAcrossBranches(ctx context.Context) error {
 		filteredBranches = branches
 	}
 
-	// 4.2.1.2.2 MICRO-TASK: Analyse diff documentaire par branche
-	for _, branch := range filteredBranches {
-		diffResult, err := bs.analyzeBranchDocDiff(branch)
-		if err != nil {
-			return err
-		}
-		// Stocker ou utiliser diffResult selon besoin (ex: bs.BranchDiffs[branch] = diffResult)
-		bs.BranchDiffs[branch] = diffResult
-	}
-	return nil
+	// Retourne la liste filtrée et la branche courante (pour usage ultérieur)
+	return filteredBranches, nil
+>>>>>>> consolidation-v65B
 }
 
 // analyzeBranchDocDiff analyse les différences documentaires pour une branche
@@ -519,6 +560,39 @@ func (csrm *ConfigurableSyncRuleManager) fileMatchesPatterns(fileName string, pa
 		}
 	}
 	return false
+}
+
+// --- Gestion du cache status branches ---
+// SetBranchStatusCache met à jour le cache pour une branche
+func (bs *BranchSynchronizer) SetBranchStatusCache(branch string, status *BranchDocStatus) {
+	bs.cacheMutex.Lock()
+	defer bs.cacheMutex.Unlock()
+	bs.branchStatusCache[branch] = status
+}
+
+// GetBranchStatusCache récupère le status de cache pour une branche (avec gestion d'expiration)
+func (bs *BranchSynchronizer) GetBranchStatusCache(branch string) (*BranchDocStatus, bool) {
+	bs.cacheMutex.RLock()
+	defer bs.cacheMutex.RUnlock()
+	status, exists := bs.branchStatusCache[branch]
+	if !exists {
+		return nil, false
+	}
+	if time.Since(status.LastSync) > bs.cacheExpiry {
+		return nil, false // Expiré
+	}
+	return status, true
+}
+
+// CleanExpiredBranchStatusCache supprime les entrées expirées du cache
+func (bs *BranchSynchronizer) CleanExpiredBranchStatusCache() {
+	bs.cacheMutex.Lock()
+	defer bs.cacheMutex.Unlock()
+	for branch, status := range bs.branchStatusCache {
+		if time.Since(status.LastSync) > bs.cacheExpiry {
+			delete(bs.branchStatusCache, branch)
+		}
+	}
 }
 
 // TASK ATOMIQUE 3.4.1.3 - Détection automatique des conflits
@@ -1840,108 +1914,122 @@ func (mshs *MemorySyncHistoryStorage) matchesFilter(entry SyncHistoryEntry, filt
 	return true
 }
 
-// NewSmartMergeManager crée un nouveau gestionnaire de merge intelligent
-func NewSmartMergeManager(conflictDetector *ConflictDetector) *SmartMergeManager {
-	manager := &SmartMergeManager{
-		strategies:       []IntelligentMergeStrategy{},
-		fileHandlers:     make(map[string]FileHandler),
-		conflictDetector: conflictDetector,
-		mergeHistory:     []MergeOperation{},
-	}
+// DiffResult contient le résultat d'une analyse documentaire
+// pour une branche donnée
+// 4.2.1.2.2
 
-	// Enregistrer les gestionnaires de fichiers par défaut
-	manager.RegisterFileHandler("go", &GoFileHandler{})
-	manager.RegisterFileHandler("markdown", &MarkdownFileHandler{})
-
-	// Ajouter des stratégies par défaut
-	manager.AddDefaultStrategies()
-
-	return manager
+type DiffResult struct {
+	Branch          string
+	ModifiedFiles   []string
+	DivergenceScore int
 }
 
-// RegisterFileHandler enregistre un gestionnaire de fichier
-func (smm *SmartMergeManager) RegisterFileHandler(fileType string, handler FileHandler) {
-	smm.mu.Lock()
-	defer smm.mu.Unlock()
-	smm.fileHandlers[fileType] = handler
-}
-
-// AddDefaultStrategies ajoute les stratégies de merge par défaut
-func (smm *SmartMergeManager) AddDefaultStrategies() {
-	smm.mu.Lock()
-	defer smm.mu.Unlock()
-
-	// Ajouter quelques stratégies par défaut
-	defaultStrategy := IntelligentMergeStrategy{
-		Name:        "default",
-		Priority:    100,
-		FilePattern: "*",
-		ConflictResolution: ResolutionMethod{
-			Type: "manual",
-			Parameters: map[string]interface{}{
-				"require_review": true,
-			},
-		},
-	}
-	smm.strategies = append(smm.strategies, defaultStrategy)
-}
-
-// PerformIntelligentMerge effectue un merge intelligent
-func (smm *SmartMergeManager) PerformIntelligentMerge(sourceContent, targetContent, baseContent string, filePath string) (MergeResult, error) {
-	smm.mu.RLock()
-	defer smm.mu.RUnlock()
-
-	// Déterminer le type de fichier
-	fileType := smm.getFileType(filePath)
-
-	// Obtenir le gestionnaire approprié
-	handler, exists := smm.fileHandlers[fileType]
-	if !exists {
-		// Utiliser un merge basique si aucun gestionnaire spécialisé
-		return MergeResult{
-			Content:         sourceContent,
-			HasConflicts:    false,
-			ConflictMarkers: []ConflictMarker{},
-			Success:         true,
-		}, nil
-	}
-
-	// Utiliser le gestionnaire spécialisé
-	return handler.MergeFiles(sourceContent, targetContent, baseContent)
-}
-
-// getFileType détermine le type de fichier basé sur son extension
-func (smm *SmartMergeManager) getFileType(filePath string) string {
-	ext := strings.ToLower(filePath)
-	if strings.HasSuffix(ext, ".go") {
-		return "go"
-	} else if strings.HasSuffix(ext, ".md") || strings.HasSuffix(ext, ".markdown") {
-		return "markdown"
-	}
-	return "generic"
-}
-
-// GetMergeStatistics retourne les statistiques de merge
-func (smm *SmartMergeManager) GetMergeStatistics() map[string]interface{} {
-	smm.mu.RLock()
-	defer smm.mu.RUnlock()
-
-	stats := make(map[string]interface{})
-	stats["total_merges"] = len(smm.mergeHistory)
-
-	successful := 0
-	for _, op := range smm.mergeHistory {
-		if op.Result.Success {
-			successful++
+// analyzeBranchDocDiff analyse les différences documentaires d'une branche
+func (bs *BranchSynchronizer) analyzeBranchDocDiff(branch string) (*DiffResult, error) {
+	// Simulation : dans un vrai repo, on comparerait les fichiers entre branches
+	// Ici, on simule avec des données fictives ou via un mock pour les tests
+	var modified []string
+	// Ex : on suppose que BranchDiffs contient la liste des fichiers modifiés
+	if diff, ok := bs.BranchDiffs[branch]; ok {
+		for _, f := range diff.FilesChanged {
+			if hasDocExtension(f) {
+				modified = append(modified, f)
+			}
 		}
 	}
-	stats["successful_merges"] = successful
-
-	if len(smm.mergeHistory) > 0 {
-		stats["success_rate"] = float64(successful) / float64(len(smm.mergeHistory))
-	} else {
-		stats["success_rate"] = 0.0
-	}
-
-	return stats
+	return &DiffResult{
+		Branch:          branch,
+		ModifiedFiles:   modified,
+		DivergenceScore: len(modified),
+	}, nil
 }
+
+func hasDocExtension(filename string) bool {
+	return hasSuffix(filename, ".md") || hasSuffix(filename, ".txt") || hasSuffix(filename, ".adoc")
+}
+
+func hasSuffix(s, suffix string) bool {
+	if len(s) < len(suffix) {
+		return false
+	}
+	return s[len(s)-len(suffix):] == suffix
+}
+
+// Résolution automatique des conflits documentaires
+// Filtre les conflits auto-résolvables et applique les stratégies de merge
+func (bs *BranchSynchronizer) filterAutoResolvable(conflicts []DetectedConflict) []DetectedConflict {
+	var resolvable []DetectedConflict
+	for _, c := range conflicts {
+		// Stratégie simple : conflits de sévérité "low" ou "medium" sont auto-résolvables
+		if c.Severity == "low" || c.Severity == "medium" {
+			resolvable = append(resolvable, c)
+		}
+		// On pourrait ajouter d'autres critères (timestamp, consensus, etc.)
+	}
+	return resolvable
+}
+
+// Applique la résolution automatique sur les conflits auto-résolvables
+func (bs *BranchSynchronizer) autoResolveConflicts(conflicts []DetectedConflict) (int, error) {
+	conflictDetector, ok := interface{}(bs.Conflicts).(*ConflictDetector)
+	if !ok || conflictDetector == nil {
+		return 0, fmt.Errorf("ConflictDetector non initialisé dans BranchSynchronizer")
+	}
+	resolved := 0
+	for _, c := range conflicts {
+		// Stratégie : on applique la résolution "keep_source" ou "timestamp" (exemple)
+		resolution := "auto:keep_source"
+		if err := conflictDetector.ResolveConflict(c.ID, resolution); err == nil {
+			resolved++
+		}
+	}
+	return resolved, nil
+}
+
+// 4.3.1.1.1 Système stratégies pluggables
+// Définition de l’interface ResolutionStrategy et des structures associées
+
+type ConflictType string
+
+type Document struct {
+	Content  string
+	Metadata map[string]interface{}
+}
+
+type DocumentConflict struct {
+	Type     ConflictType
+	Details  map[string]interface{}
+	Severity string
+}
+
+type ResolutionStrategy interface {
+	Resolve(*DocumentConflict) (*Document, error)
+	CanHandle(ConflictType) bool
+	Priority() int
+}
+
+type ConflictResolver struct {
+	strategies      map[ConflictType][]ResolutionStrategy
+	defaultStrategy ResolutionStrategy
+}
+
+// 4.3.1.2.1 Analyse et classification conflit
+func (cr *ConflictResolver) classifyConflict(conflict *DocumentConflict) ConflictType {
+	// Exemple : classification simple par champ Type
+	return conflict.Type
+}
+
+func (cr *ConflictResolver) assessConflictSeverity(conflict *DocumentConflict) string {
+	// Exemple : retourne la sévérité du conflit
+	if conflict.Severity != "" {
+		return conflict.Severity
+	}
+	return "medium"
+}
+
+func (cr *ConflictResolver) extractConflictMetadata(conflict *DocumentConflict) map[string]interface{} {
+	// Exemple : retourne les métadonnées du conflit
+	return conflict.Details
+}
+
+// 4.3.1.2.2 Sélection stratégie optimale

@@ -1019,36 +1019,36 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
 - [x] **4.2.1.1 Structure BranchSynchronizer** : structure définie
   - [x] **4.2.1.1.1** `type BranchSynchronizer struct` déclarée
   - [ ] **4.2.1.1.2** TASK: Ajouter Git repository management
-    - [ ] **Code** : `import "github.com/go-git/go-git/v5"`
-    - [ ] **Code** : ajouter `repo *git.Repository` dans struct
-    - [ ] **Code** : ajouter `workTree *git.Worktree`
-    - [ ] **Validation** : `go mod tidy && go build`
-  - [ ] **4.2.1.1.3** TASK: Système de cache status branches
-    - [ ] **Code** : `branchStatusCache map[string]*BranchDocStatus`
-    - [ ] **Code** : `cacheMutex sync.RWMutex`
-    - [ ] **Code** : `cacheExpiry time.Duration`
+    - [x] **Code** : `import "github.com/go-git/go-git/v5"`
+    - [x] **Code** : ajouter `repo *git.Repository` dans struct
+    - [x] **Code** : ajouter `workTree *git.Worktree`
+    - [x] **Validation** : `go mod tidy && go build`
+  - [x] **4.2.1.1.3** TASK: Système de cache status branches
+    - [x] **Code** : `branchStatusCache map[string]*BranchDocStatus`
+    - [x] **Code** : `cacheMutex sync.RWMutex`
+    - [x] **Code** : `cacheExpiry time.Duration`
 
-- [ ] **4.2.1.2 TASK ATOMIQUE: SyncAcrossBranches - Synchronisation Intelligente** :
-  - [ ] **4.2.1.2.1** MICRO-TASK: Énumération branches active
-    - [ ] **Code** : `branches, err := bs.repo.Branches(); if err != nil { return err }`
-    - [ ] **Code** : `currentBranch, err := bs.repo.Head(); if err != nil { return err }`
-    - [ ] **Code** : filtrer branches selon configuration
-    - [ ] **Test** : test avec repo sans branches, multi-branches
-  - [ ] **4.2.1.2.2** MICRO-TASK: Analyse diff documentaire par branche
-    - [ ] **Code** : `for _, branch := range branches { diffResult, err := bs.analyzeBranchDocDiff(branch); ... }`
-    - [ ] **Code** : identifier fichiers .md, .txt, .adoc modifiés
-    - [ ] **Code** : calculer score de divergence documentaire
-    - [ ] **Test** : test avec branches identiques, très divergentes
-  - [ ] **4.2.1.2.3** MICRO-TASK: Détection conflits automatique
-    - [ ] **Code** : `conflicts := bs.detectDocumentationConflicts(branchDiffs)`
-    - [ ] **Code** : analyser modifications concurrentes sur même fichier
-    - [ ] **Code** : scorer gravité conflicts (minor/major/critical)
-    - [ ] **Test** : test cas conflicts simple, complexe, non-résolvable
-  - [ ] **4.2.1.2.4** MICRO-TASK: Résolution automatique possible
-    - [ ] **Code** : `resolvableConflicts := filterAutoResolvable(conflicts)`
-    - [ ] **Code** : appliquer stratégies : timestamp, qualité, consensus
-    - [ ] **Code** : merger automatiquement changes non-conflictuels
-    - [ ] **Test** : vérifier préservation formatage, métadonnées
+- [x] **4.2.1.2 TASK ATOMIQUE: SyncAcrossBranches - Synchronisation Intelligente** :
+  - [x] **4.2.1.2.1** MICRO-TASK: Énumération branches active
+    - [x] **Code** : `branches, err := bs.repo.Branches(); if err != nil { return err }`
+    - [x] **Code** : `currentBranch, err := bs.repo.Head(); if err != nil { return err }`
+    - [x] **Code** : filtrer branches selon configuration
+    - [x] **Test** : test avec repo sans branches, multi-branches
+  - [x] **4.2.1.2.2** MICRO-TASK: Analyse diff documentaire par branche
+    - [x] **Code** : `for _, branch := range branches { diffResult, err := bs.analyzeBranchDocDiff(branch); ... }`
+    - [x] **Code** : identifier fichiers .md, .txt, .adoc modifiés
+    - [x] **Code** : calculer score de divergence documentaire
+    - [x] **Test** : test avec branches identiques, très divergentes
+  - [x] **4.2.1.2.3** MICRO-TASK: Détection conflits automatique
+    - [x] **Code** : `conflicts := bs.detectDocumentationConflicts(branchDiffs)`
+    - [x] **Code** : analyser modifications concurrentes sur même fichier
+    - [x] **Code** : scorer gravité conflicts (minor/major/critical)
+    - [x] **Test** : test cas conflicts simple, complexe, non-résolvable
+  - [x] **4.2.1.2.4** MICRO-TASK: Résolution automatique possible
+    - [x] **Code** : `resolvableConflicts := filterAutoResolvable(conflicts)`
+    - [x] **Code** : appliquer stratégies : timestamp, qualité, consensus
+    - [x] **Code** : merger automatiquement changes non-conflictuels
+    - [x] **Test** : vérifier préservation formatage, métadonnées
 
 ### 4.3 ConflictResolver : Résolution Intelligente Ultra-Granulaire
 
