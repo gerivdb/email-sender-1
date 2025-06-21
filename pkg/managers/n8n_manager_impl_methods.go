@@ -250,7 +250,7 @@ func (m *DefaultN8NManager) MapParameters(ctx context.Context, params *Parameter
 		parameters = append(parameters, mapping.Parameter{
 			Name:  key,
 			Value: value,
-			Type:  fmt.Sprintf("%T", value),
+			Type:  mapping.ParameterType(fmt.Sprintf("%T", value)),
 		})
 	}
 
@@ -261,8 +261,10 @@ func (m *DefaultN8NManager) MapParameters(ctx context.Context, params *Parameter
 
 	// Convert back to map
 	mappedParams := make(map[string]interface{})
-	for _, param := range result.MappedParameters {
-		mappedParams[param.Name] = param.Value
+	// The MappingResult struct has InputData which seems to be the processed key-value pairs.
+	// MappedParameters was not a field on MappingResult.
+	for key, value := range result.InputData {
+		mappedParams[key] = value
 	}
 
 	response := &ParameterMappingResponse{

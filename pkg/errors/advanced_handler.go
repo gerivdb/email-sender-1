@@ -42,3 +42,18 @@ type ErrorAttempt struct {
 }
 
 // RetryManager, DeadLetterQueue, CircuitBreaker, ErrorClassifier, AutoHealer à implémenter selon besoins
+
+// RetryManager gère les tentatives de réessai.
+type RetryManager struct{}
+
+// DeadLetterQueue gère les messages qui ne peuvent pas être traités.
+type DeadLetterQueue struct{}
+
+// CircuitBreaker surveille les échecs et peut interrompre les opérations.
+type CircuitBreaker struct{}
+
+// ErrorClassifier classifie les erreurs pour un traitement différencié.
+type ErrorClassifier struct{}
+
+// AutoHealer tente de résoudre automatiquement certains types d'erreurs.
+type AutoHealer struct{}

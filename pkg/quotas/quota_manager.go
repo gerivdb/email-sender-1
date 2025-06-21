@@ -38,3 +38,17 @@ type Usage struct {
 }
 
 // QuotaStorage, UsageMonitor, AlertManager à implémenter selon besoins
+
+// QuotaStorage est une interface pour stocker et récupérer les données de quota.
+type QuotaStorage interface {
+	// Méthodes à définir, par exemple:
+	// GetUsage(tenantID, resourceType string) (int64, error)
+	// RecordUsage(usage Usage) error
+	// GetPolicy(policyID string) (*QuotaPolicy, error)
+}
+
+// UsageMonitor surveille l'utilisation des ressources par rapport aux quotas.
+type UsageMonitor struct{}
+
+// AlertManager gère l'envoi d'alertes lorsque les seuils de quota sont atteints.
+type AlertManager struct{}
