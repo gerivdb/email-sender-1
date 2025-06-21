@@ -63,6 +63,9 @@ func NewN8NClient(config N8NClientConfig) (*N8NClient, error) {
 	if err != nil {
 		return nil, fmt.Errorf("invalid base_url: %w", err)
 	}
+	if baseURL.Scheme == "" || baseURL.Host == "" {
+		return nil, fmt.Errorf("invalid base_url: scheme and host are required for BaseURL (e.g., http://localhost:5678), got scheme='%s', host='%s'", baseURL.Scheme, baseURL.Host)
+	}
 
 	// Valeurs par défaut
 	if config.Timeout == 0 {

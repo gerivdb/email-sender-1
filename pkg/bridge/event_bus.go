@@ -79,30 +79,33 @@ func (bus *ChannelEventBus) Publish(ctx context.Context, event Event) error {
 	// Send to channel subscribers
 	bus.mu.RLock()
 	channel, exists := bus.channels[event.Type]
-	handlers := bus.subscribers[event.Type]
+	// handlers := bus.subscribers[event.Type] // Removed direct handler call from Publish
 	bus.mu.RUnlock()
 
 	if exists {
 		select {
 		case channel <- event:
 		case <-ctx.Done():
+			bus.logger.Info("Context done, event not published", zap.String("event_type", event.Type))
 			return ctx.Err()
 		default:
+			// This case can happen if the channel buffer is full.
+			// It's important to log this, as events might be lost.
 			bus.logger.Warn("Event channel full, dropping event",
-				zap.String("event_type", event.Type))
+				zap.String("event_type", event.Type),
+				zap.String("trace_id", event.TraceID))
+			// Depending on requirements, this could return an error or implement other strategies.
 		}
+	} else {
+		// Log if no channel (and thus no subscribers via channel processing) exists for the event type.
+		// This might be normal if some events are fire-and-forget with no active subscribers.
+		bus.logger.Debug("No channel for event type, event not sent to channel",
+			zap.String("event_type", event.Type),
+			zap.String("trace_id", event.TraceID))
 	}
 
-	// Call direct handlers
-	for _, handler := range handlers {
-		go func(h EventHandler) {
-			if err := h(ctx, event); err != nil {
-				bus.logger.Error("Event handler failed",
-					zap.Error(err),
-					zap.String("event_type", event.Type))
-			}
-		}(handler)
-	}
+	// Direct handlers were removed from here.
+	// All subscribed handlers will be called by processEventChannel.
 
 	return nil
 }

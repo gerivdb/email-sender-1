@@ -2,6 +2,9 @@ package bridge
 
 import (
 	"context"
+	"fmt"
+	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -151,9 +154,9 @@ func TestChannelEventBus_ConcurrentPublish(t *testing.T) {
 	eventBus := NewChannelEventBus(logger, nil)
 	defer eventBus.Close()
 
-	var receivedCount int
+	var receivedCount int32 // Use int32 for atomic operations
 	handler := func(ctx context.Context, event Event) error {
-		receivedCount++
+		atomic.AddInt32(&receivedCount, 1) // Atomic increment
 		return nil
 	}
 
@@ -161,22 +164,30 @@ func TestChannelEventBus_ConcurrentPublish(t *testing.T) {
 	require.NoError(t, err)
 
 	const numEvents = 100
+	var wg sync.WaitGroup // WaitGroup to ensure all publish calls are made
 
 	// Publish events concurrently
 	for i := 0; i < numEvents; i++ {
+		wg.Add(1)
 		go func(id int) {
+			defer wg.Done()
 			event := Event{
-				Type: "concurrent_test",
-				Data: map[string]interface{}{"id": id},
+				Type:      "concurrent_test",
+				Data:      map[string]interface{}{"id": id},
+				Timestamp: time.Now(),
+				TraceID:   fmt.Sprintf("concurrent-trace-%d", id),
 			}
 			eventBus.Publish(context.Background(), event)
 		}(i)
 	}
 
-	// Wait for all events to be processed
-	time.Sleep(500 * time.Millisecond)
+	wg.Wait() // Wait for all publishing goroutines to finish
 
-	assert.Equal(t, numEvents, receivedCount)
+	// Wait for all events to be processed.
+	// This duration might need adjustment based on typical processing time.
+	time.Sleep(1 * time.Second) // Increased sleep time
+
+	assert.Equal(t, int32(numEvents), atomic.LoadInt32(&receivedCount)) // Atomic load for assertion
 }
 
 func BenchmarkChannelEventBus_Publish(b *testing.B) {
