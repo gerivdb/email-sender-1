@@ -482,6 +482,20 @@
         "reveal": "always",
         "panel": "shared"
       }
+    },
+    {
+      "label": "generate-agents-md",
+      "type": "shell",
+      "command": "go run ./tools/gen_agentsmd.go",
+      "group": "build",
+      "problemMatcher": [],
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      }
     }
   ],
   "inputs": [
