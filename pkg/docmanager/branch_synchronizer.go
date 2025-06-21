@@ -8,13 +8,25 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/go-git/go-git/v5"
 )
 
 // BranchSynchronizer gère la synchronisation documentaire entre branches
+// Ajout gestion repository Git et worktree
+// 4.2.1.1.2
+// 4.2.1.1.3 (début cache)
 type BranchSynchronizer struct {
 	SyncRules   map[string]BranchSyncRule
 	Conflicts   *ConflictResolver
 	BranchDiffs map[string]*BranchDiff
+
+	repo     *git.Repository
+	workTree *git.Worktree
+
+	branchStatusCache map[string]*BranchDocStatus
+	cacheMutex        sync.RWMutex
+	cacheExpiry       time.Duration
 }
 
 // BranchSyncRule définit les règles de synchronisation
@@ -38,8 +50,10 @@ type BranchDiff struct {
 // NewBranchSynchronizer crée un nouveau synchronisateur de branches
 func NewBranchSynchronizer() *BranchSynchronizer {
 	return &BranchSynchronizer{
-		SyncRules:   make(map[string]BranchSyncRule),
-		BranchDiffs: make(map[string]*BranchDiff),
+		SyncRules:         make(map[string]BranchSyncRule),
+		BranchDiffs:       make(map[string]*BranchDiff),
+		branchStatusCache: make(map[string]*BranchDocStatus),
+		cacheExpiry:       10 * time.Minute,
 	}
 }
 
