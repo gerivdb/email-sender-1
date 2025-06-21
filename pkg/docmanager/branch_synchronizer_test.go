@@ -484,3 +484,66 @@ func TestBranchStatusCache_CleanExpired(t *testing.T) {
 		t.Error("b2 doit rester dans le cache car non expiré")
 	}
 }
+func TestSyncAcrossBranches_EmptyAndMulti(t *testing.T) {
+	bs := NewBranchSynchronizer()
+	// Simule un repo git vide (mock minimal)
+	bs.repo = &mockRepo{branches: []string{}}
+	branches, err := bs.SyncAcrossBranches(nil)
+	if err != nil {
+		t.Errorf("Erreur inattendue sur repo vide: %v", err)
+	}
+	if len(branches) != 0 {
+		t.Errorf("Attendu 0 branche, obtenu %d", len(branches))
+	}
+
+	// Simule un repo avec plusieurs branches
+	bs.repo = &mockRepo{branches: []string{"main", "dev", "feature"}, head: "main"}
+	bs.AddSyncRule("main", BranchSyncRule{SourceBranch: "main", TargetBranches: []string{"dev"}})
+	bs.AddSyncRule("dev", BranchSyncRule{SourceBranch: "dev", TargetBranches: []string{"main"}})
+	branches, err = bs.SyncAcrossBranches(nil)
+	if err != nil {
+		t.Errorf("Erreur inattendue sur repo multi-branches: %v", err)
+	}
+	if len(branches) != 2 {
+		t.Errorf("Attendu 2 branches filtrées, obtenu %d", len(branches))
+	}
+}
+
+type mockRepo struct {
+	branches []string
+	head     string
+}
+
+func (m *mockRepo) Branches() (branchIter, error) {
+	return &mockBranchIter{branches: m.branches}, nil
+}
+func (m *mockRepo) Head() (ref, error) {
+	return &mockRef{name: m.head}, nil
+}
+// Mocks pour l'itérateur et ref
+type branchIter interface {
+	Next() (ref, error)
+}
+type ref interface {
+	Name() refName
+}
+type refName interface {
+	Short() string
+}
+type mockBranchIter struct {
+	branches []string
+	idx      int
+}
+func (it *mockBranchIter) Next() (ref, error) {
+	if it.idx >= len(it.branches) {
+		return nil, io.EOF
+	}
+	r := &mockRef{name: it.branches[it.idx]}
+	it.idx++
+	return r, nil
+}
+type mockRef struct {
+	name string
+}
+func (r *mockRef) Name() refName { return r }
+func (r *mockRef) Short() string { return r.name }

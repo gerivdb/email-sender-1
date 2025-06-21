@@ -110,12 +110,11 @@ func (bs *BranchSynchronizer) ValidateSyncRules() []string {
 
 // TASK ATOMIQUE 3.1.4.1.1 - Implementation BranchAware Interface
 
-// SyncAcrossBranches implémente l'interface BranchAware
-func (bs *BranchSynchronizer) SyncAcrossBranches(ctx context.Context) error {
-	// 4.2.1.2.1 MICRO-TASK: Énumération branches actives
+// SyncAcrossBranches énumère et filtre les branches actives selon la configuration
+func (bs *BranchSynchronizer) SyncAcrossBranches(ctx context.Context) ([]string, error) {
 	branchesIter, err := bs.repo.Branches()
 	if err != nil {
-		return err
+		return nil, err
 	}
 	var branches []string
 	for {
@@ -127,9 +126,10 @@ func (bs *BranchSynchronizer) SyncAcrossBranches(ctx context.Context) error {
 	}
 	currentBranchRef, err := bs.repo.Head()
 	if err != nil {
-		return err
+		return nil, err
 	}
 	currentBranch := currentBranchRef.Name().Short()
+	_ = currentBranch // utilisé pour usage ultérieur, évite l'erreur non utilisé
 
 	// Filtrage selon configuration (exemple: inclure/exclure selon SyncRules)
 	filteredBranches := []string{}
@@ -142,8 +142,8 @@ func (bs *BranchSynchronizer) SyncAcrossBranches(ctx context.Context) error {
 		filteredBranches = branches // fallback: toutes les branches
 	}
 
-	// (La suite de la logique sera ajoutée dans les micro-tâches suivantes)
-	return nil
+	// Retourne la liste filtrée et la branche courante (pour usage ultérieur)
+	return filteredBranches, nil
 }
 
 // GetBranchStatus implémente l'interface BranchAware
