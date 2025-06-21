@@ -3,6 +3,7 @@
 package docmanager
 
 import (
+	"strings"
 	"testing"
 	"time"
 )
@@ -432,5 +433,78 @@ func TestValidationFunctions(t *testing.T) {
 	err = detector.AddDetectionRule(invalidDetectionRule)
 	if err == nil {
 		t.Error("Expected error for invalid detection rule")
+	}
+}
+
+// Test du cache status branches (4.2.1.1.3)
+func TestBranchStatusCache(t *testing.T) {
+	bs := NewBranchSynchronizer()
+	branch := "test-branch"
+
+	// Premier appel : calcule et met en cache
+	status1, err := bs.GetBranchStatus(branch)
+	if err != nil {
+		t.Fatalf("Erreur GetBranchStatus: %v", err)
+	}
+	if status1.Branch != branch {
+		t.Errorf("Nom de branche incorrect: attendu %s, obtenu %s", branch, status1.Branch)
+	}
+
+	// Modifie le cache pour simuler une valeur différente
+	bs.cacheMutex.Lock()
+	fake := status1
+	fake.Status = "conflicts"
+	fake.LastSync = time.Now()
+	bs.branchStatusCache[branch] = &fake
+	bs.cacheMutex.Unlock()
+
+	// Deuxième appel : doit retourner la valeur du cache
+	status2, err := bs.GetBranchStatus(branch)
+	if err != nil {
+		t.Fatalf("Erreur GetBranchStatus (cache): %v", err)
+	}
+	if status2.Status != "conflicts" {
+		t.Errorf("Le cache n'est pas utilisé correctement (attendu 'conflicts', obtenu '%s')", status2.Status)
+	}
+
+	// Expire le cache et vérifie le recalcul
+	bs.cacheMutex.Lock()
+	bs.branchStatusCache[branch].LastSync = time.Now().Add(-2 * bs.cacheExpiry)
+	bs.cacheMutex.Unlock()
+	status3, err := bs.GetBranchStatus(branch)
+	if err != nil {
+		t.Fatalf("Erreur GetBranchStatus (expiration): %v", err)
+	}
+	if status3.Status != "active" {
+		t.Errorf("Le cache n'est pas expiré correctement (attendu 'active', obtenu '%s')", status3.Status)
+	}
+}
+
+// TestBranchSynchronizer_AnalyzeBranchDocDiff teste l'analyse documentaire par branche (4.2.1.2.2)
+func TestBranchSynchronizer_AnalyzeBranchDocDiff(t *testing.T) {
+	bs := NewBranchSynchronizer()
+
+	// Simuler un repo avec deux branches : identique et divergente
+	// (ici, on mocke la méthode analyzeBranchDocDiff pour l'exemple)
+	bs.BranchDiffs["identique"] = &BranchDiff{FilesChanged: []string{}, Conflicts: []string{}}
+	bs.BranchDiffs["divergente"] = &BranchDiff{FilesChanged: []string{"doc1.md", "doc2.txt", "doc3.adoc"}, Conflicts: []string{}}
+
+	// Cas identique : score de divergence = 0
+	identiqueDiff, _ := bs.analyzeBranchDocDiff("identique")
+	if len(identiqueDiff.FilesChanged) != 0 {
+		t.Errorf("Attendu 0 fichier modifié, obtenu %d", len(identiqueDiff.FilesChanged))
+	}
+
+	// Cas très divergent : score de divergence = 3
+	divergenteDiff, _ := bs.analyzeBranchDocDiff("divergente")
+	if len(divergenteDiff.FilesChanged) != 3 {
+		t.Errorf("Attendu 3 fichiers modifiés, obtenu %d", len(divergenteDiff.FilesChanged))
+	}
+
+	// Vérifier extensions
+	for _, f := range divergenteDiff.FilesChanged {
+		if !(strings.HasSuffix(f, ".md") || strings.HasSuffix(f, ".txt") || strings.HasSuffix(f, ".adoc")) {
+			t.Errorf("Fichier %s n'a pas une extension documentaire attendue", f)
+		}
 	}
 }
