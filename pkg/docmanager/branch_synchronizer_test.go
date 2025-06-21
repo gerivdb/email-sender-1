@@ -547,3 +547,28 @@ type mockRef struct {
 }
 func (r *mockRef) Name() refName { return r }
 func (r *mockRef) Short() string { return r.name }
+func TestAnalyzeBranchDocDiff(t *testing.T) {
+	bs := NewBranchSynchronizer()
+	// Cas 1 : branches identiques (aucun fichier modifié)
+	bs.BranchDiffs["main"] = &BranchDiff{FilesChanged: []string{}}
+	res, err := bs.analyzeBranchDocDiff("main")
+	if err != nil {
+		t.Errorf("Erreur inattendue: %v", err)
+	}
+	if res.DivergenceScore != 0 {
+		t.Errorf("Score attendu 0, obtenu %d", res.DivergenceScore)
+	}
+
+	// Cas 2 : branche très divergente (plusieurs fichiers doc modifiés)
+	bs.BranchDiffs["dev"] = &BranchDiff{FilesChanged: []string{"README.md", "notes.txt", "doc.adoc", "main.go"}}
+	res, err = bs.analyzeBranchDocDiff("dev")
+	if err != nil {
+		t.Errorf("Erreur inattendue: %v", err)
+	}
+	if res.DivergenceScore != 3 {
+		t.Errorf("Score attendu 3, obtenu %d", res.DivergenceScore)
+	}
+	if len(res.ModifiedFiles) != 3 {
+		t.Errorf("Fichiers modifiés attendus: 3, obtenus: %d", len(res.ModifiedFiles))
+	}
+}
