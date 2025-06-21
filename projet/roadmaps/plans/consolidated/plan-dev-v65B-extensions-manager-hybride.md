@@ -942,23 +942,23 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
 
 #### 4.1.2 Système de Mise à Jour des Références Ultra-Précis
 
-- [ ] **4.1.2.1 TASK ATOMIQUE: updateAllReferences - Orchestrateur Principal** :
-  - [ ] **4.1.2.1.1** MICRO-TASK: Validation et préparation
-    - [ ] **Code** : `if oldPath == newPath { return nil }` // optimisation court-circuit
-    - [ ] **Code** : `errors := make([]error, 0)`
-    - [ ] **Code** : `wg := sync.WaitGroup{}`
-    - [ ] **Test** : test edge case chemins identiques
-  - [ ] **4.1.2.1.2** MICRO-TASK: Mise à jour parallèle par type
-    - [ ] **Code** : `wg.Add(4)` // 4 types de références
-    - [ ] **Code** : `go func() { defer wg.Done(); if err := pt.updateMarkdownLinks(oldPath, newPath); err != nil { errors = append(errors, err) } }()`
-    - [ ] **Code** : `go func() { defer wg.Done(); if err := pt.updateCodeReferences(oldPath, newPath); err != nil { errors = append(errors, err) } }()`
-    - [ ] **Code** : `go func() { defer wg.Done(); if err := pt.updateConfigPaths(oldPath, newPath); err != nil { errors = append(errors, err) } }()`
-    - [ ] **Code** : `go func() { defer wg.Done(); if err := pt.updateImportStatements(oldPath, newPath); err != nil { errors = append(errors, err) } }()`
-  - [ ] **4.1.2.1.3** MICRO-TASK: Consolidation erreurs et rapport
-    - [ ] **Code** : `wg.Wait()`
-    - [ ] **Code** : `if len(errors) > 0 { return fmt.Errorf("multiple update errors: %v", errors) }`
-    - [ ] **Code** : `return nil`
-    - [ ] **Test** : test avec erreurs dans certains goroutines
+- [x] **4.1.2.1 TASK ATOMIQUE: updateAllReferences - Orchestrateur Principal** :
+  - [x] **4.1.2.1.1** MICRO-TASK: Validation et préparation
+    - [x] **Code** : `if oldPath == newPath { return nil }` // optimisation court-circuit
+    - [x] **Code** : `errors := make([]error, 0)`
+    - [x] **Code** : `wg := sync.WaitGroup{}`
+    - [x] **Test** : test edge case chemins identiques
+  - [x] **4.1.2.1.2** MICRO-TASK: Mise à jour parallèle par type
+    - [x] **Code** : `wg.Add(4)` // 4 types de références
+    - [x] **Code** : `go func() { defer wg.Done(); if err := pt.updateMarkdownLinks(oldPath, newPath); err != nil { errors = append(errors, err) } }()`
+    - [x] **Code** : `go func() { defer wg.Done(); if err := pt.updateCodeReferences(oldPath, newPath); err != nil { errors = append(errors, err) } }()`
+    - [x] **Code** : `go func() { defer wg.Done(); if err := pt.updateConfigPaths(oldPath, newPath); err != nil { errors = append(errors, err) } }()`
+    - [x] **Code** : `go func() { defer wg.Done(); if err := pt.updateImportStatements(oldPath, newPath); err != nil { errors = append(errors, err) } }()`
+  - [x] **4.1.2.1.3** MICRO-TASK: Consolidation erreurs et rapport
+    - [x] **Code** : `wg.Wait()`
+    - [x] **Code** : `if len(errors) > 0 { return fmt.Errorf("multiple update errors: %v", errors) }`
+    - [x] **Code** : `return nil`
+    - [x] **Test** : test avec erreurs dans certains goroutines
 
 - [ ] **4.1.2.2 TASK ATOMIQUE: updateMarkdownLinks - Liens Markdown** :
   - [ ] **4.1.2.2.1** MICRO-TASK: Recherche fichiers Markdown
