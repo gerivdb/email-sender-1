@@ -2033,3 +2033,47 @@ func (cr *ConflictResolver) extractConflictMetadata(conflict *DocumentConflict) 
 }
 
 // 4.3.1.2.2 Sélection stratégie optimale
+func (cr *ConflictResolver) selectOptimalStrategy(conflictType ConflictType) ResolutionStrategy {
+	strategies := cr.strategies[conflictType]
+	if len(strategies) == 0 {
+		return cr.defaultStrategy
+	}
+	// Tri décroissant par priorité
+	sorted := make([]ResolutionStrategy, len(strategies))
+	copy(sorted, strategies)
+	for i := 0; i < len(sorted)-1; i++ {
+		for j := i + 1; j < len(sorted); j++ {
+			if sorted[j].Priority() > sorted[i].Priority() {
+				sorted[i], sorted[j] = sorted[j], sorted[i]
+			}
+		}
+	}
+	return sorted[0]
+}
+
+// 4.3.1.2.3 Exécution et validation résolution
+func (cr *ConflictResolver) executeAndValidateResolution(selectedStrategy ResolutionStrategy, conflict *DocumentConflict) (*Document, error) {
+	resolvedDoc, err := selectedStrategy.Resolve(conflict)
+	if err != nil {
+		return cr.tryFallbackStrategy(conflict)
+	}
+	if validationErr := cr.validateResolution(resolvedDoc, conflict); validationErr != nil {
+		return nil, validationErr
+	}
+	return resolvedDoc, nil
+}
+
+func (cr *ConflictResolver) tryFallbackStrategy(conflict *DocumentConflict) (*Document, error) {
+	if cr.defaultStrategy != nil {
+		return cr.defaultStrategy.Resolve(conflict)
+	}
+	return nil, fmt.Errorf("No fallback strategy available")
+}
+
+func (cr *ConflictResolver) validateResolution(resolvedDoc *Document, conflict *DocumentConflict) error {
+	// Validation simple : le document ne doit pas être nil
+	if resolvedDoc == nil {
+		return fmt.Errorf("Resolution failed: document is nil")
+	}
+	return nil
+}

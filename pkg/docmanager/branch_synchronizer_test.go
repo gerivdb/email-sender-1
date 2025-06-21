@@ -4,6 +4,7 @@ package docmanager
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"strings"
 	"testing"
@@ -753,21 +754,49 @@ type dummyStrategy struct {
 // TestConflictClassification vérifie la classification, sévérité et extraction de métadonnées
 func TestConflictClassification(t *testing.T) {
 	cr := &ConflictResolver{}
-	conflict := &DocumentConflict{
-		Type:     "merge",
-		Severity: "critical",
-		Details:  map[string]interface{}{ "file": "README.md" },
+	conflict := &DocumentConflict{Type: "merge", Severity: "high", Details: map[string]interface{}{"meta": 1}}
+	typeResult := cr.classifyConflict(conflict)
+	if typeResult != "merge" {
+		t.Errorf("Expected 'merge', got %v", typeResult)
 	}
-	typeRes := cr.classifyConflict(conflict)
-	if typeRes != "merge" {
-		t.Errorf("Type attendu 'merge', obtenu '%s'", typeRes)
+	severity := cr.assessConflictSeverity(conflict)
+	if severity != "high" {
+		t.Errorf("Expected 'high', got %v", severity)
 	}
-	sev := cr.assessConflictSeverity(conflict)
-	if sev != "critical" {
-		t.Errorf("Sévérité attendue 'critical', obtenue '%s'", sev)
+	metadata := cr.extractConflictMetadata(conflict)
+	if metadata["meta"] != 1 {
+		t.Errorf("Expected meta=1, got %v", metadata["meta"])
 	}
-	meta := cr.extractConflictMetadata(conflict)
-	if meta["file"] != "README.md" {
-		t.Errorf("Méta attendue 'README.md', obtenue '%v'", meta["file"])
+}
+
+// Test sélection avec priorités, fallback
+func TestSelectOptimalStrategy(t *testing.T) {
+	ds1 := &dummyStrategy{id: 1, ct: "merge", prio: 10, can: true}
+	ds2 := &dummyStrategy{id: 2, ct: "merge", prio: 20, can: true}
+	cr := &ConflictResolver{
+		strategies:      map[ConflictType][]ResolutionStrategy{"merge": {ds1, ds2}},
+		defaultStrategy: ds1,
+	}
+	selected := cr.selectOptimalStrategy("merge")
+	if selected.Priority() != 20 {
+		t.Errorf("Expected priority 20, got %d", selected.Priority())
+	}
+	selectedFallback := cr.selectOptimalStrategy("unknown")
+	if selectedFallback != ds1 {
+		t.Error("Expected fallback to defaultStrategy")
+	}
+}
+
+// Test exécution et fallback automatique
+func TestExecuteAndValidateResolution(t *testing.T) {
+	ds := &dummyStrategy{id: 1, ct: "merge", prio: 10, can: true, fail: true}
+	cr := &ConflictResolver{
+		strategies:      map[ConflictType][]ResolutionStrategy{"merge": {ds}},
+		defaultStrategy: &dummyStrategy{id: 2, ct: "merge", prio: 5, can: true},
+	}
+	conflict := &DocumentConflict{Type: "merge"}
+	_, err := cr.executeAndValidateResolution(ds, conflict)
+	if err == nil {
+		t.Error("Expected fallback error, got nil")
 	}
 }
