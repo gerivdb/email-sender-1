@@ -1055,56 +1055,35 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
 #### 4.3.1 Architecture ConflictResolver (`pkg/docmanager/conflict_resolver.go`)
 
 - [x] **4.3.1.1 Structure ConflictResolver** : structure définie
-  - [ ] **4.3.1.1.1** TASK: Système stratégies pluggables
-    - [ ] **Code** : `type ResolutionStrategy interface { Resolve(*DocumentConflict) (*Document, error); CanHandle(ConflictType) bool; Priority() int }`
-    - [ ] **Code** : `strategies map[ConflictType][]ResolutionStrategy`
-    - [ ] **Code** : `defaultStrategy ResolutionStrategy`
-    - [ ] **Test** : test enregistrement, priorités stratégies
+- [x] **4.3.1.1.1** TASK: Système stratégies pluggables
+  - [x] **Code** : `type ResolutionStrategy interface { Resolve(*DocumentConflict) (*Document, error); CanHandle(ConflictType) bool; Priority() int }`
+  - [x] **Code** : `strategies map[ConflictType][]ResolutionStrategy`
+  - [x] **Code** : `defaultStrategy ResolutionStrategy`
+  - [x] **Test** : test enregistrement, priorités stratégies
 
-- [ ] **4.3.1.2 TASK ATOMIQUE: ResolveConflict - Orchestration Résolution** :
-  - [ ] **4.3.1.2.1** MICRO-TASK: Analyse et classification conflit
-    - [ ] **Code** : `conflictType := cr.classifyConflict(conflict)`
-    - [ ] **Code** : `severity := cr.assessConflictSeverity(conflict)`
-    - [ ] **Code** : `metadata := cr.extractConflictMetadata(conflict)`
-    - [ ] **Test** : test classification précise différents types
-  - [ ] **4.3.1.2.2** MICRO-TASK: Sélection stratégie optimale
-    - [ ] **Code** : `strategies := cr.strategies[conflictType]`
-    - [ ] **Code** : `sort.Slice(strategies, func(i, j int) bool { return strategies[i].Priority() > strategies[j].Priority() })`
-    - [ ] **Code** : `selectedStrategy := strategies[0]`
-    - [ ] **Test** : test sélection avec priorités, fallback
-  - [ ] **4.3.1.2.3** MICRO-TASK: Exécution et validation résolution
-    - [ ] **Code** : `resolvedDoc, err := selectedStrategy.Resolve(conflict)`
-    - [ ] **Code** : `if err != nil { return cr.tryFallbackStrategy(conflict) }`
-    - [ ] **Code** : `validationErr := cr.validateResolution(resolvedDoc, conflict)`
-    - [ ] **Test** : test échec stratégie, fallback automatique
+- [x] **4.3.1.2 TASK ATOMIQUE: ResolveConflict - Orchestration Résolution** :
+  - [x] **4.3.1.2.1** MICRO-TASK: Analyse et classification conflit
+    - [x] **Code** : `conflictType := cr.classifyConflict(conflict)`
+    - [x] **Code** : `severity := cr.assessConflictSeverity(conflict)`
+    - [x] **Code** : `metadata := cr.extractConflictMetadata(conflict)`
+    - [x] **Test** : test classification précise différents types
+  - [x] **4.3.1.2.2** MICRO-TASK: Sélection stratégie optimale
+    - [x] **Code** : `strategies := cr.strategies[conflictType]`
+    - [x] **Code** : `sort.Slice(strategies, func(i, j int) bool { return strategies[i].Priority() > strategies[j].Priority() })`
+    - [x] **Code** : `selectedStrategy := strategies[0]`
+    - [x] **Test** : test sélection avec priorités, fallback
+  - [x] **4.3.1.2.3** MICRO-TASK: Exécution et validation résolution
+    - [x] **Code** : `resolvedDoc, err := selectedStrategy.Resolve(conflict)`
+    - [x] **Code** : `if err != nil { return cr.tryFallbackStrategy(conflict) }`
+    - [x] **Code** : `validationErr := cr.validateResolution(resolvedDoc, conflict)`
+    - [x] **Test** : test échec stratégie, fallback automatique
 
 #### 4.3.2 Stratégies de Résolution Spécialisées
 
-- [ ] **4.3.2.1 TASK ATOMIQUE: LastModifiedWins Strategy** :
-  - [ ] **4.3.2.1.1** MICRO-TASK: Comparaison timestamps précise
-    - [ ] **Code** : `type LastModifiedWins struct{}`
-    - [ ] **Code** : `func (lmw *LastModifiedWins) Resolve(conflict *DocumentConflict) (*Document, error) { ... }`
-    - [ ] **Code** : comparer `conflict.VersionA.LastModified` vs `conflict.VersionB.LastModified`
-    - [ ] **Test** : test avec timestamps identiques, différence microseconde
-  - [ ] **4.3.2.1.2** MICRO-TASK: Préservation métadonnées perdantes
-    - [ ] **Code** : `winner := selectByTimestamp(versionA, versionB)`
-    - [ ] **Code** : `winner.Metadata = mergeMetadata(versionA.Metadata, versionB.Metadata)`
-    - [ ] **Code** : préserver tags, auteurs, historique
-    - [ ] **Test** : vérifier pas de perte métadonnées importantes
-
-- [ ] **4.3.2.2 TASK ATOMIQUE: QualityBased Strategy** :
-  - [ ] **4.3.2.2.1** MICRO-TASK: Calcul score qualité multi-critères
-    - [ ] **Code** : `score := calculateQualityScore(doc)` basé sur : longueur, structure, liens, images, grammaire
-    - [ ] **Code** : `structureScore := analyzeMarkdownStructure(doc.Content)`
-    - [ ] **Code** : `linkScore := validateAllLinks(doc.Content)`
-    - [ ] **Test** : test scoring cohérent, reproductible
-  - [ ] **4.3.2.2.2** MICRO-TASK: Sélection version optimale
-    - [ ] **Code** : `if scoreA > scoreB { return versionA } else { return versionB }`
-    - [ ] **Code** : seuil minimum qualité avant acceptation
-    - [ ] **Code** : fallback vers autre stratégie si qualité insuffisante
-    - [ ] **Test** : test avec documents très similaires, très différents
-  - [ ] **4.3.2.3** UserPrompt : demande à l'utilisateur
-  - [ ] **4.3.2.4** AutoMerge : fusion automatique intelligente
+- [x] 4.3.2.1 LastModifiedWins Strategy (comparaison timestamps, fusion métadonnées, tests unitaires)
+- [ ] 4.3.2.2 QualityBased Strategy (calcul score qualité multi-critères, sélection version optimale, seuil minimal, fallback, tests cohérents et reproductibles)
+- [ ] 4.3.2.3 UserPrompt (demande utilisateur en cas d’ambiguïté, interface, tests)
+- [ ] 4.3.2.4 AutoMerge (fusion automatique si possible, rollback sinon, tests)
 
 ### 4.4 Stack Technologique Hybride
 

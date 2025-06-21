@@ -286,3 +286,61 @@ func TestLastModifiedWins(t *testing.T) {
 		t.Error("Fusion des auteurs incomplète")
 	}
 }
+
+func TestQualityBasedStrategy(t *testing.T) {
+	// Setup : docLowQuality (50 mots, pas de structure)
+	lowText := "mot " + string(make([]byte, 49))
+	docLow := &Document{
+		ID:      "low",
+		Content: []byte(lowText),
+		Metadata: map[string]interface{}{"LastModified": time.Now().Add(-2 * time.Hour)},
+	}
+	// Setup : docHighQuality (500 mots, headers, liens, images)
+	highText := "# Header\n" +
+		"Ceci est un document de test avec beaucoup de contenu. " +
+		string(make([]byte, 480)) +
+		"\n## Sous-titre\n" +
+		"Voir https://example.com et ![img](img.png)"
+	docHigh := &Document{
+		ID:      "high",
+		Content: []byte(highText),
+		Metadata: map[string]interface{}{"LastModified": time.Now()},
+	}
+	conflict := &DocumentConflict{LocalDoc: docLow, RemoteDoc: docHigh}
+	strategy := &QualityBasedStrategy{MinScore: 100}
+
+	scoreLow := calculateQualityScore(docLow)
+	scoreHigh := calculateQualityScore(docHigh)
+	if scoreHigh <= scoreLow*2 {
+		t.Errorf("Le score high doit être au moins le double du low (got %v vs %v)", scoreHigh, scoreLow)
+	}
+	if scoreLow == 0 {
+		t.Error("Le score low ne doit pas être nul")
+	}
+	if scoreHigh == 0 {
+		t.Error("Le score high ne doit pas être nul")
+	}
+	// Résolution
+	res, err := strategy.Resolve(conflict)
+	if err != nil {
+		t.Fatalf("Erreur inattendue: %v", err)
+	}
+	if res.ResolvedDoc.ID != "high" {
+		t.Errorf("La version high quality doit gagner (got %v)", res.ResolvedDoc.ID)
+	}
+	if res.Strategy != "quality_based" {
+		t.Errorf("Stratégie attendue: quality_based, obtenu: %v", res.Strategy)
+	}
+	if res.Confidence < 0.5 {
+		t.Errorf("Confidence trop faible: %v", res.Confidence)
+	}
+	// Fallback : si les deux scores sont trop faibles
+	strategy.MinScore = 1e6
+	res, err = strategy.Resolve(conflict)
+	if err != nil {
+		t.Fatalf("Erreur fallback inattendue: %v", err)
+	}
+	if res.Strategy != "manual" {
+		t.Errorf("Fallback attendu: manual, obtenu: %v", res.Strategy)
+	}
+}

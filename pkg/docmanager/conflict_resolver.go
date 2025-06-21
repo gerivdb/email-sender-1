@@ -4,6 +4,7 @@ package docmanager
 
 import (
 	"fmt"
+	"regexp"
 	"time"
 )
 
@@ -76,7 +77,8 @@ func NewConflictResolver() *ConflictResolver {
 	resolver.strategies[MetadataConflict] = &MetadataPreferenceStrategy{}
 	resolver.strategies[VersionConflict] = &VersionBasedStrategy{}
 	resolver.strategies[PathConflict] = &PathRenameStrategy{}
-
+	// Ajout QualityBasedStrategy pour ContentConflict (remplace ou complète)
+	resolver.strategies[ContentConflict] = &QualityBasedStrategy{MinScore: 100}
 	resolver.defaultStrategy = &ManualResolutionStrategy{}
 
 	return resolver
@@ -374,4 +376,83 @@ func mergeMetadata(metaA, metaB map[string]interface{}) map[string]interface{} {
 		}
 	}
 	return merged
+}
+
+// QualityBasedStrategy : sélectionne la meilleure version selon un score qualité multi-critères
+// Critères : longueur, structure (headers, sections), liens, images, etc.
+type QualityBasedStrategy struct {
+	MinScore float64 // seuil minimal pour accepter une version
+}
+
+// calculateQualityScore calcule un score qualité pour un document
+func calculateQualityScore(doc *Document) float64 {
+	if doc == nil || len(doc.Content) == 0 {
+		return 0
+	}
+	text := string(doc.Content)
+	wordCount := float64(len(splitWords(text)))
+	structureScore := 0.0
+	linkScore := 0.0
+	imageScore := 0.0
+
+	// Structure : headers (ex: Markdown #, ##, etc.)
+	headers := countHeaders(text)
+	if headers > 0 {
+		structureScore += float64(headers) * 2
+	}
+	// Liens (http, https)
+	links := countLinks(text)
+	if links > 0 {
+		linkScore += float64(links) * 1.5
+	}
+	// Images (ex: ![...](...))
+	images := countImages(text)
+	if images > 0 {
+		imageScore += float64(images) * 2
+	}
+	// Score global : pondération simple
+	return wordCount + structureScore + linkScore + imageScore
+}
+
+func splitWords(text string) []string {
+	// Sépare sur espaces, ponctuation simple
+	return regexp.MustCompile(`\w+`).FindAllString(text, -1)
+}
+
+func countHeaders(text string) int {
+	return len(regexp.MustCompile(`(?m)^#{1,6} `).FindAllString(text, -1))
+}
+
+func countLinks(text string) int {
+	return len(regexp.MustCompile(`https?://\S+`).FindAllString(text, -1))
+}
+
+func countImages(text string) int {
+	return len(regexp.MustCompile(`!\[.*?\]\(.*?\)`).FindAllString(text, -1))
+}
+
+func (qbs *QualityBasedStrategy) Resolve(conflict *DocumentConflict) (*Resolution, error) {
+	scoreA := calculateQualityScore(conflict.LocalDoc)
+	scoreB := calculateQualityScore(conflict.RemoteDoc)
+	var winner, loser *Document
+	var winnerScore, loserScore float64
+	if scoreA >= scoreB {
+		winner, loser = conflict.LocalDoc, conflict.RemoteDoc
+		winnerScore, loserScore = scoreA, scoreB
+	} else {
+		winner, loser = conflict.RemoteDoc, conflict.LocalDoc
+		winnerScore, loserScore = scoreB, scoreA
+	}
+	if winnerScore < qbs.MinScore {
+		// Fallback : score trop faible, résolution manuelle
+		return (&ManualResolutionStrategy{}).Resolve(conflict)
+	}
+	// Fusion métadonnées du perdant
+	winner.Metadata = mergeMetadata(winner.Metadata, loser.Metadata)
+	return &Resolution{
+		ResolvedDoc: winner,
+		Strategy:    "quality_based",
+		Confidence:  winnerScore / (winnerScore + loserScore + 1e-6),
+		Metadata:    map[string]interface{}{ "winner": winner.ID, "loser": loser.ID, "scoreA": scoreA, "scoreB": scoreB },
+	}, nil
 }
