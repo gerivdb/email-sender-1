@@ -344,3 +344,39 @@ func TestQualityBasedStrategy(t *testing.T) {
 		t.Errorf("Fallback attendu: manual, obtenu: %v", res.Strategy)
 	}
 }
+
+// Test UserPromptStrategy avec un mock prompter
+func TestUserPromptStrategy(t *testing.T) {
+	mock := &MockPrompter{choice: "remote"}
+	strategy := &UserPromptStrategy{Prompter: mock}
+	docA := &Document{ID: "A", Content: []byte("A"), Metadata: map[string]interface{}{"LastModified": time.Now()}}
+	docB := &Document{ID: "B", Content: []byte("B"), Metadata: map[string]interface{}{"LastModified": time.Now()}}
+	conflict := &DocumentConflict{LocalDoc: docA, RemoteDoc: docB}
+	res, err := strategy.Resolve(conflict)
+	if err != nil {
+		t.Fatalf("Erreur inattendue: %v", err)
+	}
+	if res.ResolvedDoc.ID != "B" {
+		t.Errorf("La version remote doit gagner (got %v)", res.ResolvedDoc.ID)
+	}
+	if res.Strategy != "user_prompt" {
+		t.Errorf("Stratégie attendue: user_prompt, obtenu: %v", res.Strategy)
+	}
+	// Test fallback si prompter nil
+	strategy = &UserPromptStrategy{Prompter: nil}
+	res, err = strategy.Resolve(conflict)
+	if err != nil {
+		t.Fatalf("Erreur fallback inattendue: %v", err)
+	}
+	if res.Strategy != "manual" {
+		t.Errorf("Fallback attendu: manual, obtenu: %v", res.Strategy)
+	}
+}
+
+type MockPrompter struct {
+	choice string
+}
+
+func (m *MockPrompter) PromptUser(conflict *DocumentConflict) (string, error) {
+	return m.choice, nil
+}

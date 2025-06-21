@@ -79,6 +79,9 @@ func NewConflictResolver() *ConflictResolver {
 	resolver.strategies[PathConflict] = &PathRenameStrategy{}
 	// Ajout QualityBasedStrategy pour ContentConflict (remplace ou complète)
 	resolver.strategies[ContentConflict] = &QualityBasedStrategy{MinScore: 100}
+	resolver.strategies[MetadataConflict] = &MetadataPreferenceStrategy{}
+	resolver.strategies[VersionConflict] = &VersionBasedStrategy{}
+	resolver.strategies[PathConflict] = &UserPromptStrategy{Prompter: nil}
 	resolver.defaultStrategy = &ManualResolutionStrategy{}
 
 	return resolver
@@ -454,5 +457,40 @@ func (qbs *QualityBasedStrategy) Resolve(conflict *DocumentConflict) (*Resolutio
 		Strategy:    "quality_based",
 		Confidence:  winnerScore / (winnerScore + loserScore + 1e-6),
 		Metadata:    map[string]interface{}{ "winner": winner.ID, "loser": loser.ID, "scoreA": scoreA, "scoreB": scoreB },
+	}, nil
+}
+
+// UserPromptStrategy : demande à l’utilisateur de choisir la version à conserver en cas d’ambiguïté
+// Utilise une interface UserPrompter pour l’abstraction (testable/mockable)
+type UserPrompter interface {
+	PromptUser(conflict *DocumentConflict) (choice string, err error)
+}
+
+type UserPromptStrategy struct {
+	Prompter UserPrompter
+}
+
+func (ups *UserPromptStrategy) Resolve(conflict *DocumentConflict) (*Resolution, error) {
+	if ups.Prompter == nil {
+		return (&ManualResolutionStrategy{}).Resolve(conflict)
+	}
+	choice, err := ups.Prompter.PromptUser(conflict)
+	if err != nil {
+		return (&ManualResolutionStrategy{}).Resolve(conflict)
+	}
+	var winner, loser *Document
+	if choice == "local" {
+		winner, loser = conflict.LocalDoc, conflict.RemoteDoc
+	} else if choice == "remote" {
+		winner, loser = conflict.RemoteDoc, conflict.LocalDoc
+	} else {
+		return (&ManualResolutionStrategy{}).Resolve(conflict)
+	}
+	winner.Metadata = mergeMetadata(winner.Metadata, loser.Metadata)
+	return &Resolution{
+		ResolvedDoc: winner,
+		Strategy:    "user_prompt",
+		Confidence:  1.0,
+		Metadata:    map[string]interface{}{ "winner": winner.ID, "loser": loser.ID, "choice": choice },
 	}, nil
 }
