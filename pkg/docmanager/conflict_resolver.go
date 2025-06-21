@@ -17,6 +17,16 @@ const (
 	PathConflict     ConflictType = "path"
 )
 
+// 3.6.1.3 Type ConflictType enum (Path, Content, Version, Permission)
+type ConflictTypeEnum int
+
+const (
+	ConflictTypePath ConflictTypeEnum = iota
+	ConflictTypeContent
+	ConflictTypeVersion
+	ConflictTypePermission
+)
+
 // ResolutionStrategy stratégie de résolution de conflit
 type ResolutionStrategy interface {
 	Resolve(conflict *DocumentConflict) (*Resolution, error)
@@ -289,3 +299,21 @@ type ConflictResolverInterface interface {
 	Resolve(conflict *DocumentConflict) (*Resolution, error)
 	Score(conflict *DocumentConflict) float64
 }
+
+// 3.6.1.4 Structure Conflict avec champs Type, Severity, Participants, Metadata
+type Conflict struct {
+	Type         ConflictTypeEnum
+	Severity     ConflictSeverity
+	Participants []string
+	Metadata     map[string]interface{}
+}
+
+// 3.6.1.5 Structure Resolution avec Status, Strategy, AppliedAt, Rollback
+type ResolutionGranular struct {
+	Status    ResolutionStatus
+	Strategy  string
+	AppliedAt time.Time
+	Rollback  func() error
+}
+
+// 3.6.1.8 Validation avec go vet et golangci-lint : OK (voir scripts build_and_test.ps1)

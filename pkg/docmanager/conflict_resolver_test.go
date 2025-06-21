@@ -227,3 +227,24 @@ func TestConflictResolverImpl_Behavior(t *testing.T) {
 		t.Errorf("Expected no conflicts, got %d", len(conflicts))
 	}
 }
+
+func TestConflictAndResolutionGranular(t *testing.T) {
+	c := Conflict{
+		Type:         ConflictTypeContent,
+		Severity:     Medium,
+		Participants: []string{"user1", "user2"},
+		Metadata:     map[string]interface{}{"key": "value"},
+	}
+	if c.Type != ConflictTypeContent || c.Severity != Medium {
+		t.Error("Conflict struct fields not set correctly")
+	}
+	r := ResolutionGranular{
+		Status:    Resolved,
+		Strategy:  "auto",
+		AppliedAt: time.Now(),
+		Rollback:  func() error { return nil },
+	}
+	if r.Status != Resolved || r.Strategy != "auto" {
+		t.Error("ResolutionGranular struct fields not set correctly")
+	}
+}

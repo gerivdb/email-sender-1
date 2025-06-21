@@ -29,7 +29,7 @@ func updateMarkdownLinks(root string) error {
 			return match // Placeholder: à adapter selon la logique métier
 		})
 		tempFile := file + ".tmp"
-		err = ioutil.WriteFile(tempFile, newContent, 0644)
+		err = ioutil.WriteFile(tempFile, newContent, 0o644)
 		if err != nil {
 			return err
 		}

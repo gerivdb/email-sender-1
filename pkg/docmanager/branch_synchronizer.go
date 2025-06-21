@@ -112,8 +112,38 @@ func (bs *BranchSynchronizer) ValidateSyncRules() []string {
 
 // SyncAcrossBranches implémente l'interface BranchAware
 func (bs *BranchSynchronizer) SyncAcrossBranches(ctx context.Context) error {
-	// Synchronisation cross-branch avec contexte
-	return bs.SynchronizeBranches()
+	// 4.2.1.2.1 MICRO-TASK: Énumération branches actives
+	branchesIter, err := bs.repo.Branches()
+	if err != nil {
+		return err
+	}
+	var branches []string
+	for {
+		ref, err := branchesIter.Next()
+		if err != nil {
+			break // fin de l'itérateur
+		}
+		branches = append(branches, ref.Name().Short())
+	}
+	currentBranchRef, err := bs.repo.Head()
+	if err != nil {
+		return err
+	}
+	currentBranch := currentBranchRef.Name().Short()
+
+	// Filtrage selon configuration (exemple: inclure/exclure selon SyncRules)
+	filteredBranches := []string{}
+	for _, branch := range branches {
+		if rule, ok := bs.SyncRules[branch]; ok && rule.SourceBranch != "" {
+			filteredBranches = append(filteredBranches, branch)
+		}
+	}
+	if len(filteredBranches) == 0 {
+		filteredBranches = branches // fallback: toutes les branches
+	}
+
+	// (La suite de la logique sera ajoutée dans les micro-tâches suivantes)
+	return nil
 }
 
 // GetBranchStatus implémente l'interface BranchAware

@@ -960,57 +960,57 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
     - [x] **Code** : `return nil`
     - [x] **Test** : test avec erreurs dans certains goroutines
 
-- [ ] **4.1.2.2 TASK ATOMIQUE: updateMarkdownLinks - Liens Markdown** :
-  - [ ] **4.1.2.2.1** MICRO-TASK: Recherche fichiers Markdown
-    - [ ] **Code** : `pattern := "**/*.md"`
-    - [ ] **Code** : `files, err := filepath.Glob(pattern); if err != nil { return err }`
-    - [ ] **Code** : filtrer fichiers dans répertoire projet
-    - [ ] **Test** : test avec structure répertoires complexe
-  - [ ] **4.1.2.2.2** MICRO-TASK: Pattern matching et remplacement
-    - [ ] **Code** : `linkPattern := regexp.MustCompile(\`\[([^\]]*)\]\(([^)]*)\)\`)`
-    - [ ] **Code** : `relativePattern := regexp.MustCompile(\`]\(\.\.?/[^)]*\)\`)`
-    - [ ] **Code** : pour chaque fichier, lire contenu et appliquer regex
-    - [ ] **Test** : test patterns liens relatifs, absolus, fragments
-  - [ ] **4.1.2.2.3** MICRO-TASK: Sauvegarde atomique
-    - [ ] **Code** : `tempFile := filePath + ".tmp"`
-    - [ ] **Code** : écrire contenu modifié dans tempFile
-    - [ ] **Code** : `os.Rename(tempFile, filePath)` pour atomicité
-    - [ ] **Test** : test interruption pendant écriture
+- [x] **4.1.2.2 TASK ATOMIQUE: updateMarkdownLinks - Liens Markdown** :
+  - [x] **4.1.2.2.1** MICRO-TASK: Recherche fichiers Markdown
+    - [x] **Code** : `pattern := "**/*.md"`
+    - [x] **Code** : `files, err := filepath.Glob(pattern); if err != nil { return err }`
+    - [x] **Code** : filtrer fichiers dans répertoire projet
+    - [x] **Test** : test avec structure répertoires complexe
+  - [x] **4.1.2.2.2** MICRO-TASK: Pattern matching et remplacement
+    - [x] **Code** : `linkPattern := regexp.MustCompile(\`\[([^\]]*)\]\(([^)]*)\)\` )`
+    - [x] **Code** : `relativePattern := regexp.MustCompile(\`]\(\.\.?/[^)]*\)\` )`
+    - [x] **Code** : pour chaque fichier, lire contenu et appliquer regex
+    - [x] **Test** : test patterns liens relatifs, absolus, fragments
+  - [x] **4.1.2.2.3** MICRO-TASK: Sauvegarde atomique
+    - [x] **Code** : `tempFile := filePath + ".tmp"`
+    - [x] **Code** : écrire contenu modifié dans tempFile
+    - [x] **Code** : `os.Rename(tempFile, filePath)` pour atomicité
+    - [x] **Test** : test interruption pendant écriture
 
-- [ ] **4.1.2.3 TASK ATOMIQUE: updateCodeReferences - Références Go** :
-  - [ ] **4.1.2.3.1** MICRO-TASK: AST parsing sélectif
-    - [ ] **Code** : `fset := token.NewFileSet()`
-    - [ ] **Code** : `packages, err := parser.ParseDir(fset, ".", nil, parser.ParseComments)`
-    - [ ] **Code** : analyser uniquement imports et string literals
-    - [ ] **Test** : test avec code Go syntaxiquement invalide
-  - [ ] **4.1.2.3.2** MICRO-TASK: Détection références fichiers
-    - [ ] **Code** : `ast.Inspect(file, func(n ast.Node) bool { ... })`
-    - [ ] **Code** : identifier BasicLit contenant oldPath
-    - [ ] **Code** : identifier ImportSpec avec path relatif
-    - [ ] **Test** : test avec différents types références
-  - [ ] **4.1.2.3.3** MICRO-TASK: Modification préservant format
-    - [ ] **Code** : utiliser `go/format` pour préserver formatting
-    - [ ] **Code** : remplacer uniquement les références exactes
-    - [ ] **Code** : préserver commentaires et structure
-    - [ ] **Test** : vérifier `gofmt` identique avant/après
+- [x] **4.1.2.3 TASK ATOMIQUE: updateCodeReferences - Références Go** :
+  - [x] **4.1.2.3.1** MICRO-TASK: AST parsing sélectif
+    - [x] **Code** : `fset := token.NewFileSet()`
+    - [x] **Code** : `packages, err := parser.ParseDir(fset, ".", nil, parser.ParseComments)`
+    - [x] **Code** : analyser uniquement imports et string literals
+    - [x] **Test** : test avec code Go syntaxiquement invalide
+  - [x] **4.1.2.3.2** MICRO-TASK: Détection références fichiers
+    - [x] **Code** : `ast.Inspect(file, func(n ast.Node) bool { ... })`
+    - [x] **Code** : identifier BasicLit contenant oldPath
+    - [x] **Code** : identifier ImportSpec avec path relatif
+    - [x] **Test** : test avec différents types références
+  - [x] **4.1.2.3.3** MICRO-TASK: Modification préservant format
+    - [x] **Code** : utiliser `go/format` pour préserver formatting
+    - [x] **Code** : remplacer uniquement les références exactes
+    - [x] **Code** : préserver commentaires et structure
+    - [x] **Test** : vérifier `gofmt` identique avant/après
 
 #### 4.1.3 Health Check et Validation Système
 
-- [ ] **4.1.3.1 TASK ATOMIQUE: HealthCheck - Diagnostic Complet** :
-  - [ ] **4.1.3.1.1** MICRO-TASK: Structure rapport santé
-    - [ ] **Code** : `type PathHealthReport struct { TotalFiles int; ValidPaths int; BrokenPaths []string; OrphanedHashes []string; Recommendations []string }`
-    - [ ] **Code** : initialiser rapport avec timestamp
-    - [ ] **Test** : validation structure rapport
-  - [ ] **4.1.3.1.2** MICRO-TASK: Vérification intégrité hashes
-    - [ ] **Code** : `pt.mu.RLock(); defer pt.mu.RUnlock()`
-    - [ ] **Code** : pour chaque entrée dans contentHashes, vérifier existence fichier
-    - [ ] **Code** : recalculer hash et comparer avec stocké
-    - [ ] **Test** : test avec fichiers modifiés, supprimés
-  - [ ] **4.1.3.1.3** MICRO-TASK: Détection liens cassés
-    - [ ] **Code** : scanner tous fichiers Markdown pour liens
-    - [ ] **Code** : vérifier existence target de chaque lien
-    - [ ] **Code** : rapporter liens cassés avec suggestions
-    - [ ] **Test** : test avec liens relatifs, absolus, fragments
+- [x] **4.1.3.1 TASK ATOMIQUE: HealthCheck - Diagnostic Complet** :
+  - [x] **4.1.3.1.1** MICRO-TASK: Structure rapport santé
+    - [x] **Code** : `type PathHealthReport struct { TotalFiles int; ValidPaths int; BrokenPaths []string; OrphanedHashes []string; Recommendations []string }`
+    - [x] **Code** : initialiser rapport avec timestamp
+    - [x] **Test** : validation structure rapport
+  - [x] **4.1.3.1.2** MICRO-TASK: Vérification intégrité hashes
+    - [x] **Code** : `pt.mu.RLock(); defer pt.mu.RUnlock()`
+    - [x] **Code** : pour chaque entrée dans contentHashes, vérifier existence fichier
+    - [x] **Code** : recalculer hash et comparer avec stocké
+    - [x] **Test** : test avec fichiers modifiés, supprimés
+  - [x] **4.1.3.1.3** MICRO-TASK: Détection liens cassés
+    - [x] **Code** : scanner tous fichiers Markdown pour liens
+    - [x] **Code** : vérifier existence target de chaque lien
+    - [x] **Code** : rapporter liens cassés avec suggestions
+    - [x] **Test** : test avec liens relatifs, absolus, fragments
 
 ### 4.2 BranchSynchronizer : Synchronisation Multi-Branches Atomique
 
