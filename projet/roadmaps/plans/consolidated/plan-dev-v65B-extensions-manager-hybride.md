@@ -1099,11 +1099,11 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
   - [x] **4.4.2.3** Fonctions PL/pgSQL avancées
   - [x] **4.4.2.4** Vues matérialisées pour dashboard
 
-- [ ] **4.4.3 Redis Streaming** : à implémenter
-  - [ ] **4.4.3.1** RedisStreamingDocSync : structure principale
-  - [ ] **4.4.3.2** PublishDocumentationEvent : publication d'événements
-  - [ ] **4.4.3.3** IntelligentCache : cache adaptatif
-  - [ ] **4.4.3.4** Stratégies de cache avancées
+- [x] **4.4.3 Redis Streaming** : à implémenter
+  - [x] **4.4.3.1** RedisStreamingDocSync : structure principale
+  - [x] **4.4.3.2** PublishDocumentationEvent : publication d'événements
+  - [x] **4.4.3.3** IntelligentCache : cache adaptatif
+  - [x] **4.4.3.4** Stratégies de cache avancées
 
 - [ ] **4.4.4 InfluxDB Métriques** : à implémenter
   - [ ] **4.4.4.1** InfluxDBDocumentationMetrics : structure principale
