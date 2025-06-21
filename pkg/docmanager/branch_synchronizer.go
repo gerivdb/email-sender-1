@@ -1872,8 +1872,8 @@ func (mshs *MemorySyncHistoryStorage) matchesFilter(entry SyncHistoryEntry, filt
 // 4.2.1.2.2
 
 type DiffResult struct {
-	Branch         string
-	ModifiedFiles  []string
+	Branch          string
+	ModifiedFiles   []string
 	DivergenceScore int
 }
 
@@ -1891,8 +1891,8 @@ func (bs *BranchSynchronizer) analyzeBranchDocDiff(branch string) (*DiffResult, 
 		}
 	}
 	return &DiffResult{
-		Branch: branch,
-		ModifiedFiles: modified,
+		Branch:          branch,
+		ModifiedFiles:   modified,
 		DivergenceScore: len(modified),
 	}, nil
 }
@@ -1906,4 +1906,35 @@ func hasSuffix(s, suffix string) bool {
 		return false
 	}
 	return s[len(s)-len(suffix):] == suffix
+}
+
+// Résolution automatique des conflits documentaires
+// Filtre les conflits auto-résolvables et applique les stratégies de merge
+func (bs *BranchSynchronizer) filterAutoResolvable(conflicts []DetectedConflict) []DetectedConflict {
+	var resolvable []DetectedConflict
+	for _, c := range conflicts {
+		// Stratégie simple : conflits de sévérité "low" ou "medium" sont auto-résolvables
+		if c.Severity == "low" || c.Severity == "medium" {
+			resolvable = append(resolvable, c)
+		}
+		// On pourrait ajouter d'autres critères (timestamp, consensus, etc.)
+	}
+	return resolvable
+}
+
+// Applique la résolution automatique sur les conflits auto-résolvables
+func (bs *BranchSynchronizer) autoResolveConflicts(conflicts []DetectedConflict) (int, error) {
+	conflictDetector, ok := interface{}(bs.Conflicts).(*ConflictDetector)
+	if !ok || conflictDetector == nil {
+		return 0, fmt.Errorf("ConflictDetector non initialisé dans BranchSynchronizer")
+	}
+	resolved := 0
+	for _, c := range conflicts {
+		// Stratégie : on applique la résolution "keep_source" ou "timestamp" (exemple)
+		resolution := "auto:keep_source"
+		if err := conflictDetector.ResolveConflict(c.ID, resolution); err == nil {
+			resolved++
+		}
+	}
+	return resolved, nil
 }

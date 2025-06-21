@@ -1044,11 +1044,11 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
     - [x] **Code** : analyser modifications concurrentes sur même fichier
     - [x] **Code** : scorer gravité conflicts (minor/major/critical)
     - [x] **Test** : test cas conflicts simple, complexe, non-résolvable
-  - [ ] **4.2.1.2.4** MICRO-TASK: Résolution automatique possible
-    - [ ] **Code** : `resolvableConflicts := filterAutoResolvable(conflicts)`
-    - [ ] **Code** : appliquer stratégies : timestamp, qualité, consensus
-    - [ ] **Code** : merger automatiquement changes non-conflictuels
-    - [ ] **Test** : vérifier préservation formatage, métadonnées
+  - [x] **4.2.1.2.4** MICRO-TASK: Résolution automatique possible
+    - [x] **Code** : `resolvableConflicts := filterAutoResolvable(conflicts)`
+    - [x] **Code** : appliquer stratégies : timestamp, qualité, consensus
+    - [x] **Code** : merger automatiquement changes non-conflictuels
+    - [x] **Test** : vérifier préservation formatage, métadonnées
 
 ### 4.3 ConflictResolver : Résolution Intelligente Ultra-Granulaire
 

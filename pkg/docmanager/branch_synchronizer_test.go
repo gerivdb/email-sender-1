@@ -603,3 +603,32 @@ func TestDetectDocumentationConflicts(t *testing.T) {
 		t.Error("Aucun conflit de gravité majeure/critique détecté")
 	}
 }
+
+// TestAutoResolveConflicts vérifie la résolution automatique des conflits documentaires
+func TestAutoResolveConflicts(t *testing.T) {
+	bs := NewBranchSynchronizer()
+	bs.Conflicts = interface{}(NewConflictDetector()).(*ConflictResolver)
+
+	// Simuler des conflits détectés
+	conflicts := []DetectedConflict{
+		{ID: "c1", Severity: "low", Status: "new"},
+		{ID: "c2", Severity: "medium", Status: "new"},
+		{ID: "c3", Severity: "high", Status: "new"},
+	}
+
+	resolvable := bs.filterAutoResolvable(conflicts)
+	if len(resolvable) != 2 {
+		t.Errorf("Attendu 2 conflits auto-résolvables, obtenu %d", len(resolvable))
+	}
+
+	// Injecter le detector réel pour la résolution
+	bs.Conflicts = interface{}(NewConflictDetector()).(*ConflictResolver)
+	// On simule la résolution (pas d'erreur attendue)
+	resolved, err := bs.autoResolveConflicts(resolvable)
+	if err != nil {
+		t.Fatalf("Erreur inattendue lors de la résolution auto: %v", err)
+	}
+	if resolved != 2 {
+		t.Errorf("Attendu 2 conflits résolus automatiquement, obtenu %d", resolved)
+	}
+}
