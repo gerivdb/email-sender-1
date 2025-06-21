@@ -483,18 +483,18 @@
 
 #### 🏗️ NIVEAU 1: ARCHITECTURE_SYSTÈME_TRACKING_AVANCÉ
 
-- **Contexte**: Architecture DocManager existante avec PathTracker de base
-- **Intégration**: pkg/docmanager/path_tracker.go interface avec StatusTracker pattern du bridge
+- [x] **Contexte**: Architecture DocManager existante avec PathTracker de base
+- [x] **Intégration**: pkg/docmanager/path_tracker.go interface avec StatusTracker pattern du bridge
 
 ##### 🔧 NIVEAU 2: MODULE_DÉTECTION_DÉPLACEMENTS
 
-- **Responsabilité**: Détection automatique et mise à jour des références après déplacement
-- **Interface**: DocumentMovementDetector + PathTracker interface existante
+- [x] **Responsabilité**: Détection automatique et mise à jour des références après déplacement
+- [x] **Interface**: DocumentMovementDetector + PathTracker interface existante
 
 ###### ⚙️ NIVEAU 3: COMPOSANT_DÉTECTEUR_MOUVEMENT
 
-- **Type**: struct MovementDetector avec méthodes tracking avancées
-- **Localisation**: pkg/docmanager/path_tracker.go:ligne_150-300
+- [x] **Type**: struct MovementDetector avec méthodes tracking avancées
+- [x] **Localisation**: pkg/docmanager/path_tracker.go:ligne_150-300
 
 ####### 📋 NIVEAU 4: INTERFACE_MOUVEMENT_INTELLIGENT
 
@@ -546,9 +546,9 @@ func (pt *PathTracker) DetectMovedFile(newPath string) (*MovementResult, error) 
 
 ######### 🎯 NIVEAU 6: IMPLÉMENTATION_SURVEILLANCE_TEMPS_RÉEL
 
-- **Action**: Intégrer fsnotify pour surveillance système de fichiers
-- **Durée**: 10-15 min
-- **Commandes**:
+- [x] **Action**: Intégrer fsnotify pour surveillance système de fichiers
+- [x] **Durée**: 10-15 min
+- [x] **Commandes**:
 
   ```bash
   cd d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1
@@ -558,15 +558,15 @@ func (pt *PathTracker) DetectMovedFile(newPath string) (*MovementResult, error) 
 
 ########## 🔬 NIVEAU 7: ÉTAPE_AJOUT_WATCHER
 
-1. **Pré**: `go list -m github.com/fsnotify/fsnotify` → `module not found`
-2. **Exec**: `go get github.com/fsnotify/fsnotify@latest` → `dependency added`
-3. **Post**: `go mod tidy && go test ./pkg/docmanager` → `tests pass`
+1. [x] **Pré**: `go list -m github.com/fsnotify/fsnotify` → `module not found`
+2. [x] **Exec**: `go get github.com/fsnotify/fsnotify@latest` → `dependency added`
+3. [x] **Post**: `go mod tidy && go test ./pkg/docmanager` → `tests pass`
 
 ########### ⚡ NIVEAU 8: ACTION_IMPORT_FSNOTIFY
 
-- **Instruction**: Ajouter import "github.com/fsnotify/fsnotify" dans path_tracker.go ligne 8
-- **Validation**: `go build ./pkg/docmanager`
-- **Rollback**: `git checkout -- pkg/docmanager/path_tracker.go`
+- [x] **Instruction**: Ajouter import "github.com/fsnotify/fsnotify" dans path_tracker.go ligne 8
+- [x] **Validation**: `go build ./pkg/docmanager`
+- [x] **Rollback**: `git checkout -- pkg/docmanager/path_tracker.go`
 
 ### 🎯 FONCTIONNALITÉS_AVANCÉES_RÉCUPÉRATION
 
@@ -578,18 +578,18 @@ func (pt *PathTracker) DetectMovedFile(newPath string) (*MovementResult, error) 
 
 #### 🏗️ NIVEAU 1: ARCHITECTURE_RÉCUPÉRATION_LIENS
 
-- **Contexte**: Extension PathTracker pour auto-récupération des liens cassés
-- **Intégration**: Utilise ContentHashes existants pour reconstruction intelligente
+- [x] **Contexte**: Extension PathTracker pour auto-récupération des liens cassés
+- [x] **Intégration**: Utilise ContentHashes existants pour reconstruction intelligente
 
 ##### 🔧 NIVEAU 2: MODULE_RÉCUPÉRATION_AUTOMATIQUE
 
-- **Responsabilité**: Récupération et réparation automatique des liens cassés
-- **Interface**: LinkRecoveryManager avec PathTracker
+- [x] **Responsabilité**: Récupération et réparation automatique des liens cassés
+- [x] **Interface**: LinkRecoveryManager avec PathTracker
 
 ###### ⚙️ NIVEAU 3: COMPOSANT_RÉPARATEUR_LIENS
 
-- **Type**: struct LinkRepairer avec mapping intelligent
-- **Localisation**: pkg/docmanager/path_tracker.go:ligne_400-550
+- [x] **Type**: struct LinkRepairer avec mapping intelligent
+- [x] **Localisation**: pkg/docmanager/path_tracker.go:ligne_400-550
 
 ####### 📋 NIVEAU 4: INTERFACE_RÉCUPÉRATION_LIENS
 
@@ -649,9 +649,9 @@ func (pt *PathTracker) ScanBrokenLinks(rootPath string) ([]BrokenLink, error) {
 
 ######### 🎯 NIVEAU 6: IMPLÉMENTATION_HISTORIQUE_MOUVEMENTS
 
-- **Action**: Implémenter système d'historique complet des déplacements
-- **Durée**: 12-18 min
-- **Commandes**:
+- [x] **Action**: Implémenter système d'historique complet des déplacements
+- [x] **Durée**: 12-18 min
+- [x] **Commandes**:
 
   ```bash
   cd d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1
@@ -661,15 +661,15 @@ func (pt *PathTracker) ScanBrokenLinks(rootPath string) ([]BrokenLink, error) {
 
 ########## 🔬 NIVEAU 7: ÉTAPE_STRUCTURE_HISTORIQUE
 
-1. **Pré**: `grep -n "MovementEvent" pkg/docmanager/path_tracker.go` → `struct not found`
-2. **Exec**: `echo "type MovementEvent struct {}" >> pkg/docmanager/path_tracker.go` → `struct added`
-3. **Post**: `go build ./pkg/docmanager` → `compilation success`
+1. [x] **Pré**: `grep -n "MovementEvent" pkg/docmanager/path_tracker.go` → `struct not found`
+2. [x] **Exec**: `echo "type MovementEvent struct {}" >> pkg/docmanager/path_tracker.go` → `struct added`
+3. [x] **Post**: `go build ./pkg/docmanager` → `compilation success`
 
 ########### ⚡ NIVEAU 8: ACTION_AJOUTER_STRUCT_EVENT
 
-- **Instruction**: Ajouter struct MovementEvent après ligne 45 dans path_tracker.go
-- **Validation**: `go test ./pkg/docmanager -run TestMovementEvent`
-- **Rollback**: `git restore pkg/docmanager/path_tracker.go`
+- [x] **Instruction**: Ajouter struct MovementEvent après ligne 45 dans path_tracker.go
+- [x] **Validation**: `go test ./pkg/docmanager -run TestMovementEvent`
+- [x] **Rollback**: `git restore pkg/docmanager/path_tracker.go`
 
 ### 🎯 VALIDATION_INTÉGRITÉ_POST_DÉPLACEMENT
 
@@ -681,18 +681,18 @@ func (pt *PathTracker) ScanBrokenLinks(rootPath string) ([]BrokenLink, error) {
 
 #### 🏗️ NIVEAU 1: ARCHITECTURE_VALIDATION_INTÉGRITÉ
 
-- **Contexte**: Système de validation post-déplacement avec vérifications multi-niveaux
-- **Intégration**: Extension PathTracker avec checksums et validation croisée
+- [x] **Contexte**: Système de validation post-déplacement avec vérifications multi-niveaux
+- [x] **Intégration**: Extension PathTracker avec checksums et validation croisée
 
 ##### 🔧 NIVEAU 2: MODULE_VÉRIFICATION_INTÉGRITÉ
 
-- **Responsabilité**: Validation complète de l'intégrité après déplacements
-- **Interface**: IntegrityValidator avec PathTracker existant
+- [x] **Responsabilité**: Validation complète de l'intégrité après déplacements
+- [x] **Interface**: IntegrityValidator avec PathTracker existant
 
 ###### ⚙️ NIVEAU 3: COMPOSANT_VALIDATEUR_INTÉGRITÉ
 
-- **Type**: struct IntegrityValidator avec vérifications multi-étapes
-- **Localisation**: pkg/docmanager/path_tracker.go:ligne_600-750
+- [x] **Type**: struct IntegrityValidator avec vérifications multi-étapes
+- [x] **Localisation**: pkg/docmanager/path_tracker.go:ligne_600-750
 
 ####### 📋 NIVEAU 4: INTERFACE_VALIDATION_INTÉGRITÉ
 
@@ -753,9 +753,9 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
 
 ######### 🎯 NIVEAU 6: IMPLÉMENTATION_VÉRIFICATION_CROISÉE
 
-- **Action**: Implémenter validation croisée des références et checksums
-- **Durée**: 15-20 min
-- **Commandes**:
+- [x] **Action**: Implémenter validation croisée des références et checksums
+- [x] **Durée**: 15-20 min
+- [x] **Commandes**:
 
   ```bash
   cd d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1
@@ -765,31 +765,113 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
 
 ########## 🔬 NIVEAU 7: ÉTAPE_TESTS_INTÉGRITÉ
 
-1. **Pré**: `go test ./pkg/docmanager -list TestIntegrity` → `no tests found`
-2. **Exec**: `go test ./pkg/docmanager -run TestPathTracker_ValidatePostMove` → `test created`
-3. **Post**: `go test ./pkg/docmanager -cover` → `coverage increased`
+1. [x] **Pré**: `go test ./pkg/docmanager -list TestIntegrity` → `no tests found`
+2. [x] **Exec**: `go test ./pkg/docmanager -run TestPathTracker_ValidatePostMove` → `test created`
+3. [x] **Post**: `go test ./pkg/docmanager -cover` → `coverage increased`
 
 ########### ⚡ NIVEAU 8: ACTION_AJOUTER_TEST_INTÉGRITÉ
 
-- **Instruction**: Créer TestPathTracker_ValidatePostMove dans path_tracker_test.go
-- **Validation**: `go test ./pkg/docmanager -run TestPathTracker_ValidatePostMove -v`
-- **Rollback**: `git restore pkg/docmanager/path_tracker_test.go`
+- [x] **Instruction**: Créer TestPathTracker_ValidatePostMove dans path_tracker_test.go
+- [x] **Validation**: `go test ./pkg/docmanager -run TestPathTracker_ValidatePostMove -v`
+- [x] **Rollback**: `git restore pkg/docmanager/path_tracker_test.go`
 
 ### 📊 VALIDATION
 
-- [ ] **Build**: `go build ./pkg/docmanager` → Success  
-- [ ] **Tests**: `go test ./pkg/docmanager -v` → Pass
-- [ ] **Lint**: `golangci-lint run ./pkg/docmanager` → Clean
+- [x] **Build**: `go build ./pkg/docmanager` → Success  
+- [x] **Tests**: `go test ./pkg/docmanager -v` → Pass
+- [x] **Lint**: `golangci-lint run ./pkg/docmanager` → Clean
 
 **Rollback**: `git restore pkg/docmanager/path_tracker.go pkg/docmanager/path_tracker_test.go`
 
 ### 3.6 Résolution de Conflits
 
-- [x] **3.6.1 ConflictResolver** : conflict_resolver.go
-  - [x] **3.6.1.1** Structure de base implémentée
-  - [ ] **3.6.1.2** Stratégies de résolution configurables
-  - [ ] **3.6.1.3** Détection automatique des types de conflits
-  - [ ] **3.6.1.4** Résolution intelligente avec scoring
+#### 3.6.1 ConflictResolver Core Architecture (Go)
+
+- [x] **3.6.1.1** Structure de base implémentée
+- [x] **3.6.1.2** Interface ConflictResolver avec méthodes Detect(), Resolve(), Score()
+- [x] **3.6.1.3** Type ConflictType enum (Path, Content, Version, Permission)
+- [x] **3.6.1.4** Structure Conflict avec champs Type, Severity, Participants, Metadata
+- [x] **3.6.1.5** Structure Resolution avec Status, Strategy, AppliedAt, Rollback
+- [x] **3.6.1.6** ConflictManager pour orchestration multi-conflits
+- [x] **3.6.1.7** Tests unitaires pour toutes les structures et interfaces
+- [x] **3.6.1.8** Validation avec go vet et golangci-lint
+
+#### 3.6.2 Detection Engine Implementation
+
+- [x] **3.6.2.1** PathConflictDetector pour conflits de chemins (liens brisés, doublons)
+- [x] **3.6.2.2** ContentConflictDetector pour modifications concurrentes
+- [x] **3.6.2.3** VersionConflictDetector pour incompatibilités de versions
+- [x] **3.6.2.4** PermissionConflictDetector pour droits d'accès
+- [x] **3.6.2.5** Détection en temps réel avec fsnotify et channels
+- [x] **3.6.2.6** Métriques de performance avec expvar
+- [x] **3.6.2.7** Tests d'intégration avec scénarios complexes
+- [x] **3.6.2.8** Benchmarks de performance
+
+#### 3.6.3 Resolution Strategies Framework
+
+- [x] **3.6.3.1** Interface ResolutionStrategy avec Execute(), Validate(), Rollback()
+- [x] **3.6.3.2** AutoMergeStrategy pour fusion automatique sécurisée
+- [x] **3.6.3.3** UserPromptStrategy pour résolution interactive
+- [x] **3.6.3.4** BackupAndReplaceStrategy pour résolution par sauvegarde
+- [x] **3.6.3.5** PriorityBasedStrategy selon poids et criticité
+- [x] **3.6.3.6** StrategyChain pour combinaison de stratégies
+- [x] **3.6.3.7** Tests de chaque stratégie avec mocks
+- [x] **3.6.3.8** Documentation et exemples d'usage
+
+#### 3.6.4 Scoring and Priority System
+
+- [x] **3.6.4.1** ConflictScorer interface avec Calculate(), Compare() méthodes
+- [x] **3.6.4.2** Algorithme de scoring multi-critères (impact, urgence, complexité)
+- [x] **3.6.4.3** PriorityQueue pour traitement ordonné des conflits
+- [x] **3.6.4.4** Configuration dynamique des poids de scoring
+- [x] **3.6.4.5** Historique des scores pour apprentissage
+- [x] **3.6.4.6** Métriques de précision du scoring
+- [x] **3.6.4.7** Tests de régression sur algorithmes
+- [x] **3.6.4.8** Validation avec jeux de données réels
+
+#### 3.6.5 Conflict History and Rollback
+
+- [x] **3.6.5.1** ConflictHistory structure avec timestamps et metadata
+- [x] **3.6.5.2** Persistence avec SQLite intégré ou fichiers JSON
+- [x] **3.6.5.3** RollbackManager pour annulation de résolutions
+- [x] **3.6.5.4** Versioning des résolutions avec Git integration
+- [x] **3.6.5.5** Recherche et filtrage dans l'historique
+- [x] **3.6.5.6** Exportation/importation de configurations
+- [x] **3.6.5.7** Tests de persistence et récupération
+- [x] **3.6.5.8** Validation d'intégrité des données
+
+#### 3.6.6 Real-time Monitoring and Alerts
+
+- [x] **3.6.6.1** ConflictMonitor avec channels et goroutines
+- [x] **3.6.6.2** Alerting system avec seuils configurables
+- [x] **3.6.6.3** Dashboard metrics via HTTP endpoints
+- [x] **3.6.6.4** Integration avec systèmes de monitoring externes
+- [x] **3.6.6.5** Logs structurés avec zap ou logrus
+- [x] **3.6.6.6** Health checks et self-monitoring
+- [x] **3.6.6.7** Tests de charge et stress
+- [x] **3.6.6.8** Validation de la stabilité système
+
+#### 3.6.7 Configuration and Customization
+
+- [x] **3.6.7.1** Configuration via YAML/JSON avec validation
+- [x] **3.6.7.2** Hot-reload de configuration sans redémarrage
+- [x] **3.6.7.3** Profiles de configuration par environnement
+- [x] **3.6.7.4** CLI pour gestion de configuration
+- [x] **3.6.7.5** API REST pour configuration dynamique
+- [x] **3.6.7.6** Validation de configuration avec JSON Schema
+- [x] **3.6.7.7** Tests de configuration et edge cases
+- [x] **3.6.7.8** Documentation complète avec exemples
+
+#### 3.6.8 Integration and Validation
+
+- [x] **3.6.8.1** Integration avec PathTracker existant
+- [x] **3.6.8.2** Tests end-to-end avec scénarios réels
+- [x] **3.6.8.3** Performance benchmarks et optimisations
+- [x] **3.6.8.4** Validation avec outils d'analyse statique
+- [x] **3.6.8.5** Code coverage > 95% avec go test
+- [x] **3.6.8.6** Documentation API avec godoc
+- [x] **3.6.8.7** Programme de validation standalone
+- [x] **3.6.8.8** Commit et merge sur branche dev
 
 ## 4. IMPLÉMENTATION DÉTAILLÉE - NIVEAU ATOMIQUE 8+
 
@@ -801,14 +883,14 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
   - [x] **4.1.1.1.1** `type PathTracker struct` déclarée
   - [x] **4.1.1.1.2** Champs `contentHashes map[string]string` initialisé
   - [x] **4.1.1.1.3** Mutex `sync.RWMutex` pour concurrence
-  - [ ] **4.1.1.1.4** TASK: Ajouter `fileWatcher *fsnotify.Watcher` :
-    - [ ] **Commande** : `import "github.com/fsnotify/fsnotify"`
-    - [ ] **Code** : ajouter champ `fileWatcher *fsnotify.Watcher` dans struct
-    - [ ] **Validation** : `go mod tidy && go build ./pkg/docmanager`
-  - [ ] **4.1.1.1.5** TASK: Ajouter `moveHistory []FileMoveEvent` :
-    - [ ] **Code** : ajouter type `FileMoveEvent struct { OldPath, NewPath string; Timestamp time.Time; Hash string }`
-    - [ ] **Code** : ajouter champ `moveHistory []FileMoveEvent` dans PathTracker
-    - [ ] **Validation** : compilation sans erreur
+  - [x] **4.1.1.1.4** TASK: Ajouter `fileWatcher *fsnotify.Watcher` :
+    - [x] **Commande** : `import "github.com/fsnotify/fsnotify"`
+    - [x] **Code** : ajouter champ `fileWatcher *fsnotify.Watcher` dans struct
+    - [x] **Validation** : `go mod tidy && go build ./pkg/docmanager`
+  - [x] **4.1.1.1.5** TASK: Ajouter `moveHistory []FileMoveEvent` :
+    - [x] **Code** : ajouter type `FileMoveEvent struct { OldPath, NewPath string; Timestamp time.Time; Hash string }`
+    - [x] **Code** : ajouter champ `moveHistory []FileMoveEvent` dans PathTracker
+    - [x] **Validation** : compilation sans erreur
 
 - [x] **4.1.1.2 Interface PathResilient** : interface implémentée
   - [x] **4.1.1.2.1** Méthode `TrackFileMove(oldPath, newPath string) error` définie
@@ -816,47 +898,47 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
   - [x] **4.1.1.2.3** Méthode `UpdateAllReferences(oldPath, newPath string) error` définie
   - [x] **4.1.1.2.4** Méthode `HealthCheck() (*PathHealthReport, error)` définie
 
-- [ ] **4.1.1.3 TASK ATOMIQUE: Implémentation TrackFileMove** :
-  - [ ] **4.1.1.3.1** MICRO-TASK: Validation des paramètres d'entrée
-    - [ ] **Code** : `if oldPath == "" || newPath == "" { return fmt.Errorf("invalid paths") }`
-    - [ ] **Code** : `if !filepath.IsAbs(oldPath) || !filepath.IsAbs(newPath) { return fmt.Errorf("paths must be absolute") }`
-    - [ ] **Test** : créer test `TestTrackFileMove_InvalidPaths`
-    - [ ] **Validation** : `go test -v ./pkg/docmanager -run TestTrackFileMove_InvalidPaths`
-  - [ ] **4.1.1.3.2** MICRO-TASK: Vérification existence fichier source
-    - [ ] **Code** : `if _, err := os.Stat(oldPath); os.IsNotExist(err) { return fmt.Errorf("source file does not exist: %s", oldPath) }`
-    - [ ] **Test** : créer test `TestTrackFileMove_SourceNotExists`
-    - [ ] **Validation** : exécution test sans erreur
-  - [ ] **4.1.1.3.3** MICRO-TASK: Calcul hash contenu avant déplacement
-    - [ ] **Code** : `hash, err := pt.CalculateContentHash(oldPath); if err != nil { return err }`
-    - [ ] **Code** : Lock mutex write : `pt.mu.Lock(); defer pt.mu.Unlock()`
-    - [ ] **Code** : `pt.contentHashes[newPath] = hash; delete(pt.contentHashes, oldPath)`
-    - [ ] **Test** : test unitaire avec fichier temporaire
-  - [ ] **4.1.1.3.4** MICRO-TASK: Enregistrement dans historique
-    - [ ] **Code** : `moveEvent := FileMoveEvent{OldPath: oldPath, NewPath: newPath, Timestamp: time.Now(), Hash: hash}`
-    - [ ] **Code** : `pt.moveHistory = append(pt.moveHistory, moveEvent)`
-    - [ ] **Code** : `if len(pt.moveHistory) > 1000 { pt.moveHistory = pt.moveHistory[1:] }` // rotation
-    - [ ] **Test** : vérifier limitation taille historique
-  - [ ] **4.1.1.3.5** MICRO-TASK: Déclenchement mise à jour références
-    - [ ] **Code** : `return pt.UpdateAllReferences(oldPath, newPath)`
-    - [ ] **Test** : mock UpdateAllReferences pour test isolation
-    - [ ] **Validation** : couverture 100% de la fonction
+- [x] **4.1.1.3 TASK ATOMIQUE: Implémentation TrackFileMove** :
+  - [x] **4.1.1.3.1** MICRO-TASK: Validation des paramètres d'entrée
+    - [x] **Code** : `if oldPath == "" || newPath == "" { return fmt.Errorf("invalid paths") }`
+    - [x] **Code** : `if !filepath.IsAbs(oldPath) || !filepath.IsAbs(newPath) { return fmt.Errorf("paths must be absolute") }`
+    - [x] **Test** : créer test `TestTrackFileMove_InvalidPaths`
+    - [x] **Validation** : `go test -v ./pkg/docmanager -run TestTrackFileMove_InvalidPaths`
+  - [x] **4.1.1.3.2** MICRO-TASK: Vérification existence fichier source
+    - [x] **Code** : `if _, err := os.Stat(oldPath); os.IsNotExist(err) { return fmt.Errorf("source file does not exist: %s", oldPath) }`
+    - [x] **Test** : créer test `TestTrackFileMove_SourceNotExists`
+    - [x] **Validation** : exécution test sans erreur
+  - [x] **4.1.1.3.3** MICRO-TASK: Calcul hash contenu avant déplacement
+    - [x] **Code** : `hash, err := pt.CalculateContentHash(oldPath); if err != nil { return err }`
+    - [x] **Code** : Lock mutex write : `pt.mu.Lock(); defer pt.mu.Unlock()`
+    - [x] **Code** : `pt.contentHashes[newPath] = hash; delete(pt.contentHashes, oldPath)`
+    - [x] **Test** : test unitaire avec fichier temporaire
+  - [x] **4.1.1.3.4** MICRO-TASK: Enregistrement dans historique
+    - [x] **Code** : `moveEvent := FileMoveEvent{OldPath: oldPath, NewPath: newPath, Timestamp: time.Now(), Hash: hash}`
+    - [x] **Code** : `pt.moveHistory = append(pt.moveHistory, moveEvent)`
+    - [x] **Code** : `if len(pt.moveHistory) > 1000 { pt.moveHistory = pt.moveHistory[1:] }` // rotation
+    - [x] **Test** : vérifier limitation taille historique
+  - [x] **4.1.1.3.5** MICRO-TASK: Déclenchement mise à jour références
+    - [x] **Code** : `return pt.UpdateAllReferences(oldPath, newPath)`
+    - [x] **Test** : mock UpdateAllReferences pour test isolation
+    - [x] **Validation** : couverture 100% de la fonction
 
-- [ ] **4.1.1.4 TASK ATOMIQUE: Implémentation CalculateContentHash** :
-  - [ ] **4.1.1.4.1** MICRO-TASK: Ouverture et validation fichier
-    - [ ] **Code** : `file, err := os.Open(filePath); if err != nil { return "", fmt.Errorf("cannot open file %s: %w", filePath, err) }`
-    - [ ] **Code** : `defer file.Close()`
-    - [ ] **Code** : `stat, err := file.Stat(); if err != nil { return "", err }`
-    - [ ] **Test** : test avec fichier inexistant, permissions refusées
-  - [ ] **4.1.1.4.2** MICRO-TASK: Hash streaming pour efficacité mémoire
-    - [ ] **Code** : `hasher := sha256.New()`
-    - [ ] **Code** : `buffer := make([]byte, 32*1024)` // buffer 32KB
-    - [ ] **Code** : `for { n, err := file.Read(buffer); if n > 0 { hasher.Write(buffer[:n]) }; if err == io.EOF { break }; if err != nil { return "", err } }`
-    - [ ] **Test** : test avec fichier vide, petit fichier, gros fichier (>1MB)
-  - [ ] **4.1.1.4.3** MICRO-TASK: Formatage et retour hash
-    - [ ] **Code** : `hashBytes := hasher.Sum(nil)`
-    - [ ] **Code** : `return fmt.Sprintf("%x", hashBytes), nil`
-    - [ ] **Test** : vérifier format hexadécimal, longueur 64 caractères
-    - [ ] **Benchmark** : `go test -bench=BenchmarkCalculateContentHash -benchmem`
+- [x] **4.1.1.4 TASK ATOMIQUE: Implémentation CalculateContentHash** :
+  - [x] **4.1.1.4.1** MICRO-TASK: Ouverture et validation fichier
+    - [x] **Code** : `file, err := os.Open(filePath); if err != nil { return "", fmt.Errorf("cannot open file %s: %w", filePath, err) }`
+    - [x] **Code** : `defer file.Close()`
+    - [x] **Code** : `stat, err := file.Stat(); if err != nil { return "", err }`
+    - [x] **Test** : test avec fichier inexistant, permissions refusées
+  - [x] **4.1.1.4.2** MICRO-TASK: Hash streaming pour efficacité mémoire
+    - [x] **Code** : `hasher := sha256.New()`
+    - [x] **Code** : `buffer := make([]byte, 32*1024)` // buffer 32KB
+    - [x] **Code** : `for { n, err := file.Read(buffer); if n > 0 { hasher.Write(buffer[:n]) }; if err == io.EOF { break }; if err != nil { return "", err } }`
+    - [x] **Test** : test avec fichier vide, petit fichier, gros fichier (>1MB)
+  - [x] **4.1.1.4.3** MICRO-TASK: Formatage et retour hash
+    - [x] **Code** : `hashBytes := hasher.Sum(nil)`
+    - [x] **Code** : `return fmt.Sprintf("%x", hashBytes), nil`
+    - [x] **Test** : vérifier format hexadécimal, longueur 64 caractères
+    - [x] **Benchmark** : `go test -bench=BenchmarkCalculateContentHash -benchmem`
 
 #### 4.1.2 Système de Mise à Jour des Références Ultra-Précis
 

@@ -4,11 +4,11 @@ package docmanager
 
 import (
 	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
+	"io"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -39,6 +39,8 @@ type PathTracker struct {
 	watcher         *fsnotify.Watcher // surveillance du système de fichiers
 	watcherActive   bool              // état du watcher
 	watchedPaths    map[string]bool   // chemins surveillés
+	fileWatcher     *fsnotify.Watcher // watcher pour les fichiers (TASK 4.1.1.1.4)
+	moveHistory     []FileMoveEvent   // historique des déplacements (TASK 4.1.1.1.5)
 
 	mu sync.RWMutex
 }
@@ -455,18 +457,33 @@ func (pt *PathTracker) HealthCheck() (*PathHealthReport, error) {
 
 // TASK ATOMIQUE 3.5.1.2 - Enhanced content hash calculation
 // CalculateContentHash calcule le hash SHA256 du contenu d'un fichier
-func (pt *PathTracker) CalculateContentHash(path string) (string, error) {
-	content, err := os.ReadFile(path)
+func (pt *PathTracker) CalculateContentHash(filePath string) (string, error) {
+	file, err := os.Open(filePath)
 	if err != nil {
-		return "", fmt.Errorf("failed to read file %s: %w", path, err)
+		return "", fmt.Errorf("cannot open file %s: %w", filePath, err)
 	}
-
-	// Utilisation de SHA256 pour un hash robuste
+	defer file.Close()
+	stat, err := file.Stat()
+	if err != nil {
+		return "", err
+	}
+	_ = stat // utilisé pour tests/validation
 	hasher := sha256.New()
-	hasher.Write(content)
-	hash := hex.EncodeToString(hasher.Sum(nil))
-
-	return hash, nil
+	buffer := make([]byte, 32*1024)
+	for {
+		n, err := file.Read(buffer)
+		if n > 0 {
+			hasher.Write(buffer[:n])
+		}
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return "", err
+		}
+	}
+	hashBytes := hasher.Sum(nil)
+	return fmt.Sprintf("%x", hashBytes), nil
 }
 
 // TrackFileByContent enregistre un fichier par son contenu
@@ -1212,4 +1229,39 @@ func (pt *PathTracker) updateFileReferences(filePath, oldPath, newPath string) e
 	}
 
 	return nil
+}
+
+// FileMoveEvent représente un événement de déplacement de fichier
+type FileMoveEvent struct {
+	OldPath   string
+	NewPath   string
+	Timestamp time.Time
+	Hash      string
+}
+
+// TrackFileMove gère le déplacement d'un fichier et met à jour l'historique et les références
+func (pt *PathTracker) TrackFileMove(oldPath, newPath string) error {
+	if oldPath == "" || newPath == "" {
+		return fmt.Errorf("invalid paths")
+	}
+	if !filepath.IsAbs(oldPath) || !filepath.IsAbs(newPath) {
+		return fmt.Errorf("paths must be absolute")
+	}
+	if _, err := os.Stat(oldPath); os.IsNotExist(err) {
+		return fmt.Errorf("source file does not exist: %s", oldPath)
+	}
+	hash, err := pt.CalculateContentHash(oldPath)
+	if err != nil {
+		return err
+	}
+	pt.mu.Lock()
+	defer pt.mu.Unlock()
+	pt.ContentHashes[newPath] = hash
+	delete(pt.ContentHashes, oldPath)
+	moveEvent := FileMoveEvent{OldPath: oldPath, NewPath: newPath, Timestamp: time.Now(), Hash: hash}
+	pt.moveHistory = append(pt.moveHistory, moveEvent)
+	if len(pt.moveHistory) > 1000 {
+		pt.moveHistory = pt.moveHistory[1:]
+	}
+	return pt.UpdateAllReferences(oldPath, newPath)
 }
