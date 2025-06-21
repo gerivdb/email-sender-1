@@ -1034,11 +1034,11 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
     - [x] **Code** : `currentBranch, err := bs.repo.Head(); if err != nil { return err }`
     - [x] **Code** : filtrer branches selon configuration
     - [x] **Test** : test avec repo sans branches, multi-branches
-  - [ ] **4.2.1.2.2** MICRO-TASK: Analyse diff documentaire par branche
-    - [ ] **Code** : `for _, branch := range branches { diffResult, err := bs.analyzeBranchDocDiff(branch); ... }`
-    - [ ] **Code** : identifier fichiers .md, .txt, .adoc modifiés
-    - [ ] **Code** : calculer score de divergence documentaire
-    - [ ] **Test** : test avec branches identiques, très divergentes
+  - [x] **4.2.1.2.2** MICRO-TASK: Analyse diff documentaire par branche
+    - [x] **Code** : `for _, branch := range branches { diffResult, err := bs.analyzeBranchDocDiff(branch); ... }`
+    - [x] **Code** : identifier fichiers .md, .txt, .adoc modifiés
+    - [x] **Code** : calculer score de divergence documentaire
+    - [x] **Test** : test avec branches identiques, très divergentes
   - [x] **4.2.1.2.3** MICRO-TASK: Détection conflits automatique
     - [x] **Code** : `conflicts := bs.detectDocumentationConflicts(branchDiffs)`
     - [x] **Code** : analyser modifications concurrentes sur même fichier
