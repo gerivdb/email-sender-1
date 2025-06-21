@@ -494,3 +494,61 @@ func (ups *UserPromptStrategy) Resolve(conflict *DocumentConflict) (*Resolution,
 		Metadata:    map[string]interface{}{ "winner": winner.ID, "loser": loser.ID, "choice": choice },
 	}, nil
 }
+
+// AutoMergeStrategy : tente une fusion automatique, rollback si échec
+// Fusionne le contenu si possible, sinon rollback (retourne erreur ou version manuelle)
+type AutoMergeStrategy struct{}
+
+func (ams *AutoMergeStrategy) Resolve(conflict *DocumentConflict) (*Resolution, error) {
+	merged, ok := tryAutoMerge(conflict.LocalDoc, conflict.RemoteDoc)
+	if ok {
+		return &Resolution{
+			ResolvedDoc: merged,
+			Strategy:    "auto_merge",
+			Confidence:  1.0,
+			Metadata:    map[string]interface{}{ "merged": true },
+		}, nil
+	}
+	// Rollback : impossible de fusionner automatiquement
+	return (&ManualResolutionStrategy{}).Resolve(conflict)
+}
+
+// tryAutoMerge : exemple simplifié de fusion automatique (concatène si pas de conflit sur les lignes)
+func tryAutoMerge(docA, docB *Document) (*Document, bool) {
+	if string(docA.Content) == string(docB.Content) {
+		// Pas de conflit, contenu identique
+		return docA, true
+	}
+	// Exemple : si les contenus n’ont pas de lignes en commun, on concatène
+	linesA := splitLines(string(docA.Content))
+	linesB := splitLines(string(docB.Content))
+	lineSet := make(map[string]struct{})
+	for _, l := range linesA {
+		lineSet[l] = struct{}{}
+	}
+	for _, l := range linesB {
+		if _, exists := lineSet[l]; exists {
+			// Conflit détecté, pas de fusion auto
+			return nil, false
+		}
+	}
+	// Pas de lignes en commun, on concatène
+	merged := &Document{
+		ID:       docA.ID + "+" + docB.ID,
+		Content:  []byte(string(docA.Content) + "\n" + string(docB.Content)),
+		Metadata: mergeMetadata(docA.Metadata, docB.Metadata),
+		Version:  max(docA.Version, docB.Version),
+	}
+	return merged, true
+}
+
+func splitLines(text string) []string {
+	return regexp.MustCompile(`\r?\n`).Split(text, -1)
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}

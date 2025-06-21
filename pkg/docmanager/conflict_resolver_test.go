@@ -380,3 +380,44 @@ type MockPrompter struct {
 func (m *MockPrompter) PromptUser(conflict *DocumentConflict) (string, error) {
 	return m.choice, nil
 }
+
+// Test AutoMergeStrategy (fusion automatique et rollback)
+func TestAutoMergeStrategy(t *testing.T) {
+	strategy := &AutoMergeStrategy{}
+	// Cas : contenus identiques
+	docA := &Document{ID: "A", Content: []byte("ligne1\nligne2"), Metadata: map[string]interface{}{"LastModified": time.Now()}, Version: 1}
+	docB := &Document{ID: "B", Content: []byte("ligne1\nligne2"), Metadata: map[string]interface{}{"LastModified": time.Now()}, Version: 2}
+	conflict := &DocumentConflict{LocalDoc: docA, RemoteDoc: docB}
+	res, err := strategy.Resolve(conflict)
+	if err != nil {
+		t.Fatalf("Erreur inattendue: %v", err)
+	}
+	if res.Strategy != "auto_merge" {
+		t.Errorf("Stratégie attendue: auto_merge, obtenu: %v", res.Strategy)
+	}
+	// Cas : contenus sans lignes en commun (fusion)
+	docA = &Document{ID: "A", Content: []byte("a1\na2"), Metadata: map[string]interface{}{"LastModified": time.Now()}, Version: 1}
+	docB = &Document{ID: "B", Content: []byte("b1\nb2"), Metadata: map[string]interface{}{"LastModified": time.Now()}, Version: 2}
+	conflict = &DocumentConflict{LocalDoc: docA, RemoteDoc: docB}
+	res, err = strategy.Resolve(conflict)
+	if err != nil {
+		t.Fatalf("Erreur inattendue: %v", err)
+	}
+	if res.Strategy != "auto_merge" {
+		t.Errorf("Stratégie attendue: auto_merge, obtenu: %v", res.Strategy)
+	}
+	if string(res.ResolvedDoc.Content) != "a1\na2\nb1\nb2" {
+		t.Errorf("Fusion attendue: a1\na2\nb1\nb2, obtenu: %v", string(res.ResolvedDoc.Content))
+	}
+	// Cas : contenus avec conflit (ligne commune)
+	docA = &Document{ID: "A", Content: []byte("x\ny"), Metadata: map[string]interface{}{"LastModified": time.Now()}, Version: 1}
+	docB = &Document{ID: "B", Content: []byte("y\nz"), Metadata: map[string]interface{}{"LastModified": time.Now()}, Version: 2}
+	conflict = &DocumentConflict{LocalDoc: docA, RemoteDoc: docB}
+	res, err = strategy.Resolve(conflict)
+	if err != nil {
+		t.Fatalf("Erreur inattendue: %v", err)
+	}
+	if res.Strategy != "manual" {
+		t.Errorf("Rollback attendu: manual, obtenu: %v", res.Strategy)
+	}
+}

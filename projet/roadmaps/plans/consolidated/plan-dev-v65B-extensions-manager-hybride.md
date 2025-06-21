@@ -1082,8 +1082,8 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
 
 - [x] 4.3.2.1 LastModifiedWins Strategy (comparaison timestamps, fusion métadonnées, tests unitaires)
 - [x] 4.3.2.2 QualityBased Strategy (calcul score qualité multi-critères, sélection version optimale, seuil minimal, fallback, tests cohérents et reproductibles)
-- [ ] 4.3.2.3 UserPrompt (demande utilisateur en cas d’ambiguïté, interface, tests)
-- [ ] 4.3.2.4 AutoMerge (fusion automatique si possible, rollback sinon, tests)
+- [x] 4.3.2.3 UserPrompt (demande utilisateur en cas d’ambiguïté, interface, tests)
+- [x] 4.3.2.4 AutoMerge (fusion automatique si possible, rollback sinon, tests)
 
 ### 4.4 Stack Technologique Hybride
 
