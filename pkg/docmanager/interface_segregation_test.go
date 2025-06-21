@@ -25,7 +25,7 @@ func testBranchAwareInterface(t *testing.T, ba BranchAware) {
 	ctx := context.Background()
 
 	// Test SyncAcrossBranches
-	err := ba.SyncAcrossBranches(ctx)
+	_, err := ba.SyncAcrossBranches(ctx) // Adjusted to receive two values
 	if err != nil {
 		t.Logf("SyncAcrossBranches returned error (may be expected): %v", err)
 	}
@@ -98,7 +98,7 @@ func testPathResilientBehavior(t *testing.T, pr PathResilient, testID int) {
 		t.Logf("HealthCheck returned error (may be expected): %v", err)
 	}
 	if report != nil {
-		t.Logf("HealthCheck returned report with %d total paths", report.TotalPaths)
+		t.Logf("HealthCheck returned report with %d total files", report.TotalFiles) // Changed TotalPaths to TotalFiles
 	}
 
 	// Validation: Interface allows substitution without behavior change
@@ -125,7 +125,11 @@ func TestDocManager_CacheAwareImplementation(t *testing.T) {
 	var _ CacheAware = (*DocManager)(nil)
 
 	// Test avec instance réelle
-	dm := NewDocManager()
+	// Provide a default config for NewDocManager
+	dm := NewDocManager(Config{
+		SyncInterval:  1 * time.Minute, // Example value
+		DefaultBranch: "main",            // Example value
+	})
 	testCacheAwareInterface(t, dm)
 }
 
@@ -163,7 +167,11 @@ func testCacheAwareInterface(t *testing.T, ca CacheAware) {
 // TestMetricsAware_PerformanceImpact teste l'impact performance des métriques
 func TestMetricsAware_PerformanceImpact(t *testing.T) {
 	// Test que l'impact performance est < 5% avec metrics enabled
-	dm := NewDocManager()
+	// Provide a default config for NewDocManager
+	dm := NewDocManager(Config{
+		SyncInterval:  1 * time.Minute, // Example value
+		DefaultBranch: "main",            // Example value
+	})
 
 	// Mesure performance sans métriques
 	start := time.Now()
@@ -240,11 +248,12 @@ func (m *MockPathResilient) UpdateAllReferences(oldPath, newPath string) error {
 // HealthCheck retourne un rapport mock
 func (m *MockPathResilient) HealthCheck() (*PathHealthReport, error) {
 	return &PathHealthReport{
-		TotalPaths:     100,
-		BrokenPaths:    2,
-		OrphanedPaths:  1,
-		DuplicatePaths: 0,
-		LastCheck:      time.Now(),
+		TotalFiles:      100, // Changed from TotalPaths
+		ValidPaths:      97,  // Example value
+		BrokenPaths:     []string{"/broken/path1.md", "/broken/path2.md"}, // Example
+		OrphanedHashes:  []string{"hash123"},          // Example
+		Recommendations: []string{"Run cleanup"},      // Example
+		Timestamp:       time.Now(),
 	}, nil
 }
 

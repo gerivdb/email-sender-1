@@ -51,13 +51,11 @@ func TestDocManager_CoordinationOnly(t *testing.T) {
 
 	// Test document pour opérations
 	doc := &Document{
-		ID:          "test-doc",
-		Title:       "Test Document",
-		Content:     "Test content",
-		Manager:     "test-manager",
-		Version:     "1.0",
-		LastUpdated: time.Now(),
-		Metadata:    map[string]interface{}{"test": "value"},
+		ID:       "test-doc",
+		Path:     "/test/doc.md", // Added Path, as it's a field in Document
+		Content:  []byte("Test content"),
+		Version:  1, // Changed to int
+		Metadata: map[string]interface{}{"test": "value"},
 	}
 
 	// Test coordination store (sans persistence configurée)
@@ -114,7 +112,9 @@ func TestDocManager_ThreadSafety(t *testing.T) {
 
 	doc := &Document{
 		ID:      "concurrent-test",
-		Content: "test",
+		Path:    "/concurrent/test.md", // Added Path
+		Content: []byte("test"),
+		Version: 1,                     // Added Version
 	}
 
 	// Test opérations concurrentes

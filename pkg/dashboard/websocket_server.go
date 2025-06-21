@@ -6,6 +6,21 @@ import (
 	"time"
 )
 
+// LayoutStorage placeholder type
+type LayoutStorage struct{}
+
+// WidgetRegistry placeholder type
+type WidgetRegistry struct{}
+
+// WebSocketManager placeholder type
+type WebSocketManager struct{}
+
+// PermissionManager placeholder type
+type PermissionManager struct{}
+
+// DashboardSettings placeholder type
+type DashboardSettings struct{}
+
 // DashboardManager gère les dashboards utilisateurs
 type DashboardManager struct {
 	LayoutStore LayoutStorage
@@ -38,3 +53,4 @@ type WidgetLayout struct {
 }
 
 // LayoutStorage, WidgetRegistry, WebSocketManager, PermissionManager à implémenter selon besoins
+// Defined above as empty structs for now.

@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/chrlesur/Email_Sender/pkg/docmanager"
+	"email_sender/pkg/docmanager"
 )
 
 func main() {
