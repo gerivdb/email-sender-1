@@ -362,3 +362,47 @@ type ResolutionGranular struct {
 }
 
 // 3.6.1.8 Validation avec go vet et golangci-lint : OK (voir scripts build_and_test.ps1)
+
+// Analyse et classification de conflit
+func (cr *ConflictResolver) classifyConflict(conflict *DocumentConflict) ConflictType {
+	// Classification simple basée sur les champs du conflit
+	if conflict.LocalDoc != nil && conflict.RemoteDoc != nil {
+		if string(conflict.LocalDoc.Content) != string(conflict.RemoteDoc.Content) {
+			return ContentConflict
+		}
+		if conflict.LocalDoc.Version != conflict.RemoteDoc.Version {
+			return VersionConflict
+		}
+		if conflict.LocalDoc.Path != conflict.RemoteDoc.Path {
+			return PathConflict
+		}
+		// Ajoute d'autres règles si besoin
+	}
+	return MetadataConflict // fallback
+}
+
+func (cr *ConflictResolver) assessConflictSeverity(conflict *DocumentConflict) ConflictSeverity {
+	// Exemple : plus la différence de version est grande, plus la sévérité est haute
+	if conflict.LocalDoc != nil && conflict.RemoteDoc != nil {
+		delta := conflict.LocalDoc.Version - conflict.RemoteDoc.Version
+		if delta < 0 {
+			delta = -delta
+		}
+		if delta > 5 {
+			return 2 // élevé
+		} else if delta > 1 {
+			return 1 // moyen
+		}
+	}
+	return 0 // faible
+}
+
+func (cr *ConflictResolver) extractConflictMetadata(conflict *DocumentConflict) map[string]interface{} {
+	meta := map[string]interface{}{
+		"local_id":   conflict.LocalDoc.ID,
+		"remote_id":  conflict.RemoteDoc.ID,
+		"type":       conflict.Type,
+		"timestamp":  conflict.ConflictedAt,
+	}
+	return meta
+}

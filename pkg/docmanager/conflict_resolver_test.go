@@ -281,3 +281,30 @@ func TestConflictResolver_StrategyRegistrationAndPriority(t *testing.T) {
 		t.Errorf("expected high_priority strategy, got %s", res.Strategy)
 	}
 }
+
+func TestConflictResolver_ClassificationAndMetadata(t *testing.T) {
+	cr := NewConflictResolver()
+	local := &Document{ID: "1", Path: "/a", Content: []byte("A"), Metadata: nil, Version: 1}
+	remote := &Document{ID: "1", Path: "/a", Content: []byte("B"), Metadata: nil, Version: 2}
+	conflict := &DocumentConflict{
+		ID:           "c2",
+		Type:         ContentConflict,
+		LocalDoc:     local,
+		RemoteDoc:    remote,
+		ConflictedAt: time.Now(),
+		Context:      nil,
+	}
+
+	conflictType := cr.classifyConflict(conflict)
+	if conflictType != ContentConflict {
+		t.Errorf("expected ContentConflict, got %v", conflictType)
+	}
+	severity := cr.assessConflictSeverity(conflict)
+	if severity != 1 {
+		t.Errorf("expected severity 1, got %v", severity)
+	}
+	meta := cr.extractConflictMetadata(conflict)
+	if meta["local_id"] != "1" || meta["remote_id"] != "1" {
+		t.Errorf("metadata extraction failed: %v", meta)
+	}
+}
