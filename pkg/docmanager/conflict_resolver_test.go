@@ -360,3 +360,63 @@ func TestConflictResolver_ExecuteAndValidateResolution(t *testing.T) {
 		t.Errorf("expected fallback manual strategy, got %+v", res)
 	}
 }
+
+func TestLastModifiedWinsStrategy(t *testing.T) {
+	lmw := &LastModifiedWins{}
+	t0 := time.Now().Truncate(time.Microsecond)
+	t1 := t0.Add(1 * time.Microsecond)
+	local := &Document{ID: "1", Path: "/a", Content: []byte("A"), Metadata: map[string]interface{}{ "last_modified": t0 }, Version: 1}
+	remote := &Document{ID: "1", Path: "/a", Content: []byte("B"), Metadata: map[string]interface{}{ "last_modified": t1 }, Version: 1}
+	conflict := &DocumentConflict{
+		ID:           "c4",
+		Type:         ContentConflict,
+		LocalDoc:     local,
+		RemoteDoc:    remote,
+		ConflictedAt: time.Now(),
+		Context:      nil,
+	}
+	res, err := lmw.Resolve(conflict)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if res.ResolvedDoc != remote {
+		t.Errorf("expected remote to win, got %+v", res.ResolvedDoc)
+	}
+	// Test égalité stricte
+	conflict.RemoteDoc.Metadata["last_modified"] = t0
+	res, err = lmw.Resolve(conflict)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if res.Metadata["winner"] != "equal" {
+		t.Errorf("expected winner=equal, got %v", res.Metadata["winner"])
+	}
+}
+
+func TestMergeMetadataPreservesImportantFields(t *testing.T) {
+	metaA := map[string]interface{}{
+		"tags": []string{"a", "b"},
+		"authors": []string{"alice"},
+		"history": []string{"v1"},
+		"foo": "bar",
+	}
+	metaB := map[string]interface{}{
+		"tags": []string{"c"},
+		"authors": []string{"bob"},
+		"history": []string{"v2"},
+		"baz": 42,
+	}
+	merged := mergeMetadata(metaA, metaB)
+	if merged["foo"] != "bar" || merged["baz"] != 42 {
+		t.Errorf("basic merge failed: %+v", merged)
+	}
+	if tags, ok := merged["tags"].([]string); !ok || len(tags) == 0 {
+		t.Errorf("tags not preserved: %+v", merged["tags"])
+	}
+	if authors, ok := merged["authors"].([]string); !ok || len(authors) == 0 {
+		t.Errorf("authors not preserved: %+v", merged["authors"])
+	}
+	if history, ok := merged["history"].([]string); !ok || len(history) == 0 {
+		t.Errorf("history not preserved: %+v", merged["history"])
+	}
+}

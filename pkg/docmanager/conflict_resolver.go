@@ -451,3 +451,99 @@ func (cr *ConflictResolver) validateResolution(res *Resolution, conflict *Docume
 	}
 	return nil
 }
+
+// LastModifiedWins : stratégie basée sur le timestamp de modification
+
+type LastModifiedWins struct{}
+
+func (lmw *LastModifiedWins) Resolve(conflict *DocumentConflict) (*Resolution, error) {
+	if conflict.LocalDoc == nil || conflict.RemoteDoc == nil {
+		return nil, fmt.Errorf("missing document(s)")
+	}
+	// On suppose que Metadata["last_modified"] contient un time.Time ou string RFC3339
+	getTime := func(meta map[string]interface{}) time.Time {
+		if meta == nil {
+			return time.Time{}
+		}
+		if t, ok := meta["last_modified"].(time.Time); ok {
+			return t
+		}
+		if s, ok := meta["last_modified"].(string); ok {
+			parsed, err := time.Parse(time.RFC3339Nano, s)
+			if err == nil {
+				return parsed
+			}
+		}
+		return time.Time{}
+	}
+	lt := getTime(conflict.LocalDoc.Metadata)
+	rt := getTime(conflict.RemoteDoc.Metadata)
+	if lt.After(rt) {
+		return &Resolution{
+			ResolvedDoc: conflict.LocalDoc,
+			Strategy:    "last_modified_wins",
+			Confidence:  1.0,
+			Metadata:    map[string]interface{}{"winner": "local", "lt": lt, "rt": rt},
+		}, nil
+	} else if rt.After(lt) {
+		return &Resolution{
+			ResolvedDoc: conflict.RemoteDoc,
+			Strategy:    "last_modified_wins",
+			Confidence:  1.0,
+			Metadata:    map[string]interface{}{"winner": "remote", "lt": lt, "rt": rt},
+		}, nil
+	}
+	// Égalité stricte
+	return &Resolution{
+		ResolvedDoc: conflict.LocalDoc,
+		Strategy:    "last_modified_wins",
+		Confidence:  0.5,
+		Metadata:    map[string]interface{}{"winner": "equal", "lt": lt, "rt": rt},
+	}, nil
+}
+
+// Sélectionne le document gagnant par timestamp
+func selectByTimestamp(a, b *Document) *Document {
+	getTime := func(meta map[string]interface{}) time.Time {
+		if meta == nil {
+			return time.Time{}
+		}
+		if t, ok := meta["last_modified"].(time.Time); ok {
+			return t
+		}
+		if s, ok := meta["last_modified"].(string); ok {
+			parsed, err := time.Parse(time.RFC3339Nano, s)
+			if err == nil {
+				return parsed
+			}
+		}
+		return time.Time{}
+	}
+	if getTime(a.Metadata).After(getTime(b.Metadata)) {
+		return a
+	}
+	return b
+}
+
+// Fusionne les métadonnées en préservant les informations importantes
+func mergeMetadata(metaA, metaB map[string]interface{}) map[string]interface{} {
+	result := make(map[string]interface{})
+	for k, v := range metaA {
+		result[k] = v
+	}
+	for k, v := range metaB {
+		if _, exists := result[k]; !exists {
+			result[k] = v
+		}
+	}
+	// Préserver explicitement certains champs
+	for _, key := range []string{"tags", "authors", "history"} {
+		if v, ok := metaA[key]; ok {
+			result[key] = v
+		}
+		if v, ok := metaB[key]; ok {
+			result[key] = v
+		}
+	}
+	return result
+}
