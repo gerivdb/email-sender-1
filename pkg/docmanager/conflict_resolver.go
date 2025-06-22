@@ -206,7 +206,28 @@ type DetectingStrategy interface {
 	Detect() ([]*DocumentConflict, error)
 }
 
-// ConflictManager pour orchestration multi-conflits
+// ConflictManager struct — Orchestrateur de la résolution multi-conflits documentaires.
+//
+// Rôle :
+//   - Centralise la gestion, la détection et la résolution de multiples conflits documentaires.
+//
+// Interfaces principales :
+//   - Utilise ResolutionStrategy, ScoringStrategy, DetectingStrategy.
+//   - Expose des méthodes d’ajout de résolveurs, de détection et de résolution (voir méthodes ci-dessous).
+//
+// Utilisation :
+//   - Permet d’ajouter dynamiquement des stratégies de résolution.
+//   - Orchestration de la détection et de la résolution sur plusieurs stratégies.
+//
+// Entrée/Sortie :
+//   - Documents en conflit, stratégies appliquées, logs de résolution.
+//
+// Exemple :
+//   mgr := ConflictManager{...}
+//   mgr.AddResolver(myStrategy)
+//   conflicts, _ := mgr.DetectAll()
+//
+// Voir aussi : ResolutionStrategy, ScoringStrategy, DetectingStrategy
 type ConflictManager struct {
 	Resolvers []ResolutionStrategy
 }

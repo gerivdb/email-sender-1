@@ -86,6 +86,18 @@
       "cwd": "${workspaceFolder}",
       "args": ["-test.v"],
       "showLog": true
+    },
+    {
+      "name": "📝 Générer doc managers (dry-run)",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/tools/cmd/generate_manager_io_doc",
+      "args": [
+        "--dry-run",
+        "--agents-path", "${workspaceFolder}/AGENTS.md"
+      ],
+      "cwd": "${workspaceFolder}"
     }
   ],
   "inputs": [

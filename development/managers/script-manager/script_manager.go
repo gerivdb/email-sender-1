@@ -23,6 +23,34 @@ import (
 	"github.com/email-sender/managers/error-manager"
 )
 
+// ScriptManager gère l’exécution, le cycle de vie et la surveillance des scripts (PowerShell, etc.) avec intégration ErrorManager.
+//
+// Rôle :
+//   - Orchestration complète de l’exécution, du suivi, du rechargement et de la gestion des scripts.
+//   - Intègre ErrorManager pour la gestion centralisée des erreurs lors de l’exécution ou du chargement des scripts.
+//
+// Interfaces principales :
+//   - ExecuteScript(scriptID string, parameters map[string]interface{}) (*ExecutionResult, error)
+//       → Exécute un script identifié avec des paramètres donnés.
+//   - ListScripts() []*ManagedScript
+//       → Liste tous les scripts gérés.
+//   - GetScript(scriptID string) (*ManagedScript, error)
+//       → Récupère un script par son identifiant.
+//   - CreateScriptFromTemplate(templateID, scriptName string, parameters map[string]interface{}) (*ManagedScript, error)
+//       → Génère un script à partir d’un template et de paramètres.
+//   - Shutdown() error
+//       → Arrête proprement le manager et libère les ressources.
+//
+// Utilisation :
+//   - Centralise l’exécution, la découverte, la création et la gestion des scripts et templates.
+//   - Utilisé par d’autres modules pour automatiser des tâches via scripts.
+//
+// Entrées/Sorties :
+//   - Entrées : identifiants de scripts, paramètres d’exécution, templates, contexte d’exécution.
+//   - Sorties : résultats d’exécution, erreurs, logs, scripts générés.
+//
+// Voir aussi : ManagedScript, ScriptModule, ScriptTemplate, ErrorManager
+
 // ScriptManager manages script execution and lifecycle with ErrorManager integration
 type ScriptManager struct {
 	config         *Config

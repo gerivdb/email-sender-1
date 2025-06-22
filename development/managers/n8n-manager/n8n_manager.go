@@ -15,6 +15,27 @@ import (
 	"	errormanager "github.com/email-sender/managers/error-manager""
 )
 
+// N8NManager struct — Orchestrateur des workflows n8n et gestion centralisée des exécutions.
+//
+// Rôle :
+//   - Gère l’exécution, la surveillance et la gestion des workflows n8n avec gestion centralisée des erreurs.
+//
+// Interfaces principales :
+//   - Utilise ErrorManager pour la gestion des erreurs.
+//   - Expose des méthodes pour lancer, surveiller et arrêter des workflows (voir méthodes ci-dessous).
+//
+// Utilisation :
+//   - Centralise les appels API n8n, collecte des métriques, gestion des logs.
+//   - Permet l’intégration avec d’autres managers via injection de dépendances.
+//
+// Entrée/Sortie :
+//   - Workflows, statuts d’exécution, logs, métriques.
+//
+// Exemple :
+//   mgr := N8NManager{...}
+//   err := mgr.LaunchWorkflow(id)
+//
+// Voir aussi : ErrorManager, N8NMetrics
 // N8NManager manages n8n workflows and executions with centralized error handling
 type N8NManager struct {
 	baseURL      string

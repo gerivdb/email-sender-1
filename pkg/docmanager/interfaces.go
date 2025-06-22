@@ -154,7 +154,27 @@ type PluginInterface interface {
 	Shutdown() error
 }
 
-// ExtensibleManagerType interface pour les managers extensibles
+// ExtensibleManagerType interface — Interface pour les managers extensibles via plugins ou stratégies.
+//
+// Rôle :
+//   - Permet d’ajouter, retirer et gérer dynamiquement des plugins ou extensions sur un manager.
+//
+// Interfaces principales :
+//   - Déclare RegisterPlugin, UnregisterPlugin, ListPlugins, GetPlugin.
+//
+// Utilisation :
+//   - Utilisée par les managers qui supportent l’extension dynamique de fonctionnalités.
+//   - Centralise la gestion des plugins documentaires.
+//
+// Entrée/Sortie :
+//   - Plugins, informations sur les plugins, erreurs éventuelles.
+//
+// Exemple :
+//   var m ExtensibleManagerType
+//   err := m.RegisterPlugin(myPlugin)
+//   plugins := m.ListPlugins()
+//
+// Voir aussi : PluginInterface, PluginInfo
 type ExtensibleManagerType interface {
 	RegisterPlugin(plugin PluginInterface) error
 	UnregisterPlugin(name string) error

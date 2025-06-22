@@ -527,8 +527,29 @@ func (c *Config) testInfluxDBConnectivity(ctx context.Context) error {
 	return nil
 }
 
-// DocManager structure principale - SRP: Coordination documentaire exclusive
-// MICRO-TASK 3.1.1.1.1 - Responsabilité coordination documentaire exclusive
+// DocManager coordonne la gestion documentaire hybride du projet.
+//
+// Rôle :
+//   - Orchestrateur central pour la création, la coordination et la cohérence documentaire.
+//   - Point d’entrée unique pour toutes les opérations documentaires.
+//
+// Interfaces principales :
+//   - DocumentPersistence, DocumentCaching, DocumentVectorization, DocumentSearch, DocumentSynchronization, DocumentPathTracking
+//   - Repository, Cache, Vectorizer (legacy)
+//
+// Utilisation :
+//   - Toutes les opérations documentaires passent par DocManager.
+//   - Extension dynamique via plugins (PluginRegistry).
+//
+// Entrée/Sortie :
+//   - Documents structurés, résultats d’opérations, logs, rapports d’intégrité, suggestions de correction.
+//
+// Exemple :
+//
+//	dm := NewDocManager(config)
+//	err := dm.Store(doc)
+//
+// Voir aussi : PathTracker, BranchSynchronizer, ConflictResolver
 type DocManager struct {
 	Config Config
 

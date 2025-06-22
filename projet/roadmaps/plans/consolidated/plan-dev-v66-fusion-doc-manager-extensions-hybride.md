@@ -131,6 +131,35 @@ Fusion de la vision "doc-manager dynamique" (documentation auto-évolutive, cent
 
 ---
 
+## 🚀 Workflow d’automatisation et d’enrichissement documentaire
+
+Pour garantir une documentation vivante, cohérente et enrichie, le projet adopte un workflow unifié d’automatisation et d’enrichissement, articulé en trois volets complémentaires :
+
+1. **Automatisation technique (signatures, I/O, interfaces)**
+   - Extraction automatique des signatures de méthodes, interfaces et points d’extension à partir du code source (Go, etc.).
+   - Mise à jour automatique des sections techniques (ex : Entrée/Sortie, Interfaces) dans AGENTS.md et la documentation centrale.
+   - Synchronisation continue via scripts et intégration CI/CD.
+
+2. **Enrichissement par IA (exemples, schémas, explications métier)**
+   - Utilisation d’IA (LLM, Copilot, etc.) pour générer :
+     - Des exemples d’utilisation concrets pour chaque manager/méthode.
+     - Des schémas (diagrammes d’architecture, séquences, dépendances) à partir de l’analyse du code et des graphes générés.
+     - Des explications métier/fonctionnelles à partir des noms, commentaires et contexte du code.
+   - Intégration de ces enrichissements dans la documentation, avec validation humaine pour garantir la pertinence métier.
+
+3. **Validation et amélioration continue**
+   - Revue régulière par les experts métier et techniques.
+   - Collecte de feedback et itérations sur la qualité et la clarté de la documentation.
+   - Mise à jour des workflows d’automatisation et d’IA selon l’évolution des besoins et des outils.
+
+**Bénéfices :**
+
+- Documentation toujours à jour, fiable et enrichie, utile aussi bien aux développeurs qu’aux utilisateurs métier.
+- Réduction de la charge manuelle et des risques d’obsolescence documentaire.
+- Alignement total avec la vision d’un doc-manager dynamique, auto-évolutif et cognitif.
+
+---
+
 # 🏗️ ARCHITECTURE & STACK (SYNTHÈSE)
 
 - Voir la section architecture détaillée du doc-manager dynamique (Go natif, principes KISS/SOLID/DRY, branch management, path resilience, tests, automatisation totale, etc.)

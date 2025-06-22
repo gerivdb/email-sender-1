@@ -14,6 +14,37 @@ import (
 	_ "github.com/lib/pq" // PostgreSQL driver
 )
 
+// StorageManager centralise la gestion de la persistance documentaire, du stockage objet, des connexions PostgreSQL/Qdrant et des métadonnées de dépendances.
+//
+// Rôle :
+//   - Fournit une interface unifiée pour la gestion du stockage (PostgreSQL, Qdrant, objets, métadonnées).
+//   - Intègre ErrorManager pour la gestion des erreurs lors des opérations de stockage et de migration.
+//
+// Interfaces principales :
+//   - Initialize(ctx context.Context) error
+//       → Initialise les connexions et ressources nécessaires.
+//   - GetPostgreSQLConnection() (interface{}, error)
+//       → Retourne la connexion PostgreSQL active.
+//   - GetQdrantConnection() (interface{}, error)
+//       → Retourne la connexion Qdrant active.
+//   - RunMigrations(ctx context.Context) error
+//       → Exécute les migrations de schéma nécessaires.
+//   - SaveDependencyMetadata(ctx context.Context, metadata *interfaces.DependencyMetadata) error
+//   - GetDependencyMetadata(ctx context.Context, name string) (*interfaces.DependencyMetadata, error)
+//   - QueryDependencies(ctx context.Context, query *DependencyQuery) ([]*interfaces.DependencyMetadata, error)
+//   - HealthCheck(ctx context.Context) error
+//   - Cleanup() error
+//
+// Utilisation :
+//   - Centralise toutes les opérations de stockage, migration et récupération documentaire.
+//   - Utilisé par d’autres managers pour la persistance, la migration et la recherche vectorielle.
+//
+// Entrées/Sorties :
+//   - Entrées : contextes d’exécution, métadonnées, requêtes de dépendances, objets à stocker.
+//   - Sorties : statuts, objets/document récupérés, erreurs, logs.
+//
+// Voir aussi : ErrorManager, DependencyQuery, QdrantPoint
+
 // StorageManager interface defines the contract for storage management
 type StorageManager interface {
 	Initialize(ctx context.Context) error

@@ -5,7 +5,6 @@ package docmanager
 import (
 	"context"
 	"fmt"
-	"sort"
 	"io"
 	"strings"
 	"sync"
@@ -314,7 +313,27 @@ type NotificationRule struct {
 	Conditions map[string]interface{} `json:"conditions" yaml:"conditions"`
 }
 
-// ConfigurableSyncRuleManager gestionnaire de règles configurables
+// ConfigurableSyncRuleManager struct — Gestionnaire de règles de synchronisation documentaire configurables.
+//
+// Rôle :
+//   - Permet de définir, valider et appliquer dynamiquement des règles de synchronisation documentaire.
+//
+// Interfaces principales :
+//   - Utilise RuleValidator pour la validation des règles.
+//   - Expose des méthodes de gestion et de validation des règles (voir méthodes ci-dessous).
+//
+// Utilisation :
+//   - Centralise la configuration et la validation des règles de synchronisation.
+//   - Permet l’extension via l’ajout de validateurs personnalisés.
+//
+// Entrée/Sortie :
+//   - Règles de synchronisation, statuts de validation, logs.
+//
+// Exemple :
+//   mgr := NewConfigurableSyncRuleManager()
+//   err := mgr.validators["maRule"].ValidateRule(rule)
+//
+// Voir aussi : SyncConfiguration, RuleValidator
 type ConfigurableSyncRuleManager struct {
 	config     *SyncConfiguration
 	validators map[string]RuleValidator
@@ -921,7 +940,27 @@ type MergeResult struct {
 	Metadata           map[string]interface{} `json:"metadata" yaml:"metadata"`
 }
 
-// SmartMergeManager gestionnaire de merge intelligent
+// SmartMergeManager struct — Gestionnaire de fusion intelligente de documents ou branches.
+//
+// Rôle :
+//   - Orchestration de la fusion automatisée avec gestion avancée des conflits et stratégies personnalisées.
+//
+// Interfaces principales :
+//   - Utilise IntelligentMergeStrategy, FileHandler, ConflictDetector, DecisionEngine.
+//   - Expose des méthodes de gestion de merge, détection de conflits, historique (voir méthodes ci-dessous).
+//
+// Utilisation :
+//   - Fusionne des branches ou documents en appliquant des stratégies intelligentes.
+//   - Permet l’extension via l’ajout de stratégies de merge personnalisées.
+//
+// Entrée/Sortie :
+//   - Documents fusionnés, rapports de conflits, historique de merge.
+//
+// Exemple :
+//   mgr := SmartMergeManager{...}
+//   result := mgr.decisionEngine.Decide(...)
+//
+// Voir aussi : MergeOperation, ConflictDetector, DecisionEngine
 type SmartMergeManager struct {
 	strategies       []IntelligentMergeStrategy `json:"strategies" yaml:"strategies"`
 	fileHandlers     map[string]FileHandler     `json:"-" yaml:"-"`
@@ -2045,3 +2084,25 @@ func (cr *ConflictResolver) validateResolution(resolvedDoc *Document, conflict *
 	}
 	return nil
 }
+
+// SyncHistoryManager struct — Gestionnaire d’historique des synchronisations documentaires.
+//
+// Rôle :
+//   - Centralise, stocke et indexe l’historique des opérations de synchronisation documentaire.
+//
+// Interfaces principales :
+//   - Utilise SyncHistoryStorage, SyncHistoryIndexer.
+//   - Expose des méthodes de gestion, d’indexation et de récupération d’historique (voir méthodes ci-dessous).
+//
+// Utilisation :
+//   - Permet l’audit, la recherche et le suivi des synchronisations passées.
+//   - Limite le nombre d’entrées via maxEntries.
+//
+// Entrée/Sortie :
+//   - Logs, historiques de synchronisation, rapports d’audit.
+//
+// Exemple :
+//   mgr := SyncHistoryManager{...}
+//   entries := mgr.history
+//
+// Voir aussi : SyncHistoryEntry, SyncHistoryStorage, SyncHistoryIndexer

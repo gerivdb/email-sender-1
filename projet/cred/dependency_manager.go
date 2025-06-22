@@ -16,6 +16,34 @@ import (
 	"golang.org/x/mod/modfile"
 )
 
+// ErrorManager centralizes error handling, validation, and structured logging for the dependency management system and related modules.
+//
+// Rôle :
+//   - Fournit une interface pour la gestion centralisée des erreurs, la validation des entrées d’erreur et la journalisation structurée.
+//   - Permet l’injection dans d’autres managers pour uniformiser le traitement des erreurs.
+//
+// Interfaces :
+//   - ProcessError(ctx context.Context, err error, component, operation string, hooks *ErrorHooks) error
+//       → Traite une erreur, la valide, la catalogue et déclenche les hooks éventuels.
+//   - CatalogError(entry ErrorEntry) error
+//       → Ajoute une entrée d’erreur structurée au catalogue (journalisation).
+//   - ValidateErrorEntry(entry ErrorEntry) error
+//       → Valide la structure et la complétude d’une entrée d’erreur.
+//
+// Utilisation :
+//   - Injecté dans GoModManager, ConfigManager, etc. pour la gestion des erreurs.
+//   - Permet d’assurer la cohérence et la traçabilité des erreurs dans tout le système.
+//
+// Entrées/Sorties :
+//   - Entrées : erreurs Go, entrées structurées (ErrorEntry), contexte d’exécution.
+//   - Sorties : erreurs Go standard (validation, journalisation, etc.).
+//
+// Exemple d’injection :
+//   errorManager := &ErrorManagerImpl{logger: logger}
+//   configManager := NewDepConfigManager(config, logger, errorManager)
+//
+// Voir aussi : ErrorManagerImpl, ErrorEntry, ErrorHooks
+
 // Dependency represents a dependency with its metadata.
 type Dependency struct {
 	Name     string `json:"name"`

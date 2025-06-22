@@ -15,6 +15,31 @@ import (
 	"github.com/email-sender/maintenance-manager/src/core"
 )
 
+// CleanupManager centralise l’organisation intelligente, le nettoyage, la purge et l’optimisation documentaire.
+//
+// Rôle : Nettoyage, organisation, suppression intelligente, détection de doublons, analyse de structure, et reporting sur l’état documentaire.
+//
+// Interfaces :
+//   - NewCleanupManager(config *core.CleanupConfig, aiAnalyzer *ai.AIAnalyzer) *CleanupManager
+//   - ScanForCleanup(ctx context.Context, directories []string) ([]CleanupTask, error)
+//   - ExecuteTasks(ctx context.Context, tasks []CleanupTask, dryRun bool) error
+//   - GetStats() CleanupStats
+//   - GetHealthStatus(ctx context.Context) core.HealthStatus
+//   - (et autres méthodes avancées d’analyse, d’optimisation et de reporting)
+//
+// Utilisation :
+//   - Analyse et nettoyage de répertoires, suppression de fichiers temporaires ou obsolètes, détection de doublons, organisation automatique, reporting, intégration IA.
+//   - Utilisé par MaintenanceManager et d’autres modules pour la maintenance documentaire.
+//
+// Entrée/Sortie :
+//   - Entrées : contextes d’exécution, configurations, listes de répertoires, tâches de nettoyage.
+//   - Sorties : rapports, logs, statistiques, statuts de santé, erreurs éventuelles.
+//
+// Exemple :
+//   mgr := NewCleanupManager(config, aiAnalyzer)
+//   tasks, err := mgr.ScanForCleanup(ctx, []string{"/data"})
+//   err = mgr.ExecuteTasks(ctx, tasks, false)
+
 // CleanupManager handles intelligent file organization and cleanup
 type CleanupManager struct {
 	config     *core.CleanupConfig

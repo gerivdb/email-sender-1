@@ -9,18 +9,13 @@ import (
 	"strings"
 )
 
-func main() {
-	root := "../pkg/docmanager"
+func scanAndDoc(root string, f *os.File) {
 	fs := token.NewFileSet()
 	pkgs, err := parser.ParseDir(fs, root, nil, parser.ParseComments)
 	if err != nil {
-		panic(err)
+		fmt.Fprintf(f, "Erreur lors du scan de %s : %v\n", root, err)
+		return
 	}
-
-	f, _ := os.Create("../../AGENTS.md") // Adjusted path for os.Create
-	defer f.Close()
-	fmt.Fprintln(f, "# AGENTS.md\n\n## Documentation générée automatiquement\n")
-
 	for pkgName, pkgAst := range pkgs {
 		pkg := doc.New(pkgAst, root, 0)
 		fmt.Fprintf(f, "## Package %s\n\n", pkgName)
@@ -38,5 +33,15 @@ func main() {
 			}
 		}
 	}
+}
+
+func main() {
+	f, _ := os.Create("../../AGENTS.md")
+	defer f.Close()
+	fmt.Fprintln(f, "# AGENTS.md\n\n## Documentation générée automatiquement\n")
+
+	scanAndDoc("../pkg/docmanager", f)
+	scanAndDoc("../development/managers", f)
+
 	fmt.Fprintln(f, "\n---\nCe fichier est généré automatiquement. Ne pas éditer à la main.")
 }
