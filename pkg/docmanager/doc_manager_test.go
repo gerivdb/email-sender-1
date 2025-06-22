@@ -184,6 +184,16 @@ func (suite *DocManagerTestSuite) TearDownTest() {
 	}
 }
 
+// --- Test fixtures factory (exemple pour la configuration réutilisable) ---
+func newTestDocManagerWithMocks() (*DocManager, *MockRepository, *MockCache, func()) {
+	mockRepo := &MockRepository{}
+	mockCache := &MockCache{}
+	docManager := NewDocManager(mockRepo, mockCache)
+	tempDir, _ := ioutil.TempDir("", "docmanager_test")
+	cleanup := func() { _ = ioutil.RemoveAll(tempDir) }
+	return docManager, mockRepo, mockCache, cleanup
+}
+
 // Implémentation des méthodes de l'interface Repository pour MockRepository
 func (m *MockRepository) Save(doc string) error {
 	args := m.Called(doc)
