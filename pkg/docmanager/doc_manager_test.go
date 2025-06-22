@@ -3,9 +3,38 @@
 package docmanager
 
 import (
+	"io/ioutil"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/suite"
 )
+
+type DocManagerTestSuite struct {
+	suite.Suite
+	tempDir    string
+	docManager *DocManager
+	mockRepo   *MockRepository
+	mockCache  *MockCache
+}
+
+// Placeholder for DocManager, MockRepository, and MockCache definitions
+// These should be replaced with actual implementations or imports
+
+type DocManager struct{}
+
+type MockRepository struct {
+	mock.Mock
+}
+
+type MockCache struct {
+	mock.Mock
+}
+
+func TestDocManagerTestSuite(t *testing.T) {
+	suite.Run(t, new(DocManagerTestSuite))
+}
 
 // TestDocManager_SRP vérifie le respect du principe SRP pour DocManager
 // MICRO-TASK 3.1.1.1.1 - Validation responsabilité coordination exclusive
@@ -139,4 +168,46 @@ func TestDocManager_ThreadSafety(t *testing.T) {
 	if manager.GetActiveOperations() != 0 {
 		t.Error("All operations should have completed")
 	}
+}
+
+func (suite *DocManagerTestSuite) SetupTest() {
+	tempDir, _ := ioutil.TempDir("", "docmanager_test")
+	suite.tempDir = tempDir
+	suite.mockRepo = &MockRepository{}
+	suite.mockCache = &MockCache{}
+	suite.docManager = NewDocManager(suite.mockRepo, suite.mockCache)
+}
+
+func (suite *DocManagerTestSuite) TearDownTest() {
+	if suite.tempDir != "" {
+		_ = ioutil.RemoveAll(suite.tempDir)
+	}
+}
+
+// Implémentation des méthodes de l'interface Repository pour MockRepository
+func (m *MockRepository) Save(doc string) error {
+	args := m.Called(doc)
+	return args.Error(0)
+}
+
+func (m *MockRepository) Find(id string) (string, error) {
+	args := m.Called(id)
+	return args.String(0), args.Error(1)
+}
+
+// Exemple d'utilisation de testify/mock pour les expectations
+func (suite *DocManagerTestSuite) TestMockRepositoryBehavior() {
+	docID := "123"
+	docContent := "test content"
+	suite.mockRepo.On("Save", docContent).Return(nil)
+	suite.mockRepo.On("Find", docID).Return(docContent, nil)
+
+	err := suite.mockRepo.Save(docContent)
+	suite.NoError(err)
+
+	result, err := suite.mockRepo.Find(docID)
+	suite.NoError(err)
+	suite.Equal(docContent, result)
+
+	suite.mockRepo.AssertExpectations(suite.T())
 }
