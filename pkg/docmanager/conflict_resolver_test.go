@@ -420,3 +420,23 @@ func TestMergeMetadataPreservesImportantFields(t *testing.T) {
 		t.Errorf("history not preserved: %+v", merged["history"])
 	}
 }
+
+func TestCalculateQualityScoreAndOptimalVersion(t *testing.T) {
+	docA := &Document{Content: []byte("# Title\n- item\n[link](url)\n![](img.png)\nThis is a test.")}
+	docB := &Document{Content: []byte("plain text")}
+	scoreA := calculateQualityScore(docA)
+	scoreB := calculateQualityScore(docB)
+	if scoreA <= scoreB {
+		t.Errorf("expected docA to have higher score, got %v <= %v", scoreA, scoreB)
+	}
+	minScore := 1.0
+	selected := selectOptimalVersionByQuality(docA, docB, minScore, func() *Document { return docB })
+	if selected != docA {
+		t.Errorf("expected docA to be selected, got %+v", selected)
+	}
+	// Test fallback si aucun ne passe le seuil
+	selected = selectOptimalVersionByQuality(docB, docB, 100.0, func() *Document { return docA })
+	if selected != docA {
+		t.Errorf("expected fallback to docA, got %+v", selected)
+	}
+}

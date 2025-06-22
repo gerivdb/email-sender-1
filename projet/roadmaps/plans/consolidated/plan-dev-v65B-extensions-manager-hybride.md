@@ -1081,16 +1081,16 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
 #### 4.3.2 Stratégies de Résolution Spécialisées
 
 - [ ] **4.3.2.1 TASK ATOMIQUE: LastModifiedWins Strategy** :
-  - [ ] **4.3.2.1.1** MICRO-TASK: Comparaison timestamps précise
-    - [ ] **Code** : `type LastModifiedWins struct{}`
-    - [ ] **Code** : `func (lmw *LastModifiedWins) Resolve(conflict *DocumentConflict) (*Document, error) { ... }`
-    - [ ] **Code** : comparer `conflict.VersionA.LastModified` vs `conflict.VersionB.LastModified`
-    - [ ] **Test** : test avec timestamps identiques, différence microseconde
-  - [ ] **4.3.2.1.2** MICRO-TASK: Préservation métadonnées perdantes
-    - [ ] **Code** : `winner := selectByTimestamp(versionA, versionB)`
-    - [ ] **Code** : `winner.Metadata = mergeMetadata(versionA.Metadata, versionB.Metadata)`
-    - [ ] **Code** : préserver tags, auteurs, historique
-    - [ ] **Test** : vérifier pas de perte métadonnées importantes
+  - [x] **4.3.2.1.1** MICRO-TASK: Comparaison timestamps précise
+    - [x] **Code** : `type LastModifiedWins struct{}`
+    - [x] **Code** : `func (lmw *LastModifiedWins) Resolve(conflict *DocumentConflict) (*Document, error) { ... }`
+    - [x] **Code** : comparer `conflict.VersionA.LastModified` vs `conflict.VersionB.LastModified`
+    - [x] **Test** : test avec timestamps identiques, différence microseconde
+  - [x] **4.3.2.1.2** MICRO-TASK: Préservation métadonnées perdantes
+    - [x] **Code** : `winner := selectByTimestamp(versionA, versionB)`
+    - [x] **Code** : `winner.Metadata = mergeMetadata(versionA.Metadata, versionB.Metadata)`
+    - [x] **Code** : préserver tags, auteurs, historique
+    - [x] **Test** : vérifier pas de perte métadonnées importantes
 
 - [ ] **4.3.2.2 TASK ATOMIQUE: QualityBased Strategy** :
   - [ ] **4.3.2.2.1** MICRO-TASK: Calcul score qualité multi-critères

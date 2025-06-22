@@ -5,6 +5,7 @@ package docmanager
 import (
 	"fmt"
 	"sort"
+	"strings"
 	"time"
 )
 
@@ -502,27 +503,45 @@ func (lmw *LastModifiedWins) Resolve(conflict *DocumentConflict) (*Resolution, e
 	}, nil
 }
 
-// Sélectionne le document gagnant par timestamp
-func selectByTimestamp(a, b *Document) *Document {
-	getTime := func(meta map[string]interface{}) time.Time {
-		if meta == nil {
-			return time.Time{}
-		}
-		if t, ok := meta["last_modified"].(time.Time); ok {
-			return t
-		}
-		if s, ok := meta["last_modified"].(string); ok {
-			parsed, err := time.Parse(time.RFC3339Nano, s)
-			if err == nil {
-				return parsed
-			}
-		}
-		return time.Time{}
+// Calcule un score de qualité multi-critères pour un document
+func calculateQualityScore(doc *Document) float64 {
+	if doc == nil {
+		return 0
 	}
-	if getTime(a.Metadata).After(getTime(b.Metadata)) {
-		return a
+	lengthScore := float64(len(doc.Content)) / 1000.0
+	structureScore := analyzeMarkdownStructure(string(doc.Content))
+	linkScore := validateAllLinks(string(doc.Content))
+	// Grammaire : simplifié (présence de points, majuscules)
+	grammarScore := 0.0
+	if strings.Contains(string(doc.Content), ".") {
+		grammarScore += 0.5
 	}
-	return b
+	if strings.ContainsAny(string(doc.Content), "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
+		grammarScore += 0.5
+	}
+	// Images : présence de ![](
+	imageScore := 0.0
+	if strings.Contains(string(doc.Content), "![](") {
+		imageScore = 1.0
+	}
+	return lengthScore + structureScore + linkScore + grammarScore + imageScore
+}
+
+func analyzeMarkdownStructure(content string) float64 {
+	headers := strings.Count(content, "#")
+	lists := strings.Count(content, "-")
+	if headers+lists == 0 {
+		return 0
+	}
+	return float64(headers+lists) / 10.0
+}
+
+func validateAllLinks(content string) float64 {
+	links := strings.Count(content, "[")
+	if links == 0 {
+		return 0
+	}
+	return float64(links) / 10.0
 }
 
 // Fusionne les métadonnées en préservant les informations importantes
@@ -546,4 +565,20 @@ func mergeMetadata(metaA, metaB map[string]interface{}) map[string]interface{} {
 		}
 	}
 	return result
+}
+
+// Sélectionne la version optimale selon le score de qualité
+func selectOptimalVersionByQuality(a, b *Document, minScore float64, fallback func() *Document) *Document {
+	scoreA := calculateQualityScore(a)
+	scoreB := calculateQualityScore(b)
+	if scoreA >= minScore && scoreA > scoreB {
+		return a
+	}
+	if scoreB >= minScore && scoreB > scoreA {
+		return b
+	}
+	if fallback != nil {
+		return fallback()
+	}
+	return nil
 }
