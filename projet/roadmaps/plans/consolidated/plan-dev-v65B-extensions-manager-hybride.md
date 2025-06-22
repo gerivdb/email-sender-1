@@ -1093,16 +1093,16 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
     - [x] **Test** : vérifier pas de perte métadonnées importantes
 
 - [ ] **4.3.2.2 TASK ATOMIQUE: QualityBased Strategy** :
-  - [ ] **4.3.2.2.1** MICRO-TASK: Calcul score qualité multi-critères
-    - [ ] **Code** : `score := calculateQualityScore(doc)` basé sur : longueur, structure, liens, images, grammaire
-    - [ ] **Code** : `structureScore := analyzeMarkdownStructure(doc.Content)`
-    - [ ] **Code** : `linkScore := validateAllLinks(doc.Content)`
-    - [ ] **Test** : test scoring cohérent, reproductible
-  - [ ] **4.3.2.2.2** MICRO-TASK: Sélection version optimale
-    - [ ] **Code** : `if scoreA > scoreB { return versionA } else { return versionB }`
-    - [ ] **Code** : seuil minimum qualité avant acceptation
-    - [ ] **Code** : fallback vers autre stratégie si qualité insuffisante
-    - [ ] **Test** : test avec documents très similaires, très différents
+  - [x] **4.3.2.2.1** MICRO-TASK: Calcul score qualité multi-critères
+    - [x] **Code** : `score := calculateQualityScore(doc)` basé sur : longueur, structure, liens, images, grammaire
+    - [x] **Code** : `structureScore := analyzeMarkdownStructure(doc.Content)`
+    - [x] **Code** : `linkScore := validateAllLinks(doc.Content)`
+    - [x] **Test** : test scoring cohérent, reproductible
+  - [x] **4.3.2.2.2** MICRO-TASK: Sélection version optimale
+    - [x] **Code** : `if scoreA > scoreB { return versionA } else { return versionB }`
+    - [x] **Code** : seuil minimum qualité avant acceptation
+    - [x] **Code** : fallback vers autre stratégie si qualité insuffisante
+    - [x] **Test** : test avec documents très similaires, très différents
   - [ ] **4.3.2.3** UserPrompt : demande à l'utilisateur
   - [ ] **4.3.2.4** AutoMerge : fusion automatique intelligente
 

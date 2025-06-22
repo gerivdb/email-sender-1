@@ -440,3 +440,22 @@ func TestCalculateQualityScoreAndOptimalVersion(t *testing.T) {
 		t.Errorf("expected fallback to docA, got %+v", selected)
 	}
 }
+
+func TestAutoMerge(t *testing.T) {
+	cr := NewConflictResolver()
+	docA := &Document{ID: "1", Path: "/a", Content: []byte("A"), Metadata: map[string]interface{}{ "foo": 1 }, Version: 1}
+	docB := &Document{ID: "1", Path: "/a", Content: []byte("B"), Metadata: map[string]interface{}{ "bar": 2 }, Version: 2}
+	merged, err := cr.autoMerge(docA, docB)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if string(merged.Content) != "AB" && string(merged.Content) != "BA" {
+		t.Errorf("unexpected merged content: %s", string(merged.Content))
+	}
+	if merged.Metadata["foo"] != 1 || merged.Metadata["bar"] != 2 {
+		t.Errorf("metadata not merged correctly: %+v", merged.Metadata)
+	}
+	if merged.Version != 2 {
+		t.Errorf("expected version 2, got %d", merged.Version)
+	}
+}

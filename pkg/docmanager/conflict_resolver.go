@@ -582,3 +582,32 @@ func selectOptimalVersionByQuality(a, b *Document, minScore float64, fallback fu
 	}
 	return nil
 }
+
+// UserPrompt : demande à l'utilisateur (stub, à compléter avec UI ou CLI)
+func (cr *ConflictResolver) userPrompt(conflict *DocumentConflict) (*Resolution, error) {
+	// Ici, on simule une interaction utilisateur
+	return nil, fmt.Errorf("user prompt not implemented")
+}
+
+// AutoMerge : fusion automatique intelligente (stub)
+func (cr *ConflictResolver) autoMerge(a, b *Document) (*Document, error) {
+	// Fusionne le contenu, les métadonnées, etc. (à spécialiser selon le contexte)
+	if a == nil || b == nil {
+		return nil, fmt.Errorf("missing document(s)")
+	}
+	merged := &Document{
+		ID:       a.ID,
+		Path:     a.Path,
+		Content:  append(a.Content, b.Content...),
+		Metadata: mergeMetadata(a.Metadata, b.Metadata),
+		Version:  max(a.Version, b.Version),
+	}
+	return merged, nil
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
