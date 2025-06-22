@@ -1072,11 +1072,11 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
     - [x] **Code** : `sort.Slice(strategies, func(i, j int) bool { return strategies[i].Priority() > strategies[j].Priority() })`
     - [x] **Code** : `selectedStrategy := strategies[0]`
     - [x] **Test** : test sélection avec priorités, fallback
-  - [ ] **4.3.1.2.3** MICRO-TASK: Exécution et validation résolution
-    - [ ] **Code** : `resolvedDoc, err := selectedStrategy.Resolve(conflict)`
-    - [ ] **Code** : `if err != nil { return cr.tryFallbackStrategy(conflict) }`
-    - [ ] **Code** : `validationErr := cr.validateResolution(resolvedDoc, conflict)`
-    - [ ] **Test** : test échec stratégie, fallback automatique
+  - [x] **4.3.1.2.3** MICRO-TASK: Exécution et validation résolution
+    - [x] **Code** : `resolvedDoc, err := selectedStrategy.Resolve(conflict)`
+    - [x] **Code** : `if err != nil { return cr.tryFallbackStrategy(conflict) }`
+    - [x] **Code** : `validationErr := cr.validateResolution(resolvedDoc, conflict)`
+    - [x] **Test** : test échec stratégie, fallback automatique
 
 #### 4.3.2 Stratégies de Résolution Spécialisées
 
