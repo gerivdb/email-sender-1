@@ -221,3 +221,38 @@ func (suite *DocManagerTestSuite) TestMockRepositoryBehavior() {
 
 	suite.mockRepo.AssertExpectations(suite.T())
 }
+
+func (suite *DocManagerTestSuite) TestFixturesFactory() {
+	doc := CreateTestDocument("Titre", "Contenu")
+	suite.Equal("Titre", doc.Title)
+	suite.Equal("Contenu", doc.Content)
+
+	docA := CreateTestDocument("A", "a")
+	docB := CreateTestDocument("B", "b")
+	conflict := CreateTestConflict(docA, docB)
+	suite.Equal(docA, conflict.DocA)
+	suite.Equal(docB, conflict.DocB)
+
+	files, cleanup := CreateTempTestFiles(2)
+	suite.Len(files, 2)
+	for _, f := range files {
+		suite.FileExists(f)
+	}
+	cleanup()
+	for _, f := range files {
+		suite.NoFileExists(f)
+	}
+}
+
+func (suite *DocManagerTestSuite) TestSetupTestDB() {
+	db, cleanup := SetupTestDB()
+	defer cleanup()
+	_, err := db.Exec("INSERT INTO documents (title, content) VALUES (?, ?)", "Titre", "Contenu")
+	suite.NoError(err)
+	row := db.QueryRow("SELECT title, content FROM documents WHERE title = ?", "Titre")
+	var title, content string
+	err = row.Scan(&title, &content)
+	suite.NoError(err)
+	suite.Equal("Titre", title)
+	suite.Equal("Contenu", content)
+}
