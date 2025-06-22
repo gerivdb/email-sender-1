@@ -1,0 +1,62 @@
+[
+  {
+    "id": "media_001",
+    "nom": "Sarah Mitchell",
+    "media": "The Quietus",
+    "type": "blog",
+    "email": "sarah@thequietus.com",
+    "telephone": "+44 20 7123 4567",
+    "specialite": ["indie", "post-punk", "experimental"],
+    "derniere_interaction": "2024-06-10",
+    "status_outreach": "collabore",
+    "notes": "Excellente relation, très réactive. Couvre souvent nos artistes."
+  },
+  {
+    "id": "media_002",
+    "nom": "Pierre Dubois",
+    "media": "Les Inrocks",
+    "type": "presse",
+    "email": "p.dubois@lesinrocks.com",
+    "telephone": "+33 1 44 88 99 00",
+    "specialite": ["rock", "indie", "électro"],
+    "derniere_interaction": "2024-05-28",
+    "status_outreach": "interesse",
+    "notes": "Journaliste influent, cherche des exclusivités pour ses interviews."
+  },
+  {
+    "id": "media_003",
+    "nom": "Marco Ferrero",
+    "media": "Radio Popolare",
+    "type": "radio",
+    "email": "marco.ferrero@radiopopolare.it",
+    "telephone": "+39 02 3300 4455",
+    "specialite": ["rock", "alternative"],
+    "derniere_interaction": "2024-06-05",
+    "status_outreach": "contacte",
+    "notes": "Animateur émission rock alternatif. Intéressé par les nouvelles découvertes."
+  },
+  {
+    "id": "media_004",
+    "nom": "Anna Schmidt",
+    "media": "ByteFM",
+    "type": "radio",
+    "email": "anna.schmidt@bytefm.de",
+    "telephone": "+49 40 1234 5678",
+    "specialite": ["électro", "experimental", "indie"],
+    "derniere_interaction": "2024-06-15",
+    "status_outreach": "jamais_contacte",
+    "notes": "Radio spécialisée musique électronique et expérimentale à Hambourg."
+  },
+  {
+    "id": "media_005",
+    "nom": "Tom Roberts",
+    "media": "Music Stories Podcast",
+    "type": "podcast",
+    "email": "tom@musicstories.com",
+    "telephone": "+44 161 789 0123",
+    "specialite": ["indie", "post-punk", "alternative"],
+    "derniere_interaction": "2024-06-01",
+    "status_outreach": "decline",
+    "notes": "Podcast populaire mais créneau complet pour les prochains mois."
+  }
+]

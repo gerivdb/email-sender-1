@@ -1,0 +1,54 @@
+[
+  {
+    "id": "invoice_001",
+    "numero": "INV-2024-001",
+    "client": "Le Bataclan",
+    "montant": 12000,
+    "tva": 2400,
+    "total": 14400,
+    "date_emission": "2024-06-15",
+    "date_echeance": "2024-07-15",
+    "status": "envoye",
+    "deal_id": "deal_001",
+    "description": "Concert The Midnight Wolves - 15 octobre 2024"
+  },
+  {
+    "id": "invoice_002",
+    "numero": "INV-2024-002",
+    "client": "Live Nation Italy",
+    "montant": 35000,
+    "tva": 7000,
+    "total": 42000,
+    "date_emission": "2024-06-20",
+    "date_echeance": "2024-07-20",
+    "status": "paye",
+    "deal_id": "deal_005",
+    "description": "Tournée Summer Rock Tour Italy - 5 dates"
+  },
+  {
+    "id": "invoice_003",
+    "numero": "INV-2024-003",
+    "client": "Berghain",
+    "montant": 8000,
+    "tva": 1600,
+    "total": 9600,
+    "date_emission": "2024-06-22",
+    "date_echeance": "2024-08-22",
+    "status": "brouillon",
+    "deal_id": "deal_002",
+    "description": "Set Electric Storm - Nouvel An 2024"
+  },
+  {
+    "id": "invoice_004",
+    "numero": "INV-2024-004",
+    "client": "Rough Trade Records",
+    "montant": 3500,
+    "tva": 700,
+    "total": 4200,
+    "date_emission": "2024-06-10",
+    "date_echeance": "2024-07-10",
+    "status": "en_retard",
+    "deal_id": "deal_004",
+    "description": "Session acoustique Luna & The Satellites"
+  }
+]

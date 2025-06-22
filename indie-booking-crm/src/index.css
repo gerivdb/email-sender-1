@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* IndieBooking CRM - Thème Sombre Indie-Rock */
+@layer base {
+  :root {
+    /* Couleurs du thème sombre indie */
+    --background: 26 26 26; /* #1a1a1a - Matte charcoal */
+    --foreground: 255 255 255; /* Blanc pour le texte */
+    --card: 32 32 32; /* #202020 - Cartes légèrement plus claires */
+    --card-foreground: 255 255 255;
+    --popover: 32 32 32;
+    --popover-foreground: 255 255 255;
+    --primary: 255 0 102; /* #FF0066 - Hot pink */
+    --primary-foreground: 255 255 255;
+    --secondary: 64 64 64; /* #404040 - Gris secondaire */
+    --secondary-foreground: 255 255 255;
+    --muted: 45 45 45; /* #2d2d2d - Gris sourd */
+    --muted-foreground: 163 163 163; /* #a3a3a3 */
+    --accent: 255 0 102; /* #FF0066 - Même que primary */
+    --accent-foreground: 255 255 255;
+    --destructive: 239 68 68; /* Rouge pour les actions destructrices */
+    --destructive-foreground: 255 255 255;
+    --border: 64 64 64; /* #404040 - Bordures */
+    --input: 45 45 45; /* #2d2d2d - Champs de saisie */
+    --ring: 255 0 102; /* #FF0066 - Focus ring */
+    --radius: 0.75rem; /* Coins arrondis Material 3 */
+
+    /* Couleurs spécifiques au CRM */
+    --crm-purple: 147 51 234; /* #9333ea - Violet pour certains éléments */
+    --crm-green: 34 197 94; /* #22c55e - Vert pour les confirmations */
+    --crm-yellow: 251 191 36; /* #fbbf24 - Jaune pour les alertes */
+    --crm-red: 239 68 68; /* #ef4444 - Rouge pour les erreurs */
+    --crm-blue: 59 130 246; /* #3b82f6 - Bleu pour les informations */
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Styles globaux pour le CRM */
+  .crm-gradient {
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%);
+  }
+
+  .crm-card {
+    @apply bg-card border border-border rounded-xl shadow-sm;
+  }
+
+  .crm-button-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 font-medium transition-colors;
+  }
+
+  .crm-button-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-lg px-4 py-2 font-medium transition-colors;
+  }
+
+  /* Styles pour les statuts des deals */
+  .status-prospect { @apply bg-purple-500/20 text-purple-300 border-purple-500/30; }
+  .status-offre { @apply bg-blue-500/20 text-blue-300 border-blue-500/30; }
+  .status-negotiation { @apply bg-yellow-500/20 text-yellow-300 border-yellow-500/30; }
+  .status-confirme { @apply bg-green-500/20 text-green-300 border-green-500/30; }
+  .status-signe { @apply bg-emerald-500/20 text-emerald-300 border-emerald-500/30; }
+  .status-termine { @apply bg-gray-500/20 text-gray-300 border-gray-500/30; }
+
+  /* Scrollbar personnalisée */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary));
+  }
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%
+  }
+
+  .dark {
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%
+  }
+}
+
+
+
+img {
+  object-position: top;
+}

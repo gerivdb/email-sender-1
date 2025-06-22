@@ -1,0 +1,111 @@
+[
+  {
+    "id": "tour_001",
+    "nom": "European Autumn Tour 2024",
+    "artiste": "The Midnight Wolves",
+    "date_debut": "2024-10-10",
+    "date_fin": "2024-11-15",
+    "events": [
+      {
+        "id": "event_001",
+        "date": "2024-10-15",
+        "venue": "Le Bataclan",
+        "ville": "Paris",
+        "pays": "France",
+        "fee": 12000,
+        "statut": "confirme",
+        "contact_id": "contact_001",
+        "deal_id": "deal_001",
+        "notes": "Sound check 16h, portes 19h, concert 21h"
+      },
+      {
+        "id": "event_002",
+        "date": "2024-10-18",
+        "venue": "Melkweg",
+        "ville": "Amsterdam",
+        "pays": "Pays-Bas",
+        "fee": 10000,
+        "statut": "negotiation",
+        "contact_id": "contact_007",
+        "notes": "Négociation en cours sur le pourcentage merchandising"
+      },
+      {
+        "id": "event_003",
+        "date": "2024-10-22",
+        "venue": "Columbiahalle",
+        "ville": "Berlin",
+        "pays": "Allemagne",
+        "fee": 11000,
+        "statut": "prospect",
+        "contact_id": "contact_008",
+        "notes": "Attente réponse programmateur"
+      },
+      {
+        "id": "event_004",
+        "date": "2024-10-25",
+        "venue": "Alcatraz",
+        "ville": "Milan",
+        "pays": "Italie",
+        "fee": 9500,
+        "statut": "confirme",
+        "contact_id": "contact_004",
+        "notes": "Inclus dans le package Live Nation Italy"
+      }
+    ],
+    "budget_transport": 8000,
+    "budget_hebergement": 6000,
+    "budget_per_diem": 2400,
+    "total_fees": 42500,
+    "profit_prevu": 26100,
+    "status": "confirme"
+  },
+  {
+    "id": "tour_002",
+    "nom": "Electronic Underground Circuit",
+    "artiste": "Electric Storm",
+    "date_debut": "2024-11-01",
+    "date_fin": "2024-12-31",
+    "events": [
+      {
+        "id": "event_005",
+        "date": "2024-11-15",
+        "venue": "Tresor",
+        "ville": "Berlin",
+        "pays": "Allemagne",
+        "fee": 6000,
+        "statut": "signe",
+        "contact_id": "contact_009",
+        "notes": "Set de 3h, 23h-2h"
+      },
+      {
+        "id": "event_006",
+        "date": "2024-12-07",
+        "venue": "Fabric",
+        "ville": "Londres",
+        "pays": "Royaume-Uni",
+        "fee": 7500,
+        "statut": "confirme",
+        "contact_id": "contact_010",
+        "notes": "Room 1, set principal weekend"
+      },
+      {
+        "id": "event_007",
+        "date": "2024-12-31",
+        "venue": "Berghain",
+        "ville": "Berlin",
+        "pays": "Allemagne",
+        "fee": 8000,
+        "statut": "negotiation",
+        "contact_id": "contact_003",
+        "deal_id": "deal_002",
+        "notes": "Slot Nouvel An 2h-4h"
+      }
+    ],
+    "budget_transport": 3500,
+    "budget_hebergement": 2800,
+    "budget_per_diem": 1200,
+    "total_fees": 21500,
+    "profit_prevu": 14000,
+    "status": "en_cours"
+  }
+]

@@ -1,0 +1,76 @@
+[
+  {
+    "id": "task_001",
+    "titre": "Finaliser contrat Primavera Sound",
+    "description": "Négocier les derniers détails du contrat pour le slot festival 2025",
+    "assignee_role": "booker_agent",
+    "status": "in_progress",
+    "priority": "urgent",
+    "due_date": "2024-06-30",
+    "deal_id": "deal_003",
+    "contact_id": "contact_005",
+    "created_at": "2024-06-15T10:00:00Z",
+    "updated_at": "2024-06-21T14:30:00Z"
+  },
+  {
+    "id": "task_002",
+    "titre": "Confirmer logistique tournée Italie",
+    "description": "Vérifier transport, hébergement et catering pour les 5 dates",
+    "assignee_role": "tourneur_manager",
+    "status": "todo",
+    "priority": "high",
+    "due_date": "2024-07-01",
+    "deal_id": "deal_005",
+    "contact_id": "contact_004",
+    "created_at": "2024-06-12T09:00:00Z",
+    "updated_at": "2024-06-12T09:00:00Z"
+  },
+  {
+    "id": "task_003",
+    "titre": "Préparer communiqué de presse Electric Storm",
+    "description": "Rédiger le CP pour l'annonce du set Berghain Nouvel An",
+    "assignee_role": "attache_presse",
+    "status": "todo",
+    "priority": "medium",
+    "due_date": "2024-07-15",
+    "deal_id": "deal_002",
+    "contact_id": "contact_003",
+    "created_at": "2024-06-20T11:00:00Z",
+    "updated_at": "2024-06-20T11:00:00Z"
+  },
+  {
+    "id": "task_004",
+    "titre": "Revoir budget marketing Q3",
+    "description": "Analyse des dépenses marketing et ajustements pour Q4",
+    "assignee_role": "label_management",
+    "status": "completed",
+    "priority": "medium",
+    "due_date": "2024-06-15",
+    "created_at": "2024-05-01T14:00:00Z",
+    "updated_at": "2024-06-14T16:45:00Z"
+  },
+  {
+    "id": "task_005",
+    "titre": "Prospection venues Allemagne",
+    "description": "Identifier et contacter 10 nouvelles venues en Allemagne",
+    "assignee_role": "apporteur_affaires",
+    "status": "in_progress",
+    "priority": "low",
+    "due_date": "2024-07-31",
+    "created_at": "2024-06-01T10:00:00Z",
+    "updated_at": "2024-06-18T12:30:00Z"
+  },
+  {
+    "id": "task_006",
+    "titre": "Setup technique Bataclan",
+    "description": "Coordonner l'installation technique pour le concert Midnight Wolves",
+    "assignee_role": "regisseur_general",
+    "status": "todo",
+    "priority": "high",
+    "due_date": "2024-10-14",
+    "deal_id": "deal_001",
+    "contact_id": "contact_001",
+    "created_at": "2024-06-10T15:30:00Z",
+    "updated_at": "2024-06-10T15:30:00Z"
+  }
+]
