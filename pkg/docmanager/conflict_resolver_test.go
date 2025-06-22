@@ -308,3 +308,24 @@ func TestConflictResolver_ClassificationAndMetadata(t *testing.T) {
 		t.Errorf("metadata extraction failed: %v", meta)
 	}
 }
+
+func TestConflictResolver_OptimalStrategySelection(t *testing.T) {
+	cr := NewConflictResolver()
+	// Ajoute une stratégie custom avec priorité supérieure
+	type HighPriorityStrategy struct{}
+	func (hps *HighPriorityStrategy) Resolve(conflict *DocumentConflict) (*Resolution, error) { return nil, nil }
+	func (hps *HighPriorityStrategy) CanHandle(conflictType ConflictType) bool { return true }
+	func (hps *HighPriorityStrategy) Priority() int { return 99 }
+	cr.AddStrategy(ContentConflict, &HighPriorityStrategy{})
+
+	selected := cr.selectOptimalStrategy(ContentConflict)
+	if selected.Priority() != 99 {
+		t.Errorf("expected priority 99, got %d", selected.Priority())
+	}
+
+	// Test fallback
+	fallback := cr.selectOptimalStrategy("unknown")
+	if fallback == nil {
+		t.Error("expected fallback strategy, got nil")
+	}
+}

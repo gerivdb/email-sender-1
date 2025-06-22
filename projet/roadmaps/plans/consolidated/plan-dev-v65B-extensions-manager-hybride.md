@@ -1062,11 +1062,11 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
     - [x] **Test** : test enregistrement, priorités stratégies
 
 - [ ] **4.3.1.2 TASK ATOMIQUE: ResolveConflict - Orchestration Résolution** :
-  - [ ] **4.3.1.2.1** MICRO-TASK: Analyse et classification conflit
-    - [ ] **Code** : `conflictType := cr.classifyConflict(conflict)`
-    - [ ] **Code** : `severity := cr.assessConflictSeverity(conflict)`
-    - [ ] **Code** : `metadata := cr.extractConflictMetadata(conflict)`
-    - [ ] **Test** : test classification précise différents types
+  - [x] **4.3.1.2.1** MICRO-TASK: Analyse et classification conflit
+    - [x] **Code** : `conflictType := cr.classifyConflict(conflict)`
+    - [x] **Code** : `severity := cr.assessConflictSeverity(conflict)`
+    - [x] **Code** : `metadata := cr.extractConflictMetadata(conflict)`
+    - [x] **Test** : test classification précise différents types
   - [ ] **4.3.1.2.2** MICRO-TASK: Sélection stratégie optimale
     - [ ] **Code** : `strategies := cr.strategies[conflictType]`
     - [ ] **Code** : `sort.Slice(strategies, func(i, j int) bool { return strategies[i].Priority() > strategies[j].Priority() })`

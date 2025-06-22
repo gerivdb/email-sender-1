@@ -4,6 +4,7 @@ package docmanager
 
 import (
 	"fmt"
+	"sort"
 	"time"
 )
 
@@ -114,6 +115,18 @@ func (cr *ConflictResolver) ResolveConflict(conflict *DocumentConflict) (*Resolu
 // SetStrategy configure une stratégie pour un type de conflit
 func (cr *ConflictResolver) SetStrategy(conflictType ConflictType, strategy ResolutionStrategy) {
 	cr.strategies[conflictType] = strategy
+}
+
+// Sélectionne la meilleure stratégie pour un type de conflit donné
+func (cr *ConflictResolver) selectOptimalStrategy(conflictType ConflictType) ResolutionStrategy {
+	strategies := cr.strategies[conflictType]
+	if len(strategies) == 0 {
+		return cr.defaultStrategy
+	}
+	sort.Slice(strategies, func(i, j int) bool {
+		return strategies[i].Priority() > strategies[j].Priority()
+	})
+	return strategies[0]
 }
 
 // Stratégies concrètes implémentant ResolutionStrategy
