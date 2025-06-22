@@ -1067,11 +1067,11 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
     - [x] **Code** : `severity := cr.assessConflictSeverity(conflict)`
     - [x] **Code** : `metadata := cr.extractConflictMetadata(conflict)`
     - [x] **Test** : test classification précise différents types
-  - [ ] **4.3.1.2.2** MICRO-TASK: Sélection stratégie optimale
-    - [ ] **Code** : `strategies := cr.strategies[conflictType]`
-    - [ ] **Code** : `sort.Slice(strategies, func(i, j int) bool { return strategies[i].Priority() > strategies[j].Priority() })`
-    - [ ] **Code** : `selectedStrategy := strategies[0]`
-    - [ ] **Test** : test sélection avec priorités, fallback
+  - [x] **4.3.1.2.2** MICRO-TASK: Sélection stratégie optimale
+    - [x] **Code** : `strategies := cr.strategies[conflictType]`
+    - [x] **Code** : `sort.Slice(strategies, func(i, j int) bool { return strategies[i].Priority() > strategies[j].Priority() })`
+    - [x] **Code** : `selectedStrategy := strategies[0]`
+    - [x] **Test** : test sélection avec priorités, fallback
   - [ ] **4.3.1.2.3** MICRO-TASK: Exécution et validation résolution
     - [ ] **Code** : `resolvedDoc, err := selectedStrategy.Resolve(conflict)`
     - [ ] **Code** : `if err != nil { return cr.tryFallbackStrategy(conflict) }`

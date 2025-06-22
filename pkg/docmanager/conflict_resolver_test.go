@@ -3,6 +3,7 @@
 package docmanager
 
 import (
+	"fmt"
 	"testing"
 	"time"
 )
@@ -327,5 +328,35 @@ func TestConflictResolver_OptimalStrategySelection(t *testing.T) {
 	fallback := cr.selectOptimalStrategy("unknown")
 	if fallback == nil {
 		t.Error("expected fallback strategy, got nil")
+	}
+}
+
+func TestConflictResolver_ExecuteAndValidateResolution(t *testing.T) {
+	cr := NewConflictResolver()
+	// Stratégie qui échoue
+	type FailingStrategy struct{}
+	func (fs *FailingStrategy) Resolve(conflict *DocumentConflict) (*Resolution, error) { return nil, fmt.Errorf("fail") }
+	func (fs *FailingStrategy) CanHandle(conflictType ConflictType) bool { return true }
+	func (fs *FailingStrategy) Priority() int { return 100 }
+	cr.AddStrategy(ContentConflict, &FailingStrategy{})
+
+	local := &Document{ID: "1", Path: "/a", Content: []byte("A"), Metadata: nil, Version: 1}
+	remote := &Document{ID: "1", Path: "/a", Content: []byte("B"), Metadata: nil, Version: 1}
+	conflict := &DocumentConflict{
+		ID:           "c3",
+		Type:         ContentConflict,
+		LocalDoc:     local,
+		RemoteDoc:    remote,
+		ConflictedAt: time.Now(),
+		Context:      nil,
+	}
+
+	selected := cr.selectOptimalStrategy(ContentConflict)
+	res, err := cr.executeAndValidateResolution(selected, conflict)
+	if err != nil {
+		t.Errorf("expected fallback to succeed, got error: %v", err)
+	}
+	if res == nil || res.Strategy != "manual" {
+		t.Errorf("expected fallback manual strategy, got %+v", res)
 	}
 }

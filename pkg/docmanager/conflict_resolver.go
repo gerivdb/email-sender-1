@@ -419,3 +419,35 @@ func (cr *ConflictResolver) extractConflictMetadata(conflict *DocumentConflict) 
 	}
 	return meta
 }
+
+// Exécution et validation de la résolution
+func (cr *ConflictResolver) executeAndValidateResolution(selectedStrategy ResolutionStrategy, conflict *DocumentConflict) (*Resolution, error) {
+	resolvedDoc, err := selectedStrategy.Resolve(conflict)
+	if err != nil {
+		return cr.tryFallbackStrategy(conflict)
+	}
+	validationErr := cr.validateResolution(resolvedDoc, conflict)
+	if validationErr != nil {
+		return nil, validationErr
+	}
+	return resolvedDoc, nil
+}
+
+// Fallback automatique si la stratégie échoue
+func (cr *ConflictResolver) tryFallbackStrategy(conflict *DocumentConflict) (*Resolution, error) {
+	if cr.defaultStrategy == nil {
+		return nil, fmt.Errorf("no fallback strategy available")
+	}
+	return cr.defaultStrategy.Resolve(conflict)
+}
+
+// Validation de la résolution (exemple : document non nil et ID cohérent)
+func (cr *ConflictResolver) validateResolution(res *Resolution, conflict *DocumentConflict) error {
+	if res == nil || res.ResolvedDoc == nil {
+		return fmt.Errorf("resolution failed: no document produced")
+	}
+	if res.ResolvedDoc.ID != conflict.LocalDoc.ID {
+		return fmt.Errorf("resolution failed: ID mismatch")
+	}
+	return nil
+}
