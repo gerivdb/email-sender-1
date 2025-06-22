@@ -1171,11 +1171,11 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
     - [ ] **Code** : `func CreateTestConflict(docA, docB *Document) *DocumentConflict { ... }`
     - [ ] **Code** : `func CreateTempTestFiles(count int) ([]string, func()) { ... }`
     - [ ] **Test** : vérifier fixtures valides et reproductibles
-  - [ ] **5.1.1.2.2** MICRO-TASK: Configuration test database
-    - [ ] **Code** : `func SetupTestDB() (*sql.DB, func()) { ... }`
-    - [ ] **Code** : utiliser SQLite en mémoire pour tests
-    - [ ] **Code** : migrations automatiques pour schéma test
-    - [ ] **Test** : base isolée par test, cleanup automatique
+  - [x] **5.1.1.2.2** MICRO-TASK: Configuration test database
+    - [x] **Code** : `func SetupTestDB() (*sql.DB, func()) { ... }`
+    - [x] **Code** : utiliser SQLite en mémoire pour tests
+    - [x] **Code** : migrations automatiques pour schéma test
+    - [x] **Test** : base isolée par test, cleanup automatique
 
 #### 5.1.2 Tests Spécialisés par Composant
 

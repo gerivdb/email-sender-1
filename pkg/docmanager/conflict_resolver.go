@@ -30,6 +30,8 @@ const (
 // ResolutionStrategy stratégie de résolution de conflit
 type ResolutionStrategy interface {
 	Resolve(conflict *DocumentConflict) (*Resolution, error)
+	CanHandle(conflictType ConflictType) bool
+	Priority() int
 }
 
 // DocumentConflict représente un conflit entre documents
@@ -60,40 +62,53 @@ type Document struct {
 }
 
 // ConflictResolver - SRP: Résolution de conflits uniquement
+// Adapte strategies pour supporter plusieurs stratégies par type
+// et ajoute la gestion des priorités
+
 type ConflictResolver struct {
-	strategies      map[ConflictType]ResolutionStrategy
+	strategies      map[ConflictType][]ResolutionStrategy
 	defaultStrategy ResolutionStrategy
 }
 
 // NewConflictResolver constructeur respectant SRP
 func NewConflictResolver() *ConflictResolver {
 	resolver := &ConflictResolver{
-		strategies: make(map[ConflictType]ResolutionStrategy),
+		strategies: make(map[ConflictType][]ResolutionStrategy),
 	}
 
-	// Stratégies par défaut
-	resolver.strategies[ContentConflict] = &ContentMergeStrategy{}
-	resolver.strategies[MetadataConflict] = &MetadataPreferenceStrategy{}
-	resolver.strategies[VersionConflict] = &VersionBasedStrategy{}
-	resolver.strategies[PathConflict] = &PathRenameStrategy{}
+	// Ajoute les stratégies par défaut avec priorités
+	resolver.strategies[ContentConflict] = []ResolutionStrategy{&ContentMergeStrategy{}}
+	resolver.strategies[MetadataConflict] = []ResolutionStrategy{&MetadataPreferenceStrategy{}}
+	resolver.strategies[VersionConflict] = []ResolutionStrategy{&VersionBasedStrategy{}}
+	resolver.strategies[PathConflict] = []ResolutionStrategy{&PathRenameStrategy{}}
 
 	resolver.defaultStrategy = &ManualResolutionStrategy{}
 
 	return resolver
 }
 
-// ResolveConflict résout un conflit selon sa stratégie
+// Ajoute une stratégie pour un type de conflit
+func (cr *ConflictResolver) AddStrategy(conflictType ConflictType, strategy ResolutionStrategy) {
+	cr.strategies[conflictType] = append(cr.strategies[conflictType], strategy)
+}
+
+// Résout un conflit en choisissant la stratégie de plus haute priorité pouvant le gérer
 func (cr *ConflictResolver) ResolveConflict(conflict *DocumentConflict) (*Resolution, error) {
 	if conflict == nil {
 		return nil, fmt.Errorf("conflict cannot be nil")
 	}
-
-	strategy, exists := cr.strategies[conflict.Type]
-	if !exists {
-		strategy = cr.defaultStrategy
+	strategies := cr.strategies[conflict.Type]
+	if len(strategies) == 0 {
+		return cr.defaultStrategy.Resolve(conflict)
 	}
-
-	return strategy.Resolve(conflict)
+	// Trie par priorité décroissante
+	highest := strategies[0]
+	for _, s := range strategies {
+		if s.CanHandle(conflict.Type) && s.Priority() > highest.Priority() {
+			highest = s
+		}
+	}
+	return highest.Resolve(conflict)
 }
 
 // SetStrategy configure une stratégie pour un type de conflit
@@ -115,6 +130,12 @@ func (cms *ContentMergeStrategy) Resolve(conflict *DocumentConflict) (*Resolutio
 		Metadata:    map[string]interface{}{"merged": true},
 	}, nil
 }
+func (cms *ContentMergeStrategy) CanHandle(conflictType ConflictType) bool {
+	return conflictType == ContentConflict
+}
+func (cms *ContentMergeStrategy) Priority() int {
+	return 10
+}
 
 // MetadataPreferenceStrategy privilégie certaines métadonnées
 type MetadataPreferenceStrategy struct{}
@@ -127,6 +148,12 @@ func (mps *MetadataPreferenceStrategy) Resolve(conflict *DocumentConflict) (*Res
 		Confidence:  0.9,
 		Metadata:    map[string]interface{}{"preferred": "remote"},
 	}, nil
+}
+func (mps *MetadataPreferenceStrategy) CanHandle(conflictType ConflictType) bool {
+	return conflictType == MetadataConflict
+}
+func (mps *MetadataPreferenceStrategy) Priority() int {
+	return 8
 }
 
 // VersionBasedStrategy résout selon les versions
@@ -147,6 +174,12 @@ func (vbs *VersionBasedStrategy) Resolve(conflict *DocumentConflict) (*Resolutio
 		Metadata:    map[string]interface{}{"version_winner": resolvedDoc.Version},
 	}, nil
 }
+func (vbs *VersionBasedStrategy) CanHandle(conflictType ConflictType) bool {
+	return conflictType == VersionConflict
+}
+func (vbs *VersionBasedStrategy) Priority() int {
+	return 7
+}
 
 // PathRenameStrategy renomme en cas de conflit de chemin
 type PathRenameStrategy struct{}
@@ -160,6 +193,12 @@ func (prs *PathRenameStrategy) Resolve(conflict *DocumentConflict) (*Resolution,
 		Metadata:    map[string]interface{}{"renamed": true},
 	}, nil
 }
+func (prs *PathRenameStrategy) CanHandle(conflictType ConflictType) bool {
+	return conflictType == PathConflict
+}
+func (prs *PathRenameStrategy) Priority() int {
+	return 5
+}
 
 // ManualResolutionStrategy nécessite intervention manuelle
 type ManualResolutionStrategy struct{}
@@ -171,6 +210,12 @@ func (mrs *ManualResolutionStrategy) Resolve(conflict *DocumentConflict) (*Resol
 		Confidence:  0.0,
 		Metadata:    map[string]interface{}{"requires_manual": true},
 	}, nil
+}
+func (mrs *ManualResolutionStrategy) CanHandle(conflictType ConflictType) bool {
+	return true // fallback
+}
+func (mrs *ManualResolutionStrategy) Priority() int {
+	return 0
 }
 
 // Ajout : ConflictSeverity, ResolutionStatus, méthodes Detect et Score, et ConflictManager

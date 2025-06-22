@@ -7,7 +7,7 @@ import (
 )
 
 // Document represents a document in the contextual memory system
-type Document struct {
+type ContextualMemoryDocument struct {
 	ID       string            `json:"id"`
 	Content  string            `json:"content"`
 	Metadata map[string]string `json:"metadata"`
@@ -16,7 +16,7 @@ type Document struct {
 
 // SearchResult represents a search result with similarity score
 type SearchResult struct {
-	Document   Document `json:"document"`
+	Document   ContextualMemoryDocument `json:"document"`
 	Score      float64  `json:"score"`
 	Highlights []string `json:"highlights,omitempty"`
 }
@@ -24,19 +24,19 @@ type SearchResult struct {
 // IndexManager manages document indexing and storage
 type IndexManager interface {
 	// Index adds or updates a document in the index
-	Index(ctx context.Context, doc Document) error
+	Index(ctx context.Context, doc ContextualMemoryDocument) error
 	
 	// Delete removes a document from the index
 	Delete(ctx context.Context, documentID string) error
 	
 	// Update modifies an existing document
-	Update(ctx context.Context, doc Document) error
+	Update(ctx context.Context, doc ContextualMemoryDocument) error
 	
 	// GetDocument retrieves a document by ID
-	GetDocument(ctx context.Context, documentID string) (*Document, error)
+	GetDocument(ctx context.Context, documentID string) (*ContextualMemoryDocument, error)
 	
 	// ListDocuments returns all documents with pagination
-	ListDocuments(ctx context.Context, offset, limit int) ([]Document, error)
+	ListDocuments(ctx context.Context, offset, limit int) ([]ContextualMemoryDocument, error)
 	
 	// GetStats returns indexing statistics
 	GetStats(ctx context.Context) (IndexStats, error)

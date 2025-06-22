@@ -50,5 +50,3 @@ func CreateTempTestFiles(count int) ([]string, func()) {
 	}
 	return files, cleanup
 }
-
-// Importe les types du vrai module (ne pas redéclarer ici)

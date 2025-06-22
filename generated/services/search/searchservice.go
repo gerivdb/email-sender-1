@@ -60,7 +60,7 @@ type SearchResult struct {
 }
 
 // Document represents a document to be indexed
-type Document struct {
+type GeneratedSearchDocument struct {
 	ID       string                 `json:"id"`
 	Content  string                 `json:"content"`
 	Metadata map[string]interface{} `json:"metadata"`
@@ -154,7 +154,7 @@ func (s *SearchService) Search(ctx context.Context, req *SearchRequest) (*Search
 }
 
 // IndexDocument indexes a document in the vector database
-func (s *SearchService) IndexDocument(ctx context.Context, doc *Document) error {
+func (s *SearchService) IndexDocument(ctx context.Context, doc *GeneratedSearchDocument) error {
 	if doc == nil {
 		return fmt.Errorf("document cannot be nil")
 	}

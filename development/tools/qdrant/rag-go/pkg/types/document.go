@@ -15,7 +15,7 @@ import (
 const MaxContentSize = 100 * 1024
 
 // Document represents a document in the RAG system
-type Document struct {
+type QdrantDocument struct {
 	// ID is the unique identifier for the document
 	ID string `json:"id"`
 
@@ -30,8 +30,8 @@ type Document struct {
 }
 
 // NewDocument creates a new document with the given content
-func NewDocument(content string) *Document {
-	return &Document{
+func NewDocument(content string) *QdrantDocument {
+	return &QdrantDocument{
 		ID:       uuid.New().String(),
 		Content:  content,
 		Metadata: make(map[string]interface{}),
@@ -40,8 +40,8 @@ func NewDocument(content string) *Document {
 }
 
 // NewDocumentWithID creates a new document with a specific ID
-func NewDocumentWithID(id, content string) *Document {
-	return &Document{
+func NewDocumentWithID(id, content string) *QdrantDocument {
+	return &QdrantDocument{
 		ID:       id,
 		Content:  content,
 		Metadata: make(map[string]interface{}),
@@ -50,7 +50,7 @@ func NewDocumentWithID(id, content string) *Document {
 }
 
 // Validate checks if the document is valid
-func (d *Document) Validate() error {
+func (d *QdrantDocument) Validate() error {
 	// Check if ID is not empty
 	if strings.TrimSpace(d.ID) == "" {
 		return errors.New("document ID cannot be empty")
@@ -84,7 +84,7 @@ func (d *Document) Validate() error {
 }
 
 // ToJSON serializes the document to JSON
-func (d *Document) ToJSON() ([]byte, error) {
+func (d *QdrantDocument) ToJSON() ([]byte, error) {
 	// Validate before serialization
 	if err := d.Validate(); err != nil {
 		return nil, fmt.Errorf("document validation failed: %w", err)
@@ -99,7 +99,7 @@ func (d *Document) ToJSON() ([]byte, error) {
 }
 
 // FromJSON deserializes the document from JSON
-func (d *Document) FromJSON(data []byte) error {
+func (d *QdrantDocument) FromJSON(data []byte) error {
 	if err := json.Unmarshal(data, d); err != nil {
 		return fmt.Errorf("failed to unmarshal document from JSON: %w", err)
 	}
@@ -113,7 +113,7 @@ func (d *Document) FromJSON(data []byte) error {
 }
 
 // SetMetadata sets a metadata field
-func (d *Document) SetMetadata(key string, value interface{}) {
+func (d *QdrantDocument) SetMetadata(key string, value interface{}) {
 	if d.Metadata == nil {
 		d.Metadata = make(map[string]interface{})
 	}
@@ -121,7 +121,7 @@ func (d *Document) SetMetadata(key string, value interface{}) {
 }
 
 // GetMetadata gets a metadata field
-func (d *Document) GetMetadata(key string) (interface{}, bool) {
+func (d *QdrantDocument) GetMetadata(key string) (interface{}, bool) {
 	if d.Metadata == nil {
 		return nil, false
 	}
@@ -130,12 +130,12 @@ func (d *Document) GetMetadata(key string) (interface{}, bool) {
 }
 
 // SetSource sets the source metadata
-func (d *Document) SetSource(source string) {
+func (d *QdrantDocument) SetSource(source string) {
 	d.SetMetadata("source", source)
 }
 
 // GetSource gets the source metadata
-func (d *Document) GetSource() string {
+func (d *QdrantDocument) GetSource() string {
 	if source, exists := d.GetMetadata("source"); exists {
 		if sourceStr, ok := source.(string); ok {
 			return sourceStr
@@ -145,12 +145,12 @@ func (d *Document) GetSource() string {
 }
 
 // SetCreatedAt sets the creation timestamp
-func (d *Document) SetCreatedAt(t time.Time) {
+func (d *QdrantDocument) SetCreatedAt(t time.Time) {
 	d.SetMetadata("created_at", t.Format(time.RFC3339Nano))
 }
 
 // GetCreatedAt gets the creation timestamp
-func (d *Document) GetCreatedAt() *time.Time {
+func (d *QdrantDocument) GetCreatedAt() *time.Time {
 	if createdAt, exists := d.GetMetadata("created_at"); exists {
 		if createdAtStr, ok := createdAt.(string); ok {
 			if t, err := time.Parse(time.RFC3339Nano, createdAtStr); err == nil {
@@ -162,12 +162,12 @@ func (d *Document) GetCreatedAt() *time.Time {
 }
 
 // SetModifiedAt sets the modification timestamp
-func (d *Document) SetModifiedAt(t time.Time) {
+func (d *QdrantDocument) SetModifiedAt(t time.Time) {
 	d.SetMetadata("modified_at", t.Format(time.RFC3339Nano))
 }
 
 // GetModifiedAt gets the modification timestamp
-func (d *Document) GetModifiedAt() *time.Time {
+func (d *QdrantDocument) GetModifiedAt() *time.Time {
 	if modifiedAt, exists := d.GetMetadata("modified_at"); exists {
 		if modifiedAtStr, ok := modifiedAt.(string); ok {
 			if t, err := time.Parse(time.RFC3339Nano, modifiedAtStr); err == nil {
@@ -179,12 +179,12 @@ func (d *Document) GetModifiedAt() *time.Time {
 }
 
 // SetFileType sets the file type metadata
-func (d *Document) SetFileType(fileType string) {
+func (d *QdrantDocument) SetFileType(fileType string) {
 	d.SetMetadata("file_type", fileType)
 }
 
 // GetFileType gets the file type metadata
-func (d *Document) GetFileType() string {
+func (d *QdrantDocument) GetFileType() string {
 	if fileType, exists := d.GetMetadata("file_type"); exists {
 		if fileTypeStr, ok := fileType.(string); ok {
 			return fileTypeStr
@@ -194,12 +194,12 @@ func (d *Document) GetFileType() string {
 }
 
 // SetOriginalSize sets the original document size
-func (d *Document) SetOriginalSize(size int64) {
+func (d *QdrantDocument) SetOriginalSize(size int64) {
 	d.SetMetadata("original_size", size)
 }
 
 // GetOriginalSize gets the original document size
-func (d *Document) GetOriginalSize() int64 {
+func (d *QdrantDocument) GetOriginalSize() int64 {
 	if size, exists := d.GetMetadata("original_size"); exists {
 		switch v := size.(type) {
 		case int64:
@@ -214,18 +214,18 @@ func (d *Document) GetOriginalSize() int64 {
 }
 
 // SetVector sets the embedding vector
-func (d *Document) SetVector(vector []float32) {
+func (d *QdrantDocument) SetVector(vector []float32) {
 	d.Vector = make([]float32, len(vector))
 	copy(d.Vector, vector)
 }
 
 // GetVectorDimension returns the dimension of the vector
-func (d *Document) GetVectorDimension() int {
+func (d *QdrantDocument) GetVectorDimension() int {
 	return len(d.Vector)
 }
 
 // ValidateVectorDimension checks if the vector has the expected dimension
-func (d *Document) ValidateVectorDimension(expectedDim int) error {
+func (d *QdrantDocument) ValidateVectorDimension(expectedDim int) error {
 	if len(d.Vector) != expectedDim {
 		return fmt.Errorf("vector dimension mismatch: expected %d, got %d", expectedDim, len(d.Vector))
 	}

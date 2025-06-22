@@ -1945,23 +1945,14 @@ func (bs *BranchSynchronizer) autoResolveConflicts(conflicts []DetectedConflict)
 
 type ConflictType string
 
-type Document struct {
-	Content  string
-	Metadata map[string]interface{}
-}
-
-type DocumentConflict struct {
-	Type     ConflictType
-	Details  map[string]interface{}
-	Severity string
-}
-
+// ResolutionStrategy définit une stratégie de résolution de conflit
 type ResolutionStrategy interface {
 	Resolve(*DocumentConflict) (*Document, error)
 	CanHandle(ConflictType) bool
 	Priority() int
 }
 
+// ConflictResolver gère la résolution de conflits
 type ConflictResolver struct {
 	strategies      map[ConflictType][]ResolutionStrategy
 	defaultStrategy ResolutionStrategy
@@ -1985,5 +1976,3 @@ func (cr *ConflictResolver) extractConflictMetadata(conflict *DocumentConflict) 
 	// Exemple : retourne les métadonnées du conflit
 	return conflict.Details
 }
-
-// 4.3.1.2.2 Sélection stratégie optimale

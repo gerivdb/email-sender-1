@@ -248,3 +248,36 @@ func TestConflictAndResolutionGranular(t *testing.T) {
 		t.Error("ResolutionGranular struct fields not set correctly")
 	}
 }
+
+func TestConflictResolver_StrategyRegistrationAndPriority(t *testing.T) {
+	cr := NewConflictResolver()
+
+	// Ajoute une stratégie custom avec priorité supérieure
+	type HighPriorityStrategy struct{}
+	func (hps *HighPriorityStrategy) Resolve(conflict *DocumentConflict) (*Resolution, error) {
+		return &Resolution{ResolvedDoc: conflict.LocalDoc, Strategy: "high_priority", Confidence: 1.0}, nil
+	}
+	func (hps *HighPriorityStrategy) CanHandle(conflictType ConflictType) bool { return conflictType == ContentConflict }
+	func (hps *HighPriorityStrategy) Priority() int { return 99 }
+
+	cr.AddStrategy(ContentConflict, &HighPriorityStrategy{})
+
+	local := &Document{ID: "1", Path: "/a", Content: []byte("A"), Metadata: nil, Version: 1}
+	remote := &Document{ID: "1", Path: "/a", Content: []byte("B"), Metadata: nil, Version: 1}
+	conflict := &DocumentConflict{
+		ID:           "c1",
+		Type:         ContentConflict,
+		LocalDoc:     local,
+		RemoteDoc:    remote,
+		ConflictedAt: time.Now(),
+		Context:      nil,
+	}
+
+	res, err := cr.ResolveConflict(conflict)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if res.Strategy != "high_priority" {
+		t.Errorf("expected high_priority strategy, got %s", res.Strategy)
+	}
+}

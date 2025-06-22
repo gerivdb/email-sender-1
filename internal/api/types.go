@@ -60,7 +60,10 @@ type CreateCollectionRequest struct {
 }
 
 // Document defines model for Document.
-type Document struct {
+// Renamed to avoid conflict with canonical Document
+// Use APIDocument for local use
+// type Document struct {
+type APIDocument struct {
 	Content   *string                 `json:"content,omitempty"`
 	CreatedAt *time.Time              `json:"created_at,omitempty"`
 	Id        *string                 `json:"id,omitempty"`
@@ -89,7 +92,7 @@ type DocumentInput struct {
 
 // DocumentListResponse defines model for DocumentListResponse.
 type DocumentListResponse struct {
-	Documents  *[]Document `json:"documents,omitempty"`
+	Documents  *[]APIDocument `json:"documents,omitempty"`
 	Limit      *int        `json:"limit,omitempty"`
 	Offset     *int        `json:"offset,omitempty"`
 	TotalCount *int        `json:"total_count,omitempty"`
