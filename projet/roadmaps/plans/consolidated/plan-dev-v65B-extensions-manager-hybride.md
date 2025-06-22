@@ -1103,8 +1103,8 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
     - [x] **Code** : seuil minimum qualité avant acceptation
     - [x] **Code** : fallback vers autre stratégie si qualité insuffisante
     - [x] **Test** : test avec documents très similaires, très différents
-  - [ ] **4.3.2.3** UserPrompt : demande à l'utilisateur
-  - [ ] **4.3.2.4** AutoMerge : fusion automatique intelligente
+  - [x] **4.3.2.3** UserPrompt : demande à l'utilisateur
+  - [x] **4.3.2.4** AutoMerge : fusion automatique intelligente
 
 ### 4.4 Stack Technologique Hybride
 
