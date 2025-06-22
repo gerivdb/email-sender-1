@@ -3,11 +3,23 @@
 package docmanager
 
 import (
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/suite"
 )
+
+type PathTracker struct{}
+
+type PathTrackerTestSuite struct {
+	suite.Suite
+	pathTracker *PathTracker
+	testFiles   []string
+	testDir     string
+}
 
 // TestPathTracker_SRP vérifie le respect du principe SRP pour PathTracker
 // MICRO-TASK 3.1.1.2.2 - Méthodes scope verification
@@ -212,4 +224,27 @@ func BenchmarkCalculateContentHash(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, _ = pt.CalculateContentHash(file)
 	}
+}
+
+func (suite *PathTrackerTestSuite) SetupTest() {
+	dir, _ := ioutil.TempDir("", "pathtracker_test")
+	suite.testDir = dir
+	suite.testFiles = []string{}
+	// Création de vrais fichiers temporaires
+	for i := 0; i < 2; i++ {
+		file := dir + "/file" + string('A'+i) + ".txt"
+		_ = ioutil.WriteFile(file, []byte("test"), 0644)
+		suite.testFiles = append(suite.testFiles, file)
+	}
+	suite.pathTracker = &PathTracker{}
+}
+
+func (suite *PathTrackerTestSuite) TearDownTest() {
+	if suite.testDir != "" {
+		_ = ioutil.RemoveAll(suite.testDir)
+	}
+}
+
+func TestPathTrackerTestSuite(t *testing.T) {
+	suite.Run(t, new(PathTrackerTestSuite))
 }
