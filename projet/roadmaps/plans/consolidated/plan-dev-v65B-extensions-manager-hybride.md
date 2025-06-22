@@ -1056,10 +1056,10 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
 
 - [x] **4.3.1.1 Structure ConflictResolver** : structure définie
   - [ ] **4.3.1.1.1** TASK: Système stratégies pluggables
-    - [ ] **Code** : `type ResolutionStrategy interface { Resolve(*DocumentConflict) (*Document, error); CanHandle(ConflictType) bool; Priority() int }`
-    - [ ] **Code** : `strategies map[ConflictType][]ResolutionStrategy`
-    - [ ] **Code** : `defaultStrategy ResolutionStrategy`
-    - [ ] **Test** : test enregistrement, priorités stratégies
+    - [x] **Code** : `type ResolutionStrategy interface { Resolve(*DocumentConflict) (*Document, error); CanHandle(ConflictType) bool; Priority() int }`
+    - [x] **Code** : `strategies map[ConflictType][]ResolutionStrategy`
+    - [x] **Code** : `defaultStrategy ResolutionStrategy`
+    - [x] **Test** : test enregistrement, priorités stratégies
 
 - [ ] **4.3.1.2 TASK ATOMIQUE: ResolveConflict - Orchestration Résolution** :
   - [ ] **4.3.1.2.1** MICRO-TASK: Analyse et classification conflit
