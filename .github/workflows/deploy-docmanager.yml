@@ -1,0 +1,27 @@
+name: Deploy DocManager v66
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/v66-*"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+
+      - name: Run build and tests
+        run: |
+          chmod +x core/docmanager/deployment/deploy.sh
+          ./core/docmanager/deployment/deploy.sh
+
+      - name: Deploy to production (simulé)
+        run: echo "Déploiement production terminé"
