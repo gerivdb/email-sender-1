@@ -461,21 +461,48 @@ alert_levels:
 
 ---
 
-## 📚 Ressources & Documentation
+# Ecosystem Overview
 
-### 🔗 Liens Rapides
+## Vision Globale
 
-- [🚀 Quick Start Guide](../GETTING-STARTED/quick-start.md)
-- [📊 Managers Catalog](../MANAGERS/catalog-complete.md)
-- [🔧 Development Guide](../DEVELOPMENT/coding-standards.md)
-- [🛡️ Security Details](./security-enterprise.md)
+L'écosystème est structuré autour de trois grands rôles :
 
-### 📞 Support & Contact
+- **Orchestrator** : Gère la distribution, l’exécution et le suivi des tâches (jobs, workflows) entre sous-systèmes ou clusters. Il orchestre l’enchaînement des actions, la synchronisation et la coordination technique.
+- **Integrated Manager** : Point d’entrée opérationnel, orchestre l’exécution synchronisée des managers critiques (Branch, Cache, Context Memory, Notification, etc.), centralise les logs, automatise la validation et la cohérence, prépare la supervision globale.
+- **Central Coordinator** : Composant de supervision omnisciente (vision d’ensemble, monitoring transverse, gouvernance, priorisation, gestion d’état). Il pourra piloter integrated-manager et tous les autres managers, collecter les métriques, déclencher des alertes, arbitrer les conflits, fournir une interface de monitoring centralisée.
 
-- **🆘 Technical Support**: [Create Issue](../../issues/new)
-- **📧 Architecture Questions**: [Discussion Board](../../discussions)
-- **🏢 Enterprise Contact**: [Sales Team](mailto:enterprise@email-sender.com)
+## Relations et Flux
+
+```
+[orchestrator] → [integrated-manager] → [managers métiers]
+                        ↑
+                [central-coordinator]
+(supervision globale, collecte, arbitrage, alertes)
+```
+
+- **orchestrator** : pilote l’exécution technique, peut appeler des managers (dont integrated-manager) pour exécuter des tâches.
+- **integrated-manager** : exécute, intègre et synchronise les managers métiers, remonte des états/logs.
+- **central-coordinator** : supervise l’ensemble, collecte les états/rapports, peut piloter integrated-manager, arbitrer, déclencher des alertes, fournir une vision transverse.
+
+## Recommandations d’architecture
+
+- Garder une séparation claire entre :
+  - Orchestration opérationnelle (**integrated-manager**)
+  - Supervision/gouvernance (**central-coordinator**)
+- Préparer l’export structuré des états, logs, et métriques dès maintenant.
+- Documenter les responsabilités, flux d’information, interfaces d’échange (API, logs, métriques, alertes).
+
+## Feuille de route
+
+- **Phase 1** : Mise en place d’un integrated-manager robuste, centralisation des états/rapports, préparation des interfaces d’export d’état.
+- **Phase 2** : Spécification et prototypage du central-coordinator (supervision, monitoring, arbitrage, reporting global, interface API/dashboard, collecte d’états, alertes, gouvernance).
+- **Phase 3** : Implémentation du central-coordinator, intégration avec l’écosystème, documentation, tests, déploiement progressif.
 
 ---
 
-*📅 Last Updated: 2025-06-19 | 🏆 Plan v64: 100% Complete | 🚀 Next: Plan v65 Extensions*
+Pour plus de détails, voir les sous-dossiers :
+
+- [orchestrator.md](orchestrator.md)
+- [integrated-manager.md](integrated-manager.md)
+- [central-coordinator.md](central-coordinator.md)
+- [interfaces.md](interfaces.md)
