@@ -1,0 +1,11 @@
+# core/docmanager/config/docmanager-config.yaml
+# Configuration initiale DocManager v66
+
+database_url: "postgres://user:password@localhost:5432/docmanager"
+redis_url: "redis://localhost:6379"
+qdrant_url: "http://localhost:6333"
+sync_interval: "60s"
+path_tracking: true
+auto_resolve: true
+cross_branch: true
+default_branch: "main"
