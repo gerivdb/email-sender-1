@@ -1,0 +1,5 @@
+------- SEARCH
+Ancien contenu à remplacer.
+=======
+Nouveau contenu inséré par diff Edit.
++++++++ REPLACE

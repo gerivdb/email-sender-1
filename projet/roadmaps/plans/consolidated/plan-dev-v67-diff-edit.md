@@ -210,6 +210,31 @@ return a + b // nouvelle implémentation diff Edit
 
 ---
 
+## 10. Optimisation parsing & diff-edit pour gros fichiers (2500+ lignes)
+
+- [ ] Générer automatiquement un index des sections/titres pour navigation rapide (table des matières dynamique, liens internes).
+- [ ] Utiliser un parseur qui construit un arbre de sections pour accélérer les recherches et modifications ciblées.
+- [ ] Découper les plans très longs en modules/fichiers thématiques et automatiser l’assemblage final.
+- [ ] Appliquer diff-edit sur des sous-ensembles pour limiter la charge mémoire et accélérer les patchs.
+- [ ] Utiliser des expressions régulières ou des parseurs structurés pour cibler précisément les blocs à modifier.
+- [ ] Ajouter un mode “fuzzy” ou tolérant pour les blocs SEARCH (gestion des espaces, indentation, variantes).
+- [ ] Lire et traiter les fichiers volumineux en streaming (ligne par ligne ou bloc par bloc) pour limiter la consommation mémoire.
+- [ ] Appliquer les patchs en pipeline (lecture, modification, écriture sans tout charger en RAM).
+- [ ] Mettre en cache les index, positions des blocs, ou résultats de parsing pour accélérer les opérations répétées.
+- [ ] Utiliser un cache partagé avec les managers pour éviter les re-parsings inutiles.
+- [ ] Logger précisément les temps de parsing, d’application de patch, et les éventuels ralentissements.
+- [ ] Intégrer des alertes si un patch ou un parsing dépasse un seuil de temps ou de ressources.
+- [ ] Paralléliser le parsing et l’application des patchs sur différentes sections/fichiers.
+- [ ] Utiliser des pools de workers adaptés à la puissance CPU/RAM disponible (feedback du process manager).
+- [ ] Simuler l’application de plusieurs patchs en “dry-run” pour détecter les conflits ou les lenteurs avant exécution réelle.
+- [ ] Générer un rapport de “diff coverage” pour visualiser l’impact des patchs sur le plan.
+- [ ] Exposer des hooks/API pour que les managers système puissent piloter ou monitorer le parsing/patching.
+- [ ] Adapter dynamiquement le comportement selon les priorités ou la charge globale de l’écosystème.
+- [ ] Proposer une interface de navigation rapide (arborescence, recherche par titre, jump-to-section).
+- [ ] Ajouter des outils de visualisation des diff et de l’état d’avancement (progress bar, heatmap des modifications).
+
+---
+
 **Livrables** :
 
 - Script CLI diff Edit prêt à l’emploi

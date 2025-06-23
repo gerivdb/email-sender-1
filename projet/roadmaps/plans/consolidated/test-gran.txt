@@ -1,0 +1,671 @@
+---
+title: "Plan de Développement v66 Fusionné : Doc-Manager Dynamique & Extensions Manager Hybride Code-Graph RAG"
+version: "v66.1"
+date: "2025-06-21"
+author: "Équipe Développement Légendaire + Copilot"
+priority: "CRITICAL"
+status: "EN_COURS"
+dependencies:
+  - plan-v64-complete
+  - ecosystem-managers-go
+  - documentation-legendaire
+  - infrastructure-powershell
+integration_level: "PROFONDE"
+target_audience: ["developers", "ai_assistants", "management", "automation"]
+cognitive_level: "AUTO_EVOLUTIVE"
+---
+
+# 🧠 PLAN V66 FUSIONNÉ : DOC-MANAGER DYNAMIQUE & EXTENSIONS MANAGER HYBRIDE CODE-GRAPH RAG
+
+## 🌟 VISION & CONTEXTE
+
+Fusion de la vision "doc-manager dynamique" (documentation auto-évolutive, centralisée, cognitive) et de la roadmap granulaire "extensions manager hybride + code-graph RAG" (cartographie, extraction, visualisation, automatisation des dépendances).
+
+## 🎯 OBJECTIFS MAJEURS
+
+- Documentation vivante, auto-consciente, synchronisée avec tous les managers et l’écosystème.
+- Cartographie exhaustive et visualisation interactive des dépendances (modules, fonctions, fichiers).
+- Automatisation de la génération, de la mise à jour et de la validation documentaire.
+- Stack technologique hybride (QDrant, PostgreSQL, Redis, InfluxDB, Go natif, CI/CD).
+- Roadmap détaillée à granularité 8 niveaux, avec cases à cocher pour chaque étape.
+
+---
+
+# 🗺️ ROADMAP DÉTAILLÉE (CHECKLIST FUSIONNÉE)
+
+## [ ] 1. Initialisation et cadrage
+
+- [ ] 1.1. Définir les objectifs précis de l’intégration Code-Graph RAG et doc-manager dynamique
+  - [ ] 1.1.1. Cartographie exhaustive des dépendances (modules, fonctions, fichiers)
+  - [ ] 1.1.2. Génération automatique de documentation et de schémas
+  - [ ] 1.1.3. Visualisation interactive et navigable
+  - [ ] 1.1.4. Interfaçage avec le doc manager existant
+  - [ ] 1.1.5. Compatibilité multi-langages et multi-dossiers
+  - [ ] 1.1.6. Export vers formats standards (Mermaid, PlantUML, Graphviz)
+  - [ ] 1.1.7. Automatisation de la mise à jour documentaire
+  - [ ] 1.1.8. Définition des métriques de succès
+
+### 🎯 Définir les objectifs précis de l’intégration Code-Graph RAG et doc-manager dynamique
+
+**ÉCOSYSTÈME DÉTECTÉ**: Go, Python, PowerShell
+
+**FICHIER CIBLE**: projet/roadmaps/plans/consolidated/test-gran.txt
+
+**CONVENTIONS**: snake_case (Python), PascalCase (Go), kebab-case (scripts)
+
+#### 🏗️ NIVEAU 1: Architecture d’intégration hybride
+
+- **Contexte**: Fusion de gestion documentaire dynamique et cartographie de dépendances (Go backend, Python scripts, PowerShell automation)
+- **Intégration**: API Go, scripts Python, hooks PowerShell
+
+##### 🔧 NIVEAU 2: Module d’objectifs d’intégration
+
+- **Responsabilité**: Centraliser la définition des objectifs d’intégration
+- **Interface**: IIntegrationObjectives (Go), IntegrationObjectives (Python class)
+
+###### ⚙️ NIVEAU 3: Composant technique principal
+
+- **Type**: Interface (Go), Class (Python)
+- **Localisation**: integration/objectives.go:12, integration/objectives.py:8
+
+####### 📋 NIVEAU 4: Interface contrat
+
+```go
+type IIntegrationObjectives interface {
+    DefineObjectives(ctx context.Context) error
+    ListDependencies() ([]string, error)
+}
+```
+
+######## 🛠️ NIVEAU 5: Méthode fonction
+
+// Implémentation Go
+func (o *ObjectivesManager) DefineObjectives(ctx context.Context) error {
+    // ...gestion des objectifs, erreurs, logs...
+    return nil;
+}
+
+######### 🎯 NIVEAU 6: Implémentation atomique
+
+Action: Générer la structure d’objectifs et valider l’intégration
+
+Durée: 10 min
+
+Commandes:
+
+cd integration
+go build ./...
+go test -run TestDefineObjectives
+
+########## 🔬 NIVEAU 7: Étape exécution
+
+Pré: go vet ./... → Aucun warning
+Exec: go run main.go --define-objectives → --dry-run
+Post: go test -run TestDefineObjectives → OK
+
+########### ⚡ NIVEAU 8: Action indivisible
+
+Instruction: go run main.go --define-objectives --single
+Validation: go test -run TestDefineObjectives
+Rollback: git checkout integration/objectives.go
+
+📊 VALIDATION
+<input disabled="" type="checkbox"> Build: go build ./... → Success
+<input disabled="" type="checkbox"> Tests: go test -run TestDefineObjectives → Pass
+<input disabled="" type="checkbox"> Lint: golangci-lint run → Clean
+Rollback: git checkout integration/objectives.go
+
+---
+
+### 🎯 Cartographie exhaustive des dépendances (modules, fonctions, fichiers)
+
+**ÉCOSYSTÈME DÉTECTÉ**: Go
+
+**FICHIER CIBLE**: cache_logic_simulation, integration/objectives.go
+
+**CONVENTIONS**: PascalCase
+
+#### 🏗️ NIVEAU 1: Architecture de cartographie
+
+- **Contexte**: Analyse statique des modules Go, extraction des dépendances
+- **Intégration**: API Go, visualisation Mermaid
+
+##### 🔧 NIVEAU 2: Module de cartographie
+
+- **Responsabilité**: Générer la liste des dépendances
+- **Interface**: IDependencyMapper
+
+###### ⚙️ NIVEAU 3: Composant technique
+
+- **Type**: Struct
+- **Localisation**: cache_logic_simulation/mapper.go:20
+
+####### 📋 NIVEAU 4: Interface contrat
+
+```go
+type IDependencyMapper interface {
+    MapDependencies(root string) ([]Dependency, error)
+}
+```
+
+######## 🛠️ NIVEAU 5: Méthode fonction
+
+func (m *DependencyMapper) MapDependencies(root string) ([]Dependency, error) {
+    // ...analyse, gestion erreurs...
+}
+
+######### 🎯 NIVEAU 6: Implémentation atomique
+
+Action: Exécuter l’analyse sur le dossier cible
+
+Durée: 10 min
+
+Commandes:
+
+cd cache_logic_simulation
+go build
+go test -run TestMapDependencies
+
+########## 🔬 NIVEAU 7: Étape exécution
+
+Pré: go vet ./... → Clean
+Exec: go run main.go --map-dependencies ./src
+Post: go test -run TestMapDependencies → OK
+
+########### ⚡ NIVEAU 8: Action indivisible
+
+Instruction: go run main.go --map-dependencies ./src
+Validation: go test -run TestMapDependencies
+Rollback: git checkout cache_logic_simulation/mapper.go
+
+📊 VALIDATION
+<input disabled="" type="checkbox"> Build: go build → Success
+<input disabled="" type="checkbox"> Tests: go test -run TestMapDependencies → Pass
+<input disabled="" type="checkbox"> Lint: golangci-lint run → Clean
+Rollback: git checkout cache_logic_simulation/mapper.go
+
+---
+
+### 🎯 Génération automatique de documentation et de schémas
+
+**ÉCOSYSTÈME DÉTECTÉ**: Python, Go
+
+**FICHIER CIBLE**: scripts/docgen.py, integration/objectives.go
+
+**CONVENTIONS**: snake_case (Python), PascalCase (Go)
+
+#### 🏗️ NIVEAU 1: Architecture docgen
+
+- **Contexte**: Génération automatique via scripts Python, extraction Go doc
+- **Intégration**: CLI Python, API Go
+
+##### 🔧 NIVEAU 2: Module docgen
+
+- **Responsabilité**: Générer docs et schémas à partir du code
+- **Interface**: DocGenerator (Python), IDocGen (Go)
+
+###### ⚙️ NIVEAU 3: Composant technique
+
+- **Type**: Class (Python), Interface (Go)
+- **Localisation**: scripts/docgen.py:10, integration/docgen.go:15
+
+####### 📋 NIVEAU 4: Interface contrat
+
+```python
+class DocGenerator:
+    def generate(self, source_path: str) -> None:
+        pass
+```
+
+######## 🛠️ NIVEAU 5: Méthode fonction
+
+def generate(self, source_path: str) -> None:
+    # ...parsing, génération, gestion erreurs...
+
+######### 🎯 NIVEAU 6: Implémentation atomique
+
+Action: Générer la documentation pour le module cible
+
+Durée: 8 min
+
+Commandes:
+
+cd scripts
+python docgen.py --source ../integration
+
+########## 🔬 NIVEAU 7: Étape exécution
+
+Pré: python -m py_compile docgen.py → OK
+Exec: python docgen.py --source ../integration → output
+Post: cat output/doc.md → Vérifier contenu
+
+########### ⚡ NIVEAU 8: Action indivisible
+
+Instruction: python docgen.py --source ../integration --single
+Validation: pytest tests/test_docgen.py
+Rollback: git checkout scripts/docgen.py
+
+📊 VALIDATION
+<input disabled="" type="checkbox"> Build: python -m py_compile docgen.py → Success
+<input disabled="" type="checkbox"> Tests: pytest tests/test_docgen.py → Pass
+<input disabled="" type="checkbox"> Lint: flake8 scripts/docgen.py → Clean
+Rollback: git checkout scripts/docgen.py
+
+---
+
+### 🎯 Visualisation interactive et navigable
+
+**ÉCOSYSTÈME DÉTECTÉ**: Node.js, Go
+
+**FICHIER CIBLE**: cloudflare-worker.js, integration/visualizer.go
+
+**CONVENTIONS**: camelCase (JS), PascalCase (Go)
+
+#### 🏗️ NIVEAU 1: Architecture visualisation
+
+- **Contexte**: Frontend JS, backend Go pour données
+- **Intégration**: API REST, WebSocket
+
+##### 🔧 NIVEAU 2: Module visualizer
+
+- **Responsabilité**: Afficher la cartographie interactive
+- **Interface**: Visualizer (JS), IVisualizer (Go)
+
+###### ⚙️ NIVEAU 3: Composant technique
+
+- **Type**: Class (JS), Interface (Go)
+- **Localisation**: cloudflare-worker.js:30, integration/visualizer.go:10
+
+####### 📋 NIVEAU 4: Interface contrat
+
+```javascript
+class Visualizer {
+    renderGraph(data) {
+        // ...
+    }
+}
+```
+
+######## 🛠️ NIVEAU 5: Méthode fonction
+
+renderGraph(data) {
+    // ...rendu interactif, gestion erreurs...
+}
+
+######### 🎯 NIVEAU 6: Implémentation atomique
+
+Action: Afficher le graphe pour le module sélectionné
+
+Durée: 7 min
+
+Commandes:
+
+cd integration
+go run visualizer.go
+# ou côté JS
+node cloudflare-worker.js
+
+########## 🔬 NIVEAU 7: Étape exécution
+
+Pré: npm run lint → Clean
+Exec: node cloudflare-worker.js --render
+Post: Vérifier affichage dans navigateur
+
+########### ⚡ NIVEAU 8: Action indivisible
+
+Instruction: node cloudflare-worker.js --render --single
+Validation: npm test
+Rollback: git checkout cloudflare-worker.js
+
+📊 VALIDATION
+<input disabled="" type="checkbox"> Build: npm run build → Success
+<input disabled="" type="checkbox"> Tests: npm test → Pass
+<input disabled="" type="checkbox"> Lint: npm run lint → Clean
+Rollback: git checkout cloudflare-worker.js
+
+---
+
+### 🎯 Interfaçage avec le doc manager existant
+
+**ÉCOSYSTÈME DÉTECTÉ**: Go, PowerShell
+
+**FICHIER CIBLE**: integration/doc_manager.go, scripts/commit-interceptor-setup.ps1
+
+**CONVENTIONS**: PascalCase (Go), kebab-case (scripts)
+
+#### 🏗️ NIVEAU 1: Architecture d’interfaçage
+
+- **Contexte**: Appels API Go, hooks PowerShell pour intégration CI/CD
+- **Intégration**: commit-interceptor, API doc manager
+
+##### 🔧 NIVEAU 2: Module d’interface
+
+- **Responsabilité**: Relier doc manager et pipeline CI
+- **Interface**: IDocManagerInterface
+
+###### ⚙️ NIVEAU 3: Composant technique
+
+- **Type**: Interface (Go), Script (PowerShell)
+- **Localisation**: integration/doc_manager.go:18, scripts/commit-interceptor-setup.ps1:5
+
+####### 📋 NIVEAU 4: Interface contrat
+
+```go
+type IDocManagerInterface interface {
+    SyncDocs() error
+    TriggerUpdate() error
+}
+```
+
+######## 🛠️ NIVEAU 5: Méthode fonction
+
+func (d *DocManager) SyncDocs() error {
+    // ...synchronisation, gestion erreurs...
+}
+
+######### 🎯 NIVEAU 6: Implémentation atomique
+
+Action: Synchroniser la documentation via hook
+
+Durée: 6 min
+
+Commandes:
+
+pwsh scripts/commit-interceptor-setup.ps1
+go run doc_manager.go --sync
+
+########## 🔬 NIVEAU 7: Étape exécution
+
+Pré: pwsh -Command "Test-Path scripts/commit-interceptor-setup.ps1" → True
+Exec: pwsh scripts/commit-interceptor-setup.ps1
+Post: go test -run TestSyncDocs → OK
+
+########### ⚡ NIVEAU 8: Action indivisible
+
+Instruction: pwsh scripts/commit-interceptor-setup.ps1 --single
+Validation: go test -run TestSyncDocs
+Rollback: git checkout integration/doc_manager.go
+
+📊 VALIDATION
+<input disabled="" type="checkbox"> Build: go build integration/doc_manager.go → Success
+<input disabled="" type="checkbox"> Tests: go test -run TestSyncDocs → Pass
+<input disabled="" type="checkbox"> Lint: golangci-lint run → Clean
+Rollback: git checkout integration/doc_manager.go
+
+---
+
+### 🎯 Compatibilité multi-langages et multi-dossiers
+
+**ÉCOSYSTÈME DÉTECTÉ**: Go, Python, Node.js
+
+**FICHIER CIBLE**: integration/objectives.go, scripts/docgen.py, cloudflare-worker.js
+
+**CONVENTIONS**: PascalCase, snake_case, camelCase
+
+#### 🏗️ NIVEAU 1: Architecture multi-langages
+
+- **Contexte**: Modules Go, scripts Python, JS pour visualisation
+- **Intégration**: API, CLI, Web
+
+##### 🔧 NIVEAU 2: Module de compatibilité
+
+- **Responsabilité**: Gérer l’interopérabilité des modules
+- **Interface**: IMultiLangCompat
+
+###### ⚙️ NIVEAU 3: Composant technique
+
+- **Type**: Interface (Go), Class (Python/JS)
+- **Localisation**: integration/multilang.go:10, scripts/docgen.py:30
+
+####### 📋 NIVEAU 4: Interface contrat
+
+```go
+type IMultiLangCompat interface {
+    CheckCompatibility() error
+}
+```
+
+######## 🛠️ NIVEAU 5: Méthode fonction
+
+func (m *MultiLangCompat) CheckCompatibility() error {
+    // ...vérification, gestion erreurs...
+}
+
+######### 🎯 NIVEAU 6: Implémentation atomique
+
+Action: Vérifier la compatibilité sur tous les dossiers
+
+Durée: 9 min
+
+Commandes:
+
+cd integration
+go run multilang.go
+python ../scripts/docgen.py --check-compat
+
+########## 🔬 NIVEAU 7: Étape exécution
+
+Pré: go vet ./... → Clean
+Exec: go run multilang.go --check
+Post: python ../scripts/docgen.py --check-compat → OK
+
+########### ⚡ NIVEAU 8: Action indivisible
+
+Instruction: go run multilang.go --check --single
+Validation: python ../scripts/docgen.py --check-compat
+Rollback: git checkout integration/multilang.go
+
+📊 VALIDATION
+<input disabled="" type="checkbox"> Build: go build integration/multilang.go → Success
+<input disabled="" type="checkbox"> Tests: go test -run TestCheckCompatibility → Pass
+<input disabled="" type="checkbox"> Lint: golangci-lint run → Clean
+Rollback: git checkout integration/multilang.go
+
+---
+
+### 🎯 Export vers formats standards (Mermaid, PlantUML, Graphviz)
+
+**ÉCOSYSTÈME DÉTECTÉ**: Go, Python
+
+**FICHIER CIBLE**: scripts/docgen.py, integration/export.go
+
+**CONVENTIONS**: snake_case, PascalCase
+
+#### 🏗️ NIVEAU 1: Architecture d’export
+
+- **Contexte**: Génération de fichiers Mermaid, PlantUML, Graphviz
+- **Intégration**: CLI Python, API Go
+
+##### 🔧 NIVEAU 2: Module d’export
+
+- **Responsabilité**: Exporter la cartographie dans différents formats
+- **Interface**: IExporter (Go), Exporter (Python)
+
+###### ⚙️ NIVEAU 3: Composant technique
+
+- **Type**: Interface (Go), Class (Python)
+- **Localisation**: integration/export.go:12, scripts/docgen.py:50
+
+####### 📋 NIVEAU 4: Interface contrat
+
+```go
+type IExporter interface {
+    ExportMermaid(data interface{}) error
+    ExportPlantUML(data interface{}) error
+    ExportGraphviz(data interface{}) error
+}
+```
+
+######## 🛠️ NIVEAU 5: Méthode fonction
+
+func (e *Exporter) ExportMermaid(data interface{}) error {
+    // ...export, gestion erreurs...
+}
+
+######### 🎯 NIVEAU 6: Implémentation atomique
+
+Action: Exporter la cartographie en Mermaid
+
+Durée: 7 min
+
+Commandes:
+
+cd integration
+go run export.go --format mermaid
+
+########## 🔬 NIVEAU 7: Étape exécution
+
+Pré: go vet ./... → Clean
+Exec: go run export.go --format mermaid
+Post: Vérifier fichier output/diagram.mmd
+
+########### ⚡ NIVEAU 8: Action indivisible
+
+Instruction: go run export.go --format mermaid --single
+Validation: cat output/diagram.mmd
+Rollback: git checkout integration/export.go
+
+📊 VALIDATION
+<input disabled="" type="checkbox"> Build: go build integration/export.go → Success
+<input disabled="" type="checkbox"> Tests: go test -run TestExportMermaid → Pass
+<input disabled="" type="checkbox"> Lint: golangci-lint run → Clean
+Rollback: git checkout integration/export.go
+
+---
+
+### 🎯 Automatisation de la mise à jour documentaire
+
+**ÉCOSYSTÈME DÉTECTÉ**: PowerShell, Python
+
+**FICHIER CIBLE**: scripts/commit-interceptor-setup.ps1, scripts/docgen.py
+
+**CONVENTIONS**: kebab-case, snake_case
+
+#### 🏗️ NIVEAU 1: Architecture d’automatisation
+
+- **Contexte**: Hooks PowerShell, scripts Python pour update auto
+- **Intégration**: CI/CD, commit hooks
+
+##### 🔧 NIVEAU 2: Module d’automatisation
+
+- **Responsabilité**: Déclencher la mise à jour documentaire à chaque commit
+- **Interface**: CommitInterceptor (PS), DocUpdater (Python)
+
+###### ⚙️ NIVEAU 3: Composant technique
+
+- **Type**: Script (PS), Class (Python)
+- **Localisation**: scripts/commit-interceptor-setup.ps1:1, scripts/docgen.py:70
+
+####### 📋 NIVEAU 4: Interface contrat
+
+```python
+class DocUpdater:
+    def update_on_commit(self) -> None:
+        pass
+```
+
+######## 🛠️ NIVEAU 5: Méthode fonction
+
+def update_on_commit(self) -> None:
+    # ...détection commit, update doc...
+
+######### 🎯 NIVEAU 6: Implémentation atomique
+
+Action: Déclencher update doc sur commit
+
+Durée: 6 min
+
+Commandes:
+
+pwsh scripts/commit-interceptor-setup.ps1
+python scripts/docgen.py --update
+
+########## 🔬 NIVEAU 7: Étape exécution
+
+Pré: pwsh -Command "Test-Path scripts/commit-interceptor-setup.ps1" → True
+Exec: pwsh scripts/commit-interceptor-setup.ps1
+Post: python scripts/docgen.py --update → OK
+
+########### ⚡ NIVEAU 8: Action indivisible
+
+Instruction: python scripts/docgen.py --update --single
+Validation: pytest tests/test_docgen.py
+Rollback: git checkout scripts/docgen.py
+
+📊 VALIDATION
+<input disabled="" type="checkbox"> Build: python -m py_compile scripts/docgen.py → Success
+<input disabled="" type="checkbox"> Tests: pytest tests/test_docgen.py → Pass
+<input disabled="" type="checkbox"> Lint: flake8 scripts/docgen.py → Clean
+Rollback: git checkout scripts/docgen.py
+
+---
+
+### 🎯 Définition des métriques de succès
+
+**ÉCOSYSTÈME DÉTECTÉ**: Go, Python
+
+**FICHIER CIBLE**: integration/metrics.go, scripts/metrics.py
+
+**CONVENTIONS**: PascalCase, snake_case
+
+#### 🏗️ NIVEAU 1: Architecture de métriques
+
+- **Contexte**: Suivi des succès via modules Go et scripts Python
+- **Intégration**: API, CLI
+
+##### 🔧 NIVEAU 2: Module de métriques
+
+- **Responsabilité**: Définir et collecter les métriques de succès
+- **Interface**: IMetrics (Go), MetricsCollector (Python)
+
+###### ⚙️ NIVEAU 3: Composant technique
+
+- **Type**: Interface (Go), Class (Python)
+- **Localisation**: integration/metrics.go:10, scripts/metrics.py:5
+
+####### 📋 NIVEAU 4: Interface contrat
+
+```go
+type IMetrics interface {
+    Collect() (Metrics, error)
+    Report() error
+}
+```
+
+######## 🛠️ NIVEAU 5: Méthode fonction
+
+func (m *MetricsManager) Collect() (Metrics, error) {
+    // ...collecte, gestion erreurs...
+}
+
+######### 🎯 NIVEAU 6: Implémentation atomique
+
+Action: Collecter et reporter les métriques
+
+Durée: 8 min
+
+Commandes:
+
+cd integration
+go run metrics.go
+python ../scripts/metrics.py --collect
+
+########## 🔬 NIVEAU 7: Étape exécution
+
+Pré: go vet ./... → Clean
+Exec: go run metrics.go --collect
+Post: python ../scripts/metrics.py --report → OK
+
+########### ⚡ NIVEAU 8: Action indivisible
+
+Instruction: go run metrics.go --collect --single
+Validation: python ../scripts/metrics.py --report
+Rollback: git checkout integration/metrics.go
+
+📊 VALIDATION
+<input disabled="" type="checkbox"> Build: go build integration/metrics.go → Success
+<input disabled="" type="checkbox"> Tests: go test -run TestCollect → Pass
+<input disabled="" type="checkbox"> Lint: golangci-lint run → Clean
+Rollback: git checkout integration/metrics.go
+
+---

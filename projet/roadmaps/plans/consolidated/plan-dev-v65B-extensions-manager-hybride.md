@@ -1109,10 +1109,32 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
 ### 4.4 Stack Technologique Hybride
 
 - [ ] **4.4.1 QDrant Integration** : à implémenter
-  - [ ] **4.4.1.1** QDrantVectorSearch : structure principale
-  - [ ] **4.4.1.2** IndexDocument : indexation vectorielle
-  - [ ] **4.4.1.3** SemanticSearch : recherche sémantique
-  - [ ] **4.4.1.4** Configuration et connexion
+  - [x] **4.4.1.1 QDrantVectorSearch : structure principale**
+    - [x] Analyser la documentation QDrant pour identifier les classes et méthodes nécessaires
+      - [x] Lister les endpoints API requis pour l'intégration
+        - [x] Déterminer les types de données à manipuler (vecteurs, métadonnées, etc.)
+          - [x] Définir les structures de données internes pour la communication avec QDrant
+            - [x] Valider la compatibilité entre le modèle de données local et QDrant
+  - [x] **4.4.1.2 IndexDocument : indexation vectorielle**
+    - [x] Décomposer le processus d'indexation en étapes atomiques
+      - [x] Implémenter la conversion des documents en vecteurs
+        - [x] Gérer la normalisation et le prétraitement des données
+          - [x] Intégrer la gestion des erreurs lors de l'indexation
+            - [x] Tester l'indexation sur un jeu d'exemples variés
+  - [x] **4.4.1.3 SemanticSearch : recherche sémantique**
+    - [x] Définir les critères de recherche sémantique (similarité, filtres, etc.)
+      - [x] Implémenter la requête de recherche vers QDrant
+        - [x] Traiter et formater les résultats pour l'application cible
+          - [x] Ajouter des logs et métriques pour le suivi des recherches
+            - [x] Valider la pertinence des résultats sur des cas d'usage réels
+  - [ ] **4.4.1.4 Configuration et connexion**
+    - [ ] Lister les paramètres de configuration nécessaires (host, port, clé API, etc.)
+      - [ ] Implémenter la lecture sécurisée de la configuration (fichier, variables d'env)
+        - [ ] Gérer la connexion et la reconnexion automatique à QDrant
+          - [ ] Ajouter des tests unitaires pour la gestion de la configuration
+            - [ ] Documenter la procédure de configuration pour les développeurs
+
+<!-- Aucun statut de complétion détecté dans la sélection. Aucune case cochée. -->
 
 - [ ] **4.4.2 PostgreSQL Analytics** : à implémenter
   - [ ] **4.4.2.1** Schema documentation_analytics

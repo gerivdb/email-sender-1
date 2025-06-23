@@ -7,6 +7,7 @@
 - Plugins VS Code ou auto-formatters : peuvent modifier le contenu entre la génération et l’application du patch, toujours valider le diff avant commit.
 
 ## Recommandations
+
 - Toujours valider l’unicité du bloc SEARCH avant application.
 - Vérifier l’encodage et la taille du fichier.
 - Utiliser Git pour gérer les conflits et l’historique.
