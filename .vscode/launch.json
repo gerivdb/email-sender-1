@@ -54,7 +54,7 @@
       "name": "🐞 Debug Current File",
       "type": "go",
       "request": "launch",
-      "mode": "debug",
+      "mode": "auto",
       "program": "${file}",
       "env": {},
       "cwd": "${workspaceFolder}",

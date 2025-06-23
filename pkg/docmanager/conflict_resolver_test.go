@@ -3,6 +3,7 @@
 package docmanager
 
 import (
+	"fmt"
 	"testing"
 	"time"
 )
@@ -249,6 +250,7 @@ func TestConflictAndResolutionGranular(t *testing.T) {
 	}
 }
 
+<<<<<<< HEAD
 func TestLastModifiedWins(t *testing.T) {
 	// Cas : timestamps identiques
 	timestamp := time.Now()
@@ -419,5 +421,214 @@ func TestAutoMergeStrategy(t *testing.T) {
 	}
 	if res.Strategy != "manual" {
 		t.Errorf("Rollback attendu: manual, obtenu: %v", res.Strategy)
+=======
+func TestConflictResolver_StrategyRegistrationAndPriority(t *testing.T) {
+	cr := NewConflictResolver()
+
+	// Ajoute une stratégie custom avec priorité supérieure
+	type HighPriorityStrategy struct{}
+	func (hps *HighPriorityStrategy) Resolve(conflict *DocumentConflict) (*Resolution, error) {
+		return &Resolution{ResolvedDoc: conflict.LocalDoc, Strategy: "high_priority", Confidence: 1.0}, nil
+	}
+	func (hps *HighPriorityStrategy) CanHandle(conflictType ConflictType) bool { return conflictType == ContentConflict }
+	func (hps *HighPriorityStrategy) Priority() int { return 99 }
+
+	cr.AddStrategy(ContentConflict, &HighPriorityStrategy{})
+
+	local := &Document{ID: "1", Path: "/a", Content: []byte("A"), Metadata: nil, Version: 1}
+	remote := &Document{ID: "1", Path: "/a", Content: []byte("B"), Metadata: nil, Version: 1}
+	conflict := &DocumentConflict{
+		ID:           "c1",
+		Type:         ContentConflict,
+		LocalDoc:     local,
+		RemoteDoc:    remote,
+		ConflictedAt: time.Now(),
+		Context:      nil,
+	}
+
+	res, err := cr.ResolveConflict(conflict)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if res.Strategy != "high_priority" {
+		t.Errorf("expected high_priority strategy, got %s", res.Strategy)
+	}
+}
+
+func TestConflictResolver_ClassificationAndMetadata(t *testing.T) {
+	cr := NewConflictResolver()
+	local := &Document{ID: "1", Path: "/a", Content: []byte("A"), Metadata: nil, Version: 1}
+	remote := &Document{ID: "1", Path: "/a", Content: []byte("B"), Metadata: nil, Version: 2}
+	conflict := &DocumentConflict{
+		ID:           "c2",
+		Type:         ContentConflict,
+		LocalDoc:     local,
+		RemoteDoc:    remote,
+		ConflictedAt: time.Now(),
+		Context:      nil,
+	}
+
+	conflictType := cr.classifyConflict(conflict)
+	if conflictType != ContentConflict {
+		t.Errorf("expected ContentConflict, got %v", conflictType)
+	}
+	severity := cr.assessConflictSeverity(conflict)
+	if severity != 1 {
+		t.Errorf("expected severity 1, got %v", severity)
+	}
+	meta := cr.extractConflictMetadata(conflict)
+	if meta["local_id"] != "1" || meta["remote_id"] != "1" {
+		t.Errorf("metadata extraction failed: %v", meta)
+	}
+}
+
+func TestConflictResolver_OptimalStrategySelection(t *testing.T) {
+	cr := NewConflictResolver()
+	// Ajoute une stratégie custom avec priorité supérieure
+	type HighPriorityStrategy struct{}
+	func (hps *HighPriorityStrategy) Resolve(conflict *DocumentConflict) (*Resolution, error) { return nil, nil }
+	func (hps *HighPriorityStrategy) CanHandle(conflictType ConflictType) bool { return true }
+	func (hps *HighPriorityStrategy) Priority() int { return 99 }
+	cr.AddStrategy(ContentConflict, &HighPriorityStrategy{})
+
+	selected := cr.selectOptimalStrategy(ContentConflict)
+	if selected.Priority() != 99 {
+		t.Errorf("expected priority 99, got %d", selected.Priority())
+	}
+
+	// Test fallback
+	fallback := cr.selectOptimalStrategy("unknown")
+	if fallback == nil {
+		t.Error("expected fallback strategy, got nil")
+	}
+}
+
+func TestConflictResolver_ExecuteAndValidateResolution(t *testing.T) {
+	cr := NewConflictResolver()
+	// Stratégie qui échoue
+	type FailingStrategy struct{}
+	func (fs *FailingStrategy) Resolve(conflict *DocumentConflict) (*Resolution, error) { return nil, fmt.Errorf("fail") }
+	func (fs *FailingStrategy) CanHandle(conflictType ConflictType) bool { return true }
+	func (fs *FailingStrategy) Priority() int { return 100 }
+	cr.AddStrategy(ContentConflict, &FailingStrategy{})
+
+	local := &Document{ID: "1", Path: "/a", Content: []byte("A"), Metadata: nil, Version: 1}
+	remote := &Document{ID: "1", Path: "/a", Content: []byte("B"), Metadata: nil, Version: 1}
+	conflict := &DocumentConflict{
+		ID:           "c3",
+		Type:         ContentConflict,
+		LocalDoc:     local,
+		RemoteDoc:    remote,
+		ConflictedAt: time.Now(),
+		Context:      nil,
+	}
+
+	selected := cr.selectOptimalStrategy(ContentConflict)
+	res, err := cr.executeAndValidateResolution(selected, conflict)
+	if err != nil {
+		t.Errorf("expected fallback to succeed, got error: %v", err)
+	}
+	if res == nil || res.Strategy != "manual" {
+		t.Errorf("expected fallback manual strategy, got %+v", res)
+	}
+}
+
+func TestLastModifiedWinsStrategy(t *testing.T) {
+	lmw := &LastModifiedWins{}
+	t0 := time.Now().Truncate(time.Microsecond)
+	t1 := t0.Add(1 * time.Microsecond)
+	local := &Document{ID: "1", Path: "/a", Content: []byte("A"), Metadata: map[string]interface{}{ "last_modified": t0 }, Version: 1}
+	remote := &Document{ID: "1", Path: "/a", Content: []byte("B"), Metadata: map[string]interface{}{ "last_modified": t1 }, Version: 1}
+	conflict := &DocumentConflict{
+		ID:           "c4",
+		Type:         ContentConflict,
+		LocalDoc:     local,
+		RemoteDoc:    remote,
+		ConflictedAt: time.Now(),
+		Context:      nil,
+	}
+	res, err := lmw.Resolve(conflict)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if res.ResolvedDoc != remote {
+		t.Errorf("expected remote to win, got %+v", res.ResolvedDoc)
+	}
+	// Test égalité stricte
+	conflict.RemoteDoc.Metadata["last_modified"] = t0
+	res, err = lmw.Resolve(conflict)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if res.Metadata["winner"] != "equal" {
+		t.Errorf("expected winner=equal, got %v", res.Metadata["winner"])
+	}
+}
+
+func TestMergeMetadataPreservesImportantFields(t *testing.T) {
+	metaA := map[string]interface{}{
+		"tags": []string{"a", "b"},
+		"authors": []string{"alice"},
+		"history": []string{"v1"},
+		"foo": "bar",
+	}
+	metaB := map[string]interface{}{
+		"tags": []string{"c"},
+		"authors": []string{"bob"},
+		"history": []string{"v2"},
+		"baz": 42,
+	}
+	merged := mergeMetadata(metaA, metaB)
+	if merged["foo"] != "bar" || merged["baz"] != 42 {
+		t.Errorf("basic merge failed: %+v", merged)
+	}
+	if tags, ok := merged["tags"].([]string); !ok || len(tags) == 0 {
+		t.Errorf("tags not preserved: %+v", merged["tags"])
+	}
+	if authors, ok := merged["authors"].([]string); !ok || len(authors) == 0 {
+		t.Errorf("authors not preserved: %+v", merged["authors"])
+	}
+	if history, ok := merged["history"].([]string); !ok || len(history) == 0 {
+		t.Errorf("history not preserved: %+v", merged["history"])
+	}
+}
+
+func TestCalculateQualityScoreAndOptimalVersion(t *testing.T) {
+	docA := &Document{Content: []byte("# Title\n- item\n[link](url)\n![](img.png)\nThis is a test.")}
+	docB := &Document{Content: []byte("plain text")}
+	scoreA := calculateQualityScore(docA)
+	scoreB := calculateQualityScore(docB)
+	if scoreA <= scoreB {
+		t.Errorf("expected docA to have higher score, got %v <= %v", scoreA, scoreB)
+	}
+	minScore := 1.0
+	selected := selectOptimalVersionByQuality(docA, docB, minScore, func() *Document { return docB })
+	if selected != docA {
+		t.Errorf("expected docA to be selected, got %+v", selected)
+	}
+	// Test fallback si aucun ne passe le seuil
+	selected = selectOptimalVersionByQuality(docB, docB, 100.0, func() *Document { return docA })
+	if selected != docA {
+		t.Errorf("expected fallback to docA, got %+v", selected)
+	}
+}
+
+func TestAutoMerge(t *testing.T) {
+	cr := NewConflictResolver()
+	docA := &Document{ID: "1", Path: "/a", Content: []byte("A"), Metadata: map[string]interface{}{ "foo": 1 }, Version: 1}
+	docB := &Document{ID: "1", Path: "/a", Content: []byte("B"), Metadata: map[string]interface{}{ "bar": 2 }, Version: 2}
+	merged, err := cr.autoMerge(docA, docB)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if string(merged.Content) != "AB" && string(merged.Content) != "BA" {
+		t.Errorf("unexpected merged content: %s", string(merged.Content))
+	}
+	if merged.Metadata["foo"] != 1 || merged.Metadata["bar"] != 2 {
+		t.Errorf("metadata not merged correctly: %+v", merged.Metadata)
+	}
+	if merged.Version != 2 {
+		t.Errorf("expected version 2, got %d", merged.Version)
+>>>>>>> diff-edit-implementation-v67
 	}
 }

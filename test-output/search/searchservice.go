@@ -64,7 +64,9 @@ type SearchResult struct {
 }
 
 // Document represents a document to be indexed
-type Document struct {
+// Renamed to avoid conflict with canonical Document
+// Use SearchDocument for local use
+type SearchDocument struct {
 	ID       string                 `json:"id"`
 	Content  string                 `json:"content"`
 	Metadata map[string]interface{} `json:"metadata"`
@@ -151,7 +153,7 @@ func (s *SearchService) Search(ctx context.Context, req *SearchRequest) (*Search
 }
 
 // IndexDocument indexes a document in the vector database
-func (s *SearchService) IndexDocument(ctx context.Context, doc *Document) error {
+func (s *SearchService) IndexDocument(ctx context.Context, doc *SearchDocument) error {
 	// Generate embedding for document content
 	embedding, err := s.embedder.GenerateEmbedding(ctx, doc.Content)
 	if err != nil {

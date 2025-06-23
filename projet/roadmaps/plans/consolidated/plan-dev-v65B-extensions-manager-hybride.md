@@ -1055,6 +1055,7 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
 #### 4.3.1 Architecture ConflictResolver (`pkg/docmanager/conflict_resolver.go`)
 
 - [x] **4.3.1.1 Structure ConflictResolver** : structure définie
+<<<<<<< HEAD
 - [x] **4.3.1.1.1** TASK: Système stratégies pluggables
   - [x] **Code** : `type ResolutionStrategy interface { Resolve(*DocumentConflict) (*Document, error); CanHandle(ConflictType) bool; Priority() int }`
   - [x] **Code** : `strategies map[ConflictType][]ResolutionStrategy`
@@ -1062,6 +1063,15 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
   - [x] **Test** : test enregistrement, priorités stratégies
 
 - [x] **4.3.1.2 TASK ATOMIQUE: ResolveConflict - Orchestration Résolution** :
+=======
+  - [ ] **4.3.1.1.1** TASK: Système stratégies pluggables
+    - [x] **Code** : `type ResolutionStrategy interface { Resolve(*DocumentConflict) (*Document, error); CanHandle(ConflictType) bool; Priority() int }`
+    - [x] **Code** : `strategies map[ConflictType][]ResolutionStrategy`
+    - [x] **Code** : `defaultStrategy ResolutionStrategy`
+    - [x] **Test** : test enregistrement, priorités stratégies
+
+- [ ] **4.3.1.2 TASK ATOMIQUE: ResolveConflict - Orchestration Résolution** :
+>>>>>>> diff-edit-implementation-v67
   - [x] **4.3.1.2.1** MICRO-TASK: Analyse et classification conflit
     - [x] **Code** : `conflictType := cr.classifyConflict(conflict)`
     - [x] **Code** : `severity := cr.assessConflictSeverity(conflict)`
@@ -1080,6 +1090,7 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
 
 #### 4.3.2 Stratégies de Résolution Spécialisées
 
+<<<<<<< HEAD
 - [x] 4.3.2.1 LastModifiedWins Strategy (comparaison timestamps, fusion métadonnées, tests unitaires)
 - [x] 4.3.2.2 QualityBased Strategy (calcul score qualité multi-critères, sélection version optimale, seuil minimal, fallback, tests cohérents et reproductibles)
 - [x] 4.3.2.3 UserPrompt (demande utilisateur en cas d’ambiguïté, interface, tests)
@@ -1092,6 +1103,63 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
   - [x] **4.4.1.2** IndexDocument : indexation vectorielle
   - [x] **4.4.1.3** SemanticSearch : recherche sémantique
   - [x] **4.4.1.4** Configuration et connexion
+=======
+- [ ] **4.3.2.1 TASK ATOMIQUE: LastModifiedWins Strategy** :
+  - [x] **4.3.2.1.1** MICRO-TASK: Comparaison timestamps précise
+    - [x] **Code** : `type LastModifiedWins struct{}`
+    - [x] **Code** : `func (lmw *LastModifiedWins) Resolve(conflict *DocumentConflict) (*Document, error) { ... }`
+    - [x] **Code** : comparer `conflict.VersionA.LastModified` vs `conflict.VersionB.LastModified`
+    - [x] **Test** : test avec timestamps identiques, différence microseconde
+  - [x] **4.3.2.1.2** MICRO-TASK: Préservation métadonnées perdantes
+    - [x] **Code** : `winner := selectByTimestamp(versionA, versionB)`
+    - [x] **Code** : `winner.Metadata = mergeMetadata(versionA.Metadata, versionB.Metadata)`
+    - [x] **Code** : préserver tags, auteurs, historique
+    - [x] **Test** : vérifier pas de perte métadonnées importantes
+
+- [ ] **4.3.2.2 TASK ATOMIQUE: QualityBased Strategy** :
+  - [x] **4.3.2.2.1** MICRO-TASK: Calcul score qualité multi-critères
+    - [x] **Code** : `score := calculateQualityScore(doc)` basé sur : longueur, structure, liens, images, grammaire
+    - [x] **Code** : `structureScore := analyzeMarkdownStructure(doc.Content)`
+    - [x] **Code** : `linkScore := validateAllLinks(doc.Content)`
+    - [x] **Test** : test scoring cohérent, reproductible
+  - [x] **4.3.2.2.2** MICRO-TASK: Sélection version optimale
+    - [x] **Code** : `if scoreA > scoreB { return versionA } else { return versionB }`
+    - [x] **Code** : seuil minimum qualité avant acceptation
+    - [x] **Code** : fallback vers autre stratégie si qualité insuffisante
+    - [x] **Test** : test avec documents très similaires, très différents
+  - [x] **4.3.2.3** UserPrompt : demande à l'utilisateur
+  - [x] **4.3.2.4** AutoMerge : fusion automatique intelligente
+
+### 4.4 Stack Technologique Hybride
+
+- [ ] **4.4.1 QDrant Integration** : à implémenter
+  - [x] **4.4.1.1 QDrantVectorSearch : structure principale**
+    - [x] Analyser la documentation QDrant pour identifier les classes et méthodes nécessaires
+      - [x] Lister les endpoints API requis pour l'intégration
+        - [x] Déterminer les types de données à manipuler (vecteurs, métadonnées, etc.)
+          - [x] Définir les structures de données internes pour la communication avec QDrant
+            - [x] Valider la compatibilité entre le modèle de données local et QDrant
+  - [x] **4.4.1.2 IndexDocument : indexation vectorielle**
+    - [x] Décomposer le processus d'indexation en étapes atomiques
+      - [x] Implémenter la conversion des documents en vecteurs
+        - [x] Gérer la normalisation et le prétraitement des données
+          - [x] Intégrer la gestion des erreurs lors de l'indexation
+            - [x] Tester l'indexation sur un jeu d'exemples variés
+  - [x] **4.4.1.3 SemanticSearch : recherche sémantique**
+    - [x] Définir les critères de recherche sémantique (similarité, filtres, etc.)
+      - [x] Implémenter la requête de recherche vers QDrant
+        - [x] Traiter et formater les résultats pour l'application cible
+          - [x] Ajouter des logs et métriques pour le suivi des recherches
+            - [x] Valider la pertinence des résultats sur des cas d'usage réels
+  - [ ] **4.4.1.4 Configuration et connexion**
+    - [ ] Lister les paramètres de configuration nécessaires (host, port, clé API, etc.)
+      - [ ] Implémenter la lecture sécurisée de la configuration (fichier, variables d'env)
+        - [ ] Gérer la connexion et la reconnexion automatique à QDrant
+          - [ ] Ajouter des tests unitaires pour la gestion de la configuration
+            - [ ] Documenter la procédure de configuration pour les développeurs
+
+<!-- Aucun statut de complétion détecté dans la sélection. Aucune case cochée. -->
+>>>>>>> diff-edit-implementation-v67
 
 - [x] **4.4.2 PostgreSQL Analytics** : à implémenter
   - [x] **4.4.2.1** Schema documentation_analytics
@@ -1150,11 +1218,11 @@ func (pt *PathTracker) ValidatePostMove(oldPath, newPath string) (*IntegrityResu
     - [ ] **Code** : `func CreateTestConflict(docA, docB *Document) *DocumentConflict { ... }`
     - [ ] **Code** : `func CreateTempTestFiles(count int) ([]string, func()) { ... }`
     - [ ] **Test** : vérifier fixtures valides et reproductibles
-  - [ ] **5.1.1.2.2** MICRO-TASK: Configuration test database
-    - [ ] **Code** : `func SetupTestDB() (*sql.DB, func()) { ... }`
-    - [ ] **Code** : utiliser SQLite en mémoire pour tests
-    - [ ] **Code** : migrations automatiques pour schéma test
-    - [ ] **Test** : base isolée par test, cleanup automatique
+  - [x] **5.1.1.2.2** MICRO-TASK: Configuration test database
+    - [x] **Code** : `func SetupTestDB() (*sql.DB, func()) { ... }`
+    - [x] **Code** : utiliser SQLite en mémoire pour tests
+    - [x] **Code** : migrations automatiques pour schéma test
+    - [x] **Test** : base isolée par test, cleanup automatique
 
 #### 5.1.2 Tests Spécialisés par Composant
 

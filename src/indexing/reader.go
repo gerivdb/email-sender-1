@@ -1,19 +1,13 @@
 package indexing
 
 // DocumentReader interface defines methods for reading different document formats
+// Use IndexingDocument for local use
+//
 type DocumentReader interface {
 	// Read reads the content and metadata from a file
-	Read(path string) (*Document, error)
+	Read(path string) (*IndexingDocument, error)
 	// GetSupportedExtensions returns the file extensions this reader supports
 	GetSupportedExtensions() []string
-}
-
-// Document represents a file's content and metadata
-type Document struct {
-	Path     string
-	Content  string
-	Metadata map[string]interface{}
-	Encoding string
 }
 
 // FileType represents supported document types

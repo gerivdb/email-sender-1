@@ -5,6 +5,7 @@ package docmanager
 import (
 	"fmt"
 	"regexp"
+	"sort"
 	"time"
 )
 
@@ -31,6 +32,8 @@ const (
 // ResolutionStrategy stratégie de résolution de conflit
 type ResolutionStrategy interface {
 	Resolve(conflict *DocumentConflict) (*Resolution, error)
+	CanHandle(conflictType ConflictType) bool
+	Priority() int
 }
 
 // DocumentConflict représente un conflit entre documents
@@ -43,14 +46,6 @@ type DocumentConflict struct {
 	Context      map[string]interface{}
 }
 
-// Resolution résultat de résolution de conflit
-type Resolution struct {
-	ResolvedDoc *Document
-	Strategy    string
-	Confidence  float64
-	Metadata    map[string]interface{}
-}
-
 // Document structure de document (simplifiée)
 type Document struct {
 	ID       string
@@ -60,50 +55,82 @@ type Document struct {
 	Version  int
 }
 
+// Resolution résultat de résolution de conflit
+type Resolution struct {
+	ResolvedDoc *Document
+	Strategy    string
+	Confidence  float64
+	Metadata    map[string]interface{}
+}
+
 // ConflictResolver - SRP: Résolution de conflits uniquement
+// Adapte strategies pour supporter plusieurs stratégies par type
+// et ajoute la gestion des priorités
+
 type ConflictResolver struct {
-	strategies      map[ConflictType]ResolutionStrategy
+	strategies      map[ConflictType][]ResolutionStrategy
 	defaultStrategy ResolutionStrategy
 }
 
 // NewConflictResolver constructeur respectant SRP
 func NewConflictResolver() *ConflictResolver {
 	resolver := &ConflictResolver{
-		strategies: make(map[ConflictType]ResolutionStrategy),
+		strategies: make(map[ConflictType][]ResolutionStrategy),
 	}
-
-	// Stratégies par défaut
-	resolver.strategies[ContentConflict] = &ContentMergeStrategy{}
-	resolver.strategies[MetadataConflict] = &MetadataPreferenceStrategy{}
-	resolver.strategies[VersionConflict] = &VersionBasedStrategy{}
-	resolver.strategies[PathConflict] = &PathRenameStrategy{}
-	// Ajout QualityBasedStrategy pour ContentConflict (remplace ou complète)
-	resolver.strategies[ContentConflict] = &QualityBasedStrategy{MinScore: 100}
-	resolver.strategies[MetadataConflict] = &MetadataPreferenceStrategy{}
-	resolver.strategies[VersionConflict] = &VersionBasedStrategy{}
-	resolver.strategies[PathConflict] = &UserPromptStrategy{Prompter: nil}
+	// Ajoute les stratégies par défaut avec priorités
+	resolver.strategies[ContentConflict] = []ResolutionStrategy{
+		&ContentMergeStrategy{},
+		&QualityBasedStrategy{MinScore: 100},
+	}
+	resolver.strategies[MetadataConflict] = []ResolutionStrategy{&MetadataPreferenceStrategy{}}
+	resolver.strategies[VersionConflict] = []ResolutionStrategy{&VersionBasedStrategy{}}
+	resolver.strategies[PathConflict] = []ResolutionStrategy{
+		&PathRenameStrategy{},
+		&UserPromptStrategy{Prompter: nil},
+	}
 	resolver.defaultStrategy = &ManualResolutionStrategy{}
-
 	return resolver
 }
 
-// ResolveConflict résout un conflit selon sa stratégie
+// Ajoute une stratégie pour un type de conflit
+func (cr *ConflictResolver) AddStrategy(conflictType ConflictType, strategy ResolutionStrategy) {
+	cr.strategies[conflictType] = append(cr.strategies[conflictType], strategy)
+}
+
+// Résout un conflit en choisissant la stratégie de plus haute priorité pouvant le gérer
 func (cr *ConflictResolver) ResolveConflict(conflict *DocumentConflict) (*Resolution, error) {
 	if conflict == nil {
 		return nil, fmt.Errorf("conflict cannot be nil")
 	}
-
-	strategy, exists := cr.strategies[conflict.Type]
-	if !exists {
-		strategy = cr.defaultStrategy
+	strategies := cr.strategies[conflict.Type]
+	if len(strategies) == 0 {
+		return cr.defaultStrategy.Resolve(conflict)
 	}
-
-	return strategy.Resolve(conflict)
+	// Trie par priorité décroissante
+	highest := strategies[0]
+	for _, s := range strategies {
+		if s.CanHandle(conflict.Type) && s.Priority() > highest.Priority() {
+			highest = s
+		}
+	}
+	return highest.Resolve(conflict)
 }
 
 // SetStrategy configure une stratégie pour un type de conflit
 func (cr *ConflictResolver) SetStrategy(conflictType ConflictType, strategy ResolutionStrategy) {
-	cr.strategies[conflictType] = strategy
+	cr.strategies[conflictType] = []ResolutionStrategy{strategy}
+}
+
+// Sélectionne la meilleure stratégie pour un type de conflit donné
+func (cr *ConflictResolver) selectOptimalStrategy(conflictType ConflictType) ResolutionStrategy {
+	strategies := cr.strategies[conflictType]
+	if len(strategies) == 0 {
+		return cr.defaultStrategy
+	}
+	sort.Slice(strategies, func(i, j int) bool {
+		return strategies[i].Priority() > strategies[j].Priority()
+	})
+	return strategies[0]
 }
 
 // Stratégies concrètes implémentant ResolutionStrategy
@@ -120,6 +147,12 @@ func (cms *ContentMergeStrategy) Resolve(conflict *DocumentConflict) (*Resolutio
 		Metadata:    map[string]interface{}{"merged": true},
 	}, nil
 }
+func (cms *ContentMergeStrategy) CanHandle(conflictType ConflictType) bool {
+	return conflictType == ContentConflict
+}
+func (cms *ContentMergeStrategy) Priority() int {
+	return 10
+}
 
 // MetadataPreferenceStrategy privilégie certaines métadonnées
 type MetadataPreferenceStrategy struct{}
@@ -132,6 +165,12 @@ func (mps *MetadataPreferenceStrategy) Resolve(conflict *DocumentConflict) (*Res
 		Confidence:  0.9,
 		Metadata:    map[string]interface{}{"preferred": "remote"},
 	}, nil
+}
+func (mps *MetadataPreferenceStrategy) CanHandle(conflictType ConflictType) bool {
+	return conflictType == MetadataConflict
+}
+func (mps *MetadataPreferenceStrategy) Priority() int {
+	return 8
 }
 
 // VersionBasedStrategy résout selon les versions
@@ -152,6 +191,12 @@ func (vbs *VersionBasedStrategy) Resolve(conflict *DocumentConflict) (*Resolutio
 		Metadata:    map[string]interface{}{"version_winner": resolvedDoc.Version},
 	}, nil
 }
+func (vbs *VersionBasedStrategy) CanHandle(conflictType ConflictType) bool {
+	return conflictType == VersionConflict
+}
+func (vbs *VersionBasedStrategy) Priority() int {
+	return 7
+}
 
 // PathRenameStrategy renomme en cas de conflit de chemin
 type PathRenameStrategy struct{}
@@ -165,6 +210,12 @@ func (prs *PathRenameStrategy) Resolve(conflict *DocumentConflict) (*Resolution,
 		Metadata:    map[string]interface{}{"renamed": true},
 	}, nil
 }
+func (prs *PathRenameStrategy) CanHandle(conflictType ConflictType) bool {
+	return conflictType == PathConflict
+}
+func (prs *PathRenameStrategy) Priority() int {
+	return 5
+}
 
 // ManualResolutionStrategy nécessite intervention manuelle
 type ManualResolutionStrategy struct{}
@@ -177,282 +228,16 @@ func (mrs *ManualResolutionStrategy) Resolve(conflict *DocumentConflict) (*Resol
 		Metadata:    map[string]interface{}{"requires_manual": true},
 	}, nil
 }
-
-// Ajout : ConflictSeverity, ResolutionStatus, méthodes Detect et Score, et ConflictManager
-
-type ConflictSeverity int
-
-const (
-	Low ConflictSeverity = iota
-	Medium
-	High
-)
-
-type ResolutionStatus int
-
-const (
-	Pending ResolutionStatus = iota
-	Resolved
-	RolledBack
-)
-
-// Extension de l'interface ResolutionStrategy pour Score et Detect
-// (optionnel selon granularisation, mais Score utile pour priorisation)
-type ScoringStrategy interface {
-	Score(conflict *DocumentConflict) float64
+func (mrs *ManualResolutionStrategy) CanHandle(conflictType ConflictType) bool {
+	return true // fallback
+}
+func (mrs *ManualResolutionStrategy) Priority() int {
+	return 0
 }
 
-type DetectingStrategy interface {
-	Detect() ([]*DocumentConflict, error)
-}
-
-// ConflictManager struct — Orchestrateur de la résolution multi-conflits documentaires.
-//
-// Rôle :
-//   - Centralise la gestion, la détection et la résolution de multiples conflits documentaires.
-//
-// Interfaces principales :
-//   - Utilise ResolutionStrategy, ScoringStrategy, DetectingStrategy.
-//   - Expose des méthodes d’ajout de résolveurs, de détection et de résolution (voir méthodes ci-dessous).
-//
-// Utilisation :
-//   - Permet d’ajouter dynamiquement des stratégies de résolution.
-//   - Orchestration de la détection et de la résolution sur plusieurs stratégies.
-//
-// Entrée/Sortie :
-//   - Documents en conflit, stratégies appliquées, logs de résolution.
-//
-// Exemple :
-//   mgr := ConflictManager{...}
-//   mgr.AddResolver(myStrategy)
-//   conflicts, _ := mgr.DetectAll()
-//
-// Voir aussi : ResolutionStrategy, ScoringStrategy, DetectingStrategy
-type ConflictManager struct {
-	Resolvers []ResolutionStrategy
-}
-
-func (cm *ConflictManager) AddResolver(r ResolutionStrategy) {
-	cm.Resolvers = append(cm.Resolvers, r)
-}
-
-func (cm *ConflictManager) DetectAll() ([]*DocumentConflict, error) {
-	var all []*DocumentConflict
-	for _, r := range cm.Resolvers {
-		if d, ok := r.(DetectingStrategy); ok {
-			conflicts, err := d.Detect()
-			if err != nil {
-				return nil, err
-			}
-			all = append(all, conflicts...)
-		}
-	}
-	return all, nil
-}
-
-func (cm *ConflictManager) ResolveAll() ([]*Resolution, error) {
-	conflicts, err := cm.DetectAll()
-	if err != nil {
-		return nil, err
-	}
-	var resolutions []*Resolution
-	for _, c := range conflicts {
-		var best ResolutionStrategy
-		var bestScore float64
-		for _, r := range cm.Resolvers {
-			if s, ok := r.(ScoringStrategy); ok {
-				score := s.Score(c)
-				if best == nil || score > bestScore {
-					best = r
-					bestScore = score
-				}
-			}
-		}
-		if best == nil {
-			best = cm.Resolvers[0]
-		}
-		res, err := best.Resolve(c)
-		if err != nil {
-			return nil, err
-		}
-		resolutions = append(resolutions, res)
-	}
-	return resolutions, nil
-}
-
-// Implémentation granularisée : interface et struct ConflictResolverImpl
-
-type ConflictResolverImpl struct {
-	strategies      map[ConflictType]ResolutionStrategy
-	defaultStrategy ResolutionStrategy
-}
-
-func NewConflictResolverImpl() *ConflictResolverImpl {
-	return &ConflictResolverImpl{
-		strategies:      make(map[ConflictType]ResolutionStrategy),
-		defaultStrategy: &ManualResolutionStrategy{},
-	}
-}
-
-func (cr *ConflictResolverImpl) Detect() ([]*DocumentConflict, error) {
-	// Détection des conflits selon les stratégies enregistrées (exemple simplifié)
-	return []*DocumentConflict{}, nil
-}
-
-func (cr *ConflictResolverImpl) Resolve(conflict *DocumentConflict) (*Resolution, error) {
-	strategy, exists := cr.strategies[conflict.Type]
-	if !exists {
-		strategy = cr.defaultStrategy
-	}
-	return strategy.Resolve(conflict)
-}
-
-func (cr *ConflictResolverImpl) Score(conflict *DocumentConflict) float64 {
-	// Calcul du score de criticité (exemple simplifié)
-	return 1.0
-}
-
-// TODO: Implémenter la gestion précise de la durée d’implémentation (Durée: 10 min)
-// TODO: Ajouter un script ou une documentation pour les commandes build/test
-// TODO: Ajouter des hooks ou scripts pour go vet, go test, golangci-lint
-// TODO: Préparer un script ou une fonction de rollback (git checkout ...)
-// TODO: Ajouter des validations automatiques pour chaque étape
-
-// Interface contrat
-
-type ConflictResolverInterface interface {
-	Detect() ([]*DocumentConflict, error)
-	Resolve(conflict *DocumentConflict) (*Resolution, error)
-	Score(conflict *DocumentConflict) float64
-}
-
-// 3.6.1.4 Structure Conflict avec champs Type, Severity, Participants, Metadata
-type Conflict struct {
-	Type         ConflictTypeEnum
-	Severity     ConflictSeverity
-	Participants []string
-	Metadata     map[string]interface{}
-}
-
-// 3.6.1.5 Structure Resolution avec Status, Strategy, AppliedAt, Rollback
-type ResolutionGranular struct {
-	Status    ResolutionStatus
-	Strategy  string
-	AppliedAt time.Time
-	Rollback  func() error
-}
-
-// 3.6.1.8 Validation avec go vet et golangci-lint : OK (voir scripts build_and_test.ps1)
-
-// LastModifiedWins Strategy
-// Compare les timestamps de modification et préserve les métadonnées du perdant
-
-type LastModifiedWins struct{}
-
-type TimestampedDocument struct {
-	Doc          *Document
-	LastModified time.Time
-}
-
-func (lmw *LastModifiedWins) Resolve(conflict *DocumentConflict) (*Resolution, error) {
-	// On suppose que les métadonnées contiennent les timestamps
-	versionA := TimestampedDocument{Doc: conflict.LocalDoc}
-	versionB := TimestampedDocument{Doc: conflict.RemoteDoc}
-	if tA, ok := conflict.LocalDoc.Metadata["LastModified"].(time.Time); ok {
-		versionA.LastModified = tA
-	}
-	if tB, ok := conflict.RemoteDoc.Metadata["LastModified"].(time.Time); ok {
-		versionB.LastModified = tB
-	}
-	var winner, loser *Document
-	if versionA.LastModified.After(versionB.LastModified) {
-		winner, loser = versionA.Doc, versionB.Doc
-	} else {
-		winner, loser = versionB.Doc, versionA.Doc
-	}
-	// Fusionner les métadonnées du perdant
-	winner.Metadata = mergeMetadata(winner.Metadata, loser.Metadata)
-	return &Resolution{
-		ResolvedDoc: winner,
-		Strategy:    "last_modified_wins",
-		Confidence:  1.0,
-		Metadata:    map[string]interface{}{"winner": winner.ID, "loser": loser.ID},
-	}, nil
-}
-
-func mergeMetadata(metaA, metaB map[string]interface{}) map[string]interface{} {
-	merged := make(map[string]interface{})
-	for k, v := range metaA {
-		merged[k] = v
-	}
-	for k, v := range metaB {
-		if _, exists := merged[k]; !exists {
-			merged[k] = v
-		}
-	}
-	// Préserver tags, auteurs, historique si présents
-	for _, key := range []string{"tags", "authors", "history"} {
-		if v, ok := metaA[key]; ok {
-			merged[key] = v
-		}
-		if v, ok := metaB[key]; ok {
-			merged[key] = v
-		}
-	}
-	return merged
-}
-
-// QualityBasedStrategy : sélectionne la meilleure version selon un score qualité multi-critères
-// Critères : longueur, structure (headers, sections), liens, images, etc.
+// QualityBasedStrategy sélectionne selon un score qualité
 type QualityBasedStrategy struct {
-	MinScore float64 // seuil minimal pour accepter une version
-}
-
-// calculateQualityScore calcule un score qualité pour un document
-func calculateQualityScore(doc *Document) float64 {
-	if doc == nil || len(doc.Content) == 0 {
-		return 0
-	}
-	text := string(doc.Content)
-	wordCount := float64(len(splitWords(text)))
-	structureScore := 0.0
-	linkScore := 0.0
-	imageScore := 0.0
-
-	// Structure : headers (ex: Markdown #, ##, etc.)
-	headers := countHeaders(text)
-	if headers > 0 {
-		structureScore += float64(headers) * 2
-	}
-	// Liens (http, https)
-	links := countLinks(text)
-	if links > 0 {
-		linkScore += float64(links) * 1.5
-	}
-	// Images (ex: ![...](...))
-	images := countImages(text)
-	if images > 0 {
-		imageScore += float64(images) * 2
-	}
-	// Score global : pondération simple
-	return wordCount + structureScore + linkScore + imageScore
-}
-
-func splitWords(text string) []string {
-	// Sépare sur espaces, ponctuation simple
-	return regexp.MustCompile(`\w+`).FindAllString(text, -1)
-}
-
-func countHeaders(text string) int {
-	return len(regexp.MustCompile(`(?m)^#{1,6} `).FindAllString(text, -1))
-}
-
-func countLinks(text string) int {
-	return len(regexp.MustCompile(`https?://\S+`).FindAllString(text, -1))
-}
-
-func countImages(text string) int {
-	return len(regexp.MustCompile(`!\[.*?\]\(.*?\)`).FindAllString(text, -1))
+	MinScore float64
 }
 
 func (qbs *QualityBasedStrategy) Resolve(conflict *DocumentConflict) (*Resolution, error) {
@@ -480,9 +265,14 @@ func (qbs *QualityBasedStrategy) Resolve(conflict *DocumentConflict) (*Resolutio
 		Metadata:    map[string]interface{}{ "winner": winner.ID, "loser": loser.ID, "scoreA": scoreA, "scoreB": scoreB },
 	}, nil
 }
+func (qbs *QualityBasedStrategy) CanHandle(conflictType ConflictType) bool {
+	return conflictType == ContentConflict
+}
+func (qbs *QualityBasedStrategy) Priority() int {
+	return 9
+}
 
-// UserPromptStrategy : demande à l’utilisateur de choisir la version à conserver en cas d’ambiguïté
-// Utilise une interface UserPrompter pour l’abstraction (testable/mockable)
+// UserPromptStrategy demande à l'utilisateur
 type UserPrompter interface {
 	PromptUser(conflict *DocumentConflict) (choice string, err error)
 }
@@ -515,9 +305,57 @@ func (ups *UserPromptStrategy) Resolve(conflict *DocumentConflict) (*Resolution,
 		Metadata:    map[string]interface{}{ "winner": winner.ID, "loser": loser.ID, "choice": choice },
 	}, nil
 }
+func (ups *UserPromptStrategy) CanHandle(conflictType ConflictType) bool {
+	return conflictType == PathConflict
+}
+func (ups *UserPromptStrategy) Priority() int {
+	return 4
+}
 
-// AutoMergeStrategy : tente une fusion automatique, rollback si échec
-// Fusionne le contenu si possible, sinon rollback (retourne erreur ou version manuelle)
+// mergeMetadata fusionne les métadonnées de deux documents en préservant les clés de A et complétant avec celles de B
+func mergeMetadata(metaA, metaB map[string]interface{}) map[string]interface{} {
+	merged := make(map[string]interface{})
+	for k, v := range metaA {
+		merged[k] = v
+	}
+	for k, v := range metaB {
+		if _, exists := merged[k]; !exists {
+			merged[k] = v
+		}
+	}
+	return merged
+}
+
+// calculateQualityScore calcule un score qualité
+func calculateQualityScore(doc *Document) float64 {
+	if doc == nil || len(doc.Content) == 0 {
+		return 0
+	}
+	text := string(doc.Content)
+	wordCount := float64(len(splitWords(text)))
+	structureScore := float64(countHeaders(text)) * 2
+	linkScore := float64(countLinks(text)) * 1.5
+	imageScore := float64(countImages(text)) * 2
+	return wordCount + structureScore + linkScore + imageScore
+}
+
+func splitWords(text string) []string {
+	return regexp.MustCompile(`\w+`).FindAllString(text, -1)
+}
+
+func countHeaders(text string) int {
+	return len(regexp.MustCompile(`(?m)^#{1,6} `).FindAllString(text, -1))
+}
+
+func countLinks(text string) int {
+	return len(regexp.MustCompile(`https?://\S+`).FindAllString(text, -1))
+}
+
+func countImages(text string) int {
+	return len(regexp.MustCompile(`!\[.*?\]\(.*?\)`).FindAllString(text, -1))
+}
+
+// AutoMergeStrategy tente une fusion automatique
 type AutoMergeStrategy struct{}
 
 func (ams *AutoMergeStrategy) Resolve(conflict *DocumentConflict) (*Resolution, error) {
@@ -530,17 +368,19 @@ func (ams *AutoMergeStrategy) Resolve(conflict *DocumentConflict) (*Resolution, 
 			Metadata:    map[string]interface{}{ "merged": true },
 		}, nil
 	}
-	// Rollback : impossible de fusionner automatiquement
 	return (&ManualResolutionStrategy{}).Resolve(conflict)
 }
+func (ams *AutoMergeStrategy) CanHandle(conflictType ConflictType) bool {
+	return conflictType == ContentConflict
+}
+func (ams *AutoMergeStrategy) Priority() int {
+	return 11
+}
 
-// tryAutoMerge : exemple simplifié de fusion automatique (concatène si pas de conflit sur les lignes)
 func tryAutoMerge(docA, docB *Document) (*Document, bool) {
 	if string(docA.Content) == string(docB.Content) {
-		// Pas de conflit, contenu identique
 		return docA, true
 	}
-	// Exemple : si les contenus n’ont pas de lignes en commun, on concatène
 	linesA := splitLines(string(docA.Content))
 	linesB := splitLines(string(docB.Content))
 	lineSet := make(map[string]struct{})
@@ -549,11 +389,9 @@ func tryAutoMerge(docA, docB *Document) (*Document, bool) {
 	}
 	for _, l := range linesB {
 		if _, exists := lineSet[l]; exists {
-			// Conflit détecté, pas de fusion auto
 			return nil, false
 		}
 	}
-	// Pas de lignes en commun, on concatène
 	merged := &Document{
 		ID:       docA.ID + "+" + docB.ID,
 		Content:  []byte(string(docA.Content) + "\n" + string(docB.Content)),
