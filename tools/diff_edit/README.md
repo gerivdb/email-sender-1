@@ -106,3 +106,15 @@ func Addition(a, b int) int {
 | Code Go              | return a + b            | return a + b // modifié        | Avec contexte                   |
 | Config JSON          | "key": "old"            | "key": "new"                   | Attention aux espaces           |
 | Batch multi-fichiers | Bloc commun dans plusieurs fichiers | Bloc modifié         | Gérer les erreurs partielles    |
+
+## Modules et extensions
+
+Pour ajouter un nouveau module (support format, intégration outil, etc.), voir la procédure détaillée dans `MODULES_EXTENSIONS.md`.
+
+## FAQ / Problèmes fréquents
+
+Consultez `FAQ_PROBLEMES.md` pour les problèmes courants, solutions et retours d’expérience.
+
+## Historique des mises à jour
+
+Voir la section "Maintenance et évolutivité" du plan principal pour la procédure de mise à jour continue de la documentation.
