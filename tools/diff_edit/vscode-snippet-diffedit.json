@@ -1,0 +1,13 @@
+{
+  "Diff Edit Block": {
+    "prefix": "diffedit",
+    "body": [
+      "------- SEARCH",
+      "$TM_SELECTED_TEXT",
+      "=======",
+      "${1:Texte de remplacement}",
+      "+++++++ REPLACE"
+    ],
+    "description": "Bloc diff Edit pour patch ciblé"
+  }
+}
