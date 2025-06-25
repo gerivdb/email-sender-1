@@ -11,12 +11,12 @@ import (
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 
-	"github.com/email-sender/maintenance-manager/src/ai"
-	"github.com/email-sender/maintenance-manager/src/cleanup"
-	"github.com/email-sender/maintenance-manager/src/core"
-	"github.com/email-sender/maintenance-manager/src/integration"
-	"github.com/email-sender/maintenance-manager/src/templates"
-	"github.com/email-sender/maintenance-manager/src/vector"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/ai"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/cleanup"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/core"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/integration"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/templates"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/vector"
 )
 
 var (

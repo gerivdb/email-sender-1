@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/email-sender/managers/interfaces"
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 	"github.com/google/go-github/v58/github"
 	"golang.org/x/oauth2"
 )

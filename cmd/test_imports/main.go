@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
-	"github.com/email-sender/tools/core/toolkit"
-	"github.com/email-sender/tools/operations/validation"
-	toolkitpkg "github.com/email-sender/tools/pkg/manager"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/operations/validation"
+	toolkitpkg "github.com/gerivdb/email-sender-1/tools/pkg/manager"
 )
 
 func main() {

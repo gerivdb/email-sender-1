@@ -4,7 +4,7 @@
 package analysis
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -101,7 +101,7 @@ require (
 		"main.go": `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"log"
 	"net/http"
@@ -124,7 +124,7 @@ func main() {
 		"internal/handler/handler.go": `package handler
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"net/http"
 	"github.com/gin-gonic/gin"
 )
@@ -141,7 +141,7 @@ func (h *Handler) Home(c *gin.Context) {
 		"internal/service/service.go": `package service
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"net/http"
 	"github.com/gin-gonic/gin"
 )
@@ -158,7 +158,7 @@ func (s *Service) Health(c *gin.Context) {
 		"pkg/utils/utils.go": `package utils
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"strings"
 )
@@ -305,7 +305,7 @@ require (
 			content: `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"log"
 	"net/http"
@@ -335,7 +335,7 @@ func main() {
 			content: `package handler
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"example.com/test/internal/service"
@@ -363,7 +363,7 @@ func (h *Handler) Home(c *gin.Context) {
 			content: `package service
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"example.com/test/internal/handler" // Circular dependency!
@@ -628,7 +628,7 @@ func TestDependencyAnalyzer_EdgeCases(t *testing.T) {
 		content := `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 
 func main() {
@@ -876,7 +876,7 @@ require (
 		content := fmt.Sprintf(`package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"log"
 	"net/http"

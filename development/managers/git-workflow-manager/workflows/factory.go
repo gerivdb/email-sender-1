@@ -3,7 +3,7 @@ package workflows
 import (
 	"fmt"
 
-	"github.com/email-sender/managers/interfaces"
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 )
 
 // WorkflowFactory creates workflow instances based on workflow type

@@ -4,7 +4,7 @@
 package analysis
 
 import (
-	// "github.com/email-sender/tools/core/registry" // Removed unused import
+	// "github.com/gerivdb/email-sender-1/tools/core/registry" // Removed unused import
 	"context"
 	"encoding/json"
 	"fmt"
@@ -16,8 +16,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/email-sender/tools/core/toolkit"
-	// managerToolkit "github.com/email-sender/tools/cmd/manager-toolkit" // Commented out to break import cycle
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	// managerToolkit "github.com/gerivdb/email-sender-1/tools/cmd/manager-toolkit" // Commented out to break import cycle
 )
 
 func TestSyntaxChecker_ImplementsToolkitOperation(t *testing.T) {
@@ -189,8 +189,8 @@ func TestSyntaxChecker_Execute_ValidGoFile(t *testing.T) {
 	validGoCode := `package main
 
 import (
-	"github.com/email-sender/tools/core/registry"
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 
 func main() {
@@ -238,8 +238,8 @@ func TestSyntaxChecker_Execute_SyntaxError(t *testing.T) {
 	invalidGoCode := `package main
 
 import (
-	"github.com/email-sender/tools/core/registry"
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 
 func main() {
@@ -298,8 +298,8 @@ func TestSyntaxChecker_Execute_FormattingIssue(t *testing.T) {
 	unformattedGoCode := `package main
 
 import (
-	"github.com/email-sender/tools/core/registry"
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 
 func main(){
@@ -350,8 +350,8 @@ func TestSyntaxChecker_Execute_WithDryRun(t *testing.T) {
 	unformattedGoCode := `package main
 
 import (
-	"github.com/email-sender/tools/core/registry"
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 
 func main(){
@@ -523,8 +523,8 @@ func TestSyntaxChecker_Integration_WithManagerToolkit(t *testing.T) {
 	testCode := `package main
 
 import (
-	"github.com/email-sender/tools/core/registry"
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 
 func main(){
@@ -537,7 +537,7 @@ fmt.Println("Hello, World!")
 	require.NoError(t, err)
 
 	// Create ManagerToolkit instance
-	// Add import: managerToolkit "github.com/email-sender/tools/cmd/manager-toolkit"
+	// Add import: managerToolkit "github.com/gerivdb/email-sender-1/tools/cmd/manager-toolkit"
 	mtk, err := managerToolkit.NewManagerToolkit(tmpDir, "", false)
 	require.NoError(t, err)
 	defer mtk.Close()
@@ -575,8 +575,8 @@ func TestSyntaxChecker_Integration_WithManagerToolkit(t *testing.T) {
 	testCode := `package main
 
 import (
-	"github.com/email-sender/tools/core/registry"
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 
 func main(){
@@ -589,7 +589,7 @@ fmt.Println("Hello, World!")
 	require.NoError(t, err)
 
 	// Create ManagerToolkit instance
-	// Add import: managerToolkit "github.com/email-sender/tools/cmd/manager-toolkit"
+	// Add import: managerToolkit "github.com/gerivdb/email-sender-1/tools/cmd/manager-toolkit"
 	mtk, err := managerToolkit.NewManagerToolkit(tmpDir, "", false)
 	require.NoError(t, err)
 	defer mtk.Close()
@@ -629,8 +629,8 @@ func BenchmarkSyntaxChecker_Execute(b *testing.B) {
 		testCode := fmt.Sprintf(`package main
 
 import (
-	"github.com/email-sender/tools/core/registry"
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 
 func main() {

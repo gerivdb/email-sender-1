@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/email-sender/maintenance-manager/src/core"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/core"
 )
 
 // TestBasicFunctionality tests basic FMOUA functionality without external dependencies

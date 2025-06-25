@@ -5,8 +5,8 @@
 package analysis
 
 import (
-	"github.com/email-sender/tools/core/registry"
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -513,7 +513,7 @@ func init() {
 	// Ensure globalRegistry is initialized (example, actual initialization might differ)
 	// This assumes GetGlobalRegistry() and NewToolRegistry() are accessible, possibly via an import
 	// For example, if they are in a package like "core/registry"
-	// import coreRegistry "github.com/email-sender/tools/core/registry"
+	// import coreRegistry "github.com/gerivdb/email-sender-1/tools/core/registry"
 	// globalRegistry = coreRegistry.GetGlobalRegistry()
 	// if globalRegistry == nil {
 	// 	globalRegistry = coreRegistry.NewToolRegistry()

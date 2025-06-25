@@ -4,7 +4,7 @@
 package correction
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -83,7 +83,7 @@ func TestImportConflictResolver_ToolkitOperationInterface(t *testing.T) {
 		"main.go": `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"os"
 	"log"
@@ -98,17 +98,17 @@ func main() {
 		"conflicts.go": `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"fmt"  // Duplicate import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"os"
 	"path/filepath"
 	"path/filepath" as fp  // Duplicate with alias
 	"log"
 	"encoding/json"
 	// unused import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"unused"
 )
 
@@ -120,7 +120,7 @@ func testFunction() {
 		"aliases.go": `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 	ctx "context"  // Conflicting alias
 	"fmt"
@@ -246,7 +246,7 @@ func TestImportConflictResolver_DetectConflicts(t *testing.T) {
 			content: `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"fmt"  // Duplicate
 	"os"
@@ -267,7 +267,7 @@ func main() {
 			content: `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 	ctx "context"  // Alias conflict
 	"fmt"
@@ -290,7 +290,7 @@ func main() {
 			content: `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"os"
 	"log"      // Used
@@ -312,7 +312,7 @@ func main() {
 			content: `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"fmt"     // Duplicate
 	"context"
@@ -431,7 +431,7 @@ func TestImportConflictResolver_ResolveConflicts(t *testing.T) {
 	originalContent := `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"fmt"  // Duplicate - should be removed
 	"os"
@@ -583,7 +583,7 @@ func main() {
 		invalidContent := `package main
 
 		import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 			"fmt"
 			this is not valid import syntax
 			"os"
@@ -631,7 +631,7 @@ func TestImportConflictResolver_DryRunMode(t *testing.T) {
 	testContent := `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"fmt"  // Duplicate
 	"os"
@@ -766,7 +766,7 @@ func BenchmarkImportConflictResolver_Execute(b *testing.B) {
 		content := fmt.Sprintf(`package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"fmt"  // Duplicate
 	"os"

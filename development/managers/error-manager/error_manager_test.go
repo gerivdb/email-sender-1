@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	errormanager "github.com/email-sender/managers/error-manager"
+	errormanager "github.com/gerivdb/email-sender-1/managers/error-manager"
 )
 
 func TestValidateErrorEntry(t *testing.T) {

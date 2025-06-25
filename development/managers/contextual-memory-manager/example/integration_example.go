@@ -6,8 +6,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/email-sender/development/managers/contextual-memory-manager/development"
-	"github.com/email-sender/development/managers/contextual-memory-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/development"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
 )
 
 // Example implementation showing how to use the Contextual Memory Manager

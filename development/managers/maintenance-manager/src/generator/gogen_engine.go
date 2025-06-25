@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"go.uber.org/zap"
-	"github.com/email-sender/maintenance-manager/src/core"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/core"
 )
 
 // GoGenEngine provides comprehensive code generation capabilities

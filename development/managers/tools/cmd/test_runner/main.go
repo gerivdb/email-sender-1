@@ -7,7 +7,7 @@ import (
 	"fmt"
 	// "os" // Removed unused import
 
-	// "github.com/email-sender/tools/core/registry" // Removed as TestRegistryFunction call is commented out
+	// "github.com/gerivdb/email-sender-1/tools/core/registry" // Removed as TestRegistryFunction call is commented out
 )
 
 func main() {

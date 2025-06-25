@@ -10,8 +10,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/email-sender/development/managers/contextual-memory-manager/development"
-	"github.com/email-sender/development/managers/contextual-memory-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/development"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
 )
 
 type HybridIntegrationSuite struct {

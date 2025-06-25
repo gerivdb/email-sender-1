@@ -2,7 +2,7 @@
 
 ## Synthèse Phase 1 – Initialisation et cadrage
 
-- **Cartographie** : voir `init-cartographie-scan.json`
+- **Recensement modules/scripts** : voir `init-cartographie-scan.json`
 - **Analyse d’écart** : voir `INIT_GAP_ANALYSIS.md`
 - **Besoins utilisateurs/techniques** : voir `analysis/user-needs-phase1.json`
 - **Date de génération** : 2025-06-25
@@ -11,14 +11,17 @@
 
 | Élément | Statut | Commentaire |
 |---------|--------|------------|
-| Cartographie initiale | en_attente |  |
-| Analyse d’écart | en_attente |  |
-| Recueil besoins | en_attente |  |
-| Reporting | en_attente |  |
+| Recensement modules/scripts | fait | Automatisé via scan-modules.js |
+| Analyse d’écart | fait | INIT_GAP_ANALYSIS.md généré automatiquement, score d’intégrité inclus |
+| Recueil besoins | fait | Besoins validés par parties prenantes |
+| Spécification cible | n/a |  |
+| Reporting | fait | Ce rapport synthétise la phase 1 |
 
-## Recommandations et plan de cadrage
+## Recommandations et plan d’intégration CI/CD
 
--
+- Intégrer les scripts de scan et d’analyse d’écart dans le pipeline CI/CD pour audit continu.
+- Générer automatiquement le rapport d’écart à chaque modification du dépôt.
+- Notifier les responsables en cas d’écart critique.
 
 ---
 

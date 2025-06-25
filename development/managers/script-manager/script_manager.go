@@ -20,7 +20,7 @@ import (
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
-	"github.com/email-sender/managers/error-manager"
+	"github.com/gerivdb/email-sender-1/managers/error-manager"
 )
 
 // ScriptManager gère l’exécution, le cycle de vie et la surveillance des scripts (PowerShell, etc.) avec intégration ErrorManager.

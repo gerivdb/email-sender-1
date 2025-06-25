@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/email-sender/tools/operations/validation"
+	"github.com/gerivdb/email-sender-1/tools/operations/validation"
 )
 
 func main() {

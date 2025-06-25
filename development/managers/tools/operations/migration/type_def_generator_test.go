@@ -4,7 +4,7 @@
 package migration
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -176,7 +176,7 @@ func TestTypeDefGenerator_Execute_WithUndefinedTypes(t *testing.T) {
 	goCodeWithUndefined := `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 
 type UserProfile struct {
@@ -237,7 +237,7 @@ func TestTypeDefGenerator_Execute_ValidGoFile(t *testing.T) {
 	validGoCode := `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 
 type User struct {

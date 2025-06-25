@@ -121,11 +121,11 @@ func (sr *StructureReorganizer) ValidateImports() error {
 
 	// Exemples d'imports qui devront être mis à jour
 	importUpdates := map[string]string{
-		"github.com/email-sender/managers/config-manager":      "github.com/email-sender/managers/core/config-manager",
-		"github.com/email-sender/managers/ai-template-manager": "github.com/email-sender/managers/specialized/ai-template-manager",
-		"github.com/email-sender/managers/n8n-manager":         "github.com/email-sender/managers/integration/n8n-manager",
-		"github.com/email-sender/managers/central-coordinator": "github.com/email-sender/managers/infrastructure/central-coordinator",
-		"github.com/email-sender/managers/vectorization-go":    "github.com/email-sender/managers/vectorization/vectorization-go",
+		"github.com/gerivdb/email-sender-1/managers/config-manager":      "github.com/gerivdb/email-sender-1/managers/core/config-manager",
+		"github.com/gerivdb/email-sender-1/managers/ai-template-manager": "github.com/gerivdb/email-sender-1/managers/specialized/ai-template-manager",
+		"github.com/gerivdb/email-sender-1/managers/n8n-manager":         "github.com/gerivdb/email-sender-1/managers/integration/n8n-manager",
+		"github.com/gerivdb/email-sender-1/managers/central-coordinator": "github.com/gerivdb/email-sender-1/managers/infrastructure/central-coordinator",
+		"github.com/gerivdb/email-sender-1/managers/vectorization-go":    "github.com/gerivdb/email-sender-1/managers/vectorization/vectorization-go",
 	}
 
 	fmt.Println("Imports à mettre à jour:")

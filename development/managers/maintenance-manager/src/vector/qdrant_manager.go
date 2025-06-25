@@ -9,7 +9,7 @@ import (
 	// "github.com/qdrant/go-client/qdrant" // Temporarily disabled
 	"go.uber.org/zap"
 
-	"github.com/email-sender/maintenance-manager/src/core"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/core"
 )
 
 // QdrantManager manages Qdrant vector database operations

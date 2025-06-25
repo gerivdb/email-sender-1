@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
-	autofix "github.com/email-sender/managers/error-manager/auto_fix"
+	autofix "github.com/gerivdb/email-sender-1/managers/error-manager/auto_fix"
 )
 
 const (

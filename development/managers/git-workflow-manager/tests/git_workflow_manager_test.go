@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	gitworkflowmanager "github.com/email-sender/git-workflow-manager"
-	"github.com/email-sender/managers/interfaces"
+	gitworkflowmanager "github.com/gerivdb/email-sender-1/git-workflow-manager"
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 )
 
 // MockErrorManager implements a mock ErrorManager for testing

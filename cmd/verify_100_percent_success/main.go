@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/email-sender/tools/core/toolkit"
-	toolkitpkg "github.com/email-sender/tools/pkg/manager"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	toolkitpkg "github.com/gerivdb/email-sender-1/tools/pkg/manager"
 )
 
 func main() {

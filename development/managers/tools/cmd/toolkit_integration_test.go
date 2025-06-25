@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/email-sender/tools/core/registry"
-	"github.com/email-sender/tools/core/toolkit"
-	"github.com/email-sender/tools/operations/analysis"
-	"github.com/email-sender/tools/operations/correction"
-	"github.com/email-sender/tools/operations/migration"
-	"github.com/email-sender/tools/operations/validation"
+	"github.com/gerivdb/email-sender-1/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/operations/analysis"
+	"github.com/gerivdb/email-sender-1/tools/operations/correction"
+	"github.com/gerivdb/email-sender-1/tools/operations/migration"
+	"github.com/gerivdb/email-sender-1/tools/operations/validation"
 	// "go/token" // May not be needed if FileSet is handled by constructors
 )
 

@@ -10,8 +10,8 @@ import (
 	"go/token"
 	"time"
 
-	"github.com/email-sender/tools/core/toolkit"
-	"github.com/email-sender/tools/operations/validation"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/operations/validation"
 )
 
 // ManagerToolkit provides the external interface for toolkit operations

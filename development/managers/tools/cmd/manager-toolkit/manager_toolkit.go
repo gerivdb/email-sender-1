@@ -6,7 +6,7 @@
 package main
 
 import (
-	"github.com/email-sender/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/tools/core/registry"
 	"context"
 	"encoding/json"
 	"flag"
@@ -17,11 +17,11 @@ import (
 	// "path/filepath" // Removed as it's likely unused after local NewLogger removal
 	"time"
 
-	"github.com/email-sender/tools/core/toolkit"
-	"github.com/email-sender/tools/operations/analysis"    // Added for analysis tools
-	"github.com/email-sender/tools/operations/correction"  // Added for correction tools
-	"github.com/email-sender/tools/operations/migration"   // Added for migration tools
-	"github.com/email-sender/tools/operations/validation"  // Added for validation tools
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/operations/analysis"    // Added for analysis tools
+	"github.com/gerivdb/email-sender-1/tools/operations/correction"  // Added for correction tools
+	"github.com/gerivdb/email-sender-1/tools/operations/migration"   // Added for migration tools
+	"github.com/gerivdb/email-sender-1/tools/operations/validation"  // Added for validation tools
 )
 
 // Configuration constants

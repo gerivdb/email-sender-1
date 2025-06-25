@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 )
 
 // Global registry instance for automatic registration

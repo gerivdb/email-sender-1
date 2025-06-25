@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/email-sender/maintenance-manager/src/core"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/core"
 )
 
 // FMOUAIntegrationTestSuite provides comprehensive integration testing for the complete FMOUA system

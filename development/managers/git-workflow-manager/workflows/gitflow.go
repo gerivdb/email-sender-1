@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/email-sender/managers/interfaces"
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 )
 
 // GitFlowWorkflow implements the GitFlow workflow pattern

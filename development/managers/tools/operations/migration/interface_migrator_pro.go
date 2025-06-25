@@ -5,8 +5,8 @@ package migration
 import (
 	"context"
 	"fmt"
-	"github.com/email-sender/tools/core/toolkit"
-	"github.com/email-sender/tools/operations/analysis" // Added import
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/operations/analysis" // Added import
 	"go/ast"
 	"go/format"
 	"go/parser"
@@ -301,7 +301,7 @@ func (im *InterfaceMigrator) CreateInterfacesStructure() error {
 	// Create go.mod for interfaces package if it doesn't exist
 	goModPath := filepath.Join(im.InterfacesDir, "go.mod")
 	if _, err := os.Stat(goModPath); os.IsNotExist(err) {
-		goModContent := `module github.com/email-sender/managers/interfaces
+		goModContent := `module github.com/gerivdb/email-sender-1/managers/interfaces
 
 go 1.21
 `
@@ -345,10 +345,10 @@ func (im *InterfaceMigrator) generateSingleInterfaceFile(spec NewFileSpec, plan 
 
 	effectiveImports := []string{}
 	if len(spec.Imports) > 0 { // If there are specific imports, assume toolkit is also needed as per original structure
-		effectiveImports = append(effectiveImports, `"github.com/email-sender/tools/core/toolkit"`)
+		effectiveImports = append(effectiveImports, `"github.com/gerivdb/email-sender-1/tools/core/toolkit"`)
 		effectiveImports = append(effectiveImports, spec.Imports...)
 	} else {
-		// If spec.Imports is empty, decide if "github.com/email-sender/tools/core/toolkit" should still be imported.
+		// If spec.Imports is empty, decide if "github.com/gerivdb/email-sender-1/tools/core/toolkit" should still be imported.
 		// The original code would not import anything if spec.Imports was empty.
 		// To maintain that, we can keep this 'else' block empty or add specific logic if toolkit is mandatory.
 		// For this fix, I will ensure that if spec.Imports are present, toolkit is also there.
@@ -726,7 +726,7 @@ func (im *InterfaceMigrator) planFileUpdates(plan *MigrationPlan, _ *analysis.An
 		}
 
 		update := fileUpdates[location.SourceFile]
-		update.AddImports = append(update.AddImports, `"github.com/email-sender/managers/interfaces"`)
+		update.AddImports = append(update.AddImports, `"github.com/gerivdb/email-sender-1/managers/interfaces"`)
 		// Add interface removal logic here
 	}
 

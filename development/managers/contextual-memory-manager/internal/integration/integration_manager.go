@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/email-sender/development/managers/contextual-memory-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
 	baseInterfaces "./interfaces"
 )
 

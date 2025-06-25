@@ -13,8 +13,8 @@ import (
 	"time"
 
 	"go.uber.org/zap"
-	"github.com/email-sender/maintenance-manager/src/core"
-	"github.com/email-sender/maintenance-manager/src/vector"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/core"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/vector"
 )
 
 // AIAnalyzer provides AI-driven analysis and optimization capabilities

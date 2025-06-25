@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/email-sender/managers/interfaces"
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 )
 
 // WebhookConfig represents webhook configuration

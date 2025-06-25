@@ -95,7 +95,7 @@ type User struct {
 		"data_provider.go": `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 
 type DataProvider interface {
@@ -197,7 +197,7 @@ func TestAnalyzeSpecificInterface(t *testing.T) {
 	interfaceContent := `package main
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 
 type DatabaseManager interface {
@@ -353,7 +353,7 @@ type SimpleInterface interface {
 }`,
 		"complex.go": `package main
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 type ComplexInterface interface {
 	Process(ctx context.Context, data []byte, options map[string]interface{}) (*Result, error)

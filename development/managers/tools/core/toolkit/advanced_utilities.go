@@ -3,7 +3,7 @@
 package toolkit
 
 import (
-	// "github.com/email-sender/tools/core/toolkit"
+	// "github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"go/format"
 	"go/token"
@@ -77,23 +77,23 @@ func (fixer *ImportFixer) processImports(content string) string {
 	// Define import replacements
 	replacements := map[string]string{
 		// Absolute path imports to module imports
-		`errormanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/error-manager"`:           `errormanager "github.com/email-sender/managers/error-manager"`,
-		`configmanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/config-manager"`:         `configmanager "github.com/email-sender/managers/config-manager"`,
-		`processmanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/process-manager"`:       `processmanager "github.com/email-sender/managers/process-manager"`,
-		`storagemanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/storage-manager"`:       `storagemanager "github.com/email-sender/managers/storage-manager"`,
-		`securitymanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/security-manager"`:     `securitymanager "github.com/email-sender/managers/security-manager"`,
-		`monitoringmanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/monitoring-manager"`: `monitoringmanager "github.com/email-sender/managers/monitoring-manager"`,
-		`containermanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/container-manager"`:   `containermanager "github.com/email-sender/managers/container-manager"`,
-		`deploymentmanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/deployment-manager"`: `deploymentmanager "github.com/email-sender/managers/deployment-manager"`,
+		`errormanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/error-manager"`:           `errormanager "github.com/gerivdb/email-sender-1/managers/error-manager"`,
+		`configmanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/config-manager"`:         `configmanager "github.com/gerivdb/email-sender-1/managers/config-manager"`,
+		`processmanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/process-manager"`:       `processmanager "github.com/gerivdb/email-sender-1/managers/process-manager"`,
+		`storagemanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/storage-manager"`:       `storagemanager "github.com/gerivdb/email-sender-1/managers/storage-manager"`,
+		`securitymanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/security-manager"`:     `securitymanager "github.com/gerivdb/email-sender-1/managers/security-manager"`,
+		`monitoringmanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/monitoring-manager"`: `monitoringmanager "github.com/gerivdb/email-sender-1/managers/monitoring-manager"`,
+		`containermanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/container-manager"`:   `containermanager "github.com/gerivdb/email-sender-1/managers/container-manager"`,
+		`deploymentmanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/deployment-manager"`: `deploymentmanager "github.com/gerivdb/email-sender-1/managers/deployment-manager"`,
 
 		// Interface imports
-		`"github.com/email-sender/managers/interfaces/common"`:     `"github.com/email-sender/managers/interfaces"`,
-		`"github.com/email-sender/managers/interfaces/types"`:      `"github.com/email-sender/managers/interfaces"`,
-		`"github.com/email-sender/managers/interfaces/security"`:   `"github.com/email-sender/managers/interfaces"`,
-		`"github.com/email-sender/managers/interfaces/storage"`:    `"github.com/email-sender/managers/interfaces"`,
-		`"github.com/email-sender/managers/interfaces/monitoring"`: `"github.com/email-sender/managers/interfaces"`,
-		`"github.com/email-sender/managers/interfaces/container"`:  `"github.com/email-sender/managers/interfaces"`,
-		`"github.com/email-sender/managers/interfaces/deployment"`: `"github.com/email-sender/managers/interfaces"`,
+		`"github.com/gerivdb/email-sender-1/managers/interfaces/common"`:     `"github.com/gerivdb/email-sender-1/managers/interfaces"`,
+		`"github.com/gerivdb/email-sender-1/managers/interfaces/types"`:      `"github.com/gerivdb/email-sender-1/managers/interfaces"`,
+		`"github.com/gerivdb/email-sender-1/managers/interfaces/security"`:   `"github.com/gerivdb/email-sender-1/managers/interfaces"`,
+		`"github.com/gerivdb/email-sender-1/managers/interfaces/storage"`:    `"github.com/gerivdb/email-sender-1/managers/interfaces"`,
+		`"github.com/gerivdb/email-sender-1/managers/interfaces/monitoring"`: `"github.com/gerivdb/email-sender-1/managers/interfaces"`,
+		`"github.com/gerivdb/email-sender-1/managers/interfaces/container"`:  `"github.com/gerivdb/email-sender-1/managers/interfaces"`,
+		`"github.com/gerivdb/email-sender-1/managers/interfaces/deployment"`: `"github.com/gerivdb/email-sender-1/managers/interfaces"`,
 	}
 
 	// Apply replacements

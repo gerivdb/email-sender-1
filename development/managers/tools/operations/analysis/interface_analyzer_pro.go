@@ -3,7 +3,7 @@
 package analysis
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"go/ast"
 	"go/parser"
@@ -282,7 +282,7 @@ func (ia *InterfaceAnalyzer) analyzeFile(filePath string, report *AnalysisReport
 	for _, imp := range file.Imports {
 		if imp.Path != nil {
 			importPath := strings.Trim(imp.Path.Value, `"`)
-			if strings.Contains(importPath, "github.com/email-sender/managers") {
+			if strings.Contains(importPath, "github.com/gerivdb/email-sender-1/managers") {
 				report.Dependencies[packageName] = append(report.Dependencies[packageName], importPath)
 			}
 		}

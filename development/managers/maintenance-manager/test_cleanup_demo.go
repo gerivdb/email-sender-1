@@ -6,8 +6,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/email-sender/maintenance-manager/src/cleanup"
-	"github.com/email-sender/maintenance-manager/src/core"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/cleanup"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/core"
 )
 
 func main() {

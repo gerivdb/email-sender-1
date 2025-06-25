@@ -5,9 +5,9 @@ import (
 	"log"
 	"os"
 
-	storage "github.com/email-sender/development/managers/storage-manager"
-	dependency "github.com/email-sender/development/managers/dependency-manager"
-	security "github.com/email-sender/development/managers/security-manager"
+	storage "github.com/gerivdb/email-sender-1/development/managers/storage-manager"
+	dependency "github.com/gerivdb/email-sender-1/development/managers/dependency-manager"
+	security "github.com/gerivdb/email-sender-1/development/managers/security-manager"
 )
 
 func main() {

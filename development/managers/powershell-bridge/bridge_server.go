@@ -17,7 +17,7 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"github.com/email-sender/managers/error-manager"
+	"github.com/gerivdb/email-sender-1/managers/error-manager"
 )
 
 // PowerShellError represents an error received from PowerShell

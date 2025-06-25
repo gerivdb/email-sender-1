@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/email-sender/pkg/metrics"
+	"github.com/gerivdb/email-sender-1/pkg/metrics"
 )
 
 type TechStackOrchestrator struct {

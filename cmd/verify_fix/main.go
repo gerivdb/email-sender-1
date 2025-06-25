@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/email-sender/tools/core/toolkit"
-	"github.com/email-sender/tools/pkg/manager"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/pkg/manager"
 )
 
 func main() {

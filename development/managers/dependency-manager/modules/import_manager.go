@@ -567,8 +567,8 @@ func (im *ImportManager) normalizeLocalPath(localPath, expectedPrefix string) st
 		`/development/managers/`:                                               expectedPrefix + "/managers/",
 		
 		// Generic project paths
-		`github.com/email-sender/development/managers/`:                        expectedPrefix + "/managers/",
-		`github.com/email-sender/managers/`:                                    expectedPrefix + "/managers/",
+		`github.com/gerivdb/email-sender-1/development/managers/`:                        expectedPrefix + "/managers/",
+		`github.com/gerivdb/email-sender-1/managers/`:                                    expectedPrefix + "/managers/",
 	}
 
 	normalizedPath := localPath

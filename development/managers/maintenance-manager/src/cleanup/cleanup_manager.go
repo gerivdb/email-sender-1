@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/email-sender/maintenance-manager/src/ai"
-	"github.com/email-sender/maintenance-manager/src/core"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/ai"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/core"
 )
 
 // CleanupManager centralise l’organisation intelligente, le nettoyage, la purge et l’optimisation documentaire.

@@ -8,11 +8,11 @@ import (
 	"context"
 	"testing"
 
-	"github.com/email-sender/tools/core/toolkit"
-	_ "github.com/email-sender/tools/operations/analysis"    // Blank import for init()
-	_ "github.com/email-sender/tools/operations/correction"  // Blank import for init()
-	_ "github.com/email-sender/tools/operations/migration"   // Blank import for init()
-	_ "github.com/email-sender/tools/operations/validation"  // Blank import for init()
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	_ "github.com/gerivdb/email-sender-1/tools/operations/analysis"    // Blank import for init()
+	_ "github.com/gerivdb/email-sender-1/tools/operations/correction"  // Blank import for init()
+	_ "github.com/gerivdb/email-sender-1/tools/operations/migration"   // Blank import for init()
+	_ "github.com/gerivdb/email-sender-1/tools/operations/validation"  // Blank import for init()
 )
 
 // TestGlobalRegistry tests the global registry functionality

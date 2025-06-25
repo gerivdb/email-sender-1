@@ -7,7 +7,7 @@ import (
 	"log"
 	"path/filepath"
 
-	"github.com/email-sender/maintenance-manager/src/generator"
+	"github.com/gerivdb/email-sender-1/maintenance-manager/src/generator"
 )
 
 func main() {

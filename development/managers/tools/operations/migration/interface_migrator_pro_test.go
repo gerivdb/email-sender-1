@@ -4,7 +4,7 @@
 package migration
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 	"fmt"
 	"io/ioutil"
@@ -109,7 +109,7 @@ type User struct {
 		"data_provider.go": `package oldpackage
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 
 type DataProvider interface {

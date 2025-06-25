@@ -93,7 +93,7 @@ func (m *MockGoModManager) GenerateImportReport(ctx context.Context, projectPath
 	// Simulation de génération de rapport
 	return &interfaces.ImportReport{
 		ProjectPath:     projectPath,
-		ModuleName:      "github.com/email-sender/managers",
+		ModuleName:      "github.com/gerivdb/email-sender-1/managers",
 		TotalGoFiles:    25,
 		TotalImports:    150,
 		ExternalImports: 45,

@@ -5,8 +5,8 @@
 package correction
 
 import (
-	"github.com/email-sender/tools/core/registry"
-	"github.com/email-sender/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"

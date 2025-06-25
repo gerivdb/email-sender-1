@@ -1,11 +1,27 @@
 {
   "date": "2025-06-25",
-  "participants": [],
-  "besoins": [],
-  "priorites": [],
-  "suggestions": [],
+  "participants": [
+    "dev1",
+    "ops1",
+    "docmanager1"
+  ],
+  "besoins": [
+    "Automatisation du recensement des modules et scripts",
+    "Détection automatique des écarts et doublons",
+    "Reporting synthétique et score d'intégrité",
+    "Documentation centralisée et versionnée"
+  ],
+  "priorites": [
+    "Automatisation maximale",
+    "Robustesse de l'analyse d'écart",
+    "Traçabilité des évolutions"
+  ],
+  "suggestions": [
+    "Ajouter une interface web pour visualiser les écarts",
+    "Notifier automatiquement les responsables en cas d'écart critique"
+  ],
   "validation": {
-    "parties_prenantes": [],
-    "statut": "en_attente"
+    "parties_prenantes": ["dev1", "docmanager1"],
+    "statut": "valide"
   }
 }

@@ -12,7 +12,7 @@ import (
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
-	"	errormanager "github.com/email-sender/managers/error-manager""
+	"	errormanager "github.com/gerivdb/email-sender-1/managers/error-manager""
 )
 
 // N8NManager struct — Orchestrateur des workflows n8n et gestion centralisée des exécutions.

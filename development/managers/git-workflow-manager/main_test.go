@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/email-sender/managers/interfaces"
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 )
 
 // MockErrorManager implements a simple mock for testing

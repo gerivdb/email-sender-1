@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/email-sender/managers/interfaces"
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 )
 
 // CustomWorkflow implements a user-defined custom workflow
