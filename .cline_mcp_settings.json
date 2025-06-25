@@ -9,7 +9,7 @@
       "disabled": false
     },
     "git": {
-      "command": "npx", 
+      "command": "npx",
       "args": [
         "@modelcontextprotocol/server-git",
         "--repository",

@@ -1,6 +1,8 @@
 module email-sender-1
 
-go 1.21
+go 1.22.2
+
+toolchain go1.23.9
 
 require (
 	github.com/gin-gonic/gin v1.10.1
@@ -44,6 +46,7 @@ require (
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.62.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
+	github.com/qdrant/go-client v1.14.1 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
