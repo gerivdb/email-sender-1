@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-filesystem",
+        "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
+      ],
+      "disabled": false
+    },
+    "git": {
+      "command": "npx", 
+      "args": [
+        "@modelcontextprotocol/server-git",
+        "--repository",
+        "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
+      ],
+      "disabled": false
+    }
+  }
+}

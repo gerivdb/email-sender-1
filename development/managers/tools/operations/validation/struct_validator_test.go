@@ -4,13 +4,14 @@
 package validation
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"docmanager/development/managers/tools/core/toolkit"
 )
 
 // TestNewStructValidator tests validator creation
@@ -106,7 +107,7 @@ type {  // Invalid struct declaration
 	}
 
 	for filename, content := range testFiles {
-		err := os.WriteFile(filepath.Join(tempDir, filename), []byte(content), 0644)
+		err := os.WriteFile(filepath.Join(tempDir, filename), []byte(content), 0o644)
 		if err != nil {
 			t.Fatalf("Failed to create test file %s: %v", filename, err)
 		}
@@ -273,7 +274,7 @@ type BadStruct struct {
 	}
 
 	for filename, testCase := range testCases {
-		err := os.WriteFile(filepath.Join(tempDir, filename), []byte(testCase.content), 0644)
+		err := os.WriteFile(filepath.Join(tempDir, filename), []byte(testCase.content), 0o644)
 		if err != nil {
 			t.Fatalf("Failed to create test file %s: %v", filename, err)
 		}
@@ -380,7 +381,7 @@ func TestStructValidator_EdgeCases(t *testing.T) {
 
 	t.Run("Empty directory", func(t *testing.T) {
 		emptyDir := filepath.Join(tempDir, "empty")
-		err := os.MkdirAll(emptyDir, 0755)
+		err := os.MkdirAll(emptyDir, 0o755)
 		if err != nil {
 			t.Fatalf("Failed to create empty dir: %v", err)
 		}
@@ -405,7 +406,7 @@ func TestStructValidator_EdgeCases(t *testing.T) {
 
 	t.Run("Non-Go files", func(t *testing.T) {
 		nonGoDir := filepath.Join(tempDir, "non_go")
-		err := os.MkdirAll(nonGoDir, 0755)
+		err := os.MkdirAll(nonGoDir, 0o755)
 		if err != nil {
 			t.Fatalf("Failed to create non-go dir: %v", err)
 		}
@@ -417,7 +418,7 @@ func TestStructValidator_EdgeCases(t *testing.T) {
 			"script.sh":   "#!/bin/bash\necho 'hello'",
 		}
 		for filename, content := range files {
-			err := os.WriteFile(filepath.Join(nonGoDir, filename), []byte(content), 0644)
+			err := os.WriteFile(filepath.Join(nonGoDir, filename), []byte(content), 0o644)
 			if err != nil {
 				t.Fatalf("Failed to create test file %s: %v", filename, err)
 			}
@@ -443,7 +444,7 @@ func TestStructValidator_EdgeCases(t *testing.T) {
 
 	t.Run("Invalid Go syntax", func(t *testing.T) {
 		invalidDir := filepath.Join(tempDir, "invalid")
-		err := os.MkdirAll(invalidDir, 0755)
+		err := os.MkdirAll(invalidDir, 0o755)
 		if err != nil {
 			t.Fatalf("Failed to create invalid dir: %v", err)
 		}
@@ -457,7 +458,7 @@ func TestStructValidator_EdgeCases(t *testing.T) {
 		}
 		another broken line
 		`
-		err = os.WriteFile(filepath.Join(invalidDir, "broken.go"), []byte(invalidContent), 0644)
+		err = os.WriteFile(filepath.Join(invalidDir, "broken.go"), []byte(invalidContent), 0o644)
 		if err != nil {
 			t.Fatalf("Failed to create broken file: %v", err)
 		}
@@ -499,7 +500,7 @@ type TestStruct struct {
 	Name string ` + "`json:\"name\"`" + `
 }`
 
-	err = os.WriteFile(filepath.Join(tempDir, "test.go"), []byte(testContent), 0644)
+	err = os.WriteFile(filepath.Join(tempDir, "test.go"), []byte(testContent), 0o644)
 	if err != nil {
 		t.Fatalf("Failed to create test file: %v", err)
 	}
@@ -623,7 +624,7 @@ type BenchStruct%dExtra struct {
 	Value    float64 `+"`json:\"value\"`"+`
 }`, i, i)
 
-		err := os.WriteFile(filepath.Join(tempDir, fmt.Sprintf("bench_%d.go", i)), []byte(content), 0644)
+		err := os.WriteFile(filepath.Join(tempDir, fmt.Sprintf("bench_%d.go", i)), []byte(content), 0o644)
 		if err != nil {
 			b.Fatalf("Failed to create bench file: %v", err)
 		}
@@ -649,5 +650,3 @@ type BenchStruct%dExtra struct {
 		}
 	}
 }
-
-

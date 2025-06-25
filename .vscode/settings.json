@@ -27,7 +27,7 @@
   },
   "go.goroot": "C:\\Users\\user\\sdk\\go1.23.9",
   "go.gopath": "C:\\Users\\user\\go",
-  "go.buildFlags": ["-tags=database"],
+  
   "go.formatTool": "goimports",
   "go.lintTool": "golangci-lint",
   "go.lintFlags": [],
@@ -44,7 +44,6 @@
       "shadow": true
     },
     "staticcheck": true,
-    "experimentalWorkspaceModule": true,
     "env": {
       "GOPROXY": "direct",
       "GOSUMDB": "off",
@@ -55,7 +54,6 @@
       "-node_modules",
       "-vendor"
     ],
-    "buildFlags": ["-tags=database"],
     "completionBudget": "10s"
   },
   "[go]": {
@@ -69,7 +67,7 @@
     "source.fixAll": "always"
   },  "[markdown]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+    
     "editor.codeActionsOnSave": {
       "source.fixAll.markdownlint": "always"
     }
