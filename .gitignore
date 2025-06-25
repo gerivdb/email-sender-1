@@ -89,3 +89,7 @@ tools/qdrant/wal/
 vectors_cache/
 embeddings_cache/
 qdrant_snapshots/
+
+
+#Ignore vscode AI rules
+.github\copilot-instructions.md
