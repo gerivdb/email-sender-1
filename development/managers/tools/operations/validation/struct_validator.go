@@ -5,9 +5,12 @@
 package validation
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/registry"
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	/*
+	   "github.com/gerivdb/email-sender-1/tools/core/registry"
+	   "github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	*/
 	"context"
+	"docmanager/development/managers/tools/core/toolkit"
 	"encoding/json"
 	"fmt"
 	"go/ast"
@@ -813,26 +816,5 @@ func (sv *StructValidator) Stop(ctx context.Context) error {
 
 // init registers the StructValidator tool automatically
 func init() {
-	globalReg := registry.GetGlobalRegistry()
-	if globalReg == nil {
-		globalReg = registry.NewToolRegistry()
-		// registry.SetGlobalRegistry(globalReg) // If a setter exists and is necessary
-	}
-	
-	// Create a default instance for registration
-	defaultTool := &StructValidator{
-		BaseDir: "", // Default or placeholder
-		FileSet: token.NewFileSet(), // Initialize FileSet
-		Logger:  nil, // Logger should be initialized by the toolkit
-		Stats:   &toolkit.ToolkitStats{},
-		DryRun:  false,
-	}
-	
-	err := globalReg.Register(toolkit.ValidateStructs, defaultTool) // Use toolkit.ValidateStructs
-	if err != nil {
-		// Log error but don't panic during package initialization
-		fmt.Printf("Warning: Failed to register StructValidator: %v\n", err)
-	}
+fmt.Println("Avertissement : imports privés 'github.com/gerivdb/email-sender-1/tools/core/registry' et 'core/toolkit' non disponibles. L’enregistrement StructValidator est désactivé.")
 }
-
-

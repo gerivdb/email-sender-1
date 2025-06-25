@@ -22,3 +22,30 @@ func TestScanDir(t *testing.T) {
 		t.Errorf("Langage détecté incorrect: %s", modules[0].Lang)
 	}
 }
+
+func TestExportModules(t *testing.T) {
+	tmpDir := t.TempDir()
+	modules := []ModuleInfo{
+		{
+			Name:   "test.go",
+			Path:   tmpDir + "/test.go",
+			Type:   "file",
+			Lang:   "Go",
+			Role:   "",
+			Deps:   []string{},
+			Outputs: []string{},
+		},
+	}
+	outPath := tmpDir + "/modules.json"
+	err := ExportModules(modules, outPath)
+	if err != nil {
+		t.Fatalf("Erreur lors de l'export JSON: %v", err)
+	}
+	data, err := os.ReadFile(outPath)
+	if err != nil {
+		t.Fatalf("Erreur lors de la lecture du fichier JSON: %v", err)
+	}
+	if len(data) == 0 {
+		t.Error("Le fichier JSON généré est vide")
+	}
+}
