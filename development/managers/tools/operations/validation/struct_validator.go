@@ -10,7 +10,7 @@ import (
 	   "github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	*/
 	"context"
-	"docmanager/development/managers/tools/core/toolkit"
+	"email-sender-1/development/managers/tools/core/toolkit"
 	"encoding/json"
 	"fmt"
 	"go/ast"
