@@ -1,4 +1,16 @@
 {
+  "tools": [
+    {
+      "name": "codacy-cli",
+      "description": "Analyse de code et sécurité avec Codacy CLI",
+      "type": "executable",
+"command": "C:/tools/codacy-cli.exe",
+      "args": ["analyze", "--tool", "trivy", "--src", "${workspaceRoot}"],
+      "output": "stdout",
+      "visible": true,
+      "mcpIntegration": true
+    }
+  ],
   "port": 4000,
   "services": {
     "augment": {

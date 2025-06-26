@@ -41,8 +41,4 @@ Définir des guidelines et prompts personnalisés pour guider Gemini selon vos b
 
 Ajoutez ci-dessous vos règles, prompts ou instructions spécifiques :
 
-<!--
-Exemple :
-- Toujours vérifier la cohérence des données avant de proposer une solution.
-- Prioriser les solutions robustes et documentées.
--->
+- Après chaque action importante (modification de fichier, exécution de commande critique), je dois documenter l'action en utilisant le script `log-action.ps1 'Votre message de log ici'`.

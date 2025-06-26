@@ -60,10 +60,21 @@ Gemini CLI est un outil en ligne de commande qui permet d’interagir avec l’I
 
 ---
 
+## Sandbox Gemini CLI
+
+La sandbox permet d’exécuter des commandes et scripts dans un environnement isolé pour plus de sécurité et de contrôle.
+
+- Pour activer ou utiliser la sandbox, consultez la documentation officielle : [Sandbox Gemini CLI](https://github.com/google-gemini/gemini-cli/blob/main/docs/sandbox.md)
+- La sandbox protège votre système en limitant les accès et en isolant les processus lancés via Gemini CLI.
+- Reportez-vous à la documentation pour les options d’activation, de configuration et les limitations éventuelles.
+
+---
+
 ## Ressources complémentaires
 - [Documentation officielle Gemini CLI](https://github.com/google-gemini/gemini-cli/tree/main/docs/cli)
 - [Liste complète des commandes (commands.md)](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/commands.md)
 - [Configuration avancée](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/configuration.md)
+- [Sandbox Gemini CLI](https://github.com/google-gemini/gemini-cli/blob/main/docs/sandbox.md)
 
 ---
 

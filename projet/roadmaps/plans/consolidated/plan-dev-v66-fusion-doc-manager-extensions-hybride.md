@@ -117,7 +117,6 @@ tests/
 
 # 🗺️ ROADMAP MAGISTRALE (DÉTAILLÉE & AUTOMATISÉE, Go natif)
 
-## 1. Initialisation et cadrage
 
 - [x] Scripts, scans, rapports et synthèse automatisés (voir détails plus haut)
 
