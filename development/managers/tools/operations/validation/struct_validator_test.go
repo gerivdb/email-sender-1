@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"docmanager/development/managers/tools/core/toolkit"
+	"email-sender-1/development/managers/tools/core/toolkit"
 )
 
 // TestNewStructValidator tests validator creation

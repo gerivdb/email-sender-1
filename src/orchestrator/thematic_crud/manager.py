@@ -86,7 +86,8 @@ class ThematicCRUDManager:
             embeddings_path,
             embedding_model,
             api_key,
-            api_url
+            api_url,
+            api_provider="gemini"
         )
 
     # Méthodes de création et mise à jour

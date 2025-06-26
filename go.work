@@ -1,0 +1,12 @@
+go 1.23.9
+
+use (
+	.
+	./core/gapanalyzer
+	./core/scanmodules
+	/tmp/email-sender-1
+)
+
+replace github.com/amoylab/unla => github.com/mcp-ecosystem/mcp-gateway v0.8.0
+
+replace github.com/gerivdb/email-sender-1 => /tmp/email-sender-1

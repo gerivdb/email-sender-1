@@ -27,36 +27,41 @@ class ThematicVectorSearch:
     """Classe pour la recherche vectorielle thématique."""
     
     def __init__(self, storage_path: str, embeddings_path: Optional[str] = None,
-                embedding_model: str = "openrouter/qwen/qwen3-235b-a22b",
+                embedding_model: Optional[str] = None,
                 api_key: Optional[str] = None,
-                api_url: Optional[str] = None):
+                api_url: Optional[str] = None,
+                api_provider: str = 'openrouter'):
         """
         Initialise le gestionnaire de recherche vectorielle thématique.
         
         Args:
             storage_path: Chemin vers le répertoire de stockage des données
             embeddings_path: Chemin vers le répertoire de stockage des embeddings (optionnel)
-            embedding_model: Modèle d'embedding à utiliser (défaut: "openrouter/qwen/qwen3-235b-a22b")
+            embedding_model: Modèle d'embedding à utiliser
             api_key: Clé API pour le service d'embedding (optionnel)
             api_url: URL de l'API pour le service d'embedding (optionnel)
+            api_provider: Fournisseur d'API à utiliser ('openrouter' or 'gemini')
         """
         self.storage_path = storage_path
         
-        # Utiliser un sous-répertoire "_embeddings" par défaut
         if embeddings_path is None:
             self.embeddings_path = os.path.join(storage_path, "_embeddings")
         else:
             self.embeddings_path = embeddings_path
         
-        # Créer le répertoire d'embeddings s'il n'existe pas
         os.makedirs(self.embeddings_path, exist_ok=True)
         
-        # Configuration du modèle d'embedding
-        self.embedding_model = embedding_model
-        self.api_key = api_key or os.environ.get("OPENROUTER_API_KEY")
-        self.api_url = api_url or "https://openrouter.ai/api/v1/embeddings"
+        self.api_provider = api_provider
         
-        # Cache des embeddings
+        if self.api_provider == 'gemini':
+            self.api_key = api_key or os.environ.get("GEMINI_API_KEY")
+            self.embedding_model = embedding_model or "models/embedding-001"
+            self.api_url = api_url or "https://generativelanguage.googleapis.com/v1beta/models/embedding-001:embedContent"
+        else: # openrouter
+            self.api_key = api_key or os.environ.get("OPENROUTER_API_KEY")
+            self.embedding_model = embedding_model or "openrouter/qwen/qwen3-235b-a22b"
+            self.api_url = api_url or "https://openrouter.ai/api/v1/embeddings"
+
         self.embeddings_cache = {}
     
     def generate_embedding(self, text: str) -> Optional[List[float]]:
@@ -70,30 +75,48 @@ class ThematicVectorSearch:
             Vecteur d'embedding ou None en cas d'erreur
         """
         if not self.api_key:
-            print("Erreur: Clé API non définie pour le service d'embedding")
+            print(f"Erreur: Clé API non définie pour le service {self.api_provider}")
             return None
         
         try:
-            headers = {
-                "Authorization": f"Bearer {self.api_key}",
-                "Content-Type": "application/json"
-            }
-            
-            data = {
-                "model": self.embedding_model,
-                "input": text
-            }
-            
-            response = requests.post(self.api_url, headers=headers, json=data)
-            response.raise_for_status()
-            
-            result = response.json()
-            
-            if "data" in result and len(result["data"]) > 0 and "embedding" in result["data"][0]:
-                return result["data"][0]["embedding"]
-            else:
-                print(f"Erreur: Format de réponse inattendu: {result}")
-                return None
+            if self.api_provider == 'gemini':
+                headers = {
+                    "x-goog-api-key": self.api_key,
+                    "Content-Type": "application/json"
+                }
+                data = {
+                    "model": self.embedding_model,
+                    "content": {
+                        "parts": [{
+                            "text": text
+                        }]
+                    }
+                }
+                response = requests.post(self.api_url, headers=headers, json=data)
+                response.raise_for_status()
+                result = response.json()
+                if "embedding" in result and "values" in result["embedding"]:
+                    return result["embedding"]["values"]
+                else:
+                    print(f"Erreur: Format de réponse inattendu de Gemini: {result}")
+                    return None
+            else: # openrouter
+                headers = {
+                    "Authorization": f"Bearer {self.api_key}",
+                    "Content-Type": "application/json"
+                }
+                data = {
+                    "model": self.embedding_model,
+                    "input": text
+                }
+                response = requests.post(self.api_url, headers=headers, json=data)
+                response.raise_for_status()
+                result = response.json()
+                if "data" in result and len(result["data"]) > 0 and "embedding" in result["data"][0]:
+                    return result["data"][0]["embedding"]
+                else:
+                    print(f"Erreur: Format de réponse inattendu de OpenRouter: {result}")
+                    return None
         
         except Exception as e:
             print(f"Erreur lors de la génération de l'embedding: {str(e)}")
@@ -110,11 +133,9 @@ class ThematicVectorSearch:
         Returns:
             Score de similarité cosinus (entre -1 et 1)
         """
-        # Convertir en tableaux numpy
         vec1 = np.array(embedding1)
         vec2 = np.array(embedding2)
         
-        # Calculer la similarité cosinus
         dot_product = np.dot(vec1, vec2)
         norm1 = np.linalg.norm(vec1)
         norm2 = np.linalg.norm(vec2)
@@ -140,16 +161,13 @@ class ThematicVectorSearch:
         
         item_id = item["id"]
         
-        # Extraire le texte à encoder
         text_to_encode = self._extract_text_for_embedding(item)
         
-        # Générer l'embedding
         embedding = self.generate_embedding(text_to_encode)
         
         if embedding is None:
             return False
         
-        # Sauvegarder l'embedding
         embedding_data = {
             "item_id": item_id,
             "embedding": embedding,
@@ -162,7 +180,6 @@ class ThematicVectorSearch:
             with open(embedding_path, 'w', encoding='utf-8') as f:
                 json.dump(embedding_data, f, ensure_ascii=False, indent=2)
             
-            # Mettre à jour le cache
             self.embeddings_cache[item_id] = embedding
             
             return True
@@ -185,10 +202,8 @@ class ThematicVectorSearch:
         if not os.path.exists(theme_dir) or not os.path.isdir(theme_dir):
             return {"indexed_count": 0, "error_count": 0, "skipped_count": 0}
         
-        # Récupérer tous les fichiers JSON dans le répertoire thématique
         json_files = glob.glob(os.path.join(theme_dir, "*.json"))
         
-        # Statistiques
         stats = {
             "total_items": len(json_files),
             "indexed_count": 0,
@@ -196,13 +211,11 @@ class ThematicVectorSearch:
             "skipped_count": 0
         }
         
-        # Indexer chaque élément
         for file_path in json_files:
             try:
                 with open(file_path, 'r', encoding='utf-8') as f:
                     item = json.load(f)
                     
-                    # Vérifier si l'élément est déjà indexé
                     item_id = item["id"]
                     embedding_path = os.path.join(self.embeddings_path, f"{item_id}.json")
                     
@@ -210,7 +223,6 @@ class ThematicVectorSearch:
                         stats["skipped_count"] += 1
                         continue
                     
-                    # Indexer l'élément
                     if self.index_item(item):
                         stats["indexed_count"] += 1
                     else:
@@ -236,42 +248,31 @@ class ThematicVectorSearch:
         Returns:
             Liste des éléments similaires avec leur score de similarité
         """
-        # Générer l'embedding de la requête
         query_embedding = self.generate_embedding(query)
         
         if query_embedding is None:
             return []
         
-        # Charger tous les embeddings
         self._load_embeddings_cache()
         
-        # Calculer les similarités
         similarities = []
         
         for item_id, embedding in self.embeddings_cache.items():
-            # Calculer la similarité
             similarity = self.compute_similarity(query_embedding, embedding)
             
-            # Ajouter à la liste si la similarité est suffisante
             if similarity >= similarity_threshold:
                 similarities.append((item_id, similarity))
         
-        # Trier par similarité décroissante
         similarities.sort(key=lambda x: x[1], reverse=True)
         
-        # Limiter au nombre d'éléments demandé
         top_similarities = similarities[:top_k]
         
-        # Récupérer les éléments correspondants
         results = []
         for item_id, similarity in top_similarities:
-            # Récupérer l'élément
             item = self._get_item_by_id(item_id)
             
             if item is not None:
-                # Filtrer par thème si nécessaire
                 if themes is None or self._item_has_theme(item, themes):
-                    # Ajouter le score de similarité
                     item_with_score = item.copy()
                     item_with_score["_similarity_score"] = similarity
                     
@@ -291,17 +292,14 @@ class ThematicVectorSearch:
         Returns:
             Liste des clusters identifiés
         """
-        # Charger tous les embeddings
         self._load_embeddings_cache()
         
-        # Matrice de similarité
         item_ids = list(self.embeddings_cache.keys())
         n_items = len(item_ids)
         
         if n_items == 0:
             return []
         
-        # Calculer les similarités entre tous les éléments
         similarities = {}
         for i in range(n_items):
             item_id1 = item_ids[i]
@@ -311,10 +309,8 @@ class ThematicVectorSearch:
                 item_id2 = item_ids[j]
                 embedding2 = self.embeddings_cache[item_id2]
                 
-                # Calculer la similarité
                 similarity = self.compute_similarity(embedding1, embedding2)
                 
-                # Stocker la similarité si elle est suffisante
                 if similarity >= min_similarity:
                     if item_id1 not in similarities:
                         similarities[item_id1] = {}
@@ -325,7 +321,6 @@ class ThematicVectorSearch:
                     similarities[item_id1][item_id2] = similarity
                     similarities[item_id2][item_id1] = similarity
         
-        # Identifier les clusters (implémentation simple)
         visited = set()
         clusters = []
         
@@ -333,11 +328,9 @@ class ThematicVectorSearch:
             if item_id in visited:
                 continue
             
-            # Démarrer un nouveau cluster
             cluster = [item_id]
             visited.add(item_id)
             
-            # Ajouter les éléments similaires
             i = 0
             while i < len(cluster):
                 current_id = cluster[i]
@@ -350,16 +343,13 @@ class ThematicVectorSearch:
                 
                 i += 1
             
-            # Ajouter le cluster s'il est suffisamment grand
             if len(cluster) >= min_cluster_size:
-                # Récupérer les éléments du cluster
                 cluster_items = []
                 for cluster_id in cluster:
                     item = self._get_item_by_id(cluster_id)
                     if item is not None:
                         cluster_items.append(item)
                 
-                # Identifier les thèmes communs
                 common_themes = self._identify_common_themes(cluster_items)
                 
                 clusters.append({
@@ -368,7 +358,6 @@ class ThematicVectorSearch:
                     "common_themes": common_themes
                 })
         
-        # Trier les clusters par taille décroissante
         clusters.sort(key=lambda x: x["size"], reverse=True)
         
         return clusters
@@ -385,38 +374,30 @@ class ThematicVectorSearch:
         """
         text_parts = []
         
-        # Ajouter le contenu
         if "content" in item:
             text_parts.append(item["content"])
         
-        # Ajouter les métadonnées importantes
         if "metadata" in item:
             metadata = item["metadata"]
             
-            # Ajouter le titre
             if "title" in metadata:
                 text_parts.append(f"Titre: {metadata['title']}")
             
-            # Ajouter les tags
             if "tags" in metadata and isinstance(metadata["tags"], list):
                 text_parts.append(f"Tags: {', '.join(metadata['tags'])}")
             
-            # Ajouter les thèmes
             if "themes" in metadata:
                 themes_str = ", ".join(metadata["themes"].keys())
                 text_parts.append(f"Thèmes: {themes_str}")
         
-        # Joindre toutes les parties
         return "\n\n".join(text_parts)
     
     def _load_embeddings_cache(self) -> None:
         """
         Charge tous les embeddings dans le cache.
         """
-        # Réinitialiser le cache
         self.embeddings_cache = {}
         
-        # Récupérer tous les fichiers d'embedding
         embedding_files = glob.glob(os.path.join(self.embeddings_path, "*.json"))
         
         for file_path in embedding_files:
@@ -486,7 +467,6 @@ class ThematicVectorSearch:
         if not items:
             return {}
         
-        # Compter les occurrences de chaque thème
         theme_counts = defaultdict(int)
         
         for item in items:
@@ -494,11 +474,9 @@ class ThematicVectorSearch:
                 for theme in item["metadata"]["themes"]:
                     theme_counts[theme] += 1
         
-        # Calculer la fréquence de chaque thème
         n_items = len(items)
         theme_frequencies = {theme: count / n_items for theme, count in theme_counts.items()}
         
-        # Trier par fréquence décroissante
         sorted_themes = dict(sorted(theme_frequencies.items(), key=lambda x: x[1], reverse=True))
         
         return sorted_themes

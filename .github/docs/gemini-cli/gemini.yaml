@@ -1,0 +1,14 @@
+# Exemple de configuration gemini-cli pour documentation ou tests
+# Voir : https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/configuration.md
+
+model: gemini-2.5-flash
+sandbox: true
+project_dir: D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1
+context:
+  max_tokens: 8192
+  temperature: 0.7
+  top_p: 1.0
+  stream: true
+api_key: ${GEMINI_API_KEY}
+# endpoint: "https://..."
+# debug: true
