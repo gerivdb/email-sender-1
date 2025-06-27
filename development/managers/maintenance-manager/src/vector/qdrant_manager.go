@@ -6,7 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"email-sender-1/development/managers/maintenance-manager/src/core"
+	"email_sender/development/managers/maintenance-manager/src/core"
+	"email_sender/development/managers/maintenance-manager/src/vector/qdrant" // Ajouté pour les types qdrant
 
 	"go.uber.org/zap"
 	// "github.com/gerivdb/email-sender-1/maintenance-manager/src/core" // Désactivé car module absent
@@ -148,32 +149,33 @@ func (qm *QdrantManager) ensureCollection(ctx context.Context, name string, vect
 			zap.String("name", name),
 			zap.Int("vector_size", vectorSize))
 
-// Utilisation du stub local pour la création de collection
-// Correction de la virgule manquante dans la struct CreateCollection
-_, err := qm.client.CreateCollection(ctx, &CreateCollection{
-CollectionName: name,
-VectorsConfig: &VectorsConfig{
-Params: &VectorParams{
-Size:     uint64(vectorSize),
-Distance: Distance_Cosine,
-},
-},
-})
-if err != nil {
-return fmt.Errorf("failed to create collection: %w", err)
-}
+		// Utilisation du stub local pour la création de collection
+		// Correction de la virgule manquante dans la struct CreateCollection
+		_, err := qm.client.CreateCollection(ctx, &CreateCollection{
+			CollectionName: name,
+			VectorsConfig: &VectorsConfig{
+				Params: &VectorParams{
+					Size:     uint64(vectorSize),
+					Distance: Distance_Cosine,
+				},
+			},
+		})
+		if err != nil {
+			return fmt.Errorf("failed to create collection: %w", err)
+		}
 
-qm.logger.Info("Collection created successfully", zap.String("name", name))
-// Store collection info
-qm.collections[name] = &Collection{
-Name:       name,
-VectorSize: vectorSize,
-Distance:   "cosine",
-Metadata:   make(map[string]string),
-CreatedAt:  time.Now(),
-}
+		qm.logger.Info("Collection created successfully", zap.String("name", name))
+		// Store collection info
+		qm.collections[name] = &Collection{
+			Name:       name,
+			VectorSize: vectorSize,
+			Distance:   "cosine",
+			Metadata:   make(map[string]string),
+			CreatedAt:  time.Now(),
+		}
+	}
 
-return nil
+	return nil
 }
 
 // loadCollections loads information about existing collections
@@ -192,17 +194,17 @@ func (qm *QdrantManager) loadCollections(ctx context.Context) error {
 			continue
 		}
 
-vectorSize := 0
-distance := "cosine"
+		vectorSize := 0
+		distance := "cosine"
 
-qm.collections[collection.Name] = &Collection{
-Name:       collection.Name,
-VectorSize: vectorSize,
-Distance:   distance,
-Metadata:   make(map[string]string),
-CreatedAt:  time.Now(), // We don't have the actual creation time
-}
-}
+		qm.collections[collection.Name] = &Collection{
+			Name:       collection.Name,
+			VectorSize: vectorSize,
+			Distance:   distance,
+			Metadata:   make(map[string]string),
+			CreatedAt:  time.Now(), // We don't have the actual creation time
+		}
+	}
 
 	qm.logger.Info("Loaded collections", zap.Int("count", len(qm.collections)))
 	return nil

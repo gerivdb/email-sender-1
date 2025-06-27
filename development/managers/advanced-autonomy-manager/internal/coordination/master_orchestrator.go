@@ -5,11 +5,10 @@ package coordination
 import (
 	"context"
 	"fmt"
-	"sort"
 	"sync"
 	"time"
 
-	"advanced-autonomy-manager/interfaces"
+	interfaces "email_sender/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // MasterOrchestrator implémentation détaillée
@@ -55,21 +54,21 @@ type DependencyNode struct {
 
 // PerformanceOptimizer optimise les performances d'orchestration
 type PerformanceOptimizer struct {
-	config            *OptimizerConfig
-	logger            interfaces.Logger
+	config             *OptimizerConfig
+	logger             interfaces.Logger
 	performanceMetrics *OrchestrationMetrics
-	optimizationRules []OptimizationRule
-	mutex             sync.RWMutex
+	optimizationRules  []OptimizationRule
+	mutex              sync.RWMutex
 }
 
 // OrchestrationMetrics métriques d'orchestration
 type OrchestrationMetrics struct {
-	OperationsPerSecond  float64
-	AverageLatency       time.Duration
-	SuccessRate          float64
-	ResourceUtilization  map[string]float64
-	BottleneckAnalysis   []string
-	LastUpdate           time.Time
+	OperationsPerSecond float64
+	AverageLatency      time.Duration
+	SuccessRate         float64
+	ResourceUtilization map[string]float64
+	BottleneckAnalysis  []string
+	LastUpdate          time.Time
 }
 
 // OptimizationRule règle d'optimisation
@@ -83,8 +82,8 @@ type OptimizationRule struct {
 
 // OptimizerConfig configuration de l'optimiseur
 type OptimizerConfig struct {
-	OptimizationInterval time.Duration
-	PerformanceThreshold float64
+	OptimizationInterval    time.Duration
+	PerformanceThreshold    float64
 	AutoOptimizationEnabled bool
 }
 
@@ -93,7 +92,7 @@ func NewMasterOrchestrator(config *OrchestratorConfig, logger interfaces.Logger)
 	if config == nil {
 		return nil, fmt.Errorf("orchestrator config is required")
 	}
-	
+
 	if logger == nil {
 		return nil, fmt.Errorf("logger is required")
 	}
@@ -101,14 +100,14 @@ func NewMasterOrchestrator(config *OrchestratorConfig, logger interfaces.Logger)
 	ctx, cancel := context.WithCancel(context.Background())
 
 	orchestrator := &MasterOrchestrator{
-		config:               config,
-		logger:               logger,
-		managerRegistry:      make(map[string]*ManagerInfo),
-		operationQueue:       make(chan *OrchestrationOperation, 1000),
-		workers:              make([]*OrchestratorWorker, config.Workers),
-		ctx:                  ctx,
-		cancel:               cancel,
-		initialized:          false,
+		config:          config,
+		logger:          logger,
+		managerRegistry: make(map[string]*ManagerInfo),
+		operationQueue:  make(chan *OrchestrationOperation, 1000),
+		workers:         make([]*OrchestratorWorker, config.Workers),
+		ctx:             ctx,
+		cancel:          cancel,
+		initialized:     false,
 	}
 
 	// Initialiser le graphe de dépendances
@@ -195,7 +194,7 @@ func (mo *MasterOrchestrator) ProcessPendingOperations() {
 // ExecuteOperation exécute une opération d'orchestration
 func (mo *MasterOrchestrator) ExecuteOperation(operation *OrchestrationOperation) (*OperationResult, error) {
 	startTime := time.Now()
-	
+
 	mo.logger.Info(fmt.Sprintf("Executing operation %s of type %s", operation.ID, operation.Type))
 
 	// Vérifier les dépendances avant l'exécution
@@ -319,18 +318,18 @@ func (mo *MasterOrchestrator) filterDecisionsForManager(decisions []interfaces.A
 func (mo *MasterOrchestrator) executeDecisionsOnManager(ctx context.Context, managerInfo *ManagerInfo, decisions []interfaces.AutonomousDecision) (interface{}, error) {
 	// Exécuter les décisions sur le manager spécifique
 	// Cette implémentation dépend de l'interface du manager
-	
+
 	// Pour l'instant, nous simulons l'exécution
 	result := map[string]interface{}{
 		"decisions_executed": len(decisions),
 		"manager_name":       managerInfo.Name,
 		"execution_time":     time.Now(),
-		"status":            "success",
+		"status":             "success",
 	}
 
 	// Mettre à jour le statut du manager
 	managerInfo.LastUpdate = time.Now()
-	
+
 	return result, nil
 }
 
@@ -538,7 +537,7 @@ func (po *PerformanceOptimizer) updateMetrics(duration time.Duration, success bo
 
 	// Mettre à jour les métriques de performance
 	po.performanceMetrics.LastUpdate = time.Now()
-	
+
 	// Calculer la latence moyenne
 	if po.performanceMetrics.AverageLatency == 0 {
 		po.performanceMetrics.AverageLatency = duration

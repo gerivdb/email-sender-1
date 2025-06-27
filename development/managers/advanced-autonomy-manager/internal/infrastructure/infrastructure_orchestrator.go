@@ -24,8 +24,8 @@ var (
 	ErrSecurityValidationFailed  = errors.New("security validation failed")
 )
 
-// InfrastructureOrchestrator - Interface principale pour l'orchestration infrastructure (Phase 4)
-type InfrastructureOrchestrator interface {
+// InfrastructureOrchestratorInterface - Interface principale pour l'orchestration infrastructure (Phase 4)
+type InfrastructureOrchestratorInterface interface {
 	// Démarrage orchestré de l'infrastructure complète
 	StartInfrastructureStack(ctx context.Context, config *StackConfig) (*StartupResult, error)
 
@@ -661,4 +661,19 @@ func (io *InfrastructureOrchestrator) updateRunningServiceStatus(service string,
 	defer io.lock.Unlock()
 
 	io.runningServices[service] = status
+}
+
+// getShutdownOrder returns the reverse order for shutdown (stub, à adapter selon la logique réelle)
+func (io *InfrastructureOrchestrator) getShutdownOrder(services []string) ([]string, error) {
+	reversed := make([]string, len(services))
+	for i, s := range services {
+		reversed[len(services)-1-i] = s
+	}
+	return reversed, nil
+}
+
+// getStartupOrder returns the order for startup (stub, à adapter selon la logique réelle)
+func (io *InfrastructureOrchestrator) getStartupOrder(services []string) ([]string, error) {
+	// Ici, on retourne simplement l'ordre reçu
+	return services, nil
 }

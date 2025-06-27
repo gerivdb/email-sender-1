@@ -8,93 +8,108 @@ import (
 	"sync"
 	"time"
 
-	"advanced-autonomy-manager/interfaces"
+	interfaces "email_sender/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // MasterCoordinationLayer orchestre et coordonne tous les 20 managers de l'écosystème
 type MasterCoordinationLayer struct {
-	config         *CoordinationConfig
-	logger         interfaces.Logger
-	initialized    bool
-	
+	config      *CoordinationConfig
+	logger      interfaces.Logger
+	initialized bool
+
 	// Composants principaux
 	orchestrator    *MasterOrchestrator
 	eventBus        *CrossManagerEventBus
 	stateManager    *GlobalStateManager
 	emergencySystem *EmergencyResponseSystem
-	
+
 	// État et synchronisation
 	managerRegistry map[string]interfaces.BaseManager
 	coordinationCtx context.Context
-	cancel         context.CancelFunc
-	mutex          sync.RWMutex
-	
+	cancel          context.CancelFunc
+	mutex           sync.RWMutex
+
 	// Métriques de coordination
 	coordinationMetrics *CoordinationMetrics
 	performanceTracker  *PerformanceTracker
 }
 
+// mclEventSubscriber est une implémentation de EventSubscriber pour MasterCoordinationLayer
+type mclEventSubscriber struct {
+	mcl *MasterCoordinationLayer
+}
+
+// NewMCLSubscriber crée une nouvelle instance de mclEventSubscriber
+func NewMCLSubscriber(mcl *MasterCoordinationLayer) *mclEventSubscriber {
+	return &mclEventSubscriber{mcl: mcl}
+}
+
+// HandleEvent implémente la méthode HandleEvent de l'interface EventSubscriber
+func (s *mclEventSubscriber) HandleEvent(event *CoordinationEvent) error {
+	return s.mcl.handleManagerEvent(event)
+}
+
 // CoordinationConfig configure la couche de coordination maître
 type CoordinationConfig struct {
 	// Configuration de l'orchestrateur
-	OrchestratorWorkers  int           `yaml:"orchestrator_workers" json:"orchestrator_workers"`
-	MaxConcurrentOps     int           `yaml:"max_concurrent_ops" json:"max_concurrent_ops"`
-	OperationTimeout     time.Duration `yaml:"operation_timeout" json:"operation_timeout"`
-	
+	OrchestratorWorkers int           `yaml:"orchestrator_workers" json:"orchestrator_workers"`
+	MaxConcurrentOps    int           `yaml:"max_concurrent_ops" json:"max_concurrent_ops"`
+	OperationTimeout    time.Duration `yaml:"operation_timeout" json:"operation_timeout"`
+
 	// Configuration du bus d'événements
-	EventBusBufferSize   int           `yaml:"event_bus_buffer_size" json:"event_bus_buffer_size"`
-	EventProcessingRate  time.Duration `yaml:"event_processing_rate" json:"event_processing_rate"`
-	EventRetentionTime   time.Duration `yaml:"event_retention_time" json:"event_retention_time"`
-	
+	EventBusBufferSize  int           `yaml:"event_bus_buffer_size" json:"event_bus_buffer_size"`
+	EventProcessingRate time.Duration `yaml:"event_processing_rate" json:"event_processing_rate"`
+	EventRetentionTime  time.Duration `yaml:"event_retention_time" json:"event_retention_time"`
+
 	// Configuration de la gestion d'état
-	StateSyncInterval    time.Duration `yaml:"state_sync_interval" json:"state_sync_interval"`
-	StateBackupInterval  time.Duration `yaml:"state_backup_interval" json:"state_backup_interval"`
+	StateSyncInterval         time.Duration `yaml:"state_sync_interval" json:"state_sync_interval"`
+	StateBackupInterval       time.Duration `yaml:"state_backup_interval" json:"state_backup_interval"`
 	ConflictResolutionTimeout time.Duration `yaml:"conflict_resolution_timeout" json:"conflict_resolution_timeout"`
-	
+
 	// Configuration du système d'urgence
-	EmergencyResponseTime    time.Duration `yaml:"emergency_response_time" json:"emergency_response_time"`
-	CrisisDetectionSensitivity float64     `yaml:"crisis_detection_sensitivity" json:"crisis_detection_sensitivity"`
-	AutoRecoveryEnabled      bool          `yaml:"auto_recovery_enabled" json:"auto_recovery_enabled"`
-	
+	EmergencyResponseTime      time.Duration `yaml:"emergency_response_time" json:"emergency_response_time"`
+	CrisisDetectionSensitivity float64       `yaml:"crisis_detection_sensitivity" json:"crisis_detection_sensitivity"`
+	AutoRecoveryEnabled        bool          `yaml:"auto_recovery_enabled" json:"auto_recovery_enabled"`
+
 	// Paramètres de performance
-	HealthCheckInterval  time.Duration `yaml:"health_check_interval" json:"health_check_interval"`
-	MetricsUpdateRate    time.Duration `yaml:"metrics_update_rate" json:"metrics_update_rate"`
-	LoggingLevel         string        `yaml:"logging_level" json:"logging_level"`
+	HealthCheckInterval time.Duration `yaml:"health_check_interval" json:"health_check_interval"`
+	MetricsUpdateRate   time.Duration `yaml:"metrics_update_rate" json:"metrics_update_rate"`
+	LoggingLevel        string        `yaml:"logging_level" json:"logging_level"`
 }
 
 // Structures de données pour la coordination
 
 type ManagerInfo struct {
-	Manager     interfaces.BaseManager
-	Name        string
-	Status      ManagerStatus
-	Health      float64
-	LastUpdate  time.Time
+	Manager      interfaces.BaseManager
+	Name         string
+	Status       ManagerStatus
+	Health       float64
+	LastUpdate   time.Time
 	Dependencies []string
 	Capabilities []string
-	Metadata    map[string]interface{}
+	Metadata     map[string]interface{}
 }
 
 type ManagerStatus string
 
 const (
 	ManagerStatusActive      ManagerStatus = "active"
-	ManagerStatusIdle        ManagerStatus = "idle" 
+	ManagerStatusIdle        ManagerStatus = "idle"
 	ManagerStatusMaintenance ManagerStatus = "maintenance"
 	ManagerStatusError       ManagerStatus = "error"
 	ManagerStatusOffline     ManagerStatus = "offline"
 )
 
 type OrchestrationOperation struct {
-	ID          string
-	Type        OperationType
+	ID             string
+	Type           OperationType
 	TargetManagers []string
-	Decisions   []interfaces.AutonomousDecision
-	Priority    OperationPriority
-	Context     context.Context
-	ResultChan  chan *OperationResult
-	CreatedAt   time.Time
-	Timeout     time.Duration
+	Decisions      []interfaces.AutonomousDecision
+	Priority       OperationPriority
+	Context        context.Context
+	ResultChan     chan *OperationResult
+	CreatedAt      time.Time
+	Timeout        time.Duration
 }
 
 type OperationType string
@@ -110,9 +125,9 @@ const (
 type OperationPriority int
 
 const (
-	PriorityLow    OperationPriority = 1
-	PriorityNormal OperationPriority = 5
-	PriorityHigh   OperationPriority = 8
+	PriorityLow      OperationPriority = 1
+	PriorityNormal   OperationPriority = 5
+	PriorityHigh     OperationPriority = 8
 	PriorityCritical OperationPriority = 10
 )
 
@@ -130,11 +145,11 @@ type CoordinationEvent struct {
 type EventType string
 
 const (
-	EventTypeManagerStateChange  EventType = "manager_state_change"
-	EventTypeDecisionExecuted    EventType = "decision_executed"
-	EventTypeHealthAlert         EventType = "health_alert"
-	EventTypePerformanceMetric   EventType = "performance_metric"
-	EventTypeEmergencyTrigger    EventType = "emergency_trigger"
+	EventTypeManagerStateChange EventType = "manager_state_change"
+	EventTypeDecisionExecuted   EventType = "decision_executed"
+	EventTypeHealthAlert        EventType = "health_alert"
+	EventTypePerformanceMetric  EventType = "performance_metric"
+	EventTypeEmergencyTrigger   EventType = "emergency_trigger"
 	EventTypeSystemNotification EventType = "system_notification"
 )
 
@@ -148,13 +163,13 @@ const (
 )
 
 type UnifiedSystemState struct {
-	ManagerStates   map[string]*interfaces.ManagerState
-	SystemHealth    *SystemHealthState
-	Performance     *SystemPerformance
+	ManagerStates    map[string]*interfaces.ManagerState
+	SystemHealth     *SystemHealthState
+	Performance      *SystemPerformance
 	ActiveOperations map[string]*interfaces.Operation
-	LastUpdate      time.Time
-	Version         int64
-	Checksum        string
+	LastUpdate       time.Time
+	Version          int64
+	Checksum         string
 }
 
 type SystemHealthState struct {
@@ -166,17 +181,17 @@ type SystemHealthState struct {
 }
 
 type SystemPerformance struct {
-	OverallThroughput   float64
-	AverageResponseTime time.Duration
-	ResourceUtilization map[string]float64
-	BottleneckAnalysis  []string
+	OverallThroughput       float64
+	AverageResponseTime     time.Duration
+	ResourceUtilization     map[string]float64
+	BottleneckAnalysis      []string
 	OptimizationSuggestions []string
 }
 
 // CoordinationMetrics pour le suivi des performances de coordination
 type CoordinationMetrics struct {
-	OperationsExecuted    int64
-	AverageExecutionTime  time.Duration
+	OperationsExecuted   int64
+	AverageExecutionTime time.Duration
 	SuccessRate          float64
 	EventsProcessed      int64
 	StateUpdates         int64
@@ -190,7 +205,7 @@ func NewMasterCoordinationLayer(config *CoordinationConfig, logger interfaces.Lo
 	if config == nil {
 		return nil, fmt.Errorf("coordination config is required")
 	}
-	
+
 	if logger == nil {
 		return nil, fmt.Errorf("logger is required")
 	}
@@ -224,9 +239,9 @@ func (mcl *MasterCoordinationLayer) Initialize(ctx context.Context) error {
 
 	// 1. Initialiser l'orchestrateur maître
 	orchestrator, err := NewMasterOrchestrator(&OrchestratorConfig{
-		Workers:           mcl.config.OrchestratorWorkers,
-		MaxConcurrentOps:  mcl.config.MaxConcurrentOps,
-		OperationTimeout:  mcl.config.OperationTimeout,
+		Workers:          mcl.config.OrchestratorWorkers,
+		MaxConcurrentOps: mcl.config.MaxConcurrentOps,
+		OperationTimeout: mcl.config.OperationTimeout,
 	}, mcl.logger)
 	if err != nil {
 		return fmt.Errorf("failed to initialize master orchestrator: %w", err)
@@ -235,9 +250,9 @@ func (mcl *MasterCoordinationLayer) Initialize(ctx context.Context) error {
 
 	// 2. Initialiser le bus d'événements cross-manager
 	eventBus, err := NewCrossManagerEventBus(&EventBusConfig{
-		BufferSize:       mcl.config.EventBusBufferSize,
-		ProcessingRate:   mcl.config.EventProcessingRate,
-		RetentionTime:    mcl.config.EventRetentionTime,
+		BufferSize:     mcl.config.EventBusBufferSize,
+		ProcessingRate: mcl.config.EventProcessingRate,
+		RetentionTime:  mcl.config.EventRetentionTime,
 	}, mcl.logger)
 	if err != nil {
 		return fmt.Errorf("failed to initialize event bus: %w", err)
@@ -246,9 +261,9 @@ func (mcl *MasterCoordinationLayer) Initialize(ctx context.Context) error {
 
 	// 3. Initialiser le gestionnaire d'état global
 	stateManager, err := NewGlobalStateManager(&StateManagerConfig{
-		SyncInterval:     mcl.config.StateSyncInterval,
-		BackupInterval:   mcl.config.StateBackupInterval,
-		ConflictTimeout:  mcl.config.ConflictResolutionTimeout,
+		SyncInterval:    mcl.config.StateSyncInterval,
+		BackupInterval:  mcl.config.StateBackupInterval,
+		ConflictTimeout: mcl.config.ConflictResolutionTimeout,
 	}, mcl.logger)
 	if err != nil {
 		return fmt.Errorf("failed to initialize state manager: %w", err)
@@ -257,9 +272,9 @@ func (mcl *MasterCoordinationLayer) Initialize(ctx context.Context) error {
 
 	// 4. Initialiser le système de réponse d'urgence
 	emergencySystem, err := NewEmergencyResponseSystem(&EmergencyConfig{
-		ResponseTime:        mcl.config.EmergencyResponseTime,
+		ResponseTime:         mcl.config.EmergencyResponseTime,
 		DetectionSensitivity: mcl.config.CrisisDetectionSensitivity,
-		AutoRecoveryEnabled: mcl.config.AutoRecoveryEnabled,
+		AutoRecoveryEnabled:  mcl.config.AutoRecoveryEnabled,
 	}, mcl.logger)
 	if err != nil {
 		return fmt.Errorf("failed to initialize emergency system: %w", err)
@@ -306,14 +321,14 @@ func (mcl *MasterCoordinationLayer) RegisterManager(name string, manager interfa
 	}
 
 	// Souscrire aux événements du manager
-	mcl.eventBus.SubscribeToManager(name, mcl.handleManagerEvent)
+	mcl.eventBus.SubscribeToManager(name, NewMCLSubscriber(mcl))
 
 	mcl.logger.Info(fmt.Sprintf("Manager %s registered successfully", name))
 	return nil
 }
 
 // ExecuteDecisionsAcrossManagers exécute des décisions autonomes à travers les managers
-func (mcl *MasterCoordinationLayer) ExecuteDecisionsAcrossManagers(ctx context.Context, decisions []interfaces.AutonomousDecision) (map[string]interface{}, error) {
+func (mcl *MasterCoordinationLayer) ExecuteDecisionsAcrossManagers(ctx context.Context, decisions []interfaces.AutonomousDecision) ([]*interfaces.Action, error) {
 	mcl.logger.Info(fmt.Sprintf("Executing %d decisions across ecosystem managers", len(decisions)))
 
 	// Créer une opération d'orchestration
@@ -338,7 +353,7 @@ func (mcl *MasterCoordinationLayer) ExecuteDecisionsAcrossManagers(ctx context.C
 			if result.Error != nil {
 				return nil, fmt.Errorf("operation execution failed: %w", result.Error)
 			}
-			
+
 			// Publier l'événement de succès
 			mcl.eventBus.PublishEvent(&CoordinationEvent{
 				ID:        generateEventID(),
@@ -350,14 +365,23 @@ func (mcl *MasterCoordinationLayer) ExecuteDecisionsAcrossManagers(ctx context.C
 				Timestamp: time.Now(),
 			})
 
-			return result.Data, nil
-			
+			// Convertir result.Data en []*interfaces.Action
+			// Cette partie est un placeholder et devra être adaptée en fonction du contenu réel de result.Data
+			actions := make([]*interfaces.Action, 0)
+			// Exemple de conversion si result.Data est un map d'actions
+			// for _, v := range result.Data {
+			// 	if action, ok := v.(*interfaces.Action); ok {
+			// 		actions = append(actions, action)
+			// 	}
+			// }
+			return actions, nil
+
 		case <-time.After(operation.Timeout):
 			return nil, fmt.Errorf("operation timed out after %v", operation.Timeout)
 		case <-ctx.Done():
 			return nil, fmt.Errorf("operation cancelled: %w", ctx.Err())
 		}
-		
+
 	case <-ctx.Done():
 		return nil, fmt.Errorf("failed to queue operation: %w", ctx.Err())
 	}
@@ -396,12 +420,12 @@ func (mcl *MasterCoordinationLayer) MonitorEcosystemHealth(ctx context.Context) 
 
 	// Analyser la santé de l'écosystème
 	ecosystemHealth := &interfaces.EcosystemHealth{
-		OverallHealth:    systemState.SystemHealth.OverallHealth,
-		ManagerStates:    systemState.ManagerStates,
-		CriticalIssues:   systemState.SystemHealth.CriticalIssues,
-		Warnings:         systemState.SystemHealth.Warnings,
-		Performance:      mcl.analyzeSystemPerformance(systemState),
-		LastUpdate:       time.Now(),
+		OverallHealth:       systemState.SystemHealth.OverallHealth,
+		ManagerStates:       systemState.ManagerStates,
+		CriticalIssues:      systemState.SystemHealth.CriticalIssues,
+		Warnings:            systemState.SystemHealth.Warnings,
+		Performance:         mcl.analyzeSystemPerformance(systemState),
+		LastUpdate:          time.Now(),
 		CoordinationMetrics: mcl.coordinationMetrics,
 	}
 
@@ -544,14 +568,15 @@ func (mcl *MasterCoordinationLayer) checkManagerHealth(name string, manager inte
 	}
 }
 
-func (mcl *MasterCoordinationLayer) handleManagerEvent(event *CoordinationEvent) {
+func (mcl *MasterCoordinationLayer) handleManagerEvent(event *CoordinationEvent) error {
 	// Traiter les événements des managers
 	mcl.logger.Info(fmt.Sprintf("Handling manager event: %s from %s", event.Type, event.Source))
+	return nil
 }
 
 func (mcl *MasterCoordinationLayer) handleManagerHealthIssue(name string, err error) {
 	mcl.logger.Error(fmt.Sprintf("Manager %s health issue: %v", name, err))
-	
+
 	// Publier un événement d'alerte
 	mcl.eventBus.PublishEvent(&CoordinationEvent{
 		ID:        generateEventID(),
@@ -564,23 +589,23 @@ func (mcl *MasterCoordinationLayer) handleManagerHealthIssue(name string, err er
 	})
 }
 
-func (mcl *MasterCoordinationLayer) updateCoordinationMetrics(results map[string]interface{}) {
-	mcl.coordinationMetrics.OperationsExecuted++
+func (mcl *MasterCoordinationLayer) updateCoordinationMetrics(results []*interfaces.Action) {
+	mcl.coordinationMetrics.OperationsExecuted += int64(len(results))
 	// Mise à jour des autres métriques basées sur les résultats
 }
 
 func (mcl *MasterCoordinationLayer) analyzeSystemPerformance(state *UnifiedSystemState) map[string]interface{} {
 	return map[string]interface{}{
-		"overall_throughput":   state.Performance.OverallThroughput,
+		"overall_throughput":    state.Performance.OverallThroughput,
 		"average_response_time": state.Performance.AverageResponseTime,
-		"resource_utilization": state.Performance.ResourceUtilization,
-		"bottlenecks":          state.Performance.BottleneckAnalysis,
+		"resource_utilization":  state.Performance.ResourceUtilization,
+		"bottlenecks":           state.Performance.BottleneckAnalysis,
 	}
 }
 
 func (mcl *MasterCoordinationLayer) triggerEmergencyResponse(ctx context.Context, state *UnifiedSystemState) {
 	mcl.logger.Warn("Crisis detected - triggering emergency response")
-	
+
 	// Déclencher la réponse d'urgence via le système d'urgence
 	go mcl.emergencySystem.HandleCrisis(ctx, state)
 }
@@ -598,16 +623,16 @@ func generateEventID() string {
 func extractTargetManagers(decisions []interfaces.AutonomousDecision) []string {
 	managers := make(map[string]bool)
 	for _, decision := range decisions {
-		for _, manager := range decision.AffectedManagers {
+		for _, manager := range decision.TargetManagers {
 			managers[manager] = true
 		}
 	}
-	
+
 	result := make([]string, 0, len(managers))
 	for manager := range managers {
 		result = append(result, manager)
 	}
-	
+
 	return result
 }
 
@@ -615,12 +640,12 @@ func NewCoordinationMetrics() *CoordinationMetrics {
 	return &CoordinationMetrics{
 		OperationsExecuted:   0,
 		AverageExecutionTime: 0,
-		SuccessRate:         1.0,
-		EventsProcessed:     0,
-		StateUpdates:        0,
-		EmergencyResponses:  0,
-		PerformanceScore:    1.0,
-		LastMetricsUpdate:   time.Now(),
+		SuccessRate:          1.0,
+		EventsProcessed:      0,
+		StateUpdates:         0,
+		EmergencyResponses:   0,
+		PerformanceScore:     1.0,
+		LastMetricsUpdate:    time.Now(),
 	}
 }
 
@@ -663,8 +688,8 @@ type EmergencyConfig struct {
 
 // OperationResult représente le résultat d'une opération d'orchestration
 type OperationResult struct {
-	Data    map[string]interface{}
-	Error   error
+	Data     map[string]interface{}
+	Error    error
 	Duration time.Duration
 }
 

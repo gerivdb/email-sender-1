@@ -8,10 +8,10 @@ import (
 	"runtime"
 	"time"
 
-	"email_sender/cmd/roadmap-cli/ingestion"
-	parallelprocessor "email_sender/cmd/roadmap-cli/parallel"
-	rag "email_sender/cmd/roadmap-cli/rag"
-	"email_sender/cmd/roadmap-cli/storage"
+	"email_sender/development/managers/roadmap-manager/roadmap-cli/ingestion"
+	parallelprocessor "email_sender/development/managers/roadmap-manager/roadmap-cli/parallel"
+	rag "email_sender/development/managers/roadmap-manager/roadmap-cli/rag"
+	"email_sender/development/managers/roadmap-manager/roadmap-cli/storage"
 
 	"github.com/spf13/cobra"
 )

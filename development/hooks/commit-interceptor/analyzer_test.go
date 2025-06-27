@@ -1,25 +1,27 @@
 // development/hooks/commit-interceptor/analyzer_test.go
-package main
+package commitinterceptor_test
 
 import (
 	"strings"
 	"testing"
 	"time"
+
+	"D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/hooks/commit-interceptor"
 )
 
 func TestCommitAnalyzer_AnalyzeCommit(t *testing.T) {
 	config := getDefaultConfig()
-	analyzer := NewCommitAnalyzer(config)
+	analyzer := commitinterceptor.NewCommitAnalyzer(config)
 
 	tests := []struct {
 		name           string
-		commitData     *CommitData
+		commitData     *commitinterceptor.CommitData
 		expectedType   string
 		expectedImpact string
 	}{
 		{
 			name: "Feature commit",
-			commitData: &CommitData{
+			commitData: &commitinterceptor.CommitData{
 				Hash:      "abc123",
 				Message:   "feat: add user authentication system",
 				Author:    "Test User",
@@ -31,7 +33,7 @@ func TestCommitAnalyzer_AnalyzeCommit(t *testing.T) {
 			expectedImpact: "high", // Changed from "medium" to "high" because main.go is critical
 		}, {
 			name: "Bug fix commit",
-			commitData: &CommitData{
+			commitData: &commitinterceptor.CommitData{
 				Hash:      "def456",
 				Message:   "fix: resolve critical authentication bug",
 				Author:    "Test User",
@@ -44,7 +46,7 @@ func TestCommitAnalyzer_AnalyzeCommit(t *testing.T) {
 		},
 		{
 			name: "Documentation commit",
-			commitData: &CommitData{
+			commitData: &commitinterceptor.CommitData{
 				Hash:      "ghi789",
 				Message:   "docs: update README with installation instructions",
 				Author:    "Test User",
@@ -57,7 +59,7 @@ func TestCommitAnalyzer_AnalyzeCommit(t *testing.T) {
 		},
 		{
 			name: "Large refactor",
-			commitData: &CommitData{
+			commitData: &commitinterceptor.CommitData{
 				Hash:      "jkl012",
 				Message:   "refactor: restructure authentication module",
 				Author:    "Test User",
@@ -101,7 +103,7 @@ func TestCommitAnalyzer_AnalyzeCommit(t *testing.T) {
 
 func TestCommitAnalyzer_analyzeMessage(t *testing.T) {
 	config := getDefaultConfig()
-	analyzer := NewCommitAnalyzer(config)
+	analyzer := commitinterceptor.NewCommitAnalyzer(config)
 
 	tests := []struct {
 		message      string
@@ -121,8 +123,8 @@ func TestCommitAnalyzer_analyzeMessage(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.message, func(t *testing.T) {
-			analysis := &CommitAnalysis{
-				CommitData: &CommitData{
+			analysis := &commitinterceptor.CommitAnalysis{
+				CommitData: &commitinterceptor.CommitData{
 					Message: tt.message,
 				},
 			}
@@ -139,7 +141,7 @@ func TestCommitAnalyzer_analyzeMessage(t *testing.T) {
 
 func TestCommitAnalyzer_analyzeFiles(t *testing.T) {
 	config := getDefaultConfig()
-	analyzer := NewCommitAnalyzer(config)
+	analyzer := commitinterceptor.NewCommitAnalyzer(config)
 
 	tests := []struct {
 		name          string
@@ -170,8 +172,8 @@ func TestCommitAnalyzer_analyzeFiles(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			analysis := &CommitAnalysis{
-				CommitData: &CommitData{
+			analysis := &commitinterceptor.CommitAnalysis{
+				CommitData: &commitinterceptor.CommitData{
 					Files: tt.files,
 				},
 			}
@@ -197,7 +199,7 @@ func TestCommitAnalyzer_analyzeFiles(t *testing.T) {
 
 func TestCommitAnalyzer_analyzeImpact(t *testing.T) {
 	config := getDefaultConfig()
-	analyzer := NewCommitAnalyzer(config)
+	analyzer := commitinterceptor.NewCommitAnalyzer(config)
 
 	tests := []struct {
 		name           string
@@ -245,8 +247,8 @@ func TestCommitAnalyzer_analyzeImpact(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			analysis := &CommitAnalysis{
-				CommitData: &CommitData{
+			analysis := &commitinterceptor.CommitAnalysis{
+				CommitData: &commitinterceptor.CommitData{
 					Files:   tt.files,
 					Message: tt.message,
 				},
@@ -264,7 +266,7 @@ func TestCommitAnalyzer_analyzeImpact(t *testing.T) {
 
 func TestCommitAnalyzer_isCriticalFile(t *testing.T) {
 	config := getDefaultConfig()
-	analyzer := NewCommitAnalyzer(config)
+	analyzer := commitinterceptor.NewCommitAnalyzer(config)
 
 	tests := []struct {
 		filename   string
@@ -295,7 +297,7 @@ func TestCommitAnalyzer_isCriticalFile(t *testing.T) {
 
 func TestCommitAnalyzer_suggestBranch(t *testing.T) {
 	config := getDefaultConfig()
-	analyzer := NewCommitAnalyzer(config)
+	analyzer := commitinterceptor.NewCommitAnalyzer(config)
 
 	tests := []struct {
 		changeType     string
@@ -313,8 +315,8 @@ func TestCommitAnalyzer_suggestBranch(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.changeType+"_"+tt.priority, func(t *testing.T) {
-			analysis := &CommitAnalysis{
-				CommitData: &CommitData{
+			analysis := &commitinterceptor.CommitAnalysis{
+				CommitData: &commitinterceptor.CommitData{
 					Message:   "test commit message",
 					Timestamp: time.Now(),
 				},

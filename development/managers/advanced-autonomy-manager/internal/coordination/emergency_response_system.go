@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"advanced-autonomy-manager/interfaces"
+	interfaces "email_sender/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // EmergencyResponseSystem implémentation détaillée
@@ -40,13 +40,13 @@ type CrisisDetector struct {
 
 // FailoverManager gère le basculement automatique des managers
 type FailoverManager struct {
-	config           *FailoverConfig
-	logger           interfaces.Logger
-	failoverPairs    map[string]string
-	activeFailovers  map[string]*ActiveFailover
-	failoverHistory  []FailoverRecord
+	config             *FailoverConfig
+	logger             interfaces.Logger
+	failoverPairs      map[string]string
+	activeFailovers    map[string]*ActiveFailover
+	failoverHistory    []FailoverRecord
 	recoveryProcedures map[string]*RecoveryProcedure
-	mutex            sync.RWMutex
+	mutex              sync.RWMutex
 }
 
 // DisasterRecoveryManager gère la récupération après sinistre
@@ -61,13 +61,13 @@ type DisasterRecoveryManager struct {
 
 // EscalationManager gère l'escalade des incidents
 type EscalationManager struct {
-	config           *EscalationConfig
-	logger           interfaces.Logger
-	escalationLevels []EscalationLevel
-	activeIncidents  map[string]*Incident
-	escalationRules  []EscalationRule
+	config               *EscalationConfig
+	logger               interfaces.Logger
+	escalationLevels     []EscalationLevel
+	activeIncidents      map[string]*Incident
+	escalationRules      []EscalationRule
 	notificationChannels map[string]NotificationChannel
-	mutex            sync.RWMutex
+	mutex                sync.RWMutex
 }
 
 // Structures de données pour la gestion d'urgence
@@ -87,26 +87,26 @@ type EmergencyProcedure struct {
 }
 
 type EmergencyAction struct {
-	ActionID      string
-	Name          string
-	ActionType    ActionType
-	Parameters    map[string]interface{}
-	Timeout       time.Duration
-	RetryPolicy   *RetryPolicy
-	Dependencies  []string
+	ActionID       string
+	Name           string
+	ActionType     ActionType
+	Parameters     map[string]interface{}
+	Timeout        time.Duration
+	RetryPolicy    *RetryPolicy
+	Dependencies   []string
 	RollbackAction *EmergencyAction
 }
 
 type ActionType string
 
 const (
-	ActionTypeManagerRestart    ActionType = "manager_restart"
-	ActionTypeManagerFailover   ActionType = "manager_failover"
-	ActionTypeSystemShutdown    ActionType = "system_shutdown"
-	ActionTypeStateRollback     ActionType = "state_rollback"
-	ActionTypeResourceScale     ActionType = "resource_scale"
-	ActionTypeNotification      ActionType = "notification"
-	ActionTypeCustomScript     ActionType = "custom_script"
+	ActionTypeManagerRestart  ActionType = "manager_restart"
+	ActionTypeManagerFailover ActionType = "manager_failover"
+	ActionTypeSystemShutdown  ActionType = "system_shutdown"
+	ActionTypeStateRollback   ActionType = "state_rollback"
+	ActionTypeResourceScale   ActionType = "resource_scale"
+	ActionTypeNotification    ActionType = "notification"
+	ActionTypeCustomScript    ActionType = "custom_script"
 )
 
 type RetryPolicy struct {
@@ -126,13 +126,13 @@ const (
 )
 
 type CrisisRule struct {
-	RuleID      string
-	Name        string
-	Description string
-	Condition   func(*UnifiedSystemState) bool
-	Severity    CrisisLevel
-	Priority    int
-	Enabled     bool
+	RuleID        string
+	Name          string
+	Description   string
+	Condition     func(*UnifiedSystemState) bool
+	Severity      CrisisLevel
+	Priority      int
+	Enabled       bool
 	LastTriggered time.Time
 	TriggerCount  int
 }
@@ -149,7 +149,7 @@ const (
 type CrisisType string
 
 const (
-	CrisisTypeHealthDegradation CrisisType = "health_degradation"
+	CrisisTypeHealthDegradation  CrisisType = "health_degradation"
 	CrisisTypePerformanceFailure CrisisType = "performance_failure"
 	CrisisTypeManagerFailure     CrisisType = "manager_failure"
 	CrisisTypeResourceExhaustion CrisisType = "resource_exhaustion"
@@ -160,10 +160,10 @@ const (
 type EmergencySeverity int
 
 const (
-	SeverityMinor    EmergencySeverity = 1
-	SeverityModerate EmergencySeverity = 3
-	SeverityMajor    EmergencySeverity = 5
-	SeverityCritical EmergencySeverity = 8
+	SeverityMinor        EmergencySeverity = 1
+	SeverityModerate     EmergencySeverity = 3
+	SeverityMajor        EmergencySeverity = 5
+	SeverityCritical     EmergencySeverity = 8
 	SeverityCatastrophic EmergencySeverity = 10
 )
 
@@ -218,44 +218,44 @@ type RecoveryProcedure struct {
 }
 
 type RecoveryStep struct {
-	StepID      string
-	Name        string
-	Action      func(context.Context) error
-	Validation  func() bool
-	Timeout     time.Duration
-	Critical    bool
-	Rollback    func(context.Context) error
+	StepID     string
+	Name       string
+	Action     func(context.Context) error
+	Validation func() bool
+	Timeout    time.Duration
+	Critical   bool
+	Rollback   func(context.Context) error
 }
 
 type RecoveryPlan struct {
-	PlanID        string
-	Name          string
-	Description   string
-	CrisisTypes   []CrisisType
-	Procedures    []string
-	Priority      int
-	EstimatedRTO  time.Duration // Recovery Time Objective
-	EstimatedRPO  time.Duration // Recovery Point Objective
-	LastUpdated   time.Time
+	PlanID       string
+	Name         string
+	Description  string
+	CrisisTypes  []CrisisType
+	Procedures   []string
+	Priority     int
+	EstimatedRTO time.Duration // Recovery Time Objective
+	EstimatedRPO time.Duration // Recovery Point Objective
+	LastUpdated  time.Time
 }
 
 type RecoveryPoint struct {
-	PointID     string
-	Timestamp   time.Time
+	PointID       string
+	Timestamp     time.Time
 	StateSnapshot *UnifiedSystemState
-	Checksum    string
-	Size        int64
-	Verified    bool
+	Checksum      string
+	Size          int64
+	Verified      bool
 }
 
 type RecoveryStatus struct {
-	InProgress    bool
-	StartTime     time.Time
-	CurrentPlan   string
-	CurrentStep   string
-	Progress      float64
-	EstimatedETA  time.Time
-	Errors        []error
+	InProgress   bool
+	StartTime    time.Time
+	CurrentPlan  string
+	CurrentStep  string
+	Progress     float64
+	EstimatedETA time.Time
+	Errors       []error
 }
 
 type EscalationLevel struct {
@@ -274,16 +274,16 @@ type EscalationAction struct {
 }
 
 type Incident struct {
-	IncidentID    string
-	Type          CrisisType
-	Severity      EmergencySeverity
-	Description   string
-	StartTime     time.Time
-	CurrentLevel  int
-	Status        IncidentStatus
-	AssignedTo    []string
-	Updates       []IncidentUpdate
-	Resolution    *IncidentResolution
+	IncidentID   string
+	Type         CrisisType
+	Severity     EmergencySeverity
+	Description  string
+	StartTime    time.Time
+	CurrentLevel int
+	Status       IncidentStatus
+	AssignedTo   []string
+	Updates      []IncidentUpdate
+	Resolution   *IncidentResolution
 }
 
 type IncidentStatus string
@@ -297,19 +297,19 @@ const (
 )
 
 type IncidentUpdate struct {
-	UpdateID    string
-	Timestamp   time.Time
-	UpdatedBy   string
-	Message     string
+	UpdateID     string
+	Timestamp    time.Time
+	UpdatedBy    string
+	Message      string
 	StatusChange IncidentStatus
 }
 
 type IncidentResolution struct {
-	ResolutionID   string
-	ResolvedBy     string
-	ResolvedAt     time.Time
-	Resolution     string
-	RootCause      string
+	ResolutionID       string
+	ResolvedBy         string
+	ResolvedAt         time.Time
+	Resolution         string
+	RootCause          string
 	PreventiveMeasures []string
 }
 
@@ -328,13 +328,13 @@ type NotificationChannel interface {
 }
 
 type NotificationMessage struct {
-	MessageID   string
-	Priority    NotificationPriority
-	Subject     string
-	Body        string
-	Recipients  []string
-	Timestamp   time.Time
-	Context     map[string]interface{}
+	MessageID  string
+	Priority   NotificationPriority
+	Subject    string
+	Body       string
+	Recipients []string
+	Timestamp  time.Time
+	Context    map[string]interface{}
 }
 
 type NotificationPriority int
@@ -349,41 +349,41 @@ const (
 // Métriques
 
 type DetectionMetrics struct {
-	CrisesDetected     int64
-	FalsePositives     int64
+	CrisesDetected       int64
+	FalsePositives       int64
 	AverageDetectionTime time.Duration
-	LastDetection      time.Time
-	DetectionAccuracy  float64
+	LastDetection        time.Time
+	DetectionAccuracy    float64
 }
 
 // Configurations
 
 type CrisisConfig struct {
-	DetectionInterval    time.Duration
-	HealthThreshold      float64
-	AlertBufferSize      int
-	AlertRetention       time.Duration
+	DetectionInterval time.Duration
+	HealthThreshold   float64
+	AlertBufferSize   int
+	AlertRetention    time.Duration
 }
 
 type FailoverConfig struct {
-	FailoverTimeout      time.Duration
+	FailoverTimeout        time.Duration
 	MaxConcurrentFailovers int
-	AutoFailoverEnabled  bool
-	FailoverCooldown     time.Duration
+	AutoFailoverEnabled    bool
+	FailoverCooldown       time.Duration
 }
 
 type DisasterConfig struct {
-	RecoveryTimeout      time.Duration
-	BackupRetention      time.Duration
-	RecoveryPointInterval time.Duration
+	RecoveryTimeout         time.Duration
+	BackupRetention         time.Duration
+	RecoveryPointInterval   time.Duration
 	ParallelRecoveryEnabled bool
 }
 
 type EscalationConfig struct {
-	EscalationTimeout    time.Duration
-	MaxEscalationLevel   int
+	EscalationTimeout     time.Duration
+	MaxEscalationLevel    int
 	AutoEscalationEnabled bool
-	NotificationChannels []string
+	NotificationChannels  []string
 }
 
 // NewEmergencyResponseSystem crée un nouveau système de réponse d'urgence
@@ -391,7 +391,7 @@ func NewEmergencyResponseSystem(config *EmergencyConfig, logger interfaces.Logge
 	if config == nil {
 		return nil, fmt.Errorf("emergency config is required")
 	}
-	
+
 	if logger == nil {
 		return nil, fmt.Errorf("logger is required")
 	}
@@ -538,10 +538,10 @@ func (ers *EmergencyResponseSystem) HandleCrisis(ctx context.Context, state *Uni
 	// Exécuter la procédure d'urgence
 	if err := ers.executeEmergencyProcedure(ctx, procedure, incident); err != nil {
 		ers.logger.Error(fmt.Sprintf("Emergency procedure execution failed: %v", err))
-		
+
 		// Escalade automatique en cas d'échec
 		ers.escalationManager.EscalateIncident(incident.IncidentID)
-		
+
 		return fmt.Errorf("emergency procedure failed: %w", err)
 	}
 
@@ -652,7 +652,7 @@ func (ers *EmergencyResponseSystem) analyzeCrisisType(state *UnifiedSystemState)
 	if state.SystemHealth.OverallHealth < 0.3 {
 		return CrisisTypeHealthDegradation
 	}
-	
+
 	// Vérifier les échecs de managers
 	failedManagers := 0
 	for _, managerState := range state.ManagerStates {
@@ -660,23 +660,23 @@ func (ers *EmergencyResponseSystem) analyzeCrisisType(state *UnifiedSystemState)
 			failedManagers++
 		}
 	}
-	
+
 	if failedManagers > len(state.ManagerStates)/2 {
 		return CrisisTypeManagerFailure
 	}
-	
+
 	// Vérifier les problèmes de performance
 	if state.Performance.AverageResponseTime > 10*time.Second {
 		return CrisisTypePerformanceFailure
 	}
-	
+
 	return CrisisTypeHealthDegradation // Par défaut
 }
 
 func (ers *EmergencyResponseSystem) calculateSeverity(state *UnifiedSystemState) EmergencySeverity {
 	// Calculer la gravité basée sur l'état du système
 	healthScore := state.SystemHealth.OverallHealth
-	
+
 	if healthScore < 0.2 {
 		return SeverityCatastrophic
 	} else if healthScore < 0.4 {
@@ -686,24 +686,24 @@ func (ers *EmergencyResponseSystem) calculateSeverity(state *UnifiedSystemState)
 	} else if healthScore < 0.8 {
 		return SeverityModerate
 	}
-	
+
 	return SeverityMinor
 }
 
 func (ers *EmergencyResponseSystem) selectEmergencyProcedure(crisisType CrisisType, severity EmergencySeverity) (*EmergencyProcedure, error) {
 	// Sélectionner la procédure d'urgence la plus appropriée
 	var candidates []*EmergencyProcedure
-	
+
 	for _, procedure := range ers.emergencyProcedures {
 		if procedure.TriggerType == crisisType && procedure.Severity <= severity {
 			candidates = append(candidates, procedure)
 		}
 	}
-	
+
 	if len(candidates) == 0 {
 		return nil, fmt.Errorf("no suitable emergency procedure found for crisis type %s with severity %v", crisisType, severity)
 	}
-	
+
 	// Trier par gravité et taux de succès
 	sort.Slice(candidates, func(i, j int) bool {
 		if candidates[i].Severity == candidates[j].Severity {
@@ -711,26 +711,26 @@ func (ers *EmergencyResponseSystem) selectEmergencyProcedure(crisisType CrisisTy
 		}
 		return candidates[i].Severity > candidates[j].Severity
 	})
-	
+
 	return candidates[0], nil
 }
 
 func (ers *EmergencyResponseSystem) executeEmergencyProcedure(ctx context.Context, procedure *EmergencyProcedure, incident *Incident) error {
 	ers.logger.Info(fmt.Sprintf("Executing emergency procedure: %s", procedure.Name))
-	
+
 	startTime := time.Now()
-	
+
 	// Créer un contexte avec timeout
 	procCtx, cancel := context.WithTimeout(ctx, procedure.EstimatedTime*2)
 	defer cancel()
-	
+
 	// Exécuter chaque action de la procédure
 	for i, action := range procedure.Actions {
 		ers.logger.Info(fmt.Sprintf("Executing action %d/%d: %s", i+1, len(procedure.Actions), action.Name))
-		
+
 		if err := ers.executeEmergencyAction(procCtx, &action, incident); err != nil {
 			ers.logger.Error(fmt.Sprintf("Action %s failed: %v", action.Name, err))
-			
+
 			// Essayer le rollback si disponible
 			if action.RollbackAction != nil {
 				ers.logger.Info(fmt.Sprintf("Attempting rollback for action %s", action.Name))
@@ -738,27 +738,27 @@ func (ers *EmergencyResponseSystem) executeEmergencyProcedure(ctx context.Contex
 					ers.logger.Error(fmt.Sprintf("Rollback failed: %v", rollbackErr))
 				}
 			}
-			
+
 			return fmt.Errorf("emergency action %s failed: %w", action.Name, err)
 		}
 	}
-	
+
 	duration := time.Since(startTime)
-	
+
 	// Mettre à jour les métriques de la procédure
 	procedure.LastExecuted = startTime
-	
+
 	// Mettre à jour le statut de l'incident
 	incident.Status = IncidentStatusResolved
 	incident.Resolution = &IncidentResolution{
-		ResolutionID:   generateResolutionID(),
-		ResolvedBy:     "EmergencyResponseSystem",
-		ResolvedAt:     time.Now(),
-		Resolution:     fmt.Sprintf("Resolved by emergency procedure: %s", procedure.Name),
-		RootCause:      string(incident.Type),
+		ResolutionID:       generateResolutionID(),
+		ResolvedBy:         "EmergencyResponseSystem",
+		ResolvedAt:         time.Now(),
+		Resolution:         fmt.Sprintf("Resolved by emergency procedure: %s", procedure.Name),
+		RootCause:          string(incident.Type),
 		PreventiveMeasures: []string{"System monitoring enhanced", "Response procedures updated"},
 	}
-	
+
 	ers.logger.Info(fmt.Sprintf("Emergency procedure completed in %v", duration))
 	return nil
 }
@@ -767,7 +767,7 @@ func (ers *EmergencyResponseSystem) executeEmergencyAction(ctx context.Context, 
 	// Créer un contexte avec timeout pour l'action
 	actionCtx, cancel := context.WithTimeout(ctx, action.Timeout)
 	defer cancel()
-	
+
 	// Exécuter l'action selon son type
 	switch action.ActionType {
 	case ActionTypeManagerRestart:
@@ -795,10 +795,10 @@ func (ers *EmergencyResponseSystem) executeManagerRestart(ctx context.Context, p
 	if !ok {
 		return fmt.Errorf("manager_name parameter is required")
 	}
-	
+
 	ers.logger.Info(fmt.Sprintf("Restarting manager: %s", managerName))
 	// Logique de redémarrage spécifique
-	
+
 	return nil
 }
 
@@ -808,12 +808,12 @@ func (ers *EmergencyResponseSystem) executeManagerFailover(ctx context.Context, 
 	if !ok {
 		return fmt.Errorf("source_manager parameter is required")
 	}
-	
+
 	targetManager, ok := params["target_manager"].(string)
 	if !ok {
 		return fmt.Errorf("target_manager parameter is required")
 	}
-	
+
 	return ers.failoverManager.InitiateFailover(sourceManager, targetManager)
 }
 
@@ -821,7 +821,7 @@ func (ers *EmergencyResponseSystem) executeSystemShutdown(ctx context.Context, p
 	// Implémentation de l'arrêt système
 	ers.logger.Warn("Initiating emergency system shutdown")
 	// Logique d'arrêt contrôlé
-	
+
 	return nil
 }
 
@@ -831,7 +831,7 @@ func (ers *EmergencyResponseSystem) executeStateRollback(ctx context.Context, pa
 	if !ok {
 		return fmt.Errorf("recovery_point_id parameter is required")
 	}
-	
+
 	return ers.disasterRecovery.RollbackToRecoveryPoint(recoveryPointID)
 }
 
@@ -839,7 +839,7 @@ func (ers *EmergencyResponseSystem) executeResourceScale(ctx context.Context, pa
 	// Implémentation du scaling de ressources
 	ers.logger.Info("Scaling system resources")
 	// Logique de scaling automatique
-	
+
 	return nil
 }
 
@@ -857,7 +857,7 @@ func (ers *EmergencyResponseSystem) executeNotification(ctx context.Context, par
 			"severity":    incident.Severity,
 		},
 	}
-	
+
 	return ers.escalationManager.SendNotification(message)
 }
 
@@ -867,10 +867,10 @@ func (ers *EmergencyResponseSystem) executeCustomScript(ctx context.Context, par
 	if !ok {
 		return fmt.Errorf("script_path parameter is required")
 	}
-	
+
 	ers.logger.Info(fmt.Sprintf("Executing custom script: %s", scriptPath))
 	// Logique d'exécution de script
-	
+
 	return nil
 }
 
@@ -927,7 +927,7 @@ func (ers *EmergencyResponseSystem) loadDefaultEmergencyProcedures() {
 			SuccessRate: 0.92,
 		},
 	}
-	
+
 	for _, procedure := range procedures {
 		ers.emergencyProcedures[procedure.ProcedureID] = procedure
 	}
@@ -944,7 +944,7 @@ func NewCrisisDetector(config *CrisisConfig, logger interfaces.Logger) (*CrisisD
 		alertBuffer:      make([]CrisisAlert, 0),
 		detectionMetrics: &DetectionMetrics{},
 	}
-	
+
 	return detector, nil
 }
 
@@ -963,7 +963,7 @@ func (cd *CrisisDetector) DetectCrisis(state *UnifiedSystemState) bool {
 			return true
 		}
 	}
-	
+
 	return false
 }
 
@@ -1013,7 +1013,7 @@ func NewFailoverManager(config *FailoverConfig, logger interfaces.Logger) (*Fail
 		failoverHistory:    make([]FailoverRecord, 0),
 		recoveryProcedures: make(map[string]*RecoveryProcedure),
 	}
-	
+
 	return manager, nil
 }
 
@@ -1024,7 +1024,7 @@ func (fm *FailoverManager) Initialize(ctx context.Context) error {
 
 func (fm *FailoverManager) InitiateFailover(sourceManager, targetManager string) error {
 	fm.logger.Info(fmt.Sprintf("Initiating failover from %s to %s", sourceManager, targetManager))
-	
+
 	failover := &ActiveFailover{
 		FailoverID:    generateFailoverID(),
 		SourceManager: sourceManager,
@@ -1035,14 +1035,14 @@ func (fm *FailoverManager) InitiateFailover(sourceManager, targetManager string)
 		Errors:        make([]error, 0),
 		Metadata:      make(map[string]interface{}),
 	}
-	
+
 	fm.mutex.Lock()
 	fm.activeFailovers[failover.FailoverID] = failover
 	fm.mutex.Unlock()
-	
+
 	// Logique de basculement
 	// ...
-	
+
 	return nil
 }
 
@@ -1053,7 +1053,7 @@ func (fm *FailoverManager) MonitorActiveFailovers() {
 		activeFailovers = append(activeFailovers, failover)
 	}
 	fm.mutex.RUnlock()
-	
+
 	for _, failover := range activeFailovers {
 		fm.checkFailoverProgress(failover)
 	}
@@ -1070,13 +1070,13 @@ func (fm *FailoverManager) cleanup() error {
 
 func NewDisasterRecoveryManager(config *DisasterConfig, logger interfaces.Logger) (*DisasterRecoveryManager, error) {
 	manager := &DisasterRecoveryManager{
-		config:        config,
-		logger:        logger,
-		recoveryPlans: make(map[string]*RecoveryPlan),
+		config:         config,
+		logger:         logger,
+		recoveryPlans:  make(map[string]*RecoveryPlan),
 		recoveryPoints: make([]RecoveryPoint, 0),
 		recoveryStatus: &RecoveryStatus{},
 	}
-	
+
 	return manager, nil
 }
 
@@ -1108,7 +1108,7 @@ func NewEscalationManager(config *EscalationConfig, logger interfaces.Logger) (*
 		escalationRules:      createDefaultEscalationRules(),
 		notificationChannels: make(map[string]NotificationChannel),
 	}
-	
+
 	return manager, nil
 }
 
@@ -1120,7 +1120,7 @@ func (em *EscalationManager) Initialize(ctx context.Context) error {
 func (em *EscalationManager) RegisterIncident(incident *Incident) {
 	em.mutex.Lock()
 	defer em.mutex.Unlock()
-	
+
 	em.activeIncidents[incident.IncidentID] = incident
 	em.logger.Info(fmt.Sprintf("Incident registered: %s", incident.IncidentID))
 }
@@ -1133,10 +1133,10 @@ func (em *EscalationManager) EscalateIncident(incidentID string) error {
 		return fmt.Errorf("incident %s not found", incidentID)
 	}
 	em.mutex.Unlock()
-	
+
 	incident.CurrentLevel++
 	incident.Status = IncidentStatusEscalated
-	
+
 	em.logger.Warn(fmt.Sprintf("Incident %s escalated to level %d", incidentID, incident.CurrentLevel))
 	return nil
 }

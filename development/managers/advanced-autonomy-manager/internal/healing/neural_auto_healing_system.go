@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"advanced-autonomy-manager/interfaces"
+	"email_sender/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // HealingConfig configure le système d'auto-réparation
@@ -19,29 +19,29 @@ type HealingConfig struct {
 	DetectionInterval           time.Duration `yaml:"detection_interval" json:"detection_interval"`
 	ConfidenceThreshold         float64       `yaml:"confidence_threshold" json:"confidence_threshold"`
 	FalsePositiveThreshold      float64       `yaml:"false_positive_threshold" json:"false_positive_threshold"`
-	
+
 	// Configuration de la correction automatique
-	AutoCorrectionEnabled       bool          `yaml:"auto_correction_enabled" json:"auto_correction_enabled"`
-	MaxHealingAttempts          int           `yaml:"max_healing_attempts" json:"max_healing_attempts"`
-	HealingTimeout              time.Duration `yaml:"healing_timeout" json:"healing_timeout"`
-	SafetyModeEnabled           bool          `yaml:"safety_mode_enabled" json:"safety_mode_enabled"`
-	
+	AutoCorrectionEnabled bool          `yaml:"auto_correction_enabled" json:"auto_correction_enabled"`
+	MaxHealingAttempts    int           `yaml:"max_healing_attempts" json:"max_healing_attempts"`
+	HealingTimeout        time.Duration `yaml:"healing_timeout" json:"healing_timeout"`
+	SafetyModeEnabled     bool          `yaml:"safety_mode_enabled" json:"safety_mode_enabled"`
+
 	// Configuration de l'apprentissage
-	LearningEnabled             bool          `yaml:"learning_enabled" json:"learning_enabled"`
-	PatternRecognitionEnabled   bool          `yaml:"pattern_recognition_enabled" json:"pattern_recognition_enabled"`
-	AdaptiveLearningRate        float64       `yaml:"adaptive_learning_rate" json:"adaptive_learning_rate"`
-	HistoryRetentionTime        time.Duration `yaml:"history_retention_time" json:"history_retention_time"`
-	
+	LearningEnabled           bool          `yaml:"learning_enabled" json:"learning_enabled"`
+	PatternRecognitionEnabled bool          `yaml:"pattern_recognition_enabled" json:"pattern_recognition_enabled"`
+	AdaptiveLearningRate      float64       `yaml:"adaptive_learning_rate" json:"adaptive_learning_rate"`
+	HistoryRetentionTime      time.Duration `yaml:"history_retention_time" json:"history_retention_time"`
+
 	// Configuration de la récupération
-	RecoveryStrategies          []string      `yaml:"recovery_strategies" json:"recovery_strategies"`
-	EscalationEnabled           bool          `yaml:"escalation_enabled" json:"escalation_enabled"`
-	EscalationThreshold         int           `yaml:"escalation_threshold" json:"escalation_threshold"`
-	EmergencyProtocols          []string      `yaml:"emergency_protocols" json:"emergency_protocols"`
-	
+	RecoveryStrategies  []string `yaml:"recovery_strategies" json:"recovery_strategies"`
+	EscalationEnabled   bool     `yaml:"escalation_enabled" json:"escalation_enabled"`
+	EscalationThreshold int      `yaml:"escalation_threshold" json:"escalation_threshold"`
+	EmergencyProtocols  []string `yaml:"emergency_protocols" json:"emergency_protocols"`
+
 	// Configuration des performances
-	MaxConcurrentHealing        int           `yaml:"max_concurrent_healing" json:"max_concurrent_healing"`
-	ResourceLimits              *ResourceLimits `yaml:"resource_limits" json:"resource_limits"`
-	PerformanceMonitoring       bool          `yaml:"performance_monitoring" json:"performance_monitoring"`
+	MaxConcurrentHealing  int             `yaml:"max_concurrent_healing" json:"max_concurrent_healing"`
+	ResourceLimits        *ResourceLimits `yaml:"resource_limits" json:"resource_limits"`
+	PerformanceMonitoring bool            `yaml:"performance_monitoring" json:"performance_monitoring"`
 }
 
 // ActionExecutor exécute les actions de réparation
@@ -71,103 +71,94 @@ type PatternDatabase struct {
 
 // HealingStrategy représente une stratégie de réparation
 type HealingStrategy struct {
-	ID          string        `json:"id"`
-	Name        string        `json:"name"`
-	Steps       []HealingStep `json:"steps"`
-	Conditions  []string      `json:"conditions"`
-	RiskLevel   float64       `json:"risk_level"`
+	ID         string        `json:"id"`
+	Name       string        `json:"name"`
+	Steps      []HealingStep `json:"steps"`
+	Conditions []string      `json:"conditions"`
+	RiskLevel  float64       `json:"risk_level"`
 }
 
 // HealingStep représente une étape de réparation
 type HealingStep struct {
-	Action      string                 `json:"action"`
-	Parameters  map[string]interface{} `json:"parameters"`
-	Timeout     time.Duration          `json:"timeout"`
-	Rollbackable bool                  `json:"rollbackable"`
+	Action       string                 `json:"action"`
+	Parameters   map[string]interface{} `json:"parameters"`
+	Timeout      time.Duration          `json:"timeout"`
+	Rollbackable bool                   `json:"rollbackable"`
 }
 
 // SafetyRule représente une règle de sécurité
 type SafetyRule struct {
-	ID          string   `json:"id"`
-	Conditions  []string `json:"conditions"`
-	Allowed     bool     `json:"allowed"`
-	Message     string   `json:"message"`
+	ID         string   `json:"id"`
+	Conditions []string `json:"conditions"`
+	Allowed    bool     `json:"allowed"`
+	Message    string   `json:"message"`
 }
 
 // SystemSnapshot représente un instantané du système
 type SystemSnapshot struct {
-	Timestamp   time.Time              `json:"timestamp"`
-	State       map[string]interface{} `json:"state"`
-	Version     string                 `json:"version"`
-}
-
-// AnomalyPattern représente un pattern d'anomalie
-type AnomalyPattern struct {
-	ID          string    `json:"id"`
-	Signature   []float64 `json:"signature"`
-	Severity    float64   `json:"severity"`
-	Frequency   int       `json:"frequency"`
-	LastSeen    time.Time `json:"last_seen"`
+	Timestamp time.Time              `json:"timestamp"`
+	State     map[string]interface{} `json:"state"`
+	Version   string                 `json:"version"`
 }
 
 // NeuralAutoHealingSystem est le système d'auto-réparation basé sur l'IA qui détecte
 // automatiquement les anomalies, applique des corrections intelligentes, apprend des
 // patterns de pannes et effectue la récupération autonome avec >90% de précision.
 type NeuralAutoHealingSystem struct {
-	config          *HealingConfig
-	logger          interfaces.Logger
-	
+	config *HealingConfig
+	logger interfaces.Logger
+
 	// Composants de détection et réparation
-	anomalyDetector    *AnomalyDetector
-	healingEngine      *HealingEngine
-	learningSystem     *PatternLearningSystem
+	anomalyDetector      *AnomalyDetector
+	healingEngine        *HealingEngine
+	learningSystem       *PatternLearningSystem
 	recoveryOrchestrator *RecoveryOrchestrator
-	diagnosticEngine   *DiagnosticEngine
-	
+	diagnosticEngine     *DiagnosticEngine
+
 	// Base de connaissances
-	knowledgeBase      *HealingKnowledgeBase
-	healingHistory     []*HealingSession
-	anomalyPatterns    map[string]*AnomalyPattern
-	
+	knowledgeBase   *HealingKnowledgeBase
+	healingHistory  []*HealingSession
+	anomalyPatterns map[string]*AnomalyPattern
+
 	// État et synchronisation
-	mutex              sync.RWMutex
-	initialized        bool
+	mutex                 sync.RWMutex
+	initialized           bool
 	activeHealingSessions map[string]*HealingSession
-	
+
 	// Surveillance continue
-	detectionTicker    *time.Ticker
-	learningTicker     *time.Ticker
-	metrics            *HealingMetrics
+	detectionTicker *time.Ticker
+	learningTicker  *time.Ticker
+	metrics         *HealingMetrics
 }
 
 // HealingMetrics métriques du système de réparation
 type HealingMetrics struct {
-	TotalAnomaliesDetected    int64
-	AnomaliesAutoResolved     int64
-	DetectionAccuracy         float64
-	HealingSuccessRate        float64
-	AverageResolutionTime     time.Duration
-	FalsePositiveRate         float64
-	FalseNegativeRate         float64
-	LearningEffectiveness     float64
-	SystemDowntimePrevented   time.Duration
-	mutex                     sync.RWMutex
+	TotalAnomaliesDetected  int64
+	AnomaliesAutoResolved   int64
+	DetectionAccuracy       float64
+	HealingSuccessRate      float64
+	AverageResolutionTime   time.Duration
+	FalsePositiveRate       float64
+	FalseNegativeRate       float64
+	LearningEffectiveness   float64
+	SystemDowntimePrevented float64 // Changed to float64 for percentage
+	mutex                   sync.RWMutex
 }
 
 // HealingSession session de réparation active
 type HealingSession struct {
-	ID                string
-	AnomalyID         string
-	StartTime         time.Time
-	EndTime           time.Time
-	Status            HealingStatus
-	Anomaly           *DetectedAnomaly
-	AppliedActions    []*HealingAction
-	Result            *HealingResult
-	Attempts          int
-	LastAttemptTime   time.Time
-	ErrorMessages     []string
-	LearningValue     float64
+	ID              string
+	AnomalyID       string
+	StartTime       time.Time
+	EndTime         time.Time
+	Status          HealingStatus
+	Anomaly         *DetectedAnomaly
+	AppliedActions  []*HealingAction
+	Result          *HealingResult
+	Attempts        int
+	LastAttemptTime time.Time
+	ErrorMessages   []string
+	LearningValue   float64
 }
 
 // DetectedAnomaly anomalie détectée
@@ -202,26 +193,26 @@ type HealingAction struct {
 
 // HealingResult résultat d'une session de réparation
 type HealingResult struct {
-	Success           bool
-	Resolution        string
-	Duration          time.Duration
-	ActionsExecuted   int
-	AnomalyResolved   bool
-	SideEffects       []string
-	LessonsLearned    []string
+	Success            bool
+	Resolution         string
+	Duration           time.Duration
+	ActionsExecuted    int
+	AnomalyResolved    bool
+	SideEffects        []string
+	LessonsLearned     []string
 	RecommendedActions []string
-	FollowUpRequired  bool
+	FollowUpRequired   bool
 }
 
 // AnomalyPattern pattern d'anomalie appris
 type AnomalyPattern struct {
-	Pattern          string
-	Frequency        int
-	SuccessRate      float64
+	Pattern               string
+	Frequency             int
+	SuccessRate           float64
 	AverageResolutionTime time.Duration
-	PreferredActions []string
-	Confidence       float64
-	LastSeen         time.Time
+	PreferredActions      []string
+	Confidence            float64
+	LastSeen              time.Time
 }
 
 // Énumérations
@@ -251,7 +242,7 @@ func NewNeuralAutoHealingSystem(config *HealingConfig, logger interfaces.Logger)
 	if config == nil {
 		return nil, fmt.Errorf("healing config is required")
 	}
-	
+
 	if logger == nil {
 		return nil, fmt.Errorf("logger is required")
 	}
@@ -339,7 +330,7 @@ func (nahs *NeuralAutoHealingSystem) HealthCheck(ctx context.Context) error {
 
 	// Vérifier tous les composants
 	checks := []struct {
-		name string
+		name  string
 		check func(context.Context) error
 	}{
 		{"AnomalyDetector", nahs.anomalyDetector.HealthCheck},
@@ -369,7 +360,7 @@ func (nahs *NeuralAutoHealingSystem) HealthCheck(ctx context.Context) error {
 	nahs.metrics.mutex.RUnlock()
 
 	if accuracy < nahs.config.ConfidenceThreshold {
-		return fmt.Errorf("detection accuracy below threshold: %.2f < %.2f", 
+		return fmt.Errorf("detection accuracy below threshold: %.2f < %.2f",
 			accuracy, nahs.config.ConfidenceThreshold)
 	}
 
@@ -406,7 +397,7 @@ func (nahs *NeuralAutoHealingSystem) Cleanup() error {
 	var errors []error
 
 	components := []struct {
-		name string
+		name    string
 		cleanup func() error
 	}{
 		{"RecoveryOrchestrator", nahs.recoveryOrchestrator.Cleanup},
@@ -444,10 +435,10 @@ func (nahs *NeuralAutoHealingSystem) Cleanup() error {
 }
 
 // MonitorAndHealExecution surveille l'exécution et applique l'auto-healing si nécessaire
-func (nahs *NeuralAutoHealingSystem) MonitorAndHealExecution(ctx context.Context, executionResults map[string]interface{}) (map[string]*HealingResult, error) {
+func (nahs *NeuralAutoHealingSystem) MonitorAndHealExecution(ctx context.Context, executionResults map[string]interface{}) ([]*interfaces.Issue, error) {
 	nahs.logger.Info("Monitoring execution and applying auto-healing")
 
-	healingResults := make(map[string]*HealingResult)
+	issues := make([]*interfaces.Issue, 0)
 
 	// Analyser les résultats d'exécution pour détecter des anomalies
 	anomalies, err := nahs.analyzeExecutionResults(ctx, executionResults)
@@ -460,21 +451,37 @@ func (nahs *NeuralAutoHealingSystem) MonitorAndHealExecution(ctx context.Context
 		healingResult, err := nahs.processAnomalyAndHeal(ctx, anomaly)
 		if err != nil {
 			nahs.logger.WithError(err).Warn(fmt.Sprintf("Failed to process anomaly %s", anomaly.ID))
+			// Si le traitement de l'anomalie échoue, nous la considérons comme une issue
+			issues = append(issues, &interfaces.Issue{
+				Type:               "HealingFailure",
+				Description:        fmt.Sprintf("Failed to heal anomaly %s: %v", anomaly.ID, err),
+				Severity:           int(anomaly.Severity),
+				ReportedAt:         time.Now(),
+				AffectedComponents: []string{anomaly.Component},
+				ResolutionStatus:   "pending",
+			})
 			continue
 		}
 
-		if healingResult != nil {
-			healingResults[anomaly.ID] = healingResult
+		if healingResult != nil && !healingResult.Success { // Si le healing n'a pas réussi, c'est une issue
+			issues = append(issues, &interfaces.Issue{
+				Type:               "UnresolvedAnomaly",
+				Description:        fmt.Sprintf("Anomaly %s not fully resolved: %s", anomaly.ID, healingResult.Resolution),
+				Severity:           int(anomaly.Severity),
+				ReportedAt:         time.Now(),
+				AffectedComponents: []string{anomaly.Component},
+				ResolutionStatus:   "pending",
+			})
 		}
 	}
 
 	// Mettre à jour les métriques
-	nahs.updateMetricsFromExecution(anomalies, healingResults)
+	nahs.updateMetricsFromExecution(anomalies, nil) // results map est maintenant vide ou modifié
 
-	nahs.logger.Info(fmt.Sprintf("Completed monitoring and healing: %d anomalies processed, %d healed", 
-		len(anomalies), len(healingResults)))
+	nahs.logger.Info(fmt.Sprintf("Completed monitoring and healing: %d anomalies processed, %d issues identified",
+		len(anomalies), len(issues)))
 
-	return healingResults, nil
+	return issues, nil
 }
 
 // DetectAnomalies détecte des anomalies dans les données fournies
@@ -508,15 +515,15 @@ func (nahs *NeuralAutoHealingSystem) GetHealingHistory(duration time.Duration) [
 	defer nahs.mutex.RUnlock()
 
 	cutoff := time.Now().Add(-duration)
-	history := make([]*HealingSession, 0)
+	recent := make([]*HealingSession, 0)
 
 	for _, session := range nahs.healingHistory {
 		if session.StartTime.After(cutoff) {
-			history = append(history, session)
+			recent = append(recent, session)
 		}
 	}
 
-	return history
+	return recent
 }
 
 // GetMetrics retourne les métriques du système de réparation
@@ -703,14 +710,14 @@ func (nahs *NeuralAutoHealingSystem) analyzeExecutionResults(ctx context.Context
 func (nahs *NeuralAutoHealingSystem) processAnomalyAndHeal(ctx context.Context, anomaly *DetectedAnomaly) (*HealingResult, error) {
 	// Créer une session de réparation
 	session := &HealingSession{
-		ID:              fmt.Sprintf("healing-%d", time.Now().UnixNano()),
-		AnomalyID:       anomaly.ID,
-		StartTime:       time.Now(),
-		Status:          HealingStatusRunning,
-		Anomaly:         anomaly,
-		AppliedActions:  make([]*HealingAction, 0),
-		Attempts:        0,
-		ErrorMessages:   make([]string, 0),
+		ID:             fmt.Sprintf("healing-%d", time.Now().UnixNano()),
+		AnomalyID:      anomaly.ID,
+		StartTime:      time.Now(),
+		Status:         HealingStatusRunning,
+		Anomaly:        anomaly,
+		AppliedActions: make([]*HealingAction, 0),
+		Attempts:       0,
+		ErrorMessages:  make([]string, 0),
 	}
 
 	// Ajouter à la liste des sessions actives
@@ -748,12 +755,12 @@ func (nahs *NeuralAutoHealingSystem) processAnomalyAndHeal(ctx context.Context, 
 
 func (nahs *NeuralAutoHealingSystem) performHealingProcess(ctx context.Context, session *HealingSession) (*HealingResult, error) {
 	maxAttempts := nahs.config.MaxHealingAttempts
-	
+
 	for session.Attempts < maxAttempts {
 		session.Attempts++
 		session.LastAttemptTime = time.Now()
 
-		nahs.logger.Info(fmt.Sprintf("Healing attempt %d/%d for anomaly %s", 
+		nahs.logger.Info(fmt.Sprintf("Healing attempt %d/%d for anomaly %s",
 			session.Attempts, maxAttempts, session.AnomalyID))
 
 		// Générer un plan de réparation
@@ -782,17 +789,17 @@ func (nahs *NeuralAutoHealingSystem) performHealingProcess(ctx context.Context, 
 		// Vérifier si l'anomalie a été résolue
 		if executionResult.Success {
 			result := &HealingResult{
-				Success:           true,
-				Resolution:        executionResult.Resolution,
-				Duration:          time.Since(session.StartTime),
-				ActionsExecuted:   len(session.AppliedActions),
-				AnomalyResolved:   true,
-				SideEffects:       executionResult.SideEffects,
-				LessonsLearned:    executionResult.LessonsLearned,
-				FollowUpRequired:  executionResult.RequiresFollowUp,
+				Success:          true,
+				Resolution:       executionResult.Resolution,
+				Duration:         time.Since(session.StartTime),
+				ActionsExecuted:  len(session.AppliedActions),
+				AnomalyResolved:  true,
+				SideEffects:      executionResult.SideEffects,
+				LessonsLearned:   executionResult.LessonsLearned,
+				FollowUpRequired: executionResult.RequiresFollowUp,
 			}
 
-			nahs.logger.Info(fmt.Sprintf("Anomaly %s successfully healed in %d attempts", 
+			nahs.logger.Info(fmt.Sprintf("Anomaly %s successfully healed in %d attempts",
 				session.AnomalyID, session.Attempts))
 
 			return result, nil
@@ -801,12 +808,12 @@ func (nahs *NeuralAutoHealingSystem) performHealingProcess(ctx context.Context, 
 
 	// Toutes les tentatives ont échoué
 	result := &HealingResult{
-		Success:           false,
-		Resolution:        "Failed to resolve after maximum attempts",
-		Duration:          time.Since(session.StartTime),
-		ActionsExecuted:   len(session.AppliedActions),
-		AnomalyResolved:   false,
-		FollowUpRequired:  true,
+		Success:          false,
+		Resolution:       "Failed to resolve after maximum attempts",
+		Duration:         time.Since(session.StartTime),
+		ActionsExecuted:  len(session.AppliedActions),
+		AnomalyResolved:  false,
+		FollowUpRequired: true,
 	}
 
 	// Escalader si activé
@@ -827,7 +834,7 @@ func (nahs *NeuralAutoHealingSystem) processAnomalyAsync(ctx context.Context, an
 	nahs.mutex.RUnlock()
 
 	if activeCount >= nahs.config.MaxConcurrentHealing {
-		nahs.logger.Warn(fmt.Sprintf("Maximum concurrent healing sessions reached (%d), queueing anomaly %s", 
+		nahs.logger.Warn(fmt.Sprintf("Maximum concurrent healing sessions reached (%d), queueing anomaly %s",
 			nahs.config.MaxConcurrentHealing, anomaly.ID))
 		return
 	}
@@ -898,7 +905,7 @@ func (nahs *NeuralAutoHealingSystem) updateMetricsFromExecution(anomalies []*Det
 	defer nahs.metrics.mutex.Unlock()
 
 	nahs.metrics.TotalAnomaliesDetected += int64(len(anomalies))
-	
+
 	successCount := 0
 	for _, result := range results {
 		if result.Success {
@@ -918,7 +925,7 @@ func (nahs *NeuralAutoHealingSystem) updateMetricsFromExecution(anomalies []*Det
 func (nahs *NeuralAutoHealingSystem) updateFalsePositiveMetrics() {
 	nahs.metrics.mutex.Lock()
 	defer nahs.metrics.mutex.Unlock()
-	
+
 	nahs.metrics.FalsePositiveRate = math.Min(nahs.metrics.FalsePositiveRate+0.01, 1.0)
 }
 
@@ -945,7 +952,7 @@ func (nahs *NeuralAutoHealingSystem) updateAnomalyPatterns(sessions []*HealingSe
 	for _, session := range sessions {
 		if session.Result != nil && session.Result.Success {
 			patternKey := session.Anomaly.Type
-			
+
 			if pattern, exists := nahs.anomalyPatterns[patternKey]; exists {
 				pattern.Frequency++
 				pattern.SuccessRate = (pattern.SuccessRate + 1.0) / 2.0
@@ -1010,10 +1017,10 @@ func NewHealingMetrics() *HealingMetrics {
 // Structures de support
 
 type ResourceLimits struct {
-	MaxCPUPercent    float64 `yaml:"max_cpu_percent"`
-	MaxMemoryMB      int     `yaml:"max_memory_mb"`
-	MaxDiskIO        float64 `yaml:"max_disk_io"`
-	MaxNetworkIO     float64 `yaml:"max_network_io"`
+	MaxCPUPercent float64 `yaml:"max_cpu_percent"`
+	MaxMemoryMB   int     `yaml:"max_memory_mb"`
+	MaxDiskIO     float64 `yaml:"max_disk_io"`
+	MaxNetworkIO  float64 `yaml:"max_network_io"`
 }
 
 type AnomalyContext struct {
@@ -1056,9 +1063,9 @@ type ActionResult struct {
 // Configurations des composants
 
 type DetectorConfig struct {
-	ModelPath       string  `yaml:"model_path"`
-	Sensitivity     float64 `yaml:"sensitivity"`
-	WindowSize      int     `yaml:"window_size"`
+	ModelPath   string  `yaml:"model_path"`
+	Sensitivity float64 `yaml:"sensitivity"`
+	WindowSize  int     `yaml:"window_size"`
 }
 
 type EngineConfig struct {
@@ -1068,9 +1075,9 @@ type EngineConfig struct {
 }
 
 type LearningConfig struct {
-	Algorithm       string  `yaml:"algorithm"`
-	LearningRate    float64 `yaml:"learning_rate"`
-	BatchSize       int     `yaml:"batch_size"`
+	Algorithm    string  `yaml:"algorithm"`
+	LearningRate float64 `yaml:"learning_rate"`
+	BatchSize    int     `yaml:"batch_size"`
 }
 
 type OrchestratorConfig struct {
@@ -1080,13 +1087,13 @@ type OrchestratorConfig struct {
 }
 
 type DiagnosticConfig struct {
-	RuleEngine     string `yaml:"rule_engine"`
-	AnalysisDepth  int    `yaml:"analysis_depth"`
-	CausalInference bool  `yaml:"causal_inference"`
+	RuleEngine      string `yaml:"rule_engine"`
+	AnalysisDepth   int    `yaml:"analysis_depth"`
+	CausalInference bool   `yaml:"causal_inference"`
 }
 
 type KnowledgeBaseConfig struct {
-	StorageType   string `yaml:"storage_type"`
-	SyncEnabled   bool   `yaml:"sync_enabled"`
-	VersionControl bool  `yaml:"version_control"`
+	StorageType    string `yaml:"storage_type"`
+	SyncEnabled    bool   `yaml:"sync_enabled"`
+	VersionControl bool   `yaml:"version_control"`
 }

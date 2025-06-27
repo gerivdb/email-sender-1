@@ -1,5 +1,26 @@
 # Détecte codacy-cli.exe, met à jour la config MCP et redémarre le service MCP automatiquement
-$codacyPath = Get-ChildItem -Path C:\, D:\, E:\ -Filter codacy-cli.exe -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName
+$codacyExe = "codacy-cli.exe"
+$installDir = "$env:ProgramFiles\CodacyCLI"
+$codacyPath = Get-ChildItem -Path C:\, D:\, E:\ -Filter $codacyExe -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName
+
+if (-not $codacyPath) {
+   Write-Host "Codacy CLI introuvable, téléchargement de la dernière version..."
+   $latestUrl = "https://api.github.com/repos/codacy/codacy-cli/releases/latest"
+   $release = Invoke-RestMethod -Uri $latestUrl -UseBasicParsing
+   $asset = $release.assets | Where-Object { $_.name -like "*windows*amd64*.exe" } | Select-Object -First 1
+   if (-not $asset) { throw "Aucun binaire Windows trouvé dans la release Codacy CLI." }
+   if (-not (Test-Path $installDir)) { New-Item -ItemType Directory -Path $installDir | Out-Null }
+   $downloadPath = Join-Path $installDir $codacyExe
+   Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $downloadPath
+   $codacyPath = $downloadPath
+   Write-Host "Codacy CLI téléchargé dans $codacyPath"
+   # Ajouter au PATH utilisateur si non présent
+   $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+   if ($userPath -notlike "*$installDir*") {
+      [Environment]::SetEnvironmentVariable("Path", "$userPath;$installDir", "User")
+      Write-Host "Répertoire $installDir ajouté au PATH utilisateur. Redémarrez votre terminal si besoin."
+   }
+}
 
 if ($codacyPath) {
    Write-Host "Codacy CLI trouvé : $codacyPath"
@@ -14,5 +35,5 @@ if ($codacyPath) {
    Write-Host "Service MCP redémarré."
 }
 else {
-   Write-Host "codacy-cli.exe introuvable sur les partitions C:, D:, E:."
+   Write-Host "codacy-cli.exe introuvable ou installation échouée."
 }

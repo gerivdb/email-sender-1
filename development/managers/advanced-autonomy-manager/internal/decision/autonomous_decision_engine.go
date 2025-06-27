@@ -9,62 +9,53 @@ import (
 	"sync"
 	"time"
 
-	"advanced-autonomy-manager/interfaces"
+	interfaces "email_sender/development/managers/advanced-autonomy-manager/interfaces"
 )
-
-// DecisionEngineConfig configure le moteur de décision neural
-type DecisionEngineConfig struct {
-	NeuralTreeLevels     int           `yaml:"neural_tree_levels" json:"neural_tree_levels"`
-	ConfidenceThreshold  float64       `yaml:"confidence_threshold" json:"confidence_threshold"`
-	RiskAssessmentDepth  int           `yaml:"risk_assessment_depth" json:"risk_assessment_depth"`
-	TrainingDataSize     int           `yaml:"training_data_size" json:"training_data_size"`
-	DecisionSpeedTarget  time.Duration `yaml:"decision_speed_target" json:"decision_speed_target"`
-}
 
 // AnalyzerMetrics contient les métriques de l'analyseur de contexte
 type AnalyzerMetrics struct {
-	AnalysisCount       int64         `json:"analysis_count"`
-	AnalysisTime        time.Duration `json:"analysis_time"`
-	ContextComplexity   float64       `json:"context_complexity"`
-	PatternMatchCount   int           `json:"pattern_match_count"`
+	AnalysisCount     int64         `json:"analysis_count"`
+	AnalysisTime      time.Duration `json:"analysis_time"`
+	ContextComplexity float64       `json:"context_complexity"`
+	PatternMatchCount int           `json:"pattern_match_count"`
 }
 
 // DecisionTemplate représente un modèle de décision
 type DecisionTemplate struct {
-	ID          string                 `json:"id"`
-	Name        string                 `json:"name"`
-	Conditions  map[string]interface{} `json:"conditions"`
-	Actions     []string               `json:"actions"`
-	Priority    int                    `json:"priority"`
-	RiskLevel   float64                `json:"risk_level"`
+	ID         string                 `json:"id"`
+	Name       string                 `json:"name"`
+	Conditions map[string]interface{} `json:"conditions"`
+	Actions    []string               `json:"actions"`
+	Priority   int                    `json:"priority"`
+	RiskLevel  float64                `json:"risk_level"`
 }
 
 // AutonomousDecisionEngine est le moteur de décision neural qui analyse le contexte,
 // génère des options de décision, évalue les risques et prend des décisions autonomes
 // en moins de 200ms avec une confiance élevée.
 type AutonomousDecisionEngine struct {
-	config           *DecisionEngineConfig
-	logger           interfaces.Logger
-	
+	config *interfaces.DecisionEngineConfig
+	logger interfaces.Logger
+
 	// Composants du moteur de décision
-	contextAnalyzer  *ContextAnalyzer
-	optionGenerator  *OptionGenerator
-	riskEvaluator    *RiskEvaluator
+	contextAnalyzer     *ContextAnalyzer
+	optionGenerator     *OptionGenerator
+	riskEvaluator       *RiskEvaluator
 	neuralDecisionMaker *NeuralDecisionMaker
-	executionPlanner *ExecutionPlanner
-	
+	executionPlanner    *ExecutionPlanner
+
 	// Système d'apprentissage
-	learningSystem   *LearningSystem
-	decisionHistory  []*DecisionRecord
-	
+	learningSystem  *LearningSystem
+	decisionHistory []*DecisionRecord
+
 	// État et synchronisation
-	mutex           sync.RWMutex
-	initialized     bool
-	metrics         *DecisionMetrics
-	
+	mutex       sync.RWMutex
+	initialized bool
+	metrics     *DecisionMetrics
+
 	// Cache de performance
-	decisionCache   map[string]*CachedDecision
-	cacheMutex      sync.RWMutex
+	decisionCache map[string]*CachedDecision
+	cacheMutex    sync.RWMutex
 }
 
 // ContextAnalyzer analyse l'état du système et fournit une analyse contextuelle
@@ -76,9 +67,9 @@ type ContextAnalyzer struct {
 
 // OptionGenerator génère des options de décision basées sur l'analyse contextuelle
 type OptionGenerator struct {
-	config  *GeneratorConfig
-	logger  interfaces.Logger
-	
+	config *GeneratorConfig
+	logger interfaces.Logger
+
 	// Templates de décisions pré-configurés
 	decisionTemplates map[string]*DecisionTemplate
 	patternLibrary    *PatternLibrary
@@ -86,18 +77,18 @@ type OptionGenerator struct {
 
 // RiskEvaluator évalue les risques associés à chaque option de décision
 type RiskEvaluator struct {
-	config        *RiskConfig
-	logger        interfaces.Logger
-	riskDatabase  *RiskDatabase
-	modelCache    map[string]*RiskModel
+	config       *RiskConfig
+	logger       interfaces.Logger
+	riskDatabase *RiskDatabase
+	modelCache   map[string]*RiskModel
 }
 
 // NeuralDecisionMaker sélectionne la meilleure décision en utilisant des réseaux de neurones
 type NeuralDecisionMaker struct {
-	config      *NeuralConfig
-	logger      interfaces.Logger
-	neuralNet   *NeuralNetwork
-	weights     map[string]float64
+	config    *NeuralConfig
+	logger    interfaces.Logger
+	neuralNet *NeuralNetwork
+	weights   map[string]float64
 }
 
 // ExecutionPlanner planifie l'exécution des actions associées à une décision
@@ -149,20 +140,17 @@ type DecisionMetrics struct {
 }
 
 // NewAutonomousDecisionEngine crée une nouvelle instance du moteur de décision
-func NewAutonomousDecisionEngine(config *DecisionEngineConfig, logger interfaces.Logger) (*AutonomousDecisionEngine, error) {
+func NewAutonomousDecisionEngine(config *interfaces.DecisionEngineConfig, logger interfaces.Logger) (*AutonomousDecisionEngine, error) {
 	if config == nil {
 		return nil, fmt.Errorf("decision engine config is required")
 	}
-	
 	if logger == nil {
 		return nil, fmt.Errorf("logger is required")
 	}
-
 	// Valider la configuration
 	if err := validateDecisionConfig(config); err != nil {
 		return nil, fmt.Errorf("invalid decision engine config: %w", err)
 	}
-
 	engine := &AutonomousDecisionEngine{
 		config:          config,
 		logger:          logger,
@@ -170,12 +158,10 @@ func NewAutonomousDecisionEngine(config *DecisionEngineConfig, logger interfaces
 		decisionCache:   make(map[string]*CachedDecision),
 		metrics:         NewDecisionMetrics(),
 	}
-
 	// Initialiser les composants
 	if err := engine.initializeComponents(); err != nil {
 		return nil, fmt.Errorf("failed to initialize decision engine components: %w", err)
 	}
-
 	return engine, nil
 }
 
@@ -232,7 +218,7 @@ func (ade *AutonomousDecisionEngine) HealthCheck(ctx context.Context) error {
 
 	// Vérifier tous les composants
 	checks := []struct {
-		name string
+		name  string
 		check func(context.Context) error
 	}{
 		{"ContextAnalyzer", ade.contextAnalyzer.HealthCheck},
@@ -250,7 +236,7 @@ func (ade *AutonomousDecisionEngine) HealthCheck(ctx context.Context) error {
 
 	// Vérifier les métriques de performance
 	if ade.metrics.AverageDecisionTime > ade.config.MaxDecisionTime {
-		return fmt.Errorf("decision time exceeds threshold: %v > %v", 
+		return fmt.Errorf("decision time exceeds threshold: %v > %v",
 			ade.metrics.AverageDecisionTime, ade.config.MaxDecisionTime)
 	}
 
@@ -268,7 +254,7 @@ func (ade *AutonomousDecisionEngine) Cleanup() error {
 	var errors []error
 
 	components := []struct {
-		name string
+		name    string
 		cleanup func() error
 	}{
 		{"ExecutionPlanner", ade.executionPlanner.Cleanup},
@@ -364,7 +350,7 @@ func (ade *AutonomousDecisionEngine) GenerateMaintenanceDecisions(ctx context.Co
 	// 8. Enregistrer pour l'apprentissage
 	ade.recordDecisionGeneration(situation, options, selectedDecisions, time.Since(startTime))
 
-	ade.logger.Info(fmt.Sprintf("Generated %d maintenance decisions in %v", 
+	ade.logger.Info(fmt.Sprintf("Generated %d maintenance decisions in %v",
 		len(selectedDecisions), time.Since(startTime)))
 
 	return selectedDecisions, nil
@@ -380,7 +366,7 @@ func (ade *AutonomousDecisionEngine) FilterSafeDecisions(ctx context.Context, de
 		}
 	}
 
-	ade.logger.Info(fmt.Sprintf("Filtered %d safe decisions from %d total decisions", 
+	ade.logger.Info(fmt.Sprintf("Filtered %d safe decisions from %d total decisions",
 		len(safeDecisions), len(decisions)))
 
 	return safeDecisions, nil
@@ -403,7 +389,7 @@ func (ade *AutonomousDecisionEngine) ValidateDecision(ctx context.Context, decis
 	}
 
 	if float64(decision.RiskAssessment.RiskLevel) > ade.config.RiskTolerance*100 {
-		return fmt.Errorf("decision risk level %d exceeds tolerance %.0f", 
+		return fmt.Errorf("decision risk level %d exceeds tolerance %.0f",
 			decision.RiskAssessment.RiskLevel, ade.config.RiskTolerance*100)
 	}
 
@@ -501,7 +487,7 @@ func (ade *AutonomousDecisionEngine) updateMetrics(duration time.Duration) {
 	defer ade.metrics.mutex.Unlock()
 
 	ade.metrics.TotalDecisions++
-	
+
 	// Calculer la moyenne mobile de la durée des décisions
 	alpha := 0.1 // Facteur de lissage
 	if ade.metrics.AverageDecisionTime == 0 {
@@ -518,7 +504,7 @@ func (ade *AutonomousDecisionEngine) checkDecisionCache(analysis *ContextualAnal
 	defer ade.cacheMutex.RUnlock()
 
 	contextHash := analysis.GenerateHash()
-	
+
 	if cached, exists := ade.decisionCache[contextHash]; exists {
 		// Vérifier si le cache n'a pas expiré
 		if time.Since(cached.CreatedAt) < ade.config.CacheExpirationTime {
@@ -538,7 +524,7 @@ func (ade *AutonomousDecisionEngine) cacheDecisions(analysis *ContextualAnalysis
 	defer ade.cacheMutex.Unlock()
 
 	contextHash := analysis.GenerateHash()
-	
+
 	if len(decisions) > 0 {
 		// Mettre en cache la meilleure décision
 		bestDecision := decisions[0]
@@ -600,10 +586,10 @@ func (ade *AutonomousDecisionEngine) createTrainingExamples(result *interfaces.A
 func (ade *AutonomousDecisionEngine) shouldUpdateNeuralWeights(result *interfaces.AutonomyResult) bool {
 	// Logique pour déterminer si les poids doivent être mis à jour
 	return result.OverallSuccess != result.ExpectedSuccess ||
-		   math.Abs(result.Performance.ActualDuration-result.Performance.EstimatedDuration) > time.Minute
+		math.Abs(result.Performance.ActualDuration-result.Performance.EstimatedDuration) > time.Minute
 }
 
-func validateDecisionConfig(config *DecisionEngineConfig) error {
+func validateDecisionConfig(config *interfaces.DecisionEngineConfig) error {
 	if config.NeuralTreeLevels < 1 || config.NeuralTreeLevels > 16 {
 		return fmt.Errorf("neural tree levels must be between 1 and 16")
 	}
@@ -638,21 +624,21 @@ func NewDecisionMetrics() *DecisionMetrics {
 // Structures de support pour les configurations des composants
 
 type AnalyzerConfig struct {
-	Depth          int           `yaml:"depth"`
-	TimeoutMs      int           `yaml:"timeout_ms"`
-	PatternEnabled bool          `yaml:"pattern_enabled"`
+	Depth          int  `yaml:"depth"`
+	TimeoutMs      int  `yaml:"timeout_ms"`
+	PatternEnabled bool `yaml:"pattern_enabled"`
 }
 
 type GeneratorConfig struct {
-	MaxOptions     int      `yaml:"max_options"`
-	Templates      []string `yaml:"templates"`
-	CreativityLevel float64 `yaml:"creativity_level"`
+	MaxOptions      int      `yaml:"max_options"`
+	Templates       []string `yaml:"templates"`
+	CreativityLevel float64  `yaml:"creativity_level"`
 }
 
 type RiskConfig struct {
-	ModelPath      string  `yaml:"model_path"`
-	Sensitivity    float64 `yaml:"sensitivity"`
-	HistoryWeight  float64 `yaml:"history_weight"`
+	ModelPath     string  `yaml:"model_path"`
+	Sensitivity   float64 `yaml:"sensitivity"`
+	HistoryWeight float64 `yaml:"history_weight"`
 }
 
 type NeuralConfig struct {
@@ -668,9 +654,9 @@ type PlannerConfig struct {
 }
 
 type LearningConfig struct {
-	Algorithm     string  `yaml:"algorithm"`
-	BatchSize     int     `yaml:"batch_size"`
-	Epochs        int     `yaml:"epochs"`
+	Algorithm       string  `yaml:"algorithm"`
+	BatchSize       int     `yaml:"batch_size"`
+	Epochs          int     `yaml:"epochs"`
 	ValidationSplit float64 `yaml:"validation_split"`
 }
 

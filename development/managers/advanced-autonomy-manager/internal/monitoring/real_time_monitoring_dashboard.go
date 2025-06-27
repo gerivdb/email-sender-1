@@ -9,47 +9,54 @@ import (
 	"sync"
 	"time"
 
-	"advanced-autonomy-manager/interfaces"
+	"email_sender/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // MonitoringConfig configure le dashboard temps réel
 type MonitoringConfig struct {
-	DashboardPort        int           `yaml:"dashboard_port" json:"dashboard_port"`
-	UpdateInterval       time.Duration `yaml:"update_interval" json:"update_interval"`
-	MetricsRetention     time.Duration `yaml:"metrics_retention" json:"metrics_retention"`
-	AlertThresholds      map[string]float64 `yaml:"alert_thresholds" json:"alert_thresholds"`
-	WebSocketEnabled     bool          `yaml:"websocket_enabled" json:"websocket_enabled"`
+	DashboardPort    int                `yaml:"dashboard_port" json:"dashboard_port"`
+	UpdateInterval   time.Duration      `yaml:"update_interval" json:"update_interval"`
+	MetricsRetention time.Duration      `yaml:"metrics_retention" json:"metrics_retention"`
+	AlertThresholds  map[string]float64 `yaml:"alert_thresholds" json:"alert_thresholds"`
+	WebSocketEnabled bool               `yaml:"websocket_enabled" json:"websocket_enabled"`
+
+	// Nouveaux champs pour RealTimeMonitoringDashboard
+	HTTPSEnabled      bool          `yaml:"https_enabled" json:"https_enabled"`
+	CertFile          string        `yaml:"cert_file" json:"cert_file"`
+	KeyFile           string        `yaml:"key_file" json:"key_file"`
+	AggregationWindow time.Duration `yaml:"aggregation_window" json:"aggregation_window"`
+	TrendAnalysis     bool          `yaml:"trend_analysis" json:"trend_analysis"`
 }
 
 // AlertRule représente une règle d'alerte
 type AlertRule struct {
-	ID          string    `json:"id"`
-	Name        string    `json:"name"`
-	Condition   string    `json:"condition"`
-	Threshold   float64   `json:"threshold"`
-	Severity    string    `json:"severity"`
-	Enabled     bool      `json:"enabled"`
+	ID        string  `json:"id"`
+	Name      string  `json:"name"`
+	Condition string  `json:"condition"`
+	Threshold float64 `json:"threshold"`
+	Severity  string  `json:"severity"`
+	Enabled   bool    `json:"enabled"`
 }
 
 // NotificationChannel représente un canal de notification
 type NotificationChannel struct {
-	Type     string                 `json:"type"`
-	Config   map[string]interface{} `json:"config"`
-	Enabled  bool                   `json:"enabled"`
+	Type    string                 `json:"type"`
+	Config  map[string]interface{} `json:"config"`
+	Enabled bool                   `json:"enabled"`
 }
 
 // EscalationRule représente une règle d'escalade
 type EscalationRule struct {
-	Level    int           `json:"level"`
-	Delay    time.Duration `json:"delay"`
-	Actions  []string      `json:"actions"`
+	Level   int           `json:"level"`
+	Delay   time.Duration `json:"delay"`
+	Actions []string      `json:"actions"`
 }
 
 // DashboardTemplate représente un template de dashboard
 type DashboardTemplate struct {
-	Name     string                 `json:"name"`
-	Layout   map[string]interface{} `json:"layout"`
-	Widgets  []Widget              `json:"widgets"`
+	Name    string                 `json:"name"`
+	Layout  map[string]interface{} `json:"layout"`
+	Widgets []Widget               `json:"widgets"`
 }
 
 // MiddlewareFunc représente une fonction middleware
@@ -72,131 +79,39 @@ type Position struct {
 	Height int `json:"height"`
 }
 
-// LiveMetrics représente des métriques en temps réel
-type LiveMetrics struct {
-	Timestamp time.Time              `json:"timestamp"`
-	Values    map[string]interface{} `json:"values"`
-	Source    string                 `json:"source"`
-}
-
-// Alert représente une alerte
-type Alert struct {
-	ID        string    `json:"id"`
-	Message   string    `json:"message"`
-	Severity  string    `json:"severity"`
-	Source    string    `json:"source"`
-	Timestamp time.Time `json:"timestamp"`
-	Resolved  bool      `json:"resolved"`
-}
-
 // RealTimeMonitoringDashboard est le tableau de bord de surveillance temps réel
 // qui surveille en continu les 20 managers, collecte les métriques, génère des alertes
 // et fournit une visualisation web temps réel avec WebSocket.
 type RealTimeMonitoringDashboard struct {
-	config          *MonitoringConfig
-	logger          interfaces.Logger
-	
+	config *MonitoringConfig
+	logger interfaces.Logger
+
 	// Composants de surveillance
-	metricsCollector  *MetricsCollector
-	alertingSystem    *AlertingSystem
-	webDashboard      *WebDashboard
-	websocketServer   *WebSocketServer
-	dataAggregator    *DataAggregator
-	
+	metricsCollector *MetricsCollector
+	alertingSystem   *AlertingSystem
+	webDashboard     *WebDashboard
+	websocketServer  *WebSocketServer
+	dataAggregator   *DataAggregator
+
 	// Stockage en temps réel
-	liveMetrics       map[string]*LiveMetrics
-	alertHistory      []*Alert
-	systemEvents      []*SystemEvent
-	
+	liveMetrics  map[string]*LiveMetrics
+	alertHistory []*Alert
+	systemEvents []*SystemEvent
+
 	// État et synchronisation
-	mutex             sync.RWMutex
-	initialized       bool
-	running           bool
-	
+	mutex       sync.RWMutex
+	initialized bool
+	running     bool
+
 	// Serveur web et connectivité
-	httpServer        *http.Server
-	wsConnections     map[string]*WebSocketConnection
-	connMutex         sync.RWMutex
-	
+	httpServer    *http.Server
+	wsConnections map[string]*WebSocketConnection
+	connMutex     sync.RWMutex
+
 	// Processus de surveillance
 	collectionTicker  *time.Ticker
 	aggregationTicker *time.Ticker
 	cleanupTicker     *time.Ticker
-}
-
-// MetricsCollector collecteur de métriques en temps réel
-type MetricsCollector struct {
-	config            *CollectorConfig
-	logger            interfaces.Logger
-	managerConnections map[string]interfaces.BaseManager
-	collectors        map[string]*ManagerCollector
-	aggregateMetrics  *AggregateMetrics
-}
-
-// AlertingSystem système d'alertes intelligent
-type AlertingSystem struct {
-	config          *AlertConfig
-	logger          interfaces.Logger
-	alertRules      []*AlertRule
-	activeAlerts    map[string]*Alert
-	alertHistory    []*Alert
-	notificationChannels map[string]NotificationChannel
-	escalationRules []*EscalationRule
-}
-
-// WebDashboard interface web du tableau de bord
-type WebDashboard struct {
-	config        *DashboardConfig
-	logger        interfaces.Logger
-	templates     map[string]*DashboardTemplate
-	staticFiles   map[string][]byte
-	apiEndpoints  map[string]http.HandlerFunc
-	middleware    []MiddlewareFunc
-}
-
-// WebSocketServer serveur WebSocket pour les mises à jour temps réel
-type WebSocketServer struct {
-	config      *WebSocketConfig
-	logger      interfaces.Logger
-	connections map[string]*WebSocketConnection
-	broadcaster *MessageBroadcaster
-	authManager *AuthManager
-}
-
-// DataAggregator agrégateur de données pour l'analyse
-type DataAggregator struct {
-	config         *AggregatorConfig
-	logger         interfaces.Logger
-	timeSeriesData map[string]*TimeSeries
-	trendAnalyzer  *TrendAnalyzer
-	statistician   *StatisticalAnalyzer
-}
-
-// WebSocketConnection connexion WebSocket active
-type WebSocketConnection struct {
-	ID           string
-	UserID       string
-	ConnectedAt  time.Time
-	LastPing     time.Time
-	Subscriptions []string
-	Connection   interface{} // WebSocket connection
-}
-
-// ResourceUsage utilisation des ressources
-type ResourceUsage struct {
-	CPUPercent    float64
-	MemoryPercent float64
-	DiskPercent   float64
-	NetworkIO     *NetworkIO
-	ProcessCount  int
-}
-
-// NetworkIO métriques de réseau
-type NetworkIO struct {
-	BytesReceived float64
-	BytesSent     float64
-	PacketsReceived float64
-	PacketsSent   float64
 }
 
 // AlertSeverity niveau de sévérité d'alerte
@@ -225,7 +140,7 @@ func NewRealTimeMonitoringDashboard(config *MonitoringConfig, logger interfaces.
 	if config == nil {
 		return nil, fmt.Errorf("monitoring config is required")
 	}
-	
+
 	if logger == nil {
 		return nil, fmt.Errorf("logger is required")
 	}
@@ -323,7 +238,7 @@ func (rtmd *RealTimeMonitoringDashboard) HealthCheck(ctx context.Context) error 
 
 	// Vérifier tous les composants
 	checks := []struct {
-		name string
+		name  string
 		check func(context.Context) error
 	}{
 		{"MetricsCollector", rtmd.metricsCollector.HealthCheck},
@@ -407,7 +322,7 @@ func (rtmd *RealTimeMonitoringDashboard) Cleanup() error {
 	var errors []error
 
 	components := []struct {
-		name string
+		name    string
 		cleanup func() error
 	}{
 		{"WebSocketServer", rtmd.websocketServer.Cleanup},
@@ -669,7 +584,7 @@ func (rtmd *RealTimeMonitoringDashboard) startAutomaticCleanup() {
 
 func (rtmd *RealTimeMonitoringDashboard) collectAndProcessMetrics() error {
 	ctx := context.Background()
-	
+
 	// Collecter les métriques de tous les managers
 	newMetrics, err := rtmd.metricsCollector.CollectAllMetrics(ctx)
 	if err != nil {
@@ -793,10 +708,10 @@ func (rtmd *RealTimeMonitoringDashboard) processTrendAnalysis(trends map[string]
 				Timestamp:   time.Now(),
 				Severity:    EventSeverityInfo,
 				Data: map[string]interface{}{
-					"trend_type":  trend.Type,
-					"direction":   trend.Direction,
-					"strength":    trend.Strength,
-					"confidence":  trend.Confidence,
+					"trend_type": trend.Type,
+					"direction":  trend.Direction,
+					"strength":   trend.Strength,
+					"confidence": trend.Confidence,
 				},
 			}
 			rtmd.addSystemEvent(event)
@@ -820,7 +735,7 @@ func (rtmd *RealTimeMonitoringDashboard) addSystemEvent(event *SystemEvent) {
 func (rtmd *RealTimeMonitoringDashboard) handleHealthAPI(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	managerConnections := rtmd.metricsCollector.GetManagerConnections()
-	
+
 	healthReport, err := rtmd.GenerateEcosystemHealthReport(ctx, managerConnections)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Failed to generate health report: %v", err), http.StatusInternalServerError)
@@ -834,7 +749,7 @@ func (rtmd *RealTimeMonitoringDashboard) handleHealthAPI(w http.ResponseWriter, 
 
 func (rtmd *RealTimeMonitoringDashboard) handleMetricsAPI(w http.ResponseWriter, r *http.Request) {
 	metrics := rtmd.GetLiveMetrics()
-	
+
 	w.Header().Set("Content-Type", "application/json")
 	// Ici on sérialiserait metrics en JSON
 	fmt.Fprintf(w, `{"metrics_count": %d}`, len(metrics))
@@ -842,7 +757,7 @@ func (rtmd *RealTimeMonitoringDashboard) handleMetricsAPI(w http.ResponseWriter,
 
 func (rtmd *RealTimeMonitoringDashboard) handleAlertsAPI(w http.ResponseWriter, r *http.Request) {
 	activeAlerts := rtmd.alertingSystem.GetActiveAlerts()
-	
+
 	w.Header().Set("Content-Type", "application/json")
 	// Ici on sérialiserait activeAlerts en JSON
 	fmt.Fprintf(w, `{"active_alerts": %d}`, len(activeAlerts))
@@ -850,7 +765,7 @@ func (rtmd *RealTimeMonitoringDashboard) handleAlertsAPI(w http.ResponseWriter, 
 
 func (rtmd *RealTimeMonitoringDashboard) handleEventsAPI(w http.ResponseWriter, r *http.Request) {
 	recentEvents := rtmd.getRecentEvents(24 * time.Hour)
-	
+
 	w.Header().Set("Content-Type", "application/json")
 	// Ici on sérialiserait recentEvents en JSON
 	fmt.Fprintf(w, `{"recent_events": %d}`, len(recentEvents))
@@ -859,7 +774,7 @@ func (rtmd *RealTimeMonitoringDashboard) handleEventsAPI(w http.ResponseWriter, 
 func (rtmd *RealTimeMonitoringDashboard) handleHistoricalAPI(w http.ResponseWriter, r *http.Request) {
 	manager := r.URL.Query().Get("manager")
 	duration := r.URL.Query().Get("duration")
-	
+
 	if manager == "" || duration == "" {
 		http.Error(w, "manager and duration parameters are required", http.StatusBadRequest)
 		return
@@ -912,10 +827,10 @@ func (rtmd *RealTimeMonitoringDashboard) convertToManagerStates(metrics map[stri
 			HealthScore:     metric.HealthScore,
 			LastHealthCheck: metric.LastUpdate,
 			Metrics: map[string]interface{}{
-				"response_time":   metric.ResponseTime,
-				"throughput":      metric.ThroughputRPS,
-				"error_rate":      metric.ErrorRate,
-				"resource_usage":  metric.ResourceUsage,
+				"response_time":  metric.ResponseTime,
+				"throughput":     metric.ThroughputRPS,
+				"error_rate":     metric.ErrorRate,
+				"resource_usage": metric.ResourceUsage,
 			},
 		}
 		states[name] = state
@@ -970,6 +885,7 @@ func (rtmd *RealTimeMonitoringDashboard) aggregateResourceUtilization(metrics ma
 			totalCPU += metric.ResourceUsage.CPUPercent
 			totalMemory += metric.ResourceUsage.MemoryPercent
 			totalDisk += metric.ResourceUsage.DiskPercent
+		}
 		}
 	}
 
@@ -1033,9 +949,9 @@ func validateMonitoringConfig(config *MonitoringConfig) error {
 // Structures de support pour les configurations
 
 type CollectorConfig struct {
-	Timeout        time.Duration `yaml:"timeout"`
-	RetryAttempts  int           `yaml:"retry_attempts"`
-	BatchSize      int           `yaml:"batch_size"`
+	Timeout       time.Duration `yaml:"timeout"`
+	RetryAttempts int           `yaml:"retry_attempts"`
+	BatchSize     int           `yaml:"batch_size"`
 }
 
 type AlertConfig struct {
@@ -1059,9 +975,9 @@ type WebSocketConfig struct {
 }
 
 type AggregatorConfig struct {
-	BufferSize     int           `yaml:"buffer_size"`
-	FlushInterval  time.Duration `yaml:"flush_interval"`
-	CompressionEnabled bool      `yaml:"compression_enabled"`
+	BufferSize         int           `yaml:"buffer_size"`
+	FlushInterval      time.Duration `yaml:"flush_interval"`
+	CompressionEnabled bool          `yaml:"compression_enabled"`
 }
 
 // Structures de données
@@ -1077,15 +993,8 @@ type TimeSeriesPoint struct {
 	Timestamp time.Time `json:"timestamp"`
 	Value     float64   `json:"value"`
 }
+</file_content>
 
-type TrendAnalysis struct {
-	Type        string
-	Direction   string
-	Strength    float64
-	Confidence  float64
-	Description string
-}
-
-func (ta *TrendAnalysis) IsSignificant() bool {
-	return ta.Confidence > 0.8 && ta.Strength > 0.5
-}
+Now that you have the latest state of the file, try the operation again with fewer, more precise SEARCH blocks. For large files especially, it may be prudent to try to limit yourself to <5 SEARCH/REPLACE blocks at a time, then wait for the user to respond with the result of the operation before following up with another replace_in_file call to make additional edits.
+(If you run into this error 3 times in a row, you may use the write_to_file tool as a fallback.)
+</error>

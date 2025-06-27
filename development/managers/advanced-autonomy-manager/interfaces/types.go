@@ -13,6 +13,66 @@ type Logger interface {
 	Error(msg string, fields ...interface{})
 	Fatal(msg string, fields ...interface{})
 	With(fields ...interface{}) Logger
+	WithError(err error) Logger
+}
+
+// DecisionEngineConfig configure le moteur de décision neural
+type DecisionEngineConfig struct {
+	NeuralTreeLevels    int           `yaml:"neural_tree_levels" json:"neural_tree_levels"`
+	ConfidenceThreshold float64       `yaml:"confidence_threshold" json:"confidence_threshold"`
+	RiskAssessmentDepth int           `yaml:"risk_assessment_depth" json:"risk_assessment_depth"`
+	TrainingDataSize    int           `yaml:"training_data_size" json:"training_data_size"`
+	DecisionSpeedTarget time.Duration `yaml:"decision_speed_target" json:"decision_speed_target"`
+
+	// Nouveaux champs pour AutonomousDecisionEngine
+	LearningEnabled      bool          `yaml:"learning_enabled" json:"learning_enabled"`
+	MaxDecisionTime      time.Duration `yaml:"max_decision_time" json:"max_decision_time"`
+	CacheEnabled         bool          `yaml:"cache_enabled" json:"cache_enabled"`
+	CacheExpirationTime  time.Duration `yaml:"cache_expiration_time" json:"cache_expiration_time"`
+	RollbackPlanRequired bool          `yaml:"rollback_plan_required" json:"rollback_plan_required"`
+	RiskTolerance        float64       `yaml:"risk_tolerance" json:"risk_tolerance"`
+}
+
+// PredictiveConfig configure la maintenance prédictive
+type PredictiveConfig struct {
+	PredictionHorizon time.Duration `yaml:"prediction_horizon" json:"prediction_horizon"`
+	AnalysisDepth     int           `yaml:"analysis_depth" json:"analysis_depth"`
+	MLModelPath       string        `yaml:"ml_model_path" json:"ml_model_path"`
+	AccuracyThreshold float64       `yaml:"accuracy_threshold" json:"accuracy_threshold"`
+	UpdateFrequency   time.Duration `yaml:"update_frequency" json:"update_frequency"`
+
+	// Nouveaux champs pour PredictiveMaintenanceCore
+	CacheEnabled         bool          `yaml:"cache_enabled" json:"cache_enabled"`
+	CacheExpirationTime  time.Duration `yaml:"cache_expiration_time" json:"cache_expiration_time"`
+	ProactiveScheduling  bool          `yaml:"proactive_scheduling" json:"proactive_scheduling"`
+	ResourceOptimization bool          `yaml:"resource_optimization" json:"resource_optimization"`
+	DataSamplingRate     time.Duration `yaml:"data_sampling_rate" json:"data_sampling_rate"`
+}
+
+// MonitoringConfig configure le dashboard temps réel
+type MonitoringConfig struct {
+	DashboardPort    int                `yaml:"dashboard_port" json:"dashboard_port"`
+	UpdateInterval   time.Duration      `yaml:"update_interval" json:"update_interval"`
+	MetricsRetention time.Duration      `yaml:"metrics_retention" json:"metrics_retention"`
+	AlertThresholds  map[string]float64 `yaml:"alert_thresholds" json:"alert_thresholds"`
+	WebSocketEnabled bool               `yaml:"websocket_enabled" json:"websocket_enabled"`
+}
+
+// HealingConfig configure le système d'auto-réparation
+type HealingConfig struct {
+	AnomalyDetectionSensitivity float64       `yaml:"anomaly_detection_sensitivity" json:"anomaly_detection_sensitivity"`
+	AutoCorrectionEnabled       bool          `yaml:"auto_correction_enabled" json:"auto_correction_enabled"`
+	LearningPatterns            bool          `yaml:"learning_patterns" json:"learning_patterns"`
+	HealingTimeout              time.Duration `yaml:"healing_timeout" json:"healing_timeout"`
+	MaxHealingAttempts          int           `yaml:"max_healing_attempts" json:"max_healing_attempts"`
+}
+
+// CoordinationConfig configure la couche de coordination maître
+type CoordinationConfig struct {
+	EventBusBufferSize    int           `yaml:"event_bus_buffer_size" json:"event_bus_buffer_size"`
+	StateSyncInterval     time.Duration `yaml:"state_sync_interval" json:"state_sync_interval"`
+	EmergencyResponseTime time.Duration `yaml:"emergency_response_time" json:"emergency_response_time"`
+	OrchestratorWorkers   int           `yaml:"orchestrator_workers" json:"orchestrator_workers"`
 }
 
 // AutonomyLevel represents the level of autonomy for the manager
@@ -34,11 +94,11 @@ type BaseManager interface {
 	GetHealth() HealthStatus
 	GetMetrics() map[string]interface{}
 	GetDependencies() []string
-	
+
 	// Health and lifecycle
 	HealthCheck(ctx context.Context) error
 	Cleanup() error
-	
+
 	// Operational methods
 	ProcessOperation(operation *Operation) error
 	ValidateConfiguration() error
@@ -48,11 +108,11 @@ type BaseManager interface {
 
 // HealthStatus represents the health status of a manager
 type HealthStatus struct {
-	IsHealthy   bool               `json:"is_healthy"`
-	Score       float64            `json:"score"`
-	Message     string             `json:"message"`
-	LastCheck   time.Time          `json:"last_check"`
-	Details     map[string]interface{} `json:"details"`
+	IsHealthy bool                   `json:"is_healthy"`
+	Score     float64                `json:"score"`
+	Message   string                 `json:"message"`
+	LastCheck time.Time              `json:"last_check"`
+	Details   map[string]interface{} `json:"details"`
 }
 
 // SystemSituation représente l'état actuel de l'écosystème complet du FMOUA
@@ -981,6 +1041,15 @@ type EcosystemHealth struct {
 
 	// HealthHistory contient l'historique de santé
 	HealthHistory []*HistoricalHealth `json:"health_history"`
+
+	// Nouveaux champs à ajouter pour correspondre à l'utilisation dans master_coordination_layer.go
+	ManagerStates       map[string]*ManagerState `json:"manager_states"`
+	CriticalIssues      []string                 `json:"critical_issues"`
+	Warnings            []string                 `json:"warnings"`
+	Performance         map[string]interface{}   `json:"performance"`
+	LastUpdate          time.Time                `json:"last_update"`
+	CoordinationMetrics interface{}              `json:"coordination_metrics"`
+	EmergencyStatus     string                   `json:"emergency_status"`
 }
 
 // ManagerHealth représente l'état de santé d'un manager
@@ -1056,4 +1125,44 @@ type HistoricalHealth struct {
 
 	// ResourceUtilization est l'utilisation des ressources à ce moment
 	ResourceUtilization *ResourceUtilization `json:"resource_utilization"`
+}
+
+// DiagnosticConfig configure le moteur de diagnostic
+// Harmonisé pour tous les sous-packages
+type DiagnosticConfig struct {
+	RuleEngine      string `yaml:"rule_engine" json:"rule_engine"`
+	AnalysisDepth   int    `yaml:"analysis_depth" json:"analysis_depth"`
+	CausalInference bool   `yaml:"causal_inference" json:"causal_inference"`
+}
+
+// LearningConfig configure le système d'apprentissage
+// Harmonisé pour tous les sous-packages
+type LearningConfig struct {
+	Algorithm    string  `yaml:"algorithm" json:"algorithm"`
+	LearningRate float64 `yaml:"learning_rate" json:"learning_rate"`
+	BatchSize    int     `yaml:"batch_size" json:"batch_size"`
+}
+
+// DetectorConfig configure le détecteur d'anomalies
+// Harmonisé pour tous les sous-packages
+type DetectorConfig struct {
+	ModelPath   string  `yaml:"model_path" json:"model_path"`
+	Sensitivity float64 `yaml:"sensitivity" json:"sensitivity"`
+	WindowSize  int     `yaml:"window_size" json:"window_size"`
+}
+
+// EngineConfig configure le moteur de réparation
+// Harmonisé pour tous les sous-packages
+type EngineConfig struct {
+	StrategyPath    string `yaml:"strategy_path" json:"strategy_path"`
+	SafetyChecks    bool   `yaml:"safety_checks" json:"safety_checks"`
+	RollbackEnabled bool   `yaml:"rollback_enabled" json:"rollback_enabled"`
+}
+
+// OrchestratorConfig configure l'orchestrateur de récupération
+// Harmonisé pour tous les sous-packages
+type OrchestratorConfig struct {
+	MaxConcurrency  int           `yaml:"max_concurrency" json:"max_concurrency"`
+	Timeout         time.Duration `yaml:"timeout" json:"timeout"`
+	EscalationRules []string      `yaml:"escalation_rules" json:"escalation_rules"`
 }

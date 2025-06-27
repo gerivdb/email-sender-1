@@ -9,16 +9,35 @@ import (
 	"sync"
 	"time"
 
-	"advanced-autonomy-manager/interfaces"
+	"email_sender/development/managers/advanced-autonomy-manager/interfaces"
 )
 
-// PredictiveConfig configure la maintenance prédictive
-type PredictiveConfig struct {
-	PredictionHorizon    time.Duration `yaml:"prediction_horizon" json:"prediction_horizon"`
-	AnalysisDepth        int           `yaml:"analysis_depth" json:"analysis_depth"`
-	MLModelPath          string        `yaml:"ml_model_path" json:"ml_model_path"`
-	AccuracyThreshold    float64       `yaml:"accuracy_threshold" json:"accuracy_threshold"`
-	UpdateFrequency      time.Duration `yaml:"update_frequency" json:"update_frequency"`
+// PredictiveMaintenanceCore est le cœur de la maintenance prédictive qui utilise
+// le machine learning pour prédire les pannes, optimiser la maintenance proactive
+// et gérer automatiquement les ressources avec une précision >85%.
+type PredictiveMaintenanceCore struct {
+	config          *interfaces.PredictiveConfig
+	logger          interfaces.Logger
+	
+	// Composants ML et prédiction
+	mlEngine        *MachineLearningEngine
+	patternAnalyzer *PatternAnalyzer
+	forecastEngine  *ForecastEngine
+	scheduler       *ProactiveScheduler
+	optimizer       *ResourceOptimizer
+	
+	// Base de données et historique
+	historicalData  *HistoricalDataManager
+	predictionCache map[string]*CachedPrediction
+	
+	// État et synchronisation
+	mutex           sync.RWMutex
+	initialized     bool
+	metrics         *PredictiveMetrics
+	
+	// Surveillance continue
+	monitoringTicker *time.Ticker
+	predictionUpdater *time.Ticker
 }
 
 // PredictionModel représente un modèle de prédiction
@@ -71,34 +90,6 @@ type CachedPrediction struct {
 	Confidence  float64     `json:"confidence"`
 }
 
-// PredictiveMaintenanceCore est le cœur de la maintenance prédictive qui utilise
-// le machine learning pour prédire les pannes, optimiser la maintenance proactive
-// et gérer automatiquement les ressources avec une précision >85%.
-type PredictiveMaintenanceCore struct {
-	config          *PredictiveConfig
-	logger          interfaces.Logger
-	
-	// Composants ML et prédiction
-	mlEngine        *MachineLearningEngine
-	patternAnalyzer *PatternAnalyzer
-	forecastEngine  *ForecastEngine
-	scheduler       *ProactiveScheduler
-	optimizer       *ResourceOptimizer
-	
-	// Base de données et historique
-	historicalData  *HistoricalDataManager
-	predictionCache map[string]*CachedPrediction
-	
-	// État et synchronisation
-	mutex           sync.RWMutex
-	initialized     bool
-	metrics         *PredictiveMetrics
-	
-	// Surveillance continue
-	monitoringTicker *time.Ticker
-	predictionUpdater *time.Ticker
-}
-
 // MachineLearningEngine moteur ML pour l'analyse prédictive
 type MachineLearningEngine struct {
 	config     *MLEngineConfig
@@ -120,7 +111,7 @@ type PatternAnalyzer struct {
 type ForecastEngine struct {
 	config     *ForecastConfig
 	logger     interfaces.Logger
-	forecasts  map[string]*MaintenanceForecast
+	forecasts  map[string]*interfaces.MaintenanceForecast
 	validator  *ForecastValidator
 }
 
@@ -165,7 +156,7 @@ type PredictiveMetrics struct {
 }
 
 // NewPredictiveMaintenanceCore crée une nouvelle instance du cœur prédictif
-func NewPredictiveMaintenanceCore(config *PredictiveConfig, logger interfaces.Logger) (*PredictiveMaintenanceCore, error) {
+func NewPredictiveMaintenanceCore(config *interfaces.PredictiveConfig, logger interfaces.Logger) (*PredictiveMaintenanceCore, error) {
 	if config == nil {
 		return nil, fmt.Errorf("predictive config is required")
 	}

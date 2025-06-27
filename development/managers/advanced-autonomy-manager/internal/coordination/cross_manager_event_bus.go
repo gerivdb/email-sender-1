@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"advanced-autonomy-manager/interfaces"
+	"email_sender/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // CrossManagerEventBus implémentation détaillée
