@@ -120,8 +120,7 @@ tests/
 
 - [x] Scripts, scans, rapports et synthèse automatisés (voir détails plus haut)
 
-## 2. Audit et analyse d’écart
-
+implémen
 - [ ] Adapter/migrer `scan-modules.js` → `core/scanmodules/scanmodules.go`
 - [ ] Adapter/migrer `init-gap-analyzer.js` → `core/gapanalyzer/gapanalyzer.go`
 - [ ] Générer automatiquement :

@@ -1,35 +1,53 @@
+// Tests unitaires pour le package gapanalyzer.
 package gapanalyzer
 
 import (
-	"encoding/json"
 	"os"
 	"testing"
 )
 
 func TestAnalyzeGaps(t *testing.T) {
-	// Crée un fichier temporaire de scan JSON avec un module inconnu
-	tmpFile, err := os.CreateTemp("", "scanmodules-*.json")
+	jsonData := `[{"name":"foo.go","lang":"Go"},{"name":"bar.txt","lang":"unknown"}]`
+	tmpFile, err := os.CreateTemp("", "modules-*.json")
 	if err != nil {
 		t.Fatalf("Erreur création fichier temporaire: %v", err)
 	}
 	defer os.Remove(tmpFile.Name())
-
-	modules := []map[string]interface{}{
-		{"name": "test.unknown", "lang": "unknown"},
-		{"name": "main.go", "lang": "Go"},
-	}
-	data, _ := json.Marshal(modules)
-	tmpFile.Write(data)
+	tmpFile.WriteString(jsonData)
 	tmpFile.Close()
 
 	gaps, err := AnalyzeGaps(tmpFile.Name())
 	if err != nil {
-		t.Fatalf("Erreur AnalyzeGaps: %v", err)
+		t.Fatalf("AnalyzeGaps erreur: %v", err)
 	}
 	if len(gaps) != 1 {
-		t.Errorf("Attendu 1 gap, obtenu %d", len(gaps))
+		t.Errorf("AnalyzeGaps retourne %d gaps; attendu 1", len(gaps))
 	}
-	if gaps[0].Module != "test.unknown" {
-		t.Errorf("Nom de module incorrect: %s", gaps[0].Module)
+	if gaps[0].Module != "bar.txt" {
+		t.Errorf("Nom du module inattendu: %s", gaps[0].Module)
+	}
+}
+
+func TestExportMarkdown(t *testing.T) {
+	gaps := []Gap{
+		{Module: "bar.txt", Ecart: "Langage non détecté", Risque: "Non analysé", Recommandation: "Compléter manuellement"},
+	}
+	tmpFile, err := os.CreateTemp("", "gaps-*.md")
+	if err != nil {
+		t.Fatalf("Erreur création fichier temporaire: %v", err)
+	}
+	defer os.Remove(tmpFile.Name())
+	tmpFile.Close()
+
+	err = ExportMarkdown(gaps, tmpFile.Name())
+	if err != nil {
+		t.Fatalf("ExportMarkdown erreur: %v", err)
+	}
+	data, err := os.ReadFile(tmpFile.Name())
+	if err != nil {
+		t.Fatalf("Erreur lecture fichier markdown: %v", err)
+	}
+	if string(data) == "" {
+		t.Error("Le fichier markdown généré est vide")
 	}
 }

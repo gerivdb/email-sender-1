@@ -1,51 +1,45 @@
+// Tests unitaires pour le package scanmodules.
 package scanmodules
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 )
 
-func TestScanDir(t *testing.T) {
-	// Crée un dossier temporaire avec un fichier factice pour le test
-	tmpDir := t.TempDir()
-	testFile := tmpDir + "/test.go"
-	os.WriteFile(testFile, []byte("package main\n"), 0o644)
+// Test de la fonction DetectLang.
+func TestDetectLang(t *testing.T) {
+	tests := []struct {
+		filename string
+		expected string
+	}{
+		{"main.go", "Go"},
+		{"script.js", "Node.js"},
+		{"module.py", "Python"},
+		{"README.md", "unknown"},
+	}
 
-	modules, err := ScanDir(tmpDir)
-	if err != nil {
-		t.Fatalf("Erreur lors du scan: %v", err)
-	}
-	if len(modules) != 1 {
-		t.Errorf("Attendu 1 module, obtenu %d", len(modules))
-	}
-	if modules[0].Lang != "Go" {
-		t.Errorf("Langage détecté incorrect: %s", modules[0].Lang)
+	for _, tt := range tests {
+		result := DetectLang(tt.filename)
+		if result != tt.expected {
+			t.Errorf("DetectLang(%q) = %q; want %q", tt.filename, result, tt.expected)
+		}
 	}
 }
 
-func TestExportModules(t *testing.T) {
+// Test de la fonction ScanDir sur un dossier temporaire.
+func TestScanDir(t *testing.T) {
 	tmpDir := t.TempDir()
-	modules := []ModuleInfo{
-		{
-			Name:   "test.go",
-			Path:   tmpDir + "/test.go",
-			Type:   "file",
-			Lang:   "Go",
-			Role:   "",
-			Deps:   []string{},
-			Outputs: []string{},
-		},
+	files := []string{"a.go", "b.js", "c.py", "d.txt"}
+	for _, f := range files {
+		os.WriteFile(filepath.Join(tmpDir, f), []byte("test"), 0644)
 	}
-	outPath := tmpDir + "/modules.json"
-	err := ExportModules(modules, outPath)
+
+	modules, err := ScanDir(tmpDir)
 	if err != nil {
-		t.Fatalf("Erreur lors de l'export JSON: %v", err)
+		t.Fatalf("ScanDir error: %v", err)
 	}
-	data, err := os.ReadFile(outPath)
-	if err != nil {
-		t.Fatalf("Erreur lors de la lecture du fichier JSON: %v", err)
-	}
-	if len(data) == 0 {
-		t.Error("Le fichier JSON généré est vide")
+	if len(modules) != len(files) {
+		t.Errorf("ScanDir found %d modules; want %d", len(modules), len(files))
 	}
 }

@@ -1,3 +1,14 @@
+/*
+Package gapanalyzer fournit des fonctions pour analyser les écarts détectés dans les modules.
+
+Fonctions principales :
+- AnalyzeGaps : lit un fichier JSON de modules et retourne la liste des écarts détectés.
+- ExportMarkdown : exporte la liste des écarts au format Markdown.
+
+Utilisation typique :
+gaps, err := gapanalyzer.AnalyzeGaps("modules.json")
+err := gapanalyzer.ExportMarkdown(gaps, "INIT_GAP_ANALYSIS.md")
+*/
 package gapanalyzer
 
 import (
@@ -13,6 +24,16 @@ type Gap struct {
 	Recommandation string
 }
 
+/*
+AnalyzeGaps lit un fichier JSON de modules et retourne la liste des écarts détectés.
+
+Paramètre :
+- scanPath : chemin du fichier JSON à analyser
+
+Retourne :
+- []Gap : liste des écarts détectés
+- error : erreur éventuelle
+*/
 func AnalyzeGaps(scanPath string) ([]Gap, error) {
 	data, err := os.ReadFile(scanPath)
 	if err != nil {
@@ -34,6 +55,16 @@ func AnalyzeGaps(scanPath string) ([]Gap, error) {
 	return gaps, nil
 }
 
+/*
+ExportMarkdown exporte la liste des écarts au format Markdown.
+
+Paramètres :
+- gaps : liste des écarts à exporter
+- outPath : chemin du fichier de sortie
+
+Retourne :
+- error : erreur éventuelle
+*/
 func ExportMarkdown(gaps []Gap, outPath string) error {
 	f, err := os.Create(outPath)
 	if err != nil {
