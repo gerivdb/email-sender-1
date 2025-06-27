@@ -46,8 +46,8 @@
     },
     "staticcheck": true,
     "env": {
-      "GOPROXY": "direct",
-      "GOSUMDB": "off",
+      "GOPROXY": "https://proxy.golang.org,direct",
+      "GOSUMDB": "sum.golang.org",
       "GOCACHE": "",
       "GOMODCACHE": ""
     },

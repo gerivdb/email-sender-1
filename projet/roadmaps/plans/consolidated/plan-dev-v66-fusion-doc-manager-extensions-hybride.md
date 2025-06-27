@@ -29,9 +29,9 @@ cognitive_level: "AUTO_EVOLUTIVE"
 # 📋 CHECKLIST MAGISTRALE (SUIVI)
 
 - [x] Phase 1 : Initialisation et cadrage
-- [ ] Phase 2 : Audit et analyse d’écart
+- [x] Phase 2 : Audit et analyse d’écart
 - [ ] Phase 3 : Architecture cible et choix technos
-- [ ] Phase 4 : Extraction et parsing
+- [x] Phase 4 : Extraction et parsing
 - [ ] Phase 5 : Génération et visualisation graphes
 - [ ] Phase 6 : Automatisation et synchronisation
 - [ ] Phase 7 : Documentation, formation, diffusion

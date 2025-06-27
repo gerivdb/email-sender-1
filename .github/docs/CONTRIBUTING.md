@@ -45,3 +45,23 @@ Ce guide explique comment contribuer efficacement à la documentation de l’éc
 - [Index documentaire](DOC_INDEX.md)
 - [Onboarding](onboarding/README.md)
 - [FAQ](FAQ.md)
+
+---
+
+## ⚠️ Note critique pour toute documentation Go, scripts, ou automatisation
+
+Pour toute documentation, guide technique, ou script d’intégration concernant Go :
+
+- **Ne jamais recommander ou documenter l’utilisation de `GOPROXY=off`** sauf cas d’exception (offline total).
+- Toujours rappeler que :
+  - `GOPROXY=https://proxy.golang.org,direct`
+  - `GOSUMDB=sum.golang.org`
+
+- Toute documentation, exemple, ou snippet CLI/IA doit inclure l’export de ces variables AVANT toute commande Go.
+- Toute exception (modules privés, proxy d’entreprise, etc.) doit être explicitement documentée.
+
+Exemple à inclure dans les guides :
+```bash
+export GOPROXY="https://proxy.golang.org,direct"
+export GOSUMDB="sum.golang.org"
+```

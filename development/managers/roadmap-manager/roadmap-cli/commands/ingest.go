@@ -3,14 +3,15 @@ package commands
 
 import (
 	"context"
-	"email_sender/cmd/roadmap-cli/ingestion"
-	parallelprocessor "email_sender/cmd/roadmap-cli/parallel"
-	"email_sender/cmd/roadmap-cli/rag"
-	"email_sender/cmd/roadmap-cli/storage"
 	"fmt"
 	"path/filepath"
 	"runtime"
 	"time"
+
+	"email_sender/cmd/roadmap-cli/ingestion"
+	parallelprocessor "email_sender/cmd/roadmap-cli/parallel"
+	rag "email_sender/cmd/roadmap-cli/rag"
+	"email_sender/cmd/roadmap-cli/storage"
 
 	"github.com/spf13/cobra"
 )

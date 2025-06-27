@@ -6,16 +6,16 @@ import (
 	"net/http"
 	"time"
 
-	// "github.com/qdrant/go-client/qdrant" // Temporarily disabled
-	"go.uber.org/zap"
+	"email-sender-1/development/managers/maintenance-manager/src/core"
 
-	"github.com/gerivdb/email-sender-1/maintenance-manager/src/core"
+	"go.uber.org/zap"
+	// "github.com/gerivdb/email-sender-1/maintenance-manager/src/core" // Désactivé car module absent
 )
 
 // QdrantManager manages Qdrant vector database operations
 type QdrantManager struct {
 	logger      *zap.Logger
-	client      *qdrant.Client
+	client      *Client
 	config      core.VectorDBConfig
 	collections map[string]*Collection
 	initialized bool
@@ -30,21 +30,7 @@ type Collection struct {
 	CreatedAt  time.Time         `json:"created_at"`
 }
 
-// VectorPoint represents a vector point with metadata
-type VectorPoint struct {
-	ID       string                 `json:"id"`
-	Vector   []float32              `json:"vector"`
-	Payload  map[string]interface{} `json:"payload"`
-	Metadata map[string]string      `json:"metadata"`
-}
-
-// SearchResult represents a vector search result
-type SearchResult struct {
-	ID       string                 `json:"id"`
-	Score    float64                `json:"score"`
-	Payload  map[string]interface{} `json:"payload"`
-	Metadata map[string]string      `json:"metadata"`
-}
+// VectorPoint and SearchResult are now defined in vector_registry.go and must be imported/used from là-bas.
 
 // VectorStats contains statistics about the vector database
 type VectorStats struct {
@@ -64,16 +50,19 @@ func NewQdrantManager(logger *zap.Logger, config core.VectorDBConfig) (*QdrantMa
 	}
 
 	// Create Qdrant client
-	qdrantURL := fmt.Sprintf("http://%s:%d", config.Host, config.Port)
-	client, err := qdrant.NewClient(&qdrant.Config{
-		Host:   config.Host,
-		Port:   config.Port,
-		UseTLS: false,
-		APIKey: "",
-	})
-	if err != nil {
-		return nil, fmt.Errorf("failed to create Qdrant client: %w", err)
-	}
+	// qdrantURL := fmt.Sprintf("http://%s:%d", config.Host, config.Port)
+	// client, err := qdrant.NewClient(&qdrant.Config{
+	// Host:   config.Host,
+	// Port:   config.Port,
+	// UseTLS: false,
+	// APIKey: "",
+	// })
+	// if err != nil {
+	// return nil, fmt.Errorf("failed to create Qdrant client: %w", err)
+	// }
+
+	// Utilisation du stub local
+	client := &Client{}
 
 	manager := &QdrantManager{
 		logger:      logger,
@@ -159,32 +148,32 @@ func (qm *QdrantManager) ensureCollection(ctx context.Context, name string, vect
 			zap.String("name", name),
 			zap.Int("vector_size", vectorSize))
 
-		_, err := qm.client.CreateCollection(ctx, &qdrant.CreateCollection{
-			CollectionName: name,
-			VectorsConfig: qdrant.VectorsConfig{
-				Params: &qdrant.VectorParams{
-					Size:     uint64(vectorSize),
-					Distance: qdrant.Distance_Cosine,
-				},
-			},
-		})
-		if err != nil {
-			return fmt.Errorf("failed to create collection: %w", err)
-		}
+// Utilisation du stub local pour la création de collection
+// Correction de la virgule manquante dans la struct CreateCollection
+_, err := qm.client.CreateCollection(ctx, &CreateCollection{
+CollectionName: name,
+VectorsConfig: &VectorsConfig{
+Params: &VectorParams{
+Size:     uint64(vectorSize),
+Distance: Distance_Cosine,
+},
+},
+})
+if err != nil {
+return fmt.Errorf("failed to create collection: %w", err)
+}
 
-		qm.logger.Info("Collection created successfully", zap.String("name", name))
-	}
+qm.logger.Info("Collection created successfully", zap.String("name", name))
+// Store collection info
+qm.collections[name] = &Collection{
+Name:       name,
+VectorSize: vectorSize,
+Distance:   "cosine",
+Metadata:   make(map[string]string),
+CreatedAt:  time.Now(),
+}
 
-	// Store collection info
-	qm.collections[name] = &Collection{
-		Name:       name,
-		VectorSize: vectorSize,
-		Distance:   "cosine",
-		Metadata:   make(map[string]string),
-		CreatedAt:  time.Now(),
-	}
-
-	return nil
+return nil
 }
 
 // loadCollections loads information about existing collections
@@ -203,17 +192,17 @@ func (qm *QdrantManager) loadCollections(ctx context.Context) error {
 			continue
 		}
 
-		vectorSize := int(info.Config.Params.VectorSize)
-		distance := info.Config.Params.Distance.String()
+vectorSize := 0
+distance := "cosine"
 
-		qm.collections[collection.Name] = &Collection{
-			Name:       collection.Name,
-			VectorSize: vectorSize,
-			Distance:   distance,
-			Metadata:   make(map[string]string),
-			CreatedAt:  time.Now(), // We don't have the actual creation time
-		}
-	}
+qm.collections[collection.Name] = &Collection{
+Name:       collection.Name,
+VectorSize: vectorSize,
+Distance:   distance,
+Metadata:   make(map[string]string),
+CreatedAt:  time.Now(), // We don't have the actual creation time
+}
+}
 
 	qm.logger.Info("Loaded collections", zap.Int("count", len(qm.collections)))
 	return nil

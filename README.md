@@ -64,7 +64,7 @@ La structure du projet a été réorganisée pour une meilleure organisation et 
 - **node_modules/** - Dépendances Node.js
 - **scripts/** - Scripts d'automatisation et utilitaires
 
-## �️ Système d'exclusion AVG
+## ⚠️ Système d'exclusion AVG
 
 Le projet intègre un système automatique d'exclusion AVG pour éviter les blocages lors de la compilation et l'exécution des fichiers `.exe` et autres artefacts de développement.
 
@@ -331,6 +331,47 @@ Ce projet applique systématiquement les méthodes décrites dans [`.github/docs
 - Un workflow GitHub Actions ([.github/workflows/go-quality.yml](.github/workflows/go-quality.yml)) applique ces méthodes à chaque push ou pull request.
 - Le Makefile et la configuration VS Code sont alignés sur ces standards.
 - Toute contribution doit respecter ce guide et passer les vérifications automatiques.
+
+## ⚠️ Configuration Go Modules et Proxy (IMPORTANT)
+
+Pour garantir que le build Go fonctionne pour tous les développeurs, agents IA, scripts CLI ou outils d'intégration continue, il est OBLIGATOIRE de respecter la configuration suivante :
+
+- **Ne JAMAIS définir `GOPROXY=off`** sauf si vous travaillez 100 % hors-ligne et que toutes les dépendances sont déjà présentes localement.
+- **Valeurs recommandées à utiliser dans votre environnement** :
+  - `GOPROXY=https://proxy.golang.org,direct`
+  - `GOSUMDB=sum.golang.org`
+
+- **Si vous voyez une erreur du type** :
+  > module lookup disabled by GOPROXY=off
+  **=> Corrigez immédiatement la variable d’environnement**
+
+- **Pour tous les agents IA, scripts CLI, ou pipelines CI/CD** : vérifiez et exportez ces variables AVANT toute commande `go mod tidy`, `go build`, ou `go test`.
+
+### Exemple PowerShell (Windows)
+```powershell
+$env:GOPROXY="https://proxy.golang.org,direct"
+$env:GOSUMDB="sum.golang.org"
+```
+
+### Exemple Bash (Linux/macOS)
+```bash
+export GOPROXY="https://proxy.golang.org,direct"
+export GOSUMDB="sum.golang.org"
+```
+
+- **La configuration VS Code** dans `.vscode/settings.json` doit contenir :
+```jsonc
+"gopls": {
+  "env": {
+    "GOPROXY": "https://proxy.golang.org,direct",
+    "GOSUMDB": "sum.golang.org"
+  }
+}
+```
+
+- **Documentez toute exception** (modules privés, proxy d’entreprise, etc.) dans ce README ou dans un fichier `CONTRIBUTING.md`.
+
+---
 
 ## Licence
 
