@@ -6,7 +6,7 @@ import (
 	"log"
 	"strings"
 
-	"./interfaces"
+	"D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/interfaces"
 	"go.uber.org/zap"
 )
 
