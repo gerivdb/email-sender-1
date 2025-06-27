@@ -8,11 +8,12 @@ package scriptmanager
 
 import (
 	"context"
+	errormanager "email_sender/development/managers/error-manager"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
-	"os/exec"	"path/filepath"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"sync"
@@ -20,7 +21,6 @@ import (
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
-	"github.com/gerivdb/email-sender-1/managers/error-manager"
 )
 
 // ScriptManager gère l’exécution, le cycle de vie et la surveillance des scripts (PowerShell, etc.) avec intégration ErrorManager.

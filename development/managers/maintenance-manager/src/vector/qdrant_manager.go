@@ -188,7 +188,7 @@ func (qm *QdrantManager) loadCollections(ctx context.Context) error {
 		if err != nil {
 			qm.logger.Warn("Failed to get collection info",
 				zap.String("collection", collection.Name),
-				zap.Error(err))
+			)
 			continue
 		}
 
