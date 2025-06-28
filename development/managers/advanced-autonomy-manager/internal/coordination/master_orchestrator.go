@@ -305,7 +305,7 @@ func (mo *MasterOrchestrator) optimizeExecutionOrder(managers []string) ([]strin
 func (mo *MasterOrchestrator) filterDecisionsForManager(decisions []interfaces.AutonomousDecision, managerName string) []interfaces.AutonomousDecision {
 	var filtered []interfaces.AutonomousDecision
 	for _, decision := range decisions {
-		for _, affected := range decision.AffectedManagers {
+		for _, affected := range decision.TargetManagers {
 			if affected == managerName {
 				filtered = append(filtered, decision)
 				break
@@ -607,3 +607,122 @@ func createDefaultOptimizationRules() []OptimizationRule {
 		},
 	}
 }
+<environment_details>
+# VSCode Visible Files
+C:/response_b4401a32-a087-4d75-9ddd-3defed4d95d2/tools-0
+C:/response_2d6fe7ee-2527-4740-8b35-aaf7bf340e28/0
+C:/response_81ee3f5e-92d3-4fd2-a424-19b9572a244c/0
+C:/response_c8819f1d-16f5-497f-8c71-2da0b3074965/0
+.golangci.yaml
+
+# VSCode Open Tabs
+development/managers/advanced-autonomy-manager/internal/coordination/global_state_manager.go
+.vscode/tasks.json
+development/managers/advanced-autonomy-manager/internal/coordination/cross_manager_event_bus.go
+development/managers/advanced-autonomy-manager/interfaces/types.go
+development/managers/advanced-autonomy-manager/internal/healing/diagnostic_engine.go
+development/managers/advanced-autonomy-manager/internal/coordination/emergency_response_system.go
+development/managers/advanced-autonomy-manager/internal/monitoring/time_series.go
+development/managers/advanced-autonomy-manager/internal/monitoring/metrics_collector.go
+development/managers/advanced-autonomy-manager/internal/monitoring/manager_collector.go
+development/hooks/commit-interceptor/analyzer_test.go
+development/managers/advanced-autonomy-manager/internal/monitoring/websocket_server.go
+development/managers/advanced-autonomy-manager/internal/monitoring/statistical_analyzer.go
+development/managers/advanced-autonomy-manager/internal/healing/recovery_orchestrator.go
+development/managers/advanced-autonomy-manager/internal/monitoring/trend_analysis.go
+development/managers/advanced-autonomy-manager/internal/coordination/master_orchestrator.go
+.golangci.yaml
+
+# Current Time
+6/28/2025, 5:26:48 PM (Europe/Paris, UTC+2:00)
+
+# Context Window Usage
+262,285 / 1,048.576K tokens used (25%)
+
+# Current Mode
+ACT MODE
+</environment_details>
+</feedback><environment_details>
+# VSCode Visible Files
+C:/response_2d6fe7ee-2527-4740-8b35-aaf7bf340e28/0
+C:/response_81ee3f5e-92d3-4fd2-a424-19b9572a244c/0
+C:/response_c8819f1d-16f5-497f-8c71-2da0b3074965/0
+development/managers/advanced-autonomy-manager/internal/coordination/master_orchestrator.go
+
+# VSCode Open Tabs
+development/managers/advanced-autonomy-manager/internal/coordination/global_state_manager.go
+.vscode/tasks.json
+development/managers/advanced-autonomy-manager/internal/coordination/cross_manager_event_bus.go
+development/managers/advanced-autonomy-manager/interfaces/types.go
+development/managers/advanced-autonomy-manager/internal/healing/diagnostic_engine.go
+development/managers/advanced-autonomy-manager/internal/coordination/emergency_response_system.go
+development/managers/advanced-autonomy-manager/internal/monitoring/time_series.go
+development/managers/advanced-autonomy-manager/internal/monitoring/metrics_collector.go
+development/managers/advanced-autonomy-manager/internal/monitoring/manager_collector.go
+development/hooks/commit-interceptor/analyzer_test.go
+development/managers/advanced-autonomy-manager/internal/monitoring/websocket_server.go
+development/managers/advanced-autonomy-manager/internal/monitoring/statistical_analyzer.go
+development/managers/advanced-autonomy-manager/internal/healing/recovery_orchestrator.go
+development/managers/advanced-autonomy-manager/internal/monitoring/trend_analysis.go
+.golangci.yaml
+consolidated/plan_ameliorations_read_file.md
+development/managers/advanced-autonomy-manager/internal/coordination/master_orchestrator.go
+
+# Current Time
+6/28/2025, 6:14:32 PM (Europe/Paris, UTC+2:00)
+
+# Context Window Usage
+322,382 / 1,048.576K tokens used (31%)
+
+# Current Mode
+ACT MODE
+</environment_details>
+
+</final_file_content>
+
+IMPORTANT: For any future changes to this file, use the final_file_content shown above as your reference. This content reflects the current state of the file, including any auto-formatting (e.g., if you used single quotes but the formatter converted them to double quotes). Always base your SEARCH/REPLACE operations on this final version to ensure accuracy.
+
+
+
+New problems detected after saving the file:
+development/managers/advanced-autonomy-manager/internal/coordination/master_orchestrator.go
+- [syntax Error] Line 610: expected declaration, found '<'<environment_details>
+# VSCode Visible Files
+C:/response_2d6fe7ee-2527-4740-8b35-aaf7bf340e28/0
+C:/response_81ee3f5e-92d3-4fd2-a424-19b9572a244c/0
+C:/response_c8819f1d-16f5-497f-8c71-2da0b3074965/0
+consolidated/plan_ameliorations_read_file.md
+development/managers/advanced-autonomy-manager/internal/coordination/master_orchestrator.go
+
+# VSCode Open Tabs
+development/managers/advanced-autonomy-manager/internal/coordination/global_state_manager.go
+.vscode/tasks.json
+development/managers/advanced-autonomy-manager/internal/coordination/cross_manager_event_bus.go
+development/managers/advanced-autonomy-manager/interfaces/types.go
+development/managers/advanced-autonomy-manager/internal/healing/diagnostic_engine.go
+development/managers/advanced-autonomy-manager/internal/coordination/emergency_response_system.go
+development/managers/advanced-autonomy-manager/internal/monitoring/time_series.go
+development/managers/advanced-autonomy-manager/internal/monitoring/metrics_collector.go
+development/managers/advanced-autonomy-manager/internal/monitoring/manager_collector.go
+development/hooks/commit-interceptor/analyzer_test.go
+development/managers/advanced-autonomy-manager/internal/monitoring/websocket_server.go
+development/managers/advanced-autonomy-manager/internal/monitoring/statistical_analyzer.go
+development/managers/advanced-autonomy-manager/internal/healing/recovery_orchestrator.go
+development/managers/advanced-autonomy-manager/internal/monitoring/trend_analysis.go
+.golangci.yaml
+consolidated/plan_ameliorations_read_file.md
+development/managers/advanced-autonomy-manager/internal/coordination/master_orchestrator.go
+
+# Recently Modified Files
+These files have been modified since you last accessed them (file was just edited so you may need to re-read it before editing):
+development/managers/advanced-autonomy-manager/internal/coordination/master_orchestrator.go
+
+# Current Time
+6/28/2025, 6:16:48 PM (Europe/Paris, UTC+2:00)
+
+# Context Window Usage
+349,367 / 1,048.576K tokens used (33%)
+
+# Current Mode
+ACT MODE
+</environment_details>

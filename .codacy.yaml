@@ -1,0 +1,28 @@
+---
+version: 1.0
+project:
+  name: EMAIL_SENDER_1
+  path: . # Analyze the entire repository
+  default_branch: main # Or your default branch name
+engines:
+  # Enable all available engines for JavaScript/TypeScript and Go
+  # You might want to customize this based on your specific needs
+  eslint:
+    enabled: true
+  go-vet:
+    enabled: true
+  gofmt:
+    enabled: true
+  golint:
+    enabled: true
+  # Add other relevant engines for your project, e.g., for Vue.js
+  # vue-eslint:
+  #   enabled: true
+exclude_paths:
+  - "**/node_modules/**"
+  - "**/*.min.js"
+  - "**/vendor/**"
+  - "**/test/**"
+  - "**/*.test.go"
+  - "**/*.spec.js"
+  - "**/*.spec.ts"

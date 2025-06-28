@@ -1,0 +1,23 @@
+# Configuration de base pour EMAIL_SENDER_1
+app:
+  name: "Email Sender Application"
+  version: "1.0.0"
+  env: "development"
+
+server:
+  host: "localhost"
+  port: 8080
+
+cache:
+  type: "memory"
+  ttl: 3600
+
+logging:
+  level: "info"
+  format: "json"
+
+# Désactiver les modules problématiques pour l'installation initiale
+modules:
+  mcp_gateway: false
+  vector_tools: false
+  advanced_managers: false
