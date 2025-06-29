@@ -19,7 +19,7 @@ require (
 
 replace github.com/gerivdb/email-sender-1/managers/error-manager => ./development/managers/error-manager
 
-replace github.com/gerivdb/email-sender-1/interfaces => ./interfaces
+replace github.com/gerivdb/email-sender-1/interfaces => ./development/managers/interfaces
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect

@@ -1,22 +1,10 @@
-package main
+package deployment
 
 import (
 	"context"
 	"fmt"
 	"time"
 )
-
-// ArtifactMetadata holds metadata for a deployment artifact.
-type ArtifactMetadata struct {
-	Name              string    `json:"name"`
-	Version           string    `json:"version"`
-	BuildDate         time.Time `json:"build_date"`
-	Checksum          string    `json:"checksum"`
-	Size              int64     `json:"size"`
-	TargetEnvironment string    `json:"target_environment"`
-	DependencyHash    string    `json:"dependency_hash"` // Hash of dependencies used for this artifact
-	// Add other relevant fields like GitCommit, DockerImageID, etc.
-}
 
 // initializeDeploymentIntegration sets up deployment manager integration
 func (m *GoModManager) initializeDeploymentIntegration() error {
@@ -25,12 +13,12 @@ func (m *GoModManager) initializeDeploymentIntegration() error {
 		return nil
 	}
 
-	m.Log("info", "Initializing deployment integration...")
+	m.logger.Info("Initializing deployment integration...")
 	// In a real implementation, this would use a factory or service locator
 	// to get an instance of the DeploymentManager
 
 	// For now we'll just log this step
-	m.Log("info", "Deployment integration initialized successfully")
+	m.logger.Info("Deployment integration initialized successfully")
 	return nil
 }
 
@@ -40,17 +28,17 @@ func (m *GoModManager) checkDependencyDeploymentCompatibility(ctx context.Contex
 		return nil, fmt.Errorf("DeploymentManager not initialized")
 	}
 
-	m.Log("info", fmt.Sprintf("Checking deployment compatibility for %d dependencies", len(dependencies)))
+	m.logger.Info(fmt.Sprintf("Checking deployment compatibility for %d dependencies", len(dependencies)))
 
 	// Use deployment manager to check compatibility
 	result, err := m.deploymentManager.CheckDependencyCompatibility(ctx, dependencies)
 	if err != nil {
-		m.Log("error", fmt.Sprintf("Error checking deployment compatibility: %v", err))
+		m.logger.Error(fmt.Sprintf("Error checking deployment compatibility: %v", err))
 		return nil, err
 	}
 
 	// Log summary of compatibility results
-	m.Log("info", fmt.Sprintf("Deployment compatibility results - Compatible: %v, Target platforms: %d, Blocking issues: %d",
+	m.logger.Info(fmt.Sprintf("Deployment compatibility results - Compatible: %v, Target platforms: %d, Blocking issues: %d",
 		result.Compatible, len(result.TargetPlatforms), len(result.BlockingIssues)))
 
 	return result, nil
@@ -62,16 +50,16 @@ func (m *GoModManager) generateDeploymentMetadata(ctx context.Context, dependenc
 		return nil, fmt.Errorf("DeploymentManager not initialized")
 	}
 
-	m.Log("info", "Generating deployment artifact metadata")
+	m.logger.Info("Generating deployment artifact metadata")
 
 	// Use deployment manager to generate artifact metadata
 	metadata, err := m.deploymentManager.GenerateArtifactMetadata(ctx, dependencies)
 	if err != nil {
-		m.Log("error", fmt.Sprintf("Error generating artifact metadata: %v", err))
+		m.logger.Error(fmt.Sprintf("Error generating artifact metadata: %v", err))
 		return nil, err
 	}
 
-	m.Log("info", "Successfully generated deployment artifact metadata")
+	m.logger.Info("Successfully generated deployment artifact metadata")
 	return metadata, nil
 }
 
@@ -80,7 +68,7 @@ func (m *GoModManager) verifyDeploymentReadiness(ctx context.Context, environmen
 	// Get current dependencies
 	deps, err := m.List()
 	if err != nil {
-		m.Log("error", fmt.Sprintf("Error listing dependencies: %v", err))
+		m.logger.Error(fmt.Sprintf("Error listing dependencies: %v", err))
 		return "", fmt.Errorf("failed to list dependencies: %v", err)
 	}
 
@@ -135,12 +123,12 @@ func (m *GoModManager) verifyDeploymentReadiness(ctx context.Context, environmen
 
 // exportDependencyLockfileForDeployment generates a deployment-specific lockfile
 func (m *GoModManager) exportDependencyLockfileForDeployment(ctx context.Context) (string, error) {
-	m.Log("info", "Exporting dependency lockfile for deployment")
+	m.logger.Info("Exporting dependency lockfile for deployment")
 
 	// Get current dependencies
 	deps, err := m.List()
 	if err != nil {
-		m.Log("error", fmt.Sprintf("Error listing dependencies: %v", err))
+		m.logger.Error(fmt.Sprintf("Error listing dependencies: %v", err))
 		return "", fmt.Errorf("failed to list dependencies: %v", err)
 	}
 
@@ -174,6 +162,6 @@ dependencies:
 			dep.Name, dep.Version, dep.Repository)
 	}
 
-	m.Log("info", "Successfully exported dependency lockfile for deployment")
+	m.logger.Info("Successfully exported dependency lockfile for deployment")
 	return lockfile, nil
 }

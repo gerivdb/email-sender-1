@@ -1,4 +1,4 @@
-package main
+package dependencymanager
 
 import (
 	"context"
@@ -13,122 +13,37 @@ import (
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
-	"./interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
 	"golang.org/x/mod/modfile"
 )
-
-// Dependency represents a dependency with its metadata.
-type Dependency struct {
-	Name       string `json:"name"`
-	Version    string `json:"version"`
-	Indirect   bool   `json:"indirect,omitempty"`
-	Repository string `json:"repository,omitempty"`
-	License    string `json:"license,omitempty"`
-}
-
-// ErrorEntry represents a locally cataloged error.
-type ErrorEntry struct {
-	ID             string    `json:"id"`
-	Timestamp      time.Time `json:"timestamp"`
-	Message        string    `json:"message"`
-	StackTrace     string    `json:"stack_trace"`
-	Module         string    `json:"module"`
-	ErrorCode      string    `json:"error_code"`
-	ManagerContext string    `json:"manager_context"`
-	Severity       string    `json:"severity"`
-}
-
-// Config represents the manager's configuration.
-type Config struct {
-	Name     string `json:"name"`
-	Version  string `json:"version"`
-	Settings struct {
-		LogPath            string `json:"logPath"`
-		LogLevel           string `json:"logLevel"`
-		GoModPath          string `json:"goModPath"`
-		AutoTidy           bool   `json:"autoTidy"`
-		VulnerabilityCheck bool   `json:"vulnerabilityCheck"`
-		BackupOnChange     bool   `json:"backupOnChange"`
-	} `json:"settings"`
-}
-
-// DepManager manages dependency operations (SOLID interface).
-type DepManager interface {
-	List() ([]Dependency, error)
-	Add(module, version string) error
-	Remove(module string) error
-	Update(module string) error
-	Audit() error
-	Cleanup() error
-}
 
 // GoModManager implements DepManager for go.mod.
 type GoModManager struct {
 	modFilePath         string
-	config              *Config
-	configManager       ConfigManager
+	config              *interfaces.Config
+	configManager       interfaces.ConfigManager
 	logger              *zap.Logger
-	errorManager        ErrorManager
-	securityManager     SecurityManagerInterface
-	monitoringManager   MonitoringManagerInterface
-	storageManager      StorageManagerInterface
-	containerManager    ContainerManagerInterface
-	deploymentManager   DeploymentManagerInterface
-	registryCredentials map[string]RegistryCredentials
-	managerIntegrator   *ManagerIntegrator
+	errorManager        interfaces.ErrorManager
+	securityManager     interfaces.SecurityManagerInterface
+	monitoringManager   interfaces.MonitoringManagerInterface
+	storageManager      interfaces.StorageManagerInterface
+	containerManager    interfaces.ContainerManagerInterface
+	deploymentManager   interfaces.DeploymentManagerInterface
+	registryCredentials map[string]interfaces.RegistryCredentials
+	managerIntegrator   interfaces.ManagerIntegrator
 	
 	// Phase 4.1.1.1: Ajout des capacités de vectorisation
-	vectorizer          VectorizationEngine  // Moteur de vectorisation
-	qdrant             QdrantInterface      // Interface Qdrant
+	vectorizer          interfaces.VectorizationEngine  // Moteur de vectorisation
+	qdrant             interfaces.QdrantInterface      // Interface Qdrant
 	vectorizationEnabled bool               // Flag d'activation
 }
 
-// ErrorManager interface for decoupling error handling.
-type ErrorManager interface {
-	ProcessError(ctx context.Context, err error, component, operation string, hooks *ErrorHooks) error
-	CatalogError(entry ErrorEntry) error
-	ValidateErrorEntry(entry ErrorEntry) error
-}
-
-// ConfigManager interface for configuration management.
-type ConfigManager interface {
-	GetString(key string) (string, error)
-	GetInt(key string) (int, error)
-	GetBool(key string) (bool, error)
-	UnmarshalKey(key string, targetStruct interface{}) error
-	IsSet(key string) bool
-	RegisterDefaults(defaults map[string]interface{})
-	LoadConfigFile(filePath string, fileType string) error
-	LoadFromEnv(prefix string)
-	Validate() error
-	SetRequiredKeys(keys []string)
-	Get(key string) interface{}
-	Set(key string, value interface{})
-	SetDefault(key string, value interface{})
-	GetAll() map[string]interface{}
-	SaveToFile(filePath string, fileType string, config map[string]interface{}) error
-	Cleanup() error
-	GetErrorManager() ErrorManager
-	GetLogger() *zap.Logger
-}
-
-// ErrorManagerImpl implements ErrorManager.
-type ErrorManagerImpl struct {
-	logger *zap.Logger
-}
-
-// ErrorHooks defines callbacks for error handling.
-type ErrorHooks struct {
-	OnError func(err error)
-	OnRetry func(attempt int, err error)
-}
-
 // NewGoModManager creates a GoModManager instance.
-func NewGoModManager(modFilePath string, config *Config) *GoModManager {
+func NewGoModManager(modFilePath string, config *interfaces.Config) *GoModManager {
 	logger, _ := zap.NewProduction()
-	errorManager := &ErrorManagerImpl{logger: logger}
-	configManager := NewDepConfigManager(config, logger, errorManager)
-	managerIntegrator := NewManagerIntegrator(logger, errorManager)
+	errorManager := &interfaces.ErrorManagerImpl{logger: logger}
+	configManager := interfaces.NewDepConfigManager(config, logger) // Corrected argument
+	managerIntegrator := interfaces.NewManagerIntegrator(logger, errorManager)
 
 	mgr := &GoModManager{
 		modFilePath:         modFilePath,
@@ -137,7 +52,7 @@ func NewGoModManager(modFilePath string, config *Config) *GoModManager {
 		logger:              logger,
 		errorManager:        errorManager,
 		managerIntegrator:   managerIntegrator,
-		registryCredentials: make(map[string]RegistryCredentials),
+		registryCredentials: make(map[string]interfaces.RegistryCredentials),
 	}
 
 	// Initialize the security, monitoring, storage, container, and deployment integrations
@@ -146,7 +61,7 @@ func NewGoModManager(modFilePath string, config *Config) *GoModManager {
 }
 
 // ProcessError processes an error with centralized error handling.
-func (em *ErrorManagerImpl) ProcessError(ctx context.Context, err error, component, operation string, hooks *ErrorHooks) error {
+func (em *interfaces.ErrorManagerImpl) ProcessError(ctx context.Context, err error, component, operation string, hooks *interfaces.ErrorHooks) error {
 	if err == nil {
 		return nil
 	}
@@ -155,7 +70,7 @@ func (em *ErrorManagerImpl) ProcessError(ctx context.Context, err error, compone
 	severity := determineSeverity(err)
 	errorCode := generateErrorCode(component, operation)
 
-	entry := ErrorEntry{
+	entry := interfaces.ErrorEntry{
 		ID:             errorID,
 		Timestamp:      time.Now(),
 		Message:        err.Error(),
@@ -166,14 +81,14 @@ func (em *ErrorManagerImpl) ProcessError(ctx context.Context, err error, compone
 		Severity:       severity,
 	}
 
-	if validationErr := em.ValidateErrorEntry(entry); validationErr != nil {
+	if validationErr := em.ValidateErrorEntry(&entry); validationErr != nil {
 		em.logger.Error("Error entry validation failed",
 			zap.Error(validationErr),
 			zap.String("error_id", errorID))
 		return validationErr
 	}
 
-	if catalogErr := em.CatalogError(entry); catalogErr != nil {
+	if catalogErr := em.CatalogError(&entry); catalogErr != nil {
 		em.logger.Error("Failed to catalog error",
 			zap.Error(catalogErr),
 			zap.String("error_id", errorID))
@@ -195,7 +110,7 @@ func (em *ErrorManagerImpl) ProcessError(ctx context.Context, err error, compone
 }
 
 // CatalogError catalogs an error with structured details.
-func (em *ErrorManagerImpl) CatalogError(entry ErrorEntry) error {
+func (em *interfaces.ErrorManagerImpl) CatalogError(entry *interfaces.ErrorEntry) error {
 	em.logger.Error("Error cataloged",
 		zap.String("id", entry.ID),
 		zap.Time("timestamp", entry.Timestamp),
@@ -209,7 +124,7 @@ func (em *ErrorManagerImpl) CatalogError(entry ErrorEntry) error {
 }
 
 // ValidateErrorEntry validates an error entry.
-func (em *ErrorManagerImpl) ValidateErrorEntry(entry ErrorEntry) error {
+func (em *interfaces.ErrorManagerImpl) ValidateErrorEntry(entry *interfaces.ErrorEntry) error {
 	if entry.ID == "" {
 		return fmt.Errorf("ID cannot be empty")
 	}
@@ -233,21 +148,20 @@ func (em *ErrorManagerImpl) ValidateErrorEntry(entry ErrorEntry) error {
 
 // Log writes a message to the log.
 func (m *GoModManager) Log(level, message string) {
-	timestamp := time.Now().Format("2006-01-02 15:04:05")
-	logMessage := fmt.Sprintf("[%s] [%s] %s", timestamp, level, message)
-
-	if logPath, err := m.configManager.GetString("dependency-manager.settings.logPath"); err == nil && logPath != "" {
-		logFile, err := os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-		if err == nil {
-			defer logFile.Close()
-			if _, err := logFile.WriteString(logMessage + "\n"); err != nil {
-				// Log write error, but don't fail the operation
-				fmt.Printf("Warning: failed to write to log file: %v\n", err)
-			}
-		}
+	// This method should ideally be removed and replaced by m.logger directly
+	// For now, it's kept for compatibility with existing code that calls m.Log
+	switch level {
+	case "INFO":
+		m.logger.Info(message)
+	case "WARN":
+		m.logger.Warn(message)
+	case "ERROR":
+		m.logger.Error(message)
+	case "SUCCESS": // Custom level, map to info
+		m.logger.Info(message, zap.String("status", "SUCCESS"))
+	default:
+		m.logger.Debug(message, zap.String("level", level))
 	}
-
-	fmt.Println(logMessage)
 }
 
 // backupGoMod creates a backup of the go.mod file.
@@ -269,12 +183,12 @@ func (m *GoModManager) backupGoMod() error {
 }
 
 // List returns the list of dependencies from go.mod.
-func (m *GoModManager) List() ([]Dependency, error) {
-	m.Log("INFO", "Listing dependencies")
+func (m *GoModManager) List() ([]interfaces.Dependency, error) {
+	m.logger.Info("Listing dependencies")
 	ctx := context.Background()
 	data, err := os.ReadFile(m.modFilePath)
 	if err != nil {
-		return nil, m.errorManager.ProcessError(ctx, fmt.Errorf("failed to read go.mod: %v", err), "go-mod-operation", "read", &ErrorHooks{
+		return nil, m.errorManager.ProcessError(ctx, fmt.Errorf("failed to read go.mod: %v", err), "go-mod-operation", "read", &interfaces.ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to read go.mod file",
 					zap.Error(err),
@@ -286,7 +200,7 @@ func (m *GoModManager) List() ([]Dependency, error) {
 
 	modFile, err := modfile.Parse(m.modFilePath, data, nil)
 	if err != nil {
-		return nil, m.errorManager.ProcessError(ctx, fmt.Errorf("failed to parse go.mod: %v", err), "go-mod-operation", "parse", &ErrorHooks{
+		return nil, m.errorManager.ProcessError(ctx, fmt.Errorf("failed to parse go.mod: %v", err), "go-mod-operation", "parse", &interfaces.ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to parse go.mod file",
 					zap.Error(err),
@@ -296,22 +210,22 @@ func (m *GoModManager) List() ([]Dependency, error) {
 		})
 	}
 
-	var deps []Dependency
+	var deps []interfaces.Dependency
 	for _, req := range modFile.Require {
-		deps = append(deps, Dependency{
+		deps = append(deps, interfaces.Dependency{
 			Name:     req.Mod.Path,
 			Version:  req.Mod.Version,
 			Indirect: req.Indirect,
 		})
 	}
 
-	m.Log("INFO", fmt.Sprintf("Found %d dependencies", len(deps)))
+	m.logger.Info(fmt.Sprintf("Found %d dependencies", len(deps)))
 	return deps, nil
 }
 
 // Add adds a dependency to the project.
 func (m *GoModManager) Add(module, version string) error {
-	m.Log("INFO", fmt.Sprintf("Adding dependency: %s@%s", module, version))
+	m.logger.Info(fmt.Sprintf("Adding dependency: %s@%s", module, version))
 	ctx := context.Background()
 
 	if err := m.backupGoMod(); err != nil {
@@ -326,7 +240,7 @@ func (m *GoModManager) Add(module, version string) error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to add dependency %s: %v", module, err), "dependency-resolution", "add", &ErrorHooks{
+		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to add dependency %s: %v", module, err), "dependency-resolution", "add", &interfaces.ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to add dependency",
 					zap.Error(err),
@@ -345,13 +259,13 @@ func (m *GoModManager) Add(module, version string) error {
 		}
 	}
 
-	m.Log("SUCCESS", fmt.Sprintf("Successfully added %s@%s", module, version))
+	m.logger.Info(fmt.Sprintf("Successfully added %s@%s", module, version))
 	return nil
 }
 
 // Remove removes a dependency from the project.
 func (m *GoModManager) Remove(module string) error {
-	m.Log("INFO", fmt.Sprintf("Removing dependency: %s", module))
+	m.logger.Info(fmt.Sprintf("Removing dependency: %s", module))
 	ctx := context.Background()
 
 	if err := m.backupGoMod(); err != nil {
@@ -364,7 +278,7 @@ func (m *GoModManager) Remove(module string) error {
 
 	data, err := os.ReadFile(m.modFilePath)
 	if err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to read go.mod: %v", err), "go-mod-operation", "read", &ErrorHooks{
+		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to read go.mod: %v", err), "go-mod-operation", "read", &interfaces.ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to read go.mod for dependency removal",
 					zap.Error(err),
@@ -376,7 +290,7 @@ func (m *GoModManager) Remove(module string) error {
 
 	modFile, err := modfile.Parse(m.modFilePath, data, nil)
 	if err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to parse go.mod: %v", err), "go-mod-operation", "parse", &ErrorHooks{
+		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to parse go.mod: %v", err), "go-mod-operation", "parse", &interfaces.ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to parse go.mod for dependency removal",
 					zap.Error(err),
@@ -387,7 +301,7 @@ func (m *GoModManager) Remove(module string) error {
 	}
 
 	if err := modFile.DropRequire(module); err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to drop dependency %s: %v", module, err), "dependency-resolution", "remove", &ErrorHooks{
+		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to drop dependency %s: %v", module, err), "dependency-resolution", "remove", &interfaces.ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to drop dependency from go.mod",
 					zap.Error(err),
@@ -399,7 +313,7 @@ func (m *GoModManager) Remove(module string) error {
 
 	newData, err := modFile.Format()
 	if err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to format go.mod: %v", err), "go-mod-operation", "write", &ErrorHooks{
+		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to format go.mod: %v", err), "go-mod-operation", "write", &interfaces.ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to format go.mod after dependency removal",
 					zap.Error(err),
@@ -409,7 +323,7 @@ func (m *GoModManager) Remove(module string) error {
 	}
 
 	if err := os.WriteFile(m.modFilePath, newData, 0644); err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to write go.mod: %v", err), "go-mod-operation", "write", &ErrorHooks{
+		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to write go.mod: %v", err), "go-mod-operation", "write", &interfaces.ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to write updated go.mod file",
 					zap.Error(err),
@@ -420,7 +334,7 @@ func (m *GoModManager) Remove(module string) error {
 	}
 
 	if err := m.runGoModTidy(); err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to tidy go.mod: %v", err), "go-mod-operation", "tidy", &ErrorHooks{
+		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to tidy go.mod: %v", err), "go-mod-operation", "tidy", &interfaces.ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to run go mod tidy after dependency removal",
 					zap.Error(err),
@@ -429,13 +343,13 @@ func (m *GoModManager) Remove(module string) error {
 		})
 	}
 
-	m.Log("SUCCESS", fmt.Sprintf("Successfully removed %s", module))
+	m.logger.Info(fmt.Sprintf("Successfully removed %s", module))
 	return nil
 }
 
 // Update updates a dependency to the latest version.
 func (m *GoModManager) Update(module string) error {
-	m.Log("INFO", fmt.Sprintf("Updating dependency: %s", module))
+	m.logger.Info(fmt.Sprintf("Updating dependency: %s", module))
 	ctx := context.Background()
 
 	if err := m.backupGoMod(); err != nil {
@@ -449,7 +363,7 @@ func (m *GoModManager) Update(module string) error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to update dependency %s: %v", module, err), "dependency-resolution", "update", &ErrorHooks{
+		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to update dependency %s: %v", module, err), "dependency-resolution", "update", &interfaces.ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to update dependency",
 					zap.Error(err),
@@ -466,19 +380,19 @@ func (m *GoModManager) Update(module string) error {
 		}
 	}
 
-	m.Log("SUCCESS", fmt.Sprintf("Successfully updated %s", module))
+	m.logger.Info(fmt.Sprintf("Successfully updated %s", module))
 	return nil
 }
 
 // Audit checks for dependency vulnerabilities.
 func (m *GoModManager) Audit() error {
-	m.Log("INFO", "Running security audit")
+	m.logger.Info("Running security audit")
 	ctx := context.Background()
 
 	cmd := exec.Command("go", "list", "-json", "-m", "all")
 	output, err := cmd.Output()
 	if err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to audit dependencies: %v", err), "vulnerability-scan", "audit", &ErrorHooks{
+		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to audit dependencies: %v", err), "vulnerability-scan", "audit", &interfaces.ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to run dependency audit",
 					zap.Error(err),
@@ -490,7 +404,7 @@ func (m *GoModManager) Audit() error {
 
 	m.logger.Info("Audit completed - consider running 'govulncheck' for detailed security analysis",
 		zap.Int("modules_count", strings.Count(string(output), "}")))
-	m.Log("INFO", "Audit completed - consider running 'govulncheck' for detailed security analysis")
+	m.logger.Info("Audit completed - consider running 'govulncheck' for detailed security analysis")
 	fmt.Println(string(output))
 
 	return nil
@@ -498,7 +412,7 @@ func (m *GoModManager) Audit() error {
 
 // Cleanup removes unused dependencies.
 func (m *GoModManager) Cleanup() error {
-	m.Log("INFO", "Cleaning up unused dependencies")
+	m.logger.Info("Cleaning up unused dependencies")
 	ctx := context.Background()
 
 	if err := m.backupGoMod(); err != nil {
@@ -508,7 +422,7 @@ func (m *GoModManager) Cleanup() error {
 	}
 
 	if err := m.runGoModTidy(); err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to cleanup dependencies: %v", err), "go-mod-operation", "cleanup", &ErrorHooks{
+		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to cleanup dependencies: %v", err), "go-mod-operation", "cleanup", &interfaces.ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to cleanup unused dependencies",
 					zap.Error(err),
@@ -518,7 +432,7 @@ func (m *GoModManager) Cleanup() error {
 	}
 
 	m.logger.Info("Successfully cleaned up unused dependencies")
-	m.Log("SUCCESS", "Successfully cleansed unused dependencies")
+	m.logger.Info("Successfully cleansed unused dependencies")
 	return nil
 }
 
@@ -533,7 +447,7 @@ func (m *GoModManager) runGoModTidy() error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to execute go mod tidy: %v", err), "dependency-cleanup", "tidy", &ErrorHooks{
+		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to execute go mod tidy: %v", err), "dependency-cleanup", "tidy", &interfaces.ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to execute go mod tidy",
 					zap.Error(err),
@@ -547,7 +461,7 @@ func (m *GoModManager) runGoModTidy() error {
 }
 
 // loadConfig loads configuration from a JSON file with fallback.
-func loadConfig(configPath string) (*Config, error) {
+func loadConfig(configPath string) (*interfaces.Config, error) {
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		fmt.Printf("Configuration file not found at %s, using defaults\n", configPath)
 		return getDefaultConfig(), nil
@@ -559,7 +473,7 @@ func loadConfig(configPath string) (*Config, error) {
 		return getDefaultConfig(), nil
 	}
 
-	var config Config
+	var config interfaces.Config
 	if err := json.Unmarshal(data, &config); err != nil {
 		fmt.Printf("Warning: Failed to parse config JSON %s: %v. Using defaults.\n", configPath, err)
 		return getDefaultConfig(), nil
@@ -575,18 +489,11 @@ func loadConfig(configPath string) (*Config, error) {
 }
 
 // getDefaultConfig returns a default configuration.
-func getDefaultConfig() *Config {
-	return &Config{
+func getDefaultConfig() *interfaces.Config {
+	return &interfaces.Config{
 		Name:    "dependency-manager",
 		Version: "1.0.0",
-		Settings: struct {
-			LogPath            string `json:"logPath"`
-			LogLevel           string `json:"logLevel"`
-			GoModPath          string `json:"goModPath"`
-			AutoTidy           bool   `json:"autoTidy"`
-			VulnerabilityCheck bool   `json:"vulnerabilityCheck"`
-			BackupOnChange     bool   `json:"backupOnChange"`
-		}{
+		Settings: interfaces.ConfigSettings{
 			LogPath:            "logs/dependency-manager.log",
 			LogLevel:           "info",
 			GoModPath:          "go.mod", // Default path to go.mod
@@ -598,7 +505,7 @@ func getDefaultConfig() *Config {
 }
 
 // validateConfig validates the loaded configuration.
-func validateConfig(config *Config) error {
+func validateConfig(config *interfaces.Config) error {
 	if config.Name == "" {
 		return fmt.Errorf("config name cannot be empty")
 	}
@@ -1002,18 +909,17 @@ type DepConfigManagerImpl struct {
 	defaults     map[string]interface{}
 	requiredKeys []string
 	logger       *zap.Logger
-	errorManager ErrorManager
-	config       *Config
+	errorManager interfaces.ErrorManager
+	config       *interfaces.Config
 }
 
 // NewDepConfigManager creates a ConfigManager instance.
-func NewDepConfigManager(config *Config, logger *zap.Logger, errorManager ErrorManager) ConfigManager {
+func NewDepConfigManager(config *interfaces.Config, logger *zap.Logger) interfaces.ConfigManager {
 	cm := &DepConfigManagerImpl{
 		settings:     make(map[string]interface{}),
 		defaults:     make(map[string]interface{}),
 		requiredKeys: []string{},
 		logger:       logger,
-		errorManager: errorManager,
 		config:       config,
 	}
 	if config != nil {
@@ -1023,7 +929,7 @@ func NewDepConfigManager(config *Config, logger *zap.Logger, errorManager ErrorM
 }
 
 // initializeFromLegacyConfig initializes ConfigManager from Config struct.
-func (cm *DepConfigManagerImpl) initializeFromLegacyConfig(config *Config) {
+func (cm *DepConfigManagerImpl) initializeFromLegacyConfig(config *interfaces.Config) {
 	prefix := "dependency-manager."
 	cm.settings[prefix+"name"] = config.Name
 	cm.settings[prefix+"version"] = config.Version
@@ -1039,13 +945,13 @@ func (cm *DepConfigManagerImpl) initializeFromLegacyConfig(config *Config) {
 func (cm *DepConfigManagerImpl) GetString(key string) (string, error) {
 	if val, exists := cm.settings[key]; exists {
 		if str, ok := val.(string); ok {
-			return str, nil
+			return str
 		}
 		return fmt.Sprintf("%v", val), nil
 	}
 	if val, exists := cm.defaults[key]; exists {
 		if str, ok := val.(string); ok {
-			return str, nil
+			return str
 		}
 		return fmt.Sprintf("%v", val), nil
 	}
@@ -1071,13 +977,13 @@ func (cm *DepConfigManagerImpl) GetInt(key string) (int, error) {
 func (cm *DepConfigManagerImpl) GetBool(key string) (bool, error) {
 	if val, exists := cm.settings[key]; exists {
 		if b, ok := val.(bool); ok {
-			return b, nil
+			return b
 		}
 		return false, fmt.Errorf("value is not a bool: %s", key)
 	}
 	if val, exists := cm.defaults[key]; exists {
 		if b, ok := val.(bool); ok {
-			return b, nil
+			return b
 		}
 		return false, fmt.Errorf("default value is not a bool: %s", key)
 	}
@@ -1173,7 +1079,7 @@ func (cm *DepConfigManagerImpl) Cleanup() error {
 	return nil
 }
 
-func (cm *DepConfigManagerImpl) GetErrorManager() ErrorManager {
+func (cm *DepConfigManagerImpl) GetErrorManager() interfaces.ErrorManager {
 	return cm.errorManager
 }
 
@@ -1181,455 +1087,10 @@ func (cm *DepConfigManagerImpl) GetLogger() *zap.Logger {
 	return cm.logger
 }
 
-// Phase 4.1.1.1: Extension pour vectorisation
-// VectorizationSupport interface pour l'auto-vectorisation des dépendances
-type VectorizationSupport interface {
-	// OnDependencyAdded vectorise automatiquement une nouvelle dépendance
-	OnDependencyAdded(ctx context.Context, dep *Dependency) error
-	
-	// OnDependencyUpdated vectorise les changements de dépendance
-	OnDependencyUpdated(ctx context.Context, dep *Dependency, oldVersion string) error
-	
-	// OnDependencyRemoved supprime les vecteurs de dépendance
-	OnDependencyRemoved(ctx context.Context, depName string) error
-	
-	// SearchSimilarDependencies trouve des dépendances similaires
-	SearchSimilarDependencies(ctx context.Context, description string) ([]Dependency, error)
-}
-
-// VectorizationEngine interface pour la génération d'embeddings
-type VectorizationEngine interface {
-	GenerateEmbedding(ctx context.Context, text string) ([]float32, error)
-	BatchGenerateEmbeddings(ctx context.Context, texts []string) ([][]float32, error)
-}
-
-// QdrantInterface interface pour les opérations Qdrant
-type QdrantInterface interface {
-	UpsertPoints(ctx context.Context, collection string, points []Point) error
-	SearchPoints(ctx context.Context, collection string, req SearchRequest) (*SearchResponse, error)
-	DeletePoints(ctx context.Context, collection string, ids []interface{}) error
-}
-
-// Point représente un point vectoriel dans Qdrant
-type Point struct {
-	ID      interface{}            `json:"id"`
-	Vector  []float32              `json:"vector"`
-	Payload map[string]interface{} `json:"payload"`
-}
-
-// SearchRequest pour la recherche vectorielle
-type SearchRequest struct {
-	Vector []float32   `json:"vector"`
-	Limit  int         `json:"limit"`
-	Filter interface{} `json:"filter,omitempty"`
-}
-
-// SearchResponse pour les résultats de recherche
-type SearchResponse struct {
-	Result []Point `json:"result"`
-}
-
-// Advanced Integration Methods for Section 3.1
-
-// SetSecurityManager configures SecurityManager integration
-func (m *GoModManager) SetSecurityManager(sm SecurityManagerInterface) {
-	m.managerIntegrator.SetSecurityManager(sm)
-	m.logger.Info("SecurityManager integration configured for DependencyManager")
-}
-
-// SetMonitoringManager configures MonitoringManager integration
-func (m *GoModManager) SetMonitoringManager(mm MonitoringManagerInterface) {
-	m.managerIntegrator.SetMonitoringManager(mm)
-	m.logger.Info("MonitoringManager integration configured for DependencyManager")
-}
-
-// SetStorageManager configures StorageManager integration
-func (m *GoModManager) SetStorageManager(sm StorageManagerInterface) {
-	m.managerIntegrator.SetStorageManager(sm)
-	m.logger.Info("StorageManager integration configured for DependencyManager")
-}
-
-// SetContainerManager configures ContainerManager integration
-func (m *GoModManager) SetContainerManager(cm ContainerManagerInterface) {
-	m.managerIntegrator.SetContainerManager(cm)
-	m.logger.Info("ContainerManager integration configured for DependencyManager")
-}
-
-// SetDeploymentManager configures DeploymentManager integration
-func (m *GoModManager) SetDeploymentManager(dm DeploymentManagerInterface) {
-	m.managerIntegrator.SetDeploymentManager(dm)
-	m.logger.Info("DeploymentManager integration configured for DependencyManager")
-}
-
-// AuditWithSecurityManager performs enhanced security audit using SecurityManager
-func (m *GoModManager) AuditWithSecurityManager() error {
-	m.Log("INFO", "Running enhanced security audit with SecurityManager")
-	ctx := context.Background()
-
-	// Get current dependencies
-	dependencies, err := m.List()
-	if err != nil {
-		return m.errorManager.ProcessError(ctx, err, "dependency-list", "audit_with_security", nil)
-	}
-
-	// Perform security audit through ManagerIntegrator
-	auditResult, err := m.managerIntegrator.SecurityAuditWithManager(ctx, dependencies)
-	if err != nil {
-		return m.errorManager.ProcessError(ctx, err, "SecurityManager", "security_audit", &ErrorHooks{
-			OnError: func(err error) {
-				m.logger.Error("Enhanced security audit failed",
-					zap.Error(err),
-					zap.Int("dependencies_count", len(dependencies)))
-			},
-		})
-	}
-
-	// Log audit results
-	if auditResult != nil { // Check if auditResult is not nil
-		// auditResult is now *interfaces.VulnerabilityReport
-		totalVulnerabilitiesFromReport := auditResult.CriticalCount + auditResult.HighCount + auditResult.MediumCount + auditResult.LowCount
-
-		m.logger.Info("Enhanced security audit completed",
-			zap.Int("total_scanned", auditResult.TotalScanned),
-			zap.Int("total_vulnerabilities_found", totalVulnerabilitiesFromReport),
-			zap.Int("critical_vulnerabilities", auditResult.CriticalCount),
-			zap.Int("high_vulnerabilities", auditResult.HighCount),
-			zap.Int("medium_vulnerabilities", auditResult.MediumCount),
-			zap.Int("low_vulnerabilities", auditResult.LowCount),
-			zap.Time("audit_timestamp", auditResult.Timestamp))
-
-		// Persist audit results
-		if m.managerIntegrator != nil {
-			if err := m.managerIntegrator.PersistDependencyMetadata(ctx, dependencies); err != nil {
-				m.logger.Warn("Failed to persist dependency metadata after audit", zap.Error(err))
-			}
-		} else {
-			m.logger.Warn("ManagerIntegrator not initialized, cannot persist metadata after audit")
-		}
-
-		m.Log("info", fmt.Sprintf("Enhanced security audit completed - %d dependencies scanned, %d total vulnerabilities found (C:%d H:%d M:%d L:%d)",
-			auditResult.TotalScanned, totalVulnerabilitiesFromReport, auditResult.CriticalCount, auditResult.HighCount, auditResult.MediumCount, auditResult.LowCount))
-	} else {
-		m.logger.Error("Security audit result was nil")
-		m.Log("error", "Security audit failed to produce a result")
-	}
-	return nil
-}
-
-// AddWithMonitoring adds a dependency with performance monitoring
-func (m *GoModManager) AddWithMonitoring(module, version string) error {
-	m.Log("INFO", fmt.Sprintf("Adding dependency with monitoring: %s@%s", module, version))
-	ctx := context.Background()
-
-	// Monitor the add operation performance
-	err := m.managerIntegrator.MonitorOperationPerformance(ctx, "add_dependency", func() error {
-		return m.Add(module, version)
-	})
-
-	if err != nil {
-		return m.errorManager.ProcessError(ctx, err, "dependency-add", "add_with_monitoring", &ErrorHooks{
-			OnError: func(err error) {
-				m.logger.Error("Monitored dependency addition failed",
-					zap.Error(err),
-					zap.String("module", module),
-					zap.String("version", version))
-			},
-		})
-	}
-
-	// Persist dependency metadata
-	dependencies := []Dependency{{Name: module, Version: version}} // Create a slice for Persist
-	if m.managerIntegrator != nil { // Ensure integrator exists
-		if err := m.managerIntegrator.PersistDependencyMetadata(ctx, dependencies); err != nil {
-			m.logger.Warn("Failed to persist dependency metadata after addition",
-				zap.Error(err),
-				zap.String("module", module))
-		}
-	} else {
-		m.logger.Warn("ManagerIntegrator not initialized, cannot persist metadata after addition")
-	}
-
-	m.Log("SUCCESS", fmt.Sprintf("Successfully added and monitored %s@%s", module, version))
-	return nil
-}
-
-// UpdateWithMonitoring updates a dependency with performance monitoring
-func (m *GoModManager) UpdateWithMonitoring(module string) error {
-	m.Log("INFO", fmt.Sprintf("Updating dependency with monitoring: %s", module))
-	ctx := context.Background()
-
-	// Monitor the update operation performance
-	err := m.managerIntegrator.MonitorOperationPerformance(ctx, "update_dependency", func() error {
-		return m.Update(module)
-	})
-
-	if err != nil {
-		return m.errorManager.ProcessError(ctx, err, "dependency-update", "update_with_monitoring", &ErrorHooks{
-			OnError: func(err error) {
-				m.logger.Error("Monitored dependency update failed",
-					zap.Error(err),
-					zap.String("module", module))
-			},
-		})
-	}
-
-	m.Log("SUCCESS", fmt.Sprintf("Successfully updated and monitored %s", module))
-	return nil
-}
-
-// ValidateForContainerDeployment validates dependencies for container deployment
-func (m *GoModManager) ValidateForContainerDeployment() error {
-	m.Log("INFO", "Validating dependencies for container deployment")
-	ctx := context.Background()
-
-	// Get current dependencies
-	dependencies, err := m.List()
-	if err != nil {
-		return m.errorManager.ProcessError(ctx, err, "dependency-list", "container_validation", nil)
-	}
-
-	// Validate container compatibility
-	_, err = m.managerIntegrator.ValidateContainerCompatibility(ctx, dependencies)
-	if err != nil {
-		return m.errorManager.ProcessError(ctx, err, "ContainerManager", "validate_compatibility", &ErrorHooks{
-			OnError: func(err error) {
-				m.logger.Error("Container compatibility validation failed",
-					zap.Error(err),
-					zap.Int("dependencies_count", len(dependencies)))
-			},
-		})
-	}
-
-	m.Log("SUCCESS", "Dependencies validated for container deployment")
-	return nil
-}
-
-// CheckDeploymentReadiness checks if dependencies are ready for deployment
-func (m *GoModManager) CheckDeploymentReadiness(environment string) error {
-	m.Log("INFO", fmt.Sprintf("Checking deployment readiness for environment: %s", environment))
-	ctx := context.Background()
-
-	// Get current dependencies
-	dependencies, err := m.List()
-	if err != nil {
-		return m.errorManager.ProcessError(ctx, err, "dependency-list", "deployment_readiness", nil)
-	}
-
-	// Check deployment readiness
-	_, err = m.managerIntegrator.CheckDeploymentReadiness(ctx, dependencies, environment)
-	if err != nil {
-		return m.errorManager.ProcessError(ctx, err, "DeploymentManager", "check_readiness", &ErrorHooks{
-			OnError: func(err error) {
-				m.logger.Error("Deployment readiness check failed",
-					zap.Error(err),
-					zap.String("environment", environment),
-					zap.Int("dependencies_count", len(dependencies)))
-			},
-		})
-	}
-
-	m.Log("SUCCESS", fmt.Sprintf("Dependencies ready for deployment to %s environment", environment))
-	return nil
-}
-
-// PerformHealthCheck checks health of all integrated managers
-func (m *GoModManager) PerformHealthCheck() error {
-	m.Log("info", "Performing integration health check") // Corrected log level
-	ctx := context.Background()
-
-	status, err := m.managerIntegrator.PerformHealthCheck(ctx) // Corrected method name
-	if err != nil {
-		return m.errorManager.ProcessError(ctx, err, "ManagerIntegrator", "health_check", &ErrorHooks{
-			OnError: func(err error) {
-				m.logger.Error("Integration health check failed", zap.Error(err))
-			},
-		})
-	}
-
-	// Log detailed health status
-	for managerName, health := range status.Managers {
-		m.logger.Info("Manager health status",
-			zap.String("manager", managerName),
-			zap.String("status", health))
-	}
-
-	m.logger.Info("Integration health check completed",
-		zap.String("overall_status", status.Overall),
-		zap.Time("last_checked", status.LastChecked), // Corrected Timestamp to LastChecked
-		zap.Int("managers_checked", len(status.Managers)))
-
-	m.Log("info", fmt.Sprintf("Integration health check completed - Overall status: %s", status.Overall)) // Corrected log level
-	return nil
-}
-
-// ListWithEnhancedMetadata lists dependencies with enhanced metadata from StorageManager
-func (m *GoModManager) ListWithEnhancedMetadata() ([]interfaces.DependencyMetadata, error) {
-	m.Log("INFO", "Listing dependencies with enhanced metadata")
-	ctx := context.Background()
-
-	dependencies, err := m.List() // Returns []Dependency
-	if err != nil {
-		return nil, m.errorManager.ProcessError(ctx, err, "dependency-list", "enhanced_metadata_list", nil)
-	}
-
-	var enhancedDependencies []interfaces.DependencyMetadata
-	if m.managerIntegrator == nil || m.managerIntegrator.storageManager == nil {
-		m.logger.Warn("StorageManager not available, returning basic metadata")
-		for _, dep := range dependencies {
-			enhancedDependencies = append(enhancedDependencies, interfaces.DependencyMetadata{
-				Name:       dep.Name,
-				Version:    dep.Version,
-				Repository: dep.Repository,
-				License:    dep.License,
-				Tags:       map[string]string{"source": "go-mod", "type": "basic"},
-			})
-		}
-		return enhancedDependencies, nil
-	}
-
-	for _, dep := range dependencies {
-		metadata, err := m.managerIntegrator.storageManager.GetDependencyMetadata(ctx, dep.Name) // Corrected method name
-		if err != nil {
-			m.logger.Warn("Failed to get enhanced metadata, using basic", zap.String("dependency", dep.Name), zap.Error(err))
-			enhancedDependencies = append(enhancedDependencies, interfaces.DependencyMetadata{
-				Name:        dep.Name,
-				Version:     dep.Version,
-				Repository:  dep.Repository,
-				License:     dep.License,
-				LastUpdated: time.Now(),
-				Tags:        map[string]string{"source": "go-mod", "type": "fallback"},
-			})
-		} else if metadata != nil { // Ensure metadata is not nil before appending
-			enhancedDependencies = append(enhancedDependencies, *metadata) // Corrected: dereference pointer
-		} else {
-            // Handle case where metadata is nil but error is also nil (if possible by interface)
-             m.logger.Warn("Enhanced metadata was nil but no error reported, using basic", zap.String("dependency", dep.Name))
-             enhancedDependencies = append(enhancedDependencies, interfaces.DependencyMetadata{
-                Name:        dep.Name,
-                Version:     dep.Version,
-                Repository:  dep.Repository,
-                License:     dep.License,
-                LastUpdated: time.Now(),
-                Tags:        map[string]string{"source": "go-mod", "type": "nil_fallback"},
-            })
-        }
-	}
-	m.logger.Info("Enhanced dependency metadata retrieved", zap.Int("count", len(enhancedDependencies)))
-	return enhancedDependencies, nil
-}
-
-// SyncDependencyMetadata synchronizes dependency metadata with StorageManager
-func (m *GoModManager) SyncDependencyMetadata() error {
-	m.Log("INFO", "Synchronizing dependency metadata with StorageManager")
-	ctx := context.Background()
-
-	dependencies, err := m.List() // Returns []Dependency
-	if err != nil {
-		return m.errorManager.ProcessError(ctx, err, "dependency-list", "sync_metadata_list", nil)
-	}
-
-	if m.managerIntegrator == nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("manager integrator not initialized"), "ManagerIntegrator", "sync_metadata_integrator_check", nil)
-	}
-
-	// Pass the original []Dependency slice directly
-	if err := m.managerIntegrator.PersistDependencyMetadata(ctx, dependencies); err != nil {
-		return m.errorManager.ProcessError(ctx, err, "StorageManager", "sync_metadata_persist", &ErrorHooks{
-			OnError: func(err error) {
-				m.logger.Error("Failed to sync dependency metadata", zap.Error(err), zap.Int("dependencies_count", len(dependencies)))
-			},
-		})
-	}
-
-	m.Log("SUCCESS", fmt.Sprintf("Successfully synchronized metadata for %d dependencies", len(dependencies)))
-	return nil
-}
-
-// EnableRealManagerIntegration enables real manager integration mode
-func (m *GoModManager) EnableRealManagerIntegration(ctx context.Context) error {
-	m.Log("INFO", "Enabling real manager integration mode")
-
-	err := m.managerIntegrator.EnableRealManagers(ctx)
-	if err != nil {
-		return m.errorManager.ProcessError(ctx, err, "ManagerIntegrator", "enable_real_managers", &ErrorHooks{
-			OnError: func(err error) {
-				m.logger.Error("Failed to enable real manager integration", zap.Error(err))
-			},
-		})
-	}
-
-	m.Log("SUCCESS", "Real manager integration mode enabled successfully")
-	return nil
-}
-
-// GetIntegrationStatus returns the current status of all integrated managers.
-func (m *GoModManager) GetIntegrationStatus(ctx context.Context) (*interfaces.IntegrationHealthStatus, error) { // Ensure it uses interfaces.IntegrationHealthStatus
-	if m.managerIntegrator == nil {
-		return nil, fmt.Errorf("ManagerIntegrator not initialized")
-	}
-	// PerformHealthCheck now returns (*interfaces.IntegrationHealthStatus, error)
-	return m.managerIntegrator.PerformHealthCheck(ctx)
-}
-
-// InitializeAllManagers initializes all manager integrations
-func (m *GoModManager) InitializeAllManagers(ctx context.Context) error {
-	m.Log("INFO", "Initializing all manager integrations")
-
-	if m.managerIntegrator == nil {
-		return fmt.Errorf("manager integrator not initialized")
-	}
-
-	// Delegate to the manager integrator's initialization
-	if err := m.managerIntegrator.InitializeAllManagers(ctx); err != nil {
-		return m.errorManager.ProcessError(ctx, err, "ManagerIntegrator", "initialize_all", &ErrorHooks{
-			OnError: func(err error) {
-				m.logger.Error("Failed to initialize all managers", zap.Error(err))
-			},
-		})
-	}
-
-	m.Log("INFO", "All manager integrations initialized successfully")
-	return nil
-}
-
-// Placeholder methods for GoModManager based on original problem description
-func (m *GoModManager) initializeDependencyGraph() error {
-	m.logger.Info("initializeDependencyGraph called - STUB")
-	// TODO: Implement actual logic
-	return nil
-}
-
-func (m *GoModManager) loadExistingMetadata() error {
-	m.logger.Info("loadExistingMetadata called - STUB")
-	// TODO: Implement actual logic
-	return nil
-}
-
-func (m *GoModManager) saveCache() error {
-	m.logger.Info("saveCache called - STUB")
-	// TODO: Implement actual logic
-	return nil
-}
-
-func (m *GoModManager) checkRegistryHealth() error {
-	m.logger.Info("checkRegistryHealth called - STUB")
-	// TODO: Implement actual logic
-	return nil
-}
-
-// DetectConflicts for GoModManager - assuming it might be needed here as well,
-// or if GoModManager is the one truly implementing an external DependencyManager interface.
-func (m *GoModManager) DetectConflicts(ctx context.Context) ([]interfaces.DependencyConflict, error) {
-	m.logger.Info("DetectConflicts called on GoModManager - STUB")
-	// TODO: Implement actual conflict detection logic for GoModManager
-	return nil, nil
-}
-
-// === PHASE 4.1.1: IMPLÉMENTATION DE VECTORIZATIONSUPPORT ===
-
+// Phase 4.1.1: Extension pour vectorisation
 // OnDependencyAdded implements VectorizationSupport interface
 // Micro-étape 4.1.1.1.2: Implémenter auto-vectorisation des dépendances ajoutées
-func (m *GoModManager) OnDependencyAdded(ctx context.Context, dep *Dependency) error {
+func (m *GoModManager) OnDependencyAdded(ctx context.Context, dep *interfaces.Dependency) error {
 	if !m.vectorizationEnabled || m.vectorizer == nil || m.qdrant == nil {
 		m.logger.Debug("Vectorization disabled or not configured", 
 			zap.String("dependency", dep.Name))
@@ -1653,7 +1114,7 @@ func (m *GoModManager) OnDependencyAdded(ctx context.Context, dep *Dependency) e
 	}
 
 	// Créer le point vectoriel
-	point := Point{
+	point := interfaces.Point{
 		ID:     dep.Name,
 		Vector: embedding,
 		Payload: map[string]interface{}{
@@ -1670,7 +1131,7 @@ func (m *GoModManager) OnDependencyAdded(ctx context.Context, dep *Dependency) e
 	}
 
 	// Stocker dans Qdrant
-	err = m.qdrant.UpsertPoints(ctx, "dependencies", []Point{point})
+	err = m.qdrant.UpsertPoints(ctx, "dependencies", []interfaces.Point{point})
 	if err != nil {
 		m.logger.Error("Failed to store dependency vector",
 			zap.String("dependency", dep.Name),
@@ -1694,7 +1155,7 @@ func (m *GoModManager) OnDependencyAdded(ctx context.Context, dep *Dependency) e
 }
 
 // OnDependencyUpdated vectorise les changements de dépendance
-func (m *GoModManager) OnDependencyUpdated(ctx context.Context, dep *Dependency, oldVersion string) error {
+func (m *GoModManager) OnDependencyUpdated(ctx context.Context, dep *interfaces.Dependency, oldVersion string) error {
 	if !m.vectorizationEnabled || m.vectorizer == nil || m.qdrant == nil {
 		return nil
 	}
@@ -1715,7 +1176,7 @@ func (m *GoModManager) OnDependencyUpdated(ctx context.Context, dep *Dependency,
 	}
 
 	// Mettre à jour le point vectoriel
-	point := Point{
+	point := interfaces.Point{
 		ID:     dep.Name,
 		Vector: embedding,
 		Payload: map[string]interface{}{
@@ -1732,7 +1193,7 @@ func (m *GoModManager) OnDependencyUpdated(ctx context.Context, dep *Dependency,
 		},
 	}
 
-	err = m.qdrant.UpsertPoints(ctx, "dependencies", []Point{point})
+	err = m.qdrant.UpsertPoints(ctx, "dependencies", []interfaces.Point{point})
 	if err != nil {
 		return err
 	}
@@ -1771,7 +1232,7 @@ func (m *GoModManager) OnDependencyRemoved(ctx context.Context, depName string) 
 }
 
 // SearchSimilarDependencies trouve des dépendances similaires
-func (m *GoModManager) SearchSimilarDependencies(ctx context.Context, description string) ([]Dependency, error) {
+func (m *GoModManager) SearchSimilarDependencies(ctx context.Context, description string) ([]interfaces.Dependency, error) {
 	if !m.vectorizationEnabled || m.vectorizer == nil || m.qdrant == nil {
 		return nil, fmt.Errorf("vectorization not enabled or configured")
 	}
@@ -1783,7 +1244,7 @@ func (m *GoModManager) SearchSimilarDependencies(ctx context.Context, descriptio
 	}
 
 	// Rechercher dans Qdrant
-	searchReq := SearchRequest{
+	searchReq := interfaces.SearchRequest{
 		Vector: embedding,
 		Limit:  10,
 		Filter: map[string]interface{}{
@@ -1797,10 +1258,10 @@ func (m *GoModManager) SearchSimilarDependencies(ctx context.Context, descriptio
 	}
 
 	// Convertir les résultats en dépendances
-	var dependencies []Dependency
+	var dependencies []interfaces.Dependency
 	for _, point := range results.Result {
 		if payload := point.Payload; payload != nil {
-			dep := Dependency{
+			dep := interfaces.Dependency{
 				Name:       getStringFromPayload(payload, "name"),
 				Version:    getStringFromPayload(payload, "version"),
 				Indirect:   getBoolFromPayload(payload, "indirect"),
@@ -1817,7 +1278,7 @@ func (m *GoModManager) SearchSimilarDependencies(ctx context.Context, descriptio
 // === MÉTHODES UTILITAIRES POUR LA VECTORISATION ===
 
 // buildDependencyDescription construit une description textuelle pour une dépendance
-func (m *GoModManager) buildDependencyDescription(dep *Dependency) string {
+func (m *GoModManager) buildDependencyDescription(dep *interfaces.Dependency) string {
 	var parts []string
 	
 	parts = append(parts, fmt.Sprintf("Dependency: %s", dep.Name))
@@ -1874,7 +1335,7 @@ func getBoolFromPayload(payload map[string]interface{}, key string) bool {
 }
 
 // EnableVectorization active les capacités de vectorisation
-func (m *GoModManager) EnableVectorization(vectorizer VectorizationEngine, qdrant QdrantInterface) {
+func (m *GoModManager) EnableVectorization(vectorizer interfaces.VectorizationEngine, qdrant interfaces.QdrantInterface) {
 	m.vectorizer = vectorizer
 	m.qdrant = qdrant
 	m.vectorizationEnabled = true

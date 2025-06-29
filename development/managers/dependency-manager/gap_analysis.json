@@ -1,0 +1,7 @@
+{
+  "duplications": [],
+  "incoherences": [],
+  "broken_imports": [],
+  "multiple_packages": [],
+  "summary": "Aucune duplication, incohérence, import cassé ou package multiple détecté dans les fichiers principaux du manager de dépendances. Tous les types, interfaces et méthodes sont centralisés dans manager_interfaces.go. Les imports sont qualifiés et cohérents. La structure respecte la granularité attendue."
+}

@@ -1,34 +1,37 @@
-package main
+package interfaces
 
 import (
 	"context"
 	"time"
 
-	"./interfaces"
+	"go.uber.org/zap"
 )
 
 // SecurityManagerInterface defines the interface for SecurityManager integration
 type SecurityManagerInterface interface {
-	ScanDependenciesForVulnerabilities(ctx context.Context, deps []Dependency) (*interfaces.VulnerabilityReport, error)
+	ScanDependenciesForVulnerabilities(ctx context.Context, deps []Dependency) (*VulnerabilityReport, error)
 	ValidateAPIKeyAccess(ctx context.Context, key string) (bool, error)
 	HealthCheck(ctx context.Context) error
+	GetSecret(key string) (string, error)
+	EncryptData(data []byte) ([]byte, error)
+	DecryptData(encryptedData []byte) ([]byte, error)
 }
 
 // MonitoringManagerInterface defines the interface for MonitoringManager integration
 type MonitoringManagerInterface interface {
-	StartOperationMonitoring(ctx context.Context, operationName string) (*interfaces.OperationMetrics, error)
-	StopOperationMonitoring(ctx context.Context, metrics *interfaces.OperationMetrics) error // Changed from RecordOperationMetrics for consistency if Stop is more apt
-	CheckSystemHealth(ctx context.Context) (*interfaces.SystemMetrics, error) // Changed from local HealthStatus to interfaces.SystemMetrics
-	ConfigureAlerts(ctx context.Context, config *AlertConfig) error // AlertConfig remains local as it's specific to this module's alerting config structure
+	StartOperationMonitoring(ctx context.Context, operationName string) (*OperationMetrics, error)
+	StopOperationMonitoring(ctx context.Context, metrics *OperationMetrics) error // Changed from RecordOperationMetrics for consistency if Stop is more apt
+	CheckSystemHealth(ctx context.Context) (*SystemMetrics, error)                // Changed from local HealthStatus to SystemMetrics
+	ConfigureAlerts(ctx context.Context, config *AlertConfig) error               // AlertConfig remains local as it's specific to this module's alerting config structure
 	HealthCheck(ctx context.Context) error
-	CollectMetrics(ctx context.Context) (*interfaces.SystemMetrics, error)
+	CollectMetrics(ctx context.Context) (*SystemMetrics, error)
 }
 
 // StorageManagerInterface defines the interface for StorageManager integration
 type StorageManagerInterface interface {
-	SaveDependencyMetadata(ctx context.Context, metadata *interfaces.DependencyMetadata) error
-	GetDependencyMetadata(ctx context.Context, name string) (*interfaces.DependencyMetadata, error)
-	QueryDependencies(ctx context.Context, query *DependencyQuery) ([]*interfaces.DependencyMetadata, error) // DependencyQuery remains local
+	SaveDependencyMetadata(ctx context.Context, metadata *DependencyMetadata) error
+	GetDependencyMetadata(ctx context.Context, name string) (*DependencyMetadata, error)
+	QueryDependencies(ctx context.Context, query *DependencyQuery) ([]*DependencyMetadata, error) // DependencyQuery remains local
 	HealthCheck(ctx context.Context) error
 	StoreObject(ctx context.Context, key string, data interface{}) error
 	GetObject(ctx context.Context, key string, target interface{}) error
@@ -39,17 +42,23 @@ type StorageManagerInterface interface {
 // ContainerManagerInterface defines the interface for ContainerManager integration
 type ContainerManagerInterface interface {
 	ValidateForContainerization(ctx context.Context, deps []Dependency) (*ContainerValidationResult, error) // ContainerValidationResult is local
-	OptimizeForContainer(ctx context.Context, deps []Dependency) (*ContainerOptimization, error)       // ContainerOptimization is local
+	OptimizeForContainer(ctx context.Context, deps []Dependency) (*ContainerOptimization, error)            // ContainerOptimization is local
 	HealthCheck(ctx context.Context) error
+	GetContainerDependencies(ctx context.Context, containerID string) ([]*ContainerDependency, error)
+	ValidateContainerCompatibility(ctx context.Context, dependencies []Dependency) error
+	BuildDependencyImage(ctx context.Context, config *ImageBuildConfig) error
 }
 
 // DeploymentManagerInterface defines the interface for DeploymentManager integration
 type DeploymentManagerInterface interface {
-	CheckDeploymentReadiness(ctx context.Context, deps []Dependency, env string) (*interfaces.DeploymentReadiness, error) // Changed to interfaces.DeploymentReadiness
-	GenerateDeploymentPlan(ctx context.Context, deps []Dependency, env string) (*DeploymentPlan, error)       // DeploymentPlan is local
+	CheckDeploymentReadiness(ctx context.Context, deps []Dependency, env string) (*DeploymentReadiness, error) // Changed to DeploymentReadiness
+	GenerateDeploymentPlan(ctx context.Context, deps []Dependency, env string) (*DeploymentPlan, error)        // DeploymentPlan is local
 	HealthCheck(ctx context.Context) error
-	CheckDependencyCompatibility(ctx context.Context, deps []*interfaces.DependencyMetadata, targetPlatform string) (*interfaces.DeploymentReadiness, error) // Changed param and return
-	GenerateArtifactMetadata(ctx context.Context, deps []*interfaces.DependencyMetadata) (*interfaces.ArtifactMetadata, error) // Changed param and return
+	CheckDependencyCompatibility(ctx context.Context, deps []*DependencyMetadata, targetPlatform string) (*DeploymentReadiness, error) // Changed param and return
+	GenerateArtifactMetadata(ctx context.Context, deps []*DependencyMetadata) (*ArtifactMetadata, error)                               // Changed param and return
+	ValidateDeploymentDependencies(ctx context.Context, dependencies []Dependency) error
+	UpdateDeploymentConfig(ctx context.Context, config *DeploymentConfig) error
+	GetEnvironmentDependencies(ctx context.Context, env string) ([]*EnvironmentDependency, error)
 }
 
 // AlertConfig defines configuration for dependency operation alerts (local type)
@@ -66,7 +75,7 @@ type AlertConfig struct {
 	Recipients      []string           `json:"recipients"`
 }
 
-// HealthStatus for monitoring integration (local type, distinct from interfaces.IntegrationHealthStatus)
+// HealthStatus for monitoring integration (local type, distinct from IntegrationHealthStatus)
 type HealthStatus struct {
 	Status       string            `json:"status"`
 	Timestamp    time.Time         `json:"timestamp"`
@@ -139,19 +148,107 @@ type DeploymentStep struct {
 	Order       int           `json:"order"`
 }
 
-// Note: Local types like AlertConfig, HealthStatus, DependencyQuery,
-// ContainerValidationResult, ContainerOptimization, ContainerDependency,
-// DeploymentPlan, DeploymentStep are kept local as they might be specific
-// to this module's internal workings or its direct interface contracts
-// before mapping to/from the shared `interfaces` package types.
-// The key is that methods intended for cross-manager communication
-// (if these interfaces were implemented by truly separate manager microservices)
-// should standardize on types from the `interfaces` package.
-// For now, focusing on what makes this module compile with the given plan.
-// ArtifactMetadata used by DeploymentManagerInterface is now expected from interfaces package.
-// DeploymentReadiness used by DeploymentManagerInterface is now expected from interfaces package.
-// OperationMetrics and SystemMetrics are now from interfaces package.
-// DependencyMetadata is now from interfaces package.
-// VulnerabilityReport is now from interfaces package.
-// IntegrationHealthStatus (if it were used by these interfaces) would be from interfaces package.
-// SecurityAuditResult and VulnerabilityInfo (local) are removed as VulnerabilityReport from interfaces package is used.
+// VulnerabilityReport represents a security vulnerability report (local type)
+type VulnerabilityReport struct {
+	Timestamp       time.Time
+	TotalScanned    int
+	CriticalCount   int
+	HighCount       int
+	MediumCount     int
+	LowCount        int
+	Vulnerabilities []Vulnerability
+}
+
+// Vulnerability represents a single security vulnerability (local type)
+type Vulnerability struct {
+	PackageName string
+	Version     string
+	Description string
+	Severity    string
+	CVEIDs      []string
+	FixedIn     string
+}
+
+// OperationMetrics represents metrics for a monitored operation (local type)
+type OperationMetrics struct {
+	OperationName string
+	Timestamp     time.Time
+	Success       bool
+	DurationMs    int64
+	ErrorMessage  string
+	CPUUsage      float64
+	MemoryUsage   float64
+	Tags          map[string]string
+}
+
+// SystemMetrics represents system-wide metrics (local type)
+type SystemMetrics struct {
+	Timestamp    time.Time
+	CPUUsage     float64
+	MemoryUsage  float64
+	DiskUsage    float64
+	NetworkIn    int64
+	NetworkOut   int64
+	ErrorCount   int
+	RequestCount int
+}
+
+// IntegrationHealthStatus represents the health status of all integrated managers
+type IntegrationHealthStatus struct {
+	Overall     string            `json:"overall"`
+	Healthy     bool              `json:"healthy"`
+	Message     string            `json:"message"`
+	Managers    map[string]string `json:"managers"`
+	LastChecked time.Time         `json:"last_checked"`
+}
+
+// DeploymentReadiness represents the readiness status for deployment
+type DeploymentReadiness struct {
+	Compatible      bool              `json:"compatible"`
+	Ready           bool              `json:"ready"`
+	TargetPlatforms []string          `json:"target_platforms"`
+	BlockingIssues  []string          `json:"blocking_issues"`
+	Warnings        []string          `json:"warnings"`
+	Recommendations []string          `json:"recommendations"`
+	Environment     string            `json:"environment"`
+	Timestamp       time.Time         `json:"timestamp"`
+	Details         map[string]string `json:"details"`
+}
+
+// ArtifactMetadata represents metadata for a deployment artifact.
+type ArtifactMetadata struct {
+	Name              string    `json:"name"`
+	Version           string    `json:"version"`
+	BuildDate         time.Time `json:"build_date"`
+	Checksum          string    `json:"checksum"`
+	Size              int64     `json:"size"`
+	TargetEnvironment string    `json:"target_environment"`
+	DependencyHash    string    `json:"dependency_hash"` // Hash of dependencies used for this artifact
+}
+
+// ErrorManager defines the interface for error handling
+type ErrorManager interface {
+	ProcessError(err error, source string, fields ...zap.Field) error
+	CatalogError(entry *ErrorEntry) error
+	ValidateErrorEntry(entry *ErrorEntry) error
+}
+
+// ErrorEntry represents a structured error entry
+type ErrorEntry struct {
+	ID             string                 `json:"id"`
+	Timestamp      time.Time              `json:"timestamp"`
+	Message        string                 `json:"message"`
+	StackTrace     string                 `json:"stack_trace"`
+	Module         string                 `json:"module"`
+	ErrorCode      string                 `json:"error_code"`
+	ManagerContext map[string]interface{} `json:"manager_context"`
+	Severity       string                 `json:"severity"`
+}
+
+// Dependency defines a project dependency (local type)
+type Dependency struct {
+	Name       string
+	Version    string
+	Repository string
+	License    string
+}

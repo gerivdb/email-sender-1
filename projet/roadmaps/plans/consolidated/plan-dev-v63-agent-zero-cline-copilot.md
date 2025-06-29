@@ -1,4 +1,4 @@
-Intégrer **Agent Zero** (<https://github.com/frdel/agent-zero>) dans ton workflow avec **GitHub Copilot**, **Cline**, **GEMINI-CLI** et **Opencode-CLI** dans Visual Studio Code (VS Code) est une stratégie optimale pour bâtir un écosystème d'IA managers inspiré de l'architecture documentaire, mais augmenté par l'IA et l'orchestration multi-CLI. Agent Zero devient l'orchestrateur central, pilotant tous les outils/agents (Copilot, Cline, GEMINI-CLI, Opencode-CLI, et les IA managers spécialisés) via des workflows automatisés, traçables et adaptatifs.
+ce paIntégrer **Agent Zero** (<https://github.com/frdel/agent-zero>) dans ton workflow avec **GitHub Copilot**, **Cline**, **GEMINI-CLI** et **Opencode-CLI** dans Visual Studio Code (VS Code) est une stratégie optimale pour bâtir un écosystème d'IA managers inspiré de l'architecture documentaire, mais augmenté par l'IA et l'orchestration multi-CLI. Agent Zero devient l'orchestrateur central, pilotant tous les outils/agents (Copilot, Cline, GEMINI-CLI, Opencode-CLI, et les IA managers spécialisés) via des workflows automatisés, traçables et adaptatifs.
 
 ---
 

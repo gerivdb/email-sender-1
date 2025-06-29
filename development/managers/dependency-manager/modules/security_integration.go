@@ -1,4 +1,4 @@
-package main
+package security
 
 import (
 	"context"
@@ -7,20 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"./interfaces" // Added import
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
 )
-
-// SecurityConfig holds configuration for registry access
-type SecurityConfig struct {
-	RegistryAuth map[string]RegistryCredentials `json:"registry_auth"`
-}
-
-// RegistryCredentials holds authentication info for a registry
-type RegistryCredentials struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Token    string `json:"token,omitempty"`
-}
 
 // initializeSecurityIntegration sets up security manager integration
 func (m *GoModManager) initializeSecurityIntegration() error {
@@ -29,42 +17,42 @@ func (m *GoModManager) initializeSecurityIntegration() error {
 		return nil
 	}
 
-	m.Log("info", "Initializing security integration...")
+	m.logger.Info("Initializing security integration...")
 	// In a real implementation, this would use a factory or service locator
 	// to get an instance of the SecurityManager
-	
+
 	// For now we'll just log this step
-	m.Log("info", "Security integration initialized successfully")
+	m.logger.Info("Security integration initialized successfully")
 	return nil
 }
 
 // loadRegistryCredentials loads and decrypts registry credentials using SecurityManager
 func (m *GoModManager) loadRegistryCredentials() error {
 	if m.securityManager == nil {
-		m.Log("warn", "SecurityManager not initialized, skipping credential loading")
+		m.logger.Warn("SecurityManager not initialized, skipping credential loading")
 		return nil
 	}
 
-	m.Log("info", "Loading registry credentials...")
-	
+	m.logger.Info("Loading registry credentials...")
+
 	// Try to get the registry credentials secret
 	regCredentialsSecret, err := m.securityManager.GetSecret("dependency-manager.registry-credentials") // Assuming GetSecret is part of SecurityManagerInterface
 	if err != nil {
-		m.Log("error", fmt.Sprintf("Error loading registry credentials: %v", err))
+		m.logger.Error(fmt.Sprintf("Error loading registry credentials: %v", err))
 		return err
 	}
-	
+
 	// Parse credentials
-	var secConfig SecurityConfig
+	var secConfig interfaces.SecurityConfig
 	if err := json.Unmarshal([]byte(regCredentialsSecret), &secConfig); err != nil {
-		m.Log("error", fmt.Sprintf("Error parsing registry credentials: %v", err))
+		m.logger.Error(fmt.Sprintf("Error parsing registry credentials: %v", err))
 		return err
 	}
-	
+
 	// Store credentials in memory for use in go operations
 	m.registryCredentials = secConfig.RegistryAuth
-	m.Log("info", fmt.Sprintf("Loaded credentials for %d registries", len(m.registryCredentials)))
-	
+	m.logger.Info(fmt.Sprintf("Loaded credentials for %d registries", len(m.registryCredentials)))
+
 	return nil
 }
 
@@ -74,8 +62,8 @@ func (m *GoModManager) configureAuthForPrivateModules() error {
 		return nil // No credentials to configure
 	}
 
-	m.Log("info", "Configuring authentication for private modules...")
-	
+	m.logger.Info("Configuring authentication for private modules...")
+
 	// Build list of private module patterns for GOPRIVATE
 	var privateModules []string
 	for registry := range m.registryCredentials {
@@ -83,25 +71,25 @@ func (m *GoModManager) configureAuthForPrivateModules() error {
 		// Example: github.com/private-org would be added to GOPRIVATE
 		privateModules = append(privateModules, registry)
 	}
-	
+
 	// Configuration would set GOPRIVATE in the real implementation
 	// os.Setenv("GOPRIVATE", strings.Join(privateModules, ","))
-	m.Log("info", fmt.Sprintf("Configured GOPRIVATE=%s", strings.Join(privateModules, ",")))
+	m.logger.Info(fmt.Sprintf("Configured GOPRIVATE=%s", strings.Join(privateModules, ",")))
 
 	// In a real implementation, this would also configure git credentials or NETRC file
 	// for authentication with the private repositories
-	
+
 	return nil
 }
 
 // scanDependenciesForVulnerabilities scans dependencies using SecurityManager
-func (m *GoModManager) scanDependenciesForVulnerabilities(ctx context.Context, dependencies []Dependency) (*interfaces.VulnerabilityReport, error) {
+func (m *GoModManager) scanDependenciesForVulnerabilities(ctx context.Context, dependencies []interfaces.Dependency) (*interfaces.VulnerabilityReport, error) {
 	if m.securityManager == nil {
 		return nil, fmt.Errorf("security manager not initialized")
 	}
-	
-	m.Log("info", fmt.Sprintf("Scanning %d dependencies for vulnerabilities...", len(dependencies)))
-	
+
+	m.logger.Info(fmt.Sprintf("Scanning %d dependencies for vulnerabilities...", len(dependencies)))
+
 	// This now calls SecurityManagerInterface.ScanDependenciesForVulnerabilities which returns *interfaces.VulnerabilityReport
 	return m.securityManager.ScanDependenciesForVulnerabilities(ctx, dependencies)
 }
@@ -111,16 +99,16 @@ func (m *GoModManager) generateVulnerabilityReport(report *interfaces.Vulnerabil
 	if report == nil {
 		return "No vulnerability report available"
 	}
-	
+
 	var output strings.Builder
 	totalVulnerabilities := report.CriticalCount + report.HighCount + report.MediumCount + report.LowCount
-	
+
 	output.WriteString("=== Dependency Vulnerability Report ===\n")
 	output.WriteString(fmt.Sprintf("Timestamp: %s\n", report.Timestamp.Format(time.RFC3339)))
 	output.WriteString(fmt.Sprintf("Total dependencies scanned: %d\n", report.TotalScanned))
 	output.WriteString(fmt.Sprintf("Total vulnerabilities found: %d (C:%d H:%d M:%d L:%d)\n",
 		totalVulnerabilities, report.CriticalCount, report.HighCount, report.MediumCount, report.LowCount))
-	
+
 	if totalVulnerabilities > 0 {
 		output.WriteString("\nDetails:\n")
 		for i, vuln := range report.Vulnerabilities {
@@ -138,6 +126,6 @@ func (m *GoModManager) generateVulnerabilityReport(report *interfaces.Vulnerabil
 	} else {
 		output.WriteString("\nNo vulnerabilities found. All dependencies are secure.\n")
 	}
-	
+
 	return output.String()
 }

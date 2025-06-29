@@ -1,41 +1,13 @@
-package main
+package managerintegration
 
 import (
 	"context"
 	"fmt"
 	"time"
 
-	"./interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
 	"go.uber.org/zap"
 )
-
-// ImageBuildConfig for container builds
-type ImageBuildConfig struct {
-	Dependencies   []Dependency `json:"dependencies"`
-	BaseImage      string       `json:"base_image"`
-	GoVersion      string       `json:"go_version"`
-	BuildArgs      []string     `json:"build_args"`
-	TargetPlatform string       `json:"target_platform"`
-	OutputPath     string       `json:"output_path"`
-}
-
-// DeploymentConfig for deployment management
-type DeploymentConfig struct {
-	Environment  string                 `json:"environment"`
-	Dependencies []Dependency           `json:"dependencies"`
-	Version      string                 `json:"version"`
-	Config       map[string]interface{} `json:"config"`
-	RollbackPlan string                 `json:"rollback_plan"`
-}
-
-// EnvironmentDependency represents environment-specific dependencies
-type EnvironmentDependency struct {
-	Name        string `json:"name"`
-	Version     string `json:"version"`
-	Environment string `json:"environment"`
-	Required    bool   `json:"required"`
-	ConfigKey   string `json:"config_key"`
-}
 
 // ManagerIntegrator handles integration with all managers
 type ManagerIntegrator struct {
@@ -139,7 +111,7 @@ func (mi *ManagerIntegrator) SecurityAuditWithManager(ctx context.Context, depen
 	// this would be more complex. For now, assume it returns the correct type.
 	report, err := mi.securityManager.ScanDependenciesForVulnerabilities(ctx, dependencies)
 	if err != nil {
-		mi.errorManager.ProcessError(ctx, err, "SecurityManager", "ScanDependenciesForVulnerabilities", nil)
+		mi.errorManager.ProcessError(err, "SecurityManager", zap.String("operation", "ScanDependenciesForVulnerabilities"))
 		return nil, err
 	}
 
@@ -177,7 +149,7 @@ func (mi *ManagerIntegrator) MonitorOperationPerformance(ctx context.Context, op
 	// Collect initial metrics
 	initialMetrics, err := mi.monitoringManager.CollectMetrics(ctx)
 	if err != nil {
-		mi.errorManager.ProcessError(ctx, err, "MonitoringManager", "CollectMetrics", nil)
+		mi.errorManager.ProcessError(err, "MonitoringManager", zap.String("operation", "CollectMetrics"))
 	}
 
 	// Execute the operation
@@ -186,7 +158,7 @@ func (mi *ManagerIntegrator) MonitorOperationPerformance(ctx context.Context, op
 	// Collect final metrics
 	finalMetrics, err := mi.monitoringManager.CollectMetrics(ctx)
 	if err != nil {
-		mi.errorManager.ProcessError(ctx, err, "MonitoringManager", "CollectMetrics", nil)
+		mi.errorManager.ProcessError(err, "MonitoringManager", zap.String("operation", "CollectMetrics"))
 	}
 
 	duration := time.Since(startTime)
@@ -265,7 +237,7 @@ func (mi *ManagerIntegrator) PersistDependencyMetadata(ctx context.Context, depe
 		}
 
 		if err := mi.storageManager.SaveDependencyMetadata(ctx, metadata); err != nil {
-			mi.errorManager.ProcessError(ctx, err, "StorageManager", "save_metadata", nil)
+			mi.errorManager.ProcessError(err, "StorageManager", zap.String("operation", "save_metadata"))
 			continue
 		}
 	}
@@ -275,7 +247,7 @@ func (mi *ManagerIntegrator) PersistDependencyMetadata(ctx context.Context, depe
 }
 
 // ValidateForContainerDeployment validates using real ContainerManager
-func (mi *ManagerIntegrator) ValidateForContainerDeployment(ctx context.Context, dependencies []Dependency) (*ContainerValidationResult, error) {
+func (mi *ManagerIntegrator) ValidateForContainerDeployment(ctx context.Context, dependencies []Dependency) (*interfaces.ContainerValidationResult, error) {
 	if mi.containerManager == nil {
 		return nil, fmt.Errorf("ContainerManager not configured")
 	}
@@ -286,44 +258,44 @@ func (mi *ManagerIntegrator) ValidateForContainerDeployment(ctx context.Context,
 
 	result, err := mi.containerManager.ValidateForContainerization(ctx, dependencies)
 	if err != nil {
-		return nil, mi.errorManager.ProcessError(ctx, err, "ContainerManager", "validate_containerization", nil)
+		return nil, mi.errorManager.ProcessError(err, "ContainerManager", zap.String("operation", "validate_containerization"))
 	}
 
 	mi.logger.Info("Container validation completed",
-		zap.Bool("is_valid", result.IsValid),    // Changed from Compatible
+		zap.Bool("is_valid", result.IsValid),                       // Changed from Compatible
 		zap.Int("validation_errors", len(result.ValidationErrors))) // Changed from Issues
 
 	return result, nil
 }
 
 // ValidateContainerCompatibility validates dependencies for container compatibility
-func (mi *ManagerIntegrator) ValidateContainerCompatibility(ctx context.Context, deps []Dependency) (*ContainerValidationResult, error) {
+func (mi *ManagerIntegrator) ValidateContainerCompatibility(ctx context.Context, deps []Dependency) (*interfaces.ContainerValidationResult, error) {
 	if mi.containerManager == nil {
 		return nil, fmt.Errorf("ContainerManager not configured")
 	}
 
 	result, err := mi.containerManager.ValidateForContainerization(ctx, deps)
 	if err != nil {
-		mi.errorManager.ProcessError(ctx, err, "ContainerManager", "ValidateForContainerization", nil)
+		mi.errorManager.ProcessError(err, "ContainerManager", zap.String("operation", "ValidateForContainerization"))
 		return nil, err
 	}
 
 	mi.logger.Info("Container compatibility validation completed",
-		zap.Bool("is_valid", result.IsValid),    // Changed from Compatible
+		zap.Bool("is_valid", result.IsValid),                             // Changed from Compatible
 		zap.Int("validation_errors_count", len(result.ValidationErrors))) // Changed from Issues
 
 	return result, nil
 }
 
 // CheckDeploymentReadiness checks if the dependencies are ready for deployment
-func (mi *ManagerIntegrator) CheckDeploymentReadiness(ctx context.Context, deps []Dependency, env string) (*DeploymentReadiness, error) {
+func (mi *ManagerIntegrator) CheckDeploymentReadiness(ctx context.Context, deps []Dependency, env string) (*interfaces.DeploymentReadiness, error) {
 	if mi.deploymentManager == nil {
 		return nil, fmt.Errorf("DeploymentManager not configured")
 	}
 
 	readiness, err := mi.deploymentManager.CheckDeploymentReadiness(ctx, deps, env)
 	if err != nil {
-		mi.errorManager.ProcessError(ctx, err, "DeploymentManager", "CheckDeploymentReadiness", nil)
+		mi.errorManager.ProcessError(err, "DeploymentManager", zap.String("operation", "CheckDeploymentReadiness"))
 		return nil, err
 	}
 
@@ -342,8 +314,6 @@ func (mi *ManagerIntegrator) PerformHealthCheck(ctx context.Context) (*interface
 		Overall:     "healthy",  // Assume healthy initially
 		Healthy:     true,       // Default to true
 	}
-	anyFailed := false // Renamed from isHealthy for clarity, and default Overall to "healthy"
-	// anyFailed := false // This variable is effectively replaced by status.Healthy and status.Overall logic
 
 	managerChecks := []struct {
 		name   string
@@ -359,13 +329,12 @@ func (mi *ManagerIntegrator) PerformHealthCheck(ctx context.Context) (*interface
 	for _, check := range managerChecks {
 		if check.hcFunc == nil {
 			status.Managers[check.name] = "not_configured"
-			anyFailed = true // Or treat as warning depending on policy
+			status.Overall = "degraded" // Or "unhealthy"
 			continue
 		}
 		if err := check.hcFunc(ctx); err != nil {
 			status.Managers[check.name] = "unhealthy"
 			status.Overall = "degraded" // Or "unhealthy"
-			anyFailed = true
 			// Optionally log the specific error using mi.errorManager or mi.logger
 			mi.logger.Error("Health check failed for manager", zap.String("manager", check.name), zap.Error(err))
 			// Decide if one failure means we return immediately or check all
@@ -379,8 +348,8 @@ func (mi *ManagerIntegrator) PerformHealthCheck(ctx context.Context) (*interface
 		status.Overall = "degraded"
 	}
 	if !status.Healthy {
-        status.Message = "One or more components reported issues."
-    } else {
+		status.Message = "One or more components reported issues."
+	} else {
 		status.Message = "All components healthy."
 	}
 

@@ -1,0 +1,44 @@
+{
+  "tasks": [
+    {
+      "id": "centralize_types_interfaces",
+      "description": "Centraliser tous les types, interfaces et constantes partagés dans manager_interfaces.go",
+      "status": "done"
+    },
+    {
+      "id": "fix_imports",
+      "description": "Corriger tous les imports relatifs ou locaux en imports qualifiés",
+      "status": "done"
+    },
+    {
+      "id": "deduplicate",
+      "description": "Supprimer toute duplication de type, méthode ou constante",
+      "status": "done"
+    },
+    {
+      "id": "separate_prod_test",
+      "description": "Assurer la séparation claire prod/test, un package par dossier",
+      "status": "done"
+    },
+    {
+      "id": "centralize_mocks",
+      "description": "Centraliser tous les mocks de tests dans tests/mocks_common_test.go",
+      "status": "done"
+    },
+    {
+      "id": "develop_ia_adapters",
+      "description": "Développer des adaptateurs pour permettre le remplacement progressif par des agents IA",
+      "status": "todo"
+    },
+    {
+      "id": "add_ia_integration_tests",
+      "description": "Ajouter des tests d’intégration pour chaque agent IA introduit",
+      "status": "todo"
+    },
+    {
+      "id": "document_ia_migration",
+      "description": "Documenter la migration et les critères de succès dans agents_migration.md",
+      "status": "todo"
+    }
+  ]
+}

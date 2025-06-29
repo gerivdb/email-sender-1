@@ -1,4 +1,4 @@
-package main
+package tests
 
 import (
 	"encoding/json"
@@ -7,41 +7,22 @@ import (
 	"testing"
 	"time"
 
-	"golang.org/x/mod/modfile"
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces" // New import
+	"golang.org/x/mod/modfile"                                          // New import
 )
 
-// Test structures
-type TestDependency struct {
-	Name     string `json:"name"`
-	Version  string `json:"version"`
-	Indirect bool   `json:"indirect,omitempty"`
-}
-
-type TestConfig struct {
-	Name     string `json:"name"`
-	Version  string `json:"version"`
-	Settings struct {
-		LogPath            string `json:"logPath"`
-		LogLevel           string `json:"logLevel"`
-		GoModPath          string `json:"goModPath"`
-		AutoTidy           bool   `json:"autoTidy"`
-		VulnerabilityCheck bool   `json:"vulnerabilityCheck"`
-		BackupOnChange     bool   `json:"backupOnChange"`
-	} `json:"settings"`
-}
-
-// Mock implementation for testing
+// MockDepManager implements interfaces.DepManager for testing
 type MockDepManager struct {
-	dependencies []TestDependency
-	config       *TestConfig
+	dependencies []interfaces.Dependency
+	config       *interfaces.Config
 }
 
-func (m *MockDepManager) List() ([]TestDependency, error) {
+func (m *MockDepManager) List() ([]interfaces.Dependency, error) {
 	return m.dependencies, nil
 }
 
 func (m *MockDepManager) Add(module, version string) error {
-	dep := TestDependency{
+	dep := interfaces.Dependency{
 		Name:    module,
 		Version: version,
 	}
@@ -95,15 +76,15 @@ require (
 )
 `
 	modPath := filepath.Join(dir, "go.mod")
-	err := os.WriteFile(modPath, []byte(goModContent), 0644)
+	err := os.WriteFile(modPath, []byte(goModContent), 0o644)
 	if err != nil {
 		t.Fatalf("Failed to create test go.mod: %v", err)
 	}
 	return modPath
 }
 
-func createTestConfig(t *testing.T, dir string) *TestConfig {
-	config := &TestConfig{
+func createTestConfig(t *testing.T, dir string) *interfaces.Config {
+	config := &interfaces.Config{
 		Name:    "dependency-manager",
 		Version: "1.0.0",
 	}
@@ -120,7 +101,7 @@ func createTestConfig(t *testing.T, dir string) *TestConfig {
 // Unit tests
 func TestMockDepManager_List(t *testing.T) {
 	manager := &MockDepManager{
-		dependencies: []TestDependency{
+		dependencies: []interfaces.Dependency{
 			{Name: "github.com/gorilla/mux", Version: "v1.8.1"},
 			{Name: "github.com/stretchr/testify", Version: "v1.10.0"},
 		},
@@ -141,7 +122,7 @@ func TestMockDepManager_List(t *testing.T) {
 }
 
 func TestMockDepManager_Add(t *testing.T) {
-	manager := &MockDepManager{dependencies: []TestDependency{}}
+	manager := &MockDepManager{dependencies: []interfaces.Dependency{}}
 
 	err := manager.Add("github.com/pkg/errors", "v0.9.1")
 	if err != nil {
@@ -159,7 +140,7 @@ func TestMockDepManager_Add(t *testing.T) {
 
 func TestMockDepManager_Remove(t *testing.T) {
 	manager := &MockDepManager{
-		dependencies: []TestDependency{
+		dependencies: []interfaces.Dependency{
 			{Name: "github.com/gorilla/mux", Version: "v1.8.1"},
 			{Name: "github.com/pkg/errors", Version: "v0.9.1"},
 		},
@@ -181,7 +162,7 @@ func TestMockDepManager_Remove(t *testing.T) {
 
 func TestMockDepManager_Update(t *testing.T) {
 	manager := &MockDepManager{
-		dependencies: []TestDependency{
+		dependencies: []interfaces.Dependency{
 			{Name: "github.com/gorilla/mux", Version: "v1.8.0"},
 		},
 	}
@@ -244,7 +225,7 @@ func TestConfigLoading(t *testing.T) {
 		t.Fatalf("Failed to marshal config: %v", err)
 	}
 
-	var loadedConfig TestConfig
+	var loadedConfig interfaces.Config
 	err = json.Unmarshal(configJSON, &loadedConfig)
 	if err != nil {
 		t.Fatalf("Failed to unmarshal config: %v", err)
@@ -272,7 +253,7 @@ func TestBackupFunctionality(t *testing.T) {
 	// Create backup
 	timestamp := time.Now().Format("20060102_150405")
 	backupPath := filepath.Join(tempDir, "go.mod.backup."+timestamp)
-	err = os.WriteFile(backupPath, originalContent, 0644)
+	err = os.WriteFile(backupPath, originalContent, 0o644)
 	if err != nil {
 		t.Fatalf("Failed to create backup: %v", err)
 	}
@@ -291,15 +272,15 @@ func TestBackupFunctionality(t *testing.T) {
 func TestLogging(t *testing.T) {
 	tempDir := t.TempDir()
 	logDir := filepath.Join(tempDir, "logs")
-	err := os.MkdirAll(logDir, 0755)
+	err := os.MkdirAll(logDir, 0o755)
 	if err != nil {
 		t.Fatalf("Failed to create log directory: %v", err)
 	}
 
 	logFile := filepath.Join(logDir, "dependency-manager.log")
 	logMessage := "[2025-06-03 20:00:00] [INFO] Test log message\n"
-	
-	err = os.WriteFile(logFile, []byte(logMessage), 0644)
+
+	err = os.WriteFile(logFile, []byte(logMessage), 0o644)
 	if err != nil {
 		t.Fatalf("Failed to write log: %v", err)
 	}
@@ -318,12 +299,12 @@ func TestLogging(t *testing.T) {
 // Benchmark tests
 func BenchmarkListDependencies(b *testing.B) {
 	manager := &MockDepManager{
-		dependencies: make([]TestDependency, 100),
+		dependencies: make([]interfaces.Dependency, 100),
 	}
 
 	// Fill with test data
 	for i := 0; i < 100; i++ {
-		manager.dependencies[i] = TestDependency{
+		manager.dependencies[i] = interfaces.Dependency{
 			Name:    "github.com/test/package" + string(rune('0'+i%10)),
 			Version: "v1.0.0",
 		}
@@ -339,7 +320,7 @@ func BenchmarkListDependencies(b *testing.B) {
 }
 
 func BenchmarkAddDependency(b *testing.B) {
-	manager := &MockDepManager{dependencies: []TestDependency{}}
+	manager := &MockDepManager{dependencies: []interfaces.Dependency{}}
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -349,7 +330,7 @@ func BenchmarkAddDependency(b *testing.B) {
 		}
 		// Reset for next iteration
 		if len(manager.dependencies) > 1000 {
-			manager.dependencies = []TestDependency{}
+			manager.dependencies = []interfaces.Dependency{}
 		}
 	}
 }

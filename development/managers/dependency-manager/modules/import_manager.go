@@ -1,4 +1,4 @@
-package main
+package importmanager
 
 import (
 	"context"
@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"./interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
 	"go.uber.org/zap"
 )
 
@@ -36,10 +36,10 @@ func NewImportManager(logger *zap.Logger, projectRoot string) *ImportManager {
 
 // ValidateImportPaths validates all import paths in the given project
 func (m *GoModManager) ValidateImportPaths(ctx context.Context, projectPath string) (*interfaces.ImportValidationResult, error) {
-	m.Log("INFO", fmt.Sprintf("Starting import validation for project: %s", projectPath))
-	
+	m.logger.Info(fmt.Sprintf("Starting import validation for project: %s", projectPath))
+
 	im := NewImportManager(m.logger, projectPath)
-	
+
 	result := &interfaces.ImportValidationResult{
 		ProjectPath: projectPath,
 		Issues:      []interfaces.ImportIssue{},
@@ -79,7 +79,6 @@ func (m *GoModManager) ValidateImportPaths(ctx context.Context, projectPath stri
 
 		return nil
 	})
-
 	if err != nil {
 		return nil, m.errorManager.ProcessError(ctx, err, "import-validation", "walk_project", nil)
 	}
@@ -87,8 +86,8 @@ func (m *GoModManager) ValidateImportPaths(ctx context.Context, projectPath stri
 	// Update summary
 	result.Summary = im.calculateSummary(result.Issues)
 
-	m.Log("INFO", fmt.Sprintf("Import validation completed. Found %d issues in %d files", len(result.Issues), result.FilesWithIssues))
-	
+	m.logger.Info(fmt.Sprintf("Import validation completed. Found %d issues in %d files", len(result.Issues), result.FilesWithIssues))
+
 	return result, nil
 }
 
@@ -186,7 +185,7 @@ func (im *ImportManager) isValidImportPath(importPath string) bool {
 	if importPath == "" {
 		return false
 	}
-	
+
 	// Check for invalid characters
 	invalidChars := []string{" ", "\t", "\n", "\r"}
 	for _, char := range invalidChars {
@@ -194,7 +193,7 @@ func (im *ImportManager) isValidImportPath(importPath string) bool {
 			return false
 		}
 	}
-	
+
 	return true
 }
 
@@ -203,7 +202,7 @@ func (im *ImportManager) isAbsoluteLocalPath(importPath string) bool {
 	// Check for Windows and Unix absolute paths
 	windowsPath := regexp.MustCompile(`^[A-Za-z]:\\`)
 	unixPath := regexp.MustCompile(`^/`)
-	
+
 	return windowsPath.MatchString(importPath) || unixPath.MatchString(importPath)
 }
 
@@ -242,7 +241,7 @@ func (im *ImportManager) isImportUnused(file *ast.File, importPath string) bool 
 // detectImportConflicts detects conflicts in imports
 func (im *ImportManager) detectImportConflicts(file *ast.File, filePath string) []interfaces.ImportConflict {
 	var conflicts []interfaces.ImportConflict
-	
+
 	importPaths := make(map[string][]int)
 	packageNames := make(map[string][]string)
 
@@ -254,9 +253,9 @@ func (im *ImportManager) detectImportConflicts(file *ast.File, filePath string) 
 
 		importPath := strings.Trim(imp.Path.Value, `"`)
 		lineNum := im.fileSet.Position(imp.Pos()).Line
-		
+
 		importPaths[importPath] = append(importPaths[importPath], lineNum)
-		
+
 		packageName := filepath.Base(importPath)
 		packageNames[packageName] = append(packageNames[packageName], importPath)
 	}
@@ -268,7 +267,7 @@ func (im *ImportManager) detectImportConflicts(file *ast.File, filePath string) 
 			for i, line := range lines {
 				lineStrs[i] = strconv.Itoa(line)
 			}
-			
+
 			conflicts = append(conflicts, interfaces.ImportConflict{
 				Type:             "duplicate_import",
 				ConflictingPaths: []string{importPath},
@@ -298,7 +297,7 @@ func (im *ImportManager) detectImportConflicts(file *ast.File, filePath string) 
 // calculateSummary calculates validation summary from issues
 func (im *ImportManager) calculateSummary(issues []interfaces.ImportIssue) interfaces.ValidationSummary {
 	summary := interfaces.ValidationSummary{}
-	
+
 	for _, issue := range issues {
 		switch issue.IssueType {
 		case interfaces.ImportIssueRelative:
@@ -315,14 +314,14 @@ func (im *ImportManager) calculateSummary(issues []interfaces.ImportIssue) inter
 			summary.InconsistentNaming++
 		}
 	}
-	
+
 	return summary
 }
 
 // FixRelativeImports fixes relative imports in the project
 func (m *GoModManager) FixRelativeImports(ctx context.Context, projectPath string) error {
-	m.Log("INFO", fmt.Sprintf("Starting to fix relative imports in project: %s", projectPath))
-	
+	m.logger.Info(fmt.Sprintf("Starting to fix relative imports in project: %s", projectPath))
+
 	// First, we need to determine the module name from go.mod
 	moduleName, err := m.getModuleName(projectPath)
 	if err != nil {
@@ -356,12 +355,11 @@ func (m *GoModManager) FixRelativeImports(ctx context.Context, projectPath strin
 
 		return nil
 	})
-
 	if err != nil {
 		return m.errorManager.ProcessError(ctx, err, "import-fix", "walk_project", nil)
 	}
 
-	m.Log("INFO", fmt.Sprintf("Fixed relative imports in %d files", filesFixed))
+	m.logger.Info(fmt.Sprintf("Fixed relative imports in %d files", filesFixed))
 	return nil
 }
 
@@ -412,14 +410,14 @@ func (im *ImportManager) fixRelativeImportsInFile(filePath, moduleName, projectR
 		}
 
 		importPath := strings.Trim(imp.Path.Value, `"`)
-		
+
 		// Check if it's a relative import
 		if strings.HasPrefix(importPath, ".") {
 			hasRelativeImports = true
-			
+
 			// Convert relative path to absolute module path
 			absolutePath := im.convertRelativeToAbsolute(importPath, filePath, moduleName, projectRoot)
-			
+
 			// Replace in content
 			oldImport := fmt.Sprintf(`"%s"`, importPath)
 			newImport := fmt.Sprintf(`"%s"`, absolutePath)
@@ -429,7 +427,7 @@ func (im *ImportManager) fixRelativeImportsInFile(filePath, moduleName, projectR
 
 	// Write back if changes were made
 	if hasRelativeImports && content != originalContent {
-		err = os.WriteFile(filePath, []byte(content), 0644)
+		err = os.WriteFile(filePath, []byte(content), 0o644)
 		if err != nil {
 			return false, err
 		}
@@ -443,30 +441,30 @@ func (im *ImportManager) fixRelativeImportsInFile(filePath, moduleName, projectR
 func (im *ImportManager) convertRelativeToAbsolute(relativePath, currentFile, moduleName, projectRoot string) string {
 	// Get directory of current file
 	currentDir := filepath.Dir(currentFile)
-	
+
 	// Resolve the relative path
 	targetDir := filepath.Join(currentDir, relativePath)
 	targetDir = filepath.Clean(targetDir)
-	
+
 	// Convert to module-relative path
 	relativeToProject, err := filepath.Rel(projectRoot, targetDir)
 	if err != nil {
 		// Fallback
 		return relativePath
 	}
-	
+
 	// Build module path
 	modulePath := moduleName
 	if relativeToProject != "." {
 		modulePath = moduleName + "/" + strings.ReplaceAll(relativeToProject, "\\", "/")
 	}
-		return modulePath
+	return modulePath
 }
 
 // NormalizeModulePaths normalizes all module paths to use the expected prefix
 func (m *GoModManager) NormalizeModulePaths(ctx context.Context, projectPath string, expectedPrefix string) error {
-	m.Log("INFO", fmt.Sprintf("Starting to normalize module paths in project: %s with prefix: %s", projectPath, expectedPrefix))
-	
+	m.logger.Info(fmt.Sprintf("Starting to normalize module paths in project: %s with prefix: %s", projectPath, expectedPrefix))
+
 	im := NewImportManager(m.logger, projectPath)
 	filesFixed := 0
 
@@ -494,12 +492,11 @@ func (m *GoModManager) NormalizeModulePaths(ctx context.Context, projectPath str
 
 		return nil
 	})
-
 	if err != nil {
 		return m.errorManager.ProcessError(ctx, err, "import-normalize", "walk_project", nil)
 	}
 
-	m.Log("INFO", fmt.Sprintf("Normalized module paths in %d files", filesFixed))
+	m.logger.Info(fmt.Sprintf("Normalized module paths in %d files", filesFixed))
 	return nil
 }
 
@@ -526,14 +523,14 @@ func (im *ImportManager) normalizeImportsInFile(filePath, expectedPrefix string)
 		}
 
 		importPath := strings.Trim(imp.Path.Value, `"`)
-		
+
 		// Check if it's an absolute local path that needs normalization
 		if im.isAbsoluteLocalPath(importPath) {
 			hasChanges = true
-			
+
 			// Convert to expected module prefix
 			normalizedPath := im.normalizeLocalPath(importPath, expectedPrefix)
-			
+
 			// Replace in content
 			oldImport := fmt.Sprintf(`"%s"`, importPath)
 			newImport := fmt.Sprintf(`"%s"`, normalizedPath)
@@ -543,7 +540,7 @@ func (im *ImportManager) normalizeImportsInFile(filePath, expectedPrefix string)
 
 	// Write back if changes were made
 	if hasChanges && content != originalContent {
-		err = os.WriteFile(filePath, []byte(content), 0644)
+		err = os.WriteFile(filePath, []byte(content), 0o644)
 		if err != nil {
 			return false, err
 		}
@@ -558,17 +555,17 @@ func (im *ImportManager) normalizeLocalPath(localPath, expectedPrefix string) st
 	// Common patterns to replace
 	patterns := map[string]string{
 		// Windows paths
-		`d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/`:     expectedPrefix + "/managers/",
-		`D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/`:     expectedPrefix + "/managers/",
-		`d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\managers\`:     expectedPrefix + "/managers/",
-		`D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\managers\`:     expectedPrefix + "/managers/",
-		
+		`d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/`: expectedPrefix + "/managers/",
+		`D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/`: expectedPrefix + "/managers/",
+		`d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\managers\`: expectedPrefix + "/managers/",
+		`D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\managers\`: expectedPrefix + "/managers/",
+
 		// Unix paths
-		`/development/managers/`:                                               expectedPrefix + "/managers/",
-		
+		`/development/managers/`: expectedPrefix + "/managers/",
+
 		// Generic project paths
-		`github.com/gerivdb/email-sender-1/development/managers/`:                        expectedPrefix + "/managers/",
-		`github.com/gerivdb/email-sender-1/managers/`:                                    expectedPrefix + "/managers/",
+		`github.com/gerivdb/email-sender-1/development/managers/`: expectedPrefix + "/managers/",
+		`github.com/gerivdb/email-sender-1/managers/`:             expectedPrefix + "/managers/",
 	}
 
 	normalizedPath := localPath
@@ -581,14 +578,14 @@ func (im *ImportManager) normalizeLocalPath(localPath, expectedPrefix string) st
 
 	// Clean up path separators
 	normalizedPath = strings.ReplaceAll(normalizedPath, "\\", "/")
-	
+
 	return normalizedPath
 }
 
 // DetectImportConflicts detects import conflicts in the project
 func (m *GoModManager) DetectImportConflicts(ctx context.Context, projectPath string) ([]interfaces.ImportConflict, error) {
-	m.Log("INFO", fmt.Sprintf("Detecting import conflicts in project: %s", projectPath))
-	
+	m.logger.Info(fmt.Sprintf("Detecting import conflicts in project: %s", projectPath))
+
 	im := NewImportManager(m.logger, projectPath)
 	var allConflicts []interfaces.ImportConflict
 
@@ -621,19 +618,18 @@ func (m *GoModManager) DetectImportConflicts(ctx context.Context, projectPath st
 
 		return nil
 	})
-
 	if err != nil {
 		return nil, m.errorManager.ProcessError(ctx, err, "import-conflicts", "walk_project", nil)
 	}
 
-	m.Log("INFO", fmt.Sprintf("Found %d import conflicts", len(allConflicts)))
+	m.logger.Info(fmt.Sprintf("Found %d import conflicts", len(allConflicts)))
 	return allConflicts, nil
 }
 
 // ScanInvalidImports scans for invalid imports in the project
 func (m *GoModManager) ScanInvalidImports(ctx context.Context, projectPath string) ([]interfaces.ImportIssue, error) {
-	m.Log("INFO", fmt.Sprintf("Scanning for invalid imports in project: %s", projectPath))
-	
+	m.logger.Info(fmt.Sprintf("Scanning for invalid imports in project: %s", projectPath))
+
 	im := NewImportManager(m.logger, projectPath)
 	var allIssues []interfaces.ImportIssue
 
@@ -660,19 +656,18 @@ func (m *GoModManager) ScanInvalidImports(ctx context.Context, projectPath strin
 
 		return nil
 	})
-
 	if err != nil {
 		return nil, m.errorManager.ProcessError(ctx, err, "import-scan", "walk_project", nil)
 	}
 
-	m.Log("INFO", fmt.Sprintf("Found %d import issues", len(allIssues)))
+	m.logger.Info(fmt.Sprintf("Found %d import issues", len(allIssues)))
 	return allIssues, nil
 }
 
 // AutoFixImports automatically fixes import issues in the project
 func (m *GoModManager) AutoFixImports(ctx context.Context, projectPath string, options *interfaces.ImportFixOptions) (*interfaces.ImportFixResult, error) {
-	m.Log("INFO", fmt.Sprintf("Starting auto-fix imports in project: %s", projectPath))
-	
+	m.logger.Info(fmt.Sprintf("Starting auto-fix imports in project: %s", projectPath))
+
 	if options == nil {
 		options = &interfaces.ImportFixOptions{
 			FixRelativeImports:   true,
@@ -747,7 +742,7 @@ func (m *GoModManager) AutoFixImports(ctx context.Context, projectPath string, o
 
 	result.Summary = fmt.Sprintf("Fixed %d issues, %d remaining", result.IssuesFixed, result.IssuesRemaining)
 
-	m.Log("INFO", fmt.Sprintf("Auto-fix completed: %s", result.Summary))
+	m.logger.Info(fmt.Sprintf("Auto-fix completed: %s", result.Summary))
 	return result, nil
 }
 
@@ -755,9 +750,9 @@ func (m *GoModManager) AutoFixImports(ctx context.Context, projectPath string, o
 func (m *GoModManager) createProjectBackup(projectPath string) (string, error) {
 	timestamp := time.Now().Format("20060102-150405")
 	backupDir := fmt.Sprintf("%s.backup.%s", projectPath, timestamp)
-	
+
 	// Create backup directory
-	err := os.MkdirAll(backupDir, 0755)
+	err := os.MkdirAll(backupDir, 0o755)
 	if err != nil {
 		return "", err
 	}
@@ -779,9 +774,9 @@ func (m *GoModManager) createProjectBackup(projectPath string) (string, error) {
 		}
 
 		backupPath := filepath.Join(backupDir, relPath)
-		
+
 		// Ensure backup directory exists
-		err = os.MkdirAll(filepath.Dir(backupPath), 0755)
+		err = os.MkdirAll(filepath.Dir(backupPath), 0o755)
 		if err != nil {
 			return err
 		}
@@ -794,7 +789,6 @@ func (m *GoModManager) createProjectBackup(projectPath string) (string, error) {
 
 		return os.WriteFile(backupPath, data, info.Mode())
 	})
-
 	if err != nil {
 		os.RemoveAll(backupDir) // Clean up on error
 		return "", err
@@ -832,7 +826,6 @@ func (m *GoModManager) removeUnusedImports(ctx context.Context, projectPath stri
 
 		return nil
 	})
-
 	if err != nil {
 		return nil, m.errorManager.ProcessError(ctx, err, "remove-unused-imports", "walk_project", nil)
 	}
@@ -880,7 +873,7 @@ func (im *ImportManager) removeUnusedImportsFromFile(filePath string) (bool, err
 
 	// Write back if changes were made
 	if content != originalContent {
-		err = os.WriteFile(filePath, []byte(content), 0644)
+		err = os.WriteFile(filePath, []byte(content), 0o644)
 		if err != nil {
 			return false, err
 		}
@@ -894,26 +887,26 @@ func (im *ImportManager) removeUnusedImportsFromFile(filePath string) (bool, err
 func (im *ImportManager) removeImportFromContent(content, importPath string) string {
 	lines := strings.Split(content, "\n")
 	var result []string
-	
+
 	for _, line := range lines {
 		trimmed := strings.TrimSpace(line)
-		
+
 		// Check if this line contains the import to remove
 		if strings.Contains(trimmed, `"`+importPath+`"`) {
 			// Skip this line
 			continue
 		}
-		
+
 		result = append(result, line)
 	}
-	
+
 	return strings.Join(result, "\n")
 }
 
 // ValidateModuleStructure validates the overall module structure
 func (m *GoModManager) ValidateModuleStructure(ctx context.Context, projectPath string) (*interfaces.ModuleStructureValidation, error) {
-	m.Log("INFO", fmt.Sprintf("Validating module structure for project: %s", projectPath))
-	
+	m.logger.Info(fmt.Sprintf("Validating module structure for project: %s", projectPath))
+
 	validation := &interfaces.ModuleStructureValidation{
 		ModuleName:        "",
 		GoModValid:        false,
@@ -958,7 +951,7 @@ func (m *GoModManager) ValidateModuleStructure(ctx context.Context, projectPath 
 		}
 	}
 
-	m.Log("INFO", fmt.Sprintf("Module structure validation completed. Valid: %t", len(validation.Errors) == 0))
+	m.logger.Info(fmt.Sprintf("Module structure validation completed. Valid: %t", len(validation.Errors) == 0))
 	return validation, nil
 }
 
@@ -966,56 +959,56 @@ func (m *GoModManager) ValidateModuleStructure(ctx context.Context, projectPath 
 func (m *GoModManager) isValidModulePath(modulePath string) bool {
 	// Basic validation - should start with domain/organization/repo
 	parts := strings.Split(modulePath, "/")
-	
+
 	// Should have at least 3 parts: domain/org/repo
 	if len(parts) < 3 {
 		return false
 	}
-	
+
 	// Domain should contain a dot
 	if !strings.Contains(parts[0], ".") {
 		return false
 	}
-	
+
 	return true
 }
 
 // validateDependencies validates the listed dependencies
 func (m *GoModManager) validateDependencies(deps []Dependency, validation *interfaces.ModuleStructureValidation) bool {
 	valid := true
-	
+
 	for _, dep := range deps {
 		// Check for empty names or versions
 		if dep.Name == "" {
 			validation.Errors = append(validation.Errors, "Dependency with empty name found")
 			valid = false
 		}
-		
+
 		if dep.Version == "" {
 			validation.Warnings = append(validation.Warnings, fmt.Sprintf("Dependency %s has no version specified", dep.Name))
 		}
-		
+
 		// Check for suspicious version patterns
 		if strings.Contains(dep.Version, "v0.0.0-") {
 			validation.Warnings = append(validation.Warnings, fmt.Sprintf("Dependency %s uses pseudo-version %s", dep.Name, dep.Version))
 		}
 	}
-	
+
 	return valid
 }
 
 // GenerateImportReport generates a comprehensive import report
 func (m *GoModManager) GenerateImportReport(ctx context.Context, projectPath string) (*interfaces.ImportReport, error) {
-	m.Log("INFO", fmt.Sprintf("Generating import report for project: %s", projectPath))
-	
+	m.logger.Info(fmt.Sprintf("Generating import report for project: %s", projectPath))
+
 	im := NewImportManager(m.logger, projectPath)
-	
+
 	// Get module name
 	moduleName, err := m.getModuleName(projectPath)
 	if err != nil {
 		moduleName = "unknown"
 	}
-	
+
 	report := &interfaces.ImportReport{
 		ProjectPath:     projectPath,
 		ModuleName:      moduleName,
@@ -1076,7 +1069,7 @@ func (m *GoModManager) GenerateImportReport(ctx context.Context, projectPath str
 				internalModuleMap[importPath]++
 			} else {
 				report.ExternalImports++
-				
+
 				// Extract root dependency
 				rootDep := strings.Split(importPath, "/")
 				if len(rootDep) > 0 {
@@ -1093,7 +1086,6 @@ func (m *GoModManager) GenerateImportReport(ctx context.Context, projectPath str
 
 		return nil
 	})
-
 	if err != nil {
 		return nil, m.errorManager.ProcessError(ctx, err, "import-report", "walk_project", nil)
 	}
@@ -1110,7 +1102,7 @@ func (m *GoModManager) GenerateImportReport(ctx context.Context, projectPath str
 	// Generate recommendations
 	report.Recommendations = im.generateRecommendations(report)
 
-	m.Log("INFO", fmt.Sprintf("Import report generated with %d files, %d imports", report.TotalGoFiles, report.TotalImports))
+	m.logger.Info(fmt.Sprintf("Import report generated with %d files, %d imports", report.TotalGoFiles, report.TotalImports))
 	return report, nil
 }
 
