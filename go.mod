@@ -14,7 +14,12 @@ require (
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/zap v1.27.0
 	gopkg.in/yaml.v3 v3.0.1
+	github.com/gerivdb/email-sender-1/managers/error-manager v0.0.0-00010101000000-000000000000
 )
+
+replace github.com/gerivdb/email-sender-1/managers/error-manager => ./development/managers/error-manager
+
+replace github.com/gerivdb/email-sender-1/interfaces => ./interfaces
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect

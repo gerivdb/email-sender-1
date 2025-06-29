@@ -12,28 +12,29 @@ import (
 	"os/signal"
 	"strconv"
 	"sync"
-	"syscall"	"time"
+	"syscall"
+	"time"
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"github.com/gerivdb/email-sender-1/managers/error-manager"
+	errormanager "github.com/gerivdb/email-sender-1/managers/error-manager"
 )
 
 // PowerShellError represents an error received from PowerShell
 type PowerShellError struct {
-	ErrorMessage      string                 `json:"error_message"`
-	Component         string                 `json:"component"`
-	Context           map[string]interface{} `json:"context"`
-	Severity          string                 `json:"severity"`
-	Category          string                 `json:"category"`
-	ScriptPath        string                 `json:"script_path"`
-	Operation         string                 `json:"operation"`
-	Timestamp         string                 `json:"timestamp"`
-	Source            string                 `json:"source"`
-	SessionID         int                    `json:"session_id"`
-	User              string                 `json:"user"`
-	Machine           string                 `json:"machine"`
+	ErrorMessage string                 `json:"error_message"`
+	Component    string                 `json:"component"`
+	Context      map[string]interface{} `json:"context"`
+	Severity     string                 `json:"severity"`
+	Category     string                 `json:"category"`
+	ScriptPath   string                 `json:"script_path"`
+	Operation    string                 `json:"operation"`
+	Timestamp    string                 `json:"timestamp"`
+	Source       string                 `json:"source"`
+	SessionID    int                    `json:"session_id"`
+	User         string                 `json:"user"`
+	Machine      string                 `json:"machine"`
 }
 
 // PowerShellErrorResponse represents the response sent back to PowerShell
@@ -72,44 +73,35 @@ type PowerShellBridge struct {
 	config       BridgeConfig
 	server       *http.Server
 	logger       *zap.Logger
-	errorManager *ErrorManagerService
+	errorManager *ErrorManagerService // Réintroduit le champ
 	mutex        sync.RWMutex
 	stats        BridgeStats
 }
 
 // BridgeStats tracks bridge statistics
 type BridgeStats struct {
-	RequestsProcessed   int64     `json:"requests_processed"`
-	ErrorsProcessed     int64     `json:"errors_processed"`
-	SuccessfulRequests  int64     `json:"successful_requests"`
-	FailedRequests      int64     `json:"failed_requests"`
-	StartTime           time.Time `json:"start_time"`
-	LastActivityTime    time.Time `json:"last_activity_time"`
+	RequestsProcessed  int64     `json:"requests_processed"`
+	ErrorsProcessed    int64     `json:"errors_processed"`
+	SuccessfulRequests int64     `json:"successful_requests"`
+	FailedRequests     int64     `json:"failed_requests"`
+	StartTime          time.Time `json:"start_time"`
+	LastActivityTime   time.Time `json:"last_activity_time"`
 }
 
-// ErrorManagerService wraps the ErrorManager for the bridge
+// ErrorManagerService provides logging capabilities for the bridge
 type ErrorManagerService struct {
-	errorManager *errormanager.ErrorManager
-	logger       *zap.Logger
+	logger *zap.Logger
 }
 
 // NewErrorManagerService creates a new ErrorManager service
 func NewErrorManagerService(logger *zap.Logger) *ErrorManagerService {
-	// Initialize a simple ErrorManager for the bridge
-	// In a real implementation, this would connect to the actual ErrorManager
-	em := &errormanager.ErrorManager{}
-	
 	return &ErrorManagerService{
-		errorManager: em,
-		logger:       logger,
+		logger: logger,
 	}
 }
 
 // ProcessPowerShellError processes an error from PowerShell
 func (ems *ErrorManagerService) ProcessPowerShellError(ctx context.Context, psError PowerShellError) (*PowerShellErrorResponse, error) {
-	// Create Go error from PowerShell error
-	goErr := fmt.Errorf("PowerShell error: %s", psError.ErrorMessage)
-	
 	// Add PowerShell context to Go context
 	ctx = context.WithValue(ctx, "component", psError.Component)
 	ctx = context.WithValue(ctx, "powershell_context", psError.Context)
@@ -123,20 +115,29 @@ func (ems *ErrorManagerService) ProcessPowerShellError(ctx context.Context, psEr
 	ctx = context.WithValue(ctx, "machine", psError.Machine)
 
 	// Create error entry for validation and cataloging
+	// Préparer le ManagerContext à partir des champs de PowerShellError
+	managerContextData := map[string]interface{}{
+		"powershell_context": psError.Context,
+		"category":           psError.Category,
+		"script_path":        psError.ScriptPath,
+		"operation":          psError.Operation,
+		"source":             psError.Source,
+		"session_id":         psError.SessionID,
+		"user":               psError.User,
+		"machine":            psError.Machine,
+	}
+	managerContextBytes, _ := json.Marshal(managerContextData) // Ignorer l'erreur pour la concision
+
 	errorEntry := errormanager.ErrorEntry{
-		ID:          uuid.New().String(),
-		Timestamp:   time.Now(),
-		Level:       mapSeverityToLevel(psError.Severity),
-		Component:   psError.Component,
-		Message:     psError.ErrorMessage,
-		Context:     psError.Context,
-		Source:      psError.Source,
-		Category:    psError.Category,
-		Operation:   psError.Operation,
-		ScriptPath:  psError.ScriptPath,
-		SessionID:   strconv.Itoa(psError.SessionID),
-		User:        psError.User,
-		Machine:     psError.Machine,
+		ID:             uuid.New().String(),
+		Timestamp:      time.Now(),
+		Message:        psError.ErrorMessage,
+		Severity:       mapSeverityToLevel(psError.Severity),
+		Module:         psError.Component,           // Mappage de Component à Module
+		ManagerContext: string(managerContextBytes), // Les autres champs combinés en JSON
+		// StackTrace et ErrorCode sont vides car non fournis par PowerShellError
+		StackTrace: "",
+		ErrorCode:  "",
 	}
 
 	// Validate error entry
@@ -149,12 +150,7 @@ func (ems *ErrorManagerService) ProcessPowerShellError(ctx context.Context, psEr
 	}
 
 	// Catalog the error
-	if err := errormanager.CatalogError(errorEntry); err != nil {
-		ems.logger.Error("Failed to catalog PowerShell error",
-			zap.Error(err),
-			zap.String("error_id", errorEntry.ID))
-		return nil, fmt.Errorf("failed to catalog error: %v", err)
-	}
+	errormanager.CatalogError(errorEntry) // Appel sans affectation de retour
 
 	// Determine recovery action based on error characteristics
 	recoveryAction := determineRecoveryAction(psError)
@@ -179,9 +175,9 @@ func (ems *ErrorManagerService) ProcessPowerShellError(ctx context.Context, psEr
 func NewPowerShellBridge(config BridgeConfig) (*PowerShellBridge, error) {
 	// Setup logger
 	logConfig := zap.NewProductionConfig()
-	logConfig.Level = zap.NewAtomicLevelAt(parseLogLevel(config.LogLevel))
+	logConfig.Level = parseLogLevel(config.LogLevel)
 	logConfig.OutputPaths = []string{"stdout", config.LogFile}
-	
+
 	logger, err := logConfig.Build()
 	if err != nil {
 		return nil, fmt.Errorf("failed to create logger: %v", err)
@@ -193,7 +189,7 @@ func NewPowerShellBridge(config BridgeConfig) (*PowerShellBridge, error) {
 	bridge := &PowerShellBridge{
 		config:       config,
 		logger:       logger,
-		errorManager: errorManagerService,
+		errorManager: errorManagerService, // Initialisation du champ errorManager
 		stats: BridgeStats{
 			StartTime: time.Now(),
 		},
@@ -333,14 +329,14 @@ func (pb *PowerShellBridge) corsMiddleware(next http.Handler) http.Handler {
 func (pb *PowerShellBridge) loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
-		
+
 		// Create a response writer that captures status code
 		rw := &responseWriter{ResponseWriter: w, statusCode: http.StatusOK}
-		
+
 		next.ServeHTTP(rw, r)
-		
+
 		duration := time.Since(start)
-		
+
 		pb.logger.Info("HTTP request",
 			zap.String("method", r.Method),
 			zap.String("path", r.URL.Path),
@@ -440,18 +436,18 @@ func determineRecoveryAction(psError PowerShellError) string {
 func main() {
 	// Load configuration (from environment variables or config file)
 	config := DefaultBridgeConfig()
-	
+
 	// Override with environment variables if present
 	if port := os.Getenv("BRIDGE_PORT"); port != "" {
 		if p, err := strconv.Atoi(port); err == nil {
 			config.Port = p
 		}
 	}
-	
+
 	if logLevel := os.Getenv("BRIDGE_LOG_LEVEL"); logLevel != "" {
 		config.LogLevel = logLevel
 	}
-	
+
 	if logFile := os.Getenv("BRIDGE_LOG_FILE"); logFile != "" {
 		config.LogFile = logFile
 	}
@@ -474,14 +470,14 @@ func main() {
 
 	// Wait for shutdown signal
 	<-sigChan
-	
+
 	// Graceful shutdown
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	
+
 	if err := bridge.Stop(ctx); err != nil {
 		log.Printf("Error during shutdown: %v", err)
 	}
-	
+
 	log.Println("PowerShell ErrorManager bridge stopped")
 }

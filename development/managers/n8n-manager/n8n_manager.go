@@ -10,9 +10,9 @@ import (
 	"sync"
 	"time"
 
+	errormanager "github.com/gerivdb/email-sender-1/managers/error-manager"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
-	"	errormanager "github.com/gerivdb/email-sender-1/managers/error-manager""
 )
 
 // N8NManager struct — Orchestrateur des workflows n8n et gestion centralisée des exécutions.
@@ -32,8 +32,9 @@ import (
 //   - Workflows, statuts d’exécution, logs, métriques.
 //
 // Exemple :
-//   mgr := N8NManager{...}
-//   err := mgr.LaunchWorkflow(id)
+//
+//	mgr := N8NManager{...}
+//	err := mgr.LaunchWorkflow(id)
 //
 // Voir aussi : ErrorManager, N8NMetrics
 // N8NManager manages n8n workflows and executions with centralized error handling
@@ -42,7 +43,7 @@ type N8NManager struct {
 	apiKey       string
 	httpClient   *http.Client
 	logger       *zap.Logger
-	errorManager *ErrorManager
+	errorManager ErrorManager
 	metrics      *N8NMetrics
 	mu           sync.RWMutex
 }
@@ -55,41 +56,41 @@ type ErrorManager interface {
 
 // ErrorHooks defines hooks for error handling
 type ErrorHooks struct {
-	OnError    func(error)
-	OnRetry    func(int, error)
-	OnRecover  func()
-	OnCircuit  func(string, error)
+	OnError   func(error)
+	OnRetry   func(int, error)
+	OnRecover func()
+	OnCircuit func(string, error)
 }
 
 // N8NMetrics holds metrics for n8n operations
 type N8NMetrics struct {
-	WorkflowExecutions     int64
-	FailedExecutions       int64
-	SuccessfulExecutions   int64
-	AverageExecutionTime   time.Duration
-	LastExecutionTime      time.Time
-	mu                     sync.RWMutex
+	WorkflowExecutions   int64
+	FailedExecutions     int64
+	SuccessfulExecutions int64
+	AverageExecutionTime time.Duration
+	LastExecutionTime    time.Time
+	mu                   sync.RWMutex
 }
 
 // Config holds configuration for N8NManager
 type Config struct {
-	BaseURL     string        `json:"base_url"`
-	APIKey      string        `json:"api_key"`
-	Timeout     time.Duration `json:"timeout"`
-	MaxRetries  int           `json:"max_retries"`
-	EnableTLS   bool          `json:"enable_tls"`
-	LogLevel    string        `json:"log_level"`
+	BaseURL    string        `json:"base_url"`
+	APIKey     string        `json:"api_key"`
+	Timeout    time.Duration `json:"timeout"`
+	MaxRetries int           `json:"max_retries"`
+	EnableTLS  bool          `json:"enable_tls"`
+	LogLevel   string        `json:"log_level"`
 }
 
 // WorkflowExecution represents an n8n workflow execution
 type WorkflowExecution struct {
-	ID           string                 `json:"id"`
-	WorkflowID   string                 `json:"workflowId"`
-	Status       string                 `json:"status"`
-	StartedAt    time.Time              `json:"startedAt"`
-	FinishedAt   time.Time              `json:"finishedAt"`
-	Data         map[string]interface{} `json:"data"`
-	Error        string                 `json:"error,omitempty"`
+	ID         string                 `json:"id"`
+	WorkflowID string                 `json:"workflowId"`
+	Status     string                 `json:"status"`
+	StartedAt  time.Time              `json:"startedAt"`
+	FinishedAt time.Time              `json:"finishedAt"`
+	Data       map[string]interface{} `json:"data"`
+	Error      string                 `json:"error,omitempty"`
 }
 
 // Workflow represents an n8n workflow
@@ -105,7 +106,7 @@ type Workflow struct {
 }
 
 // NewN8NManager creates a new N8N manager with ErrorManager integration
-func NewN8NManager(config Config, logger *zap.Logger, errorManager *ErrorManager) *N8NManager {
+func NewN8NManager(config Config, logger *zap.Logger, errorManager ErrorManager) *N8NManager {
 	if logger == nil {
 		logger = zap.NewNop()
 	}
@@ -140,15 +141,15 @@ func (nm *N8NManager) ProcessError(ctx context.Context, err error, operation str
 		Operation: operation,
 		Message:   err.Error(),
 		Context: map[string]interface{}{
-			"base_url":    nm.baseURL,
-			"operation":   operation,
-			"error_id":    errorID,
+			"base_url":         nm.baseURL,
+			"operation":        operation,
+			"error_id":         errorID,
 			"workflow_context": workflowContext,
 		},
 		ManagerContext: workflowContext,
-		Tags:          []string{"n8n", "workflow", "manager"},
-		Severity:      nm.determineSeverity(err),
-		Category:      nm.categorizeError(err),
+		Tags:           []string{"n8n", "workflow", "manager"},
+		Severity:       nm.determineSeverity(err),
+		Category:       nm.categorizeError(err),
 	}
 
 	// Validate error entry
@@ -200,7 +201,7 @@ func (nm *N8NManager) ExecuteWorkflow(ctx context.Context, workflowID string, in
 
 	// Prepare request
 	url := fmt.Sprintf("%s/api/v1/workflows/%s/execute", nm.baseURL, workflowID)
-	
+
 	jsonData, err := json.Marshal(inputData)
 	if err != nil {
 		return nil, nm.ProcessError(ctx, err, "workflow_execute_marshal", workflowContext)
@@ -241,7 +242,7 @@ func (nm *N8NManager) ExecuteWorkflow(ctx context.Context, workflowID string, in
 	}
 
 	nm.updateMetrics(true, time.Since(start))
-	
+
 	nm.logger.Info("Workflow executed successfully",
 		zap.String("workflow_id", workflowID),
 		zap.String("execution_id", execution.ID),
@@ -255,7 +256,7 @@ func (nm *N8NManager) GetWorkflows(ctx context.Context) ([]Workflow, error) {
 	nm.logger.Info("Retrieving workflows")
 
 	url := fmt.Sprintf("%s/api/v1/workflows", nm.baseURL)
-	
+
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nm.ProcessError(ctx, err, "get_workflows_request", map[string]interface{}{})
@@ -282,7 +283,7 @@ func (nm *N8NManager) GetWorkflows(ctx context.Context) ([]Workflow, error) {
 	var response struct {
 		Data []Workflow `json:"data"`
 	}
-	
+
 	if err := json.Unmarshal(body, &response); err != nil {
 		return nil, nm.ProcessError(ctx, err, "get_workflows_unmarshal", map[string]interface{}{})
 	}
@@ -299,7 +300,7 @@ func (nm *N8NManager) GetExecutionStatus(ctx context.Context, executionID string
 		zap.String("execution_id", executionID))
 
 	url := fmt.Sprintf("%s/api/v1/executions/%s", nm.baseURL, executionID)
-	
+
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nm.ProcessError(ctx, err, "get_execution_status_request", map[string]interface{}{
@@ -351,7 +352,7 @@ func (nm *N8NManager) StopExecution(ctx context.Context, executionID string) err
 		zap.String("execution_id", executionID))
 
 	url := fmt.Sprintf("%s/api/v1/executions/%s/stop", nm.baseURL, executionID)
-	
+
 	req, err := http.NewRequestWithContext(ctx, "POST", url, nil)
 	if err != nil {
 		return nm.ProcessError(ctx, err, "stop_execution_request", map[string]interface{}{
@@ -388,7 +389,7 @@ func (nm *N8NManager) HealthCheck(ctx context.Context) error {
 	nm.logger.Info("Performing health check")
 
 	url := fmt.Sprintf("%s/healthz", nm.baseURL)
-	
+
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nm.ProcessError(ctx, err, "health_check_request", map[string]interface{}{})
@@ -422,13 +423,13 @@ func (nm *N8NManager) GetMetrics() N8NMetrics {
 func (nm *N8NManager) updateMetrics(success bool, duration time.Duration) {
 	nm.metrics.mu.Lock()
 	defer nm.metrics.mu.Unlock()
-	
+
 	if success {
 		nm.metrics.SuccessfulExecutions++
 	} else {
 		nm.metrics.FailedExecutions++
 	}
-	
+
 	nm.metrics.AverageExecutionTime = (nm.metrics.AverageExecutionTime + duration) / 2
 	nm.metrics.LastExecutionTime = time.Now()
 }

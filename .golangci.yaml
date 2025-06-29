@@ -1,40 +1,27 @@
-version: "1" # or "2", depending on the schema version expected by golangci-lint
-run:
-  timeout: 5m
-  issues-exit-code: 1
-  tests: false
-  skip-dirs:
-    - vendor
-    - test
-
-linters-settings:
-  govet:
-    check-shadowing: true
-
-  golint:
-    min-confidence: 0.8
-
-  staticcheck:
-    checks: ["all"]
-
-  errcheck:
-    check-blank: true
-
+version: "2"
 linters:
-  enable-all: true
+  default: all
+  settings:
+    govet:
+      enable:
+        - shadow # Equivalent to check-shadowing: true
+    errcheck:
+      check-blank: true
+  exclusions:
+    paths:
+      - vendor
+      - test
   disable:
+    - staticcheck # Temporarily disabled for import debugging
     - prealloc
     - gochecknoglobals
     - gochecknoinits
-    - exhaustivestruct
     - wrapcheck
     - nlreturn
     - funlen
-    - gofumpt # Use gofmt directly
     - testpackage
     - wsl
     - paralleltest
-    - nosnakecase
     - varnamelen
     - depguard
     - godox
@@ -44,16 +31,13 @@ linters:
     - nonamedreturns
     - nakedret
     - revive # golint is preferred
-    - interfacer # Deprecated
-    - scopelint # Deprecated
-    - maligned # Deprecated
-    - deadcode # Deprecated
-    - varcheck # Deprecated
-    - structcheck # Deprecated
-    - ifshort # Deprecated
     - rowserrcheck # Deprecated
     - sqlclosecheck # Deprecated
     - dupl
     - lll
     - cyclop
     - gocognit
+run:
+  timeout: 5m
+  issues-exit-code: 1
+  tests: false

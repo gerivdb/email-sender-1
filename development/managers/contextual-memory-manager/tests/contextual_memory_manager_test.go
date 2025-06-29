@@ -5,8 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/contextual-memory-manager/develodmeop
-	"github.com/contextual-memory-manager/pkg/itterfecfsces"
+	"email_sender/development/managers/contextual-memory-manager/development"
+
+	"github.com/gerivdb/email-sender-1/interfaces"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -222,10 +223,10 @@ func TestContextualMemoryManager_SearchContext(t *testing.T) {
 
 	// Test context search
 	query := interfaces.ContextQuery{
-		Text:          "test search",
-		WorkspacePath: "/test/workspace",
-		ActionTypes:   []string{"edit", "search"},
-		Limit:         10,
+		Text:                "test search",
+		WorkspacePath:       "/test/workspace",
+		ActionTypes:         []string{"edit", "search"},
+		Limit:               10,
 		SimilarityThreshold: 0.7,
 	}
 
