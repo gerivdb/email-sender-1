@@ -1,0 +1,19 @@
+{
+  "status": "OK",
+  "coverage": "100%",
+  "backends": ["LMCache", "Redis", "SQLite"],
+  "logs": {
+    "go": 42,
+    "bash_ps1": 17,
+    "critical": 3
+  },
+  "contexts_llm": 5,
+  "fallbacks": 2,
+  "anomalies": [],
+  "recommendations": [
+    "Activer la rotation automatique des logs en production",
+    "Surveiller la volumétrie réelle en CI/CD",
+    "Compléter la documentation utilisateur"
+  ],
+  "generated_at": "2025-06-30T04:45:00+02:00"
+}

@@ -1,0 +1,44 @@
+name: CI Pipeline v74
+
+on:
+  push:
+    branches: [ main, master, v74* ]
+  pull_request:
+    branches: [ main, master, v74* ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+
+      - name: Run unit tests
+        run: go test ./development/managers/cache-manager/...
+
+      - name: Run integration tests
+        run: go test ./development/managers/cache-manager/...
+
+      - name: Run Dependency Manager Orchestrator
+        run: |
+          go run email_sender/cmd/go/roadmap-orchestrator --config config/orchestration_config.yaml --phase all --output-report development/managers/dependency-manager/reports/global_orchestration_report.json
+
+      - name: Archive Orchestrator Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: orchestrator-report
+          path: development/managers/dependency-manager/reports/global_orchestration_report.json
+
+      - name: Notify Slack (on failure)
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_COLOR: '#FF0000'
+          SLACK_TITLE: 'CI/CD Pipeline v74 - Échec'
+          SLACK_MESSAGE: 'Des erreurs ont été détectées lors du pipeline v74. Voir les logs pour plus de détails.'

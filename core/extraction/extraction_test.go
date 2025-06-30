@@ -1,72 +1,63 @@
-// Tests unitaires pour le package extraction.
 package extraction
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 )
 
-func TestScanExtraction(t *testing.T) {
-	tmpDir := t.TempDir()
-	os.WriteFile(tmpDir+"/a.txt", []byte("abc"), 0644)
-	os.WriteFile(tmpDir+"/b.go", []byte(""), 0644)
-
-	results, err := ScanExtraction(tmpDir)
+func TestExtractAndParseData(t *testing.T) {
+	// Créer un fichier temporaire pour le test
+	tempDir := t.TempDir()
+	tempFile := filepath.Join(tempDir, "test_source.txt")
+	err := os.WriteFile(tempFile, []byte("test content"), 0644)
 	if err != nil {
-		t.Fatalf("ScanExtraction erreur: %v", err)
+		t.Fatalf("Erreur lors de la création du fichier temporaire : %v", err)
 	}
-	if len(results) != 2 {
-		t.Errorf("ScanExtraction retourne %d résultats; attendu 2", len(results))
+
+	// Cas 1 : Chemin source valide
+	data, err := ExtractAndParseData(tempFile)
+	if err != nil {
+		t.Errorf("ExtractAndParseData a échoué pour un chemin valide : %v", err)
 	}
-	if results[1].ParseStatus != "Vide" && results[0].ParseStatus != "Vide" {
-		t.Error("ScanExtraction devrait détecter un fichier vide")
+	if data == nil {
+		t.Error("ExtractAndParseData a retourné des données nil pour un chemin valide")
+	}
+	if data["status"] != "success" {
+		t.Errorf("Statut attendu 'success', obtenu '%v'", data["status"])
+	}
+
+	// Cas 2 : Chemin source inexistant
+	_, err = ExtractAndParseData("chemin/inexistant/fichier.txt")
+	if err == nil {
+		t.Error("ExtractAndParseData devrait échouer pour un chemin inexistant, mais a réussi")
 	}
 }
 
-func TestExportExtractionJSON(t *testing.T) {
-	results := []ExtractionResult{
-		{File: "a.txt", Type: ".txt", Size: 3, ParseStatus: "OK"},
+func TestGenerateExtractionParsingScan(t *testing.T) {
+	tempDir := t.TempDir()
+	outputPath := filepath.Join(tempDir, "extraction-parsing-scan.json")
+	testData := map[string]interface{}{
+		"key": "value",
 	}
-	tmpFile, err := os.CreateTemp("", "extract-*.json")
-	if err != nil {
-		t.Fatalf("Erreur création fichier temporaire: %v", err)
-	}
-	defer os.Remove(tmpFile.Name())
-	tmpFile.Close()
 
-	err = ExportExtractionJSON(results, tmpFile.Name())
+	err := GenerateExtractionParsingScan(outputPath, testData)
 	if err != nil {
-		t.Fatalf("ExportExtractionJSON erreur: %v", err)
+		t.Errorf("GenerateExtractionParsingScan a échoué : %v", err)
 	}
-	data, err := os.ReadFile(tmpFile.Name())
-	if err != nil {
-		t.Fatalf("Erreur lecture fichier JSON: %v", err)
-	}
-	if string(data) == "" {
-		t.Error("Le fichier JSON généré est vide")
-	}
-}
 
-func TestExportExtractionGapAnalysis(t *testing.T) {
-	results := []ExtractionResult{
-		{File: "a.txt", Type: ".txt", Size: 3, ParseStatus: "OK"},
+	// Vérifier si le fichier a été créé
+	_, err = os.Stat(outputPath)
+	if os.IsNotExist(err) {
+		t.Errorf("Le fichier de sortie n'a pas été créé : %v", err)
 	}
-	tmpFile, err := os.CreateTemp("", "gap-*.md")
-	if err != nil {
-		t.Fatalf("Erreur création fichier temporaire: %v", err)
-	}
-	defer os.Remove(tmpFile.Name())
-	tmpFile.Close()
 
-	err = ExportExtractionGapAnalysis(results, tmpFile.Name())
+	// Lire le contenu et vérifier qu'il n'est pas vide (une vérification plus approfondie nécessiterait un parsing JSON)
+	content, err := os.ReadFile(outputPath)
 	if err != nil {
-		t.Fatalf("ExportExtractionGapAnalysis erreur: %v", err)
+		t.Errorf("Erreur lors de la lecture du fichier de sortie : %v", err)
 	}
-	data, err := os.ReadFile(tmpFile.Name())
-	if err != nil {
-		t.Fatalf("Erreur lecture fichier markdown: %v", err)
-	}
-	if string(data) == "" {
-		t.Error("Le fichier markdown généré est vide")
+	if len(content) == 0 {
+		t.Error("Le fichier de sortie est vide")
 	}
 }

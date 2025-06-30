@@ -1,0 +1,8 @@
+# Exemple de configuration LMCache pour CacheManager v74
+
+lmc_host: "localhost"
+lmc_port: 6379
+lmc_password: ""
+lmc_db: 0
+use_ssl: false
+timeout_ms: 2000

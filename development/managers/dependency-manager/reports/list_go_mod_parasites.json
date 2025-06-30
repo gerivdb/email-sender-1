@@ -1,0 +1,5 @@
+[
+  "core\\gapanalyzer\\go.mod",
+  "core\\scanmodules\\go.mod",
+  "development\\managers\\error-manager\\go.mod"
+]

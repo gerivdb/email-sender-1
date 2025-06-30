@@ -16,6 +16,14 @@
         "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
       ],
       "disabled": false
+    },
+    "awslabs.code-doc-gen-mcp-server": {
+      "command": "C:\\Python312\\Scripts\\awslabs.code-doc-gen-mcp-server.exe",
+      "env": {
+        "FASTMCP_LOG_LEVEL": "INFO"
+      },
+      "disabled": false,
+      "autoApprove": []
     }
   }
 }

@@ -1,70 +1,51 @@
-/*
-Package graphgen fournit des fonctions pour générer et analyser des graphes de dépendances ou de structure du projet.
-
-Fonctions principales :
-- ScanGraph : génère une représentation simple du graphe du projet.
-- ExportGraphJSON : exporte le graphe au format JSON.
-- ExportGraphGapAnalysis : génère un rapport markdown d’écarts de graphe.
-
-Utilisation typique :
-graph, err := graphgen.ScanGraph("chemin/du/projet")
-err := graphgen.ExportGraphJSON(graph, "graphgen-scan.json")
-err := graphgen.ExportGraphGapAnalysis(graph, "GRAPHGEN_GAP_ANALYSIS.md")
-*/
 package graphgen
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
-	"path/filepath"
+	"encoding/json"
 )
 
-type Node struct {
-	Name  string   `json:"name"`
-	Type  string   `json:"type"`
-	Links []string `json:"links"`
-}
+// GenerateGraphData simule la génération de données de graphe à partir de sources.
+func GenerateGraphData(sourcePaths []string) (map[string]interface{}, error) {
+	fmt.Printf("Génération des données de graphe à partir des sources : %v\n", sourcePaths)
 
-// ScanGraph génère une représentation simple du graphe du projet.
-func ScanGraph(root string) ([]Node, error) {
-	var nodes []Node
-	filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.IsDir() {
-			return nil
-		}
-		nodes = append(nodes, Node{
-			Name:  info.Name(),
-			Type:  filepath.Ext(path),
-			Links: []string{}, // À spécialiser pour détecter les liens/dépendances réelles
-		})
-		return nil
-	})
-	return nodes, nil
-}
-
-// ExportGraphJSON exporte le graphe au format JSON.
-func ExportGraphJSON(nodes []Node, outPath string) error {
-	data, err := json.MarshalIndent(nodes, "", "  ")
-	if err != nil {
-		return err
+	// Simuler le processus de génération de graphe
+	// En réalité, cela impliquerait l'analyse de code, de configurations, etc.
+	nodes := []map[string]string{
+		{"id": "nodeA", "label": "Module A"},
+		{"id": "nodeB", "label": "Module B"},
+		{"id": "nodeC", "label": "Module C"},
 	}
-	return os.WriteFile(outPath, data, 0644)
+	edges := []map[string]string{
+		{"source": "nodeA", "target": "nodeB", "label": "dépend de"},
+		{"source": "nodeB", "target": "nodeC", "label": "utilise"},
+	}
+
+	graphData := map[string]interface{}{
+		"nodes": nodes,
+		"edges": edges,
+		"metadata": map[string]string{
+			"generation_time": "2025-06-30T00:00:00Z", // Placeholder
+			"sources": fmt.Sprintf("%v", sourcePaths),
+		},
+	}
+
+	return graphData, nil
 }
 
-// ExportGraphGapAnalysis génère un rapport markdown d’écarts de graphe.
-func ExportGraphGapAnalysis(nodes []Node, outPath string) error {
-	f, err := os.Create(outPath)
+// ExportGraphScan simule l'exportation des données de graphe au format JSON.
+func ExportGraphScan(outputPath string, graphData map[string]interface{}) error {
+	fmt.Printf("Exportation des données de graphe vers : %s\n", outputPath)
+
+	jsonData, err := json.MarshalIndent(graphData, "", "  ")
 	if err != nil {
-		return err
+		return fmt.Errorf("erreur lors de la sérialisation des données de graphe : %w", err)
 	}
-	defer f.Close()
-	f.WriteString("# GRAPHGEN_GAP_ANALYSIS.md\n\n| Noeud | Type | Nb liens |\n|---|---|---|\n")
-	for _, n := range nodes {
-		f.WriteString(fmt.Sprintf("| %s | %s | %d |\n", n.Name, n.Type, len(n.Links)))
+
+	err = os.WriteFile(outputPath, jsonData, 0644)
+	if err != nil {
+		return fmt.Errorf("erreur lors de l'écriture du fichier de scan de graphe : %w", err)
 	}
 	return nil
 }

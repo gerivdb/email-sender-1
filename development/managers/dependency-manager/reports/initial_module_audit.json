@@ -1,0 +1,64 @@
+{
+  "timestamp": "2025-06-30T00-43-55",
+  "go_mods_found": [
+    {
+      "path": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\core\\gapanalyzer\\go.mod",
+      "name": "core/gapanalyzer",
+      "go_version": "1.21"
+    },
+    {
+      "path": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\core\\scanmodules\\go.mod",
+      "name": "core/scanmodules",
+      "go_version": "1.21"
+    },
+    {
+      "path": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\managers\\error-manager\\go.mod",
+      "name": "github.com/gerivdb/email-sender-1/managers/error-manager",
+      "go_version": "1.23.0"
+    },
+    {
+      "path": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\go.mod",
+      "name": "email_sender",
+      "go_version": "1.22.2"
+    }
+  ],
+  "go_sums_found": [
+    "development\\hooks\\commit-interceptor\\go.sum",
+    "development\\managers\\advanced-autonomy-manager\\go.sum",
+    "development\\managers\\api-gateway\\go.sum",
+    "development\\managers\\branching-manager\\go.sum",
+    "development\\managers\\contextual-memory-manager\\go.sum",
+    "development\\managers\\dependency-manager\\go.sum",
+    "development\\managers\\dependency-manager\\modules\\go.sum",
+    "development\\managers\\dependency-manager\\tests\\go.sum",
+    "development\\managers\\error-manager\\adapters\\demo\\go.sum",
+    "development\\managers\\error-manager\\adapters\\go.sum",
+    "development\\managers\\error-manager\\bridges\\demo\\go.sum",
+    "development\\managers\\error-manager\\bridges\\go.sum",
+    "development\\managers\\error-manager\\go.sum",
+    "development\\managers\\git-workflow-manager\\go.sum",
+    "development\\managers\\go.sum",
+    "development\\managers\\integration-manager\\go.sum",
+    "development\\managers\\integration_tests\\go.sum",
+    "development\\managers\\maintenance-manager\\go.sum",
+    "development\\managers\\roadmap-manager\\roadmap-cli\\go.sum",
+    "development\\managers\\roadmap-manager\\roadmap-cli\\tui\\navigation\\go.sum",
+    "development\\managers\\security-manager\\development\\go.sum",
+    "development\\managers\\security-manager\\go.sum",
+    "development\\managers\\storage-manager\\development\\go.sum",
+    "development\\managers\\template-performance-manager\\go.sum",
+    "development\\managers\\tools\\go.sum",
+    "development\\managers\\vectorization-go\\go.sum",
+    "development\\tests\\unit\\go.sum",
+    "development\\tools\\qdrant\\rag-go\\go.sum",
+    "go.sum",
+    "planning-ecosystem-sync\\tests\\go.sum",
+    "planning-ecosystem-sync\\tools\\sync-core\\go.sum",
+    "planning-ecosystem-sync\\tools\\validation\\go.sum",
+    "projet\\mcp\\servers\\gateway\\go.sum",
+    "projet\\security\\backups\\sessions\\20250603-113746-0474c679-7b01-4b48-8859-d7628ad37ba1\\critical\\go.sum",
+    "projet\\security\\backups\\sessions\\20250603-114531-4b17a7b1-b99b-4358-a47a-bc5b8168b8df\\critical\\go.sum",
+    "projet\\security\\backups\\sessions\\20250603-114716-77f4019f-bcfc-4325-bcca-ee3e05ba4873\\critical\\go.sum",
+    "scripts\\error-resolution-pipeline\\go.sum"
+  ]
+}
