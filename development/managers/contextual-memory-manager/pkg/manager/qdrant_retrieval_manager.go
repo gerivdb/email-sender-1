@@ -7,15 +7,15 @@ import (
 	"log"
 	"strings"
 
-	"github.com/contextual-memory-manager/pkg/interfaces"
+	cmmInterfaces "email_sender/development/managers/contextual-memory-manager/interfaces"
 )
 
 // QdrantRetrievalManager implements RetrievalManager using Qdrant vector database
 type QdrantRetrievalManager struct {
 	client           *QdrantClient
-	embeddingService interfaces.EmbeddingProvider
-	vectorStore      interfaces.VectorStore
-	config           interfaces.VectorDBConfig
+	embeddingService cmmInterfaces.EmbeddingProvider
+	vectorStore      cmmInterfaces.VectorStore
+	config           cmmInterfaces.VectorDBConfig
 	initialized      bool
 }
 
@@ -42,7 +42,7 @@ type OpenAIEmbeddingProvider struct {
 }
 
 // NewQdrantRetrievalManager creates a new Qdrant-based retrieval manager
-func NewQdrantRetrievalManager(vectorConfig interfaces.VectorDBConfig, embeddingConfig interfaces.EmbeddingConfig) (*QdrantRetrievalManager, error) {
+func NewQdrantRetrievalManager(vectorConfig cmmInterfaces.VectorDBConfig, embeddingConfig cmmInterfaces.EmbeddingConfig) (*QdrantRetrievalManager, error) {
 	log.Printf("Creating Qdrant RetrievalManager with config: %+v", vectorConfig)
 	// Create Qdrant client
 	client, err := NewQdrantClient(vectorConfig.URL, vectorConfig.APIKey, vectorConfig.Collection)
@@ -91,7 +91,7 @@ func NewQdrantClient(endpoint, apiKey, collection string) (*QdrantClient, error)
 }
 
 // NewOpenAIEmbeddingProvider creates a new OpenAI embedding provider
-func NewOpenAIEmbeddingProvider(config interfaces.EmbeddingConfig) (*OpenAIEmbeddingProvider, error) {
+func NewOpenAIEmbeddingProvider(config cmmInterfaces.EmbeddingConfig) (*OpenAIEmbeddingProvider, error) {
 	provider := &OpenAIEmbeddingProvider{
 		apiKey:    config.APIKey,
 		model:     config.Model,
@@ -128,7 +128,7 @@ func (q *QdrantRetrievalManager) Initialize(ctx context.Context) error {
 }
 
 // Search performs semantic search using vector similarity (interface method)
-func (q *QdrantRetrievalManager) Search(ctx context.Context, query string, limit int) ([]interfaces.SearchResult, error) {
+func (q *QdrantRetrievalManager) Search(ctx context.Context, query string, limit int) ([]cmmInterfaces.SearchResult, error) {
 	if !q.initialized {
 		return nil, fmt.Errorf("retrieval manager not initialized")
 	}
@@ -151,7 +151,7 @@ func (q *QdrantRetrievalManager) Search(ctx context.Context, query string, limit
 }
 
 // SemanticSearch performs semantic similarity search (interface method)
-func (q *QdrantRetrievalManager) SemanticSearch(ctx context.Context, queryVector []float32, limit int) ([]interfaces.SearchResult, error) {
+func (q *QdrantRetrievalManager) SemanticSearch(ctx context.Context, queryVector []float32, limit int) ([]cmmInterfaces.SearchResult, error) {
 	if !q.initialized {
 		return nil, fmt.Errorf("retrieval manager not initialized")
 	}
@@ -169,7 +169,7 @@ func (q *QdrantRetrievalManager) SemanticSearch(ctx context.Context, queryVector
 }
 
 // FilteredSearch performs search with metadata filters (interface method)
-func (q *QdrantRetrievalManager) FilteredSearch(ctx context.Context, query string, filters map[string]string, limit int) ([]interfaces.SearchResult, error) {
+func (q *QdrantRetrievalManager) FilteredSearch(ctx context.Context, query string, filters map[string]string, limit int) ([]cmmInterfaces.SearchResult, error) {
 	if !q.initialized {
 		return nil, fmt.Errorf("retrieval manager not initialized")
 	}
@@ -195,7 +195,7 @@ func (q *QdrantRetrievalManager) FilteredSearch(ctx context.Context, query strin
 }
 
 // GetSimilar finds documents similar to a given document (interface method)
-func (q *QdrantRetrievalManager) GetSimilar(ctx context.Context, documentID string, limit int) ([]interfaces.SearchResult, error) {
+func (q *QdrantRetrievalManager) GetSimilar(ctx context.Context, documentID string, limit int) ([]cmmInterfaces.SearchResult, error) {
 	if !q.initialized {
 		return nil, fmt.Errorf("retrieval manager not initialized")
 	}
@@ -207,10 +207,10 @@ func (q *QdrantRetrievalManager) GetSimilar(ctx context.Context, documentID stri
 	// 2. Use that vector to search for similar documents
 	// For now, return mock results
 
-	results := make([]interfaces.SearchResult, 0, limit)
+	results := make([]cmmInterfaces.SearchResult, 0, limit)
 	for i := 0; i < limit && i < 2; i++ {
-		result := interfaces.SearchResult{
-			Document: interfaces.Document{
+		result := cmmInterfaces.SearchResult{
+			Document: cmmInterfaces.Document{
 				ID:      fmt.Sprintf("similar_%d", i+1),
 				Content: fmt.Sprintf("Document similar to %s - content %d", documentID, i+1),
 				Metadata: map[string]string{
@@ -315,7 +315,7 @@ func (c *QdrantClient) Close() error {
 // QdrantVectorStore interface implementations
 
 // Insert stores vectors with metadata
-func (q *QdrantVectorStore) Insert(ctx context.Context, vectors []interfaces.VectorWithMetadata) error {
+func (q *QdrantVectorStore) Insert(ctx context.Context, vectors []cmmInterfaces.VectorWithMetadata) error {
 	log.Printf("Inserting %d vectors into Qdrant", len(vectors))
 
 	// Mock implementation - in real implementation, use Qdrant client
@@ -327,15 +327,15 @@ func (q *QdrantVectorStore) Insert(ctx context.Context, vectors []interfaces.Vec
 }
 
 // Search performs similarity search
-func (q *QdrantVectorStore) Search(ctx context.Context, vector []float32, limit int, filters map[string]string) ([]interfaces.SearchResult, error) {
+func (q *QdrantVectorStore) Search(ctx context.Context, vector []float32, limit int, filters map[string]string) ([]cmmInterfaces.SearchResult, error) {
 	log.Printf("Searching vectors with %d dimensions, limit: %d, filters: %+v", len(vector), limit, filters)
 
 	// Mock implementation - return dummy results
-	results := make([]interfaces.SearchResult, 0, limit)
+	results := make([]cmmInterfaces.SearchResult, 0, limit)
 
 	for i := 0; i < limit && i < 3; i++ { // Return up to 3 mock results
-		result := interfaces.SearchResult{
-			Document: interfaces.Document{
+		result := cmmInterfaces.SearchResult{
+			Document: cmmInterfaces.Document{
 				ID:      fmt.Sprintf("doc_%d", i+1),
 				Content: fmt.Sprintf("Mock document content %d", i+1),
 				Metadata: map[string]string{
@@ -365,7 +365,7 @@ func (q *QdrantVectorStore) Delete(ctx context.Context, ids []string) error {
 }
 
 // Update modifies existing vectors
-func (q *QdrantVectorStore) Update(ctx context.Context, vectors []interfaces.VectorWithMetadata) error {
+func (q *QdrantVectorStore) Update(ctx context.Context, vectors []cmmInterfaces.VectorWithMetadata) error {
 	log.Printf("Updating %d vectors in Qdrant", len(vectors))
 
 	// Mock implementation
@@ -377,11 +377,11 @@ func (q *QdrantVectorStore) Update(ctx context.Context, vectors []interfaces.Vec
 }
 
 // GetStats returns vector store statistics
-func (q *QdrantVectorStore) GetStats(ctx context.Context) (interfaces.VectorStats, error) {
+func (q *QdrantVectorStore) GetStats(ctx context.Context) (cmmInterfaces.VectorStats, error) {
 	log.Println("Getting Qdrant vector store statistics")
 
 	// Mock statistics
-	stats := interfaces.VectorStats{
+	stats := cmmInterfaces.VectorStats{
 		TotalVectors: 1000,
 		Dimension:    q.dimensions,
 		IndexType:    "HNSW",
@@ -452,3 +452,46 @@ func (e *OpenAIEmbeddingProvider) GetDimension() int {
 		return 1536 // Default
 	}
 }
+
+</final_file_content>
+
+IMPORTANT: For any future changes to this file, use the final_file_content shown above as your reference. This content reflects the current state of the file, including any auto-formatting (e.g., if you used single quotes but the formatter converted them to double quotes). Always base your SEARCH/REPLACE operations on this final version to ensure accuracy.
+
+<environment_details>
+# VSCode Visible Files
+C:/response_855baf9a-470c-4272-ab0a-87452348b6dd/tools-0
+C:/response_855baf9a-470c-4272-ab0a-87452348b6dd/tools-1
+C:/response_855baf9a-470c-4272-ab0a-87452348b6dd/tools-3
+C:/response_855baf9a-470c-4272-ab0a-87452348b6dd/tools-4
+development/managers/contextual-memory-manager/pkg/manager/qdrant_retrieval_manager.go
+
+# VSCode Open Tabs
+core/gapanalyzer/gapanalyzer_test.go
+core/reporting/needs_test.go
+core/reporting/needs.go
+core/reporting/spec.go
+core/reporting/spec_test.go
+core/docmanager/validation/validator.go
+core/docmanager/validation/report.go
+core/conflict/rollback_manager.go
+core/docmanager/tests/phase2/dependency_analyzer_test.go
+core/docmanager/tests/phase2/interface_sync_test.go
+core/conflict/permission_detector_test.go
+core/reporting/reportgen.go
+development/managers/contextual-memory-manager/tests/contextual_memory_manager_test.go
+go.mod
+development/managers/contextual-memory-manager/cmd/cli/main.go
+development/managers/contextual-memory-manager/demo.go
+development/managers/contextual-memory-manager/minimal_cli.go
+development/managers/contextual-memory-manager/test_cli.go
+development/managers/contextual-memory-manager/pkg/manager/qdrant_retrieval_manager.go
+
+# Current Time
+6/30/2025, 4:58:27 PM (Europe/Paris, UTC+2:00)
+
+# Context Window Usage
+304,028 / 1,048.576K tokens used (29%)
+
+# Current Mode
+ACT MODE
+</environment_details>

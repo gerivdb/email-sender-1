@@ -4,8 +4,9 @@
 package phase2
 
 import (
-	"core/docmanager"
 	"testing"
+
+	"email_sender/core/docmanager"
 )
 
 func TestDetectDependencies(t *testing.T) {

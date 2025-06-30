@@ -1,103 +1,59 @@
-/*
-Package scanmodules fournit des fonctions pour scanner les modules du projet.
-
-Fonctions principales :
-- ScanDir : parcourt récursivement un dossier et retourne la liste des modules détectés.
-- DetectLang : détermine le langage d’un fichier selon son extension.
-- ExportModules : exporte la liste des modules au format JSON.
-
-Utilisation typique :
-modules, err := scanmodules.ScanDir("chemin/du/projet")
-err := scanmodules.ExportModules(modules, "modules.json")
-*/
+// core/scanmodules/scanmodules.go
 package scanmodules
 
 import (
-	"encoding/json"
+	"fmt"
 	"os"
-	"path/filepath"
+	"os/exec"
+	"strings"
 )
 
-type ModuleInfo struct {
-	Name    string   `json:"name"`
-	Path    string   `json:"path"`
-	Type    string   `json:"type"`
-	Lang    string   `json:"lang"`
-	Role    string   `json:"role"`
-	Deps    []string `json:"deps"`
-	Outputs []string `json:"outputs"`
-}
-
-/*
-ScanDir parcourt récursivement le dossier root et retourne la liste des modules détectés.
-
-Paramètres :
-- root : chemin du dossier à scanner
-
-Retourne :
-- []ModuleInfo : liste des modules détectés
-- error : erreur éventuelle
-*/
-func ScanDir(root string) ([]ModuleInfo, error) {
-	var modules []ModuleInfo
-	filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.IsDir() {
-			return nil
-		}
-		lang := DetectLang(info.Name())
-		modules = append(modules, ModuleInfo{
-			Name:    info.Name(),
-			Path:    path,
-			Type:    "file",
-			Lang:    lang,
-			Role:    "",
-			Deps:    []string{},
-			Outputs: []string{},
-		})
-		return nil
-	})
-	return modules, nil
-}
-
-/*
-DetectLang détermine le langage d’un fichier selon son extension.
-
-Paramètre :
-- filename : nom du fichier
-
-Retourne :
-- string : langage détecté ("Go", "Node.js", "Python", "unknown")
-*/
-func DetectLang(filename string) string {
-	switch filepath.Ext(filename) {
-	case ".go":
-		return "Go"
-	case ".js":
-		return "Node.js"
-	case ".py":
-		return "Python"
-	default:
-		return "unknown"
-	}
-}
-
-/*
-ExportModules exporte la liste des modules au format JSON.
-
-Paramètres :
-- modules : liste des modules à exporter
-- outPath : chemin du fichier de sortie
-
-Retourne :
-- error : erreur éventuelle
-*/
-func ExportModules(modules []ModuleInfo, outPath string) error {
-	data, err := json.MarshalIndent(modules, "", "  ")
+// RunScanModules exécute les commandes de scan et écrit les résultats dans des fichiers.
+func RunScanModules() error {
+	// Exécute la commande tree -L 3 et écrit la sortie dans arborescence.txt
+	treeCmd := exec.Command("tree", "-L", "3")
+	treeOutput, err := treeCmd.CombinedOutput()
 	if err != nil {
-		return err
+		return fmt.Errorf("erreur lors de l'exécution de 'tree': %w", err)
 	}
-	return os.WriteFile(outPath, data, 0644)
+	err = os.WriteFile("arborescence.txt", treeOutput, 0o644)
+	if err != nil {
+		return fmt.Errorf("erreur lors de l'écriture de arborescence.txt: %w", err)
+	}
+	fmt.Println("Arborescence du dépôt écrite dans arborescence.txt")
+
+	// Exécute la commande go list ./... et écrit la sortie dans modules.txt
+	goListCmd := exec.Command("go", "list", "./...")
+	goListOutput, err := goListCmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("erreur lors de l'exécution de 'go list': %w", err)
+	}
+	err = os.WriteFile("modules.txt", goListOutput, 0o644)
+	if err != nil {
+		return fmt.Errorf("erreur lors de l'écriture de modules.txt: %w", err)
+	}
+	fmt.Println("Liste des modules Go écrite dans modules.txt")
+
+	// Convertir modules.txt en modules.json
+	modules := strings.Split(string(goListOutput), "\n")
+	var jsonModules []string
+	for _, module := range modules {
+		if strings.TrimSpace(module) != "" {
+			jsonModules = append(jsonModules, fmt.Sprintf("%q", module))
+		}
+	}
+	jsonContent := fmt.Sprintf("[\n%s\n]", strings.Join(jsonModules, ",\n"))
+	err = os.WriteFile("modules.json", []byte(jsonContent), 0o644)
+	if err != nil {
+		return fmt.Errorf("erreur lors de l'écriture de modules.json: %w", err)
+	}
+	fmt.Println("Liste des modules Go convertie en modules.json")
+	return nil
+}
+
+func main() {
+	if err := RunScanModules(); err != nil {
+		fmt.Printf("Erreur lors de l'exécution de ScanModules: %s\n", err)
+		os.Exit(1)
+	}
 }

@@ -7,7 +7,8 @@ import (
 
 	"email_sender/development/managers/contextual-memory-manager/development"
 
-	"github.com/gerivdb/email-sender-1/interfaces"
+	"email_sender/development/managers/contextual-memory-manager/interfaces"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"

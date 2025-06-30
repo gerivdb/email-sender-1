@@ -7,10 +7,6 @@ import (
 	"context"
 )
 
-type (
-	Document         struct{}
-	ValidationReport struct{}
-)
 
 func ValidateDocument(ctx context.Context, doc *Document) error {
 	// Stub : valide toujours le document

@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/gerivdb/email-sender-1/tools/operations/validation"
+	"email_sender/tools/operations/validation"
 )
 
-func main() {
+func RunSimpleTest() {
 	fmt.Println("Testing basic import...")
 
 	// Try to create a temporary directory

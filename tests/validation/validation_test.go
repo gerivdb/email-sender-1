@@ -3,9 +3,9 @@ package validation_test
 import (
 	"testing"
 	/*
-	   "github.com/gerivdb/email-sender-1/tools/core/toolkit"
-	   "github.com/gerivdb/email-sender-1/tools/operations/validation"
-	   toolkitpkg "github.com/gerivdb/email-sender-1/tools/pkg/manager"
+	   "email_sender/tools/core/toolkit"
+	   "email_sender/tools/operations/validation"
+	   toolkitpkg "email_sender/tools/pkg/manager"
 	*/)
 
 // Validation de l'implémentation - Phase 1.1 - Plan v49
@@ -13,7 +13,7 @@ import (
 // et que les méthodes d'intégration ManagerToolkit.ExecuteOperation fonctionnent comme attendu.
 
 func TestValidationPhase1_1(t *testing.T) {
-	t.Fatal("Erreur : modules privés 'github.com/gerivdb/email-sender-1' non disponibles. Corrigez les imports pour compiler ce test.")
+	t.Fatal("Erreur : modules privés 'email_sender' non disponibles. Corrigez les imports pour compiler ce test.")
 }
 
 /*

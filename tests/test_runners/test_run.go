@@ -1,11 +1,11 @@
-package validation_test
+package main
 
 import (
 	"fmt"
 	"os"
 )
 
-func main() {
+func RunTestRun() {
 	// Test simple pour vérifier que NewStructValidator fonctionne
 	tempDir, err := os.MkdirTemp("", "test_validator")
 	if err != nil {
@@ -21,5 +21,5 @@ func main() {
 	fmt.Printf("\n🎯 Basic test completed successfully\n")
 
 	// Call the renamed main function from validation_test_phase1.1.go
-	runValidationPhase1_1()
+	validation_test.runValidationPhase1_1(nil) // Pass nil or a mock testing.T
 }

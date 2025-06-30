@@ -2,6 +2,6 @@ package main
 
 import "fmt"
 
-func main() {
+func RunTestCli() {
 	fmt.Println("Hello from CLI test!")
 }

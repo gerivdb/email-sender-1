@@ -4,28 +4,34 @@ import (
 	"fmt"
 	"os"
 
-	"docmanager/core/gapanalyzer"
+	"email_sender/core/gapanalyzer"
 )
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("Usage: gapanalyzer <scanmodules.json> [output_md]")
+		fmt.Println("Usage: gapanalyzer <modules.json> [output_json] [output_md]")
 		os.Exit(1)
 	}
-	scanPath := os.Args[1]
-	output := "INIT_GAP_ANALYSIS.md"
+	modulesJSONPath := os.Args[1]
+	outputJSONPath := "gap-analysis-initial.json"
 	if len(os.Args) > 2 {
-		output = os.Args[2]
+		outputJSONPath = os.Args[2]
 	}
-	gaps, err := gapanalyzer.AnalyzeGaps(scanPath)
+	outputMDPath := "GAP_ANALYSIS_INIT.md"
+	if len(os.Args) > 3 {
+		outputMDPath = os.Args[3]
+	}
+
+	analysisResult, err := gapanalyzer.AnalyzeGoModulesGap(modulesJSONPath, "") // "" for default expected modules
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Erreur AnalyzeGaps: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Erreur lors de l'analyse des écarts: %v\n", err)
 		os.Exit(2)
 	}
-	err = gapanalyzer.ExportMarkdown(gaps, output)
+
+	err = gapanalyzer.GenerateGapAnalysisReport(outputJSONPath, outputMDPath, analysisResult)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Erreur ExportMarkdown: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Erreur lors de la génération du rapport: %v\n", err)
 		os.Exit(3)
 	}
-	fmt.Printf("Analyse d'écart générée dans %s\n", output)
+	fmt.Printf("Analyse d'écart générée dans %s et %s\n", outputJSONPath, outputMDPath)
 }

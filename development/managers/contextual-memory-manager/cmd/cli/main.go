@@ -10,8 +10,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/contextual-memory-manager/pkg/interfaces"
-	"github.com/contextual-memory-manager/pkg/manager"
+	"email_sender/development/managers/contextual-memory-manager/interfaces"
+	"email_sender/development/managers/contextual-memory-manager/pkg/manager"
 )
 
 // CLI represents the command-line interface

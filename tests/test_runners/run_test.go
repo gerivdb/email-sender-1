@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func main() {
+func RunTests() {
 	// Create a testing.T instance for running the test
 	t := &testing.T{}
 

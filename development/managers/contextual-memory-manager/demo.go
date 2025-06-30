@@ -7,32 +7,32 @@ import (
 	"log"
 	"time"
 
-	"github.com/contextual-memory-manager/pkg/interfaces"
-	"github.com/contextual-memory-manager/pkg/manager"
+	cmmInterfaces "email_sender/development/managers/contextual-memory-manager/interfaces"
+	cmmManager "email_sender/development/managers/contextual-memory-manager/pkg/manager"
 )
 
 // Demo function to test the contextual memory system end-to-end
-func main() {
+func RunDemo() {
 	fmt.Println("=== Contextual Memory Manager Demo ===")
 
 	// Create manager
-	mgr := manager.NewContextualMemoryManager()
-	
+	mgr := cmmManager.NewContextualMemoryManager()
+
 	// Create test configuration
-	config := interfaces.Config{
+	config := cmmInterfaces.Config{
 		DatabaseURL: "sqlite:///tmp/demo.db",
-		VectorDB: interfaces.VectorDBConfig{
+		VectorDB: cmmInterfaces.VectorDBConfig{
 			Type:       "qdrant",
 			URL:        "http://localhost:6333",
 			Collection: "documents",
 			Dimension:  1536,
 		},
-		Embedding: interfaces.EmbeddingConfig{
+		Embedding: cmmInterfaces.EmbeddingConfig{
 			Provider:  "openai",
 			Model:     "text-embedding-ada-002",
 			Dimension: 1536,
 		},
-		Cache: interfaces.CacheConfig{
+		Cache: cmmInterfaces.CacheConfig{
 			Type:    "memory",
 			TTL:     time.Hour,
 			MaxSize: 1000,
@@ -59,7 +59,7 @@ func main() {
 	}
 
 	// Test 3: Create test document
-	testDoc := interfaces.Document{
+	testDoc := cmmInterfaces.Document{
 		ID:      "test-doc-1",
 		Content: "This is a test document for the contextual memory system",
 		Metadata: map[string]string{

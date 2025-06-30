@@ -5,8 +5,9 @@ package phase2
 
 import (
 	"context"
-	"core/docmanager"
 	"testing"
+
+	"email_sender/core/docmanager"
 )
 
 func TestSyncInterfaces(t *testing.T) {

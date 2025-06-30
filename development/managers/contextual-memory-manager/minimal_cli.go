@@ -5,12 +5,12 @@ import (
 	"fmt"
 )
 
-func main() {
+func RunMinimalCli() {
 	command := flag.String("command", "help", "Command to execute")
 	flag.Parse()
-	
+
 	fmt.Printf("Command: %s\n", *command)
-	
+
 	switch *command {
 	case "help":
 		fmt.Println("Contextual Memory Manager CLI")

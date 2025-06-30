@@ -1,8 +1,0 @@
-{
-  "host": "localhost",
-  "port": 6333,
-  "api_key": "changeme",
-  "collection": "test-collection",
-  "vector_size": 3,
-  "distance": "cosine"
-}

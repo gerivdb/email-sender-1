@@ -3,7 +3,8 @@ package main
 import (
 	"encoding/json"
 	"net/http"
-	"D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/core/config"
+
+	"email_sender/core/config"
 )
 
 func configAPIHandler(w http.ResponseWriter, r *http.Request) {

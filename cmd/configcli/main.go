@@ -4,7 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/core/config"
+
+	"email_sender/core/config"
 )
 
 func main() {

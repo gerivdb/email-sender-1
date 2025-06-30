@@ -1,207 +1,151 @@
 package gapanalyzer
 
 import (
-	"os"
+	"encoding/json"
+	"os" // Use os instead of ioutil for file operations
 	"path/filepath"
+	"reflect"
+	"strings"
 	"testing"
 )
 
-func TestAnalyzeExtractionParsingGap(t *testing.T) {
-	// Cas 1 : Données valides (pas d'écart attendu)
-	validData := map[string]interface{}{
-		"status":  "success",
-		"message": "Données extraites",
-	}
-	result, err := AnalyzeExtractionParsingGap(validData)
+// Helper function to create a dummy modules.json file for testing
+func createDummyModulesFile(t *testing.T, path string, content []string) {
+	jsonContent, err := json.Marshal(content)
 	if err != nil {
-		t.Errorf("AnalyzeExtractionParsingGap a échoué pour des données valides : %v", err)
+		t.Fatalf("Failed to marshal dummy content: %v", err)
 	}
-	if result["gap_found"].(bool) != false {
-		t.Errorf("Écart inattendu détecté pour des données valides. Résultat : %v", result)
-	}
-
-	// Cas 2 : Données manquantes (écart attendu)
-	emptyData := map[string]interface{}{}
-	result, err = AnalyzeExtractionParsingGap(emptyData)
+	err = os.WriteFile(path, jsonContent, 0o644) // Use os.WriteFile
 	if err != nil {
-		t.Errorf("AnalyzeExtractionParsingGap a échoué pour des données vides : %v", err)
-	}
-	if result["gap_found"].(bool) != true {
-		t.Error("Aucun écart détecté pour des données vides, mais un écart était attendu.")
-	}
-	if _, ok := result["gap_details"].(map[string]interface{})["data_missing"]; !ok {
-		t.Error("La clé 'data_missing' est manquante dans les détails de l'écart pour des données vides.")
-	}
-
-	// Cas 3 : Statut non 'success' (écart attendu)
-	failedData := map[string]interface{}{
-		"status":  "failed",
-		"message": "Erreur d'extraction",
-	}
-	result, err = AnalyzeExtractionParsingGap(failedData)
-	if err != nil {
-		t.Errorf("AnalyzeExtractionParsingGap a échoué pour un statut 'failed' : %v", err)
-	}
-	if result["gap_found"].(bool) != true {
-		t.Error("Aucun écart détecté pour un statut 'failed', mais un écart était attendu.")
-	}
-	if _, ok := result["gap_details"].(map[string]interface{})["status_not_success"]; !ok {
-		t.Error("La clé 'status_not_success' est manquante dans les détails de l'écart pour un statut 'failed'.")
-	}
-
-	// Cas 4 : Statut manquant (écart attendu)
-	noStatusData := map[string]interface{}{
-		"message": "Juste un message",
-	}
-	result, err = AnalyzeExtractionParsingGap(noStatusData)
-	if err != nil {
-		t.Errorf("AnalyzeExtractionParsingGap a échoué pour un statut manquant : %v", err)
-	}
-	if result["gap_found"].(bool) != true {
-		t.Error("Aucun écart détecté pour un statut manquant, mais un écart était attendu.")
-	}
-	if _, ok := result["gap_details"].(map[string]interface{})["status_missing"]; !ok {
-		t.Error("La clé 'status_missing' est manquante dans les détails de l'écart pour un statut manquant.")
+		t.Fatalf("Failed to write dummy modules file: %v", err)
 	}
 }
 
-func TestGenerateExtractionParsingGapAnalysis(t *testing.T) {
+func TestAnalyzeGoModulesGap(t *testing.T) {
 	tempDir := t.TempDir()
-	outputPath := filepath.Join(tempDir, "EXTRACTION_PARSING_GAP_ANALYSIS.md")
+	existingModulesPath := filepath.Join(tempDir, "modules.json")
+	expectedModulesPath := filepath.Join(tempDir, "expected_modules.json")
 
-	// Cas 1 : Aucun écart
-	noGapResult := map[string]interface{}{
-		"gap_found":   false,
-		"timestamp":   "2025-06-29T22:00:00Z",
-		"gap_details": map[string]interface{}{},
+	// Define a common set of expected modules for consistent testing
+	commonExpectedModules := []string{
+		"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+		"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/core/scanmodules",
+		"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/core/gapanalyzer",
 	}
-	err := GenerateExtractionParsingGapAnalysis(outputPath, noGapResult)
+	createDummyModulesFile(t, expectedModulesPath, commonExpectedModules)
+
+	// Test Case 1: No gaps
+	createDummyModulesFile(t, existingModulesPath, commonExpectedModules)
+	result, err := AnalyzeGoModulesGap(existingModulesPath, expectedModulesPath) // Pass expectedModulesPath
 	if err != nil {
-		t.Errorf("GenerateExtractionParsingGapAnalysis a échoué pour aucun écart : %v", err)
+		t.Fatalf("AnalyzeGoModulesGap failed: %v", err)
 	}
-	content, _ := os.ReadFile(outputPath)
-	if !containsSubstring(string(content), "Aucun écart majeur détecté") {
-		t.Error("Le rapport ne contient pas le message 'Aucun écart majeur détecté' pour aucun écart.")
+	if result.GapFound {
+		t.Errorf("Expected no gaps, but found gaps: %v", result.GapDetails)
+	}
+	if len(result.MissingModules) != 0 {
+		t.Errorf("Expected no missing modules, got %v", result.MissingModules)
+	}
+	if len(result.ExtraModules) != 0 {
+		t.Errorf("Expected no extra modules, got %v", result.ExtraModules)
 	}
 
-	// Cas 2 : Écarts détectés
-	gapResult := map[string]interface{}{
-		"gap_found": true,
-		"timestamp": "2025-06-29T22:00:00Z",
-		"gap_details": map[string]interface{}{
-			"data_missing":       "Données manquantes.",
-			"status_not_success": "Statut non conforme.",
-		},
-	}
-	err = GenerateExtractionParsingGapAnalysis(outputPath, gapResult)
+	// Test Case 2: Missing modules
+	createDummyModulesFile(t, existingModulesPath, []string{
+		"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+		"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/core/scanmodules",
+	})
+	result, err = AnalyzeGoModulesGap(existingModulesPath, expectedModulesPath) // Pass expectedModulesPath
 	if err != nil {
-		t.Errorf("GenerateExtractionParsingGapAnalysis a échoué pour des écarts détectés : %v", err)
+		t.Fatalf("AnalyzeGoModulesGap failed: %v", err)
 	}
-	content, _ = os.ReadFile(outputPath)
-	if !containsSubstring(string(content), "Détails des Écarts") || !containsSubstring(string(content), "Données manquantes.") {
-		t.Error("Le rapport ne contient pas les détails des écarts attendus.")
+	if !result.GapFound {
+		t.Errorf("Expected gaps, but found none")
+	}
+	expectedMissing := []string{"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/core/gapanalyzer"}
+	if !reflect.DeepEqual(result.MissingModules, expectedMissing) {
+		t.Errorf("Expected missing modules %v, got %v", expectedMissing, result.MissingModules)
+	}
+	if len(result.ExtraModules) != 0 {
+		t.Errorf("Expected no extra modules, got %v", result.ExtraModules)
+	}
+
+	// Test Case 3: Extra modules
+	createDummyModulesFile(t, existingModulesPath, []string{
+		"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+		"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/core/scanmodules",
+		"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/core/gapanalyzer",
+		"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/core/newmodule", // Extra
+	})
+	result, err = AnalyzeGoModulesGap(existingModulesPath, expectedModulesPath) // Pass expectedModulesPath
+	if err != nil {
+		t.Fatalf("AnalyzeGoModulesGap failed: %v", err)
+	}
+	if !result.GapFound {
+		t.Errorf("Expected gaps, but found none")
+	}
+	if len(result.MissingModules) != 0 {
+		t.Errorf("Expected no missing modules, got %v", result.MissingModules)
+	}
+	expectedExtra := []string{"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/core/newmodule"}
+	if !reflect.DeepEqual(result.ExtraModules, expectedExtra) {
+		t.Errorf("Expected extra modules %v, got %v", expectedExtra, result.ExtraModules)
 	}
 }
 
-// Fonction utilitaire pour vérifier si une sous-chaîne est présente
-func containsSubstring(s, substring string) bool {
-	return len(s) >= len(substring) && s[0:len(substring)] == substring
-}
-
-func TestAnalyzeGraphGenerationGap(t *testing.T) {
-	// Cas 1 : Données de graphe valides (pas d'écart attendu)
-	validGraphData := map[string]interface{}{
-		"nodes": []map[string]string{{"id": "n1"}},
-		"edges": []map[string]string{{"source": "n1", "target": "n2"}},
-	}
-	result, err := AnalyzeGraphGenerationGap(validGraphData)
-	if err != nil {
-		t.Errorf("AnalyzeGraphGenerationGap a échoué pour des données valides : %v", err)
-	}
-	if result["gap_found"].(bool) != false {
-		t.Errorf("Écart inattendu détecté pour des données de graphe valides. Résultat : %v", result)
-	}
-
-	// Cas 2 : Données de graphe manquantes (écart attendu)
-	emptyGraphData := map[string]interface{}{}
-	result, err = AnalyzeGraphGenerationGap(emptyGraphData)
-	if err != nil {
-		t.Errorf("AnalyzeGraphGenerationGap a échoué pour des données vides : %v", err)
-	}
-	if result["gap_found"].(bool) != true {
-		t.Error("Aucun écart détecté pour des données vides, mais un écart était attendu.")
-	}
-	if _, ok := result["gap_details"].(map[string]interface{})["graph_data_missing"]; !ok {
-		t.Error("La clé 'graph_data_missing' est manquante dans les détails de l'écart pour des données vides.")
-	}
-
-	// Cas 3 : Pas de nœuds (écart attendu)
-	noNodesData := map[string]interface{}{
-		"nodes": []map[string]string{},
-		"edges": []map[string]string{{"source": "n1", "target": "n2"}},
-	}
-	result, err = AnalyzeGraphGenerationGap(noNodesData)
-	if err != nil {
-		t.Errorf("AnalyzeGraphGenerationGap a échoué pour des données sans nœuds : %v", err)
-	}
-	if result["gap_found"].(bool) != true {
-		t.Error("Aucun écart détecté pour des données sans nœuds, mais un écart était attendu.")
-	}
-	if _, ok := result["gap_details"].(map[string]interface{})["no_nodes"]; !ok {
-		t.Error("La clé 'no_nodes' est manquante dans les détails de l'écart pour des données sans nœuds.")
-	}
-
-	// Cas 4 : Pas d'arêtes (écart attendu)
-	noEdgesData := map[string]interface{}{
-		"nodes": []map[string]string{{"id": "n1"}},
-		"edges": []map[string]string{},
-	}
-	result, err = AnalyzeGraphGenerationGap(noEdgesData)
-	if err != nil {
-		t.Errorf("AnalyzeGraphGenerationGap a échoué pour des données sans arêtes : %v", err)
-	}
-	if result["gap_found"].(bool) != true {
-		t.Error("Aucun écart détecté pour des données sans arêtes, mais un écart était attendu.")
-	}
-	if _, ok := result["gap_details"].(map[string]interface{})["no_edges"]; !ok {
-		t.Error("La clé 'no_edges' est manquante dans les détails de l'écart pour des données sans arêtes.")
-	}
-}
-
-func TestGenerateGraphGenerationGapAnalysis(t *testing.T) {
+func TestGenerateGapAnalysisReport(t *testing.T) {
 	tempDir := t.TempDir()
-	outputPath := filepath.Join(tempDir, "GRAPHGEN_GAP_ANALYSIS.md")
+	outputPathJSON := filepath.Join(tempDir, "gap-analysis-initial.json")
+	outputPathMD := filepath.Join(tempDir, "GAP_ANALYSIS_INIT.md")
 
-	// Cas 1 : Aucun écart
-	noGapResult := map[string]interface{}{
-		"gap_found":   false,
-		"timestamp":   "2025-06-30T00:00:00Z",
-		"gap_details": map[string]interface{}{},
-	}
-	err := GenerateGraphGenerationGapAnalysis(outputPath, noGapResult)
-	if err != nil {
-		t.Errorf("GenerateGraphGenerationGapAnalysis a échoué pour aucun écart : %v", err)
-	}
-	content, _ := os.ReadFile(outputPath)
-	if !containsSubstring(string(content), "Aucun écart majeur détecté") {
-		t.Error("Le rapport ne contient pas le message 'Aucun écart majeur détecté' pour aucun écart.")
-	}
-
-	// Cas 2 : Écarts détectés
-	gapResult := map[string]interface{}{
-		"gap_found": true,
-		"timestamp": "2025-06-30T00:00:00Z",
-		"gap_details": map[string]interface{}{
-			"no_nodes": "Aucun nœud.",
-			"no_edges": "Aucune arête.",
+	analysisResult := &GapAnalysisResult{
+		GapFound: true,
+		GapDetails: map[string]interface{}{
+			"missing_modules": []string{"moduleC"},
+			"extra_modules":   []string{"moduleD"},
 		},
+		Timestamp:       "2025-06-30T00:00:00Z",
+		ExistingModules: []string{"moduleA", "moduleB", "moduleD"},
+		ExpectedModules: []string{"moduleA", "moduleB", "moduleC"},
+		MissingModules:  []string{"moduleC"},
+		ExtraModules:    []string{"moduleD"},
 	}
-	err = GenerateGraphGenerationGapAnalysis(outputPath, gapResult)
+
+	err := GenerateGapAnalysisReport(outputPathJSON, outputPathMD, analysisResult)
 	if err != nil {
-		t.Errorf("GenerateGraphGenerationGapAnalysis a échoué pour des écarts détectés : %v", err)
+		t.Fatalf("GenerateGapAnalysisReport failed: %v", err)
 	}
-	content, _ = os.ReadFile(outputPath)
-	if !containsSubstring(string(content), "Détails des Écarts") || !containsSubstring(string(content), "Aucun nœud.") {
-		t.Error("Le rapport ne contient pas les détails des écarts attendus.")
+
+	// Verify JSON output
+	jsonBytes, err := os.ReadFile(outputPathJSON) // Use os.ReadFile
+	if err != nil {
+		t.Fatalf("Failed to read JSON output: %v", err)
+	}
+	var readResult GapAnalysisResult
+	err = json.Unmarshal(jsonBytes, &readResult)
+	if err != nil {
+		t.Fatalf("Failed to unmarshal JSON output: %v", err)
+	}
+	if !reflect.DeepEqual(readResult.MissingModules, analysisResult.MissingModules) {
+		t.Errorf("JSON missing modules mismatch: expected %v, got %v", analysisResult.MissingModules, readResult.MissingModules)
+	}
+	if !reflect.DeepEqual(readResult.ExtraModules, analysisResult.ExtraModules) {
+		t.Errorf("JSON extra modules mismatch: expected %v, got %v", analysisResult.ExtraModules, readResult.ExtraModules)
+	}
+
+	// Verify Markdown output
+	markdownContent, err := os.ReadFile(outputPathMD) // Use os.ReadFile
+	if err != nil {
+		t.Fatalf("Failed to read Markdown output: %v", err)
+	}
+	mdString := string(markdownContent)
+	if !strings.Contains(mdString, "Rapport d'Analyse d'Écart des Modules Go") {
+		t.Errorf("Markdown content missing header")
+	}
+	if !strings.Contains(mdString, "Modules Manquants (Attendus mais non trouvés) :\n- moduleC") {
+		t.Errorf("Markdown content missing missing modules")
+	}
+	if !strings.Contains(mdString, "Modules Supplémentaires (Trouvés mais non attendus) :\n- moduleD") {
+		t.Errorf("Markdown content missing extra modules")
 	}
 }

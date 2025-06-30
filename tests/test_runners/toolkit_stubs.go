@@ -1,4 +1,4 @@
-package main
+package validation_test
 
 import (
 	"context"
@@ -27,8 +27,8 @@ type ManagerToolkit struct {
 	Stats   *ToolkitStats
 }
 
-// NewManagerToolkitStub crée un nouveau stub de ManagerToolkit
-func NewManagerToolkitStub(rootDir, configPath string, debug bool) *ManagerToolkit {
+// NewManagerToolkit crée un nouveau stub de ManagerToolkit
+func NewManagerToolkit(rootDir, configPath string, debug bool) *ManagerToolkit {
 	return &ManagerToolkit{
 		RootDir: rootDir,
 		Debug:   debug,
