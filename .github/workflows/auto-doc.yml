@@ -1,0 +1,235 @@
+name: Documentation Automation
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - '**.md'
+      - '**.txt' 
+      - '**.rst'
+      - 'docs/**'
+      - '.github/**'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - '**.md'
+      - '**.txt'
+      - '**.rst'
+      - 'docs/**'
+      - '.github/**'
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      operations:
+        description: 'Operations to run (comma-separated or "all")'
+        required: false
+        default: 'all'
+        type: string
+      dry_run:
+        description: 'Run in dry-run mode'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  GO_VERSION: '1.21'
+
+jobs:
+  documentation-automation:
+    runs-on: ubuntu-latest
+    name: Documentation Automation Pipeline
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: ${{ env.GO_VERSION }}
+
+    - name: Cache Go modules
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/go-build
+          ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+
+    - name: Install dependencies
+      run: go mod download
+
+    - name: Run Documentation Inventory
+      id: inventory
+      run: |
+        echo "::group::Documentation Inventory"
+        go run .github/scripts/inventory_docs.go > docs_inventory.json
+        echo "Files found: $(jq '.total_files' docs_inventory.json)"
+        echo "::endgroup::"
+        echo "total_files=$(jq '.total_files' docs_inventory.json)" >> $GITHUB_OUTPUT
+
+    - name: Run Gap Analysis
+      id: gap_analysis
+      run: |
+        echo "::group::Gap Analysis"
+        go run .github/scripts/gap_analysis_docs.go > gap_analysis.json
+        echo "Gaps found: $(jq '.identified_gaps | length' gap_analysis.json)"
+        echo "Coverage score: $(jq '.coverage_score' gap_analysis.json)"
+        echo "::endgroup::"
+        echo "gap_count=$(jq '.identified_gaps | length' gap_analysis.json)" >> $GITHUB_OUTPUT
+        echo "coverage_score=$(jq '.coverage_score' gap_analysis.json)" >> $GITHUB_OUTPUT
+
+    - name: Generate Documentation Index
+      run: |
+        echo "::group::Generate Documentation Index"
+        go run .github/scripts/gen_docs_index.go
+        echo "Documentation index generated at .github/DOCS_INDEX.md"
+        echo "::endgroup::"
+
+    - name: Run Documentation Linter
+      id: lint
+      run: |
+        echo "::group::Documentation Linting"
+        go run .github/scripts/lint_docs.go > lint_report.json
+        echo "Files linted: $(jq '.files_linted' lint_report.json)"
+        echo "Total issues: $(jq '.total_issues' lint_report.json)"
+        echo "Overall score: $(jq '.summary.overall_score' lint_report.json)"
+        echo "::endgroup::"
+        echo "files_linted=$(jq '.files_linted' lint_report.json)" >> $GITHUB_OUTPUT
+        echo "total_issues=$(jq '.total_issues' lint_report.json)" >> $GITHUB_OUTPUT
+        echo "overall_score=$(jq '.summary.overall_score' lint_report.json)" >> $GITHUB_OUTPUT
+
+    - name: Generate Coverage Report
+      id: coverage
+      run: |
+        echo "::group::Coverage Analysis"
+        go run .github/scripts/gen_doc_coverage.go > coverage_report.json
+        echo "Overall coverage: $(jq '.overall_coverage' coverage_report.json)%"
+        echo "Missing files: $(jq '.missing_files | length' coverage_report.json)"
+        echo "::endgroup::"
+        echo "overall_coverage=$(jq '.overall_coverage' coverage_report.json)" >> $GITHUB_OUTPUT
+        echo "missing_files=$(jq '.missing_files | length' coverage_report.json)" >> $GITHUB_OUTPUT
+
+    - name: Run Full Orchestration
+      if: github.event.inputs.operations == 'all' || github.event.inputs.operations == ''
+      run: |
+        echo "::group::Full Documentation Orchestration"
+        DRY_RUN_FLAG=""
+        if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+          DRY_RUN_FLAG="--dry-run"
+        fi
+        go run .github/scripts/auto-doc-orchestrator.go $DRY_RUN_FLAG > orchestration_report.json
+        echo "Orchestration completed"
+        echo "::endgroup::"
+
+    - name: Generate Summary
+      run: |
+        echo "## 📊 Documentation Automation Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📋 Inventory Results" >> $GITHUB_STEP_SUMMARY
+        echo "- **Total Documentation Files**: ${{ steps.inventory.outputs.total_files }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🔍 Gap Analysis" >> $GITHUB_STEP_SUMMARY
+        echo "- **Coverage Score**: ${{ steps.gap_analysis.outputs.coverage_score }}%" >> $GITHUB_STEP_SUMMARY
+        echo "- **Identified Gaps**: ${{ steps.gap_analysis.outputs.gap_count }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### ✨ Linting Results" >> $GITHUB_STEP_SUMMARY
+        echo "- **Files Linted**: ${{ steps.lint.outputs.files_linted }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Total Issues**: ${{ steps.lint.outputs.total_issues }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Quality Score**: ${{ steps.lint.outputs.overall_score }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📈 Coverage Analysis" >> $GITHUB_STEP_SUMMARY
+        echo "- **Overall Coverage**: ${{ steps.coverage.outputs.overall_coverage }}%" >> $GITHUB_STEP_SUMMARY
+        echo "- **Missing Files**: ${{ steps.coverage.outputs.missing_files }}" >> $GITHUB_STEP_SUMMARY
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: documentation-reports
+        path: |
+          docs_inventory.json
+          gap_analysis.json
+          lint_report.json
+          coverage_report.json
+          orchestration_report.json
+          .github/DOCS_INDEX.md
+        retention-days: 30
+
+    - name: Update Documentation Index
+      if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+      run: |
+        if [ -n "$(git status --porcelain .github/DOCS_INDEX.md)" ]; then
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .github/DOCS_INDEX.md
+          git commit -m "📝 Update documentation index [automated]" || exit 0
+          git push
+        fi
+
+    - name: Comment on PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const coverage = ${{ steps.coverage.outputs.overall_coverage }};
+          const issues = ${{ steps.lint.outputs.total_issues }};
+          const gaps = ${{ steps.gap_analysis.outputs.gap_count }};
+          
+          let emoji = '✅';
+          let status = 'Good';
+          
+          if (coverage < 50 || issues > 500 || gaps > 10) {
+            emoji = '⚠️';
+            status = 'Needs Attention';
+          } else if (coverage < 70 || issues > 200 || gaps > 5) {
+            emoji = '📊';
+            status = 'Moderate';
+          }
+          
+          const body = `## ${emoji} Documentation Analysis - ${status}
+          
+          ### Summary
+          - **Coverage**: ${coverage.toFixed(1)}%
+          - **Quality Issues**: ${issues}
+          - **Missing Files**: ${gaps}
+          
+          ### Details
+          📋 **Files Analyzed**: ${{ steps.inventory.outputs.total_files }}
+          ✨ **Files Linted**: ${{ steps.lint.outputs.files_linted }}
+          📈 **Quality Score**: ${{ steps.lint.outputs.overall_score }}
+          
+          ${coverage < 60 ? '⚡ **Recommendation**: Consider improving documentation coverage' : ''}
+          ${issues > 300 ? '🧹 **Recommendation**: Address high-priority linting issues' : ''}
+          ${gaps > 8 ? '📝 **Recommendation**: Create missing critical documentation files' : ''}
+          
+          <details>
+          <summary>View Documentation Index</summary>
+          
+          The updated documentation index is available at [.github/DOCS_INDEX.md](.github/DOCS_INDEX.md)
+          </details>`;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: body
+          });
+
+  badge-update:
+    runs-on: ubuntu-latest
+    needs: documentation-automation
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    name: Update Documentation Badges
+    
+    steps:
+    - name: Update README Badges
+      run: |
+        echo "Badge update would happen here"
+        echo "Coverage: ${{ needs.documentation-automation.outputs.overall_coverage }}%"
+        # In a real implementation, this would update shields.io badges or similar
