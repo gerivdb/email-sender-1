@@ -36,8 +36,8 @@ func createDummyModulesFile(t *testing.T, path string, content []ModuleInfo) { /
 func TestAnalyzeGaps(t *testing.T) { // Renamed function
 	tempDir := t.TempDir()
 	modulesJSONPath := filepath.Join(tempDir, "modules.json")
-	_ = filepath.Join(tempDir, "gap-analysis.json")
-	_ = filepath.Join(tempDir, "gap-analysis.md")
+	gapAnalysisJSONPath := filepath.Join(tempDir, "gap-analysis.json")
+	gapAnalysisMDPath := filepath.Join(tempDir, "gap-analysis.md")
 
 	// Define a common set of expected modules for consistent testing
 	commonExpectedModules := GetExpectedModules() // Use exported function
@@ -132,8 +132,6 @@ func TestAnalyzeGaps(t *testing.T) { // Renamed function
 		t.Errorf("Expected 'extra/unwanted/module' to be extra, but it was not")
 	}
 }
-
-// TestGenerateGapAnalysisReport removed - fonction obsolète
 
 func TestGenerateMarkdownReport(t *testing.T) { // Renamed function
 	analysisResult := GapAnalysis{ // Use GapAnalysis type
