@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gerivdb/email-sender-1/maintenance-manager/src/ai"
-	"github.com/gerivdb/email-sender-1/maintenance-manager/src/core"
+	"EMAIL_SENDER_1/maintenance-manager/src/ai"
+	"EMAIL_SENDER_1/maintenance-manager/src/core"
 )
 
 // CleanupManager centralise l’organisation intelligente, le nettoyage, la purge et l’optimisation documentaire.
@@ -49,15 +49,15 @@ type CleanupManager struct {
 
 // CleanupStats tracks cleanup operations statistics
 type CleanupStats struct {
-	TotalFilesScanned   int     `json:"total_files_scanned"`
-	FilesDeleted        int     `json:"files_deleted"`
-	FilesMoved          int     `json:"files_moved"`
-	DirectoriesCreated  int     `json:"directories_created"`
-	SpaceFreed          int64   `json:"space_freed_bytes"`
-	DuplicatesRemoved   int     `json:"duplicates_removed"`
-	OperationStartTime  time.Time `json:"operation_start_time"`
-	OperationEndTime    time.Time `json:"operation_end_time"`
-	ErrorCount          int     `json:"error_count"`
+	TotalFilesScanned  int       `json:"total_files_scanned"`
+	FilesDeleted       int       `json:"files_deleted"`
+	FilesMoved         int       `json:"files_moved"`
+	DirectoriesCreated int       `json:"directories_created"`
+	SpaceFreed         int64     `json:"space_freed_bytes"`
+	DuplicatesRemoved  int       `json:"duplicates_removed"`
+	OperationStartTime time.Time `json:"operation_start_time"`
+	OperationEndTime   time.Time `json:"operation_end_time"`
+	ErrorCount         int       `json:"error_count"`
 }
 
 // DuplicateGroup represents a group of duplicate files
@@ -95,52 +95,52 @@ type CleanupTask struct {
 
 // SafetyCheck represents safety validation for cleanup operations
 type SafetyCheck struct {
-	FilePath    string   `json:"file_path"`
-	IsSafe      bool     `json:"is_safe"`
-	Confidence  float64  `json:"confidence"`
-	Warnings    []string `json:"warnings"`
-	Reasons     []string `json:"reasons"`
+	FilePath   string   `json:"file_path"`
+	IsSafe     bool     `json:"is_safe"`
+	Confidence float64  `json:"confidence"`
+	Warnings   []string `json:"warnings"`
+	Reasons    []string `json:"reasons"`
 }
 
 // Additional structures for Level 2 and Level 3 functionality
 type FilePattern struct {
-	Pattern     string    `json:"pattern"`
-	Type        string    `json:"type"`
-	Confidence  float64   `json:"confidence"`
-	Examples    []string  `json:"examples"`
-	Frequency   int       `json:"frequency"`
-	Risk        string    `json:"risk"`
-	Suggestion  string    `json:"suggestion"`
-	CreatedAt   time.Time `json:"created_at"`
+	Pattern    string    `json:"pattern"`
+	Type       string    `json:"type"`
+	Confidence float64   `json:"confidence"`
+	Examples   []string  `json:"examples"`
+	Frequency  int       `json:"frequency"`
+	Risk       string    `json:"risk"`
+	Suggestion string    `json:"suggestion"`
+	CreatedAt  time.Time `json:"created_at"`
 }
 
 type DirectoryAnalysis struct {
-	Path                string                 `json:"path"`
-	TotalFiles          int                    `json:"total_files"`
-	TotalSize           int64                  `json:"total_size"`
-	Depth               int                    `json:"depth"`
-	FileTypes           map[string]int         `json:"file_types"`
-	DuplicateRatio      float64               `json:"duplicate_ratio"`
-	OrganizationScore   float64               `json:"organization_score"`
-	Patterns            []FilePattern         `json:"patterns"`
-	Recommendations     []string              `json:"recommendations"`
-	HealthScore         float64               `json:"health_score"`
-	LastAnalyzed        time.Time             `json:"last_analyzed"`
-	IssuesFound         []string              `json:"issues_found"`
-	OptimizationTasks   []CleanupTask         `json:"optimization_tasks"`
+	Path              string         `json:"path"`
+	TotalFiles        int            `json:"total_files"`
+	TotalSize         int64          `json:"total_size"`
+	Depth             int            `json:"depth"`
+	FileTypes         map[string]int `json:"file_types"`
+	DuplicateRatio    float64        `json:"duplicate_ratio"`
+	OrganizationScore float64        `json:"organization_score"`
+	Patterns          []FilePattern  `json:"patterns"`
+	Recommendations   []string       `json:"recommendations"`
+	HealthScore       float64        `json:"health_score"`
+	LastAnalyzed      time.Time      `json:"last_analyzed"`
+	IssuesFound       []string       `json:"issues_found"`
+	OptimizationTasks []CleanupTask  `json:"optimization_tasks"`
 }
 
 type OrganizationReport struct {
-	DirectoryPath       string                 `json:"directory_path"`
-	Analysis            DirectoryAnalysis      `json:"analysis"`
-	BeforeStats         CleanupStats          `json:"before_stats"`
-	AfterStats          CleanupStats          `json:"after_stats"`
-	TasksExecuted       []CleanupTask         `json:"tasks_executed"`
-	TimeSpent           time.Duration         `json:"time_spent"`
-	SpaceSaved          int64                 `json:"space_saved"`
-	FilesReorganized    int                   `json:"files_reorganized"`
-	EfficiencyGain      float64               `json:"efficiency_gain"`
-	GeneratedAt         time.Time             `json:"generated_at"`
+	DirectoryPath    string            `json:"directory_path"`
+	Analysis         DirectoryAnalysis `json:"analysis"`
+	BeforeStats      CleanupStats      `json:"before_stats"`
+	AfterStats       CleanupStats      `json:"after_stats"`
+	TasksExecuted    []CleanupTask     `json:"tasks_executed"`
+	TimeSpent        time.Duration     `json:"time_spent"`
+	SpaceSaved       int64             `json:"space_saved"`
+	FilesReorganized int               `json:"files_reorganized"`
+	EfficiencyGain   float64           `json:"efficiency_gain"`
+	GeneratedAt      time.Time         `json:"generated_at"`
 }
 
 // NewCleanupManager creates a new cleanup manager instance
@@ -691,22 +691,22 @@ func (cm *CleanupManager) executeOrganizationTask(ctx context.Context, task Clea
 // getTypeDirName returns an appropriate directory name for a file type
 func (cm *CleanupManager) getTypeDirName(ext string) string {
 	typeDirs := map[string]string{
-		".go":   "go-files",
-		".js":   "javascript",
-		".ts":   "typescript",
-		".py":   "python",
-		".java": "java",
-		".md":   "documentation",
-		".txt":  "text-files",
-		".json": "json-data",
-		".yaml": "yaml-config",
-		".yml":  "yaml-config",
-		".png":  "images",
-		".jpg":  "images",
-		".gif":  "images",
-		".svg":  "images",
-		".pdf":  "documents",
-		".log":  "logs",
+		".go":          "go-files",
+		".js":          "javascript",
+		".ts":          "typescript",
+		".py":          "python",
+		".java":        "java",
+		".md":          "documentation",
+		".txt":         "text-files",
+		".json":        "json-data",
+		".yaml":        "yaml-config",
+		".yml":         "yaml-config",
+		".png":         "images",
+		".jpg":         "images",
+		".gif":         "images",
+		".svg":         "images",
+		".pdf":         "documents",
+		".log":         "logs",
 		"no_extension": "misc",
 	}
 
@@ -903,12 +903,12 @@ func (cm *CleanupManager) ApplyPatternBasedCleanup(ctx context.Context, director
 // AnalyzeDirectoryStructure performs comprehensive directory structure analysis
 func (cm *CleanupManager) AnalyzeDirectoryStructure(ctx context.Context, directory string) (*DirectoryAnalysis, error) {
 	analysis := &DirectoryAnalysis{
-		Path:          directory,
-		FileTypes:     make(map[string]int),
-		Patterns:      make([]FilePattern, 0),
+		Path:            directory,
+		FileTypes:       make(map[string]int),
+		Patterns:        make([]FilePattern, 0),
 		Recommendations: make([]string, 0),
-		IssuesFound:   make([]string, 0),
-		LastAnalyzed:  time.Now(),
+		IssuesFound:     make([]string, 0),
+		LastAnalyzed:    time.Now(),
 	}
 
 	// Analyze directory depth and structure
@@ -1089,8 +1089,8 @@ func (cm *CleanupManager) AnalyzeDirectoryHealth(ctx context.Context, directory 
 		"issues_found":       analysis.IssuesFound,
 		"recommendations":    analysis.Recommendations,
 		"patterns_detected":  len(analysis.Patterns),
-		"status":            cm.getHealthStatus(analysis.HealthScore),
-		"last_analyzed":     analysis.LastAnalyzed,
+		"status":             cm.getHealthStatus(analysis.HealthScore),
+		"last_analyzed":      analysis.LastAnalyzed,
 	}
 
 	// Add detailed file type distribution
@@ -1259,7 +1259,7 @@ func (cm *CleanupManager) generatePatternCleanupTasks(pattern FilePattern, direc
 func (cm *CleanupManager) extractBaseName(nameWithoutExt, pattern string) string {
 	// Simple extraction - remove common version patterns
 	name := nameWithoutExt
-	
+
 	// Remove patterns at the end
 	if strings.Contains(name, "_v") {
 		if idx := strings.LastIndex(name, "_v"); idx > 0 {
@@ -1274,7 +1274,7 @@ func (cm *CleanupManager) extractBaseName(nameWithoutExt, pattern string) string
 			name = name[:idx]
 		}
 	}
-	
+
 	return strings.TrimSpace(name)
 }
 
@@ -1284,7 +1284,7 @@ func (cm *CleanupManager) sortFilesByVersion(files []string) []string {
 		path    string
 		modTime time.Time
 	}
-	
+
 	var filesWithTime []fileWithTime
 	for _, file := range files {
 		if info, err := os.Stat(file); err == nil {
@@ -1294,17 +1294,17 @@ func (cm *CleanupManager) sortFilesByVersion(files []string) []string {
 			})
 		}
 	}
-	
+
 	// Sort by modification time (oldest first)
 	sort.Slice(filesWithTime, func(i, j int) bool {
 		return filesWithTime[i].modTime.Before(filesWithTime[j].modTime)
 	})
-	
+
 	var sortedFiles []string
 	for _, f := range filesWithTime {
 		sortedFiles = append(sortedFiles, f.path)
 	}
-	
+
 	return sortedFiles
 }
 

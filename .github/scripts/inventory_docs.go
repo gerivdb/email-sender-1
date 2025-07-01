@@ -1,4 +1,4 @@
-package main
+package scripts
 
 import (
 	"encoding/json"
@@ -11,26 +11,26 @@ import (
 
 // DocumentFile represents a documentation file with metadata
 type DocumentFile struct {
-	Path         string            `json:"path"`
-	Name         string            `json:"name"`
-	Extension    string            `json:"extension"`
-	Size         int64             `json:"size"`
-	LastModified time.Time         `json:"last_modified"`
-	Type         string            `json:"type"`
-	Category     string            `json:"category"`
-	Tags         []string          `json:"tags"`
-	Metadata     map[string]string `json:"metadata"`
+	Path		string			`json:"path"`
+	Name		string			`json:"name"`
+	Extension	string			`json:"extension"`
+	Size		int64			`json:"size"`
+	LastModified	time.Time		`json:"last_modified"`
+	Type		string			`json:"type"`
+	Category	string			`json:"category"`
+	Tags		[]string		`json:"tags"`
+	Metadata	map[string]string	`json:"metadata"`
 }
 
 // InventoryReport represents the complete inventory
 type InventoryReport struct {
-	GeneratedAt    time.Time       `json:"generated_at"`
-	TotalFiles     int             `json:"total_files"`
-	TotalSize      int64           `json:"total_size"`
-	Categories     map[string]int  `json:"categories"`
-	Extensions     map[string]int  `json:"extensions"`
-	Files          []DocumentFile  `json:"files"`
-	Summary        string          `json:"summary"`
+	GeneratedAt	time.Time	`json:"generated_at"`
+	TotalFiles	int		`json:"total_files"`
+	TotalSize	int64		`json:"total_size"`
+	Categories	map[string]int	`json:"categories"`
+	Extensions	map[string]int	`json:"extensions"`
+	Files		[]DocumentFile	`json:"files"`
+	Summary		string		`json:"summary"`
 }
 
 func main() {
@@ -75,7 +75,7 @@ func generateInventory(root string) (*InventoryReport, error) {
 		// Get relative path for consistent processing
 		relPath, err := filepath.Rel(root, path)
 		if err != nil {
-			relPath = path // fallback to absolute path
+			relPath = path	// fallback to absolute path
 		}
 
 		// Check if file matches documentation patterns
@@ -93,15 +93,15 @@ func generateInventory(root string) (*InventoryReport, error) {
 		tags := extractTags(relPath, info.Name())
 
 		doc := DocumentFile{
-			Path:         relPath, // Use relative path in output
-			Name:         info.Name(),
-			Extension:    ext,
-			Size:         info.Size(),
-			LastModified: info.ModTime(),
-			Type:         getFileType(ext),
-			Category:     category,
-			Tags:         tags,
-			Metadata:     extractMetadata(relPath),
+			Path:		relPath,	// Use relative path in output
+			Name:		info.Name(),
+			Extension:	ext,
+			Size:		info.Size(),
+			LastModified:	info.ModTime(),
+			Type:		getFileType(ext),
+			Category:	category,
+			Tags:		tags,
+			Metadata:	extractMetadata(relPath),
 		}
 
 		files = append(files, doc)
@@ -117,13 +117,13 @@ func generateInventory(root string) (*InventoryReport, error) {
 	}
 
 	report := &InventoryReport{
-		GeneratedAt: time.Now(),
-		TotalFiles:  len(files),
-		TotalSize:   totalSize,
-		Categories:  categories,
-		Extensions:  extensions,
-		Files:       files,
-		Summary:     generateSummary(len(files), categories, extensions),
+		GeneratedAt:	time.Now(),
+		TotalFiles:	len(files),
+		TotalSize:	totalSize,
+		Categories:	categories,
+		Extensions:	extensions,
+		Files:		files,
+		Summary:	generateSummary(len(files), categories, extensions),
 	}
 
 	return report, nil
@@ -132,7 +132,7 @@ func generateInventory(root string) (*InventoryReport, error) {
 func isDocumentationFile(path, name string) bool {
 	ext := strings.ToLower(filepath.Ext(name))
 	docExts := []string{".md", ".txt", ".rst", ".adoc", ".org"}
-	
+
 	// Check extension
 	for _, docExt := range docExts {
 		if ext == docExt {
@@ -169,7 +169,7 @@ func shouldSkipPath(path string) bool {
 	for _, skip := range skipPaths {
 		// Check if path starts with skip directory
 		if strings.HasPrefix(pathLower, skip+"/") ||
-			// Check if path contains skip directory  
+			// Check if path contains skip directory
 			strings.Contains(pathLower, "/"+skip+"/") ||
 			// Check if path ends with skip directory
 			strings.HasSuffix(pathLower, "/"+skip) ||
@@ -206,7 +206,7 @@ func categorizeFile(path, name string) string {
 	}
 
 	// Project management - check for projet directory
-	if strings.HasPrefix(pathLower, "projet/") || strings.Contains(pathLower, "/projet/") || 
+	if strings.HasPrefix(pathLower, "projet/") || strings.Contains(pathLower, "/projet/") ||
 		strings.HasPrefix(pathLower, "planning/") || strings.Contains(pathLower, "/planning/") {
 		return "project-management"
 	}
@@ -236,7 +236,7 @@ func categorizeFile(path, name string) string {
 
 func extractTags(path, name string) []string {
 	var tags []string
-	
+
 	pathLower := strings.ToLower(path)
 	nameLower := strings.ToLower(name)
 
@@ -276,11 +276,11 @@ func extractTags(path, name string) []string {
 
 func extractMetadata(path string) map[string]string {
 	metadata := make(map[string]string)
-	
+
 	// Add directory depth
 	depth := strings.Count(path, "/")
 	metadata["depth"] = fmt.Sprintf("%d", depth)
-	
+
 	// Add parent directory
 	if dir := filepath.Dir(path); dir != "." {
 		metadata["parent_dir"] = filepath.Base(dir)
@@ -309,12 +309,12 @@ func getFileType(ext string) string {
 func generateSummary(totalFiles int, categories, extensions map[string]int) string {
 	summary := fmt.Sprintf("Found %d documentation files across %d categories and %d file types.\n",
 		totalFiles, len(categories), len(extensions))
-	
+
 	summary += "\nTop categories:\n"
 	for cat, count := range categories {
 		summary += fmt.Sprintf("- %s: %d files\n", cat, count)
 	}
-	
+
 	summary += "\nFile types:\n"
 	for ext, count := range extensions {
 		summary += fmt.Sprintf("- %s: %d files\n", ext, count)

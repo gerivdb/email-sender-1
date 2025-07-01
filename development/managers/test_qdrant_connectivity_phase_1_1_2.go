@@ -1,4 +1,4 @@
-package main
+package managers
 
 import (
 	"context"
@@ -20,9 +20,9 @@ func main() {
 
 	// Configuration Qdrant
 	config := &qdrant.Config{
-		Host:   "localhost",
-		Port:   6333,
-		UseTLS: false,
+		Host:	"localhost",
+		Port:	6333,
+		UseTLS:	false,
 	}
 
 	// Test de connexion
@@ -55,12 +55,12 @@ func main() {
 	collectionName := "test_collection_phase_1_1_2"
 
 	createReq := &qdrant.CreateCollectionRequest{
-		CollectionName: collectionName,
+		CollectionName:	collectionName,
 		VectorsConfig: &qdrant.VectorsConfig{
 			VectorsConfig: &qdrant.VectorsConfig_Params{
 				Params: &qdrant.VectorParams{
-					Size:     384, // Dimension pour embeddings standard
-					Distance: qdrant.Distance_Cosine,
+					Size:		384,	// Dimension pour embeddings standard
+					Distance:	qdrant.Distance_Cosine,
 				},
 			},
 		},
@@ -68,7 +68,7 @@ func main() {
 
 	_, err = client.CreateCollection(ctx, createReq)
 	if err != nil {
-		// Ignorer si la collection existe dÃ©jÃ 
+		// Ignorer si la collection existe dÃ©jÃ
 		if !contains(err.Error(), "already exists") {
 			logger.Error("Ãchec de crÃ©ation de collection", zap.Error(err))
 			fmt.Printf("â ï¸  CrÃ©ation collection: %v\n", err)
@@ -83,7 +83,7 @@ func main() {
 	fmt.Println("\nð Test d'insertion de vecteurs...")
 	testVectors := make([]float32, 384)
 	for i := range testVectors {
-		testVectors[i] = float32(i) * 0.01 // Vecteur de test simple
+		testVectors[i] = float32(i) * 0.01	// Vecteur de test simple
 	}
 
 	points := []*qdrant.PointStruct{
@@ -116,8 +116,8 @@ func main() {
 	}
 
 	upsertReq := &qdrant.UpsertPointsRequest{
-		CollectionName: collectionName,
-		Points:         points,
+		CollectionName:	collectionName,
+		Points:		points,
 	}
 
 	_, err = client.UpsertPoints(ctx, upsertReq)
@@ -131,10 +131,10 @@ func main() {
 	// Test de recherche
 	fmt.Println("\nð Test de recherche vectorielle...")
 	searchReq := &qdrant.SearchPointsRequest{
-		CollectionName: collectionName,
-		Vector:         testVectors,
-		Limit:          5,
-		WithPayload:    &qdrant.WithPayloadSelector{SelectorOptions: &qdrant.WithPayloadSelector_Enable{Enable: true}},
+		CollectionName:	collectionName,
+		Vector:		testVectors,
+		Limit:		5,
+		WithPayload:	&qdrant.WithPayloadSelector{SelectorOptions: &qdrant.WithPayloadSelector_Enable{Enable: true}},
 	}
 
 	searchResponse, err := client.SearchPoints(ctx, searchReq)

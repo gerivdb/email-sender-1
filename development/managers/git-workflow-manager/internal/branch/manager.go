@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gerivdb/email-sender-1/managers/interfaces"
+	"EMAIL_SENDER_1/managers/interfaces"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 )

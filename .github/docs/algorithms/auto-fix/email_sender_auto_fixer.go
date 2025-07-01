@@ -2,7 +2,7 @@
 // EMAIL_SENDER_1 Auto-Fix Pattern Matching Algorithm Implementation
 // Algorithm 5 of 8 - Automatic error correction for repetitive issues
 
-package main
+package auto_fix
 
 import (
 	"fmt"
@@ -18,7 +18,7 @@ import (
 type EmailSenderComponent int
 
 const (
-	RAGEngine EmailSenderComponent = iota
+	RAGEngine	EmailSenderComponent	= iota
 	N8NWorkflow
 	NotionAPI
 	GmailProcessing
@@ -37,44 +37,44 @@ func (c EmailSenderComponent) String() string {
 
 // EmailSenderFixRule represents a pattern-matching fix rule
 type EmailSenderFixRule struct {
-	Pattern     *regexp.Regexp
-	Replacement string
-	Description string
-	Safe        bool
-	Component   EmailSenderComponent
-	Language    string
-	Priority    int // 1 = critical, 5 = low priority
+	Pattern		*regexp.Regexp
+	Replacement	string
+	Description	string
+	Safe		bool
+	Component	EmailSenderComponent
+	Language	string
+	Priority	int	// 1 = critical, 5 = low priority
 }
 
 // EmailSenderAutoFixer manages pattern-based error correction
 type EmailSenderAutoFixer struct {
-	Rules   []EmailSenderFixRule
-	DryRun  bool
-	Verbose bool
-	Stats   AutoFixStats
+	Rules	[]EmailSenderFixRule
+	DryRun	bool
+	Verbose	bool
+	Stats	AutoFixStats
 }
 
 // AutoFixStats tracks correction statistics
 type AutoFixStats struct {
-	FilesProcessed   int
-	TotalFixes       int
-	FixesByRule      map[string]int
-	FixesByComponent map[EmailSenderComponent]int
-	FixesByLanguage  map[string]int
-	CriticalFixes    int
-	SafeFixes        int
+	FilesProcessed		int
+	TotalFixes		int
+	FixesByRule		map[string]int
+	FixesByComponent	map[EmailSenderComponent]int
+	FixesByLanguage		map[string]int
+	CriticalFixes		int
+	SafeFixes		int
 }
 
 // NewEmailSenderAutoFixer creates a new auto-fixer instance
 func NewEmailSenderAutoFixer(dryRun, verbose bool) *EmailSenderAutoFixer {
 	return &EmailSenderAutoFixer{
-		Rules:   initializeEmailSenderFixRules(),
-		DryRun:  dryRun,
-		Verbose: verbose,
+		Rules:		initializeEmailSenderFixRules(),
+		DryRun:		dryRun,
+		Verbose:	verbose,
 		Stats: AutoFixStats{
-			FixesByRule:      make(map[string]int),
-			FixesByComponent: make(map[EmailSenderComponent]int),
-			FixesByLanguage:  make(map[string]int),
+			FixesByRule:		make(map[string]int),
+			FixesByComponent:	make(map[EmailSenderComponent]int),
+			FixesByLanguage:	make(map[string]int),
 		},
 	}
 }
@@ -84,194 +84,194 @@ func initializeEmailSenderFixRules() []EmailSenderFixRule {
 	return []EmailSenderFixRule{
 		// RAG Engine - Go fixes (Priority 1-2)
 		{
-			Pattern:     regexp.MustCompile(`(\w+) declared and not used`),
-			Replacement: "_ = $1 // EMAIL_SENDER_1 auto-fixed: unused variable",
-			Description: "Fix unused variables in RAG Engine Go code",
-			Safe:        true,
-			Component:   RAGEngine,
-			Language:    "go",
-			Priority:    2,
+			Pattern:	regexp.MustCompile(`(\w+) declared and not used`),
+			Replacement:	"_ = $1 // EMAIL_SENDER_1 auto-fixed: unused variable",
+			Description:	"Fix unused variables in RAG Engine Go code",
+			Safe:		true,
+			Component:	RAGEngine,
+			Language:	"go",
+			Priority:	2,
 		},
 		{
-			Pattern:     regexp.MustCompile(`missing import: "(.+)"`),
-			Replacement: `import "$1" // EMAIL_SENDER_1 auto-added missing import`,
-			Description: "Add missing imports for RAG Engine",
-			Safe:        true,
-			Component:   RAGEngine,
-			Language:    "go",
-			Priority:    1,
+			Pattern:	regexp.MustCompile(`missing import: "(.+)"`),
+			Replacement:	`import "$1" // EMAIL_SENDER_1 auto-added missing import`,
+			Description:	"Add missing imports for RAG Engine",
+			Safe:		true,
+			Component:	RAGEngine,
+			Language:	"go",
+			Priority:	1,
 		},
 		{
-			Pattern:     regexp.MustCompile(`undefined: qdrant\.(\w+)`),
-			Replacement: "qdrant.$1 // EMAIL_SENDER_1 Qdrant reference (needs manual review)",
-			Description: "Mark undefined Qdrant references for manual review",
-			Safe:        false,
-			Component:   RAGEngine,
-			Language:    "go",
-			Priority:    1,
+			Pattern:	regexp.MustCompile(`undefined: qdrant\.(\w+)`),
+			Replacement:	"qdrant.$1 // EMAIL_SENDER_1 Qdrant reference (needs manual review)",
+			Description:	"Mark undefined Qdrant references for manual review",
+			Safe:		false,
+			Component:	RAGEngine,
+			Language:	"go",
+			Priority:	1,
 		},
 		{
-			Pattern:     regexp.MustCompile(`log\.Print\(([^)]+)\)`),
-			Replacement: `log.Printf("EMAIL_SENDER_1: %v", $1)`,
-			Description: "Standardize RAG Engine logging format",
-			Safe:        true,
-			Component:   RAGEngine,
-			Language:    "go",
-			Priority:    3,
+			Pattern:	regexp.MustCompile(`log\.Print\(([^)]+)\)`),
+			Replacement:	`log.Printf("EMAIL_SENDER_1: %v", $1)`,
+			Description:	"Standardize RAG Engine logging format",
+			Safe:		true,
+			Component:	RAGEngine,
+			Language:	"go",
+			Priority:	3,
 		},
 
 		// n8n Workflows - JSON fixes (Priority 1-2)
 		{
-			Pattern:     regexp.MustCompile(`"id":\s*""`),
-			Replacement: `"id": "` + generateRandomNodeId() + `"`,
-			Description: "Fix empty node IDs in n8n workflows",
-			Safe:        true,
-			Component:   N8NWorkflow,
-			Language:    "json",
-			Priority:    1,
+			Pattern:	regexp.MustCompile(`"id":\s*""`),
+			Replacement:	`"id": "` + generateRandomNodeId() + `"`,
+			Description:	"Fix empty node IDs in n8n workflows",
+			Safe:		true,
+			Component:	N8NWorkflow,
+			Language:	"json",
+			Priority:	1,
 		},
 		{
-			Pattern:     regexp.MustCompile(`"connections":\s*{}`),
-			Replacement: `"connections": {"main": []}`,
-			Description: "Fix empty connections in EMAIL_SENDER_1 workflows",
-			Safe:        true,
-			Component:   N8NWorkflow,
-			Language:    "json",
-			Priority:    1,
+			Pattern:	regexp.MustCompile(`"connections":\s*{}`),
+			Replacement:	`"connections": {"main": []}`,
+			Description:	"Fix empty connections in EMAIL_SENDER_1 workflows",
+			Safe:		true,
+			Component:	N8NWorkflow,
+			Language:	"json",
+			Priority:	1,
 		},
 		{
-			Pattern:     regexp.MustCompile(`"parameters":\s*{}`),
-			Replacement: `"parameters": {"email_sender_context": true}`,
-			Description: "Add EMAIL_SENDER_1 context to n8n node parameters",
-			Safe:        true,
-			Component:   N8NWorkflow,
-			Language:    "json",
-			Priority:    2,
+			Pattern:	regexp.MustCompile(`"parameters":\s*{}`),
+			Replacement:	`"parameters": {"email_sender_context": true}`,
+			Description:	"Add EMAIL_SENDER_1 context to n8n node parameters",
+			Safe:		true,
+			Component:	N8NWorkflow,
+			Language:	"json",
+			Priority:	2,
 		},
 		{
-			Pattern:     regexp.MustCompile(`"executeOnce":\s*true`),
-			Replacement: `"executeOnce": false`,
-			Description: "Fix executeOnce setting for EMAIL_SENDER_1 workflows",
-			Safe:        true,
-			Component:   N8NWorkflow,
-			Language:    "json",
-			Priority:    2,
+			Pattern:	regexp.MustCompile(`"executeOnce":\s*true`),
+			Replacement:	`"executeOnce": false`,
+			Description:	"Fix executeOnce setting for EMAIL_SENDER_1 workflows",
+			Safe:		true,
+			Component:	N8NWorkflow,
+			Language:	"json",
+			Priority:	2,
 		},
 
 		// PowerShell Scripts - PowerShell fixes (Priority 1-3)
 		{
-			Pattern:     regexp.MustCompile(`\$(\w+)\s*=\s*\$null;\s*\$\1\s*=`),
-			Replacement: `$1 = `,
-			Description: "Remove redundant null initialization in PowerShell",
-			Safe:        true,
-			Component:   PowerShellScript,
-			Language:    "powershell",
-			Priority:    3,
+			Pattern:	regexp.MustCompile(`\$(\w+)\s*=\s*\$null;\s*\$\1\s*=`),
+			Replacement:	`$1 = `,
+			Description:	"Remove redundant null initialization in PowerShell",
+			Safe:		true,
+			Component:	PowerShellScript,
+			Language:	"powershell",
+			Priority:	3,
 		},
 		{
-			Pattern:     regexp.MustCompile(`Write-Host\s+"(.+)"\s+-ForegroundColor\s+(\w+)`),
-			Replacement: `Write-Host "$1" -ForegroundColor $2 # EMAIL_SENDER_1 standardized`,
-			Description: "Standardize Write-Host formatting",
-			Safe:        true,
-			Component:   PowerShellScript,
-			Language:    "powershell",
-			Priority:    3,
+			Pattern:	regexp.MustCompile(`Write-Host\s+"(.+)"\s+-ForegroundColor\s+(\w+)`),
+			Replacement:	`Write-Host "$1" -ForegroundColor $2 # EMAIL_SENDER_1 standardized`,
+			Description:	"Standardize Write-Host formatting",
+			Safe:		true,
+			Component:	PowerShellScript,
+			Language:	"powershell",
+			Priority:	3,
 		},
 		{
-			Pattern:     regexp.MustCompile(`Invoke-RestMethod\s+-Uri\s+"([^"]+)"\s+-Method\s+GET\s*$`),
-			Replacement: `Invoke-RestMethod -Uri "$1" -Method GET -TimeoutSec 30 # EMAIL_SENDER_1 timeout added`,
-			Description: "Add timeout to Invoke-RestMethod calls",
-			Safe:        true,
-			Component:   PowerShellScript,
-			Language:    "powershell",
-			Priority:    2,
+			Pattern:	regexp.MustCompile(`Invoke-RestMethod\s+-Uri\s+"([^"]+)"\s+-Method\s+GET\s*$`),
+			Replacement:	`Invoke-RestMethod -Uri "$1" -Method GET -TimeoutSec 30 # EMAIL_SENDER_1 timeout added`,
+			Description:	"Add timeout to Invoke-RestMethod calls",
+			Safe:		true,
+			Component:	PowerShellScript,
+			Language:	"powershell",
+			Priority:	2,
 		},
 		{
-			Pattern:     regexp.MustCompile(`catch\s*{\s*}\s*$`),
-			Replacement: `catch { Write-Error "EMAIL_SENDER_1 error: $_"; throw }`,
-			Description: "Fix empty catch blocks in PowerShell",
-			Safe:        true,
-			Component:   PowerShellScript,
-			Language:    "powershell",
-			Priority:    1,
+			Pattern:	regexp.MustCompile(`catch\s*{\s*}\s*$`),
+			Replacement:	`catch { Write-Error "EMAIL_SENDER_1 error: $_"; throw }`,
+			Description:	"Fix empty catch blocks in PowerShell",
+			Safe:		true,
+			Component:	PowerShellScript,
+			Language:	"powershell",
+			Priority:	1,
 		},
 
 		// Notion API - JSON/Go fixes (Priority 1-2)
 		{
-			Pattern:     regexp.MustCompile(`"notion_api_key":\s*""`),
-			Replacement: `"notion_api_key": "${NOTION_API_KEY}" // EMAIL_SENDER_1 env var`,
-			Description: "Fix empty Notion API key with environment variable",
-			Safe:        true,
-			Component:   NotionAPI,
-			Language:    "json",
-			Priority:    1,
+			Pattern:	regexp.MustCompile(`"notion_api_key":\s*""`),
+			Replacement:	`"notion_api_key": "${NOTION_API_KEY}" // EMAIL_SENDER_1 env var`,
+			Description:	"Fix empty Notion API key with environment variable",
+			Safe:		true,
+			Component:	NotionAPI,
+			Language:	"json",
+			Priority:	1,
 		},
 		{
-			Pattern:     regexp.MustCompile(`PageSize:\s*0`),
-			Replacement: `PageSize: 100 // EMAIL_SENDER_1 default page size`,
-			Description: "Fix zero page size in Notion queries",
-			Safe:        true,
-			Component:   NotionAPI,
-			Language:    "go",
-			Priority:    2,
+			Pattern:	regexp.MustCompile(`PageSize:\s*0`),
+			Replacement:	`PageSize: 100 // EMAIL_SENDER_1 default page size`,
+			Description:	"Fix zero page size in Notion queries",
+			Safe:		true,
+			Component:	NotionAPI,
+			Language:	"go",
+			Priority:	2,
 		},
 
 		// Gmail Processing - Go/JSON fixes (Priority 1-2)
 		{
-			Pattern:     regexp.MustCompile(`"credentials_path":\s*""`),
-			Replacement: `"credentials_path": "./configs/gmail/credentials.json" // EMAIL_SENDER_1 default`,
-			Description: "Fix empty Gmail credentials path",
-			Safe:        true,
-			Component:   GmailProcessing,
-			Language:    "json",
-			Priority:    1,
+			Pattern:	regexp.MustCompile(`"credentials_path":\s*""`),
+			Replacement:	`"credentials_path": "./configs/gmail/credentials.json" // EMAIL_SENDER_1 default`,
+			Description:	"Fix empty Gmail credentials path",
+			Safe:		true,
+			Component:	GmailProcessing,
+			Language:	"json",
+			Priority:	1,
 		},
 		{
-			Pattern:     regexp.MustCompile(`MaxResults:\s*0`),
-			Replacement: `MaxResults: 50 // EMAIL_SENDER_1 default batch size`,
-			Description: "Fix zero MaxResults in Gmail queries",
-			Safe:        true,
-			Component:   GmailProcessing,
-			Language:    "go",
-			Priority:    2,
+			Pattern:	regexp.MustCompile(`MaxResults:\s*0`),
+			Replacement:	`MaxResults: 50 // EMAIL_SENDER_1 default batch size`,
+			Description:	"Fix zero MaxResults in Gmail queries",
+			Safe:		true,
+			Component:	GmailProcessing,
+			Language:	"go",
+			Priority:	2,
 		},
 
 		// Configuration Files - YAML/JSON fixes (Priority 1-3)
 		{
-			Pattern:     regexp.MustCompile(`(\s+)version:\s*"?3"?`),
-			Replacement: `$1version: "3.8" # EMAIL_SENDER_1 docker-compose version`,
-			Description: "Fix docker-compose version specification",
-			Safe:        true,
-			Component:   ConfigFiles,
-			Language:    "yaml",
-			Priority:    2,
+			Pattern:	regexp.MustCompile(`(\s+)version:\s*"?3"?`),
+			Replacement:	`$1version: "3.8" # EMAIL_SENDER_1 docker-compose version`,
+			Description:	"Fix docker-compose version specification",
+			Safe:		true,
+			Component:	ConfigFiles,
+			Language:	"yaml",
+			Priority:	2,
 		},
 		{
-			Pattern:     regexp.MustCompile(`(\s+)ports:\s*\n\s+-\s+"(\d+)"`),
-			Replacement: `$1ports:\n$1  - "$2:$2" # EMAIL_SENDER_1 port mapping`,
-			Description: "Fix incomplete port mapping format",
-			Safe:        true,
-			Component:   ConfigFiles,
-			Language:    "yaml",
-			Priority:    1,
+			Pattern:	regexp.MustCompile(`(\s+)ports:\s*\n\s+-\s+"(\d+)"`),
+			Replacement:	`$1ports:\n$1  - "$2:$2" # EMAIL_SENDER_1 port mapping`,
+			Description:	"Fix incomplete port mapping format",
+			Safe:		true,
+			Component:	ConfigFiles,
+			Language:	"yaml",
+			Priority:	1,
 		},
 		{
-			Pattern:     regexp.MustCompile(`"timeout":\s*0`),
-			Replacement: `"timeout": 30000`,
-			Description: "Fix zero timeout values in config",
-			Safe:        true,
-			Component:   ConfigFiles,
-			Language:    "json",
-			Priority:    2,
+			Pattern:	regexp.MustCompile(`"timeout":\s*0`),
+			Replacement:	`"timeout": 30000`,
+			Description:	"Fix zero timeout values in config",
+			Safe:		true,
+			Component:	ConfigFiles,
+			Language:	"json",
+			Priority:	2,
 		},
 		{
-			Pattern:     regexp.MustCompile(`"retries":\s*0`),
-			Replacement: `"retries": 3`,
-			Description: "Fix zero retry count in config",
-			Safe:        true,
-			Component:   ConfigFiles,
-			Language:    "json",
-			Priority:    2,
+			Pattern:	regexp.MustCompile(`"retries":\s*0`),
+			Replacement:	`"retries": 3`,
+			Description:	"Fix zero retry count in config",
+			Safe:		true,
+			Component:	ConfigFiles,
+			Language:	"json",
+			Priority:	2,
 		},
 	}
 }
@@ -334,7 +334,7 @@ func (fixer *EmailSenderAutoFixer) AutoFixFile(filename string, component EmailS
 		matches := rule.Pattern.FindAllStringSubmatch(newContent, -1)
 		matchIndices := rule.Pattern.FindAllStringSubmatchIndex(newContent, -1)
 
-		for i := len(matches) - 1; i >= 0; i-- { // Process from end to avoid index shift
+		for i := len(matches) - 1; i >= 0; i-- {	// Process from end to avoid index shift
 			match := matches[i]
 			indices := matchIndices[i]
 
@@ -408,8 +408,8 @@ func (fixer *EmailSenderAutoFixer) GenerateReport() {
 		fmt.Printf("\n📋 TOP APPLIED RULES:\n")
 		// Sort by count and show top 10
 		type ruleCount struct {
-			rule  string
-			count int
+			rule	string
+			count	int
 		}
 		var rules []ruleCount
 		for rule, count := range fixer.Stats.FixesByRule {

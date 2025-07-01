@@ -3,10 +3,10 @@
 package migration
 
 import (
+	"EMAIL_SENDER_1/tools/core/toolkit"
+	"EMAIL_SENDER_1/tools/operations/analysis" // Added import
 	"context"
 	"fmt"
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
-	"github.com/gerivdb/email-sender-1/tools/operations/analysis" // Added import
 	"go/ast"
 	"go/format"
 	"go/parser"
@@ -183,7 +183,6 @@ func (im *InterfaceMigrator) CreateMigrationPlan() (*MigrationPlan, error) {
 	// If InterfaceAnalyzer needs to use the migrator's stats, it needs a setter or different constructor.
 	// For now, we assume it manages its own stats or they are passed differently.
 
-
 	report, err := analyzer.AnalyzeInterfaces()
 	if err != nil {
 		return nil, err
@@ -355,7 +354,6 @@ func (im *InterfaceMigrator) generateSingleInterfaceFile(spec NewFileSpec, plan 
 		// If spec.Imports is empty, no import block is generated, matching original behavior.
 	}
 
-
 	if len(effectiveImports) > 0 {
 		content.WriteString("import (\n")
 		for _, impPath := range effectiveImports {
@@ -373,7 +371,6 @@ func (im *InterfaceMigrator) generateSingleInterfaceFile(spec NewFileSpec, plan 
 		}
 		content.WriteString(")\n\n")
 	}
-
 
 	// Interfaces
 	for _, interfaceName := range spec.Interfaces {
@@ -763,5 +760,3 @@ func (im *InterfaceMigrator) PrintMigrationPlan(plan *MigrationPlan) {
 		im.Logger.Info("  %s (%d interfaces)", spec.Path, len(spec.Interfaces))
 	}
 }
-
-

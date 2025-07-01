@@ -5,8 +5,8 @@
 package correction
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/registry"
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"EMAIL_SENDER_1/tools/core/registry"
+	"EMAIL_SENDER_1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -469,11 +469,11 @@ func (icr *ImportConflictResolver) Validate(ctx context.Context) error {
 // CollectMetrics implémente ToolkitOperation.CollectMetrics
 func (icr *ImportConflictResolver) CollectMetrics() map[string]interface{} {
 	return map[string]interface{}{
-		"tool":             "ImportConflictResolver",
-		"files_analyzed":   icr.Stats.FilesAnalyzed,    // Number of files checked
-		"conflicts_fixed":  icr.Stats.ErrorsFixed,      // Number of conflicts actually fixed
-		"dry_run":          icr.DryRun,                 // Changed key from dry_run_mode
-		"base_dir":         icr.BaseDir,                // Changed key from base_directory
+		"tool":            "ImportConflictResolver",
+		"files_analyzed":  icr.Stats.FilesAnalyzed, // Number of files checked
+		"conflicts_fixed": icr.Stats.ErrorsFixed,   // Number of conflicts actually fixed
+		"dry_run":         icr.DryRun,              // Changed key from dry_run_mode
+		"base_dir":        icr.BaseDir,             // Changed key from base_directory
 		// "conflicts_found": placeholder_value, // Test expects this, but it's not explicitly tracked in stats. Could be len(conflicts) from Execute.
 		// "duplicates_removed": not applicable to this tool
 	}
@@ -515,21 +515,19 @@ func init() {
 		globalReg = registry.NewToolRegistry()
 		// registry.SetGlobalRegistry(globalReg) // If a setter exists
 	}
-	
+
 	// Create a default instance for registration
 	defaultTool := &ImportConflictResolver{
-		BaseDir: "", // Default or placeholder
+		BaseDir: "",                 // Default or placeholder
 		FileSet: token.NewFileSet(), // Initialize FileSet
-		Logger:  nil, // Logger should be initialized by the toolkit
+		Logger:  nil,                // Logger should be initialized by the toolkit
 		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  false,
 	}
-	
+
 	err := globalReg.Register(toolkit.ResolveImports, defaultTool) // Changed to toolkit.ResolveImports
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register ImportConflictResolver: %v\n", err)
 	}
 }
-
-

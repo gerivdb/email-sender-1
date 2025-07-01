@@ -5,8 +5,8 @@
 package analysis
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/registry"
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"EMAIL_SENDER_1/tools/core/registry"
+	"EMAIL_SENDER_1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -532,7 +532,7 @@ func init() {
 
 	// Create a default instance for registration
 	defaultTool := &DependencyAnalyzer{
-		BaseDir: "", // Default or placeholder
+		BaseDir: "",  // Default or placeholder
 		Logger:  nil, // Logger should be initialized by the toolkit when the tool is used
 		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  false,
@@ -544,5 +544,3 @@ func init() {
 		fmt.Printf("Warning: Failed to register DependencyAnalyzer: %v\n", err)
 	}
 }
-
-

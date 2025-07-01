@@ -3,7 +3,7 @@
 // Native Go orchestration for all 8 algorithms - eliminates PowerShell overhead
 // Performance: 10x faster than PowerShell + Go hybrid approach
 
-package main
+package algorithms
 
 import (
 	"context"
@@ -19,65 +19,65 @@ import (
 
 // OrchestratorConfig represents the unified orchestrator configuration
 type OrchestratorConfig struct {
-	ProjectRoot     string            `json:"project_root"`
-	AlgorithmsPath  string            `json:"algorithms_path"`
-	OutputPath      string            `json:"output_path"`
-	LogLevel        string            `json:"log_level"`
-	MaxConcurrency  int               `json:"max_concurrency"`
-	Timeout         time.Duration     `json:"timeout"`
-	EnableProfiling bool              `json:"enable_profiling"`
-	Algorithms      []AlgorithmConfig `json:"algorithms"`
+	ProjectRoot	string			`json:"project_root"`
+	AlgorithmsPath	string			`json:"algorithms_path"`
+	OutputPath	string			`json:"output_path"`
+	LogLevel	string			`json:"log_level"`
+	MaxConcurrency	int			`json:"max_concurrency"`
+	Timeout		time.Duration		`json:"timeout"`
+	EnableProfiling	bool			`json:"enable_profiling"`
+	Algorithms	[]AlgorithmConfig	`json:"algorithms"`
 }
 
 // AlgorithmConfig represents configuration for a single algorithm
 type AlgorithmConfig struct {
-	ID         string            `json:"id"`
-	Name       string            `json:"name"`
-	Enabled    bool              `json:"enabled"`
-	Priority   int               `json:"priority"`
-	Timeout    time.Duration     `json:"timeout"`
-	DependsOn  []string          `json:"depends_on"`
-	Parameters map[string]string `json:"parameters"`
-	OutputPath string            `json:"output_path"`
+	ID		string			`json:"id"`
+	Name		string			`json:"name"`
+	Enabled		bool			`json:"enabled"`
+	Priority	int			`json:"priority"`
+	Timeout		time.Duration		`json:"timeout"`
+	DependsOn	[]string		`json:"depends_on"`
+	Parameters	map[string]string	`json:"parameters"`
+	OutputPath	string			`json:"output_path"`
 }
 
 // AlgorithmResult represents the result of algorithm execution
 type AlgorithmResult struct {
-	ID           string        `json:"id"`
-	Name         string        `json:"name"`
-	Status       string        `json:"status"`
-	Duration     time.Duration `json:"duration"`
-	ErrorCount   int           `json:"error_count"`
-	WarningCount int           `json:"warning_count"`
-	OutputPath   string        `json:"output_path"`
-	Errors       []string      `json:"errors"`
-	Warnings     []string      `json:"warnings"`
-	Metadata     interface{}   `json:"metadata"`
+	ID		string		`json:"id"`
+	Name		string		`json:"name"`
+	Status		string		`json:"status"`
+	Duration	time.Duration	`json:"duration"`
+	ErrorCount	int		`json:"error_count"`
+	WarningCount	int		`json:"warning_count"`
+	OutputPath	string		`json:"output_path"`
+	Errors		[]string	`json:"errors"`
+	Warnings	[]string	`json:"warnings"`
+	Metadata	interface{}	`json:"metadata"`
 }
 
 // OrchestratorResult represents the overall orchestration result
 type OrchestratorResult struct {
-	StartTime       time.Time                  `json:"start_time"`
-	EndTime         time.Time                  `json:"end_time"`
-	TotalDuration   time.Duration              `json:"total_duration"`
-	AlgorithmsRun   int                        `json:"algorithms_run"`
-	SuccessCount    int                        `json:"success_count"`
-	FailureCount    int                        `json:"failure_count"`
-	TotalErrors     int                        `json:"total_errors"`
-	TotalWarnings   int                        `json:"total_warnings"`
-	Results         map[string]AlgorithmResult `json:"results"`
-	Recommendations []string                   `json:"recommendations"`
+	StartTime	time.Time			`json:"start_time"`
+	EndTime		time.Time			`json:"end_time"`
+	TotalDuration	time.Duration			`json:"total_duration"`
+	AlgorithmsRun	int				`json:"algorithms_run"`
+	SuccessCount	int				`json:"success_count"`
+	FailureCount	int				`json:"failure_count"`
+	TotalErrors	int				`json:"total_errors"`
+	TotalWarnings	int				`json:"total_warnings"`
+	Results		map[string]AlgorithmResult	`json:"results"`
+	Recommendations	[]string			`json:"recommendations"`
 }
 
 // EmailSenderOrchestrator manages the execution of all EMAIL_SENDER_1 algorithms
 type EmailSenderOrchestrator struct {
-	config    OrchestratorConfig
-	ctx       context.Context
-	cancel    context.CancelFunc
-	wg        sync.WaitGroup
-	mu        sync.RWMutex
-	results   map[string]AlgorithmResult
-	startTime time.Time
+	config		OrchestratorConfig
+	ctx		context.Context
+	cancel		context.CancelFunc
+	wg		sync.WaitGroup
+	mu		sync.RWMutex
+	results		map[string]AlgorithmResult
+	startTime	time.Time
 }
 
 // Algorithm interface that all algorithms must implement
@@ -93,10 +93,10 @@ func NewEmailSenderOrchestrator(config OrchestratorConfig) *EmailSenderOrchestra
 	ctx, cancel := context.WithTimeout(context.Background(), config.Timeout)
 
 	return &EmailSenderOrchestrator{
-		config:  config,
-		ctx:     ctx,
-		cancel:  cancel,
-		results: make(map[string]AlgorithmResult),
+		config:		config,
+		ctx:		ctx,
+		cancel:		cancel,
+		results:	make(map[string]AlgorithmResult),
 	}
 }
 
@@ -139,7 +139,7 @@ func (eso *EmailSenderOrchestrator) RegisterAlgorithms() map[string]Algorithm {
 	algorithms["analysis-pipeline"] = &AnalysisPipelineAlgorithm{}
 	algorithms["config-validator"] = &ConfigValidatorAlgorithm{}
 	algorithms["dependency-resolution"] = &DependencyResolutionAlgorithm{}
-	
+
 	// Ajouter l'algorithme de parallélisation du pipeline
 	algorithms["parallel-pipeline"] = NewParallelAlgorithm()
 
@@ -299,9 +299,9 @@ func (eso *EmailSenderOrchestrator) executeAlgorithm(algorithm Algorithm, config
 	log.Printf("🔨 Starting %s (%s)", algorithm.Name(), algorithmID)
 
 	result := AlgorithmResult{
-		ID:     algorithmID,
-		Name:   algorithm.Name(),
-		Status: "running",
+		ID:	algorithmID,
+		Name:	algorithm.Name(),
+		Status:	"running",
 	}
 
 	// Validate algorithm configuration
@@ -353,10 +353,10 @@ func (eso *EmailSenderOrchestrator) generateResult() *OrchestratorResult {
 	endTime := time.Now()
 
 	result := &OrchestratorResult{
-		StartTime:     eso.startTime,
-		EndTime:       endTime,
-		TotalDuration: endTime.Sub(eso.startTime),
-		Results:       make(map[string]AlgorithmResult),
+		StartTime:	eso.startTime,
+		EndTime:	endTime,
+		TotalDuration:	endTime.Sub(eso.startTime),
+		Results:	make(map[string]AlgorithmResult),
 	}
 
 	eso.mu.RLock()
@@ -519,13 +519,13 @@ func main() {
 // generateDefaultConfig generates a default configuration file
 func generateDefaultConfig() {
 	config := OrchestratorConfig{
-		ProjectRoot:     ".",
-		AlgorithmsPath:  ".github/docs/algorithms",
-		OutputPath:      "output",
-		LogLevel:        "INFO",
-		MaxConcurrency:  4,
-		Timeout:         30 * time.Minute,
-		EnableProfiling: false,
+		ProjectRoot:		".",
+		AlgorithmsPath:		".github/docs/algorithms",
+		OutputPath:		"output",
+		LogLevel:		"INFO",
+		MaxConcurrency:		4,
+		Timeout:		30 * time.Minute,
+		EnableProfiling:	false,
 		Algorithms: []AlgorithmConfig{
 			{ID: "error-triage", Name: "Error Triage", Enabled: true, Priority: 1, Timeout: 5 * time.Minute, DependsOn: []string{}},
 			{ID: "binary-search", Name: "Binary Search Debug", Enabled: true, Priority: 2, Timeout: 10 * time.Minute, DependsOn: []string{"error-triage"}},

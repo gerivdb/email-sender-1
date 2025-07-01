@@ -1,5 +1,5 @@
 // Minimal Go program to test standard library
-package main
+package _
 
 import "fmt"
 

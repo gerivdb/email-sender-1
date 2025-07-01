@@ -4,7 +4,7 @@
 package migration
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"EMAIL_SENDER_1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -514,5 +514,3 @@ func Process%d(user User%d) error {
 		generator.Execute(ctx, options)
 	}
 }
-
-

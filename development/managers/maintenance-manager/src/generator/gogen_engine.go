@@ -10,8 +10,8 @@ import (
 	"text/template"
 	"time"
 
+	"EMAIL_SENDER_1/maintenance-manager/src/core"
 	"go.uber.org/zap"
-	"github.com/gerivdb/email-sender-1/maintenance-manager/src/core"
 )
 
 // GoGenEngine provides comprehensive code generation capabilities
@@ -24,13 +24,13 @@ type GoGenEngine struct {
 
 // GenerationRequest represents a code generation request
 type GenerationRequest struct {
-	Type        string                 `json:"type"`        // "component", "service", "handler", "test"
-	Name        string                 `json:"name"`        // Component name
-	Package     string                 `json:"package"`     // Target package
-	OutputDir   string                 `json:"output_dir"`  // Output directory
-	Template    string                 `json:"template"`    // Template name
-	Variables   map[string]interface{} `json:"variables"`   // Template variables
-	Options     GenerationOptions      `json:"options"`     // Generation options
+	Type      string                 `json:"type"`       // "component", "service", "handler", "test"
+	Name      string                 `json:"name"`       // Component name
+	Package   string                 `json:"package"`    // Target package
+	OutputDir string                 `json:"output_dir"` // Output directory
+	Template  string                 `json:"template"`   // Template name
+	Variables map[string]interface{} `json:"variables"`  // Template variables
+	Options   GenerationOptions      `json:"options"`    // Generation options
 }
 
 // GenerationOptions controls generation behavior
@@ -40,27 +40,27 @@ type GenerationOptions struct {
 	CreateDocs        bool     `json:"create_docs"`
 	AddInterfaces     bool     `json:"add_interfaces"`
 	UseDefaults       bool     `json:"use_defaults"`
-	Imports          []string  `json:"imports"`
+	Imports           []string `json:"imports"`
 }
 
 // GenerationResult represents the result of a generation operation
 type GenerationResult struct {
-	Success     bool              `json:"success"`
-	GeneratedFiles []GeneratedFile `json:"generated_files"`
-	Errors      []string          `json:"errors"`
-	Warnings    []string          `json:"warnings"`
-	Duration    time.Duration     `json:"duration"`
-	Metadata    map[string]interface{} `json:"metadata"`
+	Success        bool                   `json:"success"`
+	GeneratedFiles []GeneratedFile        `json:"generated_files"`
+	Errors         []string               `json:"errors"`
+	Warnings       []string               `json:"warnings"`
+	Duration       time.Duration          `json:"duration"`
+	Metadata       map[string]interface{} `json:"metadata"`
 }
 
 // GeneratedFile represents a generated file
 type GeneratedFile struct {
-	Path        string    `json:"path"`
-	Type        string    `json:"type"`
-	Size        int64     `json:"size"`
-	CreatedAt   time.Time `json:"created_at"`
-	Template    string    `json:"template"`
-	Checksum    string    `json:"checksum"`
+	Path      string    `json:"path"`
+	Type      string    `json:"type"`
+	Size      int64     `json:"size"`
+	CreatedAt time.Time `json:"created_at"`
+	Template  string    `json:"template"`
+	Checksum  string    `json:"checksum"`
 }
 
 // TemplateData holds data for template rendering
@@ -105,9 +105,9 @@ func (e *GoGenEngine) Generate(req *GenerationRequest) (*GenerationResult, error
 	startTime := time.Now()
 	result := &GenerationResult{
 		GeneratedFiles: []GeneratedFile{},
-		Errors:        []string{},
-		Warnings:      []string{},
-		Metadata:      make(map[string]interface{}),
+		Errors:         []string{},
+		Warnings:       []string{},
+		Metadata:       make(map[string]interface{}),
 	}
 
 	e.logger.Info("Starting code generation",

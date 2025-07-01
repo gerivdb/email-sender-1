@@ -1,7 +1,7 @@
 // EMAIL_SENDER_1 Orchestrator Module - Version Modulaire
 // Module d'orchestration sans fonction main pour éviter les conflits
 
-package main
+package algorithms
 
 import (
 	"context"
@@ -15,10 +15,10 @@ import (
 
 // EmailSenderOrchestratorModule - Version modulaire de l'orchestrateur
 type EmailSenderOrchestratorModule struct {
-	config    *OrchestratorConfig
-	ctx       context.Context
-	cancel    context.CancelFunc
-	startTime time.Time
+	config		*OrchestratorConfig
+	ctx		context.Context
+	cancel		context.CancelFunc
+	startTime	time.Time
 }
 
 // NewEmailSenderOrchestratorModule crée une nouvelle instance du module orchestrateur
@@ -31,9 +31,9 @@ func NewEmailSenderOrchestratorModule(configPath string) (*EmailSenderOrchestrat
 	ctx, cancel := context.WithTimeout(context.Background(), config.Timeout)
 
 	return &EmailSenderOrchestratorModule{
-		config: config,
-		ctx:    ctx,
-		cancel: cancel,
+		config:	config,
+		ctx:	ctx,
+		cancel:	cancel,
 	}, nil
 }
 
@@ -43,15 +43,15 @@ func (eso *EmailSenderOrchestratorModule) ExecuteDebugSession() (*OrchestratorRe
 	log.Printf("🚀 Démarrage de la session de débogage EMAIL_SENDER_1")
 
 	result := &OrchestratorResult{
-		Results:         []AlgorithmResult{},
-		Recommendations: []string{},
+		Results:		[]AlgorithmResult{},
+		Recommendations:	[]string{},
 	}
 
 	// Exécuter les 8 algorithmes en séquence
 	algorithms := []struct {
-		id   string
-		name string
-		fn   func() error
+		id	string
+		name	string
+		fn	func() error
 	}{
 		{"error-triage", "Error Triage", eso.runErrorTriage},
 		{"dependency-analysis", "Dependency Analysis", eso.runDependencyAnalysis},
@@ -71,9 +71,9 @@ func (eso *EmailSenderOrchestratorModule) ExecuteDebugSession() (*OrchestratorRe
 		duration := time.Since(startTime)
 
 		algoResult := AlgorithmResult{
-			ID:       algo.id,
-			Name:     algo.name,
-			Duration: duration,
+			ID:		algo.id,
+			Name:		algo.name,
+			Duration:	duration,
 		}
 
 		if err != nil {
@@ -102,49 +102,49 @@ func (eso *EmailSenderOrchestratorModule) ExecuteDebugSession() (*OrchestratorRe
 // Implémentations des algorithmes
 func (eso *EmailSenderOrchestratorModule) runErrorTriage() error {
 	log.Printf("📋 Classification automatique des erreurs par catégorie")
-	time.Sleep(200 * time.Millisecond) // Simulation
+	time.Sleep(200 * time.Millisecond)	// Simulation
 	return nil
 }
 
 func (eso *EmailSenderOrchestratorModule) runDependencyAnalysis() error {
 	log.Printf("📈 Analyse du graphe de dépendances")
-	time.Sleep(300 * time.Millisecond) // Simulation
+	time.Sleep(300 * time.Millisecond)	// Simulation
 	return nil
 }
 
 func (eso *EmailSenderOrchestratorModule) runConfigValidator() error {
 	log.Printf("⚙️ Validation des configurations")
-	time.Sleep(250 * time.Millisecond) // Simulation
+	time.Sleep(250 * time.Millisecond)	// Simulation
 	return nil
 }
 
 func (eso *EmailSenderOrchestratorModule) runAutoFix() error {
 	log.Printf("🔧 Application des corrections automatiques")
-	time.Sleep(400 * time.Millisecond) // Simulation
+	time.Sleep(400 * time.Millisecond)	// Simulation
 	return nil
 }
 
 func (eso *EmailSenderOrchestratorModule) runAnalysisPipeline() error {
 	log.Printf("🔄 Pipeline d'analyse multi-étapes")
-	time.Sleep(500 * time.Millisecond) // Simulation
+	time.Sleep(500 * time.Millisecond)	// Simulation
 	return nil
 }
 
 func (eso *EmailSenderOrchestratorModule) runProgressiveBuild() error {
 	log.Printf("🏗️ Test de construction progressive")
-	time.Sleep(600 * time.Millisecond) // Simulation
+	time.Sleep(600 * time.Millisecond)	// Simulation
 	return nil
 }
 
 func (eso *EmailSenderOrchestratorModule) runBinarySearch() error {
 	log.Printf("🎯 Recherche binaire des erreurs")
-	time.Sleep(300 * time.Millisecond) // Simulation
+	time.Sleep(300 * time.Millisecond)	// Simulation
 	return nil
 }
 
 func (eso *EmailSenderOrchestratorModule) runDependencyResolution() error {
 	log.Printf("🔗 Résolution finale des dépendances")
-	time.Sleep(400 * time.Millisecond) // Simulation
+	time.Sleep(400 * time.Millisecond)	// Simulation
 	return nil
 }
 
@@ -168,13 +168,13 @@ func main() {
 
 	// Créer configuration par défaut
 	defaultConfig := &OrchestratorConfig{
-		ProjectRoot:     "../../../../",
-		AlgorithmsPath:  "./",
-		OutputPath:      "./output",
-		LogLevel:        "INFO",
-		MaxConcurrency:  4,
-		Timeout:         30 * time.Minute,
-		EnableProfiling: false,
+		ProjectRoot:		"../../../../",
+		AlgorithmsPath:		"./",
+		OutputPath:		"./output",
+		LogLevel:		"INFO",
+		MaxConcurrency:		4,
+		Timeout:		30 * time.Minute,
+		EnableProfiling:	false,
 	}
 
 	// Sauvegarder la configuration par défaut
@@ -183,8 +183,8 @@ func main() {
 
 	// Créer et exécuter l'orchestrateur
 	orchestratorModule := &EmailSenderOrchestratorModule{
-		config: defaultConfig,
-		ctx:    context.Background(),
+		config:	defaultConfig,
+		ctx:	context.Background(),
 	}
 
 	result, err := orchestratorModule.ExecuteDebugSession()

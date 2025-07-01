@@ -1,4 +1,4 @@
-package main
+package scripts
 
 import (
 	"encoding/json"
@@ -12,88 +12,88 @@ import (
 
 // DocumentationIndex represents the complete documentation index
 type DocumentationIndex struct {
-	GeneratedAt    time.Time        `json:"generated_at"`
-	ProjectName    string           `json:"project_name"`
-	TotalFiles     int              `json:"total_files"`
-	Categories     []CategoryIndex  `json:"categories"`
-	GlobalIndex    []IndexEntry     `json:"global_index"`
-	CrossReferences []CrossReference `json:"cross_references"`
-	Metadata       IndexMetadata    `json:"metadata"`
-	Navigation     NavigationIndex  `json:"navigation"`
+	GeneratedAt	time.Time		`json:"generated_at"`
+	ProjectName	string			`json:"project_name"`
+	TotalFiles	int			`json:"total_files"`
+	Categories	[]CategoryIndex		`json:"categories"`
+	GlobalIndex	[]IndexEntry		`json:"global_index"`
+	CrossReferences	[]CrossReference	`json:"cross_references"`
+	Metadata	IndexMetadata		`json:"metadata"`
+	Navigation	NavigationIndex		`json:"navigation"`
 }
 
 // CategoryIndex represents documentation grouped by category
 type CategoryIndex struct {
-	Name        string       `json:"name"`
-	Description string       `json:"description"`
-	Files       []IndexEntry `json:"files"`
-	Subcategories []CategoryIndex `json:"subcategories,omitempty"`
+	Name		string		`json:"name"`
+	Description	string		`json:"description"`
+	Files		[]IndexEntry	`json:"files"`
+	Subcategories	[]CategoryIndex	`json:"subcategories,omitempty"`
 }
 
 // IndexEntry represents a single documentation file entry
 type IndexEntry struct {
-	Title       string            `json:"title"`
-	Path        string            `json:"path"`
-	Description string            `json:"description"`
-	Tags        []string          `json:"tags"`
-	LastModified time.Time        `json:"last_modified"`
-	Size        int64             `json:"size"`
-	Type        string            `json:"type"`
-	Category    string            `json:"category"`
-	Level       int               `json:"level"`
-	Metadata    map[string]string `json:"metadata"`
+	Title		string			`json:"title"`
+	Path		string			`json:"path"`
+	Description	string			`json:"description"`
+	Tags		[]string		`json:"tags"`
+	LastModified	time.Time		`json:"last_modified"`
+	Size		int64			`json:"size"`
+	Type		string			`json:"type"`
+	Category	string			`json:"category"`
+	Level		int			`json:"level"`
+	Metadata	map[string]string	`json:"metadata"`
 }
 
 // CrossReference represents links between documents
 type CrossReference struct {
-	From        string   `json:"from"`
-	To          string   `json:"to"`
-	Type        string   `json:"type"`
-	Context     string   `json:"context"`
-	Line        int      `json:"line,omitempty"`
+	From	string	`json:"from"`
+	To	string	`json:"to"`
+	Type	string	`json:"type"`
+	Context	string	`json:"context"`
+	Line	int	`json:"line,omitempty"`
 }
 
 // IndexMetadata represents metadata about the index
 type IndexMetadata struct {
-	Version         string            `json:"version"`
-	Generator       string            `json:"generator"`
-	LastUpdate      time.Time         `json:"last_update"`
-	Statistics      IndexStatistics   `json:"statistics"`
-	Configuration   map[string]string `json:"configuration"`
+	Version		string			`json:"version"`
+	Generator	string			`json:"generator"`
+	LastUpdate	time.Time		`json:"last_update"`
+	Statistics	IndexStatistics		`json:"statistics"`
+	Configuration	map[string]string	`json:"configuration"`
 }
 
 // IndexStatistics represents statistics about the documentation
 type IndexStatistics struct {
-	TotalFiles      int               `json:"total_files"`
-	TotalSize       int64             `json:"total_size"`
-	CategoryCounts  map[string]int    `json:"category_counts"`
-	TypeCounts      map[string]int    `json:"type_counts"`
-	TagCounts       map[string]int    `json:"tag_counts"`
-	RecentChanges   int               `json:"recent_changes"`
+	TotalFiles	int		`json:"total_files"`
+	TotalSize	int64		`json:"total_size"`
+	CategoryCounts	map[string]int	`json:"category_counts"`
+	TypeCounts	map[string]int	`json:"type_counts"`
+	TagCounts	map[string]int	`json:"tag_counts"`
+	RecentChanges	int		`json:"recent_changes"`
 }
 
 // NavigationIndex represents navigation structure
 type NavigationIndex struct {
-	MainSections   []NavigationSection `json:"main_sections"`
-	QuickStart     []string            `json:"quick_start"`
-	ImportantPages []string            `json:"important_pages"`
-	SearchIndex    []SearchIndexEntry  `json:"search_index"`
+	MainSections	[]NavigationSection	`json:"main_sections"`
+	QuickStart	[]string		`json:"quick_start"`
+	ImportantPages	[]string		`json:"important_pages"`
+	SearchIndex	[]SearchIndexEntry	`json:"search_index"`
 }
 
 // NavigationSection represents a navigation section
 type NavigationSection struct {
-	Name     string   `json:"name"`
-	Path     string   `json:"path"`
-	Children []string `json:"children"`
-	Order    int      `json:"order"`
+	Name		string		`json:"name"`
+	Path		string		`json:"path"`
+	Children	[]string	`json:"children"`
+	Order		int		`json:"order"`
 }
 
 // SearchIndexEntry represents a search index entry
 type SearchIndexEntry struct {
-	Path     string   `json:"path"`
-	Title    string   `json:"title"`
-	Keywords []string `json:"keywords"`
-	Content  string   `json:"content"`
+	Path		string		`json:"path"`
+	Title		string		`json:"title"`
+	Keywords	[]string	`json:"keywords"`
+	Content		string		`json:"content"`
 }
 
 func main() {
@@ -160,21 +160,21 @@ func generateDocumentationIndex(root string) (*DocumentationIndex, error) {
 	stats := generateStatistics(entries)
 
 	index := &DocumentationIndex{
-		GeneratedAt:     time.Now(),
-		ProjectName:     projectName,
-		TotalFiles:      len(entries),
-		Categories:      categories,
-		GlobalIndex:     entries,
-		CrossReferences: crossRefs,
-		Navigation:      navigation,
+		GeneratedAt:		time.Now(),
+		ProjectName:		projectName,
+		TotalFiles:		len(entries),
+		Categories:		categories,
+		GlobalIndex:		entries,
+		CrossReferences:	crossRefs,
+		Navigation:		navigation,
 		Metadata: IndexMetadata{
-			Version:     "1.0",
-			Generator:   "gen_docs_index.go",
-			LastUpdate:  time.Now(),
-			Statistics:  stats,
+			Version:	"1.0",
+			Generator:	"gen_docs_index.go",
+			LastUpdate:	time.Now(),
+			Statistics:	stats,
 			Configuration: map[string]string{
-				"root_path": root,
-				"format":    "markdown",
+				"root_path":	root,
+				"format":	"markdown",
 			},
 		},
 	}
@@ -221,16 +221,16 @@ func collectDocumentationFiles(root string) ([]IndexEntry, error) {
 		metadata := extractMetadata(relPath)
 
 		entry := IndexEntry{
-			Title:       title,
-			Path:        relPath,
-			Description: description,
-			Tags:        tags,
-			LastModified: info.ModTime(),
-			Size:        info.Size(),
-			Type:        getFileType(filepath.Ext(info.Name())),
-			Category:    categorizeFile(relPath, info.Name()),
-			Level:       calculateDocumentLevel(relPath),
-			Metadata:    metadata,
+			Title:		title,
+			Path:		relPath,
+			Description:	description,
+			Tags:		tags,
+			LastModified:	info.ModTime(),
+			Size:		info.Size(),
+			Type:		getFileType(filepath.Ext(info.Name())),
+			Category:	categorizeFile(relPath, info.Name()),
+			Level:		calculateDocumentLevel(relPath),
+			Metadata:	metadata,
 		}
 
 		entries = append(entries, entry)
@@ -261,14 +261,14 @@ func extractTitleAndDescription(filePath string) (string, string) {
 
 	for i, line := range lines {
 		line = strings.TrimSpace(line)
-		
+
 		// Look for markdown title
 		if strings.HasPrefix(line, "# ") {
 			title = strings.TrimPrefix(line, "# ")
 			title = strings.TrimSpace(title)
 			break
 		}
-		
+
 		// Look for HTML title
 		if strings.Contains(line, "<title>") {
 			start := strings.Index(line, "<title>") + 7
@@ -278,9 +278,9 @@ func extractTitleAndDescription(filePath string) (string, string) {
 				break
 			}
 		}
-		
+
 		// If no title found and this is a substantial line, use it
-		if title == "" && len(line) > 5 && !strings.HasPrefix(line, "<!--") && 
+		if title == "" && len(line) > 5 && !strings.HasPrefix(line, "<!--") &&
 			!strings.HasPrefix(line, "---") && i < 10 {
 			title = line
 			if len(title) > 60 {
@@ -309,7 +309,7 @@ func extractTitleAndDescription(filePath string) (string, string) {
 
 func generateCategories(entries []IndexEntry) []CategoryIndex {
 	categoryMap := make(map[string][]IndexEntry)
-	
+
 	// Group entries by category
 	for _, entry := range entries {
 		categoryMap[entry.Category] = append(categoryMap[entry.Category], entry)
@@ -317,15 +317,15 @@ func generateCategories(entries []IndexEntry) []CategoryIndex {
 
 	var categories []CategoryIndex
 	categoryDescriptions := map[string]string{
-		"root":                "Project root documentation (README, LICENSE, etc.)",
-		"documentation":       "Main documentation directory",
-		"github":             "GitHub-specific documentation and templates",
-		"development":        "Development and contribution guides",
-		"project-management": "Project planning and management documents",
-		"api":                "API documentation and specifications",
-		"testing":            "Testing guides and documentation",
-		"configuration":      "Configuration and setup documentation",
-		"general":            "General documentation files",
+		"root":			"Project root documentation (README, LICENSE, etc.)",
+		"documentation":	"Main documentation directory",
+		"github":		"GitHub-specific documentation and templates",
+		"development":		"Development and contribution guides",
+		"project-management":	"Project planning and management documents",
+		"api":			"API documentation and specifications",
+		"testing":		"Testing guides and documentation",
+		"configuration":	"Configuration and setup documentation",
+		"general":		"General documentation files",
 	}
 
 	// Create categories with sorted entries
@@ -344,9 +344,9 @@ func generateCategories(entries []IndexEntry) []CategoryIndex {
 		}
 
 		category := CategoryIndex{
-			Name:        categoryName,
-			Description: description,
-			Files:       categoryEntries,
+			Name:		categoryName,
+			Description:	description,
+			Files:		categoryEntries,
 		}
 
 		categories = append(categories, category)
@@ -355,8 +355,8 @@ func generateCategories(entries []IndexEntry) []CategoryIndex {
 	// Sort categories by importance
 	sort.Slice(categories, func(i, j int) bool {
 		order := map[string]int{
-			"root": 1, "documentation": 2, "github": 3, "development": 4,
-			"api": 5, "testing": 6, "project-management": 7, "configuration": 8, "general": 9,
+			"root":	1, "documentation": 2, "github": 3, "development": 4,
+			"api":	5, "testing": 6, "project-management": 7, "configuration": 8, "general": 9,
 		}
 		return order[categories[i].Name] < order[categories[j].Name]
 	})
@@ -399,23 +399,23 @@ func findReferencesInFile(filePath string, allEntries []IndexEntry) []CrossRefer
 	for _, entry := range allEntries {
 		if strings.HasSuffix(filePath, entry.Path) {
 			currentPath := entry.Path
-			
+
 			// Look for references to other files
 			for lineNum, line := range lines {
 				for _, targetEntry := range allEntries {
 					if targetEntry.Path == currentPath {
 						continue
 					}
-					
+
 					// Look for markdown links
 					if strings.Contains(line, targetEntry.Path) ||
 						strings.Contains(line, targetEntry.Title) {
 						refs = append(refs, CrossReference{
-							From:    currentPath,
-							To:      targetEntry.Path,
-							Type:    "link",
-							Context: strings.TrimSpace(line),
-							Line:    lineNum + 1,
+							From:		currentPath,
+							To:		targetEntry.Path,
+							Type:		"link",
+							Context:	strings.TrimSpace(line),
+							Line:		lineNum + 1,
 						})
 					}
 				}
@@ -434,7 +434,7 @@ func generateNavigation(entries []IndexEntry, categories []CategoryIndex) Naviga
 		if len(category.Files) > 0 {
 			// Use first file as the section entry point
 			mainPath := category.Files[0].Path
-			
+
 			var children []string
 			for _, file := range category.Files {
 				if file.Path != mainPath {
@@ -443,10 +443,10 @@ func generateNavigation(entries []IndexEntry, categories []CategoryIndex) Naviga
 			}
 
 			section := NavigationSection{
-				Name:     category.Name,
-				Path:     mainPath,
-				Children: children,
-				Order:    i,
+				Name:		category.Name,
+				Path:		mainPath,
+				Children:	children,
+				Order:		i,
 			}
 			mainSections = append(mainSections, section)
 		}
@@ -480,43 +480,43 @@ func generateNavigation(entries []IndexEntry, categories []CategoryIndex) Naviga
 	for _, entry := range entries {
 		keywords := append(entry.Tags, strings.Fields(entry.Title)...)
 		keywords = append(keywords, entry.Category)
-		
+
 		searchEntry := SearchIndexEntry{
-			Path:     entry.Path,
-			Title:    entry.Title,
-			Keywords: keywords,
-			Content:  entry.Description,
+			Path:		entry.Path,
+			Title:		entry.Title,
+			Keywords:	keywords,
+			Content:	entry.Description,
 		}
 		searchIndex = append(searchIndex, searchEntry)
 	}
 
 	return NavigationIndex{
-		MainSections:   mainSections,
-		QuickStart:     quickStart,
-		ImportantPages: importantPages,
-		SearchIndex:    searchIndex,
+		MainSections:	mainSections,
+		QuickStart:	quickStart,
+		ImportantPages:	importantPages,
+		SearchIndex:	searchIndex,
 	}
 }
 
 func generateStatistics(entries []IndexEntry) IndexStatistics {
 	stats := IndexStatistics{
-		TotalFiles:     len(entries),
-		CategoryCounts: make(map[string]int),
-		TypeCounts:     make(map[string]int),
-		TagCounts:      make(map[string]int),
+		TotalFiles:	len(entries),
+		CategoryCounts:	make(map[string]int),
+		TypeCounts:	make(map[string]int),
+		TagCounts:	make(map[string]int),
 	}
 
-	recentThreshold := time.Now().AddDate(0, 0, -7) // Last 7 days
+	recentThreshold := time.Now().AddDate(0, 0, -7)	// Last 7 days
 
 	for _, entry := range entries {
 		stats.TotalSize += entry.Size
 		stats.CategoryCounts[entry.Category]++
 		stats.TypeCounts[entry.Type]++
-		
+
 		if entry.LastModified.After(recentThreshold) {
 			stats.RecentChanges++
 		}
-		
+
 		for _, tag := range entry.Tags {
 			stats.TagCounts[tag]++
 		}
@@ -531,7 +531,7 @@ func generateMarkdownIndex(index *DocumentationIndex) (string, error) {
 	// Header
 	md.WriteString(fmt.Sprintf("# %s Documentation Index\n\n", index.ProjectName))
 	md.WriteString(fmt.Sprintf("*Generated on %s*\n\n", index.GeneratedAt.Format("2006-01-02 15:04:05")))
-	
+
 	// Summary
 	md.WriteString("## Summary\n\n")
 	md.WriteString(fmt.Sprintf("- **Total Files**: %d\n", index.TotalFiles))
@@ -558,7 +558,7 @@ func generateMarkdownIndex(index *DocumentationIndex) (string, error) {
 	for _, category := range index.Categories {
 		md.WriteString(fmt.Sprintf("### %s\n\n", strings.Title(strings.ReplaceAll(category.Name, "-", " "))))
 		md.WriteString(fmt.Sprintf("*%s*\n\n", category.Description))
-		
+
 		for _, file := range category.Files {
 			md.WriteString(fmt.Sprintf("- [%s](%s)", file.Title, file.Path))
 			if file.Description != "" {
@@ -578,14 +578,14 @@ func generateMarkdownIndex(index *DocumentationIndex) (string, error) {
 	for category, count := range index.Metadata.Statistics.CategoryCounts {
 		md.WriteString(fmt.Sprintf("- %s: %d files\n", strings.Title(category), count))
 	}
-	
+
 	md.WriteString("\n### By Type\n\n")
 	for fileType, count := range index.Metadata.Statistics.TypeCounts {
 		md.WriteString(fmt.Sprintf("- %s: %d files\n", strings.Title(fileType), count))
 	}
 
 	// Footer
-	md.WriteString(fmt.Sprintf("\n---\n*Index generated by %s v%s*\n", 
+	md.WriteString(fmt.Sprintf("\n---\n*Index generated by %s v%s*\n",
 		index.Metadata.Generator, index.Metadata.Version))
 
 	return md.String(), nil
@@ -606,7 +606,7 @@ func writeMarkdownFile(outputPath, content string) error {
 func isDocumentationFile(path, name string) bool {
 	ext := strings.ToLower(filepath.Ext(name))
 	docExts := []string{".md", ".txt", ".rst", ".adoc", ".org"}
-	
+
 	for _, docExt := range docExts {
 		if ext == docExt {
 			return true
@@ -668,7 +668,7 @@ func categorizeFile(path, name string) string {
 		return "development"
 	}
 
-	if strings.HasPrefix(pathLower, "projet/") || strings.Contains(pathLower, "/projet/") || 
+	if strings.HasPrefix(pathLower, "projet/") || strings.Contains(pathLower, "/projet/") ||
 		strings.HasPrefix(pathLower, "planning/") || strings.Contains(pathLower, "/planning/") {
 		return "project-management"
 	}
@@ -694,7 +694,7 @@ func categorizeFile(path, name string) string {
 
 func extractTags(path, name string) []string {
 	var tags []string
-	
+
 	pathLower := strings.ToLower(path)
 	nameLower := strings.ToLower(name)
 
@@ -732,10 +732,10 @@ func extractTags(path, name string) []string {
 
 func extractMetadata(path string) map[string]string {
 	metadata := make(map[string]string)
-	
+
 	depth := strings.Count(path, "/")
 	metadata["depth"] = fmt.Sprintf("%d", depth)
-	
+
 	if dir := filepath.Dir(path); dir != "." {
 		metadata["parent_dir"] = filepath.Base(dir)
 	}
@@ -763,17 +763,17 @@ func getFileType(ext string) string {
 func calculateDocumentLevel(path string) int {
 	// Level based on directory depth and file importance
 	depth := strings.Count(path, "/")
-	
+
 	// Root files are level 0
 	if depth == 0 {
 		return 0
 	}
-	
+
 	// Important files in subdirectories are lower level
 	filename := strings.ToLower(filepath.Base(path))
 	if strings.Contains(filename, "readme") || strings.Contains(filename, "index") {
 		return depth - 1
 	}
-	
+
 	return depth
 }

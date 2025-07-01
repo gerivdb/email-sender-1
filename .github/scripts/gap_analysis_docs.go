@@ -1,4 +1,4 @@
-package main
+package scripts
 
 import (
 	"encoding/json"
@@ -11,33 +11,33 @@ import (
 
 // GapAnalysisReport represents documentation gaps and recommendations
 type GapAnalysisReport struct {
-	GeneratedAt        time.Time        `json:"generated_at"`
-	ProjectName        string           `json:"project_name"`
-	TotalFilesScanned  int              `json:"total_files_scanned"`
-	IdentifiedGaps     []DocumentGap    `json:"identified_gaps"`
-	Recommendations    []Recommendation `json:"recommendations"`
-	CoverageScore      float64          `json:"coverage_score"`
-	Priority           string           `json:"priority"`
-	Summary            string           `json:"summary"`
+	GeneratedAt		time.Time		`json:"generated_at"`
+	ProjectName		string			`json:"project_name"`
+	TotalFilesScanned	int			`json:"total_files_scanned"`
+	IdentifiedGaps		[]DocumentGap		`json:"identified_gaps"`
+	Recommendations		[]Recommendation	`json:"recommendations"`
+	CoverageScore		float64			`json:"coverage_score"`
+	Priority		string			`json:"priority"`
+	Summary			string			`json:"summary"`
 }
 
 // DocumentGap represents a missing or inadequate documentation area
 type DocumentGap struct {
-	Category    string   `json:"category"`
-	Type        string   `json:"type"`
-	Severity    string   `json:"severity"`
-	Description string   `json:"description"`
-	MissingFiles []string `json:"missing_files"`
-	Impact      string   `json:"impact"`
+	Category	string		`json:"category"`
+	Type		string		`json:"type"`
+	Severity	string		`json:"severity"`
+	Description	string		`json:"description"`
+	MissingFiles	[]string	`json:"missing_files"`
+	Impact		string		`json:"impact"`
 }
 
 // Recommendation represents an actionable recommendation
 type Recommendation struct {
-	Priority    string   `json:"priority"`
-	Action      string   `json:"action"`
-	Description string   `json:"description"`
-	Files       []string `json:"files"`
-	Effort      string   `json:"effort"`
+	Priority	string		`json:"priority"`
+	Action		string		`json:"action"`
+	Description	string		`json:"description"`
+	Files		[]string	`json:"files"`
+	Effort		string		`json:"effort"`
 }
 
 // ExpectedFiles defines the standard documentation files expected in a project
@@ -102,22 +102,22 @@ func analyzeGaps(root string) (*GapAnalysisReport, error) {
 			fullPath := filepath.Join(root, expectedFile)
 			if !fileExists(fullPath) {
 				gap := DocumentGap{
-					Category:    category,
-					Type:        "missing_file",
-					Severity:    getSeverity(expectedFile),
-					Description: fmt.Sprintf("Missing %s file", expectedFile),
-					MissingFiles: []string{expectedFile},
-					Impact:      getImpact(expectedFile),
+					Category:	category,
+					Type:		"missing_file",
+					Severity:	getSeverity(expectedFile),
+					Description:	fmt.Sprintf("Missing %s file", expectedFile),
+					MissingFiles:	[]string{expectedFile},
+					Impact:		getImpact(expectedFile),
 				}
 				gaps = append(gaps, gap)
 
 				// Add recommendation
 				rec := Recommendation{
-					Priority:    gap.Severity,
-					Action:      "create",
-					Description: fmt.Sprintf("Create %s file", expectedFile),
-					Files:       []string{expectedFile},
-					Effort:      getEffort(expectedFile),
+					Priority:	gap.Severity,
+					Action:		"create",
+					Description:	fmt.Sprintf("Create %s file", expectedFile),
+					Files:		[]string{expectedFile},
+					Effort:		getEffort(expectedFile),
 				}
 				recommendations = append(recommendations, rec)
 			}
@@ -128,21 +128,21 @@ func analyzeGaps(root string) (*GapAnalysisReport, error) {
 	for _, file := range existingFiles {
 		if isOutdated(file) {
 			gap := DocumentGap{
-				Category:    "maintenance",
-				Type:        "outdated_content",
-				Severity:    "medium",
-				Description: fmt.Sprintf("File %s appears outdated", file),
-				MissingFiles: []string{file},
-				Impact:      "May contain incorrect information",
+				Category:	"maintenance",
+				Type:		"outdated_content",
+				Severity:	"medium",
+				Description:	fmt.Sprintf("File %s appears outdated", file),
+				MissingFiles:	[]string{file},
+				Impact:		"May contain incorrect information",
 			}
 			gaps = append(gaps, gap)
 
 			rec := Recommendation{
-				Priority:    "medium",
-				Action:      "update",
-				Description: fmt.Sprintf("Review and update %s", file),
-				Files:       []string{file},
-				Effort:      "medium",
+				Priority:	"medium",
+				Action:		"update",
+				Description:	fmt.Sprintf("Review and update %s", file),
+				Files:		[]string{file},
+				Effort:		"medium",
 			}
 			recommendations = append(recommendations, rec)
 		}
@@ -160,14 +160,14 @@ func analyzeGaps(root string) (*GapAnalysisReport, error) {
 	coverageScore := calculateCoverageScore(gaps, len(existingFiles))
 
 	report := &GapAnalysisReport{
-		GeneratedAt:        time.Now(),
-		ProjectName:        filepath.Base(root),
-		TotalFilesScanned:  len(existingFiles),
-		IdentifiedGaps:     gaps,
-		Recommendations:    recommendations,
-		CoverageScore:      coverageScore,
-		Priority:           getPriorityLevel(gaps, coverageScore),
-		Summary:            generateGapSummary(gaps, recommendations, coverageScore),
+		GeneratedAt:		time.Now(),
+		ProjectName:		filepath.Base(root),
+		TotalFilesScanned:	len(existingFiles),
+		IdentifiedGaps:		gaps,
+		Recommendations:	recommendations,
+		CoverageScore:		coverageScore,
+		Priority:		getPriorityLevel(gaps, coverageScore),
+		Summary:		generateGapSummary(gaps, recommendations, coverageScore),
 	}
 
 	return report, nil
@@ -188,7 +188,7 @@ func getExistingFiles(root string) ([]string, error) {
 		// Get relative path for consistent processing
 		relPath, err := filepath.Rel(root, path)
 		if err != nil {
-			relPath = path // fallback to absolute path
+			relPath = path	// fallback to absolute path
 		}
 
 		// Only consider documentation files
@@ -210,7 +210,7 @@ func fileExists(path string) bool {
 func isDocumentationFile(path, name string) bool {
 	ext := strings.ToLower(filepath.Ext(name))
 	docExts := []string{".md", ".txt", ".rst", ".adoc", ".org"}
-	
+
 	// Check extension
 	for _, docExt := range docExts {
 		if ext == docExt {
@@ -247,7 +247,7 @@ func shouldSkipPath(path string) bool {
 	for _, skip := range skipPaths {
 		// Check if path starts with skip directory
 		if strings.HasPrefix(pathLower, skip+"/") ||
-			// Check if path contains skip directory  
+			// Check if path contains skip directory
 			strings.Contains(pathLower, "/"+skip+"/") ||
 			// Check if path ends with skip directory
 			strings.HasSuffix(pathLower, "/"+skip) ||
@@ -262,58 +262,58 @@ func shouldSkipPath(path string) bool {
 func getSeverity(filename string) string {
 	critical := []string{"README.md", "LICENSE", "SECURITY.md"}
 	high := []string{"CHANGELOG.md", "CONTRIBUTING.md", "INSTALLATION.md"}
-	
+
 	for _, file := range critical {
 		if strings.Contains(filename, file) {
 			return "critical"
 		}
 	}
-	
+
 	for _, file := range high {
 		if strings.Contains(filename, file) {
 			return "high"
 		}
 	}
-	
+
 	return "medium"
 }
 
 func getImpact(filename string) string {
 	impacts := map[string]string{
-		"README.md":         "Users cannot understand the project purpose and usage",
-		"LICENSE":           "Legal implications for project usage",
-		"SECURITY.md":       "Security vulnerabilities may go unreported",
-		"CONTRIBUTING.md":   "Contributors don't know how to contribute",
-		"CHANGELOG.md":      "Users cannot track changes between versions",
-		"INSTALLATION.md":   "Users cannot install or set up the project",
-		"CODE_OF_CONDUCT.md": "Community standards are unclear",
+		"README.md":		"Users cannot understand the project purpose and usage",
+		"LICENSE":		"Legal implications for project usage",
+		"SECURITY.md":		"Security vulnerabilities may go unreported",
+		"CONTRIBUTING.md":	"Contributors don't know how to contribute",
+		"CHANGELOG.md":		"Users cannot track changes between versions",
+		"INSTALLATION.md":	"Users cannot install or set up the project",
+		"CODE_OF_CONDUCT.md":	"Community standards are unclear",
 	}
-	
+
 	for key, impact := range impacts {
 		if strings.Contains(filename, key) {
 			return impact
 		}
 	}
-	
+
 	return "General documentation completeness affected"
 }
 
 func getEffort(filename string) string {
 	lowEffort := []string{"LICENSE", "CODE_OF_CONDUCT.md"}
 	highEffort := []string{"docs/api", "docs/architecture.md", "docs/development"}
-	
+
 	for _, file := range lowEffort {
 		if strings.Contains(filename, file) {
 			return "low"
 		}
 	}
-	
+
 	for _, file := range highEffort {
 		if strings.Contains(filename, file) {
 			return "high"
 		}
 	}
-	
+
 	return "medium"
 }
 
@@ -323,7 +323,7 @@ func isOutdated(filename string) bool {
 	if err != nil {
 		return false
 	}
-	
+
 	// Consider files older than 6 months as potentially outdated
 	sixMonthsAgo := time.Now().AddDate(0, -6, 0)
 	return info.ModTime().Before(sixMonthsAgo)
@@ -331,42 +331,42 @@ func isOutdated(filename string) bool {
 
 func analyzeFragmentation(files []string) []DocumentGap {
 	var gaps []DocumentGap
-	
+
 	// Check for scattered documentation
 	docDirs := make(map[string]int)
 	for _, file := range files {
 		dir := filepath.Dir(file)
 		docDirs[dir]++
 	}
-	
+
 	// If documentation is spread across many directories, suggest consolidation
 	if len(docDirs) > 5 {
 		gap := DocumentGap{
-			Category:    "organization",
-			Type:        "fragmentation",
-			Severity:    "medium",
-			Description: fmt.Sprintf("Documentation scattered across %d directories", len(docDirs)),
-			MissingFiles: []string{},
-			Impact:      "Difficult to find and maintain documentation",
+			Category:	"organization",
+			Type:		"fragmentation",
+			Severity:	"medium",
+			Description:	fmt.Sprintf("Documentation scattered across %d directories", len(docDirs)),
+			MissingFiles:	[]string{},
+			Impact:		"Difficult to find and maintain documentation",
 		}
 		gaps = append(gaps, gap)
 	}
-	
+
 	return gaps
 }
 
 func analyzeAPIDocumentation(root string) []DocumentGap {
 	var gaps []DocumentGap
-	
+
 	// Check if this is likely an API project
 	hasAPICode := false
 	apiIndicators := []string{"api", "server", "endpoint", "route"}
-	
+
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
-		
+
 		if strings.HasSuffix(path, ".go") || strings.HasSuffix(path, ".js") || strings.HasSuffix(path, ".py") {
 			pathLower := strings.ToLower(path)
 			for _, indicator := range apiIndicators {
@@ -376,10 +376,10 @@ func analyzeAPIDocumentation(root string) []DocumentGap {
 				}
 			}
 		}
-		
+
 		return nil
 	})
-	
+
 	if err == nil && hasAPICode {
 		// Check for API documentation
 		apiDocExists := false
@@ -389,20 +389,20 @@ func analyzeAPIDocumentation(root string) []DocumentGap {
 				break
 			}
 		}
-		
+
 		if !apiDocExists {
 			gap := DocumentGap{
-				Category:    "api",
-				Type:        "missing_api_docs",
-				Severity:    "high",
-				Description: "API project detected but no API documentation found",
-				MissingFiles: []string{"docs/api.md", "docs/api/endpoints.md"},
-				Impact:      "Developers cannot understand how to use the API",
+				Category:	"api",
+				Type:		"missing_api_docs",
+				Severity:	"high",
+				Description:	"API project detected but no API documentation found",
+				MissingFiles:	[]string{"docs/api.md", "docs/api/endpoints.md"},
+				Impact:		"Developers cannot understand how to use the API",
 			}
 			gaps = append(gaps, gap)
 		}
 	}
-	
+
 	return gaps
 }
 
@@ -410,7 +410,7 @@ func calculateCoverageScore(gaps []DocumentGap, totalFiles int) float64 {
 	if totalFiles == 0 {
 		return 0.0
 	}
-	
+
 	// Calculate deductions based on gap severity
 	deductions := 0.0
 	for _, gap := range gaps {
@@ -425,24 +425,24 @@ func calculateCoverageScore(gaps []DocumentGap, totalFiles int) float64 {
 			deductions += 2.0
 		}
 	}
-	
+
 	// Base score: start at 100 and subtract deductions
 	finalScore := 100.0 - deductions
-	
+
 	if finalScore < 0 {
 		finalScore = 0
 	}
 	if finalScore > 100 {
 		finalScore = 100
 	}
-	
+
 	return finalScore
 }
 
 func getPriorityLevel(gaps []DocumentGap, coverageScore float64) string {
 	criticalCount := 0
 	highCount := 0
-	
+
 	for _, gap := range gaps {
 		if gap.Severity == "critical" {
 			criticalCount++
@@ -450,7 +450,7 @@ func getPriorityLevel(gaps []DocumentGap, coverageScore float64) string {
 			highCount++
 		}
 	}
-	
+
 	if criticalCount > 0 || coverageScore < 30 {
 		return "critical"
 	}
@@ -460,26 +460,26 @@ func getPriorityLevel(gaps []DocumentGap, coverageScore float64) string {
 	if coverageScore < 80 {
 		return "medium"
 	}
-	
+
 	return "low"
 }
 
 func generateGapSummary(gaps []DocumentGap, recommendations []Recommendation, coverageScore float64) string {
 	summary := fmt.Sprintf("Documentation Coverage Score: %.1f%%\n\n", coverageScore)
-	
+
 	summary += fmt.Sprintf("Identified %d documentation gaps:\n", len(gaps))
-	
+
 	severityCount := make(map[string]int)
 	for _, gap := range gaps {
 		severityCount[gap.Severity]++
 	}
-	
+
 	for severity, count := range severityCount {
 		summary += fmt.Sprintf("- %s: %d gaps\n", strings.Title(severity), count)
 	}
-	
+
 	summary += fmt.Sprintf("\nGenerated %d actionable recommendations for improvement.\n", len(recommendations))
-	
+
 	if coverageScore < 50 {
 		summary += "\n⚠️  WARNING: Documentation coverage is critically low. Immediate attention required."
 	} else if coverageScore < 75 {
@@ -487,6 +487,6 @@ func generateGapSummary(gaps []DocumentGap, recommendations []Recommendation, co
 	} else {
 		summary += "\n✅ Good documentation coverage. Focus on maintaining and updating existing content."
 	}
-	
+
 	return summary
 }

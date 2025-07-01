@@ -1,6 +1,6 @@
 // Exemple de hook CacheManager dans un script Go existant (phase 4.4)
 
-package main
+package dependency_manager
 
 import (
 	"fmt"
@@ -17,10 +17,10 @@ func main() {
 	)
 
 	entry := cachemanager.LogEntry{
-		Timestamp: time.Now(),
-		Level:     "INFO",
-		Source:    "dependency-manager",
-		Message:   "Démarrage du scan des dépendances",
+		Timestamp:	time.Now(),
+		Level:		"INFO",
+		Source:		"dependency-manager",
+		Message:	"Démarrage du scan des dépendances",
 	}
 
 	_ = cm.StoreLog(entry)

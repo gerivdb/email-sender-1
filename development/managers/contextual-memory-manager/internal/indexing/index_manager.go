@@ -9,8 +9,8 @@ import (
 	"math"
 	"time"
 
-	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
 	baseInterfaces "./interfaces"
+	"EMAIL_SENDER_1/development/managers/contextual-memory-manager/interfaces"
 	"github.com/google/uuid"
 )
 

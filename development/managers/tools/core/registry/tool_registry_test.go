@@ -8,11 +8,11 @@ import (
 	"context"
 	"testing"
 
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
-	_ "github.com/gerivdb/email-sender-1/tools/operations/analysis"    // Blank import for init()
-	_ "github.com/gerivdb/email-sender-1/tools/operations/correction"  // Blank import for init()
-	_ "github.com/gerivdb/email-sender-1/tools/operations/migration"   // Blank import for init()
-	_ "github.com/gerivdb/email-sender-1/tools/operations/validation"  // Blank import for init()
+	"EMAIL_SENDER_1/tools/core/toolkit"
+	_ "EMAIL_SENDER_1/tools/operations/analysis"   // Blank import for init()
+	_ "EMAIL_SENDER_1/tools/operations/correction" // Blank import for init()
+	_ "EMAIL_SENDER_1/tools/operations/migration"  // Blank import for init()
+	_ "EMAIL_SENDER_1/tools/operations/validation" // Blank import for init()
 )
 
 // TestGlobalRegistry tests the global registry functionality
@@ -26,7 +26,7 @@ func TestGlobalRegistry(t *testing.T) {
 	operations := GetGlobalRegistry().ListOperations()
 	if len(operations) == 0 {
 		t.Error("Expected at least one registered operation")
-	}	// Check if we have all expected operations
+	} // Check if we have all expected operations
 	expectedOps := []toolkit.Operation{
 		toolkit.ValidateStructs,
 		toolkit.SyntaxCheck,

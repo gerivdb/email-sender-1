@@ -6,15 +6,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gerivdb/email-sender-1/managers/interfaces"
+	"EMAIL_SENDER_1/managers/interfaces"
 )
 
 // FeatureBranchWorkflow implements a simple feature branch workflow
 type FeatureBranchWorkflow struct {
-	manager      interfaces.GitWorkflowManager
-	mainBranch   string
-	autoCleanup  bool
-	cleanupDays  int
+	manager     interfaces.GitWorkflowManager
+	mainBranch  string
+	autoCleanup bool
+	cleanupDays int
 }
 
 // NewFeatureBranchWorkflow creates a new Feature Branch workflow instance
@@ -22,7 +22,7 @@ func NewFeatureBranchWorkflow(manager interfaces.GitWorkflowManager, mainBranch 
 	if mainBranch == "" {
 		mainBranch = "main"
 	}
-	
+
 	return &FeatureBranchWorkflow{
 		manager:     manager,
 		mainBranch:  mainBranch,
@@ -86,7 +86,7 @@ func (f *FeatureBranchWorkflow) MergeFeature(ctx context.Context, branchName, ti
 		SourceBranch: branchName,
 		TargetBranch: f.mainBranch,
 	}
-	
+
 	pullRequestInfo, err := f.manager.CreatePullRequest(ctx, prInfo.Title, prInfo.Description, prInfo.SourceBranch, prInfo.TargetBranch)
 	if err != nil {
 		return nil, err
@@ -106,10 +106,10 @@ func (f *FeatureBranchWorkflow) RebaseBranch(ctx context.Context, branchName str
 	// 2. Pulling latest changes from main
 	// 3. Rebasing onto main
 	// 4. Force pushing the rebased branch
-	
+
 	// For now, we'll create a commit that indicates a rebase
 	commitMessage := fmt.Sprintf("Rebase %s onto %s", branchName, f.mainBranch)
-	
+
 	_, err := f.manager.CreateTimestampedCommit(ctx, commitMessage, []string{})
 	return err
 }
@@ -120,33 +120,33 @@ func (f *FeatureBranchWorkflow) ArchiveBranch(ctx context.Context, branchName st
 	// 1. Tag the branch for archival
 	// 2. Move it to an archive namespace
 	// 3. Delete the original branch
-	
+
 	branches, err := f.manager.ListSubBranches(ctx, "") // Assuming listing all branches from root
 	if err != nil {
 		return fmt.Errorf("failed to list branches: %w", err)
 	}
-	
+
 	for _, branch := range branches {
 		if branch.Name == branchName {
 			// Create an archive tag
 			// tagName := fmt.Sprintf("archive/%s", branchName) // tagName is unused
-			
+
 			// Set metadata to mark as archived
 			// err := f.manager.SetMetadata(fmt.Sprintf("archived_%s", branchName), map[string]interface{}{
 			// 	"original_branch": branchName,
 			// 	"archived_at":     time.Now(),
 			// 	"reason":          "archived by feature branch workflow",
 			// })
-			
+
 			// if err != nil {
 			// 	return fmt.Errorf("failed to set archive metadata: %w", err)
 			// }
-			
+
 			// return f.manager.DeleteSubBranch(ctx, branchName) // DeleteSubBranch is undefined
 			return nil // Returning nil as per instruction after commenting out undefined methods
 		}
 	}
-	
+
 	return fmt.Errorf("branch '%s' not found", branchName)
 }
 
@@ -155,20 +155,20 @@ func (f *FeatureBranchWorkflow) CleanupStaleBranches(ctx context.Context) error 
 	if !f.autoCleanup {
 		return nil
 	}
-	
+
 	branches, err := f.manager.ListSubBranches(ctx, "") // Assuming listing all branches from root
 	if err != nil {
 		return fmt.Errorf("failed to list branches: %w", err)
 	}
-	
+
 	cutoffDate := time.Now().AddDate(0, 0, -f.cleanupDays)
-	
+
 	for _, branch := range branches {
 		// Skip protected branches
 		if f.isProtectedBranch(branch.Name) {
 			continue
 		}
-		
+
 		// Check if branch is stale
 		if branch.CreatedAt.Before(cutoffDate) && branch.Status != "active" {
 			// Archive instead of directly deleting
@@ -178,26 +178,26 @@ func (f *FeatureBranchWorkflow) CleanupStaleBranches(ctx context.Context) error 
 			}
 		}
 	}
-	
+
 	return nil
 }
 
 // ValidateBranchName ensures branch names follow feature branch conventions
 func (f *FeatureBranchWorkflow) ValidateBranchName(branchName string) error {
 	// Allow flexible naming but with some basic rules
-	
+
 	if f.isProtectedBranch(branchName) {
 		return fmt.Errorf("cannot create branch with protected name '%s'", branchName)
 	}
-	
+
 	if len(branchName) == 0 {
 		return fmt.Errorf("branch name cannot be empty")
 	}
-	
+
 	if len(branchName) > 100 {
 		return fmt.Errorf("branch name too long (max 100 characters)")
 	}
-	
+
 	// Ensure no invalid characters
 	invalidChars := []string{" ", "\t", "\n", "..", "~", "^", ":", "?", "*", "[", "\\"}
 	for _, char := range invalidChars {
@@ -205,7 +205,7 @@ func (f *FeatureBranchWorkflow) ValidateBranchName(branchName string) error {
 			return fmt.Errorf("branch name contains invalid character '%s'", char)
 		}
 	}
-	
+
 	return nil
 }
 
@@ -230,7 +230,7 @@ func (f *FeatureBranchWorkflow) formatBranchName(featureName string) string {
 
 func (f *FeatureBranchWorkflow) getBranchLabels(branchName string) []string {
 	labels := []string{"feature-branch-workflow"}
-	
+
 	if strings.HasPrefix(branchName, "feature/") {
 		labels = append(labels, "feature")
 	} else if strings.HasPrefix(branchName, "bugfix/") {
@@ -240,7 +240,7 @@ func (f *FeatureBranchWorkflow) getBranchLabels(branchName string) []string {
 	} else if strings.HasPrefix(branchName, "experiment/") {
 		labels = append(labels, "experiment")
 	}
-	
+
 	return labels
 }
 

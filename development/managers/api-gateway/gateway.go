@@ -1,4 +1,4 @@
-package main
+package api_gateway
 
 import (
 	"context"
@@ -32,11 +32,11 @@ type ManagerInterface interface {
 
 // APIGateway centralise tous les endpoints de l'écosystème
 type APIGateway struct {
-	managers    map[string]ManagerInterface
-	router      *gin.Engine
-	logger      *zap.Logger
-	rateLimiter *rate.Limiter
-	server      *http.Server
+	managers	map[string]ManagerInterface
+	router		*gin.Engine
+	logger		*zap.Logger
+	rateLimiter	*rate.Limiter
+	server		*http.Server
 }
 
 // NewAPIGateway crée une nouvelle instance de la gateway API
@@ -46,10 +46,10 @@ func NewAPIGateway(logger *zap.Logger) *APIGateway {
 	router.Use(gin.Recovery())
 
 	return &APIGateway{
-		managers:    make(map[string]ManagerInterface),
-		router:      router,
-		logger:      logger,
-		rateLimiter: rate.NewLimiter(1000, 100), // 1000 req/s, burst 100
+		managers:	make(map[string]ManagerInterface),
+		router:		router,
+		logger:		logger,
+		rateLimiter:	rate.NewLimiter(1000, 100),	// 1000 req/s, burst 100
 	}
 }
 
@@ -123,8 +123,8 @@ func (ag *APIGateway) Start(ctx context.Context, port int) error {
 	ag.SetupRoutes()
 
 	ag.server = &http.Server{
-		Addr:    ":" + strconv.Itoa(port),
-		Handler: ag.router,
+		Addr:		":" + strconv.Itoa(port),
+		Handler:	ag.router,
 	}
 
 	ag.logger.Info("Starting API Gateway", zap.Int("port", port))
@@ -168,8 +168,8 @@ func (ag *APIGateway) rateLimitMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if !ag.rateLimiter.Allow() {
 			c.JSON(http.StatusTooManyRequests, gin.H{
-				"error":   "Rate limit exceeded",
-				"message": "Too many requests, please try again later",
+				"error":	"Rate limit exceeded",
+				"message":	"Too many requests, please try again later",
 			})
 			c.Abort()
 			return

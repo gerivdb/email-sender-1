@@ -1,4 +1,4 @@
-package main
+package validation
 
 import (
 	"fmt"
@@ -69,7 +69,7 @@ func validateTypes() error {
 					found = false
 				}
 			}()
-			
+
 			// Essaie d'obtenir le package et observe s'il panic
 			pkg := reflect.TypeOf(interfaces.SystemSituation{})
 			if pkg.PkgPath() == "advanced-autonomy-manager/interfaces" {
@@ -93,12 +93,12 @@ func validateTypes() error {
 func main() {
 	fmt.Println("Validation de l'architecture du AdvancedAutonomyManager (21ème manager)")
 	fmt.Println("======================================================================")
-	
+
 	errs := []error{
 		validateStructure(),
 		validateTypes(),
 	}
-	
+
 	hasErrors := false
 	for _, err := range errs {
 		if err != nil {
@@ -106,7 +106,7 @@ func main() {
 			fmt.Fprintf(os.Stderr, "ERREUR: %v\n", err)
 		}
 	}
-	
+
 	if !hasErrors {
 		fmt.Println("\n✓ Validation de l'architecture réussie!")
 		fmt.Println("\nL'architecture foundation du AdvancedAutonomyManager est prête pour l'implémentation.")

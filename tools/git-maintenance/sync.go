@@ -1,4 +1,4 @@
-package main
+package git_maintenance
 
 import (
 	"bufio"
@@ -14,29 +14,29 @@ import (
 )
 
 type SubmoduleStatus struct {
-	Path            string    `json:"path"`
-	URL             string    `json:"url"`
-	LocalSHA        string    `json:"localSHA"`
-	RemoteSHA       string    `json:"remoteSHA"`
-	LastSync        time.Time `json:"lastSync"`
-	LastFetch       time.Time `json:"lastFetch"`
-	HasDivergence   bool      `json:"hasDivergence"`
-	HasLocalCommit  bool      `json:"hasLocalCommit"`
-	HasRemoteCommit bool      `json:"hasRemoteCommit"`
-	ConflictType    string    `json:"conflictType,omitempty"`
-	SyncStrategy    string    `json:"syncStrategy,omitempty"`
+	Path		string		`json:"path"`
+	URL		string		`json:"url"`
+	LocalSHA	string		`json:"localSHA"`
+	RemoteSHA	string		`json:"remoteSHA"`
+	LastSync	time.Time	`json:"lastSync"`
+	LastFetch	time.Time	`json:"lastFetch"`
+	HasDivergence	bool		`json:"hasDivergence"`
+	HasLocalCommit	bool		`json:"hasLocalCommit"`
+	HasRemoteCommit	bool		`json:"hasRemoteCommit"`
+	ConflictType	string		`json:"conflictType,omitempty"`
+	SyncStrategy	string		`json:"syncStrategy,omitempty"`
 }
 
 type SyncResult struct {
-	Path        string `json:"path"`
-	Status      string `json:"status"`
-	Message     string `json:"message"`
-	ChangesHash string `json:"changesHash,omitempty"`
+	Path		string	`json:"path"`
+	Status		string	`json:"status"`
+	Message		string	`json:"message"`
+	ChangesHash	string	`json:"changesHash,omitempty"`
 }
 
 type SubmoduleSync struct {
-	config Config
-	logger *log.Logger
+	config	Config
+	logger	*log.Logger
 }
 
 func NewSubmoduleSync(config Config) *SubmoduleSync {
@@ -46,8 +46,8 @@ func NewSubmoduleSync(config Config) *SubmoduleSync {
 	}
 
 	return &SubmoduleSync{
-		config: config,
-		logger: logger,
+		config:	config,
+		logger:	logger,
 	}
 }
 
@@ -180,8 +180,8 @@ func (s *SubmoduleSync) getSubmoduleStatus(submodule string) (SubmoduleStatus, e
 	}
 
 	status := SubmoduleStatus{
-		Path: path,
-		URL:  url,
+		Path:	path,
+		URL:	url,
 	}
 
 	// Get local SHA
@@ -230,17 +230,17 @@ func (s *SubmoduleSync) syncSubmodules(statuses []SubmoduleStatus) []SyncResult 
 func (s *SubmoduleSync) syncSubmodule(status SubmoduleStatus) SyncResult {
 	if s.config.DryRun {
 		return SyncResult{
-			Path:    status.Path,
-			Status:  "dry-run",
-			Message: fmt.Sprintf("Would sync using strategy: %s", status.SyncStrategy),
+			Path:		status.Path,
+			Status:		"dry-run",
+			Message:	fmt.Sprintf("Would sync using strategy: %s", status.SyncStrategy),
 		}
 	}
 
 	if !status.HasDivergence {
 		return SyncResult{
-			Path:    status.Path,
-			Status:  "up-to-date",
-			Message: "No sync needed",
+			Path:		status.Path,
+			Status:		"up-to-date",
+			Message:	"No sync needed",
 		}
 	}
 
@@ -253,9 +253,9 @@ func (s *SubmoduleSync) syncSubmodule(status SubmoduleStatus) SyncResult {
 		return s.performForceSync(status)
 	default:
 		return SyncResult{
-			Path:    status.Path,
-			Status:  "error",
-			Message: fmt.Sprintf("Unknown sync strategy: %s", status.SyncStrategy),
+			Path:		status.Path,
+			Status:		"error",
+			Message:	fmt.Sprintf("Unknown sync strategy: %s", status.SyncStrategy),
 		}
 	}
 }
@@ -266,24 +266,24 @@ func (s *SubmoduleSync) performFastForward(status SubmoduleStatus) SyncResult {
 
 	if err := cmd.Run(); err != nil {
 		return SyncResult{
-			Path:    status.Path,
-			Status:  "error",
-			Message: fmt.Sprintf("Fast-forward failed: %v", err),
+			Path:		status.Path,
+			Status:		"error",
+			Message:	fmt.Sprintf("Fast-forward failed: %v", err),
 		}
 	}
 
 	return SyncResult{
-		Path:    status.Path,
-		Status:  "synced",
-		Message: "Fast-forward completed successfully",
+		Path:		status.Path,
+		Status:		"synced",
+		Message:	"Fast-forward completed successfully",
 	}
 }
 
 func (s *SubmoduleSync) requestManualReview(status SubmoduleStatus) SyncResult {
 	return SyncResult{
-		Path:    status.Path,
-		Status:  "manual-review-required",
-		Message: fmt.Sprintf("Manual review required for conflict type: %s", status.ConflictType),
+		Path:		status.Path,
+		Status:		"manual-review-required",
+		Message:	fmt.Sprintf("Manual review required for conflict type: %s", status.ConflictType),
 	}
 }
 
@@ -293,16 +293,16 @@ func (s *SubmoduleSync) performForceSync(status SubmoduleStatus) SyncResult {
 
 	if err := cmd.Run(); err != nil {
 		return SyncResult{
-			Path:    status.Path,
-			Status:  "error",
-			Message: fmt.Sprintf("Force sync failed: %v", err),
+			Path:		status.Path,
+			Status:		"error",
+			Message:	fmt.Sprintf("Force sync failed: %v", err),
 		}
 	}
 
 	return SyncResult{
-		Path:    status.Path,
-		Status:  "force-synced",
-		Message: "Force sync completed (local changes lost)",
+		Path:		status.Path,
+		Status:		"force-synced",
+		Message:	"Force sync completed (local changes lost)",
 	}
 }
 

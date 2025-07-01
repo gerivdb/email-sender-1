@@ -1,6 +1,8 @@
 package ai_template_manager
 
 import (
+	"EMAIL_SENDER_1/development/managers/ai-template-manager/interfaces"
+	"EMAIL_SENDER_1/development/managers/ai-template-manager/internal/ai"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -9,9 +11,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
-	"github.com/chrlesur/Email_Sender/development/managers/ai-template-manager/interfaces"
-	"github.com/chrlesur/Email_Sender/development/managers/ai-template-manager/internal/ai"
 )
 
 // AITemplateManager implements the AI-powered template management system

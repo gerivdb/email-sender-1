@@ -1,4 +1,4 @@
-package main
+package qdrant
 
 import (
 	"fmt"
@@ -8,9 +8,9 @@ import (
 )
 
 type Point struct {
-	ID      string
-	Vector  []float32
-	Payload map[string]interface{}
+	ID	string
+	Vector	[]float32
+	Payload	map[string]interface{}
 }
 
 type UpsertResponse struct {
@@ -40,14 +40,14 @@ func TestUpsertPointsMinimalBatch(t *testing.T) {
 	// Préparer un jeu de données minimal (1-2 points)
 	points := []Point{
 		{
-			ID:      "point1",
-			Vector:  []float32{0.1, 0.2, 0.3},
-			Payload: map[string]interface{}{"key": "value1"},
+			ID:		"point1",
+			Vector:		[]float32{0.1, 0.2, 0.3},
+			Payload:	map[string]interface{}{"key": "value1"},
 		},
 		{
-			ID:      "point2",
-			Vector:  []float32{0.4, 0.5, 0.6},
-			Payload: map[string]interface{}{"key": "value2"},
+			ID:		"point2",
+			Vector:		[]float32{0.4, 0.5, 0.6},
+			Payload:	map[string]interface{}{"key": "value2"},
 		},
 	}
 

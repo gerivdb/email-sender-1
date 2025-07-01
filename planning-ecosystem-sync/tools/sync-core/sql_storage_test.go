@@ -1,4 +1,4 @@
-package main
+package sync_core
 
 import (
 	"fmt"
@@ -7,10 +7,10 @@ import (
 )
 
 // TestSQLStorageIntegration tests the SQL storage functionality
-func TestSQLStorageIntegration(t *testing.T) { // Use SQLite for testing
+func TestSQLStorageIntegration(t *testing.T) {	// Use SQLite for testing
 	config := DatabaseConfig{
-		Driver:     "sqlite",
-		Connection: "file:test.db?mode=memory&cache=shared",
+		Driver:		"sqlite",
+		Connection:	"file:test.db?mode=memory&cache=shared",
 	}
 
 	storage, err := NewSQLStorage(config)
@@ -21,45 +21,45 @@ func TestSQLStorageIntegration(t *testing.T) { // Use SQLite for testing
 
 	// Create test plan
 	plan := &DynamicPlan{
-		ID: "test_plan_sql",
+		ID:	"test_plan_sql",
 		Metadata: PlanMetadata{
-			Title:       "SQL Test Plan",
-			Version:     "v1.0",
-			FilePath:    "test/sql_test.md",
-			Description: "Test plan for SQL storage",
-			Progression: 60.0,
+			Title:		"SQL Test Plan",
+			Version:	"v1.0",
+			FilePath:	"test/sql_test.md",
+			Description:	"Test plan for SQL storage",
+			Progression:	60.0,
 		},
 		Tasks: []Task{
 			{
-				ID:           "task_sql_1",
-				Title:        "SQL Task 1",
-				Description:  "First SQL test task",
-				Status:       "completed",
-				Phase:        "Phase 1",
-				Level:        1,
-				Priority:     "high",
-				Completed:    true,
-				Dependencies: []string{},
-				CreatedAt:    time.Now(),
-				UpdatedAt:    time.Now(),
+				ID:		"task_sql_1",
+				Title:		"SQL Task 1",
+				Description:	"First SQL test task",
+				Status:		"completed",
+				Phase:		"Phase 1",
+				Level:		1,
+				Priority:	"high",
+				Completed:	true,
+				Dependencies:	[]string{},
+				CreatedAt:	time.Now(),
+				UpdatedAt:	time.Now(),
 			},
 			{
-				ID:           "task_sql_2",
-				Title:        "SQL Task 2",
-				Description:  "Second SQL test task",
-				Status:       "in_progress",
-				Phase:        "Phase 2",
-				Level:        2,
-				Priority:     "medium",
-				Completed:    false,
-				Dependencies: []string{"task_sql_1"},
-				CreatedAt:    time.Now(),
-				UpdatedAt:    time.Now(),
+				ID:		"task_sql_2",
+				Title:		"SQL Task 2",
+				Description:	"Second SQL test task",
+				Status:		"in_progress",
+				Phase:		"Phase 2",
+				Level:		2,
+				Priority:	"medium",
+				Completed:	false,
+				Dependencies:	[]string{"task_sql_1"},
+				CreatedAt:	time.Now(),
+				UpdatedAt:	time.Now(),
 			},
 		},
-		Embeddings: make([]float64, 384),
-		CreatedAt:  time.Now(),
-		UpdatedAt:  time.Now(),
+		Embeddings:	make([]float64, 384),
+		CreatedAt:	time.Now(),
+		UpdatedAt:	time.Now(),
 	}
 
 	// Test storing plan
@@ -113,10 +113,10 @@ func TestSQLStorageIntegration(t *testing.T) { // Use SQLite for testing
 }
 
 // TestSQLStorageRecovery tests error handling and recovery
-func TestSQLStorageRecovery(t *testing.T) { // Use SQLite for testing
+func TestSQLStorageRecovery(t *testing.T) {	// Use SQLite for testing
 	config := DatabaseConfig{
-		Driver:     "sqlite",
-		Connection: "file:test_recovery.db?mode=memory&cache=shared",
+		Driver:		"sqlite",
+		Connection:	"file:test_recovery.db?mode=memory&cache=shared",
 	}
 
 	storage, err := NewSQLStorage(config)
@@ -133,13 +133,13 @@ func TestSQLStorageRecovery(t *testing.T) { // Use SQLite for testing
 
 	// Test storing plan with missing required fields
 	invalidPlan := &DynamicPlan{
-		ID: "", // Missing ID
+		ID:	"",	// Missing ID
 		Metadata: PlanMetadata{
 			Title: "Invalid Plan",
 		},
-		Tasks:     []Task{},
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		Tasks:		[]Task{},
+		CreatedAt:	time.Now(),
+		UpdatedAt:	time.Now(),
 	}
 
 	err = storage.StorePlan(invalidPlan)
@@ -154,8 +154,8 @@ func TestSQLStorageRecovery(t *testing.T) { // Use SQLite for testing
 func TestSQLStorageStatistics(t *testing.T) {
 	// Use SQLite for testing
 	config := DatabaseConfig{
-		Driver:     "sqlite",
-		Connection: "file:test_stats.db?mode=memory&cache=shared",
+		Driver:		"sqlite",
+		Connection:	"file:test_stats.db?mode=memory&cache=shared",
 	}
 
 	storage, err := NewSQLStorage(config)
@@ -166,31 +166,31 @@ func TestSQLStorageStatistics(t *testing.T) {
 
 	// Store a test plan
 	plan := &DynamicPlan{
-		ID: "test_plan_stats",
+		ID:	"test_plan_stats",
 		Metadata: PlanMetadata{
-			Title:    "Statistics Test Plan",
-			FilePath: "test/stats_test.md",
+			Title:		"Statistics Test Plan",
+			FilePath:	"test/stats_test.md",
 		},
 		Tasks: []Task{
 			{
-				ID:        "task_stats_1",
-				Title:     "Completed Task",
-				Status:    "completed",
-				Completed: true,
-				CreatedAt: time.Now(),
-				UpdatedAt: time.Now(),
+				ID:		"task_stats_1",
+				Title:		"Completed Task",
+				Status:		"completed",
+				Completed:	true,
+				CreatedAt:	time.Now(),
+				UpdatedAt:	time.Now(),
 			},
 			{
-				ID:        "task_stats_2",
-				Title:     "Pending Task",
-				Status:    "pending",
-				Completed: false,
-				CreatedAt: time.Now(),
-				UpdatedAt: time.Now(),
+				ID:		"task_stats_2",
+				Title:		"Pending Task",
+				Status:		"pending",
+				Completed:	false,
+				CreatedAt:	time.Now(),
+				UpdatedAt:	time.Now(),
 			},
 		},
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		CreatedAt:	time.Now(),
+		UpdatedAt:	time.Now(),
 	}
 
 	err = storage.StorePlan(plan)
@@ -221,10 +221,10 @@ func TestSQLStorageStatistics(t *testing.T) {
 }
 
 // TestSQLStoragePerformance tests the performance of SQL operations
-func TestSQLStoragePerformance(t *testing.T) { // Use SQLite for testing
+func TestSQLStoragePerformance(t *testing.T) {	// Use SQLite for testing
 	config := DatabaseConfig{
-		Driver:     "sqlite",
-		Connection: "file:test_perf.db?mode=memory&cache=shared",
+		Driver:		"sqlite",
+		Connection:	"file:test_perf.db?mode=memory&cache=shared",
 	}
 
 	storage, err := NewSQLStorage(config)
@@ -237,28 +237,28 @@ func TestSQLStoragePerformance(t *testing.T) { // Use SQLite for testing
 	tasks := make([]Task, 100)
 	for i := 0; i < 100; i++ {
 		tasks[i] = Task{
-			ID:          fmt.Sprintf("perf_task_%d", i),
-			Title:       fmt.Sprintf("Performance Task %d", i),
-			Description: fmt.Sprintf("Description for performance task %d", i),
-			Status:      "pending",
-			Phase:       fmt.Sprintf("Phase %d", i%5+1),
-			Level:       i%3 + 1,
-			Priority:    "medium",
-			Completed:   false,
-			CreatedAt:   time.Now(),
-			UpdatedAt:   time.Now(),
+			ID:		fmt.Sprintf("perf_task_%d", i),
+			Title:		fmt.Sprintf("Performance Task %d", i),
+			Description:	fmt.Sprintf("Description for performance task %d", i),
+			Status:		"pending",
+			Phase:		fmt.Sprintf("Phase %d", i%5+1),
+			Level:		i%3 + 1,
+			Priority:	"medium",
+			Completed:	false,
+			CreatedAt:	time.Now(),
+			UpdatedAt:	time.Now(),
 		}
 	}
 
 	plan := &DynamicPlan{
-		ID: "test_plan_perf",
+		ID:	"test_plan_perf",
 		Metadata: PlanMetadata{
-			Title:    "Performance Test Plan",
-			FilePath: "test/perf_test.md",
+			Title:		"Performance Test Plan",
+			FilePath:	"test/perf_test.md",
 		},
-		Tasks:     tasks,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		Tasks:		tasks,
+		CreatedAt:	time.Now(),
+		UpdatedAt:	time.Now(),
 	}
 
 	// Measure storage time

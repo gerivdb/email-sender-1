@@ -1,4 +1,4 @@
-package main
+package auditor
 
 import (
 	"fmt"
@@ -42,7 +42,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	report := utils.AuditReport{ // Utilisation de utils.AuditReport
+	report := utils.AuditReport{	// Utilisation de utils.AuditReport
 		Timestamp: time.Now().Format("2006-01-02T15-04-05"),
 	}
 
@@ -58,16 +58,16 @@ func main() {
 			return err
 		}
 
-		if info.IsDir() && strings.Contains(path, "vendor") { // Ignorer le dossier vendor
+		if info.IsDir() && strings.Contains(path, "vendor") {	// Ignorer le dossier vendor
 			return filepath.SkipDir
 		}
 
 		if info.Name() == "go.mod" {
 			// relPath, _ := filepath.Rel(rootDir, path) // relPath n'est pas utilisé ici
-			moduleInfo, err := parseGoMod(path) // parseGoMod reste ici car spécifique à cet outil
+			moduleInfo, err := parseGoMod(path)	// parseGoMod reste ici car spécifique à cet outil
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "Erreur lors de l'analyse de %s: %v\n", path, err)
-				return nil // Ne pas bloquer l'audit pour un seul fichier
+				return nil	// Ne pas bloquer l'audit pour un seul fichier
 			}
 			report.GoModsFound = append(report.GoModsFound, moduleInfo)
 		} else if info.Name() == "go.sum" {
@@ -82,17 +82,17 @@ func main() {
 	}
 
 	// Générer le rapport Markdown
-	report.ReportMarkdown = utils.GenerateMarkdownReportAudit(report) // Utilisation de utils.GenerateMarkdownReportAudit
+	report.ReportMarkdown = utils.GenerateMarkdownReportAudit(report)	// Utilisation de utils.GenerateMarkdownReportAudit
 
 	// Écrire le rapport JSON
-	err = utils.WriteReportJSON(report, outputJSON) // Utilisation de utils.WriteReportJSON
+	err = utils.WriteReportJSON(report, outputJSON)	// Utilisation de utils.WriteReportJSON
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Erreur lors de l'écriture du rapport JSON : %v\n", err)
 		os.Exit(1)
 	}
 
 	// Écrire le rapport Markdown
-	err = utils.WriteReportMD(report.ReportMarkdown, outputMD) // Utilisation de utils.WriteReportMD
+	err = utils.WriteReportMD(report.ReportMarkdown, outputMD)	// Utilisation de utils.WriteReportMD
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Erreur lors de l'écriture du rapport Markdown : %v\n", err)
 		os.Exit(1)
@@ -102,7 +102,7 @@ func main() {
 }
 
 // parseGoMod reste ici car c'est une fonction interne spécifique à cet outil
-func parseGoMod(path string) (utils.ModuleInfo, error) { // Utilisation de utils.ModuleInfo
+func parseGoMod(path string) (utils.ModuleInfo, error) {	// Utilisation de utils.ModuleInfo
 	content, err := ioutil.ReadFile(path)
 	if err != nil {
 		return utils.ModuleInfo{}, err
@@ -113,10 +113,10 @@ func parseGoMod(path string) (utils.ModuleInfo, error) { // Utilisation de utils
 	// ou le chemin relatif à rootDir si rootDir est disponible.
 	relPath, err := filepath.Rel(os.Getenv("CWD"), path)
 	if err != nil || os.Getenv("CWD") == "" {
-		relPath = path // Fallback si CWD n'est pas défini ou erreur
+		relPath = path	// Fallback si CWD n'est pas défini ou erreur
 	}
 
-	moduleInfo := utils.ModuleInfo{Path: relPath} // Utilisation de utils.ModuleInfo
+	moduleInfo := utils.ModuleInfo{Path: relPath}	// Utilisation de utils.ModuleInfo
 
 	lines := strings.Split(string(content), "\n")
 	for _, line := range lines {

@@ -12,9 +12,9 @@ import (
 	"strings"
 	"time"
 
+	"EMAIL_SENDER_1/maintenance-manager/src/core"
+	"EMAIL_SENDER_1/maintenance-manager/src/vector"
 	"go.uber.org/zap"
-	"github.com/gerivdb/email-sender-1/maintenance-manager/src/core"
-	"github.com/gerivdb/email-sender-1/maintenance-manager/src/vector"
 )
 
 // AIAnalyzer provides AI-driven analysis and optimization capabilities
@@ -31,20 +31,20 @@ type AIAnalyzer struct {
 
 // LearningData contains accumulated learning information
 type LearningData struct {
-	FileClassifications map[string]string            `json:"file_classifications"`
-	OptimizationHistory []core.OptimizationRecord    `json:"optimization_history"`
-	UserPreferences     map[string]interface{}       `json:"user_preferences"`
-	SuccessfulPatterns  []PatternSuccess             `json:"successful_patterns"`
-	LastUpdated         time.Time                    `json:"last_updated"`
+	FileClassifications map[string]string         `json:"file_classifications"`
+	OptimizationHistory []core.OptimizationRecord `json:"optimization_history"`
+	UserPreferences     map[string]interface{}    `json:"user_preferences"`
+	SuccessfulPatterns  []PatternSuccess          `json:"successful_patterns"`
+	LastUpdated         time.Time                 `json:"last_updated"`
 }
 
 // PatternSuccess records successful pattern applications
 type PatternSuccess struct {
-	Pattern     string    `json:"pattern"`
-	Context     string    `json:"context"`
-	Success     bool      `json:"success"`
-	Timestamp   time.Time `json:"timestamp"`
-	Confidence  float64   `json:"confidence"`
+	Pattern    string    `json:"pattern"`
+	Context    string    `json:"context"`
+	Success    bool      `json:"success"`
+	Timestamp  time.Time `json:"timestamp"`
+	Confidence float64   `json:"confidence"`
 }
 
 // AnalysisPattern represents a recognized file organization pattern
@@ -130,11 +130,11 @@ func NewAIAnalyzer(logger *zap.Logger, config *core.AIConfig, vectorDB *vector.Q
 // AnalyzeFiles performs AI-driven analysis of files and directories
 func (ai *AIAnalyzer) AnalyzeFiles(ctx context.Context, files []core.FileInfo) (*core.AnalysisResult, error) {
 	result := &core.AnalysisResult{
-		Timestamp:     time.Now(),
-		TotalFiles:    len(files),
-		Suggestions:   make([]core.OptimizationSuggestion, 0),
-		Issues:        make([]string, 0),
-		Confidence:    0.0,
+		Timestamp:   time.Now(),
+		TotalFiles:  len(files),
+		Suggestions: make([]core.OptimizationSuggestion, 0),
+		Issues:      make([]string, 0),
+		Confidence:  0.0,
 	}
 
 	// Classify files using AI
@@ -330,10 +330,10 @@ func (ai *AIAnalyzer) generateSuggestions(patterns []*AnalysisPattern, files []c
 	// Generate suggestions based on detected patterns
 	for _, pattern := range patterns {
 		suggestion := core.OptimizationSuggestion{
-			ID:          fmt.Sprintf("suggestion-%d", time.Now().Unix()),
-			Type:        "reorganization",
-			Description: fmt.Sprintf("Reorganize files in %s", pattern.Description),
-			Priority:    ai.calculatePriority(pattern.Confidence),
+			ID:              fmt.Sprintf("suggestion-%d", time.Now().Unix()),
+			Type:            "reorganization",
+			Description:     fmt.Sprintf("Reorganize files in %s", pattern.Description),
+			Priority:        ai.calculatePriority(pattern.Confidence),
 			EstimatedEffort: "medium",
 			ExpectedBenefit: "improved organization",
 		}
@@ -345,10 +345,10 @@ func (ai *AIAnalyzer) generateSuggestions(patterns []*AnalysisPattern, files []c
 	for dir, size := range dirSizes {
 		if size > 50 { // Large directory threshold
 			suggestion := core.OptimizationSuggestion{
-				ID:          fmt.Sprintf("subdivision-%d", time.Now().Unix()),
-				Type:        "subdivision",
-				Description: fmt.Sprintf("Consider subdividing directory %s (%d files)", dir, size),
-				Priority:    ai.calculatePriority(0.8),
+				ID:              fmt.Sprintf("subdivision-%d", time.Now().Unix()),
+				Type:            "subdivision",
+				Description:     fmt.Sprintf("Consider subdividing directory %s (%d files)", dir, size),
+				Priority:        ai.calculatePriority(0.8),
 				EstimatedEffort: "high",
 				ExpectedBenefit: "better navigation",
 			}
@@ -480,14 +480,14 @@ func (ai *AIAnalyzer) loadLearningData() error {
 // saveLearningData saves learning data to file
 func (ai *AIAnalyzer) saveLearningData() error {
 	dataPath := "data/learning_data.json"
-	
+
 	// Ensure data directory exists
 	if err := os.MkdirAll(filepath.Dir(dataPath), 0755); err != nil {
 		return fmt.Errorf("failed to create data directory: %w", err)
 	}
 
 	ai.learningData.LastUpdated = time.Now()
-	
+
 	data, err := json.MarshalIndent(ai.learningData, "", "  ")
 	if err != nil {
 		return fmt.Errorf("failed to marshal learning data: %w", err)
@@ -571,7 +571,7 @@ func (ai *AIAnalyzer) GetHealthStatus(ctx context.Context) core.HealthStatus {
 	status.Details["learning_data"] = map[string]interface{}{
 		"classification_count": len(ai.learningData.FileClassifications),
 		"optimization_history": len(ai.learningData.OptimizationHistory),
-		"last_updated":        ai.learningData.LastUpdated,
+		"last_updated":         ai.learningData.LastUpdated,
 	}
 
 	return status

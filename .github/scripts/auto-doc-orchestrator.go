@@ -1,4 +1,4 @@
-package main
+package scripts
 
 import (
 	"encoding/json"
@@ -12,59 +12,59 @@ import (
 
 // OrchestrationReport represents the complete automation results
 type OrchestrationReport struct {
-	GeneratedAt    time.Time                  `json:"generated_at"`
-	ProjectName    string                     `json:"project_name"`
-	ExecutionMode  string                     `json:"execution_mode"`
-	Operations     []OperationResult          `json:"operations"`
-	Summary        OrchestrationSummary       `json:"summary"`
-	Recommendations []string                  `json:"recommendations"`
-	NextActions    []string                   `json:"next_actions"`
-	Configuration  OrchestrationConfiguration `json:"configuration"`
+	GeneratedAt	time.Time			`json:"generated_at"`
+	ProjectName	string				`json:"project_name"`
+	ExecutionMode	string				`json:"execution_mode"`
+	Operations	[]OperationResult		`json:"operations"`
+	Summary		OrchestrationSummary		`json:"summary"`
+	Recommendations	[]string			`json:"recommendations"`
+	NextActions	[]string			`json:"next_actions"`
+	Configuration	OrchestrationConfiguration	`json:"configuration"`
 }
 
 // OperationResult represents the result of a single operation
 type OperationResult struct {
-	Name        string    `json:"name"`
-	Command     string    `json:"command"`
-	Status      string    `json:"status"`
-	Duration    float64   `json:"duration_seconds"`
-	Output      string    `json:"output,omitempty"`
-	Error       string    `json:"error,omitempty"`
-	Timestamp   time.Time `json:"timestamp"`
-	OutputFiles []string  `json:"output_files"`
-	Metrics     map[string]interface{} `json:"metrics,omitempty"`
+	Name		string			`json:"name"`
+	Command		string			`json:"command"`
+	Status		string			`json:"status"`
+	Duration	float64			`json:"duration_seconds"`
+	Output		string			`json:"output,omitempty"`
+	Error		string			`json:"error,omitempty"`
+	Timestamp	time.Time		`json:"timestamp"`
+	OutputFiles	[]string		`json:"output_files"`
+	Metrics		map[string]interface{}	`json:"metrics,omitempty"`
 }
 
 // OrchestrationSummary represents overall execution summary
 type OrchestrationSummary struct {
-	TotalOperations    int     `json:"total_operations"`
-	SuccessfulOps      int     `json:"successful_operations"`
-	FailedOps          int     `json:"failed_operations"`
-	SkippedOps         int     `json:"skipped_operations"`
-	TotalDuration      float64 `json:"total_duration_seconds"`
-	OverallStatus      string  `json:"overall_status"`
-	SuccessRate        float64 `json:"success_rate"`
+	TotalOperations	int	`json:"total_operations"`
+	SuccessfulOps	int	`json:"successful_operations"`
+	FailedOps	int	`json:"failed_operations"`
+	SkippedOps	int	`json:"skipped_operations"`
+	TotalDuration	float64	`json:"total_duration_seconds"`
+	OverallStatus	string	`json:"overall_status"`
+	SuccessRate	float64	`json:"success_rate"`
 }
 
 // OrchestrationConfiguration represents configuration options
 type OrchestrationConfiguration struct {
-	DryRun          bool              `json:"dry_run"`
-	ContinueOnError bool              `json:"continue_on_error"`
-	Operations      []string          `json:"operations"`
-	OutputDir       string            `json:"output_dir"`
-	TimeoutSeconds  int               `json:"timeout_seconds"`
-	Parallel        bool              `json:"parallel"`
-	Environment     map[string]string `json:"environment"`
+	DryRun		bool			`json:"dry_run"`
+	ContinueOnError	bool			`json:"continue_on_error"`
+	Operations	[]string		`json:"operations"`
+	OutputDir	string			`json:"output_dir"`
+	TimeoutSeconds	int			`json:"timeout_seconds"`
+	Parallel	bool			`json:"parallel"`
+	Environment	map[string]string	`json:"environment"`
 }
 
 // Operation represents a documentation automation operation
 type Operation struct {
-	Name        string   `json:"name"`
-	Description string   `json:"description"`
-	Command     []string `json:"command"`
-	OutputFiles []string `json:"output_files"`
-	Required    bool     `json:"required"`
-	Timeout     int      `json:"timeout_seconds"`
+	Name		string		`json:"name"`
+	Description	string		`json:"description"`
+	Command		[]string	`json:"command"`
+	OutputFiles	[]string	`json:"output_files"`
+	Required	bool		`json:"required"`
+	Timeout		int		`json:"timeout_seconds"`
 }
 
 func main() {
@@ -81,7 +81,7 @@ func main() {
 		case "--root":
 			if i+1 < len(os.Args) {
 				projectRoot = os.Args[i+1]
-				i++ // Skip next argument
+				i++	// Skip next argument
 			}
 		case "--operations":
 			if i+1 < len(os.Args) {
@@ -89,7 +89,7 @@ func main() {
 				if operationsArg != "all" {
 					operations = strings.Split(operationsArg, ",")
 				}
-				i++ // Skip next argument
+				i++	// Skip next argument
 			}
 		case "--help":
 			showHelp()
@@ -113,7 +113,7 @@ func main() {
 
 	// Print summary to stderr for visibility
 	fmt.Fprintf(os.Stderr, "\n=== Documentation Orchestration Summary ===\n")
-	fmt.Fprintf(os.Stderr, "Operations: %d total, %d successful, %d failed\n", 
+	fmt.Fprintf(os.Stderr, "Operations: %d total, %d successful, %d failed\n",
 		report.Summary.TotalOperations, report.Summary.SuccessfulOps, report.Summary.FailedOps)
 	fmt.Fprintf(os.Stderr, "Duration: %.2f seconds\n", report.Summary.TotalDuration)
 	fmt.Fprintf(os.Stderr, "Status: %s\n", report.Summary.OverallStatus)
@@ -163,13 +163,13 @@ func orchestrateDocumentation(root string, dryRun bool, requestedOps []string) (
 	selectedOps := selectOperations(operations, requestedOps)
 
 	config := OrchestrationConfiguration{
-		DryRun:          dryRun,
-		ContinueOnError: true,
-		Operations:      requestedOps,
-		OutputDir:       filepath.Join(root, ".github"),
-		TimeoutSeconds:  300,
-		Parallel:        false,
-		Environment:     map[string]string{"PROJECT_ROOT": root},
+		DryRun:			dryRun,
+		ContinueOnError:	true,
+		Operations:		requestedOps,
+		OutputDir:		filepath.Join(root, ".github"),
+		TimeoutSeconds:		300,
+		Parallel:		false,
+		Environment:		map[string]string{"PROJECT_ROOT": root},
 	}
 
 	var results []OperationResult
@@ -198,14 +198,14 @@ func orchestrateDocumentation(root string, dryRun bool, requestedOps []string) (
 	nextActions := generateNextActions(results, summary)
 
 	report := &OrchestrationReport{
-		GeneratedAt:     time.Now(),
-		ProjectName:     projectName,
-		ExecutionMode:   getExecutionMode(dryRun),
-		Operations:      results,
-		Summary:         summary,
-		Recommendations: recommendations,
-		NextActions:     nextActions,
-		Configuration:   config,
+		GeneratedAt:		time.Now(),
+		ProjectName:		projectName,
+		ExecutionMode:		getExecutionMode(dryRun),
+		Operations:		results,
+		Summary:		summary,
+		Recommendations:	recommendations,
+		NextActions:		nextActions,
+		Configuration:		config,
 	}
 
 	return report, nil
@@ -213,63 +213,63 @@ func orchestrateDocumentation(root string, dryRun bool, requestedOps []string) (
 
 func defineOperations(root string) []Operation {
 	scriptsDir := filepath.Join(root, ".github", "scripts")
-	
+
 	return []Operation{
 		{
-			Name:        "inventory",
-			Description: "Scan and inventory all documentation files",
-			Command:     []string{"go", "run", filepath.Join(scriptsDir, "inventory_docs.go"), root},
-			OutputFiles: []string{"docs_inventory.json"},
-			Required:    true,
-			Timeout:     60,
+			Name:		"inventory",
+			Description:	"Scan and inventory all documentation files",
+			Command:	[]string{"go", "run", filepath.Join(scriptsDir, "inventory_docs.go"), root},
+			OutputFiles:	[]string{"docs_inventory.json"},
+			Required:	true,
+			Timeout:	60,
 		},
 		{
-			Name:        "gap-analysis",
-			Description: "Analyze documentation gaps and missing files",
-			Command:     []string{"go", "run", filepath.Join(scriptsDir, "gap_analysis_docs.go"), root},
-			OutputFiles: []string{"gap_analysis_doc.md", "gap_matrix.csv"},
-			Required:    true,
-			Timeout:     60,
+			Name:		"gap-analysis",
+			Description:	"Analyze documentation gaps and missing files",
+			Command:	[]string{"go", "run", filepath.Join(scriptsDir, "gap_analysis_docs.go"), root},
+			OutputFiles:	[]string{"gap_analysis_doc.md", "gap_matrix.csv"},
+			Required:	true,
+			Timeout:	60,
 		},
 		{
-			Name:        "needs-survey",
-			Description: "Survey documentation needs and user requirements",
-			Command:     []string{"go", "run", filepath.Join(scriptsDir, "needs_survey_docs.go"), root},
-			OutputFiles: []string{"needs_survey_docs.json", "needs_survey_docs.md"},
-			Required:    false,
-			Timeout:     30,
+			Name:		"needs-survey",
+			Description:	"Survey documentation needs and user requirements",
+			Command:	[]string{"go", "run", filepath.Join(scriptsDir, "needs_survey_docs.go"), root},
+			OutputFiles:	[]string{"needs_survey_docs.json", "needs_survey_docs.md"},
+			Required:	false,
+			Timeout:	30,
 		},
 		{
-			Name:        "specs-generator",
-			Description: "Generate detailed technical specifications",
-			Command:     []string{"go", "run", filepath.Join(scriptsDir, "specs_generator_docs.go"), root},
-			OutputFiles: []string{"specs_automatisation_doc.md"},
-			Required:    false,
-			Timeout:     30,
+			Name:		"specs-generator",
+			Description:	"Generate detailed technical specifications",
+			Command:	[]string{"go", "run", filepath.Join(scriptsDir, "specs_generator_docs.go"), root},
+			OutputFiles:	[]string{"specs_automatisation_doc.md"},
+			Required:	false,
+			Timeout:	30,
 		},
 		{
-			Name:        "index-generation",
-			Description: "Generate comprehensive documentation index",
-			Command:     []string{"go", "run", filepath.Join(scriptsDir, "gen_docs_index.go"), root},
-			OutputFiles: []string{".github/DOCS_INDEX.md", "docs_index.json"},
-			Required:    true,
-			Timeout:     120,
+			Name:		"index-generation",
+			Description:	"Generate comprehensive documentation index",
+			Command:	[]string{"go", "run", filepath.Join(scriptsDir, "gen_docs_index.go"), root},
+			OutputFiles:	[]string{".github/DOCS_INDEX.md", "docs_index.json"},
+			Required:	true,
+			Timeout:	120,
 		},
 		{
-			Name:        "lint",
-			Description: "Lint documentation for quality and consistency",
-			Command:     []string{"go", "run", filepath.Join(scriptsDir, "lint_docs.go"), root},
-			OutputFiles: []string{"lint_report.json"},
-			Required:    false,
-			Timeout:     180,
+			Name:		"lint",
+			Description:	"Lint documentation for quality and consistency",
+			Command:	[]string{"go", "run", filepath.Join(scriptsDir, "lint_docs.go"), root},
+			OutputFiles:	[]string{"lint_report.json"},
+			Required:	false,
+			Timeout:	180,
 		},
 		{
-			Name:        "coverage",
-			Description: "Generate documentation coverage report",
-			Command:     []string{"go", "run", filepath.Join(scriptsDir, "gen_doc_coverage.go"), root},
-			OutputFiles: []string{"docs_coverage_report.md"},
-			Required:    true,
-			Timeout:     90,
+			Name:		"coverage",
+			Description:	"Generate documentation coverage report",
+			Command:	[]string{"go", "run", filepath.Join(scriptsDir, "gen_doc_coverage.go"), root},
+			OutputFiles:	[]string{"docs_coverage_report.md"},
+			Required:	true,
+			Timeout:	90,
 		},
 	}
 }
@@ -296,14 +296,14 @@ func selectOperations(available []Operation, requested []string) []Operation {
 
 func executeOperation(op Operation, config OrchestrationConfiguration, root string) OperationResult {
 	startTime := time.Now()
-	
+
 	result := OperationResult{
-		Name:        op.Name,
-		Command:     fmt.Sprintf("%s", op.Command),
-		Status:      "running",
-		Timestamp:   startTime,
-		OutputFiles: op.OutputFiles,
-		Metrics:     make(map[string]interface{}),
+		Name:		op.Name,
+		Command:	fmt.Sprintf("%s", op.Command),
+		Status:		"running",
+		Timestamp:	startTime,
+		OutputFiles:	op.OutputFiles,
+		Metrics:	make(map[string]interface{}),
 	}
 
 	if config.DryRun {
@@ -326,7 +326,7 @@ func executeOperation(op Operation, config OrchestrationConfiguration, root stri
 		result.Error = err.Error()
 	} else {
 		result.Status = "success"
-		
+
 		// Extract metrics from output if it's JSON
 		if len(output) > 0 && output[0] == '{' {
 			var jsonData map[string]interface{}
@@ -396,13 +396,13 @@ func calculateSummary(results []OperationResult, totalDuration float64) Orchestr
 	}
 
 	return OrchestrationSummary{
-		TotalOperations: total,
-		SuccessfulOps:   successful,
-		FailedOps:       failed,
-		SkippedOps:      skipped,
-		TotalDuration:   totalDuration,
-		OverallStatus:   overallStatus,
-		SuccessRate:     successRate,
+		TotalOperations:	total,
+		SuccessfulOps:		successful,
+		FailedOps:		failed,
+		SkippedOps:		skipped,
+		TotalDuration:		totalDuration,
+		OverallStatus:		overallStatus,
+		SuccessRate:		successRate,
 	}
 }
 
@@ -410,12 +410,12 @@ func generateOrchestrationRecommendations(results []OperationResult, summary Orc
 	var recommendations []string
 
 	if summary.FailedOps > 0 {
-		recommendations = append(recommendations, 
+		recommendations = append(recommendations,
 			fmt.Sprintf("🔧 Address %d failed operations before proceeding", summary.FailedOps))
 	}
 
 	if summary.SuccessRate < 50 {
-		recommendations = append(recommendations, 
+		recommendations = append(recommendations,
 			"⚠️ Low success rate - check system dependencies and permissions")
 	}
 
@@ -425,17 +425,17 @@ func generateOrchestrationRecommendations(results []OperationResult, summary Orc
 			switch result.Name {
 			case "coverage":
 				if coverage, ok := result.Metrics["overall_coverage"].(float64); ok && coverage < 60 {
-					recommendations = append(recommendations, 
+					recommendations = append(recommendations,
 						"📊 Documentation coverage is low - prioritize creating missing files")
 				}
 			case "lint":
 				if issues, ok := result.Metrics["total_issues"].(float64); ok && issues > 100 {
-					recommendations = append(recommendations, 
+					recommendations = append(recommendations,
 						"✨ High number of linting issues - consider automated fixes")
 				}
 			case "gap-analysis":
 				if gaps, ok := result.Metrics["gap_count"].(int); ok && gaps > 5 {
-					recommendations = append(recommendations, 
+					recommendations = append(recommendations,
 						"📝 Multiple documentation gaps identified - create missing critical files")
 				}
 			}
@@ -443,7 +443,7 @@ func generateOrchestrationRecommendations(results []OperationResult, summary Orc
 	}
 
 	if len(recommendations) == 0 {
-		recommendations = append(recommendations, 
+		recommendations = append(recommendations,
 			"✅ All operations completed successfully - documentation automation is working well")
 	}
 
@@ -464,7 +464,7 @@ func generateNextActions(results []OperationResult, summary OrchestrationSummary
 	// Add specific actions based on results
 	hasLintIssues := false
 	hasGaps := false
-	
+
 	for _, result := range results {
 		if result.Status == "success" && result.Metrics != nil {
 			if result.Name == "lint" {

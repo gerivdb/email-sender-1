@@ -1,4 +1,4 @@
-package main
+package avg_test
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 func main() {
 	fmt.Println("Test d'exclusion AVG pour les fichiers .exe")
 	fmt.Println("Compilation réussie à", time.Now().Format("2006-01-02 15:04:05"))
-	
+
 	// Créer un fichier de succès
 	successFile := "test_success.txt"
 	f, err := os.Create(successFile)

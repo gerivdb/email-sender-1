@@ -1,7 +1,7 @@
 // Test d’intégration — capture_terminal_test.go
 // Vérifie la capture et l’envoi de logs via le pipeline CacheManager
 
-package main
+package scripts
 
 import (
 	"os/exec"

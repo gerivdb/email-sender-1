@@ -1,4 +1,4 @@
-package main
+package read_file_navigator
 
 import (
 	"bufio"
@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"email_sender/pkg/common" // Assurez-vous que le chemin est correct pour votre module Go
+	"email_sender/pkg/common"	// Assurez-vous que le chemin est correct pour votre module Go
 )
 
 func main() {
@@ -29,7 +29,7 @@ func main() {
 	}
 
 	// Créer un fichier de test si non existant pour faciliter les tests
-	err := common.CreateLargeTestFile(filePath, 1000) // Crée un fichier de 1000 lignes
+	err := common.CreateLargeTestFile(filePath, 1000)	// Crée un fichier de 1000 lignes
 	if err != nil {
 		fmt.Printf("Erreur lors de la création du fichier de test: %v\n", err)
 	}
@@ -42,7 +42,7 @@ func main() {
 	}
 	totalPages := (totalLines + blockSize - 1) / blockSize
 
-	currentBlock := 1 // Initialiser le bloc courant
+	currentBlock := 1	// Initialiser le bloc courant
 
 	// Simuler la gestion de l'état du bloc courant si on était dans une session interactive
 	// Pour cette implémentation simple, on se base sur l'action demandée.
@@ -51,10 +51,10 @@ func main() {
 		currentBlock = 1
 	case "next":
 		// Dans une vraie CLI interactive, on lirait l'état précédent. Ici, on simule 2.
-		currentBlock = 2 // Placeholder: assume we were at block 1
+		currentBlock = 2	// Placeholder: assume we were at block 1
 	case "prev":
 		// Dans une vraie CLI interactive, on lirait l'état précédent. Ici, on simule 1.
-		currentBlock = 1 // Placeholder: assume we were at block 2
+		currentBlock = 1	// Placeholder: assume we were at block 2
 	case "goto":
 		currentBlock = targetBlock
 	case "end":

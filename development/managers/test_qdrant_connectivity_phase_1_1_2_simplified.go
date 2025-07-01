@@ -1,4 +1,4 @@
-package main
+package managers
 
 import (
 	"context"
@@ -75,10 +75,10 @@ func testCreateCollection(ctx context.Context) error {
 
 	// Configuration simulée
 	collectionConfig := map[string]interface{}{
-		"name":     "email_vectors_test",
-		"size":     384, // Dimension des vecteurs
-		"distance": "Cosine",
-		"on_disk":  true,
+		"name":		"email_vectors_test",
+		"size":		384,	// Dimension des vecteurs
+		"distance":	"Cosine",
+		"on_disk":	true,
 	}
 
 	fmt.Printf("   📦 Collection configurée: %+v\n", collectionConfig)
@@ -92,14 +92,14 @@ func testVectorOperations(ctx context.Context) error {
 	// Simuler l'insertion de quelques vecteurs
 	testVectors := []map[string]interface{}{
 		{
-			"id":      "test_1",
-			"vector":  generateRandomVector(384),
-			"payload": map[string]string{"type": "email", "content": "test content 1"},
+			"id":		"test_1",
+			"vector":	generateRandomVector(384),
+			"payload":	map[string]string{"type": "email", "content": "test content 1"},
 		},
 		{
-			"id":      "test_2",
-			"vector":  generateRandomVector(384),
-			"payload": map[string]string{"type": "email", "content": "test content 2"},
+			"id":		"test_2",
+			"vector":	generateRandomVector(384),
+			"payload":	map[string]string{"type": "email", "content": "test content 2"},
 		},
 	}
 
@@ -111,9 +111,9 @@ func testVectorOperations(ctx context.Context) error {
 
 	// Simuler une recherche
 	searchResult := map[string]interface{}{
-		"matches": 2,
-		"scores":  []float64{0.95, 0.87},
-		"time_ms": 23,
+		"matches":	2,
+		"scores":	[]float64{0.95, 0.87},
+		"time_ms":	23,
 	}
 
 	fmt.Printf("   🔍 Résultats recherche: %+v\n", searchResult)

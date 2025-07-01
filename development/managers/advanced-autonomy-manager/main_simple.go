@@ -1,6 +1,6 @@
 // Main simplified version of the Advanced Autonomy Manager
 // This version focuses on the core architecture and discovery system
-package main
+package advanced_autonomy_manager
 
 import (
 	"context"
@@ -73,11 +73,11 @@ func main() {
 		logger.Error("Manager discovery failed", err)
 	} else {
 		logger.Info(fmt.Sprintf("Discovered %d managers", len(managers)))
-		
+
 		// List discovered managers
 		for name, manager := range managers {
 			health := manager.GetHealth()
-			logger.Info(fmt.Sprintf("Manager: %s, Health: %v, Score: %.2f", 
+			logger.Info(fmt.Sprintf("Manager: %s, Health: %v, Score: %.2f",
 				name, health.IsHealthy, health.Score))
 		}
 	}
@@ -99,7 +99,7 @@ func main() {
 		case <-sigChan:
 			logger.Info("Shutdown signal received")
 			cancel()
-			
+
 			// Cleanup discovered managers
 			for name, manager := range managers {
 				logger.Info(fmt.Sprintf("Stopping manager: %s", name))
@@ -107,7 +107,7 @@ func main() {
 					logger.Error(fmt.Sprintf("Failed to stop manager %s", name), err)
 				}
 			}
-			
+
 			logger.Info("Advanced Autonomy Manager stopped")
 			return
 
@@ -116,7 +116,7 @@ func main() {
 			logger.Info("Performing periodic ecosystem health check...")
 			healthyCount := 0
 			totalCount := len(managers)
-			
+
 			for name, manager := range managers {
 				health := manager.GetHealth()
 				if health.IsHealthy {
@@ -125,9 +125,9 @@ func main() {
 					logger.Warn(fmt.Sprintf("Manager %s unhealthy: %s", name, health.Message))
 				}
 			}
-			
+
 			healthRatio := float64(healthyCount) / float64(totalCount) * 100
-			logger.Info(fmt.Sprintf("Ecosystem health: %.1f%% (%d/%d managers healthy)", 
+			logger.Info(fmt.Sprintf("Ecosystem health: %.1f%% (%d/%d managers healthy)",
 				healthRatio, healthyCount, totalCount))
 
 		case <-ctx.Done():

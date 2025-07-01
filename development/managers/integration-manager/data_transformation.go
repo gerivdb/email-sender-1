@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"EMAIL_SENDER_1/development/managers/interfaces"
 	"github.com/sirupsen/logrus"
-	"github.com/your-org/email-sender/development/managers/interfaces"
 )
 
 // TransformData transforms data using the specified transformation
@@ -26,15 +26,15 @@ func (im *IntegrationManagerImpl) TransformData(transformationID string, data in
 
 	startTime := time.Now()
 	im.logger.WithFields(logrus.Fields{
-		"transformation_id": transformationID,
+		"transformation_id":   transformationID,
 		"transformation_type": transformation.Type,
-		"data_type": reflect.TypeOf(data).String(),
+		"data_type":           reflect.TypeOf(data).String(),
 	}).Info("Starting data transformation")
 
 	result, err := im.executeTransformation(transformation, data)
-	
+
 	processingTime := time.Since(startTime)
-	
+
 	// Log transformation execution
 	im.logTransformationExecution(transformationID, data, result, err, processingTime)
 
@@ -45,7 +45,7 @@ func (im *IntegrationManagerImpl) TransformData(transformationID string, data in
 
 	im.logger.WithFields(logrus.Fields{
 		"transformation_id": transformationID,
-		"processing_time": processingTime,
+		"processing_time":   processingTime,
 	}).Info("Data transformation completed successfully")
 
 	return result, nil
@@ -58,8 +58,8 @@ func (im *IntegrationManagerImpl) RegisterTransformation(transformation *interfa
 
 	im.logger.WithFields(logrus.Fields{
 		"transformation_id": transformation.ID,
-		"type": transformation.Type,
-		"name": transformation.Name,
+		"type":              transformation.Type,
+		"name":              transformation.Name,
 	}).Info("Registering data transformation")
 
 	// Validate transformation
@@ -117,8 +117,8 @@ func (im *IntegrationManagerImpl) executeScriptTransformation(transformation *in
 
 	im.logger.WithFields(logrus.Fields{
 		"transformation_id": transformation.ID,
-		"language": language,
-		"script_length": len(script),
+		"language":          language,
+		"script_length":     len(script),
 	}).Debug("Executing script transformation")
 
 	switch language {
@@ -137,7 +137,7 @@ func (im *IntegrationManagerImpl) executeScriptTransformation(transformation *in
 func (im *IntegrationManagerImpl) executeJavaScriptTransformation(script string, data interface{}) (interface{}, error) {
 	// Note: In a real implementation, you would use a JavaScript engine like Otto or V8
 	// For this example, we'll implement basic JavaScript-like operations
-	
+
 	// Convert data to JSON for script processing
 	jsonData, err := json.Marshal(data)
 	if err != nil {
@@ -157,7 +157,7 @@ func (im *IntegrationManagerImpl) executeJavaScriptTransformation(script string,
 		if returnIndex != -1 {
 			returnExpr := strings.TrimSpace(script[returnIndex+6:])
 			returnExpr = strings.TrimSuffix(returnExpr, ";")
-			
+
 			// Simple expression evaluation
 			if strings.HasPrefix(returnExpr, "data.") {
 				fieldPath := strings.TrimPrefix(returnExpr, "data.")
@@ -173,7 +173,7 @@ func (im *IntegrationManagerImpl) executeJavaScriptTransformation(script string,
 func (im *IntegrationManagerImpl) executeJSONPathTransformation(jsonPath string, data interface{}) (interface{}, error) {
 	// Simple JSONPath implementation
 	// In production, use a proper JSONPath library
-	
+
 	if jsonPath == "$" {
 		return data, nil
 	}
@@ -217,11 +217,11 @@ func (im *IntegrationManagerImpl) executeMappingTransformation(transformation *i
 
 	im.logger.WithFields(logrus.Fields{
 		"transformation_id": transformation.ID,
-		"mapping_count": len(mappings),
+		"mapping_count":     len(mappings),
 	}).Debug("Executing mapping transformation")
 
 	result := make(map[string]interface{})
-	
+
 	for targetField, sourceField := range mappings {
 		sourceFieldStr, ok := sourceField.(string)
 		if !ok {
@@ -236,7 +236,7 @@ func (im *IntegrationManagerImpl) executeMappingTransformation(transformation *i
 			}).Warn("Failed to map field")
 			continue
 		}
-		
+
 		im.setNestedField(result, targetField, value)
 	}
 
@@ -252,7 +252,7 @@ func (im *IntegrationManagerImpl) executeFilterTransformation(transformation *in
 
 	im.logger.WithFields(logrus.Fields{
 		"transformation_id": transformation.ID,
-		"filter_count": len(filters),
+		"filter_count":      len(filters),
 	}).Debug("Executing filter transformation")
 
 	// Handle array filtering
@@ -346,7 +346,7 @@ func (im *IntegrationManagerImpl) executeCustomTransformation(transformation *in
 
 	im.logger.WithFields(logrus.Fields{
 		"transformation_id": transformation.ID,
-		"custom_type": customType,
+		"custom_type":       customType,
 	}).Debug("Executing custom transformation")
 
 	switch customType {
@@ -694,17 +694,17 @@ func (im *IntegrationManagerImpl) maxField(data []interface{}, field string) (in
 
 func (im *IntegrationManagerImpl) groupByField(data []interface{}, field string) (map[string][]interface{}, error) {
 	groups := make(map[string][]interface{})
-	
+
 	for _, item := range data {
 		value, err := im.getNestedField(item, field)
 		if err != nil {
 			continue
 		}
-		
+
 		key := fmt.Sprintf("%v", value)
 		groups[key] = append(groups[key], item)
 	}
-	
+
 	return groups, nil
 }
 
@@ -738,11 +738,11 @@ func (im *IntegrationManagerImpl) unflattenData(data interface{}) (interface{}, 
 	}
 
 	result := make(map[string]interface{})
-	
+
 	for key, value := range dataMap {
 		im.setNestedField(result, key, value)
 	}
-	
+
 	return result, nil
 }
 
@@ -818,7 +818,7 @@ func (im *IntegrationManagerImpl) sortData(data interface{}, sortField string, a
 	sort.Slice(result, func(i, j int) bool {
 		valueI, _ := im.getNestedField(result[i], sortField)
 		valueJ, _ := im.getNestedField(result[j], sortField)
-		
+
 		if ascending {
 			return im.isLessThan(valueI, valueJ)
 		}

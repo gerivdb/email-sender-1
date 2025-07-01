@@ -1,4 +1,4 @@
-package main
+package tests
 
 import (
 	"fmt"
@@ -14,40 +14,40 @@ import (
 
 // TestSuite structure pour organiser les suites de tests
 type TestSuite struct {
-	Name        string
-	Path        string
-	Description string
-	Type        string // "unit", "integration", "benchmark"
-	Timeout     time.Duration
-	Required    bool
+	Name		string
+	Path		string
+	Description	string
+	Type		string	// "unit", "integration", "benchmark"
+	Timeout		time.Duration
+	Required	bool
 }
 
 // TestResult résultat d'un test
 type TestResult struct {
-	Suite    TestSuite
-	Success  bool
-	Duration time.Duration
-	Output   string
-	Error    string
+	Suite		TestSuite
+	Success		bool
+	Duration	time.Duration
+	Output		string
+	Error		string
 }
 
 // ValidationReport rapport de validation
 type ValidationReport struct {
-	StartTime     time.Time
-	EndTime       time.Time
-	TotalDuration time.Duration
-	Results       []TestResult
-	Summary       ValidationSummary
+	StartTime	time.Time
+	EndTime		time.Time
+	TotalDuration	time.Duration
+	Results		[]TestResult
+	Summary		ValidationSummary
 }
 
 // ValidationSummary résumé de la validation
 type ValidationSummary struct {
-	TotalSuites   int
-	PassedSuites  int
-	FailedSuites  int
-	SkippedSuites int
-	SuccessRate   float64
-	OverallStatus string
+	TotalSuites	int
+	PassedSuites	int
+	FailedSuites	int
+	SkippedSuites	int
+	SuccessRate	float64
+	OverallStatus	string
 }
 
 func main() {
@@ -70,8 +70,8 @@ func main() {
 
 // Phase5Validator validateur pour la Phase 5
 type Phase5Validator struct {
-	suites     []TestSuite
-	projectDir string
+	suites		[]TestSuite
+	projectDir	string
 }
 
 // NewPhase5Validator crée un nouveau validateur
@@ -82,58 +82,58 @@ func NewPhase5Validator() *Phase5Validator {
 	}
 
 	return &Phase5Validator{
-		projectDir: projectDir,
+		projectDir:	projectDir,
 		suites: []TestSuite{
 			// Tests unitaires (Phase 5.1.1)
 			{
-				Name:        "Qdrant Client Unit Tests",
-				Path:        "development/tests/unit/qdrant_client_test.go",
-				Description: "Tests unitaires du client Qdrant unifié",
-				Type:        "unit",
-				Timeout:     5 * time.Minute,
-				Required:    true,
+				Name:		"Qdrant Client Unit Tests",
+				Path:		"development/tests/unit/qdrant_client_test.go",
+				Description:	"Tests unitaires du client Qdrant unifié",
+				Type:		"unit",
+				Timeout:	5 * time.Minute,
+				Required:	true,
 			},
 			{
-				Name:        "Vectorization Engine Unit Tests",
-				Path:        "development/tests/unit/vectorization_engine_test.go",
-				Description: "Tests unitaires du moteur de vectorisation",
-				Type:        "unit",
-				Timeout:     5 * time.Minute,
-				Required:    true,
+				Name:		"Vectorization Engine Unit Tests",
+				Path:		"development/tests/unit/vectorization_engine_test.go",
+				Description:	"Tests unitaires du moteur de vectorisation",
+				Type:		"unit",
+				Timeout:	5 * time.Minute,
+				Required:	true,
 			},
 			// Tests d'intégration (Phase 5.1.2)
 			{
-				Name:        "Cross-Managers Integration Tests",
-				Path:        "development/tests/integration/cross_managers_test.go",
-				Description: "Tests d'intégration cross-managers",
-				Type:        "integration",
-				Timeout:     10 * time.Minute,
-				Required:    true,
+				Name:		"Cross-Managers Integration Tests",
+				Path:		"development/tests/integration/cross_managers_test.go",
+				Description:	"Tests d'intégration cross-managers",
+				Type:		"integration",
+				Timeout:	10 * time.Minute,
+				Required:	true,
 			},
 			{
-				Name:        "Extended Cross-Managers Tests",
-				Path:        "development/tests/integration/cross_managers_extended_test.go",
-				Description: "Tests d'intégration étendus avec end-to-end",
-				Type:        "integration",
-				Timeout:     15 * time.Minute,
-				Required:    true,
+				Name:		"Extended Cross-Managers Tests",
+				Path:		"development/tests/integration/cross_managers_extended_test.go",
+				Description:	"Tests d'intégration étendus avec end-to-end",
+				Type:		"integration",
+				Timeout:	15 * time.Minute,
+				Required:	true,
 			},
 			// Benchmarks et tests de performance (Phase 5.2)
 			{
-				Name:        "Performance Benchmarks",
-				Path:        "development/tests/benchmarks/performance_test.go",
-				Description: "Benchmarks de performance et tests de charge",
-				Type:        "benchmark",
-				Timeout:     30 * time.Minute,
-				Required:    true,
+				Name:		"Performance Benchmarks",
+				Path:		"development/tests/benchmarks/performance_test.go",
+				Description:	"Benchmarks de performance et tests de charge",
+				Type:		"benchmark",
+				Timeout:	30 * time.Minute,
+				Required:	true,
 			},
 			{
-				Name:        "Python vs Go Comparison",
-				Path:        "development/tests/benchmarks/python_vs_go_comparison_test.go",
-				Description: "Comparaison de performance Python vs Go",
-				Type:        "benchmark",
-				Timeout:     20 * time.Minute,
-				Required:    false, // Optionnel pour environnements sans Python
+				Name:		"Python vs Go Comparison",
+				Path:		"development/tests/benchmarks/python_vs_go_comparison_test.go",
+				Description:	"Comparaison de performance Python vs Go",
+				Type:		"benchmark",
+				Timeout:	20 * time.Minute,
+				Required:	false,	// Optionnel pour environnements sans Python
 			},
 		},
 	}
@@ -173,11 +173,11 @@ func (v *Phase5Validator) RunValidation() ValidationReport {
 	summary := v.calculateSummary(results)
 
 	return ValidationReport{
-		StartTime:     startTime,
-		EndTime:       endTime,
-		TotalDuration: totalDuration,
-		Results:       results,
-		Summary:       summary,
+		StartTime:	startTime,
+		EndTime:	endTime,
+		TotalDuration:	totalDuration,
+		Results:	results,
+		Summary:	summary,
 	}
 }
 
@@ -189,11 +189,11 @@ func (v *Phase5Validator) runTestSuite(suite TestSuite) TestResult {
 	fullPath := filepath.Join(v.projectDir, suite.Path)
 	if _, err := os.Stat(fullPath); os.IsNotExist(err) {
 		return TestResult{
-			Suite:    suite,
-			Success:  false,
-			Duration: time.Since(startTime),
-			Output:   "",
-			Error:    fmt.Sprintf("Fichier de test non trouvé: %s", fullPath),
+			Suite:		suite,
+			Success:	false,
+			Duration:	time.Since(startTime),
+			Output:		"",
+			Error:		fmt.Sprintf("Fichier de test non trouvé: %s", fullPath),
 		}
 	}
 
@@ -240,11 +240,11 @@ func (v *Phase5Validator) runTestSuite(suite TestSuite) TestResult {
 		}
 
 		return TestResult{
-			Suite:    suite,
-			Success:  success,
-			Duration: duration,
-			Output:   string(output),
-			Error:    errorMsg,
+			Suite:		suite,
+			Success:	success,
+			Duration:	duration,
+			Output:		string(output),
+			Error:		errorMsg,
 		}
 
 	case <-time.After(suite.Timeout):
@@ -254,11 +254,11 @@ func (v *Phase5Validator) runTestSuite(suite TestSuite) TestResult {
 		}
 
 		return TestResult{
-			Suite:    suite,
-			Success:  false,
-			Duration: suite.Timeout,
-			Output:   string(output),
-			Error:    fmt.Sprintf("Test timeout après %v", suite.Timeout),
+			Suite:		suite,
+			Success:	false,
+			Duration:	suite.Timeout,
+			Output:		string(output),
+			Error:		fmt.Sprintf("Test timeout après %v", suite.Timeout),
 		}
 	}
 }
@@ -296,12 +296,12 @@ func (v *Phase5Validator) calculateSummary(results []TestResult) ValidationSumma
 	}
 
 	return ValidationSummary{
-		TotalSuites:   totalSuites,
-		PassedSuites:  passedSuites,
-		FailedSuites:  failedSuites,
-		SkippedSuites: skippedSuites,
-		SuccessRate:   successRate,
-		OverallStatus: overallStatus,
+		TotalSuites:	totalSuites,
+		PassedSuites:	passedSuites,
+		FailedSuites:	failedSuites,
+		SkippedSuites:	skippedSuites,
+		SuccessRate:	successRate,
+		OverallStatus:	overallStatus,
 	}
 }
 

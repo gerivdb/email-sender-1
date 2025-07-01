@@ -3,7 +3,7 @@
 package analysis
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"EMAIL_SENDER_1/tools/core/toolkit"
 	"fmt"
 	"go/ast"
 	"go/parser"
@@ -42,7 +42,6 @@ func NewInterfaceAnalyzerPro(baseDir string, fileSet *token.FileSet, debugMode b
 	// if err != nil {
 	// 	return nil, fmt.Errorf("failed to create logger: %w", err)
 	// }
-
 
 	if fileSet == nil {
 		fileSet = token.NewFileSet()
@@ -596,4 +595,3 @@ func min(a, b int) int {
 	}
 	return b
 }
-

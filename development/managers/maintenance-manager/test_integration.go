@@ -1,13 +1,12 @@
 // Package main provides integration testing for the maintenance manager
-package main
+package maintenance_manager
 
 import (
+	"EMAIL_SENDER_1/maintenance-manager/src/generator"
 	"context"
 	"fmt"
 	"log"
 	"path/filepath"
-
-	"github.com/gerivdb/email-sender-1/maintenance-manager/src/generator"
 )
 
 func main() {

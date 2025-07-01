@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	gitworkflowmanager "github.com/gerivdb/email-sender-1/git-workflow-manager"
-	"github.com/gerivdb/email-sender-1/git-workflow-manager/workflows"
-	"github.com/gerivdb/email-sender-1/managers/interfaces"
+	gitworkflowmanager "EMAIL_SENDER_1/git-workflow-manager"
+	"EMAIL_SENDER_1/git-workflow-manager/workflows"
+	"EMAIL_SENDER_1/managers/interfaces"
 )
 
 // TestGitWorkflowIntegration tests the GitWorkflowManager with actual Git operations

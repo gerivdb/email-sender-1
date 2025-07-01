@@ -2,7 +2,7 @@
 // Algorithm 3: Dependency Graph Analysis for EMAIL_SENDER_1
 // Analyzes circular dependencies and component interactions across the multi-stack system
 
-package main
+package dependency_analysis
 
 import (
 	"encoding/json"
@@ -19,82 +19,82 @@ import (
 
 // DependencyNode represents a component in the dependency graph
 type DependencyNode struct {
-	Name         string            `json:"name"`
-	Type         string            `json:"type"`
-	Path         string            `json:"path"`
-	Dependencies []string          `json:"dependencies"`
-	Dependents   []string          `json:"dependents"`
-	Circular     []string          `json:"circular"`
-	Depth        int               `json:"depth"`
-	Metadata     map[string]string `json:"metadata"`
+	Name		string			`json:"name"`
+	Type		string			`json:"type"`
+	Path		string			`json:"path"`
+	Dependencies	[]string		`json:"dependencies"`
+	Dependents	[]string		`json:"dependents"`
+	Circular	[]string		`json:"circular"`
+	Depth		int			`json:"depth"`
+	Metadata	map[string]string	`json:"metadata"`
 }
 
 // DependencyGraph represents the complete dependency structure
 type DependencyGraph struct {
-	Nodes       map[string]*DependencyNode `json:"nodes"`
-	Edges       []DependencyEdge           `json:"edges"`
-	Circular    []CircularDependency       `json:"circular"`
-	Stats       DependencyStats            `json:"stats"`
-	Timestamp   time.Time                  `json:"timestamp"`
-	ProjectPath string                     `json:"project_path"`
+	Nodes		map[string]*DependencyNode	`json:"nodes"`
+	Edges		[]DependencyEdge		`json:"edges"`
+	Circular	[]CircularDependency		`json:"circular"`
+	Stats		DependencyStats			`json:"stats"`
+	Timestamp	time.Time			`json:"timestamp"`
+	ProjectPath	string				`json:"project_path"`
 }
 
 // DependencyEdge represents a dependency relationship
 type DependencyEdge struct {
-	From   string `json:"from"`
-	To     string `json:"to"`
-	Type   string `json:"type"`
-	Weight int    `json:"weight"`
+	From	string	`json:"from"`
+	To	string	`json:"to"`
+	Type	string	`json:"type"`
+	Weight	int	`json:"weight"`
 }
 
 // CircularDependency represents a circular dependency cycle
 type CircularDependency struct {
-	Cycle    []string `json:"cycle"`
-	Length   int      `json:"length"`
-	Severity string   `json:"severity"`
-	Impact   string   `json:"impact"`
+	Cycle		[]string	`json:"cycle"`
+	Length		int		`json:"length"`
+	Severity	string		`json:"severity"`
+	Impact		string		`json:"impact"`
 }
 
 // DependencyStats provides analysis statistics
 type DependencyStats struct {
-	TotalNodes     int `json:"total_nodes"`
-	TotalEdges     int `json:"total_edges"`
-	CircularCycles int `json:"circular_cycles"`
-	MaxDepth       int `json:"max_depth"`
-	IsolatedNodes  int `json:"isolated_nodes"`
-	CriticalNodes  int `json:"critical_nodes"`
+	TotalNodes	int	`json:"total_nodes"`
+	TotalEdges	int	`json:"total_edges"`
+	CircularCycles	int	`json:"circular_cycles"`
+	MaxDepth	int	`json:"max_depth"`
+	IsolatedNodes	int	`json:"isolated_nodes"`
+	CriticalNodes	int	`json:"critical_nodes"`
 }
 
 // EMAIL_SENDER_1 Component Types
 var componentTypes = map[string]string{
-	".md":    "documentation",
-	".ps1":   "powershell_script",
-	".py":    "python_script",
-	".js":    "javascript",
-	".json":  "configuration",
-	".yml":   "configuration",
-	".yaml":  "configuration",
-	".go":    "go_module",
-	".ts":    "typescript",
-	".env":   "environment",
-	"n8n":    "n8n_workflow",
-	"notion": "notion_integration",
-	"gmail":  "gmail_processor",
-	"rag":    "rag_engine",
+	".md":		"documentation",
+	".ps1":		"powershell_script",
+	".py":		"python_script",
+	".js":		"javascript",
+	".json":	"configuration",
+	".yml":		"configuration",
+	".yaml":	"configuration",
+	".go":		"go_module",
+	".ts":		"typescript",
+	".env":		"environment",
+	"n8n":		"n8n_workflow",
+	"notion":	"notion_integration",
+	"gmail":	"gmail_processor",
+	"rag":		"rag_engine",
 }
 
 // EMAIL_SENDER_1 Dependency Patterns
 var dependencyPatterns = map[string]*regexp.Regexp{
-	"powershell_import":   regexp.MustCompile(`(?i)^\s*\.\s+(.+\.ps1)`),
-	"powershell_module":   regexp.MustCompile(`(?i)Import-Module\s+(.+)`),
-	"python_import":       regexp.MustCompile(`(?i)^(?:from\s+(.+)\s+)?import\s+(.+)`),
-	"javascript_require":  regexp.MustCompile(`(?i)require\(['"](.+)['"]\)`),
-	"javascript_import":   regexp.MustCompile(`(?i)import\s+.+\s+from\s+['"](.+)['"]`),
-	"json_reference":      regexp.MustCompile(`(?i)["'](.+\.json)["']`),
-	"config_reference":    regexp.MustCompile(`(?i)["'](.+\.(?:yml|yaml|env))["']`),
-	"file_path_reference": regexp.MustCompile(`(?i)["']([./\\].+\.(?:ps1|py|js|json|yml|yaml))["']`),
-	"n8n_workflow_ref":    regexp.MustCompile(`(?i)workflow[_-]?(?:id|name)["']\s*:\s*["'](.+)["']`),
-	"notion_database_ref": regexp.MustCompile(`(?i)database[_-]?(?:id|name)["']\s*:\s*["'](.+)["']`),
+	"powershell_import":	regexp.MustCompile(`(?i)^\s*\.\s+(.+\.ps1)`),
+	"powershell_module":	regexp.MustCompile(`(?i)Import-Module\s+(.+)`),
+	"python_import":	regexp.MustCompile(`(?i)^(?:from\s+(.+)\s+)?import\s+(.+)`),
+	"javascript_require":	regexp.MustCompile(`(?i)require\(['"](.+)['"]\)`),
+	"javascript_import":	regexp.MustCompile(`(?i)import\s+.+\s+from\s+['"](.+)['"]`),
+	"json_reference":	regexp.MustCompile(`(?i)["'](.+\.json)["']`),
+	"config_reference":	regexp.MustCompile(`(?i)["'](.+\.(?:yml|yaml|env))["']`),
+	"file_path_reference":	regexp.MustCompile(`(?i)["']([./\\].+\.(?:ps1|py|js|json|yml|yaml))["']`),
+	"n8n_workflow_ref":	regexp.MustCompile(`(?i)workflow[_-]?(?:id|name)["']\s*:\s*["'](.+)["']`),
+	"notion_database_ref":	regexp.MustCompile(`(?i)database[_-]?(?:id|name)["']\s*:\s*["'](.+)["']`),
 }
 
 func main() {
@@ -150,11 +150,11 @@ func main() {
 // NewDependencyAnalyzer creates a new dependency analyzer
 func NewDependencyAnalyzer(projectPath string) *DependencyGraph {
 	return &DependencyGraph{
-		Nodes:       make(map[string]*DependencyNode),
-		Edges:       []DependencyEdge{},
-		Circular:    []CircularDependency{},
-		Timestamp:   time.Now(),
-		ProjectPath: projectPath,
+		Nodes:		make(map[string]*DependencyNode),
+		Edges:		[]DependencyEdge{},
+		Circular:	[]CircularDependency{},
+		Timestamp:	time.Now(),
+		ProjectPath:	projectPath,
 	}
 }
 
@@ -162,11 +162,11 @@ func NewDependencyAnalyzer(projectPath string) *DependencyGraph {
 func (dg *DependencyGraph) ScanProject() error {
 	return filepath.Walk(dg.ProjectPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			return nil // Skip errors, continue scanning
+			return nil	// Skip errors, continue scanning
 		}
 
 		if info.IsDir() {
-			return nil // Skip directories
+			return nil	// Skip directories
 		}
 
 		// Skip hidden files and directories
@@ -175,7 +175,7 @@ func (dg *DependencyGraph) ScanProject() error {
 		}
 
 		// Skip binary and large files
-		if info.Size() > 10*1024*1024 { // 10MB limit
+		if info.Size() > 10*1024*1024 {	// 10MB limit
 			return nil
 		}
 
@@ -202,14 +202,14 @@ func (dg *DependencyGraph) ScanProject() error {
 
 		// Create dependency node
 		node := &DependencyNode{
-			Name:         nodeKey,
-			Type:         componentType,
-			Path:         path,
-			Dependencies: []string{},
-			Dependents:   []string{},
-			Circular:     []string{},
-			Depth:        0,
-			Metadata:     make(map[string]string),
+			Name:		nodeKey,
+			Type:		componentType,
+			Path:		path,
+			Dependencies:	[]string{},
+			Dependents:	[]string{},
+			Circular:	[]string{},
+			Depth:		0,
+			Metadata:	make(map[string]string),
 		}
 
 		node.Metadata["size"] = fmt.Sprintf("%d", info.Size())
@@ -237,10 +237,10 @@ func (dg *DependencyGraph) AnalyzeDependencies() {
 
 				// Add edge
 				edge := DependencyEdge{
-					From:   nodeKey,
-					To:     depKey,
-					Type:   "direct",
-					Weight: 1,
+					From:	nodeKey,
+					To:	depKey,
+					Type:	"direct",
+					Weight:	1,
 				}
 				dg.Edges = append(dg.Edges, edge)
 
@@ -379,10 +379,10 @@ func (dg *DependencyGraph) dfsCircular(nodeKey string, visited, recursionStack m
 				}
 
 				circular := CircularDependency{
-					Cycle:    cycle,
-					Length:   len(cycle) - 1,
-					Severity: severity,
-					Impact:   impact,
+					Cycle:		cycle,
+					Length:		len(cycle) - 1,
+					Severity:	severity,
+					Impact:		impact,
 				}
 
 				dg.Circular = append(dg.Circular, circular)
@@ -403,9 +403,9 @@ func (dg *DependencyGraph) dfsCircular(nodeKey string, visited, recursionStack m
 // CalculateStats calculates dependency statistics
 func (dg *DependencyGraph) CalculateStats() {
 	stats := DependencyStats{
-		TotalNodes:     len(dg.Nodes),
-		TotalEdges:     len(dg.Edges),
-		CircularCycles: len(dg.Circular),
+		TotalNodes:	len(dg.Nodes),
+		TotalEdges:	len(dg.Edges),
+		CircularCycles:	len(dg.Circular),
 	}
 
 	maxDepth := 0
@@ -441,7 +441,7 @@ func (dg *DependencyGraph) CalculateStats() {
 // calculateDepth calculates the dependency depth of a node
 func (dg *DependencyGraph) calculateDepth(nodeKey string, visited map[string]bool) int {
 	if visited[nodeKey] {
-		return 0 // Avoid infinite recursion
+		return 0	// Avoid infinite recursion
 	}
 
 	visited[nodeKey] = true
@@ -500,7 +500,7 @@ func (dg *DependencyGraph) DisplaySummary() {
 		})
 
 		for i, circular := range dg.Circular {
-			if i >= 5 { // Limit display to top 5
+			if i >= 5 {	// Limit display to top 5
 				fmt.Printf("  ... and %d more cycles\n", len(dg.Circular)-5)
 				break
 			}

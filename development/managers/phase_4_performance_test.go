@@ -1,4 +1,4 @@
-package main
+package managers
 
 import (
 	"context"
@@ -66,14 +66,14 @@ func main() {
 
 // Simulation des structures pour les tests
 type Vector struct {
-	ID     string    `json:"id"`
-	Values []float32 `json:"values"`
+	ID	string		`json:"id"`
+	Values	[]float32	`json:"values"`
 }
 
 type SearchResult struct {
-	Vector     Vector  `json:"vector"`
-	Score      float32 `json:"score"`
-	QueryIndex int     `json:"query_index"`
+	Vector		Vector	`json:"vector"`
+	Score		float32	`json:"score"`
+	QueryIndex	int	`json:"query_index"`
 }
 
 type VectorClient struct {
@@ -100,11 +100,11 @@ func (vc *VectorClient) SearchVectorsParallel(ctx context.Context, queries []Vec
 			for j := 0; j < topK; j++ {
 				result := SearchResult{
 					Vector: Vector{
-						ID:     fmt.Sprintf("result_%d_%d", idx, j),
-						Values: make([]float32, len(vec.Values)),
+						ID:	fmt.Sprintf("result_%d_%d", idx, j),
+						Values:	make([]float32, len(vec.Values)),
 					},
-					Score:      0.95 - float32(j)*0.1,
-					QueryIndex: idx,
+					Score:		0.95 - float32(j)*0.1,
+					QueryIndex:	idx,
 				}
 				resultChan <- result
 			}
@@ -129,8 +129,8 @@ func benchmarkParallelVectorSearch(ctx context.Context, logger *zap.Logger) erro
 	queries := make([]Vector, 1000)
 	for i := range queries {
 		queries[i] = Vector{
-			ID:     fmt.Sprintf("query_%d", i),
-			Values: make([]float32, 128), // Vecteurs de dimension 128
+			ID:	fmt.Sprintf("query_%d", i),
+			Values:	make([]float32, 128),	// Vecteurs de dimension 128
 		}
 
 		// Remplir avec des valeurs aléatoires simulées
@@ -197,7 +197,7 @@ func testConnectionPooling(ctx context.Context, logger *zap.Logger) error {
 	fmt.Printf("   ❌ Erreurs: %d/100\n", errorCount)
 	fmt.Printf("   ✅ Taux de succès: %.1f%%\n", float64(100-errorCount))
 
-	if errorCount > 5 { // Tolérer max 5% d'erreurs
+	if errorCount > 5 {	// Tolérer max 5% d'erreurs
 		return fmt.Errorf("too many connection errors: %d", errorCount)
 	}
 
@@ -209,19 +209,19 @@ func testVectorCache(ctx context.Context, logger *zap.Logger) error {
 
 	// Simuler hit/miss ratio
 	totalRequests := 1000
-	cacheHits := 750 // 75% hit rate
+	cacheHits := 750	// 75% hit rate
 	cacheMisses := totalRequests - cacheHits
 
 	startTime := time.Now()
 
 	// Simuler les requêtes cachées (plus rapides)
 	for i := 0; i < cacheHits; i++ {
-		time.Sleep(time.Microsecond * 10) // Cache hit très rapide
+		time.Sleep(time.Microsecond * 10)	// Cache hit très rapide
 	}
 
 	// Simuler les cache misses (plus lents)
 	for i := 0; i < cacheMisses; i++ {
-		time.Sleep(time.Microsecond * 100) // Cache miss plus lent
+		time.Sleep(time.Microsecond * 100)	// Cache miss plus lent
 	}
 
 	duration := time.Since(startTime)
@@ -300,28 +300,28 @@ func stressTestIntegration(ctx context.Context, logger *zap.Logger) error {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		time.Sleep(time.Millisecond * 100) // Simulation recherche vectorielle
+		time.Sleep(time.Millisecond * 100)	// Simulation recherche vectorielle
 	}()
 
 	// Simuler charge cache
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		time.Sleep(time.Millisecond * 50) // Simulation cache lookup
+		time.Sleep(time.Millisecond * 50)	// Simulation cache lookup
 	}()
 
 	// Simuler charge événements
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		time.Sleep(time.Millisecond * 30) // Simulation event processing
+		time.Sleep(time.Millisecond * 30)	// Simulation event processing
 	}()
 
 	// Simuler charge connexions
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		time.Sleep(time.Millisecond * 20) // Simulation connection pooling
+		time.Sleep(time.Millisecond * 20)	// Simulation connection pooling
 	}()
 
 	wg.Wait()

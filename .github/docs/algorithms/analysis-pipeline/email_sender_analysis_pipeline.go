@@ -3,7 +3,7 @@
 // Algorithm 6 of 8 - Comprehensive analysis of fix effectiveness and system optimization
 // Analyzes the results from Algorithms 1-5 to optimize EMAIL_SENDER_1 multi-stack architecture
 
-package main
+package analysis_pipeline
 
 import (
 	"encoding/json"
@@ -20,138 +20,138 @@ import (
 
 // AnalysisMetrics represents various metrics collected during analysis
 type AnalysisMetrics struct {
-	TotalErrors       int                      `json:"total_errors"`
-	FixedErrors       int                      `json:"fixed_errors"`
-	RemainingErrors   int                      `json:"remaining_errors"`
-	EffectivenessRate float64                  `json:"effectiveness_rate"`
-	ComponentMetrics  map[string]int           `json:"component_metrics"`
-	LanguageMetrics   map[string]int           `json:"language_metrics"`
-	RuleEffectiveness map[string]float64       `json:"rule_effectiveness"`
-	TimeMetrics       map[string]float64       `json:"time_metrics"`
-	ErrorPatterns     map[string]int           `json:"error_patterns"`
-	QualityScore      float64                  `json:"quality_score"`
-	TechnicalDebt     float64                  `json:"technical_debt"`
-	Recommendations   []AnalysisRecommendation `json:"recommendations"`
+	TotalErrors		int				`json:"total_errors"`
+	FixedErrors		int				`json:"fixed_errors"`
+	RemainingErrors		int				`json:"remaining_errors"`
+	EffectivenessRate	float64				`json:"effectiveness_rate"`
+	ComponentMetrics	map[string]int			`json:"component_metrics"`
+	LanguageMetrics		map[string]int			`json:"language_metrics"`
+	RuleEffectiveness	map[string]float64		`json:"rule_effectiveness"`
+	TimeMetrics		map[string]float64		`json:"time_metrics"`
+	ErrorPatterns		map[string]int			`json:"error_patterns"`
+	QualityScore		float64				`json:"quality_score"`
+	TechnicalDebt		float64				`json:"technical_debt"`
+	Recommendations		[]AnalysisRecommendation	`json:"recommendations"`
 }
 
 // AnalysisRecommendation represents actionable recommendations
 type AnalysisRecommendation struct {
-	Category    string  `json:"category"`
-	Priority    int     `json:"priority"`
-	Component   string  `json:"component"`
-	Description string  `json:"description"`
-	Impact      string  `json:"impact"`
-	Effort      string  `json:"effort"`
-	Confidence  float64 `json:"confidence"`
+	Category	string	`json:"category"`
+	Priority	int	`json:"priority"`
+	Component	string	`json:"component"`
+	Description	string	`json:"description"`
+	Impact		string	`json:"impact"`
+	Effort		string	`json:"effort"`
+	Confidence	float64	`json:"confidence"`
 }
 
 // ComponentAnalysis represents analysis results for a specific component
 type ComponentAnalysis struct {
-	Name           string             `json:"name"`
-	TotalFiles     int                `json:"total_files"`
-	ProcessedFiles int                `json:"processed_files"`
-	ErrorsFound    int                `json:"errors_found"`
-	ErrorsFixed    int                `json:"errors_fixed"`
-	BuildSuccess   bool               `json:"build_success"`
-	TestSuccess    bool               `json:"test_success"`
-	CodeQuality    float64            `json:"code_quality"`
-	TechnicalDebt  float64            `json:"technical_debt"`
-	Dependencies   []string           `json:"dependencies"`
-	CriticalIssues []string           `json:"critical_issues"`
-	Improvements   []string           `json:"improvements"`
-	Performance    PerformanceMetrics `json:"performance"`
-	Trends         TrendAnalysis      `json:"trends"`
+	Name		string			`json:"name"`
+	TotalFiles	int			`json:"total_files"`
+	ProcessedFiles	int			`json:"processed_files"`
+	ErrorsFound	int			`json:"errors_found"`
+	ErrorsFixed	int			`json:"errors_fixed"`
+	BuildSuccess	bool			`json:"build_success"`
+	TestSuccess	bool			`json:"test_success"`
+	CodeQuality	float64			`json:"code_quality"`
+	TechnicalDebt	float64			`json:"technical_debt"`
+	Dependencies	[]string		`json:"dependencies"`
+	CriticalIssues	[]string		`json:"critical_issues"`
+	Improvements	[]string		`json:"improvements"`
+	Performance	PerformanceMetrics	`json:"performance"`
+	Trends		TrendAnalysis		`json:"trends"`
 }
 
 // PerformanceMetrics represents performance-related metrics
 type PerformanceMetrics struct {
-	BuildTime         float64 `json:"build_time"`
-	TestTime          float64 `json:"test_time"`
-	MemoryUsage       float64 `json:"memory_usage"`
-	CPUUsage          float64 `json:"cpu_usage"`
-	ResponseTime      float64 `json:"response_time"`
-	Throughput        float64 `json:"throughput"`
-	ErrorRate         float64 `json:"error_rate"`
-	AvailabilityScore float64 `json:"availability_score"`
+	BuildTime		float64	`json:"build_time"`
+	TestTime		float64	`json:"test_time"`
+	MemoryUsage		float64	`json:"memory_usage"`
+	CPUUsage		float64	`json:"cpu_usage"`
+	ResponseTime		float64	`json:"response_time"`
+	Throughput		float64	`json:"throughput"`
+	ErrorRate		float64	`json:"error_rate"`
+	AvailabilityScore	float64	`json:"availability_score"`
 }
 
 // TrendAnalysis represents trend analysis over time
 type TrendAnalysis struct {
-	ErrorTrend       string                `json:"error_trend"`
-	QualityTrend     string                `json:"quality_trend"`
-	PerformanceTrend string                `json:"performance_trend"`
-	HistoricalData   []HistoricalDataPoint `json:"historical_data"`
-	Predictions      map[string]float64    `json:"predictions"`
+	ErrorTrend		string			`json:"error_trend"`
+	QualityTrend		string			`json:"quality_trend"`
+	PerformanceTrend	string			`json:"performance_trend"`
+	HistoricalData		[]HistoricalDataPoint	`json:"historical_data"`
+	Predictions		map[string]float64	`json:"predictions"`
 }
 
 // HistoricalDataPoint represents a point in time for trend analysis
 type HistoricalDataPoint struct {
-	Timestamp    time.Time `json:"timestamp"`
-	ErrorCount   int       `json:"error_count"`
-	QualityScore float64   `json:"quality_score"`
-	BuildTime    float64   `json:"build_time"`
+	Timestamp	time.Time	`json:"timestamp"`
+	ErrorCount	int		`json:"error_count"`
+	QualityScore	float64		`json:"quality_score"`
+	BuildTime	float64		`json:"build_time"`
 }
 
 // EmailSenderAnalysisPipeline manages the comprehensive analysis process
 type EmailSenderAnalysisPipeline struct {
-	ProjectPath      string                       `json:"project_path"`
-	AnalysisID       string                       `json:"analysis_id"`
-	Timestamp        time.Time                    `json:"timestamp"`
-	InputSources     []string                     `json:"input_sources"`
-	Components       map[string]ComponentAnalysis `json:"components"`
-	OverallMetrics   AnalysisMetrics              `json:"overall_metrics"`
-	AlgorithmResults map[string]interface{}       `json:"algorithm_results"`
-	OptimizationPlan OptimizationPlan             `json:"optimization_plan"`
-	ReportSummary    ReportSummary                `json:"report_summary"`
-	Config           AnalysisConfig               `json:"config"`
+	ProjectPath		string				`json:"project_path"`
+	AnalysisID		string				`json:"analysis_id"`
+	Timestamp		time.Time			`json:"timestamp"`
+	InputSources		[]string			`json:"input_sources"`
+	Components		map[string]ComponentAnalysis	`json:"components"`
+	OverallMetrics		AnalysisMetrics			`json:"overall_metrics"`
+	AlgorithmResults	map[string]interface{}		`json:"algorithm_results"`
+	OptimizationPlan	OptimizationPlan		`json:"optimization_plan"`
+	ReportSummary		ReportSummary			`json:"report_summary"`
+	Config			AnalysisConfig			`json:"config"`
 }
 
 // OptimizationPlan represents the optimization strategy
 type OptimizationPlan struct {
-	Priority1Actions []OptimizationAction `json:"priority1_actions"`
-	Priority2Actions []OptimizationAction `json:"priority2_actions"`
-	Priority3Actions []OptimizationAction `json:"priority3_actions"`
-	LongTermActions  []OptimizationAction `json:"longterm_actions"`
-	EstimatedEffort  map[string]float64   `json:"estimated_effort"`
-	ExpectedROI      map[string]float64   `json:"expected_roi"`
-	Timeline         map[string]string    `json:"timeline"`
+	Priority1Actions	[]OptimizationAction	`json:"priority1_actions"`
+	Priority2Actions	[]OptimizationAction	`json:"priority2_actions"`
+	Priority3Actions	[]OptimizationAction	`json:"priority3_actions"`
+	LongTermActions		[]OptimizationAction	`json:"longterm_actions"`
+	EstimatedEffort		map[string]float64	`json:"estimated_effort"`
+	ExpectedROI		map[string]float64	`json:"expected_roi"`
+	Timeline		map[string]string	`json:"timeline"`
 }
 
 // OptimizationAction represents a specific optimization action
 type OptimizationAction struct {
-	ID             string   `json:"id"`
-	Description    string   `json:"description"`
-	Component      string   `json:"component"`
-	Category       string   `json:"category"`
-	EstimatedHours float64  `json:"estimated_hours"`
-	ExpectedImpact float64  `json:"expected_impact"`
-	Dependencies   []string `json:"dependencies"`
-	RiskLevel      string   `json:"risk_level"`
-	Prerequisites  []string `json:"prerequisites"`
+	ID		string		`json:"id"`
+	Description	string		`json:"description"`
+	Component	string		`json:"component"`
+	Category	string		`json:"category"`
+	EstimatedHours	float64		`json:"estimated_hours"`
+	ExpectedImpact	float64		`json:"expected_impact"`
+	Dependencies	[]string	`json:"dependencies"`
+	RiskLevel	string		`json:"risk_level"`
+	Prerequisites	[]string	`json:"prerequisites"`
 }
 
 // ReportSummary provides executive summary of analysis
 type ReportSummary struct {
-	SystemHealthScore   float64  `json:"system_health_score"`
-	CriticalIssuesCount int      `json:"critical_issues_count"`
-	RecommendationCount int      `json:"recommendation_count"`
-	EstimatedFixTime    float64  `json:"estimated_fix_time"`
-	ROIProjection       float64  `json:"roi_projection"`
-	NextSteps           []string `json:"next_steps"`
-	ExecutiveSummary    string   `json:"executive_summary"`
-	KeyFindings         []string `json:"key_findings"`
+	SystemHealthScore	float64		`json:"system_health_score"`
+	CriticalIssuesCount	int		`json:"critical_issues_count"`
+	RecommendationCount	int		`json:"recommendation_count"`
+	EstimatedFixTime	float64		`json:"estimated_fix_time"`
+	ROIProjection		float64		`json:"roi_projection"`
+	NextSteps		[]string	`json:"next_steps"`
+	ExecutiveSummary	string		`json:"executive_summary"`
+	KeyFindings		[]string	`json:"key_findings"`
 }
 
 // AnalysisConfig holds configuration for the analysis pipeline
 type AnalysisConfig struct {
-	EnableDeepAnalysis bool               `json:"enable_deep_analysis"`
-	IncludePerformance bool               `json:"include_performance"`
-	IncludeTrends      bool               `json:"include_trends"`
-	AnalysisDepth      int                `json:"analysis_depth"`
-	ComponentFilters   []string           `json:"component_filters"`
-	MetricThresholds   map[string]float64 `json:"metric_thresholds"`
-	OutputFormat       string             `json:"output_format"`
-	GenerateCharts     bool               `json:"generate_charts"`
+	EnableDeepAnalysis	bool			`json:"enable_deep_analysis"`
+	IncludePerformance	bool			`json:"include_performance"`
+	IncludeTrends		bool			`json:"include_trends"`
+	AnalysisDepth		int			`json:"analysis_depth"`
+	ComponentFilters	[]string		`json:"component_filters"`
+	MetricThresholds	map[string]float64	`json:"metric_thresholds"`
+	OutputFormat		string			`json:"output_format"`
+	GenerateCharts		bool			`json:"generate_charts"`
 }
 
 // EMAIL_SENDER_1 component definitions for analysis
@@ -291,26 +291,26 @@ func getConfigDisplay(configFile string) string {
 // NewAnalysisPipeline creates a new analysis pipeline instance
 func NewAnalysisPipeline(projectPath string) *EmailSenderAnalysisPipeline {
 	return &EmailSenderAnalysisPipeline{
-		ProjectPath:      projectPath,
-		AnalysisID:       generateAnalysisID(),
-		Timestamp:        time.Now(),
-		InputSources:     []string{},
-		Components:       make(map[string]ComponentAnalysis),
-		AlgorithmResults: make(map[string]interface{}),
+		ProjectPath:		projectPath,
+		AnalysisID:		generateAnalysisID(),
+		Timestamp:		time.Now(),
+		InputSources:		[]string{},
+		Components:		make(map[string]ComponentAnalysis),
+		AlgorithmResults:	make(map[string]interface{}),
 		Config: AnalysisConfig{
-			EnableDeepAnalysis: true,
-			IncludePerformance: true,
-			IncludeTrends:      true,
-			AnalysisDepth:      3,
-			ComponentFilters:   []string{},
+			EnableDeepAnalysis:	true,
+			IncludePerformance:	true,
+			IncludeTrends:		true,
+			AnalysisDepth:		3,
+			ComponentFilters:	[]string{},
 			MetricThresholds: map[string]float64{
-				"error_rate":    0.1,
-				"quality_score": 0.8,
-				"build_time":    300.0,
-				"test_coverage": 0.7,
+				"error_rate":		0.1,
+				"quality_score":	0.8,
+				"build_time":		300.0,
+				"test_coverage":	0.7,
 			},
-			OutputFormat:   "json",
-			GenerateCharts: false,
+			OutputFormat:	"json",
+			GenerateCharts:	false,
 		},
 	}
 }
@@ -355,10 +355,10 @@ func (pipeline *EmailSenderAnalysisPipeline) CollectAnalysisData() error {
 	// Collect component data
 	for componentName, paths := range emailSenderComponents {
 		analysis := ComponentAnalysis{
-			Name:           componentName,
-			Dependencies:   []string{},
-			CriticalIssues: []string{},
-			Improvements:   []string{},
+			Name:		componentName,
+			Dependencies:	[]string{},
+			CriticalIssues:	[]string{},
+			Improvements:	[]string{},
 		}
 
 		err := pipeline.analyzeComponentPaths(componentName, paths, &analysis)
@@ -471,13 +471,13 @@ func (pipeline *EmailSenderAnalysisPipeline) calculateCodeQuality(componentName 
 	// Adjust based on component type
 	switch componentName {
 	case "RAGEngine":
-		baseScore = 0.8 // Go code typically has good quality tools
+		baseScore = 0.8	// Go code typically has good quality tools
 	case "N8NWorkflow":
-		baseScore = 0.6 // JSON workflows may have less validation
+		baseScore = 0.6	// JSON workflows may have less validation
 	case "PowerShellScript":
-		baseScore = 0.6 // PowerShell may have less strict validation
+		baseScore = 0.6	// PowerShell may have less strict validation
 	case "ConfigFiles":
-		baseScore = 0.5 // Config files often have quality issues
+		baseScore = 0.5	// Config files often have quality issues
 	}
 
 	// Add randomness to simulate real analysis (in real implementation, this would be calculated)
@@ -494,13 +494,13 @@ func (pipeline *EmailSenderAnalysisPipeline) calculateTechnicalDebt(componentNam
 	// Adjust based on component complexity
 	switch componentName {
 	case "RAGEngine":
-		baseDebt = 0.4 // Complex AI/ML code tends to have more debt
+		baseDebt = 0.4	// Complex AI/ML code tends to have more debt
 	case "N8NWorkflow":
-		baseDebt = 0.2 // Workflows are typically simpler
+		baseDebt = 0.2	// Workflows are typically simpler
 	case "PowerShellScript":
-		baseDebt = 0.5 // Scripts often accumulate debt
+		baseDebt = 0.5	// Scripts often accumulate debt
 	case "ConfigFiles":
-		baseDebt = 0.6 // Config files often have high debt
+		baseDebt = 0.6	// Config files often have high debt
 	}
 
 	// Add variation to simulate real calculation
@@ -618,14 +618,14 @@ func (pipeline *EmailSenderAnalysisPipeline) performComponentDeepAnalysis(compon
 
 	// Calculate performance metrics
 	analysis.Performance = PerformanceMetrics{
-		BuildTime:         math.Max(30, 300*analysis.TechnicalDebt),
-		TestTime:          math.Max(10, 60*analysis.TechnicalDebt),
-		MemoryUsage:       math.Max(0.1, analysis.TechnicalDebt),
-		CPUUsage:          math.Max(0.2, analysis.TechnicalDebt*1.5),
-		ResponseTime:      math.Max(10, 1000*analysis.TechnicalDebt),
-		Throughput:        math.Max(100, 1000*(1-analysis.TechnicalDebt)),
-		ErrorRate:         analysis.TechnicalDebt * 0.1,
-		AvailabilityScore: math.Max(0.9, 1-analysis.TechnicalDebt*0.3),
+		BuildTime:		math.Max(30, 300*analysis.TechnicalDebt),
+		TestTime:		math.Max(10, 60*analysis.TechnicalDebt),
+		MemoryUsage:		math.Max(0.1, analysis.TechnicalDebt),
+		CPUUsage:		math.Max(0.2, analysis.TechnicalDebt*1.5),
+		ResponseTime:		math.Max(10, 1000*analysis.TechnicalDebt),
+		Throughput:		math.Max(100, 1000*(1-analysis.TechnicalDebt)),
+		ErrorRate:		analysis.TechnicalDebt * 0.1,
+		AvailabilityScore:	math.Max(0.9, 1-analysis.TechnicalDebt*0.3),
 	}
 
 	// Generate component-specific improvements
@@ -633,10 +633,10 @@ func (pipeline *EmailSenderAnalysisPipeline) performComponentDeepAnalysis(compon
 
 	// Analyze trends (simplified implementation)
 	analysis.Trends = TrendAnalysis{
-		ErrorTrend:       pipeline.calculateTrend(analysis.TechnicalDebt),
-		QualityTrend:     pipeline.calculateTrend(1 - analysis.CodeQuality),
-		PerformanceTrend: pipeline.calculateTrend(analysis.Performance.ErrorRate),
-		Predictions:      make(map[string]float64),
+		ErrorTrend:		pipeline.calculateTrend(analysis.TechnicalDebt),
+		QualityTrend:		pipeline.calculateTrend(1 - analysis.CodeQuality),
+		PerformanceTrend:	pipeline.calculateTrend(analysis.Performance.ErrorRate),
+		Predictions:		make(map[string]float64),
 	}
 }
 
@@ -685,13 +685,13 @@ func (pipeline *EmailSenderAnalysisPipeline) calculateTrend(metric float64) stri
 // GenerateOptimizationPlan generates a comprehensive optimization plan
 func (pipeline *EmailSenderAnalysisPipeline) GenerateOptimizationPlan() error {
 	plan := OptimizationPlan{
-		Priority1Actions: []OptimizationAction{},
-		Priority2Actions: []OptimizationAction{},
-		Priority3Actions: []OptimizationAction{},
-		LongTermActions:  []OptimizationAction{},
-		EstimatedEffort:  make(map[string]float64),
-		ExpectedROI:      make(map[string]float64),
-		Timeline:         make(map[string]string),
+		Priority1Actions:	[]OptimizationAction{},
+		Priority2Actions:	[]OptimizationAction{},
+		Priority3Actions:	[]OptimizationAction{},
+		LongTermActions:	[]OptimizationAction{},
+		EstimatedEffort:	make(map[string]float64),
+		ExpectedROI:		make(map[string]float64),
+		Timeline:		make(map[string]string),
 	}
 
 	// Generate actions based on analysis results
@@ -700,15 +700,15 @@ func (pipeline *EmailSenderAnalysisPipeline) GenerateOptimizationPlan() error {
 		// Critical issues → Priority 1
 		if analysis.TechnicalDebt > 0.6 || analysis.CodeQuality < 0.5 {
 			action := OptimizationAction{
-				ID:             fmt.Sprintf("P1_%03d", actionID),
-				Description:    fmt.Sprintf("Critical refactoring of %s component", componentName),
-				Component:      componentName,
-				Category:       "critical_fix",
-				EstimatedHours: 40.0,
-				ExpectedImpact: 0.8,
-				RiskLevel:      "high",
-				Dependencies:   []string{},
-				Prerequisites:  []string{"backup_component", "create_tests"},
+				ID:		fmt.Sprintf("P1_%03d", actionID),
+				Description:	fmt.Sprintf("Critical refactoring of %s component", componentName),
+				Component:	componentName,
+				Category:	"critical_fix",
+				EstimatedHours:	40.0,
+				ExpectedImpact:	0.8,
+				RiskLevel:	"high",
+				Dependencies:	[]string{},
+				Prerequisites:	[]string{"backup_component", "create_tests"},
 			}
 			plan.Priority1Actions = append(plan.Priority1Actions, action)
 			actionID++
@@ -717,15 +717,15 @@ func (pipeline *EmailSenderAnalysisPipeline) GenerateOptimizationPlan() error {
 		// Quality improvements → Priority 2
 		if analysis.CodeQuality < 0.8 {
 			action := OptimizationAction{
-				ID:             fmt.Sprintf("P2_%03d", actionID),
-				Description:    fmt.Sprintf("Quality improvements for %s", componentName),
-				Component:      componentName,
-				Category:       "quality_improvement",
-				EstimatedHours: 20.0,
-				ExpectedImpact: 0.6,
-				RiskLevel:      "medium",
-				Dependencies:   []string{},
-				Prerequisites:  []string{"code_review"},
+				ID:		fmt.Sprintf("P2_%03d", actionID),
+				Description:	fmt.Sprintf("Quality improvements for %s", componentName),
+				Component:	componentName,
+				Category:	"quality_improvement",
+				EstimatedHours:	20.0,
+				ExpectedImpact:	0.6,
+				RiskLevel:	"medium",
+				Dependencies:	[]string{},
+				Prerequisites:	[]string{"code_review"},
 			}
 			plan.Priority2Actions = append(plan.Priority2Actions, action)
 			actionID++
@@ -734,15 +734,15 @@ func (pipeline *EmailSenderAnalysisPipeline) GenerateOptimizationPlan() error {
 		// Performance optimizations → Priority 3
 		if analysis.Performance.ErrorRate > 0.05 {
 			action := OptimizationAction{
-				ID:             fmt.Sprintf("P3_%03d", actionID),
-				Description:    fmt.Sprintf("Performance optimization for %s", componentName),
-				Component:      componentName,
-				Category:       "performance",
-				EstimatedHours: 15.0,
-				ExpectedImpact: 0.4,
-				RiskLevel:      "low",
-				Dependencies:   []string{},
-				Prerequisites:  []string{"performance_baseline"},
+				ID:		fmt.Sprintf("P3_%03d", actionID),
+				Description:	fmt.Sprintf("Performance optimization for %s", componentName),
+				Component:	componentName,
+				Category:	"performance",
+				EstimatedHours:	15.0,
+				ExpectedImpact:	0.4,
+				RiskLevel:	"low",
+				Dependencies:	[]string{},
+				Prerequisites:	[]string{"performance_baseline"},
 			}
 			plan.Priority3Actions = append(plan.Priority3Actions, action)
 			actionID++
@@ -810,26 +810,26 @@ func (pipeline *EmailSenderAnalysisPipeline) generateOverallRecommendations() {
 	// System-wide quality recommendation
 	if pipeline.OverallMetrics.QualityScore < 0.7 {
 		recommendations = append(recommendations, AnalysisRecommendation{
-			Category:    "quality",
-			Priority:    1,
-			Component:   "system",
-			Description: "Implement system-wide code quality standards and automated checking",
-			Impact:      "high",
-			Effort:      "medium",
-			Confidence:  0.9,
+			Category:	"quality",
+			Priority:	1,
+			Component:	"system",
+			Description:	"Implement system-wide code quality standards and automated checking",
+			Impact:		"high",
+			Effort:		"medium",
+			Confidence:	0.9,
 		})
 	}
 
 	// Technical debt recommendation
 	if pipeline.OverallMetrics.TechnicalDebt > 0.5 {
 		recommendations = append(recommendations, AnalysisRecommendation{
-			Category:    "technical_debt",
-			Priority:    1,
-			Component:   "system",
-			Description: "Prioritize technical debt reduction across all components",
-			Impact:      "high",
-			Effort:      "high",
-			Confidence:  0.8,
+			Category:	"technical_debt",
+			Priority:	1,
+			Component:	"system",
+			Description:	"Prioritize technical debt reduction across all components",
+			Impact:		"high",
+			Effort:		"high",
+			Confidence:	0.8,
 		})
 	}
 
@@ -837,13 +837,13 @@ func (pipeline *EmailSenderAnalysisPipeline) generateOverallRecommendations() {
 	for componentName, analysis := range pipeline.Components {
 		if analysis.TechnicalDebt > 0.6 {
 			recommendations = append(recommendations, AnalysisRecommendation{
-				Category:    "component_fix",
-				Priority:    2,
-				Component:   componentName,
-				Description: fmt.Sprintf("Critical refactoring needed for %s component", componentName),
-				Impact:      "medium",
-				Effort:      "high",
-				Confidence:  0.7,
+				Category:	"component_fix",
+				Priority:	2,
+				Component:	componentName,
+				Description:	fmt.Sprintf("Critical refactoring needed for %s component", componentName),
+				Impact:		"medium",
+				Effort:		"high",
+				Confidence:	0.7,
 			})
 		}
 	}
@@ -873,14 +873,14 @@ func (pipeline *EmailSenderAnalysisPipeline) calculateReportSummary() {
 		pipeline.OptimizationPlan.ExpectedROI["priority2"]*0.4) * 100
 
 	pipeline.ReportSummary = ReportSummary{
-		SystemHealthScore:   healthScore,
-		CriticalIssuesCount: criticalIssues,
-		RecommendationCount: len(pipeline.OverallMetrics.Recommendations),
-		EstimatedFixTime:    estimatedFixTime,
-		ROIProjection:       roiProjection,
-		NextSteps:           pipeline.generateNextSteps(),
-		ExecutiveSummary:    pipeline.generateExecutiveSummary(healthScore),
-		KeyFindings:         pipeline.generateKeyFindings(),
+		SystemHealthScore:	healthScore,
+		CriticalIssuesCount:	criticalIssues,
+		RecommendationCount:	len(pipeline.OverallMetrics.Recommendations),
+		EstimatedFixTime:	estimatedFixTime,
+		ROIProjection:		roiProjection,
+		NextSteps:		pipeline.generateNextSteps(),
+		ExecutiveSummary:	pipeline.generateExecutiveSummary(healthScore),
+		KeyFindings:		pipeline.generateKeyFindings(),
 	}
 }
 
@@ -1006,8 +1006,8 @@ func (pipeline *EmailSenderAnalysisPipeline) DisplayAnalysisSummary() {
 
 	// Sort components by health score
 	type componentHealth struct {
-		name   string
-		health float64
+		name	string
+		health	float64
 	}
 
 	var componentHealths []componentHealth

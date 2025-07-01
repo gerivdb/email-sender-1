@@ -10,7 +10,7 @@ import (
 	"sync"
 
 <<<<<<< HEAD
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"EMAIL_SENDER_1/tools/core/toolkit"
 =======
 	"github.com/email-sender/tools/core/platform" // Changed to platform
 >>>>>>> origin/jules/fix-build-errors-and-cycles

@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/development"
-	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
+	"EMAIL_SENDER_1/development/managers/contextual-memory-manager/development"
+	"EMAIL_SENDER_1/development/managers/contextual-memory-manager/interfaces"
 )
 
 func BenchmarkASTSearch(b *testing.B) {

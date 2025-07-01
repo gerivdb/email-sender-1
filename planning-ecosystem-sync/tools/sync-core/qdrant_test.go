@@ -1,4 +1,4 @@
-package main
+package sync_core
 
 import (
 	"testing"
@@ -48,18 +48,18 @@ func TestSyncClient_StorePlanEmbeddings(t *testing.T) {
 
 	// Create test plan
 	plan := &DynamicPlan{
-		ID:         "test-plan-123",
-		Embeddings: []float64{0.1, 0.2, 0.3, 0.4, 0.5},
+		ID:		"test-plan-123",
+		Embeddings:	[]float64{0.1, 0.2, 0.3, 0.4, 0.5},
 		Metadata: PlanMetadata{
-			Title:       "Test Plan",
-			Version:     "1.0.0",
-			FilePath:    "/test/plan.md",
-			Progression: 0.5,
-			Description: "Test plan description",
+			Title:		"Test Plan",
+			Version:	"1.0.0",
+			FilePath:	"/test/plan.md",
+			Progression:	0.5,
+			Description:	"Test plan description",
 		},
-		Tasks:     []Task{},
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		Tasks:		[]Task{},
+		CreatedAt:	time.Now(),
+		UpdatedAt:	time.Now(),
 	}
 
 	// Test storing embeddings
@@ -78,13 +78,13 @@ func TestSyncClient_StorePlanEmbeddings_EmptyEmbeddings(t *testing.T) {
 
 	// Create plan with no embeddings
 	plan := &DynamicPlan{
-		ID:         "test-plan-no-embeddings",
-		Embeddings: []float64{}, // Empty embeddings
+		ID:		"test-plan-no-embeddings",
+		Embeddings:	[]float64{},	// Empty embeddings
 		Metadata: PlanMetadata{
 			Title: "Test Plan No Embeddings",
 		},
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		CreatedAt:	time.Now(),
+		UpdatedAt:	time.Now(),
 	}
 
 	// Should return error for empty embeddings
@@ -125,24 +125,24 @@ func TestSyncClient_SyncPlanData(t *testing.T) {
 	// Create test plans
 	plans := []*DynamicPlan{
 		{
-			ID:         "plan-1",
-			Embeddings: []float64{0.1, 0.2, 0.3},
+			ID:		"plan-1",
+			Embeddings:	[]float64{0.1, 0.2, 0.3},
 			Metadata: PlanMetadata{
-				Title:       "Plan 1",
-				Description: "First test plan",
+				Title:		"Plan 1",
+				Description:	"First test plan",
 			},
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
+			CreatedAt:	time.Now(),
+			UpdatedAt:	time.Now(),
 		},
 		{
-			ID:         "plan-2",
-			Embeddings: []float64{0.4, 0.5, 0.6},
+			ID:		"plan-2",
+			Embeddings:	[]float64{0.4, 0.5, 0.6},
 			Metadata: PlanMetadata{
-				Title:       "Plan 2",
-				Description: "Second test plan",
+				Title:		"Plan 2",
+				Description:	"Second test plan",
 			},
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
+			CreatedAt:	time.Now(),
+			UpdatedAt:	time.Now(),
 		},
 	}
 
@@ -163,15 +163,15 @@ func TestSyncClient_SyncPlanData_ValidationError(t *testing.T) {
 	// Create plans with validation issues
 	plans := []*DynamicPlan{
 		{
-			ID:         "", // Missing ID
-			Embeddings: []float64{0.1, 0.2, 0.3},
+			ID:		"",	// Missing ID
+			Embeddings:	[]float64{0.1, 0.2, 0.3},
 			Metadata: PlanMetadata{
 				Title: "Plan with no ID",
 			},
 		},
 		{
-			ID:         "plan-no-embeddings",
-			Embeddings: []float64{}, // No embeddings
+			ID:		"plan-no-embeddings",
+			Embeddings:	[]float64{},	// No embeddings
 			Metadata: PlanMetadata{
 				Title: "Plan with no embeddings",
 			},

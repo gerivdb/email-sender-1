@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt" // Keep fmt for Sprintf
 
-	"github.com/gerivdb/email-sender-1/development/managers/dependencymanager"
-	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
+	"EMAIL_SENDER_1/development/managers/dependencymanager"
+	"EMAIL_SENDER_1/development/managers/interfaces"
 )
 
 // initializeContainerIntegration sets up container manager integration

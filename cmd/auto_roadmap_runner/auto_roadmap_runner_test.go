@@ -1,4 +1,4 @@
-package main
+package auto_roadmap_runner
 
 import (
 	"bytes"
@@ -27,11 +27,11 @@ func executeOrchestrator(t *testing.T) string {
 	r, w, _ := os.Pipe()
 	os.Stdout = w
 
-	main() // Run the orchestrator's main function
+	main()	// Run the orchestrator's main function
 
 	w.Close()
 	out, _ := ioutil.ReadAll(r)
-	os.Stdout = oldStdout // Restore stdout
+	os.Stdout = oldStdout	// Restore stdout
 	return string(out)
 }
 
@@ -57,7 +57,7 @@ func TestOrchestratorExecution(t *testing.T) {
 	createDummyScript(t, "cmd/read_file_navigator/read_file_navigator.go", `package main; import "fmt"; import "os"; func main(){ fmt.Println("read_file_navigator executed"); os.Exit(0) }`)
 	createDummyScript(t, "scripts/vscode_read_file_selection.js", `console.log("vscode_extension_validation executed"); process.exit(0);`)
 	createDummyScript(t, "scripts/gen_read_file_report.go", `package main; import "fmt"; import "os"; func main(){ fmt.Println("gen_read_file_report executed"); os.Exit(0) }`)
-	createDummyScript(t, "docs/read_file_README.md", `Documentation is updated.`) // This is a file, not a script, but included for completeness of the roadmap
+	createDummyScript(t, "docs/read_file_README.md", `Documentation is updated.`)	// This is a file, not a script, but included for completeness of the roadmap
 	createDummyScript(t, "scripts/collect_user_feedback.sh", `#!/bin/bash; echo "collect_user_feedback_bash executed"; exit 0`)
 	createDummyScript(t, "scripts/collect_user_feedback.ps1", `Write-Host "collect_user_feedback_powershell executed"; exit 0`)
 	createDummyScript(t, "cmd/audit_rollback_points/audit_rollback_points.go", `package main; import "fmt"; import "os"; func main(){ fmt.Println("audit_rollback_points executed"); os.Exit(0) }`)
@@ -81,11 +81,11 @@ func TestOrchestratorExecution(t *testing.T) {
 		"validate_and_archive_user_needs executed",
 		"gen_read_file_spec executed",
 		"archive_spec executed",
-		"read_file_lib_tests executed", // Note: go test output might differ based on verbosity
+		"read_file_lib_tests executed",	// Note: go test output might differ based on verbosity
 		"read_file_navigator executed",
 		"vscode_extension_validation executed",
 		"gen_read_file_report executed",
-		"Documentation is updated.", // From docs_update placeholder
+		"Documentation is updated.",	// From docs_update placeholder
 		"collect_user_feedback_bash executed",
 		"collect_user_feedback_powershell executed",
 		"audit_rollback_points executed",

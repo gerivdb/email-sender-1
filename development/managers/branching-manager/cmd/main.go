@@ -8,7 +8,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/development"
+	"EMAIL_SENDER_1/development/managers/branching-manager/development"
 )
 
 func main() {

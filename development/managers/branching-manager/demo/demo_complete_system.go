@@ -1,4 +1,4 @@
-package main
+package demo
 
 import (
 	"context"
@@ -6,12 +6,12 @@ import (
 	"log"
 	"time"
 
-	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/ai"
-	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/database"
-	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/development"
-	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/git"
-	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/integrations"
-	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
+	"EMAIL_SENDER_1/development/managers/branching-manager/ai"
+	"EMAIL_SENDER_1/development/managers/branching-manager/database"
+	"EMAIL_SENDER_1/development/managers/branching-manager/development"
+	"EMAIL_SENDER_1/development/managers/branching-manager/git"
+	"EMAIL_SENDER_1/development/managers/branching-manager/integrations"
+	"EMAIL_SENDER_1/development/managers/branching-manager/interfaces"
 )
 
 func main() {

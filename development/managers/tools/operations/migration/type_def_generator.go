@@ -5,8 +5,8 @@
 package migration
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/registry"
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"EMAIL_SENDER_1/tools/core/registry"
+	"EMAIL_SENDER_1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -51,14 +51,14 @@ type GeneratedType struct {
 
 // TypeGenReport représente le rapport de génération de types
 type TypeGenReport struct {
-	Tool            string          `json:"tool"`
-	Version         string          `json:"version"`
-	Timestamp       time.Time       `json:"timestamp"`
-	FilesAnalyzed   int             `json:"files_analyzed"`
-	UndefinedTypes  []UndefinedType `json:"undefined_types"`
-	GeneratedTypes  []GeneratedType `json:"generated_types"`
-	DryRunMode      bool            `json:"dry_run_mode"`
-	Summary         TypeGenSummary  `json:"summary"`
+	Tool           string          `json:"tool"`
+	Version        string          `json:"version"`
+	Timestamp      time.Time       `json:"timestamp"`
+	FilesAnalyzed  int             `json:"files_analyzed"`
+	UndefinedTypes []UndefinedType `json:"undefined_types"`
+	GeneratedTypes []GeneratedType `json:"generated_types"`
+	DryRunMode     bool            `json:"dry_run_mode"`
+	Summary        TypeGenSummary  `json:"summary"`
 }
 
 // TypeGenSummary fournit un résumé de la génération
@@ -220,13 +220,13 @@ func (tdg *TypeDefGenerator) Execute(ctx context.Context, options *toolkit.Opera
 	// Generate type definitions for undefined types
 	for typeName, occurrences := range undefinedTypes {
 		report.UndefinedTypes = append(report.UndefinedTypes, occurrences...)
-		
+
 		if !tdg.DryRun && options.Force {
 			generatedType := tdg.generateTypeDefinition(typeName, occurrences)
 			if generatedType != nil {
 				report.GeneratedTypes = append(report.GeneratedTypes, *generatedType)
 				report.Summary.TypesGenerated++
-				
+
 				// Determine type category
 				if strings.Contains(generatedType.Definition, "struct") {
 					report.Summary.StructsGenerated++
@@ -235,7 +235,7 @@ func (tdg *TypeDefGenerator) Execute(ctx context.Context, options *toolkit.Opera
 				} else {
 					report.Summary.AliasesGenerated++
 				}
-				
+
 				tdg.Logger.Info("✅ Generated type definition for: %s", typeName)
 			}
 		}
@@ -260,7 +260,7 @@ func (tdg *TypeDefGenerator) Execute(ctx context.Context, options *toolkit.Opera
 		tdg.Logger.Info("📄 Report generated: %s", options.Output)
 	}
 
-	tdg.Logger.Info("✅ Type definition generation completed: %d files analyzed, %d undefined types found, %d types generated", 
+	tdg.Logger.Info("✅ Type definition generation completed: %d files analyzed, %d undefined types found, %d types generated",
 		filesAnalyzed, report.Summary.UndefinedFound, report.Summary.TypesGenerated)
 
 	return nil
@@ -391,7 +391,7 @@ func (tdg *TypeDefGenerator) generateTypeDefinition(typeName string, occurrences
 	// Analyze usage context to determine best type definition
 	structUsages := 0
 	interfaceUsages := 0
-	
+
 	for _, occ := range occurrences {
 		switch occ.Context {
 		case "struct_field", "variable_declaration":
@@ -414,7 +414,7 @@ func (tdg *TypeDefGenerator) generateTypeDefinition(typeName string, occurrences
 
 	// Use the first occurrence for package and file info
 	firstOcc := occurrences[0]
-	
+
 	return &GeneratedType{
 		Name:       typeName,
 		Definition: definition,
@@ -480,21 +480,19 @@ func init() {
 		globalReg = registry.NewToolRegistry()
 		// registry.SetGlobalRegistry(globalReg) // If a setter exists
 	}
-	
+
 	// Create a default instance for registration
 	defaultTool := &TypeDefGenerator{
-		BaseDir: "", // Default or placeholder
+		BaseDir: "",                 // Default or placeholder
 		FileSet: token.NewFileSet(), // Initialize FileSet
-		Logger:  nil, // Logger should be initialized by the toolkit
+		Logger:  nil,                // Logger should be initialized by the toolkit
 		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  false,
 	}
-	
+
 	err := globalReg.Register(toolkit.TypeDefGen, defaultTool) // Changed to toolkit.TypeDefGen
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register TypeDefGenerator: %v\n", err)
 	}
 }
-
-

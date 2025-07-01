@@ -3,7 +3,7 @@
 // Replaces all PowerShell validation scripts with pure Go implementation
 // Provides comprehensive validation of the 8-algorithm native Go ecosystem
 
-package main
+package algorithms
 
 import (
 	"encoding/json"
@@ -21,52 +21,52 @@ import (
 
 // ValidationSuite represents the complete validation suite
 type ValidationSuite struct {
-	ProjectPath     string                   `json:"project_path"`
-	AlgorithmsPath  string                   `json:"algorithms_path"`
-	Timestamp       time.Time                `json:"timestamp"`
-	ValidationTests []ValidationTest         `json:"validation_tests"`
-	AlgorithmStatus map[string]AlgorithmInfo `json:"algorithm_status"`
-	ComplianceScore float64                  `json:"compliance_score"`
-	Summary         ValidationSummary        `json:"summary"`
-	Recommendations []string                 `json:"recommendations"`
+	ProjectPath	string				`json:"project_path"`
+	AlgorithmsPath	string				`json:"algorithms_path"`
+	Timestamp	time.Time			`json:"timestamp"`
+	ValidationTests	[]ValidationTest		`json:"validation_tests"`
+	AlgorithmStatus	map[string]AlgorithmInfo	`json:"algorithm_status"`
+	ComplianceScore	float64				`json:"compliance_score"`
+	Summary		ValidationSummary		`json:"summary"`
+	Recommendations	[]string			`json:"recommendations"`
 }
 
 // ValidationTest represents a single validation test
 type ValidationTest struct {
-	Name        string        `json:"name"`
-	Category    string        `json:"category"`
-	Status      string        `json:"status"`
-	Duration    time.Duration `json:"duration"`
-	Message     string        `json:"message"`
-	Details     []string      `json:"details"`
-	Criticality string        `json:"criticality"`
+	Name		string		`json:"name"`
+	Category	string		`json:"category"`
+	Status		string		`json:"status"`
+	Duration	time.Duration	`json:"duration"`
+	Message		string		`json:"message"`
+	Details		[]string	`json:"details"`
+	Criticality	string		`json:"criticality"`
 }
 
 // AlgorithmInfo contains information about each algorithm
 type AlgorithmInfo struct {
-	ID              string   `json:"id"`
-	Name            string   `json:"name"`
-	HasGoImpl       bool     `json:"has_go_implementation"`
-	HasPowerShell   bool     `json:"has_powershell_files"`
-	PowerShellFiles []string `json:"powershell_files"`
-	GoFiles         []string `json:"go_files"`
-	Compilable      bool     `json:"compilable"`
-	TestsPresent    bool     `json:"tests_present"`
-	Documentation   bool     `json:"documentation"`
-	Status          string   `json:"status"`
+	ID		string		`json:"id"`
+	Name		string		`json:"name"`
+	HasGoImpl	bool		`json:"has_go_implementation"`
+	HasPowerShell	bool		`json:"has_powershell_files"`
+	PowerShellFiles	[]string	`json:"powershell_files"`
+	GoFiles		[]string	`json:"go_files"`
+	Compilable	bool		`json:"compilable"`
+	TestsPresent	bool		`json:"tests_present"`
+	Documentation	bool		`json:"documentation"`
+	Status		string		`json:"status"`
 }
 
 // ValidationSummary provides overall validation statistics
 type ValidationSummary struct {
-	TotalTests          int           `json:"total_tests"`
-	PassedTests         int           `json:"passed_tests"`
-	FailedTests         int           `json:"failed_tests"`
-	SkippedTests        int           `json:"skipped_tests"`
-	PassRate            float64       `json:"pass_rate"`
-	GoNativeCompliance  float64       `json:"go_native_compliance"`
-	PowerShellRemaining int           `json:"powershell_remaining"`
-	AlgorithmsCovered   int           `json:"algorithms_covered"`
-	TotalDuration       time.Duration `json:"total_duration"`
+	TotalTests		int		`json:"total_tests"`
+	PassedTests		int		`json:"passed_tests"`
+	FailedTests		int		`json:"failed_tests"`
+	SkippedTests		int		`json:"skipped_tests"`
+	PassRate		float64		`json:"pass_rate"`
+	GoNativeCompliance	float64		`json:"go_native_compliance"`
+	PowerShellRemaining	int		`json:"powershell_remaining"`
+	AlgorithmsCovered	int		`json:"algorithms_covered"`
+	TotalDuration		time.Duration	`json:"total_duration"`
 }
 
 // Expected 8 algorithms for EMAIL_SENDER_1
@@ -129,12 +129,12 @@ func NewValidationSuite(projectPath string) *ValidationSuite {
 	algorithmsPath := filepath.Join(projectPath, ".github", "docs", "algorithms")
 
 	return &ValidationSuite{
-		ProjectPath:     projectPath,
-		AlgorithmsPath:  algorithmsPath,
-		Timestamp:       time.Now(),
-		ValidationTests: []ValidationTest{},
-		AlgorithmStatus: make(map[string]AlgorithmInfo),
-		Recommendations: []string{},
+		ProjectPath:		projectPath,
+		AlgorithmsPath:		algorithmsPath,
+		Timestamp:		time.Now(),
+		ValidationTests:	[]ValidationTest{},
+		AlgorithmStatus:	make(map[string]AlgorithmInfo),
+		Recommendations:	[]string{},
 	}
 }
 
@@ -190,13 +190,13 @@ func (vs *ValidationSuite) runTest(name, category string, testFunc func() (bool,
 	}
 
 	test := ValidationTest{
-		Name:        name,
-		Category:    category,
-		Status:      status,
-		Duration:    duration,
-		Message:     message,
-		Details:     details,
-		Criticality: criticality,
+		Name:		name,
+		Category:	category,
+		Status:		status,
+		Duration:	duration,
+		Message:	message,
+		Details:	details,
+		Criticality:	criticality,
 	}
 
 	vs.ValidationTests = append(vs.ValidationTests, test)
@@ -273,13 +273,13 @@ func (vs *ValidationSuite) validateGoImplementations() (bool, string, []string) 
 		algorithmPath := filepath.Join(vs.AlgorithmsPath, algorithmID)
 
 		info := AlgorithmInfo{
-			ID:              algorithmID,
-			Name:            algorithmID,
-			HasGoImpl:       false,
-			HasPowerShell:   false,
-			PowerShellFiles: []string{},
-			GoFiles:         []string{},
-			Status:          "unknown",
+			ID:			algorithmID,
+			Name:			algorithmID,
+			HasGoImpl:		false,
+			HasPowerShell:		false,
+			PowerShellFiles:	[]string{},
+			GoFiles:		[]string{},
+			Status:			"unknown",
 		}
 
 		// Check if algorithm directory exists
@@ -435,9 +435,9 @@ func (vs *ValidationSuite) validateNativeOrchestrator() (bool, string, []string)
 	implPath := filepath.Join(vs.AlgorithmsPath, "algorithms_implementations.go")
 
 	requiredFiles := map[string]string{
-		orchestratorPath: "Main orchestrator",
-		configPath:       "Orchestrator configuration",
-		implPath:         "Algorithm implementations",
+		orchestratorPath:	"Main orchestrator",
+		configPath:		"Orchestrator configuration",
+		implPath:		"Algorithm implementations",
 	}
 
 	allPresent := true
@@ -534,8 +534,8 @@ func (vs *ValidationSuite) validateConfigurationFiles() (bool, string, []string)
 	allValid := true
 
 	configFiles := map[string]string{
-		"email_sender_orchestrator_config.json": "Main orchestrator config",
-		"go.mod":                                "Go module definition",
+		"email_sender_orchestrator_config.json":	"Main orchestrator config",
+		"go.mod":					"Go module definition",
 	}
 
 	for fileName, description := range configFiles {
@@ -726,8 +726,8 @@ func (vs *ValidationSuite) DisplayResults() {
 
 	// Sort algorithms by status for better display
 	type algStatus struct {
-		id   string
-		info AlgorithmInfo
+		id	string
+		info	AlgorithmInfo
 	}
 
 	var algorithms []algStatus
@@ -737,12 +737,12 @@ func (vs *ValidationSuite) DisplayResults() {
 
 	sort.Slice(algorithms, func(i, j int) bool {
 		statusOrder := map[string]int{
-			"go_native":         1,
-			"mixed":             2,
-			"powershell_only":   3,
-			"no_implementation": 4,
-			"missing":           5,
-			"error":             6,
+			"go_native":		1,
+			"mixed":		2,
+			"powershell_only":	3,
+			"no_implementation":	4,
+			"missing":		5,
+			"error":		6,
 		}
 		return statusOrder[algorithms[i].info.Status] < statusOrder[algorithms[j].info.Status]
 	})

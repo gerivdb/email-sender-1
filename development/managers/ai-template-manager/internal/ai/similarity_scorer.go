@@ -1,10 +1,9 @@
 package ai
 
 import (
+	"EMAIL_SENDER_1/development/managers/ai-template-manager/interfaces"
 	"math"
 	"strings"
-
-	"github.com/chrlesur/Email_Sender/development/managers/ai-template-manager/interfaces"
 )
 
 // SimilarityScorer implements semantic matching algorithms for templates

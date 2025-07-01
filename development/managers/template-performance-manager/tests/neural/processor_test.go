@@ -1,15 +1,14 @@
 package neural
 
 import (
+	"EMAIL_SENDER_1/development/managers/template-performance-manager/interfaces"
+	"EMAIL_SENDER_1/development/managers/template-performance-manager/internal/neural"
 	"context"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	"github.com/fmoua/email-sender/development/managers/template-performance-manager/interfaces"
-	"github.com/fmoua/email-sender/development/managers/template-performance-manager/internal/neural"
 )
 
 func TestNeuralProcessor_Initialize(t *testing.T) {
@@ -29,7 +28,7 @@ func TestNeuralProcessor_Initialize(t *testing.T) {
 				AIEndpoint:           "",
 				MaxPatternComplexity: 100,
 				AnalysisTimeout:      time.Minute,
-				CacheSize:           1000,
+				CacheSize:            1000,
 			},
 			expectError: true,
 		},
@@ -39,7 +38,7 @@ func TestNeuralProcessor_Initialize(t *testing.T) {
 				AIEndpoint:           "http://localhost:8080",
 				MaxPatternComplexity: 100,
 				AnalysisTimeout:      time.Minute,
-				CacheSize:           0,
+				CacheSize:            0,
 			},
 			expectError: true,
 		},
@@ -74,11 +73,11 @@ func TestNeuralProcessor_AnalyzeTemplatePatterns(t *testing.T) {
 		{
 			name: "Valid template data",
 			templateData: interfaces.TemplateData{
-				TemplateID:   "template_001",
-				Content:      "Hello {{.Name}}, your order {{.OrderID}} is ready!",
-				Variables:    map[string]interface{}{"Name": "John", "OrderID": "12345"},
-				Metadata:     map[string]interface{}{"category": "order_notification"},
-				GeneratedAt:  time.Now(),
+				TemplateID:  "template_001",
+				Content:     "Hello {{.Name}}, your order {{.OrderID}} is ready!",
+				Variables:   map[string]interface{}{"Name": "John", "OrderID": "12345"},
+				Metadata:    map[string]interface{}{"category": "order_notification"},
+				GeneratedAt: time.Now(),
 			},
 			expectError: false,
 			validateFunc: func(t *testing.T, analysis *interfaces.PatternAnalysis) {
@@ -145,22 +144,22 @@ func TestNeuralProcessor_ExtractUsagePatterns(t *testing.T) {
 
 	sessionData := []interfaces.SessionData{
 		{
-			SessionID:    "session_001",
-			UserID:       "user_001",
-			TemplateID:   "template_001",
-			StartTime:    time.Now().Add(-10 * time.Minute),
-			EndTime:      time.Now().Add(-5 * time.Minute),
-			Actions:      []string{"view", "edit", "generate"},
-			Performance:  map[string]float64{"generation_time": 1.5, "load_time": 0.3},
+			SessionID:   "session_001",
+			UserID:      "user_001",
+			TemplateID:  "template_001",
+			StartTime:   time.Now().Add(-10 * time.Minute),
+			EndTime:     time.Now().Add(-5 * time.Minute),
+			Actions:     []string{"view", "edit", "generate"},
+			Performance: map[string]float64{"generation_time": 1.5, "load_time": 0.3},
 		},
 		{
-			SessionID:    "session_002",
-			UserID:       "user_002",
-			TemplateID:   "template_001",
-			StartTime:    time.Now().Add(-8 * time.Minute),
-			EndTime:      time.Now().Add(-3 * time.Minute),
-			Actions:      []string{"view", "generate"},
-			Performance:  map[string]float64{"generation_time": 2.1, "load_time": 0.4},
+			SessionID:   "session_002",
+			UserID:      "user_002",
+			TemplateID:  "template_001",
+			StartTime:   time.Now().Add(-8 * time.Minute),
+			EndTime:     time.Now().Add(-3 * time.Minute),
+			Actions:     []string{"view", "generate"},
+			Performance: map[string]float64{"generation_time": 2.1, "load_time": 0.4},
 		},
 	}
 
@@ -234,13 +233,13 @@ func TestNeuralProcessor_PredictPerformance(t *testing.T) {
 	processor := setupTestProcessor(t)
 
 	templateConfig := interfaces.TemplateConfig{
-		ID:          "config_001",
-		Type:        "email_notification",
-		Complexity:  0.7,
-		Variables:   []string{"name", "order_id", "items"},
+		ID:           "config_001",
+		Type:         "email_notification",
+		Complexity:   0.7,
+		Variables:    []string{"name", "order_id", "items"},
 		CacheEnabled: true,
 		Optimizations: map[string]interface{}{
-			"compression": true,
+			"compression":  true,
 			"minification": true,
 		},
 	}
@@ -371,7 +370,7 @@ func TestNeuralProcessor_ContextCancellation(t *testing.T) {
 func setupTestProcessor(t *testing.T) interfaces.NeuralPatternProcessor {
 	config := neural.DefaultConfig()
 	config.AIEndpoint = "http://localhost:8080" // Mock endpoint for testing
-	
+
 	processor, err := neural.NewProcessor(config)
 	require.NoError(t, err)
 
@@ -415,7 +414,7 @@ func BenchmarkNeuralProcessor_AnalyzeTemplatePatterns(b *testing.B) {
 func setupBenchmarkProcessor(b *testing.B) interfaces.NeuralPatternProcessor {
 	config := neural.DefaultConfig()
 	config.AIEndpoint = "http://localhost:8080"
-	
+
 	processor, err := neural.NewProcessor(config)
 	if err != nil {
 		b.Fatal(err)

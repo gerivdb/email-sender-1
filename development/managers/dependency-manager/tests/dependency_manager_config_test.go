@@ -10,8 +10,8 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zaptest"
 
-	"github.com/gerivdb/email-sender-1/development/managers/dependencymanager" // New import
-	"github.com/gerivdb/email-sender-1/development/managers/interfaces"        // New import
+	"EMAIL_SENDER_1/development/managers/dependencymanager" // New import
+	"EMAIL_SENDER_1/development/managers/interfaces"        // New import
 )
 
 // TestConfigManagerIntegration tests integration with ConfigManager

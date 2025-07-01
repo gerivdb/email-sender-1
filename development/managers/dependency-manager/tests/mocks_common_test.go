@@ -7,7 +7,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
+	"EMAIL_SENDER_1/development/managers/interfaces"
 )
 
 // MockSecurityManagerFull implements interfaces.SecurityManagerInterface for testing

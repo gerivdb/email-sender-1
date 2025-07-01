@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/mock"
 	"go.uber.org/zap"
 
-	"github.com/gerivdb/email-sender-1/development/managers/dependencymanager"
-	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
+	"EMAIL_SENDER_1/development/managers/dependencymanager"
+	"EMAIL_SENDER_1/development/managers/interfaces"
 )
 
 // TestifyMockSecurityManager is a mock implementation of interfaces.SecurityManagerInterface

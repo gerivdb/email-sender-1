@@ -1,4 +1,4 @@
-package main
+package gen_rollback_spec
 
 import (
 	"fmt"

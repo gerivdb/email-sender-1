@@ -1,4 +1,4 @@
-package main
+package sync_core
 
 import (
 	"fmt"
@@ -13,8 +13,8 @@ import (
 func TestPlanSynchronizerCreation(t *testing.T) {
 	// Create test SQL storage
 	config := DatabaseConfig{
-		Driver:     "sqlite",
-		Connection: "file:test_sync.db?mode=memory&cache=shared",
+		Driver:		"sqlite",
+		Connection:	"file:test_sync.db?mode=memory&cache=shared",
 	}
 
 	storage, err := NewSQLStorage(config)
@@ -26,10 +26,10 @@ func TestPlanSynchronizerCreation(t *testing.T) {
 	qdrantClient := NewQDrantClient("http://localhost:6333")
 	// Create synchronizer
 	syncConfig := &MarkdownSyncConfig{
-		OutputDirectory:    "./test-output",
-		PreserveFormatting: true,
-		BackupOriginal:     true,
-		OverwriteExisting:  false,
+		OutputDirectory:	"./test-output",
+		PreserveFormatting:	true,
+		BackupOriginal:		true,
+		OverwriteExisting:	false,
 	}
 
 	synchronizer := NewPlanSynchronizer(storage, qdrantClient, syncConfig)
@@ -57,8 +57,8 @@ func TestSyncToMarkdown(t *testing.T) {
 
 	// Create test SQL storage
 	config := DatabaseConfig{
-		Driver:     "sqlite",
-		Connection: "file:test_sync_full.db?mode=memory&cache=shared",
+		Driver:		"sqlite",
+		Connection:	"file:test_sync_full.db?mode=memory&cache=shared",
 	}
 
 	storage, err := NewSQLStorage(config)
@@ -69,53 +69,53 @@ func TestSyncToMarkdown(t *testing.T) {
 
 	// Create test plan
 	testPlan := &DynamicPlan{
-		ID: "test_sync_plan",
+		ID:	"test_sync_plan",
 		Metadata: PlanMetadata{
-			Title:       "Plan de Test Synchronisation",
-			Version:     "v2.1",
-			Description: "Plan de test pour la synchronisation inverse",
-			Progression: 75.0,
+			Title:		"Plan de Test Synchronisation",
+			Version:	"v2.1",
+			Description:	"Plan de test pour la synchronisation inverse",
+			Progression:	75.0,
 		},
 		Tasks: []Task{
 			{
-				ID:          "task_sync_1",
-				Title:       "Tâche Phase 1 Complétée",
-				Description: "Première tâche de test",
-				Status:      "completed",
-				Phase:       "Phase 1: Initialization",
-				Level:       1,
-				Priority:    "high",
-				Completed:   true,
-				CreatedAt:   time.Now().Add(-2 * time.Hour),
-				UpdatedAt:   time.Now().Add(-1 * time.Hour),
+				ID:		"task_sync_1",
+				Title:		"Tâche Phase 1 Complétée",
+				Description:	"Première tâche de test",
+				Status:		"completed",
+				Phase:		"Phase 1: Initialization",
+				Level:		1,
+				Priority:	"high",
+				Completed:	true,
+				CreatedAt:	time.Now().Add(-2 * time.Hour),
+				UpdatedAt:	time.Now().Add(-1 * time.Hour),
 			},
 			{
-				ID:          "task_sync_2",
-				Title:       "Tâche Phase 1 En Cours",
-				Description: "Deuxième tâche de test",
-				Status:      "in_progress",
-				Phase:       "Phase 1: Initialization",
-				Level:       1,
-				Priority:    "medium",
-				Completed:   false,
-				CreatedAt:   time.Now().Add(-1 * time.Hour),
-				UpdatedAt:   time.Now().Add(-30 * time.Minute),
+				ID:		"task_sync_2",
+				Title:		"Tâche Phase 1 En Cours",
+				Description:	"Deuxième tâche de test",
+				Status:		"in_progress",
+				Phase:		"Phase 1: Initialization",
+				Level:		1,
+				Priority:	"medium",
+				Completed:	false,
+				CreatedAt:	time.Now().Add(-1 * time.Hour),
+				UpdatedAt:	time.Now().Add(-30 * time.Minute),
 			},
 			{
-				ID:          "task_sync_3",
-				Title:       "Sous-tâche Phase 2",
-				Description: "Tâche de niveau 2",
-				Status:      "pending",
-				Phase:       "Phase 2: Implementation",
-				Level:       2,
-				Priority:    "low",
-				Completed:   false,
-				CreatedAt:   time.Now().Add(-30 * time.Minute),
-				UpdatedAt:   time.Now(),
+				ID:		"task_sync_3",
+				Title:		"Sous-tâche Phase 2",
+				Description:	"Tâche de niveau 2",
+				Status:		"pending",
+				Phase:		"Phase 2: Implementation",
+				Level:		2,
+				Priority:	"low",
+				Completed:	false,
+				CreatedAt:	time.Now().Add(-30 * time.Minute),
+				UpdatedAt:	time.Now(),
 			},
 		},
-		CreatedAt: time.Now().Add(-3 * time.Hour),
-		UpdatedAt: time.Now(),
+		CreatedAt:	time.Now().Add(-3 * time.Hour),
+		UpdatedAt:	time.Now(),
 	}
 
 	// Store test plan
@@ -126,10 +126,10 @@ func TestSyncToMarkdown(t *testing.T) {
 	// Create synchronizer
 	qdrantClient := NewQDrantClient("http://localhost:6333")
 	syncConfig := &MarkdownSyncConfig{
-		OutputDirectory:    tempDir,
-		PreserveFormatting: true,
-		BackupOriginal:     false,
-		OverwriteExisting:  true,
+		OutputDirectory:	tempDir,
+		PreserveFormatting:	true,
+		BackupOriginal:		false,
+		OverwriteExisting:	true,
 	}
 
 	synchronizer := NewPlanSynchronizer(storage, qdrantClient, syncConfig)
@@ -204,44 +204,44 @@ func TestSyncToMarkdown(t *testing.T) {
 func TestMarkdownConversion(t *testing.T) {
 	// Create test plan
 	testPlan := &DynamicPlan{
-		ID: "test_conversion_plan",
+		ID:	"test_conversion_plan",
 		Metadata: PlanMetadata{
-			Title:       "Plan de Conversion Test",
-			Version:     "v1.0",
-			Description: "Test de conversion vers Markdown",
-			Progression: 50.0,
+			Title:		"Plan de Conversion Test",
+			Version:	"v1.0",
+			Description:	"Test de conversion vers Markdown",
+			Progression:	50.0,
 		},
 		Tasks: []Task{
 			{
-				ID:        "conv_task_1",
-				Title:     "Tâche Niveau 1",
-				Phase:     "Phase 1",
-				Level:     1,
-				Completed: true,
-				CreatedAt: time.Now(),
-				UpdatedAt: time.Now(),
+				ID:		"conv_task_1",
+				Title:		"Tâche Niveau 1",
+				Phase:		"Phase 1",
+				Level:		1,
+				Completed:	true,
+				CreatedAt:	time.Now(),
+				UpdatedAt:	time.Now(),
 			},
 			{
-				ID:        "conv_task_2",
-				Title:     "Sous-tâche Niveau 2",
-				Phase:     "Phase 1",
-				Level:     2,
-				Completed: false,
-				CreatedAt: time.Now(),
-				UpdatedAt: time.Now(),
+				ID:		"conv_task_2",
+				Title:		"Sous-tâche Niveau 2",
+				Phase:		"Phase 1",
+				Level:		2,
+				Completed:	false,
+				CreatedAt:	time.Now(),
+				UpdatedAt:	time.Now(),
 			},
 			{
-				ID:        "conv_task_3",
-				Title:     "Tâche Phase 2",
-				Phase:     "Phase 2",
-				Level:     1,
-				Completed: false,
-				CreatedAt: time.Now(),
-				UpdatedAt: time.Now(),
+				ID:		"conv_task_3",
+				Title:		"Tâche Phase 2",
+				Phase:		"Phase 2",
+				Level:		1,
+				Completed:	false,
+				CreatedAt:	time.Now(),
+				UpdatedAt:	time.Now(),
 			},
 		},
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		CreatedAt:	time.Now(),
+		UpdatedAt:	time.Now(),
 	}
 
 	// Create synchronizer
@@ -367,8 +367,8 @@ func TestRoundtripConsistency(t *testing.T) {
 
 	// Create test SQL storage
 	config := DatabaseConfig{
-		Driver:     "sqlite",
-		Connection: "file:test_roundtrip.db?mode=memory&cache=shared",
+		Driver:		"sqlite",
+		Connection:	"file:test_roundtrip.db?mode=memory&cache=shared",
 	}
 
 	storage, err := NewSQLStorage(config)
@@ -379,35 +379,35 @@ func TestRoundtripConsistency(t *testing.T) {
 
 	// Create original test plan
 	originalPlan := &DynamicPlan{
-		ID: "roundtrip_test_plan",
+		ID:	"roundtrip_test_plan",
 		Metadata: PlanMetadata{
-			Title:       "Plan Roundtrip Test",
-			Version:     "v1.5",
-			Description: "Test de cohérence roundtrip",
-			Progression: 80.0,
+			Title:		"Plan Roundtrip Test",
+			Version:	"v1.5",
+			Description:	"Test de cohérence roundtrip",
+			Progression:	80.0,
 		},
 		Tasks: []Task{
 			{
-				ID:        "rt_task_1",
-				Title:     "Tâche Test 1",
-				Phase:     "Phase 1",
-				Level:     1,
-				Completed: true,
-				CreatedAt: time.Now(),
-				UpdatedAt: time.Now(),
+				ID:		"rt_task_1",
+				Title:		"Tâche Test 1",
+				Phase:		"Phase 1",
+				Level:		1,
+				Completed:	true,
+				CreatedAt:	time.Now(),
+				UpdatedAt:	time.Now(),
 			},
 			{
-				ID:        "rt_task_2",
-				Title:     "Tâche Test 2",
-				Phase:     "Phase 2",
-				Level:     1,
-				Completed: false,
-				CreatedAt: time.Now(),
-				UpdatedAt: time.Now(),
+				ID:		"rt_task_2",
+				Title:		"Tâche Test 2",
+				Phase:		"Phase 2",
+				Level:		1,
+				Completed:	false,
+				CreatedAt:	time.Now(),
+				UpdatedAt:	time.Now(),
 			},
 		},
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		CreatedAt:	time.Now(),
+		UpdatedAt:	time.Now(),
 	}
 
 	// Store original plan
@@ -418,8 +418,8 @@ func TestRoundtripConsistency(t *testing.T) {
 	// Step 1: Convert Dynamic → Markdown
 	qdrantClient := NewQDrantClient("http://localhost:6333")
 	syncConfig := &MarkdownSyncConfig{
-		OutputDirectory:   tempDir,
-		OverwriteExisting: true,
+		OutputDirectory:	tempDir,
+		OverwriteExisting:	true,
 	}
 
 	synchronizer := NewPlanSynchronizer(storage, qdrantClient, syncConfig)
@@ -493,8 +493,8 @@ func TestFilenameSanitization(t *testing.T) {
 	synchronizer := NewPlanSynchronizer(storage, qdrantClient, nil)
 
 	testCases := []struct {
-		input    string
-		expected string
+		input		string
+		expected	string
 	}{
 		{"Plan de Développement v2.0", "plan-de-developpement-v2-0"},
 		{"Écosystème Synchronisation", "ecosysteme-synchronisation"},
@@ -524,14 +524,14 @@ func TestProgressionCalculation(t *testing.T) {
 	synchronizer := NewPlanSynchronizer(storage, qdrantClient, nil)
 
 	testCases := []struct {
-		tasks       []Task
-		expectedPct float64
-		description string
+		tasks		[]Task
+		expectedPct	float64
+		description	string
 	}{
 		{
-			tasks:       []Task{},
-			expectedPct: 0,
-			description: "empty task list",
+			tasks:		[]Task{},
+			expectedPct:	0,
+			description:	"empty task list",
 		},
 		{
 			tasks: []Task{
@@ -539,8 +539,8 @@ func TestProgressionCalculation(t *testing.T) {
 				{Completed: true},
 				{Completed: true},
 			},
-			expectedPct: 100,
-			description: "all tasks completed",
+			expectedPct:	100,
+			description:	"all tasks completed",
 		},
 		{
 			tasks: []Task{
@@ -548,8 +548,8 @@ func TestProgressionCalculation(t *testing.T) {
 				{Completed: false},
 				{Completed: false},
 			},
-			expectedPct: 0,
-			description: "no tasks completed",
+			expectedPct:	0,
+			description:	"no tasks completed",
 		},
 		{
 			tasks: []Task{
@@ -558,8 +558,8 @@ func TestProgressionCalculation(t *testing.T) {
 				{Completed: true},
 				{Completed: false},
 			},
-			expectedPct: 50,
-			description: "half tasks completed",
+			expectedPct:	50,
+			description:	"half tasks completed",
 		},
 		{
 			tasks: []Task{
@@ -567,8 +567,8 @@ func TestProgressionCalculation(t *testing.T) {
 				{Completed: true},
 				{Completed: false},
 			},
-			expectedPct: 66.67,
-			description: "two thirds completed",
+			expectedPct:	66.67,
+			description:	"two thirds completed",
 		},
 	}
 
@@ -591,8 +591,8 @@ func TestSyncAllPlans(t *testing.T) {
 
 	// Create test SQL storage
 	config := DatabaseConfig{
-		Driver:     "sqlite",
-		Connection: "file:test_sync_all.db?mode=memory&cache=shared",
+		Driver:		"sqlite",
+		Connection:	"file:test_sync_all.db?mode=memory&cache=shared",
 	}
 
 	storage, err := NewSQLStorage(config)
@@ -602,25 +602,25 @@ func TestSyncAllPlans(t *testing.T) {
 	defer storage.Close()
 	// Store multiple test plans
 	testPlans := []*DynamicPlan{{
-		ID:        "bulk_plan_1",
-		Metadata:  PlanMetadata{Title: "Plan Bulk 1", Version: "v1.0", FilePath: "bulk/plan1.md", Progression: 25.0},
-		Tasks:     []Task{{ID: "t1", Title: "Task 1", Phase: "Phase 1", Completed: false, Level: 1}},
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		ID:		"bulk_plan_1",
+		Metadata:	PlanMetadata{Title: "Plan Bulk 1", Version: "v1.0", FilePath: "bulk/plan1.md", Progression: 25.0},
+		Tasks:		[]Task{{ID: "t1", Title: "Task 1", Phase: "Phase 1", Completed: false, Level: 1}},
+		CreatedAt:	time.Now(),
+		UpdatedAt:	time.Now(),
 	},
 		{
-			ID:        "bulk_plan_2",
-			Metadata:  PlanMetadata{Title: "Plan Bulk 2", Version: "v2.0", FilePath: "bulk/plan2.md", Progression: 50.0},
-			Tasks:     []Task{{ID: "t2", Title: "Task 2", Phase: "Phase 1", Completed: true, Level: 1}},
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
+			ID:		"bulk_plan_2",
+			Metadata:	PlanMetadata{Title: "Plan Bulk 2", Version: "v2.0", FilePath: "bulk/plan2.md", Progression: 50.0},
+			Tasks:		[]Task{{ID: "t2", Title: "Task 2", Phase: "Phase 1", Completed: true, Level: 1}},
+			CreatedAt:	time.Now(),
+			UpdatedAt:	time.Now(),
 		},
 		{
-			ID:        "bulk_plan_3",
-			Metadata:  PlanMetadata{Title: "Plan Bulk 3", Version: "v3.0", FilePath: "bulk/plan3.md", Progression: 75.0},
-			Tasks:     []Task{{ID: "t3", Title: "Task 3", Phase: "Phase 1", Completed: true, Level: 1}},
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
+			ID:		"bulk_plan_3",
+			Metadata:	PlanMetadata{Title: "Plan Bulk 3", Version: "v3.0", FilePath: "bulk/plan3.md", Progression: 75.0},
+			Tasks:		[]Task{{ID: "t3", Title: "Task 3", Phase: "Phase 1", Completed: true, Level: 1}},
+			CreatedAt:	time.Now(),
+			UpdatedAt:	time.Now(),
 		},
 	}
 
@@ -633,8 +633,8 @@ func TestSyncAllPlans(t *testing.T) {
 	// Create synchronizer and sync all
 	qdrantClient := NewQDrantClient("http://localhost:6333")
 	syncConfig := &MarkdownSyncConfig{
-		OutputDirectory:   tempDir,
-		OverwriteExisting: true,
+		OutputDirectory:	tempDir,
+		OverwriteExisting:	true,
 	}
 
 	synchronizer := NewPlanSynchronizer(storage, qdrantClient, syncConfig)
@@ -671,8 +671,8 @@ func TestSyncAllPlans(t *testing.T) {
 func BenchmarkSyncToMarkdown(b *testing.B) {
 	// Setup
 	config := DatabaseConfig{
-		Driver:     "sqlite",
-		Connection: "file:bench_sync.db?mode=memory&cache=shared",
+		Driver:		"sqlite",
+		Connection:	"file:bench_sync.db?mode=memory&cache=shared",
 	}
 
 	storage, err := NewSQLStorage(config)
@@ -685,22 +685,22 @@ func BenchmarkSyncToMarkdown(b *testing.B) {
 	tasks := make([]Task, 100)
 	for i := 0; i < 100; i++ {
 		tasks[i] = Task{
-			ID:        fmt.Sprintf("bench_task_%d", i),
-			Title:     fmt.Sprintf("Benchmark Task %d", i),
-			Phase:     fmt.Sprintf("Phase %d", i%5+1),
-			Level:     i%3 + 1,
-			Completed: i%2 == 0,
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
+			ID:		fmt.Sprintf("bench_task_%d", i),
+			Title:		fmt.Sprintf("Benchmark Task %d", i),
+			Phase:		fmt.Sprintf("Phase %d", i%5+1),
+			Level:		i%3 + 1,
+			Completed:	i%2 == 0,
+			CreatedAt:	time.Now(),
+			UpdatedAt:	time.Now(),
 		}
 	}
 
 	testPlan := &DynamicPlan{
-		ID:        "benchmark_plan",
-		Metadata:  PlanMetadata{Title: "Benchmark Plan", Version: "v1.0", Progression: 50.0},
-		Tasks:     tasks,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		ID:		"benchmark_plan",
+		Metadata:	PlanMetadata{Title: "Benchmark Plan", Version: "v1.0", Progression: 50.0},
+		Tasks:		tasks,
+		CreatedAt:	time.Now(),
+		UpdatedAt:	time.Now(),
 	}
 
 	err = storage.StorePlan(testPlan)
@@ -710,8 +710,8 @@ func BenchmarkSyncToMarkdown(b *testing.B) {
 	tempDir := b.TempDir()
 	qdrantClient := NewQDrantClient("http://localhost:6333")
 	syncConfig := &MarkdownSyncConfig{
-		OutputDirectory:   tempDir,
-		OverwriteExisting: true,
+		OutputDirectory:	tempDir,
+		OverwriteExisting:	true,
 	}
 
 	synchronizer := NewPlanSynchronizer(storage, qdrantClient, syncConfig)

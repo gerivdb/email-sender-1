@@ -9,8 +9,8 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zaptest"
 
-	"github.com/gerivdb/email-sender-1/development/managers/dependencymanager"
-	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
+	"EMAIL_SENDER_1/development/managers/dependencymanager"
+	"EMAIL_SENDER_1/development/managers/interfaces"
 )
 
 // TestFullManagerIntegrationScenario tests a complete scenario involving all manager integrations

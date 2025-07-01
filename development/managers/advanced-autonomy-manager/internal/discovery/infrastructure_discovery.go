@@ -12,8 +12,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/internal/config"
-	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/internal/logging"
+	"EMAIL_SENDER_1/development/managers/advanced-autonomy-manager/internal/config"
+	"EMAIL_SENDER_1/development/managers/advanced-autonomy-manager/internal/logging"
 )
 
 // ServiceType defines the type of service being discovered
@@ -32,35 +32,35 @@ const (
 
 // ServiceInfo contains information about a discovered service
 type ServiceInfo struct {
-	Type        ServiceType          `json:"type"`
-	ID          string               `json:"id"`
-	Name        string               `json:"name"`
-	Endpoint    string               `json:"endpoint"`
-	Status      string               `json:"status"`
-	Version     string               `json:"version"`
-	LastSeen    time.Time            `json:"last_seen"`
-	Metadata    map[string]string    `json:"metadata"`
+	Type     ServiceType       `json:"type"`
+	ID       string            `json:"id"`
+	Name     string            `json:"name"`
+	Endpoint string            `json:"endpoint"`
+	Status   string            `json:"status"`
+	Version  string            `json:"version"`
+	LastSeen time.Time         `json:"last_seen"`
+	Metadata map[string]string `json:"metadata"`
 }
 
 // ComposeFileInfo contains information about a discovered docker-compose file
 type ComposeFileInfo struct {
-	Path      string            `json:"path"`
-	Services  []string          `json:"services"`
-	Networks  []string          `json:"networks"`
-	Volumes   []string          `json:"volumes"`
-	LastSeen  time.Time         `json:"last_seen"`
-	Metadata  map[string]string `json:"metadata"`
+	Path     string            `json:"path"`
+	Services []string          `json:"services"`
+	Networks []string          `json:"networks"`
+	Volumes  []string          `json:"volumes"`
+	LastSeen time.Time         `json:"last_seen"`
+	Metadata map[string]string `json:"metadata"`
 }
 
 // InfrastructureDiscoveryService provides discovery for infrastructure components
 type InfrastructureDiscoveryService struct {
-	config          *config.Config
-	services        map[string]*ServiceInfo
-	composeFiles    map[string]*ComposeFileInfo
-	logger          *logging.Logger
-	mutex           sync.RWMutex
-	scanTicker      *time.Ticker
-	stopChan        chan struct{}
+	config       *config.Config
+	services     map[string]*ServiceInfo
+	composeFiles map[string]*ComposeFileInfo
+	logger       *logging.Logger
+	mutex        sync.RWMutex
+	scanTicker   *time.Ticker
+	stopChan     chan struct{}
 }
 
 // NewInfrastructureDiscoveryService creates a new instance of the infrastructure discovery service
@@ -95,12 +95,12 @@ func (ids *InfrastructureDiscoveryService) Start(ctx context.Context) error {
 	}
 
 	ids.logger.Info("Starting infrastructure discovery service", "scan_interval", scanInterval)
-	
+
 	// Initial scan
 	if err := ids.performDiscoveryScan(ctx); err != nil {
 		ids.logger.Error("Initial discovery scan failed", "error", err)
 	}
-	
+
 	// Start periodic scanning
 	ids.scanTicker = time.NewTicker(scanInterval)
 	go func() {
@@ -219,7 +219,7 @@ func (ids *InfrastructureDiscoveryService) performDiscoveryScan(ctx context.Cont
 		ids.logger.Error("Failed to discover docker-compose files", "error", err)
 	}
 
-	ids.logger.Debug("Infrastructure discovery scan completed", 
+	ids.logger.Debug("Infrastructure discovery scan completed",
 		"services", len(ids.services),
 		"compose_files", len(ids.composeFiles))
 
@@ -234,7 +234,7 @@ func (ids *InfrastructureDiscoveryService) discoverContainerManager(ctx context.
 	}
 
 	endpoint := infraCfg.ServiceDiscovery.ContainerManagerEndpoint
-	
+
 	// Create HTTP request with context
 	req, err := http.NewRequestWithContext(ctx, "GET", fmt.Sprintf("http://%s/health", endpoint), nil)
 	if err != nil {
@@ -244,7 +244,7 @@ func (ids *InfrastructureDiscoveryService) discoverContainerManager(ctx context.
 	client := &http.Client{
 		Timeout: 5 * time.Second,
 	}
-	
+
 	resp, err := client.Do(req)
 	if err != nil {
 		return fmt.Errorf("container manager health check failed: %w", err)
@@ -294,7 +294,7 @@ func (ids *InfrastructureDiscoveryService) discoverContainerManager(ctx context.
 func (ids *InfrastructureDiscoveryService) discoverStorageManager(ctx context.Context) error {
 	// This would be similar to the container manager discovery,
 	// but for now, we'll just create a mock implementation
-	
+
 	// In a real implementation, this would connect to the storage manager endpoint
 	// and retrieve its health/status information
 
@@ -324,7 +324,7 @@ func (ids *InfrastructureDiscoveryService) discoverDockerComposeFiles(ctx contex
 	}
 
 	path := infraCfg.ServiceDiscovery.DockerComposePath
-	
+
 	// Handle relative paths
 	if !filepath.IsAbs(path) {
 		// Convert to absolute path based on current working directory

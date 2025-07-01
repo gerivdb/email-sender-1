@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gerivdb/email-sender-1/managers/interfaces"
+	"EMAIL_SENDER_1/managers/interfaces"
 	"github.com/google/go-github/v58/github"
 	"golang.org/x/oauth2"
 )
@@ -135,12 +135,12 @@ func (m *Manager) GetPullRequestStatus(ctx context.Context, prID int) (*interfac
 		ID:           *pr.Number,
 		Title:        *pr.Title,
 		Description:  *pr.Body,
-		SourceBranch: *pr.Head.Ref,		TargetBranch: *pr.Base.Ref,
-		Status:       strings.ToLower(*pr.State),
-		CreatedAt:    pr.CreatedAt.Time,
-		UpdatedAt:    pr.UpdatedAt.Time,
+		SourceBranch: *pr.Head.Ref, TargetBranch: *pr.Base.Ref,
+		Status:    strings.ToLower(*pr.State),
+		CreatedAt: pr.CreatedAt.Time,
+		UpdatedAt: pr.UpdatedAt.Time,
 	}
-	
+
 	return prInfo, nil
 }
 
@@ -177,8 +177,8 @@ func (m *Manager) ListPullRequests(ctx context.Context, status string) ([]*inter
 				Description:  *pr.Body,
 				SourceBranch: *pr.Head.Ref,
 				TargetBranch: *pr.Base.Ref,
-				Status:       strings.ToLower(*pr.State),				CreatedAt:    pr.CreatedAt.Time,
-				UpdatedAt:    pr.UpdatedAt.Time,
+				Status:       strings.ToLower(*pr.State), CreatedAt: pr.CreatedAt.Time,
+				UpdatedAt: pr.UpdatedAt.Time,
 			}
 			allPRs = append(allPRs, prInfo)
 		}
@@ -224,9 +224,9 @@ func (m *Manager) UpdatePullRequest(ctx context.Context, prID int, title, descri
 		Title:        *updatedPR.Title,
 		Description:  *updatedPR.Body,
 		SourceBranch: *updatedPR.Head.Ref,
-		TargetBranch: *updatedPR.Base.Ref,		Status:       strings.ToLower(*updatedPR.State),
-		CreatedAt:    updatedPR.CreatedAt.Time,
-		UpdatedAt:    updatedPR.UpdatedAt.Time,
+		TargetBranch: *updatedPR.Base.Ref, Status: strings.ToLower(*updatedPR.State),
+		CreatedAt: updatedPR.CreatedAt.Time,
+		UpdatedAt: updatedPR.UpdatedAt.Time,
 	}
 
 	log.Printf("Updated pull request #%d", prID)
@@ -282,7 +282,7 @@ func (m *Manager) MergePullRequest(ctx context.Context, prID int, commitMessage 
 
 	if !isValid {
 		return fmt.Errorf("invalid merge method: %s. Valid methods: %v", mergeMethod, validMethods)
-	}	// Use simple merge without options for now
+	} // Use simple merge without options for now
 	_, _, err := m.client.PullRequests.Merge(ctx, m.owner, m.repo, prID, commitMessage, nil)
 	if err != nil {
 		return fmt.Errorf("failed to merge pull request #%d: %w", prID, err)

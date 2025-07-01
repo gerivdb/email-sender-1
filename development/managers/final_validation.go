@@ -1,18 +1,18 @@
-package main
+package managers
 
 import (
 	"fmt"
 	"log"
 	"os"
 
-	storage "github.com/gerivdb/email-sender-1/development/managers/storage-manager"
-	dependency "github.com/gerivdb/email-sender-1/development/managers/dependency-manager"
-	security "github.com/gerivdb/email-sender-1/development/managers/security-manager"
+	dependency "EMAIL_SENDER_1/development/managers/dependency-manager"
+	security "EMAIL_SENDER_1/development/managers/security-manager"
+	storage "EMAIL_SENDER_1/development/managers/storage-manager"
 )
 
 func main() {
 	fmt.Println("=== Phase 2 Managers Validation ===")
-	
+
 	// Test Storage Manager
 	fmt.Println("\n1. Testing Storage Manager...")
 	storageManager, err := storage.NewStorageManager()
@@ -20,7 +20,7 @@ func main() {
 		log.Printf("Storage Manager initialization error: %v", err)
 	} else {
 		fmt.Println("✅ Storage Manager initialized successfully")
-		
+
 		// Test basic operations
 		err = storageManager.Store("test-key", []byte("test-data"))
 		if err != nil {
@@ -29,7 +29,7 @@ func main() {
 			fmt.Println("   ✅ Storage operation successful")
 		}
 	}
-	
+
 	// Test Dependency Manager
 	fmt.Println("\n2. Testing Dependency Manager...")
 	depManager, err := dependency.NewDependencyManager()
@@ -37,7 +37,7 @@ func main() {
 		log.Fatalf("Failed to create Dependency Manager: %v", err)
 	}
 	fmt.Println("✅ Dependency Manager initialized successfully")
-	
+
 	// Test dependency analysis
 	deps, err := depManager.AnalyzeDependencies(".")
 	if err != nil {
@@ -45,7 +45,7 @@ func main() {
 	} else {
 		fmt.Printf("   ✅ Found %d dependencies\n", len(deps))
 	}
-	
+
 	// Test Security Manager
 	fmt.Println("\n3. Testing Security Manager...")
 	secManager, err := security.NewSecurityManager()
@@ -53,7 +53,7 @@ func main() {
 		log.Fatalf("Failed to create Security Manager: %v", err)
 	}
 	fmt.Println("✅ Security Manager initialized successfully")
-	
+
 	// Test input validation
 	testInput := "test@example.com"
 	isValid := secManager.ValidateInput(testInput, "email")
@@ -62,7 +62,7 @@ func main() {
 	} else {
 		fmt.Println("   ❌ Input validation failed")
 	}
-	
+
 	// Test encryption/decryption
 	testData := []byte("sensitive data")
 	encrypted, err := secManager.EncryptData(testData)
@@ -78,14 +78,14 @@ func main() {
 			fmt.Println("   ❌ Encryption/Decryption data mismatch")
 		}
 	}
-	
+
 	fmt.Println("\n=== Phase 2 Implementation Status ===")
 	fmt.Println("✅ Storage Manager - COMPLETED")
-	fmt.Println("✅ Dependency Manager - COMPLETED") 
+	fmt.Println("✅ Dependency Manager - COMPLETED")
 	fmt.Println("✅ Security Manager - COMPLETED")
 	fmt.Println("✅ Integration Testing - COMPLETED")
 	fmt.Println("\n🎉 All Phase 2 managers are fully implemented and functional!")
-	
+
 	// Clean up test environment variable if set
 	if os.Getenv("TEST_ENV") != "" {
 		fmt.Println("\n🧪 Running in test environment - some operations may show expected warnings")

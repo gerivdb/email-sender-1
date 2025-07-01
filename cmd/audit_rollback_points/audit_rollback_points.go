@@ -1,4 +1,4 @@
-package main
+package audit_rollback_points
 
 import (
 	"fmt"
@@ -6,9 +6,9 @@ import (
 )
 
 type CriticalFile struct {
-	Path        string
-	Category    string // e.g., "config", "code", "report", "data", "script"
-	Description string
+	Path		string
+	Category	string	// e.g., "config", "code", "report", "data", "script"
+	Description	string
 }
 
 func main() {

@@ -3,7 +3,7 @@ package workflows
 import (
 	"fmt"
 
-	"github.com/gerivdb/email-sender-1/managers/interfaces"
+	"EMAIL_SENDER_1/managers/interfaces"
 )
 
 // WorkflowFactory creates workflow instances based on workflow type
@@ -23,17 +23,17 @@ func (f *WorkflowFactory) CreateWorkflow(workflowType interfaces.WorkflowType, c
 	switch workflowType {
 	case interfaces.WorkflowTypeGitFlow:
 		return NewGitFlowWorkflow(f.manager), nil
-		
+
 	case interfaces.WorkflowTypeGitHubFlow:
 		return NewGitHubFlowWorkflow(f.manager), nil
-		
+
 	case interfaces.WorkflowTypeFeatureBranch:
 		mainBranch := "main"
 		if mb, ok := config["main_branch"].(string); ok && mb != "" {
 			mainBranch = mb
 		}
 		workflow := NewFeatureBranchWorkflow(f.manager, mainBranch)
-		
+
 		// Configure cleanup policy if specified
 		if enabled, ok := config["auto_cleanup"].(bool); ok {
 			days := 30
@@ -42,12 +42,12 @@ func (f *WorkflowFactory) CreateWorkflow(workflowType interfaces.WorkflowType, c
 			}
 			workflow.SetCleanupPolicy(enabled, days)
 		}
-		
+
 		return workflow, nil
-		
+
 	case interfaces.WorkflowTypeCustom:
 		return NewCustomWorkflow(f.manager, config), nil
-		
+
 	default:
 		return nil, fmt.Errorf("unsupported workflow type: %v", workflowType)
 	}
@@ -68,16 +68,16 @@ func (f *WorkflowFactory) GetWorkflowDescription(workflowType interfaces.Workflo
 	switch workflowType {
 	case interfaces.WorkflowTypeGitFlow:
 		return "GitFlow workflow with feature, release, and hotfix branches from develop and main"
-		
+
 	case interfaces.WorkflowTypeGitHubFlow:
 		return "GitHub Flow workflow with simple branching from main and continuous deployment"
-		
+
 	case interfaces.WorkflowTypeFeatureBranch:
 		return "Feature branch workflow with flexible branching and automated cleanup"
-		
+
 	case interfaces.WorkflowTypeCustom:
 		return "Custom workflow with user-defined rules and conventions"
-		
+
 	default:
 		return "Unknown workflow type"
 	}
@@ -87,10 +87,10 @@ func (f *WorkflowFactory) GetWorkflowDescription(workflowType interfaces.Workflo
 type Workflow interface {
 	// GetWorkflowType returns the workflow type
 	GetWorkflowType() interfaces.WorkflowType
-	
+
 	// GetBranchingStrategy returns a description of the branching strategy
 	GetBranchingStrategy() string
-	
+
 	// ValidateBranchName validates if a branch name follows workflow conventions
 	ValidateBranchName(branchName string) error
 }

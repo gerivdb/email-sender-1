@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // Package interface_validation - Test unitaires d'interface enhancement
-package main
+package interface_validation
 
 import (
 	"context"
@@ -41,8 +41,8 @@ func TestManagerTypeLifecycle(t *testing.T) {
 
 	// Test Process
 	testData := map[string]interface{}{
-		"type":    "test",
-		"content": "test data",
+		"type":		"test",
+		"content":	"test data",
 	}
 
 	result, err := manager.Process(ctx, testData)
@@ -101,10 +101,10 @@ func TestRepositoryContextOperations(t *testing.T) {
 
 	// Document de test
 	doc := &docmanager.Document{
-		ID:      "test-context-1",
-		Path:    "/test/context1.md",
-		Content: []byte("Test context operations"),
-		Version: 1,
+		ID:		"test-context-1",
+		Path:		"/test/context1.md",
+		Content:	[]byte("Test context operations"),
+		Version:	1,
 	}
 
 	// Test StoreWithContext
@@ -139,7 +139,7 @@ func TestRepositoryContextOperations(t *testing.T) {
 
 	// Test avec contexte annulé
 	cancelCtx, cancel := context.WithCancel(ctx)
-	cancel() // Annuler immédiatement
+	cancel()	// Annuler immédiatement
 
 	_, err = repo.RetrieveWithContext(cancelCtx, doc.ID)
 	if err == nil {
@@ -167,26 +167,26 @@ func TestRepositoryBatchOperations(t *testing.T) {
 	// Préparer des opérations batch
 	operations := []docmanager.Operation{
 		{
-			Type: docmanager.OperationStore,
+			Type:	docmanager.OperationStore,
 			Document: &docmanager.Document{
-				ID:      "batch-test-1",
-				Path:    "/batch/test1.md",
-				Content: []byte("Batch test content 1"),
-				Version: 1,
+				ID:		"batch-test-1",
+				Path:		"/batch/test1.md",
+				Content:	[]byte("Batch test content 1"),
+				Version:	1,
 			},
 		},
 		{
-			Type: docmanager.OperationStore,
+			Type:	docmanager.OperationStore,
 			Document: &docmanager.Document{
-				ID:      "batch-test-2",
-				Path:    "/batch/test2.md",
-				Content: []byte("Batch test content 2"),
-				Version: 1,
+				ID:		"batch-test-2",
+				Path:		"/batch/test2.md",
+				Content:	[]byte("Batch test content 2"),
+				Version:	1,
 			},
 		},
 		{
-			Type: docmanager.OperationDelete,
-			ID:   "batch-test-1", // Supprimer le premier document
+			Type:	docmanager.OperationDelete,
+			ID:	"batch-test-1",	// Supprimer le premier document
 		},
 	}
 
@@ -235,10 +235,10 @@ func TestRepositoryTransactions(t *testing.T) {
 	// Test transaction successful
 	err := repo.Transaction(ctx, func(txCtx docmanager.TransactionContext) error {
 		doc := &docmanager.Document{
-			ID:      "tx-success",
-			Path:    "/tx/success.md",
-			Content: []byte("Transaction success test"),
-			Version: 1,
+			ID:		"tx-success",
+			Path:		"/tx/success.md",
+			Content:	[]byte("Transaction success test"),
+			Version:	1,
 		}
 		return txCtx.Store(doc)
 	})
@@ -312,10 +312,10 @@ func BenchmarkRepositoryOperations(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		doc := &docmanager.Document{
-			ID:      fmt.Sprintf("bench-doc-%d", i),
-			Path:    fmt.Sprintf("/bench/doc%d.md", i),
-			Content: []byte(fmt.Sprintf("Benchmark content %d", i)),
-			Version: 1,
+			ID:		fmt.Sprintf("bench-doc-%d", i),
+			Path:		fmt.Sprintf("/bench/doc%d.md", i),
+			Content:	[]byte(fmt.Sprintf("Benchmark content %d", i)),
+			Version:	1,
 		}
 
 		// Store

@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/gerivdb/email-sender-1/maintenance-manager/src/core"
+	"EMAIL_SENDER_1/maintenance-manager/src/core"
 )
 
 // TestBasicFunctionality tests basic FMOUA functionality without external dependencies
@@ -20,29 +20,29 @@ func TestBasicFunctionality(t *testing.T) {
 	testRepoPath := filepath.Join(os.TempDir(), "fmoua_basic_test")
 	err := os.RemoveAll(testRepoPath)
 	require.NoError(t, err)
-	
+
 	err = os.MkdirAll(testRepoPath, 0755)
 	require.NoError(t, err)
-	
+
 	defer os.RemoveAll(testRepoPath)
-	
+
 	// Create test files
 	testFiles := map[string]string{
-		"src/main.js":     "console.log('hello');",
-		"src/utils.js":    "export const util = () => {};",
-		"docs/readme.md":  "# Test Project",
-		"temp/old.txt":    "old content",
+		"src/main.js":    "console.log('hello');",
+		"src/utils.js":   "export const util = () => {};",
+		"docs/readme.md": "# Test Project",
+		"temp/old.txt":   "old content",
 	}
-	
+
 	for filePath, content := range testFiles {
 		fullPath := filepath.Join(testRepoPath, filePath)
 		err := os.MkdirAll(filepath.Dir(fullPath), 0755)
 		require.NoError(t, err)
-		
+
 		err = os.WriteFile(fullPath, []byte(content), 0644)
 		require.NoError(t, err)
 	}
-	
+
 	// Initialize FMOUA components with minimal configuration
 	config := &core.Config{
 		RepositoryPath:   testRepoPath,
@@ -62,7 +62,7 @@ func TestBasicFunctionality(t *testing.T) {
 			Endpoint: "http://localhost:8080",
 		},
 	}
-	
+
 	// Test OrganizationEngine creation
 	engine, err := core.NewOrganizationEngine(config)
 	if err != nil {
@@ -70,13 +70,13 @@ func TestBasicFunctionality(t *testing.T) {
 		t.Skip("Skipping test due to incomplete implementation")
 		return
 	}
-	
+
 	assert.NotNil(t, engine, "OrganizationEngine should be created")
-	
+
 	// Test basic repository analysis
 	ctx := context.WithTimeout(context.Background(), 5*time.Minute)
 	analysis, err := engine.AnalyzeRepository(testRepoPath)
-	
+
 	if err != nil {
 		t.Logf("Repository analysis failed (may be expected): %v", err)
 	} else {
@@ -109,7 +109,7 @@ func TestConfigurationValidation(t *testing.T) {
 			valid: false,
 		},
 	}
-	
+
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			_, err := core.NewOrganizationEngine(tc.config)

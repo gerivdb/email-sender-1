@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
+	"EMAIL_SENDER_1/development/managers/interfaces"
 )
 
 // initializeMonitoringIntegration sets up monitoring manager integration

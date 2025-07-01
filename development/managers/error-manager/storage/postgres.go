@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	errormanager "github.com/gerivdb/email-sender-1/managers/error-manager"
+	errormanager "EMAIL_SENDER_1/managers/error-manager"
 
 	_ "github.com/lib/pq"
 )

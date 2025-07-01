@@ -1,4 +1,4 @@
-package main
+package _
 
 import (
 	"fmt"
@@ -24,12 +24,12 @@ type Config struct {
 
 func loadConfig() (*Config, error) {
 	var config Config
-	
+
 	data, err := os.ReadFile("config.yaml")
 	if err != nil {
 		return nil, err
 	}
-	
+
 	err = yaml.Unmarshal(data, &config)
 	return &config, err
 }

@@ -4,7 +4,7 @@
 package correction
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"EMAIL_SENDER_1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"os"
@@ -68,7 +68,7 @@ func TestNamingNormalizerValidation(t *testing.T) {
 	tests := []struct {
 		name        string
 		baseDir     string
-		logger      *toolkit.Logger // Corrected field definition
+		logger      *toolkit.Logger       // Corrected field definition
 		stats       *toolkit.ToolkitStats // Corrected field definition
 		expectError bool
 	}{
@@ -822,5 +822,3 @@ type SecurityManagerInterface interface {
 		t.Error("Expected issues to be detected even in dry-run mode")
 	}
 }
-
-

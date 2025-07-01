@@ -1,26 +1,13 @@
 package main
 
 import (
-<<<<<<< HEAD
-	"github.com/gerivdb/email-sender-1/tools/core/registry"
-=======
->>>>>>> origin/jules/fix-build-errors-and-cycles
+	"EMAIL_SENDER_1/tools/core/toolkit"
 	"context"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 	"time"
-
-<<<<<<< HEAD
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
-	"github.com/gerivdb/email-sender-1/tools/operations/analysis"    // Added for analysis tools
-	"github.com/gerivdb/email-sender-1/tools/operations/correction"  // Added for correction tools
-	"github.com/gerivdb/email-sender-1/tools/operations/migration"   // Added for migration tools
-	"github.com/gerivdb/email-sender-1/tools/operations/validation"  // Added for validation tools
-=======
-	"github.com/email-sender/tools/core/toolkit"
->>>>>>> origin/jules/fix-build-errors-and-cycles
 )
 
 // Configuration constants specific to CLI
@@ -31,23 +18,22 @@ const (
 // OperationMapping maps CLI operation strings to toolkit.Operation constants
 // This is crucial for decoupling CLI flags from internal operation representations.
 var OperationMapping = map[string]toolkit.Operation{
-	"analyze":              toolkit.Operation("analyze"), // Assuming "analyze" is a custom/manual dispatch string
-	"migrate":              toolkit.Operation("migrate"), // Assuming "migrate" is a custom/manual dispatch string
-	"fix-imports":          toolkit.Operation("fix-imports"), // Custom/manual
+	"analyze":              toolkit.Operation("analyze"),           // Assuming "analyze" is a custom/manual dispatch string
+	"migrate":              toolkit.Operation("migrate"),           // Assuming "migrate" is a custom/manual dispatch string
+	"fix-imports":          toolkit.Operation("fix-imports"),       // Custom/manual
 	"remove-duplicates":    toolkit.Operation("remove-duplicates"), // Custom/manual
-	"fix-syntax":           toolkit.Operation("fix-syntax"),    // Custom/manual
-	"health-check":         toolkit.Operation("health-check"),   // Custom/manual
-	"init-config":          toolkit.Operation("init-config"),    // Custom/manual
-	"full-suite":           toolkit.Operation("full-suite"),     // Custom/manual
+	"fix-syntax":           toolkit.Operation("fix-syntax"),        // Custom/manual
+	"health-check":         toolkit.Operation("health-check"),      // Custom/manual
+	"init-config":          toolkit.Operation("init-config"),       // Custom/manual
+	"full-suite":           toolkit.Operation("full-suite"),        // Custom/manual
 	"validate-structs":     toolkit.ValidateStructs,
 	"resolve-imports":      toolkit.ResolveImports,
 	"analyze-dependencies": toolkit.AnalyzeDeps,
 	"detect-duplicates":    toolkit.DetectDuplicates,
-	"check-syntax":         toolkit.SyntaxCheck,       // Renamed from "syntax-check" to match toolkit
-	"generate-typedefs":    toolkit.TypeDefGen,        // Renamed from "type-def-gen"
+	"check-syntax":         toolkit.SyntaxCheck, // Renamed from "syntax-check" to match toolkit
+	"generate-typedefs":    toolkit.TypeDefGen,  // Renamed from "type-def-gen"
 	"normalize-naming":     toolkit.NormalizeNaming,
 }
-
 
 func main() {
 	var (
@@ -93,7 +79,6 @@ func main() {
 		manager.Config.EnableDryRun = true
 	}
 
-
 	// Execute operation
 	ctx := context.Background()
 	opOptions := &toolkit.OperationOptions{
@@ -101,13 +86,12 @@ func main() {
 		Output:   *output,
 		Force:    *force,
 		DryRun:   manager.Config.EnableDryRun, // Use the (potentially overridden) config value
-		Verbose:  *verbose, // Pass verbose for operation-specific logging if needed
-		Context:  ctx,      // Pass context
-		LogLevel: "INFO",  // Default, could be configurable
-		Workers:  manager.Config.MaxWorkers, // Use from config
-		Timeout:  30 * time.Minute, // Example, could be configurable
+		Verbose:  *verbose,                    // Pass verbose for operation-specific logging if needed
+		Context:  ctx,                         // Pass context
+		LogLevel: "INFO",                      // Default, could be configurable
+		Workers:  manager.Config.MaxWorkers,   // Use from config
+		Timeout:  30 * time.Minute,            // Example, could be configurable
 	}
-
 
 	if err := manager.ExecuteOperation(ctx, op, opOptions); err != nil {
 		// Logger is part of manager, it would have logged details.
@@ -149,7 +133,7 @@ Options:
   -dry-run           Perform dry run without making changes
   -verbose           Enable verbose logging
   -target string     Specific file or directory target for the operation
-  -output string     Output file for reports or results
+  -output string     Output file for reports
   -force             Force operations without confirmation
   -help              Show this help information
 

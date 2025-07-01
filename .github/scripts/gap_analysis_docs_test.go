@@ -1,4 +1,4 @@
-package main
+package scripts
 
 import (
 	"encoding/json"
@@ -90,8 +90,8 @@ func TestAnalyzeGaps(t *testing.T) {
 
 func TestGetSeverity(t *testing.T) {
 	tests := []struct {
-		filename string
-		expected string
+		filename	string
+		expected	string
 	}{
 		{"README.md", "critical"},
 		{"LICENSE", "critical"},
@@ -106,7 +106,7 @@ func TestGetSeverity(t *testing.T) {
 	for _, test := range tests {
 		result := getSeverity(test.filename)
 		if result != test.expected {
-			t.Errorf("getSeverity(%s) = %s, expected %s", 
+			t.Errorf("getSeverity(%s) = %s, expected %s",
 				test.filename, result, test.expected)
 		}
 	}
@@ -114,8 +114,8 @@ func TestGetSeverity(t *testing.T) {
 
 func TestGetImpact(t *testing.T) {
 	tests := []struct {
-		filename string
-		expected string
+		filename	string
+		expected	string
 	}{
 		{"README.md", "Users cannot understand the project purpose and usage"},
 		{"LICENSE", "Legal implications for project usage"},
@@ -127,7 +127,7 @@ func TestGetImpact(t *testing.T) {
 	for _, test := range tests {
 		result := getImpact(test.filename)
 		if result != test.expected {
-			t.Errorf("getImpact(%s) = %s, expected %s", 
+			t.Errorf("getImpact(%s) = %s, expected %s",
 				test.filename, result, test.expected)
 		}
 	}
@@ -135,8 +135,8 @@ func TestGetImpact(t *testing.T) {
 
 func TestGetEffort(t *testing.T) {
 	tests := []struct {
-		filename string
-		expected string
+		filename	string
+		expected	string
 	}{
 		{"LICENSE", "low"},
 		{"CODE_OF_CONDUCT.md", "low"},
@@ -149,7 +149,7 @@ func TestGetEffort(t *testing.T) {
 	for _, test := range tests {
 		result := getEffort(test.filename)
 		if result != test.expected {
-			t.Errorf("getEffort(%s) = %s, expected %s", 
+			t.Errorf("getEffort(%s) = %s, expected %s",
 				test.filename, result, test.expected)
 		}
 	}
@@ -157,25 +157,25 @@ func TestGetEffort(t *testing.T) {
 
 func TestCalculateCoverageScore(t *testing.T) {
 	tests := []struct {
-		gaps       []DocumentGap
-		totalFiles int
-		minScore   float64 // Minimum expected score
-		maxScore   float64 // Maximum expected score
+		gaps		[]DocumentGap
+		totalFiles	int
+		minScore	float64	// Minimum expected score
+		maxScore	float64	// Maximum expected score
 	}{
 		{
-			gaps:       []DocumentGap{},
-			totalFiles: 10,
-			minScore:   95.0,
-			maxScore:   100.0,
+			gaps:		[]DocumentGap{},
+			totalFiles:	10,
+			minScore:	95.0,
+			maxScore:	100.0,
 		},
 		{
 			gaps: []DocumentGap{
 				{Severity: "critical"},
 				{Severity: "high"},
 			},
-			totalFiles: 10,
-			minScore:   70.0,
-			maxScore:   90.0,
+			totalFiles:	10,
+			minScore:	70.0,
+			maxScore:	90.0,
 		},
 		{
 			gaps: []DocumentGap{
@@ -184,17 +184,17 @@ func TestCalculateCoverageScore(t *testing.T) {
 				{Severity: "high"},
 				{Severity: "high"},
 			},
-			totalFiles: 5,
-			minScore:   30.0,
-			maxScore:   70.0,
+			totalFiles:	5,
+			minScore:	30.0,
+			maxScore:	70.0,
 		},
 	}
 
 	for i, test := range tests {
 		result := calculateCoverageScore(test.gaps, test.totalFiles)
-		
+
 		if result < test.minScore || result > test.maxScore {
-			t.Errorf("Test %d: calculateCoverageScore() = %.1f, expected between %.1f and %.1f", 
+			t.Errorf("Test %d: calculateCoverageScore() = %.1f, expected between %.1f and %.1f",
 				i, result, test.minScore, test.maxScore)
 		}
 	}
@@ -202,46 +202,46 @@ func TestCalculateCoverageScore(t *testing.T) {
 
 func TestGetPriorityLevel(t *testing.T) {
 	tests := []struct {
-		gaps         []DocumentGap
-		coverageScore float64
-		expected     string
+		gaps		[]DocumentGap
+		coverageScore	float64
+		expected	string
 	}{
 		{
-			gaps:         []DocumentGap{{Severity: "critical"}},
-			coverageScore: 80.0,
-			expected:     "critical",
+			gaps:		[]DocumentGap{{Severity: "critical"}},
+			coverageScore:	80.0,
+			expected:	"critical",
 		},
 		{
-			gaps:         []DocumentGap{},
-			coverageScore: 20.0,
-			expected:     "critical",
+			gaps:		[]DocumentGap{},
+			coverageScore:	20.0,
+			expected:	"critical",
 		},
 		{
-			gaps:         []DocumentGap{{Severity: "high"}},
-			coverageScore: 70.0,
-			expected:     "high",
+			gaps:		[]DocumentGap{{Severity: "high"}},
+			coverageScore:	70.0,
+			expected:	"high",
 		},
 		{
-			gaps:         []DocumentGap{},
-			coverageScore: 50.0,
-			expected:     "high",
+			gaps:		[]DocumentGap{},
+			coverageScore:	50.0,
+			expected:	"high",
 		},
 		{
-			gaps:         []DocumentGap{{Severity: "medium"}},
-			coverageScore: 75.0,
-			expected:     "medium",
+			gaps:		[]DocumentGap{{Severity: "medium"}},
+			coverageScore:	75.0,
+			expected:	"medium",
 		},
 		{
-			gaps:         []DocumentGap{},
-			coverageScore: 90.0,
-			expected:     "low",
+			gaps:		[]DocumentGap{},
+			coverageScore:	90.0,
+			expected:	"low",
 		},
 	}
 
 	for i, test := range tests {
 		result := getPriorityLevel(test.gaps, test.coverageScore)
 		if result != test.expected {
-			t.Errorf("Test %d: getPriorityLevel() = %s, expected %s", 
+			t.Errorf("Test %d: getPriorityLevel() = %s, expected %s",
 				i, result, test.expected)
 		}
 	}
@@ -251,11 +251,11 @@ func TestAnalyzeFragmentation(t *testing.T) {
 	// Test with scattered files
 	scatteredFiles := []string{
 		"docs1/file1.md",
-		"docs2/file2.md", 
+		"docs2/file2.md",
 		"docs3/file3.md",
 		"docs4/file4.md",
 		"docs5/file5.md",
-		"docs6/file6.md", // 6 different directories
+		"docs6/file6.md",	// 6 different directories
 	}
 
 	gaps := analyzeFragmentation(scatteredFiles)
@@ -299,7 +299,7 @@ func TestAnalyzeAPIDocumentation(t *testing.T) {
 
 	// Analyze API documentation (without creating API docs)
 	gaps := analyzeAPIDocumentation(tmpDir)
-	
+
 	// Should identify missing API documentation
 	foundAPIGap := false
 	for _, gap := range gaps {
@@ -363,7 +363,7 @@ func TestCompleteWorkflow(t *testing.T) {
 		t.Error("Report timestamp seems incorrect")
 	}
 	if decoded.TotalFilesScanned != len(testFiles) {
-		t.Errorf("Expected %d files scanned, got %d", 
+		t.Errorf("Expected %d files scanned, got %d",
 			len(testFiles), decoded.TotalFilesScanned)
 	}
 }

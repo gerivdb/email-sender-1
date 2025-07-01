@@ -10,7 +10,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
+	"EMAIL_SENDER_1/development/managers/branching-manager/interfaces"
 )
 
 // MCPGatewayIntegration handles integration with MCP (Model Context Protocol) Gateway

@@ -1,4 +1,4 @@
-package main
+package sync_core
 
 import (
 	"fmt"
@@ -12,35 +12,35 @@ import (
 
 // PlanSynchronizer handles synchronization from dynamic system to Markdown
 type PlanSynchronizer struct {
-	qdrantClient *QDrantClient
-	sqlStorage   *SQLStorage
-	config       *MarkdownSyncConfig
-	logger       *log.Logger
-	stats        *SyncStats
+	qdrantClient	*QDrantClient
+	sqlStorage	*SQLStorage
+	config		*MarkdownSyncConfig
+	logger		*log.Logger
+	stats		*SyncStats
 }
 
 // MarkdownSyncConfig contains configuration for synchronization
 type MarkdownSyncConfig struct {
-	OutputDirectory    string `json:"output_directory"`
-	PreserveFormatting bool   `json:"preserve_formatting"`
-	BackupOriginal     bool   `json:"backup_original"`
-	OverwriteExisting  bool   `json:"overwrite_existing"`
+	OutputDirectory		string	`json:"output_directory"`
+	PreserveFormatting	bool	`json:"preserve_formatting"`
+	BackupOriginal		bool	`json:"backup_original"`
+	OverwriteExisting	bool	`json:"overwrite_existing"`
 }
 
 // SyncStats tracks synchronization statistics
 type SyncStats struct {
-	FilesSynced     int           `json:"files_synced"`
-	ErrorsEncounter int           `json:"errors_encountered"`
-	TotalSyncTime   time.Duration `json:"total_sync_time"`
-	LastSyncTime    time.Time     `json:"last_sync_time"`
+	FilesSynced	int		`json:"files_synced"`
+	ErrorsEncounter	int		`json:"errors_encountered"`
+	TotalSyncTime	time.Duration	`json:"total_sync_time"`
+	LastSyncTime	time.Time	`json:"last_sync_time"`
 }
 
 // PhaseGroup represents a group of tasks organized by phase
 type PhaseGroup struct {
-	Name        string  `json:"name"`
-	Tasks       []Task  `json:"tasks"`
-	Progression float64 `json:"progression"`
-	Order       int     `json:"order"`
+	Name		string	`json:"name"`
+	Tasks		[]Task	`json:"tasks"`
+	Progression	float64	`json:"progression"`
+	Order		int	`json:"order"`
 }
 
 // NewPlanSynchronizer creates a new instance of PlanSynchronizer
@@ -49,19 +49,19 @@ func NewPlanSynchronizer(sqlStorage *SQLStorage, qdrantClient *QDrantClient, con
 
 	if config == nil {
 		config = &MarkdownSyncConfig{
-			OutputDirectory:    "./exported-plans",
-			PreserveFormatting: true,
-			BackupOriginal:     true,
-			OverwriteExisting:  false,
+			OutputDirectory:	"./exported-plans",
+			PreserveFormatting:	true,
+			BackupOriginal:		true,
+			OverwriteExisting:	false,
 		}
 	}
 
 	return &PlanSynchronizer{
-		qdrantClient: qdrantClient,
-		sqlStorage:   sqlStorage,
-		config:       config,
-		logger:       logger,
-		stats:        &SyncStats{},
+		qdrantClient:	qdrantClient,
+		sqlStorage:	sqlStorage,
+		config:		config,
+		logger:		logger,
+		stats:		&SyncStats{},
 	}
 }
 
@@ -182,7 +182,7 @@ func (ps *PlanSynchronizer) convertToMarkdown(plan *DynamicPlan) string {
 			checkbox := "[ ]"
 			if task.Completed {
 				checkbox = "[x]"
-			} // Indentation selon le niveau de la tâche (minimum level 1)
+			}	// Indentation selon le niveau de la tâche (minimum level 1)
 			level := task.Level
 			if level < 1 {
 				level = 1
@@ -228,10 +228,10 @@ func (ps *PlanSynchronizer) groupTasksByPhase(tasks []Task) []PhaseGroup {
 			// Déterminer l'ordre de la phase depuis le nom
 			order := ps.extractPhaseOrder(phaseName)
 			phaseMap[phaseName] = &PhaseGroup{
-				Name:        phaseName,
-				Tasks:       []Task{},
-				Progression: -1, // Will be calculated later
-				Order:       order,
+				Name:		phaseName,
+				Tasks:		[]Task{},
+				Progression:	-1,	// Will be calculated later
+				Order:		order,
 			}
 			phaseOrder[phaseName] = order
 		}

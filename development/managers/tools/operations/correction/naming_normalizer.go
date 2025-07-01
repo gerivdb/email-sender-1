@@ -5,8 +5,8 @@
 package correction
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/registry"
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"EMAIL_SENDER_1/tools/core/registry"
+	"EMAIL_SENDER_1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -42,16 +42,16 @@ type NamingIssue struct {
 
 // NamingConventions defines the naming rules for the ecosystem
 type NamingConventions struct {
-	InterfaceSuffix     string   `json:"interface_suffix"`     // "Manager"
-	ImplementSuffix     string   `json:"implement_suffix"`     // "Impl"
-	ConstructorPrefix   string   `json:"constructor_prefix"`   // "New"
-	PrivatePrefix       string   `json:"private_prefix"`       // "_" or lowercase
-	ExportedPattern     string   `json:"exported_pattern"`     // "^[A-Z][a-zA-Z0-9]*$"
-	PrivatePattern      string   `json:"private_pattern"`      // "^[a-z][a-zA-Z0-9]*$"
-	ConstantPattern     string   `json:"constant_pattern"`     // "^[A-Z][A-Z0-9_]*$"
-	ForbiddenPrefixes   []string `json:"forbidden_prefixes"`   // ["Create", "Make"]
-	RequiredPrefixes    []string `json:"required_prefixes"`    // ["New"] for constructors
-	ReservedSuffixes    []string `json:"reserved_suffixes"`    // ["Manager", "Impl"]
+	InterfaceSuffix   string   `json:"interface_suffix"`   // "Manager"
+	ImplementSuffix   string   `json:"implement_suffix"`   // "Impl"
+	ConstructorPrefix string   `json:"constructor_prefix"` // "New"
+	PrivatePrefix     string   `json:"private_prefix"`     // "_" or lowercase
+	ExportedPattern   string   `json:"exported_pattern"`   // "^[A-Z][a-zA-Z0-9]*$"
+	PrivatePattern    string   `json:"private_pattern"`    // "^[a-z][a-zA-Z0-9]*$"
+	ConstantPattern   string   `json:"constant_pattern"`   // "^[A-Z][A-Z0-9_]*$"
+	ForbiddenPrefixes []string `json:"forbidden_prefixes"` // ["Create", "Make"]
+	RequiredPrefixes  []string `json:"required_prefixes"`  // ["New"] for constructors
+	ReservedSuffixes  []string `json:"reserved_suffixes"`  // ["Manager", "Impl"]
 }
 
 // NewNamingNormalizer creates a new NamingNormalizer instance
@@ -68,7 +68,7 @@ func NewNamingNormalizer(baseDir string, logger *toolkit.Logger, stats *toolkit.
 // Execute implements ToolkitOperation.Execute
 func (nn *NamingNormalizer) Execute(ctx context.Context, options *toolkit.OperationOptions) error {
 	nn.Logger.Info("🔧 Starting naming convention normalization on: %s", options.Target)
-	
+
 	if nn.DryRun {
 		nn.Logger.Info("🔍 Running in DRY-RUN mode - no changes will be made")
 	}
@@ -77,27 +77,27 @@ func (nn *NamingNormalizer) Execute(ctx context.Context, options *toolkit.Operat
 	namingIssues := make(map[string][]NamingIssue)
 	issuesFound := 0
 	filesAnalyzed := 0
-	
+
 	// Walk through all Go files in the target directory
 	err := filepath.Walk(options.Target, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			nn.Logger.Warn("Error accessing path %s: %v", path, err)
 			return nil // Continue processing other files
 		}
-		
+
 		// Skip non-Go files
 		if !strings.HasSuffix(path, ".go") {
 			return nil
 		}
-		
+
 		// Skip test files for now (can be enabled via configuration)
 		if strings.HasSuffix(path, "_test.go") {
 			return nil
 		}
-		
+
 		filesAnalyzed++
 		nn.Logger.Debug("Analyzing file: %s", path)
-		
+
 		// Parse the Go file
 		fset := token.NewFileSet()
 		file, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
@@ -105,29 +105,29 @@ func (nn *NamingNormalizer) Execute(ctx context.Context, options *toolkit.Operat
 			nn.Logger.Warn("Failed to parse %s: %v", path, err)
 			return nil // Continue with other files
 		}
-		
+
 		// Analyze naming conventions in this file
 		fileIssues := nn.analyzeFile(file, path, fset)
 		if len(fileIssues) > 0 {
 			namingIssues[path] = fileIssues
 			issuesFound += len(fileIssues)
 		}
-		
+
 		return nil
 	})
-	
+
 	if err != nil {
 		nn.Logger.Error("Error walking directory: %v", err)
 		return err
 	}
-	
+
 	// Update statistics
 	nn.Stats.FilesAnalyzed += filesAnalyzed
 	nn.Stats.ErrorsFixed += issuesFound // Track issues found, even if not fixed in dry-run
-	
+
 	// Log summary
 	nn.Logger.Info("📊 Analysis complete: %d files analyzed, %d naming issues found", filesAnalyzed, issuesFound)
-	
+
 	// Generate detailed report if requested
 	if options.Output != "" {
 		if err := nn.generateReport(namingIssues, options.Output); err != nil {
@@ -136,30 +136,30 @@ func (nn *NamingNormalizer) Execute(ctx context.Context, options *toolkit.Operat
 		}
 		nn.Logger.Info("📄 Report generated: %s", options.Output)
 	}
-	
+
 	// Apply fixes if not in dry-run mode
 	if !nn.DryRun && issuesFound > 0 {
 		fixedIssues := nn.applyFixes(namingIssues)
 		nn.Logger.Info("🔧 Applied %d automatic fixes", fixedIssues)
 		nn.Stats.ErrorsFixed = fixedIssues // Update with actual fixes
 	}
-	
-	nn.Logger.Info("✅ Naming convention normalization completed: %d issues %s", 
-		issuesFound, 
+
+	nn.Logger.Info("✅ Naming convention normalization completed: %d issues %s",
+		issuesFound,
 		func() string {
 			if nn.DryRun {
 				return "detected"
 			}
 			return "processed"
 		}())
-	
+
 	return nil
 }
 
 // analyzeFile analyzes a single Go file for naming convention issues
 func (nn *NamingNormalizer) analyzeFile(file *ast.File, filePath string, fset *token.FileSet) []NamingIssue {
 	var issues []NamingIssue
-	
+
 	// Analyze all declarations in the file
 	for _, decl := range file.Decls {
 		switch d := decl.(type) {
@@ -193,7 +193,7 @@ func (nn *NamingNormalizer) analyzeFile(file *ast.File, filePath string, fset *t
 			}
 		}
 	}
-	
+
 	return issues
 }
 
@@ -201,7 +201,7 @@ func (nn *NamingNormalizer) analyzeFile(file *ast.File, filePath string, fset *t
 func (nn *NamingNormalizer) checkTypeNaming(typeSpec *ast.TypeSpec, filePath string, fset *token.FileSet) *NamingIssue {
 	name := typeSpec.Name.Name
 	line := fset.Position(typeSpec.Pos()).Line
-	
+
 	// Check if name follows basic Go conventions (exported types start with uppercase)
 	if !nn.isValidGoIdentifier(name) {
 		return &NamingIssue{
@@ -214,17 +214,17 @@ func (nn *NamingNormalizer) checkTypeNaming(typeSpec *ast.TypeSpec, filePath str
 			AutoFixable: true,
 		}
 	}
-	
+
 	// Check interface naming conventions
 	if _, isInterface := typeSpec.Type.(*ast.InterfaceType); isInterface {
 		return nn.checkInterfaceNaming(name, line)
 	}
-	
+
 	// Check struct naming conventions
 	if _, isStruct := typeSpec.Type.(*ast.StructType); isStruct {
 		return nn.checkStructNaming(name, line)
 	}
-	
+
 	return nil
 }
 
@@ -256,7 +256,7 @@ func (nn *NamingNormalizer) checkInterfaceNaming(name string, line int) *NamingI
 			AutoFixable: false, // Requires manual review due to semantic implications
 		}
 	}
-	
+
 	return nil
 }
 
@@ -274,7 +274,7 @@ func (nn *NamingNormalizer) checkStructNaming(name string, line int) *NamingIssu
 			AutoFixable: false, // Requires context understanding
 		}
 	}
-	
+
 	return nil
 }
 
@@ -282,12 +282,12 @@ func (nn *NamingNormalizer) checkStructNaming(name string, line int) *NamingIssu
 func (nn *NamingNormalizer) checkFunctionNaming(funcDecl *ast.FuncDecl, filePath string, fset *token.FileSet) *NamingIssue {
 	name := funcDecl.Name.Name
 	line := fset.Position(funcDecl.Pos()).Line
-	
+
 	// Skip methods (functions with receivers)
 	if funcDecl.Recv != nil {
 		return nil
 	}
-	
+
 	// Check constructor function naming
 	if nn.isConstructorFunction(funcDecl) && !strings.HasPrefix(name, "New") {
 		suggested := "New" + strings.TrimPrefix(name, "Create")
@@ -302,7 +302,7 @@ func (nn *NamingNormalizer) checkFunctionNaming(funcDecl *ast.FuncDecl, filePath
 			AutoFixable: true,
 		}
 	}
-	
+
 	// Check for forbidden prefixes
 	for _, forbidden := range []string{"Create", "Make"} {
 		if strings.HasPrefix(name, forbidden) && nn.isConstructorFunction(funcDecl) {
@@ -318,7 +318,7 @@ func (nn *NamingNormalizer) checkFunctionNaming(funcDecl *ast.FuncDecl, filePath
 			}
 		}
 	}
-	
+
 	return nil
 }
 
@@ -326,12 +326,12 @@ func (nn *NamingNormalizer) checkFunctionNaming(funcDecl *ast.FuncDecl, filePath
 func (nn *NamingNormalizer) checkVariableNaming(name *ast.Ident, tok token.Token, filePath string, fset *token.FileSet) *NamingIssue {
 	varName := name.Name
 	line := fset.Position(name.Pos()).Line
-	
+
 	// Skip blank identifiers
 	if varName == "_" {
 		return nil
 	}
-	
+
 	// Check constant naming (should be ALL_CAPS or CamelCase)
 	if tok == token.CONST {
 		if !nn.isValidConstantName(varName) {
@@ -346,7 +346,7 @@ func (nn *NamingNormalizer) checkVariableNaming(name *ast.Ident, tok token.Token
 			}
 		}
 	}
-	
+
 	// Check variable naming
 	if tok == token.VAR {
 		if !nn.isValidVariableName(varName) {
@@ -361,7 +361,7 @@ func (nn *NamingNormalizer) checkVariableNaming(name *ast.Ident, tok token.Token
 			}
 		}
 	}
-	
+
 	return nil
 }
 
@@ -372,7 +372,7 @@ func (nn *NamingNormalizer) isValidGoIdentifier(name string) bool {
 	if len(name) == 0 {
 		return false
 	}
-	
+
 	// Go identifier pattern: letter followed by letters, digits, or underscores
 	matched, _ := regexp.MatchString(`^[a-zA-Z_][a-zA-Z0-9_]*$`, name)
 	return matched
@@ -386,13 +386,13 @@ func (nn *NamingNormalizer) isSingleWordInterface(name string) bool {
 		"Scanner", "Parser", "Validator", "Handler",
 		"Formatter", "Encoder", "Decoder", "Builder",
 	}
-	
+
 	for _, pattern := range singleWordPatterns {
 		if strings.HasSuffix(name, pattern) {
 			return true
 		}
 	}
-	
+
 	return false
 }
 
@@ -402,7 +402,7 @@ func (nn *NamingNormalizer) isConstructorFunction(funcDecl *ast.FuncDecl) bool {
 	if funcDecl.Type.Results == nil {
 		return false
 	}
-	
+
 	// Simple heuristic: constructor if it returns something and has no receiver
 	return funcDecl.Recv == nil && len(funcDecl.Type.Results.List) > 0
 }
@@ -411,10 +411,10 @@ func (nn *NamingNormalizer) isConstructorFunction(funcDecl *ast.FuncDecl) bool {
 func (nn *NamingNormalizer) isValidConstantName(name string) bool {
 	// All caps with underscores
 	allCapsPattern, _ := regexp.MatchString(`^[A-Z][A-Z0-9_]*$`, name)
-	
+
 	// CamelCase for exported constants
 	camelCasePattern, _ := regexp.MatchString(`^[A-Z][a-zA-Z0-9]*$`, name)
-	
+
 	return allCapsPattern || camelCasePattern
 }
 
@@ -422,10 +422,10 @@ func (nn *NamingNormalizer) isValidConstantName(name string) bool {
 func (nn *NamingNormalizer) isValidVariableName(name string) bool {
 	// Exported: PascalCase
 	exportedPattern, _ := regexp.MatchString(`^[A-Z][a-zA-Z0-9]*$`, name)
-	
+
 	// Unexported: camelCase
 	unexportedPattern, _ := regexp.MatchString(`^[a-z][a-zA-Z0-9]*$`, name)
-	
+
 	return exportedPattern || unexportedPattern
 }
 
@@ -436,13 +436,13 @@ func (nn *NamingNormalizer) suggestGoIdentifierFix(name string) string {
 	if len(name) == 0 {
 		return "validName"
 	}
-	
+
 	// Remove invalid characters and ensure it starts with a letter
 	cleaned := regexp.MustCompile(`[^a-zA-Z0-9_]`).ReplaceAllString(name, "")
 	if len(cleaned) == 0 || (cleaned[0] >= '0' && cleaned[0] <= '9') {
 		cleaned = "name" + cleaned
 	}
-	
+
 	return cleaned
 }
 
@@ -464,17 +464,17 @@ func (nn *NamingNormalizer) suggestVariableName(name string) string {
 	if len(name) == 0 {
 		return "variable"
 	}
-	
+
 	// Ensure proper camelCase or PascalCase
 	if name[0] >= 'A' && name[0] <= 'Z' {
 		return name // Already PascalCase
 	}
-	
+
 	// Convert to camelCase
 	if name[0] >= 'a' && name[0] <= 'z' {
 		return name // Already camelCase
 	}
-	
+
 	// Fix other cases
 	return strings.ToLower(string(name[0])) + name[1:]
 }
@@ -482,26 +482,26 @@ func (nn *NamingNormalizer) suggestVariableName(name string) string {
 // applyFixes applies automatic fixes to the identified issues
 func (nn *NamingNormalizer) applyFixes(namingIssues map[string][]NamingIssue) int {
 	fixedCount := 0
-	
+
 	for filePath, issues := range namingIssues {
 		fileFixed := 0
-		
+
 		for _, issue := range issues {
 			if issue.AutoFixable {
-				nn.Logger.Debug("Applying fix: %s -> %s in %s:%d", 
+				nn.Logger.Debug("Applying fix: %s -> %s in %s:%d",
 					issue.Current, issue.Suggested, filePath, issue.Line)
 				// TODO: Implement actual code modification
 				// This would require AST manipulation and code generation
 				fileFixed++
 			}
 		}
-		
+
 		if fileFixed > 0 {
 			nn.Logger.Info("Applied %d fixes in %s", fileFixed, filePath)
 			fixedCount += fileFixed
 		}
 	}
-	
+
 	return fixedCount
 }
 
@@ -512,7 +512,7 @@ func (nn *NamingNormalizer) generateReport(namingIssues map[string][]NamingIssue
 	issuesBySeverity := make(map[string]int)
 	issuesByType := make(map[string]int)
 	autoFixableCount := 0
-	
+
 	for _, issues := range namingIssues {
 		for _, issue := range issues {
 			totalIssues++
@@ -523,7 +523,7 @@ func (nn *NamingNormalizer) generateReport(namingIssues map[string][]NamingIssue
 			}
 		}
 	}
-	
+
 	// Create comprehensive report
 	report := map[string]interface{}{
 		"tool":           "NamingNormalizer",
@@ -532,33 +532,33 @@ func (nn *NamingNormalizer) generateReport(namingIssues map[string][]NamingIssue
 		"base_directory": nn.BaseDir,
 		"dry_run":        nn.DryRun,
 		"summary": map[string]interface{}{
-			"total_files":      len(namingIssues),
-			"total_issues":     totalIssues,
-			"auto_fixable":     autoFixableCount,
-			"manual_review":    totalIssues - autoFixableCount,
-			"by_severity":      issuesBySeverity,
-			"by_type":          issuesByType,
+			"total_files":   len(namingIssues),
+			"total_issues":  totalIssues,
+			"auto_fixable":  autoFixableCount,
+			"manual_review": totalIssues - autoFixableCount,
+			"by_severity":   issuesBySeverity,
+			"by_type":       issuesByType,
 		},
 		"conventions": map[string]interface{}{
-			"interfaces":   "Should end with 'Manager' or be single descriptive words",
-			"structs":      "Implementation structs should end with 'Impl'",
-			"functions":    "Constructors should start with 'New'",
-			"constants":    "Should use ALL_CAPS or CamelCase",
-			"variables":    "Should use camelCase or PascalCase",
+			"interfaces": "Should end with 'Manager' or be single descriptive words",
+			"structs":    "Implementation structs should end with 'Impl'",
+			"functions":  "Constructors should start with 'New'",
+			"constants":  "Should use ALL_CAPS or CamelCase",
+			"variables":  "Should use camelCase or PascalCase",
 		},
 		"files": namingIssues,
 	}
-	
+
 	// Write report to file
 	data, err := json.MarshalIndent(report, "", "  ")
 	if err != nil {
 		return fmt.Errorf("failed to marshal report: %w", err)
 	}
-	
+
 	if err := os.WriteFile(outputPath, data, 0644); err != nil {
 		return fmt.Errorf("failed to write report: %w", err)
 	}
-	
+
 	return nil
 }
 
@@ -573,24 +573,24 @@ func (nn *NamingNormalizer) Validate(ctx context.Context) error {
 	if nn.Stats == nil {
 		return fmt.Errorf("Stats is required")
 	}
-	
+
 	// Check if base directory exists
 	if _, err := os.Stat(nn.BaseDir); os.IsNotExist(err) {
 		return fmt.Errorf("base directory does not exist: %s", nn.BaseDir)
 	}
-	
+
 	return nil
 }
 
 // CollectMetrics implements ToolkitOperation.CollectMetrics
 func (nn *NamingNormalizer) CollectMetrics() map[string]interface{} {
 	return map[string]interface{}{
-		"tool":            "NamingNormalizer",
-		"base_dir":        nn.BaseDir,
-		"dry_run":         nn.DryRun,
-		"files_analyzed":  nn.Stats.FilesAnalyzed,
-		"issues_found":    nn.Stats.ErrorsFixed,
-		"execution_time":  time.Since(time.Now()).String(),
+		"tool":           "NamingNormalizer",
+		"base_dir":       nn.BaseDir,
+		"dry_run":        nn.DryRun,
+		"files_analyzed": nn.Stats.FilesAnalyzed,
+		"issues_found":   nn.Stats.ErrorsFixed,
+		"execution_time": time.Since(time.Now()).String(),
 	}
 }
 
@@ -600,14 +600,14 @@ func (nn *NamingNormalizer) HealthCheck(ctx context.Context) error {
 	if _, err := os.Stat(nn.BaseDir); os.IsNotExist(err) {
 		return fmt.Errorf("base directory does not exist: %s", nn.BaseDir)
 	}
-	
+
 	// Check if we can create temporary files for testing
 	tempFile := filepath.Join(os.TempDir(), "naming_normalizer_health_check.tmp")
 	if err := os.WriteFile(tempFile, []byte("test"), 0644); err != nil {
 		return fmt.Errorf("cannot write temporary files: %w", err)
 	}
 	os.Remove(tempFile) // Clean up
-	
+
 	return nil
 }
 
@@ -633,21 +633,19 @@ func init() {
 		globalReg = registry.NewToolRegistry()
 		// registry.SetGlobalRegistry(globalReg) // If a setter exists
 	}
-	
+
 	// Create a default instance for registration
 	defaultTool := &NamingNormalizer{
-		BaseDir: "", // Default or placeholder
+		BaseDir: "",                 // Default or placeholder
 		FileSet: token.NewFileSet(), // Initialize FileSet
-		Logger:  nil, // Logger should be initialized by the toolkit
+		Logger:  nil,                // Logger should be initialized by the toolkit
 		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  false,
 	}
-	
+
 	err := globalReg.Register(toolkit.NormalizeNaming, defaultTool) // Changed to toolkit.NormalizeNaming
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register NamingNormalizer: %v\n", err)
 	}
 }
-
-

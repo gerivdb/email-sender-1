@@ -1,4 +1,4 @@
-package main
+package demos
 
 import (
 	"context"
@@ -12,23 +12,23 @@ import (
 
 // MockErrorManager implements ErrorManager for demo purposes
 type MockErrorManager struct {
-	loggedErrors     []LoggedError
-	catalogedErrors  []ErrorEntry
-	validationErrors []ErrorEntry
-	mu               sync.Mutex
+	loggedErrors		[]LoggedError
+	catalogedErrors		[]ErrorEntry
+	validationErrors	[]ErrorEntry
+	mu			sync.Mutex
 }
 
 type LoggedError struct {
-	Err    error
-	Module string
-	Code   string
+	Err	error
+	Module	string
+	Code	string
 }
 
 // NewMockErrorManager creates a new mock error manager
 func NewMockErrorManager() *MockErrorManager {
 	return &MockErrorManager{
-		loggedErrors:    make([]LoggedError, 0),
-		catalogedErrors: make([]ErrorEntry, 0),
+		loggedErrors:		make([]LoggedError, 0),
+		catalogedErrors:	make([]ErrorEntry, 0),
 	}
 }
 
@@ -36,9 +36,9 @@ func (m *MockErrorManager) LogError(err error, module string, code string) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	m.loggedErrors = append(m.loggedErrors, LoggedError{
-		Err:    err,
-		Module: module,
-		Code:   code,
+		Err:	err,
+		Module:	module,
+		Code:	code,
 	})
 	log.Printf("📝 Logged error from %s: %s", module, err.Error())
 }
@@ -92,9 +92,9 @@ func DemoIntegration() {
 	fmt.Println("\n🎯 Démonstration 2: Centralisation avec contexte")
 	emailError := errors.New("Échec d'envoi d'email")
 	emailContext := map[string]interface{}{
-		"recipient": "user@example.com",
-		"template":  "welcome",
-		"attempt":   3,
+		"recipient":	"user@example.com",
+		"template":	"welcome",
+		"attempt":	3,
 	}
 	CentralizeErrorWithContext("email-manager", emailError, emailContext)
 
@@ -111,9 +111,9 @@ func DemoIntegration() {
 	// Déclencher une erreur critique
 	criticalError := errors.New("critical: unauthorized access attempt detected")
 	PropagateErrorWithContext("security-manager", criticalError, map[string]interface{}{
-		"ip":     "192.168.1.100",
-		"user":   "unknown",
-		"action": "admin_access",
+		"ip":		"192.168.1.100",
+		"user":		"unknown",
+		"action":	"admin_access",
 	})
 
 	// Démonstration 4: Gestion des timeouts
@@ -146,8 +146,8 @@ func SimulateManagerErrors() {
 	// Erreurs du dependency-manager
 	fmt.Println("\n🔗 Erreurs du dependency-manager:")
 	depErrors := []struct {
-		err     error
-		context map[string]interface{}
+		err	error
+		context	map[string]interface{}
 	}{
 		{
 			errors.New("circular dependency detected"),
@@ -166,8 +166,8 @@ func SimulateManagerErrors() {
 	// Erreurs du mcp-manager
 	fmt.Println("\n💬 Erreurs du mcp-manager:")
 	mcpErrors := []struct {
-		err     error
-		context map[string]interface{}
+		err	error
+		context	map[string]interface{}
 	}{
 		{
 			errors.New("MCP server connection refused"),
@@ -186,8 +186,8 @@ func SimulateManagerErrors() {
 	// Erreurs du n8n-manager
 	fmt.Println("\n🔄 Erreurs du n8n-manager:")
 	n8nErrors := []struct {
-		err     error
-		context map[string]interface{}
+		err	error
+		context	map[string]interface{}
 	}{
 		{
 			errors.New("workflow execution timeout"),
@@ -221,7 +221,7 @@ func printErrorStatistics(mockEM *MockErrorManager) {
 	if len(catalogedErrors) > 0 {
 		fmt.Println("\n📋 Détails des erreurs cataloguées:")
 		for i, err := range catalogedErrors {
-			if i >= 5 { // Limiter l'affichage aux 5 premières
+			if i >= 5 {	// Limiter l'affichage aux 5 premières
 				fmt.Printf("... et %d autres erreurs\n", len(catalogedErrors)-5)
 				break
 			}
@@ -254,9 +254,9 @@ func DemoIntegrationWithConcurrency() {
 			for j := 0; j < 3; j++ {
 				err := errors.New(fmt.Sprintf("concurrent error %d from %s", j+1, mgr))
 				context := map[string]interface{}{
-					"goroutine": id,
-					"iteration": j,
-					"timestamp": time.Now(),
+					"goroutine":	id,
+					"iteration":	j,
+					"timestamp":	time.Now(),
 				}
 				PropagateErrorWithContext(mgr, err, context)
 				time.Sleep(10 * time.Millisecond)

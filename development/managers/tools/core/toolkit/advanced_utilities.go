@@ -3,7 +3,6 @@
 package toolkit
 
 import (
-	// "github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"go/format"
 	"go/token"
@@ -61,7 +60,7 @@ func (fixer *ImportFixer) FixSingleFile(filePath string) error {
 			formatted = []byte(fixed)
 		}
 
-		if err := os.WriteFile(filePath, formatted, 0644); err != nil {
+		if err := os.WriteFile(filePath, formatted, 0o644); err != nil {
 			return err
 		}
 
@@ -94,6 +93,46 @@ func (fixer *ImportFixer) processImports(content string) string {
 		`"github.com/gerivdb/email-sender-1/managers/interfaces/monitoring"`: `"github.com/gerivdb/email-sender-1/managers/interfaces"`,
 		`"github.com/gerivdb/email-sender-1/managers/interfaces/container"`:  `"github.com/gerivdb/email-sender-1/managers/interfaces"`,
 		`"github.com/gerivdb/email-sender-1/managers/interfaces/deployment"`: `"github.com/gerivdb/email-sender-1/managers/interfaces"`,
+
+		// github.com/gerivdb/email-sender-1/ development managers
+		`"github.com/gerivdb/email-sender-1/development/managers/interfaces"`:                                     `"EMAIL_SENDER_1/development/managers/interfaces"`,
+		`"github.com/gerivdb/email-sender-1/development/managers/dependency-manager"`:                             `"EMAIL_SENDER_1/development/managers/dependency-manager"`,
+		`"github.com/gerivdb/email-sender-1/development/managers/security-manager"`:                               `"EMAIL_SENDER_1/development/managers/security-manager"`,
+		`"github.com/gerivdb/email-sender-1/development/managers/storage-manager"`:                                `"EMAIL_SENDER_1/development/managers/storage-manager"`,
+		`"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/internal/config"`:      `"EMAIL_SENDER_1/development/managers/advanced-autonomy-manager/internal/config"`,
+		`"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/internal/logging"`:     `"EMAIL_SENDER_1/development/managers/advanced-autonomy-manager/internal/logging"`,
+		`"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"`:                   `"EMAIL_SENDER_1/development/managers/branching-manager/interfaces"`,
+		`"github.com/gerivdb/email-sender-1/development/managers/branching-manager/development"`:                  `"EMAIL_SENDER_1/development/managers/branching-manager/development"`,
+		`"github.com/gerivdb/email-sender-1/development/managers/branching-manager/ai"`:                           `"EMAIL_SENDER_1/development/managers/branching-manager/ai"`,
+		`"github.com/gerivdb/email-sender-1/development/managers/branching-manager/database"`:                     `"EMAIL_SENDER_1/development/managers/branching-manager/database"`,
+		`"github.com/gerivdb/email-sender-1/development/managers/branching-manager/git"`:                          `"EMAIL_SENDER_1/development/managers/branching-manager/git"`,
+		`"github.com/gerivdb/email-sender-1/development/managers/branching-manager/integrations"`:                 `"EMAIL_SENDER_1/development/managers/branching-manager/integrations"`,
+		`"github.com/gerivdb/email-sender-1/git-workflow-manager/internal/branch"`:                                `"EMAIL_SENDER_1/git-workflow-manager/internal/branch"`,
+		`"github.com/gerivdb/email-sender-1/git-workflow-manager/internal/commit"`:                                `"EMAIL_SENDER_1/git-workflow-manager/internal/commit"`,
+		`"github.com/gerivdb/email-sender-1/git-workflow-manager/internal/pr"`:                                    `"EMAIL_SENDER_1/git-workflow-manager/internal/pr"`,
+		`"github.com/gerivdb/email-sender-1/git-workflow-manager/internal/webhook"`:                               `"EMAIL_SENDER_1/git-workflow-manager/internal/webhook"`,
+		`"github.com/gerivdb/email-sender-1/managers/integrated-manager"`:                                         `"EMAIL_SENDER_1/managers/integrated-manager"`,
+		`"github.com/gerivdb/email-sender-1/maintenance-manager/src/ai"`:                                          `"EMAIL_SENDER_1/maintenance-manager/src/ai"`,
+		`"github.com/gerivdb/email-sender-1/maintenance-manager/src/cleanup"`:                                     `"EMAIL_SENDER_1/maintenance-manager/src/cleanup"`,
+		`"github.com/gerivdb/email-sender-1/maintenance-manager/src/core"`:                                        `"EMAIL_SENDER_1/maintenance-manager/src/core"`,
+		`"github.com/gerivdb/email-sender-1/maintenance-manager/src/generator"`:                                   `"EMAIL_SENDER_1/maintenance-manager/src/generator"`,
+		`"github.com/gerivdb/email-sender-1/maintenance-manager/src/integration"`:                                 `"EMAIL_SENDER_1/maintenance-manager/src/integration"`,
+		`"github.com/gerivdb/email-sender-1/maintenance-manager/src/templates"`:                                   `"EMAIL_SENDER_1/maintenance-manager/src/templates"`,
+		`"github.com/gerivdb/email-sender-1/maintenance-manager/src/vector"`:                                      `"EMAIL_SENDER_1/maintenance-manager/src/vector"`,
+		`"github.com/gerivdb/email-sender-1/git-workflow-manager"`:                                                `"EMAIL_SENDER_1/git-workflow-manager"`,
+		`"github.com/gerivdb/email-sender-1/git-workflow-manager/workflows"`:                                      `"EMAIL_SENDER_1/git-workflow-manager/workflows"`,
+		`"github.com/fmoua/email-sender/development/managers/template-performance-manager"`:                       `"EMAIL_SENDER_1/development/managers/template-performance-manager"`,
+		`"github.com/fmoua/email-sender/development/managers/template-performance-manager/interfaces"`:            `"EMAIL_SENDER_1/development/managers/template-performance-manager/interfaces"`,
+		`"github.com/fmoua/email-sender/development/managers/template-performance-manager/internal/analytics"`:    `"EMAIL_SENDER_1/development/managers/template-performance-manager/internal/analytics"`,
+		`"github.com/fmoua/email-sender/development/managers/template-performance-manager/internal/neural"`:       `"EMAIL_SENDER_1/development/managers/template-performance-manager/internal/neural"`,
+		`"github.com/fmoua/email-sender/development/managers/template-performance-manager/internal/optimization"`: `"EMAIL_SENDER_1/development/managers/template-performance-manager/internal/optimization"`,
+		`"github.com/your-org/email-sender/development/managers/interfaces"`:                                      `"EMAIL_SENDER_1/development/managers/interfaces"`,
+		`"github.com/email-sender-manager/interfaces"`:                                                            `"EMAIL_SENDER_1/managers/interfaces"`,
+		`"github.com/email-sender-manager/dependency-manager"`:                                                    `"EMAIL_SENDER_1/managers/dependency-manager"`,
+		`"github.com/email-sender-manager/security-manager"`:                                                      `"EMAIL_SENDER_1/managers/security-manager"`,
+		`"github.com/email-sender-manager/storage-manager"`:                                                       `"EMAIL_SENDER_1/managers/storage-manager"`,
+		`"github.com/email-sender-notification-manager/interfaces"`:                                               `"EMAIL_SENDER_1/managers/notification-manager/interfaces"`,
+		`"EMAIL_SENDER_1/development/managers/dependencymanager"`:                                                 `"EMAIL_SENDER_1/development/managers/dependency-manager"`,
 	}
 
 	// Apply replacements
@@ -194,7 +233,7 @@ func (dr *DuplicateRemover) ProcessSingleFile(filePath string) error {
 			formatted = []byte(cleaned)
 		}
 
-		if err := os.WriteFile(filePath, formatted, 0644); err != nil {
+		if err := os.WriteFile(filePath, formatted, 0o644); err != nil {
 			return err
 		}
 
@@ -217,7 +256,7 @@ func (dr *DuplicateRemover) removeDuplicates(content string) string {
 	var result []string
 	skipUntil := -1
 
-	for i, line := range lines {
+	for i := start; i < len(lines); i++ {
 		if i <= skipUntil {
 			continue
 		}
@@ -374,7 +413,7 @@ func (sf *SyntaxFixer) FixSingleFile(filePath string) error {
 			formatted = []byte(fixed)
 		}
 
-		if err := os.WriteFile(filePath, formatted, 0644); err != nil {
+		if err := os.WriteFile(filePath, formatted, 0o644); err != nil {
 			return err
 		}
 
@@ -583,7 +622,6 @@ func (hc *HealthChecker) checkFileHealth(report *HealthReport) {
 
 		return nil
 	})
-
 	if err != nil {
 		// hc.Logger.Warn("Error during file health check: %v", err)
 	}
@@ -603,8 +641,7 @@ func (hc *HealthChecker) checkSyntaxHealth(report *HealthReport) {
 
 // checkDependencyHealth checks dependency-related health
 func (hc *HealthChecker) checkDependencyHealth(report *HealthReport) {
-	// Check go.mod files and analyze dependencies
-	// This would involve parsing go.mod files and checking for issues
+	// This would involve parsing all Go files and checking for issues
 }
 
 // calculateOverallHealth calculates the overall health score
@@ -640,3 +677,130 @@ func (hc *HealthChecker) calculateOverallHealth(report *HealthReport) {
 		report.OverallHealth = "poor"
 	}
 }
+
+</final_file_content>
+
+IMPORTANT: For any future changes to this file, use the final_file_content shown above as your reference. This content reflects the current state of the file, including any auto-formatting (e.g., if you used single quotes but the formatter converted them to double quotes). Always base your SEARCH/REPLACE operations on this final version to ensure accuracy.
+
+
+
+New problems detected after saving the file:
+development/managers/tools/core/toolkit/advanced_utilities.go
+- [compiler Error] Line 11: "EMAIL_SENDER_1/managers/error-manager" is not a Go package
+- [compiler Error] Line 12: "EMAIL_SENDER_1/managers/config-manager" is not a Go package
+- [compiler Error] Line 13: "EMAIL_SENDER_1/managers/process-manager" is not a Go package
+- [compiler Error] Line 14: "EMAIL_SENDER_1/managers/storage-manager" is not a Go package
+- [compiler Error] Line 15: "EMAIL_SENDER_1/managers/security-manager" is not a Go package
+- [compiler Error] Line 16: "EMAIL_SENDER_1/managers/monitoring-manager" is not a Go package
+- [compiler Error] Line 17: "EMAIL_SENDER_1/managers/container-manager" is not a Go package
+- [compiler Error] Line 18: "EMAIL_SENDER_1/managers/deployment-manager" is not a Go package
+- [compiler Error] Line 20: "EMAIL_SENDER_1/managers/interfaces" is not a Go package
+- [compiler Error] Line 21: "EMAIL_SENDER_1/managers/interfaces/common" is not a Go package
+- [compiler Error] Line 22: "EMAIL_SENDER_1/managers/interfaces/types" is not a Go package
+- [compiler Error] Line 23: "EMAIL_SENDER_1/managers/interfaces/security" is not a Go package
+- [compiler Error] Line 24: "EMAIL_SENDER_1/managers/interfaces/storage" is not a Go package
+- [compiler Error] Line 25: "EMAIL_SENDER_1/managers/interfaces/monitoring" is not a Go package
+- [compiler Error] Line 26: "EMAIL_SENDER_1/managers/interfaces/container" is not a Go package
+- [compiler Error] Line 27: "EMAIL_SENDER_1/managers/interfaces/deployment" is not a Go package
+- [compiler Error] Line 29: "EMAIL_SENDER_1/development/managers/interfaces" is not a Go package
+- [compiler Error] Line 30: "EMAIL_SENDER_1/development/managers/dependency-manager" is not a Go package
+- [compiler Error] Line 31: "EMAIL_SENDER_1/development/managers/security-manager" is not a Go package
+- [compiler Error] Line 32: "EMAIL_SENDER_1/development/managers/storage-manager" is not a Go package
+- [compiler Error] Line 33: "EMAIL_SENDER_1/development/managers/advanced-autonomy-manager/internal/config" is not a Go package
+- [compiler Error] Line 34: "EMAIL_SENDER_1/development/managers/advanced-autonomy-manager/internal/logging" is not a Go package
+- [compiler Error] Line 35: "EMAIL_SENDER_1/development/managers/branching-manager/interfaces" is not a Go package
+- [compiler Error] Line 36: "EMAIL_SENDER_1/development/managers/branching-manager/development" is not a Go package
+- [compiler Error] Line 37: "EMAIL_SENDER_1/development/managers/branching-manager/ai" is not a Go package
+- [compiler Error] Line 38: "EMAIL_SENDER_1/development/managers/branching-manager/database" is not a Go package
+- [compiler Error] Line 39: "EMAIL_SENDER_1/development/managers/branching-manager/git" is not a Go package
+- [compiler Error] Line 40: "EMAIL_SENDER_1/development/managers/branching-manager/integrations" is not a Go package
+- [compiler Error] Line 41: "EMAIL_SENDER_1/git-workflow-manager/internal/branch" is not a Go package
+- [compiler Error] Line 42: "EMAIL_SENDER_1/git-workflow-manager/internal/commit" is not a Go package
+- [compiler Error] Line 43: "EMAIL_SENDER_1/git-workflow-manager/internal/pr" is not a Go package
+- [compiler Error] Line 44: "EMAIL_SENDER_1/git-workflow-manager/internal/webhook" is not a Go package
+- [compiler Error] Line 45: "EMAIL_SENDER_1/managers/integrated-manager" is not a Go package
+- [compiler Error] Line 46: "EMAIL_SENDER_1/maintenance-manager/src/ai" is not a Go package
+- [compiler Error] Line 47: "EMAIL_SENDER_1/maintenance-manager/src/cleanup" is not a Go package
+- [compiler Error] Line 48: "EMAIL_SENDER_1/maintenance-manager/src/core" is not a Go package
+- [compiler Error] Line 49: "EMAIL_SENDER_1/maintenance-manager/src/generator" is not a Go package
+- [compiler Error] Line 50: "EMAIL_SENDER_1/maintenance-manager/src/integration" is not a Go package
+- [compiler Error] Line 51: "EMAIL_SENDER_1/maintenance-manager/src/templates" is not a Go package
+- [compiler Error] Line 52: "EMAIL_SENDER_1/maintenance-manager/src/vector" is not a Go package
+- [compiler Error] Line 53: "EMAIL_SENDER_1/git-workflow-manager" is not a Go package
+- [compiler Error] Line 54: "EMAIL_SENDER_1/git-workflow-manager/workflows" is not a Go package
+- [compiler Error] Line 55: "EMAIL_SENDER_1/development/managers/template-performance-manager" is not a Go package
+- [compiler Error] Line 56: "EMAIL_SENDER_1/development/managers/template-performance-manager/interfaces" is not a Go package
+- [compiler Error] Line 57: "EMAIL_SENDER_1/development/managers/template-performance-manager/internal/analytics" is not a Go package
+- [compiler Error] Line 58: "EMAIL_SENDER_1/development/managers/template-performance-manager/internal/neural" is not a Go package
+- [compiler Error] Line 59: "EMAIL_SENDER_1/development/managers/template-performance-manager/internal/optimization" is not a Go package
+- [compiler Error] Line 61: "EMAIL_SENDER_1/development/managers/interfaces" is not a Go package
+- [compiler Error] Line 62: "EMAIL_SENDER_1/managers/interfaces" is not a Go package
+- [compiler Error] Line 63: "EMAIL_SENDER_1/managers/dependency-manager" is not a Go package
+- [compiler Error] Line 64: "EMAIL_SENDER_1/managers/security-manager" is not a Go package
+- [compiler Error] Line 65: "EMAIL_SENDER_1/managers/storage-manager" is not a Go package
+- [compiler Error] Line 66: "EMAIL_SENDER_1/managers/notification-manager/interfaces" is not a Go package
+- [compiler Error] Line 67: "EMAIL_SENDER_1/development/managers/dependency-manager" is not a Go package<environment_details>
+# VSCode Visible Files
+C:/response_e17d3f44-f2bc-4374-bda2-a04ceaeed2e1/tools-0
+C:/response_e17d3f44-f2bc-4374-bda2-a04ceaeed2e1/tools-1
+C:/response_e17d3f44-f2bc-4374-bda2-a04ceaeed2e1/tools-2
+C:/response_e17d3f44-f2bc-4374-bda2-a04ceaeed2e1/tools-3
+C:/response_e17d3f44-f2bc-4374-bda2-a04ceaeed2e1/tools-4
+C:/response_5be2459c-ac57-47d0-9ee9-838ab4b10401/tools-0
+C:/response_5be2459c-ac57-47d0-9ee9-838ab4b10401/tools-1
+C:/response_dc17368f-8df6-4aa4-a554-64175d99ec03/tools-0
+C:/response_dc17368f-8df6-4aa4-a554-64175d99ec03/tools-2
+C:/response_dc17368f-8df6-4aa4-a554-64175d99ec03/tools-3
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-0
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-1
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-2
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-3
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-4
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-5
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-9
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-10
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-11
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-12
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-13
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-14
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-15
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-16
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-17
+C:/response_4ea56f14-ffdc-4202-872c-87bb0786ae4d/tools-18
+C:/response_1b86c299-4911-476b-8994-1af8f64a7853/tools-1
+C:/response_1b86c299-4911-476b-8994-1af8f64a7853/tools-2
+C:/response_1b86c299-4911-476b-8994-1af8f64a7853/tools-3
+C:/response_1b86c299-4911-476b-8994-1af8f64a7853/tools-4
+C:/response_1b86c299-4911-476b-8994-1af8f64a7853/tools-5
+C:/response_162759c6-027f-465b-a4fb-e66c8023a770/0
+cmd/refactor_project/main.go
+
+# VSCode Open Tabs
+development/managers/template-performance-manager/manager.go
+development/managers/template-performance-manager/tests/manager_test.go
+development/managers/template-performance-manager/tests/analytics/metrics_collector_test.go
+development/managers/template-performance-manager/tests/optimization/adaptive_engine_test.go
+development/managers/template-performance-manager/tests/neural/processor_test.go
+development/managers/integration-manager/phase3_integration_test.go
+development/managers/integration-manager/integration_manager.go
+development/managers/final_validation.go
+development/managers/maintenance-manager/test_integration.go
+development/managers/maintenance-manager/test_cleanup_demo.go
+development/managers/maintenance-manager/tests/integration_test.go
+development/managers/powershell-bridge/bridge_server.go
+development/managers/validation.go
+development/managers/tools/cmd/manager-toolkit/manager_toolkit.go
+development/managers/tools/cmd/toolkit_integration_test.go
+development/managers/tools/core/toolkit/advanced_utilities.go
+development/managers/tools/core/registry/tool_registry.go
+cmd/refactor_project/main.go
+
+# Current Time
+7/1/2025, 9:21:05 PM (Europe/Paris, UTC+2:00)
+
+# Context Window Usage
+890,733 / 1,048.576K tokens used (85%)
+
+# Current Mode
+ACT MODE
+</environment_details>

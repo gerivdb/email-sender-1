@@ -1,7 +1,7 @@
 // Package main demonstrates the complete functionality of the TemplatePerformanceAnalyticsManager
 // This example shows how to use all major features including neural pattern analysis,
 // performance metrics collection, and adaptive optimization.
-package main
+package examples
 
 import (
 	"context"
@@ -9,8 +9,8 @@ import (
 	"log"
 	"time"
 
-	manager "github.com/fmoua/email-sender/development/managers/template-performance-manager"
-	"github.com/fmoua/email-sender/development/managers/template-performance-manager/interfaces"
+	manager "EMAIL_SENDER_1/development/managers/template-performance-manager"
+	"EMAIL_SENDER_1/development/managers/template-performance-manager/interfaces"
 )
 
 func main() {
@@ -58,12 +58,12 @@ func setupCallbacks(mgr *manager.Manager) {
 	mgr.SetCallbacks(
 		// Analysis completion callback
 		func(analysis *interfaces.PerformanceAnalysis) {
-			fmt.Printf("✅ Analysis completed: %s (Duration: %v)\n", 
+			fmt.Printf("✅ Analysis completed: %s (Duration: %v)\n",
 				analysis.ID, analysis.Duration)
 		},
 		// Optimization application callback
 		func(result *interfaces.OptimizationResult) {
-			fmt.Printf("⚡ Optimization applied: %s (Gain: %.2f%%)\n", 
+			fmt.Printf("⚡ Optimization applied: %s (Gain: %.2f%%)\n",
 				result.ID, result.PerformanceGain*100)
 		},
 		// Error callback
@@ -205,12 +205,12 @@ The E-commerce Team
 			GeneratedAt: time.Now(),
 		},
 		SessionData: interfaces.SessionData{
-			SessionID:   "session_complex_001",
-			UserID:      "user_002",
-			TemplateID:  "complex_ecommerce_template",
-			StartTime:   time.Now().Add(-15 * time.Minute),
-			EndTime:     time.Now(),
-			Actions:     []string{"view", "edit", "preview", "generate", "send"},
+			SessionID:  "session_complex_001",
+			UserID:     "user_002",
+			TemplateID: "complex_ecommerce_template",
+			StartTime:  time.Now().Add(-15 * time.Minute),
+			EndTime:    time.Now(),
+			Actions:    []string{"view", "edit", "preview", "generate", "send"},
 			Performance: map[string]float64{
 				"generation_time": 4.2,
 				"load_time":       1.1,
@@ -219,9 +219,9 @@ The E-commerce Team
 			},
 		},
 		CurrentConfig: map[string]interface{}{
-			"cache_enabled":     false,
-			"compression":       false,
-			"parallelization":   false,
+			"cache_enabled":      false,
+			"compression":        false,
+			"parallelization":    false,
 			"optimization_level": 0,
 		},
 		TargetMetrics: map[string]float64{
@@ -347,10 +347,10 @@ func generateReport(ctx context.Context, mgr *manager.Manager) {
 		},
 		Format: "json",
 		Options: map[string]interface{}{
-			"include_raw_data":     true,
-			"include_predictions":  true,
+			"include_raw_data":        true,
+			"include_predictions":     true,
 			"include_recommendations": true,
-			"detail_level":        "comprehensive",
+			"detail_level":            "comprehensive",
 		},
 	}
 

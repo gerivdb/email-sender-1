@@ -1,4 +1,4 @@
-package main
+package scripts
 
 import (
 	"encoding/json"
@@ -11,41 +11,41 @@ import (
 
 // NeedsSurveyReport represents documentation needs assessment
 type NeedsSurveyReport struct {
-	GeneratedAt        time.Time              `json:"generated_at"`
-	ProjectName        string                 `json:"project_name"`
-	UserRoles          []UserRole             `json:"user_roles"`
-	DocumentationNeeds []DocumentationNeed    `json:"documentation_needs"`
-	PriorityMatrix     map[string]PriorityItem `json:"priority_matrix"`
-	Recommendations    []string               `json:"recommendations"`
-	Summary            string                 `json:"summary"`
+	GeneratedAt		time.Time		`json:"generated_at"`
+	ProjectName		string			`json:"project_name"`
+	UserRoles		[]UserRole		`json:"user_roles"`
+	DocumentationNeeds	[]DocumentationNeed	`json:"documentation_needs"`
+	PriorityMatrix		map[string]PriorityItem	`json:"priority_matrix"`
+	Recommendations		[]string		`json:"recommendations"`
+	Summary			string			`json:"summary"`
 }
 
 // UserRole represents different types of users and their needs
 type UserRole struct {
-	Name        string   `json:"name"`
-	Description string   `json:"description"`
-	Needs       []string `json:"needs"`
-	Priority    string   `json:"priority"`
-	Usage       string   `json:"usage"`
+	Name		string		`json:"name"`
+	Description	string		`json:"description"`
+	Needs		[]string	`json:"needs"`
+	Priority	string		`json:"priority"`
+	Usage		string		`json:"usage"`
 }
 
 // DocumentationNeed represents a specific documentation requirement
 type DocumentationNeed struct {
-	Category    string   `json:"category"`
-	Type        string   `json:"type"`
-	Description string   `json:"description"`
-	UserRoles   []string `json:"user_roles"`
-	Priority    string   `json:"priority"`
-	Format      string   `json:"format"`
-	Examples    []string `json:"examples"`
+	Category	string		`json:"category"`
+	Type		string		`json:"type"`
+	Description	string		`json:"description"`
+	UserRoles	[]string	`json:"user_roles"`
+	Priority	string		`json:"priority"`
+	Format		string		`json:"format"`
+	Examples	[]string	`json:"examples"`
 }
 
 // PriorityItem represents prioritized documentation items
 type PriorityItem struct {
-	Description string   `json:"description"`
-	Impact      string   `json:"impact"`
-	Effort      string   `json:"effort"`
-	UserRoles   []string `json:"user_roles"`
+	Description	string		`json:"description"`
+	Impact		string		`json:"impact"`
+	Effort		string		`json:"effort"`
+	UserRoles	[]string	`json:"user_roles"`
 }
 
 func main() {
@@ -82,13 +82,13 @@ func generateNeedsSurvey(root string) (*NeedsSurveyReport, error) {
 	priorityMatrix := createPriorityMatrix(documentationNeeds)
 
 	report := &NeedsSurveyReport{
-		GeneratedAt:        time.Now(),
-		ProjectName:        projectName,
-		UserRoles:          userRoles,
-		DocumentationNeeds: documentationNeeds,
-		PriorityMatrix:     priorityMatrix,
-		Recommendations:    generateRecommendations(userRoles, documentationNeeds),
-		Summary:            generateNeedsSummary(userRoles, documentationNeeds),
+		GeneratedAt:		time.Now(),
+		ProjectName:		projectName,
+		UserRoles:		userRoles,
+		DocumentationNeeds:	documentationNeeds,
+		PriorityMatrix:		priorityMatrix,
+		Recommendations:	generateRecommendations(userRoles, documentationNeeds),
+		Summary:		generateNeedsSummary(userRoles, documentationNeeds),
 	}
 
 	return report, nil
@@ -110,7 +110,7 @@ func analyzeProjectType(root string) map[string]bool {
 		// Get relative path for consistent processing
 		relPath, err := filepath.Rel(root, path)
 		if err != nil {
-			relPath = path // fallback to absolute path
+			relPath = path	// fallback to absolute path
 		}
 
 		// Skip certain directories
@@ -122,7 +122,7 @@ func analyzeProjectType(root string) map[string]bool {
 		pathLower := strings.ToLower(relPath)
 
 		// Check for API project
-		if strings.Contains(filename, "api") || strings.Contains(pathLower, "/api/") || 
+		if strings.Contains(filename, "api") || strings.Contains(pathLower, "/api/") ||
 			strings.HasPrefix(pathLower, "api/") {
 			features["api"] = true
 		}
@@ -190,88 +190,88 @@ func defineUserRoles(projectType map[string]bool) []UserRole {
 
 	// Always include basic roles
 	roles = append(roles, UserRole{
-		Name:        "developer",
-		Description: "Software developers working on the project",
+		Name:		"developer",
+		Description:	"Software developers working on the project",
 		Needs: []string{
 			"API documentation", "code examples", "setup instructions",
 			"development guidelines", "testing guides", "architecture overview",
 		},
-		Priority: "high",
-		Usage:    "Daily development work, onboarding, debugging",
+		Priority:	"high",
+		Usage:		"Daily development work, onboarding, debugging",
 	})
 
 	roles = append(roles, UserRole{
-		Name:        "user",
-		Description: "End users of the software/service",
+		Name:		"user",
+		Description:	"End users of the software/service",
 		Needs: []string{
 			"user guides", "tutorials", "FAQ", "troubleshooting",
 			"installation instructions", "feature documentation",
 		},
-		Priority: "high",
-		Usage:    "Learning to use the software, solving problems",
+		Priority:	"high",
+		Usage:		"Learning to use the software, solving problems",
 	})
 
 	roles = append(roles, UserRole{
-		Name:        "contributor",
-		Description: "External contributors and open source community",
+		Name:		"contributor",
+		Description:	"External contributors and open source community",
 		Needs: []string{
 			"contribution guidelines", "code of conduct", "development setup",
 			"coding standards", "PR process", "community guidelines",
 		},
-		Priority: "medium",
-		Usage:    "Contributing code, reporting issues, community participation",
+		Priority:	"medium",
+		Usage:		"Contributing code, reporting issues, community participation",
 	})
 
 	// Add role-specific needs based on project type
 	if projectType["api"] {
 		roles = append(roles, UserRole{
-			Name:        "api_consumer",
-			Description: "Developers consuming the API",
+			Name:		"api_consumer",
+			Description:	"Developers consuming the API",
 			Needs: []string{
 				"API reference", "authentication docs", "rate limiting",
 				"error handling", "SDK documentation", "code examples",
 			},
-			Priority: "high",
-			Usage:    "Integrating with the API, troubleshooting API issues",
+			Priority:	"high",
+			Usage:		"Integrating with the API, troubleshooting API issues",
 		})
 	}
 
 	if projectType["cicd"] || projectType["docker"] {
 		roles = append(roles, UserRole{
-			Name:        "devops",
-			Description: "DevOps engineers and system administrators",
+			Name:		"devops",
+			Description:	"DevOps engineers and system administrators",
 			Needs: []string{
 				"deployment guides", "infrastructure docs", "monitoring setup",
 				"backup procedures", "security guidelines", "scaling documentation",
 			},
-			Priority: "medium",
-			Usage:    "Deploying and maintaining the system",
+			Priority:	"medium",
+			Usage:		"Deploying and maintaining the system",
 		})
 	}
 
 	if projectType["testing"] {
 		roles = append(roles, UserRole{
-			Name:        "qa_tester",
-			Description: "Quality assurance and testing professionals",
+			Name:		"qa_tester",
+			Description:	"Quality assurance and testing professionals",
 			Needs: []string{
 				"test procedures", "test data setup", "bug reporting guidelines",
 				"testing environments", "automation guides", "performance testing",
 			},
-			Priority: "medium",
-			Usage:    "Testing the software, validating functionality",
+			Priority:	"medium",
+			Usage:		"Testing the software, validating functionality",
 		})
 	}
 
 	// Add management role for larger projects
 	roles = append(roles, UserRole{
-		Name:        "project_manager",
-		Description: "Project managers and technical leads",
+		Name:		"project_manager",
+		Description:	"Project managers and technical leads",
 		Needs: []string{
 			"project overview", "roadmap", "progress tracking",
 			"team onboarding", "decision records", "status reports",
 		},
-		Priority: "low",
-		Usage:    "Project planning, team coordination, progress tracking",
+		Priority:	"low",
+		Usage:		"Project planning, team coordination, progress tracking",
 	})
 
 	return roles
@@ -282,115 +282,115 @@ func generateDocumentationNeeds(projectType map[string]bool) []DocumentationNeed
 
 	// Core documentation needs
 	needs = append(needs, DocumentationNeed{
-		Category:    "getting_started",
-		Type:        "installation",
-		Description: "Step-by-step installation and setup guide",
-		UserRoles:   []string{"developer", "user", "contributor"},
-		Priority:    "critical",
-		Format:      "markdown",
-		Examples:    []string{"README.md", "INSTALLATION.md", "docs/setup.md"},
+		Category:	"getting_started",
+		Type:		"installation",
+		Description:	"Step-by-step installation and setup guide",
+		UserRoles:	[]string{"developer", "user", "contributor"},
+		Priority:	"critical",
+		Format:		"markdown",
+		Examples:	[]string{"README.md", "INSTALLATION.md", "docs/setup.md"},
 	})
 
 	needs = append(needs, DocumentationNeed{
-		Category:    "getting_started", 
-		Type:        "quick_start",
-		Description: "Quick start guide for immediate productivity",
-		UserRoles:   []string{"developer", "user"},
-		Priority:    "high",
-		Format:      "markdown",
-		Examples:    []string{"QUICKSTART.md", "docs/quickstart.md"},
+		Category:	"getting_started",
+		Type:		"quick_start",
+		Description:	"Quick start guide for immediate productivity",
+		UserRoles:	[]string{"developer", "user"},
+		Priority:	"high",
+		Format:		"markdown",
+		Examples:	[]string{"QUICKSTART.md", "docs/quickstart.md"},
 	})
 
 	needs = append(needs, DocumentationNeed{
-		Category:    "development",
-		Type:        "guidelines",
-		Description: "Development guidelines and coding standards",
-		UserRoles:   []string{"developer", "contributor"},
-		Priority:    "high",
-		Format:      "markdown",
-		Examples:    []string{"CONTRIBUTING.md", "docs/development.md"},
+		Category:	"development",
+		Type:		"guidelines",
+		Description:	"Development guidelines and coding standards",
+		UserRoles:	[]string{"developer", "contributor"},
+		Priority:	"high",
+		Format:		"markdown",
+		Examples:	[]string{"CONTRIBUTING.md", "docs/development.md"},
 	})
 
 	// API-specific documentation
 	if projectType["api"] {
 		needs = append(needs, DocumentationNeed{
-			Category:    "api",
-			Type:        "reference",
-			Description: "Complete API reference with endpoints and examples",
-			UserRoles:   []string{"developer", "api_consumer"},
-			Priority:    "critical",
-			Format:      "openapi",
-			Examples:    []string{"docs/api.md", "swagger.yaml", "openapi.json"},
+			Category:	"api",
+			Type:		"reference",
+			Description:	"Complete API reference with endpoints and examples",
+			UserRoles:	[]string{"developer", "api_consumer"},
+			Priority:	"critical",
+			Format:		"openapi",
+			Examples:	[]string{"docs/api.md", "swagger.yaml", "openapi.json"},
 		})
 
 		needs = append(needs, DocumentationNeed{
-			Category:    "api",
-			Type:        "authentication",
-			Description: "Authentication and authorization documentation",
-			UserRoles:   []string{"api_consumer", "developer"},
-			Priority:    "high",
-			Format:      "markdown",
-			Examples:    []string{"docs/auth.md", "docs/security.md"},
+			Category:	"api",
+			Type:		"authentication",
+			Description:	"Authentication and authorization documentation",
+			UserRoles:	[]string{"api_consumer", "developer"},
+			Priority:	"high",
+			Format:		"markdown",
+			Examples:	[]string{"docs/auth.md", "docs/security.md"},
 		})
 	}
 
 	// Testing documentation
 	if projectType["testing"] {
 		needs = append(needs, DocumentationNeed{
-			Category:    "testing",
-			Type:        "guidelines",
-			Description: "Testing guidelines and best practices",
-			UserRoles:   []string{"developer", "qa_tester"},
-			Priority:    "medium",
-			Format:      "markdown",
-			Examples:    []string{"docs/testing.md", "TEST_GUIDE.md"},
+			Category:	"testing",
+			Type:		"guidelines",
+			Description:	"Testing guidelines and best practices",
+			UserRoles:	[]string{"developer", "qa_tester"},
+			Priority:	"medium",
+			Format:		"markdown",
+			Examples:	[]string{"docs/testing.md", "TEST_GUIDE.md"},
 		})
 	}
 
 	// Deployment documentation
 	if projectType["cicd"] || projectType["docker"] {
 		needs = append(needs, DocumentationNeed{
-			Category:    "deployment",
-			Type:        "guide",
-			Description: "Deployment and infrastructure documentation",
-			UserRoles:   []string{"devops", "developer"},
-			Priority:    "high",
-			Format:      "markdown",
-			Examples:    []string{"docs/deployment.md", "DEPLOY.md"},
+			Category:	"deployment",
+			Type:		"guide",
+			Description:	"Deployment and infrastructure documentation",
+			UserRoles:	[]string{"devops", "developer"},
+			Priority:	"high",
+			Format:		"markdown",
+			Examples:	[]string{"docs/deployment.md", "DEPLOY.md"},
 		})
 	}
 
 	// Architecture documentation
 	needs = append(needs, DocumentationNeed{
-		Category:    "architecture",
-		Type:        "overview",
-		Description: "System architecture and design decisions",
-		UserRoles:   []string{"developer", "project_manager"},
-		Priority:    "medium",
-		Format:      "markdown",
-		Examples:    []string{"docs/architecture.md", "ARCHITECTURE.md"},
+		Category:	"architecture",
+		Type:		"overview",
+		Description:	"System architecture and design decisions",
+		UserRoles:	[]string{"developer", "project_manager"},
+		Priority:	"medium",
+		Format:		"markdown",
+		Examples:	[]string{"docs/architecture.md", "ARCHITECTURE.md"},
 	})
 
 	// User documentation
 	needs = append(needs, DocumentationNeed{
-		Category:    "user",
-		Type:        "guides",
-		Description: "User guides and tutorials",
-		UserRoles:   []string{"user"},
-		Priority:    "high",
-		Format:      "markdown",
-		Examples:    []string{"docs/user-guide.md", "docs/tutorials/"},
+		Category:	"user",
+		Type:		"guides",
+		Description:	"User guides and tutorials",
+		UserRoles:	[]string{"user"},
+		Priority:	"high",
+		Format:		"markdown",
+		Examples:	[]string{"docs/user-guide.md", "docs/tutorials/"},
 	})
 
 	// Troubleshooting
 	needs = append(needs, DocumentationNeed{
-		Category:    "support",
-		Type:        "troubleshooting",
-		Description: "Common issues and troubleshooting guide",
-		UserRoles:   []string{"user", "developer", "devops"},
-		Priority:    "medium",
-		Format:      "markdown",
-		Examples:    []string{"docs/troubleshooting.md", "FAQ.md"},
+		Category:	"support",
+		Type:		"troubleshooting",
+		Description:	"Common issues and troubleshooting guide",
+		UserRoles:	[]string{"user", "developer", "devops"},
+		Priority:	"medium",
+		Format:		"markdown",
+		Examples:	[]string{"docs/troubleshooting.md", "FAQ.md"},
 	})
 
 	return needs
@@ -401,10 +401,10 @@ func createPriorityMatrix(needs []DocumentationNeed) map[string]PriorityItem {
 
 	for _, need := range needs {
 		key := fmt.Sprintf("%s_%s", need.Category, need.Type)
-		
+
 		impact := "medium"
 		effort := "medium"
-		
+
 		// Determine impact based on user roles and priority
 		if len(need.UserRoles) >= 3 || need.Priority == "critical" {
 			impact = "high"
@@ -413,7 +413,7 @@ func createPriorityMatrix(needs []DocumentationNeed) map[string]PriorityItem {
 		} else {
 			impact = "low"
 		}
-		
+
 		// Determine effort based on complexity
 		if need.Type == "reference" || need.Category == "api" {
 			effort = "high"
@@ -424,10 +424,10 @@ func createPriorityMatrix(needs []DocumentationNeed) map[string]PriorityItem {
 		}
 
 		matrix[key] = PriorityItem{
-			Description: need.Description,
-			Impact:      impact,
-			Effort:      effort,
-			UserRoles:   need.UserRoles,
+			Description:	need.Description,
+			Impact:		impact,
+			Effort:		effort,
+			UserRoles:	need.UserRoles,
 		}
 	}
 
@@ -440,7 +440,7 @@ func generateRecommendations(userRoles []UserRole, needs []DocumentationNeed) []
 	// Analyze priorities
 	criticalNeeds := 0
 	highNeeds := 0
-	
+
 	for _, need := range needs {
 		if need.Priority == "critical" {
 			criticalNeeds++
@@ -451,7 +451,7 @@ func generateRecommendations(userRoles []UserRole, needs []DocumentationNeed) []
 
 	// Generate strategic recommendations
 	if criticalNeeds > 0 {
-		recommendations = append(recommendations, 
+		recommendations = append(recommendations,
 			fmt.Sprintf("Focus immediately on %d critical documentation needs", criticalNeeds))
 	}
 
@@ -463,7 +463,7 @@ func generateRecommendations(userRoles []UserRole, needs []DocumentationNeed) []
 	// Role-specific recommendations
 	hasAPIRole := false
 	hasDevOpsRole := false
-	
+
 	for _, role := range userRoles {
 		if role.Name == "api_consumer" {
 			hasAPIRole = true

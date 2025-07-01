@@ -1,4 +1,4 @@
-package main
+package audit_read_file
 
 import (
 	"fmt"
@@ -9,15 +9,15 @@ import (
 )
 
 type Usage struct {
-	FilePath string
-	LineNum  int
-	Context  string
-	Snippet  string
+	FilePath	string
+	LineNum		int
+	Context		string
+	Snippet		string
 }
 
 func main() {
 	var usages []Usage
-	auditDir := "." // Current directory
+	auditDir := "."	// Current directory
 
 	err := filepath.Walk(auditDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -39,7 +39,7 @@ func main() {
 
 		lines := strings.Split(string(content), "\n")
 		for i, line := range lines {
-			if strings.Contains(line, "read_file") { // Simple string match for "read_file"
+			if strings.Contains(line, "read_file") {	// Simple string match for "read_file"
 				// Capture context: 2 lines before, the line itself, and 2 lines after
 				contextLines := []string{}
 				start := i - 2
@@ -55,10 +55,10 @@ func main() {
 				}
 
 				usages = append(usages, Usage{
-					FilePath: path,
-					LineNum:  i + 1, // Line numbers are 1-based
-					Context:  strings.Join(contextLines, "\n"),
-					Snippet:  line,
+					FilePath:	path,
+					LineNum:	i + 1,	// Line numbers are 1-based
+					Context:	strings.Join(contextLines, "\n"),
+					Snippet:	line,
 				})
 			}
 		}

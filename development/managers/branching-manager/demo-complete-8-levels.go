@@ -1,10 +1,10 @@
-package main
+package branching_manager
 
 import (
 	"fmt"
 	"time"
 
-	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
+	"EMAIL_SENDER_1/development/managers/branching-manager/interfaces"
 )
 
 func main() {

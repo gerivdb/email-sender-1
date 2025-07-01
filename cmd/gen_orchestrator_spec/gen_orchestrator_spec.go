@@ -1,4 +1,4 @@
-package main
+package gen_orchestrator_spec
 
 import (
 	"fmt"

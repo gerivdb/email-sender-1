@@ -1,6 +1,8 @@
 package analytics
 
 import (
+	"EMAIL_SENDER_1/development/managers/template-performance-manager/interfaces"
+	"EMAIL_SENDER_1/development/managers/template-performance-manager/internal/analytics"
 	"context"
 	"fmt"
 	"testing"
@@ -8,9 +10,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	"github.com/fmoua/email-sender/development/managers/template-performance-manager/interfaces"
-	"github.com/fmoua/email-sender/development/managers/template-performance-manager/internal/analytics"
 )
 
 func TestMetricsCollector_Initialize(t *testing.T) {
@@ -27,20 +26,20 @@ func TestMetricsCollector_Initialize(t *testing.T) {
 		{
 			name: "Invalid database connection",
 			config: analytics.Config{
-				DatabaseURL:     "",
+				DatabaseURL:        "",
 				CollectionInterval: time.Second,
-				BatchSize:      100,
-				CacheSize:      1000,
+				BatchSize:          100,
+				CacheSize:          1000,
 			},
 			expectError: true,
 		},
 		{
 			name: "Zero batch size",
 			config: analytics.Config{
-				DatabaseURL:     "postgres://localhost:5432/testdb",
+				DatabaseURL:        "postgres://localhost:5432/testdb",
 				CollectionInterval: time.Second,
-				BatchSize:      0,
-				CacheSize:      1000,
+				BatchSize:          0,
+				CacheSize:          1000,
 			},
 			expectError: true,
 		},
@@ -412,20 +411,20 @@ func TestMetricsCollector_GenerateInsights(t *testing.T) {
 
 	metricsData := []interfaces.PerformanceMetrics{
 		{
-			ID:         "metrics_001",
-			TemplateID: "template_001",
-			Timestamp:  time.Now().Add(-30 * time.Minute),
-			Generation: interfaces.GenerationMetrics{Time: 1.5, MemoryUsage: 1024},
+			ID:          "metrics_001",
+			TemplateID:  "template_001",
+			Timestamp:   time.Now().Add(-30 * time.Minute),
+			Generation:  interfaces.GenerationMetrics{Time: 1.5, MemoryUsage: 1024},
 			Performance: interfaces.PerformanceData{ResponseTime: 0.8, Throughput: 100},
-			Quality:    interfaces.QualityMetrics{AccuracyScore: 0.95, ErrorRate: 0.02},
+			Quality:     interfaces.QualityMetrics{AccuracyScore: 0.95, ErrorRate: 0.02},
 		},
 		{
-			ID:         "metrics_002",
-			TemplateID: "template_001",
-			Timestamp:  time.Now().Add(-20 * time.Minute),
-			Generation: interfaces.GenerationMetrics{Time: 1.8, MemoryUsage: 1200},
+			ID:          "metrics_002",
+			TemplateID:  "template_001",
+			Timestamp:   time.Now().Add(-20 * time.Minute),
+			Generation:  interfaces.GenerationMetrics{Time: 1.8, MemoryUsage: 1200},
 			Performance: interfaces.PerformanceData{ResponseTime: 1.0, Throughput: 90},
-			Quality:    interfaces.QualityMetrics{AccuracyScore: 0.92, ErrorRate: 0.05},
+			Quality:     interfaces.QualityMetrics{AccuracyScore: 0.92, ErrorRate: 0.05},
 		},
 	}
 
@@ -520,7 +519,7 @@ func TestMetricsCollector_Start_Stop(t *testing.T) {
 func setupTestMetricsCollector(t *testing.T) interfaces.PerformanceMetricsEngine {
 	config := analytics.DefaultConfig()
 	config.DatabaseURL = "postgres://localhost:5432/testdb" // Mock DB for testing
-	
+
 	collector, err := analytics.NewMetricsCollector(config)
 	require.NoError(t, err)
 
@@ -567,7 +566,7 @@ func BenchmarkMetricsCollector_CollectPerformanceMetrics(b *testing.B) {
 func setupBenchmarkMetricsCollector(b *testing.B) interfaces.PerformanceMetricsEngine {
 	config := analytics.DefaultConfig()
 	config.DatabaseURL = "postgres://localhost:5432/benchmarkdb"
-	
+
 	collector, err := analytics.NewMetricsCollector(config)
 	if err != nil {
 		b.Fatal(err)

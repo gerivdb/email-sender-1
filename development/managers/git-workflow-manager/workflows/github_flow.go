@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/gerivdb/email-sender-1/managers/interfaces"
+	"EMAIL_SENDER_1/managers/interfaces"
 )
 
 // GitHubFlowWorkflow implements the GitHub Flow workflow pattern
@@ -24,12 +24,12 @@ func NewGitHubFlowWorkflow(manager interfaces.GitWorkflowManager) *GitHubFlowWor
 func (g *GitHubFlowWorkflow) CreateFeatureBranch(ctx context.Context, branchName string) (*interfaces.SubBranchInfo, error) {
 	// GitHub Flow all branches are created from main
 	sourceBranch := "main"
-	
+
 	// Ensure branch name is descriptive but simple
 	if !strings.Contains(branchName, "/") {
 		branchName = fmt.Sprintf("feature/%s", strings.ToLower(branchName))
 	}
-	
+
 	subBranchInfo, err := g.manager.CreateSubBranch(ctx, branchName, sourceBranch, g.GetWorkflowType())
 	if err != nil {
 		return nil, err
@@ -56,7 +56,7 @@ func (g *GitHubFlowWorkflow) CreatePullRequest(ctx context.Context, branchName, 
 		SourceBranch: branchName,
 		TargetBranch: "main", // GitHub Flow always merges to main
 	}
-	
+
 	pullRequestInfo, err := g.manager.CreatePullRequest(ctx, prInfo.Title, prInfo.Description, prInfo.SourceBranch, prInfo.TargetBranch)
 	if err != nil {
 		return nil, err
@@ -73,7 +73,7 @@ func (g *GitHubFlowWorkflow) MergeBranch(ctx context.Context, branchName string)
 		SourceBranch: branchName,
 		TargetBranch: "main",
 	}
-	
+
 	_, err := g.manager.CreatePullRequest(ctx, prInfo.Title, prInfo.Description, prInfo.SourceBranch, prInfo.TargetBranch)
 	return err
 }
@@ -82,18 +82,18 @@ func (g *GitHubFlowWorkflow) MergeBranch(ctx context.Context, branchName string)
 func (g *GitHubFlowWorkflow) DeployBranch(ctx context.Context, branchName string) error {
 	// In GitHub Flow, deployment can happen from any branch
 	// This would typically trigger CI/CD pipeline
-	
+
 	// Create a deployment webhook
 	webhook := interfaces.WebhookPayload{
 		Event: "deployment",
 		Data: map[string]interface{}{
-			"branch":     branchName,
-			"workflow":   "github-flow",
-			"action":     "deploy",
-			"timestamp":  "now", // Consider using time.Now() for actual timestamp
+			"branch":    branchName,
+			"workflow":  "github-flow",
+			"action":    "deploy",
+			"timestamp": "now", // Consider using time.Now() for actual timestamp
 		},
 	}
-	
+
 	return g.manager.SendWebhook(ctx, webhook.Event, &webhook)
 }
 
@@ -101,20 +101,20 @@ func (g *GitHubFlowWorkflow) DeployBranch(ctx context.Context, branchName string
 func (g *GitHubFlowWorkflow) ValidateBranchName(branchName string) error {
 	// GitHub Flow is more flexible with branch naming
 	// Just ensure it's not main and has reasonable format
-	
+
 	if branchName == "main" || branchName == "master" {
 		return fmt.Errorf("cannot create branch with protected name '%s'", branchName)
 	}
-	
+
 	// Ensure branch name is not empty and has valid characters
 	if len(branchName) == 0 {
 		return fmt.Errorf("branch name cannot be empty")
 	}
-	
+
 	if strings.Contains(branchName, " ") {
 		return fmt.Errorf("branch name cannot contain spaces")
 	}
-	
+
 	return nil
 }
 
@@ -125,7 +125,7 @@ func (g *GitHubFlowWorkflow) CleanupMergedBranches(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("failed to list branches: %w", err)
 	}
-	
+
 	for _, branch := range branches {
 		if branch.Status == "merged" && branch.Name != "main" && branch.Name != "master" {
 			// Delete the merged branch
@@ -135,7 +135,7 @@ func (g *GitHubFlowWorkflow) CleanupMergedBranches(ctx context.Context) error {
 			// }
 		}
 	}
-	
+
 	return nil
 }
 

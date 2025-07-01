@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
+	"EMAIL_SENDER_1/development/managers/interfaces"
 	"go.uber.org/zap"
 )
 

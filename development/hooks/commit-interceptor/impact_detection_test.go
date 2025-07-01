@@ -1,5 +1,5 @@
 // development/hooks/commit-interceptor/impact_detection_test.go
-package main
+package commit_interceptor
 
 import (
 	"strings"
@@ -14,101 +14,101 @@ import (
 func TestCommitAnalyzer_DetailedImpactDetection(t *testing.T) {
 
 	impactTestCases := []struct {
-		name           string
-		files          []string
-		message        string
-		expectedImpact string
-		reason         string
+		name		string
+		files		[]string
+		message		string
+		expectedImpact	string
+		reason		string
 	}{
 		// Test Case 1: Impact faible - Documentation seule
 		{
-			name:           "Low impact - single documentation",
-			files:          []string{"README.md"},
-			message:        "docs: update installation instructions",
-			expectedImpact: "low",
-			reason:         "Single non-critical documentation file",
+			name:		"Low impact - single documentation",
+			files:		[]string{"README.md"},
+			message:	"docs: update installation instructions",
+			expectedImpact:	"low",
+			reason:		"Single non-critical documentation file",
 		},
 		// Test Case 2: Impact faible - Fichier unique non-critique
 		{
-			name:           "Low impact - single utility file",
-			files:          []string{"utils/helper.go"},
-			message:        "refactor: clean up utility functions",
-			expectedImpact: "low",
-			reason:         "Single non-critical utility file",
+			name:		"Low impact - single utility file",
+			files:		[]string{"utils/helper.go"},
+			message:	"refactor: clean up utility functions",
+			expectedImpact:	"low",
+			reason:		"Single non-critical utility file",
 		},
 
 		// Test Case 3: Impact moyen - Plusieurs fichiers sources
 		{
-			name:           "Medium impact - multiple source files",
-			files:          []string{"auth.go", "user.go", "handler.go"},
-			message:        "feat: add user management",
-			expectedImpact: "medium",
-			reason:         "3-5 source files modified",
+			name:		"Medium impact - multiple source files",
+			files:		[]string{"auth.go", "user.go", "handler.go"},
+			message:	"feat: add user management",
+			expectedImpact:	"medium",
+			reason:		"3-5 source files modified",
 		},
 		// Test Case 4: Impact moyen - Fichier critique main.go avec feature
 		{
-			name:           "Medium impact - critical file main.go with feature",
-			files:          []string{"main.go"},
-			message:        "feat: restructure application entry point",
-			expectedImpact: "medium",
-			reason:         "Critical file main.go modified with feature (escalated from low)",
+			name:		"Medium impact - critical file main.go with feature",
+			files:		[]string{"main.go"},
+			message:	"feat: restructure application entry point",
+			expectedImpact:	"medium",
+			reason:		"Critical file main.go modified with feature (escalated from low)",
 		},
 		// Test Case 5: Impact moyen - Dockerfile seul avec modification autre
 		{
-			name:           "Medium impact - Dockerfile with chore",
-			files:          []string{"Dockerfile"},
-			message:        "chore: update base image",
-			expectedImpact: "medium",
-			reason:         "Critical infrastructure file modified",
+			name:		"Medium impact - Dockerfile with chore",
+			files:		[]string{"Dockerfile"},
+			message:	"chore: update base image",
+			expectedImpact:	"medium",
+			reason:		"Critical infrastructure file modified",
 		},
 
 		// Test Case 6: Impact élevé - Nombreux fichiers (6+)
 		{
-			name:           "High impact - many files",
-			files:          []string{"a.go", "b.go", "c.go", "d.go", "e.go", "f.go", "g.go"},
-			message:        "refactor: major architectural changes",
-			expectedImpact: "high",
-			reason:         "6+ files modified",
+			name:		"High impact - many files",
+			files:		[]string{"a.go", "b.go", "c.go", "d.go", "e.go", "f.go", "g.go"},
+			message:	"refactor: major architectural changes",
+			expectedImpact:	"high",
+			reason:		"6+ files modified",
 		},
 		// Test Case 7: Impact élevé - Message critique
 		{
-			name:           "High impact - critical message",
-			files:          []string{"auth.go"},
-			message:        "fix: critical security vulnerability in authentication",
-			expectedImpact: "high",
-			reason:         "Message contains 'critical' keyword",
+			name:		"High impact - critical message",
+			files:		[]string{"auth.go"},
+			message:	"fix: critical security vulnerability in authentication",
+			expectedImpact:	"high",
+			reason:		"Message contains 'critical' keyword",
 		},
 		// Test Case 8: Impact élevé - Message urgent
 		{
-			name:           "High impact - urgent message",
-			files:          []string{"api.go"},
-			message:        "hotfix: urgent fix for API rate limiting",
-			expectedImpact: "high",
-			reason:         "Message contains 'urgent' keyword",
+			name:		"High impact - urgent message",
+			files:		[]string{"api.go"},
+			message:	"hotfix: urgent fix for API rate limiting",
+			expectedImpact:	"high",
+			reason:		"Message contains 'urgent' keyword",
 		},
 		// Test Case 9: Impact élevé - Fix sur fichier critique
 		{
-			name:           "High impact - fix on critical file",
-			files:          []string{"main.go"},
-			message:        "fix: startup crash on invalid config",
-			expectedImpact: "high",
-			reason:         "Fix on critical file main.go always high impact",
+			name:		"High impact - fix on critical file",
+			files:		[]string{"main.go"},
+			message:	"fix: startup crash on invalid config",
+			expectedImpact:	"high",
+			reason:		"Fix on critical file main.go always high impact",
 		},
 		// Test Case 10: Impact élevé - Refactor sur fichier critique
 		{
-			name:           "High impact - refactor on critical file",
-			files:          []string{"go.mod"},
-			message:        "refactor: update dependency management",
-			expectedImpact: "high",
-			reason:         "Refactor on critical file go.mod always high impact",
+			name:		"High impact - refactor on critical file",
+			files:		[]string{"go.mod"},
+			message:	"refactor: update dependency management",
+			expectedImpact:	"high",
+			reason:		"Refactor on critical file go.mod always high impact",
 		},
 		// Test Case 11: Impact élevé - Fichiers d'infrastructure multiples
 		{
-			name:           "High impact - infrastructure files",
-			files:          []string{"Dockerfile", "go.mod", ".github/workflows/ci.yml"},
-			message:        "chore: update infrastructure configuration",
-			expectedImpact: "high",
-			reason:         "Multiple infrastructure/config files",
+			name:		"High impact - infrastructure files",
+			files:		[]string{"Dockerfile", "go.mod", ".github/workflows/ci.yml"},
+			message:	"chore: update infrastructure configuration",
+			expectedImpact:	"high",
+			reason:		"Multiple infrastructure/config files",
 		},
 	}
 	for _, tc := range impactTestCases {
@@ -118,10 +118,10 @@ func TestCommitAnalyzer_DetailedImpactDetection(t *testing.T) {
 
 			// Analyse complète du commit
 			analysis, err := analyzer.AnalyzeCommit(&CommitData{
-				Hash:    "abc123def456", // Hash requis pour validation
-				Message: tc.message,
-				Author:  "test-author <test@example.com>", // Author requis pour validation
-				Files:   tc.files,
+				Hash:		"abc123def456",	// Hash requis pour validation
+				Message:	tc.message,
+				Author:		"test-author <test@example.com>",	// Author requis pour validation
+				Files:		tc.files,
 			})
 
 			// Validations de base
@@ -173,7 +173,7 @@ func TestCommitAnalyzer_DetailedImpactDetection(t *testing.T) {
 				if strings.Contains(strings.ToLower(tc.message), "critical") ||
 					strings.Contains(strings.ToLower(tc.message), "urgent") {
 					hasValidReason = true
-				} // Vérifier fichiers critiques avec fix/refactor
+				}	// Vérifier fichiers critiques avec fix/refactor
 				criticalFileCount := 0
 				for _, file := range tc.files {
 					if analyzer.isCriticalFile(file) {
@@ -203,55 +203,55 @@ func TestCommitAnalyzer_ComprehensiveCriticalFiles(t *testing.T) {
 
 	criticalFiles := map[string]bool{
 		// Fichiers d'entrée principaux
-		"main.go":   true,
-		"index.js":  true,
-		"app.js":    true,
-		"server.js": true,
+		"main.go":	true,
+		"index.js":	true,
+		"app.js":	true,
+		"server.js":	true,
 
 		// Fichiers de configuration Docker
-		"Dockerfile":          true,
-		"docker-compose.yml":  true,
-		"docker-compose.yaml": true,
+		"Dockerfile":		true,
+		"docker-compose.yml":	true,
+		"docker-compose.yaml":	true,
 
 		// Fichiers de gestion des dépendances
-		"go.mod":            true,
-		"go.sum":            true, // Ajout pour Go
-		"package.json":      true,
-		"package-lock.json": true, // Ajout pour npm
-		"requirements.txt":  true,
-		"Pipfile":           true, // Ajout pour Python
+		"go.mod":		true,
+		"go.sum":		true,	// Ajout pour Go
+		"package.json":		true,
+		"package-lock.json":	true,	// Ajout pour npm
+		"requirements.txt":	true,
+		"Pipfile":		true,	// Ajout pour Python
 
 		// Fichiers de configuration
-		"config.yml":    true,
-		"config.yaml":   true,
-		"config.json":   true,
-		"config.toml":   true, // Ajout
-		"settings.json": true, // Ajout
+		"config.yml":		true,
+		"config.yaml":		true,
+		"config.json":		true,
+		"config.toml":		true,	// Ajout
+		"settings.json":	true,	// Ajout
 
 		// Workflows CI/CD
-		".github/workflows/ci.yml":   true,
-		".github/workflows/cd.yml":   true,
-		".github/workflows/test.yml": true,
-		".gitlab-ci.yml":             true, // Ajout GitLab
+		".github/workflows/ci.yml":	true,
+		".github/workflows/cd.yml":	true,
+		".github/workflows/test.yml":	true,
+		".gitlab-ci.yml":		true,	// Ajout GitLab
 
 		// Fichiers de build
-		"Makefile":     true,
-		"makefile":     true, // Variante lowercase
-		"build.gradle": true, // Ajout Java
-		"pom.xml":      true, // Ajout Maven
+		"Makefile":	true,
+		"makefile":	true,	// Variante lowercase
+		"build.gradle":	true,	// Ajout Java
+		"pom.xml":	true,	// Ajout Maven
 
 		// Fichiers NON critiques
-		"utils.go":            false,
-		"helper.go":           false,
-		"README.md":           false,
-		"CHANGELOG.md":        false,
-		"test_helper.go":      false,
-		"example.txt":         false,
-		"docs/guide.md":       false,
-		"internal/utils.go":   false,
-		"pkg/helper/util.go":  false,
-		"vendor/library.go":   false, // Dépendances
-		"node_modules/lib.js": false, // Dépendances npm
+		"utils.go":		false,
+		"helper.go":		false,
+		"README.md":		false,
+		"CHANGELOG.md":		false,
+		"test_helper.go":	false,
+		"example.txt":		false,
+		"docs/guide.md":	false,
+		"internal/utils.go":	false,
+		"pkg/helper/util.go":	false,
+		"vendor/library.go":	false,	// Dépendances
+		"node_modules/lib.js":	false,	// Dépendances npm
 	}
 
 	for filename, expected := range criticalFiles {
@@ -269,67 +269,67 @@ func TestCommitAnalyzer_AdvancedImpactEscalation(t *testing.T) {
 	analyzer := NewCommitAnalyzer(getDefaultConfig())
 
 	escalationTestCases := []struct {
-		name           string
-		files          []string
-		changeType     string
-		message        string
-		baseImpact     string
-		expectedImpact string
-		escalationRule string
+		name		string
+		files		[]string
+		changeType	string
+		message		string
+		baseImpact	string
+		expectedImpact	string
+		escalationRule	string
 	}{
 		{
-			name:           "Feature on critical file: low -> medium",
-			files:          []string{"main.go"},
-			changeType:     "feature",
-			message:        "feat: add new startup option",
-			baseImpact:     "low",
-			expectedImpact: "medium",
-			escalationRule: "Critical file with feature escalates by one level",
+			name:		"Feature on critical file: low -> medium",
+			files:		[]string{"main.go"},
+			changeType:	"feature",
+			message:	"feat: add new startup option",
+			baseImpact:	"low",
+			expectedImpact:	"medium",
+			escalationRule:	"Critical file with feature escalates by one level",
 		},
 		{
-			name:           "Feature on multiple files including critical: medium -> high",
-			files:          []string{"auth.go", "user.go", "main.go", "config.go"},
-			changeType:     "feature",
-			message:        "feat: comprehensive auth refactor",
-			baseImpact:     "medium",
-			expectedImpact: "high",
-			escalationRule: "Critical file with feature in multi-file change escalates",
+			name:		"Feature on multiple files including critical: medium -> high",
+			files:		[]string{"auth.go", "user.go", "main.go", "config.go"},
+			changeType:	"feature",
+			message:	"feat: comprehensive auth refactor",
+			baseImpact:	"medium",
+			expectedImpact:	"high",
+			escalationRule:	"Critical file with feature in multi-file change escalates",
 		},
 		{
-			name:           "Fix on critical file: any -> high",
-			files:          []string{"main.go"},
-			changeType:     "fix",
-			message:        "fix: resolve startup crash",
-			baseImpact:     "low",
-			expectedImpact: "high",
-			escalationRule: "Fix on critical file always high impact",
+			name:		"Fix on critical file: any -> high",
+			files:		[]string{"main.go"},
+			changeType:	"fix",
+			message:	"fix: resolve startup crash",
+			baseImpact:	"low",
+			expectedImpact:	"high",
+			escalationRule:	"Fix on critical file always high impact",
 		},
 		{
-			name:           "Refactor on critical file: any -> high",
-			files:          []string{"go.mod"},
-			changeType:     "refactor",
-			message:        "refactor: restructure dependencies",
-			baseImpact:     "low",
-			expectedImpact: "high",
-			escalationRule: "Refactor on critical file always high impact",
+			name:		"Refactor on critical file: any -> high",
+			files:		[]string{"go.mod"},
+			changeType:	"refactor",
+			message:	"refactor: restructure dependencies",
+			baseImpact:	"low",
+			expectedImpact:	"high",
+			escalationRule:	"Refactor on critical file always high impact",
 		},
 		{
-			name:           "Non-critical change type on critical file: low -> medium",
-			files:          []string{"Dockerfile"},
-			changeType:     "chore",
-			message:        "chore: update base image version",
-			baseImpact:     "low",
-			expectedImpact: "medium",
-			escalationRule: "Other types on critical file escalate to at least medium",
+			name:		"Non-critical change type on critical file: low -> medium",
+			files:		[]string{"Dockerfile"},
+			changeType:	"chore",
+			message:	"chore: update base image version",
+			baseImpact:	"low",
+			expectedImpact:	"medium",
+			escalationRule:	"Other types on critical file escalate to at least medium",
 		},
 	}
 	for _, tc := range escalationTestCases {
 		t.Run(tc.name, func(t *testing.T) {
 			analysis, err := analyzer.AnalyzeCommit(&CommitData{
-				Hash:    "test123abc456", // Hash requis pour validation
-				Message: tc.message,
-				Author:  "test-user <test@example.com>", // Author requis pour validation
-				Files:   tc.files,
+				Hash:		"test123abc456",	// Hash requis pour validation
+				Message:	tc.message,
+				Author:		"test-user <test@example.com>",	// Author requis pour validation
+				Files:		tc.files,
 			})
 
 			require.NoError(t, err)
@@ -355,48 +355,48 @@ func TestCommitAnalyzer_CriticalKeywordImpact(t *testing.T) {
 	analyzer := NewCommitAnalyzer(getDefaultConfig())
 
 	keywordTestCases := []struct {
-		name           string
-		message        string
-		files          []string
-		expectedImpact string
-		keyword        string
+		name		string
+		message		string
+		files		[]string
+		expectedImpact	string
+		keyword		string
 	}{
 		{
-			name:           "Critical keyword forces high impact",
-			message:        "fix: critical vulnerability in auth system",
-			files:          []string{"auth.go"},
-			expectedImpact: "high",
-			keyword:        "critical",
+			name:		"Critical keyword forces high impact",
+			message:	"fix: critical vulnerability in auth system",
+			files:		[]string{"auth.go"},
+			expectedImpact:	"high",
+			keyword:	"critical",
 		},
 		{
-			name:           "Urgent keyword forces high impact",
-			message:        "hotfix: urgent memory leak fix",
-			files:          []string{"memory.go"},
-			expectedImpact: "high",
-			keyword:        "urgent",
+			name:		"Urgent keyword forces high impact",
+			message:	"hotfix: urgent memory leak fix",
+			files:		[]string{"memory.go"},
+			expectedImpact:	"high",
+			keyword:	"urgent",
 		},
 		{
-			name:           "Critical in description forces high impact",
-			message:        "fix: resolve issue that causes critical system failure",
-			files:          []string{"system.go"},
-			expectedImpact: "high",
-			keyword:        "critical",
+			name:		"Critical in description forces high impact",
+			message:	"fix: resolve issue that causes critical system failure",
+			files:		[]string{"system.go"},
+			expectedImpact:	"high",
+			keyword:	"critical",
 		},
 		{
-			name:           "Urgent hotfix forces high impact regardless of files",
-			message:        "hotfix: urgent production issue",
-			files:          []string{"utils.go"}, // Non-critical file
-			expectedImpact: "high",
-			keyword:        "urgent",
+			name:		"Urgent hotfix forces high impact regardless of files",
+			message:	"hotfix: urgent production issue",
+			files:		[]string{"utils.go"},	// Non-critical file
+			expectedImpact:	"high",
+			keyword:	"urgent",
 		},
 	}
 	for _, tc := range keywordTestCases {
 		t.Run(tc.name, func(t *testing.T) {
 			analysis, err := analyzer.AnalyzeCommit(&CommitData{
-				Hash:    "keyword789test", // Hash requis pour validation
-				Message: tc.message,
-				Author:  "test-user <test@example.com>", // Author requis pour validation
-				Files:   tc.files,
+				Hash:		"keyword789test",	// Hash requis pour validation
+				Message:	tc.message,
+				Author:		"test-user <test@example.com>",	// Author requis pour validation
+				Files:		tc.files,
 			})
 
 			require.NoError(t, err)

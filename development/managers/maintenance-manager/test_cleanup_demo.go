@@ -1,13 +1,12 @@
-package main
+package maintenance_manager
 
 import (
+	"EMAIL_SENDER_1/maintenance-manager/src/cleanup"
+	"EMAIL_SENDER_1/maintenance-manager/src/core"
 	"context"
 	"fmt"
 	"log"
 	"time"
-
-	"github.com/gerivdb/email-sender-1/maintenance-manager/src/cleanup"
-	"github.com/gerivdb/email-sender-1/maintenance-manager/src/core"
 )
 
 func main() {

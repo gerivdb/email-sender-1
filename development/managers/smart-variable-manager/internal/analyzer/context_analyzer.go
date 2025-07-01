@@ -1,6 +1,7 @@
 package analyzer
 
 import (
+	"EMAIL_SENDER_1/development/managers/smart-variable-manager/interfaces"
 	"context"
 	"fmt"
 	"go/ast"
@@ -11,8 +12,6 @@ import (
 	"regexp"
 	"strings"
 	"time"
-
-	"github.com/chrlesur/Email_Sender/development/managers/smart-variable-manager/interfaces"
 )
 
 // ContextAnalyzer provides comprehensive project context analysis
@@ -106,7 +105,7 @@ func (ca *ContextAnalyzer) detectLanguageAndFramework(projectPath string, projec
 	goModPath := filepath.Join(projectPath, "go.mod")
 	if _, err := os.Stat(goModPath); err == nil {
 		projectInfo.Language = "go"
-		
+
 		// Try to detect Go framework
 		framework := ca.detectGoFramework(projectPath)
 		projectInfo.Framework = framework
@@ -140,7 +139,7 @@ func (ca *ContextAnalyzer) detectGoFramework(projectPath string) string {
 	}
 
 	content := string(goModContent)
-	
+
 	// Check for popular Go frameworks
 	if strings.Contains(content, "github.com/gin-gonic/gin") {
 		return "gin"
@@ -496,10 +495,10 @@ func (ca *ContextAnalyzer) analyzeFunctionPattern(funcDecl *ast.FuncDecl) interf
 		for i, param := range funcDecl.Type.Params.List {
 			for _, name := range param.Names {
 				paramPattern := interfaces.ParameterPattern{
-					Name:     name.Name,
-					Type:     ca.typeToString(param.Type),
-					Position: i,
-					Optional: false, // Go doesn't have optional parameters
+					Name:      name.Name,
+					Type:      ca.typeToString(param.Type),
+					Position:  i,
+					Optional:  false, // Go doesn't have optional parameters
 					Frequency: 1,
 				}
 				pattern.Parameters = append(pattern.Parameters, paramPattern)
@@ -520,7 +519,7 @@ func (ca *ContextAnalyzer) analyzeFunctionPattern(funcDecl *ast.FuncDecl) interf
 // categorizeFunctionName categorizes a function based on its name
 func (ca *ContextAnalyzer) categorizeFunctionName(name string) string {
 	name = strings.ToLower(name)
-	
+
 	if strings.HasPrefix(name, "handle") || strings.HasSuffix(name, "handler") {
 		return "handler"
 	}
@@ -542,7 +541,7 @@ func (ca *ContextAnalyzer) categorizeFunctionName(name string) string {
 	if strings.HasPrefix(name, "test") || strings.HasSuffix(name, "test") {
 		return "test"
 	}
-	
+
 	return "business"
 }
 
@@ -644,12 +643,12 @@ func (ca *ContextAnalyzer) analyzeGoDependencies(goModPath string, dependencies 
 
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
-		
+
 		if line == "require (" {
 			inRequireBlock = true
 			continue
 		}
-		
+
 		if line == ")" && inRequireBlock {
 			inRequireBlock = false
 			continue
@@ -670,7 +669,7 @@ func (ca *ContextAnalyzer) analyzeGoDependencies(goModPath string, dependencies 
 func (ca *ContextAnalyzer) parseGoDependency(line string) *interfaces.DependencyInfo {
 	line = strings.TrimSpace(line)
 	line = strings.TrimPrefix(line, "require ")
-	
+
 	parts := strings.Fields(line)
 	if len(parts) < 2 {
 		return nil
@@ -820,16 +819,16 @@ func (ca *ContextAnalyzer) detectStyleGuide(projectPath string) string {
 func (ca *ContextAnalyzer) analyzeEnvironment(envInfo *interfaces.EnvironmentInfo) error {
 	// Detect IDE (simplified - would need more sophisticated detection)
 	envInfo.IDE = ca.detectIDE()
-	
+
 	// Get Go version
 	envInfo.GoVersion = ca.getGoVersion()
-	
+
 	// Detect OS
 	envInfo.OperatingSystem = ca.detectOS()
-	
+
 	// Detect available tools
 	envInfo.ToolsAvailable = ca.detectAvailableTools()
-	
+
 	// Initialize other fields
 	envInfo.Extensions = []string{} // Would need IDE-specific detection
 	envInfo.Configuration = make(map[string]string)
@@ -846,7 +845,7 @@ func (ca *ContextAnalyzer) detectIDE() string {
 	if _, err := os.Stat(".idea"); err == nil {
 		return "intellij"
 	}
-	
+
 	return "unknown"
 }
 
@@ -865,15 +864,15 @@ func (ca *ContextAnalyzer) detectOS() string {
 // detectAvailableTools detects available development tools
 func (ca *ContextAnalyzer) detectAvailableTools() []string {
 	tools := []string{}
-	
+
 	// This would check if tools are available in PATH
 	commonTools := []string{"git", "docker", "make", "golangci-lint", "gofmt", "goimports"}
-	
+
 	for _, tool := range commonTools {
 		// Simplified check - would use exec.LookPath in real implementation
 		tools = append(tools, tool)
 	}
-	
+
 	return tools
 }
 

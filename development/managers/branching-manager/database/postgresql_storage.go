@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 	_ "github.com/lib/pq"
 
-	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
+	"EMAIL_SENDER_1/development/managers/branching-manager/interfaces"
 )
 
 // PostgreSQLStorageManager implements StorageManager interface with PostgreSQL backend

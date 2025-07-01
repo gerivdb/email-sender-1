@@ -1,6 +1,6 @@
 // Simple persistent bridge for PowerShell integration testing
 // Section 8.2 - Optimisation Surveillance Temps Réel
-package main
+package demo
 
 import (
 	"email_sender/development/managers/bridges"
@@ -13,13 +13,13 @@ func RunPersistentBridge() {
 	fmt.Println("Section 8.2 - Optimisation Surveillance Temps Réel")
 	// Create a simple configuration for testing
 	config := bridges.RealtimeBridgeConfig{
-		HTTPPort:         8080,
-		WatchPaths:       []string{".", "../../../scripts"},
-		LogFilePath:      "./integration_test.log",
-		DebounceMs:       500,
-		MaxEvents:        50,
-		EnableFileWatch:  true,
-		EnableHTTPServer: true,
+		HTTPPort:		8080,
+		WatchPaths:		[]string{".", "../../../scripts"},
+		LogFilePath:		"./integration_test.log",
+		DebounceMs:		500,
+		MaxEvents:		50,
+		EnableFileWatch:	true,
+		EnableHTTPServer:	true,
 	}
 
 	bridge, err := bridges.NewRealtimeBridge(config)

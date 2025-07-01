@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
 	baseInterfaces "./interfaces"
+	"EMAIL_SENDER_1/development/managers/contextual-memory-manager/interfaces"
 )
 
 // retrievalManagerImpl implÃ©mente RetrievalManager en utilisant PostgreSQL et SQLite
@@ -262,7 +262,7 @@ func (rm *retrievalManagerImpl) DeleteContext(ctx context.Context, contextID str
 		DELETE FROM contextual_actions 
 		WHERE id = $1 OR session_id = $1 OR metadata->>'context_id' = $1
 	`
-	
+
 	result, err := tx.ExecContext(ctx, deleteActionsQuery, contextID)
 	if err != nil {
 		return fmt.Errorf("failed to delete contextual actions: %w", err)

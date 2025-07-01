@@ -16,7 +16,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"EMAIL_SENDER_1/tools/core/toolkit"
 	// managerToolkit "github.com/gerivdb/email-sender-1/tools/cmd/manager-toolkit" // Commented out to break import cycle
 )
 
@@ -669,5 +669,3 @@ func main() {
 		checker.Execute(ctx, options)
 	}
 }
-
-

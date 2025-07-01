@@ -12,7 +12,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
+	"EMAIL_SENDER_1/development/managers/branching-manager/interfaces"
 )
 
 // GitOperationsManager handles real Git operations

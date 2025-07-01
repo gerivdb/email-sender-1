@@ -1,4 +1,4 @@
-package main
+package managers
 
 import (
 	"context"
@@ -67,16 +67,16 @@ func main() {
 
 // Simulation d'une API Gateway simple pour les tests
 type MockAPIGateway struct {
-	port   int
-	server *http.ServeMux
-	logger *zap.Logger
+	port	int
+	server	*http.ServeMux
+	logger	*zap.Logger
 }
 
 func NewMockAPIGateway(port int, logger *zap.Logger) *MockAPIGateway {
 	return &MockAPIGateway{
-		port:   port,
-		server: http.NewServeMux(),
-		logger: logger,
+		port:	port,
+		server:	http.NewServeMux(),
+		logger:	logger,
 	}
 }
 
@@ -173,8 +173,8 @@ func testAPIGatewayStartup(ctx context.Context, logger *zap.Logger) error {
 
 	// Démarrer le serveur en arrière-plan
 	server := &http.Server{
-		Addr:    ":8080",
-		Handler: gateway.server,
+		Addr:		":8080",
+		Handler:	gateway.server,
 	}
 
 	go func() {

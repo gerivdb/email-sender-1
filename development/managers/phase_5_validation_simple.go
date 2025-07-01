@@ -1,4 +1,4 @@
-package main
+package managers
 
 import (
 	"fmt"
@@ -99,39 +99,39 @@ func validatePerformanceRequirements() {
 
 // APIGatewaySpec définit la spécification complète de l'API Gateway
 type APIGatewaySpec struct {
-	Version     string
-	BaseURL     string
-	Endpoints   []EndpointSpec
-	Middleware  []string
-	Security    SecuritySpec
-	Performance PerformanceSpec
+	Version		string
+	BaseURL		string
+	Endpoints	[]EndpointSpec
+	Middleware	[]string
+	Security	SecuritySpec
+	Performance	PerformanceSpec
 }
 
 type EndpointSpec struct {
-	Method      string
-	Path        string
-	Description string
-	Auth        bool
-	RateLimit   bool
+	Method		string
+	Path		string
+	Description	string
+	Auth		bool
+	RateLimit	bool
 }
 
 type SecuritySpec struct {
-	AuthType    string
-	TokenFormat string
-	PublicPaths []string
+	AuthType	string
+	TokenFormat	string
+	PublicPaths	[]string
 }
 
 type PerformanceSpec struct {
-	MaxRequestsPerSecond int
-	BurstLimit           int
-	TimeoutSeconds       int
-	TargetLatencyMs      int
+	MaxRequestsPerSecond	int
+	BurstLimit		int
+	TimeoutSeconds		int
+	TargetLatencyMs		int
 }
 
 func getAPIGatewaySpecification() APIGatewaySpec {
 	return APIGatewaySpec{
-		Version: "v57-consolidation",
-		BaseURL: "http://localhost:8080",
+		Version:	"v57-consolidation",
+		BaseURL:	"http://localhost:8080",
 		Endpoints: []EndpointSpec{
 			{"GET", "/health", "Health check", false, false},
 			{"GET", "/ready", "Readiness check", false, false},
@@ -143,17 +143,17 @@ func getAPIGatewaySpecification() APIGatewaySpec {
 			{"GET", "/api/v1/config/:key", "Get config", true, true},
 			{"GET", "/api/v1/monitoring/status", "System status", true, true},
 		},
-		Middleware: []string{"CORS", "RateLimit", "Logging", "Auth"},
+		Middleware:	[]string{"CORS", "RateLimit", "Logging", "Auth"},
 		Security: SecuritySpec{
-			AuthType:    "Bearer",
-			TokenFormat: "Bearer valid-token",
-			PublicPaths: []string{"/health", "/ready", "/docs"},
+			AuthType:	"Bearer",
+			TokenFormat:	"Bearer valid-token",
+			PublicPaths:	[]string{"/health", "/ready", "/docs"},
 		},
 		Performance: PerformanceSpec{
-			MaxRequestsPerSecond: 1000,
-			BurstLimit:           100,
-			TimeoutSeconds:       30,
-			TargetLatencyMs:      100,
+			MaxRequestsPerSecond:	1000,
+			BurstLimit:		100,
+			TimeoutSeconds:		30,
+			TargetLatencyMs:	100,
 		},
 	}
 }

@@ -6,15 +6,15 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/gerivdb/email-sender-1/managers/interfaces"
+	"EMAIL_SENDER_1/managers/interfaces"
 )
 
 // CustomWorkflow implements a user-defined custom workflow
 type CustomWorkflow struct {
-	manager         interfaces.GitWorkflowManager
-	config          map[string]interface{}
-	branchPatterns  map[string]*regexp.Regexp
-	mergeRules      map[string][]string
+	manager           interfaces.GitWorkflowManager
+	config            map[string]interface{}
+	branchPatterns    map[string]*regexp.Regexp
+	mergeRules        map[string][]string
 	protectedBranches []string
 }
 
@@ -27,7 +27,7 @@ func NewCustomWorkflow(manager interfaces.GitWorkflowManager, config map[string]
 		mergeRules:        make(map[string][]string),
 		protectedBranches: []string{"main", "master"},
 	}
-	
+
 	workflow.loadConfig()
 	return workflow
 }
@@ -44,7 +44,7 @@ func (c *CustomWorkflow) loadConfig() {
 			}
 		}
 	}
-	
+
 	// Load merge rules
 	if rules, ok := c.config["merge_rules"].(map[string]interface{}); ok {
 		for source, targets := range rules {
@@ -59,7 +59,7 @@ func (c *CustomWorkflow) loadConfig() {
 			}
 		}
 	}
-	
+
 	// Load protected branches
 	if protected, ok := c.config["protected_branches"].([]interface{}); ok {
 		c.protectedBranches = []string{}
@@ -77,12 +77,12 @@ func (c *CustomWorkflow) CreateBranch(ctx context.Context, branchName, sourceBra
 	if err := c.ValidateBranchName(branchName); err != nil {
 		return nil, err
 	}
-	
+
 	// Validate source branch
 	if sourceBranch == "" {
 		sourceBranch = c.getDefaultSourceBranch(branchName)
 	}
-	
+
 	subBranchInfo, err := c.manager.CreateSubBranch(ctx, branchName, sourceBranch, c.GetWorkflowType())
 	if err != nil {
 		return nil, err
@@ -96,11 +96,11 @@ func (c *CustomWorkflow) CreatePullRequest(ctx context.Context, sourceBranch, ta
 	if err := c.validateMergeRule(sourceBranch, targetBranch); err != nil {
 		return nil, err
 	}
-	
+
 	// The manager.CreatePullRequest method now takes individual string arguments
 	// The prInfo struct is not passed directly to the manager method anymore
 	// We still might want to construct it if other local methods use it, but the call to manager changes.
-	
+
 	pullRequestInfo, err := c.manager.CreatePullRequest(ctx, title, description, sourceBranch, targetBranch)
 	if err != nil {
 		return nil, err
@@ -116,12 +116,12 @@ func (c *CustomWorkflow) ValidateBranchName(branchName string) error {
 			return fmt.Errorf("cannot create branch with protected name '%s'", branchName)
 		}
 	}
-	
+
 	// If no custom patterns are defined, use basic validation
 	if len(c.branchPatterns) == 0 {
 		return c.basicValidation(branchName)
 	}
-	
+
 	// Check against custom patterns
 	for patternName, pattern := range c.branchPatterns {
 		if pattern.MatchString(branchName) {
@@ -130,7 +130,7 @@ func (c *CustomWorkflow) ValidateBranchName(branchName string) error {
 		}
 		_ = patternName // Avoid unused variable warning
 	}
-	
+
 	return fmt.Errorf("branch name '%s' does not match any configured patterns", branchName)
 }
 
@@ -167,7 +167,7 @@ func (c *CustomWorkflow) SetBranchPattern(name, pattern string) error {
 	if err != nil {
 		return fmt.Errorf("invalid regex pattern '%s': %w", pattern, err)
 	}
-	
+
 	c.branchPatterns[name] = regex
 	return nil
 }
@@ -218,11 +218,11 @@ func (c *CustomWorkflow) basicValidation(branchName string) error {
 	if len(branchName) == 0 {
 		return fmt.Errorf("branch name cannot be empty")
 	}
-	
+
 	if len(branchName) > 250 {
 		return fmt.Errorf("branch name too long (max 250 characters)")
 	}
-	
+
 	// Check for invalid characters
 	invalidChars := []string{" ", "\t", "\n", "..", "~", "^", ":", "?", "*", "[", "\\", "@", "{", "}"}
 	for _, char := range invalidChars {
@@ -230,7 +230,7 @@ func (c *CustomWorkflow) basicValidation(branchName string) error {
 			return fmt.Errorf("branch name contains invalid character '%s'", char)
 		}
 	}
-	
+
 	return nil
 }
 
@@ -246,7 +246,7 @@ func (c *CustomWorkflow) getDefaultSourceBranch(branchName string) string {
 			}
 		}
 	}
-	
+
 	// Default to main
 	return "main"
 }
@@ -256,7 +256,7 @@ func (c *CustomWorkflow) validateMergeRule(sourceBranch, targetBranch string) er
 	if len(c.mergeRules) == 0 {
 		return nil
 	}
-	
+
 	// Check if source branch has specific rules
 	if allowedTargets, exists := c.mergeRules[sourceBranch]; exists {
 		for _, allowed := range allowedTargets {
@@ -266,7 +266,7 @@ func (c *CustomWorkflow) validateMergeRule(sourceBranch, targetBranch string) er
 		}
 		return fmt.Errorf("merge from '%s' to '%s' is not allowed by workflow rules", sourceBranch, targetBranch)
 	}
-	
+
 	// Check for wildcard rules
 	if allowedTargets, exists := c.mergeRules["*"]; exists {
 		for _, allowed := range allowedTargets {
@@ -276,20 +276,20 @@ func (c *CustomWorkflow) validateMergeRule(sourceBranch, targetBranch string) er
 		}
 		return fmt.Errorf("merge to '%s' is not allowed by workflow rules", targetBranch)
 	}
-	
+
 	return nil
 }
 
 func (c *CustomWorkflow) getBranchLabels(branchName string) []string {
 	labels := []string{"custom-workflow"}
-	
+
 	// Add labels based on branch patterns
 	for patternName, pattern := range c.branchPatterns {
 		if pattern.MatchString(branchName) {
 			labels = append(labels, patternName)
 		}
 	}
-	
+
 	return labels
 }
 

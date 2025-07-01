@@ -2,7 +2,7 @@
 // EMAIL_SENDER_1 Algorithm 7 - Configuration Validator
 // Validates and optimizes EMAIL_SENDER_1 configuration files across all components
 
-package main
+package config_validator
 
 import (
 	"encoding/json"
@@ -20,129 +20,129 @@ import (
 
 // ConfigValidationResult represents the complete validation result
 type ConfigValidationResult struct {
-	ProjectPath      string                     `json:"project_path"`
-	ValidationTime   time.Time                  `json:"validation_time"`
-	TotalConfigs     int                        `json:"total_configs"`
-	ValidConfigs     int                        `json:"valid_configs"`
-	InvalidConfigs   int                        `json:"invalid_configs"`
-	ComponentConfigs map[string]ComponentConfig `json:"component_configs"`
-	ValidationIssues []ValidationIssue          `json:"validation_issues"`
-	SecurityIssues   []SecurityIssue            `json:"security_issues"`
-	OptimizationTips []OptimizationTip          `json:"optimization_tips"`
-	OverallHealth    string                     `json:"overall_health"`
-	HealthScore      float64                    `json:"health_score"`
-	ExecutionTime    time.Duration              `json:"execution_time"`
+	ProjectPath		string				`json:"project_path"`
+	ValidationTime		time.Time			`json:"validation_time"`
+	TotalConfigs		int				`json:"total_configs"`
+	ValidConfigs		int				`json:"valid_configs"`
+	InvalidConfigs		int				`json:"invalid_configs"`
+	ComponentConfigs	map[string]ComponentConfig	`json:"component_configs"`
+	ValidationIssues	[]ValidationIssue		`json:"validation_issues"`
+	SecurityIssues		[]SecurityIssue			`json:"security_issues"`
+	OptimizationTips	[]OptimizationTip		`json:"optimization_tips"`
+	OverallHealth		string				`json:"overall_health"`
+	HealthScore		float64				`json:"health_score"`
+	ExecutionTime		time.Duration			`json:"execution_time"`
 }
 
 // ComponentConfig represents configuration analysis for a component
 type ComponentConfig struct {
-	Name            string            `json:"name"`
-	ConfigFiles     []string          `json:"config_files"`
-	ValidFiles      int               `json:"valid_files"`
-	InvalidFiles    int               `json:"invalid_files"`
-	MissingRequired []string          `json:"missing_required"`
-	DeprecatedKeys  []string          `json:"deprecated_keys"`
-	SecurityRisks   []string          `json:"security_risks"`
-	Recommendations []string          `json:"recommendations"`
-	ConfigType      string            `json:"config_type"`
-	LastModified    time.Time         `json:"last_modified"`
-	Properties      map[string]string `json:"properties"`
+	Name		string			`json:"name"`
+	ConfigFiles	[]string		`json:"config_files"`
+	ValidFiles	int			`json:"valid_files"`
+	InvalidFiles	int			`json:"invalid_files"`
+	MissingRequired	[]string		`json:"missing_required"`
+	DeprecatedKeys	[]string		`json:"deprecated_keys"`
+	SecurityRisks	[]string		`json:"security_risks"`
+	Recommendations	[]string		`json:"recommendations"`
+	ConfigType	string			`json:"config_type"`
+	LastModified	time.Time		`json:"last_modified"`
+	Properties	map[string]string	`json:"properties"`
 }
 
 // ValidationIssue represents a configuration validation issue
 type ValidationIssue struct {
-	File       string `json:"file"`
-	Component  string `json:"component"`
-	Type       string `json:"type"`
-	Severity   string `json:"severity"`
-	Line       int    `json:"line"`
-	Column     int    `json:"column"`
-	Message    string `json:"message"`
-	Suggestion string `json:"suggestion"`
-	RuleName   string `json:"rule_name"`
+	File		string	`json:"file"`
+	Component	string	`json:"component"`
+	Type		string	`json:"type"`
+	Severity	string	`json:"severity"`
+	Line		int	`json:"line"`
+	Column		int	`json:"column"`
+	Message		string	`json:"message"`
+	Suggestion	string	`json:"suggestion"`
+	RuleName	string	`json:"rule_name"`
 }
 
 // SecurityIssue represents a security-related configuration issue
 type SecurityIssue struct {
-	File         string `json:"file"`
-	Component    string `json:"component"`
-	RiskLevel    string `json:"risk_level"`
-	Issue        string `json:"issue"`
-	Impact       string `json:"impact"`
-	Remediation  string `json:"remediation"`
-	CWEReference string `json:"cwe_reference,omitempty"`
+	File		string	`json:"file"`
+	Component	string	`json:"component"`
+	RiskLevel	string	`json:"risk_level"`
+	Issue		string	`json:"issue"`
+	Impact		string	`json:"impact"`
+	Remediation	string	`json:"remediation"`
+	CWEReference	string	`json:"cwe_reference,omitempty"`
 }
 
 // OptimizationTip represents a performance optimization suggestion
 type OptimizationTip struct {
-	File         string  `json:"file"`
-	Component    string  `json:"component"`
-	Category     string  `json:"category"`
-	Suggestion   string  `json:"suggestion"`
-	ExpectedGain string  `json:"expected_gain"`
-	Complexity   string  `json:"complexity"`
-	Confidence   float64 `json:"confidence"`
+	File		string	`json:"file"`
+	Component	string	`json:"component"`
+	Category	string	`json:"category"`
+	Suggestion	string	`json:"suggestion"`
+	ExpectedGain	string	`json:"expected_gain"`
+	Complexity	string	`json:"complexity"`
+	Confidence	float64	`json:"confidence"`
 }
 
 // EMAIL_SENDER_1 component configuration patterns
 var configPatterns = map[string]ConfigPattern{
 	"RAG_Engine": {
-		Files:          []string{"**/*rag*.json", "**/*embedding*.yaml", "**/*vector*.yml", "**/*llm*.config"},
-		RequiredKeys:   []string{"model", "api_key", "endpoint"},
-		OptionalKeys:   []string{"temperature", "max_tokens", "timeout"},
-		DeprecatedKeys: []string{"old_api_version", "legacy_endpoint"},
-		SecurityKeys:   []string{"api_key", "secret", "token"},
-		Type:           "AI/ML Configuration",
+		Files:		[]string{"**/*rag*.json", "**/*embedding*.yaml", "**/*vector*.yml", "**/*llm*.config"},
+		RequiredKeys:	[]string{"model", "api_key", "endpoint"},
+		OptionalKeys:	[]string{"temperature", "max_tokens", "timeout"},
+		DeprecatedKeys:	[]string{"old_api_version", "legacy_endpoint"},
+		SecurityKeys:	[]string{"api_key", "secret", "token"},
+		Type:		"AI/ML Configuration",
 	},
 	"N8N_Workflows": {
-		Files:          []string{"**/*workflow*.json", "**/n8n/**/*.json"},
-		RequiredKeys:   []string{"name", "nodes", "connections"},
-		OptionalKeys:   []string{"settings", "meta", "tags"},
-		DeprecatedKeys: []string{"old_version"},
-		SecurityKeys:   []string{"credentials", "auth"},
-		Type:           "Workflow Configuration",
+		Files:		[]string{"**/*workflow*.json", "**/n8n/**/*.json"},
+		RequiredKeys:	[]string{"name", "nodes", "connections"},
+		OptionalKeys:	[]string{"settings", "meta", "tags"},
+		DeprecatedKeys:	[]string{"old_version"},
+		SecurityKeys:	[]string{"credentials", "auth"},
+		Type:		"Workflow Configuration",
 	},
 	"Notion_API": {
-		Files:          []string{"**/*notion*.json", "**/*notion*.env", "**/*database*.config"},
-		RequiredKeys:   []string{"notion_token", "database_id"},
-		OptionalKeys:   []string{"version", "timeout", "retry_count"},
-		DeprecatedKeys: []string{"legacy_token"},
-		SecurityKeys:   []string{"notion_token", "integration_token"},
-		Type:           "API Configuration",
+		Files:		[]string{"**/*notion*.json", "**/*notion*.env", "**/*database*.config"},
+		RequiredKeys:	[]string{"notion_token", "database_id"},
+		OptionalKeys:	[]string{"version", "timeout", "retry_count"},
+		DeprecatedKeys:	[]string{"legacy_token"},
+		SecurityKeys:	[]string{"notion_token", "integration_token"},
+		Type:		"API Configuration",
 	},
 	"Gmail_Processing": {
-		Files:          []string{"**/*gmail*.json", "**/*email*.yaml", "**/*smtp*.config"},
-		RequiredKeys:   []string{"smtp_server", "port", "username"},
-		OptionalKeys:   []string{"use_tls", "timeout", "max_retries"},
-		DeprecatedKeys: []string{"old_auth_method"},
-		SecurityKeys:   []string{"password", "oauth_token", "app_password"},
-		Type:           "Email Configuration",
+		Files:		[]string{"**/*gmail*.json", "**/*email*.yaml", "**/*smtp*.config"},
+		RequiredKeys:	[]string{"smtp_server", "port", "username"},
+		OptionalKeys:	[]string{"use_tls", "timeout", "max_retries"},
+		DeprecatedKeys:	[]string{"old_auth_method"},
+		SecurityKeys:	[]string{"password", "oauth_token", "app_password"},
+		Type:		"Email Configuration",
 	},
 	"PowerShell_Scripts": {
-		Files:          []string{"**/*.psd1", "**/config.ps1", "**/*settings*.ps1"},
-		RequiredKeys:   []string{"ModuleVersion", "GUID"},
-		OptionalKeys:   []string{"Author", "Description", "PowerShellVersion"},
-		DeprecatedKeys: []string{"CLRVersion"},
-		SecurityKeys:   []string{"ExecutionPolicy", "Credential"},
-		Type:           "PowerShell Configuration",
+		Files:		[]string{"**/*.psd1", "**/config.ps1", "**/*settings*.ps1"},
+		RequiredKeys:	[]string{"ModuleVersion", "GUID"},
+		OptionalKeys:	[]string{"Author", "Description", "PowerShellVersion"},
+		DeprecatedKeys:	[]string{"CLRVersion"},
+		SecurityKeys:	[]string{"ExecutionPolicy", "Credential"},
+		Type:		"PowerShell Configuration",
 	},
 	"System_Config": {
-		Files:          []string{"**/*.env", "**/config.*", "**/.env*", "**/settings.*"},
-		RequiredKeys:   []string{},
-		OptionalKeys:   []string{},
-		DeprecatedKeys: []string{},
-		SecurityKeys:   []string{"PASSWORD", "SECRET", "KEY", "TOKEN"},
-		Type:           "System Configuration",
+		Files:		[]string{"**/*.env", "**/config.*", "**/.env*", "**/settings.*"},
+		RequiredKeys:	[]string{},
+		OptionalKeys:	[]string{},
+		DeprecatedKeys:	[]string{},
+		SecurityKeys:	[]string{"PASSWORD", "SECRET", "KEY", "TOKEN"},
+		Type:		"System Configuration",
 	},
 }
 
 type ConfigPattern struct {
-	Files          []string
-	RequiredKeys   []string
-	OptionalKeys   []string
-	DeprecatedKeys []string
-	SecurityKeys   []string
-	Type           string
+	Files		[]string
+	RequiredKeys	[]string
+	OptionalKeys	[]string
+	DeprecatedKeys	[]string
+	SecurityKeys	[]string
+	Type		string
 }
 
 func main() {
@@ -181,9 +181,9 @@ func main() {
 // validateEmailSenderConfigs performs comprehensive configuration validation
 func validateEmailSenderConfigs(projectPath string) (*ConfigValidationResult, error) {
 	result := &ConfigValidationResult{
-		ProjectPath:      projectPath,
-		ValidationTime:   time.Now(),
-		ComponentConfigs: make(map[string]ComponentConfig),
+		ProjectPath:		projectPath,
+		ValidationTime:		time.Now(),
+		ComponentConfigs:	make(map[string]ComponentConfig),
 	}
 
 	// Validate each component configuration
@@ -217,14 +217,14 @@ func validateEmailSenderConfigs(projectPath string) (*ConfigValidationResult, er
 // validateComponentConfig validates configuration for a specific component
 func validateComponentConfig(projectPath, componentName string, pattern ConfigPattern) (*ComponentConfig, error) {
 	config := &ComponentConfig{
-		Name:            componentName,
-		ConfigFiles:     []string{},
-		MissingRequired: []string{},
-		DeprecatedKeys:  []string{},
-		SecurityRisks:   []string{},
-		Recommendations: []string{},
-		ConfigType:      pattern.Type,
-		Properties:      make(map[string]string),
+		Name:			componentName,
+		ConfigFiles:		[]string{},
+		MissingRequired:	[]string{},
+		DeprecatedKeys:		[]string{},
+		SecurityRisks:		[]string{},
+		Recommendations:	[]string{},
+		ConfigType:		pattern.Type,
+		Properties:		make(map[string]string),
 	}
 
 	// Find configuration files
@@ -289,7 +289,7 @@ func findConfigFiles(projectPath string, patterns []string) ([]string, error) {
 	for _, pattern := range patterns {
 		files, err := findFilesMatchingPattern(projectPath, pattern)
 		if err != nil {
-			continue // Skip patterns that don't match
+			continue	// Skip patterns that don't match
 		}
 		allFiles = append(allFiles, files...)
 	}
@@ -307,7 +307,7 @@ func findFilesMatchingPattern(projectPath, pattern string) ([]string, error) {
 
 	err := filepath.WalkDir(projectPath, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
-			return nil // Continue walking
+			return nil	// Continue walking
 		}
 
 		if d.IsDir() {
@@ -358,11 +358,11 @@ func validateConfigFile(filePath string, pattern ConfigPattern) (bool, []Validat
 	content, err := os.ReadFile(filePath)
 	if err != nil {
 		issues = append(issues, ValidationIssue{
-			File:     filePath,
-			Type:     "read_error",
-			Severity: "error",
-			Message:  fmt.Sprintf("Cannot read file: %v", err),
-			RuleName: "file_accessibility",
+			File:		filePath,
+			Type:		"read_error",
+			Severity:	"error",
+			Message:	fmt.Sprintf("Cannot read file: %v", err),
+			RuleName:	"file_accessibility",
 		})
 		return false, issues
 	}
@@ -416,12 +416,12 @@ func validateJSONConfig(filePath, content string, pattern ConfigPattern) []Valid
 	var jsonData map[string]interface{}
 	if err := json.Unmarshal([]byte(content), &jsonData); err != nil {
 		issues = append(issues, ValidationIssue{
-			File:       filePath,
-			Type:       "syntax_error",
-			Severity:   "error",
-			Message:    fmt.Sprintf("Invalid JSON syntax: %v", err),
-			Suggestion: "Fix JSON syntax errors",
-			RuleName:   "json_syntax",
+			File:		filePath,
+			Type:		"syntax_error",
+			Severity:	"error",
+			Message:	fmt.Sprintf("Invalid JSON syntax: %v", err),
+			Suggestion:	"Fix JSON syntax errors",
+			RuleName:	"json_syntax",
 		})
 		return issues
 	}
@@ -430,12 +430,12 @@ func validateJSONConfig(filePath, content string, pattern ConfigPattern) []Valid
 	for _, requiredKey := range pattern.RequiredKeys {
 		if _, exists := jsonData[requiredKey]; !exists {
 			issues = append(issues, ValidationIssue{
-				File:       filePath,
-				Type:       "missing_required",
-				Severity:   "error",
-				Message:    fmt.Sprintf("Missing required key: %s", requiredKey),
-				Suggestion: fmt.Sprintf("Add required key '%s' to configuration", requiredKey),
-				RuleName:   "required_keys",
+				File:		filePath,
+				Type:		"missing_required",
+				Severity:	"error",
+				Message:	fmt.Sprintf("Missing required key: %s", requiredKey),
+				Suggestion:	fmt.Sprintf("Add required key '%s' to configuration", requiredKey),
+				RuleName:	"required_keys",
 			})
 		}
 	}
@@ -445,12 +445,12 @@ func validateJSONConfig(filePath, content string, pattern ConfigPattern) []Valid
 		if contains(pattern.RequiredKeys, key) {
 			if value == nil || value == "" {
 				issues = append(issues, ValidationIssue{
-					File:       filePath,
-					Type:       "empty_value",
-					Severity:   "warning",
-					Message:    fmt.Sprintf("Required key '%s' has empty value", key),
-					Suggestion: fmt.Sprintf("Provide a valid value for '%s'", key),
-					RuleName:   "empty_values",
+					File:		filePath,
+					Type:		"empty_value",
+					Severity:	"warning",
+					Message:	fmt.Sprintf("Required key '%s' has empty value", key),
+					Suggestion:	fmt.Sprintf("Provide a valid value for '%s'", key),
+					RuleName:	"empty_values",
 				})
 			}
 		}
@@ -475,13 +475,13 @@ func validateYAMLConfig(filePath, content string, pattern ConfigPattern) []Valid
 		if !strings.Contains(line, ":") && !strings.HasPrefix(trimmed, "-") {
 			if !unicode.IsSpace(rune(line[0])) {
 				issues = append(issues, ValidationIssue{
-					File:       filePath,
-					Type:       "syntax_warning",
-					Severity:   "warning",
-					Line:       i + 1,
-					Message:    "Potentially malformed YAML line",
-					Suggestion: "Check YAML syntax",
-					RuleName:   "yaml_syntax",
+					File:		filePath,
+					Type:		"syntax_warning",
+					Severity:	"warning",
+					Line:		i + 1,
+					Message:	"Potentially malformed YAML line",
+					Suggestion:	"Check YAML syntax",
+					RuleName:	"yaml_syntax",
 				})
 			}
 		}
@@ -491,12 +491,12 @@ func validateYAMLConfig(filePath, content string, pattern ConfigPattern) []Valid
 	for _, requiredKey := range pattern.RequiredKeys {
 		if !strings.Contains(content, requiredKey+":") {
 			issues = append(issues, ValidationIssue{
-				File:       filePath,
-				Type:       "missing_required",
-				Severity:   "error",
-				Message:    fmt.Sprintf("Missing required key: %s", requiredKey),
-				Suggestion: fmt.Sprintf("Add required key '%s:' to YAML configuration", requiredKey),
-				RuleName:   "required_keys",
+				File:		filePath,
+				Type:		"missing_required",
+				Severity:	"error",
+				Message:	fmt.Sprintf("Missing required key: %s", requiredKey),
+				Suggestion:	fmt.Sprintf("Add required key '%s:' to YAML configuration", requiredKey),
+				RuleName:	"required_keys",
 			})
 		}
 	}
@@ -518,13 +518,13 @@ func validateEnvConfig(filePath, content string, pattern ConfigPattern) []Valida
 		// Check for proper KEY=VALUE format
 		if !strings.Contains(trimmed, "=") {
 			issues = append(issues, ValidationIssue{
-				File:       filePath,
-				Type:       "syntax_error",
-				Severity:   "error",
-				Line:       i + 1,
-				Message:    "Invalid environment variable format (should be KEY=VALUE)",
-				Suggestion: "Use KEY=VALUE format",
-				RuleName:   "env_syntax",
+				File:		filePath,
+				Type:		"syntax_error",
+				Severity:	"error",
+				Line:		i + 1,
+				Message:	"Invalid environment variable format (should be KEY=VALUE)",
+				Suggestion:	"Use KEY=VALUE format",
+				RuleName:	"env_syntax",
 			})
 		} else {
 			parts := strings.SplitN(trimmed, "=", 2)
@@ -535,13 +535,13 @@ func validateEnvConfig(filePath, content string, pattern ConfigPattern) []Valida
 				// Check for empty values in important keys
 				if contains(pattern.SecurityKeys, key) && value == "" {
 					issues = append(issues, ValidationIssue{
-						File:       filePath,
-						Type:       "empty_security_value",
-						Severity:   "warning",
-						Line:       i + 1,
-						Message:    fmt.Sprintf("Security-related key '%s' has empty value", key),
-						Suggestion: "Provide a valid value for security keys",
-						RuleName:   "security_values",
+						File:		filePath,
+						Type:		"empty_security_value",
+						Severity:	"warning",
+						Line:		i + 1,
+						Message:	fmt.Sprintf("Security-related key '%s' has empty value", key),
+						Suggestion:	"Provide a valid value for security keys",
+						RuleName:	"security_values",
 					})
 				}
 			}
@@ -559,12 +559,12 @@ func validatePowerShellConfig(filePath, content string, pattern ConfigPattern) [
 	if strings.HasSuffix(strings.ToLower(filePath), ".psd1") {
 		if !strings.Contains(content, "@{") {
 			issues = append(issues, ValidationIssue{
-				File:       filePath,
-				Type:       "syntax_error",
-				Severity:   "error",
-				Message:    "PowerShell manifest should start with @{",
-				Suggestion: "Use proper PowerShell hashtable syntax",
-				RuleName:   "powershell_manifest",
+				File:		filePath,
+				Type:		"syntax_error",
+				Severity:	"error",
+				Message:	"PowerShell manifest should start with @{",
+				Suggestion:	"Use proper PowerShell hashtable syntax",
+				RuleName:	"powershell_manifest",
 			})
 		}
 
@@ -574,12 +574,12 @@ func validatePowerShellConfig(filePath, content string, pattern ConfigPattern) [
 			matched, _ := regexp.MatchString(keyPattern, content)
 			if !matched {
 				issues = append(issues, ValidationIssue{
-					File:       filePath,
-					Type:       "missing_required",
-					Severity:   "error",
-					Message:    fmt.Sprintf("Missing required key: %s", requiredKey),
-					Suggestion: fmt.Sprintf("Add '%s = value' to manifest", requiredKey),
-					RuleName:   "required_keys",
+					File:		filePath,
+					Type:		"missing_required",
+					Severity:	"error",
+					Message:	fmt.Sprintf("Missing required key: %s", requiredKey),
+					Suggestion:	fmt.Sprintf("Add '%s = value' to manifest", requiredKey),
+					RuleName:	"required_keys",
 				})
 			}
 		}
@@ -599,13 +599,13 @@ func validatePowerShellConfig(filePath, content string, pattern ConfigPattern) [
 			matched, _ := regexp.MatchString(pattern, line)
 			if matched {
 				issues = append(issues, ValidationIssue{
-					File:       filePath,
-					Type:       "security_warning",
-					Severity:   "warning",
-					Line:       i + 1,
-					Message:    "Potentially dangerous PowerShell construct detected",
-					Suggestion: "Review for security implications",
-					RuleName:   "powershell_security",
+					File:		filePath,
+					Type:		"security_warning",
+					Severity:	"warning",
+					Line:		i + 1,
+					Message:	"Potentially dangerous PowerShell construct detected",
+					Suggestion:	"Review for security implications",
+					RuleName:	"powershell_security",
 				})
 			}
 		}
@@ -621,24 +621,24 @@ func validateGenericConfig(filePath, content string, _ ConfigPattern) []Validati
 	// Check for obviously corrupted files
 	if len(content) == 0 {
 		issues = append(issues, ValidationIssue{
-			File:       filePath,
-			Type:       "empty_file",
-			Severity:   "warning",
-			Message:    "Configuration file is empty",
-			Suggestion: "Add configuration content or remove unused file",
-			RuleName:   "empty_file",
+			File:		filePath,
+			Type:		"empty_file",
+			Severity:	"warning",
+			Message:	"Configuration file is empty",
+			Suggestion:	"Add configuration content or remove unused file",
+			RuleName:	"empty_file",
 		})
 	}
 
 	// Check for binary content in text config files
 	if strings.Contains(content, "\x00") {
 		issues = append(issues, ValidationIssue{
-			File:       filePath,
-			Type:       "binary_content",
-			Severity:   "error",
-			Message:    "File appears to contain binary content",
-			Suggestion: "Ensure configuration file is text-based",
-			RuleName:   "text_content",
+			File:		filePath,
+			Type:		"binary_content",
+			Severity:	"error",
+			Message:	"File appears to contain binary content",
+			Suggestion:	"Ensure configuration file is text-based",
+			RuleName:	"text_content",
 		})
 	}
 
@@ -651,8 +651,8 @@ func checkSecurityIssues(filePath, content string, _ ConfigPattern) []Validation
 
 	// Check for hardcoded credentials
 	credentialPatterns := []struct {
-		pattern string
-		message string
+		pattern	string
+		message	string
 	}{
 		{`(?i)password\s*[:=]\s*["\']?[^"\'\s\n]{8,}`, "Hardcoded password detected"},
 		{`(?i)api_key\s*[:=]\s*["\']?[a-zA-Z0-9]{20,}`, "Hardcoded API key detected"},
@@ -666,13 +666,13 @@ func checkSecurityIssues(filePath, content string, _ ConfigPattern) []Validation
 			matched, _ := regexp.MatchString(cp.pattern, line)
 			if matched {
 				issues = append(issues, ValidationIssue{
-					File:       filePath,
-					Type:       "security",
-					Severity:   "error",
-					Line:       i + 1,
-					Message:    cp.message,
-					Suggestion: "Use environment variables or secure credential storage",
-					RuleName:   "hardcoded_credentials",
+					File:		filePath,
+					Type:		"security",
+					Severity:	"error",
+					Line:		i + 1,
+					Message:	cp.message,
+					Suggestion:	"Use environment variables or secure credential storage",
+					RuleName:	"hardcoded_credentials",
 				})
 			}
 		}
@@ -690,13 +690,13 @@ func checkSecurityIssues(filePath, content string, _ ConfigPattern) []Validation
 			matched, _ := regexp.MatchString(pattern, line)
 			if matched {
 				issues = append(issues, ValidationIssue{
-					File:       filePath,
-					Type:       "security",
-					Severity:   "warning",
-					Line:       i + 1,
-					Message:    "Insecure protocol detected",
-					Suggestion: "Use secure protocols (HTTPS, SFTP, SSH)",
-					RuleName:   "insecure_protocols",
+					File:		filePath,
+					Type:		"security",
+					Severity:	"warning",
+					Line:		i + 1,
+					Message:	"Insecure protocol detected",
+					Suggestion:	"Use secure protocols (HTTPS, SFTP, SSH)",
+					RuleName:	"insecure_protocols",
 				})
 			}
 		}
@@ -712,12 +712,12 @@ func checkDeprecatedKeys(filePath, content string, pattern ConfigPattern) []Vali
 	for _, deprecatedKey := range pattern.DeprecatedKeys {
 		if strings.Contains(content, deprecatedKey) {
 			issues = append(issues, ValidationIssue{
-				File:       filePath,
-				Type:       "deprecated",
-				Severity:   "warning",
-				Message:    fmt.Sprintf("Deprecated key found: %s", deprecatedKey),
-				Suggestion: "Update to use current configuration keys",
-				RuleName:   "deprecated_keys",
+				File:		filePath,
+				Type:		"deprecated",
+				Severity:	"warning",
+				Message:	fmt.Sprintf("Deprecated key found: %s", deprecatedKey),
+				Suggestion:	"Update to use current configuration keys",
+				RuleName:	"deprecated_keys",
 			})
 		}
 	}
@@ -749,12 +749,12 @@ func collectSecurityIssues(result *ConfigValidationResult) []SecurityIssue {
 	for _, issue := range result.ValidationIssues {
 		if issue.Type == "security" || issue.Type == "security_warning" {
 			securityIssue := SecurityIssue{
-				File:        issue.File,
-				Component:   issue.Component,
-				RiskLevel:   mapSeverityToRisk(issue.Severity),
-				Issue:       issue.Message,
-				Impact:      "Potential security vulnerability",
-				Remediation: issue.Suggestion,
+				File:		issue.File,
+				Component:	issue.Component,
+				RiskLevel:	mapSeverityToRisk(issue.Severity),
+				Issue:		issue.Message,
+				Impact:		"Potential security vulnerability",
+				Remediation:	issue.Suggestion,
 			}
 
 			// Add CWE reference for known patterns
@@ -781,45 +781,45 @@ func generateOptimizationTips(result *ConfigValidationResult) []OptimizationTip 
 		case "RAG_Engine":
 			if len(config.ConfigFiles) > 0 {
 				tips = append(tips, OptimizationTip{
-					Component:    componentName,
-					Category:     "Performance",
-					Suggestion:   "Consider caching embeddings to improve response time",
-					ExpectedGain: "30-50% faster responses",
-					Complexity:   "Medium",
-					Confidence:   0.8,
+					Component:	componentName,
+					Category:	"Performance",
+					Suggestion:	"Consider caching embeddings to improve response time",
+					ExpectedGain:	"30-50% faster responses",
+					Complexity:	"Medium",
+					Confidence:	0.8,
 				})
 			}
 		case "N8N_Workflows":
 			if config.ValidFiles > 5 {
 				tips = append(tips, OptimizationTip{
-					Component:    componentName,
-					Category:     "Optimization",
-					Suggestion:   "Consider consolidating similar workflows to reduce maintenance overhead",
-					ExpectedGain: "Reduced complexity",
-					Complexity:   "Low",
-					Confidence:   0.7,
+					Component:	componentName,
+					Category:	"Optimization",
+					Suggestion:	"Consider consolidating similar workflows to reduce maintenance overhead",
+					ExpectedGain:	"Reduced complexity",
+					Complexity:	"Low",
+					Confidence:	0.7,
 				})
 			}
 		case "PowerShell_Scripts":
 			tips = append(tips, OptimizationTip{
-				Component:    componentName,
-				Category:     "Performance",
-				Suggestion:   "Enable PowerShell module auto-loading for better performance",
-				ExpectedGain: "Faster script execution",
-				Complexity:   "Low",
-				Confidence:   0.9,
+				Component:	componentName,
+				Category:	"Performance",
+				Suggestion:	"Enable PowerShell module auto-loading for better performance",
+				ExpectedGain:	"Faster script execution",
+				Complexity:	"Low",
+				Confidence:	0.9,
 			})
 		}
 
 		// General tips based on configuration health
 		if len(config.SecurityRisks) > 0 {
 			tips = append(tips, OptimizationTip{
-				Component:    componentName,
-				Category:     "Security",
-				Suggestion:   "Implement secure credential management",
-				ExpectedGain: "Improved security posture",
-				Complexity:   "Medium",
-				Confidence:   0.95,
+				Component:	componentName,
+				Category:	"Security",
+				Suggestion:	"Implement secure credential management",
+				ExpectedGain:	"Improved security posture",
+				Complexity:	"Medium",
+				Confidence:	0.95,
 			})
 		}
 	}
@@ -891,7 +891,7 @@ func generateComponentRecommendations(config *ComponentConfig, _ ConfigPattern) 
 
 func calculateHealthScore(result *ConfigValidationResult) float64 {
 	if result.TotalConfigs == 0 {
-		return 50.0 // Neutral score for no configs
+		return 50.0	// Neutral score for no configs
 	}
 
 	// Base score from valid configurations

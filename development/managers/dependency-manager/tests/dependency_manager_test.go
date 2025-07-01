@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gerivdb/email-sender-1/development/managers/interfaces" // New import
-	"golang.org/x/mod/modfile"                                          // New import
+	"EMAIL_SENDER_1/development/managers/interfaces" // New import
+	"golang.org/x/mod/modfile"                       // New import
 )
 
 // MockDepManager implements interfaces.DepManager for testing

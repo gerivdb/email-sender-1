@@ -1,4 +1,4 @@
-package main
+package dependency_resolution
 
 import (
 	"fmt"

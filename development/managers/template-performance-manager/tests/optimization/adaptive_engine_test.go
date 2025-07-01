@@ -1,6 +1,8 @@
 package optimization
 
 import (
+	"EMAIL_SENDER_1/development/managers/template-performance-manager/interfaces"
+	"EMAIL_SENDER_1/development/managers/template-performance-manager/internal/optimization"
 	"context"
 	"fmt"
 	"testing"
@@ -8,9 +10,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	"github.com/fmoua/email-sender/development/managers/template-performance-manager/interfaces"
-	"github.com/fmoua/email-sender/development/managers/template-performance-manager/internal/optimization"
 )
 
 func TestAdaptiveEngine_Initialize(t *testing.T) {
@@ -27,30 +26,30 @@ func TestAdaptiveEngine_Initialize(t *testing.T) {
 		{
 			name: "Invalid ML endpoint",
 			config: optimization.Config{
-				MLEndpoint:         "",
-				MaxOptimizers:      10,
+				MLEndpoint:          "",
+				MaxOptimizers:       10,
 				OptimizationTimeout: time.Minute,
-				LearningRate:       0.01,
+				LearningRate:        0.01,
 			},
 			expectError: true,
 		},
 		{
 			name: "Invalid learning rate",
 			config: optimization.Config{
-				MLEndpoint:         "http://localhost:8080",
-				MaxOptimizers:      10,
+				MLEndpoint:          "http://localhost:8080",
+				MaxOptimizers:       10,
 				OptimizationTimeout: time.Minute,
-				LearningRate:       -0.1,
+				LearningRate:        -0.1,
 			},
 			expectError: true,
 		},
 		{
 			name: "Zero max optimizers",
 			config: optimization.Config{
-				MLEndpoint:         "http://localhost:8080",
-				MaxOptimizers:      0,
+				MLEndpoint:          "http://localhost:8080",
+				MaxOptimizers:       0,
 				OptimizationTimeout: time.Minute,
-				LearningRate:       0.01,
+				LearningRate:        0.01,
 			},
 			expectError: true,
 		},
@@ -92,9 +91,9 @@ func TestAdaptiveEngine_GenerateOptimizations(t *testing.T) {
 					Confidence: 0.85,
 				},
 				MetricsData: &interfaces.PerformanceMetrics{
-					ID:         "metrics_001",
-					TemplateID: "template_001",
-					Generation: interfaces.GenerationMetrics{Time: 2.5, MemoryUsage: 2048},
+					ID:          "metrics_001",
+					TemplateID:  "template_001",
+					Generation:  interfaces.GenerationMetrics{Time: 2.5, MemoryUsage: 2048},
 					Performance: interfaces.PerformanceData{ResponseTime: 1.8, Throughput: 50},
 				},
 				CurrentConfig: map[string]interface{}{
@@ -128,9 +127,9 @@ func TestAdaptiveEngine_GenerateOptimizations(t *testing.T) {
 					Confidence: 0.95,
 				},
 				MetricsData: &interfaces.PerformanceMetrics{
-					ID:         "metrics_002",
-					TemplateID: "template_002",
-					Generation: interfaces.GenerationMetrics{Time: 0.8, MemoryUsage: 512},
+					ID:          "metrics_002",
+					TemplateID:  "template_002",
+					Generation:  interfaces.GenerationMetrics{Time: 0.8, MemoryUsage: 512},
 					Performance: interfaces.PerformanceData{ResponseTime: 0.4, Throughput: 200},
 				},
 				CurrentConfig: map[string]interface{}{
@@ -153,24 +152,24 @@ func TestAdaptiveEngine_GenerateOptimizations(t *testing.T) {
 			request: interfaces.OptimizationRequest{
 				AnalysisID: "analysis_003",
 				PatternData: &interfaces.PatternAnalysis{
-					ID:       "pattern_003",
+					ID: "pattern_003",
 					Patterns: map[string]interface{}{
 						"template_complexity": 0.9,
-						"nested_loops":       true,
-						"heavy_computations": true,
+						"nested_loops":        true,
+						"heavy_computations":  true,
 					},
 					Confidence: 0.88,
 				},
 				MetricsData: &interfaces.PerformanceMetrics{
-					ID:         "metrics_003",
-					TemplateID: "template_003",
-					Generation: interfaces.GenerationMetrics{Time: 5.2, MemoryUsage: 4096},
+					ID:          "metrics_003",
+					TemplateID:  "template_003",
+					Generation:  interfaces.GenerationMetrics{Time: 5.2, MemoryUsage: 4096},
 					Performance: interfaces.PerformanceData{ResponseTime: 3.5, Throughput: 20},
-					Quality:    interfaces.QualityMetrics{ErrorRate: 0.08},
+					Quality:     interfaces.QualityMetrics{ErrorRate: 0.08},
 				},
 				CurrentConfig: map[string]interface{}{
-					"cache_enabled": false,
-					"compression":   false,
+					"cache_enabled":   false,
+					"compression":     false,
 					"parallelization": false,
 				},
 				TargetMetrics: map[string]float64{
@@ -183,7 +182,7 @@ func TestAdaptiveEngine_GenerateOptimizations(t *testing.T) {
 			expectError: false,
 			validateFunc: func(t *testing.T, recommendations []interfaces.OptimizationRecommendation) {
 				assert.True(t, len(recommendations) >= 3) // Should have multiple optimizations
-				
+
 				// Check for specific optimization types
 				types := make(map[string]bool)
 				for _, rec := range recommendations {
@@ -286,7 +285,7 @@ func TestAdaptiveEngine_ApplyOptimizations(t *testing.T) {
 				Recommendations: recommendations,
 				Configuration: map[string]interface{}{
 					"apply_immediately": true,
-					"test_mode":        true,
+					"test_mode":         true,
 				},
 			},
 			expectError: false,
@@ -510,9 +509,9 @@ func TestAdaptiveEngine_PredictOptimizationImpact(t *testing.T) {
 	}
 
 	currentMetrics := interfaces.PerformanceMetrics{
-		ID:         "current_metrics",
-		TemplateID: "pred_template",
-		Generation: interfaces.GenerationMetrics{Time: 2.0, MemoryUsage: 1024},
+		ID:          "current_metrics",
+		TemplateID:  "pred_template",
+		Generation:  interfaces.GenerationMetrics{Time: 2.0, MemoryUsage: 1024},
 		Performance: interfaces.PerformanceData{ResponseTime: 1.5, Throughput: 50},
 	}
 
@@ -568,11 +567,11 @@ func TestAdaptiveEngine_RollbackOptimization(t *testing.T) {
 
 		// Now test rollback
 		rollbackRequest := interfaces.OptimizationRollbackRequest{
-			ID:               "rollback_001",
-			OptimizationID:   result.ID,
-			TemplateID:       "rollback_template",
-			Reason:           "Performance degradation detected",
-			RestoreSnapshot:  true,
+			ID:              "rollback_001",
+			OptimizationID:  result.ID,
+			TemplateID:      "rollback_template",
+			Reason:          "Performance degradation detected",
+			RestoreSnapshot: true,
 		}
 
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -600,21 +599,21 @@ func TestAdaptiveEngine_PerformanceTargets(t *testing.T) {
 			Confidence: 0.9,
 		},
 		MetricsData: &interfaces.PerformanceMetrics{
-			ID:         "perf_target_metrics",
-			TemplateID: "perf_target_template",
-			Generation: interfaces.GenerationMetrics{Time: 4.0, MemoryUsage: 4096}, // Poor performance
+			ID:          "perf_target_metrics",
+			TemplateID:  "perf_target_template",
+			Generation:  interfaces.GenerationMetrics{Time: 4.0, MemoryUsage: 4096}, // Poor performance
 			Performance: interfaces.PerformanceData{ResponseTime: 3.0, Throughput: 25},
 		},
 		CurrentConfig: map[string]interface{}{
-			"cache_enabled":     false,
-			"compression":       false,
-			"parallelization":   false,
+			"cache_enabled":      false,
+			"compression":        false,
+			"parallelization":    false,
 			"optimization_level": 0,
 		},
 		TargetMetrics: map[string]float64{
-			"generation_time": 2.0,  // 50% improvement target
-			"response_time":   1.5,  // 50% improvement target
-			"throughput":      50,   // 100% improvement target
+			"generation_time": 2.0, // 50% improvement target
+			"response_time":   1.5, // 50% improvement target
+			"throughput":      50,  // 100% improvement target
 		},
 	}
 
@@ -695,7 +694,7 @@ func TestAdaptiveEngine_Start_Stop(t *testing.T) {
 func setupTestOptimizationEngine(t *testing.T) interfaces.AdaptiveOptimizationEngine {
 	config := optimization.DefaultConfig()
 	config.MLEndpoint = "http://localhost:8080" // Mock ML endpoint for testing
-	
+
 	engine, err := optimization.NewAdaptiveEngine(config)
 	require.NoError(t, err)
 
@@ -748,7 +747,7 @@ func BenchmarkAdaptiveEngine_GenerateOptimizations(b *testing.B) {
 func setupBenchmarkOptimizationEngine(b *testing.B) interfaces.AdaptiveOptimizationEngine {
 	config := optimization.DefaultConfig()
 	config.MLEndpoint = "http://localhost:8080"
-	
+
 	engine, err := optimization.NewAdaptiveEngine(config)
 	if err != nil {
 		b.Fatal(err)

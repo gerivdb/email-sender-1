@@ -1,7 +1,7 @@
 // Script Go — capture_terminal.go
 // Capture stdout/stderr et envoie les logs à CacheManager (squelette)
 
-package main
+package scripts
 
 import (
 	"bytes"
@@ -30,11 +30,11 @@ func main() {
 		level = "ERROR"
 	}
 	entry := cachemanager.LogEntry{
-		Timestamp: time.Now(),
-		Level:     level,
-		Source:    "capture_terminal",
-		Message:   msg,
-		Context:   map[string]interface{}{"args": os.Args[1:], "output": string(output)},
+		Timestamp:	time.Now(),
+		Level:		level,
+		Source:		"capture_terminal",
+		Message:	msg,
+		Context:	map[string]interface{}{"args": os.Args[1:], "output": string(output)},
 	}
 
 	// Envoi du log à l’API REST

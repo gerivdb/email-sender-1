@@ -1,33 +1,33 @@
-package main
+package demos
 
 import (
+	integratedmanager "EMAIL_SENDER_1/managers/integrated-manager"
 	"fmt"
 	"log"
 	"time"
-	integratedmanager "github.com/gerivdb/email-sender-1/managers/integrated-manager"
 )
 
 func main() {
 	fmt.Println("=== EMAIL_SENDER_1 - Conformity API Demo ===")
-	
+
 	// Create IntegratedErrorManager instance
 	fmt.Println("1. Creating IntegratedErrorManager...")
 	manager := integratedmanager.NewIntegratedErrorManager()
-	
+
 	// Configure API server
 	fmt.Println("2. Configuring API server on port 8082...")
 	err := manager.SetAPIServerConfig(true, 8082)
 	if err != nil {
 		log.Fatalf("Failed to configure API server: %v", err)
 	}
-	
+
 	// Start API server
 	fmt.Println("3. Starting API server...")
 	err = manager.StartAPIServer()
 	if err != nil {
 		log.Fatalf("Failed to start API server: %v", err)
 	}
-	
+
 	// Show API server status
 	enabled, port, err := manager.GetAPIServerStatus()
 	if err != nil {
@@ -35,11 +35,11 @@ func main() {
 	} else {
 		fmt.Printf("4. API Server Status: Enabled=%v, Port=%d\n", enabled, port)
 	}
-	
+
 	// Show API server URL
 	url := manager.GetAPIServerURL()
 	fmt.Printf("5. API Server URL: %s\n", url)
-	
+
 	// Display available endpoints
 	fmt.Println("6. Available API Endpoints:")
 	fmt.Println("   GET    /api/v1/health                     - Health check")
@@ -57,27 +57,27 @@ func main() {
 	fmt.Println("   GET    /api/v1/config                     - Get conformity configuration")
 	fmt.Println("   PUT    /api/v1/config                     - Update conformity configuration")
 	fmt.Println("   GET    /api/v1/docs                       - API documentation")
-	
+
 	// Keep server running for demo
 	fmt.Println("7. API server is running. You can test the endpoints using:")
 	fmt.Printf("   curl %s/health\n", url)
 	fmt.Printf("   curl %s/metrics\n", url)
 	fmt.Printf("   curl %s/docs\n", url)
 	fmt.Println("8. Press Ctrl+C to stop or wait for auto-shutdown in 30 seconds...")
-	
+
 	// Wait for 30 seconds
 	time.Sleep(30 * time.Second)
-	
+
 	// Stop the API server
 	fmt.Println("9. Stopping API server...")
 	err = manager.StopAPIServer()
 	if err != nil {
 		log.Printf("Error stopping API server: %v", err)
 	}
-	
+
 	// Stop the manager
 	fmt.Println("10. Stopping IntegratedErrorManager...")
 	manager.Stop()
-	
+
 	fmt.Println("=== Demo completed successfully! ===")
 }

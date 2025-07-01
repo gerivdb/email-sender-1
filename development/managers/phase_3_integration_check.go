@@ -1,4 +1,4 @@
-package main
+package managers
 
 import (
 	"context"
@@ -56,8 +56,8 @@ func main() {
 
 // Simuler le CentralCoordinator pour les tests
 type CentralCoordinator struct {
-	managers map[string]ManagerInterface
-	logger   *zap.Logger
+	managers	map[string]ManagerInterface
+	logger		*zap.Logger
 }
 
 type ManagerInterface interface {
@@ -69,13 +69,13 @@ type ManagerInterface interface {
 }
 
 type ManagerStatus struct {
-	Name   string `json:"name"`
-	Status string `json:"status"`
+	Name	string	`json:"name"`
+	Status	string	`json:"status"`
 }
 
 type MockManager struct {
-	name   string
-	status string
+	name	string
+	status	string
 }
 
 func (m *MockManager) Initialize(ctx context.Context, config interface{}) error {
@@ -103,8 +103,8 @@ func (m *MockManager) GetName() string {
 
 func NewCentralCoordinator(logger *zap.Logger) *CentralCoordinator {
 	return &CentralCoordinator{
-		managers: make(map[string]ManagerInterface),
-		logger:   logger,
+		managers:	make(map[string]ManagerInterface),
+		logger:		logger,
 	}
 }
 
@@ -229,11 +229,11 @@ func testStructureReorganization() error {
 	fmt.Println("   📁 Test de la nouvelle structure hiérarchique:")
 
 	structure := map[string][]string{
-		"core":           {"config-manager", "error-manager", "dependency-manager", "storage-manager", "security-manager"},
-		"specialized":    {"ai-template-manager", "advanced-autonomy-manager", "branching-manager"},
-		"integration":    {"n8n-manager", "mcp-manager", "notification-manager"},
-		"infrastructure": {"central-coordinator", "interfaces", "shared"},
-		"vectorization":  {"vectorization-go"},
+		"core":			{"config-manager", "error-manager", "dependency-manager", "storage-manager", "security-manager"},
+		"specialized":		{"ai-template-manager", "advanced-autonomy-manager", "branching-manager"},
+		"integration":		{"n8n-manager", "mcp-manager", "notification-manager"},
+		"infrastructure":	{"central-coordinator", "interfaces", "shared"},
+		"vectorization":	{"vectorization-go"},
 	}
 
 	totalManagers := 0

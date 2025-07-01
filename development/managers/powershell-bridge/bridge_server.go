@@ -1,6 +1,6 @@
 // Package bridge implements the PowerShell-Go bridge for ErrorManager integration
 // Section 1.4 - Implementation des Recommandations
-package main
+package powershell_bridge
 
 import (
 	"context"
@@ -18,7 +18,7 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	errormanager "github.com/gerivdb/email-sender-1/managers/error-manager"
+	errormanager "EMAIL_SENDER_1/managers/error-manager"
 )
 
 // PowerShellError represents an error received from PowerShell

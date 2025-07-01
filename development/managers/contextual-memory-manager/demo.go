@@ -1,4 +1,4 @@
-package main
+package contextual_memory_manager
 
 import (
 	"context"
@@ -20,27 +20,27 @@ func RunDemo() {
 
 	// Create test configuration
 	config := cmmInterfaces.Config{
-		DatabaseURL: "sqlite:///tmp/demo.db",
+		DatabaseURL:	"sqlite:///tmp/demo.db",
 		VectorDB: cmmInterfaces.VectorDBConfig{
-			Type:       "qdrant",
-			URL:        "http://localhost:6333",
-			Collection: "documents",
-			Dimension:  1536,
+			Type:		"qdrant",
+			URL:		"http://localhost:6333",
+			Collection:	"documents",
+			Dimension:	1536,
 		},
 		Embedding: cmmInterfaces.EmbeddingConfig{
-			Provider:  "openai",
-			Model:     "text-embedding-ada-002",
-			Dimension: 1536,
+			Provider:	"openai",
+			Model:		"text-embedding-ada-002",
+			Dimension:	1536,
 		},
 		Cache: cmmInterfaces.CacheConfig{
-			Type:    "memory",
-			TTL:     time.Hour,
-			MaxSize: 1000,
+			Type:		"memory",
+			TTL:		time.Hour,
+			MaxSize:	1000,
 		},
 		Integrations: map[string]interface{}{
 			"webhooks": map[string]interface{}{
-				"enabled": true,
-				"port":    8080,
+				"enabled":	true,
+				"port":		8080,
 			},
 		},
 	}
@@ -60,12 +60,12 @@ func RunDemo() {
 
 	// Test 3: Create test document
 	testDoc := cmmInterfaces.Document{
-		ID:      "test-doc-1",
-		Content: "This is a test document for the contextual memory system",
+		ID:		"test-doc-1",
+		Content:	"This is a test document for the contextual memory system",
 		Metadata: map[string]string{
-			"type":    "test",
-			"author":  "demo",
-			"created": time.Now().Format(time.RFC3339),
+			"type":		"test",
+			"author":	"demo",
+			"created":	time.Now().Format(time.RFC3339),
 		},
 	}
 

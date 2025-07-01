@@ -1,4 +1,4 @@
-package main
+package scripts
 
 import (
 	"encoding/json"
@@ -20,11 +20,11 @@ func TestGenerateInventory(t *testing.T) {
 	// Create test files
 	testFiles := []string{
 		"README.md",
-		"docs/api.md", 
+		"docs/api.md",
 		"docs/guide.txt",
 		".github/CONTRIBUTING.md",
-		"src/main.go", // Should be ignored
-		"node_modules/package.json", // Should be ignored
+		"src/main.go",			// Should be ignored
+		"node_modules/package.json",	// Should be ignored
 	}
 
 	for _, file := range testFiles {
@@ -50,7 +50,7 @@ func TestGenerateInventory(t *testing.T) {
 	}
 
 	// Should find markdown and text files, but not Go files or node_modules
-	expectedFiles := 4 // README.md, docs/api.md, docs/guide.txt, .github/CONTRIBUTING.md
+	expectedFiles := 4	// README.md, docs/api.md, docs/guide.txt, .github/CONTRIBUTING.md
 	if report.TotalFiles != expectedFiles {
 		t.Errorf("Expected %d files, got %d", expectedFiles, report.TotalFiles)
 	}
@@ -87,9 +87,9 @@ func TestGenerateInventory(t *testing.T) {
 
 func TestIsDocumentationFile(t *testing.T) {
 	tests := []struct {
-		path     string
-		name     string
-		expected bool
+		path		string
+		name		string
+		expected	bool
 	}{
 		{"README.md", "README.md", true},
 		{"docs/api.md", "api.md", true},
@@ -103,7 +103,7 @@ func TestIsDocumentationFile(t *testing.T) {
 	for _, test := range tests {
 		result := isDocumentationFile(test.path, test.name)
 		if result != test.expected {
-			t.Errorf("isDocumentationFile(%s, %s) = %v, expected %v", 
+			t.Errorf("isDocumentationFile(%s, %s) = %v, expected %v",
 				test.path, test.name, result, test.expected)
 		}
 	}
@@ -111,8 +111,8 @@ func TestIsDocumentationFile(t *testing.T) {
 
 func TestShouldSkipPath(t *testing.T) {
 	tests := []struct {
-		path     string
-		expected bool
+		path		string
+		expected	bool
 	}{
 		{"README.md", false},
 		{"docs/api.md", false},
@@ -126,7 +126,7 @@ func TestShouldSkipPath(t *testing.T) {
 	for _, test := range tests {
 		result := shouldSkipPath(test.path)
 		if result != test.expected {
-			t.Errorf("shouldSkipPath(%s) = %v, expected %v", 
+			t.Errorf("shouldSkipPath(%s) = %v, expected %v",
 				test.path, result, test.expected)
 		}
 	}
@@ -134,9 +134,9 @@ func TestShouldSkipPath(t *testing.T) {
 
 func TestCategorizeFile(t *testing.T) {
 	tests := []struct {
-		path     string
-		name     string
-		expected string
+		path		string
+		name		string
+		expected	string
 	}{
 		{"README.md", "README.md", "root"},
 		{"docs/api.md", "api.md", "documentation"},
@@ -150,7 +150,7 @@ func TestCategorizeFile(t *testing.T) {
 	for _, test := range tests {
 		result := categorizeFile(test.path, test.name)
 		if result != test.expected {
-			t.Errorf("categorizeFile(%s, %s) = %s, expected %s", 
+			t.Errorf("categorizeFile(%s, %s) = %s, expected %s",
 				test.path, test.name, result, test.expected)
 		}
 	}
@@ -158,9 +158,9 @@ func TestCategorizeFile(t *testing.T) {
 
 func TestExtractTags(t *testing.T) {
 	tests := []struct {
-		path     string
-		name     string
-		expected []string
+		path		string
+		name		string
+		expected	[]string
 	}{
 		{"roadmap/plan.md", "plan.md", []string{"roadmap", "plan"}},
 		{"README.md", "README.md", []string{"readme"}},
@@ -171,7 +171,7 @@ func TestExtractTags(t *testing.T) {
 
 	for _, test := range tests {
 		result := extractTags(test.path, test.name)
-		
+
 		// Check if all expected tags are present
 		for _, expectedTag := range test.expected {
 			found := false
@@ -182,7 +182,7 @@ func TestExtractTags(t *testing.T) {
 				}
 			}
 			if !found {
-				t.Errorf("extractTags(%s, %s) missing expected tag: %s", 
+				t.Errorf("extractTags(%s, %s) missing expected tag: %s",
 					test.path, test.name, expectedTag)
 			}
 		}
@@ -191,8 +191,8 @@ func TestExtractTags(t *testing.T) {
 
 func TestGetFileType(t *testing.T) {
 	tests := []struct {
-		ext      string
-		expected string
+		ext		string
+		expected	string
 	}{
 		{".md", "markdown"},
 		{".txt", "text"},
@@ -205,7 +205,7 @@ func TestGetFileType(t *testing.T) {
 	for _, test := range tests {
 		result := getFileType(test.ext)
 		if result != test.expected {
-			t.Errorf("getFileType(%s) = %s, expected %s", 
+			t.Errorf("getFileType(%s) = %s, expected %s",
 				test.ext, result, test.expected)
 		}
 	}
@@ -214,25 +214,25 @@ func TestGetFileType(t *testing.T) {
 func TestJSONOutput(t *testing.T) {
 	// Create a minimal test report
 	report := &InventoryReport{
-		GeneratedAt: time.Now(),
-		TotalFiles:  1,
-		TotalSize:   100,
-		Categories:  map[string]int{"test": 1},
-		Extensions:  map[string]int{".md": 1},
+		GeneratedAt:	time.Now(),
+		TotalFiles:	1,
+		TotalSize:	100,
+		Categories:	map[string]int{"test": 1},
+		Extensions:	map[string]int{".md": 1},
 		Files: []DocumentFile{
 			{
-				Path:         "test.md",
-				Name:         "test.md",
-				Extension:    ".md",
-				Size:         100,
-				LastModified: time.Now(),
-				Type:         "markdown",
-				Category:     "test",
-				Tags:         []string{"test"},
-				Metadata:     map[string]string{"depth": "0"},
+				Path:		"test.md",
+				Name:		"test.md",
+				Extension:	".md",
+				Size:		100,
+				LastModified:	time.Now(),
+				Type:		"markdown",
+				Category:	"test",
+				Tags:		[]string{"test"},
+				Metadata:	map[string]string{"depth": "0"},
 			},
 		},
-		Summary: "Test summary",
+		Summary:	"Test summary",
 	}
 
 	// Test JSON encoding
@@ -249,11 +249,11 @@ func TestJSONOutput(t *testing.T) {
 
 	// Validate key fields
 	if decoded.TotalFiles != report.TotalFiles {
-		t.Errorf("TotalFiles mismatch: got %d, expected %d", 
+		t.Errorf("TotalFiles mismatch: got %d, expected %d",
 			decoded.TotalFiles, report.TotalFiles)
 	}
 	if decoded.Summary != report.Summary {
-		t.Errorf("Summary mismatch: got %s, expected %s", 
+		t.Errorf("Summary mismatch: got %s, expected %s",
 			decoded.Summary, report.Summary)
 	}
 }

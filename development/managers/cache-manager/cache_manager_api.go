@@ -1,6 +1,6 @@
 // API REST CacheManager v74 — Serveur Go natif
 
-package main
+package cache_manager
 
 import (
 	"encoding/json"
@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	cm     *cachemanager.CacheManager
-	cmOnce sync.Once
+	cm	*cachemanager.CacheManager
+	cmOnce	sync.Once
 )
 
 func getCacheManager() *cachemanager.CacheManager {
@@ -62,8 +62,8 @@ func contextHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:
 		var req struct {
-			Key   string      `json:"key"`
-			Value interface{} `json:"value"`
+			Key	string		`json:"key"`
+			Value	interface{}	`json:"value"`
 		}
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			http.Error(w, "Invalid JSON", http.StatusBadRequest)

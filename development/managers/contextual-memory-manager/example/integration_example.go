@@ -1,4 +1,4 @@
-package main
+package example
 
 import (
 	"context"
@@ -6,8 +6,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/development"
-	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
+	"EMAIL_SENDER_1/development/managers/contextual-memory-manager/development"
+	"EMAIL_SENDER_1/development/managers/contextual-memory-manager/interfaces"
 )
 
 // Example implementation showing how to use the Contextual Memory Manager
@@ -56,11 +56,11 @@ func main() {
 		LineNumber:    127,
 		Timestamp:     time.Now(),
 		Metadata: map[string]interface{}{
-			"language":     "go",
-			"function":     "authenticateUser",
-			"change_type":  "error_handling",
-			"lines_added":  5,
-			"complexity":   "medium",
+			"language":    "go",
+			"function":    "authenticateUser",
+			"change_type": "error_handling",
+			"lines_added": 5,
+			"complexity":  "medium",
 		},
 	}
 
@@ -80,7 +80,7 @@ func main() {
 			WorkspacePath: "/workspace/email-sender",
 			Timestamp:     time.Now(),
 			Metadata: map[string]interface{}{
-				"search_terms": []string{"email", "validation", "regex"},
+				"search_terms":  []string{"email", "validation", "regex"},
 				"results_count": 15,
 			},
 		},
@@ -105,10 +105,10 @@ func main() {
 			LineNumber:    89,
 			Timestamp:     time.Now(),
 			Metadata: map[string]interface{}{
-				"refactor_type": "extraction",
+				"refactor_type":     "extraction",
 				"functions_created": 2,
-				"lines_removed": 45,
-				"lines_added": 32,
+				"lines_removed":     45,
+				"lines_added":       32,
 			},
 		},
 	}

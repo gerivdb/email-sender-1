@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
+	"EMAIL_SENDER_1/development/managers/branching-manager/interfaces"
 )
 
 // QdrantVectorManager implements vector operations for AI-powered branching features

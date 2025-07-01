@@ -5,7 +5,7 @@
 package analysis
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"EMAIL_SENDER_1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -961,5 +961,3 @@ func (s *Service%d) Process%d() error {
 		}
 	}
 }
-
-

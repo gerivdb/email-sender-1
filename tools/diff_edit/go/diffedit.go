@@ -1,4 +1,4 @@
-package main
+package go
 
 import (
 	"bufio"
@@ -12,9 +12,9 @@ import (
 )
 
 var (
-	filePath   = flag.String("file", "", "Fichier cible à patcher")
-	patchPath  = flag.String("patch", "", "Fichier contenant le bloc diff Edit")
-	dryRun     = flag.Bool("dry-run", false, "Prévisualiser le diff sans appliquer")
+	filePath	= flag.String("file", "", "Fichier cible à patcher")
+	patchPath	= flag.String("patch", "", "Fichier contenant le bloc diff Edit")
+	dryRun		= flag.Bool("dry-run", false, "Prévisualiser le diff sans appliquer")
 )
 
 func main() {
@@ -79,8 +79,8 @@ func main() {
 func parseDiffEditBlock(block string) (string, string, error) {
 	scanner := bufio.NewScanner(strings.NewReader(block))
 	var (
-		inSearch, inReplace bool
-		search, replace strings.Builder
+		inSearch, inReplace	bool
+		search, replace		strings.Builder
 	)
 	for scanner.Scan() {
 		line := scanner.Text()

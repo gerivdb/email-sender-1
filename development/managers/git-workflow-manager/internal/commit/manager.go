@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
+	"EMAIL_SENDER_1/managers/interfaces"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
-	"github.com/gerivdb/email-sender-1/managers/interfaces"
 )
 
 // Manager handles Git commit operations
@@ -19,7 +19,7 @@ type Manager struct {
 	repoPath     string
 	repo         *git.Repository
 	errorManager interfaces.ErrorManager
-	
+
 	// Commit message validation patterns
 	conventionalCommitPattern *regexp.Regexp
 }
@@ -29,28 +29,28 @@ func NewManager(repoPath string, errorManager interfaces.ErrorManager) (*Manager
 	if repoPath == "" {
 		return nil, fmt.Errorf("repository path is required")
 	}
-	
+
 	if errorManager == nil {
 		return nil, fmt.Errorf("error manager is required")
 	}
-	
+
 	// Open the Git repository
 	repo, err := git.PlainOpen(repoPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open repository at %s: %w", repoPath, err)
 	}
-	
+
 	// Compile conventional commit pattern
 	// Pattern: type(scope): description
 	pattern := regexp.MustCompile(`^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?: .{1,50}`)
-	
+
 	manager := &Manager{
 		repoPath:                  repoPath,
-		repo:                     repo,
-		errorManager:             errorManager,
+		repo:                      repo,
+		errorManager:              errorManager,
 		conventionalCommitPattern: pattern,
 	}
-	
+
 	log.Printf("Commit manager initialized for repository: %s", repoPath)
 	return manager, nil
 }
@@ -60,37 +60,37 @@ func (m *Manager) ValidateCommitMessage(message string) error {
 	if message == "" {
 		return fmt.Errorf("commit message cannot be empty")
 	}
-	
+
 	// Remove leading/trailing whitespace
 	message = strings.TrimSpace(message)
-	
+
 	// Check minimum length
 	if len(message) < 10 {
 		return fmt.Errorf("commit message too short (minimum 10 characters)")
 	}
-	
+
 	// Check maximum length for first line
 	lines := strings.Split(message, "\n")
 	firstLine := lines[0]
-	
+
 	if len(firstLine) > 72 {
 		return fmt.Errorf("commit message first line too long (maximum 72 characters)")
 	}
-	
+
 	// Validate conventional commit format
 	if !m.conventionalCommitPattern.MatchString(firstLine) {
 		return fmt.Errorf("commit message does not follow conventional commit format. Expected: type(scope): description")
 	}
-	
+
 	// Additional checks
 	if strings.HasSuffix(firstLine, ".") {
 		return fmt.Errorf("commit message should not end with a period")
 	}
-	
+
 	if strings.ToLower(firstLine) == firstLine {
 		return fmt.Errorf("commit message should start with a capital letter")
 	}
-	
+
 	return nil
 }
 
@@ -99,18 +99,18 @@ func (m *Manager) CreateTimestampedCommit(ctx context.Context, message string, f
 	if message == "" {
 		return nil, fmt.Errorf("commit message cannot be empty")
 	}
-	
+
 	// Validate the commit message
 	if err := m.ValidateCommitMessage(message); err != nil {
 		return nil, fmt.Errorf("invalid commit message: %w", err)
 	}
-	
+
 	// Get the working tree
 	worktree, err := m.repo.Worktree()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get working tree: %w", err)
 	}
-	
+
 	// Add specified files or all changes if no files specified
 	if len(files) > 0 {
 		for _, file := range files {
@@ -126,11 +126,11 @@ func (m *Manager) CreateTimestampedCommit(ctx context.Context, message string, f
 			return nil, fmt.Errorf("failed to add changes: %w", err)
 		}
 	}
-	
+
 	// Create timestamped commit message
 	timestamp := time.Now().Format("2006-01-02 15:04:05")
 	timestampedMessage := fmt.Sprintf("%s\n\nTimestamp: %s", message, timestamp)
-	
+
 	// Create the commit
 	commitHash, err := worktree.Commit(timestampedMessage, &git.CommitOptions{
 		Author: &object.Signature{
@@ -142,13 +142,13 @@ func (m *Manager) CreateTimestampedCommit(ctx context.Context, message string, f
 	if err != nil {
 		return nil, fmt.Errorf("failed to create commit: %w", err)
 	}
-	
+
 	// Get current branch
 	head, err := m.repo.Head()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get current branch: %w", err)
 	}
-	
+
 	commitInfo := &interfaces.CommitInfo{
 		Hash:      commitHash.String(),
 		Message:   timestampedMessage,
@@ -156,7 +156,7 @@ func (m *Manager) CreateTimestampedCommit(ctx context.Context, message string, f
 		Timestamp: time.Now(),
 		Branch:    head.Name().Short(),
 	}
-	
+
 	log.Printf("Created timestamped commit %s on branch %s", commitHash.String()[:8], head.Name().Short())
 	return commitInfo, nil
 }
@@ -166,11 +166,11 @@ func (m *Manager) GetCommitHistory(ctx context.Context, branch string, limit int
 	if limit <= 0 {
 		limit = 10 // Default limit
 	}
-	
+
 	// Get the branch reference
 	var ref *plumbing.Reference
 	var err error
-	
+
 	if branch == "" {
 		// Use current branch
 		ref, err = m.repo.Head()
@@ -183,7 +183,7 @@ func (m *Manager) GetCommitHistory(ctx context.Context, branch string, limit int
 			return nil, fmt.Errorf("failed to get branch %s: %w", branch, err)
 		}
 	}
-	
+
 	// Get commit iterator
 	commitIter, err := m.repo.Log(&git.LogOptions{
 		From:  ref.Hash(),
@@ -193,15 +193,15 @@ func (m *Manager) GetCommitHistory(ctx context.Context, branch string, limit int
 		return nil, fmt.Errorf("failed to get commit log: %w", err)
 	}
 	defer commitIter.Close()
-	
+
 	var commits []*interfaces.CommitInfo
 	count := 0
-	
+
 	err = commitIter.ForEach(func(commit *object.Commit) error {
 		if count >= limit {
 			return fmt.Errorf("limit reached") // Use error to break iteration
 		}
-		
+
 		commitInfo := &interfaces.CommitInfo{
 			Hash:      commit.Hash.String(),
 			Message:   commit.Message,
@@ -209,18 +209,18 @@ func (m *Manager) GetCommitHistory(ctx context.Context, branch string, limit int
 			Timestamp: commit.Author.When,
 			Branch:    ref.Name().Short(),
 		}
-		
+
 		commits = append(commits, commitInfo)
 		count++
-		
+
 		return nil
 	})
-	
+
 	// Filter out the "limit reached" error
 	if err != nil && !strings.Contains(err.Error(), "limit reached") {
 		return nil, fmt.Errorf("failed to iterate commits: %w", err)
 	}
-	
+
 	return commits, nil
 }
 
@@ -230,11 +230,11 @@ func (m *Manager) GetLastCommit(ctx context.Context, branch string) (*interfaces
 	if err != nil {
 		return nil, fmt.Errorf("failed to get commit history: %w", err)
 	}
-	
+
 	if len(commits) == 0 {
 		return nil, fmt.Errorf("no commits found for branch %s", branch)
 	}
-	
+
 	return commits[0], nil
 }
 
@@ -243,16 +243,16 @@ func (m *Manager) GetCommitDetails(ctx context.Context, commitHash string) (*int
 	if commitHash == "" {
 		return nil, fmt.Errorf("commit hash cannot be empty")
 	}
-	
+
 	// Parse the commit hash
 	hash := plumbing.NewHash(commitHash)
-	
+
 	// Get the commit object
 	commit, err := m.repo.CommitObject(hash)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get commit %s: %w", commitHash, err)
 	}
-	
+
 	// Determine which branch contains this commit (simplified approach)
 	branch := "unknown"
 	head, err := m.repo.Head()
@@ -263,7 +263,7 @@ func (m *Manager) GetCommitDetails(ctx context.Context, commitHash string) (*int
 			branch = head.Name().Short()
 		}
 	}
-	
+
 	commitInfo := &interfaces.CommitInfo{
 		Hash:      commit.Hash.String(),
 		Message:   commit.Message,
@@ -271,7 +271,7 @@ func (m *Manager) GetCommitDetails(ctx context.Context, commitHash string) (*int
 		Timestamp: commit.Author.When,
 		Branch:    branch,
 	}
-	
+
 	return commitInfo, nil
 }
 
@@ -281,36 +281,36 @@ func (m *Manager) isCommitReachable(target, from *object.Commit) bool {
 	if target.Hash == from.Hash {
 		return true
 	}
-	
+
 	// Check parents (limited depth to avoid infinite loops)
 	depth := 0
 	maxDepth := 100
-	
+
 	var checkParents func(*object.Commit) bool
 	checkParents = func(commit *object.Commit) bool {
 		if depth > maxDepth {
 			return false
 		}
 		depth++
-		
+
 		parentIter := commit.Parents()
 		defer parentIter.Close()
-		
+
 		err := parentIter.ForEach(func(parent *object.Commit) error {
 			if parent.Hash == target.Hash {
 				return fmt.Errorf("found") // Use error to break iteration
 			}
-			
+
 			if checkParents(parent) {
 				return fmt.Errorf("found")
 			}
-			
+
 			return nil
 		})
-		
+
 		return err != nil && strings.Contains(err.Error(), "found")
 	}
-	
+
 	return checkParents(from)
 }
 
@@ -319,7 +319,7 @@ func (m *Manager) CreateCommitWithFiles(ctx context.Context, message string, fil
 	if len(files) == 0 {
 		return nil, fmt.Errorf("at least one file must be specified")
 	}
-	
+
 	return m.CreateTimestampedCommit(ctx, message, files)
 }
 
@@ -331,37 +331,37 @@ func (m *Manager) AmendLastCommit(ctx context.Context, newMessage string) (*inte
 			return nil, fmt.Errorf("invalid commit message: %w", err)
 		}
 	}
-	
+
 	// Get the working tree
 	worktree, err := m.repo.Worktree()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get working tree: %w", err)
 	}
-	
+
 	// Add all changes
 	_, err = worktree.Add(".")
 	if err != nil {
 		return nil, fmt.Errorf("failed to add changes: %w", err)
 	}
-	
+
 	// Get the last commit
 	head, err := m.repo.Head()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get HEAD: %w", err)
 	}
-	
+
 	lastCommit, err := m.repo.CommitObject(head.Hash())
 	if err != nil {
 		return nil, fmt.Errorf("failed to get last commit: %w", err)
 	}
-	
+
 	// Use existing message if no new message provided
 	message := lastCommit.Message
 	if newMessage != "" {
 		timestamp := time.Now().Format("2006-01-02 15:04:05")
 		message = fmt.Sprintf("%s\n\nAmended: %s", newMessage, timestamp)
 	}
-	
+
 	// Create amended commit	// Get parent hashes
 	var parentHashes []plumbing.Hash
 	parentIter := lastCommit.Parents()
@@ -382,7 +382,7 @@ func (m *Manager) AmendLastCommit(ctx context.Context, newMessage string) (*inte
 	if err != nil {
 		return nil, fmt.Errorf("failed to amend commit: %w", err)
 	}
-	
+
 	commitInfo := &interfaces.CommitInfo{
 		Hash:      commitHash.String(),
 		Message:   message,
@@ -390,7 +390,7 @@ func (m *Manager) AmendLastCommit(ctx context.Context, newMessage string) (*inte
 		Timestamp: time.Now(),
 		Branch:    head.Name().Short(),
 	}
-	
+
 	log.Printf("Amended commit %s on branch %s", commitHash.String()[:8], head.Name().Short())
 	return commitInfo, nil
 }
@@ -401,28 +401,28 @@ func (m *Manager) GetCommitStats(ctx context.Context, branch string, since time.
 	if err != nil {
 		return nil, fmt.Errorf("failed to get commit history: %w", err)
 	}
-	
+
 	stats := make(map[string]interface{})
-	
+
 	totalCommits := 0
 	commitsSincePeriod := 0
 	authorStats := make(map[string]int)
-	
+
 	for _, commit := range commits {
 		totalCommits++
-		
+
 		if commit.Timestamp.After(since) {
 			commitsSincePeriod++
 		}
-		
+
 		authorStats[commit.Author]++
 	}
-	
+
 	stats["total_commits"] = totalCommits
 	stats["commits_since_period"] = commitsSincePeriod
 	stats["author_stats"] = authorStats
 	stats["since"] = since.Format("2006-01-02 15:04:05")
-	
+
 	return stats, nil
 }
 
@@ -433,7 +433,7 @@ func (m *Manager) Health() error {
 	if err != nil {
 		return fmt.Errorf("repository health check failed: %w", err)
 	}
-	
+
 	return nil
 }
 

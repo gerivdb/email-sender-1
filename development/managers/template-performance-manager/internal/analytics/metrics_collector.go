@@ -6,25 +6,25 @@ import (
 	"sync"
 	"time"
 
+	"EMAIL_SENDER_1/development/managers/template-performance-manager/interfaces"
 	"github.com/sirupsen/logrus"
-	"github.com/fmoua/email-sender/development/managers/template-performance-manager/interfaces"
 )
 
 // metricsCollectorEngine implémente l'interface PerformanceMetricsEngine
 type metricsCollectorEngine struct {
-	metricsStore      MetricsStore
-	aggregator        MetricsAggregator
-	exporter          DataExporter
-	config            *Config
-	logger            *logrus.Logger
-	mu                sync.RWMutex
-	callbacks         []interfaces.MetricsCallback
-	monitoring        bool
-	metricsBuffer     chan *interfaces.MetricsCollection
-	aggregatedData    map[string]*interfaces.AggregatedMetrics
-	dashboardData     map[string]interface{}
-	stopChan          chan struct{}
-	isRunning         bool
+	metricsStore   MetricsStore
+	aggregator     MetricsAggregator
+	exporter       DataExporter
+	config         *Config
+	logger         *logrus.Logger
+	mu             sync.RWMutex
+	callbacks      []interfaces.MetricsCallback
+	monitoring     bool
+	metricsBuffer  chan *interfaces.MetricsCollection
+	aggregatedData map[string]*interfaces.AggregatedMetrics
+	dashboardData  map[string]interface{}
+	stopChan       chan struct{}
+	isRunning      bool
 }
 
 // MetricsStore - Interface stockage métriques
@@ -69,16 +69,16 @@ func NewMetricsCollectorEngine(
 // NewMetricsCollector creates a new performance metrics engine with the given configuration
 func NewMetricsCollector(config Config) (interfaces.PerformanceMetricsEngine, error) {
 	engine := &metricsCollectorEngine{
-		config:           &config,
-		metricsBuffer:    make(chan *interfaces.MetricsCollection, config.BufferSize),
-		aggregatedData:   make(map[string]*interfaces.AggregatedMetrics),
-		callbacks:        make([]interfaces.MetricsCallback, 0),
-		dashboardData:    make(map[string]interface{}),
-		mu:               sync.RWMutex{},
-		stopChan:         make(chan struct{}),
-		isRunning:        false,
+		config:         &config,
+		metricsBuffer:  make(chan *interfaces.MetricsCollection, config.BufferSize),
+		aggregatedData: make(map[string]*interfaces.AggregatedMetrics),
+		callbacks:      make([]interfaces.MetricsCallback, 0),
+		dashboardData:  make(map[string]interface{}),
+		mu:             sync.RWMutex{},
+		stopChan:       make(chan struct{}),
+		isRunning:      false,
 	}
-	
+
 	return engine, nil
 }
 
@@ -88,7 +88,7 @@ func (mce *metricsCollectorEngine) CollectUsageMetrics(
 	sessionID string,
 ) (*interfaces.MetricsReport, error) {
 	startTime := time.Now()
-	
+
 	mce.logger.WithFields(logrus.Fields{
 		"session_id": sessionID,
 		"operation":  "collect_metrics",
@@ -147,10 +147,10 @@ func (mce *metricsCollectorEngine) CollectUsageMetrics(
 	}
 
 	mce.logger.WithFields(logrus.Fields{
-		"session_id":       sessionID,
-		"processing_time":  processingTime,
-		"insights_count":   len(insights),
-		"correlations":     len(correlations),
+		"session_id":      sessionID,
+		"processing_time": processingTime,
+		"insights_count":  len(insights),
+		"correlations":    len(correlations),
 	}).Info("Collecte métriques terminée avec succès")
 
 	return report, nil
@@ -161,13 +161,13 @@ func (mce *metricsCollectorEngine) CollectPerformanceMetrics(ctx context.Context
 	if sessionData == nil {
 		return nil, fmt.Errorf("session data cannot be nil")
 	}
-	
+
 	// Convert session data to performance metrics
 	metrics := mce.collectPerformanceMetrics(ctx, sessionData.SessionID)
 	if metrics == nil {
 		return nil, fmt.Errorf("failed to collect performance metrics")
 	}
-	
+
 	// Enhance with session-specific data
 	if len(sessionData.TemplateUsage) > 0 {
 		// Process template usage records for additional metrics
@@ -176,7 +176,7 @@ func (mce *metricsCollectorEngine) CollectPerformanceMetrics(ctx context.Context
 			if metrics.TemplateMetrics == nil {
 				metrics.TemplateMetrics = make(map[string]*interfaces.TemplateMetrics)
 			}
-			
+
 			if _, exists := metrics.TemplateMetrics[usage.TemplateID]; !exists {
 				metrics.TemplateMetrics[usage.TemplateID] = &interfaces.TemplateMetrics{
 					TemplateID:      usage.TemplateID,
@@ -191,7 +191,7 @@ func (mce *metricsCollectorEngine) CollectPerformanceMetrics(ctx context.Context
 			}
 		}
 	}
-	
+
 	return metrics, nil
 }
 
@@ -199,7 +199,7 @@ func (mce *metricsCollectorEngine) CollectPerformanceMetrics(ctx context.Context
 func (mce *metricsCollectorEngine) GetMetrics(ctx context.Context, filter interfaces.MetricsFilter) (*interfaces.PerformanceMetrics, error) {
 	mce.mu.RLock()
 	defer mce.mu.RUnlock()
-	
+
 	// For now, return basic metrics - this would be enhanced with filtering logic
 	return mce.collectPerformanceMetrics(ctx, "filtered"), nil
 }
@@ -208,17 +208,17 @@ func (mce *metricsCollectorEngine) GetMetrics(ctx context.Context, filter interf
 func (mce *metricsCollectorEngine) ExportDashboardData(ctx context.Context, timeRange interfaces.TimeFrame) (map[string]interface{}, error) {
 	mce.mu.RLock()
 	defer mce.mu.RUnlock()
-	
+
 	data := make(map[string]interface{})
 	data["timeRange"] = timeRange
 	data["exportedAt"] = time.Now()
 	data["metricsCount"] = len(mce.dashboardData)
-	
+
 	// Add dashboard data
 	for key, value := range mce.dashboardData {
 		data[key] = value
 	}
-	
+
 	return data, nil
 }
 
@@ -226,7 +226,7 @@ func (mce *metricsCollectorEngine) ExportDashboardData(ctx context.Context, time
 func (mce *metricsCollectorEngine) Initialize(ctx context.Context) error {
 	mce.mu.Lock()
 	defer mce.mu.Unlock()
-	
+
 	mce.isRunning = false
 	return nil
 }
@@ -235,7 +235,7 @@ func (mce *metricsCollectorEngine) Initialize(ctx context.Context) error {
 func (mce *metricsCollectorEngine) Start(ctx context.Context) error {
 	mce.mu.Lock()
 	defer mce.mu.Unlock()
-	
+
 	mce.isRunning = true
 	return nil
 }
@@ -244,7 +244,7 @@ func (mce *metricsCollectorEngine) Start(ctx context.Context) error {
 func (mce *metricsCollectorEngine) Stop(ctx context.Context) error {
 	mce.mu.Lock()
 	defer mce.mu.Unlock()
-	
+
 	mce.isRunning = false
 	close(mce.stopChan)
 	return nil
@@ -306,8 +306,8 @@ func (mce *metricsCollectorEngine) ExportMetricsDashboard(
 	}
 
 	mce.logger.WithFields(logrus.Fields{
-		"format":      format,
-		"data_points": len(recentMetrics),
+		"format":       format,
+		"data_points":  len(recentMetrics),
 		"last_updated": dashboard.LastUpdated,
 	}).Info("Export dashboard terminé")
 
@@ -327,7 +327,7 @@ func (mce *metricsCollectorEngine) SetupRealTimeMonitoring(
 
 	// Ajout callback à la liste
 	mce.callbacks = append(mce.callbacks, callback)
-	
+
 	// Activation monitoring si premier callback
 	if len(mce.callbacks) == 1 && !mce.monitoring {
 		go mce.startRealTimeMonitoring()
@@ -346,9 +346,9 @@ func (mce *metricsCollectorEngine) collectGenerationMetrics(ctx context.Context,
 	// Simulation collecte - à implémenter selon besoins réels
 	return &interfaces.GenerationMetrics{
 		TotalGenerations:    100,
-		AverageTime:        150 * time.Millisecond,
-		SuccessRate:        0.95,
-		CacheEfficiency:    0.8,
+		AverageTime:         150 * time.Millisecond,
+		SuccessRate:         0.95,
+		CacheEfficiency:     0.8,
 		ResourceUtilization: 0.7,
 	}
 }
@@ -386,11 +386,11 @@ func (mce *metricsCollectorEngine) collectUsageMetrics(ctx context.Context, sess
 // collectQualityMetrics - Collecte métriques qualité
 func (mce *metricsCollectorEngine) collectQualityMetrics(ctx context.Context, sessionID string) *interfaces.QualityMetrics {
 	return &interfaces.QualityMetrics{
-		CodeQualityScore:     0.85,
-		ConsistencyScore:     0.9,
-		MaintenabilityIndex:  0.8,
-		ComplexityScore:      0.75,
-		SecurityScore:        0.88,
+		CodeQualityScore:    0.85,
+		ConsistencyScore:    0.9,
+		MaintenabilityIndex: 0.8,
+		ComplexityScore:     0.75,
+		SecurityScore:       0.88,
 	}
 }
 
@@ -548,14 +548,14 @@ func (mce *metricsCollectorEngine) startRealTimeMonitoring() {
 		case <-ticker.C:
 			// Collecte métriques système périodique
 			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-			
+
 			systemReport, err := mce.CollectUsageMetrics(ctx, "system_monitoring")
 			if err != nil {
 				mce.logger.Errorf("System monitoring collection failed: %v", err)
 			} else {
 				go mce.notifyCallbacks(systemReport)
 			}
-			
+
 			cancel()
 		}
 	}

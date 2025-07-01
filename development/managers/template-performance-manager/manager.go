@@ -6,15 +6,14 @@
 package template_performance_manager
 
 import (
+	"EMAIL_SENDER_1/development/managers/template-performance-manager/interfaces"
+	"EMAIL_SENDER_1/development/managers/template-performance-manager/internal/analytics"
+	"EMAIL_SENDER_1/development/managers/template-performance-manager/internal/neural"
+	"EMAIL_SENDER_1/development/managers/template-performance-manager/internal/optimization"
 	"context"
 	"fmt"
 	"sync"
 	"time"
-
-	"github.com/fmoua/email-sender/development/managers/template-performance-manager/interfaces"
-	"github.com/fmoua/email-sender/development/managers/template-performance-manager/internal/analytics"
-	"github.com/fmoua/email-sender/development/managers/template-performance-manager/internal/neural"
-	"github.com/fmoua/email-sender/development/managers/template-performance-manager/internal/optimization"
 )
 
 // Manager implements the TemplatePerformanceAnalyticsManager interface
@@ -22,64 +21,64 @@ import (
 type Manager struct {
 	// Core engines
 	neuralProcessor    interfaces.NeuralPatternProcessor
-	metricsEngine     interfaces.PerformanceMetricsEngine
+	metricsEngine      interfaces.PerformanceMetricsEngine
 	optimizationEngine interfaces.AdaptiveOptimizationEngine
 
 	// Configuration
 	config *Config
-	
+
 	// State management
-	mu              sync.RWMutex
-	isInitialized   bool
+	mu             sync.RWMutex
+	isInitialized  bool
 	isRunning      bool
 	activeAnalyses map[string]*interfaces.PerformanceAnalysis
-	
+
 	// Monitoring
-	startTime      time.Time
-	lastUpdate     time.Time
-	requestCount   int64
-	errorCount     int64
-	
+	startTime    time.Time
+	lastUpdate   time.Time
+	requestCount int64
+	errorCount   int64
+
 	// Callbacks
 	onAnalysisComplete func(*interfaces.PerformanceAnalysis)
 	onOptimization     func(*interfaces.OptimizationResult)
-	onError           func(error)
+	onError            func(error)
 }
 
 // Config holds configuration for the manager
 type Config struct {
 	// Neural processor settings
 	NeuralConfig neural.Config
-	
+
 	// Metrics engine settings
 	MetricsConfig analytics.Config
-	
+
 	// Optimization engine settings
 	OptimizationConfig optimization.Config
-	
+
 	// Manager-specific settings
 	MaxConcurrentAnalyses int           `json:"max_concurrent_analyses"`
-	AnalysisTimeout      time.Duration `json:"analysis_timeout"`
-	CacheSize           int           `json:"cache_size"`
-	EnableRealTimeMode  bool          `json:"enable_real_time_mode"`
-	
+	AnalysisTimeout       time.Duration `json:"analysis_timeout"`
+	CacheSize             int           `json:"cache_size"`
+	EnableRealTimeMode    bool          `json:"enable_real_time_mode"`
+
 	// Integration settings
 	AIEngineEndpoint    string `json:"ai_engine_endpoint"`
 	MetricsDBConnection string `json:"metrics_db_connection"`
-	LogLevel           string `json:"log_level"`
+	LogLevel            string `json:"log_level"`
 }
 
 // DefaultConfig returns a default configuration
 func DefaultConfig() *Config {
 	return &Config{
-		NeuralConfig:         neural.DefaultConfig(),
-		MetricsConfig:        analytics.DefaultConfig(),
-		OptimizationConfig:   optimization.DefaultConfig(),
+		NeuralConfig:          neural.DefaultConfig(),
+		MetricsConfig:         analytics.DefaultConfig(),
+		OptimizationConfig:    optimization.DefaultConfig(),
 		MaxConcurrentAnalyses: 100,
-		AnalysisTimeout:      30 * time.Second,
-		CacheSize:           10000,
-		EnableRealTimeMode:  true,
-		LogLevel:           "INFO",
+		AnalysisTimeout:       30 * time.Second,
+		CacheSize:             10000,
+		EnableRealTimeMode:    true,
+		LogLevel:              "INFO",
 	}
 }
 
@@ -109,10 +108,10 @@ func New(config *Config) (*Manager, error) {
 
 	manager := &Manager{
 		neuralProcessor:    neuralProcessor,
-		metricsEngine:     metricsEngine,
+		metricsEngine:      metricsEngine,
 		optimizationEngine: optimizationEngine,
-		config:            config,
-		activeAnalyses:    make(map[string]*interfaces.PerformanceAnalysis),
+		config:             config,
+		activeAnalyses:     make(map[string]*interfaces.PerformanceAnalysis),
 	}
 
 	return manager, nil
@@ -266,11 +265,11 @@ func (m *Manager) AnalyzeTemplatePerformance(ctx context.Context, request interf
 
 	// Step 3: Generate optimization recommendations
 	optimizationRequest := interfaces.OptimizationRequest{
-		AnalysisID:     requestID,
-		PatternData:    patternAnalysis,
-		MetricsData:    metrics,
-		CurrentConfig:  request.CurrentConfig,
-		TargetMetrics:  request.TargetMetrics,
+		AnalysisID:    requestID,
+		PatternData:   patternAnalysis,
+		MetricsData:   metrics,
+		CurrentConfig: request.CurrentConfig,
+		TargetMetrics: request.TargetMetrics,
 	}
 
 	optimizations, err := m.optimizationEngine.GenerateOptimizations(analysisCtx, &optimizationRequest)
@@ -341,13 +340,13 @@ func (m *Manager) GenerateAnalyticsReport(ctx context.Context, request interface
 
 	// Generate report
 	report := &interfaces.AnalyticsReport{
-		ID:           m.generateRequestID(),
-		GeneratedAt:  time.Now(),
-		TimeRange:    request.TimeRange,
-		MetricsData:  metricsData,
-		Insights:     neuralInsights,
+		ID:            m.generateRequestID(),
+		GeneratedAt:   time.Now(),
+		TimeRange:     request.TimeRange,
+		MetricsData:   metricsData,
+		Insights:      neuralInsights,
 		Optimizations: optimizationHistory,
-	}	// Add summary statistics
+	} // Add summary statistics
 	summary := m.generateReportSummary(report)
 	report.Summary = &summary
 
@@ -360,13 +359,13 @@ func (m *Manager) GetManagerStatus() interfaces.ManagerStatus {
 	defer m.mu.RUnlock()
 
 	return interfaces.ManagerStatus{
-		IsInitialized:    m.isInitialized,
-		IsRunning:       m.isRunning,
-		StartTime:       m.startTime,
-		LastUpdate:      m.lastUpdate,
-		RequestCount:    m.requestCount,
-		ErrorCount:      m.errorCount,
-		ActiveAnalyses:  len(m.activeAnalyses),
+		IsInitialized:  m.isInitialized,
+		IsRunning:      m.isRunning,
+		StartTime:      m.startTime,
+		LastUpdate:     m.lastUpdate,
+		RequestCount:   m.requestCount,
+		ErrorCount:     m.errorCount,
+		ActiveAnalyses: len(m.activeAnalyses),
 		Version:        "1.0.0",
 	}
 }
@@ -414,11 +413,11 @@ func (m *Manager) realTimeMonitoringLoop(ctx context.Context) {
 func (m *Manager) performRealTimeMonitoring(ctx context.Context) {
 	// Monitor system health
 	status := m.GetManagerStatus()
-	
+
 	// Check for anomalies
 	if status.ErrorCount > status.RequestCount/10 { // More than 10% error rate
 		if m.onError != nil {
-			go m.onError(fmt.Errorf("high error rate detected: %d errors out of %d requests", 
+			go m.onError(fmt.Errorf("high error rate detected: %d errors out of %d requests",
 				status.ErrorCount, status.RequestCount))
 		}
 	}
@@ -434,7 +433,7 @@ func (m *Manager) generateReportSummary(report *interfaces.AnalyticsReport) inte
 		TotalAnalyses:      len(report.MetricsData),
 		AveragePerformance: m.calculateAveragePerformance(report.MetricsData),
 		OptimizationGains:  m.calculateOptimizationGains(report.Optimizations),
-		TopPatterns:       m.extractTopPatterns(report.Insights),
+		TopPatterns:        m.extractTopPatterns(report.Insights),
 	}
 }
 

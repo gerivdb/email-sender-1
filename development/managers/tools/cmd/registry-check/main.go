@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os" // os is used for os.Exit
 
-	reg "github.com/gerivdb/email-sender-1/tools/core/registry" // Added import for registry package
+	reg "EMAIL_SENDER_1/tools/core/registry" // Added import for registry package
 )
 
 func main() {

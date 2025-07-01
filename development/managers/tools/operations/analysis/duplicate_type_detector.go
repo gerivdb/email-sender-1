@@ -5,8 +5,8 @@
 package analysis
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/registry"
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"EMAIL_SENDER_1/tools/core/registry"
+	"EMAIL_SENDER_1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -436,21 +436,19 @@ func init() {
 		globalReg = registry.NewToolRegistry()
 		// registry.SetGlobalRegistry(globalReg) // If a setter exists
 	}
-	
+
 	// Create a default instance for registration
 	defaultTool := &DuplicateTypeDetector{
-		BaseDir: "", // Default or placeholder
+		BaseDir: "",                 // Default or placeholder
 		FileSet: token.NewFileSet(), // Initialize FileSet
-		Logger:  nil, // Logger should be initialized by the toolkit
+		Logger:  nil,                // Logger should be initialized by the toolkit
 		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  false,
 	}
-	
+
 	err := globalReg.Register(toolkit.DetectDuplicates, defaultTool) // Changed to toolkit.DetectDuplicates
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register DuplicateTypeDetector: %v\n", err)
 	}
 }
-
-

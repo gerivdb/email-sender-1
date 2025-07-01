@@ -1,4 +1,4 @@
-package main
+package contextual_memory_manager
 
 import (
 	"flag"

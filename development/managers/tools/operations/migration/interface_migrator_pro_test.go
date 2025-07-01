@@ -4,7 +4,7 @@
 package migration
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"EMAIL_SENDER_1/tools/core/toolkit"
 	"context"
 	"fmt"
 	"io/ioutil"
@@ -271,46 +271,46 @@ type BackupInterface interface {
 	// The following parts of the test assumed single-file backup and a restore method.
 	// Commenting them out as they are not compatible with the current CreateBackup and lack of restoreFromBackup.
 	/*
-		// Verify backup file exists
-		if _, err := os.Stat(backupPath); os.IsNotExist(err) {
-			t.Error("Backup file was not created")
-		}
+			// Verify backup file exists
+			if _, err := os.Stat(backupPath); os.IsNotExist(err) {
+				t.Error("Backup file was not created")
+			}
 
-		// Verify backup content matches original
-		backupContent, err := ioutil.ReadFile(backupPath)
-		if err != nil {
-			t.Fatalf("Failed to read backup file: %v", err)
-		}
+			// Verify backup content matches original
+			backupContent, err := ioutil.ReadFile(backupPath)
+			if err != nil {
+				t.Fatalf("Failed to read backup file: %v", err)
+			}
 
-		if string(backupContent) != testContent {
-			t.Error("Backup content does not match original")
-		}
+			if string(backupContent) != testContent {
+				t.Error("Backup content does not match original")
+			}
 
-		// Modify original file
-		modifiedContent := `package main
-	type ModifiedInterface interface {
-		NewMethod() error
-	}`
-		err = ioutil.WriteFile(testFile, []byte(modifiedContent), 0644)
-		if err != nil {
-			t.Fatalf("Failed to modify original file: %v", err)
-		}
+			// Modify original file
+			modifiedContent := `package main
+		type ModifiedInterface interface {
+			NewMethod() error
+		}`
+			err = ioutil.WriteFile(testFile, []byte(modifiedContent), 0644)
+			if err != nil {
+				t.Fatalf("Failed to modify original file: %v", err)
+			}
 
-		// Test restore
-		err = migrator.restoreFromBackup(testFile, backupPath) // restoreFromBackup is not defined
-		if err != nil {
-			t.Fatalf("Failed to restore from backup: %v", err)
-		}
+			// Test restore
+			err = migrator.restoreFromBackup(testFile, backupPath) // restoreFromBackup is not defined
+			if err != nil {
+				t.Fatalf("Failed to restore from backup: %v", err)
+			}
 
-		// Verify file was restored
-		restoredContent, err := ioutil.ReadFile(testFile)
-		if err != nil {
-			t.Fatalf("Failed to read restored file: %v", err)
-		}
+			// Verify file was restored
+			restoredContent, err := ioutil.ReadFile(testFile)
+			if err != nil {
+				t.Fatalf("Failed to read restored file: %v", err)
+			}
 
-		if string(restoredContent) != testContent {
-			t.Error("File was not properly restored from backup")
-		}
+			if string(restoredContent) != testContent {
+				t.Error("File was not properly restored from backup")
+			}
 	*/
 }
 
@@ -675,5 +675,3 @@ type Interface%d interface {
 		migrator.MigrateInterfaces(ctx, sourceDir, targetDir, "newpackage")
 	}
 }
-
-

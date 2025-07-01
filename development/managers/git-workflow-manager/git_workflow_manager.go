@@ -7,11 +7,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gerivdb/email-sender-1/git-workflow-manager/internal/branch"
-	"github.com/gerivdb/email-sender-1/git-workflow-manager/internal/commit"
-	"github.com/gerivdb/email-sender-1/git-workflow-manager/internal/pr"
-	"github.com/gerivdb/email-sender-1/git-workflow-manager/internal/webhook"
-	"github.com/gerivdb/email-sender-1/managers/interfaces"
+	"EMAIL_SENDER_1/git-workflow-manager/internal/branch"
+	"EMAIL_SENDER_1/git-workflow-manager/internal/commit"
+	"EMAIL_SENDER_1/git-workflow-manager/internal/pr"
+	"EMAIL_SENDER_1/git-workflow-manager/internal/webhook"
+	"EMAIL_SENDER_1/managers/interfaces"
 )
 
 // GitWorkflowManagerImpl implements the GitWorkflowManager interface
