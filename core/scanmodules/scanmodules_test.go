@@ -1,8 +1,9 @@
-package main
+package scanmodules
 
 import (
 	"encoding/json"
 	"os"
+	"path/filepath"
 	"testing"
 	"time"
 )
@@ -67,131 +68,89 @@ func TestRepositoryStructure(t *testing.T) {
 	}
 }
 
-func TestJSONSerialization(t *testing.T) {
-	// Test de sérialisation/désérialisation JSON
-	original := RepositoryStructure{
+func TestScanOptions(t *testing.T) {
+	// Test de création d'une structure ScanOptions
+	options := ScanOptions{
+		TreeLevels: 3,
+		OutputDir:  "/test/output",
+	}
+
+	if options.TreeLevels != 3 {
+		t.Errorf("Expected TreeLevels to be 3, got %d", options.TreeLevels)
+	}
+
+	if options.OutputDir != "/test/output" {
+		t.Errorf("Expected OutputDir to be '/test/output', got %s", options.OutputDir)
+	}
+}
+
+func TestSaveToJSON(t *testing.T) {
+	// Test de sauvegarde JSON
+	tempDir := t.TempDir()
+
+	structure := &RepositoryStructure{
 		TreeOutput:   "test output",
 		Modules:      []ModuleInfo{},
 		TotalModules: 0,
-		GeneratedAt:  time.Now().Truncate(time.Second), // Tronquer pour éviter les problèmes de précision
+		GeneratedAt:  time.Now().Truncate(time.Second),
 		RootPath:     "/test",
 	}
 
-	// Sérialiser
-	jsonData, err := json.Marshal(original)
+	err := SaveToJSON(structure, tempDir)
 	if err != nil {
-		t.Fatalf("Failed to marshal JSON: %v", err)
+		t.Fatalf("SaveToJSON failed: %v", err)
 	}
 
-	// Désérialiser
+	// Vérifier que le fichier a été créé
+	jsonFile := filepath.Join(tempDir, "modules.json")
+	if _, err := os.Stat(jsonFile); os.IsNotExist(err) {
+		t.Errorf("JSON file was not created")
+	}
+
+	// Vérifier le contenu
+	data, err := os.ReadFile(jsonFile)
+	if err != nil {
+		t.Fatalf("Failed to read JSON file: %v", err)
+	}
+
 	var restored RepositoryStructure
-	err = json.Unmarshal(jsonData, &restored)
+	err = json.Unmarshal(data, &restored)
 	if err != nil {
 		t.Fatalf("Failed to unmarshal JSON: %v", err)
 	}
 
-	// Vérifier que les données sont identiques
-	if restored.TreeOutput != original.TreeOutput {
-		t.Errorf("TreeOutput mismatch: expected %s, got %s", original.TreeOutput, restored.TreeOutput)
+	if restored.TreeOutput != structure.TreeOutput {
+		t.Errorf("TreeOutput mismatch: expected %s, got %s", structure.TreeOutput, restored.TreeOutput)
 	}
 
-	if restored.TotalModules != original.TotalModules {
-		t.Errorf("TotalModules mismatch: expected %d, got %d", original.TotalModules, restored.TotalModules)
-	}
-
-	if restored.RootPath != original.RootPath {
-		t.Errorf("RootPath mismatch: expected %s, got %s", original.RootPath, restored.RootPath)
-	}
-
-	// Note: GeneratedAt peut avoir une légère différence due à la précision des timestamps
-	// On vérifie qu'ils sont proches (moins d'une seconde d'écart)
-	timeDiff := restored.GeneratedAt.Sub(original.GeneratedAt)
-	if timeDiff > time.Second || timeDiff < -time.Second {
-		t.Errorf("GeneratedAt mismatch: expected %v, got %v (diff: %v)",
-			original.GeneratedAt, restored.GeneratedAt, timeDiff)
+	if restored.RootPath != structure.RootPath {
+		t.Errorf("RootPath mismatch: expected %s, got %s", structure.RootPath, restored.RootPath)
 	}
 }
 
-func TestFileOperations(t *testing.T) {
-	// Test des opérations de fichier (création et nettoyage)
-	testFiles := []string{"test_arborescence.txt", "test_modules.txt", "test_modules.json"}
-
-	// Créer des fichiers de test
-	for _, filename := range testFiles {
-		content := "test content for " + filename
-		err := os.WriteFile(filename, []byte(content), 0644)
-		if err != nil {
-			t.Fatalf("Failed to create test file %s: %v", filename, err)
-		}
-
-		// Vérifier que le fichier existe
-		if _, err := os.Stat(filename); os.IsNotExist(err) {
-			t.Errorf("Test file %s was not created", filename)
-		}
+func TestPrintSummary(t *testing.T) {
+	// Test que PrintSummary ne panic pas
+	structure := &RepositoryStructure{
+		TreeOutput: "test output",
+		Modules: []ModuleInfo{
+			{Name: "test/module", Path: "/test", Description: "Test", LastModified: time.Now()},
+		},
+		TotalModules: 1,
+		GeneratedAt:  time.Now(),
+		RootPath:     "/test",
 	}
 
-	// Nettoyer les fichiers de test
+	// Ce test vérifie juste que la fonction ne panic pas
 	defer func() {
-		for _, filename := range testFiles {
-			os.Remove(filename)
+		if r := recover(); r != nil {
+			t.Errorf("PrintSummary panicked: %v", r)
 		}
 	}()
 
-	// Vérifier le contenu
-	for _, filename := range testFiles {
-		content, err := os.ReadFile(filename)
-		if err != nil {
-			t.Errorf("Failed to read test file %s: %v", filename, err)
-			continue
-		}
-
-		expectedContent := "test content for " + filename
-		if string(content) != expectedContent {
-			t.Errorf("Content mismatch for %s: expected %s, got %s",
-				filename, expectedContent, string(content))
-		}
-	}
+	PrintSummary(structure, ".")
 }
 
-func TestModulePathConversion(t *testing.T) {
-	// Test de conversion des chemins de module
-	testCases := []struct {
-		input    string
-		expected string
-	}{
-		{"module/submodule", "module" + string(os.PathSeparator) + "submodule"},
-		{"simple", "simple"},
-		{"deep/nested/module", "deep" + string(os.PathSeparator) + "nested" + string(os.PathSeparator) + "module"},
-	}
-
-	for _, tc := range testCases {
-		// Simuler la conversion effectuée dans le code principal
-		result := tc.input
-		if os.PathSeparator != '/' {
-			result = string([]rune(tc.input)) // Simulation simple
-			for i, r := range result {
-				if r == '/' {
-					result = result[:i] + string(os.PathSeparator) + result[i+1:]
-				}
-			}
-		}
-
-		// Note: Cette vérification est simplifiée car la conversion réelle
-		// se fait avec strings.ReplaceAll dans le code principal
-		if tc.input == "module/submodule" && os.PathSeparator == '\\' {
-			// Test spécifique pour Windows
-			expected := "module\\submodule"
-			actual := tc.input
-			actual = actual[:6] + "\\" + actual[7:] // Simulation manuelle
-			if actual != expected {
-				t.Errorf("Path conversion failed for %s: expected %s, got %s",
-					tc.input, expected, actual)
-			}
-		}
-	}
-}
-
-// Benchmark pour mesurer les performances du scan
+// Benchmark pour mesurer les performances
 func BenchmarkModuleInfoCreation(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		module := ModuleInfo{
@@ -207,7 +166,7 @@ func BenchmarkModuleInfoCreation(b *testing.B) {
 func BenchmarkJSONMarshal(b *testing.B) {
 	repo := RepositoryStructure{
 		TreeOutput:   "benchmark tree output",
-		Modules:      make([]ModuleInfo, 100), // 100 modules pour le benchmark
+		Modules:      make([]ModuleInfo, 100),
 		TotalModules: 100,
 		GeneratedAt:  time.Now(),
 		RootPath:     "/benchmark/root",

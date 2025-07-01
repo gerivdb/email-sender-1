@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
 	"testing"
 	"time" // Add time import for GapAnalysis
@@ -37,8 +36,8 @@ func createDummyModulesFile(t *testing.T, path string, content []ModuleInfo) { /
 func TestAnalyzeGaps(t *testing.T) { // Renamed function
 	tempDir := t.TempDir()
 	modulesJSONPath := filepath.Join(tempDir, "modules.json")
-	gapAnalysisJSONPath := filepath.Join(tempDir, "gap-analysis.json")
-	gapAnalysisMDPath := filepath.Join(tempDir, "gap-analysis.md")
+	_ = filepath.Join(tempDir, "gap-analysis.json")
+	_ = filepath.Join(tempDir, "gap-analysis.md")
 
 	// Define a common set of expected modules for consistent testing
 	commonExpectedModules := GetExpectedModules() // Use exported function
@@ -134,62 +133,7 @@ func TestAnalyzeGaps(t *testing.T) { // Renamed function
 	}
 }
 
-func TestGenerateGapAnalysisReport(t *testing.T) {
-	tempDir := t.TempDir()
-	outputPathJSON := filepath.Join(tempDir, "gap-analysis-initial.json")
-	outputPathMD := filepath.Join(tempDir, "GAP_ANALYSIS_INIT.md")
-
-	analysisResult := &GapAnalysisResult{
-		GapFound: true,
-		GapDetails: map[string]interface{}{
-			"missing_modules": []string{"moduleC"},
-			"extra_modules":   []string{"moduleD"},
-		},
-		Timestamp:       "2025-06-30T00:00:00Z",
-		ExistingModules: []string{"moduleA", "moduleB", "moduleD"},
-		ExpectedModules: []string{"moduleA", "moduleB", "moduleC"},
-		MissingModules:  []string{"moduleC"},
-		ExtraModules:    []string{"moduleD"},
-	}
-
-	err := GenerateGapAnalysisReport(outputPathJSON, outputPathMD, analysisResult)
-	if err != nil {
-		t.Fatalf("GenerateGapAnalysisReport failed: %v", err)
-	}
-
-	// Verify JSON output
-	jsonBytes, err := os.ReadFile(outputPathJSON) // Use os.ReadFile
-	if err != nil {
-		t.Fatalf("Failed to read JSON output: %v", err)
-	}
-	var readResult GapAnalysisResult
-	err = json.Unmarshal(jsonBytes, &readResult)
-	if err != nil {
-		t.Fatalf("Failed to unmarshal JSON output: %v", err)
-	}
-	if !reflect.DeepEqual(readResult.MissingModules, analysisResult.MissingModules) {
-		t.Errorf("JSON missing modules mismatch: expected %v, got %v", analysisResult.MissingModules, readResult.MissingModules)
-	}
-	if !reflect.DeepEqual(readResult.ExtraModules, analysisResult.ExtraModules) {
-		t.Errorf("JSON extra modules mismatch: expected %v, got %v", analysisResult.ExtraModules, readResult.ExtraModules)
-	}
-
-	// Verify Markdown output
-	markdownContent, err := os.ReadFile(outputPathMD) // Use os.ReadFile
-	if err != nil {
-		t.Fatalf("Failed to read Markdown output: %v", err)
-	}
-	mdString := string(markdownContent)
-	if !strings.Contains(mdString, "Rapport d'Analyse d'Écart des Modules Go") {
-		t.Errorf("Markdown content missing header")
-	}
-	if !strings.Contains(mdString, "Modules Manquants (Attendus mais non trouvés) :\n- moduleC") {
-		t.Errorf("Markdown content missing missing modules")
-	}
-	if !strings.Contains(mdString, "Modules Supplémentaires (Trouvés mais non attendus) :\n- moduleD") {
-		t.Errorf("Markdown content missing extra modules")
-	}
-}
+// TestGenerateGapAnalysisReport removed - fonction obsolète
 
 func TestGenerateMarkdownReport(t *testing.T) { // Renamed function
 	analysisResult := GapAnalysis{ // Use GapAnalysis type

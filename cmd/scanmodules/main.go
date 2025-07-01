@@ -1,31 +1,32 @@
 package main
 
 import (
+	"core/scanmodules"
 	"fmt"
-	"os"
-
-	"docmanager/core/scanmodules"
+	"log"
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: scanmodules <root_dir> [output_file]")
-		os.Exit(1)
+	fmt.Println("=== Scan des modules et structure du dépôt ===")
+
+	// Configuration du scan
+	options := scanmodules.ScanOptions{
+		TreeLevels: 3,
+		OutputDir:  ".",
 	}
-	root := os.Args[1]
-	output := "init-cartographie-scan.json"
-	if len(os.Args) > 2 {
-		output = os.Args[2]
-	}
-	modules, err := scanmodules.ScanDir(root)
+
+	// Effectuer le scan
+	structure, err := scanmodules.ScanModules(options)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Erreur lors du scan: %v\n", err)
-		os.Exit(2)
+		log.Fatalf("❌ Erreur lors du scan: %v", err)
 	}
-	err = scanmodules.ExportModules(modules, output)
+
+	// Sauvegarder en JSON
+	err = scanmodules.SaveToJSON(structure, options.OutputDir)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Erreur lors de l'export: %v\n", err)
-		os.Exit(3)
+		log.Fatalf("❌ Erreur lors de la sauvegarde: %v", err)
 	}
-	fmt.Printf("Scan terminé, voir %s\n", output)
+
+	// Afficher le résumé
+	scanmodules.PrintSummary(structure, options.OutputDir)
 }

@@ -1,4 +1,4 @@
-package main
+package scanmodules
 
 import (
 	"encoding/json"
@@ -29,18 +29,23 @@ type RepositoryStructure struct {
 	RootPath     string       `json:"root_path"`
 }
 
-func main() {
-	fmt.Println("=== Scan des modules et structure du dépôt ===")
+// ScanOptions représente les options de scan
+type ScanOptions struct {
+	TreeLevels int
+	OutputDir  string
+}
 
+// ScanModules effectue le scan des modules et génère la structure du dépôt
+func ScanModules(options ScanOptions) (*RepositoryStructure, error) {
 	// Obtenir le répertoire de travail actuel
 	pwd, err := os.Getwd()
 	if err != nil {
-		log.Fatalf("Erreur lors de l'obtention du répertoire de travail: %v", err)
+		return nil, fmt.Errorf("erreur lors de l'obtention du répertoire de travail: %v", err)
 	}
 
 	// Exécuter tree pour obtenir la structure
-	fmt.Println("Génération de l'arborescence...")
-	treeCmd := exec.Command("tree", "-L", "3")
+	log.Println("Génération de l'arborescence...")
+	treeCmd := exec.Command("tree", "-L", fmt.Sprintf("%d", options.TreeLevels))
 	treeOutput, err := treeCmd.Output()
 	if err != nil {
 		log.Printf("Attention: impossible d'exécuter tree: %v", err)
@@ -49,23 +54,25 @@ func main() {
 	}
 
 	// Sauvegarder l'arborescence dans un fichier
-	err = ioutil.WriteFile("arborescence.txt", treeOutput, 0644)
+	treeFile := filepath.Join(options.OutputDir, "arborescence.txt")
+	err = ioutil.WriteFile(treeFile, treeOutput, 0o644)
 	if err != nil {
-		log.Printf("Erreur lors de l'écriture de arborescence.txt: %v", err)
+		log.Printf("Erreur lors de l'écriture de %s: %v", treeFile, err)
 	}
 
 	// Exécuter go list pour obtenir les modules
-	fmt.Println("Scan des modules Go...")
+	log.Println("Scan des modules Go...")
 	goListCmd := exec.Command("go", "list", "./...")
 	goListOutput, err := goListCmd.Output()
 	if err != nil {
-		log.Fatalf("Erreur lors de l'exécution de go list: %v", err)
+		return nil, fmt.Errorf("erreur lors de l'exécution de go list: %v", err)
 	}
 
 	// Sauvegarder la liste des modules dans un fichier
-	err = ioutil.WriteFile("modules.txt", goListOutput, 0644)
+	modulesFile := filepath.Join(options.OutputDir, "modules.txt")
+	err = ioutil.WriteFile(modulesFile, goListOutput, 0o644)
 	if err != nil {
-		log.Printf("Erreur lors de l'écriture de modules.txt: %v", err)
+		log.Printf("Erreur lors de l'écriture de %s: %v", modulesFile, err)
 	}
 
 	// Parser les modules et collecter les informations
@@ -113,7 +120,7 @@ func main() {
 	}
 
 	// Créer la structure complète du dépôt
-	repoStructure := RepositoryStructure{
+	repoStructure := &RepositoryStructure{
 		TreeOutput:   string(treeOutput),
 		Modules:      modules,
 		TotalModules: len(modules),
@@ -121,31 +128,41 @@ func main() {
 		RootPath:     pwd,
 	}
 
-	// Sauvegarder en JSON
-	jsonData, err := json.MarshalIndent(repoStructure, "", "  ")
+	return repoStructure, nil
+}
+
+// SaveToJSON sauvegarde la structure du dépôt en JSON
+func SaveToJSON(structure *RepositoryStructure, outputDir string) error {
+	jsonData, err := json.MarshalIndent(structure, "", "  ")
 	if err != nil {
-		log.Fatalf("Erreur lors de la sérialisation JSON: %v", err)
+		return fmt.Errorf("erreur lors de la sérialisation JSON: %v", err)
 	}
 
-	err = ioutil.WriteFile("modules.json", jsonData, 0644)
+	jsonFile := filepath.Join(outputDir, "modules.json")
+	err = ioutil.WriteFile(jsonFile, jsonData, 0o644)
 	if err != nil {
-		log.Fatalf("Erreur lors de l'écriture de modules.json: %v", err)
+		return fmt.Errorf("erreur lors de l'écriture de %s: %v", jsonFile, err)
 	}
 
-	// Afficher un résumé
+	log.Printf("Structure sauvegardée dans %s", jsonFile)
+	return nil
+}
+
+// PrintSummary affiche un résumé du scan
+func PrintSummary(structure *RepositoryStructure, outputDir string) {
 	fmt.Printf("✅ Scan terminé avec succès!\n")
-	fmt.Printf("📁 Répertoire racine: %s\n", pwd)
-	fmt.Printf("📦 Modules trouvés: %d\n", len(modules))
+	fmt.Printf("📁 Répertoire racine: %s\n", structure.RootPath)
+	fmt.Printf("📦 Modules trouvés: %d\n", len(structure.Modules))
 	fmt.Printf("📄 Fichiers générés:\n")
-	fmt.Printf("   - arborescence.txt\n")
-	fmt.Printf("   - modules.txt\n")
-	fmt.Printf("   - modules.json\n")
+	fmt.Printf("   - %s\n", filepath.Join(outputDir, "arborescence.txt"))
+	fmt.Printf("   - %s\n", filepath.Join(outputDir, "modules.txt"))
+	fmt.Printf("   - %s\n", filepath.Join(outputDir, "modules.json"))
 
 	// Afficher quelques modules trouvés
 	fmt.Printf("\n📋 Premiers modules détectés:\n")
-	for i, module := range modules {
+	for i, module := range structure.Modules {
 		if i >= 5 { // Limiter l'affichage aux 5 premiers
-			fmt.Printf("   ... et %d autres\n", len(modules)-5)
+			fmt.Printf("   ... et %d autres\n", len(structure.Modules)-5)
 			break
 		}
 		fmt.Printf("   - %s\n", module.Name)

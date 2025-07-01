@@ -1,10 +1,8 @@
-package main
+package reporting
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -50,14 +48,57 @@ type RequirementsAnalysis struct {
 	Recommendations   []string       `json:"recommendations"`
 }
 
-// parseIssuesFromJSON parse les issues depuis un fichier JSON
-func parseIssuesFromJSON(filename string) ([]Issue, error) {
+// Specification représente une spécification technique détaillée
+type Specification struct {
+	ID                 string                 `json:"id"`
+	RequirementID      string                 `json:"requirement_id"`
+	Title              string                 `json:"title"`
+	Description        string                 `json:"description"`
+	TechnicalDetails   map[string]interface{} `json:"technical_details"`
+	AcceptanceCriteria []string               `json:"acceptance_criteria"`
+	TestCases          []TestCase             `json:"test_cases"`
+	Dependencies       []string               `json:"dependencies"`
+	Priority           string                 `json:"priority"`
+	EstimatedEffort    string                 `json:"estimated_effort"`
+	Status             string                 `json:"status"`
+	CreatedAt          time.Time              `json:"created_at"`
+	UpdatedAt          time.Time              `json:"updated_at"`
+}
+
+// TestCase représente un cas de test
+type TestCase struct {
+	ID            string   `json:"id"`
+	Name          string   `json:"name"`
+	Description   string   `json:"description"`
+	PreConditions []string `json:"pre_conditions"`
+	Steps         []string `json:"steps"`
+	Expected      string   `json:"expected_result"`
+	Type          string   `json:"type"` // unit, integration, e2e
+	Priority      string   `json:"priority"`
+}
+
+// SpecificationAnalysis représente l'analyse complète des spécifications
+type SpecificationAnalysis struct {
+	AnalysisDate       time.Time       `json:"analysis_date"`
+	TotalRequirements  int             `json:"total_requirements"`
+	TotalSpecs         int             `json:"total_specs"`
+	Specifications     []Specification `json:"specifications"`
+	ComplianceRate     float64         `json:"compliance_rate"`
+	CoverageByCategory map[string]int  `json:"coverage_by_category"`
+	CoverageByPriority map[string]int  `json:"coverage_by_priority"`
+	MissingSpecs       []Requirement   `json:"missing_specs"`
+	Summary            string          `json:"summary"`
+	Recommendations    []string        `json:"recommendations"`
+}
+
+// ParseIssuesFromJSON parse les issues depuis un fichier JSON ou retourne des issues par défaut
+func ParseIssuesFromJSON(filename string) ([]Issue, error) {
 	// Si le fichier n'existe pas, créer des issues par défaut basées sur le plan v72
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
-		return getDefaultIssues(), nil
+		return GetDefaultIssues(), nil
 	}
 
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, fmt.Errorf("erreur lors de la lecture du fichier %s: %v", filename, err)
 	}
@@ -71,8 +112,8 @@ func parseIssuesFromJSON(filename string) ([]Issue, error) {
 	return issues, nil
 }
 
-// getDefaultIssues retourne des issues par défaut basées sur le plan v72
-func getDefaultIssues() []Issue {
+// GetDefaultIssues retourne des issues par défaut basées sur le plan v72
+func GetDefaultIssues() []Issue {
 	return []Issue{
 		{
 			ID:          "ROADMAP-001",
@@ -143,8 +184,8 @@ func getDefaultIssues() []Issue {
 	}
 }
 
-// convertIssuesToRequirements convertit les issues en exigences structurées
-func convertIssuesToRequirements(issues []Issue) []Requirement {
+// ConvertIssuesToRequirements convertit les issues en exigences structurées
+func ConvertIssuesToRequirements(issues []Issue) []Requirement {
 	var requirements []Requirement
 
 	for i, issue := range issues {
@@ -156,9 +197,9 @@ func convertIssuesToRequirements(issues []Issue) []Requirement {
 			Category:     issue.Category,
 			Source:       "issue",
 			SourceID:     issue.ID,
-			Status:       mapIssueStatusToRequirementStatus(issue.Status),
+			Status:       MapIssueStatusToRequirementStatus(issue.Status),
 			CreatedAt:    issue.CreatedAt,
-			Dependencies: extractDependencies(issue.Description),
+			Dependencies: ExtractDependencies(issue.Description),
 		}
 		requirements = append(requirements, requirement)
 	}
@@ -166,8 +207,8 @@ func convertIssuesToRequirements(issues []Issue) []Requirement {
 	return requirements
 }
 
-// mapIssueStatusToRequirementStatus mappe le statut d'une issue vers le statut d'un besoin
-func mapIssueStatusToRequirementStatus(issueStatus string) string {
+// MapIssueStatusToRequirementStatus mappe le statut d'une issue vers le statut d'un besoin
+func MapIssueStatusToRequirementStatus(issueStatus string) string {
 	switch strings.ToLower(issueStatus) {
 	case "open", "new":
 		return "identified"
@@ -182,8 +223,8 @@ func mapIssueStatusToRequirementStatus(issueStatus string) string {
 	}
 }
 
-// extractDependencies extrait les dépendances d'une description (basique)
-func extractDependencies(description string) []string {
+// ExtractDependencies extrait les dépendances d'une description (basique)
+func ExtractDependencies(description string) []string {
 	var dependencies []string
 
 	// Rechercher des références simples comme "dépend de", "après", "requires"
@@ -201,8 +242,8 @@ func extractDependencies(description string) []string {
 	return dependencies
 }
 
-// analyzeRequirements effectue l'analyse des besoins
-func analyzeRequirements(requirements []Requirement) RequirementsAnalysis {
+// AnalyzeRequirements effectue l'analyse des besoins
+func AnalyzeRequirements(requirements []Requirement) RequirementsAnalysis {
 	analysis := RequirementsAnalysis{
 		AnalysisDate:      time.Now(),
 		TotalRequirements: len(requirements),
@@ -258,8 +299,69 @@ func analyzeRequirements(requirements []Requirement) RequirementsAnalysis {
 	return analysis
 }
 
-// generateMarkdownReport génère un rapport Markdown des besoins
-func generateMarkdownReport(analysis RequirementsAnalysis) string {
+// RunNeedsAnalysis exécute l'analyse des besoins avec les paramètres fournis
+func RunNeedsAnalysis(inputFile, outputFile string) error {
+	fmt.Println("=== Analyse des besoins ===")
+	fmt.Printf("📂 Fichier d'entrée: %s\n", inputFile)
+	fmt.Printf("📄 Fichier de sortie: %s\n", outputFile)
+
+	// Parser les issues
+	issues, err := ParseIssuesFromJSON(inputFile)
+	if err != nil {
+		return fmt.Errorf("erreur lors du parsing des issues: %v", err)
+	}
+
+	fmt.Printf("📋 Issues chargées: %d\n", len(issues))
+
+	// Convertir en besoins
+	requirements := ConvertIssuesToRequirements(issues)
+	fmt.Printf("🎯 Besoins identifiés: %d\n", len(requirements))
+
+	// Analyser les besoins
+	analysis := AnalyzeRequirements(requirements)
+	analysis.TotalIssues = len(issues)
+
+	// Sauvegarder l'analyse
+	err = SaveAnalysisToFile(analysis, outputFile)
+	if err != nil {
+		return fmt.Errorf("erreur lors de la sauvegarde: %v", err)
+	}
+
+	// Générer le rapport Markdown
+	markdownReport := GenerateRequirementsMarkdownReport(analysis)
+	markdownFile := "BESOINS_INITIAUX.md"
+	err = SaveMarkdownReport(markdownReport, markdownFile)
+	if err != nil {
+		log.Printf("⚠️ Erreur lors de l'écriture du rapport Markdown %s: %v", markdownFile, err)
+	}
+
+	// Afficher le résumé
+	fmt.Printf("\n✅ Analyse terminée avec succès!\n")
+	fmt.Printf("📊 %s\n", analysis.Summary)
+	fmt.Printf("📄 Fichiers générés:\n")
+	fmt.Printf("   - %s (analyse JSON)\n", outputFile)
+	fmt.Printf("   - %s (rapport Markdown)\n", markdownFile)
+
+	// Afficher les recommandations principales
+	fmt.Printf("\n🎯 Recommandations principales:\n")
+	for i, rec := range analysis.Recommendations {
+		if i >= 3 {
+			fmt.Printf("   ... et %d autres recommandations (voir le rapport complet)\n", len(analysis.Recommendations)-3)
+			break
+		}
+		fmt.Printf("   %d. %s\n", i+1, rec)
+	}
+
+	fmt.Printf("\n📈 Distribution des besoins:\n")
+	for category, count := range analysis.Categories {
+		fmt.Printf("   - %s: %d besoins\n", category, count)
+	}
+
+	return nil
+}
+
+// GenerateRequirementsMarkdownReport génère un rapport Markdown des besoins
+func GenerateRequirementsMarkdownReport(analysis RequirementsAnalysis) string {
 	var report strings.Builder
 
 	report.WriteString("# 📋 Analyse des Besoins\n\n")
@@ -308,70 +410,29 @@ func generateMarkdownReport(analysis RequirementsAnalysis) string {
 	return report.String()
 }
 
-func main() {
-	// Définir les flags de ligne de commande
-	inputFile := flag.String("input", "issues.json", "Fichier JSON d'entrée contenant les issues")
-	outputFile := flag.String("output", "besoins.json", "Fichier JSON de sortie pour les besoins")
-	flag.Parse()
-
-	fmt.Println("=== Analyse des besoins ===")
-	fmt.Printf("📂 Fichier d'entrée: %s\n", *inputFile)
-	fmt.Printf("📄 Fichier de sortie: %s\n", *outputFile)
-
-	// Parser les issues
-	issues, err := parseIssuesFromJSON(*inputFile)
+// SaveAnalysisToFile sauvegarde l'analyse dans un fichier JSON
+func SaveAnalysisToFile(analysis RequirementsAnalysis, filename string) error {
+	data, err := json.MarshalIndent(analysis, "", "  ")
 	if err != nil {
-		log.Fatalf("❌ Erreur lors du parsing des issues: %v", err)
+		return fmt.Errorf("erreur lors de la sérialisation de l'analyse: %v", err)
 	}
 
-	fmt.Printf("📋 Issues chargées: %d\n", len(issues))
-
-	// Convertir en besoins
-	requirements := convertIssuesToRequirements(issues)
-	fmt.Printf("🎯 Besoins identifiés: %d\n", len(requirements))
-
-	// Analyser les besoins
-	analysis := analyzeRequirements(requirements)
-	analysis.TotalIssues = len(issues)
-
-	// Sauvegarder l'analyse en JSON
-	analysisJSON, err := json.MarshalIndent(analysis, "", "  ")
+	err = os.WriteFile(filename, data, 0o644)
 	if err != nil {
-		log.Fatalf("❌ Erreur lors de la sérialisation de l'analyse: %v", err)
+		return fmt.Errorf("erreur lors de l'écriture de %s: %v", filename, err)
 	}
 
-	err = ioutil.WriteFile(*outputFile, analysisJSON, 0644)
+	log.Printf("Analyse sauvegardée dans %s", filename)
+	return nil
+}
+
+// SaveMarkdownReport sauvegarde le rapport Markdown
+func SaveMarkdownReport(content, filename string) error {
+	err := os.WriteFile(filename, []byte(content), 0o644)
 	if err != nil {
-		log.Fatalf("❌ Erreur lors de l'écriture de %s: %v", *outputFile, err)
+		return fmt.Errorf("erreur lors de l'écriture du rapport Markdown %s: %v", filename, err)
 	}
 
-	// Générer le rapport Markdown
-	markdownReport := generateMarkdownReport(analysis)
-	markdownFile := "BESOINS_INITIAUX.md"
-	err = ioutil.WriteFile(markdownFile, []byte(markdownReport), 0644)
-	if err != nil {
-		log.Printf("⚠️ Erreur lors de l'écriture du rapport Markdown %s: %v", markdownFile, err)
-	}
-
-	// Afficher le résumé
-	fmt.Printf("\n✅ Analyse terminée avec succès!\n")
-	fmt.Printf("📊 %s\n", analysis.Summary)
-	fmt.Printf("📄 Fichiers générés:\n")
-	fmt.Printf("   - %s (analyse JSON)\n", *outputFile)
-	fmt.Printf("   - %s (rapport Markdown)\n", markdownFile)
-
-	// Afficher les recommandations principales
-	fmt.Printf("\n🎯 Recommandations principales:\n")
-	for i, rec := range analysis.Recommendations {
-		if i >= 3 {
-			fmt.Printf("   ... et %d autres recommandations (voir le rapport complet)\n", len(analysis.Recommendations)-3)
-			break
-		}
-		fmt.Printf("   %d. %s\n", i+1, rec)
-	}
-
-	fmt.Printf("\n📈 Distribution des besoins:\n")
-	for category, count := range analysis.Categories {
-		fmt.Printf("   - %s: %d besoins\n", category, count)
-	}
+	log.Printf("Rapport Markdown sauvegardé dans %s", filename)
+	return nil
 }
