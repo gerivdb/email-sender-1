@@ -1,472 +1,414 @@
-package main
+package reporting
 
 import (
-	"encoding/json"
-	"flag"
 	"fmt"
-	"io/ioutil"
-	"log"
-	"os"
 	"strings"
 	"time"
 )
 
-// Requirement représente un besoin (importé du module needs)
-type Requirement struct {
-	ID           string    `json:"id"`
-	Name         string    `json:"name"`
-	Description  string    `json:"description"`
-	Priority     string    `json:"priority"`
-	Category     string    `json:"category"`
-	Source       string    `json:"source"`
-	SourceID     string    `json:"source_id"`
-	Status       string    `json:"status"`
-	CreatedAt    time.Time `json:"created_at"`
-	Dependencies []string  `json:"dependencies"`
-}
-
-// RequirementsAnalysis représente l'analyse des besoins (importé du module needs)
-type RequirementsAnalysis struct {
-	AnalysisDate      time.Time      `json:"analysis_date"`
-	TotalIssues       int            `json:"total_issues"`
-	TotalRequirements int            `json:"total_requirements"`
-	Requirements      []Requirement  `json:"requirements"`
-	Summary           string         `json:"summary"`
-	Categories        map[string]int `json:"categories"`
-	Priorities        map[string]int `json:"priorities"`
-	Recommendations   []string       `json:"recommendations"`
-}
-
-// Specification représente une spécification technique détaillée
+// Specification représente une spécification technique
 type Specification struct {
-	ID                 string                 `json:"id"`
-	RequirementID      string                 `json:"requirement_id"`
-	Title              string                 `json:"title"`
-	Description        string                 `json:"description"`
-	TechnicalDetails   map[string]interface{} `json:"technical_details"`
-	AcceptanceCriteria []string               `json:"acceptance_criteria"`
-	TestCases          []TestCase             `json:"test_cases"`
-	Dependencies       []string               `json:"dependencies"`
-	Priority           string                 `json:"priority"`
-	EstimatedEffort    string                 `json:"estimated_effort"`
-	Status             string                 `json:"status"`
-	CreatedAt          time.Time              `json:"created_at"`
-	UpdatedAt          time.Time              `json:"updated_at"`
+	ID                 string     `json:"id"`
+	RequirementID      string     `json:"requirement_id"`
+	Name               string     `json:"name"`
+	Description        string     `json:"description"`
+	TechnicalDetails   string     `json:"technical_details"`
+	AcceptanceCriteria []string   `json:"acceptance_criteria"`
+	TestCases          []TestCase `json:"test_cases"`
+	Complexity         string     `json:"complexity"`
+	EstimatedEffort    float64    `json:"estimated_effort"`
+	Priority           string     `json:"priority"`
+	Category           string     `json:"category"`
+	Dependencies       []string   `json:"dependencies"`
+	CreatedAt          time.Time  `json:"created_at"`
 }
 
 // TestCase représente un cas de test
 type TestCase struct {
-	ID            string   `json:"id"`
-	Name          string   `json:"name"`
-	Description   string   `json:"description"`
-	PreConditions []string `json:"pre_conditions"`
-	Steps         []string `json:"steps"`
-	Expected      string   `json:"expected_result"`
-	Type          string   `json:"type"` // unit, integration, e2e
-	Priority      string   `json:"priority"`
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Type        string `json:"type"`
+	Expected    string `json:"expected"`
+	Automated   bool   `json:"automated"`
 }
 
-// SpecificationAnalysis représente l'analyse complète des spécifications
+// SpecificationAnalysis représente l'analyse des spécifications
 type SpecificationAnalysis struct {
-	AnalysisDate       time.Time       `json:"analysis_date"`
-	TotalRequirements  int             `json:"total_requirements"`
-	TotalSpecs         int             `json:"total_specs"`
-	Specifications     []Specification `json:"specifications"`
-	ComplianceRate     float64         `json:"compliance_rate"`
-	CoverageByCategory map[string]int  `json:"coverage_by_category"`
-	CoverageByPriority map[string]int  `json:"coverage_by_priority"`
-	MissingSpecs       []Requirement   `json:"missing_specs"`
-	Summary            string          `json:"summary"`
-	Recommendations    []string        `json:"recommendations"`
+	AnalysisDate           time.Time       `json:"analysis_date"`
+	TotalSpecifications    int             `json:"total_specifications"`
+	TotalTestCases         int             `json:"total_test_cases"`
+	TotalEffort            float64         `json:"total_effort"`
+	Specifications         []Specification `json:"specifications"`
+	Summary                string          `json:"summary"`
+	ComplexityDistribution map[string]int  `json:"complexity_distribution"`
+	CategoryDistribution   map[string]int  `json:"category_distribution"`
+	Recommendations        []string        `json:"recommendations"`
 }
 
-// generateSpecificationsFromRequirements génère des spécifications à partir des besoins
-func generateSpecificationsFromRequirements(requirements []Requirement) []Specification {
-	var specs []Specification
+// GenerateSpecificationsFromRequirements génère des spécifications à partir des besoins
+func GenerateSpecificationsFromRequirements(requirements []Requirement) []Specification {
+	var specifications []Specification
 
 	for i, req := range requirements {
 		spec := Specification{
 			ID:                 fmt.Sprintf("SPEC-%03d", i+1),
 			RequirementID:      req.ID,
-			Title:              fmt.Sprintf("Spécification pour %s", req.Name),
+			Name:               fmt.Sprintf("Spécification pour %s", req.Name),
 			Description:        generateSpecDescription(req),
 			TechnicalDetails:   generateTechnicalDetails(req),
 			AcceptanceCriteria: generateAcceptanceCriteria(req),
-			TestCases:          generateTestCases(req, i+1),
-			Dependencies:       req.Dependencies,
-			Priority:           req.Priority,
+			TestCases:          generateTestCases(req, fmt.Sprintf("SPEC-%03d", i+1)),
+			Complexity:         estimateComplexity(req),
 			EstimatedEffort:    estimateEffort(req),
-			Status:             "draft",
+			Priority:           req.Priority,
+			Category:           req.Category,
+			Dependencies:       req.Dependencies,
 			CreatedAt:          time.Now(),
-			UpdatedAt:          time.Now(),
 		}
-		specs = append(specs, spec)
+		specifications = append(specifications, spec)
 	}
 
-	return specs
+	return specifications
 }
 
-// generateSpecDescription génère une description détaillée de la spécification
+// generateSpecDescription génère une description de spécification
 func generateSpecDescription(req Requirement) string {
-	baseDesc := fmt.Sprintf("Cette spécification détaille l'implémentation du besoin '%s'.\n\n", req.Name)
-
-	baseDesc += fmt.Sprintf("**Contexte:** %s\n\n", req.Description)
-
-	switch req.Category {
-	case "core":
-		baseDesc += "**Type:** Module core - fonctionnalité fondamentale du système\n"
-		baseDesc += "**Criticité:** Haute - requis pour le fonctionnement global\n"
-	case "cmd":
-		baseDesc += "**Type:** Module commande - outil exécutable\n"
-		baseDesc += "**Criticité:** Moyenne - améliore l'expérience utilisateur\n"
-	case "tests":
-		baseDesc += "**Type:** Module de tests - validation et qualité\n"
-		baseDesc += "**Criticité:** Haute - essentiel pour la fiabilité\n"
-	case "devops":
-		baseDesc += "**Type:** Module DevOps - automatisation et déploiement\n"
-		baseDesc += "**Criticité:** Moyenne - optimise les processus\n"
-	default:
-		baseDesc += "**Type:** Module général\n"
-		baseDesc += "**Criticité:** À déterminer\n"
-	}
-
-	baseDesc += fmt.Sprintf("**Priorité:** %s\n", strings.ToUpper(req.Priority))
-
-	return baseDesc
+	return fmt.Sprintf(
+		"Cette spécification définit l'implémentation technique pour le besoin '%s'. "+
+			"Elle inclut les détails d'architecture, les interfaces, et les critères d'acceptation "+
+			"nécessaires pour satisfaire les exigences fonctionnelles et non-fonctionnelles.",
+		req.Name)
 }
 
-// generateTechnicalDetails génère les détails techniques selon le type de besoin
-func generateTechnicalDetails(req Requirement) map[string]interface{} {
-	details := make(map[string]interface{})
+// generateTechnicalDetails génère les détails techniques
+func generateTechnicalDetails(req Requirement) string {
+	var details strings.Builder
 
-	// Détails communs
-	details["language"] = "Go"
-	details["architecture"] = "Module-based"
-	details["testing_framework"] = "go test"
-
-	// Détails spécifiques selon la catégorie
 	switch req.Category {
 	case "core":
-		details["type"] = "library_module"
-		details["package"] = "main"
-		details["cli_interface"] = true
-		details["config_file"] = false
-		details["dependencies"] = []string{"encoding/json", "flag", "fmt", "os", "time"}
+		details.WriteString("**Architecture:**\n")
+		details.WriteString("- Module Go avec interface claire\n")
+		details.WriteString("- Tests unitaires et d'intégration\n")
+		details.WriteString("- Documentation API complète\n")
+		details.WriteString("- Gestion d'erreurs robuste\n\n")
+		details.WriteString("**Technologies:**\n")
+		details.WriteString("- Go 1.24+\n")
+		details.WriteString("- Tests avec testing package\n")
+		details.WriteString("- JSON pour la sérialisation\n")
 	case "cmd":
-		details["type"] = "executable"
-		details["package"] = "main"
-		details["cli_interface"] = true
-		details["config_file"] = true
-		details["dependencies"] = []string{"flag", "fmt", "os", "os/exec"}
+		details.WriteString("**Architecture:**\n")
+		details.WriteString("- Exécutable en ligne de commande\n")
+		details.WriteString("- Gestion des arguments et flags\n")
+		details.WriteString("- Codes de sortie appropriés\n")
+		details.WriteString("- Logging structuré\n\n")
+		details.WriteString("**Technologies:**\n")
+		details.WriteString("- Go flag package\n")
+		details.WriteString("- os/exec pour l'orchestration\n")
+		details.WriteString("- Timeout et gestion d'erreurs\n")
 	case "tests":
-		details["type"] = "test_module"
-		details["package"] = "main"
-		details["test_types"] = []string{"unit", "integration", "benchmark"}
-		details["coverage_target"] = "90%"
+		details.WriteString("**Architecture:**\n")
+		details.WriteString("- Suite de tests complète\n")
+		details.WriteString("- Tests unitaires et d'intégration\n")
+		details.WriteString("- Couverture de code > 80%\n")
+		details.WriteString("- Tests de performance\n\n")
+		details.WriteString("**Technologies:**\n")
+		details.WriteString("- Go testing package\n")
+		details.WriteString("- Benchmarks\n")
+		details.WriteString("- Mocks et stubs\n")
 	case "devops":
-		details["type"] = "automation_script"
-		details["platform"] = []string{"github_actions", "bash"}
-		details["triggers"] = []string{"push", "pull_request", "schedule"}
+		details.WriteString("**Architecture:**\n")
+		details.WriteString("- Scripts d'automatisation\n")
+		details.WriteString("- Pipeline CI/CD\n")
+		details.WriteString("- Monitoring et alertes\n")
+		details.WriteString("- Documentation d'exploitation\n\n")
+		details.WriteString("**Technologies:**\n")
+		details.WriteString("- GitHub Actions\n")
+		details.WriteString("- Docker\n")
+		details.WriteString("- Scripts shell/PowerShell\n")
+	default:
+		details.WriteString("**Architecture générale:**\n")
+		details.WriteString("- Implémentation selon les bonnes pratiques\n")
+		details.WriteString("- Tests appropriés\n")
+		details.WriteString("- Documentation complète\n")
 	}
 
-	// Performance et scalabilité
-	details["performance"] = map[string]interface{}{
-		"max_execution_time": "5m",
-		"memory_limit":       "512MB",
-		"concurrent_safe":    true,
-	}
-
-	return details
+	return details.String()
 }
 
 // generateAcceptanceCriteria génère les critères d'acceptation
 func generateAcceptanceCriteria(req Requirement) []string {
 	var criteria []string
 
-	// Critères de base
-	criteria = append(criteria, "Le module compile sans erreur avec `go build`")
-	criteria = append(criteria, "Tous les tests unitaires passent avec `go test`")
-	criteria = append(criteria, "Le code respecte les conventions Go (gofmt, golint)")
+	// Critères généraux
+	criteria = append(criteria, "Le module compile sans erreur")
+	criteria = append(criteria, "Tous les tests passent avec succès")
 	criteria = append(criteria, "La documentation est complète et à jour")
+	criteria = append(criteria, "Le code respecte les standards de qualité")
 
-	// Critères spécifiques selon la priorité
-	switch req.Priority {
-	case "high":
-		criteria = append(criteria, "Couverture de tests >= 90%")
-		criteria = append(criteria, "Validation manuelle par l'équipe")
-		criteria = append(criteria, "Tests de performance validés")
-	case "medium":
-		criteria = append(criteria, "Couverture de tests >= 70%")
-		criteria = append(criteria, "Revue de code approuvée")
-	case "low":
-		criteria = append(criteria, "Couverture de tests >= 50%")
-		criteria = append(criteria, "Tests d'intégration de base")
-	}
-
-	// Critères spécifiques selon la catégorie
+	// Critères spécifiques par catégorie
 	switch req.Category {
 	case "core":
-		criteria = append(criteria, "Interface CLI fonctionnelle et documentée")
-		criteria = append(criteria, "Génération des fichiers de sortie attendus")
-		criteria = append(criteria, "Gestion d'erreurs robuste")
+		criteria = append(criteria, "L'interface publique est stable et documentée")
+		criteria = append(criteria, "La couverture de code est >= 80%")
+		criteria = append(criteria, "Les erreurs sont gérées de manière appropriée")
+		criteria = append(criteria, "Les performances sont acceptables")
 	case "cmd":
-		criteria = append(criteria, "Exécution en ligne de commande réussie")
-		criteria = append(criteria, "Options et flags documentés")
-		criteria = append(criteria, "Codes de sortie appropriés")
+		criteria = append(criteria, "L'aide en ligne de commande est claire")
+		criteria = append(criteria, "Les codes de sortie sont corrects")
+		criteria = append(criteria, "La gestion des arguments est robuste")
+		criteria = append(criteria, "Les logs sont informatifs")
 	case "tests":
-		criteria = append(criteria, "Tests automatisés intégrés dans le pipeline")
-		criteria = append(criteria, "Rapports de tests générés")
+		criteria = append(criteria, "Tous les cas de test sont couverts")
+		criteria = append(criteria, "Les tests sont fiables et reproductibles")
+		criteria = append(criteria, "Les tests d'intégration passent")
+		criteria = append(criteria, "Les benchmarks montrent des performances acceptables")
 	case "devops":
-		criteria = append(criteria, "Pipeline CI/CD fonctionnel")
-		criteria = append(criteria, "Déploiement automatique validé")
+		criteria = append(criteria, "Le pipeline CI/CD fonctionne correctement")
+		criteria = append(criteria, "Le déploiement est automatisé")
+		criteria = append(criteria, "Le monitoring est en place")
+		criteria = append(criteria, "La documentation d'exploitation est complète")
+	}
+
+	// Critères spécifiques par priorité
+	if req.Priority == "high" {
+		criteria = append(criteria, "La livraison respecte les délais critiques")
+		criteria = append(criteria, "La solution est robuste et fiable")
 	}
 
 	return criteria
 }
 
 // generateTestCases génère les cas de test
-func generateTestCases(req Requirement, index int) []TestCase {
+func generateTestCases(req Requirement, specID string) []TestCase {
 	var testCases []TestCase
 
-	// Test cas de base - Succès nominal
+	// Tests de base
 	testCases = append(testCases, TestCase{
-		ID:          fmt.Sprintf("TC-%03d-001", index),
-		Name:        "Exécution nominale réussie",
-		Description: fmt.Sprintf("Teste l'exécution normale du module %s", req.Name),
-		PreConditions: []string{
-			"Environnement Go configuré",
-			"Fichiers d'entrée présents si requis",
-			"Permissions d'écriture appropriées",
-		},
-		Steps: []string{
-			"Compiler le module avec `go build`",
-			"Exécuter le module avec les paramètres par défaut",
-			"Vérifier la sortie standard",
-			"Vérifier les fichiers générés",
-		},
-		Expected: "Module exécuté avec succès, fichiers de sortie générés correctement",
-		Type:     "integration",
-		Priority: "high",
+		ID:          fmt.Sprintf("%s-TC-001", specID),
+		Name:        "Test de fonctionnement nominal",
+		Description: "Vérifier le comportement normal du module",
+		Type:        "functional",
+		Expected:    "Le module fonctionne selon les spécifications",
+		Automated:   true,
 	})
 
-	// Test cas d'erreur
 	testCases = append(testCases, TestCase{
-		ID:          fmt.Sprintf("TC-%03d-002", index),
-		Name:        "Gestion des erreurs",
-		Description: "Teste la gestion des cas d'erreur",
-		PreConditions: []string{
-			"Environnement Go configuré",
-			"Fichiers d'entrée absents ou corrompus",
-		},
-		Steps: []string{
-			"Exécuter le module avec des entrées invalides",
-			"Vérifier les messages d'erreur",
-			"Vérifier le code de sortie",
-		},
-		Expected: "Messages d'erreur clairs, code de sortie non-zéro",
-		Type:     "unit",
-		Priority: "medium",
+		ID:          fmt.Sprintf("%s-TC-002", specID),
+		Name:        "Test de gestion d'erreurs",
+		Description: "Vérifier la gestion des cas d'erreur",
+		Type:        "error",
+		Expected:    "Les erreurs sont gérées de manière appropriée",
+		Automated:   true,
 	})
 
-	// Test cas de performance (pour modules critiques)
-	if req.Priority == "high" {
+	// Tests spécifiques par catégorie
+	switch req.Category {
+	case "core":
 		testCases = append(testCases, TestCase{
-			ID:          fmt.Sprintf("TC-%03d-003", index),
-			Name:        "Performance et scalabilité",
-			Description: "Teste les performances du module",
-			PreConditions: []string{
-				"Environnement Go configuré",
-				"Jeux de données de test volumineux",
-			},
-			Steps: []string{
-				"Exécuter le module avec des données volumineuses",
-				"Mesurer le temps d'exécution",
-				"Mesurer l'utilisation mémoire",
-				"Vérifier la stabilité",
-			},
-			Expected: "Exécution en moins de 5 minutes, utilisation mémoire < 512MB",
-			Type:     "performance",
-			Priority: "medium",
+			ID:          fmt.Sprintf("%s-TC-003", specID),
+			Name:        "Test de performance",
+			Description: "Vérifier les performances du module",
+			Type:        "performance",
+			Expected:    "Les performances sont dans les limites acceptables",
+			Automated:   true,
+		})
+	case "cmd":
+		testCases = append(testCases, TestCase{
+			ID:          fmt.Sprintf("%s-TC-003", specID),
+			Name:        "Test d'arguments",
+			Description: "Vérifier la gestion des arguments en ligne de commande",
+			Type:        "functional",
+			Expected:    "Les arguments sont traités correctement",
+			Automated:   true,
+		})
+	case "tests":
+		testCases = append(testCases, TestCase{
+			ID:          fmt.Sprintf("%s-TC-003", specID),
+			Name:        "Test de couverture",
+			Description: "Vérifier la couverture de code",
+			Type:        "coverage",
+			Expected:    "La couverture de code est >= 80%",
+			Automated:   true,
 		})
 	}
 
 	return testCases
 }
 
-// estimateEffort estime l'effort de développement
-func estimateEffort(req Requirement) string {
-	baseEffort := 1 // jour
+// estimateComplexity estime la complexité d'une spécification
+func estimateComplexity(req Requirement) string {
+	score := 0
 
-	// Ajustement selon la priorité
-	switch req.Priority {
-	case "high":
-		baseEffort += 2
-	case "medium":
-		baseEffort += 1
-	case "low":
-		baseEffort += 0
+	// Facteurs de complexité
+	if req.Priority == "high" {
+		score += 2
+	}
+	if req.Category == "core" {
+		score += 3
+	}
+	if req.Category == "cmd" {
+		score += 2
+	}
+	if len(req.Dependencies) > 2 {
+		score += 2
 	}
 
-	// Ajustement selon la catégorie
-	switch req.Category {
-	case "core":
-		baseEffort += 3 // Modules core plus complexes
-	case "cmd":
-		baseEffort += 2 // Outils avec interface
-	case "tests":
-		baseEffort += 1 // Tests plus simples mais nombreux
-	case "devops":
-		baseEffort += 2 // Configuration et validation
-	}
-
-	// Ajustement selon les dépendances
-	baseEffort += len(req.Dependencies)
-
-	if baseEffort <= 2 {
-		return "1-2 jours"
-	} else if baseEffort <= 4 {
-		return "3-4 jours"
-	} else if baseEffort <= 7 {
-		return "1 semaine"
+	// Classification
+	if score <= 2 {
+		return "low"
+	} else if score <= 4 {
+		return "medium"
 	} else {
-		return "1-2 semaines"
+		return "high"
 	}
 }
 
-// analyzeSpecifications effectue l'analyse de complétude des spécifications
-func analyzeSpecifications(requirements []Requirement, specs []Specification) SpecificationAnalysis {
+// estimateEffort estime l'effort en jours
+func estimateEffort(req Requirement) float64 {
+	baseEffort := 1.0
+
+	// Facteurs d'effort
+	switch req.Category {
+	case "core":
+		baseEffort = 3.0
+	case "cmd":
+		baseEffort = 2.0
+	case "tests":
+		baseEffort = 1.5
+	case "devops":
+		baseEffort = 2.5
+	}
+
+	// Multiplicateurs
+	switch req.Priority {
+	case "high":
+		baseEffort *= 1.2 // Plus de temps pour la qualité
+	case "medium":
+		baseEffort *= 1.0
+	case "low":
+		baseEffort *= 0.8
+	}
+
+	// Complexité des dépendances
+	if len(req.Dependencies) > 0 {
+		baseEffort += float64(len(req.Dependencies)) * 0.5
+	}
+
+	return baseEffort
+}
+
+// AnalyzeSpecifications effectue l'analyse des spécifications
+func AnalyzeSpecifications(specifications []Specification) SpecificationAnalysis {
 	analysis := SpecificationAnalysis{
-		AnalysisDate:       time.Now(),
-		TotalRequirements:  len(requirements),
-		TotalSpecs:         len(specs),
-		Specifications:     specs,
-		CoverageByCategory: make(map[string]int),
-		CoverageByPriority: make(map[string]int),
-		MissingSpecs:       []Requirement{},
-		Recommendations:    []string{},
+		AnalysisDate:           time.Now(),
+		TotalSpecifications:    len(specifications),
+		Specifications:         specifications,
+		ComplexityDistribution: make(map[string]int),
+		CategoryDistribution:   make(map[string]int),
+		Recommendations:        []string{},
 	}
 
-	// Créer un map des specs par requirement ID
-	specsByReqID := make(map[string]Specification)
-	for _, spec := range specs {
-		specsByReqID[spec.RequirementID] = spec
-	}
-
-	// Identifier les besoins sans spécification
-	for _, req := range requirements {
-		if _, hasSpec := specsByReqID[req.ID]; !hasSpec {
-			analysis.MissingSpecs = append(analysis.MissingSpecs, req)
-		}
-	}
-
-	// Analyser la couverture par catégorie et priorité
-	for _, req := range requirements {
-		if _, hasSpec := specsByReqID[req.ID]; hasSpec {
-			analysis.CoverageByCategory[req.Category]++
-			analysis.CoverageByPriority[req.Priority]++
-		}
-	}
-
-	// Calculer le taux de conformité
-	if analysis.TotalRequirements > 0 {
-		analysis.ComplianceRate = float64(analysis.TotalSpecs) / float64(analysis.TotalRequirements) * 100
-	} else {
-		analysis.ComplianceRate = 100.0
+	// Analyser les distributions et calculer les totaux
+	for _, spec := range specifications {
+		analysis.ComplexityDistribution[spec.Complexity]++
+		analysis.CategoryDistribution[spec.Category]++
+		analysis.TotalTestCases += len(spec.TestCases)
+		analysis.TotalEffort += spec.EstimatedEffort
 	}
 
 	// Générer des recommandations
-	if analysis.ComplianceRate < 80 {
+	highComplexityCount := analysis.ComplexityDistribution["high"]
+	if highComplexityCount > 0 {
 		analysis.Recommendations = append(analysis.Recommendations,
-			"PRIORITÉ HAUTE: Taux de couverture faible - créer les spécifications manquantes")
+			fmt.Sprintf("ATTENTION: %d spécifications de haute complexité identifiées - prévoir des ressources supplémentaires", highComplexityCount))
 	}
 
-	if len(analysis.MissingSpecs) > 0 {
+	if analysis.TotalEffort > 20 {
 		analysis.Recommendations = append(analysis.Recommendations,
-			fmt.Sprintf("SPÉCIFICATIONS: %d besoins sans spécifications détaillées", len(analysis.MissingSpecs)))
+			fmt.Sprintf("PLANIFICATION: Effort total estimé %.1f jours - considérer une approche itérative", analysis.TotalEffort))
 	}
 
-	// Recommandations par catégorie
-	if analysis.CoverageByCategory["core"] < analysis.CoverageByCategory["tests"] {
+	coreSpecs := analysis.CategoryDistribution["core"]
+	if coreSpecs > 0 {
 		analysis.Recommendations = append(analysis.Recommendations,
-			"ARCHITECTURE: Prioriser les spécifications des modules core")
+			fmt.Sprintf("PRIORITÉ: %d spécifications core - implémenter en premier", coreSpecs))
+	}
+
+	testSpecs := analysis.CategoryDistribution["tests"]
+	if testSpecs > 0 {
+		analysis.Recommendations = append(analysis.Recommendations,
+			fmt.Sprintf("QUALITÉ: %d spécifications de tests - développer en parallèle", testSpecs))
 	}
 
 	// Générer le résumé
 	analysis.Summary = fmt.Sprintf(
-		"Analyse des spécifications terminée: %d spécifications pour %d besoins (%.1f%% de couverture). "+
-			"Couverture par priorité: haute(%d), moyenne(%d), faible(%d).",
-		analysis.TotalSpecs, analysis.TotalRequirements, analysis.ComplianceRate,
-		analysis.CoverageByPriority["high"], analysis.CoverageByPriority["medium"], analysis.CoverageByPriority["low"])
+		"Analyse des spécifications terminée: %d spécifications générées avec %d cas de test. "+
+			"Effort total estimé: %.1f jours. Complexité: haute(%d), moyenne(%d), faible(%d).",
+		analysis.TotalSpecifications,
+		analysis.TotalTestCases,
+		analysis.TotalEffort,
+		analysis.ComplexityDistribution["high"],
+		analysis.ComplexityDistribution["medium"],
+		analysis.ComplexityDistribution["low"])
 
 	return analysis
 }
 
-// generateMarkdownReport génère un rapport Markdown des spécifications
-func generateMarkdownReport(analysis SpecificationAnalysis) string {
+// GenerateSpecMarkdownReport génère un rapport Markdown des spécifications
+func GenerateSpecMarkdownReport(analysis SpecificationAnalysis) string {
 	var report strings.Builder
 
-	report.WriteString("# 📋 Spécifications Techniques Détaillées\n\n")
+	report.WriteString("# 📋 Spécifications Techniques\n\n")
 	report.WriteString(fmt.Sprintf("**Date de génération:** %s\n\n", analysis.AnalysisDate.Format("2006-01-02 15:04:05")))
 	report.WriteString(fmt.Sprintf("**Résumé:** %s\n\n", analysis.Summary))
 
 	// Métriques
-	report.WriteString("## 📊 Métriques de Couverture\n\n")
-	report.WriteString(fmt.Sprintf("- **Besoins analysés:** %d\n", analysis.TotalRequirements))
-	report.WriteString(fmt.Sprintf("- **Spécifications générées:** %d\n", analysis.TotalSpecs))
-	report.WriteString(fmt.Sprintf("- **Taux de couverture:** %.1f%%\n\n", analysis.ComplianceRate))
+	report.WriteString("## 📊 Métriques\n\n")
+	report.WriteString(fmt.Sprintf("- **Total des spécifications:** %d\n", analysis.TotalSpecifications))
+	report.WriteString(fmt.Sprintf("- **Total des cas de test:** %d\n", analysis.TotalTestCases))
+	report.WriteString(fmt.Sprintf("- **Effort total estimé:** %.1f jours\n\n", analysis.TotalEffort))
 
-	// Couverture par catégorie
-	report.WriteString("### 📂 Couverture par Catégorie\n\n")
-	for category, count := range analysis.CoverageByCategory {
-		report.WriteString(fmt.Sprintf("- **%s:** %d spécifications\n", category, count))
+	// Distribution par complexité
+	report.WriteString("### 🎯 Distribution par complexité\n\n")
+	for complexity, count := range analysis.ComplexityDistribution {
+		report.WriteString(fmt.Sprintf("- **%s:** %d spécifications\n", complexity, count))
 	}
 	report.WriteString("\n")
 
-	// Couverture par priorité
-	report.WriteString("### ⚡ Couverture par Priorité\n\n")
-	for priority, count := range analysis.CoverageByPriority {
-		report.WriteString(fmt.Sprintf("- **%s:** %d spécifications\n", priority, count))
+	// Distribution par catégorie
+	report.WriteString("### 📂 Distribution par catégorie\n\n")
+	for category, count := range analysis.CategoryDistribution {
+		report.WriteString(fmt.Sprintf("- **%s:** %d spécifications\n", category, count))
 	}
 	report.WriteString("\n")
 
 	// Spécifications détaillées
 	report.WriteString("## 📝 Spécifications Détaillées\n\n")
 	for _, spec := range analysis.Specifications {
-		report.WriteString(fmt.Sprintf("### %s - %s\n\n", spec.ID, spec.Title))
-		report.WriteString(fmt.Sprintf("- **Besoin source:** %s\n", spec.RequirementID))
+		report.WriteString(fmt.Sprintf("### %s - %s\n\n", spec.ID, spec.Name))
+		report.WriteString(fmt.Sprintf("- **Besoin associé:** %s\n", spec.RequirementID))
+		report.WriteString(fmt.Sprintf("- **Complexité:** %s\n", spec.Complexity))
+		report.WriteString(fmt.Sprintf("- **Effort estimé:** %.1f jours\n", spec.EstimatedEffort))
 		report.WriteString(fmt.Sprintf("- **Priorité:** %s\n", spec.Priority))
-		report.WriteString(fmt.Sprintf("- **Effort estimé:** %s\n", spec.EstimatedEffort))
-		report.WriteString(fmt.Sprintf("- **Statut:** %s\n\n", spec.Status))
+		report.WriteString(fmt.Sprintf("- **Catégorie:** %s\n\n", spec.Category))
 
 		report.WriteString("**Description:**\n")
 		report.WriteString(fmt.Sprintf("%s\n\n", spec.Description))
 
-		// Critères d'acceptation
-		if len(spec.AcceptanceCriteria) > 0 {
-			report.WriteString("**Critères d'acceptation:**\n")
-			for i, criteria := range spec.AcceptanceCriteria {
-				report.WriteString(fmt.Sprintf("%d. %s\n", i+1, criteria))
-			}
-			report.WriteString("\n")
+		report.WriteString("**Détails techniques:**\n")
+		report.WriteString(fmt.Sprintf("%s\n\n", spec.TechnicalDetails))
+
+		report.WriteString("**Critères d'acceptation:**\n")
+		for i, criteria := range spec.AcceptanceCriteria {
+			report.WriteString(fmt.Sprintf("%d. %s\n", i+1, criteria))
 		}
+		report.WriteString("\n")
 
-		// Cas de test
-		if len(spec.TestCases) > 0 {
-			report.WriteString("**Cas de test:**\n")
-			for _, testCase := range spec.TestCases {
-				report.WriteString(fmt.Sprintf("- **%s** (%s): %s\n", testCase.Name, testCase.Type, testCase.Description))
-			}
-			report.WriteString("\n")
-		}
-
-		report.WriteString("---\n\n")
-	}
-
-	// Spécifications manquantes
-	if len(analysis.MissingSpecs) > 0 {
-		report.WriteString("## ⚠️ Spécifications Manquantes\n\n")
-		for _, missing := range analysis.MissingSpecs {
-			report.WriteString(fmt.Sprintf("- **%s** (%s) - %s\n", missing.ID, missing.Priority, missing.Name))
+		report.WriteString("**Cas de test:**\n")
+		for _, testCase := range spec.TestCases {
+			report.WriteString(fmt.Sprintf("- **%s:** %s (Type: %s, Automatisé: %v)\n",
+				testCase.Name, testCase.Description, testCase.Type, testCase.Automated))
 		}
 		report.WriteString("\n")
 	}
@@ -478,86 +420,4 @@ func generateMarkdownReport(analysis SpecificationAnalysis) string {
 	}
 
 	return report.String()
-}
-
-func main() {
-	// Définir les flags de ligne de commande
-	inputFile := flag.String("input", "besoins.json", "Fichier JSON d'entrée contenant les besoins")
-	outputFile := flag.String("output", "spec.json", "Fichier JSON de sortie pour les spécifications")
-	flag.Parse()
-
-	fmt.Println("=== Générateur de spécifications détaillées ===")
-	fmt.Printf("📂 Fichier d'entrée: %s\n", *inputFile)
-	fmt.Printf("📄 Fichier de sortie: %s\n", *outputFile)
-
-	// Vérifier que le fichier d'entrée existe
-	if _, err := os.Stat(*inputFile); os.IsNotExist(err) {
-		log.Fatalf("❌ Fichier d'entrée '%s' introuvable. Exécutez d'abord l'analyse des besoins.", *inputFile)
-	}
-
-	// Lire l'analyse des besoins
-	jsonData, err := ioutil.ReadFile(*inputFile)
-	if err != nil {
-		log.Fatalf("❌ Erreur lors de la lecture de %s: %v", *inputFile, err)
-	}
-
-	var requirementsAnalysis RequirementsAnalysis
-	err = json.Unmarshal(jsonData, &requirementsAnalysis)
-	if err != nil {
-		log.Fatalf("❌ Erreur lors de la désérialisation de %s: %v", *inputFile, err)
-	}
-
-	fmt.Printf("📋 Besoins chargés: %d\n", len(requirementsAnalysis.Requirements))
-
-	// Générer les spécifications
-	specifications := generateSpecificationsFromRequirements(requirementsAnalysis.Requirements)
-	fmt.Printf("📝 Spécifications générées: %d\n", len(specifications))
-
-	// Analyser la complétude
-	analysis := analyzeSpecifications(requirementsAnalysis.Requirements, specifications)
-
-	// Sauvegarder l'analyse en JSON
-	analysisJSON, err := json.MarshalIndent(analysis, "", "  ")
-	if err != nil {
-		log.Fatalf("❌ Erreur lors de la sérialisation de l'analyse: %v", err)
-	}
-
-	err = ioutil.WriteFile(*outputFile, analysisJSON, 0644)
-	if err != nil {
-		log.Fatalf("❌ Erreur lors de l'écriture de %s: %v", *outputFile, err)
-	}
-
-	// Générer le rapport Markdown
-	markdownReport := generateMarkdownReport(analysis)
-	markdownFile := "SPEC_INIT.md"
-	err = ioutil.WriteFile(markdownFile, []byte(markdownReport), 0644)
-	if err != nil {
-		log.Printf("⚠️ Erreur lors de l'écriture du rapport Markdown %s: %v", markdownFile, err)
-	}
-
-	// Afficher le résumé
-	fmt.Printf("\n✅ Génération terminée avec succès!\n")
-	fmt.Printf("📊 %s\n", analysis.Summary)
-	fmt.Printf("📄 Fichiers générés:\n")
-	fmt.Printf("   - %s (spécifications JSON)\n", *outputFile)
-	fmt.Printf("   - %s (rapport Markdown)\n", markdownFile)
-
-	// Afficher les recommandations principales
-	fmt.Printf("\n🎯 Recommandations principales:\n")
-	for i, rec := range analysis.Recommendations {
-		if i >= 3 {
-			fmt.Printf("   ... et %d autres recommandations (voir le rapport complet)\n", len(analysis.Recommendations)-3)
-			break
-		}
-		fmt.Printf("   %d. %s\n", i+1, rec)
-	}
-
-	// Code de sortie basé sur le taux de couverture
-	if analysis.ComplianceRate < 80 {
-		fmt.Printf("\n⚠️ Couverture faible (%.1f%%) - action requise\n", analysis.ComplianceRate)
-		os.Exit(1)
-	} else {
-		fmt.Printf("\n🎉 Spécifications générées avec succès (%.1f%% de couverture)!\n", analysis.ComplianceRate)
-		os.Exit(0)
-	}
 }

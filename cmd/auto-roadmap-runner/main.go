@@ -61,19 +61,27 @@ func getExecutionSteps() []ExecutionStep {
 		{
 			Name:        "gap-analysis",
 			Command:     "go",
-			Args:        []string{"run", "core/gapanalyzer/gapanalyzer.go", "-input", "modules.json", "-output", "gap-analysis.json"},
+			Args:        []string{"run", "cmd/gapanalyzer/main.go", "-input", "modules.json", "-output", "gap-analysis.json"},
 			Description: "Analyser les écarts entre modules attendus et existants",
 			Required:    true,
 			Timeout:     30,
 		},
-		{
-			Name:        "needs-analysis",
-			Command:     "go",
-			Args:        []string{"run", "core/reporting/needs.go", "-input", "issues.json", "-output", "besoins.json"},
-			Description: "Analyser les besoins à partir des issues/tickets",
-			Required:    true,
-			Timeout:     30,
-		},
+{
+Name:        "needs-analysis",
+Command:     "go",
+Args:        []string{"run", "cmd/reporting/main.go", "-input", "issues.json", "-output", "besoins.json", "--mode", "needs"},
+Description: "Analyser les besoins à partir des issues/tickets",
+Required:    true,
+Timeout:     30,
+},
+{
+Name:        "spec-generation",
+Command:     "go",
+Args:        []string{"run", "cmd/reporting/main.go", "-input", "besoins.json", "-output", "spec.json", "--mode", "spec"},
+Description: "Générer les spécifications techniques détaillées",
+Required:    true,
+Timeout:     30,
+},
 		{
 			Name:        "build-test",
 			Command:     "go",
@@ -269,7 +277,7 @@ func saveResults(execution RoadmapExecution) error {
 
 	timestamp := execution.StartTime.Format("2006-01-02_15-04-05")
 	jsonFile := fmt.Sprintf("roadmap-execution_%s.json", timestamp)
-	err = ioutil.WriteFile(jsonFile, jsonData, 0644)
+	err = ioutil.WriteFile(jsonFile, jsonData, 0o644)
 	if err != nil {
 		return fmt.Errorf("erreur lors de l'écriture du fichier JSON: %v", err)
 	}
@@ -277,7 +285,7 @@ func saveResults(execution RoadmapExecution) error {
 	// Générer et sauvegarder le rapport Markdown
 	report := generateExecutionReport(execution)
 	markdownFile := fmt.Sprintf("ROADMAP_EXECUTION_REPORT_%s.md", timestamp)
-	err = ioutil.WriteFile(markdownFile, []byte(report), 0644)
+	err = ioutil.WriteFile(markdownFile, []byte(report), 0o644)
 	if err != nil {
 		return fmt.Errorf("erreur lors de l'écriture du rapport Markdown: %v", err)
 	}
@@ -292,7 +300,7 @@ func saveResults(execution RoadmapExecution) error {
 // createBackup crée une sauvegarde des fichiers importants
 func createBackup() error {
 	backupDir := fmt.Sprintf("backup_%s", time.Now().Format("2006-01-02_15-04-05"))
-	err := os.MkdirAll(backupDir, 0755)
+	err := os.MkdirAll(backupDir, 0o755)
 	if err != nil {
 		return fmt.Errorf("erreur lors de la création du dossier de sauvegarde: %v", err)
 	}
@@ -317,7 +325,7 @@ func createBackup() error {
 				log.Printf("⚠️ Impossible de lire %s: %v", src, err)
 				continue
 			}
-			err = ioutil.WriteFile(dst, data, 0644)
+			err = ioutil.WriteFile(dst, data, 0o644)
 			if err != nil {
 				log.Printf("⚠️ Impossible de sauvegarder %s: %v", file, err)
 				continue
@@ -378,3 +386,45 @@ func main() {
 		os.Exit(1)
 	}
 }
+
+</file_content>
+
+Now that you have the latest state of the file, try the operation again with fewer, more precise SEARCH blocks. For large files especially, it may be prudent to try to limit yourself to <5 SEARCH/REPLACE blocks at a time, then wait for the user to respond with the result of the operation before following up with another replace_in_file call to make additional edits.
+(If you run into this error 3 times in a row, you may use the write_to_file tool as a fallback.)
+</error><environment_details>
+# VSCode Visible Files
+C:/response_af2ed764-9490-4c99-4d4e-79e26a154c3b/1
+C:/response_f50ce7ce-f1e8-4644-b590-a5507990143a/0
+C:/response_dcde6e9b-6f7d-4412-8a7d-6ea37c5e34bd/tools-0
+C:/response_cd91b4c2-2838-410f-9d8e-874f5cf38b10/tools-0
+core/gapanalyzer/main.go
+
+# VSCode Open Tabs
+core/reporting/spec.go
+projet/roadmaps/plans/consolidated/plan-dev-v72-fusion-doc-manager-extensions-hybride.md
+core/gapanalyzer/gapanalyzer.go
+core/gapanalyzer/gapanalyzer_test.go
+core/gapanalyzer/main.go
+
+# Actively Running Terminals
+## Original command: `git commit -m "fix: Resolve package conflicts and Go version issues
+
+- Remove conflicting reportgen.go file
+- Fix package declarations in test files (main instead of package names)
+- Update Go workspace to use correct version (1.24.4)
+- Clean up module dependencies with go mod tidy
+
+Remaining issues to address:
+- Function name conflicts between needs.go and spec.go
+- Test dependencies that need to be updated
+- Some modules pass tests (scanmodules ✅) others need fixes"`
+
+# Current Time
+7/1/2025, 11:58:19 AM (Europe/Paris, UTC+2:00)
+
+# Context Window Usage
+353,065 / 1,048.576K tokens used (34%)
+
+# Current Mode
+ACT MODE
+</environment_details>

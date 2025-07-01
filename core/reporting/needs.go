@@ -1,11 +1,9 @@
-package main
+package reporting
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"strings"
 	"time"
@@ -50,8 +48,8 @@ type RequirementsAnalysis struct {
 	Recommendations   []string       `json:"recommendations"`
 }
 
-// parseIssuesFromJSON parse les issues depuis un fichier JSON
-func parseIssuesFromJSON(filename string) ([]Issue, error) {
+// ParseIssuesFromJSON parse les issues depuis un fichier JSON
+func ParseIssuesFromJSON(filename string) ([]Issue, error) {
 	// Si le fichier n'existe pas, créer des issues par défaut basées sur le plan v72
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		return getDefaultIssues(), nil
@@ -143,8 +141,8 @@ func getDefaultIssues() []Issue {
 	}
 }
 
-// convertIssuesToRequirements convertit les issues en exigences structurées
-func convertIssuesToRequirements(issues []Issue) []Requirement {
+// ConvertIssuesToRequirements convertit les issues en exigences structurées
+func ConvertIssuesToRequirements(issues []Issue) []Requirement {
 	var requirements []Requirement
 
 	for i, issue := range issues {
@@ -201,8 +199,8 @@ func extractDependencies(description string) []string {
 	return dependencies
 }
 
-// analyzeRequirements effectue l'analyse des besoins
-func analyzeRequirements(requirements []Requirement) RequirementsAnalysis {
+// AnalyzeRequirements effectue l'analyse des besoins
+func AnalyzeRequirements(requirements []Requirement) RequirementsAnalysis {
 	analysis := RequirementsAnalysis{
 		AnalysisDate:      time.Now(),
 		TotalRequirements: len(requirements),
@@ -258,8 +256,8 @@ func analyzeRequirements(requirements []Requirement) RequirementsAnalysis {
 	return analysis
 }
 
-// generateMarkdownReport génère un rapport Markdown des besoins
-func generateMarkdownReport(analysis RequirementsAnalysis) string {
+// GenerateMarkdownReport génère un rapport Markdown des besoins
+func GenerateMarkdownReport(analysis RequirementsAnalysis) string {
 	var report strings.Builder
 
 	report.WriteString("# 📋 Analyse des Besoins\n\n")
@@ -306,72 +304,4 @@ func generateMarkdownReport(analysis RequirementsAnalysis) string {
 	}
 
 	return report.String()
-}
-
-func main() {
-	// Définir les flags de ligne de commande
-	inputFile := flag.String("input", "issues.json", "Fichier JSON d'entrée contenant les issues")
-	outputFile := flag.String("output", "besoins.json", "Fichier JSON de sortie pour les besoins")
-	flag.Parse()
-
-	fmt.Println("=== Analyse des besoins ===")
-	fmt.Printf("📂 Fichier d'entrée: %s\n", *inputFile)
-	fmt.Printf("📄 Fichier de sortie: %s\n", *outputFile)
-
-	// Parser les issues
-	issues, err := parseIssuesFromJSON(*inputFile)
-	if err != nil {
-		log.Fatalf("❌ Erreur lors du parsing des issues: %v", err)
-	}
-
-	fmt.Printf("📋 Issues chargées: %d\n", len(issues))
-
-	// Convertir en besoins
-	requirements := convertIssuesToRequirements(issues)
-	fmt.Printf("🎯 Besoins identifiés: %d\n", len(requirements))
-
-	// Analyser les besoins
-	analysis := analyzeRequirements(requirements)
-	analysis.TotalIssues = len(issues)
-
-	// Sauvegarder l'analyse en JSON
-	analysisJSON, err := json.MarshalIndent(analysis, "", "  ")
-	if err != nil {
-		log.Fatalf("❌ Erreur lors de la sérialisation de l'analyse: %v", err)
-	}
-
-	err = ioutil.WriteFile(*outputFile, analysisJSON, 0644)
-	if err != nil {
-		log.Fatalf("❌ Erreur lors de l'écriture de %s: %v", *outputFile, err)
-	}
-
-	// Générer le rapport Markdown
-	markdownReport := generateMarkdownReport(analysis)
-	markdownFile := "BESOINS_INITIAUX.md"
-	err = ioutil.WriteFile(markdownFile, []byte(markdownReport), 0644)
-	if err != nil {
-		log.Printf("⚠️ Erreur lors de l'écriture du rapport Markdown %s: %v", markdownFile, err)
-	}
-
-	// Afficher le résumé
-	fmt.Printf("\n✅ Analyse terminée avec succès!\n")
-	fmt.Printf("📊 %s\n", analysis.Summary)
-	fmt.Printf("📄 Fichiers générés:\n")
-	fmt.Printf("   - %s (analyse JSON)\n", *outputFile)
-	fmt.Printf("   - %s (rapport Markdown)\n", markdownFile)
-
-	// Afficher les recommandations principales
-	fmt.Printf("\n🎯 Recommandations principales:\n")
-	for i, rec := range analysis.Recommendations {
-		if i >= 3 {
-			fmt.Printf("   ... et %d autres recommandations (voir le rapport complet)\n", len(analysis.Recommendations)-3)
-			break
-		}
-		fmt.Printf("   %d. %s\n", i+1, rec)
-	}
-
-	fmt.Printf("\n📈 Distribution des besoins:\n")
-	for category, count := range analysis.Categories {
-		fmt.Printf("   - %s: %d besoins\n", category, count)
-	}
 }

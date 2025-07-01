@@ -1,13 +1,7 @@
-package main
+package gapanalyzer
 
 import (
-	"encoding/json"
-	"flag"
 	"fmt"
-	"io/ioutil"
-	"log"
-	"os"
-	"path/filepath"
 	"strings"
 	"time"
 )
@@ -51,8 +45,8 @@ type GapAnalysis struct {
 	Summary         string           `json:"summary"`
 }
 
-// getExpectedModules retourne la liste des modules attendus selon l'architecture du projet
-func getExpectedModules() []ExpectedModule {
+// GetExpectedModules retourne la liste des modules attendus selon l'architecture du projet
+func GetExpectedModules() []ExpectedModule {
 	return []ExpectedModule{
 		// Modules core
 		{
@@ -127,8 +121,8 @@ func getExpectedModules() []ExpectedModule {
 	}
 }
 
-// analyzeGaps effectue l'analyse d'écart entre modules attendus et trouvés
-func analyzeGaps(repoStructure RepositoryStructure, expectedModules []ExpectedModule) GapAnalysis {
+// AnalyzeGaps effectue l'analyse d'écart entre modules attendus et trouvés
+func AnalyzeGaps(repoStructure RepositoryStructure, expectedModules []ExpectedModule) GapAnalysis {
 	analysis := GapAnalysis{
 		AnalysisDate:    time.Now(),
 		TotalExpected:   len(expectedModules),
@@ -173,7 +167,7 @@ func analyzeGaps(repoStructure RepositoryStructure, expectedModules []ExpectedMo
 			analysis.MatchingModules = append(analysis.MatchingModules, found)
 		} else {
 			// Vérifier si c'est un module "extra" légitime ou non
-			if !isLegitimateExtraModule(normalizedName) {
+			if !IsLegitimateExtraModule(normalizedName) {
 				analysis.ExtraModules = append(analysis.ExtraModules, found)
 				analysis.Recommendations = append(analysis.Recommendations,
 					fmt.Sprintf("RÉVISION: Module non-attendu trouvé '%s' - vérifier s'il est nécessaire", normalizedName))
@@ -221,8 +215,8 @@ func analyzeGaps(repoStructure RepositoryStructure, expectedModules []ExpectedMo
 	return analysis
 }
 
-// isLegitimateExtraModule vérifie si un module "extra" est légitime
-func isLegitimateExtraModule(moduleName string) bool {
+// IsLegitimateExtraModule vérifie si un module "extra" est légitime
+func IsLegitimateExtraModule(moduleName string) bool {
 	legitimatePatterns := []string{
 		"github.com/",                 // Modules externes
 		"golang.org/",                 // Modules standard
@@ -238,8 +232,8 @@ func isLegitimateExtraModule(moduleName string) bool {
 	return false
 }
 
-// generateMarkdownReport génère un rapport Markdown
-func generateMarkdownReport(analysis GapAnalysis) string {
+// GenerateMarkdownReport génère un rapport Markdown
+func GenerateMarkdownReport(analysis GapAnalysis) string {
 	var report strings.Builder
 
 	report.WriteString("# 📊 Analyse d'Écart des Modules\n\n")
@@ -295,87 +289,4 @@ func generateMarkdownReport(analysis GapAnalysis) string {
 	return report.String()
 }
 
-func main() {
-	// Définir les flags de ligne de commande
-	inputFile := flag.String("input", "modules.json", "Fichier JSON d'entrée contenant la structure du dépôt")
-	outputFile := flag.String("output", "gap-analysis-initial.json", "Fichier JSON de sortie pour l'analyse d'écart")
-	flag.Parse()
-
-	fmt.Println("=== Analyse d'écart des modules ===")
-	fmt.Printf("📂 Fichier d'entrée: %s\n", *inputFile)
-	fmt.Printf("📄 Fichier de sortie: %s\n", *outputFile)
-
-	// Vérifier que le fichier d'entrée existe
-	if _, err := os.Stat(*inputFile); os.IsNotExist(err) {
-		log.Fatalf("❌ Fichier d'entrée '%s' introuvable. Exécutez d'abord le scanner de modules.", *inputFile)
-	}
-
-	// Lire la structure du dépôt
-	jsonData, err := ioutil.ReadFile(*inputFile)
-	if err != nil {
-		log.Fatalf("❌ Erreur lors de la lecture de %s: %v", *inputFile, err)
-	}
-
-	var repoStructure RepositoryStructure
-	err = json.Unmarshal(jsonData, &repoStructure)
-	if err != nil {
-		log.Fatalf("❌ Erreur lors de la désérialisation de %s: %v", *inputFile, err)
-	}
-
-	fmt.Printf("📦 Modules chargés: %d\n", len(repoStructure.Modules))
-
-	// Obtenir les modules attendus
-	expectedModules := getExpectedModules()
-	fmt.Printf("🎯 Modules attendus: %d\n", len(expectedModules))
-
-	// Effectuer l'analyse d'écart
-	analysis := analyzeGaps(repoStructure, expectedModules)
-
-	// Sauvegarder l'analyse en JSON
-	analysisJSON, err := json.MarshalIndent(analysis, "", "  ")
-	if err != nil {
-		log.Fatalf("❌ Erreur lors de la sérialisation de l'analyse: %v", err)
-	}
-
-	err = ioutil.WriteFile(*outputFile, analysisJSON, 0644)
-	if err != nil {
-		log.Fatalf("❌ Erreur lors de l'écriture de %s: %v", *outputFile, err)
-	}
-
-	// Générer le rapport Markdown
-	markdownReport := generateMarkdownReport(analysis)
-	markdownFile := strings.TrimSuffix(*outputFile, filepath.Ext(*outputFile)) + ".md"
-	err = ioutil.WriteFile(markdownFile, []byte(markdownReport), 0644)
-	if err != nil {
-		log.Printf("⚠️ Erreur lors de l'écriture du rapport Markdown %s: %v", markdownFile, err)
-	}
-
-	// Afficher le résumé
-	fmt.Printf("\n✅ Analyse terminée avec succès!\n")
-	fmt.Printf("📊 %s\n", analysis.Summary)
-	fmt.Printf("📄 Fichiers générés:\n")
-	fmt.Printf("   - %s (analyse JSON)\n", *outputFile)
-	fmt.Printf("   - %s (rapport Markdown)\n", markdownFile)
-
-	// Afficher les recommandations les plus importantes
-	fmt.Printf("\n🎯 Recommandations principales:\n")
-	for i, rec := range analysis.Recommendations {
-		if i >= 3 { // Limiter à 3 recommandations principales
-			fmt.Printf("   ... et %d autres recommandations (voir le rapport complet)\n", len(analysis.Recommendations)-3)
-			break
-		}
-		fmt.Printf("   %d. %s\n", i+1, rec)
-	}
-
-	// Code de sortie basé sur le taux de conformité
-	if analysis.ComplianceRate < 80 {
-		fmt.Printf("\n⚠️ Taux de conformité faible (%.1f%%) - action requise\n", analysis.ComplianceRate)
-		os.Exit(1)
-	} else if analysis.ComplianceRate < 100 {
-		fmt.Printf("\n👍 Taux de conformité acceptable (%.1f%%) - améliorations recommandées\n", analysis.ComplianceRate)
-		os.Exit(0)
-	} else {
-		fmt.Printf("\n🎉 Conformité parfaite (%.1f%%) - excellent travail!\n", analysis.ComplianceRate)
-		os.Exit(0)
-	}
-}
+// main function is removed from here and will be in core/gapanalyzer/main.go
