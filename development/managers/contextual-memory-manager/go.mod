@@ -1,6 +1,6 @@
 module github.com/contextual-memory-manager
 
-go 1.21
+go 1.23.9
 
 require (
 	github.com/google/uuid v1.3.0

@@ -7,9 +7,10 @@ import (
 	"path/filepath"
 	"time"
 
-	toolkit "github.com/email-sender/tools/core/toolkit" // Changed alias
-	validation "github.com/email-sender/tools/operations/validation" // Added
-	managerTool "github.com/email-sender/tools/cmd/manager-toolkit" // Added
+	"github.com/email-sender/tools/core/platform" // Added platform import
+	toolkit "github.com/email-sender/tools/core/toolkit"
+	validation "github.com/email-sender/tools/operations/validation"
+	// managerTool "github.com/email-sender/tools/cmd/manager-toolkit" // Removed
 )
 
 // Validation de l'implémentation - Phase 1.1 - Plan v49
@@ -71,7 +72,8 @@ func runValidationPhase1_1() {
 	fmt.Printf("--------------------------------------\n")
 
 	// Test 2.1: Création du ManagerToolkit
-	mtk, err := managerTool.NewManagerToolkit(tempDir, "", false) // Changed to managerTool.NewManagerToolkit and var mtk
+	// Use toolkit.NewManagerToolkit directly as managerTool import is removed
+	mtk, err := toolkit.NewManagerToolkit(tempDir, "", false)
 	if err != nil {
 		fmt.Printf("❌ ERROR: Création de ManagerToolkit a échoué: %v\n", err)
 		os.Exit(1)
@@ -80,24 +82,26 @@ func runValidationPhase1_1() {
 
 	// Test 2.2: Test d'intégration avec ExecuteOperation
 	ctx := context.Background()
-	opts := &toolkit.OperationOptions{ // Changed to toolkit.OperationOptions
+
+	opts := &platform.OperationOptions{ // Use platform.OperationOptions
 		Target: tempDir,
 		Output: filepath.Join(tempDir, "test_report.json"),
 		Force:  false,
+		DryRun: mtk.Config.EnableDryRun,
 	}
 
-	operations := []toolkit.Operation{ // Changed to toolkit.Operation
-		toolkit.ValidateStructs,  // Changed to toolkit.ValidateStructs
-		toolkit.ResolveImports,   // Changed to toolkit.ResolveImports
-		toolkit.AnalyzeDeps,      // Changed to toolkit.AnalyzeDeps
-		toolkit.DetectDuplicates, // Changed to toolkit.DetectDuplicates
+	operations := []platform.Operation{ // Use platform.Operation
+		platform.ValidateStructs,
+		platform.ResolveImports,
+		platform.AnalyzeDeps,
+		platform.DetectDuplicates,
 	}
 
-	operationNames := map[toolkit.Operation]string{ // Changed to toolkit.Operation
-		toolkit.ValidateStructs:  "OpValidateStructs",  // Key is toolkit.ValidateStructs
-		toolkit.ResolveImports:   "OpResolveImports",   // Key is toolkit.ResolveImports
-		toolkit.AnalyzeDeps:      "OpAnalyzeDeps",      // Key is toolkit.AnalyzeDeps
-		toolkit.DetectDuplicates: "OpDetectDuplicates", // Key is toolkit.DetectDuplicates
+	operationNames := map[platform.Operation]string{ // Use platform.Operation
+		platform.ValidateStructs:  "OpValidateStructs",
+		platform.ResolveImports:   "OpResolveImports",
+		platform.AnalyzeDeps:      "OpAnalyzeDeps",
+		platform.DetectDuplicates: "OpDetectDuplicates",
 	}
 
 	totalOps := len(operations)
@@ -105,7 +109,7 @@ func runValidationPhase1_1() {
 
 	for _, op := range operations {
 		startTime := time.Now()
-		err := mtk.ExecuteOperation(ctx, toolkit.Operation(op), opts) // Changed to mtk.ExecuteOperation, cast op
+		err := mtk.ExecuteOperation(ctx, op, opts) // op is already platform.Operation
 		duration := time.Since(startTime)
 
 		if err != nil {
@@ -117,12 +121,13 @@ func runValidationPhase1_1() {
 	}
 
 	// Test 3: Vérification des métriques après exécution
+	// mtk.Stats is now *platform.ToolkitStats
 	fmt.Printf("\n3️⃣ TEST: Vérification des métriques ToolkitStats\n")
 	fmt.Printf("---------------------------------------------\n")
-	fmt.Printf("- Operations executed: %d\n", mtk.Stats.OperationsExecuted) // Changed to mtk.Stats
-	fmt.Printf("- Files analyzed: %d\n", mtk.Stats.FilesAnalyzed)       // Changed to mtk.Stats
-	fmt.Printf("- Files processed: %d\n", mtk.Stats.FilesProcessed)     // Changed to mtk.Stats
-	fmt.Printf("- Execution time: %v\n", mtk.Stats.ExecutionTime)     // Changed to mtk.Stats
+	fmt.Printf("- Operations executed: %d\n", mtk.Stats.OperationsExecuted)
+	fmt.Printf("- Files analyzed: %d\n", mtk.Stats.FilesAnalyzed)
+	fmt.Printf("- Files processed: %d\n", mtk.Stats.FilesProcessed)
+	fmt.Printf("- Execution time: %v\n", mtk.Stats.ExecutionTime)
 
 	// Rapport final
 	fmt.Printf("\n📋 RAPPORT FINAL:\n")
