@@ -1,0 +1,2443 @@
+# project Documentation Index
+
+*Generated on 2025-07-01 13:44:06*
+
+## Summary
+
+- **Total Files**: 2354
+- **Categories**: 9
+- **Recent Changes**: 2354 files (last 7 days)
+- **Total Size**: 94753.03 KB
+
+## Quick Start
+
+- [title: "Quick Start Guide - Démarrage Rapide"](.github/docs/GETTING-STARTED/quick-start.md) - description: "Guide de démarrage rapide pour développeurs - Setup en moins de 5 minutes"
+- [🎉 INSTALLATION COMPLETE - EMAIL_SENDER_1 NATIVE GO SYSTEM](.github/docs/algorithms/INSTALLATION-COMPLETE.md) - **Date**: 28 Mai 2025
+- [📚 EMAIL_SENDER_1 Algorithms - Quick Reference](.github/docs/algorithms/QUICK_REFERENCE.md) - go run email_sender_orchestrator.go
+- [README – Instructions Copilot](.github/instructions/README.md) - Ce dossier contient toutes les instructions personnalisées pour GitHub Copilot.
+- [README – Prompts Copilot](.github/prompts/README.md) - Ce dossier contient des prompts structurés pour guider Copilot dans différents contextes du projet EMAIL_SENDER_1.
+
+## Documentation by Category
+
+### Root
+
+*Project root documentation (README, LICENSE, etc.)*
+
+- ["resource": "/d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/.gi...](2025-05-28-errors.md) - "resource": "/d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/.github/docs/algorithms/algorithms_implementations.go",
+- [### Solution au problème "Smart Infrastructure: Status chec...](diagnostic-status-check-failed.md) - Le problème persistant avec la barre d'état VS Code est lié à la façon dont l'extension vérifie l'état de santé....
+- [============================= test session starts ==========...](final_coverage.txt) - ============================= test session starts =============================
+- [============================= test session starts ==========...](coverage_final.txt) - ============================= test session starts =============================
+- [============================= test session starts ==========...](coverage_final_100.txt) - ============================= test session starts =============================
+- [============================= test session starts ==========...](coverage_report.txt) - ============================= test session starts =============================
+- [============================================================...](RESOLUTION_SUCCESS_FINALE.md) - =====================================================================
+- [AGENTS.md](dryrun_agents_doc.md) - Ce fichier documente les agents et managers principaux de l’architecture documentaire hybride du projet. Il décrit le...
+- [AGENTS.md](AGENTS.md) - Ce fichier documente les agents et managers principaux de l’architecture documentaire hybride du projet. Il décrit le...
+- [ANALYSE_DIFFICULTS_PHASE1.md](ANALYSE_DIFFICULTS_PHASE1.md) - - **Scripts et outputs** : voir `audit-managers-scan.json`
+- [API Documentation](API_DOC.md) - Générez la documentation API avec :
+- [ARCHITECTURE_GAP_ANALYSIS.md](ARCHITECTURE_GAP_ANALYSIS.md) - - **Source du scan** : `architecture-patterns-scan.json`
+- [ARCHITECTURE_PHASE3_REPORT.md](ARCHITECTURE_PHASE3_REPORT.md) - - **Patterns d’architecture** : voir `architecture-patterns-scan.json`
+- [ARCHITECTURE_TARGET_SPEC.md](ARCHITECTURE_TARGET_SPEC.md) - - **Besoins utilisateurs/techniques** : voir `analysis/user-needs-phase3.json` `specification`
+- [Audit Complet - Phase 1 du Plan v56: Migration Vectorisation Python vers Go](audit-vectorization-v56.md) - **Date d'audit:** 14 juin 2025
+- [C:\Users\user\AppData\Roaming\Python\Python312\site-packages...](test_output.txt) - C:\Users\user\AppData\Roaming\Python\Python312\site-packages\pytest_asyncio\plugin.py:207: PytestDeprecationWarning: The...
+- [C:\Users\user\AppData\Roaming\Python\Python312\site-packages...](test_output_final.txt) - C:\Users\user\AppData\Roaming\Python\Python312\site-packages\pytest_asyncio\plugin.py:207: PytestDeprecationWarning: The...
+- [CACHE_EVICTION_FIX_SUMMARY.md](CACHE_EVICTION_FIX_SUMMARY.md) - - **Source du scan** : `audit-managers-scan.json`, `cache_logic_simulation`
+- [CHANGELOG Phase 2 - DocManager v66](CHANGELOG_PHASE2.md) - - Génération documentaire initiale pour managers sécurité & infrastructure : `changelog`
+- [CHANGELOG Phase 3 - DocManager v66](CHANGELOG_PHASE3.md) - - Implémentation du moteur de validation documentaire (validator.go, report.go) `changelog`
+- [CHANGELOG Phase 4 - DocManager v66](CHANGELOG_PHASE4.md) - - Optimisation pipeline validation/sync/cache (performance.go) `changelog`
+- [CHUNKER INFINITE LOOP FIX COMPLETE ✅](CHUNKER_INFINITE_LOOP_FIX_COMPLETE.md) - The chunker tests were experiencing infinite loops due to faulty logic in the `findWordBoundary` function and improper b...
+- [COMPILATION ERRORS FIXED - COMPLETE](COMPILATION_ERRORS_FIXED_COMPLETE.md) - All compilation errors in the Go project have been successfully resolved.
+- [CONFIGURATION ANTI-CRASH MÉMOIRE - EMAIL_SENDER_1](MEMORY-MANAGEMENT-CONFIG.md) - - **Total RAM**: 24 GB
+- [Cache Test Fixes Summary](CACHE_TEST_FIXES.md) - The `TestMockEmbeddingProviderCache/Cache_Size_Limit` test was failing because it was using timing-based verification in...
+- [CacheManager v74 — Logging Centralisé & Mémoire Contextuelle](README.md) - - Centralisation des logs (Go, Bash, PowerShell, API REST) `readme`
+- [Ceci est la ligne de test numéro 1.](test_large_file.txt) - Ceci est la ligne de test numéro 2.
+- [Commandes Git pour push vers GitHub](COMMANDES_GIT_MANUELLES.txt) - cd /d "d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
+- [Compilation et exécution réussies à 2025-06-18 09:50:54](test_success.txt)
+- [DOC_COVERAGE.md — Suivi de la couverture documentaire](DOC_COVERAGE.md) - - [ ] Managers (fiche par manager, interfaces, usages, exemples)
+- [DOC_GAP_ANALYSIS.md](DOC_GAP_ANALYSIS.md) - - **Source du scan** : `doc-supports-scan.json`
+- [DOC_PHASE7_REPORT.md](DOC_PHASE7_REPORT.md) - - **Recensement supports** : voir `doc-supports-scan.json`
+- [DOC_SUPPORTS_SPEC.md](DOC_SUPPORTS_SPEC.md) - - **Besoins utilisateurs/techniques** : voir `analysis/user-needs-phase7.json` `specification`
+- [DUPLICATE MAIN FUNCTION ERRORS - RESOLVED](DUPLICATE_MAIN_ERRORS_RESOLVED.md) - The duplicate main function compilation errors have been **successfully resolved**. The error diagnostics you're seeing ...
+- [DUPLICATE TYPE DECLARATIONS RESOLUTION - COMPLETE ✅](DUPLICATE_TYPE_DECLARATIONS_RESOLVED_COMPLETE.md) - **Date**: June 8, 2025
+- [Debug file placeholder](debug_output.txt)
+- [EMAIL_SENDER_1 Implementation Status Report](IMPLEMENTATION-STATUS-FINAL.md) - **Date**: May 29, 2025
+- [EMAIL_SENDER_1 Native Go Orchestrator - Implementation Complete](NATIVE-GO-ORCHESTRATOR-COMPLETE.md) - **Date**: May 27, 2025
+- [EMAIL_SENDER_1 PROJECT - ITERATION PROGRESS REPORT](PROGRESS_REPORT_PHASE1.1_JUNE8.md) - **Date:** June 8, 2025
+- [ERROR RESOLUTION FINAL SUCCESS ✅](ERROR_RESOLUTION_FINAL_SUCCESS.md) - **Date**: June 4, 2025
+- [EVALUATION_GAP_ANALYSIS.md](EVALUATION_GAP_ANALYSIS.md) - - **Source du scan** : `evaluation-process-scan.json`
+- [EVALUATION_PHASE8_REPORT.md](EVALUATION_PHASE8_REPORT.md) - - **Recensement processus/outils** : voir `evaluation-process-scan.json`
+- [EVALUATION_SPEC.md](EVALUATION_SPEC.md) - - **Besoins utilisateurs/techniques** : voir `analysis/user-needs-phase8.json` `specification`
+- [EXTRACTION_PARSING_GAP_ANALYSIS.md](EXTRACTION_PARSING_GAP_ANALYSIS.md) - - **Source du scan** : `extraction-parsing-scan.json`
+- [EXTRACTION_PARSING_PHASE4_REPORT.md](EXTRACTION_PARSING_PHASE4_REPORT.md) - - **Recensement modules/scripts** : voir `extraction-parsing-scan.json`
+- [EXTRACTION_PARSING_SPEC.md](EXTRACTION_PARSING_SPEC.md) - - **Besoins utilisateurs/techniques** : voir `analysis/user-needs-phase4.json` `specification`
+- [Enable Unix Commands for PowerShell](README-UnixCommands.md) - Ce script permet d'utiliser les commandes Unix (bash) directement dans PowerShell Windows. `readme`
+- [FMOUA Phase 1: Core Framework - Completion Assessment](PHASE1_COMPLETION_REPORT.md) - Based on comprehensive testing and validation, **Phase 1: Core Framework** of the FMOUA project has been successfully im...
+- [GRAPHGEN_GAP_ANALYSIS.md](GRAPHGEN_GAP_ANALYSIS.md) - - **Source du scan** : `graphgen-scan.json`
+- [GRAPHGEN_PHASE5_REPORT.md](GRAPHGEN_PHASE5_REPORT.md) - - **Recensement modules/scripts** : voir `graphgen-scan.json`
+- [GRAPHGEN_SPEC.md](GRAPHGEN_SPEC.md) - - **Besoins utilisateurs/techniques** : voir `analysis/user-needs-phase5.json` `specification`
+- [Go Toolchain Environment Fix - Complete Resolution](GO_TOOLCHAIN_FIX_COMPLETE.md) - Fixed widespread Go compilation errors caused by corrupted toolchain installation where the `unsafe` package and other s...
+- [Guide d'Installation - EMAIL_SENDER_1](INSTALLATION.md) - Le dépôt **EMAIL_SENDER_1** a été installé et configuré avec succès sur votre système Windows. `installation`
+- [Guide de Dépannage MCP pour Cline](MCP_TROUBLESHOOTING.md) - L'erreur "Invalid MCP settings format. Please ensure your settings follow the correct JSON format. Source Cline" était ...
+- [IMPLEMENTATION PHASE 3.1.3 - LISKOV SUBSTITUTION PRINCIPLE (LSP) - COMPLETE](IMPLEMENTATION_PHASE_3_1_3_LSP_COMPLETE.md) - **Date**: 20 juin 2025
+- [IMPLEMENTATION PHASE 3.1.4 - INTERFACE SEGREGATION PRINCIPLE (ISP) - COMPLETE](IMPLEMENTATION_PHASE_3_1_4_ISP_COMPLETE.md) - **Date**: 20 juin 2025
+- [IMPLEMENTATION_PHASE_3_1_1_SRP_COMPLETE.md](IMPLEMENTATION_PHASE_3_1_1_SRP_COMPLETE.md) - **Date**: 20 Juin 2025
+- [IMPLEMENTATION_PHASE_3_1_2_OPEN_CLOSED_COMPLETE.md](IMPLEMENTATION_PHASE_3_1_2_OPEN_CLOSED_COMPLETE.md) - **Date**: 20 Juin 2025
+- [IMPLÉMENTATION PHASE 1.1.3 - ÉVALUER PERFORMANCE - COMPLÈTE](IMPLEMENTATION_PHASE_1_1_3_COMPLETE.md) - **Phase**: 1.1.3 - Évaluer Performance et Métriques
+- [IMPLÉMENTATION PHASE 1.2.1 - INVENTAIRE WORKFLOWS EMAIL - COMPLÈTE](IMPLEMENTATION_PHASE_1_2_1_COMPLETE.md) - **Phase**: 1.2.1 - Inventaire Workflows Email
+- [INIT_GAP_ANALYSIS.md](INIT_GAP_ANALYSIS.md) - - **Source du scan** : `init-cartographie-scan.json`
+- [INIT_PHASE1_REPORT.md](INIT_PHASE1_REPORT.md) - - **Recensement modules/scripts** : voir `init-cartographie-scan.json`
+- [Interface Enhancement Implementation Report - Tasks 3.2.1.1.2 & 3.2.1.2.2](INTERFACE_ENHANCEMENT_IMPLEMENTATION_REPORT.md) - **Date**: 2025-06-20
+- [Journal de session Gemini](gemini_session_log.md) - - **Action :** Enregistrement de la préférence utilisateur pour l'activation permanente de la sandbox.
+- [Jules Bot Review & Approval System - Final Production Deployment Status](JULES_BOT_PRODUCTION_STATUS.md) - **Deployment Date:** June 8, 2025
+- [MISE À JOUR : SOLUTION FINALE POUR LE PUSH GITHUB](SOLUTION_GITHUB_PUSH_UPDATED.md) - **Date: 8 juin 2025**
+- [MIT License](LICENSE) - Copyright (c) 2025 [Votre nom ou organisation] `license`
+- [Manager Toolkit v49 - Intégration des Nouveaux Outils](README_V49_PHASE1.md) - Ce document présente l'implémentation de la phase 1.1 du plan v49 concernant l'intégration de nouveaux outils d'analy... `readme`
+- [On branch main](git_status.txt) - Your branch is up to date with 'origin/main'.
+- [PHASE 4 IMPLEMENTATION COMPLETE - SUMMARY REPORT](PHASE_4_IMPLEMENTATION_COMPLETE.md) - **Date:** $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
+- [PHASE_2_2_COMPLETED_INTERFACE_IMPLEMENTATION.md](PHASE_2_2_COMPLETED_INTERFACE_IMPLEMENTATION.md) - **Date**: June 6, 2025
+- [PROMPT ULTRA-GRANULARISÉ v2.0](prompt-granularisation-analytique-2.md) - **ACTION**: Remplacer la SÉLECTION ACTIVE de l'éditeur markdown VS Code par une granularisation niveau 8+
+- [Personnalisation des interactions Gemini CLI](gemini.md) - Ce fichier permet de définir des instructions, règles et exemples pour customiser vos interactions avec Gemini via gem...
+- [Phase 0.4 Auto-Optimization Report](PHASE_0.4_OPTIMIZATION_REPORT.md) - Generated: 2025-06-17 13:39:27
+- [Phase 2 Complete - Advanced Monitoring & Auto-Recovery](PHASE_2_ADVANCED_MONITORING_COMPLETE.md) - **Date**: 2025-01-28
+- [Phase 2.3 - Mise à Jour de la Documentation](PHASE_2_3_COMPLETED_DOCUMENTATION_UPDATE.md) - La phase 2.3 du plan d'intégration Manager Toolkit v49 a été complétée avec succès. Cette phase consistait en la m...
+- [Phase 2: Integration Package Test Coverage Achievement Report](PHASE2_COVERAGE_ACHIEVEMENT_REPORT.md) - **Objective**: Achieve 100% test coverage for the "integration" package as part of "Phase 2: Gestionnaires Spécialisés...
+- [Phase 3 - Intégration IDE et Expérience Développeur](PHASE_3_IDE_INTEGRATION_COMPLETE.md) - - **Localisation** : `.vscode/extension/`
+- [Phase 3: Migration des Scripts de Vectorisation - Rapport de Complétion](PHASE_3_MIGRATION_SCRIPTS_VECTORISATION_COMPLETE.md) - **Date**: 15 juin 2025
+- [Phase 4 Plan Update Complete](PHASE_4_PLAN_UPDATE_COMPLETE.md) - *Date: 2025-06-05* `plan`
+- [Phase 4: Dependency Manager Harmonization - COMPLETE ✅](PHASE_4_DEPENDENCY_MANAGER_COMPLETE.md) - Successfully completed Phase 4 of the dependency manager refactoring plan, focusing on harmonizing the code with the Con...
+- [Phase 5.1 Completion Report - Intégration avec integrated-manager](PHASE_5_1_COMPLETION_REPORT.md) - *Date: 2025-06-04*
+- [Phase 6 - Documentation et Déploiement - Livrables](PHASE_6_DELIVERABLES.md) - La Phase 6 du plan de migration vectorisation Go (v56) a pour objectif de :
+- [Phase 6.1.1 Completion Report - Tests unitaires ErrorEntry](PHASE_6_1_1_COMPLETION_REPORT.md) - *Date: 2025-06-04*
+- [Phase 7 - Migration des Données et Nettoyage - Livrables](PHASE_7_DELIVERABLES.md) - La Phase 7 du plan de migration vectorisation Go (v56) finalise la migration en :
+- [Phase 8 Deliverables - Monitoring et Optimisation](PHASE_8_DELIVERABLES.md) - La Phase 8 du plan de migration vers Go natif est désormais complète. Cette phase portait sur la mise en place du moni...
+- [Plan Dev v41 - Phase 1.1.1 COMPLETE](PLAN_DEV_V41_PHASE_1_1_1_COMPLETE.md) - **Date:** June 3, 2025 `plan`
+- [Plan Dev v41 Section 2.2.1 Implementation Complete](PLAN_DEV_V41_SECTION_2_2_1_COMPLETE.md) - **Implementation Date**: June 3, 2025 `plan`
+- [Plan de Développement EMAIL SENDER 1 - RAG Go](plan_dev_v34_rag_go_restructure.md) - *Version v34 - Intégration EMAIL_SENDER_1 - 27 Mai 2025 - Progression globale : 63%* `plan`
+- [Plan de développement v39 - Amélioration des templates plan-dev](plan-dev-v39-updated.md) - *Version 2.0 - 2025-01-27 - Progression globale : 95%* `plan`
+- [Problème de Push GitHub - Solution](SOLUTION_GITHUB_PUSH.md) - Le push vers GitHub échoue probablement pour l'une des raisons suivantes:
+- [Problème de Sous-modules Git - Résolu](SUBMODULE_FIX_DOCUMENTATION.md) - Jules a rencontré une erreur lors du clonage du dépôt due à un sous-module mal configuré :
+- [Project Status Summary - Error Manager Development](PROJECT_STATUS_SUMMARY.md) - *Date: 2025-06-04*
+- [Prompt Ultra-Granularisé v2.0 - Spécification Exécutable Sans Improvisation](PROMPT_ULTRA_GRANULARISE_V2.md) - **Basé sur l'analyse de l'implémentation Phase 1 FMOUA - Leçons Apprises**
+- [Prompt pour documentation GoDoc automatique des managers](SNIPPETS_MANAGER_GODOC_PROMPT.md) - Pour chaque manager Go de votre projet, ajoutez un bloc GoDoc structuré au-dessus de la déclaration du type (struct ou...
+- [Qdrant Client Compilation Fixes - COMPLETE ✅](QDRANT_CLIENT_FIXES_COMPLETE.md) - - **Problem**: Test file used `fmt.Sprintf` but didn't import `fmt` package
+- [RAG System - 7 Time-Saving Methods Implementation Report](automation-report.md) - **Execution Time**: 00:00
+- [RAG-Go Compilation Fix - COMPLETE ✅](RAG_GO_COMPILATION_FIX_COMPLETE.md) - The RAG-Go system was experiencing compilation errors due to duplicate declarations of `SearchResult` and related types ...
+- [RESOLUTION CONFLITS INTERFACES LEGACY - RAPPORT FINAL](LEGACY_CONFLICTS_RESOLUTION_REPORT.md) - **Date**: 2025-06-20
+- [Rapport Détaillé de Conformité - Plan v49 Phase 1.1](rapport_conformite_v49_phase1.1.md) - **Date: 6 juin 2025**
+- [Rapport Final de Cohérence Écosystème Manager Toolkit v3.0.0](COHERENCE_ECOSYSTEME_FINAL_REPORT.md) - ✅ **MISSION ACCOMPLIE** : L'adaptation complète du plan de développement v49 pour qu'il soit cohérent avec la nouve...
+- [Rapport d'Adaptation README.md vers v3.0.0](README_V3_ADAPTATION_REPORT.md) - Adaptation complète du fichier `development/managers/tools/docs/README.md` pour assurer la cohérence avec la documenta... `readme`
+- [Rapport d'Adaptation du Plan de Développement v49 à la Documentation v3.0.0](PLAN_DEV_V49_ADAPTATION_V3_REPORT.md) - **Date de mise à jour :** 2025-06-06 `plan`
+- [Rapport d'Implémentation - Phase 1.1.1 Complète](IMPLEMENTATION_PHASE_1_1_1_COMPLETE.md) - Implémentation complète de la **Section 1.1.1 "Scanner Architecture Managers Existants"** du plan v64, comprenant les ...
+- [Rapport d'Implémentation - Phase 3.1.5: Dependency Inversion Principle](IMPLEMENTATION_PHASE_3_1_5_DIP_COMPLETE.md) - **Date de génération**: 2025-06-20 02:06:47
+- [Rapport d'Implémentation - Phase 3.1.5: Dependency Inversion Principle](IMPLEMENTATION_PHASE_3_1_5_DIP_FINAL_SUCCESS.md) - **Date de génération**: 2025-06-20
+- [Rapport d'Implémentation Phase 2 - Unification des Clients Qdrant](PHASE_2_UNIFICATION_CLIENTS_QDRANT_COMPLETE.md) - **Date**: 15 juin 2025
+- [Rapport de Centralisation des Suggestions de Roadmap Future](CENTRALISATION_ROADMAP_FUTURE_REPORT.md) - **Tâche** : Centraliser toutes les suggestions de roadmap future dispersées dans l'écosystème EMAIL_SENDER_1 en un d... `roadmap`
+- [Rapport de Fusion des Branches - Migration Vectorisation Go v56](BRANCH_MERGE_REPORT.md) - **Date :** [Date actuelle]
+- [Rapport de Mise à Jour - Plan-dev-v53-maintenance-orga-repo.md](PLAN_V53_UPDATE_REPORT_JUIN2025.md) - **Tâche** : Vérifier si le plan-dev-v53-maintenance-orga-repo.md est à jour, terminé et adapté à la stack/configur... `plan`
+- [Rapport de Vérification - Plan v49 - Phase 1.1.1 & 1.1.2](PHASE_1_1_COMPLETED_V49.md) - **Date: 6 juin 2025**
+- [RÉSOLUTION FINALE - TESTS QUI NE S'ARRÊTENT PAS ✅](INFINITE_LOOP_TESTS_FINAL_RESOLUTION.md) - Tous les problèmes de boucles infinies et de tests qui ne s'arrêtent pas ont été définitivement résolus.
+- [SOLUTION ANTI-PLANTAGE - EMAIL_SENDER_1](SOLUTION-ANTI-PLANTAGE.md) - L'API Server (api-server-fixed.exe) s'arrête parfois, causant l'erreur HTTP 404 dans l'extension VSCode. `plan`
+- [SOLUTION: Configuration de l'Upstream Git](UPSTREAM_CONFIGURATION_GUIDE.md) - - Allez sur https://github.com ou votre plateforme Git `guide`
+- [STATUS_REPORT_2025-06-07](STATUS_REPORT_2025-06-07.md)
+- [SYNC_GAP_ANALYSIS.md](SYNC_GAP_ANALYSIS.md) - - **Source du scan** : `sync-scan.json`
+- [SYNC_PHASE6_REPORT.md](SYNC_PHASE6_REPORT.md) - - **Recensement modules/scripts** : voir `sync-scan.json`
+- [SYNC_SPEC.md](SYNC_SPEC.md) - - **Besoins utilisateurs/techniques** : voir `analysis/user-needs-phase6.json` `specification`
+- [Section 1.3 - Audit de la Gestion des Erreurs](SECTION_1_3_AUDIT_GESTION_ERREURS.md) - Cette section présente un audit complet des mécanismes de gestion d'erreurs actuels dans le projet EMAIL_SENDER_1, év...
+- [Section 1.3.1.1 Configuration Redis - COMPLETION REPORT](REDIS_SECTION_1_3_1_1_COMPLETE.md) - Date: May 29, 2025
+- [Section 1.4 - Implémentation des Recommandations](SECTION_1_4_IMPLEMENTATION_RECOMMANDATIONS.md) - Cette section détaille l'implémentation des recommandations issues de l'audit de gestion des erreurs (Section 1.3). El...
+- [TaskMaster Advanced Roadmap CLI - Final Implementation Report](TASKMASTER_ADVANCED_CLI_FINAL_SUCCESS_REPORT.md) - **Date**: June 1, 2025
+- [Test 12-Level Hierarchy Plan](test-12-levels.md)
+- [Test Document for Advanced Parser](test-parser-formats.md)
+- [Test Plan](test-simple.md) - - Task 1: Initialize project
+- [Timestamp Precision Fix - Complete](TIMESTAMP_PRECISION_FIX_COMPLETE.md) - The `TestDocument` test in `types_test.go` was failing due to timestamp precision loss during JSON serialization/deseria...
+- [Trop de param�tres - 3](arborescence.txt)
+- [Ultra-Advanced 8-Level Framework - Load Test Report](loadtest-report-20250608-214618.md) - - **Test Type**: comprehensive
+- [V43D Dependency Manager - Phase 1.3 Error Management Audit Report](PHASE_1_3_ERROR_MANAGEMENT_AUDIT_REPORT.md) - **Date:** June 5, 2025
+- [V43D Dependency Manager Audit - Phase 1.3 COMPLETED - Transition to Phase 1.4](PHASE_1_3_COMPLETED_TRANSITION_TO_1_4.md) - The Phase 1.3 Error Management Audit has been successfully completed with comprehensive analysis and documentation. The ...
+- [[11:49:27] [START] Starting Phase 0.1 Integration Test...](phase-0.1-test-log-2025-06-17_11-49-27.txt) - [11:49:27] [INFO] Starting comprehensive test suite...
+- [[11:58:03] [START] Starting Phase 0.1 Integration Test...](phase-0.1-test-log-2025-06-17_11-58-03.txt) - [11:58:03] [INFO] Starting comprehensive test suite...
+- [[12:24:45] [START] Starting Phase 0.2 Integration Test...](phase-0.2-test-log-2025-06-17_12-24-45.txt) - [12:24:45] [INFO] Starting comprehensive Phase 0.2 test suite...
+- [[12:52:34] [START] Starting Phase 0.1 Integration Test...](phase-0.1-test-log-2025-06-17_12-52-34.txt) - [12:52:34] [INFO] Starting comprehensive test suite...
+- [[13:18:09] [START] Starting Phase 0.3 Integration Test...](phase-0.3-test-log-2025-06-17_13-18-09.txt) - [13:18:09] [TEST] 🔍 Test 1: Terminal & Process Management Files Verification
+- [[13:18:27] [START] Starting Phase 0.3 Auto Optimizer...](phase-0.3-optimizer-log-2025-06-17_13-18-27.txt) - [13:18:27] [OPTIMIZE] 🖲️ Optimization 1: Terminal Management
+- [[13:55:18] [START] Starting Phase 0.3 Integration Test...](phase-0.3-test-log-2025-06-17_13-55-18.txt) - [13:55:18] [TEST] 🔍 Test 1: Terminal & Process Management Files Verification
+- [[2025-06-17 13:36:56] [INFO] 🚀 Starting Phase 0.4 Integra...](phase-0.4-test-log-20250617-133656.txt) - [2025-06-17 13:36:56] [INFO] 🚀 Starting Phase 0.4 Integration Tests
+- [[2025-06-17 13:39:27] [INFO] 🚀 Starting Phase 0.4 Auto-Op...](phase-0.4-optimizer-log-20250617-133927.txt) - [2025-06-17 13:39:27] [INFO] 🚀 Starting Phase 0.4 Auto-Optimization
+- [coverage_100_percent](coverage_100_percent.txt)
+- [exec: "C:\\Users\\user\\AppData\\Local\\Temp\\go-build417452...](cache_verification_output.txt) - exec: "C:\\Users\\user\\AppData\\Local\\Temp\\go-build4174529970\\b001\\exe\\cache_verification": executable file not fo...
+- [fork/exec C:\Users\user\AppData\Local\Temp\go-build260132120...](cache_test_output.txt) - fork/exec C:\Users\user\AppData\Local\Temp\go-build2601321207\b001\providers.test: %1 nÔÇÖest pas une application Win...
+- [go_list_output](go_list_output.txt)
+- [granularisation-section-3.5-resilience-deplacements](granularisation-section-3.5-resilience-deplacements.md)
+- [modules](modules.txt)
+- [prompt-granularisation-analytique-2-clean](prompt-granularisation-analytique-2-clean.md)
+- [prompt-granularisation-ultra-final](prompt-granularisation-ultra-final.md)
+- [title: "Adaptation Réussie du Plan v66 : Doc-Manager-Dynami...](ADAPTATION_V66_COMPLETE_SUCCESS.md) - title: "Adaptation Réussie du Plan v66 : Doc-Manager-Dynamique Cognitif"
+- [title: "Extension Majeure Plan V66 : Intégration Complète ...](EXTENSION_V66_UNIVERSELLE_SUCCESS.md) - title: "Extension Majeure Plan V66 : Intégration Complète de TOUS les Managers"
+- [État du Projet et Prochaines Étapes - Migration Vectorisation Go v56](PROJECT_STATUS_AND_NEXT_STEPS.md) - **Date :** [Date actuelle]
+- [✅ CACHE EVICTION FIX - IMPLEMENTATION COMPLETE](CACHE_FIX_COMPLETE.md) - Fixed the failing `TestMockEmbeddingProviderCache/Cache_Eviction_Order` test that was showing race conditions in cache e...
+- [✅ PHASE 3 : INTÉGRATION IDE ET EXPÉRIENCE DÉVELOPPEUR - COMPLÈTE ET VALIDÉE](PHASE_3_IDE_INTEGRATION_FINAL_COMPLETE.md) - ✅ **STATUT** : **IMPLÉMENTATION COMPLÈTE ET VALIDÉE**
+- [🌟 PROMPT DE DÉVELOPPEMENT LÉGENDAIRE PRO : ADAPTATION PLAN V66 DOC-MANAGER-DYNAMIQUE 🌟](prompt-dev-legendaire-v66-adaptation.md) - **Version**: v66-legendary-adaptation
+- [🌳 STRUCTURE DES BRANCH MANAGERS - EMAIL_SENDER_1](BRANCH_MANAGEMENT_STRUCTURE.md) - Cette organisation permet une gestion parallèle et spécialisée des différents aspects du projet selon les erreurs id...
+- [🎉 COMMIT FINAL RÉUSSI - PLAN v54 COMPLÈTEMENT FINALISÉ](COMMIT_FINAL_PLAN_V54_SUCCESS.md) - **Date :** 15 juin 2025 `plan`
+- [🎉 COMMIT RÉUSSI - OUTILS DE DIAGNOSTIC AGREGATION](COMMIT_DIAGNOSTIC_TOOLS_SUCCESS.md) - **Date :** 15 juin 2025
+- [🎉 FINAL ACHIEVEMENT SUMMARY: 100% Test Success Rate](ACHIEVEMENT_100_PERCENT_SUCCESS.md) - **Date**: June 8, 2025
+- [🎉 FINAL SUCCESS REPORT: 100% Test Success Rate Achieved](FINAL_SUCCESS_REPORT_100_PERCENT.md) - **STATUS**: ✅ **COMPLETE SUCCESS** - All duplicate type declaration issues have been resolved and 100% test success ra...
+- [🎉 GO VALIDATION TEST SUCCESS - 100% ACHIEVEMENT REPORT](VALIDATION_TEST_SUCCESS_REPORT.md) - **Status**: ✅ **COMPLETE SUCCESS - 100% Test Success Rate Achieved**
+- [🎉 IMPLÉMENTATION COMPLÈTE - PHASES 1.2 et 1.3](IMPLEMENTATION_COMPLETE_REPORT.md) - **Branche Git**: `dev` ✅
+- [🎉 Implementation Complete: 7 Time-Saving Methods](IMPLEMENTATION-COMPLETE.md) - **Project**: Email Sender 1
+- [🎉 MIGRATION VECTORISATION COMPLETE - RAPPORT FINAL](VECTORIZATION_MIGRATION_COMPLETE_REPORT.md) - **Date:** 14 juin 2025
+- [🎉 MISE À JOUR PHASE 0.3 - 100% SUCCÈS ATTEINT](PHASE_0.3_100_PERCENT_SUCCESS_UPDATE.md) - **Date**: 2025-06-17 13:55
+- [🎉 MISSION ACCOMPLIE - TaskMaster-Ink-CLI → Go Native + RAG](MISSION_ACCOMPLIE_FINAL.md) - L'adaptation de TaskMaster-Ink-CLI (React Ink + TypeScript) vers une implémentation **Go native avec TUI et capacités ...
+- [🎉 PHASE 0.1 & 0.2 - IMPLÉMENTATION COMPLÈTE ET VALIDÉE](PHASE_0.1_0.2_FINAL_SUCCESS_REPORT.md) - **Taux de succès global : 100% (12/12 composants validés)**
+- [🎉 PHASE 0.1 : IMPLÉMENTATION RÉUSSIE À 100%](PHASE-0.1-SUCCESS-SUMMARY.md) - La **Phase 0.1 : Diagnostic et Réparation Infrastructure** a été implémentée avec succès à **100%** selon le plan...
+- [🎉 PHASE 0.4 IMPLEMENTATION SUCCESS REPORT](PHASE_0.4_IMPLEMENTATION_SUCCESS_REPORT.md) - **Date**: 2025-06-17 13:39:27
+- [🎉 PHASE 0.6 IMPLEMENTATION COMPLETE - SUCCESS REPORT](PHASE_06_SUCCESS_REPORT.md) - La Phase 0.6 "Scripts et Outils Automatisés" a été **implémentée avec succès** selon les spécifications de la sé...
+- [🎉 PHASE 2 - TÂCHE 023 - STRUCTURE API REST N8N→GO - TERMINÉE AVEC SUCCÈS](IMPLEMENTATION_PHASE_2_TASK_023_COMPLETE.md) - **Tâche:** Action Atomique 023 - Créer Structure API REST N8N→Go
+- [🎉 PHASE 2 - TÂCHE 024 - MIDDLEWARE AUTHENTIFICATION - TERMINÉE AVEC SUCCÈS](IMPLEMENTATION_PHASE_2_TASK_024_COMPLETE.md) - **Tâche:** 024 - Implémenter Middleware Authentification
+- [🎉 PHASE 2 - TÂCHE 025 - SERIALIZATION JSON WORKFLOW - TERMINÉE AVEC SUCCÈS](IMPLEMENTATION_PHASE_2_TASK_025_COMPLETE.md) - **Tâche:** 025 - Développer Serialization JSON Workflow
+- [🎉 PHASE 3 - TÂCHES 051-052 - INFRASTRUCTURE BLUE-GREEN - TERMINÉES AVEC SUCCÈS](IMPLEMENTATION_PHASE_3_TASK_051_052_COMPLETE.md) - **Tâche 051:** Configuration Docker Compose Blue
+- [🎉 PHASE 3 COMPLÈTE ET LIVRÉE AVEC SUCCÈS](PHASE_3_DELIVERY_SUMMARY.md) - **Date de livraison** : 15 juin 2025
+- [🎉 PLAN V66 DOC-MANAGER-DYNAMIQUE - ADAPTATION LÉGENDAIRE TERMINÉE](PLAN_V66_ADAPTATION_LEGENDAIRE_SUCCESS.md) - **Date de Finalisation** : 2025-01-27 `plan`
+- [🎉 Phase 0.3 Implementation Success Report](PHASE_0.3_IMPLEMENTATION_SUCCESS_REPORT.md) - **Branche Git Active :** `feature/phase2-gestionnaires-specialises` ✅ **APPROPRIÉE**
+- [🎉 Phase 0.5 - Monitoring & Alerting System](PHASE_05_SUCCESS_REPORT.md) - **Date d'implémentation**: 2025-06-17
+- [🎉 RAPPORT DE COMPLETION - PHASE 1.1 PLAN V60](RAPPORT_PHASE_1_1_V60_COMPLETE.md) - **Date de completion** : 18 juin 2025, 12:33 PM
+- [🎉 RAPPORT DE COMPLETION - PHASE 1.2 PLAN V60](RAPPORT_PHASE_1_2_V60_COMPLETE.md) - **Date de completion** : 18 juin 2025, 12:45 PM
+- [🎉 RAPPORT DE COMPLETION - PHASE 1.3 DU PLAN V62](RAPPORT_PHASE_1_3_COMPLETE.md) - **Date de completion** : 18 juin 2025, 12:18 PM
+- [🎉 RAPPORT FINAL - PHASES 0.1 à 0.4 IMPLEMENTATION COMPLETE](FINAL_PHASES_0.1_TO_0.4_COMPLETE_REPORT.md) - **Date**: 2025-06-17
+- [🎉 RAPPORT FINAL - Plan de développement v39 finalisé](PLAN_V39_FINALISE_RAPPORT.md) - **Date de finalisation :** 29 mai 2025 `plan`
+- [🎉 ROADMAP PARSER OPTIMIZATION - COMPLETE SUCCESS REPORT](ROADMAP_PARSER_FINAL_SUCCESS_REPORT.md) - **Date**: June 1, 2025 `roadmap`
+- [🎉 ROADMAP PARSER OPTIMIZATION - FINAL COMPLETION SUMMARY](ROADMAP_PARSER_OPTIMIZATION_FINAL_SUMMARY.md) - - **✅ 100% Success Rate**: All 55 consolidated roadmap files parsed successfully `roadmap`
+- [🎉 Roadmap Parser Optimization Complete - Final Report](ROADMAP_PARSER_OPTIMIZATION_COMPLETE.md) - **Date:** June 1, 2025 `roadmap`
+- [🎉 VALIDATION FINALE COMPLÈTE - PLAN v54 TERMINÉ À 100%](PLAN_V54_VALIDATION_FINALE_COMPLETE.md) - **DATE:** 15 juin 2025 `plan`
+- [🎯 ALL ISSUES RESOLVED - COMPREHENSIVE FIX SUMMARY ✅](ALL_ISSUES_RESOLVED_FINAL.md) - - ✅ **All tests passing** across all modules
+- [🎯 EMAIL_SENDER_1 - VALIDATION FINALE DES CORRECTIONS](VALIDATION_FINALE_DEBUG.md) - **Statut**: ✅ **TERMINÉ AVEC SUCCÈS**
+- [🎯 RAG System - Complete Implementation Status Report](FINAL-IMPLEMENTATION-REPORT.md) - **Generated on:** May 27, 2025
+- [🎯 RAPPORT DE COMPLETION - TaskMaster Enhancement v40](TASKMASTER_PANELS_COMPLETION_REPORT.md) - **Date :** 2 juin 2025
+- [🎯 RAPPORT DE VALIDATION - TÂCHE 026](TASK_026_VALIDATION_REPORT.md) - **Date**: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+- [🎯 Rapport d'Implémentation - Actions Atomiques 027, 028, 029](TASKS_027_028_029_IMPLEMENTATION_REPORT.md) - **Date d'exécution** : 2025-06-19
+- [🎯 Rapport d'Implémentation - Actions Atomiques 030-032](ACTIONS_030_032_IMPLEMENTATION_REPORT.md) - **Date d'exécution** : 2025-06-19
+- [🎯 Rapport d'Implémentation - Actions Atomiques 033-041](ACTIONS_033_041_IMPLEMENTATION_REPORT.md) - **Date d'exécution** : 2025-06-19
+- [🎯 Rapport d'Implémentation - Actions Atomiques 042-044](ACTIONS_042_044_IMPLEMENTATION_REPORT.md) - **Date d'exécution** : 2025-06-19
+- [🎯 Rapport d'Implémentation - Actions Atomiques 042-050](ACTIONS_042_050_IMPLEMENTATION_REPORT.md) - **Date d'exécution** : 2025-06-19
+- [🎯 Rapport d'Implémentation - Actions Atomiques 046-060](ACTIONS_046_060_IMPLEMENTATION_REPORT.md) - **Date d'exécution** : 2025-06-19
+- [🎯 Rapport d'Implémentation - Actions Atomiques 061-075](ACTIONS_061_075_IMPLEMENTATION_REPORT.md) - **Date d'exécution** : 2025-06-19
+- [🎯 Rapport de Validation Réelle - Plan v64](V64_REAL_VALIDATION_REPORT.md) - **Date de validation** : 19 Juin 2025 17:50:00
+- [🎯 Résumé d'Implémentation du Plan de Développement v72](IMPLEMENTATION_SUMMARY_V72.md) - **Date d'implémentation:** 2025-01-07
+- [🎯 TaskMaster-Ink-CLI vers Go Native : Rapport d'Adaptation Complet](TASKMASTER_ADAPTATION_RAPPORT_FINAL.md) - L'adaptation de l'architecture TaskMaster-Ink-CLI (React Ink + TypeScript) vers une implémentation Go native avec TUI p...
+- [🏆 DOCUMENTATION LÉGENDAIRE ACCOMPLIE](DOCUMENTATION_LEGENDAIRE_ACCOMPLIE.md) - **🎉 FÉLICITATIONS ! MISSION DOCUMENTATION NIVEAU LÉGENDAIRE RÉUSSIE ! 🎉**
+- [🏆 PHASE 3 - SUCCÈS COMPLET 100%](PHASE_3_SUCCESS_100_PERCENT.md) - **Date de finalisation** : 15 juin 2025 ✅
+- [🏆 PLAN V64 - 100% COMPLÉTUDE ATTEINTE](PLAN_V64_100_PERCENT_SUCCESS.md) - **🎉 FÉLICITATIONS ! MISSION ACCOMPLIE ! 🎉** `plan`
+- [🏆 PROJET STATUS FINAL - DÉCEMBRE 2024](PROJET_STATUS_DECEMBER_2024_FINAL.md) - **Date du rapport** : 19 Décembre 2024
+- [🏆 VALIDATION FINALE COMPLÈTE - PLAN V64](VALIDATION_FINALE_COMPLETE_V64.md) - **Date** : 19 Juin 2025
+- [🏆 VALIDATION FINALE EXHAUSTIVE - PLAN V64](VALIDATION_FINALE_EXHAUSTIVE_V64.md) - **🎯 VALIDATION TECHNIQUE COMPLÈTE À 100%**
+- [🏗️ RÉORGANISATION ARCHITECTURALE COMPLÈTE - RAPPORT FINAL](ARCHITECTURE_REORGANISATION_COMPLETE.md) - **Date** : 3 juin 2025
+- [📊 Infrastructure & Performance - Rapport de Status Global](INFRASTRUCTURE_PERFORMANCE_STATUS_REPORT.md) - **Taux de réussite : 100% (6/6 tests)**
+- [📊 Manager Toolkit Status Check - June 8, 2025](STATUS_CHECK_JUNE_2025.md) - - **100% Test Success Rate**: ✅ MAINTAINED
+- [📊 Phase 0.5 - Monitoring & Alerting System](PHASE_05_VALIDATION_REPORT.md) - **Date**: 2025-06-17 14:38:18
+- [📊 RÉSUMÉ DU PROGRÈS - PLAN V64 EMAIL SENDER HYBRIDE](IMPLEMENTATION_PROGRESS_SUMMARY.md) - **Projet:** Email Sender Hybride N8N + Go CLI
+- [📋 Phase 0.1 - Infrastructure Diagnostic et Réparation : IMPLEMENTATION COMPLETE](PHASE-0.1-IMPLEMENTATION-COMPLETE.md) - Implémentation complète du système de diagnostic et réparation automatique de l'infrastructure selon le plan de dév...
+- [📋 RAPPORT DE MISE À JOUR - PLAN DEV V64](PLAN_V64_UPDATE_REPORT.md) - **Date**: 2025-06-19 `plan`
+- [📋 RAPPORT DE MISE À JOUR - PLAN DEV V64 (Tâches 042-044)](PLAN_V64_UPDATE_TASKS_042_044_REPORT.md) - **Date**: 2025-06-19 `plan`
+- [📋 RAPPORT DE MISE À JOUR - PLAN v53b ADAPTÉ À L'ÉTAT ACTUEL](PLAN_V53B_UPDATE_REPORT.md) - **Date :** 15 juin 2025 `plan`
+- [📋 RAPPORT DE VALIDATION - TÂCHES 027, 028, 029](TASKS_027_028_029_VALIDATION_REPORT.md) - **Date**: 19 juin 2025
+- [📋 RAPPORT FINAL - VALIDATION RÉELLE PLAN V64](PLAN_V64_FINAL_VALIDATION_REPORT.md) - **Date de validation** : 19 Juin 2025 `plan`
+- [📋 Rapport de Correction des 625 Erreurs EMAIL_SENDER_1](error_correction_progress.md) - **Date :** 2025-05-28 03:55:16
+- [📚 Guide d'Utilisation - Outils de Gestion des Plans](PLAN_MANAGEMENT_TOOLS_README.md) - Ce dossier contient des outils PowerShell pour gérer et valider les plans de développement v64 et v65 de l'écosystèm... `plan` `readme`
+- [🔧 CORRECTION TEST EMBEDDING - PROBLÈME DE CONSISTANCE RÉSOLU](EMBEDDING_CONSISTENCY_FIX_COMPLETE.md) - ```plaintext
+- [🔧 RÉSOLUTION ERREUR AGGREGATION - SUCCESS](RESOLUTION_AGGREGATE_ERROR_SUCCESS.md) - **Date :** 15 juin 2025
+- [🔧 VS Code Cache Cleanup Solution - Phantom Debug Files](VS_CODE_CACHE_CLEANUP_SOLUTION.md) - VS Code is showing phantom files that don't exist on the filesystem:
+- [🗄️ QDrant Vector Database](qdrant-service.txt) - image: qdrant/qdrant:${QDRANT_VERSION:-v1.7.0}
+- [🚀 EMAIL_SENDER_1 - Native Go Ecosystem Achievement Report](NATIVE_GO_ECOSYSTEM_COMPLETE.md) - **Date**: May 28, 2025
+- [🚀 EMAIL_SENDER_1 - RAPPORT DE CORRECTION DES 616 ERREURS](ERROR_DEBUG_REPORT_FINAL.md) - **Date**: 28 mai 2025
+- [🚀 JULES BOT AUTO-INTEGRATION ACTIVATED](JULES_BOT_AUTO_INTEGRATION_ACTIVATED.md) - **Date**: June 8, 2025
+- [🚀 MIGRATION PLAN V64 VERS BRANCHE DEV - RAPPORT FINAL](MIGRATION_PLAN_V64_TO_DEV_COMPLETE.md) - **Date**: 18 juin 2025 `plan`
+- [🚀 Smart Infrastructure Orchestrator - Phase 1 Implementation Complete](PHASE_1_SMART_INFRASTRUCTURE_COMPLETE.md) - **✅ Étape 1.1.1 : Module SmartInfrastructureManager**
+- [🚀 Time-Saving Methods Implementation Guide](TIME-SAVING-METHODS.md) - Email Sender 1 project now includes 7 powerful time-saving methods that provide **+289h immediate ROI** and **+141h/mont...
+- [🛠️ CORRECTION DES ERREURS IDE - RÉSUMÉ COMPLET](IDE_ERRORS_FIXED_SUMMARY.md) - - **`$DepManagerPath`** dans `dep.ps1` (racine) → ✅ **SUPPRIMÉE**
+- [🛡️ Système d'Exclusion AVG pour Développement Go/Python](AVG-EXCLUSION-README.md) - Ce système automatise l'exclusion des fichiers `.exe` et d'autres artefacts de compilation de la surveillance AVG pour ... `readme`
+- [🤖 Jules Bot Automatic Redirection System - COMPLETE](JULES_BOT_SYSTEM_COMPLETE.md) - ✅ **FORCER automatiquement toutes les contributions de `google-labs-jules[bot]` vers des sous-branches de `jules-googl...
+
+### Documentation
+
+*Main documentation directory*
+
+- [Documentation Technique et Guides pour les Améliorations de `read_file`](docs/read_file_README.md) - Ce document fournit la documentation technique et les guides d'utilisation pour les améliorations apportées à la fonc... `readme`
+- [- Utilisateur :](docs/rollback_feedback.md) - - Feedback :
+- [- Utilisateur :](docs/read_file_user_feedback.md) - - Feedback :
+- [Analyse d'écart pour read_file](docs/read_file_gap_analysis.md) - Ce rapport compare les usages actuels de `read_file` avec les besoins utilisateurs.
+- [Architecture du Système de Synchronisation](docs/architecture.md) - Le Planning Ecosystem Sync est un système distribué conçu pour maintenir la cohérence entre les plans de développem...
+- [Audit des points de rollback/versionning](docs/rollback_points_audit.md) - Ce rapport identifie les fichiers critiques du dépôt qui devraient être considérés pour les procédures de sauvegar...
+- [Audit des scripts d'orchestration et de leurs dépendances](docs/orchestration_audit.md) - Ce rapport liste tous les scripts d'automatisation identifiés, leurs dépendances et leurs points d'entrée.
+- [Audit usages read_file](docs/read_file_usage_audit.md) - Ce rapport liste tous les appels détectés à la fonction `read_file` dans le dépôt.
+- [Documentation Technique](development/docs/index.md) - Cette section contient la documentation technique du projet.
+- [Démarrage Rapide - Écosystème de Synchronisation Planning](docs/quickstart.md) - git clone https://github.com/planning-ecosystem/sync.git
+- [Déploiement DocManager v66](docs/deployment/README.md) - Ce module décrit la procédure de build, test, déploiement staging et production. `readme`
+- [EMAIL_SENDER_1 - Guide d'Architecture Go Native](docs/ARCHITECTURE_GO_NATIVE.md) - Ce document présente l'architecture finale de l'écosystème EMAIL_SENDER_1 après la consolidation complète vers Go n...
+- [Guide de Contribution](docs/contributing.md) - - Node.js 18+
+- [Guide de Migration EMAIL_SENDER_1 - Python vers Go Native](docs/MIGRATION_GUIDE.md) - Ce guide documente la migration complète de l'écosystème EMAIL_SENDER_1 d'une architecture Python/mixte vers une arch... `guide`
+- [Guide de Migration des Plans](docs/migration-guide.md) - La migration des plans existants vers l'écosystème de synchronisation se fait en plusieurs étapes progressives, avec ... `guide`
+- [Guide de Résolution des Problèmes](docs/troubleshooting.md) - **Symptôme :** Alertes "conflict_detected" dans le dashboard
+- [Guide de Troubleshooting EMAIL_SENDER_1 Go Native](docs/TROUBLESHOOTING_GUIDE.md) - Ce guide fournit des solutions pour les problèmes courants rencontrés avec l'écosystème EMAIL_SENDER_1 Go Native. `guide`
+- [Jules Bot Manual Review & Approval Process](docs/JULES_BOT_REVIEW_PROCESS.md) - This document outlines the complete manual review and approval workflow for Jules Bot contributions, bridging the gap be...
+- [Jules Bot Review System - Metrics & Monitoring](docs/JULES_BOT_MONITORING.md) - quality_metrics:
+- [Monitoring cross-stack - DocManager v66](docs/monitoring/README.md) - Ce module assure la surveillance temps réel de la performance, de la santé et des anomalies du système documentaire. `readme`
+- [PHASE 1 - FONDATIONS LÉGENDAIRES : AVANCEMENT](docs/PHASE1_PROGRESS.md) - - [x] Arborescence core/docmanager/ initialisée
+- [PHASE 2 - EXPANSION UNIVERSELLE : AVANCEMENT](docs/PHASE2_PROGRESS.md) - - [x] Documentation initiale générée pour tous les managers sécurité & infrastructure
+- [PHASE 3 - VALIDATION, TESTS ET BENCHMARKING : AVANCEMENT](docs/PHASE3_PROGRESS.md) - - [x] Moteur de validation documentaire (validator.go, report.go)
+- [PHASE 4 - OPTIMISATION, ROBUSTESSE ET RÉSILIENCE : AVANCEMENT](docs/PHASE4_PROGRESS.md) - - [x] Optimisation pipeline validation/sync/cache (performance.go)
+- [Procédures de Maintenance](docs/maintenance.md) - ```powershell
+- [README Technique - Phase 1 Doc-Manager Fusion & Code-Graph RAG](docs/technical/README.md) - Cette phase pose les fondations de l’intégration entre le Doc-Manager dynamique (Go) et les extensions Code-Graph RAG... `readme`
+- [Rapport de Clôture - DocManager v66](docs/FINAL_REPORT.md) - - Toutes les phases de la roadmap v66 réalisées à 100%
+- [Rapport de Dépendances - Phase 2 DocManager v66](docs/DEPENDENCY_REPORT_PHASE2.md) - | Manager        | Dépendances détectées         |
+- [Recueil des besoins utilisateurs pour read_file](docs/read_file_user_needs.md) - - Utilisateur : Développeur
+- [Référence API](docs/api-reference.md) - L'API Planning Ecosystem Sync expose un ensemble d'endpoints REST pour la synchronisation, validation et monitoring des ...
+- [Testing Guide for Jules Bot Manual Review System](docs/JULES_BOT_TESTING_GUIDE.md) - This guide provides instructions for testing the Jules Bot manual review and approval system to ensure all components wo... `guide`
+- [Validation Finale - DocManager v66](docs/FINAL_VALIDATION.md) - - [x] Stack technologique hybride déployée
+- [Validation documentaire DocManager v66](docs/validation/README.md) - Ce module valide la cohérence, l’intégrité et la qualité des documents du système. `readme`
+- [📚 Documentation Technique Complète - Infrastructure Hybride N8N/Go](docs/TECHNICAL_DOCUMENTATION.md) - N8N Workflow → GoCliExecutor Node → Parameter Bridge → Async Queue → Go CLI/Manager
+- [🚀 Guide de Déploiement Production - Infrastructure Hybride N8N/Go](docs/DEPLOYMENT_GUIDE.md) - - **Go** ≥ 1.20 `guide`
+- [🚀 Jules Bot Review & Approval System - Production Deployment Guide](docs/JULES_BOT_PRODUCTION_DEPLOYMENT.md) - The Jules Bot Review & Approval System has been successfully deployed and is ready for production use. This guide covers...
+- [API - API Gateway Manager](docs/api/interfaces_apigateway.md) - Spécification des endpoints et schémas exposés par le API Gateway Manager.
+- [API - Audit Manager](docs/api/interfaces_audit.md) - Spécification des endpoints et schémas exposés par le Audit Manager.
+- [API - Interface Manager](docs/api/interfaces_interfaces.md) - Spécification des endpoints et schémas exposés par le Interface Manager.
+- [API - Load Balancer Manager](docs/api/interfaces_loadbalancer.md) - Spécification des endpoints et schémas exposés par le Load Balancer Manager.
+- [API - Orchestrator Manager](docs/api/interfaces_orchestrator.md) - Spécification des endpoints et schémas exposés par le Orchestrator Manager.
+- [API - Replication Manager](docs/api/interfaces_replication.md) - Spécification des endpoints et schémas exposés par le Replication Manager.
+- [API - Security Manager](docs/api/interfaces_security.md) - Spécification des endpoints et schémas exposés par le Security Manager.
+- [API Gateway Manager](docs/managers/apigateway.md) - Documentation des endpoints et de la gestion des accès API pour DocManager v66.
+- [Analyse des Gaps & Besoins Utilisateurs - Phase 2 Doc-Manager Fusion](docs/technical/GAP_ANALYSIS.md) - - Pas de cartographie interactive des dépendances (visualisation D3.js/Mermaid manquante)
+- [Architecture Overview - Planning Ecosystem Synchronization](planning-ecosystem-sync/docs/architecture-overview.md) - **Date**: June 11, 2025 `plan`
+- [Architecture cible – Doc-Manager & Code-Graph RAG (Phase 3)](docs/technical/ARCHITECTURE.md) - - Stack hybride : Go (core/docmanager), Node.js (scripts/), Python (docgen, tests)
+- [Audit Manager](docs/managers/audit.md) - Documentation de la traçabilité et de l’audit documentaire pour DocManager v66.
+- [Benchmarks Validation & Conflits - DocManager v66](docs/validation/BENCHMARKS.md) - | Test                         | Durée (ms) | Résultat |
+- [Dependency Manager - Documentation Technique](docs/technical/DEPENDENCY_MANAGER.md) - Ce document fournit une documentation technique détaillée pour le Dependency Manager, y compris son architecture, le f...
+- [Documentation CI/CD - Migration Vectorisation Go](docs/ci-cd/github-actions-setup.md) - 1. [GitHub Actions Workflows](#github-actions-workflows)
+- [Documentation MCP](projet/mcp/docs/README.md) - Cette documentation couvre tous les aspects du système MCP (Model Context Protocol) utilisé dans le projet EMAIL_SENDE... `readme`
+- [Documentation du système de remédiation n8n](src/n8n/docs/index.md) - Bienvenue dans la documentation du système de remédiation n8n. Cette documentation fournit des informations détaillé...
+- [Dépannage DocManager v66](docs/user/TROUBLESHOOTING.md) - - **Build échoue** : Vérifier Go, dépendances, variables d’environnement
+- [Feedback Utilisateur - DocManager v66](docs/user/FEEDBACK.md) - - Documentation centralisée très appréciée
+- [Git Configuration for Planning Ecosystem Sync](planning-ecosystem-sync/docs/git-workflow.md) - - **Require pull request reviews**: 1 reviewer minimum `plan`
+- [Guide Utilisateur DocManager v66](docs/user/USER_GUIDE.md) - - Prérequis : Go, Docker, accès PostgreSQL/Redis/QDrant/InfluxDB `guide`
+- [Guide d'Architecture - Système Unifié de Vectorisation Go](docs/architecture/system-architecture-guide.md) - Ce document décrit l'architecture du système unifié de vectorisation Go implémenté dans le cadre de la migration Ph... `guide`
+- [Guide de Migration Python → Go](docs/migration/python-to-go-migration-guide.md) - Ce guide détaille la migration complète du système de vectorisation Python vers l'implémentation Go native dans le c... `guide`
+- [Guide de Résolution des Conflits - DocManager v66](docs/validation/RESOLUTION_GUIDE.md) - Ce guide explique comment résoudre les conflits documentaires détectés : `guide`
+- [Guide de Troubleshooting et Validation Post-Migration](docs/troubleshooting/post-migration-validation.md) - 1. [Checklist de Validation Post-Migration](#checklist-de-validation-post-migration)
+- [Interface Manager](docs/managers/interfaces.md) - Documentation des contrats API et interfaces exposées pour DocManager v66.
+- [Load Balancer Manager](docs/managers/loadbalancer.md) - Documentation de la répartition de charge documentaire pour DocManager v66.
+- [Monitoring Post-Déploiement - DocManager v66](docs/monitoring/POST_DEPLOY_MONITORING.md) - | Métrique                | Valeur | Statut |
+- [Objectifs Phase 1 - Fusion Doc-Manager Dynamique & Code-Graph RAG](docs/technical/OBJECTIVES.md) - - Cartographie exhaustive des dépendances (modules, fonctions, fichiers)
+- [Orchestrator Manager](docs/managers/orchestrator.md) - Documentation des déploiements et de l’orchestration documentaire pour DocManager v66.
+- [Phase 3 : Intégration IDE et Expérience Développeur - Documentation Complète](docs/phase3/ide-integration-guide.md) - La Phase 3 du projet Smart Email Sender se concentre sur l'amélioration de l'expérience développeur en intégrant l'i... `guide`
+- [Plan d'Intégration CI/CD pour le Dependency Manager](docs/technical/ci_cd_integration_plan.md) - Ce document décrit les modifications et les ajouts nécessaires au pipeline CI/CD pour intégrer le Dependency Manager ... `plan`
+- [PowerShell Function Name Validator - Modular Version](scripts/automation/docs/README-Modular.md) - Cette version modulaire du validateur de noms de fonctions PowerShell améliore l'architecture monolithique originale en... `readme`
+- [Quickstart DocManager v66](docs/user/QUICKSTART.md) - 1. Cloner le dépôt et installer les dépendances
+- [Rapport Post-Déploiement - DocManager v66](docs/deployment/POST_DEPLOY_REPORT.md) - | Étape                  | Statut |
+- [Rapport de Conflits Documentaires - DocManager v66](docs/validation/CONFLICTS_REPORT.md) - | Type           | Détails                | Résolu |
+- [Rapport de Formation - DocManager v66](docs/user/TRAINING_REPORT.md) - | Session         | Date       | Participants | Statut |
+- [Rapport de Performance - DocManager v66 (Phase 4)](docs/optimization/PERFORMANCE_REPORT.md) - | Composant         | Optimisation appliquée         | Gain estimé |
+- [Rapport d’Alertes Monitoring - DocManager v66](docs/monitoring/ALERTS_REPORT.md) - | Type d’alerte      | Détails                  | Statut |
+- [Rapport d’Audit de l’Existant - Phase 2 Doc-Manager Fusion](docs/technical/AUDIT_REPORT.md) - - core/docmanager/orchestrator.go
+- [Replication Manager](docs/managers/replication.md) - Documentation de la réplication documentaire pour DocManager v66.
+- [Résultats Load Testing - DocManager v66 (Phase 4)](docs/optimization/LOAD_TEST_RESULTS.md) - | Scénario           | Utilisateurs | TPS   | Latence max (ms) | Statut |
+- [Scripts du projet](development/scripts/docs/README.md) - Ce dossier contient des **scripts exécutables** qui réalisent des actions spécifiques dans le cadre du projet. Ces sc... `readme`
+- [Security Manager](docs/managers/security.md) - Gestion documentaire des politiques de sécurité pour l’écosystème DocManager v66.
+- [Serveurs MCP pour EMAIL_SENDER_1](src/mcp/docs/README_SERVEURS_MCP.md) - Ce document explique comment installer, configurer et démarrer les serveurs MCP (Model Context Protocol) utilisés par ... `readme`
+- [TTL Cache Integration Guide](docs/integration/ttl-cache-integration.md) - This guide shows how to integrate the TTL cache management system with your email sender application.
+- [mcp](src/mcp/docs/README.md) - Model Context Protocol `readme`
+- [🔮 ROADMAP FUTURE - SUGGESTIONS D'ÉVOLUTION EMAIL_SENDER_1](docs/evolution/future-roadmap.md) - **Objectif** : Centraliser toutes les suggestions d'évolution future pour l'écosystème EMAIL_SENDER_1. Ce document co... `roadmap`
+- [Analyse de la Fonction Test-ModuleDependencies et ses Capacités](development/docs/dependency-management/test-module-dependencies-analysis.md) - Ce document analyse la fonction `Test-ModuleDependencies` mentionnée dans la documentation du projet, ses capacités ac...
+- [Analyse de la Gestion des RequiredModules dans les Fichiers .psd1](development/docs/dependency-management/required-modules-analysis.md) - Ce document examine comment les dépendances de modules PowerShell sont définies, détectées et gérées dans les fich...
+- [Analyse de la fonction Register-Manager](development/docs/dependency-management/register-manager-analysis.md) - La fonction `Register-Manager` du Process Manager est définie avec la signature suivante :
+- [Analyse de la structure MCP pour Hygen](src/mcp/docs/hygen-analysis.md) - Ce document présente l'analyse de la structure du dossier MCP pour l'implémentation de Hygen.
+- [Analyse de la structure des dossiers des gestionnaires](development/docs/analysis/manager-folder-structure.md) - Ce document analyse la structure des dossiers des gestionnaires dans le projet EMAIL_SENDER_1. L'objectif est d'identifi...
+- [Analyse des Méthodes de Détection d'Imports et de Dot-Sourcing](development/docs/dependency-management/import-detection-analysis.md) - Ce document analyse en détail les méthodes utilisées dans le projet pour détecter les imports et le dot-sourcing dan...
+- [Analyse des algorithmes de détection de cycles](development/docs/algorithms/AlgorithmesDetectionCycles.md) - Ce document présente une analyse comparative des différents algorithmes de détection de cycles dans les graphes. Cett...
+- [Analyse des chemins de recherche et de la stratégie de découverte du Process Manager](development/docs/analysis/process-manager-discovery-analysis.md) - Ce document analyse les chemins de recherche et la stratégie de découverte utilisés par la fonction `Discover-Manager...
+- [Analyse des conventions de nommage des gestionnaires](development/docs/analysis/manager-naming-conventions.md) - Ce document analyse les conventions de nommage utilisées pour les gestionnaires dans le projet EMAIL_SENDER_1. L'object...
+- [Analyse des incohérences dans les conventions des gestionnaires](development/docs/analysis/manager-conventions-inconsistencies.md) - Ce document résume les incohérences identifiées dans les conventions de nommage et de structure des dossiers des gest...
+- [Analyse du Module DependencyAnalyzer.psm1](development/docs/dependency-management/dependency-analyzer-examination.md) - Ce document présente une analyse détaillée du module `DependencyAnalyzer.psm1` et de ses fonctions, dans le cadre de ...
+- [Analyse du Système d'Adaptateurs du Process Manager](development/docs/dependency-management/process-manager-adapters.md) - Ce document examine le système d'adaptateurs utilisé par le Process Manager pour intégrer et gérer les dépendances ...
+- [Analyse du mécanisme de détection automatique des gestionnaires](development/docs/analysis/manager-detection-mechanism.md) - Ce document analyse le mécanisme de détection automatique des gestionnaires utilisé par le Process Manager. L'objecti...
+- [Analyse du mécanisme de vérification d'existence des gestionnaires](development/docs/dependency-management/manager-existence-verification.md) - Le Process Manager implémente un mécanisme de vérification d'existence des gestionnaires à deux niveaux :
+- [Analyse du processus de stockage des métadonnées des gestionnaires](development/docs/dependency-management/manager-metadata-storage.md) - Le Process Manager utilise un système de stockage de métadonnées pour les gestionnaires enregistrés. Ces métadonné...
+- [Architecture améliorée pour le mécanisme d'enregistrement du Process Manager](development/docs/dependency-management/register-manager-architecture.md) - Ce document présente une architecture améliorée pour le mécanisme d'enregistrement des gestionnaires dans le Process...
+- [Architecture cognitive des roadmaps](projet/roadmaps/docs/architecture-cognitive-roadmaps.md) - Ce document présente l'architecture cognitive des roadmaps, un modèle mental complet pour l'orchestration du développ... `roadmap`
+- [Automation Scripts](scripts/automation/archive/docs/README.md) - Ce dossier contient des scripts d'automatisation pour diverses tâches liées au projet. `readme`
+- [Changelog](development/docs/structure/CHANGELOG.md) - Toutes les modifications notables apportées à ce projet seront documentées dans ce fichier. `changelog`
+- [Comparaison des conventions actuelles avec les bonnes pratiques PowerShell](development/docs/analysis/manager-conventions-vs-best-practices.md) - Ce document compare les conventions actuelles utilisées pour les gestionnaires dans le projet EMAIL_SENDER_1 avec les b...
+- [DependencyCycleResolver - Documentation API](development/docs/api/DependencyCycleResolver_API.md) - Le module `DependencyCycleResolver` est conçu pour détecter et résoudre automatiquement les cycles de dépendances da...
+- [Document de décision technique : Choix de l'algorithme de détection de cycles](development/docs/algorithms/DecisionAlgorithmeCycles.md) - Après analyse des différents algorithmes de détection de cycles disponibles, nous avons sélectionné l'**algorithme ...
+- [Documentation Complète - n8n](src/n8n/docs/documentation-complete.md) - Cette documentation détaille la structure, l'installation, la configuration et l'utilisation de n8n dans le cadre du pr...
+- [Documentation d'architecture n8n](src/n8n/docs/architecture/README.md) - Ce dossier contient la documentation relative à l'architecture du système n8n. `readme`
+- [Documentation du Manager de Dépendances (dependency-manager)](development/managers/dependency-manager/docs/README.md) - Ce document fournit une documentation générale sur le manager de dépendances, sa structure, ses fonctionnalités et c... `readme`
+- [Documentation du Système d'Exclusion AVG](development/docs/security/avg/README.md) - Ce dossier contient la documentation complète du système d'exclusion AVG mis en place pour éviter les blocages des fi... `readme`
+- [Documentation du Système de Logging pour Templates Hygen](_templates/helpers/docs/logger-guide.md) - 1. [Introduction](#introduction) `guide`
+- [Documentation technique du module MCPClient](development/docs/mcp/MCPClientAPI.md) - Le module `MCPClient` est un client PowerShell pour le protocole MCP (Model Context Protocol). Il permet d'interagir ave...
+- [Déductions Inédites - Projet n8n](src/n8n/docs/deductions-inedites.md) - Ce document présente les déductions et observations inédites issues de l'analyse complète du thread de consolidation...
+- [EMAIL_SENDER_1 - Optimisations et Améliorations](development/docs/performance/OPTIMIZATIONS.md) - Ce projet contient des optimisations et améliorations pour le projet EMAIL_SENDER_1, notamment pour éviter les erreurs...
+- [Fonction de recherche de fichiers de gestionnaires](development/docs/solutions/file-based-search-function.md) - Ce document propose une implémentation d'une fonction de recherche de fichiers de gestionnaires pour le Process Manager...
+- [Format de tâche standardisé pour le système de roadmapping](projet/roadmaps/docs/task-format-standard.md) - Ce document définit le format de tâche standardisé pour notre système de roadmapping, inspiré par le projet claude-... `roadmap`
+- [Formation Hygen pour MCP](src/mcp/docs/hygen-training-presentation.md) - - **Qu'est-ce que Hygen ?**
+- [Guide d'utilisation de Hygen pour MCP](src/mcp/docs/hygen-guide.md) - Ce guide explique comment utiliser Hygen pour générer des composants standardisés pour le projet MCP. `guide`
+- [Guide d'utilisation de la nouvelle structure n8n](src/n8n/docs/GUIDE_UTILISATION.md) - Ce guide explique comment utiliser la nouvelle structure n8n mise en place dans le projet. `guide`
+- [Guide d'utilisation du système de remédiation n8n](src/n8n/docs/user-guide.md) - Ce guide explique comment utiliser le système de remédiation n8n pour gérer, surveiller et maintenir votre installati... `guide`
+- [Guide de finalisation de l'installation de Hygen](src/n8n/docs/hygen-installation-finalization.md) - Ce guide explique comment finaliser l'installation de Hygen dans le projet n8n. `installation`
+- [Guide de formation Hygen pour MCP](src/mcp/docs/hygen-training-guide.md) - Ce guide de formation est destiné aux développeurs qui souhaitent utiliser Hygen pour générer des composants MCP. `guide`
+- [Guide de validation des bénéfices de Hygen](src/n8n/docs/hygen-benefits-validation.md) - Ce guide explique comment valider les bénéfices et l'utilité de Hygen dans le projet n8n.
+- [Guide de validation des scripts d'utilitaires Hygen](src/n8n/docs/hygen-utilities-validation.md) - Ce guide explique comment valider les scripts d'utilitaires Hygen dans le projet n8n.
+- [Guide de validation des templates Hygen](src/n8n/docs/hygen-templates-validation.md) - Ce guide explique comment valider les templates Hygen dans le projet n8n.
+- [Impact des limitations du mécanisme de découverte des gestionnaires](development/docs/analysis/manager-discovery-limitations-impact.md) - Ce document évalue l'impact des limitations techniques du mécanisme de découverte automatique des gestionnaires sur l...
+- [Implémentation d'une fonction utilisant l'AST de PowerShell](development/docs/solutions/powershell-ast-function.md) - Ce document présente l'implémentation d'une fonction qui utilise l'Abstract Syntax Tree (AST) de PowerShell pour analy...
+- [Implémentations de référence pour la détection de cycles](development/docs/structure/ImplementationsReference.md) - Ce document présente une liste d'implémentations existantes de détection de cycles dans différents langages et frame...
+- [Intégration de Hygen dans la documentation globale MCP](src/mcp/docs/hygen-integration.md) - Ce document explique comment Hygen s'intègre dans la documentation globale MCP.
+- [Intégration des concepts de claude-task-master dans notre système de roadmapping](projet/roadmaps/docs/integration-task-master.md) - Ce document présente notre stratégie d'intégration des concepts du projet claude-task-master dans notre système de r... `roadmap`
+- [Journal de Bord - Projet n8n](src/n8n/docs/journal-de-bord.md) - Le projet comportait de multiples dossiers liés à n8n, créant de la confusion et rendant difficile la maintenance :
+- [Journal des Erreurs - Projet n8n](src/n8n/docs/journal-des-erreurs.md) - Ce document recense les erreurs rencontrées lors de la consolidation et de la réorganisation de la structure n8n, ains...
+- [Limitations des Méthodes de Détection de Dépendances Actuelles](development/docs/dependency-management/detection-limitations.md) - Ce document présente une analyse détaillée des limitations des méthodes actuelles de détection de dépendances dans...
+- [Limitations du mécanisme d'enregistrement actuel du Process Manager](development/docs/dependency-management/register-manager-limitations.md) - Ce document analyse les limitations actuelles du mécanisme d'enregistrement des gestionnaires dans le Process Manager. ...
+- [Limitations techniques du mécanisme de découverte des gestionnaires](development/docs/analysis/manager-discovery-limitations.md) - Ce document identifie les limitations techniques du mécanisme de découverte automatique des gestionnaires dans le Proc...
+- [Manager Toolkit v3.0.0 - Professional Development Tools](development/managers/tools/docs/README.md) - Suite d'outils professionnels pour l'analyse, la migration et la maintenance du code Go dans l'écosystème Email Sender... `readme`
+- [Module MCPManager](development/docs/mcp/MCPManager.md) - Le module MCPManager est un module PowerShell qui centralise toutes les fonctionnalitÃ©s liÃ©es Ã  la gestion des ...
+- [Module d'utilitaires de chiffrement (EncryptionUtils)](development/docs/security/EncryptionUtils.md) - Ce document décrit le module d'utilitaires de chiffrement (`EncryptionUtils.ps1`) qui permet de sécuriser les données...
+- [Module de détection de cycles](development/docs/algorithms/CycleDetector.md) - Le module `CycleDetector` fournit des fonctionnalités pour détecter et corriger les cycles dans différents types de g...
+- [Module de gestion de cache (CacheManager)](development/docs/performance/CacheManager.md) - Ce document décrit le module de gestion de cache (`CacheManager.ps1`) qui permet d'améliorer les performances en metta...
+- [Module de segmentation d'entrées](development/docs/performance/InputSegmentation.md) - Le module `InputSegmentation` fournit des fonctionnalités pour segmenter automatiquement les entrées volumineuses en m...
+- [Module de segmentation d'entrées (InputSegmenter)](development/docs/api/InputSegmenter.md) - Le module `InputSegmentation` est un composant essentiel qui permet de segmenter automatiquement les entrées volumineus...
+- [Module de sécurité pour le traitement de fichiers](development/docs/security/FileSecurityUtils.md) - Ce document décrit le module de sécurité (`FileSecurityUtils.ps1`) qui permet de sécuriser le traitement des fichier...
+- [Module de traitement parallèle](development/docs/performance/ParallelProcessing.md) - Ce document décrit le module de traitement parallèle (`ParallelProcessing.ps1`) qui permet d'optimiser les performance...
+- [Méthodes d'analyse syntaxique disponibles dans PowerShell](development/docs/solutions/powershell-ast-analysis.md) - Ce document présente les différentes méthodes d'analyse syntaxique disponibles dans PowerShell. Ces méthodes permett...
+- [Optimisation des performances pour les grands arbres syntaxiques](development/docs/solutions/ast-optimization.md) - Ce document décrit les optimisations implémentées pour améliorer les performances du parcours des grands arbres synt...
+- [Optimisations pour Augment Code](development/docs/augment/OPTIMISATIONS-AUGMENT.md) - Ce document explique les optimisations mises en place pour améliorer l'utilisation d'Augment Code dans ce projet.
+- [Organisation des scripts de maintenance](development/scripts/maintenance/docs/README.md) - Ce dossier contient les scripts de maintenance du projet EMAIL_SENDER_1. Une méthode hybride a été mise en place pour... `readme`
+- [Plan d'intégration de Hygen pour MCP](src/mcp/docs/hygen-integration-plan.md) - Ce document présente le plan d'intégration de Hygen dans le workflow de développement MCP. `plan`
+- [Plan de Couverture des Tests Unitaires pour le Dependency Manager](docs/technical/test_plans/dep_manager_test_coverage_plan.md) - Ce document identifie les composants du Dependency Manager qui nécessitent des tests unitaires et décrit la stratégie... `plan`
+- [Plan de Documentation pour le Dependency Manager](docs/technical/doc_plans/dep_manager_doc_plan.md) - Ce document décrit le plan de documentation pour le Dependency Manager, y compris les sections à couvrir, les publics ... `plan`
+- [Plan des templates Hygen pour MCP](src/mcp/docs/hygen-templates-plan.md) - Ce document présente le plan des templates Hygen à développer pour le dossier MCP. `plan`
+- [Procédures d'utilisation de Hygen pour MCP](src/mcp/docs/hygen-procedures.md) - Ce document présente les procédures d'utilisation de Hygen pour la génération de composants MCP.
+- [PyMCPfy Documentation](src/mcp/python/docs/index.md) - Welcome to the PyMCPfy documentation! PyMCPfy is a Python library that enables developers to expose their existing web f...
+- [Rapport des bénéfices de Hygen pour MCP](src/mcp/docs/hygen-benefits-report.md) - Ce rapport présente les bénéfices mesurés de l'utilisation de Hygen pour la génération de composants MCP.
+- [Rapport des retours utilisateurs sur Hygen pour MCP](src/mcp/docs/hygen-user-feedback-report.md) - Ce rapport présente les retours des utilisateurs sur l'utilisation de Hygen pour la génération de composants MCP.
+- [RÉSUMÉ DE LA MODULARISATION - PowerShell Function Name Validator](scripts/automation/docs/RÉSUMÉ-MODULARISATION.md) - - ✅ Identification des problèmes dans le script original (365 lignes)
+- [Serveur MCP PowerShell](development/docs/mcp/MCPPowerShellServer.md) - Le serveur MCP PowerShell est une implémentation du Model Context Protocol (MCP) qui permet d'exécuter des commandes P...
+- [Solutions techniques pour la recherche récursive des gestionnaires](development/docs/solutions/recursive-search-solutions.md) - Ce document propose des solutions techniques pour permettre la recherche récursive des gestionnaires dans le Process Ma...
+- [Spécification d'API du module CycleDetector](development/docs/api/CycleDetectorAPI.md) - Le module `CycleDetector.psm1` fournit des fonctionnalités pour détecter et corriger les cycles dans différents types...
+- [Spécification d'API du module DependencyCycleResolver](development/docs/api/DependencyCycleAPI.md) - Le module `DependencyCycleResolver.psm1` fournit des fonctionnalités pour résoudre automatiquement les cycles de dépe...
+- [Spécifications des Rapports de Dépendances](docs/technical/specifications/dependency_report_requirements.md) - Ce document décrit les besoins et les formats attendus pour les rapports de dépendances Go générés par le système. `specification`
+- [Standard de Structure du Dépôt](development/docs/structure/RepoStructureStandard.md) - Ce document définit la structure standardisée du dépôt pour le projet EMAIL_SENDER_1. Il établit les conventions po...
+- [Stratégie de gestion des erreurs pour le module CycleDetector](development/docs/structure/ErrorHandlingStrategy.md) - Ce document définit la stratégie de gestion des erreurs pour le module `CycleDetector.psm1`. Une gestion efficace des ...
+- [Stratégies de Gestion des Versions de Modules](development/docs/dependency-management/version-management-strategies.md) - Ce document présente une analyse des stratégies de gestion des versions de modules PowerShell utilisées dans le proje...
+- [Structure de données pour la représentation des graphes](development/docs/algorithms/GraphDataStructure.md) - Ce document définit la structure de données utilisée pour représenter les graphes dans le module `CycleDetector.psm1...
+- [Structure du dossier n8n](src/n8n/docs/structure.md) - Ce document décrit la structure du dossier n8n et son organisation.
+- [Support des formats CSV et YAML dans UnifiedSegmenter](development/docs/structure/CSV_YAML_Support.md) - Ce document décrit les fonctionnalités de support des formats CSV et YAML ajoutées au module UnifiedSegmenter.
+- [SystÃ¨me d'Inventaire et de Classification des Scripts](development/docs/structure/ScriptInventorySystem.md) - Ce systÃ¨me permet de :
+- [SystÃ¨me d'analyse de code](development/scripts/analysis/docs/README.md) - Ce systÃ¨me permet d'analyser le code source avec diffÃ©rents outils et d'intÃ©grer les rÃ©sultats avec des outi... `readme`
+- [Système RAG (Retrieval-Augmented Generation) pour la gestion de roadmap](development/scripts/roadmap/docs/README_RAG.md) - Ce système permet de gérer efficacement les tâches de la roadmap en utilisant des techniques de vectorisation et de r... `roadmap` `readme`
+- [Système de Logging pour Templates Hygen](_templates/helpers/docs/logger-documentation.md) - Le système de logging est un module centralisé qui fournit des fonctionnalités de logging cohérentes et cross-platfo...
+- [Système de gestion de roadmap](development/scripts/roadmap/docs/README.md) - Ce dossier contient les scripts pour le système de gestion de roadmap du projet EMAIL_SENDER_1. `roadmap` `readme`
+- [Tableau comparatif des algorithmes de détection de cycles](development/docs/algorithms/ComparaisonAlgorithmesCycles.md) - | Critère | DFS (Depth-First Search) | BFS (Breadth-First Search) | Algorithme de Tarjan | Détection par coloration |
+- [Types de Dépendances à Gérer dans le Process Manager](development/docs/dependency-management/dependency-types.md) - Ce document identifie et catégorise les différents types de dépendances qui doivent être gérés par le système de ...
+- [Visualisation "ligne de métro" pour le système de roadmapping](projet/roadmaps/docs/visualisation-ligne-metro.md) - Ce document présente la conception et l'implémentation d'un système de visualisation inspiré des plans de métro pou... `roadmap`
+- [Évaluation de la gestion des conflits et des doublons](development/docs/dependency-management/conflict-duplicate-management.md) - La gestion des conflits et des doublons est un aspect crucial du Process Manager, car elle garantit l'intégrité et la ...
+- [Évaluation de la robustesse du mécanisme de détection face aux structures de dossiers non standard](development/docs/analysis/manager-detection-robustness.md) - Ce document évalue la robustesse du mécanisme de détection automatique des gestionnaires du Process Manager face aux ...
+- [Évaluation des Mécanismes de Résolution de Chemins Relatifs](development/docs/dependency-management/path-resolution-evaluation.md) - Ce document évalue les mécanismes de résolution de chemins relatifs utilisés dans le projet, en particulier ceux li�...
+- [Évaluation des Mécanismes de Vérification de Disponibilité des Modules](development/docs/dependency-management/module-availability-verification.md) - Ce document évalue les différents mécanismes utilisés dans le projet pour vérifier la disponibilité des modules Po...
+- [📁 Archivage des Versions Obsolètes - Complet](scripts/automation/docs/ARCHIVAGE-COMPLET.md) - **Date :** 24 mai 2025
+- [🚀 Plan d'Organisation Avancée du Répertoire Automation](scripts/automation/docs/PLAN-ORGANISATION-AVANCEE.md) - 1. **`scripts/automation/`** - Scripts PowerShell modulaires (architecture principale) `plan`
+- [Analyse des options de stockage en mémoire pour les index temporaires](development/scripts/extraction/Docs/Performance/IndexInMemoryStorage.md) - Date d'analyse : $(Get-Date)
+- [Analyse des paramÃ¨tres et types de retour](development/roadmap/parser/docs/Parameters-ReturnTypes-Analysis.md) - Ce document dÃ©finit les paramÃ¨tres et types de retour pour les fonctions du module RoadmapParser. `roadmap`
+- [Analyse des patterns d'appels de fonctions dans PowerShell](development/scripts/dependency-management/docs/PowerShell-Function-Call-Patterns.md) - Ce document analyse les différentes syntaxes d'appels de fonctions dans PowerShell et définit les règles de détectio...
+- [Architecture des Gestionnaires](development/docs/guides/methodologies/manager_architecture.md) - Ce document présente l'architecture globale du système de gestionnaires, leur organisation, leurs interactions et leur... `guide`
+- [Architecture du système MCP](projet/mcp/docs/development/architecture.md) - Ce document décrit l'architecture du système MCP (Model Context Protocol) utilisé dans le projet EMAIL_SENDER_1.
+- [Architecture du système de remédiation n8n](src/n8n/docs/architecture/system-overview.md) - Ce document présente une vue d'ensemble de l'architecture du système de remédiation n8n, expliquant comment les diff�...
+- [Architectures d'agents IA pour n8n](src/n8n/docs/architecture/ai-agent-architectures.md) - Ce document présente différentes architectures d'agents IA qui peuvent être implémentées dans n8n pour le projet Em...
+- [Automatisation des tâches récurrentes n8n](src/n8n/docs/architecture/maintenance.md) - Ce document explique comment utiliser les scripts d'automatisation des tâches récurrentes pour maintenir votre install...
+- [Bonnes pratiques pour la gestion des roadmaps](development/docs/guides/best-practices/roadmap-management.md) - Ce document présente les bonnes pratiques pour la gestion des roadmaps dans le projet, en utilisant les modes de gestio... `roadmap` `guide`
+- [Cartographie et usages des fichiers mcp-config.json dans le projet EMAIL_SENDER_1](projet/mcp/docs/guides/cartographie-mcp-config.md) - Ce document explicite la présence de plusieurs fichiers `mcp-config.json` dans le projet, leur structure et leur usage ... `guide`
+- [Conception d'une fonction de clonage profond des index](development/scripts/extraction/Docs/Performance/IndexDeepCloning.md) - Date de conception : $(Get-Date)
+- [Conception d'une fonction de création initiale des index](development/scripts/extraction/Docs/Performance/IndexCreationSystem.md) - Date de conception : $(Get-Date)
+- [Conception d'une structure d'index pour la propriété ProcessingState](development/scripts/extraction/Docs/Performance/ProcessingStateIndexStructure.md) - Date de conception : $(Get-Date)
+- [Conception d'une structure d'index pour la propriété Source](development/scripts/extraction/Docs/Performance/SourceIndexStructure.md) - Date de conception : $(Get-Date)
+- [Conception d'une structure d'index pour la propriété Type](development/scripts/extraction/Docs/Performance/TypeIndexStructure.md) - Date de conception : $(Get-Date)
+- [Conception de l'algorithme de parcours récursif des dépendances](development/scripts/dependency-management/docs/RecursiveDependencyTraversal.md) - Ce document décrit l'algorithme de parcours récursif des dépendances de modules PowerShell. L'objectif est de concevo...
+- [Configuration Guide](src/mcp/python/docs/configuration.md) - PyMCPfy offers flexible configuration options through YAML files, environment variables, or programmatic configuration.
+- [Conventions de nommage pour le module ExtractedInfoModuleV2](development/scripts/extraction/Docs/CONVENTIONS_NOMMAGE.md) - Ce document présente les conventions de nommage à suivre pour le développement et l'extension du module ExtractedInfo...
+- [Conventions standardisées pour les gestionnaires](development/docs/guides/best-practices/manager-conventions.md) - Ce document définit les conventions standardisées pour les gestionnaires dans le projet EMAIL_SENDER_1. Ces convention... `guide`
+- [Création d'un gestionnaire pour le Process Manager](development/docs/guides/methodologies/creating_manager.md) - Ce guide explique comment créer un nouveau gestionnaire compatible avec le Process Manager. Il détaille la structure r... `guide`
+- [Documentation CI/CD pour le Manager de Dépendances](development/managers/dependency-manager/docs/ci_cd.md) - Ce document décrit les procédures et les pipelines d'Intégration Continue / Déploiement Continu (CI/CD) pour le mana...
+- [Documentation Complète de l'Écosystème Tools - Manager Toolkit v2.0.0](development/managers/tools/docs/TOOLS_ECOSYSTEM_DOCUMENTATION.md) - > **IMPORTANT: CE DOCUMENT EST ARCHIVÉ**
+- [Documentation Complète de l'Écosystème Tools - Manager Toolkit v3.0.0](development/managers/tools/docs/TOOLS_ECOSYSTEM_DOCUMENTATION_V3.md) - Ce document présente une analyse modulaire, robuste et réutilisable de l'écosystème `development\managers\tools` **a...
+- [Documentation Technique des Scripts d'Exclusion AVG](development/docs/security/avg/technical.md) - Ce document détaille le fonctionnement technique des scripts d'exclusion AVG développés pour résoudre les problèmes...
+- [DÃ©veloppement de plugins d'analyse personnalisÃ©s](development/scripts/analysis/docs/PluginDevelopment.md) - Ce document explique comment dÃ©velopper des plugins personnalisÃ©s pour le systÃ¨me d'intÃ©gration avec des out...
+- [Error Manager API Documentation](development/managers/error-manager/docs/api/README.md) - The Error Manager package provides a comprehensive solution for error handling, analysis, and reporting in the EMAIL_SEN... `readme`
+- [Error Manager Architecture Documentation](development/managers/error-manager/docs/architecture/README.md) - The Error Manager is a comprehensive error handling and analysis system designed with a modular architecture that suppor... `readme`
+- [Error Manager User Guide](development/managers/error-manager/docs/guides/README.md) - 1. [Getting Started](#getting-started) `guide` `readme`
+- [Examples - Exemples d'utilisation](development/scripts/roadmap/docs/examples/README.md) - Ce dossier contient des exemples d'utilisation des diffÃ©rents scripts. `roadmap` `readme`
+- [Exemple d'ajout d'une nouvelle fonctionnalité au module ExtractedInfoModuleV2](development/scripts/extraction/Docs/EXEMPLE_AJOUT_FONCTIONNALITE.md) - Ce document présente un exemple concret d'ajout d'une nouvelle fonctionnalité au module ExtractedInfoModuleV2, en suiv...
+- [Exemples d'utilisation courants du système de remédiation n8n](src/n8n/docs/examples/common-scenarios.md) - Ce document présente des exemples d'utilisation courants du système de remédiation n8n, avec des instructions étape ...
+- [Exemples d'utilisation des modes de gestion de roadmap](development/docs/guides/examples/roadmap-modes-examples.md) - Ce document présente des exemples d'utilisation des modes de gestion de roadmap (ROADMAP-SYNC, ROADMAP-REPORT, ROADMAP-... `roadmap` `guide`
+- [Exemples d'utilisation du systÃ¨me d'analyse](development/scripts/analysis/docs/EXAMPLES.md) - Ce document prÃ©sente des exemples concrets d'utilisation du systÃ¨me d'analyse de code.
+- [Gestion des multi-instances n8n](src/n8n/docs/architecture/multi-instances.md) - Ce document explique comment utiliser les scripts de gestion des multi-instances n8n.
+- [Gestion du cycle de vie de n8n avec PID](src/n8n/docs/architecture/gestion-pid.md) - Ce document explique comment utiliser les scripts de gestion du cycle de vie de n8n avec PID.
+- [Gestion du dossier maintenance](development/docs/guides/methodologies/maintenance_folder_management.md) - Ce document explique la structure et la gestion du dossier `development/scripts/maintenance` dans le projet EMAIL_SENDER... `guide`
+- [Getting Started with PyMCPfy](src/mcp/python/docs/getting_started.md) - This guide will help you get started with PyMCPfy and expose your first API via MCP.
+- [Guide Rapide - Exclusion AVG pour les fichiers .exe](development/docs/security/avg/quickguide.md) - Ce guide explique comment utiliser et vérifier le système d'exclusion AVG mis en place pour éviter que l'antivirus ne... `guide`
+- [Guide d'installation du Gestionnaire Intégré](development/docs/guides/methodologies/install_integrated_manager.md) - Le script `install-integrated-manager.ps1` est un outil essentiel pour installer et configurer le Gestionnaire Intégré... `guide` `installation`
+- [Guide d'intÃ©gration du systÃ¨me de cache PRAnalysisCache](development/scripts/testing/docs/PRAnalysisCache-Integration-Guide.md) - Ce guide explique comment intÃ©grer le systÃ¨me de cache PRAnalysisCache dans d'autres parties de l'application pour... `guide`
+- [Guide d'intégration des gestionnaires](development/docs/guides/methodologies/manager_integration.md) - Ce guide explique comment intégrer les différents gestionnaires du système avec le gestionnaire de processus (Process... `guide`
+- [Guide d'organisation des scripts de maintenance](development/docs/guides/methodologies/maintenance_scripts_organization.md) - Ce guide explique la méthode hybride mise en place pour organiser les scripts de maintenance du projet EMAIL_SENDER_1. `guide`
+- [Guide d'utilisation de Invoke-CachedPSScriptAnalyzer](development/scripts/analysis/docs/CachedPSScriptAnalyzer-Guide.md) - Ce guide explique comment utiliser le script `Invoke-CachedPSScriptAnalyzer.ps1` pour analyser des scripts PowerShell av... `guide`
+- [Guide d'utilisation du gestionnaire intÃ©grÃ©](development/docs/guides/user-guides/integrated-manager-guide.md) - Ce guide prÃ©sente l'utilisation du gestionnaire intÃ©grÃ©, qui unifie les fonctionnalitÃ©s du Mode Manager et d... `guide`
+- [Guide d'utilisation du serveur de passerelle API MCP](src/mcp/docs/guides/api-gateway-guide.md) - Ce guide explique comment utiliser le serveur de passerelle API MCP. `guide`
+- [Guide de Migration vers la Nouvelle Structure - Manager Toolkit v3.0.0](development/managers/tools/docs/GUIDE_MIGRATION_STRUCTURE.md) - Ce document fournit un guide pour l'équipe de développement sur la nouvelle structure de dossiers de `development\mana... `guide`
+- [Guide de configuration MCP](projet/mcp/docs/guides/configuration.md) - Ce guide explique comment configurer les serveurs MCP (Model Context Protocol) dans le projet EMAIL_SENDER_1. `guide`
+- [Guide de consolidation des dossiers analysis et analytics](development/docs/guides/maintenance/consolidation-analysis-directories.md) - Ce guide explique comment consolider les dossiers `development/scripts/analysis` et `development/scripts/analytics` en u... `guide`
+- [Guide de démarrage rapide MCP](projet/mcp/docs/guides/quick-start.md) - Ce guide vous aidera à démarrer rapidement avec la nouvelle structure MCP (Model Context Protocol) dans le projet EMAI... `guide`
+- [Guide de démarrage rapide MCP](projet/mcp/docs/guides/getting-started.md) - Ce guide vous aidera à démarrer rapidement avec le système MCP (Model Context Protocol) dans le projet EMAIL_SENDER_1... `guide`
+- [Guide de démarrage rapide du gestionnaire intégré](development/docs/guides/user-guides/integrated-manager-quickstart.md) - Ce guide de démarrage rapide vous permettra de commencer à utiliser le gestionnaire intégré en quelques minutes. `guide`
+- [Guide de dépannage MCP](projet/mcp/docs/guides/troubleshooting.md) - Ce guide vous aidera à résoudre les problèmes courants rencontrés avec les serveurs MCP (Model Context Protocol) dan... `guide`
+- [Guide de gestion des cas ambigus](development/scripts/utils/Docs/Ambiguous-Format-Handling.md) - La dÃ©tection automatique de format peut parfois Ãªtre ambiguÃ«, c'est-Ã -dire que plusieurs formats peuvent cor...
+- [Guide de maintenance MCP](projet/mcp/docs/guides/maintenance.md) - Ce guide explique comment maintenir et gérer les serveurs MCP (Model Context Protocol) dans le projet EMAIL_SENDER_1. `guide`
+- [Guide de priorisation des développements](development/docs/guides/methodologies/development_prioritization.md) - Ce guide explique la méthodologie utilisée pour prioriser les développements nécessaires afin de couvrir les piliers... `guide`
+- [Guide de rÃ©fÃ©rence rapide - Format-Converters](development/scripts/utils/Docs/Quick-Reference.md) - ```powershell
+- [Guide de test pour le systÃ¨me d'analyse de code](development/scripts/analysis/docs/TESTING.md) - Ce document explique comment tester le systÃ¨me d'analyse de code et comment rÃ©soudre les problÃ¨mes courants.
+- [Guide des bonnes pratiques pour les tests unitaires](development/docs/guides/methodologies/tests_unitaires_bonnes_pratiques.md) - Les tests unitaires sont essentiels pour garantir la qualitÃ© du code et faciliter la maintenance. Ce guide prÃ©sent... `guide`
+- [Guide du Gestionnaire Intégré](development/docs/guides/methodologies/integrated_manager.md) - Le gestionnaire intégré est un composant central du système qui coordonne et unifie l'accès à tous les autres gesti... `guide`
+- [Guide du Gestionnaire Mcp Manager](development/docs/guides/methodologies/mcp_manager.md) - Le gestionnaire Mcp Manager est un composant essentiel du systÃ¨me qui gÃ¨re les fonctionnalitÃ©s liÃ©es Ã  mc... `guide`
+- [Guide du Gestionnaire Mode Manager](development/docs/guides/methodologies/mode_manager.md) - Le gestionnaire Mode Manager est un composant essentiel du système qui gère les modes opérationnels du projet. Ce doc... `guide`
+- [Guide du Gestionnaire N8n Manager](development/docs/guides/methodologies/n8n_manager.md) - Le gestionnaire N8n Manager est un composant essentiel du systÃ¨me qui gÃ¨re les fonctionnalitÃ©s liÃ©es Ã  n8... `guide`
+- [Guide du Gestionnaire [NOM_DU_GESTIONNAIRE]](development/docs/guides/methodologies/manager_documentation_template.md) - Le gestionnaire [NOM_DU_GESTIONNAIRE] est un composant essentiel du système qui [DESCRIPTION_COURTE]. Ce document déta... `guide`
+- [Guide du Gestionnaire d'Erreurs](development/docs/guides/methodologies/error_manager.md) - Le gestionnaire d'erreurs est un composant essentiel du système qui centralise la gestion, le traitement et la journali... `guide`
+- [Guide du Gestionnaire de Processus (Process Manager)](development/docs/guides/methodologies/process_manager.md) - Le gestionnaire de processus (Process Manager) est un composant central qui coordonne et gère tous les gestionnaires et... `guide`
+- [Guide du Gestionnaire de Roadmap](development/docs/guides/methodologies/roadmap_manager.md) - Le gestionnaire de roadmap est un composant essentiel du système qui gère le suivi, l'analyse et la mise à jour des r... `roadmap` `guide`
+- [Guide du Gestionnaire de Scripts](development/docs/guides/methodologies/script_manager.md) - Le gestionnaire de scripts est un composant essentiel du système qui gère l'organisation, l'exécution et la maintenan... `guide`
+- [Guide technique d’intégration MCPManager & GCP MCP](projet/mcp/docs/guides/mcpmanager-integration.md) - Ce guide centralise la documentation, les logs, FAQ, captures, bonnes pratiques et scénarios de test liés à l’inté... `guide`
+- [Guides - Guides d'utilisation](development/scripts/roadmap/docs/guides/README.md) - Ce dossier contient des guides dÃ©taillÃ©s pour l'utilisation du systÃ¨me de roadmap. `roadmap` `guide` `readme`
+- [Hook pre-commit pour l'organisation des scripts de maintenance](development/docs/guides/git/pre-commit_hook_for_maintenance.md) - Ce document explique le fonctionnement et la gestion du hook pre-commit Git qui organise automatiquement les scripts de ... `guide`
+- [Identification des propriétés candidates pour l'indexation](development/scripts/extraction/Docs/Performance/IndexCandidateProperties.md) - Date d'analyse : $(Get-Date)
+- [Importation automatique des workflows n8n](src/n8n/docs/architecture/workflow-import.md) - Ce document explique comment utiliser les scripts d'importation automatique des workflows n8n.
+- [IntÃ©gration avec des outils d'analyse tiers](development/scripts/analysis/docs/AnalysisTools.md) - Ce document dÃ©crit comment utiliser le systÃ¨me d'intÃ©gration avec des outils d'analyse tiers pour amÃ©liorer ...
+- [IntÃ©gration avec des outils d'analyse tiers](development/scripts/analysis/docs/INTEGRATION.md) - Ce document explique comment utiliser le systÃ¨me d'intÃ©gration avec des outils d'analyse tiers pour amÃ©liorer l...
+- [Intégration du module ExtractedInfoModuleV2 avec d'autres modules](development/scripts/extraction/Docs/INTEGRATION_MODULES.md) - Ce document explique comment intégrer le module ExtractedInfoModuleV2 avec d'autres modules PowerShell pour créer des ...
+- [Intégration n8n avec Augment](src/n8n/docs/api/augment-integration.md) - Ce document décrit comment intégrer n8n avec Augment pour permettre la création et la modification de workflows n8n d...
+- [Manager Toolkit v49 - Analyse et Corrections Documentaires](development/managers/tools/docs/DOCUMENTATION_ANALYSIS_FIXES.md) - Cette analyse identifie les zones d'incertitude dans la documentation qui ont causé les difficultés d'implémentation ...
+- [Manager Toolkit v49 Integration Status Report](development/managers/tools/docs/INTERFACE_IMPLEMENTATION_COMPLETE.md) - All tools now implement the complete `ToolkitOperation` interface with the following methods:
+- [Mise Ã  jour de la Roadmap - SystÃ¨me de Cache pour l'Analyse de Code](development/scripts/analysis/docs/CACHE_ROADMAP_UPDATE.md) - Cette mise Ã  jour concerne la section "D. Mise en cache des rÃ©sultats" de la roadmap complÃ¨te. Elle ajoute les ... `roadmap`
+- [Mise Ã  jour de la feuille de route](development/scripts/analysis/docs/ROADMAP_UPDATE.md) - La tÃ¢che C.2.4 concernant l'intÃ©gration avec des outils d'analyse tiers a Ã©tÃ© complÃ©tÃ©e avec succÃ¨s... `roadmap`
+- [Module Format-Converters](development/scripts/utils/Docs/Format-Converters.md) - Le module Format-Converters est un outil puissant pour la dÃ©tection, la conversion et l'analyse de formats de fichier...
+- [Notes de compatibilité pour le module UnifiedParallel](development/tools/parallelization/docs/compatibility-notes.md) - Le module UnifiedParallel a été conçu pour fonctionner avec PowerShell 7.x, mais certaines parties du module sont ég...
+- [Optimisation des performances du systÃ¨me d'analyse](development/scripts/analysis/docs/PERFORMANCE.md) - Ce document explique comment optimiser les performances du systÃ¨me d'analyse de code.
+- [Optimisations de Wait-ForCompletedRunspace](development/tools/parallelization/docs/optimizations.md) - Ce document décrit les optimisations apportées à la fonction Wait-ForCompletedRunspace du module UnifiedParallel, ain...
+- [Phase 2 : Analyse et organisation avancÃƒÂ©es](development/scripts/script-manager/docs/Phase2-Documentation.md) - Cette documentation dÃƒÂ©crit la Phase 2 du Script Manager, qui se concentre sur l'analyse approfondie des scripts e...
+- [Points d'intégration du module ExtractedInfoModuleV2](development/scripts/extraction/Docs/POINTS_INTEGRATION.md) - Ce document détaille les points d'intégration disponibles dans le module ExtractedInfoModuleV2, permettant d'étendre ...
+- [Problèmes rencontrés et solutions appliquées - Module ExtractedInfoModuleV2](development/scripts/extraction/Docs/ProblemsAndSolutions.md) - Date de documentation : $(Get-Date)
+- [Rapport Final de Réorganisation - Manager Toolkit v3.0.0](development/managers/tools/docs/REORGANISATION_RAPPORT_FINAL.md) - ✅ **MISSION ACCOMPLIE** : La réorganisation du dossier `development\managers\tools` a été complétée avec succès ...
+- [Rapport de Mise à Jour de la Documentation - Manager Toolkit v3.0.0](development/managers/tools/docs/DOCUMENTATION_UPDATE_V3_REPORT.md) - Ce rapport documente la mise à jour de la documentation de l'écosystème Manager Toolkit pour refléter les changement...
+- [Routes API de n8n](src/n8n/docs/architecture/api-routes.md) - Ce document décrit les routes API disponibles dans n8n et comment les utiliser.
+- [RÃ©fÃ©rence des paramÃ¨tres du gestionnaire intÃ©grÃ©](development/docs/guides/reference/integrated-manager-parameters.md) - Ce document prÃ©sente une rÃ©fÃ©rence complÃ¨te des paramÃ¨tres du gestionnaire intÃ©grÃ© et des modes ass... `guide`
+- [Résultats des tests d'intégration du module ExtractedInfoModuleV2](development/scripts/extraction/Docs/IntegrationTestResults.md) - Date de documentation : $(Get-Date)
+- [Résultats des tests de la fonctionnalité de fusion d'objets d'information extraite](development/scripts/extraction/Docs/RESULTATS_TESTS_MERGE.md) - Ce document présente les résultats des tests effectués sur la fonctionnalité de fusion d'objets d'information extrai...
+- [Résultats des tests unitaires du module ExtractedInfoModuleV2](development/scripts/extraction/Docs/UnitTestResults.md) - Date de documentation : $(Get-Date)
+- [Serveur MCP Gateway](projet/mcp/docs/servers/gateway.md) - Le serveur MCP Gateway (centralmind/gateway) est un serveur MCP (Model Context Protocol) qui permet d'exposer votre base...
+- [Serveur MCP Roadmap](projet/mcp/docs/servers/roadmap-mcp.md) - Le serveur MCP Roadmap est une implémentation du Model Context Protocol (MCP) spécifiquement conçue pour interagir av... `roadmap`
+- [Sommaire](projet/mcp/docs/guides/mpc-gateway-documentation.md) - - [Démarrage rapide](#démarrage-rapide) `guide`
+- [Spécification Détaillée du AdvancedAutonomyManager](development/managers/advanced-autonomy-manager/docs/detailed_specifications.md) - Ce document détaille les spécifications techniques pour l'implémentation des composants internes du AdvancedAutonomyM... `specification`
+- [Structure de la section GCP dans `mcp-config.json`](projet/mcp/docs/guides/structure-section-gcp-mcp-config.md) - Ce document décrit la structure attendue pour la section GCP dans le fichier de configuration du proxy MCP (`projet/mcp... `guide`
+- [Structure du dossier n8n](src/n8n/docs/architecture/structure.md) - Ce document décrit la structure du dossier n8n et son organisation.
+- [Structure du dÃ©pÃ´t](development/scripts/maintenance/docs/repository-structure.md) - Ce document dÃ©crit la structure standardisÃ©e du dÃ©pÃ´t.
+- [Structure du dÃ©pÃ´t v2](development/scripts/maintenance/docs/repository-structure-v2.md) - Ce document dÃ©crit la nouvelle structure hiÃ©rarchisÃ©e du dÃ©pÃ´t.
+- [Suivi de Projet: AdvancedAutonomyManager](development/managers/advanced-autonomy-manager/docs/project_tracking.md) - **Date de mise à jour:** 10 Juin 2025
+- [Surveillance du port et de l'API n8n](src/n8n/docs/architecture/port-api-monitoring.md) - Ce document explique comment utiliser les scripts de surveillance du port et de l'API n8n.
+- [SystÃ¨me de rÃ¨gles pour l'analyse des permissions SQL Server](development/roadmap/parser/docs/SqlPermissionRules.md) - Ce document dÃ©crit le systÃ¨me de rÃ¨gles pour l'analyse des permissions SQL Server implÃ©mentÃ© dans le modu... `roadmap`
+- [Système d'Exclusion AVG pour le Développement](development/docs/security/avg/system.md) - Ce document détaille le système d'exclusion automatique d'AVG mis en place pour résoudre les problèmes de blocage de...
+- [Système d'analyse des pull requests](.build/ci/git-hooks/docs/PullRequestAnalysis.md) - Ce document décrit le système d'analyse des pull requests GitHub pour détecter les erreurs potentielles dans les scri...
+- [Tableau de bord de surveillance n8n](src/n8n/docs/architecture/dashboard.md) - Ce document explique comment utiliser le tableau de bord de surveillance n8n pour surveiller l'état de n8n.
+- [Test de performance du systÃ¨me d'analyse](development/scripts/analysis/docs/PERFORMANCE_TEST.md) - Ce document prÃ©sente les rÃ©sultats des tests de performance du systÃ¨me d'analyse de code.
+- [Test structurel de n8n](src/n8n/docs/architecture/structure-test.md) - Ce document explique comment utiliser les scripts de test structurel pour vérifier l'intégrité et la structure des co...
+- [Tests d'intégration n8n](src/n8n/docs/architecture/integration-tests.md) - Ce document explique comment utiliser les tests d'intégration pour vérifier que tous les composants de la remédiation...
+- [Ultra-Advanced 8-Level Branching Framework - API Documentation](development/managers/branching-manager/docs/API_DOCUMENTATION.md) - The Ultra-Advanced 8-Level Branching Framework provides unprecedented capabilities for Git branching operations with AI-...
+- [Utilisation de l'API Key pour n8n](src/n8n/docs/architecture/api-key.md) - Ce document explique comment configurer et utiliser l'API Key pour accéder à l'API REST de n8n.
+- [Validation de l'Architecture du AdvancedAutonomyManager](development/managers/advanced-autonomy-manager/docs/architecture_validation.md) - Date : 10 Juin 2025
+- [Validation de l'Écosystème Tools - Manager Toolkit](development/managers/tools/docs/VALIDATION_PHASE_6.md) - 1. **Documentation Complète** : `TOOLS_ECOSYSTEM_DOCUMENTATION.md`
+- [Vérification de la présence des workflows n8n](src/n8n/docs/architecture/workflow-verification.md) - Ce document explique comment utiliser les scripts de vérification de la présence des workflows n8n.
+- [Workflows automatisÃ©s pour la gestion des roadmaps](development/docs/guides/automation/roadmap-workflows.md) - Ce document prÃ©sente les workflows automatisÃ©s pour la gestion des roadmaps, qui permettent d'exÃ©cuter rÃ©gul... `roadmap` `guide`
+- [api - docs](development/roadmap/parser/docs/api/README.md) - Cette section contient les scripts liÃ©s Ã  api dans la catÃ©gorie docs. `roadmap` `readme`
+- [examples - docs](development/roadmap/parser/docs/examples/README.md) - Cette section contient les scripts liÃ©s Ã  examples dans la catÃ©gorie docs. `roadmap` `readme`
+- [guides - docs](development/roadmap/parser/docs/guides/README.md) - Cette section contient les scripts liÃ©s Ã  guides dans la catÃ©gorie docs. `roadmap` `guide` `readme`
+- [n8n Manager - Script d'orchestration principal](src/n8n/docs/architecture/n8n-manager.md) - Ce document explique comment utiliser le script d'orchestration principal `n8n-manager.ps1` pour gérer toutes les fonct...
+- [Évaluation de la séparation des index ID, Type, Source et ProcessingState dans les fichiers JSON](development/scripts/extraction/Docs/Performance/JsonIndexTypePartitioning.md) - Date d'évaluation : $(Get-Date)
+- [🎉 RÉORGANISATION TOOLS COMPLÈTE - RAPPORT D'ACHÈVEMENT](development/managers/tools/docs/REORGANISATION_ACHEVEE_RAPPORT.md) - **Date d'achèvement :** 6 juin 2025
+- [Add-ExtractedInfoMetadata](development/scripts/extraction/Docs/functions/Add-ExtractedInfoMetadata.md) - Ajoute ou met à jour des métadonnées dans un objet d'information extraite.
+- [Add-ExtractedInfoToCollection](development/scripts/extraction/Docs/functions/Add-ExtractedInfoToCollection.md) - Ajoute un ou plusieurs objets d'information extraite à une collection.
+- [Add-ExtractedInfoValidationRule](development/scripts/extraction/Docs/functions/Add-ExtractedInfoValidationRule.md) - Ajoute une règle de validation personnalisée pour les objets d'information extraite.
+- [Analyse de la couverture de code - Fonctions de base](development/scripts/extraction/Docs/CodeCoverage/BaseFunctionsCoverage.md) - Date d'analyse : $(Get-Date)
+- [Analyse de la couverture de code - Fonctions de collection](development/scripts/extraction/Docs/CodeCoverage/CollectionFunctionsCoverage.md) - Date d'analyse : $(Get-Date)
+- [Analyse de la couverture de code - Fonctions de métadonnées](development/scripts/extraction/Docs/CodeCoverage/MetadataFunctionsCoverage.md) - Date d'analyse : $(Get-Date)
+- [Analyse de la couverture de code - Fonctions de sérialisation](development/scripts/extraction/Docs/CodeCoverage/SerializationFunctionsCoverage.md) - Date d'analyse : $(Get-Date)
+- [Analyse de la couverture de code - Fonctions de validation](development/scripts/extraction/Docs/CodeCoverage/ValidationFunctionsCoverage.md) - Date d'analyse : $(Get-Date)
+- [Analyse des paramÃ¨tres et types de retour](development/roadmap/scripts/parser/docs/Parameters-ReturnTypes-Analysis.md) - Ce document dÃ©finit les paramÃ¨tres et types de retour pour les fonctions du module RoadmapParser. `roadmap`
+- [Analyse des structures de données actuelles des collections](development/scripts/extraction/Docs/Performance/CollectionStructureAnalysis.md) - Date d'analyse : $(Get-Date)
+- [Conception d'une structure de collection basée sur des tables de hachage](development/scripts/extraction/Docs/Performance/HashTableCollectionStructure.md) - Date de conception : $(Get-Date)
+- [ConvertFrom-ExtractedInfoJson](development/scripts/extraction/Docs/functions/ConvertFrom-ExtractedInfoJson.md) - Convertit une chaîne JSON en objet d'information extraite ou en collection.
+- [ConvertFrom-MarkdownToRoadmap](development/roadmap/parser/module/docs/ConvertFrom-MarkdownToRoadmap.md) - Convertit un fichier markdown en structure d'objet PowerShell reprÃ©sentant une roadmap. `roadmap`
+- [ConvertFrom-MarkdownToRoadmapExtended](development/roadmap/parser/module/docs/ConvertFrom-MarkdownToRoadmapExtended.md) - Convertit un fichier markdown en structure d'objet PowerShell reprÃ©sentant une roadmap avec fonctionnalitÃ©s Ã©te... `roadmap`
+- [ConvertFrom-MarkdownToRoadmapOptimized](development/roadmap/parser/module/docs/ConvertFrom-MarkdownToRoadmapOptimized.md) - Convertit un fichier markdown en structure d'objet PowerShell reprÃ©sentant une roadmap avec performance optimisÃ©e. `roadmap`
+- [ConvertFrom-MarkdownToRoadmapWithDependencies](development/roadmap/parser/module/docs/ConvertFrom-MarkdownToRoadmapWithDependencies.md) - Convertit un fichier markdown en structure d'objet PowerShell reprÃ©sentant une roadmap avec dÃ©pendances. `roadmap`
+- [ConvertTo-ExtractedInfoJson](development/scripts/extraction/Docs/functions/ConvertTo-ExtractedInfoJson.md) - Convertit un objet d'information extraite ou une collection en format JSON.
+- [Copy-ExtractedInfo](development/scripts/extraction/Docs/functions/Copy-ExtractedInfo.md) - Crée une copie d'un objet d'information extraite avec possibilité de modifier certaines propriétés.
+- [Documentation des tests du systÃ¨me d'apprentissage des erreurs](development/scripts/maintenance/error-learning/docs/TestsDocumentation.md) - Ce document dÃ©crit les tests du systÃ¨me d'apprentissage des erreurs et les amÃ©liorations apportÃ©es pour les ...
+- [Documentation du module RoadmapParserCore](development/roadmap/parser/module/docs/RoadmapParserCore.md) - RoadmapParserCore est un module PowerShell conÃ§u pour analyser, manipuler et gÃ©rer des roadmaps au format markdown... `roadmap`
+- [Edit-RoadmapTask](development/roadmap/parser/module/docs/Edit-RoadmapTask.md) - Modifie une tÃ¢che dans une roadmap. `roadmap`
+- [Export-RoadmapToJson](development/roadmap/parser/module/docs/Export-RoadmapToJson.md) - Exporte une roadmap au format JSON. `roadmap`
+- [Extension du module : Ajout de nouvelles fonctionnalités](development/scripts/extraction/Docs/extension/ExtendingFunctions.md) - Le module `ExtractedInfoModuleV2` est conçu pour être extensible, permettant l'ajout de nouvelles fonctionnalités tou...
+- [Extension du module : Création de nouveaux types d'informations extraites](development/scripts/extraction/Docs/extension/ExtendingTypes.md) - Le module `ExtractedInfoModuleV2` est construit autour d'un système de types d'objets d'information extraite hiérarchi...
+- [Find-DependencyCycle](development/roadmap/parser/module/docs/Find-DependencyCycle.md) - DÃ©tecte les cycles de dÃ©pendances dans une roadmap. `roadmap`
+- [Get-ExtractedInfoCollectionStatistics](development/scripts/extraction/Docs/functions/Get-ExtractedInfoCollectionStatistics.md) - Génère des statistiques détaillées sur le contenu d'une collection d'informations extraites.
+- [Get-ExtractedInfoFromCollection](development/scripts/extraction/Docs/functions/Get-ExtractedInfoFromCollection.md) - Récupère un ou plusieurs objets d'information extraite d'une collection selon différents critères de filtrage.
+- [Get-ExtractedInfoMetadata](development/scripts/extraction/Docs/functions/Get-ExtractedInfoMetadata.md) - Récupère les métadonnées d'un objet d'information extraite.
+- [Get-ExtractedInfoSummary](development/scripts/extraction/Docs/functions/Get-ExtractedInfoSummary.md) - Génère un résumé des propriétés et métadonnées d'un objet d'information extraite.
+- [Get-ExtractedInfoValidationErrors](development/scripts/extraction/Docs/functions/Get-ExtractedInfoValidationErrors.md) - Récupère les erreurs de validation d'un objet d'information extraite.
+- [Get-RoadmapParameterDefault](development/roadmap/parser/module/docs/Get-RoadmapParameterDefault.md) - RÃ©cupÃ¨re les valeurs par dÃ©faut pour les paramÃ¨tres des fonctions du module RoadmapParser. `roadmap`
+- [Get-TaskDependencies](development/roadmap/parser/module/docs/Get-TaskDependencies.md) - Analyse et gÃ¨re les dÃ©pendances entre les tÃ¢ches d'une roadmap. `roadmap`
+- [Identification des goulots d'étranglement - Module ExtractedInfoModuleV2](development/scripts/extraction/Docs/Performance/PerformanceBottlenecks.md) - Date d'analyse : $(Get-Date)
+- [Import-RoadmapFromJson](development/roadmap/parser/module/docs/Import-RoadmapFromJson.md) - Importe une roadmap Ã  partir d'un fichier JSON. `roadmap`
+- [Initialize-RoadmapParameters](development/roadmap/parser/module/docs/Initialize-RoadmapParameters.md) - Initialise et valide les paramÃ¨tres d'une fonction du module RoadmapParser. `roadmap`
+- [Invoke-RoadmapErrorHandler](development/roadmap/parser/module/docs/Invoke-RoadmapErrorHandler.md) - GÃ¨re les erreurs et les exceptions pour le module RoadmapParser. `roadmap`
+- [Load-ExtractedInfoFromFile](development/scripts/extraction/Docs/functions/Load-ExtractedInfoFromFile.md) - Charge un objet d'information extraite ou une collection depuis un fichier JSON.
+- [New-ExtractedInfo](development/scripts/extraction/Docs/functions/New-ExtractedInfo.md) - Crée un nouvel objet d'information extraite de base.
+- [New-ExtractedInfoCollection](development/scripts/extraction/Docs/functions/New-ExtractedInfoCollection.md) - Crée une nouvelle collection d'informations extraites.
+- [New-MediaExtractedInfo](development/scripts/extraction/Docs/functions/New-MediaExtractedInfo.md) - Crée un nouvel objet d'information extraite pour les fichiers média.
+- [New-StructuredDataExtractedInfo](development/scripts/extraction/Docs/functions/New-StructuredDataExtractedInfo.md) - Crée un nouvel objet d'information extraite contenant des données structurées.
+- [New-TextExtractedInfo](development/scripts/extraction/Docs/functions/New-TextExtractedInfo.md) - Crée un nouvel objet d'information extraite de type texte.
+- [Optimisations de performances du systÃ¨me d'apprentissage des erreurs](development/scripts/maintenance/error-learning/docs/PerformanceOptimizations.md) - Ce document dÃ©crit les optimisations de performances apportÃ©es au systÃ¨me d'apprentissage des erreurs pour amÃ...
+- [Remove-ExtractedInfoMetadata](development/scripts/extraction/Docs/functions/Remove-ExtractedInfoMetadata.md) - Supprime une ou plusieurs métadonnées d'un objet d'information extraite.
+- [RoadmapParser Module](development/roadmap/parser/module/docs/RoadmapParser.md) - A PowerShell module for parsing and manipulating roadmap files in Markdown format. `roadmap`
+- [Save-ExtractedInfoToFile](development/scripts/extraction/Docs/functions/Save-ExtractedInfoToFile.md) - Sauvegarde un objet d'information extraite ou une collection dans un fichier JSON.
+- [Select-RoadmapTask](development/roadmap/parser/module/docs/Select-RoadmapTask.md) - SÃ©lectionne des tÃ¢ches dans une roadmap selon diffÃ©rents critÃ¨res. `roadmap`
+- [Système RAG de gestion des roadmaps](development/scripts/roadmap/docs/guides/RAG-System.md) - Ce dossier contient les scripts pour le système RAG (Retrieval-Augmented Generation) de gestion des roadmaps. Ce systè... `roadmap` `guide`
+- [Test-ExtractedInfo](development/scripts/extraction/Docs/functions/Test-ExtractedInfo.md) - Vérifie si un objet d'information extraite est valide selon les règles de validation définies.
+- [Test-MarkdownFormat](development/roadmap/parser/module/docs/Test-MarkdownFormat.md) - Valide le format d'un fichier markdown pour s'assurer qu'il est compatible avec le parser de roadmap. `roadmap`
+- [Test-RoadmapParameter](development/roadmap/parser/module/docs/Test-RoadmapParameter.md) - Valide les paramÃ¨tres utilisÃ©s dans les fonctions du module RoadmapParser. `roadmap`
+- [Test-RoadmapReturnType](development/roadmap/parser/module/docs/Test-RoadmapReturnType.md) - Valide les types de retour des fonctions du module RoadmapParser. `roadmap`
+- [Tests unitaires du script manager](development/scripts/script-manager/testing/docs/tests/README.md) - Ce dossier contient les tests unitaires pour le script manager. Les tests sont écrits en utilisant le framework Pester ... `readme`
+- [Write-RoadmapLog](development/roadmap/parser/module/docs/Write-RoadmapLog.md) - Ã‰crit un message de journal pour le module RoadmapParser. `roadmap`
+- [api - docs](development/roadmap/scripts/parser/docs/api/README.md) - Cette section contient les scripts liÃ©s Ã  api dans la catÃ©gorie docs. `roadmap` `readme`
+- [examples - docs](development/roadmap/scripts/parser/docs/examples/README.md) - Cette section contient les scripts liÃ©s Ã  examples dans la catÃ©gorie docs. `roadmap` `readme`
+- [guides - docs](development/roadmap/scripts/parser/docs/guides/README.md) - Cette section contient les scripts liÃ©s Ã  guides dans la catÃ©gorie docs. `roadmap` `guide` `readme`
+- [Évaluation de l'utilisation de Qdrant comme solution de stockage pour les index temporaires](development/scripts/extraction/Docs/Performance/QdrantStorageEvaluation.md) - Date d'évaluation : $(Get-Date)
+- [ConvertFrom-MarkdownToRoadmap](development/roadmap/scripts/parser/module/docs/ConvertFrom-MarkdownToRoadmap.md) - Convertit un fichier markdown en structure d'objet PowerShell reprÃ©sentant une roadmap. `roadmap`
+- [ConvertFrom-MarkdownToRoadmapExtended](development/roadmap/scripts/parser/module/docs/ConvertFrom-MarkdownToRoadmapExtended.md) - Convertit un fichier markdown en structure d'objet PowerShell reprÃ©sentant une roadmap avec fonctionnalitÃ©s Ã©te... `roadmap`
+- [ConvertFrom-MarkdownToRoadmapOptimized](development/roadmap/scripts/parser/module/docs/ConvertFrom-MarkdownToRoadmapOptimized.md) - Convertit un fichier markdown en structure d'objet PowerShell reprÃ©sentant une roadmap avec performance optimisÃ©e. `roadmap`
+- [ConvertFrom-MarkdownToRoadmapWithDependencies](development/roadmap/scripts/parser/module/docs/ConvertFrom-MarkdownToRoadmapWithDependencies.md) - Convertit un fichier markdown en structure d'objet PowerShell reprÃ©sentant une roadmap avec dÃ©pendances. `roadmap`
+- [Documentation du module RoadmapParserCore](development/roadmap/scripts/parser/module/docs/RoadmapParserCore.md) - RoadmapParserCore est un module PowerShell conÃ§u pour analyser, manipuler et gÃ©rer des roadmaps au format markdown... `roadmap`
+- [Edit-RoadmapTask](development/roadmap/scripts/parser/module/docs/Edit-RoadmapTask.md) - Modifie une tÃ¢che dans une roadmap. `roadmap`
+- [Export-RoadmapToJson](development/roadmap/scripts/parser/module/docs/Export-RoadmapToJson.md) - Exporte une roadmap au format JSON. `roadmap`
+- [Find-DependencyCycle](development/roadmap/scripts/parser/module/docs/Find-DependencyCycle.md) - DÃ©tecte les cycles de dÃ©pendances dans une roadmap. `roadmap`
+- [Get-RoadmapParameterDefault](development/roadmap/scripts/parser/module/docs/Get-RoadmapParameterDefault.md) - RÃ©cupÃ¨re les valeurs par dÃ©faut pour les paramÃ¨tres des fonctions du module RoadmapParser. `roadmap`
+- [Get-TaskDependencies](development/roadmap/scripts/parser/module/docs/Get-TaskDependencies.md) - Analyse et gÃ¨re les dÃ©pendances entre les tÃ¢ches d'une roadmap. `roadmap`
+- [Import-RoadmapFromJson](development/roadmap/scripts/parser/module/docs/Import-RoadmapFromJson.md) - Importe une roadmap Ã  partir d'un fichier JSON. `roadmap`
+- [Initialize-RoadmapParameters](development/roadmap/scripts/parser/module/docs/Initialize-RoadmapParameters.md) - Initialise et valide les paramÃ¨tres d'une fonction du module RoadmapParser. `roadmap`
+- [Invoke-RoadmapErrorHandler](development/roadmap/scripts/parser/module/docs/Invoke-RoadmapErrorHandler.md) - GÃ¨re les erreurs et les exceptions pour le module RoadmapParser. `roadmap`
+- [Rapport d'amélioration des tests unitaires du script manager](development/scripts/script-manager/testing/docs/tests/TestImprovementReport.md) - Ce rapport présente les améliorations apportées aux tests unitaires du script manager. Les tests unitaires ont été ...
+- [RoadmapParser Module](development/roadmap/scripts/parser/module/docs/RoadmapParser.md) - A PowerShell module for parsing and manipulating roadmap files in Markdown format. `roadmap`
+- [Select-RoadmapTask](development/roadmap/scripts/parser/module/docs/Select-RoadmapTask.md) - SÃ©lectionne des tÃ¢ches dans une roadmap selon diffÃ©rents critÃ¨res. `roadmap`
+- [Test-MarkdownFormat](development/roadmap/scripts/parser/module/docs/Test-MarkdownFormat.md) - Valide le format d'un fichier markdown pour s'assurer qu'il est compatible avec le parser de roadmap. `roadmap`
+- [Test-RoadmapParameter](development/roadmap/scripts/parser/module/docs/Test-RoadmapParameter.md) - Valide les paramÃ¨tres utilisÃ©s dans les fonctions du module RoadmapParser. `roadmap`
+- [Test-RoadmapReturnType](development/roadmap/scripts/parser/module/docs/Test-RoadmapReturnType.md) - Valide les types de retour des fonctions du module RoadmapParser. `roadmap`
+- [Write-RoadmapLog](development/roadmap/scripts/parser/module/docs/Write-RoadmapLog.md) - Ã‰crit un message de journal pour le module RoadmapParser. `roadmap`
+- [Bonnes pratiques pour optimiser les requêtes](development/scripts/roadmap/rag/views/query/docs/best_practices/query_optimization.md) - Ce document fournit des recommandations pour optimiser les performances et l'efficacité des requêtes dans le langage d... `roadmap`
+- [Caractères spéciaux et leur échappement](development/scripts/roadmap/rag/views/query/docs/operators/special_characters.md) - Le langage de requête utilise divers caractères spéciaux qui ont une signification particulière dans la syntaxe. Pou... `roadmap` `specification`
+- [Exemples de filtrage par priorité](development/scripts/roadmap/rag/views/query/docs/examples/priority_filtering.md) - Ce document fournit des exemples détaillés de requêtes pour filtrer les tâches par priorité dans le système de roa... `roadmap`
+- [Exemples de filtrage par statut](development/scripts/roadmap/rag/views/query/docs/examples/status_filtering.md) - Ce document fournit des exemples détaillés de requêtes pour filtrer les tâches par statut dans le système de roadma... `roadmap`
+- [Exemples de requêtes combinées](development/scripts/roadmap/rag/views/query/docs/examples/combined_queries.md) - Ce document fournit des exemples détaillés de requêtes combinées utilisant plusieurs opérateurs et conditions pour ... `roadmap`
+- [Limitations et cas particuliers du langage de requête](development/scripts/roadmap/rag/views/query/docs/best_practices/limitations.md) - Ce document décrit les limitations, cas particuliers et comportements spécifiques du langage de requête du système d... `roadmap`
+- [Opérateur d'inégalité (!=)](development/scripts/roadmap/rag/views/query/docs/operators/inequality_operator.md) - L'opérateur d'inégalité est utilisé pour vérifier si la valeur d'un champ est différente d'une valeur spécifiée.... `roadmap`
+- [Opérateur d'égalité (:)](development/scripts/roadmap/rag/views/query/docs/operators/equality_operator.md) - L'opérateur d'égalité est utilisé pour vérifier si la valeur d'un champ est exactement égale à une valeur spécif... `roadmap`
+- [Opérateur de contenance (~)](development/scripts/roadmap/rag/views/query/docs/operators/contains_operator.md) - L'opérateur de contenance est utilisé pour vérifier si la valeur d'un champ contient une sous-chaîne spécifiée. Co... `roadmap`
+- [Opérateurs de comparaison numérique (>, <, >=, <=)](development/scripts/roadmap/rag/views/query/docs/operators/numeric_comparison_operators.md) - Les opérateurs de comparaison numérique sont utilisés pour comparer des valeurs numériques, des dates ou d'autres va... `roadmap`
+- [Opérateurs de début et fin (^ et $)](development/scripts/roadmap/rag/views/query/docs/operators/starts_ends_with_operators.md) - Les opérateurs de début et fin sont utilisés pour vérifier si la valeur d'un champ commence ou se termine par une so... `roadmap`
+- [Recommandations pour la lisibilité des requêtes](development/scripts/roadmap/rag/views/query/docs/best_practices/query_readability.md) - Ce document fournit des recommandations pour améliorer la lisibilité et la maintenabilité des requêtes dans le langa... `roadmap`
+- [Règles de groupement avec parenthèses](development/scripts/roadmap/rag/views/query/docs/operators/grouping_rules.md) - Les parenthèses sont utilisées dans le langage de requête pour contrôler l'ordre d'évaluation des expressions et cr... `roadmap`
+- [Utilisation des guillemets pour les valeurs](development/scripts/roadmap/rag/views/query/docs/operators/quotation_marks.md) - Les guillemets sont utilisés dans le langage de requête pour délimiter des valeurs contenant des caractères spéciau... `roadmap`
+- [level-1-micro-sessions - Implémentation des micro-sessions atomiques](development/managers/branching-manager/scripts/development/managers/branching-manager/docs/level-1-micro-sessions.md) - Ce niveau implémente: Implémentation des micro-sessions atomiques
+- [level-2-event-driven - Système de branchement basé sur les événements](development/managers/branching-manager/scripts/development/managers/branching-manager/docs/level-2-event-driven.md) - Ce niveau implémente: Système de branchement basé sur les événements
+- [level-3-multi-dimensional - Branchement multi-dimensionnel](development/managers/branching-manager/scripts/development/managers/branching-manager/docs/level-3-multi-dimensional.md) - Ce niveau implémente: Branchement multi-dimensionnel
+- [level-4-contextual-memory - Mémoire contextuelle intelligente](development/managers/branching-manager/scripts/development/managers/branching-manager/docs/level-4-contextual-memory.md) - Ce niveau implémente: Mémoire contextuelle intelligente
+- [level-5-temporal - Voyage temporel et états historiques](development/managers/branching-manager/scripts/development/managers/branching-manager/docs/level-5-temporal.md) - Ce niveau implémente: Voyage temporel et états historiques
+- [level-6-predictive-ai - IA prédictive pour branches](development/managers/branching-manager/scripts/development/managers/branching-manager/docs/level-6-predictive-ai.md) - Ce niveau implémente: IA prédictive pour branches
+- [level-7-branching-as-code - Branchement programmatique](development/managers/branching-manager/scripts/development/managers/branching-manager/docs/level-7-branching-as-code.md) - Ce niveau implémente: Branchement programmatique
+- [level-8-quantum - Branchement quantique avec superposition](development/managers/branching-manager/scripts/development/managers/branching-manager/docs/level-8-quantum.md) - Ce niveau implémente: Branchement quantique avec superposition
+
+### Github
+
+*GitHub-specific documentation and templates*
+
+- [.github Configuration](.github/README.md) - Configuration et documentation GitHub pour EMAIL_SENDER_1. `readme`
+- [Index de Corrélation .github](.github/CORRELATION-INDEX.md) - - **98 fichiers** analysés et corrélés
+- [## Jules Bot Contribution Review](.github/pull_request_template.md) - **Branch:** `jules-google/auto-{timestamp}`
+- [Codacy Rules](.github/copilot-instructions.md) - Configuration for AI behavior when interacting with Codacy's MCP Server
+- [Corrections de Cohérence .github - Rapport Final](.github/CONSISTENCY-FIXES-APPLIED.md) - - `DEV-mode.prompt.md` : Format YAML header standardisé
+- [README – Instructions Copilot](.github/instructions/README.md) - Ce dossier contient toutes les instructions personnalisées pour GitHub Copilot. `readme`
+- [README – Prompts Copilot](.github/prompts/README.md) - Ce dossier contient des prompts structurés pour guider Copilot dans différents contextes du projet EMAIL_SENDER_1. `readme`
+- [✅ VALIDATION COMPLÈTE .github - RAPPORT FINAL](.github/VALIDATION-FINALE-COMPLETE.md) - **Vérification et corrélation intelligente de tous les 98 fichiers dans `.github`**
+- [🗂️ Index Central de la Documentation](.github/docs/DOC_INDEX.md) - Ce document sert de point d’entrée pour naviguer dans toute la documentation du dépôt.
+- [🚀 Documentation EMAIL_SENDER_1 - Écosystème Enterprise](.github/docs/README.md) - [![🏆 Plan v64: 100% Complete](https://img.shields.io/badge/Plan%20v64-100%25%20Complete-success?style=for-the-badge)]... `readme`
+- [## Description](.github/PULL_REQUEST_TEMPLATE/pull_request_template.md) - Veuillez inclure un résumé des changements et du problème connexe. Veuillez également inclure la motivation et le co...
+- [## 🤖 Jules Bot Automated Contribution](.github/PULL_REQUEST_TEMPLATE/jules-bot-contribution.md) - > **⚠️ Important:** This is an automated contribution from Jules Bot. Please review carefully before approval.
+- [Corrélation MANAGERS & ARCHITECTURE](.github/docs/MANAGERS/README_ARCHITECTURE.md) - Ce document fait le lien entre chaque manager métier et l’architecture globale. `readme`
+- [Documentation Architecture](.github/docs/ARCHITECTURE/README.md) - Ce dossier contient la documentation structurée de l’écosystème logiciel : `readme`
+- [Documentation des Managers](.github/docs/MANAGERS/README.md) - Ce dossier recense la documentation de chaque manager métier de l’écosystème. `readme`
+- [EMAIL SENDER 1 – Augment Guidelines](.github/docs/project/README_EMAIL_SENDER_1.md) - *Version 2025-05-15 — à conserver dans `/docs/README_EMAIL_SENDER_1.md`* `readme`
+- [EMAIL_SENDER_1 - Native Go Algorithms Suite](.github/docs/algorithms/README.md) - [![Go Native](https://img.shields.io/badge/Go-Native-00ADD8?style=for-the-badge&logo=go)](https://golang.org/) `readme`
+- [Index des Managers et Corrélations](.github/docs/MANAGERS/INDEX.md) - Ce document liste tous les managers de l’écosystème, leur rôle principal, et fournit des liens directs vers leur do...
+- [Instructions Copilot - Exécuteur de Plans v2.0](.github/instructions/plan-executor.instructions.md) - Exécuter des plans de développement avec mise à jour temps réel, suivi continu et gestion robuste des erreurs. `plan`
+- [Instructions Copilot - Modes Opérationnels](.github/instructions/modes.instructions.md) - Ce fichier décrit les modes opérationnels personnalisés pour Copilot.
+- [Instructions Copilot – Standards Globaux](.github/instructions/standards.instructions.md) - Ce fichier regroupe les standards de codage, de nommage et d’organisation des fichiers à appliquer dans tout le proje...
+- [Rapport exhaustif : Méthodes de manipulation de fichiers par Cline (vs Copilot)](.github/docs/cline_vs_copilot_file_ops_report.md) - - **Méthode** : Utilisation de `write_to_file` pour créer ou écraser un fichier. Création automatique des dossiers n...
+- [applyTo: '**'](.github/instructions/instructions.md) - Coding standards, domain knowledge, and preferences that AI should follow.
+- [name: Bug report](.github/ISSUE_TEMPLATE/bug_report.md) - about: Créez un rapport pour nous aider à améliorer
+- [name: Feature request](.github/ISSUE_TEMPLATE/feature_request.md) - about: Suggérer une idée pour ce projet
+- [✅ Exemples, Cas d’Erreur & Bonnes Pratiques](.github/docs/BONNES-PRATIQUES.md) - Ce guide synthétise les exemples d’appels API, de scripts, la gestion d’erreurs, les limites connues et les checkli...
+- [❓ FAQ – Questions Fréquentes](.github/docs/FAQ.md) - - **Q : Je n’arrive pas à envoyer d’email via Gmail.**
+- [👋 Onboarding – Nouveaux Contributeurs](.github/docs/onboarding/README.md) - Bienvenue ! Ce guide décrit les étapes pour rejoindre et contribuer efficacement à l’écosystème Email Sender. `readme`
+- [📋 Suivi de Couverture Documentaire](.github/docs/DOC_COVERAGE.md) - Ce fichier centralise le suivi de la couverture documentaire du dépôt.
+- [📚 Index de Documentation RAG QDrant - MemOS](.github/docs/RAG/README.md) - - **`analyse_llm_tool_consumers.md`** *(74.8 KB - 1,667 lignes)* `readme`
+- [📝 Rapport d’Audit Documentaire](.github/docs/DOC_AUDIT.md) - Ce document synthétise les audits réguliers de la documentation du dépôt.
+- [📦 Scripts & Outils Annexes](.github/docs/SCRIPTS-OUTILS.md) - Ce document centralise la liste, l’explication et les exemples d’utilisation des scripts PowerShell, Python, CLI et ...
+- [🤝 Guide de Contribution Documentaire](.github/docs/CONTRIBUTING.md) - Ce guide explique comment contribuer efficacement à la documentation de l’écosystème Email Sender.
+- [### Instructions pour interagir avec Jules, l'agent de codag...](.github/docs/guides/jules-google-instructions.md) - **Points clés :** `guide`
+- [AlertManagerImpl](.github/docs/MANAGERS/alert-manager-impl.md) - - **Rôle :** Gestion centralisée des alertes documentaires : création, mise à jour, suppression, déclenchement, h...
+- [Analyse Approfondie : LLMs en tant que Consommateurs d'Outils et Systèmes de Mémoire pour RAG QDrant](.github/docs/RAG/analyse_llm_tool_consumers.md) - *Basé sur l'analyse de :*
+- [Branch Manager](.github/docs/MANAGERS/branch-manager.md) - Le Branch Manager gère la création, la gestion, la fusion et la suppression des branches dans l’écosystème documen...
+- [Cache Manager](.github/docs/MANAGERS/cache-manager.md) - Le Cache Manager gère la mise en cache, l’invalidation, la cohérence et la performance des accès aux données dans ...
+- [Central Coordinator](.github/docs/ARCHITECTURE/central-coordinator.md) - Le central-coordinator est le composant de supervision omnisciente de l’écosystème. Il est responsable de la vision ...
+- [ChannelManagerImpl](.github/docs/MANAGERS/channel-manager-impl.md) - - **Rôle :** Gestion centralisée des canaux de notification/documentation : enregistrement, configuration, activatio...
+- [CleanupManager](.github/docs/MANAGERS/cleanup-manager.md) - - **Rôle :** Nettoyage, organisation intelligente, suppression, détection de doublons, analyse de structure, reporting...
+- [ConfigurableSyncRuleManager](.github/docs/MANAGERS/configurable-sync-rule-manager.md) - Manager de règles de synchronisation documentaire configurables.
+- [ConflictManager](.github/docs/MANAGERS/conflict-manager.md) - Gestion et résolution des conflits documentaires.
+- [Context Memory Manager](.github/docs/MANAGERS/context-memory-manager.md) - Le Context Memory Manager gère la mémoire contextuelle et l’historique des opérations/documents pour permettre des ...
+- [ContextManager](.github/docs/MANAGERS/context-manager.md) - - **Rôle :** Gestion centralisée du contexte documentaire ou applicatif : persistance, restauration, sauvegarde auto...
+- [Diagramme visuel de l’écosystème documentaire](.github/docs/ARCHITECTURE/ecosystem-diagram.md) - flowchart TD
+- [DocManager](.github/docs/MANAGERS/doc-manager.md) - Orchestrateur central de la gestion documentaire (création, coordination, cohérence).
+- [Error Analysis Report](.github/docs/reports/error_analysis_report.md) - This report provides a detailed analysis of the issues encountered during the debugging and compilation of the `EMAIL_SE...
+- [ErrorManager](.github/docs/MANAGERS/error-manager.md) - - **Rôle :** Centralise la gestion, la validation et la journalisation structurée des erreurs dans le système de gest...
+- [ExtensibleManagerType](.github/docs/MANAGERS/extensible-manager-type.md) - Manager extensible via plugins ou stratégies.
+- [FMAO Manager](.github/docs/MANAGERS/fmao-manager.md) - Le FMAO Manager gère les opérations de fusion, migration, archivage et optimisation documentaire.
+- [Gemini CLI – Documentation des commandes](.github/docs/gemini-cli/COMMANDS.md) - Gemini CLI est un outil en ligne de commande qui permet d’interagir avec l’IA Gemini de Google directement depuis vo...
+- [Guide d'exécution des tests pour le système RAG de roadmaps](.github/docs/guides/roadmap/README_TESTS.md) - Ce guide explique comment exécuter les tests pour le système RAG de roadmaps et comment résoudre les problèmes coura... `roadmap` `guide` `readme`
+- [Guide d'utilisation du module UnifiedParallel](.github/docs/guides/UnifiedParallel-Guide.md) - Le module UnifiedParallel est une solution complète pour la parallélisation des tâches en PowerShell, conçue pour of... `guide`
+- [Guide des cas limites pour le module UnifiedParallel](.github/docs/guides/UnifiedParallel-CasLimites.md) - Ce document décrit en détail comment le module UnifiedParallel gère les cas limites, tels que les tableaux vides, les... `guide`
+- [Instructions Globales pour GitHub Copilot](.github/docs/github/copilot-instructions.md) - version: 1.0
+- [Integrated Manager](.github/docs/ARCHITECTURE/integrated-manager.md) - L’integrated-manager est le point d’entrée opérationnel de l’écosystème. Il orchestre l’exécution synchroni...
+- [Interfaces et Flux d’Échange](.github/docs/ARCHITECTURE/interfaces.md) - - **Orchestrator → Integrated Manager**
+- [MaintenanceManager](.github/docs/MANAGERS/maintenance-manager.md) - - **Rôle :** Orchestration centrale de la maintenance documentaire : nettoyage intelligent, optimisation, analyse de ...
+- [Metrics Manager](.github/docs/MANAGERS/metrics-manager.md) - Le Metrics Manager collecte, agrège et expose les métriques de performance, d’usage et d’état de l’écosystème...
+- [MigrationManager](.github/docs/MANAGERS/migration-manager.md) - - **Rôle :** Gère l’import/export et la migration de données (jobs, configs, tenants, etc.) entre versions ou envir...
+- [ModeManager](.github/docs/MANAGERS/mode-manager.md) - - **Rôle :** Gestion centralisée des modes d’exécution ou de configuration documentaire : changement de mode, ges...
+- [MonitoringManager](.github/docs/MANAGERS/monitoring-manager.md) - - **Rôle :** Supervise et monitor l’écosystème documentaire, collecte des métriques système et applicatives, gén...
+- [Méthodologie de Développement](.github/docs/github/development-methodology.md) - 1. **Analyze** : Décomposition et estimation
+- [N8NManager](.github/docs/MANAGERS/n8n-manager.md) - Orchestration des workflows n8n et gestion des exécutions.
+- [Notes de version - Module UnifiedParallel](.github/docs/project/ReleaseNotes.md) - - **Gestion d'erreurs standardisée** : Nouvelle fonction `New-UnifiedError` pour créer des objets d'erreur standardis�...
+- [Notification Manager](.github/docs/MANAGERS/notification-manager.md) - Le Notification Manager gère l’envoi, la réception et la gestion des notifications dans l’écosystème documentair...
+- [NotificationManagerImpl](.github/docs/MANAGERS/notification-manager-impl.md) - - **Rôle :** Gestion centralisée des notifications et alertes documentaires : envoi, planification, suivi, gestion d...
+- [Orchestrator](.github/docs/ARCHITECTURE/orchestrator.md) - L’orchestrator gère la distribution, l’exécution et le suivi des tâches (jobs, workflows) entre sous-systèmes ou...
+- [Personnaliser les réponses de chat dans VS Code](.github/docs/github/personnaliser-copilot.md) - Copilot peut vous fournir des réponses adaptées à vos pratiques de codage et aux exigences de votre projet si vous lu...
+- [Pour aborder la **Phase 3: Optimisation des performances** c...](.github/docs/reports/reponse3.md) - Pour aborder la **Phase 3: Optimisation des performances** comme indiqué dans le document **UnifiedParallel-Analyse-Tec...
+- [Pour aborder la **Phase 4: Amélioration de la compatibilit�...](.github/docs/reports/reponse4.md) - Pour aborder la **Phase 4: Amélioration de la compatibilité** comme indiqué dans le document **UnifiedParallel-Analys...
+- [Pour aborder la **Phase 5: Documentation et finalisation** c...](.github/docs/reports/reponse5.md) - Pour aborder la **Phase 5: Documentation et finalisation** comme indiqué dans le document **UnifiedParallel-Analyse-Tec...
+- [Pour résoudre les problèmes identifiés dans le rapport d'...](.github/docs/reports/reponse.md) - Pour résoudre les problèmes identifiés dans le rapport d'analyse technique du module `UnifiedParallel.psm1`, je vais ...
+- [ProcessManager](.github/docs/MANAGERS/process-manager.md) - - **Rôle :** Orchestration et gestion du cycle de vie des processus documentaires et des autres managers, avec intégra...
+- [Prompt – Génération avancée de plan de développement (mode DEV-R, format EMAIL_SENDER_1)](.github/prompts/planning/plan-dev.prompt.md) - MODE: DEV-R `plan`
+- [QdrantManager](.github/docs/MANAGERS/qdrant-manager.md) - - **Rôle :** Gestion centralisée de la vectorisation documentaire et du stockage Qdrant (création, indexation, recher...
+- [Rapport d'analyse technique : Module UnifiedParallel.psm1](.github/docs/reports/UnifiedParallel-Analyse-Technique.md) - Le module UnifiedParallel.psm1 présente plusieurs problèmes critiques qui compromettent sa fiabilité, sa testabilité...
+- [Rapport des Échecs Workflows – gerivdb/email-sender-1](.github/docs/reports/rapport_echecs_workflows_2025-05-21.md) - - **Erreur principale** :
+- [RoadmapManager](.github/docs/MANAGERS/roadmap-manager.md) - - **Rôle :** Gestion de la feuille de route documentaire : synchronisation, planification, suivi, reporting, intégra... `roadmap`
+- [RollbackManager](.github/docs/MANAGERS/rollback-manager.md) - - **Rôle :** Gestion des rollbacks et restaurations documentaires.
+- [Scheduler Manager](.github/docs/MANAGERS/scheduler-manager.md) - Le Scheduler Manager gère la planification, l’ordonnancement et l’exécution différée des tâches dans l’écosy...
+- [ScriptManager](.github/docs/MANAGERS/script-manager.md) - - **Rôle :** Orchestration complète de l’exécution, du suivi, du rechargement et de la gestion des scripts (PowerSh...
+- [Security Manager](.github/docs/MANAGERS/security-manager.md) - Le Security Manager gère la sécurité, les accès, les permissions et la conformité dans l’écosystème documentair...
+- [SimpleAdvancedAutonomyManager](.github/docs/MANAGERS/simple-advanced-autonomy-manager.md) - - **Rôle :** Orchestration autonome avancée : coordination intelligente, maintenance prédictive, auto-réparation, ...
+- [SmartMergeManager](.github/docs/MANAGERS/smart-merge-manager.md) - Manager de fusion intelligente de documents ou branches.
+- [SmartVariableSuggestionManager](.github/docs/MANAGERS/smart-variable-suggestion-manager.md) - - **Rôle :** Suggestion intelligente de variables pour les documents et scripts, basée sur l’analyse contextuelle, l...
+- [Standards et Conventions de Développement](.github/docs/guides/standards/README.md) - Ce dossier contient les documents de référence pour les standards et conventions de développement du projet EMAIL_SEN... `guide` `readme`
+- [StorageManager](.github/docs/MANAGERS/storage-manager.md) - - **Rôle :** Centralise la gestion de la persistance documentaire, du stockage objet, des connexions PostgreSQL/Qdrant ...
+- [SyncHistoryManager](.github/docs/MANAGERS/sync-history-manager.md) - Historique des synchronisations documentaires.
+- [TaskMaster-Ink-CLI Repository Analysis Report](.github/docs/reports/TaskMaster-Ink-CLI-Analysis-2025-05-31.md) - **Date:** May 31, 2025
+- [TaskMaster-Ink-CLI to Go Native Roadmap CLI Adaptation Report](.github/docs/reports/taskmaster-to-go-roadmap-cli-adaptation-2025-05-31.md) - **Report Date:** May 31, 2025 `roadmap`
+- [TaskMaster-Ink-CLI to Go Native Roadmap CLI Adaptation Report](.github/docs/reports/taskmaster-to-go-roadmap-cli-adaptation-2025-01-08.md) - **Report Date:** January 8, 2025 `roadmap`
+- [To address the **Phase 2: Amélioration de la robustesse** a...](.github/docs/reports/reponse2.md) - To address the **Phase 2: Amélioration de la robustesse** as outlined in the **UnifiedParallel-Analyse-Technique.md** d...
+- [VectorOperationsManager](.github/docs/MANAGERS/vector-operations-manager.md) - - **Rôle :** Orchestration des opérations de vectorisation documentaire : insertion, mise à jour, suppression, rech...
+- [VersionManagerImpl](.github/docs/MANAGERS/version-manager-impl.md) - - **Rôle :** Gestion centralisée des versions documentaires ou applicatives : comparaison, compatibilité, récupér...
+- [Voici une proposition de synthèse d’architecture (Markdow...](.github/docs/reports/synthese-archi-EMAIL-SENDER-1-2025-05-05-29.md) - Voici une proposition de synthèse d’architecture (Markdown) pour ton projet, intégrant la logique SQL/QDrant/RAG, su...
+- [mode: 'edit'](.github/prompts/analysis/analyse-standards.prompt.md) - description: 'Analyser la conformité aux standards du projet'
+- [title: "Completed Plans - Plans Terminés"](.github/docs/ROADMAPS/completed-plans.md) - description: "Historique et accomplissements des plans de développement complétés" `roadmap` `plan`
+- [title: "Ecosystem Overview - Architecture Enterprise"](.github/docs/ARCHITECTURE/ecosystem-overview.md) - description: "Vue d'ensemble complète de l'écosystème hybride N8N/Go EMAIL_SENDER_1"
+- [title: "Implementation Status - État d'Avancement"](.github/docs/MANAGERS/implementation-status.md) - description: "État détaillé d'implémentation des managers et fonctionnalités"
+- [title: "Managers Registry - Catalogue Complet"](.github/docs/MANAGERS/catalog-complete.md) - description: "Registre central de tous les managers de l'écosystème EMAIL_SENDER_1"
+- [title: "Mode ARCHI"](.github/prompts/modes/ARCHI-mode.prompt.md) - description: "Mode opérationnel ARCHI pour le projet EMAIL_SENDER_1"
+- [title: "Mode DEBUG"](.github/prompts/modes/DEBUG-mode.prompt.md) - description: "Mode opérationnel DEBUG pour le projet EMAIL_SENDER_1"
+- [title: "Mode DEV"](.github/prompts/modes/DEV-mode.prompt.md) - description: "Mode opérationnel DEV pour le projet EMAIL_SENDER_1"
+- [title: "Mode GIT"](.github/prompts/modes/GIT-mode.prompt.md) - description: "Mode opérationnel GIT pour le projet EMAIL_SENDER_1"
+- [title: "Mode METRICS"](.github/prompts/modes/METRICS-mode.prompt.md) - description: "Mode opérationnel METRICS pour le projet EMAIL_SENDER_1"
+- [title: "Mode N8N"](.github/prompts/modes/N8N-mode.prompt.md) - description: "Mode opérationnel N8N pour le projet EMAIL_SENDER_1"
+- [title: "Mode OPTI"](.github/prompts/modes/OPTI-mode.prompt.md) - description: "Mode opérationnel OPTI pour le projet EMAIL_SENDER_1"
+- [title: "Mode PREDIC"](.github/prompts/modes/PREDIC-mode.prompt.md) - description: "Mode opérationnel PREDIC pour le projet EMAIL_SENDER_1"
+- [title: "Mode TEST"](.github/prompts/modes/TEST-mode.prompt.md) - description: "Mode opérationnel TEST pour le projet EMAIL_SENDER_1"
+- [title: "Mode augment"](.github/prompts/modes/augment-mode.prompt.md) - description: "Mode opérationnel augment pour le projet EMAIL_SENDER_1"
+- [title: "Mode standard"](.github/prompts/modes/standard-mode.prompt.md) - description: "Mode opérationnel standard pour le projet EMAIL_SENDER_1"
+- [title: "Quick Start Guide - Démarrage Rapide"](.github/docs/GETTING-STARTED/quick-start.md) - description: "Guide de démarrage rapide pour développeurs - Setup en moins de 5 minutes"
+- [⚙️ Configuration Validator EMAIL_SENDER_1](.github/docs/algorithms/config-validator/README.md) - Native Go implementation for systematic configuration validation across EMAIL_SENDER_1 stack `readme`
+- [✉️ Tutoriel : Automatisation d’Emails](.github/docs/guides/EMAIL_AUTOMATION.md) - Ce guide explique comment automatiser l’envoi d’emails avec n8n, Gmail et Notion. `guide`
+- [🎉 EMAIL_SENDER_1 - FINAL COMPLETION REPORT](.github/docs/algorithms/FINAL_COMPLETION_REPORT.md) - - **PowerShell files eliminated**: 0 (.ps1 files remaining)
+- [🎉 EMAIL_SENDER_1 - Native Go Migration COMPLETE](.github/docs/algorithms/NATIVE_GO_MIGRATION_COMPLETE.md) - [![Go Native 100%](https://img.shields.io/badge/Go%20Native-100%25-success?style=for-the-badge&logo=go)](https://golang....
+- [🎉 INSTALLATION COMPLETE - EMAIL_SENDER_1 NATIVE GO SYSTEM](.github/docs/algorithms/INSTALLATION-COMPLETE.md) - **Date**: 28 Mai 2025 `installation`
+- [🎯 Binary Search Debug EMAIL_SENDER_1](.github/docs/algorithms/binary-search/README.md) - Native Go implementation for systematic component isolation and failure detection `readme`
+- [🏗️ Architecture MemOS-QDrant : Vue d'Ensemble Technique](.github/docs/RAG/ARCHITECTURE_OVERVIEW.md) - ```plaintext
+- [🏗️ Progressive Build Strategy EMAIL_SENDER_1](.github/docs/algorithms/progressive-build/README.md) - Native Go implementation for incremental build strategy by architectural layers `readme`
+- [📅 Intégration Google Calendar](.github/docs/INTEGRATIONS/Google_Calendar.md) - Ce guide explique la configuration, l’utilisation et les bonnes pratiques pour l’intégration Google Calendar dans l...
+- [📊 Dependency Resolution Matrix EMAIL_SENDER_1](.github/docs/algorithms/dependency-resolution/README.md) - Native Go implementation for intelligent dependency conflict management and resolution `readme`
+- [📋 EMAIL_SENDER_1 Algorithms Manifest](.github/docs/algorithms/ALGORITHMS_MANIFEST.md) - *Complete inventory of native Go algorithms and their implementation status*
+- [📒 Intégration Notion](.github/docs/INTEGRATIONS/Notion.md) - Ce guide détaille la configuration, l’utilisation et les bonnes pratiques pour l’intégration Notion dans l’écos...
+- [📚 EMAIL_SENDER_1 Algorithms - Quick Reference](.github/docs/algorithms/QUICK_REFERENCE.md) - go run email_sender_orchestrator.go
+- [📧 Intégration Gmail](.github/docs/INTEGRATIONS/Gmail.md) - Ce guide décrit la configuration, l’utilisation et les bonnes pratiques pour l’intégration Gmail dans l’écosyst...
+- [📬 Workflow Traitement des Réponses](.github/docs/WORKFLOWS/Reponses.md) - Ce workflow automatise le traitement des réponses reçues suite aux campagnes de prospection et de suivi.
+- [🔄 Workflow Suivi](.github/docs/WORKFLOWS/Suivi.md) - Ce workflow gère le suivi automatisé des prospects après la prospection initiale.
+- [🔍 Error Triage & Classification EMAIL_SENDER_1](.github/docs/algorithms/error-triage/README.md) - Native Go implementation for automatic multi-stack error classification `readme`
+- [🔗 Dependency Graph Analysis EMAIL_SENDER_1](.github/docs/algorithms/dependency-analysis/README.md) - Algorithm 3: Advanced dependency analysis system for EMAIL_SENDER_1 multi-stack architecture. Detects circular dependenc... `readme`
+- [🔬 Static Analysis Pipeline EMAIL_SENDER_1](.github/docs/algorithms/analysis-pipeline/README.md) - Native Go implementation for advanced multi-stack validation pipeline `readme`
+- [🚀 Workflow Prospection](.github/docs/WORKFLOWS/Prospection.md) - Ce workflow automatise la prospection par email, de la collecte de contacts à l’envoi initial. `specification`
+- [🚦 Guide de Démarrage Rapide](.github/docs/guides/QUICKSTART.md) - Ce guide vous accompagne pour installer, configurer et lancer vos premiers workflows avec Email Sender. `guide`
+- [🤖 Algorithm 5 - Auto-Fix Pattern Matching for EMAIL_SENDER_1](.github/docs/algorithms/auto-fix/README.md) - **Automatic error correction for repetitive issues across EMAIL_SENDER_1 multi-stack architecture** `readme`
+- [🤖 Intégration OpenRouter](.github/docs/INTEGRATIONS/OpenRouter.md) - Ce guide détaille la configuration, l’utilisation et les bonnes pratiques pour l’intégration OpenRouter (API IA) d...
+- [🧠 Résumé Exécutif : Intégration MemOS dans l'Analyse RAG QDrant](.github/docs/RAG/SUMMARY_MEMOS_INTEGRATION.md) - - **Lignes :** 1,421
+- [🧰 Rapport : Méthodes de Validation et Correction de Code Go](.github/docs/guides/méthodes-validation-correction-go.md) - Ce rapport détaille les outils et commandes indispensables pour valider et corriger du code Go **avant compilation**. O... `guide`
+- [Absolument ! Voici une version améliorée et enrichie de vo...](.github/docs/guides/standards/copilot-instuctions.md) - Absolument ! Voici une version améliorée et enrichie de votre guide, intégrant vos excellentes instructions personnal... `guide`
+- [Algorithm 5 - Auto-Fix Pattern Matching Implementation Summary](.github/docs/algorithms/auto-fix/IMPLEMENTATION_SUMMARY.md) - **Algorithm 5 - Auto-Fix Pattern Matching for EMAIL_SENDER_1** is now **FULLY IMPLEMENTED** with comprehensive pattern-m...
+- [Conventions de nommage pour EMAIL_SENDER_1](.github/docs/guides/standards/Conventions-Nommage.md) - *Version 1.0 - 2025-05-15* `guide`
+- [EMAIL SENDER 1 – Guidelines](.github/docs/guides/augment/USER_GUIDELINES.md) - *Version 2025-05-15 — à conserver dans `/docs/README_EMAIL_SENDER_1.md`* `guide`
+- [Guide d'intégration avec Augment Code](.github/docs/guides/augment/integration_guide.md) - Ce guide explique comment intégrer efficacement Augment Code avec notre système de gestion de modes et de Memories. `guide`
+- [Guide d'optimisation des Memories pour Augment Code](.github/docs/guides/augment/memories_optimization.md) - Ce guide explique comment optimiser les Memories d'Augment Code pour améliorer les performances et la pertinence des r�... `guide`
+- [Guide d'utilisation avancée d'Augment Code](.github/docs/guides/augment/advanced_usage.md) - Ce guide présente des techniques avancées pour tirer le meilleur parti d'Augment Code dans notre environnement de dév... `guide`
+- [Guide d'utilisation du MCP Desktop Commander](.github/docs/guides/mcp/GUIDE_MCP_DESKTOP_COMMANDER.md) - Le MCP Desktop Commander est un serveur MCP (Model Context Protocol) qui permet à Claude et autres assistants IA de man... `guide`
+- [Guide de dépannage des dépendances Python pour le système RAG de roadmaps](.github/docs/guides/roadmap/TROUBLESHOOTING_DEPENDENCIES.md) - Ce guide vous aidera à résoudre les problèmes courants liés aux dépendances Python utilisées par le système RAG d... `roadmap` `guide`
+- [Guide de gestion de la longueur des fichiers de code](.github/docs/guides/standards/Gestion-Longueur-Fichiers.md) - *Version 1.0 - 2025-05-25* `guide`
+- [Guide de génération de modules PowerShell](.github/docs/guides/powershell/Génération-de-modules-PowerShell.md) - Ce guide explique comment générer des modules PowerShell à partir des templates disponibles dans le projet EMAIL_SEND... `guide`
+- [Guide de style de codage pour EMAIL_SENDER_1](.github/docs/guides/standards/Guide-Style-Codage.md) - *Version 1.0 - 2025-05-15* `guide`
+- [Guide des Verbes Approuvés PowerShell](.github/docs/guides/standards/PowerShell-Verbes-Approuves.md) - *Version 1.0 - 2025-05-15* `guide`
+- [Guide du mode DEV-R amélioré](.github/docs/guides/augment/mode-dev-r-ameliore.md) - Le mode DEV-R (Roadmap Delivery) amélioré est un mode opérationnel qui permet d'implémenter les tâches définies da... `guide`
+- [Intégration MCP avec Augment Code](.github/docs/guides/augment/mcp_integration.md) - Ce guide explique comment intégrer les serveurs MCP (Model Context Protocol) d'Augment Code avec le MCP Manager existan... `guide`
+- [Limitations d'Augment Code](.github/docs/guides/augment/limitations.md) - Ce guide détaille les limitations techniques et pratiques d'Augment Code et propose des stratégies pour les contourner... `guide`
+- [Organisation des fichiers et dossiers pour EMAIL_SENDER_1](.github/docs/guides/standards/Organisation-Fichiers-Dossiers.md) - *Version 1.0 - 2025-05-15* `guide`
+- [Prompt de référence pour Augment](.github/docs/guides/augment/PROMPT_REFERENCE.md) - *Version 1.1 - 2025-05-14* `guide`
+- [Prompts efficaces pour Augment](.github/docs/guides/augment/prompts-efficaces.md) - *Version 2025-05-15* `guide`
+- [Système de configuration des formats de tags](.github/docs/guides/roadmap/tag-formats/README.md) - Le système de configuration des formats de tags permet de définir, gérer et utiliser des formats de tags personnalis�... `roadmap` `guide` `readme`
+- [🚀 **7 Méthodes Time-Saving** pour EMAIL_SENDER_1 + RAG Go](.github/docs/guides/go/7-methodes-time-saving.md) - Au-delà du dry run, voici des techniques éprouvées avec **ROI mesurable** pour votre architecture **EMAIL_SENDER_1 + ... `guide`
+- [🚀 **Algorithmes Go Optimisés EMAIL_SENDER_1** (Multi-Stack Validation)](.github/docs/guides/go/Algorithmes-go.md) - *Algorithmes de validation et analyse statique spécialement conçus pour l'architecture EMAIL_SENDER_1* `guide`
+- [🚀 **Algorithmes de Debug Avancés EMAIL_SENDER_1** (400-1000 erreurs/minute)](.github/docs/guides/go/Algorithmes-debug-avances.md) - *Méthodes de debug parallélisé spécialement conçues pour l'écosystème EMAIL_SENDER_1* `guide`
+- [🧬 **Polymorphisme Avancé pour EMAIL_SENDER_1 + RAG Go** - Debug & Architecture Massive](.github/docs/guides/go/polymorphisme-go.md) - Guide spécialisé de polymorphisme avancé en Go pour **EMAIL_SENDER_1**, optimisé pour notre architecture multi-compo... `guide`
+- [Apprentissage des nouveaux formats de tags](.github/docs/guides/roadmap/tag-formats/tag-learning.md) - Le système d'apprentissage des nouveaux formats de tags permet de détecter automatiquement les formats de tags non rec... `roadmap` `guide`
+- [Détection des tags avec expressions régulières](.github/docs/guides/roadmap/tag-formats/tag-detection.md) - Le système de détection des tags permet d'identifier et d'extraire les tags présents dans les tâches des roadmaps. I... `roadmap` `guide`
+
+### Development
+
+*Development and contribution guides*
+
+- [Dossier `development`](development/README.md) - Ce dossier contient tous les éléments liés au développement du projet, y compris la documentation technique, les scr... `readme`
+- [Structure du projet](development/README-STRUCTURE.md) - Ce document explique la structure du projet après la réorganisation effectuée pour éliminer les redondances, ambigu�... `readme`
+- [.. API documentation master file](development/api/index.rst) - Documentation des API
+- [Archives](development/archives/index.md) - Cette section contient la documentation relative à Archives.
+- [Communications](development/communications/index.md) - Cette section contient la documentation relative à Communications.
+- [Documentation de l'API RoadmapParser](development/api/index.md) - Cette documentation dÃ©crit les fonctions disponibles dans le module RoadmapParser.
+- [Documentation du système de remédiation n8n](development/n8n-internals/index.md) - Bienvenue dans la documentation du système de remédiation n8n. Cette documentation fournit des informations détaillé...
+- [Dossier development/roadmap](development/roadmap/README.md) - Ce dossier contient les outils et scripts pour gérer et analyser les roadmaps du projet. `roadmap` `readme`
+- [Email Sender - Structure Modulaire](development/workflows/README_EMAIL_SENDER_PHASES-restructured.md) - 1. [Email Sender - Structure Modulaire](#section-1) `readme`
+- [Email Sender - Structure Modulaire](development/workflows/README_EMAIL_SENDER_PHASES.md) - Ce projet est structuré en 6 phases distinctes, chacune implémentée dans un fichier JSON séparé. Cette approche mod... `readme`
+- [Gestionnaires](development/managers/README.md) - Ce répertoire contient tous les gestionnaires du projet dans une architecture unifiée. `readme`
+- [Optimisations VS Code pour le développement Go](development/VSCODE_OPTIMIZATIONS_FOR_GO.md) - Ce document détaille les optimisations effectuées sur les paramètres VS Code pour améliorer l'expérience de dévelo...
+- [Outils de développement](development/tools/README.md) - Ce dossier contient des **bibliothèques, modules et utilitaires réutilisables** qui fournissent des fonctionnalités c... `readme`
+- [Phase 5 - Tests et Validation](development/tests/README.md) - Ce répertoire contient la suite complète de tests pour la Phase 5 du plan de migration vectorisation Go. `readme`
+- [Reporting](development/reporting/index.md) - Cette section contient la documentation relative à Reporting.
+- [Roadmap](development/roadmap/index.md) - Cette section contient la documentation relative à Roadmap. `roadmap`
+- [Scripts du projet](development/scripts/README-UPDATED.md) - Ce dossier contient des **scripts exécutables** qui réalisent des actions spécifiques dans le cadre du projet. Ces sc... `readme`
+- [Templates Hygen pour les modes opérationnels](development/templates/README.md) - Ce répertoire contient les templates Hygen utilisés pour générer les modes opérationnels et leurs composants associ... `readme`
+- [Testing](development/testing/index.md) - Cette section contient la documentation relative à Testing.
+- [Workflows](development/workflows/index.md) - Cette section contient la documentation relative aux workflows métier du projet, notamment le workflow N8N "Email Sende...
+- [🏗️ Manager Ecosystem - Architecture des Branches](development/managers/README-ECOSYSTEM.md) - **Date de création :** 7 juin 2025 `readme`
+- [## ## ## ## ## ## ## ## ## ## # Roadmap EMAIL_SENDER_1](development/roadmap/roadmap_complete_converted.md) - - **Objectif**: Réduire de 90% le temps consacré à la mise à jour manuelle de la roadmap `roadmap`
+- [.. CycleDetector API documentation](development/api/CycleDetector.rst) - Module CycleDetector
+- [.. DependencyManager API documentation](development/api/DependencyManager.rst) - Module DependencyManager
+- [.. InputSegmenter API documentation](development/api/InputSegmenter.rst) - Module InputSegmenter
+- [.. MCPManager API documentation](development/api/MCPManager.rst) - Module MCPManager
+- [ACLAnalyzer](development/scripts/debug/README.md) - ACLAnalyzer est un module PowerShell pour analyser, comparer, visualiser et gÃ©rer les listes de contrÃ´le d'accÃ¨... `readme`
+- [ANALYSE DE L'ÉCOSYSTÈME DE MANAGERS](development/managers/MANAGER_ECOSYSTEM_SETUP_COMPLETE.md) - Ce document présente une analyse technique détaillée de l'écosystème des managers du projet EMAIL_SENDER_1. Dévelo...
+- [AdvancedAutonomyManager](development/managers/advanced-autonomy-manager/README.md) - Le AdvancedAutonomyManager est le 21ème manager du Framework FMOUA (Framework de Maintenance et Organisation Ultra-Avan... `readme`
+- [Analyse de la roadmap et proposition de scripts Python open-source](development/roadmap/scripts-open-source.md) - Analyser la roadmap EMAIL_SENDER_1 pour identifier les fonctionnalités clés et proposer des scripts Python open-source... `roadmap`
+- [Analyse des Redondances - Phase 3.1.1](development/managers/PHASE_3_1_1_REDONDANCES_ANALYSIS.md) - - **integrated-manager/** : Manager existant avec responsabilités de coordination
+- [Analyse des besoins en rapports](development/reporting/report_requirements.md) - Ce document présente l'analyse des besoins en rapports automatiques pour le système de surveillance de performance.
+- [Analyser les besoins](development/roadmap/subtasks.txt) - Concevoir l'architecture `roadmap`
+- [Analytics](development/testing/analytics/index.md) - Cette section contient la documentation relative à Analytics.
+- [Annonce : Nouvelles fonctionnalités et organisation du dépôt Email Sender 1](development/communications/ANNONCE_NOUVELLES_FONCTIONNALITES.md) - Chers membres de l'équipe,
+- [Archive: Module de détection de cycles v1.0](development/archives/cycle_detection_v1.0.md) - - **Version**: 1.0.0
+- [Archive: Tests unitaires du module de détection de cycles v1.0](development/archives/cycle_detection_tests_v1.0.md) - - **Version**: 1.0.0
+- [Build-DependencyGraph](development/api/Build-DependencyGraph.md) - Build-DependencyGraph [-Files] <FileInfo[]> [-ProjectRoot] <string> [[-MaxDepth] <int>] [<CommonParameters>]
+- [CacheManager v74 — Logging Centralisé & Mémoire Contextuelle](development/managers/cache-manager/README.md) - CacheManager est le module Go centralisé pour la gestion des logs, de la mémoire contextuelle et de l’orchestration ... `readme`
+- [Cas de Test pour le Parsing Markdown du Module RoadmapParser](development/testing/markdown_parsing_test_cases.md) - Ce document définit les cas de test spécifiques pour valider les fonctionnalités de parsing markdown du module Roadma...
+- [Code Snippets for EMAIL_SENDER_1](development/templates/snippets/README.md) - *Version 1.0 - 2025-05-15* `readme`
+- [Commit Interceptor - Framework de Branchement Automatique](development/hooks/commit-interceptor/README.md) - Le Commit Interceptor est un système intelligent qui intercepte automatiquement les commits Git, analyse leur contenu, ... `readme`
+- [Conception de la couche d'abstraction pour l'export Excel](development/reporting/excel_abstraction_design.md) - Ce document décrit la conception de la couche d'abstraction pour la génération de fichiers Excel dans le cadre du sys...
+- [ConfigManager Module](development/managers/config-manager/README.md) - The `ConfigManager` is responsible for handling all application configurations. It loads settings from various sources (... `readme`
+- [Configuration Augment](development/tools/augment-tools/README.md) - Ce dossier contient les fichiers de configuration pour Augment, l'outil d'IA utilisé pour le développement assisté. `readme`
+- [Contextual Memory Manager](development/managers/contextual-memory-manager/README.md) - 🧠 **Advanced Contextual Memory System** for capturing, indexing, and retrieving user actions with vector search capab... `readme`
+- [Création d'entrées dans le journal de bord](development/workflows/creating_entries.md) - Ce guide explique comment créer et gérer des entrées dans le journal de bord.
+- [Documentation Complète - n8n](development/n8n-internals/documentation-complete.md) - Cette documentation détaille la structure, l'installation, la configuration et l'utilisation de n8n dans le cadre du pr...
+- [Documentation de l'API n8n (Version locale)](development/api/N8N_API_DOCUMENTATION.md) - Cette documentation a ete generee automatiquement en testant les endpoints de l'API n8n disponibles sur votre instance l...
+- [Documentation des exceptions du namespace System](development/methodologies/system_exceptions_documentation.md) - Le namespace `System` contient les exceptions fondamentales du framework .NET. Ces exceptions représentent les erreurs ...
+- [Documentation des exceptions du namespace System.IO](development/methodologies/system_io_exceptions_documentation.md) - Le namespace `System.IO` contient les exceptions liées aux opérations d'entrée/sortie dans le framework .NET. Ces exc...
+- [Documentation des propriétés communes de System.Exception](development/methodologies/exception_properties_documentation.md) - Ce document détaille les propriétés communes à toutes les exceptions dérivées de la classe `System.Exception` dans...
+- [Déductions Inédites - Projet n8n](development/n8n-internals/deductions-inedites.md) - Ce document présente les déductions et observations inédites issues de l'analyse complète du thread de consolidation...
+- [Error Manager - Gestionnaire d'erreurs avancé](development/managers/error-manager/README.md) - *Version 1.0 - 2025-06-04* `readme`
+- [Examples](development/api/examples/index.md) - Cette section contient la documentation relative à Examples.
+- [Exemples d'utilisation de l'API n8n (Version locale)](development/api/N8N_API_EXAMPLES.md) - Ce document contient des exemples concrets d'utilisation des endpoints fonctionnels de l'API n8n sur votre instance loca...
+- [Fusion Réussie : Écosystème Unifié des Managers dans DEV](development/managers/FUSION_MANAGERS_DEV_COMPLETE.md) - La fusion de la branche `managers` dans `dev` a été **réalisée avec succès** le 13 juin 2025.
+- [Generate-RoadmapReport](development/api/Generate-RoadmapReport.md) - GÃ©nÃ¨re un rapport sur l'Ã©tat des tÃ¢ches d'un fichier de roadmap. `roadmap`
+- [GitWorkflowManager Documentation](development/managers/git-workflow-manager/README.md) - The GitWorkflowManager is a comprehensive solution for managing Git workflows in software development projects. It provi... `readme`
+- [GoPlanGen - Générateur de Plans de Développement Modulaire en Go](development/tools/plan-generator/README.md) - GoPlanGen est un outil en ligne de commande écrit en Go pour générer des plans de développement au format Markdown. ... `plan` `readme`
+- [Guide complet d'utilisation de Hygen pour le projet n8n](development/n8n-internals/hygen-guide.md) - Ce guide explique comment utiliser Hygen dans le projet n8n pour générer des composants standardisés. `guide`
+- [Guide d'installation du système de journal de bord RAG](development/workflows/installation.md) - Ce guide détaille les étapes pour installer et configurer le système de journal de bord RAG. `installation`
+- [Guide d'utilisation de la nouvelle structure n8n](development/n8n-internals/GUIDE_UTILISATION.md) - Ce guide explique comment utiliser la nouvelle structure n8n mise en place dans le projet. `guide`
+- [Guide d'utilisation du système de remédiation n8n](development/n8n-internals/user-guide.md) - Ce guide explique comment utiliser le système de remédiation n8n pour gérer, surveiller et maintenir votre installati... `guide`
+- [Guide de finalisation de l'installation de Hygen](development/n8n-internals/hygen-installation-finalization.md) - Ce guide explique comment finaliser l'installation de Hygen dans le projet n8n. `installation`
+- [Guide de migration vers PowerShell 7 pour le module FileContentIndexer](development/tools/utilities-tools/FileContentIndexer-MigrationGuide.md) - Ce guide explique comment migrer votre code du module FileContentIndexer de PowerShell 5.1 vers PowerShell 7, en mettant... `guide`
+- [Guide de validation des bénéfices de Hygen](development/n8n-internals/hygen-benefits-validation.md) - Ce guide explique comment valider les bénéfices et l'utilité de Hygen dans le projet n8n.
+- [Guide de validation des scripts d'utilitaires Hygen](development/n8n-internals/hygen-utilities-validation.md) - Ce guide explique comment valider les scripts d'utilitaires Hygen dans le projet n8n.
+- [Guide de validation des templates Hygen](development/n8n-internals/hygen-templates-validation.md) - Ce guide explique comment valider les templates Hygen dans le projet n8n.
+- [Handle-Error](development/api/Handle-Error.md) - GÃ¨re une erreur en la journalisant et en effectuant des actions appropriÃ©es.
+- [Handle-Exception](development/api/Handle-Exception.md) - GÃ¨re une exception et affiche un message d'erreur.
+- [Increment-OperationCounter](development/api/Increment-OperationCounter.md) - IncrÃ©mente un compteur d'opÃ©rations.
+- [Inspect-Variable](development/api/Inspect-Variable.md) - Inspecte une variable PowerShell et affiche des informations dÃ©taillÃ©es sur son contenu et sa structure. `specification`
+- [Intégration avec Augment Memories](development/api/augment_memories.md) - Cette documentation détaille l'intégration entre le système de journal de bord RAG et Augment Memories.
+- [Intégration avec Model Context Protocol (MCP)](development/api/mcp.md) - Cette documentation détaille l'intégration entre le système de journal de bord RAG et le Model Context Protocol (MCP)...
+- [Inventaire Complet des Managers - Phase 1.1.1](development/managers/AUDIT_PHASE_1_1_1_INVENTAIRE_MANAGERS.md) - - **Total des managers détectés**: 26
+- [Journal de Bord - Projet n8n](development/n8n-internals/journal-de-bord.md) - Le projet comportait de multiples dossiers liés à n8n, créant de la confusion et rendant difficile la maintenance :
+- [Journal des Erreurs - Projet n8n](development/n8n-internals/journal-des-erreurs.md) - Ce document recense les erreurs rencontrées lors de la consolidation et de la réorganisation de la structure n8n, ains...
+- [Les 16 Bases de la Programmation](development/methodologies/programmation_16_bases.md) - Ce document présente les 16 bases fondamentales de la programmation qui guident le développement de notre projet.
+- [Les 16 Bases de la Programmation en Go](development/methodologies/16-piliers-programmation.go.md) - Ce document présente les 16 bases fondamentales de la programmation en Go qui guident le développement de notre projet...
+- [Manager Toolkit](development/managers/tools/README.md) - Ce répertoire a été réorganisé pour suivre les principes SOLID, KISS et DRY. Pour la documentation complète, veuil... `readme`
+- [Matrice de Responsabilités et Analyse des Redondances - Phase 1.1.1](development/managers/AUDIT_PHASE_1_1_1_REDONDANCES_ANALYSIS.md) - CONFLIT POTENTIEL:
+- [Merge-Configuration](development/api/Merge-Configuration.md) - Fusionne deux configurations.
+- [Mode MANAGER](development/scripts/mode-manager/README.md) - Ce répertoire contient les scripts et la documentation du mode MANAGER, qui permet de gérer et d'orchestrer les diffé... `readme`
+- [Modes Opérationnels](development/methodologies/modes/index.md) - Ce document présente les différents modes opérationnels utilisés dans le projet.
+- [Module ExtractedInfoModuleV2](development/scripts/extraction/README.md) - Le module `ExtractedInfoModuleV2` a été conçu pour résoudre plusieurs problèmes fondamentaux liés à l'extraction,... `readme`
+- [Module LocalCache](development/tools/cache-tools/README.md) - Ce module fournit une implÃ©mentation simple et efficace d'un systÃ¨me de cache local persistant basÃ© sur la bibl... `readme`
+- [Module Path-Manager](development/tools/path-utils-tools/README.md) - Le module Path-Manager est un gestionnaire de chemins pour les projets PowerShell. Il permet de définir des mappings de... `readme`
+- [Optimisation Dynamique de la ParallÃ©lisation](development/tools/optimization-tools/DynamicParallelization-README.md) - Ce module implÃ©mente un systÃ¨me d'optimisation dynamique de la parallÃ©lisation qui ajuste automatiquement le no... `readme`
+- [Outils de gestion de roadmap](development/scripts/roadmap-tools/README.md) - Ce répertoire contient des outils pour gérer et mettre à jour les fichiers de roadmap du projet. `roadmap` `readme`
+- [PHASE 4 - OPTIMISATION PERFORMANCE ET CONCURRENCE - RAPPORT COMPLET ✅](development/managers/PHASE_4_PERFORMANCE_COMPLETE_REPORT.md) - **Date**: 2025-01-05
+- [PHASE 5 - HARMONISATION APIs ET INTERFACES - RAPPORT COMPLET ✅](development/managers/PHASE_5_API_HARMONIZATION_COMPLETE_REPORT.md) - **Date**: 2025-01-05
+- [PHASE 6 - TESTS D'INTÉGRATION ET VALIDATION - RAPPORT COMPLET ✅](development/managers/PHASE_6_INTEGRATION_COMPLETE_REPORT.md) - **Date**: 2025-01-05
+- [PHASE 7 - DÉPLOIEMENT ET MIGRATION DE DONNÉES - RAPPORT COMPLET](development/managers/PHASE_7_DEPLOYMENT_COMPLETE_REPORT.md) - **Statut**: ✅ **TERMINÉ AVEC SUCCÈS**
+- [Performance](development/testing/performance/index.md) - Cette section contient la documentation relative à Performance.
+- [Phase 8 - Documentation et Finalisation - RAPPORT DE COMPLETION FINAL](development/managers/PHASE_8_FINAL_COMPLETION_REPORT.md) - **Date de completion:** 14 juin 2025
+- [Prochaines étapes d'implémentation - EMAIL_SENDER_1](development/roadmap/NEXT_STEPS.md) - Ce document présente les prochaines étapes pour l'implémentation et l'intégration des optimisations réalisées pour... `roadmap`
+- [Rapport d'Analyse des Gestionnaires](development/reports/manager-analysis.md) - Date de gÃ©nÃ©ration : 2025-04-29 03:19:11
+- [Rapport de Completion - Phase 3: Consolidation et Unification des Managers](development/managers/PHASE_3_CONSOLIDATION_COMPLETE_REPORT.md) - La Phase 3 du plan v57 a été **COMPLÉTÉE AVEC SUCCÈS**. Tous les objectifs de consolidation et d'unification des ma...
+- [Rapport de Priorisation des AmÃ©liorations](development/reports/improvement-priorities.md) - Date de gÃ©nÃ©ration : 2025-04-29 03:27:43
+- [Rapport de Priorisation des DÃ©veloppements](development/reports/priority-matrix.md) - Date de gÃ©nÃ©ration : 2025-04-29 03:08:23
+- [Rapport de vérification pour la tâche 1.2.2.1.2](development/roadmap/check_report_1.2.2.1.2.md) - - Tâche principale : **1.2.2.1.2** - Créer le tokenizer pour décomposer le contenu markdown `roadmap`
+- [RegistryACLAnalyzer](development/scripts/debug/README-RegistryACLAnalyzer.md) - RegistryACLAnalyzer est un module PowerShell pour analyser, comparer, visualiser et gÃ©rer les listes de contrÃ´le d... `readme`
+- [Reports](development/testing/reports/index.md) - Cette section contient la documentation relative à Reports.
+- [Roadmap](development/roadmap/declarations/index.md) - Cette section contient la documentation relative à Roadmap. `roadmap`
+- [Roadmap Parser](development/roadmap/parser/README.md) - Ce rÃ©pertoire contient des outils pour l'analyse, la manipulation et la gestion des fichiers de roadmap du projet. `roadmap` `readme`
+- [Roadmap Tools](development/roadmap/scripts/README.md) - Ce rÃ©pertoire contient des outils pour la gestion, l'analyse et la manipulation des fichiers de roadmap du projet. `roadmap` `readme`
+- [Script Manager](development/scripts/script-manager/README.md) - Ce dossier contient le Script Manager du projet EMAIL_SENDER_1, un ensemble d'outils pour gérer, analyser et organiser ... `readme`
+- [Script de démarrage pour EMAIL_SENDER_1](development/scripts/startup/README.md) - Ce dossier contient le script de démarrage pour le projet EMAIL_SENDER_1, qui configure automatiquement l'environnement... `readme`
+- [Scripts](development/roadmap/scripts/index.md) - Cette section contient la documentation relative Ã  Scripts. `roadmap`
+- [Scripts CMD](development/scripts/batch/README.md) - Ce dossier contient les scripts CMD utilisÃ©s dans le projet Email Sender. `readme`
+- [Structure de la taxonomie des exceptions PowerShell](development/methodologies/exception_taxonomy_structure.md) - Ce document décrit la structure de données utilisée pour représenter la taxonomie des exceptions PowerShell dans le ...
+- [Structure des rapports automatiques](development/reporting/report_structure.md) - Ce document définit la structure détaillée des rapports automatiques pour le système de surveillance de performance.
+- [Structure du dossier n8n](development/n8n-internals/structure.md) - Ce document décrit la structure du dossier n8n et son organisation.
+- [SystÃ¨me d'Optimisation Proactive](development/tools/optimization-tools/README.md) - Ce module fournit un ensemble d'outils pour le monitoring et l'analyse comportementale des scripts, permettant d'optimis... `readme`
+- [SystÃ¨me d'Optimisation Proactive BasÃ© sur l'Usage](development/tools/utilities-tools/README.md) - Ce module fournit un systÃ¨me complet pour collecter, analyser et optimiser l'utilisation des scripts PowerShell en fo... `readme`
+- [Système d''Analyse Unifié](development/scripts/analysis/README.md) - Ce répertoire contient des scripts pour l''analyse de code, de performance et de données, ainsi que des outils d''int�... `readme`
+- [Système de gestion automatique de la roadmap](development/roadmap/tools/README.md) - Ce dossier contient les outils nécessaires pour mettre à jour automatiquement la roadmap personnelle du projet, y comp... `roadmap` `readme`
+- [Techniques de débogage des problèmes d'accès](development/methodologies/debugging_access_problems.md) - Ce document présente des techniques avancées pour déboguer les problèmes d'accès dans PowerShell, en particulier ce...
+- [Template de Roadmap - Standard de Documentation](development/roadmap/roadmap_template.md) - Ce document sert de référence pour la création et la maintenance de la roadmap du projet. Il définit la structure, l... `roadmap`
+- [TemplatePerformanceAnalyticsManager](development/managers/template-performance-manager/README.md) - > **Manager 20** of the FMOUA (Framework de Maintenance et Organisation Ultra-Avancé) ecosystem `readme`
+- [Test Roadmap pour GRAN Mode](development/roadmap/test_gran_mode.md) - - [ ] **1.1** Implémenter la fonctionnalité A `roadmap`
+- [TestOmnibus](development/tools/testing-tools/README.md) - TestOmnibus est un systÃ¨me centralisÃ© pour exÃ©cuter et gÃ©rer tous les tests unitaires du projet. Il permet d... `readme`
+- [Tests](development/testing/tests/README.md) - Ce répertoire contient les tests du projet. `readme`
+- [Tests](development/testing/tests/index.md) - Cette section contient la documentation relative à Tests.
+- [Tests avec des pull requests rÃ©elles](development/scripts/testing/README.md) - Ce dossier contient les scripts nÃ©cessaires pour tester le systÃ¨me d'analyse des pull requests avec des pull reque... `readme`
+- [Tests pour le système de gestion de roadmap](development/tests/maintenance/README_TESTS.md) - Ce dossier contient les tests unitaires pour le système de gestion de roadmap du projet EMAIL_SENDER_1. `readme`
+- [Tests unitaires pour le système de gestion de roadmap](development/tests/maintenance/README.md) - Ce dossier contient les tests unitaires pour le système de gestion de roadmap du projet EMAIL_SENDER_1. `readme`
+- [Tâches complétées](development/roadmap/completed_tasks.md) - Ce fichier contient les tâches complétées du roadmap. `roadmap`
+- [Utilitaires (Déprécié)](development/scripts/utils/README.md) - Ce dossier est déprécié. Tous les utilitaires ont été déplacés vers le dossier development/tools. `readme`
+- [Workflow N8N "Email Sender 1" - Gestion Automatisée de Booking de Concerts](development/workflows/WORKFLOW_INTENTION.md) - Ce workflow N8N vise à automatiser l'ensemble du processus de booking de concerts pour le groupe Gribitch, depuis la pr...
+- [Workflow N8N "Email Sender 1" - Gestion Automatisée de Booking de Concerts](development/workflows/WORKFLOW_INTENTION-restructured.md) - 1. [Workflow N8N "Email Sender 1" - Gestion Automatisée de Booking de Concerts](#section-1)
+- [api](development/scripts/api/README.md) - Scripts d'interaction avec les APIs `readme`
+- [container-manager](development/managers/container-manager/README.md) - Ce répertoire contient les fichiers du gestionnaire container-manager. `readme`
+- [core](development/scripts/core/README.md) - FonctionnalitÃ©s essentielles et modules de base `readme`
+- [dependency-manager](development/managers/dependency-manager/README.md) - Ce répertoire contient les fichiers du gestionnaire dependency-manager. `readme`
+- [deployment-manager](development/managers/deployment-manager/README.md) - Ce répertoire contient les fichiers du gestionnaire deployment-manager. `readme`
+- [docs](development/scripts/documentation/README.md) - Documentation `readme`
+- [email](development/scripts/email/README.md) - FonctionnalitÃ©s liÃ©es aux emails `readme`
+- [git](development/tools/git-tools/README.md) - Utilitaires Git `readme`
+- [integrated-manager](development/managers/integrated-manager/README.md) - Ce rÃ©pertoire contient les fichiers du gestionnaire integrated-manager. `readme`
+- [journal](development/scripts/journal/README.md) - SystÃ¨me de journal `readme`
+- [json](development/tools/json-tools/README.md) - Manipulation de JSON `readme`
+- [markdown](development/tools/markdown-tools/README.md) - Manipulation de Markdown `readme`
+- [mcp-manager](development/managers/mcp-manager/README.md) - Ce rÃ©pertoire contient les fichiers du gestionnaire mcp-manager. `readme`
+- [mode-manager](development/managers/mode-manager/README.md) - Ce rÃ©pertoire contient les fichiers du gestionnaire mode-manager. `readme`
+- [monitoring-manager](development/managers/monitoring-manager/README.md) - Ce répertoire contient les fichiers du gestionnaire monitoring-manager. `readme`
+- [n8n-manager](development/managers/n8n-manager/README.md) - Ce rÃ©pertoire contient les fichiers du gestionnaire n8n-manager. `readme`
+- [plan-dev-v31-migration-mcp-manager](development/managers/plan-dev-v31-migration-mcp-manager.md) `plan`
+- [python](development/scripts/python/README.md) - Scripts Python `readme`
+- [roadmap-manager](development/managers/roadmap-manager/README.md) - Ce rÃ©pertoire contient les fichiers du gestionnaire roadmap-manager. `roadmap` `readme`
+- [script-manager](development/managers/script-manager/README.md) - Ce rÃ©pertoire contient les fichiers du gestionnaire script-manager. `readme`
+- [security-manager](development/managers/security-manager/README.md) - Ce répertoire contient les fichiers du gestionnaire security-manager. `readme`
+- [setup](development/scripts/setup/README.md) - Scripts d'installation et configuration `readme`
+- [storage-manager](development/managers/storage-manager/README.md) - Ce répertoire contient les fichiers du gestionnaire storage-manager. `readme`
+- [workflow](development/scripts/workflow/README.md) - Gestion des workflows `readme`
+- [Écosystème Unifié des Managers - Référence Principale](development/managers/UNIFIED_ECOSYSTEM_REFERENCE.md) - La branche `managers` est désormais la **référence principale** pour l'écosystème unifié des managers du projet EM...
+- [Évaluation des bibliothèques Excel pour PowerShell](development/reporting/excel_libraries_evaluation.md) - Ce document présente une analyse comparative des principales bibliothèques disponibles pour la génération de fichier...
+- [🌿 Branching Manager - Framework de Branchement Ultra-Avancé 8-Niveaux](development/managers/branching-manager/README.md) - Le framework de branchement est maintenant **correctement organisé** dans l'écosystème de managers selon les conventi... `readme`
+- [🎉 MANAGER ECOSYSTEM - CONFIGURATION TERMINÉE](development/managers/ECOSYSTEM-COMPLETE.md) - **Date de finalisation :** 7 juin 2025
+- [🎯 Roadmap de Développement - Manager Ecosystem](development/managers/ROADMAP.md) - **Objectif:** Consolider les fondations et finaliser Git Workflow Manager `roadmap`
+- [📋 Rapport de Completion - Phase 1.1 Audit et Préparation de l'Écosystème](development/managers/PHASE_1_COMPLETION_REPORT.md) - - [x] Audit complet effectué : 26 managers identifiés
+- [🔧 Configuration de l'Écosystème des Managers](development/managers/CONFIG.md) - development/managers/
+- [🚀 Phase 2 - Migration Vectorisation Python → Go Native - COMPLÈTE](development/managers/PHASE_2_VECTORIZATION_COMPLETE_REPORT.md) - **Date**: 2025-06-14
+- [## 1.5 Système avancé de gestion des erreurs et journal de...](development/roadmap/scripts/error_journal_enhancements.txt) - **Complexité**: Élevée `roadmap`
+- [## 2.6 Améliorations avancées de TestOmnibus](development/roadmap/scripts/testomnibus_enhancements.txt) - **Complexité**: Moyenne `roadmap`
+- [## 2.7 Système d'optimisation avancée des tests](development/roadmap/scripts/test_optimization_enhancements.txt) - **Complexité**: Élevée `roadmap`
+- [## {PHASE_NUMBER}. Phase {PHASE_NUMBER} (Phase {PHASE_NUMBER...](development/templates/plan-dev/plan-dev-phase.md) - - [ ] **{PHASE_NUMBER}.1** Tâche principale 1 `plan`
+- [.. CycleDetector Examples documentation](development/api/examples/CycleDetector_Examples.rst) - Exemples d'utilisation du module CycleDetector
+- [.. DependencyManager Examples documentation](development/api/examples/DependencyManager_Examples.rst) - Exemples d'utilisation du module DependencyManager
+- [.. InputSegmenter Examples documentation](development/api/examples/InputSegmenter_Examples.rst) - Exemples d'utilisation du module InputSegmenter
+- [.. MCPManager Examples documentation](development/api/examples/MCPManager_Examples.rst) - Exemples d'utilisation du module MCPManager
+- [<<<<<<< .merge_file_7OUXLZ](development/managers/branching-manager/AUTO_CREATION_SUCCESS_REPORT.md) - **Date:** 2025-06-09
+- [<<<<<<< .merge_file_ZgxmVy](development/managers/branching-manager/COMPLETE_8_LEVELS_VALIDATION_REPORT.md) - **Date:** 2025-06-09
+- [========== TEST: CrÃ©ation de donnÃ©es de test avec tend...](development/scripts/monitoring/debug_output.txt) - ========== TEST: CrÃ©ation de donnÃ©es de test avec tendance linÃ©aire ==========
+- [========== TEST: CrÃ©ation de donnÃ©es de test avec tend...](development/scripts/monitoring/debug_output2.txt) - ========== TEST: CrÃ©ation de donnÃ©es de test avec tendance linÃ©aire ==========
+- [ADVANCED_USE_CASES](development/managers/branching-manager/ADVANCED_USE_CASES.md)
+- [API Documentation - Gestionnaire de Dépendances Go](development/managers/dependency-manager/API_DOCUMENTATION.md) - Le gestionnaire de dépendances est conçu selon les principes SOLID et utilise une architecture modulaire pour facilite...
+- [Adaptateurs Infrastructure PowerShell/Python](development/managers/error-manager/adapters/README.md) - Ce package contient les adaptateurs pour intégrer le gestionnaire d'erreurs Go avec l'infrastructure PowerShell et Pyth... `readme`
+- [Adaptateurs de cache](development/tools/cache-tools/adapters/README.md) - Ce module fournit des adaptateurs de cache pour diffÃ©rents types de requÃªtes et d'API. `readme`
+- [Analyse de Code](development/scripts/analysis/code/README.md) - Ce dossier contient des scripts pour l''analyse de code source avec différents outils. `readme`
+- [Analyse de Données](development/scripts/analysis/data/README.md) - Ce dossier contient des scripts pour l''analyse de données et la détection d''anomalies. `readme`
+- [Analyse de Performance](development/scripts/analysis/performance/README.md) - Ce dossier contient des scripts pour l''analyse de performance et le calcul de KPIs. `readme`
+- [Analyse de l'Utilisation de la Ponctuation dans les Titres](development/data/planning/title-punctuation-analysis.md) - - **Nombre total de titres analysÃ©s**: 25 `plan`
+- [Analyse de la CohÃ©rence de la Ponctuation entre Niveaux de Titres](development/scripts/planning/test-output.md) - - **Nombre total de niveaux de titres**: 3 `plan`
+- [Analyse de la FrÃ©quence d'Utilisation des CompÃ©tences](development/data/planning/skill-frequency.md) - Ce document prÃ©sente une analyse dÃ©taillÃ©e de la frÃ©quence d'utilisation des compÃ©tences dans les amÃ©l... `plan`
+- [Analyse de la HiÃ©rarchie des Titres et Sous-titres](development/data/planning/title-hierarchy-analysis.md) - - **Niveau 1**: 2 sections `plan`
+- [Analyse de la structure scripts pour Hygen](development/scripts/documentation/hygen-analysis.md) - Ce document prÃ©sente l'analyse de la structure du dossier scripts pour l'implÃ©mentation de Hygen.
+- [Analyse des Aspects Techniques des AmÃ©liorations](development/data/planning/technical-analysis.md) - Ce document prÃ©sente l'analyse des aspects techniques des amÃ©liorations identifiÃ©es pour les diffÃ©rents gest... `plan`
+- [Analyse des Besoins Spécifiques du Parsing Markdown pour le Module RoadmapParser](development/testing/analytics/markdown_parsing_requirements.md) - Ce document analyse les besoins spécifiques liés au parsing de fichiers markdown dans le contexte du module RoadmapPar...
+- [Analyse des Conventions de Casse dans les Titres](development/data/planning/title-casing-analysis.md) - - **Nombre total de titres analysÃ©s**: 25 `plan`
+- [Analyse des PrÃ©fixes et Suffixes RÃ©currents dans les Titres](development/data/planning/title-affixes-analysis.md) - - **Nombre total de titres analysÃ©s**: 25 `plan`
+- [Analyse des problÃ¨mes actuels de dÃ©tection automatique des formats](development/tools/analysis-tools/FormatDetection_Analysis.md) - Ce document prÃ©sente une analyse approfondie des limitations et des problÃ¨mes rencontrÃ©s avec le systÃ¨me act...
+- [Analyser les besoins](development/templates/subtasks/simple.txt) - Implémenter la solution
+- [Analyser les besoins](development/templates/subtasks/medium.txt) - Concevoir l'architecture
+- [Analyser les besoins détaillés](development/templates/subtasks/complex.txt) - Identifier les risques potentiels
+- [Attribution des Scores de ComplexitÃ© Technique des AmÃ©liorations](development/data/planning/complexity-scores.md) - Ce document prÃ©sente l'attribution des scores de complexitÃ© technique aux amÃ©liorations identifiÃ©es pour les... `plan`
+- [Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\dev...](development/scripts/monitoring/test_output.txt) - Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\monitoring\Predic
+- [Auto-Fix System Documentation](development/managers/error-manager/auto_fix/README.md) - The Auto-Fix System is a comprehensive solution for automatically detecting, analyzing, and fixing common coding issues ... `readme`
+- [COMMENTAIRES : Chargement du module à partir du chemin](development/scripts/monitoring/debug_output3.txt) - « D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\monitoring\LightweightContai
+- [COMMENTAIRES : Chargement du module à partir du chemin](development/scripts/monitoring/debug_output4.txt) - « D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\monitoring\LightweightContai
+- [CONTEXTUAL MEMORY MANAGER - IMPLEMENTATION COMPLETE ✅](development/managers/contextual-memory-manager/IMPLEMENTATION_COMPLETE.md) - **Date**: June 7, 2025
+- [Catalogue des anomalies de performance](development/testing/analytics/anomaly_catalog.md) - Ce catalogue documente les différents types d'anomalies détectées dans les données de performance historiques. Il se...
+- [Ce fichier a été fusionné dans `mode_c-break.md`.](development/methodologies/modes/mode_c_break.md) - > Merci de vous référer à `mode_c-break.md` pour la version harmonisée et complète du mode C-BREAK (détection et r...
+- [CleanupEngine Level 2 & 3 Implementation Complete](development/managers/maintenance-manager/CLEANUP_ENGINE_IMPLEMENTATION_COMPLETE.md) - ✅ **TASK COMPLETED SUCCESSFULLY**
+- [Commit Interceptor - Test Completion Report](development/hooks/commit-interceptor/TEST_COMPLETION_REPORT.md) - **Date:** 2025-06-10
+- [Comparaison des Conventions de Casse entre Niveaux de Titres](development/data/planning/title-casing-levels-comparison.md) - - **Nombre total de titres analysÃ©s**: 25 `plan`
+- [CompÃ©tences CatÃ©gorisÃ©es par Domaine](development/data/planning/skills-categorized.md) - Ce document prÃ©sente les compÃ©tences requises catÃ©gorisÃ©es par domaine pour une meilleure organisation et an... `plan`
+- [CompÃ©tences Communes Ã  Plusieurs AmÃ©liorations](development/data/planning/common-skills.md) - Ce document prÃ©sente les compÃ©tences qui sont communes Ã  plusieurs amÃ©liorations, ce qui permet de dÃ©term... `plan`
+- [Conclusions de l'Analyse des Besoins Spécifiques du Parsing Markdown](development/testing/analytics/markdown_parsing_conclusions.md) - Cette analyse a permis d'identifier les besoins spécifiques du parsing markdown pour le module RoadmapParser. Les princ...
+- [ConfigManager - Final Implementation Report](development/managers/config-manager/FINAL_IMPLEMENTATION_REPORT.md) - *Date: June 4, 2025*
+- [ConfigManager - Technical Implementation Summary](development/managers/config-manager/TECHNICAL_SUMMARY.md) - *EMAIL_SENDER_1 Project - June 4, 2025*
+- [ConfigManager Implementation - COMPLETION SUMMARY](development/managers/config-manager/COMPLETION_SUMMARY.md) - *Final Update: June 4, 2025*
+- [ConfigManager Implementation Progress Report](development/managers/config-manager/IMPLEMENTATION_PROGRESS.md) - *Date: 2025-06-04*
+- [Contextual Memory Manager - Implementation Status](development/managers/contextual-memory-manager/IMPLEMENTATION_STATUS.md) - - ✅ Interface definitions in `pkg/interfaces/contextual_memory.go`
+- [Core - Fonctionnalités fondamentales](development/scripts/roadmap/core/README.md) - Ce dossier contient les scripts fondamentaux pour la gestion des roadmaps. `roadmap` `readme`
+- [DOCUMENTATION_ANALYSIS_FIXES](development/managers/tools/DOCUMENTATION_ANALYSIS_FIXES.md)
+- [DOCUMENTATION_UPDATE_V3_REPORT](development/managers/tools/DOCUMENTATION_UPDATE_V3_REPORT.md)
+- [Dependency Manager - Integration Summary](development/managers/dependency-manager/INTEGRATION_SUMMARY.md) - The Dependency Manager has been successfully implemented and integrated into the project architecture.
+- [DependencyManager Integration Implementation Summary](development/managers/dependency-manager/INTEGRATION_IMPLEMENTATION_SUMMARY.md) - - Created `storage_integration.go` with:
+- [DependencyManager Manager Integrations](development/managers/dependency-manager/MANAGER_INTEGRATIONS.md) - This document explains how the DependencyManager integrates with other managers in the system to provide enhanced capabi...
+- [Documentation des Tests Format-Converters](development/tools/testing-tools/Documentation/README.md) - Ce document explique les diffÃ©rences entre les tests simplifiÃ©s et les tests rÃ©els du module Format-Converters,... `readme`
+- [DÃ©termination du Nombre de Personnes NÃ©cessaires pour les AmÃ©liorations](development/data/planning/required-personnel.md) - Ce document prÃ©sente la dÃ©termination du nombre de personnes nÃ©cessaires pour les amÃ©liorations identifiÃ©... `plan`
+- [Définition des Niveaux d'Expertise](development/data/planning/expertise-levels.md) - Ce document définit les différents niveaux d'expertise utilisés pour évaluer les compétences requises pour les amé... `plan`
+- [Exemples d'exportation d'informations extraites](development/scripts/extraction/Examples/README.md) - Ce répertoire contient des exemples d'utilisation des fonctions d'exportation du module ExtractedInfoModuleV2. `readme`
+- [Facteurs Influençant la Complexité des Améliorations](development/data/planning/complexity-factors.md) - Ce document identifie et décrit les facteurs qui influencent la complexité des améliorations logicielles. Ces facteur... `plan`
+- [Framework de Maintenance et Organisation Ultra-Avancé (FMOUA)](development/managers/maintenance-manager/MAINTENANCE_FRAMEWORK_SPECIFICATION.md) - **Version:** 1.0.0 `specification`
+- [Framework de Maintenance et Organisation Ultra-Avancé (FMOUA)](development/managers/maintenance-manager/IMPLEMENTATION_FINAL_REPORT.md) - *Généré le: 9 juin 2025*
+- [Gestionnaire de MEMORIES pour Augment](development/scripts/maintenance/augment/README.md) - Ce dossier contient des scripts et modules pour amÃ©liorer l'autonomie, la proactivitÃ© et la granularitÃ© des rÃ... `readme`
+- [GitWorkflowManager Implementation Complete - Final Summary](development/managers/git-workflow-manager/IMPLEMENTATION_COMPLETE.md) - The GitWorkflowManager has been successfully implemented with comprehensive workflow support, testing, and documentation...
+- [Granularisation des Phases d'AmÃ©lioration du Workflow de Roadmap](development/roadmap/parser/roadmap-converted-direct.md) - - [ ] **Objectif** : RÃ©duire de 90% le temps consacrÃ© Ã  la mise Ã  jour manuelle de la roadmap `roadmap`
+- [Guide d'utilisation de Hygen pour scripts](development/scripts/documentation/hygen-guide.md) - Ce guide explique comment utiliser Hygen pour gÃ©nÃ©rer des scripts standardisÃ©s pour le projet. `guide`
+- [Guide d'utilisation du Gestionnaire de Dépendances Go](development/managers/dependency-manager/GUIDE_UTILISATEUR.md) - Le gestionnaire de dépendances Go pour EMAIL_SENDER_1 est un outil complet qui permet de gérer facilement les dépenda... `guide`
+- [Guide de gestion des cas ambigus](development/tools/documentation-tools/Ambiguous-Format-Handling.md) - La dÃ©tection automatique de format peut parfois Ãªtre ambiguÃ«, c'est-Ã -dire que plusieurs formats peuvent cor...
+- [Guide de migration vers PowerShell 7 pour le module FileContentIndexer](development/scripts/utils/CompatibleCode/FileContentIndexer-MigrationGuide.md) - Ce guide explique comment migrer votre code du module FileContentIndexer de PowerShell 5.1 vers PowerShell 7, en mettant... `guide`
+- [Guide de rÃ©fÃ©rence rapide - Format-Converters](development/tools/documentation-tools/Quick-Reference.md) - ```powershell
+- [Guide des Critères d'Estimation](development/data/planning/estimation-criteria-guide.md) - Ce document présente les critères d'estimation d'effort pour les améliorations logicielles. Il sert de guide de réf�... `plan` `guide`
+- [INTEGRATION_GUIDE](development/managers/branching-manager/INTEGRATION_GUIDE.md) `guide`
+- [INTERFACE_IMPLEMENTATION_COMPLETE](development/managers/tools/INTERFACE_IMPLEMENTATION_COMPLETE.md)
+- [Identification des CompÃ©tences Requises pour les AmÃ©liorations](development/data/planning/required-skills.md) - Ce document prÃ©sente l'identification des compÃ©tences requises pour les amÃ©liorations identifiÃ©es pour les d... `plan`
+- [Identification des Risques Techniques des AmÃ©liorations](development/data/planning/technical-risks.md) - Ce document prÃ©sente l'identification des risques techniques associÃ©s aux amÃ©liorations identifiÃ©es pour les... `plan`
+- [Index des fichiers du module d'intégration pour le reporting](development/scripts/extraction/Examples/Integration-Reporting-Index.md) - Ce document liste tous les fichiers du module d'intégration pour le reporting des informations extraites et décrit bri...
+- [Indicateurs Clés de Performance (KPIs) Applicatifs](development/testing/analytics/application_kpis.md) - Ce document définit les indicateurs clés de performance (KPIs) au niveau applicatif qui sont utilisés pour surveiller...
+- [Indicateurs Clés de Performance (KPIs) Métier](development/testing/analytics/business_kpis.md) - Ce document définit les indicateurs clés de performance (KPIs) métier qui sont utilisés pour mesurer, analyser et op...
+- [Indicateurs Clés de Performance (KPIs) Système](development/testing/analytics/system_kpis.md) - Ce document définit les indicateurs clés de performance (KPIs) au niveau système qui sont utilisés pour surveiller, ...
+- [Insights Automatisés - Analyse des Patterns d'Erreurs](development/tools/insights-tools/2025-04-14-Insights-Patterns-Erreurs.md) - *Généré le 14 avril 2025*
+- [Inspection PrÃ©ventive des Scripts PowerShell](development/scripts/maintenance/standards/README.md) - Ce module fournit des outils pour inspecter prÃ©ventivement les scripts PowerShell et dÃ©tecter les problÃ¨mes pot... `readme`
+- [Integration - Intégrations](development/scripts/roadmap/integration/README.md) - Ce dossier contient les scripts d'intégration du système de roadmap avec d'autres systèmes. `roadmap` `readme`
+- [Intégration](development/scripts/analysis/integration/README.md) - Ce dossier contient des scripts pour l''intégration avec des outils tiers. `readme`
+- [Inventaire du manager de dépendances (dependency-manager)](development/managers/dependency-manager/inventory.md) - - **dependency_manager.go** (package: dependency)
+- [Justifications des Évaluations de Complexité Technique](development/data/planning/complexity-evaluation-justifications.md) - Ce document présente les justifications détaillées des évaluations de complexité technique attribuées aux amélior... `plan`
+- [Liste des Compétences](development/data/planning/skills-list.md) - - PowerShell Avancé `plan`
+- [Liste des Compétences](development/data/planning/skills-list-formatted.md) - Cette amélioration vise à optimiser les performances des applications. `plan`
+- [Maintenance - Scripts de maintenance](development/scripts/roadmap/maintenance/README.md) - Ce dossier contient les scripts de maintenance pour le système de roadmap. `roadmap` `readme`
+- [Matrice d'Estimation d'Effort](development/data/planning/effort-estimation-matrix.md) - Ce document présente une matrice d'estimation d'effort pour les améliorations logicielles. Cette matrice combine les f... `plan`
+- [Matrice de CompÃ©tences par Gestionnaire](development/data/planning/skills-matrix.md) - Ce document prÃ©sente une matrice de compÃ©tences par gestionnaire, ce qui permet de visualiser les compÃ©tences r... `plan`
+- [Mise en Cache PrÃ©dictive et Adaptative](development/tools/cache-tools/PredictiveCache/README.md) - Ce module Ã©tend le PSCacheManager avec des capacitÃ©s de mise en cache prÃ©dictive et adaptative, permettant d'op... `readme`
+- [Mode ARCHI](development/methodologies/modes/mode_archi.md) - Le mode ARCHI (Architecture) est un mode opérationnel dédié à la conception, la documentation et la validation de l�...
+- [Mode C-BREAK (Détection et Résolution des Dépendances Circulaires)](development/methodologies/modes/mode_c-break.md) - Le mode C-BREAK (Cycle Breaker) est un mode opérationnel conçu pour détecter, analyser et corriger les dépendances c...
+- [Mode CHECK Amélioré](development/methodologies/modes/mode_check_enhanced.md) - Le mode CHECK amélioré est une version avancée du mode CHECK qui vérifie si les tâches sélectionnées ont été im...
+- [Mode DEBUG](development/methodologies/modes/mode_debug.md) - Le mode DEBUG est un mode opérationnel qui aide à identifier, analyser et résoudre les problèmes dans le code et les...
+- [Mode DEV-R](development/methodologies/modes/mode_dev_r.md) - Le mode DEV-R (Développement Roadmap) permet d’implémenter concrètement toutes les tâches d’un plan de développ...
+- [Mode GRAN](development/methodologies/modes/mode_gran.md) - Le mode GRAN (Granularisation) permet de décomposer une ou plusieurs tâches complexes en sous-tâches plus petites, ad...
+- [Mode OPTI](development/methodologies/modes/mode_opti.md) - Le mode OPTI (Optimisation) est un mode opÃ©rationnel qui se concentre sur l'amÃ©lioration des performances, de la l...
+- [Mode PREDIC](development/methodologies/modes/mode_predic.md) - Le mode PREDIC (PrÃ©diction) est un mode opÃ©rationnel qui se concentre sur l'anticipation des performances, la dÃ�...
+- [Mode REVIEW](development/methodologies/modes/mode_review.md) - Le mode REVIEW est un mode opÃ©rationnel qui se concentre sur l'Ã©valuation et l'amÃ©lioration de la qualitÃ© du...
+- [Mode TEST](development/methodologies/modes/mode_test.md) - Le mode TEST est un mode opérationnel dédié à la création, l’exécution et la validation des tests pour garantir ...
+- [Modes opÃ©rationnels](development/roadmap/parser/modes/README.md) - Ce rÃ©pertoire contient les scripts pour les diffÃ©rents modes opÃ©rationnels du module roadmap-parser. `roadmap` `readme`
+- [Module Format-Converters](development/tools/documentation-tools/Format-Converters.md) - Le module Format-Converters est un outil puissant pour la dÃ©tection, la conversion et l'analyse de formats de fichier...
+- [Module LocalCache](development/scripts/utils/cache/README.md) - Ce module fournit une implÃ©mentation simple et efficace d'un systÃ¨me de cache local persistant basÃ© sur la bibl... `readme`
+- [Module d'analyse des workflows n8n](development/scripts/workflow/analysis/README.md) - Ce module fournit des fonctionnalités pour analyser les workflows n8n, détecter les activités, extraire les transitio... `readme`
+- [Module de compatibilitÃ© entre environnements](development/scripts/maintenance/environment-compatibility/README.md) - Ce module fournit des fonctions pour amÃ©liorer la compatibilitÃ© des scripts PowerShell entre diffÃ©rents environ... `readme`
+- [Module de gestion d'erreurs](development/scripts/maintenance/error-handling/README.md) - Ce rÃ©pertoire contient un module PowerShell pour la gestion d'erreurs dans les scripts, ainsi que des outils pour ajo... `readme`
+- [Modules et Outils Communs](development/scripts/analysis/common/README.md) - Ce dossier contient des modules et outils communs utilisés par les différents scripts d''analyse. `readme`
+- [Métriques pour l'Estimation des Ressources](development/data/planning/resource-metrics.md) - Ce document établit les métriques utilisées pour l'estimation des ressources nécessaires à l'implémentation des am... `plan`
+- [Niveaux de Complexité Technique](development/data/planning/complexity-levels.md) - Ce document définit les niveaux de complexité technique utilisés pour l'estimation de l'effort des améliorations. Ce... `plan`
+- [Optimisation Dynamique de la ParallÃ©lisation](development/scripts/utils/ProactiveOptimization/DynamicParallelization-README.md) - Ce module implÃ©mente un systÃ¨me d'optimisation dynamique de la parallÃ©lisation qui ajuste automatiquement le no... `readme`
+- [Outils de gestion des rÃ©fÃ©rences](development/scripts/maintenance/references/README.md) - Ce rÃ©pertoire contient des scripts pour dÃ©tecter et mettre Ã  jour les rÃ©fÃ©rences brisÃ©es dans les fich... `readme`
+- [PHASE 1: Analyse](development/roadmap/tools/test-example.txt) - Identifier les besoins (2 jours) `roadmap`
+- [PHASE 2 - INTÉGRATION HYBRIDE AST+RAG - DOCUMENTATION COMPLÈTE](development/managers/contextual-memory-manager/PHASE_2_IMPLEMENTATION_COMPLETE.md) - La **PHASE 2** a été **COMPLÈTEMENT IMPLÉMENTÉE** selon les spécifications du plan `plan-dev-v61-memory.md`. Cette...
+- [PHASE 3 : TESTS & VALIDATION - IMPLÉMENTATION COMPLÈTE](development/managers/contextual-memory-manager/PHASE_3_IMPLEMENTATION_COMPLETE.md) - Cette implémentation couvre la **PHASE 3** du plan de développement du gestionnaire de mémoire contextuelle, se conce...
+- [PHASE 4 : MÉTRIQUES & MONITORING - IMPLÉMENTATION COMPLÈTE](development/managers/contextual-memory-manager/PHASE_4_IMPLEMENTATION_COMPLETE.md) - Cette implémentation couvre la **PHASE 4** du plan de développement du gestionnaire de mémoire contextuelle, se conce...
+- [PRODUCTION_GUIDE](development/managers/branching-manager/PRODUCTION_GUIDE.md) `guide`
+- [Phase 2.2.3 - API REST for Conformity - Implementation Complete](development/managers/integrated-manager/PHASE_2_2_3_COMPLETE.md) - This document confirms the successful completion of Phase 2.2.3 - API REST for conformity implementation in the EMAIL_SE...
+- [Phase 4 - Analyse Algorithmique des Patterns - COMPLET ✅](development/managers/error-manager/PHASE_4_COMPLETE_REPORT.md) - **Date d'achèvement :** 4 juin 2025
+- [Phase Analyse et conception terminée](development/roadmap/declarations/example-declarations.txt) - Tâche Analyser les besoins du projet dans la phase Analyse et conception terminée `roadmap`
+- [Phase Analyse et conception terminée](development/roadmap/declarations/augment-declarations.txt) - Phase Gestion des problèmes d'encodage et caractères spéciaux terminée `roadmap`
+- [Plan d'intÃ©gration de Hygen pour scripts](development/scripts/documentation/hygen-integration-plan.md) - Ce document prÃ©sente le plan d'intÃ©gration de Hygen dans le workflow de dÃ©veloppement scripts. `plan`
+- [Plan de développement {VERSION} - {TITLE}](development/templates/plan-dev/plan-dev-template.md) - *Version 1.0 - {DATE} - Progression globale : 0%* `plan`
+- [Plan de développement {VERSION} - {TITLE}](development/templates/plan-dev/plan-dev-template.txt) - *Version 1.0 - {DATE} - Progression globale : 0%* `plan`
+- [Plan de développement {VERSION} - {TITLE}](development/templates/plan-dev/plan-dev-header.md) - *Version 1.0 - {DATE} - Progression globale : 0%* `plan`
+- [Plan des templates Hygen pour scripts](development/scripts/documentation/hygen-templates-plan.md) - Ce document prÃ©sente le plan des templates Hygen Ã  dÃ©velopper pour le dossier scripts. `plan`
+- [Plan v6.1 - Résumé des Gains et Impact](development/managers/contextual-memory-manager/PHASE_5_6_IMPLEMENTATION_COMPLETE.md) - - **Précision contextuelle** : 65% → 85-90% (+25-40%)
+- [Politique d’Orchestration — CacheManager v74](development/managers/cache-manager/cache_manager_policy.md) - - LMCache est utilisé par défaut pour tous les logs/contextes.
+- [Processus de préparation des données de performance](development/testing/analytics/data_preparation_process.md) - Ce document décrit le processus d'extraction, de nettoyage, de transformation et de préparation des données historiqu...
+- [Rapport Final d’Implémentation du Plan v73 — dependency-manager](development/managers/dependency-manager/final_report.md) - Ce rapport synthétise l'implémentation du "Plan de Développement v73 — Refactoring & Remise à Plat Architecturale ...
+- [Rapport d'??valuation des Comp??tences](development/data/planning/skills-evaluation.md) - 1. [M??thodologie](#m??thodologie) `plan`
+- [Rapport d'analyse des anomalies](development/testing/analytics/anomaly_analysis_report.md) - Ce rapport présente les résultats de l'analyse des anomalies dans les données de performance historiques. L'objectif ...
+- [Rapport d'analyse des corrélations entre métriques](development/testing/analytics/correlation_analysis_report.md) - Ce rapport présente les résultats de l'analyse des corrélations et des relations causales entre les différentes mét...
+- [Rapport d'analyse des tendances et patterns](development/testing/analytics/trend_analysis_report.md) - Ce rapport présente les résultats de l'analyse des tendances et patterns dans les données de performance. L'objectif ...
+- [Rapport d'erreurs - Achèvement des phases 3, 4 et 5 du Script Manager](development/testing/reports/script_manager_phases_3_4_5_completion.md) - Ce rapport documente les problèmes rencontrés et résolus lors de l'implémentation des phases 3, 4 et 5 du Script Man...
+- [Rapport d'exÃ©cution des tests - Module CycleDetector](development/testing/reports/CycleDetector_TestReport.md) - - **Date d'exÃ©cution**: 2025-04-17 18:20:13
+- [Rapport d'intÃ©gration avec TestOmnibus](development/testing/tests/test_integration_report.md) - Ce rapport prÃ©sente l'intÃ©gration du systÃ¨me d'analyse des patterns d'erreurs inÃ©dits avec TestOmnibus.
+- [Rapport de Couverture de Tests — dependency-manager](development/managers/dependency-manager/coverage_report.md) - - **Fichiers testés** : Tous les fichiers `.go` du manager de dépendances et de ses modules.
+- [Rapport de Nettoyage du DÃ©pÃ´t](development/tools/reports-tools/cleanup-20250416-171652.md) - Date: 2025-04-16 17:16:59
+- [Rapport de Nettoyage du DÃ©pÃ´t](development/tools/reports-tools/cleanup-20250416-181059.md) - **Date:** 2025-04-16 18:11:47
+- [Rapport de Nettoyage du DÃ©pÃ´t](development/tools/reports-tools/cleanup-20250416-181231.md) - **Date:** 2025-04-16 18:13:20
+- [Rapport de Nettoyage du DÃ©pÃ´t](development/tools/reports-tools/cleanup-20250416-180747.md) - **Date:** 2025-04-16 18:08:30
+- [Rapport de Nettoyage du DÃ©pÃ´t](development/tools/reports-tools/cleanup-20250416-180542.md) - **Date:** 2025-04-16 18:06:28
+- [Rapport de Nettoyage du DÃ©pÃ´t](development/tools/reports-tools/cleanup-20250416-180909.md) - **Date:** 2025-04-16 18:09:51
+- [Rapport de Nettoyage du DÃ©pÃ´t](development/tools/reports-tools/cleanup-20250416-170439.md) - Date: 2025-04-16 17:06:06
+- [Rapport de Nettoyage du DÃ©pÃ´t](development/tools/reports-tools/cleanup-20250416-171805.md) - Date: 2025-04-16 17:18:14
+- [Rapport de Nettoyage du DÃ©pÃ´t](development/tools/reports-tools/cleanup-20250416-180347.md) - **Date:** 2025-04-16 18:04:32
+- [Rapport de Tests - Module DependencyCycleResolver](development/testing/reports/DependencyManager_TestReport.md) - **Date du rapport** : 20/04/2025
+- [Rapport de Validation de Structure du DÃ©pÃ´t](development/tools/reports-tools/structure-validation-20250416-164455.md) - Date: 2025-04-16 16:44:56
+- [Rapport de performance du module CycleDetector](development/testing/performance/PerformanceReport.md) - Ce rapport présente les résultats des tests de performance du module CycleDetector sur différentes tailles de graphes...
+- [Rapport de prÃ©diction des erreurs en cascade](development/testing/tests/test_cascade_report.md) - *GÃ©nÃ©rÃ© le 2025-04-14 02:45:20*
+- [Rapport des Sections du Document](development/data/planning/document-sections.md) - - **Définition des Niveaux d'Expertise** (Niveau 1, Ligne 1) `plan`
+- [Rapport d’Analyse d’Écart (Gap Analysis) — dependency-manager](development/managers/dependency-manager/gap_report.md) - - **Aucune duplication détectée** : tous les types, interfaces et méthodes sont centralisés dans `manager_interfac...
+- [Rapport d’Observabilité — CacheManager v74](development/managers/cache-manager/observability_report.md) - - Pipeline de logging centralisé opérationnel (structure Go, Bash, PowerShell en place)
+- [Reporting](development/scripts/analysis/reporting/README.md) - Ce dossier contient des scripts pour la génération et la gestion de rapports. `readme`
+- [Roadmap](development/scripts/analysis/roadmap/README.md) - Ce dossier contient des scripts pour la mise à jour et la gestion de la roadmap. `roadmap` `readme`
+- [Roadmap Parser](development/roadmap/scripts/parser/README.md) - Ce rÃ©pertoire contient des outils pour l'analyse, la manipulation et la gestion des fichiers de roadmap du projet. `roadmap` `readme`
+- [Roadmap de Migration Progressive vers des Agents IA — dependency-manager](development/managers/dependency-manager/agents_migration.md) - Ce document décrit la roadmap pour la transition progressive des managers systèmes actuels du `dependency-manager` ver...
+- [Roadmap de Test](development/roadmap/parser/roadmap-test-direct2.md) - Ceci est une roadmap de test pour valider le modÃ¨le objet. `roadmap`
+- [Roadmap de Test](development/roadmap/parser/roadmap-test-direct.md) - Ceci est une roadmap de test pour valider le modÃ¨le objet. `roadmap`
+- [Roadmap de test](development/scripts/roadmap-tools/test_roadmap.md) - - [x] 2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.1 Creer la structure de base de la fonction avec gestion de la profondeur maximale `roadmap`
+- [RoadmapParserCore](development/roadmap/parser/module/README.md) - RoadmapParserCore est un module PowerShell conÃ§u pour analyser, manipuler et gÃ©rer des roadmaps au format markdown... `roadmap` `readme`
+- [Règles de Filtrage des Logs — CacheManager v74](development/managers/cache-manager/logging_filter_rules.md) - - Seuls les logs de niveau >= configuré (ex : INFO, WARN, ERROR, FATAL) sont stockés par défaut.
+- [Résumé des travaux réalisés](development/scripts/extraction/SUMMARY.md) - 1. **Problèmes de dépendances circulaires**
+- [SYNTHESIS_COMPLETE](development/managers/branching-manager/SYNTHESIS_COMPLETE.md)
+- [Sauvegardes de maintenance](development/scripts/maintenance/backups/README.md) - Ce rÃ©pertoire contient les sauvegardes crÃ©Ã©es avant les opÃ©rations de maintenance. `readme`
+- [Scripts d'organisation](development/scripts/maintenance/organize/README.md) - Ce répertoire contient des scripts pour organiser les fichiers et dossiers du projet. `readme`
+- [Scripts d'organisation pour Roadmap](development/scripts/roadmap/organize/README.md) - Ce répertoire contient des scripts pour organiser les fichiers et dossiers du répertoire roadmap. `roadmap` `readme`
+- [Scripts de migration](development/scripts/maintenance/migrate/README.md) - Ce rÃ©pertoire contient des scripts pour migrer des fichiers d'un rÃ©pertoire Ã  un autre. `readme`
+- [Spécification Technique — Pipeline de Logging & CacheManager (v74)](development/managers/cache-manager/logging_cache_pipeline_spec.md) - Définir l’architecture, les interfaces, les flux de données et les responsabilités du pipeline de logging centralis... `specification`
+- [Spécification de l’API — CacheManager v74](development/managers/cache-manager/cache_manager_api.md) - - **Description** : Ingestion d’un log centralisé.
+- [Spécification des Refactoring & Conventions — dependency-manager](development/managers/dependency-manager/refactoring_spec.md) - - Garantir la robustesse, la maintenabilité et la conformité Go idiomatique du manager de dépendances. `specification`
+- [StorageManager API Documentation](development/managers/storage-manager/API_DOCUMENTATION.md) - Le StorageManager fournit une interface unifiée pour la gestion des connexions, migrations de schéma et opérations CR...
+- [Structure du Document des Niveaux d'Expertise](development/data/planning/expertise-document-structure.md) - Ce document décrit la structure du document des niveaux d'expertise, identifiant les sections principales et leur organ... `plan`
+- [SystÃ¨me d'Optimisation Proactive](development/scripts/utils/ProactiveOptimization/README.md) - Ce module fournit un ensemble d'outils pour le monitoring et l'analyse comportementale des scripts, permettant d'optimis... `readme`
+- [SystÃ¨me d'Optimisation Proactive BasÃ© sur l'Usage](development/scripts/utils/UsageMonitor/README.md) - Ce module fournit un systÃ¨me complet pour collecter, analyser et optimiser l'utilisation des scripts PowerShell en fo... `readme`
+- [SystÃ¨me d'apprentissage des erreurs PowerShell](development/scripts/maintenance/error-learning/README.md) - Ce systÃ¨me permet de collecter, analyser et apprendre des erreurs PowerShell pour amÃ©liorer la qualitÃ© du code ... `readme`
+- [Système d'Analyse Sémantique des Commits - Phase 2 Implémentée](development/hooks/commit-interceptor/SEMANTIC_IMPLEMENTATION_REPORT.md) - **Phase 2.1.1 & 2.1.2 : ✅ COMPLÈTEMENT IMPLÉMENTÉES**
+- [Système de détection automatique des tâches](development/roadmap/tools/task-detection/README.md) - Ce dossier contient les scripts et les ressources nécessaires pour détecter automatiquement les tâches dans les conve... `roadmap` `readme`
+- [TOOLS_ECOSYSTEM_DOCUMENTATION](development/managers/tools/TOOLS_ECOSYSTEM_DOCUMENTATION.md)
+- [TOOLS_ECOSYSTEM_DOCUMENTATION_V3](development/managers/tools/TOOLS_ECOSYSTEM_DOCUMENTATION_V3.md)
+- [TestOmnibus](development/scripts/utils/TestOmnibus/README.md) - TestOmnibus est un systÃ¨me centralisÃ© pour exÃ©cuter et gÃ©rer tous les tests unitaires du projet. Il permet d... `readme`
+- [TestOmnibus](development/scripts/python/testing/README.md) - TestOmnibus est un outil d'exÃ©cution et d'analyse rapide des tests Python. Il permet d'exÃ©cuter les tests Python, ... `readme`
+- [TestOmnibusOptimizer](development/scripts/utils/TestOmnibusOptimizer/README.md) - Ce module intÃ¨gre TestOmnibus et le SystÃ¨me d'Optimisation Proactive pour crÃ©er une solution complÃ¨te d'anal... `readme`
+- [Tests - Tests unitaires et d'intégration](development/scripts/roadmap/Tests/README.md) - Ce dossier contient les tests unitaires et d'intégration pour le système de roadmap. `roadmap` `readme`
+- [Tests Unitaires pour le Module ProactiveOptimization](development/tools/optimization-tools/tests/README.md) - Ce dossier contient des tests unitaires pour le module ProactiveOptimization, utilisant le framework Pester. `readme`
+- [Tests de la solution d'organisation des scripts](development/scripts/maintenance/test/README.md) - Ce dossier contient les tests unitaires et d'intégration pour la solution d'organisation des scripts de maintenance. `readme`
+- [Tests des Composants](development/testing/tests/components.md) - Cette page décrit les tests unitaires pour les composants Vue.js du système de journal de bord RAG.
+- [Tests des Services](development/testing/tests/services.md) - Cette page décrit les tests unitaires pour les services du système de journal de bord RAG.
+- [Tests du Mode Manager](development/scripts/mode-manager/tests/README.md) - Ce répertoire contient les tests pour le mode manager. Les tests sont organisés par type et peuvent être exécutés i... `readme`
+- [Tests pour la structure de documentation Augment](development/testing/tests/augment/README.md) - Ce dossier contient les tests unitaires et d'intégration pour la structure de documentation Augment. `readme`
+- [Tests unitaires du script manager](development/scripts/script-manager/testing/README.md) - Ce dossier contient les tests unitaires pour le script manager. Les tests sont écrits en utilisant le framework Pester ... `readme`
+- [Tests unitaires pour les scripts de test de pull requests](development/scripts/testing/tests/README.md) - Ce dossier contient les tests unitaires pour les scripts de test de pull requests. `readme`
+- [Titre Principal: Introduction](development/scripts/planning/test-document.md) - Contenu du titre principal. `plan`
+- [Utils - Utilitaires](development/scripts/roadmap/utils/README.md) - Ce dossier contient les scripts utilitaires pour la gestion des roadmaps. `roadmap` `readme`
+- [VISUAL_DIAGRAMS](development/managers/branching-manager/VISUAL_DIAGRAMS.md)
+- [Visualisation des Roadmaps en Carte de Métro](development/scripts/roadmap/visualization/README.md) - Ce module permet de visualiser les roadmaps sous forme de carte de métro, en mettant en évidence les interconnexions e... `roadmap` `readme`
+- [WORKFLOW_GUIDE](development/managers/branching-manager/WORKFLOW_GUIDE.md) `guide`
+- [[2025-04-07 01:39:55] Catégorie: 7, ID: 7.2, Demande: Ajout...](development/roadmap/tools/requests-log.txt) - [2025-04-07 01:39:55] Catégorie: 7, ID: 7.2, Demande: Ajouter un systeme de recherche dans la roadmap `roadmap`
+- [analysis](development/scripts/journal/analysis/README.md) - Analyse des journaux `readme`
+- [automation](development/scripts/utils/automation/README.md) - Automatisation `readme`
+- [cleanup](development/scripts/maintenance/cleanup/README.md) - Ce dossier fait partie de la section [maintenance](..) qui contient scripts de maintenance. `readme`
+- [config](development/scripts/core/config/README.md) - Configuration du systÃ¨me `readme`
+- [config](development/scripts/script-manager/config/README.md) - Configuration `readme`
+- [data](development/scripts/script-manager/data/README.md) - DonnÃ©es gÃ©nÃ©rÃ©es `readme`
+- [encoding](development/scripts/maintenance/encoding/README.md) - Gestion d'encodage `readme`
+- [env](development/scripts/setup/env/README.md) - Configuration d'environnement `readme`
+- [export](development/scripts/workflow/export/README.md) - Export de workflows `readme`
+- [external](development/scripts/api/external/README.md) - Autres APIs externes `readme`
+- [git](development/scripts/utils/git/README.md) - Utilitaires Git `readme`
+- [git](development/scripts/setup/git/README.md) - Configuration Git `readme`
+- [github.com/contextual-memory-manager/pkg/manager](development/managers/contextual-memory-manager/output.txt) - pkg\manager\sqlite_index_manager.go:225:28: invalid operation: existing.Metadata["version"] (map index expression of typ...
+- [guides](development/scripts/documentation/guides/README.md) - Guides d'utilisation `guide` `readme`
+- [import](development/scripts/workflow/import/README.md) - Import de workflows `readme`
+- [integration](development/scripts/testing/integration/README.md) - Tests d'intÃ©gration `readme`
+- [integrations](development/scripts/journal/integrations/README.md) - IntÃ©grations avec d'autres systÃ¨mes `readme`
+- [journal](development/scripts/python/journal/README.md) - Journal en Python `readme`
+- [json](development/scripts/utils/json/README.md) - Manipulation de JSON `readme`
+- [logging](development/scripts/core/logging/README.md) - Journalisation et rapports `readme`
+- [main_test.go:108: Failed to create GitWorkflowManager: faile...](development/managers/git-workflow-manager/test_results.txt) - main_test.go:108: Failed to create GitWorkflowManager: failed to create branch manager: failed to open repository at .: ...
+- [markdown](development/scripts/utils/markdown/README.md) - Manipulation de Markdown `readme`
+- [mcp](development/scripts/setup/mcp/README.md) - Configuration MCP `readme`
+- [modules](development/scripts/script-manager/modules/README.md) - Modules du gestionnaire `readme`
+- [monitoring](development/scripts/workflow/monitoring/README.md) - Surveillance des workflows `readme`
+- [monitoring](development/scripts/maintenance/monitoring/README.md) - Surveillance du systÃ¨me `readme`
+- [n8n](development/scripts/api/n8n/README.md) - Ce dossier fait partie de la section [api](..) qui contient scripts d'interaction avec les apis. `readme`
+- [performance](development/scripts/testing/performance/README.md) - Tests de performance `readme`
+- [processing](development/scripts/email/processing/README.md) - Traitement d'emails `readme`
+- [rag](development/scripts/journal/rag/README.md) - FonctionnalitÃ©s RAG `readme`
+- [references](development/scripts/documentation/references/README.md) - Documentation de rÃ©fÃ©rence `readme`
+- [repo](development/scripts/maintenance/repo/README.md) - Maintenance du dÃ©pÃ´t `readme`
+- [roadmap-converted](development/roadmap/parser/roadmap-converted.md) `roadmap`
+- [roadmap-test](development/roadmap/parser/roadmap-test.md) `roadmap`
+- [sending](development/scripts/email/sending/README.md) - Envoi d'emails `readme`
+- [templates](development/scripts/workflow/templates/README.md) - Templates de workflows `readme`
+- [templates](development/scripts/email/templates/README.md) - Templates d'emails `readme`
+- [unit](development/scripts/testing/unit/README.md) - Tests unitaires `readme`
+- [utils](development/scripts/python/utils/README.md) - Utilitaires Python `readme`
+- [utils](development/scripts/core/utils/README.md) - Utilitaires gÃ©nÃ©riques `readme`
+- [validation](development/scripts/workflow/validation/README.md) - Validation de workflows `readme`
+- [web](development/scripts/journal/web/README.md) - Interface web `readme`
+- [{"level":"error","ts":1749005025.6754868,"caller":"error-man...](development/managers/error-manager/test_output.txt) - {"level":"error","ts":1749005025.6754868,"caller":"error-manager/catalog.go:13","msg":"Error cataloged","id":"456e7890-f...
+- [Ã‰valuation de la DifficultÃ© d'ImplÃ©mentation des AmÃ©liorations](development/data/planning/implementation-difficulty.md) - Ce document prÃ©sente l'Ã©valuation de la difficultÃ© d'implÃ©mentation des amÃ©liorations identifiÃ©es pour... `plan`
+- [✅ CONTEXTUAL MEMORY SYSTEM - IMPLEMENTATION COMPLETE](development/managers/contextual-memory-manager/MISSION_COMPLETE.md) - The **complete contextual memory system** for managing documents with indexing, retrieval, and integration capabilities ...
+- [✅ CONTEXTUAL MEMORY SYSTEM - METADATA TYPE FIXES COMPLETE](development/managers/contextual-memory-manager/FIXES_COMPLETE.md) - **Problem**: Compilation error in `UpdateDocument` method due to type assertion on `map[string]string` metadata
+- [﻿ftfy==6.3.1](development/scripts/python/requirements.txt)
+- [🌿 FRAMEWORK DE BRANCHEMENT 8-NIVEAUX - RAPPORT DE STATUT FINAL](development/managers/branching-manager/FINAL_STATUS_REPORT.md) - **8 juin 2025 - 22:56**
+- [🎉 ConfigManager Implementation - MISSION ACCOMPLISHED](development/managers/config-manager/MISSION_ACCOMPLISHED.md) - The ConfigManager module for the EMAIL_SENDER_1 project has been **successfully completed** and is ready for production ...
+- [🎉 FMOUA Implementation Complete - Final Success Report](development/managers/maintenance-manager/FMOUA_IMPLEMENTATION_COMPLETE.md) - **Date:** December 9, 2024
+- [🎉 FMOUA Integration Test Execution Summary - Final Success Report](development/managers/maintenance-manager/INTEGRATION_TEST_EXECUTION_REPORT.md) - **Test Execution Date:** January 9, 2025
+- [🎉 LIVE VALIDATION COMPLETE - 8-LEVEL BRANCHING FRAMEWORK](development/managers/branching-manager/LIVE_VALIDATION_COMPLETE_REPORT.md) - Date: 2025-06-13
+- [🎉 TEST SUCCESS REPORT - 100% RÉUSSITE ATTEINTE](development/hooks/commit-interceptor/TEST_SUCCESS_REPORT.md) - **Date**: 11 juin 2025
+- [🎯 FMOUA Project Completion Report](development/managers/maintenance-manager/FMOUA_PROJECT_COMPLETION_REPORT.md) - **Date:** $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+- [🎯 FRAMEWORK TEST VALIDATION - FINAL RESULTS](development/managers/branching-manager/FRAMEWORK_TEST_FINAL_VALIDATION.md) - **Date:** 2025-06-13
+- [🎯 Framework de Branchement 8-Niveaux - COMMIT & PUSH COMPLETION REPORT](development/managers/branching-manager/COMMIT_PUSH_COMPLETION_REPORT.md) - **Date:** 2025-06-09
+- [🎯 PHASE 1 COMPLETE: Extension AST du ContextualMemoryManager](development/managers/contextual-memory-manager/PHASE_1_AST_IMPLEMENTATION_COMPLETE.md) - **Date de completion:** 18 juin 2025
+- [🎯 Plan v6.1 - IMPLÉMENTATION COMPLÈTE - RAPPORT FINAL](development/managers/contextual-memory-manager/PLAN_V61_FINAL_IMPLEMENTATION_REPORT.md) - **18 juin 2025, 14:30 PM** `plan`
+- [🎯 SYNTHÈSE FINALE - RÉORGANISATION TOOLS ACHEVÉE](development/managers/tools/SYNTHESE_FINALE_REORGANISATION.md) - - **Date d'achèvement :** 6 juin 2025
+- [📋 CHECKLIST FINALE DE VALIDATION - Plan v6.1](development/managers/contextual-memory-manager/FINAL_VALIDATION_CHECKLIST.md) - - [x] Interface `ASTAnalysisManager` implémentée
+- [🔬 GRANULARISATION ULTRA-DÉTAILLÉE FMOUA - 10 NIVEAUX](development/managers/maintenance-manager/FMOUA_GRANULARISATION_5_NIVEAUX.md) - **Basé sur:**
+- [ActiveRoadmap - Générée le 2025-05-02 22:07:57](development/projet/roadmaps/views/ActiveRoadmap.md) - - [ ] **1.3.1** Système RAG (Retrieval-Augmented Generation) avec vectorisation `roadmap`
+- [Adaptateurs de cache](development/scripts/utils/cache/adapters/README.md) - Ce module fournit des adaptateurs de cache pour diffÃ©rents types de requÃªtes et d'API. `readme`
+- [Analyse des problÃ¨mes actuels de dÃ©tection automatique des formats](development/scripts/utils/analysis/FormatDetection_Analysis.md) - Ce document prÃ©sente une analyse approfondie des limitations et des problÃ¨mes rencontrÃ©s avec le systÃ¨me act...
+- [Analyser les besoins d'API](development/templates/subtasks/domains/backend.txt) - Concevoir le modèle de données
+- [Analyser les besoins d'infrastructure](development/templates/subtasks/domains/devops.txt) - Configurer l'environnement de développement
+- [Analyser les besoins d'interface utilisateur](development/templates/subtasks/domains/frontend.txt) - Créer les maquettes et wireframes
+- [Analyser les besoins de stockage](development/templates/subtasks/domains/database.txt) - Concevoir le schéma de base de données
+- [Analyser les besoins en documentation](development/templates/subtasks/domains/documentation.txt) - Définir la structure et le format des documents
+- [Analyser les besoins en intelligence artificielle](development/templates/subtasks/domains/ai-ml.txt) - Collecter et préparer les données d'entraînement
+- [Analyser les exigences de sécurité](development/templates/subtasks/domains/security.txt) - Identifier les vulnérabilités potentielles
+- [Analyser les exigences de test](development/templates/subtasks/domains/testing.txt) - Définir les cas de test
+- [Archive - Management](development/roadmap/scripts/management/archive/README.md) - Cette section contient les scripts liÃ©s Ã  l'archivage des tÃ¢ches dans la catÃ©gorie management. `roadmap` `readme`
+- [BRANCH_MANAGEMENT_STRUCTURE](development/managers/branching-manager/scripts/BRANCH_MANAGEMENT_STRUCTURE.md)
+- [Base de connaissances des erreurs](development/scripts/script-manager/data/error_knowledge_base.md) - Ce document centralise les erreurs rencontrÃ©es et leurs solutions pour faciliter le dÃ©pannage futur.
+- [Bonnes Pratiques pour les Tests Pester](development/tools/testing-tools/Documentation/PESTER_BEST_PRACTICES.md) - Ce guide prÃ©sente les bonnes pratiques pour Ã©crire des tests Pester efficaces et maintenables pour le module Forma...
+- [Cleanup - Nettoyage](development/scripts/roadmap/maintenance/cleanup/README.md) - Ce dossier contient les scripts de nettoyage et d'archivage. `roadmap` `readme`
+- [Config - Configuration](development/scripts/roadmap/rag/config/README.md) - Ce dossier contient les scripts de configuration du systÃ¨me RAG. `roadmap` `readme`
+- [ConfigurationMetadataExtractor](development/scripts/maintenance/modules/ConfigurationMetadataExtractor/README.md) - Module PowerShell pour l'extraction des métadonnées de configuration. `readme`
+- [Conversion - Core](development/roadmap/scripts/core/conversion/README.md) - Cette section contient les scripts liÃ©s Ã  la conversion de format dans la catÃ©gorie core. `roadmap` `readme`
+- [Converter - Convertisseurs de format](development/scripts/roadmap/core/converter/README.md) - Ce dossier contient les scripts pour convertir les roadmaps entre diffÃ©rents formats. `roadmap` `readme`
+- [DeepCloneTest-Results](development/tools/parallelization/tests/DeepCloneTest-Results.txt)
+- [Documentation des Tests Format-Converters](development/scripts/utils/Tests/Documentation/README.md) - Ce document explique les diffÃ©rences entre les tests simplifiÃ©s et les tests rÃ©els du module Format-Converters,... `readme`
+- [EMAIL_SENDER_1 Native Go Orchestrator - Implementation Complete](development/managers/branching-manager/orchestration/NATIVE-GO-ORCHESTRATOR-COMPLETE.md) - **Date**: May 27, 2025
+- [Encoding - Utils](development/roadmap/scripts/utils/encoding/README.md) - Cette section contient les scripts liÃ©s Ã  la gestion d'encodage dans la catÃ©gorie utils. `roadmap` `readme`
+- [Entries - Journal](development/roadmap/scripts/journal/entries/README.md) - Cette section contient les scripts liÃ©s Ã  la gestion des entrÃ©es de journal dans la catÃ©gorie journal. `roadmap` `readme`
+- [Export - Exportation](development/scripts/roadmap/utils/export/README.md) - Ce dossier contient les scripts pour exporter les roadmaps vers diffÃ©rents formats. `roadmap` `readme`
+- [Fonctions d'analyse statistique](development/scripts/extraction/Public/Analysis/README.md) - Ce répertoire contient des fonctions pour l'analyse statistique des objets d'information extraite. `readme`
+- [Granularisation des Phases d'AmÃ©lioration du Workflow de Roadmap](development/roadmap/scripts/parser/roadmap-converted-direct.md) - - [ ] **Objectif** : RÃ©duire de 90% le temps consacrÃ© Ã  la mise Ã  jour manuelle de la roadmap `roadmap`
+- [Guide d'utilisation du système de détection automatique des tâches](development/roadmap/tools/task-detection/USER-GUIDE.md) - Ce guide vous explique comment utiliser le système de détection automatique des tâches pour capturer les demandes dan... `roadmap` `guide`
+- [Guide de Migration des Tests SimplifiÃ©s vers les Tests RÃ©els](development/tools/testing-tools/Documentation/MIGRATION_GUIDE.md) - Ce guide explique comment migrer des tests simplifiÃ©s vers des tests rÃ©els pour le module Format-Converters. `guide`
+- [Helpers - Fonctions d'aide](development/scripts/roadmap/utils/helpers/README.md) - Ce dossier contient les fonctions d'aide gÃ©nÃ©rales pour la gestion des roadmaps. `roadmap` `readme`
+- [Import - Importation](development/scripts/roadmap/utils/import/README.md) - Ce dossier contient les scripts pour importer les roadmaps depuis diffÃ©rentes sources. `roadmap` `readme`
+- [Journal de dÃ©veloppement](development/scripts/script-manager/data/development_log.md) - - Correction du script `Detect-BrokenReferences.ps1` pour gÃ©rer les valeurs null dans l'analyse des fichiers
+- [Journal des erreurs](development/scripts/script-manager/data/error_log.md) - - **Message d'erreur** : `Exception lors de l'appel de Â« Matches Â» avec Â« 2 Â» argument(s) : Â« La valeur n...
+- [Kernel Density Estimation: Error Types](development/scripts/statistics/Documentation/KernelDensityEstimation-ErrorTypes.md) - This document defines the different types of errors that can occur in the kernel density estimation module and how they ...
+- [Kernel Density Estimation: Kernels and Methods](development/scripts/statistics/Documentation/KernelDensityEstimation-KernelsAndMethods.md) - This document provides an overview of the different kernel functions and bandwidth selection methods available for kerne...
+- [Kernel Density Estimation: Performance and Limitations](development/scripts/statistics/Documentation/KernelDensityEstimation-PerformanceAndLimitations.md) - This document provides information about the performance characteristics and limitations of kernel density estimation in...
+- [Manager - Gestion principale](development/scripts/roadmap/core/manager/README.md) - Ce dossier contient les scripts principaux de gestion des roadmaps. `roadmap` `readme`
+- [Metadata Extraction and Normalization](development/scripts/roadmap/rag/metadata/README.md) - This module provides tools for extracting and normalizing metadata from tags. `roadmap` `readme`
+- [Mise en Cache PrÃ©dictive et Adaptative](development/scripts/utils/PSCacheManager/PredictiveCache/README.md) - Ce module Ã©tend le PSCacheManager avec des capacitÃ©s de mise en cache prÃ©dictive et adaptative, permettant d'op... `readme`
+- [Mode GRAN](development/roadmap/parser/modes/gran/README.md) - Cette section contient les scripts liés au mode GRAN (Granularisation) qui permet de décomposer les tâches complexes ... `roadmap` `readme`
+- [Mode MANAGER](development/scripts/maintenance/backups/manager-backup-20250429-004221/README.md) - Ce répertoire contient les scripts et la documentation du mode MANAGER, qui permet de gérer et d'orchestrer les diffé... `readme`
+- [Model - Modèles de données](development/scripts/roadmap/core/model/README.md) - Ce dossier contient les modèles de données pour représenter les roadmaps. `roadmap` `readme`
+- [Modes opÃ©rationnels](development/roadmap/scripts/parser/modes/README.md) - Ce rÃ©pertoire contient les scripts pour les diffÃ©rents modes opÃ©rationnels du module roadmap-parser. `roadmap` `readme`
+- [Module HygenAdvancedModule](development/scripts/testing/modules/HygenAdvancedModule/README.md) - Module avancé de test pour Hygen `readme`
+- [Module HygenExtensionModule](development/scripts/testing/modules/HygenExtensionModule/README.md) - Module d'extension de test pour Hygen `readme`
+- [Module HygenTestModule2](development/scripts/testing/modules/HygenTestModule2/README.md) - Module de test pour Hygen 2 `readme`
+- [Module HygenTestModule3](development/scripts/testing/modules/HygenTestModule3/README.md) - Module de test pour Hygen 3 `readme`
+- [Module TestFramework](development/scripts/testing/modules/TestFramework/README.md) - Framework de test minimal pour les tests unitaires PowerShell dans le projet EMAIL_SENDER_1. `readme`
+- [Module TestStandardModule](development/scripts/testing/modules/TestStandardModule/README.md) - Module PowerShell standard pour les tests. `readme`
+- [Module d'optimisation et d'apprentissage automatique](development/scripts/script-manager/modules/Optimization/README.md) - Ce module fournit des fonctionnalitÃƒÂ©s avancÃƒÂ©es d'optimisation de code et d'apprentissage automatique pour ... `readme`
+- [NextPriorities - Générée le 2025-05-02 21:12:34](development/projet/roadmaps/views/NextPriorities.md) - - [ ] **1.3.1** Système RAG (Retrieval-Augmented Generation) avec vectorisation `roadmap`
+- [Notion - IntÃ©gration Notion](development/scripts/roadmap/integration/notion/README.md) - Ce dossier contient les scripts d'intÃ©gration avec Notion. `roadmap` `readme`
+- [P1-Results](development/tools/parallelization/tests/P1-Results.txt)
+- [PSObjectDeepClone-Results](development/tools/parallelization/tests/PSObjectDeepClone-Results.txt)
+- [Parser - Analyseurs de roadmap](development/scripts/roadmap/core/parser/README.md) - Ce dossier contient les scripts pour analyser et parser les fichiers de roadmap. `roadmap` `readme`
+- [Phase 9 Auto-Fix System Implementation Summary](development/managers/error-manager/auto_fix/IMPLEMENTATION_SUMMARY.md) - - **Suggestion Engine** (`suggestion_engine.go`): Advanced AST-based code analysis and fix generation
+- [Plan d'implÃ©mentation de la Phase 6](development/scripts/maintenance/phase6/Phase6-Plan.md) - - AmÃ©liorer la gestion d'erreurs dans les scripts existants `plan`
+- [Projet de développement](development/roadmap/tools/examples/example.md) - - Identifier les besoins `roadmap`
+- [Prompt de détection des tâches](development/roadmap/tools/task-detection/task-detection-prompt.md) - Ce prompt doit être ajouté au prompt système de l'IA pour lui permettre de détecter automatiquement les tâches dans... `roadmap`
+- [RAG Core - FonctionnalitÃ©s RAG principales](development/scripts/roadmap/rag/core/README.md) - Ce dossier contient les fonctionnalitÃ©s principales du systÃ¨me RAG. `roadmap` `readme`
+- [Rapport d'Audit des Modules Go - 2025-06-30T00-43-55](development/managers/dependency-manager/reports/initial_module_audit.md) - - **Chemin :** `D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\core\gapanalyzer\go.mod`
+- [Rapport de comparaison des tests de performance](development/scripts/reporting/performance/performance_comparison_report.md) - | MÃ©trique | Faible concurrence (1) | Concurrence moyenne (3) | Concurrence Ã©levÃ©e (5) |
+- [Rapport de complétion - Phase 1](development/managers/dependency-manager/reports/phase1_completion_report.md) - - Date de génération : 2025-06-30 14:11:14
+- [Rapport de complétion - Phase 2](development/managers/dependency-manager/reports/phase2_completion_report.md) - - Date de génération : 2025-06-30 14:16:30
+- [Rapport de complétion - Phase 3](development/managers/dependency-manager/reports/phase3_completion_report.md) - - Date de génération : 2025-06-30 14:25:09
+- [Rapport de complétion - Phase 4](development/managers/dependency-manager/reports/phase4_completion_report.md) - - Date de génération : 2025-06-30 14:31:56
+- [Rapport de complétion - Phase 5](development/managers/dependency-manager/reports/phase5_completion_report.md) - - Date de génération : 2025-06-30 14:38:12
+- [Rapport de complétion - Phase 6](development/managers/dependency-manager/reports/phase6_completion_report.md) - - Date de génération : 2025-06-30 14:41:19
+- [Rapport de complétion - Phase 7](development/managers/dependency-manager/reports/phase7_completion_report.md) - - Date de génération : 2025-06-30 14:43:24
+- [Rapport de complétion - Phase 8](development/managers/dependency-manager/reports/phase8_completion_report.md) - - Date de génération : 2025-06-30 14:47:49
+- [Rapport de la suite de tests d'analyse des pull requests](development/scripts/testing/reports/PR-TestSuite-Report-20250414-182230.md) - - **Date d'exÃ©cution**: 2025-04-14 18:22:30
+- [Rapport de test des 4 phases du projet](development/scripts/testing/tests/TestResults.md) - Les tests ont montrÃ© que les 4 phases du projet ont portÃ© leurs fruits, mais certains modules prÃ©sentent des er...
+- [Rapport de tests pour Wait-ForCompletedRunspace](development/tools/parallelization/tests/TestReport.md) - Ce rapport présente les résultats des tests de robustesse effectués sur la fonction Wait-ForCompletedRunspace du modu...
+- [Rapport de tests pour le délai adaptatif dans Wait-ForCompletedRunspace](development/tools/parallelization/tests/AdaptiveSleepTestReport.md) - - **Date d'exécution**: 2025-05-19 04:27:15
+- [Roadmap de Test](development/roadmap/scripts/parser/roadmap-test-direct.md) - Ceci est une roadmap de test pour valider le modÃ¨le objet. `roadmap`
+- [Roadmap de Test](development/roadmap/scripts/parser/roadmap-test-direct2.md) - Ceci est une roadmap de test pour valider le modÃ¨le objet. `roadmap`
+- [Roadmap de test](development/scripts/roadmap-tools/Tests/test_roadmap.md) - - [x] 2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.1 Creer la structure de base de la fonction avec gestion de la profondeur maximale `roadmap`
+- [Roadmap de test - EMAIL_SENDER_1](development/tests/maintenance/testdata/test_roadmap.md) - Ce fichier est utilisé pour les tests unitaires du système de gestion de roadmap. `roadmap`
+- [RoadmapParserCore](development/roadmap/scripts/parser/module/README.md) - RoadmapParserCore est un module PowerShell conÃ§u pour analyser, manipuler et gÃ©rer des roadmaps au format markdown... `roadmap` `readme`
+- [Search - Recherche](development/scripts/roadmap/rag/search/README.md) - Ce dossier contient les scripts pour rechercher dans les roadmaps. `roadmap` `readme`
+- [Section 8.2 - Optimisation Surveillance Temps Réel](development/managers/error-manager/bridges/Section_8.2_COMPLETE.md) - Section 8.2 "Optimisation Surveillance Temps Réel" has been successfully implemented, extending the PowerShell/Python i...
+- [Standards de Codage pour les Scripts](development/scripts/maintenance/standards/CodingStandards.md) - Ce document dÃ©finit les standards de codage Ã  suivre pour tous les scripts du projet. Ces standards visent Ã  am...
+- [Syntaxe des balises de tâches](development/roadmap/tools/task-detection/task-tags-syntax.md) - Ce document définit la syntaxe des balises utilisées pour marquer les tâches dans les conversations avec l'IA. `roadmap`
+- [TaskMaster-Ink-CLI Implementation Complete ✅](development/managers/roadmap-manager/roadmap-cli/IMPLEMENTATION_COMPLETE.md) - **STATUS**: ✅ **COMPLETE** `roadmap`
+- [Test](development/tools/testing-tools/TestData/test.md) - This is a test file.
+- [Tests Unitaires pour le Module ProactiveOptimization](development/scripts/utils/ProactiveOptimization/tests/README.md) - Ce dossier contient des tests unitaires pour le module ProactiveOptimization, utilisant le framework Pester. `readme`
+- [Tests de performance pour l'architecture hybride PowerShell-Python](development/scripts/performance/performance/tests/README.md) - Ce rÃ©pertoire contient les tests unitaires et de performance pour l'architecture hybride PowerShell-Python. Ces tests... `readme`
+- [Tests du systÃ¨me d'apprentissage des erreurs PowerShell](development/scripts/maintenance/error-learning/Tests/README.md) - Ce rÃ©pertoire contient les tests unitaires et d'intÃ©gration pour le systÃ¨me d'apprentissage des erreurs PowerSh... `readme`
+- [Ultra-Advanced 8-Level Branching Framework - Execution Report](development/managers/branching-manager/scripts/BRANCHING_FRAMEWORK_EXECUTION_REPORT.md) - 2025-06-08 19:11:53
+- [Validation - Validation](development/scripts/roadmap/maintenance/validation/README.md) - Ce dossier contient les scripts de validation de structure. `roadmap` `readme`
+- [Vectorization - Vectorisation](development/scripts/roadmap/rag/vectorization/README.md) - Ce dossier contient les scripts pour vectoriser les roadmaps. `roadmap` `readme`
+- [Voici ma réponse à votre question sur l'implémentation d'...](development/roadmap/tools/task-detection/test-sample.txt) - Voici ma réponse à votre question sur l'implémentation d'une nouvelle fonctionnalité. `roadmap`
+- [archi - modes](development/roadmap/parser/modes/archi/README.md) - Cette section contient les scripts liÃ©s Ã  archi dans la catÃ©gorie modes. `roadmap` `readme`
+- [check - modes](development/roadmap/parser/modes/check/README.md) - Cette section contient les scripts liÃ©s Ã  check dans la catÃ©gorie modes. `roadmap` `readme`
+- [converter - core](development/roadmap/parser/core/converter/README.md) - Cette section contient les scripts liÃ©s Ã  converter dans la catÃ©gorie core. `roadmap` `readme`
+- [debug - modes](development/roadmap/parser/modes/debug/README.md) - Cette section contient les scripts liÃ©s Ã  debug dans la catÃ©gorie modes. `roadmap` `readme`
+- [dependencies - analysis](development/roadmap/parser/analysis/dependencies/README.md) - Cette section contient les scripts liÃ©s Ã  dependencies dans la catÃ©gorie analysis. `roadmap` `readme`
+- [dev-r - modes](development/roadmap/parser/modes/dev-r/README.md) - Cette section contient les scripts liÃ©s Ã  dev-r dans la catÃ©gorie modes. `roadmap` `readme`
+- [encoding - utils](development/roadmap/parser/utils/encoding/README.md) - Cette section contient les scripts liÃ©s Ã  encoding dans la catÃ©gorie utils. `roadmap` `readme`
+- [export - utils](development/roadmap/parser/utils/export/README.md) - Cette section contient les scripts liÃ©s Ã  export dans la catÃ©gorie utils. `roadmap` `readme`
+- [file_utils](development/scripts/python/utils/file_utils/README.md) - Scripts utilitaires pour la gestion des fichiers et des encodages. `readme`
+- [go.mod parasites détectés](development/managers/dependency-manager/reports/report_go_mod_parasites.md) - Les fichiers suivants sont des go.mod parasites (hors racine) :
+- [helpers - utils](development/roadmap/parser/utils/helpers/README.md) - Cette section contient les scripts liÃ©s Ã  helpers dans la catÃ©gorie utils. `roadmap` `readme`
+- [import - utils](development/roadmap/parser/utils/import/README.md) - Cette section contient les scripts liÃ©s Ã  import dans la catÃ©gorie utils. `roadmap` `readme`
+- [integration - tests](development/roadmap/parser/tests/integration/README.md) - Cette section contient les scripts liÃ©s Ã  integration dans la catÃ©gorie tests. `roadmap` `readme`
+- [managers](development/scripts/maintenance/modules/managers.txt)
+- [model - core](development/roadmap/parser/core/model/README.md) - Cette section contient les scripts liÃ©s Ã  model dans la catÃ©gorie core. `roadmap` `readme`
+- [n8n - IntÃ©gration n8n](development/scripts/roadmap/integration/n8n/README.md) - Ce dossier contient les scripts d'intÃ©gration avec n8n. `roadmap` `readme`
+- [opti - modes](development/roadmap/parser/modes/opti/README.md) - Cette section contient les scripts liÃ©s Ã  opti dans la catÃ©gorie modes. `roadmap` `readme`
+- [parser - core](development/roadmap/parser/core/parser/README.md) - Cette section contient les scripts liÃ©s Ã  parser dans la catÃ©gorie core. `roadmap` `readme`
+- [performance - analysis](development/roadmap/parser/analysis/performance/README.md) - Cette section contient les scripts liÃ©s Ã  performance dans la catÃ©gorie analysis. `roadmap` `readme`
+- [performance - tests](development/roadmap/parser/tests/performance/README.md) - Cette section contient les scripts liÃ©s Ã  performance dans la catÃ©gorie tests. `roadmap` `readme`
+- [project_utils](development/scripts/python/utils/project_utils/README.md) - Scripts utilitaires pour la gestion et l'organisation des projets. `readme`
+- [reporting - analysis](development/roadmap/parser/analysis/reporting/README.md) - Cette section contient les scripts liÃ©s Ã  reporting dans la catÃ©gorie analysis. `roadmap` `readme`
+- [review - modes](development/roadmap/parser/modes/review/README.md) - Cette section contient les scripts liÃ©s Ã  review dans la catÃ©gorie modes. `roadmap` `readme`
+- [roadmap](development/scripts/python/utils/roadmap/README.md) - Scripts utilitaires liés à la gestion, au formatage et à l'analyse des roadmaps du projet. `roadmap` `readme`
+- [roadmap-converted](development/roadmap/scripts/parser/roadmap-converted.md) `roadmap`
+- [roadmap-test](development/roadmap/scripts/parser/roadmap-test.md) `roadmap`
+- [structure - core](development/roadmap/parser/core/structure/README.md) - Cette section contient les scripts liÃ©s Ã  structure dans la catÃ©gorie core. `roadmap` `readme`
+- [test - modes](development/roadmap/parser/modes/test/README.md) - Cette section contient les scripts liÃ©s Ã  test dans la catÃ©gorie modes. `roadmap` `readme`
+- [testing_utils](development/scripts/python/utils/testing_utils/README.md) - Scripts utilitaires pour les tests et l'intégration continue. `readme`
+- [text_utils](development/scripts/python/utils/text_utils/README.md) - Scripts utilitaires pour la manipulation de texte. `readme`
+- [to: development/scripts/{{category}}/modules/{{name}}/README...](development/scripts/testing/modules/HygenTestModule/README.md) - to: development/scripts/{{category}}/modules/{{name}}/README.md `readme`
+- [unit - tests](development/roadmap/parser/tests/unit/README.md) - Cette section contient les scripts liÃ©s Ã  unit dans la catÃ©gorie tests. `roadmap` `readme`
+- [validation - analysis](development/roadmap/parser/analysis/validation/README.md) - Cette section contient les scripts liÃ©s Ã  validation dans la catÃ©gorie analysis. `roadmap` `readme`
+- [validation - tests](development/roadmap/parser/tests/validation/README.md) - Cette section contient les scripts liÃ©s Ã  validation dans la catÃ©gorie tests. `roadmap` `readme`
+- [﻿ = = =   T e s t   d e   d Ã © t e c t i o n   d ' e n ...](development/tools/testing-tools/encoding_samples/utf16be.txt) - ﻿ = = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c o d a g e   = = = 
+- [﻿ = = =   T e s t   d e   d Ã © t e c t i o n   d ' e n ...](development/tools/examples-tools/encoding/sample_UTF-16BE.txt) - ﻿ = = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c o d a g e   = = = 
+- [﻿# Module de gÃ©nÃ©ration de README pour le Script Man...](development/scripts/script-manager/modules/Documentation/ReadmeGenerator.psm1) - ﻿# Module de gÃ©nÃ©ration de README pour le Script Manager `readme`
+- [﻿= = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c...](development/tools/examples-tools/encoding/sample_UTF-16LE.txt) - ﻿= = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c o d a g e   = = = 
+- [﻿= = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c...](development/tools/testing-tools/encoding_samples/utf16le.txt) - ﻿= = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c o d a g e   = = = 
+- [﻿=== RAPPORT D'ANALYSE D'ASYMÃ‰TRIE ===](development/scripts/statistics/reports/exponential_report.txt) - Date: 2025-05-08 06:16:45
+- [﻿=== RAPPORT D'ANALYSE D'ASYMÃ‰TRIE ===](development/scripts/statistics/reports/negative_skew_report.txt) - Date: 2025-05-08 06:16:44
+- [﻿=== RAPPORT D'ANALYSE D'ASYMÃ‰TRIE ===](development/scripts/statistics/reports/normal_report.txt) - Date: 2025-05-08 06:16:43
+- [﻿=== RAPPORT D'ANALYSE D'ASYMÃ‰TRIE ===](development/scripts/statistics/reports/positive_skew_report.txt) - Date: 2025-05-08 06:16:44
+- [﻿=== Test de d??tection d'encodage ===](development/tools/examples-tools/encoding/sample_ASCII.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/tools/examples-tools/encoding/sample_Windows-1252.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/tools/testing-tools/encoding_samples/utf16le-bom.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/tools/examples-tools/encoding/sample_UTF-16LE-BOM.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/tools/examples-tools/encoding/sample_UTF-8-BOM.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/tools/testing-tools/encoding_samples/utf16be-bom.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/tools/testing-tools/encoding_samples/windows1252.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/tools/examples-tools/encoding/sample_ISO-8859-1.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/tools/examples-tools/encoding/sample_UTF-16BE-BOM.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/tools/testing-tools/encoding_samples/utf8-bom.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃƒÂ©tection d'encodage ===](development/tools/examples-tools/encoding/sample_UTF-8.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃƒÂ©tection d'encodage ===](development/tools/testing-tools/encoding_samples/utf8.txt) - == Texte latin (ASCII) ==
+- [﻿Ceci est un fichier texte simple.](development/tools/testing-tools/samples/sample.txt)
+- [﻿Ceci est un fichier texte simple.](development/tools/testing-tools/basic_samples/sample.txt)
+- [﻿This is a plain text file.](development/tools/testing-tools/TestData/test.txt) - It contains multiple lines.
+- [﻿This is a simple ASCII text file.](development/tools/testing-tools/encoding_samples/ascii.txt)
+- [﻿sentence-transformers>=2.2.2](development/scripts/python/journal/requirements.txt) - huggingface-hub>=0.12.0
+- [🌌 STRATÉGIE DE BRANCHING TRANSCENDANTE](development/managers/branching-manager/scripts/BRANCHING_TRANSCENDANT_LEVELS_9-12.md) - ```javascript
+- [🔍 ANALYSE STRATÉGIQUE - CONTRIBUTIONS JULES & REMONTÉE QUALITATIVE](development/managers/branching-manager/scripts/JULES_BRANCHING_STRATEGY_ANALYSIS.md) - **Date d'analyse :** 8 juin 2025
+- [🚀 Roadmap CLI - Démonstration Complète](development/managers/roadmap-manager/roadmap-cli/DEMO_GUIDE.md) - ```powershell `roadmap` `guide`
+- [🚀 STRATÉGIE DE BRANCHING ULTRA-AVANCÉE](development/managers/branching-manager/scripts/ADVANCED_BRANCHING_STRATEGY_ULTRA.md) - ├── dev
+- [## PHASE 5 : Tests et Validation](development/roadmap/parser/modes/dev-r/selection.md) - - [ ] **5.1** Tests unitaires `roadmap`
+- [Analyse des erreurs et optimisations pour Augment Memories](development/scripts/journal/analysis/errors/2025-04-20-augment-memories-optimization.md) - Lors de l'implÃ©mentation des amÃ©liorations pour les MEMORIES d'Augment, plusieurs problÃ¨mes ont Ã©tÃ© ident...
+- [Bonnes Pratiques pour les Tests Pester](development/scripts/utils/Tests/Documentation/PESTER_BEST_PRACTICES.md) - Ce guide prÃ©sente les bonnes pratiques pour Ã©crire des tests Pester efficaces et maintenables pour le module Forma...
+- [Cas de test pour le système de détection des tâches](development/roadmap/tools/task-detection/tests/test-cases.txt) - Pouvez-vous implémenter une fonctionnalité de recherche dans la roadmap ? Ce serait utile pour retrouver rapidement le... `roadmap`
+- [Cette tâche prendra environ 3,5 jours.](development/scripts/roadmap/rag/tests/decimal_values_test.txt) - Le développement durera à peu près 2.5 semaines. `roadmap`
+- [Fonctions privées du module HygenAdvancedModule](development/scripts/testing/modules/HygenAdvancedModule/Private/README.md) - Ce dossier contient toutes les fonctions privées du module. Ces fonctions sont utilisées en interne par le module et n... `readme`
+- [Fonctions privées du module HygenExtensionModule](development/scripts/testing/modules/HygenExtensionModule/Private/README.md) - Ce dossier contient toutes les fonctions privées du module. Ces fonctions sont utilisées en interne par le module et n... `readme`
+- [Fonctions privées du module HygenTestModule2](development/scripts/testing/modules/HygenTestModule2/Private/README.md) - Ce dossier contient toutes les fonctions privées du module. Ces fonctions sont utilisées en interne par le module et n... `readme`
+- [Fonctions privées du module HygenTestModule3](development/scripts/testing/modules/HygenTestModule3/Private/README.md) - Ce dossier contient toutes les fonctions privées du module. Ces fonctions sont utilisées en interne par le module et n... `readme`
+- [Fonctions privées du module TestStandardModule](development/scripts/testing/modules/TestStandardModule/Private/README.md) - Ce dossier contient toutes les fonctions privées du module. Ces fonctions sont utilisées en interne par le module et n... `readme`
+- [Fonctions publiques du module HygenAdvancedModule](development/scripts/testing/modules/HygenAdvancedModule/Public/README.md) - Ce dossier contient toutes les fonctions publiques du module. Ces fonctions sont exportées et accessibles aux utilisate... `readme`
+- [Fonctions publiques du module HygenExtensionModule](development/scripts/testing/modules/HygenExtensionModule/Public/README.md) - Ce dossier contient toutes les fonctions publiques du module. Ces fonctions sont exportées et accessibles aux utilisate... `readme`
+- [Fonctions publiques du module HygenTestModule2](development/scripts/testing/modules/HygenTestModule2/Public/README.md) - Ce dossier contient toutes les fonctions publiques du module. Ces fonctions sont exportées et accessibles aux utilisate... `readme`
+- [Fonctions publiques du module HygenTestModule3](development/scripts/testing/modules/HygenTestModule3/Public/README.md) - Ce dossier contient toutes les fonctions publiques du module. Ces fonctions sont exportées et accessibles aux utilisate... `readme`
+- [Fonctions publiques du module TestStandardModule](development/scripts/testing/modules/TestStandardModule/Public/README.md) - Ce dossier contient toutes les fonctions publiques du module. Ces fonctions sont exportées et accessibles aux utilisate... `readme`
+- [Graphe de dépendances de fonctions pour D:\DO\WEB\N8N_tests...](development/scripts/dependency-management/Examples/Output/FunctionDependencies.txt) - Graphe de dépendances de fonctions pour D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\dependency-manag...
+- [Graphe de dépendances de variables pour D:\DO\WEB\N8N_tests...](development/scripts/dependency-management/Examples/Output/VariableDependencies.txt) - Graphe de dépendances de variables pour D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\dependency-manag...
+- [Guide de Migration des Tests SimplifiÃ©s vers les Tests RÃ©els](development/scripts/utils/Tests/Documentation/MIGRATION_GUIDE.md) - Ce guide explique comment migrer des tests simplifiÃ©s vers des tests rÃ©els pour le module Format-Converters. `guide`
+- [Guide de tests de performance - Test AutoHotkey](development/scripts/performance/performance/tests/PERFORMANCE_TESTING_GUIDE.md) - Ce guide explique comment crÃ©er et exÃ©cuter des tests de performance pour l'architecture hybride PowerShell-Python... `guide`
+- [Mode GRAN](development/roadmap/scripts/parser/modes/gran/README.md) - Cette section contient les scripts liés au mode GRAN (Granularisation) qui permet de décomposer les tâches complexes ... `roadmap` `readme`
+- [Rapport d'avancement de la Roadmap - EMAIL_SENDER_1](development/tests/maintenance/testdata/output/status_report_20250502_182147.md) - Généré le 2025-05-02 18:21:47
+- [Rapport d'avancement de la Roadmap - EMAIL_SENDER_1](development/tests/maintenance/testdata/output/status_report_20250502_182310.md) - Généré le 2025-05-02 18:23:10
+- [Rapport des tests de structure Augment - 2025-04-14 17:53:52](development/testing/tests/augment/reports/AugmentStructure-Results.txt) - Tests exécutés: 0
+- [Roadmap Active - EMAIL_SENDER_1](development/tests/maintenance/testdata/output/roadmap_active.md) - Ce fichier contient les tâches actives et à venir de la roadmap. `roadmap`
+- [Roadmap Complétée - EMAIL_SENDER_1](development/tests/maintenance/testdata/output/roadmap_completed.md) - Ce fichier contient les tâches complétées de la roadmap. `roadmap`
+- [Roadmap d'exemple avec tags](development/scripts/roadmap/rag/tests/sample-roadmap.md) - Cette roadmap est un exemple pour tester le système de tags. `roadmap`
+- [Seuils d'alerte et d'erreur pour les métriques de complexité](development/scripts/validation/PowerShellComplexityValidator/Research/ComplexityThresholds.md) - *Version 1.0 - 2025-05-15*
+- [Spécification des Visualisations Graphiques pour Roadmap RAG](development/scripts/roadmap/rag/visualization/VisualizationSpecification.md) - *Version 1.0 - 2025-05-15* `roadmap` `specification`
+- [Standards de mesure de complexité pour PowerShell](development/scripts/validation/PowerShellComplexityValidator/Research/ComplexityMetricsResearch.md) - *Version 1.0 - 2025-05-15*
+- [Tache 1: a pris 4 heures](development/scripts/roadmap/rag/tests/simple_duration_test.txt) - Tache 2: duree reelle: 3 jours `roadmap`
+- [Test](development/scripts/utils/Tests/TestData/test.md) - This is a test file.
+- [Tests du Mode Manager](development/scripts/maintenance/backups/manager-backup-20250429-004221/tests/README.md) - Ce répertoire contient les tests pour le mode manager. Les tests sont organisés par type et peuvent être exécutés i... `readme`
+- [Tâche 1: Développer la fonctionnalité X (4 heures)](development/scripts/roadmap/rag/tests/duration_formats_test.txt) - Tâche 2: Implémenter le module Y (2.5 jours réels) `roadmap`
+- [Tâche 1: Développer la fonctionnalité X (a pris 4 heures)](development/scripts/roadmap/rag/tests/actual_duration_test.txt) - Tâche 2: Implémenter le module Y (environ 2.5 jours) - durée réelle: 3 jours `roadmap`
+- [Tâche 1: Développer la fonctionnalité X (environ 4 heures...](development/scripts/roadmap/rag/tests/test_estimation_conversion.txt) - Tâche 1: Développer la fonctionnalité X (environ 4 heures) `roadmap`
+- [Tâche 1: Développer la fonctionnalité X (environ 4 heures...](development/scripts/roadmap/rag/tests/simple_test.txt) - Tâche 1: Développer la fonctionnalité X (environ 4 heures) `roadmap`
+- [Tâche 1: Développer la fonctionnalité X (exactement 4 heu...](development/scripts/roadmap/rag/tests/mini_test.txt) - Tâche 1: Développer la fonctionnalité X (exactement 4 heures) `roadmap`
+- [Tâche 1: Développer la fonctionnalité X (exactement 4 heu...](development/scripts/roadmap/rag/tests/confidence_test.txt) - Tâche 1: Développer la fonctionnalité X (exactement 4 heures) `roadmap`
+- [Tâche 1: Développer la fonctionnalité X (terminée)](development/scripts/roadmap/rag/tests/completion_terms_test.txt) - Tâche 2: Implémenter le module Y - terminé le 15/06/2023 `roadmap`
+- [archi - modes](development/roadmap/scripts/parser/modes/archi/README.md) - Cette section contient les scripts liÃ©s Ã  archi dans la catÃ©gorie modes. `roadmap` `readme`
+- [check - modes](development/roadmap/scripts/parser/modes/check/README.md) - Cette section contient les scripts liÃ©s Ã  check dans la catÃ©gorie modes. `roadmap` `readme`
+- [converter - core](development/roadmap/scripts/parser/core/converter/README.md) - Cette section contient les scripts liÃ©s Ã  converter dans la catÃ©gorie core. `roadmap` `readme`
+- [debug - modes](development/roadmap/scripts/parser/modes/debug/README.md) - Cette section contient les scripts liÃ©s Ã  debug dans la catÃ©gorie modes. `roadmap` `readme`
+- [dependencies - analysis](development/roadmap/scripts/parser/analysis/dependencies/README.md) - Cette section contient les scripts liÃ©s Ã  dependencies dans la catÃ©gorie analysis. `roadmap` `readme`
+- [dev-r - modes](development/roadmap/scripts/parser/modes/dev-r/README.md) - Cette section contient les scripts liÃ©s Ã  dev-r dans la catÃ©gorie modes. `roadmap` `readme`
+- [encoding - utils](development/roadmap/scripts/parser/utils/encoding/README.md) - Cette section contient les scripts liÃ©s Ã  encoding dans la catÃ©gorie utils. `roadmap` `readme`
+- [export - utils](development/roadmap/scripts/parser/utils/export/README.md) - Cette section contient les scripts liÃ©s Ã  export dans la catÃ©gorie utils. `roadmap` `readme`
+- [helpers - utils](development/roadmap/scripts/parser/utils/helpers/README.md) - Cette section contient les scripts liÃ©s Ã  helpers dans la catÃ©gorie utils. `roadmap` `readme`
+- [import - utils](development/roadmap/scripts/parser/utils/import/README.md) - Cette section contient les scripts liÃ©s Ã  import dans la catÃ©gorie utils. `roadmap` `readme`
+- [integration - tests](development/roadmap/scripts/parser/tests/integration/README.md) - Cette section contient les scripts liÃ©s Ã  integration dans la catÃ©gorie tests. `roadmap` `readme`
+- [model - core](development/roadmap/scripts/parser/core/model/README.md) - Cette section contient les scripts liÃ©s Ã  model dans la catÃ©gorie core. `roadmap` `readme`
+- [opti - modes](development/roadmap/scripts/parser/modes/opti/README.md) - Cette section contient les scripts liÃ©s Ã  opti dans la catÃ©gorie modes. `roadmap` `readme`
+- [parser - core](development/roadmap/scripts/parser/core/parser/README.md) - Cette section contient les scripts liÃ©s Ã  parser dans la catÃ©gorie core. `roadmap` `readme`
+- [performance - analysis](development/roadmap/scripts/parser/analysis/performance/README.md) - Cette section contient les scripts liÃ©s Ã  performance dans la catÃ©gorie analysis. `roadmap` `readme`
+- [performance - tests](development/roadmap/scripts/parser/tests/performance/README.md) - Cette section contient les scripts liÃ©s Ã  performance dans la catÃ©gorie tests. `roadmap` `readme`
+- [reporting - analysis](development/roadmap/scripts/parser/analysis/reporting/README.md) - Cette section contient les scripts liÃ©s Ã  reporting dans la catÃ©gorie analysis. `roadmap` `readme`
+- [review - modes](development/roadmap/scripts/parser/modes/review/README.md) - Cette section contient les scripts liÃ©s Ã  review dans la catÃ©gorie modes. `roadmap` `readme`
+- [stopwords](development/scripts/roadmap/modules/data/stopwords.txt) `roadmap`
+- [structure - core](development/roadmap/scripts/parser/core/structure/README.md) - Cette section contient les scripts liÃ©s Ã  structure dans la catÃ©gorie core. `roadmap` `readme`
+- [test - modes](development/roadmap/scripts/parser/modes/test/README.md) - Cette section contient les scripts liÃ©s Ã  test dans la catÃ©gorie modes. `roadmap` `readme`
+- [title: ProblÃ¨mes de compatibilitÃ© PowerShell 5.1 dans ...](development/scripts/journal/analysis/errors/2025-04-09-pscachemanager-compatibility-issues.md) - title: ProblÃ¨mes de compatibilitÃ© PowerShell 5.1 dans le module PSCacheManager
+- [title: ProblÃ¨mes de gestion des chemins de fichiers dans ...](development/scripts/journal/analysis/errors/2025-04-09-pscachemanager-path-handling-issues.md) - title: ProblÃ¨mes de gestion des chemins de fichiers dans le cache disque de PSCacheManager
+- [to: development/scripts/{{category}}/modules/{{name}}/Privat...](development/scripts/testing/modules/HygenTestModule/Private/README.md) - to: development/scripts/{{category}}/modules/{{name}}/Private/README.md `readme`
+- [to: development/scripts/{{category}}/modules/{{name}}/Public...](development/scripts/testing/modules/HygenTestModule/Public/README.md) - to: development/scripts/{{category}}/modules/{{name}}/Public/README.md `readme`
+- [unit - tests](development/roadmap/scripts/parser/tests/unit/README.md) - Cette section contient les scripts liÃ©s Ã  unit dans la catÃ©gorie tests. `roadmap` `readme`
+- [validation - analysis](development/roadmap/scripts/parser/analysis/validation/README.md) - Cette section contient les scripts liÃ©s Ã  validation dans la catÃ©gorie analysis. `roadmap` `readme`
+- [validation - tests](development/roadmap/scripts/parser/tests/validation/README.md) - Cette section contient les scripts liÃ©s Ã  validation dans la catÃ©gorie tests. `roadmap` `readme`
+- [﻿ = = =   T e s t   d e   d Ã © t e c t i o n   d ' e n ...](development/scripts/utils/Tests/encoding_samples/utf16be.txt) - ﻿ = = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c o d a g e   = = = 
+- [﻿ = = =   T e s t   d e   d Ã © t e c t i o n   d ' e n ...](development/tools/testing-tools/samples/encodings/utf16be.txt) - ﻿ = = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c o d a g e   = = = 
+- [﻿ = = =   T e s t   d e   d Ã © t e c t i o n   d ' e n ...](development/scripts/utils/samples/encoding/sample_UTF-16BE.txt) - ﻿ = = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c o d a g e   = = = 
+- [﻿= = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c...](development/scripts/utils/samples/encoding/sample_UTF-16LE.txt) - ﻿= = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c o d a g e   = = = 
+- [﻿= = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c...](development/scripts/utils/Tests/encoding_samples/utf16le.txt) - ﻿= = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c o d a g e   = = = 
+- [﻿= = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c...](development/tools/testing-tools/samples/encodings/utf16le.txt) - ﻿= = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c o d a g e   = = = 
+- [﻿=== Test de d??tection d'encodage ===](development/scripts/utils/samples/encoding/sample_ASCII.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/tools/testing-tools/samples/encodings/utf16be-bom.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/scripts/utils/samples/encoding/sample_UTF-16BE-BOM.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/scripts/utils/Tests/encoding_samples/utf16le-bom.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/scripts/utils/samples/encoding/sample_Windows-1252.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/tools/testing-tools/samples/encodings/utf8-bom.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/scripts/utils/samples/encoding/sample_ISO-8859-1.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/scripts/utils/samples/encoding/sample_UTF-8-BOM.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/scripts/utils/Tests/encoding_samples/utf8-bom.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/scripts/utils/Tests/encoding_samples/windows1252.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/tools/testing-tools/samples/encodings/windows1252.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/tools/testing-tools/samples/encodings/utf16le-bom.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/scripts/utils/samples/encoding/sample_UTF-16LE-BOM.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/scripts/utils/Tests/encoding_samples/utf16be-bom.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃƒÂ©tection d'encodage ===](development/tools/testing-tools/samples/encodings/utf8.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃƒÂ©tection d'encodage ===](development/scripts/utils/samples/encoding/sample_UTF-8.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃƒÂ©tection d'encodage ===](development/scripts/utils/Tests/encoding_samples/utf8.txt) - == Texte latin (ASCII) ==
+- [﻿Ceci est un fichier texte simple.](development/scripts/utils/Tests/samples/sample.txt)
+- [﻿Ceci est un fichier texte simple.](development/scripts/utils/Tests/basic_samples/sample.txt)
+- [﻿Ceci est un fichier texte simple.](development/tools/testing-tools/samples/formats/sample.txt) - Il contient plusieurs lignes de texte.
+- [﻿This is a plain text file.](development/scripts/utils/Tests/TestData/test.txt) - It contains multiple lines.
+- [﻿This is a simple ASCII text file.](development/tools/testing-tools/samples/encodings/ascii.txt)
+- [﻿This is a simple ASCII text file.](development/scripts/utils/Tests/encoding_samples/ascii.txt)
+- [Critères d'Interactivité pour les Visualisations](development/scripts/roadmap/rag/visualization/specifications/InteractivityCriteria.md) - *Version 1.0 - 2025-05-15* `roadmap` `specification`
+- [Section 1.1.1 : Créer la structure de base](development/tests/maintenance/testdata/output/sections/section_1.1.1_Créer_la_structure_de_base.md) - Section archivée le 2025-05-02 18:33:57
+- [Spécification de la Carte de Chaleur des Priorités](development/scripts/roadmap/rag/visualization/specifications/PriorityHeatmapSpec.md) - *Version 1.0 - 2025-05-15* `roadmap` `specification`
+- [Spécification des Écrans d'Interface Utilisateur](development/scripts/roadmap/rag/visualization/specifications/UIScreens.md) - *Version 1.0 - 2025-05-15* `roadmap` `specification`
+- [Spécification du Diagramme Hiérarchique](development/scripts/roadmap/rag/visualization/specifications/HierarchicalDiagramSpec.md) - *Version 1.0 - 2025-05-15* `roadmap` `specification`
+- [Spécification du Diagramme de Gantt Simplifié](development/scripts/roadmap/rag/visualization/specifications/GanttChartSpec.md) - *Version 1.0 - 2025-05-15* `roadmap` `specification`
+- [Spécification du Graphe de Dépendances](development/scripts/roadmap/rag/visualization/specifications/DependencyGraphSpec.md) - *Version 1.0 - 2025-05-15* `roadmap` `specification`
+- [Standards de Rendu pour les Visualisations](development/scripts/roadmap/rag/visualization/specifications/RenderingStandards.md) - *Version 1.0 - 2025-05-15* `roadmap` `specification`
+- [{{.name}} Manager](development/managers/maintenance-manager/src/templates/default_templates/go-manager/README.md.tmpl) - {{.description}} `readme`
+- [﻿ = = =   T e s t   d e   d Ã © t e c t i o n   d ' e n ...](development/scripts/utils/Tests/samples/encodings/utf16be.txt) - ﻿ = = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c o d a g e   = = = 
+- [﻿= = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c...](development/scripts/utils/Tests/samples/encodings/utf16le.txt) - ﻿= = =   T e s t   d e   d Ã © t e c t i o n   d ' e n c o d a g e   = = = 
+- [﻿=== Test de dÃ©tection d'encodage ===](development/scripts/utils/Tests/samples/encodings/utf8-bom.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/scripts/utils/Tests/samples/encodings/utf16le-bom.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/scripts/utils/Tests/samples/encodings/utf16be-bom.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃ©tection d'encodage ===](development/scripts/utils/Tests/samples/encodings/windows1252.txt) - == Texte latin (ASCII) ==
+- [﻿=== Test de dÃƒÂ©tection d'encodage ===](development/scripts/utils/Tests/samples/encodings/utf8.txt) - == Texte latin (ASCII) ==
+- [﻿Ceci est un fichier texte simple.](development/scripts/utils/Tests/samples/formats/sample.txt) - Il contient plusieurs lignes de texte.
+- [﻿This is a simple ASCII text file.](development/scripts/utils/Tests/samples/encodings/ascii.txt)
+- [Gestionnaire d'Etiquettes (Tags)](development/scripts/roadmap/rag/restore/archive/index/tagging/README.md) - Ce module PowerShell fournit des fonctionnalites pour gerer les etiquettes (tags) des documents indexes. `roadmap` `readme`
+- [Gestionnaire de Metadonnees](development/scripts/roadmap/rag/restore/archive/index/metadata/README.md) - Ce module PowerShell fournit des fonctionnalites pour gerer les metadonnees des documents et des fichiers markdown. `roadmap` `readme`
+- [Gestionnaire de Versions](development/scripts/roadmap/rag/restore/archive/index/versioning/README.md) - Ce module PowerShell fournit des fonctionnalites pour gerer les versions des documents indexes. `roadmap` `readme`
+- [Module de Previsualisation des Resultats de Recherche](development/scripts/roadmap/rag/restore/archive/index/search/preview/README.md) - Ce module PowerShell fournit des fonctionnalites pour generer des previsualisations de resultats de recherche, avec mise... `roadmap` `readme`
+- [Roadmap d'exemple avec tags](development/scripts/roadmap/rag/tests/projet/roadmaps/plans/sample-roadmap.md) - Cette roadmap est un exemple pour tester le systÃ¨me de tags. `roadmap` `plan`
+- [{{title}}](development/scripts/roadmap/rag/views/template/library/templates/Task_Table.md) - {{description}} `roadmap`
+- [{{title}}](development/scripts/roadmap/rag/views/template/library/templates/Simple_List.md) - {{description}} `roadmap`
+- [{{title}} - Tableau Kanban](development/scripts/roadmap/rag/views/template/library/templates/Kanban_Board.md) - {{description}} `roadmap`
+- [﻿Test d'encodage avec des caractÃ¨res accentuÃ©s : Ã�...](development/scripts/roadmap/rag/restore/archive/index/search/filters/encoding_test_output.txt) - ﻿Test d'encodage avec des caractÃ¨res accentuÃ©s : Ã© Ã¨ Ãª Ã  Ã§ Ã¹ `roadmap`
+- [Roadmap Test](development/scripts/roadmap/rag/tests/projet/roadmaps/analysis/test/files/roadmap_structural.md) - - [ ] **1.1** Tâche 1 `roadmap`
+- [Roadmap Test](development/scripts/roadmap/rag/tests/projet/roadmaps/analysis/test/files/roadmap_added.md) - - [ ] **1.1** Tâche 1 `roadmap`
+- [Roadmap Test](development/scripts/roadmap/rag/tests/projet/roadmaps/analysis/test/files/roadmap_status.md) - - [x] **1.1** Tâche 1 `roadmap`
+- [Roadmap Test](development/scripts/roadmap/rag/tests/projet/roadmaps/analysis/test/files/roadmap_modified.md) - - [ ] **1.1** Tâche 1 modifiée `roadmap`
+- [Roadmap Test](development/scripts/roadmap/rag/tests/projet/roadmaps/analysis/test/files/roadmap_moved.md) - - [ ] **1.1** Tâche 1 `roadmap`
+- [Roadmap Test](development/scripts/roadmap/rag/tests/projet/roadmaps/analysis/test/files/roadmap_original.md) - - [ ] **1.1** Tâche 1 `roadmap`
+- [Roadmap Test](development/scripts/roadmap/rag/tests/projet/roadmaps/analysis/test/files/roadmap_removed.md) - - [ ] **1.1** Tâche 1 `roadmap`
+
+### Api
+
+*API documentation and specifications*
+
+- [Please provide the specifications for the project so I can a...](scripts/error-resolution-pipeline/pkg/api/install.sh       # Installation script/README.md            # Documentation) - Please provide the specifications for the project so I can assist you in creating the necessary file contents. `readme`
+- [Référence API - Support des formats XML et HTML](src/format-support/XML_HTML/Documentation/Reference_API.md) - Ce document fournit une référence complète de toutes les fonctions disponibles dans les modules de support XML et HTM...
+
+### Testing
+
+*Testing guides and documentation*
+
+- [Analyse des Tests d'Intégration QDrant HTTP](analysis/qdrant-tests-analysis.md) - - ❌ **Résultat** : Aucun test gRPC QDrant détecté dans le projet
+- [Qdrant Integration Tests](src/qdrant/README_TESTING.md) - The Qdrant tests are split into two categories: `readme`
+- [Rapport de la suite de tests](reports/TestSuiteReport.md) - Date: 2025-04-28 17:47:40
+- [Test Roadmap](misc/test-roadmap.md) - - [x] 1.1 Première tâche `roadmap`
+- [fastapi==0.104.1](load-testing/requirements-loadtest-controller.txt) - uvicorn==0.24.0
+- [============================================================...](src/orchestrator/test_output.txt) - ================================================================================
+- [Integration and Validation Documentation](tests/integration/INTEGRATION_VALIDATION.md) - - **PathTracker** : Intégration testée avec les conflits
+- [Méthodologie de Tests Progressive en 4 Phases (P1-P4)](aaaretrait-pour-xp/.augment/testing-methodology.md) - La méthodologie de tests progressive en 4 phases est une approche structurée pour le développement et l'exécution de...
+- [Tests unitaires pour Hygen](src/n8n/tests/README.md) - Ce dossier contient les tests unitaires pour l'implémentation de Hygen dans le projet n8n. `readme`
+- [🎯 RAG System - 7 Time-Saving Methods Implementation Report](internal/testgen/automation-report.md) - **Execution Time**: 00:59
+- [Guide QDrant RAG](tools/qdrant/rag/test-document.txt) - QDrant est une base de données vectorielle open-source conçue pour la recherche sémantique à haute performance.
+- [Plan de développement v2025-05 - Test Complex Plan](roadmaps/plans/consolidated/plan-dev-v2025-05-test-complex-plan.md) - *Version 1.0 - 2025-05-28 - Progression globale : 0 / 9* `roadmap` `plan`
+- [Plan de développement v2025-05 - Test Simple Plan](roadmaps/plans/consolidated/plan-dev-v2025-05-test-simple-plan.md) - *Version 1.0 - 2025-05-28 - Progression globale : 0 / 9* `roadmap` `plan`
+- [Test du script diffedit.go sur un fichier markdown réel](tools/diff_edit/go/TEST_DIFFEDIT.md) - ```markdown
+- [Tests avec des pull requests réelles](aaaretrait-pour-xp/.augment/guidelines/pull_request_testing.md) - Ce document définit les bonnes pratiques et les procédures pour tester efficacement les pull requests dans le projet. `guide`
+- [Tests des nodes MCP pour n8n](src/n8n/nodes/tests/README.md) - Ce répertoire contient les tests automatisés pour les nodes MCP Client et MCP Memory pour n8n. `readme`
+- [Rapport d'analyse de pull request (test)](.build/ci/git-hooks/reports/test-pr-analysis.md) - - **Erreurs**: 0
+- [Rapport d'analyse post-commit](.build/ci/git-hooks/reports/post-commit-test-report.md) - Date: 2025-04-14 08:10:13
+- [Rapport de vérification de l'intégration MCP avec n8n](src/n8n/nodes/tests/rapport-verification.md) - L'intégration MCP avec n8n a été vérifiée manuellement. Voici les résultats de cette vérification.
+- [Rapport de test des nodes MCP pour n8n](src/n8n/nodes/tests/reports/test-report-2025-05-16T15-53-27.867Z.md) - Date: 2025-05-16T15:53:48.376Z
+- [Rapport de test des nodes MCP pour n8n](src/n8n/nodes/tests/reports/test-report-2025-05-16T15-56-21.424Z.md) - Date: 2025-05-16T15:56:42.239Z
+- [Rapport de test des nodes MCP pour n8n](src/n8n/nodes/tests/reports/test-report-2025-05-16T15-58-25.430Z.md) - Date: 2025-05-16T15:58:46.737Z
+- [Rapport de test manuel des nodes MCP pour n8n](src/n8n/nodes/tests/reports/test-report-manual.md) - Date: 2025-05-16
+
+### Project Management
+
+*Project planning and management documents*
+
+- [Documentation Projet](projet/README.md) - Ce dossier contient la documentation relative au projet lui-même. `readme`
+- [.. Technical documentation master file](projet/architecture/index.rst) - Documentation technique
+- [Architecture](projet/architecture/index.md) - Cette section contient la documentation relative à Architecture.
+- [Assets](projet/assets/index.md) - Cette section contient la documentation relative à Assets.
+- [Assets](projet/assets/README.md) - Ce répertoire contient les ressources statiques du projet. `readme`
+- [Documentation](projet/documentation/README.md) - Ce répertoire contient la documentation du projet. `readme`
+- [Documentation du Système de Journal de Bord RAG](projet/guides/README.md) - Cette documentation détaille l'architecture, les fonctionnalités et l'utilisation du système de journal de bord RAG (... `guide` `readme`
+- [Dossier projet/roadmaps](projet/roadmaps/README.md) - Ce dossier contient toutes les roadmaps et plans du projet. `roadmap` `readme`
+- [Guides et Documentation](projet/guides/index_old.md) - Cette section contient les guides et la documentation du projet. `guide`
+- [Index de la documentation du système de journal de bord RAG](projet/guides/index.md) - Bienvenue dans la documentation du système de journal de bord RAG. Ce système permet de documenter, analyser et exploi... `guide`
+- [IntÃ©gration de mcp-use pour la gestion des serveurs MCP](projet/documentation/README_MCP_USE.md) - Ce document explique comment utiliser la bibliothÃ¨que `mcp-use` pour amÃ©liorer la gestion des serveurs MCP (Model ... `readme`
+- [MCP (Model Context Protocol) - EMAIL_SENDER_1](projet/mcp/README.md) - Ce répertoire contient tous les serveurs MCP (Model Context Protocol) utilisés dans le projet EMAIL_SENDER_1. `readme`
+- [Readme](projet/documentation/index.md) - Cette section contient la documentation relative à Readme.
+- [Roadmap](projet/roadmaps/index.md) - Cette section contient la documentation relative à Roadmap. `roadmap`
+- [Tutorials](projet/tutorials/index.md) - Cette section contient la documentation relative à Tutorials. `tutorial`
+- [## ## ## ## ## ## ## ## ## ## # Roadmap EMAIL_SENDER_1](projet/roadmaps/roadmap_complete_converted.md) - - [x] **1.1.1** Renommer `development/scripts/mode-manager` en `development/scripts/mode-manager` `roadmap`
+- [.. EMAIL_SENDER_1 documentation master file](projet/documentation/config/index.rst) - Documentation EMAIL_SENDER_1
+- [Analyse Avancée - Documentation Technique](projet/architecture/analysis.md) - Le système d'analyse avancée permet d'extraire des insights et d'identifier des tendances dans le journal de bord. Il ...
+- [Analyse de la roadmap et proposition de scripts Python open-source](projet/roadmaps/scripts-open-source.md) - Analyser la roadmap EMAIL_SENDER_1 pour identifier les fonctionnalités clés et proposer des scripts Python open-source... `roadmap`
+- [Analyse des besoins en modèles prédictifs](projet/architecture/PredictiveModelRequirements.md) - Ce document définit les besoins pour l'implémentation des modèles prédictifs dans le cadre du projet EMAIL_SENDER_1....
+- [Analyse des besoins en métriques de performance](projet/architecture/PerformanceMetricsRequirements.md) - Ce document définit les besoins en métriques de performance pour le projet EMAIL_SENDER_1. Il identifie les métriques...
+- [Analyse des erreurs recurrentes et patterns problematiques](projet/guides/error_analysis_report.md) - *Genere le 07/04/2025 06:55* `guide`
+- [Analyser les besoins](projet/roadmaps/subtasks.txt) - Concevoir l'architecture `roadmap`
+- [Analysis](projet/roadmaps/analysis/index.md) - Cette section contient la documentation relative à Analysis. `roadmap`
+- [Architecture des modèles prédictifs](projet/architecture/PredictiveModelArchitecture.md) - L'architecture des modèles prédictifs est conçue pour être modulaire, extensible et performante. Elle permet l'inté...
+- [Architecture du Module PowerShell RoadmapModel](projet/architecture/RoadmapModule_Architecture.md) - - **Description**: Convertit un fichier markdown en un arbre de roadmap. `roadmap`
+- [Architecture du Parsing Markdown pour le Module RoadmapParser](projet/architecture/markdown_parsing_architecture.md) - Ce document décrit l'architecture proposée pour le composant de parsing markdown du module RoadmapParser. L'architectu...
+- [Architecture du module PerformanceAnalyzer](projet/architecture/PerformanceAnalyzerArchitecture.md) - Le module PerformanceAnalyzer est conçu pour collecter, analyser et visualiser les métriques de performance du systèm...
+- [Archive](projet/roadmaps/archive/index.md) - Cette section contient la documentation relative à Archive. `roadmap`
+- [Archive de la roadmap](projet/roadmaps/archive/README.md) - Ce dossier contient les tâches archivées et terminées de la roadmap du projet EMAIL_SENDER_1. `roadmap` `readme`
+- [Aspects cruciaux de la programmation](projet/guides/programmation_16_bases.md) - 1. Distribution et communication des scripts `guide`
+- [Code de Conduite du Contributeur](projet/documentation/CODE_OF_CONDUCT.md) - Dans l'intérêt de favoriser un environnement ouvert et accueillant, nous nous engageons, en tant que contributeurs et ...
+- [Conception : Intégration de la parallélisation avec la gestion des caches](projet/architecture/integration-parallelisation-cache.md) - Ce document présente la conception détaillée de l'intégration de la parallélisation avec la gestion des caches, com...
+- [Configuration des gestionnaires](projet/config/managers/README.md) - Ce rÃ©pertoire contient les fichiers de configuration de tous les gestionnaires du projet. `readme`
+- [Decisions](projet/architecture/decisions/index.md) - Cette section contient la documentation relative à Decisions.
+- [Diagrams](projet/architecture/diagrams/index.md) - Cette section contient la documentation relative à Diagrams.
+- [Documentation Augment](projet/guides/augment/README.md) - Ce dossier contient la documentation spécifique à l'utilisation et l'optimisation d'Augment, l'assistant IA basé sur ... `guide` `readme`
+- [Documentation Augment Code](projet/guides/augment/index.md) - Cette section contient la documentation relative à l'utilisation d'Augment Code dans notre projet. `guide`
+- [Documentation PowerShell](projet/guides/powershell/index.md) - Cette section contient la documentation relative à l'utilisation de PowerShell dans le projet. `guide`
+- [Documentation de l'API du module PerformanceAnalyzer](projet/architecture/PerformanceAnalyzerAPI.md) - Cette documentation détaille l'API publique du module PerformanceAnalyzer, qui permet de collecter, analyser et visuali...
+- [Documentation technique des modèles prédictifs](projet/architecture/PredictiveModels.md) - L'implémentation des modèles prédictifs repose sur une architecture hybride PowerShell/Python :
+- [Définir les paramètres d'entrée (variable à inspecter, o...](projet/documentation/subtasks_1.2.1.3.2.3.1.txt) - Définir les paramètres d'entrée (variable à inspecter, options de formatage)
+- [Examples](projet/tutorials/examples/index.md) - Cette section contient la documentation relative à Examples. `tutorial`
+- [Glossaire du système de journal de bord RAG](projet/guides/glossary.md) - Ce glossaire définit les termes techniques utilisés dans le système de journal de bord RAG. `guide`
+- [Guide d'installation du module RoadmapParser](projet/guides/installation.md) - Ce guide explique comment installer et configurer le module RoadmapParser pour PowerShell. `guide` `installation`
+- [Guide d'utilisation : Cache prédictif](projet/guides/PredictiveCache.md) - Ce guide explique comment utiliser le cache prédictif pour optimiser les performances de vos workflows n8n et autres sc... `guide`
+- [Guide d'utilisation : Détection de cycles](projet/guides/CycleDetection.md) - Ce guide explique comment utiliser les fonctionnalités de détection de cycles pour identifier et corriger les dépenda... `guide`
+- [Guide d'utilisation : Segmentation d'entrées](projet/guides/InputSegmentation.md) - Ce guide explique comment utiliser les fonctionnalités de segmentation d'entrées pour traiter efficacement des donnée... `guide`
+- [Guide d'utilisation : Traitement parallèle](projet/guides/ParallelProcessing.md) - Ce guide explique comment utiliser les fonctionnalités de traitement parallèle pour améliorer les performances de vos... `guide`
+- [Guide d'utilisation des segmenteurs de formats](projet/guides/FormatSegmenters.md) - Ce guide explique comment utiliser les modules de segmentation pour les formats JSON, XML et texte. `guide`
+- [Guide d'utilisation du module PerformancePredictor](projet/guides/PerformancePredictor.md) - Le module PerformancePredictor fournit des fonctionnalités avancées de prédiction des performances, de détection d'a... `guide`
+- [Guide de contribution](projet/documentation/CONTRIBUTING.md) - Merci de votre intérêt pour contribuer au projet Email Sender pour n8n ! Voici quelques directives pour vous aider à ...
+- [Implémenter la détection et le traitement des tableaux](projet/documentation/subtasks_1.2.1.3.2.3.2.txt) - Implémenter la détection et le traitement des hashtables
+- [Implémenter le filtrage par nom de propriété (inclusion/e...](projet/documentation/subtasks_1.2.1.3.2.3.4.txt) - Implémenter le filtrage par nom de propriété (inclusion/exclusion)
+- [Implémenter le paramètre MaxDepth](projet/documentation/subtasks_1.2.1.3.2.3.3.txt) - Créer la logique de suivi de la profondeur actuelle
+- [Implémenter le suivi des objets déjà visités](projet/documentation/subtasks_1.2.1.3.2.3.5.txt) - Créer une table de hachage d'objets référencés
+- [Index du Journal de Bord](projet/roadmaps/journal/index.md) - - [2023-12-06] [Innovations en IA et apprentissage automatique pour la gestion de code](entries/2023-12-06-innovations-i... `roadmap`
+- [Interface Web - Documentation Technique](projet/architecture/web_interface.md) - L'interface web fournit un accès unifié à toutes les fonctionnalités du système de journal de bord. Elle permet de ...
+- [Intégration GitHub - Documentation Technique](projet/architecture/github.md) - L'intégration GitHub permet de lier le journal de bord au code source et aux issues GitHub, créant ainsi une traçabil...
+- [Intégrations](projet/guides/integrations/index.md) - Ce répertoire contient la documentation pour les différentes intégrations du système de journal de bord RAG. `guide`
+- [Journal de Bord - Documentation Technique](projet/architecture/journal.md) - Le journal de bord est le composant central du système. Il permet de créer, stocker et rechercher des entrées structu...
+- [Mcp](projet/guides/mcp/index.md) - Cette section contient la documentation relative à Mcp. `guide`
+- [Mes Plans](projet/roadmaps/mes-plans/index.md) - Cette section contient la documentation relative à Mes Plans. `roadmap` `plan`
+- [Module de cache prédictif](projet/architecture/PredictiveCache.md) - Le module `PredictiveCache` fournit un système de cache intelligent qui prédit les prochains accès en fonction des mo...
+- [Méthodologies de Développement](projet/guides/methodologies/index.md) - Cette section contient la documentation sur les méthodologies de développement utilisées dans le projet. `guide`
+- [N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true](projet/config/n8n-config.txt)
+- [N8n](projet/guides/n8n/index.md) - Cette section contient la documentation relative à N8n. `guide`
+- [Prochaines étapes d'implémentation - EMAIL_SENDER_1](projet/roadmaps/NEXT_STEPS.md) - Ce document présente les prochaines étapes pour l'implémentation et l'intégration des optimisations réalisées pour... `roadmap`
+- [Rapport de vÃƒÂ©rification pour la tÃƒÂ¢che 2.2](projet/roadmaps/check_report_2.2.md) - - TÃƒÂ¢che principale : **2.2** - DÃ©finir une convention de nommage cohÃ©rente `roadmap`
+- [Rapport de vérification pour la tâche 1.2.2.1.2](projet/roadmaps/check_report_1.2.2.1.2.md) - - Tâche principale : **1.2.2.1.2** - Créer le tokenizer pour décomposer le contenu markdown `roadmap`
+- [Reports](projet/roadmaps/Reports/index.md) - Cette section contient la documentation relative à Reports. `roadmap`
+- [Requirements pour le projet N8N Email Sender](projet/config/requirements.txt) - n8n-nodes-mcp==0.1.14
+- [Roadmap](projet/roadmaps/Roadmap/index.md) - Cette section contient la documentation relative à Roadmap. `roadmap`
+- [Roadmap d'implémentation](projet/roadmaps/roadmap.md) - - [ ] Analyser les exigences et contraintes `roadmap`
+- [Schémas de données pour le MCP](projet/mcp/schemas/README.md) - Ce répertoire contient les schémas de données utilisés par le MCP (Model Context Protocol). `readme`
+- [Scripts](projet/roadmaps/scripts/index.md) - Cette section contient la documentation relative Ã  Scripts. `roadmap`
+- [Scripts de gestion de la roadmap](projet/roadmaps/scripts/README.md) - Ce dossier contient les scripts principaux pour la gestion de la roadmap du projet. `roadmap` `readme`
+- [Scénarios d'utilisation courants du module RoadmapParser](projet/guides/usage-scenarios.md) - Ce guide présente les scénarios d'utilisation les plus courants du module RoadmapParser, avec des exemples de code et ... `guide`
+- [Système RAG - Documentation Technique](projet/architecture/rag.md) - Le système RAG (Retrieval-Augmented Generation) permet d'interroger le journal de bord en langage naturel. Il combine l...
+- [Système de Journal de Bord RAG](projet/roadmaps/journal/README.md) - Ce système de journal de bord RAG (Retrieval-Augmented Generation) permet de documenter, analyser et exploiter les conn... `roadmap` `readme`
+- [Tasks](projet/roadmaps/tasks/index.md) - Cette section contient la documentation relative à Tasks. `roadmap`
+- [Template de Roadmap - Standard de Documentation](projet/roadmaps/roadmap_template.md) - Ce document sert de référence pour la création et la maintenance de la roadmap du projet. Il définit la structure, l... `roadmap`
+- [Test GitHub Actions](projet/guides/test-github-actions.md) - Ce fichier est utilisé pour tester le workflow GitHub Actions qui envoie des emails de notification. `guide`
+- [Test Roadmap pour GRAN Mode](projet/roadmaps/test_gran_mode.md) - - [ ] **1.1** Implémenter la fonctionnalité A `roadmap`
+- [Test d'analyse des erreurs](projet/guides/test_journal_entry.md) - *Date: 2025-04-07 07:03* `guide`
+- [Tâches complétées](projet/roadmaps/completed_tasks.md) - Ce fichier contient les tâches complétées du roadmap. `roadmap`
+- [Ui](projet/assets/ui/index.md) - Cette section contient la documentation relative à Ui.
+- [Visualisations Avancées](projet/assets/visualizations/index.md) - Ce répertoire contient la documentation pour les visualisations avancées du système de journal de bord RAG.
+- [## ## ## ## ## ## ## ## ## ## # Roadmap EMAIL_SENDER_1](projet/roadmaps/analysis/roadmap-test.md) - - **Objectif**: Réduire de 90% le temps consacré à la mise à jour manuelle de la roadmap `roadmap`
+- [## 1.5 Système avancé de gestion des erreurs et journal de...](projet/roadmaps/scripts/error_journal_enhancements.txt) - **Complexité**: Élevée `roadmap`
+- [## 2.6 Améliorations avancées de TestOmnibus](projet/roadmaps/scripts/testomnibus_enhancements.txt) - **Complexité**: Moyenne `roadmap`
+- [## 2.7 Système d'optimisation avancée des tests](projet/roadmaps/scripts/test_optimization_enhancements.txt) - **Complexité**: Élevée `roadmap`
+- [#### 5.1.2 Implémentation des modèles prédictifs](projet/roadmaps/archive/5.1.2_Implémentation_des_modèles_prédictifs.md) - **Complexité**: Élevée `roadmap`
+- [**N8n Automation Nodes Cheat Sheet**](projet/guides/n8n/n8n Cheat Sheet Guide.md) - This cheat sheet provides **JSON configuration snippets** for common n8n nodes, categorized by function. Each snippet sh... `guide`
+- [Analyse d'OpenMemory MCP : Meilleures pratiques pour la gestion de la mémoire entre serveurs MCP](projet/guides/mcp/ANALYSE_OPENMEMORY_MCP.md) - OpenMemory MCP est une implémentation du Model Context Protocol (MCP) développée par Mem0, qui se concentre sur la cr... `guide`
+- [Analyse de Sentiment](projet/assets/visualizations/sentiment-analysis/README.md) - L'analyse de sentiment visualise l'évolution du sentiment dans les entrées du journal au fil du temps. Elle permet d'i... `readme`
+- [Analyse de la configuration Qdrant](projet/guides/mcp/ANALYSE_QDRANT_CONFIG.md) - *Générée le 2025-05-20* `guide`
+- [Analyse des attributs de dépendances et relations](projet/roadmaps/analysis/dependency-analysis.md) - - Nombre total de tâches: 2567 `roadmap`
+- [Analyse des besoins fonctionnels du framework de test](projet/documentation/technical/TestFrameworkRequirements.md) - Ce document présente l'analyse des besoins fonctionnels pour le framework de test du projet EMAIL_SENDER_1. Il définit...
+- [Analyse des permissions SQL Server](projet/guides/powershell/sql_server_permissions.md) - Ce guide explique comment utiliser la fonction `Analyze-SqlServerPermission` pour analyser les permissions au niveau ser... `guide`
+- [Analyse du projet claude-task-master pour amélioration de notre roadmapper](projet/roadmaps/analyses/analyse-claude-task-master.md) - - **Système MCP intégré** : Utilisation du Model Context Protocol pour permettre aux modèles d'IA d'interagir direct... `roadmap`
+- [Analysis](projet/roadmaps/journal/analysis/index.md) - Cette section contient la documentation relative à Analysis. `roadmap`
+- [Animations](projet/assets/ui/animations/index.md) - Cette section contient la documentation relative à Animations.
+- [Animations et Transitions](projet/assets/ui/animations/README.md) - Les animations et transitions améliorent l'expérience utilisateur en rendant l'interface plus fluide et plus intuitive... `readme`
+- [Automatisation de Workflow et Déclencheurs dans n8n](projet/guides/n8n/N8N_WORKFLOW_AUTOMATION_TRIGGERS.md) - Ce document détaille les différents types de déclencheurs disponibles dans n8n pour démarrer vos workflows automatis... `guide`
+- [Automatisation de Workflow et Déclencheurs dans n8n](projet/guides/n8n/N8N_WORKFLOW_AUTOMATION_TRIGGERS-restructured.md) - 1. [Automatisation de Workflow et Déclencheurs dans n8n](#section-1) `guide`
+- [Backups](projet/roadmaps/journal/backups/index.md) - Cette section contient la documentation relative à Backups. `roadmap`
+- [Bonnes Pratiques PowerShell](projet/guides/powershell/best_practices.md) - Ce document présente les bonnes pratiques à suivre lors de l'écriture de scripts PowerShell dans le cadre du projet. `guide`
+- [Bonnes Pratiques pour l'Utilisation de Qdrant dans le MCP Manager](projet/guides/mcp/BONNES_PRATIQUES_QDRANT.md) - *Version 1.0 - 2025-05-19* `guide`
+- [Bonnes pratiques pour n8n dans EMAIL SENDER 1](projet/guides/n8n/bonnes-pratiques-n8n.md) - *Version 2025-05-15* `guide`
+- [Configuration du mode hybride pour Qdrant](projet/guides/mcp/CONFIGURATION_MODE_HYBRIDE.md) - *Généré le 2025-05-20* `guide`
+- [Configuration et Utilisation du JSON dans n8n](projet/guides/n8n/N8N_CONFIGURATION_JSON_USAGE.md) - Ce guide offre une exploration détaillée des capacités d'automatisation de n8n, avec un accent particulier sur les ex... `guide`
+- [Configuration et Utilisation du JSON dans n8n](projet/guides/n8n/N8N_CONFIGURATION_JSON_USAGE-restructured.md) - 1. [Configuration et Utilisation du JSON dans n8n](#section-1) `guide`
+- [Conventions SpÃ©cifiques au Projet](projet/roadmaps/analysis/conventions-report.md) - **Fichier analysÃ©:** D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete_converted.md `roadmap`
+- [Conventions SpÃ©cifiques au Projet](projet/roadmaps/analysis/project-conventions.md) - **Fichier analysÃ©:** $RoadmapFilePath `roadmap`
+- [Documentation des exceptions du namespace System](projet/guides/methodologies/system_exceptions_documentation.md) - Le namespace `System` contient les exceptions fondamentales du framework .NET. Ces exceptions représentent les erreurs ... `guide`
+- [Documentation des exceptions du namespace System.IO](projet/guides/methodologies/system_io_exceptions_documentation.md) - Le namespace `System.IO` contient les exceptions liées aux opérations d'entrée/sortie dans le framework .NET. Ces exc... `guide`
+- [Documentation des propriétés communes de System.Exception](projet/guides/methodologies/exception_properties_documentation.md) - Ce document détaille les propriétés communes à toutes les exceptions dérivées de la classe `System.Exception` dans... `guide`
+- [Décisions architecturales pour EMAIL SENDER 1](projet/guides/architecture/decisions-architecturales.md) - *Version 2025-05-15* `guide`
+- [Email Sender Cognitive Architecture [COSMOS]](projet/roadmaps/examples/example-cognitive-roadmap.md) - > Représentation holistique de l'écosystème complet du projet Email Sender, `roadmap`
+- [Enseignements sur l'implémentation des notifications email GitHub Actions](projet/roadmaps/journal/2025-04-07-00-30-Enseignements-GitHub-Actions-Email.md) - **Date**: 07/04/2025 00:30 `roadmap`
+- [Enseignements tirés de l'analyse de git-mcp pour notre MCP Manager](projet/guides/mcp/ENSEIGNEMENTS_GIT_MCP.md) - [git-mcp](https://github.com/idosal/git-mcp) est un serveur MCP (Model Context Protocol) open-source qui transforme n'im... `guide`
+- [Entree du 2025-04-07 03:52](projet/roadmaps/journal/journal.md) - - **Taches totales** : 4 `roadmap`
+- [Entries](projet/roadmaps/journal/entries/index.md) - Cette section contient la documentation relative à Entries. `roadmap`
+- [Erpnext](projet/guides/integrations/erpnext/index.md) - Cette section contient la documentation relative à Erpnext. `guide`
+- [Filtering](projet/assets/ui/filtering/index.md) - Cette section contient la documentation relative à Filtering.
+- [Filtrage Avancé](projet/assets/ui/filtering/README.md) - Le système de filtrage avancé permet aux utilisateurs de filtrer les données affichées dans les visualisations selon... `readme`
+- [Fonctions Utilitaires PowerShell](projet/guides/powershell/utility_functions.md) - Ce document contient des fonctions utilitaires PowerShell couramment utilisées dans le projet. `guide`
+- [GUIDE COMPLET : DÉFINITIONS JSON DES NŒUDS N8N, TOUS LES OUTILS, NUANCES D'INTÉGRATION ET MANIPULATION D'AGENT IA](projet/guides/n8n/N8N_TIPS_AND_TRICKS-restructured.md) - 1. [GUIDE COMPLET : DÉFINITIONS JSON DES NŒUDS N8N, TOUS LES OUTILS, NUANCES D'INTÉGRATION ET MANIPULATION D'AGENT IA... `guide`
+- [GUIDE COMPLET : DÉFINITIONS JSON DES NŒUDS N8N, TOUS LES OUTILS, NUANCES D'INTÉGRATION ET MANIPULATION D'AGENT IA](projet/guides/n8n/N8N_TIPS_AND_TRICKS.md) - Ce document combine une vue d'ensemble des structures JSON des nœuds n8n avec des sections détaillées sur tous les ou... `guide`
+- [Granularisation des Phases d'Amélioration du Workflow de Roadmap](projet/roadmaps/analysis/roadmap-regenerated.md) - - [ ] **Objectif** : Réduire de 90% le temps consacré à la mise à jour manuelle de la roadmap `roadmap`
+- [Granularisation des Phases d'Amélioration du Workflow de Roadmap](projet/roadmaps/mes-plans/granularisation-phases-roadmap.md) - - **Objectif**: Réduire de 90% le temps consacré à la mise à jour manuelle de la roadmap `roadmap` `plan`
+- [Guide Complet des Extraits JSON pour l'Automatisation n8n](projet/guides/n8n/N8N_JSON_SNIPPETS_GUIDE-restructured.md) - 1. [Guide Complet des Extraits JSON pour l'Automatisation n8n](#section-1) `guide`
+- [Guide Complet des Extraits JSON pour l'Automatisation n8n](projet/guides/n8n/N8N_JSON_SNIPPETS_GUIDE.md) - Lors de la création d'automatisations dans n8n, la gestion appropriée des configurations JSON est essentielle, en part... `guide`
+- [Guide Pratique : Tests Progressifs en 4 Phases](projet/guides/testing/progressive-testing-guide.md) - Ce guide explique comment implémenter la méthodologie de tests progressive en 4 phases (P1-P4) dans le cadre du workfl... `guide`
+- [Guide d'Assistance pour Workflow N8N - Gribitch Booking](projet/guides/n8n/N8N_WORKFLOW_GUIDELINES-restructured.md) - 1. [Guide d'Assistance pour Workflow N8N - Gribitch Booking](#section-1) `guide`
+- [Guide d'Assistance pour Workflow N8N - Gribitch Booking](projet/guides/n8n/N8N_WORKFLOW_GUIDELINES.md) - Ce projet vise à construire et optimiser un workflow N8N nommé "Email Sender 1" pour automatiser le processus complet ... `guide`
+- [Guide d'intégration MCP avec n8n](projet/guides/n8n/mcp-n8n-integration.md) - Ce guide détaille l'intégration du Model Context Protocol (MCP) avec n8n, permettant d'utiliser les capacités de MCP ... `guide`
+- [Guide d'utilisation du MCP Gateway dans n8n](projet/guides/mcp/GUIDE_MCP_GATEWAY.md) - Le MCP Gateway (centralmind/gateway) est un serveur MCP (Model Context Protocol) qui permet d'exposer votre base de donn... `guide`
+- [Guide d'utilisation du MCP Git Ingest](projet/guides/mcp/GUIDE_MCP_GIT_INGEST.md) - Le MCP Git Ingest est un serveur MCP (Model Context Protocol) qui permet d'explorer et de lire les structures de dépôt... `guide`
+- [Guide d'utilisation du MCP GitHub](projet/guides/mcp/GITHUB_MCP.md) - Ce document explique comment configurer et utiliser le serveur MCP GitHub pour accéder aux dépôts GitHub depuis n8n e... `guide`
+- [Guide de conception des tableaux de bord](projet/assets/visualizations/dashboard_designs.md) - Ce document décrit les principes de conception, les types de tableaux de bord disponibles et les bonnes pratiques pour ...
+- [Guide de démarrage rapide - Journal de Bord RAG](projet/roadmaps/journal/QUICKSTART.md) - Ce guide vous aidera à démarrer rapidement avec le système de journal de bord RAG. `roadmap`
+- [Guide de granularité adaptative pour les roadmaps](projet/guides/methodologies/granularite-adaptative.md) - La granularité adaptative est une approche qui ajuste le niveau de détail des tâches en fonction de leur complexité,... `guide`
+- [Guide des types de graphiques](projet/assets/visualizations/chart_types_guide.md) - Ce document décrit les différents types de graphiques disponibles pour visualiser les données de performance, leurs c... `guide`
+- [Guide final pour les MCP dans n8n](projet/guides/mcp/GUIDE_FINAL_MCP.md) - Ce guide resume toutes les etapes effectuees pour resoudre les problemes de toasts d'erreur au demarrage des MCP dans n8... `guide`
+- [Guide pour tester les MCP dans n8n](projet/guides/mcp/TESTER_MCP_WORKFLOW.md) - Ce guide vous explique comment importer et tester le workflow de test pour vérifier que les MCP fonctionnent correcteme... `guide`
+- [Guide pour tester les MCP dans n8n](projet/guides/mcp/TESTER_MCP_WORKFLOW_FIXED.md) - Ce guide vous explique comment importer et tester le workflow de test pour verifier que les MCP fonctionnent correctemen... `guide`
+- [Guide ultra-simple pour configurer votre token GitHub](projet/guides/mcp/GUIDE_TOKEN_GITHUB.md) - Ce guide vous explique comment configurer votre token GitHub en quelques étapes simples. `guide`
+- [Idéation et définition des besoins](projet/roadmaps/mes-plans/chaine-de-dev.md) - Identifier le problème ou l'opportunité (le "pourquoi" du projet). `roadmap` `plan`
+- [Instructions pour Projet N8N](projet/guides/n8n/N8N_PROJECT_INSTRUCTIONS-restructured.md) - 1. [Instructions pour Projet N8N](#section-1) `guide`
+- [Instructions pour Projet N8N](projet/guides/n8n/N8N_PROJECT_INSTRUCTIONS.md) - Créer un workflow N8N fonctionnel et complet sous forme de fichier JSON valide, prêt à être importé dans l'interfac... `guide`
+- [Intégration Augment-n8n](projet/guides/n8n/integration-augment-n8n.md) - *Version 2025-05-15* `guide`
+- [Intégration ERPNext](projet/guides/integrations/erpnext/README.md) - L'intégration ERPNext permet de synchroniser les données entre votre journal de bord et votre instance ERPNext. Cette ... `guide` `readme`
+- [Intégration ERPNext](projet/guides/integrations/erpnext.md) - L'intégration ERPNext permet de synchroniser les données entre votre journal de bord et votre instance ERPNext. Cette ... `guide`
+- [Intégrations IA & LLM dans n8n](projet/guides/n8n/N8N_AI_LLM_INTEGRATIONS.md) - Ce document détaille les différentes façons d'intégrer des modèles de langage (LLM) et des fonctionnalités d'IA da... `guide`
+- [Intégrations IA & LLM dans n8n](projet/guides/n8n/N8N_AI_LLM_INTEGRATIONS-restructured.md) - 1. [Intégrations IA & LLM dans n8n](#section-1) `guide`
+- [Intégrations Notables dans n8n (Applications et Services)](projet/guides/n8n/N8N_NOTABLE_INTEGRATIONS.md) - Ce document présente des exemples d'utilisation JSON pour les nœuds de services tiers populaires dans n8n. Chacun de c... `guide`
+- [Intégrations Notables dans n8n (Applications et Services)](projet/guides/n8n/N8N_NOTABLE_INTEGRATIONS-restructured.md) - 1. [Intégrations Notables dans n8n (Applications et Services)](#section-1) `guide`
+- [Journal de Bord (Migré)](projet/roadmaps/journal/JOURNAL_DE_BORD.md) - Ce journal a été migré vers un format plus structuré. Les entrées individuelles se trouvent dans le dossier `entrie... `roadmap`
+- [Journal de Développement - 14 avril 2025](projet/roadmaps/journal/2025-04-14-Analyse-Patterns-Erreurs.md) - Aujourd'hui, j'ai finalisé le développement du système d'analyse des patterns d'erreurs inédits et son intégration ... `roadmap`
+- [Journal de bord - 16/04/2025](projet/roadmaps/journal/2025-04-16_completion_script_manager.md) - - Vérification de l'état d'avancement des phases 3, 4 et 5 du Script Manager Proactif `roadmap`
+- [Journal de dÃ©veloppement](projet/roadmaps/journal/journal_de_bord_test.md) - Ce journal contient les entrÃ©es de dÃ©veloppement enrichies automatiquement par le hook post-commit. `roadmap`
+- [Journal de développement](projet/roadmaps/journal/development_log.md) - - Analyse approfondie des patterns d'erreur rencontrés dans le projet `roadmap`
+- [Journal de développement - 09/04/2023](projet/roadmaps/journal/2023-04-09-optimisation-parallelisation.md) - Besoin d'améliorer les performances des scripts qui traitent de nombreux fichiers en parallèle, tout en restant compat... `roadmap`
+- [Les 16 Bases de la Programmation](projet/guides/methodologies/programmation_16_bases.md) - Ce document présente les 16 bases fondamentales de la programmation qui guident le développement de notre projet. `guide`
+- [Limitations d'Augment Code](projet/guides/augment/limitations.md) - Ce document détaille les limitations techniques et pratiques d'Augment Code, pour vous aider à optimiser votre utilisa... `guide`
+- [MCP Filesystem Server](projet/mcp/servers/filesystem/README.md) - Ce dossier contient une installation locale du serveur MCP Filesystem. `readme`
+- [Magistral](projet/roadmaps/plans/magistral/index.md) - Cette section contient la documentation relative à Magistral. `roadmap` `plan`
+- [Memory Banks](projet/roadmaps/mes-plans/memory-banks/index.md) - Cette section contient la documentation relative à Memory Banks. `roadmap` `plan`
+- [Memory Banks](projet/roadmaps/plans/memory-banks/index.md) - Cette section contient la documentation relative à Memory Banks. `roadmap` `plan`
+- [Mise à jour de l'Architecture Cognitive (v12)](projet/roadmaps/orchestration/v12-architecture-cognitive-maj.md) - La version v12 de l'architecture cognitive a été enrichie avec de nouvelles fonctionnalités et améliorations. Cette ... `roadmap`
+- [Mode C-BREAK - Détection et Résolution des Dépendances Circulaires](projet/guides/methodologies/mode_c-break.md) - Le mode C-BREAK (Cycle Breaker) est un mode opérationnel conçu pour détecter et corriger les dépendances circulaires... `guide`
+- [Mode CHECK](projet/guides/methodologies/mode_check.md) - Le mode CHECK est un mode opérationnel qui permet de vérifier si les tâches d'une roadmap ont été implémentées à... `guide`
+- [Mode DEBUG](projet/guides/methodologies/mode_debug.md) - Le mode DEBUG est un mode opérationnel conçu pour faciliter la détection, l'analyse et la correction des bugs dans le... `guide`
+- [Modes OpÃ©rationnels](projet/guides/methodologies/modes/index.md) - Ce document prÃ©sente les diffÃ©rents modes opÃ©rationnels utilisÃ©s dans le projet. `guide`
+- [Modes opérationnels Augment](projet/guides/methodologies/modes-operationnels-augment.md) - *Version 2025-05-15* `guide`
+- [Modèles de Scripts PowerShell](projet/guides/powershell/script_templates.md) - Ce document contient des modèles de scripts PowerShell réutilisables pour différents scénarios. `guide`
+- [Moteur de Layout Automatique pour Carte de Métro](projet/roadmaps/visualization/src/README-MetroMapLayoutEngine.md) - Ce module fournit un moteur de layout automatique spécialisé pour les visualisations de type "carte de métro" des roa... `roadmap` `readme`
+- [N8n cheat sheet guide restructured](projet/guides/n8n/n8n Cheat Sheet Guide-restructured.md) `guide`
+- [Nuage de Mots Interactif](projet/assets/visualizations/word-cloud/README.md) - Le nuage de mots interactif affiche les termes les plus fréquents dans les entrées du journal, avec une taille proport... `readme`
+- [Nœuds de Traitement de Données et de Logique dans n8n](projet/guides/n8n/N8N_DATA_PROCESSING_LOGIC_NODES.md) - Ce document détaille les nœuds essentiels pour le traitement des données et la logique conditionnelle dans les workfl... `guide`
+- [Nœuds de Traitement de Données et de Logique dans n8n](projet/guides/n8n/N8N_DATA_PROCESSING_LOGIC_NODES-restructured.md) - 1. [Nœuds de Traitement de Données et de Logique dans n8n](#section-1) `guide`
+- [Optimisation des Memories dans Augment](projet/guides/augment/memories_optimization.md) - Ce document décrit les caractéristiques, limites et bonnes pratiques pour l'utilisation optimale des Memories (fonctio... `guide`
+- [Patterns d'erreurs et conclusions sur l'encodage et les tests](projet/roadmaps/journal/encodage_et_tests_patterns.md) - 1. **Problèmes d'encodage en cascade** `roadmap`
+- [Phase Analyse et conception terminée](projet/roadmaps/Roadmap/augment-declarations.txt) - Phase Gestion des problèmes d'encodage et caractères spéciaux terminée `roadmap`
+- [Phase Analyse et conception terminée](projet/roadmaps/Roadmap/example-declarations.txt) - Tâche Analyser les besoins du projet dans la phase Analyse et conception terminée `roadmap`
+- [Piliers](projet/roadmaps/plans/piliers/index.md) - Cette section contient la documentation relative à Piliers. `roadmap` `plan`
+- [Plan De Départ](projet/roadmaps/plans/plan de départ/index.md) - Cette section contient la documentation relative à Plan De Départ. `roadmap` `plan`
+- [Plan Légendaire d'Amélioration du Workflow de Roadmap](projet/roadmaps/mes-plans/amelioration-roadmap.md) - - **Granularité extrême** permettant un suivi précis de l'avancement `roadmap` `plan`
+- [Plan d'intégration Hygen-Roadmapper](projet/guides/integration/hygen-roadmapper-integration.md) - *Version 1.0 - 2025-05-14* `roadmap` `guide`
+- [Plan de Développement Magistral V2 : Intégration du Memory Bank et Normalisation Intégrale du Dépôt](projet/roadmaps/mes-plans/plan-dev-v2.md) - Ce plan de développement magistral v2 propose une approche intégrée combinant deux méthodologies complémentaires : `roadmap` `plan`
+- [Plan de Développement Magistral V3 : Memory Bank Hybride pour Augment et VS Code](projet/roadmaps/mes-plans/plan-dev-v3.md) - Ce plan de développement magistral v3 propose une architecture Memory Bank hybride, combinant les meilleures pratiques ... `roadmap` `plan`
+- [Plan de développement v12 : Architecture cognitive des roadmaps [COSMOS]](projet/roadmaps/tests/plan-dev-v12-architecture-cognitive-reconverted.md) - - [ ] **1.1** Définir le modèle hiérarchique complet `roadmap` `plan`
+- [Plans](projet/roadmaps/plans/consolidated/index.md) - Cette section contient la documentation relative à Plans. `roadmap` `plan`
+- [Plans et Quotas d'Augment Code](projet/guides/augment/plans_and_quotas.md) - Ce document détaille les différents plans d'abonnement disponibles pour Augment Code et leurs quotas respectifs. `plan` `guide`
+- [Principes de Langchain pour EMAIL SENDER 1](projet/guides/methodologies/principes-langchain.md) - *Version 2025-05-16* `guide`
+- [Product Requirements Document: Module de Prédiction par Régression Linéaire](projet/guides/prd/prediction_module.md) - *Version 1.0 - 2025-05-13* `guide`
+- [Rag](projet/roadmaps/journal/rag/index.md) - Cette section contient la documentation relative à Rag. `roadmap`
+- [Rapport d'Analyse de Structure de Roadmap](projet/roadmaps/analysis/roadmap-structure-report.md) - **Fichier analysÃ©:** $RoadmapFilePath `roadmap`
+- [Rapport d'Analyse de Structure de Roadmap](projet/roadmaps/analysis/structure-report.md) - **Fichier analysÃ©:** D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete_converted.md `roadmap`
+- [Rapport d'avancement de la Roadmap - EMAIL_SENDER_1](projet/roadmaps/Reports/status_report_20250502_183354.md) - Généré le 2025-05-02 18:33:54 `roadmap`
+- [Rapport d'avancement de la Roadmap - EMAIL_SENDER_1](projet/roadmaps/Reports/status_report_20250502_182307.md) - Généré le 2025-05-02 18:23:07 `roadmap`
+- [Rapport de Progression de la Roadmap](projet/roadmaps/analysis/progress-report.md) - **Fichier analysÃ©:** D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete_converted.md `roadmap`
+- [Rapport de Vulnérabilités - organize-root-files.ps1](projet/security/audits/rapport-vulnerabilites.md) - **Plan Dev v41 - Phase 1.1.1.1 - Audit de Sécurité**
+- [Rapport de test de performance de quantification Qdrant](projet/guides/mcp/RAPPORT_PERFORMANCE_QUANTIFICATION.md) - *Généré le 2025-05-20* `guide`
+- [Rapport de test de performance du mode hybride Qdrant](projet/guides/mcp/RAPPORT_PERFORMANCE_MODE_HYBRIDE.md) - *Généré le 2025-05-20* `guide`
+- [Rapport final sur la resolution des problemes MCP dans n8n](projet/guides/mcp/RAPPORT_FINAL_MCP.md) - Les toasts d'erreur apparaissaient au demarrage de n8n, indiquant que les MCP (Model Context Protocol) n'avaient pas dem... `guide`
+- [Reports](projet/roadmaps/journal/reports/index.md) - Cette section contient la documentation relative à Reports. `roadmap`
+- [Roadmap Active - EMAIL_SENDER_1](projet/roadmaps/active/roadmap_active.md) - Ce fichier contient les tÃ¢ches actives et Ã  venir de la roadmap. `roadmap`
+- [Roadmap Archive](projet/roadmaps/archive/roadmap_archive.md) - Ce fichier archive les sections terminées à 100% de la roadmap principale. `roadmap`
+- [Roadmap Complétée - EMAIL_SENDER_1](projet/roadmaps/archive/roadmap_completed.md) - Ce fichier contient les tâches complétées de la roadmap. `roadmap`
+- [Scripts_Archive](projet/roadmaps/archive/scripts_archive/index.md) - Cette section contient la documentation relative à Scripts_Archive. `roadmap`
+- [Sections](projet/roadmaps/journal/sections/index.md) - Cette section contient la documentation relative à Sections. `roadmap`
+- [Sections](projet/roadmaps/archive/sections/index.md) - Cette section contient la documentation relative à Sections. `roadmap`
+- [Sentiment Analysis](projet/assets/visualizations/sentiment-analysis/index.md) - Cette section contient la documentation relative à Sentiment Analysis.
+- [Spécification de la Fonction de Conversion Markdown vers Objet](projet/architecture/decisions/markdown_conversion_function.md) - La fonction `ConvertFrom-MarkdownToObject` est la fonction principale du module RoadmapParser pour convertir un fichier ...
+- [Structure de documentation pour Augment](projet/roadmaps/tasks/augment_documentation_structure.md) - Implémentation d'une structure de documentation organisée pour Augment, similaire aux fichiers .mdc de Cursor mais ada... `roadmap`
+- [Structure de la taxonomie des exceptions PowerShell](projet/guides/methodologies/exception_taxonomy_structure.md) - Ce document décrit la structure de données utilisée pour représenter la taxonomie des exceptions PowerShell dans le ... `guide`
+- [Système de gestion des erreurs](projet/roadmaps/journal/error_management.md) - - **Hooks manquants** : Erreur lors du push due à un hook pre-push référencé mais inexistant `roadmap`
+- [Système de tests automatisés pour l'analyse des pull reque...](projet/assets/data/input_text.txt) - Système de tests automatisés pour l'analyse des pull requests
+- [Tags](projet/roadmaps/journal/tags/index.md) - Cette section contient la documentation relative à Tags. `roadmap`
+- [Techniques de débogage des problèmes d'accès](projet/guides/methodologies/debugging_access_problems.md) - Ce document présente des techniques avancées pour déboguer les problèmes d'accès dans PowerShell, en particulier ce... `guide`
+- [Templates](projet/roadmaps/journal/templates/index.md) - Cette section contient la documentation relative à Templates. `roadmap`
+- [Tendances des Sujets](projet/assets/visualizations/topic-trends/README.md) - La visualisation des tendances des sujets montre l'évolution des sujets principaux identifiés dans le journal au fil d... `readme`
+- [Test Cognitive Roadmap [COSMOS]](projet/roadmaps/tests/reconverted-roadmap.md) - > This is a test roadmap for the cognitive architecture system. `roadmap`
+- [Test Cognitive Roadmap [COSMOS]](projet/roadmaps/tests/test-roadmap.md) - > This is a test roadmap for the cognitive architecture system. `roadmap`
+- [Tests](projet/roadmaps/archive/tests/index.md) - Cette section contient la documentation relative à Tests. `roadmap`
+- [Tests pour le Moteur de Rendu avec Layout Automatique](projet/roadmaps/visualization/tests/README.md) - Ce dossier contient les tests pour le moteur de rendu avec layout automatique pour la visualisation en carte de métro. `roadmap` `readme`
+- [Topic Trends](projet/assets/visualizations/topic-trends/index.md) - Cette section contient la documentation relative à Topic Trends.
+- [Transition](projet/roadmaps/plans/transition/index.md) - Cette section contient la documentation relative à Transition. `roadmap` `plan`
+- [Tâche: PRED-123](projet/tasks/examples/task_123_regression_lineaire.md) - Implémenter le module de régression linéaire simple
+- [Validation Report for v12 Architecture Cognitive Roadmap](projet/roadmaps/Reports/v12-validation-report.md) - - **Valid**: ✅ Yes `roadmap`
+- [Veille technique régulière – Modes & Mode Manager](projet/roadmaps/plans/veille_technique.md) - | Date       | Source                | Résumé                                              | Impact attendu           ... `roadmap` `plan`
+- [Versions](projet/roadmaps/plans/versions/index.md) - Cette section contient la documentation relative à Versions. `roadmap` `plan`
+- [Visualisations Avancées](projet/assets/visualizations/advanced_visualizations.md) - Le système de journal de bord RAG inclut plusieurs visualisations avancées qui permettent d'explorer et d'analyser les...
+- [Word Cloud](projet/assets/visualizations/word-cloud/index.md) - Cette section contient la documentation relative à Word Cloud.
+- [plan-dev-v17-orchestration-dev](projet/roadmaps/plans/plan-dev-v17-orchestration-dev.md) `roadmap` `plan`
+- [plan-dev-v20-observabilite-monitoring](projet/roadmaps/plans/plan-dev-v20-observabilite-monitoring.md) `roadmap` `plan`
+- [plan-dev-v21-scalabilite-resilience](projet/roadmaps/plans/plan-dev-v21-scalabilite-resilience.md) `roadmap` `plan`
+- [## ## ## ## ## ## ## ## ## ## # Roadmap EMAIL_SENDER_1](projet/roadmaps/plans/consolidated/plan-dev-v3.md) - - **Objectif**: Réduire de 90% le temps consacré à la mise à jour manuelle de la roadmap `roadmap` `plan`
+- [## ## ## ## ## ## ## ## ## ## # Roadmap EMAIL_SENDER_1](projet/roadmaps/plans/consolidated/roadmap_complete_2.md) - - **Objectif**: Réduire de 90% le temps consacré à la mise à jour manuelle de la roadmap `roadmap` `plan`
+- [## 1.1.2 Système de gestion centralisée des scripts](projet/roadmaps/archive/sections/section_gestion_scripts.md) - **Complexité**: Élevée `roadmap`
+- [## 🎯 **PHASE 5 : DÉPLOIEMENT & PRODUCTION**](projet/roadmaps/plans/consolidated/plan-dev-v61-memory-finale.md) - - [ ] **⚙️ Configuration Production** `roadmap` `plan`
+- [### 1.1.2.5 Améliorations avancées du système d'inventair...](projet/roadmaps/archive/sections/section_script_inventory_improvements.md) - **Complexité**: Moyenne `roadmap`
+- [### Réponse directe](projet/roadmaps/mes-plans/2025-0618- doc/AST-de-cline-plutot-que-RAG.md) - - **Cline ne utilise pas RAG pour indexer les bases de code, préférant une analyse en temps réel via la structure du ... `roadmap` `plan`
+- [1_Intelligence](projet/roadmaps/journal/sections/1_intelligence/index.md) - Cette section contient la documentation relative à 1_Intelligence. `roadmap`
+- [1_Section](projet/roadmaps/journal/sections/1_section/index.md) - Cette section contient la documentation relative à 1_Section. `roadmap`
+- [2023-11-30 - Analyse des patterns d'erreurs dans les scripts PowerShell](projet/roadmaps/journal/entries/2023-11-30-analyse-erreurs-powershell.md) - - Correction de 9 erreurs PSScriptAnalyzer dans RoadmapAdmin.ps1 `roadmap`
+- [2023-12-05 - Réorganisation majeure et ajout de nouveaux modules](projet/roadmaps/journal/entries/2023-12-05-reorganisation-majeure-et-nouveaux-modules.md) - - Réorganisation complète des fichiers du projet selon une structure modulaire `roadmap`
+- [2023-12-06 - Innovations en IA et apprentissage automatique pour la gestion de code](projet/roadmaps/journal/entries/2023-12-06-innovations-ia-et-apprentissage-automatique.md) - - Développement d'un système d'apprentissage automatique multi-dimensionnel pour l'analyse du code `roadmap`
+- [2_Devex](projet/roadmaps/journal/sections/2_devex/index.md) - Cette section contient la documentation relative à 2_Devex. `roadmap`
+- [2_Section](projet/roadmaps/journal/sections/2_section/index.md) - Cette section contient la documentation relative à 2_Section. `roadmap`
+- [3_Section](projet/roadmaps/journal/sections/3_section/index.md) - Cette section contient la documentation relative à 3_Section. `roadmap`
+- [4_Section](projet/roadmaps/journal/sections/4_section/index.md) - Cette section contient la documentation relative à 4_Section. `roadmap`
+- [5_Section](projet/roadmaps/journal/sections/5_section/index.md) - Cette section contient la documentation relative à 5_Section. `roadmap`
+- [API ERPNext](projet/guides/integrations/erpnext/api.md) - L'intégration ERPNext expose plusieurs endpoints API pour interagir avec ERPNext depuis le journal de bord. Cette page ... `guide`
+- [Absolument ! Analysons cette vidéo sur Langchain et extrayo...](projet/roadmaps/mes-plans/2025-0512-doc/langchains-tuto.md) - Absolument ! Analysons cette vidéo sur Langchain et extrayons toutes les informations pertinentes pour votre projet EMA... `roadmap` `plan`
+- [Absolument ! Analysons en profondeur le document "EMAIL SEND...](projet/roadmaps/mes-plans/2025-0512-doc/Lovable-Supabase-n8n.md) - Absolument ! Analysons en profondeur le document "EMAIL SENDER 1 – Augment Guidelines" et la vidéo pour en extraire t... `roadmap` `plan`
+- [Absolument ! Cette vidéo est une mine d'or pour illustrer e...](projet/roadmaps/mes-plans/2025-0512-doc/vibe-coding-with-cursor.md) - Absolument ! Cette vidéo est une mine d'or pour illustrer et enrichir tes "EMAIL SENDER 1 – Augment Guidelines". Le s... `roadmap` `plan`
+- [Absolument ! Voici une analyse du contenu audio de la vidéo...](projet/roadmaps/mes-plans/2025-0512-doc/analyse-n8n-prospect.md) - Absolument ! Voici une analyse du contenu audio de la vidéo et son utilité potentielle pour votre projet, le tout en f... `roadmap` `plan` `specification`
+- [Absolument. Voici une analyse technique de la vidéo, axée ...](projet/roadmaps/mes-plans/2025-0512-doc/Assistant-Personnel-Ultime-n8n.md) - Absolument. Voici une analyse technique de la vidéo, axée sur les éléments utiles pour votre projet EMAIL_SENDER_1. `roadmap` `plan`
+- [Absolument. Voici une analyse technique de la vidéo, axée ...](projet/roadmaps/mes-plans/2025-0512-doc/human-in-the-loop.md) - Absolument. Voici une analyse technique de la vidéo, axée sur son utilité pour votre projet EMAIL_SENDER_1. `roadmap` `plan`
+- [Amélioration des scripts MCP et résolution des notifications d'erreur](projet/roadmaps/journal/entries/2025-04-16-amelioration-scripts-mcp.md) - **Date:** 2025-04-16 `roadmap`
+- [Amélioration des tests unitaires et d'intégration](projet/roadmaps/journal/entries/2025-05-15-amelioration-tests-unitaires-integration.md) - **Date**: 2025-05-15 `roadmap`
+- [Analyse des besoins fonctionnels du moteur d'exécution des tests](projet/documentation/technical/TestFrameworkInterfaces/TestExecutionEngineRequirements.md) - Ce document présente l'analyse des besoins fonctionnels pour le moteur d'exécution des tests du framework de performan...
+- [Analyse d’écart — Logging & CacheManager v74](projet/roadmaps/plans/consolidated/gap_analysis_logging_cache.md) - Cette analyse compare les besoins fonctionnels/techniques (voir spec_logging_cache_requirements.md) avec l’existant du... `roadmap` `plan`
+- [Audit de complétion – plan-dev-v66-fusion-doc-manager-extensions-hybride.md](projet/roadmaps/plans/consolidated/plan-v66-completion-audit.md) - Le fichier roadmap contient toutes les phases (1 à 8) mais n’est pas complété à 100 % au sens actionable : `roadmap` `plan`
+- [Audit de la Journalisation - Rapport Phase 1.2](projet/roadmaps/plans/audits/audit-rapport-v43d-phase-1-2.md) - **Date :** 5 juin 2025 `roadmap` `plan`
+- [Composant d'analyse et de reporting](projet/documentation/technical/TestFrameworkComponents/AnalysisReportingComponent.md) - **Nom**: AnalysisReportingComponent
+- [Composant d'exécution des tests](projet/documentation/technical/TestFrameworkComponents/TestExecutionComponent.md) - **Nom**: TestExecutionComponent
+- [Composant de collecte des métriques](projet/documentation/technical/TestFrameworkComponents/MetricsCollectionComponent.md) - **Nom**: MetricsCollectionComponent
+- [Composant de génération de données de test](projet/documentation/technical/TestFrameworkComponents/DataGenerationComponent.md) - **Nom**: DataGenerationComponent
+- [Composants de Filtrage](projet/assets/ui/filtering/components.md) - Cette page décrit les composants de filtrage disponibles dans le système de journal de bord RAG.
+- [Configuration de l'intégration ERPNext](projet/guides/integrations/erpnext/configuration.md) - Avant de configurer l'intégration ERPNext, assurez-vous de disposer des éléments suivants: `guide`
+- [Dépannage de l'intégration ERPNext](projet/guides/integrations/erpnext/troubleshooting.md) - Cette page présente les problèmes courants rencontrés avec l'intégration ERPNext et leurs solutions. `guide`
+- [Développement Détaillé de la Phase 1 : Analyse et Préparation](projet/roadmaps/plans/transition/phase1-transi.md) - La Phase 1 est cruciale car elle pose les fondations de tout le processus de transition. Elle comprend deux étapes prin... `roadmap` `plan`
+- [Développement Détaillé de la Phase 1 : Analyse et Préparation](projet/roadmaps/plans/versions/phase1-transi-restructured.md) - 1. [Développement Détaillé de la Phase 1 : Analyse et Préparation](#section-1) `roadmap` `plan`
+- [Développement détaillé du **PILIER 2 : Le Moteur de Proce...](projet/roadmaps/plans/piliers/PILIER_2.md) - Développement détaillé du **PILIER 2 : Le Moteur de Processus N8N**, en adoptant une perspective résolument techniqu... `roadmap` `plan`
+- [EMAIL SENDER 1 – Plan de Développement RAG Go Consolidé](projet/roadmaps/plans/consolidated/plan-dev-v34-rag-go.md) - **Date de création :** 25 Mai 2025 `roadmap` `plan`
+- [Entrées avec le tag 'amélioration'](projet/roadmaps/journal/tags/amélioration.md) - - [2025-04-05] [Amélioration du système de journal de bord RAG](../entries/2025-04-05-06-11-am-lioration-du-syst-me-de... `roadmap`
+- [Entrées avec le tag 'augment'](projet/roadmaps/journal/tags/augment.md) - - [2025-04-20] [Optimisation des MEMORIES d'Augment](../entries/2025-04-20-optimisation-memories-augment.md) `roadmap`
+- [Entrées avec le tag 'documentation'](projet/roadmaps/journal/tags/documentation.md) - - [2025-04-05] [Optimisation des processus de documentation et de développement](../entries/2025-04-05-19-58-optimisati... `roadmap`
+- [Entrées avec le tag 'développement'](projet/roadmaps/journal/tags/développement.md) - - [2025-04-05] [Optimisation des processus de documentation et de développement](../entries/2025-04-05-19-58-optimisati... `roadmap`
+- [Entrées avec le tag 'journal'](projet/roadmaps/journal/tags/journal.md) - - [2025-04-05] [Mise en place du système RAG pour le journal de bord](../entries/2025-04-05-mise-en-place-du-syst-me-ra... `roadmap`
+- [Entrées avec le tag 'optimisation'](projet/roadmaps/journal/tags/optimisation.md) - - [2025-04-20] [Optimisation des MEMORIES d'Augment](../entries/2025-04-20-optimisation-memories-augment.md) `roadmap`
+- [Entrées avec le tag 'rag'](projet/roadmaps/journal/tags/rag.md) - - [2025-04-05] [Mise en place du système RAG pour le journal de bord](../entries/2025-04-05-mise-en-place-du-syst-me-ra... `roadmap`
+- [Entrées avec le tag: ci-cd](projet/roadmaps/journal/tags/ci-cd.md) - - [2025-05-15] [Amélioration des tests unitaires et d'intégration](../entries/2025-05-15-amelioration-tests-unitaires-... `roadmap`
+- [Entrées avec le tag: integration](projet/roadmaps/journal/tags/integration.md) - - [2025-05-15] [Amélioration des tests unitaires et d'intégration](../entries/2025-05-15-amelioration-tests-unitaires-... `roadmap`
+- [Entrées avec le tag: performance](projet/roadmaps/journal/tags/performance.md) - - [2025-05-15] [Amélioration des tests unitaires et d'intégration](../entries/2025-05-15-amelioration-tests-unitaires-... `roadmap`
+- [Entrées avec le tag: tests](projet/roadmaps/journal/tags/tests.md) - - [2025-05-15] [Amélioration des tests unitaires et d'intégration](../entries/2025-05-15-amelioration-tests-unitaires-... `roadmap`
+- [Entrées du journal de bord avec le tag #mcp](projet/roadmaps/journal/tags/mcp.md) - Ce fichier répertorie toutes les entrées du journal de bord liées aux serveurs MCP (Model Context Protocol). `roadmap`
+- [Entrées du journal de bord avec le tag #notifications](projet/roadmaps/journal/tags/notifications.md) - Ce fichier répertorie toutes les entrées du journal de bord liées aux notifications et à leur gestion. `roadmap`
+- [Excellent \! Approfondissons le **PILIER 4 : L'Interface Uti...](projet/roadmaps/plans/piliers/PILIER_4.md) - Excellent \! Approfondissons le **PILIER 4 : L'Interface Utilisateur** avec une granularité technique destinée aux ing... `roadmap` `plan`
+- [Exemples d'utilisation de l'intégration ERPNext](projet/guides/integrations/erpnext/examples.md) - Cette page présente des exemples concrets d'utilisation de l'intégration ERPNext avec le journal de bord. `guide`
+- [Fix Critique DependencyManager - loadConfig Implémentée](projet/roadmaps/plans/fixes/dependency-manager-loadconfig-fix-complete.md) - **Date**: 2025-06-05 `roadmap` `plan`
+- [Fonctionnalités du Nuage de Mots Interactif](projet/assets/visualizations/word-cloud/features.md) - - **Taille proportionnelle**: Les mots sont affichés avec une taille proportionnelle à leur fréquence
+- [Framework de Maintenance et Organisation Ultra-Avancé (FMOUA) - Version Réaliste](projet/roadmaps/plans/consolidated/plan-dev-v53-maintenance-orga-repo.md) - *Version 2.0 - Mise à jour selon l'état RÉEL du projet - 15 juin 2025* `roadmap` `plan`
+- [Granularisation des Phases d'Amélioration du Workflow de Roadmap](projet/roadmaps/plans/consolidated/granularisation-phases-roadmap.md) - - **Objectif**: Réduire de 90% le temps consacré à la mise à jour manuelle de la roadmap `roadmap` `plan`
+- [Idéation et définition des besoins](projet/roadmaps/plans/consolidated/chaine-de-dev.md) - Identifier le problème ou l'opportunité (le "pourquoi" du projet). `roadmap` `plan`
+- [Interface du générateur de données](projet/documentation/technical/TestFrameworkInterfaces/DataGeneratorInterface.md) - L'interface du générateur de données définit le contrat que doivent respecter tous les générateurs de données du ...
+- [Interface du moteur d'exécution des tests](projet/documentation/technical/TestFrameworkInterfaces/TestExecutionEngineInterface.md) - L'interface du moteur d'exécution des tests définit le contrat que doit respecter l'implémentation du moteur d'exécu...
+- [Je vais créer un plan de développement détaillé pour l'�...](projet/roadmaps/plans/consolidated/plan-dev-v51-ecosysteme-harmoniser-plan-dev.md) - Je vais créer un plan de développement détaillé pour l'écosystème modulaire de gestion des roadmaps, en respectant... `roadmap` `plan`
+- [Journal de développement - 08/04/2025 19:45](projet/roadmaps/journal/entries/08-04-2025-19-45.md) - - Développement d'outils pour la standardisation des scripts `roadmap`
+- [Journal de développement - 08/04/2025 20:30](projet/roadmaps/journal/entries/08-04-2025-20-30.md) - - Développement d'outils pour l'élimination des duplications de code `roadmap`
+- [Journal de développement - 08/04/2025 21:00](projet/roadmaps/journal/entries/08-04-2025-21-00.md) - - Développement du nouveau ScriptManager centralisé `roadmap`
+- [Mode ARCHI](projet/guides/methodologies/modes/mode_archi.md) - Le mode ARCHI (Architecture) est un mode opÃ©rationnel qui se concentre sur la conception et l'analyse de l'architectu... `guide`
+- [Mode C-BREAK](projet/guides/methodologies/modes/mode_c_break.md) - Le mode C-BREAK (Cycle Breaker) est un mode opÃ©rationnel qui se concentre sur la dÃ©tection et la rÃ©solution des... `guide`
+- [Mode CHECK](projet/guides/methodologies/modes/mode_check.md) - > **Note importante** : Une version amÃ©liorÃ©e du mode CHECK est disponible. Voir [Mode CHECK AmÃ©liorÃ©](mode_... `guide`
+- [Mode CHECK AmÃ©liorÃ©](projet/guides/methodologies/modes/mode_check_enhanced.md) - Le mode CHECK amÃ©liorÃ© est une version avancÃ©e du [mode CHECK](mode_check.md) qui vÃ©rifie si les tÃ¢ches s... `guide`
+- [Mode DEBUG](projet/guides/methodologies/modes/mode_debug.md) - Le mode DEBUG est un mode opÃ©rationnel qui aide Ã  identifier et rÃ©soudre les problÃ¨mes dans le code et les p... `guide`
+- [Mode DEV-R](projet/guides/methodologies/modes/mode_dev_r.md) - Le mode DEV-R (DÃ©veloppement Roadmap) est un mode opÃ©rationnel qui se concentre sur l'implÃ©mentation des tÃ¢c... `guide`
+- [Mode GRAN](projet/guides/methodologies/modes/mode_gran.md) - Le mode GRAN (Granularisation) est un mode opérationnel qui décompose les tâches complexes en sous-tâches plus petit... `guide`
+- [Mode GRAN Récursif](projet/guides/methodologies/modes/mode_gran_recursive.md) - Le mode GRAN Récursif est une extension du mode GRAN standard qui permet de granulariser automatiquement une tâche et ... `guide`
+- [Mode GRAN Unifié](projet/guides/methodologies/modes/mode_gran_unified.md) - Le mode GRAN (Granularisation) est un mode opérationnel qui décompose les tâches complexes en sous-tâches plus petit... `guide`
+- [Mode OPTI](projet/guides/methodologies/modes/mode_opti.md) - Le mode OPTI (Optimisation) est un mode opÃ©rationnel qui se concentre sur l'amÃ©lioration des performances, de la l... `guide`
+- [Mode PREDIC](projet/guides/methodologies/modes/mode_predic.md) - Le mode PREDIC (PrÃ©diction) est un mode opÃ©rationnel qui se concentre sur l'anticipation des performances, la dÃ�... `guide`
+- [Mode REVIEW](projet/guides/methodologies/modes/mode_review.md) - Le mode REVIEW est un mode opÃ©rationnel qui se concentre sur l'Ã©valuation et l'amÃ©lioration de la qualitÃ© du... `guide`
+- [Mode TEST](projet/guides/methodologies/modes/mode_test.md) - Le mode TEST est un mode opÃ©rationnel qui se concentre sur la crÃ©ation, l'exÃ©cution et la validation des tests ... `guide`
+- [Okay, Augment, let's dive into this video ("n8n Workflow: Au...](projet/roadmaps/mes-plans/2025-0512-doc/masterclass-n8n.md) - Okay, Augment, let's dive into this video ("n8n Workflow: Automated Email Outreach & Follow-up System" by n8n) and extra... `roadmap` `plan`
+- [Okay, voici le développement détaillé et technique du **P...](projet/roadmaps/plans/piliers/PILIER_3_fixed.md) - Okay, voici le développement détaillé et technique du **PILIER 3 : L'Intelligence Augmentée**, destiné aux ingénie... `roadmap` `plan`
+- [Okay, voici le développement détaillé et technique du **P...](projet/roadmaps/plans/piliers/PILIER_3.md) - Okay, voici le développement détaillé et technique du **PILIER 3 : L'Intelligence Augmentée**, destiné aux ingénie... `roadmap` `plan`
+- [Optimisation des MEMORIES d'Augment](projet/roadmaps/journal/entries/2025-04-20-optimisation-memories-augment.md) - **Date**: 2025-04-20 `roadmap`
+- [PILIER 1 : La Donnée Stratégique](projet/roadmaps/plans/versions/PILIER_1-restructured.md) - 1. [PILIER 1 : La Donnée Stratégique](#section-1) `roadmap` `plan`
+- [PILIER 1 : La Donnée Stratégique](projet/roadmaps/plans/piliers/PILIER_1.md) - *Centralisée, Structurée, Validée, Sécurisée et Accessible (Fondation Notion & Extensions)* `roadmap` `plan`
+- [Phase 2.2 - Intégration ErrorManager TERMINÉE](projet/roadmaps/plans/phase-2/phase-2-2-error-manager-integration-COMPLETE.md) - *Date: 2025-01-27 - Progression: 0% → 100%* ✅ `roadmap` `plan`
+- [Phase 2.2 - Plan de Refactorisation pour la Gestion des Erreurs](projet/roadmaps/plans/phase-2/phase-2-2-error-manager-integration-plan.md) - *Date: 2025-01-27 - Progression: 0% → 80%* `roadmap` `plan`
+- [Phase 2.3 - Plan de Refactorisation pour la Configuration](projet/roadmaps/plans/phase-2/phase-2-3-configuration-manager-integration-plan.md) - *Date: 2025-01-27 - Progression: 0% → 80%* `roadmap` `plan`
+- [Pilier 2 restructured](projet/roadmaps/plans/versions/PILIER_2-restructured.md) `roadmap` `plan`
+- [Pilier 3 fixed restructured](projet/roadmaps/plans/versions/PILIER_3_fixed-restructured.md) `roadmap` `plan`
+- [Pilier 3 restructured](projet/roadmaps/plans/versions/PILIER_3-restructured.md) `roadmap` `plan`
+- [Pilier 4 restructured](projet/roadmaps/plans/versions/PILIER_4-restructured.md) `roadmap` `plan`
+- [Pilotage du serveur MCP Filesystem via MCP Manager et Proxy-MCP](projet/mcp/servers/filesystem/MCP_MANAGER.md) - - Le serveur MCP Filesystem peut être démarré automatiquement ou manuellement via le script `start-filesystem-mcp.cmd...
+- [Plan GitWorkflowManager Adapté - Version Go Architecture Manager](projet/roadmaps/plans/consolidated/plan-dev-v52-git-workflow-manager-adapted.md) - *Version adaptée - 2025-06-07 - Progression globale : 100%* ✅ `roadmap` `plan`
+- [Plan Légendaire d'Amélioration du Workflow de Roadmap](projet/roadmaps/plans/consolidated/amelioration-roadmap.md) - - **Granularité extrême** permettant un suivi précis de l'avancement `roadmap` `plan`
+- [Plan Magistral V5 : Écosystème Intégré N8N & CMS pour Agence Musicale (Booking, Management, Production) - Propulsé par 8 Équipes IA - Focus Utilisabilité & RH](projet/roadmaps/plans/versions/Plan Magistral V5-restructured.md) - 1. [Plan Magistral V5 : Écosystème Intégré N8N & CMS pour Agence Musicale (Booking, Management, Production) - Propul... `roadmap` `plan`
+- [Plan Magistral V5 : Écosystème Intégré N8N & CMS pour Agence Musicale (Booking, Management, Production) \- Propulsé par 8 Équipes IA \- Focus Utilisabilité & RH](projet/roadmaps/plans/magistral/Plan Magistral V5.md) - **Vision Globale :** (Inchangée mais renforcée) Établir un système nerveux centralisé et intelligent pour une agenc... `roadmap` `plan`
+- [Plan d'Implémentation du Workflow "Email Sender 1"](projet/roadmaps/plans/versions/PLAN_IMPLEMENTATION-restructured.md) - 1. [Plan d'Implémentation du Workflow "Email Sender 1"](#section-1) `roadmap` `plan`
+- [Plan d'Implémentation du Workflow "Email Sender 1"](projet/roadmaps/plans/plan de départ/PLAN_IMPLEMENTATION.md) - - **Corriger d'abord**: Priorité à la réparation des flux de données cassés et des logiques incohérentes dans la p... `roadmap` `plan`
+- [Plan d'amélioration des modes opérationnels v2.0](projet/roadmaps/plans/consolidated/plan-dev-v6-modes-stepup-improved.md) - *Version 2025-05-25 - Progression globale : 35%* `roadmap` `plan`
+- [Plan d'implémentation pour résoudre 100% des problèmes](projet/roadmaps/plans/completed/PLAN-dev-v7-IMPLEMENTATION.md) - - [x] **1.1** Créer un module PowerShell en UTF-8 sans BOM (ASCII uniquement) `roadmap` `plan`
+- [Plan de Développement - Agent Notion Terminal avec MCP (Go)](projet/roadmaps/plans/consolidated/plan-dev-v35-agent-notion-terminal-avec--mcp-go.md) - **Date de création :** 26 Mai 2025 `roadmap` `plan`
+- [Plan de Développement : Améliorations de la lecture de fichiers volumineux (`read_file`)](projet/roadmaps/plans/completed/plan_ameliorations_read_file.md) - - [ ] **VÉRIFIER la branche actuelle** : `git branch` et `git status` `roadmap` `plan`
+- [Plan de Développement : Intégration de QDrant avec Clustering pour RAG](projet/roadmaps/plans/consolidated/plan-dev-v5-integ-qdrant-avec-clustering-pour-rag.md) - - **Roadmap et base de connaissances** existantes mais non standardisées `roadmap` `plan`
+- [Plan de Développement Amélioré : Système d'Orchestration & Parallélisation en Go](projet/roadmaps/plans/consolidated/plan-dev-v36-Orchestration-et-Parrellisation-go.md) - **Date de création :** 2025-05-26 `roadmap` `plan`
+- [Plan de Développement Détaillé - Phase 3 : Intégration avec le Plan Magistral V5](projet/roadmaps/plans/transition/phase3-transi-restructuré.md) - Ce document présente le plan détaillé pour la Phase 3 du plan de transition, qui prépare le workflow à l'initialisa... `roadmap` `plan`
+- [Plan de Développement Détaillé - Phase 3 : Intégration avec le Plan Magistral V5](projet/roadmaps/plans/versions/phase3-transi-restructured.md) - 1. [Plan de Développement Détaillé - Phase 3 : Intégration avec le Plan Magistral V5](#section-1) `roadmap` `plan`
+- [Plan de Développement Détaillé \- Phase 3 : Intégration avec le Plan Magistral V5](projet/roadmaps/plans/transition/phase3-transi.md) - Je vais analyser en détail la Phase 3 du plan de transition et développer un plan d'implémentation exhaustif pour pr�... `roadmap` `plan`
+- [Plan de Développement FMOUA v5.3 - Maintenance, Organisation et Reformatage du Repository](projet/roadmaps/plans/consolidated/plan-dev-v53-maintenance-orga-repo-reformate.md) - - [ ] **VÉRIFIER la branche actuelle** : `git branch` et `git status` `roadmap` `plan`
+- [Plan de Développement Magistral : Normalisation Intégrale du Dépôt avec Hygen](projet/roadmaps/plans/consolidated/plan-dev-v4-base-connaissances.md) - - **Roadmap peu claire** : La roadmap actuelle est difficile à naviguer et manque de structure cohérente `roadmap` `plan`
+- [Plan de Développement Magistral V2 : Intégration du Memory Bank et Normalisation Intégrale du Dépôt](projet/roadmaps/plans/consolidated/plan-dev-v2.md) - Ce plan de développement magistral v2 propose une approche intégrée combinant deux méthodologies complémentaires : `roadmap` `plan`
+- [Plan de Développement v43 - Écosystème des Managers](projet/roadmaps/plans/consolidated/plan-dev-v43-managers-plan.md) - *Version 1.0 - 2025-06-04* `roadmap` `plan`
+- [Plan de Développement v43h - DuplicateManager](projet/roadmaps/plans/consolidated/plan-dev-v43k-DuplicateManager.md) - Version 1.0 - 2025-06-04 - Progression globale : 0% `roadmap` `plan`
+- [Plan de Développement v43k - MCP Manager](projet/roadmaps/plans/consolidated/plan-dev-v33-mcp-manager.md) - *Version 1.0 - 2025-06-04 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de Développement v52b - Framework de Branchement Automatique](projet/roadmaps/plans/consolidated/plan-dev-v52b-branching-framework-auto.md) - **Version 1.1 - 2025-06-11 - Progression globale : 100% ✅ TERMINÉ** `roadmap` `plan`
+- [Plan de Développement v53b - Framework FMOUA (Maintenance & Organisation)](projet/roadmaps/plans/consolidated/plan-dev-v53b-maintenance-orga-repo.md) - *Version 2.0 - Adapté à l'État Actuel du Repository - 15 juin 2025* `roadmap` `plan`
+- [Plan de Développement v54 - Démarrage Automatisé de la Stack Générale](projet/roadmaps/plans/consolidated/plan-dev-v54-demarrage-general-stack.md) - **Version:** 2.0 `roadmap` `plan`
+- [Plan de Développement v64 - Implémentation Approche Hybride](projet/roadmaps/plans/consolidated/plan-dev-v64-correlation-avec-manager-go-existant.md) - - [ ] **VÉRIFIER la branche actuelle** : `git branch` et `git status` `roadmap` `plan`
+- [Plan de Développement v65 - Extension Manager Hybride Go/N8N](projet/roadmaps/plans/consolidated/plan-dev-v65-extensions-manager-hybride.md) - - [ ] **VÉRIFIER la branche actuelle** : `git branch` et `git status` `roadmap` `plan`
+- [Plan de Développement v65B - Extensions Manager Hybride - Architecture Cognitive Documentaire](projet/roadmaps/plans/consolidated/plan-dev-v65B-extensions-manager-hybride.md) - - [x] **VÉRIFIER la branche actuelle** : `git branch` et `git status` `roadmap` `plan`
+- [Plan de Développement v67 - Intégration de la méthode diff Edit (Cline)](projet/roadmaps/plans/consolidated/plan-dev-v67-diff-edit.md) - - [ ] **Recensement des cas d’usage** `roadmap` `plan`
+- [Plan de Transition : Workflow Email Sender vers Plan Magistral V5](projet/roadmaps/plans/transition/PLAN_TRANSITION_VERS_MAGISTRAL_V5.md) - Nous avons actuellement un workflow Email Sender modulaire, divisé en 6 phases distinctes, chacune implémentée dans u... `roadmap` `plan`
+- [Plan de Transition : Workflow Email Sender vers Plan Magistral V5](projet/roadmaps/plans/versions/PLAN_TRANSITION_VERS_MAGISTRAL_V5-restructured.md) - 1. [Plan de Transition : Workflow Email Sender vers Plan Magistral V5](#section-1) `roadmap` `plan`
+- [Plan de dÃ©veloppement v14 - Optimisation des pratiques avec Augment](projet/roadmaps/plans/consolidated/plan-dev-v14-augment-optimization.md) - *Version 1.0 - 2025-05-14* `roadmap` `plan`
+- [Plan de développement 1.0 - Intégration et orchestration du serveur GCP MCP](projet/roadmaps/plans/completed/plan-dev-v31-integration-gcp-mcp.md) - *Version 1.0 - 2025-05-22 - Progression globale : 100%* `roadmap` `plan`
+- [Plan de développement : Watch-Manager pour la maintenance automatisée du dépôt](projet/roadmaps/plans/consolidated/plan-dev-v32-watch-manager.md) - *Version 1.0 - 2025-05-22 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v10 : Système CRUD modulaire thématique pour roadmaps](projet/roadmaps/plans/consolidated/plan-dev-v10-CRUD-thematique.md) - - [ ] **1.1** Analyser la structure thématique des roadmaps actuelles `roadmap` `plan`
+- [Plan de développement v11 : Orchestrateur intelligent de roadmaps](projet/roadmaps/plans/consolidated/plan-dev-v11-orchestrateur-roadmaps.md) - - [ ] **1.1** Définir le modèle de données de l'orchestrateur `roadmap` `plan`
+- [Plan de développement v12 : Architecture cognitive des roadmaps](projet/roadmaps/plans/consolidated/plan-dev-v12-architecture-cognitive.md) - Ce plan définit l'implémentation d'une architecture cognitive complète pour notre système de roadmapping, intégrant... `roadmap` `plan`
+- [Plan de développement v13 : Orchestration des ressources système](projet/roadmaps/plans/consolidated/plan-dev-v13-resource-orchestration.md) - *Version 2025-05-20* `roadmap` `plan`
+- [Plan de développement v14 - Optimisation des pratiques avec Augment](projet/roadmaps/plans/consolidated/plan-dev-v15-pratiques-dev.md) - *Version 1.0 - 2025-05-14* `roadmap` `plan`
+- [Plan de développement v14 - Optimisation des pratiques avec GitHub Copilot](projet/roadmaps/plans/consolidated/plan-dev-v14-v2-VSCopilotGithu-optimization.md) - *Version 2.0 - 2025-05-26* `roadmap` `plan`
+- [Plan de développement v16 - MCP Manager standardisé avec intégration Langchain et gestion de mémoire](projet/roadmaps/plans/consolidated/plan-dev-v16-MCP-manager.md) - *Version 1.3 - 2025-05-19* `roadmap` `plan`
+- [Plan de développement v17 - Orchestration du développement](projet/roadmaps/plans/consolidated/plan-dev-v17-orchestration-dev.md) - *Version 1.18 - 2025-05-30 - Progression globale : 85%* `roadmap` `plan`
+- [Plan de développement v18 - Gestion du dépôt](projet/roadmaps/plans/consolidated/plan-dev-v18-repo-mgmt.md) - *Version 1.0 - 2025-05-25 - Progression globale : 10%* `roadmap` `plan`
+- [Plan de développement v19 - Sécurité et conformité](projet/roadmaps/plans/consolidated/plan-dev-v19-securite-conformite.md) - *Version 1.0 - 2025-05-25 - Progression globale : 5%* `roadmap` `plan`
+- [Plan de développement v2 - Plan de Développement Magistral V2 : Intégration du Memory Bank et Normalisation Intégrale du Dépôt](projet/roadmaps/plans/consolidated/plan-dev-v2-plan-de-développement-magistral-v2-_-intégration-du-memory-bank-et-normalisation-intégrale-du-dépôt.md) - *Version 1.0 - 2025-05-16 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v20 - Observabilité et monitoring](projet/roadmaps/plans/consolidated/plan-dev-v20-observabilite-monitoring.md) - *Version 1.0 - 2025-05-25 - Progression globale : 5%* `roadmap` `plan`
+- [Plan de développement v2025-05 - Mise en place Email Sender](projet/roadmaps/plans/consolidated/plan-dev-v2025-05-mise-en-place-email-sender.md) - *Version 1.0 - 2025-05-28 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v21 - Scalabilité et résilience](projet/roadmaps/plans/consolidated/plan-dev-v21-scalabilite-resilience.md) - *Version 1.0 - 2025-05-25 - Progression globale : 5%* `roadmap` `plan`
+- [Plan de développement v22 - Architecture UI/UX modulaire](projet/roadmaps/plans/consolidated/plan-dev-v22-ui-ux-modulaire.md) - *Version 1.0 - 2025-05-25 - Progression globale : 5%* `roadmap` `plan`
+- [Plan de développement v23 - Admin Core Framework](projet/roadmaps/plans/consolidated/plan-dev-v23-admin-framework.md) - *Version 1.0 - 2025-05-25 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v24 - Intégration n8n](projet/roadmaps/plans/consolidated/plan-dev-v24-integration-n8n.md) - *Version 1.0 - 2025-05-30 - Progression globale : 35%* `roadmap` `plan`
+- [Plan de développement v25 - Système de gestion de méta-roadmap avec synchronisation bidirectionnelle](projet/roadmaps/plans/consolidated/plan-dev-v25-meta-roadmap-sync-updated.md) - *Version 1.1 - 2025-06-15 - Progression globale : 20%* `roadmap` `plan`
+- [Plan de développement v26 - Module UnifiedParallel](projet/roadmaps/plans/consolidated/plan-dev-v26.md) - **Statut global** : [11.45/13] - 88% complété `roadmap` `plan`
+- [Plan de développement v30 – Workflows CI/CD Correctifs](projet/roadmaps/plans/consolidated/plan-dev-v30-workflows-ci-cd-correctifs.md) - *Version 1.0 - 2025-05-21 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v37 - Error Resolution Pipeline Go Native](projet/roadmaps/plans/consolidated/plan-dev-v37-error-resolution-pipeline.md) - *Version 1.0 - 2025-05-28 - Progression globale : 72%* `roadmap` `plan`
+- [Plan de développement v38 - Cache & Storage Manager Go Native](projet/roadmaps/plans/consolidated/plan-dev-v38-Cache-Storage-Manager-Go copy.md) - *Version 1.0 - 2025-05-28 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v39 - Amélioration des templates plan-dev](projet/roadmaps/plans/consolidated/plan-dev-v39-amelioration-plan-dev-ameliore.md) - *Version 2.0 - 2025-01-27 - Progression globale : 98%* `roadmap` `plan`
+- [Plan de développement v40-v2 - TaskMaster Enhancement Suite Go Native](projet/roadmaps/plans/consolidated/plan-dev-v40-TaskMaster-Enhancement-go.md) - *Version 1.0 - 2025-06-02 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v40-v2 - TaskMaster Enhancement Suite Go Native](projet/roadmaps/plans/consolidated/plan-dev-v40-TaskMaster-Enhancement-go copy.md) - *Version 1.0 - 2025-06-02 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v41 - Précautions et Sécurisation Organize-Root](projet/roadmaps/plans/consolidated/plan-dev-v41-precautions-organize-root.md) - *Version 1.0 - 2025-06-03 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v42 - Gestionnaire d'erreurs avancé](projet/roadmaps/plans/consolidated/plan-dev-v42-error-manager copy.md) - *Version 1.0 - 2025-06-04 - Progression globale : 43%*Plan de développement v42 - Gestionnaire d’erreurs avancé `roadmap` `plan`
+- [Plan de développement v42 - Gestionnaire d'erreurs avancé](projet/roadmaps/plans/consolidated/plan-dev-v42-error-manager.md) - *Version 1.1 - 2025-06-05 - Progression globale : 58%* de développement v42 - Gestionnaire d'erreurs avancé `roadmap` `plan`
+- [Plan de développement v43a - Gestionnaire de Configuration (ConfigManager)](projet/roadmaps/plans/consolidated/plan-dev-v43a-config-manager.md) - *Version 1.0 - 2025-06-04 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v43b - Gestionnaire de Stockage (StorageManager)](projet/roadmaps/plans/consolidated/plan-dev-v43b-storage-manager.md) - *Version 1.0 - 2025-06-04 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v43c - Gestionnaire de Conteneurs (ContainerManager)](projet/roadmaps/plans/consolidated/plan-dev-v43c-container-manager.md) - *Version 1.0 - 2025-06-04 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v43d - Audit et Harmonisation du Gestionnaire de Dépendances](projet/roadmaps/plans/consolidated/plan-dev-v43d-dependency-manager.md) - *Version 1.6 - 2025-06-05 - Progression globale : 75%* `roadmap` `plan`
+- [Plan de développement v43e - Création d'un Gestionnaire de Processus en Go](projet/roadmaps/plans/consolidated/plan-dev-v43e-process-manager-go.md) - *Version 1.0 - 2025-06-04 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v43f - Gestionnaire de Déploiement (Go)](projet/roadmaps/plans/consolidated/plan-dev-v43f-deployment-manager-go.md) - *Version 1.0 - {{CURRENT_DATE}} - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v43g - Gestionnaire de Sécurité (Go)](projet/roadmaps/plans/consolidated/plan-dev-v43g-security-manager-go.md) - *Version 1.0 - 2025-06-04 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v43h - Gestionnaire de Monitoring (Go)](projet/roadmaps/plans/consolidated/plan-dev-v43h-monitoring-manager-go.md) - *Version 1.0 - 2025-06-04 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v43i - Gestionnaire N8N (Go)](projet/roadmaps/plans/consolidated/plan-dev-v43i-n8n-manager-go.md) - *Version 1.0 - 2025-06-04 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v43j - Gestionnaire Intégré (Go) - Audit et Refonte](projet/roadmaps/plans/consolidated/plan-dev-v43j-integrated-manager-go.md) - *Version 1.0 - 2025-06-04 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v44 - Optimisation des Goroutines et Tâches PowerShell pour EMAIL_SENDER_1](projet/roadmaps/plans/consolidated/plan-dev-v47-goroutines-tasks.md) - *Version 1.0 - 2025-06-05 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v44.1 - Visualisation de Dépôt avec...](projet/roadmaps/plans/consolidated/plan-dev-v48-repovisualizer.md) - Plan de développement v44.1 - Visualisation de Dépôt avec Optimisation des Goroutines et Tâches PowerShell `roadmap` `plan`
+- [Plan de développement v46 - Système de Vérification de Conformité et Documentation Centrale des Managers](projet/roadmaps/plans/consolidated/plan-dev-v46-conformite-managers.md) - *Version 1.0 - 2025-06-05 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v49 - Intégration des nouveaux outils dans Manager Toolkit v3.0.0](projet/roadmaps/plans/consolidated/plan-dev-v49-integration-new-tools-Toolkit.md) - **Version 3.0 (Réorganisation Structurelle Achevée) - 6 juin 2025 - Progression globale : 100%** `roadmap` `plan`
+- [Plan de développement v5 - Plan de Développement : Intégration de QDrant avec Clustering pour RAG](projet/roadmaps/plans/consolidated/plan-dev-v5-plan-de-développement-_-intégration-de-qdrant-avec-clustering-pour-rag.md) - *Version 1.0 - 2025-05-16 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v52 - Framework de Branching Ultra-Avancé 8 Niveaux](projet/roadmaps/plans/consolidated/plan-dev-v52-framework-branching-ultra-avance-8-niveaux.md) - *Version 1.0 - 2025-01-27 - Progression globale : 0%* `roadmap` `plan`
+- [Plan de développement v55 - Écosystème de Synchronisation des Plans de Développement](projet/roadmaps/plans/consolidated/plan-dev-v55-planning-ecosystem-sync.md) - **Version 2.6 - 2025-06-13 - Progression globale : 100% ✅ PROJET FINALISÉ** `roadmap` `plan`
+- [Plan de développement v56 - Migration Vectorisation Go Native et Unification Clients Qdrant](projet/roadmaps/plans/consolidated/plan-dev-v56-go-native-vectorization-migration.md) - **Version 1.0 - 2025-06-13 - Progression globale : 0%** `roadmap` `plan`
+- [Plan de développement v57 - Consolidation Écosystème et M...](projet/roadmaps/plans/consolidated/plan-dev-v57-ecosystem-consolidation-go-native.md) - Plan de développement v57 - Consolidation Écosystème et Migration Vectorisation Go Native `roadmap` `plan`
+- [Plan de développement v8 : Système de gestion modulaire des roadmaps avec RAG et classification automatique](projet/roadmaps/plans/completed/plan-dev-v8-RAG-roadmap-s1-7.md) - - [x] **0.1** Développer les scripts de détection des changements `roadmap` `plan`
+- [Plan de développement v8b : Système de gestion modulaire des roadmaps avec RAG et classification automatique](projet/roadmaps/plans/consolidated/plan-dev-v8-RAG-roadmap-s8.md) - - [x] **8.1** Optimisation des performances `roadmap` `plan`
+- [Plan de développement v8b : Système de gestion modulaire des roadmaps avec RAG et classification automatique](projet/roadmaps/plans/consolidated/plan-dev-v8-RAG-roadmap-s9.md) - - [ ] **9.1** Développer le système d'intégration avec n8n `roadmap` `plan`
+- [Plan de développement v8b : Système de gestion modulaire des roadmaps avec RAG et classification automatique](projet/roadmaps/plans/completed/plan-dev-v8-RAG-roadmap-s10.md) - - [x] **10.1** Amélioration des performances et de l'évolutivité `roadmap` `plan`
+- [Plan de développement v8b : Système de gestion modulaire des roadmaps avec RAG et classification automatique](projet/roadmaps/plans/completed/plan-dev-v8-RAG-roadmap-s11.md) - - [x] **11.1** Résumé des améliorations apportées `roadmap` `plan`
+- [Plan de développement v9 : Intégration des concepts de Task Master avec LWM/LCM](projet/roadmaps/plans/consolidated/plan-dev-v9-LWM-LCM-task-master-integration.md) - Ce plan complète le plan-dev-v9-LWM-LCM.md existant en intégrant les concepts du projet claude-task-master pour améli... `roadmap` `plan`
+- [Plan de développement v9 : Intégration des concepts de Task Master avec LWM/LCM](projet/roadmaps/plans/consolidated/plan-dev-v9-LWM-LCM-task-master.md) - Ce plan de développement propose d'intégrer les concepts du projet claude-task-master dans notre système de roadmappi... `roadmap` `plan`
+- [Plan-Dev v5.9 : Extension Smart Email Sender - Hub Central de Gestion de Projet](projet/roadmaps/plans/consolidated/plan-dev-v59-extension-vscode-intelligente.md) - **Date** : 16 juin 2025 - 21h00 `roadmap` `plan`
+- [Plan-Dev v5.9 : Extension VSCode Intelligente - Unified Ecosystem Manager](projet/roadmaps/plans/consolidated/plan-dev-v59-errors-debug-tests-framework.md) - **Version** : v5.9 `roadmap` `plan`
+- [Plan-Dev v6.0 : Migration vers Go CLI & Construction du HUB Central](projet/roadmaps/plans/consolidated/plan-dev-v60-migration-vers-go-cli.md) - - [ ] **VÉRIFIER la branche actuelle** : `git branch` et `git status` `roadmap` `plan`
+- [Plan-Dev v6.1 : Intégration AST Cline dans ContextualMemoryManager](projet/roadmaps/plans/consolidated/plan-dev-v61-memory.md) - - [ ] **VÉRIFIER la branche actuelle** : `git branch` et `git status` `roadmap` `plan`
+- [Politique d’orchestration multi-backend — CacheManager v74](projet/roadmaps/plans/consolidated/cache_manager_policy.md) - - LMCache est le backend prioritaire pour tous les logs et contextes (stockage et lecture) `roadmap` `plan`
+- [Rapport Complet sur l'Intégration des Agents IA dans le Pro...](projet/roadmaps/mes-plans/2025-0512-doc/agentic-ia.md) - Rapport Complet sur l'Intégration des Agents IA dans le Projet EMAIL SENDER 1 `roadmap` `plan`
+- [Rapport Détaillé sur les Niveaux des Agents IA - Analyse du Post de Ashpreet Bedi](projet/roadmaps/mes-plans/2025-0512-doc/agno-rapport-explicatif.md) - Ce rapport est basé sur un post publié par Ashpreet Bedi sur X le 18 mai 2025 à 20:02 UTC, disponible à l'adresse su... `roadmap` `plan`
+- [Rapport Exhaustif : Tableau Éditable pour le Plan de Dével...](projet/roadmaps/plans/consolidated/plan-dev-v58-tableau-editable.md) - Rapport Exhaustif : Tableau Éditable pour le Plan de Développement v52b `roadmap` `plan`
+- [Rapport d'Audit Architectural et de Code - Phase 1.1](projet/roadmaps/plans/audits/audit-rapport-v43d-phase-1-1.md) - *Gestionnaire de Dépendances v43d - Date: 2025-06-05* `roadmap` `plan`
+- [Rapport d'Audit Phase 1.3 - Gestion des Erreurs DependencyManager](projet/roadmaps/plans/audits/audit-rapport-v43d-phase-1-3.md) - **Date**: 2025-06-05 `roadmap` `plan`
+- [Rapport d'Audit Phase 1.4 - Configuration DependencyManager](projet/roadmaps/plans/audits/audit-rapport-v43d-phase-1-4.md) - **Date**: 2025-06-05 `roadmap` `plan`
+- [Rapport d'analyse de la roadmap](projet/roadmaps/journal/reports/roadmap_analysis.md) - *GÃ©nÃ©rÃ© le 2025-04-17 05:08:43* `roadmap`
+- [Rapport de la Roadmap](projet/roadmaps/journal/reports/roadmap_report.md) - *GÃ©nÃ©rÃ© le 2025-04-17 05:08:53* `roadmap`
+- [Rapport d’observabilité — Pipeline Logging & CacheManager v74](projet/roadmaps/plans/consolidated/observability_report.md) - - Statut du pipeline : ✅ Fonctionnel (tests unitaires et intégration OK) `roadmap` `plan`
+- [Rapport sur le Memory Bank de Cursor](projet/roadmaps/mes-plans/memory-banks/Memory-bank-cursor.md) - Le Memory Bank de Cursor est un système structuré de documentation conçu pour résoudre un problème fondamental des ... `roadmap` `plan`
+- [Rapport sur le Memory Bank de Cursor](projet/roadmaps/plans/memory-banks/Memory-bank-cursor.md) - Le Memory Bank de Cursor est un système structuré de documentation conçu pour résoudre un problème fondamental des ... `roadmap` `plan`
+- [Rapport sur le Memory Bank de Roo Code](projet/roadmaps/plans/memory-banks/memory-bank-roo-code1.md) - Le Memory Bank de Roo Code est un système de gestion de contexte persistant conçu pour l'extension VS Code "Roo Code".... `roadmap` `plan`
+- [Rapport sur le Memory Bank de Roo Code](projet/roadmaps/mes-plans/memory-banks/memory-bank-roo-code1.md) - Le Memory Bank de Roo Code est un système de gestion de contexte persistant conçu pour l'extension VS Code "Roo Code".... `roadmap` `plan`
+- [Rapport sur le Memory Bank de vanzan01](projet/roadmaps/mes-plans/memory-banks/memory-bank-cursor-2.md) - Le Memory Bank de vanzan01 représente une évolution significative du concept original de Memory Bank, passant d'une ap... `roadmap` `plan`
+- [Rapport sur le Memory Bank de vanzan01](projet/roadmaps/plans/memory-banks/memory-bank-cursor-2.md) - Le Memory Bank de vanzan01 représente une évolution significative du concept original de Memory Bank, passant d'une ap... `roadmap` `plan`
+- [Rapport sur le Système Memory Bank de Cline](projet/roadmaps/plans/memory-banks/Memory_bank-cline.md) - Le Memory Bank est un système structuré de documentation développé pour l'assistant IA Cline, permettant de mainteni... `roadmap` `plan`
+- [Rapport sur le Système Memory Bank de Cline](projet/roadmaps/mes-plans/memory-banks/Memory_bank-cline.md) - Le Memory Bank est un système structuré de documentation développé pour l'assistant IA Cline, permettant de mainteni... `roadmap` `plan`
+- [Recensement des besoins fonctionnels et techniques — Logging & CacheManager v74](projet/roadmaps/plans/consolidated/spec_logging_cache_requirements.md) - - Centraliser tous les logs (stdout/stderr, scripts, managers, assistants) `roadmap` `plan` `specification`
+- [Règles de filtrage, quotas et masquage — Logging & CacheManager v74](projet/roadmaps/plans/consolidated/logging_filter_rules.md) - - Seuls les logs de niveau >= configuré (ex : INFO, WARN, ERROR, FATAL) sont stockés par défaut `roadmap` `plan`
+- [Schéma de base des résultats de test](projet/documentation/technical/TestFrameworkStructures/TestResultsBaseSchema.md) - Le schéma de base des résultats de test définit la structure fondamentale utilisée pour représenter les résultats ...
+- [Spécification de l’API REST — CacheManager v74](projet/roadmaps/plans/consolidated/cache_manager_api.md) - - Description : Ingestion d’un log centralisé `roadmap` `plan`
+- [Spécification technique détaillée — Pipeline Logging & CacheManager v74](projet/roadmaps/plans/consolidated/logging_cache_pipeline_spec.md) - - CacheManager (Go) : point d’entrée unique pour logs/contextes `roadmap` `plan` `specification`
+- [Structure de configuration des tests](projet/documentation/technical/TestFrameworkStructures/TestConfigurationStructure.md) - La structure de configuration des tests définit le format et le contenu des configurations utilisées pour paramétrer ...
+- [Structure des données ERPNext](projet/guides/integrations/erpnext/data-structure.md) - Cette page décrit comment les données sont mappées entre ERPNext et le journal de bord. `guide`
+- [Structure des métriques temporelles](projet/documentation/technical/TestFrameworkStructures/TimeMetricsStructure.md) - La structure des métriques temporelles définit le format et l'organisation des données de mesure du temps collectées...
+- [Synchronisation ERPNext](projet/guides/integrations/erpnext/synchronization.md) - L'intégration ERPNext propose deux types de synchronisation: `guide`
+- [Système de Mémoire Contextuelle Modulaire pour IDE - Version Adaptée](projet/roadmaps/plans/consolidated/plan-dev-v50-adapt-systeme-memoire-contextuel-modulaire-IDE.md) - *Version 1.0 - Adaptée aux configurations locales - 2025-01-27* `roadmap` `plan`
+- [Transitions](projet/assets/ui/animations/transitions.md) - Cette page décrit les transitions disponibles dans le système de journal de bord RAG.
+- [Utilisation du Nuage de Mots Interactif](projet/assets/visualizations/word-cloud/usage.md) - Cette page explique comment utiliser le nuage de mots interactif pour explorer les termes les plus fréquents dans votre...
+- [Voici un compte rendu structuré en Markdown, synthétisant ...](projet/roadmaps/mes-plans/2025-0618- doc/graph-code-rag.md) - Voici un compte rendu structuré en Markdown, synthétisant les réponses précédentes concernant l’intérêt d’un ... `roadmap` `plan`
+- [Voici un rapport exhaustif des lacunes identifiées dans ton...](projet/roadmaps/mes-plans/2025-0618- doc/analyse-lacunes-depot-par-copilot.md) - Voici un rapport exhaustif des lacunes identifiées dans ton dépôt email-sender-1, suivi de recommandations et de solu... `roadmap` `plan`
+- [ce paIntégrer **Agent Zero** (<https://github.com/frdel/age...](projet/roadmaps/plans/consolidated/plan-dev-v63-agent-zero-cline-copilot.md) - ce paIntégrer **Agent Zero** (<https://github.com/frdel/agent-zero>) dans ton workflow avec **GitHub Copilot**, **Cline... `roadmap` `plan`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-enseignements-sur-l-encodage-et-les-caract-res-accentu-s.md) - title: Enseignements sur l'encodage et les caractères accentués `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-fichiers-cr-s.md) - title: Fichiers créés `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-2-gestion-des-workflows-via-l-api.md) - title: 2. Gestion des workflows via l'API `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-2-gestion-des-r-pertoires.md) - title: 2. Gestion des répertoires `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-2-avantages-pour-le-projet-n8n.md) - title: 2. Avantages pour le projet n8n `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-2-automatisation-du-rangement.md) - title: 2. Automatisation du rangement `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-4-gestion-des-doublons.md) - title: 4. Gestion des doublons `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-4-r-le-du-dossier-n8n.md) - title: 4. Rôle du dossier .n8n `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-5-avantages-d-une-structure-standardis-e.md) - title: 5. Avantages d'une structure standardisée `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-actions-r-alis-es.md) - title: Actions réalisées `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-automatisation-du-processus.md) - title: Automatisation du processus `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-2-organisation-intelligente-des-fichiers.md) - title: 2. Organisation intelligente des fichiers `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-2-probl-mes-courants-et-leurs-r-solutions.md) - title: 2. Problèmes courants et leurs résolutions `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-2-scripts-sp-cialis-s.md) - title: 2. Scripts spécialisés `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-2-utilisation-efficace-du-contexte.md) - title: 2. Utilisation efficace du contexte `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-2-analyse-et-documentation-du-code.md) - title: 2. Analyse et documentation du code `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-3-analyse-des-workflows-n8n.md) - title: 3. Analyse des workflows n8n `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-3-bonnes-pratiques-pour-l-utilisation-de-l-api.md) - title: 3. Bonnes pratiques pour l'utilisation de l'API `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-19-58-optimisation-des-processus-de-documentation-et-de-d-veloppement.md) - heure: 19-58 `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-scripts-d-velopp-s.md) - title: Scripts développés `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-1-structure-compl-te-d-un-workflow.md) - title: 1. Structure complète d'un workflow `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-1-standards-github-et-organisation-optimale.md) - title: 1. Standards GitHub et organisation optimale `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-1-qu-est-ce-que-mcp.md) - title: 1. Qu'est-ce que MCP ? `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-v-rification-avant-push.md) - title: Vérification avant push `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-strat-gies-de-d-bogage-efficaces.md) - title: Stratégies de débogage efficaces `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-avantages-pour-notre-projet-n8n.md) - title: Avantages pour notre projet n8n `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-biblioth-ques-utilis-es-et-leur-r-le-dans-le-projet.md) - title: Bibliothèques utilisées et leur rôle dans le projet `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-1-organisation-automatis-e-du-d-p-t.md) - title: 1. Organisation automatisée du dépôt `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-bonnes-pratiques-de-codage-powershell.md) - title: Bonnes pratiques de codage PowerShell `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-capacit-s-du-serveur-mcp-filesystem.md) - title: Capacités du serveur MCP Filesystem `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-cas-d-utilisation-concrets.md) - title: Cas d'utilisation concrets `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-commits-atomiques-vs-commits-volumineux.md) - title: Commits atomiques vs. commits volumineux `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-conflits-avec-les-hooks-git.md) - title: Conflits avec les hooks Git `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-1-op-rations-sur-les-fichiers.md) - title: 1. Opérations sur les fichiers `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-enseignements-sur-l-api-n8n.md) - title: Enseignements sur l'API n8n `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-ressources-cr-es.md) - title: Ressources créées `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-enseignements-sur-l-organisation-des-d-p-ts-github.md) - title: Enseignements sur l'organisation des dépôts GitHub `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-enseignements-sur-la-gestion-des-commits-git.md) - title: Enseignements sur la gestion des commits Git `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-3-correction-des-probl-mes-d-encodage.md) - title: 3. Correction des problèmes d'encodage `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-3-gestion-des-versions-multiples.md) - title: 3. Gestion des versions multiples `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-fichiers-corrig-s.md) - title: Fichiers corrigés `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-2-le-serveur-mcp-filesystem.md) - title: 2. Le serveur MCP Filesystem `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-fichiers-mis-jour.md) - title: Fichiers mis à jour `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-fonctionnalit-s-cl-s-impl-ment-es.md) - title: Fonctionnalités clés implémentées `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-1-gestionnaire-de-fichiers-principal.md) - title: 1. Gestionnaire de fichiers principal `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-gestion-des-fins-de-ligne-lf-crlf.md) - title: Gestion des fins de ligne (LF/CRLF) `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-implications-pour-le-projet-n8n.md) - title: Implications pour le projet n8n `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-implications-pour-le-projet.md) - title: Implications pour le projet `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-implications-pour-notre-workflow.md) - title: Implications pour notre workflow `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-1-gestion-optimis-e-des-workflows.md) - title: 1. Gestion optimisée des workflows `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-journal-de-bord-projet-n8n.md) - title: Journal de Bord - Projet n8n `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-3-int-gration-avec-nos-scripts-python.md) - title: 3. Intégration avec nos scripts Python `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-1-gestion-des-caract-res-accentu-s.md) - title: 1. Gestion des caractères accentués `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-limitations-identifi-es.md) - title: Limitations identifiées `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-1-biblioth-ques-principales.md) - title: 1. Bibliothèques principales `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-1-approche-m-thodique-pour-les-commits-volumineux.md) - title: 1. Approche méthodique pour les commits volumineux `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-07-04-2025-installation-et-exploration-du-model-context-protocol-mcp-server-filesystem.md) - title: 07/04/2025 - Installation et exploration du Model Context Protocol (MCP) Server Filesystem `roadmap` `installation`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-07-04-2025-installation-de-biblioth-ques-python-et-cr-ation-d-outils-de-gestion-de-fichiers.md) - title: 07/04/2025 - Installation de bibliothèques Python et création d'outils de gestion de fichiers `roadmap` `installation`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-06-15-exemple-d-entree-enrichie.md) - heure: 06-15 `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-06-12-journal-quotidien.md) - heure: 06-12 `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-mise-en-place-du-syst-me-rag-pour-le-journal-de-bord.md) - title: Mise en place du système RAG pour le journal de bord `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-pr-sentation-du-model-context-protocol-mcp.md) - title: Présentation du Model Context Protocol (MCP) `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-probl-me-identifi.md) - title: Problème identifié `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-probl-mes-identifi-s-et-r-solus.md) - title: Problèmes identifiés et résolus `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-prochaines-tapes.md) - title: Prochaines étapes `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-r-pertoires.md) - title: Répertoires `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-06-11-am-lioration-du-syst-me-de-journal-de-bord-rag.md) - heure: 06-11 `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-r-sultats-des-tests.md) - title: Résultats des tests `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-06-04-2025-gestion-efficace-des-commits-git-avec-un-grand-nombre-de-fichiers.md) - title: 06/04/2025 - Gestion efficace des commits Git avec un grand nombre de fichiers `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-r-sultats.md) - title: Résultats `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-solutions-d-velopp-es.md) - title: Solutions développées `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-3-optimisations-pour-les-futurs-commits.md) - title: 3. Optimisations pour les futurs commits `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-06-04-2025-d-couverte-et-documentation-du-sch-ma-complet-de-l-api-n8n.md) - title: 06/04/2025 - Découverte et documentation du schéma complet de l'API n8n `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-05-04-2025-organisation-automatique-du-d-p-t-et-gestion-des-standards-github.md) - title: 05/04/2025 - Organisation automatique du dépôt et gestion des standards GitHub `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-04-04-2025-probl-mes-d-encodage-des-caract-res-accentu-s-fran-ais.md) - title: 04/04/2025 - Problèmes d'encodage des caractères accentués français `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-scripts-powershell.md) - title: Scripts PowerShell `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-3-recherche-et-m-tadonn-es.md) - title: 3. Recherche et métadonnées `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-04-04-2025-organisation-des-outils-de-gestion-des-caract-res-accentu-s.md) - title: 04/04/2025 - Organisation des outils de gestion des caractères accentués `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-04-04-2025-documentation-de-l-api-n8n.md) - title: 04/04/2025 - Documentation de l'API n8n `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-04-04-2025-enseignements-du-d-bogage-des-scripts-powershell.md) - title: 04/04/2025 - Enseignements du débogage des scripts PowerShell `roadmap`
+- [date: 2025-04-05](projet/roadmaps/journal/entries/2025-04-05-scripts-python.md) - title: Scripts Python `roadmap`
+- [pymcpfy>=0.1.0](projet/mcp/dependencies/pip/requirements.txt) - mcp-git-ingest>=0.1.0
+- [sections_finales](projet/roadmaps/plans/consolidated/sections_finales.md) `roadmap` `plan`
+- [title: "Plan de Développement Magistral v66 Fusionné : Doc...](projet/roadmaps/plans/consolidated/plan-dev-v66-fusion-doc-manager-extensions-hybride.md) - title: "Plan de Développement Magistral v66 Fusionné : Doc-Manager Dynamique & Extensions Manager Hybride Code-Graph R... `roadmap` `plan`
+- [title: "Plan de Développement Magistral v72 : Roadmap Actio...](projet/roadmaps/plans/consolidated/plan-dev-v72-fusion-doc-manager-extensions-hybride.md) - title: "Plan de Développement Magistral v72 : Roadmap Actionnable, Automatisable & Testée" `roadmap` `plan`
+- [title: "Plan de Développement v66 : Doc-Manager-Dynamique -...](projet/roadmaps/plans/consolidated/plan-dev-v66-doc-manager-dynamique.md) - title: "Plan de Développement v66 : Doc-Manager-Dynamique - Architecture Cognitive Documentaire" `roadmap` `plan`
+- [title: "Plan de Développement v66 Fusionné : Doc-Manager D...](projet/roadmaps/plans/consolidated/test-gran.txt) - title: "Plan de Développement v66 Fusionné : Doc-Manager Dynamique & Extensions Manager Hybride Code-Graph RAG" `roadmap` `plan`
+- [title: "Plan de Développement v68 : Immutables Manager & Sy...](projet/roadmaps/plans/consolidated/plan-dev-v68-immutables-manager.md) - title: "Plan de Développement v68 : Immutables Manager & Synchronisation Interbranch Universelle" `roadmap` `plan`
+- [title: "Plan de Développement v69 : Documentation Complète...](projet/roadmaps/plans/consolidated/plan-dev-v69-documentation-complete.md) - title: "Plan de Développement v69 : Documentation Complète & Onboarding Écosystème" `roadmap` `plan`
+- [title: "Plan de Développement v70 : Génération Contextuel...](projet/roadmaps/plans/consolidated/plan-dev-v70-copilot-contextual-generation.md) - title: "Plan de Développement v70 : Génération Contextuelle Harmonisée Copilot & Managers" `roadmap` `plan`
+- [title: "Plan de Développement v71 : Automatisation & Refact...](projet/roadmaps/plans/consolidated/plan-dev-v71-automatisation-refactoring-struct-cline-copilot.md) - title: "Plan de Développement v71 : Automatisation & Refactoring Structuré (Cline/Copilot)" `roadmap` `plan`
+- [title: "Plan de Développement v73 : Dépendency-Manager Uni...](projet/roadmaps/plans/completed/plan-dev-v73-dep-manager.md) - title: "Plan de Développement v73 : Dépendency-Manager Unifié & Gouvernance Monorepo" `roadmap` `plan`
+- [title: "Plan de Développement v73 — Refactoring & Remise ...](projet/roadmaps/plans/completed/plan-dev-v73-refactorig-remise-a-plat-archi-go.md) - title: "Plan de Développement v73 — Refactoring & Remise à Plat Architecturale Go" `roadmap` `plan`
+- [title: "Plan de Développement v74 : Logging Centralisé, Ca...](projet/roadmaps/plans/completed/plan-dev-v74-logging-centralise.md) - title: "Plan de Développement v74 : Logging Centralisé, CacheManager & LMCache (Phases 3 à 8 granularisées, .clineru... `roadmap` `plan`
+- [title: Améliorations avancées du module PSCacheManager et ...](projet/roadmaps/journal/entries/2025-04-09-16-45-ameliorations-avancees-pscachemanager.md) - title: Améliorations avancées du module PSCacheManager et intégration dans les scripts existants `roadmap`
+- [title: Analyse sémantique avancée](projet/roadmaps/journal/entries/2025-04-01-16-45-analyse-semantique-avancee.md) - date: 2025-04-01 `roadmap`
+- [title: Implémentation du module PSCacheManager pour l'optim...](projet/roadmaps/journal/entries/2025-04-09-14-30-implementation-module-pscachemanager.md) - title: Implémentation du module PSCacheManager pour l'optimisation des performances `roadmap`
+- [title: Implémentation du système RAG](projet/roadmaps/journal/entries/2025-04-05-14-30-implementation-du-systeme-rag.md) - date: 2025-04-05 `roadmap`
+- [title: Intégration avec Notion](projet/roadmaps/journal/entries/2025-04-03-10-15-integration-avec-notion.md) - date: 2025-04-03 `roadmap`
+- [title: Nouvelle phase prioritaire - Intégration de la paral...](projet/roadmaps/journal/entries/2025-04-09-18-30-nouvelle-phase-parallelisation-cache.md) - title: Nouvelle phase prioritaire - Intégration de la parallélisation avec la gestion des caches `roadmap`
+- [title: Plan de développement v36 granularisé - Error Patte...](projet/roadmaps/plans/consolidated/plan-dev-v36-error-pattern-analyser-hybride-go-ts.md) - title: Plan de développement v36 granularisé - Error Pattern Analyzer Hybride Go/TypeScript `roadmap` `plan`
+- [title: Plan de migration v31 – Regroupement de mcp-manager...](projet/roadmaps/plans/consolidated/plan-dev-v31-migration-mcp-manager.md) - title: Plan de migration v31 – Regroupement de mcp-manager dans development/managers `roadmap` `plan`
+- [to: "plan-dev/plan-dev-v28.md"](projet/roadmaps/plans/consolidated/plan-dev-v28-Orga-Auto-Scripts.md) - Date de création : 2025-05-21 `roadmap` `plan`
+- [to: "plan-dev/plan-dev-v29-modes-harmonisation.md"](projet/roadmaps/plans/consolidated/plan-dev-v29-modes-harmonisation copy.md) - Date de création : 2025-05-21 `roadmap` `plan`
+- [to: "plan-dev/plan-dev-v29-modes-harmonisation.md"](projet/roadmaps/plans/consolidated/plan-dev-v29-modes-harmonisation copy-utf8.md) - Date de crÃ©ation : 2025-05-21 `roadmap` `plan`
+- [﻿# Plan de développement v9 : Intégration des modèles L...](projet/roadmaps/plans/consolidated/plan-dev-v9-LWM-LCM.md) - ﻿# Plan de développement v9 : Intégration des modèles LWM et LCM pour la gestion avancée des roadmaps `roadmap` `plan`
+- [🎯 PLAN DE RÉSOLUTION ERREURS GO - PROGRESSION CHRONOLOGIQUE](projet/roadmaps/plans/consolidated/plan-dev-v62.md) - - [x] **État initial**: 214+ erreurs détectées `roadmap` `plan`
+- [@Switch01](projet/venv/Lib/site-packages/pip-24.2.dist-info/AUTHORS.txt) - Aakanksha Agrawal
+- [Analyse du dÃ©pÃ´t https://github.com/mem0ai/mem0](projet/mcp/scripts/output/mem0-analysis/report.md) - *Erreur lors de la rÃ©cupÃ©ration des fichiers importants.*
+- [Copyright (c) 2008-present The pip developers (see AUTHORS.t...](projet/venv/Lib/site-packages/pip-24.2.dist-info/LICENSE.txt) - Copyright (c) 2008-present The pip developers (see AUTHORS.txt file) `license`
+- [EMAIL_SENDER_1](projet/security/backups/sessions/20250603-114716-77f4019f-bcfc-4325-bcca-ee3e05ba4873/critical/README.md) - La structure du projet a été réorganisée pour une meilleure organisation et maintenabilité, avec une distinction cl... `readme`
+- [EMAIL_SENDER_1](projet/security/backups/sessions/20250603-113746-0474c679-7b01-4b48-8859-d7628ad37ba1/critical/README.md) - La structure du projet a été réorganisée pour une meilleure organisation et maintenabilité, avec une distinction cl... `readme`
+- [EMAIL_SENDER_1](projet/security/backups/sessions/20250603-114531-4b17a7b1-b99b-4358-a47a-bc5b8168b8df/critical/README.md) - La structure du projet a été réorganisée pour une meilleure organisation et maintenabilité, avec une distinction cl... `readme`
+- [Métriques de latence pour les caches matériels](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/HardwareCacheLatencyMetrics.md) - Les métriques de latence pour les caches matériels mesurent le temps nécessaire pour accéder aux données dans les d...
+- [Métriques de mémoire paginée](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/PagedMemoryMetrics.md) - Les métriques de mémoire paginée représentent les mesures liées au système de pagination de la mémoire, qui est u...
+- [Métriques de mémoire physique](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/PhysicalMemoryMetrics.md) - Les métriques de mémoire physique représentent les mesures liées à l'utilisation de la mémoire RAM physique par le...
+- [Métriques de mémoire virtuelle](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/VirtualMemoryMetrics.md) - Les métriques de mémoire virtuelle représentent les mesures liées à l'utilisation de l'espace d'adressage virtuel p...
+- [Métriques de taux de succès du cache](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/CacheHitRateMetrics.md) - Les métriques de taux de succès du cache (cache hit rate) sont essentielles pour évaluer l'efficacité des différent...
+- [Plan d'implÃ©mentation](projet/roadmaps/analysis/test/files/plan-implementation.md) - - [ ] **1.1** Conception `roadmap` `plan`
+- [Roadmap Test v1](projet/roadmaps/analysis/test/files/roadmap_duplicate.md) - - [ ] TÃ¢che 1 `roadmap`
+- [Roadmap Test v1](projet/roadmaps/analysis/test/files/roadmap-v1.md) - - [ ] TÃ¢che 1 `roadmap`
+- [Roadmap Test v2](projet/roadmaps/analysis/test/files/roadmap-v2.md) - - [ ] TÃ¢che 1 `roadmap`
+- [Types de cache à mesurer](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/CacheMemoryTypes.md) - Ce document identifie et définit les différents types de cache mémoire qui doivent être mesurés dans le cadre des t...
+- [[console_scripts]](projet/venv/Lib/site-packages/pip-24.2.dist-info/entry_points.txt) - pip = pip._internal.cli.main:main
+- [top_level](projet/venv/Lib/site-packages/pip-24.2.dist-info/top_level.txt)
+- [CacheControl==0.14.0](projet/venv/Lib/site-packages/pip/_vendor/vendor.txt) - distlib==0.3.8
+- [Caractéristiques des valeurs aberrantes pour les lectures aléatoires de blocs de 2KB](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/RandomRead2KBOutliers.md) - Ce document analyse les caractéristiques des valeurs aberrantes (outliers) dans la distribution des latences pour les l...
+- [Champs obligatoires et optionnels pour les métriques par taille de bloc des lectures aléatoires](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/RandomReadBlockSizeFields.md) - Ce document définit les champs obligatoires et optionnels pour les métriques de latence par taille de bloc lors des le...
+- [Forme générale de la distribution des latences pour les lectures aléatoires de blocs de 2KB](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/RandomRead2KBDistributionShape.md) - Ce document analyse la forme générale de la distribution des latences pour les lectures aléatoires de blocs de 2 kilo...
+- [Formulation mathématique de l'indice global de conservation des moments](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/GlobalMomentConservationIndex.md) - Ce document définit la formulation mathématique d'un indice global de conservation des moments statistiques pour les h...
+- [Implémentation de l'algorithme de calcul de l'indice global de conservation des moments](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/GlobalIndexImplementation.md) - Ce document décrit l'implémentation de l'algorithme de calcul de l'indice global de conservation des moments (IGCM) po...
+- [Intervalles de confiance statistique pour les lectures aléatoires de blocs de 2KB](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/RandomRead2KBConfidenceIntervals.md) - Ce document définit les intervalles de confiance statistique pour les métriques de latence des lectures aléatoires de...
+- [Métriques de base pour les lectures aléatoires dans le cache de système de fichiers](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/RandomReadBaseMetrics.md) - Les métriques de base pour les lectures aléatoires mesurent les caractéristiques fondamentales de latence lorsque les...
+- [Métriques de dispersion pour les lectures aléatoires de blocs de 2KB](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/RandomRead2KBDispersion.md) - Ce document définit les métriques de dispersion (écart-type, variance) pour les latences des lectures aléatoires de ...
+- [Métriques de latence pour les lectures aléatoires de blocs de 1KB](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/RandomRead1KBMetrics.md) - Ce document définit les métriques de latence spécifiques aux lectures aléatoires de blocs de 1 kilooctet (1KB) dans ...
+- [Métriques de latence pour les lectures aléatoires de blocs de 512B](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/RandomRead512BMetrics.md) - Ce document définit les métriques de latence spécifiques aux lectures aléatoires de blocs de 512 octets dans le cach...
+- [Métriques de latence pour les lectures séquentielles dans le cache de système de fichiers](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/SequentialReadLatencyMetrics.md) - Les métriques de latence pour les lectures séquentielles mesurent le temps nécessaire pour accéder aux données dans...
+- [Percentiles caractéristiques pour les lectures aléatoires de blocs de 2KB](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/RandomRead2KBPercentiles.md) - Ce document définit les percentiles caractéristiques (p90, p95, p99) pour les métriques de latence des lectures aléa...
+- [Plages de valeurs significatives et points d'inflexion pour les lectures aléatoires de blocs de 2KB](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/RandomRead2KBInflectionPoints.md) - Ce document identifie et analyse les plages de valeurs significatives et les points d'inflexion dans la distribution des...
+- [Plages de valeurs typiques pour les lectures aléatoires de blocs de 2KB](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/RandomRead2KBBaseValues.md) - Ce document définit les plages de valeurs typiques (minimum, maximum, moyenne, médiane) pour les métriques de latence...
+- [Relations entre métriques pour les lectures aléatoires par taille de bloc](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/RandomReadBlockSizeRelations.md) - Ce document définit les relations entre les différentes métriques de latence par taille de bloc pour les lectures al�...
+- [Schéma JSON pour les métriques par taille de bloc des lectures aléatoires](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/RandomReadBlockSizeSchema.md) - Ce document définit le schéma JSON pour les métriques de latence par taille de bloc lors des lectures aléatoires dan...
+- [Seuils d'interprétation pour l'indice global de conservation des moments](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/GlobalIndexThresholds.md) - Ce document établit les seuils d'interprétation pour l'indice global de conservation des moments (IGCM) dans les histo...
+- [Analyse de l'impact des pondérations sur la sensibilité des métriques](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/WeightingSensitivityAnalysis.md) - Ce document présente une analyse détaillée de l'impact des différentes stratégies de pondération sur la sensibilit...
+- [Analyse de l'impact du binning sur la conservation de la moyenne](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/BinningImpactOnMean.md) - Ce document analyse l'impact des différentes stratégies de binning sur la conservation de la moyenne dans les histogra...
+- [Analyse de l'impact du binning sur la conservation de la variance](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/BinningImpactOnVariance.md) - Ce document analyse l'impact des différentes stratégies de binning sur la conservation de la variance dans les histogr...
+- [Analyse de l'impact du binning sur les moments d'ordre supérieur](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/BinningImpactOnHigherMoments.md) - Ce document analyse l'impact des stratégies de binning sur la conservation des moments d'ordre supérieur (asymétrie e...
+- [Critères de résolution minimale requise pour les modes dans les histogrammes de latence](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/ModeResolutionCriteria.md) - Ce document établit les critères de résolution minimale requise pour représenter fidèlement les modes dans les dist...
+- [Formules d'erreur absolue et relative pour la conservation de la moyenne](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/MeanConservationMetrics.md) - Ce document établit les formules d'erreur absolue et relative pour évaluer la conservation de la moyenne dans les hist...
+- [Formules d'erreur absolue et relative pour la conservation de la variance](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/VarianceConservationMetrics.md) - Ce document établit les formules d'erreur absolue et relative pour évaluer la conservation de la variance dans les his...
+- [Formules de métriques pondérées pour chaque moment statistique](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/WeightedMetricsFormulas.md) - Ce document présente les formules mathématiques et l'implémentation des métriques pondérées pour chaque moment sta...
+- [Mesure de l'efficacité des bins à largeur fixe pour les distributions uniformes](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/FixedWidthBinsUniformDistributions.md) - Ce document évalue l'efficacité des histogrammes à largeur de bin fixe pour la représentation des distributions unif...
+- [Métriques de conservation de la forme des modes](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/ModeShapePreservationMetrics.md) - Ce document définit des métriques quantitatives pour évaluer la conservation de la forme des modes dans les histogram...
+- [Métriques de précision de localisation des modes](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/ModeLocationMetrics.md) - Ce document définit des métriques quantitatives pour évaluer la précision de localisation des modes dans les histogr...
+- [Métriques de préservation de la largeur des modes](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/ModeWidthPreservationMetrics.md) - Ce document définit des métriques quantitatives pour évaluer la préservation de la largeur des modes dans les histog...
+- [Métriques pour la conservation de l'aplatissement (kurtosis)](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/KurtosisConservationMetrics.md) - Ce document définit des métriques pour évaluer la conservation de l'aplatissement (kurtosis) dans les histogrammes de...
+- [Métriques pour la conservation de l'asymétrie (skewness)](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/SkewnessConservationMetrics.md) - Ce document définit des métriques pour évaluer la conservation de l'asymétrie (skewness) dans les histogrammes de la...
+- [Quantification de la sous-représentation des régions à haute densité avec des bins à largeur fixe](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/FixedWidthBinsHighDensityUnderrepresentation.md) - Ce document quantifie et analyse la sous-représentation des régions à haute densité dans les histogrammes à largeur...
+- [Seuils d'acceptabilité pour les erreurs de moyenne](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/MeanErrorThresholds.md) - Ce document définit les seuils d'acceptabilité pour les erreurs de moyenne dans les histogrammes de latence. Ces seuil...
+- [Seuils d'acceptabilité pour les erreurs de variance](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/VarianceErrorThresholds.md) - Ce document définit les seuils d'acceptabilité pour les erreurs de variance dans les histogrammes de latence. Ces seui...
+- [Système de pondération adaptative selon le contexte](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/AdaptiveWeightingSystem.md) - Le système de pondération adaptative ajuste dynamiquement l'importance relative des différents moments statistiques (...
+- [Évaluation de la simplicité d'implémentation et d'interprétation des bins à largeur fixe](projet/documentation/technical/TestFrameworkStructures/MemoryMetrics/FileSystemCache/BinningStrategies/FixedWidthBinsSimplicity.md) - Ce document évalue la simplicité d'implémentation et d'interprétation des histogrammes à largeur de bin fixe pour l...
+
+### Configuration
+
+*Configuration and setup documentation*
+
+- [Configuration and Customization Documentation](core/config/CONFIGURATION.md) - - **AppConfig** : Structure de configuration YAML/JSON
+
+### General
+
+*General documentation files*
+
+- [Build](.build/README.md) - Ce répertoire contient les fichiers liés au build et au CI/CD. `readme`
+- [Context7 MCP - Up-to-date Code Docs For Any Prompt](servers/README.md) - [![Website](https://img.shields.io/badge/Website-context7.com-blue)](https://context7.com) [![smithery badge](https://sm... `readme`
+- [React + TypeScript + Vite](indie-booking-crm/README.md) - This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules. `readme`
+- [Scripts Utilitaires](scripts/README.md) - Ce répertoire contient les scripts utilitaires principaux pour interagir avec les différents gestionnaires du projet. `readme`
+- [Source Code](src/README.md) - Ce répertoire contient le code source principal du projet. `readme`
+- [Templates Hygen 📁](_templates/README.md) - Ce dossier contient tous les templates Hygen pour la génération automatique de fichiers dans le projet EMAIL_SENDER_1. `readme`
+- [🎯 Phase 6.1.1 - Dashboard de Synchronisation](web/README.md) - Ce document décrit l'implémentation complète du **Dashboard de Synchronisation** de la Phase 6.1.1, comprenant l'inte... `readme`
+- [![Build Status](https://img.shields.io/badge/build-passing-b...](badges/build.md) - ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+- [![Modules](https://img.shields.io/badge/modules--blue)](badges/modules.md)
+- [![Roadmap Status](https://img.shields.io/badge/roadmap-85%25...](badges/roadmap.md) - ![Roadmap Status](https://img.shields.io/badge/roadmap-85%25-yellow) `roadmap`
+- [.cline - Configuration de Cline](aaaretrait-pour-xp/.cline/README.md) - Ce dossier contient les règles et configurations nécessaires à l'IA Cline pour fonctionner dans ce projet. `readme`
+- [Automation Directory Organization](scripts/automation/README-Automation.md) - This directory contains all automation scripts and related files organized in a hierarchical, functional structure for b... `readme`
+- [Ce fichier est un placeholder\n# Le MCP Server a ete retire car il n'etait pas operationnel\n# Date de suppression : 2025-04-04](src/mcp/README-CLEANUP.md) `readme`
+- [Commande personnalisée VS Code : Générer un bloc diff Edit](tools/diff_edit/README_SNIPPET.md) - 1. Sélectionner le texte à patcher dans l’éditeur VS Code. `readme`
+- [Configuration AMP - Email-Sender-1](aaaretrait-pour-xp/.amp/README.md) - Ce dossier contient les configurations et pru00e9fu00e9rences pour l'agent AMP travaillant sur le projet Email-Sender-1. `readme`
+- [Directives pour les agents - Email-Sender-1](misc/AGENT.md) - > Ce document contient les instructions essentielles pour les agents IA opérant dans ce dépôt. Il est complémentaire...
+- [Documentation Augment](aaaretrait-pour-xp/.augment/README.md) - Ce dossier contient la configuration et les ressources pour l'assistant IA Augment utilisé dans le projet. `readme`
+- [Error Resolution Pipeline - Go Native](scripts/error-resolution-pipeline/README.md) - Ce workspace contient l'implémentation d'un pipeline Go natif pour la détection, identification et résolution automat... `readme`
+- [Git Maintenance Tool](tools/git-maintenance/README.md) - Automated maintenance and synchronization tool for Git submodules according to Plan Dev v41 section 2.2.1. `readme`
+- [Guide de démarrage rapide — Email Sender Écosystème](guides/QUICKSTART.md) - - Node.js ≥ 18.x `guide`
+- [Helpers pour les Templates Hygen](_templates/helpers/README.md) - Ce répertoire contient des modules utilitaires qui facilitent le développement et la maintenance des templates Hygen e... `readme`
+- [MCP (Model Context Protocol) Framework](src/mcp/README.md) - Ce dossier contient l'implÃ©mentation du framework MCP (Model Context Protocol) qui permet d'interagir avec diffÃ©re... `readme`
+- [Module de support de formats](src/format-support/README.md) - Ce module fournit des fonctionnalités avancées pour la conversion, la validation et l'analyse de différents formats d... `readme`
+- [N8N Go CLI Node - Installation Guide](go-cli-node-template/INSTALLATION_GUIDE.md) - Ce guide détaille l'installation et la configuration du node N8N personnalisé pour l'intégration Go CLI. Le node perm... `guide` `installation`
+- [N8N Go CLI Wrapper - Documentation](cmd/n8n-go-cli/README.md) - Le `n8n-go-cli` est un wrapper CLI standalone pour l'intégration d'applications Go avec les workflows N8N. Il fournit d... `readme`
+- [PERFORMANCE_ANALYSIS_REPORT](planning-ecosystem-sync/PERFORMANCE_ANALYSIS_REPORT.md) `plan`
+- [Plan-dev-v55 Implementation Completion Report](planning-ecosystem-sync/IMPLEMENTATION_COMPLETE_REPORT.md) - **Date**: June 11, 2025 `plan`
+- [PostgreSQL Analytics - Documentation](analytics/postgresql_analytics/README.md) - Ce dossier contient les scripts SQL pour l'intégration de l'analytics documentaire dans PostgreSQL, conformément au pl... `readme`
+- [RAG System - 7 Time-Saving Methods Implementation Report](generated/automation-report.md) - **Execution Time**: 02:43
+- [README](cmd/hub-central/README.md) `readme`
+- [README diff Edit (Go natif)](tools/diff_edit/README.md) - - Générer un bloc diff Edit avec le snippet VS Code ou manuellement. `readme`
+- [README-Modular](scripts/automation/README-Modular.md) `readme`
+- [Rapport Automatisé pour read_file](reports/read_file_report.md) - **Date de génération**: 2025-06-28 20:32:40 CEST
+- [Rapport d'Orchestration Globale](reports/orchestration_report.md) - **Date de génération**: 2025-06-28 20:40:27 CEST
+- [Rapport d'analyse de longueur des fichiers](reports/docs-file-lengths.md) - *Généré le 2025-05-14 20:26:19*
+- [Rapport d'analyse de longueur des fichiers](reports/projet-file-lengths.md) - *Généré le 2025-05-14 20:25:32*
+- [Rapport d'analyse de longueur des fichiers](reports/modes-file-lengths.md) - *Généré le 2025-05-14 19:22:40*
+- [Rapport d'analyse de longueur des fichiers](reports/development-file-lengths.md) - *Généré le 2025-05-14 20:22:51*
+- [Rapport de Cohérence .github](analysis/.github-consistency-report.md) - **Date**: 2025-05-27 19:33:09
+- [Rapport de Dry Run Critique - Plan Dev v34](analysis/qdrant-migration-report.md) - **Date:** 27 mai 2025
+- [Rapport de Rollback et de Versionning](reports/rollback_report.md) - **Date de génération**: 2025-06-28 20:32:51 CEST
+- [Rapport de déplacement des fichiers de roadmap](reports/roadmap-files-moved.md) - *Généré le 2025-05-17 01:25:52* `roadmap`
+- [Rapport de déplacement des fichiers de visualisation](reports/visualization-files-moved-report.md) - *Généré le 17/05/2025 02:10:00*
+- [Rapport de déplacement des fichiers de visualisation](reports/visualization-files-moved.md) - *Généré le 2025-05-17 01:57:01*
+- [Rapport de synthèse sur la longueur des fichiers](reports/file-lengths-summary.md) - *Généré le 2025-05-14*
+- [Redis Streaming - Documentation](streaming/redis_streaming/README.md) - Ce dossier contient l’implémentation Go pour la synchronisation documentaire via Redis Streaming (section 4.4.3) : `readme`
+- [RÉSUMÉ EXÉCUTIF - DRY RUN CRITIQUE PLAN DEV V34](analysis/dry-run-executive-summary.md) - **Date d'exécution :** 27 mai 2025 07:45
+- [Spécification de l'Orchestrateur Global](specs/orchestrator_spec.md) - Ce document spécifie l'orchestrateur global qui coordonnera l'exécution séquentielle des différents scripts d'automa... `specification`
+- [Spécification des Procédures de Rollback et de Restauration](specs/rollback_spec.md) - Ce document détaille les procédures, les cas d'usage et les critères pour les opérations de sauvegarde et de restaur... `specification`
+- [Support des formats JSON, XML et texte](src/modules/README.md) - Ce module fournit un support complet pour la segmentation, l'analyse et la conversion des formats JSON, XML et texte. `readme`
+- [Système de gestion des erreurs avancé](src/error-management/README.md) - Ce module fournit un framework complet pour la gestion des erreurs dans les scripts PowerShell, avec des fonctionnalité... `readme`
+- [Système de remédiation n8n](src/n8n/README.md) - Ce dossier contient un ensemble d'outils pour gérer, surveiller et maintenir une installation n8n. Il offre une interfa... `readme`
+- [Template Hygen pour les plans de développement](_templates/plan-dev-v1/README-original.md) - Ce template permet de générer un nouveau plan de développement avec une structure standardisée. `plan` `readme`
+- [Templates de maintenance Hygen](_templates/maintenance/README.md) - Ce répertoire contient des templates Hygen pour générer des scripts de maintenance pour le projet. `readme`
+- [Templates de modules PowerShell](_templates/powershell-module/README.md) - Ce répertoire contient des templates Hygen pour générer des modules PowerShell optimisés pour le projet EMAIL_SENDER... `readme`
+- [The MIT License (MIT)](servers/LICENSE) - Copyright (c) 2021 Upstash, Inc. `license`
+- [Tutoriel pas-à-pas — Automatisation de l’envoi d’emails](guides/EMAIL_AUTOMATION.md) - Automatiser l’envoi d’emails personnalisés à partir d’une liste de contacts, avec suivi des statuts via n8n. `guide`
+- [Workflow n8n — Prospection Email Automatisée](workflows/PROSPECTION.md) - Automatiser la prospection par email : envoi séquencé, suivi des ouvertures, gestion des réponses. `specification`
+- [fastapi==0.104.1](edge-computing/requirements-edge-router.txt) - uvicorn==0.24.0
+- [plan_ameliorations_read_file](consolidated/plan_ameliorations_read_file.md) `plan`
+- [﻿                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2...](misc/temp_roadmap_lines.txt) - ﻿                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.1** Rechercher les méthodes d'analyse syntaxique disponi... `roadmap`
+- [📅 Intégration Google Calendar](integrations/GOOGLE_CALENDAR.md) - Ce guide explique la configuration, l’utilisation et les bonnes pratiques pour l’intégration Google Calendar dans l...
+- [📊 Monitoring Dashboard Real-Time - N8N/Go Infrastructure](dashboard/monitoring_dashboard.md) - Fournir une vue temps réel sur :
+- [📋 Implementation Report: Section 2.1.2 - Conversion vers Format Dynamique](planning-ecosystem-sync/IMPLEMENTATION_REPORT_2.1.2.md) - **Date:** June 11, 2025 `plan`
+- [📋 Implementation Report: Section 2.2.1 - Synchronisation Dynamique → Markdown](planning-ecosystem-sync/IMPLEMENTATION_REPORT_2.2.1.md) - Successfully implemented the complete reverse synchronization functionality as specified in plan-dev-v55 section 2.2.1. ... `plan`
+- [📒 Intégration Notion](integrations/NOTION.md) - Ce guide détaille la configuration, l’utilisation et les bonnes pratiques pour l’intégration Notion dans l’écos...
+- [📦 Module Go : scanmodules](core/scanmodules/README.md) - Ce module permet de scanner récursivement une arborescence de fichiers, de détecter le langage de chaque fichier, et d... `readme`
+- [📧 Intégration Gmail](integrations/GMAIL.md) - Ce guide décrit la configuration, l’utilisation et les bonnes pratiques pour l’intégration Gmail dans l’écosyst...
+- [🤖 Intégration OpenRouter](integrations/OPENROUTER.md) - Ce guide détaille la configuration, l’utilisation et les bonnes pratiques pour l’intégration OpenRouter (API IA) d...
+- [// Extension VS Code (esquisse, Go natif via CLI)](tools/diff_edit/vscode-tasks-diffedit.md) - // Pour automatiser l’application du patch diff Edit, il suffit d’appeler le binaire Go depuis une tâche ou une com...
+- [<p align="center">](output/mem0-analysis/files/README.md) - <a href="https://github.com/mem0ai/mem0"> `readme`
+- [ARCHIVAGE-COMPLET](scripts/automation/ARCHIVAGE-COMPLET.md)
+- [Analyse du dépôt mem0ai/mem0](output/mem0-analysis/report.md) - *Erreur lors de la récupération de la structure du dépôt.*
+- [Ancien contenu à remplacer.](tools/diff_edit/exemple_patch_diffedit.txt) - Nouveau contenu inséré par diff Edit.
+- [Archive des Versions Obsolètes](scripts/automation/archive/README-ARCHIVE.md) - Cette archive contient les versions obsolètes des scripts PowerShell qui ont été remplacées par l'architecture modul... `readme`
+- [Automation Directory Organization - Completion Report](scripts/automation/ORGANIZATION-COMPLETION-REPORT.md) - **Date:** 2025-05-24
+- [Automatisation complète et activation zéro-intervention (diff Edit Go natif)](tools/diff_edit/AUTOMATISATION_COMPLETE.md) - - **Vérification hook Git** :
+- [Automatisation et sécurité diff Edit (Go natif)](tools/diff_edit/AUTOMATISATION_SECURITE.md) - - Déjà implémentée dans le CLI Go (`diffedit.go`).
+- [CPU-Z TXT Report](aaaretrait-pour-xp/.augment/DESKTOP-ORG3GN0.txt) - CPU-Z version			2.09.0.x64
+- [Cas d’usage de la méthode diff Edit (v67)](tools/diff_edit/USAGE_CASES.md) - - Modification ciblée de contenu dans un fichier markdown (doc technique, notes, README)
+- [Conclusion et plan d'action](output/analyse-parallelisation/6-conclusion.md) - L'audit des mécanismes de parallélisation et d'optimisation dans le projet EMAIL_SENDER_1 a révélé plusieurs points...
+- [Conflict History and Rollback Documentation](core/conflict/HISTORY_ROLLBACK.md) - - **ConflictHistory** : Historique des conflits avec timestamps et metadata
+- [Contraintes d’encodage, de format et de compatibilité (diff Edit)](tools/diff_edit/CONTRAINTES.md) - - **Encodage recommandé** : UTF-8 sans BOM (Byte Order Mark)
+- [Dependencies Map - Imports Managers](output/phase1/dependencies-map.md) - **Date de scan**: 2025-06-18 20:34:34
+- [Directives pour Augment Chat](aaaretrait-pour-xp/.augment/chat_guidelines.md) - - Sois concis et précis dans tes réponses `guide`
+- [Documentation CLI : Génération automatique AGENTS.md](tools/cmd/generate_manager_io_doc/README.md) - Le script à utiliser pour générer ou mettre à jour la documentation détaillée des managers Go est : `readme`
+- [Error Pattern Analyzer](src/extensions/error-pattern-analyzer/README.md) - VS Code extension for analyzing error patterns in PowerShell scripts. `readme`
+- [Exemples d'utilisation du système RAG](tools/qdrant/rag/README-Exemples.ps1) - Write-Host "=== EXEMPLES SYSTÈME RAG ===" -ForegroundColor Green `readme`
+- [FAQ / Problèmes fréquents diff Edit](tools/diff_edit/FAQ_PROBLEMES.md) - Cette FAQ centralise les retours d’expérience, problèmes courants et solutions liés à l’utilisation de la métho...
+- [Format standardisé des blocs diff Edit (SEARCH/REPLACE)](tools/diff_edit/FORMAT_STANDARD.md) - Un bloc diff Edit est structuré ainsi :
+- [Gestion des Erreurs - Analyse des Patterns](output/phase1/error-handling-patterns.md) - **Date de scan**: 2025-06-18 20:45:22
+- [Gestion des conflits en équipe (diff Edit Go natif)](tools/diff_edit/GESTION_EQUIPE.md) - - **Branches distinctes** : chaque diff Edit doit être appliqué sur une branche dédiée pour éviter les conflits.
+- [Guidelines d'implémentation optimale avec Augment/Claude](aaaretrait-pour-xp/.augment/AUGMENT_IMPLEMENTATION_GUIDELINES.md) - *Version 1.1 - 2025-05-14* `guide`
+- [Générateur universel de README dynamique pour dossiers de ...](_templates/maintenance/readme-hygen-generator/readme-hygen-generator.ejs.t) - Générateur universel de README dynamique pour dossiers de templates Hygen `readme`
+- [Hooks Git pour l'analyse des erreurs](.build/ci/git-hooks/README.md) - Ce répertoire contient des hooks Git pour l'analyse des erreurs dans les scripts PowerShell. `readme`
+- [INTEGRATION_MANAGERS.md — Points d’intégration diff Edit avec les managers système](tools/diff_edit/INTEGRATION_MANAGERS.md) - - **Process manager** : hooks pour notifier le lancement/fin de batch, logs d’état, gestion des workers.
+- [Implémentations recommandées](output/analyse-parallelisation/5-implementations.md) - ```plaintext
+- [Interfaces Publiques - Rapport d'Extraction](output/phase1/interfaces-publiques-managers.md) - **Date de scan**: 2025-06-18 20:31:50
+- [Intégration CI/CD diff Edit (Go natif)](tools/diff_edit/CI_CD.md) - name: DiffEdit Patch Validation
+- [Inventaire des mécanismes de parallélisation PowerShell](output/analyse-parallelisation/1-inventaire-powershell.md) - | Fichier | Mécanisme | Configuration | Gestion d'erreurs |
+- [Inventaire des mécanismes de parallélisation Python](output/analyse-parallelisation/2-inventaire-python.md) - | Fichier | Mécanisme | Configuration | Gestion d'erreurs |
+- [LOCKS.md — Convention de verrouillage/notification diff Edit](tools/diff_edit/LOCKS.md) - - Lorsqu’un fichier critique est édité via diff Edit, notifier l’équipe (Slack, mail, bot, ou PR comment).
+- [Livrables diff Edit (Go natif)](tools/diff_edit/LIVRABLES_BENEFICES.md) - - **Script CLI diff Edit prêt à l’emploi** : `tools/diff_edit/go/diffedit.go`, `batch_diffedit.go`, `undo.go`
+- [MCP Integration for n8n](src/n8n/nodes/README.md) - This directory contains custom nodes for integrating the Model Context Protocol (MCP) with n8n. `readme`
+- [Mintlify Starter Kit](output/mem0-analysis/files/docs_README.md) - Click on `Use this template` to copy the Mintlify starter kit. The starter kit contains examples including `readme`
+- [Mode dry-run et rollback (diff Edit Go natif)](tools/diff_edit/DRYRUN_ROLLBACK.md) - - Le script Go `diffedit.go` supporte l’option `--dry-run` pour prévisualiser le diff sans appliquer la modification.
+- [Modules et extensions diff Edit](tools/diff_edit/MODULES_EXTENSIONS.md) - Cette section documente la structure recommandée pour l’ajout de nouveaux modules ou extensions à l’écosystème d...
+- [Optimisation des ressources et intégration avec les managers système (diff Edit Go natif)](tools/diff_edit/OPTIMISATION_MANAGERS.md) - - Utilisation de goroutines pour le traitement batch (parallélisation contrôlée).
+- [PLAN-ORGANISATION-AVANCEE](scripts/automation/PLAN-ORGANISATION-AVANCEE.md) `plan`
+- [Patch diff Edit pour test](tools/diff_edit/patch.txt) - Ancien contenu à remplacer.
+- [Patterns Constructeurs - Analyse Complète](output/phase1/constructors-patterns.md) - **Date de scan**: 2025-06-18 20:33:25
+- [Pièges et limites connus (diff Edit Go natif)](tools/diff_edit/PIEGES_LIMITES.md) - - Bloc SEARCH non unique dans le fichier : le script Go refuse d’appliquer le patch si le bloc SEARCH apparaît plus...
+- [Points de Communication - Analyse Système](output/phase1/communication-points.md) - **Date de scan**: 2025-06-18 20:43:49
+- [Procédure d’utilisation du workflow diff Edit (Go natif)](tools/diff_edit/WORKFLOW_VALIDATION.md) - 1. **Génération du bloc diff Edit**
+- [Proxy MCP Unifié](src/mcp/proxy/README.md) - Un proxy qui unifie l'accès aux systèmes MCP (Augment et Cline) avec gestion de routage, failover automatique et inter... `readme`
+- [PyMCPfy: MCP-fy Your Python Web APIs](src/mcp/python/README.md) - [![PyPI version](https://badge.fury.io/py/pymcpfy.svg)](https://badge.fury.io/py/pymcpfy) `readme`
+- [Real-time Monitoring and Alerts Documentation](core/conflict/MONITORING_ALERTS.md) - - **ConflictMonitor** : Surveillance temps réel (channels, goroutines)
+- [Recommandations d'optimisation](output/analyse-parallelisation/4-recommandations.md) - | Recommandation | Priorité | Impact estimé | Complexité |
+- [Resolution Strategies Documentation](core/conflict/RESOLUTION_STRATEGIES.md) - - **ResolutionStrategy** : Interface avec Execute(), Validate(), Rollback()
+- [RÉSUMÉ-MODULARISATION](scripts/automation/RÉSUMÉ-MODULARISATION.md)
+- [Règles Globales](aaaretrait-pour-xp/.cline/global-rules.md) - - **ANALYZE** : Décomposition systématique en sous-tâches avec estimation de complexité
+- [Règles du Projet (Workspace-Specific)](aaaretrait-pour-xp/.cline/workspace-rules.md) - - **n8n** : Moteur principal d'automatisation
+- [Scoring and Priority System Documentation](core/conflict/SCORING_SYSTEM.md) - - **ConflictScorer** : Interface avec Calculate(), Compare()
+- [Scripts n8n](src/n8n/scripts/README.md) - Ce dossier contient tous les scripts pour gérer n8n, organisés par catégorie. `readme`
+- [Support des formats XML et HTML](src/format-support/XML_HTML/README.md) - Ce module fournit un support complet pour les formats XML et HTML, permettant de convertir, analyser et valider des fich... `readme`
+- [Template Hygen — plan-dev/new (README dynamique)](_templates/plan-dev-v1/new/README.md) - Ce dossier contient le template principal pour la génération de plans de développement structurés avec Hygen. `plan` `readme`
+- [Titre](tools/diff_edit/exemple_markdown.md) - Nouveau contenu inséré par diff Edit.
+- [config](src/mcp/core/README.md) - Configuration MCP `readme`
+- [integrations](src/mcp/integrations/README.md) - Intégrations MCP `readme`
+- [keep assets in the dir to use.](indie-booking-crm/public/use.txt)
+- [langchain>=0.1.0](src/langchain/requirements.txt) - langchain-core>=0.1.0
+- [to: D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/maint...](_templates/maintenance/organize/readme.ejs.t) - to: D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/maintenance/organize/README.md `readme`
+- [to: D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/maint...](_templates/maintenance/cleanup/readme.ejs.t) - to: D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/maintenance/cleanup/README.md `readme`
+- [to: D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/maint...](_templates/maintenance/migrate/readme.ejs.t) - to: D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/maintenance/migrate/README.md `readme`
+- [to: D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/roadm...](_templates/roadmap/new/readme.ejs.t) - to: D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/roadmap/<%= category %>/<%= subcategory %>/README.md `roadmap` `readme`
+- [to: development/scripts/{{category}}/modules/{{name}}/README...](_templates/powershell-module/new/readme.ejs.t) - to: development/scripts/{{category}}/modules/{{name}}/README.md `readme`
+- [Évaluation des performances actuelles](output/analyse-parallelisation/3-evaluation-performances.md) - | Mécanisme | Implémentation | Forces | Faiblesses |
+- [﻿node.exe : npm error code E404](output/mem0-analysis/structure.txt) - Au caractère C:\Program Files\nodejs\npx.ps1:29 : 3
+- [🎯 RAG System - 7 Time-Saving Methods Implementation Report](internal/codegen/automation-report.md) - **Execution Time**: 02:32
+- [🚀 Guide Plan-Dev Templates](_templates/plan-dev/usage/README.md) - \\\powershell `plan` `readme`
+- [AGENTS.md](tools/cmd/generate_manager_io_doc/dryrun_agents_doc.md) - Ce fichier documente les agents et managers principaux de l’architecture documentaire hybride du projet. Il décrit le...
+- [Architecture du projet EMAIL_SENDER_1](aaaretrait-pour-xp/.augment/context/architecture.md) - Ce document présente l'architecture globale du projet EMAIL_SENDER_1, ses composants principaux et leurs interactions.
+- [Architecture du projet EMAIL_SENDER_1](aaaretrait-pour-xp/.amp/context/architecture.md) - Ce document présente l'architecture globale du projet EMAIL_SENDER_1, ses composants principaux et leurs interactions.
+- [Augment Client Node for n8n](src/n8n/nodes/augment-client/README.md) - This node allows you to interact with Augment Code directly from n8n workflows. `readme`
+- [BENCHMARK_RESULTS](planning-ecosystem-sync/tools/validation/BENCHMARK_RESULTS.md) `plan`
+- [Configuration d'EMAIL_PASSWORD pour GitHub Actions](src/mcp/servers/gcp-mcp/EMAIL_GITHUB_ACTIONS_README.md) - Ce dossier contient des scripts pour configurer un compte de service GCP avec accès Gmail et générer les identifiants... `readme`
+- [Configuration du MCP GCP pour N8N](src/mcp/servers/gcp-mcp/README.md) - Ce dossier contient le MCP (Model Context Protocol) pour Google Cloud Platform, qui permet à N8N d'interagir avec les s... `readme`
+- [EMAIL SENDER 1 — Augment Guidelines](aaaretrait-pour-xp/.augment/guidelines/chat_guidelines.md) - *Version 2025-05-15 — à conserver dans `/docs/README_EMAIL_SENDER_1.md`* `guide`
+- [Exemples de formats XML et HTML](src/format-support/XML_HTML/Examples/README.md) - Ce dossier contient des exemples de fichiers XML et HTML pour illustrer les fonctionnalités de conversion et d'analyse. `readme`
+- [Flux applicatif détaillé](aaaretrait-pour-xp/.amp/context/app_flow.md) - Ce document décrit les flux principaux de l'application, les interactions entre les composants et le cycle de vie des d...
+- [Flux applicatif détaillé](aaaretrait-pour-xp/.augment/context/app_flow.md) - Ce document décrit les flux principaux de l'application, les interactions entre les composants et le cycle de vie des d...
+- [Google Drive server](src/mcp/servers/gdrive/README.md) - This MCP server integrates with Google Drive to allow listing, reading, and searching over files. `readme`
+- [Instructions d'implémentation étape par étape](aaaretrait-pour-xp/.augment/guidelines/implementation_steps.md) - Ce document fournit un guide détaillé pour l'implémentation de nouvelles fonctionnalités dans le projet. `guide`
+- [Intu00e9gration Hygen pour AMP](aaaretrait-pour-xp/.amp/templates/hygen_integration.md) - Le projet utilise [Hygen](https://www.hygen.io/) pour gu00e9nu00e9rer du code u00e0 partir de templates. Les templates s...
+- [Journal de bord du projet MCP](src/mcp/core/journal.md) - Aujourd'hui, nous avons implémenté et corrigé les tests unitaires pour le projet MCP. Nous avons créé des tests pou...
+- [Points d'intégration du projet EMAIL_SENDER_1](aaaretrait-pour-xp/.amp/context/integration_points.md) - Ce document détaille les différents points d'intégration du projet EMAIL_SENDER_1 avec des services externes, APIs et...
+- [Points d'intégration du projet EMAIL_SENDER_1](aaaretrait-pour-xp/.augment/context/integration_points.md) - Ce document détaille les différents points d'intégration du projet EMAIL_SENDER_1 avec des services externes, APIs et...
+- [Règles de développement Backend](aaaretrait-pour-xp/.augment/guidelines/backend_rules.md) - Ce document définit les standards et bonnes pratiques pour le développement backend dans le projet. `guide`
+- [Règles de développement Frontend](aaaretrait-pour-xp/.augment/guidelines/frontend_rules.md) - Ce document définit les standards et bonnes pratiques pour le développement frontend dans le projet. `guide`
+- [Stack technique et utilisation API](aaaretrait-pour-xp/.augment/context/tech_stack.md) - Ce document détaille la stack technique du projet, les APIs utilisées et les configurations spécifiques.
+- [Stack technique et utilisation API](aaaretrait-pour-xp/.amp/context/tech_stack.md) - Ce document détaille la stack technique du projet, les APIs utilisées et les configurations spécifiques.
+- [Standards de codage pour AMP](aaaretrait-pour-xp/.amp/guidelines/coding_standards.md) - - Suivre les standards de codage du projet (SOLID, DRY, KISS, YAGNI) `guide`
+- [Standards de code globaux](aaaretrait-pour-xp/.augment/guidelines/project_standards.md) - Ce document définit les standards et bonnes pratiques générales pour tout le code du projet. `guide`
+- [Standards de développement du projet EMAIL_SENDER_1](aaaretrait-pour-xp/.amp/context/development_standards.md) - Ce document définit les standards de développement à respecter pour le projet EMAIL_SENDER_1, couvrant les aspects te...
+- [Standards de développement du projet EMAIL_SENDER_1](aaaretrait-pour-xp/.augment/context/development_standards.md) - Ce document définit les standards de développement à respecter pour le projet EMAIL_SENDER_1, couvrant les aspects te...
+- [Système de design](aaaretrait-pour-xp/.amp/context/design_system.md) - Ce document décrit le système de design utilisé dans le projet, incluant les polices, les couleurs, les composants et...
+- [Système de design](aaaretrait-pour-xp/.augment/context/design_system.md) - Ce document décrit le système de design utilisé dans le projet, incluant les polices, les couleurs, les composants et...
+- [Workflows n8n du projet EMAIL_SENDER_1](aaaretrait-pour-xp/.amp/context/workflows.md) - Ce document détaille les workflows n8n utilisés dans le projet EMAIL_SENDER_1, leur structure, fonctionnement et inter...
+- [Workflows n8n du projet EMAIL_SENDER_1](aaaretrait-pour-xp/.augment/context/workflows.md) - Ce document détaille les workflows n8n utilisés dans le projet EMAIL_SENDER_1, leur structure, fonctionnement et inter...
+- [generated_agents_doc](tools/cmd/generate_manager_io_doc/generated_agents_doc.md)
+- [server](src/mcp/core/server/README.md) - Serveurs MCP `readme`
+- [🚀 Plan de Développement Traceable v2025-05 - Mise en place Email Sender](roadmaps/plans/consolidated/plan-dev-v2025-05-mise-en-place-email-sender.md) - > **📅 Généré le**: 28/05/2025 `roadmap` `plan`
+- [Algorithmes de conversion entre formats Roadmap, XML et HTML](src/format-support/XML_HTML/Analysis/RoadmapConversionAlgorithms.md) - Ce document détaille les algorithmes spécifiques pour convertir entre le format Roadmap (Markdown) et les formats XML ... `roadmap`
+- [Analyse de la conversion entre formats XML/HTML et format Roadmap](src/format-support/XML_HTML/Analysis/RoadmapFormatAnalysis.md) - Le format Roadmap utilise une structure Markdown hiérarchique avec les éléments suivants : `roadmap`
+- [Analyse des besoins pour le support des formats XML et HTML](src/format-support/XML_HTML/Analysis/RequirementsAnalysis.md) - L'objectif principal est d'étendre les fonctionnalités existantes pour prendre en charge les formats XML et HTML, perm...
+- [Architecture pour le support des formats XML et HTML](src/format-support/XML_HTML/Analysis/ArchitectureDesign.md) - L'architecture proposée pour le support des formats XML et HTML suit une approche modulaire et extensible, s'intégrant...
+- [Conception de l'implémentation pour la conversion de formats Roadmap](src/format-support/XML_HTML/Analysis/ImplementationDesign.md) - Ce document détaille la conception de l'implémentation pour la conversion entre le format Roadmap (Markdown) et les fo...
+- [FastAPI Chat Example with PyMCPfy](src/mcp/python/examples/fastapi_example/README.md) - This example demonstrates how to build a real-time chat API using FastAPI and expose it via MCP using PyMCPfy. `readme`
+- [Flask Todo List Example with PyMCPfy](src/mcp/python/examples/flask_example/README.md) - This example demonstrates how to build a Todo List API using Flask and expose it via MCP using PyMCPfy. `readme`
+- [Guide d'intégration pour les développeurs](src/format-support/XML_HTML/Documentation/Guide_Integration.md) - Ce guide explique comment intégrer le support des formats XML et HTML dans vos propres scripts et applications. `guide`
+- [Guide d'utilisation du format HTML](src/format-support/XML_HTML/Documentation/Guide_HTML.md) - Ce guide explique comment utiliser les fonctionnalités de support du format HTML pour convertir, analyser et manipuler ... `guide`
+- [Guide d'utilisation du format XML](src/format-support/XML_HTML/Documentation/Guide_XML.md) - Ce guide explique comment utiliser les fonctionnalités de support du format XML pour convertir, analyser et valider des... `guide`
+- [Guide de conversion entre formats](src/format-support/XML_HTML/Documentation/Guide_Conversion.md) - Ce guide explique comment convertir entre les différents formats supportés : Roadmap (Markdown), XML, HTML et JSON. `guide`
+- [Plan d'implémentation pour le support des formats XML et HTML](src/format-support/XML_HTML/Analysis/ImplementationPlan.md) - Ce plan d'implémentation détaille les étapes nécessaires pour ajouter le support des formats XML et HTML au système... `plan`
+- [README.md](src/mcp/python/pymcpfy.egg-info/SOURCES.txt) - pymcpfy/__init__.py
+- [Rapport d'analyse pre-commit](.build/ci/git-hooks/reports/pre-commit-report.md) - Date: 2025-04-14 07:46:53
+- [Templates d'architectures d'agents IA pour n8n](src/n8n/workflows/templates/ai-agents/README.md) - Ce dossier contient des templates de workflows n8n implémentant différentes architectures d'agents IA pour le projet E... `readme`
+- [dependency_links](src/mcp/python/pymcpfy.egg-info/dependency_links.txt)
+- [mcp>=0.1.0](src/mcp/python/pymcpfy.egg-info/requires.txt) - pydantic>=2.0.0
+- [pymcpfy](src/mcp/python/pymcpfy.egg-info/top_level.txt)
+- [Plan de développement v1.0 - Error Resolution Pipeline Go Native](scripts/error-resolution-pipeline/roadmaps/plans/consolidated/plan-dev-v1.0-error-resolution-pipeline-go-native.md) - *Version 1.0 - 2025-01-20 - Progression globale : 0%* `roadmap` `plan`
+- [django>=3.2](src/mcp/python/examples/django_example/requirements.txt) - djangorestframework>=3.12.0
+- [fastapi>=0.70.0](src/mcp/python/examples/fastapi_example/requirements.txt) - uvicorn>=0.15.0
+- [flask>=2.0.0](src/mcp/python/examples/flask_example/requirements.txt) - flask-sqlalchemy>=3.0.0
+
+## Statistics
+
+### By Category
+
+- General: 194 files
+- Testing: 23 files
+- Github: 165 files
+- Root: 232 files
+- Configuration: 1 files
+- Project-Management: 619 files
+- Api: 2 files
+- Documentation: 405 files
+- Development: 713 files
+
+### By Type
+
+- Markdown: 2153 files
+- Text: 178 files
+- Other: 12 files
+- Restructuredtext: 11 files
+
+---
+*Index generated by gen_docs_index.go v1.0*
