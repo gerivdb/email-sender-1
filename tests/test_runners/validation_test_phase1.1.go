@@ -8,9 +8,16 @@ import (
 	"testing"
 	"time"
 
+<<<<<<< HEAD
 	"email_sender/tools/core/toolkit"
 	"email_sender/tools/operations/validation"
 	toolkitpkg "email_sender/tools/pkg/manager"
+=======
+	"github.com/email-sender/tools/core/platform" // Added platform import
+	toolkit "github.com/email-sender/tools/core/toolkit"
+	validation "github.com/email-sender/tools/operations/validation"
+	// managerTool "github.com/email-sender/tools/cmd/manager-toolkit" // Removed
+>>>>>>> origin/jules/fix-build-errors-and-cycles
 )
 
 // Validation de l'implémentation - Phase 1.1 - Plan v49
@@ -68,8 +75,16 @@ func runValidationPhase1_1(t *testing.T) {
 	}
 	// Test 2: Validation de l'intégration avec ManagerToolkit
 	fmt.Printf("\n2️⃣ TEST: Intégration avec ManagerToolkit\n")
+<<<<<<< HEAD
 	fmt.Printf("--------------------------------------\n") // Test 2.1: Création du ManagerToolkit
 	mtk, err := toolkitpkg.NewManagerToolkit(tempDir, "", false)
+=======
+	fmt.Printf("--------------------------------------\n")
+
+	// Test 2.1: Création du ManagerToolkit
+	// Use toolkit.NewManagerToolkit directly as managerTool import is removed
+	mtk, err := toolkit.NewManagerToolkit(tempDir, "", false)
+>>>>>>> origin/jules/fix-build-errors-and-cycles
 	if err != nil {
 		t.Fatalf("❌ ERROR: Création de ManagerToolkit a échoué: %v", err)
 	}
@@ -77,12 +92,19 @@ func runValidationPhase1_1(t *testing.T) {
 
 	// Test 2.2: Test d'intégration avec ExecuteOperation
 	ctx := context.Background()
+<<<<<<< HEAD
 	opts := &toolkit.OperationOptions{
+=======
+
+	opts := &platform.OperationOptions{ // Use platform.OperationOptions
+>>>>>>> origin/jules/fix-build-errors-and-cycles
 		Target: tempDir,
 		Output: filepath.Join(tempDir, "test_report.json"),
 		Force:  false,
+		DryRun: mtk.Config.EnableDryRun,
 	}
 
+<<<<<<< HEAD
 	operations := []toolkit.Operation{
 		toolkit.ValidateStructs,
 		toolkit.ResolveImports,
@@ -95,13 +117,31 @@ func runValidationPhase1_1(t *testing.T) {
 		toolkit.ResolveImports:   "OpResolveImports",
 		toolkit.AnalyzeDeps:      "OpAnalyzeDeps",
 		toolkit.DetectDuplicates: "OpDetectDuplicates",
+=======
+	operations := []platform.Operation{ // Use platform.Operation
+		platform.ValidateStructs,
+		platform.ResolveImports,
+		platform.AnalyzeDeps,
+		platform.DetectDuplicates,
+	}
+
+	operationNames := map[platform.Operation]string{ // Use platform.Operation
+		platform.ValidateStructs:  "OpValidateStructs",
+		platform.ResolveImports:   "OpResolveImports",
+		platform.AnalyzeDeps:      "OpAnalyzeDeps",
+		platform.DetectDuplicates: "OpDetectDuplicates",
+>>>>>>> origin/jules/fix-build-errors-and-cycles
 	}
 
 	totalOps := len(operations)
 	successOps := 0
 	for _, op := range operations {
 		startTime := time.Now()
+<<<<<<< HEAD
 		err := mtk.ExecuteOperation(ctx, op, opts) // Use op directly - no cast needed
+=======
+		err := mtk.ExecuteOperation(ctx, op, opts) // op is already platform.Operation
+>>>>>>> origin/jules/fix-build-errors-and-cycles
 		duration := time.Since(startTime)
 
 		if err != nil {
@@ -112,12 +152,14 @@ func runValidationPhase1_1(t *testing.T) {
 		}
 	}
 	// Test 3: Vérification des métriques après exécution
+	// mtk.Stats is now *platform.ToolkitStats
 	fmt.Printf("\n3️⃣ TEST: Vérification des métriques ToolkitStats\n")
 	fmt.Printf("---------------------------------------------\n")
 	fmt.Printf("- Operations executed: %d\n", mtk.Stats.OperationsExecuted)
 	fmt.Printf("- Files analyzed: %d\n", mtk.Stats.FilesAnalyzed)
 	fmt.Printf("- Files processed: %d\n", mtk.Stats.FilesProcessed)
 	fmt.Printf("- Execution time: %v\n", mtk.Stats.ExecutionTime)
+<<<<<<< HEAD
 
 	// Test 4: Test spécifique ResolveImports
 	fmt.Printf("\n4️⃣ TEST: ResolveImports spécifique\n")
@@ -137,6 +179,8 @@ func runValidationPhase1_1(t *testing.T) {
 		totalOps++
 		successOps++
 	}
+=======
+>>>>>>> origin/jules/fix-build-errors-and-cycles
 
 	// Rapport final
 	fmt.Printf("\n📋 RAPPORT FINAL:\n")

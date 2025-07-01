@@ -9,14 +9,18 @@ import (
 	"fmt"
 	"sync"
 
+<<<<<<< HEAD
 	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+=======
+	"github.com/email-sender/tools/core/platform" // Changed to platform
+>>>>>>> origin/jules/fix-build-errors-and-cycles
 )
 
 // Global registry instance for automatic registration
 var globalRegistry *ToolRegistry
 
 // RegisterGlobalTool registers a tool with the global registry
-func RegisterGlobalTool(op toolkit.Operation, tool toolkit.ToolkitOperation) error {
+func RegisterGlobalTool(op platform.Operation, tool platform.ToolkitOperation) error { // Use platform types
 	if globalRegistry == nil {
 		globalRegistry = NewToolRegistry()
 	}
@@ -33,7 +37,7 @@ func GetGlobalRegistry() *ToolRegistry {
 
 // ToolRegistry manages automatic tool registration and conflict prevention
 type ToolRegistry struct {
-	tools     map[toolkit.Operation]toolkit.ToolkitOperation
+	tools     map[platform.Operation]platform.ToolkitOperation // Use platform types
 	conflicts map[string][]string
 	mutex     sync.RWMutex
 }
@@ -41,13 +45,13 @@ type ToolRegistry struct {
 // NewToolRegistry creates a new tool registry
 func NewToolRegistry() *ToolRegistry {
 	return &ToolRegistry{
-		tools:     make(map[toolkit.Operation]toolkit.ToolkitOperation),
+		tools:     make(map[platform.Operation]platform.ToolkitOperation), // Use platform types
 		conflicts: make(map[string][]string),
 	}
 }
 
 // Register registers a new tool with conflict detection
-func (tr *ToolRegistry) Register(op toolkit.Operation, tool toolkit.ToolkitOperation) error {
+func (tr *ToolRegistry) Register(op platform.Operation, tool platform.ToolkitOperation) error { // Use platform types
 	tr.mutex.Lock()
 	defer tr.mutex.Unlock()
 
@@ -57,7 +61,7 @@ func (tr *ToolRegistry) Register(op toolkit.Operation, tool toolkit.ToolkitOpera
 	}
 
 	// Validate the tool
-	ctx := context.Background()
+	ctx := context.Background() // Consider passing context if tool validation needs it
 	if err := tool.Validate(ctx); err != nil {
 		return fmt.Errorf("tool validation failed for operation %s: %w", op, err)
 	}
@@ -77,7 +81,7 @@ func (tr *ToolRegistry) Register(op toolkit.Operation, tool toolkit.ToolkitOpera
 }
 
 // GetTool retrieves a tool by operation
-func (tr *ToolRegistry) GetTool(op toolkit.Operation) (toolkit.ToolkitOperation, error) {
+func (tr *ToolRegistry) GetTool(op platform.Operation) (platform.ToolkitOperation, error) { // Use platform types
 	tr.mutex.RLock()
 	defer tr.mutex.RUnlock()
 
@@ -90,11 +94,11 @@ func (tr *ToolRegistry) GetTool(op toolkit.Operation) (toolkit.ToolkitOperation,
 }
 
 // ListOperations returns all registered operations
-func (tr *ToolRegistry) ListOperations() []toolkit.Operation {
+func (tr *ToolRegistry) ListOperations() []platform.Operation { // Use platform types
 	tr.mutex.RLock()
 	defer tr.mutex.RUnlock()
 
-	operations := make([]toolkit.Operation, 0, len(tr.tools))
+	operations := make([]platform.Operation, 0, len(tr.tools)) // Use platform types
 	for op := range tr.tools {
 		operations = append(operations, op)
 	}
