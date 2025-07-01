@@ -1,4 +1,4 @@
-package reporting
+package main
 
 import (
 	"encoding/json"

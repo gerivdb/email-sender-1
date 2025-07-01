@@ -1,4 +1,4 @@
-package gapanalyzer
+package main
 
 import (
 	"encoding/json"
