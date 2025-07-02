@@ -33,3 +33,11 @@ jobs:
           gosec ./...
       - name: Build verification
         run: go build -o /dev/null
+      - name: Exécution des scripts d'audit et d'inventaire feuille de route
+        run: |
+          go run ./cmd/audit-inventory/main.go
+          go run ./cmd/audit-gap-analysis/main.go
+          go run ./cmd/standards-inventory/main.go
+          go run ./cmd/standards-duplication-check/main.go
+          go run ./cmd/roadmap-indexer/main.go
+          go run ./cmd/cross-doc-inventory/main.go

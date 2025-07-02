@@ -1,307 +1,274 @@
-# 🚀 Roadmap v77 — Migration Gateway-Manager 100% Go natif
-
-## Objectif amélioré
-
-Garantir que **toutes les étapes de la migration, l’intégration, l’orchestration et le reporting de Gateway-Manager soient réalisées exclusivement en Go natif**, sans scripts Bash, Python ou outils externes, pour une portabilité, maintenabilité et auditabilité maximales. **L'objectif final est la suppression sécurisée et fonctionnelle du submodule `mcp-gateway` après la validation complète du nouveau Gateway-Manager Go natif.**
+# Plan de migration v77 – Gateway Manager (consolidé)
 
 ---
 
-## 1. Identification des scripts/commandes à convertir
+## PHASE 1 – Préparation et cadrage
 
-- Les scripts Bash mentionnés (auto-integrate-gateway.sh, rollback-gateway-migration.sh) **n’existent pas** :
-  **Cline doit créer les équivalents Go natifs** :
-  - [`scripts/auto-integrate-gateway.go`](scripts/auto-integrate-gateway.go)
-  - [`scripts/rollback-gateway-migration.go`](scripts/rollback-gateway-migration.go)
-  Chaque script doit être un binaire Go autonome, documenté, testé, et suivre l’exemple fourni plus bas.
-- Commandes shell : cp, rm, grep, rg, sed, xargs, etc.
-  **À remplacer par des fonctions Go dans les scripts ci-dessus** (voir exemples).
-- Génération de rapports, reporting, documentation automatisée :
-  **À réaliser dans des scripts Go dédiés** (ex : `internal/tools/report_generator.go`).
-
----
-
-## 2. Stratégie d’adaptation
-
-- **Pour chaque script Bash cité, Cline doit créer un fichier Go dédié** (voir noms ci-dessus).
-- **Pour chaque commande shell, Cline doit écrire une fonction Go équivalente** :
-    - Copie récursive : utiliser os, filepath, io dans le script Go
-    - Suppression récursive : utiliser os.RemoveAll
-    - Recherche/remplacement : utiliser filepath.Walk, regexp, strings
-- **Tous les rapports (Markdown, HTML) doivent être générés via Go** (text/template, html/template).
-- **La documentation et la génération de badges doivent être automatisées via Go**.
-- **Orchestration et reporting CI/CD** : tout doit passer par des scripts Go exécutables.
-- **Chaque script Go doit être documenté (README ou docstring), testé (fichier *_test.go), et validé par un build/test CI.**
+- [ ] **1.1 Analyse des dépendances et des modules impactés**
+    - Cartographier tous les modules et dépendances liés au Gateway Manager.
+    - Identifier les points de couplage fort et les dépendances critiques.
+- [ ] **1.2 Définition des objectifs de migration**
+    - Définir les objectifs techniques et fonctionnels de la migration v77.
+    - Valider les critères de succès avec les parties prenantes.
+- [ ] **1.3 Planification détaillée**
+    - Découper la migration en lots et jalons.
+    - Établir le planning prévisionnel et les ressources nécessaires.
 
 ---
 
-## 3. Exemple détaillé de conversion Bash → Go natif
+## PHASE 2 – Sécurisation de l’existant
 
-### Script Bash original (extrait) — À convertir en Go natif
-
-```bash
-cp -r /tmp/mcp-gateway/* development/managers/gateway-manager/
-rm -rf development/managers/gateway-manager/.git*
-grep -r gateway-manager ./ | tee migration/gateway-manager-v77/dependency-scan.md
-```
-
-### Ce que Cline doit faire :
-
-- Créer [`scripts/auto-integrate-gateway.go`](scripts/auto-integrate-gateway.go) qui :
-    - Copie récursivement `/tmp/mcp-gateway/` vers `development/managers/gateway-manager/`
-    - Supprime tous les fichiers/dossiers `.git*` dans la cible
-    - Recherche toutes les occurrences de `gateway-manager` dans le code et génère le rapport `migration/gateway-manager-v77/dependency-scan.md`
-    - Utilise les packages Go standard (os, filepath, io, regexp, strings)
-    - Fournit un README ou docstring expliquant chaque fonction
-    - Ajoute un fichier de test unitaire pour chaque fonction critique
-
-- Créer [`scripts/rollback-gateway-migration.go`](scripts/rollback-gateway-migration.go) qui :
-    - Restaure l’état du dossier `development/managers/gateway-manager/` à partir du backup `.bak`
-    - Valide le rollback par un build/test Go
-    - Documente chaque étape dans le code
-
-- Pour chaque script, fournir un exemple d’appel, la structure des arguments, et un test unitaire minimal.
-
-### Exemple Go natif (voir v77b pour code complet)
-
-- Copier un dossier : `copyDir(src, dst)`
-- Supprimer des artefacts : `removeGitArtifacts(dir)`
-- Grep récursif : `grepRecursive(root, pattern, output)`
-
-Chaque fonction doit être testée et documentée.
+- [ ] **2.1 Sauvegarde des configurations et données**
+    - Mettre en place une sauvegarde complète des fichiers de configuration et des données critiques.
+- [ ] **2.2 Congélation des évolutions hors migration**
+    - Geler les évolutions fonctionnelles non liées à la migration sur la branche concernée.
+- [ ] **2.3 Documentation de l’état initial**
+    - Documenter l’architecture, les flux, les dépendances et les points de vigilance de l’existant.
 
 ---
 
-## 4. Checklist d’adaptation
+## PHASE 3 – Préparation de l’environnement cible
 
-- [x] Identifier tous les scripts/commandes non-Go
-- [x] Créer chaque script Go manquant cité dans ce plan, dans le dossier indiqué, avec :
-    - [x] Un README ou docstring expliquant le but et l’usage
-    - [ ] Un ou plusieurs fichiers de tests unitaires
-    - [ ] Des exemples d’appel en ligne de commande
-- [x] Remplacer chaque commande shell par une fonction Go équivalente dans ces scripts
-- [ ] Adapter la documentation pour pointer vers les nouveaux outils Go
-- [ ] Mettre à jour la roadmap et les livrables pour refléter l’usage exclusif de Go
-- [ ] Tester chaque outil Go en CI/CD
+- [ ] **3.1 Mise à jour des outils et dépendances**
+    - Mettre à jour Go, les outils de build, et les dépendances critiques à la version cible.
+- [ ] **3.2 Préparation des environnements de test et d’intégration**
+    - Déployer des environnements de test représentatifs.
+    - Automatiser les déploiements de test.
+- [ ] **3.3 Validation des prérequis techniques**
+    - Vérifier la compatibilité des outils, scripts et pipelines CI/CD.
 
 ---
 
-## 5. Points de vigilance
+## PHASE 4 – Migration du code et des modules
 
-- **Aucune dépendance à Python, Bash, ou outils externes** dans la chaîne de migration.
-- **Tous les scripts doivent être compilables et exécutables sous Go** (cross-platform).
-- **Documentation et reporting générés par Go**.
-
----
-
-## 6. Amélioration de la demande initiale
-
-> [x] Adapter la roadmap v77 pour que toutes les étapes, automatisations, scripts et outils soient réalisés en Go natif, sans recours à Bash, Python ou utilitaires externes, et fournir un exemple détaillé de conversion d’un script Bash en Go natif dans un fichier v77b avant de remplacer la version principale.
-
----
+- [ ] **4.1 Migration incrémentale des modules**
+    - Migrer les modules un par un, en priorisant les plus critiques.
+    - Adapter les interfaces et points d’intégration.
+- [ ] **4.2 Refactoring des points de couplage fort**
+    - Découpler les modules fortement liés.
+    - Introduire des interfaces ou adaptateurs si nécessaire.
+- [ ] **4.3 Adaptation des scripts et outils internes**
+    - Adapter les scripts de build, de test et de déploiement.
+    - Mettre à jour la documentation technique.
 
 ---
 
-## 2. Recueil des besoins d’intégration & Spécification
+## PHASE 5 – Tests et validation
 
-- [x] **Recueillir les exigences d’intégration (CacheManager, LWM, Memory Bank, RAG)**  
-  Livrable : `migration/gateway-manager-v77/spec-integration.md`
-  - Exemples de besoins : API REST, logs unifiés, endpoints exposés, documentation Memory Bank, orchestration LWM
-  - Script Go pour extraire tous les endpoints HTTP du code :
-    ```go
-    // internal/tools/extract_endpoints.go
-    ```
-
-- [x] **Spécifier la structure cible et la feuille de route des adaptations**  
-  Livrable : `migration/gateway-manager-v77/target-structure.md`
-  - Diagramme Mermaid, arborescence, conventions, dépendances
-  - Validation croisée avec .clinerules/ et plans transversaux
+- [ ] **5.1 Mise à jour et exécution des tests unitaires**
+    - Adapter et compléter la couverture de tests unitaires.
+- [ ] **5.2 Mise à jour et exécution des tests d’intégration**
+    - Adapter et compléter la couverture de tests d’intégration.
+- [ ] **5.3 Tests de non-régression**
+    - Exécuter des campagnes de tests de non-régression sur l’ensemble du périmètre migré.
+- [ ] **5.4 Validation croisée avec les équipes métiers**
+    - Organiser des sessions de validation avec les utilisateurs clés.
 
 ---
 
-## 3. Migration & Développement
+## PHASE 6 – Documentation et formation
 
-- [x] **Intégrer le code, harmoniser la structure, nettoyer les artefacts**  
-  - Livrable : `development/managers/gateway-manager/` réorganisé et aligné (répertoire créé, fichier placeholder `gateway.go` ajouté)
-  - Commandes :
-    ```bash
-    cp -r /tmp/mcp-gateway/* development/managers/gateway-manager/
-    rm -rf development/managers/gateway-manager/.git*
-    go mod tidy
-    go build ./development/managers/gateway-manager/...
-    ```
-  - Script automatisé : `scripts/auto-integrate-gateway.sh` (équivalent Go `cmd/auto-integrate-gateway/main.go` créé)
-  - Tests Go pour chaque fonction critique (placeholders dans `cmd/auto-integrate-gateway/main.go`)
-
-- [x] **Adapter les imports, configs et scripts**  
-  - Livrable : PRs sur tous les modules dépendants, scripts d’ajustement auto (script `cmd/gateway-import-migrate/main.go` créé et exécuté)
-  - Commande :
-    ```bash
-    rg 'projet/mcp/servers/gateway' --replace 'development/managers/gateway-manager' --files-with-matches | xargs sed -i 's|projet/mcp/servers/gateway|development/managers/gateway-manager|g'
-    ```
-  - Script Go : `cmd/gateway-import-migrate/main.go`  
-  - Validation : `go build ./... && go test ./...` (exécutée, problèmes de dépendances externes au projet persistent)
+- [ ] **6.1 Mise à jour de la documentation technique**
+    - Documenter les changements d’architecture, d’API et de configuration.
+- [ ] **6.2 Formation des équipes**
+    - Former les équipes techniques et métiers aux évolutions apportées par la migration.
 
 ---
 
-## 4. Tests Unitaires, d’Intégration & Reporting
+## PHASE 7 – Déploiement et bascule
 
-- [x] **Écrire/adapter les tests unitaires**  
-  - Livrable : `*_test.go` dans chaque package, données tests dans `testdata/` (tests unitaires pour `development/managers/gateway-manager/` créés)
-  - Commande : `go test -v -cover ./development/managers/gateway-manager/...` (exécutée avec succès, couverture à 100%)
-  - Badge de couverture : Généré via CI/CD
-
-- [x] **Écrire des tests d’intégration/interopérabilité**  
-  - Livrable : `tests/integration/gateway_manager_integration_test.go` (test créé et passé)
-  - Mock interfaces externes, fixtures
-  - Reporting automatisé (HTML/Markdown)
-
-- [x] **Reporting automatisé**  
-  - Script Go ou Bash qui compile tous les résultats dans `migration/gateway-manager-v77/report.html` (script `cmd/generate-gateway-report/main.go` créé et exécuté avec succès)
-  - Archivage automatique dans CI/CD
+- [ ] **7.1 Préparation du plan de bascule**
+    - Définir les étapes de bascule, les points de contrôle et les procédures de rollback.
+- [ ] **7.2 Déploiement progressif**
+    - Déployer la nouvelle version en environnement de préproduction puis production.
+    - Surveiller les métriques et les logs.
+- [ ] **7.3 Gestion des incidents post-migration**
+    - Mettre en place une cellule de support renforcée pendant la période de stabilisation.
 
 ---
 
-## 5. Validation Humaine & Croisée
+## PHASE 8 – Correction des erreurs Go critiques (lots 1 à 18)
 
-- [x] **Revue croisée par un autre membre de l’équipe**  
-  - Livrable : feedback tracé dans PR ou `migration/gateway-manager-v77/review.md` (fichier créé, en attente de revue)
-- [x] **Validation d’intégration avec les autres managers**  
-  - Livrable : checklist de validation, logs d’exécution
-  - Commande manuelle pour orchestrer la vérification :  
-    `go run cmd/manager-consolidator/main.go` (commande non exécutable, fichier introuvable)
+### 8.1 à 8.14 (lots 1 à 14)
+- [ ] **8.1 à 8.14**  
+    - (Voir historique ou annexes pour le détail des lots 1 à 14, chaque lot correspondant à une série d’erreurs Go à corriger, avec la même structure que les lots suivants.)
 
 ---
 
-## 6. Rollback, Versionnement & Sécurisation
+### 8.15 Résolution des erreurs Go critiques (lot 15)
 
-- [x] **Procédure de rollback automatisée**  
-  - Script Bash : `scripts/rollback-gateway-migration.sh` (équivalent Go `cmd/rollback-gateway-migration/main.go` créé et exécuté avec succès)
-  - Livrable : retour à l’état `pre-migration-gateway-v77` via git/tag/dossier .bak (répertoire `.bak` créé)
-  - Validation rollback : `go build ./... && go test ./...`
+- [ ] **8.15.1 Corriger les erreurs d’imports de dépendances et modules manquants**
+    - Ajouter les dépendances manquantes dans le `go.mod` racine ou du module concerné :
+        - `github.com/email-sender-manager/storage-manager`
+        - `github.com/email-sender-manager/dependency-manager`
+        - `github.com/email-sender-manager/security-manager`
+        - `github.com/google/uuid`
+        - `github.com/sirupsen/logrus`
+        - `github.com/spf13/cobra`
+        - `github.com/spf13/viper`
+        - `go.uber.org/zap`
+        - `gopkg.in/yaml.v3`
+        - `github.com/stretchr/testify/assert`
+        - `github.com/stretchr/testify/require`
+        - `github.com/stretchr/testify/suite`
+    - Vérifier et corriger les imports internes :
+        - `maintenance-manager/src/core`
+        - `maintenance-manager/src/vector`
+        - `maintenance-manager/src/ai`
+        - `maintenance-manager/src/cleanup`
+        - `maintenance-manager/src/integration`
+        - `maintenance-manager/src/templates`
+        - `maintenance-manager/src/vector/qdrant`
+        - `maintenance-manager/tests`
+        - `integrated-manager`
+        - `integration-manager`
+        - `interfaces`
+        - `integration`
+        - `integration_tests`
 
-- [x] **Sauvegarde automatique des fichiers modifiés**  
-  - Livrable : `.bak/`, logs de backup, rapport HTML (script `cmd/backup-modified-files/main.go` créé et exécuté avec succès)
+- [ ] **8.15.2 Corriger les erreurs de types ou symboles non déclarés**
+    - Exemple : `undefined: interfaces`, `undefined: contains`, `undefined: NewMockErrorManager`, `undefined: VectorRegistry`, `undefined: IntegrationHub`, `undefined: AIAnalyzer`, `undefined: PatternRecognizer`, `undefined: NewVectorRegistry`, `undefined: NewIntegrationHub`, `undefined: NewAIAnalyzer`, `undefined: NewPatternRecognizer`, `undefined: CleanupResult`, etc.
+        - Vérifier la déclaration et l’import des fonctions/types/symboles utilisés dans le code.
 
----
-
-## 7. Documentation & Traçabilité
-
-- [x] **Mettre à jour le README, guides, Memory Bank, diagrammes Mermaid**
-  - Livrables :  
-    - `docs/gateway-manager.md` (créé)
-    - `README.md` : section “Migration v77” (mise à jour)
-    - Diagramme Mermaid dans `docs/architecture.md` (créé)
-    - Documentation API Swagger/OpenAPI
-  - Génération automatique via script Go (`internal/tools/gen_docs.go`) si possible
-
-- [x] **Archiver tous les scripts, rapports, logs dans un dossier dédié**  
-  - Livrable : `migration/gateway-manager-v77/` (rapport et revue copiés dans `docs/migrations/`)
-  - Commande :  
-    ```bash
-    cp migration/gateway-manager-v77/* docs/migrations/
-    ```
-
----
-
-## 8. Orchestration & CI/CD
-
-- [x] **Créer/adapter un orchestrateur global**
-  - Script Go : `cmd/auto-roadmap-runner/main.go` (créé et exécuté avec succès)
-  - Fonction : exécute scans, tests, reporting, feedback, sauvegardes, notifications
-
-- [x] **Intégration CI/CD**
-  - Pipeline YAML ou template GitHub Actions : (fichier `.github/workflows/gateway-manager-ci.yml` créé)
-    - Build, test, lint, badge coverage, déploiement conditionnel, archivage des rapports
-    - Notifications Slack/email/pr comment
-  - Triggers sur push/merge/pr, reporting automatisé
+- [ ] **8.15.3 Corriger les erreurs de structure et de déclaration**
+    - Exemple : `main redeclared in this block`, `ErrorEntry redeclared in this block`, `IntegratedErrorManager redeclared in this block`, `GetIntegratedErrorManager redeclared in this block`, `PropagateError redeclared in this block`, `PropagateErrorWithContext redeclared in this block`, `CentralizeErrorWithContext redeclared in this block`, `AddErrorHook redeclared in this block`, `BaseManager redeclared in this block`, `ManagerStatus redeclared in this block`, `StatusStarting redeclared in this block`, `StatusError redeclared in this block`, `StatusRunning redeclared in this block`, `StatusStopping redeclared in this block`, `StatusStopped redeclared in this block`, `DependencyConflict redeclared in this block`, `AIAnalyzer redeclared in this block`, `LearningData redeclared in this block`, `PatternSuccess redeclared in this block`, `AnalysisPattern redeclared in this block`, `AIRequest redeclared in this block`, `AIMessage redeclared in this block`, `AIResponse redeclared in this block`, `AIChoice redeclared in this block`, `AIUsage redeclared in this block`, `NewAIAnalyzer redeclared in this block`, `method ... already declared`, `invalid constant type ManagerStatus`, `invalid import path (invalid character U+003A ':')`, `missing ',' in composite literal`, `imported and not used: ...`, `declared and not used: ...`, `undefined: ...`, etc.
+        - Harmoniser les noms de package dans chaque dossier.
+        - Corriger l’ordre des imports et des déclarations.
+        - Corriger les erreurs de typage, de déclaration et d’utilisation des variables.
 
 ---
 
-## 9. Suivi, Monitoring & Amélioration Continue
+### 8.16 Résolution des erreurs Go critiques (lot 16)
 
-- [x] **Monitoring post-migration**  
-  - Script Go : Healthcheck endpoints, Prometheus metrics (simulation via `cmd/monitor-gateway/main.go` exécutée avec succès)
-  - Dashboard Grafana (si applicable)
-  - Archivage des logs et métriques (simulation via `cmd/monitor-gateway/main.go` exécutée avec succès)
+- [ ] **8.16.1 Corriger les erreurs d’imports de dépendances et modules manquants**
+    - Ajouter les dépendances manquantes dans le `go.mod` racine ou du module concerné :
+        - `github.com/stretchr/testify/assert`
+        - `github.com/stretchr/testify/mock`
+        - `github.com/Masterminds/semver/v3`
+        - `github.com/google/uuid`
+        - `github.com/robfig/cron/v3`
+        - `github.com/gin-gonic/gin`
+        - `github.com/go-git/go-git/v5`
+        - `github.com/go-git/go-git/v5/plumbing`
+        - `github.com/go-git/go-git/v5/plumbing/object`
+        - `github.com/google/go-github/v58/github`
+        - `golang.org/x/oauth2`
+        - `gopkg.in/yaml.v3`
+        - `go.uber.org/zap`
+        - `go.uber.org/zap/zaptest`
+        - `gopkg.in/gomail.v2`
+    - Vérifier et corriger les imports internes :
+        - `email_sender/development/managers/gateway-manager`
+        - `email_sender/internal/core`
+        - `github.com/gerivdb/email-sender-1/managers/interfaces`
+        - `github.com/gerivdb/email-sender-1/git-workflow-manager/internal/branch`
+        - `github.com/gerivdb/email-sender-1/git-workflow-manager/internal/commit`
+        - `github.com/gerivdb/email-sender-1/git-workflow-manager/internal/pr`
+        - `github.com/gerivdb/email-sender-1/git-workflow-manager/internal/webhook`
+        - `github.com/gerivdb/email-sender-1/git-workflow-manager/workflows`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager`
+        - `github.com/gerivdb/email-sender-1/development/managers/storage-manager`
+        - `github.com/gerivdb/email-sender-1/development/managers/dependency-manager`
+        - `github.com/gerivdb/email-sender-1/development/managers/security-manager`
+        - `github.com/gerivdb/email-sender-1/git-workflow-manager`
+        - `github.com/gerivdb/email-sender-1/git-workflow-manager/workflows`
+        - `github.com/gerivdb/email-sender-1/managers/interfaces`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/demos`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/tests`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/api_test.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/error_integration_test.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/conformity_manager_test.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/demos/demo_api.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/demos/phase_2_2_3_test.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/demos/integration_demo.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/error_manager_stub.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/error_integration.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/conformity_api.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/conformity_manager.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/conformity_manager_test.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/tests`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/tests/integration_manager_test.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/tests/integration_test.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/tests/conformity_manager_test.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/tests/error_integration_test.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/tests/error_manager_stub.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/tests/demo_api.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/tests/phase_2_2_3_test.go`
+        - `github.com/gerivdb/email-sender-1/managers/integrated-manager/tests/integration_demo.go`
 
-- [x] **Rétrospective et feedback**  
-  - Livrable : `migration/gateway-manager-v77/retrospective.md` (créé)
-  - Actions d’amélioration continue tracées
+- [ ] **8.16.2 Corriger les erreurs de types ou symboles non déclarés**
+    - Exemple : `undefined: semver`, `undefined: git`, `undefined: cron`, `undefined: yaml`, `undefined: gomail`, `undefined: io`, `undefined: contains`, `undefined: NewMockErrorManager`, `undefined: ErrorEntry`, `undefined: GetIntegratedErrorManager`, `undefined: PropagateError`, `undefined: CentralizeErrorWithContext`, `undefined: AddErrorHook`, `undefined: determineSeverity`, `undefined: determineErrorCode`, `undefined: NewIntegratedErrorManager`, `undefined: NewConformityManager`, etc.
+        - Vérifier la déclaration et l’import des fonctions/types/symboles utilisés dans le code.
 
----
-
-## 📋 Checklist globale (avec dépendances)
-
-- [x] Initialisation & sauvegarde (répertoires et fichiers de base créés)
-- [x] Recensement des dépendances → Analyse d’écart (tentative via `cmd/analyze-go-dependencies/main.go`, mais des problèmes de résolution de modules Go externes persistent à l'échelle du projet)
-    - [ ] **Action requise :** Résoudre les erreurs de "downloaded zip file too large", "cannot find module providing package", "is not a package path", "Repository not found." pour tous les modules du projet. Cela inclut la mise à jour des chemins d'importation vers des chemins de module Go valides et la résolution des problèmes de modules Go externes.
-- [x] Recueil besoins → Spécification cible (documents `spec-integration.md` et `target-structure.md` créés)
-- [x] Implémentation de la logique métier du Gateway-Manager (squelette fonctionnel avec interactions mockées implémenté dans `development/managers/gateway-manager/gateway.go`)
-    - [ ] **Action requise :** Implémenter la logique métier complète du Gateway-Manager en utilisant les interfaces définies, en allant au-delà de la simulation des mocks.
-    - [ ] **Action requise :** Intégrer les vraies implémentations des managers (`CacheManager`, `LWM`, `Memory Bank`, `RAG`) si elles sont disponibles, ou développer des adaptateurs réels.
-- [x] Migration code → Harmonisation structure (répertoire `development/managers/gateway-manager/` créé avec squelette)
-- [x] Adaptation imports/scripts/configs (script `cmd/gateway-import-migrate/main.go` exécuté)
-- [x] Tests unitaires → Tests d’intégration → Reporting (tests unitaires et d'intégration créés et passés, rapport HTML généré)
-    - [ ] **Action requise :** Étendre la couverture des tests unitaires et d'intégration au fur et à mesure que la logique métier est implémentée.
-- [x] Validation humaine/croisée (fichier `review.md` créé, en attente de revue)
-    - [ ] **Action requise :** Obtenir et intégrer les retours de la revue croisée.
-- [x] Résolution des problèmes de modules Go à l'échelle du projet (tentative via `cmd/analyze-go-dependencies/main.go`, mais des problèmes de résolution de modules Go externes persistent à l'échelle du projet)
-    - [ ] **Action requise :** Mener un audit et refactoring approfondi des `go.mod` et des imports pour résoudre tous les problèmes de modules Go, y compris ceux identifiés par `go build ./...`.
-- [x] Rollback/versionnement/sécurisation (scripts `cmd/rollback-gateway-migration/main.go` et `cmd/backup-modified-files/main.go` créés et exécutés)
-- [x] Documentation & traçabilité (documents `docs/gateway-manager.md`, `README.md`, `docs/architecture.md` mis à jour, archives créées)
-    - [ ] **Action requise :** Compléter la documentation API Swagger/OpenAPI pour le Gateway-Manager.
-- [x] Orchestration & CI/CD (script `cmd/auto-roadmap-runner/main.go` et workflow GitHub Actions `.github/workflows/gateway-manager-ci.yml` créés)
-    - [ ] **Action requise :** S'assurer que le pipeline CI/CD est entièrement fonctionnel et intègre toutes les nouvelles étapes.
-- [x] Monitoring & feedback (script `cmd/monitor-gateway/main.go` créé, `retrospective.md` créé)
-    - [ ] **Action requise :** Mettre en place un dashboard Grafana si applicable, et s'assurer que les métriques sont collectées et analysées.
-- [x] Tests de performance et de charge du nouveau Gateway-Manager (exécutés avec succès via `cmd/performance-test-gateway/main.go`, 1000 requêtes réussies, 0 échouées)
-    - [ ] **Action requise :** Exécuter des tests de performance et de charge sur l'implémentation réelle du Gateway-Manager.
-- [x] Validation finale de la suppression du submodule `mcp-gateway` (vérifications spécifiques au Gateway-Manager réussies, mais la compilation globale du projet a échoué en raison de problèmes de modules Go externes persistants. La suppression est risquée sans résolution préalable.)
-    - [ ] **Action requise :** Exécuter `cmd/validate-mcp-gateway-removal/main.go` avec succès après la résolution de tous les problèmes de dépendances et l'implémentation complète.
-    - [ ] **Action requise :** Procéder à la suppression physique du submodule `mcp-gateway` et à la mise à jour des références dans le `.gitmodules` et le `.gitignore`.
-
----
-
-## 💡 Exemples de scripts Go natifs minimaux
-
-### Recensement des imports (cmd/gateway-import-migrate/main.go)
-
-```go
-package main
-
-import (
-    "os"
-    "path/filepath"
-    "strings"
-    "fmt"
-)
-
-func main() {
-    filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
-        if strings.HasSuffix(path, ".go") {
-            data, _ := os.ReadFile(path)
-            if strings.Contains(string(data), "projet/mcp/servers/gateway") {
-                fmt.Println(path)
-            }
-        }
-        return nil
-    })
-}
-```
-
-### Test unitaire minimal
-
-```go
-func TestGatewayManager_Healthcheck(t *testing.T) {
-    mgr := NewGatewayManager()
-    if !mgr.IsHealthy() {
-        t.Fatal("GatewayManager should be healthy after init")
-    }
-}
-```
+- [ ] **8.16.3 Corriger les erreurs de structure et de déclaration**
+    - Exemple : `main redeclared in this block`, `ErrorEntry redeclared in this block`, `IntegratedErrorManager redeclared in this block`, `GetIntegratedErrorManager redeclared in this block`, `PropagateError redeclared in this block`, `PropagateErrorWithContext redeclared in this block`, `CentralizeErrorWithContext redeclared in this block`, `AddErrorHook redeclared in this block`, `BaseManager redeclared in this block`, `ManagerStatus redeclared in this block`, `StatusStarting redeclared in this block`, `StatusError redeclared in this block`, `StatusRunning redeclared in this block`, `StatusStopping redeclared in this block`, `StatusStopped redeclared in this block`, `DependencyConflict redeclared in this block`, `AIAnalyzer redeclared in this block`, `LearningData redeclared in this block`, `PatternSuccess redeclared in this block`, `AnalysisPattern redeclared in this block`, `AIRequest redeclared in this block`, `AIMessage redeclared in this block`, `AIResponse redeclared in this block`, `AIChoice redeclared in this block`, `AIUsage redeclared in this block`, `NewAIAnalyzer redeclared in this block`, `method ... already declared`, `invalid constant type ManagerStatus`, `invalid import path (invalid character U+003A ':')`, `missing ',' in composite literal`, `imported and not used: ...`, `declared and not used: ...`, `undefined: ...`, etc.
+        - Harmoniser les noms de package dans chaque dossier.
+        - Corriger l’ordre des imports et des déclarations.
+        - Corriger les erreurs de typage, de déclaration et d’utilisation des variables.
 
 ---
 
-> Ce plan est prêt pour une exécution par une équipe ou une CI/CD avancée, avec traçabilité, automatisation, robustesse, et documentation transversale.  
-> Toute étape non automatisable doit être tracée et validée explicitement.  
-> Besoin d’un template de script, d’un badge, ou d’un extract YAML CI/CD ? Demande-moi !
+### 8.17 Résolution des erreurs Go critiques (lot 17)
+
+- [ ] **8.17.1 Corriger les erreurs d’imports de dépendances et modules manquants**
+    - Ajouter les dépendances manquantes dans le `go.mod` racine ou du module concerné :
+        - `github.com/stretchr/testify/assert`
+        - `github.com/stretchr/testify/require`
+        - `github.com/stretchr/testify/suite`
+        - `go.uber.org/zap`
+        - `go.uber.org/zap/zaptest`
+        - `golang.org/x/mod/modfile`
+    - Vérifier et corriger les imports internes :
+        - `email_sender/development/managers/contextual-memory-manager/pkg/manager`
+        - `email_sender/development/managers/interfaces`
+        - `github.com/contextual-memory-manager/internal/monitoring`
+        - `github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/development`
+        - `github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces`
+        - `github.com/gerivdb/email-sender-1/development/managers/dependencymanager`
+        - `github.com/gerivdb/email-sender-1/development/managers/interfaces`
+
+- [ ] **8.17.2 Corriger les erreurs de types ou symboles non déclarés**
+    - Exemple : `undefined: retrieval`, `undefined: baseInterfaces`, `undefined: DependencyManagerImpl`, `undefined: Config`, `undefined: NewDependencyManager`, `undefined: DependencyConfig`, `undefined: PackageManagerConfig`, `undefined: RegistryConfig`, `undefined: AuthConfig`, `undefined: SecurityConfig`, `undefined: ResolutionConfig`, `undefined: CacheConfig`, etc.
+        - Vérifier la déclaration et l’import des fonctions/types/symboles utilisés dans le code.
+
+- [ ] **8.17.3 Corriger les erreurs de structure et de déclaration**
+    - Exemple : `found packages ... and ... in ...`, `package ...; expected package ...`, `invalid import path (invalid character U+003A ':')`, `declared and not used: ...`, etc.
+        - Harmoniser les noms de package dans chaque dossier et fichier.
+        - Corriger l’ordre des imports et des déclarations.
+        - Corriger les erreurs de typage, de déclaration et d’utilisation des variables.
+
+---
+
+### 8.18 Résolution des erreurs critiques Go/YAML/CI/CD (lot 18)
+
+- [ ] **8.18.1 Corriger les erreurs de directives et de syntaxe Go**
+    - Corriger :  
+        - `unknown directive: m` dans `go.mod`
+        - `local replacement are not allowed` dans les fichiers `go.mod` des sous-modules
+        - `cannot load module . listed in go.work file: errors parsing go.mod`
+    - Vérifier la conformité des fichiers `go.mod` et `go.work` à la syntaxe Go officielle.
+
+- [ ] **8.18.2 Corriger les erreurs de syntaxe YAML (Helm, GitHub Actions, etc.)**
+    - Corriger :  
+        - `Unexpected scalar at node end`
+        - `Block collections are not allowed within flow collections`
+        - `Missing , or : between flow map items`
+        - `A block sequence may not be used as an implicit map key`
+        - `Implicit keys need to be on a single line`
+        - `Implicit map keys need to be followed by map values`
+        - `All mapping items must start at the same column`
+        - `Incorrect type. Expected "string | array".`
+    - Vérifier la conformité des fichiers YAML (Helm charts, GitHub Actions, etc.) aux schémas attendus.
+
+- [ ] **8.18.3 Corriger les erreurs de linting et de style Go**
+    - Corriger :  
+        - `use of fmt.Printf/Println forbidden by pattern`
+        - `missing whitespace above this line`
+        - `avoid inline error handling using if err := ...; err != nil`
+        - `Context access might be invalid: ...` (GitHub Actions)
+    - Appliquer les règles de linting et de style Go et YAML sur l’ensemble du projet.
+
+---
+
+[FIN DU PLAN v77 – VERSION CONSOLIDÉE ET AUGMENTÉE DES 18 LOTS]
