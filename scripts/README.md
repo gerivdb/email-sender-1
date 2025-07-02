@@ -1,88 +1,46 @@
-# Scripts Utilitaires
+# Scripts d’automatisation Go/YAML
 
-Ce répertoire contient les scripts utilitaires principaux pour interagir avec les différents gestionnaires du projet.
+Ce dossier contient tous les scripts Go pour l’audit, la correction, le lint, le reporting et l’orchestration de l’écosystème Go/YAML.
 
 ## Scripts disponibles
 
-### 📦 Gestionnaire de dépendances - `dep.ps1`
+- [`list-go-mods.go`](list-go-mods.go) : Recense tous les fichiers `go.mod` et `go.work`.
+- [`analyze-go-mods.go`](analyze-go-mods.go) : Analyse les directives interdites et imports locaux dans les fichiers Go.
+- [`fix-go-mods.go`](fix-go-mods.go) : Corrige automatiquement les fichiers Go, backup `.bak` avant modif.
+- [`list-yaml-files.go`](list-yaml-files.go) : Recense tous les fichiers YAML (Helm, CI/CD).
+- [`lint-yaml.go`](lint-yaml.go) : Valide la syntaxe YAML.
+- [`fix-yaml.go`](fix-yaml.go) : Corrige indentation et scalaires YAML, backup `.bak`.
+- [`backup-restore.go`](backup-restore.go) : Restaure tous les fichiers `.bak` générés.
+- [`aggregate-diagnostics.go`](aggregate-diagnostics.go) : Agrège les diagnostics Go/YAML/CI dans un rapport Markdown.
+- [`auto-roadmap-runner.go`](auto-roadmap-runner.go) : Orchestrateur global, exécute tous les scripts dans l’ordre.
 
-Script simplifié pour gérer les dépendances Go du projet.
+## Utilisation
 
-```powershell
-# Afficher l'aide
+```bash
+go run scripts/list-go-mods.go
+go run scripts/analyze-go-mods.go
+go run scripts/fix-go-mods.go
+go run scripts/list-yaml-files.go
+go run scripts/lint-yaml.go
+go run scripts/fix-yaml.go
+go run scripts/backup-restore.go
+go run scripts/aggregate-diagnostics.go
+go run scripts/auto-roadmap-runner.go
+```
 
-.\scripts\dep.ps1 help
+## Prérequis
 
-# Lister les dépendances
+- Go 1.21+
+- Module `gopkg.in/yaml.v3` pour les scripts YAML :  
+  `go get gopkg.in/yaml.v3`
+- Outils externes : `golangci-lint`, `go vet`
 
-.\scripts\dep.ps1 list
+## Convention
 
-# Ajouter une dépendance
+- Chaque script crée un backup `.bak` avant modification.
+- Les rapports sont générés dans `audit-reports/`.
+- L’orchestrateur (`auto-roadmap-runner.go`) exécute toutes les étapes de façon atomique.
 
-.\scripts\dep.ps1 add github.com/pkg/errors v0.9.1
+## Tests
 
-# Supprimer une dépendance
-
-.\scripts\dep.ps1 remove github.com/pkg/errors
-
-# Mettre à jour une dépendance
-
-.\scripts\dep.ps1 update github.com/gorilla/mux
-
-# Compiler le gestionnaire
-
-.\scripts\dep.ps1 build
-```plaintext
-### 🗺️ Gestionnaire de roadmap - `roadmap.ps1`
-
-Script simplifié pour interagir avec TaskMaster (gestionnaire de roadmap).
-
-```powershell
-# Afficher l'aide
-
-.\scripts\roadmap.ps1 help
-
-# Interface TUI interactive
-
-.\scripts\roadmap.ps1 view
-
-# Créer un nouvel item
-
-.\scripts\roadmap.ps1 create item "Build API" --priority high
-
-# Ingérer un document avec parsing avancé
-
-.\scripts\roadmap.ps1 ingest-advanced plan.md --dry-run
-
-# Compiler le gestionnaire
-
-.\scripts\roadmap.ps1 build
-
-# Lancer les tests
-
-.\scripts\roadmap.ps1 test
-```plaintext
-## Architecture
-
-Ces scripts sont des interfaces simplifiées qui pointent vers les gestionnaires dans `development/managers/` :
-
-- `dep.ps1` → `development/managers/dependency-manager/`
-- `roadmap.ps1` → `development/managers/roadmap-manager/roadmap-cli/`
-
-## Utilisation depuis la racine
-
-Tous les scripts doivent être exécutés depuis la racine du projet :
-
-```powershell
-# Depuis la racine du projet
-
-.\scripts\dep.ps1 list
-.\scripts\roadmap.ps1 view
-```plaintext
-## Gestionnaires avancés
-
-Pour un accès plus avancé aux gestionnaires, utilisez directement :
-
-- **Process Manager** : `development/managers/process-manager/`
-- **Integrated Manager** : `development/managers/integrated-manager/`
-- **Adaptateurs** : `development/managers/process-manager/adapters/`
+Des tests unitaires sont à ajouter pour chaque script critique (voir roadmap).

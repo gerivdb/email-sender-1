@@ -1,9 +1,10 @@
-m odule github.com/your/module
+module github.com/your/module
 
-go 1.21
+go 1.23.0
+
+toolchain go1.24.4
 
 require (
-	github.com/some/dependency v1.2.3
 	golang.org/x/sync v0.15.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/text v0.26.0 // indirect
@@ -13,4 +14,5 @@ require (
 	google.golang.org/grpc v1.66.0 // indirect
 	google.golang.org/protobuf v1.36.5 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
