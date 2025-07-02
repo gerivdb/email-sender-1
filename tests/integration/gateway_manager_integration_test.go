@@ -7,14 +7,21 @@ import (
 	"time"
 
 	gatewaymanager "email_sender/development/managers/gateway-manager"
+	"email_sender/internal/core" // Importer les mocks
 )
 
 // TestGatewayManagerIntegration simule un scénario d'intégration basique
 func TestGatewayManagerIntegration(t *testing.T) {
 	fmt.Println("Démarrage du test d'intégration pour GatewayManager...")
 
-	// Initialisation du GatewayManager
-	gm := gatewaymanager.NewGatewayManager("IntegrationTestGateway")
+	// Créer des mocks
+	mockCache := &core.MockCacheManager{}
+	mockLWM := &core.MockLWM{}
+	mockRAG := &core.MockRAG{}
+	mockMemoryBank := &core.MockMemoryBank{}
+
+	// Initialisation du GatewayManager avec les mocks
+	gm := gatewaymanager.NewGatewayManager("IntegrationTestGateway", mockCache, mockLWM, mockRAG, mockMemoryBank)
 	if gm == nil {
 		t.Fatal("Échec de l'initialisation du GatewayManager.")
 	}
@@ -24,13 +31,17 @@ func TestGatewayManagerIntegration(t *testing.T) {
 	gm.Start() // Cette méthode imprime, mais ne retourne pas d'erreur.
 
 	// Simuler une opération simple qui pourrait interagir avec d'autres composants
-	// Dans un vrai test d'intégration, on aurait des mocks pour les dépendances externes
-	// ou un environnement de test avec les vrais services.
 	fmt.Println("Simulating a basic operation...")
+	ctx := context.Background()
+	requestID := "integration-req-1"
+	data := map[string]interface{}{"param1": "value1"}
+	_, err := gm.ProcessRequest(ctx, requestID, data)
+	if err != nil {
+		t.Errorf("ProcessRequest returned an error: %v", err)
+	}
 	time.Sleep(100 * time.Millisecond) // Simuler une opération prenant du temps
 
 	// Vérification de l'état (basique pour l'exemple)
-	// Dans un vrai scénario, on vérifierait des logs, des changements d'état dans des bases de données, etc.
 	if gm.Name != "IntegrationTestGateway" {
 		t.Errorf("Le nom du GatewayManager a été modifié de manière inattendue. Attendu: %s, Obtenu: %s", "IntegrationTestGateway", gm.Name)
 	}
@@ -45,7 +56,13 @@ func TestGatewayManagerContextCancellation(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel() // S'assurer que le contexte est annulé à la fin
 
-	gm := gatewaymanager.NewGatewayManager("CancellableGateway")
+	// Créer des mocks
+	mockCache := &core.MockCacheManager{}
+	mockLWM := &core.MockLWM{}
+	mockRAG := &core.MockRAG{}
+	mockMemoryBank := &core.MockMemoryBank{}
+
+	gm := gatewaymanager.NewGatewayManager("CancellableGateway", mockCache, mockLWM, mockRAG, mockMemoryBank)
 	_ = gm // Marquer comme utilisé pour éviter l'erreur de linter
 
 	// Lancer une goroutine qui simule une opération longue et écoute le contexte
