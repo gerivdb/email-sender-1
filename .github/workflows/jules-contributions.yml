@@ -1,38 +1,7 @@
-name: Jules Google Bot Contributions Manager
-
-on:
-  push:
-    branches: ['**']
-  pull_request:
-    branches: ['**']
-
 jobs:
-  manage-jules-contributions:
-    runs-on: ubuntu-latest
-    if: github.actor == 'google-labs-jules[bot]'
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      
-      - name: Configure Git
-        run: |
-          git config user.name "Jules Contribution Manager"
-          git config user.email "actions@github.com"
-      
-      - name: Redirect Jules Contribution
-        run: |
-          echo "Jules bot activity detected on branch: ${{ github.ref_name }}"
-          echo "Redirecting to appropriate branch manager..."
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   jules-activity-monitor:
-    runs-on: ubuntu-latest
     if: github.actor == 'google-labs-jules[bot]'
-    
+    runs-on: ubuntu-latest
     steps:
       - name: Log Jules Activity
         run: |
@@ -42,3 +11,29 @@ jobs:
           echo "Commit SHA: ${{ github.sha }}"
           echo "Event: ${{ github.event_name }}"
           echo "Timestamp: $(date)"
+  manage-jules-contributions:
+    if: github.actor == 'google-labs-jules[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Configure Git
+        run: |
+          git config user.name "Jules Contribution Manager"
+          git config user.email "actions@github.com"
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: Redirect Jules Contribution
+        run: |
+          echo "Jules bot activity detected on branch: ${{ github.ref_name }}"
+          echo "Redirecting to appropriate branch manager..."
+name: Jules Google Bot Contributions Manager
+"on":
+  pull_request:
+    branches:
+      - '**'
+  push:
+    branches:
+      - '**'

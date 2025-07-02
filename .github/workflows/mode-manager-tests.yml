@@ -1,130 +1,117 @@
-name: Mode Manager Tests
-
-on:
-  push:
-    branches: [ main, master, develop ]
-    paths:
-      - 'development/scripts/manager/**'
-      - '.github/workflows/mode-manager-tests.yml'
-  pull_request:
-    branches: [ main, master, develop ]
-    paths:
-      - 'development/scripts/manager/**'
-      - '.github/workflows/mode-manager-tests.yml'
-  workflow_dispatch:
-
 jobs:
-  test-windows:
-    name: Test on Windows
-    runs-on: windows-latest
-    
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    
-    - name: Set up PowerShell modules
-      shell: pwsh
-      run: |
-        Install-Module -Name Pester -Force -SkipPublisherCheck
-        Install-Module -Name ReportGenerator -Force -SkipPublisherCheck
-    
-    - name: Run tests
-      shell: pwsh
-      run: |
-        $ErrorActionPreference = 'Stop'
-        $reportsPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "reports\tests"
-        New-Item -Path $reportsPath -ItemType Directory -Force | Out-Null
-        
-        $testScript = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "development\scripts\manager\tests\Run-AllTestsCI.ps1"
-        & $testScript -OutputPath $reportsPath -GenerateHTML -FailOnError
-    
-    - name: Upload test results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: test-results
-        path: reports/tests
-    
-    - name: Publish test results
-      uses: EnricoMi/publish-unit-test-result-action@v2
-      if: always()
-      with:
-        files: reports/tests/**/*.xml
-    
-    - name: Publish code coverage
-      uses: codecov/codecov-action@v3
-      with:
-        files: reports/tests/mode-manager-coverage.xml
-        fail_ci_if_error: false
-        verbose: true
-
-  test-powershell-5:
-    name: Test on PowerShell 5.1
-    runs-on: windows-2019
-    
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    
-    - name: Set up PowerShell modules
-      shell: powershell
-      run: |
-        Install-Module -Name Pester -Force -SkipPublisherCheck
-        Install-Module -Name ReportGenerator -Force -SkipPublisherCheck
-    
-    - name: Run tests
-      shell: powershell
-      run: |
-        $ErrorActionPreference = 'Stop'
-        $reportsPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "reports\tests-ps5"
-        New-Item -Path $reportsPath -ItemType Directory -Force | Out-Null
-        
-        $testScript = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "development\scripts\manager\tests\Run-AllTestsCI.ps1"
-        & $testScript -OutputPath $reportsPath -GenerateHTML -FailOnError
-    
-    - name: Upload test results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: test-results-ps5
-        path: reports/tests-ps5
-    
-    - name: Publish test results
-      uses: EnricoMi/publish-unit-test-result-action@v2
-      if: always()
-      with:
-        files: reports/tests-ps5/**/*.xml
-
   test-linux:
     name: Test on Linux
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    
-    - name: Set up PowerShell modules
-      shell: pwsh
-      run: |
-        Install-Module -Name Pester -Force -SkipPublisherCheck
-        Install-Module -Name ReportGenerator -Force -SkipPublisherCheck
-    
-    - name: Run compatibility tests
-      shell: pwsh
-      run: |
-        $ErrorActionPreference = 'Stop'
-        $reportsPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "reports/tests-linux"
-        New-Item -Path $reportsPath -ItemType Directory -Force | Out-Null
-        
-        $testScript = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "development/scripts/manager/tests/Run-AllTests.ps1"
-        & $testScript -TestType "Compatibility" -OutputPath $reportsPath -GenerateHTML
-    
-    - name: Upload test results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: test-results-linux
-        path: reports/tests-linux
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up PowerShell modules
+        run: |
+          Install-Module -Name Pester -Force -SkipPublisherCheck
+          Install-Module -Name ReportGenerator -Force -SkipPublisherCheck
+        shell: pwsh
+      - name: Run compatibility tests
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $reportsPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "reports/tests-linux"
+          New-Item -Path $reportsPath -ItemType Directory -Force | Out-Null
+
+          $testScript = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "development/scripts/manager/tests/Run-AllTests.ps1"
+          & $testScript -TestType "Compatibility" -OutputPath $reportsPath -GenerateHTML
+        shell: pwsh
+      - if: always()
+        name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-linux
+          path: reports/tests-linux
+  test-powershell-5:
+    name: Test on PowerShell 5.1
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up PowerShell modules
+        run: |
+          Install-Module -Name Pester -Force -SkipPublisherCheck
+          Install-Module -Name ReportGenerator -Force -SkipPublisherCheck
+        shell: powershell
+      - name: Run tests
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $reportsPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "reports\tests-ps5"
+          New-Item -Path $reportsPath -ItemType Directory -Force | Out-Null
+
+          $testScript = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "development\scripts\manager\tests\Run-AllTestsCI.ps1"
+          & $testScript -OutputPath $reportsPath -GenerateHTML -FailOnError
+        shell: powershell
+      - if: always()
+        name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-ps5
+          path: reports/tests-ps5
+      - if: always()
+        name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: reports/tests-ps5/**/*.xml
+  test-windows:
+    name: Test on Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up PowerShell modules
+        run: |
+          Install-Module -Name Pester -Force -SkipPublisherCheck
+          Install-Module -Name ReportGenerator -Force -SkipPublisherCheck
+        shell: pwsh
+      - name: Run tests
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $reportsPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "reports\tests"
+          New-Item -Path $reportsPath -ItemType Directory -Force | Out-Null
+
+          $testScript = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "development\scripts\manager\tests\Run-AllTestsCI.ps1"
+          & $testScript -OutputPath $reportsPath -GenerateHTML -FailOnError
+        shell: pwsh
+      - if: always()
+        name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: reports/tests
+      - if: always()
+        name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: reports/tests/**/*.xml
+      - name: Publish code coverage
+        uses: codecov/codecov-action@v3
+        with:
+          fail_ci_if_error: false
+          files: reports/tests/mode-manager-coverage.xml
+          verbose: true
+name: Mode Manager Tests
+"on":
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+    paths:
+      - development/scripts/manager/**
+      - .github/workflows/mode-manager-tests.yml
+  push:
+    branches:
+      - main
+      - master
+      - develop
+    paths:
+      - development/scripts/manager/**
+      - .github/workflows/mode-manager-tests.yml
+  workflow_dispatch: null

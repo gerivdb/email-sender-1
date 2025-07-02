@@ -1,141 +1,38 @@
-name: Jules Bot Contribution Validator
-
-on:
-  pull_request:
-    branches: ['**']
-  workflow_call:
-    inputs:
-      branch_name:
-        description: 'Branch to validate'
-        required: true
-        type: string
-      validation_level:
-        description: 'Validation level (basic, standard, strict)'
-        required: false
-        type: string
-        default: 'standard'
-
 jobs:
   validate-bot-contribution:
-    runs-on: ubuntu-latest
     if: github.actor == 'google-labs-jules[bot]' || github.event_name == 'workflow_call'
-    
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
       - name: Setup Validation Environment
-        run: |
-          echo "🔍 Setting up Jules Bot contribution validation..."
-          echo "Branch: ${{ github.ref_name }}"
-          echo "Validation Level: ${{ inputs.validation_level || 'standard' }}"
-          echo "Event: ${{ github.event_name }}"
-      
-      - name: Validate Branch Structure
-        id: branch-validation
-        run: |
-          BRANCH_NAME="${{ github.ref_name }}"
-          VALIDATION_LEVEL="${{ inputs.validation_level || 'standard' }}"
-          
-          echo "Validating branch structure for: $BRANCH_NAME"
-          
-          # Check if branch follows jules-google convention
-          if [[ "$BRANCH_NAME" == jules-google/* ]]; then
-            echo "✅ Branch follows jules-google convention"
-            echo "branch_valid=true" >> $GITHUB_OUTPUT
-          else
-            echo "⚠️ Branch does not follow jules-google convention"
-            echo "branch_valid=false" >> $GITHUB_OUTPUT
-          fi
-          
-          # Additional validations based on level
-          case "$VALIDATION_LEVEL" in
-            "strict")
-              echo "🔒 Applying strict validation rules..."
-              # Add strict validation logic here
-              ;;
-            "standard")
-              echo "📋 Applying standard validation rules..."
-              # Add standard validation logic here
-              ;;
-            "basic")
-              echo "📝 Applying basic validation rules..."
-              # Add basic validation logic here
-              ;;
-          esac
-      
-      - name: Validate File Changes
-        id: file-validation
-        run: |
-          echo "🔍 Validating file changes..."
-          
-          # Get list of changed files
-          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
-          
-          if [ -z "$CHANGED_FILES" ]; then
-            echo "No files changed"
-            echo "files_valid=true" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-          
-          echo "Changed files:"
-          echo "$CHANGED_FILES"
-          
-          # Validate file types and patterns
-          INVALID_FILES=""
-          while IFS= read -r file; do
-            if [[ -f "$file" ]]; then
-              echo "Checking: $file"
-              
-              # Check for sensitive files that bots shouldn't modify
-              if [[ "$file" == *.key ]] || [[ "$file" == *.pem ]] || [[ "$file" == *.p12 ]]; then
-                echo "❌ Invalid file type detected: $file"
-                INVALID_FILES="$INVALID_FILES $file"
-              fi
-            fi
-          done <<< "$CHANGED_FILES"
-          
-          if [ -n "$INVALID_FILES" ]; then
-            echo "files_valid=false" >> $GITHUB_OUTPUT
-            echo "invalid_files=$INVALID_FILES" >> $GITHUB_OUTPUT
-          else
-            echo "files_valid=true" >> $GITHUB_OUTPUT
-          fi
-      
+        run: "echo \"\U0001F50D Setting up Jules Bot contribution validation...\"\necho \"Branch: ${{ github.ref_name }}\"\necho \"Validation Level: ${{ inputs.validation_level || 'standard' }}\"\necho \"Event: ${{ github.event_name }}\"\n"
+      - id: branch-validation
+        name: Validate Branch Structure
+        run: "BRANCH_NAME=\"${{ github.ref_name }}\"\nVALIDATION_LEVEL=\"${{ inputs.validation_level || 'standard' }}\"\n\necho \"Validating branch structure for: $BRANCH_NAME\"\n\n# Check if branch follows jules-google convention\nif [[ \"$BRANCH_NAME\" == jules-google/* ]]; then\n  echo \"✅ Branch follows jules-google convention\"\n  echo \"branch_valid=true\" >> $GITHUB_OUTPUT\nelse\n  echo \"⚠️ Branch does not follow jules-google convention\"\n  echo \"branch_valid=false\" >> $GITHUB_OUTPUT\nfi\n\n# Additional validations based on level\ncase \"$VALIDATION_LEVEL\" in\n  \"strict\")\n    echo \"\U0001F512 Applying strict validation rules...\"\n    # Add strict validation logic here\n    ;;\n  \"standard\")\n    echo \"\U0001F4CB Applying standard validation rules...\"\n    # Add standard validation logic here\n    ;;\n  \"basic\")\n    echo \"\U0001F4DD Applying basic validation rules...\"\n    # Add basic validation logic here\n    ;;\nesac\n"
+      - id: file-validation
+        name: Validate File Changes
+        run: "echo \"\U0001F50D Validating file changes...\"\n\n# Get list of changed files\nCHANGED_FILES=$(git diff --name-only HEAD^ HEAD)\n\nif [ -z \"$CHANGED_FILES\" ]; then\n  echo \"No files changed\"\n  echo \"files_valid=true\" >> $GITHUB_OUTPUT\n  exit 0\nfi\n\necho \"Changed files:\"\necho \"$CHANGED_FILES\"\n\n# Validate file types and patterns\nINVALID_FILES=\"\"\nwhile IFS= read -r file; do\n  if [[ -f \"$file\" ]]; then\n    echo \"Checking: $file\"\n    \n    # Check for sensitive files that bots shouldn't modify\n    if [[ \"$file\" == *.key ]] || [[ \"$file\" == *.pem ]] || [[ \"$file\" == *.p12 ]]; then\n      echo \"❌ Invalid file type detected: $file\"\n      INVALID_FILES=\"$INVALID_FILES $file\"\n    fi\n  fi\ndone <<< \"$CHANGED_FILES\"\n\nif [ -n \"$INVALID_FILES\" ]; then\n  echo \"files_valid=false\" >> $GITHUB_OUTPUT\n  echo \"invalid_files=$INVALID_FILES\" >> $GITHUB_OUTPUT\nelse\n  echo \"files_valid=true\" >> $GITHUB_OUTPUT\nfi\n"
       - name: Generate Validation Report
-        run: |
-          echo "📊 Jules Bot Contribution Validation Report"
-          echo "==========================================="
-          echo "Timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
-          echo "Repository: ${{ github.repository }}"
-          echo "Branch: ${{ github.ref_name }}"
-          echo "Actor: ${{ github.actor }}"
-          echo "Event: ${{ github.event_name }}"
-          echo ""
-          echo "Validation Results:"
-          echo "- Branch Structure: ${{ steps.branch-validation.outputs.branch_valid == 'true' && '✅ VALID' || '❌ INVALID' }}"
-          echo "- File Changes: ${{ steps.file-validation.outputs.files_valid == 'true' && '✅ VALID' || '❌ INVALID' }}"
-          echo ""
-          
-          if [[ "${{ steps.file-validation.outputs.files_valid }}" == "false" ]]; then
-            echo "⚠️ Invalid files detected: ${{ steps.file-validation.outputs.invalid_files }}"
-          fi
-          
-          echo "Overall Status: ${{ (steps.branch-validation.outputs.branch_valid == 'true' && steps.file-validation.outputs.files_valid == 'true') && '✅ APPROVED' || '❌ REQUIRES REVIEW' }}"
-      
-      - name: Set Validation Status
-        if: always()
-        run: |
-          BRANCH_VALID="${{ steps.branch-validation.outputs.branch_valid }}"
-          FILES_VALID="${{ steps.file-validation.outputs.files_valid }}"
-          
-          if [[ "$BRANCH_VALID" == "true" && "$FILES_VALID" == "true" ]]; then
-            echo "🎉 All validations passed - Contribution approved"
-            exit 0
-          else
-            echo "⚠️ Validation issues detected - Manual review recommended"
-            # Don't fail the workflow, just warn
-            exit 0
-          fi
+        run: "echo \"\U0001F4CA Jules Bot Contribution Validation Report\"\necho \"===========================================\"\necho \"Timestamp: $(date -u +\"%Y-%m-%d %H:%M:%S UTC\")\"\necho \"Repository: ${{ github.repository }}\"\necho \"Branch: ${{ github.ref_name }}\"\necho \"Actor: ${{ github.actor }}\"\necho \"Event: ${{ github.event_name }}\"\necho \"\"\necho \"Validation Results:\"\necho \"- Branch Structure: ${{ steps.branch-validation.outputs.branch_valid == 'true' && '✅ VALID' || '❌ INVALID' }}\"\necho \"- File Changes: ${{ steps.file-validation.outputs.files_valid == 'true' && '✅ VALID' || '❌ INVALID' }}\"\necho \"\"\n\nif [[ \"${{ steps.file-validation.outputs.files_valid }}\" == \"false\" ]]; then\n  echo \"⚠️ Invalid files detected: ${{ steps.file-validation.outputs.invalid_files }}\"\nfi\n\necho \"Overall Status: ${{ (steps.branch-validation.outputs.branch_valid == 'true' && steps.file-validation.outputs.files_valid == 'true') && '✅ APPROVED' || '❌ REQUIRES REVIEW' }}\"\n"
+      - if: always()
+        name: Set Validation Status
+        run: "BRANCH_VALID=\"${{ steps.branch-validation.outputs.branch_valid }}\"\nFILES_VALID=\"${{ steps.file-validation.outputs.files_valid }}\"\n\nif [[ \"$BRANCH_VALID\" == \"true\" && \"$FILES_VALID\" == \"true\" ]]; then\n  echo \"\U0001F389 All validations passed - Contribution approved\"\n  exit 0\nelse\n  echo \"⚠️ Validation issues detected - Manual review recommended\"\n  # Don't fail the workflow, just warn\n  exit 0\nfi\n"
+name: Jules Bot Contribution Validator
+"on":
+  pull_request:
+    branches:
+      - '**'
+  workflow_call:
+    inputs:
+      branch_name:
+        description: Branch to validate
+        required: true
+        type: string
+      validation_level:
+        default: standard
+        description: Validation level (basic, standard, strict)
+        required: false
+        type: string

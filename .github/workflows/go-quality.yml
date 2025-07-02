@@ -1,20 +1,12 @@
-name: Go Quality
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
 jobs:
   quality:
-    name: "Validation du code Go"
+    name: Validation du code Go
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
-          go-version: '1.21'
+          go-version: "1.21"
       - name: Installation des outils
         run: |
           go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
@@ -41,3 +33,11 @@ jobs:
           go run ./cmd/standards-duplication-check/main.go
           go run ./cmd/roadmap-indexer/main.go
           go run ./cmd/cross-doc-inventory/main.go
+name: Go Quality
+"on":
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main

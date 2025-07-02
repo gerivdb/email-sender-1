@@ -1,37 +1,31 @@
-name: N8N Workflow Deployment
-
-on:
-  push:
-    paths:
-      - 'src/n8n/workflows/*.json'
-      - 'n8n-unified/**'
-  workflow_dispatch:
-
 jobs:
   deploy-n8n:
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Validate N8N Workflows
-      run: |
-        python scripts/validate_n8n_workflows.py
-        
-    - name: Deploy to N8N
-      env:
-        N8N_API_TOKEN: ${{ secrets.N8N_API_TOKEN }}
-        N8N_URL: ${{ secrets.N8N_URL }}
-      run: |
-        ./scripts/deploy_n8n_workflows.sh
-        
-    - name: Send Email Notification
-      if: always()
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: ${{ secrets.MAIL_SERVER }}
-        server_port: 587
-        username: ${{ secrets.MAIL_USERNAME }}
-        password: ${{ secrets.MAIL_PASSWORD }}
-        subject: N8N Workflow Deployment ${{ job.status }}
-        body: Deployment status for N8N workflows - ${{ job.status }}
+      - uses: actions/checkout@v4
+      - name: Validate N8N Workflows
+        run: |
+          python scripts/validate_n8n_workflows.py
+      - env:
+          N8N_API_TOKEN: ${{ secrets.N8N_API_TOKEN }}
+          N8N_URL: ${{ secrets.N8N_URL }}
+        name: Deploy to N8N
+        run: |
+          ./scripts/deploy_n8n_workflows.sh
+      - if: always()
+        name: Send Email Notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          body: Deployment status for N8N workflows - ${{ job.status }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          server_address: ${{ secrets.MAIL_SERVER }}
+          server_port: 587
+          subject: N8N Workflow Deployment ${{ job.status }}
+          username: ${{ secrets.MAIL_USERNAME }}
+name: N8N Workflow Deployment
+"on":
+  push:
+    paths:
+      - src/n8n/workflows/*.json
+      - n8n-unified/**
+  workflow_dispatch: null

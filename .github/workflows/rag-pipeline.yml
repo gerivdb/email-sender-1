@@ -1,317 +1,109 @@
-name: RAG System - Complete CI/CD Pipeline
-# 🎯 Phase 7: Pipeline-as-Code Implementation
-# Advanced CI/CD pipeline for RAG system with all 7 time-saving methods
-
-on:
-  push:
-    branches: [ main, develop, feature/* ]
-  pull_request:
-    branches: [ main, develop ]
-  schedule:
-    - cron: '0 2 * * *'  # Daily builds for dependency updates
-  workflow_dispatch:
-    inputs:
-      deploy_environment:
-        description: 'Target deployment environment'
-        required: true
-        default: 'staging'
-        type: choice
-        options:
-          - staging
-          - production
-      run_performance_tests:
-        description: 'Run performance benchmarks'
-        required: false
-        default: true
-        type: boolean
-
-env:
-  GO_VERSION: '1.21'
-  QDRANT_VERSION: 'v1.7.0'
-  PROMETHEUS_VERSION: '2.45.0'
-  GRAFANA_VERSION: '10.0.0'
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/rag-system
-
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
+  group: ${{ github.workflow }}-${{ github.ref }}
+env:
+  GO_VERSION: "1.21"
+  GRAFANA_VERSION: 10.0.0
+  IMAGE_NAME: ${{ github.repository }}/rag-system
+  PROMETHEUS_VERSION: 2.45.0
+  QDRANT_VERSION: v1.7.0
+  REGISTRY: ghcr.io
 jobs:
-  # 🚨 Method 1: Fail-Fast Validation
-  fail-fast-validation:
-    name: 🚨 Fail-Fast Validation
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    outputs:
-      validation-passed: ${{ steps.validation.outputs.passed }}
-      error-summary: ${{ steps.validation.outputs.errors }}
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          
-      - name: Setup Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: ${{ env.GO_VERSION }}
-          
-      - name: Cache Go modules
-        uses: actions/cache@v4
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-            
-      - name: Run Fail-Fast Validation
-        id: validation
-        run: |
-          echo "🚨 Running fail-fast validation..."
-
-          echo "STEP 1: Checking Go build..."
-          go build -o /dev/null ./...
-          if [ $? -ne 0 ]; then
-            echo "❌ Go build failed"
-            echo "passed=false" >> $GITHUB_OUTPUT
-            echo "errors=build-failure" >> $GITHUB_OUTPUT
-            exit 1
-          fi
-          echo "✅ Go build successful."
-
-          echo "STEP 2: Running validation tests in internal/validation..."
-          cd internal/validation
-          go test -timeout=30s -v ./...
-          if [ $? -ne 0 ]; then
-            echo "❌ Validation tests failed in internal/validation"
-            echo "passed=false" >> $GITHUB_OUTPUT
-            echo "errors=validation-tests" >> $GITHUB_OUTPUT
-            cd ../.. # Ensure we navigate back even if tests fail
-            exit 1
-          fi
-          cd ../..
-          echo "✅ Validation tests successful."
-
-          echo "STEP 3: Verifying Go modules..."
-          go mod verify
-          if [ $? -ne 0 ]; then
-            echo "❌ Module verification failed"
-            echo "passed=false" >> $GITHUB_OUTPUT
-            echo "errors=dependency-verification" >> $GITHUB_OUTPUT
-            exit 1
-          fi
-          echo "✅ Module verification successful."
-
-          echo "✅ All fail-fast validations passed."
-          echo "passed=true" >> $GITHUB_OUTPUT
-          echo "errors=none" >> $GITHUB_OUTPUT
-
-  # 🧪 Method 2: Mock-First Testing Strategy
-  mock-first-testing:
-    name: 🧪 Mock-First Testing
-    runs-on: ubuntu-latest
-    needs: fail-fast-validation
-    timeout-minutes: 8
-    strategy:
-      matrix:
-        test-type: [unit, integration, performance]
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Setup Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: ${{ env.GO_VERSION }}
-          
-      - name: Cache Go modules
-        uses: actions/cache@v4
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-            
-      - name: Start Mock Services
-        run: |
-          echo "🧪 Starting mock services..."
-          
-          # Start QDrant mock
-          cd mocks
-          go run qdrant_client.go &
-          echo $! > qdrant_mock.pid
-          
-          # Wait for mock to be ready
-          sleep 2
-          
-          # Verify mock is running
-          if ! nc -z localhost 6333; then
-            echo "❌ QDrant mock failed to start"
-            exit 1
-          fi
-          
-          echo "✅ Mock services ready"
-          
-      - name: Run Unit Tests
-        if: matrix.test-type == 'unit'
-        run: |
-          echo "🧪 Running unit tests with mocks..."
-          go test -v -race -coverprofile=coverage.out -coverpkg=./... ./internal/...
-          
-      - name: Run Integration Tests
-        if: matrix.test-type == 'integration'
-        run: |
-          echo "🧪 Running integration tests..."
-          go test -v -tags=integration -timeout=5m ./tests/integration/...
-          
-      - name: Run Performance Tests
-        if: matrix.test-type == 'performance' && github.event.inputs.run_performance_tests == 'true'
-        run: |
-          echo "🧪 Running performance benchmarks..."
-          go test -v -bench=. -benchmem -timeout=10m ./internal/...
-          
-      - name: Upload Coverage Reports
-        if: matrix.test-type == 'unit'
-        uses: codecov/codecov-action@v3
-        with:
-          file: ./coverage.out
-          flags: unittests
-          name: codecov-umbrella
-          
-      - name: Stop Mock Services
-        if: always()
-        run: |
-          if [ -f mocks/qdrant_mock.pid ]; then
-            kill $(cat mocks/qdrant_mock.pid) || true
-            rm mocks/qdrant_mock.pid
-          fi
-
-  # 📋 Method 3: Contract-First API Validation
-  contract-validation:
-    name: 📋 Contract-First Validation
-    runs-on: ubuntu-latest
-    needs: fail-fast-validation
-    timeout-minutes: 5
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          
-      - name: Install OpenAPI Tools
-        run: |
-          npm install -g @redocly/cli swagger-codegen-cli
-          
-      - name: Validate OpenAPI Specification
-        run: |
-          echo "📋 Validating OpenAPI contract..."
-          
-          # Lint OpenAPI spec
-          redocly lint api/openapi.yaml
-          
-          # Validate specification
-          if ! redocly validate api/openapi.yaml; then
-            echo "❌ OpenAPI specification validation failed"
-            exit 1
-          fi
-          
-          echo "✅ OpenAPI contract validation passed"
-          
-      - name: Generate API Documentation
-        run: |
-          echo "📋 Generating API documentation..."
-          redocly build-docs api/openapi.yaml --output=api-docs.html
-          
-      - name: Upload API Documentation
-        uses: actions/upload-artifact@v4
-        with:
-          name: api-documentation
-          path: api-docs.html
-
-  # 🔄 Method 4: Inverted TDD - Auto Test Generation
   auto-test-generation:
-    name: 🔄 Auto Test Generation
-    runs-on: ubuntu-latest
+    name: "\U0001F504 Auto Test Generation"
     needs: fail-fast-validation
-    timeout-minutes: 10
-    
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
       - name: Setup Go
         uses: actions/setup-go@v4
         with:
           go-version: ${{ env.GO_VERSION }}
-          
       - name: Generate Tests
-        run: |
-          echo "🔄 Running automatic test generation..."
-          
-          cd internal/testgen
-          go run generator.go -target=../../internal/validation -output=../../tests/generated
-          go run generator.go -target=../../internal/metrics -output=../../tests/generated
-          go run generator.go -target=../../internal/codegen -output=../../tests/generated
-          
+        run: "echo \"\U0001F504 Running automatic test generation...\"\n\ncd internal/testgen\ngo run generator.go -target=../../internal/validation -output=../../tests/generated\ngo run generator.go -target=../../internal/metrics -output=../../tests/generated\ngo run generator.go -target=../../internal/codegen -output=../../tests/generated\n"
       - name: Validate Generated Tests
-        run: |
-          echo "🔄 Validating generated tests..."
-          
-          if [ -d tests/generated ]; then
-            go test -v ./tests/generated/...
-            echo "✅ Generated tests are valid"
-          else
-            echo "❌ No tests were generated"
-            exit 1
-          fi
-          
+        run: "echo \"\U0001F504 Validating generated tests...\"\n\nif [ -d tests/generated ]; then\n  go test -v ./tests/generated/...\n  echo \"✅ Generated tests are valid\"\nelse\n  echo \"❌ No tests were generated\"\n  exit 1\nfi\n"
       - name: Upload Generated Tests
         uses: actions/upload-artifact@v4
         with:
           name: generated-tests
           path: tests/generated/
-
-  # ⚙️ Method 5: Code Generation Framework
-  code-generation:
-    name: ⚙️ Code Generation
+    timeout-minutes: 10
+  build-and-package:
+    name: "\U0001F528 Build & Package"
+    needs:
+      - auto-test-generation
+      - code-generation
+      - metrics-collection
     runs-on: ubuntu-latest
-    needs: contract-validation
-    timeout-minutes: 8
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
       - name: Setup Go
         uses: actions/setup-go@v4
         with:
           go-version: ${{ env.GO_VERSION }}
-          
+      - name: Download Generated Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: generated-code
+          path: generated/
+      - env:
+          CGO_ENABLED: 0
+          GOARCH: ${{ matrix.target.arch }}
+          GOOS: ${{ matrix.target.os }}
+        name: Build RAG System
+        run: "echo \"\U0001F528 Building RAG system for ${{ matrix.target.os }}/${{ matrix.target.arch }}...\"\n\nmkdir -p dist\n\n# Build main RAG server\ngo build -ldflags=\"-s -w -X main.Version=${{ github.sha }}\" \\\n  -o dist/rag-server-${{ matrix.target.os }}-${{ matrix.target.arch }} \\\n  ./cmd/server/\n  \n# Build CLI tools\ngo build -ldflags=\"-s -w\" \\\n  -o dist/rag-cli-${{ matrix.target.os }}-${{ matrix.target.arch }} \\\n  ./cmd/cli/\n  \n"
+      - name: Package Release
+        run: "echo \"\U0001F528 Packaging release...\"\n\ncd dist\nif [ \"${{ matrix.target.os }}\" = \"windows\" ]; then\n  zip -r ../rag-system-${{ matrix.target.os }}-${{ matrix.target.arch }}.zip .\nelse\n  tar -czf ../rag-system-${{ matrix.target.os }}-${{ matrix.target.arch }}.tar.gz .\nfi\n"
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rag-system-${{ matrix.target.os }}-${{ matrix.target.arch }}
+          path: rag-system-${{ matrix.target.os }}-${{ matrix.target.arch }}.*
+    strategy:
+      matrix:
+        target:
+          - arch: amd64
+            os: linux
+          - arch: arm64
+            os: linux
+          - arch: amd64
+            os: windows
+          - arch: amd64
+            os: darwin
+          - arch: arm64
+            os: darwin
+    timeout-minutes: 12
+  code-generation:
+    name: ⚙️ Code Generation
+    needs: contract-validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
       - name: Generate Service Code
         run: |
           echo "⚙️ Running code generation..."
-          
+
           cd internal/codegen
-          
+
           # Generate RAG service interfaces
           go run generator.go -type=service -spec=rag-search -output=../../generated/services
           go run generator.go -type=service -spec=rag-indexing -output=../../generated/services
           go run generator.go -type=service -spec=rag-embedding -output=../../generated/services
-          
+
           # Generate CLI commands
           go run generator.go -type=cli -commands=search,index,serve -output=../../generated/cli
-          
       - name: Validate Generated Code
         run: |
           echo "⚙️ Validating generated code..."
-          
+
           if [ -d generated ]; then
             if go build ./generated/...; then
               echo "✅ Generated code compiles successfully"
@@ -323,194 +115,98 @@ jobs:
             echo "❌ No code was generated"
             exit 1
           fi
-          
       - name: Upload Generated Code
         uses: actions/upload-artifact@v4
         with:
           name: generated-code
           path: generated/
-
-  # 📊 Method 6: Metrics-Driven Development
-  metrics-collection:
-    name: 📊 Metrics Collection
+    timeout-minutes: 8
+  contract-validation:
+    name: "\U0001F4CB Contract-First Validation"
+    needs: fail-fast-validation
     runs-on: ubuntu-latest
-    needs: [mock-first-testing, contract-validation]
-    timeout-minutes: 6
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
-      - name: Setup Go
-        uses: actions/setup-go@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          go-version: ${{ env.GO_VERSION }}
-          
-      - name: Start Metrics Services
+          node-version: "18"
+      - name: Install OpenAPI Tools
         run: |
-          echo "📊 Starting metrics collection..."
-          
-          # Start Prometheus (mock for CI)
-          docker run -d --name prometheus \
-            -p 9090:9090 \
-            prom/prometheus:${{ env.PROMETHEUS_VERSION }} \
-            --config.file=/etc/prometheus/prometheus.yml \
-            --storage.tsdb.path=/prometheus \
-            --web.console.libraries=/etc/prometheus/console_libraries \
-            --web.console.templates=/etc/prometheus/consoles
-            
-      - name: Run Metrics Tests
-        run: |
-          echo "📊 Testing metrics collection..."
-          
-          cd internal/metrics
-          go test -v -timeout=30s ./...
-          
-          # Test metrics endpoint
-          if ! timeout 10 bash -c 'until nc -z localhost 9090; do sleep 1; done'; then
-            echo "❌ Prometheus metrics endpoint not ready"
-            exit 1
-          fi
-          
-          echo "✅ Metrics collection validated"
-          
-      - name: Collect Pipeline Metrics
-        run: |
-          echo "📊 Collecting pipeline metrics..."
-          
-          cat > pipeline-metrics.json << EOF
-          {
-            "pipeline": {
-              "run_id": "${{ github.run_id }}",
-              "run_number": "${{ github.run_number }}",
-              "commit_sha": "${{ github.sha }}",
-              "branch": "${{ github.ref_name }}",
-              "trigger": "${{ github.event_name }}",
-              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            },
-            "validation": {
-              "fail_fast_passed": "${{ needs.fail-fast-validation.outputs.validation-passed }}",
-              "error_summary": "${{ needs.fail-fast-validation.outputs.error-summary }}"
-            },
-            "testing": {
-              "mock_strategy": "enabled",
-              "contract_validation": "passed",
-              "auto_generation": "enabled"
-            },
-            "performance": {
-              "pipeline_duration": "$(echo $((SECONDS/60)))m",
-              "parallel_jobs": 6,
-              "cache_hit_ratio": "85%"
-            }
-          }
-          EOF
-          
-      - name: Upload Pipeline Metrics
+          npm install -g @redocly/cli swagger-codegen-cli
+      - name: Validate OpenAPI Specification
+        run: "echo \"\U0001F4CB Validating OpenAPI contract...\"\n\n# Lint OpenAPI spec\nredocly lint api/openapi.yaml\n\n# Validate specification\nif ! redocly validate api/openapi.yaml; then\n  echo \"❌ OpenAPI specification validation failed\"\n  exit 1\nfi\n\necho \"✅ OpenAPI contract validation passed\"\n"
+      - name: Generate API Documentation
+        run: "echo \"\U0001F4CB Generating API documentation...\"\nredocly build-docs api/openapi.yaml --output=api-docs.html\n"
+      - name: Upload API Documentation
         uses: actions/upload-artifact@v4
         with:
-          name: pipeline-metrics
-          path: pipeline-metrics.json
-          
-      - name: Stop Metrics Services
-        if: always()
-        run: |
-          docker stop prometheus || true
-          docker rm prometheus || true
-
-  # 🔨 Build and Package
-  build-and-package:
-    name: 🔨 Build & Package
+          name: api-documentation
+          path: api-docs.html
+    timeout-minutes: 5
+  deploy-production:
+    environment:
+      name: production
+      url: https://rag-system.example.com
+    if: github.ref == 'refs/heads/main' && github.event.inputs.deploy_environment == 'production'
+    name: "\U0001F680 Deploy to Production"
+    needs:
+      - build-and-package
+      - docker-build
+      - deploy-staging
     runs-on: ubuntu-latest
-    needs: [auto-test-generation, code-generation, metrics-collection]
-    timeout-minutes: 12
-    strategy:
-      matrix:
-        target:
-          - { os: linux, arch: amd64 }
-          - { os: linux, arch: arm64 }
-          - { os: windows, arch: amd64 }
-          - { os: darwin, arch: amd64 }
-          - { os: darwin, arch: arm64 }
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
-      - name: Setup Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: ${{ env.GO_VERSION }}
-          
-      - name: Download Generated Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: generated-code
-          path: generated/
-          
-      - name: Build RAG System
-        env:
-          GOOS: ${{ matrix.target.os }}
-          GOARCH: ${{ matrix.target.arch }}
-          CGO_ENABLED: 0
-        run: |
-          echo "🔨 Building RAG system for ${{ matrix.target.os }}/${{ matrix.target.arch }}..."
-          
-          mkdir -p dist
-          
-          # Build main RAG server
-          go build -ldflags="-s -w -X main.Version=${{ github.sha }}" \
-            -o dist/rag-server-${{ matrix.target.os }}-${{ matrix.target.arch }} \
-            ./cmd/server/
-            
-          # Build CLI tools
-          go build -ldflags="-s -w" \
-            -o dist/rag-cli-${{ matrix.target.os }}-${{ matrix.target.arch }} \
-            ./cmd/cli/
-            
-      - name: Package Release
-        run: |
-          echo "🔨 Packaging release..."
-          
-          cd dist
-          if [ "${{ matrix.target.os }}" = "windows" ]; then
-            zip -r ../rag-system-${{ matrix.target.os }}-${{ matrix.target.arch }}.zip .
-          else
-            tar -czf ../rag-system-${{ matrix.target.os }}-${{ matrix.target.arch }}.tar.gz .
-          fi
-          
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: rag-system-${{ matrix.target.os }}-${{ matrix.target.arch }}
-          path: rag-system-${{ matrix.target.os }}-${{ matrix.target.arch }}.*
-
-  # 🐳 Docker Build
-  docker-build:
-    name: 🐳 Docker Build
-    runs-on: ubuntu-latest
-    needs: [auto-test-generation, code-generation]
+      - name: Deploy to Production
+        run: "echo \"\U0001F680 Deploying to production environment...\"\n\n# Simulate blue-green deployment\necho \"\U0001F4F1 Starting blue-green deployment...\"\nsleep 8\n\necho \"✅ Production deployment completed\"\n"
+      - name: Run Production Health Checks
+        run: "echo \"\U0001F50D Running production health checks...\"\n\n# Simulate comprehensive health checks\nsleep 5\n\necho \"✅ Production health checks passed\"\n"
     timeout-minutes: 15
+  deploy-staging:
+    environment:
+      name: staging
+      url: https://rag-system-staging.example.com
+    if: github.ref == 'refs/heads/develop' || github.event.inputs.deploy_environment == 'staging'
+    name: "\U0001F680 Deploy to Staging"
+    needs:
+      - build-and-package
+      - docker-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Deploy to Staging
+        run: "echo \"\U0001F680 Deploying to staging environment...\"\n\n# Simulate deployment\nsleep 5\n\necho \"✅ Staging deployment completed\"\n"
+      - name: Run Health Checks
+        run: "echo \"\U0001F50D Running health checks...\"\n\n# Simulate health checks\nsleep 2\n\necho \"✅ Health checks passed\"\n"
+      - name: Run Smoke Tests
+        run: "echo \"\U0001F9EA Running smoke tests...\"\n\n# Simulate smoke tests\nsleep 3\n\necho \"✅ Smoke tests passed\"\n"
+    timeout-minutes: 10
+  docker-build:
+    name: "\U0001F433 Docker Build"
+    needs:
+      - auto-test-generation
+      - code-generation
     permissions:
       contents: read
       packages: write
-    
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
-        
-      - name: Login to Container Registry
-        if: github.event_name != 'pull_request'
+      - if: github.event_name != 'pull_request'
+        name: Login to Container Registry
         uses: docker/login-action@v3
         with:
+          password: ${{ secrets.GITHUB_TOKEN }}
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Extract Metadata
-        id: meta
+      - id: meta
+        name: Extract Metadata
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
@@ -519,202 +215,194 @@ jobs:
             type=ref,event=pr
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
-            
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
           build-args: |
             VERSION=${{ github.sha }}
             BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-
-  # 🚀 Deploy to Staging
-  deploy-staging:
-    name: 🚀 Deploy to Staging
-    runs-on: ubuntu-latest
-    needs: [build-and-package, docker-build]
-    if: github.ref == 'refs/heads/develop' || github.event.inputs.deploy_environment == 'staging'
-    environment:
-      name: staging
-      url: https://rag-system-staging.example.com
-    timeout-minutes: 10
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Deploy to Staging
-        run: |
-          echo "🚀 Deploying to staging environment..."
-          
-          # Simulate deployment
-          sleep 5
-          
-          echo "✅ Staging deployment completed"
-          
-      - name: Run Health Checks
-        run: |
-          echo "🔍 Running health checks..."
-          
-          # Simulate health checks
-          sleep 2
-          
-          echo "✅ Health checks passed"
-          
-      - name: Run Smoke Tests
-        run: |
-          echo "🧪 Running smoke tests..."
-          
-          # Simulate smoke tests
-          sleep 3
-          
-          echo "✅ Smoke tests passed"
-
-  # 🚀 Deploy to Production
-  deploy-production:
-    name: 🚀 Deploy to Production
-    runs-on: ubuntu-latest
-    needs: [build-and-package, docker-build, deploy-staging]
-    if: github.ref == 'refs/heads/main' && github.event.inputs.deploy_environment == 'production'
-    environment:
-      name: production
-      url: https://rag-system.example.com
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          context: .
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
     timeout-minutes: 15
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Deploy to Production
-        run: |
-          echo "🚀 Deploying to production environment..."
-          
-          # Simulate blue-green deployment
-          echo "📱 Starting blue-green deployment..."
-          sleep 8
-          
-          echo "✅ Production deployment completed"
-          
-      - name: Run Production Health Checks
-        run: |
-          echo "🔍 Running production health checks..."
-          
-          # Simulate comprehensive health checks
-          sleep 5
-          
-          echo "✅ Production health checks passed"
-
-  # 📊 Post-Deployment Monitoring
-  post-deployment-monitoring:
-    name: 📊 Post-Deployment Monitoring
+  fail-fast-validation:
+    name: "\U0001F6A8 Fail-Fast Validation"
+    outputs:
+      error-summary: ${{ steps.validation.outputs.errors }}
+      validation-passed: ${{ steps.validation.outputs.passed }}
     runs-on: ubuntu-latest
-    needs: [deploy-staging]
-    if: always() && (needs.deploy-staging.result == 'success' || needs.deploy-production.result == 'success')
-    timeout-minutes: 5
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
-      - name: Setup Monitoring
-        run: |
-          echo "📊 Setting up post-deployment monitoring..."
-          
-          # Simulate monitoring setup
-          sleep 3
-          
-          echo "✅ Monitoring configured"
-          
-      - name: Collect Deployment Metrics
-        run: |
-          echo "📊 Collecting deployment metrics..."
-          
-          cat > deployment-metrics.json << EOF
-          {
-            "deployment": {
-              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-              "environment": "${{ github.event.inputs.deploy_environment || 'staging' }}",
-              "version": "${{ github.sha }}",
-              "status": "success",
-              "duration_minutes": $((SECONDS/60))
-            },
-            "pipeline_summary": {
-              "total_duration": "$((GITHUB_RUN_STARTED_AT ? ($(date +%s) - GITHUB_RUN_STARTED_AT) / 60 : 'unknown'))m",
-              "methods_implemented": 7,
-              "automation_level": "100%",
-              "quality_gates_passed": 6
-            }
-          }
-          EOF
-          
-      - name: Upload Deployment Metrics
+        with:
+          fetch-depth: 0
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          path: ~/go/pkg/mod
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - id: validation
+        name: Run Fail-Fast Validation
+        run: "echo \"\U0001F6A8 Running fail-fast validation...\"\n\necho \"STEP 1: Checking Go build...\"\ngo build -o /dev/null ./...\nif [ $? -ne 0 ]; then\n  echo \"❌ Go build failed\"\n  echo \"passed=false\" >> $GITHUB_OUTPUT\n  echo \"errors=build-failure\" >> $GITHUB_OUTPUT\n  exit 1\nfi\necho \"✅ Go build successful.\"\n\necho \"STEP 2: Running validation tests in internal/validation...\"\ncd internal/validation\ngo test -timeout=30s -v ./...\nif [ $? -ne 0 ]; then\n  echo \"❌ Validation tests failed in internal/validation\"\n  echo \"passed=false\" >> $GITHUB_OUTPUT\n  echo \"errors=validation-tests\" >> $GITHUB_OUTPUT\n  cd ../.. # Ensure we navigate back even if tests fail\n  exit 1\nfi\ncd ../..\necho \"✅ Validation tests successful.\"\n\necho \"STEP 3: Verifying Go modules...\"\ngo mod verify\nif [ $? -ne 0 ]; then\n  echo \"❌ Module verification failed\"\n  echo \"passed=false\" >> $GITHUB_OUTPUT\n  echo \"errors=dependency-verification\" >> $GITHUB_OUTPUT\n  exit 1\nfi\necho \"✅ Module verification successful.\"\n\necho \"✅ All fail-fast validations passed.\"\necho \"passed=true\" >> $GITHUB_OUTPUT\necho \"errors=none\" >> $GITHUB_OUTPUT\n"
+    timeout-minutes: 3
+  metrics-collection:
+    name: "\U0001F4CA Metrics Collection"
+    needs:
+      - mock-first-testing
+      - contract-validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - name: Start Metrics Services
+        run: "echo \"\U0001F4CA Starting metrics collection...\"\n\n# Start Prometheus (mock for CI)\ndocker run -d --name prometheus \\\n  -p 9090:9090 \\\n  prom/prometheus:${{ env.PROMETHEUS_VERSION }} \\\n  --config.file=/etc/prometheus/prometheus.yml \\\n  --storage.tsdb.path=/prometheus \\\n  --web.console.libraries=/etc/prometheus/console_libraries \\\n  --web.console.templates=/etc/prometheus/consoles\n  \n"
+      - name: Run Metrics Tests
+        run: "echo \"\U0001F4CA Testing metrics collection...\"\n\ncd internal/metrics\ngo test -v -timeout=30s ./...\n\n# Test metrics endpoint\nif ! timeout 10 bash -c 'until nc -z localhost 9090; do sleep 1; done'; then\n  echo \"❌ Prometheus metrics endpoint not ready\"\n  exit 1\nfi\n\necho \"✅ Metrics collection validated\"\n"
+      - name: Collect Pipeline Metrics
+        run: "echo \"\U0001F4CA Collecting pipeline metrics...\"\n\ncat > pipeline-metrics.json << EOF\n{\n  \"pipeline\": {\n    \"run_id\": \"${{ github.run_id }}\",\n    \"run_number\": \"${{ github.run_number }}\",\n    \"commit_sha\": \"${{ github.sha }}\",\n    \"branch\": \"${{ github.ref_name }}\",\n    \"trigger\": \"${{ github.event_name }}\",\n    \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"\n  },\n  \"validation\": {\n    \"fail_fast_passed\": \"${{ needs.fail-fast-validation.outputs.validation-passed }}\",\n    \"error_summary\": \"${{ needs.fail-fast-validation.outputs.error-summary }}\"\n  },\n  \"testing\": {\n    \"mock_strategy\": \"enabled\",\n    \"contract_validation\": \"passed\",\n    \"auto_generation\": \"enabled\"\n  },\n  \"performance\": {\n    \"pipeline_duration\": \"$(echo $((SECONDS/60)))m\",\n    \"parallel_jobs\": 6,\n    \"cache_hit_ratio\": \"85%\"\n  }\n}\nEOF\n"
+      - name: Upload Pipeline Metrics
         uses: actions/upload-artifact@v4
         with:
-          name: deployment-metrics
-          path: deployment-metrics.json
-
-  # 📈 Pipeline Summary and ROI Report
-  pipeline-summary:
-    name: 📈 Pipeline Summary & ROI
+          name: pipeline-metrics
+          path: pipeline-metrics.json
+      - if: always()
+        name: Stop Metrics Services
+        run: |
+          docker stop prometheus || true
+          docker rm prometheus || true
+    timeout-minutes: 6
+  mock-first-testing:
+    name: "\U0001F9EA Mock-First Testing"
+    needs: fail-fast-validation
     runs-on: ubuntu-latest
-    needs: [fail-fast-validation, mock-first-testing, contract-validation, auto-test-generation, code-generation, metrics-collection, build-and-package]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          path: ~/go/pkg/mod
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - name: Start Mock Services
+        run: "echo \"\U0001F9EA Starting mock services...\"\n\n# Start QDrant mock\ncd mocks\ngo run qdrant_client.go &\necho $! > qdrant_mock.pid\n\n# Wait for mock to be ready\nsleep 2\n\n# Verify mock is running\nif ! nc -z localhost 6333; then\n  echo \"❌ QDrant mock failed to start\"\n  exit 1\nfi\n\necho \"✅ Mock services ready\"\n"
+      - if: matrix.test-type == 'unit'
+        name: Run Unit Tests
+        run: "echo \"\U0001F9EA Running unit tests with mocks...\"\ngo test -v -race -coverprofile=coverage.out -coverpkg=./... ./internal/...\n"
+      - if: matrix.test-type == 'integration'
+        name: Run Integration Tests
+        run: "echo \"\U0001F9EA Running integration tests...\"\ngo test -v -tags=integration -timeout=5m ./tests/integration/...\n"
+      - if: matrix.test-type == 'performance' && github.event.inputs.run_performance_tests == 'true'
+        name: Run Performance Tests
+        run: "echo \"\U0001F9EA Running performance benchmarks...\"\ngo test -v -bench=. -benchmem -timeout=10m ./internal/...\n"
+      - if: matrix.test-type == 'unit'
+        name: Upload Coverage Reports
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.out
+          flags: unittests
+          name: codecov-umbrella
+      - if: always()
+        name: Stop Mock Services
+        run: |
+          if [ -f mocks/qdrant_mock.pid ]; then
+            kill $(cat mocks/qdrant_mock.pid) || true
+            rm mocks/qdrant_mock.pid
+          fi
+    strategy:
+      matrix:
+        test-type:
+          - unit
+          - integration
+          - performance
+    timeout-minutes: 8
+  pipeline-summary:
     if: always()
-    timeout-minutes: 3
-    
+    name: "\U0001F4C8 Pipeline Summary & ROI"
+    needs:
+      - fail-fast-validation
+      - mock-first-testing
+      - contract-validation
+      - auto-test-generation
+      - code-generation
+      - metrics-collection
+      - build-and-package
+    runs-on: ubuntu-latest
     steps:
       - name: Generate Pipeline Report
-        run: |
-          echo "📈 Generating pipeline summary and ROI report..."
-          
-          cat > pipeline-report.md << 'EOF'
-          # 🎯 RAG System Pipeline Report
-          
-          ## 📊 Pipeline Execution Summary
-          
-          | Phase | Method | Status | Duration | ROI Impact |
-          |-------|--------|--------|----------|------------|
-          | 1 | 🚨 Fail-Fast Validation | ${{ needs.fail-fast-validation.result }} | ~3min | +72h immediate |
-          | 2 | 🧪 Mock-First Testing | ${{ needs.mock-first-testing.result }} | ~8min | +24h immediate |
-          | 3 | 📋 Contract-First API | ${{ needs.contract-validation.result }} | ~5min | +22h immediate |
-          | 4 | 🔄 Auto Test Generation | ${{ needs.auto-test-generation.result }} | ~10min | +24h immediate |
-          | 5 | ⚙️ Code Generation | ${{ needs.code-generation.result }} | ~8min | +36h immediate |
-          | 6 | 📊 Metrics Collection | ${{ needs.metrics-collection.result }} | ~6min | +20h/month ongoing |
-          | 7 | 🚀 Pipeline-as-Code | success | ~15min | +40h immediate |
-          
-          ## 🎯 Total ROI Achievement
-          
-          - **Immediate Time Savings**: +248 hours
-          - **Monthly Ongoing Savings**: +94 hours/month
-          - **Pipeline Duration**: ~40 minutes (fully automated)
-          - **Automation Coverage**: 100%
-          - **Quality Gates**: 6/6 passed
-          
-          ## 🚀 Implementation Status
-          
-          ✅ All 7 time-saving methods successfully implemented
-          ✅ Complete CI/CD pipeline operational
-          ✅ Automated testing and validation
-          ✅ Contract-driven development
-          ✅ Metrics and monitoring enabled
-          ✅ Multi-platform builds and deployments
-          
-          Generated on: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
-          Pipeline Run: ${{ github.run_number }}
-          Commit: ${{ github.sha }}
-          EOF
-          
+        run: "echo \"\U0001F4C8 Generating pipeline summary and ROI report...\"\n\ncat > pipeline-report.md << 'EOF'\n# \U0001F3AF RAG System Pipeline Report\n\n## \U0001F4CA Pipeline Execution Summary\n\n| Phase | Method | Status | Duration | ROI Impact |\n|-------|--------|--------|----------|------------|\n| 1 | \U0001F6A8 Fail-Fast Validation | ${{ needs.fail-fast-validation.result }} | ~3min | +72h immediate |\n| 2 | \U0001F9EA Mock-First Testing | ${{ needs.mock-first-testing.result }} | ~8min | +24h immediate |\n| 3 | \U0001F4CB Contract-First API | ${{ needs.contract-validation.result }} | ~5min | +22h immediate |\n| 4 | \U0001F504 Auto Test Generation | ${{ needs.auto-test-generation.result }} | ~10min | +24h immediate |\n| 5 | ⚙️ Code Generation | ${{ needs.code-generation.result }} | ~8min | +36h immediate |\n| 6 | \U0001F4CA Metrics Collection | ${{ needs.metrics-collection.result }} | ~6min | +20h/month ongoing |\n| 7 | \U0001F680 Pipeline-as-Code | success | ~15min | +40h immediate |\n\n## \U0001F3AF Total ROI Achievement\n\n- **Immediate Time Savings**: +248 hours\n- **Monthly Ongoing Savings**: +94 hours/month\n- **Pipeline Duration**: ~40 minutes (fully automated)\n- **Automation Coverage**: 100%\n- **Quality Gates**: 6/6 passed\n\n## \U0001F680 Implementation Status\n\n✅ All 7 time-saving methods successfully implemented\n✅ Complete CI/CD pipeline operational\n✅ Automated testing and validation\n✅ Contract-driven development\n✅ Metrics and monitoring enabled\n✅ Multi-platform builds and deployments\n\nGenerated on: $(date -u +\"%Y-%m-%d %H:%M:%S UTC\")\nPipeline Run: ${{ github.run_number }}\nCommit: ${{ github.sha }}\nEOF\n"
       - name: Upload Pipeline Report
         uses: actions/upload-artifact@v4
         with:
           name: pipeline-report
           path: pipeline-report.md
-          
       - name: Add Job Summary
         run: |
           cat pipeline-report.md >> $GITHUB_STEP_SUMMARY
+    timeout-minutes: 3
+  post-deployment-monitoring:
+    if: always() && (needs.deploy-staging.result == 'success' || needs.deploy-production.result == 'success')
+    name: "\U0001F4CA Post-Deployment Monitoring"
+    needs:
+      - deploy-staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Monitoring
+        run: "echo \"\U0001F4CA Setting up post-deployment monitoring...\"\n\n# Simulate monitoring setup\nsleep 3\n\necho \"✅ Monitoring configured\"\n"
+      - name: Collect Deployment Metrics
+        run: "echo \"\U0001F4CA Collecting deployment metrics...\"\n\ncat > deployment-metrics.json << EOF\n{\n  \"deployment\": {\n    \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\n    \"environment\": \"${{ github.event.inputs.deploy_environment || 'staging' }}\",\n    \"version\": \"${{ github.sha }}\",\n    \"status\": \"success\",\n    \"duration_minutes\": $((SECONDS/60))\n  },\n  \"pipeline_summary\": {\n    \"total_duration\": \"$((GITHUB_RUN_STARTED_AT ? ($(date +%s) - GITHUB_RUN_STARTED_AT) / 60 : 'unknown'))m\",\n    \"methods_implemented\": 7,\n    \"automation_level\": \"100%\",\n    \"quality_gates_passed\": 6\n  }\n}\nEOF\n"
+      - name: Upload Deployment Metrics
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-metrics
+          path: deployment-metrics.json
+    timeout-minutes: 5
+name: RAG System - Complete CI/CD Pipeline
+"on":
+  pull_request:
+    branches:
+      - main
+      - develop
+  push:
+    branches:
+      - main
+      - develop
+      - feature/*
+  schedule:
+    - cron: 0 2 * * *
+  workflow_dispatch:
+    inputs:
+      deploy_environment:
+        default: staging
+        description: Target deployment environment
+        options:
+          - staging
+          - production
+        required: true
+        type: choice
+      run_performance_tests:
+        default: true
+        description: Run performance benchmarks
+        required: false
+        type: boolean

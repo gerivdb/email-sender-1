@@ -1,134 +1,77 @@
-name: Jules Bot Integration Workflow
-
-"on":
-  pull_request_review:
-    types: [submitted]
-  workflow_dispatch:
-    inputs:
-      source_branch:
-        description: 'Source branch to integrate (e.g., jules-google/feature-123)'
-        required: true
-        type: string
-      target_branch:
-        description: 'Target branch to merge into'
-        required: false
-        default: 'dev'
-        type: string
-      merge_strategy:
-        description: 'Merge strategy to use'
-        required: false
-        default: 'squash'
-        type: choice
-        options:
-          - squash
-          - merge
-          - rebase
-
 env:
-  PYTHON_VERSION: '3.11'
-
+  PYTHON_VERSION: "3.11"
 jobs:
   check-approval:
-    runs-on: ubuntu-latest
     if: github.event_name == 'pull_request_review' && github.event.review.state == 'approved' && startsWith(github.event.pull_request.head.ref, 'jules-google/')
     outputs:
+      merge_strategy: ${{ steps.check.outputs.merge_strategy }}
       should_integrate: ${{ steps.check.outputs.should_integrate }}
       source_branch: ${{ steps.check.outputs.source_branch }}
       target_branch: ${{ steps.check.outputs.target_branch }}
-      merge_strategy: ${{ steps.check.outputs.merge_strategy }}
-    
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Check Integration Criteria
-        id: check
+      - id: check
+        name: Check Integration Criteria
         uses: actions/github-script@v7
         with:
-          script: |
-            const pr = context.payload.pull_request;
-            const review = context.payload.review;
-            
-            // Check if this is a Jules Bot contribution
-            const isJulesContribution = pr.head.ref.startsWith('jules-google/');
-            
-            // Check if PR is targeting dev branch
-            const isTargetingDev = pr.base.ref === 'dev';
-            
-            // Check if review is from authorized user
-            const reviewer = review.user.login;
-            
-            // Get all reviews for this PR
-            const reviews = await github.rest.pulls.listReviews({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: pr.number
-            });
-            
-            // Check if there are any blocking reviews
-            const latestReviews = {};
-            reviews.data.forEach(r => {
-              latestReviews[r.user.login] = r.state;
-            });
-            
-            const hasBlockingReviews = Object.values(latestReviews).some(state => 
-              state === 'CHANGES_REQUESTED'
-            );
-            
-            const approvalCount = Object.values(latestReviews).filter(state => 
-              state === 'APPROVED'
-            ).length;
-            
-            // Determine if we should integrate
-            const shouldIntegrate = isJulesContribution && 
-                                  isTargetingDev && 
-                                  !hasBlockingReviews && 
-                                  approvalCount >= 1;
-            
-            console.log('Integration check:', {
-              isJulesContribution,
-              isTargetingDev,
-              hasBlockingReviews,
-              approvalCount,
-              shouldIntegrate
-            });
-            
-            core.setOutput('should_integrate', shouldIntegrate);
-            core.setOutput('source_branch', pr.head.ref);
-            core.setOutput('target_branch', pr.base.ref);
-            core.setOutput('merge_strategy', 'squash'); // Default strategy
-
-  integration:
+          script: "const pr = context.payload.pull_request;\nconst review = context.payload.review;\n\n// Check if this is a Jules Bot contribution\nconst isJulesContribution = pr.head.ref.startsWith('jules-google/');\n\n// Check if PR is targeting dev branch\nconst isTargetingDev = pr.base.ref === 'dev';\n\n// Check if review is from authorized user\nconst reviewer = review.user.login;\n\n// Get all reviews for this PR\nconst reviews = await github.rest.pulls.listReviews({\n  owner: context.repo.owner,\n  repo: context.repo.repo,\n  pull_number: pr.number\n});\n\n// Check if there are any blocking reviews\nconst latestReviews = {};\nreviews.data.forEach(r => {\n  latestReviews[r.user.login] = r.state;\n});\n\nconst hasBlockingReviews = Object.values(latestReviews).some(state => \n  state === 'CHANGES_REQUESTED'\n);\n\nconst approvalCount = Object.values(latestReviews).filter(state => \n  state === 'APPROVED'\n).length;\n\n// Determine if we should integrate\nconst shouldIntegrate = isJulesContribution && \n                      isTargetingDev && \n                      !hasBlockingReviews && \n                      approvalCount >= 1;\n\nconsole.log('Integration check:', {\n  isJulesContribution,\n  isTargetingDev,\n  hasBlockingReviews,\n  approvalCount,\n  shouldIntegrate\n});\n\ncore.setOutput('should_integrate', shouldIntegrate);\ncore.setOutput('source_branch', pr.head.ref);\ncore.setOutput('target_branch', pr.base.ref);\ncore.setOutput('merge_strategy', 'squash'); // Default strategy\n"
+  cleanup:
+    if: always() && needs.integration.result == 'success'
+    needs:
+      - check-approval
+      - integration
     runs-on: ubuntu-latest
-    needs: check-approval
+    steps:
+      - name: Cleanup Temporary Resources
+        run: |
+          echo "Cleaning up temporary resources..."
+
+          # This job could handle cleanup tasks like:
+          # - Removing temporary branches
+          # - Updating tracking systems
+          # - Archiving integration logs
+          # - Updating metrics dashboards
+
+          echo "Cleanup completed"
+      - name: Update Integration Metrics
+        run: |
+          echo "Updating integration metrics..."
+
+          # This could update metrics about:
+          # - Integration success rate
+          # - Average time to integration
+          # - Quality scores trends
+          # - Error patterns
+
+          echo "Metrics updated"
+  integration:
     if: |
       (github.event_name == 'pull_request_review' && needs.check-approval.outputs.should_integrate == 'true') ||
       (github.event_name == 'workflow_dispatch')
-    
+    needs: check-approval
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pyyaml requests
-
       - name: Configure Git
         run: |
           git config --global user.name "Jules Bot Integration"
           git config --global user.email "jules-bot@users.noreply.github.com"
-
-      - name: Set Integration Parameters
-        id: params
+      - id: params
+        name: Set Integration Parameters
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "source_branch=${{ github.event.inputs.source_branch }}" >> $GITHUB_OUTPUT
@@ -139,26 +82,25 @@ jobs:
             echo "target_branch=${{ needs.check-approval.outputs.target_branch }}" >> $GITHUB_OUTPUT
             echo "merge_strategy=${{ needs.check-approval.outputs.merge_strategy }}" >> $GITHUB_OUTPUT
           fi
-
-      - name: Pre-Integration Quality Check
-        id: quality_check
+      - id: quality_check
+        name: Pre-Integration Quality Check
         run: |
           echo "Running final quality check before integration..."
-          
+
           chmod +x .github/scripts/quality_assessment.py
-          
+
           # Run quality assessment on the source branch
           git checkout origin/${{ steps.params.outputs.source_branch }}
-          
+
           python .github/scripts/quality_assessment.py \
             --config .github/jules-config.yml \
             --base-ref origin/${{ steps.params.outputs.target_branch }} \
             --output pre_integration_quality.json \
             --github-output >> $GITHUB_OUTPUT
-          
+
           # Check if quality score meets minimum threshold for integration
           score=$(grep "score=" $GITHUB_OUTPUT | cut -d= -f2)
-          
+
           if [ "$score" -lt 50 ]; then
             echo "Quality score too low for integration: $score"
             echo "quality_check_passed=false" >> $GITHUB_OUTPUT
@@ -167,126 +109,59 @@ jobs:
             echo "Quality check passed: $score"
             echo "quality_check_passed=true" >> $GITHUB_OUTPUT
           fi
-
-      - name: Run Integration
-        id: integration
+      - id: integration
         if: steps.quality_check.outputs.quality_check_passed == 'true'
+        name: Run Integration
         run: |
           echo "Starting integration process..."
-          
+
           chmod +x .github/scripts/integration_manager.py
-          
+
           python .github/scripts/integration_manager.py \
             --config .github/jules-config.yml \
             --source-branch ${{ steps.params.outputs.source_branch }} \
             --target-branch ${{ steps.params.outputs.target_branch }} \
             --strategy ${{ steps.params.outputs.merge_strategy }} >> integration_output.txt
-          
+
           # Extract results
           success=$(grep "INTEGRATION_SUCCESS=" integration_output.txt | cut -d= -f2)
           error=$(grep "INTEGRATION_ERROR=" integration_output.txt | cut -d= -f2)
-          
+
           echo "integration_success=$success" >> $GITHUB_OUTPUT
           echo "integration_error=$error" >> $GITHUB_OUTPUT
-          
+
           # Show output
           cat integration_output.txt
-
-      - name: Update PR Status on Success
-        if: steps.integration.outputs.integration_success == 'True'
+      - if: steps.integration.outputs.integration_success == 'True'
+        name: Update PR Status on Success
         uses: actions/github-script@v7
         with:
-          script: |
-            const prNumber = context.payload.pull_request?.number || 
-                           parseInt('${{ steps.params.outputs.source_branch }}'.split('/').pop());
-            
-            if (prNumber) {
-              // Close the PR as merged
-              try {
-                await github.rest.pulls.update({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  pull_number: prNumber,
-                  state: 'closed'
-                });
-                
-                // Add success comment
-                await github.rest.issues.createComment({
-                  issue_number: prNumber,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: `## ✅ Integration Completed Successfully
-                  
-                  **Source:** \`${{ steps.params.outputs.source_branch }}\`
-                  **Target:** \`${{ steps.params.outputs.target_branch }}\`
-                  **Strategy:** \`${{ steps.params.outputs.merge_strategy }}\`
-                  
-                  The contribution has been successfully integrated into the development branch.
-                  
-                  ---
-                  *Automated integration by Jules Bot*`
-                });
-                
-              } catch (error) {
-                console.log('Could not update PR status:', error.message);
-              }
-            }
-
-      - name: Update PR Status on Failure
-        if: steps.integration.outputs.integration_success != 'True'
+          script: "const prNumber = context.payload.pull_request?.number || \n               parseInt('${{ steps.params.outputs.source_branch }}'.split('/').pop());\n\nif (prNumber) {\n  // Close the PR as merged\n  try {\n    await github.rest.pulls.update({\n      owner: context.repo.owner,\n      repo: context.repo.repo,\n      pull_number: prNumber,\n      state: 'closed'\n    });\n    \n    // Add success comment\n    await github.rest.issues.createComment({\n      issue_number: prNumber,\n      owner: context.repo.owner,\n      repo: context.repo.repo,\n      body: `## ✅ Integration Completed Successfully\n      \n      **Source:** \\`${{ steps.params.outputs.source_branch }}\\`\n      **Target:** \\`${{ steps.params.outputs.target_branch }}\\`\n      **Strategy:** \\`${{ steps.params.outputs.merge_strategy }}\\`\n      \n      The contribution has been successfully integrated into the development branch.\n      \n      ---\n      *Automated integration by Jules Bot*`\n    });\n    \n  } catch (error) {\n    console.log('Could not update PR status:', error.message);\n  }\n}\n"
+      - if: steps.integration.outputs.integration_success != 'True'
+        name: Update PR Status on Failure
         uses: actions/github-script@v7
         with:
-          script: |
-            const prNumber = context.payload.pull_request?.number || 
-                           parseInt('${{ steps.params.outputs.source_branch }}'.split('/').pop());
-            
-            if (prNumber) {
-              const error = '${{ steps.integration.outputs.integration_error }}';
-              
-              await github.rest.issues.createComment({
-                issue_number: prNumber,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: `## ❌ Integration Failed
-                
-                **Source:** \`${{ steps.params.outputs.source_branch }}\`
-                **Target:** \`${{ steps.params.outputs.target_branch }}\`
-                **Error:** ${error}
-                
-                The integration process failed. Please review the logs and try again.
-                
-                ### Next Steps
-                - Review the error message above
-                - Check if the source branch is still valid
-                - Ensure there are no conflicts with the target branch
-                - Re-run the integration manually if needed
-                
-                ---
-                *Automated integration by Jules Bot*`
-              });
-            }
-
-      - name: Send Integration Notifications
-        if: always()
+          script: "const prNumber = context.payload.pull_request?.number || \n               parseInt('${{ steps.params.outputs.source_branch }}'.split('/').pop());\n\nif (prNumber) {\n  const error = '${{ steps.integration.outputs.integration_error }}';\n  \n  await github.rest.issues.createComment({\n    issue_number: prNumber,\n    owner: context.repo.owner,\n    repo: context.repo.repo,\n    body: `## ❌ Integration Failed\n    \n    **Source:** \\`${{ steps.params.outputs.source_branch }}\\`\n    **Target:** \\`${{ steps.params.outputs.target_branch }}\\`\n    **Error:** ${error}\n    \n    The integration process failed. Please review the logs and try again.\n    \n    ### Next Steps\n    - Review the error message above\n    - Check if the source branch is still valid\n    - Ensure there are no conflicts with the target branch\n    - Re-run the integration manually if needed\n    \n    ---\n    *Automated integration by Jules Bot*`\n  });\n}\n"
+      - if: always()
+        name: Send Integration Notifications
         run: |
           chmod +x .github/scripts/notification_system.py
-          
+
           success="${{ steps.integration.outputs.integration_success }}"
           error="${{ steps.integration.outputs.integration_error }}"
-          
+
           if [ "$success" = "True" ]; then
             message="✅ Jules Bot integration completed successfully for ${{ steps.params.outputs.source_branch }} → ${{ steps.params.outputs.target_branch }}"
           else
             message="❌ Jules Bot integration failed for ${{ steps.params.outputs.source_branch }} → ${{ steps.params.outputs.target_branch }}: $error"
           fi
-          
+
           python .github/scripts/notification_system.py \
             --config .github/jules-config.yml \
             --action approval \
             --message "$message"
-
-      - name: Upload Integration Logs
-        if: always()
+      - if: always()
+        name: Upload Integration Logs
         uses: actions/upload-artifact@v3
         with:
           name: integration-logs
@@ -295,33 +170,28 @@ jobs:
             pre_integration_quality.json
             .github/jules-memory.jsonl
           retention-days: 30
-
-  cleanup:
-    runs-on: ubuntu-latest
-    needs: [check-approval, integration]
-    if: always() && needs.integration.result == 'success'
-    
-    steps:
-      - name: Cleanup Temporary Resources
-        run: |
-          echo "Cleaning up temporary resources..."
-          
-          # This job could handle cleanup tasks like:
-          # - Removing temporary branches
-          # - Updating tracking systems
-          # - Archiving integration logs
-          # - Updating metrics dashboards
-          
-          echo "Cleanup completed"
-
-      - name: Update Integration Metrics
-        run: |
-          echo "Updating integration metrics..."
-          
-          # This could update metrics about:
-          # - Integration success rate
-          # - Average time to integration
-          # - Quality scores trends
-          # - Error patterns
-          
-          echo "Metrics updated"
+name: Jules Bot Integration Workflow
+"on":
+  pull_request_review:
+    types:
+      - submitted
+  workflow_dispatch:
+    inputs:
+      merge_strategy:
+        default: squash
+        description: Merge strategy to use
+        options:
+          - squash
+          - merge
+          - rebase
+        required: false
+        type: choice
+      source_branch:
+        description: Source branch to integrate (e.g., jules-google/feature-123)
+        required: true
+        type: string
+      target_branch:
+        default: dev
+        description: Target branch to merge into
+        required: false
+        type: string

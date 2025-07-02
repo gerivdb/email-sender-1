@@ -56,21 +56,34 @@ func copyFile(src, dst string) error {
 }
 
 func main() {
-	root := "."
+	// Limite le scope aux dossiers YAML métier
+	targetDirs := []string{
+		"charts",
+		".github/workflows",
+		"deploy",
+	}
 	var files []string
-	_ = filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if err == nil && !info.IsDir() && (strings.HasSuffix(info.Name(), ".yaml") || strings.HasSuffix(info.Name(), ".yml")) {
-			files = append(files, path)
-		}
-		return nil
-	})
+	for _, dir := range targetDirs {
+		_ = filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+			if err == nil && !info.IsDir() &&
+				(strings.HasSuffix(info.Name(), ".yaml") || strings.HasSuffix(info.Name(), ".yml")) &&
+				!strings.HasSuffix(info.Name(), ".bak") && !strings.Contains(info.Name(), "tmp") {
+				files = append(files, path)
+			}
+			return nil
+		})
+	}
 
+	fmt.Printf("Correction de %d fichiers YAML dans %v\n", len(files), targetDirs)
+	nbErr := 0
 	for _, file := range files {
 		fmt.Printf("Correction de %s...\n", file)
 		if err := fixYAMLFile(file); err != nil {
 			fmt.Fprintf(os.Stderr, "Erreur sur %s : %v\n", file, err)
+			nbErr++
 			continue
 		}
 		fmt.Printf("OK : %s (backup : %s.bak)\n", file, file)
 	}
+	fmt.Printf("Total erreurs de correction YAML : %d\n", nbErr)
 }
