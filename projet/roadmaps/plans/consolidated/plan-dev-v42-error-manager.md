@@ -76,7 +76,7 @@ Ce plan de développement détaille l’implémentation d’un gestionnaire d’
 *Progression : 100%*
 - [x] Créer une structure Go pour cataloguer les erreurs
   - [x] Étape 2.1 : Définir la structure `ErrorEntry` dans `development/managers/error-manager/model.go`
-    - [x] Micro-étape 2.1.1 : Inclure les champs `ID` (UUID), `Timestamp`, `Message`, `StackTrace`, `Module` (ex: `dependency-manager`, `mcp-manager`), `ErrorCode` (standardisé), `ManagerContext` (infos spécifiques au manager), `Severity` (INFO, WARNING, ERROR, CRITICAL)
+    - [x] Micro-étape 2.1.1 : Inclure les champs `ID` (UUID), `Timestamp`, `Message`, `StackTrace`, `Module` (ex: `dependency-manager`, `gateway-manager`), `ErrorCode` (standardisé), `ManagerContext` (infos spécifiques au manager), `Severity` (INFO, WARNING, ERROR, CRITICAL)
     - [x] Micro-étape 2.1.2 : Ajouter des tags JSON pour sérialisation
     - [x] Micro-étape 2.1.3 : Valider la structure avec un exemple JSON
   - [x] Étape 2.2 : Implémenter une fonction de catalogage dans `development/managers/error-manager/catalog.go`
@@ -494,4 +494,3 @@ Ce plan complémentaire traite spécifiquement:
 - Résolution des conflits de versions
 - Intégration avec le workflow de développement
 - Monitoring de sécurité des dépendances
-

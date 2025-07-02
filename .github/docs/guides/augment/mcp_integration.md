@@ -37,7 +37,7 @@ Cet adaptateur écoute par défaut sur le port 7892.
 
 ## Intégration avec le MCP Manager
 
-Pour intégrer les serveurs MCP d'Augment Code avec le MCP Manager existant, nous avons créé un script d'intégration (`integrate-with-mcp-manager.ps1`) qui effectue les actions suivantes :
+Pour intégrer les serveurs MCP d'Augment Code avec le Gateway Manager existant, nous avons créé un script d'intégration (`integrate-with-gateway-manager.ps1`) qui effectue les actions suivantes :
 
 1. Met à jour le module MCPManager pour inclure les serveurs MCP d'Augment Code
 2. Met à jour la configuration MCP globale
@@ -48,12 +48,12 @@ Pour intégrer les serveurs MCP d'Augment Code avec le MCP Manager existant, nou
 Pour exécuter le script d'intégration, utilisez la commande suivante :
 
 ```powershell
-.\development\scripts\maintenance\augment\integrate-with-mcp-manager.ps1
+.\development\scripts\maintenance\augment\integrate-with-gateway-manager.ps1
 ```plaintext
 Si les serveurs MCP d'Augment Code sont déjà intégrés, le script affichera un message et s'arrêtera. Pour forcer la mise à jour, utilisez le paramètre `-Force` :
 
 ```powershell
-.\development\scripts\maintenance\augment\integrate-with-mcp-manager.ps1 -Force
+.\development\scripts\maintenance\augment\integrate-with-gateway-manager.ps1 -Force
 ```plaintext
 ### Vérification de l'intégration
 
@@ -150,7 +150,7 @@ Si Augment Code ne peut pas communiquer avec les serveurs MCP, vérifiez les poi
 Si vous rencontrez des problèmes avec la configuration, vous pouvez réinitialiser l'intégration en exécutant le script d'intégration avec le paramètre `-Force` :
 
 ```powershell
-.\development\scripts\maintenance\augment\integrate-with-mcp-manager.ps1 -Force
+.\development\scripts\maintenance\augment\integrate-with-gateway-manager.ps1 -Force
 ```plaintext
 ## Ressources supplémentaires
 

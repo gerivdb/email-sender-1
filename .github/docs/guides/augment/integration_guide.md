@@ -156,7 +156,7 @@ Si les Memories ne sont pas mises à jour, vérifiez les points suivants :
 Pour intégrer les serveurs MCP d'Augment avec le MCP Manager existant, exécutez le script suivant :
 
 ```powershell
-.\development\scripts\maintenance\augment\integrate-with-mcp-manager.ps1
+.\development\scripts\maintenance\augment\integrate-with-gateway-manager.ps1
 ```plaintext
 Ce script effectue les actions suivantes :
 1. Met à jour le module MCPManager pour inclure les serveurs MCP d'Augment

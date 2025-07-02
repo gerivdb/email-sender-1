@@ -245,9 +245,9 @@ Ce plan vise à garantir l’intégration harmonieuse du serveur GCP MCP avec le
             - Droits administrateur pour l'installation et l'ouverture de ports réseau
             - Accès en écriture au dossier de logs (`logs/mcp/`) et au dossier de configuration (`projet/mcp/config/`)
         - Emplacement recommandé des fichiers :
-            - Binaire MCPManager : `projet/mcp/bin/mcpmanager.exe` (ou équivalent Linux/macOS)
-            - Fichiers de configuration : `projet/mcp/config/mcpmanager-config.json` ou `.yaml`
-            - Documentation associée : `projet/mcp/docs/guides/mcpmanager-integration.md`
+            - Binaire GatewayManager : `projet/mcp/bin/gateway.exe` (ou équivalent Linux/macOS)
+            - Fichiers de configuration : `projet/mcp/config/gateway-manager-config.json` ou `.yaml`
+            - Documentation associée : `projet/mcp/docs/guides/gateway-manager-integration.md`
         - Prérequis réseau :
             - Ports nécessaires ouverts (ex : 5235 pour le proxy, 8080 pour l’API interne, à adapter selon la configuration)
             - Accès au serveur GCP MCP et au proxy MCP Gateway
@@ -255,10 +255,10 @@ Ce plan vise à garantir l’intégration harmonieuse du serveur GCP MCP avec le
         - S’assurer que l’utilisateur dispose des droits suffisants pour démarrer/arrêter les services MCP
     - [x] **4.1.1.2** Décrire la procédure d'installation de MCPManager (récupération du binaire ou du dépôt, commandes d'installation, vérification de l'installation)
         - Télécharger le binaire officiel de MCPManager ou cloner le dépôt source :
-            - **Binaire** : récupérer la dernière version stable depuis le dépôt officiel ([GitHub MCPManager Releases](https://github.com/mcp-ecosystem/mcp-manager/releases)).
-            - **Source** :  
+            - **Binaire** : récupérer la dernière version stable depuis le dépôt officiel ([GitHub GatewayManager Releases](https://github.com/mcp-ecosystem/gateway-manager/releases)).
+            - **Source** :
               ```bash
-              git clone https://github.com/mcp-ecosystem/mcp-manager.git projet/mcp/servers/manager
+              git clone https://github.com/mcp-ecosystem/gateway-manager.git projet/mcp/servers/gateway
               ```
         - Si compilation depuis les sources :
             - Se placer dans le dossier du projet :  
@@ -268,33 +268,33 @@ Ce plan vise à garantir l’intégration harmonieuse du serveur GCP MCP avec le
             - Compiler le binaire (exemple Go) :  
               - **Windows** :  
                 ```powershell
-                go build -o mcpmanager.exe ./cmd/mcpmanager
+                go build -o gateway.exe ./cmd/gateway
                 ```
               - **Linux/macOS** :  
                 ```bash
-                go build -o mcpmanager ./cmd/mcpmanager
+                go build -o gateway ./cmd/gateway
                 ```
             - Déplacer le binaire compilé dans `projet/mcp/bin/` :  
               ```bash
-              mv mcpmanager* ../../bin/
+              mv gateway* ../../bin/
               ```
         - Vérifier la présence du binaire :  
           ```bash
-          dir projet/mcp/bin/mcpmanager*
+          dir projet/mcp/bin/gateway*
           ```
         - S'assurer que le binaire est exécutable et affiche l'aide :  
           ```bash
-          projet/mcp/bin/mcpmanager.exe --help   # Windows
+          projet/mcp/bin/gateway.exe --help   # Windows
 
-          ./projet/mcp/bin/mcpmanager --help     # Linux/macOS
+          ./projet/mcp/bin/gateway --help     # Linux/macOS
 
           ```
         - Documenter la version installée et le commit source dans le guide technique :  
           ```bash
-          git -C projet/mcp/servers/manager rev-parse HEAD
+          git -C projet/mcp/servers/gateway rev-parse HEAD
           ```
-        - Archiver les commandes utilisées et les éventuelles erreurs rencontrées (logs d'installation) dans `logs/mcp/install-mcpmanager.log`.
-        - Préciser les adaptations éventuelles selon l'OS (chemins, extensions `.exe`, droits d’exécution sous Linux/macOS : `chmod +x mcpmanager`).
+        - Archiver les commandes utilisées et les éventuelles erreurs rencontrées (logs d'installation) dans `logs/mcp/install-gateway.log`.
+        - Préciser les adaptations éventuelles selon l'OS (chemins, extensions `.exe`, droits d’exécution sous Linux/macOS : `chmod +x gateway`).
 - [x] **4.1.1.3** Documenter la configuration initiale (fichiers de configuration, variables d'environnement, chemins à adapter, exemples de configuration)
     - **Fichiers de configuration principaux** :
         - `projet/mcp/config/mcpmanager-config.json` (ou `.yaml`)
@@ -354,13 +354,13 @@ Ce plan vise à garantir l’intégration harmonieuse du serveur GCP MCP avec le
         - Conserver un exemple de configuration par défaut dans le dossier `projet/mcp/config/`.
         - Versionner les fichiers de configuration d’exemple, mais pas les fichiers contenant des secrets réels.
     - [x] **4.1.1.4** Ajouter les liens vers la documentation technique officielle et interne (README, guides, schémas d'architecture)
-    - **Documentation officielle MCPManager** :  
-      [https://github.com/mcp-ecosystem/mcp-manager](https://github.com/mcp-ecosystem/mcp-manager)
-    - **Releases officielles MCPManager** :  
-      [https://github.com/mcp-ecosystem/mcp-manager/releases](https://github.com/mcp-ecosystem/mcp-manager/releases)
-    - **Documentation interne du projet** :  
+    - **Documentation officielle GatewayManager** :
+      [https://github.com/mcp-ecosystem/gateway-manager](https://github.com/mcp-ecosystem/gateway-manager)
+    - **Releases officielles GatewayManager** :
+      [https://github.com/mcp-ecosystem/gateway-manager/releases](https://github.com/mcp-ecosystem/gateway-manager/releases)
+    - **Documentation interne du projet** :
       - [README général du projet](../../../../README.md)
-      - [Guide d’intégration MCPManager](../../docs/guides/mcpmanager-integration.md)
+      - [Guide d’intégration GatewayManager](../../docs/guides/gateway-manager-integration.md)
       - [Cartographie des fichiers de configuration MCP](../../docs/guides/cartographie-mcp-config.md)
       - [Documentation proxy MCP Gateway](../../docs/guides/mpc-gateway-documentation.md)
     - **Schémas d’architecture** :  

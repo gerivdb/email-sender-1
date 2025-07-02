@@ -1,5 +1,5 @@
 ---
-title: Plan de migration v31 – Regroupement de mcp-manager dans development/managers
+title: Plan de migration v31 – Regroupement de gateway-manager dans development/managers
 date: 2025-05-23
 version: 1.1
 status: draft
@@ -7,13 +7,13 @@ status: draft
 
 # Objectif
 
-Migrer le gestionnaire `mcp-manager`, ses dépendances et tous les éléments nécessaires à son fonctionnement vers le dossier centralisé `development/managers` afin d’unifier la gestion des gestionnaires du projet et d’améliorer la maintenabilité.
+Migrer le gestionnaire `gateway-manager`, ses dépendances et tous les éléments nécessaires à son fonctionnement vers le dossier centralisé `development/managers` afin d’unifier la gestion des gestionnaires du projet et d’améliorer la maintenabilité.
 
 # Périmètre
 
-- **Dossier source** : `projet/mcp/servers/manager` (et dépendances associées)
-  - **Note** : Le dossier source `projet/mcp/servers/manager` est actuellement manquant. Une recherche globale dans le projet et une vérification de l'historique Git sont nécessaires pour localiser ou recréer les fichiers nécessaires.
-- **Dossier cible** : `development/managers/mcp-manager`
+- **Dossier source** : `projet/mcp/servers/gateway` (et dépendances associées)
+  - **Note** : Le dossier source `projet/mcp/servers/gateway` est actuellement manquant. Une recherche globale dans le projet et une vérification de l'historique Git est nécessaire pour localiser ou recréer les fichiers nécessaires.
+- **Dossier cible** : `development/managers/gateway-manager`
 - **Inclut** : scripts, modules, configurations, tests, documentation, binaires, dépendances spécifiques
 - **Exclut** : fichiers obsolètes ou non utilisés (à identifier et archiver)
 
@@ -21,8 +21,8 @@ Migrer le gestionnaire `mcp-manager`, ses dépendances et tous les éléments n�
 
 ## 1. Préparation
 
-- [ ] **Recensement** : Identifier tous les fichiers et dossiers liés à `mcp-manager` (code, scripts, modules, configs, tests, binaires, documentation).
-  - **Étape 1** : Lister les fichiers dans le dossier source `projet/mcp/servers/manager`.
+- [ ] **Recensement** : Identifier tous les fichiers et dossiers liés à `gateway-manager` (code, scripts, modules, configs, tests, binaires, documentation).
+  - **Étape 1** : Lister les fichiers dans le dossier source `projet/mcp/servers/gateway`.
   - **Étape 2** : Identifier les dépendances croisées avec d'autres composants MCP.
   - **Étape 3** : Vérifier les fichiers obsolètes ou non utilisés pour archivage.
   - **Étape 4** : Centraliser les guides et logs dans un dossier dédié.
@@ -32,7 +32,7 @@ Migrer le gestionnaire `mcp-manager`, ses dépendances et tous les éléments n�
 
 ## 2. Migration des fichiers
 
-- [ ] **Copie initiale** : Copier le code source de `mcp-manager` dans `development/managers/mcp-manager`.
+- [ ] **Copie initiale** : Copier le code source de `gateway-manager` dans `development/managers/gateway-manager`.
 - [ ] **Migration associée** : Déplacer les scripts PowerShell, modules, configurations, tests et documentation associés.
 - [ ] **Adaptation des chemins** : Mettre à jour les chemins dans les scripts, modules et configurations pour refléter la nouvelle structure.
 - [ ] **Documentation** : Mettre à jour les README et la documentation interne pour refléter les changements.
@@ -41,11 +41,11 @@ Migrer le gestionnaire `mcp-manager`, ses dépendances et tous les éléments n�
 
 - [ ] **Validation des dépendances** : Vérifier et migrer les dépendances spécifiques (librairies, binaires, modules partagés).
 - [ ] **Scripts d’installation/build** : Adapter les scripts d’installation ou de build pour la nouvelle structure.
-- [ ] **Tests initiaux** : Tester l’exécution de `mcp-manager` dans son nouvel emplacement pour détecter les erreurs immédiates.
+- [ ] **Tests initiaux** : Tester l’exécution de `gateway-manager` dans son nouvel emplacement pour détecter les erreurs immédiates.
 
 ## 4. Validation
 
-- [ ] **Tests unitaires** : Exécuter les tests unitaires de `mcp-manager` depuis `development/managers/mcp-manager`.
+- [ ] **Tests unitaires** : Exécuter les tests unitaires de `gateway-manager` depuis `development/managers/gateway-manager`.
 - [ ] **Tests d’intégration** : Vérifier l’intégration avec d’autres composants MCP.
 - [ ] **Orchestration** : Tester l’orchestration via le gestionnaire principal (`integrated-manager`) pour s’assurer que tout fonctionne correctement.
 - [ ] **Documentation centrale** : Mettre à jour la documentation centrale (`development/managers/README.md`) avec les nouvelles instructions.
@@ -70,14 +70,14 @@ Migrer le gestionnaire `mcp-manager`, ses dépendances et tous les éléments n�
 
 ## Ajouts et modifications
 
-- **Documentation centralisée** : Ajouter une section pour centraliser les guides, FAQ et logs dans un dossier dédié, similaire à `projet/mcp/docs/guides/mcpmanager-integration.md`.
+- **Documentation centralisée** : Ajouter une section pour centraliser les guides, FAQ et logs dans un dossier dédié, similaire à `projet/mcp/docs/guides/gateway-manager-integration.md`.
 - **Tests multi-OS** : Inclure des tests sur Windows, Linux et macOS pour garantir la compatibilité.
 - **Audit sécurité** : Prévoir des audits réguliers pour vérifier la conformité RGPD et la sécurité des accès.
 - **Automatisation des logs** : Ajouter une tâche pour automatiser l'archivage des logs et scénarios de test.
 
 # Historique
 
-- **2025-05-23** : Création du plan de migration v31 pour le regroupement de `mcp-manager` dans `development/managers`.
+- **2025-05-23** : Création du plan de migration v31 pour le regroupement de `gateway-manager` dans `development/managers`.
 
 ---
 

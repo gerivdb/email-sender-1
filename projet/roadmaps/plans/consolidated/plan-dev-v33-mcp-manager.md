@@ -1,4 +1,4 @@
-# Plan de Développement v43k - MCP Manager
+# Plan de Développement v43k - Gateway Manager
 
 *Version 1.0 - 2025-06-04 - Progression globale : 0%*
 
@@ -22,10 +22,10 @@ Ce plan détaille l'implémentation du MCPManager pour le projet EMAIL_SENDER_1,
 
 ## Structure du projet intégrée dans l'écosystème
 
-Le MCP Manager s'intègre parfaitement dans l'architecture managers existante :
+Le Gateway Manager s'intègre parfaitement dans l'architecture managers existante :
 
 ```plaintext
-development/managers/mcp-manager/
+development/managers/gateway-manager/
 ├── config/                  # Configuration locale du gestionnaire
 
 ├── scripts/                 # Scripts d'interface (PowerShell compatibilité)

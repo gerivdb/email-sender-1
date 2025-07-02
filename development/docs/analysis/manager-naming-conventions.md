@@ -52,7 +52,7 @@ $managerStructure = @{
 ```plaintext
 Cependant, il existe quelques incohérences :
 - Certains dossiers utilisent le format `<Domaine>Manager` (avec PascalCase) au lieu de `<domaine>-manager`
-- Exemple : `MCPManager` au lieu de `mcp-manager`
+- Exemple : `GatewayManager` au lieu de `gateway-manager`
 
 ### Noms des fichiers
 
@@ -92,7 +92,7 @@ $manifestPath = Join-Path -Path $managerDir.FullName -ChildPath "scripts\$($mana
 ```plaintext
 Cependant, il existe quelques incohérences :
 - Certains fichiers utilisent le format `<Domaine>Manager.ps1` (avec PascalCase) au lieu de `<domaine>-manager.ps1`
-- Exemple : `MCPManager.psm1` au lieu de `mcp-manager.psm1`
+- Exemple : `GatewayManager.psm1` au lieu de `gateway-manager.psm1`
 - Certains fichiers de configuration sont nommés différemment
 - Exemple : `n8n-manager-config.json` au lieu de `n8n-manager.config.json`
 
