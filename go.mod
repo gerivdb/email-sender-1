@@ -1,4 +1,4 @@
-module github.com/your/module
+module github.com/gerivdb/email-sender-1
 
 go 1.23.0
 

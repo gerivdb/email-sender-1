@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"../interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
 )
 
 // CommitEventProcessor handles commit events for automatic branch creation
@@ -329,6 +329,10 @@ func (p *SessionEventProcessor) ProcessEvent(ctx context.Context, event interfac
 	}
 }
 
+func (p *SessionEventProcessor) GetEventType() interfaces.EventType {
+	return interfaces.EventTypeSessionCreated
+}
+
 func (p *SessionEventProcessor) handleSessionCreated(ctx context.Context, event interfaces.BranchingEvent) error {
 	sessionID := event.Data.(*interfaces.Session).ID
 	p.manager.logger.Printf("Session created: %s", sessionID)
@@ -357,6 +361,10 @@ func (p *BranchEventProcessor) ProcessEvent(ctx context.Context, event interface
 	default:
 		return fmt.Errorf("unsupported branch event type: %v", event.Type)
 	}
+}
+
+func (p *BranchEventProcessor) GetEventType() interfaces.EventType {
+	return interfaces.EventTypeBranchCreated
 }
 
 func (p *BranchEventProcessor) handleBranchCreated(ctx context.Context, event interfaces.BranchingEvent) error {
