@@ -37,6 +37,17 @@ Définir des guidelines et prompts personnalisés pour guider Gemini selon vos b
 
 ---
 
+## 🧠 Contexte du projet
+
+Ce projet possède une documentation et une configuration très riches dans le répertoire `.github`. Avant de répondre à une question ou d'effectuer une tâche, je dois systématiquement consulter ces sources pour m'aligner sur les conventions, l'architecture et les processus établis.
+
+- **Documentation principale :** `.github/docs/` (contient l'architecture, les guides, les standards de codage, la documentation des managers, etc.)
+- **Workflows CI/CD :** `.github/workflows/` (définit les pipelines d'intégration, de test et de déploiement)
+- **Instructions & Prompts :** `.github/instructions/` et `.github/prompts/` (contiennent des directives spécifiques sur la manière d'interagir et d'exécuter des tâches)
+- **Scripts utiles :** `.github/scripts/` (fournit des outils d'automatisation pour le projet)
+
+---
+
 ## 🔧 Section personnalisable
 
 Ajoutez ci-dessous vos règles, prompts ou instructions spécifiques :

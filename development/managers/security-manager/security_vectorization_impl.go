@@ -3,10 +3,10 @@ package security
 import (
 	"context"
 	"fmt"
-	"math"
 	"sort"
-	"strings"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 // === IMPLÉMENTATION PHASE 4.2.2.1: VECTORISATION DES POLITIQUES DE SÉCURITÉ ===
