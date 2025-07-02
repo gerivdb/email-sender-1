@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/gerivdb/email-sender-1/tools/core/registry"
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
-	"github.com/gerivdb/email-sender-1/tools/operations/analysis"
-	"github.com/gerivdb/email-sender-1/tools/operations/correction"
-	"github.com/gerivdb/email-sender-1/tools/operations/migration"
-	"github.com/gerivdb/email-sender-1/tools/operations/validation"
-	// "go/token" // May not be needed if FileSet is handled by constructors
+	"email_sender/development/managers/tools/core/registry"
+	"email_sender/development/managers/tools/core/toolkit"
+	"email_sender/development/managers/tools/operations/analysis"
+	"email_sender/development/managers/tools/operations/correction"
+	"email_sender/development/managers/tools/operations/migration"
+	"email_sender/development/managers/tools/operations/validation"
 )
 
 func TestToolkitOperationsIntegration(t *testing.T) {
@@ -80,7 +79,7 @@ func TestToolkitOperationsIntegration(t *testing.T) {
 			// For tools created via constructors, they should initialize internal FileSet if needed.
 			err := toolInstance.Validate(context.Background())
 			fmt.Printf("Validate() error/status: %v\n", err)
-            // Original test expected errors for some, so not failing test here.
+			// Original test expected errors for some, so not failing test here.
 		})
 	}
 

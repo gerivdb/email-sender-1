@@ -5,8 +5,6 @@
 package analysis
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/registry"
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -17,6 +15,9 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"email_sender/development/managers/tools/core/registry"
+	"email_sender/development/managers/tools/core/toolkit"
 )
 
 // DuplicateTypeDetector implémente l'interface toolkit.ToolkitOperation pour la détection des types dupliqués
@@ -129,7 +130,6 @@ func (dtd *DuplicateTypeDetector) Execute(ctx context.Context, options *toolkit.
 
 		return nil
 	})
-
 	if err != nil {
 		dtd.Logger.Error("Failed to walk directory: %v", err)
 		return err
@@ -369,7 +369,7 @@ func (dtd *DuplicateTypeDetector) generateReport(report DuplicationReport, outpu
 		return err
 	}
 
-	return os.WriteFile(outputPath, data, 0644)
+	return os.WriteFile(outputPath, data, 0o644)
 }
 
 // Validate implémente ToolkitOperation.Validate
@@ -436,21 +436,19 @@ func init() {
 		globalReg = registry.NewToolRegistry()
 		// registry.SetGlobalRegistry(globalReg) // If a setter exists
 	}
-	
+
 	// Create a default instance for registration
 	defaultTool := &DuplicateTypeDetector{
-		BaseDir: "", // Default or placeholder
+		BaseDir: "",                 // Default or placeholder
 		FileSet: token.NewFileSet(), // Initialize FileSet
-		Logger:  nil, // Logger should be initialized by the toolkit
+		Logger:  nil,                // Logger should be initialized by the toolkit
 		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  false,
 	}
-	
+
 	err := globalReg.Register(toolkit.DetectDuplicates, defaultTool) // Changed to toolkit.DetectDuplicates
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register DuplicateTypeDetector: %v\n", err)
 	}
 }
-
-

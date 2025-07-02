@@ -5,8 +5,6 @@
 package correction
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/registry"
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -18,6 +16,9 @@ import (
 	"sort"
 	"strings"
 	"time"
+
+	"email_sender/development/managers/tools/core/registry"
+	"email_sender/development/managers/tools/core/toolkit"
 )
 
 // ImportConflictResolver implémente l'interface toolkit.ToolkitOperation pour résoudre les conflits d'imports
@@ -151,7 +152,6 @@ func (icr *ImportConflictResolver) Execute(ctx context.Context, options *toolkit
 
 		return nil
 	})
-
 	if err != nil {
 		icr.Logger.Error("Failed to walk directory: %v", err)
 		return err
@@ -420,7 +420,7 @@ func (icr *ImportConflictResolver) resolveConflicts(filePath string, analysis *I
 	// Réécrire le fichier si des modifications ont été apportées
 	if fixed > 0 {
 		newContent := strings.Join(lines, "\n")
-		if err := os.WriteFile(filePath, []byte(newContent), 0644); err != nil {
+		if err := os.WriteFile(filePath, []byte(newContent), 0o644); err != nil {
 			return 0, err
 		}
 	}
@@ -446,7 +446,7 @@ func (icr *ImportConflictResolver) generateReport(report ImportReport, outputPat
 		return err
 	}
 
-	return os.WriteFile(outputPath, data, 0644)
+	return os.WriteFile(outputPath, data, 0o644)
 }
 
 // Validate implémente ToolkitOperation.Validate
@@ -469,11 +469,11 @@ func (icr *ImportConflictResolver) Validate(ctx context.Context) error {
 // CollectMetrics implémente ToolkitOperation.CollectMetrics
 func (icr *ImportConflictResolver) CollectMetrics() map[string]interface{} {
 	return map[string]interface{}{
-		"tool":             "ImportConflictResolver",
-		"files_analyzed":   icr.Stats.FilesAnalyzed,    // Number of files checked
-		"conflicts_fixed":  icr.Stats.ErrorsFixed,      // Number of conflicts actually fixed
-		"dry_run":          icr.DryRun,                 // Changed key from dry_run_mode
-		"base_dir":         icr.BaseDir,                // Changed key from base_directory
+		"tool":            "ImportConflictResolver",
+		"files_analyzed":  icr.Stats.FilesAnalyzed, // Number of files checked
+		"conflicts_fixed": icr.Stats.ErrorsFixed,   // Number of conflicts actually fixed
+		"dry_run":         icr.DryRun,              // Changed key from dry_run_mode
+		"base_dir":        icr.BaseDir,             // Changed key from base_directory
 		// "conflicts_found": placeholder_value, // Test expects this, but it's not explicitly tracked in stats. Could be len(conflicts) from Execute.
 		// "duplicates_removed": not applicable to this tool
 	}
@@ -515,21 +515,19 @@ func init() {
 		globalReg = registry.NewToolRegistry()
 		// registry.SetGlobalRegistry(globalReg) // If a setter exists
 	}
-	
+
 	// Create a default instance for registration
 	defaultTool := &ImportConflictResolver{
-		BaseDir: "", // Default or placeholder
+		BaseDir: "",                 // Default or placeholder
 		FileSet: token.NewFileSet(), // Initialize FileSet
-		Logger:  nil, // Logger should be initialized by the toolkit
+		Logger:  nil,                // Logger should be initialized by the toolkit
 		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  false,
 	}
-	
+
 	err := globalReg.Register(toolkit.ResolveImports, defaultTool) // Changed to toolkit.ResolveImports
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register ImportConflictResolver: %v\n", err)
 	}
 }
-
-

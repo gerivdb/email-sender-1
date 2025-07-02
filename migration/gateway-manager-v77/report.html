@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rapport d'Automatisation Gateway-Manager v77</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .section { margin-bottom: 20px; border: 1px solid #eee; padding: 15px; border-radius: 8px; }
+        .status-success { color: green; font-weight: bold; }
+        .status-failure { color: red; font-weight: bold; }
+        pre { background-color: #f4f4f4; padding: 10px; border-radius: 4px; overflow-x: auto; }
+        .error-message { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Rapport d'Automatisation Gateway-Manager v77</h1>
+    <p><strong>Date de génération:</strong> 2025-07-02 02:24:57 CEST</p>
+    <p><strong>Statut Global:</strong> <span class="status-success">SUCCÈS</span></p>
+    <p><strong>Couverture des tests unitaires (GatewayManager):</strong> 100.0% of statements</p>
+
+    
+
+    <div class="section">
+        <h2>Résultats des Tests Unitaires (development/managers/gateway-manager/...)</h2>
+        <pre>=== RUN   TestNewGatewayManager
+--- PASS: TestNewGatewayManager (0.00s)
+=== RUN   TestGatewayManagerStart
+GatewayManager TestGateway démarré.
+--- PASS: TestGatewayManagerStart (0.00s)
+PASS
+coverage: 100.0% of statements
+ok  	email_sender/development/managers/gateway-manager	(cached)	coverage: 100.0% of statements
+</pre>
+    </div>
+
+    <div class="section">
+        <h2>Résultats des Tests d'Intégration (tests/integration/...)</h2>
+        <pre>=== RUN   TestGatewayManagerIntegration
+Démarrage du test d&#39;intégration pour GatewayManager...
+Simulating GatewayManager Start...
+GatewayManager IntegrationTestGateway démarré.
+Simulating a basic operation...
+Test d&#39;intégration pour GatewayManager terminé avec succès.
+--- PASS: TestGatewayManagerIntegration (0.10s)
+=== RUN   TestGatewayManagerContextCancellation
+Démarrage du test d&#39;annulation de contexte pour GatewayManager...
+Opération GatewayManager annulée par le contexte.
+Contexte annulé avec l&#39;erreur: context canceled
+Test d&#39;annulation de contexte pour GatewayManager terminé.
+--- PASS: TestGatewayManagerContextCancellation (0.30s)
+PASS
+coverage: [no statements]
+ok  	email_sender/tests/integration	(cached)	coverage: [no statements]
+</pre>
+    </div>
+
+    <footer>
+        <p>Ce rapport a été généré automatiquement.</p>
+    </footer>
+</body>
+</html>

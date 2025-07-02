@@ -112,8 +112,8 @@ func GetExpectedModules() []ExpectedModule {
 
 		// Modules MCP Gateway (existants)
 		{
-			Name:        "projet/mcp/servers/gateway",
-			Path:        "projet/mcp/servers/gateway",
+			Name:        "development/managers/gateway-manager",
+			Path:        "development/managers/gateway-manager",
 			Required:    false,
 			Category:    "mcp",
 			Description: "Serveur de passerelle MCP",
@@ -221,7 +221,7 @@ func IsLegitimateExtraModule(moduleName string) bool {
 		"github.com/",                 // Modules externes
 		"golang.org/",                 // Modules standard
 		"go.uber.org/",                // Modules tiers légitimes
-		"projet/mcp/servers/gateway/", // Sous-modules MCP légitimes
+		"development/managers/gateway-manager/", // Sous-modules MCP légitimes
 	}
 
 	for _, pattern := range legitimatePatterns {

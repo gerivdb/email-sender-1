@@ -10,7 +10,6 @@ import (
 	   "github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	*/
 	"context"
-	"email-sender-1/development/managers/tools/core/toolkit"
 	"encoding/json"
 	"fmt"
 	"go/ast"
@@ -22,6 +21,8 @@ import (
 	"regexp"
 	"strings"
 	"time"
+
+	"email_sender/development/managers/tools/core/toolkit"
 )
 
 // StructValidator implémente l'interface toolkit.ToolkitOperation pour la validation des structures
@@ -365,7 +366,7 @@ func (sv *StructValidator) generateReport(report ValidationReport, outputPath st
 		return err
 	}
 
-	return os.WriteFile(outputPath, data, 0644)
+	return os.WriteFile(outputPath, data, 0o644)
 }
 
 // Validate implémente ToolkitOperation.Validate
@@ -393,8 +394,8 @@ func (sv *StructValidator) CollectMetrics() map[string]interface{} {
 		"files_analyzed":    sv.Stats.FilesAnalyzed,
 		"structs_analyzed":  sv.Stats.FilesModified, // Réutilisation de cette métrique
 		"errors_found":      sv.Stats.ErrorsFixed,
-		"dry_run":           sv.DryRun,                // Changed key
-		"base_dir":          sv.BaseDir,               // Changed key
+		"dry_run":           sv.DryRun,  // Changed key
+		"base_dir":          sv.BaseDir, // Changed key
 		"semantic_analysis": true,
 		"type_checking":     sv.Package != nil,
 		"validation_rules":  []string{"naming", "json_tags", "type_safety", "best_practices"},
@@ -816,5 +817,5 @@ func (sv *StructValidator) Stop(ctx context.Context) error {
 
 // init registers the StructValidator tool automatically
 func init() {
-fmt.Println("Avertissement : imports privés 'github.com/gerivdb/email-sender-1/tools/core/registry' et 'core/toolkit' non disponibles. L’enregistrement StructValidator est désactivé.")
+	fmt.Println("Avertissement : imports privés 'github.com/gerivdb/email-sender-1/tools/core/registry' et 'core/toolkit' non disponibles. L’enregistrement StructValidator est désactivé.")
 }

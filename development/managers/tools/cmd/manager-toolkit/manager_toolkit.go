@@ -6,7 +6,6 @@
 package main
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/registry"
 	"context"
 	"encoding/json"
 	"flag"
@@ -14,14 +13,14 @@ import (
 	"go/token"
 	"log"
 	"os"
-	// "path/filepath" // Removed as it's likely unused after local NewLogger removal
 	"time"
 
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
-	"github.com/gerivdb/email-sender-1/tools/operations/analysis"    // Added for analysis tools
-	"github.com/gerivdb/email-sender-1/tools/operations/correction"  // Added for correction tools
-	"github.com/gerivdb/email-sender-1/tools/operations/migration"   // Added for migration tools
-	"github.com/gerivdb/email-sender-1/tools/operations/validation"  // Added for validation tools
+	"email_sender/development/managers/tools/core/registry"
+	"email_sender/development/managers/tools/core/toolkit"
+	"email_sender/development/managers/tools/operations/analysis"
+	"email_sender/development/managers/tools/operations/correction"
+	"email_sender/development/managers/tools/operations/migration"
+	"email_sender/development/managers/tools/operations/validation"
 )
 
 // Configuration constants
@@ -39,7 +38,7 @@ type ManagerToolkit struct {
 	FileSet   *token.FileSet
 	BaseDir   string
 	StartTime time.Time
-	Stats     *toolkit.ToolkitStats  // Changed to toolkit type
+	Stats     *toolkit.ToolkitStats // Changed to toolkit type
 }
 
 // Configuration structure (local definition removed, use toolkit.ToolkitConfig)
@@ -77,15 +76,15 @@ const (
 	OpValidateStructs  Operation = "validate-structs"
 	OpResolveImports   Operation = "resolve-imports"
 	OpAnalyzeDeps      Operation = "analyze-dependencies" // Matches toolkit.AnalyzeDeps string value
-	OpDetectDuplicates Operation = "detect-duplicates" // Matches toolkit.DetectDuplicates string value
-	OpSyntaxCheck      Operation = "syntax-check"      // Matches toolkit.SyntaxCheck string value
+	OpDetectDuplicates Operation = "detect-duplicates"    // Matches toolkit.DetectDuplicates string value
+	OpSyntaxCheck      Operation = "syntax-check"         // Matches toolkit.SyntaxCheck string value
 
 	// These seem specific to manager-toolkit or have different string values than toolkit constants
 	// OpSyntaxFix is "fix-syntax", toolkit.SyntaxCheck is "check-syntax"
 	// OpTypeDefGen is "type-def-gen", toolkit.TypeDefGen is "generate-typedefs"
 
 	OpTypeDefGen      Operation = "type-def-gen"
-	OpNormalizeNaming Operation = "normalize-naming"    // Matches toolkit.NormalizeNaming string value
+	OpNormalizeNaming Operation = "normalize-naming" // Matches toolkit.NormalizeNaming string value
 )
 
 func main() {
@@ -204,7 +203,6 @@ func (mt *ManagerToolkit) ExecuteOperation(ctx context.Context, op Operation, op
 		mt.Logger.Warn("Global tool registry is not available.")
 	}
 
-
 	// Fall back to manual operation handling if no registered tool found
 	// The 'op' variable is of local type 'Operation', which is now an alias for 'toolkit.Operation'.
 	// The switch cases use locally defined constants.
@@ -234,7 +232,7 @@ func (mt *ManagerToolkit) ExecuteOperation(ctx context.Context, op Operation, op
 		err = mt.RunStructValidation(ctx, opts)
 	case OpResolveImports: // local "resolve-imports"
 		err = mt.RunImportConflictResolution(ctx, opts)
-	case OpAnalyzeDeps:    // local "analyze-dependencies", matches toolkit.AnalyzeDeps
+	case OpAnalyzeDeps: // local "analyze-dependencies", matches toolkit.AnalyzeDeps
 		err = mt.RunDependencyAnalysis(ctx, opts)
 	case OpDetectDuplicates: // local "detect-duplicates", matches toolkit.DetectDuplicates
 		err = mt.RunDuplicateTypeDetection(ctx, opts)
@@ -542,7 +540,7 @@ func LoadOrCreateConfig(configPath, baseDir string) (*toolkit.ToolkitConfig, err
 
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		// Config file doesn't exist, create default
-		config := CreateDefaultConfigStruct(baseDir) // This function will now return *toolkit.ToolkitConfig
+		config := CreateDefaultConfigStruct(baseDir)           // This function will now return *toolkit.ToolkitConfig
 		if err := SaveConfig(config, configPath); err != nil { // SaveConfig takes *toolkit.ToolkitConfig
 			return nil, fmt.Errorf("failed to save default config: %w", err)
 		}
@@ -627,7 +625,7 @@ func SaveConfig(config *toolkit.ToolkitConfig, path string) error { // Param is 
 		return err
 	}
 
-	return os.WriteFile(path, data, 0644)
+	return os.WriteFile(path, data, 0o644)
 }
 
 // Close closes the toolkit and releases resources
@@ -637,4 +635,3 @@ func (mt *ManagerToolkit) Close() error { // mt.Logger is *toolkit.Logger
 	}
 	return nil
 }
-

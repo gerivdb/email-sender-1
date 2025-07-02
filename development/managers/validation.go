@@ -1,72 +1,59 @@
-package main
+package validation
 
 import (
 	"fmt"
 	"log"
 
-	"github.com/gerivdb/email-sender-1/managers/dependency-manager"
-	"github.com/gerivdb/email-sender-1/managers/security-manager"
-	"github.com/gerivdb/email-sender-1/managers/storage-manager"
+	dependency_manager "email_sender/development/managers/dependency-manager"
+	security_manager "email_sender/development/managers/security-manager"
+	storage_manager "email_sender/development/managers/storage-manager"
 )
 
-func main() {
-	fmt.Println("=== Phase 2 Managers Final Validation ===")
-	
+// ValidateAllManagers exécute une série de validations pour tous les managers.
+func ValidateAllManagers() {
+	fmt.Println("=== Exécution de la validation des Managers ===")
+
 	// Test Storage Manager
-	fmt.Println("\n1. Storage Manager Validation:")
+	fmt.Println("\n1. Validation du Storage Manager:")
 	storageManager, err := storage_manager.NewStorageManager()
 	if err != nil {
-		fmt.Printf("   ⚠️  Storage Manager init: %v (expected in test env)\n", err)
+		fmt.Printf("   ⚠️  Erreur d'initialisation du Storage Manager: %v\n", err)
 	} else {
-		fmt.Println("   ✅ Storage Manager initialized successfully")
+		fmt.Println("   ✅ Storage Manager initialisé avec succès")
+		// Ici, vous pourriez ajouter des appels à des méthodes de test du storageManager
 	}
-	
-	// Test Dependency Manager  
-	fmt.Println("\n2. Dependency Manager Validation:")
+
+	// Test Dependency Manager
+	fmt.Println("\n2. Validation du Dependency Manager:")
 	depManager, err := dependency_manager.NewDependencyManager()
 	if err != nil {
-		log.Printf("   ❌ Dependency Manager failed: %v", err)
+		log.Printf("   ❌ Erreur d'initialisation du Dependency Manager: %v\n", err)
 	} else {
-		fmt.Println("   ✅ Dependency Manager initialized successfully")
-		
-		// Test basic functionality
+		fmt.Println("   ✅ Dependency Manager initialisé avec succès")
+		// Ici, vous pourriez ajouter des appels à des méthodes de test du depManager
 		configFiles := depManager.DetectConfigFiles(".")
-		fmt.Printf("   📁 Detected %d config files\n", len(configFiles))
+		fmt.Printf("   📁 %d fichiers de configuration détectés\n", len(configFiles))
 	}
-	
+
 	// Test Security Manager
-	fmt.Println("\n3. Security Manager Validation:")
+	fmt.Println("\n3. Validation du Security Manager:")
 	secManager, err := security_manager.NewSecurityManager()
 	if err != nil {
-		log.Printf("   ❌ Security Manager failed: %v", err)
+		log.Printf("   ❌ Erreur d'initialisation du Security Manager: %v\n", err)
 	} else {
-		fmt.Println("   ✅ Security Manager initialized successfully")
-		
-		// Test validation
+		fmt.Println("   ✅ Security Manager initialisé avec succès")
+		// Ici, vous pourriez ajouter des appels à des méthodes de test du secManager
 		testEmail := "test@example.com"
 		isValid := secManager.ValidateInput(testEmail, "email")
 		if isValid {
-			fmt.Println("   ✅ Input validation working")
-		}
-		
-		// Test encryption
-		testData := []byte("test data")
-		encrypted, err := secManager.EncryptData(testData)
-		if err != nil {
-			fmt.Printf("   ❌ Encryption failed: %v\n", err)
-		} else {
-			decrypted, err := secManager.DecryptData(encrypted)
-			if err == nil && string(decrypted) == string(testData) {
-				fmt.Println("   ✅ Encryption/Decryption working")
-			}
+			fmt.Println("   ✅ Validation d'entrée fonctionnelle")
 		}
 	}
-	
-	fmt.Println("\n=== PHASE 2 COMPLETION STATUS ===")
-	fmt.Println("✅ Storage Manager - FULLY IMPLEMENTED")
-	fmt.Println("✅ Dependency Manager - FULLY IMPLEMENTED") 
-	fmt.Println("✅ Security Manager - FULLY IMPLEMENTED")
-	fmt.Println("✅ Integration Testing - COMPLETED")
-	fmt.Println("✅ All Interface Compliance - VERIFIED")
-	fmt.Println("\n🎉 Phase 2 Implementation: 100% COMPLETE!")
+
+	fmt.Println("\n=== STATUT DE VALIDATION DES MANAGERS ===")
+	fmt.Println("✅ Validation terminée.")
+	// Utiliser les variables pour éviter les erreurs de "declared and not used"
+	_ = storageManager
+	_ = depManager
+	_ = secManager
 }

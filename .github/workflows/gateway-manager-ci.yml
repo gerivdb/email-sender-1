@@ -1,0 +1,80 @@
+name: Gateway-Manager CI/CD (v77 Go Native)
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'development/managers/gateway-manager/**'
+      - 'cmd/auto-integrate-gateway/**'
+      - 'cmd/rollback-gateway-migration/**'
+      - 'cmd/gateway-import-migrate/**'
+      - 'cmd/generate-gateway-report/**'
+      - 'cmd/backup-modified-files/**'
+      - 'cmd/auto-roadmap-runner/**'
+      - 'tests/integration/gateway_manager_integration_test.go'
+      - 'projet/roadmaps/plans/consolidated/plan-dev-v77-migration-gateway-manager.md'
+      - '.github/workflows/gateway-manager-ci.yml' # Trigger on workflow changes
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'development/managers/gateway-manager/**'
+      - 'cmd/auto-integrate-gateway/**'
+      - 'cmd/rollback-gateway-migration/**'
+      - 'cmd/gateway-import-migrate/**'
+      - 'cmd/generate-gateway-report/**'
+      - 'cmd/backup-modified-files/**'
+      - 'cmd/auto-roadmap-runner/**'
+      - 'tests/integration/gateway_manager_integration_test.go'
+      - 'projet/roadmaps/plans/consolidated/plan-dev-v77-migration-gateway-manager.md'
+      - '.github/workflows/gateway-manager-ci.yml' # Trigger on workflow changes
+
+jobs:
+  build-test-report:
+    runs-on: windows-latest # Utiliser un runner Windows pour la compatibilité PowerShell si nécessaire, mais Go est cross-platform
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.22' # Assurez-vous que la version de Go est compatible avec le projet
+
+    - name: Go Mod Tidy
+      run: go mod tidy
+
+    - name: Build Gateway-Manager
+      run: go build -v ./development/managers/gateway-manager/...
+
+    - name: Run Unit Tests (Gateway-Manager)
+      run: go test -v -coverprofile=coverage-unit.out ./development/managers/gateway-manager/...
+
+    - name: Run Integration Tests
+      run: go test -v -coverprofile=coverage-integration.out ./tests/integration/...
+
+    - name: Generate Combined Coverage Report
+      run: |
+        # Combiner les profils de couverture (nécessite go tool cover)
+        go tool cover -mode=set -o coverage.out coverage-unit.out coverage-integration.out
+        # Générer le rapport HTML de couverture
+        go tool cover -html=coverage.out -o coverage.html
+
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: go-coverage-report
+        path: coverage.html
+
+    - name: Run Auto-Roadmap Runner (Orchestrator)
+      run: go run cmd/auto-roadmap-runner/main.go
+
+    - name: Upload Generated Reports and Backups
+      uses: actions/upload-artifact@v4
+      with:
+        name: gateway-manager-reports-backups
+        path: migration/gateway-manager-v77/

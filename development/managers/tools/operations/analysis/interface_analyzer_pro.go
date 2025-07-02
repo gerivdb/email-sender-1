@@ -3,7 +3,6 @@
 package analysis
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"fmt"
 	"go/ast"
 	"go/parser"
@@ -14,6 +13,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"email_sender/development/managers/tools/core/toolkit"
 )
 
 // ToolVersion defines the current version of this specific tool or the toolkit.
@@ -42,7 +43,6 @@ func NewInterfaceAnalyzerPro(baseDir string, fileSet *token.FileSet, debugMode b
 	// if err != nil {
 	// 	return nil, fmt.Errorf("failed to create logger: %w", err)
 	// }
-
 
 	if fileSet == nil {
 		fileSet = token.NewFileSet()
@@ -211,7 +211,6 @@ func (ia *InterfaceAnalyzer) AnalyzeInterfaces() (*AnalysisReport, error) {
 
 		return nil
 	})
-
 	if err != nil {
 		return nil, fmt.Errorf("failed to walk directory tree: %w", err)
 	}
@@ -596,4 +595,3 @@ func min(a, b int) int {
 	}
 	return b
 }
-

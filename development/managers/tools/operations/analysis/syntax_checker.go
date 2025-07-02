@@ -5,8 +5,6 @@
 package analysis
 
 import (
-	"github.com/gerivdb/email-sender-1/tools/core/registry"
-	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -17,6 +15,9 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"email_sender/development/managers/tools/core/registry"
+	"email_sender/development/managers/tools/core/toolkit"
 )
 
 // SyntaxChecker implémente l'interface toolkit.ToolkitOperation pour la correction de syntaxe
@@ -30,31 +31,31 @@ type SyntaxChecker struct {
 
 // SyntaxError représente une erreur de syntaxe détectée
 type SyntaxError struct {
-	File            string `json:"file"`
-	Line            int    `json:"line"`
-	Column          int    `json:"column"`
-	Position        int    `json:"position"`
-	Message         string `json:"message"`
-	ErrorType       string `json:"error_type"`
-	Severity        string `json:"severity"`
-	OriginalCode    string `json:"original_code,omitempty"`
-	SuggestedFix    string `json:"suggested_fix,omitempty"`
-	FixApplied      bool   `json:"fix_applied"`
-	FixDescription  string `json:"fix_description,omitempty"`
+	File           string `json:"file"`
+	Line           int    `json:"line"`
+	Column         int    `json:"column"`
+	Position       int    `json:"position"`
+	Message        string `json:"message"`
+	ErrorType      string `json:"error_type"`
+	Severity       string `json:"severity"`
+	OriginalCode   string `json:"original_code,omitempty"`
+	SuggestedFix   string `json:"suggested_fix,omitempty"`
+	FixApplied     bool   `json:"fix_applied"`
+	FixDescription string `json:"fix_description,omitempty"`
 }
 
 // SyntaxReport représente le rapport de vérification syntaxique
 type SyntaxReport struct {
-	Tool            string        `json:"tool"`
-	Version         string        `json:"version"`
-	Timestamp       time.Time     `json:"timestamp"`
-	TotalFiles      int           `json:"total_files"`
-	FilesAnalyzed   int           `json:"files_analyzed"`
-	ErrorsFound     int           `json:"errors_found"`
-	ErrorsFixed     int           `json:"errors_fixed"`
-	DryRunMode      bool          `json:"dry_run_mode"`
-	Errors          []SyntaxError `json:"errors"`
-	Summary         SyntaxSummary `json:"summary"`
+	Tool          string        `json:"tool"`
+	Version       string        `json:"version"`
+	Timestamp     time.Time     `json:"timestamp"`
+	TotalFiles    int           `json:"total_files"`
+	FilesAnalyzed int           `json:"files_analyzed"`
+	ErrorsFound   int           `json:"errors_found"`
+	ErrorsFixed   int           `json:"errors_fixed"`
+	DryRunMode    bool          `json:"dry_run_mode"`
+	Errors        []SyntaxError `json:"errors"`
+	Summary       SyntaxSummary `json:"summary"`
 }
 
 // SyntaxSummary fournit un résumé des erreurs par type
@@ -89,12 +90,12 @@ func (sc *SyntaxChecker) Execute(ctx context.Context, options *toolkit.Operation
 	}
 
 	report := &SyntaxReport{
-		Tool:      "SyntaxChecker",
-		Version:   "3.0.0",
-		Timestamp: time.Now(),
+		Tool:       "SyntaxChecker",
+		Version:    "3.0.0",
+		Timestamp:  time.Now(),
 		DryRunMode: sc.DryRun,
-		Errors:    make([]SyntaxError, 0),
-		Summary:   SyntaxSummary{},
+		Errors:     make([]SyntaxError, 0),
+		Summary:    SyntaxSummary{},
 	}
 
 	syntaxErrors := 0
@@ -175,7 +176,6 @@ func (sc *SyntaxChecker) Execute(ctx context.Context, options *toolkit.Operation
 
 		return nil
 	})
-
 	if err != nil {
 		sc.Logger.Error("Error walking directory: %v", err)
 		return err
@@ -202,7 +202,7 @@ func (sc *SyntaxChecker) Execute(ctx context.Context, options *toolkit.Operation
 		sc.Logger.Info("📄 Report generated: %s", options.Output)
 	}
 
-	sc.Logger.Info("✅ Syntax check completed: %d files analyzed, %d errors found, %d fixed", 
+	sc.Logger.Info("✅ Syntax check completed: %d files analyzed, %d errors found, %d fixed",
 		filesAnalyzed, report.ErrorsFound, fixedErrors)
 
 	return nil
@@ -346,7 +346,7 @@ func (sc *SyntaxChecker) attemptFix(file string, src []byte, parseErr error) (bo
 
 	// Write the fixed content if changes were made
 	if fixed && !sc.DryRun {
-		if err := os.WriteFile(file, []byte(content), 0644); err != nil {
+		if err := os.WriteFile(file, []byte(content), 0o644); err != nil {
 			sc.Logger.Error("Failed to write fixed file %s: %v", file, err)
 			return false, ""
 		}
@@ -375,7 +375,7 @@ func (sc *SyntaxChecker) fixUnterminatedStrings(content string) string {
 	for i, line := range lines {
 		quotes := strings.Count(line, "\"")
 		backquotes := strings.Count(line, "`")
-		
+
 		if quotes%2 == 1 && !strings.Contains(line, "//") {
 			lines[i] = line + "\""
 		}
@@ -390,14 +390,14 @@ func (sc *SyntaxChecker) fixUnterminatedStrings(content string) string {
 func (sc *SyntaxChecker) fixMissingBraces(content string) string {
 	openBraces := strings.Count(content, "{")
 	closeBraces := strings.Count(content, "}")
-	
+
 	if openBraces > closeBraces {
 		missing := openBraces - closeBraces
 		for i := 0; i < missing; i++ {
 			content += "\n}"
 		}
 	}
-	
+
 	return content
 }
 
@@ -424,7 +424,7 @@ func (sc *SyntaxChecker) generateReport(report *SyntaxReport, outputPath string)
 		return fmt.Errorf("failed to marshal report: %v", err)
 	}
 
-	if err := os.WriteFile(outputPath, data, 0644); err != nil {
+	if err := os.WriteFile(outputPath, data, 0o644); err != nil {
 		return fmt.Errorf("failed to write report file: %v", err)
 	}
 
@@ -459,21 +459,19 @@ func init() {
 		globalReg = registry.NewToolRegistry()
 		// registry.SetGlobalRegistry(globalReg) // If a setter exists
 	}
-	
+
 	// Create a default instance for registration
 	defaultTool := &SyntaxChecker{
-		BaseDir: "", // Default or placeholder
+		BaseDir: "",                 // Default or placeholder
 		FileSet: token.NewFileSet(), // Initialize FileSet
-		Logger:  nil, // Logger should be initialized by the toolkit
+		Logger:  nil,                // Logger should be initialized by the toolkit
 		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  false,
 	}
-	
+
 	err := globalReg.Register(toolkit.SyntaxCheck, defaultTool) // Changed to toolkit.SyntaxCheck
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register SyntaxChecker: %v\n", err)
 	}
 }
-
-

@@ -37,6 +37,12 @@
 
 ---
 
+## Migration Gateway-Manager v77
+
+Le Gateway-Manager a été migré vers une implémentation 100% Go natif. Plus de détails peuvent être trouvés dans la [documentation dédiée](docs/gateway-manager.md) et dans le plan de migration détaillé [ici](projet/roadmaps/plans/consolidated/plan-dev-v77-migration-gateway-manager.md).
+
+---
+
 *Projet conforme aux standards .clinerules, prêt pour production et évolutions LLM.*
 
 ---

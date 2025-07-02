@@ -87,6 +87,11 @@ type ToolkitStats struct {
 	OperationsExecuted int           `json:"operations_executed"`
 	FilesAnalyzed      int           `json:"files_analyzed"`
 	FilesProcessed     int           `json:"files_processed"`
+	FilesCreated       int           `json:"files_created"`    // Added
+	ImportsFixed       int           `json:"imports_fixed"`    // Added
+	TotalFiles         int           `json:"total_files"`      // Added
+	InterfaceFiles     int           `json:"interface_files"`  // Added
+	TotalInterfaces    int           `json:"total_interfaces"` // Added
 	ExecutionTime      time.Duration `json:"execution_time"`
 	ErrorCount         int           `json:"error_count"`
 	WarningCount       int           `json:"warning_count"`
