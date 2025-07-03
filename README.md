@@ -49,3 +49,18 @@ Le Gateway-Manager a été migré vers une implémentation 100% Go natif. Plus d
 **Dernière exécution CI/CD:** 
 **Pipeline:** ✅ Succès
 **Modules testés:** core/scanmodules, core/gapanalyzer, core/reporting, cmd/auto-roadmap-runner
+
+## Version Go
+
+Ce projet requiert Go version `1.24.4`.
+
+Pour vérifier votre version de Go :
+```bash
+go version
+```
+
+Pour mettre à jour Go (si nécessaire) :
+```bash
+go install golang.org/dl/go1.24.4@latest
+go1.24.4 download
+```

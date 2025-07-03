@@ -1,19 +1,34 @@
+// cmd/audit-inventory/main_test.go
 package main
 
 import (
+	"encoding/json"
 	"os"
+	"os/exec"
 	"testing"
 )
 
-func TestAuditInventoryGeneration(t *testing.T) {
-	// Nettoyage avant test
-	_ = os.Remove("audit_inventory.md")
-	// Exécution du script principal
-	main()
-	// Vérification du fichier généré
-	if _, err := os.Stat("audit_inventory.md"); os.IsNotExist(err) {
-		t.Fatalf("audit_inventory.md n'a pas été généré")
+func TestInventoryGeneration(t *testing.T) {
+	cmd := exec.Command("go", "run", "main.go")
+	cmd.Dir = "."
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("Erreur exécution script: %v\nSortie: %s", err, string(out))
 	}
-	// Nettoyage après test
-	_ = os.Remove("audit_inventory.md")
+
+	// Vérifie la présence du fichier inventaire
+	inventoryPath := "projet/roadmaps/plans/consolidated/inventory.json"
+	f, err := os.Open(inventoryPath)
+	if err != nil {
+		t.Fatalf("Fichier inventaire non trouvé: %v", err)
+	}
+	defer f.Close()
+
+	var files []string
+	if err := json.NewDecoder(f).Decode(&files); err != nil {
+		t.Fatalf("Erreur décodage JSON: %v", err)
+	}
+	if len(files) == 0 {
+		t.Error("Inventaire vide")
+	}
 }

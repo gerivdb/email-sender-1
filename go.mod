@@ -1,6 +1,6 @@
 module github.com/gerivdb/email-sender-1
 
-go 1.23.0
+go 1.24.4
 
 toolchain go1.24.4
 
