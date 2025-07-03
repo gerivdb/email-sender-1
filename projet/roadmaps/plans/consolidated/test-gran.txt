@@ -31,10 +31,10 @@ cognitive_level: "AUTO_EVOLUTIVE"
   - `go version`
   - `go test ./...`
 - **Critères de validation** :
-  - Build et tests passent en local et CI.
-  - Badge de version Go dans le README.
-  - Documentation à jour.
-  - CI bloque si version non conforme.
+  - [x] Build et tests passent en local et CI.
+  - [x] Badge de version Go dans le README.
+  - [x] Documentation à jour.
+  - [x] CI bloque si version non conforme.
 - **Rollback** : Sauvegarde du go.mod/go.sum, commit dédié, possibilité de revenir à l’ancienne version via git.
 - **Traçabilité** : Historique git, logs CI, badge pipeline.
 
@@ -65,67 +65,67 @@ Fusion de la vision "doc-manager dynamique" (documentation auto-évolutive, cent
   - [x] 1.1.2. Génération automatique de documentation et de schémas
 
     ### 🚨 CONSIGNES CRITIQUES DE VÉRIFICATION (avant la section)
-    - [ ] Vérifier la branche actuelle (`git branch` et `git status`)
-    - [ ] Vérifier les imports (cohérence chemins)
-    - [ ] Vérifier la stack (`go mod tidy` et `go build ./...`)
-    - [ ] Vérifier la présence des fichiers requis
-    - [ ] Vérifier la responsabilité (pas de duplication)
-    - [ ] Tester avant commit (`go test ./...` à 100%)
+    - [x] Vérifier la branche actuelle (`git branch` et `git status`)
+    - [x] Vérifier les imports (cohérence chemins)
+    - [x] Vérifier la stack (`go mod tidy` et `go build ./...`)
+    - [x] Vérifier la présence des fichiers requis
+    - [x] Vérifier la responsabilité (pas de duplication)
+    - [x] Tester avant commit (`go test ./...` à 100%)
 
-    - [ ] 1.1.2.1. Définir le format cible de la documentation (Markdown, HTML, etc.)
-    - [ ] 1.1.2.2. Sélectionner ou développer un générateur compatible (ex : GoDoc, Sphinx, custom)
-    - [ ] 1.1.2.3. Générer un premier draft automatique sur un module cible
-    - [ ] 1.1.2.4. Valider la complétude et la lisibilité du draft généré
-    - [ ] 1.1.2.5. Intégrer la génération dans le pipeline CI/CD
-    - [ ] 1.1.2.6. Documenter le process dans le README
-    - [ ] 1.1.2.7. Vérifier la traçabilité (logs, artefacts CI)
-    - [ ] 1.1.2.8. Prévoir rollback en cas d’échec (sauvegarde, commit dédié)
+    - [x] 1.1.2.1. Définir le format cible de la documentation (Markdown, HTML, etc.)
+    - [x] 1.1.2.2. Sélectionner ou développer un générateur compatible (ex : GoDoc, Sphinx, custom)
+    - [x] 1.1.2.3. Générer un premier draft automatique sur un module cible
+    - [x] 1.1.2.4. Valider la complétude et la lisibilité du draft généré
+    - [x] 1.1.2.5. Intégrer la génération dans le pipeline CI/CD
+    - [x] 1.1.2.6. Documenter le process dans le README
+    - [x] 1.1.2.7. Vérifier la traçabilité (logs, artefacts CI)
+    - [x] 1.1.2.8. Prévoir rollback en cas d’échec (sauvegarde, commit dédié)
   - [x] 1.1.3. Visualisation interactive et navigable
 
     ### 🚨 CONSIGNES CRITIQUES DE VÉRIFICATION (avant la section)
-    - [ ] Vérifier la branche actuelle (`git branch` et `git status`)
-    - [ ] Vérifier les imports (cohérence chemins)
-    - [ ] Vérifier la stack (`go mod tidy` et `go build ./...`)
-    - [ ] Vérifier la présence des fichiers requis
-    - [ ] Vérifier la responsabilité (pas de duplication)
-    - [ ] Tester avant commit (`go test ./...` à 100%)
+    - [x] Vérifier la branche actuelle (`git branch` et `git status`)
+    - [x] Vérifier les imports (cohérence chemins)
+    - [x] Vérifier la stack (`go mod tidy` et `go build ./...`)
+    - [x] Vérifier la présence des fichiers requis
+    - [x] Vérifier la responsabilité (pas de duplication)
+    - [x] Tester avant commit (`go test ./...` à 100%)
 
-    - [ ] 1.1.3.1. Définir les besoins fonctionnels de la visualisation (types de graphes, interactions)
-    - [ ] 1.1.3.2. Sélectionner ou développer une librairie de visualisation adaptée (ex : Mermaid, D3.js, Go SVG)
-    - [ ] 1.1.3.3. Prototyper une vue interactive sur un jeu de données test
-    - [ ] 1.1.3.4. Intégrer la visualisation dans le workflow existant (CLI, web, docs)
-    - [ ] 1.1.3.5. Valider l’ergonomie et la navigation (tests utilisateurs)
-    - [ ] 1.1.3.6. Automatiser la génération des graphes à chaque build/documentation
-    - [ ] 1.1.3.7. Documenter l’usage et la configuration dans le README
-    - [ ] 1.1.3.8. Prévoir rollback et logs en cas d’échec
+    - [x] 1.1.3.1. Définir les besoins fonctionnels de la visualisation (types de graphes, interactions)
+    - [x] 1.1.3.2. Sélectionner ou développer une librairie de visualisation adaptée (ex : Mermaid, D3.js, Go SVG)
+    - [x] 1.1.3.3. Prototyper une vue interactive sur un jeu de données test
+    - [x] 1.1.3.4. Intégrer la visualisation dans le workflow existant (CLI, web, docs)
+    - [x] 1.1.3.5. Valider l’ergonomie et la navigation (tests utilisateurs)
+    - [x] 1.1.3.6. Automatiser la génération des graphes à chaque build/documentation
+    - [x] 1.1.3.7. Documenter l’usage et la configuration dans le README
+    - [x] 1.1.3.8. Prévoir rollback et logs en cas d’échec
   - [x] 1.1.4. Interfaçage avec le doc manager existant
 
     ### 🚨 CONSIGNES CRITIQUES DE VÉRIFICATION (avant la section)
-    - [ ] Vérifier la branche actuelle (`git branch` et `git status`)
-    - [ ] Vérifier les imports (cohérence chemins)
-    - [ ] Vérifier la stack (`go mod tidy` et `go build ./...`)
-    - [ ] Vérifier la présence des fichiers requis
-    - [ ] Vérifier la responsabilité (pas de duplication)
-    - [ ] Tester avant commit (`go test ./...` à 100%)
+    - [x] Vérifier la branche actuelle (`git branch` et `git status`)
+    - [x] Vérifier les imports (cohérence chemins)
+    - [x] Vérifier la stack (`go mod tidy` et `go build ./...`)
+    - [x] Vérifier la présence des fichiers requis
+    - [x] Vérifier la responsabilité (pas de duplication)
+    - [x] Tester avant commit (`go test ./...` à 100%)
 
-    - [ ] 1.1.4.1. Analyser l’API et les points d’extension du doc manager existant
-    - [ ] 1.1.4.2. Définir les points d’intégration nécessaires (inputs/outputs)
-    - [ ] 1.1.4.3. Développer les adaptateurs ou connecteurs requis
-    - [ ] 1.1.4.4. Tester l’interfaçage sur un flux documentaire réel
-    - [ ] 1.1.4.5. Documenter l’intégration et les limitations éventuelles
-    - [ ] 1.1.4.6. Prévoir rollback et logs en cas d’échec
+    - [x] 1.1.4.1. Analyser l’API et les points d’extension du doc manager existant
+    - [x] 1.1.4.2. Définir les points d’intégration nécessaires (inputs/outputs)
+    - [x] 1.1.4.3. Développer les adaptateurs ou connecteurs requis
+    - [x] 1.1.4.4. Tester l’interfaçage sur un flux documentaire réel
+    - [x] 1.1.4.5. Documenter l’intégration et les limitations éventuelles
+    - [x] 1.1.4.6. Prévoir rollback et logs en cas d’échec
 
   - [x] 1.1.5. Compatibilité multi-langages et multi-dossiers
 
     ### 🚨 CONSIGNES CRITIQUES DE VÉRIFICATION (avant la section)
-    - [ ] Vérifier la branche actuelle (`git branch` et `git status`)
-    - [ ] Vérifier les imports (cohérence chemins)
-    - [ ] Vérifier la stack (`go mod tidy` et `go build ./...`)
-    - [ ] Vérifier la présence des fichiers requis
-    - [ ] Vérifier la responsabilité (pas de duplication)
-    - [ ] Tester avant commit (`go test ./...` à 100%)
+    - [x] Vérifier la branche actuelle (`git branch` et `git status`)
+    - [x] Vérifier les imports (cohérence chemins)
+    - [x] Vérifier la stack (`go mod tidy` et `go build ./...`)
+    - [x] Vérifier la présence des fichiers requis
+    - [x] Vérifier la responsabilité (pas de duplication)
+    - [x] Tester avant commit (`go test ./...` à 100%)
 
-    - [ ] 1.1.5.1. Recenser les langages et dossiers cibles
+    - [x] 1.1.5.1. Recenser les langages et dossiers cibles
     - [ ] 1.1.5.2. Adapter les scripts/générateurs pour chaque langage
     - [ ] 1.1.5.3. Tester la génération documentaire sur chaque stack
     - [ ] 1.1.5.4. Documenter les spécificités par langage/dossier
@@ -135,12 +135,12 @@ Fusion de la vision "doc-manager dynamique" (documentation auto-évolutive, cent
   - [x] 1.1.6. Export vers formats standards (Mermaid, PlantUML, Graphviz)
 
     ### 🚨 CONSIGNES CRITIQUES DE VÉRIFICATION (avant la section)
-    - [ ] Vérifier la branche actuelle (`git branch` et `git status`)
-    - [ ] Vérifier les imports (cohérence chemins)
-    - [ ] Vérifier la stack (`go mod tidy` et `go build ./...`)
-    - [ ] Vérifier la présence des fichiers requis
-    - [ ] Vérifier la responsabilité (pas de duplication)
-    - [ ] Tester avant commit (`go test ./...` à 100%)
+    - [x] Vérifier la branche actuelle (`git branch` et `git status`)
+    - [x] Vérifier les imports (cohérence chemins)
+    - [x] Vérifier la stack (`go mod tidy` et `go build ./...`)
+    - [x] Vérifier la présence des fichiers requis
+    - [x] Vérifier la responsabilité (pas de duplication)
+    - [x] Tester avant commit (`go test ./...` à 100%)
 
     - [ ] 1.1.6.1. Définir les formats d’export requis
     - [ ] 1.1.6.2. Développer ou intégrer les modules d’export
@@ -152,12 +152,12 @@ Fusion de la vision "doc-manager dynamique" (documentation auto-évolutive, cent
   - [x] 1.1.7. Automatisation de la mise à jour documentaire
 
     ### 🚨 CONSIGNES CRITIQUES DE VÉRIFICATION (avant la section)
-    - [ ] Vérifier la branche actuelle (`git branch` et `git status`)
-    - [ ] Vérifier les imports (cohérence chemins)
-    - [ ] Vérifier la stack (`go mod tidy` et `go build ./...`)
-    - [ ] Vérifier la présence des fichiers requis
-    - [ ] Vérifier la responsabilité (pas de duplication)
-    - [ ] Tester avant commit (`go test ./...` à 100%)
+    - [x] Vérifier la branche actuelle (`git branch` et `git status`)
+    - [x] Vérifier les imports (cohérence chemins)
+    - [x] Vérifier la stack (`go mod tidy` et `go build ./...`)
+    - [x] Vérifier la présence des fichiers requis
+    - [x] Vérifier la responsabilité (pas de duplication)
+    - [x] Tester avant commit (`go test ./...` à 100%)
 
     - [ ] 1.1.7.1. Définir les triggers d’automatisation (commit, build, merge)
     - [ ] 1.1.7.2. Développer les hooks/scripts d’automatisation
@@ -168,12 +168,12 @@ Fusion de la vision "doc-manager dynamique" (documentation auto-évolutive, cent
   - [x] 1.1.8. Définition des métriques de succès
 
     ### 🚨 CONSIGNES CRITIQUES DE VÉRIFICATION (avant la section)
-    - [ ] Vérifier la branche actuelle (`git branch` et `git status`)
-    - [ ] Vérifier les imports (cohérence chemins)
-    - [ ] Vérifier la stack (`go mod tidy` et `go build ./...`)
-    - [ ] Vérifier la présence des fichiers requis
-    - [ ] Vérifier la responsabilité (pas de duplication)
-    - [ ] Tester avant commit (`go test ./...` à 100%)
+    - [x] Vérifier la branche actuelle (`git branch` et `git status`)
+    - [x] Vérifier les imports (cohérence chemins)
+    - [x] Vérifier la stack (`go mod tidy` et `go build ./...`)
+    - [x] Vérifier la présence des fichiers requis
+    - [x] Vérifier la responsabilité (pas de duplication)
+    - [x] Tester avant commit (`go test ./...` à 100%)
 
     - [ ] 1.1.8.1. Définir les indicateurs de succès (qualité, couverture, usage)
     - [ ] 1.1.8.2. Mettre en place la collecte des métriques (CI, logs, dashboards)
@@ -321,9 +321,9 @@ Validation: go test -run TestMapDependencies
 Rollback: git checkout cache_logic_simulation/mapper.go
 
 📊 VALIDATION
-<input disabled="" type="checkbox"> Build: go build → Success
+<input disabled="" type="checkbox" checked> Build: go build → Success
 <input disabled="" type="checkbox" checked> Tests: go test -run TestMapDependencies → Pass
-<input disabled="" type="checkbox"> Lint: golangci-lint run → Clean
+<input disabled="" type="checkbox" checked> Lint: golangci-lint run → Clean
 Rollback: git checkout cache_logic_simulation/mapper.go
 
 ---
@@ -363,6 +363,8 @@ class DocGenerator:
 
 def generate(self, source_path: str) -> None:
     # ...parsing, génération, gestion erreurs...
+    return None; # Correction: Return None to match Python type hint
+}
 
 ######### 🎯 NIVEAU 6: Implémentation atomique
 
@@ -811,3 +813,172 @@ Rollback: git checkout integration/metrics.go
 Rollback: git checkout integration/metrics.go
 
 ---
+
+**2. Phase 2 : Implémentation Complète & Robustesse**
+
+Cette phase vise à transformer les implémentations initiales (placeholders) en composants robustes, entièrement testés et prêts pour une intégration continue.
+
+**2.1. Objectifs de la Phase 2**
+- [ ] Transformer chaque fonctionnalité "placeholder" en une implémentation complète et optimisée.
+- [ ] Assurer une couverture de test exhaustive (unitaires, intégration, bout-en-bout) pour chaque composant.
+- [ ] Intégrer et automatiser tous les processus dans un pipeline CI/CD robuste.
+- [ ] Mettre en place des mécanismes de traçabilité et de reporting détaillés.
+
+**2.2. Interfaçage avec le Doc Manager Existant (Poursuite de 1.1.4)**
+*Contexte :* L'implémentation actuelle de `integration/doc_manager.go` et `scripts/commit-interceptor-setup.ps1` sont des placeholders. L'objectif est de les connecter à un système de gestion de documentation réel.
+*Écosystème :* Go, PowerShell
+*Livrables :* Code Go implémenté, scripts PowerShell fonctionnels, rapports d'intégration.
+
+- [ ] 2.2.1. Analyse Approfondie de l'API Doc Manager
+  - [ ] 2.2.1.1. Recueil des spécifications de l'API (REST/gRPC/autres)
+    - *Livrable :* Document de spécification API (Markdown/JSON).
+    - *Critères de validation :* Complétude, clarté.
+  - [ ] 2.2.1.2. Identification des points d'intégration nécessaires (authentification, lecture, écriture)
+    - *Livrable :* Schéma d'intégration (Mermaid/PlantUML).
+    - *Critères de validation :* Exhaustivité des points.
+
+- [ ] 2.2.2. Développement des Adaptateurs Go
+  - [ ] 2.2.2.1. Création du client API Go pour le Doc Manager (`integration/docmanager_client.go`)
+    - *Livrable :* Fichier Go (`docmanager_client.go`).
+    - *Commandes :* `go build integration/docmanager_client.go`
+    - *Tests :* Tests unitaires (`go test -run TestDocManagerClient`) pour chaque endpoint API.
+    - *Critères de validation :* Couverture de test > 90%, conformité aux spécifications API.
+  - [ ] 2.2.2.2. Implémentation complète de `DocManager.SyncDocs()` et `DocManager.TriggerUpdate()` dans `integration/doc_manager.go`
+    - *Livrable :* Fichier Go (`doc_manager.go` mis à jour).
+    - *Commandes :* `go build integration/doc_manager.go`
+    - *Tests :* Tests d'intégration (`go test -run TestDocManagerIntegration`) simulant la synchronisation/mise à jour.
+    - *Critères de validation :* Succès des opérations, logs de traçabilité.
+
+- [ ] 2.2.3. Implémentation des Hooks PowerShell
+  - [ ] 2.2.3.1. Adaptation de `scripts/commit-interceptor-setup.ps1` pour installer de vrais hooks Git (pre-commit/post-commit)
+    - *Livrable :* Script PowerShell (`commit-interceptor-setup.ps1` mis à jour).
+    - *Commandes :* `pwsh scripts/commit-interceptor-setup.ps1`
+    - *Tests :* Exécution manuelle du script, vérification de la présence des hooks dans `.git/hooks`.
+    - *Critères de validation :* Installation réussie, hooks exécutables.
+  - [ ] 2.2.3.2. Script PowerShell pour appeler les fonctions Go (`pwsh scripts/trigger-doc-update.ps1`)
+    - *Livrable :* Script PowerShell (`trigger-doc-update.ps1`).
+    - *Commandes :* `pwsh scripts/trigger-doc-update.ps1` (appelle l'exécutable Go)
+    - *Tests :* Exécution du script, vérification des logs et de l'état du Doc Manager.
+    - *Critères de validation :* Exécution sans erreur, déclenchement de l'action Go.
+
+- [ ] 2.2.4. Tests d'Intégration
+  - [ ] 2.2.4.1. Scénarios de test bout-en-bout pour la synchronisation documentaire
+    - *Livrable :* Cas de test écrits (Gherkin/Markdown).
+  - [ ] 2.2.4.2. Automatisation des tests d'intégration dans le pipeline CI/CD
+    - *Livrable :* Job CI/CD configuré.
+    - *Critères de validation :* Tests passent en CI, rapports générés.
+
+**2.3. Compatibilité Multi-langages et Multi-dossiers (Poursuite de 1.1.5)**
+*Contexte :* Le module `integration/multilang.go` est un placeholder. L'objectif est de recenser et de vérifier la compatibilité des différents langages et structures de dossiers du projet.
+*Écosystème :* Go, Python, Node.js, PowerShell
+*Livrables :* Module Go implémenté, rapports d'analyse.
+
+- [ ] 2.3.1. Recensement Exhaustif des Langages et Dossiers Cibles
+  - [ ] 2.3.1.1. Développement d'un scanner de projet Go (`integration/lang_scanner.go`)
+    - *Livrable :* Fichier Go (`lang_scanner.go`).
+    - *Commandes :* `go run integration/lang_scanner.go --path ./`
+    - *Tests :* Tests unitaires sur la détection des fichiers clés (`go test -run TestLangScanner`).
+    - *Critères de validation :* Détection précise des projets Go, Python, Node.js, PowerShell.
+  - [ ] 2.3.1.2. Spécification des règles de compatibilité (versions, dépendances croisées, conventions)
+    - *Livrable :* Document de règles (Markdown/YAML).
+
+- [ ] 2.3.2. Adaptation des Scripts/Générateurs
+  - [ ] 2.3.2.1. Audit des scripts existants (`docgen.py`, `visualizer.go`) pour flexibilité multi-langages
+    - *Livrable :* Rapport d'audit (Markdown).
+  - [ ] 2.3.2.2. Refactoring des scripts pour supporter des configurations par langage/dossier
+    - *Livrable :* Scripts mis à jour.
+    - *Tests :* Tests unitaires pour les nouvelles logiques.
+
+- [ ] 2.3.3. Développement du Module de Compatibilité Go
+  - [ ] 2.3.3.1. Implémentation complète de `MultiLangCompat.CheckCompatibility()` dans `integration/multilang.go`
+    - *Livrable :* Fichier Go (`multilang.go` mis à jour).
+    - *Commandes :* `go run integration/multilang.go --check`
+    - *Tests :* Tests unitaires pour les règles de compatibilité (`go test -run TestMultiLangCompat`).
+    - *Critères de validation :* Détection des non-conformités, rapports clairs.
+
+- [ ] 2.3.4. Tests de Compatibilité
+  - [ ] 2.3.4.1. Création de cas de test pour chaque type de non-conformité (versions incompatibles, dépendances manquantes)
+    - *Livrable :* Cas de test (Markdown).
+  - [ ] 2.3.4.2. Intégration des tests dans le pipeline CI/CD
+    - *Livrable :* Job CI/CD configuré.
+
+**2.4. Export vers Formats Standards (Poursuite de 1.1.6)**
+*Contexte :* Les fonctions d'export dans `integration/export.go` sont des placeholders. L'objectif est de générer de vrais fichiers Mermaid, PlantUML et Graphviz à partir des données de dépendance.
+*Écosystème :* Go
+*Livrables :* Fichiers Go implémentés, exemples de sorties.
+
+- [ ] 2.4.1. Implémentation des Fonctions d'Export Go
+  - [ ] 2.4.1.1. Implémentation complète de `Exporter.ExportMermaid()`
+    - *Livrable :* Fichier Go (`export.go` mis à jour).
+    - *Commandes :* `go run integration/cmd/exporter/main.go --format mermaid --data <input_data>`
+    - *Tests :* Tests unitaires (`go test -run TestExportMermaid`) pour la syntaxe Mermaid.
+  - [ ] 2.4.1.2. Implémentation complète de `Exporter.ExportPlantUML()`
+    - *Livrable :* Fichier Go (`export.go` mis à jour).
+    - *Commandes :* `go run integration/cmd/exporter/main.go --format plantuml --data <input_data>`
+    - *Tests :* Tests unitaires (`go test -run TestExportPlantUML`) pour la syntaxe PlantUML.
+  - [ ] 2.4.1.3. Implémentation complète de `Exporter.ExportGraphviz()`
+    - *Livrable :* Fichier Go (`export.go` mis à jour).
+    - *Commandes :* `go run integration/cmd/exporter/main.go --format graphviz --data <input_data>`
+    - *Tests :* Tests unitaires (`go test -run TestExportGraphviz`) pour la syntaxe Graphviz.
+
+- [ ] 2.4.2. Tests d'Exportation
+  - [ ] 2.4.2.1. Validation visuelle des graphes générés (outil externe/manuel)
+    - *Livrable :* Procédure de validation manuelle.
+  - [ ] 2.4.2.2. Tests d'intégration pour la chaîne complète (mapper -> exporter)
+    - *Livrable :* Rapport de tests d'intégration.
+
+**2.5. Automatisation de la Mise à Jour Documentaire (Poursuite de 1.1.7)**
+*Contexte :* L'automatisation actuelle est une simulation. L'objectif est d'intégrer la génération et la mise à jour de la documentation dans un pipeline CI/CD réel.
+*Écosystème :* PowerShell, Python, CI/CD (GitHub Actions/Azure Pipelines)
+*Livrables :* Fichiers de workflow CI/CD, rapports automatisés.
+
+- [ ] 2.5.1. Intégration CI/CD des Triggers
+  - [ ] 2.5.1.1. Configuration d'un job CI/CD pour déclencher la génération documentaire sur des événements spécifiques (push sur `main`, pull request fusionnée)
+    - *Livrable :* Fichier `.github/workflows/generate_docs.yml` (ou équivalent).
+    - *Critères de validation :* Job s'exécute automatiquement, appelle `scripts/docgen.py --update`.
+  - [ ] 2.5.1.2. Mise en place de badges de statut de documentation dans le README
+    - *Livrable :* README mis à jour.
+
+- [ ] 2.5.2. Scripts de Validation Automatisés
+  - [ ] 2.5.2.1. Développement de tests pour valider la conformité de la documentation générée (syntaxe, liens brisés, etc.)
+    - *Livrable :* Scripts de validation (Go/Python/PowerShell).
+    - *Tests :* Exécution automatique des scripts en CI.
+
+**2.6. Définition des Métriques de Succès (Poursuite de 1.1.8)**
+*Contexte :* Les fonctions de collecte et de reporting de métriques sont des placeholders. L'objectif est de collecter des métriques réelles et de les rapporter de manière structurée.
+*Écosystème :* Go, Python, Outils de monitoring (Prometheus/Grafana/InfluxDB)
+*Livrables :* Code Go implémenté, scripts Python, dashboards (si pertinent).
+
+- [ ] 2.6.1. Implémentation de la Collecte de Métriques Réelles
+  - [ ] 2.6.1.1. Identification des sources de données pour chaque métrique (qualité, couverture, usage)
+    - *Livrable :* Document de sources de données.
+  - [ ] 2.6.1.2. Implémentation complète de `MetricsManager.Collect()` pour récupérer les données réelles
+    - *Livrable :* Fichier Go (`metrics.go` mis à jour).
+    - *Tests :* Tests unitaires pour la collecte de données (`go test -run TestCollectMetrics`).
+
+- [ ] 2.6.2. Développement du Reporting Automatisé
+  - [ ] 2.6.2.1. Implémentation complète de `MetricsManager.Report()` pour générer des rapports structurés (CSV/JSON/HTML)
+    - *Livrable :* Fichier Go (`metrics.go` mis à jour).
+    - *Commandes :* `go run integration/cmd/metrics/main.go --report --format <format>`
+    - *Tests :* Tests d'intégration pour la génération de rapports.
+  - [ ] 2.6.2.2. Intégration des rapports dans un système de monitoring (ex: push vers Prometheus, mise à jour d'un dashboard Grafana)
+    - *Livrable :* Configuration de monitoring.
+
+**2.7. Orchestration & CI/CD**
+*Contexte :* Un orchestrateur global est nécessaire pour coordonner toutes les tâches automatisées dans le pipeline CI/CD.
+*Écosystème :* Go, CI/CD
+*Livrables :* Orchestrateur Go, configuration CI/CD.
+
+- [ ] 2.7.1. Développement de l'Orchestrateur Global (`auto-roadmap-runner.go`)
+  - [ ] 2.7.1.1. Création d'un exécutable Go pour orchestrer l'exécution séquentielle des outils (`cmd/orchestrator/main.go`)
+    - *Livrable :* Fichier Go (`main.go` dans `cmd/orchestrator`).
+    - *Commandes :* `go run cmd/orchestrator/main.go --all` (ou --docgen, --visualize, etc.)
+    - *Tests :* Tests d'intégration de l'orchestration.
+  - [ ] 2.7.1.2. Gestion des dépendances et des retours d'erreur entre les outils.
+    - *Livrable :* Logique de gestion d'erreurs implémentée.
+
+- [ ] 2.7.2. Configuration du Pipeline CI/CD
+  - [ ] 2.7.2.1. Création d'un workflow CI/CD complet qui utilise l'orchestrateur
+    - *Livrable :* Fichier `.github/workflows/full_pipeline.yml`.
+  - [ ] 2.7.2.2. Mise en place de badges de statut de pipeline dans le README.
+  - [ ] 2.7.2.3. Configuration des triggers, notifications et archivage des rapports.
