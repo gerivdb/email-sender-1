@@ -1,0 +1,1 @@
+problem in mem0-analysis\repo\embedchain\embedchain\llm\aws_bedrock.py - ModuleNotFoundError: The required dependencies for AWSBedrock are not installed.Please install with `pip install langchain_aws`

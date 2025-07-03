@@ -1,0 +1,1 @@
+problem in mem0-analysis\repo\embedchain\embedchain\embedder\huggingface.py - ModuleNotFoundError: The required dependencies for HuggingFaceHub are not installed.Please install with `pip install langchain_huggingface`

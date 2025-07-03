@@ -1,0 +1,1 @@
+problem in mem0-analysis\repo\mem0\embeddings\huggingface.py - ImportError: cannot import name 'cached_download' from 'huggingface_hub' (C:\Users\user\AppData\Roaming\Python\Python312\site-packages\huggingface_hub\__init__.py)

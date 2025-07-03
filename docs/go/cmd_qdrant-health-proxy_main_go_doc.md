@@ -1,0 +1,6 @@
+# Package main
+
+## Types
+
+### HealthResponse
+

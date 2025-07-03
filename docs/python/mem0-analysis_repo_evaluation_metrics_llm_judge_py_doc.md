@@ -1,0 +1,1 @@
+problem in mem0-analysis\repo\evaluation\metrics\llm_judge.py - OpenAIError: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable

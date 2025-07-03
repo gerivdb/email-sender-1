@@ -1,0 +1,1 @@
+problem in development\scripts\mcp\document_indexer.py - ImportError: cannot import name 'OptimizedTextSplitter' from 'langchain.text_splitter' (C:\Users\user\AppData\Roaming\Python\Python312\site-packages\langchain\text_splitter.py)

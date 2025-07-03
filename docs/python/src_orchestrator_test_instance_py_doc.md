@@ -1,0 +1,9 @@
+Test de création d'une instance de ThematicDeleteArchive...
+Répertoires créés: C:\Users\user\AppData\Local\Temp\tmph2o_rju3\storage, C:\Users\user\AppData\Local\Temp\tmph2o_rju3\archive
+Création d'une instance de ThematicDeleteArchive...
+Instance de ThematicDeleteArchive créée avec succès!
+Chemin de stockage: C:\Users\user\AppData\Local\Temp\tmph2o_rju3\storage
+Chemin d'archivage: C:\Users\user\AppData\Local\Temp\tmph2o_rju3\archive
+Test terminé avec succès!
+Suppression du répertoire temporaire C:\Users\user\AppData\Local\Temp\tmph2o_rju3...
+problem in src\orchestrator\test_instance.py - SystemExit: 0
