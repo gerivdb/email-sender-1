@@ -2,50 +2,65 @@ package integration
 
 import (
 	"fmt"
+	"math/rand"
+	"time"
 )
 
-// Metrics represents a collection of success metrics.
+// Metrics représente une collection de métriques de succès.
 type Metrics struct {
-	Quality  float64
-	Coverage float64
-	Usage    float64
+	Quality  float64 `json:"quality"`
+	Coverage float64 `json:"coverage"`
+	Usage    float64 `json:"usage"`
 }
 
-// IMetrics defines the interface for collecting and reporting metrics.
+// IMetrics définit l'interface pour la collecte et le reporting des métriques.
 type IMetrics interface {
-	// Collect collects the current metrics.
+	// Collect collecte les métriques actuelles.
 	Collect() (Metrics, error)
-	// Report generates a report of the collected metrics.
+	// Report génère un rapport des métriques collectées.
 	Report() error
 }
 
-// MetricsManager implements the IMetrics interface.
+// MetricsManager implémente l'IMetrics interface.
 type MetricsManager struct {
-	// Add necessary fields for metrics management here.
+	// Vous pouvez ajouter ici des champs pour les dépendances (ex: clients API, bases de données)
 }
 
-// Collect collects the current metrics.
+// NewMetricsManager crée une nouvelle instance de MetricsManager.
+func NewMetricsManager() IMetrics {
+	return &MetricsManager{}
+}
+
+// Collect collecte les métriques actuelles.
 func (m *MetricsManager) Collect() (Metrics, error) {
 	fmt.Println("Collecte des métriques...")
-	// Placeholder for actual metric collection logic
-	// For demonstration, return dummy data
-	return Metrics{
-		Quality:  0.9,
-		Coverage: 0.85,
-		Usage:    0.7,
-	}, nil
+	// Ici, vous intégreriez la logique réelle pour collecter les métriques.
+	// Par exemple, lire des données de couverture de test, des logs de qualité de code,
+	// ou des statistiques d'utilisation.
+
+	// Pour la démonstration, générons des données aléatoires.
+	// En production, ces valeurs proviendraient de sources fiables.
+	rand.Seed(time.Now().UnixNano()) // Initialiser le générateur de nombres aléatoires
+
+	metrics := Metrics{
+		Quality:  0.7 + rand.Float64()*0.3, // Entre 0.7 et 1.0
+		Coverage: 0.6 + rand.Float64()*0.4, // Entre 0.6 et 1.0
+		Usage:    0.5 + rand.Float64()*0.5, // Entre 0.5 et 1.0
+	}
+	return metrics, nil
 }
 
-// Report generates a report of the collected metrics.
+// Report génère un rapport des métriques collectées.
 func (m *MetricsManager) Report() error {
 	metrics, err := m.Collect()
 	if err != nil {
-		return fmt.Errorf("failed to collect metrics for report: %w", err)
+		return fmt.Errorf("échec de la collecte des métriques pour le rapport: %w", err)
 	}
 	fmt.Printf("Rapport de métriques:\n")
 	fmt.Printf("  Qualité: %.2f\n", metrics.Quality)
 	fmt.Printf("  Couverture: %.2f\n", metrics.Coverage)
 	fmt.Printf("  Usage: %.2f\n", metrics.Usage)
-	// Placeholder for actual reporting logic (e.g., to a dashboard, log file)
+	// Logique réelle de reporting (ex: vers un tableau de bord, un fichier de log, une API)
+	fmt.Println("Rapport de métriques généré avec succès.")
 	return nil
 }

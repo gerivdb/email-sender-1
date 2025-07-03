@@ -41,6 +41,9 @@ jobs:
           go run ./cmd/standards-duplication-check/main.go
           go run ./cmd/roadmap-indexer/main.go
           go run ./cmd/cross-doc-inventory/main.go
+      - name: Exécuter l'orchestrateur CI/CD
+        run: |
+          ./integration/cmd/orchestrator/orchestrator.exe all
 name: Go Quality
 "on":
   pull_request:
