@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"email_sender/development/managers/bridges"
+	"github.com/gerivdb/email-sender-1/development/managers/bridges"
 )
 
 func main() {

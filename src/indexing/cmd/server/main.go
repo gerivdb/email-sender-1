@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"email_sender/src/indexing"
+	"github.com/gerivdb/email-sender-1/src/indexing"
 
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -56,7 +56,7 @@ func NewIndexingServer(config *indexing.IndexingConfig) (*IndexingServer, error)
 		config = indexing.DefaultConfig()
 	}
 	indexDir := filepath.Join(config.DataDir, "index")
-	if err := os.MkdirAll(indexDir, 0755); err != nil {
+	if err := os.MkdirAll(indexDir, 0o755); err != nil {
 		return nil, fmt.Errorf("failed to create index directory: %v", err)
 	}
 

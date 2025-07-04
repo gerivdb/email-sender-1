@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"email_sender/pkg/common" // Assurez-vous que le chemin est correct pour votre module Go
+	"github.com/gerivdb/email-sender-1/pkg/common" // Assurez-vous que le chemin est correct pour votre module Go
 )
 
 func main() {

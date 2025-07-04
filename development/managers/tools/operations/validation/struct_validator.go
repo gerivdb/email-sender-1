@@ -22,7 +22,7 @@ import (
 	"strings"
 	"time"
 
-	"email_sender/development/managers/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/toolkit"
 )
 
 // StructValidator implémente l'interface toolkit.ToolkitOperation pour la validation des structures

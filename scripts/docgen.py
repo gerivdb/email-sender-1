@@ -8,8 +8,8 @@ import json # Import the json module for parsing scanner output
 
 class DocGen:
     def __init__(self):
-        self.go_docgen_base_path = os.path.join("integration", "cmd", "docgen", "docgen")
-        self.go_lang_scanner_base_path = os.path.join("integration", "cmd", "langscanner", "langscanner") # Assuming a langscanner CLI will be built
+        self.go_docgen_base_path = os.path.join(os.path.dirname(__file__), "..", "integration", "cmd", "docgen", "docgen")
+        self.go_lang_scanner_base_path = os.path.join(os.path.dirname(__file__), "..", "integration", "cmd", "langscanner", "langscanner") # Assuming a langscanner CLI will be built
         
         if sys.platform == "win32":
             self.go_docgen_path = self.go_docgen_base_path + ".exe"
@@ -62,9 +62,18 @@ class DocGen:
         
         try:
             # pydoc génère au format texte brut, nous le redirigeons vers un fichier
-            command = [sys.executable, "-m", "pydoc", source_path]
+            # Convertir le chemin source en chemin absolu pour pydoc
+            abs_source_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", source_path))
+            # Le chemin absolu est déjà correct, mais pydoc a besoin que le répertoire de base du projet soit dans sys.path.
+            # On va changer le répertoire de travail du subprocess.
+            project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+            
+            # Pour pydoc, on doit lui passer le chemin relatif du fichier par rapport au cwd
+            relative_source_path_for_pydoc = os.path.relpath(abs_source_path, project_root)
+
+            command = [sys.executable, "-m", "pydoc", relative_source_path_for_pydoc]
             with open(output_file, "w", encoding="utf-8") as f:
-                subprocess.run(command, stdout=f, stderr=subprocess.PIPE, text=True, check=True)
+                subprocess.run(command, stdout=f, stderr=subprocess.PIPE, text=True, check=True, cwd=project_root)
             print(f"Documentation Python générée avec succès pour {source_path} dans {output_file}")
             return True
         except subprocess.CalledProcessError as e:
@@ -128,7 +137,11 @@ class DocGen:
         temp_output_dir = os.path.join(os.path.dirname(output_file), "jsdoc_tmp")
         self._ensure_output_dir(temp_output_dir)
 
-        command = ["jsdoc", source_path, "-d", temp_output_dir]
+        jsdoc_executable = os.path.join(os.path.dirname(__file__), "node_modules", ".bin", "jsdoc")
+        if sys.platform == "win32":
+            jsdoc_executable += ".cmd" # On Windows, npm puts .cmd files in .bin
+
+        command = [jsdoc_executable, source_path, "-d", temp_output_dir]
         
         try:
             result = subprocess.run(command, capture_output=True, text=True, check=True, shell=True)

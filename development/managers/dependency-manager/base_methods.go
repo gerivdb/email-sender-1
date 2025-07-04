@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/email-sender-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 )
 
 // Interface compliance methods

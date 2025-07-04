@@ -1,4 +1,4 @@
-package main
+package gapanalyzer
 
 import (
 	"encoding/json"
@@ -10,8 +10,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"email_sender/core/gapanalyzer" // Import the gapanalyzer package
-	"email_sender/core/scanmodules" // Import scanmodules for RepositoryStructure
+	"github.com/gerivdb/email-sender-1/core/gapanalyzer" // Import the gapanalyzer package
+	"github.com/gerivdb/email-sender-1/core/scanmodules" // Import scanmodules for RepositoryStructure
 )
 
 func main() {

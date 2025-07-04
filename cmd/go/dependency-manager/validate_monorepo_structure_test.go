@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"email_sender/cmd/go/dependency-manager/validate_monorepo_structure"
+	"github.com/gerivdb/email-sender-1/cmd/go/dependency-manager/validate_monorepo_structure"
 )
 
 func TestValidateMonorepoStructure(t *testing.T) {
@@ -62,7 +62,7 @@ func TestValidateMonorepoStructure(t *testing.T) {
 	// Create dummy go.mod in submodule
 	submodulePath := filepath.Join(tmpDir, "submodule")
 	os.MkdirAll(submodulePath, 0o755)
-	err = ioutil.WriteFile(filepath.Join(submodulePath, "go.mod"), []byte("module email_sender/submodule"), 0o644)
+	err = ioutil.WriteFile(filepath.Join(submodulePath, "go.mod"), []byte("module github.com/gerivdb/email-sender-1/submodule"), 0o644)
 	if err != nil {
 		t.Fatalf("Failed to write dummy submodule go.mod: %v", err)
 	}

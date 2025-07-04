@@ -7,8 +7,8 @@ import (
 	"log"
 	"time"
 
-	cmmInterfaces "email_sender/development/managers/contextual-memory-manager/interfaces"
-	cmmManager "email_sender/development/managers/contextual-memory-manager/pkg/manager"
+	cmmInterfaces "github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
+	cmmManager "github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/pkg/manager"
 )
 
 // Demo function to test the contextual memory system end-to-end

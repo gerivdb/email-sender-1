@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"email_sender/internal/testgen"
+	"github.com/gerivdb/email-sender-1/internal/testgen"
 )
 
 func main() {
@@ -36,7 +36,7 @@ func main() {
 	_ = generator // For future use
 
 	// Ensure output directory exists
-	if err := os.MkdirAll(*output, 0755); err != nil {
+	if err := os.MkdirAll(*output, 0o755); err != nil {
 		log.Fatalf("Failed to create output directory: %v", err)
 	}
 	// Generate tests for the target package
@@ -57,7 +57,7 @@ func TestBasic(t *testing.T) {
 `, filepath.Base(*target), *target)
 
 	testFile := filepath.Join(*output, fmt.Sprintf("%s_test.go", filepath.Base(*target)))
-	if err := os.WriteFile(testFile, []byte(testContent), 0644); err != nil {
+	if err := os.WriteFile(testFile, []byte(testContent), 0o644); err != nil {
 		log.Fatalf("Failed to write test file: %v", err)
 	}
 

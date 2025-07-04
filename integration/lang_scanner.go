@@ -40,15 +40,19 @@ func NewLangScanner() LangScanner {
 
 // Scan parcourt le répertoire racine et identifie les types de projets.
 func (s *fileSystemScanner) Scan(rootPath string) ([]Project, error) {
+	return s.scanRecursive(rootPath, rootPath) // Appel initial avec rootPath comme basePath
+}
+
+func (s *fileSystemScanner) scanRecursive(currentPath, basePath string) ([]Project, error) {
 	var projects []Project
 
-	files, err := ioutil.ReadDir(rootPath)
+	files, err := ioutil.ReadDir(currentPath)
 	if err != nil {
-		return nil, fmt.Errorf("erreur de lecture du répertoire %s: %w", rootPath, err)
+		return nil, fmt.Errorf("erreur de lecture du répertoire %s: %w", currentPath, err)
 	}
 
 	for _, file := range files {
-		fullPath := filepath.Join(rootPath, file.Name())
+		fullPath := filepath.Join(currentPath, file.Name())
 
 		if file.IsDir() {
 			// Ignorer les répertoires Git et autres répertoires de build/dépendances
@@ -56,7 +60,7 @@ func (s *fileSystemScanner) Scan(rootPath string) ([]Project, error) {
 				continue
 			}
 			// Recherche récursive dans les sous-répertoires
-			subProjects, err := s.Scan(fullPath)
+			subProjects, err := s.scanRecursive(fullPath, basePath) // Passer basePath aux appels récursifs
 			if err != nil {
 				return nil, err // Propager l'erreur
 			}
@@ -64,7 +68,11 @@ func (s *fileSystemScanner) Scan(rootPath string) ([]Project, error) {
 		} else {
 			projectType := s.detectProjectType(file.Name(), fullPath)
 			if projectType != UnknownProject {
-				projects = append(projects, Project{Path: fullPath, Type: projectType})
+				relativePath, err := filepath.Rel(basePath, fullPath)
+				if err != nil {
+					return nil, fmt.Errorf("erreur lors de la conversion du chemin relatif: %w", err)
+				}
+				projects = append(projects, Project{Path: relativePath, Type: projectType})
 			}
 		}
 	}

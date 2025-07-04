@@ -8,10 +8,10 @@ import (
 	"runtime"
 	"time"
 
-	"email_sender/development/managers/roadmap-manager/roadmap-cli/ingestion"
-	parallelprocessor "email_sender/development/managers/roadmap-manager/roadmap-cli/parallel"
-	rag "email_sender/development/managers/roadmap-manager/roadmap-cli/rag"
-	"email_sender/development/managers/roadmap-manager/roadmap-cli/storage"
+	"github.com/gerivdb/email-sender-1/development/managers/roadmap-manager/roadmap-cli/ingestion"
+	parallelprocessor "github.com/gerivdb/email-sender-1/development/managers/roadmap-manager/roadmap-cli/parallel"
+	rag "github.com/gerivdb/email-sender-1/development/managers/roadmap-manager/roadmap-cli/rag"
+	"github.com/gerivdb/email-sender-1/development/managers/roadmap-manager/roadmap-cli/storage"
 
 	"github.com/spf13/cobra"
 )

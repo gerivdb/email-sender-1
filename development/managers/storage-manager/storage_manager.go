@@ -10,10 +10,9 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 	"github.com/google/uuid"
-	"github.com/lib/pq"
 	_ "github.com/lib/pq"
-	"github.com/email-sender-manager/interfaces"
 )
 
 // StorageManagerImpl implémente StorageManager
@@ -33,10 +32,10 @@ type StorageManagerImpl struct {
 	mu            sync.RWMutex
 
 	// Phase 4.2.1: Ajout des capacités de vectorisation
-	vectorizer         VectorizationEngine     // Moteur de vectorisation pour auto-indexation
-	configIndexer      *ConfigurationIndexer   // Indexeur de fichiers de configuration
-	schemaVectorizer   *SchemaVectorizer       // Vectoriseur de schémas de base de données
-	semanticSearcher   *SemanticSearcher       // Recherche sémantique dans les configurations
+	vectorizer           VectorizationEngine   // Moteur de vectorisation pour auto-indexation
+	configIndexer        *ConfigurationIndexer // Indexeur de fichiers de configuration
+	schemaVectorizer     *SchemaVectorizer     // Vectoriseur de schémas de base de données
+	semanticSearcher     *SemanticSearcher     // Recherche sémantique dans les configurations
 	vectorizationEnabled bool                  // Flag d'activation de la vectorisation
 }
 
@@ -78,9 +77,9 @@ type CacheConfig struct {
 
 // MigrationsConfig configuration migrations
 type MigrationsConfig struct {
-	Path       string `json:"path"`
-	AutoRun    bool   `json:"auto_run"`
-	TableName  string `json:"table_name"`
+	Path      string `json:"path"`
+	AutoRun   bool   `json:"auto_run"`
+	TableName string `json:"table_name"`
 }
 
 // QdrantClient interface pour Qdrant
@@ -110,7 +109,7 @@ type MigrationManager struct {
 // NewStorageManager crée une nouvelle instance du gestionnaire de stockage
 func NewStorageManager() interfaces.StorageManager {
 	config := loadStorageConfig()
-	
+
 	manager := &StorageManagerImpl{
 		id:      uuid.New().String(),
 		name:    "storage-manager",
@@ -155,7 +154,7 @@ func loadStorageConfig() *StorageConfig {
 			TableName: getEnv("MIGRATIONS_TABLE", "schema_migrations"),
 		},
 	}
-}// Interface compliance methods
+} // Interface compliance methods
 
 // GetID retourne l'ID du manager
 func (sm *StorageManagerImpl) GetID() string {
@@ -291,7 +290,7 @@ func (sm *StorageManagerImpl) Health(ctx context.Context) error {
 
 	sm.logger.Printf("Health check passed - Cache size: %d", cacheSize)
 	return nil
-}// Storage operations methods
+} // Storage operations methods
 
 // SaveDependencyMetadata sauvegarde les métadonnées de dépendance
 func (sm *StorageManagerImpl) SaveDependencyMetadata(ctx context.Context, metadata *interfaces.DependencyMetadata) error {
@@ -389,18 +388,18 @@ type VectorizationEngine interface {
 
 // ConfigurationIndexer gère l'auto-indexation des fichiers de configuration
 type ConfigurationIndexer struct {
-	vectorizer       VectorizationEngine
-	qdrant          QdrantClient
-	watchedPaths    []string
-	indexedConfigs  map[string]*ConfigMetadata
-	mu              sync.RWMutex
-	logger          *log.Logger
+	vectorizer     VectorizationEngine
+	qdrant         QdrantClient
+	watchedPaths   []string
+	indexedConfigs map[string]*ConfigMetadata
+	mu             sync.RWMutex
+	logger         *log.Logger
 }
 
 // ConfigMetadata métadonnées d'un fichier de configuration indexé
 type ConfigMetadata struct {
 	FilePath     string                 `json:"file_path"`
-	ConfigType   string                 `json:"config_type"`   // json, yaml, env, etc.
+	ConfigType   string                 `json:"config_type"` // json, yaml, env, etc.
 	LastModified time.Time              `json:"last_modified"`
 	Embedding    []float32              `json:"embedding"`
 	Content      map[string]interface{} `json:"content"`
@@ -411,23 +410,23 @@ type ConfigMetadata struct {
 // SchemaVectorizer gère la vectorisation des schémas de base de données
 type SchemaVectorizer struct {
 	vectorizer       VectorizationEngine
-	qdrant          QdrantClient
-	schemas         map[string]*DatabaseSchema
+	qdrant           QdrantClient
+	schemas          map[string]*DatabaseSchema
 	schemaEmbeddings map[string][]float32
-	mu              sync.RWMutex
-	logger          *log.Logger
+	mu               sync.RWMutex
+	logger           *log.Logger
 }
 
 // DatabaseSchema représente un schéma de base de données
 type DatabaseSchema struct {
-	Name        string              `json:"name"`
-	Tables      []TableSchema       `json:"tables"`
-	Relations   []RelationSchema    `json:"relations"`
-	Indexes     []IndexSchema       `json:"indexes"`
-	Constraints []ConstraintSchema  `json:"constraints"`
-	Version     string              `json:"version"`
-	CreatedAt   time.Time           `json:"created_at"`
-	UpdatedAt   time.Time           `json:"updated_at"`
+	Name        string             `json:"name"`
+	Tables      []TableSchema      `json:"tables"`
+	Relations   []RelationSchema   `json:"relations"`
+	Indexes     []IndexSchema      `json:"indexes"`
+	Constraints []ConstraintSchema `json:"constraints"`
+	Version     string             `json:"version"`
+	CreatedAt   time.Time          `json:"created_at"`
+	UpdatedAt   time.Time          `json:"updated_at"`
 }
 
 // TableSchema représente un schéma de table
@@ -477,25 +476,25 @@ type ConstraintSchema struct {
 
 // ForeignKey représente une clé étrangère
 type ForeignKey struct {
-	Column          string `json:"column"`
-	ReferencedTable string `json:"referenced_table"`
+	Column           string `json:"column"`
+	ReferencedTable  string `json:"referenced_table"`
 	ReferencedColumn string `json:"referenced_column"`
-	OnDelete        string `json:"on_delete,omitempty"`
-	OnUpdate        string `json:"on_update,omitempty"`
+	OnDelete         string `json:"on_delete,omitempty"`
+	OnUpdate         string `json:"on_update,omitempty"`
 }
 
 // SemanticSearcher gère la recherche sémantique dans les configurations
 type SemanticSearcher struct {
-	vectorizer     VectorizationEngine
-	qdrant        QdrantClient
-	configIndexer *ConfigurationIndexer
+	vectorizer       VectorizationEngine
+	qdrant           QdrantClient
+	configIndexer    *ConfigurationIndexer
 	schemaVectorizer *SchemaVectorizer
-	logger        *log.Logger
+	logger           *log.Logger
 }
 
 // SearchResult représente un résultat de recherche sémantique
 type SearchResult struct {
-	Type        string                 `json:"type"`        // config, schema, table, etc.
+	Type        string                 `json:"type"` // config, schema, table, etc.
 	ID          string                 `json:"id"`
 	Name        string                 `json:"name"`
 	Score       float32                `json:"score"`
@@ -512,19 +511,19 @@ type StorageVectorization interface {
 	UpdateConfigurationIndex(ctx context.Context, filePath string) error
 	RemoveConfigurationIndex(ctx context.Context, filePath string) error
 	WatchConfigurationDirectory(ctx context.Context, dirPath string) error
-	
+
 	// Phase 4.2.1.2: Vectorisation des schémas de base de données
 	IndexDatabaseSchema(ctx context.Context, schemaName string) error
 	UpdateSchemaIndex(ctx context.Context, schemaName string) error
 	GetSchemaEmbedding(ctx context.Context, schemaName string) ([]float32, error)
 	FindSimilarSchemas(ctx context.Context, schemaName string, threshold float64) ([]SearchResult, error)
-	
+
 	// Phase 4.2.1.3: Recherche sémantique dans les configurations
 	SearchConfigurations(ctx context.Context, query string, limit int) ([]SearchResult, error)
 	SearchSchemas(ctx context.Context, query string, limit int) ([]SearchResult, error)
 	SearchTables(ctx context.Context, query string, limit int) ([]SearchResult, error)
 	SearchAll(ctx context.Context, query string, limit int) ([]SearchResult, error)
-	
+
 	// Méthodes de gestion
 	EnableVectorization() error
 	DisableVectorization() error

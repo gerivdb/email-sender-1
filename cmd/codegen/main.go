@@ -2,13 +2,9 @@
 package main
 
 import (
-"fmt"
-
-/*
-"email_sender/internal/codegen"
-*/
+	"fmt"
 )
 
 func main() {
-	fmt.Println("Erreur : le module interne 'email_sender/internal/codegen' est manquant. Corrigez l'import ou ajoutez le module pour activer la génération.")
+	fmt.Println("Erreur : le module interne 'github.com/gerivdb/email-sender-1/internal/codegen' est manquant. Corrigez l'import ou ajoutez le module pour activer la génération.")
 }

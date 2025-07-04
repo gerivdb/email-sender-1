@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/contextual-memory-manager/pkg/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/pkg/interfaces"
 )
 
 // ContextualMemoryManagerImpl implements the ContextualMemoryManager interface

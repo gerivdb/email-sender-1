@@ -7,10 +7,9 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"go.uber.org/zap/zaptest"
 
-	"github.com/contextual-memory-manager/internal/monitoring"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/internal/monitoring"
 )
 
 func TestHybridMetricsCollector(t *testing.T) {
@@ -50,9 +49,9 @@ func TestHybridMetricsCollector(t *testing.T) {
 		collector.Reset()
 
 		// Enregistrer des sélections de mode
-		collector.RecordModeSelection("ast", "ast", 0.9)    // Correct
-		collector.RecordModeSelection("rag", "ast", 0.7)    // Incorrect
-		collector.RecordModeSelection("ast", "ast", 0.8)    // Correct
+		collector.RecordModeSelection("ast", "ast", 0.9) // Correct
+		collector.RecordModeSelection("rag", "ast", 0.7) // Incorrect
+		collector.RecordModeSelection("ast", "ast", 0.8) // Correct
 
 		stats := collector.GetStatistics()
 
@@ -60,8 +59,8 @@ func TestHybridMetricsCollector(t *testing.T) {
 		assert.Equal(t, int64(1), stats.ModeSelections["rag"])
 
 		// Vérifier la précision
-		assert.Equal(t, 1.0, stats.ModeAccuracy["ast"])  // 2/2 correct
-		assert.Equal(t, 0.0, stats.ModeAccuracy["rag"])  // 0/1 correct
+		assert.Equal(t, 1.0, stats.ModeAccuracy["ast"]) // 2/2 correct
+		assert.Equal(t, 0.0, stats.ModeAccuracy["rag"]) // 0/1 correct
 	})
 
 	t.Run("RecordError", func(t *testing.T) {
@@ -108,8 +107,8 @@ func TestHybridMetricsCollector(t *testing.T) {
 	t.Run("RecordMemoryUsage", func(t *testing.T) {
 		collector.Reset()
 
-		collector.RecordMemoryUsage("ast", 1024*1024)  // 1MB
-		collector.RecordMemoryUsage("rag", 2048*1024)  // 2MB
+		collector.RecordMemoryUsage("ast", 1024*1024) // 1MB
+		collector.RecordMemoryUsage("rag", 2048*1024) // 2MB
 
 		stats := collector.GetStatistics()
 

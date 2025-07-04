@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"email_sender/pkg/managers"
-	"email_sender/pkg/queue"
+	"github.com/gerivdb/email-sender-1/pkg/managers"
+	"github.com/gerivdb/email-sender-1/pkg/queue"
 
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"

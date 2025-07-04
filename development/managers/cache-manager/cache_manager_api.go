@@ -1,6 +1,6 @@
 // API REST CacheManager v74 — Serveur Go natif
 
-package main
+package cachemanager
 
 import (
 	"encoding/json"
@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"sync"
 
-	cachemanager "email_sender/development/managers/cache-manager"
+	cachemanager "github.com/gerivdb/email-sender-1/development/managers/cache-manager"
 )
 
 var (

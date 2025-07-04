@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"email_sender/cmd/go/dependency-manager/audit_modules"
+	"github.com/gerivdb/email-sender-1/cmd/go/dependency-manager/audit_modules"
 )
 
 func TestAuditModules(t *testing.T) {
@@ -22,7 +22,7 @@ func TestAuditModules(t *testing.T) {
 
 	// Create dummy go.mod and go.sum files
 	dummyGoModContent := `
-module email_sender/core/testmodule
+module github.com/gerivdb/email-sender-1/core/testmodule
 go 1.18
 require (
 	github.com/stretchr/testify v1.7.0
@@ -114,8 +114,8 @@ require (
 	for _, gm := range report.GoModFiles {
 		if gm.Path == "go.mod" {
 			foundMainModule = true
-			if gm.ModuleName != "email_sender/core/testmodule" {
-				t.Errorf("Main go.mod: Expected module name 'email_sender/core/testmodule', got '%s'", gm.ModuleName)
+			if gm.ModuleName != "github.com/gerivdb/email-sender-1/core/testmodule" {
+				t.Errorf("Main go.mod: Expected module name 'github.com/gerivdb/email-sender-1/core/testmodule', got '%s'", gm.ModuleName)
 			}
 			if gm.GoVersion != "1.18" {
 				t.Errorf("Main go.mod: Expected go version '1.18', got '%s'", gm.GoVersion)

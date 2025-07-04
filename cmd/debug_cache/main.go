@@ -2,8 +2,9 @@
 package main
 
 import (
-	"email_sender/src/providers"
 	"fmt"
+
+	"github.com/gerivdb/email-sender-1/src/providers"
 )
 
 func main() {

@@ -14,7 +14,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 
-	"email_sender/cmd/roadmap-cli/keybinds"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/keybinds"
 )
 
 var (
@@ -547,7 +547,7 @@ func exportResults(result *TestResult, filename string) {
 		return
 	}
 
-	if err := os.WriteFile(filename, data, 0644); err != nil {
+	if err := os.WriteFile(filename, data, 0o644); err != nil {
 		log.Printf("Failed to write results to %s: %v", filename, err)
 		return
 	}

@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"email_sender/cmd/go/dependency-manager/plan_go_mod_deletion"
+	"github.com/gerivdb/email-sender-1/cmd/go/dependency-manager/plan_go_mod_deletion"
 )
 
 func TestPlanGoModDeletion(t *testing.T) {

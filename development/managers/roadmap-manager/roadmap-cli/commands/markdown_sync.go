@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"email_sender/cmd/roadmap-cli/storage"
-	"email_sender/cmd/roadmap-cli/types"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/storage"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types"
 
 	"github.com/spf13/cobra"
 )
@@ -159,7 +159,7 @@ func runMarkdownExport(storage *storage.JSONStorage) error {
 	}
 
 	// Create target directory
-	if err := os.MkdirAll(targetDir, 0755); err != nil {
+	if err := os.MkdirAll(targetDir, 0o755); err != nil {
 		return fmt.Errorf("failed to create target directory: %w", err)
 	}
 
@@ -187,7 +187,7 @@ func runMarkdownExport(storage *storage.JSONStorage) error {
 	filepath := filepath.Join(targetDir, filename)
 
 	if !markdownDryRun {
-		if err := os.WriteFile(filepath, []byte(markdownContent), 0644); err != nil {
+		if err := os.WriteFile(filepath, []byte(markdownContent), 0o644); err != nil {
 			return fmt.Errorf("failed to write Markdown file: %w", err)
 		}
 	}

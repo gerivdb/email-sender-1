@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"email_sender/pkg/docmanager"
+	"github.com/gerivdb/email-sender-1/pkg/docmanager"
 )
 
 // TestManagerImplementation teste l'implémentation ManagerType
@@ -122,12 +122,14 @@ func (tr *TestRepositoryImplementation) Search(query docmanager.SearchQuery) ([]
 }
 
 // Alias methods
-func (tr *TestRepositoryImplementation) Save(doc *docmanager.Document) error { 
-	return tr.Store(doc) 
+func (tr *TestRepositoryImplementation) Save(doc *docmanager.Document) error {
+	return tr.Store(doc)
 }
-func (tr *TestRepositoryImplementation) Get(id string) (*docmanager.Document, error) { 
-	return tr.Retrieve(id) 
+
+func (tr *TestRepositoryImplementation) Get(id string) (*docmanager.Document, error) {
+	return tr.Retrieve(id)
 }
+
 func (tr *TestRepositoryImplementation) Delete(id string) error {
 	if tr.documents == nil {
 		return fmt.Errorf("document not found: %s", id)
@@ -359,7 +361,6 @@ func main() {
 		}
 		return txCtx.Store(testDoc)
 	})
-
 	if err != nil {
 		fmt.Printf("❌ Transaction failed: %v\n", err)
 		return

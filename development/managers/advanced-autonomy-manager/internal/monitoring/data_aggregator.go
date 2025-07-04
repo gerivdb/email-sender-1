@@ -5,7 +5,8 @@ import (
 	"context"
 	"fmt"
 	"time"
-	"email_sender/development/managers/advanced-autonomy-manager/interfaces"
+
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // DataAggregator agrégateur de données pour l'analyse
@@ -15,7 +16,7 @@ type DataAggregator struct {
 	timeSeriesData map[string]*TimeSeries
 	trendAnalyzer  *TrendAnalyzer
 	statistician   *StatisticalAnalyzer
-	initialized bool
+	initialized    bool
 }
 
 // NewDataAggregator crée une nouvelle instance de DataAggregator

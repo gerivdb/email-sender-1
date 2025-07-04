@@ -15,8 +15,8 @@ import (
 	"strings"
 	"time"
 
-	"email_sender/development/managers/tools/core/registry"
-	"email_sender/development/managers/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/toolkit"
 )
 
 // DependencyAnalyzer implémente l'interface toolkit.ToolkitOperation pour l'analyse des dépendances

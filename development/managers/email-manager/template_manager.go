@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 	"github.com/google/uuid"
-	"github.com/email-sender-manager/interfaces"
 	"go.uber.org/zap"
 )
 
@@ -25,7 +25,7 @@ type TemplateManagerImpl struct {
 	isInitialized bool
 
 	// Template manager specific fields
-	templates     map[string]*interfaces.EmailTemplate
+	templates         map[string]*interfaces.EmailTemplate
 	compiledTemplates map[string]*template.Template
 }
 
@@ -130,8 +130,8 @@ func (tm *TemplateManagerImpl) GetMetrics() map[string]interface{} {
 	return map[string]interface{}{
 		"total_templates":    len(tm.templates),
 		"compiled_templates": len(tm.compiledTemplates),
-		"status":            tm.status.String(),
-		"uptime":            time.Since(time.Now()).String(),
+		"status":             tm.status.String(),
+		"uptime":             time.Since(time.Now()).String(),
 	}
 }
 
@@ -165,7 +165,7 @@ func (tm *TemplateManagerImpl) CreateTemplate(ctx context.Context, emailTemplate
 	tm.templates[emailTemplate.ID] = emailTemplate
 	tm.compiledTemplates[emailTemplate.ID] = tmpl
 
-	tm.logger.Info("Template created", 
+	tm.logger.Info("Template created",
 		zap.String("template_id", emailTemplate.ID),
 		zap.String("name", emailTemplate.Name))
 
@@ -205,7 +205,7 @@ func (tm *TemplateManagerImpl) UpdateTemplate(ctx context.Context, templateID st
 	tm.templates[templateID] = emailTemplate
 	tm.compiledTemplates[templateID] = tmpl
 
-	tm.logger.Info("Template updated", 
+	tm.logger.Info("Template updated",
 		zap.String("template_id", templateID),
 		zap.String("name", emailTemplate.Name))
 
@@ -317,24 +317,24 @@ func (tm *TemplateManagerImpl) validateTemplateContent(content string) error {
 func (tm *TemplateManagerImpl) loadDefaultTemplates() {
 	// Template de bienvenue
 	welcomeTemplate := &interfaces.EmailTemplate{
-		ID:          "welcome",
-		Name:        "Welcome Email",
-		Subject:     "Welcome to {{.AppName}}",
-		Content:     `Hello {{.Name}},\n\nWelcome to {{.AppName}}! We're excited to have you on board.\n\nBest regards,\nThe {{.AppName}} Team`,
-		Type:        interfaces.EmailTemplateTypeHTML,
-		CreatedAt:   time.Now(),
-		UpdatedAt:   time.Now(),
+		ID:        "welcome",
+		Name:      "Welcome Email",
+		Subject:   "Welcome to {{.AppName}}",
+		Content:   `Hello {{.Name}},\n\nWelcome to {{.AppName}}! We're excited to have you on board.\n\nBest regards,\nThe {{.AppName}} Team`,
+		Type:      interfaces.EmailTemplateTypeHTML,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	// Template de notification
 	notificationTemplate := &interfaces.EmailTemplate{
-		ID:          "notification",
-		Name:        "System Notification",
-		Subject:     "System Notification: {{.Title}}",
-		Content:     `Dear {{.Name}},\n\n{{.Message}}\n\nTime: {{.Timestamp}}\n\nBest regards,\nSystem`,
-		Type:        interfaces.EmailTemplateTypeText,
-		CreatedAt:   time.Now(),
-		UpdatedAt:   time.Now(),
+		ID:        "notification",
+		Name:      "System Notification",
+		Subject:   "System Notification: {{.Title}}",
+		Content:   `Dear {{.Name}},\n\n{{.Message}}\n\nTime: {{.Timestamp}}\n\nBest regards,\nSystem`,
+		Type:      interfaces.EmailTemplateTypeText,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	tm.templates["welcome"] = welcomeTemplate

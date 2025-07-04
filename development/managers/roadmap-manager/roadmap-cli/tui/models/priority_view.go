@@ -7,8 +7,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 
-	"email_sender/cmd/roadmap-cli/priority"
-	"email_sender/cmd/roadmap-cli/types"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/priority"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types"
 )
 
 // PriorityViewMode represents different priority view modes
@@ -393,7 +393,9 @@ func (pv *PriorityView) categorizeByUrgencyImportance() map[string][]types.Roadm
 }
 
 // Message types for priority view communication
-type PriorityRefreshMsg struct{}
-type PriorityDetailMsg struct {
-	ItemID string
-}
+type (
+	PriorityRefreshMsg struct{}
+	PriorityDetailMsg  struct {
+		ItemID string
+	}
+)

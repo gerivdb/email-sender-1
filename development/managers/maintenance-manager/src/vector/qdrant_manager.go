@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"email_sender/development/managers/maintenance-manager/src/core"
-	"email_sender/development/managers/maintenance-manager/src/vector/qdrant" // Ajouté pour les types qdrant
+	"github.com/gerivdb/email-sender-1/development/managers/maintenance-manager/src/core"
+	"github.com/gerivdb/email-sender-1/development/managers/maintenance-manager/src/vector/qdrant" // Ajouté pour les types qdrant
 
 	"go.uber.org/zap"
 	// "github.com/gerivdb/email-sender-1/maintenance-manager/src/core" // Désactivé car module absent

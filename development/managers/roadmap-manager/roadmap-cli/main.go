@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"email_sender/cmd/roadmap-cli/commands"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/commands"
 )
 
 var (

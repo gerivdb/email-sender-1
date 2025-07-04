@@ -4,13 +4,14 @@ package healing
 import (
 	"context"
 	"fmt"
-	"email_sender/development/managers/advanced-autonomy-manager/interfaces"
+
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // HealingKnowledgeBase gère la base de connaissances pour l'auto-réparation
 type HealingKnowledgeBase struct {
-	config *KnowledgeBaseConfig
-	logger interfaces.Logger
+	config      *KnowledgeBaseConfig
+	logger      interfaces.Logger
 	initialized bool
 }
 

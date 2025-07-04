@@ -3,9 +3,10 @@
 package main
 
 import (
-	"email_sender/development/managers/bridges"
 	"fmt"
 	"log"
+
+	"github.com/gerivdb/email-sender-1/development/managers/bridges"
 )
 
 func RunPersistentBridge() {

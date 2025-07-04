@@ -6,9 +6,8 @@ import (
 	"context"
 	"fmt"
 	"testing"
-	"time"
 
-	"email_sender/pkg/docmanager"
+	"github.com/gerivdb/email-sender-1/pkg/docmanager"
 )
 
 // TestManagerTypeCompliance teste la conformité de l'interface ManagerType
@@ -242,7 +241,6 @@ func TestRepositoryTransactions(t *testing.T) {
 		}
 		return txCtx.Store(doc)
 	})
-
 	if err != nil {
 		t.Fatalf("Successful transaction failed: %v", err)
 	}

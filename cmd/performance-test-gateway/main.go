@@ -9,8 +9,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	gatewaymanager "email_sender/development/managers/gateway-manager"
-	"email_sender/internal/core" // Importer les mocks
+	gatewaymanager "github.com/gerivdb/email-sender-1/development/managers/gateway-manager"
+	"github.com/gerivdb/email-sender-1/internal/core" // Importer les mocks
 )
 
 const (

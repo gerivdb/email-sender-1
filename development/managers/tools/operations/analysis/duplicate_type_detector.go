@@ -16,8 +16,8 @@ import (
 	"strings"
 	"time"
 
-	"email_sender/development/managers/tools/core/registry"
-	"email_sender/development/managers/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/toolkit"
 )
 
 // DuplicateTypeDetector implémente l'interface toolkit.ToolkitOperation pour la détection des types dupliqués

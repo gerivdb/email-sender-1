@@ -8,9 +8,9 @@ import (
 	"sync"
 	"time"
 
-	"email_sender/cmd/roadmap-cli/ingestion"
-	"email_sender/cmd/roadmap-cli/storage"
-	"email_sender/cmd/roadmap-cli/types"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/ingestion"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/storage"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types"
 )
 
 // ProcessorConfig contains configuration for parallel processing

@@ -3,13 +3,14 @@ package main
 
 import (
 	"context"
-	redisconfig "email_sender/pkg/cache/redis"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 	"time"
+
+	redisconfig "github.com/gerivdb/email-sender-1/pkg/cache/redis"
 
 	"github.com/redis/go-redis/v9"
 )

@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/email-sender-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 )
 
 // VersionManagerImpl implémente VersionManager
@@ -62,7 +62,7 @@ func (vm *VersionManagerImpl) GetLatestVersion(ctx context.Context, packageName 
 	// Cette implémentation serait spécifique au gestionnaire de packages
 	// Pour Go, on utiliserait la Go proxy API
 	// Pour npm, on utiliserait l'API npm registry
-	
+
 	// Placeholder implementation
 	return "latest", fmt.Errorf("not implemented: GetLatestVersion for %s", packageName)
 }
@@ -70,7 +70,7 @@ func (vm *VersionManagerImpl) GetLatestVersion(ctx context.Context, packageName 
 // GetLatestStableVersion retourne la dernière version stable
 func (vm *VersionManagerImpl) GetLatestStableVersion(ctx context.Context, packageName string) (string, error) {
 	// Cette implémentation filtrerait les versions préliminaires
-	
+
 	// Placeholder implementation
 	return "stable", fmt.Errorf("not implemented: GetLatestStableVersion for %s", packageName)
 }
@@ -79,13 +79,13 @@ func (vm *VersionManagerImpl) GetLatestStableVersion(ctx context.Context, packag
 func (vm *VersionManagerImpl) normalizeVersion(version string) string {
 	// Supprimer les préfixes comme 'v'
 	version = strings.TrimPrefix(version, "v")
-	
+
 	// Ajouter .0 si nécessaire pour faire une version semver valide
 	parts := strings.Split(version, ".")
 	for len(parts) < 3 {
 		parts = append(parts, "0")
 	}
-	
+
 	return strings.Join(parts, ".")
 }
 

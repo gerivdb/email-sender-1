@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	redisconfig "email_sender/pkg/cache/redis"
+	redisconfig "github.com/gerivdb/email-sender-1/pkg/cache/redis"
 )
 
 func main() {
@@ -26,7 +26,7 @@ func main() {
 	// Test 2: Circuit Breaker functionality
 	logger.Println("\n=== Test 2: Circuit Breaker ===")
 	cb := redisconfig.NewCircuitBreaker(redisconfig.DefaultCircuitBreakerConfig(), logger)
-	
+
 	// Test circuit breaker with simulated failures
 	for i := 0; i < 6; i++ {
 		err := cb.Execute(func() error {
@@ -35,7 +35,7 @@ func main() {
 			}
 			return nil
 		})
-		
+
 		if i < 5 {
 			logger.Printf("❌ Expected failure %d: %v (State: %s)", i+1, err, cb.State())
 		} else {
@@ -50,74 +50,74 @@ func main() {
 	// Test 3: Local Cache functionality
 	logger.Println("\n=== Test 3: Local Cache ===")
 	localCache := redisconfig.NewLocalCache(100, 10*time.Second)
-	
+
 	ctx := context.Background()
-	
+
 	// Test Set/Get
 	key := "test-key"
 	value := "test-value"
-	
+
 	if err := localCache.Set(ctx, key, value, 5*time.Second); err != nil {
 		logger.Fatalf("❌ Failed to set value: %v", err)
 	}
 	logger.Println("✓ Value set in local cache")
-	
+
 	retrievedValue, err := localCache.Get(ctx, key)
 	if err != nil {
 		logger.Fatalf("❌ Failed to get value: %v", err)
 	}
-	
+
 	if retrievedValue == value {
 		logger.Println("✓ Value retrieved correctly from local cache")
 	} else {
 		logger.Fatalf("❌ Retrieved value doesn't match: got %v, want %v", retrievedValue, value)
 	}
-	
+
 	// Test cache stats
 	cacheStats := localCache.Stats()
 	logger.Printf("Local Cache Stats: %+v", cacheStats)
 
 	// Test 4: Hybrid Redis Client (fallback mode)
 	logger.Println("\n=== Test 4: Hybrid Redis Client (Fallback) ===")
-	
+
 	// Create hybrid client with invalid Redis config to force fallback
 	invalidConfig := redisconfig.DefaultRedisConfig()
 	invalidConfig.Host = "invalid-host"
 	invalidConfig.Port = 9999
-	
+
 	hybridClient, err := redisconfig.NewHybridRedisClient(invalidConfig)
 	if err != nil {
 		logger.Fatalf("❌ Failed to create hybrid client: %v", err)
 	}
 	defer hybridClient.Close()
-	
+
 	// Test that Redis is not healthy (fallback mode)
 	if hybridClient.IsRedisHealthy() {
 		logger.Println("⚠️  Redis appears healthy (unexpected)")
 	} else {
 		logger.Println("✓ Redis is not healthy, fallback mode active")
 	}
-	
+
 	// Test Set/Get through hybrid client (should use local cache)
 	hybridKey := "hybrid-test-key"
 	hybridValue := "hybrid-test-value"
-	
+
 	if err := hybridClient.Set(ctx, hybridKey, hybridValue, 5*time.Second); err != nil {
 		logger.Fatalf("❌ Failed to set value through hybrid client: %v", err)
 	}
 	logger.Println("✓ Value set through hybrid client (local cache)")
-	
+
 	retrievedHybridValue, err := hybridClient.Get(ctx, hybridKey)
 	if err != nil {
 		logger.Fatalf("❌ Failed to get value through hybrid client: %v", err)
 	}
-	
+
 	if retrievedHybridValue == hybridValue {
 		logger.Println("✓ Value retrieved correctly through hybrid client")
 	} else {
 		logger.Fatalf("❌ Retrieved hybrid value doesn't match: got %v, want %v", retrievedHybridValue, hybridValue)
 	}
-	
+
 	// Test hybrid client stats
 	hybridStats := hybridClient.GetStats()
 	logger.Printf("Hybrid Client Stats: %+v", hybridStats)
@@ -125,7 +125,7 @@ func main() {
 	// Test 5: Error Handler functionality
 	logger.Println("\n=== Test 5: Error Handler ===")
 	errorHandler := redisconfig.NewErrorHandler(logger)
-	
+
 	// Test different error types
 	testErrors := []error{
 		fmt.Errorf("connection refused"),
@@ -133,7 +133,7 @@ func main() {
 		fmt.Errorf("authentication failed"),
 		fmt.Errorf("unknown error"),
 	}
-	
+
 	for _, testErr := range testErrors {
 		handledErr := errorHandler.Handle(testErr)
 		if handledErr != nil {

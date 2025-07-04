@@ -7,7 +7,7 @@ import (
 	"context"
 	"testing"
 
-	"email_sender/core/docmanager"
+	"github.com/gerivdb/email-sender-1/core/docmanager"
 )
 
 func TestSyncInterfaces(t *testing.T) {

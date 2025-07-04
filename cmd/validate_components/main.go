@@ -1,10 +1,11 @@
 package main
 
 import (
-	"email_sender/tools"
 	"fmt"
 	"log"
 	"time"
+
+	"github.com/gerivdb/email-sender-1/tools"
 )
 
 func main() {

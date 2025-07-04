@@ -8,8 +8,8 @@ import (
 	"io"
 	"time"
 
-	"email_sender/internal/report/diff"
-	"email_sender/internal/report/stats"
+	"github.com/gerivdb/email-sender-1/internal/report/diff"
+	"github.com/gerivdb/email-sender-1/internal/report/stats"
 )
 
 // Format represents the output format of a report

@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	qdrantclient "email_sender/src/qdrant"
+	qdrantclient "github.com/gerivdb/email-sender-1/src/qdrant"
 
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
@@ -82,7 +82,7 @@ func (s *IntegrationTestSuite) createTestFiles() {
 
 	for _, tf := range testFiles {
 		path := filepath.Join(s.testDataDir, tf.name)
-		err := os.WriteFile(path, []byte(tf.content), 0644)
+		err := os.WriteFile(path, []byte(tf.content), 0o644)
 		s.NoError(err)
 	}
 }
@@ -164,7 +164,7 @@ func (s *IntegrationTestSuite) TestSystemLimits() {
 	s.Run("LargeFile", func() {
 		largePath := filepath.Join(s.testDataDir, "large.txt")
 		content := make([]byte, 10*1024*1024) // 10MB file
-		err := os.WriteFile(largePath, content, 0644)
+		err := os.WriteFile(largePath, content, 0o644)
 		s.NoError(err)
 
 		startTime := time.Now()
@@ -188,7 +188,7 @@ func (s *IntegrationTestSuite) TestSystemLimits() {
 		files := make([]string, 100)
 		for i := 0; i < 100; i++ {
 			path := filepath.Join(s.testDataDir, fmt.Sprintf("memory_%d.txt", i))
-			err := os.WriteFile(path, []byte(fmt.Sprintf("Small test document %d", i)), 0644)
+			err := os.WriteFile(path, []byte(fmt.Sprintf("Small test document %d", i)), 0o644)
 			s.NoError(err)
 			files[i] = path
 		}

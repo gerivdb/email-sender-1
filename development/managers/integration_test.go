@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
-	storageManager "github.com/email-sender-manager/storage-manager"
-	dependencyManager "github.com/email-sender-manager/dependency-manager"
-	securityManager "github.com/email-sender-manager/security-manager"
+	dependencyManager "github.com/gerivdb/email-sender-1/managers/dependency-manager"
+	securityManager "github.com/gerivdb/email-sender-1/managers/security-manager"
+	storageManager "github.com/gerivdb/email-sender-1/managers/storage-manager"
 )
 
 // TestManagersIntegration teste l'intégration des trois managers
@@ -20,9 +20,9 @@ func TestManagersIntegration(t *testing.T) {
 	// Initialiser le Storage Manager
 	storageConfig := &storageManager.Config{
 		DatabaseURL:    "postgres://test:test@localhost:5432/test_db?sslmode=disable",
-		QdrantURL:     "http://localhost:6333",
-		CacheEnabled:  true,
-		CacheTTL:      5 * time.Minute,
+		QdrantURL:      "http://localhost:6333",
+		CacheEnabled:   true,
+		CacheTTL:       5 * time.Minute,
 		MaxConnections: 10,
 	}
 
@@ -72,7 +72,7 @@ func TestManagersIntegration(t *testing.T) {
 		if err != nil {
 			t.Logf("Dependency analysis failed: %v", err)
 		} else {
-			log.Printf("Dependency analysis completed: %d direct dependencies, %d transitive", 
+			log.Printf("Dependency analysis completed: %d direct dependencies, %d transitive",
 				len(analysis.DirectDependencies), len(analysis.TransitiveDependencies))
 
 			// Scanner les vulnérabilités de sécurité
@@ -80,7 +80,7 @@ func TestManagersIntegration(t *testing.T) {
 			if err != nil {
 				t.Errorf("Security scan failed: %v", err)
 			} else {
-				log.Printf("Security scan completed: %d vulnerabilities found", 
+				log.Printf("Security scan completed: %d vulnerabilities found",
 					len(scanResult.Vulnerabilities))
 
 				// Stocker les résultats (si Storage Manager disponible)
@@ -146,7 +146,7 @@ func TestManagersIntegration(t *testing.T) {
 		if err != nil {
 			t.Errorf("Encryption failed: %v", err)
 		} else {
-			log.Printf("Data encrypted successfully (%d bytes -> %d bytes)", 
+			log.Printf("Data encrypted successfully (%d bytes -> %d bytes)",
 				len(sensitiveData), len(encrypted))
 
 			// Déchiffrer
@@ -168,7 +168,7 @@ func TestManagersIntegration(t *testing.T) {
 		for i := 0; i < 5; i++ {
 			allowed := secMgr.CheckRateLimit(identifier, 2)
 			log.Printf("Rate limit check %d: %t", i+1, allowed)
-			
+
 			if i < 2 && !allowed {
 				t.Errorf("Expected request %d to be allowed", i+1)
 			}
@@ -206,10 +206,10 @@ func TestManagersPerformance(t *testing.T) {
 	t.Run("Dependency Analysis Performance", func(t *testing.T) {
 		start := time.Now()
 		projectPath := filepath.Join("..", "..", "..")
-		
+
 		_, err := dm.AnalyzeDependencies(ctx, projectPath)
 		duration := time.Since(start)
-		
+
 		if err != nil {
 			t.Logf("Dependency analysis failed: %v", err)
 		} else {
@@ -223,10 +223,10 @@ func TestManagersPerformance(t *testing.T) {
 	t.Run("Security Scan Performance", func(t *testing.T) {
 		start := time.Now()
 		projectPath := filepath.Join("..", "..", "..")
-		
+
 		_, err := secMgr.ScanForVulnerabilities(ctx, projectPath)
 		duration := time.Since(start)
-		
+
 		if err != nil {
 			t.Errorf("Security scan failed: %v", err)
 		} else {
@@ -267,7 +267,7 @@ func TestManagersPerformance(t *testing.T) {
 
 func main() {
 	fmt.Println("Running integration tests for Phase 2 managers...")
-	
+
 	// Ce fichier peut être exécuté directement pour des tests manuels
 	ctx := context.Background()
 

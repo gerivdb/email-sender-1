@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	qdrantclient "email_sender/src/qdrant"
+	qdrantclient "github.com/gerivdb/email-sender-1/src/qdrant"
 )
 
 // BatchIndexer handles batch indexing of documents
@@ -46,7 +46,7 @@ func NewBatchIndexer(config BatchIndexerConfig) (*BatchIndexer, error) {
 		return nil, fmt.Errorf("index directory is required")
 	}
 	// Create index directory if it doesn't exist
-	if err := os.MkdirAll(config.IndexDir, 0755); err != nil {
+	if err := os.MkdirAll(config.IndexDir, 0o755); err != nil {
 		return nil, fmt.Errorf("failed to create index directory: %v", err)
 	}
 
@@ -156,7 +156,7 @@ func (bi *BatchIndexer) indexFile(_ context.Context, filePath string) error {
 
 	// Write the document to the index directory
 	indexPath := filepath.Join(bi.indexDir, id)
-	if err := os.WriteFile(indexPath, []byte(doc.Content), 0644); err != nil {
+	if err := os.WriteFile(indexPath, []byte(doc.Content), 0o644); err != nil {
 		return fmt.Errorf("failed to write indexed file: %v", err)
 	}
 

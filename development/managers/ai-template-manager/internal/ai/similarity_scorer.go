@@ -4,7 +4,7 @@ import (
 	"math"
 	"strings"
 
-	"github.com/chrlesur/Email_Sender/development/managers/ai-template-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/ai-template-manager/interfaces"
 )
 
 // SimilarityScorer implements semantic matching algorithms for templates

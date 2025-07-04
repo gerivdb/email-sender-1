@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"email_sender/core/config"
+	"github.com/gerivdb/email-sender-1/core/config"
 )
 
 func main() {

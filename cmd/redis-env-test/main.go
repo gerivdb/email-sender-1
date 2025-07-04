@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	redisconfig "email_sender/pkg/cache/redis"
+	redisconfig "github.com/gerivdb/email-sender-1/pkg/cache/redis"
 )
 
 func main() {

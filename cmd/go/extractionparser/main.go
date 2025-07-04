@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"time"
 
-	"email_sender/core/extraction"
+	"github.com/gerivdb/email-sender-1/core/extraction"
 
-	"email_sender/core/gapanalyzer"
+	"github.com/gerivdb/email-sender-1/core/gapanalyzer"
 )
 
 func main() {

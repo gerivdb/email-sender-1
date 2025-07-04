@@ -3,8 +3,8 @@ package commands
 import (
 	"fmt"
 
-	"email_sender/cmd/roadmap-cli/tui"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/tui"
 	"github.com/spf13/cobra"
 )
 

@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"email_sender/development/managers/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/toolkit"
 )
 
 // ToolVersion defines the current version of this specific tool or the toolkit.

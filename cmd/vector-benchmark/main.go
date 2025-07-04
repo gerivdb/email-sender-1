@@ -8,7 +8,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"email_sender/pkg/vectorization"
+	"github.com/gerivdb/email-sender-1/pkg/vectorization"
 )
 
 func main() {

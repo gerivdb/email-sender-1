@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/chrlesur/Email_Sender/development/managers/ai-template-manager/interfaces"
-	"github.com/chrlesur/Email_Sender/development/managers/ai-template-manager/internal/ai"
+	"github.com/gerivdb/email-sender-1/development/managers/ai-template-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/ai-template-manager/internal/ai"
 )
 
 // AITemplateManager implements the AI-powered template management system

@@ -9,34 +9,34 @@ import (
 	"sync"
 	"time"
 
-	"email_sender/development/managers/advanced-autonomy-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // PredictiveMaintenanceCore est le cœur de la maintenance prédictive qui utilise
 // le machine learning pour prédire les pannes, optimiser la maintenance proactive
 // et gérer automatiquement les ressources avec une précision >85%.
 type PredictiveMaintenanceCore struct {
-	config          *interfaces.PredictiveConfig
-	logger          interfaces.Logger
-	
+	config *interfaces.PredictiveConfig
+	logger interfaces.Logger
+
 	// Composants ML et prédiction
 	mlEngine        *MachineLearningEngine
 	patternAnalyzer *PatternAnalyzer
 	forecastEngine  *ForecastEngine
 	scheduler       *ProactiveScheduler
 	optimizer       *ResourceOptimizer
-	
+
 	// Base de données et historique
 	historicalData  *HistoricalDataManager
 	predictionCache map[string]*CachedPrediction
-	
+
 	// État et synchronisation
-	mutex           sync.RWMutex
-	initialized     bool
-	metrics         *PredictiveMetrics
-	
+	mutex       sync.RWMutex
+	initialized bool
+	metrics     *PredictiveMetrics
+
 	// Surveillance continue
-	monitoringTicker *time.Ticker
+	monitoringTicker  *time.Ticker
 	predictionUpdater *time.Ticker
 }
 
@@ -51,8 +51,8 @@ type PredictionModel struct {
 
 // ModelTrainer entraîne les modèles ML
 type ModelTrainer struct {
-	config    *TrainingConfig
-	datasets  []Dataset
+	config   *TrainingConfig
+	datasets []Dataset
 }
 
 // ModelEvaluator évalue les modèles
@@ -84,19 +84,19 @@ type Dataset struct {
 
 // CachedPrediction représente une prédiction mise en cache
 type CachedPrediction struct {
-	Prediction  interface{} `json:"prediction"`
-	Timestamp   time.Time   `json:"timestamp"`
-	TTL         time.Duration `json:"ttl"`
-	Confidence  float64     `json:"confidence"`
+	Prediction interface{}   `json:"prediction"`
+	Timestamp  time.Time     `json:"timestamp"`
+	TTL        time.Duration `json:"ttl"`
+	Confidence float64       `json:"confidence"`
 }
 
 // MachineLearningEngine moteur ML pour l'analyse prédictive
 type MachineLearningEngine struct {
-	config     *MLEngineConfig
-	logger     interfaces.Logger
-	models     map[string]*PredictionModel
-	trainer    *ModelTrainer
-	evaluator  *ModelEvaluator
+	config    *MLEngineConfig
+	logger    interfaces.Logger
+	models    map[string]*PredictionModel
+	trainer   *ModelTrainer
+	evaluator *ModelEvaluator
 }
 
 // PatternAnalyzer analyseur de patterns de dégradation
@@ -109,10 +109,10 @@ type PatternAnalyzer struct {
 
 // ForecastEngine moteur de prévision des pannes
 type ForecastEngine struct {
-	config     *ForecastConfig
-	logger     interfaces.Logger
-	forecasts  map[string]*interfaces.MaintenanceForecast
-	validator  *ForecastValidator
+	config    *ForecastConfig
+	logger    interfaces.Logger
+	forecasts map[string]*interfaces.MaintenanceForecast
+	validator *ForecastValidator
 }
 
 // ProactiveScheduler planificateur de maintenance proactive
@@ -135,24 +135,24 @@ type ResourceOptimizer struct {
 
 // HistoricalDataManager gestionnaire des données historiques
 type HistoricalDataManager struct {
-	config      *DataManagerConfig
-	logger      interfaces.Logger
-	storage     *DataStorage
-	aggregator  *DataAggregator
-	cleaner     *DataCleaner
+	config     *DataManagerConfig
+	logger     interfaces.Logger
+	storage    *DataStorage
+	aggregator *DataAggregator
+	cleaner    *DataCleaner
 }
 
 // PredictiveMetrics métriques du système prédictif
 type PredictiveMetrics struct {
-	TotalPredictions     int64
-	AccuratePredictions  int64
-	AverageAccuracy      float64
-	PredictionTime       time.Duration
-	FalsePositives       int64
-	FalseNegatives       int64
-	ResourceSavings      float64
-	PreventedFailures    int64
-	mutex                sync.RWMutex
+	TotalPredictions    int64
+	AccuratePredictions int64
+	AverageAccuracy     float64
+	PredictionTime      time.Duration
+	FalsePositives      int64
+	FalseNegatives      int64
+	ResourceSavings     float64
+	PreventedFailures   int64
+	mutex               sync.RWMutex
 }
 
 // NewPredictiveMaintenanceCore crée une nouvelle instance du cœur prédictif
@@ -160,7 +160,7 @@ func NewPredictiveMaintenanceCore(config *interfaces.PredictiveConfig, logger in
 	if config == nil {
 		return nil, fmt.Errorf("predictive config is required")
 	}
-	
+
 	if logger == nil {
 		return nil, fmt.Errorf("logger is required")
 	}
@@ -238,7 +238,7 @@ func (pmc *PredictiveMaintenanceCore) HealthCheck(ctx context.Context) error {
 
 	// Vérifier tous les composants
 	checks := []struct {
-		name string
+		name  string
 		check func(context.Context) error
 	}{
 		{"MachineLearningEngine", pmc.mlEngine.HealthCheck},
@@ -261,7 +261,7 @@ func (pmc *PredictiveMaintenanceCore) HealthCheck(ctx context.Context) error {
 	pmc.metrics.mutex.RUnlock()
 
 	if accuracy < pmc.config.AccuracyThreshold {
-		return fmt.Errorf("prediction accuracy below threshold: %.2f < %.2f", 
+		return fmt.Errorf("prediction accuracy below threshold: %.2f < %.2f",
 			accuracy, pmc.config.AccuracyThreshold)
 	}
 
@@ -287,7 +287,7 @@ func (pmc *PredictiveMaintenanceCore) Cleanup() error {
 	var errors []error
 
 	components := []struct {
-		name string
+		name    string
 		cleanup func() error
 	}{
 		{"ResourceOptimizer", pmc.optimizer.Cleanup},
@@ -395,7 +395,7 @@ func (pmc *PredictiveMaintenanceCore) GenerateMaintenanceForecast(ctx context.Co
 	// 10. Enregistrer les métriques
 	pmc.recordPredictionGeneration(forecast, time.Since(startTime))
 
-	pmc.logger.Info(fmt.Sprintf("Generated maintenance forecast with %d predicted issues in %v", 
+	pmc.logger.Info(fmt.Sprintf("Generated maintenance forecast with %d predicted issues in %v",
 		len(forecast.PredictedIssues), time.Since(startTime)))
 
 	return forecast, nil
@@ -517,7 +517,7 @@ func (pmc *PredictiveMaintenanceCore) initializeComponents() error {
 
 func (pmc *PredictiveMaintenanceCore) startContinuousMonitoring() {
 	pmc.monitoringTicker = time.NewTicker(pmc.config.DataSamplingRate)
-	
+
 	go func() {
 		for range pmc.monitoringTicker.C {
 			if err := pmc.collectAndAnalyzeData(); err != nil {
@@ -529,7 +529,7 @@ func (pmc *PredictiveMaintenanceCore) startContinuousMonitoring() {
 
 func (pmc *PredictiveMaintenanceCore) startPredictionUpdates() {
 	pmc.predictionUpdater = time.NewTicker(pmc.config.UpdateFrequency)
-	
+
 	go func() {
 		for range pmc.predictionUpdater.C {
 			if err := pmc.updatePredictions(); err != nil {
@@ -571,7 +571,7 @@ func (pmc *PredictiveMaintenanceCore) collectAndAnalyzeData() error {
 func (pmc *PredictiveMaintenanceCore) updatePredictions() error {
 	// Mettre à jour toutes les prédictions actives
 	ctx := context.Background()
-	
+
 	// Supprimer les prédictions expirées du cache
 	pmc.cleanExpiredPredictions()
 
@@ -603,7 +603,7 @@ func (pmc *PredictiveMaintenanceCore) updateMetrics(duration time.Duration) {
 	defer pmc.metrics.mutex.Unlock()
 
 	pmc.metrics.TotalPredictions++
-	
+
 	// Calculer la moyenne mobile du temps de prédiction
 	alpha := 0.1
 	if pmc.metrics.PredictionTime == 0 {
@@ -620,7 +620,7 @@ func (pmc *PredictiveMaintenanceCore) checkForecastCache(timeHorizon time.Durati
 	defer pmc.mutex.RUnlock()
 
 	cacheKey := fmt.Sprintf("horizon-%v", timeHorizon)
-	
+
 	if cached, exists := pmc.predictionCache[cacheKey]; exists {
 		if time.Now().Before(cached.ValidUntil) {
 			cached.AccessCount++
@@ -638,7 +638,7 @@ func (pmc *PredictiveMaintenanceCore) cacheForecast(timeHorizon time.Duration, f
 	defer pmc.mutex.Unlock()
 
 	cacheKey := fmt.Sprintf("horizon-%v", timeHorizon)
-	
+
 	pmc.predictionCache[cacheKey] = &CachedPrediction{
 		Prediction:  forecast,
 		Context:     cacheKey,
@@ -702,7 +702,7 @@ func (pmc *PredictiveMaintenanceCore) hasSignificantChange(old, new *interfaces.
 	// Comparer les prévisions pour détecter des changements significatifs
 	confidenceDiff := math.Abs(old.Confidence - new.Confidence)
 	issueCountDiff := math.Abs(float64(len(old.PredictedIssues) - len(new.PredictedIssues)))
-	
+
 	return confidenceDiff > 0.1 || issueCountDiff > 2.0
 }
 
@@ -739,24 +739,24 @@ func NewPredictiveMetrics() *PredictiveMetrics {
 // Structures de support
 
 type ComponentHealth struct {
-	Name              string
-	Status            string
-	HealthScore       float64
-	LastMaintenance   time.Time
-	OperatingHours    float64
-	ErrorRate         float64
+	Name               string
+	Status             string
+	HealthScore        float64
+	LastMaintenance    time.Time
+	OperatingHours     float64
+	ErrorRate          float64
 	PerformanceMetrics map[string]float64
-	DegradationRate   float64
+	DegradationRate    float64
 }
 
 type DegradationPattern struct {
-	Type        string
-	Component   string
-	Pattern     []float64
-	Confidence  float64
-	IsNovel     bool
-	Severity    int
-	TimeFrame   time.Duration
+	Type       string
+	Component  string
+	Pattern    []float64
+	Confidence float64
+	IsNovel    bool
+	Severity   int
+	TimeFrame  time.Duration
 }
 
 type MaintenanceForecast struct {
@@ -800,11 +800,11 @@ type ResourceAllocation struct {
 }
 
 type AllocatedResource struct {
-	Type      string
-	Quantity  int
-	Duration  time.Duration
-	Cost      float64
-	Priority  int
+	Type     string
+	Quantity int
+	Duration time.Duration
+	Cost     float64
+	Priority int
 }
 
 type ResourceOptimizationResult struct {
@@ -818,27 +818,27 @@ type ResourceOptimizationResult struct {
 // Configurations des composants
 
 type MLEngineConfig struct {
-	ModelTypes     []string `yaml:"model_types"`
-	TrainingMode   string   `yaml:"training_mode"`
-	ValidationSplit float64 `yaml:"validation_split"`
+	ModelTypes      []string `yaml:"model_types"`
+	TrainingMode    string   `yaml:"training_mode"`
+	ValidationSplit float64  `yaml:"validation_split"`
 }
 
 type AnalyzerConfig struct {
-	WindowSize     time.Duration `yaml:"window_size"`
-	Sensitivity    float64       `yaml:"sensitivity"`
-	PatternTypes   []string      `yaml:"pattern_types"`
+	WindowSize   time.Duration `yaml:"window_size"`
+	Sensitivity  float64       `yaml:"sensitivity"`
+	PatternTypes []string      `yaml:"pattern_types"`
 }
 
 type ForecastConfig struct {
-	Algorithms       []string `yaml:"algorithms"`
-	EnsembleMethod   string   `yaml:"ensemble_method"`
-	ConfidenceMode   string   `yaml:"confidence_mode"`
+	Algorithms     []string `yaml:"algorithms"`
+	EnsembleMethod string   `yaml:"ensemble_method"`
+	ConfidenceMode string   `yaml:"confidence_mode"`
 }
 
 type SchedulerConfig struct {
-	OptimizationGoal string  `yaml:"optimization_goal"`
+	OptimizationGoal  string                 `yaml:"optimization_goal"`
 	WindowConstraints map[string]interface{} `yaml:"window_constraints"`
-	PreferredTimes   []string `yaml:"preferred_times"`
+	PreferredTimes    []string               `yaml:"preferred_times"`
 }
 
 type OptimizerConfig struct {
@@ -848,7 +848,7 @@ type OptimizerConfig struct {
 }
 
 type DataManagerConfig struct {
-	StorageType    string        `yaml:"storage_type"`
-	RetentionTime  time.Duration `yaml:"retention_time"`
-	CompressionEnabled bool      `yaml:"compression_enabled"`
+	StorageType        string        `yaml:"storage_type"`
+	RetentionTime      time.Duration `yaml:"retention_time"`
+	CompressionEnabled bool          `yaml:"compression_enabled"`
 }

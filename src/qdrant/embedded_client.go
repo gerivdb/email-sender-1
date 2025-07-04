@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"email_sender/mocks"
+	"github.com/gerivdb/email-sender-1/mocks"
 )
 
 // EmbeddedClient wraps the mock client to provide an embedded Qdrant experience

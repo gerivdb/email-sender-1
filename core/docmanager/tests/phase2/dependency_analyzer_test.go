@@ -6,7 +6,7 @@ package phase2
 import (
 	"testing"
 
-	"email_sender/core/docmanager"
+	"github.com/gerivdb/email-sender-1/core/docmanager"
 )
 
 func TestDetectDependencies(t *testing.T) {

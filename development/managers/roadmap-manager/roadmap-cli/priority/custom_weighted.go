@@ -3,7 +3,7 @@ package priority
 import (
 	"time"
 
-	"email_sender/cmd/roadmap-cli/types"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types"
 )
 
 // CustomWeightedCalculator implements a fully customizable weighted priority algorithm

@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"sync"
 
-	cachemanager "email_sender/development/managers/cache-manager"
+	cachemanager "github.com/gerivdb/email-sender-1/development/managers/cache-manager"
 )
 
 var (

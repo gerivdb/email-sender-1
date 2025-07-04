@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	interfaces "email_sender/development/managers/advanced-autonomy-manager/interfaces"
+	interfaces "github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // MasterCoordinationLayer orchestre et coordonne tous les 20 managers de l'écosystème

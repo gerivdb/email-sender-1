@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 
-	dependency_manager "email_sender/development/managers/dependency-manager"
-	security_manager "email_sender/development/managers/security-manager"
-	storage_manager "email_sender/development/managers/storage-manager"
+	dependency_manager "github.com/gerivdb/email-sender-1/development/managers/dependency-manager"
+	security_manager "github.com/gerivdb/email-sender-1/development/managers/security-manager"
+	storage_manager "github.com/gerivdb/email-sender-1/development/managers/storage-manager"
 )
 
 // ValidateAllManagers exécute une série de validations pour tous les managers.

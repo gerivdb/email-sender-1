@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"email_sender/cmd/go/dependency-manager/generate_dep_report"
+	"github.com/gerivdb/email-sender-1/cmd/go/dependency-manager/generate_dep_report"
 )
 
 func TestGenerateDepReport(t *testing.T) {

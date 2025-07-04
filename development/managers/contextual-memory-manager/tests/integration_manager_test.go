@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
-	cmmManager "email_sender/development/managers/contextual-memory-manager/pkg/manager"
-	interfaces "email_sender/development/managers/interfaces" // Use the common interfaces package
+	cmmManager "github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/pkg/manager"
+	interfaces "github.com/gerivdb/email-sender-1/development/managers/interfaces" // Use the common interfaces package
 )
 
 // Mock for interfaces.IntegrationManager

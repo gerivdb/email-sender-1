@@ -13,8 +13,8 @@ import (
 	"strings"
 	"time"
 
-	"email_sender/cmd/roadmap-cli/storage"
-	"email_sender/cmd/roadmap-cli/types"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/storage"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types"
 
 	"github.com/google/uuid"
 )
@@ -132,7 +132,6 @@ func (p *PlanIngester) IngestAllPlans(ctx context.Context) (*IngestionResult, er
 
 		return nil
 	})
-
 	if err != nil {
 		fmt.Printf("DEBUG: Error during file walk: %v\n", err)
 		return nil, fmt.Errorf("error walking plans directory: %w", err)

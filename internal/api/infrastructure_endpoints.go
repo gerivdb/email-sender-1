@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"email_sender/internal/infrastructure"
+	"github.com/gerivdb/email-sender-1/internal/infrastructure"
 )
 
 // InfrastructureAPIHandler gère les endpoints API pour l'infrastructure
@@ -27,20 +27,20 @@ func NewInfrastructureAPIHandler(orchestrator infrastructure.InfrastructureOrche
 // StartServer démarre le serveur HTTP d'API
 func (h *InfrastructureAPIHandler) StartServer(port int) error {
 	mux := http.NewServeMux()
-	
+
 	// Endpoints de base
 	mux.HandleFunc("/api/v1/infrastructure/status", h.handleGetStatus)
 	mux.HandleFunc("/api/v1/infrastructure/health", h.handleHealthCheck)
 	mux.HandleFunc("/api/v1/infrastructure/start", h.handleStartServices)
 	mux.HandleFunc("/api/v1/infrastructure/stop", h.handleStopServices)
 	mux.HandleFunc("/api/v1/infrastructure/recover", h.handleAutoRecover)
-	
+
 	// Endpoints Phase 2: Monitoring avancé
 	mux.HandleFunc("/api/v1/monitoring/start", h.handleStartAdvancedMonitoring)
 	mux.HandleFunc("/api/v1/monitoring/stop", h.handleStopAdvancedMonitoring)
 	mux.HandleFunc("/api/v1/monitoring/status", h.handleGetMonitoringStatus)
 	mux.HandleFunc("/api/v1/monitoring/health-advanced", h.handleGetAdvancedHealthStatus)
-	
+
 	// Endpoints Phase 2: Auto-healing
 	mux.HandleFunc("/api/v1/auto-healing/enable", h.handleEnableAutoHealing)
 	mux.HandleFunc("/api/v1/auto-healing/disable", h.handleDisableAutoHealing)

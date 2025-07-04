@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"email_sender/core/config"
+	"github.com/gerivdb/email-sender-1/core/config"
 )
 
 func configAPIHandler(w http.ResponseWriter, r *http.Request) {

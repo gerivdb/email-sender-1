@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"email_sender/core/reporting"
+	"github.com/gerivdb/email-sender-1/core/reporting"
 )
 
 func main() {

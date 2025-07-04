@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strings"
 
-	"email_sender/cmd/roadmap-cli/storage"
-	"email_sender/cmd/roadmap-cli/tui"
-	"email_sender/cmd/roadmap-cli/types"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/storage"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/tui"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types"
 	"github.com/spf13/cobra"
 )
 

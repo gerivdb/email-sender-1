@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"email_sender/cmd/roadmap-cli/rag"
-	"email_sender/cmd/roadmap-cli/storage"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/rag"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/storage"
 
 	"github.com/spf13/cobra"
 )

@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	unified "email_sender/planning-ecosystem-sync/pkg/qdrant"
+	unified "github.com/gerivdb/email-sender-1/planning-ecosystem-sync/pkg/qdrant"
 
 	"go.uber.org/zap"
 )

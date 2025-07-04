@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"email_sender/internal/core" // Importer les interfaces définies
+	"github.com/gerivdb/email-sender-1/internal/core" // Importer les interfaces définies
 )
 
 // GatewayManager représente le gestionnaire de passerelle, avec des dépendances sur d'autres managers.

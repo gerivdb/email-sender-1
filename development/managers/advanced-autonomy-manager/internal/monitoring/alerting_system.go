@@ -4,20 +4,20 @@ package monitoring
 import (
 	"context"
 	"fmt"
-	"sync"
-	"email_sender/development/managers/advanced-autonomy-manager/interfaces"
+
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // AlertingSystem système d'alertes intelligent
 type AlertingSystem struct {
-	config          *AlertConfig
-	logger          interfaces.Logger
-	alertRules      []*AlertRule
-	activeAlerts    map[string]*Alert
-	alertHistory    []*Alert
+	config               *AlertConfig
+	logger               interfaces.Logger
+	alertRules           []*AlertRule
+	activeAlerts         map[string]*Alert
+	alertHistory         []*Alert
 	notificationChannels map[string]NotificationChannel
-	escalationRules []*EscalationRule
-	initialized bool
+	escalationRules      []*EscalationRule
+	initialized          bool
 }
 
 // NewAlertingSystem crée une nouvelle instance de AlertingSystem

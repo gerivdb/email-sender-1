@@ -9,7 +9,7 @@ import (
 	"syscall"
 	"time"
 
-	"email_sender/internal/infrastructure"
+	"github.com/gerivdb/email-sender-1/internal/infrastructure"
 )
 
 // SmartInfrastructureOrchestrator est le point d'entrée pour l'orchestration de l'infrastructure

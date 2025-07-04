@@ -4,7 +4,7 @@ package monitoring
 import (
 	"context"
 
-	"email_sender/development/managers/advanced-autonomy-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // ManagerCollector collecte les métriques d'un manager spécifique

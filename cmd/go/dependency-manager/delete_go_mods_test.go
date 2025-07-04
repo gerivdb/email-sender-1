@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"email_sender/cmd/go/dependency-manager/delete_go_mods"
+	"github.com/gerivdb/email-sender-1/cmd/go/dependency-manager/delete_go_mods"
 )
 
 func TestDeleteGoMods(t *testing.T) {

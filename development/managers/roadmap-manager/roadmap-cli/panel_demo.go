@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"email_sender/cmd/roadmap-cli/tui/panels"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/tui/panels"
 
 	"github.com/charmbracelet/lipgloss"
 )

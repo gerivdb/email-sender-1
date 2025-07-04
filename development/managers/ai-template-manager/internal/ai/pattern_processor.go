@@ -8,7 +8,7 @@ import (
 	"math"
 	"strings"
 
-	"github.com/chrlesur/Email_Sender/development/managers/ai-template-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/ai-template-manager/interfaces"
 )
 
 // PatternProcessor implements neural pattern recognition for code analysis
@@ -81,12 +81,12 @@ func (pp *PatternProcessor) analyzeFile(file *ast.File, patterns *interfaces.Pat
 // extractFunctionInfo extracts detailed information about a function
 func (pp *PatternProcessor) extractFunctionInfo(funcDecl *ast.FuncDecl) interfaces.FunctionInfo {
 	info := interfaces.FunctionInfo{
-		Name:        funcDecl.Name.Name,
-		Parameters:  []interfaces.ParameterInfo{},
-		ReturnType:  "void",
-		Complexity:  pp.calculateCyclomaticComplexity(funcDecl),
-		UsageCount:  0, // This would be calculated through cross-referencing
-		Metadata:    make(map[string]string),
+		Name:       funcDecl.Name.Name,
+		Parameters: []interfaces.ParameterInfo{},
+		ReturnType: "void",
+		Complexity: pp.calculateCyclomaticComplexity(funcDecl),
+		UsageCount: 0, // This would be calculated through cross-referencing
+		Metadata:   make(map[string]string),
 	}
 
 	// Extract parameters

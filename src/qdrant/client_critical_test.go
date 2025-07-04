@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"email_sender/src/qdrant"
+	"github.com/gerivdb/email-sender-1/src/qdrant"
 )
 
 // Helper function to check if Qdrant is available
@@ -108,7 +108,6 @@ func TestQdrantHTTPClient_VectorSearch(t *testing.T) {
 		WithPayload: true,
 	}
 	results, err := client.Search("email_contacts", searchReq)
-
 	if err != nil {
 		t.Fatalf("❌ Recherche vectorielle échouée: %v", err)
 	}

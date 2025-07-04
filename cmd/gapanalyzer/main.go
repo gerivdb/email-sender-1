@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"email_sender/core/gapanalyzer"
+	"github.com/gerivdb/email-sender-1/core/gapanalyzer"
 )
 
 func main() {

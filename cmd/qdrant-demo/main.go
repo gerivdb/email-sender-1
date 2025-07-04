@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"email_sender/src/qdrant"
+	"github.com/gerivdb/email-sender-1/src/qdrant"
 )
 
 func main() {

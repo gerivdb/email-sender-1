@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/chrlesur/Email_Sender/development/managers/smart-variable-manager/interfaces"
-	"github.com/chrlesur/Email_Sender/development/managers/smart-variable-manager/internal/analyzer"
+	"github.com/gerivdb/email-sender-1/development/managers/smart-variable-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/smart-variable-manager/internal/analyzer"
 )
 
 // SmartVariableSuggestionManager implements intelligent variable suggestion system
@@ -18,15 +18,15 @@ type SmartVariableSuggestionManager struct {
 	mu          sync.RWMutex
 
 	// Core components
-	contextAnalyzer    *analyzer.ContextAnalyzer
-	suggestionEngine   *SuggestionEngine
-	validationEngine   *ValidationEngine
-	learningEngine     *LearningEngine
+	contextAnalyzer  *analyzer.ContextAnalyzer
+	suggestionEngine *SuggestionEngine
+	validationEngine *ValidationEngine
+	learningEngine   *LearningEngine
 
 	// Data storage and caching
-	analysisCache      map[string]*CachedAnalysis
-	patternDatabase    *PatternDatabase
-	userPreferences    *UserPreferencesStore
+	analysisCache   map[string]*CachedAnalysis
+	patternDatabase *PatternDatabase
+	userPreferences *UserPreferencesStore
 
 	// Configuration
 	config             *Config
@@ -77,15 +77,15 @@ type PerformanceMetrics struct {
 
 // SuggestionEngine generates intelligent variable suggestions
 type SuggestionEngine struct {
-	patterns       *PatternDatabase
-	preferences    *UserPreferencesStore
+	patterns        *PatternDatabase
+	preferences     *UserPreferencesStore
 	contextAnalyzer *analyzer.ContextAnalyzer
 }
 
 // ValidationEngine validates variable usage and provides reports
 type ValidationEngine struct {
-	rules           []ValidationRule
-	securityChecker *SecurityChecker
+	rules               []ValidationRule
+	securityChecker     *SecurityChecker
 	performanceAnalyzer *PerformanceAnalyzer
 }
 
@@ -98,12 +98,12 @@ type LearningEngine struct {
 
 // ValidationRule represents a validation rule
 type ValidationRule struct {
-	Name        string                 `json:"name"`
-	Type        string                 `json:"type"`        // naming, type, scope, security
+	Name        string `json:"name"`
+	Type        string `json:"type"` // naming, type, scope, security
 	Rule        func(variable string, value interface{}, context *interfaces.ContextAnalysis) *interfaces.ValidationIssue
-	Severity    string                 `json:"severity"`
-	Enabled     bool                   `json:"enabled"`
-	Description string                 `json:"description"`
+	Severity    string `json:"severity"`
+	Enabled     bool   `json:"enabled"`
+	Description string `json:"description"`
 }
 
 // SecurityChecker performs security analysis
@@ -126,10 +126,10 @@ type PerformanceAnalyzer struct {
 
 // PerformanceMetric represents a performance metric
 type PerformanceMetric struct {
-	Name        string
-	Type        string // memory, cpu, io
-	Threshold   float64
-	Impact      string // low, medium, high
+	Name      string
+	Type      string // memory, cpu, io
+	Threshold float64
+	Impact    string // low, medium, high
 }
 
 // NewSmartVariableSuggestionManager creates a new smart variable suggestion manager
@@ -174,14 +174,14 @@ func NewSmartVariableSuggestionManager(config *Config) *SmartVariableSuggestionM
 	}
 
 	return &SmartVariableSuggestionManager{
-		contextAnalyzer:    analyzer.NewContextAnalyzer(),
-		suggestionEngine:   suggestionEngine,
-		validationEngine:   validationEngine,
-		learningEngine:     learningEngine,
-		analysisCache:      make(map[string]*CachedAnalysis),
-		patternDatabase:    patternDB,
-		userPreferences:    userPrefs,
-		config:             config,
+		contextAnalyzer:  analyzer.NewContextAnalyzer(),
+		suggestionEngine: suggestionEngine,
+		validationEngine: validationEngine,
+		learningEngine:   learningEngine,
+		analysisCache:    make(map[string]*CachedAnalysis),
+		patternDatabase:  patternDB,
+		userPreferences:  userPrefs,
+		config:           config,
 		performanceMetrics: &PerformanceMetrics{
 			LastReset: time.Now(),
 		},
@@ -383,7 +383,7 @@ func (svsm *SmartVariableSuggestionManager) getCachedAnalysis(projectPath string
 	// Update access statistics
 	cached.AccessCount++
 	cached.LastAccess = time.Now()
-	
+
 	return cached
 }
 
@@ -425,7 +425,7 @@ func (svsm *SmartVariableSuggestionManager) updatePerformanceMetrics(responseTim
 	defer svsm.mu.Unlock()
 
 	svsm.performanceMetrics.TotalRequests++
-	
+
 	// Update average response time
 	if svsm.performanceMetrics.AverageResponseTime == 0 {
 		svsm.performanceMetrics.AverageResponseTime = responseTime
@@ -442,31 +442,31 @@ func (svsm *SmartVariableSuggestionManager) initializePatternDatabase() error {
 	// Initialize with default patterns
 	defaultPatterns := []*interfaces.VariablePattern{
 		{
-			Name:         "ConfigPattern",
-			Type:         "config",
-			Pattern:      "configuration",
-			Context:      []string{"application"},
-			Confidence:   0.9,
-			Examples:     []string{"config", "cfg", "settings", "options"},
-			Metadata:     map[string]interface{}{"category": "configuration"},
+			Name:       "ConfigPattern",
+			Type:       "config",
+			Pattern:    "configuration",
+			Context:    []string{"application"},
+			Confidence: 0.9,
+			Examples:   []string{"config", "cfg", "settings", "options"},
+			Metadata:   map[string]interface{}{"category": "configuration"},
 		},
 		{
-			Name:         "LoggerPattern",
-			Type:         "logger",
-			Pattern:      "logging",
-			Context:      []string{"application"},
-			Confidence:   0.95,
-			Examples:     []string{"logger", "log", "logr"},
-			Metadata:     map[string]interface{}{"category": "logging"},
+			Name:       "LoggerPattern",
+			Type:       "logger",
+			Pattern:    "logging",
+			Context:    []string{"application"},
+			Confidence: 0.95,
+			Examples:   []string{"logger", "log", "logr"},
+			Metadata:   map[string]interface{}{"category": "logging"},
 		},
 		{
-			Name:         "DatabasePattern",
-			Type:         "database",
-			Pattern:      "data_access",
-			Context:      []string{"persistence"},
-			Confidence:   0.88,
-			Examples:     []string{"db", "database", "conn", "connection"},
-			Metadata:     map[string]interface{}{"category": "database"},
+			Name:       "DatabasePattern",
+			Type:       "database",
+			Pattern:    "data_access",
+			Context:    []string{"persistence"},
+			Confidence: 0.88,
+			Examples:   []string{"db", "database", "conn", "connection"},
+			Metadata:   map[string]interface{}{"category": "database"},
 		},
 	}
 
@@ -477,7 +477,7 @@ func (svsm *SmartVariableSuggestionManager) initializePatternDatabase() error {
 	return nil
 }
 
-func (svsm *SmartVariableSuggestionManager) initializeUserPreferences() error {	// Initialize with default user preferences
+func (svsm *SmartVariableSuggestionManager) initializeUserPreferences() error { // Initialize with default user preferences
 	defaultPrefs := &interfaces.UserPreferences{
 		PreferredNaming:     "camelCase",
 		PreferredTypes:      []string{"string", "int", "bool", "interface{}"},
@@ -542,7 +542,8 @@ func (svsm *SmartVariableSuggestionManager) updateCacheHitRate() {
 
 // SuggestionEngine methods
 
-func (se *SuggestionEngine) GenerateSuggestions(ctx context.Context, contextAnalysis *interfaces.ContextAnalysis, template string) (*interfaces.VariableSuggestions, error) {	suggestions := &interfaces.VariableSuggestions{
+func (se *SuggestionEngine) GenerateSuggestions(ctx context.Context, contextAnalysis *interfaces.ContextAnalysis, template string) (*interfaces.VariableSuggestions, error) {
+	suggestions := &interfaces.VariableSuggestions{
 		Suggestions: []interfaces.VariableSuggestion{},
 		Context: interfaces.SuggestionContext{
 			TemplateType:    "default",
@@ -559,7 +560,7 @@ func (se *SuggestionEngine) GenerateSuggestions(ctx context.Context, contextAnal
 
 	// Extract template variables
 	templateVars := se.extractTemplateVariables(template)
-	
+
 	// Generate suggestions for each variable
 	for _, varName := range templateVars {
 		suggestion := se.generateVariableSuggestion(varName, contextAnalysis)
@@ -582,7 +583,7 @@ func (se *SuggestionEngine) GenerateSuggestions(ctx context.Context, contextAnal
 
 func (se *SuggestionEngine) extractTemplateVariables(template string) []string {
 	var variables []string
-	
+
 	// Simple regex-based extraction for {{variable}} patterns
 	start := 0
 	for {
@@ -591,21 +592,21 @@ func (se *SuggestionEngine) extractTemplateVariables(template string) []string {
 			break
 		}
 		openIdx += start
-		
+
 		closeIdx := strings.Index(template[openIdx:], "}}")
 		if closeIdx == -1 {
 			break
 		}
 		closeIdx += openIdx
-		
+
 		varName := strings.TrimSpace(template[openIdx+2 : closeIdx])
 		if varName != "" {
 			variables = append(variables, varName)
 		}
-		
+
 		start = closeIdx + 2
 	}
-	
+
 	return variables
 }
 
@@ -613,7 +614,7 @@ func (se *SuggestionEngine) generateVariableSuggestion(varName string, context *
 	// Check if variable matches known patterns
 	var bestPattern *interfaces.VariablePattern
 	bestScore := 0.0
-	
+
 	for _, pattern := range se.patterns.patterns {
 		score := se.calculatePatternMatch(varName, pattern)
 		if score > bestScore {
@@ -621,18 +622,18 @@ func (se *SuggestionEngine) generateVariableSuggestion(varName string, context *
 			bestPattern = pattern
 		}
 	}
-	
+
 	if bestPattern == nil || bestScore < 0.5 {
 		return nil
 	}
-		return &interfaces.VariableSuggestion{
+	return &interfaces.VariableSuggestion{
 		Name:        varName,
 		Type:        bestPattern.Type,
 		Confidence:  bestScore,
 		Category:    bestPattern.Name,
 		Description: fmt.Sprintf("Variable follows %s pattern", bestPattern.Name),
 		Rationale:   fmt.Sprintf("Matched pattern with confidence %.2f", bestScore),
-		Examples:    []interfaces.UsageExample{
+		Examples: []interfaces.UsageExample{
 			{
 				Code:        bestPattern.Examples[0],
 				Description: "Example usage",
@@ -644,7 +645,7 @@ func (se *SuggestionEngine) generateVariableSuggestion(varName string, context *
 
 func (se *SuggestionEngine) calculatePatternMatch(varName string, pattern *interfaces.VariablePattern) float64 {
 	score := 0.0
-	
+
 	// Check direct name matches
 	for _, example := range pattern.Examples {
 		if strings.EqualFold(varName, example) {
@@ -653,24 +654,24 @@ func (se *SuggestionEngine) calculatePatternMatch(varName string, pattern *inter
 			score += 0.7
 		}
 	}
-	
+
 	// Normalize score
 	if len(pattern.Examples) > 0 {
 		score = score / float64(len(pattern.Examples))
 	}
-	
+
 	return score
 }
 
 func (se *SuggestionEngine) generateAlternatives(varName string, pattern *interfaces.VariablePattern) []string {
 	alternatives := make([]string, 0, len(pattern.Examples))
-	
+
 	for _, example := range pattern.Examples {
 		if !strings.EqualFold(varName, example) {
 			alternatives = append(alternatives, example)
 		}
 	}
-	
+
 	return alternatives
 }
 
@@ -678,15 +679,15 @@ func (se *SuggestionEngine) generateAlternatives(varName string, pattern *interf
 
 func (ve *ValidationEngine) ValidateVariables(ctx context.Context, variables map[string]interface{}) (*interfaces.ValidationReport, error) {
 	report := &interfaces.ValidationReport{
-		Valid:        true,
-		Issues:       []interfaces.ValidationIssue{},
-		Suggestions:  []interfaces.ImprovementSuggestion{},
-		Performance:  interfaces.PerformanceAnalysis{
+		Valid:       true,
+		Issues:      []interfaces.ValidationIssue{},
+		Suggestions: []interfaces.ImprovementSuggestion{},
+		Performance: interfaces.PerformanceAnalysis{
 			Issues: []interfaces.PerformanceIssue{},
 		},
-		Security:     interfaces.SecurityAnalysis{},
-		GeneratedAt:  time.Now(),
-		Metadata:     make(map[string]interface{}),
+		Security:    interfaces.SecurityAnalysis{},
+		GeneratedAt: time.Now(),
+		Metadata:    make(map[string]interface{}),
 	}
 
 	// Run validation rules
@@ -694,7 +695,7 @@ func (ve *ValidationEngine) ValidateVariables(ctx context.Context, variables map
 		if !rule.Enabled {
 			continue
 		}
-		
+
 		for varName, value := range variables {
 			if issue := rule.Rule(varName, value, nil); issue != nil {
 				report.Issues = append(report.Issues, *issue)
@@ -734,7 +735,8 @@ func (le *LearningEngine) LearnFromFeedback(ctx context.Context, variables map[s
 	if outcome.Success {
 		for varName, value := range variables {
 			le.updatePatternSuccess(varName, value)
-		}	} else {
+		}
+	} else {
 		// Learn from failures
 		for varName, value := range variables {
 			errorMsg := ""
@@ -769,8 +771,8 @@ func (pdb *PatternDatabase) GetPatterns(filters *interfaces.PatternFilters) (*in
 	pdb.mu.RLock()
 	defer pdb.mu.RUnlock()
 	patterns := &interfaces.VariablePatterns{
-		Patterns:    []interfaces.VariablePattern{},
-		Statistics:  interfaces.PatternStatistics{
+		Patterns: []interfaces.VariablePattern{},
+		Statistics: interfaces.PatternStatistics{
 			TotalPatterns: len(pdb.patterns),
 		},
 		GeneratedAt: time.Now(),
@@ -807,14 +809,15 @@ func initializeValidationRules() []ValidationRule {
 			Enabled:     true,
 			Description: "Variable names must not be empty",
 			Rule: func(variable string, value interface{}, context *interfaces.ContextAnalysis) *interfaces.ValidationIssue {
-				if variable == "" {				return &interfaces.ValidationIssue{
-					Variable:    variable,
-					Type:        "naming",
-					Severity:    "error",
-					Message:     "Variable name cannot be empty",
-					Suggestion:  "Provide a meaningful variable name",
-					AutoFixable: false,
-				}
+				if variable == "" {
+					return &interfaces.ValidationIssue{
+						Variable:    variable,
+						Type:        "naming",
+						Severity:    "error",
+						Message:     "Variable name cannot be empty",
+						Suggestion:  "Provide a meaningful variable name",
+						AutoFixable: false,
+					}
 				}
 				return nil
 			},
@@ -830,11 +833,11 @@ func initializeValidationRules() []ValidationRule {
 				for _, word := range reserved {
 					if strings.EqualFold(variable, word) {
 						return &interfaces.ValidationIssue{
-							Variable:    variable,
-							Type:        "naming",
-							Severity:    "warning",						Message:     fmt.Sprintf("Variable name '%s' is a reserved word", variable),
-						Suggestion:  fmt.Sprintf("Consider using '%s_var' or '%s_value'", variable, variable),
-						AutoFixable: true,
+							Variable: variable,
+							Type:     "naming",
+							Severity: "warning", Message: fmt.Sprintf("Variable name '%s' is a reserved word", variable),
+							Suggestion:  fmt.Sprintf("Consider using '%s_var' or '%s_value'", variable, variable),
+							AutoFixable: true,
 						}
 					}
 				}
@@ -857,12 +860,12 @@ func NewSecurityChecker() *SecurityChecker {
 					for _, word := range sensitive {
 						if strings.Contains(varLower, word) {
 							return &interfaces.SecurityVulnerability{
-								Variable:    variable,							Type:        "sensitive_data",
-							Severity:    "high",
-							Description: fmt.Sprintf("Variable '%s' may contain sensitive data", variable),
-							Impact:      "High risk of data exposure",
-							Mitigation:  "Use secure storage mechanisms for sensitive data",
-							CVSS:        7.5,
+								Variable: variable, Type: "sensitive_data",
+								Severity:    "high",
+								Description: fmt.Sprintf("Variable '%s' may contain sensitive data", variable),
+								Impact:      "High risk of data exposure",
+								Mitigation:  "Use secure storage mechanisms for sensitive data",
+								CVSS:        7.5,
 							}
 						}
 					}
@@ -875,13 +878,13 @@ func NewSecurityChecker() *SecurityChecker {
 
 func (sc *SecurityChecker) CheckVariable(variable string, value interface{}) []interfaces.SecurityVulnerability {
 	var vulnerabilities []interfaces.SecurityVulnerability
-	
+
 	for _, rule := range sc.rules {
 		if vuln := rule.Check(variable, value); vuln != nil {
 			vulnerabilities = append(vulnerabilities, *vuln)
 		}
 	}
-	
+
 	return vulnerabilities
 }
 
@@ -906,7 +909,7 @@ func NewPerformanceAnalyzer() *PerformanceAnalyzer {
 
 func (pa *PerformanceAnalyzer) AnalyzeVariables(variables map[string]interface{}) []interfaces.PerformanceIssue {
 	var issues []interfaces.PerformanceIssue
-		// Simple performance analysis based on variable count and types
+	// Simple performance analysis based on variable count and types
 	if len(variables) > 50 {
 		issues = append(issues, interfaces.PerformanceIssue{
 			Variable:    "multiple",
@@ -918,7 +921,7 @@ func (pa *PerformanceAnalyzer) AnalyzeVariables(variables map[string]interface{}
 			Confidence:  0.7,
 		})
 	}
-	
+
 	return issues
 }
 

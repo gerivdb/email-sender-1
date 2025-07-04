@@ -5,7 +5,7 @@ import (
 	"context"
 	"fmt"
 
-	"email_sender/development/managers/advanced-autonomy-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // DiagnosticEngine effectue des diagnostics approfondis

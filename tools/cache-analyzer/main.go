@@ -10,7 +10,7 @@ import (
 	"os"
 	"time"
 
-	"email_sender/pkg/cache/ttl"
+	"github.com/gerivdb/email-sender-1/pkg/cache/ttl"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -333,7 +333,7 @@ func saveReport(report *AnalysisReport, filename string) error {
 		return fmt.Errorf("failed to marshal report: %w", err)
 	}
 
-	return os.WriteFile(filename, data, 0644)
+	return os.WriteFile(filename, data, 0o644)
 }
 
 // displaySummary displays the analysis summary

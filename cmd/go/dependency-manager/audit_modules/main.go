@@ -103,9 +103,9 @@ func RunAudit(outputJSONPath, outputMDPath string) error {
 		return fmt.Errorf("error walking the path %q: %w", rootPath, err)
 	}
 
-	// Identify non-conformant modules (not email_sender/core/...)
+	// Identify non-conformant modules (not github.com/gerivdb/email-sender-1/core/...)
 	for _, gm := range report.GoModFiles {
-		if gm.ModuleName != "" && !strings.HasPrefix(gm.ModuleName, "email_sender/core/") && gm.Path != "go.mod" {
+		if gm.ModuleName != "" && !strings.HasPrefix(gm.ModuleName, "github.com/gerivdb/email-sender-1/core/") && gm.Path != "go.mod" {
 			report.NonConformantModules = append(report.NonConformantModules, gm.ModuleName)
 		}
 	}
@@ -178,7 +178,7 @@ func generateMarkdownReport(report AuditReport) string {
 	}
 
 	if len(report.NonConformantModules) > 0 {
-		sb.WriteString("## Non-Conformant Modules (expected 'email_sender/core/...' or root go.mod)\n\n")
+		sb.WriteString("## Non-Conformant Modules (expected 'github.com/gerivdb/email-sender-1/core/...' or root go.mod)\n\n")
 		for _, ncm := range report.NonConformantModules {
 			sb.WriteString(fmt.Sprintf("- `%s`\n", ncm))
 		}

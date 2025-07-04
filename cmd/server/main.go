@@ -17,8 +17,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.uber.org/zap"
 
-	"email_sender/internal/metrics"
-	"email_sender/internal/validation"
+	"github.com/gerivdb/email-sender-1/internal/metrics"
+	"github.com/gerivdb/email-sender-1/internal/validation"
 )
 
 var (

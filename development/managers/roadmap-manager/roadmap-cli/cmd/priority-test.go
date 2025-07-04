@@ -5,8 +5,8 @@ import (
 	"log"
 	"time"
 
-	"email_sender/cmd/roadmap-cli/priority"
-	"email_sender/cmd/roadmap-cli/types"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/priority"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types"
 )
 
 // TestResult represents the result of a priority algorithm test

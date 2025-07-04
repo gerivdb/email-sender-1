@@ -8,7 +8,6 @@ package scriptmanager
 
 import (
 	"context"
-	errormanager "email_sender/development/managers/error-manager"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -18,6 +17,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	errormanager "github.com/gerivdb/email-sender-1/development/managers/error-manager"
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
@@ -87,14 +88,14 @@ type ManagedScript struct {
 
 // ScriptModule represents a PowerShell module or script library
 type ScriptModule struct {
-	ID          string            `json:"id"`
-	Name        string            `json:"name"`
-	Path        string            `json:"path"`
-	Version     string            `json:"version"`
-	Functions   []string          `json:"functions"`
+	ID           string            `json:"id"`
+	Name         string            `json:"name"`
+	Path         string            `json:"path"`
+	Version      string            `json:"version"`
+	Functions    []string          `json:"functions"`
 	Dependencies []string          `json:"dependencies"`
-	Metadata    map[string]string `json:"metadata"`
-	IsLoaded    bool              `json:"is_loaded"`
+	Metadata     map[string]string `json:"metadata"`
+	IsLoaded     bool              `json:"is_loaded"`
 }
 
 // ScriptTemplate represents a script template for generation
@@ -180,21 +181,21 @@ const (
 
 // Config defines the configuration for the Script Manager
 type Config struct {
-	ScriptPaths        map[string]string `json:"script_paths"`
-	ModulePaths        []string          `json:"module_paths"`
-	TemplatePaths      []string          `json:"template_paths"`
-	DefaultTimeout     time.Duration     `json:"default_timeout"`
-	MaxConcurrent      int               `json:"max_concurrent"`
-	AllowedExtensions  []string          `json:"allowed_extensions"`
-	ExecutionMode      string            `json:"execution_mode"`
-	EnableLogging      bool              `json:"enable_logging"`
-	EnableMonitoring   bool              `json:"enable_monitoring"`
-	EnableCache        bool              `json:"enable_cache"`
-	CacheDirectory     string            `json:"cache_directory"`
-	TempDirectory      string            `json:"temp_directory"`
-	PowerShellExePath  string            `json:"powershell_exe_path"`
-	PythonExePath      string            `json:"python_exe_path"`
-	NodeExePath        string            `json:"node_exe_path"`
+	ScriptPaths       map[string]string `json:"script_paths"`
+	ModulePaths       []string          `json:"module_paths"`
+	TemplatePaths     []string          `json:"template_paths"`
+	DefaultTimeout    time.Duration     `json:"default_timeout"`
+	MaxConcurrent     int               `json:"max_concurrent"`
+	AllowedExtensions []string          `json:"allowed_extensions"`
+	ExecutionMode     string            `json:"execution_mode"`
+	EnableLogging     bool              `json:"enable_logging"`
+	EnableMonitoring  bool              `json:"enable_monitoring"`
+	EnableCache       bool              `json:"enable_cache"`
+	CacheDirectory    string            `json:"cache_directory"`
+	TempDirectory     string            `json:"temp_directory"`
+	PowerShellExePath string            `json:"powershell_exe_path"`
+	PythonExePath     string            `json:"python_exe_path"`
+	NodeExePath       string            `json:"node_exe_path"`
 }
 
 // ErrorManager provides centralized error handling
@@ -216,13 +217,13 @@ type CircuitBreaker struct {
 // NewScriptManager creates a new Script Manager with ErrorManager integration
 func NewScriptManager(config *Config) *ScriptManager {
 	ctx, cancel := context.WithCancel(context.Background())
-	
+
 	logger, _ := zap.NewProduction()
-	
+
 	errorManager := &ErrorManager{
 		logger: logger,
 	}
-	
+
 	sm := &ScriptManager{
 		config:       config,
 		logger:       logger,
@@ -234,20 +235,20 @@ func NewScriptManager(config *Config) *ScriptManager {
 		ctx:          ctx,
 		cancel:       cancel,
 	}
-	
+
 	// Initialize default executors
 	sm.initializeExecutors()
-	
+
 	// Load existing scripts and modules
 	sm.discoverAndLoadScripts()
 	sm.discoverAndLoadModules()
 	sm.discoverAndLoadTemplates()
-	
+
 	logger.Info("Script Manager initialized successfully",
 		zap.Int("scripts_loaded", len(sm.scripts)),
 		zap.Int("modules_loaded", len(sm.modules)),
 		zap.Int("templates_loaded", len(sm.templates)))
-	
+
 	return sm
 }
 
@@ -279,10 +280,10 @@ func (em *ErrorManager) ProcessError(ctx context.Context, err error, hooks *Erro
 	// Execute hooks if provided
 	if hooks != nil && hooks.OnError != nil {
 		hooks.OnError(err, map[string]interface{}{
-			"module":      "script-manager",
-			"error_id":    entry.ID,
-			"timestamp":   entry.Timestamp,
-			"error_code":  entry.ErrorCode,
+			"module":     "script-manager",
+			"error_id":   entry.ID,
+			"timestamp":  entry.Timestamp,
+			"error_code": entry.ErrorCode,
 		})
 	}
 
@@ -298,7 +299,7 @@ func (em *ErrorManager) ProcessError(ctx context.Context, err error, hooks *Erro
 // determineSeverity determines error severity based on error content
 func (em *ErrorManager) determineSeverity(err error) string {
 	errorMsg := strings.ToLower(err.Error())
-	
+
 	// Critical errors
 	if strings.Contains(errorMsg, "system") ||
 		strings.Contains(errorMsg, "critical") ||
@@ -306,7 +307,7 @@ func (em *ErrorManager) determineSeverity(err error) string {
 		strings.Contains(errorMsg, "fatal") {
 		return "critical"
 	}
-	
+
 	// High severity errors
 	if strings.Contains(errorMsg, "permission") ||
 		strings.Contains(errorMsg, "access denied") ||
@@ -314,7 +315,7 @@ func (em *ErrorManager) determineSeverity(err error) string {
 		strings.Contains(errorMsg, "module not found") {
 		return "high"
 	}
-	
+
 	// Medium severity errors
 	if strings.Contains(errorMsg, "timeout") ||
 		strings.Contains(errorMsg, "connection") ||
@@ -322,7 +323,7 @@ func (em *ErrorManager) determineSeverity(err error) string {
 		strings.Contains(errorMsg, "parameter") {
 		return "medium"
 	}
-	
+
 	// Default to low severity
 	return "low"
 }
@@ -333,17 +334,17 @@ func (sm *ScriptManager) initializeExecutors() {
 		config: sm.config,
 		logger: sm.logger,
 	}
-	
+
 	sm.executors["python"] = &PythonExecutor{
 		config: sm.config,
 		logger: sm.logger,
 	}
-	
+
 	sm.executors["javascript"] = &JavaScriptExecutor{
 		config: sm.config,
 		logger: sm.logger,
 	}
-	
+
 	if runtime.GOOS != "windows" {
 		sm.executors["bash"] = &BashExecutor{
 			config: sm.config,
@@ -364,7 +365,7 @@ func (sm *ScriptManager) discoverAndLoadScripts() {
 			sm.logger.Warn("Script discovery error", zap.Error(err), zap.Any("context", context))
 		},
 	}
-	
+
 	for category, path := range sm.config.ScriptPaths {
 		if err := sm.scanScriptsInPath(path, category); err != nil {
 			sm.errorManager.ProcessError(sm.ctx, err, hooks)
@@ -378,11 +379,11 @@ func (sm *ScriptManager) scanScriptsInPath(path, category string) error {
 		if err != nil {
 			return err
 		}
-		
+
 		if info.IsDir() {
 			return nil
 		}
-		
+
 		// Check if file extension is allowed
 		ext := strings.ToLower(filepath.Ext(filePath))
 		allowed := false
@@ -392,11 +393,11 @@ func (sm *ScriptManager) scanScriptsInPath(path, category string) error {
 				break
 			}
 		}
-		
+
 		if !allowed {
 			return nil
 		}
-		
+
 		// Create managed script
 		script := &ManagedScript{
 			ID:           uuid.New().String(),
@@ -416,17 +417,17 @@ func (sm *ScriptManager) scanScriptsInPath(path, category string) error {
 				Multiplier:  2.0,
 			},
 		}
-		
+
 		sm.mu.Lock()
 		sm.scripts[script.ID] = script
 		sm.mu.Unlock()
-		
+
 		sm.logger.Debug("Script discovered",
 			zap.String("script_id", script.ID),
 			zap.String("name", script.Name),
 			zap.String("path", script.Path),
 			zap.String("type", string(script.Type)))
-		
+
 		return nil
 	})
 }
@@ -456,7 +457,7 @@ func (sm *ScriptManager) discoverAndLoadModules() {
 			sm.logger.Warn("Module discovery error", zap.Error(err), zap.Any("context", context))
 		},
 	}
-	
+
 	for _, path := range sm.config.ModulePaths {
 		if err := sm.scanModulesInPath(path); err != nil {
 			sm.errorManager.ProcessError(sm.ctx, err, hooks)
@@ -470,16 +471,16 @@ func (sm *ScriptManager) scanModulesInPath(path string) error {
 		if err != nil {
 			return err
 		}
-		
+
 		if info.IsDir() {
 			return nil
 		}
-		
+
 		ext := strings.ToLower(filepath.Ext(filePath))
 		if ext != ".psm1" {
 			return nil
 		}
-		
+
 		// Create script module
 		module := &ScriptModule{
 			ID:           uuid.New().String(),
@@ -491,16 +492,16 @@ func (sm *ScriptManager) scanModulesInPath(path string) error {
 			Metadata:     make(map[string]string),
 			IsLoaded:     false,
 		}
-		
+
 		sm.mu.Lock()
 		sm.modules[module.ID] = module
 		sm.mu.Unlock()
-		
+
 		sm.logger.Debug("Module discovered",
 			zap.String("module_id", module.ID),
 			zap.String("name", module.Name),
 			zap.String("path", module.Path))
-		
+
 		return nil
 	})
 }
@@ -512,7 +513,7 @@ func (sm *ScriptManager) discoverAndLoadTemplates() {
 			sm.logger.Warn("Template discovery error", zap.Error(err), zap.Any("context", context))
 		},
 	}
-	
+
 	for _, path := range sm.config.TemplatePaths {
 		if err := sm.scanTemplatesInPath(path); err != nil {
 			sm.errorManager.ProcessError(sm.ctx, err, hooks)
@@ -526,40 +527,40 @@ func (sm *ScriptManager) scanTemplatesInPath(path string) error {
 		if err != nil {
 			return err
 		}
-		
+
 		if info.IsDir() {
 			return nil
 		}
-		
+
 		ext := strings.ToLower(filepath.Ext(filePath))
 		if ext != ".json" {
 			return nil
 		}
-		
+
 		// Load template configuration
 		data, err := ioutil.ReadFile(filePath)
 		if err != nil {
 			return err
 		}
-		
+
 		var template ScriptTemplate
 		if err := json.Unmarshal(data, &template); err != nil {
 			return err
 		}
-		
+
 		if template.ID == "" {
 			template.ID = uuid.New().String()
 		}
-		
+
 		sm.mu.Lock()
 		sm.templates[template.ID] = &template
 		sm.mu.Unlock()
-		
+
 		sm.logger.Debug("Template discovered",
 			zap.String("template_id", template.ID),
 			zap.String("name", template.Name),
 			zap.String("category", template.Category))
-		
+
 		return nil
 	})
 }
@@ -569,7 +570,7 @@ func (sm *ScriptManager) ExecuteScript(scriptID string, parameters map[string]in
 	sm.mu.RLock()
 	script, exists := sm.scripts[scriptID]
 	sm.mu.RUnlock()
-	
+
 	if !exists {
 		err := fmt.Errorf("script not found: %s", scriptID)
 		hooks := &ErrorHooks{
@@ -580,7 +581,7 @@ func (sm *ScriptManager) ExecuteScript(scriptID string, parameters map[string]in
 		sm.errorManager.ProcessError(sm.ctx, err, hooks)
 		return nil, err
 	}
-	
+
 	// Get executor for script type
 	executor, exists := sm.executors[string(script.Type)]
 	if !exists {
@@ -593,27 +594,27 @@ func (sm *ScriptManager) ExecuteScript(scriptID string, parameters map[string]in
 		sm.errorManager.ProcessError(sm.ctx, err, hooks)
 		return nil, err
 	}
-	
+
 	// Update script status
 	script.mu.Lock()
 	script.Status = ScriptStatusRunning
 	script.LastRun = time.Now()
 	script.RunCount++
 	script.mu.Unlock()
-	
+
 	// Create execution context with timeout
 	ctx, cancel := context.WithTimeout(sm.ctx, script.Timeout)
 	defer cancel()
-	
+
 	// Execute script
 	result, err := executor.Execute(ctx, script, parameters)
-	
+
 	// Update script status based on result
 	script.mu.Lock()
 	if err != nil || !result.Success {
 		script.Status = ScriptStatusFailed
 		script.ErrorCount++
-		
+
 		// Handle retry logic if configured
 		if script.RetryPolicy != nil && result.RetryAttempt < script.RetryPolicy.MaxAttempts {
 			script.mu.Unlock()
@@ -624,7 +625,7 @@ func (sm *ScriptManager) ExecuteScript(scriptID string, parameters map[string]in
 		script.SuccessCount++
 	}
 	script.mu.Unlock()
-	
+
 	if err != nil {
 		hooks := &ErrorHooks{
 			OnError: func(err error, context map[string]interface{}) {
@@ -637,14 +638,14 @@ func (sm *ScriptManager) ExecuteScript(scriptID string, parameters map[string]in
 		}
 		sm.errorManager.ProcessError(sm.ctx, err, hooks)
 	}
-	
+
 	sm.logger.Info("Script execution completed",
 		zap.String("script_id", scriptID),
 		zap.String("script_name", script.Name),
 		zap.Bool("success", result.Success),
 		zap.Duration("duration", result.Duration),
 		zap.Int("exit_code", result.ExitCode))
-	
+
 	return result, err
 }
 
@@ -660,31 +661,31 @@ func (sm *ScriptManager) retryScriptExecution(script *ManagedScript, parameters 
 	case BackoffExponential:
 		delay = script.RetryPolicy.InitialWait * time.Duration(float64(attempt)*script.RetryPolicy.Multiplier)
 	}
-	
+
 	if delay > script.RetryPolicy.MaxWait {
 		delay = script.RetryPolicy.MaxWait
 	}
-	
+
 	sm.logger.Info("Retrying script execution",
 		zap.String("script_id", script.ID),
 		zap.Int("attempt", attempt),
 		zap.Duration("delay", delay))
-	
+
 	// Wait before retry
 	select {
 	case <-time.After(delay):
 	case <-sm.ctx.Done():
 		return nil, sm.ctx.Err()
 	}
-	
+
 	// Get executor and retry
 	executor := sm.executors[string(script.Type)]
 	ctx, cancel := context.WithTimeout(sm.ctx, script.Timeout)
 	defer cancel()
-	
+
 	result, err := executor.Execute(ctx, script, parameters)
 	result.RetryAttempt = attempt
-	
+
 	return result, err
 }
 
@@ -692,12 +693,12 @@ func (sm *ScriptManager) retryScriptExecution(script *ManagedScript, parameters 
 func (sm *ScriptManager) ListScripts() []*ManagedScript {
 	sm.mu.RLock()
 	defer sm.mu.RUnlock()
-	
+
 	scripts := make([]*ManagedScript, 0, len(sm.scripts))
 	for _, script := range sm.scripts {
 		scripts = append(scripts, script)
 	}
-	
+
 	return scripts
 }
 
@@ -705,12 +706,12 @@ func (sm *ScriptManager) ListScripts() []*ManagedScript {
 func (sm *ScriptManager) GetScript(scriptID string) (*ManagedScript, error) {
 	sm.mu.RLock()
 	defer sm.mu.RUnlock()
-	
+
 	script, exists := sm.scripts[scriptID]
 	if !exists {
 		return nil, fmt.Errorf("script not found: %s", scriptID)
 	}
-	
+
 	return script, nil
 }
 
@@ -718,13 +719,13 @@ func (sm *ScriptManager) GetScript(scriptID string) (*ManagedScript, error) {
 func (sm *ScriptManager) GetScriptByName(name string) (*ManagedScript, error) {
 	sm.mu.RLock()
 	defer sm.mu.RUnlock()
-	
+
 	for _, script := range sm.scripts {
 		if script.Name == name {
 			return script, nil
 		}
 	}
-	
+
 	return nil, fmt.Errorf("script not found: %s", name)
 }
 
@@ -732,12 +733,12 @@ func (sm *ScriptManager) GetScriptByName(name string) (*ManagedScript, error) {
 func (sm *ScriptManager) ListModules() []*ScriptModule {
 	sm.mu.RLock()
 	defer sm.mu.RUnlock()
-	
+
 	modules := make([]*ScriptModule, 0, len(sm.modules))
 	for _, module := range sm.modules {
 		modules = append(modules, module)
 	}
-	
+
 	return modules
 }
 
@@ -745,12 +746,12 @@ func (sm *ScriptManager) ListModules() []*ScriptModule {
 func (sm *ScriptManager) ListTemplates() []*ScriptTemplate {
 	sm.mu.RLock()
 	defer sm.mu.RUnlock()
-	
+
 	templates := make([]*ScriptTemplate, 0, len(sm.templates))
 	for _, template := range sm.templates {
 		templates = append(templates, template)
 	}
-	
+
 	return templates
 }
 
@@ -759,7 +760,7 @@ func (sm *ScriptManager) CreateScriptFromTemplate(templateID, scriptName string,
 	sm.mu.RLock()
 	template, exists := sm.templates[templateID]
 	sm.mu.RUnlock()
-	
+
 	if !exists {
 		err := fmt.Errorf("template not found: %s", templateID)
 		hooks := &ErrorHooks{
@@ -770,15 +771,15 @@ func (sm *ScriptManager) CreateScriptFromTemplate(templateID, scriptName string,
 		sm.errorManager.ProcessError(sm.ctx, err, hooks)
 		return nil, err
 	}
-	
+
 	// Process template and create script
 	scriptContent := sm.processTemplate(template, parameters)
-	
+
 	// Determine script path
 	scriptPath := filepath.Join(sm.config.ScriptPaths["generated"], scriptName+".ps1")
-	
+
 	// Write script file
-	if err := ioutil.WriteFile(scriptPath, []byte(scriptContent), 0644); err != nil {
+	if err := ioutil.WriteFile(scriptPath, []byte(scriptContent), 0o644); err != nil {
 		hooks := &ErrorHooks{
 			OnError: func(err error, context map[string]interface{}) {
 				sm.logger.Error("Failed to write script file", zap.Error(err), zap.Any("context", context))
@@ -787,7 +788,7 @@ func (sm *ScriptManager) CreateScriptFromTemplate(templateID, scriptName string,
 		sm.errorManager.ProcessError(sm.ctx, err, hooks)
 		return nil, err
 	}
-	
+
 	// Create managed script
 	script := &ManagedScript{
 		ID:           uuid.New().String(),
@@ -807,38 +808,38 @@ func (sm *ScriptManager) CreateScriptFromTemplate(templateID, scriptName string,
 			Multiplier:  2.0,
 		},
 	}
-	
+
 	sm.mu.Lock()
 	sm.scripts[script.ID] = script
 	sm.mu.Unlock()
-	
+
 	sm.logger.Info("Script created from template",
 		zap.String("script_id", script.ID),
 		zap.String("script_name", scriptName),
 		zap.String("template_id", templateID),
 		zap.String("script_path", scriptPath))
-	
+
 	return script, nil
 }
 
 // processTemplate processes a template with parameters
 func (sm *ScriptManager) processTemplate(template *ScriptTemplate, parameters map[string]interface{}) string {
 	content := template.Template
-	
+
 	// Simple template parameter replacement
 	for _, param := range template.Parameters {
 		placeholder := fmt.Sprintf("{{%s}}", param.Name)
 		value := ""
-		
+
 		if val, exists := parameters[param.Name]; exists {
 			value = fmt.Sprintf("%v", val)
 		} else if param.DefaultValue != nil {
 			value = fmt.Sprintf("%v", param.DefaultValue)
 		}
-		
+
 		content = strings.ReplaceAll(content, placeholder, value)
 	}
-	
+
 	return content
 }
 
@@ -846,36 +847,36 @@ func (sm *ScriptManager) processTemplate(template *ScriptTemplate, parameters ma
 func (sm *ScriptManager) GetMetrics() map[string]interface{} {
 	sm.mu.RLock()
 	defer sm.mu.RUnlock()
-	
+
 	totalScripts := len(sm.scripts)
 	totalRuns := 0
 	totalSuccesses := 0
 	totalErrors := 0
-	
+
 	scriptsByType := make(map[string]int)
 	scriptsByStatus := make(map[string]int)
-	
+
 	for _, script := range sm.scripts {
 		script.mu.RLock()
 		totalRuns += script.RunCount
 		totalSuccesses += script.SuccessCount
 		totalErrors += script.ErrorCount
-		
+
 		scriptsByType[string(script.Type)]++
 		scriptsByStatus[string(script.Status)]++
 		script.mu.RUnlock()
 	}
-	
+
 	return map[string]interface{}{
-		"total_scripts":      totalScripts,
-		"total_modules":      len(sm.modules),
-		"total_templates":    len(sm.templates),
-		"total_runs":         totalRuns,
-		"total_successes":    totalSuccesses,
-		"total_errors":       totalErrors,
-		"success_rate":       float64(totalSuccesses) / float64(totalRuns) * 100,
-		"scripts_by_type":    scriptsByType,
-		"scripts_by_status":  scriptsByStatus,
+		"total_scripts":       totalScripts,
+		"total_modules":       len(sm.modules),
+		"total_templates":     len(sm.templates),
+		"total_runs":          totalRuns,
+		"total_successes":     totalSuccesses,
+		"total_errors":        totalErrors,
+		"success_rate":        float64(totalSuccesses) / float64(totalRuns) * 100,
+		"scripts_by_type":     scriptsByType,
+		"scripts_by_status":   scriptsByStatus,
 		"available_executors": len(sm.executors),
 	}
 }
@@ -883,14 +884,14 @@ func (sm *ScriptManager) GetMetrics() map[string]interface{} {
 // Shutdown gracefully shuts down the Script Manager
 func (sm *ScriptManager) Shutdown() error {
 	sm.logger.Info("Shutting down Script Manager")
-	
+
 	// Cancel context to stop any running operations
 	sm.cancel()
-	
+
 	// Wait for any running scripts to complete or timeout
 	// This is a simplified approach - in production, you might want to track active executions
 	time.Sleep(2 * time.Second)
-	
+
 	sm.logger.Info("Script Manager shutdown completed")
 	return nil
 }
@@ -901,11 +902,11 @@ func (sm *ScriptManager) ValidateScript(scriptID string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	executor, exists := sm.executors[string(script.Type)]
 	if !exists {
 		return fmt.Errorf("no executor found for script type: %s", script.Type)
 	}
-	
+
 	return executor.Validate(script)
 }

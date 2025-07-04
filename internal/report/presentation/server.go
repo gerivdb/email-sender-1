@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"email_sender/internal/report"
+	"github.com/gerivdb/email-sender-1/internal/report"
 )
 
 //go:embed templates/*

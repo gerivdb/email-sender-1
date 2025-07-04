@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"time"
 
-	"email_sender/core/graphgen"
+	"github.com/gerivdb/email-sender-1/core/graphgen"
 
-	"email_sender/core/gapanalyzer"
+	"github.com/gerivdb/email-sender-1/core/gapanalyzer"
 )
 
 // findProjectRoot trouve le répertoire racine du projet en cherchant le fichier go.mod.

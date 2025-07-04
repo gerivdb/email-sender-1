@@ -15,12 +15,12 @@ import (
 	"os"
 	"time"
 
-	"email_sender/development/managers/tools/core/registry"
-	"email_sender/development/managers/tools/core/toolkit"
-	"email_sender/development/managers/tools/operations/analysis"
-	"email_sender/development/managers/tools/operations/correction"
-	"email_sender/development/managers/tools/operations/migration"
-	"email_sender/development/managers/tools/operations/validation"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/operations/analysis"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/operations/correction"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/operations/migration"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/operations/validation"
 )
 
 // Configuration constants
