@@ -87,6 +87,8 @@ replace github.com/gerivdb/email-sender-1/core/gapanalyzer => ./core/gapanalyzer
 
 replace github.com/gerivdb/email-sender-1/core/scanmodules => ./core/scanmodules
 
+replace github.com/gerivdb/email-sender-1/core/scanmodules => ./core/scanmodules
+
 replace github.com/gerivdb/email-sender-1/development/managers/error-manager => ./development/managers/error-manager
 
 replace github.com/gerivdb/email-sender-1/managers/interfaces => ./managers/interfaces
@@ -100,3 +102,5 @@ replace github.com/gerivdb/email-sender-1/streaming/redis_streaming => ./streami
 replace github.com/gerivdb/email-sender-1/tools/core/toolkit => ./tools/pkg/toolkit
 
 replace github.com/gerivdb/email-sender-1/core/graphgen => ./core/graphgen
+
+replace github.com/gerivdb/email-sender-1/tools/pkg/manager => ./tools/pkg/manager

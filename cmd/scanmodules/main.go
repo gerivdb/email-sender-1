@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"docmanager/core/scanmodules"
+	"github.com/gerivdb/email-sender-1/core/scanmodules"
 )
 
 func main() {

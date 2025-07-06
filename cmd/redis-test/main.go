@@ -320,7 +320,7 @@ func testCircuitBreaker(config *redis_streaming.RedisConfig, logger *log.Logger)
 
 	// Circuit breaker should be open now
 	if circuitBreaker.State() != redis_streaming.StateOpen {
-		return fmt.Errorf("expected circuit breaker to be open, got %v", circuitBreaker.State())
+		return fmt.Errorf("expected circuit breaker to be open, got %v", redis_streaming.StateOpen)
 	}
 
 	return nil
