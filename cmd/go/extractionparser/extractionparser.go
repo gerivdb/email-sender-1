@@ -15,15 +15,9 @@ import (
 func main() {
 	fmt.Println("Starting Orchestration of Phase 4: Extraction and Parsing.")
 
-<<<<<<< HEAD:cmd/go/extractionparser/extractionparser.go
-	// Définir les chemins de sortie
-	outputDir := "../../output/phase4"	// Un répertoire pour les sorties
-	os.MkdirAll(outputDir, os.ModePerm)	// Créer le répertoire si nécessaire
-=======
 	// Define output paths
-	outpuDir := "../../output/phase4"  // A directory for the outputs
+	outputDir := "../../output/phase4"  // A directory for the outputs
 	os.MkdirAll(outputDir, os.ModePerm) // Create the directory if it doesn't exist
->>>>>>> migration/gateway-manager-v77:cmd/go/extractionparser/main.go
 
 	extractionScanPath := filepath.Join(outputDir, "extraction-parsing-scan.json")
 	gapAnalysisPath := filepath.Join(outputDir, "EXTRACTION_PARSING_GAP_ANALYSIS.md")
