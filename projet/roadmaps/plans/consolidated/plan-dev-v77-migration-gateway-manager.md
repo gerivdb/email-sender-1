@@ -158,8 +158,12 @@ Le plan de migration peut donc être déroulé jusqu’à la validation finale.
 
 #### 9.3. Validation de l’absence de dépendance résiduelle
 
-- [ ] S’assurer qu’aucun composant, script ou pipeline ne dépend encore de `mcp-manager`.
-- [ ] Vérifier les configurations d’environnement, variables, et chemins d’accès.
+- [x] S’assurer qu’aucun composant, script ou pipeline ne dépend encore de `mcp-manager`.
+  - **Action** : Suppression complète du répertoire `development/managers/mcp-manager` et de ses références dans le code, les scripts et les configurations. Compilation globale et exécution du script `tools/migration/verify_migration.sh` pour valider l’absence de dépendances résiduelles. Correction des éventuelles erreurs détectées (fichiers vides, imports, modules Go, etc.).
+- [x] Vérifier les configurations d’environnement, variables, et chemins d’accès.
+  - **Action** : Audit des fichiers de configuration, variables d’environnement et pipelines CI/CD pour s’assurer qu’aucune référence à `mcp-manager` ne subsiste. Mise à jour ou suppression des variables et chemins obsolètes.
+
+> **Résultat** : Après suppression et audit, aucune dépendance résiduelle à `mcp-manager` n’a été détectée. Le projet compile et fonctionne sans erreur liée à ce composant.
 
 #### 9.4. Tests de non-régression et validation fonctionnelle
 
@@ -190,3 +194,4 @@ flowchart TD
     C --> D[Validation absence dépendance]
     D --> E[Tests non-régression]
     E --> F[Rapport migration & go/no-go]
+```
