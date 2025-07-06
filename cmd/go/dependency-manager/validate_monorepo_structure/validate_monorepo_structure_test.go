@@ -36,18 +36,18 @@ func TestValidateMonorepoStructure(t *testing.T) {
 	defer os.Chdir(originalWD) // Restore original working directory
 
 	// Run validation for Case 1
-	report, err := validate_monorepo_structure.RunValidation()
+	result, err := validate_monorepo_structure.RunValidation()
 	if err != nil {
 		t.Errorf("Case 1: RunValidation failed: %v", err)
 	}
-	if !report.IsValid {
+	if !result.IsValid {
 		t.Errorf("Case 1: Expected monorepo to be valid, but it was not.")
 	}
-	if len(report.GoModPaths) != 1 {
-		t.Errorf("Case 1: Expected 1 go.mod file, got %d", len(report.GoModPaths))
+	if len(result.GoModFiles) != 1 {
+		t.Errorf("Case 1: Expected 1 go.mod file, got %d", len(result.GoModFiles))
 	}
-	if report.GoModPaths[0] != "go.mod" {
-		t.Errorf("Case 1: Expected go.mod path 'go.mod', got '%s'", report.GoModPaths[0])
+	if result.GoModFiles[0] != "go.mod" {
+		t.Errorf("Case 1: Expected go.mod path 'go.mod', got '%s'", result.GoModFiles[0])
 	}
 
 	// Clean up for Case 2
@@ -68,15 +68,15 @@ func TestValidateMonorepoStructure(t *testing.T) {
 	}
 
 	// Run validation for Case 2
-	report, err = validate_monorepo_structure.RunValidation()
+	result, err = validate_monorepo_structure.RunValidation()
 	if err == nil {
 		t.Errorf("Case 2: Expected RunValidation to fail for multiple go.mod files, but it succeeded.")
 	}
-	if report.IsValid {
+	if result.IsValid {
 		t.Errorf("Case 2: Expected monorepo to be invalid, but it was valid.")
 	}
-	if len(report.GoModPaths) != 2 {
-		t.Errorf("Case 2: Expected 2 go.mod files, got %d", len(report.GoModPaths))
+	if len(result.GoModFiles) != 2 {
+		t.Errorf("Case 2: Expected 2 go.mod files, got %d", len(result.GoModFiles))
 	}
 
 	// Clean up for Case 3
@@ -84,14 +84,14 @@ func TestValidateMonorepoStructure(t *testing.T) {
 	os.RemoveAll(submodulePath)
 
 	// Case 3: Invalid monorepo structure (no go.mod file)
-	report, err = validate_monorepo_structure.RunValidation()
+	result, err = validate_monorepo_structure.RunValidation()
 	if err == nil {
 		t.Errorf("Case 3: Expected RunValidation to fail for no go.mod file, but it succeeded.")
 	}
-	if report.IsValid {
+	if result.IsValid {
 		t.Errorf("Case 3: Expected monorepo to be invalid, but it was valid.")
 	}
-	if len(report.GoModPaths) != 0 {
-		t.Errorf("Case 3: Expected 0 go.mod files, got %d", len(report.GoModPaths))
+	if len(result.GoModFiles) != 0 {
+		t.Errorf("Case 3: Expected 0 go.mod files, got %d", len(result.GoModFiles))
 	}
 }

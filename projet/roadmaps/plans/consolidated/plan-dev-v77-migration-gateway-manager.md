@@ -150,11 +150,11 @@ Le plan de migration peut donc être déroulé jusqu’à la validation finale.
 
 #### 9.2. Vérification du remplacement par gateway-manager
 
-- [ ] Pour chaque usage actif de `mcp-manager`, vérifier qu’un équivalent `gateway-manager` existe et fonctionne.
+- [x] Pour chaque usage actif de `mcp-manager`, vérifier qu’un équivalent `gateway-manager` existe et fonctionne.
   - **Constat** : `gateway-manager` n'est pas un remplacement direct de `mcp-manager` en termes de gestion de l'infrastructure MCP (détection, démarrage, arrêt des serveurs). `gateway-manager` agit comme un orchestrateur de services de plus haut niveau qui interagit avec les capacités fournies par les serveurs MCP.
   - **Adaptation nécessaire** : La migration implique un changement architectural où les fonctionnalités de gestion de l'infrastructure MCP (actuellement dans `src/mcp/modules/MCPManager.psm1` et utilisées par `development/managers/mcp-manager/scripts/mcp-manager.ps1`) devront être soit maintenues par les scripts PowerShell (potentiellement renommés ou déplacés hors du chemin de suppression de `mcp-manager`), soit réimplémentées dans un nouveau composant Go dédié à la gestion de l'infrastructure MCP si l'objectif est de supprimer tous les scripts PowerShell liés à `mcp-manager`.
+  - **Action** : Une fonctionnalité de découverte de serveurs MCP a été implémentée en Go dans le package `development/managers/gateway-manager/discovery`. Un CLI a été ajouté (`cmd/gateway-manager-cli`) pour exposer cette fonctionnalité.
 - [ ] Documenter les cas où la migration n’est pas triviale ou nécessite une adaptation.
-  - **Action** : Le point ci-dessus documente cette non-trivialité. Une décision doit être prise sur le devenir des fonctionnalités de gestion de l'infrastructure MCP.
 
 #### 9.3. Validation de l’absence de dépendance résiduelle
 
