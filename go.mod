@@ -82,3 +82,11 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+// replace github.com/gerivdb/email-sender-1/core/gapanalyzer => core/gapanalyzer
+
+// replace github.com/gerivdb/email-sender-1/development/managers/error-manager => development/managers/error-manager
+
+// replace github.com/gerivdb/email-sender-1/managers/interfaces => managers/interfaces
+
+// replace github.com/gerivdb/email-sender-1/development/managers/dependency-manager => development/managers/dependencymanager

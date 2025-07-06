@@ -20,6 +20,70 @@
 
 ---
 
+**Méthode de résolution des problèmes de dépendances :**
+*   J'ai essayé plusieurs approches pour résoudre les problèmes de dépendances, notamment la configuration des identifiants Git, la définition de la variable d'environnement `GOPRIVATE` et l'utilisation de directives `replace` dans le fichier `go.mod`.
+*   Finalement, j'ai constaté que le problème était dû à des répertoires qui n'étaient pas des modules Go valides. J'ai donc supprimé les directives `replace` correspondantes du fichier `go.mod`.
+
+**Fichiers corrigés :**
+*   `go.mod` : J'ai modifié ce fichier à plusieurs reprises pour tenter de résoudre les problèmes de dépendances. J'ai ajouté et supprimé des directives `replace`, et j'ai corrigé les chemins d'accès aux répertoires locaux.
+
+**Éléments notables pour la transmission des connaissances :**
+*   Il est important de s'assurer que tous les répertoires spécifiés dans le fichier `go.mod` sont des modules Go valides.
+*   Lorsqu'on travaille avec des dépôts GitHub privés, il est nécessaire de configurer correctement les identifiants Git pour permettre à Go de télécharger les dépendances.
+*   La variable d'environnement `GOPRIVATE` peut être utilisée pour indiquer à Go quels dépôts sont privés et nécessitent une authentification.
+
+---
+
+**NOTE :** La résolution des problèmes de dépendances est actuellement bloquée. Il est nécessaire de vérifier la configuration du projet et de s'assurer que toutes les dépendances sont disponibles et correctement configurées.
+
+---
+---
+
+## Plan détaillé pour terminer la phase 8 (correction des erreurs) - Priorisation des erreurs bloquantes
+
+1.  **Corriger les erreurs go.mod et go.work.**
+    *   Localiser les fichiers `go.mod` et `go.work` concernés.
+    *   Corriger les erreurs de directives inconnues, de chargement de modules et de remplacements locaux.
+    *   Utiliser la commande `go mod tidy` pour nettoyer et synchroniser les dépendances.
+2.  **Corriger les erreurs YAML (Helm, GitHub Actions, etc.).**
+    *   Localiser les fichiers YAML concernés (Helm charts, fichiers de configuration GitHub Actions, etc.).
+    *   Utiliser `yamllint` pour identifier et corriger les erreurs de syntaxe YAML.
+    *   Valider les fichiers YAML avec un schéma si disponible.
+3.  **Analyser le tableau de suivi des erreurs Go critiques (section 8.18.1 du plan).**
+    *   Identifier les fichiers et les lignes concernées par chaque erreur.
+    *   Comprendre le message d'erreur pour chaque occurrence.
+4.  **Localiser les erreurs restantes dans le code source.**
+    *   Utiliser les informations du tableau de suivi pour trouver les erreurs dans les fichiers correspondants.
+    *   Utiliser les diagnostics IDE pour confirmer les erreurs et obtenir plus de contexte.
+5.  **Corriger les erreurs Go restantes (8.18.1).**
+    *   Tenter d'automatiser les corrections avec `golangci-lint fix`, etc.
+    *   Corriger manuellement les erreurs restantes en modifiant le code source.
+6.  **Corriger les erreurs de linting (8.18.3).**
+    *   Exécuter `golangci-lint run` pour identifier les erreurs de style et de linting Go.
+    *   Appliquer les corrections suggérées par `golangci-lint`.
+7.  **Valider les corrections.**
+    *   Relancer la compilation globale (`go build ./...`).
+    *   Exécuter tous les tests unitaires et d'intégration (`go test ./...`).
+    *   Vérifier la conformité YAML (Helm, CI/CD).
+    *   Linting et formatage (`golangci-lint run`, `gofmt`, `yamllint`).
+8.  **Mettre à jour le rapport et cocher les cases au fur et à mesure.**
+    *   Documenter les corrections et les commits associés.
+    *   Mettre à jour le tableau de suivi des erreurs Go critiques.
+
+**Diagramme Mermaid mis à jour**
+
+```mermaid
+graph TD
+    A[Corriger erreurs go.mod/go.work] --> B(Corriger erreurs YAML);
+    B --> C[Analyser tableau erreurs];
+    C --> D(Localiser erreurs code);
+    D --> E{Corriger erreurs Go restantes};
+    E --> F{Corriger erreurs linting};
+    F --> G[Valider corrections];
+    G --> H[Mettre à jour rapport];
+```
+
+---
 ## Rapport d’erreurs résiduelles (à date)
 
 ### Erreurs Go (go.mod, go.work, imports, typage)
@@ -60,24 +124,24 @@
    - Scripts de lint, fix, validation YAML, go mod tidy, etc.
 ### Tableau de suivi des erreurs Go critiques (phase 8.18.1)
 
-| Fichier                                 | Ligne    | Message                                                                                                         | Statut   |
-|------------------------------------------|----------|-----------------------------------------------------------------------------------------------------------------|----------|
-| pkg/apigateway/oauth_jwt_auth.go         | 57:41    | claims.VerifyAudience undefined (type *JWTClaims has no field or method VerifyAudience)                         | À faire  |
-| pkg/apigateway/oauth_jwt_auth.go         | 81:40    | claims.VerifyAudience undefined (type *JWTClaims has no field or method VerifyAudience)                         | À faire  |
-| pkg/managers/n8n_manager_impl.go         | 160:21   | assignment mismatch: 2 variables but converters.NewN8NToGoConverter returns 1 value                             | À faire  |
-| pkg/managers/n8n_manager_impl.go         | 178:50   | too many arguments in call to mapping.NewParameterMapper                                                        | À faire  |
-| pkg/managers/n8n_manager_impl.go         | 178:58   | undefined: mapping.MappingOptions                                                                               | À faire  |
-| pkg/managers/n8n_manager_impl.go         | 193:22   | undefined: bridge.NewEventBus                                                                                   | À faire  |
-| pkg/managers/n8n_manager_impl.go         | 194:27   | undefined: bridge.NewStatusTracker                                                                              | À faire  |
-| pkg/managers/n8n_manager_impl.go         | 195:48   | not enough arguments in call to bridge.NewCallbackHandler                                                       | À faire  |
-| pkg/managers/n8n_manager_impl.go         | 240:23   | m.eventBus.Start undefined (type *bridge.EventBus is pointer to interface, not interface)                       | À faire  |
-| pkg/managers/n8n_manager_impl.go         | 244:28   | m.statusTracker.Start undefined (type *bridge.StatusTracker is pointer to interface, not interface)             | À faire  |
-| pkg/managers/n8n_manager_impl.go         | 248:30   | m.callbackHandler.Start undefined (type *bridge.CallbackHandler has no field or method Start)                   | À faire  |
-| pkg/managers/n8n_manager_impl.go         | 291:13   | m.eventBus.Stop undefined (type *bridge.EventBus is pointer to interface, not interface)                        | À faire  |
-| pkg/tracing/otel_tracing.go              |          | trace redeclared in this block                                                                                  | À faire  |
-| pkg/tracing/otel_tracing.go              |          | "go.opentelemetry.io/otel/trace" imported and not used                                                          | À faire  |
-| pkg/tracing/otel_tracing.go              | 32:74    | undefined: trace.Span                                                                                           | À faire  |
-| cmd/hub-central/cache_manager.go         | 1:1      | expected 'package', found 'EOF'                                                                                 | À faire  |
+| Fichier                                 | Ligne    | Message                                                                                                         | Statut      |
+|------------------------------------------|----------|-----------------------------------------------------------------------------------------------------------------|-------------|
+| pkg/apigateway/oauth_jwt_auth.go         | 57:41    | claims.VerifyAudience undefined (type *JWTClaims has no field or method VerifyAudience)                         | À faire     |
+| pkg/apigateway/oauth_jwt_auth.go         | 81:40    | claims.VerifyAudience undefined (type *JWTClaims has no field or method VerifyAudience)                         | À faire     |
+| pkg/managers/n8n_manager_impl.go         | 160:21   | assignment mismatch: 2 variables but converters.NewN8NToGoConverter returns 1 value                             | À faire     |
+| pkg/managers/n8n_manager_impl.go         | 178:50   | too many arguments in call to mapping.NewParameterMapper                                                        | À faire     |
+| pkg/managers/n8n_manager_impl.go         | 178:58   | undefined: mapping.MappingOptions                                                                               | À faire     |
+| pkg/managers/n8n_manager_impl.go         | 193:22   | undefined: bridge.NewEventBus                                                                                   | À faire     |
+| pkg/managers/n8n_manager_impl.go         | 194:27   | undefined: bridge.NewStatusTracker                                                                              | À faire     |
+| pkg/managers/n8n_manager_impl.go         | 195:48   | not enough arguments in call to bridge.NewCallbackHandler                                                       | À faire     |
+| pkg/managers/n8n_manager_impl.go         | 240:23   | m.eventBus.Start undefined (type *bridge.EventBus is pointer to interface, not interface)                       | À faire     |
+| pkg/managers/n8n_manager_impl.go         | 244:28   | m.statusTracker.Start undefined (type *bridge.StatusTracker is pointer to interface, not interface)             | À faire     |
+| pkg/managers/n8n_manager_impl.go         | 248:30   | m.callbackHandler.Start undefined (type *bridge.CallbackHandler has no field or method Start)                   | À faire     |
+| pkg/managers/n8n_manager_impl.go         | 291:13   | m.eventBus.Stop undefined (type *bridge.EventBus is pointer to interface, not interface)                        | À faire     |
+| pkg/tracing/otel_tracing.go              |          | trace redeclared in this block                                                                                  | À faire     |
+| pkg/tracing/otel_tracing.go              |          | "go.opentelemetry.io/otel/trace" imported and not used                                                          | À faire     |
+| pkg/tracing/otel_tracing.go              | 32:74    | undefined: trace.Span                                                                                           | À faire     |
+| cmd/hub-central/cache_manager.go         | 1:1      | expected 'package', found 'EOF'                                                                                 | À faire     |
    - Exécution : `go mod tidy`, `yamllint`, `golangci-lint run`, etc.
 4. **Procéder à la correction manuelle si nécessaire**
    - Pour les cas non automatisables (syntaxe complexe, refactoring).

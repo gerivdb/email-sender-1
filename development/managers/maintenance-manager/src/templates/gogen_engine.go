@@ -9,33 +9,32 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
-
-	"./interfaces"
 )
 
 // GoGenEngine - Native Go template system to replace Hygen with AI integration
 type GoGenEngine struct {
-	templatePath   string                     // Path to template directory
-	aiAnalyzer     *AIAnalyzer               // AI integration for intelligent template generation
-	configManager  interfaces.ConfigManager  // Configuration management
-	logger         *logrus.Logger            // Structured logging
-	templateCache  map[string]*template.Template // Cached parsed templates
-	variables      map[string]interface{}    // Global variables
+	templatePath  string                        // Path to template directory
+	aiAnalyzer    *AIAnalyzer                   // AI integration for intelligent template generation
+	configManager interfaces.ConfigManager      // Configuration management
+	logger        *logrus.Logger                // Structured logging
+	templateCache map[string]*template.Template // Cached parsed templates
+	variables     map[string]interface{}        // Global variables
 }
 
 // DevPlanTemplate represents a development plan template structure
 type DevPlanTemplate struct {
-	Name        string                     `yaml:"name" json:"name"`
-	Category    string                     `yaml:"category" json:"category"`
-	Description string                     `yaml:"description" json:"description"`
-	Version     string                     `yaml:"version" json:"version"`
-	Variables   map[string]interface{}     `yaml:"variables" json:"variables"`
-	Files       []TemplateFile            `yaml:"files" json:"files"`
-	Actions     []PostAction              `yaml:"actions" json:"actions"`
-	Validators  []ValidationRule          `yaml:"validators" json:"validators"`
-	Metadata    TemplateMetadata          `yaml:"metadata" json:"metadata"`
+	Name        string                 `yaml:"name" json:"name"`
+	Category    string                 `yaml:"category" json:"category"`
+	Description string                 `yaml:"description" json:"description"`
+	Version     string                 `yaml:"version" json:"version"`
+	Variables   map[string]interface{} `yaml:"variables" json:"variables"`
+	Files       []TemplateFile         `yaml:"files" json:"files"`
+	Actions     []PostAction           `yaml:"actions" json:"actions"`
+	Validators  []ValidationRule       `yaml:"validators" json:"validators"`
+	Metadata    TemplateMetadata       `yaml:"metadata" json:"metadata"`
 }
 
 // TemplateFile represents a file to be generated from template
@@ -60,11 +59,11 @@ type PostAction struct {
 
 // ValidationRule represents validation rules for generated content
 type ValidationRule struct {
-	Type        string `yaml:"type" json:"type"`
-	Pattern     string `yaml:"pattern" json:"pattern"`
-	Message     string `yaml:"message" json:"message"`
-	Required    bool   `yaml:"required" json:"required"`
-	FilePath    string `yaml:"file_path,omitempty" json:"file_path,omitempty"`
+	Type     string `yaml:"type" json:"type"`
+	Pattern  string `yaml:"pattern" json:"pattern"`
+	Message  string `yaml:"message" json:"message"`
+	Required bool   `yaml:"required" json:"required"`
+	FilePath string `yaml:"file_path,omitempty" json:"file_path,omitempty"`
 }
 
 // TemplateMetadata contains template metadata
@@ -79,22 +78,22 @@ type TemplateMetadata struct {
 
 // AIAnalyzer provides AI capabilities for template generation
 type AIAnalyzer struct {
-	enabled           bool
+	enabled             bool
 	confidenceThreshold float64
-	learningRate      float64
-	patternDatabase   map[string][]string
+	learningRate        float64
+	patternDatabase     map[string][]string
 }
 
 // GenerationResult represents the result of template generation
 type GenerationResult struct {
-	Success       bool                   `json:"success"`
-	GeneratedFiles []string              `json:"generated_files"`
-	ExecutedActions []string             `json:"executed_actions"`
-	Errors        []error               `json:"errors"`
-	Warnings      []string              `json:"warnings"`
-	Metadata      map[string]interface{} `json:"metadata"`
-	Duration      time.Duration         `json:"duration"`
-	AIDecisions   int                   `json:"ai_decisions"`
+	Success         bool                   `json:"success"`
+	GeneratedFiles  []string               `json:"generated_files"`
+	ExecutedActions []string               `json:"executed_actions"`
+	Errors          []error                `json:"errors"`
+	Warnings        []string               `json:"warnings"`
+	Metadata        map[string]interface{} `json:"metadata"`
+	Duration        time.Duration          `json:"duration"`
+	AIDecisions     int                    `json:"ai_decisions"`
 }
 
 // NewGoGenEngine creates a new instance of GoGenEngine
@@ -119,7 +118,7 @@ func (gge *GoGenEngine) Initialize(ctx context.Context) error {
 	gge.logger.Info("Initializing GoGenEngine...")
 
 	// Create template directory if it doesn't exist
-	if err := os.MkdirAll(gge.templatePath, 0755); err != nil {
+	if err := os.MkdirAll(gge.templatePath, 0o755); err != nil {
 		return fmt.Errorf("failed to create template directory: %w", err)
 	}
 
@@ -144,9 +143,9 @@ func (gge *GoGenEngine) GenerateDevPlan(planType string, variables map[string]in
 	result := &GenerationResult{
 		GeneratedFiles:  make([]string, 0),
 		ExecutedActions: make([]string, 0),
-		Errors:         make([]error, 0),
-		Warnings:       make([]string, 0),
-		Metadata:       make(map[string]interface{}),
+		Errors:          make([]error, 0),
+		Warnings:        make([]string, 0),
+		Metadata:        make(map[string]interface{}),
 	}
 
 	gge.logger.WithFields(logrus.Fields{
@@ -205,12 +204,12 @@ func (gge *GoGenEngine) GenerateDevPlan(planType string, variables map[string]in
 	result.Metadata["template_category"] = template.Category
 
 	gge.logger.WithFields(logrus.Fields{
-		"success":     result.Success,
-		"files":       len(result.GeneratedFiles),
-		"actions":     len(result.ExecutedActions),
-		"errors":      len(result.Errors),
+		"success":      result.Success,
+		"files":        len(result.GeneratedFiles),
+		"actions":      len(result.ExecutedActions),
+		"errors":       len(result.Errors),
 		"ai_decisions": result.AIDecisions,
-		"duration":    result.Duration,
+		"duration":     result.Duration,
 	}).Info("Development plan generation completed")
 
 	return result, nil
@@ -237,7 +236,7 @@ func (gge *GoGenEngine) CreateTemplate(template *DevPlanTemplate) error {
 
 	// Create template directory
 	templateDir := filepath.Join(gge.templatePath, template.Category, template.Name)
-	if err := os.MkdirAll(templateDir, 0755); err != nil {
+	if err := os.MkdirAll(templateDir, 0o755); err != nil {
 		return fmt.Errorf("failed to create template directory: %w", err)
 	}
 
@@ -248,7 +247,7 @@ func (gge *GoGenEngine) CreateTemplate(template *DevPlanTemplate) error {
 		return fmt.Errorf("failed to marshal template: %w", err)
 	}
 
-	if err := os.WriteFile(templateFile, data, 0644); err != nil {
+	if err := os.WriteFile(templateFile, data, 0o644); err != nil {
 		return fmt.Errorf("failed to write template file: %w", err)
 	}
 
@@ -317,7 +316,7 @@ func (gge *GoGenEngine) loadTemplates() error {
 		if !info.IsDir() && strings.HasSuffix(info.Name(), "template.yaml") {
 			templateName := filepath.Base(filepath.Dir(path))
 			templateFile := filepath.Join(path)
-			
+
 			data, err := os.ReadFile(templateFile)
 			if err != nil {
 				gge.logger.Warn("Failed to read template file %s: %v", templateFile, err)
@@ -344,7 +343,7 @@ func (gge *GoGenEngine) loadTemplates() error {
 // loadDevPlanTemplate loads a specific development plan template
 func (gge *GoGenEngine) loadDevPlanTemplate(planType string) (*DevPlanTemplate, error) {
 	templatePath := filepath.Join(gge.templatePath, "dev-plans", planType, "template.yaml")
-	
+
 	data, err := os.ReadFile(templatePath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read template file: %w", err)
@@ -361,27 +360,27 @@ func (gge *GoGenEngine) loadDevPlanTemplate(planType string) (*DevPlanTemplate, 
 // mergeVariables merges user variables with template defaults
 func (gge *GoGenEngine) mergeVariables(userVars, templateVars map[string]interface{}) map[string]interface{} {
 	merged := make(map[string]interface{})
-	
+
 	// Start with template defaults
 	for k, v := range templateVars {
 		merged[k] = v
 	}
-	
+
 	// Override with user variables
 	for k, v := range userVars {
 		merged[k] = v
 	}
-	
+
 	// Add global variables
 	for k, v := range gge.variables {
 		merged[k] = v
 	}
-	
+
 	// Add built-in variables
 	merged["timestamp"] = time.Now().Format("2006-01-02T15:04:05Z")
 	merged["date"] = time.Now().Format("2006-01-02")
 	merged["year"] = time.Now().Year()
-	
+
 	return merged
 }
 
@@ -401,9 +400,9 @@ func (gge *GoGenEngine) generateFile(file TemplateFile, variables map[string]int
 
 	// Resolve output path
 	outputPath := gge.resolvePath(file.Path, variables)
-	
+
 	// Create output directory
-	if err := os.MkdirAll(filepath.Dir(outputPath), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(outputPath), 0o755); err != nil {
 		return fmt.Errorf("failed to create output directory: %w", err)
 	}
 
@@ -442,14 +441,14 @@ func (gge *GoGenEngine) generateFile(file TemplateFile, variables map[string]int
 
 	// Set executable if specified
 	if file.Executable {
-		if err := os.Chmod(outputPath, 0755); err != nil {
+		if err := os.Chmod(outputPath, 0o755); err != nil {
 			gge.logger.Warn("Failed to set executable permission for %s: %v", outputPath, err)
 		}
 	}
 
 	result.GeneratedFiles = append(result.GeneratedFiles, outputPath)
 	gge.logger.WithField("file", outputPath).Info("File generated successfully")
-	
+
 	return nil
 }
 
@@ -469,7 +468,7 @@ func (gge *GoGenEngine) executeAction(action PostAction, variables map[string]in
 
 	// Resolve command with variables
 	command := gge.resolvePath(action.Command, variables)
-	
+
 	// Execute based on action type
 	switch action.Type {
 	case "shell":
@@ -488,7 +487,7 @@ func (gge *GoGenEngine) executeAction(action PostAction, variables map[string]in
 
 	result.ExecutedActions = append(result.ExecutedActions, action.Description)
 	gge.logger.WithField("action", action.Description).Info("Action executed successfully")
-	
+
 	return nil
 }
 
@@ -510,17 +509,17 @@ func (gge *GoGenEngine) validateGenerated(validator ValidationRule, result *Gene
 		if err != nil {
 			return fmt.Errorf("failed to read file for validation: %w", err)
 		}
-		
+
 		matched, err := filepath.Match(validator.Pattern, string(content))
 		if err != nil {
 			return fmt.Errorf("pattern validation failed: %w", err)
 		}
-		
+
 		if !matched && validator.Required {
 			return fmt.Errorf("file content does not match required pattern: %s", validator.Message)
 		}
 	}
-	
+
 	return nil
 }
 
@@ -533,12 +532,12 @@ func (gge *GoGenEngine) initializeAI() error {
 		if err != nil {
 			return fmt.Errorf("failed to read pattern database: %w", err)
 		}
-		
+
 		if err := yaml.Unmarshal(data, &gge.aiAnalyzer.patternDatabase); err != nil {
 			return fmt.Errorf("failed to unmarshal pattern database: %w", err)
 		}
 	}
-	
+
 	gge.logger.Info("AI analyzer initialized")
 	return nil
 }
@@ -546,9 +545,9 @@ func (gge *GoGenEngine) initializeAI() error {
 // createTemplateFile creates a template file on disk
 func (gge *GoGenEngine) createTemplateFile(templateDir string, file TemplateFile) error {
 	templatePath := filepath.Join(templateDir, file.TemplatePath)
-	
+
 	// Create directory if it doesn't exist
-	if err := os.MkdirAll(filepath.Dir(templatePath), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(templatePath), 0o755); err != nil {
 		return fmt.Errorf("failed to create template file directory: %w", err)
 	}
 
@@ -564,7 +563,7 @@ func (gge *GoGenEngine) createTemplateFile(templateDir string, file TemplateFile
 {{/* Add your template content here */}}
 `, file.Name, file.Variables)
 
-	if err := os.WriteFile(templatePath, []byte(content), 0644); err != nil {
+	if err := os.WriteFile(templatePath, []byte(content), 0o644); err != nil {
 		return fmt.Errorf("failed to write template file: %w", err)
 	}
 
@@ -622,15 +621,15 @@ func (ai *AIAnalyzer) enhanceTemplate(template *DevPlanTemplate, variables map[s
 	if !ai.enabled {
 		return template, nil
 	}
-	
+
 	enhanced := *template
-	
+
 	// AI-driven template optimization
 	// This would include:
 	// - Variable suggestion based on context
 	// - File generation optimization
 	// - Template structure improvements
-	
+
 	enhanced.Metadata.AIGenerated = true
 	return &enhanced, nil
 }
@@ -639,14 +638,14 @@ func (ai *AIAnalyzer) analyzeTemplate(template *DevPlanTemplate) (*DevPlanTempla
 	if !ai.enabled {
 		return template, nil
 	}
-	
+
 	analyzed := *template
-	
+
 	// AI analysis for template improvement
 	// - Complexity scoring
 	// - Best practice validation
 	// - Pattern recognition
-	
+
 	analyzed.Metadata.Complexity = ai.calculateComplexity(template)
 	return &analyzed, nil
 }
@@ -655,37 +654,37 @@ func (ai *AIAnalyzer) validateTemplate(template *DevPlanTemplate) error {
 	if !ai.enabled {
 		return nil
 	}
-	
+
 	// AI-powered validation
 	// - Semantic validation
 	// - Dependency checking
 	// - Best practice compliance
-	
+
 	return nil
 }
 
 func (ai *AIAnalyzer) calculateComplexity(template *DevPlanTemplate) int {
 	complexity := 0
-	
+
 	// Calculate based on:
 	complexity += len(template.Files) * 2
 	complexity += len(template.Actions) * 3
 	complexity += len(template.Validators) * 1
 	complexity += len(template.Variables) * 1
-	
+
 	return complexity
 }
 
 // ParseTemplateFiles is a helper method for DevPlanTemplate
 func (dpt *DevPlanTemplate) ParseTemplateFiles(templateDir string) *template.Template {
 	tmpl := template.New(dpt.Name)
-	
+
 	for _, file := range dpt.Files {
 		templatePath := filepath.Join(templateDir, file.TemplatePath)
 		if content, err := os.ReadFile(templatePath); err == nil {
 			tmpl.New(file.Name).Parse(string(content))
 		}
 	}
-	
+
 	return tmpl
 }
