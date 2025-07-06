@@ -1,4 +1,4 @@
-package main
+package scanmodules
 
 import (
 	"encoding/json"
@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-// ModuleInfo représente les informations d'un module
+// ModuleInfo represents a module's information
 type ModuleInfo struct {
 	Name         string    `json:"name"`
 	Path         string    `json:"path"`
@@ -20,7 +20,7 @@ type ModuleInfo struct {
 	LastModified time.Time `json:"last_modified"`
 }
 
-// RepositoryStructure représente la structure complète du dépôt
+// RepositoryStructure represents the complete repository structure
 type RepositoryStructure struct {
 	TreeOutput   string       `json:"tree_output"`
 	Modules      []ModuleInfo `json:"modules"`
@@ -29,46 +29,36 @@ type RepositoryStructure struct {
 	RootPath     string       `json:"root_path"`
 }
 
-func main() {
-	fmt.Println("=== Scan des modules et structure du dépôt ===")
+// ScanDir scans a directory for Go modules.
+func ScanDir(rootDir string) (*RepositoryStructure, error) {
+	fmt.Println("=== Scanning modules and repository structure ===")
 
-	// Obtenir le répertoire de travail actuel
+	// Get the current working directory
 	pwd, err := os.Getwd()
 	if err != nil {
-		log.Fatalf("Erreur lors de l'obtention du répertoire de travail: %v", err)
+		return nil, fmt.Errorf("error getting working directory: %w", err)
 	}
 
-	// Exécuter tree pour obtenir la structure
-	fmt.Println("Génération de l'arborescence...")
+	// Execute tree to get the structure
+	fmt.Println("Generating tree structure...")
 	treeCmd := exec.Command("tree", "-L", "3")
 	treeOutput, err := treeCmd.Output()
 	if err != nil {
-		log.Printf("Attention: impossible d'exécuter tree: %v", err)
-		// Fallback pour Windows ou si tree n'est pas disponible
-		treeOutput = []byte("Structure d'arborescence non disponible (tree non installé)")
+		log.Printf("Warning: could not execute tree: %v", err)
+		// Fallback for Windows or if tree is not available
+		treeOutput = []byte("Tree structure not available (tree not installed)")
 	}
 
-	// Sauvegarder l'arborescence dans un fichier
-	err = ioutil.WriteFile("arborescence.txt", treeOutput, 0644)
-	if err != nil {
-		log.Printf("Erreur lors de l'écriture de arborescence.txt: %v", err)
-	}
-
-	// Exécuter go list pour obtenir les modules
-	fmt.Println("Scan des modules Go...")
+	// Execute go list to get modules
+	fmt.Println("Scanning Go modules...")
 	goListCmd := exec.Command("go", "list", "./...")
+	goListCmd.Dir = rootDir
 	goListOutput, err := goListCmd.Output()
 	if err != nil {
-		log.Fatalf("Erreur lors de l'exécution de go list: %v", err)
+		return nil, fmt.Errorf("error executing go list: %w", err)
 	}
 
-	// Sauvegarder la liste des modules dans un fichier
-	err = ioutil.WriteFile("modules.txt", goListOutput, 0644)
-	if err != nil {
-		log.Printf("Erreur lors de l'écriture de modules.txt: %v", err)
-	}
-
-	// Parser les modules et collecter les informations
+	// Parse modules and collect information
 	moduleLines := strings.Split(strings.TrimSpace(string(goListOutput)), "\n")
 	var modules []ModuleInfo
 
@@ -77,10 +67,10 @@ func main() {
 			continue
 		}
 
-		// Convertir le nom du module en chemin de fichier
+		// Convert module name to file path
 		modulePath := strings.ReplaceAll(moduleLine, "/", string(filepath.Separator))
 
-		// Chercher le fichier principal du module
+		// Find the main file of the module
 		var actualPath string
 		possiblePaths := []string{
 			modulePath,
@@ -95,7 +85,7 @@ func main() {
 			}
 		}
 
-		// Obtenir les informations de modification
+		// Get modification info
 		var lastModified time.Time
 		if actualPath != "" {
 			if info, err := os.Stat(actualPath); err == nil {
@@ -106,14 +96,14 @@ func main() {
 		module := ModuleInfo{
 			Name:         moduleLine,
 			Path:         actualPath,
-			Description:  fmt.Sprintf("Module Go: %s", moduleLine),
+			Description:  fmt.Sprintf("Go module: %s", moduleLine),
 			LastModified: lastModified,
 		}
 		modules = append(modules, module)
 	}
 
-	// Créer la structure complète du dépôt
-	repoStructure := RepositoryStructure{
+	// Create the complete repository structure
+	repoStructure := &RepositoryStructure{
 		TreeOutput:   string(treeOutput),
 		Modules:      modules,
 		TotalModules: len(modules),
@@ -121,33 +111,21 @@ func main() {
 		RootPath:     pwd,
 	}
 
-	// Sauvegarder en JSON
+	return repoStructure, nil
+}
+
+// ExportModules exports the repository structure to a JSON file.
+func ExportModules(repoStructure *RepositoryStructure, outputFile string) error {
+	// Save to JSON
 	jsonData, err := json.MarshalIndent(repoStructure, "", "  ")
 	if err != nil {
-		log.Fatalf("Erreur lors de la sérialisation JSON: %v", err)
+		return fmt.Errorf("error marshalling JSON: %w", err)
 	}
 
-	err = ioutil.WriteFile("modules.json", jsonData, 0644)
+	err = ioutil.WriteFile(outputFile, jsonData, 0644)
 	if err != nil {
-		log.Fatalf("Erreur lors de l'écriture de modules.json: %v", err)
+		return fmt.Errorf("error writing to %s: %w", outputFile, err)
 	}
 
-	// Afficher un résumé
-	fmt.Printf("✅ Scan terminé avec succès!\n")
-	fmt.Printf("📁 Répertoire racine: %s\n", pwd)
-	fmt.Printf("📦 Modules trouvés: %d\n", len(modules))
-	fmt.Printf("📄 Fichiers générés:\n")
-	fmt.Printf("   - arborescence.txt\n")
-	fmt.Printf("   - modules.txt\n")
-	fmt.Printf("   - modules.json\n")
-
-	// Afficher quelques modules trouvés
-	fmt.Printf("\n📋 Premiers modules détectés:\n")
-	for i, module := range modules {
-		if i >= 5 { // Limiter l'affichage aux 5 premiers
-			fmt.Printf("   ... et %d autres\n", len(modules)-5)
-			break
-		}
-		fmt.Printf("   - %s\n", module.Name)
-	}
+	return nil
 }

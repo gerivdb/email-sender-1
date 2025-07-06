@@ -8,89 +8,90 @@ import (
 	"time"
 
 	"github.com/gerivdb/email-sender-1/core/extraction"
-
 	"github.com/gerivdb/email-sender-1/core/gapanalyzer"
+	"github.com/gerivdb/email-sender-1/core/ports"
 )
 
 func main() {
-	fmt.Println("Démarrage de l'orchestration de la Phase 4 : Extraction et Parsing.")
+	fmt.Println("Starting Orchestration of Phase 4: Extraction and Parsing.")
 
-	// Définir les chemins de sortie
-	outputDir := "../../output/phase4"  // Un répertoire pour les sorties
-	os.MkdirAll(outputDir, os.ModePerm) // Créer le répertoire si nécessaire
+	// Define output paths
+	outpuDir := "../../output/phase4"  // A directory for the outputs
+	os.MkdirAll(outputDir, os.ModePerm) // Create the directory if it doesn't exist
 
 	extractionScanPath := filepath.Join(outputDir, "extraction-parsing-scan.json")
 	gapAnalysisPath := filepath.Join(outputDir, "EXTRACTION_PARSING_GAP_ANALYSIS.md")
 	phase4ReportPath := filepath.Join(outputDir, "EXTRACTION_PARSING_PHASE4_REPORT.md")
 
-	// --- Étape 1: Extraction et Parsing ---
-	fmt.Println("\nExécution de l'extraction et du parsing...")
-	// Simuler un chemin source pour l'extraction. En réalité, ce serait un chemin vers des données réelles.
-	// Pour ce test, nous allons créer un fichier temporaire.
+	// --- Step 1: Extraction and Parsing ---
+	fmt.Println("\nExecuting Extraction and Parsing...")
+	// Simulate a source path for extraction. In reality, this would be a path to real data.
+	// For this test, we will create a temporary file.
 	tempSourceFile := filepath.Join(outputDir, "simulated_source_data.txt")
-	err := os.WriteFile(tempSourceFile, []byte("Ceci est un contenu de données simulées pour l'extraction."), 0o644)
+	err := os.WriteFile(tempSourceFile, []byte("This is simulated data content for extraction."), 0644)
 	if err != nil {
-		log.Fatalf("Erreur lors de la création du fichier source simulé : %v", err)
+		log.Fatalf("Error creating simulated source file: %v", err)
 	}
 
 	extractedData, err := extraction.ExtractAndParseData(tempSourceFile)
 	if err != nil {
-		log.Printf("Erreur lors de l'extraction et du parsing : %v", err)
-		// Continuer si possible pour l'analyse des écarts même en cas d'erreur d'extraction
+		log.Printf("Error during extraction and parsing: %v", err)
+		// Continue if possible for gap analysis even if extraction fails
 		extractedData = map[string]interface{}{"status": "failed", "error": err.Error()}
 	} else {
-		fmt.Println("Extraction et parsing terminés avec succès.")
+		fmt.Println("Extraction and parsing completed successfully.")
 	}
 
-	// Générer le fichier de scan d'extraction
+	// Generate the extraction scan file
 	err = extraction.GenerateExtractionParsingScan(extractionScanPath, extractedData)
 	if err != nil {
-		log.Fatalf("Erreur lors de la génération du scan d'extraction : %v", err)
+		log.Fatalf("Error generating extraction scan: %v", err)
 	}
-	fmt.Printf("Fichier de scan d'extraction généré : %s\n", extractionScanPath)
+	fmt.Printf("Extraction scan file generated: %s\n", extractionScanPath)
 
-	// --- Étape 2: Analyse d'écart ---
-	fmt.Println("\nExécution de l'analyse des écarts...")
-	analysisResult, err := gapanalyzer.AnalyzeExtractionParsingGap(extractedData)
+	// --- Step 2: Gap Analysis ---
+	fmt.Println("\nExecuting Gap Analysis...")
+	var analyzer ports.GapAnalyzer = gapanalyzer.NewAnalyzer()
+	analysisResult, err := analyzer.AnalyzeExtractionParsingGap(extractedData)
 	if err != nil {
-		log.Fatalf("Erreur lors de l'analyse des écarts : %v", err)
+		log.Fatalf("Error during gap analysis: %v", err)
 	}
-	fmt.Println("Analyse des écarts terminée.")
+	fmt.Println("Gap analysis completed.")
 
-	// Générer le rapport d'analyse des écarts
-	err = gapanalyzer.GenerateExtractionParsingGapAnalysis(gapAnalysisPath, analysisResult)
+	// Generate the gap analysis report
+	err = analyzer.GenerateExtractionParsingGapAnalysis(gapAnalysisPath, analysisResult)
 	if err != nil {
-		log.Fatalf("Erreur lors de la génération du rapport d'analyse des écarts : %v", err)
+		log.Fatalf("Error generating gap analysis report: %v", err)
 	}
-	fmt.Printf("Rapport d'analyse des écarts généré : %s\n", gapAnalysisPath)
+	fmt.Printf("Gap analysis report generated: %s\n", gapAnalysisPath)
 
-	// --- Étape 3: Génération du rapport de la Phase 4 ---
-	fmt.Println("\nGénération du rapport de la Phase 4...")
+	// --- Step 3: Generate Phase 4 Report ---
+	fmt.Println("\nGenerating Phase 4 Report...")
 	reportContent := fmt.Sprintf(`
-# Rapport de la Phase 4 : Extraction et Parsing
+# Phase 4 Report: Extraction and Parsing
 
-## Résumé
-Cette phase a couvert l'extraction et le parsing des données, suivi d'une analyse des écarts.
+## Summary
+This phase covered data extraction and parsing, followed by a gap analysis.
 
-## Résultats de l'Extraction/Parsing
-- Voir le fichier : [%s](%s)
+## Extraction/Parsing Results
+- See file: [%s](%s)
 
-## Résultats de l'Analyse des Écarts
-- Voir le fichier : [%s](%s)
+## Gap Analysis Results
+- See file: [%s](%s)
 
-## Statut Global
-Phase 4 complétée le %s.
-Écarts détectés : %v
+## Overall Status
+Phase 4 completed on %s.
+Detected gaps: %v
 `,
 		filepath.Base(extractionScanPath), extractionScanPath,
 		filepath.Base(gapAnalysisPath), gapAnalysisPath,
 		time.Now().Format(time.RFC3339), analysisResult["gap_found"])
 
-	err = os.WriteFile(phase4ReportPath, []byte(reportContent), 0o644)
+	err = os.WriteFile(phase4ReportPath, []byte(reportContent), 0644)
 	if err != nil {
-		log.Fatalf("Erreur lors de la génération du rapport de la Phase 4 : %v", err)
+		log.Fatalf("Error generating Phase 4 report: %v", err)
 	}
-	fmt.Printf("Rapport de la Phase 4 généré : %s\n", phase4ReportPath)
+	fmt.Printf("Phase 4 report generated: %s\n", phase4ReportPath)
 
-	fmt.Println("\nOrchestration de la Phase 4 terminée.")
+	fmt.Println("\nPhase 4 Orchestration finished.")
 }

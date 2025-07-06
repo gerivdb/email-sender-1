@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"strings"
 	"time"
+	"os"
 )
 
-// ModuleInfo représente les informations d'un module (importé du scanner)
+// ModuleInfo represents the information of a module (imported from the scanner)
 type ModuleInfo struct {
 	Name         string    `json:"name"`
 	Path         string    `json:"path"`
@@ -14,7 +15,7 @@ type ModuleInfo struct {
 	LastModified time.Time `json:"last_modified"`
 }
 
-// RepositoryStructure représente la structure complète du dépôt (importé du scanner)
+// RepositoryStructure represents the complete repository structure (imported from the scanner)
 type RepositoryStructure struct {
 	TreeOutput   string       `json:"tree_output"`
 	Modules      []ModuleInfo `json:"modules"`
@@ -23,7 +24,7 @@ type RepositoryStructure struct {
 	RootPath     string       `json:"root_path"`
 }
 
-// ExpectedModule représente un module attendu
+// ExpectedModule represents an expected module
 type ExpectedModule struct {
 	Name        string `json:"name"`
 	Path        string `json:"path"`
@@ -32,7 +33,7 @@ type ExpectedModule struct {
 	Description string `json:"description"`
 }
 
-// GapAnalysis représente le résultat de l'analyse d'écart
+// GapAnalysis represents the result of the gap analysis
 type GapAnalysis struct {
 	AnalysisDate    time.Time        `json:"analysis_date"`
 	TotalExpected   int              `json:"total_expected"`
@@ -45,84 +46,92 @@ type GapAnalysis struct {
 	Summary         string           `json:"summary"`
 }
 
-// GetExpectedModules retourne la liste des modules attendus selon l'architecture du projet
-func GetExpectedModules() []ExpectedModule {
+// Analyzer is the implementation of the GapAnalyzer interface.
+type Analyzer struct{}
+
+// NewAnalyzer creates a new Analyzer.
+func NewAnalyzer() *Analyzer {
+	return &Analyzer{}
+}
+
+// GetExpectedModules returns the list of expected modules according to the project architecture
+func (a *Analyzer) GetExpectedModules() []ExpectedModule {
 	return []ExpectedModule{
-		// Modules core
+		// Core modules
 		{
 			Name:        "core/scanmodules",
 			Path:        "core/scanmodules",
 			Required:    true,
 			Category:    "core",
-			Description: "Scanner de modules et structure du dépôt",
+			Description: "Module and repository structure scanner",
 		},
 		{
 			Name:        "core/gapanalyzer",
 			Path:        "core/gapanalyzer",
 			Required:    true,
 			Category:    "core",
-			Description: "Analyseur d'écarts entre modules attendus et existants",
+			Description: "Gap analyzer between expected and existing modules",
 		},
 		{
 			Name:        "core/reporting",
 			Path:        "core/reporting",
 			Required:    true,
 			Category:    "core",
-			Description: "Générateur de rapports automatisés",
+			Description: "Automated report generator",
 		},
 
-		// Modules cmd
+		// cmd modules
 		{
 			Name:        "cmd/auto-roadmap-runner",
 			Path:        "cmd/auto-roadmap-runner",
 			Required:    true,
 			Category:    "cmd",
-			Description: "Orchestrateur global de la roadmap",
+			Description: "Global roadmap orchestrator",
 		},
 		{
 			Name:        "cmd/configcli",
 			Path:        "cmd/configcli",
 			Required:    false,
 			Category:    "cmd",
-			Description: "Interface en ligne de commande pour la configuration",
+			Description: "Command line interface for configuration",
 		},
 		{
 			Name:        "cmd/configapi",
 			Path:        "cmd/configapi",
 			Required:    false,
 			Category:    "cmd",
-			Description: "API de configuration",
+			Description: "Configuration API",
 		},
 
-		// Modules tests
+		// tests modules
 		{
 			Name:        "tests/validation",
 			Path:        "tests/validation",
 			Required:    true,
 			Category:    "tests",
-			Description: "Tests de validation globaux",
+			Description: "Global validation tests",
 		},
 		{
 			Name:        "tests/test_runners",
 			Path:        "tests/test_runners",
 			Required:    false,
 			Category:    "tests",
-			Description: "Runners de tests spécialisés",
+			Description: "Specialized test runners",
 		},
 
-		// Modules MCP Gateway (existants)
+		// MCP Gateway modules (existing)
 		{
 			Name:        "development/managers/gateway-manager",
 			Path:        "development/managers/gateway-manager",
 			Required:    false,
 			Category:    "mcp",
-			Description: "Serveur de passerelle MCP",
+			Description: "MCP gateway server",
 		},
 	}
 }
 
-// AnalyzeGaps effectue l'analyse d'écart entre modules attendus et trouvés
-func AnalyzeGaps(repoStructure RepositoryStructure, expectedModules []ExpectedModule) GapAnalysis {
+// AnalyzeGaps performs the gap analysis between expected and found modules
+func (a *Analyzer) AnalyzeGaps(repoStructure RepositoryStructure, expectedModules []ExpectedModule) GapAnalysis {
 	analysis := GapAnalysis{
 		AnalysisDate:    time.Now(),
 		TotalExpected:   len(expectedModules),
@@ -133,10 +142,10 @@ func AnalyzeGaps(repoStructure RepositoryStructure, expectedModules []ExpectedMo
 		Recommendations: []string{},
 	}
 
-	// Créer des maps pour faciliter la comparaison
+	// Create maps for easier comparison
 	foundModulesMap := make(map[string]ModuleInfo)
 	for _, module := range repoStructure.Modules {
-		// Normaliser le nom du module pour la comparaison
+		// Normalize module name for comparison
 		normalizedName := strings.ReplaceAll(module.Name, "\\", "/")
 		foundModulesMap[normalizedName] = module
 	}
@@ -146,36 +155,36 @@ func AnalyzeGaps(repoStructure RepositoryStructure, expectedModules []ExpectedMo
 		expectedModulesMap[expected.Name] = expected
 	}
 
-	// Identifier les modules manquants
+	// Identify missing modules
 	for _, expected := range expectedModules {
 		if _, found := foundModulesMap[expected.Name]; !found {
 			analysis.MissingModules = append(analysis.MissingModules, expected)
 			if expected.Required {
 				analysis.Recommendations = append(analysis.Recommendations,
-					fmt.Sprintf("CRITIQUE: Créer le module requis '%s' (%s)", expected.Name, expected.Description))
+					fmt.Sprintf("CRITICAL: Create the required module '%s' (%s)", expected.Name, expected.Description))
 			} else {
 				analysis.Recommendations = append(analysis.Recommendations,
-					fmt.Sprintf("OPTIONNEL: Considérer la création du module '%s' (%s)", expected.Name, expected.Description))
+					fmt.Sprintf("OPTIONAL: Consider creating the module '%s' (%s)", expected.Name, expected.Description))
 			}
 		}
 	}
 
-	// Identifier les modules correspondants et supplémentaires
+	// Identify matching and extra modules
 	for _, found := range repoStructure.Modules {
 		normalizedName := strings.ReplaceAll(found.Name, "\\", "/")
 		if _, expected := expectedModulesMap[normalizedName]; expected {
 			analysis.MatchingModules = append(analysis.MatchingModules, found)
 		} else {
-			// Vérifier si c'est un module "extra" légitime ou non
-			if !IsLegitimateExtraModule(normalizedName) {
+			// Check if it's a legitimate extra module or not
+			if !a.IsLegitimateExtraModule(normalizedName) {
 				analysis.ExtraModules = append(analysis.ExtraModules, found)
 				analysis.Recommendations = append(analysis.Recommendations,
-					fmt.Sprintf("RÉVISION: Module non-attendu trouvé '%s' - vérifier s'il est nécessaire", normalizedName))
+					fmt.Sprintf("REVIEW: Unexpected module found '%s' - check if it is necessary", normalizedName))
 			}
 		}
 	}
 
-	// Calculer le taux de conformité
+	// Calculate compliance rate
 	requiredModules := 0
 	foundRequiredModules := 0
 	for _, expected := range expectedModules {
@@ -193,35 +202,35 @@ func AnalyzeGaps(repoStructure RepositoryStructure, expectedModules []ExpectedMo
 		analysis.ComplianceRate = 100.0
 	}
 
-	// Générer le résumé
+	// Generate summary
 	analysis.Summary = fmt.Sprintf(
-		"Analyse d'écart terminée: %d/%d modules requis trouvés (%.1f%% de conformité). "+
-			"%d modules manquants, %d modules supplémentaires, %d modules correspondants.",
+		"Gap analysis completed: %d/%d required modules found (%.1f%% compliance). "+
+			"%d missing modules, %d extra modules, %d matching modules.",
 		foundRequiredModules, requiredModules, analysis.ComplianceRate,
 		len(analysis.MissingModules), len(analysis.ExtraModules), len(analysis.MatchingModules))
 
-	// Ajouter des recommandations générales
+	// Add general recommendations
 	if analysis.ComplianceRate < 80 {
 		analysis.Recommendations = append(analysis.Recommendations,
-			"PRIORITÉ HAUTE: Taux de conformité faible - implémenter les modules critiques manquants")
+			"HIGH PRIORITY: Low compliance rate - implement the missing critical modules")
 	} else if analysis.ComplianceRate < 100 {
 		analysis.Recommendations = append(analysis.Recommendations,
-			"PRIORITÉ MOYENNE: Compléter les modules manquants pour une conformité complète")
+			"MEDIUM PRIORITY: Complete the missing modules for full compliance")
 	} else {
 		analysis.Recommendations = append(analysis.Recommendations,
-			"EXCELLENT: Tous les modules requis sont présents")
+			"EXCELLENT: All required modules are present")
 	}
 
 	return analysis
 }
 
-// IsLegitimateExtraModule vérifie si un module "extra" est légitime
-func IsLegitimateExtraModule(moduleName string) bool {
+// IsLegitimateExtraModule checks if an "extra" module is legitimate
+func (a *Analyzer) IsLegitimateExtraModule(moduleName string) bool {
 	legitimatePatterns := []string{
-		"github.com/",                 // Modules externes
-		"golang.org/",                 // Modules standard
-		"go.uber.org/",                // Modules tiers légitimes
-		"development/managers/gateway-manager/", // Sous-modules MCP légitimes
+		"github.com/",                 // External modules
+		"golang.org/",                 // Standard modules
+		"go.uber.org/",                // Legitimate third-party modules
+		"development/managers/gateway-manager/", // Legitimate MCP sub-modules
 	}
 
 	for _, pattern := range legitimatePatterns {
@@ -232,56 +241,56 @@ func IsLegitimateExtraModule(moduleName string) bool {
 	return false
 }
 
-// GenerateMarkdownReport génère un rapport Markdown
-func GenerateMarkdownReport(analysis GapAnalysis) string {
+// GenerateMarkdownReport generates a Markdown report
+func (a *Analyzer) GenerateMarkdownReport(analysis GapAnalysis) string {
 	var report strings.Builder
 
-	report.WriteString("# 📊 Analyse d'Écart des Modules\n\n")
-	report.WriteString(fmt.Sprintf("**Date d'analyse:** %s\n\n", analysis.AnalysisDate.Format("2006-01-02 15:04:05")))
-	report.WriteString(fmt.Sprintf("**Résumé:** %s\n\n", analysis.Summary))
+	report.WriteString("# 📊 Module Gap Analysis\n\n")
+	report.WriteString(fmt.Sprintf("**Analysis date:** %s\n\n", analysis.AnalysisDate.Format("2006-01-02 15:04:05")))
+	report.WriteString(fmt.Sprintf("**Summary:** %s\n\n", analysis.Summary))
 
-	// Métriques
-	report.WriteString("## 📈 Métriques\n\n")
-	report.WriteString(fmt.Sprintf("- **Modules attendus:** %d\n", analysis.TotalExpected))
-	report.WriteString(fmt.Sprintf("- **Modules trouvés:** %d\n", analysis.TotalFound))
-	report.WriteString(fmt.Sprintf("- **Taux de conformité:** %.1f%%\n", analysis.ComplianceRate))
-	report.WriteString(fmt.Sprintf("- **Modules manquants:** %d\n", len(analysis.MissingModules)))
-	report.WriteString(fmt.Sprintf("- **Modules supplémentaires:** %d\n", len(analysis.ExtraModules)))
-	report.WriteString(fmt.Sprintf("- **Modules correspondants:** %d\n\n", len(analysis.MatchingModules)))
+	// Metrics
+	report.WriteString("## 📈 Metrics\n\n")
+	report.WriteString(fmt.Sprintf("- **Expected modules:** %d\n", analysis.TotalExpected))
+	report.WriteString(fmt.Sprintf("- **Found modules:** %d\n", analysis.TotalFound))
+	report.WriteString(fmt.Sprintf("- **Compliance rate:** %.1f%%\n", analysis.ComplianceRate))
+	report.WriteString(fmt.Sprintf("- **Missing modules:** %d\n", len(analysis.MissingModules)))
+	report.WriteString(fmt.Sprintf("- **Extra modules:** %d\n", len(analysis.ExtraModules)))
+	report.WriteString(fmt.Sprintf("- **Matching modules:** %d\n\n", len(analysis.MatchingModules)))
 
-	// Modules manquants
+	// Missing modules
 	if len(analysis.MissingModules) > 0 {
-		report.WriteString("## ❌ Modules Manquants\n\n")
+		report.WriteString("## ❌ Missing Modules\n\n")
 		for _, missing := range analysis.MissingModules {
-			status := "OPTIONNEL"
+			status := "OPTIONAL"
 			if missing.Required {
-				status = "**REQUIS**"
+				status = "**REQUIRED**"
 			}
-			report.WriteString(fmt.Sprintf("- %s `%s` (%s)\n  - **Catégorie:** %s\n  - **Description:** %s\n\n",
+			report.WriteString(fmt.Sprintf("- %s `%s` (%s)\n  - **Category:** %s\n  - **Description:** %s\n\n",
 				status, missing.Name, missing.Path, missing.Category, missing.Description))
 		}
 	}
 
-	// Modules correspondants
+	// Matching modules
 	if len(analysis.MatchingModules) > 0 {
-		report.WriteString("## ✅ Modules Correspondants\n\n")
+		report.WriteString("## ✅ Matching Modules\n\n")
 		for _, matching := range analysis.MatchingModules {
 			report.WriteString(fmt.Sprintf("- `%s`\n", matching.Name))
 		}
 		report.WriteString("\n")
 	}
 
-	// Modules supplémentaires
+	// Extra modules
 	if len(analysis.ExtraModules) > 0 {
-		report.WriteString("## ⚠️ Modules Supplémentaires\n\n")
+		report.WriteString("## ⚠️ Extra Modules\n\n")
 		for _, extra := range analysis.ExtraModules {
 			report.WriteString(fmt.Sprintf("- `%s` - %s\n", extra.Name, extra.Description))
 		}
 		report.WriteString("\n")
 	}
 
-	// Recommandations
-	report.WriteString("## 🎯 Recommandations\n\n")
+	// Recommendations
+	report.WriteString("## 🎯 Recommendations\n\n")
 	for i, recommendation := range analysis.Recommendations {
 		report.WriteString(fmt.Sprintf("%d. %s\n", i+1, recommendation))
 	}
@@ -289,4 +298,47 @@ func GenerateMarkdownReport(analysis GapAnalysis) string {
 	return report.String()
 }
 
-// main function is removed from here and will be in core/gapanalyzer/main.go
+// AnalyzeExtractionParsingGap analyzes the gaps for extraction and parsing
+func (a *Analyzer) AnalyzeExtractionParsingGap(extractedData map[string]interface{}) (map[string]interface{}, error) {
+	// Simulate a gap analysis based on the extracted data
+	analysisResult := make(map[string]interface{})
+	analysisResult["analysis_date"] = time.Now()
+
+	if status, ok := extractedData["status"]; ok && status == "failed" {
+		analysisResult["gap_found"] = true
+		analysisResult["details"] = "Extraction failed, so a major gap exists."
+		analysisResult["error"] = extractedData["error"]
+	} else {
+		// Simulate a check for data completeness
+		if _, ok := extractedData["content"]; !ok || extractedData["content"] == "" {
+			analysisResult["gap_found"] = true
+			analysisResult["details"] = "Extracted content is empty or missing."
+		} else {
+			analysisResult["gap_found"] = false
+			analysisResult["details"] = "Extracted data seems complete."
+		}
+	}
+
+	return analysisResult, nil
+}
+
+// GenerateExtractionParsingGapAnalysis generates the gap analysis report
+func (a *Analyzer) GenerateExtractionParsingGapAnalysis(filePath string, analysisResult map[string]interface{}) error {
+	var report strings.Builder
+
+	report.WriteString("# Gap Analysis - Extraction and Parsing\n\n")
+	report.WriteString(fmt.Sprintf("**Analysis date:** %s\n\n", analysisResult["analysis_date"]))
+
+	if gapFound, ok := analysisResult["gap_found"].(bool); ok && gapFound {
+		report.WriteString("## ❌ Gap Detected\n\n")
+		report.WriteString(fmt.Sprintf("**Details:** %s\n", analysisResult["details"]))
+		if err, ok := analysisResult["error"]; ok {
+			report.WriteString(fmt.Sprintf("**Error:** %v\n", err))
+		}
+	} else {
+		report.WriteString("## ✅ No Gap Detected\n\n")
+		report.WriteString(fmt.Sprintf("**Details:** %s\n", analysisResult["details"]))
+	}
+
+	return os.WriteFile(filePath, []byte(report.String()), 0644)
+}

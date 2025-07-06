@@ -26,7 +26,7 @@
     "markdown": true,
     "scminput": true
   },
-  "go.goroot": "C:\\Users\\user\\sdk\\go1.23.9",
+  "go.goroot": "C:\\Users\\user\\sdk\\go1.24.4",
   "go.gopath": "C:\\Users\\user\\go",
   
   "go.formatTool": "goimports",
