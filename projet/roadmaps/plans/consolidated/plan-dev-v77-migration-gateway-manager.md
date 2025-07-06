@@ -2,6 +2,9 @@
 
 ---
 
+> **Note de synchronisation documentaire**  
+> Ce plan doit être régulièrement synchronisé avec `tools/migration/migration_plan.md` afin de garantir la cohérence des actions, outils et procédures de migration.
+
 ## PHASE 8 – Correction des erreurs Go critiques (lots 1 à 18)
 
 - [x] 8.1 à 8.14
@@ -69,6 +72,14 @@
 8.  **Mettre à jour le rapport et cocher les cases au fur et à mesure.**
     *   [x] Documenter les corrections et les commits associés.
     *   [x] Mettre à jour le tableau de suivi des erreurs Go critiques.
+9.  **Automatisation de la vérification de migration**
+    *   Utiliser le script `tools/migration/verify_migration.sh` pour automatiser la détection des dépendances résiduelles à l'ancien MCP ou à mcp-manager.
+    *   Le script doit être exécuté à chaque itération de correction pour garantir la conformité du code et l'absence de dépendances obsolètes.
+    *   Documenter tout message ou blocage remonté par ce script dans le rapport de migration.
+10. **Gestion des blocages et procédure de rollback**
+    *   En cas de blocage critique, revenir au dernier commit stable en utilisant `git revert` ou `git checkout`.
+    *   Documenter le contexte du blocage dans le rapport de migration et notifier l’équipe référente.
+    *   Les procédures de rollback ou d’escalade doivent être suivies avant toute suppression irréversible.
 
 **Diagramme Mermaid mis à jour**
 
@@ -164,6 +175,13 @@ Le plan de migration peut donc être déroulé jusqu’à la validation finale.
   - Les tests passés/échoués  
   - Les points de vigilance restants
 - [ ] Valider le go/no-go pour suppression définitive de `mcp-manager`.
+
+#### 9.6. Validation finale, peer review et go/no-go
+
+- [ ] Relecture du code et du rapport de migration par un pair (peer review).
+- [ ] Exécution finale du script `verify_migration.sh` et validation des tests automatisés.
+- [ ] Organisation d’un go/no-go formel (oral ou écrit) avant la suppression définitive de `mcp-manager`.
+- [ ] Archivage du rapport de migration et mise à jour du plan consolidé ET du fichier `migration_plan.md`.
 
 ```mermaid
 flowchart TD
