@@ -6,10 +6,10 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/managers/notification-manager/interfaces"
 	"github.com/google/uuid"
-	"github.com/email-sender-notification-manager/interfaces"
-	"go.uber.org/zap"
 	"github.com/robfig/cron/v3"
+	"go.uber.org/zap"
 )
 
 // NotificationManagerImpl implémente l'interface NotificationManager
@@ -24,65 +24,65 @@ type NotificationManagerImpl struct {
 	isInitialized bool
 
 	// Notification manager specific fields
-	config           *NotificationConfig
-	channelManager   interfaces.ChannelManager
-	alertManager     interfaces.AlertManager
-	channels         map[string]interfaces.NotificationChannel
-	scheduler        *cron.Cron
+	config            *NotificationConfig
+	channelManager    interfaces.ChannelManager
+	alertManager      interfaces.AlertManager
+	channels          map[string]interfaces.NotificationChannel
+	scheduler         *cron.Cron
 	notificationQueue chan *interfaces.Notification
-	workers          int
-	
+	workers           int
+
 	// Statistics
-	totalSent        int64
-	totalFailed      int64
-	channelStats     map[string]*ChannelStats
-	
+	totalSent    int64
+	totalFailed  int64
+	channelStats map[string]*ChannelStats
+
 	// Control
-	stopChan         chan struct{}
-	workersWg        sync.WaitGroup
+	stopChan  chan struct{}
+	workersWg sync.WaitGroup
 }
 
 // NotificationConfig représente la configuration du Notification Manager
 type NotificationConfig struct {
-	Workers           int           `json:"workers"`
-	QueueSize         int           `json:"queue_size"`
-	RetryAttempts     int           `json:"retry_attempts"`
-	RetryDelay        time.Duration `json:"retry_delay"`
-	DefaultChannels   []string      `json:"default_channels"`
-	SlackConfig       *SlackConfig  `json:"slack_config"`
-	DiscordConfig     *DiscordConfig `json:"discord_config"`
-	WebhookConfig     *WebhookConfig `json:"webhook_config"`
+	Workers         int            `json:"workers"`
+	QueueSize       int            `json:"queue_size"`
+	RetryAttempts   int            `json:"retry_attempts"`
+	RetryDelay      time.Duration  `json:"retry_delay"`
+	DefaultChannels []string       `json:"default_channels"`
+	SlackConfig     *SlackConfig   `json:"slack_config"`
+	DiscordConfig   *DiscordConfig `json:"discord_config"`
+	WebhookConfig   *WebhookConfig `json:"webhook_config"`
 }
 
 // SlackConfig configuration pour Slack
 type SlackConfig struct {
-	Token      string `json:"token"`
+	Token          string `json:"token"`
 	DefaultChannel string `json:"default_channel"`
-	Username   string `json:"username"`
-	IconEmoji  string `json:"icon_emoji"`
+	Username       string `json:"username"`
+	IconEmoji      string `json:"icon_emoji"`
 }
 
 // DiscordConfig configuration pour Discord
 type DiscordConfig struct {
-	Token        string `json:"token"`
-	DefaultGuild string `json:"default_guild"`
+	Token          string `json:"token"`
+	DefaultGuild   string `json:"default_guild"`
 	DefaultChannel string `json:"default_channel"`
-	Username     string `json:"username"`
+	Username       string `json:"username"`
 }
 
 // WebhookConfig configuration pour les webhooks
 type WebhookConfig struct {
-	DefaultURL     string            `json:"default_url"`
-	Headers        map[string]string `json:"headers"`
-	Timeout        time.Duration     `json:"timeout"`
-	RetryAttempts  int              `json:"retry_attempts"`
+	DefaultURL    string            `json:"default_url"`
+	Headers       map[string]string `json:"headers"`
+	Timeout       time.Duration     `json:"timeout"`
+	RetryAttempts int               `json:"retry_attempts"`
 }
 
 // ChannelStats statistiques par canal
 type ChannelStats struct {
-	TotalSent      int64     `json:"total_sent"`
-	TotalFailed    int64     `json:"total_failed"`
-	LastUsed       time.Time `json:"last_used"`
+	TotalSent       int64         `json:"total_sent"`
+	TotalFailed     int64         `json:"total_failed"`
+	LastUsed        time.Time     `json:"last_used"`
 	AvgResponseTime time.Duration `json:"avg_response_time"`
 }
 
@@ -90,27 +90,27 @@ type ChannelStats struct {
 func NewNotificationManager(config *NotificationConfig, logger *zap.Logger) interfaces.NotificationManager {
 	if config == nil {
 		config = &NotificationConfig{
-			Workers:       3,
-			QueueSize:     1000,
-			RetryAttempts: 3,
-			RetryDelay:    time.Minute * 5,
+			Workers:         3,
+			QueueSize:       1000,
+			RetryAttempts:   3,
+			RetryDelay:      time.Minute * 5,
 			DefaultChannels: []string{"slack"},
 		}
 	}
 
 	nm := &NotificationManagerImpl{
-		id:               uuid.New().String(),
-		name:             "NotificationManager",
-		version:          "1.0.0",
-		status:           interfaces.ManagerStatusStopped,
-		logger:           logger,
-		config:           config,
-		channels:         make(map[string]interfaces.NotificationChannel),
+		id:                uuid.New().String(),
+		name:              "NotificationManager",
+		version:           "1.0.0",
+		status:            interfaces.ManagerStatusStopped,
+		logger:            logger,
+		config:            config,
+		channels:          make(map[string]interfaces.NotificationChannel),
 		notificationQueue: make(chan *interfaces.Notification, config.QueueSize),
-		workers:          config.Workers,
-		channelStats:     make(map[string]*ChannelStats),
-		stopChan:         make(chan struct{}),
-		scheduler:        cron.New(),
+		workers:           config.Workers,
+		channelStats:      make(map[string]*ChannelStats),
+		stopChan:          make(chan struct{}),
+		scheduler:         cron.New(),
 	}
 
 	// Initialize managers
@@ -238,12 +238,12 @@ func (nm *NotificationManagerImpl) GetMetrics() map[string]interface{} {
 	defer nm.mu.RUnlock()
 
 	metrics := map[string]interface{}{
-		"total_sent":       nm.totalSent,
-		"total_failed":     nm.totalFailed,
-		"active_channels":  len(nm.channels),
-		"queue_size":       len(nm.notificationQueue),
-		"workers":          nm.workers,
-		"status":           nm.status.String(),
+		"total_sent":      nm.totalSent,
+		"total_failed":    nm.totalFailed,
+		"active_channels": len(nm.channels),
+		"queue_size":      len(nm.notificationQueue),
+		"workers":         nm.workers,
+		"status":          nm.status.String(),
 	}
 
 	// Add channel statistics
@@ -319,13 +319,13 @@ func (nm *NotificationManagerImpl) ScheduleNotification(ctx context.Context, not
 	}
 
 	jobID := uuid.New().String()
-	
+
 	// Schedule with cron
 	_, err := nm.scheduler.AddFunc(
-		fmt.Sprintf("0 %d %d %d %d *", 
-			sendTime.Minute(), 
-			sendTime.Hour(), 
-			sendTime.Day(), 
+		fmt.Sprintf("0 %d %d %d %d *",
+			sendTime.Minute(),
+			sendTime.Hour(),
+			sendTime.Day(),
 			int(sendTime.Month())),
 		func() {
 			if err := nm.SendNotification(context.Background(), notification); err != nil {
@@ -335,12 +335,11 @@ func (nm *NotificationManagerImpl) ScheduleNotification(ctx context.Context, not
 			}
 		},
 	)
-	
 	if err != nil {
 		return fmt.Errorf("failed to schedule notification: %w", err)
 	}
 
-	nm.logger.Info("Notification scheduled", 
+	nm.logger.Info("Notification scheduled",
 		zap.String("notification_id", notification.ID),
 		zap.Time("send_time", sendTime),
 		zap.String("job_id", jobID))
@@ -408,10 +407,10 @@ func (nm *NotificationManagerImpl) GetNotificationStats(ctx context.Context, dat
 	defer nm.mu.RUnlock()
 
 	return &interfaces.NotificationStats{
-		TotalSent:    nm.totalSent,
-		TotalFailed:  nm.totalFailed,
-		SuccessRate:  float64(nm.totalSent) / float64(nm.totalSent + nm.totalFailed) * 100,
-		DateRange:    dateRange,
+		TotalSent:   nm.totalSent,
+		TotalFailed: nm.totalFailed,
+		SuccessRate: float64(nm.totalSent) / float64(nm.totalSent+nm.totalFailed) * 100,
+		DateRange:   dateRange,
 	}, nil
 }
 
@@ -428,7 +427,7 @@ func (nm *NotificationManagerImpl) GetChannelPerformance(ctx context.Context, ch
 		ChannelID:       channelID,
 		TotalSent:       stats.TotalSent,
 		TotalFailed:     stats.TotalFailed,
-		SuccessRate:     float64(stats.TotalSent) / float64(stats.TotalSent + stats.TotalFailed) * 100,
+		SuccessRate:     float64(stats.TotalSent) / float64(stats.TotalSent+stats.TotalFailed) * 100,
 		AvgResponseTime: stats.AvgResponseTime,
 		LastUsed:        stats.LastUsed,
 	}, nil
@@ -439,16 +438,16 @@ func (nm *NotificationManagerImpl) setupDefaultChannels(ctx context.Context) err
 	// Setup Slack channel if configured
 	if nm.config.SlackConfig != nil && nm.config.SlackConfig.Token != "" {
 		slackChannel := &interfaces.NotificationChannel{
-			ID:     "slack-default",
-			Name:   "Slack Default",
-			Type:   interfaces.ChannelTypeSlack,
+			ID:   "slack-default",
+			Name: "Slack Default",
+			Type: interfaces.ChannelTypeSlack,
 			Config: map[string]interface{}{
-				"token":   nm.config.SlackConfig.Token,
-				"channel": nm.config.SlackConfig.DefaultChannel,
-				"username": nm.config.SlackConfig.Username,
+				"token":      nm.config.SlackConfig.Token,
+				"channel":    nm.config.SlackConfig.DefaultChannel,
+				"username":   nm.config.SlackConfig.Username,
 				"icon_emoji": nm.config.SlackConfig.IconEmoji,
 			},
-			IsActive: true,
+			IsActive:  true,
 			CreatedAt: time.Now(),
 		}
 		if err := nm.channelManager.RegisterChannel(ctx, slackChannel); err != nil {
@@ -459,16 +458,16 @@ func (nm *NotificationManagerImpl) setupDefaultChannels(ctx context.Context) err
 	// Setup Discord channel if configured
 	if nm.config.DiscordConfig != nil && nm.config.DiscordConfig.Token != "" {
 		discordChannel := &interfaces.NotificationChannel{
-			ID:     "discord-default",
-			Name:   "Discord Default",
-			Type:   interfaces.ChannelTypeDiscord,
+			ID:   "discord-default",
+			Name: "Discord Default",
+			Type: interfaces.ChannelTypeDiscord,
 			Config: map[string]interface{}{
-				"token":   nm.config.DiscordConfig.Token,
-				"guild":   nm.config.DiscordConfig.DefaultGuild,
-				"channel": nm.config.DiscordConfig.DefaultChannel,
+				"token":    nm.config.DiscordConfig.Token,
+				"guild":    nm.config.DiscordConfig.DefaultGuild,
+				"channel":  nm.config.DiscordConfig.DefaultChannel,
 				"username": nm.config.DiscordConfig.Username,
 			},
-			IsActive: true,
+			IsActive:  true,
 			CreatedAt: time.Now(),
 		}
 		if err := nm.channelManager.RegisterChannel(ctx, discordChannel); err != nil {
@@ -479,16 +478,16 @@ func (nm *NotificationManagerImpl) setupDefaultChannels(ctx context.Context) err
 	// Setup Webhook channel if configured
 	if nm.config.WebhookConfig != nil && nm.config.WebhookConfig.DefaultURL != "" {
 		webhookChannel := &interfaces.NotificationChannel{
-			ID:     "webhook-default",
-			Name:   "Webhook Default",
-			Type:   interfaces.ChannelTypeWebhook,
+			ID:   "webhook-default",
+			Name: "Webhook Default",
+			Type: interfaces.ChannelTypeWebhook,
 			Config: map[string]interface{}{
-				"url":     nm.config.WebhookConfig.DefaultURL,
-				"headers": nm.config.WebhookConfig.Headers,
-				"timeout": nm.config.WebhookConfig.Timeout,
+				"url":            nm.config.WebhookConfig.DefaultURL,
+				"headers":        nm.config.WebhookConfig.Headers,
+				"timeout":        nm.config.WebhookConfig.Timeout,
 				"retry_attempts": nm.config.WebhookConfig.RetryAttempts,
 			},
-			IsActive: true,
+			IsActive:  true,
 			CreatedAt: time.Now(),
 		}
 		if err := nm.channelManager.RegisterChannel(ctx, webhookChannel); err != nil {
@@ -529,7 +528,7 @@ func (nm *NotificationManagerImpl) notificationWorker(workerID int) {
 // processNotification traite une notification
 func (nm *NotificationManagerImpl) processNotification(notification *interfaces.Notification) {
 	start := time.Now()
-	
+
 	// Get channels for notification
 	channels := notification.Channels
 	if len(channels) == 0 {
@@ -605,7 +604,7 @@ func (nm *NotificationManagerImpl) updateChannelStats(channelID string, success 
 	}
 
 	stats.LastUsed = time.Now()
-	
+
 	// Update average response time
 	if stats.AvgResponseTime == 0 {
 		stats.AvgResponseTime = duration
@@ -616,7 +615,7 @@ func (nm *NotificationManagerImpl) updateChannelStats(channelID string, success 
 
 // Channel-specific sending methods (simplified implementations)
 func (nm *NotificationManagerImpl) sendSlackNotification(channel *interfaces.NotificationChannel, notification *interfaces.Notification) error {
-	nm.logger.Info("Sending Slack notification", 
+	nm.logger.Info("Sending Slack notification",
 		zap.String("channel", channel.ID),
 		zap.String("notification", notification.ID))
 	// TODO: Implement actual Slack API call
@@ -624,7 +623,7 @@ func (nm *NotificationManagerImpl) sendSlackNotification(channel *interfaces.Not
 }
 
 func (nm *NotificationManagerImpl) sendDiscordNotification(channel *interfaces.NotificationChannel, notification *interfaces.Notification) error {
-	nm.logger.Info("Sending Discord notification", 
+	nm.logger.Info("Sending Discord notification",
 		zap.String("channel", channel.ID),
 		zap.String("notification", notification.ID))
 	// TODO: Implement actual Discord API call
@@ -632,7 +631,7 @@ func (nm *NotificationManagerImpl) sendDiscordNotification(channel *interfaces.N
 }
 
 func (nm *NotificationManagerImpl) sendWebhookNotification(channel *interfaces.NotificationChannel, notification *interfaces.Notification) error {
-	nm.logger.Info("Sending Webhook notification", 
+	nm.logger.Info("Sending Webhook notification",
 		zap.String("channel", channel.ID),
 		zap.String("notification", notification.ID))
 	// TODO: Implement actual HTTP webhook call
@@ -640,7 +639,7 @@ func (nm *NotificationManagerImpl) sendWebhookNotification(channel *interfaces.N
 }
 
 func (nm *NotificationManagerImpl) sendEmailNotification(channel *interfaces.NotificationChannel, notification *interfaces.Notification) error {
-	nm.logger.Info("Sending Email notification", 
+	nm.logger.Info("Sending Email notification",
 		zap.String("channel", channel.ID),
 		zap.String("notification", notification.ID))
 	// TODO: Integrate with EmailManager

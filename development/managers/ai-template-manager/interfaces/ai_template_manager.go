@@ -3,6 +3,11 @@ package interfaces
 import (
 	"EMAIL_SENDER_1/development/managers/interfaces"
 	"time"
+<<<<<<< HEAD
+=======
+
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
+>>>>>>> migration/gateway-manager-v77
 )
 
 // AITemplateManager defines the interface for AI-powered template management

@@ -14,7 +14,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
 
 ⚡ **Nouveaux créés avec ébauches Go + interfaces ErrorManager** : storage-manager, container-manager, deployment-manager, security-manager, monitoring-manager
 
-🔄 **À implémenter** : mcp-manager (actuellement vide)
+🔄 **À implémenter** : gateway-manager (actuellement vide)
 
 ### Implications pour ce Plan
 
@@ -42,7 +42,7 @@ Ce plan de développement détaille l'audit, l'harmonisation et la potentielle r
 
 ### Priorité 2 : Finaliser MCP Manager
 
-- **Action** : Implémenter la logique MCP manquante dans mcp-manager (actuellement vide)
+- **Action** : Implémenter la logique MCP manquante dans gateway-manager (actuellement vide)
 - **Impact** : Nécessaire pour l'écosystème complet des 17 managers
 
 ### Priorité 3 : Tests d'Intégration Cross-Manager

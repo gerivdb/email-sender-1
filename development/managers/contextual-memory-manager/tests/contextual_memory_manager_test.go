@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"email_sender/development/managers/contextual-memory-manager/development"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/development"
 
-	"email_sender/development/managers/contextual-memory-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"

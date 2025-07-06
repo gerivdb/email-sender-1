@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-// ModuleInfo représente les informations d'un module
+// ModuleInfo represents a module's information
 type ModuleInfo struct {
 	Name         string    `json:"name"`
 	Path         string    `json:"path"`
@@ -20,7 +20,7 @@ type ModuleInfo struct {
 	LastModified time.Time `json:"last_modified"`
 }
 
-// RepositoryStructure représente la structure complète du dépôt
+// RepositoryStructure represents the complete repository structure
 type RepositoryStructure struct {
 	TreeOutput   string       `json:"tree_output"`
 	Modules      []ModuleInfo `json:"modules"`
@@ -29,6 +29,7 @@ type RepositoryStructure struct {
 	RootPath     string       `json:"root_path"`
 }
 
+<<<<<<< HEAD:core/scanmodules/lib.go
 // ScanOptions représente les options de scan
 type ScanOptions struct {
 	TreeLevels int
@@ -46,13 +47,29 @@ func ScanModules(options ScanOptions) (*RepositoryStructure, error) {
 	// Exécuter tree pour obtenir la structure
 	log.Println("Génération de l'arborescence...")
 	treeCmd := exec.Command("tree", "-L", fmt.Sprintf("%d", options.TreeLevels))
-	treeOutput, err := treeCmd.Output()
+=======
+// ScanDir scans a directory for Go modules.
+func ScanDir(rootDir string) (*RepositoryStructure, error) {
+	fmt.Println("=== Scanning modules and repository structure ===")
+
+	// Get the current working directory
+	pwd, err := os.Getwd()
 	if err != nil {
-		log.Printf("Attention: impossible d'exécuter tree: %v", err)
-		// Fallback pour Windows ou si tree n'est pas disponible
-		treeOutput = []byte("Structure d'arborescence non disponible (tree non installé)")
+		return nil, fmt.Errorf("error getting working directory: %w", err)
 	}
 
+	// Execute tree to get the structure
+	fmt.Println("Generating tree structure...")
+	treeCmd := exec.Command("tree", "-L", "3")
+>>>>>>> migration/gateway-manager-v77:core/scanmodules/scanmodules.go
+	treeOutput, err := treeCmd.Output()
+	if err != nil {
+		log.Printf("Warning: could not execute tree: %v", err)
+		// Fallback for Windows or if tree is not available
+		treeOutput = []byte("Tree structure not available (tree not installed)")
+	}
+
+<<<<<<< HEAD:core/scanmodules/lib.go
 	// Sauvegarder l'arborescence dans un fichier
 	treeFile := filepath.Join(options.OutputDir, "arborescence.txt")
 	err = ioutil.WriteFile(treeFile, treeOutput, 0o644)
@@ -62,9 +79,15 @@ func ScanModules(options ScanOptions) (*RepositoryStructure, error) {
 
 	// Exécuter go list pour obtenir les modules
 	log.Println("Scan des modules Go...")
+=======
+	// Execute go list to get modules
+	fmt.Println("Scanning Go modules...")
+>>>>>>> migration/gateway-manager-v77:core/scanmodules/scanmodules.go
 	goListCmd := exec.Command("go", "list", "./...")
+	goListCmd.Dir = rootDir
 	goListOutput, err := goListCmd.Output()
 	if err != nil {
+<<<<<<< HEAD:core/scanmodules/lib.go
 		return nil, fmt.Errorf("erreur lors de l'exécution de go list: %v", err)
 	}
 
@@ -76,6 +99,12 @@ func ScanModules(options ScanOptions) (*RepositoryStructure, error) {
 	}
 
 	// Parser les modules et collecter les informations
+=======
+		return nil, fmt.Errorf("error executing go list: %w", err)
+	}
+
+	// Parse modules and collect information
+>>>>>>> migration/gateway-manager-v77:core/scanmodules/scanmodules.go
 	moduleLines := strings.Split(strings.TrimSpace(string(goListOutput)), "\n")
 	var modules []ModuleInfo
 
@@ -84,10 +113,10 @@ func ScanModules(options ScanOptions) (*RepositoryStructure, error) {
 			continue
 		}
 
-		// Convertir le nom du module en chemin de fichier
+		// Convert module name to file path
 		modulePath := strings.ReplaceAll(moduleLine, "/", string(filepath.Separator))
 
-		// Chercher le fichier principal du module
+		// Find the main file of the module
 		var actualPath string
 		possiblePaths := []string{
 			modulePath,
@@ -102,7 +131,7 @@ func ScanModules(options ScanOptions) (*RepositoryStructure, error) {
 			}
 		}
 
-		// Obtenir les informations de modification
+		// Get modification info
 		var lastModified time.Time
 		if actualPath != "" {
 			if info, err := os.Stat(actualPath); err == nil {
@@ -113,13 +142,17 @@ func ScanModules(options ScanOptions) (*RepositoryStructure, error) {
 		module := ModuleInfo{
 			Name:         moduleLine,
 			Path:         actualPath,
-			Description:  fmt.Sprintf("Module Go: %s", moduleLine),
+			Description:  fmt.Sprintf("Go module: %s", moduleLine),
 			LastModified: lastModified,
 		}
 		modules = append(modules, module)
 	}
 
+<<<<<<< HEAD:core/scanmodules/lib.go
 	// Créer la structure complète du dépôt
+=======
+	// Create the complete repository structure
+>>>>>>> migration/gateway-manager-v77:core/scanmodules/scanmodules.go
 	repoStructure := &RepositoryStructure{
 		TreeOutput:   string(treeOutput),
 		Modules:      modules,
@@ -131,6 +164,7 @@ func ScanModules(options ScanOptions) (*RepositoryStructure, error) {
 	return repoStructure, nil
 }
 
+<<<<<<< HEAD:core/scanmodules/lib.go
 // SaveToJSON sauvegarde la structure du dépôt en JSON
 func SaveToJSON(structure *RepositoryStructure, outputDir string) error {
 	jsonData, err := json.MarshalIndent(structure, "", "  ")
@@ -168,3 +202,20 @@ func PrintSummary(structure *RepositoryStructure, outputDir string) {
 		fmt.Printf("   - %s\n", module.Name)
 	}
 }
+=======
+// ExportModules exports the repository structure to a JSON file.
+func ExportModules(repoStructure *RepositoryStructure, outputFile string) error {
+	// Save to JSON
+	jsonData, err := json.MarshalIndent(repoStructure, "", "  ")
+	if err != nil {
+		return fmt.Errorf("error marshalling JSON: %w", err)
+	}
+
+	err = ioutil.WriteFile(outputFile, jsonData, 0644)
+	if err != nil {
+		return fmt.Errorf("error writing to %s: %w", outputFile, err)
+	}
+
+	return nil
+}
+>>>>>>> migration/gateway-manager-v77:core/scanmodules/scanmodules.go

@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"email_sender/cmd/go/dependency-manager/scan_non_compliant_imports"
+	"github.com/gerivdb/email-sender-1/cmd/go/dependency-manager/scan_non_compliant_imports"
 )
 
 func TestRunScan(t *testing.T) {
@@ -23,7 +23,7 @@ func TestRunScan(t *testing.T) {
 
 import (
 	"fmt"
-	"email_sender/core/utils"
+	"github.com/gerivdb/email-sender-1/core/utils"
 )
 
 func main() {
@@ -47,7 +47,7 @@ func main() {
 
 import (
 	"fmt"
-	"email_sender/some_other_module"
+	"github.com/gerivdb/email-sender-1/some_other_module"
 )
 
 func main() {
@@ -112,7 +112,7 @@ func main() {
 			if imp.Line != 4 {
 				t.Errorf("Relative import: Expected line 4, got %d", imp.Line)
 			}
-		} else if imp.ImportPath == "email_sender/some_other_module" {
+		} else if imp.ImportPath == "github.com/gerivdb/email-sender-1/some_other_module" {
 			foundInternal = true
 			if imp.FilePath != filepath.ToSlash(filepath.Clean(filepath.Join(tmpDir, "non_compliant_internal.go"))) {
 				t.Errorf("Internal import: Expected file path %s, got %s", filepath.ToSlash(filepath.Clean(filepath.Join(tmpDir, "non_compliant_internal.go"))), imp.FilePath)

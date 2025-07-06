@@ -98,7 +98,7 @@ Chaque gestionnaire a son propre répertoire de configuration :
 - `integrated-manager` : Configuration du gestionnaire intégré
 - `mode-manager` : Configuration du gestionnaire des modes opérationnels
 - `roadmap-manager` : Configuration du gestionnaire de la roadmap
-- `mcp-manager` : Configuration du gestionnaire MCP
+- `gateway-manager` : Configuration du gestionnaire Gateway
 - `script-manager` : Configuration du gestionnaire de scripts
 - `error-manager` : Configuration du gestionnaire d'erreurs
 - `n8n-manager` : Configuration du gestionnaire n8n
@@ -117,7 +117,7 @@ Les gestionnaires suivants ont été identifiés dans le projet :
 4. **script-manager** : Gestionnaire de scripts
 5. **error-manager** : Gestionnaire d'erreurs
 6. **n8n-manager** : Gestionnaire n8n
-7. **mcp-manager** : Gestionnaire MCP
+7. **gateway-manager** : Gestionnaire Gateway
 8. **process-manager** : Gestionnaire de processus
 
 ### Structure détaillée des gestionnaires
@@ -235,20 +235,20 @@ $scriptPaths = @{
     Maintenance = "maintenance/maintenance.ps1"
 }
 ```plaintext
-#### mcp-manager
+#### gateway-manager
 
 ```plaintext
-development/managers/mcp-manager/
+development/managers/gateway-manager/
 ├── config/
 │   └── ...
 ├── scripts/
-│   ├── mcp-manager.ps1
-│   ├── mcp-manager.manifest.json
+│   ├── gateway-manager.ps1
+│   ├── gateway-manager.manifest.json
 │   └── ...
 ├── modules/
 │   └── ...
 └── tests/
-    ├── Test-MCPManager.ps1
+    ├── Test-GatewayManager.ps1
     └── ...
 ```plaintext
 #### process-manager

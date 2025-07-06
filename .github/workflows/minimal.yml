@@ -1,16 +1,15 @@
-name: Minimal Workflow
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
       - name: Run a simple command
         run: echo "Hello, world!"
+name: Minimal Workflow
+"on":
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main

@@ -9,6 +9,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+<<<<<<< HEAD
+=======
+
+	"github.com/gerivdb/email-sender-1/development/managers/template-performance-manager/interfaces"
+>>>>>>> migration/gateway-manager-v77
 )
 
 func TestManager_Initialize(t *testing.T) {

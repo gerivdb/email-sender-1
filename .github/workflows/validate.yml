@@ -1,33 +1,31 @@
-name: Validate
-
-on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
-
 jobs:
   validate:
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Validate JSON files
-      run: |
-        echo "Validating workflow JSON files..."
-        find ./.github/workflows -name "*.json" -type f -exec sh -c 'echo "Validating $1"; cat "$1" | jq "." > /dev/null || { echo "Invalid JSON: $1"; exit 1; }' _ {} \;
-        
-        echo "Validating MCP config JSON files..."
-        find ./projet/mcp -name "*.json" -type f -exec sh -c 'echo "Validating $1"; cat "$1" | jq "." > /dev/null || { echo "Invalid JSON: $1"; exit 1; }' _ {} \;
-        
-        echo "All JSON files are valid!"
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version: "20"
+      - name: Install dependencies
+        run: npm ci
+      - name: Validate JSON files
+        run: |
+          echo "Validating workflow JSON files..."
+          find ./.github/workflows -name "*.json" -type f -exec sh -c 'echo "Validating $1"; cat "$1" | jq "." > /dev/null || { echo "Invalid JSON: $1"; exit 1; }' _ {} \;
+
+          echo "Validating MCP config JSON files..."
+          find ./projet/mcp -name "*.json" -type f -exec sh -c 'echo "Validating $1"; cat "$1" | jq "." > /dev/null || { echo "Invalid JSON: $1"; exit 1; }' _ {} \;
+
+          echo "All JSON files are valid!"
+name: Validate
+"on":
+  pull_request:
+    branches:
+      - main
+      - master
+  push:
+    branches:
+      - main
+      - master

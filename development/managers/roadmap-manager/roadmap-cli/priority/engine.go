@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"email_sender/cmd/roadmap-cli/types"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types"
 )
 
 // PriorityFactor represents different factors that influence task priority

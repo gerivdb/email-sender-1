@@ -7,8 +7,6 @@ import (
 	"os"
 
 	"go.uber.org/zap"
-
-	"email_sender/pkg/vectorization"
 )
 
 func main() {

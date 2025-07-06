@@ -238,7 +238,7 @@
         "development\\scripts\\maintenance\\backups\\manager-backup-20250429-004221\\tests\\test-config.json",
         "development\\scripts\\maintenance\\backups\\managers-backup-20250429-012754\\n8n-manager\\n8n-manager-config.json",
         "development\\scripts\\maintenance\\backups\\references-backup-20250429-013316\\projet\\config\\managers\\integrated-manager\\integrated-manager.config.json",
-        "development\\scripts\\maintenance\\backups\\references-backup-20250429-013316\\projet\\config\\managers\\mcp-manager\\mcp-manager.config.json",
+        "development\\scripts\\maintenance\\backups\\references-backup-20250429-013316\\projet\\config\\managers\\gateway-manager\\gateway-manager.config.json",
         "development\\scripts\\maintenance\\backups\\references-backup-20250429-013316\\projet\\config\\managers\\mode-manager\\mode-manager.config.json",
         "development\\scripts\\maintenance\\backups\\references-backup-20250429-013316\\projet\\config\\managers\\n8n-manager\\n8n-manager.config.json",
         "development\\scripts\\maintenance\\backups\\references-backup-20250429-013316\\projet\\config\\managers\\roadmap-manager\\roadmap-manager.config.json",
@@ -1298,7 +1298,7 @@
       "rule_name": "json_syntax"
     },
     {
-      "file": "development\\scripts\\maintenance\\backups\\references-backup-20250429-013316\\projet\\config\\managers\\mcp-manager\\mcp-manager.config.json",
+      "file": "development\\scripts\\maintenance\\backups\\references-backup-20250429-013316\\projet\\config\\managers\\gateway-manager\\gateway-manager.config.json",
       "component": "System_Config",
       "type": "syntax_error",
       "severity": "error",
@@ -1595,7 +1595,7 @@
       "rule_name": "json_syntax"
     },
     {
-      "file": "projet\\config\\managers\\mcp-manager\\mcp-manager.config.json",
+      "file": "projet\\config\\managers\\gateway-manager\\gateway-manager.config.json",
       "component": "System_Config",
       "type": "syntax_error",
       "severity": "error",

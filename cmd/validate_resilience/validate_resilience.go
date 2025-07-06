@@ -6,8 +6,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-
-	"email_sender/pkg/docmanager"
 )
 
 func main() {

@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"email_sender/cmd/roadmap-cli/types"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types"
 )
 
 func TestPriorityEngine_NewEngine(t *testing.T) {

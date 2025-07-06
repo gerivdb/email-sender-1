@@ -4,15 +4,15 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	"log"
+	"io"
 	"sync"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 	"github.com/google/uuid"
-	"github.com/email-sender-manager/interfaces"
+	"github.com/robfig/cron/v3"
 	"go.uber.org/zap"
 	"gopkg.in/gomail.v2"
-	"github.com/robfig/cron/v3"
 )
 
 // EmailManagerImpl implémente l'interface EmailManager
@@ -27,55 +27,55 @@ type EmailManagerImpl struct {
 	isInitialized bool
 
 	// Email manager specific fields
-	config         *EmailConfig
-	smtpDialer     *gomail.Dialer
+	config          *EmailConfig
+	smtpDialer      *gomail.Dialer
 	templateManager interfaces.TemplateManager
-	queueManager   interfaces.QueueManager
-	scheduler      *cron.Cron
-	emailQueue     chan *interfaces.Email
-	workers        int
-	workerPool     chan struct{}
-	
+	queueManager    interfaces.QueueManager
+	scheduler       *cron.Cron
+	emailQueue      chan *interfaces.Email
+	workers         int
+	workerPool      chan struct{}
+
 	// Storage and analytics
-	emailStore     map[string]*interfaces.Email
-	templateStore  map[string]*interfaces.EmailTemplate
+	emailStore      map[string]*interfaces.Email
+	templateStore   map[string]*interfaces.EmailTemplate
 	deliveryReports map[string]*interfaces.DeliveryReport
-	stats          *EmailStats
-	
+	stats           *EmailStats
+
 	// Control channels
-	stopChan       chan struct{}
-	workersWg      sync.WaitGroup
+	stopChan  chan struct{}
+	workersWg sync.WaitGroup
 }
 
 // EmailConfig représente la configuration de l'Email Manager
 type EmailConfig struct {
-	SMTPHost     string
-	SMTPPort     int
-	Username     string
-	Password     string
-	FromAddress  string
-	FromName     string
-	Workers      int
-	QueueSize    int
+	SMTPHost      string
+	SMTPPort      int
+	Username      string
+	Password      string
+	FromAddress   string
+	FromName      string
+	Workers       int
+	QueueSize     int
 	RetryAttempts int
-	RetryDelay   time.Duration
-	Timeout      time.Duration
-	TLSEnabled   bool
+	RetryDelay    time.Duration
+	Timeout       time.Duration
+	TLSEnabled    bool
 }
 
 // EmailStats représente les statistiques internes
 type EmailStats struct {
-	TotalSent     int64
-	TotalFailed   int64
-	TotalOpened   int64
-	TotalClicked  int64
-	mu            sync.RWMutex
+	TotalSent    int64
+	TotalFailed  int64
+	TotalOpened  int64
+	TotalClicked int64
+	mu           sync.RWMutex
 }
 
 // NewEmailManager crée une nouvelle instance du gestionnaire d'emails
 func NewEmailManager() (interfaces.EmailManager, error) {
 	config := getDefaultEmailConfig()
-	
+
 	logger, err := zap.NewProduction()
 	if err != nil {
 		return nil, fmt.Errorf("failed to create logger: %w", err)
@@ -221,10 +221,10 @@ func (em *EmailManagerImpl) GetHealth() interfaces.HealthStatus {
 		Message:   "Email Manager is healthy",
 		Timestamp: time.Now(),
 		Details: map[string]interface{}{
-			"workers":     em.workers,
-			"queue_size":  len(em.emailQueue),
-			"total_sent":  em.stats.TotalSent,
-			"smtp_host":   em.config.SMTPHost,
+			"workers":    em.workers,
+			"queue_size": len(em.emailQueue),
+			"total_sent": em.stats.TotalSent,
+			"smtp_host":  em.config.SMTPHost,
 		},
 	}
 
@@ -327,8 +327,8 @@ func (em *EmailManagerImpl) SendBulkEmails(ctx context.Context, emails []*interf
 
 	for _, email := range emails {
 		if err := em.SendEmail(ctx, email); err != nil {
-			em.logger.Error("Failed to queue email in bulk operation", 
-				zap.String("email_id", email.ID), 
+			em.logger.Error("Failed to queue email in bulk operation",
+				zap.String("email_id", email.ID),
 				zap.Error(err))
 			// Continue with other emails instead of failing completely
 		}
@@ -366,12 +366,11 @@ func (em *EmailManagerImpl) ScheduleEmail(ctx context.Context, email *interfaces
 			}
 		},
 	)
-
 	if err != nil {
 		return fmt.Errorf("failed to schedule email: %w", err)
 	}
 
-	em.logger.Info("Email scheduled", 
+	em.logger.Info("Email scheduled",
 		zap.String("email_id", email.ID),
 		zap.Time("send_time", sendTime),
 		zap.String("job_id", jobID))
@@ -492,7 +491,7 @@ func (em *EmailManagerImpl) TrackEmailClicks(ctx context.Context, emailID string
 	}
 	em.mu.Unlock()
 
-	em.logger.Info("Email link clicked", 
+	em.logger.Info("Email link clicked",
 		zap.String("email_id", emailID),
 		zap.String("link_url", linkURL))
 	return nil

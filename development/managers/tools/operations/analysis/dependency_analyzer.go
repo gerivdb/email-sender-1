@@ -5,8 +5,11 @@
 package analysis
 
 import (
+<<<<<<< HEAD
 	"EMAIL_SENDER_1/tools/core/registry"
 	"EMAIL_SENDER_1/tools/core/toolkit"
+=======
+>>>>>>> migration/gateway-manager-v77
 	"context"
 	"encoding/json"
 	"fmt"
@@ -16,6 +19,9 @@ import (
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/toolkit"
 )
 
 // DependencyAnalyzer implémente l'interface toolkit.ToolkitOperation pour l'analyse des dépendances
@@ -446,7 +452,7 @@ func (da *DependencyAnalyzer) generateReport(report DependencyReport, outputPath
 		return err
 	}
 
-	return os.WriteFile(outputPath, data, 0644)
+	return os.WriteFile(outputPath, data, 0o644)
 }
 
 // Validate implémente ToolkitOperation.Validate

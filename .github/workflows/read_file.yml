@@ -1,6 +1,3 @@
-name: read_file_pipeline
-on: [push, pull_request]
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,26 +7,11 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: 1.21
-
       - name: Build Go modules
         run: go build ./...
-
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: 1.21
-
-      - name: Run Go tests
-        run: go test -v -cover ./...
-
   lint:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Go
@@ -40,17 +22,17 @@ jobs:
         run: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.50.1
       - name: Run golangci-lint
         run: $(go env GOPATH)/bin/golangci-lint run ./...
-
   orchestrate:
+    needs:
+      - test
+      - lint
     runs-on: ubuntu-latest
-    needs: [test, lint]
     steps:
       - uses: actions/checkout@v3
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
           go-version: 1.21
-
       - name: Run Global Orchestrator
         run: |
           # Create dummy files for the orchestrator to find
@@ -58,7 +40,7 @@ jobs:
           touch config.yaml .golangci.yaml .cline_mcp_settings.json .vscode/tasks.json
           touch pkg/common/read_file.go pkg/common/read_file_test.go integration/read_file_integration_test.go
           touch scripts/gen_user_needs_template.sh scripts/collect_user_needs.sh scripts/validate_and_archive_user_needs.sh scripts/archive_spec.sh scripts/gen_read_file_report.go scripts/vscode_read_file_selection.js scripts/collect_user_feedback.sh scripts/collect_user_feedback.ps1 scripts/git_versioning.sh
-          
+
           # Create dummy Go main files if they don't exist
           for f in cmd/audit_read_file/audit_read_file.go cmd/gap_analysis/gap_analysis.go cmd/gen_read_file_spec/gen_read_file_spec.go cmd/read_file_navigator/read_file_navigator.go cmd/audit_rollback_points/audit_rollback_points.go cmd/gen_rollback_spec/gen_rollback_spec.go scripts/backup/backup.go scripts/backup/backup_test.go scripts/gen_rollback_report/gen_rollback_report.go cmd/auto_roadmap_runner/auto_roadmap_runner.go cmd/auto_roadmap_runner/auto_roadmap_runner_test.go
           do
@@ -70,3 +52,18 @@ jobs:
 
           # Execute the orchestrator
           go run cmd/auto_roadmap_runner/auto_roadmap_runner.go
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.21
+      - name: Run Go tests
+        run: go test -v -cover ./...
+name: read_file_pipeline
+"on":
+  - push
+  - pull_request

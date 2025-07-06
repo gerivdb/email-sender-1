@@ -62,14 +62,14 @@ New-MCPConfiguration [[-OutputPath] <string>] [-Force] [<CommonParameters>]
 ```powershell
 New-MCPConfiguration -Force
 ```plaintext
-### mcp-manager
+### gateway-manager
 
 DÃ©marre le gestionnaire de serveurs MCP ou un agent MCP.
 
 #### Syntaxe
 
 ```powershell
-mcp-manager [-Agent] [[-Query] <string>] [-Force] [<CommonParameters>]
+gateway-manager [-Agent] [[-Query] <string>] [-Force] [<CommonParameters>]
 ```plaintext
 #### ParamÃ¨tres
 
@@ -80,7 +80,7 @@ mcp-manager [-Agent] [[-Query] <string>] [-Force] [<CommonParameters>]
 #### Exemple
 
 ```powershell
-mcp-manager -Agent -Query "Trouve les meilleurs restaurants Ã  Paris"
+gateway-manager -Agent -Query "Trouve les meilleurs restaurants Ã  Paris"
 ```plaintext
 ### Invoke-MCPCommand
 
@@ -108,7 +108,7 @@ Le module MCPManager s'intÃ¨gre avec les scripts Python suivants :
 - **mcp_manager.py** : GÃ¨re les serveurs MCP.
 - **mcp_agent.py** : Permet d'interagir avec les serveurs MCP.
 
-Ces scripts sont automatiquement copiÃ©s dans le rÃ©pertoire du projet lors de l'exÃ©cution de la fonction `mcp-manager`.
+Ces scripts sont automatiquement copiÃ©s dans le rÃ©pertoire du projet lors de l'exÃ©cution de la fonction `gateway-manager`.
 
 ## DÃ©pendances
 
@@ -136,4 +136,3 @@ EMAIL_SENDER_1 Team
 ## Date de crÃ©ation
 
 2025-04-20
-

@@ -5,7 +5,7 @@ import (
 	"context"
 	"fmt"
 
-	interfaces "email_sender/development/managers/advanced-autonomy-manager/interfaces"
+	interfaces "github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // AnomalyDetector détecte les anomalies

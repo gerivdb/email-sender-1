@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/email-sender-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -50,11 +50,11 @@ func TestSecurityManager_ValidateInput(t *testing.T) {
 	require.NoError(t, err)
 
 	tests := []struct {
-		name     string
-		input    string
-		rules    interfaces.ValidationRules
-		wantErr  bool
-		errMsg   string
+		name    string
+		input   string
+		rules   interfaces.ValidationRules
+		wantErr bool
+		errMsg  string
 	}{
 		{
 			name:  "Valid input - basic",
@@ -145,33 +145,33 @@ func TestSecurityManager_SanitizeInput(t *testing.T) {
 		expected string
 	}{
 		{
-			name:    "Trim spaces",
-			input:   "  hello world  ",
-			options: interfaces.SanitizationOptions{TrimSpaces: true},
+			name:     "Trim spaces",
+			input:    "  hello world  ",
+			options:  interfaces.SanitizationOptions{TrimSpaces: true},
 			expected: "hello world",
 		},
 		{
-			name:    "Remove control chars",
-			input:   "hello\x00\x1F\x7Fworld",
-			options: interfaces.SanitizationOptions{RemoveControlChars: true},
+			name:     "Remove control chars",
+			input:    "hello\x00\x1F\x7Fworld",
+			options:  interfaces.SanitizationOptions{RemoveControlChars: true},
 			expected: "helloworld",
 		},
 		{
-			name:    "Escape HTML",
-			input:   "<script>alert('xss')</script>",
-			options: interfaces.SanitizationOptions{EscapeHTML: true},
+			name:     "Escape HTML",
+			input:    "<script>alert('xss')</script>",
+			options:  interfaces.SanitizationOptions{EscapeHTML: true},
 			expected: "&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;",
 		},
 		{
-			name:    "Escape SQL",
-			input:   "Robert'; DROP TABLE users; --",
-			options: interfaces.SanitizationOptions{EscapeSQL: true},
+			name:     "Escape SQL",
+			input:    "Robert'; DROP TABLE users; --",
+			options:  interfaces.SanitizationOptions{EscapeSQL: true},
 			expected: "Robert''; DROP TABLE users; --",
 		},
 		{
-			name:    "Remove custom chars",
-			input:   "hello@#$world",
-			options: interfaces.SanitizationOptions{RemoveChars: []string{"@", "#", "$"}},
+			name:     "Remove custom chars",
+			input:    "hello@#$world",
+			options:  interfaces.SanitizationOptions{RemoveChars: []string{"@", "#", "$"}},
 			expected: "helloworld",
 		},
 		{
@@ -281,8 +281,8 @@ func TestSecurityManager_LogEvent(t *testing.T) {
 func TestSecurityManager_RateLimit(t *testing.T) {
 	config := &Config{
 		RateLimitEnabled: true,
-		DefaultRateLimit: 2,  // 2 requêtes par seconde
-		DefaultRateBurst: 1,  // Burst de 1
+		DefaultRateLimit: 2, // 2 requêtes par seconde
+		DefaultRateBurst: 1, // Burst de 1
 	}
 
 	sm, err := NewSecurityManager(config)
@@ -324,12 +324,12 @@ func TestSecurityManager_VulnerabilityScanning(t *testing.T) {
   }
 }`
 	packageJsonPath := filepath.Join(tmpDir, "package.json")
-	err = os.WriteFile(packageJsonPath, []byte(packageJson), 0644)
+	err = os.WriteFile(packageJsonPath, []byte(packageJson), 0o644)
 	require.NoError(t, err)
 
 	// Créer un fichier .env sensible
 	envPath := filepath.Join(tmpDir, ".env")
-	err = os.WriteFile(envPath, []byte("SECRET_KEY=mysecret"), 0644)
+	err = os.WriteFile(envPath, []byte("SECRET_KEY=mysecret"), 0o644)
 	require.NoError(t, err)
 
 	ctx := context.Background()
@@ -449,7 +449,7 @@ server {
 }
 `
 	nginxPath := filepath.Join(tmpDir, "nginx.conf")
-	err = os.WriteFile(nginxPath, []byte(nginxConf), 0644)
+	err = os.WriteFile(nginxPath, []byte(nginxConf), 0o644)
 	require.NoError(t, err)
 
 	vulns := sm.scanConfigurations(tmpDir)
@@ -562,11 +562,11 @@ func BenchmarkSecurityManager_VulnerabilityScanning(b *testing.B) {
 	}
 
 	tmpDir := b.TempDir()
-	
+
 	// Créer quelques fichiers de test
 	packageJson := `{"dependencies": {"express": "4.16.0", "lodash": "4.17.20"}}`
-	os.WriteFile(filepath.Join(tmpDir, "package.json"), []byte(packageJson), 0644)
-	os.WriteFile(filepath.Join(tmpDir, ".env"), []byte("SECRET=test"), 0644)
+	os.WriteFile(filepath.Join(tmpDir, "package.json"), []byte(packageJson), 0o644)
+	os.WriteFile(filepath.Join(tmpDir, ".env"), []byte("SECRET=test"), 0o644)
 
 	ctx := context.Background()
 

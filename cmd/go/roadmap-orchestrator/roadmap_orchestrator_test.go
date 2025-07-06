@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	roadmap_orchestrator "email_sender/cmd/go/roadmap-orchestrator" // Import the main package
+	roadmap_orchestrator "github.com/gerivdb/email-sender-1/cmd/go/roadmap-orchestrator" // Import the main package
 )
 
 func TestRunOrchestrator(t *testing.T) {

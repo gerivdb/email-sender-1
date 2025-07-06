@@ -6,9 +6,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
 	"github.com/sirupsen/logrus"
-
-	"./interfaces"
 )
 
 // IntegrationHub coordinates with all 17 managers in the ecosystem
@@ -367,7 +366,7 @@ type SystemHealthStatus struct {
 }
 
 // SubscribeToEvents subscribes to specific event types
-func (ih *IntegrationHub) SubscribeToEvents(eventType string, handler EventHandler) {
+func (ih *IntegrationHub) SubscribeToEvents(eventType string, handler interfaces.EventHandler) {
 	ih.eventBus.Subscribe(eventType, handler)
 }
 
@@ -421,9 +420,8 @@ func (ih *IntegrationHub) discoverManagers() error {
 
 	for _, name := range managerNames {
 		// Create placeholder coordinator and health checker
-		coordinator := NewManagerCoordinator(name, ih.logger)
-		healthChecker := NewHealthChecker(name, ih.logger)
-
+		coordinator := NewDefaultManagerCoordinator(name, nil, ih.logger)
+		healthChecker := NewDefaultHealthChecker(name, nil, ih.logger)
 		if err := ih.RegisterManager(name, coordinator, healthChecker); err != nil {
 			ih.logger.Warn("Failed to register manager %s: %v", name, err)
 			continue
@@ -468,7 +466,7 @@ func (ih *IntegrationHub) checkDependencies(op *Operation) error {
 	// Check if dependent operations are completed
 	for _, depID := range op.Dependencies {
 		ih.mutex.RLock()
-		if activeOp, exists := ih.activeOperations[depID]; exists {
+		if _, exists := ih.activeOperations[depID]; exists {
 			ih.mutex.RUnlock()
 			return fmt.Errorf("dependency operation %s is still running", depID)
 		}

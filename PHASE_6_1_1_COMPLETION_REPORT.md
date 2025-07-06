@@ -38,7 +38,7 @@ La **Phase 6.1.1** "Tests unitaires pour ErrorEntry, validation, catalogage" du 
 
 ### ✅ Tests Spécifiques par Manager
 
-- **Contextes manager-specific** : dependency, mcp, n8n, process, script, roadmap
+- **Contextes manager-specific** : dependency, gateway, n8n, process, script, roadmap
 - **Sérialisation des contextes** : JSON complexe par manager
 - **Validation cross-manager** : Cohérence entre différents managers
 
@@ -113,7 +113,7 @@ phase6_1_1_tests.go
 ### Contextes Spécifiques Validés
 
 1. **dependency-manager** : Installation de packages, versions
-2. **mcp-manager** : Connexions serveur, protocoles
+2. **gateway-manager** : Connexions serveur, protocoles
 3. **n8n-manager** : Workflows, nœuds, exécutions
 4. **process-manager** : PIDs, commandes, statuts
 5. **script-manager** : Scripts, arguments, codes de sortie

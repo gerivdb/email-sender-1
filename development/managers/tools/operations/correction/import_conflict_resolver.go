@@ -5,8 +5,11 @@
 package correction
 
 import (
+<<<<<<< HEAD
 	"EMAIL_SENDER_1/tools/core/registry"
 	"EMAIL_SENDER_1/tools/core/toolkit"
+=======
+>>>>>>> migration/gateway-manager-v77
 	"context"
 	"encoding/json"
 	"fmt"
@@ -18,6 +21,9 @@ import (
 	"sort"
 	"strings"
 	"time"
+
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/toolkit"
 )
 
 // ImportConflictResolver implémente l'interface toolkit.ToolkitOperation pour résoudre les conflits d'imports
@@ -151,7 +157,6 @@ func (icr *ImportConflictResolver) Execute(ctx context.Context, options *toolkit
 
 		return nil
 	})
-
 	if err != nil {
 		icr.Logger.Error("Failed to walk directory: %v", err)
 		return err
@@ -420,7 +425,7 @@ func (icr *ImportConflictResolver) resolveConflicts(filePath string, analysis *I
 	// Réécrire le fichier si des modifications ont été apportées
 	if fixed > 0 {
 		newContent := strings.Join(lines, "\n")
-		if err := os.WriteFile(filePath, []byte(newContent), 0644); err != nil {
+		if err := os.WriteFile(filePath, []byte(newContent), 0o644); err != nil {
 			return 0, err
 		}
 	}
@@ -446,7 +451,7 @@ func (icr *ImportConflictResolver) generateReport(report ImportReport, outputPat
 		return err
 	}
 
-	return os.WriteFile(outputPath, data, 0644)
+	return os.WriteFile(outputPath, data, 0o644)
 }
 
 // Validate implémente ToolkitOperation.Validate

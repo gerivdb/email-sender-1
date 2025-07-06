@@ -10,8 +10,8 @@ import (
 	"syscall"
 	"time"
 
-	"email_sender/internal/api"
-	"email_sender/internal/infrastructure"
+	"github.com/gerivdb/email-sender-1/internal/api"
+	"github.com/gerivdb/email-sender-1/internal/infrastructure"
 )
 
 const (

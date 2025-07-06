@@ -12,8 +12,13 @@ import (
 	"sync"
 	"time"
 
+<<<<<<< HEAD
 	integration_manager "EMAIL_SENDER_1/development/managers/integration-manager"
 
+=======
+	integration_manager "github.com/gerivdb/email-sender-1/development/managers/integration-manager"
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
+>>>>>>> migration/gateway-manager-v77
 	"github.com/sirupsen/logrus"
 )
 

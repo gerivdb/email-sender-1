@@ -8,13 +8,13 @@ import (
 	"sync"
 	"time"
 
-	interfaces "email_sender/development/managers/advanced-autonomy-manager/interfaces"
-	"email_sender/development/managers/advanced-autonomy-manager/internal/coordination"
-	"email_sender/development/managers/advanced-autonomy-manager/internal/decision"
-	"email_sender/development/managers/advanced-autonomy-manager/internal/discovery"
-	"email_sender/development/managers/advanced-autonomy-manager/internal/healing"
-	"email_sender/development/managers/advanced-autonomy-manager/internal/monitoring"
-	"email_sender/development/managers/advanced-autonomy-manager/internal/predictive"
+	interfaces "github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/internal/coordination"
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/internal/decision"
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/internal/discovery"
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/internal/healing"
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/internal/monitoring"
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/internal/predictive"
 )
 
 // AdvancedAutonomyManagerImpl est l'implémentation complète du 21ème manager FMOUA

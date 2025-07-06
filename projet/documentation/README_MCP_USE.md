@@ -42,38 +42,6 @@ Le script `mcp_manager.py` crÃ©era automatiquement un fichier de configuration
 - Serveur MCP n8n
 - Serveur MCP Augment
 
-## Utilisation
-
-### DÃ©marrer le gestionnaire de serveurs MCP
-
-```powershell
-.\mcp-manager.ps1
-```plaintext
-Ce script dÃ©marrera le gestionnaire de serveurs MCP qui :
-1. VÃ©rifie si les packages nÃ©cessaires sont installÃ©s
-2. CrÃ©e ou charge la configuration des serveurs MCP
-3. Initialise tous les serveurs MCP
-4. VÃ©rifie l'Ã©tat des serveurs MCP
-5. Garde les serveurs actifs jusqu'Ã  ce que l'utilisateur appuie sur Ctrl+C
-
-### ExÃ©cuter un agent MCP
-
-```powershell
-.\mcp-manager.ps1 -Agent
-```plaintext
-Ce script dÃ©marrera un agent MCP qui :
-1. VÃ©rifie si la configuration des serveurs MCP existe
-2. Demande Ã  l'utilisateur d'entrer une requÃªte
-3. ExÃ©cute la requÃªte en utilisant les serveurs MCP disponibles
-4. Affiche le rÃ©sultat
-
-### ExÃ©cuter un agent MCP avec une requÃªte spÃ©cifique
-
-```powershell
-.\mcp-manager.ps1 -Agent -Query "Trouve les meilleurs restaurants Ã  Paris"
-```plaintext
-Ce script dÃ©marrera un agent MCP et exÃ©cutera la requÃªte spÃ©cifiÃ©e.
-
 ## RÃ©solution des problÃ¨mes
 
 ### Erreur "Failed to initialize server"
@@ -110,4 +78,3 @@ Cette nouvelle implÃ©mentation basÃ©e sur `mcp-use` offre plusieurs avantage
 - [Documentation mcp-use](https://docs.mcp-use.io)
 - [GitHub mcp-use](https://github.com/pietrozullo/mcp-use)
 - [Awesome MCP Servers](https://github.com/punkpeye/awesome-mcp-servers)
-

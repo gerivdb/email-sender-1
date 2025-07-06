@@ -1,20 +1,20 @@
-name: Go Quality
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
 jobs:
   quality:
-    name: "Validation du code Go"
+    name: Validation du code Go
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
-          go-version: '1.21'
+          go-version: "1.24.4"
+      - name: Vérifier la version de Go
+        run: |
+          REQUIRED_GO_VERSION=$(grep "go 1.24.4" go.mod | awk '{print $2}')
+          CURRENT_GO_VERSION=$(go version | awk '{print $3}' | sed 's/go//')
+          if [ "$REQUIRED_GO_VERSION" != "$CURRENT_GO_VERSION" ]; then
+            echo "Erreur: La version de Go dans go.mod ($REQUIRED_GO_VERSION) ne correspond pas à la version installée ($CURRENT_GO_VERSION)."
+            exit 1
+          fi
       - name: Installation des outils
         run: |
           go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
@@ -33,3 +33,22 @@ jobs:
           gosec ./...
       - name: Build verification
         run: go build -o /dev/null
+      - name: Exécution des scripts d'audit et d'inventaire feuille de route
+        run: |
+          go run ./cmd/audit-inventory/main.go
+          go run ./cmd/audit-gap-analysis/main.go
+          go run ./cmd/standards-inventory/main.go
+          go run ./cmd/standards-duplication-check/main.go
+          go run ./cmd/roadmap-indexer/main.go
+          go run ./cmd/cross-doc-inventory/main.go
+      - name: Exécuter l'orchestrateur CI/CD
+        run: |
+          ./integration/cmd/orchestrator/orchestrator.exe all
+name: Go Quality
+"on":
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main

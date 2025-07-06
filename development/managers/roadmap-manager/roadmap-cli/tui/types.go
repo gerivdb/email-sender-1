@@ -1,9 +1,9 @@
 package tui
 
 import (
-	"email_sender/cmd/roadmap-cli/priority"
-	"email_sender/cmd/roadmap-cli/tui/models"
-	"email_sender/cmd/roadmap-cli/types"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/priority"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/tui/models"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types"
 )
 
 // ViewMode represents different TUI view modes

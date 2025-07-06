@@ -1,38 +1,34 @@
-name: Email Notification
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
-
 jobs:
   send-email:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-
+          node-version: "20"
       - name: Verify script directory
         run: |
           test -d projet/mcp/servers/gcp-mcp || (echo "Directory projet/mcp/servers/gcp-mcp not found!" && exit 1)
-
       - name: Install dependencies
         run: |
           cd projet/mcp/servers/gcp-mcp
           npm install googleapis
-
-      - name: Send email notification
-        env:
+      - env:
           GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
           GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
           GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
+        name: Send email notification
         run: |
           cd projet/mcp/servers/gcp-mcp
           node github-actions-email.js '{"to":"gerivonderbitsh@gmail.com","subject":"GitHub Actions Notification","body":"Une action GitHub a été déclenchée.\n\nDépôt: ${{ github.repository }}\nÉvénement: ${{ github.event_name }}\nCommit: ${{ github.sha }}\n\nCordialement,\nGitHub Actions"}'
+name: Email Notification
+"on":
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch: null

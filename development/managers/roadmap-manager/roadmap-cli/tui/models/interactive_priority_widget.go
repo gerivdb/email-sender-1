@@ -8,8 +8,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 
-	"email_sender/cmd/roadmap-cli/priority"
-	"email_sender/cmd/roadmap-cli/types"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/priority"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types"
 )
 
 // InteractivePriorityWidget provides real-time priority adjustment

@@ -38,7 +38,7 @@ mcp/
 
 - **Client MCP** : Permet de se connecter Ã  un serveur MCP, rÃ©cupÃ©rer la liste des outils disponibles et exÃ©cuter des outils.
 - **Serveur MCP** : ImplÃ©mente le protocole MCP et expose des outils via une API REST.
-- **Gestionnaire MCP** : DÃ©tecte, configure et gÃ¨re les serveurs MCP.
+- **Gestionnaire MCP** : DÃ©tecte, configure et gÃ©re les serveurs MCP.
 - **Agent MCP** : Utilise un modÃ¨le de langage pour exÃ©cuter des requÃªtes en langage naturel via le protocole MCP.
 
 ## Types de serveurs supportÃ©s
@@ -53,17 +53,4 @@ mcp/
 
 ## Utilisation
 
-Pour dÃ©marrer le gestionnaire de serveurs MCP :
-
-```powershell
-Import-Module .\modules\MCPManager.psm1
-mcp-manager
-```plaintext
-Pour dÃ©marrer un agent MCP :
-
-```powershell
-Import-Module .\modules\MCPManager.psm1
-mcp-manager -Agent -Query "Trouve les meilleurs restaurants Ã  Paris"
-```plaintext
 Pour plus d'informations, consultez la documentation dans le dossier `docs/`.
-

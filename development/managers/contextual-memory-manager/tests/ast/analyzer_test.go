@@ -8,17 +8,19 @@ import (
 	"testing"
 	"time"
 
-	"github.com/contextual-memory-manager/interfaces"
-	"github.com/contextual-memory-manager/internal/ast"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/internal/ast"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 // Mock implementations des dépendances
-type mockStorageManager struct{}
-type mockErrorManager struct{}
-type mockConfigManager struct{}
-type mockMonitoringManager struct{}
+type (
+	mockStorageManager    struct{}
+	mockErrorManager      struct{}
+	mockConfigManager     struct{}
+	mockMonitoringManager struct{}
+)
 
 func (m *mockStorageManager) Initialize(ctx context.Context) error { return nil }
 func (m *mockStorageManager) Shutdown(ctx context.Context) error   { return nil }
@@ -130,7 +132,7 @@ func main() {
 }
 `
 
-	err := os.WriteFile(testFile, []byte(testCode), 0644)
+	err := os.WriteFile(testFile, []byte(testCode), 0o644)
 	require.NoError(t, err)
 
 	// Créer et initialiser le manager
@@ -212,7 +214,7 @@ func ExampleFunction() {
 }
 `
 
-	err := os.WriteFile(testFile, []byte(testCode), 0644)
+	err := os.WriteFile(testFile, []byte(testCode), 0o644)
 	require.NoError(t, err)
 
 	// Créer et initialiser le manager
@@ -278,7 +280,7 @@ func StandaloneFunction() {
 }
 `
 
-	err := os.WriteFile(testFile, []byte(testCode), 0644)
+	err := os.WriteFile(testFile, []byte(testCode), 0o644)
 	require.NoError(t, err)
 
 	// Créer et initialiser le manager
@@ -329,7 +331,7 @@ func CachedFunction() {
 }
 `
 
-	err := os.WriteFile(testFile, []byte(testCode), 0644)
+	err := os.WriteFile(testFile, []byte(testCode), 0o644)
 	require.NoError(t, err)
 
 	// Créer et initialiser le manager

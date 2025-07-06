@@ -11,6 +11,12 @@ import (
 	"strings"
 	"sync"
 	"time"
+<<<<<<< HEAD
+=======
+
+	"github.com/gerivdb/email-sender-1/development/managers/ai-template-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/ai-template-manager/internal/ai"
+>>>>>>> migration/gateway-manager-v77
 )
 
 // AITemplateManager implements the AI-powered template management system

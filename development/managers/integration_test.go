@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
-	storageManager "github.com/email-sender-manager/storage-manager"
-	dependencyManager "github.com/email-sender-manager/dependency-manager"
-	securityManager "github.com/email-sender-manager/security-manager"
+	dependencyManager "github.com/gerivdb/email-sender-1/managers/dependency-manager"
+	securityManager "github.com/gerivdb/email-sender-1/managers/security-manager"
+	storageManager "github.com/gerivdb/email-sender-1/managers/storage-manager"
 )
 
 // TestManagersIntegration teste l'intégration des trois managers
@@ -19,11 +19,19 @@ func TestManagersIntegration(t *testing.T) {
 
 	// Initialiser le Storage Manager
 	storageConfig := &storageManager.Config{
+<<<<<<< HEAD
 		DatabaseURL:	"postgres://test:test@localhost:5432/test_db?sslmode=disable",
 		QdrantURL:	"http://localhost:6333",
 		CacheEnabled:	true,
 		CacheTTL:	5 * time.Minute,
 		MaxConnections:	10,
+=======
+		DatabaseURL:    "postgres://test:test@localhost:5432/test_db?sslmode=disable",
+		QdrantURL:      "http://localhost:6333",
+		CacheEnabled:   true,
+		CacheTTL:       5 * time.Minute,
+		MaxConnections: 10,
+>>>>>>> migration/gateway-manager-v77
 	}
 
 	sm, err := storageManager.NewStorageManager(storageConfig)

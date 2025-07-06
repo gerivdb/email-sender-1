@@ -1,20 +1,23 @@
-// Package monitoring implements the Real-Time Monitoring Dashboard component
 package monitoring
+
+// Package monitoring implements the Real-Time Monitoring Dashboard component
 
 import (
 	"context"
 	"fmt"
-	"email_sender/development/managers/advanced-autonomy-manager/interfaces"
+	"time"
+
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // MetricsCollector collecteur de métriques en temps réel
 type MetricsCollector struct {
-	config            *CollectorConfig
-	logger            interfaces.Logger
+	config             *CollectorConfig
+	logger             interfaces.Logger
 	managerConnections map[string]interfaces.BaseManager
-	collectors        map[string]*ManagerCollector
-	aggregateMetrics  *AggregateMetrics
-	initialized bool
+	collectors         map[string]*ManagerCollector
+	aggregateMetrics   *AggregateMetrics
+	initialized        bool
 }
 
 // NewMetricsCollector crée une nouvelle instance de MetricsCollector
@@ -64,7 +67,7 @@ func (mc *MetricsCollector) CollectAllMetrics(ctx context.Context) (map[string]*
 		metrics[name] = &LiveMetrics{
 			Timestamp: time.Now(),
 			Values: map[string]interface{}{
-				"cpu_usage": 0.5,
+				"cpu_usage":    0.5,
 				"memory_usage": 0.7,
 			},
 			Source: name,

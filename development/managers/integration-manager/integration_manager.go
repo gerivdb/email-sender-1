@@ -13,6 +13,11 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
+<<<<<<< HEAD
+=======
+
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
+>>>>>>> migration/gateway-manager-v77
 )
 
 // IntegrationManagerImpl implémente l'interface IntegrationManager

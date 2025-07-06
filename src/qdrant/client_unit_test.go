@@ -3,7 +3,7 @@ package qdrant_test
 import (
 	"testing"
 
-	"email_sender/src/qdrant"
+	"github.com/gerivdb/email-sender-1/src/qdrant"
 )
 
 // Unit tests that don't require a running Qdrant server

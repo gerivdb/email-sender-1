@@ -37,9 +37,30 @@
 
 ---
 
+## Migration Gateway-Manager v77
+
+Le Gateway-Manager a été migré vers une implémentation 100% Go natif. Plus de détails peuvent être trouvés dans la [documentation dédiée](docs/gateway-manager.md) et dans le plan de migration détaillé [ici](projet/roadmaps/plans/consolidated/plan-dev-v77-migration-gateway-manager.md).
+
+---
+
 *Projet conforme aux standards .clinerules, prêt pour production et évolutions LLM.*
 
 ---
 **Dernière exécution CI/CD:** 
 **Pipeline:** ✅ Succès
 **Modules testés:** core/scanmodules, core/gapanalyzer, core/reporting, cmd/auto-roadmap-runner
+
+## Version Go
+
+Ce projet requiert Go version `1.24.4`.
+
+Pour vérifier votre version de Go :
+```bash
+go version
+```
+
+Pour mettre à jour Go (si nécessaire) :
+```bash
+go install golang.org/dl/go1.24.4@latest
+go1.24.4 download
+```

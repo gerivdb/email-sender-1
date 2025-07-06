@@ -6,10 +6,10 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 	"github.com/google/uuid"
-	"github.com/email-sender-manager/interfaces"
-	"go.uber.org/zap"
 	"github.com/robfig/cron/v3"
+	"go.uber.org/zap"
 )
 
 // QueueManagerImpl implémente l'interface QueueManager
@@ -32,7 +32,7 @@ type QueueManagerImpl struct {
 	retryDelay     time.Duration
 	isPaused       bool
 	scheduler      *cron.Cron
-	
+
 	// Statistics
 	totalProcessed int64
 	totalFailed    int64
@@ -183,7 +183,7 @@ func (qm *QueueManagerImpl) EnqueueEmail(ctx context.Context, email *interfaces.
 
 	select {
 	case qm.emailQueue <- email:
-		qm.logger.Debug("Email enqueued", 
+		qm.logger.Debug("Email enqueued",
 			zap.String("email_id", email.ID),
 			zap.String("to", email.To))
 		return nil
@@ -208,7 +208,7 @@ func (qm *QueueManagerImpl) DequeueEmail(ctx context.Context) (*interfaces.Email
 	select {
 	case email := <-qm.emailQueue:
 		if email != nil {
-			qm.logger.Debug("Email dequeued", 
+			qm.logger.Debug("Email dequeued",
 				zap.String("email_id", email.ID),
 				zap.String("to", email.To))
 		}
@@ -240,13 +240,13 @@ func (qm *QueueManagerImpl) GetQueueStatus(ctx context.Context) (*interfaces.Que
 	}
 
 	return &interfaces.QueueStatus{
-		Size:           len(qm.emailQueue),
-		FailedEmails:   len(qm.failedQueue),
+		Size:            len(qm.emailQueue),
+		FailedEmails:    len(qm.failedQueue),
 		ScheduledEmails: len(qm.scheduledQueue),
-		IsPaused:       qm.isPaused,
-		TotalProcessed: qm.totalProcessed,
-		TotalFailed:    qm.totalFailed,
-		TotalRetries:   qm.totalRetries,
+		IsPaused:        qm.isPaused,
+		TotalProcessed:  qm.totalProcessed,
+		TotalFailed:     qm.totalFailed,
+		TotalRetries:    qm.totalRetries,
 	}, nil
 }
 
@@ -319,7 +319,7 @@ func (qm *QueueManagerImpl) RetryFailedEmails(ctx context.Context) error {
 	retryCount := 0
 	for i := len(qm.failedQueue) - 1; i >= 0; i-- {
 		email := qm.failedQueue[i]
-		
+
 		// Check if email has exceeded max retries
 		if email.RetryCount < qm.maxRetries {
 			select {
@@ -360,22 +360,21 @@ func (qm *QueueManagerImpl) ScheduleEmail(ctx context.Context, email *interfaces
 
 	// Schedule with cron
 	_, err := qm.scheduler.AddFunc(
-		fmt.Sprintf("0 %d %d %d %d *", 
-			sendTime.Minute(), 
-			sendTime.Hour(), 
-			sendTime.Day(), 
+		fmt.Sprintf("0 %d %d %d %d *",
+			sendTime.Minute(),
+			sendTime.Hour(),
+			sendTime.Day(),
 			int(sendTime.Month())),
 		func() {
 			qm.executeScheduledEmail(jobID)
 		},
 	)
-	
 	if err != nil {
 		delete(qm.scheduledQueue, jobID)
 		return fmt.Errorf("failed to schedule email: %w", err)
 	}
 
-	qm.logger.Info("Email scheduled", 
+	qm.logger.Info("Email scheduled",
 		zap.String("email_id", email.ID),
 		zap.Time("send_time", sendTime),
 		zap.String("job_id", jobID))
@@ -398,11 +397,11 @@ func (qm *QueueManagerImpl) executeScheduledEmail(jobID string) {
 	select {
 	case qm.emailQueue <- scheduledEmail.Email:
 		delete(qm.scheduledQueue, jobID)
-		qm.logger.Info("Scheduled email moved to queue", 
+		qm.logger.Info("Scheduled email moved to queue",
 			zap.String("email_id", scheduledEmail.Email.ID),
 			zap.String("job_id", jobID))
 	default:
-		qm.logger.Warn("Queue is full, scheduled email failed", 
+		qm.logger.Warn("Queue is full, scheduled email failed",
 			zap.String("job_id", jobID))
 	}
 }
@@ -416,7 +415,7 @@ func (qm *QueueManagerImpl) MarkEmailFailed(email *interfaces.Email) {
 	qm.failedQueue = append(qm.failedQueue, email)
 	qm.totalFailed++
 
-	qm.logger.Warn("Email marked as failed", 
+	qm.logger.Warn("Email marked as failed",
 		zap.String("email_id", email.ID),
 		zap.Int("retry_count", email.RetryCount))
 }

@@ -9,15 +9,17 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/contextual-memory-manager/interfaces"
-	"github.com/contextual-memory-manager/internal/ast"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/internal/ast"
 )
 
 // Mock implementations pour la démo
-type demoStorageManager struct{}
-type demoErrorManager struct{}
-type demoConfigManager struct{}
-type demoMonitoringManager struct{}
+type (
+	demoStorageManager    struct{}
+	demoErrorManager      struct{}
+	demoConfigManager     struct{}
+	demoMonitoringManager struct{}
+)
 
 func (d *demoStorageManager) Initialize(ctx context.Context) error { return nil }
 func (d *demoStorageManager) Shutdown(ctx context.Context) error   { return nil }
@@ -30,6 +32,7 @@ func (d *demoErrorManager) Shutdown(ctx context.Context) error   { return nil }
 func (d *demoErrorManager) GetStatus(ctx context.Context) interfaces.ManagerStatus {
 	return interfaces.ManagerStatus{Name: "DemoError", Status: "healthy", Initialized: true}
 }
+
 func (d *demoErrorManager) LogError(ctx context.Context, component, message string, err error) {
 	fmt.Printf("[ERROR] %s - %s: %v\n", component, message, err)
 }

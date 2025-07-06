@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"email_sender/cmd/go/dependency-manager/propose_go_mod_fixes"
+	"github.com/gerivdb/email-sender-1/cmd/go/dependency-manager/propose_go_mod_fixes"
 )
 
 func TestProposeGoModFixes(t *testing.T) {

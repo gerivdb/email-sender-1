@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/contextual-memory-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
 	"go.uber.org/zap"
 )
 

@@ -6,38 +6,39 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
 	"github.com/sirupsen/logrus"
 )
 
 // EventBus handles inter-manager communication and events
 type EventBus struct {
-	subscribers    map[string][]EventHandler
-	eventQueue     chan *Event
-	workers        int
-	workerPool     []chan *Event
-	mutex          sync.RWMutex
-	logger         *logrus.Logger
-	shutdownCh     chan struct{}
-	eventHistory   []*Event
-	maxHistory     int
-	metrics        *EventMetrics
+	subscribers  map[string][]interfaces.EventHandler
+	eventQueue   chan *Event
+	workers      int
+	workerPool   []chan *Event
+	mutex        sync.RWMutex
+	logger       *logrus.Logger
+	shutdownCh   chan struct{}
+	eventHistory []*Event
+	maxHistory   int
+	metrics      *EventMetrics
 }
 
 // EventMetrics tracks event bus performance
 type EventMetrics struct {
-	TotalEvents     int64                      `json:"total_events"`
-	ProcessedEvents int64                      `json:"processed_events"`
-	FailedEvents    int64                      `json:"failed_events"`
-	AverageLatency  time.Duration              `json:"average_latency"`
-	EventTypes      map[string]int64           `json:"event_types"`
-	SubscriberCount map[string]int             `json:"subscriber_count"`
-	LastProcessed   time.Time                  `json:"last_processed"`
+	TotalEvents     int64
+	ProcessedEvents int64
+	FailedEvents    int64
+	AverageLatency  time.Duration
+	EventTypes      map[string]int64
+	SubscriberCount map[string]int
+	LastProcessed   time.Time
 }
 
 // NewEventBus creates a new event bus
 func NewEventBus(logger *logrus.Logger) *EventBus {
 	return &EventBus{
-		subscribers:  make(map[string][]EventHandler),
+		subscribers:  make(map[string][]interfaces.EventHandler),
 		eventQueue:   make(chan *Event, 1000), // Buffered channel for events
 		workers:      5,                       // Number of worker goroutines
 		workerPool:   make([]chan *Event, 5),
@@ -73,12 +74,12 @@ func (eb *EventBus) Initialize() error {
 }
 
 // Subscribe subscribes to specific event types
-func (eb *EventBus) Subscribe(eventType string, handler EventHandler) {
+func (eb *EventBus) Subscribe(eventType string, handler interfaces.EventHandler) {
 	eb.mutex.Lock()
 	defer eb.mutex.Unlock()
 
 	if eb.subscribers[eventType] == nil {
-		eb.subscribers[eventType] = make([]EventHandler, 0)
+		eb.subscribers[eventType] = make([]interfaces.EventHandler, 0)
 	}
 
 	eb.subscribers[eventType] = append(eb.subscribers[eventType], handler)
@@ -91,7 +92,7 @@ func (eb *EventBus) Subscribe(eventType string, handler EventHandler) {
 }
 
 // Unsubscribe removes a handler from event type (simplified implementation)
-func (eb *EventBus) Unsubscribe(eventType string, handler EventHandler) {
+func (eb *EventBus) Unsubscribe(eventType string, handler interfaces.EventHandler) {
 	eb.mutex.Lock()
 	defer eb.mutex.Unlock()
 
@@ -130,14 +131,14 @@ func (eb *EventBus) Publish(event *Event) error {
 	case eb.eventQueue <- event:
 		eb.metrics.TotalEvents++
 		eb.metrics.EventTypes[event.Type]++
-		
+
 		eb.logger.WithFields(logrus.Fields{
 			"event_id":   event.ID,
 			"event_type": event.Type,
 			"source":     event.Source,
 			"target":     event.Target,
 		}).Debug("Event published")
-		
+
 		return nil
 	default:
 		eb.metrics.FailedEvents++
@@ -240,94 +241,67 @@ func (eb *EventBus) dispatcher() {
 				return // Queue closed
 			}
 
-			// Add to history
-			eb.addToHistory(event)
+			startTime := time.Now()
 
-			// Distribute to worker in round-robin fashion
-			select {
-			case eb.workerPool[workerIndex] <- event:
-				workerIndex = (workerIndex + 1) % eb.workers
-			default:
-				// Worker queue full, log warning
-				eb.logger.Warn("Worker queue full, dropping event", "event_id", event.ID)
-				eb.metrics.FailedEvents++
+			eb.logger.WithFields(logrus.Fields{
+				"event_id":   event.ID,
+				"event_type": event.Type,
+				"source":     event.Source,
+			}).Debug("Processing event")
+
+			managerEvent := &interfaces.ManagerEvent{
+				ID:        event.ID,
+				Type:      event.Type,
+				Source:    event.Source,
+				Target:    event.Target,
+				Timestamp: event.Timestamp,
+				Data:      event.Data,
 			}
 
-		case <-eb.shutdownCh:
-			return
-		}
-	}
-}
+			// Get subscribers for this event type
+			eb.mutex.RLock()
+			handlers := make([]interfaces.EventHandler, len(eb.subscribers[event.Type]))
+			copy(handlers, eb.subscribers[event.Type])
 
-// worker processes events from the worker queue
-func (eb *EventBus) worker(id int, eventCh chan *Event) {
-	eb.logger.WithField("worker_id", id).Debug("Event worker started")
+			// Also get wildcard subscribers (*)
+			wildcardHandlers := make([]interfaces.EventHandler, len(eb.subscribers["*"]))
+			copy(wildcardHandlers, eb.subscribers["*"])
+			eb.mutex.RUnlock()
 
-	for {
-		select {
-		case event, ok := <-eventCh:
-			if !ok {
-				eb.logger.WithField("worker_id", id).Debug("Event worker stopped")
-				return
+			// Process all handlers
+			allHandlers := append(handlers, wildcardHandlers...)
+			processedCount := 0
+			errorCount := 0
+
+			for _, handler := range allHandlers {
+				if err := handler(context.Background(), managerEvent); err != nil {
+					eb.logger.WithFields(logrus.Fields{
+						"event_id": event.ID,
+						"error":    err,
+					}).Warn("Event handler failed")
+					errorCount++
+				} else {
+					processedCount++
+				}
 			}
 
-			eb.processEvent(event)
+			// Update metrics
+			duration := time.Since(startTime)
+			eb.updateProcessingMetrics(duration, processedCount, errorCount)
+
+			eb.logger.WithFields(logrus.Fields{
+				"event_id":  event.ID,
+				"handlers":  len(allHandlers),
+				"processed": processedCount,
+				"errors":    errorCount,
+				"duration":  duration,
+			}).Debug("Event processed")
 
 		case <-eb.shutdownCh:
 			eb.logger.WithField("worker_id", id).Debug("Event worker shutdown")
 			return
 		}
 	}
-}
-
-// processEvent processes a single event
-func (eb *EventBus) processEvent(event *Event) {
-	startTime := time.Now()
-
-	eb.logger.WithFields(logrus.Fields{
-		"event_id":   event.ID,
-		"event_type": event.Type,
-		"source":     event.Source,
-	}).Debug("Processing event")
-
-	// Get subscribers for this event type
-	eb.mutex.RLock()
-	handlers := make([]EventHandler, len(eb.subscribers[event.Type]))
-	copy(handlers, eb.subscribers[event.Type])
-	
-	// Also get wildcard subscribers (*)
-	wildcardHandlers := make([]EventHandler, len(eb.subscribers["*"]))
-	copy(wildcardHandlers, eb.subscribers["*"])
-	eb.mutex.RUnlock()
-
-	// Process all handlers
-	allHandlers := append(handlers, wildcardHandlers...)
-	processedCount := 0
-	errorCount := 0
-
-	for _, handler := range allHandlers {
-		if err := handler(event); err != nil {
-			eb.logger.WithFields(logrus.Fields{
-				"event_id": event.ID,
-				"error":    err,
-			}).Warn("Event handler failed")
-			errorCount++
-		} else {
-			processedCount++
-		}
-	}
-
-	// Update metrics
-	duration := time.Since(startTime)
-	eb.updateProcessingMetrics(duration, processedCount, errorCount)
-
-	eb.logger.WithFields(logrus.Fields{
-		"event_id":        event.ID,
-		"handlers":        len(allHandlers),
-		"processed":       processedCount,
-		"errors":          errorCount,
-		"duration":        duration,
-	}).Debug("Event processed")
 }
 
 // validateEvent validates an event before publishing
@@ -397,7 +371,7 @@ func (eb *EventBus) startMetricsCollection() {
 // logMetrics logs current metrics
 func (eb *EventBus) logMetrics() {
 	metrics := eb.GetMetrics()
-	
+
 	eb.logger.WithFields(logrus.Fields{
 		"total_events":     metrics.TotalEvents,
 		"processed_events": metrics.ProcessedEvents,
@@ -408,77 +382,51 @@ func (eb *EventBus) logMetrics() {
 	}).Info("EventBus metrics")
 }
 
-// Built-in event types
-const (
-	EventTypeManagerRegistered   = "manager_registered"
-	EventTypeManagerUnregistered = "manager_unregistered"
-	EventTypeOperationStarted    = "operation_started"
-	EventTypeOperationCompleted  = "operation_completed"
-	EventTypeOperationFailed     = "operation_failed"
-	EventTypeHealthCheckFailed   = "health_check_failed"
-	EventTypeSystemAlert         = "system_alert"
-	EventTypeConfigChanged       = "config_changed"
-	EventTypeMaintenanceStarted  = "maintenance_started"
-	EventTypeMaintenanceCompleted = "maintenance_completed"
-)
+func (eb *EventBus) worker(id int, eventCh chan *Event) {
+	eb.logger.WithField("worker_id", id).Debug("Event worker started")
 
-// Common event publishers
-func (eb *EventBus) PublishManagerRegistered(managerName string, capabilities []string) error {
-	return eb.Publish(&Event{
-		Type:   EventTypeManagerRegistered,
-		Source: "integration_hub",
-		Data: map[string]interface{}{
-			"manager":      managerName,
-			"capabilities": capabilities,
-		},
-		Priority:  1,
-		Timestamp: time.Now(),
-	})
-}
+	for {
+		select {
+		case event, ok := <-eventCh:
+			if !ok {
+				eb.logger.WithField("worker_id", id).Debug("Event worker stopped")
+				return
+			}
 
-func (eb *EventBus) PublishOperationStarted(operationID string, operationType string, managers []string) error {
-	return eb.Publish(&Event{
-		Type:   EventTypeOperationStarted,
-		Source: "integration_hub",
-		Data: map[string]interface{}{
-			"operation_id":   operationID,
-			"operation_type": operationType,
-			"managers":       managers,
-		},
-		Priority:  2,
-		Timestamp: time.Now(),
-	})
-}
+			eb.processEvent(event)
 
-func (eb *EventBus) PublishOperationCompleted(operationID string, success bool, duration time.Duration) error {
-	eventType := EventTypeOperationCompleted
-	if !success {
-		eventType = EventTypeOperationFailed
+		case <-eb.shutdownCh:
+			eb.logger.WithField("worker_id", id).Debug("Event worker shutdown")
+			return
+		}
 	}
-
-	return eb.Publish(&Event{
-		Type:   eventType,
-		Source: "integration_hub",
-		Data: map[string]interface{}{
-			"operation_id": operationID,
-			"success":      success,
-			"duration":     duration,
-		},
-		Priority:  2,
-		Timestamp: time.Now(),
-	})
 }
 
-func (eb *EventBus) PublishSystemAlert(level string, message string, component string) error {
-	return eb.Publish(&Event{
-		Type:   EventTypeSystemAlert,
-		Source: component,
-		Data: map[string]interface{}{
-			"level":     level,
-			"message":   message,
-			"component": component,
-		},
-		Priority:  3,
-		Timestamp: time.Now(),
-	})
+func (eb *EventBus) dispatcher() {
+	workerIndex := 0
+
+	for {
+		select {
+		case event, ok := <-eb.eventQueue:
+			if !ok {
+				return // Queue closed
+			}
+
+			// Add to history
+			eb.addToHistory(event)
+
+			// Distribute to worker in round-robin fashion
+			select {
+			case eb.workerPool[workerIndex] <- event:
+				workerIndex = (workerIndex + 1) % eb.workers
+			default:
+				// Worker queue full, log warning
+				eb.logger.Warn("Worker queue full, dropping event", "event_id", event.ID)
+				eb.metrics.FailedEvents++
+			}
+
+		case <-eb.shutdownCh:
+			return
+		}
+	}
 }

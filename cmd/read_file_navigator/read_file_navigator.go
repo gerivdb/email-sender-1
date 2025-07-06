@@ -5,8 +5,11 @@ import (
 	"flag"
 	"fmt"
 	"os"
+<<<<<<< HEAD
 
 	"email_sender/pkg/common"	// Assurez-vous que le chemin est correct pour votre module Go
+=======
+>>>>>>> migration/gateway-manager-v77
 )
 
 func main() {

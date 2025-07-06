@@ -5,8 +5,11 @@
 package correction
 
 import (
+<<<<<<< HEAD
 	"EMAIL_SENDER_1/tools/core/registry"
 	"EMAIL_SENDER_1/tools/core/toolkit"
+=======
+>>>>>>> migration/gateway-manager-v77
 	"context"
 	"encoding/json"
 	"fmt"
@@ -18,6 +21,9 @@ import (
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/toolkit"
 )
 
 // NamingNormalizer implements toolkit.ToolkitOperation for naming convention normalization
@@ -115,7 +121,10 @@ func (nn *NamingNormalizer) Execute(ctx context.Context, options *toolkit.Operat
 
 		return nil
 	})
+<<<<<<< HEAD
 
+=======
+>>>>>>> migration/gateway-manager-v77
 	if err != nil {
 		nn.Logger.Error("Error walking directory: %v", err)
 		return err
@@ -555,7 +564,11 @@ func (nn *NamingNormalizer) generateReport(namingIssues map[string][]NamingIssue
 		return fmt.Errorf("failed to marshal report: %w", err)
 	}
 
+<<<<<<< HEAD
 	if err := os.WriteFile(outputPath, data, 0644); err != nil {
+=======
+	if err := os.WriteFile(outputPath, data, 0o644); err != nil {
+>>>>>>> migration/gateway-manager-v77
 		return fmt.Errorf("failed to write report: %w", err)
 	}
 
@@ -603,7 +616,7 @@ func (nn *NamingNormalizer) HealthCheck(ctx context.Context) error {
 
 	// Check if we can create temporary files for testing
 	tempFile := filepath.Join(os.TempDir(), "naming_normalizer_health_check.tmp")
-	if err := os.WriteFile(tempFile, []byte("test"), 0644); err != nil {
+	if err := os.WriteFile(tempFile, []byte("test"), 0o644); err != nil {
 		return fmt.Errorf("cannot write temporary files: %w", err)
 	}
 	os.Remove(tempFile) // Clean up

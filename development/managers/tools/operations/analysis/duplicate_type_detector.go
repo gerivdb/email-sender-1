@@ -5,8 +5,11 @@
 package analysis
 
 import (
+<<<<<<< HEAD
 	"EMAIL_SENDER_1/tools/core/registry"
 	"EMAIL_SENDER_1/tools/core/toolkit"
+=======
+>>>>>>> migration/gateway-manager-v77
 	"context"
 	"encoding/json"
 	"fmt"
@@ -17,6 +20,9 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/toolkit"
 )
 
 // DuplicateTypeDetector implémente l'interface toolkit.ToolkitOperation pour la détection des types dupliqués
@@ -129,7 +135,6 @@ func (dtd *DuplicateTypeDetector) Execute(ctx context.Context, options *toolkit.
 
 		return nil
 	})
-
 	if err != nil {
 		dtd.Logger.Error("Failed to walk directory: %v", err)
 		return err
@@ -369,7 +374,7 @@ func (dtd *DuplicateTypeDetector) generateReport(report DuplicationReport, outpu
 		return err
 	}
 
-	return os.WriteFile(outputPath, data, 0644)
+	return os.WriteFile(outputPath, data, 0o644)
 }
 
 // Validate implémente ToolkitOperation.Validate

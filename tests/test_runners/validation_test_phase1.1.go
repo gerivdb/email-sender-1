@@ -9,6 +9,7 @@ import (
 	"time"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"email_sender/tools/core/toolkit"
 	"email_sender/tools/operations/validation"
 	toolkitpkg "email_sender/tools/pkg/manager"
@@ -18,6 +19,11 @@ import (
 	validation "github.com/email-sender/tools/operations/validation"
 	// managerTool "github.com/email-sender/tools/cmd/manager-toolkit" // Removed
 >>>>>>> origin/jules/fix-build-errors-and-cycles
+=======
+	"github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/tools/operations/validation"
+	toolkitpkg "github.com/gerivdb/email-sender-1/tools/pkg/manager"
+>>>>>>> migration/gateway-manager-v77
 )
 
 // Validation de l'implémentation - Phase 1.1 - Plan v49

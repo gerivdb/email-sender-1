@@ -1,0 +1,1 @@
+problem in mem0-analysis\repo\embedchain\embedchain\loaders\json.py - ImportError: cannot import name 'JSONDecodeError' from partially initialized module 'json' (most likely due to a circular import) (D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\mem0-analysis\repo\embedchain\embedchain\loaders\json.py)

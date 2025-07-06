@@ -1,0 +1,1 @@
+problem in mem0-analysis\repo\embedchain\embedchain\chunkers\json.py - ImportError: cannot import name 'BaseDocumentTransformer' from 'langchain_core.documents' (C:\Users\user\AppData\Roaming\Python\Python312\site-packages\langchain_core\documents\__init__.py)

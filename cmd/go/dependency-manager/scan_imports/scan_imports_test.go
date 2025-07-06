@@ -7,7 +7,7 @@ import (
 	"path/filepath" // Re-add strings import
 	"testing"
 
-	"email_sender/cmd/go/dependency-manager/scan_imports"
+	"github.com/gerivdb/email-sender-1/cmd/go/dependency-manager/scan_imports"
 )
 
 func TestRunScan(t *testing.T) {
@@ -23,8 +23,8 @@ func TestRunScan(t *testing.T) {
 
 import (
 	"fmt"
-	"email_sender/core/moduleA"
-	"email_sender/core/moduleB"
+	"github.com/gerivdb/email-sender-1/core/moduleA"
+	"github.com/gerivdb/email-sender-1/core/moduleB"
 )
 
 func main() {
@@ -37,7 +37,7 @@ func main() {
 
 import (
 	"log"
-	"email_sender/core/moduleC"
+	"github.com/gerivdb/email-sender-1/core/moduleC"
 )
 
 func init() {
@@ -89,7 +89,7 @@ func init() {
 	if len(file1Imports.Imports) != 3 {
 		t.Errorf("Expected 3 imports for file1.go, got %d", len(file1Imports.Imports))
 	}
-	if !contains(file1Imports.Imports, "fmt") || !contains(file1Imports.Imports, "email_sender/core/moduleA") || !contains(file1Imports.Imports, "email_sender/core/moduleB") {
+	if !contains(file1Imports.Imports, "fmt") || !contains(file1Imports.Imports, "github.com/gerivdb/email-sender-1/core/moduleA") || !contains(file1Imports.Imports, "github.com/gerivdb/email-sender-1/core/moduleB") {
 		t.Errorf("Incorrect imports for file1.go: %v", file1Imports.Imports)
 	}
 
@@ -101,7 +101,7 @@ func init() {
 	if len(file2Imports.Imports) != 2 {
 		t.Errorf("Expected 2 imports for file2.go, got %d", len(file2Imports.Imports))
 	}
-	if !contains(file2Imports.Imports, "log") || !contains(file2Imports.Imports, "email_sender/core/moduleC") {
+	if !contains(file2Imports.Imports, "log") || !contains(file2Imports.Imports, "github.com/gerivdb/email-sender-1/core/moduleC") {
 		t.Errorf("Incorrect imports for file2.go: %v", file2Imports.Imports)
 	}
 

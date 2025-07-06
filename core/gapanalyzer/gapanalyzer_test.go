@@ -50,7 +50,7 @@ func TestAnalyzeGaps(t *testing.T) { // Renamed function
 		{Name: "cmd/auto-roadmap-runner", Path: "path/to/auto-roadmap-runner"},
 		{Name: "tests/validation", Path: "path/to/tests/validation"},
 		// Add more modules as per GetExpectedModules if needed for 100% match
-		{Name: "projet/mcp/servers/gateway", Path: "path/to/gateway"},
+		{Name: "development/managers/gateway-manager", Path: "path/to/gateway"},
 	}
 	createDummyModulesFile(t, modulesJSONPath, existingModules)
 
@@ -104,7 +104,7 @@ func TestAnalyzeGaps(t *testing.T) { // Renamed function
 		{Name: "core/reporting", Path: "path/to/reporting"},
 		{Name: "cmd/auto-roadmap-runner", Path: "path/to/auto-roadmap-runner"},
 		{Name: "tests/validation", Path: "path/to/tests/validation"},
-		{Name: "projet/mcp/servers/gateway", Path: "path/to/gateway"},
+		{Name: "development/managers/gateway-manager", Path: "path/to/gateway"},
 		{Name: "extra/unwanted/module", Path: "path/to/extra"}, // Extra
 	}
 	createDummyModulesFile(t, modulesJSONPath, extraModules)

@@ -7,7 +7,7 @@ import (
 	"log"
 	"strings"
 
-	cmmInterfaces "email_sender/development/managers/contextual-memory-manager/interfaces"
+	cmmInterfaces "github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
 )
 
 // QdrantRetrievalManager implements RetrievalManager using Qdrant vector database

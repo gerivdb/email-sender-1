@@ -1,4 +1,4 @@
-param (
+àparam (
     [string]$Message
 )
 

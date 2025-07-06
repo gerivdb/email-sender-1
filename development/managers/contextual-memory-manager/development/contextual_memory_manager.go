@@ -6,13 +6,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/contextual-memory-manager/interfaces"
-	"github.com/contextual-memory-manager/internal/ast"
-	"github.com/contextual-memory-manager/internal/hybrid"
-	"github.com/contextual-memory-manager/internal/indexing"
-	"github.com/contextual-memory-manager/internal/integration"
-	"github.com/contextual-memory-manager/internal/monitoring"
-	"github.com/contextual-memory-manager/internal/retrieval"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/internal/ast"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/internal/hybrid"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/internal/indexing"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/internal/integration"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/internal/monitoring"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/internal/retrieval"
 )
 
 type contextualMemoryManagerImpl struct {
@@ -20,8 +20,8 @@ type contextualMemoryManagerImpl struct {
 	retrievalManager   interfaces.RetrievalManager
 	integrationManager interfaces.IntegrationManager
 	monitoringManager  interfaces.MonitoringManager
-	astManager         interfaces.ASTAnalysisManager // NOUVEAU
-	hybridSelector     *hybrid.ModeSelector          // NOUVEAU
+	astManager         interfaces.ASTAnalysisManager   // NOUVEAU
+	hybridSelector     *hybrid.ModeSelector            // NOUVEAU
 	hybridMetrics      interfaces.HybridMetricsManager // NOUVEAU PHASE 4
 	realtimeDashboard  *monitoring.RealTimeDashboard   // NOUVEAU PHASE 4
 	storageManager     interfaces.StorageManager
@@ -135,7 +135,7 @@ func (cmm *contextualMemoryManagerImpl) Initialize(ctx context.Context) error {
 	if err := dashboard.Start(ctx); err != nil {
 		return fmt.Errorf("failed to start real-time dashboard: %w", err)
 	}
-	
+
 	hybridMetrics.StartPeriodicReporting(ctx)
 
 	// 4. Integration Manager (MCP Gateway & N8N)

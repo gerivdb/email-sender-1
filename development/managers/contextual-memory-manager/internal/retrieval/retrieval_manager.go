@@ -6,8 +6,13 @@ import (
 	"fmt"
 	"strings"
 
+<<<<<<< HEAD
 	baseInterfaces "./interfaces"
 	"EMAIL_SENDER_1/development/managers/contextual-memory-manager/interfaces"
+=======
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
+	baseInterfaces "github.com/gerivdb/email-sender-1/development/managers/interfaces"
+>>>>>>> migration/gateway-manager-v77
 )
 
 // retrievalManagerImpl implÃ©mente RetrievalManager en utilisant PostgreSQL et SQLite
@@ -127,7 +132,6 @@ func (rm *retrievalManagerImpl) GetActionMetadata(ctx context.Context, actionID 
 		&action.LineNumber,
 		&action.Timestamp,
 	)
-
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("action not found: %s", actionID)
@@ -318,7 +322,6 @@ func (rm *retrievalManagerImpl) ensureTablesExist(ctx context.Context) error {
 	var exists bool
 	err := rm.pgDB.QueryRowContext(ctx,
 		"SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'contextual_actions')").Scan(&exists)
-
 	if err != nil {
 		return fmt.Errorf("failed to check if contextual_actions table exists: %w", err)
 	}

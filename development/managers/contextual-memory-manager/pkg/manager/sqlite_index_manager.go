@@ -11,7 +11,7 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/contextual-memory-manager/pkg/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/pkg/interfaces"
 )
 
 // SQLiteIndexManager implements IndexManager using SQLite database
@@ -190,7 +190,6 @@ func (s *SQLiteIndexManager) GetDocument(ctx context.Context, id string) (*inter
 
 	err := s.db.QueryRowContext(ctx, query, id).Scan(
 		&doc.ID, &doc.Content, &metadataJSON, &createdAt, &updatedAt)
-
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("document not found: %s", id)

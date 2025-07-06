@@ -9,8 +9,13 @@ import (
 	"log"
 	"time"
 
+<<<<<<< HEAD
 	manager "EMAIL_SENDER_1/development/managers/template-performance-manager"
 	"EMAIL_SENDER_1/development/managers/template-performance-manager/interfaces"
+=======
+	manager "github.com/gerivdb/email-sender-1/development/managers/template-performance-manager"
+	"github.com/gerivdb/email-sender-1/development/managers/template-performance-manager/interfaces"
+>>>>>>> migration/gateway-manager-v77
 )
 
 func main() {

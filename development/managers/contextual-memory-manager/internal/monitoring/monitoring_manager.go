@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
-	baseInterfaces "./interfaces"
+	baseInterfaces "github.com/gerivdb/email-sender-1/development/managers/interfaces"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )

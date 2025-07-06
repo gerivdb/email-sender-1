@@ -4,6 +4,11 @@ import (
 	"EMAIL_SENDER_1/development/managers/interfaces"
 	"context"
 	"time"
+<<<<<<< HEAD
+=======
+
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
+>>>>>>> migration/gateway-manager-v77
 )
 
 // SmartVariableSuggestionManager defines the interface for intelligent variable suggestion system

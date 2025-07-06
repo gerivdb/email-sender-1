@@ -8,6 +8,12 @@ import (
 	"strings"
 	"sync"
 	"time"
+<<<<<<< HEAD
+=======
+
+	"github.com/gerivdb/email-sender-1/development/managers/smart-variable-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/smart-variable-manager/internal/analyzer"
+>>>>>>> migration/gateway-manager-v77
 )
 
 // SmartVariableSuggestionManager implements intelligent variable suggestion system

@@ -8,32 +8,32 @@ import (
 	"sync"
 	"time"
 
-	"email_sender/development/managers/advanced-autonomy-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // CrossManagerEventBus implémentation détaillée
 type CrossManagerEventBus struct {
-	config          *EventBusConfig
-	logger          interfaces.Logger
-	eventChannels   map[string]chan *CoordinationEvent
-	eventRouter     *EventRouter
-	eventFilter     *EventFilter
-	eventAnalytics  *EventAnalytics
-	subscribers     map[string][]EventSubscriber
-	initialized     bool
-	ctx             context.Context
-	cancel          context.CancelFunc
-	mutex           sync.RWMutex
+	config         *EventBusConfig
+	logger         interfaces.Logger
+	eventChannels  map[string]chan *CoordinationEvent
+	eventRouter    *EventRouter
+	eventFilter    *EventFilter
+	eventAnalytics *EventAnalytics
+	subscribers    map[string][]EventSubscriber
+	initialized    bool
+	ctx            context.Context
+	cancel         context.CancelFunc
+	mutex          sync.RWMutex
 }
 
 // EventRouter route les événements vers les bonnes destinations
 type EventRouter struct {
-	config      *RouterConfig
-	logger      interfaces.Logger
+	config       *RouterConfig
+	logger       interfaces.Logger
 	routingTable map[EventType][]string
 	routingRules []RoutingRule
-	metrics     *RoutingMetrics
-	mutex       sync.RWMutex
+	metrics      *RoutingMetrics
+	mutex        sync.RWMutex
 }
 
 // EventFilter filtre les événements selon la priorité et les règles
@@ -48,13 +48,13 @@ type EventFilter struct {
 
 // EventAnalytics analyse et corrèle les événements
 type EventAnalytics struct {
-	config           *AnalyticsConfig
-	logger           interfaces.Logger
-	eventHistory     []HistoricalEvent
-	correlations     map[string]*EventCorrelation
-	patterns         []EventPattern
-	anomalyDetector  *AnomalyDetector
-	mutex            sync.RWMutex
+	config          *AnalyticsConfig
+	logger          interfaces.Logger
+	eventHistory    []HistoricalEvent
+	correlations    map[string]*EventCorrelation
+	patterns        []EventPattern
+	anomalyDetector *AnomalyDetector
+	mutex           sync.RWMutex
 }
 
 // Structures de données pour les événements
@@ -105,10 +105,10 @@ type FilterRule struct {
 type FilterAction string
 
 const (
-	FilterActionAllow    FilterAction = "allow"
-	FilterActionBlock    FilterAction = "block"
-	FilterActionModify   FilterAction = "modify"
-	FilterActionDelay    FilterAction = "delay"
+	FilterActionAllow  FilterAction = "allow"
+	FilterActionBlock  FilterAction = "block"
+	FilterActionModify FilterAction = "modify"
+	FilterActionDelay  FilterAction = "delay"
 )
 
 // PriorityQueue pour la gestion des priorités d'événements
@@ -134,12 +134,12 @@ type RateLimiter struct {
 
 // AnomalyDetector détecte les anomalies dans les patterns d'événements
 type AnomalyDetector struct {
-	config         *AnomalyConfig
-	logger         interfaces.Logger
+	config          *AnomalyConfig
+	logger          interfaces.Logger
 	baselineMetrics map[string]float64
-	thresholds     map[string]float64
-	alerts         []AnomalyAlert
-	mutex          sync.RWMutex
+	thresholds      map[string]float64
+	alerts          []AnomalyAlert
+	mutex           sync.RWMutex
 }
 
 type AnomalyAlert struct {
@@ -168,32 +168,32 @@ type RouterConfig struct {
 }
 
 type FilterConfig struct {
-	MaxFilterLatency  time.Duration
-	FilterBufferSize  int
+	MaxFilterLatency   time.Duration
+	FilterBufferSize   int
 	EnableRateLimiting bool
 	MaxEventsPerSecond int
 }
 
 type AnalyticsConfig struct {
-	HistoryRetention    time.Duration
-	CorrelationWindow   time.Duration
-	PatternDetection    bool
-	AnomalyDetection    bool
+	HistoryRetention  time.Duration
+	CorrelationWindow time.Duration
+	PatternDetection  bool
+	AnomalyDetection  bool
 }
 
 type AnomalyConfig struct {
-	SensitivityLevel  float64
-	DetectionWindow   time.Duration
-	AlertThreshold    float64
+	SensitivityLevel float64
+	DetectionWindow  time.Duration
+	AlertThreshold   float64
 }
 
 // Métriques
 
 type RoutingMetrics struct {
-	EventsRouted      int64
-	AverageLatency    time.Duration
-	RoutingErrors     int64
-	LastUpdate        time.Time
+	EventsRouted   int64
+	AverageLatency time.Duration
+	RoutingErrors  int64
+	LastUpdate     time.Time
 }
 
 // NewCrossManagerEventBus crée un nouveau bus d'événements
@@ -201,7 +201,7 @@ func NewCrossManagerEventBus(config *EventBusConfig, logger interfaces.Logger) (
 	if config == nil {
 		return nil, fmt.Errorf("event bus config is required")
 	}
-	
+
 	if logger == nil {
 		return nil, fmt.Errorf("logger is required")
 	}
@@ -650,11 +650,11 @@ func createDefaultFilterRules() []FilterRule {
 
 func NewEventAnalytics(config *AnalyticsConfig, logger interfaces.Logger) (*EventAnalytics, error) {
 	analytics := &EventAnalytics{
-		config:          config,
-		logger:          logger,
-		eventHistory:    make([]HistoricalEvent, 0),
-		correlations:    make(map[string]*EventCorrelation),
-		patterns:        createDefaultEventPatterns(),
+		config:       config,
+		logger:       logger,
+		eventHistory: make([]HistoricalEvent, 0),
+		correlations: make(map[string]*EventCorrelation),
+		patterns:     createDefaultEventPatterns(),
 		anomalyDetector: NewAnomalyDetector(&AnomalyConfig{
 			SensitivityLevel: 0.8,
 			DetectionWindow:  5 * time.Minute,
@@ -697,7 +697,7 @@ func (ea *EventAnalytics) AnalyzePatterns() {
 		if len(matchingEvents) > 0 {
 			pattern.Frequency = len(matchingEvents)
 			pattern.LastSeen = time.Now()
-			
+
 			if err := pattern.Handler(matchingEvents); err != nil {
 				ea.logger.Error(fmt.Sprintf("Pattern handler failed for %s: %v", pattern.Name, err))
 			}

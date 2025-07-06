@@ -10,9 +10,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/internal/monitoring"
 	"github.com/prometheus/client_golang/api"
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
-	"email_sender/internal/monitoring"
 )
 
 // InfrastructureOrchestrator définit l'interface pour l'orchestration de l'infrastructure
@@ -23,7 +23,7 @@ type InfrastructureOrchestrator interface {
 	HealthCheck(ctx context.Context) error
 	DetectEnvironment() (*EnvironmentInfo, error)
 	AutoRecover(ctx context.Context) error
-	
+
 	// Nouvelles méthodes Phase 2
 	StartAdvancedMonitoring(ctx context.Context) error
 	StopAdvancedMonitoring() error
@@ -33,26 +33,26 @@ type InfrastructureOrchestrator interface {
 
 // ServiceStatus représente l'état des services
 type ServiceStatus struct {
-	Qdrant       ServiceState `json:"qdrant"`
-	Redis        ServiceState `json:"redis"`
-	Prometheus   ServiceState `json:"prometheus"`
-	Grafana      ServiceState `json:"grafana"`
-	RAGServer    ServiceState `json:"rag_server"`
-	Overall      string       `json:"overall"`
-	LastChecked  time.Time    `json:"last_checked"`
+	Qdrant      ServiceState `json:"qdrant"`
+	Redis       ServiceState `json:"redis"`
+	Prometheus  ServiceState `json:"prometheus"`
+	Grafana     ServiceState `json:"grafana"`
+	RAGServer   ServiceState `json:"rag_server"`
+	Overall     string       `json:"overall"`
+	LastChecked time.Time    `json:"last_checked"`
 }
 
 // ServiceState représente l'état d'un service individuel
 type ServiceState struct {
-	Status      string    `json:"status"`      // running, stopped, error, unknown
-	Health      string    `json:"health"`      // healthy, unhealthy, unknown
+	Status      string    `json:"status"` // running, stopped, error, unknown
+	Health      string    `json:"health"` // healthy, unhealthy, unknown
 	LastHealthy time.Time `json:"last_healthy"`
 	Errors      []string  `json:"errors,omitempty"`
 }
 
 // EnvironmentInfo contient les informations sur l'environnement détecté
 type EnvironmentInfo struct {
-	Profile           string            `json:"profile"`            // development, staging, production
+	Profile           string            `json:"profile"` // development, staging, production
 	DockerComposeFile string            `json:"docker_compose_file"`
 	Services          map[string]string `json:"services"`
 	Resources         ResourceInfo      `json:"resources"`
@@ -69,22 +69,22 @@ type ResourceInfo struct {
 
 // SmartInfrastructureManager implémente InfrastructureOrchestrator
 type SmartInfrastructureManager struct {
-	prometheusClient v1.API
-	dockerComposePath string
-	environment      *EnvironmentInfo
-	retryAttempts    int
-	retryDelay       time.Duration
+	prometheusClient   v1.API
+	dockerComposePath  string
+	environment        *EnvironmentInfo
+	retryAttempts      int
+	retryDelay         time.Duration
 	healthCheckTimeout time.Duration
-	
+
 	// Phase 2: Composants de monitoring avancé
-	advancedMonitor     *monitoring.AdvancedInfrastructureMonitor
-	autoHealingSystem   *monitoring.NeuralAutoHealingSystem
-	autonomyManager     *monitoring.DefaultAdvancedAutonomyManager
-	notificationSystem  *monitoring.DefaultNotificationSystem
-	monitoringActive    bool
-	autoHealingEnabled  bool
-	monitoringContext   context.Context
-	monitoringCancel    context.CancelFunc
+	advancedMonitor    *monitoring.AdvancedInfrastructureMonitor
+	autoHealingSystem  *monitoring.NeuralAutoHealingSystem
+	autonomyManager    *monitoring.DefaultAdvancedAutonomyManager
+	notificationSystem *monitoring.DefaultNotificationSystem
+	monitoringActive   bool
+	autoHealingEnabled bool
+	monitoringContext  context.Context
+	monitoringCancel   context.CancelFunc
 }
 
 // NewSmartInfrastructureManager crée une nouvelle instance du manager
@@ -203,7 +203,7 @@ func (sim *SmartInfrastructureManager) findDockerComposeFile() (string, error) {
 			abs, _ := filepath.Abs(path)
 			return abs, nil
 		}
-		
+
 		parentPath := filepath.Join("..", path)
 		if _, err := os.Stat(parentPath); err == nil {
 			abs, _ := filepath.Abs(parentPath)
@@ -252,8 +252,8 @@ func (sim *SmartInfrastructureManager) collectResourceInfo() (ResourceInfo, erro
 	}
 
 	// Informations basiques du système (simplifiées)
-	resources.CPUCores = 4 // Valeur par défaut, peut être améliorée
-	resources.Memory = 8192 // 8GB par défaut
+	resources.CPUCores = 4    // Valeur par défaut, peut être améliorée
+	resources.Memory = 8192   // 8GB par défaut
 	resources.DiskSpace = 100 // 100GB par défaut
 
 	return resources, nil
@@ -298,10 +298,10 @@ func (sim *SmartInfrastructureManager) detectDependencies() []string {
 
 	// Vérification des fichiers de dépendances
 	depFiles := map[string]string{
-		"go.mod":            "Go modules",
-		"requirements.txt":  "Python packages",
-		"package.json":      "Node.js packages",
-		"Dockerfile":        "Docker container",
+		"go.mod":           "Go modules",
+		"requirements.txt": "Python packages",
+		"package.json":     "Node.js packages",
+		"Dockerfile":       "Docker container",
 	}
 
 	for file, desc := range depFiles {
@@ -327,7 +327,7 @@ func (sim *SmartInfrastructureManager) StartServices(ctx context.Context) error 
 		}
 
 		log.Printf("🔄 Starting service: %s", service)
-		
+
 		if err := sim.startSingleService(ctx, service); err != nil {
 			return fmt.Errorf("failed to start service %s: %w", service, err)
 		}
@@ -350,7 +350,7 @@ func (sim *SmartInfrastructureManager) StartServices(ctx context.Context) error 
 // startSingleService démarre un service individuel
 func (sim *SmartInfrastructureManager) startSingleService(ctx context.Context, service string) error {
 	cmd := exec.CommandContext(ctx, "docker-compose", "-f", sim.dockerComposePath, "up", "-d", service)
-	
+
 	if output, err := cmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("docker-compose up failed for %s: %w\nOutput: %s", service, err, string(output))
 	}
@@ -510,7 +510,7 @@ func (sim *SmartInfrastructureManager) AutoRecover(ctx context.Context) error {
 	for service, state := range serviceStates {
 		if state.Health == "unhealthy" || state.Status == "stopped" {
 			log.Printf("🔄 Attempting to recover service: %s", service)
-			
+
 			// Tentative de redémarrage
 			if err := sim.restartService(ctx, service); err != nil {
 				log.Printf("❌ Failed to recover service %s: %v", service, err)
@@ -571,7 +571,7 @@ func (sim *SmartInfrastructureManager) StartAdvancedMonitoring(ctx context.Conte
 		return fmt.Errorf("failed to start advanced monitor: %w", err)
 	}
 
-	// Démarrer l'AdvancedAutonomyManager  
+	// Démarrer l'AdvancedAutonomyManager
 	if err := sim.autonomyManager.StartAdvancedMonitoring(sim.monitoringContext); err != nil {
 		sim.advancedMonitor.Stop()
 		return fmt.Errorf("failed to start autonomy manager: %w", err)
@@ -587,11 +587,11 @@ func (sim *SmartInfrastructureManager) StartAdvancedMonitoring(ctx context.Conte
 	}
 
 	sim.monitoringActive = true
-	
+
 	// Notification de démarrage
 	sim.notificationSystem.SendNotification(monitoring.NotificationInfo{
 		Type:      "system",
-		Level:     "info", 
+		Level:     "info",
 		Service:   "smart-infrastructure",
 		Message:   "Advanced monitoring system started successfully",
 		Timestamp: time.Now(),
@@ -633,7 +633,7 @@ func (sim *SmartInfrastructureManager) StopAdvancedMonitoring() error {
 	sim.notificationSystem.SendNotification(monitoring.NotificationInfo{
 		Type:      "system",
 		Level:     "info",
-		Service:   "smart-infrastructure", 
+		Service:   "smart-infrastructure",
 		Message:   "Advanced monitoring system stopped",
 		Timestamp: time.Now(),
 	})
@@ -665,9 +665,9 @@ func (sim *SmartInfrastructureManager) GetAdvancedHealthStatus(ctx context.Conte
 		for service, status := range healthStatus {
 			if autonomyMetric, exists := autonomyMetrics[service]; exists {
 				status.Metrics = map[string]interface{}{
-					"autonomy_level":    autonomyMetric.AutonomyLevel,
+					"autonomy_level":     autonomyMetric.AutonomyLevel,
 					"self_healing_count": autonomyMetric.SelfHealingCount,
-					"last_intervention": autonomyMetric.LastIntervention,
+					"last_intervention":  autonomyMetric.LastIntervention,
 				}
 				healthStatus[service] = status
 			}
@@ -727,7 +727,7 @@ func (sim *SmartInfrastructureManager) getMonitoredServicesCount() int {
 	if !sim.monitoringActive {
 		return 0
 	}
-	
+
 	// Compter les services actifs dans docker-compose
 	return 5 // qdrant, redis, prometheus, grafana, rag_server
 }

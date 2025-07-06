@@ -3,10 +3,10 @@ package tui
 import (
 	"time"
 
-	"email_sender/cmd/roadmap-cli/priority"
-	"email_sender/cmd/roadmap-cli/storage"
-	"email_sender/cmd/roadmap-cli/tui/models"
-	"email_sender/cmd/roadmap-cli/types"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/priority"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/storage"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/tui/models"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types"
 )
 
 // NewRoadmapModel creates a new roadmap TUI model

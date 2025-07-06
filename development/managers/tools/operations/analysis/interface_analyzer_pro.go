@@ -3,7 +3,10 @@
 package analysis
 
 import (
+<<<<<<< HEAD
 	"EMAIL_SENDER_1/tools/core/toolkit"
+=======
+>>>>>>> migration/gateway-manager-v77
 	"fmt"
 	"go/ast"
 	"go/parser"
@@ -14,6 +17,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/toolkit"
 )
 
 // ToolVersion defines the current version of this specific tool or the toolkit.
@@ -210,7 +215,6 @@ func (ia *InterfaceAnalyzer) AnalyzeInterfaces() (*AnalysisReport, error) {
 
 		return nil
 	})
-
 	if err != nil {
 		return nil, fmt.Errorf("failed to walk directory tree: %w", err)
 	}

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	integratedmanager "email_sender/development/managers/integrated-manager"
+	integratedmanager "github.com/gerivdb/email-sender-1/development/managers/integrated-manager"
 )
 
 func main() {

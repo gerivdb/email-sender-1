@@ -32,7 +32,7 @@ type ScanReport struct {
 	Summary     string                 `json:"summary"`
 }
 
-var internalPattern = regexp.MustCompile(`^email_sender/core/`)
+var internalPattern = regexp.MustCompile(`^github.com/gerivdb/email-sender-1/core/`)
 
 func main() {
 	outputJSON := flag.String("output-json", "list_internal_imports.json", "Chemin du rapport JSON")
@@ -140,7 +140,7 @@ func scanFile(path string, fset *token.FileSet) ([]string, error) {
 // isInternal returns true if the import is internal to the project (excluding stdlib and external).
 func isInternal(pkg string) bool {
 	// Add more complex logic here if needed to filter out stdlib or known external packages.
-	// For now, it checks if it matches "email_sender/core/" pattern.
+	// For now, it checks if it matches "github.com/gerivdb/email-sender-1/core/" pattern.
 	return internalPattern.MatchString(pkg)
 }
 

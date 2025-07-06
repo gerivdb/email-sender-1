@@ -12,7 +12,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	workflow "email_sender/planning-ecosystem-sync/tools/workflow-orchestrator"
+	workflow "github.com/gerivdb/email-sender-1/planning-ecosystem-sync/tools/workflow-orchestrator"
 )
 
 // WorkflowOrchestrator interface for dependency injection

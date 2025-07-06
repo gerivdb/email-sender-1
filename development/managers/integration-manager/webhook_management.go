@@ -13,6 +13,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
 	"github.com/sirupsen/logrus"
 )
 

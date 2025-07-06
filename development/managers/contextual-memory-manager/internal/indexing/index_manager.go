@@ -9,8 +9,13 @@ import (
 	"math"
 	"time"
 
+<<<<<<< HEAD
 	baseInterfaces "./interfaces"
 	"EMAIL_SENDER_1/development/managers/contextual-memory-manager/interfaces"
+=======
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
+	baseInterfaces "github.com/gerivdb/email-sender-1/development/managers/interfaces"
+>>>>>>> migration/gateway-manager-v77
 	"github.com/google/uuid"
 )
 

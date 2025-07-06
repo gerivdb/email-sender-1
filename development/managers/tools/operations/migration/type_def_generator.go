@@ -5,8 +5,11 @@
 package migration
 
 import (
+<<<<<<< HEAD
 	"EMAIL_SENDER_1/tools/core/registry"
 	"EMAIL_SENDER_1/tools/core/toolkit"
+=======
+>>>>>>> migration/gateway-manager-v77
 	"context"
 	"encoding/json"
 	"fmt"
@@ -17,6 +20,9 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/toolkit"
 )
 
 // TypeDefGenerator implémente l'interface toolkit.ToolkitOperation pour la génération de définitions de types
@@ -211,7 +217,6 @@ func (tdg *TypeDefGenerator) Execute(ctx context.Context, options *toolkit.Opera
 
 		return nil
 	})
-
 	if err != nil {
 		tdg.Logger.Error("Error walking directory: %v", err)
 		return err
@@ -451,7 +456,7 @@ func (tdg *TypeDefGenerator) generateReport(report *TypeGenReport, outputPath st
 		return fmt.Errorf("failed to marshal report: %v", err)
 	}
 
-	if err := os.WriteFile(outputPath, data, 0644); err != nil {
+	if err := os.WriteFile(outputPath, data, 0o644); err != nil {
 		return fmt.Errorf("failed to write report file: %v", err)
 	}
 

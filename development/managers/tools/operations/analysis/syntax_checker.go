@@ -5,8 +5,11 @@
 package analysis
 
 import (
+<<<<<<< HEAD
 	"EMAIL_SENDER_1/tools/core/registry"
 	"EMAIL_SENDER_1/tools/core/toolkit"
+=======
+>>>>>>> migration/gateway-manager-v77
 	"context"
 	"encoding/json"
 	"fmt"
@@ -17,6 +20,9 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/toolkit"
 )
 
 // SyntaxChecker implémente l'interface toolkit.ToolkitOperation pour la correction de syntaxe
@@ -175,7 +181,6 @@ func (sc *SyntaxChecker) Execute(ctx context.Context, options *toolkit.Operation
 
 		return nil
 	})
-
 	if err != nil {
 		sc.Logger.Error("Error walking directory: %v", err)
 		return err
@@ -346,7 +351,7 @@ func (sc *SyntaxChecker) attemptFix(file string, src []byte, parseErr error) (bo
 
 	// Write the fixed content if changes were made
 	if fixed && !sc.DryRun {
-		if err := os.WriteFile(file, []byte(content), 0644); err != nil {
+		if err := os.WriteFile(file, []byte(content), 0o644); err != nil {
 			sc.Logger.Error("Failed to write fixed file %s: %v", file, err)
 			return false, ""
 		}
@@ -424,7 +429,7 @@ func (sc *SyntaxChecker) generateReport(report *SyntaxReport, outputPath string)
 		return fmt.Errorf("failed to marshal report: %v", err)
 	}
 
-	if err := os.WriteFile(outputPath, data, 0644); err != nil {
+	if err := os.WriteFile(outputPath, data, 0o644); err != nil {
 		return fmt.Errorf("failed to write report file: %v", err)
 	}
 

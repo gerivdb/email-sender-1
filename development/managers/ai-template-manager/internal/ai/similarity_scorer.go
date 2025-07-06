@@ -4,6 +4,11 @@ import (
 	"EMAIL_SENDER_1/development/managers/ai-template-manager/interfaces"
 	"math"
 	"strings"
+<<<<<<< HEAD
+=======
+
+	"github.com/gerivdb/email-sender-1/development/managers/ai-template-manager/interfaces"
+>>>>>>> migration/gateway-manager-v77
 )
 
 // SimilarityScorer implements semantic matching algorithms for templates

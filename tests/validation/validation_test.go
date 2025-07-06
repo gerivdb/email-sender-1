@@ -3,9 +3,9 @@ package validation_test
 import (
 	"testing"
 	/*
-	   "email_sender/tools/core/toolkit"
-	   "email_sender/tools/operations/validation"
-	   toolkitpkg "email_sender/tools/pkg/manager"
+	   "github.com/gerivdb/email-sender-1/tools/core/toolkit"
+	   "github.com/gerivdb/email-sender-1/tools/operations/validation"
+	   toolkitpkg "github.com/gerivdb/email-sender-1/tools/pkg/manager"
 	*/)
 
 // Validation de l'implémentation - Phase 1.1 - Plan v49

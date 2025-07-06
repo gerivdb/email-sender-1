@@ -12,6 +12,11 @@ import (
 	"regexp"
 	"strings"
 	"time"
+<<<<<<< HEAD
+=======
+
+	"github.com/gerivdb/email-sender-1/development/managers/smart-variable-manager/interfaces"
+>>>>>>> migration/gateway-manager-v77
 )
 
 // ContextAnalyzer provides comprehensive project context analysis

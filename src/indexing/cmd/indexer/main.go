@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"email_sender/src/indexing"
+	"github.com/gerivdb/email-sender-1/src/indexing"
 
 	"github.com/schollz/progressbar/v3"
 )

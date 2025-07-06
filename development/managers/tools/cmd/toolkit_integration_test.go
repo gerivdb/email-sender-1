@@ -10,7 +10,17 @@ import (
 	"context"
 	"fmt"
 	"testing"
+<<<<<<< HEAD
 	// "go/token" // May not be needed if FileSet is handled by constructors
+=======
+
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/registry"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/core/toolkit"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/operations/analysis"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/operations/correction"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/operations/migration"
+	"github.com/gerivdb/email-sender-1/development/managers/tools/operations/validation"
+>>>>>>> migration/gateway-manager-v77
 )
 
 func TestToolkitOperationsIntegration(t *testing.T) {

@@ -570,7 +570,7 @@ development/managers/
 │   └── ...
 ├── integration/           # Managers d'intégration
 │   ├── n8n-manager/
-│   ├── mcp-manager/
+│   ├── gateway-manager/
 │   └── ...
 ├── infrastructure/        # Infrastructure et outils
 │   ├── central-coordinator/

@@ -4,7 +4,7 @@ import (
 	"strings"
 	"time"
 
-	"email_sender/cmd/roadmap-cli/types"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types"
 )
 
 // MoSCoWCalculator implements the MoSCoW (Must/Should/Could/Won't) priority algorithm

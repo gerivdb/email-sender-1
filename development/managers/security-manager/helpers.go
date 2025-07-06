@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/email-sender-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 )
 
 // performVulnerabilityScan effectue un scan de vulnérabilités
@@ -258,13 +258,13 @@ func (sm *SecurityManagerImpl) scanDependencies(target string) []interfaces.Vuln
 // generateScanSummary génère un résumé du scan
 func (sm *SecurityManagerImpl) generateScanSummary(vulnerabilities []interfaces.Vulnerability) interfaces.ScanSummary {
 	summary := interfaces.ScanSummary{
-		TotalIssues:     len(vulnerabilities),
-		CriticalIssues:  0,
-		HighIssues:      0,
-		MediumIssues:    0,
-		LowIssues:       0,
-		InfoIssues:      0,
-		RiskScore:       0.0,
+		TotalIssues:    len(vulnerabilities),
+		CriticalIssues: 0,
+		HighIssues:     0,
+		MediumIssues:   0,
+		LowIssues:      0,
+		InfoIssues:     0,
+		RiskScore:      0.0,
 	}
 
 	var totalCVSS float64
@@ -345,11 +345,11 @@ func (sm *SecurityManagerImpl) calculateFileCVSS(filename string) float64 {
 // parsePackageJsonDependencies parse les dépendances d'un package.json
 func (sm *SecurityManagerImpl) parsePackageJsonDependencies(content string) map[string]string {
 	dependencies := make(map[string]string)
-	
+
 	// Expression régulière simplifiée pour extraire les dépendances
 	depPattern := regexp.MustCompile(`"([^"]+)":\s*"([^"]+)"`)
 	matches := depPattern.FindAllStringSubmatch(content, -1)
-	
+
 	inDependencies := false
 	for _, match := range matches {
 		if len(match) == 3 {
@@ -366,50 +366,50 @@ func (sm *SecurityManagerImpl) parsePackageJsonDependencies(content string) map[
 			}
 		}
 	}
-	
+
 	return dependencies
 }
 
 // parseGoModDependencies parse les dépendances d'un go.mod
 func (sm *SecurityManagerImpl) parseGoModDependencies(content string) map[string]string {
 	dependencies := make(map[string]string)
-	
+
 	lines := strings.Split(content, "\n")
 	inRequireBlock := false
-	
+
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
-		
+
 		if strings.HasPrefix(line, "require (") {
 			inRequireBlock = true
 			continue
 		}
-		
+
 		if inRequireBlock && line == ")" {
 			inRequireBlock = false
 			continue
 		}
-		
+
 		if strings.HasPrefix(line, "require ") || inRequireBlock {
 			if line == "" || strings.HasPrefix(line, "//") {
 				continue
 			}
-			
+
 			parts := strings.Fields(line)
 			if len(parts) >= 2 {
 				name := strings.TrimPrefix(parts[0], "require ")
 				version := parts[1]
-				
+
 				// Supprimer les commentaires
 				if idx := strings.Index(version, "//"); idx != -1 {
 					version = strings.TrimSpace(version[:idx])
 				}
-				
+
 				dependencies[name] = version
 			}
 		}
 	}
-	
+
 	return dependencies
 }
 
@@ -429,7 +429,7 @@ func (sm *SecurityManagerImpl) GenerateSecureToken(length int) (string, error) {
 
 	// Utiliser base64 URL-safe encoding
 	token := base64.URLEncoding.EncodeToString(bytes)
-	
+
 	sm.auditLog.LogEvent("TOKEN", "SECURE_TOKEN_GENERATED", "Secure token generated", map[string]interface{}{
 		"length": length,
 	})

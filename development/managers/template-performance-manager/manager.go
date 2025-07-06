@@ -14,6 +14,14 @@ import (
 	"fmt"
 	"sync"
 	"time"
+<<<<<<< HEAD
+=======
+
+	"github.com/gerivdb/email-sender-1/development/managers/template-performance-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/template-performance-manager/internal/analytics"
+	"github.com/gerivdb/email-sender-1/development/managers/template-performance-manager/internal/neural"
+	"github.com/gerivdb/email-sender-1/development/managers/template-performance-manager/internal/optimization"
+>>>>>>> migration/gateway-manager-v77
 )
 
 // Manager implements the TemplatePerformanceAnalyticsManager interface

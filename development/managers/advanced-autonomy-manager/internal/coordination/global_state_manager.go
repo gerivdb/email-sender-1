@@ -11,7 +11,7 @@ import (
 	"sync"
 	"time"
 
-	"email_sender/development/managers/advanced-autonomy-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // GlobalStateManager implémentation détaillée
@@ -31,13 +31,13 @@ type GlobalStateManager struct {
 
 // StateSynchronizer synchronise les états entre managers
 type StateSynchronizer struct {
-	config           *SyncConfig
-	logger           interfaces.Logger
-	syncChannels     map[string]chan *StateUpdate
-	syncWorkers      []*SyncWorker
-	pendingSyncs     map[string]*PendingSync
-	syncMetrics      *SyncMetrics
-	mutex            sync.RWMutex
+	config       *SyncConfig
+	logger       interfaces.Logger
+	syncChannels map[string]chan *StateUpdate
+	syncWorkers  []*SyncWorker
+	pendingSyncs map[string]*PendingSync
+	syncMetrics  *SyncMetrics
+	mutex        sync.RWMutex
 }
 
 // ConflictResolver résout les conflits d'état
@@ -62,13 +62,13 @@ type StateBackupManager struct {
 // Structures de données pour la gestion d'état
 
 type StateUpdate struct {
-	UpdateID      string
-	ManagerName   string
-	StateData     interface{}
-	Timestamp     time.Time
-	Version       int64
-	UpdateType    StateUpdateType
-	Context       map[string]interface{}
+	UpdateID    string
+	ManagerName string
+	StateData   interface{}
+	Timestamp   time.Time
+	Version     int64
+	UpdateType  StateUpdateType
+	Context     map[string]interface{}
 }
 
 type StateUpdateType string
@@ -81,13 +81,13 @@ const (
 )
 
 type PendingSync struct {
-	SyncID       string
-	ManagerName  string
-	StateUpdate  *StateUpdate
-	Retries      int
-	LastAttempt  time.Time
-	NextAttempt  time.Time
-	Status       SyncStatus
+	SyncID      string
+	ManagerName string
+	StateUpdate *StateUpdate
+	Retries     int
+	LastAttempt time.Time
+	NextAttempt time.Time
+	Status      SyncStatus
 }
 
 type SyncStatus string
@@ -119,32 +119,32 @@ type ConflictRule struct {
 }
 
 type StateConflict struct {
-	ConflictID    string
-	ManagerName   string
-	LocalState    interface{}
-	RemoteState   interface{}
-	ConflictType  ConflictType
-	Timestamp     time.Time
-	Context       map[string]interface{}
+	ConflictID   string
+	ManagerName  string
+	LocalState   interface{}
+	RemoteState  interface{}
+	ConflictType ConflictType
+	Timestamp    time.Time
+	Context      map[string]interface{}
 }
 
 type ConflictType string
 
 const (
-	ConflictTypeVersionMismatch ConflictType = "version_mismatch"
+	ConflictTypeVersionMismatch   ConflictType = "version_mismatch"
 	ConflictTypeDataInconsistency ConflictType = "data_inconsistency"
-	ConflictTypeConcurrentUpdate ConflictType = "concurrent_update"
-	ConflictTypeSchemaChange     ConflictType = "schema_change"
+	ConflictTypeConcurrentUpdate  ConflictType = "concurrent_update"
+	ConflictTypeSchemaChange      ConflictType = "schema_change"
 )
 
 type ResolutionResult struct {
-	ResolutionID   string
-	ConflictID     string
-	Strategy       ResolutionStrategy
-	ResolvedState  interface{}
-	Confidence     float64
-	AppliedAt      time.Time
-	Metadata       map[string]interface{}
+	ResolutionID  string
+	ConflictID    string
+	Strategy      ResolutionStrategy
+	ResolvedState interface{}
+	Confidence    float64
+	AppliedAt     time.Time
+	Metadata      map[string]interface{}
 }
 
 type ResolutionStrategy string
@@ -165,13 +165,13 @@ type ConflictRecord struct {
 }
 
 type BackupRecord struct {
-	BackupID    string
-	Timestamp   time.Time
+	BackupID     string
+	Timestamp    time.Time
 	StateVersion int64
-	BackupSize  int64
-	Checksum    string
-	StoragePath string
-	Metadata    map[string]interface{}
+	BackupSize   int64
+	Checksum     string
+	StoragePath  string
+	Metadata     map[string]interface{}
 }
 
 // Métriques
@@ -188,11 +188,11 @@ type SyncMetrics struct {
 // Configurations
 
 type SyncConfig struct {
-	SyncWorkers       int
-	SyncInterval      time.Duration
-	MaxRetries        int
-	RetryBackoff      time.Duration
-	SyncTimeout       time.Duration
+	SyncWorkers  int
+	SyncInterval time.Duration
+	MaxRetries   int
+	RetryBackoff time.Duration
+	SyncTimeout  time.Duration
 }
 
 type ConflictConfig struct {
@@ -214,7 +214,7 @@ func NewGlobalStateManager(config *StateManagerConfig, logger interfaces.Logger)
 	if config == nil {
 		return nil, fmt.Errorf("state manager config is required")
 	}
-	
+
 	if logger == nil {
 		return nil, fmt.Errorf("logger is required")
 	}
@@ -329,11 +329,11 @@ func (gsm *GlobalStateManager) UpdateManagerState(managerName string, state *int
 		if err != nil {
 			return fmt.Errorf("failed to resolve state conflict: %w", err)
 		}
-		
+
 		if resolution.Strategy == ResolutionStrategyManualReview {
 			return fmt.Errorf("state conflict requires manual review: %s", conflict.ConflictID)
 		}
-		
+
 		// Appliquer la résolution
 		state = resolution.ResolvedState.(*interfaces.ManagerState)
 	}
@@ -530,8 +530,8 @@ func (gsm *GlobalStateManager) detectStateConflict(managerName string, newState 
 func (gsm *GlobalStateManager) detectDataInconsistency(current, new *interfaces.ManagerState) bool {
 	// Logique de détection d'incohérence de données
 	// Comparer les champs critiques
-	return current.HealthScore != new.HealthScore && 
-		   time.Since(current.LastHealthCheck) < time.Minute
+	return current.HealthScore != new.HealthScore &&
+		time.Since(current.LastHealthCheck) < time.Minute
 }
 
 func (gsm *GlobalStateManager) detectAndResolveConflicts() {
@@ -546,7 +546,7 @@ func (gsm *GlobalStateManager) detectAndResolveConflicts() {
 
 func (gsm *GlobalStateManager) applyResolution(resolution *ResolutionResult) {
 	// Appliquer la résolution du conflit
-	gsm.logger.Info(fmt.Sprintf("Applying conflict resolution %s with strategy %s", 
+	gsm.logger.Info(fmt.Sprintf("Applying conflict resolution %s with strategy %s",
 		resolution.ResolutionID, resolution.Strategy))
 }
 
@@ -626,7 +626,7 @@ func (ss *StateSynchronizer) ProcessStateUpdate(update *StateUpdate) error {
 func (ss *StateSynchronizer) StartSyncCycle() {
 	// Démarrer un cycle de synchronisation pour tous les managers
 	ss.logger.Debug("Starting synchronization cycle")
-	
+
 	// Traiter les synchronisations en attente
 	ss.processPendingSyncs()
 }
@@ -798,7 +798,7 @@ func NewStateBackupManager(config *BackupConfig, logger interfaces.Logger) (*Sta
 
 func (sbm *StateBackupManager) CreateBackup(state *UnifiedSystemState) error {
 	backupID := generateBackupID()
-	
+
 	// Sérialiser l'état
 	data, err := json.Marshal(state)
 	if err != nil {

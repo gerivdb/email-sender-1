@@ -14,7 +14,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/contextual-memory-manager/internal/monitoring"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/internal/monitoring"
 )
 
 func main() {
@@ -88,9 +88,9 @@ func main() {
 
 	// Arrêt gracieux
 	logger.Info("Shutting down dashboard...")
-	
+
 	metricsCollector.Stop()
-	
+
 	if err := dashboard.Stop(); err != nil {
 		logger.Error("Error stopping dashboard", zap.Error(err))
 	}
@@ -145,30 +145,30 @@ func generateTestData(ctx context.Context, collector *monitoring.HybridMetricsCo
 		case <-ticker.C:
 			// Sélectionner un scénario
 			scenario := selectScenario(scenarios)
-			
+
 			// Sélectionner un mode
 			mode := modes[rand.Intn(len(modes))]
-			
+
 			// Générer des métriques basées sur le scénario
 			generateScenarioMetrics(collector, mode, scenario)
-			
+
 			// Simuler occasionnellement des erreurs
 			if rand.Float64() < (1.0 - scenario.successRate) {
 				collector.RecordError(mode, fmt.Errorf("simulated error in %s mode during %s", mode, scenario.name))
 			}
-			
+
 			// Simuler l'utilisation mémoire
 			if rand.Intn(10) == 0 { // 10% du temps
 				memoryUsage := int64(rand.Intn(50)+10) * 1024 * 1024 // 10-60 MB
 				collector.RecordMemoryUsage(mode, memoryUsage)
 			}
-			
+
 			// Simuler la sélection de mode
 			if rand.Intn(5) == 0 { // 20% du temps
 				selectedMode := mode
 				actualBest := modes[rand.Intn(len(modes))]
 				confidence := rand.Float64()*0.4 + 0.6 // 0.6-1.0
-				
+
 				collector.RecordModeSelection(selectedMode, actualBest, confidence)
 			}
 		}
@@ -188,17 +188,17 @@ func selectScenario(scenarios []testScenario) testScenario {
 	for _, s := range scenarios {
 		totalWeight += s.weight
 	}
-	
+
 	r := rand.Intn(totalWeight)
 	currentWeight := 0
-	
+
 	for _, s := range scenarios {
 		currentWeight += s.weight
 		if r < currentWeight {
 			return s
 		}
 	}
-	
+
 	return scenarios[0] // Fallback
 }
 
@@ -209,10 +209,10 @@ func generateScenarioMetrics(collector *monitoring.HybridMetricsCollector, mode 
 	if latency < 10*time.Millisecond {
 		latency = 10 * time.Millisecond
 	}
-	
+
 	// Générer le succès/échec
 	success := rand.Float64() < scenario.successRate
-	
+
 	// Générer le score de qualité avec variation
 	qualityVariation := (rand.Float64() - 0.5) * 0.4 // ±0.2
 	quality := scenario.qualityBase + qualityVariation
@@ -222,10 +222,10 @@ func generateScenarioMetrics(collector *monitoring.HybridMetricsCollector, mode 
 	if quality > 1 {
 		quality = 1
 	}
-	
+
 	// Enregistrer la requête
 	collector.RecordQuery(mode, latency, success, quality)
-	
+
 	// Simuler les hits de cache avec des taux différents selon le mode
 	var cacheHitRate float64
 	switch mode {
@@ -238,14 +238,14 @@ func generateScenarioMetrics(collector *monitoring.HybridMetricsCollector, mode 
 	case "parallel":
 		cacheHitRate = 0.60 // Parallèle cache moins bien
 	}
-	
+
 	// Ajuster selon le scénario
 	if scenario.name == "optimization_phase" {
 		cacheHitRate += 0.1
 	} else if scenario.name == "heavy_load" {
 		cacheHitRate -= 0.1
 	}
-	
+
 	cacheHit := rand.Float64() < cacheHitRate
 	collector.RecordCacheHit(mode, cacheHit)
 }

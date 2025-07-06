@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"email_sender/cmd/go/dependency-manager/utils"
+	"github.com/gerivdb/email-sender-1/cmd/go/dependency-manager/utils"
 )
 
 // ModuleInfo représente les informations extraites d'un fichier go.mod

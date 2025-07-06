@@ -10,7 +10,11 @@ import (
 	"strings"
 	"time"
 
+<<<<<<< HEAD
 	"EMAIL_SENDER_1/development/managers/interfaces"
+=======
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
+>>>>>>> migration/gateway-manager-v77
 	"github.com/sirupsen/logrus"
 )
 

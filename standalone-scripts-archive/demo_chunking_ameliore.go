@@ -1,10 +1,11 @@
 package standalone_scripts_archive
 
 import (
-	"email_sender/src/chunking"
 	"fmt"
 	"log"
 	"time"
+
+	"github.com/gerivdb/email-sender-1/src/chunking"
 )
 
 // ChunkingDemo démontre les améliorations apportées à l'algorithme de chunking

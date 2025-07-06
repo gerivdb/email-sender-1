@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"email_sender/cmd/roadmap-cli/storage"
-	"email_sender/cmd/roadmap-cli/types"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/storage"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types"
 
 	"github.com/spf13/cobra"
 )
@@ -359,7 +359,7 @@ func generateConsistencyReport(report *ConsistencyReport) error {
 		}
 	}
 
-	if err := os.WriteFile(output, []byte(content.String()), 0644); err != nil {
+	if err := os.WriteFile(output, []byte(content.String()), 0o644); err != nil {
 		return fmt.Errorf("failed to write report: %w", err)
 	}
 

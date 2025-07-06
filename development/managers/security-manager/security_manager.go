@@ -5,8 +5,6 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
-	"crypto/sha256"
-	"encoding/base64"
 	"encoding/hex"
 	"fmt"
 	"io"
@@ -16,46 +14,46 @@ import (
 	"sync"
 	"time"
 
-	"github.com/email-sender-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/managers/interfaces"
 	"github.com/google/uuid"
+	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/time/rate"
-	"go.uber.org/zap"
 )
 
 // SecurityManagerImpl implémente l'interface SecurityManager
 type SecurityManagerImpl struct {
-	config          *Config
-	logger          *zap.Logger
-	auditLog        *AuditLogger
-	encryptionKey   []byte
-	rateLimiters    map[string]*rate.Limiter
-	rateLimitersMu  sync.RWMutex
-	isInitialized   bool
-	scanResults     map[string]*interfaces.SecurityScanResult
-	scanResultsMu   sync.RWMutex
+	config         *Config
+	logger         *zap.Logger
+	auditLog       *AuditLogger
+	encryptionKey  []byte
+	rateLimiters   map[string]*rate.Limiter
+	rateLimitersMu sync.RWMutex
+	isInitialized  bool
+	scanResults    map[string]*interfaces.SecurityScanResult
+	scanResultsMu  sync.RWMutex
 
 	// Phase 4.2.2: Ajout des capacités de vectorisation pour la sécurité
-	vectorizer              VectorizationEngine       // Moteur de vectorisation
-	qdrant                 QdrantInterface           // Interface Qdrant pour stockage vectoriel
-	policyVectorizer       *PolicyVectorizer         // Vectoriseur de politiques de sécurité
-	anomalyDetector        *AnomalyDetector          // Détecteur d'anomalies basé sur embeddings
+	vectorizer              VectorizationEngine      // Moteur de vectorisation
+	qdrant                  QdrantInterface          // Interface Qdrant pour stockage vectoriel
+	policyVectorizer        *PolicyVectorizer        // Vectoriseur de politiques de sécurité
+	anomalyDetector         *AnomalyDetector         // Détecteur d'anomalies basé sur embeddings
 	vulnerabilityClassifier *VulnerabilityClassifier // Classificateur automatique de vulnérabilités
-	vectorizationEnabled   bool                      // Flag d'activation de la vectorisation
+	vectorizationEnabled    bool                     // Flag d'activation de la vectorisation
 }
 
 // Config pour le Security Manager
 type Config struct {
-	EncryptionKey      string        `json:"encryption_key"`
-	AuditLogEnabled    bool          `json:"audit_log_enabled"`
-	AuditLogPath       string        `json:"audit_log_path"`
-	RateLimitEnabled   bool          `json:"rate_limit_enabled"`
-	DefaultRateLimit   int           `json:"default_rate_limit"`
-	DefaultRateBurst   int           `json:"default_rate_burst"`
-	ScanEnabled        bool          `json:"scan_enabled"`
-	ScanInterval       time.Duration `json:"scan_interval"`
-	VulnDBPath         string        `json:"vuln_db_path"`
-	HashCost           int           `json:"hash_cost"`
+	EncryptionKey    string        `json:"encryption_key"`
+	AuditLogEnabled  bool          `json:"audit_log_enabled"`
+	AuditLogPath     string        `json:"audit_log_path"`
+	RateLimitEnabled bool          `json:"rate_limit_enabled"`
+	DefaultRateLimit int           `json:"default_rate_limit"`
+	DefaultRateBurst int           `json:"default_rate_burst"`
+	ScanEnabled      bool          `json:"scan_enabled"`
+	ScanInterval     time.Duration `json:"scan_interval"`
+	VulnDBPath       string        `json:"vuln_db_path"`
+	HashCost         int           `json:"hash_cost"`
 }
 
 // AuditLogger gère les logs d'audit
@@ -91,15 +89,15 @@ func NewSecurityManager(config *Config) (*SecurityManagerImpl, error) {
 	}
 
 	sm := &SecurityManagerImpl{
-		config:          config,
-		logger:          logger,
-		auditLog:        auditLogger,
-		encryptionKey:   encryptionKey,
-		rateLimiters:    make(map[string]*rate.Limiter),
-		rateLimitersMu:  sync.RWMutex{},
-		isInitialized:   true,
-		scanResults:     make(map[string]*interfaces.SecurityScanResult),
-		scanResultsMu:   sync.RWMutex{},
+		config:         config,
+		logger:         logger,
+		auditLog:       auditLogger,
+		encryptionKey:  encryptionKey,
+		rateLimiters:   make(map[string]*rate.Limiter),
+		rateLimitersMu: sync.RWMutex{},
+		isInitialized:  true,
+		scanResults:    make(map[string]*interfaces.SecurityScanResult),
+		scanResultsMu:  sync.RWMutex{},
 	}
 
 	sm.logger.Info("Security Manager initialized successfully")
@@ -132,7 +130,7 @@ func NewAuditLogger(enabled bool, path string) (*AuditLogger, error) {
 
 	config := zap.NewProductionConfig()
 	config.OutputPaths = []string{path}
-	
+
 	logger, err := config.Build()
 	if err != nil {
 		return nil, fmt.Errorf("failed to create audit logger: %w", err)
@@ -380,7 +378,7 @@ func (sm *SecurityManagerImpl) VerifyPassword(password, hash string) bool {
 	}
 
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	
+
 	sm.auditLog.LogEvent("AUTHENTICATION", "PASSWORD_VERIFIED", "Password verification attempt", map[string]interface{}{
 		"success": err == nil,
 	})
@@ -417,7 +415,7 @@ func (sm *SecurityManagerImpl) CheckRateLimit(identifier string, limit int) bool
 	}
 
 	allowed := limiter.Allow()
-	
+
 	sm.auditLog.LogEvent("RATE_LIMIT", "RATE_LIMIT_CHECK", "Rate limit check", map[string]interface{}{
 		"identifier": identifier,
 		"limit":      limit,
@@ -434,18 +432,18 @@ func (sm *SecurityManagerImpl) ScanForVulnerabilities(ctx context.Context, targe
 	}
 
 	sm.logger.Info("Starting vulnerability scan", zap.String("target", target))
-	
+
 	startTime := time.Now()
 	scanID := uuid.New().String()
 
 	result := &interfaces.SecurityScanResult{
-		ScanID:         scanID,
-		Target:         target,
-		StartTime:      startTime,
-		EndTime:        time.Time{},
-		Status:         "running",
+		ScanID:          scanID,
+		Target:          target,
+		StartTime:       startTime,
+		EndTime:         time.Time{},
+		Status:          "running",
 		Vulnerabilities: []interfaces.Vulnerability{},
-		Summary:        interfaces.ScanSummary{},
+		Summary:         interfaces.ScanSummary{},
 	}
 
 	// Stocker le résultat en cours
@@ -455,7 +453,7 @@ func (sm *SecurityManagerImpl) ScanForVulnerabilities(ctx context.Context, targe
 
 	// Simuler un scan (dans un vrai environnement, ceci ferait appel à des outils de scan)
 	vulnerabilities := sm.performVulnerabilityScan(ctx, target)
-	
+
 	// Mettre à jour le résultat
 	result.EndTime = time.Now()
 	result.Status = "completed"
@@ -463,13 +461,13 @@ func (sm *SecurityManagerImpl) ScanForVulnerabilities(ctx context.Context, targe
 	result.Summary = sm.generateScanSummary(vulnerabilities)
 
 	sm.auditLog.LogEvent("SECURITY_SCAN", "VULNERABILITY_SCAN_COMPLETED", "Vulnerability scan completed", map[string]interface{}{
-		"scan_id":              scanID,
-		"target":               target,
+		"scan_id":               scanID,
+		"target":                target,
 		"vulnerabilities_found": len(vulnerabilities),
-		"duration":             result.EndTime.Sub(result.StartTime).String(),
+		"duration":              result.EndTime.Sub(result.StartTime).String(),
 	})
 
-	sm.logger.Info("Vulnerability scan completed", 
+	sm.logger.Info("Vulnerability scan completed",
 		zap.String("scan_id", scanID),
 		zap.String("target", target),
 		zap.Int("vulnerabilities", len(vulnerabilities)),

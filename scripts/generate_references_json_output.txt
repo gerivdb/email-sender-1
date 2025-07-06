@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\generate_references_json.py", line 41, in <module>
+    main()
+  File "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\generate_references_json.py", line 28, in main
+    all_references.extend(parse_findstr_output(mcp_gateway_file))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\generate_references_json.py", line 14, in parse_findstr_output
+    line_number = int(parts[1])
+                  ^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: '\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00&'

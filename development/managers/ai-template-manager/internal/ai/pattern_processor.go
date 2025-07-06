@@ -8,6 +8,11 @@ import (
 	"go/token"
 	"math"
 	"strings"
+<<<<<<< HEAD
+=======
+
+	"github.com/gerivdb/email-sender-1/development/managers/ai-template-manager/interfaces"
+>>>>>>> migration/gateway-manager-v77
 )
 
 // PatternProcessor implements neural pattern recognition for code analysis

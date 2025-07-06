@@ -4,14 +4,16 @@ package decision
 import (
 	"context"
 	"fmt"
-	"email_sender/development/managers/advanced-autonomy-manager/interfaces"
+	"time"
+
+	"github.com/gerivdb/email-sender-1/development/managers/advanced-autonomy-manager/interfaces"
 )
 
 // ContextAnalyzer analyse l'état du système et fournit une analyse contextuelle
 type ContextAnalyzer struct {
-	config  *AnalyzerConfig
-	logger  interfaces.Logger
-	metrics *AnalyzerMetrics
+	config      *AnalyzerConfig
+	logger      interfaces.Logger
+	metrics     *AnalyzerMetrics
 	initialized bool
 }
 

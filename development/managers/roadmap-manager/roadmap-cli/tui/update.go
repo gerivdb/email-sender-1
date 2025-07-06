@@ -1,7 +1,7 @@
 package tui
 
 import (
-	"email_sender/cmd/roadmap-cli/tui/models"
+	"github.com/gerivdb/email-sender-1/cmd/roadmap-cli/tui/models"
 
 	tea "github.com/charmbracelet/bubbletea"
 )

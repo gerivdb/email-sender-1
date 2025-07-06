@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/contextual-memory-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -200,7 +200,7 @@ func TestHybridConfigLoading(t *testing.T) {
 	assert.Equal(t, 1*time.Hour, config.MaxFileAge)
 	assert.True(t, config.ParallelAnalysis)
 	assert.Equal(t, 1*time.Second, config.MaxAnalysisTime)
-	
+
 	// Vérifier les extensions préférées
 	assert.Contains(t, config.PreferAST, ".go")
 	assert.Contains(t, config.PreferAST, ".js")
@@ -243,7 +243,7 @@ func TestSetHybridMode(t *testing.T) {
 	impl := manager.(*contextualMemoryManagerImpl)
 	impl.initialized = true
 	impl.hybridConfig = impl.loadHybridConfig()
-	
+
 	ctx := context.Background()
 
 	// Test différents modes
@@ -264,7 +264,7 @@ func TestSetHybridMode(t *testing.T) {
 
 			// Assert
 			assert.NoError(t, err)
-			
+
 			switch tc.mode {
 			case interfaces.HybridModeASTFirst:
 				assert.Equal(t, tc.expected, impl.hybridConfig.ASTThreshold)
@@ -288,9 +288,9 @@ func TestUpdateHybridConfig(t *testing.T) {
 	manager := NewContextualMemoryManager(mockStorage, mockError, mockConfig)
 	impl := manager.(*contextualMemoryManagerImpl)
 	impl.initialized = true
-	
+
 	ctx := context.Background()
-	
+
 	newConfig := interfaces.HybridConfig{
 		ASTThreshold:       0.5,
 		RAGFallbackEnabled: false,

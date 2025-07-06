@@ -1,0 +1,1 @@
+problem in mem0-analysis\repo\mem0\embeddings\together.py - ImportError: cannot import name 'Together' from partially initialized module 'together' (most likely due to a circular import) (D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\mem0-analysis\repo\mem0\embeddings\together.py)

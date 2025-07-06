@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"email_sender/src/providers"
+	"github.com/gerivdb/email-sender-1/src/providers"
 
 	"github.com/stretchr/testify/require"
 )
@@ -96,7 +96,7 @@ func TestLoadIndexing(t *testing.T) {
 		size := fileSizes[i%len(fileSizes)]
 		filename := filepath.Join(tempDir, fmt.Sprintf("test_%d.txt", i))
 		content := generateTestText(size)
-		err := os.WriteFile(filename, []byte(content), 0644)
+		err := os.WriteFile(filename, []byte(content), 0o644)
 		require.NoError(t, err)
 		files = append(files, filename)
 	}
