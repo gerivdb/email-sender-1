@@ -3,13 +3,12 @@ package integration_manager
 import (
 	"context"
 	"fmt"
-	"sync"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 
-	"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
 )
 
 // ===== Synchronization Management =====
@@ -41,7 +40,7 @@ func (im *IntegrationManagerImpl) CreateSyncJob(ctx context.Context, syncJob *in
 	now := time.Now()
 	syncJob.CreatedAt = now
 	syncJob.UpdatedAt = now
-	
+
 	// Store sync job
 	im.syncJobs[syncJob.ID] = syncJob
 
@@ -254,7 +253,7 @@ func (im *IntegrationManagerImpl) validateSyncJob(syncJob *interfaces.SyncJob) e
 
 func (im *IntegrationManagerImpl) executeSyncJob(ctx context.Context, syncJob *interfaces.SyncJob) {
 	syncJobID := syncJob.ID
-	
+
 	defer func() {
 		// Cleanup on completion/failure
 		im.syncMutex.Lock()
@@ -315,63 +314,63 @@ func (im *IntegrationManagerImpl) executeSyncJob(ctx context.Context, syncJob *i
 
 func (im *IntegrationManagerImpl) executeOneWaySync(ctx context.Context, syncJob *interfaces.SyncJob, source, target *interfaces.Integration) error {
 	im.logger.WithField("sync_job_id", syncJob.ID).Info("Executing one-way sync")
-	
+
 	// Update progress
 	im.updateSyncProgress(syncJob.ID, 25)
-	
+
 	// Simulate sync operations
 	data, err := im.extractDataFromSource(ctx, source, syncJob.Config)
 	if err != nil {
 		return fmt.Errorf("failed to extract data from source: %w", err)
 	}
-	
+
 	im.updateSyncProgress(syncJob.ID, 50)
-	
+
 	// Transform data if needed
 	transformedData, err := im.transformSyncData(ctx, data, syncJob.Config)
 	if err != nil {
 		return fmt.Errorf("failed to transform data: %w", err)
 	}
-	
+
 	im.updateSyncProgress(syncJob.ID, 75)
-	
+
 	// Load data to target
 	err = im.loadDataToTarget(ctx, target, transformedData, syncJob.Config)
 	if err != nil {
 		return fmt.Errorf("failed to load data to target: %w", err)
 	}
-	
+
 	im.updateSyncProgress(syncJob.ID, 100)
-	
+
 	return nil
 }
 
 func (im *IntegrationManagerImpl) executeTwoWaySync(ctx context.Context, syncJob *interfaces.SyncJob, source, target *interfaces.Integration) error {
 	im.logger.WithField("sync_job_id", syncJob.ID).Info("Executing two-way sync")
-	
+
 	// This is a placeholder implementation
 	// Real implementation would involve conflict resolution and bidirectional sync
-	
+
 	im.updateSyncProgress(syncJob.ID, 100)
 	return nil
 }
 
 func (im *IntegrationManagerImpl) executeIncrementalSync(ctx context.Context, syncJob *interfaces.SyncJob, source, target *interfaces.Integration) error {
 	im.logger.WithField("sync_job_id", syncJob.ID).Info("Executing incremental sync")
-	
+
 	// This is a placeholder implementation
 	// Real implementation would sync only changed data since last sync
-	
+
 	im.updateSyncProgress(syncJob.ID, 100)
 	return nil
 }
 
 func (im *IntegrationManagerImpl) executeFullSync(ctx context.Context, syncJob *interfaces.SyncJob, source, target *interfaces.Integration) error {
 	im.logger.WithField("sync_job_id", syncJob.ID).Info("Executing full sync")
-	
+
 	// This is a placeholder implementation
 	// Real implementation would sync all data
-	
+
 	im.updateSyncProgress(syncJob.ID, 100)
 	return nil
 }
@@ -379,7 +378,7 @@ func (im *IntegrationManagerImpl) executeFullSync(ctx context.Context, syncJob *
 func (im *IntegrationManagerImpl) extractDataFromSource(ctx context.Context, source *interfaces.Integration, config map[string]interface{}) (interface{}, error) {
 	// This is a placeholder implementation
 	// Real implementation would extract data based on integration type
-	
+
 	switch source.Type {
 	case interfaces.IntegrationTypeAPI:
 		return im.extractDataFromAPI(ctx, source, config)
@@ -431,7 +430,7 @@ func (im *IntegrationManagerImpl) transformSyncData(ctx context.Context, data in
 func (im *IntegrationManagerImpl) loadDataToTarget(ctx context.Context, target *interfaces.Integration, data interface{}, config map[string]interface{}) error {
 	// This is a placeholder implementation
 	// Real implementation would load data based on target integration type
-	
+
 	switch target.Type {
 	case interfaces.IntegrationTypeAPI:
 		return im.loadDataToAPI(ctx, target, data, config)
@@ -468,7 +467,7 @@ func (im *IntegrationManagerImpl) updateSyncProgress(syncJobID string, progress 
 
 	if status, exists := im.syncStatuses[syncJobID]; exists {
 		status.Progress = progress
-		
+
 		// Add progress event
 		im.addSyncEventUnsafe(syncJobID, interfaces.SyncEventProgress, fmt.Sprintf("Progress: %.1f%%", progress), map[string]interface{}{
 			"progress": progress,
@@ -489,7 +488,7 @@ func (im *IntegrationManagerImpl) finalizeSyncJob(syncJobID string, finalStatus 
 	status.Status = finalStatus
 	status.CompletedAt = &now
 	status.LastError = errorMessage
-	
+
 	if metrics != nil {
 		for key, value := range metrics {
 			status.Metrics[key] = value
@@ -499,7 +498,7 @@ func (im *IntegrationManagerImpl) finalizeSyncJob(syncJobID string, finalStatus 
 	// Add completion event
 	eventType := interfaces.SyncEventCompleted
 	message := "Sync job completed successfully"
-	
+
 	if finalStatus == interfaces.SyncStateFailed {
 		eventType = interfaces.SyncEventFailed
 		message = "Sync job failed: " + errorMessage
@@ -517,7 +516,7 @@ func (im *IntegrationManagerImpl) finalizeSyncJob(syncJobID string, finalStatus 
 func (im *IntegrationManagerImpl) addSyncEvent(syncJobID string, eventType interfaces.SyncEventType, message string, data map[string]interface{}) {
 	im.syncMutex.Lock()
 	defer im.syncMutex.Unlock()
-	
+
 	im.addSyncEventUnsafe(syncJobID, eventType, message, data)
 }
 
@@ -548,13 +547,13 @@ func (im *IntegrationManagerImpl) addSyncEventUnsafe(syncJobID string, eventType
 func (im *IntegrationManagerImpl) calculateNextRun(schedule string) (time.Time, error) {
 	// This is a placeholder implementation
 	// Real implementation would parse cron expressions or other schedule formats
-	
+
 	// For now, assume schedule is a duration like "1h", "30m", etc.
 	duration, err := time.ParseDuration(schedule)
 	if err != nil {
 		return time.Time{}, fmt.Errorf("invalid schedule format: %s", schedule)
 	}
-	
+
 	return time.Now().Add(duration), nil
 }
 
@@ -562,7 +561,7 @@ func (im *IntegrationManagerImpl) checkScheduledSyncs(ctx context.Context) {
 	im.syncMutex.RLock()
 	now := time.Now()
 	jobsToStart := make([]*interfaces.SyncJob, 0)
-	
+
 	for _, job := range im.syncJobs {
 		if job.IsActive && job.NextRun != nil && job.NextRun.Before(now) {
 			// Check if not already running

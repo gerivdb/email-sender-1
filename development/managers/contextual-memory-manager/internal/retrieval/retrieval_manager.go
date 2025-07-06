@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
-	baseInterfaces "./interfaces"
+	baseInterfaces "github.com/gerivdb/email-sender-1/development/managers/interfaces"
 )
 
 // retrievalManagerImpl implÃ©mente RetrievalManager en utilisant PostgreSQL et SQLite
@@ -127,7 +127,6 @@ func (rm *retrievalManagerImpl) GetActionMetadata(ctx context.Context, actionID 
 		&action.LineNumber,
 		&action.Timestamp,
 	)
-
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("action not found: %s", actionID)
@@ -262,7 +261,7 @@ func (rm *retrievalManagerImpl) DeleteContext(ctx context.Context, contextID str
 		DELETE FROM contextual_actions 
 		WHERE id = $1 OR session_id = $1 OR metadata->>'context_id' = $1
 	`
-	
+
 	result, err := tx.ExecContext(ctx, deleteActionsQuery, contextID)
 	if err != nil {
 		return fmt.Errorf("failed to delete contextual actions: %w", err)
@@ -318,7 +317,6 @@ func (rm *retrievalManagerImpl) ensureTablesExist(ctx context.Context) error {
 	var exists bool
 	err := rm.pgDB.QueryRowContext(ctx,
 		"SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'contextual_actions')").Scan(&exists)
-
 	if err != nil {
 		return fmt.Errorf("failed to check if contextual_actions table exists: %w", err)
 	}

@@ -3,16 +3,17 @@ package integration_manager
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/your-org/email-sender/development/managers/interfaces"
 )
 
 func TestIntegrationManagerImpl_CreateIntegration(t *testing.T) {
@@ -591,7 +592,7 @@ func createTestIntegrationManager(t *testing.T) *IntegrationManagerImpl {
 	logger.SetLevel(logrus.WarnLevel) // Reduce log noise in tests
 
 	im := NewIntegrationManager(logger)
-	
+
 	// Start the manager
 	err := im.Start(context.Background())
 	require.NoError(t, err)

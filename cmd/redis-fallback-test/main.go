@@ -7,8 +7,6 @@ import (
 	"log"
 	"os"
 	"time"
-
-	redisconfig "github.com/gerivdb/email-sender-1/pkg/cache/redis"
 )
 
 func main() {

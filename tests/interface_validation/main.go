@@ -6,8 +6,6 @@ import (
 	"context"
 	"fmt"
 	"time"
-
-	"github.com/gerivdb/email-sender-1/pkg/docmanager"
 )
 
 // TestManagerImplementation teste l'implémentation ManagerType

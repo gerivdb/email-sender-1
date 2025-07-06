@@ -6,8 +6,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-
-	"github.com/gerivdb/email-sender-1/pkg/docmanager"
 )
 
 func main() {

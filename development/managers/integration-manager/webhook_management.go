@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
 	"github.com/sirupsen/logrus"
-	"github.com/your-org/email-sender/development/managers/interfaces"
 )
 
 // RegisterWebhook registers a new webhook
@@ -129,7 +129,7 @@ func (im *IntegrationManagerImpl) HandleWebhook(webhookID string, request *http.
 	// Process webhook
 	processingTime := time.Since(startTime)
 	err = im.processWebhookPayload(webhook, eventType, payload, request)
-	
+
 	// Log webhook execution
 	im.logWebhookExecution(webhookID, eventType, payload, request, err, processingTime)
 
@@ -192,17 +192,17 @@ func (im *IntegrationManagerImpl) validateWebhook(webhook *interfaces.Webhook) e
 
 	// Validate event types
 	validEvents := map[string]bool{
-		"integration.created":   true,
-		"integration.updated":   true,
-		"integration.deleted":   true,
-		"sync.started":          true,
-		"sync.completed":        true,
-		"sync.failed":           true,
-		"api.called":            true,
-		"api.failed":            true,
-		"data.transformed":      true,
-		"webhook.triggered":     true,
-		"*":                     true, // Allow all events
+		"integration.created": true,
+		"integration.updated": true,
+		"integration.deleted": true,
+		"sync.started":        true,
+		"sync.completed":      true,
+		"sync.failed":         true,
+		"api.called":          true,
+		"api.failed":          true,
+		"data.transformed":    true,
+		"webhook.triggered":   true,
+		"*":                   true, // Allow all events
 	}
 
 	for _, event := range webhook.Events {
@@ -314,12 +314,12 @@ func (im *IntegrationManagerImpl) isEventAllowed(webhook *interfaces.Webhook, ev
 func (im *IntegrationManagerImpl) processWebhookPayload(webhook *interfaces.Webhook, eventType string, payload map[string]interface{}, request *http.Request) error {
 	// Create processing context
 	context := map[string]interface{}{
-		"webhook_id":  webhook.ID,
-		"event_type":  eventType,
-		"payload":     payload,
-		"headers":     im.extractHeaders(request),
-		"timestamp":   time.Now(),
-		"source_ip":   im.extractSourceIP(request),
+		"webhook_id": webhook.ID,
+		"event_type": eventType,
+		"payload":    payload,
+		"headers":    im.extractHeaders(request),
+		"timestamp":  time.Now(),
+		"source_ip":  im.extractSourceIP(request),
 	}
 
 	// Process based on event type
@@ -353,7 +353,7 @@ func (im *IntegrationManagerImpl) processIntegrationEvent(webhook *interfaces.We
 	}
 
 	integrationID, _ := payload["integration_id"].(string)
-	
+
 	switch eventType {
 	case "integration.created":
 		// Handle integration creation
@@ -502,7 +502,7 @@ func (im *IntegrationManagerImpl) processGenericEvent(webhook *interfaces.Webhoo
 // extractHeaders extracts relevant headers from request
 func (im *IntegrationManagerImpl) extractHeaders(request *http.Request) map[string]string {
 	headers := make(map[string]string)
-	
+
 	relevantHeaders := []string{
 		"Content-Type",
 		"User-Agent",
@@ -570,14 +570,14 @@ func (im *IntegrationManagerImpl) logWebhookEvent(webhookID, eventType string, d
 // logWebhookExecution logs webhook execution details
 func (im *IntegrationManagerImpl) logWebhookExecution(webhookID, eventType string, payload map[string]interface{}, request *http.Request, err error, duration time.Duration) {
 	data := map[string]interface{}{
-		"event_type":       eventType,
-		"processing_time":  duration.String(),
-		"payload_size":     len(fmt.Sprintf("%v", payload)),
-		"method":           request.Method,
-		"url":              request.URL.String(),
-		"user_agent":       request.Header.Get("User-Agent"),
-		"content_type":     request.Header.Get("Content-Type"),
-		"source_ip":        im.extractSourceIP(request),
+		"event_type":      eventType,
+		"processing_time": duration.String(),
+		"payload_size":    len(fmt.Sprintf("%v", payload)),
+		"method":          request.Method,
+		"url":             request.URL.String(),
+		"user_agent":      request.Header.Get("User-Agent"),
+		"content_type":    request.Header.Get("Content-Type"),
+		"source_ip":       im.extractSourceIP(request),
 	}
 
 	level := "info"

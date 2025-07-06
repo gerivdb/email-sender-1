@@ -15,8 +15,6 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/redis/go-redis/v9"
-
-	"github.com/gerivdb/email-sender-1/pkg/email"
 )
 
 var (

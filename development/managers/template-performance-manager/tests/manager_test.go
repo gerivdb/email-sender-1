@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/fmoua/email-sender/development/managers/template-performance-manager/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/template-performance-manager/interfaces"
 )
 
 func TestManager_Initialize(t *testing.T) {
@@ -32,7 +32,7 @@ func TestManager_Initialize(t *testing.T) {
 			name: "Invalid configuration",
 			config: &Config{
 				MaxConcurrentAnalyses: -1,
-				AnalysisTimeout:      0,
+				AnalysisTimeout:       0,
 			},
 			expectError: true,
 		},
@@ -50,7 +50,7 @@ func TestManager_Initialize(t *testing.T) {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
-				
+
 				status := manager.GetManagerStatus()
 				assert.True(t, status.IsInitialized)
 				assert.False(t, status.IsRunning)
@@ -199,7 +199,7 @@ func TestManager_AnalyzeTemplatePerformance(t *testing.T) {
 					Performance: map[string]float64{"generation_time": 3.5, "load_time": 0.8},
 				},
 				CurrentConfig: map[string]interface{}{
-					"cache_enabled": false,
+					"cache_enabled":      false,
 					"optimization_level": 0,
 				},
 				TargetMetrics: map[string]float64{
@@ -600,7 +600,7 @@ func setupTestManager(t *testing.T) *Manager {
 	// Use mock endpoints for testing
 	config.AIEngineEndpoint = "http://localhost:8080"
 	config.MetricsDBConnection = "postgres://localhost:5432/testdb"
-	
+
 	manager, err := New(config)
 	require.NoError(t, err)
 
@@ -659,7 +659,7 @@ func setupBenchmarkManager(b *testing.B) *Manager {
 	config := DefaultConfig()
 	config.AIEngineEndpoint = "http://localhost:8080"
 	config.MetricsDBConnection = "postgres://localhost:5432/benchmarkdb"
-	
+
 	manager, err := New(config)
 	if err != nil {
 		b.Fatal(err)

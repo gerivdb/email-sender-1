@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/development/managers/template-performance-manager/interfaces"
 	"github.com/sirupsen/logrus"
-	"github.com/fmoua/email-sender/development/managers/template-performance-manager/interfaces"
 )
 
 // neuralPatternProcessor implémente l'interface NeuralPatternProcessor
@@ -55,10 +55,10 @@ func NewNeuralPatternProcessor(
 	logger *logrus.Logger,
 ) interfaces.NeuralPatternProcessor {
 	return &neuralPatternProcessor{
-		aiEngine:   aiEngine,
-		patternDB:  patternDB,
-		config:     config,
-		logger:     logger,
+		aiEngine:  aiEngine,
+		patternDB: patternDB,
+		config:    config,
+		logger:    logger,
 	}
 }
 
@@ -74,7 +74,7 @@ func NewProcessor(config Config) (interfaces.NeuralPatternProcessor, error) {
 		stopChan:        make(chan struct{}),
 		mu:              sync.RWMutex{},
 	}
-	
+
 	return processor, nil
 }
 
@@ -84,7 +84,7 @@ func (npp *neuralPatternProcessor) AnalyzeTemplatePatterns(
 	templatePath string,
 ) (*interfaces.PatternAnalysis, error) {
 	startTime := time.Now()
-	
+
 	npp.logger.WithFields(logrus.Fields{
 		"template_path": templatePath,
 		"operation":     "analyze_patterns",
@@ -133,10 +133,10 @@ func (npp *neuralPatternProcessor) AnalyzeTemplatePatterns(
 	analysisTime := time.Since(startTime)
 
 	analysis := &interfaces.PatternAnalysis{
-		Patterns:        []interfaces.DetectedPattern{},
-		Correlations:    []interfaces.PatternCorrelation{},
-		Anomalies:       []interfaces.PerformanceAnomaly{},
-		Confidence:      confidence,
+		Patterns:     []interfaces.DetectedPattern{},
+		Correlations: []interfaces.PatternCorrelation{},
+		Anomalies:    []interfaces.PerformanceAnomaly{},
+		Confidence:   confidence,
 	}
 
 	// Convertir patterns en DetectedPattern
@@ -147,14 +147,14 @@ func (npp *neuralPatternProcessor) AnalyzeTemplatePatterns(
 			Frequency:       pattern.Frequency,
 			Characteristics: make(map[string]interface{}),
 		}
-		
+
 		// Copier les caractéristiques
 		for k, v := range pattern.Context {
 			detectedPattern.Characteristics[k] = v
 		}
 		detectedPattern.Characteristics["confidence"] = pattern.Confidence
 		detectedPattern.Characteristics["priority"] = pattern.Priority
-		
+
 		analysis.Patterns = append(analysis.Patterns, detectedPattern)
 	}
 
@@ -202,7 +202,7 @@ func (npp *neuralPatternProcessor) ExtractUsagePatterns(
 	pattern.Context["user_id"] = sessionData.UserID
 	pattern.Context["session_duration"] = sessionData.EndTime.Sub(sessionData.StartTime).String()
 	pattern.Context["template_count"] = fmt.Sprintf("%d", len(sessionData.TemplateUsage))
-	
+
 	if len(sessionData.ErrorEvents) > 0 {
 		pattern.Context["has_errors"] = "true"
 		pattern.Context["error_count"] = fmt.Sprintf("%d", len(sessionData.ErrorEvents))
@@ -212,11 +212,11 @@ func (npp *neuralPatternProcessor) ExtractUsagePatterns(
 	if len(sessionData.PerformanceData) > 0 {
 		lastSnapshot := sessionData.PerformanceData[len(sessionData.PerformanceData)-1]
 		pattern.Performance = &interfaces.MetricSnapshot{
-			Timestamp:       lastSnapshot.LastUpdated,
-			GenerationTime:  lastSnapshot.RefreshInterval,
-			MemoryUsage:     0, // À extraire des données performance
-			CPUUtilization:  0, // À extraire des données performance
-			ErrorCount:      len(sessionData.ErrorEvents),
+			Timestamp:      lastSnapshot.LastUpdated,
+			GenerationTime: lastSnapshot.RefreshInterval,
+			MemoryUsage:    0, // À extraire des données performance
+			CPUUtilization: 0, // À extraire des données performance
+			ErrorCount:     len(sessionData.ErrorEvents),
 		}
 	}
 
@@ -293,21 +293,21 @@ func (npp *neuralPatternProcessor) OptimizePatternRecognition(
 	// Sauvegarde feedback pour apprentissage futur
 	if npp.patternDB != nil {
 		feedbackPattern := &interfaces.UsagePattern{
-			PatternID:   fmt.Sprintf("feedback_%s", feedback.OptimizationID),
-			Frequency:   1,
-			Context:     map[string]string{
+			PatternID: fmt.Sprintf("feedback_%s", feedback.OptimizationID),
+			Frequency: 1,
+			Context: map[string]string{
 				"optimization_id": feedback.OptimizationID,
-				"rating":         fmt.Sprintf("%d", feedback.UserRating),
-				"success":        fmt.Sprintf("%t", feedback.Success),
+				"rating":          fmt.Sprintf("%d", feedback.UserRating),
+				"success":         fmt.Sprintf("%t", feedback.Success),
 			},
 			UserSegment: "feedback",
 			Priority:    npp.calculateFeedbackPriority(feedback),
 			Confidence:  npp.calculateFeedbackConfidence(feedback),
 		}
-		
+
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
-		
+
 		if err := npp.patternDB.StorePattern(ctx, feedbackPattern); err != nil {
 			npp.logger.Errorf("Failed to store feedback pattern: %v", err)
 		}
@@ -367,7 +367,7 @@ func (npp *neuralPatternProcessor) Cleanup() error {
 	}
 
 	npp.initialized = false
-	
+
 	return nil
 }
 
@@ -398,7 +398,7 @@ func (npp *neuralPatternProcessor) enrichPatternsWithHistory(ctx context.Context
 			"user_segment": pattern.UserSegment,
 			"context_type": pattern.Context["type"],
 		}
-		
+
 		historicalPatterns, err := npp.patternDB.RetrievePatterns(ctx, filters)
 		if err != nil {
 			npp.logger.Warnf("Failed to retrieve historical patterns: %v", err)
@@ -411,7 +411,7 @@ func (npp *neuralPatternProcessor) enrichPatternsWithHistory(ctx context.Context
 			for _, hist := range historicalPatterns {
 				totalFrequency += hist.Frequency
 			}
-			
+
 			// Pondération avec historique
 			enriched[i].Frequency = (pattern.Frequency + totalFrequency) / 2
 			enriched[i].Confidence = npp.calculateHistoricalConfidence(pattern, historicalPatterns)
@@ -426,7 +426,7 @@ func (npp *neuralPatternProcessor) correlatePerformance(ctx context.Context, pat
 	// Analyse performance basée sur patterns
 	totalFrequency := 0
 	errorCount := 0
-	
+
 	for _, pattern := range patterns {
 		totalFrequency += pattern.Frequency
 		if pattern.Performance != nil && pattern.Performance.ErrorCount > 0 {
@@ -436,11 +436,11 @@ func (npp *neuralPatternProcessor) correlatePerformance(ctx context.Context, pat
 
 	// Estimation performance basée sur patterns
 	profile := &interfaces.PerformanceProfile{
-		GenerationTime:  time.Duration(totalFrequency) * time.Millisecond, // Estimation
-		MemoryUsage:     int64(totalFrequency * 1024), // Estimation
-		CPUUtilization:  float64(totalFrequency) / 100.0,
-		CacheHitRate:    0.8, // Valeur par défaut
-		ErrorRate:       float64(errorCount) / float64(totalFrequency),
+		GenerationTime: time.Duration(totalFrequency) * time.Millisecond, // Estimation
+		MemoryUsage:    int64(totalFrequency * 1024),                     // Estimation
+		CPUUtilization: float64(totalFrequency) / 100.0,
+		CacheHitRate:   0.8, // Valeur par défaut
+		ErrorRate:      float64(errorCount) / float64(totalFrequency),
 	}
 
 	return profile, nil
@@ -456,11 +456,11 @@ func (npp *neuralPatternProcessor) generateAIRecommendations(
 	// Analyse performance vs patterns
 	if performance.GenerationTime > 200*time.Millisecond {
 		recommendations = append(recommendations, interfaces.OptimizationHint{
-			Type:          "performance",
-			Description:   "Template generation time exceeds 200ms threshold",
-			Impact:        "high",
-			Complexity:    3,
-			EstimatedGain: 0.4,
+			Type:           "performance",
+			Description:    "Template generation time exceeds 200ms threshold",
+			Impact:         "high",
+			Complexity:     3,
+			EstimatedGain:  0.4,
 			Implementation: "Consider template pre-compilation or caching",
 		})
 	}
@@ -468,11 +468,11 @@ func (npp *neuralPatternProcessor) generateAIRecommendations(
 	// Analyse cache hit rate
 	if performance.CacheHitRate < 0.8 {
 		recommendations = append(recommendations, interfaces.OptimizationHint{
-			Type:          "caching",
-			Description:   "Low cache hit rate detected",
-			Impact:        "medium",
-			Complexity:    2,
-			EstimatedGain: 0.25,
+			Type:           "caching",
+			Description:    "Low cache hit rate detected",
+			Impact:         "medium",
+			Complexity:     2,
+			EstimatedGain:  0.25,
 			Implementation: "Implement smarter caching strategy",
 		})
 	}
@@ -481,11 +481,11 @@ func (npp *neuralPatternProcessor) generateAIRecommendations(
 	for _, pattern := range patterns {
 		if pattern.Frequency > 100 && pattern.Confidence > 0.8 {
 			recommendations = append(recommendations, interfaces.OptimizationHint{
-				Type:          "optimization",
-				Description:   fmt.Sprintf("High-frequency pattern detected: %s", pattern.PatternID),
-				Impact:        "medium",
-				Complexity:    1,
-				EstimatedGain: 0.15,
+				Type:           "optimization",
+				Description:    fmt.Sprintf("High-frequency pattern detected: %s", pattern.PatternID),
+				Impact:         "medium",
+				Complexity:     1,
+				EstimatedGain:  0.15,
 				Implementation: "Create specialized template variant",
 			})
 		}
@@ -587,14 +587,14 @@ func (npp *neuralPatternProcessor) calculateCorrelationConfidence(pairs []interf
 	if len(pairs) == 0 {
 		return 0.0
 	}
-	
+
 	totalConfidence := 0.0
 	for _, pair := range pairs {
 		if pair.PValue < 0.05 {
 			totalConfidence += abs(pair.Coefficient)
 		}
 	}
-	
+
 	return totalConfidence / float64(len(pairs))
 }
 
@@ -631,13 +631,13 @@ func (npp *neuralPatternProcessor) calculateHistoricalConfidence(current interfa
 	if len(historical) == 0 {
 		return current.Confidence
 	}
-	
+
 	avgHistoricalConfidence := 0.0
 	for _, hist := range historical {
 		avgHistoricalConfidence += hist.Confidence
 	}
 	avgHistoricalConfidence /= float64(len(historical))
-	
+
 	// Pondération 70% historique, 30% actuel
 	return 0.7*avgHistoricalConfidence + 0.3*current.Confidence
 }
@@ -661,18 +661,18 @@ type TemplateData struct {
 
 // AnalysisData - Données pour analyse
 type AnalysisData struct {
-	Patterns    []interfaces.UsagePattern `json:"patterns"`
+	Patterns    []interfaces.UsagePattern      `json:"patterns"`
 	Performance *interfaces.PerformanceProfile `json:"performance"`
-	Context     map[string]interface{}    `json:"context"`
+	Context     map[string]interface{}         `json:"context"`
 }
 
 // GetInsights returns insights for reporting
 func (p *neuralPatternProcessor) GetInsights(ctx context.Context, timeRange interfaces.TimeFrame) ([]interfaces.NeuralRecommendation, error) {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
-	
+
 	var insights []interfaces.NeuralRecommendation
-	
+
 	// Generate insights based on recent patterns
 	for _, pattern := range p.patternCache {
 		if pattern != nil && len(pattern.Patterns) > 0 {
@@ -687,7 +687,7 @@ func (p *neuralPatternProcessor) GetInsights(ctx context.Context, timeRange inte
 			}
 		}
 	}
-	
+
 	return insights, nil
 }
 
@@ -695,7 +695,7 @@ func (p *neuralPatternProcessor) GetInsights(ctx context.Context, timeRange inte
 func (p *neuralPatternProcessor) Initialize(ctx context.Context) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	
+
 	p.isRunning = false
 	return nil
 }
@@ -704,7 +704,7 @@ func (p *neuralPatternProcessor) Initialize(ctx context.Context) error {
 func (p *neuralPatternProcessor) Start(ctx context.Context) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	
+
 	p.isRunning = true
 	return nil
 }
@@ -713,7 +713,7 @@ func (p *neuralPatternProcessor) Start(ctx context.Context) error {
 func (p *neuralPatternProcessor) Stop(ctx context.Context) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	
+
 	p.isRunning = false
 	close(p.stopChan)
 	return nil

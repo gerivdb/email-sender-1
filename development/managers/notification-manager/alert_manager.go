@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/managers/notification-manager/interfaces"
 	"github.com/google/uuid"
-	"github.com/email-sender-notification-manager/interfaces"
 	"go.uber.org/zap"
 )
 
@@ -23,25 +23,25 @@ type AlertManagerImpl struct {
 	isInitialized bool
 
 	// Alert manager specific fields
-	alerts        map[string]*interfaces.Alert
-	alertHistory  map[string][]*interfaces.AlertEvent
-	config        *AlertConfig
-	
+	alerts       map[string]*interfaces.Alert
+	alertHistory map[string][]*interfaces.AlertEvent
+	config       *AlertConfig
+
 	// Alert evaluation
 	evaluationInterval time.Duration
 	stopEvaluation     chan struct{}
 	evaluationTicker   *time.Ticker
-	
+
 	// Alert conditions processor
 	conditionProcessor *AlertConditionProcessor
 }
 
 // AlertConfig represents alert manager configuration
 type AlertConfig struct {
-	EvaluationInterval    time.Duration `json:"evaluation_interval"`
-	MaxHistoryPerAlert    int           `json:"max_history_per_alert"`
-	DefaultSeverity       interfaces.AlertSeverity `json:"default_severity"`
-	EnableAutoEvaluation  bool          `json:"enable_auto_evaluation"`
+	EvaluationInterval   time.Duration            `json:"evaluation_interval"`
+	MaxHistoryPerAlert   int                      `json:"max_history_per_alert"`
+	DefaultSeverity      interfaces.AlertSeverity `json:"default_severity"`
+	EnableAutoEvaluation bool                     `json:"enable_auto_evaluation"`
 }
 
 // AlertConditionProcessor handles condition evaluation logic
@@ -203,7 +203,7 @@ func (am *AlertManagerImpl) CreateAlert(ctx context.Context, alert *interfaces.A
 	am.alerts[alert.ID] = alert
 	am.alertHistory[alert.ID] = make([]*interfaces.AlertEvent, 0)
 
-	am.logger.Info("Alert created", 
+	am.logger.Info("Alert created",
 		zap.String("alert_id", alert.ID),
 		zap.String("name", alert.Name),
 		zap.String("severity", string(alert.Severity)))
@@ -237,7 +237,7 @@ func (am *AlertManagerImpl) UpdateAlert(ctx context.Context, alertID string, ale
 
 	am.alerts[alertID] = alert
 
-	am.logger.Info("Alert updated", 
+	am.logger.Info("Alert updated",
 		zap.String("alert_id", alertID),
 		zap.String("name", alert.Name))
 
@@ -334,7 +334,7 @@ func (am *AlertManagerImpl) TriggerAlert(ctx context.Context, alertID string, da
 	alert.LastTriggered = &now
 	alert.UpdatedAt = now
 
-	am.logger.Warn("Alert triggered", 
+	am.logger.Warn("Alert triggered",
 		zap.String("alert_id", alertID),
 		zap.String("alert_name", alert.Name),
 		zap.String("severity", string(alert.Severity)),
@@ -457,27 +457,27 @@ func (am *AlertManagerImpl) validateAlert(alert *interfaces.Alert) error {
 // addAlertEvent adds an event to alert history with size management
 func (am *AlertManagerImpl) addAlertEvent(alertID string, event *interfaces.AlertEvent) {
 	history := am.alertHistory[alertID]
-	
+
 	// Add new event
 	history = append(history, event)
-	
+
 	// Trim history if it exceeds maximum size
 	if len(history) > am.config.MaxHistoryPerAlert {
 		// Keep only the most recent events
 		history = history[len(history)-am.config.MaxHistoryPerAlert:]
 	}
-	
+
 	am.alertHistory[alertID] = history
 }
 
 // startConditionEvaluation starts the automatic condition evaluation
 func (am *AlertManagerImpl) startConditionEvaluation() {
 	am.evaluationTicker = time.NewTicker(am.evaluationInterval)
-	
+
 	go func() {
 		am.logger.Info("Started alert condition evaluation",
 			zap.Duration("interval", am.evaluationInterval))
-		
+
 		for {
 			select {
 			case <-am.evaluationTicker.C:
@@ -507,21 +507,21 @@ func (am *AlertManagerImpl) stopConditionEvaluation() {
 // EvaluateConditions evaluates alert conditions and returns whether to trigger
 func (acp *AlertConditionProcessor) EvaluateConditions(conditions []*interfaces.AlertCondition) (bool, map[string]interface{}, error) {
 	evalData := make(map[string]interface{})
-	
+
 	for i, condition := range conditions {
 		result, err := acp.evaluateCondition(condition)
 		if err != nil {
 			return false, nil, fmt.Errorf("condition %d evaluation failed: %w", i, err)
 		}
-		
+
 		evalData[fmt.Sprintf("condition_%d_result", i)] = result
-		
+
 		// For now, implement simple AND logic - all conditions must be true
 		if !result {
 			return false, evalData, nil
 		}
 	}
-	
+
 	return true, evalData, nil
 }
 
@@ -532,7 +532,7 @@ func (acp *AlertConditionProcessor) evaluateCondition(condition *interfaces.Aler
 	// 1. Fetch metrics/data based on condition.Type
 	// 2. Apply the operator to compare Value vs Threshold
 	// 3. Return the result
-	
+
 	switch condition.Type {
 	case "metric":
 		return acp.evaluateMetricCondition(condition)
@@ -549,11 +549,11 @@ func (acp *AlertConditionProcessor) evaluateCondition(condition *interfaces.Aler
 func (acp *AlertConditionProcessor) evaluateMetricCondition(condition *interfaces.AlertCondition) (bool, error) {
 	// Placeholder implementation
 	// In real implementation, fetch actual metrics and compare
-	acp.logger.Debug("Evaluating metric condition", 
+	acp.logger.Debug("Evaluating metric condition",
 		zap.String("operator", condition.Operator),
 		zap.Any("value", condition.Value),
 		zap.Any("threshold", condition.Threshold))
-	
+
 	// For now, randomly return false to avoid constant triggering
 	return false, nil
 }
@@ -565,7 +565,7 @@ func (acp *AlertConditionProcessor) evaluateThresholdCondition(condition *interf
 		zap.String("operator", condition.Operator),
 		zap.Any("value", condition.Value),
 		zap.Any("threshold", condition.Threshold))
-	
+
 	return false, nil
 }
 
@@ -575,6 +575,6 @@ func (acp *AlertConditionProcessor) evaluateTimeCondition(condition *interfaces.
 	acp.logger.Debug("Evaluating time condition",
 		zap.String("operator", condition.Operator),
 		zap.Any("value", condition.Value))
-	
+
 	return false, nil
 }

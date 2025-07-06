@@ -3,14 +3,9 @@ package integration_manager
 import (
 	"context"
 	"crypto/rand"
-	"crypto/hmac"
-	"crypto/sha256"
 	"encoding/hex"
-	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
-	"net/url"
 	"strings"
 	"sync"
 	"time"
@@ -18,55 +13,55 @@ import (
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 
-	"github.com/your-org/email-sender/development/managers/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
 )
 
 // IntegrationManagerImpl implémente l'interface IntegrationManager
 type IntegrationManagerImpl struct {
 	integrations    map[string]*interfaces.Integration
-	apis           map[string]*interfaces.APIEndpoint
-	syncJobs       map[string]*interfaces.SyncJob
-	webhooks       map[string]*interfaces.Webhook
+	apis            map[string]*interfaces.APIEndpoint
+	syncJobs        map[string]*interfaces.SyncJob
+	webhooks        map[string]*interfaces.Webhook
 	transformations map[string]*interfaces.DataTransformation
-	
+
 	// Storages pour les logs et statuts
-	syncStatuses    map[string]*interfaces.SyncStatus
-	syncEvents      map[string][]*interfaces.SyncEvent
-	webhookLogs     map[string][]*interfaces.WebhookLog
-	apiStatuses     map[string]*interfaces.APIStatus
-	
+	syncStatuses map[string]*interfaces.SyncStatus
+	syncEvents   map[string][]*interfaces.SyncEvent
+	webhookLogs  map[string][]*interfaces.WebhookLog
+	apiStatuses  map[string]*interfaces.APIStatus
+
 	logger         *logrus.Logger
 	config         *IntegrationConfig
 	httpClient     *http.Client
 	syncManager    *SyncManager
 	webhookManager *WebhookManager
-	
+
 	// Thread safety
-	mutex          sync.RWMutex
-	syncMutex      sync.RWMutex
-	webhookMutex   sync.RWMutex
-	
+	mutex        sync.RWMutex
+	syncMutex    sync.RWMutex
+	webhookMutex sync.RWMutex
+
 	// Manager state
-	isStarted      bool
-	shutdownCh     chan struct{}
+	isStarted  bool
+	shutdownCh chan struct{}
 }
 
 // IntegrationConfig représente la configuration du gestionnaire d'intégration
 type IntegrationConfig struct {
 	HTTPTimeout       time.Duration `json:"http_timeout"`
-	MaxRetries        int          `json:"max_retries"`
-	WebhookSecret     string       `json:"webhook_secret"`
+	MaxRetries        int           `json:"max_retries"`
+	WebhookSecret     string        `json:"webhook_secret"`
 	SyncInterval      time.Duration `json:"sync_interval"`
-	MaxConcurrentSync int          `json:"max_concurrent_sync"`
-	LogLevel          string       `json:"log_level"`
+	MaxConcurrentSync int           `json:"max_concurrent_sync"`
+	LogLevel          string        `json:"log_level"`
 }
 
 // SyncManager gère les tâches de synchronisation
 type SyncManager struct {
-	jobs        map[string]*interfaces.SyncJob
-	statuses    map[string]*interfaces.SyncStatus
-	events      map[string][]*interfaces.SyncEvent
-	mutex       sync.RWMutex
+	jobs          map[string]*interfaces.SyncJob
+	statuses      map[string]*interfaces.SyncStatus
+	events        map[string][]*interfaces.SyncEvent
+	mutex         sync.RWMutex
 	maxConcurrent int
 	activeSyncs   int
 }
@@ -103,9 +98,9 @@ func NewIntegrationManager(config *IntegrationConfig, logger *logrus.Logger) *In
 	}
 
 	syncManager := &SyncManager{
-		jobs:        make(map[string]*interfaces.SyncJob),
-		statuses:    make(map[string]*interfaces.SyncStatus),
-		events:      make(map[string][]*interfaces.SyncEvent),
+		jobs:          make(map[string]*interfaces.SyncJob),
+		statuses:      make(map[string]*interfaces.SyncStatus),
+		events:        make(map[string][]*interfaces.SyncEvent),
 		maxConcurrent: config.MaxConcurrentSync,
 	}
 
@@ -117,20 +112,20 @@ func NewIntegrationManager(config *IntegrationConfig, logger *logrus.Logger) *In
 
 	return &IntegrationManagerImpl{
 		integrations:    make(map[string]*interfaces.Integration),
-		apis:           make(map[string]*interfaces.APIEndpoint),
-		syncJobs:       make(map[string]*interfaces.SyncJob),
-		webhooks:       make(map[string]*interfaces.Webhook),
+		apis:            make(map[string]*interfaces.APIEndpoint),
+		syncJobs:        make(map[string]*interfaces.SyncJob),
+		webhooks:        make(map[string]*interfaces.Webhook),
 		transformations: make(map[string]*interfaces.DataTransformation),
 		syncStatuses:    make(map[string]*interfaces.SyncStatus),
 		syncEvents:      make(map[string][]*interfaces.SyncEvent),
 		webhookLogs:     make(map[string][]*interfaces.WebhookLog),
 		apiStatuses:     make(map[string]*interfaces.APIStatus),
-		logger:         logger,
-		config:         config,
-		httpClient:     httpClient,
-		syncManager:    syncManager,
-		webhookManager: webhookManager,
-		shutdownCh:     make(chan struct{}),
+		logger:          logger,
+		config:          config,
+		httpClient:      httpClient,
+		syncManager:     syncManager,
+		webhookManager:  webhookManager,
+		shutdownCh:      make(chan struct{}),
 	}
 }
 
@@ -182,17 +177,17 @@ func (im *IntegrationManagerImpl) GetStatus(ctx context.Context) map[string]inte
 	defer im.mutex.RUnlock()
 
 	status := map[string]interface{}{
-		"status":               "running",
-		"started":              im.isStarted,
-		"total_integrations":   len(im.integrations),
-		"active_integrations":  im.countActiveIntegrations(),
-		"total_apis":           len(im.apis),
-		"total_sync_jobs":      len(im.syncJobs),
-		"active_sync_jobs":     im.countActiveSyncJobs(),
-		"total_webhooks":       len(im.webhooks),
-		"active_webhooks":      im.countActiveWebhooks(),
+		"status":                "running",
+		"started":               im.isStarted,
+		"total_integrations":    len(im.integrations),
+		"active_integrations":   im.countActiveIntegrations(),
+		"total_apis":            len(im.apis),
+		"total_sync_jobs":       len(im.syncJobs),
+		"active_sync_jobs":      im.countActiveSyncJobs(),
+		"total_webhooks":        len(im.webhooks),
+		"active_webhooks":       im.countActiveWebhooks(),
 		"total_transformations": len(im.transformations),
-		"last_updated":         time.Now(),
+		"last_updated":          time.Now(),
 	}
 
 	return status
@@ -208,18 +203,18 @@ func (im *IntegrationManagerImpl) GetMetrics(ctx context.Context) map[string]int
 
 	// Calculate sync job metrics
 	syncMetrics := im.calculateSyncMetrics()
-	
+
 	// Calculate API metrics
 	apiMetrics := im.calculateAPIMetrics()
-	
+
 	// Calculate webhook metrics
 	webhookMetrics := im.calculateWebhookMetrics()
 
 	return map[string]interface{}{
-		"sync_jobs":  syncMetrics,
-		"apis":       apiMetrics,
-		"webhooks":   webhookMetrics,
-		"timestamp":  time.Now(),
+		"sync_jobs": syncMetrics,
+		"apis":      apiMetrics,
+		"webhooks":  webhookMetrics,
+		"timestamp": time.Now(),
 	}
 }
 
@@ -446,7 +441,7 @@ func (im *IntegrationManagerImpl) calculateSyncMetrics() map[string]interface{} 
 	totalJobs := len(im.syncJobs)
 	activeJobs := im.countActiveSyncJobs()
 	runningJobs := 0
-	
+
 	for _, status := range im.syncStatuses {
 		if status.Status == interfaces.SyncStateRunning {
 			runningJobs++

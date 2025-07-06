@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/gerivdb/email-sender-1/development/managers/contextual-memory-manager/interfaces"
-	baseInterfaces "./interfaces"
+	baseInterfaces "github.com/gerivdb/email-sender-1/development/managers/interfaces"
 )
 
 // integrationManagerImpl implÃ©mente IntegrationManager pour les intÃ©grations externes

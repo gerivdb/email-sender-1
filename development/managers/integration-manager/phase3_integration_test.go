@@ -8,11 +8,12 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strings"
+	"sync"
 	"time"
 
+	integration_manager "github.com/gerivdb/email-sender-1/development/managers/integration-manager"
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
 	"github.com/sirupsen/logrus"
-	integration_manager "github.com/your-org/email-sender/development/managers/integration-manager"
-	"github.com/your-org/email-sender/development/managers/interfaces"
 )
 
 // Phase3IntegrationTest demonstrates comprehensive Phase 3 functionality
@@ -26,7 +27,7 @@ func Phase3IntegrationTest() error {
 	// 1. Initialize Integration Manager
 	fmt.Println("\n1. Initializing Integration Manager...")
 	im := integration_manager.NewIntegrationManager(logger)
-	
+
 	ctx := context.Background()
 	if err := im.Start(ctx); err != nil {
 		return fmt.Errorf("failed to start integration manager: %w", err)
@@ -82,7 +83,7 @@ func Phase3IntegrationTest() error {
 	}
 	fmt.Println("✅ Performance tests passed")
 
-	fmt.Println("\n" + "=" * 60)
+	fmt.Println("\n" + "="*60)
 	fmt.Println("🎉 All Phase 3 Integration Tests Passed Successfully!")
 	fmt.Println("=" * 60)
 
@@ -121,8 +122,8 @@ func testIntegrationOperations(ctx context.Context, im *integration_manager.Inte
 			Description: "Analytics data warehouse integration",
 			Config: map[string]interface{}{
 				"connection_string": "postgres://user:pass@localhost/analytics",
-				"schema":           "public",
-				"pool_size":        10,
+				"schema":            "public",
+				"pool_size":         10,
 			},
 		},
 	}
@@ -164,10 +165,10 @@ func testIntegrationOperations(ctx context.Context, im *integration_manager.Inte
 		Type:        "api",
 		Description: "Updated customer relationship management system integration",
 		Config: map[string]interface{}{
-			"base_url":     "https://api.crm-v2.example.com",
-			"version":      "v3",
-			"timeout":      45,
-			"api_key":      "new-api-key",
+			"base_url": "https://api.crm-v2.example.com",
+			"version":  "v3",
+			"timeout":  45,
+			"api_key":  "new-api-key",
 		},
 	}
 
@@ -384,23 +385,23 @@ func testWebhookManagement(im *integration_manager.IntegrationManagerImpl) error
 	// Register webhooks
 	webhooks := []*interfaces.Webhook{
 		{
-			ID:          "test-payment-webhook",
-			URL:         "https://payment.example.com/webhook",
-			Events:      []string{"payment.completed", "payment.failed", "payment.refunded"},
-			Secret:      "payment-webhook-secret-123",
-			ContentType: "application/json",
-			Timeout:     30 * time.Second,
-			MaxRetries:  3,
+			ID:           "test-payment-webhook",
+			URL:          "https://payment.example.com/webhook",
+			Events:       []string{"payment.completed", "payment.failed", "payment.refunded"},
+			Secret:       "payment-webhook-secret-123",
+			ContentType:  "application/json",
+			Timeout:      30 * time.Second,
+			MaxRetries:   3,
 			RetryBackoff: 5 * time.Second,
 		},
 		{
-			ID:          "test-integration-webhook",
-			URL:         "https://integration.example.com/webhook",
-			Events:      []string{"integration.*", "sync.*"},
-			Secret:      "integration-webhook-secret-456",
-			ContentType: "application/json",
-			Timeout:     45 * time.Second,
-			MaxRetries:  5,
+			ID:           "test-integration-webhook",
+			URL:          "https://integration.example.com/webhook",
+			Events:       []string{"integration.*", "sync.*"},
+			Secret:       "integration-webhook-secret-456",
+			ContentType:  "application/json",
+			Timeout:      45 * time.Second,
+			MaxRetries:   5,
 			RetryBackoff: 3 * time.Second,
 		},
 	}
@@ -587,7 +588,7 @@ func testDataTransformation(im *integration_manager.IntegrationManagerImpl) erro
 			return fmt.Errorf("failed to transform data with %s: %w", testCase.transformationID, err)
 		}
 		fmt.Printf("  🔄 Transformed data: %s\n", testCase.description)
-		
+
 		// Basic result validation
 		if result == nil {
 			return fmt.Errorf("transformation %s returned nil result", testCase.transformationID)
@@ -656,10 +657,10 @@ func testEndToEndWorkflow(ctx context.Context, im *integration_manager.Integrati
 	if err := im.StartSync(ctx, "test-user-sync"); err != nil {
 		return fmt.Errorf("failed to start user sync: %w", err)
 	}
-	
+
 	// Wait for sync to process
 	time.Sleep(300 * time.Millisecond)
-	
+
 	syncStatus, err := im.GetSyncStatus("test-user-sync")
 	if err != nil {
 		return fmt.Errorf("failed to get sync status: %w", err)
@@ -676,7 +677,7 @@ func testEndToEndWorkflow(ctx context.Context, im *integration_manager.Integrati
 	if err != nil {
 		return fmt.Errorf("failed to aggregate analytics data: %w", err)
 	}
-	
+
 	if analyticsMap, ok := aggregatedResult.(map[string]interface{}); ok {
 		totalOrders, _ := analyticsMap["total_orders"].(int)
 		totalRevenue, _ := analyticsMap["total_revenue"].(float64)
@@ -707,7 +708,7 @@ func testPerformance(ctx context.Context, im *integration_manager.IntegrationMan
 		}
 	}
 	duration1 := time.Since(start)
-	fmt.Printf("    📊 Created 100 integrations in %v (%.2f integrations/sec)\n", 
+	fmt.Printf("    📊 Created 100 integrations in %v (%.2f integrations/sec)\n",
 		duration1, 100.0/duration1.Seconds())
 
 	// Test 2: Bulk data transformation
@@ -725,7 +726,7 @@ func testPerformance(ctx context.Context, im *integration_manager.IntegrationMan
 		}
 	}
 	duration2 := time.Since(start)
-	fmt.Printf("    📊 Performed 1000 transformations in %v (%.2f transformations/sec)\n", 
+	fmt.Printf("    📊 Performed 1000 transformations in %v (%.2f transformations/sec)\n",
 		duration2, 1000.0/duration2.Seconds())
 
 	// Test 3: Concurrent sync operations
@@ -738,7 +739,7 @@ func testPerformance(ctx context.Context, im *integration_manager.IntegrationMan
 		go func(index int) {
 			defer syncWg.Done()
 			syncID := fmt.Sprintf("perf-sync-%d", index)
-			
+
 			syncJob := &interfaces.SyncJob{
 				ID:            syncID,
 				Name:          fmt.Sprintf("Performance Sync %d", index),
@@ -749,22 +750,22 @@ func testPerformance(ctx context.Context, im *integration_manager.IntegrationMan
 					"batch_size": 10,
 				},
 			}
-			
+
 			if err := im.CreateSyncJob(ctx, syncJob); err != nil {
 				log.Printf("Failed to create sync job %d: %v", index, err)
 				return
 			}
-			
+
 			if err := im.StartSync(ctx, syncID); err != nil {
 				log.Printf("Failed to start sync %d: %v", index, err)
 				return
 			}
 		}(i)
 	}
-	
+
 	syncWg.Wait()
 	duration3 := time.Since(start)
-	fmt.Printf("    📊 Created and started %d concurrent syncs in %v\n", 
+	fmt.Printf("    📊 Created and started %d concurrent syncs in %v\n",
 		concurrentSyncs, duration3)
 
 	// Performance summary

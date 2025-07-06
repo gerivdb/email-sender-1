@@ -12,7 +12,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 
-	"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
 )
 
 // ===== API Management =====
@@ -44,7 +44,7 @@ func (im *IntegrationManagerImpl) RegisterAPI(ctx context.Context, api *interfac
 	now := time.Now()
 	api.CreatedAt = now
 	api.UpdatedAt = now
-	
+
 	if api.Timeout == 0 {
 		api.Timeout = 30 * time.Second
 	}
@@ -161,7 +161,7 @@ func (im *IntegrationManagerImpl) CallAPI(ctx context.Context, apiID string, req
 				"api_id":  apiID,
 				"attempt": attempt,
 			}).Warn("Retrying API call")
-			
+
 			// Wait before retry with exponential backoff
 			backoff := time.Duration(attempt) * time.Second
 			time.Sleep(backoff)

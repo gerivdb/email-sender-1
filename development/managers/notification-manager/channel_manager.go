@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/managers/notification-manager/interfaces"
 	"github.com/google/uuid"
-	"github.com/email-sender-notification-manager/interfaces"
 	"go.uber.org/zap"
 )
 
@@ -23,7 +23,7 @@ type ChannelManagerImpl struct {
 	isInitialized bool
 
 	// Channel manager specific fields
-	channels      map[string]*interfaces.NotificationChannel
+	channels map[string]*interfaces.NotificationChannel
 }
 
 // NewChannelManager crée une nouvelle instance de ChannelManager
@@ -156,7 +156,7 @@ func (cm *ChannelManagerImpl) RegisterChannel(ctx context.Context, channel *inte
 
 	cm.channels[channel.ID] = channel
 
-	cm.logger.Info("Channel registered", 
+	cm.logger.Info("Channel registered",
 		zap.String("channel_id", channel.ID),
 		zap.String("name", channel.Name),
 		zap.String("type", string(channel.Type)))
@@ -190,7 +190,7 @@ func (cm *ChannelManagerImpl) UpdateChannel(ctx context.Context, channelID strin
 
 	cm.channels[channelID] = channel
 
-	cm.logger.Info("Channel updated", 
+	cm.logger.Info("Channel updated",
 		zap.String("channel_id", channelID),
 		zap.String("name", channel.Name))
 
@@ -272,16 +272,16 @@ func (cm *ChannelManagerImpl) TestChannel(ctx context.Context, channelID string)
 
 	// Create test notification
 	testNotification := &interfaces.Notification{
-		ID:      uuid.New().String(),
-		Title:   "Test Notification",
-		Message: "This is a test notification to verify channel connectivity.",
-		Priority: interfaces.NotificationPriorityLow,
-		Channels: []string{channelID},
+		ID:        uuid.New().String(),
+		Title:     "Test Notification",
+		Message:   "This is a test notification to verify channel connectivity.",
+		Priority:  interfaces.NotificationPriorityLow,
+		Channels:  []string{channelID},
 		CreatedAt: time.Now(),
 	}
 
 	// TODO: Send actual test notification based on channel type
-	cm.logger.Info("Test notification sent", 
+	cm.logger.Info("Test notification sent",
 		zap.String("channel_id", channelID),
 		zap.String("notification_id", testNotification.ID))
 

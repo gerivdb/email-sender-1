@@ -6,26 +6,26 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/development/managers/template-performance-manager/interfaces"
 	"github.com/sirupsen/logrus"
-	"github.com/fmoua/email-sender/development/managers/template-performance-manager/interfaces"
 )
 
 // adaptiveOptimizationEngine implémente l'interface AdaptiveOptimizationEngine
 type adaptiveOptimizationEngine struct {
-	mlEngine          MLEngine
-	optimizerRegistry OptimizerRegistry
-	feedbackProcessor FeedbackProcessor
-	config           *Config
-	logger           *logrus.Logger
-	mu               sync.RWMutex
+	mlEngine            MLEngine
+	optimizerRegistry   OptimizerRegistry
+	feedbackProcessor   FeedbackProcessor
+	config              *Config
+	logger              *logrus.Logger
+	mu                  sync.RWMutex
 	activeOptimizations map[string]*OptimizationSession
-	optimizers       map[string]Optimizer
-	abTests          map[string]*ABTestInstance
-	feedbackData     map[string]*interfaces.OptimizationFeedback
-	learningModel    *MLModelInstance
-	performanceHistory map[string][]PerformanceMetric
-	stopChan         chan struct{}
-	isRunning        bool
+	optimizers          map[string]Optimizer
+	abTests             map[string]*ABTestInstance
+	feedbackData        map[string]*interfaces.OptimizationFeedback
+	learningModel       *MLModelInstance
+	performanceHistory  map[string][]PerformanceMetric
+	stopChan            chan struct{}
+	isRunning           bool
 }
 
 // MLEngine - Interface moteur machine learning
@@ -82,21 +82,21 @@ func NewAdaptiveOptimizationEngine(
 // NewAdaptiveEngine creates a new adaptive optimization engine with the given configuration
 func NewAdaptiveEngine(config Config) (interfaces.AdaptiveOptimizationEngine, error) {
 	engine := &adaptiveOptimizationEngine{
-		config:            &config,
-		optimizers:        make(map[string]Optimizer),
-		abTests:          make(map[string]*ABTestInstance),
-		feedbackData:     make(map[string]*interfaces.OptimizationFeedback),
-		learningModel:    &MLModelInstance{},
-		performanceHistory: make(map[string][]PerformanceMetric),
+		config:              &config,
+		optimizers:          make(map[string]Optimizer),
+		abTests:             make(map[string]*ABTestInstance),
+		feedbackData:        make(map[string]*interfaces.OptimizationFeedback),
+		learningModel:       &MLModelInstance{},
+		performanceHistory:  make(map[string][]PerformanceMetric),
 		activeOptimizations: make(map[string]*OptimizationSession),
-		mu:               sync.RWMutex{},
-		stopChan:         make(chan struct{}),
-		isRunning:        false,
+		mu:                  sync.RWMutex{},
+		stopChan:            make(chan struct{}),
+		isRunning:           false,
 	}
-	
+
 	// Initialize default optimizers
 	engine.initializeOptimizers()
-	
+
 	return engine, nil
 }
 
@@ -140,10 +140,10 @@ func (aoe *adaptiveOptimizationEngine) OptimizeTemplateGeneration(
 
 	// 3. Génération stratégie optimisation
 	optimizationContext := &OptimizationContext{
-		TemplateID:      request.TemplateID,
-		TargetMetrics:   request.TargetMetrics,
-		Constraints:     request.Constraints,
-		BaselineMetrics: baseline,
+		TemplateID:       request.TemplateID,
+		TargetMetrics:    request.TargetMetrics,
+		Constraints:      request.Constraints,
+		BaselineMetrics:  baseline,
 		ImpactPrediction: impact,
 	}
 
@@ -165,12 +165,12 @@ func (aoe *adaptiveOptimizationEngine) OptimizeTemplateGeneration(
 
 	// Création session optimisation
 	session := &OptimizationSession{
-		ID:             result.RequestID,
-		Request:        request,
-		Strategy:       strategy,
-		Baseline:       baseline,
-		StartTime:      startTime,
-		Status:         "running",
+		ID:        result.RequestID,
+		Request:   request,
+		Strategy:  strategy,
+		Baseline:  baseline,
+		StartTime: startTime,
+		Status:    "running",
 	}
 
 	aoe.mu.Lock()
@@ -198,8 +198,8 @@ func (aoe *adaptiveOptimizationEngine) OptimizeTemplateGeneration(
 
 		// Vérification objectif performance (+25%)
 		if result.Improvements["generation_time"] < aoe.config.PerformanceGainTarget {
-			aoe.logger.Warnf("Performance gain %.2f%% below target %.2f%%", 
-				result.Improvements["generation_time"]*100, 
+			aoe.logger.Warnf("Performance gain %.2f%% below target %.2f%%",
+				result.Improvements["generation_time"]*100,
 				aoe.config.PerformanceGainTarget*100)
 		}
 	}
@@ -256,12 +256,12 @@ func (aoe *adaptiveOptimizationEngine) ApplyAdaptiveChanges(
 			aoe.logger.Errorf("Failed to apply adaptive change %s: %v", change.ID, err)
 			result.FailedChanges = append(result.FailedChanges, change.ID)
 			result.Success = false
-			
+
 			// Rollback si activé
 			if aoe.config.RollbackEnabled {
 				aoe.rollbackChange(ctx, change, result.RollbackData[change.ID])
 			}
-			
+
 			continue
 		}
 
@@ -288,8 +288,8 @@ func (aoe *adaptiveOptimizationEngine) ValidateOptimizations(
 	result := &interfaces.ValidationResult{
 		ValidOptimizations:   make([]string, 0),
 		InvalidOptimizations: make([]interfaces.ValidationError, 0),
-		OverallScore:        0.0,
-		Recommendations:     make([]string, 0),
+		OverallScore:         0.0,
+		Recommendations:      make([]string, 0),
 	}
 
 	validCount := 0
@@ -337,19 +337,19 @@ func (aoe *adaptiveOptimizationEngine) ValidateOptimizations(
 
 	// Génération recommandations
 	if result.OverallScore < 0.8 {
-		result.Recommendations = append(result.Recommendations, 
+		result.Recommendations = append(result.Recommendations,
 			"Consider reviewing optimization parameters for better compatibility")
 	}
-	
+
 	if len(result.InvalidOptimizations) > 0 {
 		result.Recommendations = append(result.Recommendations,
 			"Address validation errors before proceeding with optimizations")
 	}
 
 	aoe.logger.WithFields(logrus.Fields{
-		"valid_count":    validCount,
-		"invalid_count":  len(result.InvalidOptimizations),
-		"overall_score":  result.OverallScore,
+		"valid_count":   validCount,
+		"invalid_count": len(result.InvalidOptimizations),
+		"overall_score": result.OverallScore,
 	}).Info("Validation optimisations terminée")
 
 	return result, nil
@@ -423,7 +423,7 @@ func (aoe *adaptiveOptimizationEngine) collectBaselineMetrics(ctx context.Contex
 	return &BaselineMetrics{
 		TemplateID: templateID,
 		Metrics: map[string]float64{
-			"generation_time": 250.0, // ms
+			"generation_time": 250.0,  // ms
 			"memory_usage":    1024.0, // KB
 			"cache_hit_rate":  0.6,
 			"error_rate":      0.05,
@@ -450,7 +450,7 @@ func (aoe *adaptiveOptimizationEngine) applyOptimization(
 	}
 
 	// Mise à jour résultat global
-	result.AppliedChanges = append(result.AppliedChanges, 
+	result.AppliedChanges = append(result.AppliedChanges,
 		fmt.Sprintf("%s: %s", optimization.Type, optimizationResult.Description))
 
 	return nil
@@ -463,9 +463,9 @@ func (aoe *adaptiveOptimizationEngine) measureOptimizedPerformance(ctx context.C
 		TemplateID: templateID,
 		Metrics: map[string]float64{
 			"generation_time": 180.0, // Amélioration de 28%
-			"memory_usage":    900.0,  // Amélioration de 12%
-			"cache_hit_rate":  0.85,   // Amélioration de 42%
-			"error_rate":      0.02,   // Amélioration de 60%
+			"memory_usage":    900.0, // Amélioration de 12%
+			"cache_hit_rate":  0.85,  // Amélioration de 42%
+			"error_rate":      0.02,  // Amélioration de 60%
 		},
 		CollectedAt: time.Now(),
 	}, nil
@@ -476,12 +476,12 @@ func (aoe *adaptiveOptimizationEngine) calculateImprovements(result *interfaces.
 	for metric, optimized := range result.OptimizedMetrics {
 		if original, exists := result.OriginalMetrics[metric]; exists && original > 0 {
 			improvement := (original - optimized) / original
-			
+
 			// Pour certaines métriques, une augmentation est une amélioration
 			if metric == "cache_hit_rate" {
 				improvement = (optimized - original) / original
 			}
-			
+
 			result.Improvements[metric] = improvement
 		}
 	}
@@ -524,7 +524,7 @@ func (aoe *adaptiveOptimizationEngine) sortChangesByPriority(changes []interface
 	// Tri simple par priorité (décroissant)
 	sorted := make([]interfaces.AdaptiveChange, len(changes))
 	copy(sorted, changes)
-	
+
 	// Tri à bulles simple pour l'exemple
 	for i := 0; i < len(sorted)-1; i++ {
 		for j := 0; j < len(sorted)-i-1; j++ {
@@ -533,7 +533,7 @@ func (aoe *adaptiveOptimizationEngine) sortChangesByPriority(changes []interface
 			}
 		}
 	}
-	
+
 	return sorted
 }
 
@@ -565,47 +565,47 @@ func (aoe *adaptiveOptimizationEngine) adjustOptimizationStrategies(feedback *in
 
 // ABTestInstance - Représente une instance de test A/B
 type ABTestInstance struct {
-	ID          string                 `json:"id"`
-	Name        string                 `json:"name"`
-	Status      string                 `json:"status"`
-	StartTime   time.Time              `json:"start_time"`
-	EndTime     *time.Time             `json:"end_time,omitempty"`
-	Variants    map[string]interface{} `json:"variants"`
-	Metrics     map[string]float64     `json:"metrics"`
-	Confidence  float64                `json:"confidence"`
+	ID         string                 `json:"id"`
+	Name       string                 `json:"name"`
+	Status     string                 `json:"status"`
+	StartTime  time.Time              `json:"start_time"`
+	EndTime    *time.Time             `json:"end_time,omitempty"`
+	Variants   map[string]interface{} `json:"variants"`
+	Metrics    map[string]float64     `json:"metrics"`
+	Confidence float64                `json:"confidence"`
 }
 
 // MLModelInstance - Représente une instance de modèle d'apprentissage machine
 type MLModelInstance struct {
-	ID          string                 `json:"id"`
-	Type        string                 `json:"type"`
-	Version     string                 `json:"version"`
-	TrainedAt   time.Time              `json:"trained_at"`
-	Accuracy    float64                `json:"accuracy"`
-	Parameters  map[string]interface{} `json:"parameters"`
-	IsActive    bool                   `json:"is_active"`
+	ID         string                 `json:"id"`
+	Type       string                 `json:"type"`
+	Version    string                 `json:"version"`
+	TrainedAt  time.Time              `json:"trained_at"`
+	Accuracy   float64                `json:"accuracy"`
+	Parameters map[string]interface{} `json:"parameters"`
+	IsActive   bool                   `json:"is_active"`
 }
 
 // PerformanceMetric - Représente une métrique de performance
 type PerformanceMetric struct {
-	Name      string    `json:"name"`
-	Value     float64   `json:"value"`
-	Unit      string    `json:"unit"`
-	Timestamp time.Time `json:"timestamp"`
+	Name      string            `json:"name"`
+	Value     float64           `json:"value"`
+	Unit      string            `json:"unit"`
+	Timestamp time.Time         `json:"timestamp"`
 	Tags      map[string]string `json:"tags"`
 }
 
 // OptimizationSession - Représente une session d'optimisation active
 type OptimizationSession struct {
-	ID        string                     `json:"id"`
-	StartTime time.Time                  `json:"start_time"`
-	Status    string                     `json:"status"`
-	Progress  float64                    `json:"progress"`
-	Context   map[string]interface{}     `json:"context"`
+	ID        string                          `json:"id"`
+	StartTime time.Time                       `json:"start_time"`
+	Status    string                          `json:"status"`
+	Progress  float64                         `json:"progress"`
+	Context   map[string]interface{}          `json:"context"`
 	Request   *interfaces.OptimizationRequest `json:"request"`
-	Strategy  *OptimizationStrategy      `json:"strategy"`
-	Baseline  *BaselineMetrics           `json:"baseline"`
-	Result    *interfaces.OptimizationResult `json:"result"`
+	Strategy  *OptimizationStrategy           `json:"strategy"`
+	Baseline  *BaselineMetrics                `json:"baseline"`
+	Result    *interfaces.OptimizationResult  `json:"result"`
 }
 
 // OptimizationContext - Représente le contexte pour l'optimisation
@@ -621,26 +621,26 @@ type OptimizationContext struct {
 
 // OptimizationStrategy - Représente une stratégie d'optimisation
 type OptimizationStrategy struct {
-	ID              string                `json:"id"`
-	Type            string                `json:"type"`
-	Optimizations   []*Optimization       `json:"optimizations"`
-	ExpectedGain    float64              `json:"expected_gain"`
-	Confidence      float64              `json:"confidence"`
-	Recommendations []string             `json:"recommendations"`
+	ID              string          `json:"id"`
+	Type            string          `json:"type"`
+	Optimizations   []*Optimization `json:"optimizations"`
+	ExpectedGain    float64         `json:"expected_gain"`
+	Confidence      float64         `json:"confidence"`
+	Recommendations []string        `json:"recommendations"`
 }
 
 // BaselineMetrics - Représente les métriques de performance de base
 type BaselineMetrics struct {
-	TemplateID      string             `json:"template_id"`
-	Metrics         map[string]float64 `json:"metrics"`
-	CollectedAt     time.Time          `json:"collected_at"`
-	GenerationTime  time.Duration      `json:"generation_time"`
-	MemoryUsage     int64              `json:"memory_usage"`
-	CPUUsage        float64            `json:"cpu_usage"`
-	ThroughputRPS   float64            `json:"throughput_rps"`
-	ErrorRate       float64            `json:"error_rate"`
-	CacheHitRate    float64            `json:"cache_hit_rate"`
-	QualityScore    float64            `json:"quality_score"`
+	TemplateID     string             `json:"template_id"`
+	Metrics        map[string]float64 `json:"metrics"`
+	CollectedAt    time.Time          `json:"collected_at"`
+	GenerationTime time.Duration      `json:"generation_time"`
+	MemoryUsage    int64              `json:"memory_usage"`
+	CPUUsage       float64            `json:"cpu_usage"`
+	ThroughputRPS  float64            `json:"throughput_rps"`
+	ErrorRate      float64            `json:"error_rate"`
+	CacheHitRate   float64            `json:"cache_hit_rate"`
+	QualityScore   float64            `json:"quality_score"`
 }
 
 // Optimization - Optimisation individuelle
@@ -653,18 +653,18 @@ type Optimization struct {
 
 // OptimizationResult - Résultat optimisation
 type OptimizationResult struct {
-	Description    string             `json:"description"`
-	Success        bool               `json:"success"`
-	MetricsImpact  map[string]float64 `json:"metrics_impact"`
-	AppliedAt      time.Time          `json:"applied_at"`
+	Description   string             `json:"description"`
+	Success       bool               `json:"success"`
+	MetricsImpact map[string]float64 `json:"metrics_impact"`
+	AppliedAt     time.Time          `json:"applied_at"`
 }
 
 // RiskAssessment - Évaluation risques
 type RiskAssessment struct {
-	OverallRisk    string   `json:"overall_risk"`
-	RiskFactors    []string `json:"risk_factors"`
-	Mitigations    []string `json:"mitigations"`
-	RollbackTime   time.Duration `json:"rollback_time"`
+	OverallRisk  string        `json:"overall_risk"`
+	RiskFactors  []string      `json:"risk_factors"`
+	Mitigations  []string      `json:"mitigations"`
+	RollbackTime time.Duration `json:"rollback_time"`
 }
 
 // LearningInsight - Insight apprentissage
@@ -678,12 +678,12 @@ type LearningInsight struct {
 
 // ImpactPrediction represents a prediction of optimization impact
 type ImpactPrediction struct {
-	ExpectedGain    float64                `json:"expected_gain"`
-	Confidence      float64                `json:"confidence"`
-	RiskLevel       string                 `json:"risk_level"`
-	TimeToApply     time.Duration          `json:"time_to_apply"`
-	ResourceImpact  map[string]float64     `json:"resource_impact"`
-	Recommendations []string               `json:"recommendations"`
+	ExpectedGain    float64            `json:"expected_gain"`
+	Confidence      float64            `json:"confidence"`
+	RiskLevel       string             `json:"risk_level"`
+	TimeToApply     time.Duration      `json:"time_to_apply"`
+	ResourceImpact  map[string]float64 `json:"resource_impact"`
+	Recommendations []string           `json:"recommendations"`
 }
 
 // Concrete optimizer implementations
@@ -796,18 +796,18 @@ func (qo *QualityOptimizer) GetOptimizationType() string {
 func (aoe *adaptiveOptimizationEngine) ApplyOptimizations(ctx context.Context, request *interfaces.OptimizationApplicationRequest) (*interfaces.OptimizationResult, error) {
 	aoe.mu.Lock()
 	defer aoe.mu.Unlock()
-	
+
 	result := &interfaces.OptimizationResult{
-		RequestID:       request.OptimizationID,
-		Success:         true,
-		ProcessingTime:  time.Since(time.Now()),
-		ConfidenceScore: 0.85,
-		AppliedChanges:  []string{"optimization applied"},
-		OriginalMetrics: map[string]float64{"baseline": 1.0},
+		RequestID:        request.OptimizationID,
+		Success:          true,
+		ProcessingTime:   time.Since(time.Now()),
+		ConfidenceScore:  0.85,
+		AppliedChanges:   []string{"optimization applied"},
+		OriginalMetrics:  map[string]float64{"baseline": 1.0},
 		OptimizedMetrics: map[string]float64{"optimized": 1.25},
-		Improvements:    map[string]float64{"improvement": 0.25},
+		Improvements:     map[string]float64{"improvement": 0.25},
 	}
-	
+
 	return result, nil
 }
 
@@ -815,21 +815,21 @@ func (aoe *adaptiveOptimizationEngine) ApplyOptimizations(ctx context.Context, r
 func (aoe *adaptiveOptimizationEngine) GenerateOptimizations(ctx context.Context, request *interfaces.OptimizationRequest) ([]*interfaces.OptimizationResult, error) {
 	aoe.mu.RLock()
 	defer aoe.mu.RUnlock()
-	
+
 	var results []*interfaces.OptimizationResult
-	
+
 	// Generate sample optimization
 	result := &interfaces.OptimizationResult{
-		RequestID:       request.AnalysisID,
-		Success:         true,
-		ProcessingTime:  time.Since(time.Now()),
-		ConfidenceScore: 0.8,
-		AppliedChanges:  []string{"cache optimization", "memory optimization"},
-		OriginalMetrics: map[string]float64{"baseline": 1.0},
+		RequestID:        request.AnalysisID,
+		Success:          true,
+		ProcessingTime:   time.Since(time.Now()),
+		ConfidenceScore:  0.8,
+		AppliedChanges:   []string{"cache optimization", "memory optimization"},
+		OriginalMetrics:  map[string]float64{"baseline": 1.0},
 		OptimizedMetrics: map[string]float64{"optimized": 1.3},
-		Improvements:    map[string]float64{"improvement": 0.3},
+		Improvements:     map[string]float64{"improvement": 0.3},
 	}
-	
+
 	results = append(results, result)
 	return results, nil
 }
@@ -838,21 +838,21 @@ func (aoe *adaptiveOptimizationEngine) GenerateOptimizations(ctx context.Context
 func (aoe *adaptiveOptimizationEngine) GetOptimizationHistory(ctx context.Context, timeRange interfaces.TimeFrame) ([]*interfaces.OptimizationResult, error) {
 	aoe.mu.RLock()
 	defer aoe.mu.RUnlock()
-	
+
 	var history []*interfaces.OptimizationResult
-	
+
 	// Return sample history
 	result := &interfaces.OptimizationResult{
-		RequestID:       "hist-001",
-		Success:         true,
-		ProcessingTime:  time.Minute,
-		ConfidenceScore: 0.9,
-		AppliedChanges:  []string{"historical optimization"},
-		OriginalMetrics: map[string]float64{"baseline": 1.0},
+		RequestID:        "hist-001",
+		Success:          true,
+		ProcessingTime:   time.Minute,
+		ConfidenceScore:  0.9,
+		AppliedChanges:   []string{"historical optimization"},
+		OriginalMetrics:  map[string]float64{"baseline": 1.0},
 		OptimizedMetrics: map[string]float64{"optimized": 1.4},
-		Improvements:    map[string]float64{"improvement": 0.4},
+		Improvements:     map[string]float64{"improvement": 0.4},
 	}
-	
+
 	history = append(history, result)
 	return history, nil
 }
@@ -861,7 +861,7 @@ func (aoe *adaptiveOptimizationEngine) GetOptimizationHistory(ctx context.Contex
 func (aoe *adaptiveOptimizationEngine) Initialize(ctx context.Context) error {
 	aoe.mu.Lock()
 	defer aoe.mu.Unlock()
-	
+
 	aoe.isRunning = false
 	return nil
 }
@@ -870,7 +870,7 @@ func (aoe *adaptiveOptimizationEngine) Initialize(ctx context.Context) error {
 func (aoe *adaptiveOptimizationEngine) Start(ctx context.Context) error {
 	aoe.mu.Lock()
 	defer aoe.mu.Unlock()
-	
+
 	aoe.isRunning = true
 	return nil
 }
@@ -879,7 +879,7 @@ func (aoe *adaptiveOptimizationEngine) Start(ctx context.Context) error {
 func (aoe *adaptiveOptimizationEngine) Stop(ctx context.Context) error {
 	aoe.mu.Lock()
 	defer aoe.mu.Unlock()
-	
+
 	aoe.isRunning = false
 	close(aoe.stopChan)
 	return nil
