@@ -83,10 +83,20 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-// replace github.com/gerivdb/email-sender-1/core/gapanalyzer => core/gapanalyzer
+replace github.com/gerivdb/email-sender-1/core/gapanalyzer => ./core/gapanalyzer
 
-// replace github.com/gerivdb/email-sender-1/development/managers/error-manager => development/managers/error-manager
+replace github.com/gerivdb/email-sender-1/core/scanmodules => ./core/scanmodules
 
-// replace github.com/gerivdb/email-sender-1/managers/interfaces => managers/interfaces
+replace github.com/gerivdb/email-sender-1/development/managers/error-manager => ./development/managers/error-manager
 
-// replace github.com/gerivdb/email-sender-1/development/managers/dependency-manager => development/managers/dependencymanager
+replace github.com/gerivdb/email-sender-1/managers/interfaces => ./managers/interfaces
+
+replace github.com/gerivdb/email-sender-1/development/managers/dependency-manager => ./development/managers/dependencymanager
+
+replace github.com/gerivdb/email-sender-1/pkg/email => ./pkg/email
+
+replace github.com/gerivdb/email-sender-1/streaming/redis_streaming => ./streaming/redis_streaming
+
+replace github.com/gerivdb/email-sender-1/tools/core/toolkit => ./tools/pkg/toolkit
+
+replace github.com/gerivdb/email-sender-1/core/graphgen => ./core/graphgen

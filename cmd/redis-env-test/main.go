@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"time"
+
+	redis_streaming "github.com/gerivdb/email-sender-1/streaming/redis_streaming"
 )
 
 func main() {
@@ -29,7 +31,7 @@ func main() {
 	// Test 1: Load configuration from environment
 	logger.Println("\n=== Test 1: Load Configuration from Environment ===")
 
-	config := redisconfig.NewConfigFromEnv()
+	config := redis_streaming.NewConfigFromEnv()
 
 	// Verify environment variables were loaded correctly
 	tests := []struct {
@@ -69,7 +71,7 @@ func main() {
 	// Test 2: Validate environment-loaded configuration
 	logger.Println("\n=== Test 2: Validate Environment Configuration ===")
 
-	validator := redisconfig.NewConfigValidator()
+	validator := redis_streaming.NewConfigValidator()
 	if err := validator.Validate(config); err != nil {
 		logger.Printf("❌ Configuration validation failed: %v", err)
 	} else {
@@ -87,7 +89,7 @@ func main() {
 	os.Unsetenv("REDIS_HOST")
 	os.Unsetenv("REDIS_PORT")
 
-	configWithDefaults := redisconfig.NewConfigFromEnv()
+	configWithDefaults := redis_streaming.NewConfigFromEnv()
 
 	if configWithDefaults.Host == "localhost" && configWithDefaults.Port == 6379 {
 		logger.Println("✅ Correctly fell back to defaults for unset environment variables")
@@ -103,8 +105,8 @@ func main() {
 	os.Setenv("REDIS_HOST", "invalid-env-host")
 	os.Setenv("REDIS_PORT", "9999")
 
-	envConfig := redisconfig.NewConfigFromEnv()
-	hybridClient, err := redisconfig.NewHybridRedisClient(envConfig)
+	envConfig := redis_streaming.NewConfigFromEnv()
+	hybridClient, err := redis_streaming.NewHybridRedisClient(envConfig)
 	if err != nil {
 		logger.Printf("Failed to create hybrid client: %v", err)
 		return

@@ -1,11 +1,10 @@
-
 package main
 
 import (
 	"fmt"
 )
 
-func main() {
+func runGenReadFileSpec() {
 	fmt.Println("# Spécification fonctionnelle et technique read_file")
 	fmt.Println("")
 	fmt.Println("## 1. Fonctionnalités")
@@ -27,4 +26,8 @@ func main() {
 	fmt.Println("func IsBinaryFile(path string) (bool, error)")
 	fmt.Println("func PreviewHex(path string, start, end int) ([]byte, error)")
 	fmt.Println("```")
+}
+
+func main() {
+	runGenReadFileSpec()
 }

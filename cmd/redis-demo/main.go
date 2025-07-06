@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"time"
+
+	redis_streaming "github.com/gerivdb/email-sender-1/streaming/redis_streaming"
 )
 
 func main() {
@@ -14,7 +16,7 @@ func main() {
 
 	// 1. Configuration des paramètres de base Redis
 	log.Println("🔧 1. Configuration des paramètres de base Redis")
-	config := redisConfig.DefaultRedisConfig()
+	config := redis_streaming.DefaultRedisConfig()
 	fmt.Printf("   Host: %s, Port: %d, DB: %d\n", config.Host, config.Port, config.DB)
 	fmt.Printf("   DialTimeout: %v, ReadTimeout: %v, WriteTimeout: %v\n",
 		config.DialTimeout, config.ReadTimeout, config.WriteTimeout)
@@ -33,7 +35,7 @@ func main() {
 
 	// 4. Validation des paramètres avec ConfigValidator.Validate()
 	log.Println("✅ 4. Validation des paramètres")
-	validator := redisConfig.NewConfigValidator()
+	validator := redis_streaming.NewConfigValidator()
 	if err := validator.Validate(config); err != nil {
 		log.Printf("   ⚠️  Validation: %v (attendu pour host inexistant)\n", err)
 	} else {
@@ -49,7 +51,7 @@ func main() {
 	log.Println()
 	// 6. Gestion des erreurs et reconnexions avec circuit breaker
 	log.Println("⚡ 6. Circuit breaker pattern")
-	circuitBreaker := redisConfig.NewCircuitBreaker(redisConfig.DefaultCircuitBreakerConfig(), nil)
+	circuitBreaker := redis_streaming.NewCircuitBreaker(redis_streaming.DefaultCircuitBreakerConfig(), nil)
 	stats := circuitBreaker.Stats()
 	fmt.Printf("   État initial: %s, MaxFailures: %d\n",
 		circuitBreaker.State(), stats["max_failures"])
@@ -74,7 +76,7 @@ func main() {
 	var testKey, testValue string
 	var retrievedValue interface{}
 
-	hybridClient, err := redisConfig.NewHybridRedisClient(config)
+	hybridClient, err := redis_streaming.NewHybridRedisClient(config)
 	if err != nil {
 		log.Printf("   ⚠️  Erreur création client hybride: %v\n", err)
 		log.Println()
@@ -118,7 +120,7 @@ skipCacheTest:
 	os.Setenv("REDIS_PASSWORD", "demo-password")
 	os.Setenv("REDIS_POOL_SIZE", "15")
 
-	envConfig := redisConfig.NewConfigFromEnv()
+	envConfig := redis_streaming.NewConfigFromEnv()
 	fmt.Printf("   Config depuis env: Host=%s, Port=%d, PoolSize=%d\n",
 		envConfig.Host, envConfig.Port, envConfig.PoolSize)
 	log.Println()

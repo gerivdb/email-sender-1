@@ -92,6 +92,7 @@ func main() {
 
 		// Tenter de 'go get' le module pour voir les erreurs de téléchargement
 		getOutput, err := runCommandAndCapture("go", "get", mod)
+		_ = getOutput // Marquer comme utilisé
 		if err != nil {
 			fmt.Printf("  'go get %s' a échoué: %v\n", mod, err)
 			fmt.Printf("  Suggestion: Le module pourrait être introuvable, privé, ou nécessiter des informations d'authentification. Vérifier le chemin d'accès au dépôt ou les permissions.\n")

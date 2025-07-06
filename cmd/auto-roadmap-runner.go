@@ -15,11 +15,15 @@ func runScript(name string, args ...string) {
 	}
 }
 
-func main() {
+func runAutoRoadmap() {
 	runScript("cmd/audit-inventory/main.go")
 	runScript("cmd/standards-inventory/main.go")
 	runScript("cmd/audit-gap-analysis/main.go")
 	runScript("cmd/standards-duplication-check/main.go")
 	runScript("cmd/roadmap-indexer/main.go")
 	runScript("cmd/cross-doc-inventory/main.go")
+}
+
+func main() {
+	runAutoRoadmap()
 }

@@ -7,6 +7,8 @@ import (
 	"log"
 	"os"
 	"time"
+
+	redis_streaming "github.com/gerivdb/email-sender-1/streaming/redis_streaming"
 )
 
 func main() {
@@ -14,8 +16,8 @@ func main() {
 
 	// Test 1: Default configuration validation
 	logger.Println("=== Test 1: Configuration Validation ===")
-	config := redisconfig.DefaultRedisConfig()
-	validator := redisconfig.NewConfigValidator()
+	config := redis_streaming.DefaultRedisConfig()
+	validator := redis_streaming.NewConfigValidator()
 	if err := validator.Validate(config); err != nil {
 		logger.Fatalf("❌ Configuration validation failed: %v", err)
 	}
@@ -23,7 +25,7 @@ func main() {
 
 	// Test 2: Circuit Breaker functionality
 	logger.Println("\n=== Test 2: Circuit Breaker ===")
-	cb := redisconfig.NewCircuitBreaker(redisconfig.DefaultCircuitBreakerConfig(), logger)
+	cb := redis_streaming.NewCircuitBreaker(redis_streaming.DefaultCircuitBreakerConfig(), logger)
 
 	// Test circuit breaker with simulated failures
 	for i := 0; i < 6; i++ {
@@ -47,7 +49,7 @@ func main() {
 
 	// Test 3: Local Cache functionality
 	logger.Println("\n=== Test 3: Local Cache ===")
-	localCache := redisconfig.NewLocalCache(100, 10*time.Second)
+	localCache := redis_streaming.NewLocalCache(100, 10*time.Second)
 
 	ctx := context.Background()
 
@@ -79,11 +81,11 @@ func main() {
 	logger.Println("\n=== Test 4: Hybrid Redis Client (Fallback) ===")
 
 	// Create hybrid client with invalid Redis config to force fallback
-	invalidConfig := redisconfig.DefaultRedisConfig()
+	invalidConfig := redis_streaming.DefaultRedisConfig()
 	invalidConfig.Host = "invalid-host"
 	invalidConfig.Port = 9999
 
-	hybridClient, err := redisconfig.NewHybridRedisClient(invalidConfig)
+	hybridClient, err := redis_streaming.NewHybridRedisClient(invalidConfig)
 	if err != nil {
 		logger.Fatalf("❌ Failed to create hybrid client: %v", err)
 	}
@@ -122,7 +124,7 @@ func main() {
 
 	// Test 5: Error Handler functionality
 	logger.Println("\n=== Test 5: Error Handler ===")
-	errorHandler := redisconfig.NewErrorHandler(logger)
+	errorHandler := redis_streaming.NewErrorHandler(logger)
 
 	// Test different error types
 	testErrors := []error{

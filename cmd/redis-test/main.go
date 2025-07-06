@@ -10,6 +10,7 @@ import (
 	"os"
 	"time"
 
+	redis_streaming "github.com/gerivdb/email-sender-1/streaming/redis_streaming"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -31,7 +32,7 @@ func main() {
 
 	logger := log.New(os.Stdout, "[REDIS-TEST] ", log.LstdFlags)
 
-	var config *redisconfig.RedisConfig
+	var config *redis_streaming.RedisConfig
 	var err error
 
 	// Load configuration
@@ -41,13 +42,13 @@ func main() {
 			logger.Fatalf("Failed to load config from file: %v", err)
 		}
 	} else {
-		config = &redisconfig.RedisConfig{
+		config = &redis_streaming.RedisConfig{
 			Host:     *host,
 			Port:     *port,
 			Password: *password,
 			DB:       *db,
 		} // Apply defaults
-		defaultConfig := redisconfig.DefaultRedisConfig()
+		defaultConfig := redis_streaming.DefaultRedisConfig()
 		config.DialTimeout = defaultConfig.DialTimeout
 		config.ReadTimeout = defaultConfig.ReadTimeout
 		config.WriteTimeout = defaultConfig.WriteTimeout
@@ -66,7 +67,7 @@ func main() {
 	}
 
 	// Validate configuration
-	validator := redisconfig.NewConfigValidator()
+	validator := redis_streaming.NewConfigValidator()
 	if err := validator.Validate(config); err != nil {
 		logger.Fatalf("Configuration validation failed: %v", err)
 	}
@@ -115,13 +116,13 @@ func main() {
 	logger.Println("🎉 All tests completed successfully!")
 }
 
-func loadConfigFromFile(filename string) (*redisconfig.RedisConfig, error) {
+func loadConfigFromFile(filename string) (*redis_streaming.RedisConfig, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read config file: %w", err)
 	}
 
-	var config redisconfig.RedisConfig
+	var config redis_streaming.RedisConfig
 	if err := json.Unmarshal(data, &config); err != nil {
 		return nil, fmt.Errorf("failed to parse config file: %w", err)
 	}
@@ -129,7 +130,7 @@ func loadConfigFromFile(filename string) (*redisconfig.RedisConfig, error) {
 	return &config, nil
 }
 
-func testBasicConnection(config *redisconfig.RedisConfig, logger *log.Logger) error {
+func testBasicConnection(config *redis_streaming.RedisConfig, logger *log.Logger) error {
 	opts := config.ToRedisOptions()
 	client := redis.NewClient(opts)
 	defer client.Close()
@@ -160,7 +161,7 @@ func testBasicConnection(config *redisconfig.RedisConfig, logger *log.Logger) er
 	return nil
 }
 
-func testRedisOperations(config *redisconfig.RedisConfig, logger *log.Logger) error {
+func testRedisOperations(config *redis_streaming.RedisConfig, logger *log.Logger) error {
 	opts := config.ToRedisOptions()
 	client := redis.NewClient(opts)
 	defer client.Close()
@@ -212,7 +213,7 @@ func testRedisOperations(config *redisconfig.RedisConfig, logger *log.Logger) er
 	return nil
 }
 
-func testConnectionPool(config *redisconfig.RedisConfig, logger *log.Logger) error {
+func testConnectionPool(config *redis_streaming.RedisConfig, logger *log.Logger) error {
 	opts := config.ToRedisOptions()
 	client := redis.NewClient(opts)
 	defer client.Close()
@@ -278,13 +279,12 @@ func testConnectionPool(config *redisconfig.RedisConfig, logger *log.Logger) err
 	return nil
 }
 
-func testRetryMechanism(config *redisconfig.RedisConfig, logger *log.Logger) error {
+func testRetryMechanism(config *redis_streaming.RedisConfig, logger *log.Logger) error {
 	// Create a client with retry configuration
 	opts := config.ToRedisOptions()
 	client := redis.NewClient(opts)
 	defer client.Close()
 
-	// Test with a very short timeout to trigger retry
 	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
 	defer cancel()
 
@@ -299,10 +299,10 @@ func testRetryMechanism(config *redisconfig.RedisConfig, logger *log.Logger) err
 	return nil
 }
 
-func testCircuitBreaker(config *redisconfig.RedisConfig, logger *log.Logger) error {
+func testCircuitBreaker(config *redis_streaming.RedisConfig, logger *log.Logger) error {
 	// Create error handler and circuit breaker
-	errorHandler := redisconfig.NewErrorHandler(logger)
-	circuitBreaker := redisconfig.NewCircuitBreaker(redisconfig.DefaultCircuitBreakerConfig(), logger)
+	errorHandler := redis_streaming.NewErrorHandler(logger)
+	circuitBreaker := redis_streaming.NewCircuitBreaker(redis_streaming.DefaultCircuitBreakerConfig(), logger)
 
 	// Simulate some errors to trigger circuit breaker
 	for i := 0; i < 6; i++ {
@@ -319,7 +319,7 @@ func testCircuitBreaker(config *redisconfig.RedisConfig, logger *log.Logger) err
 	}
 
 	// Circuit breaker should be open now
-	if circuitBreaker.State() != redisconfig.StateOpen {
+	if circuitBreaker.State() != redis_streaming.StateOpen {
 		return fmt.Errorf("expected circuit breaker to be open, got %v", circuitBreaker.State())
 	}
 
