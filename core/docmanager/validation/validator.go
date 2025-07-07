@@ -7,7 +7,6 @@ import (
 	"context"
 )
 
-
 func ValidateDocument(ctx context.Context, doc *Document) error {
 	// Stub : valide toujours le document
 	return nil

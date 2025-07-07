@@ -8,12 +8,12 @@ import (
 
 // TestResult represents the result of a test
 type TestResult struct {
-	Name		string
-	Level		int
-	Status		string
-	Duration	time.Duration
-	Description	string
-	Error		error
+	Name        string
+	Level       int
+	Status      string
+	Duration    time.Duration
+	Description string
+	Error       error
 }
 
 // IntegrationTestRunner manages comprehensive testing
@@ -44,12 +44,12 @@ func (itr *IntegrationTestRunner) RunTest(name string, level int, description st
 	}
 
 	result := TestResult{
-		Name:		name,
-		Level:		level,
-		Status:		status,
-		Duration:	duration,
-		Description:	description,
-		Error:		err,
+		Name:        name,
+		Level:       level,
+		Status:      status,
+		Duration:    duration,
+		Description: description,
+		Error:       err,
 	}
 
 	itr.Results = append(itr.Results, result)
@@ -61,13 +61,13 @@ func (itr *IntegrationTestRunner) TestLevel1_MicroSessions() {
 	itr.RunTest("Level 1: Micro-Sessions", 1, "Atomic branching operations", func() error {
 		// Simulate micro-session creation
 		fmt.Println("     Creating micro-session...")
-		time.Sleep(100 * time.Millisecond)	// Simulate work
+		time.Sleep(100 * time.Millisecond) // Simulate work
 
 		// Test session management
 		fmt.Println("     Testing session lifecycle...")
 		time.Sleep(50 * time.Millisecond)
 
-		return nil	// Success simulation
+		return nil // Success simulation
 	})
 }
 
@@ -179,8 +179,8 @@ func (itr *IntegrationTestRunner) TestLevel8_Quantum() {
 // TestIntegrations tests all external integrations
 func (itr *IntegrationTestRunner) TestIntegrations() {
 	integrations := []struct {
-		name	string
-		test	func() error
+		name string
+		test func() error
 	}{
 		{"PostgreSQL Storage", func() error {
 			fmt.Println("     Testing PostgreSQL connection...")

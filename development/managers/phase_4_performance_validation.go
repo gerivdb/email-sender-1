@@ -66,14 +66,14 @@ func main() {
 
 // Simulation des structures pour les tests
 type Vector struct {
-	ID	string		`json:"id"`
-	Values	[]float32	`json:"values"`
+	ID     string    `json:"id"`
+	Values []float32 `json:"values"`
 }
 
 type SearchResult struct {
-	Vector		Vector	`json:"vector"`
-	Score		float32	`json:"score"`
-	QueryIndex	int	`json:"query_index"`
+	Vector     Vector  `json:"vector"`
+	Score      float32 `json:"score"`
+	QueryIndex int     `json:"query_index"`
 }
 
 type VectorClient struct {
@@ -88,7 +88,7 @@ func (vc *VectorClient) SearchVectorsParallel(ctx context.Context, queries []Vec
 	// Simulation de recherche parallèle
 	var wg sync.WaitGroup
 	resultChan := make(chan SearchResult, len(queries)*topK)
-	semaphore := make(chan struct{}, 10)	// Limiter à 10 goroutines concurrentes
+	semaphore := make(chan struct{}, 10) // Limiter à 10 goroutines concurrentes
 
 	for i, query := range queries {
 		wg.Add(1)
@@ -103,11 +103,11 @@ func (vc *VectorClient) SearchVectorsParallel(ctx context.Context, queries []Vec
 			for j := 0; j < topK; j++ {
 				result := SearchResult{
 					Vector: Vector{
-						ID:	fmt.Sprintf("result_%d_%d", idx, j),
-						Values:	[]float32{float32(idx), float32(j)},
+						ID:     fmt.Sprintf("result_%d_%d", idx, j),
+						Values: []float32{float32(idx), float32(j)},
 					},
-					Score:		float32(0.9 - (float32(j) * 0.1)),
-					QueryIndex:	idx,
+					Score:      float32(0.9 - (float32(j) * 0.1)),
+					QueryIndex: idx,
 				}
 				resultChan <- result
 			}
@@ -128,14 +128,14 @@ func (vc *VectorClient) SearchVectorsParallel(ctx context.Context, queries []Vec
 
 // ConnectionPool simule un pool de connexions
 type ConnectionPool struct {
-	connections	chan interface{}
-	logger		*zap.Logger
+	connections chan interface{}
+	logger      *zap.Logger
 }
 
 func NewConnectionPool(size int, logger *zap.Logger) *ConnectionPool {
 	pool := &ConnectionPool{
-		connections:	make(chan interface{}, size),
-		logger:		logger,
+		connections: make(chan interface{}, size),
+		logger:      logger,
 	}
 
 	// Initialiser le pool
@@ -156,15 +156,15 @@ func (cp *ConnectionPool) ReleaseConnection(conn interface{}) {
 
 // VectorCache simule un cache vectoriel
 type VectorCache struct {
-	cache	map[string][]SearchResult
-	mu	sync.RWMutex
-	logger	*zap.Logger
+	cache  map[string][]SearchResult
+	mu     sync.RWMutex
+	logger *zap.Logger
 }
 
 func NewVectorCache(logger *zap.Logger) *VectorCache {
 	return &VectorCache{
-		cache:	make(map[string][]SearchResult),
-		logger:	logger,
+		cache:  make(map[string][]SearchResult),
+		logger: logger,
 	}
 }
 
@@ -183,15 +183,15 @@ func (vc *VectorCache) Set(key string, results []SearchResult) {
 
 // EventBus simule un bus d'événements
 type EventBus struct {
-	subscribers	map[string][]chan interface{}
-	mu		sync.RWMutex
-	logger		*zap.Logger
+	subscribers map[string][]chan interface{}
+	mu          sync.RWMutex
+	logger      *zap.Logger
 }
 
 func NewEventBus(logger *zap.Logger) *EventBus {
 	return &EventBus{
-		subscribers:	make(map[string][]chan interface{}),
-		logger:		logger,
+		subscribers: make(map[string][]chan interface{}),
+		logger:      logger,
 	}
 }
 
@@ -223,8 +223,8 @@ func benchmarkParallelVectorSearch(ctx context.Context, logger *zap.Logger) erro
 	queries := make([]Vector, 100)
 	for i := range queries {
 		queries[i] = Vector{
-			ID:	fmt.Sprintf("query_%d", i),
-			Values:	[]float32{float32(i), float32(i + 1), float32(i + 2)},
+			ID:     fmt.Sprintf("query_%d", i),
+			Values: []float32{float32(i), float32(i + 1), float32(i + 2)},
 		}
 	}
 
@@ -354,8 +354,8 @@ func stressTestIntegration(ctx context.Context, logger *zap.Logger) error {
 
 			// Obtenir une connexion
 			conn := pool.GetConnection()
-			defer pool.ReleaseConnection(conn)		// Vérifier le cache
-			cacheKey := fmt.Sprintf("query_%d", id%100)	// 100 queries uniques
+			defer pool.ReleaseConnection(conn)          // Vérifier le cache
+			cacheKey := fmt.Sprintf("query_%d", id%100) // 100 queries uniques
 			if _, found := cache.Get(cacheKey); found {
 				bus.Publish("cache_hit", fmt.Sprintf("query_%d", id))
 				return
@@ -363,8 +363,8 @@ func stressTestIntegration(ctx context.Context, logger *zap.Logger) error {
 
 			// Exécuter la recherche
 			query := Vector{
-				ID:	fmt.Sprintf("query_%d", id),
-				Values:	[]float32{float32(id), float32(id + 1)},
+				ID:     fmt.Sprintf("query_%d", id),
+				Values: []float32{float32(id), float32(id + 1)},
 			}
 
 			results, err := client.SearchVectorsParallel(ctx, []Vector{query}, 3)

@@ -29,92 +29,92 @@ type MonitoringManager interface {
 
 // SystemMetrics represents collected system metrics
 type SystemMetrics struct {
-	Timestamp	time.Time	`json:"timestamp"`
-	CPUUsage	float64		`json:"cpu_usage"`
-	MemoryUsage	float64		`json:"memory_usage"`
-	DiskUsage	float64		`json:"disk_usage"`
-	NetworkIn	int64		`json:"network_in"`
-	NetworkOut	int64		`json:"network_out"`
-	ErrorCount	int64		`json:"error_count"`
-	RequestCount	int64		`json:"request_count"`
-	Goroutines	int		`json:"goroutines"`
-	GCPauses	float64		`json:"gc_pauses_ms"`
+	Timestamp    time.Time `json:"timestamp"`
+	CPUUsage     float64   `json:"cpu_usage"`
+	MemoryUsage  float64   `json:"memory_usage"`
+	DiskUsage    float64   `json:"disk_usage"`
+	NetworkIn    int64     `json:"network_in"`
+	NetworkOut   int64     `json:"network_out"`
+	ErrorCount   int64     `json:"error_count"`
+	RequestCount int64     `json:"request_count"`
+	Goroutines   int       `json:"goroutines"`
+	GCPauses     float64   `json:"gc_pauses_ms"`
 }
 
 // OperationMetrics represents metrics for a specific operation
 type OperationMetrics struct {
-	Operation	string		`json:"operation"`
-	StartTime	time.Time	`json:"start_time"`
-	EndTime		time.Time	`json:"end_time,omitempty"`
-	Duration	time.Duration	`json:"duration"`
-	CPUUsage	float64		`json:"cpu_usage"`
-	MemoryUsage	float64		`json:"memory_usage"`
-	Success		bool		`json:"success"`
-	ErrorMessage	string		`json:"error_message,omitempty"`
+	Operation    string        `json:"operation"`
+	StartTime    time.Time     `json:"start_time"`
+	EndTime      time.Time     `json:"end_time,omitempty"`
+	Duration     time.Duration `json:"duration"`
+	CPUUsage     float64       `json:"cpu_usage"`
+	MemoryUsage  float64       `json:"memory_usage"`
+	Success      bool          `json:"success"`
+	ErrorMessage string        `json:"error_message,omitempty"`
 }
 
 // HealthStatus represents system health status
 type HealthStatus struct {
-	Healthy		bool			`json:"healthy"`
-	Overall		string			`json:"overall"`
-	Components	map[string]bool		`json:"components"`
-	Metrics		map[string]float64	`json:"metrics"`
-	Services	map[string]bool		`json:"services"`
-	Timestamp	time.Time		`json:"timestamp"`
-	LastChecked	time.Time		`json:"last_checked"`
+	Healthy     bool               `json:"healthy"`
+	Overall     string             `json:"overall"`
+	Components  map[string]bool    `json:"components"`
+	Metrics     map[string]float64 `json:"metrics"`
+	Services    map[string]bool    `json:"services"`
+	Timestamp   time.Time          `json:"timestamp"`
+	LastChecked time.Time          `json:"last_checked"`
 }
 
 // AlertConfig represents alert configuration
 type AlertConfig struct {
-	MetricName	string		`json:"metric_name"`
-	Threshold	float64		`json:"threshold"`
-	Operator	string		`json:"operator"`	// "gt", "lt", "eq"
-	Enabled		bool		`json:"enabled"`
-	Recipients	[]string	`json:"recipients"`
-	Severity	string		`json:"severity"`	// "critical", "warning", "info"
+	MetricName string   `json:"metric_name"`
+	Threshold  float64  `json:"threshold"`
+	Operator   string   `json:"operator"` // "gt", "lt", "eq"
+	Enabled    bool     `json:"enabled"`
+	Recipients []string `json:"recipients"`
+	Severity   string   `json:"severity"` // "critical", "warning", "info"
 }
 
 // PerformanceReport represents a performance analysis report
 type PerformanceReport struct {
-	Period		time.Duration		`json:"period"`
-	GeneratedAt	time.Time		`json:"generated_at"`
-	AverageMetrics	*SystemMetrics		`json:"average_metrics"`
-	PeakMetrics	*SystemMetrics		`json:"peak_metrics"`
-	Operations	[]OperationStats	`json:"operations"`
-	Recommendations	[]string		`json:"recommendations"`
-	HealthIncidents	[]HealthIncident	`json:"health_incidents"`
+	Period          time.Duration    `json:"period"`
+	GeneratedAt     time.Time        `json:"generated_at"`
+	AverageMetrics  *SystemMetrics   `json:"average_metrics"`
+	PeakMetrics     *SystemMetrics   `json:"peak_metrics"`
+	Operations      []OperationStats `json:"operations"`
+	Recommendations []string         `json:"recommendations"`
+	HealthIncidents []HealthIncident `json:"health_incidents"`
 }
 
 // OperationStats represents statistics for operations
 type OperationStats struct {
-	Operation	string		`json:"operation"`
-	Count		int		`json:"count"`
-	AverageDuration	time.Duration	`json:"average_duration"`
-	SuccessRate	float64		`json:"success_rate"`
-	ErrorRate	float64		`json:"error_rate"`
+	Operation       string        `json:"operation"`
+	Count           int           `json:"count"`
+	AverageDuration time.Duration `json:"average_duration"`
+	SuccessRate     float64       `json:"success_rate"`
+	ErrorRate       float64       `json:"error_rate"`
 }
 
 // HealthIncident represents a health incident
 type HealthIncident struct {
-	Timestamp	time.Time	`json:"timestamp"`
-	Severity	string		`json:"severity"`
-	Component	string		`json:"component"`
-	Description	string		`json:"description"`
-	Resolved	bool		`json:"resolved"`
+	Timestamp   time.Time `json:"timestamp"`
+	Severity    string    `json:"severity"`
+	Component   string    `json:"component"`
+	Description string    `json:"description"`
+	Resolved    bool      `json:"resolved"`
 }
 
 // monitoringManagerImpl implements MonitoringManager with ErrorManager integration
 type monitoringManagerImpl struct {
-	logger			*zap.Logger
-	errorManager		ErrorManager
-	isMonitoring		bool
-	startTime		time.Time
-	metricsHistory		[]*SystemMetrics
-	operationMetrics	map[string]*OperationMetrics
-	alertConfigs		[]*AlertConfig
-	healthIncidents		[]HealthIncident
-	mutex			sync.RWMutex
-	stopChan		chan struct{}
+	logger           *zap.Logger
+	errorManager     ErrorManager
+	isMonitoring     bool
+	startTime        time.Time
+	metricsHistory   []*SystemMetrics
+	operationMetrics map[string]*OperationMetrics
+	alertConfigs     []*AlertConfig
+	healthIncidents  []HealthIncident
+	mutex            sync.RWMutex
+	stopChan         chan struct{}
 }
 
 // ErrorManager interface for local implementation
@@ -126,30 +126,30 @@ type ErrorManager interface {
 
 // ErrorEntry represents an error entry
 type ErrorEntry struct {
-	ID		string	`json:"id"`
-	Timestamp	string	`json:"timestamp"`
-	Level		string	`json:"level"`
-	Component	string	`json:"component"`
-	Operation	string	`json:"operation"`
-	Message		string	`json:"message"`
-	Details		string	`json:"details,omitempty"`
+	ID        string `json:"id"`
+	Timestamp string `json:"timestamp"`
+	Level     string `json:"level"`
+	Component string `json:"component"`
+	Operation string `json:"operation"`
+	Message   string `json:"message"`
+	Details   string `json:"details,omitempty"`
 }
 
 // ErrorHooks for error processing
 type ErrorHooks struct {
-	PreProcess	func(error) error
-	PostProcess	func(error) error
+	PreProcess  func(error) error
+	PostProcess func(error) error
 }
 
 // NewMonitoringManager creates a new MonitoringManager instance
 func NewMonitoringManager(logger *zap.Logger) MonitoringManager {
 	return &monitoringManagerImpl{
-		logger:			logger,
-		metricsHistory:		make([]*SystemMetrics, 0),
-		operationMetrics:	make(map[string]*OperationMetrics),
-		alertConfigs:		make([]*AlertConfig, 0),
-		healthIncidents:	make([]HealthIncident, 0),
-		stopChan:		make(chan struct{}),
+		logger:           logger,
+		metricsHistory:   make([]*SystemMetrics, 0),
+		operationMetrics: make(map[string]*OperationMetrics),
+		alertConfigs:     make([]*AlertConfig, 0),
+		healthIncidents:  make([]HealthIncident, 0),
+		stopChan:         make(chan struct{}),
 	}
 }
 
@@ -162,28 +162,28 @@ func (mm *monitoringManagerImpl) Initialize(ctx context.Context) error {
 	// Set up default alert configurations
 	defaultAlerts := []*AlertConfig{
 		{
-			MetricName:	"cpu_usage",
-			Threshold:	80.0,
-			Operator:	"gt",
-			Enabled:	true,
-			Severity:	"warning",
-			Recipients:	[]string{"admin@example.com"},
+			MetricName: "cpu_usage",
+			Threshold:  80.0,
+			Operator:   "gt",
+			Enabled:    true,
+			Severity:   "warning",
+			Recipients: []string{"admin@example.com"},
 		},
 		{
-			MetricName:	"memory_usage",
-			Threshold:	90.0,
-			Operator:	"gt",
-			Enabled:	true,
-			Severity:	"critical",
-			Recipients:	[]string{"admin@example.com"},
+			MetricName: "memory_usage",
+			Threshold:  90.0,
+			Operator:   "gt",
+			Enabled:    true,
+			Severity:   "critical",
+			Recipients: []string{"admin@example.com"},
 		},
 		{
-			MetricName:	"error_count",
-			Threshold:	100.0,
-			Operator:	"gt",
-			Enabled:	true,
-			Severity:	"warning",
-			Recipients:	[]string{"admin@example.com"},
+			MetricName: "error_count",
+			Threshold:  100.0,
+			Operator:   "gt",
+			Enabled:    true,
+			Severity:   "warning",
+			Recipients: []string{"admin@example.com"},
 		},
 	}
 
@@ -233,7 +233,7 @@ func (mm *monitoringManagerImpl) StopMonitoring(ctx context.Context) error {
 
 // monitoringLoop runs continuous monitoring
 func (mm *monitoringManagerImpl) monitoringLoop(ctx context.Context) {
-	ticker := time.NewTicker(30 * time.Second)	// Collect metrics every 30 seconds
+	ticker := time.NewTicker(30 * time.Second) // Collect metrics every 30 seconds
 	defer ticker.Stop()
 
 	for {
@@ -272,16 +272,16 @@ func (mm *monitoringManagerImpl) CollectMetrics(ctx context.Context) (*SystemMet
 	runtime.ReadMemStats(&m)
 
 	metrics := &SystemMetrics{
-		Timestamp:	time.Now(),
-		CPUUsage:	mm.getCPUUsage(),
-		MemoryUsage:	float64(m.Alloc) / 1024 / 1024,	// MB
-		DiskUsage:	mm.getDiskUsage(),
-		NetworkIn:	0,	// Would implement with real network monitoring
-		NetworkOut:	0,	// Would implement with real network monitoring
-		ErrorCount:	mm.getErrorCount(),
-		RequestCount:	mm.getRequestCount(),
-		Goroutines:	runtime.NumGoroutine(),
-		GCPauses:	float64(m.PauseTotalNs) / 1e6,	// Convert to milliseconds
+		Timestamp:    time.Now(),
+		CPUUsage:     mm.getCPUUsage(),
+		MemoryUsage:  float64(m.Alloc) / 1024 / 1024, // MB
+		DiskUsage:    mm.getDiskUsage(),
+		NetworkIn:    0, // Would implement with real network monitoring
+		NetworkOut:   0, // Would implement with real network monitoring
+		ErrorCount:   mm.getErrorCount(),
+		RequestCount: mm.getRequestCount(),
+		Goroutines:   runtime.NumGoroutine(),
+		GCPauses:     float64(m.PauseTotalNs) / 1e6, // Convert to milliseconds
 	}
 
 	return metrics, nil
@@ -292,13 +292,13 @@ func (mm *monitoringManagerImpl) getCPUUsage() float64 {
 	// In real implementation, this would use system calls or libraries
 	// For now, return a simulated value based on goroutines
 	goroutines := runtime.NumGoroutine()
-	return float64(goroutines) * 2.5	// Rough approximation
+	return float64(goroutines) * 2.5 // Rough approximation
 }
 
 // getDiskUsage returns simulated disk usage
 func (mm *monitoringManagerImpl) getDiskUsage() float64 {
 	// In real implementation, this would check actual disk usage
-	return 25.5	// Simulated value
+	return 25.5 // Simulated value
 }
 
 // getErrorCount returns current error count
@@ -336,15 +336,15 @@ func (mm *monitoringManagerImpl) CheckSystemHealth(ctx context.Context) (*Health
 	// Determine overall health
 	healthy := true
 	components := map[string]bool{
-		"cpu":		metrics.CPUUsage < 80.0,
-		"memory":	metrics.MemoryUsage < 1000.0,	// 1GB
-		"disk":		metrics.DiskUsage < 90.0,
-		"goroutines":	metrics.Goroutines < 1000,
+		"cpu":        metrics.CPUUsage < 80.0,
+		"memory":     metrics.MemoryUsage < 1000.0, // 1GB
+		"disk":       metrics.DiskUsage < 90.0,
+		"goroutines": metrics.Goroutines < 1000,
 	}
 
 	services := map[string]bool{
-		"monitoring":	mm.isMonitoring,
-		"alerting":	len(mm.alertConfigs) > 0,
+		"monitoring": mm.isMonitoring,
+		"alerting":   len(mm.alertConfigs) > 0,
 	}
 
 	for _, componentHealthy := range components {
@@ -367,17 +367,17 @@ func (mm *monitoringManagerImpl) CheckSystemHealth(ctx context.Context) (*Health
 	}
 
 	status := &HealthStatus{
-		Healthy:	healthy,
-		Overall:	overall,
-		Components:	components,
+		Healthy:    healthy,
+		Overall:    overall,
+		Components: components,
 		Metrics: map[string]float64{
-			"cpu_usage":	metrics.CPUUsage,
-			"memory_usage":	metrics.MemoryUsage,
-			"disk_usage":	metrics.DiskUsage,
+			"cpu_usage":    metrics.CPUUsage,
+			"memory_usage": metrics.MemoryUsage,
+			"disk_usage":   metrics.DiskUsage,
 		},
-		Services:	services,
-		Timestamp:	time.Now(),
-		LastChecked:	time.Now(),
+		Services:    services,
+		Timestamp:   time.Now(),
+		LastChecked: time.Now(),
 	}
 
 	return status, nil
@@ -388,9 +388,9 @@ func (mm *monitoringManagerImpl) StartOperationMonitoring(ctx context.Context, o
 	mm.logger.Info("Starting operation monitoring", zap.String("operation", operation))
 
 	metrics := &OperationMetrics{
-		Operation:	operation,
-		StartTime:	time.Now(),
-		Success:	false,
+		Operation: operation,
+		StartTime: time.Now(),
+		Success:   false,
 	}
 
 	// Collect initial metrics
@@ -492,11 +492,11 @@ func (mm *monitoringManagerImpl) checkAlerts(metrics *SystemMetrics) {
 
 			// Record health incident
 			incident := HealthIncident{
-				Timestamp:	time.Now(),
-				Severity:	alert.Severity,
-				Component:	alert.MetricName,
-				Description:	fmt.Sprintf("%s exceeded threshold: %.2f > %.2f", alert.MetricName, value, alert.Threshold),
-				Resolved:	false,
+				Timestamp:   time.Now(),
+				Severity:    alert.Severity,
+				Component:   alert.MetricName,
+				Description: fmt.Sprintf("%s exceeded threshold: %.2f > %.2f", alert.MetricName, value, alert.Threshold),
+				Resolved:    false,
 			}
 
 			mm.healthIncidents = append(mm.healthIncidents, incident)
@@ -532,8 +532,8 @@ func (mm *monitoringManagerImpl) GenerateReport(ctx context.Context, duration ti
 
 	if len(history) == 0 {
 		return &PerformanceReport{
-			Period:		duration,
-			GeneratedAt:	time.Now(),
+			Period:      duration,
+			GeneratedAt: time.Now(),
 		}, nil
 	}
 
@@ -571,13 +571,13 @@ func (mm *monitoringManagerImpl) GenerateReport(ctx context.Context, duration ti
 	recommendations := mm.generateRecommendations(avgMetrics, peakMetrics)
 
 	report := &PerformanceReport{
-		Period:			duration,
-		GeneratedAt:		time.Now(),
-		AverageMetrics:		avgMetrics,
-		PeakMetrics:		peakMetrics,
-		Operations:		mm.getOperationStats(),
-		Recommendations:	recommendations,
-		HealthIncidents:	mm.healthIncidents,
+		Period:          duration,
+		GeneratedAt:     time.Now(),
+		AverageMetrics:  avgMetrics,
+		PeakMetrics:     peakMetrics,
+		Operations:      mm.getOperationStats(),
+		Recommendations: recommendations,
+		HealthIncidents: mm.healthIncidents,
 	}
 
 	return report, nil
@@ -591,7 +591,7 @@ func (mm *monitoringManagerImpl) generateRecommendations(avg, peak *SystemMetric
 		recommendations = append(recommendations, "Consider optimizing CPU-intensive operations or scaling horizontally")
 	}
 
-	if avg.MemoryUsage > 800.0 {	// 800MB
+	if avg.MemoryUsage > 800.0 { // 800MB
 		recommendations = append(recommendations, "Memory usage is high, consider optimizing memory allocation")
 	}
 
@@ -634,11 +634,11 @@ func (mm *monitoringManagerImpl) getOperationStats() []OperationStats {
 			}
 
 			statsMap[op.Operation] = &OperationStats{
-				Operation:		op.Operation,
-				Count:			1,
-				AverageDuration:	op.Duration,
-				SuccessRate:		successRate,
-				ErrorRate:		errorRate,
+				Operation:       op.Operation,
+				Count:           1,
+				AverageDuration: op.Duration,
+				SuccessRate:     successRate,
+				ErrorRate:       errorRate,
 			}
 		}
 	}

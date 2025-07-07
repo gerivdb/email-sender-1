@@ -8,22 +8,22 @@ import (
 
 // SyncOrchestrator coordinates the conversion and storage of plans
 type SyncOrchestrator struct {
-	parser		*MarkdownParser
-	synchronizer	*PlanSynchronizer
-	qdrant		*QDrantClient
-	sqlStorage	*SQLStorage
-	logger		*log.Logger
+	parser       *MarkdownParser
+	synchronizer *PlanSynchronizer
+	qdrant       *QDrantClient
+	sqlStorage   *SQLStorage
+	logger       *log.Logger
 }
 
 // SyncConfig holds configuration for the sync orchestrator
 type SyncConfig struct {
-	QDrantURL	string		`yaml:"qdrant_url"`
-	DatabaseConfig	DatabaseConfig	`yaml:"database"`
-	OutputDir	string		`yaml:"output_dir"`
+	QDrantURL      string         `yaml:"qdrant_url"`
+	DatabaseConfig DatabaseConfig `yaml:"database"`
+	OutputDir      string         `yaml:"output_dir"`
 }
 
 // NewSyncOrchestrator creates a new sync orchestrator
-func NewSyncOrchestrator(config SyncConfig) (*SyncOrchestrator, error) {	// Initialize components
+func NewSyncOrchestrator(config SyncConfig) (*SyncOrchestrator, error) { // Initialize components
 	parser := NewMarkdownParser()
 
 	qdrant := NewQDrantClient(config.QDrantURL)
@@ -34,20 +34,20 @@ func NewSyncOrchestrator(config SyncConfig) (*SyncOrchestrator, error) {	// Init
 	}
 	// Initialize synchronizer for reverse sync
 	syncConfig := &MarkdownSyncConfig{
-		OutputDirectory:	config.OutputDir,
-		PreserveFormatting:	true,
-		BackupOriginal:		true,
-		OverwriteExisting:	false,
+		OutputDirectory:    config.OutputDir,
+		PreserveFormatting: true,
+		BackupOriginal:     true,
+		OverwriteExisting:  false,
 	}
 
 	synchronizer := NewPlanSynchronizer(sqlStorage, qdrant, syncConfig)
 
 	orchestrator := &SyncOrchestrator{
-		parser:		parser,
-		synchronizer:	synchronizer,
-		qdrant:		qdrant,
-		sqlStorage:	sqlStorage,
-		logger:		log.Default(),
+		parser:       parser,
+		synchronizer: synchronizer,
+		qdrant:       qdrant,
+		sqlStorage:   sqlStorage,
+		logger:       log.Default(),
 	}
 	// Initialize QDrant collection
 	if err := qdrant.EnsureCollection(); err != nil {
@@ -183,10 +183,10 @@ func (so *SyncOrchestrator) Close() error {
 func ExampleUsage() {
 	// Configuration
 	config := SyncConfig{
-		QDrantURL:	"http://localhost:6333",
+		QDrantURL: "http://localhost:6333",
 		DatabaseConfig: DatabaseConfig{
-			Driver:		"sqlite3",
-			Connection:	"file:plans.db?cache=shared&mode=rwc",
+			Driver:     "sqlite3",
+			Connection: "file:plans.db?cache=shared&mode=rwc",
 		},
 	}
 
@@ -199,40 +199,40 @@ func ExampleUsage() {
 
 	// Example plan metadata
 	metadata := &PlanMetadata{
-		FilePath:	"exemple/plan-dev-v48-repovisualizer.md",
-		Title:		"Plan de développement v48 - Repository Visualizer",
-		Version:	"v48",
-		Date:		"2025-06-11",
-		Progression:	75.0,
-		Description:	"Plan pour le développement du visualiseur de repository",
+		FilePath:    "exemple/plan-dev-v48-repovisualizer.md",
+		Title:       "Plan de développement v48 - Repository Visualizer",
+		Version:     "v48",
+		Date:        "2025-06-11",
+		Progression: 75.0,
+		Description: "Plan pour le développement du visualiseur de repository",
 	}
 
 	// Example tasks
 	tasks := []Task{
 		{
-			ID:		"task_1",
-			Title:		"Architecture de base",
-			Description:	"Définir l'architecture du système",
-			Status:		"completed",
-			Phase:		"Phase 1",
-			Level:		1,
-			Priority:	"high",
-			Completed:	true,
-			CreatedAt:	time.Now(),
-			UpdatedAt:	time.Now(),
+			ID:          "task_1",
+			Title:       "Architecture de base",
+			Description: "Définir l'architecture du système",
+			Status:      "completed",
+			Phase:       "Phase 1",
+			Level:       1,
+			Priority:    "high",
+			Completed:   true,
+			CreatedAt:   time.Now(),
+			UpdatedAt:   time.Now(),
 		},
 		{
-			ID:		"task_2",
-			Title:		"Implémentation parser",
-			Description:	"Développer le parser de fichiers",
-			Status:		"in_progress",
-			Phase:		"Phase 2",
-			Level:		2,
-			Priority:	"medium",
-			Completed:	false,
-			CreatedAt:	time.Now(),
-			UpdatedAt:	time.Now(),
-			Dependencies:	[]string{"task_1"},
+			ID:           "task_2",
+			Title:        "Implémentation parser",
+			Description:  "Développer le parser de fichiers",
+			Status:       "in_progress",
+			Phase:        "Phase 2",
+			Level:        2,
+			Priority:     "medium",
+			Completed:    false,
+			CreatedAt:    time.Now(),
+			UpdatedAt:    time.Now(),
+			Dependencies: []string{"task_1"},
 		},
 	}
 

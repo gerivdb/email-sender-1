@@ -203,7 +203,7 @@ func main() {
 	}
 
 	// PHASE 7: Reporting, Documentation & Validation Finale
-	if err := runGenerateReport(); err != nil {	// Appel direct de la fonction
+	if err := runGenerateReport(); err != nil { // Appel direct de la fonction
 		fmt.Printf("Error during Phase 7 (runGenerateReport): %v\n", err)
 		os.Exit(1)
 	}
@@ -229,7 +229,7 @@ func main() {
 	// PHASE 9: Orchestration & CI/CD
 	phase9Commands := [][]string{
 		{"echo", "Orchestrator and CI/CD integration (simulated)..."},
-		{"touch", filepath.Join(basePath, "auto-roadmap-runner.go")},	// Le fichier lui-même !
+		{"touch", filepath.Join(basePath, "auto-roadmap-runner.go")}, // Le fichier lui-même !
 	}
 	if err := executePhase("9. Orchestration & CI/CD", phase9Commands); err != nil {
 		fmt.Printf("Error during Phase 9: %v\n", err)

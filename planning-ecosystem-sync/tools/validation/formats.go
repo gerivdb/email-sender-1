@@ -31,16 +31,16 @@ type PlanDocument struct {
 
 // PlanMetadata contains document metadata
 type PlanMetadata struct {
-	Title       string    `json:"title" yaml:"title"`
-	Version     string    `json:"version" yaml:"version"`
-	Description string    `json:"description" yaml:"description"`
-	Author      string    `json:"author" yaml:"author"`
-	Created     string    `json:"created" yaml:"created"`
-	Updated     string    `json:"updated" yaml:"updated"`
-	Tags        []string  `json:"tags" yaml:"tags"`
-	Category    string    `json:"category" yaml:"category"`
-	Priority    string    `json:"priority" yaml:"priority"`
-	Status      string    `json:"status" yaml:"status"`
+	Title       string   `json:"title" yaml:"title"`
+	Version     string   `json:"version" yaml:"version"`
+	Description string   `json:"description" yaml:"description"`
+	Author      string   `json:"author" yaml:"author"`
+	Created     string   `json:"created" yaml:"created"`
+	Updated     string   `json:"updated" yaml:"updated"`
+	Tags        []string `json:"tags" yaml:"tags"`
+	Category    string   `json:"category" yaml:"category"`
+	Priority    string   `json:"priority" yaml:"priority"`
+	Status      string   `json:"status" yaml:"status"`
 }
 
 // Phase represents a project phase
@@ -89,12 +89,12 @@ type Milestone struct {
 
 // Resource represents a project resource
 type Resource struct {
-	ID          string  `json:"id" yaml:"id"`
-	Name        string  `json:"name" yaml:"name"`
-	Type        string  `json:"type" yaml:"type"`
-	Allocation  float64 `json:"allocation" yaml:"allocation"`
-	Cost        float64 `json:"cost" yaml:"cost"`
-	Availability string `json:"availability" yaml:"availability"`
+	ID           string  `json:"id" yaml:"id"`
+	Name         string  `json:"name" yaml:"name"`
+	Type         string  `json:"type" yaml:"type"`
+	Allocation   float64 `json:"allocation" yaml:"allocation"`
+	Cost         float64 `json:"cost" yaml:"cost"`
+	Availability string  `json:"availability" yaml:"availability"`
 }
 
 // FormatParser handles parsing different file formats
@@ -115,7 +115,7 @@ func NewFormatParser() *FormatParser {
 // DetectFormat detects the format of a file based on extension and content
 func (fp *FormatParser) DetectFormat(filePath string) FormatType {
 	ext := strings.ToLower(filepath.Ext(filePath))
-	
+
 	switch ext {
 	case ".json":
 		return FormatJSON

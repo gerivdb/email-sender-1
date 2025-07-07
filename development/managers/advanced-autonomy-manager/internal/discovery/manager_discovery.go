@@ -18,8 +18,8 @@ import (
 
 // ManagerDiscoveryService découvre et connecte aux 20 managers de l'écosystème FMOUA
 type ManagerDiscoveryService struct {
-	config          *DiscoveryConfig
-	logger          interfaces.Logger
+	config             *DiscoveryConfig
+	logger             interfaces.Logger
 	discoveredManagers map[string]*ManagerConnection
 	connectionPool     map[string]interfaces.BaseManager
 	mutex              sync.RWMutex
@@ -29,23 +29,23 @@ type ManagerDiscoveryService struct {
 // DiscoveryConfig configure le service de découverte des managers
 type DiscoveryConfig struct {
 	// Méthodes de découverte
-	EnableFileSystemDiscovery bool          `yaml:"enable_filesystem_discovery" json:"enable_filesystem_discovery"`
-	EnableNetworkDiscovery    bool          `yaml:"enable_network_discovery" json:"enable_network_discovery"`
-	EnableRegistryDiscovery   bool          `yaml:"enable_registry_discovery" json:"enable_registry_discovery"`
-	
+	EnableFileSystemDiscovery bool `yaml:"enable_filesystem_discovery" json:"enable_filesystem_discovery"`
+	EnableNetworkDiscovery    bool `yaml:"enable_network_discovery" json:"enable_network_discovery"`
+	EnableRegistryDiscovery   bool `yaml:"enable_registry_discovery" json:"enable_registry_discovery"`
+
 	// Paramètres de recherche
-	SearchPaths       []string      `yaml:"search_paths" json:"search_paths"`
-	NetworkScanRange  string        `yaml:"network_scan_range" json:"network_scan_range"`
-	DiscoveryTimeout  time.Duration `yaml:"discovery_timeout" json:"discovery_timeout"`
-	ManagerPorts      []int         `yaml:"manager_ports" json:"manager_ports"`
-	
+	SearchPaths      []string      `yaml:"search_paths" json:"search_paths"`
+	NetworkScanRange string        `yaml:"network_scan_range" json:"network_scan_range"`
+	DiscoveryTimeout time.Duration `yaml:"discovery_timeout" json:"discovery_timeout"`
+	ManagerPorts     []int         `yaml:"manager_ports" json:"manager_ports"`
+
 	// Configuration de connexion
 	ConnectionTimeout time.Duration `yaml:"connection_timeout" json:"connection_timeout"`
 	RetryAttempts     int           `yaml:"retry_attempts" json:"retry_attempts"`
 	RetryDelay        time.Duration `yaml:"retry_delay" json:"retry_delay"`
-	
+
 	// Registre des managers attendus
-	ExpectedManagers  []string      `yaml:"expected_managers" json:"expected_managers"`
+	ExpectedManagers []string `yaml:"expected_managers" json:"expected_managers"`
 }
 
 // ManagerConnection représente une connexion à un manager découvert
@@ -167,13 +167,13 @@ func (mds *ManagerDiscoveryService) DiscoverAllManagers(ctx context.Context) (ma
 		wg.Add(1)
 		go func(name string) {
 			defer wg.Done()
-			
+
 			connection, err := mds.discoverSingleManager(discoveryCtx, name)
 			if err != nil {
 				errorsChan <- fmt.Errorf("failed to discover %s: %w", name, err)
 				return
 			}
-			
+
 			if connection != nil {
 				resultsChan <- connection
 			}
@@ -198,14 +198,14 @@ func (mds *ManagerDiscoveryService) DiscoverAllManagers(ctx context.Context) (ma
 				resultsChan = nil
 				break
 			}
-			
+
 			mds.mutex.Lock()
 			mds.discoveredManagers[connection.Name] = connection
 			if connection.Manager != nil {
 				mds.connectionPool[connection.Name] = connection.Manager
 			}
 			mds.mutex.Unlock()
-			
+
 			discoveredCount++
 			mds.logger.Info(fmt.Sprintf("Successfully discovered manager: %s (%s)", connection.Name, connection.Endpoint))
 
@@ -285,28 +285,28 @@ func (mds *ManagerDiscoveryService) discoverSingleManager(ctx context.Context, m
 func (mds *ManagerDiscoveryService) discoverByFileSystem(ctx context.Context, managerName string) (*ManagerConnection, error) {
 	for _, searchPath := range mds.config.SearchPaths {
 		managerPath := filepath.Join(searchPath, managerName)
-		
+
 		if _, err := os.Stat(managerPath); err == nil {
 			// Manager trouvé, essayer de créer une connexion
 			connection := &ManagerConnection{
-				Name:        managerName,
-				Type:        "filesystem",
-				Version:     "1.0.0",
-				Endpoint:    managerPath,
-				Status:      StatusDiscovered,
-				ConnectedAt: time.Now(),
-				Manager:     mds.createManagerProxy(managerName, managerPath),
+				Name:         managerName,
+				Type:         "filesystem",
+				Version:      "1.0.0",
+				Endpoint:     managerPath,
+				Status:       StatusDiscovered,
+				ConnectedAt:  time.Now(),
+				Manager:      mds.createManagerProxy(managerName, managerPath),
 				Capabilities: []string{"basic", "filesystem"},
-				Health:      1.0,
+				Health:       1.0,
 				Metadata: map[string]interface{}{
 					"discovery_method": "filesystem",
-					"path":            managerPath,
+					"path":             managerPath,
 				},
 			}
 			return connection, nil
 		}
 	}
-	
+
 	return nil, fmt.Errorf("manager %s not found in filesystem", managerName)
 }
 
@@ -314,7 +314,7 @@ func (mds *ManagerDiscoveryService) discoverByFileSystem(ctx context.Context, ma
 func (mds *ManagerDiscoveryService) discoverByNetwork(ctx context.Context, managerName string) (*ManagerConnection, error) {
 	for _, port := range mds.config.ManagerPorts {
 		endpoint := fmt.Sprintf("127.0.0.1:%d", port)
-		
+
 		// Tester la connexion TCP
 		conn, err := net.DialTimeout("tcp", endpoint, mds.config.ConnectionTimeout)
 		if err != nil {
@@ -325,26 +325,26 @@ func (mds *ManagerDiscoveryService) discoverByNetwork(ctx context.Context, manag
 		// Tester l'endpoint HTTP pour vérifier si c'est le bon manager
 		if mds.testManagerEndpoint(ctx, endpoint, managerName) {
 			connection := &ManagerConnection{
-				Name:        managerName,
-				Type:        "network",
-				Version:     "1.0.0",
-				Endpoint:    fmt.Sprintf("http://%s", endpoint),
-				Port:        port,
-				Status:      StatusConnected,
-				ConnectedAt: time.Now(),
-				Manager:     mds.createNetworkManagerProxy(managerName, endpoint),
+				Name:         managerName,
+				Type:         "network",
+				Version:      "1.0.0",
+				Endpoint:     fmt.Sprintf("http://%s", endpoint),
+				Port:         port,
+				Status:       StatusConnected,
+				ConnectedAt:  time.Now(),
+				Manager:      mds.createNetworkManagerProxy(managerName, endpoint),
 				Capabilities: []string{"basic", "network", "http"},
-				Health:      1.0,
+				Health:       1.0,
 				Metadata: map[string]interface{}{
 					"discovery_method": "network",
-					"endpoint":        endpoint,
-					"port":           port,
+					"endpoint":         endpoint,
+					"port":             port,
 				},
 			}
 			return connection, nil
 		}
 	}
-	
+
 	return nil, fmt.Errorf("manager %s not found on network", managerName)
 }
 
@@ -395,18 +395,18 @@ func (mds *ManagerDiscoveryService) createNetworkManagerProxy(managerName, endpo
 // createMockConnection crée une connexion fictive pour les tests
 func (mds *ManagerDiscoveryService) createMockConnection(managerName string) *ManagerConnection {
 	return &ManagerConnection{
-		Name:        managerName,
-		Type:        "mock",
-		Version:     "1.0.0-mock",
-		Endpoint:    fmt.Sprintf("mock://%s", managerName),
-		Status:      StatusConnected,
-		ConnectedAt: time.Now(),
-		Manager:     mds.createMockManagerProxy(managerName),
+		Name:         managerName,
+		Type:         "mock",
+		Version:      "1.0.0-mock",
+		Endpoint:     fmt.Sprintf("mock://%s", managerName),
+		Status:       StatusConnected,
+		ConnectedAt:  time.Now(),
+		Manager:      mds.createMockManagerProxy(managerName),
 		Capabilities: []string{"mock", "testing"},
-		Health:      0.8, // Santé réduite pour les mocks
+		Health:       0.8, // Santé réduite pour les mocks
 		Metadata: map[string]interface{}{
 			"discovery_method": "mock",
-			"is_mock":         true,
+			"is_mock":          true,
 		},
 	}
 }
@@ -488,7 +488,7 @@ func (mds *ManagerDiscoveryService) checkConnectionHealth(ctx context.Context, c
 		connection.Status = StatusError
 		connection.Health = 0.0
 		mds.mutex.Unlock()
-		
+
 		mds.logger.Warn("Health check failed for manager", "manager", connection.Name, "error", err.Error())
 	} else {
 		mds.mutex.Lock()

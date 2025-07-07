@@ -222,7 +222,7 @@ func TestFormatConsistencyRule_ValidateMetadata(t *testing.T) {
 				Created: "invalid-date",
 			},
 			wantErrs: 1,
-		},		{
+		}, {
 			name: "invalid status",
 			metadata: PlanMetadata{
 				Title:   "Test Plan",
@@ -369,27 +369,27 @@ func TestFormatConsistencyRule_ValidateTask(t *testing.T) {
 		name     string
 		task     Task
 		wantErrs int
-	}{		{
-			name: "valid task",
-			task: Task{
-				ID:             "task-1",
-				Name:           "Test Task",
-				Status:         "in-progress",
-				Progress:       50.0,
-				EstimatedHrs:   8,
-				ActualHrs:      6,
-				StartDate:      "2025-01-01",
-				EndDate:        "2025-01-05",
-			},
-			wantErrs: 0,
+	}{{
+		name: "valid task",
+		task: Task{
+			ID:           "task-1",
+			Name:         "Test Task",
+			Status:       "in-progress",
+			Progress:     50.0,
+			EstimatedHrs: 8,
+			ActualHrs:    6,
+			StartDate:    "2025-01-01",
+			EndDate:      "2025-01-05",
 		},
+		wantErrs: 0,
+	},
 		{
 			name: "missing required fields",
 			task: Task{
 				Description: "Missing required fields",
 			},
 			wantErrs: 2, // id, name
-		},		{
+		}, {
 			name: "invalid progress and negative hours",
 			task: Task{
 				ID:           "task-1",
@@ -399,7 +399,7 @@ func TestFormatConsistencyRule_ValidateTask(t *testing.T) {
 				ActualHrs:    -1,    // invalid
 			},
 			wantErrs: 3,
-		},		{
+		}, {
 			name: "time overrun",
 			task: Task{
 				ID:           "task-1",

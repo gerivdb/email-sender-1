@@ -10,14 +10,14 @@ import (
 
 // Phase3ValidationResult contient les résultats de validation
 type Phase3ValidationResult struct {
-	ManagerName	string
-	FilesFound	[]string
-	LinesOfCode	int
-	HasInterfaces	bool
-	HasTests	bool
-	CompilationOK	bool
-	Features	[]string
-	Issues		[]string
+	ManagerName   string
+	FilesFound    []string
+	LinesOfCode   int
+	HasInterfaces bool
+	HasTests      bool
+	CompilationOK bool
+	Features      []string
+	Issues        []string
 }
 
 // validatePhase3Implementations valide que toutes les fonctionnalités Phase 3 sont implémentées
@@ -37,10 +37,10 @@ func validatePhase3Implementations() error {
 	for _, manager := range managers {
 		fmt.Printf("\n📂 Validation du %s...\n", manager)
 		result := &Phase3ValidationResult{
-			ManagerName:	manager,
-			FilesFound:	[]string{},
-			Features:	[]string{},
-			Issues:		[]string{},
+			ManagerName: manager,
+			FilesFound:  []string{},
+			Features:    []string{},
+			Issues:      []string{},
 		}
 
 		managerPath := filepath.Join(baseDir, manager)

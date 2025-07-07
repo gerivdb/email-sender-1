@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"./interfaces"	// Added import
+	"./interfaces" // Added import
 	"go.uber.org/zap"
 )
 
@@ -28,20 +28,20 @@ type SecurityManager interface {
 	ValidateAPIKey(ctx context.Context, key string) (bool, error)
 	EncryptData(data []byte) ([]byte, error)
 	DecryptData(encryptedData []byte) ([]byte, error)
-	ScanForVulnerabilities(ctx context.Context, dependencies []interfaces.DependencyMetadata) (*interfaces.VulnerabilityReport, error)	// Changed to interfaces types
+	ScanForVulnerabilities(ctx context.Context, dependencies []interfaces.DependencyMetadata) (*interfaces.VulnerabilityReport, error) // Changed to interfaces types
 	HealthCheck(ctx context.Context) error
 	Cleanup() error
 }
 
 // securityManagerImpl implements SecurityManager with ErrorManager integration
 type securityManagerImpl struct {
-	logger		*zap.Logger
-	errorManager	ErrorManager	// Assuming ErrorManager is a local interface or type for now
-	secretStore	map[string]string
-	apiKeys		map[string]string
-	encryptionKey	[]byte
-	gcm		cipher.AEAD
-	vulnerabilityDB	map[string]*interfaces.Vulnerability	// Changed to interfaces.Vulnerability
+	logger          *zap.Logger
+	errorManager    ErrorManager // Assuming ErrorManager is a local interface or type for now
+	secretStore     map[string]string
+	apiKeys         map[string]string
+	encryptionKey   []byte
+	gcm             cipher.AEAD
+	vulnerabilityDB map[string]*interfaces.Vulnerability // Changed to interfaces.Vulnerability
 }
 
 // ErrorManager interface for local implementation (if not sourced from a shared package)
@@ -53,28 +53,28 @@ type ErrorManager interface {
 
 // ErrorEntry represents an error entry (local type)
 type ErrorEntry struct {
-	ID		string	`json:"id"`
-	Timestamp	string	`json:"timestamp"`
-	Level		string	`json:"level"`
-	Component	string	`json:"component"`
-	Operation	string	`json:"operation"`
-	Message		string	`json:"message"`
-	Details		string	`json:"details,omitempty"`
+	ID        string `json:"id"`
+	Timestamp string `json:"timestamp"`
+	Level     string `json:"level"`
+	Component string `json:"component"`
+	Operation string `json:"operation"`
+	Message   string `json:"message"`
+	Details   string `json:"details,omitempty"`
 }
 
 // ErrorHooks for error processing (local type)
 type ErrorHooks struct {
-	PreProcess	func(error) error
-	PostProcess	func(error) error
+	PreProcess  func(error) error
+	PostProcess func(error) error
 }
 
 // NewSecurityManager creates a new SecurityManager instance
 func NewSecurityManager(logger *zap.Logger) SecurityManager {
 	return &securityManagerImpl{
-		logger:			logger,
-		secretStore:		make(map[string]string),
-		apiKeys:		make(map[string]string),
-		vulnerabilityDB:	initializeVulnerabilityDB(),	// This will now initialize with *interfaces.Vulnerability
+		logger:          logger,
+		secretStore:     make(map[string]string),
+		apiKeys:         make(map[string]string),
+		vulnerabilityDB: initializeVulnerabilityDB(), // This will now initialize with *interfaces.Vulnerability
 	}
 }
 
@@ -185,17 +185,17 @@ func (sm *securityManagerImpl) ScanForVulnerabilities(ctx context.Context, depen
 	sm.logger.Info("Scanning dependencies for vulnerabilities", zap.Int("count", len(dependencies)))
 
 	report := &interfaces.VulnerabilityReport{
-		Timestamp:		time.Now(),
-		Vulnerabilities:	make([]interfaces.Vulnerability, 0),
-		TotalScanned:		len(dependencies),
+		Timestamp:       time.Now(),
+		Vulnerabilities: make([]interfaces.Vulnerability, 0),
+		TotalScanned:    len(dependencies),
 	}
 	var criticalCount, highCount, mediumCount, lowCount int
 
 	for _, dep := range dependencies {
-		vulnKey := fmt.Sprintf("%s@%s", dep.Name, dep.Version)	// Using fields from interfaces.DependencyMetadata
+		vulnKey := fmt.Sprintf("%s@%s", dep.Name, dep.Version) // Using fields from interfaces.DependencyMetadata
 		if vuln, exists := sm.vulnerabilityDB[vulnKey]; exists {
 			report.Vulnerabilities = append(report.Vulnerabilities, *vuln)
-			switch vuln.Severity {	// Assuming Severity uses strings like "CRITICAL", "HIGH" etc.
+			switch vuln.Severity { // Assuming Severity uses strings like "CRITICAL", "HIGH" etc.
 			case "CRITICAL":
 				criticalCount++
 			case "HIGH":
@@ -243,31 +243,31 @@ func (sm *securityManagerImpl) checkForPatternVulnerabilities(dep interfaces.Dep
 }
 
 // initializeVulnerabilityDB initializes the vulnerability database
-func initializeVulnerabilityDB() map[string]*interfaces.Vulnerability {	// Changed to store *interfaces.Vulnerability
+func initializeVulnerabilityDB() map[string]*interfaces.Vulnerability { // Changed to store *interfaces.Vulnerability
 	db := make(map[string]*interfaces.Vulnerability)
 
 	db["lodash@4.17.20"] = &interfaces.Vulnerability{
-		ID:		"SNYK-JS-LODASH-1040724",	// Example ID
-		PackageName:	"lodash",
-		Version:	"4.17.20",
-		Severity:	"HIGH",	// Example, align with your severity scale
-		Description:	"Prototype pollution vulnerability",
-		CVEIDs:		[]string{"CVE-2021-23337"},
-		FixedIn:	[]string{"4.17.21"},
-		CVSS:		7.5,					// Example CVSS score
-		PublishedAt:	time.Now().Add(-30 * 24 * time.Hour),	// Example date
+		ID:          "SNYK-JS-LODASH-1040724", // Example ID
+		PackageName: "lodash",
+		Version:     "4.17.20",
+		Severity:    "HIGH", // Example, align with your severity scale
+		Description: "Prototype pollution vulnerability",
+		CVEIDs:      []string{"CVE-2021-23337"},
+		FixedIn:     []string{"4.17.21"},
+		CVSS:        7.5,                                  // Example CVSS score
+		PublishedAt: time.Now().Add(-30 * 24 * time.Hour), // Example date
 	}
 
 	db["express@4.16.0"] = &interfaces.Vulnerability{
-		ID:		"SNYK-JS-EXPRESS-12345",
-		PackageName:	"express",
-		Version:	"4.16.0",
-		Severity:	"MEDIUM",
-		Description:	"Open redirect vulnerability",
-		CVEIDs:		[]string{"CVE-2022-24999"},
-		FixedIn:	[]string{"4.18.0"},
-		CVSS:		6.1,
-		PublishedAt:	time.Now().Add(-60 * 24 * time.Hour),
+		ID:          "SNYK-JS-EXPRESS-12345",
+		PackageName: "express",
+		Version:     "4.16.0",
+		Severity:    "MEDIUM",
+		Description: "Open redirect vulnerability",
+		CVEIDs:      []string{"CVE-2022-24999"},
+		FixedIn:     []string{"4.18.0"},
+		CVSS:        6.1,
+		PublishedAt: time.Now().Add(-60 * 24 * time.Hour),
 	}
 
 	return db
@@ -313,7 +313,7 @@ func (sm *securityManagerImpl) Cleanup() error {
 
 func main() {
 	logger, _ := zap.NewDevelopment()
-	defer logger.Sync()	// nolint:errcheck
+	defer logger.Sync() // nolint:errcheck
 
 	sm := NewSecurityManager(logger)
 

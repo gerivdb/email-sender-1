@@ -39,10 +39,10 @@ type ExportOptions struct {
 
 // ImportOptions configures the import process
 type ImportOptions struct {
-	OverwriteExisting bool   `json:"overwrite_existing"`
-	ValidateBeforeImport bool `json:"validate_before_import"`
-	CreateBackup      bool   `json:"create_backup"`
-	MergeStrategy     string `json:"merge_strategy"` // "replace", "merge", "append"
+	OverwriteExisting    bool   `json:"overwrite_existing"`
+	ValidateBeforeImport bool   `json:"validate_before_import"`
+	CreateBackup         bool   `json:"create_backup"`
+	MergeStrategy        string `json:"merge_strategy"` // "replace", "merge", "append"
 }
 
 // Template represents a predefined key binding template
@@ -154,7 +154,7 @@ func (ke *KeyExporter) ExportTemplate(profileID string, templateInfo Template) e
 // LoadPresets loads predefined key binding templates
 func (ki *KeyImporter) LoadPresets() ([]Template, error) {
 	templatesDir := filepath.Join(ki.manager.configDir, "templates")
-	
+
 	files, err := filepath.Glob(filepath.Join(templatesDir, "*.json"))
 	if err != nil {
 		return nil, fmt.Errorf("failed to find template files: %w", err)
@@ -346,7 +346,7 @@ func (ke *KeyExporter) prepareExportData(profile *KeyProfile, options ExportOpti
 				filteredBindings = append(filteredBindings, binding)
 			}
 		}
-		
+
 		if len(filteredBindings) > 0 {
 			keyMap.Bindings = filteredBindings
 			filteredKeyMaps[name] = keyMap
@@ -459,23 +459,23 @@ func (ki *KeyImporter) mergeProfiles(existing *KeyProfile, imported *KeyProfile)
 		if existingKeyMap, exists := merged.KeyMaps[name]; exists {
 			// Merge bindings
 			bindingMap := make(map[string]KeyBinding)
-			
+
 			// Add existing bindings
 			for _, binding := range existingKeyMap.Bindings {
 				bindingMap[binding.ID] = binding
 			}
-			
+
 			// Add/override with imported bindings
 			for _, binding := range importedKeyMap.Bindings {
 				bindingMap[binding.ID] = binding
 			}
-			
+
 			// Convert back to slice
 			mergedBindings := make([]KeyBinding, 0, len(bindingMap))
 			for _, binding := range bindingMap {
 				mergedBindings = append(mergedBindings, binding)
 			}
-			
+
 			existingKeyMap.Bindings = mergedBindings
 			existingKeyMap.UpdatedAt = time.Now()
 			merged.KeyMaps[name] = existingKeyMap

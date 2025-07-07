@@ -9,29 +9,29 @@ import (
 )
 
 type Config struct {
-	DryRun		bool	`json:"dryRun"`
-	Verbose		bool	`json:"verbose"`
-	SyncStrategy	string	`json:"syncStrategy"`
-	MaxConcurrency	int	`json:"maxConcurrency"`
-	TimeoutSeconds	int	`json:"timeoutSeconds"`
+	DryRun         bool   `json:"dryRun"`
+	Verbose        bool   `json:"verbose"`
+	SyncStrategy   string `json:"syncStrategy"`
+	MaxConcurrency int    `json:"maxConcurrency"`
+	TimeoutSeconds int    `json:"timeoutSeconds"`
 }
 
 func main() {
 	var (
-		dryRun		= flag.Bool("dry-run", false, "Show what would be done without making changes")
-		verbose		= flag.Bool("verbose", false, "Enable verbose output")
-		strategy	= flag.String("strategy", "auto-ff", "Sync strategy: auto-ff, manual-review, force-sync")
-		configFile	= flag.String("config", "", "Path to configuration file")
-		action		= flag.String("action", "sync", "Action to perform: sync, status, cleanup")
+		dryRun     = flag.Bool("dry-run", false, "Show what would be done without making changes")
+		verbose    = flag.Bool("verbose", false, "Enable verbose output")
+		strategy   = flag.String("strategy", "auto-ff", "Sync strategy: auto-ff, manual-review, force-sync")
+		configFile = flag.String("config", "", "Path to configuration file")
+		action     = flag.String("action", "sync", "Action to perform: sync, status, cleanup")
 	)
 	flag.Parse()
 
 	config := Config{
-		DryRun:		*dryRun,
-		Verbose:	*verbose,
-		SyncStrategy:	*strategy,
-		MaxConcurrency:	4,
-		TimeoutSeconds:	30,
+		DryRun:         *dryRun,
+		Verbose:        *verbose,
+		SyncStrategy:   *strategy,
+		MaxConcurrency: 4,
+		TimeoutSeconds: 30,
 	}
 
 	if *configFile != "" {

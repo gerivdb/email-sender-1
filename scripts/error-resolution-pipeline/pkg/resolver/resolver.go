@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"go/ast"
 	"go/format"
-	"go/parser"
 	"go/token"
 	"io/ioutil"
 	"os"
@@ -52,13 +51,13 @@ const (
 
 // FixResult contient le résultat d'une correction
 type FixResult struct {
-	Applied     bool              `json:"applied"`
-	ModifiedAST *ast.File         `json:"-"`
-	Changes     []ChangeDetail    `json:"changes"`
-	Confidence  float64           `json:"confidence"`
-	Backup      string            `json:"backup_path,omitempty"`
-	Warnings    []string          `json:"warnings"`
-	Applied_At  time.Time         `json:"applied_at"`
+	Applied     bool           `json:"applied"`
+	ModifiedAST *ast.File      `json:"-"`
+	Changes     []ChangeDetail `json:"changes"`
+	Confidence  float64        `json:"confidence"`
+	Backup      string         `json:"backup_path,omitempty"`
+	Warnings    []string       `json:"warnings"`
+	Applied_At  time.Time      `json:"applied_at"`
 }
 
 // ChangeDetail décrit une modification apportée
@@ -73,19 +72,19 @@ type ChangeDetail struct {
 
 // KnowledgeBase contient les patterns de résolution
 type KnowledgeBase struct {
-	Patterns   map[string]FixPattern `json:"patterns"`
-	UpdatedAt  time.Time             `json:"updated_at"`
-	Version    string                `json:"version"`
+	Patterns  map[string]FixPattern `json:"patterns"`
+	UpdatedAt time.Time             `json:"updated_at"`
+	Version   string                `json:"version"`
 }
 
 // FixPattern définit un pattern de résolution
 type FixPattern struct {
-	Name         string            `json:"name"`
-	ErrorTypes   []string          `json:"error_types"`
-	Template     string            `json:"template"`
-	Safety       SafetyLevel       `json:"safety"`
-	Preconditions []string         `json:"preconditions"`
-	Examples     []FixExample      `json:"examples"`
+	Name          string       `json:"name"`
+	ErrorTypes    []string     `json:"error_types"`
+	Template      string       `json:"template"`
+	Safety        SafetyLevel  `json:"safety"`
+	Preconditions []string     `json:"preconditions"`
+	Examples      []FixExample `json:"examples"`
 }
 
 // FixExample contient un exemple de fix
@@ -264,11 +263,11 @@ func (ar *AutoResolver) applyFix(source []byte, fixResult *FixResult) ([]byte, e
 // groupErrorsByFile groupe les erreurs par fichier
 func (ar *AutoResolver) groupErrorsByFile(errors []detector.DetectedError) map[string][]detector.DetectedError {
 	groups := make(map[string][]detector.DetectedError)
-	
+
 	for _, error := range errors {
 		groups[error.File] = append(groups[error.File], error)
 	}
-	
+
 	return groups
 }
 

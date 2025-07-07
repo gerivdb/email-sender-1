@@ -1,5 +1,5 @@
 // development/hooks/commit-interceptor/router.go
-package commit_interceptor
+package commitinterceptor
 
 import (
 	"fmt"
@@ -10,13 +10,13 @@ import (
 
 // BranchDecision represents a routing decision for a commit
 type BranchDecision struct {
-	TargetBranch		string			`json:"target_branch"`
-	CreateBranch		bool			`json:"create_branch"`
-	MergeStrategy		string			`json:"merge_strategy"`		// auto, manual, fast-forward
-	ConflictStrategy	string			`json:"conflict_strategy"`	// abort, resolve, skip
-	Metadata		map[string]string	`json:"metadata"`
-	Reason			string			`json:"reason"`
-	Confidence		float64			`json:"confidence"`
+	TargetBranch     string            `json:"target_branch"`
+	CreateBranch     bool              `json:"create_branch"`
+	MergeStrategy    string            `json:"merge_strategy"`    // auto, manual, fast-forward
+	ConflictStrategy string            `json:"conflict_strategy"` // abort, resolve, skip
+	Metadata         map[string]string `json:"metadata"`
+	Reason           string            `json:"reason"`
+	Confidence       float64           `json:"confidence"`
 }
 
 // BranchRouter handles routing decisions for commits
@@ -287,9 +287,9 @@ func (br *BranchRouter) ValidateRoutingDecision(decision *BranchDecision) error 
 	}
 
 	validStrategies := map[string]bool{
-		"auto":		true,
-		"manual":	true,
-		"fast-forward":	true,
+		"auto":         true,
+		"manual":       true,
+		"fast-forward": true,
 	}
 
 	if !validStrategies[decision.MergeStrategy] {
@@ -297,10 +297,10 @@ func (br *BranchRouter) ValidateRoutingDecision(decision *BranchDecision) error 
 	}
 
 	validConflictStrategies := map[string]bool{
-		"abort":	true,
-		"resolve":	true,
-		"skip":		true,
-		"":		true,	// Empty is allowed (default behavior)
+		"abort":   true,
+		"resolve": true,
+		"skip":    true,
+		"":        true, // Empty is allowed (default behavior)
 	}
 
 	if !validConflictStrategies[decision.ConflictStrategy] {

@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	log.Println("cmd/gen_read_file_spec/gen_read_file_spec.go: main() called")
 	outputFile := "specs/read_file_spec.md"
 
 	// Ensure the specs directory exists
@@ -26,7 +27,7 @@ func main() {
 	template := `
 # Spécification fonctionnelle et technique pour read_file
 
-Ce document détaille la spécification des améliorations apportées à la fonction \`read_file\`, basées sur l'analyse des besoins utilisateurs.
+Ce document détaille la spécification des améliorations apportées à la fonction `read_file`, basées sur l'analyse des besoins utilisateurs.
 
 ## 1. Fonctionnalités
 

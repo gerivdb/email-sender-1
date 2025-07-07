@@ -17,9 +17,9 @@ func main() {
 
 	// Initialize Redis client
 	rdb := redis.NewClient(&redis.Options{
-		Addr:		"localhost:6379",
-		Password:	"",
-		DB:		0,
+		Addr:     "localhost:6379",
+		Password: "",
+		DB:       0,
 	})
 
 	ctx := context.Background()
@@ -42,9 +42,9 @@ func main() {
 	fmt.Println("\n📝 Demo 1: Setting cache entries with type-specific TTLs")
 
 	entries := []struct {
-		key		string
-		value		string
-		dataType	ttl.DataType
+		key      string
+		value    string
+		dataType ttl.DataType
 	}{
 		{"user:123:profile", `{"name":"John","email":"john@example.com"}`, ttl.DefaultValues},
 		{"stats:daily:2024", `{"visits":1000,"conversions":50}`, ttl.Statistics},
@@ -128,7 +128,7 @@ func generatePerformanceReport(manager *ttl.TTLManager, analyzer *ttl.TTLAnalyze
 	fmt.Printf("  📊 Optimizations Applied: %d\n", analyzerMetrics.OptimizationsApplied)
 
 	// Calculate simulated performance score
-	performanceScore := 85	// Simulated score
+	performanceScore := 85 // Simulated score
 	fmt.Printf("  🏆 Performance Score: %d/100\n", performanceScore)
 
 	// Generate recommendations
@@ -140,7 +140,7 @@ func generatePerformanceReport(manager *ttl.TTLManager, analyzer *ttl.TTLAnalyze
 	fmt.Printf("  💡 Recommendations: %d found\n", len(recommendations))
 
 	for i, rec := range recommendations {
-		if i < 3 {	// Show first 3 recommendations
+		if i < 3 { // Show first 3 recommendations
 			fmt.Printf("    %d. %s\n", i+1, rec)
 		}
 	}
@@ -148,9 +148,9 @@ func generatePerformanceReport(manager *ttl.TTLManager, analyzer *ttl.TTLAnalyze
 
 func calculatePerformanceScore(metrics *ttl.AnalyzerMetrics) int {
 	// Simple scoring algorithm
-	hitRateScore := int(metrics.HitRate * 40)		// 40 points max
-	evictionScore := int((1 - metrics.EvictionRate) * 30)	// 30 points max
-	utilizationScore := int(metrics.TTLUtilization * 30)	// 30 points max
+	hitRateScore := int(metrics.HitRate * 40)             // 40 points max
+	evictionScore := int((1 - metrics.EvictionRate) * 30) // 30 points max
+	utilizationScore := int(metrics.TTLUtilization * 30)  // 30 points max
 
 	score := hitRateScore + evictionScore + utilizationScore
 	if score > 100 {

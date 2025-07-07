@@ -2,7 +2,6 @@ package indexing
 
 // DocumentReader interface defines methods for reading different document formats
 // Use IndexingDocument for local use
-//
 type DocumentReader interface {
 	// Read reads the content and metadata from a file
 	Read(path string) (*IndexingDocument, error)

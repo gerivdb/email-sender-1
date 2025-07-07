@@ -15,15 +15,9 @@ import (
 func main() {
 	fmt.Println("Starting Orchestration of Phase 4: Extraction and Parsing.")
 
-<<<<<<< HEAD:cmd/go/extractionparser/extractionparser.go
-	// Définir les chemins de sortie
-	outputDir := "../../output/phase4"	// Un répertoire pour les sorties
-	os.MkdirAll(outputDir, os.ModePerm)	// Créer le répertoire si nécessaire
-=======
 	// Define output paths
-	outpuDir := "../../output/phase4"  // A directory for the outputs
+	outputDir := "../../output/phase4"  // A directory for the outputs
 	os.MkdirAll(outputDir, os.ModePerm) // Create the directory if it doesn't exist
->>>>>>> migration/gateway-manager-v77:cmd/go/extractionparser/main.go
 
 	extractionScanPath := filepath.Join(outputDir, "extraction-parsing-scan.json")
 	gapAnalysisPath := filepath.Join(outputDir, "EXTRACTION_PARSING_GAP_ANALYSIS.md")
@@ -34,7 +28,7 @@ func main() {
 	// Simulate a source path for extraction. In reality, this would be a path to real data.
 	// For this test, we will create a temporary file.
 	tempSourceFile := filepath.Join(outputDir, "simulated_source_data.txt")
-	err := os.WriteFile(tempSourceFile, []byte("This is simulated data content for extraction."), 0644)
+	err := os.WriteFile(tempSourceFile, []byte("This is simulated data content for extraction."), 0o644)
 	if err != nil {
 		log.Fatalf("Error creating simulated source file: %v", err)
 	}
@@ -93,7 +87,7 @@ Detected gaps: %v
 		filepath.Base(gapAnalysisPath), gapAnalysisPath,
 		time.Now().Format(time.RFC3339), analysisResult["gap_found"])
 
-	err = os.WriteFile(phase4ReportPath, []byte(reportContent), 0644)
+	err = os.WriteFile(phase4ReportPath, []byte(reportContent), 0o644)
 	if err != nil {
 		log.Fatalf("Error generating Phase 4 report: %v", err)
 	}

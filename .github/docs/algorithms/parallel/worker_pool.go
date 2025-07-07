@@ -43,16 +43,16 @@ type Result struct {
 
 // WorkerPool implémente un pool de workers avec gestion de priorité et timeouts
 type WorkerPool struct {
-	maxWorkers    int
-	taskQueue     chan Task
-	results       chan Result
-	wg            sync.WaitGroup
-	ctx           context.Context
-	cancel        context.CancelFunc
-	stats         WorkerPoolStats
-	statsMutex    sync.RWMutex
-	isRunning     int32
-	maxQueueSize  int
+	maxWorkers   int
+	taskQueue    chan Task
+	results      chan Result
+	wg           sync.WaitGroup
+	ctx          context.Context
+	cancel       context.CancelFunc
+	stats        WorkerPoolStats
+	statsMutex   sync.RWMutex
+	isRunning    int32
+	maxQueueSize int
 }
 
 // NewWorkerPool crée un nouveau worker pool
@@ -139,7 +139,7 @@ func (wp *WorkerPool) GetResults() <-chan Result {
 func (wp *WorkerPool) GetStats() WorkerPoolStats {
 	wp.statsMutex.RLock()
 	defer wp.statsMutex.RUnlock()
-	
+
 	return wp.stats
 }
 
@@ -160,22 +160,22 @@ func (wp *WorkerPool) worker(id int) {
 // executeTask exécute une tâche avec timeout si spécifié
 func (wp *WorkerPool) executeTask(task Task) {
 	startTime := time.Now()
-	
+
 	// Créer un contexte avec timeout si spécifié
 	taskCtx := wp.ctx
 	var cancel context.CancelFunc
-	
+
 	if task.Timeout > 0 {
 		taskCtx, cancel = context.WithTimeout(wp.ctx, task.Timeout)
 		defer cancel()
 	}
-	
+
 	// Exécuter la tâche
 	err := task.Execute(taskCtx)
-	
+
 	// Calculer la durée
 	duration := time.Since(startTime)
-	
+
 	// Collecter le résultat
 	result := Result{
 		TaskID:    task.ID,
@@ -184,10 +184,10 @@ func (wp *WorkerPool) executeTask(task Task) {
 		StartTime: startTime,
 		EndTime:   time.Now(),
 	}
-	
+
 	// Mettre à jour les statistiques
 	wp.updateStats(err == nil, duration)
-	
+
 	// Envoyer le résultat
 	select {
 	case wp.results <- result:
@@ -203,20 +203,20 @@ func (wp *WorkerPool) executeTask(task Task) {
 func (wp *WorkerPool) updateStats(success bool, duration time.Duration) {
 	wp.statsMutex.Lock()
 	defer wp.statsMutex.Unlock()
-	
+
 	wp.stats.JobsProcessed++
 	wp.stats.TotalTime += int64(duration)
-	
+
 	if success {
 		wp.stats.JobsSucceeded++
 	} else {
 		wp.stats.JobsFailed++
 	}
-	
+
 	if wp.stats.JobsProcessed > 0 {
 		wp.stats.AverageTime = time.Duration(wp.stats.TotalTime / wp.stats.JobsProcessed)
 	}
-	
+
 	// Mettre à jour la charge courante (0.0 - 1.0)
 	wp.stats.CurrentLoad = float64(len(wp.taskQueue)) / float64(wp.maxQueueSize)
 }
@@ -225,7 +225,7 @@ func (wp *WorkerPool) updateStats(success bool, duration time.Duration) {
 func (wp *WorkerPool) updateMaxQueueSize(currentSize int) {
 	wp.statsMutex.Lock()
 	defer wp.statsMutex.Unlock()
-	
+
 	if int64(currentSize) > wp.stats.MaxQueueSize {
 		wp.stats.MaxQueueSize = int64(currentSize)
 	}
@@ -235,7 +235,7 @@ func (wp *WorkerPool) updateMaxQueueSize(currentSize int) {
 func (wp *WorkerPool) statsCollector() {
 	ticker := time.NewTicker(1 * time.Second)
 	defer ticker.Stop()
-	
+
 	for {
 		select {
 		case <-ticker.C:

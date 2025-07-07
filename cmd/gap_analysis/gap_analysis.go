@@ -3,10 +3,12 @@ package gap_analysis
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 )
 
 func main() {
+	log.Println("cmd/gap_analysis/gap_analysis.go: main() called")
 	fmt.Println("# Analyse d'écart pour read_file\n")
 	fmt.Println("Ce rapport compare les usages actuels de `read_file` avec les besoins utilisateurs.\n")
 

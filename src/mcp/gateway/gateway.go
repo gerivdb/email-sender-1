@@ -9,20 +9,20 @@ import (
 
 // MCPResponse représente la structure de réponse MCP
 type MCPResponse struct {
-	Type	string		`json:"type"`
-	Content	interface{}	`json:"content"`
+	Type    string      `json:"type"`
+	Content interface{} `json:"content"`
 }
 
 // MCPRequest représente la structure de requête MCP
 type MCPRequest struct {
-	Type	string		`json:"type"`
-	Content	json.RawMessage	`json:"content"`
+	Type    string          `json:"type"`
+	Content json.RawMessage `json:"content"`
 }
 
 // ToolCallRequest représente une requête d'appel d'outil
 type ToolCallRequest struct {
-	ToolName	string			`json:"tool_name"`
-	Parameters	map[string]interface{}	`json:"parameters"`
+	ToolName   string                 `json:"tool_name"`
+	Parameters map[string]interface{} `json:"parameters"`
 }
 
 // ToolCallResponse représente une réponse d'appel d'outil
@@ -37,46 +37,46 @@ type ListToolsResponse struct {
 
 // Tool représente un outil MCP
 type Tool struct {
-	Name		string		`json:"name"`
-	Description	string		`json:"description"`
-	Schema		interface{}	`json:"schema"`
+	Name        string      `json:"name"`
+	Description string      `json:"description"`
+	Schema      interface{} `json:"schema"`
 }
 
 // DatabaseTool représente un outil de base de données
 type DatabaseTool struct {
-	Name		string
-	Description	string
-	Query		string
-	Parameters	map[string]string
+	Name        string
+	Description string
+	Query       string
+	Parameters  map[string]string
 }
 
 // Définition des outils disponibles
 var databaseTools = []DatabaseTool{
 	{
-		Name:		"get_customers",
-		Description:	"Récupère la liste des clients",
-		Query:		"SELECT * FROM customers LIMIT :limit OFFSET :offset",
+		Name:        "get_customers",
+		Description: "Récupère la liste des clients",
+		Query:       "SELECT * FROM customers LIMIT :limit OFFSET :offset",
 		Parameters: map[string]string{
-			"limit":	"Nombre maximum de résultats à retourner",
-			"offset":	"Nombre de résultats à ignorer",
+			"limit":  "Nombre maximum de résultats à retourner",
+			"offset": "Nombre de résultats à ignorer",
 		},
 	},
 	{
-		Name:		"get_orders",
-		Description:	"Récupère la liste des commandes",
-		Query:		"SELECT * FROM orders LIMIT :limit OFFSET :offset",
+		Name:        "get_orders",
+		Description: "Récupère la liste des commandes",
+		Query:       "SELECT * FROM orders LIMIT :limit OFFSET :offset",
 		Parameters: map[string]string{
-			"limit":	"Nombre maximum de résultats à retourner",
-			"offset":	"Nombre de résultats à ignorer",
+			"limit":  "Nombre maximum de résultats à retourner",
+			"offset": "Nombre de résultats à ignorer",
 		},
 	},
 	{
-		Name:		"search_products",
-		Description:	"Recherche des produits par nom",
-		Query:		"SELECT * FROM products WHERE name LIKE :name LIMIT :limit",
+		Name:        "search_products",
+		Description: "Recherche des produits par nom",
+		Query:       "SELECT * FROM products WHERE name LIKE :name LIMIT :limit",
 		Parameters: map[string]string{
-			"name":		"Nom du produit à rechercher",
-			"limit":	"Nombre maximum de résultats à retourner",
+			"name":  "Nom du produit à rechercher",
+			"limit": "Nombre maximum de résultats à retourner",
 		},
 	},
 }
@@ -136,8 +136,8 @@ func runMCPServer() {
 			response = handleToolCall(request.Content)
 		default:
 			response = MCPResponse{
-				Type:		"error",
-				Content:	fmt.Sprintf("Type de requête non supporté: %s", request.Type),
+				Type:    "error",
+				Content: fmt.Sprintf("Type de requête non supporté: %s", request.Type),
 			}
 		}
 
@@ -156,28 +156,28 @@ func handleListTools() MCPResponse {
 	for _, dbTool := range databaseTools {
 		// Créer le schéma des paramètres
 		schema := map[string]interface{}{
-			"type":		"object",
-			"properties":	map[string]interface{}{},
-			"required":	[]string{},
+			"type":       "object",
+			"properties": map[string]interface{}{},
+			"required":   []string{},
 		}
 		properties := schema["properties"].(map[string]interface{})
 
 		for paramName, paramDesc := range dbTool.Parameters {
 			properties[paramName] = map[string]interface{}{
-				"type":		"string",
-				"description":	paramDesc,
+				"type":        "string",
+				"description": paramDesc,
 			}
 		}
 
 		tools = append(tools, Tool{
-			Name:		dbTool.Name,
-			Description:	dbTool.Description,
-			Schema:		schema,
+			Name:        dbTool.Name,
+			Description: dbTool.Description,
+			Schema:      schema,
 		})
 	}
 
 	return MCPResponse{
-		Type:	"list_tools_response",
+		Type: "list_tools_response",
 		Content: ListToolsResponse{
 			Tools: tools,
 		},
@@ -190,8 +190,8 @@ func handleToolCall(content json.RawMessage) MCPResponse {
 	err := json.Unmarshal(content, &toolCall)
 	if err != nil {
 		return MCPResponse{
-			Type:		"error",
-			Content:	fmt.Sprintf("Erreur lors du décodage de la requête tool_call: %v", err),
+			Type:    "error",
+			Content: fmt.Sprintf("Erreur lors du décodage de la requête tool_call: %v", err),
 		}
 	}
 
@@ -206,8 +206,8 @@ func handleToolCall(content json.RawMessage) MCPResponse {
 
 	if dbTool == nil {
 		return MCPResponse{
-			Type:		"error",
-			Content:	fmt.Sprintf("Outil non trouvé: %s", toolCall.ToolName),
+			Type:    "error",
+			Content: fmt.Sprintf("Outil non trouvé: %s", toolCall.ToolName),
 		}
 	}
 
@@ -244,11 +244,11 @@ func handleToolCall(content json.RawMessage) MCPResponse {
 	}
 
 	return MCPResponse{
-		Type:	"tool_call_response",
+		Type: "tool_call_response",
 		Content: ToolCallResponse{
 			Result: map[string]interface{}{
-				"query":	query,
-				"results":	result,
+				"query":   query,
+				"results": result,
 			},
 		},
 	}

@@ -18,7 +18,7 @@ import (
 
 // Configuration constants (can be kept here or made configurable)
 const (
-	ToolVersion    = "3.0.0" // This might be better as a variable in ManagerToolkit or from config
+	ToolVersion = "3.0.0" // This might be better as a variable in ManagerToolkit or from config
 )
 
 // ManagerToolkit structure
@@ -28,7 +28,7 @@ type ManagerToolkit struct {
 	FileSet   *token.FileSet
 	BaseDir   string
 	StartTime time.Time
-	Stats     *platform.ToolkitStats  // Use platform.ToolkitStats
+	Stats     *platform.ToolkitStats // Use platform.ToolkitStats
 }
 
 // NewManagerToolkit creates a new toolkit instance
@@ -84,8 +84,8 @@ func LoadOrCreateConfig(configPath, baseDir string) (*ToolkitConfig, error) {
 func CreateDefaultConfigStruct(baseDir string) *ToolkitConfig {
 	// Ensure this aligns with toolkit.ToolkitConfig fields
 	return &ToolkitConfig{
-		MaxWorkers: 4, // Example default
-		Plugins:    []string{},
+		MaxWorkers:   4, // Example default
+		Plugins:      []string{},
 		EnableDryRun: false, // Default dry run to false
 		// BaseDir is not part of ToolkitConfig struct, it's a runtime param for NewManagerToolkit
 		// LogPath can be set here if desired, e.g., "toolkit.log"
@@ -151,20 +151,22 @@ func (mt *ManagerToolkit) ExecuteOperation(ctx context.Context, op Operation, op
 
 	globalRegistry := registry.GetGlobalRegistry()
 	if globalRegistry != nil {
-		var toolImpl ToolkitOperation // Explicitly use the interface type
+		var toolImpl ToolkitOperation                      // Explicitly use the interface type
 		toolImpl, errGetTool := globalRegistry.GetTool(op) // op is already toolkit.Operation
 		if errGetTool == nil && toolImpl != nil {
 			mt.Logger.Info("Using registered tool: %s", toolImpl.String())
 			// Ensure DryRun from options is respected if the tool doesn't directly see mt.Config
-            if opts == nil { opts = &OperationOptions{} } // Ensure opts is not nil
-            opts.DryRun = mt.Config.EnableDryRun // Propagate dry run setting
+			if opts == nil {
+				opts = &OperationOptions{}
+			} // Ensure opts is not nil
+			opts.DryRun = mt.Config.EnableDryRun // Propagate dry run setting
 			err = toolImpl.Execute(ctx, opts)
 		} else {
 			if errGetTool != nil {
 				mt.Logger.Debug("Tool for operation '%s' not found in registry: %v. Falling back to manual dispatch.", string(op), errGetTool)
 			} else if toolImpl == nil {
-                 mt.Logger.Debug("Tool for operation '%s' resolved to nil in registry. Falling back to manual dispatch.", string(op))
-            }
+				mt.Logger.Debug("Tool for operation '%s' resolved to nil in registry. Falling back to manual dispatch.", string(op))
+			}
 			err = mt.manualDispatch(ctx, op, opts) // Fallback to manual dispatch
 		}
 	} else {
@@ -191,9 +193,11 @@ func (mt *ManagerToolkit) ExecuteOperation(ctx context.Context, op Operation, op
 // This is effectively the switch statement from the original manager_toolkit.go.
 // The CLI's local Operation constants (OpAnalyze, OpMigrate, etc.) need to be mapped to toolkit.Operation strings.
 func (mt *ManagerToolkit) manualDispatch(ctx context.Context, op Operation, opts *OperationOptions) error {
-    mt.Logger.Info("Manually dispatching operation: %s", string(op))
-    if opts == nil { opts = &OperationOptions{} }
-    opts.DryRun = mt.Config.EnableDryRun // Ensure dry run is set
+	mt.Logger.Info("Manually dispatching operation: %s", string(op))
+	if opts == nil {
+		opts = &OperationOptions{}
+	}
+	opts.DryRun = mt.Config.EnableDryRun // Ensure dry run is set
 
 	// These string values come from toolkit.Operation constants if they match,
 	// or from CLI-specific operations.
@@ -245,18 +249,17 @@ func (mt *ManagerToolkit) manualDispatch(ctx context.Context, op Operation, opts
 	// OpNormalizeNaming: "normalize-naming" (toolkit.NormalizeNaming is same)
 
 	// If the string value "syntax-check" was passed, and it's different from toolkit.SyntaxCheck ("check-syntax")
-    // then it would fall to default. The CLI needs to pass the exact string values defined in toolkit.Operation constants.
-    // The original CLI defined its own Operation type and constants. Now, we assume `op` is one of toolkit.Operation.
-    // The switch above handles toolkit.Operation values. If the CLI passes strings like "analyze",
-    // they need to be converted to toolkit.Operation type before calling ExecuteOperation.
-    // The current ExecuteOperation signature takes toolkit.Operation, so the mapping happens before this call.
-    // This manualDispatch is a fallback if registry lookup fails.
+	// then it would fall to default. The CLI needs to pass the exact string values defined in toolkit.Operation constants.
+	// The original CLI defined its own Operation type and constants. Now, we assume `op` is one of toolkit.Operation.
+	// The switch above handles toolkit.Operation values. If the CLI passes strings like "analyze",
+	// they need to be converted to toolkit.Operation type before calling ExecuteOperation.
+	// The current ExecuteOperation signature takes toolkit.Operation, so the mapping happens before this call.
+	// This manualDispatch is a fallback if registry lookup fails.
 
 	default:
 		return fmt.Errorf("unknown operation for manual dispatch: %s", string(op))
 	}
 }
-
 
 // Specific operation runner methods (RunStructValidation, etc.)
 // These methods now use types from their respective imported packages (validation, correction, analysis, migration)
@@ -292,9 +295,16 @@ func (mt *ManagerToolkit) RunImportConflictResolution(ctx context.Context, opts 
 		return fmt.Errorf("import conflict resolution failed: %w", err)
 	}
 	metrics := resolver.CollectMetrics()
-	if filesAnalyzed, ok := metrics["files_analyzed"].(int); ok { mt.Stats.FilesAnalyzed += filesAnalyzed; mt.Stats.FilesProcessed += filesAnalyzed }
-	if filesModified, ok := metrics["files_modified"].(int); ok { mt.Stats.FilesModified += filesModified }
-	if importsFixed, ok := metrics["imports_fixed"].(int); ok { mt.Stats.ImportsFixed += importsFixed }
+	if filesAnalyzed, ok := metrics["files_analyzed"].(int); ok {
+		mt.Stats.FilesAnalyzed += filesAnalyzed
+		mt.Stats.FilesProcessed += filesAnalyzed
+	}
+	if filesModified, ok := metrics["files_modified"].(int); ok {
+		mt.Stats.FilesModified += filesModified
+	}
+	if importsFixed, ok := metrics["imports_fixed"].(int); ok {
+		mt.Stats.ImportsFixed += importsFixed
+	}
 	return nil
 }
 
@@ -310,7 +320,10 @@ func (mt *ManagerToolkit) RunDependencyAnalysis(ctx context.Context, opts *Opera
 		return fmt.Errorf("dependency analysis failed: %w", err)
 	}
 	metrics := analyzerImpl.CollectMetrics()
-	if filesAnalyzed, ok := metrics["files_analyzed"].(int); ok { mt.Stats.FilesAnalyzed += filesAnalyzed; mt.Stats.FilesProcessed += filesAnalyzed }
+	if filesAnalyzed, ok := metrics["files_analyzed"].(int); ok {
+		mt.Stats.FilesAnalyzed += filesAnalyzed
+		mt.Stats.FilesProcessed += filesAnalyzed
+	}
 	return nil
 }
 
@@ -327,8 +340,13 @@ func (mt *ManagerToolkit) RunDuplicateTypeDetection(ctx context.Context, opts *O
 		return fmt.Errorf("duplicate type detection failed: %w", err)
 	}
 	metrics := detectorImpl.CollectMetrics()
-	if filesAnalyzed, ok := metrics["files_analyzed"].(int); ok { mt.Stats.FilesAnalyzed += filesAnalyzed; mt.Stats.FilesProcessed += filesAnalyzed }
-	if duplicatesFound, ok := metrics["duplicates_found"].(int); ok { mt.Stats.DuplicatesFound += duplicatesFound }
+	if filesAnalyzed, ok := metrics["files_analyzed"].(int); ok {
+		mt.Stats.FilesAnalyzed += filesAnalyzed
+		mt.Stats.FilesProcessed += filesAnalyzed
+	}
+	if duplicatesFound, ok := metrics["duplicates_found"].(int); ok {
+		mt.Stats.DuplicatesFound += duplicatesFound
+	}
 	return nil
 }
 

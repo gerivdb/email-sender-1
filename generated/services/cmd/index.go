@@ -1,8 +1,8 @@
-
 package cmd
 
 import (
 	"fmt"
+
 	"github.com/spf13/cobra"
 )
 
@@ -13,7 +13,7 @@ var indexCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		file := args[0]
 		collection, _ := cmd.Flags().GetString("collection")
-		
+
 		fmt.Printf("Indexing file: %s into collection: %s\n", file, collection)
 		return nil
 	},

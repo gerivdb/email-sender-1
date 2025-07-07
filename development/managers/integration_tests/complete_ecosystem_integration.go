@@ -74,14 +74,14 @@ func main() {
 
 // EcosystemTestSuite représente l'environnement de test complet
 type EcosystemTestSuite struct {
-	managers	map[string]ManagerInterface
-	vectorClient	*VectorClient
-	coordinator	*CentralCoordinator
-	apiGateway	*APIGateway
-	eventBus	*EventBus
-	cache		*VectorCache
-	connectionPool	*ConnectionPool
-	logger		*zap.Logger
+	managers       map[string]ManagerInterface
+	vectorClient   *VectorClient
+	coordinator    *CentralCoordinator
+	apiGateway     *APIGateway
+	eventBus       *EventBus
+	cache          *VectorCache
+	connectionPool *ConnectionPool
+	logger         *zap.Logger
 }
 
 // ManagerInterface simulation pour les tests
@@ -95,18 +95,18 @@ type ManagerInterface interface {
 }
 
 type ManagerStatus struct {
-	Name		string		`json:"name"`
-	Status		string		`json:"status"`
-	LastCheck	time.Time	`json:"last_check"`
-	Errors		[]string	`json:"errors"`
+	Name      string    `json:"name"`
+	Status    string    `json:"status"`
+	LastCheck time.Time `json:"last_check"`
+	Errors    []string  `json:"errors"`
 }
 
 type ManagerMetrics struct {
-	RequestCount	int64		`json:"request_count"`
-	ResponseTime	time.Duration	`json:"response_time"`
-	ErrorRate	float64		`json:"error_rate"`
-	MemoryUsage	int64		`json:"memory_usage"`
-	CPUUsage	float64		`json:"cpu_usage"`
+	RequestCount int64         `json:"request_count"`
+	ResponseTime time.Duration `json:"response_time"`
+	ErrorRate    float64       `json:"error_rate"`
+	MemoryUsage  int64         `json:"memory_usage"`
+	CPUUsage     float64       `json:"cpu_usage"`
 }
 
 // Structures de simulation pour les tests
@@ -115,40 +115,40 @@ type VectorClient struct {
 }
 
 type CentralCoordinator struct {
-	managers	map[string]ManagerInterface
-	logger		*zap.Logger
+	managers map[string]ManagerInterface
+	logger   *zap.Logger
 }
 
 type APIGateway struct {
-	managers	map[string]ManagerInterface
-	logger		*zap.Logger
+	managers map[string]ManagerInterface
+	logger   *zap.Logger
 }
 
 type EventBus struct {
-	subscribers	map[string][]chan interface{}
-	logger		*zap.Logger
+	subscribers map[string][]chan interface{}
+	logger      *zap.Logger
 }
 
 type VectorCache struct {
-	cache	map[string]interface{}
-	logger	*zap.Logger
+	cache  map[string]interface{}
+	logger *zap.Logger
 }
 
 type ConnectionPool struct {
-	connections	chan interface{}
-	logger		*zap.Logger
+	connections chan interface{}
+	logger      *zap.Logger
 }
 
 func setupTestEcosystem(logger *zap.Logger) *EcosystemTestSuite {
 	return &EcosystemTestSuite{
-		managers:	make(map[string]ManagerInterface),
-		vectorClient:	&VectorClient{logger: logger},
-		coordinator:	&CentralCoordinator{managers: make(map[string]ManagerInterface), logger: logger},
-		apiGateway:	&APIGateway{managers: make(map[string]ManagerInterface), logger: logger},
-		eventBus:	&EventBus{subscribers: make(map[string][]chan interface{}), logger: logger},
-		cache:		&VectorCache{cache: make(map[string]interface{}), logger: logger},
-		connectionPool:	&ConnectionPool{connections: make(chan interface{}, 20), logger: logger},
-		logger:		logger,
+		managers:       make(map[string]ManagerInterface),
+		vectorClient:   &VectorClient{logger: logger},
+		coordinator:    &CentralCoordinator{managers: make(map[string]ManagerInterface), logger: logger},
+		apiGateway:     &APIGateway{managers: make(map[string]ManagerInterface), logger: logger},
+		eventBus:       &EventBus{subscribers: make(map[string][]chan interface{}), logger: logger},
+		cache:          &VectorCache{cache: make(map[string]interface{}), logger: logger},
+		connectionPool: &ConnectionPool{connections: make(chan interface{}, 20), logger: logger},
+		logger:         logger,
 	}
 }
 
@@ -238,7 +238,7 @@ func testAllManagersCommunication(ctx context.Context, logger *zap.Logger) error
 		eventsSent++
 
 		// Simuler réception par d'autres managers
-		receivingManagers := 3 + (i % 5)	// 3-7 managers reçoivent l'événement
+		receivingManagers := 3 + (i % 5) // 3-7 managers reçoivent l'événement
 		eventsReceived += receivingManagers
 
 		time.Sleep(time.Millisecond * 2)
@@ -388,8 +388,8 @@ func testRegressionCompatibility(ctx context.Context, logger *zap.Logger) error 
 	fmt.Println("   - Comparaison performance vs Python...")
 
 	// Simuler benchmark comparatif
-	goPerformance := 150.0		// req/s
-	pythonPerformance := 45.0	// req/s historique
+	goPerformance := 150.0    // req/s
+	pythonPerformance := 45.0 // req/s historique
 	improvement := (goPerformance / pythonPerformance) * 100
 
 	fmt.Printf("   - ✅ Performance Go: %.0f req/s vs Python: %.0f req/s (%.0f%% amélioration)\n",
@@ -402,7 +402,7 @@ func testReliability24h(ctx context.Context, logger *zap.Logger) error {
 	fmt.Println("   - Simulation test de fiabilité 24h...")
 
 	// Simuler 24h en 2 secondes avec événements
-	totalSeconds := 24 * 60 * 60	// 24h en secondes
+	totalSeconds := 24 * 60 * 60 // 24h en secondes
 	simulationDuration := 2 * time.Second
 	intervalNs := simulationDuration.Nanoseconds() / int64(totalSeconds)
 	interval := time.Duration(intervalNs)
@@ -417,7 +417,7 @@ func testReliability24h(ctx context.Context, logger *zap.Logger) error {
 		// Simuler une panne toutes les 1000 itérations
 		if uptime%1000 == 999 {
 			downtime++
-			time.Sleep(interval * 2)	// Simuler brief downtime
+			time.Sleep(interval * 2) // Simuler brief downtime
 		} else {
 			uptime++
 		}
@@ -443,12 +443,12 @@ func testAPIGatewayIntegration(ctx context.Context, logger *zap.Logger) error {
 
 	// Test tous les groupes d'endpoints
 	endpointGroups := map[string][]string{
-		"health":	{"/health", "/ready"},
-		"managers":	{"/api/v1/managers", "/api/v1/managers/test/status"},
-		"vectors":	{"/api/v1/vectors/search", "/api/v1/vectors/upsert"},
-		"config":	{"/api/v1/config/test", "/api/v1/config"},
-		"events":	{"/api/v1/events", "/api/v1/events/subscribe/test"},
-		"monitoring":	{"/api/v1/monitoring/status", "/api/v1/monitoring/metrics"},
+		"health":     {"/health", "/ready"},
+		"managers":   {"/api/v1/managers", "/api/v1/managers/test/status"},
+		"vectors":    {"/api/v1/vectors/search", "/api/v1/vectors/upsert"},
+		"config":     {"/api/v1/config/test", "/api/v1/config"},
+		"events":     {"/api/v1/events", "/api/v1/events/subscribe/test"},
+		"monitoring": {"/api/v1/monitoring/status", "/api/v1/monitoring/metrics"},
 	}
 
 	totalEndpoints := 0
@@ -483,9 +483,9 @@ func testAPIGatewayIntegration(ctx context.Context, logger *zap.Logger) error {
 
 // MockManager implémente ManagerInterface pour les tests
 type MockManager struct {
-	name	string
-	status	string
-	logger	*zap.Logger
+	name   string
+	status string
+	logger *zap.Logger
 }
 
 func (mm *MockManager) Initialize(ctx context.Context, config interface{}) error {
@@ -505,20 +505,20 @@ func (mm *MockManager) Stop(ctx context.Context) error {
 
 func (mm *MockManager) GetStatus() ManagerStatus {
 	return ManagerStatus{
-		Name:		mm.name,
-		Status:		"healthy",
-		LastCheck:	time.Now(),
-		Errors:		[]string{},
+		Name:      mm.name,
+		Status:    "healthy",
+		LastCheck: time.Now(),
+		Errors:    []string{},
 	}
 }
 
 func (mm *MockManager) GetMetrics() ManagerMetrics {
 	return ManagerMetrics{
-		RequestCount:	100,
-		ResponseTime:	time.Millisecond * 25,
-		ErrorRate:	0.1,
-		MemoryUsage:	1024 * 1024,	// 1MB
-		CPUUsage:	15.5,
+		RequestCount: 100,
+		ResponseTime: time.Millisecond * 25,
+		ErrorRate:    0.1,
+		MemoryUsage:  1024 * 1024, // 1MB
+		CPUUsage:     15.5,
 	}
 }
 

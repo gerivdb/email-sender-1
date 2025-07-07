@@ -12,44 +12,44 @@ import (
 
 // ToolManager manages all Go-based tools in the project
 type ToolManager struct {
-	ProjectRoot	string
-	Verbose		bool
-	Parallel	bool
+	ProjectRoot string
+	Verbose     bool
+	Parallel    bool
 }
 
 // Tool represents a Go-based tool
 type Tool struct {
-	Name		string
-	Path		string
-	Description	string
-	Args		[]string
+	Name        string
+	Path        string
+	Description string
+	Args        []string
 }
 
 var availableTools = []Tool{
 	{
-		Name:		"build-production",
-		Path:		"tools/build-production",
-		Description:	"Build optimized production binaries",
+		Name:        "build-production",
+		Path:        "tools/build-production",
+		Description: "Build optimized production binaries",
 	},
 	{
-		Name:		"project-cleanup",
-		Path:		"tools/project-cleanup",
-		Description:	"Clean and organize project files",
+		Name:        "project-cleanup",
+		Path:        "tools/project-cleanup",
+		Description: "Clean and organize project files",
 	},
 	{
-		Name:		"test-runner",
-		Path:		"tools/test-runner",
-		Description:	"Fast parallel test runner",
+		Name:        "test-runner",
+		Path:        "tools/test-runner",
+		Description: "Fast parallel test runner",
 	},
 	{
-		Name:		"project-validator",
-		Path:		"tools/project-validator",
-		Description:	"Validate project setup and dependencies",
+		Name:        "project-validator",
+		Path:        "tools/project-validator",
+		Description: "Validate project setup and dependencies",
 	},
 	{
-		Name:		"config-manager",
-		Path:		"tools/config-manager",
-		Description:	"Manage application configuration",
+		Name:        "config-manager",
+		Path:        "tools/config-manager",
+		Description: "Manage application configuration",
 	},
 }
 
@@ -57,10 +57,10 @@ func main() {
 	manager := &ToolManager{}
 
 	var (
-		listTools	= flag.Bool("list", false, "List available tools")
-		buildAll	= flag.Bool("build-all", false, "Build all tools")
-		toolName	= flag.String("tool", "", "Tool to run")
-		showHelp	= flag.Bool("help", false, "Show help")
+		listTools = flag.Bool("list", false, "List available tools")
+		buildAll  = flag.Bool("build-all", false, "Build all tools")
+		toolName  = flag.String("tool", "", "Tool to run")
+		showHelp  = flag.Bool("help", false, "Show help")
 	)
 
 	flag.BoolVar(&manager.Verbose, "v", false, "Verbose output")
@@ -179,8 +179,8 @@ func buildToolsParallel(manager *ToolManager) error {
 	fmt.Printf("🚀 Building tools in parallel (max %d goroutines)\n", runtime.NumCPU())
 
 	type buildResult struct {
-		tool	Tool
-		err	error
+		tool Tool
+		err  error
 	}
 
 	results := make(chan buildResult, len(availableTools))
@@ -189,9 +189,9 @@ func buildToolsParallel(manager *ToolManager) error {
 	// Start builds
 	for _, tool := range availableTools {
 		go func(t Tool) {
-			semaphore <- struct{}{}	// Acquire
+			semaphore <- struct{}{} // Acquire
 			err := buildTool(manager, &t)
-			<-semaphore	// Release
+			<-semaphore // Release
 			results <- buildResult{tool: t, err: err}
 		}(tool)
 	}

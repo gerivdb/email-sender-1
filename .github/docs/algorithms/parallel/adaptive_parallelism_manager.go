@@ -6,7 +6,6 @@ package parallel
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"math"
 	"runtime"
@@ -84,14 +83,14 @@ func DefaultAdaptiveParallelismConfig() AdaptiveParallelismConfig {
 
 // AdaptiveParallelismManager gère l'adaptation dynamique du parallélisme
 type AdaptiveParallelismManager struct {
-	config        AdaptiveParallelismConfig
+	config         AdaptiveParallelismConfig
 	currentWorkers int32
-	metrics       []SystemMetrics
-	lastScaleTime time.Time
-	workerPools   []*WorkerPool
-	mu            sync.RWMutex
-	ctx           context.Context
-	cancel        context.CancelFunc
+	metrics        []SystemMetrics
+	lastScaleTime  time.Time
+	workerPools    []*WorkerPool
+	mu             sync.RWMutex
+	ctx            context.Context
+	cancel         context.CancelFunc
 }
 
 // NewAdaptiveParallelismManager crée un nouveau gestionnaire de parallélisme adaptatif
@@ -108,27 +107,27 @@ func NewAdaptiveParallelismManager(config AdaptiveParallelismConfig) *AdaptivePa
 	} else if config.InitialWorkers > config.MaxWorkers {
 		config.InitialWorkers = config.MaxWorkers
 	}
-	
+
 	ctx, cancel := context.WithCancel(context.Background())
-	
+
 	manager := &AdaptiveParallelismManager{
-		config:        config,
+		config:         config,
 		currentWorkers: int32(config.InitialWorkers),
-		metrics:       make([]SystemMetrics, 0, 100),
-		lastScaleTime: time.Now(),
-		workerPools:   make([]*WorkerPool, 0),
-		ctx:           ctx,
-		cancel:        cancel,
+		metrics:        make([]SystemMetrics, 0, 100),
+		lastScaleTime:  time.Now(),
+		workerPools:    make([]*WorkerPool, 0),
+		ctx:            ctx,
+		cancel:         cancel,
 	}
-	
+
 	return manager
 }
 
 // Start démarre le gestionnaire de parallélisme adaptatif
 func (apm *AdaptiveParallelismManager) Start() {
-	log.Printf("Démarrage du gestionnaire de parallélisme adaptatif (mode: %s, workers: %d)", 
+	log.Printf("Démarrage du gestionnaire de parallélisme adaptatif (mode: %s, workers: %d)",
 		apm.config.Mode, apm.config.InitialWorkers)
-	
+
 	// Si le mode adaptatif est activé, démarrer le moniteur d'adaptation
 	if apm.config.Mode == Adaptive && apm.config.EnableAutoTuning {
 		go apm.adaptiveMonitor()
@@ -145,19 +144,19 @@ func (apm *AdaptiveParallelismManager) Stop() {
 func (apm *AdaptiveParallelismManager) RegisterWorkerPool(wp *WorkerPool) {
 	apm.mu.Lock()
 	defer apm.mu.Unlock()
-	
+
 	apm.workerPools = append(apm.workerPools, wp)
 }
 
 // SetMode change le mode de parallélisme
 func (apm *AdaptiveParallelismManager) SetMode(mode ParallelismMode) {
 	log.Printf("Changement du mode de parallélisme: %s -> %s", apm.config.Mode, mode)
-	
+
 	apm.mu.Lock()
 	oldMode := apm.config.Mode
 	apm.config.Mode = mode
 	apm.mu.Unlock()
-	
+
 	// Ajuster immédiatement les ressources si le mode a changé
 	if oldMode != mode {
 		apm.adjustResourcesForMode()
@@ -169,10 +168,10 @@ func (apm *AdaptiveParallelismManager) adjustResourcesForMode() {
 	apm.mu.RLock()
 	mode := apm.config.Mode
 	apm.mu.RUnlock()
-	
+
 	var targetWorkers int
 	numCPU := runtime.NumCPU()
-	
+
 	// Calculer le nombre cible de workers en fonction du mode
 	switch mode {
 	case Conservative:
@@ -185,7 +184,7 @@ func (apm *AdaptiveParallelismManager) adjustResourcesForMode() {
 		// En mode adaptatif, on ne fait rien ici car c'est géré par le moniteur
 		return
 	}
-	
+
 	// Mettre à jour le nombre de workers
 	apm.SetWorkers(targetWorkers)
 }
@@ -194,11 +193,11 @@ func (apm *AdaptiveParallelismManager) adjustResourcesForMode() {
 func (apm *AdaptiveParallelismManager) UpdateMetrics(metrics SystemMetrics) {
 	apm.mu.Lock()
 	defer apm.mu.Unlock()
-	
+
 	// Ajouter les nouvelles métriques
 	metrics.CollectionTime = time.Now()
 	apm.metrics = append(apm.metrics, metrics)
-	
+
 	// Limiter la taille de l'historique
 	if len(apm.metrics) > 100 {
 		apm.metrics = apm.metrics[len(apm.metrics)-100:]
@@ -212,28 +211,28 @@ func (apm *AdaptiveParallelismManager) SetWorkers(workers int) {
 	maxWorkers := apm.config.MaxWorkers
 	workerPools := apm.workerPools
 	apm.mu.RUnlock()
-	
+
 	// Valider les bornes
 	if workers < minWorkers {
 		workers = minWorkers
 	} else if workers > maxWorkers {
 		workers = maxWorkers
 	}
-	
+
 	// Si le nombre de workers est déjà celui demandé, ne rien faire
 	currentWorkers := atomic.LoadInt32(&apm.currentWorkers)
 	if int(currentWorkers) == workers {
 		return
 	}
-	
+
 	log.Printf("Ajustement du nombre de workers: %d -> %d", currentWorkers, workers)
 	atomic.StoreInt32(&apm.currentWorkers, int32(workers))
-	
+
 	// Mettre à jour le timestamp du dernier ajustement
 	apm.mu.Lock()
 	apm.lastScaleTime = time.Now()
 	apm.mu.Unlock()
-	
+
 	// Appliquer le changement sur tous les worker pools
 	// Note: Cette implémentation est simplifiée car les worker pools actuels
 	// ne supportent pas le redimensionnement dynamique. Il faudrait implémenter
@@ -241,7 +240,7 @@ func (apm *AdaptiveParallelismManager) SetWorkers(workers int) {
 	for _, wp := range workerPools {
 		// Exemple d'implémentation qui serait nécessaire:
 		// wp.Resize(workers)
-		
+
 		// Pour l'instant, on se contente de logguer l'intention
 		log.Printf("Worker pool %p serait redimensionné à %d workers", wp, workers)
 	}
@@ -251,7 +250,7 @@ func (apm *AdaptiveParallelismManager) SetWorkers(workers int) {
 func (apm *AdaptiveParallelismManager) adaptiveMonitor() {
 	ticker := time.NewTicker(apm.config.AdaptiveInterval)
 	defer ticker.Stop()
-	
+
 	for {
 		select {
 		case <-ticker.C:
@@ -275,24 +274,24 @@ func (apm *AdaptiveParallelismManager) adaptWorkers() {
 	minWorkers := apm.config.MinWorkers
 	maxWorkers := apm.config.MaxWorkers
 	apm.mu.RUnlock()
-	
+
 	// Vérifier si on est dans la période de cooldown
 	if time.Since(lastScaleTime) < cooldownPeriod {
 		return
 	}
-	
+
 	// S'il n'y a pas assez de métriques, ne rien faire
 	if len(metrics) < 3 {
 		return
 	}
-	
+
 	// Calculer les métriques moyennes récentes
 	cpuUsage := 0.0
 	memoryUsage := 0.0
 	queueLength := 0
 	responseTime := 0.0
 	throughput := 0.0
-	
+
 	// Utiliser les 3 dernières métriques pour la moyenne
 	for i := len(metrics) - 3; i < len(metrics); i++ {
 		cpuUsage += metrics[i].CPUUsage
@@ -301,19 +300,19 @@ func (apm *AdaptiveParallelismManager) adaptWorkers() {
 		responseTime += metrics[i].ResponseTime
 		throughput += metrics[i].Throughput
 	}
-	
+
 	cpuUsage /= 3
 	memoryUsage /= 3
 	queueLength /= 3
 	responseTime /= 3
 	throughput /= 3
-	
+
 	// Calculer le score d'utilisation composite (peut être personnalisé selon les besoins)
 	// Ici on donne plus de poids au CPU et à la longueur de la file d'attente
 	utilizationScore := cpuUsage*0.5 + memoryUsage*0.3 + float64(queueLength)/float64(apm.config.MaxQueueLength)*0.2
-	
+
 	var newWorkers int32
-	
+
 	// Prendre une décision d'adaptation
 	if utilizationScore > scaleUpThreshold && throughput < apm.config.TargetThroughput {
 		// Augmenter le nombre de workers
@@ -322,8 +321,8 @@ func (apm *AdaptiveParallelismManager) adaptWorkers() {
 		if newWorkers > currentWorkers {
 			apm.SetWorkers(int(newWorkers))
 		}
-	} else if utilizationScore < scaleDownThreshold && 
-		      (responseTime < apm.config.TargetResponseTime || throughput > apm.config.TargetThroughput) {
+	} else if utilizationScore < scaleDownThreshold &&
+		(responseTime < apm.config.TargetResponseTime || throughput > apm.config.TargetThroughput) {
 		// Diminuer le nombre de workers
 		newWorkers = int32(math.Max(float64(currentWorkers)/scaleFactor, float64(minWorkers)))
 		if newWorkers < currentWorkers {
@@ -338,15 +337,15 @@ func (apm *AdaptiveParallelismManager) ApplyBackpressure(queueLength int) bool {
 	if !apm.config.BackpressureEnabled {
 		return false
 	}
-	
+
 	// Si la file d'attente dépasse un certain seuil, appliquer une contre-pression
 	backpressureThreshold := int(float64(apm.config.MaxQueueLength) * 0.8)
 	if queueLength > backpressureThreshold {
-		log.Printf("Contre-pression appliquée: file d'attente (%d) > seuil (%d)", 
+		log.Printf("Contre-pression appliquée: file d'attente (%d) > seuil (%d)",
 			queueLength, backpressureThreshold)
 		return true
 	}
-	
+
 	return false
 }
 
@@ -354,24 +353,24 @@ func (apm *AdaptiveParallelismManager) ApplyBackpressure(queueLength int) bool {
 func (apm *AdaptiveParallelismManager) GetStatus() map[string]interface{} {
 	apm.mu.RLock()
 	defer apm.mu.RUnlock()
-	
+
 	var recentMetrics SystemMetrics
 	if len(apm.metrics) > 0 {
 		recentMetrics = apm.metrics[len(apm.metrics)-1]
 	}
-	
+
 	return map[string]interface{}{
-		"mode":             string(apm.config.Mode),
-		"current_workers":  atomic.LoadInt32(&apm.currentWorkers),
-		"min_workers":      apm.config.MinWorkers,
-		"max_workers":      apm.config.MaxWorkers,
-		"last_scale_time":  apm.lastScaleTime,
-		"cpu_usage":        recentMetrics.CPUUsage,
-		"memory_usage":     recentMetrics.MemoryUsage,
-		"queue_length":     recentMetrics.QueueLength,
-		"response_time":    recentMetrics.ResponseTime,
-		"throughput":       recentMetrics.Throughput,
-		"worker_pools":     len(apm.workerPools),
-		"auto_tuning":      apm.config.EnableAutoTuning,
+		"mode":            string(apm.config.Mode),
+		"current_workers": atomic.LoadInt32(&apm.currentWorkers),
+		"min_workers":     apm.config.MinWorkers,
+		"max_workers":     apm.config.MaxWorkers,
+		"last_scale_time": apm.lastScaleTime,
+		"cpu_usage":       recentMetrics.CPUUsage,
+		"memory_usage":    recentMetrics.MemoryUsage,
+		"queue_length":    recentMetrics.QueueLength,
+		"response_time":   recentMetrics.ResponseTime,
+		"throughput":      recentMetrics.Throughput,
+		"worker_pools":    len(apm.workerPools),
+		"auto_tuning":     apm.config.EnableAutoTuning,
 	}
 }

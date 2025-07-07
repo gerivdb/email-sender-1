@@ -13,7 +13,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"sort"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -21,72 +20,72 @@ import (
 
 // BuildLayer represents a layer in the EMAIL_SENDER_1 architecture
 type BuildLayer struct {
-	Name		string			`json:"name"`
-	Priority	int			`json:"priority"`
-	Components	[]BuildComponent	`json:"components"`
-	Dependencies	[]string		`json:"dependencies"`
-	Status		string			`json:"status"`
-	BuildTime	time.Duration		`json:"build_time"`
-	TestResults	[]TestResult		`json:"test_results"`
-	Metadata	map[string]string	`json:"metadata"`
+	Name         string            `json:"name"`
+	Priority     int               `json:"priority"`
+	Components   []BuildComponent  `json:"components"`
+	Dependencies []string          `json:"dependencies"`
+	Status       string            `json:"status"`
+	BuildTime    time.Duration     `json:"build_time"`
+	TestResults  []TestResult      `json:"test_results"`
+	Metadata     map[string]string `json:"metadata"`
 }
 
 // BuildComponent represents a component within a build layer
 type BuildComponent struct {
-	Name		string			`json:"name"`
-	Type		string			`json:"type"`
-	Path		string			`json:"path"`
-	BuildCmd	string			`json:"build_cmd"`
-	TestCmd		string			`json:"test_cmd"`
-	Status		string			`json:"status"`
-	BuildTime	time.Duration		`json:"build_time"`
-	ErrorCount	int			`json:"error_count"`
-	Warnings	[]string		`json:"warnings"`
-	Metadata	map[string]string	`json:"metadata"`
+	Name       string            `json:"name"`
+	Type       string            `json:"type"`
+	Path       string            `json:"path"`
+	BuildCmd   string            `json:"build_cmd"`
+	TestCmd    string            `json:"test_cmd"`
+	Status     string            `json:"status"`
+	BuildTime  time.Duration     `json:"build_time"`
+	ErrorCount int               `json:"error_count"`
+	Warnings   []string          `json:"warnings"`
+	Metadata   map[string]string `json:"metadata"`
 }
 
 // TestResult represents test execution results
 type TestResult struct {
-	Component	string		`json:"component"`
-	TestType	string		`json:"test_type"`
-	Status		string		`json:"status"`
-	Duration	time.Duration	`json:"duration"`
-	Output		string		`json:"output"`
-	Errors		[]string	`json:"errors"`
+	Component string        `json:"component"`
+	TestType  string        `json:"test_type"`
+	Status    string        `json:"status"`
+	Duration  time.Duration `json:"duration"`
+	Output    string        `json:"output"`
+	Errors    []string      `json:"errors"`
 }
 
 // BuildStrategy represents the overall build strategy
 type BuildStrategy struct {
-	ProjectPath	string		`json:"project_path"`
-	Layers		[]BuildLayer	`json:"layers"`
-	BuildOrder	[]string	`json:"build_order"`
-	TotalTime	time.Duration	`json:"total_time"`
-	SuccessRate	float64		`json:"success_rate"`
-	ErrorSummary	map[string]int	`json:"error_summary"`
-	Recommendations	[]string	`json:"recommendations"`
-	Timestamp	time.Time	`json:"timestamp"`
-	Config		BuildConfig	`json:"config"`
+	ProjectPath     string         `json:"project_path"`
+	Layers          []BuildLayer   `json:"layers"`
+	BuildOrder      []string       `json:"build_order"`
+	TotalTime       time.Duration  `json:"total_time"`
+	SuccessRate     float64        `json:"success_rate"`
+	ErrorSummary    map[string]int `json:"error_summary"`
+	Recommendations []string       `json:"recommendations"`
+	Timestamp       time.Time      `json:"timestamp"`
+	Config          BuildConfig    `json:"config"`
 }
 
 // BuildConfig holds configuration for the build strategy
 type BuildConfig struct {
-	MaxParallelBuilds	int		`json:"max_parallel_builds"`
-	BuildTimeout		time.Duration	`json:"build_timeout"`
-	TestTimeout		time.Duration	`json:"test_timeout"`
-	FailFast		bool		`json:"fail_fast"`
-	ContinueOnError		bool		`json:"continue_on_error"`
-	EnableTests		bool		`json:"enable_tests"`
-	EnableOptimizations	bool		`json:"enable_optimizations"`
-	ComponentFilters	[]string	`json:"component_filters"`
-	LayerPriorities		map[string]int	`json:"layer_priorities"`
+	MaxParallelBuilds   int            `json:"max_parallel_builds"`
+	BuildTimeout        time.Duration  `json:"build_timeout"`
+	TestTimeout         time.Duration  `json:"test_timeout"`
+	FailFast            bool           `json:"fail_fast"`
+	ContinueOnError     bool           `json:"continue_on_error"`
+	EnableTests         bool           `json:"enable_tests"`
+	EnableOptimizations bool           `json:"enable_optimizations"`
+	ComponentFilters    []string       `json:"component_filters"`
+	LayerPriorities     map[string]int `json:"layer_priorities"`
 }
 
 // EMAIL_SENDER_1 Build Layers Definition
 var emailSenderLayers = []BuildLayer{
 	{
-		Name:		"foundation",
-		Priority:	1,
-		Dependencies:	[]string{},
+		Name:         "foundation",
+		Priority:     1,
+		Dependencies: []string{},
 		Components: []BuildComponent{
 			{Name: "shared-types", Type: "go_module", Path: "internal/types", BuildCmd: "go build", TestCmd: "go test"},
 			{Name: "shared-utils", Type: "go_module", Path: "internal/utils", BuildCmd: "go build", TestCmd: "go test"},
@@ -94,28 +93,28 @@ var emailSenderLayers = []BuildLayer{
 			{Name: "logger", Type: "go_module", Path: "internal/logger", BuildCmd: "go build", TestCmd: "go test"},
 		},
 		Metadata: map[string]string{
-			"description":	"Core foundation components and utilities",
-			"criticality":	"high",
+			"description": "Core foundation components and utilities",
+			"criticality": "high",
 		},
 	},
 	{
-		Name:		"storage",
-		Priority:	2,
-		Dependencies:	[]string{"foundation"},
+		Name:         "storage",
+		Priority:     2,
+		Dependencies: []string{"foundation"},
 		Components: []BuildComponent{
 			{Name: "qdrant-client", Type: "go_module", Path: "internal/storage/qdrant", BuildCmd: "go build", TestCmd: "go test"},
 			{Name: "vector-store", Type: "go_module", Path: "internal/storage/vectors", BuildCmd: "go build", TestCmd: "go test"},
 			{Name: "embedding-cache", Type: "go_module", Path: "internal/storage/cache", BuildCmd: "go build", TestCmd: "go test"},
 		},
 		Metadata: map[string]string{
-			"description":	"Vector storage and caching layer",
-			"criticality":	"high",
+			"description": "Vector storage and caching layer",
+			"criticality": "high",
 		},
 	},
 	{
-		Name:		"rag_engine",
-		Priority:	3,
-		Dependencies:	[]string{"foundation", "storage"},
+		Name:         "rag_engine",
+		Priority:     3,
+		Dependencies: []string{"foundation", "storage"},
 		Components: []BuildComponent{
 			{Name: "embedding-service", Type: "go_module", Path: "internal/engine/embeddings", BuildCmd: "go build", TestCmd: "go test"},
 			{Name: "retrieval-service", Type: "go_module", Path: "internal/engine/retrieval", BuildCmd: "go build", TestCmd: "go test"},
@@ -123,50 +122,50 @@ var emailSenderLayers = []BuildLayer{
 			{Name: "rag-pipeline", Type: "go_module", Path: "internal/engine/pipeline", BuildCmd: "go build", TestCmd: "go test"},
 		},
 		Metadata: map[string]string{
-			"description":	"Core RAG engine components",
-			"criticality":	"critical",
+			"description": "Core RAG engine components",
+			"criticality": "critical",
 		},
 	},
 	{
-		Name:		"integrations",
-		Priority:	4,
-		Dependencies:	[]string{"foundation", "rag_engine"},
+		Name:         "integrations",
+		Priority:     4,
+		Dependencies: []string{"foundation", "rag_engine"},
 		Components: []BuildComponent{
 			{Name: "notion-client", Type: "go_module", Path: "internal/integrations/notion", BuildCmd: "go build", TestCmd: "go test"},
 			{Name: "gmail-processor", Type: "go_module", Path: "internal/integrations/gmail", BuildCmd: "go build", TestCmd: "go test"},
 			{Name: "n8n-connector", Type: "go_module", Path: "internal/integrations/n8n", BuildCmd: "go build", TestCmd: "go test"},
 		},
 		Metadata: map[string]string{
-			"description":	"External service integrations",
-			"criticality":	"medium",
+			"description": "External service integrations",
+			"criticality": "medium",
 		},
 	},
 	{
-		Name:		"automation",
-		Priority:	5,
-		Dependencies:	[]string{"foundation", "integrations"},
+		Name:         "automation",
+		Priority:     5,
+		Dependencies: []string{"foundation", "integrations"},
 		Components: []BuildComponent{
 			{Name: "powershell-bridge", Type: "powershell", Path: "scripts/automation", BuildCmd: "pwsh -c Test-Path", TestCmd: "pwsh -File test.ps1"},
 			{Name: "workflow-orchestrator", Type: "go_module", Path: "internal/automation/workflows", BuildCmd: "go build", TestCmd: "go test"},
 			{Name: "task-scheduler", Type: "go_module", Path: "internal/automation/scheduler", BuildCmd: "go build", TestCmd: "go test"},
 		},
 		Metadata: map[string]string{
-			"description":	"Automation and orchestration layer",
-			"criticality":	"medium",
+			"description": "Automation and orchestration layer",
+			"criticality": "medium",
 		},
 	},
 	{
-		Name:		"services",
-		Priority:	6,
-		Dependencies:	[]string{"rag_engine", "integrations", "automation"},
+		Name:         "services",
+		Priority:     6,
+		Dependencies: []string{"rag_engine", "integrations", "automation"},
 		Components: []BuildComponent{
 			{Name: "api-server", Type: "go_module", Path: "cmd/server", BuildCmd: "go build", TestCmd: "go test"},
 			{Name: "cli-tool", Type: "go_module", Path: "cmd/cli", BuildCmd: "go build", TestCmd: "go test"},
 			{Name: "web-interface", Type: "javascript", Path: "web", BuildCmd: "npm run build", TestCmd: "npm test"},
 		},
 		Metadata: map[string]string{
-			"description":	"User-facing services and interfaces",
-			"criticality":	"low",
+			"description": "User-facing services and interfaces",
+			"criticality": "low",
 		},
 	},
 }
@@ -244,21 +243,21 @@ func main() {
 // NewProgressiveBuilder creates a new progressive builder
 func NewProgressiveBuilder(projectPath string) *BuildStrategy {
 	return &BuildStrategy{
-		ProjectPath:		projectPath,
-		Layers:			make([]BuildLayer, len(emailSenderLayers)),
-		BuildOrder:		[]string{},
-		ErrorSummary:		make(map[string]int),
-		Recommendations:	[]string{},
-		Timestamp:		time.Now(),
+		ProjectPath:     projectPath,
+		Layers:          make([]BuildLayer, len(emailSenderLayers)),
+		BuildOrder:      []string{},
+		ErrorSummary:    make(map[string]int),
+		Recommendations: []string{},
+		Timestamp:       time.Now(),
 		Config: BuildConfig{
-			MaxParallelBuilds:	4,
-			BuildTimeout:		5 * time.Minute,
-			TestTimeout:		3 * time.Minute,
-			FailFast:		false,
-			ContinueOnError:	true,
-			EnableTests:		true,
-			EnableOptimizations:	true,
-			LayerPriorities:	make(map[string]int),
+			MaxParallelBuilds:   4,
+			BuildTimeout:        5 * time.Minute,
+			TestTimeout:         3 * time.Minute,
+			FailFast:            false,
+			ContinueOnError:     true,
+			EnableTests:         true,
+			EnableOptimizations: true,
+			LayerPriorities:     make(map[string]int),
 		},
 	}
 }
@@ -594,10 +593,10 @@ func (bs *BuildStrategy) runLayerTests(layer *BuildLayer) {
 // runComponentTest runs tests for a single component
 func (bs *BuildStrategy) runComponentTest(component *BuildComponent) TestResult {
 	result := TestResult{
-		Component:	component.Name,
-		TestType:	"unit",
-		Status:		"failed",
-		Errors:		[]string{},
+		Component: component.Name,
+		TestType:  "unit",
+		Status:    "failed",
+		Errors:    []string{},
 	}
 
 	componentPath := filepath.Join(bs.ProjectPath, component.Path)
@@ -723,8 +722,8 @@ func (bs *BuildStrategy) DisplaySummary() {
 
 		// Sort by error count
 		type layerError struct {
-			layer	string
-			count	int
+			layer string
+			count int
 		}
 
 		var layerErrors []layerError

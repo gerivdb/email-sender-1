@@ -11,9 +11,9 @@ import (
 
 // CriticalFile represents a file or directory to be backed up.
 type CriticalFile struct {
-	Path		string
-	Category	string
-	Description	string
+	Path        string
+	Category    string
+	Description string
 }
 
 // getCriticalFiles returns a hardcoded list of critical files for backup.
@@ -25,8 +25,8 @@ func getCriticalFiles() []CriticalFile {
 		{Path: ".cline_mcp_settings.json", Category: "config", Description: "MCP settings"},
 		{Path: ".vscode/tasks.json", Category: "config", Description: "VSCode tasks configuration"},
 		{Path: "pkg/common/read_file.go", Category: "code", Description: "File reading API"},
-		{Path: "cmd/audit_read_file", Category: "code", Description: "read_file usage audit script directory"},	// Directory
-		{Path: "cmd/gap_analysis", Category: "code", Description: "Gap analysis script directory"},		// Directory
+		{Path: "cmd/audit_read_file", Category: "code", Description: "read_file usage audit script directory"}, // Directory
+		{Path: "cmd/gap_analysis", Category: "code", Description: "Gap analysis script directory"},             // Directory
 		{Path: "cmd/gen_read_file_spec", Category: "code", Description: "Specification generation script directory"},
 		{Path: "cmd/read_file_navigator", Category: "code", Description: "CLI file navigator directory"},
 		{Path: "docs/read_file_usage_audit.md", Category: "report", Description: "read_file usage audit report"},

@@ -20,16 +20,16 @@ type ToolkitOperation interface {
 
 // OperationOptions holds options for operations
 type OperationOptions struct {
-	Target    string         `json:"target"`
-	Output    string         `json:"output"`
-	Force     bool           `json:"force"`
-	DryRun    bool           `json:"dry_run"`
-	Verbose   bool           `json:"verbose"`
-	Timeout   time.Duration  `json:"timeout"`
-	Workers   int            `json:"workers"`
-	LogLevel  string         `json:"log_level"`
-	Context   context.Context `json:"-"`
-	Config    *ToolkitConfig  `json:"config"`
+	Target   string          `json:"target"`
+	Output   string          `json:"output"`
+	Force    bool            `json:"force"`
+	DryRun   bool            `json:"dry_run"`
+	Verbose  bool            `json:"verbose"`
+	Timeout  time.Duration   `json:"timeout"`
+	Workers  int             `json:"workers"`
+	LogLevel string          `json:"log_level"`
+	Context  context.Context `json:"-"`
+	Config   *ToolkitConfig  `json:"config"`
 }
 
 // Operation represents the type of operation in the toolkit
@@ -90,11 +90,11 @@ func (l *Logger) Close() error {
 
 // Shared Operation constants
 const (
-	AnalyzeDeps       Operation = "analyze-dependencies"
-	SyntaxCheck       Operation = "check-syntax"
-	DetectDuplicates  Operation = "detect-duplicates"
-	ValidateStructs   Operation = "validate-structs"
-	ResolveImports    Operation = "resolve-imports"
-	NormalizeNaming   Operation = "normalize-naming"
-	TypeDefGen        Operation = "generate-typedefs"
+	AnalyzeDeps      Operation = "analyze-dependencies"
+	SyntaxCheck      Operation = "check-syntax"
+	DetectDuplicates Operation = "detect-duplicates"
+	ValidateStructs  Operation = "validate-structs"
+	ResolveImports   Operation = "resolve-imports"
+	NormalizeNaming  Operation = "normalize-naming"
+	TypeDefGen       Operation = "generate-typedefs"
 )

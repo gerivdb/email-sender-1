@@ -150,9 +150,9 @@ func TestAnalyzeProjectType(t *testing.T) {
 func TestDefineUserRoles(t *testing.T) {
 	// Test with API project
 	apiProject := map[string]bool{
-		"api":		true,
-		"cicd":		true,
-		"docker":	true,
+		"api":    true,
+		"cicd":   true,
+		"docker": true,
 	}
 
 	roles := defineUserRoles(apiProject)
@@ -183,9 +183,9 @@ func TestDefineUserRoles(t *testing.T) {
 func TestGenerateDocumentationNeeds(t *testing.T) {
 	// Test with API project
 	apiProject := map[string]bool{
-		"api":		true,
-		"testing":	true,
-		"cicd":		true,
+		"api":     true,
+		"testing": true,
+		"cicd":    true,
 	}
 
 	needs := generateDocumentationNeeds(apiProject)
@@ -231,16 +231,16 @@ func TestGenerateDocumentationNeeds(t *testing.T) {
 func TestCreatePriorityMatrix(t *testing.T) {
 	testNeeds := []DocumentationNeed{
 		{
-			Category:	"getting_started",
-			Type:		"installation",
-			Priority:	"critical",
-			UserRoles:	[]string{"developer", "user", "contributor"},
+			Category:  "getting_started",
+			Type:      "installation",
+			Priority:  "critical",
+			UserRoles: []string{"developer", "user", "contributor"},
 		},
 		{
-			Category:	"api",
-			Type:		"reference",
-			Priority:	"high",
-			UserRoles:	[]string{"developer", "api_consumer"},
+			Category:  "api",
+			Type:      "reference",
+			Priority:  "high",
+			UserRoles: []string{"developer", "api_consumer"},
 		},
 	}
 
@@ -312,8 +312,8 @@ func TestGenerateRecommendations(t *testing.T) {
 
 func TestShouldSkipPathNeedsVerision(t *testing.T) {
 	tests := []struct {
-		path		string
-		expected	bool
+		path     string
+		expected bool
 	}{
 		{"docs/api.md", false},
 		{"node_modules/package.json", true},
@@ -335,13 +335,13 @@ func TestShouldSkipPathNeedsVerision(t *testing.T) {
 func TestJSONOutput(t *testing.T) {
 	// Create a minimal test report
 	report := &NeedsSurveyReport{
-		GeneratedAt:		time.Now(),
-		ProjectName:		"test-project",
-		UserRoles:		[]UserRole{{Name: "test", Description: "test role"}},
-		DocumentationNeeds:	[]DocumentationNeed{{Category: "test", Type: "test", Priority: "medium"}},
-		PriorityMatrix:		map[string]PriorityItem{"test": {Description: "test item"}},
-		Recommendations:	[]string{"test recommendation"},
-		Summary:		"test summary",
+		GeneratedAt:        time.Now(),
+		ProjectName:        "test-project",
+		UserRoles:          []UserRole{{Name: "test", Description: "test role"}},
+		DocumentationNeeds: []DocumentationNeed{{Category: "test", Type: "test", Priority: "medium"}},
+		PriorityMatrix:     map[string]PriorityItem{"test": {Description: "test item"}},
+		Recommendations:    []string{"test recommendation"},
+		Summary:            "test summary",
 	}
 
 	// Test JSON encoding

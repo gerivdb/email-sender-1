@@ -3,7 +3,6 @@ package dependency
 import (
 	"context"
 	"fmt"
-	"path/filepath"
 	"time"
 
 	"github.com/email-sender-manager/interfaces"
@@ -21,7 +20,7 @@ func (dm *DependencyManagerImpl) AnalyzeDependencies(ctx context.Context, projec
 	dm.projectPath = projectPath
 
 	startTime := time.Now()
-	
+
 	// Détecter les fichiers de configuration
 	configFiles, err := dm.detectConfigFiles(projectPath)
 	if err != nil {
@@ -39,7 +38,7 @@ func (dm *DependencyManagerImpl) AnalyzeDependencies(ctx context.Context, projec
 			dm.logger.Printf("Warning: Failed to analyze %s: %v", config.Path, err)
 			continue
 		}
-		
+
 		directDeps = append(directDeps, deps...)
 		transitiveDeps = append(transitiveDeps, transDeps...)
 	}

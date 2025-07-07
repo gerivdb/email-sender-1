@@ -66,10 +66,10 @@ func TestConvertToScriptInfo(t *testing.T) {
 	adapter := &ScriptInventoryAdapter{}
 
 	testData := map[string]interface{}{
-		"Path": "test/path.ps1",
-		"Type": "PowerShell",
-		"Size": float64(1024),
-		"Hash": "abc123",
+		"Path":         "test/path.ps1",
+		"Type":         "PowerShell",
+		"Size":         float64(1024),
+		"Hash":         "abc123",
 		"Dependencies": []interface{}{"dep1", "dep2"},
 		"Metadata": map[string]interface{}{
 			"version": "1.0",
@@ -138,8 +138,8 @@ func TestProcessDuplicationReport(t *testing.T) {
 
 	// Créer un rapport de test
 	report := DuplicationReport{
-		GeneratedAt:  time.Now(),
-		TotalFiles:   2,
+		GeneratedAt: time.Now(),
+		TotalFiles:  2,
 		Duplications: []DuplicationError{
 			{
 				ID:              "test1",
@@ -168,7 +168,7 @@ func TestProcessDuplicationReport(t *testing.T) {
 
 	// Tester le traitement du rapport
 	handler := NewDuplicationErrorHandler(tempDir, time.Second)
-	
+
 	var processedErrors []DuplicationError
 	handler.SetErrorCallback(func(err DuplicationError) {
 		processedErrors = append(processedErrors, err)
@@ -189,12 +189,12 @@ func TestProcessDuplicationReport(t *testing.T) {
 
 func TestCreateEnhancedErrorEntry(t *testing.T) {
 	baseError := map[string]interface{}{
-		"id":             "test123",
-		"timestamp":      time.Now(),
-		"message":        "Test error message",
-		"module":         "test-module",
-		"error_code":     "TEST001",
-		"severity":       "ERROR",
+		"id":         "test123",
+		"timestamp":  time.Now(),
+		"message":    "Test error message",
+		"module":     "test-module",
+		"error_code": "TEST001",
+		"severity":   "ERROR",
 		"manager_context": map[string]interface{}{
 			"component": "test",
 		},

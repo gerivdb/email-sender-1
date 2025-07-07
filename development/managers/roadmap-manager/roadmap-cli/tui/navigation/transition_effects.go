@@ -2,7 +2,7 @@ package navigation
 
 // TransitionEffects manages user preference-based transition effects
 
-type TransitionEffects struct {}
+type TransitionEffects struct{}
 
 // Configure sets up transition effects based on user preferences
 func (te *TransitionEffects) Configure(preferences map[string]interface{}) error {

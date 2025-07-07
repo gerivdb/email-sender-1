@@ -6,9 +6,9 @@ import (
 	"sync"
 	"time"
 
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
-	tea "github.com/charmbracelet/bubbletea"
 )
 
 // ErrorEntry represents an error entry for cataloging (simplified local version)
@@ -70,7 +70,7 @@ func (cb *SimpleCircuitBreaker) Call(fn func() error) error {
 	if err != nil {
 		cb.failureCount++
 		cb.lastFailure = time.Now()
-		
+
 		if cb.failureCount >= cb.maxFailures {
 			cb.state = "open"
 		}
@@ -114,13 +114,13 @@ type ErrorHooks struct {
 
 // ModeMetrics tracks metrics for mode switching and state management
 type ModeMetrics struct {
-	TotalTransitions   int                           `json:"total_transitions"`
-	TransitionCounts   map[NavigationMode]int        `json:"transition_counts"`
-	ErrorCounts        map[string]int                `json:"error_counts"`
-	AverageTransition  time.Duration                 `json:"average_transition_time"`
-	StatePreservations int                           `json:"state_preservations"`
-	FailedTransitions  int                           `json:"failed_transitions"`
-	LastMetricsReset   time.Time                     `json:"last_metrics_reset"`
+	TotalTransitions   int                    `json:"total_transitions"`
+	TransitionCounts   map[NavigationMode]int `json:"transition_counts"`
+	ErrorCounts        map[string]int         `json:"error_counts"`
+	AverageTransition  time.Duration          `json:"average_transition_time"`
+	StatePreservations int                    `json:"state_preservations"`
+	FailedTransitions  int                    `json:"failed_transitions"`
+	LastMetricsReset   time.Time              `json:"last_metrics_reset"`
 	mu                 sync.RWMutex
 }
 
@@ -289,7 +289,7 @@ type ModeErrorMsg struct {
 // NewModeManager creates a new mode manager with ErrorManager integration
 func NewModeManager() *ModeManager {
 	logger, _ := zap.NewProduction()
-	
+
 	errorManager := &ErrorManager{
 		logger: logger,
 	}
@@ -297,9 +297,9 @@ func NewModeManager() *ModeManager {
 	circuitBreaker := NewCircuitBreaker("mode-manager", 5, 30*time.Second)
 
 	metrics := &ModeMetrics{
-		TransitionCounts:  make(map[NavigationMode]int),
-		ErrorCounts:       make(map[string]int),
-		LastMetricsReset:  time.Now(),
+		TransitionCounts: make(map[NavigationMode]int),
+		ErrorCounts:      make(map[string]int),
+		LastMetricsReset: time.Now(),
 	}
 
 	mm := &ModeManager{
@@ -316,18 +316,18 @@ func NewModeManager() *ModeManager {
 	}
 
 	mm.initializeDefaultModes()
-	
+
 	mm.logger.Info("Mode Manager initialized with ErrorManager integration",
 		zap.String("component", "mode-manager"),
 		zap.String("initial_mode", mm.currentMode.String()))
-	
+
 	return mm
 }
 
 // SwitchMode switches to a new navigation mode with ErrorManager integration
 func (mm *ModeManager) SwitchMode(targetMode NavigationMode) tea.Cmd {
 	ctx := context.Background()
-	
+
 	mm.mutex.Lock()
 	defer mm.mutex.Unlock()
 
@@ -358,7 +358,7 @@ func (mm *ModeManager) SwitchMode(targetMode NavigationMode) tea.Cmd {
 				mm.updateMetrics("circuit_breaker_block", targetMode)
 			},
 		})
-		
+
 		return func() tea.Msg {
 			return ModeErrorMsg{
 				Mode:  targetMode,
@@ -375,7 +375,7 @@ func (mm *ModeManager) SwitchMode(targetMode NavigationMode) tea.Cmd {
 				mm.updateMetrics("validation_error", mm.currentMode)
 			},
 		})
-		
+
 		return func() tea.Msg {
 			return ModeErrorMsg{
 				Mode:  mm.currentMode,
@@ -391,7 +391,7 @@ func (mm *ModeManager) SwitchMode(targetMode NavigationMode) tea.Cmd {
 				mm.updateMetrics("validation_error", targetMode)
 			},
 		})
-		
+
 		return func() tea.Msg {
 			return ModeErrorMsg{
 				Mode:  targetMode,
@@ -437,7 +437,7 @@ func (mm *ModeManager) SwitchMode(targetMode NavigationMode) tea.Cmd {
 		zap.String("from_mode", previousMode.String()),
 		zap.String("to_mode", targetMode.String()),
 		zap.Bool("state_preserved", transition.PreserveState))
-	
+
 	// Update metrics
 	mm.updateMetrics("transition_success", targetMode)
 
@@ -476,7 +476,7 @@ func (mm *ModeManager) SwitchMode(targetMode NavigationMode) tea.Cmd {
 // SwitchModeAdvanced provides enhanced mode switching with advanced state preservation and ErrorManager integration
 func (mm *ModeManager) SwitchModeAdvanced(targetMode NavigationMode, options *TransitionOptions) tea.Cmd {
 	ctx := context.Background()
-	
+
 	mm.mutex.Lock()
 	defer mm.mutex.Unlock()
 
@@ -509,7 +509,7 @@ func (mm *ModeManager) SwitchModeAdvanced(targetMode NavigationMode, options *Tr
 				mm.updateMetrics("circuit_breaker_block", targetMode)
 			},
 		})
-		
+
 		return func() tea.Msg {
 			return ModeErrorMsg{
 				Mode:  targetMode,
@@ -526,7 +526,7 @@ func (mm *ModeManager) SwitchModeAdvanced(targetMode NavigationMode, options *Tr
 				mm.updateMetrics("validation_error", targetMode)
 			},
 		})
-		
+
 		return func() tea.Msg {
 			return ModeErrorMsg{
 				Mode:  targetMode,
@@ -550,7 +550,7 @@ func (mm *ModeManager) SwitchModeAdvanced(targetMode NavigationMode, options *Tr
 			currentState = fallbackState
 		}
 	}
-	
+
 	if currentState != nil {
 		mm.stateHistory[mm.currentMode] = currentState
 		mm.updateMetrics("state_preserved", mm.currentMode)
@@ -581,7 +581,7 @@ func (mm *ModeManager) SwitchModeAdvanced(targetMode NavigationMode, options *Tr
 		zap.String("to_mode", targetMode.String()),
 		zap.Bool("state_preserved", transition.PreserveState),
 		zap.String("animation", transition.AnimationType))
-	
+
 	// Update metrics
 	mm.updateMetrics("transition_success", targetMode)
 
@@ -661,7 +661,7 @@ func (mm *ModeManager) UpdateModeConfig(mode NavigationMode, config *ModeConfig)
 // GetModeState returns the current state for a mode with ErrorManager integration
 func (mm *ModeManager) GetModeState(mode NavigationMode) (*ModeState, error) {
 	ctx := context.Background()
-	
+
 	mm.mutex.RLock()
 	defer mm.mutex.RUnlock()
 
@@ -683,7 +683,7 @@ func (mm *ModeManager) GetModeState(mode NavigationMode) (*ModeState, error) {
 			})
 			return nil, fmt.Errorf("failed to capture current state for mode %s: %w", mode.String(), err)
 		}
-		
+
 		mm.logger.Debug("Current mode state captured successfully",
 			zap.String("mode", mode.String()))
 		return state, nil
@@ -713,7 +713,7 @@ func (mm *ModeManager) GetModeState(mode NavigationMode) (*ModeState, error) {
 // RestoreState restores a saved state for the current mode with ErrorManager integration
 func (mm *ModeManager) RestoreState(state *ModeState) tea.Cmd {
 	ctx := context.Background()
-	
+
 	mm.mutex.Lock()
 	defer mm.mutex.Unlock()
 
@@ -771,7 +771,7 @@ func (mm *ModeManager) RestoreState(state *ModeState) tea.Cmd {
 
 	// Update current mode state
 	mm.stateHistory[mm.currentMode] = state
-	
+
 	// Update metrics
 	mm.updateMetrics("state_restored", mm.currentMode)
 
@@ -791,7 +791,7 @@ func (mm *ModeManager) RestoreState(state *ModeState) tea.Cmd {
 // AddEventHandler adds an event handler for a specific mode with ErrorManager integration
 func (mm *ModeManager) AddEventHandler(mode NavigationMode, handler ModeEventHandler) error {
 	ctx := context.Background()
-	
+
 	mm.mutex.Lock()
 	defer mm.mutex.Unlock()
 
@@ -840,7 +840,7 @@ func (mm *ModeManager) AddEventHandler(mode NavigationMode, handler ModeEventHan
 // TriggerEvent triggers an event for the current mode with ErrorManager integration
 func (mm *ModeManager) TriggerEvent(eventType ModeEventType, data map[string]interface{}) []tea.Cmd {
 	ctx := context.Background()
-	
+
 	mm.mutex.RLock()
 	defer mm.mutex.RUnlock()
 
@@ -1337,10 +1337,10 @@ func (em *ErrorManager) ProcessError(ctx context.Context, err error, component, 
 
 	// Generate unique error ID
 	errorID := uuid.New().String()
-	
+
 	// Determine error severity
 	severity := determineSeverity(err)
-		// Create error entry for cataloging
+	// Create error entry for cataloging
 	errorEntry := ErrorEntry{
 		ID:             errorID,
 		Timestamp:      time.Now(),
@@ -1386,22 +1386,22 @@ func (em *ErrorManager) ProcessError(ctx context.Context, err error, component, 
 // determineSeverity analyzes the error to determine its severity level
 func determineSeverity(err error) string {
 	errorMsg := err.Error()
-	
+
 	// Critical errors
 	if contains(errorMsg, []string{"panic", "fatal", "critical", "system", "memory"}) {
 		return "CRITICAL"
 	}
-	
+
 	// High severity errors
 	if contains(errorMsg, []string{"failed", "timeout", "connection", "invalid", "corrupted"}) {
 		return "HIGH"
 	}
-	
+
 	// Medium severity errors
 	if contains(errorMsg, []string{"warning", "deprecated", "retry", "temporary"}) {
 		return "MEDIUM"
 	}
-	
+
 	// Default to low for other errors
 	return "LOW"
 }
@@ -1522,7 +1522,7 @@ func (mm *ModeManager) updateMetrics(operation string, mode NavigationMode) {
 func (mm *ModeManager) GetMetrics() *ModeMetrics {
 	mm.metrics.mu.RLock()
 	defer mm.metrics.mu.RUnlock()
-	
+
 	// Create a copy to avoid race conditions
 	metricsCopy := &ModeMetrics{
 		TotalTransitions:   mm.metrics.TotalTransitions,
@@ -1656,7 +1656,7 @@ func (mm *ModeManager) captureKanbanStateWithError(state *ModeState) error {
 	state.CustomData["kanban_columns"] = mm.getKanbanColumns()
 	state.CustomData["kanban_card_positions"] = mm.getKanbanCardPositions()
 	state.CustomData["kanban_column_widths"] = mm.getKanbanColumnWidths()
-	
+
 	return nil
 }
 
@@ -1671,7 +1671,7 @@ func (mm *ModeManager) captureMatrixStateWithError(state *ModeState) error {
 	state.CustomData["matrix_dimensions"] = mm.getMatrixDimensions()
 	state.CustomData["matrix_focused_cell"] = mm.getMatrixFocusedCell()
 	state.CustomData["matrix_zoom_level"] = mm.getMatrixZoomLevel()
-	
+
 	return nil
 }
 
@@ -1686,7 +1686,7 @@ func (mm *ModeManager) captureHierarchicalStateWithError(state *ModeState) error
 	state.CustomData["expanded_nodes"] = mm.getExpandedNodes()
 	state.CustomData["current_tree_depth"] = mm.getCurrentTreeDepth()
 	state.CustomData["collapsed_branches"] = mm.getCollapsedBranches()
-	
+
 	return nil
 }
 
@@ -1701,7 +1701,7 @@ func (mm *ModeManager) captureSearchStateWithError(state *ModeState) error {
 	state.CustomData["current_search_query"] = mm.getCurrentSearchQuery()
 	state.CustomData["search_filters"] = mm.getSearchFilters()
 	state.CustomData["search_results_count"] = mm.getSearchResultsCount()
-	
+
 	return nil
 }
 
@@ -1716,7 +1716,7 @@ func (mm *ModeManager) captureFocusStateWithError(state *ModeState) error {
 	state.CustomData["focused_item"] = mm.getFocusedItem()
 	state.CustomData["focus_level"] = mm.getFocusLevel()
 	state.CustomData["focus_context"] = mm.getFocusContext()
-	
+
 	return nil
 }
 
@@ -1729,6 +1729,6 @@ func (mm *ModeManager) captureGenericStateWithError(state *ModeState) error {
 
 	// Generic state capture logic with error handling
 	state.CustomData["generic_context"] = mm.getGenericContext()
-	
+
 	return nil
 }

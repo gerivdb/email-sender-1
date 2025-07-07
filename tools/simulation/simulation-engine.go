@@ -24,55 +24,55 @@ type ISimulatable interface {
 
 // SimulationResult - Résultat d'une simulation
 type SimulationResult struct {
-	ActionType		string			`json:"action_type"`
-	SourcePath		string			`json:"source_path"`
-	DestinationPath		string			`json:"destination_path"`
-	Success			bool			`json:"success"`
-	EstimatedDuration	time.Duration		`json:"estimated_duration"`
-	RiskLevel		string			`json:"risk_level"`
-	Impact			*ImpactAnalysis		`json:"impact"`
-	Conflicts		[]ConflictInfo		`json:"conflicts"`
-	Warnings		[]string		`json:"warnings"`
-	Recommendations		[]string		`json:"recommendations"`
-	Metadata		map[string]interface{}	`json:"metadata"`
+	ActionType        string                 `json:"action_type"`
+	SourcePath        string                 `json:"source_path"`
+	DestinationPath   string                 `json:"destination_path"`
+	Success           bool                   `json:"success"`
+	EstimatedDuration time.Duration          `json:"estimated_duration"`
+	RiskLevel         string                 `json:"risk_level"`
+	Impact            *ImpactAnalysis        `json:"impact"`
+	Conflicts         []ConflictInfo         `json:"conflicts"`
+	Warnings          []string               `json:"warnings"`
+	Recommendations   []string               `json:"recommendations"`
+	Metadata          map[string]interface{} `json:"metadata"`
 }
 
 // ImpactAnalysis - Analyse d'impact d'une opération
 type ImpactAnalysis struct {
-	FileCount		int		`json:"file_count"`
-	DirectoryCount		int		`json:"directory_count"`
-	TotalSize		int64		`json:"total_size"`
-	CriticalFiles		[]string	`json:"critical_files"`
-	AffectedSubmodules	[]string	`json:"affected_submodules"`
-	GitImpact		bool		`json:"git_impact"`
-	ConfigImpact		bool		`json:"config_impact"`
+	FileCount          int      `json:"file_count"`
+	DirectoryCount     int      `json:"directory_count"`
+	TotalSize          int64    `json:"total_size"`
+	CriticalFiles      []string `json:"critical_files"`
+	AffectedSubmodules []string `json:"affected_submodules"`
+	GitImpact          bool     `json:"git_impact"`
+	ConfigImpact       bool     `json:"config_impact"`
 }
 
 // ConflictInfo - Information sur un conflit détecté
 type ConflictInfo struct {
-	Type		string	`json:"type"`
-	Source		string	`json:"source"`
-	Target		string	`json:"target"`
-	Severity	string	`json:"severity"`
-	Description	string	`json:"description"`
-	Resolution	string	`json:"resolution"`
+	Type        string `json:"type"`
+	Source      string `json:"source"`
+	Target      string `json:"target"`
+	Severity    string `json:"severity"`
+	Description string `json:"description"`
+	Resolution  string `json:"resolution"`
 }
 
 // FileOperationSimulator - Simulateur d'opérations de fichiers
 type FileOperationSimulator struct {
-	SourcePath	string
-	DestinationPath	string
-	ActionType	string
-	CriticalFiles	[]string
-	ProtectedDirs	[]string
+	SourcePath      string
+	DestinationPath string
+	ActionType      string
+	CriticalFiles   []string
+	ProtectedDirs   []string
 }
 
 // NewFileOperationSimulator - Constructeur pour FileOperationSimulator
 func NewFileOperationSimulator(source, destination, actionType string) *FileOperationSimulator {
 	return &FileOperationSimulator{
-		SourcePath:		source,
-		DestinationPath:	destination,
-		ActionType:		actionType,
+		SourcePath:      source,
+		DestinationPath: destination,
+		ActionType:      actionType,
 		CriticalFiles: []string{
 			".gitmodules", ".gitignore", ".env", "package.json", "go.mod", "go.sum",
 			"Makefile", "docker-compose.yml", "Dockerfile", "*.key", "*.pem", "*.cert",
@@ -86,15 +86,15 @@ func NewFileOperationSimulator(source, destination, actionType string) *FileOper
 // SimulateAction - Simule une opération de fichier sans l'exécuter
 func (f *FileOperationSimulator) SimulateAction() (*SimulationResult, error) {
 	result := &SimulationResult{
-		ActionType:		f.ActionType,
-		SourcePath:		f.SourcePath,
-		DestinationPath:	f.DestinationPath,
-		Success:		true,
-		Impact:			&ImpactAnalysis{},
-		Conflicts:		[]ConflictInfo{},
-		Warnings:		[]string{},
-		Recommendations:	[]string{},
-		Metadata:		make(map[string]interface{}),
+		ActionType:      f.ActionType,
+		SourcePath:      f.SourcePath,
+		DestinationPath: f.DestinationPath,
+		Success:         true,
+		Impact:          &ImpactAnalysis{},
+		Conflicts:       []ConflictInfo{},
+		Warnings:        []string{},
+		Recommendations: []string{},
+		Metadata:        make(map[string]interface{}),
 	}
 
 	// Vérifier l'existence du fichier source
@@ -159,7 +159,7 @@ func (f *FileOperationSimulator) analyzeImpact(result *SimulationResult) error {
 func (f *FileOperationSimulator) analyzeDirectoryImpact(dir string, impact *ImpactAnalysis) error {
 	return filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			return nil	// Ignorer les erreurs de lecture
+			return nil // Ignorer les erreurs de lecture
 		}
 
 		if info.IsDir() {
@@ -184,36 +184,36 @@ func (f *FileOperationSimulator) detectConflicts(result *SimulationResult) error
 	// Vérifier si la destination existe déjà
 	if _, err := os.Stat(f.DestinationPath); err == nil {
 		*conflicts = append(*conflicts, ConflictInfo{
-			Type:		"destination_exists",
-			Source:		f.SourcePath,
-			Target:		f.DestinationPath,
-			Severity:	"WARNING",
-			Description:	"Destination already exists",
-			Resolution:	"Consider renaming or backing up existing file",
+			Type:        "destination_exists",
+			Source:      f.SourcePath,
+			Target:      f.DestinationPath,
+			Severity:    "WARNING",
+			Description: "Destination already exists",
+			Resolution:  "Consider renaming or backing up existing file",
 		})
 	}
 
 	// Vérifier les permissions
 	if err := f.checkPermissions(); err != nil {
 		*conflicts = append(*conflicts, ConflictInfo{
-			Type:		"permission_denied",
-			Source:		f.SourcePath,
-			Target:		f.DestinationPath,
-			Severity:	"CRITICAL",
-			Description:	fmt.Sprintf("Permission denied: %v", err),
-			Resolution:	"Check file permissions and user access rights",
+			Type:        "permission_denied",
+			Source:      f.SourcePath,
+			Target:      f.DestinationPath,
+			Severity:    "CRITICAL",
+			Description: fmt.Sprintf("Permission denied: %v", err),
+			Resolution:  "Check file permissions and user access rights",
 		})
 	}
 
 	// Vérifier l'auto-suppression
 	if f.wouldCauseSelfDeletion() {
 		*conflicts = append(*conflicts, ConflictInfo{
-			Type:		"self_deletion",
-			Source:		f.SourcePath,
-			Target:		f.DestinationPath,
-			Severity:	"CRITICAL",
-			Description:	"Operation would move the script itself",
-			Resolution:	"Exclude the script from the operation",
+			Type:        "self_deletion",
+			Source:      f.SourcePath,
+			Target:      f.DestinationPath,
+			Severity:    "CRITICAL",
+			Description: "Operation would move the script itself",
+			Resolution:  "Exclude the script from the operation",
 		})
 	}
 
@@ -374,15 +374,15 @@ func (f *FileOperationSimulator) GetDestinationPath() string {
 
 // SimulationEngine - Moteur principal de simulation
 type SimulationEngine struct {
-	Operations	[]ISimulatable
-	Results		[]*SimulationResult
+	Operations []ISimulatable
+	Results    []*SimulationResult
 }
 
 // NewSimulationEngine - Constructeur pour SimulationEngine
 func NewSimulationEngine() *SimulationEngine {
 	return &SimulationEngine{
-		Operations:	make([]ISimulatable, 0),
-		Results:	make([]*SimulationResult, 0),
+		Operations: make([]ISimulatable, 0),
+		Results:    make([]*SimulationResult, 0),
 	}
 }
 
@@ -414,14 +414,14 @@ func (e *SimulationEngine) GetResults() []*SimulationResult {
 // GenerateReport - Génère un rapport de simulation
 func (e *SimulationEngine) GenerateReport() (string, error) {
 	report := map[string]interface{}{
-		"simulation_timestamp":	time.Now().Format("2006-01-02 15:04:05"),
-		"total_operations":	len(e.Operations),
-		"results":		e.Results,
+		"simulation_timestamp": time.Now().Format("2006-01-02 15:04:05"),
+		"total_operations":     len(e.Operations),
+		"results":              e.Results,
 		"summary": map[string]interface{}{
-			"critical_operations":		e.countByRiskLevel("CRITICAL"),
-			"high_risk_operations":		e.countByRiskLevel("HIGH"),
-			"medium_risk_operations":	e.countByRiskLevel("MEDIUM"),
-			"low_risk_operations":		e.countByRiskLevel("LOW"),
+			"critical_operations":    e.countByRiskLevel("CRITICAL"),
+			"high_risk_operations":   e.countByRiskLevel("HIGH"),
+			"medium_risk_operations": e.countByRiskLevel("MEDIUM"),
+			"low_risk_operations":    e.countByRiskLevel("LOW"),
 		},
 	}
 

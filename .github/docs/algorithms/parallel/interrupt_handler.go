@@ -10,6 +10,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"sync"
 	"syscall"
 	"time"
@@ -47,31 +48,31 @@ const (
 
 // InterruptHandlerConfig définit la configuration du gestionnaire d'interruptions
 type InterruptHandlerConfig struct {
-	EnableSignalHandling   bool            // Activer la gestion des signaux OS
-	EnableTimeouts         bool            // Activer les timeouts
-	DefaultAction          InterruptAction // Action par défaut à prendre
-	ShutdownTimeout        time.Duration   // Délai maximum pour l'arrêt gracieux
-	CheckpointInterval     time.Duration   // Intervalle entre les points de sauvegarde
-	CheckpointDir          string          // Répertoire pour les points de sauvegarde
-	EnablePause            bool            // Activer la possibilité de pause/reprise
-	AutoRestartOnFailure   bool            // Redémarrer automatiquement en cas d'échec
-	MaxRestartAttempts     int             // Nombre maximum de tentatives de redémarrage
-	NotifyOnInterrupt      bool            // Envoyer des notifications sur interruption
+	EnableSignalHandling bool            // Activer la gestion des signaux OS
+	EnableTimeouts       bool            // Activer les timeouts
+	DefaultAction        InterruptAction // Action par défaut à prendre
+	ShutdownTimeout      time.Duration   // Délai maximum pour l'arrêt gracieux
+	CheckpointInterval   time.Duration   // Intervalle entre les points de sauvegarde
+	CheckpointDir        string          // Répertoire pour les points de sauvegarde
+	EnablePause          bool            // Activer la possibilité de pause/reprise
+	AutoRestartOnFailure bool            // Redémarrer automatiquement en cas d'échec
+	MaxRestartAttempts   int             // Nombre maximum de tentatives de redémarrage
+	NotifyOnInterrupt    bool            // Envoyer des notifications sur interruption
 }
 
 // DefaultInterruptHandlerConfig retourne une configuration par défaut
 func DefaultInterruptHandlerConfig() InterruptHandlerConfig {
 	return InterruptHandlerConfig{
-		EnableSignalHandling:   true,
-		EnableTimeouts:         true,
-		DefaultAction:          GracefulStop,
-		ShutdownTimeout:        30 * time.Second,
-		CheckpointInterval:     5 * time.Minute,
-		CheckpointDir:          "./checkpoints",
-		EnablePause:            true,
-		AutoRestartOnFailure:   true,
-		MaxRestartAttempts:     3,
-		NotifyOnInterrupt:      true,
+		EnableSignalHandling: true,
+		EnableTimeouts:       true,
+		DefaultAction:        GracefulStop,
+		ShutdownTimeout:      30 * time.Second,
+		CheckpointInterval:   5 * time.Minute,
+		CheckpointDir:        "./checkpoints",
+		EnablePause:          true,
+		AutoRestartOnFailure: true,
+		MaxRestartAttempts:   3,
+		NotifyOnInterrupt:    true,
 	}
 }
 
@@ -102,7 +103,7 @@ type InterruptHandler struct {
 // NewInterruptHandler crée un nouveau gestionnaire d'interruptions
 func NewInterruptHandler(config InterruptHandlerConfig) *InterruptHandler {
 	ctx, cancel := context.WithCancel(context.Background())
-	
+
 	handler := &InterruptHandler{
 		config:         config,
 		eventListeners: make([]func(InterruptEvent), 0),
@@ -110,7 +111,7 @@ func NewInterruptHandler(config InterruptHandlerConfig) *InterruptHandler {
 		ctx:            ctx,
 		cancel:         cancel,
 	}
-	
+
 	return handler
 }
 
@@ -120,16 +121,16 @@ func (ih *InterruptHandler) Start() {
 	if ih.config.EnableSignalHandling {
 		ih.sigChan = make(chan os.Signal, 1)
 		signal.Notify(ih.sigChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
-		
+
 		ih.wg.Add(1)
 		go func() {
 			defer ih.wg.Done()
 			ih.handleSignals()
 		}()
-		
+
 		log.Printf("Gestionnaire d'interruptions démarré avec gestion des signaux")
 	}
-	
+
 	// Configurer les points de sauvegarde périodiques si configurés
 	if ih.config.CheckpointInterval > 0 {
 		ih.wg.Add(1)
@@ -144,13 +145,13 @@ func (ih *InterruptHandler) Start() {
 func (ih *InterruptHandler) Stop() {
 	// Annuler le contexte pour arrêter toutes les goroutines
 	ih.cancel()
-	
+
 	// Arrêter la notification des signaux
 	if ih.config.EnableSignalHandling && ih.sigChan != nil {
 		signal.Stop(ih.sigChan)
 		close(ih.sigChan)
 	}
-	
+
 	// Attendre que toutes les goroutines se terminent
 	ih.wg.Wait()
 }
@@ -159,7 +160,7 @@ func (ih *InterruptHandler) Stop() {
 func (ih *InterruptHandler) AddEventListener(listener func(InterruptEvent)) {
 	ih.mu.Lock()
 	defer ih.mu.Unlock()
-	
+
 	ih.eventListeners = append(ih.eventListeners, listener)
 }
 
@@ -167,10 +168,10 @@ func (ih *InterruptHandler) AddEventListener(listener func(InterruptEvent)) {
 func (ih *InterruptHandler) HandleInterrupt(reason InterruptReason, source string, message string) InterruptAction {
 	ih.mu.Lock()
 	defer ih.mu.Unlock()
-	
+
 	action := ih.config.DefaultAction
 	recoverable := true
-	
+
 	// Déterminer l'action en fonction de la raison
 	switch reason {
 	case UserInterrupt:
@@ -194,7 +195,7 @@ func (ih *InterruptHandler) HandleInterrupt(reason InterruptReason, source strin
 		// Arrêt normal et gracieux
 		action = GracefulStop
 	}
-	
+
 	// Créer l'événement d'interruption
 	event := InterruptEvent{
 		Reason:      reason,
@@ -204,22 +205,22 @@ func (ih *InterruptHandler) HandleInterrupt(reason InterruptReason, source strin
 		Message:     message,
 		Recoverable: recoverable,
 	}
-	
+
 	// Enregistrer l'événement
 	ih.events = append(ih.events, event)
-	
+
 	// Notifier tous les écouteurs
 	for _, listener := range ih.eventListeners {
 		go listener(event)
 	}
-	
+
 	// Logger l'interruption
-	log.Printf("⚠️ Interruption: %s de %s - %s (action: %s)", 
+	log.Printf("⚠️ Interruption: %s de %s - %s (action: %s)",
 		reason, source, message, action)
-	
+
 	// Exécuter l'action d'interruption
 	ih.executeAction(event)
-	
+
 	return action
 }
 
@@ -229,13 +230,13 @@ func (ih *InterruptHandler) executeAction(event InterruptEvent) {
 	case GracefulStop:
 		// Annuler le contexte pour signaler l'arrêt
 		ih.cancel()
-		
+
 	case ImmediateStop:
 		// Forcer l'arrêt immédiat
 		ih.cancel()
 		// Dans un cas réel, on pourrait aussi appeler des fonctions d'arrêt forcé
 		// sur les composants critiques qui ne répondent pas assez vite
-		
+
 	case Pause:
 		if ih.config.EnablePause {
 			ih.setPaused(true)
@@ -244,7 +245,7 @@ func (ih *InterruptHandler) executeAction(event InterruptEvent) {
 			// Si la pause n'est pas supportée, faire un arrêt gracieux
 			ih.cancel()
 		}
-		
+
 	case Checkpoint:
 		// Créer un point de sauvegarde
 		if err := ih.createCheckpoint(); err != nil {
@@ -264,7 +265,7 @@ func (ih *InterruptHandler) SetPause(pause bool) {
 		log.Printf("La fonctionnalité de pause n'est pas activée")
 		return
 	}
-	
+
 	ih.setPaused(pause)
 }
 
@@ -272,13 +273,13 @@ func (ih *InterruptHandler) SetPause(pause bool) {
 func (ih *InterruptHandler) setPaused(pause bool) {
 	ih.mu.Lock()
 	defer ih.mu.Unlock()
-	
+
 	if ih.isPaused == pause {
 		return
 	}
-	
+
 	ih.isPaused = pause
-	
+
 	if pause {
 		log.Printf("Pipeline mis en pause")
 		event := InterruptEvent{
@@ -308,7 +309,7 @@ func (ih *InterruptHandler) setPaused(pause bool) {
 func (ih *InterruptHandler) IsPaused() bool {
 	ih.mu.RLock()
 	defer ih.mu.RUnlock()
-	
+
 	return ih.isPaused
 }
 
@@ -322,7 +323,7 @@ func (ih *InterruptHandler) handleSignals() {
 			if !ok {
 				return
 			}
-			
+
 			switch sig {
 			case syscall.SIGINT, syscall.SIGTERM:
 				ih.HandleInterrupt(UserInterrupt, "signal", fmt.Sprintf("Signal %s reçu", sig))
@@ -338,7 +339,7 @@ func (ih *InterruptHandler) handleSignals() {
 func (ih *InterruptHandler) checkpointLoop() {
 	ticker := time.NewTicker(ih.config.CheckpointInterval)
 	defer ticker.Stop()
-	
+
 	for {
 		select {
 		case <-ih.ctx.Done():
@@ -347,7 +348,7 @@ func (ih *InterruptHandler) checkpointLoop() {
 			if ih.IsPaused() {
 				continue
 			}
-			
+
 			if err := ih.createCheckpoint(); err != nil {
 				log.Printf("Erreur lors de la création du checkpoint périodique: %v", err)
 			} else {
@@ -361,23 +362,23 @@ func (ih *InterruptHandler) checkpointLoop() {
 func (ih *InterruptHandler) createCheckpoint() error {
 	// Dans une implémentation réelle, cette fonction sauvegarderait l'état du pipeline
 	// dans un fichier ou une base de données pour permettre une reprise ultérieure
-	
+
 	// Vérifier que le répertoire de checkpoint existe
 	if err := os.MkdirAll(ih.config.CheckpointDir, 0755); err != nil {
 		return fmt.Errorf("impossible de créer le répertoire de checkpoint: %w", err)
 	}
-	
+
 	// Simuler la création d'un checkpoint
-	checkpointFile := filepath.Join(ih.config.CheckpointDir, 
+	checkpointFile := filepath.Join(ih.config.CheckpointDir,
 		fmt.Sprintf("checkpoint_%s.json", time.Now().Format("20060102_150405")))
-	
+
 	// Dans une implémentation réelle, on écrirait ici l'état du pipeline
 	dummyData := []byte("{\"checkpoint_time\":\"" + time.Now().String() + "\", \"status\":\"simulated\"}")
-	
+
 	if err := os.WriteFile(checkpointFile, dummyData, 0644); err != nil {
 		return fmt.Errorf("erreur lors de l'écriture du checkpoint: %w", err)
 	}
-	
+
 	return nil
 }
 
@@ -385,10 +386,10 @@ func (ih *InterruptHandler) createCheckpoint() error {
 func (ih *InterruptHandler) GetEvents() []InterruptEvent {
 	ih.mu.RLock()
 	defer ih.mu.RUnlock()
-	
+
 	// Faire une copie pour éviter les modifications concurrentes
 	events := make([]InterruptEvent, len(ih.events))
 	copy(events, ih.events)
-	
+
 	return events
 }

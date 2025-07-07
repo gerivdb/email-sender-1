@@ -9,10 +9,10 @@ import (
 
 // ScriptInfo represents details about an automation script.
 type ScriptInfo struct {
-	Path		string
-	Description	string
-	Dependencies	[]string	// List of other scripts or tools it depends on
-	EntryPoint	string		// How to run this script (e.g., "go run", "bash", "pwsh -File")
+	Path         string
+	Description  string
+	Dependencies []string // List of other scripts or tools it depends on
+	EntryPoint   string   // How to run this script (e.g., "go run", "bash", "pwsh -File")
 }
 
 func main() {

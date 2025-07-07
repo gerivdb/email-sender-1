@@ -10,8 +10,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	"D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/hooks/commit-interceptor"
 )
 
 func TestMultiCriteriaClassifier_HybridClassification(t *testing.T) {
@@ -21,12 +19,12 @@ func TestMultiCriteriaClassifier_HybridClassification(t *testing.T) {
 	classifier := commitinterceptor.NewMultiCriteriaClassifier(semanticManager, fallbackAnalyzer)
 
 	hybridTestCases := []struct {
-		name              string
-		commitData        *commitinterceptor.CommitData
-		expectedType      string
+		name               string
+		commitData         *commitinterceptor.CommitData
+		expectedType       string
 		expectedConfidence float64
-		expectedFactors   map[string]float64
-		description       string
+		expectedFactors    map[string]float64
+		description        string
 	}{
 		{
 			name: "Clear feature - high semantic + traditional agreement",
@@ -39,10 +37,10 @@ func TestMultiCriteriaClassifier_HybridClassification(t *testing.T) {
 			expectedType:       "feature",
 			expectedConfidence: 0.90,
 			expectedFactors: map[string]float64{
-				"semantic_score":     0.85,
-				"message_patterns":   0.95,
-				"file_analysis":      0.80,
-				"impact_detection":   0.70,
+				"semantic_score":   0.85,
+				"message_patterns": 0.95,
+				"file_analysis":    0.80,
+				"impact_detection": 0.70,
 			},
 			description: "Clear feature with strong multi-criteria consensus",
 		},
@@ -57,10 +55,10 @@ func TestMultiCriteriaClassifier_HybridClassification(t *testing.T) {
 			expectedType:       "refactor", // Résolu par analyse sémantique
 			expectedConfidence: 0.70,
 			expectedFactors: map[string]float64{
-				"semantic_score":     0.75, // IA détecte refactoring
-				"message_patterns":   0.50, // Message ambigu
-				"file_analysis":      0.80,
-				"impact_detection":   0.60,
+				"semantic_score":   0.75, // IA détecte refactoring
+				"message_patterns": 0.50, // Message ambigu
+				"file_analysis":    0.80,
+				"impact_detection": 0.60,
 			},
 			description: "Message ambigu résolu par analyse sémantique",
 		},
@@ -75,10 +73,10 @@ func TestMultiCriteriaClassifier_HybridClassification(t *testing.T) {
 			expectedType:       "feature", // Contenu > prefix
 			expectedConfidence: 0.75,
 			expectedFactors: map[string]float64{
-				"semantic_score":     0.80, // IA détecte feature malgré "fix:"
-				"message_patterns":   0.70, // Conflits prefix vs contenu
-				"file_analysis":      0.75, // Fichiers suggèrent feature
-				"impact_detection":   0.70, // Impact modéré
+				"semantic_score":   0.80, // IA détecte feature malgré "fix:"
+				"message_patterns": 0.70, // Conflits prefix vs contenu
+				"file_analysis":    0.75, // Fichiers suggèrent feature
+				"impact_detection": 0.70, // Impact modéré
 			},
 			description: "Signaux conflictuels résolus par pondération",
 		},
@@ -93,10 +91,10 @@ func TestMultiCriteriaClassifier_HybridClassification(t *testing.T) {
 			expectedType:       "docs",
 			expectedConfidence: 0.85,
 			expectedFactors: map[string]float64{
-				"semantic_score":     0.80,
-				"message_patterns":   0.90,
-				"file_analysis":      0.60, // Documentation files
-				"impact_detection":   0.50, // Low impact
+				"semantic_score":   0.80,
+				"message_patterns": 0.90,
+				"file_analysis":    0.60, // Documentation files
+				"impact_detection": 0.50, // Low impact
 			},
 			description: "Documentation avec consensus multi-critères",
 		},
@@ -111,10 +109,10 @@ func TestMultiCriteriaClassifier_HybridClassification(t *testing.T) {
 			expectedType:       "fix",
 			expectedConfidence: 0.95,
 			expectedFactors: map[string]float64{
-				"semantic_score":     0.90, // IA détecte criticité
-				"message_patterns":   0.95, // Pattern "fix:" + "critical"
-				"file_analysis":      0.85, // Fichiers de sécurité
-				"impact_detection":   0.90, // High impact détecté
+				"semantic_score":   0.90, // IA détecte criticité
+				"message_patterns": 0.95, // Pattern "fix:" + "critical"
+				"file_analysis":    0.85, // Fichiers de sécurité
+				"impact_detection": 0.90, // High impact détecté
 			},
 			description: "Fix critique avec détection haute priorité",
 		},
@@ -343,10 +341,10 @@ func TestMultiCriteriaClassifier_BranchSuggestion(t *testing.T) {
 	classifier := setupClassifierForTesting(t)
 
 	branchTestCases := []struct {
-		name         string
-		commitData   *commitinterceptor.CommitData
+		name            string
+		commitData      *commitinterceptor.CommitData
 		expectedPattern string
-		description  string
+		description     string
 	}{
 		{
 			name: "Feature branch suggestion",
@@ -450,6 +448,56 @@ func TestMultiCriteriaClassifier_WeightingSystem(t *testing.T) {
 
 // Fonctions utilitaires pour les tests
 
+func getTestConfig() *commitinterceptor.Config { // Adjusted to return commitinterceptor.Config
+	return &commitinterceptor.Config{ // Adjusted to use commitinterceptor.Config
+		TestMode: true,
+		Server: commitinterceptor.ServerConfig{ // Adjusted to use commitinterceptor.ServerConfig
+			Port: 8080,
+			Host: "localhost",
+		},
+		Routing: commitinterceptor.RoutingConfig{ // Adjusted to use commitinterceptor.RoutingConfig
+			Rules: map[string]commitinterceptor.RoutingRule{ // Adjusted to use commitinterceptor.RoutingRule
+				"feature": {
+					Patterns:     []string{"feat:", "feature:"},
+					TargetBranch: "feature/{name}-{timestamp}",
+					CreateBranch: true,
+				},
+				"fix": {
+					Patterns:     []string{"fix:", "bug:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
+				},
+				"hotfix": {
+					Patterns:     []string{"critical", "hotfix:"},
+					TargetBranch: "hotfix/{name}-{timestamp}",
+					CreateBranch: true,
+				},
+				"refactor": {
+					Patterns:     []string{"refactor:"},
+					TargetBranch: "refactor/{name}-{timestamp}",
+					CreateBranch: true,
+				},
+				"docs": {
+					Patterns:     []string{"docs:", "doc:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
+				},
+				"style": {
+					Patterns:     []string{"style:", "format:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
+				},
+				"test": {
+					Patterns:     []string{"test:", "tests:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
+				},
+			},
+			DefaultStrategy: "develop",
+		},
+	}
+}
+
 func setupClassifierForTesting(t *testing.T) *commitinterceptor.MultiCriteriaClassifier {
 	semanticManager := setupMockSemanticManagerForClassifier(t)
 	fallbackAnalyzer := commitinterceptor.NewCommitAnalyzer(getTestConfig())
@@ -460,24 +508,9 @@ func setupMockSemanticManagerForClassifier(t *testing.T) *commitinterceptor.Sema
 	// Utiliser le mock existant avec quelques adaptations pour le classificateur
 	mockAutonomy := commitinterceptor.NewMockAdvancedAutonomyManager()
 	mockMemory := commitinterceptor.NewMockContextualMemory()
-	
-	config := &commitinterceptor.Config{
-		Server: commitinterceptor.ServerConfig{
-			Port: 8080,
-			Host: "localhost",
-		},
-		Git: commitinterceptor.GitConfig{
-			DefaultBranch: "main",
-			RemoteName:    "origin",
-		},
-		Routing: commitinterceptor.RoutingConfig{
-			DefaultStrategy: "type-based",
-		},
-		Logging: commitinterceptor.LoggingConfig{
-			Level: "info",
-		},
-	}
-	
+
+	config := getTestConfig() // Use the local getTestConfig
+
 	return &commitinterceptor.SemanticEmbeddingManager{
 		autonomyManager:    mockAutonomy,
 		contextualMemory:   mockMemory,

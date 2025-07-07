@@ -56,7 +56,7 @@ func (um *UserManager) AuthenticateUser(ctx context.Context, username, password 
 	err := um.db.QueryRowContext(ctx, query, username).Scan(&storedHash)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return false, nil	// Utilisateur non trouvé
+			return false, nil // Utilisateur non trouvé
 		}
 		return false, fmt.Errorf("database query failed: %w", err)
 	}
@@ -99,10 +99,10 @@ func (um *UserManager) GetUser(ctx context.Context, username string) (*User, err
 
 // User représente un utilisateur
 type User struct {
-	ID		int	`json:"id"`
-	Username	string	`json:"username"`
-	Email		string	`json:"email"`
-	CreatedAt	string	`json:"created_at"`
+	ID        int    `json:"id"`
+	Username  string `json:"username"`
+	Email     string `json:"email"`
+	CreatedAt string `json:"created_at"`
 }
 
 // AuthHandler gère l'authentification HTTP

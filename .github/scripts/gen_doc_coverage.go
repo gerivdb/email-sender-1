@@ -11,76 +11,76 @@ import (
 
 // CoverageReport represents documentation coverage analysis
 type CoverageReport struct {
-	GeneratedAt		time.Time			`json:"generated_at"`
-	ProjectName		string				`json:"project_name"`
-	OverallCoverage		float64				`json:"overall_coverage"`
-	CoverageByCategory	map[string]CoverageMetric	`json:"coverage_by_category"`
-	CoverageByType		map[string]CoverageMetric	`json:"coverage_by_type"`
-	ExpectedFiles		[]ExpectedFile			`json:"expected_files"`
-	ActualFiles		[]ActualFile			`json:"actual_files"`
-	MissingFiles		[]MissingFile			`json:"missing_files"`
-	Recommendations		[]string			`json:"recommendations"`
-	Badges			[]BadgeData			`json:"badges"`
-	Trending		TrendingData			`json:"trending"`
-	Summary			string				`json:"summary"`
+	GeneratedAt        time.Time                 `json:"generated_at"`
+	ProjectName        string                    `json:"project_name"`
+	OverallCoverage    float64                   `json:"overall_coverage"`
+	CoverageByCategory map[string]CoverageMetric `json:"coverage_by_category"`
+	CoverageByType     map[string]CoverageMetric `json:"coverage_by_type"`
+	ExpectedFiles      []ExpectedFile            `json:"expected_files"`
+	ActualFiles        []ActualFile              `json:"actual_files"`
+	MissingFiles       []MissingFile             `json:"missing_files"`
+	Recommendations    []string                  `json:"recommendations"`
+	Badges             []BadgeData               `json:"badges"`
+	Trending           TrendingData              `json:"trending"`
+	Summary            string                    `json:"summary"`
 }
 
 // CoverageMetric represents coverage metrics for a category/type
 type CoverageMetric struct {
-	Expected	int	`json:"expected"`
-	Actual		int	`json:"actual"`
-	Coverage	float64	`json:"coverage"`
-	MissingCount	int	`json:"missing_count"`
-	ExtraCount	int	`json:"extra_count"`
-	QualityScore	float64	`json:"quality_score"`
+	Expected     int     `json:"expected"`
+	Actual       int     `json:"actual"`
+	Coverage     float64 `json:"coverage"`
+	MissingCount int     `json:"missing_count"`
+	ExtraCount   int     `json:"extra_count"`
+	QualityScore float64 `json:"quality_score"`
 }
 
 // ExpectedFile represents a file that should exist
 type ExpectedFile struct {
-	Path		string		`json:"path"`
-	Category	string		`json:"category"`
-	Priority	string		`json:"priority"`
-	Description	string		`json:"description"`
-	Exists		bool		`json:"exists"`
-	Alternatives	[]string	`json:"alternatives,omitempty"`
+	Path         string   `json:"path"`
+	Category     string   `json:"category"`
+	Priority     string   `json:"priority"`
+	Description  string   `json:"description"`
+	Exists       bool     `json:"exists"`
+	Alternatives []string `json:"alternatives,omitempty"`
 }
 
 // ActualFile represents a file that exists
 type ActualFile struct {
-	Path		string		`json:"path"`
-	Category	string		`json:"category"`
-	Size		int64		`json:"size"`
-	LastModified	time.Time	`json:"last_modified"`
-	QualityScore	float64		`json:"quality_score"`
-	HasTitle	bool		`json:"has_title"`
-	HasContent	bool		`json:"has_content"`
+	Path         string    `json:"path"`
+	Category     string    `json:"category"`
+	Size         int64     `json:"size"`
+	LastModified time.Time `json:"last_modified"`
+	QualityScore float64   `json:"quality_score"`
+	HasTitle     bool      `json:"has_title"`
+	HasContent   bool      `json:"has_content"`
 }
 
 // MissingFile represents a missing expected file
 type MissingFile struct {
-	Path		string	`json:"path"`
-	Category	string	`json:"category"`
-	Priority	string	`json:"priority"`
-	Impact		string	`json:"impact"`
-	Suggestion	string	`json:"suggestion"`
+	Path       string `json:"path"`
+	Category   string `json:"category"`
+	Priority   string `json:"priority"`
+	Impact     string `json:"impact"`
+	Suggestion string `json:"suggestion"`
 }
 
 // BadgeData represents badge information
 type BadgeData struct {
-	Label	string	`json:"label"`
-	Message	string	`json:"message"`
-	Color	string	`json:"color"`
-	URL	string	`json:"url"`
-	AltText	string	`json:"alt_text"`
+	Label   string `json:"label"`
+	Message string `json:"message"`
+	Color   string `json:"color"`
+	URL     string `json:"url"`
+	AltText string `json:"alt_text"`
 }
 
 // TrendingData represents trending information
 type TrendingData struct {
-	RecentChanges	int			`json:"recent_changes"`
-	NewFiles	int			`json:"new_files"`
-	UpdatedFiles	int			`json:"updated_files"`
-	CoverageChange	float64			`json:"coverage_change"`
-	CategoryTrends	map[string]float64	`json:"category_trends"`
+	RecentChanges  int                `json:"recent_changes"`
+	NewFiles       int                `json:"new_files"`
+	UpdatedFiles   int                `json:"updated_files"`
+	CoverageChange float64            `json:"coverage_change"`
+	CategoryTrends map[string]float64 `json:"category_trends"`
 }
 
 func main() {
@@ -140,18 +140,18 @@ func generateCoverageReport(root string) (*CoverageReport, error) {
 	recommendations := generateRecommendations(overallCoverage, missingFiles, coverageByCategory)
 
 	report := &CoverageReport{
-		GeneratedAt:		time.Now(),
-		ProjectName:		projectName,
-		OverallCoverage:	overallCoverage,
-		CoverageByCategory:	coverageByCategory,
-		CoverageByType:		coverageByType,
-		ExpectedFiles:		expectedFiles,
-		ActualFiles:		actualFiles,
-		MissingFiles:		missingFiles,
-		Recommendations:	recommendations,
-		Badges:			badges,
-		Trending:		trending,
-		Summary:		generateSummary(overallCoverage, len(actualFiles), len(missingFiles)),
+		GeneratedAt:        time.Now(),
+		ProjectName:        projectName,
+		OverallCoverage:    overallCoverage,
+		CoverageByCategory: coverageByCategory,
+		CoverageByType:     coverageByType,
+		ExpectedFiles:      expectedFiles,
+		ActualFiles:        actualFiles,
+		MissingFiles:       missingFiles,
+		Recommendations:    recommendations,
+		Badges:             badges,
+		Trending:           trending,
+		Summary:            generateSummary(overallCoverage, len(actualFiles), len(missingFiles)),
 	}
 
 	return report, nil
@@ -160,100 +160,100 @@ func generateCoverageReport(root string) (*CoverageReport, error) {
 func defineExpectedFiles() []ExpectedFile {
 	return []ExpectedFile{
 		{
-			Path:		"README.md",
-			Category:	"root",
-			Priority:	"critical",
-			Description:	"Main project overview and quick start guide",
-			Alternatives:	[]string{"readme.txt", "README.rst"},
+			Path:         "README.md",
+			Category:     "root",
+			Priority:     "critical",
+			Description:  "Main project overview and quick start guide",
+			Alternatives: []string{"readme.txt", "README.rst"},
 		},
 		{
-			Path:		"CHANGELOG.md",
-			Category:	"root",
-			Priority:	"high",
-			Description:	"Version history and changes documentation",
-			Alternatives:	[]string{"HISTORY.md", "CHANGES.md"},
+			Path:         "CHANGELOG.md",
+			Category:     "root",
+			Priority:     "high",
+			Description:  "Version history and changes documentation",
+			Alternatives: []string{"HISTORY.md", "CHANGES.md"},
 		},
 		{
-			Path:		"LICENSE",
-			Category:	"root",
-			Priority:	"critical",
-			Description:	"Software license information",
-			Alternatives:	[]string{"LICENSE.md", "LICENSE.txt", "COPYING"},
+			Path:         "LICENSE",
+			Category:     "root",
+			Priority:     "critical",
+			Description:  "Software license information",
+			Alternatives: []string{"LICENSE.md", "LICENSE.txt", "COPYING"},
 		},
 		{
-			Path:		"CONTRIBUTING.md",
-			Category:	"development",
-			Priority:	"high",
-			Description:	"Guidelines for project contributors",
-			Alternatives:	[]string{".github/CONTRIBUTING.md"},
+			Path:         "CONTRIBUTING.md",
+			Category:     "development",
+			Priority:     "high",
+			Description:  "Guidelines for project contributors",
+			Alternatives: []string{".github/CONTRIBUTING.md"},
 		},
 		{
-			Path:		"CODE_OF_CONDUCT.md",
-			Category:	"development",
-			Priority:	"medium",
-			Description:	"Community behavior guidelines",
-			Alternatives:	[]string{".github/CODE_OF_CONDUCT.md"},
+			Path:         "CODE_OF_CONDUCT.md",
+			Category:     "development",
+			Priority:     "medium",
+			Description:  "Community behavior guidelines",
+			Alternatives: []string{".github/CODE_OF_CONDUCT.md"},
 		},
 		{
-			Path:		"SECURITY.md",
-			Category:	"root",
-			Priority:	"high",
-			Description:	"Security policy and vulnerability reporting",
-			Alternatives:	[]string{".github/SECURITY.md"},
+			Path:         "SECURITY.md",
+			Category:     "root",
+			Priority:     "high",
+			Description:  "Security policy and vulnerability reporting",
+			Alternatives: []string{".github/SECURITY.md"},
 		},
 		{
-			Path:		"docs/README.md",
-			Category:	"documentation",
-			Priority:	"medium",
-			Description:	"Documentation directory overview",
+			Path:        "docs/README.md",
+			Category:    "documentation",
+			Priority:    "medium",
+			Description: "Documentation directory overview",
 		},
 		{
-			Path:		"docs/installation.md",
-			Category:	"documentation",
-			Priority:	"high",
-			Description:	"Installation and setup instructions",
-			Alternatives:	[]string{"INSTALL.md", "docs/setup.md"},
+			Path:         "docs/installation.md",
+			Category:     "documentation",
+			Priority:     "high",
+			Description:  "Installation and setup instructions",
+			Alternatives: []string{"INSTALL.md", "docs/setup.md"},
 		},
 		{
-			Path:		"docs/api.md",
-			Category:	"api",
-			Priority:	"high",
-			Description:	"API documentation and reference",
-			Alternatives:	[]string{"API.md", "docs/api/README.md"},
+			Path:         "docs/api.md",
+			Category:     "api",
+			Priority:     "high",
+			Description:  "API documentation and reference",
+			Alternatives: []string{"API.md", "docs/api/README.md"},
 		},
 		{
-			Path:		"docs/architecture.md",
-			Category:	"documentation",
-			Priority:	"medium",
-			Description:	"System architecture documentation",
-			Alternatives:	[]string{"ARCHITECTURE.md", "docs/design.md"},
+			Path:         "docs/architecture.md",
+			Category:     "documentation",
+			Priority:     "medium",
+			Description:  "System architecture documentation",
+			Alternatives: []string{"ARCHITECTURE.md", "docs/design.md"},
 		},
 		{
-			Path:		"docs/development.md",
-			Category:	"development",
-			Priority:	"medium",
-			Description:	"Development environment setup",
-			Alternatives:	[]string{"DEVELOPMENT.md", "docs/dev-guide.md"},
+			Path:         "docs/development.md",
+			Category:     "development",
+			Priority:     "medium",
+			Description:  "Development environment setup",
+			Alternatives: []string{"DEVELOPMENT.md", "docs/dev-guide.md"},
 		},
 		{
-			Path:		"docs/troubleshooting.md",
-			Category:	"documentation",
-			Priority:	"medium",
-			Description:	"Common issues and solutions",
-			Alternatives:	[]string{"TROUBLESHOOTING.md", "FAQ.md"},
+			Path:         "docs/troubleshooting.md",
+			Category:     "documentation",
+			Priority:     "medium",
+			Description:  "Common issues and solutions",
+			Alternatives: []string{"TROUBLESHOOTING.md", "FAQ.md"},
 		},
 		{
-			Path:		".github/ISSUE_TEMPLATE.md",
-			Category:	"github",
-			Priority:	"medium",
-			Description:	"GitHub issue template",
-			Alternatives:	[]string{".github/ISSUE_TEMPLATE/"},
+			Path:         ".github/ISSUE_TEMPLATE.md",
+			Category:     "github",
+			Priority:     "medium",
+			Description:  "GitHub issue template",
+			Alternatives: []string{".github/ISSUE_TEMPLATE/"},
 		},
 		{
-			Path:		".github/PULL_REQUEST_TEMPLATE.md",
-			Category:	"github",
-			Priority:	"medium",
-			Description:	"GitHub pull request template",
+			Path:        ".github/PULL_REQUEST_TEMPLATE.md",
+			Category:    "github",
+			Priority:    "medium",
+			Description: "GitHub pull request template",
 		},
 	}
 }
@@ -290,13 +290,13 @@ func findActualFiles(root string) ([]ActualFile, error) {
 		qualityScore, hasTitle, hasContent := analyzeFileQuality(path)
 
 		file := ActualFile{
-			Path:		relPath,
-			Category:	categorizeFile(relPath, info.Name()),
-			Size:		info.Size(),
-			LastModified:	info.ModTime(),
-			QualityScore:	qualityScore,
-			HasTitle:	hasTitle,
-			HasContent:	hasContent,
+			Path:         relPath,
+			Category:     categorizeFile(relPath, info.Name()),
+			Size:         info.Size(),
+			LastModified: info.ModTime(),
+			QualityScore: qualityScore,
+			HasTitle:     hasTitle,
+			HasContent:   hasContent,
 		}
 
 		files = append(files, file)
@@ -324,7 +324,7 @@ func analyzeFileQuality(filePath string) (float64, bool, bool) {
 	lines := strings.Split(content, "\n")
 
 	var hasTitle, hasContent bool
-	var score float64 = 50.0	// Base score
+	var score float64 = 50.0 // Base score
 
 	// Check for title
 	for _, line := range lines[:min(5, len(lines))] {
@@ -429,12 +429,12 @@ func calculateCoverageByCategory(expectedFiles []ExpectedFile, actualFiles []Act
 		}
 
 		categoryMetrics[category] = CoverageMetric{
-			Expected:	expected,
-			Actual:		actual,
-			Coverage:	coverage,
-			MissingCount:	expected - exists,
-			ExtraCount:	actual - exists,
-			QualityScore:	qualityScore,
+			Expected:     expected,
+			Actual:       actual,
+			Coverage:     coverage,
+			MissingCount: expected - exists,
+			ExtraCount:   actual - exists,
+			QualityScore: qualityScore,
 		}
 	}
 
@@ -464,8 +464,8 @@ func calculateCoverageByType(actualFiles []ActualFile) map[string]CoverageMetric
 		}
 
 		typeMetrics[fileType] = CoverageMetric{
-			Actual:		count,
-			QualityScore:	qualityScore,
+			Actual:       count,
+			QualityScore: qualityScore,
 		}
 	}
 
@@ -529,11 +529,11 @@ func findMissingFiles(expectedFiles []ExpectedFile) []MissingFile {
 			}
 
 			missing = append(missing, MissingFile{
-				Path:		expected.Path,
-				Category:	expected.Category,
-				Priority:	expected.Priority,
-				Impact:		impact,
-				Suggestion:	suggestion,
+				Path:       expected.Path,
+				Category:   expected.Category,
+				Priority:   expected.Priority,
+				Impact:     impact,
+				Suggestion: suggestion,
 			})
 		}
 	}
@@ -555,11 +555,11 @@ func generateBadges(coverage float64, missingCount int) []BadgeData {
 	}
 
 	badges = append(badges, BadgeData{
-		Label:		"docs-coverage",
-		Message:	fmt.Sprintf("%.1f%%", coverage),
-		Color:		color,
-		URL:		fmt.Sprintf("https://img.shields.io/badge/docs--coverage-%.1f%%25-%s", coverage, color),
-		AltText:	fmt.Sprintf("Documentation Coverage: %.1f%%", coverage),
+		Label:   "docs-coverage",
+		Message: fmt.Sprintf("%.1f%%", coverage),
+		Color:   color,
+		URL:     fmt.Sprintf("https://img.shields.io/badge/docs--coverage-%.1f%%25-%s", coverage, color),
+		AltText: fmt.Sprintf("Documentation Coverage: %.1f%%", coverage),
 	})
 
 	// Missing files badge
@@ -571,11 +571,11 @@ func generateBadges(coverage float64, missingCount int) []BadgeData {
 	}
 
 	badges = append(badges, BadgeData{
-		Label:		"docs-missing",
-		Message:	fmt.Sprintf("%d files", missingCount),
-		Color:		missingColor,
-		URL:		fmt.Sprintf("https://img.shields.io/badge/docs--missing-%d%%20files-%s", missingCount, missingColor),
-		AltText:	fmt.Sprintf("Missing Documentation Files: %d", missingCount),
+		Label:   "docs-missing",
+		Message: fmt.Sprintf("%d files", missingCount),
+		Color:   missingColor,
+		URL:     fmt.Sprintf("https://img.shields.io/badge/docs--missing-%d%%20files-%s", missingCount, missingColor),
+		AltText: fmt.Sprintf("Missing Documentation Files: %d", missingCount),
 	})
 
 	return badges
@@ -583,7 +583,7 @@ func generateBadges(coverage float64, missingCount int) []BadgeData {
 
 func generateTrendingData(actualFiles []ActualFile) TrendingData {
 	now := time.Now()
-	recentThreshold := now.AddDate(0, 0, -7)	// Last 7 days
+	recentThreshold := now.AddDate(0, 0, -7) // Last 7 days
 
 	var recentChanges, newFiles, updatedFiles int
 	categoryTrends := make(map[string]float64)
@@ -606,15 +606,15 @@ func generateTrendingData(actualFiles []ActualFile) TrendingData {
 
 	// Calculate category trends (simplified)
 	for category, count := range categoryCounts {
-		categoryTrends[category] = float64(count)	// Placeholder for trend calculation
+		categoryTrends[category] = float64(count) // Placeholder for trend calculation
 	}
 
 	return TrendingData{
-		RecentChanges:	recentChanges,
-		NewFiles:	newFiles,
-		UpdatedFiles:	updatedFiles,
-		CoverageChange:	0.0,	// Would need historical data
-		CategoryTrends:	categoryTrends,
+		RecentChanges:  recentChanges,
+		NewFiles:       newFiles,
+		UpdatedFiles:   updatedFiles,
+		CoverageChange: 0.0, // Would need historical data
+		CategoryTrends: categoryTrends,
 	}
 }
 

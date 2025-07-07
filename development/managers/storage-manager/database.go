@@ -28,7 +28,7 @@ func (sm *StorageManagerImpl) initPostgreSQL(ctx context.Context) error {
 	// Configure connection pool
 	db.SetMaxOpenConns(sm.config.PostgreSQL.MaxOpenConns)
 	db.SetMaxIdleConns(sm.config.PostgreSQL.MaxIdleConns)
-	
+
 	if lifetime, err := time.ParseDuration(sm.config.PostgreSQL.MaxLifetime); err == nil {
 		db.SetConnMaxLifetime(lifetime)
 	}

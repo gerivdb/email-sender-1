@@ -7,12 +7,14 @@ import (
 	"go/printer"
 	"go/token"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
 func main() {
+	log.Println("cmd/refactorgo/refactorgo.go: main() called")
 	fmt.Println("Starting Go package refactoring...")
 
 	err := filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
@@ -54,7 +56,7 @@ func main() {
 			// Ensure package name is a valid Go identifier (e.g., no hyphens)
 			newPackageName = strings.ReplaceAll(newPackageName, "-", "_")
 			newPackageName = strings.ReplaceAll(newPackageName, ".", "_")
-			newPackageName = strings.ToLower(newPackageName)	// Conventionally, package names are lowercase
+			newPackageName = strings.ToLower(newPackageName) // Conventionally, package names are lowercase
 
 			if newPackageName == "scripts" && strings.HasSuffix(path, "scan_missing_files_lib.go") {
 				// Special case for scan_missing_files_lib.go which is already scripts

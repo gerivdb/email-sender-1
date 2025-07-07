@@ -18,7 +18,7 @@ func findProjectRoot() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("impossible d'obtenir le chemin de l'exécutable : %w", err)
 	}
-	currentDir := filepath.Dir(exePath)	// Commence à partir du répertoire de l'exécutable
+	currentDir := filepath.Dir(exePath) // Commence à partir du répertoire de l'exécutable
 
 	for {
 		goModPath := filepath.Join(currentDir, "go.mod")
@@ -27,7 +27,7 @@ func findProjectRoot() (string, error) {
 		}
 
 		parentDir := filepath.Dir(currentDir)
-		if parentDir == currentDir {	// At the root or reached filesystem root
+		if parentDir == currentDir { // At the root or reached filesystem root
 			return "", fmt.Errorf("go.mod non trouvé dans aucun répertoire parent à partir de %s", filepath.Dir(exePath))
 		}
 		currentDir = parentDir
@@ -43,9 +43,9 @@ func main() {
 	}
 
 	// Définir les chemins de sortie
-	outputDir := filepath.Join(projectRoot, "output", "phase5")	// Un répertoire pour les sorties
+	outputDir := filepath.Join(projectRoot, "output", "phase5") // Un répertoire pour les sorties
 	fmt.Printf("Tentative de création du répertoire de sortie : %s\n", outputDir)
-	err = os.MkdirAll(outputDir, os.ModePerm)	// Créer le répertoire si nécessaire
+	err = os.MkdirAll(outputDir, os.ModePerm) // Créer le répertoire si nécessaire
 	if err != nil {
 		log.Fatalf("Erreur lors de la création du répertoire de sortie %s: %v", outputDir, err)
 	}
@@ -75,14 +75,14 @@ func main() {
 	fmt.Println("\nExécution de l'analyse des écarts pour les graphes...")
 	// Pour cette simulation, nous allons simplement vérifier si des données de graphe ont été générées.
 	// En réalité, une analyse d'écart serait plus complexe (e.g., conformité aux standards, détection d'anomalies).
-	gapAnalysisResult, err := gapanalyzer.AnalyzeGraphGenerationGap(graphData)	// Nouvelle fonction à ajouter au gapanalyzer
+	gapAnalysisResult, err := gapanalyzer.AnalyzeGraphGenerationGap(graphData) // Nouvelle fonction à ajouter au gapanalyzer
 	if err != nil {
 		log.Fatalf("Erreur lors de l'analyse des écarts pour les graphes : %v", err)
 	}
 	fmt.Println("Analyse des écarts pour les graphes terminée.")
 
 	// Générer le rapport d'analyse des écarts pour les graphes
-	err = gapanalyzer.GenerateGraphGenerationGapAnalysis(gapAnalysisPath, gapAnalysisResult)	// Nouvelle fonction à ajouter au gapanalyzer
+	err = gapanalyzer.GenerateGraphGenerationGapAnalysis(gapAnalysisPath, gapAnalysisResult) // Nouvelle fonction à ajouter au gapanalyzer
 	if err != nil {
 		log.Fatalf("Erreur lors de la génération du rapport d'analyse des écarts pour les graphes : %v", err)
 	}

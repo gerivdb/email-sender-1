@@ -17,7 +17,7 @@ import (
 type EmailSenderComponent int
 
 const (
-	RAGEngine	EmailSenderComponent	= iota
+	RAGEngine EmailSenderComponent = iota
 	N8NWorkflow
 	NotionAPI
 	GmailProcessing
@@ -37,51 +37,51 @@ func (c EmailSenderComponent) String() string {
 }
 
 type IsolationResult struct {
-	Component	EmailSenderComponent	`json:"component"`
-	FailingPackages	[]string		`json:"failingPackages"`
-	WorkingPackages	[]string		`json:"workingPackages"`
-	ErrorCount	int			`json:"errorCount"`
-	HealthScore	float64			`json:"healthScore"`
-	Priority	int			`json:"priority"`
+	Component       EmailSenderComponent `json:"component"`
+	FailingPackages []string             `json:"failingPackages"`
+	WorkingPackages []string             `json:"workingPackages"`
+	ErrorCount      int                  `json:"errorCount"`
+	HealthScore     float64              `json:"healthScore"`
+	Priority        int                  `json:"priority"`
 }
 
 type ComponentPackages struct {
-	Component	EmailSenderComponent
-	Packages	[]string
-	Priority	int
+	Component EmailSenderComponent
+	Packages  []string
+	Priority  int
 }
 
 func getEmailSenderPackages() []ComponentPackages {
 	return []ComponentPackages{
 		{
-			Component:	RAGEngine,
-			Packages:	[]string{"./src/rag", "./internal/engine", "./src/indexing", "./src/cache", "./src/types"},
-			Priority:	1,
+			Component: RAGEngine,
+			Packages:  []string{"./src/rag", "./internal/engine", "./src/indexing", "./src/cache", "./src/types"},
+			Priority:  1,
 		},
 		{
-			Component:	ConfigFiles,
-			Packages:	[]string{"./configs", "./docker-compose.yml", "./.github/workflows", "./package.json", "./go.mod"},
-			Priority:	1,
+			Component: ConfigFiles,
+			Packages:  []string{"./configs", "./docker-compose.yml", "./.github/workflows", "./package.json", "./go.mod"},
+			Priority:  1,
 		},
 		{
-			Component:	N8NWorkflow,
-			Packages:	[]string{"./workflows", "./src/automation"},
-			Priority:	2,
+			Component: N8NWorkflow,
+			Packages:  []string{"./workflows", "./src/automation"},
+			Priority:  2,
 		},
 		{
-			Component:	NotionAPI,
-			Packages:	[]string{"./src/notion", "./src/database"},
-			Priority:	2,
+			Component: NotionAPI,
+			Packages:  []string{"./src/notion", "./src/database"},
+			Priority:  2,
 		},
 		{
-			Component:	GmailProcessing,
-			Packages:	[]string{"./src/gmail", "./src/email"},
-			Priority:	3,
+			Component: GmailProcessing,
+			Packages:  []string{"./src/gmail", "./src/email"},
+			Priority:  3,
 		},
 		{
-			Component:	PowerShellScript,
-			Packages:	[]string{"./scripts", "./automation"},
-			Priority:	4,
+			Component: PowerShellScript,
+			Packages:  []string{"./scripts", "./automation"},
+			Priority:  4,
 		},
 	}
 }
@@ -196,12 +196,12 @@ func isolateFailingEmailSenderPackages(_ string) []IsolationResult {
 		}
 
 		result := IsolationResult{
-			Component:		componentPkg.Component,
-			FailingPackages:	componentFailing,
-			WorkingPackages:	componentWorking,
-			ErrorCount:		totalErrors,
-			HealthScore:		healthScore,
-			Priority:		componentPkg.Priority,
+			Component:       componentPkg.Component,
+			FailingPackages: componentFailing,
+			WorkingPackages: componentWorking,
+			ErrorCount:      totalErrors,
+			HealthScore:     healthScore,
+			Priority:        componentPkg.Priority,
 		}
 
 		results = append(results, result)

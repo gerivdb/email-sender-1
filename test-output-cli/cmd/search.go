@@ -1,8 +1,8 @@
-
 package cmd
 
 import (
 	"fmt"
+
 	"github.com/spf13/cobra"
 )
 
@@ -14,7 +14,7 @@ var searchCmd = &cobra.Command{
 		query := args[0]
 		limit, _ := cmd.Flags().GetInt("limit")
 		threshold, _ := cmd.Flags().GetFloat64("threshold")
-		
+
 		// Implement search logic
 		fmt.Printf("Searching for: %s (limit: %d, threshold: %.2f)\n", query, limit, threshold)
 		return nil

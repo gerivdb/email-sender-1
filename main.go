@@ -5,9 +5,10 @@ import (
 	"log"
 	"net/http"
 
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"gopkg.in/yaml.v3"
-	"os"
 )
 
 type Config struct {

@@ -14,22 +14,22 @@ import (
 
 // ErrorAnalysisResult représente le résultat de l'analyse des erreurs
 type ErrorAnalysisResult struct {
-	TotalErrors	int		`json:"total_errors"`
-	CriticalErrors	int		`json:"critical_errors"`
-	WarningErrors	int		`json:"warning_errors"`
-	InfoErrors	int		`json:"info_errors"`
-	Categories	map[string]int	`json:"categories"`
-	Recommendations	[]string	`json:"recommendations"`
-	FixableErrors	int		`json:"fixable_errors"`
-	AutoFixApplied	int		`json:"auto_fix_applied"`
+	TotalErrors     int            `json:"total_errors"`
+	CriticalErrors  int            `json:"critical_errors"`
+	WarningErrors   int            `json:"warning_errors"`
+	InfoErrors      int            `json:"info_errors"`
+	Categories      map[string]int `json:"categories"`
+	Recommendations []string       `json:"recommendations"`
+	FixableErrors   int            `json:"fixable_errors"`
+	AutoFixApplied  int            `json:"auto_fix_applied"`
 }
 
 // DebugSession représente une session de débogage complète
 type DebugSession struct {
-	ProjectRoot	string
-	StartTime	time.Time
-	Algorithms	map[string]bool
-	Results		*ErrorAnalysisResult
+	ProjectRoot string
+	StartTime   time.Time
+	Algorithms  map[string]bool
+	Results     *ErrorAnalysisResult
 }
 
 func main() {
@@ -39,21 +39,21 @@ func main() {
 
 	// Initialiser la session de débogage
 	session := &DebugSession{
-		ProjectRoot:	"../../../../",
-		StartTime:	time.Now(),
+		ProjectRoot: "../../../../",
+		StartTime:   time.Now(),
 		Algorithms: map[string]bool{
-			"error-triage":			true,
-			"binary-search":		true,
-			"dependency-analysis":		true,
-			"progressive-build":		true,
-			"config-validator":		true,
-			"auto-fix":			true,
-			"analysis-pipeline":		true,
-			"dependency-resolution":	true,
+			"error-triage":          true,
+			"binary-search":         true,
+			"dependency-analysis":   true,
+			"progressive-build":     true,
+			"config-validator":      true,
+			"auto-fix":              true,
+			"analysis-pipeline":     true,
+			"dependency-resolution": true,
 		},
 		Results: &ErrorAnalysisResult{
-			Categories:		make(map[string]int),
-			Recommendations:	[]string{},
+			Categories:      make(map[string]int),
+			Recommendations: []string{},
 		},
 	}
 
@@ -186,7 +186,7 @@ func runAnalysisPipeline(session *DebugSession) error {
 
 	for i, stage := range stages {
 		fmt.Printf("    %d/%d: %s\n", i+1, len(stages), stage)
-		time.Sleep(200 * time.Millisecond)	// Simulation
+		time.Sleep(200 * time.Millisecond) // Simulation
 	}
 
 	fmt.Println("  ✅ Pipeline terminé - 5 étapes d'analyse complétées")
@@ -206,7 +206,7 @@ func runProgressiveBuild(session *DebugSession) error {
 		fmt.Printf("    %d/%d: Construction du module '%s'", i+1, len(modules), module)
 
 		// Simuler la construction (en production, ferait vraiment go build)
-		if module != "indexing" && module != "metrics" {	// Simuler 2 échecs
+		if module != "indexing" && module != "metrics" { // Simuler 2 échecs
 			fmt.Println(" ✅")
 			successfulBuilds++
 		} else {

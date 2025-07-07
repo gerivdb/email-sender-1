@@ -93,9 +93,9 @@ type DocumentInput struct {
 // DocumentListResponse defines model for DocumentListResponse.
 type DocumentListResponse struct {
 	Documents  *[]APIDocument `json:"documents,omitempty"`
-	Limit      *int        `json:"limit,omitempty"`
-	Offset     *int        `json:"offset,omitempty"`
-	TotalCount *int        `json:"total_count,omitempty"`
+	Limit      *int           `json:"limit,omitempty"`
+	Offset     *int           `json:"offset,omitempty"`
+	TotalCount *int           `json:"total_count,omitempty"`
 }
 
 // ErrorResponse defines model for ErrorResponse.

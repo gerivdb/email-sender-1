@@ -7,38 +7,38 @@ import (
 // DuplicationContext contexte enrichi pour les erreurs de duplication
 // Micro-étape 8.3.1 : Ajouter un champ DuplicationContext à la structure ErrorEntry
 type DuplicationContext struct {
-	SourceFile        string                 `json:"source_file"`
-	DuplicateFiles    []string               `json:"duplicate_files"`
-	SimilarityScores  map[string]float64     `json:"similarity_scores"`
-	DetectionMethod   string                 `json:"detection_method"`
-	FileReferences    []string               `json:"file_references"`
-	LastDetection     time.Time              `json:"last_detection"`
-	Metadata          map[string]interface{} `json:"metadata"`
+	SourceFile       string                 `json:"source_file"`
+	DuplicateFiles   []string               `json:"duplicate_files"`
+	SimilarityScores map[string]float64     `json:"similarity_scores"`
+	DetectionMethod  string                 `json:"detection_method"`
+	FileReferences   []string               `json:"file_references"`
+	LastDetection    time.Time              `json:"last_detection"`
+	Metadata         map[string]interface{} `json:"metadata"`
 }
 
 // EnhancedErrorEntry structure ErrorEntry enrichie avec contexte de duplication
 // Micro-étape 8.3.2 : Inclure les scores de similarité et références de fichiers dupliqués
 type EnhancedErrorEntry struct {
-	ID                 string              `json:"id"`
-	Timestamp          time.Time           `json:"timestamp"`
-	Message            string              `json:"message"`
-	StackTrace         string              `json:"stack_trace"`
-	Module             string              `json:"module"`
-	ErrorCode          string              `json:"error_code"`
+	ID                 string                 `json:"id"`
+	Timestamp          time.Time              `json:"timestamp"`
+	Message            string                 `json:"message"`
+	StackTrace         string                 `json:"stack_trace"`
+	Module             string                 `json:"module"`
+	ErrorCode          string                 `json:"error_code"`
 	ManagerContext     map[string]interface{} `json:"manager_context"`
-	Severity           string              `json:"severity"`
-	DuplicationContext *DuplicationContext `json:"duplication_context,omitempty"`
+	Severity           string                 `json:"severity"`
+	DuplicationContext *DuplicationContext    `json:"duplication_context,omitempty"`
 }
 
 // DuplicationMetrics métriques de duplication pour analyse
 // Micro-étape 8.3.3 : Créer des corrélations entre erreurs et duplications détectées
 type DuplicationMetrics struct {
-	TotalDuplications    int                    `json:"total_duplications"`
-	AverageSimilarity    float64                `json:"average_similarity"`
-	FileTypeDuplication  map[string]int         `json:"file_type_duplication"`
-	ModuleDuplication    map[string]int         `json:"module_duplication"`
-	TopDuplicatedFiles   []DuplicatedFileInfo   `json:"top_duplicated_files"`
-	RecentDuplications   []DuplicationSummary   `json:"recent_duplications"`
+	TotalDuplications   int                  `json:"total_duplications"`
+	AverageSimilarity   float64              `json:"average_similarity"`
+	FileTypeDuplication map[string]int       `json:"file_type_duplication"`
+	ModuleDuplication   map[string]int       `json:"module_duplication"`
+	TopDuplicatedFiles  []DuplicatedFileInfo `json:"top_duplicated_files"`
+	RecentDuplications  []DuplicationSummary `json:"recent_duplications"`
 }
 
 // DuplicatedFileInfo informations sur un fichier dupliqué
@@ -51,20 +51,20 @@ type DuplicatedFileInfo struct {
 
 // DuplicationSummary résumé d'une duplication
 type DuplicationSummary struct {
-	ID              string    `json:"id"`
-	FilesInvolved   int       `json:"files_involved"`
-	MaxSimilarity   float64   `json:"max_similarity"`
-	DetectedAt      time.Time `json:"detected_at"`
-	Status          string    `json:"status"`
+	ID            string    `json:"id"`
+	FilesInvolved int       `json:"files_involved"`
+	MaxSimilarity float64   `json:"max_similarity"`
+	DetectedAt    time.Time `json:"detected_at"`
+	Status        string    `json:"status"`
 }
 
 // DuplicationCorrelation corrélation entre erreurs et duplications
 type DuplicationCorrelation struct {
-	ErrorID           string    `json:"error_id"`
-	DuplicationID     string    `json:"duplication_id"`
-	CorrelationScore  float64   `json:"correlation_score"`
-	CorrelationType   string    `json:"correlation_type"`
-	DetectedAt        time.Time `json:"detected_at"`
+	ErrorID          string    `json:"error_id"`
+	DuplicationID    string    `json:"duplication_id"`
+	CorrelationScore float64   `json:"correlation_score"`
+	CorrelationType  string    `json:"correlation_type"`
+	DetectedAt       time.Time `json:"detected_at"`
 }
 
 // CreateEnhancedErrorEntry crée une ErrorEntry enrichie avec contexte de duplication

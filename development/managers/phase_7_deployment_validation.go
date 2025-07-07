@@ -15,33 +15,33 @@ import (
 
 // Phase7ValidationResult structure pour les résultats de validation
 type Phase7ValidationResult struct {
-	TestName	string		`json:"test_name"`
-	Success		bool		`json:"success"`
-	Message		string		`json:"message"`
-	Duration	time.Duration	`json:"duration"`
-	Details		interface{}	`json:"details,omitempty"`
-	ErrorMessage	string		`json:"error_message,omitempty"`
+	TestName     string        `json:"test_name"`
+	Success      bool          `json:"success"`
+	Message      string        `json:"message"`
+	Duration     time.Duration `json:"duration"`
+	Details      interface{}   `json:"details,omitempty"`
+	ErrorMessage string        `json:"error_message,omitempty"`
 }
 
 // ValidationSuite pour la Phase 7
 type ValidationSuite struct {
-	Results		[]Phase7ValidationResult	`json:"results"`
-	StartTime	time.Time			`json:"start_time"`
-	EndTime		time.Time			`json:"end_time"`
-	TotalTests	int				`json:"total_tests"`
-	PassedTests	int				`json:"passed_tests"`
-	FailedTests	int				`json:"failed_tests"`
-	Success		bool				`json:"success"`
+	Results     []Phase7ValidationResult `json:"results"`
+	StartTime   time.Time                `json:"start_time"`
+	EndTime     time.Time                `json:"end_time"`
+	TotalTests  int                      `json:"total_tests"`
+	PassedTests int                      `json:"passed_tests"`
+	FailedTests int                      `json:"failed_tests"`
+	Success     bool                     `json:"success"`
 }
 
 // Configuration de validation
 type ValidationConfig struct {
-	BaseURL			string
-	TimeoutSeconds		int
-	RetryAttempts		int
-	Environment		string
-	ValidateBackups		bool
-	ValidateRollback	bool
+	BaseURL          string
+	TimeoutSeconds   int
+	RetryAttempts    int
+	Environment      string
+	ValidateBackups  bool
+	ValidateRollback bool
 }
 
 func main() {
@@ -49,12 +49,12 @@ func main() {
 	fmt.Println("==================================================")
 
 	config := ValidationConfig{
-		BaseURL:		getEnvDefault("BASE_URL", "http://localhost:8080"),
-		TimeoutSeconds:		getEnvIntDefault("TIMEOUT_SECONDS", 30),
-		RetryAttempts:		getEnvIntDefault("RETRY_ATTEMPTS", 3),
-		Environment:		getEnvDefault("ENVIRONMENT", "staging"),
-		ValidateBackups:	getEnvBoolDefault("VALIDATE_BACKUPS", true),
-		ValidateRollback:	getEnvBoolDefault("VALIDATE_ROLLBACK", false),
+		BaseURL:          getEnvDefault("BASE_URL", "http://localhost:8080"),
+		TimeoutSeconds:   getEnvIntDefault("TIMEOUT_SECONDS", 30),
+		RetryAttempts:    getEnvIntDefault("RETRY_ATTEMPTS", 3),
+		Environment:      getEnvDefault("ENVIRONMENT", "staging"),
+		ValidateBackups:  getEnvBoolDefault("VALIDATE_BACKUPS", true),
+		ValidateRollback: getEnvBoolDefault("VALIDATE_ROLLBACK", false),
 	}
 
 	suite := &ValidationSuite{
@@ -146,8 +146,8 @@ func validateDeploymentInfrastructure(config *ValidationConfig) Phase7Validation
 		result.Success = true
 		result.Message = "Tous les fichiers de déploiement sont présents"
 		result.Details = map[string]interface{}{
-			"files_checked":	len(requiredFiles),
-			"files_found":		len(requiredFiles) - len(missingFiles),
+			"files_checked": len(requiredFiles),
+			"files_found":   len(requiredFiles) - len(missingFiles),
 		}
 	}
 
@@ -327,9 +327,9 @@ func validateDataMigration(config *ValidationConfig) Phase7ValidationResult {
 	result.Success = true
 	result.Message = "Migration des données validée"
 	result.Details = map[string]interface{}{
-		"migration_script_exists":	true,
-		"qdrant_accessible":		true,
-		"collections_response":		collectionsResponse,
+		"migration_script_exists": true,
+		"qdrant_accessible":       true,
+		"collections_response":    collectionsResponse,
 	}
 
 	result.Duration = time.Since(start)
@@ -371,9 +371,9 @@ func validateBackupStrategy(config *ValidationConfig) Phase7ValidationResult {
 		result.Success = true
 		result.Message = "Stratégie de backup complète"
 		result.Details = map[string]interface{}{
-			"backup_directory_exists":	true,
-			"scripts_available":		existingScripts,
-			"total_scripts":		len(stagingScripts),
+			"backup_directory_exists": true,
+			"scripts_available":       existingScripts,
+			"total_scripts":           len(stagingScripts),
 		}
 	} else {
 		result.Success = false
@@ -410,8 +410,8 @@ func validateRollbackCapability(config *ValidationConfig) Phase7ValidationResult
 
 	result.Success = true
 	result.Details = map[string]interface{}{
-		"rollback_script_exists":	true,
-		"test_executed":		config.ValidateRollback,
+		"rollback_script_exists": true,
+		"test_executed":          config.ValidateRollback,
 	}
 
 	result.Duration = time.Since(start)
@@ -450,8 +450,8 @@ func validateMonitoringSetup(config *ValidationConfig) Phase7ValidationResult {
 	result.Success = true
 	result.Message = "Configuration monitoring validée"
 	result.Details = map[string]interface{}{
-		"prometheus_config_exists":	true,
-		"metrics_endpoint_available":	metricsAvailable,
+		"prometheus_config_exists":   true,
+		"metrics_endpoint_available": metricsAvailable,
 	}
 
 	result.Duration = time.Since(start)
@@ -483,8 +483,8 @@ func validateProductionReadiness(config *ValidationConfig) Phase7ValidationResul
 		result.Success = true
 		result.Message = "Configuration production complète"
 		result.Details = map[string]interface{}{
-			"production_files_count":	existingFiles,
-			"total_required_files":		len(productionFiles),
+			"production_files_count": existingFiles,
+			"total_required_files":   len(productionFiles),
 		}
 	} else {
 		result.Success = false
@@ -519,8 +519,8 @@ func validateSecurityConfiguration(config *ValidationConfig) Phase7ValidationRes
 	result.Success = true
 	result.Message = "Configuration sécurité évaluée"
 	result.Details = map[string]interface{}{
-		"nginx_config_exists":	nginxExists,
-		"ssl_configured":	sslConfigured,
+		"nginx_config_exists": nginxExists,
+		"ssl_configured":      sslConfigured,
 		"recommendations": []string{
 			"Configurer HTTPS en production",
 			"Activer les headers de sécurité",
@@ -573,10 +573,10 @@ func validatePerformanceMetrics(config *ValidationConfig) Phase7ValidationResult
 		result.Success = avgResponseTime < 500*time.Millisecond
 		result.Message = fmt.Sprintf("Temps de réponse moyen: %.2fms", avgResponseTime.Seconds()*1000)
 		result.Details = map[string]interface{}{
-			"avg_response_time_ms":	avgResponseTime.Seconds() * 1000,
-			"successful_requests":	successfulRequests,
-			"total_requests":	testCount,
-			"performance_ok":	avgResponseTime < 500*time.Millisecond,
+			"avg_response_time_ms": avgResponseTime.Seconds() * 1000,
+			"successful_requests":  successfulRequests,
+			"total_requests":       testCount,
+			"performance_ok":       avgResponseTime < 500*time.Millisecond,
 		}
 
 		if avgResponseTime >= 500*time.Millisecond {

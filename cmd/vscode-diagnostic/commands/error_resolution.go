@@ -11,56 +11,56 @@ import (
 
 // ErrorResolutionResult résultats de l'analyse des erreurs
 type ErrorResolutionResult struct {
-	Success			bool			`json:"success"`
-	Duration		time.Duration		`json:"duration"`
-	Timestamp		time.Time		`json:"timestamp"`
-	Action			string			`json:"action"`
-	ErrorAnalysis		ErrorAnalysis		`json:"error_analysis"`
-	ResolutionSteps		[]ResolutionStep	`json:"resolution_steps"`
-	ValidationResult	ValidationResult	`json:"validation_result"`
+	Success          bool             `json:"success"`
+	Duration         time.Duration    `json:"duration"`
+	Timestamp        time.Time        `json:"timestamp"`
+	Action           string           `json:"action"`
+	ErrorAnalysis    ErrorAnalysis    `json:"error_analysis"`
+	ResolutionSteps  []ResolutionStep `json:"resolution_steps"`
+	ValidationResult ValidationResult `json:"validation_result"`
 }
 
 // ErrorAnalysis analyse des erreurs détectées
 type ErrorAnalysis struct {
-	MainDuplicates	[]string	`json:"main_duplicates"`
-	BrokenImports	[]string	`json:"broken_imports"`
-	LocalImports	[]string	`json:"local_imports"`
-	TotalErrors	int		`json:"total_errors"`
-	FilesAnalyzed	int		`json:"files_analyzed"`
+	MainDuplicates []string `json:"main_duplicates"`
+	BrokenImports  []string `json:"broken_imports"`
+	LocalImports   []string `json:"local_imports"`
+	TotalErrors    int      `json:"total_errors"`
+	FilesAnalyzed  int      `json:"files_analyzed"`
 }
 
 // ResolutionStep étape de résolution
 type ResolutionStep struct {
-	Step		string		`json:"step"`
-	Action		string		`json:"action"`
-	FilePath	string		`json:"file_path,omitempty"`
-	Success		bool		`json:"success"`
-	Duration	time.Duration	`json:"duration"`
-	Details		string		`json:"details,omitempty"`
+	Step     string        `json:"step"`
+	Action   string        `json:"action"`
+	FilePath string        `json:"file_path,omitempty"`
+	Success  bool          `json:"success"`
+	Duration time.Duration `json:"duration"`
+	Details  string        `json:"details,omitempty"`
 }
 
 // ValidationResult résultat de validation
 type ValidationResult struct {
-	CompilationSuccess	bool		`json:"compilation_success"`
-	ErrorsRemaining		int		`json:"errors_remaining"`
-	Warnings		[]string	`json:"warnings,omitempty"`
+	CompilationSuccess bool     `json:"compilation_success"`
+	ErrorsRemaining    int      `json:"errors_remaining"`
+	Warnings           []string `json:"warnings,omitempty"`
 }
 
 // ErrorResolutionCLI gestionnaire des résolutions d'erreurs
 type ErrorResolutionCLI struct {
-	projectRoot		string
-	contextualManagerPath	string
-	dryRun			bool
-	verbose			bool
+	projectRoot           string
+	contextualManagerPath string
+	dryRun                bool
+	verbose               bool
 }
 
 // NewErrorResolutionCLI crée un nouveau gestionnaire
 func NewErrorResolutionCLI(projectRoot string, dryRun bool, verbose bool) *ErrorResolutionCLI {
 	return &ErrorResolutionCLI{
-		projectRoot:		projectRoot,
-		contextualManagerPath:	filepath.Join(projectRoot, "development", "managers", "contextual-memory-manager"),
-		dryRun:			dryRun,
-		verbose:		verbose,
+		projectRoot:           projectRoot,
+		contextualManagerPath: filepath.Join(projectRoot, "development", "managers", "contextual-memory-manager"),
+		dryRun:                dryRun,
+		verbose:               verbose,
 	}
 }
 
@@ -77,10 +77,10 @@ func (cli *DiagnosticCLI) RunErrorResolution(action string, dryRun bool) (*Error
 	resolver := NewErrorResolutionCLI(projectRoot, dryRun, true)
 
 	result := &ErrorResolutionResult{
-		Success:	true,
-		Duration:	0,
-		Timestamp:	start,
-		Action:		action,
+		Success:   true,
+		Duration:  0,
+		Timestamp: start,
+		Action:    action,
 	}
 
 	// Phase 1: Analyse ultra-rapide des erreurs
@@ -125,9 +125,9 @@ func (cli *DiagnosticCLI) RunErrorResolution(action string, dryRun bool) (*Error
 // analyzeErrors analyse ultra-rapide des erreurs Go
 func (erc *ErrorResolutionCLI) analyzeErrors() (*ErrorAnalysis, error) {
 	analysis := &ErrorAnalysis{
-		MainDuplicates:	[]string{},
-		BrokenImports:	[]string{},
-		LocalImports:	[]string{},
+		MainDuplicates: []string{},
+		BrokenImports:  []string{},
+		LocalImports:   []string{},
 	}
 
 	// Fichiers à analyser
@@ -192,10 +192,10 @@ func (erc *ErrorResolutionCLI) resolveMainDuplicates(mainFiles []string) []Resol
 	for _, file := range mainFiles {
 		start := time.Now()
 		step := ResolutionStep{
-			Step:		"resolve_main_duplicate",
-			Action:		"move_to_cmd_directory",
-			FilePath:	file,
-			Success:	false,
+			Step:     "resolve_main_duplicate",
+			Action:   "move_to_cmd_directory",
+			FilePath: file,
+			Success:  false,
 		}
 
 		fileName := filepath.Base(file)
@@ -247,10 +247,10 @@ func (erc *ErrorResolutionCLI) resolveBrokenImports(importFiles []string) []Reso
 	for _, file := range importFiles {
 		start := time.Now()
 		step := ResolutionStep{
-			Step:		"resolve_broken_import",
-			Action:		"fix_import_path",
-			FilePath:	file,
-			Success:	false,
+			Step:     "resolve_broken_import",
+			Action:   "fix_import_path",
+			FilePath: file,
+			Success:  false,
 		}
 
 		if !erc.dryRun {
@@ -289,10 +289,10 @@ func (erc *ErrorResolutionCLI) resolveLocalImports(localFiles []string) []Resolu
 	for _, file := range localFiles {
 		start := time.Now()
 		step := ResolutionStep{
-			Step:		"resolve_local_import",
-			Action:		"fix_relative_path",
-			FilePath:	file,
-			Success:	false,
+			Step:     "resolve_local_import",
+			Action:   "fix_relative_path",
+			FilePath: file,
+			Success:  false,
 		}
 
 		if !erc.dryRun {
@@ -328,9 +328,9 @@ func (erc *ErrorResolutionCLI) resolveLocalImports(localFiles []string) []Resolu
 // validatePostResolution valide après résolution
 func (erc *ErrorResolutionCLI) validatePostResolution() *ValidationResult {
 	result := &ValidationResult{
-		CompilationSuccess:	false,
-		ErrorsRemaining:	0,
-		Warnings:		[]string{},
+		CompilationSuccess: false,
+		ErrorsRemaining:    0,
+		Warnings:           []string{},
 	}
 
 	// Simulation de validation de compilation Go

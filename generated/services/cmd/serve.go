@@ -1,8 +1,8 @@
-
 package cmd
 
 import (
 	"fmt"
+
 	"github.com/spf13/cobra"
 )
 
@@ -12,7 +12,7 @@ var serveCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		port, _ := cmd.Flags().GetInt("port")
 		host, _ := cmd.Flags().GetString("host")
-		
+
 		fmt.Printf("Starting RAG server on %s:%d\n", host, port)
 		return nil
 	},

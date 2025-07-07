@@ -15,32 +15,32 @@ import (
 // NeuralAutoHealingSystem système d'auto-guérison intelligent
 type NeuralAutoHealingSystem struct {
 	// Métriques pour l'auto-healing
-	autoHealingAttempts   *prometheus.CounterVec
-	autoHealingSuccesses  *prometheus.CounterVec
-	autoHealingFailures   *prometheus.CounterVec
-	escalationCounter     *prometheus.CounterVec
-	
+	autoHealingAttempts  *prometheus.CounterVec
+	autoHealingSuccesses *prometheus.CounterVec
+	autoHealingFailures  *prometheus.CounterVec
+	escalationCounter    *prometheus.CounterVec
+
 	// Configuration
-	maxRetries           int
-	retryDelay           time.Duration
-	escalationThreshold  int
-	recoveryStrategies   map[string][]RecoveryStrategy
-	
+	maxRetries          int
+	retryDelay          time.Duration
+	escalationThreshold int
+	recoveryStrategies  map[string][]RecoveryStrategy
+
 	// État interne
-	serviceFailures      map[string]*ServiceFailureTracker
-	autonomyManager      AdvancedAutonomyManager
-	notificationSystem   NotificationSystem
-	mutex                sync.RWMutex
-	isActive             bool
+	serviceFailures    map[string]*ServiceFailureTracker
+	autonomyManager    AdvancedAutonomyManager
+	notificationSystem NotificationSystem
+	mutex              sync.RWMutex
+	isActive           bool
 }
 
 // RecoveryStrategy représente une stratégie de récupération
 type RecoveryStrategy struct {
-	Name        string
-	Priority    int
-	Action      RecoveryAction
-	Timeout     time.Duration
-	Conditions  []RecoveryCondition
+	Name       string
+	Priority   int
+	Action     RecoveryAction
+	Timeout    time.Duration
+	Conditions []RecoveryCondition
 }
 
 // RecoveryAction définit une action de récupération
@@ -51,10 +51,10 @@ type RecoveryCondition func(service string, failure *ServiceFailureTracker) bool
 
 // ServiceFailureTracker suit les échecs d'un service
 type ServiceFailureTracker struct {
-	Service           string
-	FailureCount      int
-	FirstFailure      time.Time
-	LastFailure       time.Time
+	Service             string
+	FailureCount        int
+	FirstFailure        time.Time
+	LastFailure         time.Time
 	ConsecutiveFailures int
 	LastRecoveryAttempt time.Time
 	RecoveryAttempts    []RecoveryAttempt
@@ -63,11 +63,11 @@ type ServiceFailureTracker struct {
 
 // RecoveryAttempt représente une tentative de récupération
 type RecoveryAttempt struct {
-	Timestamp  time.Time
-	Strategy   string
-	Success    bool
-	Error      error
-	Duration   time.Duration
+	Timestamp time.Time
+	Strategy  string
+	Success   bool
+	Error     error
+	Duration  time.Duration
 }
 
 // ServiceStatus énumération pour l'état du service
@@ -263,10 +263,10 @@ func (nahs *NeuralAutoHealingSystem) DetectAndHeal(ctx context.Context, healthSt
 	for serviceName, status := range healthStatuses {
 		if !status.Healthy {
 			log.Printf("⚠️  Service failure detected: %s", serviceName)
-			
+
 			// Mettre à jour ou créer le tracker de failure
 			tracker := nahs.updateFailureTracker(serviceName, status)
-			
+
 			// Décider si on doit tenter une récupération
 			if nahs.shouldAttemptRecovery(tracker) {
 				go nahs.attemptRecovery(ctx, serviceName, tracker)
@@ -291,8 +291,8 @@ func (nahs *NeuralAutoHealingSystem) updateFailureTracker(serviceName string, st
 	tracker, exists := nahs.serviceFailures[serviceName]
 	if !exists {
 		tracker = &ServiceFailureTracker{
-			Service:         serviceName,
-			FirstFailure:    time.Now(),
+			Service:          serviceName,
+			FirstFailure:     time.Now(),
 			RecoveryAttempts: []RecoveryAttempt{},
 		}
 		nahs.serviceFailures[serviceName] = tracker
@@ -329,7 +329,7 @@ func (nahs *NeuralAutoHealingSystem) shouldEscalate(tracker *ServiceFailureTrack
 // attemptRecovery tente la récupération d'un service
 func (nahs *NeuralAutoHealingSystem) attemptRecovery(ctx context.Context, serviceName string, tracker *ServiceFailureTracker) {
 	log.Printf("🔄 Attempting recovery for service: %s", serviceName)
-	
+
 	tracker.CurrentStatus = StatusRecovering
 	tracker.LastRecoveryAttempt = time.Now()
 
@@ -343,7 +343,7 @@ func (nahs *NeuralAutoHealingSystem) attemptRecovery(ctx context.Context, servic
 	for _, strategy := range strategies {
 		if nahs.evaluateConditions(strategy.Conditions, serviceName, tracker) {
 			log.Printf("🎯 Applying recovery strategy: %s for %s", strategy.Name, serviceName)
-			
+
 			attempt := RecoveryAttempt{
 				Timestamp: time.Now(),
 				Strategy:  strategy.Name,
@@ -365,15 +365,15 @@ func (nahs *NeuralAutoHealingSystem) attemptRecovery(ctx context.Context, servic
 
 			// Mettre à jour les métriques
 			nahs.autoHealingAttempts.WithLabelValues(serviceName, strategy.Name).Inc()
-			
+
 			if attempt.Success {
 				nahs.autoHealingSuccesses.WithLabelValues(serviceName, strategy.Name).Inc()
 				log.Printf("✅ Recovery successful for %s using strategy %s", serviceName, strategy.Name)
-				
+
 				// Notifier le succès
-				nahs.notificationSystem.SendAlert("info", serviceName, 
+				nahs.notificationSystem.SendAlert("info", serviceName,
 					fmt.Sprintf("Service recovered using strategy: %s", strategy.Name))
-				
+
 				tracker.CurrentStatus = StatusHealthy
 				return
 			} else {
@@ -401,20 +401,20 @@ func (nahs *NeuralAutoHealingSystem) evaluateConditions(conditions []RecoveryCon
 // escalateToAutonomyManager escalade vers l'AdvancedAutonomyManager
 func (nahs *NeuralAutoHealingSystem) escalateToAutonomyManager(ctx context.Context, serviceName string, tracker *ServiceFailureTracker) {
 	log.Printf("🚨 Escalating service failure to AdvancedAutonomyManager: %s", serviceName)
-	
-	reason := fmt.Sprintf("Consecutive failures: %d, Total attempts: %d", 
+
+	reason := fmt.Sprintf("Consecutive failures: %d, Total attempts: %d",
 		tracker.ConsecutiveFailures, len(tracker.RecoveryAttempts))
-	
+
 	nahs.escalationCounter.WithLabelValues(serviceName, "max_retries_exceeded").Inc()
-	
+
 	err := nahs.autonomyManager.HandleServiceFailure(ctx, serviceName, tracker)
 	if err != nil {
 		log.Printf("❌ Escalation failed: %v", err)
-		nahs.notificationSystem.SendAlert("critical", serviceName, 
+		nahs.notificationSystem.SendAlert("critical", serviceName,
 			fmt.Sprintf("Escalation failed: %v", err))
 	} else {
 		nahs.autonomyManager.NotifyEscalation(serviceName, reason)
-		nahs.notificationSystem.SendAlert("warning", serviceName, 
+		nahs.notificationSystem.SendAlert("warning", serviceName,
 			fmt.Sprintf("Escalated to AdvancedAutonomyManager: %s", reason))
 	}
 }
@@ -424,14 +424,14 @@ func (nahs *NeuralAutoHealingSystem) escalateToAutonomyManager(ctx context.Conte
 // dockerRestartAction redémarre un conteneur Docker
 func (nahs *NeuralAutoHealingSystem) dockerRestartAction(ctx context.Context, service string, tracker *ServiceFailureTracker) error {
 	log.Printf("🔄 Docker restart action for service: %s", service)
-	
+
 	cmd := exec.CommandContext(ctx, "docker-compose", "restart", service)
 	output, err := cmd.CombinedOutput()
-	
+
 	if err != nil {
 		return fmt.Errorf("docker restart failed: %w, output: %s", err, string(output))
 	}
-	
+
 	// Attendre un peu pour que le service redémarre
 	time.Sleep(10 * time.Second)
 	return nil
@@ -440,19 +440,19 @@ func (nahs *NeuralAutoHealingSystem) dockerRestartAction(ctx context.Context, se
 // dockerForceRestartAction force le redémarrage d'un conteneur Docker
 func (nahs *NeuralAutoHealingSystem) dockerForceRestartAction(ctx context.Context, service string, tracker *ServiceFailureTracker) error {
 	log.Printf("🔄 Docker force restart action for service: %s", service)
-	
+
 	// Stop forcé
 	stopCmd := exec.CommandContext(ctx, "docker-compose", "kill", service)
 	stopCmd.Run() // Ignorer les erreurs
-	
+
 	// Redémarrage
 	startCmd := exec.CommandContext(ctx, "docker-compose", "up", "-d", service)
 	output, err := startCmd.CombinedOutput()
-	
+
 	if err != nil {
 		return fmt.Errorf("docker force restart failed: %w, output: %s", err, string(output))
 	}
-	
+
 	time.Sleep(15 * time.Second)
 	return nil
 }
@@ -460,19 +460,19 @@ func (nahs *NeuralAutoHealingSystem) dockerForceRestartAction(ctx context.Contex
 // dockerRecreateAction recrée complètement un conteneur Docker
 func (nahs *NeuralAutoHealingSystem) dockerRecreateAction(ctx context.Context, service string, tracker *ServiceFailureTracker) error {
 	log.Printf("🔄 Docker recreate action for service: %s", service)
-	
+
 	// Down
 	downCmd := exec.CommandContext(ctx, "docker-compose", "down", service)
 	downCmd.Run()
-	
+
 	// Up avec force recreate
 	upCmd := exec.CommandContext(ctx, "docker-compose", "up", "-d", "--force-recreate", service)
 	output, err := upCmd.CombinedOutput()
-	
+
 	if err != nil {
 		return fmt.Errorf("docker recreate failed: %w, output: %s", err, string(output))
 	}
-	
+
 	time.Sleep(30 * time.Second)
 	return nil
 }
@@ -480,36 +480,36 @@ func (nahs *NeuralAutoHealingSystem) dockerRecreateAction(ctx context.Context, s
 // redisFlushAndRestartAction vide Redis et le redémarre
 func (nahs *NeuralAutoHealingSystem) redisFlushAndRestartAction(ctx context.Context, service string, tracker *ServiceFailureTracker) error {
 	log.Printf("🔄 Redis flush and restart action for service: %s", service)
-	
+
 	// Essayer de vider Redis avant redémarrage
 	flushCmd := exec.CommandContext(ctx, "docker", "exec", "redis", "redis-cli", "FLUSHALL")
 	flushCmd.Run() // Ignorer les erreurs
-	
+
 	return nahs.dockerRestartAction(ctx, service, tracker)
 }
 
 // ragServerRebuildAction reconstruit et redémarre le serveur RAG
 func (nahs *NeuralAutoHealingSystem) ragServerRebuildAction(ctx context.Context, service string, tracker *ServiceFailureTracker) error {
 	log.Printf("🔄 RAG Server rebuild action for service: %s", service)
-	
+
 	// Stop
 	stopCmd := exec.CommandContext(ctx, "docker-compose", "stop", service)
 	stopCmd.Run()
-	
+
 	// Build avec no-cache
 	buildCmd := exec.CommandContext(ctx, "docker-compose", "build", "--no-cache", service)
 	output, err := buildCmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("rag server build failed: %w, output: %s", err, string(output))
 	}
-	
+
 	// Start
 	startCmd := exec.CommandContext(ctx, "docker-compose", "up", "-d", service)
 	output, err = startCmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("rag server start failed: %w, output: %s", err, string(output))
 	}
-	
+
 	time.Sleep(60 * time.Second) // RAG server needs more time to start
 	return nil
 }
@@ -517,16 +517,16 @@ func (nahs *NeuralAutoHealingSystem) ragServerRebuildAction(ctx context.Context,
 // prometheusReloadConfigAction recharge la configuration Prometheus
 func (nahs *NeuralAutoHealingSystem) prometheusReloadConfigAction(ctx context.Context, service string, tracker *ServiceFailureTracker) error {
 	log.Printf("🔄 Prometheus config reload action for service: %s", service)
-	
+
 	// Essayer de recharger la config via l'API
 	reloadCmd := exec.CommandContext(ctx, "curl", "-X", "POST", "http://localhost:9091/-/reload")
 	output, err := reloadCmd.CombinedOutput()
-	
+
 	if err != nil {
 		// Si l'API ne répond pas, redémarrer le conteneur
 		return nahs.dockerRestartAction(ctx, service, tracker)
 	}
-	
+
 	log.Printf("Prometheus config reloaded: %s", string(output))
 	time.Sleep(5 * time.Second)
 	return nil
@@ -552,7 +552,7 @@ func (nahs *NeuralAutoHealingSystem) conditionConsecutiveFailuresAbove(threshold
 func (nahs *NeuralAutoHealingSystem) GetServiceFailureStatus(serviceName string) (*ServiceFailureTracker, bool) {
 	nahs.mutex.RLock()
 	defer nahs.mutex.RUnlock()
-	
+
 	tracker, exists := nahs.serviceFailures[serviceName]
 	return tracker, exists
 }
@@ -561,7 +561,7 @@ func (nahs *NeuralAutoHealingSystem) GetServiceFailureStatus(serviceName string)
 func (nahs *NeuralAutoHealingSystem) GetAllFailureStatuses() map[string]*ServiceFailureTracker {
 	nahs.mutex.RLock()
 	defer nahs.mutex.RUnlock()
-	
+
 	// Copie pour éviter les race conditions
 	copy := make(map[string]*ServiceFailureTracker)
 	for k, v := range nahs.serviceFailures {
@@ -573,12 +573,12 @@ func (nahs *NeuralAutoHealingSystem) GetAllFailureStatuses() map[string]*Service
 // Start démarre le système d'auto-healing
 func (nahs *NeuralAutoHealingSystem) Start(ctx context.Context) error {
 	log.Println("🚀 Starting Neural Auto-Healing System...")
-	
+
 	nahs.isActive = true
-	
+
 	// Démarrer la surveillance continue
 	go nahs.startContinuousMonitoring(ctx)
-	
+
 	log.Println("✅ Neural Auto-Healing System started")
 	return nil
 }
@@ -586,9 +586,9 @@ func (nahs *NeuralAutoHealingSystem) Start(ctx context.Context) error {
 // Stop arrête le système d'auto-healing
 func (nahs *NeuralAutoHealingSystem) Stop() error {
 	log.Println("🛑 Stopping Neural Auto-Healing System...")
-	
+
 	nahs.isActive = false
-	
+
 	log.Println("✅ Neural Auto-Healing System stopped")
 	return nil
 }
@@ -597,7 +597,7 @@ func (nahs *NeuralAutoHealingSystem) Stop() error {
 func (nahs *NeuralAutoHealingSystem) startContinuousMonitoring(ctx context.Context) {
 	ticker := time.NewTicker(60 * time.Second) // Vérifier toutes les minutes
 	defer ticker.Stop()
-	
+
 	for {
 		select {
 		case <-ctx.Done():

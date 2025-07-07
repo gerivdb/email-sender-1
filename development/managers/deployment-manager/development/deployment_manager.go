@@ -28,37 +28,37 @@ type DeploymentManager interface {
 
 // deploymentManagerImpl implements DeploymentManager with ErrorManager integration
 type deploymentManagerImpl struct {
-	logger		*zap.Logger
-	errorManager	ErrorManager
-	buildConfig	string
-	environments	map[string]string
-	buildTools	map[string]string
-	cicdConfig	*CICDConfig
-	deployments	map[string]*DeploymentStatus
+	logger       *zap.Logger
+	errorManager ErrorManager
+	buildConfig  string
+	environments map[string]string
+	buildTools   map[string]string
+	cicdConfig   *CICDConfig
+	deployments  map[string]*DeploymentStatus
 }
 
 // CICDConfig represents CI/CD configuration
 type CICDConfig struct {
-	Provider	string			`json:"provider"`
-	Repository	string			`json:"repository"`
-	Branch		string			`json:"branch"`
-	BuildCommand	string			`json:"build_command"`
-	TestCommand	string			`json:"test_command"`
-	DeployCommand	string			`json:"deploy_command"`
-	Environment	map[string]string	`json:"environment"`
-	Notifications	[]string		`json:"notifications"`
-	Artifacts	[]string		`json:"artifacts"`
+	Provider      string            `json:"provider"`
+	Repository    string            `json:"repository"`
+	Branch        string            `json:"branch"`
+	BuildCommand  string            `json:"build_command"`
+	TestCommand   string            `json:"test_command"`
+	DeployCommand string            `json:"deploy_command"`
+	Environment   map[string]string `json:"environment"`
+	Notifications []string          `json:"notifications"`
+	Artifacts     []string          `json:"artifacts"`
 }
 
 // DeploymentStatus represents deployment status
 type DeploymentStatus struct {
-	Environment	string			`json:"environment"`
-	Version		string			`json:"version"`
-	Status		string			`json:"status"`
-	StartTime	time.Time		`json:"start_time"`
-	EndTime		*time.Time		`json:"end_time,omitempty"`
-	Logs		[]string		`json:"logs"`
-	Metadata	map[string]string	`json:"metadata"`
+	Environment string            `json:"environment"`
+	Version     string            `json:"version"`
+	Status      string            `json:"status"`
+	StartTime   time.Time         `json:"start_time"`
+	EndTime     *time.Time        `json:"end_time,omitempty"`
+	Logs        []string          `json:"logs"`
+	Metadata    map[string]string `json:"metadata"`
 }
 
 // ErrorManager interface for local implementation
@@ -70,38 +70,38 @@ type ErrorManager interface {
 
 // ErrorEntry represents an error entry
 type ErrorEntry struct {
-	ID		string	`json:"id"`
-	Timestamp	string	`json:"timestamp"`
-	Level		string	`json:"level"`
-	Component	string	`json:"component"`
-	Operation	string	`json:"operation"`
-	Message		string	`json:"message"`
-	Details		string	`json:"details,omitempty"`
+	ID        string `json:"id"`
+	Timestamp string `json:"timestamp"`
+	Level     string `json:"level"`
+	Component string `json:"component"`
+	Operation string `json:"operation"`
+	Message   string `json:"message"`
+	Details   string `json:"details,omitempty"`
 }
 
 // ErrorHooks for error processing
 type ErrorHooks struct {
-	PreProcess	func(error) error
-	PostProcess	func(error) error
+	PreProcess  func(error) error
+	PostProcess func(error) error
 }
 
 // NewDeploymentManager creates a new DeploymentManager instance
 func NewDeploymentManager(logger *zap.Logger, buildConfig string) DeploymentManager {
 	return &deploymentManagerImpl{
-		logger:		logger,
-		buildConfig:	buildConfig,
+		logger:      logger,
+		buildConfig: buildConfig,
 		environments: map[string]string{
-			"dev":		"development",
-			"staging":	"staging",
-			"prod":		"production",
+			"dev":     "development",
+			"staging": "staging",
+			"prod":    "production",
 		},
 		buildTools: map[string]string{
-			"go":		"go",
-			"docker":	"docker",
-			"git":		"git",
-			"npm":		"npm",
+			"go":     "go",
+			"docker": "docker",
+			"git":    "git",
+			"npm":    "npm",
 		},
-		deployments:	make(map[string]*DeploymentStatus),
+		deployments: make(map[string]*DeploymentStatus),
 		// errorManager will be initialized separately
 	}
 }
@@ -166,15 +166,15 @@ func (dm *deploymentManagerImpl) loadCICDConfig() error {
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		// Create default config
 		dm.cicdConfig = &CICDConfig{
-			Provider:	"local",
-			Repository:	".",
-			Branch:		"main",
-			BuildCommand:	"go build",
-			TestCommand:	"go test ./...",
-			DeployCommand:	"docker-compose up -d",
-			Environment:	make(map[string]string),
-			Notifications:	[]string{},
-			Artifacts:	[]string{"*.exe", "*.bin", "Dockerfile"},
+			Provider:      "local",
+			Repository:    ".",
+			Branch:        "main",
+			BuildCommand:  "go build",
+			TestCommand:   "go test ./...",
+			DeployCommand: "docker-compose up -d",
+			Environment:   make(map[string]string),
+			Notifications: []string{},
+			Artifacts:     []string{"*.exe", "*.bin", "Dockerfile"},
 		}
 		return dm.saveCICDConfig(configPath)
 	}
@@ -208,16 +208,16 @@ func (dm *deploymentManagerImpl) loadDeploymentConfigs() error {
 		if _, err := os.Stat(configPath); os.IsNotExist(err) {
 			dm.logger.Info("Creating default deployment config", zap.String("environment", env))
 			defaultConfig := map[string]interface{}{
-				"environment":	env,
-				"replicas":	1,
+				"environment": env,
+				"replicas":    1,
 				"resources": map[string]string{
-					"cpu":		"100m",
-					"memory":	"128Mi",
+					"cpu":    "100m",
+					"memory": "128Mi",
 				},
 				"health_check": map[string]interface{}{
-					"enabled":	true,
-					"path":		"/health",
-					"timeout":	"30s",
+					"enabled": true,
+					"path":    "/health",
+					"timeout": "30s",
 				},
 			}
 
@@ -336,12 +336,12 @@ func (dm *deploymentManagerImpl) DeployToEnvironment(ctx context.Context, enviro
 
 	// Create deployment status
 	status := &DeploymentStatus{
-		Environment:	environment,
-		Version:	fmt.Sprintf("v%d", time.Now().Unix()),
-		Status:		"deploying",
-		StartTime:	time.Now(),
-		Logs:		[]string{},
-		Metadata:	make(map[string]string),
+		Environment: environment,
+		Version:     fmt.Sprintf("v%d", time.Now().Unix()),
+		Status:      "deploying",
+		StartTime:   time.Now(),
+		Logs:        []string{},
+		Metadata:    make(map[string]string),
 	}
 	dm.deployments[deploymentID] = status
 
@@ -648,8 +648,8 @@ func (dm *deploymentManagerImpl) tagVersionInGit(version string) error {
 func (dm *deploymentManagerImpl) buildReleaseArtifacts(version, releaseDir string) error {
 	// Build for multiple platforms
 	platforms := []struct {
-		os	string
-		arch	string
+		os   string
+		arch string
 	}{
 		{"linux", "amd64"},
 		{"windows", "amd64"},
@@ -914,9 +914,9 @@ func (dm *deploymentManagerImpl) saveDeploymentState() error {
 	statePath := filepath.Join(filepath.Dir(dm.buildConfig), "deployment-state.json")
 
 	state := map[string]interface{}{
-		"last_cleanup":	time.Now(),
-		"deployments":	dm.deployments,
-		"environments":	dm.environments,
+		"last_cleanup": time.Now(),
+		"deployments":  dm.deployments,
+		"environments": dm.environments,
 	}
 
 	data, err := json.MarshalIndent(state, "", "  ")

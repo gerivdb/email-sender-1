@@ -7,22 +7,22 @@ import (
 	"log"
 	"time"
 
-	_ "github.com/go-sql-driver/mysql"	// MySQL driver
-	_ "github.com/lib/pq"			// PostgreSQL driver
-	_ "github.com/mattn/go-sqlite3"		// SQLite driver
-	_ "modernc.org/sqlite"			// Alternative SQLite driver
+	_ "github.com/go-sql-driver/mysql" // MySQL driver
+	_ "github.com/lib/pq"              // PostgreSQL driver
+	_ "github.com/mattn/go-sqlite3"    // SQLite driver
+	_ "modernc.org/sqlite"             // Alternative SQLite driver
 )
 
 // SQLStorage handles SQL database operations
 type SQLStorage struct {
-	db	*sql.DB
-	logger	*log.Logger
+	db     *sql.DB
+	logger *log.Logger
 }
 
 // DatabaseConfig holds database connection configuration
 type DatabaseConfig struct {
-	Driver		string	`yaml:"driver"`		// "postgres", "mysql", "sqlite3"
-	Connection	string	`yaml:"connection"`	// connection string
+	Driver     string `yaml:"driver"`     // "postgres", "mysql", "sqlite3"
+	Connection string `yaml:"connection"` // connection string
 }
 
 // NewSQLStorage creates a new SQL storage instance
@@ -38,8 +38,8 @@ func NewSQLStorage(config DatabaseConfig) (*SQLStorage, error) {
 	}
 
 	storage := &SQLStorage{
-		db:	db,
-		logger:	log.Default(),
+		db:     db,
+		logger: log.Default(),
 	}
 
 	// Initialize tables
@@ -133,7 +133,7 @@ func (s *SQLStorage) StorePlan(plan *DynamicPlan) error {
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction: %w", err)
 	}
-	defer tx.Rollback()	// Will be ignored if tx.Commit() is called
+	defer tx.Rollback() // Will be ignored if tx.Commit() is called
 
 	// Serialize metadata as JSON
 	metadataJSON, err := json.Marshal(plan.Metadata)

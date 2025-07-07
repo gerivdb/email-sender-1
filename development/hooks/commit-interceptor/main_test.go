@@ -1,5 +1,5 @@
 // development/hooks/commit-interceptor/main_test.go
-package commit_interceptor
+package commitinterceptor
 
 import (
 	"bytes"
@@ -13,51 +13,51 @@ import (
 func TestCommitInterceptor_HandlePreCommit(t *testing.T) {
 	// Create test interceptor
 	config := getDefaultConfig()
-	config.TestMode = true	// Enable test mode to avoid actual Git operations
+	config.TestMode = true // Enable test mode to avoid actual Git operations
 	interceptor := &CommitInterceptor{
-		branchingManager:	NewBranchingManager(config),
-		analyzer:		NewCommitAnalyzer(config),
-		router:			NewBranchRouter(config),
-		config:			config,
+		branchingManager: NewBranchingManager(config),
+		analyzer:         NewCommitAnalyzer(config),
+		router:           NewBranchRouter(config),
+		config:           config,
 	}
 
 	// Create test payload
 	payload := GitWebhookPayload{
 		Commits: []struct {
-			ID		string		`json:"id"`
-			Message		string		`json:"message"`
-			Timestamp	time.Time	`json:"timestamp"`
-			Author		struct {
-				Name	string	`json:"name"`
-				Email	string	`json:"email"`
-			}	`json:"author"`
-			Added		[]string	`json:"added"`
-			Removed		[]string	`json:"removed"`
-			Modified	[]string	`json:"modified"`
+			ID        string    `json:"id"`
+			Message   string    `json:"message"`
+			Timestamp time.Time `json:"timestamp"`
+			Author    struct {
+				Name  string `json:"name"`
+				Email string `json:"email"`
+			} `json:"author"`
+			Added    []string `json:"added"`
+			Removed  []string `json:"removed"`
+			Modified []string `json:"modified"`
 		}{
 			{
-				ID:		"abc123",
-				Message:	"feat: add new user authentication",
-				Timestamp:	time.Now(),
+				ID:        "abc123",
+				Message:   "feat: add new user authentication",
+				Timestamp: time.Now(),
 				Author: struct {
-					Name	string	`json:"name"`
-					Email	string	`json:"email"`
+					Name  string `json:"name"`
+					Email string `json:"email"`
 				}{
-					Name:	"Test User",
-					Email:	"test@example.com",
+					Name:  "Test User",
+					Email: "test@example.com",
 				},
-				Added:		[]string{"auth.go", "user.go"},
-				Modified:	[]string{"main.go"},
+				Added:    []string{"auth.go", "user.go"},
+				Modified: []string{"main.go"},
 			},
 		},
 		Repository: struct {
-			Name		string	`json:"name"`
-			FullName	string	`json:"full_name"`
+			Name     string `json:"name"`
+			FullName string `json:"full_name"`
 		}{
-			Name:		"test-repo",
-			FullName:	"user/test-repo",
+			Name:     "test-repo",
+			FullName: "user/test-repo",
 		},
-		Ref:	"refs/heads/main",
+		Ref: "refs/heads/main",
 	}
 
 	jsonPayload, _ := json.Marshal(payload)
@@ -85,39 +85,39 @@ func TestCommitInterceptor_HandlePreCommit(t *testing.T) {
 
 func TestCommitInterceptor_HandlePostCommit(t *testing.T) {
 	config := getDefaultConfig()
-	config.TestMode = true	// Enable test mode to avoid actual Git operations
+	config.TestMode = true // Enable test mode to avoid actual Git operations
 	interceptor := &CommitInterceptor{
-		branchingManager:	NewBranchingManager(config),
-		analyzer:		NewCommitAnalyzer(config),
-		router:			NewBranchRouter(config),
-		config:			config,
+		branchingManager: NewBranchingManager(config),
+		analyzer:         NewCommitAnalyzer(config),
+		router:           NewBranchRouter(config),
+		config:           config,
 	}
 
 	// Create simple test payload
 	payload := GitWebhookPayload{
 		Commits: []struct {
-			ID		string		`json:"id"`
-			Message		string		`json:"message"`
-			Timestamp	time.Time	`json:"timestamp"`
-			Author		struct {
-				Name	string	`json:"name"`
-				Email	string	`json:"email"`
-			}	`json:"author"`
-			Added		[]string	`json:"added"`
-			Removed		[]string	`json:"removed"`
-			Modified	[]string	`json:"modified"`
+			ID        string    `json:"id"`
+			Message   string    `json:"message"`
+			Timestamp time.Time `json:"timestamp"`
+			Author    struct {
+				Name  string `json:"name"`
+				Email string `json:"email"`
+			} `json:"author"`
+			Added    []string `json:"added"`
+			Removed  []string `json:"removed"`
+			Modified []string `json:"modified"`
 		}{
 			{
-				ID:		"def456",
-				Message:	"fix: resolve authentication bug",
+				ID:      "def456",
+				Message: "fix: resolve authentication bug",
 				Author: struct {
-					Name	string	`json:"name"`
-					Email	string	`json:"email"`
+					Name  string `json:"name"`
+					Email string `json:"email"`
 				}{
-					Name:	"Test User",
-					Email:	"test@example.com",
+					Name:  "Test User",
+					Email: "test@example.com",
 				},
-				Modified:	[]string{"auth.go"},
+				Modified: []string{"auth.go"},
 			},
 		},
 	}
@@ -135,7 +135,7 @@ func TestCommitInterceptor_HandlePostCommit(t *testing.T) {
 
 func TestCommitInterceptor_HandleHealth(t *testing.T) {
 	config := getDefaultConfig()
-	config.TestMode = true	// Enable test mode for consistency
+	config.TestMode = true // Enable test mode for consistency
 	interceptor := &CommitInterceptor{
 		config: config,
 	}
@@ -156,7 +156,7 @@ func TestCommitInterceptor_HandleHealth(t *testing.T) {
 
 func TestCommitInterceptor_SetupRoutes(t *testing.T) {
 	config := getDefaultConfig()
-	config.TestMode = true	// Enable test mode for consistency
+	config.TestMode = true // Enable test mode for consistency
 	interceptor := &CommitInterceptor{
 		config: config,
 	}

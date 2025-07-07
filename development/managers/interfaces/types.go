@@ -56,23 +56,23 @@ type Vulnerability struct {
 
 // SystemMetrics for monitoring (updated as per plan)
 type SystemMetrics struct {
-	CPUUsage    float64           `json:"cpu_usage_percent"`
-	MemoryUsage float64           `json:"memory_usage_percent"`
+	CPUUsage    float64            `json:"cpu_usage_percent"`
+	MemoryUsage float64            `json:"memory_usage_percent"`
 	DiskUsage   map[string]float64 `json:"disk_usage_percent,omitempty"`
-	NetworkIO   map[string]int64  `json:"network_io_bytes,omitempty"`
-	Timestamp   time.Time         `json:"timestamp"`
+	NetworkIO   map[string]int64   `json:"network_io_bytes,omitempty"`
+	Timestamp   time.Time          `json:"timestamp"`
 }
 
 // VulnerabilityReport pour les analyses de sécurité
 type VulnerabilityReport struct {
-	Timestamp         time.Time       `json:"timestamp"`
-	Vulnerabilities   []Vulnerability `json:"vulnerabilities"`
-	Summary           string          `json:"summary,omitempty"`
-	TotalScanned      int             `json:"total_scanned"`
-	CriticalCount     int             `json:"critical_count"`
-	HighCount         int             `json:"high_count"`
-	MediumCount       int             `json:"medium_count"`
-	LowCount          int             `json:"low_count"`
+	Timestamp       time.Time       `json:"timestamp"`
+	Vulnerabilities []Vulnerability `json:"vulnerabilities"`
+	Summary         string          `json:"summary,omitempty"`
+	TotalScanned    int             `json:"total_scanned"`
+	CriticalCount   int             `json:"critical_count"`
+	HighCount       int             `json:"high_count"`
+	MediumCount     int             `json:"medium_count"`
+	LowCount        int             `json:"low_count"`
 }
 
 // VulnerabilityInfo details d'une vulnérabilité - This might be redundant if Vulnerability struct is comprehensive
@@ -121,20 +121,20 @@ type IntegrationHealthStatus struct {
 	Error       string            `json:"error,omitempty"`
 	LastChecked time.Time         `json:"last_checked,omitempty"`
 	Details     map[string]string `json:"details,omitempty"`
-	Overall   string            `json:"overall_status,omitempty"`
-	Managers  map[string]string `json:"manager_statuses,omitempty"`
+	Overall     string            `json:"overall_status,omitempty"`
+	Managers    map[string]string `json:"manager_statuses,omitempty"`
 }
 
 // DeploymentReadiness defines the readiness status for a deployment.
 type DeploymentReadiness struct {
-	Compatible        bool              `json:"compatible"`
-	TargetPlatforms   []string          `json:"target_platforms,omitempty"`
-	BlockingIssues    []string          `json:"blocking_issues,omitempty"`
-	Recommendations   []string          `json:"recommendations,omitempty"`
-	Details           map[string]string `json:"details,omitempty"`
-	Timestamp         time.Time         `json:"timestamp"`
-	Environment       string            `json:"environment,omitempty"` // Added from local manager_interfaces
-	Ready             bool              `json:"ready"`                 // Added from local manager_interfaces
+	Compatible      bool              `json:"compatible"`
+	TargetPlatforms []string          `json:"target_platforms,omitempty"`
+	BlockingIssues  []string          `json:"blocking_issues,omitempty"`
+	Recommendations []string          `json:"recommendations,omitempty"`
+	Details         map[string]string `json:"details,omitempty"`
+	Timestamp       time.Time         `json:"timestamp"`
+	Environment     string            `json:"environment,omitempty"` // Added from local manager_interfaces
+	Ready           bool              `json:"ready"`                 // Added from local manager_interfaces
 }
 
 // ArtifactMetadata defines metadata for a build artifact.
@@ -150,49 +150,49 @@ type ArtifactMetadata struct {
 
 // DependencyAnalysis résultat de l'analyse des dépendances
 type DependencyAnalysis struct {
-	ProjectPath         string                  `json:"project_path"`
-	TotalDependencies    int                    `json:"total_dependencies"`
-	DirectDependencies   []DependencyMetadata    `json:"direct_dependencies"`
-	TransitiveDependencies []DependencyMetadata  `json:"transitive_dependencies"`
-	Conflicts           []DependencyConflict    `json:"conflicts"`
-	Vulnerabilities     []Vulnerability         `json:"vulnerabilities"`
-	AnalyzedAt          time.Time               `json:"analyzed_at"`
+	ProjectPath            string               `json:"project_path"`
+	TotalDependencies      int                  `json:"total_dependencies"`
+	DirectDependencies     []DependencyMetadata `json:"direct_dependencies"`
+	TransitiveDependencies []DependencyMetadata `json:"transitive_dependencies"`
+	Conflicts              []DependencyConflict `json:"conflicts"`
+	Vulnerabilities        []Vulnerability      `json:"vulnerabilities"`
+	AnalyzedAt             time.Time            `json:"analyzed_at"`
 }
 
 // ResolutionResult résultat de la résolution de dépendances
 type ResolutionResult struct {
-	Success           bool                   `json:"success"`
-	ResolvedPackages  []ResolvedPackage      `json:"resolved_packages"`
-	Conflicts         []DependencyConflict   `json:"conflicts"`
-	Errors            []string               `json:"errors"`
-	ResolutionTime    time.Duration          `json:"resolution_time"`
+	Success          bool                 `json:"success"`
+	ResolvedPackages []ResolvedPackage    `json:"resolved_packages"`
+	Conflicts        []DependencyConflict `json:"conflicts"`
+	Errors           []string             `json:"errors"`
+	ResolutionTime   time.Duration        `json:"resolution_time"`
 }
 
 // ResolvedPackage package résolu
 type ResolvedPackage struct {
-	Name             string                 `json:"name"`
-	Version          string                 `json:"version"`
-	Source           string                 `json:"source"`
-	Dependencies     []string               `json:"dependencies"`
-	Metadata         map[string]interface{} `json:"metadata"`
+	Name         string                 `json:"name"`
+	Version      string                 `json:"version"`
+	Source       string                 `json:"source"`
+	Dependencies []string               `json:"dependencies"`
+	Metadata     map[string]interface{} `json:"metadata"`
 }
 
 // DependencyUpdate mise à jour de dépendance disponible
 type DependencyUpdate struct {
-	Name            string `json:"name"`
-	CurrentVersion  string `json:"current_version"`
-	LatestVersion   string `json:"latest_version"`
-	UpdateType      string `json:"update_type"` // major, minor, patch
-	BreakingChange  bool   `json:"breaking_change"`
+	Name           string `json:"name"`
+	CurrentVersion string `json:"current_version"`
+	LatestVersion  string `json:"latest_version"`
+	UpdateType     string `json:"update_type"` // major, minor, patch
+	BreakingChange bool   `json:"breaking_change"`
 }
 
 // ValidationResult résultat de validation des dépendances
 type ValidationResult struct {
-	Valid            bool     `json:"valid"`
-	Errors           []string `json:"errors"`
-	Warnings         []string `json:"warnings"`
-	MissingPackages  []string `json:"missing_packages"`
-	ValidatedAt      time.Time `json:"validated_at"`
+	Valid           bool      `json:"valid"`
+	Errors          []string  `json:"errors"`
+	Warnings        []string  `json:"warnings"`
+	MissingPackages []string  `json:"missing_packages"`
+	ValidatedAt     time.Time `json:"validated_at"`
 }
 
 // ===== PHASE 3 TYPES =====
@@ -201,40 +201,40 @@ type ValidationResult struct {
 
 // Email représente un email à envoyer
 type Email struct {
-	ID          string            `json:"id"`
-	From        string            `json:"from"`
-	To          []string          `json:"to"`
-	CC          []string          `json:"cc,omitempty"`
-	BCC         []string          `json:"bcc,omitempty"`
-	Subject     string            `json:"subject"`
-	Body        string            `json:"body"`
-	HTMLBody    string            `json:"html_body,omitempty"`
-	Attachments []*Attachment     `json:"attachments,omitempty"`
-	Headers     map[string]string `json:"headers,omitempty"`
-	Priority    EmailPriority     `json:"priority"`
-	TemplateID  string            `json:"template_id,omitempty"`
+	ID           string                 `json:"id"`
+	From         string                 `json:"from"`
+	To           []string               `json:"to"`
+	CC           []string               `json:"cc,omitempty"`
+	BCC          []string               `json:"bcc,omitempty"`
+	Subject      string                 `json:"subject"`
+	Body         string                 `json:"body"`
+	HTMLBody     string                 `json:"html_body,omitempty"`
+	Attachments  []*Attachment          `json:"attachments,omitempty"`
+	Headers      map[string]string      `json:"headers,omitempty"`
+	Priority     EmailPriority          `json:"priority"`
+	TemplateID   string                 `json:"template_id,omitempty"`
 	TemplateData map[string]interface{} `json:"template_data,omitempty"`
-	ScheduledAt time.Time         `json:"scheduled_at,omitempty"`
-	Status      EmailStatus       `json:"status"`
-	CreatedAt   time.Time         `json:"created_at"`
-	SentAt      *time.Time        `json:"sent_at,omitempty"`
-	RetryCount  int               `json:"retry_count"`
-	LastError   string            `json:"last_error,omitempty"`
+	ScheduledAt  time.Time              `json:"scheduled_at,omitempty"`
+	Status       EmailStatus            `json:"status"`
+	CreatedAt    time.Time              `json:"created_at"`
+	SentAt       *time.Time             `json:"sent_at,omitempty"`
+	RetryCount   int                    `json:"retry_count"`
+	LastError    string                 `json:"last_error,omitempty"`
 }
 
 // EmailTemplate représente un template d'email
 type EmailTemplate struct {
-	ID          string            `json:"id"`
-	Name        string            `json:"name"`
-	Subject     string            `json:"subject"`
-	Body        string            `json:"body"`
-	HTMLBody    string            `json:"html_body,omitempty"`
-	Variables   []string          `json:"variables"`
-	Category    string            `json:"category"`
-	Description string            `json:"description"`
-	IsActive    bool              `json:"is_active"`
-	CreatedAt   time.Time         `json:"created_at"`
-	UpdatedAt   time.Time         `json:"updated_at"`
+	ID          string    `json:"id"`
+	Name        string    `json:"name"`
+	Subject     string    `json:"subject"`
+	Body        string    `json:"body"`
+	HTMLBody    string    `json:"html_body,omitempty"`
+	Variables   []string  `json:"variables"`
+	Category    string    `json:"category"`
+	Description string    `json:"description"`
+	IsActive    bool      `json:"is_active"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 // Attachment représente une pièce jointe
@@ -247,52 +247,52 @@ type Attachment struct {
 
 // QueueStatus représente le statut de la file d'attente
 type QueueStatus struct {
-	Size      int                `json:"size"`
-	Status    QueueState         `json:"status"`
-	Processing int               `json:"processing"`
-	Failed    int                `json:"failed"`
-	Retries   int                `json:"retries"`
-	LastProcessed *time.Time     `json:"last_processed,omitempty"`
-	Stats     *QueueStats        `json:"stats,omitempty"`
+	Size          int         `json:"size"`
+	Status        QueueState  `json:"status"`
+	Processing    int         `json:"processing"`
+	Failed        int         `json:"failed"`
+	Retries       int         `json:"retries"`
+	LastProcessed *time.Time  `json:"last_processed,omitempty"`
+	Stats         *QueueStats `json:"stats,omitempty"`
 }
 
 // QueueStats représente les statistiques de la file
 type QueueStats struct {
-	TotalProcessed int     `json:"total_processed"`
-	TotalFailed    int     `json:"total_failed"`
+	TotalProcessed        int     `json:"total_processed"`
+	TotalFailed           int     `json:"total_failed"`
 	AverageProcessingTime float64 `json:"average_processing_time"`
-	SuccessRate    float64 `json:"success_rate"`
+	SuccessRate           float64 `json:"success_rate"`
 }
 
 // EmailStats représente les statistiques d'emails
 type EmailStats struct {
-	TotalSent     int     `json:"total_sent"`
-	TotalFailed   int     `json:"total_failed"`
-	TotalOpened   int     `json:"total_opened"`
-	TotalClicked  int     `json:"total_clicked"`
-	OpenRate      float64 `json:"open_rate"`
-	ClickRate     float64 `json:"click_rate"`
-	BounceRate    float64 `json:"bounce_rate"`
-	DeliveryRate  float64 `json:"delivery_rate"`
-	DateRange     DateRange `json:"date_range"`
+	TotalSent    int       `json:"total_sent"`
+	TotalFailed  int       `json:"total_failed"`
+	TotalOpened  int       `json:"total_opened"`
+	TotalClicked int       `json:"total_clicked"`
+	OpenRate     float64   `json:"open_rate"`
+	ClickRate    float64   `json:"click_rate"`
+	BounceRate   float64   `json:"bounce_rate"`
+	DeliveryRate float64   `json:"delivery_rate"`
+	DateRange    DateRange `json:"date_range"`
 }
 
 // DeliveryReport représente un rapport de livraison
 type DeliveryReport struct {
-	EmailID     string      `json:"email_id"`
-	Status      EmailStatus `json:"status"`
-	DeliveredAt *time.Time  `json:"delivered_at,omitempty"`
-	OpenedAt    *time.Time  `json:"opened_at,omitempty"`
-	ClickedAt   *time.Time  `json:"clicked_at,omitempty"`
-	BouncedAt   *time.Time  `json:"bounced_at,omitempty"`
-	BounceReason string     `json:"bounce_reason,omitempty"`
-	Events      []*EmailEvent `json:"events"`
+	EmailID      string        `json:"email_id"`
+	Status       EmailStatus   `json:"status"`
+	DeliveredAt  *time.Time    `json:"delivered_at,omitempty"`
+	OpenedAt     *time.Time    `json:"opened_at,omitempty"`
+	ClickedAt    *time.Time    `json:"clicked_at,omitempty"`
+	BouncedAt    *time.Time    `json:"bounced_at,omitempty"`
+	BounceReason string        `json:"bounce_reason,omitempty"`
+	Events       []*EmailEvent `json:"events"`
 }
 
 // EmailEvent représente un événement d'email
 type EmailEvent struct {
-	Type      EmailEventType `json:"type"`
-	Timestamp time.Time      `json:"timestamp"`
+	Type      EmailEventType         `json:"type"`
+	Timestamp time.Time              `json:"timestamp"`
 	Data      map[string]interface{} `json:"data,omitempty"`
 }
 
@@ -331,16 +331,16 @@ type NotificationChannel struct {
 
 // Alert représente une alerte
 type Alert struct {
-	ID          string                 `json:"id"`
-	Name        string                 `json:"name"`
-	Description string                 `json:"description"`
-	Conditions  []*AlertCondition      `json:"conditions"`
-	Actions     []*AlertAction         `json:"actions"`
-	IsActive    bool                   `json:"is_active"`
-	Severity    AlertSeverity          `json:"severity"`
-	CreatedAt   time.Time              `json:"created_at"`
-	UpdatedAt   time.Time              `json:"updated_at"`
-	LastTriggered *time.Time           `json:"last_triggered,omitempty"`
+	ID            string            `json:"id"`
+	Name          string            `json:"name"`
+	Description   string            `json:"description"`
+	Conditions    []*AlertCondition `json:"conditions"`
+	Actions       []*AlertAction    `json:"actions"`
+	IsActive      bool              `json:"is_active"`
+	Severity      AlertSeverity     `json:"severity"`
+	CreatedAt     time.Time         `json:"created_at"`
+	UpdatedAt     time.Time         `json:"updated_at"`
+	LastTriggered *time.Time        `json:"last_triggered,omitempty"`
 }
 
 // AlertCondition représente une condition d'alerte
@@ -361,34 +361,34 @@ type AlertAction struct {
 
 // AlertEvent représente un événement d'alerte
 type AlertEvent struct {
-	ID          string                 `json:"id"`
-	AlertID     string                 `json:"alert_id"`
-	Type        AlertEventType         `json:"type"`
-	Timestamp   time.Time              `json:"timestamp"`
-	Data        map[string]interface{} `json:"data,omitempty"`
-	Resolved    bool                   `json:"resolved"`
-	ResolvedAt  *time.Time             `json:"resolved_at,omitempty"`
+	ID         string                 `json:"id"`
+	AlertID    string                 `json:"alert_id"`
+	Type       AlertEventType         `json:"type"`
+	Timestamp  time.Time              `json:"timestamp"`
+	Data       map[string]interface{} `json:"data,omitempty"`
+	Resolved   bool                   `json:"resolved"`
+	ResolvedAt *time.Time             `json:"resolved_at,omitempty"`
 }
 
 // NotificationStats représente les statistiques de notifications
 type NotificationStats struct {
-	TotalSent     int       `json:"total_sent"`
-	TotalFailed   int       `json:"total_failed"`
-	TotalDelivered int      `json:"total_delivered"`
-	SuccessRate   float64   `json:"success_rate"`
-	ByChannel     map[string]int `json:"by_channel"`
-	ByType        map[string]int `json:"by_type"`
-	DateRange     DateRange `json:"date_range"`
+	TotalSent      int            `json:"total_sent"`
+	TotalFailed    int            `json:"total_failed"`
+	TotalDelivered int            `json:"total_delivered"`
+	SuccessRate    float64        `json:"success_rate"`
+	ByChannel      map[string]int `json:"by_channel"`
+	ByType         map[string]int `json:"by_type"`
+	DateRange      DateRange      `json:"date_range"`
 }
 
 // ChannelPerformance représente les performances d'un canal
 type ChannelPerformance struct {
-	ChannelID     string    `json:"channel_id"`
-	TotalSent     int       `json:"total_sent"`
-	TotalFailed   int       `json:"total_failed"`
-	SuccessRate   float64   `json:"success_rate"`
-	AverageDelay  float64   `json:"average_delay"`
-	LastUsed      *time.Time `json:"last_used,omitempty"`
+	ChannelID    string     `json:"channel_id"`
+	TotalSent    int        `json:"total_sent"`
+	TotalFailed  int        `json:"total_failed"`
+	SuccessRate  float64    `json:"success_rate"`
+	AverageDelay float64    `json:"average_delay"`
+	LastUsed     *time.Time `json:"last_used,omitempty"`
 }
 
 // ===== INTEGRATION MANAGER TYPES =====
@@ -409,18 +409,18 @@ type Integration struct {
 
 // APIEndpoint représente un endpoint d'API
 type APIEndpoint struct {
-	ID          string                 `json:"id"`
-	Name        string                 `json:"name"`
-	URL         string                 `json:"url"`
-	Method      string                 `json:"method"`
-	Headers     map[string]string      `json:"headers,omitempty"`
-	Auth        *APIAuth               `json:"auth,omitempty"`
-	Timeout     time.Duration          `json:"timeout"`
-	RetryCount  int                    `json:"retry_count"`
-	IsActive    bool                   `json:"is_active"`
-	CreatedAt   time.Time              `json:"created_at"`
-	UpdatedAt   time.Time              `json:"updated_at"`
-	LastCalled  *time.Time             `json:"last_called,omitempty"`
+	ID         string            `json:"id"`
+	Name       string            `json:"name"`
+	URL        string            `json:"url"`
+	Method     string            `json:"method"`
+	Headers    map[string]string `json:"headers,omitempty"`
+	Auth       *APIAuth          `json:"auth,omitempty"`
+	Timeout    time.Duration     `json:"timeout"`
+	RetryCount int               `json:"retry_count"`
+	IsActive   bool              `json:"is_active"`
+	CreatedAt  time.Time         `json:"created_at"`
+	UpdatedAt  time.Time         `json:"updated_at"`
+	LastCalled *time.Time        `json:"last_called,omitempty"`
 }
 
 // APIAuth représente l'authentification d'API
@@ -438,31 +438,31 @@ type APIRequest struct {
 
 // APIResponse représente une réponse d'API
 type APIResponse struct {
-	StatusCode int                    `json:"status_code"`
-	Body       interface{}            `json:"body"`
-	Headers    map[string]string      `json:"headers"`
-	Duration   time.Duration          `json:"duration"`
-	Timestamp  time.Time              `json:"timestamp"`
+	StatusCode int               `json:"status_code"`
+	Body       interface{}       `json:"body"`
+	Headers    map[string]string `json:"headers"`
+	Duration   time.Duration     `json:"duration"`
+	Timestamp  time.Time         `json:"timestamp"`
 }
 
 // APIStatus représente le statut d'une API
 type APIStatus struct {
-	IsAvailable   bool          `json:"is_available"`
-	LastCheck     time.Time     `json:"last_check"`
-	ResponseTime  time.Duration `json:"response_time"`
-	ErrorCount    int           `json:"error_count"`
-	SuccessCount  int           `json:"success_count"`
-	SuccessRate   float64       `json:"success_rate"`
+	IsAvailable  bool          `json:"is_available"`
+	LastCheck    time.Time     `json:"last_check"`
+	ResponseTime time.Duration `json:"response_time"`
+	ErrorCount   int           `json:"error_count"`
+	SuccessCount int           `json:"success_count"`
+	SuccessRate  float64       `json:"success_rate"`
 }
 
 // APIConfig représente la configuration d'une API
 type APIConfig struct {
-	BaseURL     string                 `json:"base_url"`
-	Auth        *APIAuth               `json:"auth,omitempty"`
-	Headers     map[string]string      `json:"headers,omitempty"`
-	Timeout     time.Duration          `json:"timeout"`
-	RetryCount  int                    `json:"retry_count"`
-	RateLimit   *RateLimit             `json:"rate_limit,omitempty"`
+	BaseURL    string            `json:"base_url"`
+	Auth       *APIAuth          `json:"auth,omitempty"`
+	Headers    map[string]string `json:"headers,omitempty"`
+	Timeout    time.Duration     `json:"timeout"`
+	RetryCount int               `json:"retry_count"`
+	RateLimit  *RateLimit        `json:"rate_limit,omitempty"`
 }
 
 // RateLimit représente les limites de taux
@@ -474,31 +474,31 @@ type RateLimit struct {
 
 // SyncJob représente un travail de synchronisation
 type SyncJob struct {
-	ID            string                 `json:"id"`
-	Name          string                 `json:"name"`
-	SourceID      string                 `json:"source_id"`
-	TargetID      string                 `json:"target_id"`
-	Type          SyncType               `json:"type"`
-	Schedule      string                 `json:"schedule,omitempty"`
-	Config        map[string]interface{} `json:"config"`
-	Status        SyncStatus             `json:"status"`
-	IsActive      bool                   `json:"is_active"`
-	CreatedAt     time.Time              `json:"created_at"`
-	UpdatedAt     time.Time              `json:"updated_at"`
-	LastRun       *time.Time             `json:"last_run,omitempty"`
-	NextRun       *time.Time             `json:"next_run,omitempty"`
+	ID        string                 `json:"id"`
+	Name      string                 `json:"name"`
+	SourceID  string                 `json:"source_id"`
+	TargetID  string                 `json:"target_id"`
+	Type      SyncType               `json:"type"`
+	Schedule  string                 `json:"schedule,omitempty"`
+	Config    map[string]interface{} `json:"config"`
+	Status    SyncStatus             `json:"status"`
+	IsActive  bool                   `json:"is_active"`
+	CreatedAt time.Time              `json:"created_at"`
+	UpdatedAt time.Time              `json:"updated_at"`
+	LastRun   *time.Time             `json:"last_run,omitempty"`
+	NextRun   *time.Time             `json:"next_run,omitempty"`
 }
 
 // SyncStatus représente le statut de synchronisation
 type SyncStatus struct {
-	Status        SyncState             `json:"status"`
-	Progress      float64               `json:"progress"`
-	StartedAt     *time.Time            `json:"started_at,omitempty"`
-	CompletedAt   *time.Time            `json:"completed_at,omitempty"`
-	RecordsTotal  int                   `json:"records_total"`
-	RecordsSync   int                   `json:"records_synced"`
-	RecordsFailed int                   `json:"records_failed"`
-	LastError     string                `json:"last_error,omitempty"`
+	Status        SyncState              `json:"status"`
+	Progress      float64                `json:"progress"`
+	StartedAt     *time.Time             `json:"started_at,omitempty"`
+	CompletedAt   *time.Time             `json:"completed_at,omitempty"`
+	RecordsTotal  int                    `json:"records_total"`
+	RecordsSync   int                    `json:"records_synced"`
+	RecordsFailed int                    `json:"records_failed"`
+	LastError     string                 `json:"last_error,omitempty"`
 	Metrics       map[string]interface{} `json:"metrics,omitempty"`
 }
 
@@ -515,42 +515,42 @@ type SyncEvent struct {
 
 // Webhook représente un webhook
 type Webhook struct {
-	ID          string                 `json:"id"`
-	Name        string                 `json:"name"`
-	URL         string                 `json:"url"`
-	Secret      string                 `json:"secret,omitempty"`
-	Events      []string               `json:"events"`
-	Headers     map[string]string      `json:"headers,omitempty"`
-	IsActive    bool                   `json:"is_active"`
-	CreatedAt   time.Time              `json:"created_at"`
-	UpdatedAt   time.Time              `json:"updated_at"`
-	LastCalled  *time.Time             `json:"last_called,omitempty"`
+	ID         string            `json:"id"`
+	Name       string            `json:"name"`
+	URL        string            `json:"url"`
+	Secret     string            `json:"secret,omitempty"`
+	Events     []string          `json:"events"`
+	Headers    map[string]string `json:"headers,omitempty"`
+	IsActive   bool              `json:"is_active"`
+	CreatedAt  time.Time         `json:"created_at"`
+	UpdatedAt  time.Time         `json:"updated_at"`
+	LastCalled *time.Time        `json:"last_called,omitempty"`
 }
 
 // WebhookLog représente un log de webhook
 type WebhookLog struct {
-	ID           string    `json:"id"`
-	WebhookID    string    `json:"webhook_id"`
-	Event        string    `json:"event"`
-	Payload      []byte    `json:"payload"`
-	Response     string    `json:"response,omitempty"`
-	StatusCode   int       `json:"status_code"`
+	ID           string        `json:"id"`
+	WebhookID    string        `json:"webhook_id"`
+	Event        string        `json:"event"`
+	Payload      []byte        `json:"payload"`
+	Response     string        `json:"response,omitempty"`
+	StatusCode   int           `json:"status_code"`
 	Duration     time.Duration `json:"duration"`
-	Timestamp    time.Time `json:"timestamp"`
-	Success      bool      `json:"success"`
-	ErrorMessage string    `json:"error_message,omitempty"`
+	Timestamp    time.Time     `json:"timestamp"`
+	Success      bool          `json:"success"`
+	ErrorMessage string        `json:"error_message,omitempty"`
 }
 
 // DataTransformation représente une transformation de données
 type DataTransformation struct {
-	ID          string                 `json:"id"`
-	Name        string                 `json:"name"`
-	Type        TransformationType     `json:"type"`
-	Config      map[string]interface{} `json:"config"`
-	Script      string                 `json:"script,omitempty"`
-	IsActive    bool                   `json:"is_active"`
-	CreatedAt   time.Time              `json:"created_at"`
-	UpdatedAt   time.Time              `json:"updated_at"`
+	ID        string                 `json:"id"`
+	Name      string                 `json:"name"`
+	Type      TransformationType     `json:"type"`
+	Config    map[string]interface{} `json:"config"`
+	Script    string                 `json:"script,omitempty"`
+	IsActive  bool                   `json:"is_active"`
+	CreatedAt time.Time              `json:"created_at"`
+	UpdatedAt time.Time              `json:"updated_at"`
 }
 
 // DateRange représente une plage de dates
@@ -642,13 +642,13 @@ const (
 type ChannelType string
 
 const (
-	ChannelTypeSlack    ChannelType = "slack"
-	ChannelTypeDiscord  ChannelType = "discord"
-	ChannelTypeWebhook  ChannelType = "webhook"
-	ChannelTypeEmail    ChannelType = "email"
-	ChannelTypeSMS      ChannelType = "sms"
-	ChannelTypePush     ChannelType = "push"
-	ChannelTypeTeams    ChannelType = "teams"
+	ChannelTypeSlack   ChannelType = "slack"
+	ChannelTypeDiscord ChannelType = "discord"
+	ChannelTypeWebhook ChannelType = "webhook"
+	ChannelTypeEmail   ChannelType = "email"
+	ChannelTypeSMS     ChannelType = "sms"
+	ChannelTypePush    ChannelType = "push"
+	ChannelTypeTeams   ChannelType = "teams"
 )
 
 // AlertSeverity représente la sévérité d'une alerte
@@ -686,33 +686,33 @@ const (
 type IntegrationStatus string
 
 const (
-	IntegrationStatusActive    IntegrationStatus = "active"
-	IntegrationStatusInactive  IntegrationStatus = "inactive"
-	IntegrationStatusError     IntegrationStatus = "error"
-	IntegrationStatusSyncing   IntegrationStatus = "syncing"
+	IntegrationStatusActive   IntegrationStatus = "active"
+	IntegrationStatusInactive IntegrationStatus = "inactive"
+	IntegrationStatusError    IntegrationStatus = "error"
+	IntegrationStatusSyncing  IntegrationStatus = "syncing"
 )
 
 // SyncType représente le type de synchronisation
 type SyncType string
 
 const (
-	SyncTypeOneWay    SyncType = "one_way"
-	SyncTypeTwoWay    SyncType = "two_way"
-	SyncTypeBidirect  SyncType = "bidirectional"
+	SyncTypeOneWay      SyncType = "one_way"
+	SyncTypeTwoWay      SyncType = "two_way"
+	SyncTypeBidirect    SyncType = "bidirectional"
 	SyncTypeIncremental SyncType = "incremental"
-	SyncTypeFull      SyncType = "full"
+	SyncTypeFull        SyncType = "full"
 )
 
 // SyncState représente l'état de synchronisation
 type SyncState string
 
 const (
-	SyncStateIdle       SyncState = "idle"
-	SyncStateRunning    SyncState = "running"
-	SyncStateCompleted  SyncState = "completed"
-	SyncStateFailed     SyncState = "failed"
-	SyncStatePaused     SyncState = "paused"
-	SyncStateCancelled  SyncState = "cancelled"
+	SyncStateIdle      SyncState = "idle"
+	SyncStateRunning   SyncState = "running"
+	SyncStateCompleted SyncState = "completed"
+	SyncStateFailed    SyncState = "failed"
+	SyncStatePaused    SyncState = "paused"
+	SyncStateCancelled SyncState = "cancelled"
 )
 
 // SyncEventType représente le type d'événement de synchronisation
@@ -731,9 +731,9 @@ const (
 type TransformationType string
 
 const (
-	TransformationTypeScript TransformationType = "script"
-	TransformationTypeMapping TransformationType = "mapping"
-	TransformationTypeFilter TransformationType = "filter"
+	TransformationTypeScript    TransformationType = "script"
+	TransformationTypeMapping   TransformationType = "mapping"
+	TransformationTypeFilter    TransformationType = "filter"
 	TransformationTypeAggregate TransformationType = "aggregate"
-	TransformationTypeCustom TransformationType = "custom"
+	TransformationTypeCustom    TransformationType = "custom"
 )

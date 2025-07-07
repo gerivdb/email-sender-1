@@ -23,8 +23,8 @@ func TestGenerateInventory(t *testing.T) {
 		"docs/api.md",
 		"docs/guide.txt",
 		".github/CONTRIBUTING.md",
-		"src/main.go",			// Should be ignored
-		"node_modules/package.json",	// Should be ignored
+		"src/main.go",               // Should be ignored
+		"node_modules/package.json", // Should be ignored
 	}
 
 	for _, file := range testFiles {
@@ -50,7 +50,7 @@ func TestGenerateInventory(t *testing.T) {
 	}
 
 	// Should find markdown and text files, but not Go files or node_modules
-	expectedFiles := 4	// README.md, docs/api.md, docs/guide.txt, .github/CONTRIBUTING.md
+	expectedFiles := 4 // README.md, docs/api.md, docs/guide.txt, .github/CONTRIBUTING.md
 	if report.TotalFiles != expectedFiles {
 		t.Errorf("Expected %d files, got %d", expectedFiles, report.TotalFiles)
 	}
@@ -87,9 +87,9 @@ func TestGenerateInventory(t *testing.T) {
 
 func TestIsDocumentationFile(t *testing.T) {
 	tests := []struct {
-		path		string
-		name		string
-		expected	bool
+		path     string
+		name     string
+		expected bool
 	}{
 		{"README.md", "README.md", true},
 		{"docs/api.md", "api.md", true},
@@ -111,8 +111,8 @@ func TestIsDocumentationFile(t *testing.T) {
 
 func TestShouldSkipPath(t *testing.T) {
 	tests := []struct {
-		path		string
-		expected	bool
+		path     string
+		expected bool
 	}{
 		{"README.md", false},
 		{"docs/api.md", false},
@@ -134,9 +134,9 @@ func TestShouldSkipPath(t *testing.T) {
 
 func TestCategorizeFile(t *testing.T) {
 	tests := []struct {
-		path		string
-		name		string
-		expected	string
+		path     string
+		name     string
+		expected string
 	}{
 		{"README.md", "README.md", "root"},
 		{"docs/api.md", "api.md", "documentation"},
@@ -158,9 +158,9 @@ func TestCategorizeFile(t *testing.T) {
 
 func TestExtractTags(t *testing.T) {
 	tests := []struct {
-		path		string
-		name		string
-		expected	[]string
+		path     string
+		name     string
+		expected []string
 	}{
 		{"roadmap/plan.md", "plan.md", []string{"roadmap", "plan"}},
 		{"README.md", "README.md", []string{"readme"}},
@@ -191,8 +191,8 @@ func TestExtractTags(t *testing.T) {
 
 func TestGetFileType(t *testing.T) {
 	tests := []struct {
-		ext		string
-		expected	string
+		ext      string
+		expected string
 	}{
 		{".md", "markdown"},
 		{".txt", "text"},
@@ -214,25 +214,25 @@ func TestGetFileType(t *testing.T) {
 func TestJSONOutput(t *testing.T) {
 	// Create a minimal test report
 	report := &InventoryReport{
-		GeneratedAt:	time.Now(),
-		TotalFiles:	1,
-		TotalSize:	100,
-		Categories:	map[string]int{"test": 1},
-		Extensions:	map[string]int{".md": 1},
+		GeneratedAt: time.Now(),
+		TotalFiles:  1,
+		TotalSize:   100,
+		Categories:  map[string]int{"test": 1},
+		Extensions:  map[string]int{".md": 1},
 		Files: []DocumentFile{
 			{
-				Path:		"test.md",
-				Name:		"test.md",
-				Extension:	".md",
-				Size:		100,
-				LastModified:	time.Now(),
-				Type:		"markdown",
-				Category:	"test",
-				Tags:		[]string{"test"},
-				Metadata:	map[string]string{"depth": "0"},
+				Path:         "test.md",
+				Name:         "test.md",
+				Extension:    ".md",
+				Size:         100,
+				LastModified: time.Now(),
+				Type:         "markdown",
+				Category:     "test",
+				Tags:         []string{"test"},
+				Metadata:     map[string]string{"depth": "0"},
 			},
 		},
-		Summary:	"Test summary",
+		Summary: "Test summary",
 	}
 
 	// Test JSON encoding

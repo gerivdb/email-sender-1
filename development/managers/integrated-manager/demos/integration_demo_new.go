@@ -10,46 +10,46 @@ import (
 
 // SuggestionConfig définit les paramètres pour la génération de suggestions
 type SuggestionConfig struct {
-	MinConfidence		float64
-	MaxSuggestions		int
-	BackupBeforeApply	bool
-	SafetyLevel		SafetyLevel
+	MinConfidence     float64
+	MaxSuggestions    int
+	BackupBeforeApply bool
+	SafetyLevel       SafetyLevel
 }
 
 // ValidationConfig définit les paramètres pour la validation des corrections
 type ValidationConfig struct {
-	StrictMode		bool
-	ValidateCompilation	bool
-	ValidateTests		bool
-	ShowProgressIndicator	bool
+	StrictMode            bool
+	ValidateCompilation   bool
+	ValidateTests         bool
+	ShowProgressIndicator bool
 }
 
 // ReviewAction représente les actions possibles lors de la revue
 type ReviewAction string
 
 const (
-	ActionApply	ReviewAction	= "apply"
-	ActionSkip	ReviewAction	= "skip"
-	ActionModify	ReviewAction	= "modify"
-	ActionRollback	ReviewAction	= "rollback"
+	ActionApply    ReviewAction = "apply"
+	ActionSkip     ReviewAction = "skip"
+	ActionModify   ReviewAction = "modify"
+	ActionRollback ReviewAction = "rollback"
 )
 
 // SafetyLevel définit le niveau de sécurité des suggestions
 type SafetyLevel string
 
 const (
-	SafetyHigh	SafetyLevel	= "high"
-	SafetyMedium	SafetyLevel	= "medium"
-	SafetyLow	SafetyLevel	= "low"
-	SafetyUnsafe	SafetyLevel	= "unsafe"
+	SafetyHigh   SafetyLevel = "high"
+	SafetyMedium SafetyLevel = "medium"
+	SafetyLow    SafetyLevel = "low"
+	SafetyUnsafe SafetyLevel = "unsafe"
 )
 
 // ValidationSystem gère la validation des corrections
 type ValidationSystem struct {
-	config		ValidationConfig
-	ctx		context.Context
-	mu		sync.RWMutex
-	validators	[]Validator
+	config     ValidationConfig
+	ctx        context.Context
+	mu         sync.RWMutex
+	validators []Validator
 }
 
 // Validator définit l'interface pour les validateurs
@@ -60,19 +60,19 @@ type Validator interface {
 
 // Fix représente une correction proposée
 type Fix struct {
-	FilePath	string
-	LineNumber	int
-	OldContent	string
-	NewContent	string
-	SafetyLevel	SafetyLevel
+	FilePath    string
+	LineNumber  int
+	OldContent  string
+	NewContent  string
+	SafetyLevel SafetyLevel
 }
 
 // NewValidationSystem crée une nouvelle instance de ValidationSystem
 func NewValidationSystem(ctx context.Context, config ValidationConfig) *ValidationSystem {
 	return &ValidationSystem{
-		config:		config,
-		ctx:		ctx,
-		validators:	make([]Validator, 0),
+		config:     config,
+		ctx:        ctx,
+		validators: make([]Validator, 0),
 	}
 }
 
@@ -121,11 +121,11 @@ func GenerateSuggestions(ctx context.Context, config SuggestionConfig, source st
 	// Exemple de suggestions
 	suggestions := []*Fix{
 		{
-			FilePath:	"example.go",
-			LineNumber:	42,
-			OldContent:	"fmt.Prinln(x)",
-			NewContent:	"fmt.Println(x)",
-			SafetyLevel:	SafetyHigh,
+			FilePath:    "example.go",
+			LineNumber:  42,
+			OldContent:  "fmt.Prinln(x)",
+			NewContent:  "fmt.Println(x)",
+			SafetyLevel: SafetyHigh,
 		},
 	}
 
@@ -138,10 +138,10 @@ func GenerateSuggestions(ctx context.Context, config SuggestionConfig, source st
 
 // CLIConfig définit la configuration pour l'interface en ligne de commande
 type CLIConfig struct {
-	BackupBeforeApply	bool
-	ShowProgressIndicator	bool
-	Verbose			bool
-	OutputFormat		string
-	MaxConcurrent		int
-	Timeout			time.Duration
+	BackupBeforeApply     bool
+	ShowProgressIndicator bool
+	Verbose               bool
+	OutputFormat          string
+	MaxConcurrent         int
+	Timeout               time.Duration
 }

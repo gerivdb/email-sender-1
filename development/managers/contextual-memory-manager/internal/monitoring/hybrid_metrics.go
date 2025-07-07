@@ -310,7 +310,7 @@ func (hmc *HybridMetricsCollector) GetMetricsSummary() map[string]interface{} {
 	stats := hmc.GetStatistics()
 
 	summary := map[string]interface{}{
-		"total_queries":    stats.TotalQueries,
+		"total_queries": stats.TotalQueries,
 		"mode_distribution": map[string]int64{
 			"ast":      stats.ASTQueries,
 			"rag":      stats.RAGQueries,
@@ -327,8 +327,8 @@ func (hmc *HybridMetricsCollector) GetMetricsSummary() map[string]interface{} {
 			"memory_usage":    stats.MemoryUsage,
 		},
 		"reliability": map[string]interface{}{
-			"error_counts":    stats.ErrorCounts,
-			"mode_accuracy":   stats.ModeAccuracy,
+			"error_counts":  stats.ErrorCounts,
+			"mode_accuracy": stats.ModeAccuracy,
 		},
 		"last_updated": stats.LastUpdated,
 	}

@@ -6,5 +6,5 @@ package docmanager
 type RedisClient struct{}
 
 func InitRedis() *RedisClient {
-return &RedisClient{}
+	return &RedisClient{}
 }

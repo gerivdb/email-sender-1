@@ -8,23 +8,23 @@ import (
 
 // DatabaseConfig contient la configuration de la base de données
 type DatabaseConfig struct {
-	Host		string
-	Port		int
-	Database	string
-	Username	string
-	Password	string
-	SSLMode		string
+	Host     string
+	Port     int
+	Database string
+	Username string
+	Password string
+	SSLMode  string
 }
 
 // NewDatabaseConfig crée une nouvelle configuration de base de données
 func NewDatabaseConfig() *DatabaseConfig {
 	return &DatabaseConfig{
-		Host:		"localhost",
-		Port:		5432,
-		Database:	"testdb",
-		Username:	"user",
-		Password:	"password",
-		SSLMode:	"disable",
+		Host:     "localhost",
+		Port:     5432,
+		Database: "testdb",
+		Username: "user",
+		Password: "password",
+		SSLMode:  "disable",
 	}
 }
 
@@ -43,17 +43,17 @@ type Manager interface {
 
 // BaseManager implémentation de base pour les managers
 type BaseManager struct {
-	name		string
-	startTime	time.Time
-	isActive	bool
+	name      string
+	startTime time.Time
+	isActive  bool
 }
 
 // NewBaseManager crée un nouveau manager de base
 func NewBaseManager(name string) *BaseManager {
 	return &BaseManager{
-		name:		name,
-		startTime:	time.Now(),
-		isActive:	false,
+		name:      name,
+		startTime: time.Now(),
+		isActive:  false,
 	}
 }
 
@@ -97,14 +97,14 @@ func (bm *BaseManager) GetUptime() time.Duration {
 // ConfigManager gère les configurations
 type ConfigManager struct {
 	*BaseManager
-	configs	map[string]interface{}
+	configs map[string]interface{}
 }
 
 // NewConfigManager crée un nouveau gestionnaire de configuration
 func NewConfigManager() *ConfigManager {
 	return &ConfigManager{
-		BaseManager:	NewBaseManager("ConfigManager"),
-		configs:	make(map[string]interface{}),
+		BaseManager: NewBaseManager("ConfigManager"),
+		configs:     make(map[string]interface{}),
 	}
 }
 
@@ -147,10 +147,10 @@ func (cm *ConfigManager) GetAllConfigs() map[string]interface{} {
 func analyzeCodeStructure(filepath string) (map[string]interface{}, error) {
 	// Simulation de l'analyse de structure de code
 	return map[string]interface{}{
-		"functions":	[]string{"main", "NewManager", "Initialize"},
-		"types":	[]string{"Manager", "BaseManager", "ConfigManager"},
-		"imports":	[]string{"context", "fmt", "time"},
-		"lines":	100,
+		"functions": []string{"main", "NewManager", "Initialize"},
+		"types":     []string{"Manager", "BaseManager", "ConfigManager"},
+		"imports":   []string{"context", "fmt", "time"},
+		"lines":     100,
 	}, nil
 }
 

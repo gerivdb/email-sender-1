@@ -13,36 +13,36 @@ import (
 
 // DiagnosticCLI structure principale du CLI
 type DiagnosticCLI struct {
-	config	*config.Config
-	logger	*Logger
-	metrics	*MetricsCollector
+	config  *config.Config
+	logger  *Logger
+	metrics *MetricsCollector
 }
 
 // DiagnosticResult représente le résultat d'un diagnostic
 type DiagnosticResult struct {
-	Component	string			`json:"component"`
-	Healthy		bool			`json:"healthy"`
-	Duration	time.Duration		`json:"duration"`
-	Details		map[string]interface{}	`json:"details"`
-	Timestamp	time.Time		`json:"timestamp"`
+	Component string                 `json:"component"`
+	Healthy   bool                   `json:"healthy"`
+	Duration  time.Duration          `json:"duration"`
+	Details   map[string]interface{} `json:"details"`
+	Timestamp time.Time              `json:"timestamp"`
 }
 
 // DiagnosticReport contient tous les résultats
 type DiagnosticReport struct {
-	Success		bool			`json:"success"`
-	Duration	time.Duration		`json:"total_duration"`
-	Results		[]DiagnosticResult	`json:"results"`
-	Timestamp	time.Time		`json:"timestamp"`
-	Version		string			`json:"version"`
+	Success   bool               `json:"success"`
+	Duration  time.Duration      `json:"total_duration"`
+	Results   []DiagnosticResult `json:"results"`
+	Timestamp time.Time          `json:"timestamp"`
+	Version   string             `json:"version"`
 }
 
 func main() {
 	start := time.Now()
 
 	cli := &DiagnosticCLI{
-		config:		config.LoadConfig(),
-		logger:		NewLogger(),
-		metrics:	NewMetricsCollector(),
+		config:  config.LoadConfig(),
+		logger:  NewLogger(),
+		metrics: NewMetricsCollector(),
 	}
 
 	if len(os.Args) < 2 {
@@ -55,17 +55,17 @@ func main() {
 
 	switch os.Args[1] {
 	case "--all-phases":
-		result, err = cli.RunFullDiagnostic()	// Target: ~200ms
+		result, err = cli.RunFullDiagnostic() // Target: ~200ms
 	case "--run-diagnostic":
-		result, err = cli.RunDiagnosticOnly()	// Target: ~50ms
+		result, err = cli.RunDiagnosticOnly() // Target: ~50ms
 	case "--run-repair":
-		result, err = cli.RunRepairOnly()	// Target: ~100ms
+		result, err = cli.RunRepairOnly() // Target: ~100ms
 	case "--emergency-stop":
-		result, err = cli.RunEmergencyStop()	// Target: ~50ms
+		result, err = cli.RunEmergencyStop() // Target: ~50ms
 	case "--monitor":
-		result, err = cli.StartRealtimeMonitor()	// Target: ~5ms per cycle
+		result, err = cli.StartRealtimeMonitor() // Target: ~5ms per cycle
 	case "--health-check":
-		result, err = cli.RunHealthCheck()	// Target: ~10ms
+		result, err = cli.RunHealthCheck() // Target: ~10ms
 	case "--version":
 		fmt.Printf("vscode-diagnostic v1.0.0 (Go CLI)\n")
 		fmt.Printf("Performance: 12.5x faster than PowerShell\n")
@@ -86,11 +86,11 @@ func main() {
 	// Gestion des erreurs
 	if err != nil {
 		errorReport := map[string]interface{}{
-			"success":	false,
-			"error":	err.Error(),
-			"duration":	time.Since(start),
-			"timestamp":	time.Now(),
-			"command":	os.Args[1],
+			"success":   false,
+			"error":     err.Error(),
+			"duration":  time.Since(start),
+			"timestamp": time.Now(),
+			"command":   os.Args[1],
 		}
 		jsonOutput, _ := json.Marshal(errorReport)
 		fmt.Println(string(jsonOutput))
@@ -112,10 +112,10 @@ func (cli *DiagnosticCLI) RunFullDiagnostic() (*DiagnosticReport, error) {
 	ctx := context.Background()
 
 	report := &DiagnosticReport{
-		Success:	true,
-		Results:	[]DiagnosticResult{},
-		Timestamp:	start,
-		Version:	"v1.0.0-go",
+		Success:   true,
+		Results:   []DiagnosticResult{},
+		Timestamp: start,
+		Version:   "v1.0.0-go",
 	}
 
 	// Diagnostic parallèle pour performance maximale
@@ -154,10 +154,10 @@ func (cli *DiagnosticCLI) RunDiagnosticOnly() (*DiagnosticReport, error) {
 	ctx := context.Background()
 
 	report := &DiagnosticReport{
-		Success:	true,
-		Results:	[]DiagnosticResult{},
-		Timestamp:	start,
-		Version:	"v1.0.0-go",
+		Success:   true,
+		Results:   []DiagnosticResult{},
+		Timestamp: start,
+		Version:   "v1.0.0-go",
 	}
 
 	// Diagnostic ultra-rapide - seulement les checks essentiels
@@ -174,10 +174,10 @@ func (cli *DiagnosticCLI) RunHealthCheck() (map[string]interface{}, error) {
 	start := time.Now()
 
 	result := map[string]interface{}{
-		"status":	"healthy",
-		"uptime":	time.Since(start),
-		"timestamp":	time.Now(),
-		"version":	"v1.0.0-go",
+		"status":    "healthy",
+		"uptime":    time.Since(start),
+		"timestamp": time.Now(),
+		"version":   "v1.0.0-go",
 	}
 
 	return result, nil
@@ -188,11 +188,11 @@ func (cli *DiagnosticCLI) RunRepairOnly() (map[string]interface{}, error) {
 	start := time.Now()
 
 	result := map[string]interface{}{
-		"action":	"repair_attempted",
-		"success":	true,
-		"message":	"Auto-repair completed successfully",
-		"duration":	time.Since(start),
-		"timestamp":	time.Now(),
+		"action":    "repair_attempted",
+		"success":   true,
+		"message":   "Auto-repair completed successfully",
+		"duration":  time.Since(start),
+		"timestamp": time.Now(),
 	}
 
 	return result, nil
@@ -203,11 +203,11 @@ func (cli *DiagnosticCLI) RunEmergencyStop() (map[string]interface{}, error) {
 	start := time.Now()
 
 	result := map[string]interface{}{
-		"action":	"emergency_stop",
-		"success":	true,
-		"message":	"Emergency stop executed",
-		"duration":	time.Since(start),
-		"timestamp":	time.Now(),
+		"action":    "emergency_stop",
+		"success":   true,
+		"message":   "Emergency stop executed",
+		"duration":  time.Since(start),
+		"timestamp": time.Now(),
 	}
 
 	return result, nil
@@ -218,12 +218,12 @@ func (cli *DiagnosticCLI) StartRealtimeMonitor() (map[string]interface{}, error)
 	start := time.Now()
 
 	result := map[string]interface{}{
-		"action":	"monitor_started",
-		"success":	true,
-		"message":	"Real-time monitoring active",
-		"duration":	time.Since(start),
-		"timestamp":	time.Now(),
-		"cycles":	1,
+		"action":    "monitor_started",
+		"success":   true,
+		"message":   "Real-time monitoring active",
+		"duration":  time.Since(start),
+		"timestamp": time.Now(),
+		"cycles":    1,
 	}
 
 	return result, nil

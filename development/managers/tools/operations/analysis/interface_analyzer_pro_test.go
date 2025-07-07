@@ -613,5 +613,3 @@ type BenchmarkInterface interface {
 		analyzer.GenerateAnalysisReport("json")
 	}
 }
-
-

@@ -15,37 +15,37 @@ import (
 
 // NavigationManager manages navigation state and operations
 type NavigationManager struct {
-	state           *NavigationState
-	history         []NavigationHistoryEntry
-	configDir       string
-	eventListeners  []func(NavigationEvent)
-	commands        chan NavigationCommand
-	mutex           sync.RWMutex
-	ctx             context.Context
-	cancel          context.CancelFunc
-	isInitialized   bool
-	analytics       *NavigationAnalytics
-	transitions     map[string]ViewTransition
-	keyMappings     map[string][]KeyMappingRule
+	state          *NavigationState
+	history        []NavigationHistoryEntry
+	configDir      string
+	eventListeners []func(NavigationEvent)
+	commands       chan NavigationCommand
+	mutex          sync.RWMutex
+	ctx            context.Context
+	cancel         context.CancelFunc
+	isInitialized  bool
+	analytics      *NavigationAnalytics
+	transitions    map[string]ViewTransition
+	keyMappings    map[string][]KeyMappingRule
 }
 
 // NavigationAnalytics tracks navigation usage patterns
 type NavigationAnalytics struct {
-	ViewUsage          map[ViewMode]int       `json:"view_usage"`
-	NavigationPatterns map[string]int         `json:"navigation_patterns"`
-	AverageSessionTime time.Duration          `json:"average_session_time"`
-	MostUsedBookmarks  []string               `json:"most_used_bookmarks"`
-	KeyboardShortcuts  map[string]int         `json:"keyboard_shortcuts"`
-	ErrorFrequency     map[string]int         `json:"error_frequency"`
-	LastAnalysis       time.Time              `json:"last_analysis"`
-	TotalSessions      int                    `json:"total_sessions"`
-	TotalCommands      int                    `json:"total_commands"`
+	ViewUsage          map[ViewMode]int `json:"view_usage"`
+	NavigationPatterns map[string]int   `json:"navigation_patterns"`
+	AverageSessionTime time.Duration    `json:"average_session_time"`
+	MostUsedBookmarks  []string         `json:"most_used_bookmarks"`
+	KeyboardShortcuts  map[string]int   `json:"keyboard_shortcuts"`
+	ErrorFrequency     map[string]int   `json:"error_frequency"`
+	LastAnalysis       time.Time        `json:"last_analysis"`
+	TotalSessions      int              `json:"total_sessions"`
+	TotalCommands      int              `json:"total_commands"`
 }
 
 // NewNavigationManager creates a new navigation manager
 func NewNavigationManager(configDir string) *NavigationManager {
 	ctx, cancel := context.WithCancel(context.Background())
-	
+
 	return &NavigationManager{
 		state:          NewNavigationState(),
 		configDir:      configDir,
@@ -169,12 +169,12 @@ func (nm *NavigationManager) SetViewMode(viewMode ViewMode) tea.Cmd {
 	if !exists {
 		// Use default transition
 		transition = ViewTransition{
-			FromView:       oldView,
-			ToView:         viewMode,
-			AnimationType:  "fade",
-			Duration:       300 * time.Millisecond,
-			Easing:         "ease-in-out",
-			PreserveState:  true,
+			FromView:      oldView,
+			ToView:        viewMode,
+			AnimationType: "fade",
+			Duration:      300 * time.Millisecond,
+			Easing:        "ease-in-out",
+			PreserveState: true,
 		}
 	}
 
@@ -200,8 +200,8 @@ func (nm *NavigationManager) SetViewMode(viewMode ViewMode) tea.Cmd {
 	})
 
 	nm.trackAnalytics("view_mode_change", map[string]interface{}{
-		"old_view": oldView.String(),
-		"new_view": viewMode.String(),
+		"old_view":   oldView.String(),
+		"new_view":   viewMode.String(),
 		"transition": transition.AnimationType,
 	})
 
@@ -258,8 +258,8 @@ func (nm *NavigationManager) Navigate(direction NavigationDirection) tea.Cmd {
 	nm.trackAnalytics("navigation", map[string]interface{}{
 		"direction": direction.String(),
 		"view_mode": nm.state.CurrentView.String(),
-		"x_delta": newPosition.X - oldPosition.X,
-		"y_delta": newPosition.Y - oldPosition.Y,
+		"x_delta":   newPosition.X - oldPosition.X,
+		"y_delta":   newPosition.Y - oldPosition.Y,
 	})
 
 	return func() tea.Msg {
@@ -295,8 +295,8 @@ func (nm *NavigationManager) CreateBookmark(name, description string, tags []str
 	}
 
 	nm.trackAnalytics("bookmark_created", map[string]interface{}{
-		"name": name,
-		"view_mode": nm.state.CurrentView.String(),
+		"name":       name,
+		"view_mode":  nm.state.CurrentView.String(),
 		"tags_count": len(tags),
 	})
 
@@ -328,9 +328,9 @@ func (nm *NavigationManager) JumpToBookmark(bookmarkID string) tea.Cmd {
 			nm.state.Bookmarks[i].LastAccessed = time.Now()
 
 			nm.trackAnalytics("bookmark_accessed", map[string]interface{}{
-				"bookmark_id": bookmarkID,
+				"bookmark_id":   bookmarkID,
 				"bookmark_name": bookmark.Name,
-				"access_count": nm.state.Bookmarks[i].AccessCount,
+				"access_count":  nm.state.Bookmarks[i].AccessCount,
 			})
 
 			return func() tea.Msg {
@@ -398,7 +398,7 @@ func (nm *NavigationManager) GoBack() tea.Cmd {
 
 	nm.trackAnalytics("history_back", map[string]interface{}{
 		"from_view": oldView.String(),
-		"to_view": prevItem.ViewMode.String(),
+		"to_view":   prevItem.ViewMode.String(),
 	})
 
 	return func() tea.Msg {
@@ -483,11 +483,11 @@ func (nm *NavigationManager) addToHistory(item NavigationHistoryItem) {
 
 func (nm *NavigationManager) trackAnalytics(eventType string, data map[string]interface{}) {
 	nm.analytics.TotalCommands++
-	
+
 	if nm.analytics.NavigationPatterns == nil {
 		nm.analytics.NavigationPatterns = make(map[string]int)
 	}
-	
+
 	nm.analytics.NavigationPatterns[eventType]++
 }
 
@@ -525,7 +525,7 @@ func (nm *NavigationManager) handleCommand(cmd NavigationCommand) {
 			if t, ok := cmd.Parameters["tags"].([]string); ok {
 				tags = t
 			}
-			
+
 			bookmark := Bookmark{
 				ID:          fmt.Sprintf("bookmark_%d", time.Now().Unix()),
 				Name:        name,
@@ -536,7 +536,7 @@ func (nm *NavigationManager) handleCommand(cmd NavigationCommand) {
 				CreatedAt:   time.Now(),
 				AccessCount: 0,
 			}
-			
+
 			nm.state.Bookmarks = append(nm.state.Bookmarks, bookmark)
 		}
 	}
@@ -595,28 +595,28 @@ func (nm *NavigationManager) saveAnalytics() error {
 func (nm *NavigationManager) setDefaultTransitions() {
 	nm.transitions = map[string]ViewTransition{
 		"list_to_kanban": {
-			FromView:       ViewModeList,
-			ToView:         ViewModeKanban,
-			AnimationType:  "slide_left",
-			Duration:       300 * time.Millisecond,
-			Easing:         "ease-in-out",
-			PreserveState:  true,
+			FromView:      ViewModeList,
+			ToView:        ViewModeKanban,
+			AnimationType: "slide_left",
+			Duration:      300 * time.Millisecond,
+			Easing:        "ease-in-out",
+			PreserveState: true,
 		},
 		"kanban_to_list": {
-			FromView:       ViewModeKanban,
-			ToView:         ViewModeList,
-			AnimationType:  "slide_right",
-			Duration:       300 * time.Millisecond,
-			Easing:         "ease-in-out",
-			PreserveState:  true,
+			FromView:      ViewModeKanban,
+			ToView:        ViewModeList,
+			AnimationType: "slide_right",
+			Duration:      300 * time.Millisecond,
+			Easing:        "ease-in-out",
+			PreserveState: true,
 		},
 		"list_to_calendar": {
-			FromView:       ViewModeList,
-			ToView:         ViewModeCalendar,
-			AnimationType:  "fade",
-			Duration:       400 * time.Millisecond,
-			Easing:         "ease-in-out",
-			PreserveState:  false,
+			FromView:      ViewModeList,
+			ToView:        ViewModeCalendar,
+			AnimationType: "fade",
+			Duration:      400 * time.Millisecond,
+			Easing:        "ease-in-out",
+			PreserveState: false,
 		},
 	}
 }

@@ -13,40 +13,40 @@ func TestConvertToDynamic(t *testing.T) {
 
 	// Test metadata
 	metadata := &PlanMetadata{
-		FilePath:	"test/plan-dev-v48-repovisualizer.md",
-		Title:		"Plan de développement v48 - Repository Visualizer",
-		Version:	"v48",
-		Date:		"2025-06-11",
-		Progression:	75.0,
-		Description:	"Test plan for repository visualizer",
+		FilePath:    "test/plan-dev-v48-repovisualizer.md",
+		Title:       "Plan de développement v48 - Repository Visualizer",
+		Version:     "v48",
+		Date:        "2025-06-11",
+		Progression: 75.0,
+		Description: "Test plan for repository visualizer",
 	}
 
 	// Test tasks
 	tasks := []Task{
 		{
-			ID:		"task_1",
-			Title:		"Architecture de base",
-			Description:	"Définir l'architecture du système",
-			Status:		"completed",
-			Phase:		"Phase 1",
-			Level:		1,
-			Priority:	"high",
-			Completed:	true,
-			CreatedAt:	time.Now(),
-			UpdatedAt:	time.Now(),
+			ID:          "task_1",
+			Title:       "Architecture de base",
+			Description: "Définir l'architecture du système",
+			Status:      "completed",
+			Phase:       "Phase 1",
+			Level:       1,
+			Priority:    "high",
+			Completed:   true,
+			CreatedAt:   time.Now(),
+			UpdatedAt:   time.Now(),
 		},
 		{
-			ID:		"task_2",
-			Title:		"Implémentation parser",
-			Description:	"Développer le parser de fichiers",
-			Status:		"in_progress",
-			Phase:		"Phase 2",
-			Level:		2,
-			Priority:	"medium",
-			Completed:	false,
-			CreatedAt:	time.Now(),
-			UpdatedAt:	time.Now(),
-			Dependencies:	[]string{"task_1"},
+			ID:           "task_2",
+			Title:        "Implémentation parser",
+			Description:  "Développer le parser de fichiers",
+			Status:       "in_progress",
+			Phase:        "Phase 2",
+			Level:        2,
+			Priority:     "medium",
+			Completed:    false,
+			CreatedAt:    time.Now(),
+			UpdatedAt:    time.Now(),
+			Dependencies: []string{"task_1"},
 		},
 	}
 
@@ -93,12 +93,12 @@ func TestEmbeddingsGeneration(t *testing.T) {
 	title := "Test Plan for Embeddings"
 	tasks := []Task{
 		{
-			Title:		"Test task 1",
-			Description:	"First test task description",
+			Title:       "Test task 1",
+			Description: "First test task description",
 		},
 		{
-			Title:		"Test task 2",
-			Description:	"Second test task description",
+			Title:       "Test task 2",
+			Description: "Second test task description",
 		},
 	}
 
@@ -142,20 +142,20 @@ func TestPlanValidation(t *testing.T) {
 
 	// Test valid plan
 	validPlan := &DynamicPlan{
-		ID:	"test_plan_123",
+		ID: "test_plan_123",
 		Metadata: PlanMetadata{
-			Title:		"Valid Test Plan",
-			FilePath:	"test/valid_plan.md",
+			Title:    "Valid Test Plan",
+			FilePath: "test/valid_plan.md",
 		},
 		Tasks: []Task{
 			{
-				ID:	"task_1",
-				Title:	"Valid Task",
+				ID:    "task_1",
+				Title: "Valid Task",
 			},
 		},
-		Embeddings:	make([]float64, 384),	// Correct dimension
-		CreatedAt:	time.Now(),
-		UpdatedAt:	time.Now(),
+		Embeddings: make([]float64, 384), // Correct dimension
+		CreatedAt:  time.Now(),
+		UpdatedAt:  time.Now(),
 	}
 
 	err := parser.ValidateConversion(validPlan)
@@ -165,14 +165,14 @@ func TestPlanValidation(t *testing.T) {
 
 	// Test invalid plan - missing ID
 	invalidPlan1 := &DynamicPlan{
-		ID:	"",	// Missing ID
+		ID: "", // Missing ID
 		Metadata: PlanMetadata{
 			Title: "Invalid Test Plan",
 		},
 		Tasks: []Task{
 			{
-				ID:	"task_1",
-				Title:	"Valid Task",
+				ID:    "task_1",
+				Title: "Valid Task",
 			},
 		},
 	}
@@ -184,11 +184,11 @@ func TestPlanValidation(t *testing.T) {
 
 	// Test invalid plan - no tasks
 	invalidPlan2 := &DynamicPlan{
-		ID:	"test_plan_456",
+		ID: "test_plan_456",
 		Metadata: PlanMetadata{
 			Title: "Invalid Test Plan",
 		},
-		Tasks:	[]Task{},	// No tasks
+		Tasks: []Task{}, // No tasks
 	}
 
 	err = parser.ValidateConversion(invalidPlan2)
@@ -198,17 +198,17 @@ func TestPlanValidation(t *testing.T) {
 
 	// Test invalid embeddings dimension
 	invalidPlan3 := &DynamicPlan{
-		ID:	"test_plan_789",
+		ID: "test_plan_789",
 		Metadata: PlanMetadata{
 			Title: "Invalid Test Plan",
 		},
 		Tasks: []Task{
 			{
-				ID:	"task_1",
-				Title:	"Valid Task",
+				ID:    "task_1",
+				Title: "Valid Task",
 			},
 		},
-		Embeddings:	make([]float64, 256),	// Wrong dimension
+		Embeddings: make([]float64, 256), // Wrong dimension
 	}
 
 	err = parser.ValidateConversion(invalidPlan3)
@@ -225,31 +225,31 @@ func TestSerialization(t *testing.T) {
 
 	// Create test plan
 	plan := &DynamicPlan{
-		ID:	"test_plan_serialization",
+		ID: "test_plan_serialization",
 		Metadata: PlanMetadata{
-			Title:		"Serialization Test Plan",
-			Version:	"v1.0",
-			FilePath:	"test/serialization_test.md",
-			Progression:	50.0,
+			Title:       "Serialization Test Plan",
+			Version:     "v1.0",
+			FilePath:    "test/serialization_test.md",
+			Progression: 50.0,
 		},
 		Tasks: []Task{
 			{
-				ID:		"task_1",
-				Title:		"Serialization Task",
-				Description:	"Test task for serialization",
-				Status:		"pending",
-				Phase:		"Phase 1",
-				Level:		1,
-				Priority:	"medium",
-				Completed:	false,
-				Dependencies:	[]string{},
-				CreatedAt:	time.Now(),
-				UpdatedAt:	time.Now(),
+				ID:           "task_1",
+				Title:        "Serialization Task",
+				Description:  "Test task for serialization",
+				Status:       "pending",
+				Phase:        "Phase 1",
+				Level:        1,
+				Priority:     "medium",
+				Completed:    false,
+				Dependencies: []string{},
+				CreatedAt:    time.Now(),
+				UpdatedAt:    time.Now(),
 			},
 		},
-		Embeddings:	make([]float64, 384),
-		CreatedAt:	time.Now(),
-		UpdatedAt:	time.Now(),
+		Embeddings: make([]float64, 384),
+		CreatedAt:  time.Now(),
+		UpdatedAt:  time.Now(),
 	}
 
 	// Serialize plan
@@ -333,28 +333,28 @@ func BenchmarkConversion(b *testing.B) {
 	parser := NewMarkdownParser()
 
 	metadata := &PlanMetadata{
-		FilePath:	"benchmark/plan.md",
-		Title:		"Benchmark Plan",
-		Version:	"v1.0",
-		Date:		"2025-06-11",
-		Progression:	50.0,
-		Description:	"Benchmark test plan",
+		FilePath:    "benchmark/plan.md",
+		Title:       "Benchmark Plan",
+		Version:     "v1.0",
+		Date:        "2025-06-11",
+		Progression: 50.0,
+		Description: "Benchmark test plan",
 	}
 
 	// Create multiple tasks for realistic benchmark
 	tasks := make([]Task, 100)
 	for i := 0; i < 100; i++ {
 		tasks[i] = Task{
-			ID:		fmt.Sprintf("task_%d", i),
-			Title:		fmt.Sprintf("Task %d", i),
-			Description:	fmt.Sprintf("Description for task %d", i),
-			Status:		"pending",
-			Phase:		fmt.Sprintf("Phase %d", i%5+1),
-			Level:		i%3 + 1,
-			Priority:	"medium",
-			Completed:	false,
-			CreatedAt:	time.Now(),
-			UpdatedAt:	time.Now(),
+			ID:          fmt.Sprintf("task_%d", i),
+			Title:       fmt.Sprintf("Task %d", i),
+			Description: fmt.Sprintf("Description for task %d", i),
+			Status:      "pending",
+			Phase:       fmt.Sprintf("Phase %d", i%5+1),
+			Level:       i%3 + 1,
+			Priority:    "medium",
+			Completed:   false,
+			CreatedAt:   time.Now(),
+			UpdatedAt:   time.Now(),
 		}
 	}
 

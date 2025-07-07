@@ -67,7 +67,7 @@ func TestBackupMain(t *testing.T) {
 
 	// Ensure test files exist for backup script to find
 	tempDir := t.TempDir()
-	os.Chdir(tempDir)	// Change working directory for the test
+	os.Chdir(tempDir) // Change working directory for the test
 
 	// Create dummy critical files/dirs that the backup script expects
 	os.MkdirAll("cmd/audit_read_file", 0o755)
@@ -85,6 +85,6 @@ func TestBackupMain(t *testing.T) {
 	}
 
 	// Clean up - change back to original directory and remove temp dir
-	os.Chdir("..")	// Assuming test runner changes to tempDir, change back
+	os.Chdir("..") // Assuming test runner changes to tempDir, change back
 	os.RemoveAll(tempDir)
 }

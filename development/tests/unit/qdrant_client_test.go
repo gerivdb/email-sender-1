@@ -17,9 +17,9 @@ import (
 // QdrantClientTestSuite suite de tests pour le client Qdrant unifié
 type QdrantClientTestSuite struct {
 	suite.Suite
-	client    QdrantClient
-	ctx       context.Context
-	testData  map[string]TestVector
+	client   QdrantClient
+	ctx      context.Context
+	testData map[string]TestVector
 }
 
 // QdrantClient interface du client Qdrant pour les tests
@@ -69,7 +69,7 @@ type TestVector struct {
 // SetupSuite initialise la suite de tests
 func (suite *QdrantClientTestSuite) SetupSuite() {
 	suite.ctx = context.Background()
-	
+
 	// Initialiser les données de test
 	suite.testData = map[string]TestVector{
 		"test_vector_1": {
@@ -82,7 +82,7 @@ func (suite *QdrantClientTestSuite) SetupSuite() {
 			},
 		},
 		"test_vector_2": {
-			ID:     "test_002", 
+			ID:     "test_002",
 			Vector: []float32{0.5, 0.6, 0.7, 0.8},
 			Payload: map[string]interface{}{
 				"category": "test",
@@ -95,7 +95,7 @@ func (suite *QdrantClientTestSuite) SetupSuite() {
 			Vector: []float32{0.9, 0.1, 0.2, 0.3},
 			Payload: map[string]interface{}{
 				"category": "validation",
-				"type":     "integration_test", 
+				"type":     "integration_test",
 				"metadata": "test data 3",
 			},
 		},
@@ -117,12 +117,12 @@ func (suite *QdrantClientTestSuite) TearDownSuite() {
 // TestCRUDOperations teste les opérations CRUD de base
 func (suite *QdrantClientTestSuite) TestCRUDOperations() {
 	collectionName := "test_crud_collection"
-	
+
 	// Test Create Collection
 	suite.T().Run("CreateCollection", func(t *testing.T) {
 		err := suite.client.CreateCollection(suite.ctx, collectionName, 4)
 		assert.NoError(t, err)
-		
+
 		// Vérifier que la collection a été créée
 		info, err := suite.client.GetCollectionInfo(suite.ctx, collectionName)
 		assert.NoError(t, err)
@@ -138,10 +138,10 @@ func (suite *QdrantClientTestSuite) TestCRUDOperations() {
 			Vector:  testVector.Vector,
 			Payload: testVector.Payload,
 		}
-		
+
 		err := suite.client.UpsertPoints(suite.ctx, collectionName, []Point{point})
 		assert.NoError(t, err)
-		
+
 		// Vérifier que le point a été inséré
 		count, err := suite.client.CountPoints(suite.ctx, collectionName)
 		assert.NoError(t, err)
@@ -151,7 +151,7 @@ func (suite *QdrantClientTestSuite) TestCRUDOperations() {
 	// Test Get Point
 	suite.T().Run("GetPoint", func(t *testing.T) {
 		testVector := suite.testData["test_vector_1"]
-		
+
 		point, err := suite.client.GetPoint(suite.ctx, collectionName, testVector.ID)
 		assert.NoError(t, err)
 		assert.NotNil(t, point)
@@ -171,16 +171,16 @@ func (suite *QdrantClientTestSuite) TestCRUDOperations() {
 				Payload: testVector.Payload,
 			})
 		}
-		
+
 		err := suite.client.UpsertPoints(suite.ctx, collectionName, points)
 		assert.NoError(t, err)
-		
+
 		// Rechercher avec le premier vecteur
 		queryVector := suite.testData["test_vector_1"].Vector
 		results, err := suite.client.SearchPoints(suite.ctx, collectionName, queryVector, 5)
 		assert.NoError(t, err)
 		assert.Greater(t, len(results), 0)
-		
+
 		// Le premier résultat devrait être le vecteur lui-même (score parfait)
 		assert.Equal(t, suite.testData["test_vector_1"].ID, results[0].ID)
 		assert.Greater(t, results[0].Score, float32(0.9)) // Score élevé pour similarité parfaite
@@ -189,10 +189,10 @@ func (suite *QdrantClientTestSuite) TestCRUDOperations() {
 	// Test Delete Points
 	suite.T().Run("DeletePoints", func(t *testing.T) {
 		testVector := suite.testData["test_vector_1"]
-		
+
 		err := suite.client.DeletePoints(suite.ctx, collectionName, []string{testVector.ID})
 		assert.NoError(t, err)
-		
+
 		// Vérifier que le point a été supprimé
 		point, err := suite.client.GetPoint(suite.ctx, collectionName, testVector.ID)
 		assert.Error(t, err) // Devrait retourner une erreur car le point n'existe plus
@@ -203,7 +203,7 @@ func (suite *QdrantClientTestSuite) TestCRUDOperations() {
 	suite.T().Run("DeleteCollection", func(t *testing.T) {
 		err := suite.client.DeleteCollection(suite.ctx, collectionName)
 		assert.NoError(t, err)
-		
+
 		// Vérifier que la collection a été supprimée
 		_, err = suite.client.GetCollectionInfo(suite.ctx, collectionName)
 		assert.Error(t, err) // Devrait retourner une erreur car la collection n'existe plus
@@ -214,7 +214,7 @@ func (suite *QdrantClientTestSuite) TestCRUDOperations() {
 
 // TestErrorHandlingAndRetry teste la gestion d'erreur et retry logic
 func (suite *QdrantClientTestSuite) TestErrorHandlingAndRetry() {
-	
+
 	// Test connexion invalide
 	suite.T().Run("InvalidConnection", func(t *testing.T) {
 		invalidClient := NewMockQdrantClientWithError()
@@ -238,12 +238,12 @@ func (suite *QdrantClientTestSuite) TestErrorHandlingAndRetry() {
 		collectionName := "test_error_collection"
 		err := suite.client.CreateCollection(suite.ctx, collectionName, 4)
 		require.NoError(t, err)
-		
+
 		// Essayer de récupérer un point inexistant
 		point, err := suite.client.GetPoint(suite.ctx, collectionName, "non_existent_point")
 		assert.Error(t, err)
 		assert.Nil(t, point)
-		
+
 		// Nettoyer
 		suite.client.DeleteCollection(suite.ctx, collectionName)
 	})
@@ -253,18 +253,18 @@ func (suite *QdrantClientTestSuite) TestErrorHandlingAndRetry() {
 		collectionName := "test_dimensions_collection"
 		err := suite.client.CreateCollection(suite.ctx, collectionName, 4)
 		require.NoError(t, err)
-		
+
 		// Essayer d'insérer un vecteur avec de mauvaises dimensions
 		wrongVector := Point{
-			ID:     "wrong_dims",
-			Vector: []float32{0.1, 0.2}, // 2 dimensions au lieu de 4
+			ID:      "wrong_dims",
+			Vector:  []float32{0.1, 0.2}, // 2 dimensions au lieu de 4
 			Payload: map[string]interface{}{},
 		}
-		
+
 		err = suite.client.UpsertPoints(suite.ctx, collectionName, []Point{wrongVector})
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "dimension mismatch")
-		
+
 		// Nettoyer
 		suite.client.DeleteCollection(suite.ctx, collectionName)
 	})
@@ -272,11 +272,11 @@ func (suite *QdrantClientTestSuite) TestErrorHandlingAndRetry() {
 	// Test timeout et retry
 	suite.T().Run("TimeoutAndRetry", func(t *testing.T) {
 		retryClient := NewMockQdrantClientWithRetry()
-		
+
 		// Test avec timeout court
 		ctxWithTimeout, cancel := context.WithTimeout(suite.ctx, 10*time.Millisecond)
 		defer cancel()
-		
+
 		err := retryClient.Connect(ctxWithTimeout)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "timeout")
@@ -287,13 +287,13 @@ func (suite *QdrantClientTestSuite) TestErrorHandlingAndRetry() {
 
 // TestPerformanceAndConcurrency teste la performance et la concurrence
 func (suite *QdrantClientTestSuite) TestPerformanceAndConcurrency() {
-	
+
 	// Test insertion en lot
 	suite.T().Run("BulkInsert", func(t *testing.T) {
 		collectionName := "test_bulk_collection"
 		err := suite.client.CreateCollection(suite.ctx, collectionName, 4)
 		require.NoError(t, err)
-		
+
 		// Générer 1000 points de test
 		var points []Point
 		for i := 0; i < 1000; i++ {
@@ -306,20 +306,20 @@ func (suite *QdrantClientTestSuite) TestPerformanceAndConcurrency() {
 				},
 			})
 		}
-		
+
 		// Mesurer le temps d'insertion
 		start := time.Now()
 		err = suite.client.UpsertPoints(suite.ctx, collectionName, points)
 		duration := time.Since(start)
-		
+
 		assert.NoError(t, err)
 		t.Logf("Bulk insert of 1000 points took: %v", duration)
-		
+
 		// Vérifier le nombre de points
 		count, err := suite.client.CountPoints(suite.ctx, collectionName)
 		assert.NoError(t, err)
 		assert.Equal(t, int64(1000), count)
-		
+
 		// Nettoyer
 		suite.client.DeleteCollection(suite.ctx, collectionName)
 	})
@@ -329,7 +329,7 @@ func (suite *QdrantClientTestSuite) TestPerformanceAndConcurrency() {
 		collectionName := "test_concurrent_collection"
 		err := suite.client.CreateCollection(suite.ctx, collectionName, 4)
 		require.NoError(t, err)
-		
+
 		// Insérer des données de test
 		var points []Point
 		for i := 0; i < 100; i++ {
@@ -341,40 +341,40 @@ func (suite *QdrantClientTestSuite) TestPerformanceAndConcurrency() {
 				},
 			})
 		}
-		
+
 		err = suite.client.UpsertPoints(suite.ctx, collectionName, points)
 		require.NoError(t, err)
-		
+
 		// Lancer 10 goroutines de recherche concurrente
 		var wg sync.WaitGroup
 		numGoroutines := 10
 		results := make([][]SearchResult, numGoroutines)
 		errors := make([]error, numGoroutines)
-		
+
 		start := time.Now()
 		for i := 0; i < numGoroutines; i++ {
 			wg.Add(1)
 			go func(index int) {
 				defer wg.Done()
-				
+
 				queryVector := []float32{0.5, 0.5, 0.5, 0.5}
 				searchResults, err := suite.client.SearchPoints(suite.ctx, collectionName, queryVector, 10)
 				results[index] = searchResults
 				errors[index] = err
 			}(i)
 		}
-		
+
 		wg.Wait()
 		duration := time.Since(start)
-		
+
 		// Vérifier que toutes les recherches ont réussi
 		for i := 0; i < numGoroutines; i++ {
 			assert.NoError(t, errors[i], fmt.Sprintf("Goroutine %d failed", i))
 			assert.Greater(t, len(results[i]), 0, fmt.Sprintf("Goroutine %d returned no results", i))
 		}
-		
+
 		t.Logf("Concurrent search with %d goroutines took: %v", numGoroutines, duration)
-		
+
 		// Nettoyer
 		suite.client.DeleteCollection(suite.ctx, collectionName)
 	})
@@ -384,19 +384,19 @@ func (suite *QdrantClientTestSuite) TestPerformanceAndConcurrency() {
 		collectionName := "test_stress_collection"
 		err := suite.client.CreateCollection(suite.ctx, collectionName, 4)
 		require.NoError(t, err)
-		
+
 		var wg sync.WaitGroup
 		numWorkers := 5
 		operationsPerWorker := 20
-		
+
 		start := time.Now()
-		
+
 		// Workers pour insertions
 		for i := 0; i < numWorkers; i++ {
 			wg.Add(1)
 			go func(workerID int) {
 				defer wg.Done()
-				
+
 				for j := 0; j < operationsPerWorker; j++ {
 					point := Point{
 						ID:     fmt.Sprintf("stress_worker_%d_point_%d", workerID, j),
@@ -406,7 +406,7 @@ func (suite *QdrantClientTestSuite) TestPerformanceAndConcurrency() {
 							"index":  j,
 						},
 					}
-					
+
 					err := suite.client.UpsertPoints(suite.ctx, collectionName, []Point{point})
 					if err != nil {
 						t.Logf("Insert error in worker %d: %v", workerID, err)
@@ -414,13 +414,13 @@ func (suite *QdrantClientTestSuite) TestPerformanceAndConcurrency() {
 				}
 			}(i)
 		}
-		
+
 		// Workers pour recherches
 		for i := 0; i < numWorkers; i++ {
 			wg.Add(1)
 			go func(workerID int) {
 				defer wg.Done()
-				
+
 				for j := 0; j < operationsPerWorker; j++ {
 					queryVector := []float32{float32(workerID) * 0.1, float32(j) * 0.1, 0.5, 0.5}
 					_, err := suite.client.SearchPoints(suite.ctx, collectionName, queryVector, 5)
@@ -430,17 +430,17 @@ func (suite *QdrantClientTestSuite) TestPerformanceAndConcurrency() {
 				}
 			}(i)
 		}
-		
+
 		wg.Wait()
 		duration := time.Since(start)
-		
+
 		t.Logf("Stress test with %d workers (%d ops each) took: %v", numWorkers, operationsPerWorker, duration)
-		
+
 		// Vérifier l'état final
 		count, err := suite.client.CountPoints(suite.ctx, collectionName)
 		assert.NoError(t, err)
 		assert.LessOrEqual(t, count, int64(numWorkers*operationsPerWorker))
-		
+
 		// Nettoyer
 		suite.client.DeleteCollection(suite.ctx, collectionName)
 	})
@@ -509,10 +509,10 @@ func (m *MockQdrantClient) CreateCollection(ctx context.Context, name string, ve
 	if m.shouldError {
 		return fmt.Errorf("failed to create collection: mock error")
 	}
-	
+
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	
+
 	m.collections[name] = &MockCollection{
 		Name:       name,
 		VectorSize: vectorSize,
@@ -525,25 +525,25 @@ func (m *MockQdrantClient) UpsertPoints(ctx context.Context, collection string, 
 	if m.shouldError {
 		return fmt.Errorf("failed to upsert points: mock error")
 	}
-	
+
 	m.mu.RLock()
 	coll, exists := m.collections[collection]
 	m.mu.RUnlock()
-	
+
 	if !exists {
 		return fmt.Errorf("collection not found: %s", collection)
 	}
-	
+
 	coll.mu.Lock()
 	defer coll.mu.Unlock()
-	
+
 	for _, point := range points {
 		if len(point.Vector) != coll.VectorSize {
 			return fmt.Errorf("dimension mismatch: expected %d, got %d", coll.VectorSize, len(point.Vector))
 		}
 		coll.Points[point.ID] = point
 	}
-	
+
 	return nil
 }
 
@@ -551,18 +551,18 @@ func (m *MockQdrantClient) SearchPoints(ctx context.Context, collection string, 
 	if m.shouldError {
 		return nil, fmt.Errorf("search failed: mock error")
 	}
-	
+
 	m.mu.RLock()
 	coll, exists := m.collections[collection]
 	m.mu.RUnlock()
-	
+
 	if !exists {
 		return nil, fmt.Errorf("collection not found: %s", collection)
 	}
-	
+
 	coll.mu.RLock()
 	defer coll.mu.RUnlock()
-	
+
 	var results []SearchResult
 	for _, point := range coll.Points {
 		// Calcul simple de similarité (cosine similarity approximative)
@@ -574,7 +574,7 @@ func (m *MockQdrantClient) SearchPoints(ctx context.Context, collection string, 
 			Vector:  point.Vector,
 		})
 	}
-	
+
 	// Trier par score décroissant et limiter
 	for i := 0; i < len(results)-1; i++ {
 		for j := i + 1; j < len(results); j++ {
@@ -583,11 +583,11 @@ func (m *MockQdrantClient) SearchPoints(ctx context.Context, collection string, 
 			}
 		}
 	}
-	
+
 	if len(results) > limit {
 		results = results[:limit]
 	}
-	
+
 	return results, nil
 }
 
@@ -595,22 +595,22 @@ func (m *MockQdrantClient) DeletePoints(ctx context.Context, collection string, 
 	if m.shouldError {
 		return fmt.Errorf("delete failed: mock error")
 	}
-	
+
 	m.mu.RLock()
 	coll, exists := m.collections[collection]
 	m.mu.RUnlock()
-	
+
 	if !exists {
 		return fmt.Errorf("collection not found: %s", collection)
 	}
-	
+
 	coll.mu.Lock()
 	defer coll.mu.Unlock()
-	
+
 	for _, id := range ids {
 		delete(coll.Points, id)
 	}
-	
+
 	return nil
 }
 
@@ -618,23 +618,23 @@ func (m *MockQdrantClient) GetPoint(ctx context.Context, collection string, id s
 	if m.shouldError {
 		return nil, fmt.Errorf("get point failed: mock error")
 	}
-	
+
 	m.mu.RLock()
 	coll, exists := m.collections[collection]
 	m.mu.RUnlock()
-	
+
 	if !exists {
 		return nil, fmt.Errorf("collection not found: %s", collection)
 	}
-	
+
 	coll.mu.RLock()
 	defer coll.mu.RUnlock()
-	
+
 	point, exists := coll.Points[id]
 	if !exists {
 		return nil, fmt.Errorf("point not found: %s", id)
 	}
-	
+
 	return &point, nil
 }
 
@@ -642,10 +642,10 @@ func (m *MockQdrantClient) DeleteCollection(ctx context.Context, name string) er
 	if m.shouldError {
 		return fmt.Errorf("delete collection failed: mock error")
 	}
-	
+
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	
+
 	delete(m.collections, name)
 	return nil
 }
@@ -659,18 +659,18 @@ func (m *MockQdrantClient) GetCollectionInfo(ctx context.Context, name string) (
 	if m.shouldError {
 		return nil, fmt.Errorf("get collection info failed: mock error")
 	}
-	
+
 	m.mu.RLock()
 	coll, exists := m.collections[name]
 	m.mu.RUnlock()
-	
+
 	if !exists {
 		return nil, fmt.Errorf("collection not found: %s", name)
 	}
-	
+
 	coll.mu.RLock()
 	defer coll.mu.RUnlock()
-	
+
 	return &CollectionInfo{
 		Name:        coll.Name,
 		VectorSize:  coll.VectorSize,
@@ -683,18 +683,18 @@ func (m *MockQdrantClient) CountPoints(ctx context.Context, collection string) (
 	if m.shouldError {
 		return 0, fmt.Errorf("count points failed: mock error")
 	}
-	
+
 	m.mu.RLock()
 	coll, exists := m.collections[collection]
 	m.mu.RUnlock()
-	
+
 	if !exists {
 		return 0, fmt.Errorf("collection not found: %s", collection)
 	}
-	
+
 	coll.mu.RLock()
 	defer coll.mu.RUnlock()
-	
+
 	return int64(len(coll.Points)), nil
 }
 
@@ -703,22 +703,22 @@ func (m *MockQdrantClient) calculateSimilarity(a, b []float32) float32 {
 	if len(a) != len(b) {
 		return 0.0
 	}
-	
+
 	var dotProduct, normA, normB float32
 	for i := range a {
 		dotProduct += a[i] * b[i]
 		normA += a[i] * a[i]
 		normB += b[i] * b[i]
 	}
-	
+
 	if normA == 0 || normB == 0 {
 		return 0.0
 	}
-	
+
 	similarity := dotProduct / (float32(normA) * float32(normB))
 	if similarity < 0 {
 		similarity = -similarity
 	}
-	
+
 	return similarity
 }

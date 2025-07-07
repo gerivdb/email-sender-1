@@ -32,9 +32,9 @@ func (m *MockErrorManager) ValidateError(entry ErrorEntry) error {
 // TestNewConformityManager teste la création d'une nouvelle instance
 func TestNewConformityManager(t *testing.T) {
 	tests := []struct {
-		name     string
-		config   *ConformityConfig
-		wantErr  bool
+		name    string
+		config  *ConformityConfig
+		wantErr bool
 	}{
 		{
 			name:    "with default config",
@@ -52,9 +52,9 @@ func TestNewConformityManager(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			mockErrorManager := &MockErrorManager{}
 			logger := zaptest.NewLogger(t)
-			
+
 			cm := NewConformityManager(mockErrorManager, logger, tt.config)
-			
+
 			assert.NotNil(t, cm)
 			assert.NotNil(t, cm.logger)
 			assert.NotNil(t, cm.errorManager)
@@ -93,12 +93,12 @@ func TestVerifyManagerConformity(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			mockErrorManager := &MockErrorManager{}
 			logger := zaptest.NewLogger(t)
-			
+
 			cm := NewConformityManager(mockErrorManager, logger, nil)
-			
+
 			ctx := context.Background()
 			report, err := cm.VerifyManagerConformity(ctx, tt.managerName)
-			
+
 			if tt.wantErr {
 				assert.Error(t, err)
 				assert.Nil(t, report)
@@ -117,12 +117,12 @@ func TestVerifyManagerConformity(t *testing.T) {
 func TestVerifyEcosystemConformity(t *testing.T) {
 	mockErrorManager := &MockErrorManager{}
 	logger := zaptest.NewLogger(t)
-	
+
 	cm := NewConformityManager(mockErrorManager, logger, nil)
-	
+
 	ctx := context.Background()
 	report, err := cm.VerifyEcosystemConformity(ctx)
-	
+
 	assert.NoError(t, err)
 	assert.NotNil(t, report)
 	assert.Equal(t, 17, report.TotalManagers)
@@ -162,12 +162,12 @@ func TestGenerateConformityReport(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			mockErrorManager := &MockErrorManager{}
 			logger := zaptest.NewLogger(t)
-			
+
 			cm := NewConformityManager(mockErrorManager, logger, nil)
-			
+
 			ctx := context.Background()
 			data, err := cm.GenerateConformityReport(ctx, tt.managerName, tt.format)
-			
+
 			if tt.wantErr {
 				assert.Error(t, err)
 				assert.Nil(t, data)
@@ -206,20 +206,20 @@ func TestUpdateConformityStatus(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			mockErrorManager := &MockErrorManager{}
 			mockErrorManager.On("LogError", mock.Anything, "ConformityManager", "STATUS_UPDATED").Return()
-			
+
 			logger := zaptest.NewLogger(t)
-			
+
 			cm := NewConformityManager(mockErrorManager, logger, nil)
-			
+
 			ctx := context.Background()
 			err := cm.UpdateConformityStatus(ctx, tt.managerName, tt.status)
-			
+
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			
+
 			mockErrorManager.AssertExpectations(t)
 		})
 	}
@@ -229,12 +229,12 @@ func TestUpdateConformityStatus(t *testing.T) {
 func TestGetConformityMetrics(t *testing.T) {
 	mockErrorManager := &MockErrorManager{}
 	logger := zaptest.NewLogger(t)
-	
+
 	cm := NewConformityManager(mockErrorManager, logger, nil)
-	
+
 	ctx := context.Background()
 	metrics, err := cm.GetConformityMetrics(ctx)
-	
+
 	assert.NoError(t, err)
 	assert.NotNil(t, metrics)
 }
@@ -243,30 +243,30 @@ func TestGetConformityMetrics(t *testing.T) {
 func TestConformityManagerCaching(t *testing.T) {
 	mockErrorManager := &MockErrorManager{}
 	logger := zaptest.NewLogger(t)
-	
+
 	config := getDefaultConformityConfig()
 	config.Checks.EnableCache = true
 	config.Checks.CacheTimeout = 1 * time.Second
-	
+
 	cm := NewConformityManager(mockErrorManager, logger, config)
-	
+
 	ctx := context.Background()
 	managerName := "test-manager"
-	
+
 	// Premier appel - doit générer le rapport
 	report1, err := cm.VerifyManagerConformity(ctx, managerName)
 	assert.NoError(t, err)
 	assert.NotNil(t, report1)
-	
+
 	// Deuxième appel immédiat - doit utiliser le cache
 	report2, err := cm.VerifyManagerConformity(ctx, managerName)
 	assert.NoError(t, err)
 	assert.NotNil(t, report2)
 	assert.Equal(t, report1.ID, report2.ID) // Même rapport du cache
-	
+
 	// Attendre l'expiration du cache
 	time.Sleep(2 * time.Second)
-	
+
 	// Troisième appel - doit régénérer le rapport
 	report3, err := cm.VerifyManagerConformity(ctx, managerName)
 	assert.NoError(t, err)
@@ -289,11 +289,11 @@ func TestComplianceLevelCalculation(t *testing.T) {
 	}
 
 	config := getDefaultConformityConfig()
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var level ComplianceLevel
-			
+
 			switch {
 			case tt.score >= config.MinimumScores.Platinum:
 				level = ComplianceLevelPlatinum
@@ -306,7 +306,7 @@ func TestComplianceLevelCalculation(t *testing.T) {
 			default:
 				level = ComplianceLevelFailed
 			}
-			
+
 			assert.Equal(t, tt.expected, level)
 		})
 	}
@@ -315,17 +315,17 @@ func TestComplianceLevelCalculation(t *testing.T) {
 // TestDefaultConfig teste la configuration par défaut
 func TestDefaultConfig(t *testing.T) {
 	config := getDefaultConformityConfig()
-	
+
 	assert.NotNil(t, config)
 	assert.Equal(t, 60.0, config.MinimumScores.Bronze)
 	assert.Equal(t, 70.0, config.MinimumScores.Silver)
 	assert.Equal(t, 80.0, config.MinimumScores.Gold)
 	assert.Equal(t, 90.0, config.MinimumScores.Platinum)
-	
+
 	assert.Equal(t, 0.25, config.Weights.Architecture)
 	assert.Equal(t, 0.20, config.Weights.ErrorManager)
 	assert.Equal(t, 0.20, config.Weights.Documentation)
-	
+
 	assert.True(t, config.Checks.EnableCache)
 	assert.Equal(t, 30*time.Minute, config.Checks.CacheTimeout)
 	assert.Equal(t, 5, config.Checks.MaxConcurrentChecks)
@@ -335,10 +335,10 @@ func TestDefaultConfig(t *testing.T) {
 func BenchmarkVerifyManagerConformity(b *testing.B) {
 	mockErrorManager := &MockErrorManager{}
 	logger := zaptest.NewLogger(b)
-	
+
 	cm := NewConformityManager(mockErrorManager, logger, nil)
 	ctx := context.Background()
-	
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		_, err := cm.VerifyManagerConformity(ctx, "test-manager")
@@ -352,10 +352,10 @@ func BenchmarkVerifyManagerConformity(b *testing.B) {
 func BenchmarkVerifyEcosystemConformity(b *testing.B) {
 	mockErrorManager := &MockErrorManager{}
 	logger := zaptest.NewLogger(b)
-	
+
 	cm := NewConformityManager(mockErrorManager, logger, nil)
 	ctx := context.Background()
-	
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		_, err := cm.VerifyEcosystemConformity(ctx)

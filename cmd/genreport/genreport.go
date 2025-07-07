@@ -51,7 +51,7 @@ func main() {
 	if err == nil {
 		lines := strings.Split(string(coverageOutput), "\n")
 		if len(lines) > 0 {
-			totalLine := lines[len(lines)-1]	// Last line contains total coverage
+			totalLine := lines[len(lines)-1] // Last line contains total coverage
 			if strings.Contains(totalLine, "total:") {
 				parts := strings.Fields(totalLine)
 				if len(parts) > 2 {
@@ -97,7 +97,7 @@ Un rapport de couverture HTML détaillé est disponible [ici](%s).
 Ce rapport est généré automatiquement.
 `,
 		time.Now().Format("2006-01-02 15:04:05 MST"),
-		"✅ Succès (à vérifier manuellement les logs)",	// Placeholder, should be determined by actual test results
+		"✅ Succès (à vérifier manuellement les logs)", // Placeholder, should be determined by actual test results
 		coveragePercent,
 		coverageHtmlFile,
 		time.Now().Format("2006-01-02"),

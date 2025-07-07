@@ -12,77 +12,77 @@ import (
 
 // ConflictResolver handles resolution of conflicts between Markdown and dynamic system
 type ConflictResolver struct {
-	sqlStorage	*SQLStorage
-	detector	*ConflictDetector
-	config		*ResolverConfig
-	logger		*log.Logger
-	stats		*ResolverStats
+	sqlStorage *SQLStorage
+	detector   *ConflictDetector
+	config     *ResolverConfig
+	logger     *log.Logger
+	stats      *ResolverStats
 }
 
 // ResolverConfig contains configuration for conflict resolution
 type ResolverConfig struct {
-	AutoResolveEnabled	bool					`json:"auto_resolve_enabled"`
-	AutoResolveRules	[]AutoResolveRule			`json:"auto_resolve_rules"`
-	BackupBeforeResolve	bool					`json:"backup_before_resolve"`
-	BackupDirectory		string					`json:"backup_directory"`
-	DefaultStrategy		ResolutionStrategy			`json:"default_strategy"`
-	StrategyPriority	map[ConflictType][]ResolutionStrategy	`json:"strategy_priority"`
+	AutoResolveEnabled  bool                                  `json:"auto_resolve_enabled"`
+	AutoResolveRules    []AutoResolveRule                     `json:"auto_resolve_rules"`
+	BackupBeforeResolve bool                                  `json:"backup_before_resolve"`
+	BackupDirectory     string                                `json:"backup_directory"`
+	DefaultStrategy     ResolutionStrategy                    `json:"default_strategy"`
+	StrategyPriority    map[ConflictType][]ResolutionStrategy `json:"strategy_priority"`
 }
 
 // AutoResolveRule defines conditions for automatic resolution
 type AutoResolveRule struct {
-	ConflictType	ConflictType		`json:"conflict_type"`
-	Severity	ConflictSeverity	`json:"severity"`
-	Strategy	ResolutionStrategy	`json:"strategy"`
-	Conditions	map[string]interface{}	`json:"conditions"`
+	ConflictType ConflictType           `json:"conflict_type"`
+	Severity     ConflictSeverity       `json:"severity"`
+	Strategy     ResolutionStrategy     `json:"strategy"`
+	Conditions   map[string]interface{} `json:"conditions"`
 }
 
 // ResolverStats tracks conflict resolution statistics
 type ResolverStats struct {
-	TotalResolutions	int		`json:"total_resolutions"`
-	AutoResolutions		int		`json:"auto_resolutions"`
-	ManualResolutions	int		`json:"manual_resolutions"`
-	FailedResolutions	int		`json:"failed_resolutions"`
-	BackupsCreated		int		`json:"backups_created"`
-	TotalResolutionTime	time.Duration	`json:"total_resolution_time"`
-	LastResolutionTime	time.Time	`json:"last_resolution_time"`
+	TotalResolutions    int           `json:"total_resolutions"`
+	AutoResolutions     int           `json:"auto_resolutions"`
+	ManualResolutions   int           `json:"manual_resolutions"`
+	FailedResolutions   int           `json:"failed_resolutions"`
+	BackupsCreated      int           `json:"backups_created"`
+	TotalResolutionTime time.Duration `json:"total_resolution_time"`
+	LastResolutionTime  time.Time     `json:"last_resolution_time"`
 }
 
 // ResolutionRequest represents a request to resolve conflicts
 type ResolutionRequest struct {
-	PlanID		string			`json:"plan_id"`
-	Conflicts	[]Conflict		`json:"conflicts"`
-	Strategy	ResolutionStrategy	`json:"strategy"`
-	Options		map[string]interface{}	`json:"options"`
-	User		string			`json:"user"`
+	PlanID    string                 `json:"plan_id"`
+	Conflicts []Conflict             `json:"conflicts"`
+	Strategy  ResolutionStrategy     `json:"strategy"`
+	Options   map[string]interface{} `json:"options"`
+	User      string                 `json:"user"`
 }
 
 // ResolutionResult represents the result of conflict resolution
 type ResolutionResult struct {
-	PlanID			string			`json:"plan_id"`
-	ResolvedConflicts	[]ResolvedConflict	`json:"resolved_conflicts"`
-	FailedConflicts		[]Conflict		`json:"failed_conflicts"`
-	BackupPath		string			`json:"backup_path,omitempty"`
-	Summary			string			`json:"summary"`
-	ResolutionTime		time.Duration		`json:"resolution_time"`
-	ResolvedAt		time.Time		`json:"resolved_at"`
+	PlanID            string             `json:"plan_id"`
+	ResolvedConflicts []ResolvedConflict `json:"resolved_conflicts"`
+	FailedConflicts   []Conflict         `json:"failed_conflicts"`
+	BackupPath        string             `json:"backup_path,omitempty"`
+	Summary           string             `json:"summary"`
+	ResolutionTime    time.Duration      `json:"resolution_time"`
+	ResolvedAt        time.Time          `json:"resolved_at"`
 }
 
 // ResolvedConflict represents a successfully resolved conflict
 type ResolvedConflict struct {
-	Conflict	Conflict		`json:"conflict"`
-	Resolution	ConflictResolution	`json:"resolution"`
-	Success		bool			`json:"success"`
-	Message		string			`json:"message"`
+	Conflict   Conflict           `json:"conflict"`
+	Resolution ConflictResolution `json:"resolution"`
+	Success    bool               `json:"success"`
+	Message    string             `json:"message"`
 }
 
 // MergeResult represents the result of a merge operation
 type MergeResult struct {
-	Success		bool		`json:"success"`
-	MergedPlan	*DynamicPlan	`json:"merged_plan"`
-	Conflicts	[]Conflict	`json:"remaining_conflicts"`
-	Changes		[]string	`json:"changes"`
-	Warnings	[]string	`json:"warnings"`
+	Success    bool         `json:"success"`
+	MergedPlan *DynamicPlan `json:"merged_plan"`
+	Conflicts  []Conflict   `json:"remaining_conflicts"`
+	Changes    []string     `json:"changes"`
+	Warnings   []string     `json:"warnings"`
 }
 
 // NewConflictResolver creates a new instance of ConflictResolver
@@ -91,25 +91,25 @@ func NewConflictResolver(sqlStorage *SQLStorage, detector *ConflictDetector, con
 
 	if config == nil {
 		config = &ResolverConfig{
-			AutoResolveEnabled:	false,
-			BackupBeforeResolve:	true,
-			BackupDirectory:	"./backups/conflicts",
-			DefaultStrategy:	StrategyManual,
+			AutoResolveEnabled:  false,
+			BackupBeforeResolve: true,
+			BackupDirectory:     "./backups/conflicts",
+			DefaultStrategy:     StrategyManual,
 			StrategyPriority: map[ConflictType][]ResolutionStrategy{
-				ConflictTypeTimestamp:	{StrategyUseDynamic, StrategyUseMarkdown},
-				ConflictTypeContent:	{StrategyAutoMerge, StrategyManual},
-				ConflictTypeStructure:	{StrategyManual, StrategyBackupBoth},
-				ConflictTypeMetadata:	{StrategyUseDynamic, StrategyUseMarkdown},
-				ConflictTypeTasks:	{StrategyAutoMerge, StrategyManual},
+				ConflictTypeTimestamp: {StrategyUseDynamic, StrategyUseMarkdown},
+				ConflictTypeContent:   {StrategyAutoMerge, StrategyManual},
+				ConflictTypeStructure: {StrategyManual, StrategyBackupBoth},
+				ConflictTypeMetadata:  {StrategyUseDynamic, StrategyUseMarkdown},
+				ConflictTypeTasks:     {StrategyAutoMerge, StrategyManual},
 			},
 		}
 	}
 
 	return &ConflictResolver{
-		sqlStorage:	sqlStorage,
-		detector:	detector,
-		config:		config,
-		logger:		logger,
+		sqlStorage: sqlStorage,
+		detector:   detector,
+		config:     config,
+		logger:     logger,
 		stats: &ResolverStats{
 			LastResolutionTime: time.Now(),
 		},
@@ -122,10 +122,10 @@ func (cr *ConflictResolver) ResolveConflicts(request *ResolutionRequest) (*Resol
 	startTime := time.Now()
 
 	result := &ResolutionResult{
-		PlanID:			request.PlanID,
-		ResolvedConflicts:	[]ResolvedConflict{},
-		FailedConflicts:	[]Conflict{},
-		ResolvedAt:		startTime,
+		PlanID:            request.PlanID,
+		ResolvedConflicts: []ResolvedConflict{},
+		FailedConflicts:   []Conflict{},
+		ResolvedAt:        startTime,
 	}
 
 	// Créer une sauvegarde si configuré
@@ -177,9 +177,9 @@ func (cr *ConflictResolver) resolveConflict(conflict Conflict, strategy Resoluti
 	}
 
 	resolution := ConflictResolution{
-		Strategy:	strategy,
-		AppliedBy:	user,
-		AppliedAt:	time.Now(),
+		Strategy:  strategy,
+		AppliedBy: user,
+		AppliedAt: time.Now(),
 	}
 
 	switch strategy {
@@ -195,10 +195,10 @@ func (cr *ConflictResolver) resolveConflict(conflict Conflict, strategy Resoluti
 		return cr.resolveManually(conflict, resolution)
 	default:
 		return ResolvedConflict{
-			Conflict:	conflict,
-			Resolution:	resolution,
-			Success:	false,
-			Message:	fmt.Sprintf("Unknown resolution strategy: %s", strategy),
+			Conflict:   conflict,
+			Resolution: resolution,
+			Success:    false,
+			Message:    fmt.Sprintf("Unknown resolution strategy: %s", strategy),
 		}
 	}
 }
@@ -216,10 +216,10 @@ func (cr *ConflictResolver) resolveWithAutoMerge(conflict Conflict, resolution C
 		return cr.mergeContentConflict(conflict, resolution)
 	default:
 		return ResolvedConflict{
-			Conflict:	conflict,
-			Resolution:	resolution,
-			Success:	false,
-			Message:	fmt.Sprintf("Auto-merge not supported for conflict type: %s", conflict.Type),
+			Conflict:   conflict,
+			Resolution: resolution,
+			Success:    false,
+			Message:    fmt.Sprintf("Auto-merge not supported for conflict type: %s", conflict.Type),
 		}
 	}
 }
@@ -230,10 +230,10 @@ func (cr *ConflictResolver) mergeTaskConflict(conflict Conflict, resolution Conf
 	taskID, exists := conflict.Details["task_id"].(string)
 	if !exists {
 		return ResolvedConflict{
-			Conflict:	conflict,
-			Resolution:	resolution,
-			Success:	false,
-			Message:	"Task ID not found in conflict details",
+			Conflict:   conflict,
+			Resolution: resolution,
+			Success:    false,
+			Message:    "Task ID not found in conflict details",
 		}
 	}
 
@@ -248,10 +248,10 @@ func (cr *ConflictResolver) mergeTaskConflict(conflict Conflict, resolution Conf
 	resolution.Applied = true
 
 	return ResolvedConflict{
-		Conflict:	conflict,
-		Resolution:	resolution,
-		Success:	true,
-		Message:	fmt.Sprintf("Task status merged successfully: %s", mergedStatus),
+		Conflict:   conflict,
+		Resolution: resolution,
+		Success:    true,
+		Message:    fmt.Sprintf("Task status merged successfully: %s", mergedStatus),
 	}
 }
 
@@ -270,10 +270,10 @@ func (cr *ConflictResolver) mergeMetadataConflict(conflict Conflict, resolution 
 		resolution.Applied = true
 
 		return ResolvedConflict{
-			Conflict:	conflict,
-			Resolution:	resolution,
-			Success:	true,
-			Message:	fmt.Sprintf("Version merged successfully: %s", mergedVersion),
+			Conflict:   conflict,
+			Resolution: resolution,
+			Success:    true,
+			Message:    fmt.Sprintf("Version merged successfully: %s", mergedVersion),
 		}
 	}
 
@@ -292,18 +292,18 @@ func (cr *ConflictResolver) mergeMetadataConflict(conflict Conflict, resolution 
 		resolution.Applied = true
 
 		return ResolvedConflict{
-			Conflict:	conflict,
-			Resolution:	resolution,
-			Success:	true,
-			Message:	fmt.Sprintf("Progression merged successfully: %.1f%%", mergedProgression),
+			Conflict:   conflict,
+			Resolution: resolution,
+			Success:    true,
+			Message:    fmt.Sprintf("Progression merged successfully: %.1f%%", mergedProgression),
 		}
 	}
 
 	return ResolvedConflict{
-		Conflict:	conflict,
-		Resolution:	resolution,
-		Success:	false,
-		Message:	"Metadata merge not implemented for this type",
+		Conflict:   conflict,
+		Resolution: resolution,
+		Success:    false,
+		Message:    "Metadata merge not implemented for this type",
 	}
 }
 
@@ -319,18 +319,18 @@ func (cr *ConflictResolver) mergeContentConflict(conflict Conflict, resolution C
 		resolution.Applied = true
 
 		return ResolvedConflict{
-			Conflict:	conflict,
-			Resolution:	resolution,
-			Success:	true,
-			Message:	fmt.Sprintf("Content merged automatically (similarity: %.2f%%)", similarity*100),
+			Conflict:   conflict,
+			Resolution: resolution,
+			Success:    true,
+			Message:    fmt.Sprintf("Content merged automatically (similarity: %.2f%%)", similarity*100),
 		}
 	} else {
 		// Faible similarité: nécessite intervention manuelle
 		return ResolvedConflict{
-			Conflict:	conflict,
-			Resolution:	resolution,
-			Success:	false,
-			Message:	fmt.Sprintf("Content similarity too low for auto-merge: %.2f%%", similarity*100),
+			Conflict:   conflict,
+			Resolution: resolution,
+			Success:    false,
+			Message:    fmt.Sprintf("Content similarity too low for auto-merge: %.2f%%", similarity*100),
 		}
 	}
 }
@@ -344,10 +344,10 @@ func (cr *ConflictResolver) resolveWithMarkdown(conflict Conflict, resolution Co
 	resolution.Applied = true
 
 	return ResolvedConflict{
-		Conflict:	conflict,
-		Resolution:	resolution,
-		Success:	true,
-		Message:	"Resolved using Markdown version",
+		Conflict:   conflict,
+		Resolution: resolution,
+		Success:    true,
+		Message:    "Resolved using Markdown version",
 	}
 }
 
@@ -360,10 +360,10 @@ func (cr *ConflictResolver) resolveWithDynamic(conflict Conflict, resolution Con
 	resolution.Applied = true
 
 	return ResolvedConflict{
-		Conflict:	conflict,
-		Resolution:	resolution,
-		Success:	true,
-		Message:	"Resolved using Dynamic version",
+		Conflict:   conflict,
+		Resolution: resolution,
+		Success:    true,
+		Message:    "Resolved using Dynamic version",
 	}
 }
 
@@ -379,10 +379,10 @@ func (cr *ConflictResolver) resolveWithBackup(conflict Conflict, resolution Conf
 	resolution.Backup = backupID
 
 	return ResolvedConflict{
-		Conflict:	conflict,
-		Resolution:	resolution,
-		Success:	true,
-		Message:	fmt.Sprintf("Both versions backed up: %s", backupID),
+		Conflict:   conflict,
+		Resolution: resolution,
+		Success:    true,
+		Message:    fmt.Sprintf("Both versions backed up: %s", backupID),
 	}
 }
 
@@ -395,10 +395,10 @@ func (cr *ConflictResolver) resolveManually(conflict Conflict, resolution Confli
 	resolution.Applied = false
 
 	return ResolvedConflict{
-		Conflict:	conflict,
-		Resolution:	resolution,
-		Success:	false,
-		Message:	"Manual resolution required - conflict escalated",
+		Conflict:   conflict,
+		Resolution: resolution,
+		Success:    false,
+		Message:    "Manual resolution required - conflict escalated",
 	}
 }
 
@@ -443,11 +443,11 @@ func (cr *ConflictResolver) canApplyStrategy(conflict Conflict, strategy Resolut
 func (cr *ConflictResolver) determinePriorityStatus(status1, status2 string) string {
 	// Ordre de priorité des statuts
 	priorityOrder := map[string]int{
-		"completed":	5,
-		"in_progress":	4,
-		"blocked":	3,
-		"pending":	2,
-		"not_started":	1,
+		"completed":   5,
+		"in_progress": 4,
+		"blocked":     3,
+		"pending":     2,
+		"not_started": 1,
 	}
 
 	priority1 := priorityOrder[status1]
@@ -537,9 +537,9 @@ func (cr *ConflictResolver) AutoResolveConflicts(planID string) (*ResolutionResu
 
 	if len(detectionResult.Conflicts) == 0 {
 		return &ResolutionResult{
-			PlanID:		planID,
-			Summary:	"No conflicts detected",
-			ResolvedAt:	time.Now(),
+			PlanID:     planID,
+			Summary:    "No conflicts detected",
+			ResolvedAt: time.Now(),
 		}, nil
 	}
 
@@ -553,19 +553,19 @@ func (cr *ConflictResolver) AutoResolveConflicts(planID string) (*ResolutionResu
 
 	if len(autoResolvableConflicts) == 0 {
 		return &ResolutionResult{
-			PlanID:			planID,
-			FailedConflicts:	detectionResult.Conflicts,
-			Summary:		"No auto-resolvable conflicts found",
-			ResolvedAt:		time.Now(),
+			PlanID:          planID,
+			FailedConflicts: detectionResult.Conflicts,
+			Summary:         "No auto-resolvable conflicts found",
+			ResolvedAt:      time.Now(),
 		}, nil
 	}
 
 	// Résoudre automatiquement
 	request := &ResolutionRequest{
-		PlanID:		planID,
-		Conflicts:	autoResolvableConflicts,
-		Strategy:	StrategyAutoMerge,
-		User:		"auto-resolver",
+		PlanID:    planID,
+		Conflicts: autoResolvableConflicts,
+		Strategy:  StrategyAutoMerge,
+		User:      "auto-resolver",
 	}
 
 	return cr.ResolveConflicts(request)

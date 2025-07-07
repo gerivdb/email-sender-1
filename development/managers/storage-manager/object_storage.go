@@ -59,7 +59,7 @@ func (sm *StorageManagerImpl) GetObject(ctx context.Context, key string, obj int
 
 	// Récupérer depuis la base de données
 	query := `SELECT data FROM object_storage WHERE key = $1`
-	
+
 	var data []byte
 	err := sm.db.QueryRowContext(ctx, query, key).Scan(&data)
 	if err != nil {

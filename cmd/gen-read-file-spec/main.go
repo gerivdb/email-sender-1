@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-package cmd
-=======
 package main
->>>>>>> migration/gateway-manager-v77
 
 import (
 	"fmt"

@@ -78,7 +78,7 @@ type configManagerImpl struct {
 	settings     map[string]interface{}
 	defaults     map[string]interface{}
 	requiredKeys []string
-	
+
 	// ErrorManager integration
 	logger       *zap.Logger
 	errorManager *ErrorManagerImpl
@@ -97,10 +97,10 @@ func (em *ErrorManagerImpl) ProcessError(ctx context.Context, err error, compone
 
 	// Generate unique error ID
 	errorID := uuid.New().String()
-	
+
 	// Determine error severity
 	severity := determineSeverity(err)
-	
+
 	// Create error entry for cataloging
 	errorEntry := ErrorEntry{
 		ID:             errorID,
@@ -457,7 +457,7 @@ func (cm *configManagerImpl) RegisterDefaults(defaults map[string]interface{}) {
 // LoadConfigFile loads configuration from a file with error handling.
 func (cm *configManagerImpl) LoadConfigFile(filePath string, fileType string) error {
 	ctx := context.Background()
-	
+
 	// Auto-detect file type if not provided
 	if fileType == "" {
 		fileType = detectFileType(filePath)
@@ -497,9 +497,9 @@ func (cm *configManagerImpl) LoadConfigFile(filePath string, fileType string) er
 		// Process config loading error
 		if processErr := cm.errorManager.ProcessError(ctx, err, "config-loading", "file-parsing", &ErrorHooks{
 			OnError: func(e error) {
-				cm.logger.Warn("Config file parsing failed", 
-					zap.String("file_path", filePath), 
-					zap.String("file_type", fileType), 
+				cm.logger.Warn("Config file parsing failed",
+					zap.String("file_path", filePath),
+					zap.String("file_type", fileType),
 					zap.Error(e))
 			},
 		}); processErr != nil {
@@ -519,8 +519,8 @@ func (cm *configManagerImpl) LoadConfigFile(filePath string, fileType string) er
 	}
 
 	// Log successful loading
-	cm.logger.Info("Configuration file loaded successfully", 
-		zap.String("file_path", filePath), 
+	cm.logger.Info("Configuration file loaded successfully",
+		zap.String("file_path", filePath),
 		zap.String("file_type", fileType),
 		zap.Int("keys_loaded", len(config)))
 
@@ -544,7 +544,7 @@ func (cm *configManagerImpl) LoadFromEnv(prefix string) {
 	}
 
 	// Log environment variables loading
-	cm.logger.Info("Environment variables loaded", 
+	cm.logger.Info("Environment variables loaded",
 		zap.String("prefix", prefix),
 		zap.Int("keys_loaded", keysLoaded))
 }
@@ -565,8 +565,8 @@ func (cm *configManagerImpl) Validate() error {
 		// Process validation error
 		if processErr := cm.errorManager.ProcessError(ctx, validationErr, "config-validation", "missing-required-keys", &ErrorHooks{
 			OnError: func(e error) {
-				cm.logger.Warn("Configuration validation failed", 
-					zap.Strings("missing_keys", missingKeys), 
+				cm.logger.Warn("Configuration validation failed",
+					zap.Strings("missing_keys", missingKeys),
 					zap.Error(e))
 			},
 		}); processErr != nil {
@@ -576,7 +576,7 @@ func (cm *configManagerImpl) Validate() error {
 	}
 
 	// Log successful validation
-	cm.logger.Info("Configuration validation successful", 
+	cm.logger.Info("Configuration validation successful",
 		zap.Strings("required_keys", cm.requiredKeys))
 
 	return nil
@@ -701,14 +701,14 @@ func (cm *configManagerImpl) GetAll() map[string]interface{} {
 // SaveToFile saves configuration to a file with error handling
 func (cm *configManagerImpl) SaveToFile(filePath string, fileType string, config map[string]interface{}) error {
 	ctx := context.Background()
-	
+
 	if err := saveToFile(filePath, fileType, config); err != nil {
 		// Process save error
 		if processErr := cm.errorManager.ProcessError(ctx, err, "config-saving", "file-write", &ErrorHooks{
 			OnError: func(e error) {
-				cm.logger.Warn("Config file save failed", 
-					zap.String("file_path", filePath), 
-					zap.String("file_type", fileType), 
+				cm.logger.Warn("Config file save failed",
+					zap.String("file_path", filePath),
+					zap.String("file_type", fileType),
 					zap.Error(e))
 			},
 		}); processErr != nil {
@@ -718,8 +718,8 @@ func (cm *configManagerImpl) SaveToFile(filePath string, fileType string, config
 	}
 
 	// Log successful save
-	cm.logger.Info("Configuration file saved successfully", 
-		zap.String("file_path", filePath), 
+	cm.logger.Info("Configuration file saved successfully",
+		zap.String("file_path", filePath),
 		zap.String("file_type", fileType),
 		zap.Int("keys_saved", len(config)))
 
@@ -746,7 +746,7 @@ func (cm *configManagerImpl) GetErrorManager() ErrorManager {
 	return cm.errorManager
 }
 
-// GetLogger returns the logger instance for external use  
+// GetLogger returns the logger instance for external use
 func (cm *configManagerImpl) GetLogger() *zap.Logger {
 	return cm.logger
 }

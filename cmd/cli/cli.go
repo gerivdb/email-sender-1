@@ -11,9 +11,9 @@ import (
 )
 
 var (
-	Version		= "dev"
-	BuildDate	= "unknown"
-	logger		*zap.Logger
+	Version   = "dev"
+	BuildDate = "unknown"
+	logger    *zap.Logger
 )
 
 func main() {
@@ -28,14 +28,14 @@ func main() {
 
 	// Create root command
 	rootCmd := &cobra.Command{
-		Use:	"rag-cli",
-		Short:	"RAG System Command Line Interface",
+		Use:   "rag-cli",
+		Short: "RAG System Command Line Interface",
 		Long: `RAG CLI provides command-line access to the RAG system for search, 
 indexing, and system management operations.
 
 Generated using Method 5: Code Generation Framework
 ROI: +36h immediate time savings`,
-		Version:	fmt.Sprintf("%s (built %s)", Version, BuildDate),
+		Version: fmt.Sprintf("%s (built %s)", Version, BuildDate),
 	}
 
 	// Add subcommands
@@ -56,16 +56,16 @@ ROI: +36h immediate time savings`,
 
 func createSearchCommand() *cobra.Command {
 	var (
-		query		string
-		limit		int
-		semantic	bool
-		collection	string
+		query      string
+		limit      int
+		semantic   bool
+		collection string
 	)
 
 	cmd := &cobra.Command{
-		Use:	"search",
-		Short:	"Search documents in the RAG system",
-		Long:	"Perform text or semantic search across indexed documents",
+		Use:   "search",
+		Short: "Search documents in the RAG system",
+		Long:  "Perform text or semantic search across indexed documents",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			logger.Info("Executing search command",
 				zap.String("query", query),
@@ -96,17 +96,17 @@ func createSearchCommand() *cobra.Command {
 
 func createIndexCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:	"index",
-		Short:	"Manage document indexing",
-		Long:	"Index documents, rebuild indices, and manage collections",
+		Use:   "index",
+		Short: "Manage document indexing",
+		Long:  "Index documents, rebuild indices, and manage collections",
 	}
 
 	// Add subcommands
 	cmd.AddCommand(
 		&cobra.Command{
-			Use:	"add [file|directory]",
-			Short:	"Add documents to index",
-			Args:	cobra.ExactArgs(1),
+			Use:   "add [file|directory]",
+			Short: "Add documents to index",
+			Args:  cobra.ExactArgs(1),
 			RunE: func(cmd *cobra.Command, args []string) error {
 				path := args[0]
 				logger.Info("Adding documents to index", zap.String("path", path))
@@ -119,8 +119,8 @@ func createIndexCommand() *cobra.Command {
 			},
 		},
 		&cobra.Command{
-			Use:	"rebuild",
-			Short:	"Rebuild the entire index",
+			Use:   "rebuild",
+			Short: "Rebuild the entire index",
 			RunE: func(cmd *cobra.Command, args []string) error {
 				logger.Info("Rebuilding index")
 				fmt.Printf("🔄 Rebuilding index...\n")
@@ -131,8 +131,8 @@ func createIndexCommand() *cobra.Command {
 			},
 		},
 		&cobra.Command{
-			Use:	"status",
-			Short:	"Show index status",
+			Use:   "status",
+			Short: "Show index status",
 			RunE: func(cmd *cobra.Command, args []string) error {
 				logger.Info("Showing index status")
 
@@ -152,16 +152,16 @@ func createIndexCommand() *cobra.Command {
 
 func createServeCommand() *cobra.Command {
 	var (
-		port		int
-		metricsPort	int
-		logLevel	string
-		environment	string
+		port        int
+		metricsPort int
+		logLevel    string
+		environment string
 	)
 
 	cmd := &cobra.Command{
-		Use:	"serve",
-		Short:	"Start the RAG system server",
-		Long:	"Start the HTTP API server with all RAG system endpoints",
+		Use:   "serve",
+		Short: "Start the RAG system server",
+		Long:  "Start the HTTP API server with all RAG system endpoints",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			logger.Info("Starting RAG server",
 				zap.Int("port", port),
@@ -176,7 +176,7 @@ func createServeCommand() *cobra.Command {
 			fmt.Printf("✅ Server ready - Press Ctrl+C to stop\n")
 
 			// In real implementation, this would start the actual server
-			select {}	// Block forever for demo
+			select {} // Block forever for demo
 		},
 	}
 
@@ -190,9 +190,9 @@ func createServeCommand() *cobra.Command {
 
 func createMetricsCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:	"metrics",
-		Short:	"Display system metrics",
-		Long:	"Show performance metrics and system statistics",
+		Use:   "metrics",
+		Short: "Display system metrics",
+		Long:  "Show performance metrics and system statistics",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			logger.Info("Displaying metrics")
 
@@ -226,9 +226,9 @@ func createMetricsCommand() *cobra.Command {
 
 func createHealthCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:	"health",
-		Short:	"Check system health",
-		Long:	"Perform health checks on all RAG system components",
+		Use:   "health",
+		Short: "Check system health",
+		Long:  "Perform health checks on all RAG system components",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			logger.Info("Performing health check")
 

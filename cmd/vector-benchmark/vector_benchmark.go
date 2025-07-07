@@ -11,10 +11,10 @@ import (
 
 func main() {
 	var (
-		qdrantHost	= flag.String("host", "localhost", "Qdrant host")
-		qdrantPort	= flag.Int("port", 6333, "Qdrant port")
-		collectionName	= flag.String("collection", "benchmark_test", "Collection name")
-		iterations	= flag.Int("iterations", 1000, "Number of iterations")
+		qdrantHost     = flag.String("host", "localhost", "Qdrant host")
+		qdrantPort     = flag.Int("port", 6333, "Qdrant port")
+		collectionName = flag.String("collection", "benchmark_test", "Collection name")
+		iterations     = flag.Int("iterations", 1000, "Number of iterations")
 	)
 	flag.Parse()
 
@@ -30,10 +30,10 @@ func main() {
 
 	// Create client
 	config := &vectorization.ClientConfig{
-		Host:		*qdrantHost,
-		Port:		*qdrantPort,
-		CollectionName:	*collectionName,
-		VectorSize:	384,	// Default vector size
+		Host:           *qdrantHost,
+		Port:           *qdrantPort,
+		CollectionName: *collectionName,
+		VectorSize:     384, // Default vector size
 	}
 
 	client, err := vectorization.NewVectorClient(config)

@@ -1,9 +1,9 @@
 package tests
 
 import (
-	"testing"
 	"os/exec"
 	"strings"
+	"testing"
 )
 
 func TestKeybindsIntegration(t *testing.T) {

@@ -22,13 +22,13 @@ func main() {
 
 	// Configuration optimisée
 	options := chunking.ChunkingOptions{
-		MaxChunkSize:		50,
-		ChunkOverlap:		10,
-		ParentDocumentID:	"demo-doc",
-		PreserveStructure:	false,	// Tester d'abord sans préservation de structure
+		MaxChunkSize:      50,
+		ChunkOverlap:      10,
+		ParentDocumentID:  "demo-doc",
+		PreserveStructure: false, // Tester d'abord sans préservation de structure
 		Metadata: map[string]interface{}{
-			"source":	"demo",
-			"type":		"test-chunking",
+			"source": "demo",
+			"type":   "test-chunking",
 		},
 	}
 
@@ -92,9 +92,9 @@ func main() {
 	// Test avec différentes tailles
 	fmt.Println("\n=== TESTS AVEC DIFFÉRENTES CONFIGURATIONS ===")
 	testConfigs := []struct {
-		name		string
-		chunkSize	int
-		overlap		int
+		name      string
+		chunkSize int
+		overlap   int
 	}{
 		{"Petits chunks", 25, 5},
 		{"Chunks moyens", 75, 15},

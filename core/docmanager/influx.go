@@ -6,5 +6,5 @@ package docmanager
 type InfluxClient struct{}
 
 func InitInflux() *InfluxClient {
-return &InfluxClient{}
+	return &InfluxClient{}
 }

@@ -4,17 +4,16 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/gerivdb/email-sender-1/core/gapanalyzer" // Import the gapanalyzer package
-	"github.com/gerivdb/email-sender-1/core/scanmodules" // Import scanmodules for RepositoryStructure
+	sm "github.com/gerivdb/email-sender-1/core/scanmodules" // Import scanmodules for RepositoryStructure
 )
 
 func main() {
+	log.Println("core/gapanalyzer/main.go: main() called")
 	// Définir les flags de ligne de commande
 	inputFile := flag.String("input", "modules.json", "Fichier JSON d'entrée contenant la structure du dépôt")
 	outputFile := flag.String("output", "gap-analysis-initial.json", "Fichier JSON de sortie pour l'analyse d'écart")
@@ -30,12 +29,12 @@ func main() {
 	}
 
 	// Lire la structure du dépôt
-	jsonData, err := ioutil.ReadFile(*inputFile)
+	jsonData, err := os.ReadFile(*inputFile)
 	if err != nil {
 		log.Fatalf("❌ Erreur lors de la lecture de %s: %v", *inputFile, err)
 	}
 
-	var repoStructure scanmodules.RepositoryStructure // Use RepositoryStructure from scanmodules
+	var repoStructure sm.RepositoryStructure // Use RepositoryStructure from scanmodules
 	err = json.Unmarshal(jsonData, &repoStructure)
 	if err != nil {
 		log.Fatalf("❌ Erreur lors de la désérialisation de %s: %v", *inputFile, err)
@@ -43,12 +42,14 @@ func main() {
 
 	fmt.Printf("📦 Modules chargés: %d\n", len(repoStructure.Modules))
 
+	analyzer := NewAnalyzer()
+
 	// Obtenir les modules attendus
-	expectedModules := gapanalyzer.GetExpectedModules() // Use exported function
+	expectedModules := analyzer.GetExpectedModules() // Use exported function
 	fmt.Printf("🎯 Modules attendus: %d\n", len(expectedModules))
 
 	// Effectuer l'analyse d'écart
-	analysis := gapanalyzer.AnalyzeGaps(repoStructure, expectedModules) // Use exported function
+	analysis := analyzer.AnalyzeGaps(repoStructure, expectedModules) // Use exported function
 
 	// Sauvegarder l'analyse en JSON
 	analysisJSON, err := json.MarshalIndent(analysis, "", "  ")
@@ -56,15 +57,15 @@ func main() {
 		log.Fatalf("❌ Erreur lors de la sérialisation de l'analyse: %v", err)
 	}
 
-	err = ioutil.WriteFile(*outputFile, analysisJSON, 0o644)
+	err = os.WriteFile(*outputFile, analysisJSON, 0o644)
 	if err != nil {
 		log.Fatalf("❌ Erreur lors de l'écriture de %s: %v", *outputFile, err)
 	}
 
 	// Générer le rapport Markdown
-	markdownReport := gapanalyzer.GenerateMarkdownReport(analysis) // Use exported function
+	markdownReport := analyzer.GenerateMarkdownReport(analysis) // Use exported function
 	markdownFile := strings.TrimSuffix(*outputFile, filepath.Ext(*outputFile)) + ".md"
-	err = ioutil.WriteFile(markdownFile, []byte(markdownReport), 0o644)
+	err = os.WriteFile(markdownFile, []byte(markdownReport), 0o644)
 	if err != nil {
 		log.Printf("⚠️ Erreur lors de l'écriture du rapport Markdown %s: %v", markdownFile, err)
 	}

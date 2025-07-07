@@ -46,35 +46,35 @@ import (
 
 // Dependency represents a dependency with its metadata.
 type Dependency struct {
-	Name		string	`json:"name"`
-	Version		string	`json:"version"`
-	Indirect	bool	`json:"indirect,omitempty"`
+	Name     string `json:"name"`
+	Version  string `json:"version"`
+	Indirect bool   `json:"indirect,omitempty"`
 }
 
 // ErrorEntry represents a locally cataloged error.
 type ErrorEntry struct {
-	ID		string		`json:"id"`
-	Timestamp	time.Time	`json:"timestamp"`
-	Message		string		`json:"message"`
-	StackTrace	string		`json:"stack_trace"`
-	Module		string		`json:"module"`
-	ErrorCode	string		`json:"error_code"`
-	ManagerContext	string		`json:"manager_context"`
-	Severity	string		`json:"severity"`
+	ID             string    `json:"id"`
+	Timestamp      time.Time `json:"timestamp"`
+	Message        string    `json:"message"`
+	StackTrace     string    `json:"stack_trace"`
+	Module         string    `json:"module"`
+	ErrorCode      string    `json:"error_code"`
+	ManagerContext string    `json:"manager_context"`
+	Severity       string    `json:"severity"`
 }
 
 // Config represents the manager's configuration.
 type Config struct {
-	Name		string	`json:"name"`
-	Version		string	`json:"version"`
-	Settings	struct {
-		LogPath			string	`json:"logPath"`
-		LogLevel		string	`json:"logLevel"`
-		GoModPath		string	`json:"goModPath"`
-		AutoTidy		bool	`json:"autoTidy"`
-		VulnerabilityCheck	bool	`json:"vulnerabilityCheck"`
-		BackupOnChange		bool	`json:"backupOnChange"`
-	}	`json:"settings"`
+	Name     string `json:"name"`
+	Version  string `json:"version"`
+	Settings struct {
+		LogPath            string `json:"logPath"`
+		LogLevel           string `json:"logLevel"`
+		GoModPath          string `json:"goModPath"`
+		AutoTidy           bool   `json:"autoTidy"`
+		VulnerabilityCheck bool   `json:"vulnerabilityCheck"`
+		BackupOnChange     bool   `json:"backupOnChange"`
+	} `json:"settings"`
 }
 
 // DepManager manages dependency operations (SOLID interface).
@@ -89,11 +89,11 @@ type DepManager interface {
 
 // GoModManager implements DepManager for go.mod.
 type GoModManager struct {
-	modFilePath	string
-	config		*Config
-	configManager	ConfigManager
-	logger		*zap.Logger
-	errorManager	ErrorManager
+	modFilePath   string
+	config        *Config
+	configManager ConfigManager
+	logger        *zap.Logger
+	errorManager  ErrorManager
 }
 
 // ErrorManager interface for decoupling error handling.
@@ -132,8 +132,8 @@ type ErrorManagerImpl struct {
 
 // ErrorHooks defines callbacks for error handling.
 type ErrorHooks struct {
-	OnError	func(err error)
-	OnRetry	func(attempt int, err error)
+	OnError func(err error)
+	OnRetry func(attempt int, err error)
 }
 
 // NewGoModManager creates a GoModManager instance.
@@ -143,11 +143,11 @@ func NewGoModManager(modFilePath string, config *Config) *GoModManager {
 	configManager := NewDepConfigManager(config, logger, errorManager)
 
 	return &GoModManager{
-		modFilePath:	modFilePath,
-		config:		config,
-		configManager:	configManager,
-		logger:		logger,
-		errorManager:	errorManager,
+		modFilePath:   modFilePath,
+		config:        config,
+		configManager: configManager,
+		logger:        logger,
+		errorManager:  errorManager,
 	}
 }
 
@@ -162,14 +162,14 @@ func (em *ErrorManagerImpl) ProcessError(ctx context.Context, err error, compone
 	errorCode := generateErrorCode(component, operation)
 
 	entry := ErrorEntry{
-		ID:		errorID,
-		Timestamp:	time.Now(),
-		Message:	err.Error(),
-		StackTrace:	fmt.Sprintf("%+v", err),
-		Module:		"dependency-manager",
-		ErrorCode:	errorCode,
-		ManagerContext:	fmt.Sprintf("component=%s, operation=%s", component, operation),
-		Severity:	severity,
+		ID:             errorID,
+		Timestamp:      time.Now(),
+		Message:        err.Error(),
+		StackTrace:     fmt.Sprintf("%+v", err),
+		Module:         "dependency-manager",
+		ErrorCode:      errorCode,
+		ManagerContext: fmt.Sprintf("component=%s, operation=%s", component, operation),
+		Severity:       severity,
 	}
 
 	if validationErr := em.ValidateErrorEntry(entry); validationErr != nil {
@@ -302,9 +302,9 @@ func (m *GoModManager) List() ([]Dependency, error) {
 	var deps []Dependency
 	for _, req := range modFile.Require {
 		deps = append(deps, Dependency{
-			Name:		req.Mod.Path,
-			Version:	req.Mod.Version,
-			Indirect:	req.Indirect,
+			Name:     req.Mod.Path,
+			Version:  req.Mod.Version,
+			Indirect: req.Indirect,
 		})
 	}
 
@@ -578,22 +578,22 @@ func loadConfig(configPath string) (*Config, error) {
 // getDefaultConfig returns a default configuration.
 func getDefaultConfig() *Config {
 	return &Config{
-		Name:		"dependency-manager",
-		Version:	"1.0.0",
+		Name:    "dependency-manager",
+		Version: "1.0.0",
 		Settings: struct {
-			LogPath			string	`json:"logPath"`
-			LogLevel		string	`json:"logLevel"`
-			GoModPath		string	`json:"goModPath"`
-			AutoTidy		bool	`json:"autoTidy"`
-			VulnerabilityCheck	bool	`json:"vulnerabilityCheck"`
-			BackupOnChange		bool	`json:"backupOnChange"`
+			LogPath            string `json:"logPath"`
+			LogLevel           string `json:"logLevel"`
+			GoModPath          string `json:"goModPath"`
+			AutoTidy           bool   `json:"autoTidy"`
+			VulnerabilityCheck bool   `json:"vulnerabilityCheck"`
+			BackupOnChange     bool   `json:"backupOnChange"`
 		}{
-			LogPath:		"logs/dependency-manager.log",
-			LogLevel:		"info",
-			GoModPath:		"go.mod",
-			AutoTidy:		true,
-			VulnerabilityCheck:	true,
-			BackupOnChange:		true,
+			LogPath:            "logs/dependency-manager.log",
+			LogLevel:           "info",
+			GoModPath:          "go.mod",
+			AutoTidy:           true,
+			VulnerabilityCheck: true,
+			BackupOnChange:     true,
 		},
 	}
 }
@@ -607,7 +607,7 @@ func validateConfig(config *Config) error {
 		return fmt.Errorf("config version cannot be empty")
 	}
 	validLogLevels := map[string]bool{
-		"debug":	true, "info": true, "warn": true, "error": true,
+		"debug": true, "info": true, "warn": true, "error": true,
 	}
 	if !validLogLevels[strings.ToLower(config.Settings.LogLevel)] {
 		return fmt.Errorf("invalid log level: %s", config.Settings.LogLevel)
@@ -871,23 +871,23 @@ func generateErrorCode(component, operation string) string {
 
 // DepConfigManagerImpl implements ConfigManager for DependencyManager.
 type DepConfigManagerImpl struct {
-	settings	map[string]interface{}
-	defaults	map[string]interface{}
-	requiredKeys	[]string
-	logger		*zap.Logger
-	errorManager	ErrorManager
-	config		*Config
+	settings     map[string]interface{}
+	defaults     map[string]interface{}
+	requiredKeys []string
+	logger       *zap.Logger
+	errorManager ErrorManager
+	config       *Config
 }
 
 // NewDepConfigManager creates a ConfigManager instance.
 func NewDepConfigManager(config *Config, logger *zap.Logger, errorManager ErrorManager) ConfigManager {
 	cm := &DepConfigManagerImpl{
-		settings:	make(map[string]interface{}),
-		defaults:	make(map[string]interface{}),
-		requiredKeys:	[]string{},
-		logger:		logger,
-		errorManager:	errorManager,
-		config:		config,
+		settings:     make(map[string]interface{}),
+		defaults:     make(map[string]interface{}),
+		requiredKeys: []string{},
+		logger:       logger,
+		errorManager: errorManager,
+		config:       config,
 	}
 	if config != nil {
 		cm.initializeFromLegacyConfig(config)

@@ -13,10 +13,10 @@ import (
 
 // HealthMonitorConfig defines configuration for the health monitor
 type HealthMonitorConfig struct {
-	CheckInterval    time.Duration         `json:"check_interval"`     // Interval between health checks
-	Timeout          time.Duration         `json:"timeout"`            // Timeout for health checks
-	HealthEndpoints  map[string]string     `json:"health_endpoints"`   // Service health endpoints
-	CustomCheckers   map[string]HealthCheck `json:"custom_checkers"`   // Custom health check functions
+	CheckInterval   time.Duration          `json:"check_interval"`   // Interval between health checks
+	Timeout         time.Duration          `json:"timeout"`          // Timeout for health checks
+	HealthEndpoints map[string]string      `json:"health_endpoints"` // Service health endpoints
+	CustomCheckers  map[string]HealthCheck `json:"custom_checkers"`  // Custom health check functions
 }
 
 // HealthCheck defines a function type for custom health checks
@@ -37,14 +37,14 @@ func NewHealthMonitor(config *HealthMonitorConfig) (*HealthMonitor, error) {
 	}
 
 	monitor := &HealthMonitor{
-		checkInterval: config.CheckInterval,
-		timeout:       config.Timeout,
-		endpoints:     config.HealthEndpoints,
+		checkInterval:  config.CheckInterval,
+		timeout:        config.Timeout,
+		endpoints:      config.HealthEndpoints,
 		customCheckers: config.CustomCheckers,
-		status:        make(map[string]bool),
-		lastCheck:     make(map[string]time.Time),
-		lock:          sync.RWMutex{},
-		stopCh:        make(chan struct{}),
+		status:         make(map[string]bool),
+		lastCheck:      make(map[string]time.Time),
+		lock:           sync.RWMutex{},
+		stopCh:         make(chan struct{}),
 	}
 
 	return monitor, nil
@@ -79,7 +79,7 @@ func (m *HealthMonitor) Stop() {
 func (m *HealthMonitor) GetServiceHealth(service string) (bool, time.Time, bool) {
 	m.lock.RLock()
 	defer m.lock.RUnlock()
-	
+
 	status, exists := m.status[service]
 	lastCheck, _ := m.lastCheck[service]
 	return status, lastCheck, exists
@@ -106,7 +106,7 @@ func (m *HealthMonitor) GetAllServiceHealth() map[string]ServiceStatus {
 func (m *HealthMonitor) AddServiceEndpoint(service, endpoint string) {
 	m.lock.Lock()
 	defer m.lock.Unlock()
-	
+
 	m.endpoints[service] = endpoint
 }
 
@@ -114,11 +114,11 @@ func (m *HealthMonitor) AddServiceEndpoint(service, endpoint string) {
 func (m *HealthMonitor) AddCustomChecker(service string, checker HealthCheck) {
 	m.lock.Lock()
 	defer m.lock.Unlock()
-	
+
 	if m.customCheckers == nil {
 		m.customCheckers = make(map[string]HealthCheck)
 	}
-	
+
 	m.customCheckers[service] = checker
 }
 
@@ -154,12 +154,12 @@ func (m *HealthMonitor) CheckServiceHealth(ctx context.Context, service string) 
 func (m *HealthMonitor) checkAllServices(ctx context.Context) {
 	m.lock.RLock()
 	services := make([]string, 0, len(m.endpoints)+len(m.customCheckers))
-	
+
 	// Collect all service names
 	for service := range m.endpoints {
 		services = append(services, service)
 	}
-	
+
 	for service := range m.customCheckers {
 		// Avoid duplicates
 		if _, exists := m.endpoints[service]; !exists {
@@ -178,7 +178,7 @@ func (m *HealthMonitor) checkAllServices(ctx context.Context) {
 func (m *HealthMonitor) updateServiceStatus(service string, healthy bool) {
 	m.lock.Lock()
 	defer m.lock.Unlock()
-	
+
 	m.status[service] = healthy
 	m.lastCheck[service] = time.Now()
 }
@@ -212,24 +212,24 @@ func (m *HealthMonitor) checkHTTPEndpoint(ctx context.Context, endpoint string) 
 func (m *HealthMonitor) checkRedisHealth(ctx context.Context, redisURL string) (bool, error) {
 	// In a real implementation, this would use the Redis client to send a PING command
 	// For now, just simulating the behavior
-	
+
 	// Parse Redis URL
 	_, err := url.Parse(redisURL)
 	if err != nil {
 		return false, fmt.Errorf("invalid Redis URL %s: %w", redisURL, err)
 	}
-	
+
 	// Example of how to integrate with a Redis client:
 	/*
-	client := redis.NewClient(&redis.Options{
-		Addr: redisHost,
-	})
-	defer client.Close()
-	
-	status := client.Ping(ctx)
-	return status.Err() == nil, status.Err()
+		client := redis.NewClient(&redis.Options{
+			Addr: redisHost,
+		})
+		defer client.Close()
+
+		status := client.Ping(ctx)
+		return status.Err() == nil, status.Err()
 	*/
-	
+
 	// Simulated implementation
 	return true, nil
 }
@@ -238,25 +238,25 @@ func (m *HealthMonitor) checkRedisHealth(ctx context.Context, redisURL string) (
 func (m *HealthMonitor) checkPostgreSQLHealth(ctx context.Context, pgURL string) (bool, error) {
 	// In a real implementation, this would use the PostgreSQL driver to execute a simple query
 	// For now, just simulating the behavior
-	
+
 	// Parse PostgreSQL URL
 	_, err := url.Parse(pgURL)
 	if err != nil {
 		return false, fmt.Errorf("invalid PostgreSQL URL %s: %w", pgURL, err)
 	}
-	
+
 	// Example of how to integrate with a PostgreSQL client:
 	/*
-	db, err := sql.Open("postgres", pgURL)
-	if err != nil {
-		return false, err
-	}
-	defer db.Close()
-	
-	err = db.PingContext(ctx)
-	return err == nil, err
+		db, err := sql.Open("postgres", pgURL)
+		if err != nil {
+			return false, err
+		}
+		defer db.Close()
+
+		err = db.PingContext(ctx)
+		return err == nil, err
 	*/
-	
+
 	// Simulated implementation
 	return true, nil
 }

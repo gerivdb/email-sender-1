@@ -18,54 +18,54 @@ import (
 )
 
 var (
-	configDir	= flag.String("config", "", "Path to key binding configuration directory")
-	profile		= flag.String("profile", "default", "Key binding profile to test")
-	validate	= flag.Bool("validate", false, "Validate key bindings for conflicts")
-	export		= flag.String("export", "", "Export validation report to file")
-	benchmark	= flag.Bool("benchmark", false, "Run performance benchmarks")
-	verbose		= flag.Bool("verbose", false, "Enable verbose output")
+	configDir = flag.String("config", "", "Path to key binding configuration directory")
+	profile   = flag.String("profile", "default", "Key binding profile to test")
+	validate  = flag.Bool("validate", false, "Validate key bindings for conflicts")
+	export    = flag.String("export", "", "Export validation report to file")
+	benchmark = flag.Bool("benchmark", false, "Run performance benchmarks")
+	verbose   = flag.Bool("verbose", false, "Enable verbose output")
 )
 
 // TestResult represents the result of a key binding test
 type TestResult struct {
-	Profile		string			`json:"profile"`
-	Timestamp	time.Time		`json:"timestamp"`
-	Conflicts	[]keybinds.KeyConflict	`json:"conflicts"`
-	Warnings	[]string		`json:"warnings"`
-	Suggestions	[]string		`json:"suggestions"`
-	Performance	PerformanceMetrics	`json:"performance"`
-	Coverage	CoverageReport		`json:"coverage"`
+	Profile     string                 `json:"profile"`
+	Timestamp   time.Time              `json:"timestamp"`
+	Conflicts   []keybinds.KeyConflict `json:"conflicts"`
+	Warnings    []string               `json:"warnings"`
+	Suggestions []string               `json:"suggestions"`
+	Performance PerformanceMetrics     `json:"performance"`
+	Coverage    CoverageReport         `json:"coverage"`
 }
 
 // PerformanceMetrics tracks performance of key binding operations
 type PerformanceMetrics struct {
-	LoadTime	time.Duration	`json:"load_time"`
-	ValidationTime	time.Duration	`json:"validation_time"`
-	MemoryUsage	int64		`json:"memory_usage"`
-	ConflictCount	int		`json:"conflict_count"`
-	BindingCount	int		`json:"binding_count"`
+	LoadTime       time.Duration `json:"load_time"`
+	ValidationTime time.Duration `json:"validation_time"`
+	MemoryUsage    int64         `json:"memory_usage"`
+	ConflictCount  int           `json:"conflict_count"`
+	BindingCount   int           `json:"binding_count"`
 }
 
 // CoverageReport provides coverage analysis of key bindings
 type CoverageReport struct {
-	TotalActions	int		`json:"total_actions"`
-	MappedActions	int		`json:"mapped_actions"`
-	CoveragePercent	float64		`json:"coverage_percent"`
-	UnmappedActions	[]string	`json:"unmapped_actions"`
-	DuplicateKeys	[]string	`json:"duplicate_keys"`
+	TotalActions    int      `json:"total_actions"`
+	MappedActions   int      `json:"mapped_actions"`
+	CoveragePercent float64  `json:"coverage_percent"`
+	UnmappedActions []string `json:"unmapped_actions"`
+	DuplicateKeys   []string `json:"duplicate_keys"`
 }
 
 // TesterModel represents the TUI model for interactive testing
 type TesterModel struct {
-	configManager	*keybinds.KeyConfigManager
-	validator	*keybinds.KeyValidator
-	currentProfile	*keybinds.KeyProfile
-	testResult	*TestResult
-	activeTest	string
-	logs		[]string
-	width		int
-	height		int
-	quitting	bool
+	configManager  *keybinds.KeyConfigManager
+	validator      *keybinds.KeyValidator
+	currentProfile *keybinds.KeyProfile
+	testResult     *TestResult
+	activeTest     string
+	logs           []string
+	width          int
+	height         int
+	quitting       bool
 }
 
 func main() {
@@ -128,17 +128,17 @@ func runValidation(configManager *keybinds.KeyConfigManager, validator *keybinds
 
 	// Generate test result
 	testResult := &TestResult{
-		Profile:	*profile,
-		Timestamp:	time.Now(),
-		Conflicts:	result.Conflicts,
-		Warnings:	result.Warnings,
-		Suggestions:	result.Suggestions,
+		Profile:     *profile,
+		Timestamp:   time.Now(),
+		Conflicts:   result.Conflicts,
+		Warnings:    result.Warnings,
+		Suggestions: result.Suggestions,
 		Performance: PerformanceMetrics{
-			ValidationTime:	time.Since(start),
-			ConflictCount:	len(result.Conflicts),
-			BindingCount:	len(allBindings),
+			ValidationTime: time.Since(start),
+			ConflictCount:  len(result.Conflicts),
+			BindingCount:   len(allBindings),
 		},
-		Coverage:	generateCoverageReport(allBindings),
+		Coverage: generateCoverageReport(allBindings),
 	}
 
 	// Display results
@@ -170,14 +170,14 @@ func runBenchmarks(configManager *keybinds.KeyConfigManager, validator *keybinds
 	validationTime := time.Since(start)
 
 	// Memory usage simulation (simplified)
-	memoryUsage := int64(len(allBindings) * 256)	// Rough estimate
+	memoryUsage := int64(len(allBindings) * 256) // Rough estimate
 
 	metrics := PerformanceMetrics{
-		LoadTime:	loadTime,
-		ValidationTime:	validationTime,
-		MemoryUsage:	memoryUsage,
-		ConflictCount:	len(result.Conflicts),
-		BindingCount:	len(allBindings),
+		LoadTime:       loadTime,
+		ValidationTime: validationTime,
+		MemoryUsage:    memoryUsage,
+		ConflictCount:  len(result.Conflicts),
+		BindingCount:   len(allBindings),
 	}
 
 	displayBenchmarkResults(metrics)
@@ -186,10 +186,10 @@ func runBenchmarks(configManager *keybinds.KeyConfigManager, validator *keybinds
 // runInteractiveTester starts the interactive TUI tester
 func runInteractiveTester(configManager *keybinds.KeyConfigManager, validator *keybinds.KeyValidator) {
 	model := &TesterModel{
-		configManager:	configManager,
-		validator:	validator,
-		currentProfile:	configManager.GetCurrentProfile(),
-		logs:		[]string{"🚀 Key Binding Tester initialized"},
+		configManager:  configManager,
+		validator:      validator,
+		currentProfile: configManager.GetCurrentProfile(),
+		logs:           []string{"🚀 Key Binding Tester initialized"},
 	}
 
 	program := tea.NewProgram(model, tea.WithAltScreen())
@@ -308,17 +308,17 @@ func (m *TesterModel) runValidationTest() {
 	duration := time.Since(start)
 
 	m.testResult = &TestResult{
-		Profile:	m.currentProfile.Name,
-		Timestamp:	time.Now(),
-		Conflicts:	result.Conflicts,
-		Warnings:	result.Warnings,
-		Suggestions:	result.Suggestions,
+		Profile:     m.currentProfile.Name,
+		Timestamp:   time.Now(),
+		Conflicts:   result.Conflicts,
+		Warnings:    result.Warnings,
+		Suggestions: result.Suggestions,
 		Performance: PerformanceMetrics{
-			ValidationTime:	duration,
-			ConflictCount:	len(result.Conflicts),
-			BindingCount:	len(allBindings),
+			ValidationTime: duration,
+			ConflictCount:  len(result.Conflicts),
+			BindingCount:   len(allBindings),
 		},
-		Coverage:	generateCoverageReport(allBindings),
+		Coverage: generateCoverageReport(allBindings),
 	}
 
 	m.logs = append(m.logs, fmt.Sprintf("✅ Validation completed in %v", duration))
@@ -342,11 +342,11 @@ func (m *TesterModel) runBenchmarkTest() {
 	validationTime := time.Since(start)
 
 	metrics := PerformanceMetrics{
-		LoadTime:	loadTime,
-		ValidationTime:	validationTime,
-		MemoryUsage:	int64(len(allBindings) * 256),
-		ConflictCount:	len(result.Conflicts),
-		BindingCount:	len(allBindings),
+		LoadTime:       loadTime,
+		ValidationTime: validationTime,
+		MemoryUsage:    int64(len(allBindings) * 256),
+		ConflictCount:  len(result.Conflicts),
+		BindingCount:   len(allBindings),
 	}
 
 	if m.testResult == nil {
@@ -532,11 +532,11 @@ func generateCoverageReport(bindings []keybinds.KeyBinding) CoverageReport {
 	coverage := float64(len(mappedActions)) / float64(len(allActions)) * 100
 
 	return CoverageReport{
-		TotalActions:		len(allActions),
-		MappedActions:		len(mappedActions),
-		CoveragePercent:	coverage,
-		UnmappedActions:	unmappedActions,
-		DuplicateKeys:		duplicateKeys,
+		TotalActions:    len(allActions),
+		MappedActions:   len(mappedActions),
+		CoveragePercent: coverage,
+		UnmappedActions: unmappedActions,
+		DuplicateKeys:   duplicateKeys,
 	}
 }
 

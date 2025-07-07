@@ -17,39 +17,39 @@ type RealtimeDashboard struct {
 	driftDetector      *DriftDetector
 	alertManager       *AlertManager
 	logger             *log.Logger
-	
+
 	// WebSocket connections
-	upgrader      websocket.Upgrader
-	connections   map[string]*websocket.Conn
-	connMutex     sync.RWMutex
-	
+	upgrader    websocket.Upgrader
+	connections map[string]*websocket.Conn
+	connMutex   sync.RWMutex
+
 	// Dashboard state
-	lastUpdate    time.Time
-	updateTicker  *time.Ticker
-	httpServer    *http.Server
+	lastUpdate   time.Time
+	updateTicker *time.Ticker
+	httpServer   *http.Server
 }
 
 // DashboardData represents real-time dashboard data
 type DashboardData struct {
-	Timestamp         time.Time              `json:"timestamp"`
-	SystemHealth      string                 `json:"system_health"`
+	Timestamp          time.Time              `json:"timestamp"`
+	SystemHealth       string                 `json:"system_health"`
 	PerformanceMetrics map[string]interface{} `json:"performance_metrics"`
-	BusinessMetrics   *BusinessMetrics       `json:"business_metrics"`
-	RecentAlerts      []Alert                `json:"recent_alerts"`
-	TrendAnalysis     *TrendAnalysis         `json:"trend_analysis"`
-	SystemStatus      *SystemStatus          `json:"system_status"`
+	BusinessMetrics    *BusinessMetrics       `json:"business_metrics"`
+	RecentAlerts       []Alert                `json:"recent_alerts"`
+	TrendAnalysis      *TrendAnalysis         `json:"trend_analysis"`
+	SystemStatus       *SystemStatus          `json:"system_status"`
 }
 
 // SystemStatus represents current system status
 type SystemStatus struct {
-	CPUUsage         float64 `json:"cpu_usage"`
-	MemoryUsage      uint64  `json:"memory_usage"`
-	DiskUsage        float64 `json:"disk_usage"`
-	ActiveConnections int     `json:"active_connections"`
-	QueueSize        int     `json:"queue_size"`
-	LastSyncTime     time.Time `json:"last_sync_time"`
-	SyncStatus       string  `json:"sync_status"`
-	ErrorCount       int     `json:"error_count"`
+	CPUUsage          float64   `json:"cpu_usage"`
+	MemoryUsage       uint64    `json:"memory_usage"`
+	DiskUsage         float64   `json:"disk_usage"`
+	ActiveConnections int       `json:"active_connections"`
+	QueueSize         int       `json:"queue_size"`
+	LastSyncTime      time.Time `json:"last_sync_time"`
+	SyncStatus        string    `json:"sync_status"`
+	ErrorCount        int       `json:"error_count"`
 }
 
 // NewRealtimeDashboard creates a new real-time dashboard
@@ -59,7 +59,7 @@ func NewRealtimeDashboard(
 	alertManager *AlertManager,
 	logger *log.Logger,
 ) *RealtimeDashboard {
-	
+
 	return &RealtimeDashboard{
 		performanceMetrics: performanceMetrics,
 		driftDetector:      driftDetector,
@@ -106,11 +106,11 @@ func (rd *RealtimeDashboard) Stop() error {
 	if rd.updateTicker != nil {
 		rd.updateTicker.Stop()
 	}
-	
+
 	if rd.httpServer != nil {
 		return rd.httpServer.Close()
 	}
-	
+
 	return nil
 }
 
@@ -468,7 +468,7 @@ func (rd *RealtimeDashboard) handleDashboardPage(w http.ResponseWriter, r *http.
 // handleMetricsAPI serves metrics data via REST API
 func (rd *RealtimeDashboard) handleMetricsAPI(w http.ResponseWriter, r *http.Request) {
 	data := rd.collectDashboardData()
-	
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(data)
 }
@@ -481,7 +481,7 @@ func (rd *RealtimeDashboard) handleHealthAPI(w http.ResponseWriter, r *http.Requ
 		"uptime":    time.Since(rd.lastUpdate).Seconds(),
 		"version":   "1.0.0",
 	}
-	
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(health)
 }
@@ -489,7 +489,7 @@ func (rd *RealtimeDashboard) handleHealthAPI(w http.ResponseWriter, r *http.Requ
 // handleAlertsAPI serves recent alerts
 func (rd *RealtimeDashboard) handleAlertsAPI(w http.ResponseWriter, r *http.Request) {
 	alerts := rd.alertManager.GetRecentAlerts(10)
-	
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"alerts": alerts,
@@ -504,20 +504,20 @@ func (rd *RealtimeDashboard) handleWebSocket(w http.ResponseWriter, r *http.Requ
 		rd.logger.Printf("WebSocket upgrade failed: %v", err)
 		return
 	}
-	
+
 	// Generate connection ID
 	connID := fmt.Sprintf("conn_%d", time.Now().UnixNano())
-	
+
 	rd.connMutex.Lock()
 	rd.connections[connID] = conn
 	rd.connMutex.Unlock()
-	
+
 	rd.logger.Printf("New WebSocket connection: %s", connID)
-	
+
 	// Send initial data
 	data := rd.collectDashboardData()
 	conn.WriteJSON(data)
-	
+
 	// Handle connection close
 	go func() {
 		defer func() {
@@ -527,7 +527,7 @@ func (rd *RealtimeDashboard) handleWebSocket(w http.ResponseWriter, r *http.Requ
 			conn.Close()
 			rd.logger.Printf("WebSocket connection closed: %s", connID)
 		}()
-		
+
 		// Keep connection alive and handle incoming messages
 		for {
 			_, _, err := conn.ReadMessage()
@@ -559,7 +559,7 @@ func (rd *RealtimeDashboard) broadcastUpdates() {
 func (rd *RealtimeDashboard) broadcastToWebSockets(data *DashboardData) {
 	rd.connMutex.RLock()
 	defer rd.connMutex.RUnlock()
-	
+
 	for connID, conn := range rd.connections {
 		err := conn.WriteJSON(data)
 		if err != nil {
@@ -574,47 +574,47 @@ func (rd *RealtimeDashboard) collectDashboardData() *DashboardData {
 	data := &DashboardData{
 		Timestamp: time.Now(),
 	}
-	
+
 	// Collect performance metrics
 	if rd.performanceMetrics != nil {
 		data.PerformanceMetrics = rd.performanceMetrics.GetRealtimeDashboardData()
 		data.SystemHealth = fmt.Sprintf("%v", data.PerformanceMetrics["health_status"])
-		
+
 		// Generate performance report for trend analysis
 		report := rd.performanceMetrics.GetPerformanceReport()
 		data.TrendAnalysis = report.TrendAnalysis
-		
+
 		// Collect business metrics
 		businessMetrics, err := rd.performanceMetrics.CollectBusinessMetrics()
 		if err == nil {
 			data.BusinessMetrics = businessMetrics
 		}
 	}
-	
+
 	// Collect recent alerts
 	if rd.alertManager != nil {
 		data.RecentAlerts = rd.alertManager.GetRecentAlerts(5)
 	}
-	
+
 	// Collect system status
 	data.SystemStatus = rd.collectSystemStatus()
-	
+
 	return data
 }
 
 // collectSystemStatus gathers current system status information
 func (rd *RealtimeDashboard) collectSystemStatus() *SystemStatus {
 	status := &SystemStatus{
-		CPUUsage:         65.2,  // Mock values - would be collected from system
-		MemoryUsage:      512 * 1024 * 1024, // 512MB
-		DiskUsage:        42.8,
+		CPUUsage:          65.2,              // Mock values - would be collected from system
+		MemoryUsage:       512 * 1024 * 1024, // 512MB
+		DiskUsage:         42.8,
 		ActiveConnections: len(rd.connections),
-		QueueSize:        0,
-		LastSyncTime:     time.Now().Add(-2 * time.Minute),
-		SyncStatus:       "active",
-		ErrorCount:       0,
+		QueueSize:         0,
+		LastSyncTime:      time.Now().Add(-2 * time.Minute),
+		SyncStatus:        "active",
+		ErrorCount:        0,
 	}
-	
+
 	return status
 }
 

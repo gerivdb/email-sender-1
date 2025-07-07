@@ -11,27 +11,27 @@ import (
 
 // PlanFinalizer - Outil pour finaliser le plan de développement avec checkboxes et progression
 type PlanFinalizer struct {
-	inputFile	string
-	outputFile	string
-	dateFormat	string
-	completedTasks	map[string]bool
+	inputFile      string
+	outputFile     string
+	dateFormat     string
+	completedTasks map[string]bool
 }
 
 // NewPlanFinalizer - Créer une nouvelle instance du finaliseur
 func NewPlanFinalizer(inputFile, outputFile string) *PlanFinalizer {
 	return &PlanFinalizer{
-		inputFile:	inputFile,
-		outputFile:	outputFile,
-		dateFormat:	"2006-01-02",
-		completedTasks:	make(map[string]bool),
+		inputFile:      inputFile,
+		outputFile:     outputFile,
+		dateFormat:     "2006-01-02",
+		completedTasks: make(map[string]bool),
 	}
 }
 
 // TaskCompletionRule - Règle pour marquer automatiquement des tâches comme complétées
 type TaskCompletionRule struct {
-	pattern		*regexp.Regexp
-	description	string
-	reason		string
+	pattern     *regexp.Regexp
+	description string
+	reason      string
 }
 
 func main() {
@@ -43,7 +43,7 @@ func main() {
 	}
 
 	planFile := os.Args[1]
-	outputFile := planFile	// Update in place by default
+	outputFile := planFile // Update in place by default
 
 	if len(os.Args) >= 3 {
 		outputFile = os.Args[2]
@@ -96,29 +96,29 @@ func (pf *PlanFinalizer) applyCompletionRules(text string) string {
 
 	rules := []TaskCompletionRule{
 		{
-			pattern:	regexp.MustCompile(`(?i)- \[ \] (.*(Go tools?|outils Go|scripts? PowerShell remplac|performance.*PowerShell).*)`),
-			description:	"Tâches liées aux outils Go créés",
-			reason:		"Écosystème d'outils Go autonome complété",
+			pattern:     regexp.MustCompile(`(?i)- \[ \] (.*(Go tools?|outils Go|scripts? PowerShell remplac|performance.*PowerShell).*)`),
+			description: "Tâches liées aux outils Go créés",
+			reason:      "Écosystème d'outils Go autonome complété",
 		},
 		{
-			pattern:	regexp.MustCompile(`(?i)- \[ \] (.*(build.*production|cross-platform|compilation).*)`),
-			description:	"Tâches de build et compilation",
-			reason:		"Système de build Go intégré dans les outils",
+			pattern:     regexp.MustCompile(`(?i)- \[ \] (.*(build.*production|cross-platform|compilation).*)`),
+			description: "Tâches de build et compilation",
+			reason:      "Système de build Go intégré dans les outils",
 		},
 		{
-			pattern:	regexp.MustCompile(`(?i)- \[ \] (.*(test.*runner|tests.*paralell|coverage).*)`),
-			description:	"Tâches de tests et couverture",
-			reason:		"Test runner Go haute performance créé",
+			pattern:     regexp.MustCompile(`(?i)- \[ \] (.*(test.*runner|tests.*paralell|coverage).*)`),
+			description: "Tâches de tests et couverture",
+			reason:      "Test runner Go haute performance créé",
 		},
 		{
-			pattern:	regexp.MustCompile(`(?i)- \[ \] (.*(projet.*cleanup|nettoyage|organisation.*fichier).*)`),
-			description:	"Tâches de nettoyage et organisation",
-			reason:		"Outil de nettoyage Go intelligent créé",
+			pattern:     regexp.MustCompile(`(?i)- \[ \] (.*(projet.*cleanup|nettoyage|organisation.*fichier).*)`),
+			description: "Tâches de nettoyage et organisation",
+			reason:      "Outil de nettoyage Go intelligent créé",
 		},
 		{
-			pattern:	regexp.MustCompile(`(?i)- \[ \] (.*(validation.*projet|santé.*projet|qualité.*code).*)`),
-			description:	"Tâches de validation projet",
-			reason:		"Validateur de projet Go complet créé",
+			pattern:     regexp.MustCompile(`(?i)- \[ \] (.*(validation.*projet|santé.*projet|qualité.*code).*)`),
+			description: "Tâches de validation projet",
+			reason:      "Validateur de projet Go complet créé",
 		},
 	}
 
@@ -153,9 +153,9 @@ func (pf *PlanFinalizer) updateProgressions(text string) string {
 
 	// Patterns pour les phases et leurs progressions
 	progressUpdates := map[string]string{
-		`\*Progression: 95%\*`:		"*Progression: 98%*",		// Phase 1 avec nos completions
-		`\*Progression: 0%\*`:		"*Progression: 5%*",		// Phases 2-4 avec planification détaillée
-		`Progression globale : 95%`:	"Progression globale : 98%",	// Globale
+		`\*Progression: 95%\*`:      "*Progression: 98%*",        // Phase 1 avec nos completions
+		`\*Progression: 0%\*`:       "*Progression: 5%*",         // Phases 2-4 avec planification détaillée
+		`Progression globale : 95%`: "Progression globale : 98%", // Globale
 	}
 
 	for pattern, replacement := range progressUpdates {

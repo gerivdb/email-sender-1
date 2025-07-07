@@ -6,5 +6,5 @@ package docmanager
 type PostgresClient struct{}
 
 func InitPostgres() *PostgresClient {
-return &PostgresClient{}
+	return &PostgresClient{}
 }

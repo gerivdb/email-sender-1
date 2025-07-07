@@ -12,6 +12,21 @@ import (
 	"github.com/pkg/errors"
 )
 
+// --- Placeholder/Stub types for Conformity Management ---
+type ConformityConfig struct {
+	AutoCheck     bool          `json:"auto_check"`
+	CheckInterval time.Duration `json:"check_interval"`
+	// Add other fields as necessary
+}
+type ConformityReport struct{}
+type EcosystemConformityReport struct{}
+type ReportFormat string // e.g., "json", "html", "pdf"
+type ComplianceLevel string // e.g., "compliant", "non-compliant", "warning"
+type ConformityIssue struct{}
+type ConformityConfigManager struct{} // Stub definition
+type ConformityAPIServer struct{}   // Stub definition
+// --- End Placeholder/Stub types ---
+
 // IConformityManager interface for conformity verification
 type IConformityManager interface {
 	VerifyManagerConformity(ctx context.Context, managerName string) (*ConformityReport, error)
@@ -132,6 +147,20 @@ func GetIntegratedErrorManager() *IntegratedErrorManager {
 }
 
 // getDefaultConformityConfig returns default conformity configuration
+func getDefaultConformityConfig() *ConformityConfig {
+	return &ConformityConfig{
+		AutoCheck:     true,
+		CheckInterval: 24 * time.Hour, // Default to once a day
+	}
+}
+
+// determineErrorCode determines a specific code from an error.
+func determineErrorCode(err error) string {
+	// TODO: Implement actual error code determination
+	// This could involve checking error types, specific messages, etc.
+	return "UNKNOWN_ERROR_CODE" // Default code
+}
+
 // initializeConformityManager initializes the conformity manager
 func (iem *IntegratedErrorManager) initializeConformityManager() {
 	// This would be set later when the actual ConformityManager is instantiated
@@ -392,5 +421,106 @@ func GenerateConformityReportGlobal(ctx context.Context, managerName string, for
 func UpdateConformityStatusGlobal(ctx context.Context, managerName string, level ComplianceLevel) error {
 	return GetIntegratedErrorManager().UpdateConformityStatus(ctx, managerName, level)
 }
+
+// determineSeverity : stub de détermination de la sévérité d'une erreur
+func determineSeverity(err error) string {
+	// TODO: Implement actual severity determination logic
+	// For now, returning a default or checking for known error types/messages
+	if err == nil {
+		return "info"
+	}
+	// Example:
+	// if strings.Contains(strings.ToLower(err.Error()), "critical") {
+	// 	return "critical"
+	// }
+	// if strings.Contains(strings.ToLower(err.Error()), "warning") {
+	// 	return "warning"
+	// }
+	return "error" // Default severity
+}
+
+// --- Stub methods for IntegratedErrorManager ---
+
+func (iem *IntegratedErrorManager) startErrorProcessor() {
+	iem.wg.Add(1)
+	go func() {
+		defer iem.wg.Done()
+		for {
+			select {
+			case entry := <-iem.errorQueue:
+				iem.processError(entry)
+			case <-iem.ctx.Done():
+				// Process any remaining items in the queue before exiting
+				for len(iem.errorQueue) > 0 {
+					entry := <-iem.errorQueue
+					iem.processError(entry)
+				}
+				log.Println("Error processor stopping.")
+				return
+			}
+		}
+	}()
+	log.Println("Error processor started.")
+}
+
+func (iem *IntegratedErrorManager) initializeAPIServer() {
+	iem.apiServerMu.Lock()
+	defer iem.apiServerMu.Unlock()
+
+	if !iem.apiServerEnabled {
+		log.Println("Conformity API server is disabled.")
+		return
+	}
+	// Placeholder for API server initialization
+	// iem.apiServer = NewConformityAPIServer(iem, iem.apiServerPort)
+	// go func() {
+	// 	if err := iem.apiServer.Start(); err != nil {
+	// 		log.Printf("Failed to start conformity API server: %v", err)
+	// 	}
+	// }()
+	log.Println("Conformity API server initialized (stub). Port:", iem.apiServerPort)
+}
+
+func (iem *IntegratedErrorManager) executeHooks(module string, err error, context map[string]interface{}) {
+	iem.mu.RLock()
+	defer iem.mu.RUnlock()
+	if hooks, ok := iem.hooks[module]; ok {
+		for _, hook := range hooks {
+			hook(module, err, context)
+		}
+	}
+	if hooks, ok := iem.hooks["*"]; ok { // Global hooks
+		for _, hook := range hooks {
+			hook(module, err, context)
+		}
+	}
+}
+
+func (iem *IntegratedErrorManager) processError(entry ErrorEntry) {
+	log.Printf("Processing error [%s] for module [%s]: %s", entry.ErrorCode, entry.Module, entry.Message)
+	// In a real scenario, this would log to a centralized system, database, etc.
+	if iem.errorManager != nil {
+		iem.errorManager.CatalogError(entry)
+	}
+}
+
+func (iem *IntegratedErrorManager) StopAPIServer() error {
+	iem.apiServerMu.Lock()
+	defer iem.apiServerMu.Unlock()
+
+	if iem.apiServer == nil || !iem.apiServerEnabled {
+		log.Println("Conformity API server not running or disabled.")
+		return nil
+	}
+	// Placeholder for API server stop logic
+	// err := iem.apiServer.Stop()
+	// if err != nil {
+	// 	return fmt.Errorf("failed to stop conformity API server: %w", err)
+	// }
+	log.Println("Conformity API server stopped (stub).")
+	return nil
+}
+
+// --- End Stub methods ---
 
 // === END OF EDITED FILE ===

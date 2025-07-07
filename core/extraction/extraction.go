@@ -17,9 +17,9 @@ func ExtractAndParseData(sourcePath string) (map[string]interface{}, error) {
 
 	// Simuler le processus d'extraction et de parsing
 	data := map[string]interface{}{
-		"status":  "success",
-		"message": fmt.Sprintf("Données extraites et parsées depuis %s", sourcePath),
-		"source":  sourcePath,
+		"status":    "success",
+		"message":   fmt.Sprintf("Données extraites et parsées depuis %s", sourcePath),
+		"source":    sourcePath,
 		"timestamp": "2025-06-29T22:00:00Z", // Placeholder
 	}
 

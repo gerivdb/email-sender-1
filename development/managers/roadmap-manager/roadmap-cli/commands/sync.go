@@ -15,7 +15,7 @@ func newSyncCommand() *cobra.Command {
 • RAG engine synchronization  
 • Markdown plans bidirectional sync
 • Cross-format consistency validation`,
-		RunE:  runSync,
+		RunE: runSync,
 	}
 
 	cmd.Flags().Bool("n8n", false, "sync with n8n workflows")

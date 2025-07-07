@@ -21,64 +21,64 @@ import (
 // Il fournit une autonomie complète pour la maintenance et l'organisation de l'écosystème
 type AdvancedAutonomyManagerImpl struct {
 	// Configuration de base
-	config		*AutonomyConfig
-	logger		interfaces.Logger
-	version		string
-	name		string
-	initialized	bool
+	config      *AutonomyConfig
+	logger      interfaces.Logger
+	version     string
+	name        string
+	initialized bool
 	// Composants principaux (5 core components)
-	decisionEngine		*decision.AutonomousDecisionEngine
-	predictiveCore		*predictive.PredictiveMaintenanceCore
-	monitoringDashboard	*monitoring.RealTimeMonitoringDashboard
-	healingSystem		*healing.NeuralAutoHealingSystem
-	coordinationLayer	*coordination.MasterCoordinationLayer
+	decisionEngine      *decision.AutonomousDecisionEngine
+	predictiveCore      *predictive.PredictiveMaintenanceCore
+	monitoringDashboard *monitoring.RealTimeMonitoringDashboard
+	healingSystem       *healing.NeuralAutoHealingSystem
+	coordinationLayer   *coordination.MasterCoordinationLayer
 
 	// État du système
-	systemState		*interfaces.SystemSituation
-	managerStates		map[string]*interfaces.ManagerState
-	activeOperations	map[string]*interfaces.Operation
+	systemState      *interfaces.SystemSituation
+	managerStates    map[string]*interfaces.ManagerState
+	activeOperations map[string]*interfaces.Operation
 
 	// Synchronisation
-	mutex		sync.RWMutex
-	operationMutex	sync.Mutex
-	ctx		context.Context
-	cancel		context.CancelFunc
+	mutex          sync.RWMutex
+	operationMutex sync.Mutex
+	ctx            context.Context
+	cancel         context.CancelFunc
 	// Connexions aux 20 managers précédents
-	managerConnections	map[string]interfaces.BaseManager
-	discoveryService	*discovery.ManagerDiscoveryService
+	managerConnections map[string]interfaces.BaseManager
+	discoveryService   *discovery.ManagerDiscoveryService
 
 	// Métriques et surveillance
-	metrics		*EcosystemMetrics
-	healthTracker	*HealthTracker
-	performanceData	*PerformanceData
+	metrics         *EcosystemMetrics
+	healthTracker   *HealthTracker
+	performanceData *PerformanceData
 }
 
 // AutonomyConfig contient la configuration complète du manager autonome
 type AutonomyConfig struct {
 	// Niveau d'autonomie
-	AutonomyLevel	interfaces.AutonomyLevel	`yaml:"autonomy_level" json:"autonomy_level"`
+	AutonomyLevel interfaces.AutonomyLevel `yaml:"autonomy_level" json:"autonomy_level"`
 	// Configuration des composants
-	DecisionConfig		*interfaces.DecisionEngineConfig	`yaml:"decision_config" json:"decision_config"`
-	PredictiveConfig	*interfaces.PredictiveConfig		`yaml:"predictive_config" json:"predictive_config"`
-	MonitoringConfig	*interfaces.MonitoringConfig		`yaml:"monitoring_config" json:"monitoring_config"`
-	HealingConfig		*interfaces.HealingConfig		`yaml:"healing_config" json:"healing_config"`
-	CoordinationConfig	*interfaces.CoordinationConfig		`yaml:"coordination_config" json:"coordination_config"`
-	DiscoveryConfig		*discovery.DiscoveryConfig		`yaml:"discovery_config" json:"discovery_config"`
+	DecisionConfig     *interfaces.DecisionEngineConfig `yaml:"decision_config" json:"decision_config"`
+	PredictiveConfig   *interfaces.PredictiveConfig     `yaml:"predictive_config" json:"predictive_config"`
+	MonitoringConfig   *interfaces.MonitoringConfig     `yaml:"monitoring_config" json:"monitoring_config"`
+	HealingConfig      *interfaces.HealingConfig        `yaml:"healing_config" json:"healing_config"`
+	CoordinationConfig *interfaces.CoordinationConfig   `yaml:"coordination_config" json:"coordination_config"`
+	DiscoveryConfig    *discovery.DiscoveryConfig       `yaml:"discovery_config" json:"discovery_config"`
 
 	// Paramètres de performance
-	MaxConcurrentOps	int		`yaml:"max_concurrent_ops" json:"max_concurrent_ops"`
-	DecisionTimeout		time.Duration	`yaml:"decision_timeout" json:"decision_timeout"`
-	HealthCheckInterval	time.Duration	`yaml:"health_check_interval" json:"health_check_interval"`
+	MaxConcurrentOps    int           `yaml:"max_concurrent_ops" json:"max_concurrent_ops"`
+	DecisionTimeout     time.Duration `yaml:"decision_timeout" json:"decision_timeout"`
+	HealthCheckInterval time.Duration `yaml:"health_check_interval" json:"health_check_interval"`
 
 	// Seuils et limites
-	SafetyThreshold		float64	`yaml:"safety_threshold" json:"safety_threshold"`
-	RiskTolerance		float64	`yaml:"risk_tolerance" json:"risk_tolerance"`
-	PerformanceTarget	float64	`yaml:"performance_target" json:"performance_target"`
+	SafetyThreshold   float64 `yaml:"safety_threshold" json:"safety_threshold"`
+	RiskTolerance     float64 `yaml:"risk_tolerance" json:"risk_tolerance"`
+	PerformanceTarget float64 `yaml:"performance_target" json:"performance_target"`
 
 	// Apprentissage et adaptation
-	LearningEnabled		bool		`yaml:"learning_enabled" json:"learning_enabled"`
-	AdaptationRate		float64		`yaml:"adaptation_rate" json:"adaptation_rate"`
-	HistoryRetention	time.Duration	`yaml:"history_retention" json:"history_retention"`
+	LearningEnabled  bool          `yaml:"learning_enabled" json:"learning_enabled"`
+	AdaptationRate   float64       `yaml:"adaptation_rate" json:"adaptation_rate"`
+	HistoryRetention time.Duration `yaml:"history_retention" json:"history_retention"`
 }
 
 // NewAdvancedAutonomyManager crée une nouvelle instance complète du 21ème manager
@@ -99,21 +99,21 @@ func NewAdvancedAutonomyManager(config *AutonomyConfig, logger interfaces.Logger
 	}
 
 	manager := &AdvancedAutonomyManagerImpl{
-		config:			config,
-		logger:			logger,
-		version:		"1.0.0",
-		name:			"AdvancedAutonomyManager",
-		initialized:		false,
-		systemState:		&interfaces.SystemSituation{},
-		managerStates:		make(map[string]*interfaces.ManagerState),
-		activeOperations:	make(map[string]*interfaces.Operation),
-		managerConnections:	make(map[string]interfaces.BaseManager),
-		discoveryService:	discoveryService,
-		ctx:			ctx,
-		cancel:			cancel,
-		metrics:		NewEcosystemMetrics(),
-		healthTracker:		NewHealthTracker(),
-		performanceData:	NewPerformanceData(),
+		config:             config,
+		logger:             logger,
+		version:            "1.0.0",
+		name:               "AdvancedAutonomyManager",
+		initialized:        false,
+		systemState:        &interfaces.SystemSituation{},
+		managerStates:      make(map[string]*interfaces.ManagerState),
+		activeOperations:   make(map[string]*interfaces.Operation),
+		managerConnections: make(map[string]interfaces.BaseManager),
+		discoveryService:   discoveryService,
+		ctx:                ctx,
+		cancel:             cancel,
+		metrics:            NewEcosystemMetrics(),
+		healthTracker:      NewHealthTracker(),
+		performanceData:    NewPerformanceData(),
 	}
 
 	return manager, nil
@@ -191,8 +191,8 @@ func (am *AdvancedAutonomyManagerImpl) HealthCheck(ctx context.Context) error {
 
 	// Vérifier tous les composants principaux
 	checks := []struct {
-		name	string
-		check	func(context.Context) error
+		name  string
+		check func(context.Context) error
 	}{
 		{"DecisionEngine", am.decisionEngine.HealthCheck},
 		{"PredictiveCore", am.predictiveCore.HealthCheck},
@@ -320,15 +320,15 @@ func (am *AdvancedAutonomyManagerImpl) OrchestrateAutonomousMaintenance(ctx cont
 
 	// 6. Compiler les résultats finaux
 	result := &interfaces.AutonomyResult{
-		ID:		generateOperationID(),
-		StartTime:	time.Now(),
+		ID:        generateOperationID(),
+		StartTime: time.Now(),
 		// DecisionsGenerated: len(decisions), // Supprimé, sera calculé ou omis
 		// DecisionsExecuted:  len(safeDecisions), // Supprimé, sera calculé ou omis
-		AffectedComponents:	extractAffectedManagers(safeDecisions),
-		ExecutedActions:	executionResults,
-		Issues:			healingResults,
-		Success:		calculateOverallSuccess(executionResults),
-		ImprovementMetrics:	am.calculatePerformanceMetrics(ctx),
+		AffectedComponents: extractAffectedManagers(safeDecisions),
+		ExecutedActions:    executionResults,
+		Issues:             healingResults,
+		Success:            calculateOverallSuccess(executionResults),
+		ImprovementMetrics: am.calculatePerformanceMetrics(ctx),
 	}
 
 	// 7. Apprendre des résultats pour les futures opérations
@@ -357,11 +357,11 @@ func (am *AdvancedAutonomyManagerImpl) PredictMaintenanceNeeds(ctx context.Conte
 	}
 
 	result := &interfaces.PredictionResult{
-		GeneratedAt:		time.Now(),
-		TimeHorizon:		timeHorizon,
-		Forecast:		enrichedForecast,
-		Confidence:		am.calculatePredictionConfidence(enrichedForecast),
-		Recommendations:	am.generateMaintenanceRecommendations(enrichedForecast),
+		GeneratedAt:     time.Now(),
+		TimeHorizon:     timeHorizon,
+		Forecast:        enrichedForecast,
+		Confidence:      am.calculatePredictionConfidence(enrichedForecast),
+		Recommendations: am.generateMaintenanceRecommendations(enrichedForecast),
 	}
 
 	return result, nil
@@ -452,7 +452,7 @@ func (am *AdvancedAutonomyManagerImpl) startAutonomousOperations(ctx context.Con
 			if am.shouldTriggerAutonomousOperation(ctx) {
 				go am.executeScheduledMaintenance(ctx)
 			}
-			time.Sleep(time.Minute)	// Vérification toutes les minutes
+			time.Sleep(time.Minute) // Vérification toutes les minutes
 		}
 	}
 }
@@ -476,8 +476,8 @@ func (am *AdvancedAutonomyManagerImpl) startHealthTracking(ctx context.Context) 
 func (am *AdvancedAutonomyManagerImpl) captureSystemSituation(ctx context.Context) (*interfaces.SystemSituation, error) {
 	// Capture l'état actuel de tous les managers
 	situation := &interfaces.SystemSituation{
-		Timestamp:	time.Now(),
-		ManagerStates:	make(map[string]*interfaces.ManagerState),
+		Timestamp:     time.Now(),
+		ManagerStates: make(map[string]*interfaces.ManagerState),
 	}
 
 	// Collecter l'état de chaque manager connecté
@@ -498,10 +498,10 @@ func (am *AdvancedAutonomyManagerImpl) captureSystemSituation(ctx context.Contex
 
 func (am *AdvancedAutonomyManagerImpl) captureManagerState(ctx context.Context, name string, manager interfaces.BaseManager) (*interfaces.ManagerState, error) {
 	state := &interfaces.ManagerState{
-		Name:			name,
-		LastHealthCheck:	time.Now(),
-		Metrics:		make(map[string]interface{}),
-		DependenciesStatus:	make(map[string]bool),
+		Name:               name,
+		LastHealthCheck:    time.Now(),
+		Metrics:            make(map[string]interface{}),
+		DependenciesStatus: make(map[string]bool),
 	}
 
 	// Effectuer un health check
@@ -609,12 +609,12 @@ func calculateOverallSuccess(results map[string]interface{}) bool {
 
 func (am *AdvancedAutonomyManagerImpl) calculatePerformanceMetrics(ctx context.Context) map[string]float64 {
 	return map[string]float64{
-		"response_time":		float64(am.performanceData.GetAverageResponseTime()),
-		"throughput":			float64(am.performanceData.GetThroughput()),
-		"success_rate":			am.performanceData.GetSuccessRate(),
-		"resource_usage_cpu":		am.performanceData.GetResourceUsage()["cpu"],
-		"resource_usage_memory":	am.performanceData.GetResourceUsage()["memory"],
-		"resource_usage_disk":		am.performanceData.GetResourceUsage()["disk"],
+		"response_time":         float64(am.performanceData.GetAverageResponseTime()),
+		"throughput":            float64(am.performanceData.GetThroughput()),
+		"success_rate":          am.performanceData.GetSuccessRate(),
+		"resource_usage_cpu":    am.performanceData.GetResourceUsage()["cpu"],
+		"resource_usage_memory": am.performanceData.GetResourceUsage()["memory"],
+		"resource_usage_disk":   am.performanceData.GetResourceUsage()["disk"],
 	}
 }
 
@@ -645,12 +645,12 @@ func (am *AdvancedAutonomyManagerImpl) generateMaintenanceRecommendations(foreca
 
 // EcosystemMetrics gère les métriques de l'écosystème
 type EcosystemMetrics struct {
-	StartTime		time.Time
-	TotalOperations		int64
-	SuccessfulOperations	int64
-	FailedOperations	int64
-	AverageResponseTime	time.Duration
-	mutex			sync.RWMutex
+	StartTime            time.Time
+	TotalOperations      int64
+	SuccessfulOperations int64
+	FailedOperations     int64
+	AverageResponseTime  time.Duration
+	mutex                sync.RWMutex
 }
 
 // NewEcosystemMetrics crée une nouvelle instance de métriques
@@ -686,16 +686,16 @@ func (em *EcosystemMetrics) GetSuccessRate() float64 {
 
 // HealthTracker suit la santé des managers
 type HealthTracker struct {
-	healthHistory	map[string][]float64
-	lastCheck	time.Time
-	mutex		sync.RWMutex
+	healthHistory map[string][]float64
+	lastCheck     time.Time
+	mutex         sync.RWMutex
 }
 
 // NewHealthTracker crée un nouveau traceur de santé
 func NewHealthTracker() *HealthTracker {
 	return &HealthTracker{
-		healthHistory:	make(map[string][]float64),
-		lastCheck:	time.Now(),
+		healthHistory: make(map[string][]float64),
+		lastCheck:     time.Now(),
 	}
 }
 
@@ -745,11 +745,11 @@ func (ht *HealthTracker) GetHealthTrend(managerName string) float64 {
 
 // PerformanceData gère les données de performance
 type PerformanceData struct {
-	responseTimes	[]time.Duration
-	throughput	int64
-	successCount	int64
-	totalCount	int64
-	mutex		sync.RWMutex
+	responseTimes []time.Duration
+	throughput    int64
+	successCount  int64
+	totalCount    int64
+	mutex         sync.RWMutex
 }
 
 // NewPerformanceData crée une nouvelle instance de données de performance
@@ -812,9 +812,9 @@ func (pd *PerformanceData) GetSuccessRate() float64 {
 // GetResourceUsage retourne l'utilisation des ressources
 func (pd *PerformanceData) GetResourceUsage() map[string]float64 {
 	return map[string]float64{
-		"cpu":		0.15,	// 15% CPU usage
-		"memory":	0.25,	// 25% memory usage
-		"disk":		0.10,	// 10% disk usage
+		"cpu":    0.15, // 15% CPU usage
+		"memory": 0.25, // 25% memory usage
+		"disk":   0.10, // 10% disk usage
 	}
 }
 

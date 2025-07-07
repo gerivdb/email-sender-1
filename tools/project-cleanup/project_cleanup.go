@@ -7,19 +7,18 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
 )
 
 // CleanupConfig holds configuration for cleanup operations
 type CleanupConfig struct {
-	ProjectRoot	string
-	DryRun		bool
-	Verbose		bool
-	CleanBuild	bool
-	CleanLogs	bool
-	CleanTemp	bool
-	CleanCache	bool
-	OrganizeFiles	bool
+	ProjectRoot   string
+	DryRun        bool
+	Verbose       bool
+	CleanBuild    bool
+	CleanLogs     bool
+	CleanTemp     bool
+	CleanCache    bool
+	OrganizeFiles bool
 }
 
 func main() {
@@ -191,7 +190,7 @@ func cleanByPatterns(config *CleanupConfig, patterns []string, description strin
 	for _, pattern := range patterns {
 		matches, err := filepath.Glob(pattern)
 		if err != nil {
-			continue	// Skip invalid patterns
+			continue // Skip invalid patterns
 		}
 
 		for _, match := range matches {
@@ -246,21 +245,21 @@ func organizeRootFiles(config *CleanupConfig) error {
 
 	// Define organization rules
 	rules := map[string]string{
-		"*.md":		"docs",
-		"*.txt":	"docs",
-		"*.ps1":	"scripts/legacy",
-		"*.bat":	"scripts/legacy",
-		"*.sh":		"scripts/legacy",
-		"*.py":		"scripts/python",
-		"*.js":		"scripts/node",
-		"*.json":	"configs",
-		"*.yaml":	"configs",
-		"*.yml":	"configs",
-		"*.toml":	"configs",
-		"*.env*":	"configs",
-		"*.log":	"logs",
-		"*.exe":	"bin",
-		"*.dll":	"bin",
+		"*.md":   "docs",
+		"*.txt":  "docs",
+		"*.ps1":  "scripts/legacy",
+		"*.bat":  "scripts/legacy",
+		"*.sh":   "scripts/legacy",
+		"*.py":   "scripts/python",
+		"*.js":   "scripts/node",
+		"*.json": "configs",
+		"*.yaml": "configs",
+		"*.yml":  "configs",
+		"*.toml": "configs",
+		"*.env*": "configs",
+		"*.log":  "logs",
+		"*.exe":  "bin",
+		"*.dll":  "bin",
 	}
 
 	// Get files in root directory

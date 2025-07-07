@@ -9,9 +9,9 @@ import (
 	"net/http"
 	"time"
 
-	"./interfaces"	// Added import
+	"./interfaces"        // Added import
+	_ "github.com/lib/pq" // PostgreSQL driver
 	"go.uber.org/zap"
-	_ "github.com/lib/pq"	// PostgreSQL driver
 )
 
 // StorageManager centralise la gestion de la persistance documentaire, du stockage objet, des connexions PostgreSQL/Qdrant et des métadonnées de dépendances.
@@ -51,38 +51,38 @@ type StorageManager interface {
 	GetPostgreSQLConnection() (interface{}, error)
 	GetQdrantConnection() (interface{}, error)
 	RunMigrations(ctx context.Context) error
-	SaveDependencyMetadata(ctx context.Context, metadata *interfaces.DependencyMetadata) error			// Changed to interfaces type
-	GetDependencyMetadata(ctx context.Context, name string) (*interfaces.DependencyMetadata, error)			// Changed to interfaces type
-	QueryDependencies(ctx context.Context, query *DependencyQuery) ([]*interfaces.DependencyMetadata, error)	// Changed to interfaces type
+	SaveDependencyMetadata(ctx context.Context, metadata *interfaces.DependencyMetadata) error               // Changed to interfaces type
+	GetDependencyMetadata(ctx context.Context, name string) (*interfaces.DependencyMetadata, error)          // Changed to interfaces type
+	QueryDependencies(ctx context.Context, query *DependencyQuery) ([]*interfaces.DependencyMetadata, error) // Changed to interfaces type
 	HealthCheck(ctx context.Context) error
 	Cleanup() error
 }
 
 // DependencyQuery represents a query for dependencies (local type)
 type DependencyQuery struct {
-	Name	string			`json:"name,omitempty"`
-	Version	string			`json:"version,omitempty"`
-	Tags	[]string		`json:"tags,omitempty"`	// This will be used to query the map[string]string Tags
-	Limit	int			`json:"limit,omitempty"`
-	Offset	int			`json:"offset,omitempty"`
-	Filters	map[string]string	`json:"filters,omitempty"`
+	Name    string            `json:"name,omitempty"`
+	Version string            `json:"version,omitempty"`
+	Tags    []string          `json:"tags,omitempty"` // This will be used to query the map[string]string Tags
+	Limit   int               `json:"limit,omitempty"`
+	Offset  int               `json:"offset,omitempty"`
+	Filters map[string]string `json:"filters,omitempty"`
 }
 
 // QdrantPoint represents a point in Qdrant vector database
 type QdrantPoint struct {
-	ID	string			`json:"id"`
-	Vector	[]float32		`json:"vector"`
-	Payload	map[string]interface{}	`json:"payload"`
+	ID      string                 `json:"id"`
+	Vector  []float32              `json:"vector"`
+	Payload map[string]interface{} `json:"payload"`
 }
 
 // storageManagerImpl implements StorageManager with ErrorManager integration
 type storageManagerImpl struct {
-	logger		*zap.Logger
-	errorManager	ErrorManager	// Assuming ErrorManager is a local interface or type for now
-	pgConnString	string
-	qdrantURL	string
-	pgDB		*sql.DB
-	qdrantClient	*http.Client
+	logger       *zap.Logger
+	errorManager ErrorManager // Assuming ErrorManager is a local interface or type for now
+	pgConnString string
+	qdrantURL    string
+	pgDB         *sql.DB
+	qdrantClient *http.Client
 }
 
 // ErrorManager interface for local implementation (if not sourced from a shared package)
@@ -94,28 +94,28 @@ type ErrorManager interface {
 
 // ErrorEntry represents an error entry (local type)
 type ErrorEntry struct {
-	ID		string	`json:"id"`
-	Timestamp	string	`json:"timestamp"`
-	Level		string	`json:"level"`
-	Component	string	`json:"component"`
-	Operation	string	`json:"operation"`
-	Message		string	`json:"message"`
-	Details		string	`json:"details,omitempty"`
+	ID        string `json:"id"`
+	Timestamp string `json:"timestamp"`
+	Level     string `json:"level"`
+	Component string `json:"component"`
+	Operation string `json:"operation"`
+	Message   string `json:"message"`
+	Details   string `json:"details,omitempty"`
 }
 
 // ErrorHooks for error processing (local type)
 type ErrorHooks struct {
-	PreProcess	func(error) error
-	PostProcess	func(error) error
+	PreProcess  func(error) error
+	PostProcess func(error) error
 }
 
 // NewStorageManager creates a new StorageManager instance
 func NewStorageManager(logger *zap.Logger, pgConnString, qdrantURL string) StorageManager {
 	return &storageManagerImpl{
-		logger:		logger,
-		pgConnString:	pgConnString,
-		qdrantURL:	qdrantURL,
-		qdrantClient:	&http.Client{Timeout: 30 * time.Second},
+		logger:       logger,
+		pgConnString: pgConnString,
+		qdrantURL:    qdrantURL,
+		qdrantClient: &http.Client{Timeout: 30 * time.Second},
 	}
 }
 
@@ -311,7 +311,7 @@ func (sm *storageManagerImpl) GetDependencyMetadata(ctx context.Context, name st
 		&metadata.Name, &metadata.Version, &metadata.Description, &metadata.License, &metadata.Repository,
 		&tagsJSON, &attributesJSON, &metadata.PackageManager, &metadata.Source, &metadata.Type,
 		&metadata.Direct, &metadata.Required, &vulnerabilitiesJSON, &metadata.LastUpdated,
-		&metadata.CreatedAt, &metadata.UpdatedAt,	// Assuming CreatedAt is part of interfaces.DependencyMetadata or we add it
+		&metadata.CreatedAt, &metadata.UpdatedAt, // Assuming CreatedAt is part of interfaces.DependencyMetadata or we add it
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -447,7 +447,7 @@ func (sm *storageManagerImpl) Cleanup() error {
 
 func main() {
 	logger, _ := zap.NewDevelopment()
-	defer logger.Sync()	// nolint:errcheck
+	defer logger.Sync() // nolint:errcheck
 
 	// Example usage (replace with actual configuration)
 	pgConn := "user=postgres password=secret dbname=dependencies sslmode=disable host=localhost port=5432"
@@ -463,12 +463,12 @@ func main() {
 
 	// Example: Save metadata
 	sampleMeta := &interfaces.DependencyMetadata{
-		Name:	"example-lib", Version: "1.0.2", Description: "An example library", License: "MIT",
-		Repository:	"github.com/example/example-lib", Tags: map[string]string{"language": "go", "status": "beta"},
-		Attributes:	map[string]string{"size": "10MB", "complexity": "medium"}, PackageManager: "go_modules",
-		Source:	"github", Type: "library", Direct: true, Required: true,
-		Vulnerabilities:	[]interfaces.Vulnerability{{Severity: "HIGH", Description: "XSS vulnerability", CVEIDs: []string{"CVE-2023-1234"}}},
-		LastUpdated:		time.Now(), UpdatedAt: time.Now(),	// CreatedAt will be set by DB
+		Name: "example-lib", Version: "1.0.2", Description: "An example library", License: "MIT",
+		Repository: "github.com/example/example-lib", Tags: map[string]string{"language": "go", "status": "beta"},
+		Attributes: map[string]string{"size": "10MB", "complexity": "medium"}, PackageManager: "go_modules",
+		Source: "github", Type: "library", Direct: true, Required: true,
+		Vulnerabilities: []interfaces.Vulnerability{{Severity: "HIGH", Description: "XSS vulnerability", CVEIDs: []string{"CVE-2023-1234"}}},
+		LastUpdated:     time.Now(), UpdatedAt: time.Now(), // CreatedAt will be set by DB
 	}
 	if err := storageMgr.SaveDependencyMetadata(ctx, sampleMeta); err != nil {
 		logger.Error("Failed to save sample metadata", zap.Error(err))

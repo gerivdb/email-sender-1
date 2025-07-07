@@ -28,10 +28,10 @@ type StartupSequencerConfig struct {
 // StartupSequenceResult contains the results of a startup sequence
 type StartupSequenceResult struct {
 	ServiceResults map[string]*ServiceStartupResult `json:"service_results"`
-	TotalTime      time.Duration                   `json:"total_time"`
-	StartOrder     []string                        `json:"start_order"`
-	Successful     bool                            `json:"successful"`
-	ErrorMessage   string                          `json:"error_message,omitempty"`
+	TotalTime      time.Duration                    `json:"total_time"`
+	StartOrder     []string                         `json:"start_order"`
+	Successful     bool                             `json:"successful"`
+	ErrorMessage   string                           `json:"error_message,omitempty"`
 }
 
 // ServiceStartupResult contains the result of starting a single service
@@ -94,69 +94,69 @@ func (s *StartupSequencer) StartServices(
 
 	// Group services that can be started in parallel
 	serviceLayers := s.groupServicesByLayer(orderedServices)
-	
+
 	// Start each layer of services
 	for layerIndex, layer := range serviceLayers {
 		s.logger.Info("Starting service layer", "layer", layerIndex+1, "services", layer)
-		
+
 		// Start services in this layer in parallel
 		var wg sync.WaitGroup
 		var mu sync.Mutex
-		
+
 		for _, service := range layer {
 			wg.Add(1)
-			
+
 			go func(svc string) {
 				defer wg.Done()
-				
+
 				serviceResult := &ServiceStartupResult{
 					Service:    svc,
 					StartTime:  time.Now(),
 					Successful: false,
 					RetryCount: 0,
 				}
-				
+
 				// Try to start service with retries
 				var startErr error
 				for attempt := 0; attempt < config.RetryAttempts; attempt++ {
 					if attempt > 0 {
-						s.logger.Info("Retrying service start", 
-							"service", svc, 
+						s.logger.Info("Retrying service start",
+							"service", svc,
 							"attempt", attempt+1,
 							"max_attempts", config.RetryAttempts)
 						time.Sleep(config.RetryDelay)
 					}
-					
+
 					// Start the service
 					startErr = s.containerClient.StartContainers(ctx, []string{svc})
 					if startErr == nil {
 						// Wait for service to be healthy
 						healthy := s.waitForServiceHealth(ctx, svc, config.DefaultTimeout)
-						
+
 						serviceResult.Successful = true
 						serviceResult.HealthStatus = healthy
-						
+
 						if !healthy {
 							s.logger.Warn("Service started but not yet healthy", "service", svc)
 						}
-						
+
 						break
 					}
-					
+
 					serviceResult.RetryCount++
 				}
-				
+
 				// Record error if all attempts failed
 				if startErr != nil {
 					serviceResult.Error = startErr.Error()
-					s.logger.Error("Failed to start service after retries", 
-						"service", svc, 
+					s.logger.Error("Failed to start service after retries",
+						"service", svc,
 						"attempts", config.RetryAttempts,
 						"error", startErr)
 				}
-				
+
 				serviceResult.Duration = time.Since(serviceResult.StartTime)
-				
+
 				// Store result
 				mu.Lock()
 				result.ServiceResults[svc] = serviceResult
@@ -166,10 +166,10 @@ func (s *StartupSequencer) StartServices(
 				mu.Unlock()
 			}(service)
 		}
-		
+
 		// Wait for all services in this layer to be processed
 		wg.Wait()
-		
+
 		// If any service in this layer failed, abort further layers
 		if !result.Successful {
 			result.ErrorMessage = "One or more services failed to start"
@@ -178,7 +178,7 @@ func (s *StartupSequencer) StartServices(
 	}
 
 	result.TotalTime = time.Since(startTime)
-	s.logger.Info("Service startup sequence completed", 
+	s.logger.Info("Service startup sequence completed",
 		"duration", result.TotalTime,
 		"success", result.Successful)
 
@@ -187,8 +187,8 @@ func (s *StartupSequencer) StartServices(
 
 // waitForServiceHealth waits for a service to become healthy with timeout
 func (s *StartupSequencer) waitForServiceHealth(
-	ctx context.Context, 
-	service string, 
+	ctx context.Context,
+	service string,
 	timeout time.Duration,
 ) bool {
 	deadline := time.Now().Add(timeout)
@@ -221,12 +221,12 @@ func (s *StartupSequencer) waitForServiceHealth(
 func (s *StartupSequencer) groupServicesByLayer(orderedServices []string) [][]string {
 	// Build dependency map for quick lookups
 	dependencyMap := make(map[string]map[string]bool)
-	
+
 	// Initialize empty sets for each service
 	for _, service := range orderedServices {
 		dependencyMap[service] = make(map[string]bool)
 	}
-	
+
 	// Fill in dependency sets
 	for _, service := range orderedServices {
 		deps, exists := s.serviceGraph.GetDependencies(service)
@@ -236,21 +236,21 @@ func (s *StartupSequencer) groupServicesByLayer(orderedServices []string) [][]st
 			}
 		}
 	}
-	
+
 	// Group services into layers
 	var layers [][]string
 	remaining := make(map[string]bool)
-	
+
 	// Initialize remaining services
 	for _, service := range orderedServices {
 		remaining[service] = true
 	}
-	
+
 	// Process services until none remain
 	for len(remaining) > 0 {
 		// Find services with no unprocessed dependencies
 		var currentLayer []string
-		
+
 		for service := range remaining {
 			hasDeps := false
 			for dep := range dependencyMap[service] {
@@ -259,26 +259,26 @@ func (s *StartupSequencer) groupServicesByLayer(orderedServices []string) [][]st
 					break
 				}
 			}
-			
+
 			if !hasDeps {
 				currentLayer = append(currentLayer, service)
 			}
 		}
-		
+
 		// If we couldn't find any services for this layer, there must be a cycle
 		if len(currentLayer) == 0 {
 			s.logger.Error("Dependency cycle detected during layer grouping")
 			break
 		}
-		
+
 		// Add current layer to results
 		layers = append(layers, currentLayer)
-		
+
 		// Remove processed services
 		for _, service := range currentLayer {
 			delete(remaining, service)
 		}
 	}
-	
+
 	return layers
 }

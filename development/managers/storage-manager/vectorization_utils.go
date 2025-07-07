@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/stretchr/testify/assert/yaml"
 )
 
 // === MÉTHODES UTILITAIRES POUR LA VECTORISATION ===
@@ -149,20 +151,20 @@ func (sm *StorageManagerImpl) parseEnvContent(content string) map[string]interfa
 // configToText convertit une configuration en texte pour la vectorisation
 func (sm *StorageManagerImpl) configToText(config map[string]interface{}, configType string) string {
 	var text strings.Builder
-	
+
 	text.WriteString(fmt.Sprintf("Configuration type: %s\n", configType))
-	
+
 	for key, value := range config {
 		text.WriteString(fmt.Sprintf("%s: %v\n", key, value))
 	}
-	
+
 	return text.String()
 }
 
 // generateConfigTags génère des tags pour une configuration
 func (sm *StorageManagerImpl) generateConfigTags(config map[string]interface{}, configType string) []string {
 	tags := []string{configType}
-	
+
 	// Ajouter des tags basés sur les clés
 	for key := range config {
 		keyLower := strings.ToLower(key)
@@ -179,7 +181,7 @@ func (sm *StorageManagerImpl) generateConfigTags(config map[string]interface{}, 
 			tags = append(tags, "cache")
 		}
 	}
-	
+
 	return tags
 }
 
@@ -187,26 +189,26 @@ func (sm *StorageManagerImpl) generateConfigTags(config map[string]interface{}, 
 func (sm *StorageManagerImpl) isConfigFile(filePath string) bool {
 	configExts := []string{".json", ".yaml", ".yml", ".env", ".toml", ".ini", ".conf", ".config"}
 	ext := strings.ToLower(filepath.Ext(filePath))
-	
+
 	for _, configExt := range configExts {
 		if ext == configExt {
 			return true
 		}
 	}
-	
+
 	return false
 }
 
 // extractDatabaseSchema extrait le schéma d'une base de données
 func (sm *StorageManagerImpl) extractDatabaseSchema(ctx context.Context, schemaName string) (*DatabaseSchema, error) {
 	schema := &DatabaseSchema{
-		Name:      schemaName,
-		Version:   "1.0",
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-		Tables:    []TableSchema{},
-		Relations: []RelationSchema{},
-		Indexes:   []IndexSchema{},
+		Name:        schemaName,
+		Version:     "1.0",
+		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
+		Tables:      []TableSchema{},
+		Relations:   []RelationSchema{},
+		Indexes:     []IndexSchema{},
 		Constraints: []ConstraintSchema{},
 	}
 
@@ -216,7 +218,7 @@ func (sm *StorageManagerImpl) extractDatabaseSchema(ctx context.Context, schemaN
 		FROM information_schema.tables 
 		WHERE table_schema = $1 AND table_type = 'BASE TABLE'
 	`
-	
+
 	rows, err := sm.db.QueryContext(ctx, tablesQuery, schemaName)
 	if err != nil {
 		return nil, fmt.Errorf("failed to query tables: %w", err)
@@ -266,7 +268,7 @@ func (sm *StorageManagerImpl) extractTableSchema(ctx context.Context, schemaName
 		WHERE table_schema = $1 AND table_name = $2
 		ORDER BY ordinal_position
 	`
-	
+
 	rows, err := sm.db.QueryContext(ctx, columnsQuery, schemaName, tableName)
 	if err != nil {
 		return nil, fmt.Errorf("failed to query columns: %w", err)
@@ -276,7 +278,7 @@ func (sm *StorageManagerImpl) extractTableSchema(ctx context.Context, schemaName
 	for rows.Next() {
 		var colName, dataType, isNullable, comment string
 		var defaultValue sql.NullString
-		
+
 		err := rows.Scan(&colName, &dataType, &isNullable, &defaultValue, &comment)
 		if err != nil {
 			continue
@@ -288,7 +290,7 @@ func (sm *StorageManagerImpl) extractTableSchema(ctx context.Context, schemaName
 			Nullable: isNullable == "YES",
 			Comment:  comment,
 		}
-		
+
 		if defaultValue.Valid {
 			column.DefaultValue = defaultValue.String
 		}
@@ -400,9 +402,9 @@ func (sm *StorageManagerImpl) extractIndexes(ctx context.Context, schemaName str
 // indexTableSchema indexe un schéma de table individuellement
 func (sm *StorageManagerImpl) indexTableSchema(ctx context.Context, schemaName string, table TableSchema) error {
 	// Créer un texte descriptif de la table
-	tableText := fmt.Sprintf("Table: %s\nSchema: %s\nComment: %s\nColumns: ", 
+	tableText := fmt.Sprintf("Table: %s\nSchema: %s\nComment: %s\nColumns: ",
 		table.Name, schemaName, table.Comment)
-	
+
 	for _, col := range table.Columns {
 		tableText += fmt.Sprintf("%s (%s), ", col.Name, col.Type)
 	}

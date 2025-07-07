@@ -17,23 +17,23 @@ import (
 
 // EmailTask représente une tâche de traitement d'email
 type EmailTask struct {
-	ID                string                 `json:"id"`
-	ContactID         string                 `json:"contact_id"`
-	EmailType         string                 `json:"email_type"`       // "prospection", "suivi", "réponse"
-	Priority          int                    `json:"priority"`
-	Status            string                 `json:"status"`
-	CreatedAt         time.Time              `json:"created_at"`
-	ProcessedAt       time.Time              `json:"processed_at"`
-	CompletedAt       time.Time              `json:"completed_at"`
-	Duration          time.Duration          `json:"duration"`
-	Metadata          map[string]interface{} `json:"metadata"`
-	ContactMetadata   map[string]interface{} `json:"contact_metadata"`
-	EmailContent      string                 `json:"email_content"`
-	RAGContext        interface{}            `json:"rag_context"`
-	WorkflowID        string                 `json:"workflow_id"`
-	NotionDatabaseID  string                 `json:"notion_database_id"`
-	RetryCount        int                    `json:"retry_count"`
-	ErrorDetails      string                 `json:"error_details"`
+	ID               string                 `json:"id"`
+	ContactID        string                 `json:"contact_id"`
+	EmailType        string                 `json:"email_type"` // "prospection", "suivi", "réponse"
+	Priority         int                    `json:"priority"`
+	Status           string                 `json:"status"`
+	CreatedAt        time.Time              `json:"created_at"`
+	ProcessedAt      time.Time              `json:"processed_at"`
+	CompletedAt      time.Time              `json:"completed_at"`
+	Duration         time.Duration          `json:"duration"`
+	Metadata         map[string]interface{} `json:"metadata"`
+	ContactMetadata  map[string]interface{} `json:"contact_metadata"`
+	EmailContent     string                 `json:"email_content"`
+	RAGContext       interface{}            `json:"rag_context"`
+	WorkflowID       string                 `json:"workflow_id"`
+	NotionDatabaseID string                 `json:"notion_database_id"`
+	RetryCount       int                    `json:"retry_count"`
+	ErrorDetails     string                 `json:"error_details"`
 }
 
 // EmailBatch représente un lot d'emails à traiter
@@ -49,22 +49,22 @@ type EmailBatch struct {
 
 // EmailSenderPipeline orchestre le traitement des emails
 type EmailSenderPipeline struct {
-	orchestrator      *PipelineOrchestrator
-	workerPool        *WorkerPool
-	config            EmailSenderPipelineConfig
-	batchProcessor    *EmailBatchProcessor
-	notionClient      NotionClient
-	gmailClient       GmailClient
-	ragClient         RAGClient
-	n8nClient         N8NClient
-	pipelineMu        sync.RWMutex
-	stats             *EmailPipelineStats
-	batchQueue        chan EmailBatch
-	resultCollector   chan EmailTask
-	errorCollector    chan EmailProcessingError
-	wg                sync.WaitGroup
-	ctx               context.Context
-	cancel            context.CancelFunc
+	orchestrator    *PipelineOrchestrator
+	workerPool      *WorkerPool
+	config          EmailSenderPipelineConfig
+	batchProcessor  *EmailBatchProcessor
+	notionClient    NotionClient
+	gmailClient     GmailClient
+	ragClient       RAGClient
+	n8nClient       N8NClient
+	pipelineMu      sync.RWMutex
+	stats           *EmailPipelineStats
+	batchQueue      chan EmailBatch
+	resultCollector chan EmailTask
+	errorCollector  chan EmailProcessingError
+	wg              sync.WaitGroup
+	ctx             context.Context
+	cancel          context.CancelFunc
 }
 
 // EmailProcessingError représente une erreur lors du traitement d'un email
@@ -81,18 +81,18 @@ type EmailProcessingError struct {
 
 // EmailPipelineStats contient les statistiques du pipeline d'emails
 type EmailPipelineStats struct {
-	TotalEmailsProcessed   int64         `json:"total_emails_processed"`
-	SuccessfulEmails       int64         `json:"successful_emails"`
-	FailedEmails           int64         `json:"failed_emails"`
-	TotalBatchesProcessed  int64         `json:"total_batches_processed"`
-	CurrentQueueSize       int           `json:"current_queue_size"`
-	AverageProcessingTime  time.Duration `json:"average_processing_time"`
-	AverageBatchSize       float64       `json:"average_batch_size"`
+	TotalEmailsProcessed   int64            `json:"total_emails_processed"`
+	SuccessfulEmails       int64            `json:"successful_emails"`
+	FailedEmails           int64            `json:"failed_emails"`
+	TotalBatchesProcessed  int64            `json:"total_batches_processed"`
+	CurrentQueueSize       int              `json:"current_queue_size"`
+	AverageProcessingTime  time.Duration    `json:"average_processing_time"`
+	AverageBatchSize       float64          `json:"average_batch_size"`
 	ErrorsByType           map[string]int64 `json:"errors_by_type"`
 	ErrorsByComponent      map[string]int64 `json:"errors_by_component"`
-	TotalRetries           int64         `json:"total_retries"`
-	LastProcessedTimestamp time.Time     `json:"last_processed_timestamp"`
-	StartTime              time.Time     `json:"start_time"`
+	TotalRetries           int64            `json:"total_retries"`
+	LastProcessedTimestamp time.Time        `json:"last_processed_timestamp"`
+	StartTime              time.Time        `json:"start_time"`
 }
 
 // EmailSenderPipelineConfig configure le pipeline EMAIL_SENDER
@@ -116,11 +116,11 @@ type EmailSenderPipelineConfig struct {
 
 // EmailBatchProcessor traite les lots d'emails
 type EmailBatchProcessor struct {
-	notionClient  NotionClient
-	gmailClient   GmailClient
-	ragClient     RAGClient
-	n8nClient     N8NClient
-	config        EmailSenderPipelineConfig
+	notionClient   NotionClient
+	gmailClient    GmailClient
+	ragClient      RAGClient
+	n8nClient      N8NClient
+	config         EmailSenderPipelineConfig
 	statsCollector *EmailPipelineStats
 }
 
@@ -172,37 +172,37 @@ func NewEmailSenderPipeline(config EmailSenderPipelineConfig) (*EmailSenderPipel
 	if err := validateConfig(config); err != nil {
 		return nil, err
 	}
-	
+
 	ctx, cancel := context.WithCancel(context.Background())
-	
+
 	// Créer les clients
 	notionClient, err := createNotionClient(config.NotionAPIKey)
 	if err != nil {
 		cancel()
 		return nil, fmt.Errorf("failed to create Notion client: %w", err)
 	}
-	
+
 	gmailClient, err := createGmailClient(config.GmailCredentialsPath)
 	if err != nil {
 		cancel()
 		return nil, fmt.Errorf("failed to create Gmail client: %w", err)
 	}
-	
+
 	ragClient, err := createRAGClient(config.RAGEndpoint)
 	if err != nil {
 		cancel()
 		return nil, fmt.Errorf("failed to create RAG client: %w", err)
 	}
-	
+
 	n8nClient, err := createN8NClient(config.N8NWebhookURL)
 	if err != nil {
 		cancel()
 		return nil, fmt.Errorf("failed to create N8N client: %w", err)
 	}
-	
+
 	// Créer le worker pool
 	workerPool := NewWorkerPool(config.MaxWorkers, config.MaxQueueSize)
-	
+
 	// Créer l'orchestrateur de pipeline
 	orchestratorConfig := PipelineOrchestratorConfig{
 		MaxWorkers:          config.MaxWorkers,
@@ -214,16 +214,16 @@ func NewEmailSenderPipeline(config EmailSenderPipelineConfig) (*EmailSenderPipel
 		RetryLimit:          config.MaxRetries,
 		RetryDelayMs:        config.RetryDelayMs,
 	}
-	
+
 	orchestrator := NewPipelineOrchestrator(orchestratorConfig)
-	
+
 	// Créer les statistiques
 	stats := &EmailPipelineStats{
 		ErrorsByType:      make(map[string]int64),
 		ErrorsByComponent: make(map[string]int64),
 		StartTime:         time.Now(),
 	}
-	
+
 	// Créer le processor de batch
 	batchProcessor := &EmailBatchProcessor{
 		notionClient:   notionClient,
@@ -233,12 +233,12 @@ func NewEmailSenderPipeline(config EmailSenderPipelineConfig) (*EmailSenderPipel
 		config:         config,
 		statsCollector: stats,
 	}
-	
+
 	// Créer les canaux
 	batchQueue := make(chan EmailBatch, config.MaxQueueSize)
 	resultCollector := make(chan EmailTask, config.MaxQueueSize*config.BatchSize)
 	errorCollector := make(chan EmailProcessingError, config.MaxQueueSize)
-	
+
 	return &EmailSenderPipeline{
 		orchestrator:    orchestrator,
 		workerPool:      workerPool,
@@ -262,31 +262,31 @@ func validateConfig(config EmailSenderPipelineConfig) error {
 	if config.MaxWorkers <= 0 {
 		return fmt.Errorf("max_workers must be greater than 0")
 	}
-	
+
 	if config.MaxQueueSize <= 0 {
 		return fmt.Errorf("max_queue_size must be greater than 0")
 	}
-	
+
 	if config.BatchSize <= 0 {
 		return fmt.Errorf("batch_size must be greater than 0")
 	}
-	
+
 	if config.NotionAPIKey == "" {
 		return fmt.Errorf("notion_api_key is required")
 	}
-	
+
 	if config.GmailCredentialsPath == "" {
 		return fmt.Errorf("gmail_credentials_path is required")
 	}
-	
+
 	if config.N8NWebhookURL == "" {
 		return fmt.Errorf("n8n_webhook_url is required")
 	}
-	
+
 	if config.RAGEndpoint == "" {
 		return fmt.Errorf("rag_endpoint is required")
 	}
-	
+
 	return nil
 }
 
@@ -318,30 +318,30 @@ func createN8NClient(webhookURL string) (N8NClient, error) {
 func (esp *EmailSenderPipeline) Start() error {
 	log.Printf("🚀 Starting EMAIL_SENDER_1 Pipeline")
 	log.Printf("⚙️ Configuration: %d workers, batch size %d", esp.config.MaxWorkers, esp.config.BatchSize)
-	
+
 	// Démarrer le worker pool
 	esp.workerPool.Start()
-	
+
 	// Configurer et enregistrer les étapes du pipeline
 	if err := esp.registerPipelineStages(); err != nil {
 		return fmt.Errorf("failed to register pipeline stages: %w", err)
 	}
-	
+
 	// Démarrer les collecteurs de résultats et d'erreurs
 	esp.wg.Add(2)
 	go esp.resultCollectorWorker()
 	go esp.errorCollectorWorker()
-	
+
 	// Démarrer le collecteur de statistiques si activé
 	if esp.config.EnableStats {
 		esp.wg.Add(1)
 		go esp.statsCollectorWorker()
 	}
-	
+
 	// Démarrer le traitement des lots
 	esp.wg.Add(1)
 	go esp.batchProcessorWorker()
-	
+
 	log.Printf("✅ EMAIL_SENDER_1 Pipeline started successfully")
 	return nil
 }
@@ -361,7 +361,7 @@ func (esp *EmailSenderPipeline) registerPipelineStages() error {
 			if !ok {
 				return nil, fmt.Errorf("invalid input type: expected EmailBatch")
 			}
-			
+
 			// Enrichir chaque tâche d'email avec les données de contact
 			for i := range batch.EmailTasks {
 				contactMetadata, err := esp.notionClient.GetContact(ctx, batch.EmailTasks[i].ContactID)
@@ -371,11 +371,11 @@ func (esp *EmailSenderPipeline) registerPipelineStages() error {
 				batch.EmailTasks[i].ContactMetadata = contactMetadata
 				batch.EmailTasks[i].Status = "prepared"
 			}
-			
+
 			return batch, nil
 		},
 	}
-	
+
 	// Étape 2: Génération de contexte RAG
 	ragContextStage := PipelineStage{
 		ID:          "rag_context",
@@ -389,7 +389,7 @@ func (esp *EmailSenderPipeline) registerPipelineStages() error {
 			if !ok {
 				return nil, fmt.Errorf("invalid input type: expected EmailBatch")
 			}
-			
+
 			// Obtenir le contexte RAG pour chaque tâche
 			for i := range batch.EmailTasks {
 				ragContext, err := esp.ragClient.GetEmailContext(ctx, batch.EmailTasks[i].ContactID, batch.EmailTasks[i].EmailType)
@@ -399,11 +399,11 @@ func (esp *EmailSenderPipeline) registerPipelineStages() error {
 				batch.EmailTasks[i].RAGContext = ragContext
 				batch.EmailTasks[i].Status = "contextualized"
 			}
-			
+
 			return batch, nil
 		},
 	}
-	
+
 	// Étape 3: Déclencher les workflows N8N
 	n8nTriggerStage := PipelineStage{
 		ID:          "n8n_trigger",
@@ -417,7 +417,7 @@ func (esp *EmailSenderPipeline) registerPipelineStages() error {
 			if !ok {
 				return nil, fmt.Errorf("invalid input type: expected EmailBatch")
 			}
-			
+
 			// Déclencher le workflow N8N pour chaque tâche
 			for i := range batch.EmailTasks {
 				data := make(map[string]interface{})
@@ -425,18 +425,18 @@ func (esp *EmailSenderPipeline) registerPipelineStages() error {
 				data["emailType"] = batch.EmailTasks[i].EmailType
 				data["ragContext"] = batch.EmailTasks[i].RAGContext
 				data["contactMetadata"] = batch.EmailTasks[i].ContactMetadata
-				
+
 				if err := esp.n8nClient.TriggerWorkflow(ctx, batch.EmailTasks[i].WorkflowID, data); err != nil {
 					return nil, fmt.Errorf("failed to trigger N8N workflow %s: %w", batch.EmailTasks[i].WorkflowID, err)
 				}
-				
+
 				batch.EmailTasks[i].Status = "workflow_triggered"
 			}
-			
+
 			return batch, nil
 		},
 	}
-	
+
 	// Étape 4: Envoi des emails via Gmail
 	sendEmailStage := PipelineStage{
 		ID:          "send_email",
@@ -450,7 +450,7 @@ func (esp *EmailSenderPipeline) registerPipelineStages() error {
 			if !ok {
 				return nil, fmt.Errorf("invalid input type: expected EmailBatch")
 			}
-			
+
 			// Envoyer l'email pour chaque tâche
 			for i := range batch.EmailTasks {
 				// Extraire l'email du contact
@@ -458,22 +458,22 @@ func (esp *EmailSenderPipeline) registerPipelineStages() error {
 				if !ok || email == "" {
 					return nil, fmt.Errorf("invalid or missing email for contact %s", batch.EmailTasks[i].ContactID)
 				}
-				
+
 				subject := fmt.Sprintf("Subject for %s", batch.EmailTasks[i].EmailType)
-				
+
 				emailID, err := esp.gmailClient.SendEmail(ctx, email, subject, batch.EmailTasks[i].EmailContent, batch.EmailTasks[i].Metadata)
 				if err != nil {
 					return nil, fmt.Errorf("failed to send email to %s: %w", email, err)
 				}
-				
+
 				batch.EmailTasks[i].Metadata["email_id"] = emailID
 				batch.EmailTasks[i].Status = "sent"
 			}
-			
+
 			return batch, nil
 		},
 	}
-	
+
 	// Étape 5: Mise à jour de l'état dans Notion
 	updateNotionStage := PipelineStage{
 		ID:          "update_notion",
@@ -487,24 +487,24 @@ func (esp *EmailSenderPipeline) registerPipelineStages() error {
 			if !ok {
 				return nil, fmt.Errorf("invalid input type: expected EmailBatch")
 			}
-			
+
 			// Mettre à jour l'état dans Notion pour chaque tâche
 			for i := range batch.EmailTasks {
 				if err := esp.notionClient.UpdateContactStatus(ctx, batch.EmailTasks[i].ContactID, "email_sent"); err != nil {
 					return nil, fmt.Errorf("failed to update Notion status for %s: %w", batch.EmailTasks[i].ContactID, err)
 				}
-				
+
 				if err := esp.notionClient.LogEmailSent(ctx, batch.EmailTasks[i].ContactID, batch.EmailTasks[i].EmailContent, batch.EmailTasks[i].Metadata); err != nil {
 					return nil, fmt.Errorf("failed to log email in Notion for %s: %w", batch.EmailTasks[i].ContactID, err)
 				}
-				
+
 				batch.EmailTasks[i].Status = "completed"
 			}
-			
+
 			return batch, nil
 		},
 	}
-	
+
 	// Enregistrer toutes les étapes
 	if err := esp.orchestrator.RegisterStage(prepareStage); err != nil {
 		return err
@@ -521,7 +521,7 @@ func (esp *EmailSenderPipeline) registerPipelineStages() error {
 	if err := esp.orchestrator.RegisterStage(updateNotionStage); err != nil {
 		return err
 	}
-	
+
 	return nil
 }
 
@@ -539,7 +539,7 @@ func (esp *EmailSenderPipeline) SubmitBatch(batch EmailBatch) error {
 func (esp *EmailSenderPipeline) GetStats() EmailPipelineStats {
 	esp.pipelineMu.RLock()
 	defer esp.pipelineMu.RUnlock()
-	
+
 	// Copier les statistiques pour éviter les race conditions
 	statsCopy := *esp.stats
 	return statsCopy
@@ -548,7 +548,7 @@ func (esp *EmailSenderPipeline) GetStats() EmailPipelineStats {
 // batchProcessorWorker traite les lots d'emails
 func (esp *EmailSenderPipeline) batchProcessorWorker() {
 	defer esp.wg.Done()
-	
+
 	for {
 		select {
 		case <-esp.ctx.Done():
@@ -557,16 +557,16 @@ func (esp *EmailSenderPipeline) batchProcessorWorker() {
 			if !ok {
 				return
 			}
-			
+
 			// Mettre à jour le statut du lot
 			batch.Status = "processing"
 			batch.ProcessedAt = time.Now()
-			
+
 			// Démarrer l'orchestrateur de pipeline pour ce lot
 			if err := esp.orchestrator.Start(batch); err != nil {
 				log.Printf("Error starting pipeline for batch %s: %v", batch.BatchID, err)
 				batch.Status = "failed"
-				
+
 				// Collecter les erreurs pour chaque tâche du lot
 				for _, task := range batch.EmailTasks {
 					esp.errorCollector <- EmailProcessingError{
@@ -583,10 +583,10 @@ func (esp *EmailSenderPipeline) batchProcessorWorker() {
 			} else {
 				// Attendre la fin de l'exécution du pipeline
 				esp.orchestrator.Wait()
-				
+
 				// Récupérer les résultats
 				results := esp.orchestrator.GetAllResults()
-				
+
 				// Chercher le résultat final (dernière étape)
 				if result, ok := results["update_notion"]; ok && result.Status == "completed" {
 					if finalBatch, ok := result.Output.(EmailBatch); ok {
@@ -594,12 +594,12 @@ func (esp *EmailSenderPipeline) batchProcessorWorker() {
 						for _, task := range finalBatch.EmailTasks {
 							esp.resultCollector <- task
 						}
-						
+
 						log.Printf("Batch %s processed successfully with %d tasks", batch.BatchID, len(finalBatch.EmailTasks))
 					}
 				} else {
 					log.Printf("Batch %s processing incomplete", batch.BatchID)
-					
+
 					// Collecter les erreurs pour chaque étape qui a échoué
 					for stageID, result := range results {
 						if result.Status != "completed" {
@@ -626,7 +626,7 @@ func (esp *EmailSenderPipeline) batchProcessorWorker() {
 // resultCollectorWorker collecte et traite les résultats
 func (esp *EmailSenderPipeline) resultCollectorWorker() {
 	defer esp.wg.Done()
-	
+
 	for {
 		select {
 		case <-esp.ctx.Done():
@@ -635,21 +635,21 @@ func (esp *EmailSenderPipeline) resultCollectorWorker() {
 			if !ok {
 				return
 			}
-			
+
 			// Traiter la tâche complétée
 			esp.pipelineMu.Lock()
 			esp.stats.TotalEmailsProcessed++
 			esp.stats.SuccessfulEmails++
 			esp.stats.LastProcessedTimestamp = time.Now()
 			esp.pipelineMu.Unlock()
-			
+
 			log.Printf("Task %s for contact %s completed successfully", task.ID, task.ContactID)
-			
+
 			// Indexer l'email dans RAG
 			if err := esp.ragClient.IndexEmail(esp.ctx, task.EmailContent, task.Metadata); err != nil {
 				log.Printf("Warning: Failed to index email %s in RAG: %v", task.ID, err)
 			}
-			
+
 			// Autres actions post-traitement...
 		}
 	}
@@ -658,7 +658,7 @@ func (esp *EmailSenderPipeline) resultCollectorWorker() {
 // errorCollectorWorker collecte et traite les erreurs
 func (esp *EmailSenderPipeline) errorCollectorWorker() {
 	defer esp.wg.Done()
-	
+
 	for {
 		select {
 		case <-esp.ctx.Done():
@@ -667,16 +667,16 @@ func (esp *EmailSenderPipeline) errorCollectorWorker() {
 			if !ok {
 				return
 			}
-			
+
 			// Traiter l'erreur
 			esp.pipelineMu.Lock()
 			esp.stats.FailedEmails++
 			esp.stats.ErrorsByType[err.ErrorType]++
 			esp.stats.ErrorsByComponent[err.Component]++
 			esp.pipelineMu.Unlock()
-			
+
 			log.Printf("Error processing task %s at stage %s: %s", err.TaskID, err.StageID, err.Message)
-			
+
 			// Gérer les retries si applicable
 			if err.IsRetryable && err.RetryCount < esp.config.MaxRetries {
 				// La logique de retry est gérée par l'orchestrateur
@@ -684,10 +684,10 @@ func (esp *EmailSenderPipeline) errorCollectorWorker() {
 				esp.pipelineMu.Lock()
 				esp.stats.TotalRetries++
 				esp.pipelineMu.Unlock()
-				
+
 				log.Printf("Retry %d/%d scheduled for task %s", err.RetryCount+1, esp.config.MaxRetries, err.TaskID)
 			}
-			
+
 			// Autres actions de gestion d'erreurs...
 		}
 	}
@@ -696,10 +696,10 @@ func (esp *EmailSenderPipeline) errorCollectorWorker() {
 // statsCollectorWorker collecte et sauvegarde périodiquement les statistiques
 func (esp *EmailSenderPipeline) statsCollectorWorker() {
 	defer esp.wg.Done()
-	
+
 	ticker := time.NewTicker(time.Duration(esp.config.StatsIntervalSec) * time.Second)
 	defer ticker.Stop()
-	
+
 	for {
 		select {
 		case <-esp.ctx.Done():
@@ -719,32 +719,32 @@ func (esp *EmailSenderPipeline) saveStats() {
 		log.Printf("Failed to create output directory: %v", err)
 		return
 	}
-	
+
 	// Copier les statistiques pour la sauvegarde
 	esp.pipelineMu.RLock()
 	statsCopy := *esp.stats
 	esp.pipelineMu.RUnlock()
-	
+
 	// Ajouter les statistiques du worker pool
 	workerPoolStats := esp.workerPool.GetStats()
-	
+
 	// Créer un fichier des statistiques
 	statsFile := filepath.Join(esp.config.OutputPath, "email_pipeline_stats.json")
-	
+
 	// Fusionner les statistiques
 	combinedStats := map[string]interface{}{
 		"email_pipeline": statsCopy,
 		"worker_pool":    workerPoolStats,
 		"timestamp":      time.Now(),
 	}
-	
+
 	// Sérialiser en JSON
 	data, err := json.MarshalIndent(combinedStats, "", "  ")
 	if err != nil {
 		log.Printf("Failed to marshal stats: %v", err)
 		return
 	}
-	
+
 	// Écrire dans un fichier
 	if err := os.WriteFile(statsFile, data, 0644); err != nil {
 		log.Printf("Failed to write stats to file: %v", err)
@@ -755,27 +755,27 @@ func (esp *EmailSenderPipeline) saveStats() {
 // Stop arrête le pipeline EMAIL_SENDER
 func (esp *EmailSenderPipeline) Stop() {
 	log.Printf("Stopping EMAIL_SENDER_1 Pipeline...")
-	
+
 	// Annuler le contexte pour arrêter tous les workers
 	esp.cancel()
-	
+
 	// Arrêter l'orchestrateur
 	esp.orchestrator.Stop()
-	
+
 	// Arrêter le worker pool
 	esp.workerPool.Stop()
-	
+
 	// Attendre que tous les workers se terminent
 	esp.wg.Wait()
-	
+
 	// Fermer les canaux
 	close(esp.resultCollector)
 	close(esp.errorCollector)
 	close(esp.batchQueue)
-	
+
 	// Sauvegarde finale des statistiques
 	esp.saveStats()
-	
+
 	log.Printf("EMAIL_SENDER_1 Pipeline stopped")
 }
 
@@ -841,7 +841,7 @@ type mockRAGClient struct {
 
 func (c *mockRAGClient) GetEmailContext(ctx context.Context, contactID string, emailType string) (interface{}, error) {
 	return map[string]interface{}{
-		"relevance_score": 0.92,
+		"relevance_score":  0.92,
 		"similar_contacts": []string{"contact1", "contact2"},
 		"suggested_topics": []string{"Topic A", "Topic B"},
 	}, nil

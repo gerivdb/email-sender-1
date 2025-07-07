@@ -186,7 +186,7 @@ func (po *PipelineOrchestrator) Start(initialInput interface{}) error {
 	if len(po.executionOrder) == 0 {
 		return fmt.Errorf("no stages to execute")
 	}
-	
+
 	// Surveiller la progression et le timeout
 	go po.monitorPipeline()
 
@@ -211,7 +211,7 @@ func (po *PipelineOrchestrator) Stop() {
 		po.cancel()
 		po.workerPool.Stop()
 	}
-	
+
 	po.endTime = time.Now()
 }
 
@@ -246,11 +246,11 @@ func (po *PipelineOrchestrator) GetAllResults() map[string]*PipelineResult {
 func (po *PipelineOrchestrator) GetPipelineProgress() float64 {
 	completed := atomic.LoadInt32(&po.completedStages)
 	total := atomic.LoadInt32(&po.totalStages)
-	
+
 	if total == 0 {
 		return 0
 	}
-	
+
 	return float64(completed) * 100.0 / float64(total)
 }
 
@@ -274,18 +274,18 @@ func (po *PipelineOrchestrator) GetPipelineStats() map[string]interface{} {
 	}
 
 	workerPoolStats := po.workerPool.GetStats()
-	
+
 	return map[string]interface{}{
-		"totalStages":          po.totalStages,
-		"completedStages":      po.completedStages,
-		"progress":             po.GetPipelineProgress(),
-		"duration":             duration,
-		"status":               po.getPipelineStatus(),
-		"stageStatuses":        statuses,
-		"workerPoolStats":      workerPoolStats,
-		"queuedTasks":          workerPoolStats.MaxQueueSize - workerPoolStats.JobsProcessed,
-		"averageStageTime":     workerPoolStats.AverageTime,
-		"currentLoad":          workerPoolStats.CurrentLoad,
+		"totalStages":      po.totalStages,
+		"completedStages":  po.completedStages,
+		"progress":         po.GetPipelineProgress(),
+		"duration":         duration,
+		"status":           po.getPipelineStatus(),
+		"stageStatuses":    statuses,
+		"workerPoolStats":  workerPoolStats,
+		"queuedTasks":      workerPoolStats.MaxQueueSize - workerPoolStats.JobsProcessed,
+		"averageStageTime": workerPoolStats.AverageTime,
+		"currentLoad":      workerPoolStats.CurrentLoad,
 	}
 }
 
@@ -298,22 +298,22 @@ func (po *PipelineOrchestrator) getPipelineStatus() string {
 		if po.ctx.Err() == context.Canceled {
 			return "canceled"
 		}
-		
+
 		// Vérifier si certaines étapes ont échoué
 		for _, status := range po.stageStatus {
 			if status.Status == "failed" {
 				return "failed"
 			}
 		}
-		
+
 		// Si toutes les étapes sont complétées
 		if atomic.LoadInt32(&po.completedStages) == po.totalStages {
 			return "completed"
 		}
-		
+
 		return "stopped"
 	}
-	
+
 	return "running"
 }
 
@@ -352,16 +352,16 @@ func (po *PipelineOrchestrator) toposort(stages map[string]PipelineStage) ([]str
 		if visited[id] {
 			return nil
 		}
-		
+
 		temp[id] = true
-		
+
 		// Visit dependencies
 		for _, depID := range stages[id].DependsOn {
 			if err := visit(depID); err != nil {
 				return err
 			}
 		}
-		
+
 		temp[id] = false
 		visited[id] = true
 		result = append(result, id)
@@ -384,13 +384,13 @@ func (po *PipelineOrchestrator) toposort(stages map[string]PipelineStage) ([]str
 func (po *PipelineOrchestrator) executeStages(initialInput interface{}) {
 	// Créer un map pour stocker les données de sortie des étapes
 	outputs := make(map[string]interface{})
-	
+
 	// Exécuter les étapes dans l'ordre
 	semaControl := make(chan struct{}, po.maxConcurrentStages)
-	
+
 	for _, stageID := range po.executionOrder {
 		stage := po.stages[stageID]
-		
+
 		// Ne pas commencer une étape si le pipeline est stoppé
 		select {
 		case <-po.ctx.Done():
@@ -400,34 +400,34 @@ func (po *PipelineOrchestrator) executeStages(initialInput interface{}) {
 		default:
 			// Continuer l'exécution
 		}
-		
+
 		// Vérifier que toutes les dépendances sont satisfaites
 		dependenciesOk, input := po.checkDependencies(stageID, outputs)
 		if !dependenciesOk {
 			po.updateStageStatus(stageID, "skipped", nil, time.Time{}, time.Time{})
 			continue
 		}
-		
+
 		// Limiter le nombre d'étapes parallèles
 		semaControl <- struct{}{}
-		
+
 		po.wg.Add(1)
 		go func(sid string, s PipelineStage, in interface{}) {
 			defer po.wg.Done()
 			defer func() { <-semaControl }()
-			
+
 			// Exécuter l'étape
 			result := po.executeStage(sid, s, in)
-			
+
 			// Stocker le résultat
 			po.mu.Lock()
 			po.stageResults[sid] = result
 			outputs[sid] = result.Output
 			po.mu.Unlock()
-			
+
 			// Notifier qu'une étape est terminée
 			po.stageCompletedSignal <- sid
-			
+
 			// Incrémenter le compteur des étapes terminées
 			atomic.AddInt32(&po.completedStages, 1)
 		}(stageID, stage, input)
@@ -438,22 +438,22 @@ func (po *PipelineOrchestrator) executeStages(initialInput interface{}) {
 func (po *PipelineOrchestrator) executeStage(stageID string, stage PipelineStage, input interface{}) *PipelineResult {
 	stageCtx := po.ctx
 	var cancel context.CancelFunc
-	
+
 	// Créer un contexte avec timeout spécifique si défini
 	timeout := po.stageTimeout
 	if stage.Timeout > 0 {
 		timeout = stage.Timeout
 	}
-	
+
 	if timeout > 0 {
 		stageCtx, cancel = context.WithTimeout(po.ctx, timeout)
 		defer cancel()
 	}
-	
+
 	// Mettre à jour le statut
 	startTime := time.Now()
 	po.updateStageStatus(stageID, "running", nil, startTime, time.Time{})
-	
+
 	// Créer une tâche
 	task := Task{
 		ID:       stageID,
@@ -465,19 +465,19 @@ func (po *PipelineOrchestrator) executeStage(stageID string, stage PipelineStage
 				StartTime: startTime,
 				Metadata:  make(map[string]interface{}),
 			}
-			
+
 			defer func() {
 				// Récupérer les panics
 				if r := recover(); r != nil {
 					err = fmt.Errorf("stage %s panicked: %v", stageID, r)
 					result.Status = "failed"
 				}
-				
+
 				// Enregistrer le résultat
 				result.EndTime = time.Now()
 				result.Duration = result.EndTime.Sub(result.StartTime)
 				result.Error = err
-				
+
 				if err != nil {
 					result.Status = "failed"
 					po.updateStageStatus(stageID, "failed", err, startTime, time.Now())
@@ -485,19 +485,19 @@ func (po *PipelineOrchestrator) executeStage(stageID string, stage PipelineStage
 					result.Status = "completed"
 					po.updateStageStatus(stageID, "completed", nil, startTime, time.Now())
 				}
-				
+
 				po.mu.Lock()
 				po.stageResults[stageID] = result
 				po.mu.Unlock()
 			}()
-			
+
 			// Exécuter l'étape
 			result.Output, err = stage.Execute(ctx, input)
 			return err
 		},
 		Timeout: timeout,
 	}
-	
+
 	// Soumettre la tâche au worker pool
 	submitted, err := po.workerPool.SubmitTask(task)
 	if !submitted || err != nil {
@@ -511,10 +511,10 @@ func (po *PipelineOrchestrator) executeStage(stageID string, stage PipelineStage
 			Metadata:  map[string]interface{}{"error": "task_submission_failed"},
 		}
 	}
-	
+
 	// Récupérer le résultat depuis le worker pool
 	var taskResult *PipelineResult
-	
+
 	// Attendre le résultat depuis le worker pool
 	for result := range po.workerPool.GetResults() {
 		if result.TaskID == stageID {
@@ -526,17 +526,17 @@ func (po *PipelineOrchestrator) executeStage(stageID string, stage PipelineStage
 				Duration:  result.Duration,
 				Metadata:  make(map[string]interface{}),
 			}
-			
+
 			if result.Error != nil {
 				taskResult.Status = "failed"
 			} else {
 				taskResult.Status = "completed"
 			}
-			
+
 			break
 		}
 	}
-	
+
 	// Si on n'a pas pu récupérer le résultat
 	if taskResult == nil {
 		taskResult = &PipelineResult{
@@ -549,7 +549,7 @@ func (po *PipelineOrchestrator) executeStage(stageID string, stage PipelineStage
 			Metadata:  map[string]interface{}{"error": "result_retrieval_failed"},
 		}
 	}
-	
+
 	return taskResult
 }
 
@@ -557,23 +557,23 @@ func (po *PipelineOrchestrator) executeStage(stageID string, stage PipelineStage
 func (po *PipelineOrchestrator) updateStageStatus(stageID, status string, err error, startTime, endTime time.Time) {
 	po.mu.Lock()
 	defer po.mu.Unlock()
-	
+
 	if status == po.stageStatus[stageID].Status {
 		return
 	}
-	
+
 	po.stageStatus[stageID].Status = status
-	
+
 	if !startTime.IsZero() {
 		po.stageStatus[stageID].StartTime = startTime
 	}
-	
+
 	if !endTime.IsZero() {
 		po.stageStatus[stageID].EndTime = endTime
 		po.stageStatus[stageID].Duration = endTime.Sub(po.stageStatus[stageID].StartTime)
 		po.stageStatus[stageID].IsCompleted = (status == "completed" || status == "failed" || status == "skipped")
 	}
-	
+
 	if err != nil {
 		po.stageStatus[stageID].Error = err
 	}
@@ -583,20 +583,20 @@ func (po *PipelineOrchestrator) updateStageStatus(stageID, status string, err er
 func (po *PipelineOrchestrator) checkDependencies(stageID string, outputs map[string]interface{}) (bool, interface{}) {
 	po.mu.RLock()
 	defer po.mu.RUnlock()
-	
+
 	// Vérifier les dépendances
 	stage := po.stages[stageID]
-	
+
 	for _, depID := range stage.DependsOn {
 		depStatus, exists := po.stageStatus[depID]
 		if !exists || depStatus.Status != "completed" {
 			return false, nil
 		}
 	}
-	
+
 	// Déterminer l'entrée pour cette étape
 	var input interface{}
-	
+
 	// Si l'étape a une seule dépendance, utiliser sa sortie comme entrée
 	if len(stage.DependsOn) == 1 {
 		input = outputs[stage.DependsOn[0]]
@@ -608,7 +608,7 @@ func (po *PipelineOrchestrator) checkDependencies(stageID string, outputs map[st
 		}
 		input = inputs
 	}
-	
+
 	return true, input
 }
 
@@ -616,7 +616,7 @@ func (po *PipelineOrchestrator) checkDependencies(stageID string, outputs map[st
 func (po *PipelineOrchestrator) markRemainingStagesAsCancelled() {
 	po.mu.Lock()
 	defer po.mu.Unlock()
-	
+
 	for id, status := range po.stageStatus {
 		if status.Status == "pending" {
 			status.Status = "cancelled"
@@ -628,7 +628,7 @@ func (po *PipelineOrchestrator) markRemainingStagesAsCancelled() {
 func (po *PipelineOrchestrator) monitorPipeline() {
 	ticker := time.NewTicker(1 * time.Second)
 	defer ticker.Stop()
-	
+
 	for {
 		select {
 		case <-ticker.C:
@@ -640,19 +640,19 @@ func (po *PipelineOrchestrator) monitorPipeline() {
 				}
 				return
 			}
-			
+
 			// Autres vérifications de santé du pipeline...
-			
+
 		case completedStage := <-po.stageCompletedSignal:
 			// Une étape est terminée, vérifier son statut
 			po.mu.RLock()
 			stageResult, exists := po.stageResults[completedStage]
 			po.mu.RUnlock()
-			
+
 			if !exists || stageResult.Error == nil {
 				continue
 			}
-			
+
 			// Gérer les échecs selon la stratégie de récupération
 			switch po.recoveryStrategy {
 			case FailFast:
@@ -660,15 +660,15 @@ func (po *PipelineOrchestrator) monitorPipeline() {
 					po.cancel() // Annuler le contexte pour arrêter les autres étapes
 				}
 				return
-				
+
 			case RetryOnce, RetryWithBackoff:
 				// Implémenter la logique de retry
 				go po.handleRetry(completedStage, stageResult)
-				
+
 			case SkipFailed:
 				// Continuer l'exécution, les dépendances de l'étape échouée seront automatiquement ignorées
 			}
-			
+
 		case <-po.ctx.Done():
 			// Contexte annulé ou timeout
 			if atomic.CompareAndSwapInt32(&po.isRunning, 1, 0) {
@@ -684,14 +684,14 @@ func (po *PipelineOrchestrator) handleRetry(stageID string, result *PipelineResu
 	po.mu.Lock()
 	stageStatus := po.stageStatus[stageID]
 	po.mu.Unlock()
-	
+
 	if stageStatus.RetryCount >= po.retryLimit {
 		return
 	}
-	
+
 	// Incrémenter le compteur de retry
 	stageStatus.RetryCount++
-	
+
 	// Attendre avant de réessayer si nécessaire
 	if po.recoveryStrategy == RetryWithBackoff {
 		backoffDelay := po.retryDelayMs * (1 << uint(stageStatus.RetryCount-1)) // Exponentiel: 1s, 2s, 4s...
@@ -699,13 +699,13 @@ func (po *PipelineOrchestrator) handleRetry(stageID string, result *PipelineResu
 	} else {
 		time.Sleep(time.Duration(po.retryDelayMs) * time.Millisecond)
 	}
-	
+
 	// Réinitialiser le statut pour réexécuter l'étape
 	po.updateStageStatus(stageID, "pending", nil, time.Time{}, time.Time{})
-	
+
 	// Décrémentation du compteur des étapes terminées
 	atomic.AddInt32(&po.completedStages, -1)
-	
+
 	// Récupérer la dernière entrée
 	var input interface{}
 	po.mu.RLock()
@@ -717,14 +717,14 @@ func (po *PipelineOrchestrator) handleRetry(stageID string, result *PipelineResu
 		}
 	}
 	po.mu.RUnlock()
-	
+
 	// Vérifier les dépendances et obtenir l'entrée
 	dependenciesOk, input := po.checkDependencies(stageID, outputs)
 	if !dependenciesOk {
 		po.updateStageStatus(stageID, "skipped", fmt.Errorf("dependencies not satisfied during retry"), time.Time{}, time.Now())
 		return
 	}
-	
+
 	// Réexécuter l'étape
 	task := Task{
 		ID:       fmt.Sprintf("%s_retry_%d", stageID, stageStatus.RetryCount),
@@ -736,37 +736,37 @@ func (po *PipelineOrchestrator) handleRetry(stageID string, result *PipelineResu
 				StartTime: startTime,
 				Metadata:  map[string]interface{}{"retry_count": stageStatus.RetryCount},
 			}
-			
+
 			var err error
 			newResult.Output, err = stage.Execute(ctx, input)
-			
+
 			newResult.EndTime = time.Now()
 			newResult.Duration = newResult.EndTime.Sub(newResult.StartTime)
-			
+
 			if err != nil {
 				newResult.Status = "failed"
 				newResult.Error = err
 			} else {
 				newResult.Status = "completed"
 			}
-			
+
 			po.mu.Lock()
 			po.stageResults[stageID] = newResult
 			po.mu.Unlock()
-			
+
 			po.updateStageStatus(stageID, newResult.Status, err, startTime, newResult.EndTime)
-			
+
 			// Incrémenter le compteur des étapes terminées
 			if err == nil {
 				atomic.AddInt32(&po.completedStages, 1)
 				po.stageCompletedSignal <- stageID
 			}
-			
+
 			return err
 		},
 		Timeout: po.stageTimeout,
 	}
-	
+
 	// Soumettre la tâche au worker pool
 	po.workerPool.SubmitTask(task)
 }

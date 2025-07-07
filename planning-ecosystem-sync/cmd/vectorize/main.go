@@ -636,14 +636,14 @@ type CollectionConfig struct {
 }
 
 type Point struct {
-	ID       interface{}            `json:"id"`
-	Vector   []float32              `json:"vector"`
-	Payload  map[string]interface{} `json:"payload,omitempty"`
+	ID      interface{}            `json:"id"`
+	Vector  []float32              `json:"vector"`
+	Payload map[string]interface{} `json:"payload,omitempty"`
 }
 
 type SearchRequest struct {
-	Vector []float32 `json:"vector"`
-	Limit  int       `json:"limit"`
+	Vector []float32   `json:"vector"`
+	Limit  int         `json:"limit"`
 	Filter interface{} `json:"filter,omitempty"`
 }
 

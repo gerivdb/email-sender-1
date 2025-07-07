@@ -14,21 +14,21 @@ import (
 
 // EmbeddingMigrator gère la migration des embeddings vers de nouveaux modèles
 type EmbeddingMigrator struct {
-	oldModel	string
-	newModel	string
-	batchSize	int
-	parallel	int
-	dryRun		bool
-	qdrantClient	QdrantClient
-	metrics		*MigrationMetrics
+	oldModel     string
+	newModel     string
+	batchSize    int
+	parallel     int
+	dryRun       bool
+	qdrantClient QdrantClient
+	metrics      *MigrationMetrics
 }
 
 // MigrationMetrics contient les métriques de migration
 type MigrationMetrics struct {
-	documentsProcessed	prometheus.Counter
-	migrationDuration	prometheus.Histogram
-	errorCount		prometheus.Counter
-	batchSize		prometheus.Gauge
+	documentsProcessed prometheus.Counter
+	migrationDuration  prometheus.Histogram
+	errorCount         prometheus.Counter
+	batchSize          prometheus.Gauge
 }
 
 // QdrantClient interface pour le client Qdrant
@@ -41,21 +41,21 @@ type QdrantClient interface {
 
 // Collection représente une collection Qdrant
 type Collection struct {
-	Name	string			`json:"name"`
-	Config	CollectionConfig	`json:"config"`
+	Name   string           `json:"name"`
+	Config CollectionConfig `json:"config"`
 }
 
 // CollectionConfig contient la configuration d'une collection
 type CollectionConfig struct {
-	VectorSize	int	`json:"vector_size"`
-	Distance	string	`json:"distance"`
+	VectorSize int    `json:"vector_size"`
+	Distance   string `json:"distance"`
 }
 
 // Point représente un point dans Qdrant
 type Point struct {
-	ID	interface{}		`json:"id"`
-	Vector	[]float32		`json:"vector"`
-	Payload	map[string]interface{}	`json:"payload"`
+	ID      interface{}            `json:"id"`
+	Vector  []float32              `json:"vector"`
+	Payload map[string]interface{} `json:"payload"`
 }
 
 // EmbeddingModel interface pour les modèles d'embedding
@@ -67,22 +67,22 @@ type EmbeddingModel interface {
 
 // MigrationResult contient les résultats de migration
 type MigrationResult struct {
-	ProcessedDocuments	int		`json:"processed_documents"`
-	SuccessfulMigrations	int		`json:"successful_migrations"`
-	FailedMigrations	int		`json:"failed_migrations"`
-	Duration		time.Duration	`json:"duration"`
-	Errors			[]string	`json:"errors"`
+	ProcessedDocuments   int           `json:"processed_documents"`
+	SuccessfulMigrations int           `json:"successful_migrations"`
+	FailedMigrations     int           `json:"failed_migrations"`
+	Duration             time.Duration `json:"duration"`
+	Errors               []string      `json:"errors"`
 }
 
 func main() {
 	var (
-		oldModel	= flag.String("old-model", "text-embedding-ada-002", "Ancien modèle d'embedding")
-		newModel	= flag.String("new-model", "text-embedding-3-large", "Nouveau modèle d'embedding")
-		collection	= flag.String("collection", "roadmap_tasks", "Collection à migrer")
-		batchSize	= flag.Int("batch-size", 100, "Taille des batches")
-		parallel	= flag.Int("parallel", 4, "Nombre de workers parallèles")
-		dryRun		= flag.Bool("dry-run", false, "Mode simulation sans modifications")
-		qdrantURL	= flag.String("qdrant-url", "http://localhost:6333", "URL du serveur Qdrant")
+		oldModel   = flag.String("old-model", "text-embedding-ada-002", "Ancien modèle d'embedding")
+		newModel   = flag.String("new-model", "text-embedding-3-large", "Nouveau modèle d'embedding")
+		collection = flag.String("collection", "roadmap_tasks", "Collection à migrer")
+		batchSize  = flag.Int("batch-size", 100, "Taille des batches")
+		parallel   = flag.Int("parallel", 4, "Nombre de workers parallèles")
+		dryRun     = flag.Bool("dry-run", false, "Mode simulation sans modifications")
+		qdrantURL  = flag.String("qdrant-url", "http://localhost:6333", "URL du serveur Qdrant")
 	)
 	flag.Parse()
 
@@ -93,21 +93,21 @@ func main() {
 	// Initialiser les métriques
 	metrics := &MigrationMetrics{
 		documentsProcessed: promauto.NewCounter(prometheus.CounterOpts{
-			Name:	"embedding_migration_documents_processed_total",
-			Help:	"Nombre de documents traités durant la migration",
+			Name: "embedding_migration_documents_processed_total",
+			Help: "Nombre de documents traités durant la migration",
 		}),
 		migrationDuration: promauto.NewHistogram(prometheus.HistogramOpts{
-			Name:		"embedding_migration_duration_seconds",
-			Help:		"Durée de la migration des embeddings",
-			Buckets:	[]float64{1, 5, 10, 30, 60, 300, 600, 1800, 3600},
+			Name:    "embedding_migration_duration_seconds",
+			Help:    "Durée de la migration des embeddings",
+			Buckets: []float64{1, 5, 10, 30, 60, 300, 600, 1800, 3600},
 		}),
 		errorCount: promauto.NewCounter(prometheus.CounterOpts{
-			Name:	"embedding_migration_errors_total",
-			Help:	"Nombre d'erreurs durant la migration",
+			Name: "embedding_migration_errors_total",
+			Help: "Nombre d'erreurs durant la migration",
 		}),
 		batchSize: promauto.NewGauge(prometheus.GaugeOpts{
-			Name:	"embedding_migration_batch_size",
-			Help:	"Taille des batches de migration",
+			Name: "embedding_migration_batch_size",
+			Help: "Taille des batches de migration",
 		}),
 	}
 
@@ -116,13 +116,13 @@ func main() {
 
 	// Créer le migrateur
 	migrator := &EmbeddingMigrator{
-		oldModel:	*oldModel,
-		newModel:	*newModel,
-		batchSize:	*batchSize,
-		parallel:	*parallel,
-		dryRun:		*dryRun,
-		qdrantClient:	qdrantClient,
-		metrics:	metrics,
+		oldModel:     *oldModel,
+		newModel:     *newModel,
+		batchSize:    *batchSize,
+		parallel:     *parallel,
+		dryRun:       *dryRun,
+		qdrantClient: qdrantClient,
+		metrics:      metrics,
 	}
 
 	// Exécuter la migration
@@ -168,8 +168,8 @@ func (em *EmbeddingMigrator) MigrateCollection(ctx context.Context, collectionNa
 	if !em.dryRun {
 		newModel := em.getEmbeddingModel(em.newModel)
 		newConfig := CollectionConfig{
-			VectorSize:	newModel.GetDimensions(),
-			Distance:	collection.Config.Distance,
+			VectorSize: newModel.GetDimensions(),
+			Distance:   collection.Config.Distance,
 		}
 
 		err = em.qdrantClient.CreateCollection(ctx, newCollectionName, newConfig)
@@ -264,9 +264,9 @@ func (em *EmbeddingMigrator) migrateBatches(ctx context.Context, points []Point,
 
 // BatchResult contient les résultats d'un batch
 type BatchResult struct {
-	SuccessCount	int
-	ErrorCount	int
-	Errors		[]string
+	SuccessCount int
+	ErrorCount   int
+	Errors       []string
 }
 
 // worker traite les batches de points
@@ -309,9 +309,9 @@ func (em *EmbeddingMigrator) processBatch(ctx context.Context, batch []Point, ne
 
 		// Créer le nouveau point
 		newPoint := Point{
-			ID:		point.ID,
-			Vector:		newVector,
-			Payload:	point.Payload,
+			ID:      point.ID,
+			Vector:  newVector,
+			Payload: point.Payload,
 		}
 
 		// Ajouter les métadonnées de migration
@@ -374,10 +374,10 @@ func NewQdrantClient(url string) QdrantClient {
 
 func (c *MockQdrantClient) GetCollection(ctx context.Context, name string) (*Collection, error) {
 	return &Collection{
-		Name:	name,
+		Name: name,
 		Config: CollectionConfig{
-			VectorSize:	1536,
-			Distance:	"cosine",
+			VectorSize: 1536,
+			Distance:   "cosine",
 		},
 	}, nil
 }
@@ -406,7 +406,7 @@ func (m *MockEmbeddingModel) GenerateEmbedding(ctx context.Context, text string)
 	dimensions := m.GetDimensions()
 	vector := make([]float32, dimensions)
 	for i := range vector {
-		vector[i] = 0.1	// Valeur factice
+		vector[i] = 0.1 // Valeur factice
 	}
 	return vector, nil
 }

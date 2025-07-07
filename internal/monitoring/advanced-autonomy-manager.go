@@ -280,13 +280,13 @@ func (daam *DefaultAdvancedAutonomyManager) escalateToManualIntervention(ctx con
 
 	// Préparer un rapport détaillé pour l'intervention manuelle
 	report := map[string]interface{}{
-		"service":             service,
-		"failure_count":       failure.FailureCount,
+		"service":              service,
+		"failure_count":        failure.FailureCount,
 		"consecutive_failures": failure.ConsecutiveFailures,
-		"first_failure":       failure.FirstFailure,
-		"last_failure":        failure.LastFailure,
-		"recovery_attempts":   failure.RecoveryAttempts,
-		"current_status":      failure.CurrentStatus,
+		"first_failure":        failure.FirstFailure,
+		"last_failure":         failure.LastFailure,
+		"recovery_attempts":    failure.RecoveryAttempts,
+		"current_status":       failure.CurrentStatus,
 	}
 
 	reportJSON, _ := json.MarshalIndent(report, "", "  ")

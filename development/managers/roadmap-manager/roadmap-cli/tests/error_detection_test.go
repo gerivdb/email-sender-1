@@ -1,10 +1,10 @@
 package tests
 
 import (
-	"testing"
 	"os"
 	"path/filepath"
 	"strings"
+	"testing"
 )
 
 func TestErrorDetection(t *testing.T) {

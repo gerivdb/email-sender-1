@@ -18,36 +18,36 @@ import (
 
 // TestConfig holds test configuration
 type TestConfig struct {
-	ProjectRoot	string
-	Verbose		bool
-	Parallel	bool
-	Timeout		time.Duration
-	RunBenchmarks	bool
-	RunIntegration	bool
-	Coverage	bool
-	Race		bool
-	FailFast	bool
+	ProjectRoot    string
+	Verbose        bool
+	Parallel       bool
+	Timeout        time.Duration
+	RunBenchmarks  bool
+	RunIntegration bool
+	Coverage       bool
+	Race           bool
+	FailFast       bool
 }
 
 // TestResult represents a test result
 type TestResult struct {
-	Package		string		`json:"package"`
-	Passed		bool		`json:"passed"`
-	Duration	time.Duration	`json:"duration"`
-	Output		string		`json:"output"`
-	Coverage	float64		`json:"coverage,omitempty"`
+	Package  string        `json:"package"`
+	Passed   bool          `json:"passed"`
+	Duration time.Duration `json:"duration"`
+	Output   string        `json:"output"`
+	Coverage float64       `json:"coverage,omitempty"`
 }
 
 // TestSuite represents all test results
 type TestSuite struct {
-	StartTime	time.Time	`json:"start_time"`
-	EndTime		time.Time	`json:"end_time"`
-	Duration	time.Duration	`json:"duration"`
-	TotalTests	int		`json:"total_tests"`
-	PassedTests	int		`json:"passed_tests"`
-	FailedTests	int		`json:"failed_tests"`
-	Coverage	float64		`json:"coverage"`
-	Results		[]TestResult	`json:"results"`
+	StartTime   time.Time     `json:"start_time"`
+	EndTime     time.Time     `json:"end_time"`
+	Duration    time.Duration `json:"duration"`
+	TotalTests  int           `json:"total_tests"`
+	PassedTests int           `json:"passed_tests"`
+	FailedTests int           `json:"failed_tests"`
+	Coverage    float64       `json:"coverage"`
+	Results     []TestResult  `json:"results"`
 }
 
 func main() {
@@ -109,8 +109,8 @@ func runTestSuite(config *TestConfig) (*TestSuite, error) {
 	startTime := time.Now()
 
 	suite := &TestSuite{
-		StartTime:	startTime,
-		Results:	[]TestResult{},
+		StartTime: startTime,
+		Results:   []TestResult{},
 	}
 
 	// Find all packages with tests
@@ -208,14 +208,14 @@ func runTestsParallel(config *TestConfig, packages []string, suite *TestSuite) e
 		go func(packageName string) {
 			defer wg.Done()
 
-			semaphore <- struct{}{}	// Acquire
+			semaphore <- struct{}{} // Acquire
 			result := runSingleTest(config, packageName)
-			<-semaphore	// Release
+			<-semaphore // Release
 
 			results <- result
 
 			if config.FailFast && !result.Passed {
-				return	// Early exit for fail-fast mode
+				return // Early exit for fail-fast mode
 			}
 		}(pkg)
 	}
@@ -274,8 +274,8 @@ func runSingleTest(config *TestConfig, packageName string) TestResult {
 	startTime := time.Now()
 
 	result := TestResult{
-		Package:	packageName,
-		Passed:		false,
+		Package: packageName,
+		Passed:  false,
 	}
 
 	// Build test command
@@ -285,7 +285,7 @@ func runSingleTest(config *TestConfig, packageName string) TestResult {
 		args = append(args, "-v")
 	}
 
-	if config.Race && runtime.GOOS != "windows" {	// Race detector doesn't work well on Windows
+	if config.Race && runtime.GOOS != "windows" { // Race detector doesn't work well on Windows
 		args = append(args, "-race")
 	}
 
@@ -379,7 +379,7 @@ func printSummary(suite *TestSuite) {
 	// Show slowest tests
 	fmt.Printf("   Slowest tests:\n")
 	for i, result := range sortedResults {
-		if i >= 3 {	// Show top 3 slowest
+		if i >= 3 { // Show top 3 slowest
 			break
 		}
 		fmt.Printf("   %d. %s (%.2fs)\n", i+1, result.Package, result.Duration.Seconds())

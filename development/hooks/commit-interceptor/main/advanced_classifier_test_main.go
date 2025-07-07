@@ -1,120 +1,207 @@
-// advanced_classifier_test.go - Tests pour Classification Intelligente Multi-Critères
-// Phase 2.2 du Framework de Branchement Automatique
-package commit_interceptor
+// advanced_classifier_test_main.go - Main entry point for testing Advanced Classifier
+package main
 
 import (
 	"context"
 	"fmt"
-	"testing"
+	"testing" // Still needed for t.Run etc.
 	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	commitinterceptor "github.com/gerivdb/email-sender-1/development/hooks/commit-interceptor"
+	analyzer "github.com/gerivdb/email-sender-1/development/hooks/commit-interceptor/analyzer"
 )
 
-func TestMultiCriteriaClassifier_HybridClassification(t *testing.T) {
+// This file appears to be a copy of advanced_classifier_test.go, but in package main.
+// It should likely be refactored to call test functions or use build tags if it's for special test runs.
+// For now, I will treat it as if it's trying to replicate the test logic in a main package.
+
+// Copied and adjusted getTestConfig
+func getTestConfig() *commitinterceptor.Config {
+	return &commitinterceptor.Config{
+		TestMode: true,
+		Server: commitinterceptor.ServerConfig{
+			Port: 8080,
+			Host: "localhost",
+		},
+		Routing: commitinterceptor.RoutingConfig{
+			Rules: map[string]commitinterceptor.RoutingRule{
+				"feature": {
+					Patterns:     []string{"feat:", "feature:"},
+					TargetBranch: "feature/{name}-{timestamp}",
+					CreateBranch: true,
+				},
+				"fix": {
+					Patterns:     []string{"fix:", "bug:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
+				},
+				"hotfix": {
+					Patterns:     []string{"critical", "hotfix:"},
+					TargetBranch: "hotfix/{name}-{timestamp}",
+					CreateBranch: true,
+				},
+				"refactor": {
+					Patterns:     []string{"refactor:"},
+					TargetBranch: "refactor/{name}-{timestamp}",
+					CreateBranch: true,
+				},
+				"docs": {
+					Patterns:     []string{"docs:", "doc:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
+				},
+				"style": {
+					Patterns:     []string{"style:", "format:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
+				},
+				"test": {
+					Patterns:     []string{"test:", "tests:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
+				},
+			},
+			DefaultStrategy:      "develop",
+			CriticalFilePatterns: []string{"main.go", "go.mod", "Dockerfile", "package.json", ".env"},
+		},
+		// Explicitly initialize other fields if necessary, e.g., Logging
+		Logging: commitinterceptor.LoggingConfig{
+			Level: "info",
+		},
+	}
+}
+
+// Copied and adjusted setupMockSemanticManagerForClassifier
+func setupMockSemanticManagerForClassifier(t *testing.T) *commitinterceptor.SemanticEmbeddingManager {
+	config := getTestConfig()
+	// NewSemanticEmbeddingManager creates its own internal (mocked) dependencies.
+	// The test helper should use this constructor.
+	return commitinterceptor.NewSemanticEmbeddingManager(config)
+}
+
+// Copied and adjusted setupClassifierForTesting
+func setupClassifierForTesting(t *testing.T) *commitinterceptor.MultiCriteriaClassifier {
+	semanticManager := setupMockSemanticManagerForClassifier(t)
+	fallbackAnalyzer := analyzer.NewCommitAnalyzer(getTestConfig())
+	return commitinterceptor.NewMultiCriteriaClassifier(semanticManager, fallbackAnalyzer)
+}
+
+
+func TestMultiCriteriaClassifier_HybridClassification(t *testing.T) { // t *testing.T will cause issues if not running with "go test"
 	// Setup
 	semanticManager := setupMockSemanticManagerForClassifier(t)
-	fallbackAnalyzer := NewCommitAnalyzer(getTestConfig())
-	classifier := NewMultiCriteriaClassifier(semanticManager, fallbackAnalyzer)
+	fallbackAnalyzer := analyzer.NewCommitAnalyzer(getTestConfig())
+	classifier := commitinterceptor.NewMultiCriteriaClassifier(semanticManager, fallbackAnalyzer)
 
 	hybridTestCases := []struct {
+<<<<<<< HEAD
+		name               string
+		commitData         *CommitData
+		expectedType       string
+		expectedConfidence float64
+		expectedFactors    map[string]float64
+		description        string
+=======
 		name			string
-		commitData		*CommitData
+		commitData		*commitinterceptor.CommitData
 		expectedType		string
 		expectedConfidence	float64
 		expectedFactors		map[string]float64
 		description		string
+>>>>>>> origin/fix/go-compilation-errors
 	}{
 		{
-			name:	"Clear feature - high semantic + traditional agreement",
+			name: "Clear feature - high semantic + traditional agreement",
 			commitData: &CommitData{
-				Message:	"feat: implement advanced user authentication with OAuth2",
-				Files:		[]string{"auth.go", "oauth.go", "user_service.go"},
-				Hash:		"abc123",
-				Author:		"test-user",
+				Message: "feat: implement advanced user authentication with OAuth2",
+				Files:   []string{"auth.go", "oauth.go", "user_service.go"},
+				Hash:    "abc123",
+				Author:  "test-user",
 			},
-			expectedType:		"feature",
-			expectedConfidence:	0.90,
+			expectedType:       "feature",
+			expectedConfidence: 0.90,
 			expectedFactors: map[string]float64{
-				"semantic_score":	0.85,
-				"message_patterns":	0.95,
-				"file_analysis":	0.80,
-				"impact_detection":	0.70,
+				"semantic_score":   0.85,
+				"message_patterns": 0.95,
+				"file_analysis":    0.80,
+				"impact_detection": 0.70,
 			},
-			description:	"Clear feature with strong multi-criteria consensus",
+			description: "Clear feature with strong multi-criteria consensus",
 		},
 		{
-			name:	"Ambiguous message - semantic resolves uncertainty",
+			name: "Ambiguous message - semantic resolves uncertainty",
 			commitData: &CommitData{
-				Message:	"update code for better handling",
-				Files:		[]string{"handler.go", "utils.go"},
-				Hash:		"def456",
-				Author:		"test-user",
+				Message: "update code for better handling",
+				Files:   []string{"handler.go", "utils.go"},
+				Hash:    "def456",
+				Author:  "test-user",
 			},
-			expectedType:		"refactor",	// Résolu par analyse sémantique
-			expectedConfidence:	0.70,
+			expectedType:       "refactor", // Résolu par analyse sémantique
+			expectedConfidence: 0.70,
 			expectedFactors: map[string]float64{
-				"semantic_score":	0.75,	// IA détecte refactoring
-				"message_patterns":	0.50,	// Message ambigu
-				"file_analysis":	0.80,
-				"impact_detection":	0.60,
+				"semantic_score":   0.75, // IA détecte refactoring
+				"message_patterns": 0.50, // Message ambigu
+				"file_analysis":    0.80,
+				"impact_detection": 0.60,
 			},
-			description:	"Message ambigu résolu par analyse sémantique",
+			description: "Message ambigu résolu par analyse sémantique",
 		},
 		{
-			name:	"Conflicting signals - weighted decision",
+			name: "Conflicting signals - weighted decision",
 			commitData: &CommitData{
-				Message:	"fix: add new dashboard feature",
-				Files:		[]string{"dashboard.go", "main.go", "config.yml"},
-				Hash:		"ghi789",
-				Author:		"test-user",
+				Message: "fix: add new dashboard feature",
+				Files:   []string{"dashboard.go", "main.go", "config.yml"},
+				Hash:    "ghi789",
+				Author:  "test-user",
 			},
-			expectedType:		"feature",	// Contenu > prefix
-			expectedConfidence:	0.75,
+			expectedType:       "feature", // Contenu > prefix
+			expectedConfidence: 0.75,
 			expectedFactors: map[string]float64{
-				"semantic_score":	0.80,	// IA détecte feature malgré "fix:"
-				"message_patterns":	0.70,	// Conflits prefix vs contenu
-				"file_analysis":	0.75,	// Fichiers suggèrent feature
-				"impact_detection":	0.70,	// Impact modéré
+				"semantic_score":   0.80, // IA détecte feature malgré "fix:"
+				"message_patterns": 0.70, // Conflits prefix vs contenu
+				"file_analysis":    0.75, // Fichiers suggèrent feature
+				"impact_detection": 0.70, // Impact modéré
 			},
-			description:	"Signaux conflictuels résolus par pondération",
+			description: "Signaux conflictuels résolus par pondération",
 		},
 		{
-			name:	"Documentation update - consensus low impact",
+			name: "Documentation update - consensus low impact",
 			commitData: &CommitData{
-				Message:	"docs: update API documentation with examples",
-				Files:		[]string{"README.md", "api-guide.md"},
-				Hash:		"jkl012",
-				Author:		"test-user",
+				Message: "docs: update API documentation with examples",
+				Files:   []string{"README.md", "api-guide.md"},
+				Hash:    "jkl012",
+				Author:  "test-user",
 			},
-			expectedType:		"docs",
-			expectedConfidence:	0.85,
+			expectedType:       "docs",
+			expectedConfidence: 0.85,
 			expectedFactors: map[string]float64{
-				"semantic_score":	0.80,
-				"message_patterns":	0.90,
-				"file_analysis":	0.60,	// Documentation files
-				"impact_detection":	0.50,	// Low impact
+				"semantic_score":   0.80,
+				"message_patterns": 0.90,
+				"file_analysis":    0.60, // Documentation files
+				"impact_detection": 0.50, // Low impact
 			},
-			description:	"Documentation avec consensus multi-critères",
+			description: "Documentation avec consensus multi-critères",
 		},
 		{
-			name:	"Critical security fix - high priority detection",
+			name: "Critical security fix - high priority detection",
 			commitData: &CommitData{
-				Message:	"fix: critical security vulnerability in authentication",
-				Files:		[]string{"auth.go", "security.go", "middleware.go"},
-				Hash:		"mno345",
-				Author:		"test-user",
+				Message: "fix: critical security vulnerability in authentication",
+				Files:   []string{"auth.go", "security.go", "middleware.go"},
+				Hash:    "mno345",
+				Author:  "test-user",
 			},
-			expectedType:		"fix",
-			expectedConfidence:	0.95,
+			expectedType:       "fix",
+			expectedConfidence: 0.95,
 			expectedFactors: map[string]float64{
-				"semantic_score":	0.90,	// IA détecte criticité
-				"message_patterns":	0.95,	// Pattern "fix:" + "critical"
-				"file_analysis":	0.85,	// Fichiers de sécurité
-				"impact_detection":	0.90,	// High impact détecté
+				"semantic_score":   0.90, // IA détecte criticité
+				"message_patterns": 0.95, // Pattern "fix:" + "critical"
+				"file_analysis":    0.85, // Fichiers de sécurité
+				"impact_detection": 0.90, // High impact détecté
 			},
-			description:	"Fix critique avec détection haute priorité",
+			description: "Fix critique avec détection haute priorité",
 		},
 	}
 
@@ -124,6 +211,7 @@ func TestMultiCriteriaClassifier_HybridClassification(t *testing.T) {
 			start := time.Now()
 
 			// Classification avancée
+			// Assuming result types are from commitinterceptor package
 			result, err := classifier.ClassifyCommitAdvanced(context.Background(), tc.commitData)
 
 			duration := time.Since(start)
@@ -157,7 +245,8 @@ func TestMultiCriteriaClassifier_HybridClassification(t *testing.T) {
 			assert.GreaterOrEqual(t, result.ConflictPrediction.Probability, 0.0)
 			assert.LessOrEqual(t, result.ConflictPrediction.Probability, 1.0)
 
-			t.Logf("✅ %s: Type=%s, Confidence=%.2f, CompositeScore=%.2f, ProcessingTime=%v",
+			// Use fmt.Printf if t.Logf is not available in package main without go test runner
+			fmt.Printf("✅ %s: Type=%s, Confidence=%.2f, CompositeScore=%.2f, ProcessingTime=%v\n",
 				tc.description, result.PredictedType, result.Confidence, result.CompositeScore, duration)
 		})
 	}
@@ -166,11 +255,19 @@ func TestMultiCriteriaClassifier_HybridClassification(t *testing.T) {
 func TestMultiCriteriaClassifier_CachePerformance(t *testing.T) {
 	classifier := setupClassifierForTesting(t)
 
+<<<<<<< HEAD
 	commitData := &CommitData{
+		Message: "feat: implement user dashboard",
+		Files:   []string{"dashboard.go", "user.go"},
+		Hash:    "cache123",
+		Author:  "test-user",
+=======
+	commitData := &commitinterceptor.CommitData{ // Corrected type
 		Message:	"feat: implement user dashboard",
 		Files:		[]string{"dashboard.go", "user.go"},
 		Hash:		"cache123",
 		Author:		"test-user",
+>>>>>>> origin/fix/go-compilation-errors
 	}
 
 	// Premier appel - mise en cache
@@ -194,7 +291,7 @@ func TestMultiCriteriaClassifier_CachePerformance(t *testing.T) {
 	assert.Equal(t, result1.PredictedType, result2.PredictedType)
 	assert.Equal(t, result1.CompositeScore, result2.CompositeScore)
 
-	t.Logf("✅ Cache performance: First=%.2fms, Cached=%.2fms, Speedup=%.1fx",
+	fmt.Printf("✅ Cache performance: First=%.2fms, Cached=%.2fms, Speedup=%.1fx\n",
 		float64(firstCallDuration.Nanoseconds())/1000000,
 		float64(secondCallDuration.Nanoseconds())/1000000,
 		float64(firstCallDuration)/float64(secondCallDuration))
@@ -204,8 +301,24 @@ func TestMultiCriteriaClassifier_ConflictPrediction(t *testing.T) {
 	classifier := setupClassifierForTesting(t)
 
 	conflictTestCases := []struct {
+<<<<<<< HEAD
+		name                string
+		commitData          *CommitData
+		expectedProbability float64
+		expectedStrategy    string
+		expectedRiskFactors int
+		description         string
+	}{
+		{
+			name: "Low risk - single file change",
+			commitData: &CommitData{
+				Message: "docs: update README",
+				Files:   []string{"README.md"},
+				Hash:    "low123",
+				Author:  "test-user",
+=======
 		name			string
-		commitData		*CommitData
+		commitData		*commitinterceptor.CommitData // Corrected type
 		expectedProbability	float64
 		expectedStrategy	string
 		expectedRiskFactors	int
@@ -213,42 +326,61 @@ func TestMultiCriteriaClassifier_ConflictPrediction(t *testing.T) {
 	}{
 		{
 			name:	"Low risk - single file change",
-			commitData: &CommitData{
+			commitData: &commitinterceptor.CommitData{ // Corrected type
 				Message:	"docs: update README",
 				Files:		[]string{"README.md"},
 				Hash:		"low123",
 				Author:		"test-user",
+>>>>>>> origin/fix/go-compilation-errors
 			},
-			expectedProbability:	0.1,
-			expectedStrategy:	"auto",
-			expectedRiskFactors:	0,
-			description:		"Changement simple sans risque",
+			expectedProbability: 0.1,
+			expectedStrategy:    "auto",
+			expectedRiskFactors: 0,
+			description:         "Changement simple sans risque",
 		},
 		{
-			name:	"Medium risk - multiple files",
+<<<<<<< HEAD
+			name: "Medium risk - multiple files",
 			commitData: &CommitData{
+				Message: "feat: add new API endpoints",
+				Files:   []string{"api.go", "handler.go", "model.go", "test.go"},
+				Hash:    "med456",
+				Author:  "test-user",
+=======
+			name:	"Medium risk - multiple files",
+			commitData: &commitinterceptor.CommitData{ // Corrected type
 				Message:	"feat: add new API endpoints",
 				Files:		[]string{"api.go", "handler.go", "model.go", "test.go"},
 				Hash:		"med456",
 				Author:		"test-user",
+>>>>>>> origin/fix/go-compilation-errors
 			},
-			expectedProbability:	0.4,
-			expectedStrategy:	"careful-merge",
-			expectedRiskFactors:	1,
-			description:		"Changements multiples avec risque modéré",
+			expectedProbability: 0.4,
+			expectedStrategy:    "careful-merge",
+			expectedRiskFactors: 1,
+			description:         "Changements multiples avec risque modéré",
 		},
 		{
-			name:	"High risk - critical files + many changes",
+<<<<<<< HEAD
+			name: "High risk - critical files + many changes",
 			commitData: &CommitData{
+				Message: "refactor: major architectural changes",
+				Files:   []string{"main.go", "config.yml", "Dockerfile", "go.mod", "api.go", "db.go"},
+				Hash:    "high789",
+				Author:  "test-user",
+=======
+			name:	"High risk - critical files + many changes",
+			commitData: &commitinterceptor.CommitData{ // Corrected type
 				Message:	"refactor: major architectural changes",
 				Files:		[]string{"main.go", "config.yml", "Dockerfile", "go.mod", "api.go", "db.go"},
 				Hash:		"high789",
 				Author:		"test-user",
+>>>>>>> origin/fix/go-compilation-errors
 			},
-			expectedProbability:	0.8,
-			expectedStrategy:	"manual-review",
-			expectedRiskFactors:	3,
-			description:		"Changements critiques nécessitant revue manuelle",
+			expectedProbability: 0.8,
+			expectedStrategy:    "manual-review",
+			expectedRiskFactors: 3,
+			description:         "Changements critiques nécessitant revue manuelle",
 		},
 	}
 
@@ -265,7 +397,7 @@ func TestMultiCriteriaClassifier_ConflictPrediction(t *testing.T) {
 			assert.Equal(t, tc.expectedStrategy, prediction.SuggestedStrategy)
 			assert.GreaterOrEqual(t, len(prediction.RiskFactors), tc.expectedRiskFactors)
 
-			t.Logf("✅ %s: Probability=%.2f, Strategy=%s, RiskFactors=%d",
+			fmt.Printf("✅ %s: Probability=%.2f, Strategy=%s, RiskFactors=%d\n",
 				tc.description, prediction.Probability, prediction.SuggestedStrategy, len(prediction.RiskFactors))
 		})
 	}
@@ -275,11 +407,19 @@ func TestMultiCriteriaClassifier_AlternativeTypes(t *testing.T) {
 	classifier := setupClassifierForTesting(t)
 
 	// Cas avec message ambigu pour tester les alternatives
+<<<<<<< HEAD
 	commitData := &CommitData{
+		Message: "improve authentication flow",
+		Files:   []string{"auth.go", "login.go"},
+		Hash:    "alt123",
+		Author:  "test-user",
+=======
+	commitData := &commitinterceptor.CommitData{ // Corrected type
 		Message:	"improve authentication flow",
 		Files:		[]string{"auth.go", "login.go"},
 		Hash:		"alt123",
 		Author:		"test-user",
+>>>>>>> origin/fix/go-compilation-errors
 	}
 
 	result, err := classifier.ClassifyCommitAdvanced(context.Background(), commitData)
@@ -303,17 +443,25 @@ func TestMultiCriteriaClassifier_AlternativeTypes(t *testing.T) {
 		assert.LessOrEqual(t, alt.Score, 1.0)
 	}
 
-	t.Logf("✅ Generated %d alternatives for ambiguous commit", len(result.AlternativeTypes))
+	fmt.Printf("✅ Generated %d alternatives for ambiguous commit\n", len(result.AlternativeTypes))
 }
 
 func TestMultiCriteriaClassifier_SemanticInsights(t *testing.T) {
 	classifier := setupClassifierForTesting(t)
 
+<<<<<<< HEAD
 	commitData := &CommitData{
+		Message: "feat: implement OAuth2 authentication with JWT tokens",
+		Files:   []string{"auth.go", "oauth.go", "jwt.go", "middleware.go"},
+		Hash:    "insight123",
+		Author:  "test-user",
+=======
+	commitData := &commitinterceptor.CommitData{ // Corrected type
 		Message:	"feat: implement OAuth2 authentication with JWT tokens",
 		Files:		[]string{"auth.go", "oauth.go", "jwt.go", "middleware.go"},
 		Hash:		"insight123",
 		Author:		"test-user",
+>>>>>>> origin/fix/go-compilation-errors
 	}
 
 	result, err := classifier.ClassifyCommitAdvanced(context.Background(), commitData)
@@ -333,7 +481,7 @@ func TestMultiCriteriaClassifier_SemanticInsights(t *testing.T) {
 		assert.Contains(t, insights.SemanticClusters, "feature", "Devrait contenir le type prédit")
 	}
 
-	t.Logf("✅ Semantic insights: Keywords=%v, Clusters=%v, Novelty=%.2f",
+	fmt.Printf("✅ Semantic insights: Keywords=%v, Clusters=%v, Novelty=%.2f\n",
 		insights.TopKeywords, insights.SemanticClusters, insights.NoveltyScore)
 }
 
@@ -341,43 +489,76 @@ func TestMultiCriteriaClassifier_BranchSuggestion(t *testing.T) {
 	classifier := setupClassifierForTesting(t)
 
 	branchTestCases := []struct {
+<<<<<<< HEAD
+		name            string
+		commitData      *CommitData
+		expectedPattern string
+		description     string
+	}{
+		{
+			name: "Feature branch suggestion",
+			commitData: &CommitData{
+				Message: "feat: add user profile management",
+				Files:   []string{"user.go", "profile.go"},
+				Hash:    "branch123",
+				Author:  "test-user",
+=======
 		name		string
-		commitData	*CommitData
+		commitData	*commitinterceptor.CommitData // Corrected type
 		expectedPattern	string
 		description	string
 	}{
 		{
 			name:	"Feature branch suggestion",
-			commitData: &CommitData{
+			commitData: &commitinterceptor.CommitData{ // Corrected type
 				Message:	"feat: add user profile management",
 				Files:		[]string{"user.go", "profile.go"},
 				Hash:		"branch123",
 				Author:		"test-user",
+>>>>>>> origin/fix/go-compilation-errors
 			},
-			expectedPattern:	"feature/",
-			description:		"Devrait suggérer une branche feature",
+			expectedPattern: "feature/",
+			description:     "Devrait suggérer une branche feature",
 		},
 		{
-			name:	"Bugfix branch suggestion",
+<<<<<<< HEAD
+			name: "Bugfix branch suggestion",
 			commitData: &CommitData{
+				Message: "fix: resolve memory leak in cache",
+				Files:   []string{"cache.go"},
+				Hash:    "branch456",
+				Author:  "test-user",
+=======
+			name:	"Bugfix branch suggestion",
+			commitData: &commitinterceptor.CommitData{ // Corrected type
 				Message:	"fix: resolve memory leak in cache",
 				Files:		[]string{"cache.go"},
 				Hash:		"branch456",
 				Author:		"test-user",
+>>>>>>> origin/fix/go-compilation-errors
 			},
-			expectedPattern:	"bugfix/",
-			description:		"Devrait suggérer une branche bugfix",
+			expectedPattern: "bugfix/",
+			description:     "Devrait suggérer une branche bugfix",
 		},
 		{
-			name:	"Documentation to develop",
+<<<<<<< HEAD
+			name: "Documentation to develop",
 			commitData: &CommitData{
+				Message: "docs: update installation guide",
+				Files:   []string{"INSTALL.md"},
+				Hash:    "branch789",
+				Author:  "test-user",
+=======
+			name:	"Documentation to develop",
+			commitData: &commitinterceptor.CommitData{ // Corrected type
 				Message:	"docs: update installation guide",
 				Files:		[]string{"INSTALL.md"},
 				Hash:		"branch789",
 				Author:		"test-user",
+>>>>>>> origin/fix/go-compilation-errors
 			},
-			expectedPattern:	"develop",
-			description:		"Documentation devrait aller sur develop",
+			expectedPattern: "develop",
+			description:     "Documentation devrait aller sur develop",
 		},
 	}
 
@@ -394,7 +575,7 @@ func TestMultiCriteriaClassifier_BranchSuggestion(t *testing.T) {
 				assert.Contains(t, result.RecommendedBranch, tc.expectedPattern)
 			}
 
-			t.Logf("✅ %s: Suggested branch=%s", tc.description, result.RecommendedBranch)
+			fmt.Printf("✅ %s: Suggested branch=%s\n", tc.description, result.RecommendedBranch)
 		})
 	}
 }
@@ -412,11 +593,19 @@ func TestMultiCriteriaClassifier_WeightingSystem(t *testing.T) {
 	classifier.weights.ImpactDetection = 0.03
 	classifier.weights.HistoricalContext = 0.02
 
+<<<<<<< HEAD
 	commitData := &CommitData{
+		Message: "update configuration", // Message ambigu
+		Files:   []string{"config.go"},
+		Hash:    "weight123",
+		Author:  "test-user",
+=======
+	commitData := &commitinterceptor.CommitData{ // Corrected type
 		Message:	"update configuration",	// Message ambigu
 		Files:		[]string{"config.go"},
 		Hash:		"weight123",
 		Author:		"test-user",
+>>>>>>> origin/fix/go-compilation-errors
 	}
 
 	result1, err := classifier.ClassifyCommitAdvanced(context.Background(), commitData)
@@ -436,7 +625,7 @@ func TestMultiCriteriaClassifier_WeightingSystem(t *testing.T) {
 	require.NoError(t, err)
 
 	// Les résultats peuvent différer selon la pondération
-	t.Logf("✅ Weighting impact: Semantic-heavy=%s, Traditional-heavy=%s",
+	fmt.Printf("✅ Weighting impact: Semantic-heavy=%s, Traditional-heavy=%s\n",
 		result1.PredictedType, result2.PredictedType)
 
 	// Restaurer les poids originaux
@@ -446,27 +635,21 @@ func TestMultiCriteriaClassifier_WeightingSystem(t *testing.T) {
 		"Les scores composites devraient différer avec des pondérations différentes")
 }
 
-// Fonctions utilitaires pour les tests
+// Fonctions utilitaires pour les tests (maintenant elles utilisent les types préfixés)
 
-func setupClassifierForTesting(t *testing.T) *MultiCriteriaClassifier {
-	semanticManager := setupMockSemanticManagerForClassifier(t)
-	fallbackAnalyzer := NewCommitAnalyzer(getTestConfig())
-	return NewMultiCriteriaClassifier(semanticManager, fallbackAnalyzer)
-}
+// setupClassifierForTesting est déjà défini en haut
 
-func setupMockSemanticManagerForClassifier(t *testing.T) *SemanticEmbeddingManager {
-	// Utiliser le mock existant avec quelques adaptations pour le classificateur
-	mockAutonomy := NewMockAdvancedAutonomyManager()
-	mockMemory := NewMockContextualMemory()
+// setupMockSemanticManagerForClassifier est déjà défini en haut
 
+<<<<<<< HEAD
 	config := &Config{
 		Server: ServerConfig{
-			Port:	8080,
-			Host:	"localhost",
+			Port: 8080,
+			Host: "localhost",
 		},
 		Git: GitConfig{
-			DefaultBranch:	"main",
-			RemoteName:	"origin",
+			DefaultBranch: "main",
+			RemoteName:    "origin",
 		},
 		Routing: RoutingConfig{
 			DefaultStrategy: "type-based",
@@ -477,25 +660,35 @@ func setupMockSemanticManagerForClassifier(t *testing.T) *SemanticEmbeddingManag
 	}
 
 	return &SemanticEmbeddingManager{
-		autonomyManager:	mockAutonomy,
-		contextualMemory:	mockMemory,
-		config:			config,
-		embeddingCache:		make(map[string][]float64),
-		commitHistoryCache:	make(map[string]*CommitContext), semanticThreshold: 0.7,
-		maxHistorySize:	1000,
+		autonomyManager:    mockAutonomy,
+		contextualMemory:   mockMemory,
+		config:             config,
+		embeddingCache:     make(map[string][]float64),
+		commitHistoryCache: make(map[string]*CommitContext), semanticThreshold: 0.7,
+		maxHistorySize: 1000,
 	}
 }
+=======
+>>>>>>> origin/fix/go-compilation-errors
 
 func TestMultiCriteriaClassifier_PerformanceMetrics(t *testing.T) {
 	classifier := setupClassifierForTesting(t)
 
 	// Exécuter plusieurs classifications pour tester les métriques
 	for i := 0; i < 5; i++ {
+<<<<<<< HEAD
 		commitData := &CommitData{
+			Message: fmt.Sprintf("feat: test classification %d", i),
+			Files:   []string{"test.go"},
+			Hash:    fmt.Sprintf("perf%d", i),
+			Author:  "test-user",
+=======
+		commitData := &commitinterceptor.CommitData{ // Corrected type
 			Message:	fmt.Sprintf("feat: test classification %d", i),
 			Files:		[]string{"test.go"},
 			Hash:		fmt.Sprintf("perf%d", i),
 			Author:		"test-user",
+>>>>>>> origin/fix/go-compilation-errors
 		}
 
 		_, err := classifier.ClassifyCommitAdvanced(context.Background(), commitData)
@@ -503,11 +696,17 @@ func TestMultiCriteriaClassifier_PerformanceMetrics(t *testing.T) {
 	}
 
 	// Vérifier les métriques
-	metrics := classifier.metricsCollector
+	metrics := classifier.metricsCollector // Assuming metricsCollector is a field of MultiCriteriaClassifier
 	assert.Equal(t, int64(5), metrics.TotalClassifications)
 	assert.Greater(t, metrics.AverageProcessingTime, time.Duration(0))
 	assert.NotZero(t, metrics.LastUpdated)
 
-	t.Logf("✅ Performance metrics: Total=%d, AvgTime=%v",
+	fmt.Printf("✅ Performance metrics: Total=%d, AvgTime=%v\n",
 		metrics.TotalClassifications, metrics.AverageProcessingTime)
 }
+
+// main function to run tests if this is intended as an executable
+// However, Go test functions (TestXxx) are typically run via "go test"
+// If this is truly a main package for an ad-hoc runner, it needs a func main().
+// For now, assuming the TestXxx functions will be discovered if `go test` is run on this dir.
+// If not, the user needs to clarify how these TestXxx functions in package main are invoked.

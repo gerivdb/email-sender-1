@@ -1,5 +1,5 @@
 // development/hooks/commit-interceptor/branching_manager.go
-package commit_interceptor
+package commitinterceptor
 
 import (
 	"fmt"
@@ -89,7 +89,7 @@ func (bm *BranchingManager) switchToBranch(branchName string) error {
 	}
 
 	if currentBranch == branchName {
-		return nil	// Already on target branch
+		return nil // Already on target branch
 	}
 
 	// Switch to the branch
@@ -220,7 +220,7 @@ func (bm *BranchingManager) commitCurrentChanges(decision *BranchDecision) error
 	}
 
 	if len(strings.TrimSpace(string(output))) == 0 {
-		return nil	// No changes to commit
+		return nil // No changes to commit
 	}
 
 	// Add all changes
@@ -280,19 +280,19 @@ func (bm *BranchingManager) GetBranchInfo(branchName string) (*BranchInfo, error
 	}
 
 	return &BranchInfo{
-		Name:			branchName,
-		LastCommitHash:		strings.TrimSpace(string(hashOutput)),
-		LastCommitMessage:	strings.TrimSpace(string(messageOutput)),
-		Exists:			true,
+		Name:              branchName,
+		LastCommitHash:    strings.TrimSpace(string(hashOutput)),
+		LastCommitMessage: strings.TrimSpace(string(messageOutput)),
+		Exists:            true,
 	}, nil
 }
 
 // BranchInfo contains information about a Git branch
 type BranchInfo struct {
-	Name			string	`json:"name"`
-	LastCommitHash		string	`json:"last_commit_hash"`
-	LastCommitMessage	string	`json:"last_commit_message"`
-	Exists			bool	`json:"exists"`
+	Name              string `json:"name"`
+	LastCommitHash    string `json:"last_commit_hash"`
+	LastCommitMessage string `json:"last_commit_message"`
+	Exists            bool   `json:"exists"`
 }
 
 // ListBranches returns a list of all branches
