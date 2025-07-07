@@ -28,7 +28,7 @@ func main() {
 	// Simulate a source path for extraction. In reality, this would be a path to real data.
 	// For this test, we will create a temporary file.
 	tempSourceFile := filepath.Join(outputDir, "simulated_source_data.txt")
-	err := os.WriteFile(tempSourceFile, []byte("This is simulated data content for extraction."), 0644)
+	err := os.WriteFile(tempSourceFile, []byte("This is simulated data content for extraction."), 0o644)
 	if err != nil {
 		log.Fatalf("Error creating simulated source file: %v", err)
 	}
@@ -87,7 +87,7 @@ Detected gaps: %v
 		filepath.Base(gapAnalysisPath), gapAnalysisPath,
 		time.Now().Format(time.RFC3339), analysisResult["gap_found"])
 
-	err = os.WriteFile(phase4ReportPath, []byte(reportContent), 0644)
+	err = os.WriteFile(phase4ReportPath, []byte(reportContent), 0o644)
 	if err != nil {
 		log.Fatalf("Error generating Phase 4 report: %v", err)
 	}
