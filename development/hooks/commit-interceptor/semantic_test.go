@@ -1,5 +1,5 @@
 // development/hooks/commit-interceptor/semantic_test.go
-package commit_interceptor
+package commitinterceptor
 
 import (
 	"context"

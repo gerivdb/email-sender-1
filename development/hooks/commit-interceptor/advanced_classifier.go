@@ -11,13 +11,15 @@ import (
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/gerivdb/email-sender-1/development/hooks/commit-interceptor/analyzer"
 )
 
 // MultiCriteriaClassifier - Moteur de classification hybride
 type MultiCriteriaClassifier struct {
 	semanticManager  *SemanticEmbeddingManager
 	weights          ClassificationWeights
-	fallbackAnalyzer *CommitAnalyzer
+	fallbackAnalyzer *analyzer.CommitAnalyzer // Changed to analyzer.CommitAnalyzer
 	learningEnabled  bool
 	performanceCache map[string]*ClassificationResult
 	metricsCollector *ClassificationMetrics
@@ -81,7 +83,7 @@ type ClassificationMetrics struct {
 
 // NewMultiCriteriaClassifier - Constructeur avec configuration adaptative
 func NewMultiCriteriaClassifier(semanticManager *SemanticEmbeddingManager,
-	fallbackAnalyzer *CommitAnalyzer) *MultiCriteriaClassifier {
+	fallbackAnalyzer *analyzer.CommitAnalyzer) *MultiCriteriaClassifier { // Changed to analyzer.CommitAnalyzer
 	return &MultiCriteriaClassifier{
 		semanticManager:  semanticManager,
 		fallbackAnalyzer: fallbackAnalyzer,

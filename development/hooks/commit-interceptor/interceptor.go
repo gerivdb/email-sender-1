@@ -1,5 +1,5 @@
 // development/hooks/commit-interceptor/interceptor.go
-package commit_interceptor
+package commitinterceptor
 
 import (
 	"encoding/json"

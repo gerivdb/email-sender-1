@@ -1,5 +1,5 @@
 // development/hooks/commit-interceptor/config.go
-package commit_interceptor
+package commitinterceptor
 
 import (
 	"encoding/json"
@@ -38,10 +38,11 @@ type GitConfig struct {
 
 // RoutingConfig contains routing rules configuration
 type RoutingConfig struct {
-	Rules            map[string]RoutingRule `json:"rules"`
-	DefaultStrategy  string                 `json:"default_strategy"`
-	ConflictStrategy string                 `json:"conflict_strategy"`
-	AutoMergeEnabled bool                   `json:"auto_merge_enabled"`
+	Rules                map[string]RoutingRule `json:"rules"`
+	DefaultStrategy      string                 `json:"default_strategy"`
+	ConflictStrategy     string                 `json:"conflict_strategy"`
+	AutoMergeEnabled     bool                   `json:"auto_merge_enabled"`
+	CriticalFilePatterns []string               `json:"critical_file_patterns,omitempty"`
 }
 
 // RoutingRule defines how specific types of commits should be routed
@@ -238,7 +239,7 @@ func loadConfigFromEnv(config *Config) {
 func (c *Config) SaveConfig(filename string) error {
 	// Create directory if it doesn't exist
 	dir := filepath.Dir(filename)
-	if err := os.MkdirAll(dir, 0755); err != nil {
+	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return fmt.Errorf("failed to create config directory: %w", err)
 	}
 

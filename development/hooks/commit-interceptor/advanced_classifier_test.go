@@ -448,6 +448,56 @@ func TestMultiCriteriaClassifier_WeightingSystem(t *testing.T) {
 
 // Fonctions utilitaires pour les tests
 
+func getTestConfig() *commitinterceptor.Config { // Adjusted to return commitinterceptor.Config
+	return &commitinterceptor.Config{ // Adjusted to use commitinterceptor.Config
+		TestMode: true,
+		Server: commitinterceptor.ServerConfig{ // Adjusted to use commitinterceptor.ServerConfig
+			Port: 8080,
+			Host: "localhost",
+		},
+		Routing: commitinterceptor.RoutingConfig{ // Adjusted to use commitinterceptor.RoutingConfig
+			Rules: map[string]commitinterceptor.RoutingRule{ // Adjusted to use commitinterceptor.RoutingRule
+				"feature": {
+					Patterns:     []string{"feat:", "feature:"},
+					TargetBranch: "feature/{name}-{timestamp}",
+					CreateBranch: true,
+				},
+				"fix": {
+					Patterns:     []string{"fix:", "bug:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
+				},
+				"hotfix": {
+					Patterns:     []string{"critical", "hotfix:"},
+					TargetBranch: "hotfix/{name}-{timestamp}",
+					CreateBranch: true,
+				},
+				"refactor": {
+					Patterns:     []string{"refactor:"},
+					TargetBranch: "refactor/{name}-{timestamp}",
+					CreateBranch: true,
+				},
+				"docs": {
+					Patterns:     []string{"docs:", "doc:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
+				},
+				"style": {
+					Patterns:     []string{"style:", "format:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
+				},
+				"test": {
+					Patterns:     []string{"test:", "tests:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
+				},
+			},
+			DefaultStrategy: "develop",
+		},
+	}
+}
+
 func setupClassifierForTesting(t *testing.T) *commitinterceptor.MultiCriteriaClassifier {
 	semanticManager := setupMockSemanticManagerForClassifier(t)
 	fallbackAnalyzer := commitinterceptor.NewCommitAnalyzer(getTestConfig())
@@ -459,22 +509,7 @@ func setupMockSemanticManagerForClassifier(t *testing.T) *commitinterceptor.Sema
 	mockAutonomy := commitinterceptor.NewMockAdvancedAutonomyManager()
 	mockMemory := commitinterceptor.NewMockContextualMemory()
 
-	config := &commitinterceptor.Config{
-		Server: commitinterceptor.ServerConfig{
-			Port: 8080,
-			Host: "localhost",
-		},
-		Git: commitinterceptor.GitConfig{
-			DefaultBranch: "main",
-			RemoteName:    "origin",
-		},
-		Routing: commitinterceptor.RoutingConfig{
-			DefaultStrategy: "type-based",
-		},
-		Logging: commitinterceptor.LoggingConfig{
-			Level: "info",
-		},
-	}
+	config := getTestConfig() // Use the local getTestConfig
 
 	return &commitinterceptor.SemanticEmbeddingManager{
 		autonomyManager:    mockAutonomy,

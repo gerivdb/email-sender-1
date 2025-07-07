@@ -4,23 +4,33 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+
+	commitinterceptor "github.com/gerivdb/email-sender-1/development/hooks/commit-interceptor" // Corrected import for parent package
 )
+
+// AnalysisResult holds the outcome of a commit analysis by this package.
+type AnalysisResult struct {
+	ChangeType string
+	Confidence float64
+	Impact     string
+	// Note: SuggestedBranch is NOT part of this analyzer's direct result.
+}
 
 // CommitAnalyzer - Analyseur de commits pour la classification traditionnelle
 
 type CommitAnalyzer struct {
-	config *Config
+	config *commitinterceptor.Config // Corrected type
 }
 
 // NewCommitAnalyzer - Crée un nouvel analyseur de commits
 
-func NewCommitAnalyzer(config *Config) *CommitAnalyzer {
+func NewCommitAnalyzer(config *commitinterceptor.Config) *CommitAnalyzer { // Corrected type
 	return &CommitAnalyzer{config: config}
 }
 
 // AnalyzeCommit - Analyse un commit et retourne une classification
 
-func (a *CommitAnalyzer) AnalyzeCommit(commitData *CommitData) (*AnalysisResult, error) {
+func (a *CommitAnalyzer) AnalyzeCommit(commitData *commitinterceptor.CommitData) (*AnalysisResult, error) { // Corrected type
 	if commitData == nil {
 		return nil, fmt.Errorf("commit data is nil")
 	}
