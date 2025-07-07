@@ -112,7 +112,7 @@ replace github.com/gerivdb/email-sender-1/managers/interfaces => ./managers/inte
 
 replace github.com/gerivdb/email-sender-1/development/managers/dependency-manager => ./development/managers/dependencymanager
 
-replace github.com/gerivdb/email-sender-1/pkg/email => ./pkg/email
+replace github.com/gerivdb/email-sender-1/pkg/email => ./development/managers/email-manager
 
 replace github.com/gerivdb/email-sender-1/streaming/redis_streaming => ./streaming/redis_streaming
 
