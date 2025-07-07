@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	commitinterceptor "github.com/gerivdb/email-sender-1/development/hooks/commit-interceptor" // Corrected import for parent package
+	types "github.com/gerivdb/email-sender-1/development/hooks/commit-interceptor/commitinterceptortypes"
 )
 
 // AnalysisResult holds the outcome of a commit analysis by this package.
@@ -19,18 +19,18 @@ type AnalysisResult struct {
 // CommitAnalyzer - Analyseur de commits pour la classification traditionnelle
 
 type CommitAnalyzer struct {
-	config *commitinterceptor.Config // Corrected type
+	config *types.Config // Corrected type
 }
 
 // NewCommitAnalyzer - Crée un nouvel analyseur de commits
 
-func NewCommitAnalyzer(config *commitinterceptor.Config) *CommitAnalyzer { // Corrected type
+func NewCommitAnalyzer(config *types.Config) *CommitAnalyzer { // Corrected type
 	return &CommitAnalyzer{config: config}
 }
 
 // AnalyzeCommit - Analyse un commit et retourne une classification
 
-func (a *CommitAnalyzer) AnalyzeCommit(commitData *commitinterceptor.CommitData) (*AnalysisResult, error) { // Corrected type
+func (a *CommitAnalyzer) AnalyzeCommit(commitData *types.CommitData) (*AnalysisResult, error) { // Corrected type
 	if commitData == nil {
 		return nil, fmt.Errorf("commit data is nil")
 	}
@@ -94,7 +94,7 @@ func (a *CommitAnalyzer) assessImpact(files []string) string {
 	}
 
 	for _, file := range files {
-		if a.isCriticalFile(file) {
+		if a.IsCriticalFile(file) {
 			return "high"
 		}
 	}
@@ -106,9 +106,9 @@ func (a *CommitAnalyzer) assessImpact(files []string) string {
 	return "low"
 }
 
-// isCriticalFile - Vérifie si un fichier est critique
+// IsCriticalFile - Vérifie si un fichier est critique (exporté)
 
-func (a *CommitAnalyzer) isCriticalFile(filename string) bool {
+func (a *CommitAnalyzer) IsCriticalFile(filename string) bool {
 	criticalPatterns := a.config.Routing.CriticalFilePatterns
 	lowerFile := strings.ToLower(filename)
 

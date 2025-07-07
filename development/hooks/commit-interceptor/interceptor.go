@@ -11,16 +11,7 @@ import (
 	"time"
 )
 
-// CommitData represents the data extracted from a commit
-type CommitData struct {
-	Hash       string    `json:"hash"`
-	Message    string    `json:"message"`
-	Author     string    `json:"author"`
-	Timestamp  time.Time `json:"timestamp"`
-	Files      []string  `json:"files"`
-	Branch     string    `json:"branch"`
-	Repository string    `json:"repository"`
-}
+>>>>>>>>
 
 // GitWebhookPayload represents the incoming Git webhook payload
 type GitWebhookPayload struct {

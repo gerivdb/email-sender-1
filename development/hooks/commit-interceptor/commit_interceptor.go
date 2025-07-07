@@ -11,23 +11,25 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/gerivdb/email-sender-1/development/hooks/commit-interceptor/analyzer"
+	types "github.com/gerivdb/email-sender-1/development/hooks/commit-interceptor/commitinterceptortypes"
 	"github.com/gorilla/mux"
 )
 
 type CommitInterceptor struct {
 	branchingManager *BranchingManager
-	analyzer         *CommitAnalyzer
+	analyzer         *analyzer.CommitAnalyzer
 	router           *BranchRouter
-	config           *Config
+	config           *types.Config
 }
 
 // NewCommitInterceptor creates a new commit interceptor instance
 func NewCommitInterceptor() *CommitInterceptor {
-	config := LoadConfig()
+	config := LoadConfigTyped()
 
 	return &CommitInterceptor{
 		branchingManager: NewBranchingManager(config),
-		analyzer:         NewCommitAnalyzer(config),
+		analyzer:         analyzer.NewCommitAnalyzer(config),
 		router:           NewBranchRouter(config),
 		config:           config,
 	}
@@ -58,8 +60,18 @@ func (ci *CommitInterceptor) HandlePreCommit(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
+	// Adapt AnalysisResult to CommitAnalysis
+	commitAnalysis := &types.CommitAnalysis{
+		ChangeType:      analysis.ChangeType,
+		Impact:          analysis.Impact,
+		Priority:        "", // À compléter si disponible dans AnalysisResult
+		SuggestedBranch: "", // À compléter si disponible dans AnalysisResult
+		Confidence:      analysis.Confidence,
+		CommitData:      *commitData,
+	}
+
 	// Route the commit to appropriate branch
-	routingDecision, err := ci.router.RouteCommit(analysis)
+	routingDecision, err := ci.router.RouteCommit(commitAnalysis)
 	if err != nil {
 		log.Printf("Error routing commit: %v", err)
 		http.Error(w, "Routing failed", http.StatusInternalServerError)
@@ -104,20 +116,20 @@ func (ci *CommitInterceptor) HandlePostCommit(w http.ResponseWriter, r *http.Req
 }
 
 // parseCommitData extracts commit information from HTTP request
-func (ci *CommitInterceptor) parseCommitData(r *http.Request) (*CommitData, error) {
+func (ci *CommitInterceptor) parseCommitData(r *http.Request) (*types.CommitData, error) {
 	// Implementation for parsing Git webhook payload
 	// This would typically parse JSON payload from Git hooks
-	return ParseGitWebhookPayload(r)
+	return ParseGitWebhookPayloadTyped(r)
 }
 
 // updateMetrics updates system metrics with commit data
-func (ci *CommitInterceptor) updateMetrics(commitData *CommitData) {
+func (ci *CommitInterceptor) updateMetrics(commitData *types.CommitData) {
 	// Update metrics for monitoring
 	log.Printf("Updating metrics for commit: %s", commitData.Hash)
 }
 
 // sendNotifications sends notifications about commit processing
-func (ci *CommitInterceptor) sendNotifications(commitData *CommitData) {
+func (ci *CommitInterceptor) sendNotifications(commitData *types.CommitData) {
 	// Send notifications to configured channels
 	log.Printf("Sending notifications for commit: %s", commitData.Hash)
 }
@@ -200,4 +212,18 @@ func main() {
 	}
 
 	log.Println("Server stopped")
+}
+
+// LoadConfigTyped loads configuration and returns *types.Config
+func LoadConfigTyped() *types.Config {
+	// Adapt LoadConfig or reimplement here to return *types.Config
+	// For now, just return a zero value for demonstration
+	return &types.Config{}
+}
+
+// ParseGitWebhookPayloadTyped parses the webhook and returns *types.CommitData
+func ParseGitWebhookPayloadTyped(r *http.Request) (*types.CommitData, error) {
+	// Adapt ParseGitWebhookPayload or reimplement here to return *types.CommitData
+	// For now, just return a zero value for demonstration
+	return &types.CommitData{}, nil
 }

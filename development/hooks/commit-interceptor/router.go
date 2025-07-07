@@ -6,6 +6,8 @@ import (
 	"os/exec"
 	"strings"
 	"time"
+
+	types "github.com/gerivdb/email-sender-1/development/hooks/commit-interceptor/commitinterceptortypes"
 )
 
 // BranchDecision represents a routing decision for a commit
@@ -21,18 +23,18 @@ type BranchDecision struct {
 
 // BranchRouter handles routing decisions for commits
 type BranchRouter struct {
-	config *Config
+	config *types.Config
 }
 
 // NewBranchRouter creates a new branch router
-func NewBranchRouter(config *Config) *BranchRouter {
+func NewBranchRouter(config *types.Config) *BranchRouter {
 	return &BranchRouter{
 		config: config,
 	}
 }
 
 // RouteCommit makes routing decisions based on commit analysis
-func (br *BranchRouter) RouteCommit(analysis *CommitAnalysis) (*BranchDecision, error) {
+func (br *BranchRouter) RouteCommit(analysis *types.CommitAnalysis) (*BranchDecision, error) {
 	decision := &BranchDecision{
 		Metadata: make(map[string]string),
 	}
@@ -56,7 +58,7 @@ func (br *BranchRouter) RouteCommit(analysis *CommitAnalysis) (*BranchDecision, 
 }
 
 // applyRoutingRules applies configured routing rules
-func (br *BranchRouter) applyRoutingRules(analysis *CommitAnalysis, decision *BranchDecision) {
+func (br *BranchRouter) applyRoutingRules(analysis *types.CommitAnalysis, decision *BranchDecision) {
 	changeType := analysis.ChangeType
 	impact := analysis.Impact
 	priority := analysis.Priority
@@ -134,7 +136,7 @@ func (br *BranchRouter) applyRoutingRules(analysis *CommitAnalysis, decision *Br
 }
 
 // shouldCreateFeatureBranch determines if a feature needs its own branch
-func (br *BranchRouter) shouldCreateFeatureBranch(analysis *CommitAnalysis) bool {
+func (br *BranchRouter) shouldCreateFeatureBranch(analysis *types.CommitAnalysis) bool {
 	// Create branch for medium/high impact features
 	if analysis.Impact == "medium" || analysis.Impact == "high" {
 		return true
@@ -154,7 +156,7 @@ func (br *BranchRouter) shouldCreateFeatureBranch(analysis *CommitAnalysis) bool
 }
 
 // applyCustomRules applies any custom routing rules from configuration
-func (br *BranchRouter) applyCustomRules(analysis *CommitAnalysis, decision *BranchDecision) {
+func (br *BranchRouter) applyCustomRules(analysis *types.CommitAnalysis, decision *BranchDecision) {
 	// This would read from br.config.RoutingRules if available
 	// For now, we implement some basic custom logic
 
@@ -184,7 +186,7 @@ func (br *BranchRouter) applyCustomRules(analysis *CommitAnalysis, decision *Bra
 }
 
 // checkPotentialConflicts checks for potential merge conflicts
-func (br *BranchRouter) checkPotentialConflicts(analysis *CommitAnalysis, targetBranch string) ([]string, error) {
+func (br *BranchRouter) checkPotentialConflicts(analysis *types.CommitAnalysis, targetBranch string) ([]string, error) {
 	var conflicts []string
 
 	// Check if target branch exists
@@ -269,7 +271,7 @@ func (br *BranchRouter) handleConflicts(decision *BranchDecision, conflicts []st
 }
 
 // setDecisionMetadata sets additional metadata for the decision
-func (br *BranchRouter) setDecisionMetadata(analysis *CommitAnalysis, decision *BranchDecision) {
+func (br *BranchRouter) setDecisionMetadata(analysis *types.CommitAnalysis, decision *BranchDecision) {
 	decision.Metadata["change_type"] = analysis.ChangeType
 	decision.Metadata["impact"] = analysis.Impact
 	decision.Metadata["priority"] = analysis.Priority
