@@ -1,5 +1,5 @@
 // development/hooks/commit-interceptor/main.go
-package commit_interceptor
+package commitinterceptor
 
 import (
 	"context"

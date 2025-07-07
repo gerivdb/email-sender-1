@@ -1,5 +1,5 @@
 // development/hooks/commit-interceptor/semantic_embeddings.go
-package commit_interceptor
+package commitinterceptor
 
 import (
 	"context"

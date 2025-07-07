@@ -1,5 +1,5 @@
 // FILE: development/hooks/commit-interceptor/branching_manager_test.go
-package commit_interceptor
+package commitinterceptor
 
 import (
 	"testing"

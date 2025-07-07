@@ -1,5 +1,5 @@
 // development/hooks/commit-interceptor/main_test.go
-package commit_interceptor
+package commitinterceptor
 
 import (
 	"bytes"

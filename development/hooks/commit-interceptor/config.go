@@ -1,5 +1,5 @@
 // development/hooks/commit-interceptor/config.go
-package commit_interceptor
+package commitinterceptor
 
 import (
 	"encoding/json"
@@ -42,6 +42,7 @@ type RoutingConfig struct {
 	DefaultStrategy		string			`json:"default_strategy"`
 	ConflictStrategy	string			`json:"conflict_strategy"`
 	AutoMergeEnabled	bool			`json:"auto_merge_enabled"`
+	CriticalFilePatterns	[]string		`json:"critical_file_patterns,omitempty"`
 }
 
 // RoutingRule defines how specific types of commits should be routed

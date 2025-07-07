@@ -1,5 +1,5 @@
 // development/hooks/commit-interceptor/impact_detection_test.go
-package commit_interceptor
+package commitinterceptor
 
 import (
 	"strings"

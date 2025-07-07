@@ -1,5 +1,5 @@
 // FILE: development/hooks/commit-interceptor/router_test.go
-package commit_interceptor
+package commitinterceptor
 
 import (
 	"testing"
