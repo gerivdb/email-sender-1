@@ -1,4 +1,4 @@
-package main_test
+package roadmap_orchestrator_test
 
 import (
 	"bytes"

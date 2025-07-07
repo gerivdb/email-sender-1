@@ -6,8 +6,9 @@ import (
 	"log"
 	"strings"
 
-	"D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/interfaces"
 	"go.uber.org/zap"
+
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
 )
 
 // MockGoModManager simule le dependency manager pour les tests

@@ -1,4 +1,4 @@
-n// Package monitoring implements the Real-Time Monitoring Dashboard component
+// Package monitoring implements the Real-Time Monitoring Dashboard component
 package monitoring
 
 import (

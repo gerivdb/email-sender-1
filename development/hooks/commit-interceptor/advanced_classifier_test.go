@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/hooks/commit-interceptor"
+	commitinterceptor "github.com/gerivdb/email-sender-1/development/hooks/commit-interceptor"
 )
 
 func TestMultiCriteriaClassifier_HybridClassification(t *testing.T) {

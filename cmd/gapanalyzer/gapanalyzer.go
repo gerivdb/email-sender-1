@@ -1,7 +1,7 @@
-package gapanalyzer
+package main
 
 import (
-	"core/gapanalyzer"
+	"github.com/gerivdb/email-sender-1/core/gapanalyzer"
 	"flag"
 	"fmt"
 	"log"

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -27,14 +28,14 @@ func main() {
 	template := `
 # Spécification fonctionnelle et technique pour read_file
 
-Ce document détaille la spécification des améliorations apportées à la fonction `read_file`, basées sur l'analyse des besoins utilisateurs.
+Ce document détaille la spécification des améliorations apportées à la fonction ` + "`read_file`" + `, basées sur l'analyse des besoins utilisateurs.
 
 ## 1. Fonctionnalités
 
 ### 1.1 Lecture par plage de lignes
 
 - **Description**: Permettre la lecture d'un fichier en spécifiant une plage de lignes (début et fin).
-- **API Proposée**: `ReadFileRange(path string, startLine, endLine int) ([]string, error)`
+- **API Proposée**: ` + "`" + `ReadFileRange(path string, startLine, endLine int) ([]string, error)` + "`" + `
 - **Cas d'usage**:
     - Lire uniquement les 100 premières lignes d'un fichier de log.
     - Extraire une section spécifique d'un fichier de configuration.
@@ -46,7 +47,7 @@ Ce document détaille la spécification des améliorations apportées à la fonc
 ### 1.2 Navigation par bloc
 
 - **Description**: Permettre une navigation interactive dans le fichier par blocs prédéfinis (ex: 50, 100, 500 lignes).
-- **CLI Proposée**: `read_file_navigator --file <path> --block-size <size> [next|prev|goto <block_num>|start|end]`
+- **CLI Proposée**: ` + "`" + `read_file_navigator --file <path> --block-size <size> [next|prev|goto <block_num>|start|end]` + "`" + `
 - **Cas d'usage**:
     - Parcourir un fichier de log géant bloc par bloc.
     - Atteindre rapidement une section spécifique sans charger tout le fichier en mémoire.
@@ -59,8 +60,8 @@ Ce document détaille la spécification des améliorations apportées à la fonc
 
 - **Description**: Détecter si un fichier est binaire et, si oui, offrir une option pour afficher son contenu en format hexadécimal.
 - **API Proposée**:
-    - `IsBinaryFile(path string) (bool, error)`
-    - `PreviewHex(path string, offset, length int) ([]byte, error)`
+    - ` + "`" + `IsBinaryFile(path string) (bool, error)` + "`" + `
+    - ` + "`" + `PreviewHex(path string, offset, length int) ([]byte, error)` + "`" + `
 - **Cas d'usage**:
     - Empêcher l'affichage de caractères illisibles pour les fichiers binaires.
     - Inspecter le contenu brut de fichiers binaires (images, exécutables).

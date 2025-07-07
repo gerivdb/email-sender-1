@@ -13,11 +13,11 @@ import (
 	"strings"
 )
 
-//func main() {
-//	log.Println("cmd/refactorgo/refactorgo_1.go: main() called")
-//	fmt.Println("Starting Go package refactoring...")
-//
-//	err := filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
+func main() {
+	log.Println("cmd/refactorgo/refactorgo_1.go: main() called")
+	fmt.Println("Starting Go package refactoring...")
+
+	err := filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}

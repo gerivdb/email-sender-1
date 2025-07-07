@@ -9,9 +9,10 @@ import (
 	"net/http"
 	"time"
 
-	"./interfaces"	// Added import
 	"go.uber.org/zap"
-	_ "github.com/lib/pq"	// PostgreSQL driver
+	_ "github.com/lib/pq" // PostgreSQL driver
+
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces" // Added import
 )
 
 // StorageManager centralise la gestion de la persistance documentaire, du stockage objet, des connexions PostgreSQL/Qdrant et des métadonnées de dépendances.

@@ -15,8 +15,9 @@ import (
 	"strings"
 	"time"
 
-	"./interfaces"	// Added import
 	"go.uber.org/zap"
+
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces" // Added import
 )
 
 // SecurityManager interface defines the contract for security management (local interface)

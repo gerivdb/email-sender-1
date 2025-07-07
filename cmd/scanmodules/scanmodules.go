@@ -1,4 +1,4 @@
-package scanmodules
+package main
 
 import (
 	"fmt"

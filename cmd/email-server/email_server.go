@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	"email_sender/pkg/email"
 	"encoding/json"
 	"flag"
+	"github.com/gerivdb/email-sender-1/pkg/email"
 	"fmt"
 	"log"
 	"net/http"

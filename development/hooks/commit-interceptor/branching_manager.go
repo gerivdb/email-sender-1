@@ -1,5 +1,5 @@
 // development/hooks/commit-interceptor/branching_manager.go
-package commit_interceptor
+package commitinterceptor
 
 import (
 	"fmt"
