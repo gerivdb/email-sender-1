@@ -9,20 +9,34 @@ engines:
   # You might want to customize this based on your specific needs
   eslint:
     enabled: true
-  go-vet:
-    enabled: true
-  gofmt:
-    enabled: true
-  golint:
-    enabled: true
-  # Add other relevant engines for your project, e.g., for Vue.js
+  # vue-eslint is often covered by eslint with eslint-plugin-vue.
+  # If Vue files are not linted correctly, enable vue-eslint explicitly.
   # vue-eslint:
-  #   enabled: true
+  #  enabled: true
+  golangci-lint: # Replaces go-vet, gofmt, golint for a more comprehensive Go analysis
+    enabled: true
+  pylint: # Added for Python files
+    enabled: true
+  # Add other relevant engines for your project
 exclude_paths:
   - "**/node_modules/**"
   - "**/*.min.js"
   - "**/vendor/**"
-  - "**/test/**"
+  - "**/test/**" # Common broad exclusion for test utility code
   - "**/*.test.go"
+  - "**/*.test.js"
+  - "**/*.test.ts"
   - "**/*.spec.js"
   - "**/*.spec.ts"
+  - ".build/**" # Exclude build artifacts
+  - "dist/**" # Exclude distribution artifacts
+  - "**/*.exe" # Exclude compiled executables
+  - "**/coverage/**" # Exclude coverage reports
+  - "**/coverage.out"
+  - "**/coverage.html"
+  - "**/__pycache__/**" # Exclude python cache
+  - "**/*.pb.go" # Exclude generated protobuf files for Go
+  - "**/mocks/**" # Exclude mock files, common for Go
+  - "aaaretrait-pour-xp/**" # Exclude specific directory
+  - "tmp/**"
+  - "temp/**"
