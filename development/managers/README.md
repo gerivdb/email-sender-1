@@ -17,7 +17,8 @@ Chaque gestionnaire est organisé selon la structure suivante :
 - **integrated-manager** : Gestionnaire intégré qui coordonne tous les autres gestionnaires
 - **mode-manager** : Gestionnaire des modes opérationnels
 - **roadmap-manager** : Gestionnaire de la roadmap (anciennement `cmd/roadmap-cli`)
-- **mcp-manager** : Gestionnaire MCP
+- **gateway-manager**: Orchestrateur de requêtes Go-natif. Traite les requêtes en coordonnant les services backend tels que CacheManager, LWM, RAG, et MemoryBank. (Voir `development/managers/gateway-manager/README.md` pour détails).
+- **mcp-manager**: Gestionnaire MCP. Une version Go était planifiée pour ce répertoire (voir `plan-dev-v33-mcp-manager.md`), mais le répertoire est actuellement vide. Une implémentation PowerShell existe dans `src/mcp/scripts/mcp-manager.ps1` et `src/mcp/modules/MCPManager.psm1` au sein du framework MCP plus large.
 - **script-manager** : Gestionnaire de scripts
 - **dependency-manager** : Gestionnaire de dépendances Go
 - **n8n-manager** : Gestionnaire n8n

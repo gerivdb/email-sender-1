@@ -7,6 +7,7 @@ Ce guide centralise la documentation, les logs, FAQ, captures, bonnes pratiques 
 ## 2. Installation & Configuration
 
 - Prérequis : binaire MCP-Gateway v0.4.6, accès réseau, credentials GCP valides.
+  > **Note de Dépréciation :** Le "MCP-Gateway v0.4.6" (binaire, port 5235) mentionné dans ce document est un composant plus ancien. Un nouveau `gateway-manager` (Go-natif, situé dans `development/managers/gateway-manager/`) est en cours de développement et est destiné à le remplacer pour l'orchestration des services backend. Ce guide conserve la référence historique pour le contexte de l'intégration MCPManager décrite.
 - Installation : placer le binaire, configurer `proxy-mock-server.yaml` (port 5235).
 - Démarrage :
   - `./mcp-gateway --config proxy-mock-server.yaml`
