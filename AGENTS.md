@@ -514,6 +514,22 @@ Ce fichier documente les agents et managers principaux de l’architecture docum
       - `map[string]interface{}` : statistiques diverses
       - `error` : erreur éventuelle
 
+### GatewayManager (`development/managers/gateway-manager/`)
+
+- **Rôle :** Orchestrateur de requêtes Go-natif, conçu pour potentiellement remplacer l'ancien `MCP-Gateway`. Il coordonne les interactions avec les services backend configurés.
+- **Interfaces (dépendances principales) :**
+    - `core.CacheManagerInterface` (gestion de cache)
+    - `core.LWMInterface` (gestion de workflows de cycle de vie)
+    - `core.RAGInterface` (génération augmentée par récupération)
+    - `core.MemoryBankAPIClient` (stockage/récupération de données)
+- **Utilisation :** Destiné à être un point d'entrée pour le traitement de requêtes spécifiques, en déléguant le travail aux managers spécialisés injectés lors de son initialisation.
+- **Entrée/Sortie :** Accepte des requêtes structurées (par exemple, via sa méthode `ProcessRequest`) et retourne des réponses ou des erreurs après interaction avec ses dépendances.
+- **Statut Actuel :**
+    - Le code de base du manager et ses tests unitaires (utilisant des mocks pour les dépendances) sont implémentés.
+    - Les implémentations concrètes en Go pour ses dépendances principales (`CacheManagerInterface`, `LWMInterface`, `RAGInterface`, `MemoryBankAPIClient`) n'ont pas été identifiées dans ce dépôt au dernier audit. Leur implémentation ou fourniture est nécessaire pour une fonctionnalité complète.
+    - Un outil CLI (`cmd/gateway-manager-cli`) existe mais sa fonctionnalité actuelle est limitée à la découverte de services annexes (n8n, augment) sur `localhost` et n'exécute pas la logique de traitement de requêtes du `GatewayManager`.
+    - Un outil de test de performance (`cmd/performance-test-gateway`) existe, utilisant également des mocks.
+
 ---
 
 ## Points d’extension & Plugins

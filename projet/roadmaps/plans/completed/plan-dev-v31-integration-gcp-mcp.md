@@ -13,6 +13,7 @@ Ce plan vise à garantir l’intégration harmonieuse du serveur GCP MCP avec le
 - **Livrables centralisés :**
   - Documentation technique, guides, FAQ, logs, scénarios de test, captures d’écran et bonnes pratiques sont centralisés dans `projet/mcp/docs/guides/mcpmanager-integration.md` et `logs/mcp/`.
   - Le serveur MCP-Gateway (binaire v0.4.6) est fonctionnel, configuration validée (port 5235, endpoint /health_check OK).
+    > **Note de Dépréciation :** Le "MCP-Gateway v0.4.6" (binaire, port 5235) mentionné dans ce plan complété est un composant plus ancien. Un nouveau `gateway-manager` (Go-natif, situé dans `development/managers/gateway-manager/`) est en cours de développement et est destiné à le remplacer pour l'orchestration des services backend. Ce plan conserve la référence historique.
   - Les tests de bout en bout (client → proxy → MCPManager → GCP MCP → API Google) sont réalisés et validés.
 
 ---
