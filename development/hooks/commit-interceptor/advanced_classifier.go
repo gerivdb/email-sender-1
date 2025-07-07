@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/gerivdb/email-sender-1/development/hooks/commit-interceptor/analyzer"
+	types "github.com/gerivdb/email-sender-1/development/hooks/commit-interceptor/commitinterceptortypes"
 )
 
 // MultiCriteriaClassifier - Moteur de classification hybride
@@ -83,7 +84,8 @@ type ClassificationMetrics struct {
 
 // NewMultiCriteriaClassifier - Constructeur avec configuration adaptative
 func NewMultiCriteriaClassifier(semanticManager *SemanticEmbeddingManager,
-	fallbackAnalyzer *analyzer.CommitAnalyzer) *MultiCriteriaClassifier { // Changed to analyzer.CommitAnalyzer
+	fallbackAnalyzer *analyzer.CommitAnalyzer,
+) *MultiCriteriaClassifier { // Changed to analyzer.CommitAnalyzer
 	return &MultiCriteriaClassifier{
 		semanticManager:  semanticManager,
 		fallbackAnalyzer: fallbackAnalyzer,
@@ -102,7 +104,8 @@ func NewMultiCriteriaClassifier(semanticManager *SemanticEmbeddingManager,
 
 // ClassifyCommitAdvanced - Classification hybride multi-critères
 func (mc *MultiCriteriaClassifier) ClassifyCommitAdvanced(ctx context.Context,
-	commitData *CommitData) (*ClassificationResult, error) {
+	commitData *types.CommitData,
+) (*ClassificationResult, error) {
 	start := time.Now()
 
 	// 1. Vérifier cache de performance
@@ -147,9 +150,10 @@ func (mc *MultiCriteriaClassifier) ClassifyCommitAdvanced(ctx context.Context,
 
 // analyzeSemanticFactors - Analyse sémantique avec IA
 func (mc *MultiCriteriaClassifier) analyzeSemanticFactors(ctx context.Context,
-	commitData *CommitData) (*ClassificationResult, error) {
+	commitData *types.CommitData,
+) (*ClassificationResult, error) {
 	// Génération d'embeddings et analyse directement avec CommitData
-	enrichedContext, err := mc.semanticManager.CreateCommitContext(ctx, commitData)
+	enrichedContext, err := mc.semanticManager.CreateCommitContext(ctx, (*CommitData)(commitData))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create semantic context: %w", err)
 	}
@@ -180,7 +184,7 @@ func (mc *MultiCriteriaClassifier) analyzeSemanticFactors(ctx context.Context,
 }
 
 // analyzeTraditionalFactors - Analyse traditionnelle avec fallback
-func (mc *MultiCriteriaClassifier) analyzeTraditionalFactors(commitData *CommitData) (*ClassificationResult, error) {
+func (mc *MultiCriteriaClassifier) analyzeTraditionalFactors(commitData *types.CommitData) (*ClassificationResult, error) {
 	// Utiliser l'analyzer existant pour l'analyse traditionnelle
 	analysis, err := mc.fallbackAnalyzer.AnalyzeCommit(commitData)
 	if err != nil {
@@ -211,7 +215,7 @@ func (mc *MultiCriteriaClassifier) analyzeTraditionalFactors(commitData *CommitD
 }
 
 // synthesizeClassification - Synthèse multi-critères avec pondération
-func (mc *MultiCriteriaClassifier) synthesizeClassification(commitData *CommitData, semanticResult, traditionalResult *ClassificationResult) *ClassificationResult {
+func (mc *MultiCriteriaClassifier) synthesizeClassification(commitData *types.CommitData, semanticResult, traditionalResult *ClassificationResult) *ClassificationResult {
 	// Fusion des facteurs de décision avec normalisation des scores
 	mergedFactors := make(map[string]float64)
 
@@ -254,8 +258,9 @@ func (mc *MultiCriteriaClassifier) synthesizeClassification(commitData *CommitDa
 
 // enrichWithAdvancedInsights - Enrichissement avec insights avancés
 func (mc *MultiCriteriaClassifier) enrichWithAdvancedInsights(ctx context.Context,
-	commitData *CommitData,
-	result *ClassificationResult) *ClassificationResult {
+	commitData *types.CommitData,
+	result *ClassificationResult,
+) *ClassificationResult {
 	// Suggestion de branche basée sur la classification
 	result.RecommendedBranch = mc.suggestBranch(result.PredictedType, commitData)
 
@@ -271,8 +276,9 @@ func (mc *MultiCriteriaClassifier) enrichWithAdvancedInsights(ctx context.Contex
 }
 
 // predictConflicts - Prédiction de conflits
-func (mc *MultiCriteriaClassifier) predictConflicts(commitData *CommitData,
-	result *ClassificationResult) *ConflictPrediction {
+func (mc *MultiCriteriaClassifier) predictConflicts(commitData *types.CommitData,
+	result *ClassificationResult,
+) *ConflictPrediction {
 	probability := 0.0
 	riskFactors := []string{}
 	strategy := "auto"
@@ -285,8 +291,9 @@ func (mc *MultiCriteriaClassifier) predictConflicts(commitData *CommitData,
 
 	// Facteurs de risque basés sur les fichiers critiques
 	criticalFiles := []string{}
+
 	for _, file := range commitData.Files {
-		if mc.fallbackAnalyzer.isCriticalFile(file) {
+		if mc.fallbackAnalyzer.IsCriticalFile(file) {
 			probability += 0.2
 			criticalFiles = append(criticalFiles, file)
 			riskFactors = append(riskFactors, fmt.Sprintf("Critical file: %s", file))
@@ -380,7 +387,7 @@ func (cm *ClassificationMetrics) recordCacheHit() {
 }
 
 // generateCacheKey - Générer une clé de cache unique
-func (mc *MultiCriteriaClassifier) generateCacheKey(commitData *CommitData) string {
+func (mc *MultiCriteriaClassifier) generateCacheKey(commitData *types.CommitData) string {
 	// Utiliser MD5 du message + hash + fichiers pour la clé de cache
 	content := fmt.Sprintf("%s:%s:%s", commitData.Message, commitData.Hash, strings.Join(commitData.Files, "|"))
 	hash := md5.Sum([]byte(content))
@@ -644,7 +651,7 @@ func (mc *MultiCriteriaClassifier) isCriticalFile(filename string) bool {
 }
 
 // suggestBranch - Suggère un nom de branche basé sur le type et le commit
-func (mc *MultiCriteriaClassifier) suggestBranch(commitType string, commitData *CommitData) string {
+func (mc *MultiCriteriaClassifier) suggestBranch(commitType string, commitData *types.CommitData) string {
 	// Documentation va toujours sur develop
 	if commitType == "docs" {
 		return "develop"

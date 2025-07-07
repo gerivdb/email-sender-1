@@ -6,15 +6,17 @@ import (
 	"os/exec"
 	"strings"
 	"time"
+
+	types "github.com/gerivdb/email-sender-1/development/hooks/commit-interceptor/commitinterceptortypes"
 )
 
 // BranchingManager handles Git branching operations
 type BranchingManager struct {
-	config *Config
+	config *types.Config
 }
 
 // NewBranchingManager creates a new branching manager
-func NewBranchingManager(config *Config) *BranchingManager {
+func NewBranchingManager(config *types.Config) *BranchingManager {
 	return &BranchingManager{
 		config: config,
 	}
