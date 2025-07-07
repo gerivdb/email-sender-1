@@ -15,9 +15,10 @@ import (
 	"email_sender/core/scanmodules"	// Import scanmodules for RepositoryStructure
 )
 
-func main() {
-	// Définir les flags de ligne de commande
-	inputFile := flag.String("input", "modules.json", "Fichier JSON d'entrée contenant la structure du dépôt")
+//func main() {
+//	log.Println("core/gapanalyzer/gapanalyzer.go: main() called")
+//	// Définir les flags de ligne de commande
+//	inputFile := flag.String("input", "modules.json", "Fichier JSON d'entrée contenant la structure du dépôt")
 	outputFile := flag.String("output", "gap-analysis-initial.json", "Fichier JSON de sortie pour l'analyse d'écart")
 	flag.Parse()
 

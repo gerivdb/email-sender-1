@@ -15,6 +15,7 @@ import (
 )
 
 func main() {
+	log.Println("core/gapanalyzer/main.go: main() called")
 	// Définir les flags de ligne de commande
 	inputFile := flag.String("input", "modules.json", "Fichier JSON d'entrée contenant la structure du dépôt")
 	outputFile := flag.String("output", "gap-analysis-initial.json", "Fichier JSON de sortie pour l'analyse d'écart")

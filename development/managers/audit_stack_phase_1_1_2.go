@@ -8,6 +8,7 @@ import (
 
 // Test simplifié de l'environnement Go - Phase 1.1.2
 func main() {
+	log.Println("development/managers/audit_stack_phase_1_1_2.go: main() called")
 	fmt.Println("🔍 Test Environnement Go pour Migration Vectorisation - Phase 1.1.2")
 	fmt.Println("====================================================================")
 
