@@ -12,59 +12,59 @@ import (
 
 // OrchestrationReport represents the complete automation results
 type OrchestrationReport struct {
-	GeneratedAt	time.Time			`json:"generated_at"`
-	ProjectName	string				`json:"project_name"`
-	ExecutionMode	string				`json:"execution_mode"`
-	Operations	[]OperationResult		`json:"operations"`
-	Summary		OrchestrationSummary		`json:"summary"`
-	Recommendations	[]string			`json:"recommendations"`
-	NextActions	[]string			`json:"next_actions"`
-	Configuration	OrchestrationConfiguration	`json:"configuration"`
+	GeneratedAt     time.Time                  `json:"generated_at"`
+	ProjectName     string                     `json:"project_name"`
+	ExecutionMode   string                     `json:"execution_mode"`
+	Operations      []OperationResult          `json:"operations"`
+	Summary         OrchestrationSummary       `json:"summary"`
+	Recommendations []string                   `json:"recommendations"`
+	NextActions     []string                   `json:"next_actions"`
+	Configuration   OrchestrationConfiguration `json:"configuration"`
 }
 
 // OperationResult represents the result of a single operation
 type OperationResult struct {
-	Name		string			`json:"name"`
-	Command		string			`json:"command"`
-	Status		string			`json:"status"`
-	Duration	float64			`json:"duration_seconds"`
-	Output		string			`json:"output,omitempty"`
-	Error		string			`json:"error,omitempty"`
-	Timestamp	time.Time		`json:"timestamp"`
-	OutputFiles	[]string		`json:"output_files"`
-	Metrics		map[string]interface{}	`json:"metrics,omitempty"`
+	Name        string                 `json:"name"`
+	Command     string                 `json:"command"`
+	Status      string                 `json:"status"`
+	Duration    float64                `json:"duration_seconds"`
+	Output      string                 `json:"output,omitempty"`
+	Error       string                 `json:"error,omitempty"`
+	Timestamp   time.Time              `json:"timestamp"`
+	OutputFiles []string               `json:"output_files"`
+	Metrics     map[string]interface{} `json:"metrics,omitempty"`
 }
 
 // OrchestrationSummary represents overall execution summary
 type OrchestrationSummary struct {
-	TotalOperations	int	`json:"total_operations"`
-	SuccessfulOps	int	`json:"successful_operations"`
-	FailedOps	int	`json:"failed_operations"`
-	SkippedOps	int	`json:"skipped_operations"`
-	TotalDuration	float64	`json:"total_duration_seconds"`
-	OverallStatus	string	`json:"overall_status"`
-	SuccessRate	float64	`json:"success_rate"`
+	TotalOperations int     `json:"total_operations"`
+	SuccessfulOps   int     `json:"successful_operations"`
+	FailedOps       int     `json:"failed_operations"`
+	SkippedOps      int     `json:"skipped_operations"`
+	TotalDuration   float64 `json:"total_duration_seconds"`
+	OverallStatus   string  `json:"overall_status"`
+	SuccessRate     float64 `json:"success_rate"`
 }
 
 // OrchestrationConfiguration represents configuration options
 type OrchestrationConfiguration struct {
-	DryRun		bool			`json:"dry_run"`
-	ContinueOnError	bool			`json:"continue_on_error"`
-	Operations	[]string		`json:"operations"`
-	OutputDir	string			`json:"output_dir"`
-	TimeoutSeconds	int			`json:"timeout_seconds"`
-	Parallel	bool			`json:"parallel"`
-	Environment	map[string]string	`json:"environment"`
+	DryRun          bool              `json:"dry_run"`
+	ContinueOnError bool              `json:"continue_on_error"`
+	Operations      []string          `json:"operations"`
+	OutputDir       string            `json:"output_dir"`
+	TimeoutSeconds  int               `json:"timeout_seconds"`
+	Parallel        bool              `json:"parallel"`
+	Environment     map[string]string `json:"environment"`
 }
 
 // Operation represents a documentation automation operation
 type Operation struct {
-	Name		string		`json:"name"`
-	Description	string		`json:"description"`
-	Command		[]string	`json:"command"`
-	OutputFiles	[]string	`json:"output_files"`
-	Required	bool		`json:"required"`
-	Timeout		int		`json:"timeout_seconds"`
+	Name        string   `json:"name"`
+	Description string   `json:"description"`
+	Command     []string `json:"command"`
+	OutputFiles []string `json:"output_files"`
+	Required    bool     `json:"required"`
+	Timeout     int      `json:"timeout_seconds"`
 }
 
 func main() {
@@ -81,7 +81,7 @@ func main() {
 		case "--root":
 			if i+1 < len(os.Args) {
 				projectRoot = os.Args[i+1]
-				i++	// Skip next argument
+				i++ // Skip next argument
 			}
 		case "--operations":
 			if i+1 < len(os.Args) {
@@ -89,7 +89,7 @@ func main() {
 				if operationsArg != "all" {
 					operations = strings.Split(operationsArg, ",")
 				}
-				i++	// Skip next argument
+				i++ // Skip next argument
 			}
 		case "--help":
 			showHelp()
@@ -163,13 +163,13 @@ func orchestrateDocumentation(root string, dryRun bool, requestedOps []string) (
 	selectedOps := selectOperations(operations, requestedOps)
 
 	config := OrchestrationConfiguration{
-		DryRun:			dryRun,
-		ContinueOnError:	true,
-		Operations:		requestedOps,
-		OutputDir:		filepath.Join(root, ".github"),
-		TimeoutSeconds:		300,
-		Parallel:		false,
-		Environment:		map[string]string{"PROJECT_ROOT": root},
+		DryRun:          dryRun,
+		ContinueOnError: true,
+		Operations:      requestedOps,
+		OutputDir:       filepath.Join(root, ".github"),
+		TimeoutSeconds:  300,
+		Parallel:        false,
+		Environment:     map[string]string{"PROJECT_ROOT": root},
 	}
 
 	var results []OperationResult
@@ -198,14 +198,14 @@ func orchestrateDocumentation(root string, dryRun bool, requestedOps []string) (
 	nextActions := generateNextActions(results, summary)
 
 	report := &OrchestrationReport{
-		GeneratedAt:		time.Now(),
-		ProjectName:		projectName,
-		ExecutionMode:		getExecutionMode(dryRun),
-		Operations:		results,
-		Summary:		summary,
-		Recommendations:	recommendations,
-		NextActions:		nextActions,
-		Configuration:		config,
+		GeneratedAt:     time.Now(),
+		ProjectName:     projectName,
+		ExecutionMode:   getExecutionMode(dryRun),
+		Operations:      results,
+		Summary:         summary,
+		Recommendations: recommendations,
+		NextActions:     nextActions,
+		Configuration:   config,
 	}
 
 	return report, nil
@@ -216,60 +216,60 @@ func defineOperations(root string) []Operation {
 
 	return []Operation{
 		{
-			Name:		"inventory",
-			Description:	"Scan and inventory all documentation files",
-			Command:	[]string{"go", "run", filepath.Join(scriptsDir, "inventory_docs.go"), root},
-			OutputFiles:	[]string{"docs_inventory.json"},
-			Required:	true,
-			Timeout:	60,
+			Name:        "inventory",
+			Description: "Scan and inventory all documentation files",
+			Command:     []string{"go", "run", filepath.Join(scriptsDir, "inventory_docs.go"), root},
+			OutputFiles: []string{"docs_inventory.json"},
+			Required:    true,
+			Timeout:     60,
 		},
 		{
-			Name:		"gap-analysis",
-			Description:	"Analyze documentation gaps and missing files",
-			Command:	[]string{"go", "run", filepath.Join(scriptsDir, "gap_analysis_docs.go"), root},
-			OutputFiles:	[]string{"gap_analysis_doc.md", "gap_matrix.csv"},
-			Required:	true,
-			Timeout:	60,
+			Name:        "gap-analysis",
+			Description: "Analyze documentation gaps and missing files",
+			Command:     []string{"go", "run", filepath.Join(scriptsDir, "gap_analysis_docs.go"), root},
+			OutputFiles: []string{"gap_analysis_doc.md", "gap_matrix.csv"},
+			Required:    true,
+			Timeout:     60,
 		},
 		{
-			Name:		"needs-survey",
-			Description:	"Survey documentation needs and user requirements",
-			Command:	[]string{"go", "run", filepath.Join(scriptsDir, "needs_survey_docs.go"), root},
-			OutputFiles:	[]string{"needs_survey_docs.json", "needs_survey_docs.md"},
-			Required:	false,
-			Timeout:	30,
+			Name:        "needs-survey",
+			Description: "Survey documentation needs and user requirements",
+			Command:     []string{"go", "run", filepath.Join(scriptsDir, "needs_survey_docs.go"), root},
+			OutputFiles: []string{"needs_survey_docs.json", "needs_survey_docs.md"},
+			Required:    false,
+			Timeout:     30,
 		},
 		{
-			Name:		"specs-generator",
-			Description:	"Generate detailed technical specifications",
-			Command:	[]string{"go", "run", filepath.Join(scriptsDir, "specs_generator_docs.go"), root},
-			OutputFiles:	[]string{"specs_automatisation_doc.md"},
-			Required:	false,
-			Timeout:	30,
+			Name:        "specs-generator",
+			Description: "Generate detailed technical specifications",
+			Command:     []string{"go", "run", filepath.Join(scriptsDir, "specs_generator_docs.go"), root},
+			OutputFiles: []string{"specs_automatisation_doc.md"},
+			Required:    false,
+			Timeout:     30,
 		},
 		{
-			Name:		"index-generation",
-			Description:	"Generate comprehensive documentation index",
-			Command:	[]string{"go", "run", filepath.Join(scriptsDir, "gen_docs_index.go"), root},
-			OutputFiles:	[]string{".github/DOCS_INDEX.md", "docs_index.json"},
-			Required:	true,
-			Timeout:	120,
+			Name:        "index-generation",
+			Description: "Generate comprehensive documentation index",
+			Command:     []string{"go", "run", filepath.Join(scriptsDir, "gen_docs_index.go"), root},
+			OutputFiles: []string{".github/DOCS_INDEX.md", "docs_index.json"},
+			Required:    true,
+			Timeout:     120,
 		},
 		{
-			Name:		"lint",
-			Description:	"Lint documentation for quality and consistency",
-			Command:	[]string{"go", "run", filepath.Join(scriptsDir, "lint_docs.go"), root},
-			OutputFiles:	[]string{"lint_report.json"},
-			Required:	false,
-			Timeout:	180,
+			Name:        "lint",
+			Description: "Lint documentation for quality and consistency",
+			Command:     []string{"go", "run", filepath.Join(scriptsDir, "lint_docs.go"), root},
+			OutputFiles: []string{"lint_report.json"},
+			Required:    false,
+			Timeout:     180,
 		},
 		{
-			Name:		"coverage",
-			Description:	"Generate documentation coverage report",
-			Command:	[]string{"go", "run", filepath.Join(scriptsDir, "gen_doc_coverage.go"), root},
-			OutputFiles:	[]string{"docs_coverage_report.md"},
-			Required:	true,
-			Timeout:	90,
+			Name:        "coverage",
+			Description: "Generate documentation coverage report",
+			Command:     []string{"go", "run", filepath.Join(scriptsDir, "gen_doc_coverage.go"), root},
+			OutputFiles: []string{"docs_coverage_report.md"},
+			Required:    true,
+			Timeout:     90,
 		},
 	}
 }
@@ -298,12 +298,12 @@ func executeOperation(op Operation, config OrchestrationConfiguration, root stri
 	startTime := time.Now()
 
 	result := OperationResult{
-		Name:		op.Name,
-		Command:	fmt.Sprintf("%s", op.Command),
-		Status:		"running",
-		Timestamp:	startTime,
-		OutputFiles:	op.OutputFiles,
-		Metrics:	make(map[string]interface{}),
+		Name:        op.Name,
+		Command:     fmt.Sprintf("%s", op.Command),
+		Status:      "running",
+		Timestamp:   startTime,
+		OutputFiles: op.OutputFiles,
+		Metrics:     make(map[string]interface{}),
 	}
 
 	if config.DryRun {
@@ -396,13 +396,13 @@ func calculateSummary(results []OperationResult, totalDuration float64) Orchestr
 	}
 
 	return OrchestrationSummary{
-		TotalOperations:	total,
-		SuccessfulOps:		successful,
-		FailedOps:		failed,
-		SkippedOps:		skipped,
-		TotalDuration:		totalDuration,
-		OverallStatus:		overallStatus,
-		SuccessRate:		successRate,
+		TotalOperations: total,
+		SuccessfulOps:   successful,
+		FailedOps:       failed,
+		SkippedOps:      skipped,
+		TotalDuration:   totalDuration,
+		OverallStatus:   overallStatus,
+		SuccessRate:     successRate,
 	}
 }
 

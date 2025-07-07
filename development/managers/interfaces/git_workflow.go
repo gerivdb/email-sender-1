@@ -25,14 +25,14 @@ type SubBranchInfo struct {
 
 // PullRequestInfo represents information about a pull request
 type PullRequestInfo struct {
-	ID          int
-	Title       string
-	Description string
+	ID           int
+	Title        string
+	Description  string
 	SourceBranch string
 	TargetBranch string
-	Status      string // "open", "closed", "merged"
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	Status       string // "open", "closed", "merged"
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
 
 // WebhookPayload represents the payload sent to webhooks
@@ -47,10 +47,10 @@ type WebhookPayload struct {
 type WorkflowType string
 
 const (
-	WorkflowTypeGitFlow     WorkflowType = "gitflow"
-	WorkflowTypeGitHubFlow  WorkflowType = "githubflow"
+	WorkflowTypeGitFlow       WorkflowType = "gitflow"
+	WorkflowTypeGitHubFlow    WorkflowType = "githubflow"
 	WorkflowTypeFeatureBranch WorkflowType = "feature-branch"
-	WorkflowTypeCustom      WorkflowType = "custom"
+	WorkflowTypeCustom        WorkflowType = "custom"
 )
 
 // GitWorkflowManager defines the interface for Git workflow management operations

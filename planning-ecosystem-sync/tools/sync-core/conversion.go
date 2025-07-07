@@ -1,48 +1,48 @@
 package sync_core
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"log"
-	"time"
-	"crypto/sha256"
-	"encoding/hex"
 	"strings"
+	"time"
 )
 
 // DynamicPlan represents a plan in the dynamic system format
 type DynamicPlan struct {
-	ID		string		`json:"id"`
-	Metadata	PlanMetadata	`json:"metadata"`
-	Tasks		[]Task		`json:"tasks"`
-	Embeddings	[]float64	`json:"embeddings"`
-	CreatedAt	time.Time	`json:"created_at"`
-	UpdatedAt	time.Time	`json:"updated_at"`
+	ID         string       `json:"id"`
+	Metadata   PlanMetadata `json:"metadata"`
+	Tasks      []Task       `json:"tasks"`
+	Embeddings []float64    `json:"embeddings"`
+	CreatedAt  time.Time    `json:"created_at"`
+	UpdatedAt  time.Time    `json:"updated_at"`
 }
 
 // PlanMetadata contains plan metadata
 type PlanMetadata struct {
-	FilePath	string	`json:"file_path"`
-	Title		string	`json:"title"`
-	Version		string	`json:"version"`
-	Date		string	`json:"date"`
-	Progression	float64	`json:"progression"`
-	Description	string	`json:"description"`
+	FilePath    string  `json:"file_path"`
+	Title       string  `json:"title"`
+	Version     string  `json:"version"`
+	Date        string  `json:"date"`
+	Progression float64 `json:"progression"`
+	Description string  `json:"description"`
 }
 
 // Task represents a task within a plan
 type Task struct {
-	ID		string		`json:"id"`
-	Title		string		`json:"title"`
-	Description	string		`json:"description"`
-	Status		string		`json:"status"`	// "pending", "in_progress", "completed"
-	Phase		string		`json:"phase"`
-	Level		int		`json:"level"`	// hierarchy level (1=phase, 2=section, 3=subsection, etc.)
-	Dependencies	[]string	`json:"dependencies"`
-	Priority	string		`json:"priority"`
-	CreatedAt	time.Time	`json:"created_at"`
-	UpdatedAt	time.Time	`json:"updated_at"`
-	Completed	bool		`json:"completed"`
+	ID           string    `json:"id"`
+	Title        string    `json:"title"`
+	Description  string    `json:"description"`
+	Status       string    `json:"status"` // "pending", "in_progress", "completed"
+	Phase        string    `json:"phase"`
+	Level        int       `json:"level"` // hierarchy level (1=phase, 2=section, 3=subsection, etc.)
+	Dependencies []string  `json:"dependencies"`
+	Priority     string    `json:"priority"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
+	Completed    bool      `json:"completed"`
 }
 
 // MarkdownParser handles parsing of markdown plans
@@ -62,11 +62,11 @@ func (mp *MarkdownParser) ConvertToDynamic(metadata *PlanMetadata, tasks []Task)
 	mp.logger.Printf("🔄 Converting plan to dynamic format: %s", metadata.Title)
 
 	plan := &DynamicPlan{
-		ID:		generatePlanID(metadata.FilePath),
-		Metadata:	*metadata,
-		Tasks:		tasks,
-		CreatedAt:	time.Now(),
-		UpdatedAt:	time.Now(),
+		ID:        generatePlanID(metadata.FilePath),
+		Metadata:  *metadata,
+		Tasks:     tasks,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	// Générer embeddings pour recherche sémantique
@@ -128,7 +128,7 @@ func (mp *MarkdownParser) createSimpleEmbedding(content string) []float64 {
 	for i := range embeddings {
 		// Use content characteristics to generate meaningful values
 		seed := float64(i) * wordCount
-		embeddings[i] = (seed-float64(int(seed)))*2.0 - 1.0	// Normalize to [-1, 1]
+		embeddings[i] = (seed-float64(int(seed)))*2.0 - 1.0 // Normalize to [-1, 1]
 	}
 
 	return embeddings
@@ -160,7 +160,7 @@ func (mp *MarkdownParser) ValidateConversion(plan *DynamicPlan) error {
 			return fmt.Errorf("task %d: title is required", i)
 		}
 		if task.Status == "" {
-			task.Status = "pending"	// Set default status
+			task.Status = "pending" // Set default status
 		}
 	}
 

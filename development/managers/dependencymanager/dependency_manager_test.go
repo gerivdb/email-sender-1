@@ -52,7 +52,7 @@ func TestDependencyManager_AnalyzeDependencies(t *testing.T) {
 
 	// Créer un projet test temporaire
 	tmpDir := t.TempDir()
-	
+
 	// Créer un go.mod de test
 	goModContent := `module test-project
 
@@ -121,7 +121,7 @@ func TestDependencyManager_AnalyzePackageJson(t *testing.T) {
 
 	// Créer un projet test temporaire
 	tmpDir := t.TempDir()
-	
+
 	// Créer un package.json de test
 	packageJsonContent := `{
   "name": "test-project",
@@ -210,7 +210,7 @@ func TestDependencyManager_UpdateDependency(t *testing.T) {
 
 	ctx := context.Background()
 	err = dm.UpdateDependency(ctx, "test-package", "1.1.0")
-	
+
 	// Cette méthode peut échouer si le package n'existe pas dans le registry
 	// mais on teste la logique de base
 	if err != nil {
@@ -444,7 +444,7 @@ func TestDetermineUpdateType(t *testing.T) {
 	for _, test := range tests {
 		result := dm.determineUpdateType(test.current, test.latest)
 		if result != test.expected {
-			t.Errorf("For %s -> %s, expected %s, got %s", 
+			t.Errorf("For %s -> %s, expected %s, got %s",
 				test.current, test.latest, test.expected, result)
 		}
 	}
@@ -482,7 +482,7 @@ require (
 	}
 
 	ctx := context.Background()
-	
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		_, err := dm.AnalyzeDependencies(ctx, tmpDir)

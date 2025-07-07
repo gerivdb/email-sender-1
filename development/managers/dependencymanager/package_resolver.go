@@ -27,7 +27,7 @@ func NewPackageResolver(config *DependencyConfig) interfaces.PackageResolver {
 // Resolve résout un package spécifique
 func (pr *PackageResolverImpl) Resolve(ctx context.Context, packageName, version string) (*interfaces.ResolvedPackage, error) {
 	cacheKey := fmt.Sprintf("%s@%s", packageName, version)
-	
+
 	// Check cache first
 	if cached, exists := pr.cache[cacheKey]; exists {
 		return cached, nil
@@ -97,12 +97,12 @@ func (pr *PackageResolverImpl) detectPackageManager(packageName string) string {
 	if packageName == "go" || packageName == "golang" {
 		return "go"
 	}
-	
+
 	// Check if it looks like a Go module
 	if packageName != "" && (packageName[0] != '@' && packageName != "") {
 		return "go"
 	}
-	
+
 	// Default to npm for @scoped packages
 	if len(packageName) > 0 && packageName[0] == '@' {
 		return "npm"
@@ -115,14 +115,14 @@ func (pr *PackageResolverImpl) detectPackageManager(packageName string) string {
 func (pr *PackageResolverImpl) resolveGoPackage(ctx context.Context, packageName, version string) (*interfaces.ResolvedPackage, error) {
 	// Placeholder implementation for Go packages
 	// In real implementation, this would query the Go proxy API
-	
+
 	return &interfaces.ResolvedPackage{
 		Name:         packageName,
 		Version:      version,
 		Source:       pr.config.Registry.DefaultRegistry,
 		Dependencies: []string{}, // Would be populated from actual resolution
 		Metadata: map[string]interface{}{
-			"type":       "go",
+			"type":        "go",
 			"resolved_at": time.Now(),
 		},
 	}, nil
@@ -131,14 +131,14 @@ func (pr *PackageResolverImpl) resolveGoPackage(ctx context.Context, packageName
 // resolveNpmPackage résout un package npm
 func (pr *PackageResolverImpl) resolveNpmPackage(ctx context.Context, packageName, version string) (*interfaces.ResolvedPackage, error) {
 	// Placeholder implementation for npm packages
-	
+
 	return &interfaces.ResolvedPackage{
 		Name:         packageName,
 		Version:      version,
 		Source:       "https://registry.npmjs.org",
 		Dependencies: []string{},
 		Metadata: map[string]interface{}{
-			"type":       "npm",
+			"type":        "npm",
 			"resolved_at": time.Now(),
 		},
 	}, nil

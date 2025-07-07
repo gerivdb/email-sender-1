@@ -8,9 +8,9 @@ import (
 )
 
 type HealthResponse struct {
-	Status	string		`json:"status"`
-	Version	string		`json:"version"`
-	Time	time.Time	`json:"time"`
+	Status  string    `json:"status"`
+	Version string    `json:"version"`
+	Time    time.Time `json:"time"`
 }
 
 func main() {
@@ -21,9 +21,9 @@ func main() {
 		switch r.URL.Path {
 		case "/", "/health":
 			healthResponse := HealthResponse{
-				Status:		"ok",
-				Version:	"v1.7.0",
-				Time:		time.Now(),
+				Status:  "ok",
+				Version: "v1.7.0",
+				Time:    time.Now(),
 			}
 
 			w.Header().Set("Content-Type", "application/json")

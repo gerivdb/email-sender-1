@@ -80,8 +80,8 @@ func (mp *ManagerProxy) GetHealth() interfaces.HealthStatus {
 // GetMetrics retourne les métriques
 func (mp *ManagerProxy) GetMetrics() map[string]interface{} {
 	return map[string]interface{}{
-		"type":      "filesystem",
-		"status":    "running",
+		"type":       "filesystem",
+		"status":     "running",
 		"last_check": time.Now(),
 	}
 }
@@ -128,7 +128,7 @@ type NetworkManagerProxy struct {
 // Initialize initialise le proxy réseau
 func (nmp *NetworkManagerProxy) Initialize(ctx context.Context) error {
 	nmp.logger.Debug(fmt.Sprintf("Initializing network manager proxy: %s", nmp.name))
-	
+
 	// Tester la connexion
 	resp, err := nmp.client.Get(fmt.Sprintf("%s/health", nmp.endpoint))
 	if err != nil {
@@ -231,7 +231,7 @@ func (nmp *NetworkManagerProxy) GetHealth() interfaces.HealthStatus {
 	// Tenter de récupérer les métriques de santé via HTTP
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	
+
 	if err := nmp.HealthCheck(ctx); err != nil {
 		return interfaces.HealthStatus{
 			IsHealthy: false,
@@ -241,7 +241,7 @@ func (nmp *NetworkManagerProxy) GetHealth() interfaces.HealthStatus {
 			Details:   map[string]interface{}{"error": err.Error()},
 		}
 	}
-	
+
 	return interfaces.HealthStatus{
 		IsHealthy: true,
 		Score:     1.0,
@@ -254,9 +254,9 @@ func (nmp *NetworkManagerProxy) GetHealth() interfaces.HealthStatus {
 // GetMetrics retourne les métriques
 func (nmp *NetworkManagerProxy) GetMetrics() map[string]interface{} {
 	return map[string]interface{}{
-		"type": "network",
-		"endpoint": nmp.endpoint,
-		"status": "running",
+		"type":       "network",
+		"endpoint":   nmp.endpoint,
+		"status":     "running",
 		"last_check": time.Now(),
 	}
 }
@@ -269,14 +269,14 @@ func (nmp *NetworkManagerProxy) GetDependencies() []string {
 // ProcessOperation traite une opération
 func (nmp *NetworkManagerProxy) ProcessOperation(operation *interfaces.Operation) error {
 	nmp.logger.Info(fmt.Sprintf("Processing operation %s for network manager %s", operation.ID, nmp.name))
-	
+
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	
+
 	params := map[string]interface{}{
 		"operation": operation,
 	}
-	
+
 	_, err := nmp.ExecuteCommand(ctx, "process_operation", params)
 	return err
 }
@@ -285,7 +285,7 @@ func (nmp *NetworkManagerProxy) ProcessOperation(operation *interfaces.Operation
 func (nmp *NetworkManagerProxy) ValidateConfiguration() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	
+
 	req, err := http.NewRequestWithContext(ctx, "GET", fmt.Sprintf("%s/validate", nmp.endpoint), nil)
 	if err != nil {
 		return fmt.Errorf("failed to create validation request: %w", err)
@@ -307,8 +307,8 @@ func (nmp *NetworkManagerProxy) ValidateConfiguration() error {
 // GetConfiguration retourne la configuration
 func (nmp *NetworkManagerProxy) GetConfiguration() interface{} {
 	return map[string]interface{}{
-		"name": nmp.name,
-		"type": "network",
+		"name":     nmp.name,
+		"type":     "network",
 		"endpoint": nmp.endpoint,
 	}
 }
@@ -316,14 +316,14 @@ func (nmp *NetworkManagerProxy) GetConfiguration() interface{} {
 // UpdateConfiguration met à jour la configuration
 func (nmp *NetworkManagerProxy) UpdateConfiguration(config interface{}) error {
 	nmp.logger.Info(fmt.Sprintf("Updating configuration for network manager %s", nmp.name))
-	
+
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
-	
+
 	params := map[string]interface{}{
 		"config": config,
 	}
-	
+
 	_, err := nmp.ExecuteCommand(ctx, "update_config", params)
 	return err
 }
@@ -375,7 +375,7 @@ func (mmp *MockManagerProxy) Initialize(ctx context.Context) error {
 // HealthCheck simule une vérification de santé
 func (mmp *MockManagerProxy) HealthCheck(ctx context.Context) error {
 	mmp.logger.Debug(fmt.Sprintf("Mock health check for manager: %s", mmp.name))
-	
+
 	// Simuler une latence réaliste
 	select {
 	case <-time.After(10 * time.Millisecond):
@@ -429,7 +429,7 @@ func (mmp *MockManagerProxy) GetHealth() interfaces.HealthStatus {
 		LastCheck: time.Now(),
 		Details: map[string]interface{}{
 			"is_mock": true,
-			"uptime": "24h30m",
+			"uptime":  "24h30m",
 		},
 	}
 }
@@ -438,13 +438,13 @@ func (mmp *MockManagerProxy) GetHealth() interfaces.HealthStatus {
 func (mmp *MockManagerProxy) GetMetrics() map[string]interface{} {
 	return map[string]interface{}{
 		"manager":          mmp.name,
-		"uptime":          "24h30m",
-		"memory_usage":    "128MB",
-		"cpu_usage":       "15%",
+		"uptime":           "24h30m",
+		"memory_usage":     "128MB",
+		"cpu_usage":        "15%",
 		"operations_count": 1024,
-		"last_operation":  time.Now().Format(time.RFC3339),
-		"health_score":    0.95,
-		"is_mock":         true,
+		"last_operation":   time.Now().Format(time.RFC3339),
+		"health_score":     0.95,
+		"is_mock":          true,
 	}
 }
 
@@ -456,7 +456,7 @@ func (mmp *MockManagerProxy) GetDependencies() []string {
 // ProcessOperation traite une opération mock
 func (mmp *MockManagerProxy) ProcessOperation(operation *interfaces.Operation) error {
 	mmp.logger.Info(fmt.Sprintf("Processing mock operation %s for manager %s", operation.ID, mmp.name))
-	
+
 	// Simuler un traitement
 	time.Sleep(20 * time.Millisecond)
 	return nil
@@ -471,8 +471,8 @@ func (mmp *MockManagerProxy) ValidateConfiguration() error {
 // GetConfiguration retourne la configuration mock
 func (mmp *MockManagerProxy) GetConfiguration() interface{} {
 	return map[string]interface{}{
-		"name": mmp.name,
-		"type": "mock",
+		"name":    mmp.name,
+		"type":    "mock",
 		"version": "1.0.0-mock",
 		"is_mock": true,
 	}
@@ -487,7 +487,7 @@ func (mmp *MockManagerProxy) UpdateConfiguration(config interface{}) error {
 // ExecuteCommand simule l'exécution d'une commande
 func (mmp *MockManagerProxy) ExecuteCommand(ctx context.Context, command string, params map[string]interface{}) (map[string]interface{}, error) {
 	mmp.logger.Debug(fmt.Sprintf("Mock executing command '%s' on manager: %s", command, mmp.name))
-	
+
 	// Simuler une latence et retourner un résultat fictif
 	select {
 	case <-time.After(50 * time.Millisecond):
@@ -507,7 +507,7 @@ func (mmp *MockManagerProxy) ExecuteCommand(ctx context.Context, command string,
 func (mmp *MockManagerProxy) GetCapabilities() []string {
 	return []string{
 		"mock",
-		"testing", 
+		"testing",
 		"basic-operations",
 		"health-check",
 		"metrics",
@@ -518,7 +518,7 @@ func (mmp *MockManagerProxy) GetCapabilities() []string {
 // SimulateFailure simule une défaillance pour les tests
 func (mmp *MockManagerProxy) SimulateFailure(failureType string) error {
 	mmp.logger.Warn(fmt.Sprintf("Simulating failure '%s' for mock manager: %s", failureType, mmp.name))
-	
+
 	switch failureType {
 	case "health-check":
 		return fmt.Errorf("simulated health check failure for %s", mmp.name)

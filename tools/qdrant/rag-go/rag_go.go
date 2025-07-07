@@ -54,8 +54,8 @@ func searchTest(client *client.QdrantClient) {
 	fmt.Println("Testing search...")
 	vector := make([]float32, 384)
 	results, err := client.Search("test", client.SearchRequest{
-		Vector:	vector,
-		Limit:	3,
+		Vector: vector,
+		Limit:  3,
 	})
 	if err != nil {
 		log.Printf("Search error: %v", err)

@@ -192,7 +192,7 @@ func (csm *ContextualShortcutManager) registerDefaultShortcuts() {
 		{
 			Key:         "ctrl+t",
 			Description: "New panel",
-		 Action:      "new_panel",
+			Action:      "new_panel",
 			Context:     []string{"any"},
 			Priority:    90,
 			Handler:     csm.newPanelHandler,

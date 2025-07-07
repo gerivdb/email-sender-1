@@ -17,79 +17,79 @@ import (
 
 // MonitoringDashboard provides comprehensive observability
 type MonitoringDashboard struct {
-	metrics		*MetricsCollector
-	healthCheck	*HealthChecker
-	alerts		*AlertManager
-	router		*mux.Router
-	server		*http.Server
-	logger		*log.Logger
+	metrics     *MetricsCollector
+	healthCheck *HealthChecker
+	alerts      *AlertManager
+	router      *mux.Router
+	server      *http.Server
+	logger      *log.Logger
 }
 
 // MetricsCollector handles Prometheus metrics
-type MetricsCollector struct {	// Counter metrics
-	sessionsCreated		prometheus.Counter
-	branchOperations	prometheus.Counter
-	aiPredictions		prometheus.Counter
-	errorCount		*prometheus.CounterVec
+type MetricsCollector struct { // Counter metrics
+	sessionsCreated  prometheus.Counter
+	branchOperations prometheus.Counter
+	aiPredictions    prometheus.Counter
+	errorCount       *prometheus.CounterVec
 
 	// Histogram metrics
-	responseTime	*prometheus.HistogramVec
-	sessionDuration	prometheus.Histogram
+	responseTime    *prometheus.HistogramVec
+	sessionDuration prometheus.Histogram
 
 	// Gauge metrics
-	activeSessions	prometheus.Gauge
-	memoryUsage	prometheus.Gauge
-	cpuUsage	prometheus.Gauge
+	activeSessions prometheus.Gauge
+	memoryUsage    prometheus.Gauge
+	cpuUsage       prometheus.Gauge
 
-	registry	*prometheus.Registry
+	registry *prometheus.Registry
 }
 
 // HealthChecker monitors system health
 type HealthChecker struct {
-	checks		map[string]HealthCheck
-	overallStatus	string
-	lastCheck	time.Time
-	checkInterval	time.Duration
-	mutex		sync.RWMutex
+	checks        map[string]HealthCheck
+	overallStatus string
+	lastCheck     time.Time
+	checkInterval time.Duration
+	mutex         sync.RWMutex
 }
 
 // HealthCheck represents individual health check
 type HealthCheck struct {
-	Name		string		`json:"name"`
-	Status		string		`json:"status"`
-	Message		string		`json:"message"`
-	LastCheck	time.Time	`json:"last_check"`
-	Duration	time.Duration	`json:"duration"`
-	Critical	bool		`json:"critical"`
+	Name      string        `json:"name"`
+	Status    string        `json:"status"`
+	Message   string        `json:"message"`
+	LastCheck time.Time     `json:"last_check"`
+	Duration  time.Duration `json:"duration"`
+	Critical  bool          `json:"critical"`
 }
 
 // AlertManager handles alerting logic
 type AlertManager struct {
-	rules		[]AlertRule
-	activeAlerts	map[string]Alert
-	notifiers	[]Notifier
-	mutex		sync.RWMutex
+	rules        []AlertRule
+	activeAlerts map[string]Alert
+	notifiers    []Notifier
+	mutex        sync.RWMutex
 }
 
 // AlertRule defines alerting conditions
 type AlertRule struct {
-	Name		string		`json:"name"`
-	Condition	string		`json:"condition"`
-	Threshold	float64		`json:"threshold"`
-	Duration	time.Duration	`json:"duration"`
-	Severity	string		`json:"severity"`
-	Enabled		bool		`json:"enabled"`
+	Name      string        `json:"name"`
+	Condition string        `json:"condition"`
+	Threshold float64       `json:"threshold"`
+	Duration  time.Duration `json:"duration"`
+	Severity  string        `json:"severity"`
+	Enabled   bool          `json:"enabled"`
 }
 
 // Alert represents an active alert
 type Alert struct {
-	ID		string		`json:"id"`
-	Rule		string		`json:"rule"`
-	Message		string		`json:"message"`
-	Severity	string		`json:"severity"`
-	StartTime	time.Time	`json:"start_time"`
-	LastSeen	time.Time	`json:"last_seen"`
-	Status		string		`json:"status"`
+	ID        string    `json:"id"`
+	Rule      string    `json:"rule"`
+	Message   string    `json:"message"`
+	Severity  string    `json:"severity"`
+	StartTime time.Time `json:"start_time"`
+	LastSeen  time.Time `json:"last_seen"`
+	Status    string    `json:"status"`
 }
 
 // Notifier interface for alert notifications
@@ -99,41 +99,41 @@ type Notifier interface {
 
 // DashboardMetrics represents real-time metrics for the dashboard
 type DashboardMetrics struct {
-	Timestamp		time.Time		`json:"timestamp"`
-	OverallHealth		string			`json:"overall_health"`
-	ActiveSessions		int64			`json:"active_sessions"`
-	TotalBranches		int64			`json:"total_branches"`
-	AIAccuracy		float64			`json:"ai_accuracy"`
-	ResponseTime		float64			`json:"avg_response_time"`
-	ErrorRate		float64			`json:"error_rate"`
-	ResourceUsage		ResourceUsage		`json:"resource_usage"`
-	ComponentStatus		map[string]string	`json:"component_status"`
-	RecentAlerts		[]Alert			`json:"recent_alerts"`
-	PerformanceStats	PerformanceStats	`json:"performance_stats"`
+	Timestamp        time.Time         `json:"timestamp"`
+	OverallHealth    string            `json:"overall_health"`
+	ActiveSessions   int64             `json:"active_sessions"`
+	TotalBranches    int64             `json:"total_branches"`
+	AIAccuracy       float64           `json:"ai_accuracy"`
+	ResponseTime     float64           `json:"avg_response_time"`
+	ErrorRate        float64           `json:"error_rate"`
+	ResourceUsage    ResourceUsage     `json:"resource_usage"`
+	ComponentStatus  map[string]string `json:"component_status"`
+	RecentAlerts     []Alert           `json:"recent_alerts"`
+	PerformanceStats PerformanceStats  `json:"performance_stats"`
 }
 
 // ResourceUsage tracks system resource consumption
 type ResourceUsage struct {
-	CPU		float64	`json:"cpu_percent"`
-	Memory		float64	`json:"memory_percent"`
-	Disk		float64	`json:"disk_percent"`
-	NetworkIn	int64	`json:"network_in_bytes"`
-	NetworkOut	int64	`json:"network_out_bytes"`
+	CPU        float64 `json:"cpu_percent"`
+	Memory     float64 `json:"memory_percent"`
+	Disk       float64 `json:"disk_percent"`
+	NetworkIn  int64   `json:"network_in_bytes"`
+	NetworkOut int64   `json:"network_out_bytes"`
 }
 
 // PerformanceStats tracks detailed performance metrics
 type PerformanceStats struct {
-	Level1Sessions		int64	`json:"level1_sessions"`
-	Level2Events		int64	`json:"level2_events"`
-	Level3Branches		int64	`json:"level3_branches"`
-	Level4Predictions	int64	`json:"level4_predictions"`
-	Level5Optimizations	int64	`json:"level5_optimizations"`
-	Level6Snapshots		int64	`json:"level6_snapshots"`
-	Level7Repos		int64	`json:"level7_repos"`
-	Level8Quantum		int64	`json:"level8_quantum"`
-	ThroughputPerSec	float64	`json:"throughput_per_sec"`
-	LatencyP95		float64	`json:"latency_p95"`
-	LatencyP99		float64	`json:"latency_p99"`
+	Level1Sessions      int64   `json:"level1_sessions"`
+	Level2Events        int64   `json:"level2_events"`
+	Level3Branches      int64   `json:"level3_branches"`
+	Level4Predictions   int64   `json:"level4_predictions"`
+	Level5Optimizations int64   `json:"level5_optimizations"`
+	Level6Snapshots     int64   `json:"level6_snapshots"`
+	Level7Repos         int64   `json:"level7_repos"`
+	Level8Quantum       int64   `json:"level8_quantum"`
+	ThroughputPerSec    float64 `json:"throughput_per_sec"`
+	LatencyP95          float64 `json:"latency_p95"`
+	LatencyP99          float64 `json:"latency_p99"`
 }
 
 // NewMonitoringDashboard creates a new monitoring dashboard
@@ -145,10 +145,10 @@ func NewMonitoringDashboard() *MonitoringDashboard {
 	alerts := NewAlertManager()
 
 	dashboard := &MonitoringDashboard{
-		metrics:	metrics,
-		healthCheck:	healthCheck,
-		alerts:		alerts,
-		logger:		logger,
+		metrics:     metrics,
+		healthCheck: healthCheck,
+		alerts:      alerts,
+		logger:      logger,
 	}
 
 	dashboard.setupRoutes()
@@ -163,44 +163,44 @@ func NewMetricsCollector() *MetricsCollector {
 
 	collector := &MetricsCollector{
 		sessionsCreated: prometheus.NewCounter(prometheus.CounterOpts{
-			Name:	"branching_sessions_created_total",
-			Help:	"Total number of branching sessions created",
+			Name: "branching_sessions_created_total",
+			Help: "Total number of branching sessions created",
 		}),
 		branchOperations: prometheus.NewCounter(prometheus.CounterOpts{
-			Name:	"branching_operations_total",
-			Help:	"Total number of branch operations performed",
+			Name: "branching_operations_total",
+			Help: "Total number of branch operations performed",
 		}),
 		aiPredictions: prometheus.NewCounter(prometheus.CounterOpts{
-			Name:	"ai_predictions_total",
-			Help:	"Total number of AI predictions made",
+			Name: "ai_predictions_total",
+			Help: "Total number of AI predictions made",
 		}),
 		errorCount: prometheus.NewCounterVec(prometheus.CounterOpts{
-			Name:	"branching_errors_total",
-			Help:	"Total number of errors by component",
+			Name: "branching_errors_total",
+			Help: "Total number of errors by component",
 		}, []string{"component", "error_type"}),
 		responseTime: prometheus.NewHistogramVec(prometheus.HistogramOpts{
-			Name:		"branching_response_time_seconds",
-			Help:		"Response time of branching operations",
-			Buckets:	prometheus.DefBuckets,
+			Name:    "branching_response_time_seconds",
+			Help:    "Response time of branching operations",
+			Buckets: prometheus.DefBuckets,
 		}, []string{"operation", "level"}),
 		sessionDuration: prometheus.NewHistogram(prometheus.HistogramOpts{
-			Name:		"branching_session_duration_seconds",
-			Help:		"Duration of branching sessions",
-			Buckets:	[]float64{0.1, 0.5, 1, 5, 10, 30, 60, 300, 600},
+			Name:    "branching_session_duration_seconds",
+			Help:    "Duration of branching sessions",
+			Buckets: []float64{0.1, 0.5, 1, 5, 10, 30, 60, 300, 600},
 		}),
 		activeSessions: prometheus.NewGauge(prometheus.GaugeOpts{
-			Name:	"branching_active_sessions",
-			Help:	"Number of currently active sessions",
+			Name: "branching_active_sessions",
+			Help: "Number of currently active sessions",
 		}),
 		memoryUsage: prometheus.NewGauge(prometheus.GaugeOpts{
-			Name:	"branching_memory_usage_bytes",
-			Help:	"Current memory usage in bytes",
+			Name: "branching_memory_usage_bytes",
+			Help: "Current memory usage in bytes",
 		}),
 		cpuUsage: prometheus.NewGauge(prometheus.GaugeOpts{
-			Name:	"branching_cpu_usage_percent",
-			Help:	"Current CPU usage percentage",
+			Name: "branching_cpu_usage_percent",
+			Help: "Current CPU usage percentage",
 		}),
-		registry:	registry,
+		registry: registry,
 	}
 
 	// Register metrics
@@ -222,18 +222,18 @@ func NewMetricsCollector() *MetricsCollector {
 // NewHealthChecker creates a new health checker
 func NewHealthChecker() *HealthChecker {
 	return &HealthChecker{
-		checks:		make(map[string]HealthCheck),
-		overallStatus:	"healthy",
-		checkInterval:	30 * time.Second,
+		checks:        make(map[string]HealthCheck),
+		overallStatus: "healthy",
+		checkInterval: 30 * time.Second,
 	}
 }
 
 // NewAlertManager creates a new alert manager
 func NewAlertManager() *AlertManager {
 	return &AlertManager{
-		rules:		make([]AlertRule, 0),
-		activeAlerts:	make(map[string]Alert),
-		notifiers:	make([]Notifier, 0),
+		rules:        make([]AlertRule, 0),
+		activeAlerts: make(map[string]Alert),
+		notifiers:    make([]Notifier, 0),
 	}
 }
 
@@ -262,36 +262,36 @@ func (md *MonitoringDashboard) setupRoutes() {
 func (md *MonitoringDashboard) setupDefaultAlerts() {
 	defaultRules := []AlertRule{
 		{
-			Name:		"high_error_rate",
-			Condition:	"error_rate > threshold",
-			Threshold:	0.05,	// 5%
-			Duration:	5 * time.Minute,
-			Severity:	"critical",
-			Enabled:	true,
+			Name:      "high_error_rate",
+			Condition: "error_rate > threshold",
+			Threshold: 0.05, // 5%
+			Duration:  5 * time.Minute,
+			Severity:  "critical",
+			Enabled:   true,
 		},
 		{
-			Name:		"high_response_time",
-			Condition:	"avg_response_time > threshold",
-			Threshold:	1.0,	// 1 second
-			Duration:	10 * time.Minute,
-			Severity:	"warning",
-			Enabled:	true,
+			Name:      "high_response_time",
+			Condition: "avg_response_time > threshold",
+			Threshold: 1.0, // 1 second
+			Duration:  10 * time.Minute,
+			Severity:  "warning",
+			Enabled:   true,
 		},
 		{
-			Name:		"high_memory_usage",
-			Condition:	"memory_usage > threshold",
-			Threshold:	0.85,	// 85%
-			Duration:	15 * time.Minute,
-			Severity:	"warning",
-			Enabled:	true,
+			Name:      "high_memory_usage",
+			Condition: "memory_usage > threshold",
+			Threshold: 0.85, // 85%
+			Duration:  15 * time.Minute,
+			Severity:  "warning",
+			Enabled:   true,
 		},
 		{
-			Name:		"low_ai_accuracy",
-			Condition:	"ai_accuracy < threshold",
-			Threshold:	0.85,	// 85%
-			Duration:	30 * time.Minute,
-			Severity:	"warning",
-			Enabled:	true,
+			Name:      "low_ai_accuracy",
+			Condition: "ai_accuracy < threshold",
+			Threshold: 0.85, // 85%
+			Duration:  30 * time.Minute,
+			Severity:  "warning",
+			Enabled:   true,
 		},
 	}
 
@@ -301,8 +301,8 @@ func (md *MonitoringDashboard) setupDefaultAlerts() {
 // Start begins the monitoring dashboard server
 func (md *MonitoringDashboard) Start(ctx context.Context, port int) error {
 	md.server = &http.Server{
-		Addr:		fmt.Sprintf(":%d", port),
-		Handler:	md.router,
+		Addr:    fmt.Sprintf(":%d", port),
+		Handler: md.router,
 	}
 
 	// Start health checking routine
@@ -423,9 +423,9 @@ func (md *MonitoringDashboard) handleRoot(w http.ResponseWriter, r *http.Request
 
 func (md *MonitoringDashboard) handleHealth(w http.ResponseWriter, r *http.Request) {
 	health := map[string]interface{}{
-		"status":	md.healthCheck.overallStatus,
-		"timestamp":	time.Now(),
-		"uptime":	time.Since(md.healthCheck.lastCheck),
+		"status":    md.healthCheck.overallStatus,
+		"timestamp": time.Now(),
+		"uptime":    time.Since(md.healthCheck.lastCheck),
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -441,9 +441,9 @@ func (md *MonitoringDashboard) handleDeepHealth(w http.ResponseWriter, r *http.R
 	md.healthCheck.mutex.RUnlock()
 
 	deepHealth := map[string]interface{}{
-		"overall_status":	md.healthCheck.overallStatus,
-		"timestamp":		time.Now(),
-		"checks":		checks,
+		"overall_status": md.healthCheck.overallStatus,
+		"timestamp":      time.Now(),
+		"checks":         checks,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -460,19 +460,19 @@ func (md *MonitoringDashboard) handleMetrics(w http.ResponseWriter, r *http.Requ
 
 func (md *MonitoringDashboard) handleStatus(w http.ResponseWriter, r *http.Request) {
 	status := map[string]interface{}{
-		"service":	"Ultra-Advanced Branching Framework",
-		"version":	"v1.0.0",
-		"environment":	"production",
-		"status":	"operational",
-		"uptime":	time.Since(time.Now().Add(-24 * time.Hour)),	// Mock uptime
+		"service":     "Ultra-Advanced Branching Framework",
+		"version":     "v1.0.0",
+		"environment": "production",
+		"status":      "operational",
+		"uptime":      time.Since(time.Now().Add(-24 * time.Hour)), // Mock uptime
 		"components": map[string]string{
-			"core_framework":	"operational",
-			"ai_predictor":		"operational",
-			"database":		"operational",
-			"vector_store":		"operational",
-			"git_operations":	"operational",
-			"n8n_integration":	"operational",
-			"mcp_gateway":		"operational",
+			"core_framework":  "operational",
+			"ai_predictor":    "operational",
+			"database":        "operational",
+			"vector_store":    "operational",
+			"git_operations":  "operational",
+			"n8n_integration": "operational",
+			"mcp_gateway":     "operational",
 		},
 	}
 
@@ -489,9 +489,9 @@ func (md *MonitoringDashboard) handleAlerts(w http.ResponseWriter, r *http.Reque
 	md.alerts.mutex.RUnlock()
 
 	response := map[string]interface{}{
-		"active_alerts":	alerts,
-		"total_count":		len(alerts),
-		"timestamp":		time.Now(),
+		"active_alerts": alerts,
+		"total_count":   len(alerts),
+		"timestamp":     time.Now(),
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -510,55 +510,55 @@ func (md *MonitoringDashboard) handleDashboard(w http.ResponseWriter, r *http.Re
 func (md *MonitoringDashboard) collectCurrentMetrics() map[string]interface{} {
 	// This would collect real metrics from the system
 	return map[string]interface{}{
-		"sessions_created":	1000,
-		"branch_operations":	5000,
-		"ai_predictions":	2000,
-		"active_sessions":	150,
-		"memory_usage_mb":	512,
-		"cpu_usage_percent":	45.2,
-		"error_rate":		0.02,
-		"avg_response_time_ms":	85.3,
+		"sessions_created":     1000,
+		"branch_operations":    5000,
+		"ai_predictions":       2000,
+		"active_sessions":      150,
+		"memory_usage_mb":      512,
+		"cpu_usage_percent":    45.2,
+		"error_rate":           0.02,
+		"avg_response_time_ms": 85.3,
 	}
 }
 
 func (md *MonitoringDashboard) collectDashboardMetrics() DashboardMetrics {
 	return DashboardMetrics{
-		Timestamp:	time.Now(),
-		OverallHealth:	"healthy",
-		ActiveSessions:	150,
-		TotalBranches:	5000,
-		AIAccuracy:	0.94,
-		ResponseTime:	85.3,
-		ErrorRate:	0.02,
+		Timestamp:      time.Now(),
+		OverallHealth:  "healthy",
+		ActiveSessions: 150,
+		TotalBranches:  5000,
+		AIAccuracy:     0.94,
+		ResponseTime:   85.3,
+		ErrorRate:      0.02,
 		ResourceUsage: ResourceUsage{
-			CPU:		45.2,
-			Memory:		68.5,
-			Disk:		23.1,
-			NetworkIn:	1024000,
-			NetworkOut:	2048000,
+			CPU:        45.2,
+			Memory:     68.5,
+			Disk:       23.1,
+			NetworkIn:  1024000,
+			NetworkOut: 2048000,
 		},
 		ComponentStatus: map[string]string{
-			"core_framework":	"healthy",
-			"ai_predictor":		"healthy",
-			"database":		"healthy",
-			"vector_store":		"healthy",
-			"git_operations":	"healthy",
-			"n8n_integration":	"healthy",
-			"mcp_gateway":		"healthy",
+			"core_framework":  "healthy",
+			"ai_predictor":    "healthy",
+			"database":        "healthy",
+			"vector_store":    "healthy",
+			"git_operations":  "healthy",
+			"n8n_integration": "healthy",
+			"mcp_gateway":     "healthy",
 		},
-		RecentAlerts:	[]Alert{},
+		RecentAlerts: []Alert{},
 		PerformanceStats: PerformanceStats{
-			Level1Sessions:		1000,
-			Level2Events:		2500,
-			Level3Branches:		5000,
-			Level4Predictions:	2000,
-			Level5Optimizations:	750,
-			Level6Snapshots:	300,
-			Level7Repos:		50,
-			Level8Quantum:		25,
-			ThroughputPerSec:	150.5,
-			LatencyP95:		120.0,
-			LatencyP99:		250.0,
+			Level1Sessions:      1000,
+			Level2Events:        2500,
+			Level3Branches:      5000,
+			Level4Predictions:   2000,
+			Level5Optimizations: 750,
+			Level6Snapshots:     300,
+			Level7Repos:         50,
+			Level8Quantum:       25,
+			ThroughputPerSec:    150.5,
+			LatencyP95:          120.0,
+			LatencyP99:          250.0,
 		},
 	}
 }
@@ -579,9 +579,9 @@ func (md *MonitoringDashboard) runHealthChecks(ctx context.Context) {
 
 func (md *MonitoringDashboard) performHealthChecks() {
 	checks := []struct {
-		name		string
-		critical	bool
-		checkFn		func() (string, error)
+		name     string
+		critical bool
+		checkFn  func() (string, error)
 	}{
 		{"database", true, md.checkDatabase},
 		{"vector_store", false, md.checkVectorStore},
@@ -609,12 +609,12 @@ func (md *MonitoringDashboard) performHealthChecks() {
 		}
 
 		md.healthCheck.checks[check.name] = HealthCheck{
-			Name:		check.name,
-			Status:		status,
-			Message:	fmt.Sprintf("Check completed in %v", duration),
-			LastCheck:	time.Now(),
-			Duration:	duration,
-			Critical:	check.critical,
+			Name:      check.name,
+			Status:    status,
+			Message:   fmt.Sprintf("Check completed in %v", duration),
+			LastCheck: time.Now(),
+			Duration:  duration,
+			Critical:  check.critical,
 		}
 	}
 

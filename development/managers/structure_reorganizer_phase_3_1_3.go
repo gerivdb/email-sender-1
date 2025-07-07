@@ -9,16 +9,16 @@ import (
 
 // StructureReorganizer simule la réorganisation de la structure des dossiers
 type StructureReorganizer struct {
-	basePath	string
-	dryRun		bool
-	targetStructure	map[string][]string
+	basePath        string
+	dryRun          bool
+	targetStructure map[string][]string
 }
 
 // NewStructureReorganizer crée un nouveau réorganisateur
 func NewStructureReorganizer(basePath string, dryRun bool) *StructureReorganizer {
 	return &StructureReorganizer{
-		basePath:	basePath,
-		dryRun:		dryRun,
+		basePath: basePath,
+		dryRun:   dryRun,
 		targetStructure: map[string][]string{
 			"core": {
 				"config-manager",
@@ -121,11 +121,11 @@ func (sr *StructureReorganizer) ValidateImports() error {
 
 	// Exemples d'imports qui devront être mis à jour
 	importUpdates := map[string]string{
-		"github.com/gerivdb/email-sender-1/managers/config-manager":		"github.com/gerivdb/email-sender-1/managers/core/config-manager",
-		"github.com/gerivdb/email-sender-1/managers/ai-template-manager":	"github.com/gerivdb/email-sender-1/managers/specialized/ai-template-manager",
-		"github.com/gerivdb/email-sender-1/managers/n8n-manager":		"github.com/gerivdb/email-sender-1/managers/integration/n8n-manager",
-		"github.com/gerivdb/email-sender-1/managers/central-coordinator":	"github.com/gerivdb/email-sender-1/managers/infrastructure/central-coordinator",
-		"github.com/gerivdb/email-sender-1/managers/vectorization-go":		"github.com/gerivdb/email-sender-1/managers/vectorization/vectorization-go",
+		"github.com/gerivdb/email-sender-1/managers/config-manager":      "github.com/gerivdb/email-sender-1/managers/core/config-manager",
+		"github.com/gerivdb/email-sender-1/managers/ai-template-manager": "github.com/gerivdb/email-sender-1/managers/specialized/ai-template-manager",
+		"github.com/gerivdb/email-sender-1/managers/n8n-manager":         "github.com/gerivdb/email-sender-1/managers/integration/n8n-manager",
+		"github.com/gerivdb/email-sender-1/managers/central-coordinator": "github.com/gerivdb/email-sender-1/managers/infrastructure/central-coordinator",
+		"github.com/gerivdb/email-sender-1/managers/vectorization-go":    "github.com/gerivdb/email-sender-1/managers/vectorization/vectorization-go",
 	}
 
 	fmt.Println("Imports à mettre à jour:")

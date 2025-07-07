@@ -22,11 +22,11 @@ type SearchRequest struct {
 
 // ValidationError represents a validation error with context
 type ValidationError struct {
-	Field   string `json:"field"`
+	Field   string      `json:"field"`
 	Value   interface{} `json:"value"`
-	Rule    string `json:"rule"`
-	Message string `json:"message"`
-	Code    string `json:"code"`
+	Rule    string      `json:"rule"`
+	Message string      `json:"message"`
+	Code    string      `json:"code"`
 }
 
 func (e ValidationError) Error() string {
@@ -35,11 +35,11 @@ func (e ValidationError) Error() string {
 
 // ValidationResult encapsulates validation results with metrics
 type ValidationResult struct {
-	IsValid    bool              `json:"is_valid"`
-	Errors     []ValidationError `json:"errors,omitempty"`
-	Warnings   []string          `json:"warnings,omitempty"`
-	Duration   time.Duration     `json:"duration"`
-	Sanitized  *SearchRequest    `json:"sanitized,omitempty"`
+	IsValid   bool              `json:"is_valid"`
+	Errors    []ValidationError `json:"errors,omitempty"`
+	Warnings  []string          `json:"warnings,omitempty"`
+	Duration  time.Duration     `json:"duration"`
+	Sanitized *SearchRequest    `json:"sanitized,omitempty"`
 }
 
 // Validator provides fail-fast validation with built-in performance monitoring
@@ -86,16 +86,16 @@ func NewValidator() *Validator {
 // ValidateSearchRequest performs comprehensive fail-fast validation
 func (v *Validator) ValidateSearchRequest(req *SearchRequest) (*ValidationResult, error) {
 	start := time.Now()
-	
+
 	// Timeout protection for fail-fast behavior
 	timeout := time.After(v.config.ValidationTimeout)
 	done := make(chan *ValidationResult, 1)
-	
+
 	go func() {
 		result := v.performValidation(req)
 		done <- result
 	}()
-	
+
 	select {
 	case result := <-done:
 		duration := time.Since(start)
@@ -120,11 +120,11 @@ func (v *Validator) ValidateSearchRequest(req *SearchRequest) (*ValidationResult
 // performValidation executes the actual validation logic
 func (v *Validator) performValidation(req *SearchRequest) *ValidationResult {
 	result := &ValidationResult{
-		IsValid: true,
-		Errors:  []ValidationError{},
+		IsValid:  true,
+		Errors:   []ValidationError{},
 		Warnings: []string{},
 	}
-	
+
 	if req == nil {
 		result.IsValid = false
 		result.Errors = append(result.Errors, ValidationError{
@@ -136,12 +136,12 @@ func (v *Validator) performValidation(req *SearchRequest) *ValidationResult {
 		})
 		return result
 	}
-	
+
 	// Create sanitized copy if enabled
 	if v.config.EnableSanitization {
 		result.Sanitized = v.sanitizeRequest(req)
 	}
-	
+
 	// Validate query (fail-fast on critical fields)
 	if err := v.validateQuery(req.Query); err != nil {
 		result.IsValid = false
@@ -150,35 +150,35 @@ func (v *Validator) performValidation(req *SearchRequest) *ValidationResult {
 			return result // Fail immediately in strict mode
 		}
 	}
-	
+
 	// Validate limit
 	if err := v.validateLimit(req.Limit); err != nil {
 		result.IsValid = false
 		result.Errors = append(result.Errors, *err)
 	}
-	
+
 	// Validate threshold
 	if err := v.validateThreshold(req.Threshold); err != nil {
 		result.IsValid = false
 		result.Errors = append(result.Errors, *err)
 	}
-	
+
 	// Validate temperature
 	if err := v.validateTemperature(req.Temperature); err != nil {
 		result.IsValid = false
 		result.Errors = append(result.Errors, *err)
 	}
-	
+
 	// Validate filters (soft validation with warnings)
 	if warnings := v.validateFilters(req.Filters); len(warnings) > 0 {
 		result.Warnings = append(result.Warnings, warnings...)
 	}
-	
+
 	// Validate context
 	if warnings := v.validateContext(req.Context); len(warnings) > 0 {
 		result.Warnings = append(result.Warnings, warnings...)
 	}
-	
+
 	return result
 }
 
@@ -193,7 +193,7 @@ func (v *Validator) validateQuery(query string) *ValidationError {
 			Code:    "QUERY_EMPTY",
 		}
 	}
-	
+
 	if !utf8.ValidString(query) {
 		return &ValidationError{
 			Field:   "query",
@@ -203,7 +203,7 @@ func (v *Validator) validateQuery(query string) *ValidationError {
 			Code:    "QUERY_INVALID_UTF8",
 		}
 	}
-	
+
 	queryLen := utf8.RuneCountInString(query)
 	if queryLen < v.config.MinQueryLength {
 		return &ValidationError{
@@ -214,7 +214,7 @@ func (v *Validator) validateQuery(query string) *ValidationError {
 			Code:    "QUERY_TOO_SHORT",
 		}
 	}
-	
+
 	if queryLen > v.config.MaxQueryLength {
 		return &ValidationError{
 			Field:   "query",
@@ -224,7 +224,7 @@ func (v *Validator) validateQuery(query string) *ValidationError {
 			Code:    "QUERY_TOO_LONG",
 		}
 	}
-	
+
 	// Check for SQL injection patterns (fail-fast security)
 	dangerousPatterns := []string{"--", "/*", "*/", "xp_", "sp_", "DROP", "DELETE", "INSERT", "UPDATE"}
 	upperQuery := strings.ToUpper(query)
@@ -239,7 +239,7 @@ func (v *Validator) validateQuery(query string) *ValidationError {
 			}
 		}
 	}
-	
+
 	return nil
 }
 
@@ -254,7 +254,7 @@ func (v *Validator) validateLimit(limit int) *ValidationError {
 			Code:    "LIMIT_TOO_LOW",
 		}
 	}
-	
+
 	if limit > v.config.MaxResultLimit {
 		return &ValidationError{
 			Field:   "limit",
@@ -264,7 +264,7 @@ func (v *Validator) validateLimit(limit int) *ValidationError {
 			Code:    "LIMIT_TOO_HIGH",
 		}
 	}
-	
+
 	return nil
 }
 
@@ -299,11 +299,11 @@ func (v *Validator) validateTemperature(temperature float64) *ValidationError {
 // validateFilters validates search filters (returns warnings, not errors)
 func (v *Validator) validateFilters(filters map[string]string) []string {
 	var warnings []string
-	
+
 	if len(filters) > 10 {
 		warnings = append(warnings, "large number of filters may impact performance")
 	}
-	
+
 	for key, value := range filters {
 		if len(key) > 50 {
 			warnings = append(warnings, fmt.Sprintf("filter key '%s' is very long", key))
@@ -312,18 +312,18 @@ func (v *Validator) validateFilters(filters map[string]string) []string {
 			warnings = append(warnings, fmt.Sprintf("filter value for '%s' is very long", key))
 		}
 	}
-	
+
 	return warnings
 }
 
 // validateContext validates context array
 func (v *Validator) validateContext(context []string) []string {
 	var warnings []string
-	
+
 	if len(context) > 5 {
 		warnings = append(warnings, "large context array may impact performance")
 	}
-	
+
 	totalLength := 0
 	for _, ctx := range context {
 		totalLength += len(ctx)
@@ -331,11 +331,11 @@ func (v *Validator) validateContext(context []string) []string {
 			warnings = append(warnings, "context item is very long")
 		}
 	}
-	
+
 	if totalLength > 2000 {
 		warnings = append(warnings, "total context length is very large")
 	}
-	
+
 	return warnings
 }
 
@@ -349,11 +349,11 @@ func (v *Validator) sanitizeRequest(req *SearchRequest) *SearchRequest {
 		Filters:     make(map[string]string),
 		Context:     make([]string, len(req.Context)),
 	}
-	
+
 	// Sanitize query
 	sanitized.Query = strings.ReplaceAll(sanitized.Query, "\n", " ")
 	sanitized.Query = strings.ReplaceAll(sanitized.Query, "\t", " ")
-	
+
 	// Apply defaults
 	if sanitized.Limit == 0 {
 		sanitized.Limit = 10
@@ -361,17 +361,17 @@ func (v *Validator) sanitizeRequest(req *SearchRequest) *SearchRequest {
 	if sanitized.Threshold == 0 {
 		sanitized.Threshold = v.config.DefaultThreshold
 	}
-	
+
 	// Sanitize filters
 	for k, v := range req.Filters {
 		sanitized.Filters[strings.TrimSpace(k)] = strings.TrimSpace(v)
 	}
-	
+
 	// Sanitize context
 	for i, ctx := range req.Context {
 		sanitized.Context[i] = strings.TrimSpace(ctx)
 	}
-	
+
 	return sanitized
 }
 
@@ -381,7 +381,7 @@ func (v *Validator) updateStats(duration time.Duration, failed bool) {
 	if failed {
 		v.stats.FailedValidations++
 	}
-	
+
 	// Update average latency (exponential moving average)
 	if v.stats.TotalValidations == 1 {
 		v.stats.AverageLatency = duration
@@ -389,7 +389,7 @@ func (v *Validator) updateStats(duration time.Duration, failed bool) {
 		alpha := 0.1 // Smoothing factor
 		v.stats.AverageLatency = time.Duration(float64(v.stats.AverageLatency)*(1-alpha) + float64(duration)*alpha)
 	}
-	
+
 	v.stats.LastValidationTime = time.Now()
 }
 

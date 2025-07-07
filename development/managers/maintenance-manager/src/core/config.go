@@ -96,14 +96,14 @@ type ScriptConfig struct {
 
 // CleanupConfig contains cleanup-related settings
 type CleanupConfig struct {
-	EnabledLevels          []int     `yaml:"enabled_levels" json:"enabled_levels"`
-	RetentionPeriodDays    int       `yaml:"retention_period_days" json:"retention_period_days"`
-	BackupBeforeCleanup    bool      `yaml:"backup_before_cleanup" json:"backup_before_cleanup"`
-	SafetyChecks           bool      `yaml:"safety_checks" json:"safety_checks"`
-	GitHistoryPreservation bool      `yaml:"git_history_preservation" json:"git_history_preservation"`
-	SafetyThreshold        float64   `yaml:"safety_threshold" json:"safety_threshold"`
-	MinFileSize            int       `yaml:"min_file_size" json:"min_file_size"`
-	MaxFileAge             int       `yaml:"max_file_age" json:"max_file_age"`
+	EnabledLevels          []int   `yaml:"enabled_levels" json:"enabled_levels"`
+	RetentionPeriodDays    int     `yaml:"retention_period_days" json:"retention_period_days"`
+	BackupBeforeCleanup    bool    `yaml:"backup_before_cleanup" json:"backup_before_cleanup"`
+	SafetyChecks           bool    `yaml:"safety_checks" json:"safety_checks"`
+	GitHistoryPreservation bool    `yaml:"git_history_preservation" json:"git_history_preservation"`
+	SafetyThreshold        float64 `yaml:"safety_threshold" json:"safety_threshold"`
+	MinFileSize            int     `yaml:"min_file_size" json:"min_file_size"`
+	MaxFileAge             int     `yaml:"max_file_age" json:"max_file_age"`
 }
 
 // PerformanceConfig contains performance-related settings
@@ -249,13 +249,13 @@ type OrganizationOp struct {
 
 // AnalysisResult represents the result of an AI analysis
 type AnalysisResult struct {
-	StructureScore  float64              `json:"structure_score"`
-	Recommendations []string             `json:"recommendations"`
-	Issues          []string             `json:"issues"`
-	Patterns        []Pattern            `json:"patterns"`
+	StructureScore  float64                  `json:"structure_score"`
+	Recommendations []string                 `json:"recommendations"`
+	Issues          []string                 `json:"issues"`
+	Patterns        []Pattern                `json:"patterns"`
 	Suggestions     []OptimizationSuggestion `json:"suggestions"`
-	Confidence      float64              `json:"confidence"`
-	AnalyzedAt      time.Time            `json:"analyzed_at"`
+	Confidence      float64                  `json:"confidence"`
+	AnalyzedAt      time.Time                `json:"analyzed_at"`
 }
 
 // OptimizationSuggestion represents an AI-generated optimization suggestion

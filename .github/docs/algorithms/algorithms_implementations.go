@@ -17,8 +17,8 @@ import (
 // ErrorTriageAlgorithm implements Algorithm 1 - Error Triage
 type ErrorTriageAlgorithm struct{}
 
-func (eta *ErrorTriageAlgorithm) ID() string	{ return "error-triage" }
-func (eta *ErrorTriageAlgorithm) Name() string	{ return "Error Triage & Classification" }
+func (eta *ErrorTriageAlgorithm) ID() string   { return "error-triage" }
+func (eta *ErrorTriageAlgorithm) Name() string { return "Error Triage & Classification" }
 
 func (eta *ErrorTriageAlgorithm) Validate(config AlgorithmConfig) error {
 	if config.Parameters["project_path"] == "" {
@@ -55,8 +55,8 @@ func (eta *ErrorTriageAlgorithm) Execute(ctx context.Context, config AlgorithmCo
 	if err := json.Unmarshal(output, &result); err != nil {
 		// If JSON parsing fails, return raw output
 		result = map[string]interface{}{
-			"raw_output":	string(output),
-			"success":	true,
+			"raw_output": string(output),
+			"success":    true,
 		}
 	}
 
@@ -79,8 +79,8 @@ func (eta *ErrorTriageAlgorithm) buildExecutable(algorithmsPath string) error {
 // BinarySearchAlgorithm implements Algorithm 2 - Binary Search Debug
 type BinarySearchAlgorithm struct{}
 
-func (bsa *BinarySearchAlgorithm) ID() string	{ return "binary-search" }
-func (bsa *BinarySearchAlgorithm) Name() string	{ return "Binary Search Debug Locator" }
+func (bsa *BinarySearchAlgorithm) ID() string   { return "binary-search" }
+func (bsa *BinarySearchAlgorithm) Name() string { return "Binary Search Debug Locator" }
 
 func (bsa *BinarySearchAlgorithm) Validate(config AlgorithmConfig) error {
 	if config.Parameters["project_path"] == "" {
@@ -115,8 +115,8 @@ func (bsa *BinarySearchAlgorithm) Execute(ctx context.Context, config AlgorithmC
 	var result map[string]interface{}
 	if err := json.Unmarshal(output, &result); err != nil {
 		result = map[string]interface{}{
-			"raw_output":	string(output),
-			"success":	true,
+			"raw_output": string(output),
+			"success":    true,
 		}
 	}
 
@@ -139,8 +139,8 @@ func (bsa *BinarySearchAlgorithm) buildExecutable(algorithmsPath string) error {
 // DependencyAnalysisAlgorithm implements Algorithm 3 - Dependency Analysis
 type DependencyAnalysisAlgorithm struct{}
 
-func (daa *DependencyAnalysisAlgorithm) ID() string	{ return "dependency-analysis" }
-func (daa *DependencyAnalysisAlgorithm) Name() string	{ return "Dependency Analysis & Mapping" }
+func (daa *DependencyAnalysisAlgorithm) ID() string   { return "dependency-analysis" }
+func (daa *DependencyAnalysisAlgorithm) Name() string { return "Dependency Analysis & Mapping" }
 
 func (daa *DependencyAnalysisAlgorithm) Validate(config AlgorithmConfig) error {
 	if config.Parameters["project_path"] == "" {
@@ -171,8 +171,8 @@ func (daa *DependencyAnalysisAlgorithm) Execute(ctx context.Context, config Algo
 	var result map[string]interface{}
 	if err := json.Unmarshal(output, &result); err != nil {
 		result = map[string]interface{}{
-			"raw_output":	string(output),
-			"success":	true,
+			"raw_output": string(output),
+			"success":    true,
 		}
 	}
 
@@ -195,8 +195,8 @@ func (daa *DependencyAnalysisAlgorithm) buildExecutable(algorithmsPath string) e
 // ProgressiveBuildAlgorithm implements Algorithm 4 - Progressive Build
 type ProgressiveBuildAlgorithm struct{}
 
-func (pba *ProgressiveBuildAlgorithm) ID() string	{ return "progressive-build" }
-func (pba *ProgressiveBuildAlgorithm) Name() string	{ return "Progressive Build Strategy" }
+func (pba *ProgressiveBuildAlgorithm) ID() string   { return "progressive-build" }
+func (pba *ProgressiveBuildAlgorithm) Name() string { return "Progressive Build Strategy" }
 
 func (pba *ProgressiveBuildAlgorithm) Validate(config AlgorithmConfig) error {
 	if config.Parameters["project_path"] == "" {
@@ -238,8 +238,8 @@ func (pba *ProgressiveBuildAlgorithm) Execute(ctx context.Context, config Algori
 
 	// Fallback to raw output
 	result := map[string]interface{}{
-		"raw_output":	string(output),
-		"success":	true,
+		"raw_output": string(output),
+		"success":    true,
 	}
 
 	return result, nil
@@ -261,8 +261,8 @@ func (pba *ProgressiveBuildAlgorithm) buildExecutable(algorithmsPath string) err
 // AutoFixAlgorithm implements Algorithm 5 - Auto-Fix Pattern Matching
 type AutoFixAlgorithm struct{}
 
-func (afa *AutoFixAlgorithm) ID() string	{ return "auto-fix" }
-func (afa *AutoFixAlgorithm) Name() string	{ return "Auto-Fix Pattern Matching" }
+func (afa *AutoFixAlgorithm) ID() string   { return "auto-fix" }
+func (afa *AutoFixAlgorithm) Name() string { return "Auto-Fix Pattern Matching" }
 
 func (afa *AutoFixAlgorithm) Validate(config AlgorithmConfig) error {
 	if config.Parameters["project_path"] == "" {
@@ -308,8 +308,8 @@ func (afa *AutoFixAlgorithm) Execute(ctx context.Context, config AlgorithmConfig
 	var result map[string]interface{}
 	if err := json.Unmarshal(output, &result); err != nil {
 		result = map[string]interface{}{
-			"raw_output":	string(output),
-			"success":	true,
+			"raw_output": string(output),
+			"success":    true,
 		}
 	}
 
@@ -332,8 +332,8 @@ func (afa *AutoFixAlgorithm) buildExecutable(algorithmsPath string) error {
 // AnalysisPipelineAlgorithm implements Algorithm 6 - Analysis Pipeline
 type AnalysisPipelineAlgorithm struct{}
 
-func (apa *AnalysisPipelineAlgorithm) ID() string	{ return "analysis-pipeline" }
-func (apa *AnalysisPipelineAlgorithm) Name() string	{ return "Analysis Pipeline & Optimization" }
+func (apa *AnalysisPipelineAlgorithm) ID() string   { return "analysis-pipeline" }
+func (apa *AnalysisPipelineAlgorithm) Name() string { return "Analysis Pipeline & Optimization" }
 
 func (apa *AnalysisPipelineAlgorithm) Validate(config AlgorithmConfig) error {
 	if config.Parameters["project_path"] == "" {
@@ -364,8 +364,8 @@ func (apa *AnalysisPipelineAlgorithm) Execute(ctx context.Context, config Algori
 	var result map[string]interface{}
 	if err := json.Unmarshal(output, &result); err != nil {
 		result = map[string]interface{}{
-			"raw_output":	string(output),
-			"success":	true,
+			"raw_output": string(output),
+			"success":    true,
 		}
 	}
 
@@ -388,8 +388,8 @@ func (apa *AnalysisPipelineAlgorithm) buildExecutable(algorithmsPath string) err
 // ConfigValidatorAlgorithm implements Algorithm 7 - Config Validator
 type ConfigValidatorAlgorithm struct{}
 
-func (cva *ConfigValidatorAlgorithm) ID() string	{ return "config-validator" }
-func (cva *ConfigValidatorAlgorithm) Name() string	{ return "Configuration Validator" }
+func (cva *ConfigValidatorAlgorithm) ID() string   { return "config-validator" }
+func (cva *ConfigValidatorAlgorithm) Name() string { return "Configuration Validator" }
 
 func (cva *ConfigValidatorAlgorithm) Validate(config AlgorithmConfig) error {
 	if config.Parameters["project_path"] == "" {
@@ -420,8 +420,8 @@ func (cva *ConfigValidatorAlgorithm) Execute(ctx context.Context, config Algorit
 	var result map[string]interface{}
 	if err := json.Unmarshal(output, &result); err != nil {
 		result = map[string]interface{}{
-			"raw_output":	string(output),
-			"success":	true,
+			"raw_output": string(output),
+			"success":    true,
 		}
 	}
 
@@ -444,7 +444,7 @@ func (cva *ConfigValidatorAlgorithm) buildExecutable(algorithmsPath string) erro
 // DependencyResolutionAlgorithm implements Algorithm 8 - Dependency Resolution
 type DependencyResolutionAlgorithm struct{}
 
-func (dra *DependencyResolutionAlgorithm) ID() string	{ return "dependency-resolution" }
+func (dra *DependencyResolutionAlgorithm) ID() string { return "dependency-resolution" }
 func (dra *DependencyResolutionAlgorithm) Name() string {
 	return "Dependency Resolution & Optimization"
 }
@@ -500,8 +500,8 @@ func (dra *DependencyResolutionAlgorithm) Execute(ctx context.Context, config Al
 	} else {
 		// Fallback to stdout parsing if file wasn't created
 		result = map[string]interface{}{
-			"raw_output":	string(output),
-			"success":	true,
+			"raw_output": string(output),
+			"success":    true,
 		}
 	}
 

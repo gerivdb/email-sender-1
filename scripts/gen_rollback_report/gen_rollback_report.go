@@ -26,7 +26,7 @@ func main() {
 	backupBaseDir := "backup"
 	backupDirs, err := filepath.Glob(filepath.Join(backupBaseDir, "20*-*"))
 	if err == nil && len(backupDirs) > 0 {
-		latestBackupDir = filepath.Base(backupDirs[len(backupDirs)-1])	// Get the last one in sorted list
+		latestBackupDir = filepath.Base(backupDirs[len(backupDirs)-1]) // Get the last one in sorted list
 	}
 
 	// Get latest git tag

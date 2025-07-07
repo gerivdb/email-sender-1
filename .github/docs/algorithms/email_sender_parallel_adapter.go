@@ -18,8 +18,8 @@ import (
 
 // ParallelAlgorithm implémente l'interface Algorithm pour l'intégration du système parallélisé
 type ParallelAlgorithm struct {
-	connector	*parallel.ParallelOrchestrationConnector
-	manager		*parallel.AdaptiveParallelismManager
+	connector *parallel.ParallelOrchestrationConnector
+	manager   *parallel.AdaptiveParallelismManager
 }
 
 // NewParallelAlgorithm crée une nouvelle instance de l'algorithme parallèle
@@ -131,18 +131,18 @@ func (pa *ParallelAlgorithm) Execute(ctx context.Context, config AlgorithmConfig
 
 	// Générer les résultats
 	result := map[string]interface{}{
-		"total_emails_processed":	stats.TotalEmailsProcessed,
-		"successful_emails":		stats.SuccessfulEmails,
-		"failed_emails":		stats.FailedEmails,
-		"total_batches":		stats.TotalBatchesProcessed,
-		"average_processing_time":	stats.AverageProcessingTime.String(),
-		"errors_by_type":		stats.ErrorsByType,
-		"errors_by_component":		stats.ErrorsByComponent,
-		"total_retries":		stats.TotalRetries,
-		"pipeline_stats":		stats.PipelineStats,
-		"execution_time":		time.Since(startTime).String(),
-		"parallelism_mode":		string(adaptiveConfig.Mode),
-		"worker_count":			parallelConfig.MaxWorkers,
+		"total_emails_processed":  stats.TotalEmailsProcessed,
+		"successful_emails":       stats.SuccessfulEmails,
+		"failed_emails":           stats.FailedEmails,
+		"total_batches":           stats.TotalBatchesProcessed,
+		"average_processing_time": stats.AverageProcessingTime.String(),
+		"errors_by_type":          stats.ErrorsByType,
+		"errors_by_component":     stats.ErrorsByComponent,
+		"total_retries":           stats.TotalRetries,
+		"pipeline_stats":          stats.PipelineStats,
+		"execution_time":          time.Since(startTime).String(),
+		"parallelism_mode":        string(adaptiveConfig.Mode),
+		"worker_count":            parallelConfig.MaxWorkers,
 	}
 
 	// Sauvegarder les résultats
@@ -292,26 +292,26 @@ func (pa *ParallelAlgorithm) generateMockBatches(batchCount, emailsPerBatch int)
 
 	for i := 0; i < batchCount; i++ {
 		batch := parallel.EmailBatch{
-			BatchID:	fmt.Sprintf("batch_%d", i),
-			EmailTasks:	make([]parallel.EmailTask, 0, emailsPerBatch),
-			BatchSize:	emailsPerBatch,
-			Priority:	3,
-			CreatedAt:	time.Now(),
-			Status:		"pending",
+			BatchID:    fmt.Sprintf("batch_%d", i),
+			EmailTasks: make([]parallel.EmailTask, 0, emailsPerBatch),
+			BatchSize:  emailsPerBatch,
+			Priority:   3,
+			CreatedAt:  time.Now(),
+			Status:     "pending",
 		}
 
 		for j := 0; j < emailsPerBatch; j++ {
 			task := parallel.EmailTask{
-				ID:			fmt.Sprintf("email_%d_%d", i, j),
-				ContactID:		fmt.Sprintf("contact_%d", j),
-				EmailType:		emailTypes[j%len(emailTypes)],
-				Priority:		3,
-				Status:			"pending",
-				CreatedAt:		time.Now(),
-				Metadata:		make(map[string]interface{}),
-				ContactMetadata:	make(map[string]interface{}),
-				EmailContent:		fmt.Sprintf("Contenu de l'email %d pour le contact %d", i, j),
-				NotionDatabaseID:	"12345abcdef",
+				ID:               fmt.Sprintf("email_%d_%d", i, j),
+				ContactID:        fmt.Sprintf("contact_%d", j),
+				EmailType:        emailTypes[j%len(emailTypes)],
+				Priority:         3,
+				Status:           "pending",
+				CreatedAt:        time.Now(),
+				Metadata:         make(map[string]interface{}),
+				ContactMetadata:  make(map[string]interface{}),
+				EmailContent:     fmt.Sprintf("Contenu de l'email %d pour le contact %d", i, j),
+				NotionDatabaseID: "12345abcdef",
 			}
 
 			// Ajouter des métadonnées de test

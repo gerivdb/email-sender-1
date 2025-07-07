@@ -4,18 +4,18 @@
 package validation
 
 import (
-"context"
-"testing"
+	"context"
+	"testing"
 )
 
 func BenchmarkValidateDocument(b *testing.B) {
-for i := 0; i < b.N; i++ {
-_ = ValidateDocument(context.Background(), &Document{})
-}
+	for i := 0; i < b.N; i++ {
+		_ = ValidateDocument(context.Background(), &Document{})
+	}
 }
 
 func BenchmarkDetectConflicts(b *testing.B) {
-for i := 0; i < b.N; i++ {
-_, _ = DetectConflicts(&Document{})
-}
+	for i := 0; i < b.N; i++ {
+		_, _ = DetectConflicts(&Document{})
+	}
 }

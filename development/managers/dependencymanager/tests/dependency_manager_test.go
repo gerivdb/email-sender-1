@@ -8,7 +8,8 @@ import (
 	"time"
 
 	"EMAIL_SENDER_1/development/managers/interfaces" // New import
-	"golang.org/x/mod/modfile"                       // New import
+
+	"golang.org/x/mod/modfile" // New import
 )
 
 // MockDepManager implements interfaces.DepManager for testing

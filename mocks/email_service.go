@@ -8,20 +8,20 @@ import (
 // MockEmailService simule les workflows n8n pour Email Sender 1
 // ROI: +10h développement parallèle sans attendre n8n
 type MockEmailService struct {
-	SentEmails   []Email
-	Responses    map[string]string
-	ProcessTime  time.Duration
-	FailureRate  float64
+	SentEmails  []Email
+	Responses   map[string]string
+	ProcessTime time.Duration
+	FailureRate float64
 }
 
 type Email struct {
-	To          string            `json:"to"`
-	Subject     string            `json:"subject"`
-	Body        string            `json:"body"`
-	VenueID     string            `json:"venue_id"`
-	ContactID   string            `json:"contact_id"`
-	TemplateID  string            `json:"template_id"`
-	Metadata    map[string]string `json:"metadata"`
+	To         string            `json:"to"`
+	Subject    string            `json:"subject"`
+	Body       string            `json:"body"`
+	VenueID    string            `json:"venue_id"`
+	ContactID  string            `json:"contact_id"`
+	TemplateID string            `json:"template_id"`
+	Metadata   map[string]string `json:"metadata"`
 }
 
 func NewMockEmailService() *MockEmailService {
@@ -29,22 +29,22 @@ func NewMockEmailService() *MockEmailService {
 		SentEmails:  make([]Email, 0),
 		Responses:   make(map[string]string),
 		ProcessTime: 100 * time.Millisecond, // Simulation latence réaliste
-		FailureRate: 0.0, // 0% échec pour dev initial
+		FailureRate: 0.0,                    // 0% échec pour dev initial
 	}
 }
 
 func (m *MockEmailService) SendEmail(email Email) error {
 	// Simulate processing time
 	time.Sleep(m.ProcessTime)
-	
+
 	// Simulate random failures
 	if m.shouldFail() {
 		return fmt.Errorf("mock email service: delivery failed for %s", email.To)
 	}
-	
+
 	m.SentEmails = append(m.SentEmails, email)
 	m.Responses[email.ContactID] = "delivered"
-	
+
 	return nil
 }
 

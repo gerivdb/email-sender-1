@@ -227,11 +227,11 @@ func printServiceStatus(status infrastructure.ServiceStatus) {
 	fmt.Printf("\n📋 Services:\n")
 
 	services := map[string]infrastructure.ServiceState{
-		"Qdrant":	status.Qdrant,
-		"Redis":	status.Redis,
-		"Prometheus":	status.Prometheus,
-		"Grafana":	status.Grafana,
-		"RAG Server":	status.RAGServer,
+		"Qdrant":     status.Qdrant,
+		"Redis":      status.Redis,
+		"Prometheus": status.Prometheus,
+		"Grafana":    status.Grafana,
+		"RAG Server": status.RAGServer,
 	}
 
 	for name, state := range services {

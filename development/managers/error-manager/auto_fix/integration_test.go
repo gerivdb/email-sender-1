@@ -3,6 +3,7 @@ package auto_fix
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -273,7 +274,7 @@ func main() {
 		t.Fatal("Expected suggestions from concurrent processing")
 	}
 
-	t.Logf("Successfully processed %d files concurrently, generated %d suggestions", 
+	t.Logf("Successfully processed %d files concurrently, generated %d suggestions",
 		len(filePaths), len(allSuggestions))
 }
 

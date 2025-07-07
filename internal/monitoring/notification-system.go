@@ -21,10 +21,10 @@ type NotificationInfo struct {
 
 // DefaultNotificationSystem implémentation par défaut du système de notifications
 type DefaultNotificationSystem struct {
-	logFile    string
+	logFile     string
 	alertLevels map[string]int
-	enableFile bool
-	enableLog  bool
+	enableFile  bool
+	enableLog   bool
 }
 
 // AlertLevel énumération pour les niveaux d'alerte
@@ -148,7 +148,7 @@ func (dns *DefaultNotificationSystem) LogEvent(event string, details map[string]
 // logToConsole affiche l'alerte dans la console
 func (dns *DefaultNotificationSystem) logToConsole(alert AlertData) {
 	timestamp := alert.Timestamp.Format("2006-01-02 15:04:05")
-	
+
 	switch alert.Level {
 	case "debug":
 		log.Printf("🔍 [%s] DEBUG [%s]: %s", timestamp, alert.Service, alert.Message)
@@ -228,7 +228,7 @@ func (dns *DefaultNotificationSystem) getIconForLevel(level string) string {
 		"escalation":          "🚀",
 		"manual_intervention": "🆘",
 	}
-	
+
 	if icon, exists := icons[level]; exists {
 		return icon
 	}
@@ -263,13 +263,13 @@ func (dns *DefaultNotificationSystem) GetRecentAlerts(since time.Time) ([]AlertD
 
 	var alerts []AlertData
 	decoder := json.NewDecoder(file)
-	
+
 	for decoder.More() {
 		var alert AlertData
 		if err := decoder.Decode(&alert); err != nil {
 			continue // Skip malformed entries
 		}
-		
+
 		if alert.Timestamp.After(since) {
 			alerts = append(alerts, alert)
 		}
@@ -288,13 +288,13 @@ func (dns *DefaultNotificationSystem) GetRecentEvents(since time.Time) ([]LogEve
 
 	var events []LogEventData
 	decoder := json.NewDecoder(file)
-	
+
 	for decoder.More() {
 		var event LogEventData
 		if err := decoder.Decode(&event); err != nil {
 			continue // Skip malformed entries
 		}
-		
+
 		if event.Timestamp.After(since) {
 			events = append(events, event)
 		}
@@ -306,7 +306,7 @@ func (dns *DefaultNotificationSystem) GetRecentEvents(since time.Time) ([]LogEve
 // ClearOldLogs nettoie les anciens logs
 func (dns *DefaultNotificationSystem) ClearOldLogs(olderThan time.Duration) error {
 	cutoff := time.Now().Add(-olderThan)
-	
+
 	// Lire tous les logs
 	file, err := os.Open(dns.logFile)
 	if err != nil {
@@ -316,13 +316,13 @@ func (dns *DefaultNotificationSystem) ClearOldLogs(olderThan time.Duration) erro
 
 	var recentEntries []string
 	decoder := json.NewDecoder(file)
-	
+
 	for decoder.More() {
 		var entry map[string]interface{}
 		if err := decoder.Decode(&entry); err != nil {
 			continue
 		}
-		
+
 		if timestampStr, exists := entry["timestamp"]; exists {
 			if timestamp, err := time.Parse(time.RFC3339, timestampStr.(string)); err == nil {
 				if timestamp.After(cutoff) {
@@ -332,7 +332,7 @@ func (dns *DefaultNotificationSystem) ClearOldLogs(olderThan time.Duration) erro
 			}
 		}
 	}
-	
+
 	// Réécrire le fichier avec seulement les entrées récentes
 	file, err = os.Create(dns.logFile)
 	if err != nil {

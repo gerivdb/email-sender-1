@@ -15,14 +15,14 @@ import (
 )
 
 type ApplyResult struct {
-	File	string	`json:"file"`
-	Status	string	`json:"status"`	// "modified", "unchanged", "error"
-	Error	string	`json:"error,omitempty"`
+	File   string `json:"file"`
+	Status string `json:"status"` // "modified", "unchanged", "error"
+	Error  string `json:"error,omitempty"`
 }
 
 var (
-	inputPatch	= flag.String("input-patch", "", "Fichier patch diff à appliquer")
-	report		= flag.String("report", "apply_import_correction_report.json", "Chemin du rapport JSON")
+	inputPatch = flag.String("input-patch", "", "Fichier patch diff à appliquer")
+	report     = flag.String("report", "apply_import_correction_report.json", "Chemin du rapport JSON")
 )
 
 func main() {

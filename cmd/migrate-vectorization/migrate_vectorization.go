@@ -11,10 +11,10 @@ import (
 
 func main() {
 	var (
-		filePath	= flag.String("file", "", "Path to markdown file to process")
-		qdrantHost	= flag.String("host", "localhost", "Qdrant host")
-		qdrantPort	= flag.Int("port", 6333, "Qdrant port")
-		collectionName	= flag.String("collection", "vectorization_test", "Collection name")
+		filePath       = flag.String("file", "", "Path to markdown file to process")
+		qdrantHost     = flag.String("host", "localhost", "Qdrant host")
+		qdrantPort     = flag.Int("port", 6333, "Qdrant port")
+		collectionName = flag.String("collection", "vectorization_test", "Collection name")
 	)
 	flag.Parse()
 
@@ -37,10 +37,10 @@ func main() {
 
 	// Create client
 	config := &vectorization.ClientConfig{
-		Host:		*qdrantHost,
-		Port:		*qdrantPort,
-		CollectionName:	*collectionName,
-		VectorSize:	384,	// Default vector size
+		Host:           *qdrantHost,
+		Port:           *qdrantPort,
+		CollectionName: *collectionName,
+		VectorSize:     384, // Default vector size
 	}
 
 	client, err := vectorization.NewVectorClient(config)

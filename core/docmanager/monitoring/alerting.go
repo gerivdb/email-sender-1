@@ -6,11 +6,11 @@ package monitoring
 import "context"
 
 func SendAlert(ctx context.Context, alertType string, details interface{}) error {
-// Stub : simule l’envoi d’une alerte
-return nil
+	// Stub : simule l’envoi d’une alerte
+	return nil
 }
 
 func GenerateHealthReport(ctx context.Context) error {
-// Stub : simule la génération d’un rapport de santé
-return nil
+	// Stub : simule la génération d’un rapport de santé
+	return nil
 }

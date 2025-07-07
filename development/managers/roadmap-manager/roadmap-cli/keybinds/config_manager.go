@@ -11,20 +11,20 @@ import (
 
 // KeyConfigManager manages key binding configurations
 type KeyConfigManager struct {
-	configDir     string
+	configDir      string
 	currentProfile *KeyProfile
-	profiles      map[string]*KeyProfile
-	events        []ConfigEvent
-	maxEvents     int
+	profiles       map[string]*KeyProfile
+	events         []ConfigEvent
+	maxEvents      int
 }
 
 // NewKeyConfigManager creates a new key configuration manager
 func NewKeyConfigManager(configDir string) *KeyConfigManager {
 	return &KeyConfigManager{
-		configDir:  configDir,
-		profiles:   make(map[string]*KeyProfile),
-		events:     make([]ConfigEvent, 0),
-		maxEvents:  1000, // Keep last 1000 events
+		configDir: configDir,
+		profiles:  make(map[string]*KeyProfile),
+		events:    make([]ConfigEvent, 0),
+		maxEvents: 1000, // Keep last 1000 events
 	}
 }
 
@@ -89,7 +89,7 @@ func (kcm *KeyConfigManager) GetCurrentProfile() *KeyProfile {
 // CreateProfile creates a new key binding profile
 func (kcm *KeyConfigManager) CreateProfile(name, description string) (*KeyProfile, error) {
 	profileID := fmt.Sprintf("profile_%d", time.Now().Unix())
-	
+
 	profile := &KeyProfile{
 		ID:          profileID,
 		Name:        name,
@@ -111,7 +111,7 @@ func (kcm *KeyConfigManager) CreateProfile(name, description string) (*KeyProfil
 	profile.KeyMaps["default"] = defaultKeyMap
 
 	kcm.profiles[profileID] = profile
-	
+
 	if err := kcm.saveProfile(profile); err != nil {
 		return nil, fmt.Errorf("failed to save profile: %w", err)
 	}
@@ -303,7 +303,7 @@ func (kcm *KeyConfigManager) GetKeyBindingsByContext(context string) ([]KeyBindi
 	}
 
 	var bindings []KeyBinding
-	
+
 	for _, keyMap := range kcm.currentProfile.KeyMaps {
 		for _, binding := range keyMap.Bindings {
 			if binding.Context == context && binding.Enabled {
@@ -322,7 +322,7 @@ func (kcm *KeyConfigManager) GetAllKeyBindings() ([]KeyBinding, error) {
 	}
 
 	var bindings []KeyBinding
-	
+
 	for _, keyMap := range kcm.currentProfile.KeyMaps {
 		for _, binding := range keyMap.Bindings {
 			if binding.Enabled {
@@ -369,7 +369,7 @@ func (kcm *KeyConfigManager) loadProfile(filename string) (*KeyProfile, error) {
 
 func (kcm *KeyConfigManager) saveProfile(profile *KeyProfile) error {
 	filename := filepath.Join(kcm.configDir, fmt.Sprintf("%s.json", profile.ID))
-	
+
 	data, err := json.MarshalIndent(profile, "", "  ")
 	if err != nil {
 		return err
@@ -428,7 +428,7 @@ func (kcm *KeyConfigManager) validateProfile(profile *KeyProfile) error {
 
 func (kcm *KeyConfigManager) logEvent(event ConfigEvent) {
 	kcm.events = append(kcm.events, event)
-	
+
 	// Keep only the last maxEvents
 	if len(kcm.events) > kcm.maxEvents {
 		kcm.events = kcm.events[len(kcm.events)-kcm.maxEvents:]
@@ -440,7 +440,7 @@ func (kcm *KeyConfigManager) GetEvents(limit int) []ConfigEvent {
 	if limit <= 0 || limit > len(kcm.events) {
 		limit = len(kcm.events)
 	}
-	
+
 	start := len(kcm.events) - limit
 	return kcm.events[start:]
 }

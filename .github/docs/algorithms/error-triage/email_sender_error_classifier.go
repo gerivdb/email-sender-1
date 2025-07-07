@@ -17,7 +17,7 @@ import (
 type EmailSenderComponent int
 
 const (
-	RAGEngine	EmailSenderComponent	= iota
+	RAGEngine EmailSenderComponent = iota
 	N8NWorkflow
 	NotionAPI
 	GmailProcessing
@@ -37,26 +37,26 @@ func (c EmailSenderComponent) String() string {
 }
 
 type EmailSenderErrorClass struct {
-	Type		string			`json:"type"`
-	Pattern		string			`json:"pattern"`
-	Severity	int			`json:"severity"`	// 1=critical, 2=high, 3=medium, 4=low
-	AutoFix		bool			`json:"autoFix"`
-	Component	EmailSenderComponent	`json:"component"`
-	regex		*regexp.Regexp
+	Type      string               `json:"type"`
+	Pattern   string               `json:"pattern"`
+	Severity  int                  `json:"severity"` // 1=critical, 2=high, 3=medium, 4=low
+	AutoFix   bool                 `json:"autoFix"`
+	Component EmailSenderComponent `json:"component"`
+	regex     *regexp.Regexp
 }
 
 type ClassificationResult struct {
-	Component	EmailSenderComponent	`json:"component"`
-	ErrorTypes	[]ErrorTypeResult	`json:"errorTypes"`
-	Priority	int			`json:"priority"`
-	TotalCount	int			`json:"totalCount"`
+	Component  EmailSenderComponent `json:"component"`
+	ErrorTypes []ErrorTypeResult    `json:"errorTypes"`
+	Priority   int                  `json:"priority"`
+	TotalCount int                  `json:"totalCount"`
 }
 
 type ErrorTypeResult struct {
-	Type	string		`json:"type"`
-	Errors	[]string	`json:"errors"`
-	AutoFix	bool		`json:"autoFix"`
-	Count	int		`json:"count"`
+	Type    string   `json:"type"`
+	Errors  []string `json:"errors"`
+	AutoFix bool     `json:"autoFix"`
+	Count   int      `json:"count"`
 }
 
 var EmailSenderErrorClasses = []EmailSenderErrorClass{
@@ -119,12 +119,12 @@ func ClassifyEmailSenderErrors(buildOutput string) []ClassificationResult {
 	// Convert to structured result
 	var results []ClassificationResult
 	componentPriorities := map[EmailSenderComponent]int{
-		RAGEngine:		1,	// Core - Fixes often 100+ errors at once
-		ConfigFiles:		1,	// Infrastructure - Blocks everything
-		N8NWorkflow:		2,	// Critical orchestration
-		NotionAPI:		2,	// Data persistence
-		GmailProcessing:	3,	// Email handling
-		PowerShellScript:	4,	// Automation - non-blocking
+		RAGEngine:        1, // Core - Fixes often 100+ errors at once
+		ConfigFiles:      1, // Infrastructure - Blocks everything
+		N8NWorkflow:      2, // Critical orchestration
+		NotionAPI:        2, // Data persistence
+		GmailProcessing:  3, // Email handling
+		PowerShellScript: 4, // Automation - non-blocking
 	}
 
 	for component, errorMap := range classified {
@@ -142,19 +142,19 @@ func ClassifyEmailSenderErrors(buildOutput string) []ClassificationResult {
 			}
 
 			errorTypes = append(errorTypes, ErrorTypeResult{
-				Type:		errorType,
-				Errors:		errors,
-				AutoFix:	autoFix,
-				Count:		len(errors),
+				Type:    errorType,
+				Errors:  errors,
+				AutoFix: autoFix,
+				Count:   len(errors),
 			})
 			totalCount += len(errors)
 		}
 
 		results = append(results, ClassificationResult{
-			Component:	component,
-			ErrorTypes:	errorTypes,
-			Priority:	componentPriorities[component],
-			TotalCount:	totalCount,
+			Component:  component,
+			ErrorTypes: errorTypes,
+			Priority:   componentPriorities[component],
+			TotalCount: totalCount,
 		})
 	}
 

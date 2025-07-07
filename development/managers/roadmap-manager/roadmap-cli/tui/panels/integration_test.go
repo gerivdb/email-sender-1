@@ -92,7 +92,7 @@ func TestPanelWithContextualShortcuts(t *testing.T) {
 func TestContextualShortcutManager(t *testing.T) {
 	layout := LayoutConfig{Type: LayoutHorizontal}
 	pm := NewPanelManager(100, 30, layout)
-	
+
 	csm := pm.GetContextualManager()
 	if csm == nil {
 		t.Fatal("ContextualShortcutManager ne doit pas être nil")
@@ -114,7 +114,7 @@ func TestContextualShortcutManager(t *testing.T) {
 func TestModeSpecificKeyManager(t *testing.T) {
 	layout := LayoutConfig{Type: LayoutHorizontal}
 	pm := NewPanelManager(100, 30, layout)
-	
+
 	mskm := pm.GetModeKeyManager()
 	if mskm == nil {
 		t.Fatal("ModeSpecificKeyManager ne doit pas être nil")

@@ -10,8 +10,8 @@ import (
 func main() {
 	// Configuration basique
 	config := &qdrant.Config{
-		Host:	"localhost",
-		Port:	6334,
+		Host: "localhost",
+		Port: 6334,
 	}
 
 	log.Printf("Creating Qdrant client with config: %+v", config)

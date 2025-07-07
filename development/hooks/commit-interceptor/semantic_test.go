@@ -10,12 +10,12 @@ import (
 func TestSemanticEmbeddingManager(t *testing.T) {
 	config := &Config{
 		Server: ServerConfig{
-			Port:	8080,
-			Host:	"localhost",
+			Port: 8080,
+			Host: "localhost",
 		},
 		Git: GitConfig{
-			DefaultBranch:	"main",
-			RemoteName:	"origin",
+			DefaultBranch: "main",
+			RemoteName:    "origin",
 		},
 		Routing: RoutingConfig{
 			DefaultStrategy: "type-based",
@@ -32,11 +32,11 @@ func TestSemanticEmbeddingManager(t *testing.T) {
 
 	// Test commit data
 	commitData := &CommitData{
-		Hash:		"abc123",
-		Message:	"feat: add new user authentication system",
-		Author:		"developer@example.com",
-		Timestamp:	time.Now(),
-		Files:		[]string{"auth/user.go", "auth/middleware.go", "config/auth.yaml"},
+		Hash:      "abc123",
+		Message:   "feat: add new user authentication system",
+		Author:    "developer@example.com",
+		Timestamp: time.Now(),
+		Files:     []string{"auth/user.go", "auth/middleware.go", "config/auth.yaml"},
 	}
 
 	ctx := context.Background()
@@ -93,12 +93,12 @@ func TestSemanticEmbeddingManager(t *testing.T) {
 func TestCommitAnalyzerWithSemantic(t *testing.T) {
 	config := &Config{
 		Server: ServerConfig{
-			Port:	8080,
-			Host:	"localhost",
+			Port: 8080,
+			Host: "localhost",
 		},
 		Git: GitConfig{
-			DefaultBranch:	"main",
-			RemoteName:	"origin",
+			DefaultBranch: "main",
+			RemoteName:    "origin",
 		},
 		Routing: RoutingConfig{
 			DefaultStrategy: "type-based",
@@ -115,46 +115,46 @@ func TestCommitAnalyzerWithSemantic(t *testing.T) {
 
 	// Test different types of commits
 	testCases := []struct {
-		name		string
-		commitData	*CommitData
-		expectedType	string
-		minConfidence	float64
+		name          string
+		commitData    *CommitData
+		expectedType  string
+		minConfidence float64
 	}{
 		{
-			name:	"Feature commit",
+			name: "Feature commit",
 			commitData: &CommitData{
-				Hash:		"feat123",
-				Message:	"feat: implement user dashboard with real-time updates",
-				Author:		"dev@example.com",
-				Timestamp:	time.Now(),
-				Files:		[]string{"dashboard/user.go", "dashboard/realtime.go"},
+				Hash:      "feat123",
+				Message:   "feat: implement user dashboard with real-time updates",
+				Author:    "dev@example.com",
+				Timestamp: time.Now(),
+				Files:     []string{"dashboard/user.go", "dashboard/realtime.go"},
 			},
-			expectedType:	"feature",
-			minConfidence:	0.8,
+			expectedType:  "feature",
+			minConfidence: 0.8,
 		},
 		{
-			name:	"Bug fix commit",
+			name: "Bug fix commit",
 			commitData: &CommitData{
-				Hash:		"fix123",
-				Message:	"fix: resolve memory leak in cache manager",
-				Author:		"dev@example.com",
-				Timestamp:	time.Now(),
-				Files:		[]string{"cache/manager.go", "cache/memory.go"},
+				Hash:      "fix123",
+				Message:   "fix: resolve memory leak in cache manager",
+				Author:    "dev@example.com",
+				Timestamp: time.Now(),
+				Files:     []string{"cache/manager.go", "cache/memory.go"},
 			},
-			expectedType:	"fix",
-			minConfidence:	0.8,
+			expectedType:  "fix",
+			minConfidence: 0.8,
 		},
 		{
-			name:	"Documentation commit",
+			name: "Documentation commit",
 			commitData: &CommitData{
-				Hash:		"docs123",
-				Message:	"docs: update API documentation with examples",
-				Author:		"dev@example.com",
-				Timestamp:	time.Now(),
-				Files:		[]string{"README.md", "docs/api.md"},
+				Hash:      "docs123",
+				Message:   "docs: update API documentation with examples",
+				Author:    "dev@example.com",
+				Timestamp: time.Now(),
+				Files:     []string{"README.md", "docs/api.md"},
 			},
-			expectedType:	"docs",
-			minConfidence:	0.8,
+			expectedType:  "docs",
+			minConfidence: 0.8,
 		},
 	}
 
@@ -217,8 +217,8 @@ func TestMockAdvancedAutonomyManager(t *testing.T) {
 
 	// Test commit type prediction
 	history := &ProjectHistory{
-		TotalCommits:	100,
-		CommitPatterns:	make(map[string]int),
+		TotalCommits:   100,
+		CommitPatterns: make(map[string]int),
 	}
 
 	predictedType, confidence, err := manager.PredictCommitType(ctx, embeddings, history)
@@ -257,13 +257,13 @@ func TestMockContextualMemory(t *testing.T) {
 
 	// Create test commit context
 	commitCtx := &CommitContext{
-		ContextID:	"test123",
-		Message:	"feat: test commit",
-		Author:		"test@example.com",
-		Timestamp:	time.Now(),
-		Embeddings:	[]float64{0.1, 0.2, 0.3, 0.4, 0.5},
-		Confidence:	0.9,
-		Keywords:	[]string{"feat", "test"},
+		ContextID:  "test123",
+		Message:    "feat: test commit",
+		Author:     "test@example.com",
+		Timestamp:  time.Now(),
+		Embeddings: []float64{0.1, 0.2, 0.3, 0.4, 0.5},
+		Confidence: 0.9,
+		Keywords:   []string{"feat", "test"},
 	}
 
 	// Test storing commit context

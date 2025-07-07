@@ -15,10 +15,10 @@ import (
 )
 
 type CommitInterceptor struct {
-	branchingManager	*BranchingManager
-	analyzer		*CommitAnalyzer
-	router			*BranchRouter
-	config			*Config
+	branchingManager *BranchingManager
+	analyzer         *CommitAnalyzer
+	router           *BranchRouter
+	config           *Config
 }
 
 // NewCommitInterceptor creates a new commit interceptor instance
@@ -26,10 +26,10 @@ func NewCommitInterceptor() *CommitInterceptor {
 	config := LoadConfig()
 
 	return &CommitInterceptor{
-		branchingManager:	NewBranchingManager(config),
-		analyzer:		NewCommitAnalyzer(config),
-		router:			NewBranchRouter(config),
-		config:			config,
+		branchingManager: NewBranchingManager(config),
+		analyzer:         NewCommitAnalyzer(config),
+		router:           NewBranchRouter(config),
+		config:           config,
 	}
 }
 
@@ -170,10 +170,10 @@ func main() {
 
 	// Configure server
 	srv := &http.Server{
-		Addr:		":8080",
-		Handler:	router,
-		ReadTimeout:	15 * time.Second,
-		WriteTimeout:	15 * time.Second,
+		Addr:         ":8080",
+		Handler:      router,
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 15 * time.Second,
 	}
 
 	// Start server in goroutine

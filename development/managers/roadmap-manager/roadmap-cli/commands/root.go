@@ -30,7 +30,7 @@ Features include:
 	cmd.AddCommand(AdvancedIngestCmd)
 	cmd.AddCommand(HierarchyCmd)
 	cmd.AddCommand(MigrateCmd)
-	cmd.AddCommand(validateCmd)  // New validation commands
+	cmd.AddCommand(validateCmd) // New validation commands
 
 	return cmd
 }

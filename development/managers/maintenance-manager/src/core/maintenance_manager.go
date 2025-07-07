@@ -9,13 +9,12 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
-	"gopkg.in/yaml.v3"
 )
 
 // MaintenanceManager is the core coordinator of the Ultra-Advanced Maintenance Framework
 type MaintenanceManager struct {
-	config              *MaintenanceConfig
-	organizationEngine  *OrganizationEngine
+	config             *MaintenanceConfig
+	organizationEngine *OrganizationEngine
 	scheduler          *MaintenanceScheduler
 	vectorRegistry     *VectorRegistry
 	integrationHub     *IntegrationHub
@@ -24,37 +23,37 @@ type MaintenanceManager struct {
 	cancel             context.CancelFunc
 	isRunning          bool
 	mu                 sync.RWMutex
-	
+
 	// AI Integration
-	aiAnalyzer         *AIAnalyzer
-	patternRecognizer  *PatternRecognizer
-	
+	aiAnalyzer        *AIAnalyzer
+	patternRecognizer *PatternRecognizer
+
 	// Metrics and Monitoring
-	healthScore        *OrganizationHealth
-	operationHistory   []MaintenanceOperation
-	lastOptimization   time.Time
+	healthScore      *OrganizationHealth
+	operationHistory []MaintenanceOperation
+	lastOptimization time.Time
 }
 
 // MaintenanceConfig holds the configuration for the maintenance framework
 type MaintenanceConfig struct {
 	// Core Settings
-	RepositoryPath     string            `yaml:"repository_path"`
-	MaxFilesPerFolder  int              `yaml:"max_files_per_folder"`
-	AutonomyLevel      AutonomyLevel    `yaml:"autonomy_level"`
-	
+	RepositoryPath    string        `yaml:"repository_path"`
+	MaxFilesPerFolder int           `yaml:"max_files_per_folder"`
+	AutonomyLevel     AutonomyLevel `yaml:"autonomy_level"`
+
 	// AI Configuration
-	AIConfig           AIConfig         `yaml:"ai_config"`
-	VectorDB           VectorDBConfig   `yaml:"vector_db"`
-	
+	AIConfig AIConfig       `yaml:"ai_config"`
+	VectorDB VectorDBConfig `yaml:"vector_db"`
+
 	// Integration Settings
-	ManagerIntegration map[string]bool  `yaml:"manager_integration"`
-	ExistingScripts    []ScriptConfig   `yaml:"existing_scripts"`
-	
+	ManagerIntegration map[string]bool `yaml:"manager_integration"`
+	ExistingScripts    []ScriptConfig  `yaml:"existing_scripts"`
+
 	// Cleanup Settings
-	CleanupConfig      CleanupConfig    `yaml:"cleanup_config"`
-	
+	CleanupConfig CleanupConfig `yaml:"cleanup_config"`
+
 	// Performance Settings
-	Performance        PerformanceConfig `yaml:"performance"`
+	Performance PerformanceConfig `yaml:"performance"`
 }
 
 // AutonomyLevel defines the level of autonomous operation
@@ -69,19 +68,19 @@ const (
 // AIConfig configures AI-driven operations
 type AIConfig struct {
 	PatternAnalysisEnabled    bool    `yaml:"pattern_analysis_enabled"`
-	PredictiveMaintenance    bool    `yaml:"predictive_maintenance"`
+	PredictiveMaintenance     bool    `yaml:"predictive_maintenance"`
 	IntelligentCategorization bool    `yaml:"intelligent_categorization"`
-	LearningRate             float64 `yaml:"learning_rate"`
-	ConfidenceThreshold      float64 `yaml:"confidence_threshold"`
+	LearningRate              float64 `yaml:"learning_rate"`
+	ConfidenceThreshold       float64 `yaml:"confidence_threshold"`
 }
 
 // VectorDBConfig configures QDrant integration
 type VectorDBConfig struct {
-	Enabled       bool   `yaml:"enabled"`
-	Host         string `yaml:"host"`
-	Port         int    `yaml:"port"`
+	Enabled        bool   `yaml:"enabled"`
+	Host           string `yaml:"host"`
+	Port           int    `yaml:"port"`
 	CollectionName string `yaml:"collection_name"`
-	VectorSize    int    `yaml:"vector_size"`
+	VectorSize     int    `yaml:"vector_size"`
 }
 
 // ScriptConfig defines existing script integration
@@ -96,11 +95,11 @@ type ScriptConfig struct {
 
 // CleanupConfig configures cleanup operations
 type CleanupConfig struct {
-	EnabledLevels        []int  `yaml:"enabled_levels"`
-	RetentionPeriod      int    `yaml:"retention_period_days"`
-	BackupBeforeCleanup  bool   `yaml:"backup_before_cleanup"`
-	SafetyChecks         bool   `yaml:"safety_checks"`
-	GitHistoryPreservation bool `yaml:"git_history_preservation"`
+	EnabledLevels          []int `yaml:"enabled_levels"`
+	RetentionPeriod        int   `yaml:"retention_period_days"`
+	BackupBeforeCleanup    bool  `yaml:"backup_before_cleanup"`
+	SafetyChecks           bool  `yaml:"safety_checks"`
+	GitHistoryPreservation bool  `yaml:"git_history_preservation"`
 }
 
 // PerformanceConfig configures performance settings
@@ -114,26 +113,26 @@ type PerformanceConfig struct {
 // OrganizationHealth represents the health metrics of the repository organization
 type OrganizationHealth struct {
 	StructureOptimization float64   `json:"structure_optimization"`
-	FileDistribution     float64   `json:"file_distribution"`
-	AccessEfficiency     float64   `json:"access_efficiency"`
-	MaintenanceStatus    float64   `json:"maintenance_status"`
-	OverallScore        float64   `json:"overall_score"`
-	LastUpdated         time.Time `json:"last_updated"`
-	Recommendations     []string  `json:"recommendations"`
+	FileDistribution      float64   `json:"file_distribution"`
+	AccessEfficiency      float64   `json:"access_efficiency"`
+	MaintenanceStatus     float64   `json:"maintenance_status"`
+	OverallScore          float64   `json:"overall_score"`
+	LastUpdated           time.Time `json:"last_updated"`
+	Recommendations       []string  `json:"recommendations"`
 }
 
 // MaintenanceOperation represents a single maintenance operation
 type MaintenanceOperation struct {
-	ID          string                 `json:"id"`
-	Type        string                 `json:"type"`
-	Status      string                 `json:"status"`
-	StartTime   time.Time             `json:"start_time"`
-	EndTime     time.Time             `json:"end_time"`
-	Duration    time.Duration         `json:"duration"`
-	FilesAffected int                 `json:"files_affected"`
-	Details     map[string]interface{} `json:"details"`
-	Error       error                 `json:"error,omitempty"`
-	AIDecision  bool                  `json:"ai_decision"`
+	ID            string                 `json:"id"`
+	Type          string                 `json:"type"`
+	Status        string                 `json:"status"`
+	StartTime     time.Time              `json:"start_time"`
+	EndTime       time.Time              `json:"end_time"`
+	Duration      time.Duration          `json:"duration"`
+	FilesAffected int                    `json:"files_affected"`
+	Details       map[string]interface{} `json:"details"`
+	Error         error                  `json:"error,omitempty"`
+	AIDecision    bool                   `json:"ai_decision"`
 }
 
 // NewMaintenanceManager creates a new instance of the MaintenanceManager
@@ -145,7 +144,7 @@ func NewMaintenanceManager(configPath string) (*MaintenanceManager, error) {
 
 	logger := logrus.New()
 	logger.SetLevel(logrus.InfoLevel)
-	
+
 	ctx, cancel := context.WithCancel(context.Background())
 
 	mm := &MaintenanceManager{
@@ -212,7 +211,7 @@ func (mm *MaintenanceManager) initializeComponents() error {
 
 	mm.logger.Info("All maintenance framework components initialized successfully")
 	return nil
-}// Start begins the autonomous maintenance operations
+} // Start begins the autonomous maintenance operations
 func (mm *MaintenanceManager) Start() error {
 	mm.mu.Lock()
 	defer mm.mu.Unlock()
@@ -246,7 +245,7 @@ func (mm *MaintenanceManager) Start() error {
 
 	mm.isRunning = true
 	mm.logger.Info("Ultra-Advanced Maintenance Framework started successfully")
-	
+
 	return nil
 }
 
@@ -274,7 +273,7 @@ func (mm *MaintenanceManager) Stop() error {
 
 	mm.isRunning = false
 	mm.logger.Info("Ultra-Advanced Maintenance Framework stopped successfully")
-	
+
 	return nil
 }
 
@@ -286,7 +285,7 @@ func (mm *MaintenanceManager) OrganizeRepository() (*OrganizationResult, error) 
 	mm.logger.Info("Starting intelligent repository organization")
 
 	result := &OrganizationResult{
-		StartTime: time.Now(),
+		StartTime:  time.Now(),
 		Operations: make([]OrganizationStep, 0),
 	}
 
@@ -331,9 +330,9 @@ func (mm *MaintenanceManager) OrganizeRepository() (*OrganizationResult, error) 
 	operation.FilesAffected = len(steps)
 
 	mm.logger.WithFields(logrus.Fields{
-		"duration": result.Duration,
+		"duration":       result.Duration,
 		"files_affected": len(steps),
-		"ai_decisions": result.AIDecisionCount(),
+		"ai_decisions":   result.AIDecisionCount(),
 	}).Info("Repository organization completed successfully")
 
 	return result, nil
@@ -387,9 +386,9 @@ func (mm *MaintenanceManager) PerformCleanup(level int) (*CleanupResult, error) 
 	mm.updateHealthScore()
 
 	mm.logger.WithFields(logrus.Fields{
-		"level": level,
+		"level":         level,
 		"files_cleaned": len(result.CleanedFiles),
-		"space_freed": result.SpaceFreed,
+		"space_freed":   result.SpaceFreed,
 	}).Info("Cleanup completed successfully")
 
 	return result, nil
@@ -399,7 +398,7 @@ func (mm *MaintenanceManager) PerformCleanup(level int) (*CleanupResult, error) 
 func (mm *MaintenanceManager) GetHealthScore() *OrganizationHealth {
 	mm.mu.RLock()
 	defer mm.mu.RUnlock()
-	
+
 	// Create a copy to avoid race conditions
 	health := *mm.healthScore
 	return &health
@@ -418,7 +417,7 @@ func (mm *MaintenanceManager) GetOperationHistory(limit int) []MaintenanceOperat
 	start := len(mm.operationHistory) - limit
 	history := make([]MaintenanceOperation, limit)
 	copy(history, mm.operationHistory[start:])
-	
+
 	return history
 }
 

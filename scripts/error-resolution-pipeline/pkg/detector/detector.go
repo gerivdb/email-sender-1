@@ -9,7 +9,9 @@ import (
 	"go/token"
 	"go/types"
 	"log"
+	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 	"time"
 
@@ -19,17 +21,17 @@ import (
 
 // ErrorDetector représente le moteur principal de détection d'erreurs
 type ErrorDetector struct {
-	config        *Config
-	fileSet       *token.FileSet
-	typeChecker   *types.Checker
-	patterns      []ErrorPattern
-	metrics       *DetectorMetrics
-	mu            sync.RWMutex
+	config      *Config
+	fileSet     *token.FileSet
+	typeChecker *types.Checker
+	patterns    []ErrorPattern
+	metrics     *DetectorMetrics
+	mu          sync.RWMutex
 }
 
 // Config contient la configuration du détecteur
 type Config struct {
-	MaxFileSize         int64         `json:"max_file_size"`
+	MaxFileSize        int64         `json:"max_file_size"`
 	Timeout            time.Duration `json:"timeout"`
 	ParallelProcessing bool          `json:"parallel_processing"`
 	MaxGoroutines      int           `json:"max_goroutines"`
@@ -126,7 +128,7 @@ func (ed *ErrorDetector) DetectInFile(ctx context.Context, filePath string) ([]D
 	conf := types.Config{
 		Importer: types.NewStdImporter(),
 	}
-	
+
 	info := &types.Info{
 		Types: make(map[ast.Expr]types.TypeAndValue),
 		Defs:  make(map[*ast.Ident]types.Object),
@@ -144,13 +146,13 @@ func (ed *ErrorDetector) DetectInFile(ctx context.Context, filePath string) ([]D
 		}
 
 		ed.metrics.PatternExecutions.WithLabelValues(pattern.Name()).Inc()
-		
+
 		// Visite l'AST avec le pattern
 		ast.Inspect(src, func(n ast.Node) bool {
 			if n == nil {
 				return false
 			}
-			
+
 			errors := pattern.Detect(n, info, ed.fileSet)
 			allErrors = append(allErrors, errors...)
 			return true
@@ -180,7 +182,7 @@ func (ed *ErrorDetector) DetectInDirectory(ctx context.Context, dirPath string) 
 			wg.Add(1)
 			go func(filePath string) {
 				defer wg.Done()
-				
+
 				errors, err := ed.DetectInFile(ctx, filePath)
 				if err != nil {
 					log.Printf("Error detecting in file %s: %v", filePath, err)

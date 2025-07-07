@@ -11,26 +11,26 @@ import (
 
 // DocumentFile represents a documentation file with metadata
 type DocumentFile struct {
-	Path		string			`json:"path"`
-	Name		string			`json:"name"`
-	Extension	string			`json:"extension"`
-	Size		int64			`json:"size"`
-	LastModified	time.Time		`json:"last_modified"`
-	Type		string			`json:"type"`
-	Category	string			`json:"category"`
-	Tags		[]string		`json:"tags"`
-	Metadata	map[string]string	`json:"metadata"`
+	Path         string            `json:"path"`
+	Name         string            `json:"name"`
+	Extension    string            `json:"extension"`
+	Size         int64             `json:"size"`
+	LastModified time.Time         `json:"last_modified"`
+	Type         string            `json:"type"`
+	Category     string            `json:"category"`
+	Tags         []string          `json:"tags"`
+	Metadata     map[string]string `json:"metadata"`
 }
 
 // InventoryReport represents the complete inventory
 type InventoryReport struct {
-	GeneratedAt	time.Time	`json:"generated_at"`
-	TotalFiles	int		`json:"total_files"`
-	TotalSize	int64		`json:"total_size"`
-	Categories	map[string]int	`json:"categories"`
-	Extensions	map[string]int	`json:"extensions"`
-	Files		[]DocumentFile	`json:"files"`
-	Summary		string		`json:"summary"`
+	GeneratedAt time.Time      `json:"generated_at"`
+	TotalFiles  int            `json:"total_files"`
+	TotalSize   int64          `json:"total_size"`
+	Categories  map[string]int `json:"categories"`
+	Extensions  map[string]int `json:"extensions"`
+	Files       []DocumentFile `json:"files"`
+	Summary     string         `json:"summary"`
 }
 
 func main() {
@@ -75,7 +75,7 @@ func generateInventory(root string) (*InventoryReport, error) {
 		// Get relative path for consistent processing
 		relPath, err := filepath.Rel(root, path)
 		if err != nil {
-			relPath = path	// fallback to absolute path
+			relPath = path // fallback to absolute path
 		}
 
 		// Check if file matches documentation patterns
@@ -93,15 +93,15 @@ func generateInventory(root string) (*InventoryReport, error) {
 		tags := extractTags(relPath, info.Name())
 
 		doc := DocumentFile{
-			Path:		relPath,	// Use relative path in output
-			Name:		info.Name(),
-			Extension:	ext,
-			Size:		info.Size(),
-			LastModified:	info.ModTime(),
-			Type:		getFileType(ext),
-			Category:	category,
-			Tags:		tags,
-			Metadata:	extractMetadata(relPath),
+			Path:         relPath, // Use relative path in output
+			Name:         info.Name(),
+			Extension:    ext,
+			Size:         info.Size(),
+			LastModified: info.ModTime(),
+			Type:         getFileType(ext),
+			Category:     category,
+			Tags:         tags,
+			Metadata:     extractMetadata(relPath),
 		}
 
 		files = append(files, doc)
@@ -117,13 +117,13 @@ func generateInventory(root string) (*InventoryReport, error) {
 	}
 
 	report := &InventoryReport{
-		GeneratedAt:	time.Now(),
-		TotalFiles:	len(files),
-		TotalSize:	totalSize,
-		Categories:	categories,
-		Extensions:	extensions,
-		Files:		files,
-		Summary:	generateSummary(len(files), categories, extensions),
+		GeneratedAt: time.Now(),
+		TotalFiles:  len(files),
+		TotalSize:   totalSize,
+		Categories:  categories,
+		Extensions:  extensions,
+		Files:       files,
+		Summary:     generateSummary(len(files), categories, extensions),
 	}
 
 	return report, nil

@@ -14,8 +14,8 @@ import (
 )
 
 type FileImports struct {
-	File	string		`json:"file"`
-	Imports	[]string	`json:"imports"`
+	File    string   `json:"file"`
+	Imports []string `json:"imports"`
 }
 
 type Report struct {
@@ -23,14 +23,14 @@ type Report struct {
 }
 
 type Correction struct {
-	File		string			`json:"file"`
-	Replacements	map[string]string	`json:"replacements"`	// ancien import -> nouvel import
+	File         string            `json:"file"`
+	Replacements map[string]string `json:"replacements"` // ancien import -> nouvel import
 }
 
 var (
-	inputJSON	= flag.String("input-json", "", "Fichier JSON listant les imports internes")
-	outputJSON	= flag.String("output-json", "plan_import_correction.json", "Chemin du plan de correction JSON")
-	outputPatch	= flag.String("output-patch", "diff_import_correction.patch", "Chemin du patch diff")
+	inputJSON   = flag.String("input-json", "", "Fichier JSON listant les imports internes")
+	outputJSON  = flag.String("output-json", "plan_import_correction.json", "Chemin du plan de correction JSON")
+	outputPatch = flag.String("output-patch", "diff_import_correction.patch", "Chemin du patch diff")
 )
 
 func main() {

@@ -6,16 +6,16 @@ package backup
 import "context"
 
 func BackupAll(ctx context.Context) error {
-// Stub : simule un backup complet
-return nil
+	// Stub : simule un backup complet
+	return nil
 }
 
 func BackupComponent(ctx context.Context, name string) error {
-// Stub : simule un backup d’un composant
-return nil
+	// Stub : simule un backup d’un composant
+	return nil
 }
 
 func ScheduleBackups(ctx context.Context) error {
-// Stub : simule la planification des backups
-return nil
+	// Stub : simule la planification des backups
+	return nil
 }

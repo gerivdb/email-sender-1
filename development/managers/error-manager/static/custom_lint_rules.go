@@ -20,7 +20,7 @@ func NewCustomLintRules() *CustomLintRules {
 	rules := &CustomLintRules{
 		rules: make([]LintRule, 0),
 	}
-	
+
 	// Ajouter toutes les règles personnalisées
 	rules.rules = append(rules.rules,
 		&DRYViolationRule{},
@@ -34,7 +34,7 @@ func NewCustomLintRules() *CustomLintRules {
 		&MaintainabilityRule{},
 		&TestabilityRule{},
 	)
-	
+
 	return rules
 }
 
@@ -46,15 +46,17 @@ func (c *CustomLintRules) GetRules() []LintRule {
 // DRYViolationRule détecte les violations du principe DRY (Don't Repeat Yourself)
 type DRYViolationRule struct{}
 
-func (r *DRYViolationRule) Name() string        { return "dry_violation" }
-func (r *DRYViolationRule) Description() string { return "Detect DRY (Don't Repeat Yourself) violations" }
+func (r *DRYViolationRule) Name() string { return "dry_violation" }
+func (r *DRYViolationRule) Description() string {
+	return "Detect DRY (Don't Repeat Yourself) violations"
+}
 func (r *DRYViolationRule) Category() IssueCategory { return CategoryMaintenance }
 func (r *DRYViolationRule) Severity() IssueSeverity { return SeverityWarning }
 
 func (r *DRYViolationRule) Check(file *ast.File, fset *token.FileSet, info *types.Info) []StaticIssue {
 	issues := make([]StaticIssue, 0)
 	codeBlocks := make(map[string][]*ast.Node)
-	
+
 	// Analyser les blocs de code similaires
 	ast.Inspect(file, func(node ast.Node) bool {
 		switch n := node.(type) {
@@ -73,7 +75,7 @@ func (r *DRYViolationRule) Check(file *ast.File, fset *token.FileSet, info *type
 		}
 		return true
 	})
-	
+
 	// Détecter les duplications
 	for signature, nodes := range codeBlocks {
 		if len(nodes) > 1 {
@@ -96,18 +98,18 @@ func (r *DRYViolationRule) Check(file *ast.File, fset *token.FileSet, info *type
 			}
 		}
 	}
-	
+
 	return issues
 }
 
 func (r *DRYViolationRule) extractFunctionSignature(fn *ast.FuncDecl, fset *token.FileSet) string {
 	var signature strings.Builder
-	
+
 	// Nom de la fonction
 	if fn.Name != nil {
 		signature.WriteString(fn.Name.Name)
 	}
-	
+
 	// Paramètres
 	if fn.Type.Params != nil {
 		signature.WriteString("(")
@@ -121,14 +123,14 @@ func (r *DRYViolationRule) extractFunctionSignature(fn *ast.FuncDecl, fset *toke
 		}
 		signature.WriteString(")")
 	}
-	
+
 	return signature.String()
 }
 
 func (r *DRYViolationRule) extractBlockSignature(block *ast.BlockStmt, fset *token.FileSet) string {
 	// Extraire une signature simplifiée du bloc de code
 	var signature strings.Builder
-	
+
 	for _, stmt := range block.List {
 		switch s := stmt.(type) {
 		case *ast.AssignStmt:
@@ -145,21 +147,23 @@ func (r *DRYViolationRule) extractBlockSignature(block *ast.BlockStmt, fset *tok
 			signature.WriteString(fmt.Sprintf("%T;", s))
 		}
 	}
-	
+
 	return signature.String()
 }
 
 // KISSViolationRule détecte les violations du principe KISS (Keep It Simple, Stupid)
 type KISSViolationRule struct{}
 
-func (r *KISSViolationRule) Name() string        { return "kiss_violation" }
-func (r *KISSViolationRule) Description() string { return "Detect KISS (Keep It Simple, Stupid) violations" }
+func (r *KISSViolationRule) Name() string { return "kiss_violation" }
+func (r *KISSViolationRule) Description() string {
+	return "Detect KISS (Keep It Simple, Stupid) violations"
+}
 func (r *KISSViolationRule) Category() IssueCategory { return CategoryMaintenance }
 func (r *KISSViolationRule) Severity() IssueSeverity { return SeverityWarning }
 
 func (r *KISSViolationRule) Check(file *ast.File, fset *token.FileSet, info *types.Info) []StaticIssue {
 	issues := make([]StaticIssue, 0)
-	
+
 	ast.Inspect(file, func(node ast.Node) bool {
 		switch n := node.(type) {
 		case *ast.FuncDecl:
@@ -183,7 +187,7 @@ func (r *KISSViolationRule) Check(file *ast.File, fset *token.FileSet, info *typ
 						},
 					})
 				}
-				
+
 				// Vérifier le nombre de paramètres
 				if n.Type.Params != nil && len(n.Type.Params.List) > 5 {
 					pos := fset.Position(n.Pos())
@@ -225,13 +229,13 @@ func (r *KISSViolationRule) Check(file *ast.File, fset *token.FileSet, info *typ
 		}
 		return true
 	})
-	
+
 	return issues
 }
 
 func (r *KISSViolationRule) calculateFunctionComplexity(fn *ast.FuncDecl) int {
 	complexity := 1
-	
+
 	ast.Inspect(fn, func(node ast.Node) bool {
 		switch node.(type) {
 		case *ast.IfStmt, *ast.ForStmt, *ast.RangeStmt, *ast.SwitchStmt, *ast.TypeSwitchStmt:
@@ -241,14 +245,14 @@ func (r *KISSViolationRule) calculateFunctionComplexity(fn *ast.FuncDecl) int {
 		}
 		return true
 	})
-	
+
 	return complexity
 }
 
 func (r *KISSViolationRule) countElseChain(ifStmt *ast.IfStmt) int {
 	count := 0
 	current := ifStmt
-	
+
 	for current != nil {
 		if current.Else != nil {
 			count++
@@ -261,21 +265,21 @@ func (r *KISSViolationRule) countElseChain(ifStmt *ast.IfStmt) int {
 			break
 		}
 	}
-	
+
 	return count
 }
 
 // SOLIDViolationRule détecte les violations des principes SOLID
 type SOLIDViolationRule struct{}
 
-func (r *SOLIDViolationRule) Name() string        { return "solid_violation" }
-func (r *SOLIDViolationRule) Description() string { return "Detect SOLID principles violations" }
+func (r *SOLIDViolationRule) Name() string            { return "solid_violation" }
+func (r *SOLIDViolationRule) Description() string     { return "Detect SOLID principles violations" }
 func (r *SOLIDViolationRule) Category() IssueCategory { return CategoryMaintenance }
 func (r *SOLIDViolationRule) Severity() IssueSeverity { return SeverityWarning }
 
 func (r *SOLIDViolationRule) Check(file *ast.File, fset *token.FileSet, info *types.Info) []StaticIssue {
 	issues := make([]StaticIssue, 0)
-	
+
 	ast.Inspect(file, func(node ast.Node) bool {
 		switch n := node.(type) {
 		case *ast.TypeSpec:
@@ -292,10 +296,10 @@ func (r *SOLIDViolationRule) Check(file *ast.File, fset *token.FileSet, info *ty
 						Rule:     r.Name(),
 						Category: r.Category(),
 						Context: map[string]interface{}{
-							"struct_name":  n.Name.Name,
-							"field_count":  len(structType.Fields.List),
-							"principle":    "Single Responsibility",
-							"max_fields":   10,
+							"struct_name": n.Name.Name,
+							"field_count": len(structType.Fields.List),
+							"principle":   "Single Responsibility",
+							"max_fields":  10,
 						},
 					})
 				}
@@ -327,13 +331,13 @@ func (r *SOLIDViolationRule) Check(file *ast.File, fset *token.FileSet, info *ty
 		}
 		return true
 	})
-	
+
 	return issues
 }
 
 func (r *SOLIDViolationRule) analyzeDependencies(fn *ast.FuncDecl) []string {
 	dependencies := make(map[string]bool)
-	
+
 	ast.Inspect(fn, func(node ast.Node) bool {
 		switch n := node.(type) {
 		case *ast.SelectorExpr:
@@ -347,26 +351,26 @@ func (r *SOLIDViolationRule) analyzeDependencies(fn *ast.FuncDecl) []string {
 		}
 		return true
 	})
-	
+
 	result := make([]string, 0, len(dependencies))
 	for dep := range dependencies {
 		result = append(result, dep)
 	}
-	
+
 	return result
 }
 
 // ComplexityRule détecte les problèmes de complexité
 type ComplexityRule struct{}
 
-func (r *ComplexityRule) Name() string        { return "complexity" }
-func (r *ComplexityRule) Description() string { return "Detect complexity issues" }
+func (r *ComplexityRule) Name() string            { return "complexity" }
+func (r *ComplexityRule) Description() string     { return "Detect complexity issues" }
 func (r *ComplexityRule) Category() IssueCategory { return CategoryMaintenance }
 func (r *ComplexityRule) Severity() IssueSeverity { return SeverityWarning }
 
 func (r *ComplexityRule) Check(file *ast.File, fset *token.FileSet, info *types.Info) []StaticIssue {
 	issues := make([]StaticIssue, 0)
-	
+
 	ast.Inspect(file, func(node ast.Node) bool {
 		switch n := node.(type) {
 		case *ast.FuncDecl:
@@ -394,13 +398,13 @@ func (r *ComplexityRule) Check(file *ast.File, fset *token.FileSet, info *types.
 		}
 		return true
 	})
-	
+
 	return issues
 }
 
 func (r *ComplexityRule) calculateNestingDepth(node ast.Node, currentDepth int) int {
 	maxDepth := currentDepth
-	
+
 	ast.Inspect(node, func(n ast.Node) bool {
 		switch n.(type) {
 		case *ast.IfStmt, *ast.ForStmt, *ast.RangeStmt, *ast.SwitchStmt, *ast.TypeSwitchStmt:
@@ -412,21 +416,21 @@ func (r *ComplexityRule) calculateNestingDepth(node ast.Node, currentDepth int) 
 		}
 		return true
 	})
-	
+
 	return maxDepth
 }
 
 // NamingConventionRule vérifie les conventions de nommage
 type NamingConventionRule struct{}
 
-func (r *NamingConventionRule) Name() string        { return "naming_convention" }
-func (r *NamingConventionRule) Description() string { return "Check Go naming conventions" }
+func (r *NamingConventionRule) Name() string            { return "naming_convention" }
+func (r *NamingConventionRule) Description() string     { return "Check Go naming conventions" }
 func (r *NamingConventionRule) Category() IssueCategory { return CategoryStyle }
 func (r *NamingConventionRule) Severity() IssueSeverity { return SeverityInfo }
 
 func (r *NamingConventionRule) Check(file *ast.File, fset *token.FileSet, info *types.Info) []StaticIssue {
 	issues := make([]StaticIssue, 0)
-	
+
 	ast.Inspect(file, func(node ast.Node) bool {
 		switch n := node.(type) {
 		case *ast.FuncDecl:
@@ -491,7 +495,7 @@ func (r *NamingConventionRule) Check(file *ast.File, fset *token.FileSet, info *
 		}
 		return true
 	})
-	
+
 	return issues
 }
 
@@ -499,17 +503,17 @@ func (r *NamingConventionRule) isValidFunctionName(name string) bool {
 	if len(name) == 0 {
 		return false
 	}
-	
+
 	// Vérifier que le nom commence par une lettre
 	if !((name[0] >= 'a' && name[0] <= 'z') || (name[0] >= 'A' && name[0] <= 'Z')) {
 		return false
 	}
-	
+
 	// Vérifier l'absence d'underscores (sauf pour les fonctions de test)
 	if strings.Contains(name, "_") && !strings.HasPrefix(name, "Test") && !strings.HasPrefix(name, "Benchmark") {
 		return false
 	}
-	
+
 	return true
 }
 
@@ -517,7 +521,7 @@ func (r *NamingConventionRule) isValidTypeName(name string) bool {
 	if len(name) == 0 {
 		return false
 	}
-	
+
 	// Les types doivent commencer par une majuscule pour être exportés
 	return name[0] >= 'A' && name[0] <= 'Z'
 }
@@ -526,12 +530,12 @@ func (r *NamingConventionRule) isValidVariableName(name string) bool {
 	if len(name) == 0 {
 		return false
 	}
-	
+
 	// Vérifier que le nom commence par une lettre minuscule ou majuscule
 	if !((name[0] >= 'a' && name[0] <= 'z') || (name[0] >= 'A' && name[0] <= 'Z')) {
 		return false
 	}
-	
+
 	// Éviter les underscores dans les noms de variables
 	return !strings.Contains(name, "_")
 }
@@ -539,14 +543,14 @@ func (r *NamingConventionRule) isValidVariableName(name string) bool {
 // ErrorHandlingRule vérifie la gestion des erreurs
 type ErrorHandlingRule struct{}
 
-func (r *ErrorHandlingRule) Name() string        { return "error_handling" }
-func (r *ErrorHandlingRule) Description() string { return "Check error handling patterns" }
+func (r *ErrorHandlingRule) Name() string            { return "error_handling" }
+func (r *ErrorHandlingRule) Description() string     { return "Check error handling patterns" }
 func (r *ErrorHandlingRule) Category() IssueCategory { return CategoryBugRisk }
 func (r *ErrorHandlingRule) Severity() IssueSeverity { return SeverityError }
 
 func (r *ErrorHandlingRule) Check(file *ast.File, fset *token.FileSet, info *types.Info) []StaticIssue {
 	issues := make([]StaticIssue, 0)
-	
+
 	ast.Inspect(file, func(node ast.Node) bool {
 		switch n := node.(type) {
 		case *ast.AssignStmt:
@@ -586,7 +590,7 @@ func (r *ErrorHandlingRule) Check(file *ast.File, fset *token.FileSet, info *typ
 		}
 		return true
 	})
-	
+
 	return issues
 }
 
@@ -623,14 +627,14 @@ func (r *ErrorHandlingRule) isErrorHandled(call *ast.CallExpr, context ast.Node)
 // PerformanceRule détecte les problèmes de performance potentiels
 type PerformanceRule struct{}
 
-func (r *PerformanceRule) Name() string        { return "performance" }
-func (r *PerformanceRule) Description() string { return "Detect potential performance issues" }
+func (r *PerformanceRule) Name() string            { return "performance" }
+func (r *PerformanceRule) Description() string     { return "Detect potential performance issues" }
 func (r *PerformanceRule) Category() IssueCategory { return CategoryPerformance }
 func (r *PerformanceRule) Severity() IssueSeverity { return SeverityInfo }
 
 func (r *PerformanceRule) Check(file *ast.File, fset *token.FileSet, info *types.Info) []StaticIssue {
 	issues := make([]StaticIssue, 0)
-	
+
 	ast.Inspect(file, func(node ast.Node) bool {
 		switch n := node.(type) {
 		case *ast.RangeStmt:
@@ -670,7 +674,7 @@ func (r *PerformanceRule) Check(file *ast.File, fset *token.FileSet, info *types
 		}
 		return true
 	})
-	
+
 	return issues
 }
 
@@ -701,14 +705,14 @@ func (r *PerformanceRule) isStringConcatenation(call *ast.CallExpr) bool {
 // SecurityRule détecte les problèmes de sécurité potentiels
 type SecurityRule struct{}
 
-func (r *SecurityRule) Name() string        { return "security" }
-func (r *SecurityRule) Description() string { return "Detect potential security issues" }
+func (r *SecurityRule) Name() string            { return "security" }
+func (r *SecurityRule) Description() string     { return "Detect potential security issues" }
 func (r *SecurityRule) Category() IssueCategory { return CategorySecurity }
 func (r *SecurityRule) Severity() IssueSeverity { return SeverityError }
 
 func (r *SecurityRule) Check(file *ast.File, fset *token.FileSet, info *types.Info) []StaticIssue {
 	issues := make([]StaticIssue, 0)
-	
+
 	ast.Inspect(file, func(node ast.Node) bool {
 		switch n := node.(type) {
 		case *ast.CallExpr:
@@ -747,7 +751,7 @@ func (r *SecurityRule) Check(file *ast.File, fset *token.FileSet, info *types.In
 		}
 		return true
 	})
-	
+
 	return issues
 }
 
@@ -776,14 +780,14 @@ func (r *SecurityRule) isHardcodedSecret(lit *ast.BasicLit) bool {
 // MaintainabilityRule vérifie la maintenabilité du code
 type MaintainabilityRule struct{}
 
-func (r *MaintainabilityRule) Name() string        { return "maintainability" }
-func (r *MaintainabilityRule) Description() string { return "Check code maintainability" }
+func (r *MaintainabilityRule) Name() string            { return "maintainability" }
+func (r *MaintainabilityRule) Description() string     { return "Check code maintainability" }
 func (r *MaintainabilityRule) Category() IssueCategory { return CategoryMaintenance }
 func (r *MaintainabilityRule) Severity() IssueSeverity { return SeverityInfo }
 
 func (r *MaintainabilityRule) Check(file *ast.File, fset *token.FileSet, info *types.Info) []StaticIssue {
 	issues := make([]StaticIssue, 0)
-	
+
 	ast.Inspect(file, func(node ast.Node) bool {
 		switch n := node.(type) {
 		case *ast.FuncDecl:
@@ -823,21 +827,21 @@ func (r *MaintainabilityRule) Check(file *ast.File, fset *token.FileSet, info *t
 		}
 		return true
 	})
-	
+
 	return issues
 }
 
 // TestabilityRule vérifie la testabilité du code
 type TestabilityRule struct{}
 
-func (r *TestabilityRule) Name() string        { return "testability" }
-func (r *TestabilityRule) Description() string { return "Check code testability" }
+func (r *TestabilityRule) Name() string            { return "testability" }
+func (r *TestabilityRule) Description() string     { return "Check code testability" }
 func (r *TestabilityRule) Category() IssueCategory { return CategoryMaintenance }
 func (r *TestabilityRule) Severity() IssueSeverity { return SeverityInfo }
 
 func (r *TestabilityRule) Check(file *ast.File, fset *token.FileSet, info *types.Info) []StaticIssue {
 	issues := make([]StaticIssue, 0)
-	
+
 	ast.Inspect(file, func(node ast.Node) bool {
 		switch n := node.(type) {
 		case *ast.FuncDecl:
@@ -860,7 +864,7 @@ func (r *TestabilityRule) Check(file *ast.File, fset *token.FileSet, info *types
 		}
 		return true
 	})
-	
+
 	return issues
 }
 

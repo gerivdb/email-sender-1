@@ -1,4 +1,3 @@
-
 package discovery
 
 import (
@@ -41,8 +40,8 @@ func FindLocalMCPServers() []MCPServer {
 		if err == nil {
 			conn.Close()
 			fmt.Printf("Port %d open on %s\n", port, host)
-            if server := TestMCPServer(host, port); server != nil {
-                fmt.Printf("MCP Server detected: %s v%s on %s:%d\n", server.Type, server.Version, server.Host, server.Port)
+			if server := TestMCPServer(host, port); server != nil {
+				fmt.Printf("MCP Server detected: %s v%s on %s:%d\n", server.Type, server.Version, server.Host, server.Port)
 				servers = append(servers, *server)
 			}
 		}

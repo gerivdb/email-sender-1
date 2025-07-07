@@ -8,9 +8,9 @@ import (
 
 // ErrorStats tracks and aggregates error statistics
 type ErrorStats struct {
-	errors  map[string]*ErrorEntry
-	topN    int
-	window  time.Duration
+	errors map[string]*ErrorEntry
+	topN   int
+	window time.Duration
 }
 
 // ErrorEntry represents statistics for a single error type
@@ -43,7 +43,7 @@ func NewErrorStats(window time.Duration, topN int) *ErrorStats {
 func (es *ErrorStats) RecordError(errType string, sample string) {
 	now := time.Now()
 	entry, exists := es.errors[errType]
-	
+
 	if !exists {
 		entry = &ErrorEntry{
 			FirstSeen: now,

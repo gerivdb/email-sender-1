@@ -31,52 +31,52 @@ type ContainerManager interface {
 
 // Dependency represents a dependency to validate for containerization
 type Dependency struct {
-	Name	string	`json:"name"`
-	Version	string	`json:"version"`
-	Path	string	`json:"path,omitempty"`
-	Type	string	`json:"type,omitempty"`	// "binary", "library", "config", etc.
+	Name    string `json:"name"`
+	Version string `json:"version"`
+	Path    string `json:"path,omitempty"`
+	Type    string `json:"type,omitempty"` // "binary", "library", "config", etc.
 }
 
 // ContainerValidationResult represents container validation results
 type ContainerValidationResult struct {
-	Compatible	bool		`json:"compatible"`
-	Timestamp	time.Time	`json:"timestamp"`
-	Issues		[]string	`json:"issues"`
-	Recommendations	[]string	`json:"recommendations"`
-	RequiredImages	[]string	`json:"required_images"`
-	EstimatedSize	int64		`json:"estimated_size_mb"`
+	Compatible      bool      `json:"compatible"`
+	Timestamp       time.Time `json:"timestamp"`
+	Issues          []string  `json:"issues"`
+	Recommendations []string  `json:"recommendations"`
+	RequiredImages  []string  `json:"required_images"`
+	EstimatedSize   int64     `json:"estimated_size_mb"`
 }
 
 // ContainerOptimization represents container optimization results
 type ContainerOptimization struct {
-	OptimizedDeps	[]Dependency	`json:"optimized_dependencies"`
-	SpaceSaved	int64		`json:"space_saved_mb"`
-	LayerCount	int		`json:"layer_count"`
-	Timestamp	time.Time	`json:"timestamp"`
-	Dockerfile	string		`json:"dockerfile"`
-	BuildArgs	[]string	`json:"build_args"`
+	OptimizedDeps []Dependency `json:"optimized_dependencies"`
+	SpaceSaved    int64        `json:"space_saved_mb"`
+	LayerCount    int          `json:"layer_count"`
+	Timestamp     time.Time    `json:"timestamp"`
+	Dockerfile    string       `json:"dockerfile"`
+	BuildArgs     []string     `json:"build_args"`
 }
 
 // ContainerInfo represents information about a container
 type ContainerInfo struct {
-	ID		string			`json:"id"`
-	Name		string			`json:"name"`
-	Image		string			`json:"image"`
-	Status		string			`json:"status"`
-	Ports		map[string]string	`json:"ports"`
-	Networks	[]string		`json:"networks"`
-	Volumes		[]string		`json:"volumes"`
-	Created		time.Time		`json:"created"`
+	ID       string            `json:"id"`
+	Name     string            `json:"name"`
+	Image    string            `json:"image"`
+	Status   string            `json:"status"`
+	Ports    map[string]string `json:"ports"`
+	Networks []string          `json:"networks"`
+	Volumes  []string          `json:"volumes"`
+	Created  time.Time         `json:"created"`
 }
 
 // containerManagerImpl implements ContainerManager with ErrorManager integration
 type containerManagerImpl struct {
-	logger		*zap.Logger
-	errorManager	ErrorManager
-	dockerHost	string
-	composeFile	string
-	dockerPath	string
-	composePath	string
+	logger       *zap.Logger
+	errorManager ErrorManager
+	dockerHost   string
+	composeFile  string
+	dockerPath   string
+	composePath  string
 }
 
 // ErrorManager interface for local implementation
@@ -88,29 +88,29 @@ type ErrorManager interface {
 
 // ErrorEntry represents an error entry
 type ErrorEntry struct {
-	ID		string	`json:"id"`
-	Timestamp	string	`json:"timestamp"`
-	Level		string	`json:"level"`
-	Component	string	`json:"component"`
-	Operation	string	`json:"operation"`
-	Message		string	`json:"message"`
-	Details		string	`json:"details,omitempty"`
+	ID        string `json:"id"`
+	Timestamp string `json:"timestamp"`
+	Level     string `json:"level"`
+	Component string `json:"component"`
+	Operation string `json:"operation"`
+	Message   string `json:"message"`
+	Details   string `json:"details,omitempty"`
 }
 
 // ErrorHooks for error processing
 type ErrorHooks struct {
-	PreProcess	func(error) error
-	PostProcess	func(error) error
+	PreProcess  func(error) error
+	PostProcess func(error) error
 }
 
 // NewContainerManager creates a new ContainerManager instance
 func NewContainerManager(logger *zap.Logger, dockerHost, composeFile string) ContainerManager {
 	return &containerManagerImpl{
-		logger:		logger,
-		dockerHost:	dockerHost,
-		composeFile:	composeFile,
-		dockerPath:	"docker",		// Default docker command
-		composePath:	"docker-compose",	// Default docker-compose command
+		logger:      logger,
+		dockerHost:  dockerHost,
+		composeFile: composeFile,
+		dockerPath:  "docker",         // Default docker command
+		composePath: "docker-compose", // Default docker-compose command
 	}
 }
 
@@ -312,15 +312,15 @@ func (cm *containerManagerImpl) ValidateForContainerization(ctx context.Context,
 	cm.logger.Info("Validating dependencies for containerization", zap.Int("count", len(dependencies)))
 
 	result := &ContainerValidationResult{
-		Compatible:		true,
-		Timestamp:		time.Now(),
-		Issues:			[]string{},
-		Recommendations:	[]string{},
-		RequiredImages:		[]string{},
-		EstimatedSize:		0,
+		Compatible:      true,
+		Timestamp:       time.Now(),
+		Issues:          []string{},
+		Recommendations: []string{},
+		RequiredImages:  []string{},
+		EstimatedSize:   0,
 	}
 
-	baseImageSize := int64(100)	// Base image size in MB
+	baseImageSize := int64(100) // Base image size in MB
 	result.EstimatedSize = baseImageSize
 
 	for _, dep := range dependencies {
@@ -336,7 +336,7 @@ func (cm *containerManagerImpl) ValidateForContainerization(ctx context.Context,
 		result.Recommendations = append(result.Recommendations, "Consider using multi-stage builds to reduce image size")
 	}
 
-	if result.EstimatedSize > 1000 {	// > 1GB
+	if result.EstimatedSize > 1000 { // > 1GB
 		result.Recommendations = append(result.Recommendations, "Image size is large, consider optimizing dependencies")
 	}
 
@@ -361,7 +361,7 @@ func (cm *containerManagerImpl) ValidateForContainerization(ctx context.Context,
 // validateDependency validates a single dependency for containerization
 func (cm *containerManagerImpl) validateDependency(dep Dependency, result *ContainerValidationResult) error {
 	// Estimate size based on dependency type and name
-	var estimatedSize int64 = 10	// Default 10MB
+	var estimatedSize int64 = 10 // Default 10MB
 
 	switch dep.Type {
 	case "binary":
@@ -406,11 +406,11 @@ func (cm *containerManagerImpl) OptimizeForContainer(ctx context.Context, depend
 	cm.logger.Info("Optimizing dependencies for container", zap.Int("count", len(dependencies)))
 
 	optimization := &ContainerOptimization{
-		OptimizedDeps:	make([]Dependency, 0),
-		SpaceSaved:	0,
-		LayerCount:	1,
-		Timestamp:	time.Now(),
-		BuildArgs:	[]string{},
+		OptimizedDeps: make([]Dependency, 0),
+		SpaceSaved:    0,
+		LayerCount:    1,
+		Timestamp:     time.Now(),
+		BuildArgs:     []string{},
 	}
 
 	// Optimize dependencies
@@ -420,7 +420,7 @@ func (cm *containerManagerImpl) OptimizeForContainer(ctx context.Context, depend
 
 		// Calculate space saved (simplified calculation)
 		if optimizedDep.Type == "optimized" {
-			optimization.SpaceSaved += 10	// 10MB saved per optimized dependency
+			optimization.SpaceSaved += 10 // 10MB saved per optimized dependency
 		}
 	}
 
@@ -451,7 +451,7 @@ func (cm *containerManagerImpl) optimizeDependency(dep Dependency) Dependency {
 
 	// Optimize version specifications
 	if dep.Version == "latest" {
-		optimized.Version = "stable"	// Use stable instead of latest for better reproducibility
+		optimized.Version = "stable" // Use stable instead of latest for better reproducibility
 		optimized.Type = "optimized"
 	}
 

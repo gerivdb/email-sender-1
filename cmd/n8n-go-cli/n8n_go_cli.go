@@ -12,53 +12,53 @@ import (
 
 // Version information
 var (
-	Version		= "1.0.0"
-	BuildTime	= "2025-06-19T12:00:00Z"
-	GitCommit	= "dev"
+	Version   = "1.0.0"
+	BuildTime = "2025-06-19T12:00:00Z"
+	GitCommit = "dev"
 )
 
 // CLI Configuration
 type CLIConfig struct {
-	LogLevel	string			`json:"log_level"`
-	Timeout		time.Duration		`json:"timeout"`
-	WorkDir		string			`json:"work_dir"`
-	Environment	map[string]string	`json:"environment"`
-	MaxRetries	int			`json:"max_retries"`
-	OutputFormat	string			`json:"output_format"`
+	LogLevel     string            `json:"log_level"`
+	Timeout      time.Duration     `json:"timeout"`
+	WorkDir      string            `json:"work_dir"`
+	Environment  map[string]string `json:"environment"`
+	MaxRetries   int               `json:"max_retries"`
+	OutputFormat string            `json:"output_format"`
 }
 
 // Standard response format
 type CLIResponse struct {
-	Success		bool			`json:"success"`
-	Message		string			`json:"message,omitempty"`
-	Data		map[string]interface{}	`json:"data,omitempty"`
-	Error		string			`json:"error,omitempty"`
-	Timestamp	time.Time		`json:"timestamp"`
-	TraceID		string			`json:"trace_id,omitempty"`
-	Duration	string			`json:"duration,omitempty"`
+	Success   bool                   `json:"success"`
+	Message   string                 `json:"message,omitempty"`
+	Data      map[string]interface{} `json:"data,omitempty"`
+	Error     string                 `json:"error,omitempty"`
+	Timestamp time.Time              `json:"timestamp"`
+	TraceID   string                 `json:"trace_id,omitempty"`
+	Duration  string                 `json:"duration,omitempty"`
 }
 
 // Command execution context
 type ExecutionContext struct {
-	Config		*CLIConfig
-	StartTime	time.Time
-	TraceID		string
+	Config    *CLIConfig
+	StartTime time.Time
+	TraceID   string
 }
 
 var (
-	config		= &CLIConfig{}
-	configFile	string
-	verbose		bool
-	outputFormat	string
+	config       = &CLIConfig{}
+	configFile   string
+	verbose      bool
+	outputFormat string
 )
 
 func main() {
 	rootCmd := &cobra.Command{
-		Use:	"n8n-go-cli",
-		Short:	"N8N Go CLI Integration Wrapper",
+		Use:   "n8n-go-cli",
+		Short: "N8N Go CLI Integration Wrapper",
 		Long: `A CLI wrapper for integrating Go applications with N8N workflows.
 Provides standardized commands for execution, validation, status, and health checks.`,
-		Version:	fmt.Sprintf("%s (built %s, commit %s)", Version, BuildTime, GitCommit),
+		Version: fmt.Sprintf("%s (built %s, commit %s)", Version, BuildTime, GitCommit),
 	}
 
 	// Global flags
@@ -85,11 +85,11 @@ Provides standardized commands for execution, validation, status, and health che
 }
 
 var executeCmd = &cobra.Command{
-	Use:	"execute [command]",
-	Short:	"Execute a command with input data processing",
+	Use:   "execute [command]",
+	Short: "Execute a command with input data processing",
 	Long: `Execute a specific command with input data from stdin or arguments.
 Supports JSON input processing and various output formats.`,
-	Args:	cobra.MinimumNArgs(1),
+	Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		ctx := createExecutionContext()
 
@@ -105,8 +105,8 @@ Supports JSON input processing and various output formats.`,
 }
 
 var validateCmd = &cobra.Command{
-	Use:	"validate",
-	Short:	"Validate input data",
+	Use:   "validate",
+	Short: "Validate input data",
 	Long: `Validate input data structure and content.
 Reads JSON data from stdin and validates against predefined schemas.`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -121,8 +121,8 @@ Reads JSON data from stdin and validates against predefined schemas.`,
 }
 
 var statusCmd = &cobra.Command{
-	Use:	"status",
-	Short:	"Get CLI and system status",
+	Use:   "status",
+	Short: "Get CLI and system status",
 	Long: `Get current status of the CLI application and system resources.
 Returns information about health, configuration, and runtime status.`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -136,8 +136,8 @@ Returns information about health, configuration, and runtime status.`,
 }
 
 var healthCmd = &cobra.Command{
-	Use:	"health",
-	Short:	"Check CLI health and availability",
+	Use:   "health",
+	Short: "Check CLI health and availability",
 	Long: `Perform health checks on the CLI application and its dependencies.
 Returns health status and any issues that need attention.`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -151,8 +151,8 @@ Returns health status and any issues that need attention.`,
 }
 
 var configCmd = &cobra.Command{
-	Use:	"config",
-	Short:	"Manage CLI configuration",
+	Use:   "config",
+	Short: "Manage CLI configuration",
 	Long: `Manage CLI configuration settings.
 Supports viewing, updating, and validating configuration.`,
 }
@@ -176,8 +176,8 @@ func init() {
 
 	// Config subcommands
 	configCmd.AddCommand(&cobra.Command{
-		Use:	"show",
-		Short:	"Show current configuration",
+		Use:   "show",
+		Short: "Show current configuration",
 		Run: func(cmd *cobra.Command, args []string) {
 			ctx := createExecutionContext()
 			result := showConfig(ctx)
@@ -186,8 +186,8 @@ func init() {
 	})
 
 	configCmd.AddCommand(&cobra.Command{
-		Use:	"validate",
-		Short:	"Validate configuration",
+		Use:   "validate",
+		Short: "Validate configuration",
 		Run: func(cmd *cobra.Command, args []string) {
 			ctx := createExecutionContext()
 			result := validateConfig(ctx)
@@ -237,9 +237,9 @@ func loadConfigFile(filename string) error {
 
 func createExecutionContext() *ExecutionContext {
 	return &ExecutionContext{
-		Config:		config,
-		StartTime:	time.Now(),
-		TraceID:	generateTraceID(),
+		Config:    config,
+		StartTime: time.Now(),
+		TraceID:   generateTraceID(),
 	}
 }
 
@@ -249,8 +249,8 @@ func generateTraceID() string {
 
 func executeCommand(ctx *ExecutionContext, command string, args []string, inputFormat string, timeout time.Duration, workDir string, envVars map[string]string) *CLIResponse {
 	response := &CLIResponse{
-		Timestamp:	time.Now(),
-		TraceID:	ctx.TraceID,
+		Timestamp: time.Now(),
+		TraceID:   ctx.TraceID,
 	}
 
 	defer func() {
@@ -288,16 +288,16 @@ func executeCommand(ctx *ExecutionContext, command string, args []string, inputF
 
 func executeEmailProcess(ctx *ExecutionContext, inputData map[string]interface{}, args []string) *CLIResponse {
 	response := &CLIResponse{
-		Success:	true,
-		Message:	"Email processing completed successfully",
-		Timestamp:	time.Now(),
-		TraceID:	ctx.TraceID,
+		Success:   true,
+		Message:   "Email processing completed successfully",
+		Timestamp: time.Now(),
+		TraceID:   ctx.TraceID,
 		Data: map[string]interface{}{
-			"processed_count":	100,
-			"success_rate":		0.95,
-			"duration_ms":		1250,
-			"template":		getArgValue(args, "template", "default"),
-			"batch_size":		getArgValue(args, "batch-size", "50"),
+			"processed_count": 100,
+			"success_rate":    0.95,
+			"duration_ms":     1250,
+			"template":        getArgValue(args, "template", "default"),
+			"batch_size":      getArgValue(args, "batch-size", "50"),
 		},
 	}
 	return response
@@ -305,16 +305,16 @@ func executeEmailProcess(ctx *ExecutionContext, inputData map[string]interface{}
 
 func executeEmailSend(ctx *ExecutionContext, inputData map[string]interface{}, args []string) *CLIResponse {
 	response := &CLIResponse{
-		Success:	true,
-		Message:	"Email sending completed",
-		Timestamp:	time.Now(),
-		TraceID:	ctx.TraceID,
+		Success:   true,
+		Message:   "Email sending completed",
+		Timestamp: time.Now(),
+		TraceID:   ctx.TraceID,
 		Data: map[string]interface{}{
-			"sent_count":		50,
-			"failed_count":		2,
-			"success_rate":		0.96,
-			"smtp_host":		os.Getenv("SMTP_HOST"),
-			"delivery_time":	"2.3s",
+			"sent_count":    50,
+			"failed_count":  2,
+			"success_rate":  0.96,
+			"smtp_host":     os.Getenv("SMTP_HOST"),
+			"delivery_time": "2.3s",
 		},
 	}
 	return response
@@ -322,15 +322,15 @@ func executeEmailSend(ctx *ExecutionContext, inputData map[string]interface{}, a
 
 func executeVectorSearch(ctx *ExecutionContext, inputData map[string]interface{}, args []string) *CLIResponse {
 	response := &CLIResponse{
-		Success:	true,
-		Message:	"Vector search completed",
-		Timestamp:	time.Now(),
-		TraceID:	ctx.TraceID,
+		Success:   true,
+		Message:   "Vector search completed",
+		Timestamp: time.Now(),
+		TraceID:   ctx.TraceID,
 		Data: map[string]interface{}{
-			"results_count":	25,
-			"search_time":		"0.15s",
-			"similarity":		0.87,
-			"vector_dim":		1536,
+			"results_count": 25,
+			"search_time":   "0.15s",
+			"similarity":    0.87,
+			"vector_dim":    1536,
 		},
 	}
 	return response
@@ -338,15 +338,15 @@ func executeVectorSearch(ctx *ExecutionContext, inputData map[string]interface{}
 
 func executeAnalyticsProcess(ctx *ExecutionContext, inputData map[string]interface{}, args []string) *CLIResponse {
 	response := &CLIResponse{
-		Success:	true,
-		Message:	"Analytics processing completed",
-		Timestamp:	time.Now(),
-		TraceID:	ctx.TraceID,
+		Success:   true,
+		Message:   "Analytics processing completed",
+		Timestamp: time.Now(),
+		TraceID:   ctx.TraceID,
 		Data: map[string]interface{}{
-			"records_processed":	1000,
-			"insights_generated":	15,
-			"processing_time":	"5.2s",
-			"accuracy":		0.92,
+			"records_processed":  1000,
+			"insights_generated": 15,
+			"processing_time":    "5.2s",
+			"accuracy":           0.92,
 		},
 	}
 	return response
@@ -354,15 +354,15 @@ func executeAnalyticsProcess(ctx *ExecutionContext, inputData map[string]interfa
 
 func executeTestCommand(ctx *ExecutionContext, inputData map[string]interface{}, args []string) *CLIResponse {
 	response := &CLIResponse{
-		Success:	true,
-		Message:	"Test command executed successfully",
-		Timestamp:	time.Now(),
-		TraceID:	ctx.TraceID,
+		Success:   true,
+		Message:   "Test command executed successfully",
+		Timestamp: time.Now(),
+		TraceID:   ctx.TraceID,
 		Data: map[string]interface{}{
-			"test":		"data",
-			"input_data":	inputData,
-			"args":		args,
-			"environment":	os.Getenv("TEST_ENV"),
+			"test":        "data",
+			"input_data":  inputData,
+			"args":        args,
+			"environment": os.Getenv("TEST_ENV"),
 		},
 	}
 	return response
@@ -370,8 +370,8 @@ func executeTestCommand(ctx *ExecutionContext, inputData map[string]interface{},
 
 func validateData(ctx *ExecutionContext, schema string, strict bool) *CLIResponse {
 	response := &CLIResponse{
-		Timestamp:	time.Now(),
-		TraceID:	ctx.TraceID,
+		Timestamp: time.Now(),
+		TraceID:   ctx.TraceID,
 	}
 
 	var inputData map[string]interface{}
@@ -385,11 +385,11 @@ func validateData(ctx *ExecutionContext, schema string, strict bool) *CLIRespons
 	response.Success = true
 	response.Message = "Data validation completed"
 	response.Data = map[string]interface{}{
-		"valid":		true,
-		"schema":		schema,
-		"strict_mode":		strict,
-		"field_count":		len(inputData),
-		"validation_time":	"0.05s",
+		"valid":           true,
+		"schema":          schema,
+		"strict_mode":     strict,
+		"field_count":     len(inputData),
+		"validation_time": "0.05s",
 	}
 
 	return response
@@ -397,24 +397,24 @@ func validateData(ctx *ExecutionContext, schema string, strict bool) *CLIRespons
 
 func getStatus(ctx *ExecutionContext, detailed bool) *CLIResponse {
 	response := &CLIResponse{
-		Success:	true,
-		Message:	"CLI status retrieved",
-		Timestamp:	time.Now(),
-		TraceID:	ctx.TraceID,
+		Success:   true,
+		Message:   "CLI status retrieved",
+		Timestamp: time.Now(),
+		TraceID:   ctx.TraceID,
 		Data: map[string]interface{}{
-			"status":	"healthy",
-			"version":	Version,
-			"build_time":	BuildTime,
-			"uptime":	time.Since(ctx.StartTime).String(),
-			"config":	config,
+			"status":     "healthy",
+			"version":    Version,
+			"build_time": BuildTime,
+			"uptime":     time.Since(ctx.StartTime).String(),
+			"config":     config,
 		},
 	}
 
 	if detailed {
 		response.Data["system"] = map[string]interface{}{
-			"pid":		os.Getpid(),
-			"working_dir":	config.WorkDir,
-			"environment":	len(config.Environment),
+			"pid":         os.Getpid(),
+			"working_dir": config.WorkDir,
+			"environment": len(config.Environment),
 		}
 	}
 
@@ -423,18 +423,18 @@ func getStatus(ctx *ExecutionContext, detailed bool) *CLIResponse {
 
 func checkHealth(ctx *ExecutionContext, checkDeps bool) *CLIResponse {
 	response := &CLIResponse{
-		Success:	true,
-		Message:	"Health check completed",
-		Timestamp:	time.Now(),
-		TraceID:	ctx.TraceID,
+		Success:   true,
+		Message:   "Health check completed",
+		Timestamp: time.Now(),
+		TraceID:   ctx.TraceID,
 		Data: map[string]interface{}{
-			"status":		"healthy",
-			"checks_passed":	5,
-			"checks_total":		5,
+			"status":        "healthy",
+			"checks_passed": 5,
+			"checks_total":  5,
 			"dependencies": map[string]string{
-				"filesystem":	"ok",
-				"memory":	"ok",
-				"network":	"ok",
+				"filesystem": "ok",
+				"memory":     "ok",
+				"network":    "ok",
 			},
 		},
 	}
@@ -442,9 +442,9 @@ func checkHealth(ctx *ExecutionContext, checkDeps bool) *CLIResponse {
 	if checkDeps {
 		// Simulate dependency checks
 		response.Data["external_deps"] = map[string]string{
-			"smtp_server":	"reachable",
-			"database":	"connected",
-			"redis":	"available",
+			"smtp_server": "reachable",
+			"database":    "connected",
+			"redis":       "available",
 		}
 	}
 
@@ -453,10 +453,10 @@ func checkHealth(ctx *ExecutionContext, checkDeps bool) *CLIResponse {
 
 func showConfig(ctx *ExecutionContext) *CLIResponse {
 	return &CLIResponse{
-		Success:	true,
-		Message:	"Current configuration",
-		Timestamp:	time.Now(),
-		TraceID:	ctx.TraceID,
+		Success:   true,
+		Message:   "Current configuration",
+		Timestamp: time.Now(),
+		TraceID:   ctx.TraceID,
 		Data: map[string]interface{}{
 			"config": config,
 		},
@@ -465,13 +465,13 @@ func showConfig(ctx *ExecutionContext) *CLIResponse {
 
 func validateConfig(ctx *ExecutionContext) *CLIResponse {
 	return &CLIResponse{
-		Success:	true,
-		Message:	"Configuration is valid",
-		Timestamp:	time.Now(),
-		TraceID:	ctx.TraceID,
+		Success:   true,
+		Message:   "Configuration is valid",
+		Timestamp: time.Now(),
+		TraceID:   ctx.TraceID,
 		Data: map[string]interface{}{
-			"valid":	true,
-			"errors":	[]string{},
+			"valid":  true,
+			"errors": []string{},
 		},
 	}
 }
@@ -511,7 +511,7 @@ func outputResult(result *CLIResponse) {
 		} else {
 			fmt.Println("ERROR=" + result.Error)
 		}
-	default:	// json
+	default: // json
 		encoder := json.NewEncoder(os.Stdout)
 		encoder.SetIndent("", "  ")
 		if err := encoder.Encode(result); err != nil {

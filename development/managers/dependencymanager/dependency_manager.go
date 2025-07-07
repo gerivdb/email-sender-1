@@ -17,10 +17,10 @@ func main() {
 	)
 
 	entry := cachemanager.LogEntry{
-		Timestamp:	time.Now(),
-		Level:		"INFO",
-		Source:		"dependency-manager",
-		Message:	"Démarrage du scan des dépendances",
+		Timestamp: time.Now(),
+		Level:     "INFO",
+		Source:    "dependency-manager",
+		Message:   "Démarrage du scan des dépendances",
 	}
 
 	_ = cm.StoreLog(entry)

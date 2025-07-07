@@ -8,31 +8,31 @@ import (
 	"net/http"
 	"time"
 
+	_ "github.com/lib/pq"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/redis/go-redis/v9"
-	_ "github.com/lib/pq"
 )
 
 // AutonomyMetric représente les métriques d'autonomie d'un service
 type AutonomyMetric struct {
-	ServiceName       string    `json:"service_name"`
-	AutonomyLevel     float64   `json:"autonomy_level"`
-	SelfHealingCount  int       `json:"self_healing_count"`
-	LastIntervention  time.Time `json:"last_intervention"`
-	DecisionQuality   float64   `json:"decision_quality"`
-	LastUpdated       time.Time `json:"last_updated"`
+	ServiceName      string    `json:"service_name"`
+	AutonomyLevel    float64   `json:"autonomy_level"`
+	SelfHealingCount int       `json:"self_healing_count"`
+	LastIntervention time.Time `json:"last_intervention"`
+	DecisionQuality  float64   `json:"decision_quality"`
+	LastUpdated      time.Time `json:"last_updated"`
 }
 
 // AutonomyDecision représente une décision prise par le système d'autonomie
 type AutonomyDecision struct {
-	Timestamp     time.Time                `json:"timestamp"`
-	ServiceName   string                   `json:"service_name"`
-	DecisionType  string                   `json:"decision_type"`
-	Context       map[string]interface{}   `json:"context"`
-	Success       bool                     `json:"success"`
-	Duration      time.Duration            `json:"duration"`
-	Confidence    float64                  `json:"confidence"`
+	Timestamp    time.Time              `json:"timestamp"`
+	ServiceName  string                 `json:"service_name"`
+	DecisionType string                 `json:"decision_type"`
+	Context      map[string]interface{} `json:"context"`
+	Success      bool                   `json:"success"`
+	Duration     time.Duration          `json:"duration"`
+	Confidence   float64                `json:"confidence"`
 }
 
 // MonitoringStatus représente l'état du système de monitoring
@@ -75,11 +75,11 @@ type DependencyStatus struct {
 
 // AdvancedInfrastructureMonitor étend le monitoring existant
 type AdvancedInfrastructureMonitor struct {
-	serviceHealthGauge    *prometheus.GaugeVec
-	serviceResponseGauge  *prometheus.GaugeVec
-	autoHealingCounter    *prometheus.CounterVec
-	healthCheckCounter    *prometheus.CounterVec
-	
+	serviceHealthGauge   *prometheus.GaugeVec
+	serviceResponseGauge *prometheus.GaugeVec
+	autoHealingCounter   *prometheus.CounterVec
+	healthCheckCounter   *prometheus.CounterVec
+
 	redisClient *redis.Client
 	httpClient  *http.Client
 	dbPool      map[string]*sql.DB
@@ -104,7 +104,7 @@ func NewAdvancedInfrastructureMonitor() *AdvancedInfrastructureMonitor {
 
 	monitor.serviceResponseGauge = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Namespace: "smart_infrastructure", 
+			Namespace: "smart_infrastructure",
 			Subsystem: "service",
 			Name:      "response_time_seconds",
 			Help:      "Response time of services in seconds",
@@ -116,7 +116,7 @@ func NewAdvancedInfrastructureMonitor() *AdvancedInfrastructureMonitor {
 		prometheus.CounterOpts{
 			Namespace: "smart_infrastructure",
 			Subsystem: "auto_healing",
-			Name:      "attempts_total", 
+			Name:      "attempts_total",
 			Help:      "Total auto-healing attempts",
 		},
 		[]string{"service", "result"},
@@ -138,9 +138,9 @@ func NewAdvancedInfrastructureMonitor() *AdvancedInfrastructureMonitor {
 // Start démarre le monitoring avancé
 func (aim *AdvancedInfrastructureMonitor) Start(ctx context.Context) error {
 	log.Println("🚀 Starting Advanced Infrastructure Monitor...")
-	
+
 	go aim.startMetricsCollection(ctx)
-	
+
 	log.Println("✅ Advanced Infrastructure Monitor started")
 	return nil
 }
@@ -148,40 +148,40 @@ func (aim *AdvancedInfrastructureMonitor) Start(ctx context.Context) error {
 // Stop arrête le monitoring avancé
 func (aim *AdvancedInfrastructureMonitor) Stop() {
 	log.Println("🛑 Stopping Advanced Infrastructure Monitor...")
-	
+
 	for _, db := range aim.dbPool {
 		if db != nil {
 			db.Close()
 		}
 	}
-	
+
 	log.Println("✅ Advanced Infrastructure Monitor stopped")
 }
 
 // GetHealthStatus retourne le statut de santé de tous les services
 func (aim *AdvancedInfrastructureMonitor) GetHealthStatus(ctx context.Context) (map[string]ServiceHealthStatus, error) {
 	healthStatus := make(map[string]ServiceHealthStatus)
-	
+
 	services := []string{"qdrant", "redis", "prometheus", "grafana", "rag_server"}
-	
+
 	for _, service := range services {
 		status := aim.checkSingleService(ctx, service)
 		healthStatus[service] = status
 	}
-	
+
 	return healthStatus, nil
 }
 
 // checkSingleService vérifie la santé d'un service spécifique
 func (aim *AdvancedInfrastructureMonitor) checkSingleService(ctx context.Context, service string) ServiceHealthStatus {
 	status := ServiceHealthStatus{
-		ServiceName: service,
-		Status:      "unknown",
-		Healthy:     false,
-		LastCheck:   time.Now(),
-		Checks:      make(map[string]CheckResult),
+		ServiceName:  service,
+		Status:       "unknown",
+		Healthy:      false,
+		LastCheck:    time.Now(),
+		Checks:       make(map[string]CheckResult),
 		Dependencies: []DependencyStatus{},
-		Timestamp:   time.Now(),
+		Timestamp:    time.Now(),
 	}
 
 	switch service {
@@ -205,7 +205,7 @@ func (aim *AdvancedInfrastructureMonitor) checkSingleService(ctx context.Context
 			break
 		}
 	}
-	
+
 	status.Healthy = healthy
 	status.Status = map[bool]string{true: "healthy", false: "unhealthy"}[healthy]
 
@@ -228,7 +228,7 @@ func (aim *AdvancedInfrastructureMonitor) checkQdrantHealth(ctx context.Context,
 	return status
 }
 
-// checkRedisHealth vérifie la santé de Redis  
+// checkRedisHealth vérifie la santé de Redis
 func (aim *AdvancedInfrastructureMonitor) checkRedisHealth(ctx context.Context, status ServiceHealthStatus) ServiceHealthStatus {
 	if aim.redisClient == nil {
 		aim.redisClient = redis.NewClient(&redis.Options{
@@ -287,7 +287,7 @@ func (aim *AdvancedInfrastructureMonitor) checkRAGServerHealth(ctx context.Conte
 // performHTTPCheck effectue un health check HTTP
 func (aim *AdvancedInfrastructureMonitor) performHTTPCheck(ctx context.Context, url, checkType string) CheckResult {
 	start := time.Now()
-	
+
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return CheckResult{
@@ -301,7 +301,7 @@ func (aim *AdvancedInfrastructureMonitor) performHTTPCheck(ctx context.Context, 
 
 	resp, err := aim.httpClient.Do(req)
 	duration := time.Since(start)
-	
+
 	if err != nil {
 		return CheckResult{
 			Type:      checkType,
@@ -315,7 +315,7 @@ func (aim *AdvancedInfrastructureMonitor) performHTTPCheck(ctx context.Context, 
 
 	success := resp.StatusCode >= 200 && resp.StatusCode < 300
 	message := fmt.Sprintf("HTTP %d", resp.StatusCode)
-	
+
 	return CheckResult{
 		Type:      checkType,
 		Success:   success,
@@ -329,7 +329,7 @@ func (aim *AdvancedInfrastructureMonitor) performHTTPCheck(ctx context.Context, 
 func (aim *AdvancedInfrastructureMonitor) startMetricsCollection(ctx context.Context) {
 	ticker := time.NewTicker(30 * time.Second)
 	defer ticker.Stop()
-	
+
 	for {
 		select {
 		case <-ctx.Done():

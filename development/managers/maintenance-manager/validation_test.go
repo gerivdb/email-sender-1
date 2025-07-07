@@ -2,7 +2,6 @@ package maintenance_manager
 
 import (
 	"fmt"
-	"log"
 	"testing"
 )
 
@@ -37,9 +36,9 @@ func TestFMOUAComponentValidation(t *testing.T) {
 	t.Log("=== Testing FMOUA Component Validation ===")
 
 	tests := []struct {
-		name		string
-		component	string
-		description	string
+		name        string
+		component   string
+		description string
 	}{
 		{"AutoOptimizeRepository", "repository_optimization", "6-phase comprehensive execution"},
 		{"ApplyIntelligentOrganization", "intelligent_organization", "strategy-specific ML learning"},

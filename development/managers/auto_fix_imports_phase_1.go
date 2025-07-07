@@ -123,10 +123,10 @@ func fixFileImports(filePath string) error {
 
 	// Corrections spÃÂÃÂ©cifiques basÃÂÃÂ©es sur notre architecture
 	fixes := map[string]string{
-		"./interfaces":	"./interfaces",
-		"./interfaces":	"./interfaces",
+		"./interfaces": "./interfaces",
+		"./interfaces": "./interfaces",
 		// Supprimer les imports Qdrant problÃÂÃÂ©matiques pour l'instant
-		`// "github.com/qdrant/go-client/qdrant" // Temporarily disabled`:	`// // "github.com/qdrant/go-client/qdrant" // Temporarily disabled // Temporarily disabled`,
+		`// "github.com/qdrant/go-client/qdrant" // Temporarily disabled`: `// // "github.com/qdrant/go-client/qdrant" // Temporarily disabled // Temporarily disabled`,
 	}
 
 	modified := false

@@ -10,62 +10,62 @@ import (
 
 // Config represents the configuration for the commit interceptor
 type Config struct {
-	Server			ServerConfig	`json:"server"`
-	Git			GitConfig	`json:"git"`
-	Routing			RoutingConfig	`json:"routing"`
-	NotificationsEnabled	bool		`json:"notifications_enabled"`
-	Webhooks		WebhookConfig	`json:"webhooks"`
-	Logging			LoggingConfig	`json:"logging"`
-	TestMode		bool		`json:"test_mode"`	// Nouvelle option pour mode test
+	Server               ServerConfig  `json:"server"`
+	Git                  GitConfig     `json:"git"`
+	Routing              RoutingConfig `json:"routing"`
+	NotificationsEnabled bool          `json:"notifications_enabled"`
+	Webhooks             WebhookConfig `json:"webhooks"`
+	Logging              LoggingConfig `json:"logging"`
+	TestMode             bool          `json:"test_mode"` // Nouvelle option pour mode test
 }
 
 // ServerConfig contains server-specific configuration
 type ServerConfig struct {
-	Port		int	`json:"port"`
-	Host		string	`json:"host"`
-	ReadTimeout	int	`json:"read_timeout"`
-	WriteTimeout	int	`json:"write_timeout"`
-	ShutdownTimeout	int	`json:"shutdown_timeout"`
+	Port            int    `json:"port"`
+	Host            string `json:"host"`
+	ReadTimeout     int    `json:"read_timeout"`
+	WriteTimeout    int    `json:"write_timeout"`
+	ShutdownTimeout int    `json:"shutdown_timeout"`
 }
 
 // GitConfig contains Git-specific configuration
 type GitConfig struct {
-	DefaultBranch		string		`json:"default_branch"`
-	ProtectedBranches	[]string	`json:"protected_branches"`
-	RemoteName		string		`json:"remote_name"`
-	AutoFetch		bool		`json:"auto_fetch"`
+	DefaultBranch     string   `json:"default_branch"`
+	ProtectedBranches []string `json:"protected_branches"`
+	RemoteName        string   `json:"remote_name"`
+	AutoFetch         bool     `json:"auto_fetch"`
 }
 
 // RoutingConfig contains routing rules configuration
 type RoutingConfig struct {
-	Rules			map[string]RoutingRule	`json:"rules"`
-	DefaultStrategy		string			`json:"default_strategy"`
-	ConflictStrategy	string			`json:"conflict_strategy"`
-	AutoMergeEnabled	bool			`json:"auto_merge_enabled"`
+	Rules            map[string]RoutingRule `json:"rules"`
+	DefaultStrategy  string                 `json:"default_strategy"`
+	ConflictStrategy string                 `json:"conflict_strategy"`
+	AutoMergeEnabled bool                   `json:"auto_merge_enabled"`
 }
 
 // RoutingRule defines how specific types of commits should be routed
 type RoutingRule struct {
-	Patterns	[]string	`json:"patterns"`
-	TargetBranch	string		`json:"target_branch"`
-	CreateBranch	bool		`json:"create_branch"`
-	MergeStrategy	string		`json:"merge_strategy"`
-	Priority	string		`json:"priority"`
+	Patterns      []string `json:"patterns"`
+	TargetBranch  string   `json:"target_branch"`
+	CreateBranch  bool     `json:"create_branch"`
+	MergeStrategy string   `json:"merge_strategy"`
+	Priority      string   `json:"priority"`
 }
 
 // WebhookConfig contains webhook configuration
 type WebhookConfig struct {
-	Enabled		bool			`json:"enabled"`
-	Endpoints	map[string]string	`json:"endpoints"`
-	AuthTokens	map[string]string	`json:"auth_tokens"`
-	Timeout		int			`json:"timeout"`
+	Enabled    bool              `json:"enabled"`
+	Endpoints  map[string]string `json:"endpoints"`
+	AuthTokens map[string]string `json:"auth_tokens"`
+	Timeout    int               `json:"timeout"`
 }
 
 // LoggingConfig contains logging configuration
 type LoggingConfig struct {
-	Level		string	`json:"level"`
-	Format		string	`json:"format"`
-	OutputFile	string	`json:"output_file"`
+	Level      string `json:"level"`
+	Format     string `json:"format"`
+	OutputFile string `json:"output_file"`
 }
 
 // LoadConfig loads configuration from file or environment
@@ -90,66 +90,66 @@ func LoadConfig() *Config {
 func getDefaultConfig() *Config {
 	return &Config{
 		Server: ServerConfig{
-			Port:			8080,
-			Host:			"0.0.0.0",
-			ReadTimeout:		15,
-			WriteTimeout:		15,
-			ShutdownTimeout:	30,
+			Port:            8080,
+			Host:            "0.0.0.0",
+			ReadTimeout:     15,
+			WriteTimeout:    15,
+			ShutdownTimeout: 30,
 		},
 		Git: GitConfig{
-			DefaultBranch:		"main",
-			ProtectedBranches:	[]string{"main", "master", "production"},
-			RemoteName:		"origin",
-			AutoFetch:		true,
+			DefaultBranch:     "main",
+			ProtectedBranches: []string{"main", "master", "production"},
+			RemoteName:        "origin",
+			AutoFetch:         true,
 		},
 		Routing: RoutingConfig{
 			Rules: map[string]RoutingRule{
 				"feature": {
-					Patterns:	[]string{"feat:", "feature:", "add:"},
-					TargetBranch:	"feature/*",
-					CreateBranch:	true,
-					MergeStrategy:	"manual",
-					Priority:	"medium",
+					Patterns:      []string{"feat:", "feature:", "add:"},
+					TargetBranch:  "feature/*",
+					CreateBranch:  true,
+					MergeStrategy: "manual",
+					Priority:      "medium",
 				},
 				"fix": {
-					Patterns:	[]string{"fix:", "bug:", "hotfix:"},
-					TargetBranch:	"hotfix/*",
-					CreateBranch:	true,
-					MergeStrategy:	"manual",
-					Priority:	"high",
+					Patterns:      []string{"fix:", "bug:", "hotfix:"},
+					TargetBranch:  "hotfix/*",
+					CreateBranch:  true,
+					MergeStrategy: "manual",
+					Priority:      "high",
 				},
 				"refactor": {
-					Patterns:	[]string{"refactor:", "clean:", "optimize:"},
-					TargetBranch:	"develop",
-					CreateBranch:	false,
-					MergeStrategy:	"auto",
-					Priority:	"medium",
+					Patterns:      []string{"refactor:", "clean:", "optimize:"},
+					TargetBranch:  "develop",
+					CreateBranch:  false,
+					MergeStrategy: "auto",
+					Priority:      "medium",
 				},
 				"docs": {
-					Patterns:	[]string{"docs:", "doc:", "documentation:"},
-					TargetBranch:	"develop",
-					CreateBranch:	false,
-					MergeStrategy:	"auto",
-					Priority:	"low",
+					Patterns:      []string{"docs:", "doc:", "documentation:"},
+					TargetBranch:  "develop",
+					CreateBranch:  false,
+					MergeStrategy: "auto",
+					Priority:      "low",
 				},
 			},
-			DefaultStrategy:	"manual",
-			ConflictStrategy:	"abort",
-			AutoMergeEnabled:	false,
+			DefaultStrategy:  "manual",
+			ConflictStrategy: "abort",
+			AutoMergeEnabled: false,
 		},
-		NotificationsEnabled:	false,
+		NotificationsEnabled: false,
 		Webhooks: WebhookConfig{
-			Enabled:	false,
-			Endpoints:	make(map[string]string),
-			AuthTokens:	make(map[string]string),
-			Timeout:	30,
+			Enabled:    false,
+			Endpoints:  make(map[string]string),
+			AuthTokens: make(map[string]string),
+			Timeout:    30,
 		},
 		Logging: LoggingConfig{
-			Level:		"info",
-			Format:		"json",
-			OutputFile:	"",
+			Level:      "info",
+			Format:     "json",
+			OutputFile: "",
 		},
-		TestMode:	false,	// Mode test désactivé par défaut
+		TestMode: false, // Mode test désactivé par défaut
 	}
 }
 
@@ -193,7 +193,7 @@ func loadConfigFromEnv(config *Config) {
 	// Server configuration
 	if port := os.Getenv("COMMIT_INTERCEPTOR_PORT"); port != "" {
 		// Convert string to int if needed
-		config.Server.Port = 8080	// Default fallback
+		config.Server.Port = 8080 // Default fallback
 	}
 
 	if host := os.Getenv("COMMIT_INTERCEPTOR_HOST"); host != "" {
@@ -272,7 +272,7 @@ func (c *Config) ValidateConfig() error {
 	}
 
 	validLogLevels := map[string]bool{
-		"debug":	true, "info": true, "warn": true, "error": true,
+		"debug": true, "info": true, "warn": true, "error": true,
 	}
 	if !validLogLevels[c.Logging.Level] {
 		return fmt.Errorf("invalid log level: %s", c.Logging.Level)

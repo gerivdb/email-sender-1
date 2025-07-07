@@ -17,42 +17,42 @@ import (
 
 // ConsolidationConfig configuration pour la consolidation
 type ConsolidationConfig struct {
-	ProjectRoot	string
-	UnifiedClient	string
-	OldClients	[]string
-	ExcludeDirs	[]string
-	BackupEnabled	bool
-	BackupPath	string
-	DryRun		bool
-	Verbose		bool
+	ProjectRoot   string
+	UnifiedClient string
+	OldClients    []string
+	ExcludeDirs   []string
+	BackupEnabled bool
+	BackupPath    string
+	DryRun        bool
+	Verbose       bool
 }
 
 // ConsolidationResult résultat de la consolidation
 type ConsolidationResult struct {
-	FilesProcessed	int
-	ImportsUpdated	int
-	ClientsRemoved	int
-	TestsUpdated	int
-	ErrorsFound	[]string
-	BackupPath	string
-	Duration	time.Duration
+	FilesProcessed int
+	ImportsUpdated int
+	ClientsRemoved int
+	TestsUpdated   int
+	ErrorsFound    []string
+	BackupPath     string
+	Duration       time.Duration
 }
 
 // QdrantConsolidator gestionnaire de consolidation
 type QdrantConsolidator struct {
-	config	*ConsolidationConfig
-	result	*ConsolidationResult
-	fset	*token.FileSet
+	config *ConsolidationConfig
+	result *ConsolidationResult
+	fset   *token.FileSet
 }
 
 // NewQdrantConsolidator crée un nouveau consolidateur
 func NewQdrantConsolidator(config *ConsolidationConfig) *QdrantConsolidator {
 	return &QdrantConsolidator{
-		config:	config,
+		config: config,
 		result: &ConsolidationResult{
 			ErrorsFound: make([]string, 0),
 		},
-		fset:	token.NewFileSet(),
+		fset: token.NewFileSet(),
 	}
 }
 
@@ -202,17 +202,17 @@ func (qc *QdrantConsolidator) UpdateClientUsage(filePath string) error {
 	// Patterns de remplacement pour l'usage des clients
 	replacements := map[string]string{
 		// Anciens patterns de clients → Nouveau client unifié
-		`qdrant_client\.`:	"qdrant.",
-		`QdrantClient\.`:	"qdrant.",
-		`OldQdrantInterface\.`:	"qdrant.",
-		`LegacyQdrantClient\.`:	"qdrant.",
+		`qdrant_client\.`:      "qdrant.",
+		`QdrantClient\.`:       "qdrant.",
+		`OldQdrantInterface\.`: "qdrant.",
+		`LegacyQdrantClient\.`: "qdrant.",
 		// Patterns de constructeurs
-		`NewOldQdrantClient\(`:		"qdrant.NewClient(",
-		`NewLegacyQdrantClient\(`:	"qdrant.NewClient(",
-		`CreateQdrantClient\(`:		"qdrant.NewClient(",
+		`NewOldQdrantClient\(`:    "qdrant.NewClient(",
+		`NewLegacyQdrantClient\(`: "qdrant.NewClient(",
+		`CreateQdrantClient\(`:    "qdrant.NewClient(",
 		// Patterns d'interfaces
-		`OldQdrantInterface`:		"QdrantInterface",
-		`LegacyQdrantInterface`:	"QdrantInterface",
+		`OldQdrantInterface`:    "QdrantInterface",
+		`LegacyQdrantInterface`: "QdrantInterface",
 	}
 
 	// Appliquer les remplacements avec regex
@@ -361,15 +361,15 @@ func (qc *QdrantConsolidator) updateTestFile(filePath string) error {
 	// Remplacements spécifiques aux tests
 	testReplacements := map[string]string{
 		// Mocks et stubs
-		`MockOldQdrantClient`:		"MockQdrantClient",
-		`StubLegacyQdrantClient`:	"StubQdrantClient",
-		`FakeOldQdrantClient`:		"FakeQdrantClient",
+		`MockOldQdrantClient`:    "MockQdrantClient",
+		`StubLegacyQdrantClient`: "StubQdrantClient",
+		`FakeOldQdrantClient`:    "FakeQdrantClient",
 		// Fonctions de test
-		`TestOldQdrantClient`:		"TestQdrantClient",
-		`TestLegacyQdrantClient`:	"TestQdrantClient",
+		`TestOldQdrantClient`:    "TestQdrantClient",
+		`TestLegacyQdrantClient`: "TestQdrantClient",
 		// Setup et teardown
-		`setupOldQdrantClient`:		"setupQdrantClient",
-		`setupLegacyQdrantClient`:	"setupQdrantClient",
+		`setupOldQdrantClient`:    "setupQdrantClient",
+		`setupLegacyQdrantClient`: "setupQdrantClient",
 	}
 
 	for pattern, replacement := range testReplacements {
@@ -553,18 +553,18 @@ func (qc *QdrantConsolidator) generateReport() error {
 	reportPath := filepath.Join(qc.config.ProjectRoot, "consolidation_report.json")
 
 	report := map[string]interface{}{
-		"timestamp":		time.Now().Format(time.RFC3339),
-		"version":		"v56-go-migration",
-		"phase":		"7.2.2",
-		"files_processed":	qc.result.FilesProcessed,
-		"imports_updated":	qc.result.ImportsUpdated,
-		"clients_removed":	qc.result.ClientsRemoved,
-		"tests_updated":	qc.result.TestsUpdated,
-		"errors_found":		qc.result.ErrorsFound,
-		"backup_path":		qc.result.BackupPath,
-		"duration_seconds":	qc.result.Duration.Seconds(),
-		"unified_client":	qc.config.UnifiedClient,
-		"old_clients":		qc.config.OldClients,
+		"timestamp":        time.Now().Format(time.RFC3339),
+		"version":          "v56-go-migration",
+		"phase":            "7.2.2",
+		"files_processed":  qc.result.FilesProcessed,
+		"imports_updated":  qc.result.ImportsUpdated,
+		"clients_removed":  qc.result.ClientsRemoved,
+		"tests_updated":    qc.result.TestsUpdated,
+		"errors_found":     qc.result.ErrorsFound,
+		"backup_path":      qc.result.BackupPath,
+		"duration_seconds": qc.result.Duration.Seconds(),
+		"unified_client":   qc.config.UnifiedClient,
+		"old_clients":      qc.config.OldClients,
 	}
 
 	// Convertir en JSON et sauvegarder
@@ -665,8 +665,8 @@ func (qc *QdrantConsolidator) RunConsolidation() error {
 func main() {
 	// Configuration par défaut
 	config := &ConsolidationConfig{
-		ProjectRoot:	".",
-		UnifiedClient:	"github.com/qdrant/go-client/qdrant",
+		ProjectRoot:   ".",
+		UnifiedClient: "github.com/qdrant/go-client/qdrant",
 		OldClients: []string{
 			"old_qdrant_client",
 			"legacy_qdrant_client",
@@ -681,10 +681,10 @@ func main() {
 			"legacy",
 			"backups",
 		},
-		BackupEnabled:	true,
-		BackupPath:	"./backups/consolidation",
-		DryRun:		false,
-		Verbose:	false,
+		BackupEnabled: true,
+		BackupPath:    "./backups/consolidation",
+		DryRun:        false,
+		Verbose:       false,
 	}
 
 	// Parser les arguments de ligne de commande

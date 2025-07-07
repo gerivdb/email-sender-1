@@ -5,8 +5,6 @@ import (
 	"strings"
 	"testing"
 	"time"
-
-	"D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/hooks/commit-interceptor"
 )
 
 func TestCommitAnalyzer_AnalyzeCommit(t *testing.T) {

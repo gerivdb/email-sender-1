@@ -14,28 +14,28 @@ import (
 
 // PhaseResult stores the result of a single phase execution.
 type PhaseResult struct {
-	Phase	string	`json:"phase"`
-	Success	bool	`json:"success"`
-	Output	string	`json:"output,omitempty"`
-	Error	string	`json:"error,omitempty"`
+	Phase   string `json:"phase"`
+	Success bool   `json:"success"`
+	Output  string `json:"output,omitempty"`
+	Error   string `json:"error,omitempty"`
 }
 
 // OrchestrationReport summarizes the execution of all phases.
 type OrchestrationReport struct {
-	Timestamp	string		`json:"timestamp"`
-	TotalPhases	int		`json:"total_phases"`
-	PassedPhases	int		`json:"passed_phases"`
-	FailedPhases	int		`json:"failed_phases"`
-	Results		[]PhaseResult	`json:"results"`
-	OverallSuccess	bool		`json:"overall_success"`
-	Summary		string		`json:"summary"`
+	Timestamp      string        `json:"timestamp"`
+	TotalPhases    int           `json:"total_phases"`
+	PassedPhases   int           `json:"passed_phases"`
+	FailedPhases   int           `json:"failed_phases"`
+	Results        []PhaseResult `json:"results"`
+	OverallSuccess bool          `json:"overall_success"`
+	Summary        string        `json:"summary"`
 }
 
 // PhaseConfig defines a single phase to be executed by the orchestrator.
 type PhaseConfig struct {
-	Name	string		`yaml:"name"`
-	Command	[]string	`yaml:"command"`
-	Enabled	bool		`yaml:"enabled"`
+	Name    string   `yaml:"name"`
+	Command []string `yaml:"command"`
+	Enabled bool     `yaml:"enabled"`
 }
 
 // OrchestratorConfig defines the configuration for the orchestrator.
@@ -98,8 +98,8 @@ func RunOrchestrator(configPath, phaseToRun, outputReportPath string) (Orchestra
 		err := cmd.Run()
 
 		phaseResult := PhaseResult{
-			Phase:	phase.Name,
-			Output:	stdout.String(),
+			Phase:  phase.Name,
+			Output: stdout.String(),
 		}
 
 		if err != nil {

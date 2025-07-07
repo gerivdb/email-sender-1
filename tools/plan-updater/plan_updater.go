@@ -26,17 +26,17 @@ func main() {
 	// Corrections des références PowerShell vers Go
 	corrections := map[string]string{
 		// Scripts PowerShell vers outils Go
-		"/scripts/run-redis-tests.ps1":		"tools/test-runner",
-		"/scripts/python/model_loader.py":	"tools/ml-bridge",
-		"/scripts/build-production.ps1":	"tools/build-production",
-		"/scripts/backup-automation.sh":	"tools/backup-manager",
-		"/scripts/":				"tools/",
-		".ps1":					"",
+		"/scripts/run-redis-tests.ps1":    "tools/test-runner",
+		"/scripts/python/model_loader.py": "tools/ml-bridge",
+		"/scripts/build-production.ps1":   "tools/build-production",
+		"/scripts/backup-automation.sh":   "tools/backup-manager",
+		"/scripts/":                       "tools/",
+		".ps1":                            "",
 
 		// Références PowerShell génériques
-		"avec PowerShell":	"avec des outils Go natifs",
-		"PowerShell":		"outils Go",
-		"WindowsInstallationGuide avec PowerShell":	"WindowsInstallationGuide avec les outils Go natifs",
+		"avec PowerShell": "avec des outils Go natifs",
+		"PowerShell":      "outils Go",
+		"WindowsInstallationGuide avec PowerShell": "WindowsInstallationGuide avec les outils Go natifs",
 	}
 
 	changesCount := 0

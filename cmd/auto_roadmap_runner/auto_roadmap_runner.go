@@ -9,15 +9,15 @@ import (
 
 // Script represents a script to be executed by the orchestrator.
 type Script struct {
-	Name		string
-	Path		string
-	EntryPoint	string	// e.g., "go run", "bash", "pwsh -File"
-	Args		[]string
-	DependsOn	[]string	// Names of other scripts this one depends on
-	Executed	bool
-	Success		bool
-	Output		string
-	Error		string
+	Name       string
+	Path       string
+	EntryPoint string // e.g., "go run", "bash", "pwsh -File"
+	Args       []string
+	DependsOn  []string // Names of other scripts this one depends on
+	Executed   bool
+	Success    bool
+	Output     string
+	Error      string
 }
 
 func main() {
@@ -26,17 +26,17 @@ func main() {
 	// Define all scripts with their actual paths and entry points
 	scripts := []Script{
 		{Name: "audit_read_file", Path: "cmd/audit_read_file/audit_read_file.go", EntryPoint: "go run", Args: []string{}},
-		{Name: "gap_analysis", Path: "cmd/gap_analysis/gap_analysis.go", EntryPoint: "go run", Args: []string{}, DependsOn: []string{"audit_read_file"}},	// Depends on audit report
+		{Name: "gap_analysis", Path: "cmd/gap_analysis/gap_analysis.go", EntryPoint: "go run", Args: []string{}, DependsOn: []string{"audit_read_file"}}, // Depends on audit report
 		{Name: "gen_user_needs_template", Path: "scripts/gen_user_needs_template.sh", EntryPoint: "bash", Args: []string{}},
 		{Name: "collect_user_needs", Path: "scripts/collect_user_needs.sh", EntryPoint: "bash", Args: []string{}, DependsOn: []string{"gen_user_needs_template"}},
 		{Name: "validate_and_archive_user_needs", Path: "scripts/validate_and_archive_user_needs.sh", EntryPoint: "bash", Args: []string{}, DependsOn: []string{"collect_user_needs"}},
 		{Name: "gen_read_file_spec", Path: "cmd/gen_read_file_spec/gen_read_file_spec.go", EntryPoint: "go run", Args: []string{}, DependsOn: []string{"validate_and_archive_user_needs"}},
 		{Name: "archive_spec", Path: "scripts/archive_spec.sh", EntryPoint: "bash", Args: []string{}, DependsOn: []string{"gen_read_file_spec"}},
-		{Name: "read_file_lib_tests", Path: "pkg/common/read_file_test.go", EntryPoint: "go test", Args: []string{"-v", "-cover"}, DependsOn: []string{}},	// Assuming common lib is built by now
+		{Name: "read_file_lib_tests", Path: "pkg/common/read_file_test.go", EntryPoint: "go test", Args: []string{"-v", "-cover"}, DependsOn: []string{}}, // Assuming common lib is built by now
 		{Name: "read_file_navigator", Path: "cmd/read_file_navigator/read_file_navigator.go", EntryPoint: "go run", Args: []string{"--file", "test_large_file.txt", "--action", "first", "--block-size", "10"}, DependsOn: []string{"read_file_lib_tests"}},
-		{Name: "vscode_extension_validation", Path: "scripts/vscode_read_file_selection.js", EntryPoint: "node", Args: []string{}, DependsOn: []string{"read_file_navigator"}},	// Placeholder for actual VSCode validation
+		{Name: "vscode_extension_validation", Path: "scripts/vscode_read_file_selection.js", EntryPoint: "node", Args: []string{}, DependsOn: []string{"read_file_navigator"}}, // Placeholder for actual VSCode validation
 		{Name: "gen_read_file_report", Path: "scripts/gen_read_file_report.go", EntryPoint: "go run", Args: []string{}, DependsOn: []string{"read_file_lib_tests", "vscode_extension_validation"}},
-		{Name: "docs_update", Path: "docs/read_file_README.md", EntryPoint: "echo", Args: []string{"Documentation is updated."}, DependsOn: []string{"gen_read_file_report"}},	// Placeholder for actual doc update check
+		{Name: "docs_update", Path: "docs/read_file_README.md", EntryPoint: "echo", Args: []string{"Documentation is updated."}, DependsOn: []string{"gen_read_file_report"}}, // Placeholder for actual doc update check
 		{Name: "collect_user_feedback_bash", Path: "scripts/collect_user_feedback.sh", EntryPoint: "bash", Args: []string{}, DependsOn: []string{}},
 		{Name: "collect_user_feedback_powershell", Path: "scripts/collect_user_feedback.ps1", EntryPoint: "pwsh -File", Args: []string{}, DependsOn: []string{}},
 		{Name: "audit_rollback_points", Path: "cmd/audit_rollback_points/audit_rollback_points.go", EntryPoint: "go run", Args: []string{}},
@@ -81,7 +81,7 @@ func executeScript(scriptMap map[string]*Script, scriptName string) {
 	}
 
 	fmt.Printf("\n--- Exécution du script: %s (%s %s) ---\n", script.Name, script.EntryPoint, script.Path)
-	script.Executed = true	// Mark as attempted
+	script.Executed = true // Mark as attempted
 
 	var cmd *exec.Cmd
 	fullArgs := append([]string{script.Path}, script.Args...)
@@ -97,7 +97,7 @@ func executeScript(scriptMap map[string]*Script, scriptName string) {
 		cmd = exec.Command("pwsh", append([]string{"-File"}, fullArgs...)...)
 	case "node":
 		cmd = exec.Command("node", fullArgs...)
-	case "echo":	// For placeholder scripts like docs_update
+	case "echo": // For placeholder scripts like docs_update
 		cmd = exec.Command("echo", fullArgs...)
 	default:
 		script.Success = false

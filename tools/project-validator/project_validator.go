@@ -15,29 +15,29 @@ import (
 
 // ProjectValidator validates Go project setup and dependencies
 type ProjectValidator struct {
-	ProjectRoot	string
-	Verbose		bool
-	Fix		bool
-	CheckSec	bool
+	ProjectRoot string
+	Verbose     bool
+	Fix         bool
+	CheckSec    bool
 }
 
 // ValidationResult represents the result of a validation check
 type ValidationResult struct {
-	Check		string		`json:"check"`
-	Status		string		`json:"status"`
-	Message		string		`json:"message"`
-	Details		[]string	`json:"details,omitempty"`
-	Duration	time.Duration	`json:"duration"`
+	Check    string        `json:"check"`
+	Status   string        `json:"status"`
+	Message  string        `json:"message"`
+	Details  []string      `json:"details,omitempty"`
+	Duration time.Duration `json:"duration"`
 }
 
 // ValidationReport contains all validation results
 type ValidationReport struct {
-	ProjectPath	string			`json:"project_path"`
-	Timestamp	time.Time		`json:"timestamp"`
-	TotalChecks	int			`json:"total_checks"`
-	PassedChecks	int			`json:"passed_checks"`
-	FailedChecks	int			`json:"failed_checks"`
-	Results		[]ValidationResult	`json:"results"`
+	ProjectPath  string             `json:"project_path"`
+	Timestamp    time.Time          `json:"timestamp"`
+	TotalChecks  int                `json:"total_checks"`
+	PassedChecks int                `json:"passed_checks"`
+	FailedChecks int                `json:"failed_checks"`
+	Results      []ValidationResult `json:"results"`
 }
 
 func main() {
@@ -92,15 +92,15 @@ func main() {
 
 func runValidation(validator *ProjectValidator) (*ValidationReport, error) {
 	report := &ValidationReport{
-		ProjectPath:	validator.ProjectRoot,
-		Timestamp:	time.Now(),
-		Results:	[]ValidationResult{},
+		ProjectPath: validator.ProjectRoot,
+		Timestamp:   time.Now(),
+		Results:     []ValidationResult{},
 	}
 
 	// Define validation checks
 	checks := []struct {
-		name	string
-		fn	func(*ProjectValidator) ValidationResult
+		name string
+		fn   func(*ProjectValidator) ValidationResult
 	}{
 		{"Go Installation", checkGoInstallation},
 		{"Go Modules", checkGoModules},
@@ -114,8 +114,8 @@ func runValidation(validator *ProjectValidator) (*ValidationReport, error) {
 
 	if validator.CheckSec {
 		checks = append(checks, struct {
-			name	string
-			fn	func(*ProjectValidator) ValidationResult
+			name string
+			fn   func(*ProjectValidator) ValidationResult
 		}{"Security", checkSecurity})
 	}
 
@@ -158,9 +158,9 @@ func runValidation(validator *ProjectValidator) (*ValidationReport, error) {
 func checkGoInstallation(validator *ProjectValidator) ValidationResult {
 	start := time.Now()
 	result := ValidationResult{
-		Check:		"Go Installation",
-		Status:		"FAIL",
-		Details:	[]string{},
+		Check:   "Go Installation",
+		Status:  "FAIL",
+		Details: []string{},
 	}
 
 	// Check Go version
@@ -191,9 +191,9 @@ func checkGoInstallation(validator *ProjectValidator) ValidationResult {
 func checkGoModules(validator *ProjectValidator) ValidationResult {
 	start := time.Now()
 	result := ValidationResult{
-		Check:		"Go Modules",
-		Status:		"FAIL",
-		Details:	[]string{},
+		Check:   "Go Modules",
+		Status:  "FAIL",
+		Details: []string{},
 	}
 
 	// Check if go.mod exists
@@ -235,9 +235,9 @@ func checkGoModules(validator *ProjectValidator) ValidationResult {
 func checkDependencies(validator *ProjectValidator) ValidationResult {
 	start := time.Now()
 	result := ValidationResult{
-		Check:		"Dependencies",
-		Status:		"PASS",
-		Details:	[]string{},
+		Check:   "Dependencies",
+		Status:  "PASS",
+		Details: []string{},
 	}
 
 	// Check for unused dependencies
@@ -265,10 +265,10 @@ func checkDependencies(validator *ProjectValidator) ValidationResult {
 func checkProjectStructure(validator *ProjectValidator) ValidationResult {
 	start := time.Now()
 	result := ValidationResult{
-		Check:		"Project Structure",
-		Status:		"PASS",
-		Details:	[]string{},
-		Message:	"Project structure is valid",
+		Check:   "Project Structure",
+		Status:  "PASS",
+		Details: []string{},
+		Message: "Project structure is valid",
 	}
 
 	// Check for required directories
@@ -319,9 +319,9 @@ func checkProjectStructure(validator *ProjectValidator) ValidationResult {
 func checkCodeQuality(validator *ProjectValidator) ValidationResult {
 	start := time.Now()
 	result := ValidationResult{
-		Check:		"Code Quality",
-		Status:		"PASS",
-		Details:	[]string{},
+		Check:   "Code Quality",
+		Status:  "PASS",
+		Details: []string{},
 	}
 
 	// Run go fmt
@@ -351,9 +351,9 @@ func checkCodeQuality(validator *ProjectValidator) ValidationResult {
 func checkTests(validator *ProjectValidator) ValidationResult {
 	start := time.Now()
 	result := ValidationResult{
-		Check:		"Tests",
-		Status:		"PASS",
-		Details:	[]string{},
+		Check:   "Tests",
+		Status:  "PASS",
+		Details: []string{},
 	}
 
 	// Find test files
@@ -387,9 +387,9 @@ func checkTests(validator *ProjectValidator) ValidationResult {
 func checkDocumentation(validator *ProjectValidator) ValidationResult {
 	start := time.Now()
 	result := ValidationResult{
-		Check:		"Documentation",
-		Status:		"PASS",
-		Details:	[]string{},
+		Check:   "Documentation",
+		Status:  "PASS",
+		Details: []string{},
 	}
 
 	requiredDocs := []string{"README.md", "LICENSE"}
@@ -416,9 +416,9 @@ func checkDocumentation(validator *ProjectValidator) ValidationResult {
 func checkGitSetup(validator *ProjectValidator) ValidationResult {
 	start := time.Now()
 	result := ValidationResult{
-		Check:		"Git Setup",
-		Status:		"PASS",
-		Details:	[]string{},
+		Check:   "Git Setup",
+		Status:  "PASS",
+		Details: []string{},
 	}
 
 	if !dirExists(".git") {
@@ -491,10 +491,10 @@ bin/
 func checkSecurity(validator *ProjectValidator) ValidationResult {
 	start := time.Now()
 	result := ValidationResult{
-		Check:		"Security",
-		Status:		"PASS",
-		Details:	[]string{},
-		Message:	"No security tools available",
+		Check:   "Security",
+		Status:  "PASS",
+		Details: []string{},
+		Message: "No security tools available",
 	}
 
 	// Check if gosec is available

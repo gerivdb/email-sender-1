@@ -94,9 +94,9 @@ func TestDependencyConnectorIntegration(t *testing.T) {
 	// Test de synchronisation d'une dépendance
 	ctx := context.Background()
 	testDep := &DependencyInput{
-		Name:		"github.com/stretchr/testify",
-		Version:	"v1.8.0",
-		Repository:	"https://github.com/stretchr/testify",
+		Name:       "github.com/stretchr/testify",
+		Version:    "v1.8.0",
+		Repository: "https://github.com/stretchr/testify",
 		Tags: map[string]string{
 			"type": "testing",
 		},
@@ -164,8 +164,8 @@ func TestStorageManagerVectorization(t *testing.T) {
 	t.Run("Configuration Detection", func(t *testing.T) {
 		// Test de détection de type de configuration
 		testCases := []struct {
-			filename	string
-			expectedType	string
+			filename     string
+			expectedType string
 		}{
 			{"config.json", "json"},
 			{"settings.yaml", "yaml"},
@@ -220,17 +220,17 @@ func TestSecurityManagerVectorization(t *testing.T) {
 
 		// Événement de sécurité test
 		testEvent := SecurityEvent{
-			ID:		"event_001",
-			Type:		"authentication_failure",
-			Source:		"user_login",
-			Target:		"admin_panel",
-			Description:	"Failed login attempt from unknown IP",
-			Severity:	"medium",
-			Timestamp:	time.Now(),
+			ID:          "event_001",
+			Type:        "authentication_failure",
+			Source:      "user_login",
+			Target:      "admin_panel",
+			Description: "Failed login attempt from unknown IP",
+			Severity:    "medium",
+			Timestamp:   time.Now(),
 			Metadata: map[string]interface{}{
-				"ip_address":	"192.168.1.100",
-				"username":	"admin",
-				"attempts":	3,
+				"ip_address": "192.168.1.100",
+				"username":   "admin",
+				"attempts":   3,
 			},
 		}
 
@@ -246,18 +246,18 @@ func TestSecurityManagerVectorization(t *testing.T) {
 		// Test de validation de la classification de vulnérabilités
 
 		testVuln := Vulnerability{
-			ID:		"vuln_001",
-			CVE:		"CVE-2023-1234",
-			Title:		"SQL Injection Vulnerability",
-			Description:	"SQL injection vulnerability in user input validation",
-			Severity:	"high",
-			CVSS:		8.5,
-			Category:	"injection",
-			Affected:	[]string{"web_application", "database"},
-			References:	[]string{"https://nvd.nist.gov/vuln/detail/CVE-2023-1234"},
-			Tags:		[]string{"sql", "injection", "database"},
-			CreatedAt:	time.Now(),
-			UpdatedAt:	time.Now(),
+			ID:          "vuln_001",
+			CVE:         "CVE-2023-1234",
+			Title:       "SQL Injection Vulnerability",
+			Description: "SQL injection vulnerability in user input validation",
+			Severity:    "high",
+			CVSS:        8.5,
+			Category:    "injection",
+			Affected:    []string{"web_application", "database"},
+			References:  []string{"https://nvd.nist.gov/vuln/detail/CVE-2023-1234"},
+			Tags:        []string{"sql", "injection", "database"},
+			CreatedAt:   time.Now(),
+			UpdatedAt:   time.Now(),
 		}
 
 		// Vérifier la structure de la vulnérabilité
@@ -276,17 +276,17 @@ func TestManagerIntegration(t *testing.T) {
 		// Validation que la Phase 4 a été correctement implémentée
 
 		implementedFeatures := map[string]bool{
-			"DependencyManager_VectorizationSupport":	true,
-			"PlanningEcosystem_DependencyConnector":	true,
-			"StorageManager_VectorizationCapabilities":	true,
-			"SecurityManager_VectorizationCapabilities":	true,
-			"ConflictDetection_AutomaticDependencies":	true,
-			"PolicyVectorization_SecurityPolicies":		true,
-			"AnomalyDetection_SecurityEvents":		true,
-			"VulnerabilityClassification_Automatic":	true,
-			"ConfigurationIndexing_Automatic":		true,
-			"SchemaVectorization_Database":			true,
-			"SemanticSearch_Configurations":		true,
+			"DependencyManager_VectorizationSupport":    true,
+			"PlanningEcosystem_DependencyConnector":     true,
+			"StorageManager_VectorizationCapabilities":  true,
+			"SecurityManager_VectorizationCapabilities": true,
+			"ConflictDetection_AutomaticDependencies":   true,
+			"PolicyVectorization_SecurityPolicies":      true,
+			"AnomalyDetection_SecurityEvents":           true,
+			"VulnerabilityClassification_Automatic":     true,
+			"ConfigurationIndexing_Automatic":           true,
+			"SchemaVectorization_Database":              true,
+			"SemanticSearch_Configurations":             true,
 		}
 
 		for feature, implemented := range implementedFeatures {
@@ -296,10 +296,10 @@ func TestManagerIntegration(t *testing.T) {
 
 		// Vérifier la progression selon le plan
 		phaseProgression := map[string]int{
-			"Phase_4_1_DependencyManager":	100,
-			"Phase_4_2_StorageManager":	100,
-			"Phase_4_2_SecurityManager":	100,
-			"Phase_4_Overall":		75,	// En attendant la Phase 4.3
+			"Phase_4_1_DependencyManager": 100,
+			"Phase_4_2_StorageManager":    100,
+			"Phase_4_2_SecurityManager":   100,
+			"Phase_4_Overall":             75, // En attendant la Phase 4.3
 		}
 
 		for phase, progression := range phaseProgression {
@@ -313,13 +313,13 @@ func TestManagerIntegration(t *testing.T) {
 		// Vérifier que l'architecture respecte les principes SOLID et DRY
 
 		architecturalPrinciples := map[string]bool{
-			"SRP_SingleResponsibility":	true,	// Chaque manager a une responsabilité claire
-			"OCP_OpenClosed":		true,	// Extension par interfaces
-			"LSP_LiskovSubstitution":	true,	// Interfaces respectées
-			"ISP_InterfaceSegregation":	true,	// Interfaces spécialisées
-			"DIP_DependencyInversion":	true,	// Dépendance sur abstractions
-			"DRY_DontRepeatYourself":	true,	// Pas de duplication avec integrated-manager
-			"KISS_KeepItSimpleStupid":	true,	// Architecture modulaire
+			"SRP_SingleResponsibility": true, // Chaque manager a une responsabilité claire
+			"OCP_OpenClosed":           true, // Extension par interfaces
+			"LSP_LiskovSubstitution":   true, // Interfaces respectées
+			"ISP_InterfaceSegregation": true, // Interfaces spécialisées
+			"DIP_DependencyInversion":  true, // Dépendance sur abstractions
+			"DRY_DontRepeatYourself":   true, // Pas de duplication avec integrated-manager
+			"KISS_KeepItSimpleStupid":  true, // Architecture modulaire
 		}
 
 		for principle, compliant := range architecturalPrinciples {
@@ -354,9 +354,9 @@ func BenchmarkVectorization(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			// Simulation de vectorisation d'une configuration
 			config := map[string]interface{}{
-				"database_host":	"localhost",
-				"database_port":	5432,
-				"config_id":		i,
+				"database_host": "localhost",
+				"database_port": 5432,
+				"config_id":     i,
 			}
 			_, err := mockVectorizer.GenerateConfigEmbedding(ctx, config)
 			if err != nil {
@@ -371,34 +371,34 @@ func BenchmarkVectorization(b *testing.B) {
 // NewDependencyConnector fonction utilitaire pour créer un connecteur de test
 func NewDependencyConnector(logger interface{}, vectorEngine interface{}) *MockDependencyConnector {
 	return &MockDependencyConnector{
-		metadata:	make(map[string]*MockDependencyMetadata),
-		enabled:	true,
+		metadata: make(map[string]*MockDependencyMetadata),
+		enabled:  true,
 	}
 }
 
 // MockDependencyConnector mock du connecteur de dépendances
 type MockDependencyConnector struct {
-	metadata	map[string]*MockDependencyMetadata
-	enabled		bool
+	metadata map[string]*MockDependencyMetadata
+	enabled  bool
 }
 
 type MockDependencyMetadata struct {
-	Name	string
-	Version	string
-	Plan	string
+	Name    string
+	Version string
+	Plan    string
 }
 
 type DependencyInput struct {
-	Name		string
-	Version		string
-	Repository	string
-	Tags		map[string]string
+	Name       string
+	Version    string
+	Repository string
+	Tags       map[string]string
 }
 
 func (m *MockDependencyConnector) SyncDependencyFromManager(ctx context.Context, dep *DependencyInput) error {
 	m.metadata[dep.Name] = &MockDependencyMetadata{
-		Name:		dep.Name,
-		Version:	dep.Version,
+		Name:    dep.Name,
+		Version: dep.Version,
 	}
 	return nil
 }
@@ -434,27 +434,27 @@ func (m *MockDependencyConnector) Close() error {
 
 // Structures pour les tests de sécurité
 type SecurityEvent struct {
-	ID		string
-	Type		string
-	Source		string
-	Target		string
-	Description	string
-	Severity	string
-	Timestamp	time.Time
-	Metadata	map[string]interface{}
+	ID          string
+	Type        string
+	Source      string
+	Target      string
+	Description string
+	Severity    string
+	Timestamp   time.Time
+	Metadata    map[string]interface{}
 }
 
 type Vulnerability struct {
-	ID		string
-	CVE		string
-	Title		string
-	Description	string
-	Severity	string
-	CVSS		float64
-	Category	string
-	Affected	[]string
-	References	[]string
-	Tags		[]string
-	CreatedAt	time.Time
-	UpdatedAt	time.Time
+	ID          string
+	CVE         string
+	Title       string
+	Description string
+	Severity    string
+	CVSS        float64
+	Category    string
+	Affected    []string
+	References  []string
+	Tags        []string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }

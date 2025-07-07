@@ -22,13 +22,13 @@ type ReportGenerator struct {
 
 // ReportConfig contains configuration for report generation
 type ReportConfig struct {
-	OutputDir           string        `json:"output_dir"`
-	ReportFormats       []string      `json:"report_formats"` // html, json, pdf
-	Schedule            string        `json:"schedule"`       // daily, weekly, monthly
-	EmailRecipients     []string      `json:"email_recipients"`
-	RetentionDays       int           `json:"retention_days"`
-	IncludeCharts       bool          `json:"include_charts"`
-	AutomaticGeneration bool          `json:"automatic_generation"`
+	OutputDir           string   `json:"output_dir"`
+	ReportFormats       []string `json:"report_formats"` // html, json, pdf
+	Schedule            string   `json:"schedule"`       // daily, weekly, monthly
+	EmailRecipients     []string `json:"email_recipients"`
+	RetentionDays       int      `json:"retention_days"`
+	IncludeCharts       bool     `json:"include_charts"`
+	AutomaticGeneration bool     `json:"automatic_generation"`
 }
 
 // Report represents a comprehensive system report
@@ -56,32 +56,32 @@ type ReportPeriod struct {
 
 // ReportSummary contains executive summary information
 type ReportSummary struct {
-	SystemHealth         string  `json:"system_health"`
-	TotalSyncs          int     `json:"total_syncs"`
-	SuccessRate         float64 `json:"success_rate"`
-	AverageResponseTime float64 `json:"average_response_time"`
-	TotalAlerts         int     `json:"total_alerts"`
-	CriticalIssues      int     `json:"critical_issues"`
-	SystemUptime        float64 `json:"system_uptime"`
+	SystemHealth        string                 `json:"system_health"`
+	TotalSyncs          int                    `json:"total_syncs"`
+	SuccessRate         float64                `json:"success_rate"`
+	AverageResponseTime float64                `json:"average_response_time"`
+	TotalAlerts         int                    `json:"total_alerts"`
+	CriticalIssues      int                    `json:"critical_issues"`
+	SystemUptime        float64                `json:"system_uptime"`
 	KeyMetrics          map[string]interface{} `json:"key_metrics"`
 }
 
 // PerformanceSection contains detailed performance analysis
 type PerformanceSection struct {
-	Report              *PerformanceReport `json:"report"`
-	Charts              []ChartData        `json:"charts"`
-	PerformanceScore    float64            `json:"performance_score"`
+	Report               *PerformanceReport `json:"report"`
+	Charts               []ChartData        `json:"charts"`
+	PerformanceScore     float64            `json:"performance_score"`
 	ComparisonToPrevious map[string]float64 `json:"comparison_to_previous"`
 }
 
 // AlertsSection contains alert analysis and statistics
 type AlertsSection struct {
-	TotalAlerts        int               `json:"total_alerts"`
-	AlertsBySeverity   map[string]int    `json:"alerts_by_severity"`
-	AlertsByType       map[string]int    `json:"alerts_by_type"`
-	MostFrequentAlerts []AlertFrequency  `json:"most_frequent_alerts"`
+	TotalAlerts        int                `json:"total_alerts"`
+	AlertsBySeverity   map[string]int     `json:"alerts_by_severity"`
+	AlertsByType       map[string]int     `json:"alerts_by_type"`
+	MostFrequentAlerts []AlertFrequency   `json:"most_frequent_alerts"`
 	ResolutionTimes    map[string]float64 `json:"resolution_times"`
-	RecentAlerts       []Alert           `json:"recent_alerts"`
+	RecentAlerts       []Alert            `json:"recent_alerts"`
 }
 
 // TrendsSection contains trend analysis and predictions
@@ -102,18 +102,18 @@ type BusinessSection struct {
 
 // ChartData represents data for generating charts in reports
 type ChartData struct {
-	Type        string                   `json:"type"` // line, bar, pie, area
-	Title       string                   `json:"title"`
-	XAxis       string                   `json:"x_axis"`
-	YAxis       string                   `json:"y_axis"`
-	Data        []map[string]interface{} `json:"data"`
-	Config      map[string]interface{}   `json:"config"`
+	Type   string                   `json:"type"` // line, bar, pie, area
+	Title  string                   `json:"title"`
+	XAxis  string                   `json:"x_axis"`
+	YAxis  string                   `json:"y_axis"`
+	Data   []map[string]interface{} `json:"data"`
+	Config map[string]interface{}   `json:"config"`
 }
 
 // AlertFrequency represents frequency of alert types
 type AlertFrequency struct {
-	AlertType string `json:"alert_type"`
-	Count     int    `json:"count"`
+	AlertType string    `json:"alert_type"`
+	Count     int       `json:"count"`
 	LastSeen  time.Time `json:"last_seen"`
 }
 
@@ -127,12 +127,12 @@ type SeasonalPattern struct {
 
 // UserSatisfaction contains user satisfaction metrics
 type UserSatisfaction struct {
-	OverallScore    float64            `json:"overall_score"`
-	ResponseTime    float64            `json:"response_time_satisfaction"`
-	Reliability     float64            `json:"reliability_satisfaction"`
-	Features        float64            `json:"features_satisfaction"`
-	Feedback        []string           `json:"recent_feedback"`
-	SurveyResults   map[string]float64 `json:"survey_results"`
+	OverallScore  float64            `json:"overall_score"`
+	ResponseTime  float64            `json:"response_time_satisfaction"`
+	Reliability   float64            `json:"reliability_satisfaction"`
+	Features      float64            `json:"features_satisfaction"`
+	Feedback      []string           `json:"recent_feedback"`
+	SurveyResults map[string]float64 `json:"survey_results"`
 }
 
 // NewReportGenerator creates a new report generator
@@ -154,7 +154,7 @@ func NewReportGenerator(
 
 // GenerateReport generates a comprehensive system report
 func (rg *ReportGenerator) GenerateReport(reportType string, period ReportPeriod) (*Report, error) {
-	rg.logger.Printf("Generating %s report for period %s to %s", 
+	rg.logger.Printf("Generating %s report for period %s to %s",
 		reportType, period.StartTime.Format("2006-01-02"), period.EndTime.Format("2006-01-02"))
 
 	report := &Report{
@@ -281,7 +281,7 @@ func (rg *ReportGenerator) StartScheduledReporting() {
 func (rg *ReportGenerator) generateDailyReport() {
 	end := time.Now()
 	start := end.AddDate(0, 0, -1)
-	
+
 	period := ReportPeriod{
 		StartTime: start,
 		EndTime:   end,
@@ -306,7 +306,7 @@ func (rg *ReportGenerator) generateDailyReport() {
 func (rg *ReportGenerator) generateWeeklyReport() {
 	end := time.Now()
 	start := end.AddDate(0, 0, -7)
-	
+
 	period := ReportPeriod{
 		StartTime: start,
 		EndTime:   end,
@@ -331,7 +331,7 @@ func (rg *ReportGenerator) generateWeeklyReport() {
 func (rg *ReportGenerator) generateMonthlyReport() {
 	end := time.Now()
 	start := end.AddDate(0, -1, 0)
-	
+
 	period := ReportPeriod{
 		StartTime: start,
 		EndTime:   end,
@@ -414,9 +414,9 @@ func (rg *ReportGenerator) generatePerformanceSection(period ReportPeriod) (*Per
 		Charts:           charts,
 		PerformanceScore: 85.5, // Mock calculated score
 		ComparisonToPrevious: map[string]float64{
-			"sync_duration": -5.2,   // 5.2% improvement
-			"throughput":    +8.1,   // 8.1% improvement
-			"error_rate":    -12.3,  // 12.3% improvement
+			"sync_duration": -5.2,  // 5.2% improvement
+			"throughput":    +8.1,  // 8.1% improvement
+			"error_rate":    -12.3, // 12.3% improvement
 		},
 	}, nil
 }
@@ -427,7 +427,7 @@ func (rg *ReportGenerator) generateAlertsSection(period ReportPeriod) (*AlertsSe
 	// Count alerts by severity and type
 	bySeverity := make(map[string]int)
 	byType := make(map[string]int)
-	
+
 	for _, alert := range alerts {
 		bySeverity[alert.Severity]++
 		byType[alert.Type]++
@@ -463,13 +463,13 @@ func (rg *ReportGenerator) generateTrendsSection(period ReportPeriod) (*TrendsSe
 	return &TrendsSection{
 		PerformanceTrends: perfReport.TrendAnalysis,
 		UsageTrends: map[string]float64{
-			"daily_syncs":      +12.5, // 12.5% increase
-			"user_activity":    +8.2,  // 8.2% increase
-			"api_calls":        +15.3, // 15.3% increase
+			"daily_syncs":   +12.5, // 12.5% increase
+			"user_activity": +8.2,  // 8.2% increase
+			"api_calls":     +15.3, // 15.3% increase
 		},
 		Predictions: map[string]float64{
-			"next_week_load":   110.2, // Predicted load percentage
-			"capacity_needed":  85.0,  // Predicted capacity percentage
+			"next_week_load":  110.2, // Predicted load percentage
+			"capacity_needed": 85.0,  // Predicted capacity percentage
 		},
 		SeasonalPatterns: []SeasonalPattern{
 			{
@@ -501,26 +501,26 @@ func (rg *ReportGenerator) generateBusinessSection(period ReportPeriod) (*Busine
 	return &BusinessSection{
 		Metrics: businessMetrics,
 		ROIAnalysis: map[string]float64{
-			"time_saved_hours":     152.3,
-			"error_reduction_pct":  23.8,
-			"efficiency_gain_pct":  18.5,
+			"time_saved_hours":    152.3,
+			"error_reduction_pct": 23.8,
+			"efficiency_gain_pct": 18.5,
 		},
 		EfficiencyMetrics: map[string]float64{
-			"automation_rate":      85.2,
-			"manual_intervention":  14.8,
-			"processing_speed":     125.6, // tasks per hour
+			"automation_rate":     85.2,
+			"manual_intervention": 14.8,
+			"processing_speed":    125.6, // tasks per hour
 		},
 		UserSatisfaction: &UserSatisfaction{
-			OverallScore:            4.6,
-			ResponseTime:            4.3,
-			Reliability:             4.8,
-			Features:                4.5,
-			Feedback:                []string{"Great performance", "Easy to use", "Reliable synchronization"},
+			OverallScore: 4.6,
+			ResponseTime: 4.3,
+			Reliability:  4.8,
+			Features:     4.5,
+			Feedback:     []string{"Great performance", "Easy to use", "Reliable synchronization"},
 			SurveyResults: map[string]float64{
-				"ease_of_use":     4.4,
-				"performance":     4.7,
-				"reliability":     4.8,
-				"documentation":   4.2,
+				"ease_of_use":   4.4,
+				"performance":   4.7,
+				"reliability":   4.8,
+				"documentation": 4.2,
 			},
 		},
 	}, nil
@@ -558,13 +558,13 @@ func (rg *ReportGenerator) generateRecommendations(report *Report) []string {
 
 func (rg *ReportGenerator) collectSystemInfo() map[string]interface{} {
 	return map[string]interface{}{
-		"version":     "1.0.0",
-		"build_date":  "2024-01-15",
-		"go_version":  "1.21",
-		"platform":    "linux/amd64",
+		"version":    "1.0.0",
+		"build_date": "2024-01-15",
+		"go_version": "1.21",
+		"platform":   "linux/amd64",
 		"components": []string{
 			"sync-engine",
-			"drift-detector", 
+			"drift-detector",
 			"alert-manager",
 			"performance-metrics",
 			"realtime-dashboard",
@@ -681,7 +681,7 @@ func (rg *ReportGenerator) savePDFReport(report *Report) error {
 	filename := fmt.Sprintf("%s_%s.pdf.txt", report.ID, report.Period.Type)
 	filepath := filepath.Join(rg.config.OutputDir, filename)
 
-	content := fmt.Sprintf("PDF Report Placeholder\nTitle: %s\nGenerated: %s\n", 
+	content := fmt.Sprintf("PDF Report Placeholder\nTitle: %s\nGenerated: %s\n",
 		report.Title, report.GeneratedAt.Format("2006-01-02 15:04:05"))
 
 	return os.WriteFile(filepath, []byte(content), 0644)
@@ -694,7 +694,7 @@ func (rg *ReportGenerator) CleanupOldReports() error {
 	}
 
 	cutoff := time.Now().AddDate(0, 0, -rg.config.RetentionDays)
-	
+
 	return filepath.Walk(rg.config.OutputDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err

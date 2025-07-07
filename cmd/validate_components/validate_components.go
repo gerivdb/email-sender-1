@@ -14,13 +14,13 @@ func main() {
 	// Test 1: Performance Metrics
 	fmt.Println("\n📊 Test Performance Metrics...")
 	config := &tools.MetricsConfig{
-		DatabaseURL:	"",
-		RetentionDays:	7,
-		SampleInterval:	time.Second * 30,
-		MaxSamples:	1000,
+		DatabaseURL:    "",
+		RetentionDays:  7,
+		SampleInterval: time.Second * 30,
+		MaxSamples:     1000,
 		AlertThresholds: map[string]float64{
-			"response_time_ms":	500.0,
-			"error_rate_percent":	5.0,
+			"response_time_ms":   500.0,
+			"error_rate_percent": 5.0,
 		},
 	}
 
@@ -43,12 +43,12 @@ func main() {
 	// Test 2: Alert Manager
 	fmt.Println("\n🚨 Test Alert Manager...")
 	alertConfig := &tools.AlertConfig{
-		EmailEnabled:		false,
-		SlackEnabled:		false,
-		MaxHistorySize:		100,
-		RetryAttempts:		3,
-		RetryDelay:		5,
-		RateLimitPerHour:	50,
+		EmailEnabled:     false,
+		SlackEnabled:     false,
+		MaxHistorySize:   100,
+		RetryAttempts:    3,
+		RetryDelay:       5,
+		RateLimitPerHour: 50,
 	}
 	alertManager := tools.NewAlertManager(alertConfig, logger)
 	if alertManager == nil {
@@ -58,12 +58,12 @@ func main() {
 
 	// Test création alerte
 	alert := tools.Alert{
-		ID:		"test_001",
-		Type:		"test",
-		Severity:	"low",
-		Message:	"Test d'alerte de validation",
-		Source:		"validation_test",
-		Timestamp:	time.Now(),
+		ID:        "test_001",
+		Type:      "test",
+		Severity:  "low",
+		Message:   "Test d'alerte de validation",
+		Source:    "validation_test",
+		Timestamp: time.Now(),
 	}
 
 	err = alertManager.SendAlert(alert)

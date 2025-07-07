@@ -3,16 +3,12 @@ package integratedmanager
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
-	"strconv"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 // ConformityAPIServer provides REST API endpoints for conformity management
@@ -210,11 +206,11 @@ func (s *ConformityAPIServer) verifyManagerConformity(c *gin.Context) {
 	}
 
 	response := gin.H{
-		"manager":    managerName,
-		"report":     report,
-		"status":     status,
-		"timestamp":  time.Now(),
-		"verified":   true,
+		"manager":   managerName,
+		"report":    report,
+		"status":    status,
+		"timestamp": time.Now(),
+		"verified":  true,
 	}
 
 	c.JSON(http.StatusOK, response)
@@ -310,9 +306,9 @@ func (s *ConformityAPIServer) verifyEcosystemConformity(c *gin.Context) {
 // generateConformityReport generates a conformity report in specified format
 func (s *ConformityAPIServer) generateConformityReport(c *gin.Context) {
 	var request struct {
-		Format    string   `json:"format" binding:"required"`
-		Managers  []string `json:"managers,omitempty"`
-		IncludeDetails bool `json:"include_details,omitempty"`
+		Format         string   `json:"format" binding:"required"`
+		Managers       []string `json:"managers,omitempty"`
+		IncludeDetails bool     `json:"include_details,omitempty"`
 	}
 
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -336,8 +332,8 @@ func (s *ConformityAPIServer) generateConformityReport(c *gin.Context) {
 
 	if !isValidFormat {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error":   "Bad Request",
-			"message": "Invalid format",
+			"error":         "Bad Request",
+			"message":       "Invalid format",
 			"valid_formats": validFormats,
 		})
 		return
@@ -356,7 +352,7 @@ func (s *ConformityAPIServer) generateConformityReport(c *gin.Context) {
 	// Set appropriate content type based on format
 	contentType := s.getContentType(request.Format)
 	c.Header("Content-Type", contentType)
-	
+
 	// Set filename for download
 	filename := fmt.Sprintf("conformity-report-%s.%s", time.Now().Format("2006-01-02"), request.Format)
 	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", filename))
@@ -508,11 +504,11 @@ func (s *ConformityAPIServer) updateConformityConfig(c *gin.Context) {
 // healthCheck provides API health status
 func (s *ConformityAPIServer) healthCheck(c *gin.Context) {
 	health := gin.H{
-		"status":     "healthy",
-		"timestamp":  time.Now(),
-		"version":    "1.0.0",
-		"uptime":     time.Since(time.Now()).String(), // This would be actual uptime in production
-		"managers":   len(s.manager.managerStatuses),
+		"status":    "healthy",
+		"timestamp": time.Now(),
+		"version":   "1.0.0",
+		"uptime":    time.Since(time.Now()).String(), // This would be actual uptime in production
+		"managers":  len(s.manager.managerStatuses),
 	}
 
 	// Check if conformity manager is available
@@ -540,7 +536,7 @@ func (s *ConformityAPIServer) getMetrics(c *gin.Context) {
 		totalScore += status.Score
 		totalManagers++
 		levelCounts[string(status.Level)]++
-		
+
 		for _, issue := range status.Issues {
 			issuesCounts[issue.Severity]++
 		}
@@ -552,11 +548,11 @@ func (s *ConformityAPIServer) getMetrics(c *gin.Context) {
 	}
 
 	metrics := gin.H{
-		"timestamp":      time.Now(),
-		"total_managers": totalManagers,
-		"average_score":  averageScore,
-		"level_distribution": levelCounts,
-		"issues_by_severity": issuesCounts,
+		"timestamp":            time.Now(),
+		"total_managers":       totalManagers,
+		"average_score":        averageScore,
+		"level_distribution":   levelCounts,
+		"issues_by_severity":   issuesCounts,
 		"last_ecosystem_check": s.manager.lastEcosystemCheck,
 	}
 
@@ -626,11 +622,11 @@ func (s *ConformityAPIServer) calculateEcosystemHealth(report *EcosystemConformi
 	}
 
 	return gin.H{
-		"status":      health,
-		"score":       report.OverallScore,
-		"level":       report.OverallLevel,
-		"managers":    report.ManagerCount,
-		"timestamp":   report.Timestamp,
+		"status":    health,
+		"score":     report.OverallScore,
+		"level":     report.OverallLevel,
+		"managers":  report.ManagerCount,
+		"timestamp": report.Timestamp,
 	}
 }
 
@@ -742,7 +738,7 @@ func (s *ConformityAPIServer) getColorHex(color string) string {
 		"orange":      "#fe7d37",
 		"red":         "#e05d44",
 	}
-	
+
 	if hex, exists := colors[color]; exists {
 		return hex
 	}
@@ -782,7 +778,7 @@ func (s *ConformityAPIServer) Stop() error {
 	if s.server != nil {
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
-		
+
 		log.Println("Stopping Conformity API Server...")
 		return s.server.Shutdown(ctx)
 	}

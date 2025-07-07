@@ -1,10 +1,10 @@
 package tools
 
 import (
-	"math"
-	"time"
 	"encoding/json"
 	"fmt"
+	"math"
+	"time"
 )
 
 // Helper methods for PerformanceMetrics calculations
@@ -14,12 +14,12 @@ func (pm *PerformanceMetrics) calculateDurationAverage(durations []time.Duration
 	if len(durations) == 0 {
 		return 0
 	}
-	
+
 	var total time.Duration
 	for _, d := range durations {
 		total += d
 	}
-	
+
 	return total / time.Duration(len(durations))
 }
 
@@ -28,12 +28,12 @@ func (pm *PerformanceMetrics) calculateIntAverage(values []int) float64 {
 	if len(values) == 0 {
 		return 0.0
 	}
-	
+
 	var total int
 	for _, v := range values {
 		total += v
 	}
-	
+
 	return float64(total) / float64(len(values))
 }
 
@@ -42,12 +42,12 @@ func (pm *PerformanceMetrics) calculateFloatAverage(values []float64) float64 {
 	if len(values) == 0 {
 		return 0.0
 	}
-	
+
 	var total float64
 	for _, v := range values {
 		total += v
 	}
-	
+
 	return total / float64(len(values))
 }
 
@@ -56,14 +56,14 @@ func (pm *PerformanceMetrics) calculateMaxUint64(values []uint64) uint64 {
 	if len(values) == 0 {
 		return 0
 	}
-	
+
 	max := values[0]
 	for _, v := range values[1:] {
 		if v > max {
 			max = v
 		}
 	}
-	
+
 	return max
 }
 
@@ -72,10 +72,10 @@ func (pm *PerformanceMetrics) calculateTrend(values []float64) float64 {
 	if len(values) < 2 {
 		return 0.0
 	}
-	
+
 	n := float64(len(values))
 	var sumX, sumY, sumXY, sumX2 float64
-	
+
 	for i, y := range values {
 		x := float64(i)
 		sumX += x
@@ -83,14 +83,14 @@ func (pm *PerformanceMetrics) calculateTrend(values []float64) float64 {
 		sumXY += x * y
 		sumX2 += x * x
 	}
-	
+
 	// Calculate slope using least squares
 	slope := (n*sumXY - sumX*sumY) / (n*sumX2 - sumX*sumX)
-	
+
 	if math.IsNaN(slope) || math.IsInf(slope, 0) {
 		return 0.0
 	}
-	
+
 	return slope
 }
 
@@ -110,10 +110,10 @@ func (pm *PerformanceMetrics) predictNextValue(values []float64) float64 {
 	if len(values) < 2 {
 		return 0.0
 	}
-	
+
 	slope := pm.calculateTrend(values)
 	lastValue := values[len(values)-1]
-	
+
 	return lastValue + slope
 }
 
@@ -141,22 +141,22 @@ func (pm *PerformanceMetrics) intToFloat64(values []int) []float64 {
 func (pm *PerformanceMetrics) GetRecentErrors(limit ...int) []string {
 	pm.mutex.RLock()
 	defer pm.mutex.RUnlock()
-	
+
 	maxLimit := len(pm.recentErrors)
 	if len(limit) > 0 && limit[0] > 0 && limit[0] < maxLimit {
 		maxLimit = limit[0]
 	}
-	
+
 	if maxLimit <= 0 {
 		return []string{}
 	}
-	
+
 	// Return copy to avoid data races
 	start := len(pm.recentErrors) - maxLimit
 	if start < 0 {
 		start = 0
 	}
-	
+
 	result := make([]string, maxLimit)
 	copy(result, pm.recentErrors[start:])
 	return result
@@ -166,21 +166,21 @@ func (pm *PerformanceMetrics) GetRecentErrors(limit ...int) []string {
 func (pm *PerformanceMetrics) GetConsistencyScore() float64 {
 	pm.mutex.RLock()
 	defer pm.mutex.RUnlock()
-	
+
 	errorRate := 0.0
 	if len(pm.errorRates) > 0 {
 		errorRate = pm.calculateFloatAverage(pm.errorRates)
 	}
-	
+
 	// Simple implementation - return a score based on error rate
-	return math.Max(0, 100.0 - errorRate*10) // Basic consistency scoring
+	return math.Max(0, 100.0-errorRate*10) // Basic consistency scoring
 }
 
 // GetInconsistencies returns list of inconsistencies detected
 func (pm *PerformanceMetrics) GetInconsistencies() []string {
 	pm.mutex.RLock()
 	defer pm.mutex.RUnlock()
-	
+
 	// Return recent errors as inconsistencies
 	if len(pm.recentErrors) > 5 {
 		return pm.recentErrors[len(pm.recentErrors)-5:]
@@ -192,7 +192,7 @@ func (pm *PerformanceMetrics) GetInconsistencies() []string {
 func (pm *PerformanceMetrics) GetAffectedPlans() []string {
 	pm.mutex.RLock()
 	defer pm.mutex.RUnlock()
-	
+
 	// Mock implementation - return plan IDs based on error count
 	if pm.failedOperations > 0 {
 		return []string{"plan_001", "plan_002", "plan_003"}
@@ -204,7 +204,7 @@ func (pm *PerformanceMetrics) GetAffectedPlans() []string {
 func (pm *PerformanceMetrics) GetLastValidationTime() time.Time {
 	pm.mutex.RLock()
 	defer pm.mutex.RUnlock()
-	
+
 	return pm.lastSyncTime // Use last sync time as validation time
 }
 
@@ -212,11 +212,11 @@ func (pm *PerformanceMetrics) GetLastValidationTime() time.Time {
 func (pm *PerformanceMetrics) GetMemoryUsagePercent() float64 {
 	pm.mutex.RLock()
 	defer pm.mutex.RUnlock()
-	
+
 	if len(pm.memoryUsage) == 0 {
 		return 0.0
 	}
-	
+
 	// Convert to percentage (assume 8GB total memory)
 	latest := pm.memoryUsage[len(pm.memoryUsage)-1]
 	totalBytes := uint64(8 * 1024 * 1024 * 1024) // 8GB
@@ -227,11 +227,11 @@ func (pm *PerformanceMetrics) GetMemoryUsagePercent() float64 {
 func (pm *PerformanceMetrics) GetAvailableMemoryMB() float64 {
 	pm.mutex.RLock()
 	defer pm.mutex.RUnlock()
-	
+
 	if len(pm.memoryUsage) == 0 {
 		return 8192.0 // 8GB default
 	}
-	
+
 	latest := pm.memoryUsage[len(pm.memoryUsage)-1]
 	totalMB := 8192.0 // 8GB
 	usedMB := float64(latest) / (1024 * 1024)
@@ -242,7 +242,7 @@ func (pm *PerformanceMetrics) GetAvailableMemoryMB() float64 {
 func (pm *PerformanceMetrics) GetActiveProcessCount() int {
 	pm.mutex.RLock()
 	defer pm.mutex.RUnlock()
-	
+
 	return pm.activeSyncCount + 5 // Mock: active syncs + base processes
 }
 
@@ -250,11 +250,11 @@ func (pm *PerformanceMetrics) GetActiveProcessCount() int {
 func (pm *PerformanceMetrics) GetDiskUsagePercent() float64 {
 	pm.mutex.RLock()
 	defer pm.mutex.RUnlock()
-	
+
 	// Mock disk usage - return based on operation count
 	baseUsage := 70.0
 	if pm.totalOperations > 1000 {
-		return math.Min(95.0, baseUsage + float64(pm.totalOperations)/100.0)
+		return math.Min(95.0, baseUsage+float64(pm.totalOperations)/100.0)
 	}
 	return baseUsage
 }
@@ -263,7 +263,7 @@ func (pm *PerformanceMetrics) GetDiskUsagePercent() float64 {
 func (pm *PerformanceMetrics) GetAvailableSpaceGB() float64 {
 	pm.mutex.RLock()
 	defer pm.mutex.RUnlock()
-	
+
 	// Mock available space - calculate based on usage
 	usagePercent := pm.GetDiskUsagePercent()
 	totalGB := 1000.0 // 1TB
@@ -314,7 +314,7 @@ func (pm *PerformanceMetrics) initializeTables() error {
 	if pm.database == nil {
 		return nil
 	}
-	
+
 	queries := []string{
 		`CREATE TABLE IF NOT EXISTS performance_metrics (
 			id SERIAL PRIMARY KEY,
@@ -364,18 +364,18 @@ func (pm *PerformanceMetrics) storeMetrics(duration time.Duration, processed int
 	}
 
 	details := map[string]interface{}{
-		"processed": processed,
-		"error_rate": errorRate,
+		"processed":   processed,
+		"error_rate":  errorRate,
 		"duration_ms": duration.Milliseconds(),
 	}
-	
+
 	detailsJson, _ := json.Marshal(details)
 	_, err := pm.database.Exec(`
 		INSERT INTO performance_metrics (metric_type, value, processed_count, error_rate, details)
 		VALUES ($1, $2, $3, $4, $5)`,
 		"sync_operation", float64(duration.Milliseconds()), processed, errorRate, detailsJson,
 	)
-	
+
 	if err != nil {
 		pm.logger.Printf("Failed to store metrics: %v", err)
 	}
@@ -390,7 +390,7 @@ func (pm *PerformanceMetrics) storeResponseTime(duration time.Duration) {
 		VALUES ($1, $2)`,
 		"response_time", float64(duration.Milliseconds()),
 	)
-	
+
 	if err != nil {
 		pm.logger.Printf("Failed to store response time: %v", err)
 	}
@@ -405,7 +405,7 @@ func (pm *PerformanceMetrics) storeMemoryUsage(usage uint64) {
 		VALUES ($1, $2)`,
 		"memory_usage", float64(usage),
 	)
-	
+
 	if err != nil {
 		pm.logger.Printf("Failed to store memory usage: %v", err)
 	}
@@ -456,7 +456,7 @@ func (pm *PerformanceMetrics) calculatePercentile(values []float64, percentile i
 	if index >= len(values) {
 		index = len(values) - 1
 	}
-	
+
 	return values[index]
 }
 

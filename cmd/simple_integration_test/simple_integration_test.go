@@ -14,9 +14,9 @@ func main() {
 
 	// Test results
 	tests := []struct {
-		name	string
-		level	int
-		pass	bool
+		name  string
+		level int
+		pass  bool
 	}{
 		{"Level 1: Micro-Sessions", 1, true},
 		{"Level 2: Event-Driven Branching", 2, true},
@@ -29,8 +29,8 @@ func main() {
 	}
 
 	integrations := []struct {
-		name	string
-		pass	bool
+		name string
+		pass bool
 	}{
 		{"PostgreSQL Storage", true},
 		{"Qdrant Vector Database", true},
@@ -48,7 +48,7 @@ func main() {
 	fmt.Println("==================================")
 	for _, test := range tests {
 		fmt.Printf("🧪 Running %s...\n", test.name)
-		time.Sleep(50 * time.Millisecond)	// Simulate test time
+		time.Sleep(50 * time.Millisecond) // Simulate test time
 
 		if test.pass {
 			fmt.Printf("   ✅ PASS\n")
@@ -64,7 +64,7 @@ func main() {
 	fmt.Println("========================")
 	for _, integration := range integrations {
 		fmt.Printf("🧪 Running Integration: %s...\n", integration.name)
-		time.Sleep(50 * time.Millisecond)	// Simulate test time
+		time.Sleep(50 * time.Millisecond) // Simulate test time
 
 		if integration.pass {
 			fmt.Printf("   ✅ PASS\n")

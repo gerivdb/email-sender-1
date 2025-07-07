@@ -63,17 +63,17 @@ type LayoutConfig struct {
 
 // PanelManager manages multiple panels with layouts
 type PanelManager struct {
-	panels            map[PanelID]*Panel
-	activePanel       PanelID
-	layout            LayoutConfig
-	width             int
-	height            int
-	minPanelSize      Size
-	maxPanels         int
-	panelOrder        []PanelID
-	history           []PanelID // Navigation history
-	shortcuts         map[string]PanelID
-	
+	panels       map[PanelID]*Panel
+	activePanel  PanelID
+	layout       LayoutConfig
+	width        int
+	height       int
+	minPanelSize Size
+	maxPanels    int
+	panelOrder   []PanelID
+	history      []PanelID // Navigation history
+	shortcuts    map[string]PanelID
+
 	// New contextual and mode-aware managers
 	contextualManager *ContextualShortcutManager
 	modeKeyManager    *ModeSpecificKeyManager
@@ -94,11 +94,11 @@ func NewPanelManager(width, height int, layout LayoutConfig) *PanelManager {
 		shortcuts:       make(map[string]PanelID),
 		currentViewMode: ViewModeList, // Default view mode
 	}
-	
+
 	// Initialize contextual and mode managers
 	pm.contextualManager = NewContextualShortcutManager(pm)
 	pm.modeKeyManager = NewModeSpecificKeyManager(pm, pm.contextualManager)
-	
+
 	return pm
 }
 
@@ -413,7 +413,7 @@ func (pm *PanelManager) SetViewMode(mode ViewMode) error {
 	if pm.modeKeyManager == nil {
 		return ErrManagerNotInitialized
 	}
-	
+
 	pm.currentViewMode = mode
 	return pm.modeKeyManager.SetMode(mode)
 }
@@ -428,7 +428,7 @@ func (pm *PanelManager) HandleContextualKey(keypress string) tea.Cmd {
 	if pm.contextualManager == nil {
 		return nil
 	}
-	
+
 	return pm.contextualManager.HandleKey(keypress, pm.activePanel)
 }
 
@@ -437,12 +437,12 @@ func (pm *PanelManager) UpdateShortcutContext() {
 	if pm.contextualManager == nil {
 		return
 	}
-	
+
 	activePanel := pm.GetActivePanel()
 	if activePanel == nil {
 		return
 	}
-	
+
 	context := ShortcutContext{
 		ActivePanel:   pm.activePanel,
 		PanelType:     string(activePanel.ID), // Could be more sophisticated
@@ -451,7 +451,7 @@ func (pm *PanelManager) UpdateShortcutContext() {
 		EditMode:      false,      // Would be determined by panel state
 		FilterActive:  false,      // Would be determined by panel state
 	}
-	
+
 	pm.contextualManager.UpdateContext(context)
 }
 
@@ -460,10 +460,10 @@ func (pm *PanelManager) GetAvailableShortcuts() map[string]string {
 	if pm.contextualManager == nil {
 		return make(map[string]string)
 	}
-	
+
 	shortcuts := pm.contextualManager.GetAvailableShortcuts(pm.activePanel)
 	modeShortcuts := pm.modeKeyManager.GetActiveBindings()
-	
+
 	// Merge both sets of shortcuts
 	result := make(map[string]string)
 	for key, desc := range shortcuts {
@@ -474,6 +474,6 @@ func (pm *PanelManager) GetAvailableShortcuts() map[string]string {
 			result[key] = binding.Help().Desc
 		}
 	}
-	
+
 	return result
 }

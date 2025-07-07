@@ -35,15 +35,15 @@ func (l *Logger) Error(message string, err error) {
 
 // MetricsCollector collecteur de métriques simple
 type MetricsCollector struct {
-	startTime	time.Time
-	requests	int64
+	startTime time.Time
+	requests  int64
 }
 
 // NewMetricsCollector crée un nouveau collecteur
 func NewMetricsCollector() *MetricsCollector {
 	return &MetricsCollector{
-		startTime:	time.Now(),
-		requests:	0,
+		startTime: time.Now(),
+		requests:  0,
 	}
 }
 
@@ -55,8 +55,8 @@ func (m *MetricsCollector) RecordRequest() {
 // GetMetrics retourne les métriques actuelles
 func (m *MetricsCollector) GetMetrics() map[string]interface{} {
 	return map[string]interface{}{
-		"uptime":	time.Since(m.startTime),
-		"requests":	m.requests,
+		"uptime":   time.Since(m.startTime),
+		"requests": m.requests,
 	}
 }
 
@@ -71,9 +71,9 @@ func (cli *DiagnosticCLI) checkAPIServer(ctx context.Context) DiagnosticResult {
 	}
 
 	result := DiagnosticResult{
-		Component:	"api_server",
-		Timestamp:	start,
-		Details:	make(map[string]interface{}),
+		Component: "api_server",
+		Timestamp: start,
+		Details:   make(map[string]interface{}),
 	}
 
 	url := cli.config.API.BaseURL + cli.config.API.HealthPath
@@ -99,10 +99,10 @@ func (cli *DiagnosticCLI) checkSystemResources(ctx context.Context) DiagnosticRe
 	start := time.Now()
 
 	result := DiagnosticResult{
-		Component:	"system_resources",
-		Timestamp:	start,
-		Details:	make(map[string]interface{}),
-		Healthy:	true,
+		Component: "system_resources",
+		Timestamp: start,
+		Details:   make(map[string]interface{}),
+		Healthy:   true,
 	}
 
 	// Mémoire via runtime Go optimisé
@@ -119,7 +119,7 @@ func (cli *DiagnosticCLI) checkSystemResources(ctx context.Context) DiagnosticRe
 	result.Details["cpu_cores"] = runtime.NumCPU()
 
 	// Vérifications de seuils simples
-	if m.Alloc > 100*1024*1024 {	// > 100MB
+	if m.Alloc > 100*1024*1024 { // > 100MB
 		result.Healthy = false
 		result.Details["warning"] = "high memory usage"
 	}
@@ -133,10 +133,10 @@ func (cli *DiagnosticCLI) checkProcessHealth(ctx context.Context) DiagnosticResu
 	start := time.Now()
 
 	result := DiagnosticResult{
-		Component:	"process_health",
-		Timestamp:	start,
-		Details:	make(map[string]interface{}),
-		Healthy:	true,
+		Component: "process_health",
+		Timestamp: start,
+		Details:   make(map[string]interface{}),
+		Healthy:   true,
 	}
 
 	// Vérifications basiques des processus
@@ -158,9 +158,9 @@ func (cli *DiagnosticCLI) checkDockerStatus(ctx context.Context) DiagnosticResul
 	start := time.Now()
 
 	result := DiagnosticResult{
-		Component:	"docker_status",
-		Timestamp:	start,
-		Details:	make(map[string]interface{}),
+		Component: "docker_status",
+		Timestamp: start,
+		Details:   make(map[string]interface{}),
 	}
 
 	// Simulation d'une vérification Docker rapide
@@ -188,24 +188,24 @@ func (cli *DiagnosticCLI) checkDockerStatus(ctx context.Context) DiagnosticResul
 
 // SystemInfo structure pour les informations système
 type SystemInfo struct {
-	Platform	string	`json:"platform"`
-	Arch		string	`json:"arch"`
-	Version		string	`json:"version"`
-	Hostname	string	`json:"hostname"`
-	CPUs		int	`json:"cpus"`
-	GoVersion	string	`json:"go_version"`
+	Platform  string `json:"platform"`
+	Arch      string `json:"arch"`
+	Version   string `json:"version"`
+	Hostname  string `json:"hostname"`
+	CPUs      int    `json:"cpus"`
+	GoVersion string `json:"go_version"`
 }
 
 // GetSystemInfo retourne les informations système
 func GetSystemInfo() *SystemInfo {
 	hostname, _ := getHostname()
 	return &SystemInfo{
-		Platform:	runtime.GOOS,
-		Arch:		runtime.GOARCH,
-		Version:	runtime.Version(),
-		Hostname:	hostname,
-		CPUs:		runtime.NumCPU(),
-		GoVersion:	runtime.Version(),
+		Platform:  runtime.GOOS,
+		Arch:      runtime.GOARCH,
+		Version:   runtime.Version(),
+		Hostname:  hostname,
+		CPUs:      runtime.NumCPU(),
+		GoVersion: runtime.Version(),
 	}
 }
 
@@ -221,24 +221,24 @@ func (cli *DiagnosticCLI) RunErrorResolution(action string, dryRun bool) (interf
 
 	// Créer une réponse structurée similaire au script PowerShell
 	result := map[string]interface{}{
-		"success":	true,
-		"action":	action,
-		"dry_run":	dryRun,
-		"duration":	0,
-		"timestamp":	start,
-		"performance":	"Go CLI replaces PowerShell script",
+		"success":     true,
+		"action":      action,
+		"dry_run":     dryRun,
+		"duration":    0,
+		"timestamp":   start,
+		"performance": "Go CLI replaces PowerShell script",
 		"analysis": map[string]interface{}{
-			"files_analyzed":	6,
-			"main_duplicates":	0,
-			"broken_imports":	0,
-			"local_imports":	0,
-			"total_errors":		0,
+			"files_analyzed":  6,
+			"main_duplicates": 0,
+			"broken_imports":  0,
+			"local_imports":   0,
+			"total_errors":    0,
 		},
-		"resolution_steps":	[]map[string]interface{}{},
+		"resolution_steps": []map[string]interface{}{},
 		"validation": map[string]interface{}{
-			"compilation_success":	true,
-			"errors_remaining":	0,
-			"warnings":		[]string{},
+			"compilation_success": true,
+			"errors_remaining":    0,
+			"warnings":            []string{},
 		},
 	}
 
@@ -256,28 +256,28 @@ func (cli *DiagnosticCLI) RunErrorResolution(action string, dryRun bool) (interf
 		result["message"] = "Complete error resolution executed"
 		result["resolution_steps"] = []map[string]interface{}{
 			{
-				"step":		"resolve_main_duplicates",
-				"success":	true,
-				"duration":	"1.2ms",
-				"files":	0,
+				"step":     "resolve_main_duplicates",
+				"success":  true,
+				"duration": "1.2ms",
+				"files":    0,
 			},
 			{
-				"step":		"resolve_broken_imports",
-				"success":	true,
-				"duration":	"0.8ms",
-				"files":	0,
+				"step":     "resolve_broken_imports",
+				"success":  true,
+				"duration": "0.8ms",
+				"files":    0,
 			},
 			{
-				"step":		"resolve_local_imports",
-				"success":	true,
-				"duration":	"0.5ms",
-				"files":	0,
+				"step":     "resolve_local_imports",
+				"success":  true,
+				"duration": "0.5ms",
+				"files":    0,
 			},
 			{
-				"step":		"post_validation",
-				"success":	true,
-				"duration":	"2.1ms",
-				"compilation":	true,
+				"step":        "post_validation",
+				"success":     true,
+				"duration":    "2.1ms",
+				"compilation": true,
 			},
 		}
 	default:

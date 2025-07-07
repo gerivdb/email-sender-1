@@ -1,9 +1,9 @@
 package graphgen
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
-	"encoding/json"
 )
 
 // GenerateGraphData simule la génération de données de graphe à partir de sources.
@@ -27,7 +27,7 @@ func GenerateGraphData(sourcePaths []string) (map[string]interface{}, error) {
 		"edges": edges,
 		"metadata": map[string]string{
 			"generation_time": "2025-06-30T00:00:00Z", // Placeholder
-			"sources": fmt.Sprintf("%v", sourcePaths),
+			"sources":         fmt.Sprintf("%v", sourcePaths),
 		},
 	}
 

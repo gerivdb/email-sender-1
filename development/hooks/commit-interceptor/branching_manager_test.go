@@ -15,39 +15,39 @@ import (
 
 func TestBranchingManager_ExecuteRouting(t *testing.T) {
 	config := getTestConfig()
-	config.TestMode = true	// Enable test mode to simulate Git operations
+	config.TestMode = true // Enable test mode to simulate Git operations
 	manager := NewBranchingManager(config)
 
 	routingTestCases := []struct {
-		name		string
-		branchDecision	*BranchDecision
-		expectedError	bool
+		name           string
+		branchDecision *BranchDecision
+		expectedError  bool
 	}{
 		{
-			name:	"Create new feature branch",
+			name: "Create new feature branch",
 			branchDecision: &BranchDecision{
-				TargetBranch:		"feature/user-auth-123456",
-				CreateBranch:		true,
-				MergeStrategy:		"auto",
-				ConflictStrategy:	"abort",
-				Metadata:		map[string]string{"type": "feature"},
-				Reason:			"New feature branch for user authentication",
-				Confidence:		0.95,
+				TargetBranch:     "feature/user-auth-123456",
+				CreateBranch:     true,
+				MergeStrategy:    "auto",
+				ConflictStrategy: "abort",
+				Metadata:         map[string]string{"type": "feature"},
+				Reason:           "New feature branch for user authentication",
+				Confidence:       0.95,
 			},
-			expectedError:	false,
+			expectedError: false,
 		},
 		{
-			name:	"Merge to existing develop branch",
+			name: "Merge to existing develop branch",
 			branchDecision: &BranchDecision{
-				TargetBranch:		"develop",
-				CreateBranch:		false,
-				MergeStrategy:		"fast-forward",
-				ConflictStrategy:	"resolve",
-				Metadata:		map[string]string{"type": "merge"},
-				Reason:			"Merge fix to develop",
-				Confidence:		0.90,
+				TargetBranch:     "develop",
+				CreateBranch:     false,
+				MergeStrategy:    "fast-forward",
+				ConflictStrategy: "resolve",
+				Metadata:         map[string]string{"type": "merge"},
+				Reason:           "Merge fix to develop",
+				Confidence:       0.90,
 			},
-			expectedError:	false,
+			expectedError: false,
 		},
 	}
 
@@ -70,13 +70,13 @@ func TestBranchingManager_SimulateGitOperations(t *testing.T) {
 	manager := NewBranchingManager(config)
 
 	decision := &BranchDecision{
-		TargetBranch:		"feature/test-simulation",
-		CreateBranch:		true,
-		MergeStrategy:		"auto",
-		ConflictStrategy:	"abort",
-		Metadata:		map[string]string{"test": "simulation"},
-		Reason:			"Test Git operation simulation",
-		Confidence:		0.95,
+		TargetBranch:     "feature/test-simulation",
+		CreateBranch:     true,
+		MergeStrategy:    "auto",
+		ConflictStrategy: "abort",
+		Metadata:         map[string]string{"test": "simulation"},
+		Reason:           "Test Git operation simulation",
+		Confidence:       0.95,
 	}
 
 	// In test mode, this should simulate without real Git operations
@@ -90,13 +90,13 @@ func BenchmarkBranchingManager_ExecuteRouting(b *testing.B) {
 	manager := NewBranchingManager(config)
 
 	decision := &BranchDecision{
-		TargetBranch:		"benchmark/performance-test",
-		CreateBranch:		true,
-		MergeStrategy:		"auto",
-		ConflictStrategy:	"abort",
-		Metadata:		map[string]string{"benchmark": "true"},
-		Reason:			"Performance benchmark test",
-		Confidence:		0.95,
+		TargetBranch:     "benchmark/performance-test",
+		CreateBranch:     true,
+		MergeStrategy:    "auto",
+		ConflictStrategy: "abort",
+		Metadata:         map[string]string{"benchmark": "true"},
+		Reason:           "Performance benchmark test",
+		Confidence:       0.95,
 	}
 
 	b.ResetTimer()
@@ -120,38 +120,38 @@ func TestBranchingManager_FullWorkflow_Integration(t *testing.T) {
 	manager := NewBranchingManager(config)
 
 	workflows := []struct {
-		name		string
-		analysis	*CommitAnalysis
+		name     string
+		analysis *CommitAnalysis
 	}{
 		{
-			name:	"Feature Development Workflow",
+			name: "Feature Development Workflow",
 			analysis: &CommitAnalysis{
-				ChangeType:	"feature",
-				Impact:		"medium",
-				Confidence:	0.95,
+				ChangeType: "feature",
+				Impact:     "medium",
+				Confidence: 0.95,
 				CommitData: &CommitData{
-					Hash:		"workflow123",
-					Message:	"feat: implement user profile management",
-					Author:		"Developer",
-					Timestamp:	time.Now(),
-					Files:		[]string{"profile.go", "profile_test.go"},
-					Branch:		"main",
+					Hash:      "workflow123",
+					Message:   "feat: implement user profile management",
+					Author:    "Developer",
+					Timestamp: time.Now(),
+					Files:     []string{"profile.go", "profile_test.go"},
+					Branch:    "main",
 				},
 			},
 		},
 		{
-			name:	"Critical Hotfix Workflow",
+			name: "Critical Hotfix Workflow",
 			analysis: &CommitAnalysis{
-				ChangeType:	"fix",
-				Impact:		"high",
-				Confidence:	0.98,
+				ChangeType: "fix",
+				Impact:     "high",
+				Confidence: 0.98,
 				CommitData: &CommitData{
-					Hash:		"workflow124",
-					Message:	"fix: critical security vulnerability",
-					Author:		"Security Team",
-					Timestamp:	time.Now(),
-					Files:		[]string{"auth.go"},
-					Branch:		"main",
+					Hash:      "workflow124",
+					Message:   "fix: critical security vulnerability",
+					Author:    "Security Team",
+					Timestamp: time.Now(),
+					Files:     []string{"auth.go"},
+					Branch:    "main",
 				},
 			},
 		},

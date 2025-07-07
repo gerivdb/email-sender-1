@@ -10,48 +10,48 @@ import (
 
 // Simple health response
 type HealthResponse struct {
-	Status		string		`json:"status"`
-	Timestamp	time.Time	`json:"timestamp"`
-	Service		string		`json:"service"`
-	Version		string		`json:"version"`
+	Status    string    `json:"status"`
+	Timestamp time.Time `json:"timestamp"`
+	Service   string    `json:"service"`
+	Version   string    `json:"version"`
 }
 
 // Status response
 type StatusResponse struct {
-	APIServer	string			`json:"api_server"`
-	Services	map[string]string	`json:"services"`
-	Uptime		string			`json:"uptime"`
-	Timestamp	time.Time		`json:"timestamp"`
+	APIServer string            `json:"api_server"`
+	Services  map[string]string `json:"services"`
+	Uptime    string            `json:"uptime"`
+	Timestamp time.Time         `json:"timestamp"`
 }
 
 // Extension-specific responses (pour compatibilité VSCode extension)
 type InfrastructureStatusResponse struct {
-	Overall			string			`json:"overall"`
-	Active			bool			`json:"active"`
-	AutoHealingEnabled	bool			`json:"autoHealingEnabled"`
-	ServicesMonitored	int			`json:"servicesMonitored"`
-	Services		map[string]ServiceInfo	`json:"services"`
-	Timestamp		time.Time		`json:"timestamp"`
+	Overall            string                 `json:"overall"`
+	Active             bool                   `json:"active"`
+	AutoHealingEnabled bool                   `json:"autoHealingEnabled"`
+	ServicesMonitored  int                    `json:"servicesMonitored"`
+	Services           map[string]ServiceInfo `json:"services"`
+	Timestamp          time.Time              `json:"timestamp"`
 }
 
 type ServiceInfo struct {
-	Status	string	`json:"status"`
-	Health	string	`json:"health"`
+	Status string `json:"status"`
+	Health string `json:"health"`
 }
 
 type MonitoringStatusResponse struct {
-	Overall			string		`json:"overall"`
-	Active			bool		`json:"active"`
-	AutoHealingEnabled	bool		`json:"autoHealingEnabled"`
-	ServicesMonitored	int		`json:"servicesMonitored"`
-	Timestamp		time.Time	`json:"timestamp"`
+	Overall            string    `json:"overall"`
+	Active             bool      `json:"active"`
+	AutoHealingEnabled bool      `json:"autoHealingEnabled"`
+	ServicesMonitored  int       `json:"servicesMonitored"`
+	Timestamp          time.Time `json:"timestamp"`
 }
 
 type AutoHealingResponse struct {
-	Status		string		`json:"status"`
-	Enabled		bool		`json:"enabled"`
-	Message		string		`json:"message"`
-	Timestamp	time.Time	`json:"timestamp"`
+	Status    string    `json:"status"`
+	Enabled   bool      `json:"enabled"`
+	Message   string    `json:"message"`
+	Timestamp time.Time `json:"timestamp"`
 }
 
 var startTime = time.Now()
@@ -86,10 +86,10 @@ func main() {
 	// Health endpoint
 	router.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, HealthResponse{
-			Status:		"healthy",
-			Timestamp:	time.Now(),
-			Service:	"smart-infrastructure-api",
-			Version:	"1.0.0-simple",
+			Status:    "healthy",
+			Timestamp: time.Now(),
+			Service:   "smart-infrastructure-api",
+			Version:   "1.0.0-simple",
 		})
 	})
 
@@ -99,26 +99,26 @@ func main() {
 
 		// Simple service checks
 		services := map[string]string{
-			"api_server":	"running",
-			"database":	"unknown",
-			"redis":	"unknown",
-			"qdrant":	"unknown",
+			"api_server": "running",
+			"database":   "unknown",
+			"redis":      "unknown",
+			"qdrant":     "unknown",
 		}
 
 		c.JSON(http.StatusOK, StatusResponse{
-			APIServer:	"running",
-			Services:	services,
-			Uptime:		uptime.String(),
-			Timestamp:	time.Now(),
+			APIServer: "running",
+			Services:  services,
+			Uptime:    uptime.String(),
+			Timestamp: time.Now(),
 		})
 	})
 
 	// Root endpoint
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"message":	"Smart Infrastructure API Server",
-			"version":	"1.0.0-simple",
-			"status":	"running",
+			"message": "Smart Infrastructure API Server",
+			"version": "1.0.0-simple",
+			"status":  "running",
 			"endpoints": []string{
 				"/health",
 				"/status",
@@ -134,10 +134,10 @@ func main() {
 		v1.GET("/infrastructure", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"infrastructure": map[string]interface{}{
-					"status":	"operational",
-					"services":	[]string{"api", "database", "cache"},
-					"uptime":	time.Since(startTime).String(),
-					"timestamp":	time.Now(),
+					"status":    "operational",
+					"services":  []string{"api", "database", "cache"},
+					"uptime":    time.Since(startTime).String(),
+					"timestamp": time.Now(),
 				},
 			})
 		})
@@ -145,60 +145,60 @@ func main() {
 		// Endpoint pour l'extension VSCode
 		v1.GET("/infrastructure/status", func(c *gin.Context) {
 			services := map[string]ServiceInfo{
-				"api_server":	{Status: "running", Health: "healthy"},
-				"database":	{Status: "unknown", Health: "unknown"},
-				"redis":	{Status: "unknown", Health: "unknown"},
-				"qdrant":	{Status: "unknown", Health: "unknown"},
+				"api_server": {Status: "running", Health: "healthy"},
+				"database":   {Status: "unknown", Health: "unknown"},
+				"redis":      {Status: "unknown", Health: "unknown"},
+				"qdrant":     {Status: "unknown", Health: "unknown"},
 			}
 
 			c.JSON(http.StatusOK, InfrastructureStatusResponse{
-				Overall:		"healthy",
-				Active:			true,
-				AutoHealingEnabled:	false,
-				ServicesMonitored:	len(services),
-				Services:		services,
-				Timestamp:		time.Now(),
+				Overall:            "healthy",
+				Active:             true,
+				AutoHealingEnabled: false,
+				ServicesMonitored:  len(services),
+				Services:           services,
+				Timestamp:          time.Now(),
 			})
 		})
 
 		// Endpoint monitoring status pour l'extension
 		v1.GET("/monitoring/status", func(c *gin.Context) {
 			c.JSON(http.StatusOK, MonitoringStatusResponse{
-				Overall:		"healthy",
-				Active:			true,
-				AutoHealingEnabled:	false,
-				ServicesMonitored:	4,
-				Timestamp:		time.Now(),
+				Overall:            "healthy",
+				Active:             true,
+				AutoHealingEnabled: false,
+				ServicesMonitored:  4,
+				Timestamp:          time.Now(),
 			})
 		})
 
 		// Endpoints auto-healing pour l'extension
 		v1.POST("/auto-healing/enable", func(c *gin.Context) {
 			c.JSON(http.StatusOK, AutoHealingResponse{
-				Status:		"success",
-				Enabled:	true,
-				Message:	"Auto-healing enabled",
-				Timestamp:	time.Now(),
+				Status:    "success",
+				Enabled:   true,
+				Message:   "Auto-healing enabled",
+				Timestamp: time.Now(),
 			})
 		})
 
 		v1.POST("/auto-healing/disable", func(c *gin.Context) {
 			c.JSON(http.StatusOK, AutoHealingResponse{
-				Status:		"success",
-				Enabled:	false,
-				Message:	"Auto-healing disabled",
-				Timestamp:	time.Now(),
+				Status:    "success",
+				Enabled:   false,
+				Message:   "Auto-healing disabled",
+				Timestamp: time.Now(),
 			})
 		})
 
 		v1.GET("/infrastructure/health", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
-				"overall_health":	"healthy",
+				"overall_health": "healthy",
 				"components": map[string]string{
-					"api_server":	"healthy",
-					"monitoring":	"healthy",
+					"api_server": "healthy",
+					"monitoring": "healthy",
 				},
-				"timestamp":	time.Now(),
+				"timestamp": time.Now(),
 			})
 		})
 	}

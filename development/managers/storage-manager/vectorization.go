@@ -2,16 +2,11 @@ package storage
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"strings"
 	"time"
-
-	"github.com/google/uuid"
-	"gopkg.in/yaml.v2"
 )
 
 // === IMPLÉMENTATION PHASE 4.2.1.1: AUTO-INDEXATION DES FICHIERS DE CONFIGURATION ===
@@ -30,7 +25,7 @@ func (sm *StorageManagerImpl) IndexConfiguration(ctx context.Context, filePath s
 
 	// Déterminer le type de configuration
 	configType := sm.detectConfigType(filePath)
-	
+
 	// Parser le contenu selon le type
 	configData, err := sm.parseConfigContent(content, configType)
 	if err != nil {

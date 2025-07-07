@@ -10,14 +10,14 @@ import (
 )
 
 type ValidationReport struct {
-	Timestamp		string			`json:"timestamp"`
-	PowerShellFiles		int			`json:"powershell_files"`
-	GoImplementations	map[string]bool		`json:"go_implementations"`
-	Documentation		map[string]bool		`json:"documentation"`
-	ConfigFiles		map[string]bool		`json:"config_files"`
-	ValidationResults	map[string]string	`json:"validation_results"`
-	OverallStatus		string			`json:"overall_status"`
-	PerformanceMetrics	map[string]string	`json:"performance_metrics"`
+	Timestamp          string            `json:"timestamp"`
+	PowerShellFiles    int               `json:"powershell_files"`
+	GoImplementations  map[string]bool   `json:"go_implementations"`
+	Documentation      map[string]bool   `json:"documentation"`
+	ConfigFiles        map[string]bool   `json:"config_files"`
+	ValidationResults  map[string]string `json:"validation_results"`
+	OverallStatus      string            `json:"overall_status"`
+	PerformanceMetrics map[string]string `json:"performance_metrics"`
 }
 
 func main() {
@@ -25,12 +25,12 @@ func main() {
 	fmt.Println("=========================================")
 
 	report := ValidationReport{
-		Timestamp:		time.Now().Format("2006-01-02 15:04:05"),
-		GoImplementations:	make(map[string]bool),
-		Documentation:		make(map[string]bool),
-		ConfigFiles:		make(map[string]bool),
-		ValidationResults:	make(map[string]string),
-		PerformanceMetrics:	make(map[string]string),
+		Timestamp:          time.Now().Format("2006-01-02 15:04:05"),
+		GoImplementations:  make(map[string]bool),
+		Documentation:      make(map[string]bool),
+		ConfigFiles:        make(map[string]bool),
+		ValidationResults:  make(map[string]string),
+		PerformanceMetrics: make(map[string]string),
 	}
 
 	// 1. Check PowerShell elimination
@@ -84,11 +84,11 @@ func main() {
 	// 3. Check core orchestrator files
 	fmt.Println("\n📋 3. Checking core orchestrator files...")
 	coreFiles := map[string]string{
-		"email_sender_orchestrator.go":			"Main native Go orchestrator",
-		"algorithms_implementations.go":		"Algorithm implementations wrapper",
-		"email_sender_orchestrator_config.json":	"Orchestrator configuration",
-		"go.mod":					"Go module definition",
-		"native_suite_validator.go":			"Native validation suite",
+		"email_sender_orchestrator.go":          "Main native Go orchestrator",
+		"algorithms_implementations.go":         "Algorithm implementations wrapper",
+		"email_sender_orchestrator_config.json": "Orchestrator configuration",
+		"go.mod":                                "Go module definition",
+		"native_suite_validator.go":             "Native validation suite",
 	}
 
 	for file, desc := range coreFiles {
@@ -104,10 +104,10 @@ func main() {
 	// 4. Check documentation
 	fmt.Println("\n📋 4. Checking documentation...")
 	docFiles := map[string]string{
-		"README.md":				"Main algorithms documentation",
-		"QUICK_REFERENCE.md":			"Quick reference guide",
-		"INSTALLATION-COMPLETE.md":		"Installation documentation",
-		"NATIVE_GO_MIGRATION_COMPLETE.md":	"Migration completion report",
+		"README.md":                       "Main algorithms documentation",
+		"QUICK_REFERENCE.md":              "Quick reference guide",
+		"INSTALLATION-COMPLETE.md":        "Installation documentation",
+		"NATIVE_GO_MIGRATION_COMPLETE.md": "Migration completion report",
 	}
 
 	for file, desc := range docFiles {

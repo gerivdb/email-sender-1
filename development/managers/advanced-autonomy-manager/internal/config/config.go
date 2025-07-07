@@ -12,21 +12,21 @@ type Config struct {
 
 // InfrastructureConfig defines the configuration for infrastructure orchestration
 type InfrastructureConfig struct {
-	AutoStartEnabled bool                       `yaml:"auto_start_enabled"`
-	StartupMode      string                     `yaml:"startup_mode"` // smart, fast, minimal
-	Environment      string                     `yaml:"environment"`  // development, production, testing
-	ServiceDiscovery ServiceDiscoveryConfig     `yaml:"service_discovery"`
+	AutoStartEnabled     bool                       `yaml:"auto_start_enabled"`
+	StartupMode          string                     `yaml:"startup_mode"` // smart, fast, minimal
+	Environment          string                     `yaml:"environment"`  // development, production, testing
+	ServiceDiscovery     ServiceDiscoveryConfig     `yaml:"service_discovery"`
 	DependencyResolution DependencyResolutionConfig `yaml:"dependency_resolution"`
-	Monitoring       MonitoringConfig           `yaml:"monitoring"`
-	Services         map[string]*ServiceConfig  `yaml:"services"`
+	Monitoring           MonitoringConfig           `yaml:"monitoring"`
+	Services             map[string]*ServiceConfig  `yaml:"services"`
 }
 
 // ServiceDiscoveryConfig defines service discovery configuration
 type ServiceDiscoveryConfig struct {
-	DockerComposePath      string        `yaml:"docker_compose_path"`
-	ContainerManagerEndpoint string      `yaml:"container_manager_endpoint"`
-	HealthCheckInterval    time.Duration `yaml:"health_check_interval"`
-	MaxStartupTime         time.Duration `yaml:"max_startup_time"`
+	DockerComposePath        string        `yaml:"docker_compose_path"`
+	ContainerManagerEndpoint string        `yaml:"container_manager_endpoint"`
+	HealthCheckInterval      time.Duration `yaml:"health_check_interval"`
+	MaxStartupTime           time.Duration `yaml:"max_startup_time"`
 }
 
 // DependencyResolutionConfig defines configuration for dependency resolution
@@ -47,9 +47,9 @@ type MonitoringConfig struct {
 
 // ServiceConfig defines configuration for an individual service
 type ServiceConfig struct {
-	Requires        []string      `yaml:"requires"`
-	HealthCheck     string        `yaml:"health_check"`
-	StartupTimeout  time.Duration `yaml:"startup_timeout"`
+	Requires       []string      `yaml:"requires"`
+	HealthCheck    string        `yaml:"health_check"`
+	StartupTimeout time.Duration `yaml:"startup_timeout"`
 }
 
 // LoadConfig loads configuration from the specified file path
@@ -62,10 +62,10 @@ func LoadConfig(filePath string) (*Config, error) {
 			StartupMode:      "smart",
 			Environment:      "development",
 			ServiceDiscovery: ServiceDiscoveryConfig{
-				DockerComposePath:      "./docker-compose.yml",
+				DockerComposePath:        "./docker-compose.yml",
 				ContainerManagerEndpoint: "localhost:8080",
-				HealthCheckInterval:    10 * time.Second,
-				MaxStartupTime:         5 * time.Minute,
+				HealthCheckInterval:      10 * time.Second,
+				MaxStartupTime:           5 * time.Minute,
 			},
 			DependencyResolution: DependencyResolutionConfig{
 				ParallelStartEnabled: true,

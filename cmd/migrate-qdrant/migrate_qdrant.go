@@ -10,22 +10,22 @@ import (
 
 // QdrantMigrator gestionnaire de migration Qdrant
 type QdrantMigrator struct {
-	sourceClient	*qdrant.Client
-	targetClient	*qdrant.Client
+	sourceClient *qdrant.Client
+	targetClient *qdrant.Client
 }
 
 // NewQdrantMigrator crée un nouveau migrateur
 func NewQdrantMigrator(sourceHost string, sourcePort int, targetHost string, targetPort int) (*QdrantMigrator, error) {
 	// Configuration source
 	sourceConfig := &qdrant.Config{
-		Host:	sourceHost,
-		Port:	sourcePort,
+		Host: sourceHost,
+		Port: sourcePort,
 	}
 
 	// Configuration target
 	targetConfig := &qdrant.Config{
-		Host:	targetHost,
-		Port:	targetPort,
+		Host: targetHost,
+		Port: targetPort,
 	}
 
 	// Créer les clients
@@ -40,8 +40,8 @@ func NewQdrantMigrator(sourceHost string, sourcePort int, targetHost string, tar
 	}
 
 	return &QdrantMigrator{
-		sourceClient:	sourceClient,
-		targetClient:	targetClient,
+		sourceClient: sourceClient,
+		targetClient: targetClient,
 	}, nil
 }
 

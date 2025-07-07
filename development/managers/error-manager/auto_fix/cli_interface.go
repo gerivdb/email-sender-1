@@ -3,14 +3,14 @@ package auto_fix
 import (
 	"bufio"
 	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
-	"encoding/json"
-	"io/ioutil"
-	"path/filepath"
 )
 
 // CLIInterface provides a command-line interface for reviewing and applying fixes
@@ -35,24 +35,24 @@ type CLIConfig struct {
 
 // CLIAction represents an action taken through the CLI
 type CLIAction struct {
-	Timestamp   time.Time       `json:"timestamp"`
-	Action      string          `json:"action"` // "applied", "rejected", "skipped"
-	Suggestion  *FixSuggestion  `json:"suggestion"`
-	Validation  *ValidationResult `json:"validation,omitempty"`
-	UserInput   string          `json:"user_input,omitempty"`
-	FilePath    string          `json:"file_path"`
+	Timestamp  time.Time         `json:"timestamp"`
+	Action     string            `json:"action"` // "applied", "rejected", "skipped"
+	Suggestion *FixSuggestion    `json:"suggestion"`
+	Validation *ValidationResult `json:"validation,omitempty"`
+	UserInput  string            `json:"user_input,omitempty"`
+	FilePath   string            `json:"file_path"`
 }
 
 // ReviewSession represents a fix review session
 type ReviewSession struct {
-	ID          string          `json:"id"`
-	StartTime   time.Time       `json:"start_time"`
-	EndTime     time.Time       `json:"end_time"`
-	FilesAnalyzed int           `json:"files_analyzed"`
-	SuggestionsTotal int        `json:"suggestions_total"`
-	SuggestionsApplied int      `json:"suggestions_applied"`
-	SuggestionsRejected int     `json:"suggestions_rejected"`
-	Actions     []CLIAction     `json:"actions"`
+	ID                  string      `json:"id"`
+	StartTime           time.Time   `json:"start_time"`
+	EndTime             time.Time   `json:"end_time"`
+	FilesAnalyzed       int         `json:"files_analyzed"`
+	SuggestionsTotal    int         `json:"suggestions_total"`
+	SuggestionsApplied  int         `json:"suggestions_applied"`
+	SuggestionsRejected int         `json:"suggestions_rejected"`
+	Actions             []CLIAction `json:"actions"`
 }
 
 // DiffInfo contains information about a code diff
@@ -116,7 +116,7 @@ func (cli *CLIInterface) StartReviewSession(ctx context.Context, projectPath str
 
 	// Filter and prioritize suggestions
 	suggestions = cli.filterSuggestions(suggestions)
-	
+
 	// Process each suggestion
 	for i, suggestion := range suggestions {
 		if cli.config.MaxSuggestions > 0 && i >= cli.config.MaxSuggestions {
@@ -130,7 +130,7 @@ func (cli *CLIInterface) StartReviewSession(ctx context.Context, projectPath str
 		}
 
 		session.Actions = append(session.Actions, action)
-		
+
 		switch action.Action {
 		case "applied":
 			session.SuggestionsApplied++
@@ -163,7 +163,7 @@ func (cli *CLIInterface) analyzeProject(ctx context.Context, projectPath string)
 	cli.printf("Found %d Go files\n", len(goFiles))
 
 	var allSuggestions []*FixSuggestion
-	
+
 	for _, filePath := range goFiles {
 		_, err := ioutil.ReadFile(filePath)
 		if err != nil {
@@ -415,14 +415,14 @@ func (cli *CLIInterface) printValidationResults(validation *ValidationResult) {
 	fmt.Printf("  Compilation: %t\n", validation.CompilationOK)
 	fmt.Printf("  Static Check: %t\n", validation.StaticCheckOK)
 	fmt.Printf("  Tests: %t\n", validation.TestsPassing)
-	
+
 	if len(validation.Errors) > 0 {
 		fmt.Println("  Errors:")
 		for _, err := range validation.Errors {
 			cli.printError("    %s", err)
 		}
 	}
-	
+
 	if len(validation.Warnings) > 0 {
 		fmt.Println("  Warnings:")
 		for _, warn := range validation.Warnings {
@@ -441,7 +441,7 @@ func (cli *CLIInterface) showDiff(suggestion *FixSuggestion, originalCode string
 	diff := cli.generateDiff(originalCode, modifiedCode)
 	fmt.Println("\nDiff:")
 	fmt.Println(diff)
-	
+
 	return nil
 }
 
@@ -467,23 +467,23 @@ func (cli *CLIInterface) showDetailedInfo(suggestion *FixSuggestion, validation 
 func (cli *CLIInterface) generateDiff(original, modified string) string {
 	originalLines := strings.Split(original, "\n")
 	modifiedLines := strings.Split(modified, "\n")
-	
+
 	var diff strings.Builder
 	maxLines := len(originalLines)
 	if len(modifiedLines) > maxLines {
 		maxLines = len(modifiedLines)
 	}
-	
+
 	for i := 0; i < maxLines; i++ {
 		var origLine, modLine string
-		
+
 		if i < len(originalLines) {
 			origLine = originalLines[i]
 		}
 		if i < len(modifiedLines) {
 			modLine = modifiedLines[i]
 		}
-		
+
 		if origLine != modLine {
 			if origLine != "" {
 				diff.WriteString(fmt.Sprintf("- %s\n", origLine))
@@ -493,7 +493,7 @@ func (cli *CLIInterface) generateDiff(original, modified string) string {
 			}
 		}
 	}
-	
+
 	return diff.String()
 }
 
@@ -501,14 +501,14 @@ func (cli *CLIInterface) generateDiff(original, modified string) string {
 func (cli *CLIInterface) printSessionSummary(session *ReviewSession) {
 	cli.printSeparator()
 	cli.printHeader("Session Summary")
-	
+
 	duration := session.EndTime.Sub(session.StartTime)
 	fmt.Printf("Duration: %v\n", duration.Round(time.Second))
 	fmt.Printf("Total suggestions: %d\n", session.SuggestionsTotal)
 	fmt.Printf("Applied: %d\n", session.SuggestionsApplied)
 	fmt.Printf("Rejected: %d\n", session.SuggestionsRejected)
 	fmt.Printf("Skipped: %d\n", session.SuggestionsTotal-session.SuggestionsApplied-session.SuggestionsRejected)
-	
+
 	if session.SuggestionsApplied > 0 {
 		cli.printSuccess("Successfully applied %d fixes", session.SuggestionsApplied)
 	}
@@ -519,19 +519,19 @@ func (cli *CLIInterface) printSessionSummary(session *ReviewSession) {
 // findGoFiles finds all Go files in a project
 func (cli *CLIInterface) findGoFiles(projectPath string) ([]string, error) {
 	var goFiles []string
-	
+
 	err := filepath.Walk(projectPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
-		
+
 		if strings.HasSuffix(path, ".go") && !strings.Contains(path, "vendor/") {
 			goFiles = append(goFiles, path)
 		}
-		
+
 		return nil
 	})
-	
+
 	return goFiles, err
 }
 
@@ -550,7 +550,7 @@ func (cli *CLIInterface) createBackup(filePath string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	backupPath := filePath + ".backup." + strconv.FormatInt(time.Now().Unix(), 10)
 	return ioutil.WriteFile(backupPath, content, 0644)
 }
@@ -574,7 +574,7 @@ func (cli *CLIInterface) SaveSession(session *ReviewSession, path string) error 
 	if err != nil {
 		return err
 	}
-	
+
 	return ioutil.WriteFile(path, data, 0644)
 }
 
@@ -584,11 +584,11 @@ func (cli *CLIInterface) LoadSession(path string) (*ReviewSession, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	var session ReviewSession
 	if err := json.Unmarshal(data, &session); err != nil {
 		return nil, err
 	}
-	
+
 	return &session, nil
 }

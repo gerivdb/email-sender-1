@@ -44,8 +44,8 @@ type HybridStatistics struct {
 	MemoryUsage   map[string]int64   `json:"memory_usage"`
 
 	// Erreurs et problèmes
-	ErrorCounts map[string]int64    `json:"error_counts"`
-	LastErrors  []HybridErrorInfo   `json:"last_errors"`
+	ErrorCounts map[string]int64  `json:"error_counts"`
+	LastErrors  []HybridErrorInfo `json:"last_errors"`
 
 	// Adaptation du mode
 	ModeSelections map[string]int64   `json:"mode_selections"`
@@ -74,12 +74,12 @@ type MetricsAlert struct {
 
 // PerformanceThresholds seuils de performance pour les alertes
 type PerformanceThresholds struct {
-	MaxLatency       time.Duration `json:"max_latency"`
-	MinSuccessRate   float64       `json:"min_success_rate"`
-	MinQualityScore  float64       `json:"min_quality_score"`
-	MinCacheHitRate  float64       `json:"min_cache_hit_rate"`
-	MaxErrorRate     float64       `json:"max_error_rate"`
-	MaxMemoryUsage   int64         `json:"max_memory_usage"`
+	MaxLatency      time.Duration `json:"max_latency"`
+	MinSuccessRate  float64       `json:"min_success_rate"`
+	MinQualityScore float64       `json:"min_quality_score"`
+	MinCacheHitRate float64       `json:"min_cache_hit_rate"`
+	MaxErrorRate    float64       `json:"max_error_rate"`
+	MaxMemoryUsage  int64         `json:"max_memory_usage"`
 }
 
 // HybridMetricsConfig configuration pour le système de métriques
@@ -89,5 +89,5 @@ type HybridMetricsConfig struct {
 	MaxErrorHistory         int                   `json:"max_error_history"`
 	PerformanceThresholds   PerformanceThresholds `json:"performance_thresholds"`
 	AlertWebhookURL         string                `json:"alert_webhook_url"`
-	EnableAlerts           bool                  `json:"enable_alerts"`
+	EnableAlerts            bool                  `json:"enable_alerts"`
 }

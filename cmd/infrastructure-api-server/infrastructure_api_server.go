@@ -15,15 +15,15 @@ import (
 )
 
 const (
-	defaultPort	= 8080
-	version		= "v1.0.0"
+	defaultPort = 8080
+	version     = "v1.0.0"
 )
 
 func main() {
 	var (
-		port	= flag.Int("port", defaultPort, "Port pour l'API server")
-		help	= flag.Bool("help", false, "Afficher l'aide")
-		version	= flag.Bool("version", false, "Afficher la version")
+		port    = flag.Int("port", defaultPort, "Port pour l'API server")
+		help    = flag.Bool("help", false, "Afficher l'aide")
+		version = flag.Bool("version", false, "Afficher la version")
 	)
 	flag.Parse()
 

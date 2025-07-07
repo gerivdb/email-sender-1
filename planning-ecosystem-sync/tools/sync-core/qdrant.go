@@ -21,28 +21,28 @@ type QdrantInterface interface {
 
 // CollectionConfig represents configuration for creating collections
 type CollectionConfig struct {
-	VectorSize	int	`json:"vector_size"`
-	Distance	string	`json:"distance"`
-	OnDiskPayload	bool	`json:"on_disk_payload"`
-	ReplicaCount	int	`json:"replica_count"`
-	ShardNumber	int	`json:"shard_number"`
+	VectorSize    int    `json:"vector_size"`
+	Distance      string `json:"distance"`
+	OnDiskPayload bool   `json:"on_disk_payload"`
+	ReplicaCount  int    `json:"replica_count"`
+	ShardNumber   int    `json:"shard_number"`
 }
 
 // Point represents a vector point with metadata
 type Point struct {
-	ID	interface{}		`json:"id"`
-	Vector	[]float32		`json:"vector"`
-	Payload	map[string]interface{}	`json:"payload,omitempty"`
+	ID      interface{}            `json:"id"`
+	Vector  []float32              `json:"vector"`
+	Payload map[string]interface{} `json:"payload,omitempty"`
 }
 
 // SearchRequest represents a vector search request
 type SearchRequest struct {
-	Vector		[]float32		`json:"vector"`
-	Limit		int			`json:"limit"`
-	WithPayload	bool			`json:"with_payload"`
-	WithVector	bool			`json:"with_vector"`
-	Filter		map[string]interface{}	`json:"filter,omitempty"`
-	Offset		int			`json:"offset,omitempty"`
+	Vector      []float32              `json:"vector"`
+	Limit       int                    `json:"limit"`
+	WithPayload bool                   `json:"with_payload"`
+	WithVector  bool                   `json:"with_vector"`
+	Filter      map[string]interface{} `json:"filter,omitempty"`
+	Offset      int                    `json:"offset,omitempty"`
 }
 
 // SearchResponse represents the response from a vector search
@@ -52,18 +52,18 @@ type SearchResponse struct {
 
 // ScoredPoint represents a search result with score
 type ScoredPoint struct {
-	ID	interface{}		`json:"id"`
-	Score	float32			`json:"score"`
-	Vector	[]float32		`json:"vector,omitempty"`
-	Payload	map[string]interface{}	`json:"payload,omitempty"`
+	ID      interface{}            `json:"id"`
+	Score   float32                `json:"score"`
+	Vector  []float32              `json:"vector,omitempty"`
+	Payload map[string]interface{} `json:"payload,omitempty"`
 }
 
 // SyncClient wraps the unified Qdrant client for sync-core operations
 // Implementation of Phase 2.2.3.1: Migrer planning-ecosystem-sync/tools/sync-core/qdrant.go
 type SyncClient struct {
-	unifiedClient	QdrantInterface
-	logger		*zap.Logger
-	ctx		context.Context
+	unifiedClient QdrantInterface
+	logger        *zap.Logger
+	ctx           context.Context
 }
 
 // NewSyncClient creates a new sync client using the unified Qdrant client
@@ -74,9 +74,9 @@ func NewSyncClient(baseURL string, logger *zap.Logger) (*SyncClient, error) {
 	mockClient := &MockUnifiedClient{baseURL: baseURL, logger: logger}
 
 	return &SyncClient{
-		unifiedClient:	mockClient,
-		logger:		logger,
-		ctx:		context.Background(),
+		unifiedClient: mockClient,
+		logger:        logger,
+		ctx:           context.Background(),
 	}, nil
 }
 
@@ -98,11 +98,11 @@ func (sc *SyncClient) StorePlanEmbeddings(plan *DynamicPlan) error {
 	// Ensure collection exists
 	collectionName := "plan_embeddings"
 	collectionConfig := CollectionConfig{
-		VectorSize:	len(embeddings32),
-		Distance:	"cosine",
-		OnDiskPayload:	false,
-		ReplicaCount:	1,
-		ShardNumber:	1,
+		VectorSize:    len(embeddings32),
+		Distance:      "cosine",
+		OnDiskPayload: false,
+		ReplicaCount:  1,
+		ShardNumber:   1,
 	}
 
 	// Phase 2.2.3.1.2: Intégrer avec le nouveau système de logging
@@ -118,17 +118,17 @@ func (sc *SyncClient) StorePlanEmbeddings(plan *DynamicPlan) error {
 	// Convert plan to points for unified client
 	points := []Point{
 		{
-			ID:	plan.ID,
-			Vector:	embeddings32,
+			ID:     plan.ID,
+			Vector: embeddings32,
 			Payload: map[string]interface{}{
-				"title":	plan.Metadata.Title,
-				"version":	plan.Metadata.Version,
-				"file_path":	plan.Metadata.FilePath,
-				"task_count":	len(plan.Tasks),
-				"progression":	plan.Metadata.Progression,
-				"description":	plan.Metadata.Description,
-				"created_at":	plan.CreatedAt.Unix(),
-				"updated_at":	plan.UpdatedAt.Unix(),
+				"title":       plan.Metadata.Title,
+				"version":     plan.Metadata.Version,
+				"file_path":   plan.Metadata.FilePath,
+				"task_count":  len(plan.Tasks),
+				"progression": plan.Metadata.Progression,
+				"description": plan.Metadata.Description,
+				"created_at":  plan.CreatedAt.Unix(),
+				"updated_at":  plan.UpdatedAt.Unix(),
 			},
 		},
 	}
@@ -155,10 +155,10 @@ func (sc *SyncClient) SearchSimilarPlans(queryVector []float32, limit int) (*Sea
 	defer cancel()
 
 	searchReq := SearchRequest{
-		Vector:		queryVector,
-		Limit:		limit,
-		WithPayload:	true,
-		WithVector:	false,
+		Vector:      queryVector,
+		Limit:       limit,
+		WithPayload: true,
+		WithVector:  false,
 	}
 
 	response, err := sc.unifiedClient.SearchPoints(ctx, "plan_embeddings", searchReq)
@@ -228,8 +228,8 @@ func (sc *SyncClient) SyncPlanData(plans []*DynamicPlan) error {
 // MockUnifiedClient is a temporary implementation for demonstration
 // In production, this would be replaced with the actual unified client
 type MockUnifiedClient struct {
-	baseURL	string
-	logger	*zap.Logger
+	baseURL string
+	logger  *zap.Logger
 }
 
 func (m *MockUnifiedClient) Connect(ctx context.Context) error {

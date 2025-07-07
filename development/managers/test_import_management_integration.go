@@ -7,13 +7,14 @@ import (
 	"strings"
 
 	"D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/interfaces"
+
 	"go.uber.org/zap"
 )
 
 // MockGoModManager simule le dependency manager pour les tests
 type MockGoModManager struct {
-	logger		*zap.Logger
-	errorManager	ErrorManager
+	logger       *zap.Logger
+	errorManager ErrorManager
 }
 
 type ErrorManager interface {
@@ -35,8 +36,8 @@ func main() {
 	defer logger.Sync()
 
 	mockDM := &MockGoModManager{
-		logger:		logger,
-		errorManager:	&MockErrorManager{},
+		logger:       logger,
+		errorManager: &MockErrorManager{},
 	}
 
 	ctx := context.Background()
@@ -79,30 +80,30 @@ func main() {
 func (m *MockGoModManager) ValidateImportPaths(ctx context.Context, projectPath string) (*interfaces.ImportValidationResult, error) {
 	// Simulation de validation
 	return &interfaces.ImportValidationResult{
-		ProjectPath:		projectPath,
-		TotalFiles:		10,
-		FilesWithIssues:	2,
-		Issues:			[]interfaces.ImportIssue{},
-		Conflicts:		[]interfaces.ImportConflict{},
-		Summary:		interfaces.ValidationSummary{},
-		Timestamp:		"2025-06-13T12:00:00Z",
+		ProjectPath:     projectPath,
+		TotalFiles:      10,
+		FilesWithIssues: 2,
+		Issues:          []interfaces.ImportIssue{},
+		Conflicts:       []interfaces.ImportConflict{},
+		Summary:         interfaces.ValidationSummary{},
+		Timestamp:       "2025-06-13T12:00:00Z",
 	}, nil
 }
 
 func (m *MockGoModManager) GenerateImportReport(ctx context.Context, projectPath string) (*interfaces.ImportReport, error) {
 	// Simulation de génération de rapport
 	return &interfaces.ImportReport{
-		ProjectPath:		projectPath,
-		ModuleName:		"github.com/gerivdb/email-sender-1/managers",
-		TotalGoFiles:		25,
-		TotalImports:		150,
-		ExternalImports:	45,
-		InternalImports:	105,
-		RelativeImports:	0,
-		Issues:			[]interfaces.ImportIssue{},
-		DependencyGraph:	map[string][]string{},
-		Statistics:		interfaces.ImportStatistics{},
-		Recommendations:	[]string{"All imports are properly structured"},
-		GeneratedAt:		"2025-06-13T12:00:00Z",
+		ProjectPath:     projectPath,
+		ModuleName:      "github.com/gerivdb/email-sender-1/managers",
+		TotalGoFiles:    25,
+		TotalImports:    150,
+		ExternalImports: 45,
+		InternalImports: 105,
+		RelativeImports: 0,
+		Issues:          []interfaces.ImportIssue{},
+		DependencyGraph: map[string][]string{},
+		Statistics:      interfaces.ImportStatistics{},
+		Recommendations: []string{"All imports are properly structured"},
+		GeneratedAt:     "2025-06-13T12:00:00Z",
 	}, nil
 }

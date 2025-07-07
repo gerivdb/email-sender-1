@@ -56,11 +56,11 @@ func TestGenerateAutomationSpecs(t *testing.T) {
 
 	// Check for required specs
 	expectedSpecs := map[string]bool{
-		"Documentation Inventory Scanner":	false,
-		"Gap Analysis Engine":			false,
-		"Documentation Generator":		false,
-		"Documentation Linter":			false,
-		"Coverage Reporter":			false,
+		"Documentation Inventory Scanner": false,
+		"Gap Analysis Engine":             false,
+		"Documentation Generator":         false,
+		"Documentation Linter":            false,
+		"Coverage Reporter":               false,
 	}
 
 	for _, spec := range specs {
@@ -107,8 +107,8 @@ func TestGenerateWorkflowSpecs(t *testing.T) {
 
 	// Check for required workflows
 	expectedWorkflows := map[string]bool{
-		"Full Documentation Audit":		false,
-		"Continuous Documentation Sync":	false,
+		"Full Documentation Audit":      false,
+		"Continuous Documentation Sync": false,
 	}
 
 	for _, workflow := range workflows {
@@ -214,11 +214,11 @@ func TestGenerateTechnicalRequirements(t *testing.T) {
 
 	// Check for required categories
 	expectedCategories := map[string]bool{
-		"performance":		false,
-		"reliability":		false,
-		"usability":		false,
-		"maintainability":	false,
-		"integration":		false,
+		"performance":     false,
+		"reliability":     false,
+		"usability":       false,
+		"maintainability": false,
+		"integration":     false,
 	}
 
 	for _, req := range requirements {
@@ -267,9 +267,9 @@ func TestGenerateImplementationPlan(t *testing.T) {
 
 	// Check for expected phases
 	expectedPhases := map[string]bool{
-		"Phase 1: Foundation":	false,
-		"Phase 2: Automation":	false,
-		"Phase 3: Integration":	false,
+		"Phase 1: Foundation":  false,
+		"Phase 2: Automation":  false,
+		"Phase 3: Integration": false,
 	}
 
 	for _, phase := range plan {
@@ -353,17 +353,17 @@ func TestSpecSummaryGeneration(t *testing.T) {
 func TestJSONOutput(t *testing.T) {
 	// Create a minimal test report
 	report := &SpecificationReport{
-		GeneratedAt:		time.Now(),
-		ProjectName:		"test-project",
-		AutomationSpecs:	[]AutomationSpec{{Name: "test", Description: "test spec"}},
-		WorkflowSpecs:		[]WorkflowSpec{{Name: "test", Description: "test workflow"}},
+		GeneratedAt:     time.Now(),
+		ProjectName:     "test-project",
+		AutomationSpecs: []AutomationSpec{{Name: "test", Description: "test spec"}},
+		WorkflowSpecs:   []WorkflowSpec{{Name: "test", Description: "test workflow"}},
 		ArchitectureSpecs: ArchitectureSpec{
-			Pattern:	"test_pattern",
-			Components:	[]ComponentSpec{{Name: "test", Type: "test"}},
+			Pattern:    "test_pattern",
+			Components: []ComponentSpec{{Name: "test", Type: "test"}},
 		},
-		TechnicalRequirements:	[]TechnicalRequirement{{Category: "test", Requirement: "test req"}},
-		ImplementationPlan:	[]ImplementationPhase{{Phase: "test", Description: "test phase"}},
-		Summary:		"test summary",
+		TechnicalRequirements: []TechnicalRequirement{{Category: "test", Requirement: "test req"}},
+		ImplementationPlan:    []ImplementationPhase{{Phase: "test", Description: "test phase"}},
+		Summary:               "test summary",
 	}
 
 	// Test JSON encoding

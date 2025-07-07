@@ -63,11 +63,11 @@ func main() {
 	// Step 3: Check core orchestrator
 	fmt.Printf("\n🔍 Step 3: Verifying core orchestrator files...\n")
 	coreFiles := map[string]string{
-		"email_sender_orchestrator.go":			"Main orchestrator",
-		"algorithms_implementations.go":		"Algorithm wrappers",
-		"email_sender_orchestrator_config.json":	"Configuration",
-		"go.mod":					"Go module",
-		"native_suite_validator.go":			"Validation suite",
+		"email_sender_orchestrator.go":          "Main orchestrator",
+		"algorithms_implementations.go":         "Algorithm wrappers",
+		"email_sender_orchestrator_config.json": "Configuration",
+		"go.mod":                                "Go module",
+		"native_suite_validator.go":             "Validation suite",
 	}
 
 	coreComplete := true
@@ -156,7 +156,7 @@ func checkPowerShellFiles(algorithmsPath string) []string {
 
 	filepath.WalkDir(algorithmsPath, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
-			return nil	// Continue scanning
+			return nil // Continue scanning
 		}
 
 		if strings.HasSuffix(strings.ToLower(d.Name()), ".ps1") {

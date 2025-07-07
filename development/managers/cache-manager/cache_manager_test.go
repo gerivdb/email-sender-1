@@ -1,3 +1,8 @@
+import (
+	"testing"
+	"time"
+)
+
 // ... (tests précédents)
 
 func TestCacheManager_MultiBackend_FallbackPolicy(t *testing.T) {

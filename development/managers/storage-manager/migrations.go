@@ -2,9 +2,7 @@ package storage
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
-	"log"
 )
 
 // Migrations implementation

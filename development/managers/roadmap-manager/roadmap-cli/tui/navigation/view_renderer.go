@@ -5,18 +5,18 @@ import (
 	"strings"
 	"time"
 
-	"github.com/charmbracelet/lipgloss"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 // ViewRenderer handles rendering for different navigation modes and views
 type ViewRenderer struct {
-	currentMode    NavigationMode
-	currentView    ViewMode
-	styles         *RenderStyles
-	animations     *AnimationManager
-	layout         *LayoutManager
-	accessibility  *AccessibilityRenderer
+	currentMode   NavigationMode
+	currentView   ViewMode
+	styles        *RenderStyles
+	animations    *AnimationManager
+	layout        *LayoutManager
+	accessibility *AccessibilityRenderer
 }
 
 // RenderStyles contains styling for different modes and views
@@ -29,23 +29,23 @@ type RenderStyles struct {
 
 // ModeStyles contains styles for a specific navigation mode
 type ModeStyles struct {
-	Background      lipgloss.Style `json:"background"`
-	Foreground      lipgloss.Style `json:"foreground"`
-	Border          lipgloss.Style `json:"border"`
-	Selected        lipgloss.Style `json:"selected"`
-	Focused         lipgloss.Style `json:"focused"`
-	Disabled        lipgloss.Style `json:"disabled"`
-	StatusBar       lipgloss.Style `json:"status_bar"`
-	Toolbar         lipgloss.Style `json:"toolbar"`
-	Sidebar         lipgloss.Style `json:"sidebar"`
-	Modal           lipgloss.Style `json:"modal"`
-	Error           lipgloss.Style `json:"error"`
-	Warning         lipgloss.Style `json:"warning"`
-	Success         lipgloss.Style `json:"success"`
-	Info            lipgloss.Style `json:"info"`
-	HighContrast    bool           `json:"high_contrast"`
-	ReducedMotion   bool           `json:"reduced_motion"`
-	LargeText       bool           `json:"large_text"`
+	Background    lipgloss.Style `json:"background"`
+	Foreground    lipgloss.Style `json:"foreground"`
+	Border        lipgloss.Style `json:"border"`
+	Selected      lipgloss.Style `json:"selected"`
+	Focused       lipgloss.Style `json:"focused"`
+	Disabled      lipgloss.Style `json:"disabled"`
+	StatusBar     lipgloss.Style `json:"status_bar"`
+	Toolbar       lipgloss.Style `json:"toolbar"`
+	Sidebar       lipgloss.Style `json:"sidebar"`
+	Modal         lipgloss.Style `json:"modal"`
+	Error         lipgloss.Style `json:"error"`
+	Warning       lipgloss.Style `json:"warning"`
+	Success       lipgloss.Style `json:"success"`
+	Info          lipgloss.Style `json:"info"`
+	HighContrast  bool           `json:"high_contrast"`
+	ReducedMotion bool           `json:"reduced_motion"`
+	LargeText     bool           `json:"large_text"`
 }
 
 // AnimationManager handles animations and transitions
@@ -71,23 +71,23 @@ type Animation struct {
 
 // AnimationPreferences contains animation preferences
 type AnimationPreferences struct {
-	Enabled          bool          `json:"enabled"`
-	ReducedMotion    bool          `json:"reduced_motion"`
-	DefaultDuration  time.Duration `json:"default_duration"`
-	DefaultEasing    string        `json:"default_easing"`
-	FadeEnabled      bool          `json:"fade_enabled"`
-	SlideEnabled     bool          `json:"slide_enabled"`
-	ScaleEnabled     bool          `json:"scale_enabled"`
-	RotateEnabled    bool          `json:"rotate_enabled"`
+	Enabled         bool          `json:"enabled"`
+	ReducedMotion   bool          `json:"reduced_motion"`
+	DefaultDuration time.Duration `json:"default_duration"`
+	DefaultEasing   string        `json:"default_easing"`
+	FadeEnabled     bool          `json:"fade_enabled"`
+	SlideEnabled    bool          `json:"slide_enabled"`
+	ScaleEnabled    bool          `json:"scale_enabled"`
+	RotateEnabled   bool          `json:"rotate_enabled"`
 }
 
 // LayoutManager handles layout adaptation for different modes
 type LayoutManager struct {
-	currentLayout  LayoutConfig
-	layouts        map[string]LayoutConfig
-	adaptiveMode   bool
-	screenSize     Position
-	panelStates    map[string]PanelState
+	currentLayout LayoutConfig
+	layouts       map[string]LayoutConfig
+	adaptiveMode  bool
+	screenSize    Position
+	panelStates   map[string]PanelState
 }
 
 // PanelState represents the state of a UI panel
@@ -106,47 +106,47 @@ type PanelState struct {
 
 // AccessibilityRenderer handles accessibility-specific rendering
 type AccessibilityRenderer struct {
-	screenReader    bool
-	highContrast    bool
-	largeText       bool
-	keyboardOnly    bool
-	reducedMotion   bool
-	audioFeedback   bool
-	focusIndicator  lipgloss.Style
-	landmarks       []string
-	headingLevels   map[string]int
+	screenReader   bool
+	highContrast   bool
+	largeText      bool
+	keyboardOnly   bool
+	reducedMotion  bool
+	audioFeedback  bool
+	focusIndicator lipgloss.Style
+	landmarks      []string
+	headingLevels  map[string]int
 }
 
 // RenderConfig represents rendering configuration
 type RenderConfig struct {
-	Width           int                    `json:"width"`
-	Height          int                    `json:"height"`
-	Mode            NavigationMode         `json:"mode"`
-	View            ViewMode               `json:"view"`
-	ShowAnimations  bool                   `json:"show_animations"`
-	HighContrast    bool                   `json:"high_contrast"`
-	LargeText       bool                   `json:"large_text"`
-	CustomSettings  map[string]interface{} `json:"custom_settings"`
+	Width          int                    `json:"width"`
+	Height         int                    `json:"height"`
+	Mode           NavigationMode         `json:"mode"`
+	View           ViewMode               `json:"view"`
+	ShowAnimations bool                   `json:"show_animations"`
+	HighContrast   bool                   `json:"high_contrast"`
+	LargeText      bool                   `json:"large_text"`
+	CustomSettings map[string]interface{} `json:"custom_settings"`
 }
 
 // RenderResult represents the result of a render operation
 type RenderResult struct {
-	Content         string                 `json:"content"`
-	Styles          []lipgloss.Style       `json:"styles"`
-	Animations      []Animation            `json:"animations"`
-	Accessibility   AccessibilityInfo      `json:"accessibility"`
-	Performance     RenderPerformance      `json:"performance"`
-	Metadata        map[string]interface{} `json:"metadata"`
+	Content       string                 `json:"content"`
+	Styles        []lipgloss.Style       `json:"styles"`
+	Animations    []Animation            `json:"animations"`
+	Accessibility AccessibilityInfo      `json:"accessibility"`
+	Performance   RenderPerformance      `json:"performance"`
+	Metadata      map[string]interface{} `json:"metadata"`
 }
 
 // AccessibilityInfo contains accessibility information
 type AccessibilityInfo struct {
-	AriaLabels      map[string]string `json:"aria_labels"`
-	TabOrder        []string          `json:"tab_order"`
-	Landmarks       []string          `json:"landmarks"`
-	HeadingStructure []HeadingInfo    `json:"heading_structure"`
-	FocusPath       []string          `json:"focus_path"`
-	ScreenReaderText string           `json:"screen_reader_text"`
+	AriaLabels       map[string]string `json:"aria_labels"`
+	TabOrder         []string          `json:"tab_order"`
+	Landmarks        []string          `json:"landmarks"`
+	HeadingStructure []HeadingInfo     `json:"heading_structure"`
+	FocusPath        []string          `json:"focus_path"`
+	ScreenReaderText string            `json:"screen_reader_text"`
 }
 
 // HeadingInfo represents heading information for accessibility
@@ -159,12 +159,12 @@ type HeadingInfo struct {
 
 // RenderPerformance contains performance metrics
 type RenderPerformance struct {
-	RenderTime      time.Duration `json:"render_time"`
-	LayoutTime      time.Duration `json:"layout_time"`
-	StyleTime       time.Duration `json:"style_time"`
-	AnimationTime   time.Duration `json:"animation_time"`
-	MemoryUsage     int64         `json:"memory_usage"`
-	CacheHitRate    float64       `json:"cache_hit_rate"`
+	RenderTime    time.Duration `json:"render_time"`
+	LayoutTime    time.Duration `json:"layout_time"`
+	StyleTime     time.Duration `json:"style_time"`
+	AnimationTime time.Duration `json:"animation_time"`
+	MemoryUsage   int64         `json:"memory_usage"`
+	CacheHitRate  float64       `json:"cache_hit_rate"`
 }
 
 // NewViewRenderer creates a new view renderer
@@ -185,25 +185,25 @@ func (vr *ViewRenderer) AdaptLayout(config RenderConfig) (*RenderResult, error) 
 
 	// Select appropriate styles based on mode
 	modeStyles := vr.getModeStyles(config.Mode)
-	
+
 	// Apply accessibility adaptations
 	if config.HighContrast {
 		modeStyles = vr.applyHighContrastStyles(modeStyles)
 	}
-	
+
 	if config.LargeText {
 		modeStyles = vr.applyLargeTextStyles(modeStyles)
 	}
 
 	// Generate layout based on view mode
 	layout := vr.generateViewLayout(config.View, config.Width, config.Height)
-	
+
 	// Apply mode-specific layout modifications
 	layout = vr.applyModeLayoutModifications(layout, config.Mode)
 
 	// Generate content
 	content := vr.renderContent(layout, modeStyles, config)
-	
+
 	// Handle animations
 	animations := make([]Animation, 0)
 	if config.ShowAnimations && vr.animations.preferences.Enabled {
@@ -219,8 +219,8 @@ func (vr *ViewRenderer) AdaptLayout(config RenderConfig) (*RenderResult, error) 
 		LayoutTime:    50 * time.Millisecond, // Placeholder
 		StyleTime:     20 * time.Millisecond, // Placeholder
 		AnimationTime: 10 * time.Millisecond, // Placeholder
-		MemoryUsage:   1024,                   // Placeholder
-		CacheHitRate:  0.85,                   // Placeholder
+		MemoryUsage:   1024,                  // Placeholder
+		CacheHitRate:  0.85,                  // Placeholder
 	}
 
 	return &RenderResult{
@@ -241,7 +241,7 @@ func (vr *ViewRenderer) AdaptLayout(config RenderConfig) (*RenderResult, error) 
 // RenderModeIndicator renders a mode indicator
 func (vr *ViewRenderer) RenderModeIndicator(mode NavigationMode) string {
 	styles := vr.getModeStyles(mode)
-	
+
 	modeText := strings.ToUpper(mode.String())
 	switch mode {
 	case NavigationModeNormal:
@@ -260,10 +260,10 @@ func (vr *ViewRenderer) RenderModeIndicator(mode NavigationMode) string {
 // RenderViewHeader renders a view header
 func (vr *ViewRenderer) RenderViewHeader(view ViewMode, title string) string {
 	styles := vr.getModeStyles(vr.currentMode)
-	
+
 	viewIcon := vr.getViewIcon(view)
 	headerText := fmt.Sprintf("%s %s", viewIcon, title)
-	
+
 	return styles.Toolbar.
 		Width(50).
 		Padding(0, 1).
@@ -302,15 +302,15 @@ func (vr *ViewRenderer) UpdateAnimation(animationID string) {
 		if animation.ID == animationID {
 			elapsed := time.Since(animation.StartTime)
 			progress := float64(elapsed) / float64(animation.Duration)
-			
+
 			if progress >= 1.0 {
 				progress = 1.0
 				animation.Completed = true
 			}
-			
+
 			animation.Progress = vr.applyEasing(progress, animation.Easing)
 			vr.animations.animationQueue[i] = animation
-			
+
 			if animation.Completed {
 				vr.removeCompletedAnimation(animationID)
 			}
@@ -435,7 +435,7 @@ func (vr *ViewRenderer) applyModeLayoutModifications(layout LayoutConfig, mode N
 
 func (vr *ViewRenderer) renderContent(layout LayoutConfig, styles ModeStyles, config RenderConfig) string {
 	var content strings.Builder
-	
+
 	// Render based on layout type
 	switch layout.PanelLayout {
 	case "vertical":
@@ -449,7 +449,7 @@ func (vr *ViewRenderer) renderContent(layout LayoutConfig, styles ModeStyles, co
 	default:
 		content.WriteString(vr.renderStandardLayout(layout, styles, config))
 	}
-	
+
 	return content.String()
 }
 
@@ -505,12 +505,12 @@ func (vr *ViewRenderer) generateAccessibilityInfo(layout LayoutConfig, mode Navi
 			"sidebar": "Navigation sidebar",
 			"toolbar": "Application toolbar",
 		},
-		TabOrder:        []string{"toolbar", "sidebar", "main", "statusbar"},
-		Landmarks:       []string{"banner", "navigation", "main", "contentinfo"},
+		TabOrder:  []string{"toolbar", "sidebar", "main", "statusbar"},
+		Landmarks: []string{"banner", "navigation", "main", "contentinfo"},
 		HeadingStructure: []HeadingInfo{
 			{Level: 1, Text: "TaskMaster", ID: "main-title", Section: "header"},
 		},
-		FocusPath:       []string{"main"},
+		FocusPath:        []string{"main"},
 		ScreenReaderText: fmt.Sprintf("Navigation mode: %s, View mode: %s", mode.String(), vr.currentView.String()),
 	}
 }
@@ -583,15 +583,15 @@ func NewDefaultRenderStyles() *RenderStyles {
 	primaryBg := lipgloss.Color("#1a1a1a")
 	primaryFg := lipgloss.Color("#ffffff")
 	accentColor := lipgloss.Color("#7c3aed")
-	
+
 	baseStyle := lipgloss.NewStyle().
 		Foreground(primaryFg).
 		Background(primaryBg)
-	
+
 	selectedStyle := baseStyle.Copy().
 		Background(accentColor).
 		Bold(true)
-	
+
 	focusedStyle := baseStyle.Copy().
 		Border(lipgloss.RoundedBorder()).
 		BorderForeground(accentColor)
@@ -653,9 +653,9 @@ func NewAnimationManager() *AnimationManager {
 
 func NewLayoutManager() *LayoutManager {
 	return &LayoutManager{
-		layouts:     make(map[string]LayoutConfig),
+		layouts:      make(map[string]LayoutConfig),
 		adaptiveMode: true,
-		panelStates: make(map[string]PanelState),
+		panelStates:  make(map[string]PanelState),
 	}
 }
 

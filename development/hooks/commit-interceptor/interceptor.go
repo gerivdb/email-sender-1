@@ -13,34 +13,34 @@ import (
 
 // CommitData represents the data extracted from a commit
 type CommitData struct {
-	Hash		string		`json:"hash"`
-	Message		string		`json:"message"`
-	Author		string		`json:"author"`
-	Timestamp	time.Time	`json:"timestamp"`
-	Files		[]string	`json:"files"`
-	Branch		string		`json:"branch"`
-	Repository	string		`json:"repository"`
+	Hash       string    `json:"hash"`
+	Message    string    `json:"message"`
+	Author     string    `json:"author"`
+	Timestamp  time.Time `json:"timestamp"`
+	Files      []string  `json:"files"`
+	Branch     string    `json:"branch"`
+	Repository string    `json:"repository"`
 }
 
 // GitWebhookPayload represents the incoming Git webhook payload
 type GitWebhookPayload struct {
-	Commits	[]struct {
-		ID		string		`json:"id"`
-		Message		string		`json:"message"`
-		Timestamp	time.Time	`json:"timestamp"`
-		Author		struct {
-			Name	string	`json:"name"`
-			Email	string	`json:"email"`
-		}	`json:"author"`
-		Added		[]string	`json:"added"`
-		Removed		[]string	`json:"removed"`
-		Modified	[]string	`json:"modified"`
-	}	`json:"commits"`
-	Repository	struct {
-		Name		string	`json:"name"`
-		FullName	string	`json:"full_name"`
-	}	`json:"repository"`
-	Ref	string	`json:"ref"`
+	Commits []struct {
+		ID        string    `json:"id"`
+		Message   string    `json:"message"`
+		Timestamp time.Time `json:"timestamp"`
+		Author    struct {
+			Name  string `json:"name"`
+			Email string `json:"email"`
+		} `json:"author"`
+		Added    []string `json:"added"`
+		Removed  []string `json:"removed"`
+		Modified []string `json:"modified"`
+	} `json:"commits"`
+	Repository struct {
+		Name     string `json:"name"`
+		FullName string `json:"full_name"`
+	} `json:"repository"`
+	Ref string `json:"ref"`
 }
 
 // ParseGitWebhookPayload parses Git webhook payload from HTTP request
@@ -73,13 +73,13 @@ func ParseGitWebhookPayload(r *http.Request) (*CommitData, error) {
 	branch := strings.TrimPrefix(payload.Ref, "refs/heads/")
 
 	return &CommitData{
-		Hash:		commit.ID,
-		Message:	commit.Message,
-		Author:		commit.Author.Name,
-		Timestamp:	commit.Timestamp,
-		Files:		files,
-		Branch:		branch,
-		Repository:	payload.Repository.FullName,
+		Hash:       commit.ID,
+		Message:    commit.Message,
+		Author:     commit.Author.Name,
+		Timestamp:  commit.Timestamp,
+		Files:      files,
+		Branch:     branch,
+		Repository: payload.Repository.FullName,
 	}, nil
 }
 
@@ -121,7 +121,7 @@ func ExtractCommitMetadata(commitHash string) (*CommitData, error) {
 	// Parse timestamp
 	timestamp, err := time.Parse("1136239445", strings.TrimSpace(string(timestampOutput)))
 	if err != nil {
-		timestamp = time.Now()	// Fallback to current time
+		timestamp = time.Now() // Fallback to current time
 	}
 
 	// Get changed files
@@ -146,12 +146,12 @@ func ExtractCommitMetadata(commitHash string) (*CommitData, error) {
 	branch := strings.TrimSpace(string(branchOutput))
 
 	return &CommitData{
-		Hash:		commitHash,
-		Message:	message,
-		Author:		author,
-		Timestamp:	timestamp,
-		Files:		files,
-		Branch:		branch,
+		Hash:      commitHash,
+		Message:   message,
+		Author:    author,
+		Timestamp: timestamp,
+		Files:     files,
+		Branch:    branch,
 	}, nil
 }
 

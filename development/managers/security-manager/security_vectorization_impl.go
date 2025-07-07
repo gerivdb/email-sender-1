@@ -139,7 +139,7 @@ func (sm *SecurityManagerImpl) BuildBaselineProfile(ctx context.Context, events 
 		}
 
 		embeddings = append(embeddings, embedding)
-		
+
 		// Créer un pattern embedding
 		patterns = append(patterns, PatternEmbedding{
 			Pattern:   eventText,
@@ -153,13 +153,13 @@ func (sm *SecurityManagerImpl) BuildBaselineProfile(ctx context.Context, events 
 
 	// Créer le profil de sécurité
 	profile := &SecurityProfile{
-		ID:               uuid.New().String(),
-		Name:             "Baseline Security Profile",
+		ID:                uuid.New().String(),
+		Name:              "Baseline Security Profile",
 		BaselineEmbedding: baselineEmbedding,
-		NormalPatterns:   patterns,
-		CreatedAt:        time.Now(),
-		UpdatedAt:        time.Now(),
-		EventCount:       len(events),
+		NormalPatterns:    patterns,
+		CreatedAt:         time.Now(),
+		UpdatedAt:         time.Now(),
+		EventCount:        len(events),
 	}
 
 	// Stocker le profil
@@ -186,7 +186,7 @@ func (sm *SecurityManagerImpl) DetectAnomalies(ctx context.Context, event Securi
 
 	// Calculer la similarité avec la baseline
 	similarity := sm.calculateCosineSimilarity(
-		eventEmbedding, 
+		eventEmbedding,
 		sm.anomalyDetector.baselineProfile.BaselineEmbedding,
 	)
 
@@ -202,10 +202,10 @@ func (sm *SecurityManagerImpl) DetectAnomalies(ctx context.Context, event Securi
 			Recommendation: "Investigate this unusual security event pattern",
 			DetectedAt:     time.Now(),
 			Metadata: map[string]interface{}{
-				"similarity":       similarity,
-				"threshold":        sm.anomalyDetector.thresholds.SimilarityThreshold,
-				"event_type":       event.Type,
-				"event_source":     event.Source,
+				"similarity":   similarity,
+				"threshold":    sm.anomalyDetector.thresholds.SimilarityThreshold,
+				"event_type":   event.Type,
+				"event_source": event.Source,
 			},
 		}
 		anomalies = append(anomalies, anomaly)
@@ -244,13 +244,13 @@ func (sm *SecurityManagerImpl) UpdateBaseline(ctx context.Context, event Securit
 
 	// Mettre à jour la baseline avec une moyenne pondérée
 	profile := sm.anomalyDetector.baselineProfile
-	
+
 	// Facteur de lissage pour la mise à jour incrémentale
 	alpha := 0.1
 	for i := range profile.BaselineEmbedding {
 		profile.BaselineEmbedding[i] = float32(
-			(1-alpha)*float64(profile.BaselineEmbedding[i]) + 
-			alpha*float64(eventEmbedding[i]),
+			(1-alpha)*float64(profile.BaselineEmbedding[i]) +
+				alpha*float64(eventEmbedding[i]),
 		)
 	}
 
@@ -273,7 +273,7 @@ func (sm *SecurityManagerImpl) GetAnomalyReport(ctx context.Context, timeRange T
 	for _, event := range sm.anomalyDetector.recentEvents {
 		if event.Timestamp.After(timeRange.Start) && event.Timestamp.Before(timeRange.End) {
 			totalEvents++
-			
+
 			// Détecter les anomalies pour cet événement
 			eventAnomalies, err := sm.DetectAnomalies(ctx, event)
 			if err == nil {
@@ -343,13 +343,13 @@ func (sm *SecurityManagerImpl) TrainClassifier(ctx context.Context, trainData []
 
 		// Stocker dans Qdrant avec la classification
 		payload := map[string]interface{}{
-			"vuln_id":       data.Vulnerability.ID,
-			"cve":           data.Vulnerability.CVE,
-			"category":      data.Classification.Category,
-			"subcategory":   data.Classification.Subcategory,
-			"severity":      data.Vulnerability.Severity,
-			"cvss":          data.Vulnerability.CVSS,
-			"confidence":    data.Classification.Confidence,
+			"vuln_id":     data.Vulnerability.ID,
+			"cve":         data.Vulnerability.CVE,
+			"category":    data.Classification.Category,
+			"subcategory": data.Classification.Subcategory,
+			"severity":    data.Vulnerability.Severity,
+			"cvss":        data.Vulnerability.CVSS,
+			"confidence":  data.Classification.Confidence,
 		}
 
 		err = sm.qdrant.StoreVector(ctx, "vulnerabilities", data.Vulnerability.ID, embedding, payload)
@@ -393,10 +393,10 @@ func (sm *SecurityManagerImpl) GetVulnerabilityInsights(ctx context.Context, vul
 
 	// Construire les insights
 	insights := &VulnInsights{
-		VulnID:           vulnID,
-		SimilarVulns:     sm.buildSimilarVulns(results, vulnID),
-		TrendAnalysis:    sm.analyzeTrends(*vuln),
-		ImpactAssessment: sm.assessImpact(*vuln),
+		VulnID:             vulnID,
+		SimilarVulns:       sm.buildSimilarVulns(results, vulnID),
+		TrendAnalysis:      sm.analyzeTrends(*vuln),
+		ImpactAssessment:   sm.assessImpact(*vuln),
 		RecommendedActions: sm.generateRecommendedActions(*vuln),
 	}
 

@@ -95,7 +95,7 @@ func (p *CircularDependencyPattern) Detect(node ast.Node, info *types.Info, fset
 
 	if importSpec, ok := node.(*ast.ImportSpec); ok {
 		importPath := strings.Trim(importSpec.Path.Value, "\"")
-		
+
 		// Logic to detect circular imports would be more complex
 		// This is a simplified version
 		if p.hasCircularDependency(importPath) {

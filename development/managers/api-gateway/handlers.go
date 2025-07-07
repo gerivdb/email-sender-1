@@ -18,9 +18,9 @@ import (
 // @Router /health [get]
 func (ag *APIGateway) healthCheck(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"status":	"healthy",
-		"timestamp":	"2025-01-05T00:00:00Z",
-		"version":	"v57-consolidation",
+		"status":    "healthy",
+		"timestamp": "2025-01-05T00:00:00Z",
+		"version":   "v57-consolidation",
 	})
 }
 
@@ -50,10 +50,10 @@ func (ag *APIGateway) readinessCheck(c *gin.Context) {
 	ready := readyCount == totalCount
 
 	response := gin.H{
-		"ready":	ready,
-		"ready_count":	readyCount,
-		"total_count":	totalCount,
-		"timestamp":	"2025-01-05T00:00:00Z",
+		"ready":       ready,
+		"ready_count": readyCount,
+		"total_count": totalCount,
+		"timestamp":   "2025-01-05T00:00:00Z",
 	}
 
 	if ready {
@@ -78,17 +78,17 @@ func (ag *APIGateway) listManagers(c *gin.Context) {
 		status := manager.GetStatus()
 		metrics := manager.GetMetrics()
 		managers = append(managers, map[string]interface{}{
-			"name":		name,
-			"status":	status["status"],
-			"last_check":	status["last_check"],
-			"errors":	status["errors"],
-			"metrics":	metrics,
+			"name":       name,
+			"status":     status["status"],
+			"last_check": status["last_check"],
+			"errors":     status["errors"],
+			"metrics":    metrics,
 		})
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"managers":	managers,
-		"count":	len(managers),
+		"managers": managers,
+		"count":    len(managers),
 	})
 }
 
@@ -107,8 +107,8 @@ func (ag *APIGateway) getManagerStatus(c *gin.Context) {
 	manager, exists := ag.managers[managerName]
 	if !exists {
 		c.JSON(http.StatusNotFound, gin.H{
-			"error":	"Manager not found",
-			"name":		managerName,
+			"error": "Manager not found",
+			"name":  managerName,
 		})
 		return
 	}
@@ -133,8 +133,8 @@ func (ag *APIGateway) executeManagerAction(c *gin.Context) {
 	manager, exists := ag.managers[managerName]
 	if !exists {
 		c.JSON(http.StatusNotFound, gin.H{
-			"error":	"Manager not found",
-			"name":		managerName,
+			"error": "Manager not found",
+			"name":  managerName,
 		})
 		return
 	}
@@ -142,8 +142,8 @@ func (ag *APIGateway) executeManagerAction(c *gin.Context) {
 	var actionRequest map[string]interface{}
 	if err := c.ShouldBindJSON(&actionRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error":	"Invalid action request",
-			"details":	err.Error(),
+			"error":   "Invalid action request",
+			"details": err.Error(),
 		})
 		return
 	}
@@ -164,8 +164,8 @@ func (ag *APIGateway) executeManagerAction(c *gin.Context) {
 		err := manager.Start(ctx)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"error":	"Failed to start manager",
-				"details":	err.Error(),
+				"error":   "Failed to start manager",
+				"details": err.Error(),
 			})
 			return
 		}
@@ -173,8 +173,8 @@ func (ag *APIGateway) executeManagerAction(c *gin.Context) {
 		err := manager.Stop(ctx)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"error":	"Failed to stop manager",
-				"details":	err.Error(),
+				"error":   "Failed to stop manager",
+				"details": err.Error(),
 			})
 			return
 		}
@@ -182,32 +182,32 @@ func (ag *APIGateway) executeManagerAction(c *gin.Context) {
 		err := manager.Stop(ctx)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"error":	"Failed to stop manager for restart",
-				"details":	err.Error(),
+				"error":   "Failed to stop manager for restart",
+				"details": err.Error(),
 			})
 			return
 		}
 		err = manager.Start(ctx)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"error":	"Failed to start manager after restart",
-				"details":	err.Error(),
+				"error":   "Failed to start manager after restart",
+				"details": err.Error(),
 			})
 			return
 		}
 	default:
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error":	"Unsupported action",
-			"action":	action,
-			"supported":	[]string{"start", "stop", "restart"},
+			"error":     "Unsupported action",
+			"action":    action,
+			"supported": []string{"start", "stop", "restart"},
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message":	"Action executed successfully",
-		"manager":	managerName,
-		"action":	action,
+		"message": "Action executed successfully",
+		"manager": managerName,
+		"action":  action,
 	})
 }
 
@@ -226,8 +226,8 @@ func (ag *APIGateway) getManagerMetrics(c *gin.Context) {
 	manager, exists := ag.managers[managerName]
 	if !exists {
 		c.JSON(http.StatusNotFound, gin.H{
-			"error":	"Manager not found",
-			"name":		managerName,
+			"error": "Manager not found",
+			"name":  managerName,
 		})
 		return
 	}
@@ -249,8 +249,8 @@ func (ag *APIGateway) searchVectors(c *gin.Context) {
 	var searchRequest map[string]interface{}
 	if err := c.ShouldBindJSON(&searchRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error":	"Invalid search request",
-			"details":	err.Error(),
+			"error":   "Invalid search request",
+			"details": err.Error(),
 		})
 		return
 	}
@@ -259,21 +259,21 @@ func (ag *APIGateway) searchVectors(c *gin.Context) {
 	// En réalité, cela appellerait le vector client
 	results := []map[string]interface{}{
 		{
-			"id":		"vec_1",
-			"score":	0.95,
-			"vector":	[]float32{1.0, 2.0, 3.0},
+			"id":     "vec_1",
+			"score":  0.95,
+			"vector": []float32{1.0, 2.0, 3.0},
 		},
 		{
-			"id":		"vec_2",
-			"score":	0.87,
-			"vector":	[]float32{4.0, 5.0, 6.0},
+			"id":     "vec_2",
+			"score":  0.87,
+			"vector": []float32{4.0, 5.0, 6.0},
 		},
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"results":	results,
-		"count":	len(results),
-		"query":	searchRequest,
+		"results": results,
+		"count":   len(results),
+		"query":   searchRequest,
 	})
 }
 
@@ -290,16 +290,16 @@ func (ag *APIGateway) upsertVectors(c *gin.Context) {
 	var upsertRequest map[string]interface{}
 	if err := c.ShouldBindJSON(&upsertRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error":	"Invalid upsert request",
-			"details":	err.Error(),
+			"error":   "Invalid upsert request",
+			"details": err.Error(),
 		})
 		return
 	}
 
 	// Simulation de l'upsert
 	c.JSON(http.StatusOK, gin.H{
-		"message":	"Vectors upserted successfully",
-		"count":	1,	// Compter les vecteurs de la requête
+		"message": "Vectors upserted successfully",
+		"count":   1, // Compter les vecteurs de la requête
 	})
 }
 
@@ -336,10 +336,10 @@ func (ag *APIGateway) listVectors(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"vectors":	vectors,
-		"count":	len(vectors),
-		"limit":	limit,
-		"offset":	offset,
+		"vectors": vectors,
+		"count":   len(vectors),
+		"limit":   limit,
+		"offset":  offset,
 	})
 }
 
@@ -357,8 +357,8 @@ func (ag *APIGateway) deleteVector(c *gin.Context) {
 
 	// Simulation de la suppression
 	c.JSON(http.StatusOK, gin.H{
-		"message":	"Vector deleted successfully",
-		"vector_id":	vectorID,
+		"message":   "Vector deleted successfully",
+		"vector_id": vectorID,
 	})
 }
 
@@ -376,20 +376,20 @@ func (ag *APIGateway) getConfig(c *gin.Context) {
 
 	// Simulation - en réalité utiliserait le config-manager
 	configs := map[string]interface{}{
-		"qdrant_host":	"localhost:6333",
-		"log_level":	"info",
-		"max_workers":	10,
+		"qdrant_host": "localhost:6333",
+		"log_level":   "info",
+		"max_workers": 10,
 	}
 
 	if value, exists := configs[key]; exists {
 		c.JSON(http.StatusOK, gin.H{
-			"key":		key,
-			"value":	value,
+			"key":   key,
+			"value": value,
 		})
 	} else {
 		c.JSON(http.StatusNotFound, gin.H{
-			"error":	"Configuration key not found",
-			"key":		key,
+			"error": "Configuration key not found",
+			"key":   key,
 		})
 	}
 }
@@ -410,8 +410,8 @@ func (ag *APIGateway) setConfig(c *gin.Context) {
 	var configRequest map[string]interface{}
 	if err := c.ShouldBindJSON(&configRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error":	"Invalid config request",
-			"details":	err.Error(),
+			"error":   "Invalid config request",
+			"details": err.Error(),
 		})
 		return
 	}
@@ -426,9 +426,9 @@ func (ag *APIGateway) setConfig(c *gin.Context) {
 
 	// Simulation de la mise à jour
 	c.JSON(http.StatusOK, gin.H{
-		"message":	"Configuration updated successfully",
-		"key":		key,
-		"value":	value,
+		"message": "Configuration updated successfully",
+		"key":     key,
+		"value":   value,
 	})
 }
 
@@ -443,15 +443,15 @@ func (ag *APIGateway) setConfig(c *gin.Context) {
 func (ag *APIGateway) getAllConfigs(c *gin.Context) {
 	// Simulation - en réalité utiliserait le config-manager
 	configs := map[string]interface{}{
-		"qdrant_host":	"localhost:6333",
-		"log_level":	"info",
-		"max_workers":	10,
-		"cache_size":	1000,
+		"qdrant_host": "localhost:6333",
+		"log_level":   "info",
+		"max_workers": 10,
+		"cache_size":  1000,
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"configs":	configs,
-		"count":	len(configs),
+		"configs": configs,
+		"count":   len(configs),
 	})
 }
 
@@ -475,23 +475,23 @@ func (ag *APIGateway) getEvents(c *gin.Context) {
 	// Simulation d'événements
 	events := []map[string]interface{}{
 		{
-			"id":		"evt_1",
-			"type":		"manager.started",
-			"manager":	"vector-manager",
-			"timestamp":	"2025-01-05T10:00:00Z",
+			"id":        "evt_1",
+			"type":      "manager.started",
+			"manager":   "vector-manager",
+			"timestamp": "2025-01-05T10:00:00Z",
 		},
 		{
-			"id":		"evt_2",
-			"type":		"search.completed",
-			"duration":	"120ms",
-			"timestamp":	"2025-01-05T10:01:00Z",
+			"id":        "evt_2",
+			"type":      "search.completed",
+			"duration":  "120ms",
+			"timestamp": "2025-01-05T10:01:00Z",
 		},
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"events":	events,
-		"count":	len(events),
-		"limit":	limit,
+		"events": events,
+		"count":  len(events),
+		"limit":  limit,
 	})
 }
 
@@ -508,16 +508,16 @@ func (ag *APIGateway) publishEvent(c *gin.Context) {
 	var eventRequest map[string]interface{}
 	if err := c.ShouldBindJSON(&eventRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error":	"Invalid event request",
-			"details":	err.Error(),
+			"error":   "Invalid event request",
+			"details": err.Error(),
 		})
 		return
 	}
 
 	// Simulation de la publication
 	c.JSON(http.StatusOK, gin.H{
-		"message":	"Event published successfully",
-		"event":	eventRequest,
+		"message": "Event published successfully",
+		"event":   eventRequest,
 	})
 }
 
@@ -535,9 +535,9 @@ func (ag *APIGateway) subscribeToEvents(c *gin.Context) {
 
 	// Simulation de la souscription
 	c.JSON(http.StatusOK, gin.H{
-		"message":		"Subscribed to events",
-		"topic":		topic,
-		"websocket_url":	"/ws/events/" + topic,
+		"message":       "Subscribed to events",
+		"topic":         topic,
+		"websocket_url": "/ws/events/" + topic,
 	})
 }
 
@@ -569,11 +569,11 @@ func (ag *APIGateway) getSystemStatus(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"system_health":	systemHealth,
-		"healthy_count":	healthyCount,
-		"total_count":		totalCount,
-		"uptime":		"24h",
-		"version":		"v57-consolidation",
+		"system_health": systemHealth,
+		"healthy_count": healthyCount,
+		"total_count":   totalCount,
+		"uptime":        "24h",
+		"version":       "v57-consolidation",
 	})
 }
 
@@ -587,11 +587,11 @@ func (ag *APIGateway) getSystemStatus(c *gin.Context) {
 // @Router /api/v1/monitoring/metrics [get]
 func (ag *APIGateway) getSystemMetrics(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"cpu_usage":		"25.5%",
-		"memory_usage":		"450MB",
-		"active_connections":	50,
-		"requests_per_second":	100,
-		"cache_hit_ratio":	"85.2%",
+		"cpu_usage":           "25.5%",
+		"memory_usage":        "450MB",
+		"active_connections":  50,
+		"requests_per_second": 100,
+		"cache_hit_ratio":     "85.2%",
 	})
 }
 
@@ -605,10 +605,10 @@ func (ag *APIGateway) getSystemMetrics(c *gin.Context) {
 // @Router /api/v1/monitoring/performance [get]
 func (ag *APIGateway) getPerformanceMetrics(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"avg_response_time":	"45ms",
-		"p95_response_time":	"120ms",
-		"p99_response_time":	"250ms",
-		"error_rate":		"0.1%",
-		"throughput":		"1000 req/s",
+		"avg_response_time": "45ms",
+		"p95_response_time": "120ms",
+		"p99_response_time": "250ms",
+		"error_rate":        "0.1%",
+		"throughput":        "1000 req/s",
 	})
 }

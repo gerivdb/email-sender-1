@@ -15,9 +15,9 @@ import (
 )
 
 var (
-	outputJSON	= flag.String("output-json", "list_go_mod_parasites.json", "Chemin du rapport JSON")
-	outputMD	= flag.String("output-md", "report_go_mod_parasites.md", "Chemin du rapport Markdown")
-	rootDir		= flag.String("root", ".", "Racine du monorepo à scanner")
+	outputJSON = flag.String("output-json", "list_go_mod_parasites.json", "Chemin du rapport JSON")
+	outputMD   = flag.String("output-md", "report_go_mod_parasites.md", "Chemin du rapport Markdown")
+	rootDir    = flag.String("root", ".", "Racine du monorepo à scanner")
 )
 
 func main() {

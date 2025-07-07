@@ -13,16 +13,16 @@ func TestBranchRouter_RouteCommit(t *testing.T) {
 	router := NewBranchRouter(getTestConfig())
 
 	analysis := &CommitAnalysis{
-		ChangeType:	"feature",
-		Impact:		"medium",
-		Confidence:	0.95,
+		ChangeType: "feature",
+		Impact:     "medium",
+		Confidence: 0.95,
 		CommitData: &CommitData{
-			Hash:		"test123",
-			Message:	"feat: add user authentication system",
-			Author:		"Test User",
-			Timestamp:	time.Now(),
-			Files:		[]string{"auth.go"},
-			Branch:		"main",
+			Hash:      "test123",
+			Message:   "feat: add user authentication system",
+			Author:    "Test User",
+			Timestamp: time.Now(),
+			Files:     []string{"auth.go"},
+			Branch:    "main",
 		},
 	}
 
@@ -40,16 +40,16 @@ func TestBranchRouter_DryRunMode(t *testing.T) {
 	router := NewBranchRouter(config)
 
 	analysis := &CommitAnalysis{
-		ChangeType:	"feature",
-		Impact:		"medium",
-		Confidence:	0.95,
+		ChangeType: "feature",
+		Impact:     "medium",
+		Confidence: 0.95,
 		CommitData: &CommitData{
-			Hash:		"dryrun123",
-			Message:	"feat: test dry run mode",
-			Author:		"Test User",
-			Timestamp:	time.Now(),
-			Files:		[]string{"test.go"},
-			Branch:		"main",
+			Hash:      "dryrun123",
+			Message:   "feat: test dry run mode",
+			Author:    "Test User",
+			Timestamp: time.Now(),
+			Files:     []string{"test.go"},
+			Branch:    "main",
 		},
 	}
 
@@ -64,14 +64,14 @@ func TestBranchRouter_EdgeCases(t *testing.T) {
 	router := NewBranchRouter(getTestConfig())
 
 	analysis := &CommitAnalysis{
-		ChangeType:	"feature",
-		Impact:		"medium",
-		Confidence:	0.9,
+		ChangeType: "feature",
+		Impact:     "medium",
+		Confidence: 0.9,
 		CommitData: &CommitData{
-			Hash:		"special123",
-			Message:	"feat: add special chars éàü-_@#$%",
-			Files:		[]string{"test.go"},
-			Branch:		"main",
+			Hash:    "special123",
+			Message: "feat: add special chars éàü-_@#$%",
+			Files:   []string{"test.go"},
+			Branch:  "main",
 		},
 	}
 

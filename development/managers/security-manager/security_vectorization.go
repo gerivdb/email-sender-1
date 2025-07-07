@@ -2,15 +2,8 @@ package security
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-	"math"
-	"sort"
-	"strings"
 	"sync"
 	"time"
-
-	"github.com/google/uuid"
 )
 
 // === PHASE 4.2.2: INTERFACES ET STRUCTURES DE VECTORISATION POUR SECURITY MANAGER ===
@@ -59,8 +52,8 @@ type SecurityPolicy struct {
 	ID          string            `json:"id"`
 	Name        string            `json:"name"`
 	Description string            `json:"description"`
-	Category    string            `json:"category"`    // authentication, authorization, encryption, etc.
-	Severity    string            `json:"severity"`    // low, medium, high, critical
+	Category    string            `json:"category"` // authentication, authorization, encryption, etc.
+	Severity    string            `json:"severity"` // low, medium, high, critical
 	Rules       []PolicyRule      `json:"rules"`
 	Conditions  []PolicyCondition `json:"conditions"`
 	Actions     []PolicyAction    `json:"actions"`
@@ -72,12 +65,12 @@ type SecurityPolicy struct {
 
 // PolicyRule représente une règle de politique
 type PolicyRule struct {
-	ID          string      `json:"id"`
-	Name        string      `json:"name"`
-	Expression  string      `json:"expression"`  // Expression logique de la règle
-	Type        string      `json:"type"`        // allow, deny, require, etc.
-	Priority    int         `json:"priority"`
-	Parameters  interface{} `json:"parameters"`
+	ID         string      `json:"id"`
+	Name       string      `json:"name"`
+	Expression string      `json:"expression"` // Expression logique de la règle
+	Type       string      `json:"type"`       // allow, deny, require, etc.
+	Priority   int         `json:"priority"`
+	Parameters interface{} `json:"parameters"`
 }
 
 // PolicyCondition représente une condition de politique
@@ -89,30 +82,30 @@ type PolicyCondition struct {
 
 // PolicyAction représente une action de politique
 type PolicyAction struct {
-	Type       string                 `json:"type"`       // log, alert, block, redirect, etc.
+	Type       string                 `json:"type"` // log, alert, block, redirect, etc.
 	Parameters map[string]interface{} `json:"parameters"`
 }
 
 // AnomalyDetector détecte les anomalies basées sur les embeddings
 type AnomalyDetector struct {
 	vectorizer      VectorizationEngine
-	qdrant         QdrantInterface
+	qdrant          QdrantInterface
 	baselineProfile *SecurityProfile
-	thresholds     AnomalyThresholds
-	recentEvents   []SecurityEvent
-	eventsMu       sync.RWMutex
-	logger         Logger
+	thresholds      AnomalyThresholds
+	recentEvents    []SecurityEvent
+	eventsMu        sync.RWMutex
+	logger          Logger
 }
 
 // SecurityProfile représente un profil de sécurité de référence
 type SecurityProfile struct {
-	ID               string              `json:"id"`
-	Name             string              `json:"name"`
+	ID                string             `json:"id"`
+	Name              string             `json:"name"`
 	BaselineEmbedding []float32          `json:"baseline_embedding"`
-	NormalPatterns   []PatternEmbedding  `json:"normal_patterns"`
-	CreatedAt        time.Time           `json:"created_at"`
-	UpdatedAt        time.Time           `json:"updated_at"`
-	EventCount       int                 `json:"event_count"`
+	NormalPatterns    []PatternEmbedding `json:"normal_patterns"`
+	CreatedAt         time.Time          `json:"created_at"`
+	UpdatedAt         time.Time          `json:"updated_at"`
+	EventCount        int                `json:"event_count"`
 }
 
 // PatternEmbedding représente un pattern avec son embedding
@@ -144,7 +137,7 @@ type SecurityEvent struct {
 
 // VulnerabilityClassifier classe automatiquement les vulnérabilités
 type VulnerabilityClassifier struct {
-	vectorizer       VectorizationEngine
+	vectorizer      VectorizationEngine
 	qdrant          QdrantInterface
 	knownVulns      map[string]*Vulnerability
 	classifications map[string]*VulnClassification
@@ -154,31 +147,31 @@ type VulnerabilityClassifier struct {
 
 // Vulnerability représente une vulnérabilité
 type Vulnerability struct {
-	ID          string            `json:"id"`
-	CVE         string            `json:"cve,omitempty"`
-	Title       string            `json:"title"`
-	Description string            `json:"description"`
-	Severity    string            `json:"severity"`
-	CVSS        float64           `json:"cvss"`
-	Category    string            `json:"category"`
-	Affected    []string          `json:"affected"`    // Composants affectés
-	References  []string          `json:"references"`
-	Tags        []string          `json:"tags"`
-	CreatedAt   time.Time         `json:"created_at"`
-	UpdatedAt   time.Time         `json:"updated_at"`
+	ID          string                 `json:"id"`
+	CVE         string                 `json:"cve,omitempty"`
+	Title       string                 `json:"title"`
+	Description string                 `json:"description"`
+	Severity    string                 `json:"severity"`
+	CVSS        float64                `json:"cvss"`
+	Category    string                 `json:"category"`
+	Affected    []string               `json:"affected"` // Composants affectés
+	References  []string               `json:"references"`
+	Tags        []string               `json:"tags"`
+	CreatedAt   time.Time              `json:"created_at"`
+	UpdatedAt   time.Time              `json:"updated_at"`
 	Metadata    map[string]interface{} `json:"metadata"`
 }
 
 // VulnClassification représente une classification de vulnérabilité
 type VulnClassification struct {
-	ID            string    `json:"id"`
-	Category      string    `json:"category"`
-	Subcategory   string    `json:"subcategory"`
-	Confidence    float64   `json:"confidence"`
-	Reasoning     string    `json:"reasoning"`
-	SuggestedFix  string    `json:"suggested_fix"`
-	Priority      int       `json:"priority"`
-	CreatedAt     time.Time `json:"created_at"`
+	ID           string    `json:"id"`
+	Category     string    `json:"category"`
+	Subcategory  string    `json:"subcategory"`
+	Confidence   float64   `json:"confidence"`
+	Reasoning    string    `json:"reasoning"`
+	SuggestedFix string    `json:"suggested_fix"`
+	Priority     int       `json:"priority"`
+	CreatedAt    time.Time `json:"created_at"`
 }
 
 // Logger interface simple pour le logging
@@ -196,19 +189,19 @@ type SecurityVectorization interface {
 	UpdatePolicyIndex(ctx context.Context, policyID string) error
 	RemovePolicyIndex(ctx context.Context, policyID string) error
 	SearchSimilarPolicies(ctx context.Context, policyID string, threshold float64) ([]PolicyMatch, error)
-	
+
 	// Phase 4.2.2.2: Détection d'anomalies basée sur embeddings
 	BuildBaselineProfile(ctx context.Context, events []SecurityEvent) error
 	DetectAnomalies(ctx context.Context, event SecurityEvent) ([]Anomaly, error)
 	UpdateBaseline(ctx context.Context, event SecurityEvent) error
 	GetAnomalyReport(ctx context.Context, timeRange TimeRange) (*AnomalyReport, error)
-	
+
 	// Phase 4.2.2.3: Classification automatique des vulnérabilités
 	ClassifyVulnerability(ctx context.Context, vuln Vulnerability) (*VulnClassification, error)
 	TrainClassifier(ctx context.Context, trainData []VulnTrainingData) error
 	GetVulnerabilityInsights(ctx context.Context, vulnID string) (*VulnInsights, error)
 	SuggestMitigations(ctx context.Context, vulnID string) ([]Mitigation, error)
-	
+
 	// Méthodes de gestion
 	EnableSecurityVectorization() error
 	DisableSecurityVectorization() error
@@ -226,15 +219,15 @@ type PolicyMatch struct {
 
 // Anomaly représente une anomalie détectée
 type Anomaly struct {
-	ID              string                 `json:"id"`
-	EventID         string                 `json:"event_id"`
-	Type            string                 `json:"type"`
-	Severity        string                 `json:"severity"`
-	DeviationScore  float64                `json:"deviation_score"`
-	Description     string                 `json:"description"`
-	Recommendation  string                 `json:"recommendation"`
-	DetectedAt      time.Time              `json:"detected_at"`
-	Metadata        map[string]interface{} `json:"metadata"`
+	ID             string                 `json:"id"`
+	EventID        string                 `json:"event_id"`
+	Type           string                 `json:"type"`
+	Severity       string                 `json:"severity"`
+	DeviationScore float64                `json:"deviation_score"`
+	Description    string                 `json:"description"`
+	Recommendation string                 `json:"recommendation"`
+	DetectedAt     time.Time              `json:"detected_at"`
+	Metadata       map[string]interface{} `json:"metadata"`
 }
 
 // TimeRange représente une plage de temps
@@ -245,11 +238,11 @@ type TimeRange struct {
 
 // AnomalyReport représente un rapport d'anomalies
 type AnomalyReport struct {
-	TimeRange    TimeRange `json:"time_range"`
-	TotalEvents  int       `json:"total_events"`
-	Anomalies    []Anomaly `json:"anomalies"`
-	Summary      AnomalySummary `json:"summary"`
-	GeneratedAt  time.Time `json:"generated_at"`
+	TimeRange   TimeRange      `json:"time_range"`
+	TotalEvents int            `json:"total_events"`
+	Anomalies   []Anomaly      `json:"anomalies"`
+	Summary     AnomalySummary `json:"summary"`
+	GeneratedAt time.Time      `json:"generated_at"`
 }
 
 // AnomalySummary résumé des anomalies
@@ -263,16 +256,16 @@ type AnomalySummary struct {
 
 // VulnTrainingData données d'entraînement pour le classificateur
 type VulnTrainingData struct {
-	Vulnerability  Vulnerability       `json:"vulnerability"`
-	Classification VulnClassification  `json:"classification"`
+	Vulnerability  Vulnerability      `json:"vulnerability"`
+	Classification VulnClassification `json:"classification"`
 }
 
 // VulnInsights insights sur une vulnérabilité
 type VulnInsights struct {
-	VulnID           string              `json:"vuln_id"`
-	SimilarVulns     []SimilarVuln       `json:"similar_vulns"`
-	TrendAnalysis    TrendAnalysis       `json:"trend_analysis"`
-	ImpactAssessment ImpactAssessment    `json:"impact_assessment"`
+	VulnID             string              `json:"vuln_id"`
+	SimilarVulns       []SimilarVuln       `json:"similar_vulns"`
+	TrendAnalysis      TrendAnalysis       `json:"trend_analysis"`
+	ImpactAssessment   ImpactAssessment    `json:"impact_assessment"`
 	RecommendedActions []RecommendedAction `json:"recommended_actions"`
 }
 
@@ -286,18 +279,18 @@ type SimilarVuln struct {
 
 // TrendAnalysis analyse de tendance
 type TrendAnalysis struct {
-	Frequency      int     `json:"frequency"`
-	Trend          string  `json:"trend"` // increasing, decreasing, stable
-	Seasonality    bool    `json:"seasonality"`
-	PredictedRisk  float64 `json:"predicted_risk"`
+	Frequency     int     `json:"frequency"`
+	Trend         string  `json:"trend"` // increasing, decreasing, stable
+	Seasonality   bool    `json:"seasonality"`
+	PredictedRisk float64 `json:"predicted_risk"`
 }
 
 // ImpactAssessment évaluation d'impact
 type ImpactAssessment struct {
-	BusinessImpact   string  `json:"business_impact"`
-	TechnicalImpact  string  `json:"technical_impact"`
-	RiskScore        float64 `json:"risk_score"`
-	AffectedSystems  []string `json:"affected_systems"`
+	BusinessImpact  string   `json:"business_impact"`
+	TechnicalImpact string   `json:"technical_impact"`
+	RiskScore       float64  `json:"risk_score"`
+	AffectedSystems []string `json:"affected_systems"`
 }
 
 // RecommendedAction action recommandée
@@ -310,22 +303,22 @@ type RecommendedAction struct {
 
 // Mitigation mesure d'atténuation
 type Mitigation struct {
-	ID           string    `json:"id"`
-	Type         string    `json:"type"`
-	Description  string    `json:"description"`
-	Effectiveness float64  `json:"effectiveness"`
+	ID             string  `json:"id"`
+	Type           string  `json:"type"`
+	Description    string  `json:"description"`
+	Effectiveness  float64 `json:"effectiveness"`
 	Implementation string  `json:"implementation"`
-	Cost         string    `json:"cost"`
-	Timeline     string    `json:"timeline"`
+	Cost           string  `json:"cost"`
+	Timeline       string  `json:"timeline"`
 }
 
 // SecurityVectorizationMetrics métriques de vectorisation sécurité
 type SecurityVectorizationMetrics struct {
-	IndexedPolicies      int       `json:"indexed_policies"`
-	IndexedVulns         int       `json:"indexed_vulns"`
-	ProcessedEvents      int       `json:"processed_events"`
-	DetectedAnomalies    int       `json:"detected_anomalies"`
-	LastUpdate           time.Time `json:"last_update"`
-	VectorizationEnabled bool      `json:"vectorization_enabled"`
+	IndexedPolicies      int            `json:"indexed_policies"`
+	IndexedVulns         int            `json:"indexed_vulns"`
+	ProcessedEvents      int            `json:"processed_events"`
+	DetectedAnomalies    int            `json:"detected_anomalies"`
+	LastUpdate           time.Time      `json:"last_update"`
+	VectorizationEnabled bool           `json:"vectorization_enabled"`
 	Collections          map[string]int `json:"collections"`
 }

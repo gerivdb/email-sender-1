@@ -46,29 +46,29 @@ func printUsage() {
 
 func testConnection(client *client.QdrantClient) {
 	fmt.Println("Testing QDrant connection...")
-	
+
 	if err := client.HealthCheck(); err != nil {
 		log.Fatalf("Connection failed: %v", err)
 	}
-	
+
 	fmt.Println("✓ QDrant connection successful!")
 }
 
 func indexDocument(client *client.QdrantClient, document string) {
 	fmt.Printf("Indexing document: %s\n", document)
-	
+
 	// Créer collection si elle n'existe pas
 	err := client.CreateCollection("documents", 384)
 	if err != nil {
 		fmt.Printf("Collection exists or created: %v\n", err)
 	}
-	
+
 	// Simuler un vecteur (à remplacer par de vrais embeddings)
 	vector := make([]float32, 384)
 	for i := range vector {
 		vector[i] = 0.1 // Simulation simple
 	}
-	
+
 	// Créer le point
 	points := []client.Point{
 		{
@@ -80,35 +80,35 @@ func indexDocument(client *client.QdrantClient, document string) {
 			},
 		},
 	}
-	
+
 	// Indexer
 	if err := client.UpsertPoints("documents", points); err != nil {
 		log.Fatalf("Indexing failed: %v", err)
 	}
-	
+
 	fmt.Println("✓ Document indexed successfully!")
 }
 
 func searchDocuments(client *client.QdrantClient, query string) {
 	fmt.Printf("Searching for: %s\n", query)
-	
+
 	// Simuler un vecteur de requête
 	vector := make([]float32, 384)
 	for i := range vector {
 		vector[i] = 0.1 // Simulation simple
 	}
-	
+
 	// Rechercher
 	results, err := client.Search("documents", client.SearchRequest{
 		Vector:      vector,
 		Limit:       5,
 		WithPayload: true,
 	})
-	
+
 	if err != nil {
 		log.Fatalf("Search failed: %v", err)
 	}
-	
+
 	fmt.Printf("Found %d results:\n", len(results))
 	for i, result := range results {
 		fmt.Printf("%d. Score: %.4f\n", i+1, result.Score)

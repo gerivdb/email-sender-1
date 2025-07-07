@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/interfaces"
@@ -12,8 +13,8 @@ import (
 
 // ConfigFile représente un fichier de configuration de dépendances
 type ConfigFile struct {
-	Path         string
-	Type         string // "go.mod", "package.json", etc.
+	Path           string
+	Type           string // "go.mod", "package.json", etc.
 	PackageManager string // "go", "npm", "yarn"
 }
 
@@ -25,8 +26,8 @@ func (dm *DependencyManagerImpl) detectConfigFiles(projectPath string) ([]Config
 	goModPath := filepath.Join(projectPath, "go.mod")
 	if _, err := os.Stat(goModPath); err == nil {
 		configFiles = append(configFiles, ConfigFile{
-			Path:         goModPath,
-			Type:         "go.mod",
+			Path:           goModPath,
+			Type:           "go.mod",
 			PackageManager: "go",
 		})
 	}
@@ -35,8 +36,8 @@ func (dm *DependencyManagerImpl) detectConfigFiles(projectPath string) ([]Config
 	packageJsonPath := filepath.Join(projectPath, "package.json")
 	if _, err := os.Stat(packageJsonPath); err == nil {
 		configFiles = append(configFiles, ConfigFile{
-			Path:         packageJsonPath,
-			Type:         "package.json", 
+			Path:           packageJsonPath,
+			Type:           "package.json",
 			PackageManager: "npm",
 		})
 	}
@@ -57,8 +58,8 @@ func (dm *DependencyManagerImpl) detectConfigFiles(projectPath string) ([]Config
 	cargoTomlPath := filepath.Join(projectPath, "Cargo.toml")
 	if _, err := os.Stat(cargoTomlPath); err == nil {
 		configFiles = append(configFiles, ConfigFile{
-			Path:         cargoTomlPath,
-			Type:         "Cargo.toml",
+			Path:           cargoTomlPath,
+			Type:           "Cargo.toml",
 			PackageManager: "cargo",
 		})
 	}
@@ -67,8 +68,8 @@ func (dm *DependencyManagerImpl) detectConfigFiles(projectPath string) ([]Config
 	reqTxtPath := filepath.Join(projectPath, "requirements.txt")
 	if _, err := os.Stat(reqTxtPath); err == nil {
 		configFiles = append(configFiles, ConfigFile{
-			Path:         reqTxtPath,
-			Type:         "requirements.txt",
+			Path:           reqTxtPath,
+			Type:           "requirements.txt",
 			PackageManager: "pip",
 		})
 	}
@@ -107,12 +108,12 @@ func (dm *DependencyManagerImpl) analyzeGoMod(ctx context.Context, modPath strin
 
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
-		
+
 		if strings.HasPrefix(line, "require (") {
 			inRequireBlock = true
 			continue
 		}
-		
+
 		if inRequireBlock && line == ")" {
 			inRequireBlock = false
 			continue
@@ -128,7 +129,7 @@ func (dm *DependencyManagerImpl) analyzeGoMod(ctx context.Context, modPath strin
 			if len(parts) >= 2 {
 				name := strings.TrimPrefix(parts[0], "require ")
 				version := parts[1]
-				
+
 				// Supprimer les commentaires
 				if idx := strings.Index(version, "//"); idx != -1 {
 					version = strings.TrimSpace(version[:idx])
@@ -289,11 +290,11 @@ func (dm *DependencyManagerImpl) detectDependencyConflicts(direct, transitive []
 				}
 
 				conflict := interfaces.DependencyConflict{
-					PackageName:       name,
-					ConflictType:      "version",
+					PackageName:         name,
+					ConflictType:        "version",
 					ConflictingVersions: conflictVersions,
-					Description:       fmt.Sprintf("Multiple versions of %s found: %s", name, strings.Join(conflictVersions, ", ")),
-					Severity:          "high",
+					Description:         fmt.Sprintf("Multiple versions of %s found: %s", name, strings.Join(conflictVersions, ", ")),
+					Severity:            "high",
 				}
 				conflicts = append(conflicts, conflict)
 			}

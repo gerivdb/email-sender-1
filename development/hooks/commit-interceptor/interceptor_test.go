@@ -23,10 +23,10 @@ import (
 
 // TestEnvironment encapsule l'environnement de test isolé
 type TestEnvironment struct {
-	TempDir		string
-	MockRepos	map[string]string
-	OriginalWD	string
-	TestConfig	*Config
+	TempDir    string
+	MockRepos  map[string]string
+	OriginalWD string
+	TestConfig *Config
 }
 
 var globalTestEnv *TestEnvironment
@@ -62,10 +62,10 @@ func setupIsolatedTestEnvironment() *TestEnvironment {
 	}
 
 	return &TestEnvironment{
-		TempDir:	tempDir,
-		MockRepos:	make(map[string]string),
-		OriginalWD:	originalWD,
-		TestConfig:	getTestConfig(),
+		TempDir:    tempDir,
+		MockRepos:  make(map[string]string),
+		OriginalWD: originalWD,
+		TestConfig: getTestConfig(),
 	}
 }
 
@@ -79,50 +79,50 @@ func teardownTestEnvironment(env *TestEnvironment) {
 
 func getTestConfig() *Config {
 	return &Config{
-		TestMode:	true,
+		TestMode: true,
 		Server: ServerConfig{
-			Port:	8080,
-			Host:	"localhost",
+			Port: 8080,
+			Host: "localhost",
 		},
 		Routing: RoutingConfig{
 			Rules: map[string]RoutingRule{
 				"feature": {
-					Patterns:	[]string{"feat:", "feature:"},
-					TargetBranch:	"feature/{name}-{timestamp}",
-					CreateBranch:	true,
+					Patterns:     []string{"feat:", "feature:"},
+					TargetBranch: "feature/{name}-{timestamp}",
+					CreateBranch: true,
 				},
 				"fix": {
-					Patterns:	[]string{"fix:", "bug:"},
-					TargetBranch:	"develop",
-					CreateBranch:	false,
+					Patterns:     []string{"fix:", "bug:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
 				},
 				"hotfix": {
-					Patterns:	[]string{"critical", "hotfix:"},
-					TargetBranch:	"hotfix/{name}-{timestamp}",
-					CreateBranch:	true,
+					Patterns:     []string{"critical", "hotfix:"},
+					TargetBranch: "hotfix/{name}-{timestamp}",
+					CreateBranch: true,
 				},
 				"refactor": {
-					Patterns:	[]string{"refactor:"},
-					TargetBranch:	"refactor/{name}-{timestamp}",
-					CreateBranch:	true,
+					Patterns:     []string{"refactor:"},
+					TargetBranch: "refactor/{name}-{timestamp}",
+					CreateBranch: true,
 				},
 				"docs": {
-					Patterns:	[]string{"docs:", "doc:"},
-					TargetBranch:	"develop",
-					CreateBranch:	false,
+					Patterns:     []string{"docs:", "doc:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
 				},
 				"style": {
-					Patterns:	[]string{"style:", "format:"},
-					TargetBranch:	"develop",
-					CreateBranch:	false,
+					Patterns:     []string{"style:", "format:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
 				},
 				"test": {
-					Patterns:	[]string{"test:", "tests:"},
-					TargetBranch:	"develop",
-					CreateBranch:	false,
+					Patterns:     []string{"test:", "tests:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
 				},
 			},
-			DefaultStrategy:	"develop",
+			DefaultStrategy: "develop",
 		},
 	}
 }
@@ -212,68 +212,68 @@ func generateThreeFileCommit(t *testing.T, repoPath string) *CommitData {
 	require.NoError(t, err, "Git rev-parse failed")
 
 	return &CommitData{
-		Hash:		string(bytes.TrimSpace(hashOutput)),
-		Message:	"feat: add user authentication system",
-		Author:		"Test User",
-		Timestamp:	time.Now(),
-		Files:		files,
-		Branch:		"main",
+		Hash:      string(bytes.TrimSpace(hashOutput)),
+		Message:   "feat: add user authentication system",
+		Author:    "Test User",
+		Timestamp: time.Now(),
+		Files:     files,
+		Branch:    "main",
 	}
 }
 
 type TestResponse struct {
-	StatusCode	int
-	Body		string
+	StatusCode int
+	Body       string
 }
 
 func sendCommitToInterceptor(t *testing.T, commitData *CommitData) *TestResponse {
 	// Create interceptor with test config
 	config := globalTestEnv.TestConfig
 	interceptor := &CommitInterceptor{
-		branchingManager:	NewBranchingManager(config),
-		analyzer:		NewCommitAnalyzer(config),
-		router:			NewBranchRouter(config),
-		config:			config,
+		branchingManager: NewBranchingManager(config),
+		analyzer:         NewCommitAnalyzer(config),
+		router:           NewBranchRouter(config),
+		config:           config,
 	}
 
 	// Create webhook payload
 	payload := GitWebhookPayload{
 		Commits: []struct {
-			ID		string		`json:"id"`
-			Message		string		`json:"message"`
-			Timestamp	time.Time	`json:"timestamp"`
-			Author		struct {
-				Name	string	`json:"name"`
-				Email	string	`json:"email"`
-			}	`json:"author"`
-			Added		[]string	`json:"added"`
-			Removed		[]string	`json:"removed"`
-			Modified	[]string	`json:"modified"`
+			ID        string    `json:"id"`
+			Message   string    `json:"message"`
+			Timestamp time.Time `json:"timestamp"`
+			Author    struct {
+				Name  string `json:"name"`
+				Email string `json:"email"`
+			} `json:"author"`
+			Added    []string `json:"added"`
+			Removed  []string `json:"removed"`
+			Modified []string `json:"modified"`
 		}{
 			{
-				ID:		commitData.Hash,
-				Message:	commitData.Message,
-				Timestamp:	commitData.Timestamp,
+				ID:        commitData.Hash,
+				Message:   commitData.Message,
+				Timestamp: commitData.Timestamp,
 				Author: struct {
-					Name	string	`json:"name"`
-					Email	string	`json:"email"`
+					Name  string `json:"name"`
+					Email string `json:"email"`
 				}{
-					Name:	commitData.Author,
-					Email:	"test@example.com",
+					Name:  commitData.Author,
+					Email: "test@example.com",
 				},
-				Added:		commitData.Files,
-				Removed:	[]string{},
-				Modified:	[]string{},
+				Added:    commitData.Files,
+				Removed:  []string{},
+				Modified: []string{},
 			},
 		},
 		Repository: struct {
-			Name		string	`json:"name"`
-			FullName	string	`json:"full_name"`
+			Name     string `json:"name"`
+			FullName string `json:"full_name"`
 		}{
-			Name:		"test-repo",
-			FullName:	"test/test-repo",
+			Name:     "test-repo",
+			FullName: "test/test-repo",
 		},
-		Ref:	"refs/heads/main",
+		Ref: "refs/heads/main",
 	}
 
 	// Marshal payload
@@ -290,8 +290,8 @@ func sendCommitToInterceptor(t *testing.T, commitData *CommitData) *TestResponse
 	interceptor.HandlePreCommit(recorder, req)
 
 	return &TestResponse{
-		StatusCode:	recorder.Code,
-		Body:		recorder.Body.String(),
+		StatusCode: recorder.Code,
+		Body:       recorder.Body.String(),
 	}
 }
 
@@ -310,12 +310,12 @@ func extractParsedCommitFromLogs(t *testing.T) *CommitData {
 func TestInterceptor_EdgeCase_EmptyCommit(t *testing.T) {
 	// Given: Payload avec commit sans fichiers
 	emptyCommitData := &CommitData{
-		Hash:		"empty123",
-		Message:	"empty: test commit without files",
-		Author:		"Test User",
-		Timestamp:	time.Now(),
-		Files:		[]string{},	// Empty files array
-		Branch:		"main",
+		Hash:      "empty123",
+		Message:   "empty: test commit without files",
+		Author:    "Test User",
+		Timestamp: time.Now(),
+		Files:     []string{}, // Empty files array
+		Branch:    "main",
 	}
 
 	// When: Interceptor traite le commit vide
@@ -344,7 +344,7 @@ func TestInterceptor_DryRun_SimulationMode(t *testing.T) {
 
 	// Then: Validation mode simulation
 	assert.Equal(t, http.StatusOK, response.StatusCode)
-	assert.Contains(t, response.Body, "successfully")	// Processed but no real Git operations
+	assert.Contains(t, response.Body, "successfully") // Processed but no real Git operations
 
 	// Verify no actual Git operations were performed (beyond the test setup)
 	// In test mode, the system should simulate operations without executing them
@@ -358,40 +358,40 @@ func TestCommitAnalyzer_ClassificationAutomatique(t *testing.T) {
 	analyzer := NewCommitAnalyzer(globalTestEnv.TestConfig)
 
 	testCases := []struct {
-		name		string
-		commitMessage	string
-		expectedType	string
-		expectedConf	float64
+		name          string
+		commitMessage string
+		expectedType  string
+		expectedConf  float64
 	}{
 		{
-			name:		"Feature with feat prefix",
-			commitMessage:	"feat: add user authentication system",
-			expectedType:	"feature",
-			expectedConf:	0.95,
+			name:          "Feature with feat prefix",
+			commitMessage: "feat: add user authentication system",
+			expectedType:  "feature",
+			expectedConf:  0.95,
 		},
 		{
-			name:		"Bugfix with fix prefix",
-			commitMessage:	"fix: resolve null pointer exception in validator",
-			expectedType:	"fix",
-			expectedConf:	0.95,
+			name:          "Bugfix with fix prefix",
+			commitMessage: "fix: resolve null pointer exception in validator",
+			expectedType:  "fix",
+			expectedConf:  0.95,
 		},
 		{
-			name:		"Refactoring with refactor prefix",
-			commitMessage:	"refactor: restructure database connection pool",
-			expectedType:	"refactor",
-			expectedConf:	0.95,
+			name:          "Refactoring with refactor prefix",
+			commitMessage: "refactor: restructure database connection pool",
+			expectedType:  "refactor",
+			expectedConf:  0.95,
 		},
 		{
-			name:		"Documentation with docs prefix",
-			commitMessage:	"docs: update API documentation with examples",
-			expectedType:	"docs",
-			expectedConf:	0.95,
+			name:          "Documentation with docs prefix",
+			commitMessage: "docs: update API documentation with examples",
+			expectedType:  "docs",
+			expectedConf:  0.95,
 		},
 		{
-			name:		"Style changes",
-			commitMessage:	"style: fix code formatting and linting issues",
-			expectedType:	"style",
-			expectedConf:	0.90,
+			name:          "Style changes",
+			commitMessage: "style: fix code formatting and linting issues",
+			expectedType:  "style",
+			expectedConf:  0.90,
 		},
 	}
 
@@ -400,10 +400,10 @@ func TestCommitAnalyzer_ClassificationAutomatique(t *testing.T) {
 			// Mesure de performance
 			start := time.Now()
 			analysis, err := analyzer.AnalyzeCommit(&CommitData{
-				Hash:		"abc123def456",	// Hash de test requis
-				Message:	tc.commitMessage,
-				Author:		"Test User",		// Auteur requis
-				Files:		[]string{"test.go"},	// Fichier minimal pour test
+				Hash:    "abc123def456", // Hash de test requis
+				Message: tc.commitMessage,
+				Author:  "Test User",         // Auteur requis
+				Files:   []string{"test.go"}, // Fichier minimal pour test
 			})
 
 			duration := time.Since(start)
@@ -425,62 +425,62 @@ func TestCommitAnalyzer_DetectionImpact(t *testing.T) {
 	analyzer := NewCommitAnalyzer(globalTestEnv.TestConfig)
 
 	impactTestCases := []struct {
-		name		string
-		files		[]string
-		message		string
-		expectedImpact	string
-		reason		string
+		name           string
+		files          []string
+		message        string
+		expectedImpact string
+		reason         string
 	}{
 		{
-			name:		"Low impact - single utility file",
-			files:		[]string{"utils.go"},
-			message:	"fix: update utility function",
-			expectedImpact:	"low",
-			reason:		"1 non-critical file",
+			name:           "Low impact - single utility file",
+			files:          []string{"utils.go"},
+			message:        "fix: update utility function",
+			expectedImpact: "low",
+			reason:         "1 non-critical file",
 		},
 		{
-			name:		"Medium impact - multiple files",
-			files:		[]string{"auth.go", "user.go", "validator.go"},
-			message:	"feat: enhance user management",
-			expectedImpact:	"medium",
-			reason:		"3 files modified",
+			name:           "Medium impact - multiple files",
+			files:          []string{"auth.go", "user.go", "validator.go"},
+			message:        "feat: enhance user management",
+			expectedImpact: "medium",
+			reason:         "3 files modified",
 		},
 		{
-			name:		"High impact - critical file",
-			files:		[]string{"main.go"},
-			message:	"refactor: restructure application entry point",
-			expectedImpact:	"high",
-			reason:		"main.go is critical",
+			name:           "High impact - critical file",
+			files:          []string{"main.go"},
+			message:        "refactor: restructure application entry point",
+			expectedImpact: "high",
+			reason:         "main.go is critical",
 		},
 		{
-			name:		"High impact - many files",
-			files:		[]string{"a.go", "b.go", "c.go", "d.go", "e.go", "f.go", "g.go"},
-			message:	"refactor: major architectural changes",
-			expectedImpact:	"high",
-			reason:		"6+ files modified",
+			name:           "High impact - many files",
+			files:          []string{"a.go", "b.go", "c.go", "d.go", "e.go", "f.go", "g.go"},
+			message:        "refactor: major architectural changes",
+			expectedImpact: "high",
+			reason:         "6+ files modified",
 		},
 		{
-			name:		"High impact - critical message",
-			files:		[]string{"auth.go"},
-			message:	"fix: critical security vulnerability in authentication",
-			expectedImpact:	"high",
-			reason:		"critical keyword in message",
+			name:           "High impact - critical message",
+			files:          []string{"auth.go"},
+			message:        "fix: critical security vulnerability in authentication",
+			expectedImpact: "high",
+			reason:         "critical keyword in message",
 		},
 	}
 
 	for _, tc := range impactTestCases {
 		t.Run(tc.name, func(t *testing.T) {
 			analysis, err := analyzer.AnalyzeCommit(&CommitData{
-				Hash:		"test123hash",	// Hash de test requis
-				Message:	tc.message,
-				Author:		"Test User",	// Auteur requis
-				Files:		tc.files,
+				Hash:    "test123hash", // Hash de test requis
+				Message: tc.message,
+				Author:  "Test User", // Auteur requis
+				Files:   tc.files,
 			})
 
 			require.NoError(t, err)
 			assert.Equal(t, tc.expectedImpact, analysis.Impact,
 				"Expected impact %s but got %s. Reason: %s",
-				tc.expectedImpact, analysis.Impact, tc.reason)	// Validation métadonnées
+				tc.expectedImpact, analysis.Impact, tc.reason) // Validation métadonnées
 			assert.Greater(t, analysis.Confidence, 0.0, "Confidence should be > 0")
 			assert.LessOrEqual(t, analysis.Confidence, 1.0, "Confidence should be <= 1")
 		})
@@ -495,8 +495,8 @@ func BenchmarkCommitAnalysis(b *testing.B) {
 	analyzer := NewCommitAnalyzer(globalTestEnv.TestConfig)
 
 	testCommit := &CommitData{
-		Message:	"feat: add comprehensive user authentication with JWT tokens",
-		Files:		[]string{"auth.go", "jwt.go", "middleware.go", "user.go"},
+		Message: "feat: add comprehensive user authentication with JWT tokens",
+		Files:   []string{"auth.go", "jwt.go", "middleware.go", "user.go"},
 	}
 
 	b.ResetTimer()
@@ -511,39 +511,39 @@ func BenchmarkCommitAnalysis(b *testing.B) {
 func BenchmarkCommitInterception(b *testing.B) {
 	config := globalTestEnv.TestConfig
 	interceptor := &CommitInterceptor{
-		branchingManager:	NewBranchingManager(config),
-		analyzer:		NewCommitAnalyzer(config),
-		router:			NewBranchRouter(config),
-		config:			config,
+		branchingManager: NewBranchingManager(config),
+		analyzer:         NewCommitAnalyzer(config),
+		router:           NewBranchRouter(config),
+		config:           config,
 	}
 
 	// Prepare test payload
 	payload := GitWebhookPayload{
 		Commits: []struct {
-			ID		string		`json:"id"`
-			Message		string		`json:"message"`
-			Timestamp	time.Time	`json:"timestamp"`
-			Author		struct {
-				Name	string	`json:"name"`
-				Email	string	`json:"email"`
-			}	`json:"author"`
-			Added		[]string	`json:"added"`
-			Removed		[]string	`json:"removed"`
-			Modified	[]string	`json:"modified"`
+			ID        string    `json:"id"`
+			Message   string    `json:"message"`
+			Timestamp time.Time `json:"timestamp"`
+			Author    struct {
+				Name  string `json:"name"`
+				Email string `json:"email"`
+			} `json:"author"`
+			Added    []string `json:"added"`
+			Removed  []string `json:"removed"`
+			Modified []string `json:"modified"`
 		}{
 			{
-				ID:		"bench123",
-				Message:	"feat: benchmark test commit",
-				Timestamp:	time.Now(),
+				ID:        "bench123",
+				Message:   "feat: benchmark test commit",
+				Timestamp: time.Now(),
 				Author: struct {
-					Name	string	`json:"name"`
-					Email	string	`json:"email"`
+					Name  string `json:"name"`
+					Email string `json:"email"`
 				}{
-					Name:	"Benchmark User",
-					Email:	"bench@example.com",
+					Name:  "Benchmark User",
+					Email: "bench@example.com",
 				},
-				Added:		[]string{"test.go"},
-				Modified:	[]string{},
+				Added:    []string{"test.go"},
+				Modified: []string{},
 			},
 		},
 	}
@@ -568,32 +568,32 @@ func TestInterceptor_FullWorkflow_Integration(t *testing.T) {
 	// Given: Scenarios with different types of commits
 
 	scenarios := []struct {
-		name		string
-		files		[]string
-		message		string
-		expectedBranch	string
-		expectedImpact	string
+		name           string
+		files          []string
+		message        string
+		expectedBranch string
+		expectedImpact string
 	}{
 		{
-			name:		"Feature Development",
-			files:		[]string{"feature.go", "feature_test.go"},
-			message:	"feat: implement user profile management",
-			expectedBranch:	"feature/user-profile-management",
-			expectedImpact:	"medium",
+			name:           "Feature Development",
+			files:          []string{"feature.go", "feature_test.go"},
+			message:        "feat: implement user profile management",
+			expectedBranch: "feature/user-profile-management",
+			expectedImpact: "medium",
 		},
 		{
-			name:		"Critical Hotfix",
-			files:		[]string{"auth.go"},
-			message:	"fix: critical authentication bypass vulnerability",
-			expectedBranch:	"hotfix/authentication-bypass",
-			expectedImpact:	"high",
+			name:           "Critical Hotfix",
+			files:          []string{"auth.go"},
+			message:        "fix: critical authentication bypass vulnerability",
+			expectedBranch: "hotfix/authentication-bypass",
+			expectedImpact: "high",
 		},
 		{
-			name:		"Documentation Update",
-			files:		[]string{"README.md", "docs/api.md"},
-			message:	"docs: update installation and API documentation",
-			expectedBranch:	"develop",
-			expectedImpact:	"low",
+			name:           "Documentation Update",
+			files:          []string{"README.md", "docs/api.md"},
+			message:        "docs: update installation and API documentation",
+			expectedBranch: "develop",
+			expectedImpact: "low",
 		},
 	}
 
@@ -601,12 +601,12 @@ func TestInterceptor_FullWorkflow_Integration(t *testing.T) {
 		t.Run(scenario.name, func(t *testing.T) {
 			// Create commit data
 			commitData := &CommitData{
-				Hash:		fmt.Sprintf("integration_%d", time.Now().Unix()),
-				Message:	scenario.message,
-				Author:		"Integration Test",
-				Timestamp:	time.Now(),
-				Files:		scenario.files,
-				Branch:		"main",
+				Hash:      fmt.Sprintf("integration_%d", time.Now().Unix()),
+				Message:   scenario.message,
+				Author:    "Integration Test",
+				Timestamp: time.Now(),
+				Files:     scenario.files,
+				Branch:    "main",
 			}
 
 			// Process through full workflow

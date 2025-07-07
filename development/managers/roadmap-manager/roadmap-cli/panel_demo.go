@@ -14,12 +14,12 @@ func runPanelDemo() {
 
 	// Configuration de base
 	layout := panels.LayoutConfig{
-		Type:		panels.LayoutHorizontal,
-		Ratio:		[]float64{0.3, 0.7},
-		Padding:	1,
-		Margin:		1,
-		BorderStyle:	lipgloss.NormalBorder(),
-		Adaptive:	true,
+		Type:        panels.LayoutHorizontal,
+		Ratio:       []float64{0.3, 0.7},
+		Padding:     1,
+		Margin:      1,
+		BorderStyle: lipgloss.NormalBorder(),
+		Adaptive:    true,
 	}
 
 	// Création du gestionnaire de panels
@@ -27,15 +27,15 @@ func runPanelDemo() {
 
 	// Test de création d'un panel
 	panel := &panels.Panel{
-		ID:		"test-panel",
-		Title:		"Test Panel",
-		Position:	panels.Position{X: 0, Y: 0},
-		Size:		panels.Size{Width: 60, Height: 20},
-		Visible:	true,
-		Minimized:	false,
-		ZOrder:		1,
-		Resizable:	true,
-		Movable:	true,
+		ID:        "test-panel",
+		Title:     "Test Panel",
+		Position:  panels.Position{X: 0, Y: 0},
+		Size:      panels.Size{Width: 60, Height: 20},
+		Visible:   true,
+		Minimized: false,
+		ZOrder:    1,
+		Resizable: true,
+		Movable:   true,
 	}
 
 	// Ajout du panel

@@ -13,11 +13,11 @@ import (
 type ValidationStatus string
 
 const (
-	ValidationPending    ValidationStatus = "pending"
-	ValidationRunning    ValidationStatus = "running"
-	ValidationPassed     ValidationStatus = "passed"
-	ValidationFailed     ValidationStatus = "failed"
-	ValidationWarning    ValidationStatus = "warning"
+	ValidationPending ValidationStatus = "pending"
+	ValidationRunning ValidationStatus = "running"
+	ValidationPassed  ValidationStatus = "passed"
+	ValidationFailed  ValidationStatus = "failed"
+	ValidationWarning ValidationStatus = "warning"
 )
 
 // ValidationSeverity représente la sévérité d'un problème
@@ -62,25 +62,25 @@ type ValidationResult struct {
 
 // ValidationIssue représente un problème de validation
 type ValidationIssue struct {
-	Type        string             `json:"type"`
-	Severity    ValidationSeverity `json:"severity"`
-	Message     string             `json:"message"`
-	Location    string             `json:"location"`
-	Suggestion  string             `json:"suggestion"`
-	AutoFixable bool               `json:"auto_fixable"`
-	RuleID      string             `json:"rule_id"`
+	Type        string                 `json:"type"`
+	Severity    ValidationSeverity     `json:"severity"`
+	Message     string                 `json:"message"`
+	Location    string                 `json:"location"`
+	Suggestion  string                 `json:"suggestion"`
+	AutoFixable bool                   `json:"auto_fixable"`
+	RuleID      string                 `json:"rule_id"`
 	Details     map[string]interface{} `json:"details,omitempty"`
 }
 
 // ValidationStats contient les statistiques de validation
 type ValidationStats struct {
-	PlansValidated       int           `json:"plans_validated"`
-	IssuesFound          int           `json:"issues_found"`
-	IssuesFixed          int           `json:"issues_fixed"`
-	AverageScore         float64       `json:"average_score"`
-	AverageValidationTime time.Duration `json:"average_validation_time"`
-	LastValidation       time.Time     `json:"last_validation"`
-	ValidationsByStatus  map[ValidationStatus]int `json:"validations_by_status"`
+	PlansValidated        int                      `json:"plans_validated"`
+	IssuesFound           int                      `json:"issues_found"`
+	IssuesFixed           int                      `json:"issues_fixed"`
+	AverageScore          float64                  `json:"average_score"`
+	AverageValidationTime time.Duration            `json:"average_validation_time"`
+	LastValidation        time.Time                `json:"last_validation"`
+	ValidationsByStatus   map[ValidationStatus]int `json:"validations_by_status"`
 }
 
 // ValidationRule interface pour les règles de validation modulaires
@@ -94,8 +94,8 @@ type ValidationRule interface {
 
 // ValidationData contient les données nécessaires pour la validation
 type ValidationData struct {
-	MarkdownPlan interface{} `json:"markdown_plan"`
-	DynamicPlan  interface{} `json:"dynamic_plan"`
+	MarkdownPlan interface{}       `json:"markdown_plan"`
+	DynamicPlan  interface{}       `json:"dynamic_plan"`
 	Config       *ValidationConfig `json:"config"`
 }
 
@@ -361,16 +361,16 @@ func (cv *ConsistencyValidator) generateSummary(result *ValidationResult) string
 func (cv *ConsistencyValidator) loadValidationData(ctx context.Context, planID string) (ValidationData, error) {
 	// Initialize format parser
 	parser := NewFormatParser()
-	
+
 	// Try to load data from different sources and formats
 	var markdownDoc, dynamicDoc *PlanDocument
 	var err error
-	
+
 	// Try loading as file path first
 	if markdownDoc, err = parser.ParseFile(planID); err != nil {
 		// If file parsing fails, simulate loading from different sources
 		cv.Logger.Printf("📄 Could not parse file %s, using simulated data: %v", planID, err)
-		
+
 		// Return simulated data for testing
 		return ValidationData{
 			MarkdownPlan: map[string]interface{}{
@@ -388,14 +388,14 @@ func (cv *ConsistencyValidator) loadValidationData(ctx context.Context, planID s
 			Config: cv.Config,
 		}, nil
 	}
-	
+
 	// Load dynamic plan data (in a real implementation, this would come from an API)
 	// For now, we'll use the same document but simulate it coming from a different source
 	dynamicDoc = markdownDoc
-	
-	cv.Logger.Printf("📊 Loaded planning data - Format: %s, Phases: %d, Tasks: %d", 
+
+	cv.Logger.Printf("📊 Loaded planning data - Format: %s, Phases: %d, Tasks: %d",
 		markdownDoc.Format, len(markdownDoc.Phases), cv.countTasks(markdownDoc.Phases))
-	
+
 	return ValidationData{
 		MarkdownPlan: markdownDoc,
 		DynamicPlan:  dynamicDoc,

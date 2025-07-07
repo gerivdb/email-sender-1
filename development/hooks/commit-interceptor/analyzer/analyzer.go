@@ -42,13 +42,13 @@ func (a *CommitAnalyzer) classifyByMessage(message string) (string, float64) {
 
 	// Regex pour les types de commits conventionnels
 	patterns := map[string]string{
-		"feature": `^(feat|feature)(\(.+\))?:`,
-		"fix":     `^(fix|bugfix)(\(.+\))?:`,
-		"docs":    `^docs(\(.+\))?:`,
+		"feature":  `^(feat|feature)(\(.+\))?:`,
+		"fix":      `^(fix|bugfix)(\(.+\))?:`,
+		"docs":     `^docs(\(.+\))?:`,
 		"refactor": `^refactor(\(.+\))?:`,
-		"test":    `^test(\(.+\))?:`,
-		"chore":   `^chore(\(.+\))?:`,
-		"style":   `^style(\(.+\))?:`,
+		"test":     `^test(\(.+\))?:`,
+		"chore":    `^chore(\(.+\))?:`,
+		"style":    `^style(\(.+\))?:`,
 	}
 
 	for typeName, pattern := range patterns {
@@ -59,9 +59,9 @@ func (a *CommitAnalyzer) classifyByMessage(message string) (string, float64) {
 
 	// Classification par mots-clés si aucun format conventionnel n'est trouvé
 	keywords := map[string][]string{
-		"feature": {"add", "implement", "introduce"},
-		"fix":     {"fix", "resolve", "correct", "bug"},
-		"docs":    {"docs", "documentation", "readme"},
+		"feature":  {"add", "implement", "introduce"},
+		"fix":      {"fix", "resolve", "correct", "bug"},
+		"docs":     {"docs", "documentation", "readme"},
 		"refactor": {"refactor", "restructure", "cleanup"},
 	}
 

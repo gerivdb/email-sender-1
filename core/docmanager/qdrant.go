@@ -6,5 +6,5 @@ package docmanager
 type QDrantClient struct{}
 
 func InitQDrant() *QDrantClient {
-return &QDrantClient{}
+	return &QDrantClient{}
 }

@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	phase		= flag.String("phase", "", "Nom de la phase (ex: Phase 1)")
-	outputMD	= flag.String("output-md", "phase_completion_report.md", "Chemin du rapport Markdown")
+	phase    = flag.String("phase", "", "Nom de la phase (ex: Phase 1)")
+	outputMD = flag.String("output-md", "phase_completion_report.md", "Chemin du rapport Markdown")
 )
 
 func main() {

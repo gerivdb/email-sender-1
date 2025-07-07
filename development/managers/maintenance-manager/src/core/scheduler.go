@@ -14,52 +14,52 @@ import (
 
 // MaintenanceScheduler handles automated scheduling and execution of maintenance tasks
 type MaintenanceScheduler struct {
-	config          *MaintenanceConfig
-	logger          *logrus.Logger
-	scheduledTasks  map[string]*ScheduledTask
-	taskQueue       chan *TaskExecution
-	workers         []*Worker
-	isRunning       bool
-	mu              sync.RWMutex
-	ctx             context.Context
-	cancel          context.CancelFunc
+	config         *MaintenanceConfig
+	logger         *logrus.Logger
+	scheduledTasks map[string]*ScheduledTask
+	taskQueue      chan *TaskExecution
+	workers        []*Worker
+	isRunning      bool
+	mu             sync.RWMutex
+	ctx            context.Context
+	cancel         context.CancelFunc
 }
 
 // ScheduledTask represents a maintenance task that runs on a schedule
 type ScheduledTask struct {
-	ID                string                 `json:"id"`
-	Name              string                 `json:"name"`
-	Type              string                 `json:"type"`
-	Schedule          string                 `json:"schedule"` // Cron-like schedule
-	Priority          int                    `json:"priority"`
-	MaxDuration       time.Duration          `json:"max_duration"`
-	Parameters        map[string]interface{} `json:"parameters"`
-	LastExecution     time.Time              `json:"last_execution"`
-	NextExecution     time.Time              `json:"next_execution"`
-	ExecutionCount    int                    `json:"execution_count"`
-	SuccessCount      int                    `json:"success_count"`
-	FailureCount      int                    `json:"failure_count"`
-	AverageExecution  time.Duration          `json:"average_execution"`
-	Enabled           bool                   `json:"enabled"`
-	AutoRetry         bool                   `json:"auto_retry"`
-	MaxRetries        int                    `json:"max_retries"`
-	DependsOn         []string               `json:"depends_on"`
-	TaskFunction      TaskFunction           `json:"-"`
+	ID               string                 `json:"id"`
+	Name             string                 `json:"name"`
+	Type             string                 `json:"type"`
+	Schedule         string                 `json:"schedule"` // Cron-like schedule
+	Priority         int                    `json:"priority"`
+	MaxDuration      time.Duration          `json:"max_duration"`
+	Parameters       map[string]interface{} `json:"parameters"`
+	LastExecution    time.Time              `json:"last_execution"`
+	NextExecution    time.Time              `json:"next_execution"`
+	ExecutionCount   int                    `json:"execution_count"`
+	SuccessCount     int                    `json:"success_count"`
+	FailureCount     int                    `json:"failure_count"`
+	AverageExecution time.Duration          `json:"average_execution"`
+	Enabled          bool                   `json:"enabled"`
+	AutoRetry        bool                   `json:"auto_retry"`
+	MaxRetries       int                    `json:"max_retries"`
+	DependsOn        []string               `json:"depends_on"`
+	TaskFunction     TaskFunction           `json:"-"`
 }
 
 // TaskExecution represents a single execution of a scheduled task
 type TaskExecution struct {
-	Task         *ScheduledTask         `json:"task"`
-	ExecutionID  string                 `json:"execution_id"`
-	StartTime    time.Time              `json:"start_time"`
-	EndTime      time.Time              `json:"end_time"`
-	Duration     time.Duration          `json:"duration"`
-	Status       string                 `json:"status"` // pending, running, completed, failed, cancelled, timeout
-	Result       interface{}            `json:"result"`
-	Error        error                  `json:"error"`
-	RetryCount   int                    `json:"retry_count"`
-	WorkerID     string                 `json:"worker_id"`
-	Context      map[string]interface{} `json:"context"`
+	Task        *ScheduledTask         `json:"task"`
+	ExecutionID string                 `json:"execution_id"`
+	StartTime   time.Time              `json:"start_time"`
+	EndTime     time.Time              `json:"end_time"`
+	Duration    time.Duration          `json:"duration"`
+	Status      string                 `json:"status"` // pending, running, completed, failed, cancelled, timeout
+	Result      interface{}            `json:"result"`
+	Error       error                  `json:"error"`
+	RetryCount  int                    `json:"retry_count"`
+	WorkerID    string                 `json:"worker_id"`
+	Context     map[string]interface{} `json:"context"`
 }
 
 // TaskFunction defines the signature for maintenance task functions
@@ -67,13 +67,13 @@ type TaskFunction func(ctx context.Context, params map[string]interface{}) (inte
 
 // Worker represents a worker that executes maintenance tasks
 type Worker struct {
-	ID             string
-	scheduler      *MaintenanceScheduler
-	currentTask    *TaskExecution
-	isRunning      bool
-	tasksExecuted  int
-	totalDuration  time.Duration
-	mu             sync.RWMutex
+	ID            string
+	scheduler     *MaintenanceScheduler
+	currentTask   *TaskExecution
+	isRunning     bool
+	tasksExecuted int
+	totalDuration time.Duration
+	mu            sync.RWMutex
 }
 
 // NewMaintenanceScheduler creates a new MaintenanceScheduler instance
@@ -401,7 +401,7 @@ func (w *Worker) executeTask(ctx context.Context, execution *TaskExecution) {
 			execution.RetryCount++
 			execution.Status = "pending"
 			logger.WithField("retry_count", execution.RetryCount).Info("Retrying task execution")
-			
+
 			// Re-queue the task for retry after a delay
 			go func() {
 				time.Sleep(time.Duration(execution.RetryCount) * time.Minute)
@@ -421,7 +421,7 @@ func (w *Worker) executeTask(ctx context.Context, execution *TaskExecution) {
 	// Update task statistics
 	execution.Task.ExecutionCount++
 	execution.Task.LastExecution = execution.EndTime
-	
+
 	// Update average execution time
 	if execution.Task.AverageExecution == 0 {
 		execution.Task.AverageExecution = execution.Duration
@@ -445,15 +445,15 @@ func (ms *MaintenanceScheduler) healthCheckTask(ctx context.Context, params map[
 
 	// Placeholder for actual health check implementation
 	// This would analyze repository structure, file organization, etc.
-	
+
 	healthData := map[string]interface{}{
-		"timestamp":           time.Now(),
-		"repository_status":   "healthy",
-		"structure_score":     85.5,
-		"files_analyzed":      1250,
-		"folders_analyzed":    45,
-		"recommendations":     []string{"Consider organizing large folders", "Remove duplicate files"},
-		"next_optimization":   time.Now().Add(24 * time.Hour),
+		"timestamp":         time.Now(),
+		"repository_status": "healthy",
+		"structure_score":   85.5,
+		"files_analyzed":    1250,
+		"folders_analyzed":  45,
+		"recommendations":   []string{"Consider organizing large folders", "Remove duplicate files"},
+		"next_optimization": time.Now().Add(24 * time.Hour),
 	}
 
 	return healthData, nil
@@ -465,13 +465,13 @@ func (ms *MaintenanceScheduler) organizationOptimizationTask(ctx context.Context
 
 	// Placeholder for actual organization optimization
 	// This would run the OrganizationEngine optimization
-	
+
 	optimizationResult := map[string]interface{}{
-		"timestamp":        time.Now(),
-		"files_processed":  342,
-		"folders_created":  5,
-		"files_relocated":  18,
-		"space_saved":      "45.2 MB",
+		"timestamp":                      time.Now(),
+		"files_processed":                342,
+		"folders_created":                5,
+		"files_relocated":                18,
+		"space_saved":                    "45.2 MB",
 		"optimization_score_improvement": 12.3,
 	}
 
@@ -489,7 +489,7 @@ func (ms *MaintenanceScheduler) cleanupTask(ctx context.Context, params map[stri
 
 	// Placeholder for actual cleanup implementation
 	// This would run the CleanupEngine
-	
+
 	cleanupResult := map[string]interface{}{
 		"timestamp":     time.Now(),
 		"level":         level,
@@ -509,12 +509,12 @@ func (ms *MaintenanceScheduler) vectorMaintenanceTask(ctx context.Context, param
 
 	// Placeholder for vector database maintenance
 	// This would optimize the QDrant database, reindex files, etc.
-	
+
 	vectorResult := map[string]interface{}{
-		"timestamp":        time.Now(),
-		"vectors_updated":  150,
-		"index_optimized":  true,
-		"storage_cleaned":  "12.3 MB",
+		"timestamp":                     time.Now(),
+		"vectors_updated":               150,
+		"index_optimized":               true,
+		"storage_cleaned":               "12.3 MB",
 		"query_performance_improvement": "15%",
 	}
 
@@ -527,14 +527,14 @@ func (ms *MaintenanceScheduler) aiPatternAnalysisTask(ctx context.Context, param
 
 	// Placeholder for AI pattern analysis
 	// This would run pattern recognition and generate optimization suggestions
-	
+
 	aiResult := map[string]interface{}{
-		"timestamp":              time.Now(),
-		"patterns_analyzed":      42,
-		"new_patterns_detected":  3,
+		"timestamp":                time.Now(),
+		"patterns_analyzed":        42,
+		"new_patterns_detected":    3,
 		"optimization_suggestions": 7,
-		"confidence_score":       0.87,
-		"learning_updates":       true,
+		"confidence_score":         0.87,
+		"learning_updates":         true,
 	}
 
 	return aiResult, nil
@@ -549,7 +549,7 @@ func (ms *MaintenanceScheduler) analyzeScript(scriptPath string) (*PowerShellScr
 	// This would normally parse the PowerShell script file
 	// For now, we'll provide intelligent defaults based on script name
 	scriptName := ms.extractScriptName(scriptPath)
-	
+
 	info := &PowerShellScriptInfo{
 		Name:                scriptName,
 		Description:         fmt.Sprintf("Automated maintenance script: %s", scriptName),
@@ -600,10 +600,10 @@ func (ms *MaintenanceScheduler) createScriptWrapper(scriptPath string, scriptInf
 // executePowerShellScript executes a PowerShell script with given parameters
 func (ms *MaintenanceScheduler) executePowerShellScript(ctx context.Context, scriptPath string, params map[string]interface{}) (interface{}, error) {
 	startTime := time.Now()
-	
+
 	// Build PowerShell command with parameters
 	command := ms.buildPowerShellCommand(scriptPath, params)
-	
+
 	ms.logger.WithFields(logrus.Fields{
 		"script":  scriptPath,
 		"command": command,
@@ -612,8 +612,8 @@ func (ms *MaintenanceScheduler) executePowerShellScript(ctx context.Context, scr
 	// Execute the command (implementation would use exec.CommandContext)
 	// For now, simulate successful execution
 	result := map[string]interface{}{
-		"script_path":      scriptPath,
-		"execution_time":   time.Since(startTime),
+		"script_path":     scriptPath,
+		"execution_time":  time.Since(startTime),
 		"status":          "success",
 		"output":          "Script executed successfully",
 		"parameters_used": params,
@@ -621,9 +621,9 @@ func (ms *MaintenanceScheduler) executePowerShellScript(ctx context.Context, scr
 	}
 
 	ms.logger.WithFields(logrus.Fields{
-		"script":        scriptPath,
-		"duration":      time.Since(startTime),
-		"status":        "success",
+		"script":   scriptPath,
+		"duration": time.Since(startTime),
+		"status":   "success",
 	}).Info("PowerShell script execution completed")
 
 	return result, nil
@@ -670,10 +670,10 @@ func (ms *MaintenanceScheduler) generateHealthAlerts(repositories []RepositoryHe
 		if repo.HealthScore < 0.5 {
 			alerts = append(alerts, HealthAlert{
 				Severity:       "critical",
-				Type:          "health_score",
-				Repository:    repo.Name,
-				Message:       fmt.Sprintf("Repository %s has critical health score: %.2f", repo.Name, repo.HealthScore),
-				Timestamp:     time.Now(),
+				Type:           "health_score",
+				Repository:     repo.Name,
+				Message:        fmt.Sprintf("Repository %s has critical health score: %.2f", repo.Name, repo.HealthScore),
+				Timestamp:      time.Now(),
 				ActionRequired: true,
 			})
 		}
@@ -682,10 +682,10 @@ func (ms *MaintenanceScheduler) generateHealthAlerts(repositories []RepositoryHe
 		if time.Since(repo.LastMaintenance) > 7*24*time.Hour {
 			alerts = append(alerts, HealthAlert{
 				Severity:       "warning",
-				Type:          "maintenance_overdue",
-				Repository:    repo.Name,
-				Message:       fmt.Sprintf("Repository %s maintenance overdue by %v", repo.Name, time.Since(repo.LastMaintenance)),
-				Timestamp:     time.Now(),
+				Type:           "maintenance_overdue",
+				Repository:     repo.Name,
+				Message:        fmt.Sprintf("Repository %s maintenance overdue by %v", repo.Name, time.Since(repo.LastMaintenance)),
+				Timestamp:      time.Now(),
 				ActionRequired: true,
 			})
 		}
@@ -694,10 +694,10 @@ func (ms *MaintenanceScheduler) generateHealthAlerts(repositories []RepositoryHe
 		if len(repo.Issues) > 10 {
 			alerts = append(alerts, HealthAlert{
 				Severity:       "warning",
-				Type:          "multiple_issues",
-				Repository:    repo.Name,
-				Message:       fmt.Sprintf("Repository %s has %d identified issues", repo.Name, len(repo.Issues)),
-				Timestamp:     time.Now(),
+				Type:           "multiple_issues",
+				Repository:     repo.Name,
+				Message:        fmt.Sprintf("Repository %s has %d identified issues", repo.Name, len(repo.Issues)),
+				Timestamp:      time.Now(),
 				ActionRequired: false,
 			})
 		}
@@ -744,14 +744,14 @@ func (ms *MaintenanceScheduler) generateHealthRecommendations(report *Repository
 // storeHealthReport stores health report for historical analysis
 func (ms *MaintenanceScheduler) storeHealthReport(report *RepositoryHealthReport) error {
 	ms.logger.WithField("monitoring_id", report.MonitoringID).Debug("Storing health report")
-	
+
 	// This would normally persist to database or file system
 	// For now, we'll just log the storage operation
 	ms.logger.WithFields(logrus.Fields{
-		"monitoring_id":   report.MonitoringID,
-		"overall_score":   report.OverallScore,
+		"monitoring_id":    report.MonitoringID,
+		"overall_score":    report.OverallScore,
 		"repository_count": len(report.Repositories),
-		"alert_count":     len(report.Alerts),
+		"alert_count":      len(report.Alerts),
 	}).Info("Health report stored successfully")
 
 	return nil
@@ -772,18 +772,18 @@ func (ms *MaintenanceScheduler) scriptExecutionTask(ctx context.Context, params 
 		scriptResult := map[string]interface{}{
 			"script_id":      fmt.Sprintf("script_%d", i+1),
 			"execution_time": time.Duration(2+i) * time.Second,
-			"status":        "success",
+			"status":         "success",
 		}
 		scriptsExecuted++
 		successfulExecutions++
 	}
 
 	result := map[string]interface{}{
-		"timestamp":            time.Now(),
-		"scripts_executed":     scriptsExecuted,
+		"timestamp":             time.Now(),
+		"scripts_executed":      scriptsExecuted,
 		"successful_executions": successfulExecutions,
-		"failed_executions":    scriptsExecuted - successfulExecutions,
-		"total_execution_time": 9 * time.Second,
+		"failed_executions":     scriptsExecuted - successfulExecutions,
+		"total_execution_time":  9 * time.Second,
 	}
 
 	return result, nil
@@ -795,11 +795,11 @@ func (ms *MaintenanceScheduler) emergencyMaintenanceTask(ctx context.Context, pa
 
 	// Perform critical system checks and fixes
 	result := map[string]interface{}{
-		"timestamp":        time.Now(),
-		"emergency_type":   params["emergency_type"],
-		"actions_taken":    []string{"health_check", "critical_cleanup", "system_stabilization"},
-		"resolution_time":  3 * time.Minute,
-		"system_stable":    true,
+		"timestamp":       time.Now(),
+		"emergency_type":  params["emergency_type"],
+		"actions_taken":   []string{"health_check", "critical_cleanup", "system_stabilization"},
+		"resolution_time": 3 * time.Minute,
+		"system_stable":   true,
 	}
 
 	return result, nil
@@ -810,10 +810,10 @@ func (ms *MaintenanceScheduler) defaultMaintenanceTask(ctx context.Context, para
 	ms.logger.Info("Executing default maintenance task")
 
 	result := map[string]interface{}{
-		"timestamp":     time.Now(),
-		"task_type":     params["type"],
-		"status":        "completed",
-		"message":       "Default maintenance task executed successfully",
+		"timestamp": time.Now(),
+		"task_type": params["type"],
+		"status":    "completed",
+		"message":   "Default maintenance task executed successfully",
 	}
 
 	return result, nil
@@ -845,8 +845,8 @@ func (ms *MaintenanceScheduler) getLastMaintenanceTime(repoPath string) time.Tim
 func (ms *MaintenanceScheduler) countFilesAndFolders(repoPath string) (int, int, error) {
 	// This would normally walk the directory tree
 	// For simulation, return reasonable numbers
-	fileCount := 50 + rand.Intn(200)    // 50-250 files
-	folderCount := 5 + rand.Intn(20)    // 5-25 folders
+	fileCount := 50 + rand.Intn(200) // 50-250 files
+	folderCount := 5 + rand.Intn(20) // 5-25 folders
 	return fileCount, folderCount, nil
 }
 
@@ -858,7 +858,7 @@ func (ms *MaintenanceScheduler) calculateOrganizationScore(repoPath string, file
 	}
 
 	filesPerFolder := float64(fileCount) / float64(folderCount)
-	
+
 	// Ideal range is 5-15 files per folder
 	var score float64
 	switch {
@@ -892,11 +892,11 @@ func (ms *MaintenanceScheduler) checkMaintenanceNeeded(health *RepositoryHealth)
 	// - Organization score below 0.6
 	// - Last maintenance over 7 days ago
 	// - More than 5 issues identified
-	
+
 	return health.HealthScore < 0.7 ||
-		   health.OrganizationScore < 0.6 ||
-		   time.Since(health.LastMaintenance) > 7*24*time.Hour ||
-		   len(health.Issues) > 5
+		health.OrganizationScore < 0.6 ||
+		time.Since(health.LastMaintenance) > 7*24*time.Hour ||
+		len(health.Issues) > 5
 }
 
 // identifyRepositoryIssues identifies specific issues in a repository
@@ -971,9 +971,9 @@ func (ms *MaintenanceScheduler) calculateRepositoryHealthScore(health *Repositor
 
 	// Calculate weighted average
 	overallScore := orgScore*organizationWeight +
-					maintenanceScore*maintenanceWeight +
-					issueScore*issueWeight +
-					structureScore*structureWeight
+		maintenanceScore*maintenanceWeight +
+		issueScore*issueWeight +
+		structureScore*structureWeight
 
 	return math.Min(1.0, math.Max(0.0, overallScore))
 }
@@ -1056,18 +1056,18 @@ func (ms *MaintenanceScheduler) extractScriptName(scriptPath string) string {
 // inferScriptPurpose infers script purpose from name
 func (ms *MaintenanceScheduler) inferScriptPurpose(scriptName string) string {
 	scriptName = strings.ToLower(scriptName)
-	
+
 	purposeMap := map[string]string{
-		"cleanup":      "Repository cleanup and maintenance",
-		"organize":     "Repository organization",
-		"backup":       "Data backup and archival",
-		"health":       "System health monitoring",
-		"optimize":     "Performance optimization",
-		"deploy":       "Deployment automation",
-		"test":         "Testing and validation",
-		"monitor":      "System monitoring",
-		"report":       "Report generation",
-		"maintenance":  "General maintenance tasks",
+		"cleanup":     "Repository cleanup and maintenance",
+		"organize":    "Repository organization",
+		"backup":      "Data backup and archival",
+		"health":      "System health monitoring",
+		"optimize":    "Performance optimization",
+		"deploy":      "Deployment automation",
+		"test":        "Testing and validation",
+		"monitor":     "System monitoring",
+		"report":      "Report generation",
+		"maintenance": "General maintenance tasks",
 	}
 
 	for keyword, purpose := range purposeMap {
@@ -1082,7 +1082,7 @@ func (ms *MaintenanceScheduler) inferScriptPurpose(scriptName string) string {
 // estimateScriptDuration estimates script execution duration
 func (ms *MaintenanceScheduler) estimateScriptDuration(scriptName string) time.Duration {
 	scriptName = strings.ToLower(scriptName)
-	
+
 	// Estimate based on script type
 	switch {
 	case strings.Contains(scriptName, "backup"):
@@ -1105,7 +1105,7 @@ func (ms *MaintenanceScheduler) estimateScriptDuration(scriptName string) time.D
 // calculateScriptPriority calculates script priority
 func (ms *MaintenanceScheduler) calculateScriptPriority(scriptName string) int {
 	scriptName = strings.ToLower(scriptName)
-	
+
 	// Priority based on script type (1 = highest, 5 = lowest)
 	switch {
 	case strings.Contains(scriptName, "emergency") || strings.Contains(scriptName, "critical"):
@@ -1128,7 +1128,7 @@ func (ms *MaintenanceScheduler) calculateScriptPriority(scriptName string) int {
 // recommendScriptSchedule recommends schedule for script
 func (ms *MaintenanceScheduler) recommendScriptSchedule(scriptName string) string {
 	scriptName = strings.ToLower(scriptName)
-	
+
 	// Schedule recommendations based on script type
 	switch {
 	case strings.Contains(scriptName, "backup"):
@@ -1151,33 +1151,33 @@ func (ms *MaintenanceScheduler) recommendScriptSchedule(scriptName string) strin
 // scriptRequiresElevation determines if script requires elevated privileges
 func (ms *MaintenanceScheduler) scriptRequiresElevation(scriptName string) bool {
 	scriptName = strings.ToLower(scriptName)
-	
+
 	elevatedTypes := []string{
-		"install", "uninstall", "deploy", "service", "registry", 
+		"install", "uninstall", "deploy", "service", "registry",
 		"system", "admin", "privilege", "security", "firewall",
 		"driver", "kernel", "backup",
 	}
-	
+
 	for _, elevatedType := range elevatedTypes {
 		if strings.Contains(scriptName, elevatedType) {
 			return true
 		}
 	}
-	
+
 	return false
 }
 
 // buildPowerShellCommand builds PowerShell command with parameters
 func (ms *MaintenanceScheduler) buildPowerShellCommand(scriptPath string, params map[string]interface{}) string {
 	command := fmt.Sprintf("powershell.exe -ExecutionPolicy Bypass -File \"%s\"", scriptPath)
-	
+
 	// Add parameters
 	for key, value := range params {
 		if key != "LogLevel" && key != "DryRun" && key != "MaxExecutionTime" {
 			command += fmt.Sprintf(" -%s %v", key, value)
 		}
 	}
-	
+
 	return command
 }
 
@@ -1188,14 +1188,14 @@ func (ms *MaintenanceScheduler) calculatePlanPriority(steps []OptimizationStep) 
 	if len(steps) == 0 {
 		return 5 // Lowest priority
 	}
-	
+
 	highestPriority := 5
 	for _, step := range steps {
 		if step.Priority < highestPriority {
 			highestPriority = step.Priority
 		}
 	}
-	
+
 	return highestPriority
 }
 
@@ -1204,10 +1204,10 @@ func (ms *MaintenanceScheduler) calculateAIConfidence(steps []OptimizationStep) 
 	if len(steps) == 0 {
 		return 1.0
 	}
-	
+
 	// Base confidence decreases with plan complexity
 	baseConfidence := 0.95 - float64(len(steps))*0.05
-	
+
 	// Adjust based on step types
 	complexSteps := 0
 	for _, step := range steps {
@@ -1215,10 +1215,10 @@ func (ms *MaintenanceScheduler) calculateAIConfidence(steps []OptimizationStep) 
 			complexSteps++
 		}
 	}
-	
+
 	complexityPenalty := float64(complexSteps) * 0.1
 	confidence := baseConfidence - complexityPenalty
-	
+
 	return math.Max(0.6, math.Min(1.0, confidence))
 }
 
@@ -1227,16 +1227,16 @@ func (ms *MaintenanceScheduler) estimatePlanDuration(steps []OptimizationStep) t
 	if len(steps) == 0 {
 		return 0
 	}
-	
+
 	baseDuration := map[string]time.Duration{
 		"organization":       20 * time.Minute,
 		"fifteen_files_rule": 15 * time.Minute,
-		"cleanup":           10 * time.Minute,
-		"powershell":        5 * time.Minute,
-		"script_execution":  5 * time.Minute,
-		"vector_update":     3 * time.Minute,
+		"cleanup":            10 * time.Minute,
+		"powershell":         5 * time.Minute,
+		"script_execution":   5 * time.Minute,
+		"vector_update":      3 * time.Minute,
 	}
-	
+
 	totalDuration := time.Duration(0)
 	for _, step := range steps {
 		if duration, exists := baseDuration[step.Type]; exists {
@@ -1245,7 +1245,7 @@ func (ms *MaintenanceScheduler) estimatePlanDuration(steps []OptimizationStep) t
 			totalDuration += 5 * time.Minute // Default
 		}
 	}
-	
+
 	// Add buffer time (20%)
 	return time.Duration(float64(totalDuration) * 1.2)
 }
@@ -1260,15 +1260,15 @@ func (ms *MaintenanceScheduler) executeOrganizationStep(step OptimizationStep) e
 	// This would integrate with OrganizationEngine
 	// For now, simulate successful execution
 	time.Sleep(100 * time.Millisecond) // Simulate processing
-	
+
 	step.Status = "completed"
 	step.Result = map[string]interface{}{
-		"files_organized":     42,
-		"folders_created":     3,
-		"folders_merged":      2,
+		"files_organized":                42,
+		"folders_created":                3,
+		"folders_merged":                 2,
 		"organization_score_improvement": 0.15,
 	}
-	
+
 	return nil
 }
 
@@ -1282,15 +1282,15 @@ func (ms *MaintenanceScheduler) executePowerShellStep(step OptimizationStep) err
 	// This would execute the actual PowerShell script
 	// For now, simulate successful execution
 	time.Sleep(200 * time.Millisecond) // Simulate processing
-	
+
 	step.Status = "completed"
 	step.Result = map[string]interface{}{
-		"script_executed":     true,
-		"execution_time":      "2.3s",
-		"output":             "Script completed successfully",
-		"files_processed":     15,
+		"script_executed": true,
+		"execution_time":  "2.3s",
+		"output":          "Script completed successfully",
+		"files_processed": 15,
 	}
-	
+
 	return nil
 }
 
@@ -1304,19 +1304,19 @@ func (ms *MaintenanceScheduler) updateVectorForStep(step OptimizationStep) error
 	// This would update QDrant vectors for optimized files
 	// For now, simulate successful update
 	time.Sleep(50 * time.Millisecond) // Simulate processing
-	
+
 	return nil
 }
 
 // OptimizationStep represents a single optimization step
 type OptimizationStep struct {
-	ID          string                     `json:"id"`
-	Type        string                     `json:"type"`
-	Description string                     `json:"description"`
-	Priority    int                        `json:"priority"`
-	Repository  string                     `json:"repository"`
-	Status      string                     `json:"status"`
-	Parameters  map[string]interface{}     `json:"parameters"`
-	Result      interface{}                `json:"result"`
-	Error       error                      `json:"error"`
+	ID          string                 `json:"id"`
+	Type        string                 `json:"type"`
+	Description string                 `json:"description"`
+	Priority    int                    `json:"priority"`
+	Repository  string                 `json:"repository"`
+	Status      string                 `json:"status"`
+	Parameters  map[string]interface{} `json:"parameters"`
+	Result      interface{}            `json:"result"`
+	Error       error                  `json:"error"`
 }

@@ -17,26 +17,26 @@ import (
 
 // ValidationResult represents the result of validating a proposed fix
 type ValidationResult struct {
-	IsValid        bool                `json:"is_valid"`
-	ConfidenceScore float64            `json:"confidence_score"`
-	SafetyLevel    SafetyLevel         `json:"safety_level"`
-	TestResults    []TestResult        `json:"test_results"`
-	CompilationOK  bool               `json:"compilation_ok"`
-	StaticCheckOK  bool               `json:"static_check_ok"`
-	TestsPassing   bool               `json:"tests_passing"`
-	Errors         []string           `json:"errors,omitempty"`
-	Warnings       []string           `json:"warnings,omitempty"`
-	Metrics        ValidationMetrics   `json:"metrics"`
-	Duration       time.Duration       `json:"duration"`
+	IsValid         bool              `json:"is_valid"`
+	ConfidenceScore float64           `json:"confidence_score"`
+	SafetyLevel     SafetyLevel       `json:"safety_level"`
+	TestResults     []TestResult      `json:"test_results"`
+	CompilationOK   bool              `json:"compilation_ok"`
+	StaticCheckOK   bool              `json:"static_check_ok"`
+	TestsPassing    bool              `json:"tests_passing"`
+	Errors          []string          `json:"errors,omitempty"`
+	Warnings        []string          `json:"warnings,omitempty"`
+	Metrics         ValidationMetrics `json:"metrics"`
+	Duration        time.Duration     `json:"duration"`
 }
 
 // TestResult represents the result of running a specific test
 type TestResult struct {
-	TestName  string        `json:"test_name"`
-	Passed    bool          `json:"passed"`
-	Output    string        `json:"output"`
-	Error     string        `json:"error,omitempty"`
-	Duration  time.Duration `json:"duration"`
+	TestName string        `json:"test_name"`
+	Passed   bool          `json:"passed"`
+	Output   string        `json:"output"`
+	Error    string        `json:"error,omitempty"`
+	Duration time.Duration `json:"duration"`
 }
 
 // ValidationMetrics contains metrics about the validation process
@@ -51,14 +51,14 @@ type ValidationMetrics struct {
 
 // SandboxConfig defines configuration for the validation sandbox
 type SandboxConfig struct {
-	TempDir            string        `json:"temp_dir"`
-	Timeout            time.Duration `json:"timeout"`
-	MaxMemory          int64         `json:"max_memory_mb"`
-	EnableTests        bool          `json:"enable_tests"`
-	EnableStaticCheck  bool          `json:"enable_static_check"`
-	EnableBenchmarks   bool          `json:"enable_benchmarks"`
-	AllowNetworking    bool          `json:"allow_networking"`
-	PreserveArtifacts  bool          `json:"preserve_artifacts"`
+	TempDir           string        `json:"temp_dir"`
+	Timeout           time.Duration `json:"timeout"`
+	MaxMemory         int64         `json:"max_memory_mb"`
+	EnableTests       bool          `json:"enable_tests"`
+	EnableStaticCheck bool          `json:"enable_static_check"`
+	EnableBenchmarks  bool          `json:"enable_benchmarks"`
+	AllowNetworking   bool          `json:"allow_networking"`
+	PreserveArtifacts bool          `json:"preserve_artifacts"`
 }
 
 // ValidationSystem handles validation of proposed fixes
@@ -100,7 +100,7 @@ func NewValidationSystem(config SandboxConfig) *ValidationSystem {
 // ValidateProposedFix validates a proposed fix using sandbox testing
 func (vs *ValidationSystem) ValidateProposedFix(fix *FixSuggestion, originalCode string) (*ValidationResult, error) {
 	startTime := time.Now()
-	
+
 	result := &ValidationResult{
 		ConfidenceScore: 0.0,
 		SafetyLevel:     SafetyLevelLow,
@@ -247,12 +247,12 @@ func (vs *ValidationSystem) applyFormattingFix(code string, fix *FixSuggestion) 
 	// Use gofmt to format the code
 	cmd := exec.Command("gofmt")
 	cmd.Stdin = strings.NewReader(code)
-	
+
 	output, err := cmd.Output()
 	if err != nil {
 		return code, fmt.Errorf("gofmt failed: %w", err)
 	}
-	
+
 	return string(output), nil
 }
 
@@ -291,13 +291,13 @@ func (vs *ValidationSystem) applyRegexFix(code string, fix *FixSuggestion) (stri
 // validateSyntax checks if the modified code has valid syntax
 func (vs *ValidationSystem) validateSyntax(sandboxDir string, fix *FixSuggestion, originalCode string) error {
 	codeFile := filepath.Join(sandboxDir, "main.go")
-	
+
 	fset := token.NewFileSet()
 	_, err := parser.ParseFile(fset, codeFile, nil, parser.ParseComments)
 	if err != nil {
 		return fmt.Errorf("syntax validation failed: %w", err)
 	}
-	
+
 	return nil
 }
 
@@ -308,12 +308,12 @@ func (vs *ValidationSystem) validateCompilation(sandboxDir string, fix *FixSugge
 
 	cmd := exec.CommandContext(ctx, "go", "build", "./...")
 	cmd.Dir = sandboxDir
-	
+
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("compilation failed: %w, output: %s", err, string(output))
 	}
-	
+
 	return nil
 }
 
@@ -329,7 +329,7 @@ func (vs *ValidationSystem) validateStaticAnalysis(sandboxDir string, fix *FixSu
 	// Run go vet
 	cmd := exec.CommandContext(ctx, "go", "vet", "./...")
 	cmd.Dir = sandboxDir
-	
+
 	if output, err := cmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("go vet failed: %w, output: %s", err, string(output))
 	}
@@ -338,7 +338,7 @@ func (vs *ValidationSystem) validateStaticAnalysis(sandboxDir string, fix *FixSu
 	if _, err := exec.LookPath("staticcheck"); err == nil {
 		cmd = exec.CommandContext(ctx, "staticcheck", "./...")
 		cmd.Dir = sandboxDir
-		
+
 		if output, err := cmd.CombinedOutput(); err != nil {
 			// staticcheck failures are warnings, not errors
 			fmt.Printf("staticcheck warnings: %s\n", string(output))
@@ -359,12 +359,12 @@ func (vs *ValidationSystem) validateTests(sandboxDir string, fix *FixSuggestion,
 
 	cmd := exec.CommandContext(ctx, "go", "test", "./...", "-v")
 	cmd.Dir = sandboxDir
-	
+
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("tests failed: %w, output: %s", err, string(output))
 	}
-	
+
 	return nil
 }
 
@@ -379,13 +379,13 @@ func (vs *ValidationSystem) validatePerformance(sandboxDir string, fix *FixSugge
 
 	cmd := exec.CommandContext(ctx, "go", "test", "-bench=.", "-benchmem", "./...")
 	cmd.Dir = sandboxDir
-	
+
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		// Benchmark failures are not critical
 		fmt.Printf("benchmark warnings: %s\n", string(output))
 	}
-	
+
 	return nil
 }
 
@@ -451,7 +451,7 @@ func (vs *ValidationSystem) isImportUnused(node *ast.File, importPath string) bo
 	// Simple heuristic - check if import name appears in code
 	// This is a simplified version; real implementation would use type checking
 	importName := filepath.Base(importPath)
-	
+
 	// Walk the AST to find usages
 	used := false
 	ast.Inspect(node, func(n ast.Node) bool {
@@ -463,7 +463,7 @@ func (vs *ValidationSystem) isImportUnused(node *ast.File, importPath string) bo
 		}
 		return true
 	})
-	
+
 	return !used
 }
 
@@ -532,7 +532,7 @@ func (vs *ValidationSystem) cleanupSandbox(sandboxDir string) {
 func (vs *ValidationSystem) GetActiveTests() map[string]*TestExecution {
 	vs.mutex.RLock()
 	defer vs.mutex.RUnlock()
-	
+
 	tests := make(map[string]*TestExecution)
 	for id, test := range vs.activeTests {
 		tests[id] = test
@@ -544,12 +544,12 @@ func (vs *ValidationSystem) GetActiveTests() map[string]*TestExecution {
 func (vs *ValidationSystem) CancelTest(testID string) error {
 	vs.mutex.Lock()
 	defer vs.mutex.Unlock()
-	
+
 	if test, exists := vs.activeTests[testID]; exists {
 		test.Cancel()
 		delete(vs.activeTests, testID)
 		return nil
 	}
-	
+
 	return fmt.Errorf("test %s not found", testID)
 }

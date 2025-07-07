@@ -6,6 +6,6 @@ package docmanager
 import "context"
 
 func SyncInterfaces(ctx context.Context, managerName string) error {
-// Stub : simule la synchronisation des interfaces pour le manager donné
-return nil
+	// Stub : simule la synchronisation des interfaces pour le manager donné
+	return nil
 }

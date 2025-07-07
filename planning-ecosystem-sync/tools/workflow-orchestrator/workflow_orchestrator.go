@@ -165,7 +165,7 @@ func (wo *WorkflowOrchestrator) initializeComponents() error {
 	wo.syncEngine = &SyncEngine{
 		config: &SyncConfig{
 			BatchSize:          100,
-			Timeout:           30 * time.Second,
+			Timeout:            30 * time.Second,
 			ValidateBeforeSync: true,
 			CreateDiffReports:  true,
 		},
@@ -507,11 +507,11 @@ func (wo *WorkflowOrchestrator) fetchDynamicSystemData(ctx context.Context) ([]D
 			ID:       "plan-dev-v55",
 			Title:    "Plan-dev-v55 - Planning Ecosystem Synchronization",
 			Version:  "2.2",
-			Progress: 98.0,		Metadata: map[string]interface{}{
-			"author":      "System",
-			"updated_at":  time.Now(),
-			"file_path":   "plan-dev-v55-planning-ecosystem-sync.md",
-		},
+			Progress: 98.0, Metadata: map[string]interface{}{
+				"author":     "System",
+				"updated_at": time.Now(),
+				"file_path":  "plan-dev-v55-planning-ecosystem-sync.md",
+			},
 			Tasks: []Task{
 				{
 					ID:          "task-5.2.1",
@@ -602,12 +602,12 @@ func (wo *WorkflowOrchestrator) writeMarkdownFile(path, content string) error {
 func (wo *WorkflowOrchestrator) convertToRoadmapFormat(plan DynamicPlan) ([]byte, error) {
 	// Convert to Roadmap Manager format
 	roadmapData := map[string]interface{}{
-		"id":          plan.ID,
-		"title":       plan.Title,
-		"version":     plan.Version,
-		"progress":    plan.Progress,
-		"tasks":       plan.Tasks,
-		"updated_at":  time.Now(),
+		"id":         plan.ID,
+		"title":      plan.Title,
+		"version":    plan.Version,
+		"progress":   plan.Progress,
+		"tasks":      plan.Tasks,
+		"updated_at": time.Now(),
 	}
 
 	return json.Marshal(roadmapData)
@@ -856,9 +856,9 @@ type SyncEngine struct {
 }
 
 type RoadmapConnector struct {
-	baseURL    string
-	apiKey     string
-	logger     *log.Logger
+	baseURL string
+	apiKey  string
+	logger  *log.Logger
 }
 
 type TaskMasterAdapter struct {
@@ -868,16 +868,16 @@ type TaskMasterAdapter struct {
 }
 
 type FileWatcher struct {
-	watchPaths    []string
-	filePatterns  []string
-	debounceTime  time.Duration
-	orchestrator  *WorkflowOrchestrator
-	logger        *log.Logger
+	watchPaths   []string
+	filePatterns []string
+	debounceTime time.Duration
+	orchestrator *WorkflowOrchestrator
+	logger       *log.Logger
 }
 
 type SyncConfig struct {
-	BatchSize         int           `yaml:"batch_size"`
-	Timeout          time.Duration `yaml:"timeout"`
-	ValidateBeforeSync bool         `yaml:"validate_before_sync"`
-	CreateDiffReports bool         `yaml:"create_diff_reports"`
+	BatchSize          int           `yaml:"batch_size"`
+	Timeout            time.Duration `yaml:"timeout"`
+	ValidateBeforeSync bool          `yaml:"validate_before_sync"`
+	CreateDiffReports  bool          `yaml:"create_diff_reports"`
 }

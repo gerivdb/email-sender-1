@@ -7,7 +7,7 @@ import (
 
 func TestMetadataConsistencyRule(t *testing.T) {
 	rule := NewMetadataConsistencyRule()
-	
+
 	if rule.GetID() != "metadata_consistency" {
 		t.Errorf("Expected ID 'metadata_consistency', got %s", rule.GetID())
 	}
@@ -35,7 +35,7 @@ func TestMetadataConsistencyRule(t *testing.T) {
 
 func TestTaskConsistencyRule(t *testing.T) {
 	rule := NewTaskConsistencyRule()
-	
+
 	if rule.GetID() != "task_consistency" {
 		t.Errorf("Expected ID 'task_consistency', got %s", rule.GetID())
 	}
@@ -58,7 +58,7 @@ func TestTaskConsistencyRule(t *testing.T) {
 
 func TestStructureConsistencyRule(t *testing.T) {
 	rule := NewStructureConsistencyRule()
-	
+
 	if rule.GetID() != "structure_consistency" {
 		t.Errorf("Expected ID 'structure_consistency', got %s", rule.GetID())
 	}
@@ -81,7 +81,7 @@ func TestStructureConsistencyRule(t *testing.T) {
 
 func TestTimestampConsistencyRule(t *testing.T) {
 	rule := NewTimestampConsistencyRule()
-	
+
 	if rule.GetID() != "timestamp_consistency" {
 		t.Errorf("Expected ID 'timestamp_consistency', got %s", rule.GetID())
 	}
@@ -104,7 +104,7 @@ func TestTimestampConsistencyRule(t *testing.T) {
 
 func TestGetAllValidationRules(t *testing.T) {
 	rules := GetAllValidationRules()
-	
+
 	expectedCount := 4 // metadata, task, structure, timestamp
 	if len(rules) != expectedCount {
 		t.Errorf("Expected %d rules, got %d", expectedCount, len(rules))
@@ -148,7 +148,7 @@ func createTestMarkdownPlan() interface{} {
 				"completed": false,
 			},
 			{
-				"id":        "task-2", 
+				"id":        "task-2",
 				"title":     "Test Task 2",
 				"completed": true,
 			},

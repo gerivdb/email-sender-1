@@ -3,10 +3,8 @@ package managers
 import (
 	"context"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 // TestPhase3ManagersIntegration tests the integration between Email, Notification, and Integration managers

@@ -63,21 +63,21 @@ func (sm *SecurityManagerImpl) GetSecurityVectorizationMetrics() SecurityVectori
 // eventToText convertit un événement de sécurité en texte pour la vectorisation
 func (sm *SecurityManagerImpl) eventToText(event SecurityEvent) string {
 	var text strings.Builder
-	
+
 	text.WriteString(fmt.Sprintf("Security Event Type: %s\n", event.Type))
 	text.WriteString(fmt.Sprintf("Source: %s\n", event.Source))
 	text.WriteString(fmt.Sprintf("Severity: %s\n", event.Severity))
 	text.WriteString(fmt.Sprintf("Description: %s\n", event.Description))
-	
+
 	if event.Target != "" {
 		text.WriteString(fmt.Sprintf("Target: %s\n", event.Target))
 	}
-	
+
 	// Ajouter les métadonnées importantes
 	for key, value := range event.Metadata {
 		text.WriteString(fmt.Sprintf("%s: %v\n", key, value))
 	}
-	
+
 	return text.String()
 }
 
@@ -166,7 +166,7 @@ func (sm *SecurityManagerImpl) detectPatternAnomaly(event SecurityEvent, embeddi
 			DetectedAt:     time.Now(),
 			Metadata: map[string]interface{}{
 				"max_pattern_similarity": maxSimilarity,
-				"event_type":            event.Type,
+				"event_type":             event.Type,
 			},
 		}
 	}
@@ -242,7 +242,7 @@ func (sm *SecurityManagerImpl) analyzeVulnSimilarity(vuln Vulnerability, results
 
 	category := "unknown"
 	subcategory := "unclassified"
-	
+
 	if categoryVal, ok := bestMatch.Payload["category"].(string); ok {
 		category = categoryVal
 	}
@@ -304,7 +304,7 @@ func (sm *SecurityManagerImpl) analyzeTrends(vuln Vulnerability) TrendAnalysis {
 func (sm *SecurityManagerImpl) assessImpact(vuln Vulnerability) ImpactAssessment {
 	businessImpact := "medium"
 	technicalImpact := "medium"
-	
+
 	if vuln.CVSS >= 9.0 {
 		businessImpact = "critical"
 		technicalImpact = "critical"
