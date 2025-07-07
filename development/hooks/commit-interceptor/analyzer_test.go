@@ -414,6 +414,7 @@ func TestCommitAnalyzer_suggestBranch(t *testing.T) {
 	// 	{"chore", "low", "develop"},
 	// }
 
+<<<<<<< HEAD
 	// for _, tt := range tests {
 	// 	t.Run(tt.changeType+"_"+tt.priority, func(t *testing.T) {
 	// 		analysis := &commitinterceptor.CommitAnalysis{
@@ -436,4 +437,19 @@ func TestCommitAnalyzer_suggestBranch(t *testing.T) {
 	// 		}
 	// 	})
 	// }
+=======
+			analyzer.suggestBranch(analysis)
+
+			if tt.expectedPrefix == "develop" {
+				if analysis.SuggestedBranch != "develop" {
+					t.Errorf("Expected branch 'develop', got '%s'", analysis.SuggestedBranch)
+				}
+			} else {
+				if !strings.HasPrefix(analysis.SuggestedBranch, tt.expectedPrefix) {
+					t.Errorf("Expected branch to start with '%s', got '%s'", tt.expectedPrefix, analysis.SuggestedBranch)
+				}
+			}
+		})
+	}
+>>>>>>> 84da88b7 (Mises à jour manuelles sur extractionparser.go et read_file_navigator.go : corrections, améliorations ou ajustements récents. [auto])
 }
