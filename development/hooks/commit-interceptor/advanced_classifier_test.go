@@ -10,6 +10,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+<<<<<<< HEAD
+=======
+
+	commitinterceptor "github.com/gerivdb/email-sender-1/development/hooks/commit-interceptor"
+>>>>>>> 08c2479e (Fix compilation errors in advanced_classifier_test.go)
 )
 
 func TestMultiCriteriaClassifier_HybridClassification(t *testing.T) {
@@ -448,6 +453,7 @@ func TestMultiCriteriaClassifier_WeightingSystem(t *testing.T) {
 
 // Fonctions utilitaires pour les tests
 
+<<<<<<< HEAD
 func getTestConfig() *commitinterceptor.Config { // Adjusted to return commitinterceptor.Config
 	return &commitinterceptor.Config{ // Adjusted to use commitinterceptor.Config
 		TestMode: true,
@@ -457,12 +463,30 @@ func getTestConfig() *commitinterceptor.Config { // Adjusted to return commitint
 		},
 		Routing: commitinterceptor.RoutingConfig{ // Adjusted to use commitinterceptor.RoutingConfig
 			Rules: map[string]commitinterceptor.RoutingRule{ // Adjusted to use commitinterceptor.RoutingRule
+=======
+// getTestConfig provides a basic configuration for testing purposes.
+func getTestConfig() *commitinterceptor.Config {
+	return &commitinterceptor.Config{
+		TestMode: true, // Assuming test mode is desired for most tests
+		Server: commitinterceptor.ServerConfig{
+			Port: 8080, // Default or common test port
+			Host: "localhost",
+		},
+		Git: commitinterceptor.GitConfig{
+			DefaultBranch: "main",
+			RemoteName:    "origin",
+		},
+		Routing: commitinterceptor.RoutingConfig{
+			DefaultStrategy: "type-based", // A sensible default
+			Rules: map[string]commitinterceptor.RoutingRule{
+>>>>>>> 08c2479e (Fix compilation errors in advanced_classifier_test.go)
 				"feature": {
 					Patterns:     []string{"feat:", "feature:"},
 					TargetBranch: "feature/{name}-{timestamp}",
 					CreateBranch: true,
 				},
 				"fix": {
+<<<<<<< HEAD
 					Patterns:     []string{"fix:", "bug:"},
 					TargetBranch: "develop",
 					CreateBranch: false,
@@ -495,6 +519,20 @@ func getTestConfig() *commitinterceptor.Config { // Adjusted to return commitint
 			},
 			DefaultStrategy: "develop",
 		},
+=======
+					Patterns:     []string{"fix:", "bugfix:"},
+					TargetBranch: "develop",
+					CreateBranch: false,
+				},
+				// Add other common rules if necessary for these tests
+			},
+		},
+		Logging: commitinterceptor.LoggingConfig{
+			Level: "info", // Default test logging level
+		},
+		// Add other necessary config fields with sensible defaults
+		// e.g. OpenAIConfig, AnthropicConfig, OllamaConfig if used by NewCommitAnalyzer
+>>>>>>> 08c2479e (Fix compilation errors in advanced_classifier_test.go)
 	}
 }
 

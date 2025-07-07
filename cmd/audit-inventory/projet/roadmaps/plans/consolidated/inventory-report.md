@@ -1,6 +1,6 @@
 # Rapport d’inventaire
 
-_Généré le 2025-07-06T15:11:12+02:00_
+_Généré le 2025-07-07T20:49:57+02:00_
 
 - `logs\inventory.log`
 - `main.go`
