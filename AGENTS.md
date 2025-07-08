@@ -521,7 +521,7 @@ Ce fichier documente les agents et managers principaux de l’architecture docum
     - `core.CacheManagerInterface` (gestion de cache)
     - `core.LWMInterface` (gestion de workflows de cycle de vie)
     - `core.RAGInterface` (génération augmentée par récupération)
-    - `core.MemoryBankAPIClient` (stockage/récupération de données)
+    - `core.BankAPIClient` (stockage/récupération de données)
 - **Utilisation :** Destiné à être un point d'entrée pour le traitement de requêtes spécifiques, en déléguant le travail aux managers spécialisés injectés lors de son initialisation.
 - **Entrée/Sortie :** Accepte des requêtes structurées (par exemple, via sa méthode `ProcessRequest`) et retourne des réponses ou des erreurs après interaction avec ses dépendances.
 - **Statut Actuel :**
