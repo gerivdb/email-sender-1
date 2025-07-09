@@ -1,0 +1,27 @@
+# Analyse d'écart : Jan vs Multi-agent
+
+| Plan | Fonctionnalité à adapter | Logique actuelle (Multi-agent/LLM) | Logique cible (Jan séquentiel) |
+|---|---|---|---|
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v100-harmonisation-IA-locale-avec-Jan-et-memoire.md | Orchestration | Multi-agent, AgentZero, CrewAI | Orchestration séquentielle via Jan (mono-agent) |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v100-harmonisation-IA-locale-avec-Jan-et-memoire.md | Modèles LLM | Multiples modèles LLM | Un seul LLM (Jan) avec personas via prompts |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v100-harmonisation-IA-locale-avec-Jan-et-memoire.md | Gestion du dialogue | Historique par agent/LLM | Historique centralisé par ContextManager |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v100-harmonisation-IA-locale-avec-Jan-et-memoire.md | Orchestration | Multi-agent, AgentZero, CrewAI | Orchestration séquentielle via Jan (mono-agent) |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v100-harmonisation-IA-locale-avec-Jan-et-memoire.md | Modèles LLM | Multiples modèles LLM | Un seul LLM (Jan) avec personas via prompts |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v100-harmonisation-IA-locale-avec-Jan-et-memoire.md | Gestion du dialogue | Historique par agent/LLM | Historique centralisé par ContextManager |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v100-harmonisation-IA-locale-avec-Jan-et-memoire.md | Orchestration | Multi-agent, AgentZero, CrewAI | Orchestration séquentielle via Jan (mono-agent) |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v100-harmonisation-IA-locale-avec-Jan-et-memoire.md | Modèles LLM | Multiples modèles LLM | Un seul LLM (Jan) avec personas via prompts |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v100-harmonisation-IA-locale-avec-Jan-et-memoire.md | Gestion du dialogue | Historique par agent/LLM | Historique centralisé par ContextManager |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v100-harmonisation-IA-locale-avec-Jan-et-memoire.md | Orchestration | Multi-agent, AgentZero, CrewAI | Orchestration séquentielle via Jan (mono-agent) |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v100-harmonisation-IA-locale-avec-Jan-et-memoire.md | Modèles LLM | Multiples modèles LLM | Un seul LLM (Jan) avec personas via prompts |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v100-harmonisation-IA-locale-avec-Jan-et-memoire.md | Gestion du dialogue | Historique par agent/LLM | Historique centralisé par ContextManager |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v12-architecture-cognitive.md | Orchestration | Multi-agent, AgentZero, CrewAI | Orchestration séquentielle via Jan (mono-agent) |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v63-agent-zero-cline-copilot.md | Orchestration | Multi-agent, AgentZero, CrewAI | Orchestration séquentielle via Jan (mono-agent) |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v63-agent-zero-cline-copilot.md | Orchestration | Multi-agent, AgentZero, CrewAI | Orchestration séquentielle via Jan (mono-agent) |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v63-agent-zero-cline-copilot.md | Orchestration | Multi-agent, AgentZero, CrewAI | Orchestration séquentielle via Jan (mono-agent) |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v63-agent-zero-cline-copilot.md | Orchestration | Multi-agent, AgentZero, CrewAI | Orchestration séquentielle via Jan (mono-agent) |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v63-agent-zero-cline-copilot.md | Orchestration | Multi-agent, AgentZero, CrewAI | Orchestration séquentielle via Jan (mono-agent) |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v63-agent-zero-cline-copilot.md | Orchestration | Multi-agent, AgentZero, CrewAI | Orchestration séquentielle via Jan (mono-agent) |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v70-copilot-contextual-generation.md | Orchestration | Multi-agent, AgentZero, CrewAI | Orchestration séquentielle via Jan (mono-agent) |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v70-copilot-contextual-generation.md | Modèles LLM | Multiples modèles LLM | Un seul LLM (Jan) avec personas via prompts |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v70-copilot-contextual-generation.md | Orchestration | Multi-agent, AgentZero, CrewAI | Orchestration séquentielle via Jan (mono-agent) |
+| D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\plans\consolidated\plan-dev-v70-copilot-contextual-generation.md | Modèles LLM | Multiples modèles LLM | Un seul LLM (Jan) avec personas via prompts |

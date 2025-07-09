@@ -2,21 +2,3 @@
 
 ## Orchestration séquentielle multi-personas avec Jan
 Toutes les tâches IA sont orchestrées via Jan, en mode mono-agent séquentiel, chaque persona étant simulé par un prompt système/contextuel distinct. L’historique des échanges est géré par le ContextManager et injecté à chaque tour.
-## Diagramme d'architecture (Jan)
-
-```mermaid
-flowchart TD
-    subgraph Orchestration
-        A[auto-roadmap-runner.go] --> B[Scan plans]
-        B --> C[Ajout section Jan]
-        C --> D[Refactor interfaces]
-        D --> E[Maj ContextManager]
-        E --> F[Tests & Reporting]
-        F --> G[CI/CD]
-        G --> H[Validation & Rollback]
-    end
-    subgraph Mémoire partagée
-        X[ContextManager] <--> Y[Jan]
-        X <--> Z[Managers IA]
-    end
-```

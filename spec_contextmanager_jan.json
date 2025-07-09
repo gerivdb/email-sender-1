@@ -1,0 +1,74 @@
+{
+  "name": "ContextManager étendu pour Jan",
+  "description": "Spécification de l'API et du schéma de données pour le ContextManager, adapté à l'orchestration séquentielle multi-personas avec Jan.",
+  "api": [
+    {
+      "name": "StoreDialogueHistory",
+      "description": "Stocke un message dans l'historique de dialogue d'un persona spécifique.",
+      "parameters": {
+        "message": "string (le message à stocker)",
+        "persona": "string (identifiant unique du persona)"
+      },
+      "returns": "void"
+    },
+    {
+      "name": "GetDialogueContext",
+      "description": "Récupère les 'n' derniers messages de l'historique de dialogue d'un persona.",
+      "parameters": {
+        "n": "int (nombre de messages à récupérer)",
+        "persona": "string (identifiant unique du persona)"
+      },
+      "returns": "[]string (slice de messages)"
+    },
+    {
+      "name": "GetGlobalContext",
+      "description": "Récupère le contexte global partagé entre tous les personas.",
+      "parameters": {},
+      "returns": "map[string]interface{} (contexte global)"
+    },
+    {
+      "name": "UpdateGlobalContext",
+      "description": "Met à jour le contexte global partagé avec de nouvelles données.",
+      "parameters": {
+        "key": "string (clé de la donnée)",
+        "value": "interface{} (valeur de la donnée)"
+      },
+      "returns": "void"
+    },
+    {
+      "name": "ClearDialogueHistory",
+      "description": "Efface l'historique de dialogue d'un persona ou de tous les personas.",
+      "parameters": {
+        "persona": "string (optionnel, si vide efface tout)"
+      },
+      "returns": "void"
+    }
+  ],
+  "data_schema": {
+    "globalContext": {
+      "type": "map[string]interface{}",
+      "description": "Contexte global partagé entre tous les personas."
+    },
+    "history": {
+      "type": "map[string][]string",
+      "description": "Historique des dialogues, clé: persona, valeur: liste de messages."
+    }
+  },
+  "hooks": [
+    {
+      "name": "OnBeforeStore",
+      "description": "Exécuté avant le stockage d'un message.",
+      "when": "before"
+    },
+    {
+      "name": "OnAfterStore",
+      "description": "Exécuté après le stockage d'un message.",
+      "when": "after"
+    },
+    {
+      "name": "OnContextRetrieval",
+      "description": "Exécuté lors de la récupération du contexte.",
+      "when": "after"
+    }
+  ]
+}
