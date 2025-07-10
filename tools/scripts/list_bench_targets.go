@@ -1,4 +1,4 @@
-// tools/scripts/list_bench_targets/list_bench_targets.go
+// tools/scripts/list_bench_targets.go
 package main
 
 import (

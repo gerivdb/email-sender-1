@@ -5,12 +5,12 @@
 - [x] Vérifier que toute modification future ne casse pas le comportement existant (tests de régression automatisés).
 #### Roadmap granularisée (exemple pour "Tests de robustesse et de non-régression")
 
-- [ ] **Recensement des fonctionnalités critiques**
+- [x] **Recensement des fonctionnalités critiques**
   - Livrable : Liste Markdown des fonctionnalités critiques (`features_crit.md`)
   - Commande : `go run tools/scripts/list_features.go`
 #### Roadmap granularisée (exemple pour "Tests de performance")
 
-- [ ] **Recensement des fonctions clés à benchmarker**
+- [x] **Recensement des fonctions clés à benchmarker**
   - Livrable : Liste Markdown (`bench_targets.md`)
   - Commande : `go run tools/scripts/list_bench_targets.go`
   - Script à créer : `tools/scripts/list_bench_targets.go`
@@ -20,62 +20,62 @@
   - Traçabilité : Commit Git, log de génération
 #### Roadmap granularisée (exemple pour "Tests de sécurité")
 
-- [ ] **Recensement des vecteurs d’attaque**
+- [x] **Recensement des vecteurs d’attaque**
   - Livrable : Liste Markdown (`security_vectors.md`)
   - Commande : `go run tools/scripts/list_security_vectors.go`
   - Script à créer : `tools/scripts/list_security_vectors.go`
   - Critère de validation : Liste validée par un expert sécurité
 
-- [ ] **Analyse d’écart des protections existantes**
+- [x] **Analyse d’écart des protections existantes**
   - Livrable : Rapport d’écart (`security_gap_analysis.md`)
   - Commande : `go run tools/scripts/security_gap_analysis.go`
   - Script à créer : `tools/scripts/security_gap_analysis.go`
 
-- [ ] **Spécification des tests de sécurité**
+- [x] **Spécification des tests de sécurité**
   - Livrable : Spécification (`security_test_cases.md`)
   - Commande : `go run tools/scripts/spec_security_cases.go`
   - Script à créer : `tools/scripts/spec_security_cases.go`
 
-- [ ] **Développement des tests de sécurité**
+- [x] **Développement des tests de sécurité**
   - Livrable : Fichiers Go de tests, scripts gosec/OWASP ZAP
 #### Roadmap granularisée (exemple pour "Tests de documentation")
 
-- [ ] **Recensement des modules/fonctions exportées à documenter**
+- [x] **Recensement des modules/fonctions exportées à documenter**
   - Livrable : Liste Markdown (`doc_targets.md`)
   - Commande : `go run tools/scripts/list_doc_targets.go`
   - Script à créer : `tools/scripts/list_doc_targets.go`
 
-- [ ] **Spécification des exigences de documentation**
+- [x] **Spécification des exigences de documentation**
   - Livrable : Spécification (`doc_requirements.md`)
   - Commande : `go run tools/scripts/spec_doc_requirements.go`
   - Script à créer : `tools/scripts/spec_doc_requirements.go`
 
-- [ ] **Développement des commentaires/docstrings**
+- [x] **Développement des commentaires/docstrings**
   - Livrable : Fichiers Go commentés
   - Commande : `golint ./...`
   - Critère de validation : Aucun warning critique
 
-- [ ] **Tests de lint/documentation**
+- [x] **Tests de lint/documentation**
   - Livrable : Rapport (`doc_lint_report.md`)
   - Commande : `golint ./... > doc_lint_report.md`
 
-- [ ] **Reporting et validation**
+- [x] **Reporting et validation**
   - Livrable : Rapport (`doc_report.md`)
   - Commande : `cat doc_report.md`
 
-- [ ] **Rollback/versionnement**
+- [x] **Rollback/versionnement**
   - Livrable : Sauvegarde `.bak`, commit Git
 
-- [ ] **Documentation associée**
+- [x] **Documentation associée**
   - Livrable : README, guides documentation
 
-- [ ] **Traçabilité**
+- [x] **Traçabilité**
   - Livrable : Logs, historique Git
 
-- [ ] **Automatisation maximale**
+- [x] **Automatisation maximale**
   - Livrable : Scripts Go natifs, tests associés
 
-- [ ] **Exemple de script Go minimal pour recenser les cibles**
+- [x] **Exemple de script Go minimal pour recenser les cibles**
   - Fichier : `tools/scripts/list_doc_targets.go`
   - Exemple :
     ```go

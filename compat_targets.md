@@ -1,0 +1,3 @@
+- Go 1.20 Linux
+- Go 1.20 Windows
+- Go 1.21 Mac
