@@ -1,8 +1,8 @@
 ## 🧪 Roadmap granularisée – Renforcement des tests et validation avancée
 
 ### 1. Tests de robustesse et de non-régression
-- [ ] Ajouter des tests de non-régression pour chaque fonctionnalité critique.
-- [ ] Vérifier que toute modification future ne casse pas le comportement existant (tests de régression automatisés).
+- [x] Ajouter des tests de non-régression pour chaque fonctionnalité critique.
+- [x] Vérifier que toute modification future ne casse pas le comportement existant (tests de régression automatisés).
 #### Roadmap granularisée (exemple pour "Tests de robustesse et de non-régression")
 
 - [ ] **Recensement des fonctionnalités critiques**
