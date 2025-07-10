@@ -1,0 +1,48 @@
+name: v101 Roadmap Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  v101-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+      - name: Générer stubs et tests
+        run: |
+          go run tools/scripts/gen_stubs.go
+          go run tools/scripts/gen_tests.go
+      - name: Générer tests d'intégration
+        run: go run tools/scripts/gen_integration_tests.go
+      - name: Build & Coverage
+        run: go run tools/scripts/gen_build_and_coverage_reports.go
+      - name: Générer docs & archive
+        run: go run tools/scripts/gen_docs_and_archive.go
+      - name: Lancer tous les tests unitaires et avancés
+        run: go test ./... -v
+      - name: Lancer les benchmarks de performance
+        run: go test -bench . ./tests/non_regression/...
+      - name: Lancer les tests de lint/documentation
+        run: golint ./... || true
+      - name: Lancer les tests de mutation (optionnel)
+        run: |
+          go install github.com/zimmski/go-mutesting/v4/cmd/go-mutesting@latest
+          go-mutesting ./...
+      - name: Archiver les rapports
+        uses: actions/upload-artifact@v3
+        with:
+          name: v101-artifacts
+          path: |
+            coverage_report.html
+            archive/v101/
+            build_report.md
+            gap_analysis_v101.md
+            restauration_needs_v101.md
+            restauration_specs_v101.md

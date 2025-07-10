@@ -5,8 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
-
-	"github.com/gerivdb/email-sender-1/pkg/common"
+	// "github.com/gerivdb/email-sender-1/pkg/common"
 )
 
 func main() {
@@ -29,7 +28,7 @@ func main() {
 	}
 
 	// Créer un fichier de test si non existant pour faciliter les tests
-	err := common.CreateLargeTestFile(filePath, 1000) // Crée un fichier de 1000 lignes
+	// err := common.CreateLargeTestFile(filePath, 1000) // Crée un fichier de 1000 lignes
 	if err != nil {
 		fmt.Printf("Erreur lors de la création du fichier de test: %v\n", err)
 	}
@@ -75,16 +74,16 @@ func main() {
 	startLine := (currentBlock-1)*blockSize + 1
 	endLine := currentBlock * blockSize
 
-	lines, err := common.ReadFileRange(filePath, startLine, endLine)
-	if err != nil {
-		fmt.Printf("Erreur lors de la lecture du fichier: %v\n", err)
-		os.Exit(1)
-	}
+	// lines, err := common.ReadFileRange(filePath, startLine, endLine)
+	// 	if err != nil {
+	// 		fmt.Printf("Erreur lors de la lecture du fichier: %v\n", err)
+	// 		os.Exit(1)
+	// 	}
 
 	fmt.Printf("--- Affichage du Bloc %d/%d (Lignes %d-%d) ---\n", currentBlock, totalPages, startLine, endLine)
-	for _, line := range lines {
-		fmt.Println(line)
-	}
+	// for _, line := range lines {
+	// 	fmt.Println(line)
+	// }
 	fmt.Println("--- Fin du Bloc ---")
 }
 

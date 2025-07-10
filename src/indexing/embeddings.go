@@ -8,7 +8,8 @@ import (
 
 // EmbeddingProvider interface for different embedding models
 type EmbeddingProvider interface {
-	// GetEmbeddings generates embeddings for a batch of texts
+	// GetEmbeddings generates embeddings for a batch of texts with context
+	GetEmbeddings(ctx context.Context, texts []string) ([][]float32, error)
 	GetEmbeddings(ctx context.Context, texts []string) ([][]float32, error)
 
 	// GetDimensions returns the dimensionality of the embeddings

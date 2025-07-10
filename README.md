@@ -1,31 +1,53 @@
-# Email Sender - Envoi d'emails centralisé
+# 📦 Projet v101 – Orchestration, CI/CD et Validation
 
-## Description
+## 🚀 Pipeline CI/CD v101
 
-Ce dépôt fournit un système d'envoi d'emails centralisé, construit avec Go et intégré à N8N pour l'automatisation des workflows. Il est conçu pour les environnements d'entreprise et offre des fonctionnalités telles que l'envoi d'emails automatisé et une documentation complète.
+Ce projet intègre un pipeline GitHub Actions automatisé pour la roadmap v101 :
 
-## Documentation
+- Génération automatique des stubs, tests unitaires, tests d’intégration, build, couverture, documentation et archivage.
+- Exécution de tous les scripts Go de la roadmap v101.
+- Archivage automatique des rapports et artefacts.
 
-La documentation principale se trouve dans le répertoire [.github/docs](.github/docs). Voici quelques documents clés :
+### 📋 Utilisation du pipeline
 
-*   [Guide de démarrage rapide](.github/docs/GETTING-STARTED/quick-start.md) : Démarrez rapidement avec Email Sender en moins de 5 minutes.
-*   [Aperçu de l'architecture](.github/docs/ARCHITECTURE/ecosystem-overview.md) : Découvrez l'architecture et les composants du système.
-*   [Index de la documentation](.github/docs/DOC_INDEX.md) : Un index central pour naviguer dans toute la documentation.
+- **Déclenchement** : À chaque push ou pull request sur la branche `main`.
+- **Fichier de workflow** : `.github/workflows/v101-pipeline.yml`
+- **Étapes automatisées** :
+  - Génération des stubs et tests
+  - Génération des tests d’intégration
+  - Build et rapport de couverture
+  - Génération de la documentation et archivage
+  - Exécution de tous les tests
+  - Archivage des artefacts
 
-## Contribution
+### 📊 Résultats et rapports
 
-Nous accueillons les contributions au projet Email Sender ! Veuillez consulter le [Guide de contribution](.github/docs/CONTRIBUTING.md) pour plus de détails sur la façon de contribuer.
+- Les rapports de build, couverture, besoins, specs et artefacts sont accessibles dans l’onglet “Actions” de GitHub.
+- Les artefacts sont archivés dans `archive/v101/` et téléchargeables depuis l’interface GitHub Actions.
+- Les badges de build et de couverture peuvent être ajoutés en haut du README pour le suivi visuel.
 
-## Principales fonctionnalités
+### ✅ Critères de validation
 
-*   Envoi d'emails automatisé
-*   Intégration avec les workflows N8N
-*   Documentation complète
+- Tous les jobs du pipeline doivent passer (badge vert).
+- Les artefacts doivent être présents et à jour.
+- Les stubs doivent être remplacés par des implémentations réelles pour valider la fonctionnalité métier.
 
-## Démarrage
+### 🛠️ Commandes manuelles utiles
 
-Consultez le [Guide de démarrage rapide](.github/docs/GETTING-STARTED/quick-start.md) pour savoir comment configurer et exécuter Email Sender.
+- Lancer tous les tests localement :  
+  ```bash
+  go test ./... -v
+  ```
+- Générer la couverture localement :  
+  ```bash
+  go test ./... -coverprofile=coverage.out && go tool cover -html=coverage.out -o coverage_report.html
+  ```
 
-## Licence
+### 📚 Documentation technique
 
-[Les informations de licence seront ajoutées ici]
+- Voir `docs/architecture.md` pour l’architecture détaillée.
+- Voir le plan détaillé dans `projet/roadmaps/plans/consolidated/plan-dev-v101-coherence-plans.md`.
+
+---
+
+*Pour toute contribution, suivre la checklist du plan v101 et versionner chaque étape pour garantir la traçabilité et la robustesse du projet.*

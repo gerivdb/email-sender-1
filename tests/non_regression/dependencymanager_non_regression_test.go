@@ -1,12 +1,14 @@
-// development/managers/dependencymanager/dependency_manager_test.go
-package dependencymanager
+// tests/non_regression/dependencymanager_non_regression_test.go
+package non_regression
 
 import (
 	"testing"
+
+	"github.com/gerivdb/email-sender-1/development/managers/dependencymanager"
 )
 
 func TestDependencyManagerNonRegression(t *testing.T) {
-	dm := New()
+	dm := dependencymanager.New()
 	if dm == nil {
 		t.Fatal("Gestionnaire non initialisé")
 	}

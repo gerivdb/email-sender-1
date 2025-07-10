@@ -1,10 +1,12 @@
 package indexing
 
+import "context"
+
 // DocumentReader interface defines methods for reading different document formats
-// Use IndexingDocument for local use
+// Use Document type
 type DocumentReader interface {
-	// Read reads the content and metadata from a file
-	Read(path string) (*IndexingDocument, error)
+	// Read reads the content and metadata from a file with context
+	Read(ctx context.Context, path string) (*Document, error)
 	// GetSupportedExtensions returns the file extensions this reader supports
 	GetSupportedExtensions() []string
 }

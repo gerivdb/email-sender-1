@@ -55,6 +55,7 @@ require (
 	github.com/go-playground/validator/v10 v10.27.0 // indirect
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
+	github.com/gomarkdown/markdown v0.0.0-20230922112808-5421fefb8386 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -108,14 +109,26 @@ replace github.com/gerivdb/email-sender-1/core/scanmodules => ./core/scanmodules
 
 replace github.com/gerivdb/email-sender-1/development/managers/error-manager => ./development/managers/error-manager
 
-replace github.com/gerivdb/email-sender-1/managers/interfaces => ./managers/interfaces
-
 replace github.com/gerivdb/email-sender-1/development/managers/dependency-manager => ./development/managers/dependencymanager
-
-replace github.com/gerivdb/email-sender-1/pkg/email => ./development/managers/email-manager
 
 replace github.com/gerivdb/email-sender-1/streaming/redis_streaming => ./streaming/redis_streaming
 
 replace github.com/gerivdb/email-sender-1/tools/core/toolkit => ./tools/pkg/toolkit
 
 replace github.com/gerivdb/email-sender-1/core/graphgen => ./core/graphgen
+
+replace github.com/gerivdb/email-sender-1/pkg/email => ./development/managers/email-manager
+
+replace github.com/gerivdb/email-sender-1/development/managers/interfaces => ./development/managers/interfaces
+
+replace github.com/gerivdb/email-sender-1/development/managers/maintenance-manager => ./development/managers/maintenance-manager
+
+replace github.com/gerivdb/email-sender-1/managers/notification-manager/interfaces => ./development/managers/notification-manager/interfaces
+
+replace github.com/gerivdb/email-sender-1/managers/dependency-manager => ./development/managers/dependencymanager
+
+replace github.com/gerivdb/email-sender-1/managers/security-manager => ./development/managers/security-manager
+
+replace github.com/gerivdb/email-sender-1/managers/storage-manager => ./development/managers/storage-manager
+
+replace github.com/gerivdb/email-sender-1/core/reporting => ./core/reporting

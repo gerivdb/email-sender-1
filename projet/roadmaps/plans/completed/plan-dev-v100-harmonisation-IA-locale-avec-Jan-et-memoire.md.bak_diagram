@@ -25,12 +25,12 @@ Adapter tous les plans impliquant des agents IA pour remplacer toute logique mul
 
 ## 2. Recueil des besoins & Spécification
 
-- [ ] **2.1 Recueil des besoins spécifiques à Jan**
+- [x] **2.1 Recueil des besoins spécifiques à Jan**
   - Livrable : `besoins_jan.md` (exigences, limites, scénarios cibles)
   - Commande : `go run cmd/recueil-besoins/main.go`
   - Critère : Validation par revue croisée.
 
-- [ ] **2.2 Spécification du ContextManager étendu**
+- [x] **2.2 Spécification du ContextManager étendu**
   - Livrable : `spec_contextmanager_jan.md`
   - Script Go : `cmd/spec-contextmanager/main.go`
   - Format : Markdown/JSON (schéma des données, API, hooks)
@@ -40,7 +40,7 @@ Adapter tous les plans impliquant des agents IA pour remplacer toute logique mul
 
 ## 3. Développement & Adaptation des plans
 
-- [ ] **3.1 Ajout d’une section “Orchestration séquentielle multi-personas avec Jan” dans chaque plan**
+- [x] **3.1 Ajout d’une section “Orchestration séquentielle multi-personas avec Jan” dans chaque plan**
   - Livrable : PRs sur chaque plan concerné, diff Markdown
   - Script Go : `cmd/ajout-section-jan/main.go`
   - Exemple de section à injecter :
