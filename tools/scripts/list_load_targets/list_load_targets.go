@@ -1,3 +1,4 @@
+// tools/scripts/list_load_targets/list_load_targets.go
 package main
 
 import (
@@ -5,7 +6,7 @@ import (
 )
 
 func main() {
-	fmt.Println("- gestionnaire de dépendances")
-	fmt.Println("- orchestration CLI")
-	fmt.Println("- gateway-manager")
+	fmt.Println("- Module Authentification")
+	fmt.Println("- Module Orchestration")
+	fmt.Println("- API Upload")
 }

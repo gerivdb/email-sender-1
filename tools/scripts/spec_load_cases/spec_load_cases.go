@@ -1,3 +1,4 @@
+// tools/scripts/spec_load_cases/spec_load_cases.go
 package main
 
 import (
@@ -5,8 +6,8 @@ import (
 )
 
 func main() {
-	fmt.Println("# Spécification des scénarios de charge")
-	fmt.Println("- gestionnaire de dépendances : 1000 requêtes simultanées")
-	fmt.Println("- orchestration CLI : 500 exécutions concurrentes")
-	fmt.Println("- gateway-manager : 10 000 requêtes/minute")
+	fmt.Println("# Spécification des scénarios de charge\n")
+	fmt.Println("- 1000 utilisateurs simultanés sur Authentification")
+	fmt.Println("- 500 requêtes/s sur Orchestration")
+	fmt.Println("- 200 uploads concurrents")
 }

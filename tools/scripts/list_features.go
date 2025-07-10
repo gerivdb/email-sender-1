@@ -1,3 +1,4 @@
+// tools/scripts/list_features.go
 package main
 
 import (

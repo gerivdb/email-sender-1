@@ -1,3 +1,4 @@
+// tools/scripts/collect_test_needs/collect_test_needs.go
 package main
 
 import (
@@ -5,8 +6,7 @@ import (
 )
 
 func main() {
-	fmt.Println("# Besoins de tests complémentaires")
-	fmt.Println("- Ajouter des tests d’intégration pour l’authentification")
-	fmt.Println("- Couvrir les cas limites de gestion des utilisateurs")
-	fmt.Println("- Tester la robustesse de l’orchestration CLI")
+	fmt.Println("- Besoin de tests sur la gestion des erreurs Authentification")
+	fmt.Println("- Besoin de tests de montée en charge sur Orchestration")
+	fmt.Println("- Besoin de tests de robustesse sur l’API Upload")
 }

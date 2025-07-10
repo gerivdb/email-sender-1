@@ -1,4 +1,5 @@
 # Besoins de tests complémentaires
-- Ajouter des tests d’intégration pour l’authentification
-- Couvrir les cas limites de gestion des utilisateurs
-- Tester la robustesse de l’orchestration CLI
+
+- Besoin de tests sur la gestion des erreurs Authentification
+- Besoin de tests de montée en charge sur Orchestration
+- Besoin de tests de robustesse sur l’API Upload

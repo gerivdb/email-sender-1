@@ -1,3 +1,4 @@
 # Spécification des mutations
-- Inverser une condition logique
-- Remplacer un opérateur + par -
+
+- Mutation : inversion d’une condition logique
+- Mutation : suppression d’un appel de fonction critique

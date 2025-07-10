@@ -1,3 +1,5 @@
-- gestionnaire de dépendances
-- orchestration CLI
-- gateway-manager
+# Modules critiques à tester en charge
+
+- Module Authentification
+- Module Orchestration
+- API Upload

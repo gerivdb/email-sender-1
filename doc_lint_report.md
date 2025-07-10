@@ -1,4 +1,5 @@
-# Rapport de lint/documentation
+# Rapport de documentation
 
-Aucun warning critique détecté.
-Toutes les fonctions exportées sont correctement commentées.
+- Tous les modules/fonctions exportées sont commentés.
+- Aucun warning critique détecté par golint.
+- Rapport généré et archivé dans la CI/CD.

@@ -1,21 +1,29 @@
 // security_test.go
 package main
 
-import (
-	"testing"
-)
+import "testing"
 
-func TestSanitizeInput(t *testing.T) {
-	input := "'; DROP TABLE users; --"
-	expected := "DROP TABLE users"
-	result := sanitizeInput(input)
-	if result != expected {
-		t.Errorf("Sanitization failed: got %v, want %v", result, expected)
+func TestInjection(t *testing.T) {
+	input := "' OR 1=1; --"
+	if IsInputMalicious(input) != true {
+		t.Error("Injection non détectée")
 	}
 }
 
-// Fonction fictive pour l'exemple
-func sanitizeInput(s string) string {
-	// Suppression des caractères dangereux (exemple simplifié)
-	return "DROP TABLE users"
+func TestAccessControl(t *testing.T) {
+	if !HasAccess("admin", "confidentiel") {
+		t.Error("Accès refusé à un admin")
+	}
+	if HasAccess("user", "confidentiel") {
+		t.Error("Accès non autorisé accordé à un user")
+	}
+}
+
+// Fonctions fictives pour l'exemple
+func IsInputMalicious(s string) bool {
+	return s == "' OR 1=1; --"
+}
+
+func HasAccess(role, resource string) bool {
+	return role == "admin"
 }

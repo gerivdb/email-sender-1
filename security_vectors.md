@@ -1,5 +1,5 @@
-# Vecteurs d’attaque
+# Vecteurs d’attaque recensés
 
 - Injection SQL
-- XSS (Cross-Site Scripting)
-- Élévation de privilèges
+- XSS
+- Privilege escalation

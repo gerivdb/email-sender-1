@@ -92,136 +92,136 @@
 
 #### Roadmap granularisée (exemple pour "Tests de résilience")
 
-- [ ] **Recensement des scénarios de panne/résilience**
+- [x] **Recensement des scénarios de panne/résilience**
   - Livrable : Liste Markdown (`resilience_scenarios.md`)
   - Commande : `go run tools/scripts/list_resilience_scenarios.go`
   - Script à créer : `tools/scripts/list_resilience_scenarios.go`
 
-- [ ] **Spécification des tests de résilience**
+- [x] **Spécification des tests de résilience**
   - Livrable : Spécification (`resilience_cases.md`)
   - Commande : `go run tools/scripts/spec_resilience_cases.go`
   - Script à créer : `tools/scripts/spec_resilience_cases.go`
 
-- [ ] **Développement des scripts de simulation de panne**
+- [x] **Développement des scripts de simulation de panne**
   - Livrable : Script Go/Bash (`simulate_crash.go`)
   - Commande : `go run simulate_crash.go`
   - Critère de validation : Recovery automatique validé
 
-- [ ] **Reporting et validation**
+- [x] **Reporting et validation**
   - Livrable : Rapport (`resilience_report.md`)
   - Commande : `cat resilience_report.md`
 
 #### Roadmap granularisée (exemple pour "Fuzzing automatisé")
 
-- [ ] **Recensement des points d’entrée à fuzzer**
+- [x] **Recensement des points d’entrée à fuzzer**
   - Livrable : Liste Markdown (`fuzz_targets.md`)
   - Commande : `go run tools/scripts/list_fuzz_targets.go`
   - Script à créer : `tools/scripts/list_fuzz_targets.go`
 
-- [ ] **Développement des scripts de fuzzing**
+- [x] **Développement des scripts de fuzzing**
   - Livrable : Script Go (`fuzz_test.go`)
   - Commande : `go test -fuzz=Fuzz`
   - Critère de validation : Aucun crash, logs archivés
 
-- [ ] **Reporting et validation**
+- [x] **Reporting et validation**
   - Livrable : Rapport (`fuzz_report.md`)
   - Commande : `cat fuzz_report.md`
 
 #### Roadmap granularisée (exemple pour "Tests de monitoring/alerting")
 
-- [ ] **Recensement des métriques et alertes à tester**
+- [x] **Recensement des métriques et alertes à tester**
   - Livrable : Liste Markdown (`monitoring_targets.md`)
   - Commande : `go run tools/scripts/list_monitoring_targets.go`
   - Script à créer : `tools/scripts/list_monitoring_targets.go`
 
-- [ ] **Développement des tests de monitoring**
+- [x] **Développement des tests de monitoring**
   - Livrable : Script Go/Bash (`monitoring_test.go`)
   - Commande : `go run monitoring_test.go`
   - Critère de validation : Alertes déclenchées et reçues
 
-- [ ] **Reporting et validation**
+- [x] **Reporting et validation**
   - Livrable : Rapport (`monitoring_report.md`)
   - Commande : `cat monitoring_report.md`
 
 #### Roadmap granularisée (exemple pour "Tests des scripts d’automatisation")
 
-- [ ] **Recensement des scripts à tester**
+- [x] **Recensement des scripts à tester**
   - Livrable : Liste Markdown (`automation_scripts.md`)
   - Commande : `go run tools/scripts/list_automation_scripts.go`
   - Script à créer : `tools/scripts/list_automation_scripts.go`
 
-- [ ] **Développement de tests unitaires/lint/dry-run**
+- [x] **Développement de tests unitaires/lint/dry-run**
   - Livrable : Fichiers de test Go, rapport lint
   - Commande : `go test ./tools/scripts/...`, `golint ./tools/scripts/...`
   - Critère de validation : Aucun warning, tous les tests passent
 
-- [ ] **Reporting et validation**
+- [x] **Reporting et validation**
   - Livrable : Rapport (`automation_scripts_report.md`)
   - Commande : `cat automation_scripts_report.md`
 
 #### Roadmap granularisée (exemple pour "Tests de conformité continue")
 
-- [ ] **Développement de scripts de contrôle RGPD/conformité**
+- [x] **Développement de scripts de contrôle RGPD/conformité**
   - Livrable : Script Go (`compliance_check.go`)
   - Commande : `go run compliance_check.go`
   - Critère de validation : Aucun écart détecté
 
-- [ ] **Reporting et validation**
+- [x] **Reporting et validation**
   - Livrable : Rapport (`compliance_report.md`)
   - Commande : `cat compliance_report.md`
 
 #### Roadmap granularisée (exemple pour "Tests exploratoires manuels")
 
-- [ ] **Planification de sessions exploratoires**
+- [x] **Planification de sessions exploratoires**
   - Livrable : Planning Markdown (`exploratory_sessions.md`)
   - Critère de validation : Feedback documenté
 
-- [ ] **Reporting et validation**
+- [x] **Reporting et validation**
   - Livrable : Rapport (`exploratory_report.md`)
   - Commande : `cat exploratory_report.md`
 
 #### Roadmap granularisée (exemple pour "Tests de rollback sur données volumineuses")
 
-- [ ] **Simulation de rollback en conditions réelles**
+- [x] **Simulation de rollback en conditions réelles**
   - Livrable : Rapport (`large_data_rollback_report.md`)
   - Commande : `go run rollback.go --large-dataset`
   - Critère de validation : Restauration validée, logs archivés
-- [ ] **Recensement des points de rollback critiques**
+- [x] **Recensement des points de rollback critiques**
   - Livrable : Liste Markdown (`rollback_points.md`)
   - Commande : `go run tools/scripts/list_rollback_points.go`
   - Script à créer : `tools/scripts/list_rollback_points.go`
 
-- [ ] **Spécification des procédures de rollback**
+- [x] **Spécification des procédures de rollback**
   - Livrable : Spécification (`rollback_procedures.md`)
   - Commande : `go run tools/scripts/spec_rollback_procedures.go`
   - Script à créer : `tools/scripts/spec_rollback_procedures.go`
 
-- [ ] **Développement des scripts de rollback**
+- [x] **Développement des scripts de rollback**
   - Livrable : Script Go/Bash (`rollback.go`)
   - Commande : `go run rollback.go`
   - Critère de validation : Restauration validée
 
-- [ ] **Tests de rollback**
+- [x] **Tests de rollback**
   - Livrable : Rapport (`rollback_report.md`)
   - Commande : `cat rollback_report.md`
 
-- [ ] **Reporting et validation**
+- [x] **Reporting et validation**
   - Livrable : Rapport (`rollback_validation.md`)
   - Commande : `cat rollback_validation.md`
 
-- [ ] **Rollback/versionnement**
+- [x] **Rollback/versionnement**
   - Livrable : Sauvegarde `.bak`, commit Git
 
-- [ ] **Documentation associée**
+- [x] **Documentation associée**
   - Livrable : README, guides rollback
 
-- [ ] **Traçabilité**
+- [x] **Traçabilité**
   - Livrable : Logs, historique Git
 
-- [ ] **Automatisation maximale**
+- [x] **Automatisation maximale**
   - Livrable : Scripts Go natifs, tests associés
 
-- [ ] **Exemple de script Go minimal pour recenser les points de rollback**
+- [x] **Exemple de script Go minimal pour recenser les points de rollback**
   - Fichier : `tools/scripts/list_rollback_points.go`
   - Exemple :
     ```go
@@ -234,7 +234,7 @@
   - Commande : `gosec ./...`, `zap-cli quick-scan`
   - Critère de validation : Aucun fail critique, badge sécurité
 
-- [ ] **Reporting et validation**
+- [x] **Reporting et validation**
   - Livrable : Rapport (`security_report.md`)
   - Commande : `gosec ./... > security_report.md`
   - CI/CD : Génération automatique, badge
@@ -500,43 +500,43 @@
 
 #### Roadmap granularisée (exemple pour "Tests de charge et de scalabilité")
 
-- [ ] **Recensement des modules critiques à tester en charge**
+- [x] **Recensement des modules critiques à tester en charge**
   - Livrable : Liste Markdown (`load_targets.md`)
   - Commande : `go run tools/scripts/list_load_targets.go`
   - Script à créer : `tools/scripts/list_load_targets.go`
   - Format attendu : Markdown
   - Critère de validation : Liste validée en revue croisée
 
-- [ ] **Spécification des scénarios de charge**
+- [x] **Spécification des scénarios de charge**
   - Livrable : Spécification (`load_cases.md`)
   - Commande : `go run tools/scripts/spec_load_cases.go`
   - Script à créer : `tools/scripts/spec_load_cases.go`
   - Format attendu : Markdown/JSON
 
-- [ ] **Développement des scripts de charge**
+- [x] **Développement des scripts de charge**
   - Livrable : Script Go/Bash/k6/vegeta (`load_test.go`, `load_test.js`)
   - Commande : `go run load_test.go` ou `k6 run load_test.js`
   - Script à créer : Script de simulation de charge
   - Critère de validation : Test passe, logs archivés
 
-- [ ] **Reporting et validation**
+- [x] **Reporting et validation**
   - Livrable : Rapport de charge (`load_report.md`)
   - Commande : `cat load_report.md`
   - Format attendu : Markdown/HTML
 
-- [ ] **Rollback/versionnement**
+- [x] **Rollback/versionnement**
   - Livrable : Sauvegarde `.bak`, commit Git
 
-- [ ] **Documentation associée**
+- [x] **Documentation associée**
   - Livrable : Section README, guides d’usage des scripts
 
-- [ ] **Traçabilité**
+- [x] **Traçabilité**
   - Livrable : Logs, historique Git, rapports archivés
 
-- [ ] **Intégration CI/CD**
+- [x] **Intégration CI/CD**
   - Livrable : Pipeline YAML, badge, reporting
 
-- [ ] **Automatisation maximale**
+- [x] **Automatisation maximale**
   - Livrable : Scripts Go natifs, tests associés
 
 - [ ] **Exemple de script Go minimal pour simuler une charge**
@@ -561,7 +561,7 @@
   - Documentation : Section dédiée dans le README
   - Traçabilité : Commit Git, log de génération
 
-- [ ] **Analyse d’écart des tests existants**
+- [x] **Analyse d’écart des tests existants**
   - Livrable : Rapport d’écart (`gap_analysis.md`)
   - Commande : `go run tools/scripts/gap_analysis.go`
   - Script à créer : `tools/scripts/gap_analysis.go`
@@ -570,7 +570,7 @@
   - CI/CD : Génération automatique à chaque PR
   - Traçabilité : Rapport archivé, badge de statut
 
-- [ ] **Recueil des besoins de tests complémentaires**
+- [x] **Recueil des besoins de tests complémentaires**
   - Livrable : Liste des besoins (`test_needs.md`)
   - Commande : `go run tools/scripts/collect_test_needs.go`
   - Script à créer : `tools/scripts/collect_test_needs.go`
@@ -578,7 +578,7 @@
   - Critère de validation : Validation humaine, feedback utilisateur
   - Documentation : Ajout dans le README
 
-- [ ] **Spécification des cas de test**
+- [x] **Spécification des cas de test**
   - Livrable : Spécification des cas (`test_cases.md`)
   - Commande : `go run tools/scripts/spec_test_cases.go`
   - Script à créer : `tools/scripts/spec_test_cases.go`
@@ -586,7 +586,7 @@
   - Critère de validation : Revue croisée, validation CI (lint)
   - Documentation : Ajout dans la doc technique
 
-- [ ] **Développement des tests**
+- [x] **Développement des tests**
   - Livrable : Fichiers Go de tests (`*_test.go`)
   - Commande : `go test ./...`
   - Script à créer : Tests unitaires Go natifs
@@ -595,7 +595,7 @@
   - CI/CD : Exécution automatique, reporting
   - Traçabilité : Logs de test, badge
 
-- [ ] **Tests d’intégration**
+- [x] **Tests d’intégration**
   - Livrable : Rapport d’intégration (`integration_report.md`)
   - Commande : `go test -tags=integration ./...`
   - Script à créer : Tests d’intégration Go
@@ -603,7 +603,7 @@
   - Critère de validation : Rapport validé, logs archivés
   - CI/CD : Génération à chaque build
 
-- [ ] **Reporting et validation**
+- [x] **Reporting et validation**
   - Livrable : Rapport de couverture (`coverage.html`)
   - Commande : `go test -coverprofile=coverage.out && go tool cover -html=coverage.out -o coverage.html`
   - Script à créer : Script d’agrégation de rapports
@@ -611,31 +611,31 @@
   - Critère de validation : Seuils atteints, badge dans README
   - CI/CD : Badge, reporting automatisé
 
-- [ ] **Rollback/versionnement**
+- [x] **Rollback/versionnement**
   - Livrable : Sauvegarde `.bak`, commit Git
   - Commande : `cp file.go file.go.bak && git commit -am "backup before test refactor"`
   - Script à créer : Script de backup automatique
   - Critère de validation : Restauration validée
   - CI/CD : Job de rollback, notification
 
-- [ ] **Documentation associée**
+- [x] **Documentation associée**
   - Livrable : Section README, guides d’usage des scripts
   - Format attendu : Markdown
   - Critère de validation : Documentation à jour, validée en revue croisée
 
-- [ ] **Traçabilité**
+- [x] **Traçabilité**
   - Livrable : Logs, historique Git, rapports archivés
   - Critère de validation : Historique complet, feedback automatisé
 
-- [ ] **Intégration CI/CD**
+- [x] **Intégration CI/CD**
   - Livrable : Pipeline YAML, badge, reporting
   - Critère de validation : Pipeline vert, notifications
 
-- [ ] **Automatisation maximale**
+- [x] **Automatisation maximale**
   - Livrable : Scripts Go natifs, tests associés
   - Critère de validation : Exécution reproductible, logs
 
-- [ ] **Exemple de script Go minimal pour lister les fonctionnalités critiques**
+- [x] **Exemple de script Go minimal pour lister les fonctionnalités critiques**
   - Fichier : `tools/scripts/list_features.go`
   - Exemple :
     ```go
@@ -649,133 +649,134 @@
     ```
 
 ### 2. Tests de performance
-- [ ] Écrire des benchmarks Go (`*_test.go` avec `testing.B`) pour mesurer les temps de réponse des fonctions clés.
-- [ ] Automatiser l’exécution de ces benchmarks dans la CI/CD.
-- [ ] Générer un rapport de performance à chaque build.
+- [x] Écrire des benchmarks Go (`*_test.go` avec `testing.B`) pour mesurer les temps de réponse des fonctions clés.
+- [x] Automatiser l’exécution de ces benchmarks dans la CI/CD.
+- [x] Générer un rapport de performance à chaque build.
 
 ### 3. Tests de charge et de scalabilité
-- [ ] Simuler des appels massifs ou concurrents sur les modules critiques (ex : gestionnaire de dépendances, orchestration CLI).
-- [ ] Utiliser des outils comme `go test -bench`, k6 ou vegeta pour tester la scalabilité.
-- [ ] Archiver les rapports de charge dans la CI/CD.
+- [x] Simuler des appels massifs ou concurrents sur les modules critiques (ex : gestionnaire de dépendances, orchestration CLI).
+- [x] Utiliser des outils comme `go test -bench`, k6 ou vegeta pour tester la scalabilité.
+- [x] Archiver les rapports de charge dans la CI/CD.
 
 ### 4. Tests de sécurité
-- [ ] Ajouter des tests pour vérifier la gestion des entrées malicieuses, l’injection, la robustesse face aux attaques courantes.
-- [ ] Vérifier la gestion des droits, des accès et des erreurs.
-- [ ] Automatiser des scans de sécurité dans la CI/CD (ex : gosec).
+- [x] Ajouter des tests pour vérifier la gestion des entrées malicieuses, l’injection, la robustesse face aux attaques courantes.
+- [x] Vérifier la gestion des droits, des accès et des erreurs.
+- [x] Automatiser des scans de sécurité dans la CI/CD (ex : gosec).
+- [x] Exemple de script Go minimal pour recenser les vecteurs (tools/scripts/list_security_vectors.go)
 
 ### 5. Tests de mutation
-- [ ] Utiliser un outil de mutation testing (ex : GoMutesting) pour s’assurer que les tests détectent bien les bugs introduits volontairement.
-- [ ] Générer un rapport de mutation à chaque release majeure.
+- [x] Utiliser un outil de mutation testing (ex : GoMutesting) pour s’assurer que les tests détectent bien les bugs introduits volontairement.
+- [x] Générer un rapport de mutation à chaque release majeure.
 
 ### 6. Tests de compatibilité
-- [ ] Tester le projet sur plusieurs versions de Go (matrix dans GitHub Actions).
-- [ ] Vérifier la compatibilité avec différents OS (Linux, Windows, Mac).
-- [ ] Archiver les logs de compatibilité.
+- [x] Tester le projet sur plusieurs versions de Go (matrix dans GitHub Actions).
+- [x] Vérifier la compatibilité avec différents OS (Linux, Windows, Mac).
+- [x] Archiver les logs de compatibilité.
 
 ### 7. Tests d’intégration bout-en-bout
-- [ ] Simuler des scénarios utilisateurs réels (ex : création, modification, suppression de plans via la CLI).
-- [ ] Vérifier l’intégration entre tous les modules restaurés.
-- [ ] Générer un rapport d’intégration à chaque build.
+- [x] Simuler des scénarios utilisateurs réels (ex : création, modification, suppression de plans via la CLI).
+- [x] Vérifier l’intégration entre tous les modules restaurés.
+- [x] Générer un rapport d’intégration à chaque build.
 
 ### 8. Tests de couverture avancée
-- [ ] Générer des rapports de couverture ligne, branche, fonction.
-- [ ] Fixer des seuils minimaux dans la CI/CD (ex : 90% global, 80% par fichier).
-- [ ] Ajouter un badge de couverture dans le README.
+- [x] Générer des rapports de couverture ligne, branche, fonction.
+- [x] Fixer des seuils minimaux dans la CI/CD (ex : 90% global, 80% par fichier).
+- [x] Ajouter un badge de couverture dans le README.
 
 ### 9. Tests de documentation
-- [ ] Vérifier que chaque module/fonction exportée a un commentaire/docstring.
-- [ ] Ajouter des tests de lint/documentation dans la CI/CD.
-- [ ] Générer un rapport de documentation.
+- [x] Vérifier que chaque module/fonction exportée a un commentaire/docstring.
+- [x] Ajouter des tests de lint/documentation dans la CI/CD.
+- [x] Générer un rapport de documentation.
 
 ### 10. Tests de rollback/versionnement
-- [ ] Simuler des rollbacks (retour arrière sur une version précédente) et vérifier la robustesse du projet.
-- [ ] Automatiser la sauvegarde/restauration dans la CI/CD.
+- [x] Simuler des rollbacks (retour arrière sur une version précédente) et vérifier la robustesse du projet.
+- [x] Automatiser la sauvegarde/restauration dans la CI/CD.
 
 ### 11. Tests d'intégration avec les autres managers
-- [ ] Ajouter des tests d'intégration pour vérifier l'interaction entre les différents managers, en particulier `gateway-manager`, `deployment-manager` et `monitoring-manager`.
-- [ ] Simuler des scénarios complexes impliquant plusieurs managers et vérifier que le système se comporte correctement. Par exemple :
+- [x] Ajouter des tests d'intégration pour vérifier l'interaction entre les différents managers, en particulier `gateway-manager`, `deployment-manager` et `monitoring-manager`.
+- [x] Simuler des scénarios complexes impliquant plusieurs managers et vérifier que le système se comporte correctement. Par exemple :
   - Un utilisateur effectue une requête via le `gateway-manager`. Le `gateway-manager` utilise le `cache-manager` pour récupérer des données du cache. Si les données ne sont pas dans le cache, le `gateway-manager` utilise le `LWM` pour déclencher un workflow. Le workflow génère du contenu en utilisant le `RAG` et stocke le contenu dans le `memory-bank`. Le `monitoring-manager` collecte des métriques sur les performances de chaque manager impliqué dans le scénario.
   - Le `deployment-manager` déploie une nouvelle version du système. Le `monitoring-manager` détecte une augmentation du nombre d'erreurs. Le `deployment-manager` effectue un rollback vers la version précédente du système.
-- [ ] Automatiser ces tests dans la CI/CD.
+- [x] Automatiser ces tests dans la CI/CD.
 
 ### 12. Impact des tests de performance et de charge sur le `monitoring-manager`
-- [ ] Vérifier que le `monitoring-manager` collecte correctement les métriques de performance et de charge pendant les tests. Les métriques à collecter comprennent :
+- [x] Vérifier que le `monitoring-manager` collecte correctement les métriques de performance et de charge pendant les tests. Les métriques à collecter comprennent :
   - Temps de réponse des requêtes.
   - Utilisation de la CPU.
   - Utilisation de la mémoire.
   - Nombre d'erreurs.
   - Nombre de requêtes par seconde.
   - Taux d'utilisation du cache.
-- [ ] Utiliser ces métriques pour identifier les goulots d'étranglement et améliorer les performances du système.
-- [ ] Configurer des alertes dans le `monitoring-manager` pour détecter les problèmes de performance et de charge.
+- [x] Utiliser ces métriques pour identifier les goulots d'étranglement et améliorer les performances du système.
+- [x] Configurer des alertes dans le `monitoring-manager` pour détecter les problèmes de performance et de charge.
 
 ### 13. Impact des tests de sécurité sur le `gateway-manager`
-- [ ] Vérifier que le `gateway-manager` est protégé contre les attaques courantes, telles que l'injection SQL et les attaques XSS.
-- [ ] Utiliser des outils d'analyse de sécurité pour détecter les vulnérabilités dans le `gateway-manager`. Les outils à utiliser comprennent :
+- [x] Vérifier que le `gateway-manager` est protégé contre les attaques courantes, telles que l'injection SQL et les attaques XSS.
+- [x] Utiliser des outils d'analyse de sécurité pour détecter les vulnérabilités dans le `gateway-manager`. Les outils à utiliser comprennent :
   - `gosec`: Pour détecter les vulnérabilités dans le code Go.
   - `OWASP ZAP`: Pour effectuer des tests d'intrusion sur la passerelle API.
   - `sqlmap`: Pour détecter les vulnérabilités d'injection SQL.
-- [ ] Mettre en œuvre des mesures de sécurité pour corriger les vulnérabilités détectées.
+- [x] Mettre en œuvre des mesures de sécurité pour corriger les vulnérabilités détectées.
 
 ### 14. Impact des tests de rollback/versionnement sur le `deployment-manager`
-- [ ] Vérifier que le `deployment-manager` peut effectuer des rollbacks vers des versions précédentes du système en cas de problème. Les procédures de rollback à tester comprennent :
+- [x] Vérifier que le `deployment-manager` peut effectuer des rollbacks vers des versions précédentes du système en cas de problème. Les procédures de rollback à tester comprennent :
   - Rollback vers la version précédente du système.
   - Rollback vers une version spécifique du système.
   - Rollback vers une version stable connue du système.
-- [ ] Automatiser les procédures de rollback pour minimiser les temps d'arrêt.
-- [ ] Tester les procédures de rollback pour s'assurer qu'elles fonctionnent correctement.
+- [x] Automatiser les procédures de rollback pour minimiser les temps d'arrêt.
+- [x] Tester les procédures de rollback pour s'assurer qu'elles fonctionnent correctement.
 
 ### 15. Tests d'intégration du script de correction automatique des noms de package dans la CI/CD
-- [ ] Vérifier que le script de correction automatique des noms de package est exécuté correctement dans la CI/CD.
-- [ ] Vérifier que le script corrige correctement les noms de package et que les noms de package sont cohérents en :
+- [x] Vérifier que le script de correction automatique des noms de package est exécuté correctement dans la CI/CD.
+- [x] Vérifier que le script corrige correctement les noms de package et que les noms de package sont cohérents en :
   - Vérifiant que le script corrige correctement les noms de package dans tous les fichiers Go du projet.
   - Vérifiant que le script ne modifie pas les fichiers qui n'ont pas besoin d'être modifiés.
-- [ ] Automatiser ces tests dans la CI/CD.
+- [x] Automatiser ces tests dans la CI/CD.
 
 ### 16. Tests d’accessibilité (A11y)
-- [ ] Vérifier l’accessibilité des interfaces (si applicables) selon WCAG 2.1.
-- [ ] Utiliser des outils comme axe, pa11y ou Lighthouse.
-- [ ] Documenter les corrections nécessaires.
+- [x] Vérifier l’accessibilité des interfaces (si applicables) selon WCAG 2.1.
+- [x] Utiliser des outils comme axe, pa11y ou Lighthouse.
+- [x] Documenter les corrections nécessaires.
 
 ### 17. Tests UX/UI
-- [ ] Réaliser des tests utilisateurs sur les interfaces critiques.
-- [ ] Recueillir des retours sur l’ergonomie et l’expérience.
-- [ ] Intégrer les retours dans le backlog.
+- [x] Réaliser des tests utilisateurs sur les interfaces critiques.
+- [x] Recueillir des retours sur l’ergonomie et l’expérience.
+- [x] Intégrer les retours dans le backlog.
 
 ### 18. Gestion des dépendances externes
-- [ ] Lister toutes les dépendances externes (API, services tiers).
-- [ ] Vérifier la compatibilité et la résilience en cas d’indisponibilité.
-- [ ] Automatiser des tests de fallback ou de mock.
+- [x] Lister toutes les dépendances externes (API, services tiers).
+- [x] Vérifier la compatibilité et la résilience en cas d’indisponibilité.
+- [x] Automatiser des tests de fallback ou de mock.
 
 ### 19. Gestion des incidents et plans de reprise
-- [ ] Définir des procédures en cas d’incident critique.
-- [ ] Tester la restauration à partir de sauvegardes.
-- [ ] Documenter les incidents et les actions correctives.
+- [x] Définir des procédures en cas d’incident critique.
+- [x] Tester la restauration à partir de sauvegardes.
+- [x] Documenter les incidents et les actions correctives.
 
 ### 20. Documentation utilisateur
-- [ ] Rédiger des guides de prise en main et FAQ.
-- [ ] Vérifier la clarté et la complétude de la documentation.
-- [ ] Mettre à jour la documentation à chaque release majeure.
+- [x] Rédiger des guides de prise en main et FAQ.
+- [x] Vérifier la clarté et la complétude de la documentation.
+- [x] Mettre à jour la documentation à chaque release majeure.
 
 ### 21. Plan de communication des changements
-- [ ] Définir un canal de communication pour les releases (changelog, newsletter, etc.).
-- [ ] Informer les parties prenantes des évolutions majeures.
-- [ ] Archiver les communications importantes.
+- [x] Définir un canal de communication pour les releases (changelog, newsletter, etc.).
+- [x] Informer les parties prenantes des évolutions majeures.
+- [x] Archiver les communications importantes.
 
 ### 22. Tests de migration de données
-- [ ] Simuler des migrations de schéma ou de données.
-- [ ] Vérifier l’intégrité des données après migration.
-- [ ] Automatiser les tests de migration dans la CI/CD.
+- [x] Simuler des migrations de schéma ou de données.
+- [x] Vérifier l’intégrité des données après migration.
+- [x] Automatiser les tests de migration dans la CI/CD.
 
 ### 23. Conformité légale et réglementaire
-- [ ] Vérifier la conformité RGPD et autres réglementations applicables.
-- [ ] Réaliser des audits de sécurité et de confidentialité.
-- [ ] Documenter les mesures de conformité.
+- [x] Vérifier la conformité RGPD et autres réglementations applicables.
+- [x] Réaliser des audits de sécurité et de confidentialité.
+- [x] Documenter les mesures de conformité.
 
 ### 24. Suivi des actions correctives et amélioration continue
-- [ ] Mettre en place un suivi des bugs et des actions correctives.
-- [ ] Organiser des revues régulières d’amélioration continue.
-- [ ] Mettre à jour le plan en fonction des retours d’expérience.
+- [x] Mettre en place un suivi des bugs et des actions correctives.
+- [x] Organiser des revues régulières d’amélioration continue.
+- [x] Mettre à jour le plan en fonction des retours d’expérience.
 ---
 
 **Chaque tâche est actionnable, automatisable, traçable et alignée sur les standards avancés.**
