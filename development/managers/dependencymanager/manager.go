@@ -1,4 +1,3 @@
-// development/managers/dependencymanager/manager.go
 package dependencymanager
 
 type Dependency struct {
