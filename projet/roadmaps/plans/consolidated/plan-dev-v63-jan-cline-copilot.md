@@ -1,12 +1,12 @@
-ce paIntégrer **Agent Zero** (<https://github.com/frdel/agent-zero>) dans ton workflow avec **GitHub Copilot**, **Cline**, **GEMINI-CLI** et **Opencode-CLI** dans Visual Studio Code (VS Code) est une stratégie optimale pour bâtir un écosystème d'IA managers inspiré de l'architecture documentaire, mais augmenté par l'IA et l'orchestration multi-CLI. Agent Zero devient l'orchestrateur central, pilotant tous les outils/agents (Copilot, Cline, GEMINI-CLI, Opencode-CLI, et les IA managers spécialisés) via des workflows automatisés, traçables et adaptatifs.
+ce paIntégrer **Jan** (<https://github.com/menloresearch/jan>) dans ton workflow avec **GitHub Copilot**, **Cline**, **GEMINI-CLI** et **Opencode-CLI** dans Visual Studio Code (VS Code) est une stratégie optimale pour bâtir un écosystème d'IA managers inspiré de l'architecture documentaire, mais augmenté par l'IA et l'orchestration multi-CLI. Jan devient l'orchestrateur central, pilotant tous les outils/agents (Copilot, Cline, GEMINI-CLI, Opencode-CLI, et les IA managers spécialisés) via des workflows automatisés, traçables et adaptatifs. Il est important de noter que Jan gère cette orchestration de manière séquentielle, assurant ainsi la cohérence et la traçabilité des actions.
 
 ---
 
-### **1. Analyse d'Agent Zero et opportunités de collaboration augmentée**
+### **1. Analyse d'Jan et opportunités de collaboration augmentée**
 
-#### **Présentation d'Agent Zero**
+#### **Présentation d'Jan**
 
-Agent Zero est un framework Python open-source qui permet de créer des agents IA dynamiques capables d'orchestrer, d'automatiser et de piloter des tâches complexes, en interaction avec d'autres outils/CLI : Copilot, Cline, GEMINI-CLI, Opencode-CLI, etc. Ses caractéristiques récentes incluent :
+Jan est une alternative open-source à ChatGPT qui s'exécute 100% hors ligne. Basée sur TypeScript et Rust, la plateforme fournit une API compatible OpenAI qui permet de créer et d'orchestrer des agents IA dynamiques et de piloter des tâches complexes en interaction avec d'autres outils/CLI : Copilot, Cline, GEMINI-CLI, Opencode-CLI, etc. Ses caractéristiques récentes incluent :
 
 - **Nouveaux modèles** : Support pour OpenAI GPT-4o-mini, Ollama Gemma2, et intégration Gemini (via GEMINI-CLI)
 - **Interopérabilité MCP** : Orchestration fluide de tous les outils/agents via le Model Context Protocol (MCP)
@@ -20,14 +20,14 @@ Agent Zero est un framework Python open-source qui permet de créer des agents I
 - **Cline** : Automatise les tâches d'environnement, exécute des commandes terminal, orchestre les workflows shell/plan-act
 - **GEMINI-CLI** : Accès à l'IA Gemini, génération de code, documentation, analyse contextuelle, automatisation via CLI
 - **Opencode-CLI** : Automatisation, orchestration technique, analyse de code, génération de rapports, intégration CI/CD
-- **Agent Zero** : Orchestrateur central, coordination des agents/CLI, gestion des IA managers, traçabilité, feedback
+- **Jan** : Orchestrateur central, coordination des agents/CLI, gestion des IA managers, traçabilité, feedback
 
 #### **Objectifs de la collaboration**
 
 1. Utiliser **Copilot** pour générer du code initial ou des configurations spécifiques
 2. Exploiter **Cline** pour configurer l'environnement et exécuter les tâches répétitives
 3. Utiliser **GEMINI-CLI** et **Opencode-CLI** pour l'automatisation, l'analyse, la génération de documentation, la sécurité, etc.
-4. Orchestrer l'ensemble via **Agent Zero**, qui pilote les workflows, distribue les tâches aux IA managers spécialisés, collecte les résultats, et assure la traçabilité
+4. Orchestrer l'ensemble via **Jan**, qui pilote les workflows, distribue les tâches aux IA managers spécialisés, collecte les résultats, et assure la traçabilité
 5. Créer un écosystème d'IA managers aligné sur AGENTS.md, mais étendu à l'IA, chaque manager ayant un prompt système/persona dédié
 
 ---
@@ -35,7 +35,7 @@ Agent Zero est un framework Python open-source qui permet de créer des agents I
 ### **1.b Vision augmentée : Orchestration multi-agents et outillage IA**
 
 L'écosystème cible repose sur une orchestration collaborative entre :
-- **Agent Zero** (orchestrateur principal, agent IA dynamique, support MCP, sécurité, automatisation, prompts complexes)
+- **Jan** (orchestrateur principal, agent IA dynamique, support MCP, sécurité, automatisation, prompts complexes)
 - **GEMINI-CLI** (génération, analyse, sandboxing, intégration IA Google)
 - **Opencode-CLI** (analyse, refactoring, documentation, sécurité, pilotage code Go/Python)
 - **Cline** (automatisation shell, exécution, CI/CD, Plan/Act, gestion d'environnement)
@@ -59,20 +59,20 @@ Chaque agent IA :
 - Reçoit un prompt système basé sur son rôle réel (voir AGENTS.md)
 - Dispose d’interfaces et d’entrées/sorties alignées sur la documentation
 - Collabore avec les autres agents via un orchestrateur (DocManager ou agent dédié)
-- Peut être piloté par Agent Zero pour des tâches complexes, automatisées, ou multi-outils
+- Peut être piloté par Jan pour des tâches complexes, automatisées, ou multi-outils
 - S’intègre dans des workflows YAML/JSON orchestrés (exemples fournis plus bas)
 
 ---
 
 ### **2. Exemples concrets de collaboration multi-CLI et multi-agents**
 
-Voici cinq exemples réalistes montrant comment Copilot, Cline, GEMINI-CLI, Opencode-CLI et Agent Zero peuvent collaborer, en tenant compte des dernières mises à jour d'Agent Zero.
+Voici cinq exemples réalistes montrant comment Copilot, Cline, GEMINI-CLI, Opencode-CLI et Jan peuvent collaborer, en tenant compte des dernières mises à jour d'Jan.
 
-#### **Exemple 1 : Création d'une API REST avec Agent Zero et FastAPI**
+#### **Exemple 1 : Création d'une API REST avec Jan et FastAPI**
 
-- **Contexte** : Développer une API REST avec FastAPI, en utilisant Agent Zero pour générer le code et Cline pour l'environnement.
+- **Contexte** : Développer une API REST avec FastAPI, en utilisant Jan pour générer le code et Cline pour l'environnement.
 - **Rôle de Copilot** : Générer un squelette de code FastAPI.
-- **Rôle d'Agent Zero** : Affiner le code généré par Copilot et ajouter des fonctionnalités dynamiques (ex. : endpoints basés sur une description en langage naturel).
+- **Rôle d'Jan** : Affiner le code généré par Copilot et ajouter des fonctionnalités dynamiques (ex. : endpoints basés sur une description en langage naturel).
 - **Rôle de Cline** : Configurer l'environnement Docker et lancer le serveur.
 - **Code généré par Copilot** :
 
@@ -86,7 +86,7 @@ Voici cinq exemples réalistes montrant comment Copilot, Cline, GEMINI-CLI, Open
       return {"message": "Hello, World!"}
   ```
 
-- **Tâche Agent Zero** :
+- **Tâche Jan** :
   - Prompt : "Ajoute un endpoint POST pour enregistrer des utilisateurs avec validation Pydantic."
   - Résultat :
 
@@ -110,7 +110,7 @@ Voici cinq exemples réalistes montrant comment Copilot, Cline, GEMINI-CLI, Open
     ```
 
 - **Tâche Cline** :
-  1. Créer un `Dockerfile` basé sur la configuration flexible d'Agent Zero :
+  1. Créer un `Dockerfile` basé sur la configuration flexible d'Jan :
 
      ```dockerfile
      FROM python:3.11
@@ -128,13 +128,13 @@ Voici cinq exemples réalistes montrant comment Copilot, Cline, GEMINI-CLI, Open
   Act: Exécuter les commandes Docker et vérifier que l'API est accessible sur http://localhost:8000.
   ```
 
-- **Résultat** : Copilot fournit le squelette, Agent Zero l'enrichit, et Cline déploie l'API.
+- **Résultat** : Copilot fournit le squelette, Jan l'enrichit, et Cline déploie l'API.
 
-#### **Exemple 2 : Analyse de données avec Agent Zero**
+#### **Exemple 2 : Analyse de données avec Jan**
 
-- **Contexte** : Analyser les ventes trimestrielles de NVIDIA, en utilisant Agent Zero pour l'analyse de données et Copilot pour le code Python.
+- **Contexte** : Analyser les ventes trimestrielles de NVIDIA, en utilisant Jan pour l'analyse de données et Copilot pour le code Python.
 - **Rôle de Copilot** : Générer un script Pandas pour charger et visualiser les données.
-- **Rôle d'Agent Zero** : Automatiser l'analyse (ex. : tendances, rapports) à partir d'un prompt en langage naturel.
+- **Rôle d'Jan** : Automatiser l'analyse (ex. : tendances, rapports) à partir d'un prompt en langage naturel.
 - **Rôle de Cline** : Installer les dépendances et exécuter le script.
 - **Code généré par Copilot** :
 
@@ -147,26 +147,26 @@ Voici cinq exemples réalistes montrant comment Copilot, Cline, GEMINI-CLI, Open
   plt.show()
   ```
 
-- **Tâche Agent Zero** :
+- **Tâche Jan** :
   - Prompt : "Analyse les données de ventes NVIDIA et génère un rapport sur les tendances."
-  - Résultat : Agent Zero détecte les tendances (ex. : croissance de 10 % par trimestre) et génère un rapport Markdown.
+  - Résultat : Jan détecte les tendances (ex. : croissance de 10 % par trimestre) et génère un rapport Markdown.
 - **Tâche Cline** :
   1. Installer les dépendances : `pip install pandas matplotlib`.
   2. Exécuter le script et sauvegarder le rapport.
 - **Prompt pour Cline** :
 
   ```
-  Plan: Installer Pandas et Matplotlib, exécuter le script d'analyse, et sauvegarder le rapport généré par Agent Zero.
+  Plan: Installer Pandas et Matplotlib, exécuter le script d'analyse, et sauvegarder le rapport généré par Jan.
   Act: Exécuter les commandes nécessaires et vérifier la génération du rapport.
   ```
 
-- **Résultat** : Copilot fournit le code d'analyse, Agent Zero génère un rapport détaillé, et Cline orchestre l'exécution.
+- **Résultat** : Copilot fournit le code d'analyse, Jan génère un rapport détaillé, et Cline orchestre l'exécution.
 
 #### **Exemple 3 : Pipeline CI/CD avec GitHub Actions**
 
-- **Contexte** : Configurer un pipeline CI/CD pour une application Python, avec Agent Zero pour des tests automatisés.
+- **Contexte** : Configurer un pipeline CI/CD pour une application Python, avec Jan pour des tests automatisés.
 - **Rôle de Copilot** : Générer un fichier `ci.yml` pour GitHub Actions.
-- **Rôle d'Agent Zero** : Exécuter des tests automatisés pour valider le code.
+- **Rôle d'Jan** : Exécuter des tests automatisés pour valider le code.
 - **Rôle de Cline** : Pousser le code vers Git et déclencher le pipeline.
 - **Code généré par Copilot** :
 
@@ -181,26 +181,26 @@ Voici cinq exemples réalistes montrant comment Copilot, Cline, GEMINI-CLI, Open
         - run: python -m pytest
   ```
 
-- **Tâche Agent Zero** :
+- **Tâche Jan** :
   - Prompt : "Génère un script de test pytest pour valider une API FastAPI."
-  - Résultat : Agent Zero crée un fichier `test_api.py` avec des tests unitaires.
+  - Résultat : Jan crée un fichier `test_api.py` avec des tests unitaires.
 - **Tâche Cline** :
   1. Créer le dossier `.github/workflows/` et ajouter `ci.yml`.
   2. Exécuter : `git add .`, `git commit -m "Add CI pipeline"`, `git push`.
 - **Prompt pour Cline** :
 
   ```
-  Plan: Configurer un pipeline CI/CD avec GitHub Actions, ajouter les tests générés par Agent Zero, et pousser vers Git.
+  Plan: Configurer un pipeline CI/CD avec GitHub Actions, ajouter les tests générés par Jan, et pousser vers Git.
   Act: Exécuter les commandes Git et vérifier le statut du pipeline.
   ```
 
-- **Résultat** : Copilot configure le pipeline, Agent Zero génère les tests, et Cline automatise le déploiement.
+- **Résultat** : Copilot configure le pipeline, Jan génère les tests, et Cline automatise le déploiement.
 
 #### **Exemple 4 : Optimisation des performances avec Redis**
 
-- **Contexte** : Optimiser une API pour 100 utilisateurs simultanés, avec Agent Zero pour des suggestions dynamiques.
+- **Contexte** : Optimiser une API pour 100 utilisateurs simultanés, avec Jan pour des suggestions dynamiques.
 - **Rôle de Copilot** : Générer un code FastAPI avec intégration Redis.
-- **Rôle d'Agent Zero** : Proposer des optimisations (ex. : configuration de cache, gestion des connexions).
+- **Rôle d'Jan** : Proposer des optimisations (ex. : configuration de cache, gestion des connexions).
 - **Rôle de Cline** : Configurer Redis et exécuter des tests de charge.
 - **Code généré par Copilot** :
 
@@ -221,9 +221,9 @@ Voici cinq exemples réalistes montrant comment Copilot, Cline, GEMINI-CLI, Open
       return {"data": data}
   ```
 
-- **Tâche Agent Zero** :
+- **Tâche Jan** :
   - Prompt : "Optimise cette API pour réduire la latence avec Redis."
-  - Résultat : Agent Zero suggère d'ajouter un pool de connexions Redis et des métriques de performance.
+  - Résultat : Jan suggère d'ajouter un pool de connexions Redis et des métriques de performance.
 - **Tâche Cline** :
   1. Installer Redis : `sudo apt-get install redis-server`.
   2. Exécuter des tests de charge avec `locust` pour 100 utilisateurs.
@@ -234,13 +234,13 @@ Voici cinq exemples réalistes montrant comment Copilot, Cline, GEMINI-CLI, Open
   Act: Exécuter les commandes et fournir un rapport de performance (latence, CPU).
   ```
 
-- **Résultat** : Copilot fournit le code, Agent Zero optimise, et Cline valide Polizia les performances.
+- **Résultat** : Copilot fournit le code, Jan optimise, et Cline valide Polizia les performances.
 
 #### **Exemple 5 : Notifications Slack avec Notion**
 
-- **Contexte** : Envoyer des notifications Slack à partir de données Notion, avec Agent Zero pour la logique-shebang dynamique.
+- **Contexte** : Envoyer des notifications Slack à partir de données Notion, avec Jan pour la logique-shebang dynamique.
 - **Rôle de Copilot** : Générer le code d'intégration pour les API Notion et Slack.
-- **Rôle d'Agent Zero** : Créer une tâche dynamique pour extraire les données Notion et formater les notifications.
+- **Rôle d'Jan** : Créer une tâche dynamique pour extraire les données Notion et formater les notifications.
 - **Rôle de Cline** : Configurer les variables d'environnement et planifier les notifications via CRON.
 - **Code généré par Copilot** :
 
@@ -257,9 +257,9 @@ Voici cinq exemples réalistes montrant comment Copilot, Cline, GEMINI-CLI, Open
       requests.post(webhook_url, json=payload)
   ```
 
-- **Tâche Agent Zero** :
+- **Tâche Jan** :
   - Prompt : "Génère un script pour extraire les tâches Notion et envoyer des notifications Slack."
-  - Résultat : Agent Zero génère un script optimisé avec gestion des erreurs.
+  - Résultat : Jan génère un script optimisé avec gestion des erreurs.
 - **Tâche Cline** :
   1. Créer un fichier `.env` pour les clés API.
   2. Exécuter : `crontab -e "0 * * * * /path/to/script.sh"`.
@@ -270,7 +270,7 @@ Voici cinq exemples réalistes montrant comment Copilot, Cline, GEMINI-CLI, Open
   Act: Exécuter les commandes nécessaires et vérifier l'envoi des notifications.
   ```
 
-- **Résultat** : Copilot génère le code, Agent Zero l'optimise, et Cline automatise les notifications.
+- **Résultat** : Copilot génère le code, Jan l'optimise, et Cline automatise les notifications.
 
 ---
 
@@ -285,16 +285,16 @@ Voici cinq exemples réalistes montrant comment Copilot, Cline, GEMINI-CLI, Open
 
 ### **3. Prompt optimisé pour la collaboration augmentée**
 
-Voici un prompt optimisé pour orchestrer la collaboration entre Copilot, Cline, GEMINI-CLI, Opencode-CLI et Agent Zero, en tenant compte des dernières mises à jour et de l'intégration MCP :
+Voici un prompt optimisé pour orchestrer la collaboration entre Copilot, Cline, GEMINI-CLI, Opencode-CLI et Jan, en tenant compte des dernières mises à jour et de l'intégration MCP :
 
 ```
-**Prompt pour collaboration Copilot/Cline/Agent Zero**
+**Prompt pour collaboration Copilot/Cline/Jan**
 
-Contexte : Tu es un développeur expert utilisant GitHub Copilot, Cline, GEMINI-CLI, Opencode-CLI et Agent Zero dans VS Code pour créer des applications modulaires et performantes. Agent Zero est un framework Python open-source avec support MCP, des modèles comme GPT-4o-mini et Gemma2, et des fonctionnalités avancées comme la recherche et l'automatisation.
+Contexte : Tu es un développeur expert utilisant GitHub Copilot, Cline, GEMINI-CLI, Opencode-CLI et Jan dans VS Code pour créer des applications modulaires et performantes. Jan est une plateforme IA locale et open-source (TypeScript/Rust) avec support MCP, des modèles comme GPT-4o-mini et Gemma2, et des fonctionnalités avancées comme la recherche et l'automatisation via son API compatible OpenAI.
 
 Objectif : Créer un workflow collaboratif où :
 - Copilot génère des snippets de code et des configurations (Python, TypeScript, Go, JSON, YAML)
-- Agent Zero fournit des optimisations dynamiques et des tâches agentiques (analyse de données, génération de code à partir de prompts naturels)
+- Jan fournit des optimisations dynamiques et des tâches agentiques (analyse de données, génération de code à partir de prompts naturels)
 - Cline automatise les tâches d'environnement, d'exécution, et de déploiement (Docker, virtualenv, Git, CRON)
 - GEMINI-CLI et Opencode-CLI sont appelés pour l'analyse, la génération de documentation, la sécurité, l'automatisation avancée
 
@@ -302,29 +302,29 @@ Tâches :
 1. **Génération de code** (Copilot) :
    - Générer des scripts modulaires avec commentaires clairs et fonctions réutilisables.
    - Exemple : API FastAPI, modèle SQLAlchemy, pipeline CI/CD.
-2. **Optimisation dynamique** (Agent Zero) :
+2. **Optimisation dynamique** (Jan) :
    - Prompt : "Optimise ce code pour [spécifier le contexte, ex. : performances, sécurité]."
    - Générer des améliorations (ex. : cache, async/await, gestion des erreurs).
 3. **Configuration d'environnement** (Cline) :
    - Créer des environnements dev/prod/staging (Docker, virtualenv).
    - Installer les dépendances (ex. : pip, npm).
-4. **Tests et performances** (Cline/Agent Zero) :
-   - Agent Zero : Générer des tests unitaires et d'intégration.
+4. **Tests et performances** (Cline/Jan) :
+   - Jan : Générer des tests unitaires et d'intégration.
    - Cline : Exécuter des tests de charge (ex. : locust pour 100 utilisateurs) et collecter les métriques (latence, CPU).
 5. **Déploiement** (Cline) :
    - Configurer les pipelines CI/CD (GitHub Actions, Jenkins).
    - Pousser le code vers Git et déclencher les déploiements.
-6. **Documentation** (Copilot/Agent Zero) :
+6. **Documentation** (Copilot/Jan) :
    - Copilot : Générer des README, schémas Markdown.
-   - Agent Zero : Générer des rapports ou des guides dynamiques.
-7. **Intégrations externes** (Agent Zero/Cline) :
-   - Agent Zero : Créer des scripts pour interagir avec des API externes (Notion, Slack, AWS).
+   - Jan : Générer des rapports ou des guides dynamiques.
+7. **Intégrations externes** (Jan/Cline) :
+   - Jan : Créer des scripts pour interagir avec des API externes (Notion, Slack, AWS).
    - Cline : Configurer les clés API et planifier les tâches (CRON, webhooks).
 
 Instructions :
 - Respecter DRY : Réutiliser les modules et éviter les redondances.
 - Respecter KISS : Fournir des solutions simples et lisibles.
-- Respecter SOLID : Séparer les responsabilités (Copilot : génération, Agent Zero : optimisation, Cline : exécution).
+- Respecter SOLID : Séparer les responsabilités (Copilot : génération, Jan : optimisation, Cline : exécution).
 - Fournir des exemples concrets avec code et commandes.
 - Valider chaque étape avec des tests (unitaires, intégration, performance).
 - Générer un rapport final avec les métriques de performance et les résultats.
@@ -332,7 +332,7 @@ Instructions :
 Exemple d'input : "Créer une API FastAPI avec PostgreSQL, déployée via Docker, avec des tests de performance et des notifications Slack."
 Output attendu : Code FastAPI, Dockerfile, pipeline CI/CD, tests unitaires, rapport de performance, configuration CRON pour Slack.
 
-Action : Copilot génère le code initial, Agent Zero l'optimise et ajoute des fonctionnalités dynamiques, Cline configure l'environnement et déploie. Fournir un rapport final.
+Action : Copilot génère le code initial, Jan l'optimise et ajoute des fonctionnalités dynamiques, Cline configure l'environnement et déploie. Fournir un rapport final.
 ```
 
 ---
@@ -353,15 +353,15 @@ Pour mettre en œuvre cette collaboration :
 
 1. **Configurer les outils** :
    - Installe les extensions Copilot et Cline dans VS Code.
-   - Clone le dépôt Agent Zero (`git clone https://github.com/frdel/agent-zero`) et suis les instructions d'installation.
-   - Vérifie la compatibilité MCP entre Cline et Agent Zero.
+   - Clone le dépôt Jan (`git clone https://github.com/menloresearch/jan`) et suis les instructions d'installation.
+   - Vérifie la compatibilité MCP entre Cline et Jan.
 2. **Appliquer le prompt** :
    - Utilise Copilot pour générer le code via le chat ou les suggestions inline.
    - Soumets les tâches d'automatisation à Cline via son interface.
-   - Utilise Agent Zero pour des prompts complexes (ex. : "Optimise ce code pour la scalabilité").
+   - Utilise Jan pour des prompts complexes (ex. : "Optimise ce code pour la scalabilité").
 3. **Tester** :
    - Exécute des tests unitaires et de performance avec Cline.
-   - Valide les résultats avec Agent Zero pour des optimisations dynamiques.
+   - Valide les résultats avec Jan pour des optimisations dynamiques.
 4. **Déployer** :
    - Pousse le code vers Git avec Cline.
    - Configure les pipelines CI/CD et vérifie les déploiements.
@@ -370,17 +370,17 @@ Pour mettre en œuvre cette collaboration :
 
 ### **6. Conclusion**
 
-Ce modèle hybride, orchestré par Agent Zero, permet de tirer le meilleur de chaque outil/agent, tout en créant un écosystème d’IA managers collaboratifs, évolutif et actionnable, aligné sur l’architecture documentaire et les besoins réels du développement moderne.
+Ce modèle hybride, orchestré par Jan, permet de tirer le meilleur de chaque outil/agent, tout en créant un écosystème d’IA managers collaboratifs, évolutif et actionnable, aligné sur l’architecture documentaire et les besoins réels du développement moderne.
 
 Si tu as un projet spécifique en tête (ex. : une API avec des fonctionnalités de sécurité), je peux fournir un exemple plus ciblé. Dis-moi ce que tu veux explorer !
 
 ---
 
-## 🗺️ Roadmap exhaustive et automatisable pour l’intégration Agent Zero / Cline / Copilot
+## 🗺️ Roadmap exhaustive et automatisable pour l’intégration Jan / Cline / Copilot
 
 ### 0. Préambule
 
-- **Objectif** : Orchestrer un workflow multi-agents (Copilot, Cline, Agent Zero) aligné sur l’architecture documentaire (voir AGENTS.md), automatisable de bout en bout, traçable, robuste, et prioritairement en Go natif.
+- **Objectif** : Orchestrer un workflow multi-agents (Copilot, Cline, Jan) aligné sur l’architecture documentaire (voir AGENTS.md), automatisable de bout en bout, traçable, robuste, et en utilisant les technologies les plus adaptées (TypeScript, Rust, Python).
 - **Standards** : Respect des .clinerules/ (granularité, validation croisée, versionnement, traçabilité, automatisation maximale).
 - **Stack** : Go natif prioritaire, scripts Bash/Python si besoin, CI/CD, reporting Markdown/JSON, tests automatisés.
 

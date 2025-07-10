@@ -214,3 +214,7 @@
 ## 12. Conclusion
 
 L'intégration de QDrant avec un système de clustering offre une solution puissante pour la gestion des connaissances, permettant une recherche sémantique efficace et une analyse approfondie des données. Cette approche s'aligne parfaitement avec les plans existants tout en apportant des fonctionnalités avancées pour l'extraction, la recherche et l'analyse des informations.
+
+---
+## Note d'architecture
+Ce plan est conforme à l'architecture actuelle.

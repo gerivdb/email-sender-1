@@ -58,3 +58,7 @@ Pour garantir la complétion à 100 %, il est impératif de :
 - Mettre à jour ce rapport d’audit à chaque évolution du plan ou des livrables
 
 Une fois tous les points de la checklist validés, le plan pourra être considéré comme totalement actionable, traçable et conforme aux standards du dépôt.
+
+---
+## Orchestration séquentielle multi-personas avec Jan
+Toutes les tâches IA sont orchestrées via Jan, en mode mono-agent séquentiel, chaque persona étant simulé par un prompt système/contextuel distinct. L’historique des échanges est géré par le ContextManager et injecté à chaque tour.

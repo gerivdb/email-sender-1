@@ -2999,3 +2999,6 @@ Chaque section reprend la structure 12.1.x adaptée au manager concerné.)*
 
 > **Conclusion inspirante :**  
 > Le template-manager devient le “chef d’orchestre” vivant de l’agencement, de la gouvernance, de la documentation et de l’amélioration continue de tout l’écosystème, selon une théorie formelle de la “forme” logicielle et documentaire, avec une automatisation et une transversalité maximales, jusqu’à la documentation vivante et la gouvernance distribuée du repo lui-même.
+---
+## Orchestration séquentielle multi-personas avec Jan
+Toutes les tâches IA sont orchestrées via Jan, en mode mono-agent séquentiel, chaque persona étant simulé par un prompt système/contextuel distinct. L’historique des échanges est géré par le ContextManager et injecté à chaque tour.

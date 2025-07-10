@@ -152,3 +152,15 @@ func main() {
 - [ ] CI/CD opérationnel
 - [ ] Rollback et traçabilité assurés
 - [ ] Documentation technique à jour
+
+---
+## Orchestration séquentielle multi-personas avec Jan
+Toutes les tâches IA sont orchestrées via Jan, en mode mono-agent séquentiel, chaque persona étant simulé par un prompt système/contextuel distinct. L’historique des échanges est géré par le ContextManager et injecté à chaque tour.
+
+---
+## Orchestration séquentielle multi-personas avec Jan
+Toutes les tâches IA sont orchestrées via Jan, en mode mono-agent séquentiel, chaque persona étant simulé par un prompt système/contextuel distinct. L’historique des échanges est géré par le ContextManager et injecté à chaque tour.
+
+---
+## Orchestration séquentielle multi-personas avec Jan
+Toutes les tâches IA sont orchestrées via Jan, en mode mono-agent séquentiel, chaque persona étant simulé par un prompt système/contextuel distinct. L’historique des échanges est géré par le ContextManager et injecté à chaque tour.

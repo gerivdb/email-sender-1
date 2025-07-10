@@ -692,3 +692,7 @@ Les avantages de cette approche intégrée sont nombreux :
 L'implémentation progressive, en commençant par la mise en place du Memory Bank et de l'infrastructure Hygen, puis en l'étendant à chaque domaine du dépôt, permettra d'obtenir des résultats tangibles rapidement tout en construisant les bases d'un système plus sophistiqué.
 
 En suivant ce plan, le projet disposera d'un dépôt entièrement normalisé, où chaque aspect - du code aux tests, des configurations à la documentation - est généré et maintenu via Hygen, avec une mémoire persistante grâce au Memory Bank, assurant une cohérence parfaite et une qualité optimale.
+
+---
+## Note d'architecture
+Ce plan est conforme à l'architecture actuelle.

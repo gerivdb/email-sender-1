@@ -162,6 +162,10 @@ Voici une synthèse structurée plan par plan, couvrant :
 
 #### plan-dev-v76-error-reporting.md
 - Définir un format unique et extensible de rapport d’erreurs (JSON, Markdown…)
+
+---
+## Note d'architecture
+Ce plan est conforme à l'architecture actuelle.
 - Documenter les points d’entrée (pipeline, error-manager, IA) et de sortie (tableaux de bord, exports…)
 - Centraliser la dette technique, la priorisation, l’historique des actions IA
 
@@ -225,3 +229,7 @@ flowchart TD
 
 **Veux-tu que je commence par te proposer une structure type de “meta-plan” ou un exemple de refonte d’un plan précis ?**  
 Tu peux également me donner l’ordre de priorité ou le focus à approfondir (API, orchestration, reporting, etc.).
+
+---
+## Orchestration séquentielle multi-personas avec Jan
+Toutes les tâches IA sont orchestrées via Jan, en mode mono-agent séquentiel, chaque persona étant simulé par un prompt système/contextuel distinct. L’historique des échanges est géré par le ContextManager et injecté à chaque tour.

@@ -6,7 +6,7 @@ Voici la structure harmonisée du plan suivant, dans l’ordre des roadmaps avan
 # Plan de Développement : Meta-Orchestrateur & Event Bus
 
 **Objectif global**  
-Centraliser, orchestrer et piloter tous les managers, pipelines, événements et automatisations du projet via un orchestrateur Go natif et un bus d’événements extensible. Garantir l’interopérabilité, la traçabilité, la résilience et la pilotabilité fine de l’écosystème (managers Go, scripts externes, extensions, CI/CD, observabilité…).
+Définir un système de communication découplé basé sur un Event Bus pour permettre aux managers et outils (Go, scripts, etc.) de notifier et de réagir à des événements. L'orchestration globale des workflows reste pilotée par l'agent IA principal (Jan), qui pourra produire ou consommer des événements sur ce bus pour déclencher des actions de manière asynchrone.
 
 ---
 
@@ -50,23 +50,23 @@ Centraliser, orchestrer et piloter tous les managers, pipelines, événements et
 
 ---
 
-## 3. Développement du Meta-Orchestrateur Go
+## 3. Développement des Connecteurs et Services pour l'Event Bus (Go)
 
-- [ ] **Implémentation du cœur orchestrateur**
-  - **Livrable** : `cmd/meta-orchestrator/main.go`
+- [ ] **Implémentation de services Go autonomes**
+  - **Livrable** : `cmd/event-listener-service/main.go`
   - **Exemple Go** :
     ```go
-    // cmd/meta-orchestrator/main.go
-    func main() { /* Initialise managers, écoute bus, orchestre événements/actions */ }
+    // cmd/event-listener-service/main.go
+    func main() { /* Initialise la connexion au bus, écoute les événements pertinents et exécute des tâches spécifiques en réponse. L'orchestration de haut niveau n'est pas gérée ici. */ }
     ```
   - **Fonctionnalités** :
-    - Démarrage/arrêt managers et scripts
-    - Abonnement/publication à des événements
-    - Gestion hooks, triggers, dépendances
-    - Contrôle via CLI/API (optionnel)
+    - S'abonner à des événements spécifiques sur le bus.
+    - Publier des événements en réponse à une tâche terminée.
+    - Exécuter une logique métier atomique (ex: lancer un script, interagir avec une API).
+    - Gérer son propre état de manière indépendante.
   - **Tests associés** : `*_test.go`
-  - **Validation** : Passage de tous les tests, logs détaillés, badge “orchestrator OK”
-  - **Rollback** : Restore config/état si crash
+  - **Validation** : Passage de tous les tests, logs détaillés, badge “service OK”
+  - **Rollback** : Le service doit être conçu pour être sans état ou gérer sa propre restauration
 
 ---
 

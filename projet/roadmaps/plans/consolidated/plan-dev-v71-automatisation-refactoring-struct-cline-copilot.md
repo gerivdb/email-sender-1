@@ -134,3 +134,7 @@ func UpdateHeaders(files []string, header string) error { /* ... */ }
 ---
 
 **Ce plan v71 est opérationnel, actionnable, et conforme à la stack/dépôt pour toute automatisation structurée, refactoring massif, et documentation synchronisée.**
+
+---
+## Orchestration séquentielle multi-personas avec Jan
+Toutes les tâches IA sont orchestrées via Jan, en mode mono-agent séquentiel, chaque persona étant simulé par un prompt système/contextuel distinct. L’historique des échanges est géré par le ContextManager et injecté à chaque tour.

@@ -1,66 +1,31 @@
-# CacheManager v74 — Logging Centralisé & Mémoire Contextuelle
+# Email Sender - Envoi d'emails centralisé
 
-## Fonctionnalités principales
+## Description
 
-- Centralisation des logs (Go, Bash, PowerShell, API REST)
-- Orchestration multi-backend (LMCache, Redis, SQLite)
-- Mémoire contextuelle pour LLM/assistants
-- Scripts de capture terminale et wrappers critiques
-- Tests unitaires et intégration exhaustifs
-- Reporting automatisé, backup, rollback
-
-## Structure du dépôt
-
-- `development/managers/cache-manager/` : modules Go, adapters, tests
-- `development/scripts/` : scripts de capture, backup, intégration
-- `projet/roadmaps/plans/consolidated/` : roadmap, specs, rapports, policy
-
-## Démarrage rapide
-
-1. Lancer l’API REST : `go run development/api/cache_manager_api.go`
-2. Utiliser les scripts de capture : `bash development/scripts/capture_terminal.sh ls -l`
-3. Lancer les tests : `go test ./development/managers/cache-manager/...`
-4. Générer un backup : `bash development/scripts/backup.sh`
+Ce dépôt fournit un système d'envoi d'emails centralisé, construit avec Go et intégré à N8N pour l'automatisation des workflows. Il est conçu pour les environnements d'entreprise et offre des fonctionnalités telles que l'envoi d'emails automatisé et une documentation complète.
 
 ## Documentation
 
-- Spécifications : `logging_cache_pipeline_spec.md`, `cache_manager_api.md`
-- Formats : `logging_format_spec.json`, `logging_filter_rules.md`
-- Politique d’orchestration : `cache_manager_policy.md`
-- Observabilité : `observability_report.md`, `observability_report.json`
-- Procédures rollback : `development/scripts/backup.sh`
+La documentation principale se trouve dans le répertoire [.github/docs](.github/docs). Voici quelques documents clés :
 
-## CI/CD
+*   [Guide de démarrage rapide](.github/docs/GETTING-STARTED/quick-start.md) : Démarrez rapidement avec Email Sender en moins de 5 minutes.
+*   [Aperçu de l'architecture](.github/docs/ARCHITECTURE/ecosystem-overview.md) : Découvrez l'architecture et les composants du système.
+*   [Index de la documentation](.github/docs/DOC_INDEX.md) : Un index central pour naviguer dans toute la documentation.
 
-- Prêt pour intégration dans pipeline CI/CD (tests, reporting, artefacts)
-- Badge de succès à générer après validation
+## Contribution
 
----
+Nous accueillons les contributions au projet Email Sender ! Veuillez consulter le [Guide de contribution](.github/docs/CONTRIBUTING.md) pour plus de détails sur la façon de contribuer.
 
-## Migration Gateway-Manager v77
+## Principales fonctionnalités
 
-Le Gateway-Manager a été migré vers une implémentation 100% Go natif. Plus de détails peuvent être trouvés dans la [documentation dédiée](docs/gateway-manager.md) et dans le plan de migration détaillé [ici](projet/roadmaps/plans/consolidated/plan-dev-v77-migration-gateway-manager.md).
+*   Envoi d'emails automatisé
+*   Intégration avec les workflows N8N
+*   Documentation complète
 
----
+## Démarrage
 
-*Projet conforme aux standards .clinerules, prêt pour production et évolutions LLM.*
+Consultez le [Guide de démarrage rapide](.github/docs/GETTING-STARTED/quick-start.md) pour savoir comment configurer et exécuter Email Sender.
 
----
-**Dernière exécution CI/CD:** 
-**Pipeline:** ✅ Succès
-**Modules testés:** core/scanmodules, core/gapanalyzer, core/reporting, cmd/auto-roadmap-runner
+## Licence
 
-## Version Go
-
-Ce projet requiert Go version `1.24.4`.
-
-Pour vérifier votre version de Go :
-```bash
-go version
-```
-
-Pour mettre à jour Go (si nécessaire) :
-```bash
-go install golang.org/dl/go1.24.4@latest
-go1.24.4 download
-```
+[Les informations de licence seront ajoutées ici]

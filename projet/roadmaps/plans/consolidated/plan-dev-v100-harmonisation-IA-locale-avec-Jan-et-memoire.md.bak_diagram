@@ -10,12 +10,12 @@ Adapter tous les plans impliquant des agents IA pour remplacer toute logique mul
 
 ## 1. Recensement & Analyse d’écart
 
-- [ ] **1.1 Recenser tous les plans concernés**
+- [x] **1.1 Recenser tous les plans concernés**
   - Livrable : `plans_impactes_jan.md` (liste exhaustive des plans à modifier)
   - Commande : `grep -ril 'AgentZero\|CrewAI\|multi-agent\|multi-LLM' projet/roadmaps/plans/consolidated/`
   - Critère : Tous les plans mentionnant orchestration IA, multi-agent, AgentZero, CrewAI, ou multi-LLM.
 
-- [ ] **1.2 Analyse d’écart**
+- [x] **1.2 Analyse d’écart**
   - Livrable : `ecart_jan_vs_multiagent.md` (tableau des différences de logique)
   - Script Go : `cmd/ecart-analyzer/main.go` (analyse automatique des occurrences à remplacer)
   - Format : Markdown/CSV
@@ -94,7 +94,7 @@ Adapter tous les plans impliquant des agents IA pour remplacer toute logique mul
 
 ## 5. Rollback & Versionnement
 
-- [ ] **5.1 Sauvegarde automatique avant modification**
+- [x] **5.1 Sauvegarde automatique avant modification**
   - Livrable : `.bak` de chaque plan modifié
   - Script Bash : `cp plan.md plan.md.bak`
   - Critère : Rollback possible à tout moment.

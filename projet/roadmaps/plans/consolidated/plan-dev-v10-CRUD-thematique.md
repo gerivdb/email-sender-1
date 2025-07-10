@@ -61,7 +61,7 @@
         - [ ] **1.1.3.2.2.2** Développer la visualisation en carte de métro
         - [ ] **1.1.3.2.2.3** Créer des matrices d'adjacence
 
-## 2. Conception du système de gestion modulaire
+Ce système CRUD sera orchestré par Jan, assurant une exécution séquentielle et une traçabilité complète des opérations.
 
 - [ ] **2.1** Définir l'architecture du système CRUD
   - [ ] **2.1.1** Concevoir le modèle de données

@@ -1,10 +1,8 @@
-<write_file>
-<path>projet/roadmaps/plans/consolidated/plan-dev-v100-modif-pour-jan-et-memoire.md</path>
-<content>
+
 # Plan de développement v100 – Harmonisation IA locale avec Jan et mémoire partagée
 
 ## Objectif
-Adapter tous les plans impliquant des agents IA pour remplacer toute logique multi-agent/LLM par une orchestration séquentielle multi-personas basée sur **Jan** (Go natif), avec gestion centralisée du contexte et de la mémoire partagée, en cohérence avec les limites matérielles.
+Adapter tous les plans impliquant des agents IA pour utiliser une orchestration séquentielle multi-personas basée sur **Jan** (Go natif), avec gestion centralisée du contexte et de la mémoire partagée, en tenant compte des limites matérielles et en s’appuyant sur une intercommunication standardisée et harmonisée (voir plan v102), remplaçant toute logique multi-agent ou multi-LLM par cette approche robuste et cohérente.
 
 ---
 
@@ -12,14 +10,14 @@ Adapter tous les plans impliquant des agents IA pour remplacer toute logique mul
 
 - [ ] **1.1 Recenser tous les plans concernés**
   - Livrable : `plans_impactes_jan.md` (liste exhaustive des plans à modifier)
-  - Commande : `grep -ril 'AgentZero\|CrewAI\|multi-agent\|multi-LLM' projet/roadmaps/plans/consolidated/`
-  - Critère : Tous les plans mentionnant orchestration IA, multi-agent, AgentZero, CrewAI, ou multi-LLM.
+  - Commande : `grep -ril 'orchestration IA\|mémoire partagée\|intercommunication' projet/roadmaps/plans/consolidated/`
+  - Critère : Tous les plans mentionnant orchestration IA, mémoire partagée ou intercommunication à harmoniser avec Jan et les standards d’interco.
 
 - [ ] **1.2 Analyse d’écart**
   - Livrable : `ecart_jan_vs_multiagent.md` (tableau des différences de logique)
   - Script Go : `cmd/ecart-analyzer/main.go` (analyse automatique des occurrences à remplacer)
   - Format : Markdown/CSV
-  - Critère : Liste des fonctionnalités à adapter (multi-agent → séquentiel, dialogue → mémoire partagée, etc.)
+  - Critère : Liste des fonctionnalités à adapter (multi-agent ou multi-LLM → orchestration séquentielle Jan + intercommunication standardisée, dialogue → mémoire partagée, etc.)
 
 ---
 
@@ -120,9 +118,16 @@ Adapter tous les plans impliquant des agents IA pour remplacer toute logique mul
 
 ---
 
-## 7. Documentation & Traçabilité
+## 7. Intégration de l'intercommunication
 
-- [ ] **7.1 Documentation technique**
+- [ ] **7.1 Utilisation d'interfaces standardisées pour l'intercommunication :**
+  - Livrable : Spécifications des interfaces MCP, Redis Pub/Sub, HTTP/REST, gRPC.
+  - Critère : Les interfaces sont conformes aux standards et permettent une communication efficace entre les composants.
+  - Note : Cette section doit être alignée avec le [plan v102-intercommunication](plan-dev-v102-intercommunication.md) et respecter les standards d’intercommunication définis pour l’ensemble de l’écosystème.
+
+## 8. Documentation & Traçabilité
+
+- [ ] **8.1 Documentation technique**
   - Livrable : `README.md`, guides d’usage, exemples de scripts.
   - Critère : Documentation à jour, exemples reproductibles.
 
@@ -225,7 +230,7 @@ flowchart TD
 ---
 
 </content>
-</write_file>## Diagramme d'architecture (Jan)
+## Diagramme d'architecture (Jan)
 
 ```mermaid
 flowchart TD

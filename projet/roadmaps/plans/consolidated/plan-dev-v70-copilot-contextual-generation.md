@@ -36,7 +36,7 @@ cognitive_level: "AUTO_EVOLUTIVE"
 - [ ] Synchronisation automatique du contexte entre Copilot, Context Manager, Process Manager
 - [ ] Validation croisée des blocs générés (lint, tests, conventions)
 - [ ] Historisation et audit des générations (logs, reporting)
-- [ ] Compatibilité multi-LLM et multi-agents
+- [x] Compatibilité multi-LLM et orchestration mono-agent (Jan) simulant plusieurs personas
 - [ ] Documentation et guides d’intégration pour contributeurs
 
 ---
@@ -53,7 +53,7 @@ cognitive_level: "AUTO_EVOLUTIVE"
 ## [ ] 2. Orchestration de la génération par blocs
 
 - [ ] 2.1. Décomposer les tâches en blocs indépendants (titre, objectif, schéma, code, exemples…)
-- [ ] 2.2. Paralléliser la génération des blocs via Process Manager
+- [x] 2.2. Séquentialiser la génération des blocs via l'orchestrateur Jan
 - [ ] 2.3. Synchroniser le contexte entre chaque bloc via Context Manager
 - [ ] 2.4. Assembler et valider les blocs générés (lint, tests, conventions)
 

@@ -125,10 +125,10 @@ Ce plan définit l'implémentation d'une architecture cognitive complète pour n
     - [x] **4.1.3.3** Créer le système de détection des surcharges
 
 - [ ] **4.2** Implémenter l'intelligence collective
-  - [ ] **4.2.1** Développer le système de collaboration multi-agents
-    - [ ] **4.2.1.1** Créer l'architecture des agents spécialisés
-    - [ ] **4.2.1.2** Implémenter les protocoles de communication inter-agents
-    - [ ] **4.2.1.3** Développer les mécanismes de consensus et décision
+  - [x] **4.2.1** Définir le modèle d'orchestration séquentiel avec Jan (Jan est l'orchestrateur principal, gérant toutes les interactions de manière séquentielle)
+        - [x] **4.2.1.1** Utiliser Jan comme orchestrateur mono-agent séquentiel
+        - [x] **4.2.1.2** Simuler les "personas" d'agents spécialisés via des prompts système distincts
+        - [x] **4.2.1.3** Gérer l'état et l'historique via le ContextManager pour assurer la continuité
   - [ ] **4.2.2** Créer le système d'apprentissage organisationnel
     - [ ] **4.2.2.1** Développer la capture des patterns de succès
     - [ ] **4.2.2.2** Implémenter l'analyse des échecs et blocages

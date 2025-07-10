@@ -259,3 +259,11 @@ Ce plan de développement propose d'intégrer les concepts du projet claude-task
 ## 5. Conclusion
 
 Ce plan de développement propose une approche structurée pour intégrer les concepts de claude-task-master dans notre système de roadmapping existant, en les combinant avec nos concepts de Large Workflow Models (LWM) et Large Concept Models (LCM). L'implémentation progressive des différentes phases permettra d'améliorer significativement notre système tout en maintenant sa stabilité et sa compatibilité avec les outils existants.
+
+---
+## Orchestration séquentielle multi-personas avec Jan
+Toutes les tâches IA sont orchestrées via Jan, en mode mono-agent séquentiel, chaque persona étant simulé par un prompt système/contextuel distinct. L’historique des échanges est géré par le ContextManager et injecté à chaque tour.
+
+---
+## Orchestration séquentielle multi-personas avec Jan
+Toutes les tâches IA sont orchestrées via Jan, en mode mono-agent séquentiel, chaque persona étant simulé par un prompt système/contextuel distinct. L’historique des échanges est géré par le ContextManager et injecté à chaque tour.

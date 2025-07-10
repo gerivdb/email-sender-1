@@ -150,3 +150,7 @@ func main() {
 - [ ] CI/CD opérationnel
 - [ ] Rollback et traçabilité assurés
 - [ ] Documentation technique à jour
+
+---
+## Note d'architecture
+Ce plan est conforme à l'architecture actuelle.

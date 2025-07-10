@@ -340,3 +340,7 @@ jobs:
 **✅ BILAN : Ce plan v72 a été transformé avec succès d'une roadmap statique en un système automatisé, exécutable et traçable. Les 4 modules core sont opérationnels et l'orchestrateur global fonctionne parfaitement. Mission accomplie !**
 
 *Dernière mise à jour : 2025-01-07 - Implémentation réussie à 85%*
+
+---
+## Orchestration séquentielle multi-personas avec Jan
+Toutes les tâches IA sont orchestrées via Jan, en mode mono-agent séquentiel, chaque persona étant simulé par un prompt système/contextuel distinct. L’historique des échanges est géré par le ContextManager et injecté à chaque tour.

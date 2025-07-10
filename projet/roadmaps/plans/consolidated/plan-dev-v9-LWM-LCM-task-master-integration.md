@@ -211,3 +211,11 @@ Ce plan complète le plan-dev-v9-LWM-LCM.md existant en intégrant les concepts 
     - [ ] **10.3.2.1** Créer la vue des chemins critiques
     - [ ] **10.3.2.2** Implémenter la vue des tâches bloquées
     - [ ] **10.3.2.3** Développer la vue des tâches prioritaires
+
+---
+## Orchestration séquentielle multi-personas avec Jan
+Toutes les tâches IA sont orchestrées via Jan, en mode mono-agent séquentiel, chaque persona étant simulé par un prompt système/contextuel distinct. L’historique des échanges est géré par le ContextManager et injecté à chaque tour.
+
+---
+## Orchestration séquentielle multi-personas avec Jan
+Toutes les tâches IA sont orchestrées via Jan, en mode mono-agent séquentiel, chaque persona étant simulé par un prompt système/contextuel distinct. L’historique des échanges est géré par le ContextManager et injecté à chaque tour.

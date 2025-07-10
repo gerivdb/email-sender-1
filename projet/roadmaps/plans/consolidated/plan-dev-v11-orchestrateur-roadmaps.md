@@ -1,6 +1,6 @@
 # Plan de développement v11 : Orchestrateur intelligent de roadmaps
 
-## 1. Conception de l'architecture d'orchestration
+Ce plan vise à améliorer l'orchestration des roadmaps par Jan, et non à le remplacer.
 
 - [ ] **1.1** Définir le modèle de données de l'orchestrateur
   - [ ] **1.1.1** Concevoir le schéma de méta-roadmap
@@ -43,7 +43,7 @@
         - [ ] **1.1.1.3.3.1** Définir les règles d'ajustement basées sur le feedback
         - [ ] **1.1.1.3.3.2** Établir les mécanismes d'apprentissage des préférences
         - [ ] **1.1.1.3.3.3** Concevoir le système de détection des changements de contexte
-  - [ ] **1.1.2** Concevoir l'architecture du service d'orchestration
+  - [ ] **1.1.2** Concevoir l'architecture des modules d'aide à l'orchestration de Jan
     - [ ] **1.1.2.1** Définir l'architecture des composants
       - [ ] **1.1.2.1.1** Concevoir le module de surveillance
         - [ ] **1.1.2.1.1.1** Définir les mécanismes de détection des changements
@@ -124,7 +124,7 @@
         - [ ] **1.1.3.3.3.2** Établir les mécanismes de validation sémantique
         - [ ] **1.1.3.3.3.3** Concevoir le système de correction automatique
 
-## 2. Implémentation du service d'orchestration
+## 2. Implémentation des modules d'aide à l'orchestration de Jan
 
 - [ ] **2.1** Développer le cœur du service d'orchestration
   - [ ] **2.1.1** Implémenter le module de surveillance (Watcher)

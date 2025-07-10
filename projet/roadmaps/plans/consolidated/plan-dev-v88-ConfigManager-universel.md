@@ -215,3 +215,9 @@ Centraliser, harmoniser, automatiser et tester la gestion des configurations et 
 
 **Veux-tu ce niveau de détail pour le plan suivant (“TestOps Transverse”) ou un autre ?**  
 Dis-moi si tu veux approfondir un point précis (exemples de scripts, structure Go, modèles YAML/JSON, pipeline CI/CD).
+---
+## Orchestration séquentielle multi-personas avec Jan
+Toutes les tâches IA sont orchestrées via Jan, en mode mono-agent séquentiel, chaque persona étant simulé par un prompt système/contextuel distinct. L’historique des échanges est géré par le ContextManager et injecté à chaque tour.
+---
+## Orchestration séquentielle multi-personas avec Jan
+Toutes les tâches IA sont orchestrées via Jan, en mode mono-agent séquentiel, chaque persona étant simulé par un prompt système/contextuel distinct. L’historique des échanges est géré par le ContextManager et injecté à chaque tour.
