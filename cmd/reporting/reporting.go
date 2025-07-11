@@ -1,4 +1,4 @@
-package reporting
+package main
 
 import (
 	"encoding/json"
@@ -8,11 +8,9 @@ import (
 	"log"
 	"os"
 	"strings"
-
-	"github.com/gerivdb/email-sender-1/core/reporting"
 )
 
-func main() {
+func GenerateReport() {
 	// Définir les flags de ligne de commande
 	inputFile := flag.String("input", "", "Fichier JSON d'entrée")
 	outputFile := flag.String("output", "", "Fichier JSON de sortie")
@@ -42,7 +40,7 @@ func runNeedsAnalysis(inputFile, outputFile string) {
 	fmt.Printf("📄 Fichier de sortie: %s\n", outputFile)
 
 	// Parser les issues
-	issues, err := reporting.ParseIssuesFromJSON(inputFile)
+	issues, err := // reporting.ParseIssuesFromJSON(inputFile)
 	if err != nil {
 		log.Fatalf("❌ Erreur lors du parsing des issues: %v", err)
 	}
@@ -50,11 +48,11 @@ func runNeedsAnalysis(inputFile, outputFile string) {
 	fmt.Printf("📋 Issues chargées: %d\n", len(issues))
 
 	// Convertir en besoins
-	requirements := reporting.ConvertIssuesToRequirements(issues)
+	requirements := // reporting.ConvertIssuesToRequirements(issues)
 	fmt.Printf("🎯 Besoins identifiés: %d\n", len(requirements))
 
 	// Analyser les besoins
-	analysis := reporting.AnalyzeRequirements(requirements)
+	analysis := // reporting.AnalyzeRequirements(requirements)
 	analysis.TotalIssues = len(issues)
 
 	// Sauvegarder l'analyse en JSON
@@ -69,7 +67,7 @@ func runNeedsAnalysis(inputFile, outputFile string) {
 	}
 
 	// Générer le rapport Markdown
-	markdownReport := reporting.GenerateMarkdownReport(analysis)
+	markdownReport := // reporting.GenerateMarkdownReport(analysis)
 	markdownFile := "BESOINS_INITIAUX.md"
 	err = ioutil.WriteFile(markdownFile, []byte(markdownReport), 0o644)
 	if err != nil {
@@ -110,7 +108,7 @@ func runSpecGeneration(inputFile, outputFile string) {
 		log.Fatalf("❌ Erreur lors de la lecture de %s: %v", inputFile, err)
 	}
 
-	var requirementsAnalysis reporting.RequirementsAnalysis
+	var requirementsAnalysis // reporting.RequirementsAnalysis
 	err = json.Unmarshal(jsonData, &requirementsAnalysis)
 	if err != nil {
 		log.Fatalf("❌ Erreur lors de la désérialisation de %s: %v", inputFile, err)
@@ -119,11 +117,11 @@ func runSpecGeneration(inputFile, outputFile string) {
 	fmt.Printf("📋 Besoins chargés: %d\n", len(requirementsAnalysis.Requirements))
 
 	// Générer les spécifications
-	specifications := reporting.GenerateSpecificationsFromRequirements(requirementsAnalysis.Requirements)
+	specifications := // reporting.GenerateSpecificationsFromRequirements(requirementsAnalysis.Requirements)
 	fmt.Printf("📝 Spécifications générées: %d\n", len(specifications))
 
 	// Analyser les spécifications
-	specAnalysis := reporting.AnalyzeSpecifications(specifications)
+	specAnalysis := // reporting.AnalyzeSpecifications(specifications)
 
 	// Sauvegarder l'analyse en JSON
 	analysisJSON, err := json.MarshalIndent(specAnalysis, "", "  ")
@@ -137,7 +135,7 @@ func runSpecGeneration(inputFile, outputFile string) {
 	}
 
 	// Générer le rapport Markdown
-	markdownReport := reporting.GenerateSpecMarkdownReport(specAnalysis)
+	markdownReport := // reporting.GenerateSpecMarkdownReport(specAnalysis)
 	markdownFile := strings.TrimSuffix(outputFile, ".json") + ".md"
 	err = ioutil.WriteFile(markdownFile, []byte(markdownReport), 0o644)
 	if err != nil {

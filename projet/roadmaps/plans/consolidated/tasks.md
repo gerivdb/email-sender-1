@@ -1,0 +1,9 @@
+# Table des Tâches – Suivi Granulaire
+
+| id_task | id_plan | niveau | parent | enfants | phase | section | tâche | sous-tâche | managers | statut | priorité | mvp | méthode | fichiers_entrée | livrables_sortie | à_surveiller | catégorie | date | thématique | workflow | règles_validation | résumé | suivi |
+|---------|---------|--------|--------|---------|-------|---------|-------|------------|----------|--------|----------|-----|---------|-----------------|------------------|--------------|-----------|------|------------|----------|------------------|--------|-------|
+| taskA   | plan-dev-v104-instaurant | 1 |        | [taskB] | Phase 1 | Section 1 | Recensement |        | Alice    | en cours | haute | oui | manuel | plans/ | plans_inventory.md | cohérence | roadmap | 2025-07-11 | gouvernance | draft→validé | rapport validé | Recenser tous les plans | [ ] |
+| taskB   | plan-dev-v104-instaurant | 2 | taskA  | [taskC] | Phase 1 | Section 2 | Migration   |        | Bob      | à faire | haute | non | script | plans_inventory.md | plans_harmonized.md | granularité | migration | 2025-07-12 | harmonisation | draft→validé | table harmonisée | Migrer les plans | [ ] |
+| taskC   | plan-dev-v104-instaurant | 3 | taskB  |        | Phase 2 | Section 1 | Orchestration |      | Clara    | à faire | moyenne | non | script | plans_harmonized.md | orchestration_conflicts_report.md | dépendances | orchestration | 2025-07-13 | orchestration | draft→validé | rapport de conflits | Détecter et résoudre les conflits | [ ] |
+
+*Cocher chaque tâche une fois terminée pour assurer le suivi opérationnel.*
