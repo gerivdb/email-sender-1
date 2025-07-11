@@ -27,6 +27,8 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
+require orchestrator-scanner v0.0.0
+
 require (
 	github.com/BurntSushi/toml v1.5.0 // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
@@ -99,6 +101,8 @@ require (
 
 replace github.com/gerivdb/email-sender-1/managers/error-manager => ./development/managers/error-manager
 
+replace orchestrator-scanner => ./tools/orchestrator-scanner
+
 replace github.com/gerivdb/email-sender-1/interfaces => ./development/managers/interfaces
 
 replace email_sender/core/gapanalyzer => ./core/gapanalyzer
@@ -132,3 +136,5 @@ replace github.com/gerivdb/email-sender-1/managers/security-manager => ./develop
 replace github.com/gerivdb/email-sender-1/managers/storage-manager => ./development/managers/storage-manager
 
 replace github.com/gerivdb/email-sender-1/core/reporting => ./core/reporting
+
+replace db-integration-tests => ./tools/db-integration-tests

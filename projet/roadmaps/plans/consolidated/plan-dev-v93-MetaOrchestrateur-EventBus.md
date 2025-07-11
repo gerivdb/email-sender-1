@@ -258,10 +258,10 @@ Chaque section complémentaire est alignée sur les standards d’ingénierie av
 - [x] � Extension dynamique/plugins
 - [ ] 📈 Observabilité & reporting
 - [ ] 🛡️ Robustesse, rollback, audit
-- [ ] 👥 Validation croisée
+- [x] 👥 Validation croisée
 - [ ] 🛠️ Orchestration CI/CD
 - [ ] 📝 Documentation contributeur
-- [x] 📊 Dashboards et visualisation des données
+- [ ] ⚙️ Tests d'intégration base de données (en cours)
 
 ---
 
