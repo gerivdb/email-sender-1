@@ -48,6 +48,12 @@ Définir un système de communication découplé basé sur un Event Bus pour per
   - **CI/CD** : Génération auto, archivage
   - **Documentation** : README, diagrammes Mermaid
 
+  - **Structure des événements :**
+   - `ID` : Identifiant unique de l'événement (UUID).
+   - `Type` : Type d'événement (ex : `manager.created`, `script.executed`).
+   - `Source` : Source de l'événement (ex : nom du manager, nom du script).
+   - `Target` : Cible de l'événement (ex : nom du manager, nom du script).
+   - `Payload` : Données associées à l'événement (format JSON).
 ---
 
 ## 3. Développement des Connecteurs et Services pour l'Event Bus (Go)
@@ -68,6 +74,10 @@ Définir un système de communication découplé basé sur un Event Bus pour per
   - **Validation** : Passage de tous les tests, logs détaillés, badge “service OK”
   - **Rollback** : Le service doit être conçu pour être sans état ou gérer sa propre restauration
 
+  - **Responsabilités des services :**
+    - Chaque service doit s'abonner à un ensemble spécifique d'événements.
+    - Chaque service doit exécuter une tâche spécifique en réponse à un événement.
+    - Chaque service doit gérer son propre état de manière indépendante.
 ---
 
 ## 4. Extensions, intégration plugins, gestion dynamique
@@ -79,6 +89,12 @@ Définir un système de communication découplé basé sur un Event Bus pour per
   - Tests d’intégration pour extensions
 
 ---
+  - **API pour l'extension via plugins :**
+    - L'API doit permettre d'enregistrer de nouveaux services d'écoute d'événements.
+    - L'API doit permettre de définir les événements auxquels un service s'abonne.
+    - L'API doit permettre de configurer les paramètres d'un service.
+    - L'API doit permettre de désenregistrer un service.
+
 
 ## 5. Observabilité, reporting, alerting
 
@@ -87,7 +103,12 @@ Définir un système de communication découplé basé sur un Event Bus pour per
   - Génération de logs, métriques, rapports d’événements (`reports/orchestrator_report_YYYYMMDD.md`)
   - Scripts d’alerte/notification sur défaillance ou seuil
 
----
+  - **Métriques à suivre :**
+    - Nombre d'événements publiés par type.
+    - Nombre d'événements consommés par service.
+    - Temps de traitement moyen des événements.
+    - Nombre d'erreurs par service.
+    - Utilisation des ressources (CPU, mémoire, disque) par service.
 
 ## 6. Robustesse, rollback, traçabilité
 

@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EventBus",
+  "type": "object",
+  "properties": {
+    "ID": { "type": "string" },
+    "Type": { "type": "string" },
+    "Payload": { "type": "string" }
+  },
+  "required": ["ID", "Type", "Payload"]
+}

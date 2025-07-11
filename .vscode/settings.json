@@ -20,25 +20,36 @@
     "*.prompt.md": "markdown"
   },
   "markdown.preview.fontFamily": "Consolas, 'Courier New', monospace",
+  "markdown.preview.theme": "dark",
+  "markdown.preview.markEditorSelection": true,
   "copilot.enable": {
     "*": true,
     "plaintext": true,
     "markdown": true,
     "scminput": true
   },
+  "editor.accessibilitySupport": "on",
+  "editor.snippetSuggestions": "top",
+  "security.workspace.trust.enabled": true,
+  "project.toolVersions": {
+    "go": ">=1.24.4",
+    "golangci-lint": ">=1.59",
+    "markdownlint": ">=0.32"
+  },
   "go.goroot": "C:\\Users\\user\\sdk\\go1.24.4",
   "go.gopath": "C:\\Users\\user\\go",
-  
   "go.formatTool": "goimports",
   "go.lintTool": "golangci-lint",
   "go.lintFlags": [],
   "go.lintOnSave": "file",
-  "go.vetOnSave": "off",  "go.useLanguageServer": true,
+  "go.vetOnSave": "off",
+  "go.useLanguageServer": true,
   "go.languageServerFlags": [
     "serve",
     "--debug=localhost:6060"
   ],
-  "go.toolsManagement.autoUpdate": true,  "gopls": {
+  "go.toolsManagement.autoUpdate": true,
+  "gopls": {
     "build.buildFlags": ["-tags=database"],
     "analyses": {
       "unusedparams": true,
@@ -63,12 +74,13 @@
       "source.organizeImports": "always",
       "source.fixAll": "always"
     }
-  },  "editor.formatOnSave": true,
+  },
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": "always"
-  },  "[markdown]": {
+  },
+  "[markdown]": {
     "editor.formatOnSave": true,
-    
     "editor.codeActionsOnSave": {
       "source.fixAll.markdownlint": "always"
     }
