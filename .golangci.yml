@@ -1,0 +1,53 @@
+version: "2"
+linters:
+  enable:
+    - forbidigo
+    - misspell
+
+linters-settings:
+  forbidigo:
+    forbid:
+      - fmt.Println
+      - fmt.Print
+      - fmt.Printf
+  misspell:
+    locale: US
+    ignore-words:
+      - algorithme
+      - application
+      - apprentissage
+      - intelligence
+      - neurone
+      - réseau
+      - données
+      - modèle
+      - transformeur
+      - dialogueur
+      - agent
+      - mégadonnées
+      - vision
+      - traitement
+      - instruction
+      - jeton
+      - bibliothèque
+      - framework
+      - environnement
+      - plateforme
+      - simulation
+      - optimisation
+      - calcul
+      - robotique
+      - automatisation
+      - visualisation
+      - statistique
+      - matrice
+      - intégration
+      - déploiement
+      - compatibilité
+      - performance
+      - configuration
+      - documentation
+      - maintenance
+      - test
+      - validation
+      - prototype

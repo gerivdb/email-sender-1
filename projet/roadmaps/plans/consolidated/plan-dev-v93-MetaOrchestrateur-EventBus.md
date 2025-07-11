@@ -12,7 +12,7 @@ Définir un système de communication découplé basé sur un Event Bus pour per
 
 ## 1. Recensement des managers, hooks, scripts et événements
 
-- [ ] **Inventaire automatique de tous les managers, hooks, scripts, points d’entrée**
+- [x] **Inventaire automatique de tous les managers, hooks, scripts, points d’entrée**
   - **Livrable** : `manager_inventory.md`, `event_hooks.json`
   - **Commande** :
     ```bash
@@ -35,7 +35,7 @@ Définir un système de communication découplé basé sur un Event Bus pour per
 
 ## 2. Spécification du bus d’événements/canaux d’orchestration
 
-- [ ] **Modèle formel du bus d’événements (Go struct, YAML, JSON Schema)**
+- [x] **Modèle formel du bus d’événements (Go struct, YAML, JSON Schema)**
   - **Livrables** :
     - `event_bus.go`
     - `event_bus.schema.json`
@@ -58,7 +58,7 @@ Définir un système de communication découplé basé sur un Event Bus pour per
 
 ## 3. Développement des Connecteurs et Services pour l'Event Bus (Go)
 
-- [ ] **Implémentation de services Go autonomes**
+- [x] **Implémentation de services Go autonomes**
   - **Livrable** : `cmd/event-listener-service/main.go`
   - **Exemple Go** :
     ```go
@@ -73,6 +73,7 @@ Définir un système de communication découplé basé sur un Event Bus pour per
   - **Tests associés** : `*_test.go`
   - **Validation** : Passage de tous les tests, logs détaillés, badge “service OK”
   - **Rollback** : Le service doit être conçu pour être sans état ou gérer sa propre restauration
+- [x] Implémentation de services Go autonomes
 
   - **Responsabilités des services :**
     - Chaque service doit s'abonner à un ensemble spécifique d'événements.
@@ -82,7 +83,7 @@ Définir un système de communication découplé basé sur un Event Bus pour per
 
 ## 4. Extensions, intégration plugins, gestion dynamique
 
-- [ ] **Gestion dynamique des managers/plugins/scripts**
+- [x] **Gestion dynamique des managers/plugins/scripts**
   - Découverte à chaud (hotplug), reload dynamique
   - Extension via plugins Go, scripts, hooks externes (YAML, JSON, Bash, Python…)
   - Publication documentation dynamique des événements et des points d’entrée (`auto_docs/orchestrator_events.md`)
@@ -98,7 +99,7 @@ Définir un système de communication découplé basé sur un Event Bus pour per
 
 ## 5. Observabilité, reporting, alerting
 
-- [ ] **Observabilité native**
+- [x] **Observabilité native**
   - Intégration avec le pipeline Observabilité & Reporting Unifié
   - Génération de logs, métriques, rapports d’événements (`reports/orchestrator_report_YYYYMMDD.md`)
   - Scripts d’alerte/notification sur défaillance ou seuil
@@ -112,11 +113,11 @@ Définir un système de communication découplé basé sur un Event Bus pour per
 
 ## 6. Robustesse, rollback, traçabilité
 
-- [ ] **Rollback automatique**
+- [x] **Rollback automatique**
   - Snapshots d’état, scripts de restauration
   - Logs détaillés, historique d’événements, audit trail
 
-- [ ] **Validation croisée**
+- [x] **Validation croisée**
   - Checklist humaine pour tout ajout critique (nouveau bus, hook, manager)
   - Badge de review
 
@@ -124,7 +125,7 @@ Définir un système de communication découplé basé sur un Event Bus pour per
 
 ## 7. Orchestration CI/CD
 
-- [ ] **Intégration complète CI/CD**
+- [x] **Intégration complète CI/CD**
   - Orchestration tests, déploiements, reporting, rollback
   - Génération, validation et archivage auto des artefacts orchestrateur
 
@@ -132,7 +133,7 @@ Définir un système de communication découplé basé sur un Event Bus pour per
 
 ## 8. Documentation & guides contributeurs
 
-- [ ] **README orchestrateur**
+- [x] **README orchestrateur**
   - Guide d’usage, extension, debug, ajout de managers/plugins
   - Schémas Mermaid, API, bus, hooks
   - FAQ, cas d’usage, troubleshooting
@@ -142,7 +143,7 @@ Définir un système de communication découplé basé sur un Event Bus pour per
 
 ## 9. Modèle relationnel SQL cible
 
-- [ ] Définir et documenter le modèle relationnel pour la base de données
+- [x] Définir et documenter le modèle relationnel pour la base de données
   - **Livrables :** `eventbus_schema.sql`, `eventbus_schema.md`, schéma ER Mermaid
   - **Tables :** managers, hooks, scripts, events, dependencies, logs, audits
   - **Commandes :** `psql -f eventbus_schema.sql`, `go run tools/sql-schema-generator/main.go`
@@ -158,7 +159,7 @@ Définir un système de communication découplé basé sur un Event Bus pour per
 
 ## 10. Scripts d’import/export Markdown → SQL
 
-- [ ] Automatiser la transformation des artefacts Markdown/JSON en requêtes SQL
+- [x] Automatiser la transformation des artefacts Markdown/JSON en requêtes SQL
   - **Livrables :** `import_managers.sql`, `import_managers.log`
   - **Commandes :** `go run tools/md-to-sql-importer/main.go`
   - **Scripts :** `tools/md-to-sql-importer/main.go`, tests associés
@@ -173,7 +174,7 @@ Définir un système de communication découplé basé sur un Event Bus pour per
 
 ## 11. Synchronisation bidirectionnelle artefacts/base
 
-- [ ] Mettre en place la synchronisation entre la base et les artefacts Markdown/JSON
+- [x] Mettre en place la synchronisation entre la base et les artefacts Markdown/JSON
   - **Livrables :** `sync_report.md`, scripts de synchronisation
   - **Commandes :** `go run tools/sync-manager/main.go`
   - **Scripts :** `tools/sync-manager/main.go`, tests associés
@@ -218,7 +219,7 @@ Définir un système de communication découplé basé sur un Event Bus pour per
 
 ## 14. Reporting conformité et audit base
 
-- [ ] Générer des rapports automatisés sur la conformité des données entre artefacts et base
+- [x] Générer des rapports automatisés sur la conformité des données entre artefacts et base
   - **Livrables :** `audit_report.md`, `conformity_report.md`
   - **Commandes :** `go run tools/audit-generator/main.go`
   - **Scripts :** `tools/audit-generator/main.go`, tests associés
@@ -233,7 +234,7 @@ Définir un système de communication découplé basé sur un Event Bus pour per
 
 ## 15. Feedback automatisé sur la migration
 
-- [ ] Mettre en place une boucle de feedback et reporting sur la qualité et la complétude de la migration
+- [x] Mettre en place une boucle de feedback et reporting sur la qualité et la complétude de la migration
   - **Livrables :** `migration_feedback.md`, logs
   - **Commandes :** `go run tools/feedback-migration/main.go`
   - **Scripts :** `tools/feedback-migration/main.go`, tests associés
@@ -250,15 +251,17 @@ Chaque section complémentaire est alignée sur les standards d’ingénierie av
 
 ## 9. Roadmap synthétique (cases à cocher)
 
-- [ ] 📂 Inventaire managers/scripts/hooks
-- [ ] 🧩 Spécification bus d’événements
-- [ ] 🛠️ Développement orchestrateur Go
-- [ ] 🔄 Extension dynamique/plugins
+- [x] 📂 Inventaire managers/scripts/hooks
+- [x] 🧩 Spécification bus d’événements
+- [x] 🛠️ Développement orchestrateur Go
+- [x] 🔄 Extension dynamique/plugins
+- [x] � Extension dynamique/plugins
 - [ ] 📈 Observabilité & reporting
 - [ ] 🛡️ Robustesse, rollback, audit
 - [ ] 👥 Validation croisée
 - [ ] 🛠️ Orchestration CI/CD
 - [ ] 📝 Documentation contributeur
+- [x] 📊 Dashboards et visualisation des données
 
 ---
 

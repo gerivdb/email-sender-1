@@ -1,5 +1,5 @@
 {
-  "sandbox": true,
+  "sandbox": false,
   "terminal.integrated.profiles.windows": {
     "PowerShell": {
       "source": "PowerShell",
@@ -36,8 +36,8 @@
     "golangci-lint": ">=1.59",
     "markdownlint": ">=0.32"
   },
-  "go.goroot": "C:\\Users\\user\\sdk\\go1.24.4",
-  "go.gopath": "C:\\Users\\user\\go",
+  // "go.goroot": "C:\\Users\\user\\sdk\\go1.24.4",
+  // "go.gopath": "C:\\Users\\user\\go",
   "go.formatTool": "goimports",
   "go.lintTool": "golangci-lint",
   "go.lintFlags": [],
@@ -57,10 +57,10 @@
     },
     "staticcheck": true,
     "env": {
-      "GOPROXY": "https://proxy.golang.org,direct",
-      "GOSUMDB": "sum.golang.org",
-      "GOCACHE": "",
-      "GOMODCACHE": ""
+      // "GOPROXY": "https://proxy.golang.org,direct",
+      // "GOSUMDB": "sum.golang.org",
+      // "GOCACHE": "C:\\Users\\user\\go\\cache",
+      // "GOMODCACHE": "C:\\Users\\user\\go\\pkg\\mod"
     },
     "directoryFilters": [
       "-node_modules",
