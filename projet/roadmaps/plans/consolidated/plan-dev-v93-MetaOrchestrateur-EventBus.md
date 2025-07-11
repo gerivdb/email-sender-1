@@ -117,6 +117,115 @@ Définir un système de communication découplé basé sur un Event Bus pour per
   - FAQ, cas d’usage, troubleshooting
 
 ---
+---
+
+## 9. Modèle relationnel SQL cible
+
+- [ ] Définir et documenter le modèle relationnel pour la base de données
+  - **Livrables :** `eventbus_schema.sql`, `eventbus_schema.md`, schéma ER Mermaid
+  - **Tables :** managers, hooks, scripts, events, dependencies, logs, audits
+  - **Commandes :** `psql -f eventbus_schema.sql`, `go run tools/sql-schema-generator/main.go`
+  - **Scripts :** `tools/sql-schema-generator/main.go`, tests associés
+  - **Formats :** SQL, Markdown, Mermaid
+  - **Validation :** migration testée, intégrité référentielle
+  - **Rollback :** sauvegarde `.bak`, scripts de restauration
+  - **CI/CD :** job `db-schema`
+  - **Documentation :** README, schéma ER
+  - **Traçabilité :** logs, versionning
+
+---
+
+## 10. Scripts d’import/export Markdown → SQL
+
+- [ ] Automatiser la transformation des artefacts Markdown/JSON en requêtes SQL
+  - **Livrables :** `import_managers.sql`, `import_managers.log`
+  - **Commandes :** `go run tools/md-to-sql-importer/main.go`
+  - **Scripts :** `tools/md-to-sql-importer/main.go`, tests associés
+  - **Formats :** SQL, JSON, CSV
+  - **Validation :** import complet, logs, reporting
+  - **Rollback :** sauvegarde `.bak`
+  - **CI/CD :** job `md-to-sql-import`
+  - **Documentation :** README, guides d’usage
+  - **Traçabilité :** logs, reporting
+
+---
+
+## 11. Synchronisation bidirectionnelle artefacts/base
+
+- [ ] Mettre en place la synchronisation entre la base et les artefacts Markdown/JSON
+  - **Livrables :** `sync_report.md`, scripts de synchronisation
+  - **Commandes :** `go run tools/sync-manager/main.go`
+  - **Scripts :** `tools/sync-manager/main.go`, tests associés
+  - **Formats :** Markdown, JSON, SQL
+  - **Validation :** round-trip validé, logs, reporting
+  - **Rollback :** sauvegarde `.bak`
+  - **CI/CD :** job `sync-manager`
+  - **Documentation :** README, guides
+  - **Traçabilité :** logs, reporting
+
+---
+
+## 12. Tests d’intégration base de données
+
+- [ ] Automatiser les tests d’intégration pour valider l’import/export et l’intégrité des données
+  - **Livrables :** `db_integration_tests.log`, badge de couverture
+  - **Commandes :** `go test ./tools/db-integration-tests`
+  - **Scripts :** `tools/db-integration-tests/main.go`, tests associés
+  - **Formats :** log, badge, Markdown
+  - **Validation :** couverture > 90%, logs, reporting
+  - **Rollback :** sauvegarde `.bak`
+  - **CI/CD :** job `db-integration-tests`
+  - **Documentation :** README, guides
+  - **Traçabilité :** logs, reporting
+
+---
+
+## 13. Dashboards et visualisation des données
+
+- [ ] Générer des dashboards pour visualiser l’état des managers, événements, logs, etc.
+  - **Livrables :** `dashboard_eventbus.html`, `dashboard_eventbus.md`
+  - **Commandes :** `go run tools/dashboard-generator/main.go`
+  - **Scripts :** `tools/dashboard-generator/main.go`, tests associés
+  - **Formats :** HTML, Markdown
+  - **Validation :** dashboard validé, feedback équipe
+  - **Rollback :** sauvegarde `.bak`
+  - **CI/CD :** job `dashboard-generator`
+  - **Documentation :** README, guides
+  - **Traçabilité :** logs, reporting
+
+---
+
+## 14. Reporting conformité et audit base
+
+- [ ] Générer des rapports automatisés sur la conformité des données entre artefacts et base
+  - **Livrables :** `audit_report.md`, `conformity_report.md`
+  - **Commandes :** `go run tools/audit-generator/main.go`
+  - **Scripts :** `tools/audit-generator/main.go`, tests associés
+  - **Formats :** Markdown, log
+  - **Validation :** audit validé, logs, reporting
+  - **Rollback :** sauvegarde `.bak`
+  - **CI/CD :** job `audit-generator`
+  - **Documentation :** README, guides
+  - **Traçabilité :** logs, reporting
+
+---
+
+## 15. Feedback automatisé sur la migration
+
+- [ ] Mettre en place une boucle de feedback et reporting sur la qualité et la complétude de la migration
+  - **Livrables :** `migration_feedback.md`, logs
+  - **Commandes :** `go run tools/feedback-migration/main.go`
+  - **Scripts :** `tools/feedback-migration/main.go`, tests associés
+  - **Formats :** Markdown, log
+  - **Validation :** feedback intégré, logs, reporting
+  - **Rollback :** sauvegarde `.bak`
+  - **CI/CD :** job `feedback-migration`
+  - **Documentation :** README, guides
+  - **Traçabilité :** logs, reporting
+
+---
+
+Chaque section complémentaire est alignée sur les standards d’ingénierie avancée, avec granularité, automatisation, traçabilité, documentation et validation croisée. Les dépendances entre étapes sont explicites, chaque livrable/action est traçable et automatisable, et la gouvernance est visualisée pour garantir la transformation efficace des artefacts Markdown en base de données relationnelle.
 
 ## 9. Roadmap synthétique (cases à cocher)
 

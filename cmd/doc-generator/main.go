@@ -16,6 +16,8 @@ func main() {
 		{"FAQ.md", "# FAQ\n\nQuestions fréquentes et réponses sur le template-manager.\n"},
 		{"CONTRIBUTING.md", "# CONTRIBUTING\n\nRègles et conseils pour contribuer au projet.\n"},
 		{"README.md", "# README\n\nPrésentation du template-manager, installation, usage, documentation.\n"},
+		{"README_docmanager.md", "# README DocManager\n\nDocumentation technique et usage du DocManager.\n"},
+		{"guide_docmanager.md", "# Guide DocManager\n\nGuide d’utilisation et d’intégration du DocManager.\n"},
 	}
 
 	for _, f := range files {
