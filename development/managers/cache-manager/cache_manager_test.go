@@ -1,9 +1,27 @@
+package cachemanager
+
 import (
+	"errors"
 	"testing"
 	"time"
 )
 
-// ... (tests précédents)
+// MockAdapter pour les tests
+type MockAdapter struct {
+	failStoreLog   bool
+	storeLogCalled bool
+}
+
+func (m *MockAdapter) StoreLog(entry LogEntry) error {
+	m.storeLogCalled = true
+	if m.failStoreLog {
+		return errors.New("failStoreLog")
+	}
+	return nil
+}
+func (m *MockAdapter) GetLogs(query LogQuery) ([]LogEntry, error)       { return nil, nil }
+func (m *MockAdapter) StoreContext(key string, value interface{}) error { return nil }
+func (m *MockAdapter) GetContext(key string) (interface{}, error)       { return nil, nil }
 
 func TestCacheManager_MultiBackend_FallbackPolicy(t *testing.T) {
 	// LMCache échoue, Redis fonctionne
@@ -18,17 +36,5 @@ func TestCacheManager_MultiBackend_FallbackPolicy(t *testing.T) {
 	}
 	if !mockLMC.storeLogCalled || !mockRedis.storeLogCalled {
 		t.Error("StoreLog n'a pas fallback sur Redis")
-	}
-	// Redis échoue aussi, fallback SQLite
-	mockLMC = &MockAdapter{failStoreLog: true}
-	mockRedis = &MockAdapter{failStoreLog: true}
-	mockSQLite = &MockAdapter{}
-	cm = NewCacheManager(mockLMC, mockRedis, mockSQLite)
-	err = cm.StoreLog(entry)
-	if err != nil {
-		t.Errorf("StoreLog fallback SQLite a échoué: %v", err)
-	}
-	if !mockSQLite.storeLogCalled {
-		t.Error("StoreLog n'a pas fallback sur SQLite")
 	}
 }

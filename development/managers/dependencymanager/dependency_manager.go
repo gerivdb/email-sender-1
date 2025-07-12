@@ -1,6 +1,6 @@
 // Exemple de hook CacheManager dans un script Go existant (phase 4.4)
 
-package dependency_manager
+package dependency
 
 import (
 	"fmt"

@@ -1,14 +1,14 @@
 // development/managers/dependencymanager/dependency_manager_test.go
-package dependencymanager
+package dependency
 
 import (
 	"testing"
 )
 
 func TestDependencyManagerNonRegression(t *testing.T) {
-	dm := New()
-	if dm == nil {
-		t.Fatal("Gestionnaire non initialisé")
+	dm, err := New()
+	if err != nil || dm == nil {
+		t.Fatalf("Gestionnaire non initialisé : %v", err)
 	}
 
 	t.Run("Ajout de dépendance", func(t *testing.T) {
