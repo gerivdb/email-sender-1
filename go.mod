@@ -69,9 +69,3 @@ require (
 	golang.org/x/sys v0.25.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 )
-
-replace github.com/BurntSushi/toml => github.com/BurntSushi/toml v1.4.0
-
-replace github.com/gerivdb/email-sender-1/core/gapanalyzer => ./core/gapanalyzer
-
-replace github.com/gerivdb/email-sender-1/core/scanmodules => ./core/scanmodules

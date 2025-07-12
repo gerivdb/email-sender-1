@@ -189,56 +189,56 @@ Définir un système de communication découplé basé sur un Event Bus pour per
 
 ### Tâches intermédiaires pour résoudre les problèmes de dépendances Go
 
-- [ ] Supprimer les fichiers `go.mod` inutiles :
-    - [ ] Vérifier la présence d'un fichier `go.mod` dans le répertoire `tools/db-integration-tests`.
-    - [ ] Si un fichier `go.mod` est présent, utiliser la commande `rm` ou `del` pour le supprimer.
-- [ ] Corriger la structure du projet :
-    - [ ] Vérifier que le répertoire `tools/db-integration-tests` contient les fichiers `main.go`, `main_test.go`, et un répertoire `testdb` contenant `setup.go`.
-    - [ ] Si la structure est incorrecte, déplacer ou créer les fichiers nécessaires.
-- [ ] Corriger les importations :
-    - [ ] Vérifier que le fichier `tools/db-integration-tests/main_test.go` utilise les chemins d'importation corrects pour les dépendances internes.
-    - [ ] Si les importations sont incorrectes, les modifier pour utiliser les chemins corrects.
-- [ ] Gérer les dépendances :
-    - [ ] Ajouter les dépendances `github.com/jmoiron/sqlx`, `github.com/lib/pq`, `github.com/stretchr/testify` et `github.com/google/uuid` au fichier `go.mod` principal.
-    - [ ] Exécuter la commande `go mod tidy` pour télécharger et gérer les dépendances.
-- [ ] Supprimer les directives `replace` :
-    - [ ] Supprimer toutes les directives `replace` du fichier `go.mod` principal.
-- [ ] Exécuter les tests :
-    - [ ] Exécuter les tests avec la commande `go test ./tools/db-integration-tests`.
-    - [ ] Si les tests échouent, analyser les erreurs et apporter les corrections nécessaires.
+- [x] Supprimer les fichiers `go.mod` inutiles :
+    - [x] Vérifier la présence d'un fichier `go.mod` dans le répertoire `tools/db-integration-tests`.
+    - [x] Si un fichier `go.mod` est présent, utiliser la commande `rm` ou `del` pour le supprimer.
+- [x] Corriger la structure du projet :
+    - [x] Vérifier que le répertoire `tools/db-integration-tests` contient les fichiers `main.go`, `main_test.go`, et un répertoire `testdb` contenant `setup.go`.
+    - [x] Si la structure est incorrecte, déplacer ou créer les fichiers nécessaires.
+- [x] Corriger les importations :
+    - [x] Vérifier que le fichier `tools/db-integration-tests/main_test.go` utilise les chemins d'importation corrects pour les dépendances internes.
+    - [x] Si les importations sont incorrectes, les modifier pour utiliser les chemins corrects.
+- [x] Gérer les dépendances :
+    - [x] Ajouter les dépendances `github.com/jmoiron/sqlx`, `github.com/lib/pq`, `github.com/stretchr/testify` et `github.com/google/uuid` au fichier `go.mod` principal.
+    - [x] Exécuter la commande `go mod tidy` pour télécharger et gérer les dépendances.
+- [x] Supprimer les directives `replace` :
+    - [x] Supprimer toutes les directives `replace` du fichier `go.mod` principal.
+- [x] Exécuter les tests :
+    - [x] Exécuter les tests avec la commande `go test ./tools/db-integration-tests`.
+    - [x] Si les tests échouent, analyser les erreurs et apporter les corrections nécessaires.
 
 ---
 
 ### Tâches intermédiaires pour résoudre les problèmes et implémenter les tests d'intégration
 
-- [ ] Résoudre le problème d'utilisation incorrecte de l'outil `write_to_file` :
-    - [ ] Examiner le rapport d'erreur pour comprendre la cause de l'erreur.
-    - [ ] Réviser ma compréhension de l'utilisation de l'outil `write_to_file` et des chemins de fichiers.
-    - [ ] Mettre en place des mesures pour éviter de reproduire cette erreur à l'avenir.
-    - [ ] Demander à l'utilisateur de reformuler les exemples dans le fichier `.github/docs/tools-reference.md` pour qu'ils soient plus clairs.
-- [ ] Supprimer les fichiers `go.mod` inutiles :
-    - [ ] Vérifier la présence d'un fichier `go.mod` dans le répertoire `tools/db-integration-tests`.
-    - [ ] Si un fichier `go.mod` est présent, utiliser la commande `rm` ou `del` pour le supprimer.
-- [ ] Corriger la structure du projet :
-    - [ ] Vérifier que le répertoire `tools/db-integration-tests` contient les fichiers `main.go`, `main_test.go`, et un répertoire `testdb` contenant `setup.go`.
-    - [ ] Si la structure est incorrecte, déplacer ou créer les fichiers nécessaires.
-- [ ] Corriger les importations :
-    - [ ] Vérifier que le fichier `tools/db-integration-tests/main_test.go` utilise les chemins d'importation corrects pour les dépendances internes.
-    - [ ] Si les importations sont incorrectes, les modifier pour utiliser les chemins corrects.
-- [ ] Gérer les dépendances :
-    - [ ] Ajouter les dépendances `github.com/jmoiron/sqlx`, `github.com/lib/pq`, `github.com/stretchr/testify` et `github.com/google/uuid` au fichier `go.mod` principal.
-    - [ ] Exécuter la commande `go mod tidy` pour télécharger et gérer les dépendances.
-- [ ] Supprimer les directives `replace` :
-    - [ ] Supprimer toutes les directives `replace` du fichier `go.mod` principal.
-- [ ] Exécuter les tests :
-    - [ ] Exécuter les tests avec la commande `go test ./tools/db-integration-tests`.
-    - [ ] Si les tests échouent, analyser les erreurs et apporter les corrections nécessaires.
+- [x] Résoudre le problème d'utilisation incorrecte de l'outil `write_to_file` :
+    - [x] Examiner le rapport d'erreur pour comprendre la cause de l'erreur.
+    - [x] Réviser ma compréhension de l'utilisation de l'outil `write_to_file` et des chemins de fichiers.
+    - [x] Mettre en place des mesures pour éviter de reproduire cette erreur à l'avenir.
+    - [x] Demander à l'utilisateur de reformuler les exemples dans le fichier `.github/docs/tools-reference.md` pour qu'ils soient plus clairs.
+- [x] Supprimer les fichiers `go.mod` inutiles :
+    - [x] Vérifier la présence d'un fichier `go.mod` dans le répertoire `tools/db-integration-tests`.
+    - [x] Si un fichier `go.mod` est présent, utiliser la commande `rm` ou `del` pour le supprimer.
+- [x] Corriger la structure du projet :
+    - [x] Vérifier que le répertoire `tools/db-integration-tests` contient les fichiers `main.go`, `main_test.go`, et un répertoire `testdb` contenant `setup.go`.
+    - [x] Si la structure est incorrecte, déplacer ou créer les fichiers nécessaires.
+- [x] Corriger les importations :
+    - [x] Vérifier que le fichier `tools/db-integration-tests/main_test.go` utilise les chemins d'importation corrects pour les dépendances internes.
+    - [x] Si les importations sont incorrectes, les modifier pour utiliser les chemins corrects.
+- [x] Gérer les dépendances :
+    - [x] Ajouter les dépendances `github.com/jmoiron/sqlx`, `github.com/lib/pq`, `github.com/stretchr/testify` et `github.com/google/uuid` au fichier `go.mod` principal.
+    - [x] Exécuter la commande `go mod tidy` pour télécharger et gérer les dépendances.
+- [x] Supprimer les directives `replace` :
+    - [x] Supprimer toutes les directives `replace` du fichier `go.mod` principal.
+- [x] Exécuter les tests :
+    - [x] Exécuter les tests avec la commande `go test ./tools/db-integration-tests`.
+    - [x] Si les tests échouent, analyser les erreurs et apporter les corrections nécessaires.
 
 ---
 
 ## 12. Tests d’intégration base de données
 
-- [ ] Automatiser les tests d’intégration pour valider l’import/export et l’intégrité des données
+- [x] Automatiser les tests d’intégration pour valider l’import/export et l’intégrité des données
   - **Livrables :** `db_integration_tests.log`, badge de couverture
   - **Commandes :** `go test ./tools/db-integration-tests`
   - **Scripts :** `tools/db-integration-tests/main.go`, tests associés

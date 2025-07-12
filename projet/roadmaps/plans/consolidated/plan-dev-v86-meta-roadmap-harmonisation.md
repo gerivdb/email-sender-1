@@ -2,6 +2,119 @@ Voici une synthèse détaillée sur la présence des concepts de “méta-roadma
 
 ---
 
+## Roadmap exhaustive, actionable et automatisable pour la migration des plans Markdown vers Qdrant
+
+### 1. Recensement & Analyse d’écart
+
+- [ ] **Recenser tous les fichiers Markdown à migrer et les champs à synchroniser**
+  - Livrables : inventaire des fichiers, rapport d’écart
+  - Commandes : `ls`, script Go d’inventaire
+  - Format : Markdown, JSON
+  - Validation : revue croisée, inventaire validé
+  - Rollback : sauvegarde `.bak` de l’inventaire
+
+- [ ] **Analyser les écarts entre la structure Markdown et le schéma cible Qdrant**
+  - Livrables : rapport d’écart
+  - Commandes : script Go d’analyse
+  - Format : Markdown, JSON
+  - Validation : revue technique
+  - Rollback : sauvegarde `.bak` du rapport
+
+### 2. Spécification & Développement du workflow de migration
+
+- [ ] **Définir le workflow technique de migration Markdown → Qdrant**
+  - Livrables : schéma Qdrant, documentation technique
+  - Commandes : `go run migrate.go`, `go test`
+  - Format : Go, JSON, Markdown
+  - Validation : tests unitaires, revue technique
+  - Rollback : sauvegarde automatique avant migration
+
+- [ ] **Spécifier le mapping des champs et la synchronisation bidirectionnelle**
+  - Livrables : documentation du mapping
+  - Commandes : script Go de synchronisation
+  - Format : Markdown, JSON
+  - Validation : tests automatisés
+  - Rollback : versionning git
+
+- [ ] **Développer les scripts Go natifs pour l’automatisation**
+  - Livrables : scripts Go, tests associés
+  - Commandes : `go build`, `go test`
+  - Format : Go
+  - Validation : badge de couverture >90%
+  - Rollback : sauvegarde `.bak` des scripts
+
+### 3. Automatisation & CI/CD
+
+- [ ] **Créer des scripts d’automatisation, dry-run et rollback**
+  - Livrables : scripts Go, logs de dry-run
+  - Commandes : `go run`, `go test`
+  - Format : Go, Markdown
+  - Validation : logs validés, tests automatisés
+  - Rollback : sauvegarde `.bak` des logs
+
+- [ ] **Intégrer la migration dans le pipeline CI/CD (job dédié, reporting, badge)**
+  - Livrables : pipeline CI/CD, badge de couverture
+  - Commandes : pipeline CI/CD, `go test -cover`
+  - Format : YAML, Markdown
+  - Validation : badge >90%, reporting CI/CD
+  - Rollback : versionning git, sauvegarde `.bak`
+
+### 4. Tests, Reporting & Validation
+
+- [ ] **Rédiger des scénarios de tests d’intégrité et de validation**
+  - Livrables : fichiers de test, logs, rapports
+  - Commandes : `go test`, script de reporting
+  - Format : Go, Markdown, HTML
+  - Validation : tests automatisés, reporting CI/CD
+  - Rollback : sauvegarde des logs et rapports
+
+- [ ] **Générer des logs, rapports automatisés, badges de couverture**
+  - Livrables : logs, rapports, badges
+  - Commandes : script de reporting, `go test -cover`
+  - Format : Markdown, HTML
+  - Validation : badge >90%, reporting validé
+  - Rollback : sauvegarde `.bak` des rapports
+
+### 5. Documentation & Traçabilité
+
+- [ ] **Rédiger des guides d’utilisation et de migration**
+  - Livrables : README, guides, historique des outputs
+  - Commandes : script de génération de documentation
+  - Format : Markdown, JSON
+  - Validation : revue croisée, feedback utilisateur
+  - Rollback : versionning, sauvegarde des docs
+
+- [ ] **Assurer la traçabilité des opérations (inventaire, logs, reporting)**
+  - Livrables : inventaire, logs, rapports
+  - Commandes : script Go de traçabilité
+  - Format : Markdown, JSON
+  - Validation : reporting validé
+  - Rollback : sauvegarde `.bak` des outputs
+
+---
+
+### Orchestration & CI/CD
+
+- [ ] **Mettre en place un orchestrateur global (`auto-roadmap-runner.go`)**
+  - Livrables : script Go, logs d’exécution, rapports
+  - Commandes : `go run auto-roadmap-runner.go`
+  - Format : Go, Markdown
+  - Validation : logs validés, reporting CI/CD
+  - Rollback : sauvegarde `.bak` des logs
+
+- [ ] **Intégrer le pipeline CI/CD : jobs, triggers, reporting, feedback automatisé**
+  - Livrables : pipeline CI/CD, badge, rapports
+  - Commandes : pipeline CI/CD, `go test -cover`
+  - Format : YAML, Markdown
+  - Validation : badge >90%, reporting validé
+  - Rollback : versionning git, sauvegarde `.bak`
+
+---
+
+Chaque étape est alignée sur la stack Go native, la modularité, la documentation et les standards `.clinerules/`.
+Automatisation maximale : chaque tâche doit être scriptée ou validée, avec traçabilité et robustesse.
+
+
 ## 1. Synthèse des Plans et Occurrences Clés
 
 ### A. "Méta-roadmap" et Synchronisation Vectorielle
