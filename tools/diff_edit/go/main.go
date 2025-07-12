@@ -1,5 +1,7 @@
 package main
 
+// LOG DEBUG: main.go package = main, import diffeditgo OK ?
+
 import (
 	"fmt"
 	"os"
