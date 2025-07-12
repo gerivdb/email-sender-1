@@ -1,5 +1,4 @@
-// Go
-// Package diffeditgo fournit des outils pour automatiser l'application de patchs.
+// Package diffeditgo provides tools for batch diff editing and monitoring.
 package diffeditgo
 
 import (
