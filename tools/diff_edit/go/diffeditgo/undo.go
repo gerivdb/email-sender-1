@@ -1,3 +1,4 @@
+// Package diffeditgo fournit les fonctions pour l’édition de diff.
 package diffeditgo
 
 import (
