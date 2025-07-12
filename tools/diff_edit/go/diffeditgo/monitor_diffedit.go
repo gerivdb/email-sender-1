@@ -1,4 +1,6 @@
 // Package diffeditgo provides tools for batch diff editing and monitoring.
+package diffeditgo
+
 import (
 	"errors"
 	"fmt"
@@ -10,15 +12,11 @@ import (
 	"time"
 )
 
-package diffeditgo
-
 var (
 	ErrScriptPathUnsafe   = errors.New("scriptPath contient des caractères non sécurisés")
 	ErrPythonScriptFailed = errors.New("échec de l'exécution du script Python")
 	ErrGetMemWindowsOnly  = errors.New("getMem est supporté uniquement sur Windows")
 )
-
-
 
 // MonitorDiffEdit exécute le script Python diff_edit.py et mesure les performances (CPU/mémoire).
 func MonitorDiffEdit(scriptPath string, fileArg, patchArg string, dryRun bool) error {
@@ -41,8 +39,6 @@ func MonitorDiffEdit(scriptPath string, fileArg, patchArg string, dryRun bool) e
 		return ErrScriptPathUnsafe
 	}
 
-
-
 	cmdArgs := []string{scriptPath, "--file", fileArg, "--patch", patchArg}
 	if dryRun {
 		cmdArgs = append(cmdArgs, "--dry-run")
@@ -57,10 +53,7 @@ func MonitorDiffEdit(scriptPath string, fileArg, patchArg string, dryRun bool) e
 		return fmt.Errorf("%w: %v", ErrPythonScriptFailed, runErr)
 	}
 
-
-
 	t1 := time.Now()
-
 
 	var memAfter string
 
