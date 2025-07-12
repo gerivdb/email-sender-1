@@ -1,19 +1,22 @@
-package go
+// Go
+// Package diffeditgo fournit des outils pour automatiser l'application de patchs.
+package diffeditgo
 
 import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 )
 
-// batch_diffedit.go : Applique un patch diff Edit à plusieurs fichiers listés dans un fichier texte
-// Usage : go run batch_diffedit.go --files list.txt --patch patch.txt
-
-func main() {
+// BatchDiffEdit applique un patch diff Edit à plusieurs fichiers listés dans un fichier texte.
+// Note: Cette fonction lit les arguments directement depuis os.Args, ce qui est inhabituel pour une fonction de bibliothèque.
+// Il serait préférable de passer les chemins en paramètres.
+func BatchDiffEdit() {
 	if len(os.Args) < 5 {
-		fmt.Println("Usage: go run batch_diffedit.go --files <list.txt> --patch <patch.txt>")
+		fmt.Println("Usage: go run <votre_main>.go --files <list.txt> --patch <patch.txt>")
 		os.Exit(1)
 	}
 	var filesList, patchPath string
@@ -29,7 +32,7 @@ func main() {
 		fmt.Println("Fichier de liste ou patch manquant.")
 		os.Exit(1)
 	}
-	patch, err := ioutil.ReadFile(patchPath)
+	_, err := ioutil.ReadFile(patchPath)
 	if err != nil {
 		fmt.Printf("Erreur lecture patch: %v\n", err)
 		os.Exit(1)
@@ -49,7 +52,11 @@ func main() {
 		os.Stdout.Sync()
 		os.Stderr.Sync()
 		// Appel du CLI Go natif (simple, sans gestion avancée d’erreur ici)
-		_ = os.system(cmd)
+		cmdExec := exec.Command("powershell", "-Command", cmd)
+		err = cmdExec.Run()
+		if err != nil {
+			fmt.Printf("Erreur exécution commande: %v\n", err)
+		}
 	}
 	fmt.Println("Batch terminé.")
 }
