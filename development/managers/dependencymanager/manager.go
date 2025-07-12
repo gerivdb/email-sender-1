@@ -1,37 +1,7 @@
-package dependencymanager
+package dependency
 
-type Dependency struct {
-	Name    string
-	Version string
-}
+// Ce fichier ne doit pas redéfinir Dependency, DependencyManager ou leurs méthodes.
+// Toutes les définitions sont centralisées dans export.go pour éviter les conflits de déclaration.
 
-type DependencyManager struct {
-	deps map[string]Dependency
-}
-
-func New() *DependencyManager {
-	return &DependencyManager{deps: make(map[string]Dependency)}
-}
-
-func (dm *DependencyManager) AddDependency(name, version string) error {
-	dm.deps[name] = Dependency{Name: name, Version: version}
-	return nil
-}
-
-func (dm *DependencyManager) RemoveDependency(name string) error {
-	delete(dm.deps, name)
-	return nil
-}
-
-func (dm *DependencyManager) HasDependency(name string) bool {
-	_, ok := dm.deps[name]
-	return ok
-}
-
-func (dm *DependencyManager) ListDependencies() []Dependency {
-	result := []Dependency{}
-	for _, dep := range dm.deps {
-		result = append(result, dep)
-	}
-	return result
-}
+// Si des fonctions spécifiques à manager.go sont nécessaires, les ajouter ici.
+// Sinon, ce fichier peut rester vide ou contenir uniquement des helpers non conflictuels.
