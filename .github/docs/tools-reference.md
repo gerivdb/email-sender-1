@@ -1,34 +1,186 @@
 # Référence des outils
 
+**Table des matières**
+
+*   [read_file](#read_file)
+*   [apply_diff](#apply_diff)
+*   [write_file](#write_file)
+*   [search_and_replace](#search_and_replace)
+*   [list_files](#list_files)
+*   [list_code_definition_names](#list_code_definition_names)
+*   [execute_command](#execute_command)
+
 Ce document décrit les outils disponibles pour interagir avec le système.
+
+========
 
 ## read_file
 
-**But** : Lire le contenu d'un ou plusieurs fichiers.
+### But : Lire le contenu d'un ou plusieurs fichiers.
 
-**Utilisation** : Permet d'obtenir le contenu actuel d'un fichier avant de le modifier. Ceci est crucial pour comprendre le contexte et s'assurer que les modifications sont basées sur la version la plus récente du fichier.
+### Utilisation : Permet d'obtenir le contenu actuel d'un fichier avant de le modifier. Ceci est crucial pour comprendre le contexte et s'assurer que les modifications sont basées sur la version la plus récente du fichier.
 
-**Paramètres** :
+### Paramètres :
 
-*   `path` : Chemin d'accès au fichier (obligatoire).
-*   `line_range` : Permet de spécifier les lignes à lire (facultatif, mais recommandé pour les grands fichiers).
+*   `path` : Chemin d'accès au fichier (obligatoire).
 
-**Note**: Cline a contribué à des améliorations pour la lecture de fichiers larges avec cet outil.
+*   `line_range` : Permet de spécifier les lignes à lire (facultatif, mais recommandé pour les grands fichiers).
 
-**Sortie** : Le contenu du fichier, avec les numéros de ligne.
+**Note :** Cline a contribué à des améliorations pour la lecture de fichiers larges avec cet outil.
+
+**Sortie :** Le contenu du fichier, avec les numéros de ligne.
+
+========
+
+#### Erreurs courantes et comment les éviter :
+
+*   **Erreur : Le fichier n'existe pas.**
+
+    *   Cause : Le chemin d'accès au fichier est incorrect.
+    *   Solution : Vérifiez que le chemin d'accès au fichier est correct.
+
+*   **Erreur : Le fichier est trop grand pour être lu.**
+
+    *   Cause : Le fichier dépasse la limite de taille autorisée.
+    *   Solution : Utilisez le paramètre `line_range` pour lire seulement une partie du fichier.
+
+**Exemples d'utilisation** :
+
+**Exemple 1 : Lire le contenu d'un fichier**
+
+```
+<read_file>
+<path>monfichier.txt</path>
+</read_file>
+```
+
+**Exemple 2 : Lire seulement les 10 premières lignes d'un fichier**
+
+```
+<read_file>
+<path>monfichier.txt</path>
+<line_range>1-10</line_range>
+</read_file>
+```
+
+========
 
 ## apply_diff
 
-**But** : Appliquer une modification (diff) à un fichier existant.
+### But : Appliquer une modification (diff) à un fichier existant.
 
-**Utilisation** : Permet de modifier un fichier en remplaçant des lignes spécifiques par un nouveau contenu. L'outil compare le contenu recherché avec le contenu actuel du fichier et applique la modification uniquement si la correspondance est parfaite.
+### Utilisation : Permet de modifier un fichier en remplaçant des lignes spécifiques par un nouveau contenu. L'outil compare le contenu recherché avec le contenu actuel du fichier et applique la modification uniquement si la correspondance est parfaite.
 
-**Paramètres** :
+### Paramètres :
 
 *   `path` : Chemin d'accès au fichier (obligatoire).
 *   `diff` : Contient les informations sur la modification à effectuer.
     *   `content` : Contient le contenu à rechercher (SEARCH) et le contenu de remplacement (REPLACE).
-    *   `start_line` : Numéro de la première ligne à remplacer.
+*   `start_line` : Numéro de la première ligne à remplacer.
+
+========
+
+#### Erreurs courantes et comment les éviter :
+
+*   **Erreur : La modification échoue car le contenu recherché ne correspond pas exactement au contenu du fichier.**
+
+    *   Cause : Des espaces, des sauts de ligne ou d'autres caractères invisibles peuvent être différents.
+    *   Solution : Utilisez `read_file` pour obtenir le contenu exact du fichier et assurez-vous que le contenu recherché dans `apply_diff` est identique.
+
+*   **Erreur : La modification échoue car le fichier a été modifié entre le moment où vous avez lu le contenu et le moment où vous avez essayé d'appliquer le diff.**
+
+    *   Cause : Un autre processus ou utilisateur a modifié le fichier.
+    *   Solution : Relisez le fichier avant d'appliquer le diff pour vous assurer que vous travaillez avec la version la plus récente.
+
+*   **Erreur : Utilisation incorrecte de `start_line`.**
+
+    *   Cause : `start_line` ne correspond pas à la ligne où le contenu recherché se trouve.
+    *   Solution : Utilisez `read_file` pour vérifier les numéros de ligne et assurez-vous que `start_line` est correct.
+
+**Exemples d'utilisation** :
+
+**Exemple 1 : Remplacer une ligne spécifique dans un fichier**
+
+Supposons que vous ayez le fichier suivant `monfichier.txt` :
+
+```
+ligne 1
+ligne 2
+ligne 3
+```
+
+Et vous voulez remplacer "ligne 2" par "nouvelle ligne 2". Vous devez d'abord lire le fichier :
+
+```
+<read_file>
+<path>monfichier.txt</path>
+</read_file>
+```
+
+La sortie de `read_file` sera :
+
+```
+ligne 1
+ligne 2
+ligne 3
+```
+
+Ensuite, vous pouvez utiliser `apply_diff` pour remplacer la ligne :
+
+```
+<apply_diff>
+<path>monfichier.txt</path>
+<diff>
+------- SEARCH
+ligne 2
+=======
+nouvelle ligne 2
++++++++ REPLACE
+</diff>
+</apply_diff>
+```
+
+**Exemple 2 : Ajouter une nouvelle ligne après une ligne existante**
+
+Supposons que vous ayez le même fichier `monfichier.txt` :
+
+```
+ligne 1
+ligne 2
+ligne 3
+```
+
+Et vous voulez ajouter une nouvelle ligne après "ligne 2". Vous devez d'abord lire le fichier :
+
+```
+<read_file>
+<path>monfichier.txt</path>
+</read_file>
+```
+
+La sortie de `read_file` sera :
+
+```
+ligne 1
+ligne 2
+ligne 3
+```
+
+Ensuite, vous pouvez utiliser `apply_diff` pour ajouter la nouvelle ligne :
+
+```
+<apply_diff>
+<path>monfichier.txt</path>
+<diff>
+------- SEARCH
+ligne 2
+=======
+ligne 2
+nouvelle ligne
++++++++ REPLACE
+</diff>
+</apply_diff>
+```
 
 **Compréhension essentielle** :
 
@@ -36,13 +188,15 @@ Ce document décrit les outils disponibles pour interagir avec le système.
 *   Il est *impératif* d'utiliser `read_file` pour obtenir le contenu actuel du fichier avant d'utiliser `apply_diff`. Cela permet de s'assurer que le contenu recherché correspond bien à la version actuelle du fichier.
 *   Si des modifications ont été apportées au fichier entre le moment où vous avez lu le contenu et le moment où vous essayez d'appliquer le diff, la modification échouera.
 
+========
+
 ## write_file
 
-**But** : Écrire (ou remplacer) le contenu complet d'un fichier.
+### But : Écrire (ou remplacer) le contenu complet d'un fichier.
 
-**Utilisation** : Permet de créer un nouveau fichier ou de remplacer complètement le contenu d'un fichier existant.
+### Utilisation : Permet de créer un nouveau fichier ou de remplacer complètement le contenu d'un fichier existant.
 
-**Paramètres** :
+### Paramètres :
 
 *   `path` : Chemin d'accès au fichier (obligatoire).
 *   `content` : Le contenu complet à écrire dans le fichier (obligatoire).
@@ -58,60 +212,58 @@ Ce document décrit les outils disponibles pour interagir avec le système.
 *   Utiliser `apply_diff` pour des modifications ciblées et précises, lorsque vous connaissez exactement le contenu à remplacer. C'est idéal pour les modifications de code où vous voulez éviter de remplacer tout le fichier.
 *   Utiliser `write_file` pour créer de nouveaux fichiers ou pour remplacer *entièrement* le contenu d'un fichier existant. À utiliser avec prudence, car cela peut écraser des modifications non sauvegardées.
 
-## Approche "Atomic Replacement" (Remplacement Atomique)
+========
 
-Une autre approche pour modifier des fichiers consiste à :
+#### Erreurs courantes et comment les éviter :
 
-1.  Créer une copie temporaire du fichier original.
-2.  Effectuer les modifications souhaitées sur la copie temporaire.
-3.  Une fois les modifications validées, renommer la copie temporaire pour remplacer le fichier original.
-4.  Supprimer le fichier original.
+*   **Erreur : Le fichier est écrasé avec un contenu incorrect.**
 
-Cette approche garantit que le fichier est modifié de manière atomique, c'est-à-dire que soit toutes les modifications sont appliquées avec succès, soit aucune ne l'est. Cela permet d'éviter les problèmes de corruption de données ou d'état incohérent en cas d'interruption pendant la modification.
+    *   Cause : Le contenu fourni à `write_file` est incomplet ou incorrect.
+    *   Solution : Vérifiez attentivement que le contenu fourni à `write_file` est complet et correct.
 
-**Quand utiliser cette approche ?**
+*   **Erreur : Le fichier est créé à un emplacement incorrect.**
 
-*   Lorsque la cohérence des données est primordiale.
-*   Lorsque le risque d'interruption pendant la modification est élevé.
-*   Lorsque les modifications sont complexes et qu'il est difficile de garantir leur intégrité avec `apply_diff`.
+    *   Cause : Le chemin d'accès au fichier est incorrect.
+    *   Solution : Vérifiez que le chemin d'accès au fichier est correct.
 
-## Autres méthodes de modification de fichiers
+**Exemples d'utilisation** :
 
-*   **In-place editing** : Modification du fichier directement, sans copie temporaire. Rapide, mais risque de corruption.
-*   **Copy-on-write (COW)** : Seules les parties modifiées sont copiées. Efficace pour les modifications partielles.
-*   **Journaling** : Enregistrement des modifications dans un journal avant de les appliquer. Permet de restaurer l'état en cas d'erreur.
-*   **Shadowing (Copie fantôme)** : Modifications sur une copie "fantôme" fusionnée avec la version principale. Permet de gérer les conflits.
-*   **Méthodes basées sur des transactions** : Utilisation de transactions pour garantir l'atomicité des opérations.
+**Exemple 1 : Créer un nouveau fichier**
 
-## Commandes de base pour la manipulation de fichiers et de répertoires
+```
+<write_file>
+<path>monfichier.txt</path>
+<content>Ceci est le contenu du fichier.</content>
+</write_file>
+```
 
-Bien que le système fournisse des outils spécifiques, il est utile de connaître les commandes de base pour la manipulation de fichiers et de répertoires :
+**Exemple 2 : Remplacer le contenu d'un fichier existant (ATTENTION : remplace tout le contenu !)**
 
-*   `cp` : Copier un fichier ou un répertoire.
-*   `mv` : Déplacer (renommer) un fichier ou un répertoire.
-*   `rm` : Supprimer un fichier ou un répertoire.
-*   `mkdir` : Créer un répertoire.
-*   `touch` : Créer un fichier vide ou mettre à jour la date de modification d'un fichier existant.
+**Important :** L'outil `write_file` *remplace complètement* le contenu du fichier. Assurez-vous de fournir le contenu *complet* du fichier, et non seulement les parties modifiées. Si vous ne fournissez pas le contenu complet, vous risquez d'écraser des données importantes.
 
-Ces commandes peuvent être exécutées à l'aide de l'outil `execute_command`.
+```
+<write_file>
+<path>monfichier.txt</path>
+<content>Ceci est le nouveau contenu complet du fichier.
+Il inclut toutes les lignes, même celles qui n'ont pas été modifiées.
+</content>
+</write_file>
+```
 
-## Opérations par lot et sélection de fichiers
+**Quand utiliser `apply_diff` vs `write_file` ?**
 
-Certains outils permettent d'effectuer des opérations sur plusieurs fichiers à la fois, en utilisant des techniques comme :
+*   Utiliser `apply_diff` pour des modifications ciblées et précises, lorsque vous connaissez exactement le contenu à remplacer. C'est idéal pour les modifications de code où vous voulez éviter de remplacer tout le fichier.
+*   Utiliser `write_file` pour créer de nouveaux fichiers ou pour remplacer *entièrement* le contenu d'un fichier existant. À utiliser avec prudence, car cela peut écraser des modifications non sauvegardées. De plus, cet outil est plus lent que `apply_diff` et ne peut pas gérer les fichiers de très grande taille.
 
-*   **Globbing** : Utilisation de caractères spéciaux (comme `*` et `?`) pour sélectionner des fichiers correspondant à un motif. Par exemple, `*.txt` sélectionne tous les fichiers avec l'extension `.txt`.
-*   **Sélection par lot** : Spécification d'une liste de fichiers ou de répertoires sur lesquels effectuer une opération.
-*   **Exécution de commandes en boucle** : Utilisation de scripts ou de commandes shell pour itérer sur une liste de fichiers et effectuer une opération sur chacun d'eux.
-
-Consultez la documentation de chaque outil pour savoir s'il prend en charge ces fonctionnalités.
+========
 
 ## search_and_replace
 
-**But** : Rechercher et remplacer du texte dans un fichier.
+### But : Rechercher et remplacer du texte dans un fichier.
 
-**Utilisation** : Permet de trouver une chaîne de caractères (ou une expression régulière) dans un fichier et de la remplacer par une autre chaîne.
+### Utilisation : Permet de trouver une chaîne de caractères (ou une expression régulière) dans un fichier et de la remplacer par une autre chaîne.
 
-**Paramètres** :
+### Paramètres :
 
 *   `path` : Chemin d'accès au fichier (obligatoire).
 *   `search` : La chaîne de caractères (ou l'expression régulière) à rechercher (obligatoire).
@@ -124,13 +276,50 @@ Consultez la documentation de chaque outil pour savoir s'il prend en charge ces 
 *   Cet outil est utile pour remplacer des occurrences spécifiques de texte, mais il ne permet pas de faire des modifications complexes basées sur le contexte.
 *   Les expressions régulières peuvent être utilisées pour des recherches plus flexibles, mais il est important de bien les maîtriser pour éviter des remplacements involontaires.
 
+========
+
+#### Erreurs courantes et comment les éviter :
+
+*   **Erreur : La chaîne de caractères à rechercher n'est pas trouvée.**
+
+    *   Cause : La chaîne de caractères à rechercher est incorrecte ou n'existe pas dans le fichier.
+    *   Solution : Vérifiez que la chaîne de caractères à rechercher est correcte et qu'elle existe dans le fichier.
+
+*   **Erreur : La chaîne de caractères de remplacement est incorrecte.**
+
+    *   Cause : La chaîne de caractères de remplacement est incorrecte ou contient des erreurs de syntaxe.
+    *   Solution : Vérifiez que la chaîne de caractères de remplacement est correcte et qu'elle ne contient pas d'erreurs de syntaxe.
+
+**Exemples d'utilisation** :
+
+**Exemple 1 : Remplacer une chaîne de caractères par une autre**
+
+```
+<search_and_replace>
+<path>monfichier.txt</path>
+<search>ancienne chaîne</search>
+<replace>nouvelle chaîne</replace>
+</search_and_replace>
+```
+
+**Exemple 2 : Remplacer une chaîne de caractères par une autre en utilisant une expression régulière**
+
+```
+<search_and_replace>
+<path>monfichier.txt</path>
+<search>[0-9]+</search>
+<replace>nombre</replace>
+</search_and_replace>
+```
+
+========
 ## list_files
 
-**But** : Lister les fichiers et répertoires dans un répertoire donné.
+### But : Lister les fichiers et répertoires dans un répertoire donné.
 
-**Utilisation** : Permet d'explorer la structure du projet, de vérifier l'existence de fichiers, de trouver des fichiers spécifiques, etc.
+### Utilisation : Permet d'explorer la structure du projet, de vérifier l'existence de fichiers, de trouver des fichiers spécifiques, etc.
 
-**Paramètres** :
+### Paramètres :
 
 *   `path` : Chemin d'accès au répertoire (obligatoire).
 *   `recursive` : Indique si la liste doit être récursive (facultatif).
@@ -139,13 +328,47 @@ Consultez la documentation de chaque outil pour savoir s'il prend en charge ces 
 
 *   Cet outil est utile pour obtenir une vue d'ensemble de la structure du projet, mais il ne fournit pas le contenu des fichiers.
 
+========
+
+#### Erreurs courantes et comment les éviter :
+
+*   **Erreur : Le répertoire n'existe pas.**
+
+    *   Cause : Le chemin d'accès au répertoire est incorrect.
+    *   Solution : Vérifiez que le chemin d'accès au répertoire est correct.
+
+*   **Erreur : La liste des fichiers est trop longue.**
+
+    *   Cause : Le répertoire contient un grand nombre de fichiers et de répertoires.
+    *   Solution : Utilisez le paramètre `recursive` avec prudence, car il peut générer une liste très longue.
+
+**Exemples d'utilisation** :
+
+**Exemple 1 : Lister les fichiers et répertoires dans un répertoire**
+
+```xml
+  <list_files>
+    <path>.</path>
+  </list_files>
+```
+
+**Exemple 2 : Lister les fichiers et répertoires dans un répertoire de manière récursive**
+
+```
+<list_files>
+<path>monrepertoire</path>
+<recursive>true</recursive>
+</list_files>
+```
+
+========
 ## list_code_definition_names
 
-**But** : Lister les noms des définitions de code (classes, fonctions, méthodes, etc.) dans un fichier ou un répertoire.
+### But : Lister les noms des définitions de code (classes, fonctions, méthodes, etc.) dans un fichier ou un répertoire.
 
-**Utilisation** : Permet d'obtenir une vue d'ensemble des composants d'un module ou d'un fichier, de comprendre les relations entre les différents éléments du code, etc.
+### Utilisation : Permet d'obtenir une vue d'ensemble des composants d'un module ou d'un fichier, de comprendre les relations entre les différents éléments du code, etc.
 
-**Paramètres** :
+### Paramètres :
 
 *   `path` : Chemin d'accès au fichier ou au répertoire (obligatoire).
 
@@ -153,13 +376,46 @@ Consultez la documentation de chaque outil pour savoir s'il prend en charge ces 
 
 *   Cet outil est utile pour comprendre la structure et l'organisation du code, mais il ne fournit pas le code lui-même.
 
+========
+
+#### Erreurs courantes et comment les éviter :
+
+*   **Erreur : Le fichier ou le répertoire n'existe pas.**
+
+    *   Cause : Le chemin d'accès au fichier ou au répertoire est incorrect.
+    *   Solution : Vérifiez que le chemin d'accès au fichier ou au répertoire est correct.
+
+*   **Erreur : Le fichier n'est pas un fichier de code source.**
+
+    *   Cause : Le fichier n'est pas un fichier de code source valide (par exemple, un fichier texte ou un fichier image).
+    *   Solution : Utilisez cet outil seulement avec des fichiers de code source valides.
+
+**Exemples d'utilisation** :
+
+**Exemple 1 : Lister les noms des définitions de code dans un fichier**
+
+```
+<list_code_definition_names>
+<path>monfichier.py</path>
+</list_code_definition_names>
+```
+
+**Exemple 2 : Lister les noms des définitions de code dans un répertoire**
+
+```
+<list_code_definition_names>
+<path>monrepertoire</path>
+</list_code_definition_names>
+```
+
+========
 ## execute_command
 
-**But** : Exécuter une commande dans un terminal.
+### But : Exécuter une commande dans un terminal.
 
-**Utilisation** : Permet d'automatiser des tâches, d'exécuter des scripts, de compiler du code, etc.
+### Utilisation : Permet d'automatiser des tâches, d'exécuter des scripts, de compiler du code, etc.
 
-**Paramètres** :
+### Paramètres :
 
 *   `command` : La commande à exécuter (obligatoire).
 
@@ -168,13 +424,45 @@ Consultez la documentation de chaque outil pour savoir s'il prend en charge ces 
 *   Cet outil est très puissant, mais il doit être utilisé avec précaution. Il est important de bien comprendre la commande à exécuter et de s'assurer qu'elle ne causera pas de problèmes.
 *   Il est important de bien comprendre l'environnement d'exécution (système d'exploitation, shell, etc.) pour s'assurer que la commande est exécutée correctement.
 
+========
+
+#### Erreurs courantes et comment les éviter :
+
+*   **Erreur : La commande n'est pas reconnue.**
+
+    *   Cause : La commande n'est pas installée sur le système ou n'est pas dans le PATH.
+    *   Solution : Vérifiez que la commande est installée et qu'elle est dans le PATH.
+
+*   **Erreur : La commande échoue avec une erreur.**
+
+    *   Cause : La commande a rencontré une erreur lors de son exécution.
+    *   Solution : Analysez le message d'erreur pour comprendre la cause du problème et corrigez-le.
+
+**Exemples d'utilisation** :
+
+**Exemple 1 : Exécuter une commande simple**
+
+```
+<execute_command>
+<command>ls -l</command>
+</execute_command>
+```
+
+**Exemple 2 : Exécuter une commande qui prend des paramètres**
+
+```
+<execute_command>
+<command>git commit -m "Ajout d'une nouvelle fonctionnalité"</command>
+</execute_command>
+```
+
 ## install_dependencies
 
-**But** : Installer ou mettre à jour les dépendances d'un projet dans un environnement donné.
+### But : Installer ou mettre à jour les dépendances d'un projet dans un environnement donné.
 
-**Utilisation** : Permet d'automatiser l'installation des dépendances définies dans des fichiers comme `requirements.txt` (Python), `package.json` (Node.js), `go.mod` (Go), ou autres, en tenant compte des environnements (dev, prod, staging).
+### Utilisation : Permet d'automatiser l'installation des dépendances définies dans des fichiers comme `requirements.txt` (Python), `package.json` (Node.js), `go.mod` (Go), ou autres, en tenant compte des environnements (dev, prod, staging).
 
-**Paramètres** :
+### Paramètres :
 
 *   `path` : Chemin vers le répertoire contenant le fichier de dépendances (obligatoire).
 *   `env` : Environnement cible (`dev`, `prod`, `staging`) (facultatif).
@@ -199,16 +487,16 @@ Installe les dépendances listées dans `package.json` pour un environnement de 
 
 ## run_tests
 
-**But** : Exécuter des tests unitaires, d'intégration ou de performance dans un projet.
+### But : Exécuter des tests unitaires, d'intégration ou de performance dans un projet.
 
-**Utilisation** : Permet de valider le code avant un déploiement ou une modification, en exécutant des suites de tests définies dans des frameworks comme `pytest` (Python), `Jest` (JavaScript/TypeScript), ou `go test` (Go).
+### Utilisation : Permet de valider le code avant un déploiement ou une modification, en exécutant des suites de tests définies dans des frameworks comme `pytest` (Python), `Jest` (JavaScript/TypeScript), ou `go test` (Go).
 
-**Paramètres** :
+### Paramètres :
 
-*   `path` : Chemin vers le répertoire ou fichier contenant les tests (obligatoire).
-*   `test_type` : Type de tests à exécuter (`unit`, `integration`, `performance`) (facultatif).
-*   `framework` : Framework de test à utiliser (`pytest`, `jest`, `go test`, etc.) (facultatif, autodétection par défaut).
-*   `coverage` : Générer un rapport de couverture de code (booléen, facultatif).
+*   `path` : Chemin vers le répertoire contenant le fichier de dépendances (obligatoire).
+*   `env` : Environnement cible (`dev`, `prod`, `staging`) (facultatif).
+*   `package_manager` : Gestionnaire de paquets à utiliser (`pip`, `npm`, `yarn`, `go`, etc.) (facultatif, autodétection par défaut).
+*   `version` : Version spécifique des dépendances à installer (facultatif).
 
 **Sortie** : Résultats des tests (succès/échecs, rapport de couverture si activé).
 
@@ -228,11 +516,11 @@ Exécute les tests unitaires avec `pytest` et génère un rapport de couverture.
 
 ## generate_docs
 
-**But** : Générer automatiquement la documentation d'un projet (README, commentaires de code, API docs).
+### But : Générer automatiquement la documentation d'un projet (README, commentaires de code, API docs).
 
-**Utilisation** : Crée ou met à jour la documentation à partir du code source ou de fichiers de configuration (par exemple, OpenAPI pour les API, docstrings pour Python, JSDoc pour JavaScript).
+### Utilisation : Crée ou met à jour la documentation à partir du code source ou de fichiers de configuration (par exemple, OpenAPI pour les API, docstrings pour Python, JSDoc pour JavaScript).
 
-**Paramètres** :
+### Paramètres :
 
 *   `path` : Chemin vers le projet ou fichier à documenter (obligatoire).
 *   `format` : Format de sortie (`markdown`, `html`, `pdf`) (facultatif).
@@ -256,11 +544,11 @@ Génère une documentation Markdown à partir des docstrings Python dans le rép
 
 ## deploy_project
 
-**But** : Déployer un projet vers un environnement cible (serveur, cloud, conteneur).
+### But : Déployer un projet vers un environnement cible (serveur, cloud, conteneur).
 
-**Utilisation** : Automatise le déploiement d'une application via des outils comme Docker, Kubernetes, ou des services cloud (AWS, GCP, Azure).
+### Utilisation : Automatise le déploiement d'une application via des outils comme Docker, Kubernetes, ou des services cloud (AWS, GCP, Azure).
 
-**Paramètres** :
+### Paramètres :
 
 *   `path` : Chemin vers le projet à déployer (obligatoire).
 *   `target` : Environnement cible (`local`, `aws`, `kubernetes`, etc.) (obligatoire).
@@ -285,13 +573,13 @@ Déploie l'application sur AWS avec rollback et monitoring activés.
 
 ## analyze_performance
 
-**But** : Analyser les performances d'un script ou d'une application (CPU, mémoire, latence).
+### But : Analyser les performances d'un script ou d'une application (CPU, mémoire, latence).
 
-**Utilisation** : Mesure les métriques de performance pour identifier les goulots d'étranglement, optimiser les scripts, ou valider la scalabilité.
+### Utilisation : Mesure les métriques de performance pour identifier les goulots d'étranglement, optimiser les scripts, ou valider la scalabilité.
 
-**Paramètres** :
+### Paramètres :
 
-*   `path` : Chemin vers le script ou l'application à analyser (obligatoire).
+*   `path` : Chemin d'accès au script ou l'application à analyser (obligatoire).
 *   `metrics` : Métriques à collecter (`cpu`, `memory`, `latency`) (facultatif, toutes par défaut).
 *   `load` : Simuler une charge (par exemple, 100 utilisateurs) (facultatif).
 *   `duration` : Durée de l'analyse en secondes (facultatif).
@@ -320,7 +608,6 @@ Analyse l'utilisation CPU et mémoire du script `api_server.py` sous une charge 
 *   **Journaling** : Enregistrement des modifications dans un journal avant de les appliquer. Permet de restaurer l'état en cas d'erreur.
 *   **Shadowing (Copie fantôme)** : Modifications sur une copie "fantôme" fusionnée avec la version principale. Permet de gérer les conflits.
 *   **Méthodes basées sur des transactions** : Utilisation de transactions pour garantir l'atomicité des opérations.
-
 
 ## Opérations par lot et sélection de fichiers
 

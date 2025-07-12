@@ -25,15 +25,16 @@ require (
 	google.golang.org/grpc v1.66.0
 	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.1
+	github.com/jmoiron/sqlx v1.3.5
+	github.com/lib/pq v1.10.9
+	github.com/stretchr/testify v1.8.4
 )
 
-require orchestrator-scanner v0.0.0
-
 require (
-	github.com/BurntSushi/toml v1.5.0 // indirect
-	github.com/KyleBanks/depth v1.2.1 // indirect
-	github.com/Masterminds/semver/v3 v3.4.0 // indirect
-	github.com/PuerkitoBio/purell v1.1.1 // indirect
+	github.BurntSushi/toml v1.5.0 // indirect
+	github.KyleBanks/depth v1.2.1 // indirect
+	github.Masterminds/semver/v3 v3.4.0 // indirect
+	github.PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -98,43 +99,3 @@ require (
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
 )
-
-replace github.com/gerivdb/email-sender-1/managers/error-manager => ./development/managers/error-manager
-
-replace orchestrator-scanner => ./tools/orchestrator-scanner
-
-replace github.com/gerivdb/email-sender-1/interfaces => ./development/managers/interfaces
-
-replace email_sender/core/gapanalyzer => ./core/gapanalyzer
-
-replace github.com/gerivdb/email-sender-1/core/gapanalyzer => ./core/gapanalyzer
-
-replace github.com/gerivdb/email-sender-1/core/scanmodules => ./core/scanmodules
-
-replace github.com/gerivdb/email-sender-1/development/managers/error-manager => ./development/managers/error-manager
-
-replace github.com/gerivdb/email-sender-1/development/managers/dependency-manager => ./development/managers/dependencymanager
-
-replace github.com/gerivdb/email-sender-1/streaming/redis_streaming => ./streaming/redis_streaming
-
-replace github.com/gerivdb/email-sender-1/tools/core/toolkit => ./tools/pkg/toolkit
-
-replace github.com/gerivdb/email-sender-1/core/graphgen => ./core/graphgen
-
-replace github.com/gerivdb/email-sender-1/pkg/email => ./development/managers/email-manager
-
-replace github.com/gerivdb/email-sender-1/development/managers/interfaces => ./development/managers/interfaces
-
-replace github.com/gerivdb/email-sender-1/development/managers/maintenance-manager => ./development/managers/maintenance-manager
-
-replace github.com/gerivdb/email-sender-1/managers/notification-manager/interfaces => ./development/managers/notification-manager/interfaces
-
-replace github.com/gerivdb/email-sender-1/managers/dependency-manager => ./development/managers/dependencymanager
-
-replace github.com/gerivdb/email-sender-1/managers/security-manager => ./development/managers/security-manager
-
-replace github.com/gerivdb/email-sender-1/managers/storage-manager => ./development/managers/storage-manager
-
-replace github.com/gerivdb/email-sender-1/core/reporting => ./core/reporting
-
-replace db-integration-tests => ./tools/db-integration-tests

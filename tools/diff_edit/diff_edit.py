@@ -22,8 +22,8 @@ def parse_diff_edit_block(patch_path):
         search = '\n'.join(lines[start:sep])
         replace = '\n'.join(lines[sep+1:end])
         return search, replace
-    except ValueError:
-        print('Erreur : format du bloc diff Edit invalide.')
+    except ValueError as e:
+        print(f'Erreur : format du bloc diff Edit invalide: {e}')
         sys.exit(1)
 
 def backup_file(file_path):
@@ -52,9 +52,11 @@ def main():
     # Vérification de la présence du bloc SEARCH
     if content.count(search) == 0:
         print('Erreur : bloc SEARCH non trouvé dans le fichier cible.')
+        print(f'Bloc SEARCH: {search}')
         sys.exit(2)
     if content.count(search) > 1:
         print('Erreur : bloc SEARCH non unique dans le fichier cible.')
+        print(f'Bloc SEARCH: {search}')
         sys.exit(3)
 
     new_content = content.replace(search, replace, 1)

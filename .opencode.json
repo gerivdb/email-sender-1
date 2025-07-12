@@ -1,0 +1,14 @@
+{
+  "$schema": "./opencode-schema.json",
+  "agents": {
+    "coder": {
+      "model": "gemini-2.0-flash"
+    },
+    "task": {
+      "model": "gemini-2.0-flash"
+    },
+    "title": {
+      "model": "gemini-2.0-flash"
+    }
+  }
+}

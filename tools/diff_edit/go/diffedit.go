@@ -1,4 +1,4 @@
-package go
+package diffeditgo
 
 import (
 	"bufio"
@@ -12,9 +12,9 @@ import (
 )
 
 var (
-	filePath	= flag.String("file", "", "Fichier cible à patcher")
-	patchPath	= flag.String("patch", "", "Fichier contenant le bloc diff Edit")
-	dryRun		= flag.Bool("dry-run", false, "Prévisualiser le diff sans appliquer")
+	filePath  = flag.String("file", "", "Fichier cible à patcher")
+	patchPath = flag.String("patch", "", "Fichier contenant le bloc diff Edit")
+	dryRun    = flag.Bool("dry-run", false, "Prévisualiser le diff sans appliquer")
 )
 
 func main() {
@@ -37,16 +37,16 @@ func main() {
 
 	search, replace, err := parseDiffEditBlock(string(patch))
 	if err != nil {
-		log.Fatalf("Erreur parsing bloc diff Edit: %v", err)
+		log.Fatalf("Erreur parsing bloc diff Edit: %v, search=%q, replace=%q", err, search, replace)
 	}
 
 	// Vérification unicité
 	occurrences := bytes.Count(content, []byte(search))
 	if occurrences == 0 {
-		log.Fatalf("Bloc SEARCH non trouvé dans le fichier.")
+		log.Fatalf("Bloc SEARCH non trouvé dans le fichier. search=%q", search)
 	}
 	if occurrences > 1 {
-		log.Fatalf("Bloc SEARCH non unique (%d occurrences).", occurrences)
+		log.Fatalf("Bloc SEARCH non unique (%d occurrences). search=%q", occurrences, search)
 	}
 
 	// Prévisualisation
@@ -61,14 +61,14 @@ func main() {
 
 	// Backup
 	backupPath := *filePath + ".bak-" + time.Now().Format("20060102-150405")
-	err = ioutil.WriteFile(backupPath, content, 0644)
+	err = ioutil.WriteFile(backupPath, content, 0o644)
 	if err != nil {
 		log.Fatalf("Erreur backup: %v", err)
 	}
 
 	// Remplacement
 	newContent := bytes.Replace(content, []byte(search), []byte(replace), 1)
-	err = ioutil.WriteFile(*filePath, newContent, 0644)
+	err = ioutil.WriteFile(*filePath, newContent, 0o644)
 	if err != nil {
 		log.Fatalf("Erreur écriture fichier modifié: %v", err)
 	}
@@ -79,8 +79,8 @@ func main() {
 func parseDiffEditBlock(block string) (string, string, error) {
 	scanner := bufio.NewScanner(strings.NewReader(block))
 	var (
-		inSearch, inReplace	bool
-		search, replace		strings.Builder
+		inSearch, inReplace bool
+		search, replace     strings.Builder
 	)
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -106,7 +106,11 @@ func parseDiffEditBlock(block string) (string, string, error) {
 		}
 	}
 	if err := scanner.Err(); err != nil {
-		return "", "", err
+		log.Printf("Erreur scanner: %v", err)
+		return "", "", fmt.Errorf("Erreur scanner: %w", err)
+	}
+	if !inSearch && !inReplace {
+		return "", "", fmt.Errorf("Délimiteurs SEARCH/REPLACE manquants")
 	}
 	// Trim trailing newline
 	return strings.TrimSuffix(search.String(), "\n"), strings.TrimSuffix(replace.String(), "\n"), nil
