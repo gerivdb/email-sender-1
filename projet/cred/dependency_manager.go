@@ -46,9 +46,10 @@ import (
 
 // Dependency represents a dependency with its metadata.
 type Dependency struct {
-	Name     string `json:"name"`
-	Version  string `json:"version"`
-	Indirect bool   `json:"indirect,omitempty"`
+	Name       string `json:"name"`
+	Version    string `json:"version"`
+	Repository string `json:"repository"`
+	Indirect   bool   `json:"indirect,omitempty"`
 }
 
 // ErrorEntry represents a locally cataloged error.
@@ -89,11 +90,16 @@ type DepManager interface {
 
 // GoModManager implements DepManager for go.mod.
 type GoModManager struct {
-	modFilePath   string
-	config        *Config
-	configManager ConfigManager
-	logger        *zap.Logger
-	errorManager  ErrorManager
+	modFilePath      string
+	config           *Config
+	configManager    ConfigManager
+	logger           *zap.Logger
+	errorManager     ErrorManager
+	logger           *zap.Logger
+	errorManager     ErrorManager
+	ContainerManager interface{}
+	logger           *zap.Logger
+	errorManager     ErrorManager
 }
 
 // ErrorManager interface for decoupling error handling.
@@ -141,13 +147,13 @@ func NewGoModManager(modFilePath string, config *Config) *GoModManager {
 	logger, _ := zap.NewProduction()
 	errorManager := &ErrorManagerImpl{logger: logger}
 	configManager := NewDepConfigManager(config, logger, errorManager)
-
 	return &GoModManager{
-		modFilePath:   modFilePath,
-		config:        config,
-		configManager: configManager,
-		logger:        logger,
-		errorManager:  errorManager,
+		modFilePath:      modFilePath,
+		config:           config,
+		configManager:    configManager,
+		ContainerManager: nil,
+		logger:           logger,
+		errorManager:     errorManager,
 	}
 }
 
@@ -243,7 +249,7 @@ func (m *GoModManager) Log(level, message string) {
 	logMessage := fmt.Sprintf("[%s] [%s] %s", timestamp, level, message)
 
 	if logPath, err := m.configManager.GetString("dependency-manager.settings.logPath"); err == nil && logPath != "" {
-		logFile, err := os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		logFile, err := os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
 		if err == nil {
 			defer logFile.Close()
 			logFile.WriteString(logMessage + "\n")
@@ -268,42 +274,50 @@ func (m *GoModManager) backupGoMod() error {
 		return err
 	}
 
-	return os.WriteFile(backupPath, input, 0644)
+	return os.WriteFile(backupPath, input, 0o644)
 }
 
 // List returns the list of dependencies from go.mod.
 func (m *GoModManager) List() ([]Dependency, error) {
 	m.Log("INFO", "Listing dependencies")
 	ctx := context.Background()
+
+
+
+
+
+
+
+
+
+
+
+
 	data, err := os.ReadFile(m.modFilePath)
 	if err != nil {
-		return nil, m.errorManager.ProcessError(ctx, fmt.Errorf("failed to read go.mod: %v", err), "go-mod-operation", "read", &ErrorHooks{
-			OnError: func(err error) {
-				m.logger.Error("Failed to read go.mod file",
-					zap.Error(err),
-					zap.String("file_path", m.modFilePath),
-					zap.String("operation", "list_dependencies"))
-			},
-		})
+		return nil, fmt.Errorf("failed to read go.mod: %v", err)
+	}
+	ctx := context.Background()
+	
+	}
+	}
+	}
+	}
 	}
 
 	modFile, err := modfile.Parse(m.modFilePath, data, nil)
 	if err != nil {
 		return nil, m.errorManager.ProcessError(ctx, fmt.Errorf("failed to parse go.mod: %v", err), "go-mod-operation", "parse", &ErrorHooks{
 			OnError: func(err error) {
-				m.logger.Error("Failed to parse go.mod file",
-					zap.Error(err),
-					zap.String("file_path", m.modFilePath),
-					zap.String("operation", "parse_go_mod"))
+				fmt.Println(err)
 			},
 		})
 	}
-
 	var deps []Dependency
 	for _, req := range modFile.Require {
 		deps = append(deps, Dependency{
-			Name:     req.Mod.Path,
-			Version:  req.Mod.Version,
+			Name: 	req.Mod.Path,
+			Version: 	req.Mod.Version,
 			Indirect: req.Indirect,
 		})
 	}
@@ -329,21 +343,16 @@ func (m *GoModManager) Add(module, version string) error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to add dependency %s: %v", module, err), "dependency-resolution", "add", &ErrorHooks{
+		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to add dependency %s: %v", module, err), "go-mod-operation", "add", &ErrorHooks{
 			OnError: func(err error) {
-				m.logger.Error("Failed to add dependency",
-					zap.Error(err),
-					zap.String("module", module),
-					zap.String("version", version),
-					zap.String("operation", "go_get"))
+				fmt.Println(err)
 			},
 		})
 	}
 
 	if autoTidy, err := m.configManager.GetBool("dependency-manager.settings.autoTidy"); err == nil && autoTidy {
 		if err := m.runGoModTidy(); err != nil {
-			m.logger.Warn("Failed to run go mod tidy after adding dependency",
-				zap.Error(err))
+			m.Log("WARN", fmt.Sprintf("Failed to run go mod tidy after adding dependency: %v", err))
 		}
 	}
 
@@ -365,26 +374,12 @@ func (m *GoModManager) Remove(module string) error {
 
 	data, err := os.ReadFile(m.modFilePath)
 	if err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to read go.mod: %v", err), "go-mod-operation", "read", &ErrorHooks{
-			OnError: func(err error) {
-				m.logger.Error("Failed to read go.mod for dependency removal",
-					zap.Error(err),
-					zap.String("module", module),
-					zap.String("file_path", m.modFilePath))
-			},
-		})
+		return fmt.Errorf("failed to read go.mod: %v", err)
 	}
 
 	modFile, err := modfile.Parse(m.modFilePath, data, nil)
 	if err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to parse go.mod: %v", err), "go-mod-operation", "parse", &ErrorHooks{
-			OnError: func(err error) {
-				m.logger.Error("Failed to parse go.mod for dependency removal",
-					zap.Error(err),
-					zap.String("module", module),
-					zap.String("file_path", m.modFilePath))
-			},
-		})
+		return fmt.Errorf("failed to parse go.mod: %v", err)
 	}
 
 	if err := modFile.DropRequire(module); err != nil {
@@ -409,7 +404,7 @@ func (m *GoModManager) Remove(module string) error {
 		})
 	}
 
-	if err := os.WriteFile(m.modFilePath, newData, 0644); err != nil {
+	if err := os.WriteFile(m.modFilePath, newData, 0o644); err != nil {
 		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to write go.mod: %v", err), "go-mod-operation", "write", &ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to write updated go.mod file",
@@ -479,15 +474,9 @@ func (m *GoModManager) Audit() error {
 	cmd := exec.Command("go", "list", "-json", "-m", "all")
 	output, err := cmd.Output()
 	if err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to audit dependencies: %v", err), "vulnerability-scan", "audit", &ErrorHooks{
-			OnError: func(err error) {
-				m.logger.Error("Failed to run dependency audit",
-					zap.Error(err),
-					zap.String("operation", "go_list_modules"),
-					zap.String("command", "go list -json -m all"))
-			},
-		})
+		return fmt.Errorf("failed to audit dependencies: %v", err)
 	}
+
 
 	m.logger.Info("Audit completed - consider running 'govulncheck' for detailed security analysis",
 		zap.Int("modules_count", strings.Count(string(output), "}")))
@@ -534,13 +523,7 @@ func (m *GoModManager) runGoModTidy() error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to execute go mod tidy: %v", err), "dependency-cleanup", "tidy", &ErrorHooks{
-			OnError: func(err error) {
-				m.logger.Error("Failed to execute go mod tidy",
-					zap.Error(err),
-					zap.String("operation", "go_mod_tidy"))
-			},
-		})
+		fmt.Println("Failed to run go mod tidy", err)
 	}
 
 	m.logger.Info("Successfully completed go mod tidy")

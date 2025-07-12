@@ -2,10 +2,12 @@ package dependency
 
 import (
 	"testing"
+
+	dependency "github.com/gerivdb/email-sender-1/tests/non_regression"
 )
 
 func TestDependencyManagerBasic(t *testing.T) {
-	dm := New()
+	dm := dependency.New()
 	if dm == nil {
 		t.Fatal("Gestionnaire non initialisé")
 	}

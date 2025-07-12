@@ -1,15 +1,15 @@
-package tests
+oot spackage tests
 
 import (
 	"context"
 	"fmt" // Keep fmt for Sprintf
 
-	"EMAIL_SENDER_1/development/managers/dependencymanager"
-	"EMAIL_SENDER_1/development/managers/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/interfaces"
+	"github.com/gerivdb/email-sender-1/projet/cred"
 )
 
 // initializeContainerIntegration sets up container manager integration
-func initializeContainerIntegration(m *dependencymanager.GoModManager) error { // Added m as parameter
+func initializeContainerIntegration(m *cred.GoModManager) error { // Added m as parameter
 	// Check if container manager is already initialized
 	if m.ContainerManager != nil { // Access directly
 		return nil
@@ -25,7 +25,7 @@ func initializeContainerIntegration(m *dependencymanager.GoModManager) error { /
 }
 
 // validateDependenciesForContainer checks if the current dependencies are container-compatible
-func validateDependenciesForContainer(m *dependencymanager.GoModManager, ctx context.Context, dependencies []interfaces.Dependency) (*interfaces.ContainerValidationResult, error) { // Added m as parameter
+func validateDependenciesForContainer(m *cred.GoModManager, ctx context.Context, dependencies []interfaces.Dependency) (*interfaces.ContainerValidationResult, error) { // Added m as parameter
 	if m.ContainerManager == nil { // Access directly
 		return nil, fmt.Errorf("ContainerManager not initialized")
 	}
@@ -47,7 +47,7 @@ func validateDependenciesForContainer(m *dependencymanager.GoModManager, ctx con
 }
 
 // optimizeDependenciesForContainer optimizes dependencies for container environments
-func optimizeDependenciesForContainer(m *dependencymanager.GoModManager, ctx context.Context, dependencies []interfaces.Dependency) (*interfaces.ContainerOptimization, error) { // Added m as parameter
+func optimizeDependenciesForContainer(m *cred.GoModManager, ctx context.Context, dependencies []interfaces.Dependency) (*interfaces.ContainerOptimization, error) { // Added m as parameter
 	if m.ContainerManager == nil { // Access directly
 		return nil, fmt.Errorf("ContainerManager not initialized")
 	}
@@ -69,7 +69,7 @@ func optimizeDependenciesForContainer(m *dependencymanager.GoModManager, ctx con
 }
 
 // generateDockerfileFromDependencies creates a Dockerfile based on the project's dependencies
-func generateDockerfileFromDependencies(m *dependencymanager.GoModManager, ctx context.Context, dependencies []interfaces.Dependency) (string, error) { // Added m as parameter
+func generateDockerfileFromDependencies(m *cred.GoModManager, ctx context.Context, dependencies []interfaces.Dependency) (string, error) { // Added m as parameter
 	if m.ContainerManager == nil { // Access directly
 		return "", fmt.Errorf("ContainerManager not initialized")
 	}
@@ -92,7 +92,7 @@ func generateDockerfileFromDependencies(m *dependencymanager.GoModManager, ctx c
 }
 
 // getDependencyContainerStatus checks container compatibility status for the current project
-func getDependencyContainerStatus(m *dependencymanager.GoModManager, ctx context.Context) (string, error) { // Added m as parameter
+func getDependencyContainerStatus(m *cred.GoModManager, ctx context.Context) (string, error) { // Added m as parameter
 	// Get current dependencies
 	deps, err := m.List()
 	if err != nil {
