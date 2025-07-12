@@ -1,3 +1,4 @@
+> **Référence meta-plan** : Ce plan est harmonisé avec le meta-plan fédérateur [`plan-dev-v86-meta-roadmap-harmonisation.md`](projet/roadmaps/plans/consolidated/plan-dev-v86-meta-roadmap-harmonisation.md:1). Toutes les conventions, modèles de données et workflows sont alignés sur ce socle commun. Les spécificités locales sont détaillées ci-dessous.
 # Plan de développement v40-v2 - TaskMaster Enhancement Suite Go Native
 
 *Version 1.0 - 2025-06-02 - Progression globale : 0%*

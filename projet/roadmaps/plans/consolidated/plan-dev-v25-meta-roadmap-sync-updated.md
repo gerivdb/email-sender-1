@@ -1,3 +1,4 @@
+> **Référence meta-plan** : Ce plan est harmonisé avec le meta-plan fédérateur [`plan-dev-v86-meta-roadmap-harmonisation.md`](projet/roadmaps/plans/consolidated/plan-dev-v86-meta-roadmap-harmonisation.md:1). Toutes les conventions, modèles de données et workflows sont alignés sur ce socle commun. Les spécificités locales sont détaillées ci-dessous.
 # Plan de développement v25 - Système de gestion de méta-roadmap avec synchronisation bidirectionnelle
 
 *Version 1.1 - 2025-06-15 - Progression globale : 20%*

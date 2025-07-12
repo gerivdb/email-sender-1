@@ -1,3 +1,4 @@
+> **Référence meta-plan** : Ce plan est harmonisé avec le meta-plan fédérateur [`plan-dev-v86-meta-roadmap-harmonisation.md`](projet/roadmaps/plans/consolidated/plan-dev-v86-meta-roadmap-harmonisation.md:1). Toutes les conventions, modèles de données et workflows sont alignés sur ce socle commun. Les spécificités locales sont détaillées ci-dessous.
 Je vais créer un plan de développement détaillé pour l'écosystème modulaire de gestion des roadmaps, en respectant les instructions fournies et en appliquant les principes DRY, KISS, et SOLID. Le plan sera structuré en Markdown, avec une granularité élevée (phases, sous-étapes, micro-étapes, nano-étapes), des tests unitaires, des dry-runs, et des intégrations claires avec les modules mentionnés (Parsing, DB, CLI, API, Meta-Roadmap). Les scripts seront principalement en Go pour la performance et la simplicité, avec des configurations YAML et une intégration PostgreSQL via QDrant pour le RAG.
 
 ---

@@ -1,0 +1,17 @@
+{
+  "collection": "roadmaps",
+  "fields": [
+    { "name": "id", "type": "string", "description": "Identifiant unique du plan" },
+    { "name": "title", "type": "string", "description": "Titre du plan" },
+    { "name": "objectives", "type": "string", "description": "Objectifs du plan" },
+    { "name": "sections", "type": "array", "items": { "type": "string" }, "description": "Sections principales" },
+    { "name": "metadata", "type": "object", "properties": {
+      "authors": { "type": "string" },
+      "date": { "type": "string" },
+      "version": { "type": "string" }
+    }, "description": "Métadonnées" },
+    { "name": "links", "type": "array", "items": { "type": "string" }, "description": "Liens vers scripts/artefacts" },
+    { "name": "tags", "type": "array", "items": { "type": "string" }, "description": "Mots-clés" },
+    { "name": "embeddings", "type": "array", "items": { "type": "number" }, "description": "Vecteurs pour la recherche sémantique" }
+  ]
+}

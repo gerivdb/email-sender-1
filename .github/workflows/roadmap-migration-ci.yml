@@ -1,0 +1,29 @@
+name: Roadmap Migration CI
+
+on:
+  push:
+    paths:
+      - 'cmd/auto-roadmap-runner/**'
+      - 'projet/roadmaps/plans/consolidated/**'
+      - '.github/workflows/roadmap-migration-ci.yml'
+  pull_request:
+
+jobs:
+  test-migration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Run tests
+        run: go test -v ./cmd/auto-roadmap-runner/...
+
+      - name: Generate coverage badge
+        run: |
+          go test -coverprofile=coverage.out ./cmd/auto-roadmap-runner/...
+          go tool cover -func=coverage.out > coverage.txt

@@ -6,6 +6,9 @@ import (
 	"os"
 )
 
+// Import de migrate.go
+// (Go détectera automatiquement le package main si les fichiers sont dans le même dossier)
+
 func main() {
 	// Orchestration de tous les scans, analyses, tests, rapports, feedback, sauvegardes, notifications
 	f, err := os.Create("auto_roadmap_runner.log")
@@ -20,4 +23,7 @@ func main() {
 		return
 	}
 	fmt.Println("auto_roadmap_runner.log généré.")
+
+	// Appel de la migration
+	RunMigration()
 }

@@ -1,4 +1,24 @@
-Voici une synthèse détaillée sur la présence des concepts de “méta-roadmap”, vectorisation, Qdrant, ROADMAP-CLI/TASKMASTER-CLI, et la cohérence des plans de gestion de roadmap dans ton dossier projet/roadmaps/plans/consolidated. Cette analyse vise à identifier les recoupements, divergences et propose un plan d’harmonisation pour obtenir une vision vectorisée, centralisée et exploitable de tes roadmaps.
+# Prompt Générique - Granularisation Éditeur Markdown Actif
+
+## Instructions Spécifiques pour GitHub Copilot
+
+**CONTEXTE**: Travail direct dans l'éditeur markdown actif de VS Code
+**OBJECTIF**: Granulariser le contenu sélectionné avec 5 niveaux de profondeur supplémentaires
+**CIBLE**: Fenêtre d'éditeur markdown principale (PAS le terminal)
+
+### Directives d'Exécution
+
+1. **FOCUS EXCLUSIF**: 
+   - Utiliser UNIQUEMENT la sélection active dans l'éditeur markdown principal
+   - IGNORER complètement le terminal et ses contenus
+   - Se concentrer sur le fichier `.md` ouvert dans l'éditeur VS Code
+
+2. **MÉTHODE DE REMPLACEMENT**:
+   - Remplacer directement la sélection active dans l'éditeur
+   - Procéder par couches de granularité supplémentaires
+   - Ajouter 5 niveaux de profondeur détaillés
+
+3. **STRUCTURE DE GRANULARISATION**:Voici une synthèse détaillée sur la présence des concepts de “méta-roadmap”, vectorisation, Qdrant, ROADMAP-CLI/TASKMASTER-CLI, et la cohérence des plans de gestion de roadmap dans ton dossier projet/roadmaps/plans/consolidated. Cette analyse vise à identifier les recoupements, divergences et propose un plan d’harmonisation pour obtenir une vision vectorisée, centralisée et exploitable de tes roadmaps.
 
 ---
 
@@ -6,14 +26,14 @@ Voici une synthèse détaillée sur la présence des concepts de “méta-roadma
 
 ### 1. Recensement & Analyse d’écart
 
-- [ ] **Recenser tous les fichiers Markdown à migrer et les champs à synchroniser**
+- [x] **Recenser tous les fichiers Markdown à migrer et les champs à synchroniser**
   - Livrables : inventaire des fichiers, rapport d’écart
   - Commandes : `ls`, script Go d’inventaire
   - Format : Markdown, JSON
   - Validation : revue croisée, inventaire validé
   - Rollback : sauvegarde `.bak` de l’inventaire
 
-- [ ] **Analyser les écarts entre la structure Markdown et le schéma cible Qdrant**
+- [x] **Analyser les écarts entre la structure Markdown et le schéma cible Qdrant**
   - Livrables : rapport d’écart
   - Commandes : script Go d’analyse
   - Format : Markdown, JSON
@@ -22,21 +42,21 @@ Voici une synthèse détaillée sur la présence des concepts de “méta-roadma
 
 ### 2. Spécification & Développement du workflow de migration
 
-- [ ] **Définir le workflow technique de migration Markdown → Qdrant**
+- [x] **Définir le workflow technique de migration Markdown → Qdrant**
   - Livrables : schéma Qdrant, documentation technique
   - Commandes : `go run migrate.go`, `go test`
   - Format : Go, JSON, Markdown
   - Validation : tests unitaires, revue technique
   - Rollback : sauvegarde automatique avant migration
 
-- [ ] **Spécifier le mapping des champs et la synchronisation bidirectionnelle**
+- [x] **Spécifier le mapping des champs et la synchronisation bidirectionnelle**
   - Livrables : documentation du mapping
   - Commandes : script Go de synchronisation
   - Format : Markdown, JSON
   - Validation : tests automatisés
   - Rollback : versionning git
 
-- [ ] **Développer les scripts Go natifs pour l’automatisation**
+- [x] **Développer les scripts Go natifs pour l’automatisation**
   - Livrables : scripts Go, tests associés
   - Commandes : `go build`, `go test`
   - Format : Go
@@ -45,14 +65,14 @@ Voici une synthèse détaillée sur la présence des concepts de “méta-roadma
 
 ### 3. Automatisation & CI/CD
 
-- [ ] **Créer des scripts d’automatisation, dry-run et rollback**
+- [x] **Créer des scripts d’automatisation, dry-run et rollback**
   - Livrables : scripts Go, logs de dry-run
   - Commandes : `go run`, `go test`
   - Format : Go, Markdown
   - Validation : logs validés, tests automatisés
   - Rollback : sauvegarde `.bak` des logs
 
-- [ ] **Intégrer la migration dans le pipeline CI/CD (job dédié, reporting, badge)**
+- [x] **Intégrer la migration dans le pipeline CI/CD (job dédié, reporting, badge)**
   - Livrables : pipeline CI/CD, badge de couverture
   - Commandes : pipeline CI/CD, `go test -cover`
   - Format : YAML, Markdown
@@ -61,14 +81,14 @@ Voici une synthèse détaillée sur la présence des concepts de “méta-roadma
 
 ### 4. Tests, Reporting & Validation
 
-- [ ] **Rédiger des scénarios de tests d’intégrité et de validation**
+- [x] **Rédiger des scénarios de tests d’intégrité et de validation**
   - Livrables : fichiers de test, logs, rapports
   - Commandes : `go test`, script de reporting
   - Format : Go, Markdown, HTML
   - Validation : tests automatisés, reporting CI/CD
   - Rollback : sauvegarde des logs et rapports
 
-- [ ] **Générer des logs, rapports automatisés, badges de couverture**
+- [x] **Générer des logs, rapports automatisés, badges de couverture**
   - Livrables : logs, rapports, badges
   - Commandes : script de reporting, `go test -cover`
   - Format : Markdown, HTML
@@ -77,14 +97,14 @@ Voici une synthèse détaillée sur la présence des concepts de “méta-roadma
 
 ### 5. Documentation & Traçabilité
 
-- [ ] **Rédiger des guides d’utilisation et de migration**
+- [x] **Rédiger des guides d’utilisation et de migration**
   - Livrables : README, guides, historique des outputs
   - Commandes : script de génération de documentation
   - Format : Markdown, JSON
   - Validation : revue croisée, feedback utilisateur
   - Rollback : versionning, sauvegarde des docs
 
-- [ ] **Assurer la traçabilité des opérations (inventaire, logs, reporting)**
+- [x] **Assurer la traçabilité des opérations (inventaire, logs, reporting)**
   - Livrables : inventaire, logs, rapports
   - Commandes : script Go de traçabilité
   - Format : Markdown, JSON

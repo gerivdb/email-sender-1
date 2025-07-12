@@ -1,3 +1,4 @@
+> **Référence meta-plan** : Ce plan est harmonisé avec le meta-plan fédérateur [`plan-dev-v86-meta-roadmap-harmonisation.md`](projet/roadmaps/plans/consolidated/plan-dev-v86-meta-roadmap-harmonisation.md:1). Toutes les conventions, modèles de données et workflows sont alignés sur ce socle commun. Les spécificités locales sont détaillées ci-dessous.
 # Plan de Développement : Intégration de QDrant avec Clustering pour RAG
 
 ## 1. Analyse de l'existant
