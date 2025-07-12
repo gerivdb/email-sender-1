@@ -1,4 +1,3 @@
-// Go
 // Package diffeditgo fournit des outils pour automatiser l'application de patchs.
 package diffeditgo
 
