@@ -1,4 +1,4 @@
-package dependencymanager
+package dependency
 
 import (
 	"context"

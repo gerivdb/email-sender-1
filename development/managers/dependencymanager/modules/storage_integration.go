@@ -1,11 +1,10 @@
-package storage
+package dependency
 
 import (
+	"EMAIL_SENDER_1/development/managers/interfaces"
 	"context"
 	"fmt"
 	"time"
-
-	"EMAIL_SENDER_1/development/managers/interfaces"
 )
 
 // initializeStorageIntegration sets up storage manager integration

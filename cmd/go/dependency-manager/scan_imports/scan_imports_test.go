@@ -71,7 +71,7 @@ func init() {
 	outputMD := filepath.Join(tmpDir, "imports_output.md")
 
 	// Run the scan
-	report, err := scan_imports.RunScan(outputJSON, outputMD)
+	report, err := scan_imports.RunScan(tmpDir, outputJSON, outputMD)
 	if err != nil {
 		t.Fatalf("RunScan failed: %v", err)
 	}
@@ -83,7 +83,7 @@ func init() {
 
 	// Check imports for file1.go
 	file1Imports := report.FileImports[filepath.ToSlash(filepath.Clean(filepath.Join(tmpDir, "file1.go")))]
-	if file1Imports == nil {
+	if len(file1Imports.Imports) == 0 {
 		t.Fatalf("Imports for file1.go not found in report")
 	}
 	if len(file1Imports.Imports) != 3 {
@@ -95,7 +95,7 @@ func init() {
 
 	// Check imports for file2.go
 	file2Imports := report.FileImports[filepath.ToSlash(filepath.Clean(filepath.Join(tmpDir, "file2.go")))]
-	if file2Imports == nil {
+	if len(file2Imports.Imports) == 0 {
 		t.Fatalf("Imports for file2.go not found in report")
 	}
 	if len(file2Imports.Imports) != 2 {

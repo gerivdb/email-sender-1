@@ -1,4 +1,4 @@
-package deployment
+package dependency
 
 import (
 	"context"

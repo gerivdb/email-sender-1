@@ -1,11 +1,10 @@
-package realmanager
+package dependency
 
 import (
-	"context"
-	"fmt" // Using standard log for STUB messages
-	"time"
-
 	"EMAIL_SENDER_1/development/managers/interfaces"
+	"context" // Using standard log for STUB messages
+	"fmt"
+	"time"
 
 	"go.uber.org/zap"
 )

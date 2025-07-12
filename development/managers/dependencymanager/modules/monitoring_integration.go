@@ -1,10 +1,9 @@
-package monitoring
+package dependency
 
 import (
+	"EMAIL_SENDER_1/development/managers/interfaces"
 	"context"
 	"fmt"
-
-	"EMAIL_SENDER_1/development/managers/interfaces"
 )
 
 // initializeMonitoringIntegration sets up monitoring manager integration

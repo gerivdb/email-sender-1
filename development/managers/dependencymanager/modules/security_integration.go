@@ -1,13 +1,12 @@
-package security
+package dependency
 
 import (
+	"EMAIL_SENDER_1/development/managers/interfaces"
 	"context"
 	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
-
-	"EMAIL_SENDER_1/development/managers/interfaces"
 )
 
 // initializeSecurityIntegration sets up security manager integration

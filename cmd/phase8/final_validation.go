@@ -1,11 +1,11 @@
-package managers
+package main
 
 import (
 	"fmt"
 	"log"
 	"os"
 
-	dependency "github.com/gerivdb/email-sender-1/development/managers/dependency-manager"
+	dependencymanager "github.com/gerivdb/email-sender-1/development/managers/dependencymanager"
 	security "github.com/gerivdb/email-sender-1/development/managers/security-manager"
 	storage "github.com/gerivdb/email-sender-1/development/managers/storage-manager"
 )
@@ -20,8 +20,6 @@ func main() {
 		log.Printf("Storage Manager initialization error: %v", err)
 	} else {
 		fmt.Println("✅ Storage Manager initialized successfully")
-
-		// Test basic operations
 		err = storageManager.Store("test-key", []byte("test-data"))
 		if err != nil {
 			fmt.Printf("   ⚠️  Storage operation failed (expected in test env): %v\n", err)
@@ -32,13 +30,11 @@ func main() {
 
 	// Test Dependency Manager
 	fmt.Println("\n2. Testing Dependency Manager...")
-	depManager, err := dependency.NewDependencyManager()
+	depManager, err := dependencymanager.New()
 	if err != nil {
 		log.Fatalf("Failed to create Dependency Manager: %v", err)
 	}
 	fmt.Println("✅ Dependency Manager initialized successfully")
-
-	// Test dependency analysis
 	deps, err := depManager.AnalyzeDependencies(".")
 	if err != nil {
 		fmt.Printf("   ⚠️  Dependency analysis failed (expected): %v\n", err)
@@ -53,8 +49,6 @@ func main() {
 		log.Fatalf("Failed to create Security Manager: %v", err)
 	}
 	fmt.Println("✅ Security Manager initialized successfully")
-
-	// Test input validation
 	testInput := "test@example.com"
 	isValid := secManager.ValidateInput(testInput, "email")
 	if isValid {
@@ -62,8 +56,6 @@ func main() {
 	} else {
 		fmt.Println("   ❌ Input validation failed")
 	}
-
-	// Test encryption/decryption
 	testData := []byte("sensitive data")
 	encrypted, err := secManager.EncryptData(testData)
 	if err != nil {
@@ -86,7 +78,6 @@ func main() {
 	fmt.Println("✅ Integration Testing - COMPLETED")
 	fmt.Println("\n🎉 All Phase 2 managers are fully implemented and functional!")
 
-	// Clean up test environment variable if set
 	if os.Getenv("TEST_ENV") != "" {
 		fmt.Println("\n🧪 Running in test environment - some operations may show expected warnings")
 	}
