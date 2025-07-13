@@ -43,11 +43,11 @@ func TestValidateMonorepoStructure(t *testing.T) {
 	if !result.IsValid {
 		t.Errorf("Case 1: Expected monorepo to be valid, but it was not.")
 	}
-	if len(result.GoModFiles) != 1 {
-		t.Errorf("Case 1: Expected 1 go.mod file, got %d", len(result.GoModFiles))
+	if len(result.GoModPaths) != 1 {
+		t.Errorf("Case 1: Expected 1 go.mod file, got %d", len(result.GoModPaths))
 	}
-	if result.GoModFiles[0] != "go.mod" {
-		t.Errorf("Case 1: Expected go.mod path 'go.mod', got '%s'", result.GoModFiles[0])
+	if result.GoModPaths[0] != "go.mod" {
+		t.Errorf("Case 1: Expected go.mod path 'go.mod', got '%s'", result.GoModPaths[0])
 	}
 
 	// Clean up for Case 2
@@ -75,8 +75,8 @@ func TestValidateMonorepoStructure(t *testing.T) {
 	if result.IsValid {
 		t.Errorf("Case 2: Expected monorepo to be invalid, but it was valid.")
 	}
-	if len(result.GoModFiles) != 2 {
-		t.Errorf("Case 2: Expected 2 go.mod files, got %d", len(result.GoModFiles))
+	if len(result.GoModPaths) != 2 {
+		t.Errorf("Case 2: Expected 2 go.mod files, got %d", len(result.GoModPaths))
 	}
 
 	// Clean up for Case 3
@@ -91,7 +91,7 @@ func TestValidateMonorepoStructure(t *testing.T) {
 	if result.IsValid {
 		t.Errorf("Case 3: Expected monorepo to be invalid, but it was valid.")
 	}
-	if len(result.GoModFiles) != 0 {
-		t.Errorf("Case 3: Expected 0 go.mod files, got %d", len(result.GoModFiles))
+	if len(result.GoModPaths) != 0 {
+		t.Errorf("Case 3: Expected 0 go.mod files, got %d", len(result.GoModPaths))
 	}
 }
