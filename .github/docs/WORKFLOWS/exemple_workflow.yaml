@@ -1,0 +1,11 @@
+name: Exemple de workflow Kilo Code
+
+steps:
+  - mode: orchestrator
+    task: "Décomposer la demande en sous-tâches"
+  - mode: documentation-writer
+    task: "Rédiger la documentation technique"
+  - mode: devops
+    task: "Déployer l’application sur l’environnement cible"
+  - mode: security-reviewer
+    task: "Vérifier la conformité et la sécurité du code"

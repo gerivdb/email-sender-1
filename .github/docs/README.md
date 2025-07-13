@@ -7,6 +7,13 @@
 
 > **📖 Centre de Documentation Technique Enterprise** - Référentiel central pour développeurs, IA et stakeholders
 
+## Organisation des fichiers Kilo Code et Workflows
+
+- **Configuration Kilo Code** : Toutes les configurations et modes personnalisés sont regroupés dans le dossier `.kilocode/` à la racine du projet (ex : `custom_modes.yaml`).
+- **Exemples de workflows** : Les fichiers YAML de workflows et leurs exemples sont centralisés dans `.github/docs/WORKFLOWS/`. Consultez ce dossier pour des modèles et des bonnes pratiques d’orchestration.
+
+Cette organisation facilite la maintenance, la navigation et la cohérence documentaire.
+
 ## 🎯 Accès Rapide par Profil
 
 | 👤 Profil | 🚀 Action | 📍 Lien Direct |

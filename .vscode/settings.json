@@ -36,18 +36,17 @@
     "golangci-lint": ">=1.59",
     "markdownlint": ">=0.32"
   },
-  // "go.goroot": "C:\\Users\\user\\sdk\\go1.24.4",
-  // "go.gopath": "C:\\Users\\user\\go",
+  "go.useLanguageServer": true,
+  "go.buildOnSave": "workspace",
+  "go.lintOnSave": "package",
+  "go.vetOnSave": "package",
   "go.formatTool": "goimports",
   "go.lintTool": "golangci-lint",
-  "go.lintFlags": [],
-  "go.lintOnSave": "file",
-  "go.vetOnSave": "off",
-  "go.useLanguageServer": true,
-  "go.languageServerFlags": [
-    "serve",
-    "--debug=localhost:6060"
+  "go.lintFlags": [
+    "--fast"
   ],
+  "go.coverOnSave": false,
+  "go.testOnSave": false,
   "go.toolsManagement.autoUpdate": true,
   "gopls": {
     "build.buildFlags": ["-tags=database"],
@@ -56,12 +55,7 @@
       "shadow": true
     },
     "staticcheck": true,
-    "env": {
-      // "GOPROXY": "https://proxy.golang.org,direct",
-      // "GOSUMDB": "sum.golang.org",
-      // "GOCACHE": "C:\\Users\\user\\go\\cache",
-      // "GOMODCACHE": "C:\\Users\\user\\go\\pkg\\mod"
-    },
+    "env": {},
     "directoryFilters": [
       "-node_modules",
       "-vendor"
@@ -71,18 +65,308 @@
   "[go]": {
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "always",
-      "source.fixAll": "always"
-    }
+      "source.organizeImports": "always"
+    },
+    "editor.defaultFormatter": "golang.go"
   },
-  "editor.formatOnSave": true,
+  "editor.hover.delay": 1000,
+  "editor.codeActions.triggerOnFocusChange": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": "always"
+  },
+  "editor.tabSize": 3,
+  "editor.fontSize": 12,
+  "editor.formatOnSave": true,
+  "editor.inlayHints.enabled": "off",
+  "editor.minimap.renderCharacters": false,
+  "renderWhitespace": "boundary",
+  "rulers": [80, 120],
+  "wordWrap": "on",
+  "suggestSelection": "first",
+  "files.autoSave": "onWindowChange",
+  "files.autoSaveDelay": 1000,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/dist": true,
+    "**/logs": true,
+    "**/cache": true,
+    "**/temp": true,
+    "**/tmp": true,
+    "**/bower_components": true,
+    "**/*.code-search": true
+  },
+  "files.watcherExclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/dist": true,
+    "**/logs": true,
+    "**/cache": true,
+    "**/temp": true,
+    "**/tmp": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.hg/store/**": true
+  },
+  "search.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/dist": true,
+    "**/logs": true,
+    "**/cache": true,
+    "**/temp": true,
+    "**/tmp": true,
+    "**/bower_components": true,
+    "**/*.code-search": true
   },
   "[markdown]": {
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.fixAll.markdownlint": "always"
     }
+  },
+  "kilocode.rules.enable": true,
+  "kilocode.rules.severity": "error",
+  "kilocode.rules.customRules": [
+    {
+      "id": "KC003",
+      "message": "Les fonctions doivent avoir une documentation JSDoc.",
+      "severity": "error",
+      "pattern": "/\\*\\*[\\s\\S]*?\\*/",
+      "match": "file"
+    }
+  ],
+  "roocode.modes": [
+    {
+      "id": "KC003",
+      "name": "Documentation JSDoc obligatoire",
+      "message": "Les fonctions doivent avoir une documentation JSDoc.",
+      "severity": "error",
+      "pattern": "/\\*\\*[\\s\\S]*?\\*/",
+      "match": "file"
+    }
+  ],
+  "notifications.toasts.location": "bottom",
+  "notifications.hideStatusBar": true,
+  "notifications.toasts.duration": 1500,
+  "problems.decorations.enabled": false,
+  "powershell.codeFormatting.useCorrectCasing": true,
+  "powershell.codeFormatting.autoCorrectAliases": true,
+  "powershell.codeFormatting.trimWhitespaceAroundPipe": true,
+  "powershell.integratedConsole.focusConsoleOnExecute": false,
+  "powershell.pester.useLegacyCodeLens": false,
+  "powershell.promptToUpdatePowerShell": false,
+  "powershell.startAutomatically": true,
+  "python.formatting.provider": "black",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.testing.pytestEnabled": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true,
+  "makefile.configureOnOpen": true,
+  "docker.extension.enableComposeLanguageServer": false,
+  "mssql.connectionGroups": [
+    {
+      "name": "ROOT",
+      "id": "5C904829-CF87-4C77-836B-208459C5E987"
+    }
+  ],
+  "mssql.connections": [],
+  "mcp": {
+    "servers": {
+      "mcp-server-time": {
+        "command": "python",
+        "args": [
+          "-m",
+          "mcp_server_time",
+          "--local-timezone=America/Los_Angeles"
+        ],
+        "env": {}
+      },
+      "codacy": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@codacy/codacy-mcp@latest"
+        ]
+      }
+    }
+  },
+  "roo-cline.allowedCommands": [
+    "npm test",
+    "npm install",
+    "tsc",
+    "git log",
+    "git diff",
+    "git show",
+    "gemini",
+    "git",
+    "go",
+    "go run",
+    "powershell -Command",
+    "ps",
+    "python ",
+    "set",
+    "echo",
+    "git ls-remote",
+    "Rename-Item",
+    "cmd",
+    "go get",
+    "java",
+    "powershell",
+    "npm",
+    "test",
+    "cd",
+    "pwsh",
+    "copy",
+    "mkdir",
+    "move",
+    "taskkill",
+    "ls",
+    "code",
+    "which",
+    "where",
+    "tasklist"
+  ],
+  "settingsSync.ignoredExtensions": [
+    "rooveterinaryinc.roo-cline"
+  ],
+  "kilo-code.allowedCommands": [
+    "npm test",
+    "npm install",
+    "tsc",
+    "git log",
+    "git diff",
+    "git show"
+  ],
+  "accessibility.signals.lineHasBreakpoint": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.chatEditModifiedFile": {
+    "sound": "off"
+  },
+  "accessibility.signals.chatRequestSent": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.chatResponseReceived": {
+    "sound": "off"
+  },
+  "accessibility.signals.clear": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.codeActionApplied": {
+    "sound": "off"
+  },
+  "accessibility.signals.codeActionTriggered": {
+    "sound": "off"
+  },
+  "accessibility.signals.onDebugBreak": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.diffLineDeleted": {
+    "sound": "off"
+  },
+  "accessibility.signals.diffLineInserted": {
+    "sound": "off"
+  },
+  "accessibility.signals.diffLineModified": {
+    "sound": "off"
+  },
+  "accessibility.signals.editsKept": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.positionHasError": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.lineHasError": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.lineHasFoldedArea": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.lineHasInlineSuggestion": {
+    "sound": "off"
+  },
+  "accessibility.signals.nextEditSuggestion": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.noInlayHints": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.notebookCellCompleted": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.notebookCellFailed": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.progress": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.taskCompleted": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.taskFailed": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.terminalBell": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.terminalCommandFailed": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.terminalCommandSucceeded": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.terminalQuickFix": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.editsUndone": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.voiceRecordingStarted": {
+    "sound": "off"
+  },
+  "accessibility.signals.voiceRecordingStopped": {
+    "sound": "off"
+  },
+  "accessibility.signals.positionHasWarning": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.lineHasWarning": {
+    "sound": "off",
+    "announcement": "auto"
   }
 }
