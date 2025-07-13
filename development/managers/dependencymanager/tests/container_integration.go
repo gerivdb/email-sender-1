@@ -1,4 +1,4 @@
-oot spackage tests
+package tests
 
 import (
 	"context"

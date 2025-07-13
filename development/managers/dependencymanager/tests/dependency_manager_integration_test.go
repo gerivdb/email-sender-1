@@ -1,14 +1,13 @@
 package tests
 
 import (
+	"EMAIL_SENDER_1/development/managers/dependencymanager"
 	"context"
+	"dependency/interfaces"
 	"testing"
 	"time"
 
 	"go.uber.org/zap/zaptest"
-
-	"EMAIL_SENDER_1/development/managers/dependencymanager"
-	"EMAIL_SENDER_1/development/managers/interfaces"
 )
 
 // TestDependencyManagerWithSecurityManager tests the integration between DependencyManager and SecurityManager
