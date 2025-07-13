@@ -1,8 +1,10 @@
+// Package cred gère la gestion des dépendances et la configuration associée.
 package cred
 
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -14,6 +16,17 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"golang.org/x/mod/modfile"
+)
+
+// Error statiques pour la validation des entrées.
+var (
+	ErrIDEmpty         = errors.New("id cannot be empty")
+	ErrTimestampZero   = errors.New("timestamp cannot be zero")
+	ErrMessageEmpty    = errors.New("message cannot be empty")
+	ErrModuleEmpty     = errors.New("module cannot be empty")
+	ErrErrorCodeEmpty  = errors.New("errorCode cannot be empty")
+	ErrInvalidSeverity = errors.New("invalid severity level")
+	ErrAuditFailed     = errors.New("audit failed")
 )
 
 // ErrorManager centralizes error handling, validation, and structured logging for the dependency management system and related modules.
@@ -38,7 +51,7 @@ import (
 //   - Entrées : erreurs Go, entrées structurées (ErrorEntry), contexte d’exécution.
 //   - Sorties : erreurs Go standard (validation, journalisation, etc.).
 //
-// Exemple d’injection :
+// Example d’injection :
 //   errorManager := &ErrorManagerImpl{logger: logger}
 //   configManager := NewDepConfigManager(config, logger, errorManager)
 //
@@ -95,11 +108,7 @@ type GoModManager struct {
 	configManager    ConfigManager
 	logger           *zap.Logger
 	errorManager     ErrorManager
-	logger           *zap.Logger
-	errorManager     ErrorManager
 	ContainerManager interface{}
-	logger           *zap.Logger
-	errorManager     ErrorManager
 }
 
 // ErrorManager interface for decoupling error handling.
@@ -144,7 +153,10 @@ type ErrorHooks struct {
 
 // NewGoModManager creates a GoModManager instance.
 func NewGoModManager(modFilePath string, config *Config) *GoModManager {
-	logger, _ := zap.NewProduction()
+	logger, err := zap.NewProduction()
+	if err != nil {
+		panic("Erreur d'initialisation du logger zap: " + err.Error())
+	}
 	errorManager := &ErrorManagerImpl{logger: logger}
 	configManager := NewDepConfigManager(config, logger, errorManager)
 	return &GoModManager{
@@ -178,17 +190,17 @@ func (em *ErrorManagerImpl) ProcessError(ctx context.Context, err error, compone
 		Severity:       severity,
 	}
 
-	if validationErr := em.ValidateErrorEntry(entry); validationErr != nil {
+	validationErr := em.ValidateErrorEntry(entry)
+	if validationErr != nil {
 		em.logger.Error("Error entry validation failed",
 			zap.Error(validationErr),
 			zap.String("error_id", errorID))
 		return validationErr
 	}
 
-	if catalogErr := em.CatalogError(entry); catalogErr != nil {
-		em.logger.Error("Failed to catalog error",
-			zap.Error(catalogErr),
-			zap.String("error_id", errorID))
+	catalogErr := em.CatalogError(entry)
+	if catalogErr != nil {
+		em.logger.Error("Failed to catalog error", zap.Error(catalogErr), zap.String("error_id", errorID))
 	}
 
 	if hooks != nil && hooks.OnError != nil {
@@ -223,22 +235,24 @@ func (em *ErrorManagerImpl) CatalogError(entry ErrorEntry) error {
 // ValidateErrorEntry validates an error entry.
 func (em *ErrorManagerImpl) ValidateErrorEntry(entry ErrorEntry) error {
 	if entry.ID == "" {
-		return fmt.Errorf("ID cannot be empty")
+		return ErrIDEmpty
 	}
+
 	if entry.Timestamp.IsZero() {
-		return fmt.Errorf("Timestamp cannot be zero")
+		return ErrTimestampZero
+
 	}
 	if entry.Message == "" {
-		return fmt.Errorf("Message cannot be empty")
+		return ErrMessageEmpty
 	}
 	if entry.Module == "" {
-		return fmt.Errorf("Module cannot be empty")
+		return ErrModuleEmpty
 	}
 	if entry.ErrorCode == "" {
-		return fmt.Errorf("ErrorCode cannot be empty")
+		return ErrErrorCodeEmpty
 	}
 	if !isValidSeverity(entry.Severity) {
-		return fmt.Errorf("Invalid severity level: %s", entry.Severity)
+		return fmt.Errorf("%w: %s", ErrInvalidSeverity, entry.Severity)
 	}
 	return nil
 }
@@ -248,18 +262,39 @@ func (m *GoModManager) Log(level, message string) {
 	timestamp := time.Now().Format("2006-01-02 15:04:05")
 	logMessage := fmt.Sprintf("[%s] [%s] %s", timestamp, level, message)
 
-	if logPath, err := m.configManager.GetString("dependency-manager.settings.logPath"); err == nil && logPath != "" {
-		logFile, err := os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
+	logPath, err := m.configManager.GetString("dependency-manager.settings.logPath")
+	if err == nil && logPath != "" {
+		logFile, err := os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 		if err == nil {
-			defer logFile.Close()
-			logFile.WriteString(logMessage + "\n")
+			_, writeErr := logFile.WriteString(logMessage + "\n")
+			if writeErr != nil {
+				m.logger.Warn("Erreur d'écriture dans le fichier log", zap.Error(writeErr))
+			}
+			closeErr := logFile.Close()
+			if closeErr != nil {
+				m.logger.Warn("Erreur lors de la fermeture du fichier log", zap.Error(closeErr))
+			}
 		}
 	}
 
-	fmt.Println(logMessage)
+		m.logger.Info(logMessage)
 }
 
 // backupGoMod creates a backup of the go.mod file.
+
+// initializeFromLegacyConfig initializes ConfigManager from Config struct.
+func (cm *DepConfigManagerImpl) initializeFromLegacyConfig(config *Config) {
+	prefix := "dependency-manager."
+	cm.settings[prefix+"name"] = config.Name
+	cm.settings[prefix+"version"] = config.Version
+	cm.settings[prefix+"settings.logPath"] = config.Settings.LogPath
+	cm.settings[prefix+"settings.logLevel"] = config.Settings.LogLevel
+	cm.settings[prefix+"settings.goModPath"] = config.Settings.GoModPath
+	cm.settings[prefix+"settings.autoTidy"] = config.Settings.AutoTidy
+	cm.settings[prefix+"settings.vulnerabilityCheck"] = config.Settings.VulnerabilityCheck
+	cm.settings[prefix+"settings.backupOnChange"] = config.Settings.BackupOnChange
+}
+
 func (m *GoModManager) backupGoMod() error {
 	backupEnabled, err := m.configManager.GetBool("dependency-manager.settings.backupOnChange")
 	if err != nil || !backupEnabled {
@@ -282,47 +317,32 @@ func (m *GoModManager) List() ([]Dependency, error) {
 	m.Log("INFO", "Listing dependencies")
 	ctx := context.Background()
 
-
-
-
-
-
-
-
-
-
-
-
 	data, err := os.ReadFile(m.modFilePath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read go.mod: %v", err)
-	}
-	ctx := context.Background()
-	
-	}
-	}
-	}
-	}
 	}
 
 	modFile, err := modfile.Parse(m.modFilePath, data, nil)
 	if err != nil {
 		return nil, m.errorManager.ProcessError(ctx, fmt.Errorf("failed to parse go.mod: %v", err), "go-mod-operation", "parse", &ErrorHooks{
 			OnError: func(err error) {
-				fmt.Println(err)
+				m.logger.Error("Erreur lors du parsing de go.mod", zap.Error(err))
 			},
 		})
 	}
+
 	var deps []Dependency
+
+
 	for _, req := range modFile.Require {
 		deps = append(deps, Dependency{
-			Name: 	req.Mod.Path,
-			Version: 	req.Mod.Version,
+			Version:  req.Mod.Version,
 			Indirect: req.Indirect,
 		})
 	}
 
 	m.Log("INFO", fmt.Sprintf("Found %d dependencies", len(deps)))
+
 	return deps, nil
 }
 
@@ -342,10 +362,11 @@ func (m *GoModManager) Add(module, version string) error {
 	cmd := exec.Command("go", "get", fmt.Sprintf("%s@%s", module, version))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	if err := cmd.Run(); err != nil {
+	err := cmd.Run()
+	if err != nil {
 		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to add dependency %s: %v", module, err), "go-mod-operation", "add", &ErrorHooks{
 			OnError: func(err error) {
-				fmt.Println(err)
+				m.logger.Error("Erreur lors de l'ajout de la dépendance", zap.Error(err))
 			},
 		})
 	}
@@ -362,7 +383,7 @@ func (m *GoModManager) Add(module, version string) error {
 
 // Remove removes a dependency from the project.
 func (m *GoModManager) Remove(module string) error {
-	m.Log("INFO", fmt.Sprintf("Removing dependency: %s", module))
+	m.logger.Info("Removing dependency: " + module)
 	ctx := context.Background()
 
 	if err := m.backupGoMod(); err != nil {
@@ -374,15 +395,16 @@ func (m *GoModManager) Remove(module string) error {
 
 	data, err := os.ReadFile(m.modFilePath)
 	if err != nil {
-		return fmt.Errorf("failed to read go.mod: %v", err)
+		return fmt.Errorf("failed to read go.mod: %w", err)
 	}
 
 	modFile, err := modfile.Parse(m.modFilePath, data, nil)
 	if err != nil {
-		return fmt.Errorf("failed to parse go.mod: %v", err)
+		return fmt.Errorf("failed to parse go.mod: %w", err)
 	}
 
-	if err := modFile.DropRequire(module); err != nil {
+	dropErr := modFile.DropRequire(module)
+	if dropErr != nil {
 		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to drop dependency %s: %v", module, err), "dependency-resolution", "remove", &ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to drop dependency from go.mod",
@@ -404,8 +426,8 @@ func (m *GoModManager) Remove(module string) error {
 		})
 	}
 
-	if err := os.WriteFile(m.modFilePath, newData, 0o644); err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to write go.mod: %v", err), "go-mod-operation", "write", &ErrorHooks{
+	if err := os.WriteFile(m.modFilePath, newData, 0o600); err != nil {
+		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to write go.mod: %w", err), "go-mod-operation", "write", &ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to write updated go.mod file",
 					zap.Error(err),
@@ -416,7 +438,8 @@ func (m *GoModManager) Remove(module string) error {
 	}
 
 	if err := m.runGoModTidy(); err != nil {
-		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to tidy go.mod: %v", err), "go-mod-operation", "tidy", &ErrorHooks{
+
+		return m.errorManager.ProcessError(ctx, fmt.Errorf("failed to tidy go.mod: %w", err), "go-mod-operation", "tidy", &ErrorHooks{
 			OnError: func(err error) {
 				m.logger.Error("Failed to run go mod tidy after dependency removal",
 					zap.Error(err),
@@ -425,13 +448,13 @@ func (m *GoModManager) Remove(module string) error {
 		})
 	}
 
-	m.Log("SUCCESS", fmt.Sprintf("Successfully removed %s", module))
+	m.logger.Info("Successfully removed " + module)
 	return nil
 }
 
 // Update updates a dependency to the latest version.
 func (m *GoModManager) Update(module string) error {
-	m.Log("INFO", fmt.Sprintf("Updating dependency: %s", module))
+	m.logger.Info("Updating dependency: " + module)
 	ctx := context.Background()
 
 	if err := m.backupGoMod(); err != nil {
@@ -463,20 +486,19 @@ func (m *GoModManager) Update(module string) error {
 	}
 
 	m.Log("SUCCESS", fmt.Sprintf("Successfully updated %s", module))
+
 	return nil
 }
 
 // Audit checks for dependency vulnerabilities.
 func (m *GoModManager) Audit() error {
 	m.Log("INFO", "Running security audit")
-	ctx := context.Background()
 
 	cmd := exec.Command("go", "list", "-json", "-m", "all")
 	output, err := cmd.Output()
 	if err != nil {
-		return fmt.Errorf("failed to audit dependencies: %v", err)
+		return fmt.Errorf("%w: %v", ErrAuditFailed, err)
 	}
-
 
 	m.logger.Info("Audit completed - consider running 'govulncheck' for detailed security analysis",
 		zap.Int("modules_count", strings.Count(string(output), "}")))
@@ -514,8 +536,6 @@ func (m *GoModManager) Cleanup() error {
 
 // runGoModTidy executes go mod tidy.
 func (m *GoModManager) runGoModTidy() error {
-	ctx := context.Background()
-
 	m.logger.Info("Running go mod tidy",
 		zap.String("operation", "go_mod_tidy"))
 
@@ -531,15 +551,19 @@ func (m *GoModManager) runGoModTidy() error {
 }
 
 // loadConfig loads configuration from a JSON file with fallback.
+
+
 func loadConfig(configPath string) (*Config, error) {
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		fmt.Printf("Configuration file not found at %s, using defaults\n", configPath)
+		fmt.Println("Configuration file not found, utilisation des valeurs par défaut:", configPath)
+
+
 		return getDefaultConfig(), nil
 	}
 
 	data, err := os.ReadFile(configPath)
 	if err != nil {
-		fmt.Printf("Warning: Failed to read config file %s: %v. Using defaults.\n", configPath, err)
+		fmt.Println("Impossible de lire le fichier de configuration, utilisation des valeurs par défaut:", configPath, "erreur:", err)
 		return getDefaultConfig(), nil
 	}
 
@@ -570,16 +594,8 @@ func getDefaultConfig() *Config {
 			AutoTidy           bool   `json:"autoTidy"`
 			VulnerabilityCheck bool   `json:"vulnerabilityCheck"`
 			BackupOnChange     bool   `json:"backupOnChange"`
-		}{
-			LogPath:            "logs/dependency-manager.log",
-			LogLevel:           "info",
-			GoModPath:          "go.mod",
-			AutoTidy:           true,
-			VulnerabilityCheck: true,
-			BackupOnChange:     true,
 		},
-	}
-}
+		}
 
 // validateConfig validates the loaded configuration.
 func validateConfig(config *Config) error {
@@ -598,6 +614,7 @@ func validateConfig(config *Config) error {
 	if config.Settings.LogPath == "" {
 		return fmt.Errorf("log path cannot be empty")
 	}
+
 	if config.Settings.GoModPath == "" {
 		return fmt.Errorf("go.mod path cannot be empty")
 	}
@@ -627,17 +644,26 @@ func runCLI(manager DepManager) {
 
 	switch os.Args[1] {
 	case "list":
-		listCmd.Parse(os.Args[2:])
+		if err := listCmd.Parse(os.Args[2:]); err != nil {
+			fmt.Println("Erreur lors du parsing des arguments de la commande list:", err)
+			os.Exit(1)
+		}
 		deps, err := manager.List()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
 		if *listJSON {
-			jsonData, _ := json.MarshalIndent(deps, "", "  ")
+			jsonData, err := json.MarshalIndent(deps, "", "  ")
+			if err != nil {
+				fmt.Println("Erreur lors de la sérialisation JSON des dépendances:", err)
+			} else {
+				fmt.Println(string(jsonData))
+			}
 			fmt.Println(string(jsonData))
 		} else {
 			fmt.Printf("Dependencies (%d):\n", len(deps))
+
 			for _, dep := range deps {
 				indirect := ""
 				if dep.Indirect {
@@ -648,7 +674,10 @@ func runCLI(manager DepManager) {
 		}
 
 	case "add":
-		addCmd.Parse(os.Args[2:])
+		if err := addCmd.Parse(os.Args[2:]); err != nil {
+			fmt.Println("Erreur lors du parsing des arguments de la commande add:", err)
+			os.Exit(1)
+		}
 		if *addModule == "" {
 			fmt.Fprintln(os.Stderr, "Error: --module required")
 			os.Exit(1)
@@ -660,7 +689,10 @@ func runCLI(manager DepManager) {
 		fmt.Printf("Added %s@%s\n", *addModule, *addVersion)
 
 	case "remove":
-		removeCmd.Parse(os.Args[2:])
+		if err := removeCmd.Parse(os.Args[2:]); err != nil {
+			fmt.Println("Erreur lors du parsing des arguments de la commande remove:", err)
+			os.Exit(1)
+		}
 		if *removeModule == "" {
 			fmt.Fprintln(os.Stderr, "Error: --module required")
 			os.Exit(1)
@@ -672,7 +704,10 @@ func runCLI(manager DepManager) {
 		fmt.Printf("Removed %s\n", *removeModule)
 
 	case "update":
-		updateCmd.Parse(os.Args[2:])
+		if err := updateCmd.Parse(os.Args[2:]); err != nil {
+			fmt.Println("Erreur lors du parsing des arguments de la commande update:", err)
+			os.Exit(1)
+		}
 		if *updateModule == "" {
 			fmt.Fprintln(os.Stderr, "Error: --module required")
 			os.Exit(1)
@@ -684,14 +719,20 @@ func runCLI(manager DepManager) {
 		fmt.Printf("Updated %s\n", *updateModule)
 
 	case "audit":
-		auditCmd.Parse(os.Args[2:])
+		if err := auditCmd.Parse(os.Args[2:]); err != nil {
+			fmt.Println("Erreur lors du parsing des arguments de la commande audit:", err)
+			os.Exit(1)
+		}
 		if err := manager.Audit(); err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
 
 	case "cleanup":
-		cleanupCmd.Parse(os.Args[2:])
+		if err := cleanupCmd.Parse(os.Args[2:]); err != nil {
+			fmt.Println("Erreur lors du parsing des arguments de la commande cleanup:", err)
+			os.Exit(1)
+		}
 		if err := manager.Cleanup(); err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
@@ -750,7 +791,7 @@ func main() {
 }
 
 // findGoMod searches for go.mod in the current directory or its parents.
-func findGoMod(startDir string) string {
+
 	dir := startDir
 	for {
 		modPath := filepath.Join(dir, "go.mod")
@@ -763,6 +804,7 @@ func findGoMod(startDir string) string {
 		}
 		dir = parent
 	}
+
 	return ""
 }
 
@@ -937,6 +979,7 @@ func (cm *DepConfigManagerImpl) GetBool(key string) (bool, error) {
 		}
 		return false, fmt.Errorf("default value is not a bool: %s", key)
 	}
+
 	return false, fmt.Errorf("key not found: %s", key)
 }
 
@@ -1033,6 +1076,7 @@ func (cm *DepConfigManagerImpl) GetErrorManager() ErrorManager {
 	return cm.errorManager
 }
 
+// GetLogger retourne le logger.
 func (cm *DepConfigManagerImpl) GetLogger() *zap.Logger {
 	return cm.logger
 }

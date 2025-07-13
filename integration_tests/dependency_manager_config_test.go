@@ -1,16 +1,9 @@
 package tests
 
 import (
-	// "EMAIL_SENDER_1/development/managers/dependencymanager"
-	// "EMAIL_SENDER_1/development/managers/dependencymanager"
-	// "EMAIL_SENDER_1/development/managers/dependencymanager"
-	// "EMAIL_SENDER_1/development/managers/dependencymanager"
-
 	"os"
 	"path/filepath"
 	"testing"
-
-	// "github.com/gerivdb/email-sender-1/development/managers/dependencymanager"
 
 	"go.uber.org/zap/zaptest"
 )
