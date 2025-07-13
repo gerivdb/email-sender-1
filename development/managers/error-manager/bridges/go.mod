@@ -1,4 +1,4 @@
-module bridges
+module github.com/gerivdb/email-sender-1/development/managers/error-manager/bridges
 
 go 1.23.9
 
