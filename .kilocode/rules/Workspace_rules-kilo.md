@@ -48,3 +48,12 @@ Les règles d'espace de travail peuvent inclure des paramètres tels que :
 ```
 
 Ce document fournit une vue d'ensemble des règles d'espace de travail pour Kilo Code. Pour plus d'informations, veuillez consulter la documentation officielle : `https://kilocode.ai/docs/advanced-usage/custom-rules`.
+## Usage du système d’override intelligent Kilo Code
+
+Ce projet utilise le système d’override intelligent décrit dans [`system-prompt-code`](.kilocode/system-prompt-code:1) :
+- Les règles globales et locales sont fusionnées, priorisées et adaptées dynamiquement selon le contexte, le mode actif et le workflow.
+- Orchestrator pilote l’application des règles, déclenche des audits ciblés et propose des ajustements automatiques en cas de blocage.
+- Chaque modification, override ou ajout de règle est documenté, tracé et historisé pour garantir la cohérence, la robustesse et l’amélioration continue.
+- Les exemples, workflows et bonnes pratiques sont détaillés dans [`system-prompt-code`](.kilocode/system-prompt-code:1).
+
+Pour toute adaptation, consultez et mettez à jour ce fichier ainsi que [`system-prompt-code`](.kilocode/system-prompt-code:1) pour garantir la cohérence du projet.

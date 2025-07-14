@@ -1,0 +1,74 @@
+name: Gapanalyzer Remediation CI
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'cmd/gapanalyzer/**'
+      - '_templates/script-automation/new/*.ps1'
+      - '.github/workflows/gapanalyzer_remediation.yaml'
+
+jobs:
+  backup:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Backup gapanalyzer
+        run: |
+          pwsh _templates/script-automation/new/migrate_gapanalyzer_structure.ps1
+      - name: Archive backup
+        run: |
+          mkdir archive/gapanalyzer
+          Copy-Item backup/gapanalyzer/* archive/gapanalyzer/ -Recurse -Force
+
+  audit:
+    runs-on: windows-latest
+    needs: backup
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Run Gapanalyzer Audit
+        run: |
+          pwsh _templates/script-automation/new/run_gapanalyzer_audit.ps1
+      - name: Archive audit reports
+        run: |
+          Copy-Item _templates/backup/plan-dev/new/* archive/gapanalyzer/ -Force
+
+  remediation:
+    runs-on: windows-latest
+    needs: audit
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Execute GoMod Remediation
+        run: |
+          pwsh _templates/script-automation/new/execute_gomod_remediation.ps1
+      - name: Archive remediation reports
+        run: |
+          Copy-Item backup/* archive/gapanalyzer/ -Force
+
+  checklist_feedback:
+    runs-on: windows-latest
+    needs: remediation
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Generate checklist and feedback form
+        run: |
+          pwsh _templates/script-automation/new/generate_validation_checklist.ps1
+          pwsh _templates/script-automation/new/generate_feedback_form.ps1
+      - name: Archive checklist and feedback
+        run: |
+          Copy-Item archive/gapanalyzer/checklist* archive/gapanalyzer/ -Force
+          Copy-Item archive/gapanalyzer/feedback* archive/gapanalyzer/ -Force
+
+  archive_logs:
+    runs-on: windows-latest
+    needs: checklist_feedback
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Archive all logs and reports
+        run: |
+          Compress-Archive -Path archive/gapanalyzer/* -DestinationPath archive/gapanalyzer/gapanalyzer_full_archive.zip

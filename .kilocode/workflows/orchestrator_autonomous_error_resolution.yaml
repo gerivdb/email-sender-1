@@ -1,0 +1,94 @@
+# Orchestrator Autonomous Error Resolution Workflow (État de l’art)
+
+name: Orchestrator Autonomous Error Resolution
+description: >
+  Workflow intermode Roo Code pour la résolution autonome, exhaustive et traçable de lots d’erreurs.
+  Utilise tous les modes spécialisés (Project Research, Architect, Code, Documentation Writer, DevOps, Debug, Test Engineer, Security Reviewer, User Story Creator) pour garantir la robustesse, la validation croisée et l’amélioration continue.
+  Les liens et fichiers référencés sont accessibles dans l’arborescence Roo Code (.kilocode/rules/, .kilocode/workflows/, .github/workflows/, docs/).
+
+steps:
+  - step: "Présentation des erreurs"
+    input: "Lot d’erreurs (JSON, logs, diagnostics VSCode, etc.)"
+    output: "Liste catégorisée"
+    action: "Orchestrator reçoit et prépare l’analyse"
+    links:
+      - .kilocode/rules/rules.md
+      - .kilocode/workflows/workflows-kilo.md
+
+  - step: "Analyse approfondie"
+    mode: "project-research"
+    input: "Fichiers concernés, structure, imports, nommage, historique complet du thread"
+    output: "Rapport Markdown structuré"
+    action: >
+      Analyse structurelle, identification des causes racines, analyse rétrospective, scénarisation if/then.
+      Recherche de patterns d’erreurs, analyse des tentatives précédentes, suggestion de solutions alternatives.
+      Génération de rapports d’audit, d’historique et de traçabilité.
+    links:
+      - docs/gapanalyzer/README.md
+      - docs/gapanalyzer/import_fix_report.md
+
+  - step: "Planification de la remédiation"
+    mode: "architect"
+    input: "Rapport d’analyse, historique, solutions alternatives"
+    output: "Roadmap actionnable"
+    action: >
+      Définition du plan, découpage en sous-tâches, rollback, traçabilité, prise en compte des scénarios if/then.
+      Intégration de solutions non tentées : symlinks, fusion temporaire, refactorisation, scripts de build, documentation de workarounds.
+      Génération de diagrammes Mermaid, plans de migration, checklists.
+    links:
+      - .kilocode/rules/rules.md
+      - .kilocode/workflows/workflows-kilo.md
+
+  - step: "Exécution autonome et adaptative"
+    mode: "orchestrator"
+    input: "Roadmap, scripts à exécuter, scénarios alternatifs"
+    output: "Corrections, rapports, archivage"
+    action: >
+      Création/exécution des scripts, CI/CD, validation croisée, feedback utilisateur.
+      Enchaînement des modes : Code pour corrections, Test Engineer pour TDD/dry-run, Debug pour analyse post-correction, Documentation Writer pour mise à jour des guides, DevOps pour automatisation CI/CD.
+      Application de solutions alternatives si la résolution standard échoue (if/then).
+      Génération de tests unitaires et d’intégration pour valider la correction.
+      Utilisation de dry-run, TDD, algorithmes de résolution, reporting automatisé.
+    links:
+      - .github/workflows/gapanalyzer_remediation.yaml
+      - _templates/script-automation/new/execute_gomod_remediation.ps1
+      - _templates/script-automation/new/run_gapanalyzer_audit.ps1
+      - _templates/script-automation/new/migrate_gapanalyzer_structure.ps1
+
+  - step: "Vérification finale et boucle de résolution"
+    mode: "orchestrator"
+    input: "Rapports, logs, feedback, résultats de tests"
+    output: "Validation complète ou relance du workflow"
+    action: >
+      Boucle automatique jusqu’à résolution complète.
+      Si une erreur persiste, retour à l’étape d’analyse approfondie, suggestion de nouveaux modes ou techniques (ex : TDD, refactorisation, fusion, symlink, reporting avancé).
+      Génération de tests supplémentaires, dry-run, analyse algorithmique, reporting d’échec et de solution.
+      Documentation systématique des scénarios et des solutions tentées.
+    links:
+      - .kilocode/rules/rules.md
+      - .kilocode/workflows/workflows-kilo.md
+      - docs/gapanalyzer/README.md
+
+validation:
+  - criteria: "Tous les rapports, scripts, guides et workflows sont générés, archivés et validés"
+  - criteria: "Chaque étape est loguée, chaque correction archivée"
+  - criteria: "La boucle automatique garantit qu’aucune étape n’est considérée comme terminée tant que des erreurs subsistent"
+  - criteria: "Tests unitaires et d’intégration générés et passants"
+  - criteria: "Rapports d’audit et d’historique exhaustifs"
+  - criteria: "Documentation des workarounds et solutions alternatives"
+
+usage:
+  - example: |
+      errors:
+        - resource: cmd/gapanalyzer/gapanalyzer.go
+          message: import cycle not allowed
+        - resource: cmd/gapanalyzer/gapanalyzer.go
+          message: could not import github.com/gerivdb/email-sender-1/core/gapanalyzer
+      # Orchestrator lance le workflow, analyse, planifie, corrige, documente, valide, génère des tests, boucle jusqu’à résolution complète.
+
+notes:
+  - "Syntaxe YAML validée pour Roo Code, liens relatifs vérifiés."
+  - "Ce workflow est conçu pour être entièrement autonome : il ne s’interrompt pas à chaque étape et recommence si des erreurs subsistent ou sont ajoutées."
+  - "Tous les modes Roo Code sont utilisés pour garantir la résolution la plus complète et éviter tout conflit ou ambiguïté."
+  - "Inclut la génération de tests, dry-run, TDD, algorithmes de résolution, reporting avancé, documentation systématique."
+  - "L’enchainement des modes est scénarisé pour maximiser la continuité et la robustesse de la résolution."

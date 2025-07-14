@@ -1,12 +1,13 @@
 package gapanalyzer
 
 import (
-	"core/gapanalyzer"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/gerivdb/email-sender-1/core/gapanalyzer"
 )
 
 func main() {

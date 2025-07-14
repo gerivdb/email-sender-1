@@ -1,44 +1,56 @@
-# Système d’override intelligent des règles Kilo Code — Version améliorée
+# Système d’override intelligent des règles Kilo Code — Version enrichie
 
 ---
 
 ## 1. Héritage, fusion et priorisation
 
-- Les règles globales (ex : [`global_rules-kilo.md`](C:/Users/user/.kilocode/rules/global_rules-kilo.md)) forment le socle commun à tous les projets.
-- Les règles d’espace de travail (ex : [`Workspace_rules-kilo.md`](.kilocode/rules/Workspace_rules-kilo.md)) peuvent :
-  - **Compléter** les règles globales (ajout de règles spécifiques au projet)
-  - **Overrider** les règles globales (priorité locale en cas de conflit)
-  - **Prioriser** dynamiquement selon le contexte (ex : phase de migration, audit sécurité)
-
-**Exemple :**
-```json
-{
-  "kilocode.rules.enable": true,
-  "kilocode.rules.severity": "error",
-  "kilocode.rules.customRules": [
-    {
-      "id": "KC003",
-      "message": "Les fonctions doivent avoir une documentation JSDoc.",
-      "severity": "error",
-      "pattern": "/\\*\\*[\\s\\S]*?\\*/",
-      "match": "file"
-    }
-  ]
-}
-```
-> La règle locale impose la documentation JSDoc, même si la règle globale ne l’exige pas.
+- Les règles globales (ex : [`global_rules-kilo.md`](C:/Users/user/.kilocode/rules/global_rules-kilo.md:1)) forment le socle commun à tous les projets.
+- Les règles d’espace de travail (ex : [`Workspace_rules-kilo.md`](.kilocode/rules/Workspace_rules-kilo.md:1)) peuvent compléter ou overrider les règles globales selon le contexte et le workflow.
+- Priorisation dynamique : la règle locale prévaut en cas de conflit, sinon les deux s’appliquent.
 
 ---
 
 ## 2. Contextualisation dynamique et adaptative
 
-- Adapter les règles selon :
-  - Le type de fichier (`*.go`, `*.md`, `*.yaml`)
-  - Le dossier (`/docs`, `/src`, `/tests`, `.github/docs`)
-  - Le mode actif (ex : plus strict en mode [`security-reviewer`](security-reviewer))
-  - Le workflow en cours (ex : audit, migration, onboarding)
+- Adaptation des règles selon : type de fichier, dossier, mode actif, workflow.
+- Exemples : validation spécifique pour `*.go`, documentation obligatoire dans `/docs` ou `.github/docs`, règles renforcées en mode [`security-reviewer`](security-reviewer).
 
-**Exemple :**
+---
+
+## 3. Suggestions et génération automatique de règles
+
+- Génération de règles personnalisées selon l’analyse du dépôt, des workflows et des modes utilisés.
+- Exemples : cohérence des noms, documentation imposée, sécurité renforcée sur modules sensibles.
+
+---
+
+## 4. Traçabilité, auditabilité et reporting
+
+- Chaque override ou ajout de règle est documenté (raison, auteur, date, impact).
+- Génération de rapports d’application et de violation, historisation des modifications.
+
+---
+
+## 5. Orchestration intelligente et adaptative
+
+- Le mode [`Orchestrator`](orchestrator) pilote l’application, l’audit et l’adaptation des règles.
+- Découpage des workflows en sous-tâches, attribution aux modes spécialisés, synthèse des résultats.
+- Propose des ajustements automatiques en cas de blocage (ex : `<switch_mode>`).
+
+---
+
+## 6. Bonnes pratiques et résilience
+
+- Complémentarité entre règles globales et locales.
+- Adaptation dynamique selon le contexte métier et technique.
+- Documentation et traçabilité systématiques.
+- Reporting pour amélioration continue.
+- En cas de blocage, division en sous-tâches et changement de mode si nécessaire.
+
+---
+
+## Exemples JSON
+
 ```json
 {
   "kilocode.rules.customRules": [
@@ -48,6 +60,20 @@
       "severity": "error",
       "pattern": "config.*\\.ya?ml",
       "match": "file"
+    },
+    {
+      "id": "KC020",
+      "message": "Toute documentation doit être présente dans .github/docs ou /docs.",
+      "severity": "warning",
+      "pattern": "README|CONTRIBUTING|CHANGELOG",
+      "match": "file"
+    },
+    {
+      "id": "KC030",
+      "message": "Override temporaire pour migration (auteur : Alice, date : 2025-07-12)",
+      "severity": "information",
+      "pattern": "migration",
+      "match": "file"
     }
   ]
 }
@@ -55,75 +81,8 @@
 
 ---
 
-## 3. Suggestions et génération automatique de règles
+## Exemples Markdown
 
-- Générer des règles personnalisées à partir de l’analyse du dépôt et des workflows :
-  - Imposer la documentation dans `.github/docs` via [`Documentalist`](documentalist)
-  - Valider la cohérence des noms de dossiers et fichiers
-  - Renforcer la sécurité sur les modules sensibles
-  - Adapter les règles selon les combos de modes utilisés
-
-**Exemple :**
-```json
-{
-  "id": "KC020",
-  "message": "Toute documentation doit être présente dans .github/docs ou /docs.",
-  "severity": "warning",
-  "pattern": "README|CONTRIBUTING|CHANGELOG",
-  "match": "file"
-}
-```
-
----
-
-## 4. Traçabilité, auditabilité et reporting
-
-- Documenter chaque override ou ajout de règle :
-  - Raison, auteur, date, impact attendu
-  - Générer des rapports d’application et de violation
-  - Historiser les modifications pour faciliter l’audit et la rétro-ingénierie
-
-**Exemple :**
-```json
-{
-  "id": "KC030",
-  "message": "Override temporaire pour migration (auteur : Alice, date : 2025-07-12)",
-  "severity": "information",
-  "pattern": "migration",
-  "match": "file"
-}
-```
-
----
-
-## 5. Orchestration intelligente et adaptative
-
-- Le mode [`Orchestrator`](orchestrator) pilote l’application des règles :
-  - Déclenche des audits ciblés selon le workflow
-  - Applique des overrides contextuels et dynamiques
-  - Synthétise les résultats pour chaque mode et chaque étape
-  - Propose des ajustements automatiques en cas de blocage ou d’échec
-
-**Exemple de workflow orchestré :**
-1. [`Project Research`](project-research) → Audit des règles existantes
-2. [`Security Reviewer`](security-reviewer) → Renforcement des règles de sécurité
-3. [`Documentalist`](documentalist) → Vérification de la documentation
-4. [`Orchestrator`](orchestrator) → Synthèse et adaptation des règles
-
----
-
-## 6. Bonnes pratiques et résilience
-
-- Privilégier la complémentarité entre règles globales et locales
-- Adapter dynamiquement selon le contexte métier, technique et le mode actif
-- Documenter et tracer chaque modification, avec exemples en Markdown
-- Utiliser le reporting pour améliorer en continu la qualité et la pertinence des règles
-- En cas de blocage, Orchestrator doit :
-  - Diviser la tâche en sous-tâches plus simples
-  - Proposer un changement de mode via `<switch_mode>`
-  - Réorienter le workflow pour maximiser la résilience
-
-**Exemple Markdown :**
 ```markdown
 <switch_mode>
 <mode_slug>debug</mode_slug>
@@ -133,4 +92,11 @@
 
 ---
 
-Ce système d’override intelligent maximise la pertinence, la flexibilité et la qualité des règles Kilo Code, tout en assurant la traçabilité, la résilience et l’amélioration continue.
+## Inspiration orchestrateur
+
+- Les workflows complexes sont orchestrés via le mode [`Orchestrator`](orchestrator), qui coordonne les modes spécialisés :  
+  - Debug, Project_Research, Security_Reviewer, Code, Jest_Test_Engineer, DevOps, Documentalist, Business_Needs_Expliciter, Migration_Engineer, Dependency_Auditor, Configuration_Validator, Integration_Test_Coordinator, Release_Manager, Performance_Analyst, Transversal_Architecture_Analyst, Continuous_Improvement_Facilitator, Roadmap_Synthesizer, Documentation_Writer, Repository_Comparison_Assimilation, Observability_Architect, Script_Automation_Specialist, User_Story_Creator, UX_Documentation_Specialist.
+
+---
+
+Ce prompt fusionne les règles existantes et les recommandations, s’inspire de [.roo/system-prompt-orchestrator](.roo/system-prompt-orchestrator:1), et utilise tous les modes disponibles pour maximiser pertinence, flexibilité et traçabilité.
