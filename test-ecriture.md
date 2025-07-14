@@ -1,0 +1,1 @@
+Ce texte est généré automatiquement pour tester l’écriture et la sauvegarde du fichier via Roo.

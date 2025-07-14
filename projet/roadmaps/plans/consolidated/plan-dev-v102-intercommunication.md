@@ -506,3 +506,228 @@ var (
 L'intercommunication entre Roo-Code, KiloCode, Cline et l'IA locale représente une opportunité majeure d'améliorer notre processus de développement. En relevant les défis et en suivant les recommandations de ce plan, nous pouvons créer un écosystème plus efficace, intelligent et collaboratif.
 
 Prochaine étape : Débuter le recensement des besoins pour la définition des interfaces de communication.
+
+---
+
+## Customisation, Scalabilité et Interopérabilité des Extensions (RooCode, KiloCode, Cline, Copilot)
+
+### Objectif
+
+Obtenir une intercommunication robuste, automatisable et testée entre RooCode, KiloCode, Cline et Copilot, en harmonisant la customisation, la scalabilité et la traçabilité selon les standards avancés du dépôt.
+
+---
+
+## Objectif
+
+Obtenir une intercommunication robuste, automatisable et testée entre RooCode, KiloCode, Cline et Copilot, en harmonisant la customisation, la scalabilité et la traçabilité selon les standards avancés du dépôt.
+
+---
+
+## 1. Recensement des capacités de customisation
+
+- [ ] **Lister les modes, workflows, rules, prompts, scripts, docs, archivage pour chaque extension**
+  - Livrable : Tableau comparatif (Markdown)
+  - Commande : `go run scripts/scan-customization.go > docs/customization_report.md`
+  - Format : Markdown + CSV
+  - Validation : Rapport généré, revue croisée
+  - Rollback : Historique Git, backup `.bak`
+  - CI/CD : Job de scan, badge de couverture
+  - Documentation : `docs/customization_report.md`
+  - Traçabilité : Log d’exécution, commit
+
+---
+
+## 2. Analyse d’écart et convergence
+
+- [ ] **Comparer les capacités, identifier les points de friction et de convergence**
+  - Livrable : Rapport d’écart (Markdown)
+  - Commande : `go run scripts/diff-customization.go > docs/customization_gap.md`
+  - Format : Markdown
+  - Validation : Rapport validé par managers
+  - Rollback : Versionnement Git
+  - CI/CD : Job de diff, reporting automatisé
+  - Documentation : `docs/customization_gap.md`
+  - Traçabilité : Historique des gaps
+
+---
+
+## 3. Recueil des besoins pour le socle commun
+
+- [ ] **Définir les besoins d’harmonisation, d’automatisation et d’interopérabilité**
+  - Livrable : Spécification des besoins (JSON/Markdown)
+  - Commande : `go run scripts/collect-needs.go > docs/interop_needs.json`
+  - Format : JSON + Markdown
+  - Validation : Revue croisée, feedback managers
+  - Rollback : Backup auto, version Git
+  - CI/CD : Job de collecte, notification
+  - Documentation : `docs/interop_needs.json`
+  - Traçabilité : Log de collecte
+
+---
+
+## 4. Spécification du socle commun
+
+- [ ] **Rédiger la spécification technique du socle commun (modes, workflows, rules, prompts, scripts, archivage)**
+  - Livrable : Spécification technique (Markdown/YAML)
+  - Commande : `go run scripts/spec-common.go > docs/spec_common.md`
+  - Format : Markdown + YAML
+  - Validation : Revue technique, tests automatisés
+  - Rollback : Historique Git, backup
+  - CI/CD : Job de validation, badge
+  - Documentation : `docs/spec_common.md`
+  - Traçabilité : Log de validation
+
+---
+
+## 5. Développement et intégration
+
+- [ ] **Développer les scripts, prompts, workflows, rules harmonisés**
+  - Livrable : Scripts Go natifs, prompts, workflows YAML, rules MD
+  - Commandes :  
+    - `go run scripts/generate-workflows.go`
+    - `go run scripts/generate-prompts.go`
+    - `go run scripts/generate-rules.go`
+  - Format : Go, YAML, Markdown
+  - Validation : Tests unitaires/integration (`go test ./scripts/...`)
+  - Rollback : Backup `.bak`, revert Git
+  - CI/CD : Pipeline d’intégration, reporting, triggers
+  - Documentation : Guides d’usage, README
+  - Traçabilité : Historique des scripts, logs d’exécution
+
+---
+
+## 6. Tests automatisés et reporting
+
+- [ ] **Automatiser les tests de chaque étape, générer les rapports de couverture et de conformité**
+  - Livrable : Rapport de tests (HTML/Markdown), badge de couverture
+  - Commande : `go test -v -cover ./scripts/... > docs/test_report.md`
+  - Format : Markdown + HTML
+  - Validation : Badge CI/CD, revue croisée
+  - Rollback : Historique des tests
+  - CI/CD : Job de test, reporting automatisé
+  - Documentation : `docs/test_report.md`
+  - Traçabilité : Log de test, commit
+
+---
+
+## 7. Validation, rollback et archivage
+
+- [ ] **Valider chaque étape, prévoir rollback et archivage systématique**
+  - Livrable : Checklist de validation, scripts de rollback, archive des rapports
+  - Commande :  
+    - `go run scripts/validate-step.go`
+    - `go run scripts/rollback-step.go`
+  - Format : Markdown, Go
+  - Validation : Validation humaine + automatisée
+  - Rollback : Backup, revert Git, archive `.bak`
+  - CI/CD : Job de validation, notification
+  - Documentation : Guides de rollback, README
+  - Traçabilité : Log de validation, historique des archives
+
+---
+
+## 8. Orchestration & CI/CD
+
+- [ ] **Développer un orchestrateur global (`auto-roadmap-runner.go`)**
+  - Livrable : Script Go natif, pipeline CI/CD, reporting, feedback automatisé
+  - Commande : `go run scripts/auto-roadmap-runner.go`
+  - Format : Go, YAML
+  - Validation : Tests automatisés, badge CI/CD
+  - Rollback : Backup, revert Git
+  - CI/CD : Pipeline complet, triggers, reporting, archivage
+  - Documentation : Guide d’usage, README
+  - Traçabilité : Log d’orchestration, historique des runs
+
+---
+
+## 9. Robustesse et adaptation LLM
+
+- [ ] **Procéder par étapes atomiques, vérification avant/après chaque modification**
+  - Livrable : Log d’état, rapport de vérification
+  - Commande : `go run scripts/check-state.go`
+  - Format : Markdown, Go
+  - Validation : Vérification automatisée + humaine
+  - Rollback : Backup, revert Git
+  - CI/CD : Job de vérification, notification
+  - Documentation : Guide de vérification
+  - Traçabilité : Log d’état, historique des vérifications
+
+---
+
+## 10. Documentation et traçabilité
+
+- [ ] **Documenter chaque étape, archiver tous les outputs, garantir la traçabilité**
+  - Livrable : README, guides, rapports, logs, archives
+  - Commande : `go run scripts/archive-docs.go`
+  - Format : Markdown, Go, HTML
+  - Validation : Revue croisée, badge CI/CD
+  - Rollback : Backup, archive
+  - CI/CD : Job d’archivage, reporting
+  - Documentation : Centralisation dans `docs/`, `github/docs`, `projet/roadmaps/plans/`
+  - Traçabilité : Historique des docs, logs d’archivage
+
+---
+
+## 11. Cases à cocher et dépendances
+
+- [ ] **Structurer la roadmap avec cases à cocher pour chaque livrable/action**
+  - Livrable : Roadmap Markdown avec cases à cocher, dépendances explicites
+  - Commande : Génération automatique via script Go
+  - Format : Markdown
+  - Validation : Revue croisée, reporting CI/CD
+  - Rollback : Historique Git
+  - Documentation : Roadmap dans `projet/roadmaps/plans/consolidated/`
+  - Traçabilité : Log de génération, commit
+
+---
+
+## 12. Exemples de scripts Go natifs
+
+```go
+// scripts/scan-customization.go
+package main
+import "fmt"
+func main() {
+    fmt.Println("Scanning customizations...")
+    // Implémentation du scan
+}
+```
+
+```go
+// scripts/validate-step.go
+package main
+import "fmt"
+func main() {
+    fmt.Println("Validating step...")
+    // Implémentation de la validation
+}
+```
+
+---
+
+## 13. Diagramme Mermaid – Dépendances et orchestration
+
+```mermaid
+flowchart TD
+    A[Recensement] --> B[Analyse d'écart]
+    B --> C[Recueil des besoins]
+    C --> D[Spécification socle commun]
+    D --> E[Développement/Intégration]
+    E --> F[Tests automatisés]
+    F --> G[Validation/Rollback/Archivage]
+    G --> H[Orchestration & CI/CD]
+    H --> I[Documentation/Traçabilité]
+```
+
+---
+
+## 14. Standards .clinerules/ et stack Go native
+
+- Granularité, documentation, validation croisée, versionnement, traçabilité, automatisation maximale.
+- Stack Go prioritaire, scripts reproductibles, tests automatisés, reporting, archivage.
+
+---
+
+**Ce plan exhaustif est prêt à être intégré à la roadmap, garantissant une intercommunication robuste, automatisable et traçable entre toutes les extensions.**
+
+
