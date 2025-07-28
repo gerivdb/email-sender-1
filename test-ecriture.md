@@ -1,1 +1,2 @@
 Ce texte est généré automatiquement pour tester l’écriture et la sauvegarde du fichier via Roo.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.
