@@ -1,5 +1,120 @@
 # Plan de développement v1.05c — Gouvernance & synchronisation ultra-granulaire des personas/modes multi-extensions VSIX
 
+---
+
+## PHASES — Matrice opérationnelle ultra-granulaire
+
+| # | Action | Statut | Responsable | Livrable attendu | Dépendances | Points de contrôle | Validation | Reporting |
+|---|--------|--------|-------------|------------------|-------------|-------------------|------------|-----------|
+| 1.1 | Définir le schéma cible du YAML central | ⬜ À faire | Documentation Writer | Spécification YAML | - | Revue besoins | Accord comité | CR réunion |
+| 1.1.1 | Recenser les attributs nécessaires | ⬜ À faire | Project Research | Liste attributs | 1.1 | Table d’attributs | Accord comité | Ticket validé |
+| 1.1.1.1 | Valider la liste des attributs | ⬜ À faire | Orchestrator | PV validation | 1.1.1 | Revue multi-ext | PV signé | Log validation |
+| 1.1.2 | Documenter les exemples d’utilisation | ⬜ À faire | Documentation Writer | Exemples YAML | 1.1.1.1 | Exemples relus | Accord comité | Ticket validé |
+| 1.2 | Recenser et consolider les modes/personas existants | ⬜ À faire | Code, Project Research | Liste consolidée | 1.1.2 | Extraction automatisée | Liste validée | Rapport extraction |
+| 1.2.1 | Extraire automatiquement la liste par extension | ⬜ À faire | Code | Fichiers inventaire | 1.2 | Script extraction | Rapport extraction | Log script |
+| 1.2.1.1 | Fusionner et dédoublonner les listes | ⬜ À faire | Documentation Writer | Liste consolidée | 1.2.1 | Script fusion | Accord comité | Rapport fusion |
+| 1.2.1.1.1 | Valider la liste consolidée | ⬜ À faire | Orchestrator | PV validation | 1.2.1.1 | Revue multi-ext | PV signé | Log validation |
+| 1.3 | Rédiger et versionner le YAML initial | ⬜ À faire | Documentation Writer | personas-modes-mapping.yaml | 1.2.1.1.1 | Commit Git | Accord comité | Log commit |
+| 1.3.1 | Valider l’exhaustivité et la conformité du YAML | ⬜ À faire | Orchestrator | PV validation | 1.3 | Revue YAML | PV signé | Log validation |
+| 2.1 | Spécifier les besoins de synchronisation inter-extensions | ⬜ À faire | Code, DevOps | Spécifications techniques | 1.3.1 | Revue specs | Accord comité | CR réunion |
+| 2.1.1 | Définir les formats cibles par extension | ⬜ À faire | Documentation Writer | Spécifications formats | 2.1 | Table formats | Accord comité | Ticket validé |
+| 2.2 | Développer les scripts de génération et validation | ⬜ À faire | Code | Scripts opérationnels | 2.1.1 | Tests unitaires | 100% tests OK | Rapport tests |
+| 2.2.1 | Générer automatiquement les mappings spécifiques | ⬜ À faire | Code | Fichiers mapping | 2.2 | Génération automatisée | Accord comité | Log génération |
+| 2.2.1.1 | Valider la cohérence et l’exhaustivité des mappings générés | ⬜ À faire | Jest Test Engineer | Rapport de validation | 2.2.1 | Tests automatisés | 100% OK | Rapport tests |
+| 2.3 | Intégrer la génération/validation dans la CI/CD | ⬜ À faire | DevOps | Pipeline CI/CD actif | 2.2.1.1 | Déploiement pipeline | Pipeline opérationnel | Log pipeline |
+| 3.1 | Constituer le comité multi-extensions | ⬜ À faire | Orchestrator | Liste des représentants | - | Désignation référents | 100% extensions | PV constitution |
+| 3.2 | Définir le processus de proposition/validation | ⬜ À faire | Orchestrator | Document de process | 3.1 | Workflow PR/RFC/vote | Process validé | CR publication |
+| 3.3 | Historisation et audit | ⬜ À faire | Security Reviewer | Scripts d’audit, historique | 3.2 | Historisation automatisée | Historique complet | Rapport audit |
+| 3.3.1 | Développer l’audit périodique automatisé | ⬜ À faire | Security Reviewer | Rapports d’audit, alertes | 3.3 | Détection divergences | Alertes fonctionnelles | Log audit |
+| 4.1 | Générer et publier la documentation | ⬜ À faire | Documentation Writer | Documentation générée | 1.3.1 | Génération auto | Docs publiées | Log publication |
+| 4.1.1 | Ajouter systématiquement les liens vers les plans existants | ⬜ À faire | Documentation Writer | Liens intégrés | 4.1 | Vérification liens | 100% docs référencées | Rapport liens |
+| 5.1 | Checklist globale (phases, tâches, sous-tâches) | ⬜ À faire | Orchestrator | Checklist validée | Toutes | Revue finale | Accord comité | CR synthèse |
+
+---
+
+## Procédure d’intégration
+
+1. **Sauvegarder l’ancien plan** :
+   ```bash
+   cp projet/roadmaps/plans/consolidated/plan-dev-v105c-gestion-personas-modes-multi-ext.md projet/roadmaps/plans/consolidated/plan-dev-v105c-gestion-personas-modes-multi-ext.md.bak
+   ```
+2. **Remplacer le contenu du plan par la matrice ci-dessus** (copier-coller ou script).
+3. **Committer la modification** :
+   ```bash
+   git add projet/roadmaps/plans/consolidated/plan-dev-v105c-gestion-personas-modes-multi-ext.md
+   git commit -m "Granularisation et pilotage manager du plan v105c"
+   ```
+4. **Vérifier la conformité et la traçabilité** (audit, liens, reporting).
+
+---
+
+## Diff synthétique
+
+- **Ajouts** :  
+  - Matrice ultra-granulaire (actions, statuts, responsables, livrables, dépendances, points de contrôle, validation, reporting).
+  - Procédure d’intégration et de sauvegarde.
+- **Granularité** :  
+  - Décomposition jusqu’à 5 niveaux pour chaque phase, extensible à 10 si besoin.
+  - Checklist compatible pilotage manager.
+- **Suppression** :  
+  - Remplacement du plan initial par la matrice, historique conservé en annexe ou backup.
+
+---
+
+## Historique et annexes
+
+*L’historique du fichier et les exemples concrets sont conservés dans les versions précédentes et les annexes du dépôt.*
+
+---
+
+## PHASE 5 — Synthèse opérationnelle et checklist
+
+### 5.1 Checklist globale (phases, tâches, sous-tâches)
+
+- [ ] PHASE 1 — Référentiel centralisé
+  - [ ] Définir schéma YAML
+  - [ ] Recenser attributs
+  - [ ] Valider attributs
+  - [ ] Documenter exemples
+  - [ ] Recenser modes/personas
+  - [ ] Dédoublonner/consolider
+  - [ ] Valider liste consolidée
+  - [ ] Rédiger YAML initial
+  - [ ] Versionner YAML
+  - [ ] Valider YAML
+
+- [ ] PHASE 2 — Scripts/outils
+  - [ ] Spécifier besoins de synchronisation
+  - [ ] Définir formats cibles
+  - [ ] Générer mappings
+  - [ ] Valider mappings
+  - [ ] Intégrer à la CI/CD
+
+- [ ] PHASE 3 — Gouvernance/processus
+  - [ ] Constituer comité
+  - [ ] Définir process PR/RFC
+  - [ ] Mettre en place historisation
+  - [ ] Développer audit périodique
+
+- [ ] PHASE 4 — Documentation
+  - [ ] Générer docs
+  - [ ] Ajouter liens plans
+
+---
+
+## Liens utiles
+
+- [`plan-dev-v105`](projet/roadmaps/plans/consolidated/plan-dev-v105-gestion-personas-modes-multi-ext.md:1)
+- [`plan-dev-v105b`](projet/roadmaps/plans/consolidated/plan-dev-v105b-gestion-personas-modes-multi-ext.md:1)
+- [`projet/roadmaps/plans/audits/`](projet/roadmaps/plans/audits:1)
+
+---
+
+## Historique et annexes
+
+*L’historique du fichier et les exemples concrets sont conservés dans les versions précédentes et les annexes du dépôt.*
+
+
 ## 1. Introduction
 
 Ce plan vise à fournir une feuille de route actionnable, hiérarchisée jusqu’à 10 niveaux, pour la gouvernance, la synchronisation et l’extension des personas/modes dans un écosystème multi-VSIX (Kilo Code, Roomodes, Copilot, Cline…). Il s’appuie sur les plans existants ([`plan-dev-v105`](projet/roadmaps/plans/consolidated/plan-dev-v105-gestion-personas-modes-multi-ext.md:1), [`plan-dev-v105b`](projet/roadmaps/plans/consolidated/plan-dev-v105b-gestion-personas-modes-multi-ext.md:1)), et garantit la conformité aux principes SOLID, DRY, KISS et à la logique de pilotage manager.
