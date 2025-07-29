@@ -136,8 +136,8 @@
       "source.fixAll.markdownlint": "always"
     }
   },
-  "kilocode.rules.enable": true,
-  "kilocode.rules.severity": "error",
+  "kilocode.rules.enable": false,
+  "kilocode.rules.severity": "warning",
   "kilocode.rules.customRules": [
     {
       "id": "KC003",
