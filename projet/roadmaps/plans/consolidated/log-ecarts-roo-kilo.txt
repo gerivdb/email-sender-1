@@ -1,0 +1,5 @@
+[2025-07-29T16:35:17+02:00] Génération du fichier tableau-comparatif-roo-kilo.csv à partir de tableau-comparatif-roo-kilo.md
+[2025-07-29T16:35:28+02:00] Génération du fichier gaps-roo-kilo.csv à partir de gaps-roo-kilo.md
+[2025-07-29T16:35:43+02:00] Génération du fichier besoins-non-couverts-roo-kilo.csv à partir de besoins-non-couverts-roo-kilo.md
+[2025-07-29T16:35:53+02:00] Génération du fichier synthese-ecarts-recommandations.csv à partir de synthese-ecarts-recommandations.md
+[2025-07-29T16:35:53+02:00] Archivage des 4 fichiers CSV dans projet/roadmaps/plans/consolidated/

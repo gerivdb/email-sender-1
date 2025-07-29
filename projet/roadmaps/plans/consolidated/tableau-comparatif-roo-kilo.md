@@ -1,0 +1,16 @@
+# Tableau comparatif Roo / Kilo Code
+
+| Fonctionnalité / Interface      | Roo Code                                                                 | Kilo Code                                 | Commentaires                                      |
+|---------------------------------|--------------------------------------------------------------------------|-------------------------------------------|---------------------------------------------------|
+| Modes standards                 | Architect, Code, Ask, Debug, Orchestrator                                | KiloCode                                  | KiloCode regroupe les fonctions principales       |
+| Modes custom                    | Project Research, Documentation Writer, Mode Writer                      | Aucun                                     | Kilo ne gère pas de modes custom                  |
+| Extension / Marketplace         | Oui (ajout de modes custom, plugins)                                     | Non                                       | Limité à l’exécution standard                    |
+| API d’extension                 | Oui (API, hooks, gestion d’état, extension)                              | Non                                       | Pas d’API d’extension dans Kilo                   |
+| Synchronisation multi-environ.  | Oui (Mode Synchronisation, artefacts techniques)                         | Oui (Synchronisation KiloCode)            | Synchronisation possible, mais limitée côté Kilo   |
+| Gestion des personas            | Oui (Architecte, Développeur, Analyste, etc.)                            | Oui (Utilisateur)                         | Roo : gestion fine, Kilo : gestion simplifiée     |
+| Documentation / Reporting       | Oui (Documentation Writer, rapports, logs, traçabilité)                  | Oui (Rapports, logs, traçabilité)         | Fonctionnalités similaires, plus avancées sur Roo |
+| Rollback / Versionning          | Oui (sauvegarde, rollback, logs, version Git)                            | Oui (rollback, logs, version Git)         | Parité fonctionnelle                              |
+| CI/CD / Automatisation          | Oui (pipelines, scripts Go/Bash, tests unitaires)                        | Oui (pipelines, scripts Go, tests)        | Parité fonctionnelle                              |
+| Monitoring / Feedback           | Oui (monitoring, feedback utilisateur/persona, dashboard)                | Oui (monitoring, feedback)                | Roo plus avancé sur la personnalisation           |
+| Scalabilité / Performance       | Oui (optimisation, microservices, benchmarks)                            | Oui (optimisation, benchmarks)            | Parité fonctionnelle                              |
+| Conformité / Standards          | Oui (OpenAPI, RGPD, validation, lint, tests)                             | Oui (validation, lint, tests)             | Parité fonctionnelle                              |

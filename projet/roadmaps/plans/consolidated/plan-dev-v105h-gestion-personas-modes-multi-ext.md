@@ -193,10 +193,10 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
     - [ ] Proposer recommandations d’évolution
 
 #### Livrables attendus
-- [ ] Tableaux comparatifs Markdown : `gap-modes-comparatif.md`
-- [ ] Tableaux CSV : `gap-modes-comparatif.csv`
-- [ ] Rapport d’écart structuré : `gap-analysis-report.md` (MD/JSON)
-- [ ] Logs d’exécution horodatés : `logs/gap-analysis-YYYYMMDD-HHMMSS.log`
+- [x] Tableaux comparatifs Markdown : `gap-modes-comparatif.md`
+- [x] Tableaux CSV : `gap-modes-comparatif.csv`
+- [x] Rapport d’écart structuré : `gap-analysis-report.md` (MD/JSON)
+- [x] Logs d’exécution horodatés : `logs/gap-analysis-YYYYMMDD-HHMMSS.log`
 
 #### Exemples de commandes/scripts Go natif & Bash
 - Go natif :
@@ -211,52 +211,52 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
   ```
 
 #### Critères de validation
-- [ ] Exhaustivité des comparatifs (tous modes et fonctionnalités)
-- [ ] Traçabilité complète (logs, version Git, horodatage)
-- [ ] Livrables conformes aux formats attendus (MD, CSV, JSON)
-- [ ] Revue croisée par un pair
+- [x] Exhaustivité des comparatifs (tous modes et fonctionnalités)
+- [x] Traçabilité complète (logs, version Git, horodatage)
+- [x] Livrables conformes aux formats attendus (MD, CSV, JSON)
+- [x] Revue croisée par un pair
 
 #### Procédures de rollback/versionnement
-- [ ] Sauvegarde `.bak` systématique des rapports avant modification
-- [ ] Commit Git dédié pour chaque rapport d’écart
-- [ ] Historique des logs d’exécution
+- [x] Sauvegarde `.bak` systématique des rapports avant modification
+- [x] Commit Git dédié pour chaque rapport d’écart
+- [x] Historique des logs d’exécution
 
 #### Documentation associée
-- [ ] `README-gap-analysis.md` : guide d’analyse d’écart et d’utilisation des scripts
-- [ ] Documentation des scripts et artefacts utilisés pour la comparaison
+- [x] `README-gap-analysis.md` : guide d’analyse d’écart et d’utilisation des scripts
+- [x] Documentation des scripts et artefacts utilisés pour la comparaison
 
 #### Traçabilité
-- [ ] Logs d’exécution horodatés et archivés
-- [ ] Versionning Git systématique
-- [ ] Feedback automatisé sur complétion de l’analyse d’écart
+- [x] Logs d’exécution horodatés et archivés
+- [x] Versionning Git systématique
+- [x] Feedback automatisé sur complétion de l’analyse d’écart
 
 #### Exemples de commandes/scripts
-- [ ] Go natif :
+- [x] Go natif :
       `go run cmd/audit-gap-analysis/main.go --input inventory-personas-modes.json --output gap-analysis-report.md`
-- [ ] Bash (optionnel) :
+- [x] Bash (optionnel) :
       `diff inventory-modes.md modes-registry.md > diff-modes.txt`
-- [ ] Extraction/synthèse :
+- [x] Extraction/synthèse :
       `go run cmd/gapanalyzer/gapanalyzer/main.go --input inventory-personas-modes.json --output gap-table.csv`
 
 #### Critères de validation
-- [ ] Exhaustivité de la comparaison (tous modes/personas/artefacts)
-- [ ] Traçabilité (logs, version Git, badge de validation)
-- [ ] Rapport validé par revue croisée
-- [ ] Tests automatisés sur scripts d’analyse
+- [x] Exhaustivité de la comparaison (tous modes/personas/artefacts)
+- [x] Traçabilité (logs, version Git, badge de validation)
+- [x] Rapport validé par revue croisée
+- [x] Tests automatisés sur scripts d’analyse
 
 #### Procédures de rollback/versionnement
-- [ ] Sauvegarde `.bak` du rapport avant modification
-- [ ] Commit Git dédié pour chaque rapport d’écart
-- [ ] Historique des logs d’exécution
+- [x] Sauvegarde `.bak` du rapport avant modification
+- [x] Commit Git dédié pour chaque rapport d’écart
+- [x] Historique des logs d’exécution
 
 #### Documentation associée
-- [ ] `README-gap-analysis.md` : guide d’analyse d’écart et d’utilisation des scripts
-- [ ] Guide méthodologique d’analyse comparative
+- [x] `README-gap-analysis.md` : guide d’analyse d’écart et d’utilisation des scripts
+- [x] Guide méthodologique d’analyse comparative
 
 #### Traçabilité
-- [ ] Logs d’exécution horodatés
-- [ ] Versionning Git systématique
-- [ ] Feedback automatisé sur complétion de l’analyse d’écart
+- [x] Logs d’exécution horodatés
+- [x] Versionning Git systématique
+- [x] Feedback automatisé sur complétion de l’analyse d’écart
 
 ---
 

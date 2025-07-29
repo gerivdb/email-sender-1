@@ -1,0 +1,11 @@
+# Gaps fonctionnels et techniques Roo vs Kilo Code
+
+| Fonctionnalité / Interface         | Gap identifié                                                                 | Impact                                                      | Suggestion                                      |
+|------------------------------------|-------------------------------------------------------------------------------|-------------------------------------------------------------|-------------------------------------------------|
+| Modes custom                       | Absence de modes personnalisés dans Kilo                                      | Limite la spécialisation et l’adaptabilité                  | Ajouter la gestion de modes custom              |
+| Extension / Marketplace            | Pas d’extension ni marketplace dans Kilo                                      | Impossible d’ajouter des plugins ou d’étendre les capacités | Développer une API d’extension et un marketplace|
+| API d’extension                    | Pas d’API d’extension dans Kilo                                               | Freine l’intégration et l’automatisation                    | Concevoir une API d’extension                   |
+| Synchronisation multi-environnements| Synchronisation limitée côté Kilo                                             | Risque de désynchronisation, moins de flexibilité           | Améliorer la synchronisation multi-environnements|
+| Gestion des personas               | Gestion simplifiée des personas dans Kilo                                     | Moins de granularité, personnalisation réduite              | Enrichir la gestion des personas                |
+| Documentation / Reporting          | Fonctionnalités avancées sur Roo uniquement                                   | Moins de profondeur sur la traçabilité et le reporting      | Renforcer la documentation et le reporting      |
+| Monitoring / Feedback              | Personnalisation du monitoring plus avancée sur Roo                           | Moins d’adaptation aux besoins utilisateurs/personas        | Personnaliser le monitoring et le feedback      |

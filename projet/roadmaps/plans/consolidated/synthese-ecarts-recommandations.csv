@@ -1,0 +1,8 @@
+Écart / Gap / Besoin;Impact métier / technique;Recommandation;Priorité
+Absence de modes personnalisés;Limite la spécialisation et l’adaptabilité;Ajouter la gestion de modes custom;Haute
+Pas d’extension ni marketplace;Impossible d’ajouter des plugins ou d’étendre les capacités;Développer une API d’extension et un marketplace;Haute
+Pas d’API d’extension;Freine l’intégration et l’automatisation;Concevoir une API d’extension;Haute
+Synchronisation multi-environnements limitée;Risque de désynchronisation, moins de flexibilité;Améliorer la synchronisation multi-environnements;Haute
+Gestion simplifiée des personas;Moins de granularité, personnalisation réduite;Enrichir la gestion des personas;Moyenne
+Documentation / Reporting moins avancés;Moins de profondeur sur la traçabilité et le reporting;Renforcer la documentation et le reporting;Moyenne
+Monitoring / Feedback peu personnalisés;Moins d’adaptation aux besoins utilisateurs/personas;Personnaliser le monitoring et le feedback;Moyenne
