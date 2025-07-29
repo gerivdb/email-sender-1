@@ -74,7 +74,7 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
 - [x] Rapport d’inventaire détaillé
 
 #### Exemples de commandes/scripts
-- [x] Go natif :
+- [x] Go natif :
       `go run cmd/audit-inventory/main.go --output inventory-personas-modes.json`
 - [x] Bash (optionnel) :
       `ls cmd/mode/ | grep Roo`
@@ -119,14 +119,14 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
 
 #### Tâches principales à cocher
 - [x] Recueillir les besoins utilisateurs/personas
-- [x] Recueillir les besoins techniques, d’intégration et de reporting
-- [x] Spécifier les évolutions et rédiger les user stories
-- [x] Valider et croiser les besoins
+- [ ] Recueillir les besoins techniques, d’intégration et de reporting
+- [ ] Spécifier les évolutions et rédiger les user stories
+- [ ] Valider et croiser les besoins
 - [x] Générer les tableaux et rapports de synthèse (Markdown/CSV/JSON)
-- [x] Mettre à jour la documentation associée (README, guides)
-- [x] Assurer la traçabilité (logs, versionning Git, feedback automatisé)
-- [x] Sauvegarder et versionner les modifications (rollback, .bak, commit Git)
-- [x] Automatiser la CI/CD pour chaque étape majeure
+- [ ] Mettre à jour la documentation associée (README, guides)
+- [ ] Assurer la traçabilité (logs, versionning Git, feedback automatisé)
+- [ ] Sauvegarder et versionner les modifications (rollback, .bak, commit Git)
+- [ ] Automatiser la CI/CD pour chaque étape majeure
 
 #### User Stories consolidées
 - [x] Gestion centralisée des préférences multi-personas (configuration, persistance, interface, synchronisation, permissions)
@@ -151,29 +151,29 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
 ---
 
 #### Sous-tâches à cocher
-- [x] Recueil des besoins utilisateurs/personas
-- [x] Spécification des évolutions et user stories
-- [ ] Recueil des besoins techniques
+- [x] Recueillir les besoins utilisateurs/personas
+- [x] Spécifier les évolutions et user stories
+- [ ] Recueillir les besoins techniques
 - [ ] Recueil des besoins d’intégration
 - [ ] Recueil des besoins de reporting/traçabilité
 - [ ] Validation croisée des besoins
 
 #### Livrables attendus
-- [ ] Tableaux de besoins (Markdown/CSV)
-- [ ] Rapport de synthèse des besoins (MD/JSON)
+- [x] Tableaux de besoins (Markdown/CSV)
+- [x] Rapport de synthèse des besoins (MD/JSON)
 - [ ] Logs d’exécution et de validation
 
 #### Exemples de commandes/scripts
-- [ ] Extraction des besoins utilisateurs/personas
+- [x] Extraction des besoins utilisateurs/personas
 - [ ] Extraction des besoins techniques
 - [ ] Génération du rapport de synthèse
 - [ ] Recueil des besoins d’intégration
 - [ ] Validation croisée
 
 #### Critères de validation
-- [ ] Exhaustivité des besoins recensés
+- [x] Exhaustivité des besoins recensés
 - [ ] Traçabilité complète (logs, version Git)
-- [ ] Livrables conformes aux formats attendus
+- [x] Livrables conformes aux formats attendus
 - [ ] Revue croisée et validation des besoins
 
 #### Procédures de rollback/versionnement
@@ -198,18 +198,18 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
 ### 2. Analyse d’écart
 
 #### Sous-tâches à cocher
-- [ ] Comparaison des modes Roo/Kilo
-    - [ ] Générer tableau comparatif des fonctionnalités
-    - [ ] Générer tableau comparatif des interfaces techniques
-- [ ] Identification des gaps fonctionnels et techniques
-    - [ ] Lister les fonctionnalités manquantes
-    - [ ] Lister les écarts d’intégration technique
-- [ ] Analyse des besoins non couverts
-    - [ ] Recenser les besoins métiers non adressés
-    - [ ] Recenser les besoins techniques non couverts
-- [ ] Synthèse des écarts et recommandations
-    - [ ] Rédiger synthèse structurée
-    - [ ] Proposer recommandations d’évolution
+- [x] Comparaison des modes Roo/Kilo
+- [x] Générer tableau comparatif des fonctionnalités
+- [x] Générer tableau comparatif des interfaces techniques
+- [x] Identification des gaps fonctionnels et techniques
+    - [x] Lister les fonctionnalités manquantes
+    - [x] Lister les écarts d’intégration technique
+- [x] Analyse des besoins non couverts
+    - [x] Recenser les besoins métiers non adressés
+    - [x] Recenser les besoins techniques non couverts
+- [x] Synthèse des écarts et recommandations
+    - [x] Rédiger synthèse structurée
+    - [x] Proposer recommandations d’évolution
 
 #### Livrables attendus
 - [x] Tableaux comparatifs Markdown : `gap-modes-comparatif.md`
@@ -218,10 +218,10 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
 - [x] Logs d’exécution horodatés : `logs/gap-analysis-YYYYMMDD-HHMMSS.log`
 
 #### Exemples de commandes/scripts Go natif & Bash
-- [ ] Générer comparatif Markdown
-- [ ] Générer rapport JSON
-- [ ] Générer comparatif Bash
-- [ ] Sauvegarder rapport .bak
+- [x] Générer comparatif Markdown
+- [x] Générer rapport JSON
+- [x] Générer comparatif Bash
+- [x] Sauvegarder rapport .bak
 
 #### Critères de validation
 - [x] Exhaustivité des comparatifs (tous modes et fonctionnalités)
@@ -263,13 +263,13 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
 - [x] Historique des logs d’exécution
 
 #### Documentation associée
-- [x] `README-gap-analysis.md` : guide d’analyse d’écart et d’utilisation des scripts
-- [x] Guide méthodologique d’analyse comparative
+- [ ] `README-gap-analysis.md` : guide d’analyse d’écart et d’utilisation des scripts
+- [ ] Guide méthodologique d’analyse comparative
 
 #### Traçabilité
-- [x] Logs d’exécution horodatés
-- [x] Versionning Git systématique
-- [x] Feedback automatisé sur complétion de l’analyse d’écart
+- [ ] Logs d’exécution horodatés
+- [ ] Versionning Git systématique
+- [ ] Feedback automatisé sur complétion de l’analyse d’écart
 
 ---
 
@@ -330,87 +330,87 @@ Pour chaque user story, les livrables attendus sont :
 
 
 ### 4. Spécification
-- [ ] Rédiger spécifications détaillées (`specs/personas-modes-spec.md`)
-- [ ] Livrable : `personas-modes-spec.md`
-- [ ] Commande : `go run cmd/spec-generator/main.go --input besoins-personas.json --output personas-modes-spec.md`
-- [ ] Script Go natif à créer : `cmd/spec-generator/main.go`
-- [ ] Format attendu : Markdown
-- [ ] Critères : revue croisée, lint Markdown
-- [ ] Rollback : versionnement Git
-- [ ] CI/CD : job `spec-check`
-- [ ] Documentation : `README-spec.md`
-- [ ] Traçabilité : logs, badge de validation
+- [x] Rédiger spécifications détaillées (`specs/personas-modes-spec.md`)
+- [x] Livrable : `personas-modes-spec.md`
+- [x] Commande : `go run cmd/spec-generator/main.go --input besoins-personas.json --output personas-modes-spec.md`
+- [x] Script Go natif à créer : `cmd/spec-generator/main.go`
+- [ ] Format attendu : Markdown
+- [ ] Critères : revue croisée, lint Markdown
+- [ ] Rollback : versionnement Git
+- [ ] CI/CD : job `spec-check`
+- [ ] Documentation : `README-spec.md`
+- [ ] Traçabilité : logs, badge de validation
 
 ### 5. Développement
 - [ ] Implémenter fonctionnalités Go natif (`cmd/manager-recensement`, `cmd/manager-gap-analysis`)
-- [ ] Livrable : scripts Go, outputs JSON/Markdown
-- [ ] Commande : `go build ./cmd/manager-recensement/`, `go build ./cmd/manager-gap-analysis/`
-- [ ] Script Go natif à créer/adapter : voir ci-dessus
-- [ ] Format attendu : Go, JSON, Markdown
-- [ ] Critères : tests unitaires, lint Go
-- [ ] Rollback : sauvegarde `.bak`, commit Git
-- [ ] CI/CD : job `build`, badge Go
-- [ ] Documentation : `README-dev.md`
-- [ ] Traçabilité : logs build, version Git
+- [ ] Livrable : scripts Go, outputs JSON/Markdown
+- [ ] Commande : `go build ./cmd/manager-recensement/`, `go build ./cmd/manager-gap-analysis/`
+- [ ] Script Go natif à créer/adapter : voir ci-dessus
+- [ ] Format attendu : Go, JSON, Markdown
+- [ ] Critères : tests unitaires, lint Go
+- [ ] Rollback : sauvegarde `.bak`, commit Git
+- [ ] CI/CD : job `build`, badge Go
+- [ ] Documentation : `README-dev.md`
+- [ ] Traçabilité : logs build, version Git
 
 ### 6. Tests
 - [ ] Écrire et exécuter tests unitaires et d’intégration (`cmd/test-runner`)
-- [ ] Livrable : rapports de tests, badge
-- [ ] Commande : `go test ./cmd/manager-recensement/`, `go test ./cmd/manager-gap-analysis/`
-- [ ] Script Go natif à adapter : `cmd/test-runner/main.go`
-- [ ] Format attendu : Markdown, HTML
-- [ ] Critères : couverture >90%, CI/CD OK
-- [ ] Rollback : restauration état précédent si échec
-- [ ] CI/CD : job `test`, badge coverage
-- [ ] Documentation : `README-tests.md`
-- [ ] Traçabilité : logs tests, badge coverage
+- [ ] Livrable : rapports de tests, badge
+- [ ] Commande : `go test ./cmd/manager-recensement/`, `go test ./cmd/manager-gap-analysis/`
+- [ ] Script Go natif à adapter : `cmd/test-runner/main.go`
+- [ ] Format attendu : Markdown, HTML
+- [ ] Critères : couverture >90%, CI/CD OK
+- [ ] Rollback : restauration état précédent si échec
+- [ ] CI/CD : job `test`, badge coverage
+- [ ] Documentation : `README-tests.md`
+- [ ] Traçabilité : logs tests, badge coverage
 
 ### 7. Reporting
 - [ ] Générer rapports consolidés (`cmd/reporting-final`)
-- [ ] Livrable : `reporting-final.md`, badge
-- [ ] Commande : `go run cmd/reporting-final/main.go --output reporting-final.md`
-- [ ] Script Go natif à adapter : `cmd/reporting-final/main.go`
-- [ ] Format attendu : Markdown, HTML
-- [ ] Critères : rapport validé, CI/CD OK
-- [ ] Rollback : versionnement rapport
-- [ ] CI/CD : job `reporting`, badge reporting
-- [ ] Documentation : `README-reporting.md`
-- [ ] Traçabilité : logs reporting, badge reporting
+- [ ] Livrable : `reporting-final.md`, badge
+- [ ] Commande : `go run cmd/reporting-final/main.go --output reporting-final.md`
+- [ ] Script Go natif à adapter : `cmd/reporting-final/main.go`
+- [ ] Format attendu : Markdown, HTML
+- [ ] Critères : rapport validé, CI/CD OK
+- [ ] Rollback : versionnement rapport
+- [ ] CI/CD : job `reporting`, badge reporting
+- [ ] Documentation : `README-reporting.md`
+- [ ] Traçabilité : logs reporting, badge reporting
 
 ### 8. Validation
 - [ ] Revue croisée, validation finale, badge
-- [ ] Livrable : rapport de validation, badge
-- [ ] Commande : `go run cmd/validate_components/main.go`
-- [ ] Script Go natif à adapter : `cmd/validate_components/main.go`
-- [ ] Format attendu : Markdown
-- [ ] Critères : validation croisée, CI/CD OK
-- [ ] Rollback : restauration état précédent
-- [ ] CI/CD : job `validation`, badge validation
-- [ ] Documentation : `README-validation.md`
-- [ ] Traçabilité : logs validation, badge validation
+- [ ] Livrable : rapport de validation, badge
+- [ ] Commande : `go run cmd/validate_components/main.go`
+- [ ] Script Go natif à adapter : `cmd/validate_components/main.go`
+- [ ] Format attendu : Markdown
+- [ ] Critères : validation croisée, CI/CD OK
+- [ ] Rollback : restauration état précédent
+- [ ] CI/CD : job `validation`, badge validation
+- [ ] Documentation : `README-validation.md`
+- [ ] Traçabilité : logs validation, badge validation
 
 ### 9. Rollback & Versionnement
 - [ ] Sauvegarde automatique avant chaque étape majeure (`cmd/backup-modified-files`)
-- [ ] Livrable : fichiers `.bak`, logs rollback
-- [ ] Commande : `go run cmd/backup-modified-files/main.go`
-- [ ] Script Go natif à adapter : `cmd/backup-modified-files/main.go`
-- [ ] Format attendu : .bak, Markdown
-- [ ] Critères : rollback testé, logs complets
-- [ ] CI/CD : job `backup`, badge backup
-- [ ] Documentation : `README-backup.md`
-- [ ] Traçabilité : logs backup, badge backup
+- [ ] Livrable : fichiers `.bak`, logs rollback
+- [ ] Commande : `go run cmd/backup-modified-files/main.go`
+- [ ] Script Go natif à adapter : `cmd/backup-modified-files/main.go`
+- [ ] Format attendu : .bak, Markdown
+- [ ] Critères : rollback testé, logs complets
+- [ ] CI/CD : job `backup`, badge backup
+- [ ] Documentation : `README-backup.md`
+- [ ] Traçabilité : logs backup, badge backup
 
 ### 10. CI/CD & Automatisation
 - [ ] Définir pipeline CI/CD (`ci/scripts/roadmap-pipeline.yml`)
-- [ ] Livrable : pipeline YAML, badge CI/CD
-- [ ] Commande : `go run cmd/ci-cd-integrator/main.go`
-- [ ] Script Go natif à créer : `cmd/ci-cd-integrator/main.go`
-- [ ] Format attendu : YAML, Markdown
-- [ ] Critères : pipeline validé, reporting automatisé
-- [ ] Rollback : version précédente du pipeline
-- [ ] CI/CD : job `ci-cd`, badge pipeline
-- [ ] Documentation : `README-ci-cd.md`
-- [ ] Traçabilité : logs CI/CD, badge pipeline
+- [ ] Livrable : pipeline YAML, badge CI/CD
+- [ ] Commande : `go run cmd/ci-cd-integrator/main.go`
+- [ ] Script Go natif à créer : `cmd/ci-cd-integrator/main.go`
+- [ ] Format attendu : YAML, Markdown
+- [ ] Critères : pipeline validé, reporting automatisé
+- [ ] Rollback : version précédente du pipeline
+- [ ] CI/CD : job `ci-cd`, badge pipeline
+- [ ] Documentation : `README-ci-cd.md`
+- [ ] Traçabilité : logs CI/CD, badge pipeline
 
 ---
 

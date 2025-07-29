@@ -1,0 +1,54 @@
+{
+  "modes": [
+    {
+      "name": "Architect"
+    },
+    {
+      "name": "Code"
+    },
+    {
+      "name": "Ask"
+    },
+    {
+      "name": "Debug"
+    },
+    {
+      "name": "Orchestrator"
+    },
+    {
+      "name": "Project Research"
+    },
+    {
+      "name": "Documentation Writer"
+    },
+    {
+      "name": "Mode Writer"
+    },
+    {
+      "name": "KiloCode"
+    }
+  ],
+  "personas": [
+    {
+      "name": "Architecte"
+    },
+    {
+      "name": "Développeur"
+    },
+    {
+      "name": "Utilisateur"
+    },
+    {
+      "name": "Chef de projet"
+    },
+    {
+      "name": "Analyste"
+    },
+    {
+      "name": "Rédacteur technique"
+    },
+    {
+      "name": "Développeur avancé"
+    }
+  ]
+}

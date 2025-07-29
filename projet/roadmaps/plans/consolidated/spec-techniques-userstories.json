@@ -1,0 +1,51 @@
+[
+  {
+    "besoin": "Modes personnalisés",
+    "categorie": "Orchestrator, Mode Writer",
+    "impact": "Limite la spécialisation et l’adaptabilité",
+    "priorite": "Haute",
+    "suggestion": "Ajouter la gestion de modes custom"
+  },
+  {
+    "besoin": "Extension / Marketplace",
+    "categorie": "Extension Manager",
+    "impact": "Impossible d’ajouter des plugins ou d’étendre les capacités",
+    "priorite": "Haute",
+    "suggestion": "Développer une API d’extension et un marketplace"
+  },
+  {
+    "besoin": "API d’extension",
+    "categorie": "Extension Manager, DevOps",
+    "impact": "Freine l’intégration et l’automatisation",
+    "priorite": "Haute",
+    "suggestion": "Concevoir une API d’extension"
+  },
+  {
+    "besoin": "Synchronisation multi-environnements",
+    "categorie": "Synchronisation, DevOps",
+    "impact": "Risque de désynchronisation, moins de flexibilité",
+    "priorite": "Haute",
+    "suggestion": "Améliorer la synchronisation multi-environnements"
+  },
+  {
+    "besoin": "Gestion fine des personas",
+    "categorie": "Business Needs Expliciter",
+    "impact": "Moins de granularité, personnalisation réduite",
+    "priorite": "Moyenne",
+    "suggestion": "Enrichir la gestion des personas"
+  },
+  {
+    "besoin": "Documentation / Reporting avancés",
+    "categorie": "Documentation Writer",
+    "impact": "Moins de profondeur sur la traçabilité et le reporting",
+    "priorite": "Moyenne",
+    "suggestion": "Renforcer la documentation et le reporting"
+  },
+  {
+    "besoin": "Monitoring / Feedback personnalisés",
+    "categorie": "Observability Architect",
+    "impact": "Moins d’adaptation aux besoins utilisateurs/personas",
+    "priorite": "Moyenne",
+    "suggestion": "Personnaliser le monitoring et le feedback"
+  }
+]

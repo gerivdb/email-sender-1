@@ -1,0 +1,8 @@
+Besoin,Fonctionnalité,Catégorie,Impact,Priorité,Suggestion
+Modes personnalisés,Orchestrator,Mode Writer,"Limite la spécialisation et l’adaptabilité",Haute,Ajouter la gestion de modes custom
+Extension / Marketplace,Extension Manager,"Impossible d’ajouter des plugins ou d’étendre les capacités",Haute,Développer une API d’extension et un marketplace
+API d’extension,Extension Manager,DevOps,"Freine l’intégration et l’automatisation",Haute,Concevoir une API d’extension
+Synchronisation multi-environnements,Synchronisation,DevOps,"Risque de désynchronisation, moins de flexibilité",Haute,Améliorer la synchronisation multi-environnements
+Gestion fine des personas,Business Needs Expliciter,"Moins de granularité, personnalisation réduite",Moyenne,Enrichir la gestion des personas
+Documentation / Reporting avancés,Documentation Writer,"Moins de profondeur sur la traçabilité et le reporting",Moyenne,Renforcer la documentation et le reporting
+Monitoring / Feedback personnalisés,Observability Architect,"Moins d’adaptation aux besoins utilisateurs/personas",Moyenne,Personnaliser le monitoring et le feedback

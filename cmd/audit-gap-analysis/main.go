@@ -2,38 +2,84 @@
 package main
 
 import (
+	"encoding/json"
+	"flag"
 	"fmt"
+	"io/ioutil"
 	"os"
-	"path/filepath"
 )
 
-func main() {
-	filesMap := make(map[string][]string)
-	filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if !info.IsDir() && (filepath.Ext(path) == ".md" || filepath.Ext(path) == ".go" || filepath.Ext(path) == ".ps1") {
-			filesMap[info.Name()] = append(filesMap[info.Name()], path)
-		}
-		return nil
-	})
+// Inventory représente la structure de l'inventaire.
+type Inventory struct {
+	Modes    []Mode    `json:"modes"`
+	Personas []Persona `json:"personas"`
+}
 
-	f, err := os.Create("audit_gap_report.md")
+// Mode représente un mode dans l'inventaire.
+type Mode struct {
+	Name string `json:"name"`
+}
+
+// Persona représente un persona dans l'inventaire.
+type Persona struct {
+	Name string `json:"name"`
+}
+
+func main() {
+	// Définir et parser les arguments de la ligne de commande
+	inputPath := flag.String("input", "inventory-personas-modes.json", "Chemin du fichier d'entrée JSON")
+	outputPath := flag.String("output", "gap-analysis-report.md", "Chemin du fichier de sortie Markdown")
+	flag.Parse()
+
+	// Lire le fichier d'inventaire
+	data, err := ioutil.ReadFile(*inputPath)
 	if err != nil {
-		fmt.Println("Erreur lors de la création du rapport d'écart :", err)
+		fmt.Fprintf(os.Stderr, "Erreur de lecture du fichier d'entrée: %v\n", err)
 		os.Exit(1)
 	}
-	defer f.Close()
-	fmt.Fprintln(f, "# Rapport d'écart et détection des doublons\n")
-	for name, paths := range filesMap {
-		if len(paths) > 1 {
-			fmt.Fprintf(f, "## Doublon : %s\n", name)
-			for _, p := range paths {
-				fmt.Fprintf(f, "- %s\n", p)
-			}
-			fmt.Fprintln(f)
+
+	// Parser le JSON
+	var inventory Inventory
+	err = json.Unmarshal(data, &inventory)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Erreur de parsing JSON: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Débogage : afficher le contenu de l'inventaire
+	fmt.Printf("Inventaire chargé : %+v\n", inventory)
+
+	// Ensembles de référence (codés en dur pour l'instant)
+	refModes := map[string]bool{"Architect": true, "Code": true, "Ask": true, "Debug": true, "Orchestrator": true}
+	refPersonas := map[string]bool{"Architecte": true, "Développeur": true, "Utilisateur": true}
+
+	// Créer le rapport d'analyse des écarts
+	report, err := os.Create(*outputPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Erreur de création du fichier de sortie: %v\n", err)
+		os.Exit(1)
+	}
+	defer report.Close()
+
+	fmt.Fprintln(report, "# Rapport d'analyse des écarts")
+	fmt.Fprintln(report, "")
+
+	// Analyser les modes
+	fmt.Fprintln(report, "## Modes")
+	for _, mode := range inventory.Modes {
+		if !refModes[mode.Name] {
+			fmt.Fprintf(report, "- [Écart] Mode non standard: %s\n", mode.Name)
 		}
 	}
-	fmt.Println("Rapport généré dans audit_gap_report.md")
+
+	// Analyser les personas
+	fmt.Fprintln(report, "")
+	fmt.Fprintln(report, "## Personas")
+	for _, persona := range inventory.Personas {
+		if !refPersonas[persona.Name] {
+			fmt.Fprintf(report, "- [Écart] Persona non standard: %s\n", persona.Name)
+		}
+	}
+
+	fmt.Printf("Rapport d'analyse des écarts généré dans : %s\n", *outputPath)
 }
