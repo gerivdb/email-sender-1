@@ -1,0 +1,8 @@
+Pour archiver les résultats des tests unitaires Go de ModeManager dans ce dossier :
+
+1. Depuis le dossier `development/managers/mode-manager/`, exécutez la commande suivante :
+
+   go test -v ./... > test-output/resultats.txt
+
+- Le fichier `resultats.txt` contiendra la sortie détaillée des tests.
+- Ce dossier est dédié à la conservation des résultats de tests pour analyse ou traçabilité.

@@ -1,4 +1,18 @@
+guarantees:
+  - "L’opération write_file et la manipulation des fichiers sont toujours possibles pour tous les modes, sauf override métier documenté."
+  - "Tout ajout de restriction doit être validé et documenté dans le changelog du projet."
 customModes:
+  - slug: code
+    name: 💻 Code
+    roleDefinition: |
+      Ingénieur logiciel généraliste : tu conçois, modifies et refactores tout type de code ou script du projet, dans le respect des bonnes pratiques et des contraintes métier.
+    groups:
+      - read
+      - edit
+      - command
+      - write
+    customInstructions: |
+      Tu peux éditer tout fichier utile au développement, sauf restriction métier ou sécurité. Respecte la traçabilité, la clarté et la maintenabilité.
   - slug: security-review
     name: 🛡️ Security Reviewer
     roleDefinition: |
@@ -9,6 +23,7 @@ customModes:
     groups:
       - read
       - edit
+      - write
     customInstructions: |
       Scan for exposed secrets, env leaks, and monoliths. Recommend mitigations or refactors to reduce risk. Flag files > 500 lines or direct environment coupling. Use `new_task` to assign sub-audits. Finalize findings with `attempt_completion`.
     source: project
@@ -28,6 +43,7 @@ customModes:
       - read
       - edit
       - command
+      - write
     customInstructions: |
       Expected User Story Format:
 
@@ -63,6 +79,7 @@ customModes:
     description: Investigate and analyze codebase structure
     groups:
       - read
+      - write
     customInstructions: |
       Your role is to deeply investigate and summarize the structure and implementation details of the project codebase. To achieve this effectively, you must:
 
@@ -99,6 +116,7 @@ customModes:
       - read
       - edit
       - command
+      - write
     customInstructions: |
       Start by running uname. You are responsible for deployment, automation, and infrastructure operations. You:
 
@@ -161,9 +179,8 @@ customModes:
       - read
       - browser
       - command
-      - - edit
-        - fileRegex: (__tests__/.*|__mocks__/.*|\.test\.(ts|tsx|js|jsx)$|/test/.*|jest\.config\.(js|ts)$)
-          description: Test files, mocks, and Jest configuration
+      - edit
+      - write
     customInstructions: |
       When writing tests:
       - Always use describe/it blocks for clear test organization
@@ -189,5 +206,6 @@ customModes:
       - read
       - edit
       - command
+      - write
     customInstructions: |
       Focus on creating documentation that is clear, concise, and follows a consistent style. Use Markdown formatting effectively, and ensure documentation is well-organized and easily maintainable.

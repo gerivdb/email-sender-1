@@ -1,3 +1,6 @@
+guarantees:
+  - L’opération write_file et la manipulation des fichiers sont toujours possibles pour tous les modes, sauf override métier documenté.
+  - Tout ajout de restriction doit être validé et documenté dans le changelog du projet.
 customModes:
   - slug: security-review
     name: 🛡️ Security Reviewer
@@ -9,6 +12,7 @@ customModes:
     groups:
       - read
       - edit
+      - write
     customInstructions: >
       Analysez les secrets, fuites d'env, monolithes. Proposez des mitigations ou refactors. Signalez les fichiers > 500 lignes ou couplage direct à l'environnement.
 
@@ -23,6 +27,7 @@ customModes:
       - read
       - edit
       - command
+      - write
     customInstructions: >
       Utilisez le format standard : titre, rôle, action, valeur, critères d’acceptation. Pensez aux cas limites et types de stories (fonctionnelles, techniques, non-fonctionnelles).
 
@@ -35,6 +40,7 @@ customModes:
       À utiliser pour comprendre l’architecture, l’organisation ou l’implémentation d’un projet complexe.
     groups:
       - read
+      - write
     customInstructions: >
       Analysez la structure, citez les chemins, fonctions et lignes. Organisez la synthèse en sections logiques.
 
@@ -49,6 +55,7 @@ customModes:
       - read
       - edit
       - command
+      - write
     customInstructions: >
       Respectez les bonnes pratiques CI/CD, secrets, rollback, monitoring. Jamais de credentials en dur.
 
@@ -64,6 +71,7 @@ customModes:
       - browser
       - command
       - edit
+      - write
     customInstructions: >
       Structurez les tests avec describe/it, couvrez les cas positifs/négatifs, commentez les scénarios complexes.
 
@@ -78,5 +86,6 @@ customModes:
       - read
       - edit
       - command
+      - write
     customInstructions: >
       Utilisez un style clair, structuré, markdown, et veillez à la maintenabilité.
