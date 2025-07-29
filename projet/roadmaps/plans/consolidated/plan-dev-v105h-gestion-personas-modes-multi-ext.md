@@ -115,10 +115,44 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
 - [x] `README-inventory.md` : guide d’inventaire et d’utilisation des scripts
 - [x] Documentation des artefacts techniques recensés
 
-### 3. Recueil des besoins
+### 3. Recueil des besoins, Spécification et User Stories
+
+#### Tâches principales à cocher
+- [x] Recueillir les besoins utilisateurs/personas
+- [x] Recueillir les besoins techniques, d’intégration et de reporting
+- [x] Spécifier les évolutions et rédiger les user stories
+- [x] Valider et croiser les besoins
+- [x] Générer les tableaux et rapports de synthèse (Markdown/CSV/JSON)
+- [x] Mettre à jour la documentation associée (README, guides)
+- [x] Assurer la traçabilité (logs, versionning Git, feedback automatisé)
+- [x] Sauvegarder et versionner les modifications (rollback, .bak, commit Git)
+- [x] Automatiser la CI/CD pour chaque étape majeure
+
+#### User Stories consolidées
+- [x] Gestion centralisée des préférences multi-personas (configuration, persistance, interface, synchronisation, permissions)
+- [x] Reporting croisé automatisé (génération, export, indicateurs, accessibilité, sécurité, performance)
+- [x] Documentation et traçabilité multi-mode (rédaction, archivage, synchronisation, versionning, validation)
+- [x] Clarification et fusion des managers redondants (responsabilités, migration, compatibilité, documentation)
+- [x] Couverture de tests sur scripts critiques (tests unitaires, couverture, reporting, migration/refactoring, dépendances)
+
+#### Livrables attendus
+- [x] Tableaux de besoins et rapports de synthèse
+- [x] Spécifications détaillées (Markdown)
+- [x] Artefacts de code ou configuration
+- [x] Tests et logs associés
+- [x] Documentation mise à jour
+
+#### Procédures et traçabilité
+- [x] Sauvegarde automatique avant modification
+- [x] Commit Git dédié pour chaque étape
+- [x] Logs horodatés et feedback automatisé
+- [x] CI/CD : jobs dédiés, badges, reporting
+
+---
 
 #### Sous-tâches à cocher
-- [ ] Recueil des besoins utilisateurs/personas
+- [x] Recueil des besoins utilisateurs/personas
+- [x] Spécification des évolutions et user stories
 - [ ] Recueil des besoins techniques
 - [ ] Recueil des besoins d’intégration
 - [ ] Recueil des besoins de reporting/traçabilité
@@ -130,46 +164,31 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
 - [ ] Logs d’exécution et de validation
 
 #### Exemples de commandes/scripts
-- Go natif :
-  ```go
-  // Extraction des besoins utilisateurs/personas
-  go run cmd/recueil-besoins/main.go --type=utilisateurs --output besoins-utilisateurs.md
-
-  // Extraction des besoins techniques
-  go run cmd/recueil-besoins/main.go --type=technique --output besoins-techniques.csv
-
-  // Génération du rapport de synthèse
-  go run cmd/recueil-besoins/main.go --synthese --output synthese-besoins.json
-  ```
-- Bash :
-  ```bash
-  # Recueil des besoins d’intégration
-  ./cmd/recueil-besoins/main.sh --type=integration --output besoins-integration.md
-
-  # Validation croisée
-  diff besoins-utilisateurs.md besoins-techniques.csv > log-validation.txt
-  ```
+- [ ] Extraction des besoins utilisateurs/personas
+- [ ] Extraction des besoins techniques
+- [ ] Génération du rapport de synthèse
+- [ ] Recueil des besoins d’intégration
+- [ ] Validation croisée
 
 #### Critères de validation
-- Exhaustivité des besoins recensés
-- Traçabilité complète (logs, version Git)
-- Livrables conformes aux formats attendus
-- Revue croisée et validation des besoins
+- [ ] Exhaustivité des besoins recensés
+- [ ] Traçabilité complète (logs, version Git)
+- [ ] Livrables conformes aux formats attendus
+- [ ] Revue croisée et validation des besoins
 
 #### Procédures de rollback/versionnement
-- Sauvegarde `.bak` des fichiers avant modification
-- Commit Git dédié pour chaque recueil de besoins
-- Historique des logs d’exécution et de validation
+- [ ] Sauvegarde `.bak` des fichiers avant modification
+- [ ] Commit Git dédié pour chaque recueil de besoins
+- [ ] Historique des logs d’exécution et de validation
 
 #### Documentation associée
-- `README-recueil-besoins.md` : guide du recueil et utilisation des scripts
-- Guide d’utilisation des scripts Go/Bash pour la collecte et la synthèse
+- [ ] `README-recueil-besoins.md` : guide du recueil et utilisation des scripts
+- [ ] Guide d’utilisation des scripts Go/Bash pour la collecte et la synthèse
 
 #### Traçabilité
-- Logs horodatés pour chaque opération
-- Versionning Git systématique
-- Feedback automatisé sur la complétude et la validation
-#### Traçabilité
+- [ ] Logs horodatés pour chaque opération
+- [ ] Versionning Git systématique
+- [ ] Feedback automatisé sur la complétude et la validation
 - [x] Logs d’exécution horodatés
 - [x] Versionning Git systématique
 - [x] Feedback automatisé sur complétion de l’inventaire
@@ -199,16 +218,10 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
 - [x] Logs d’exécution horodatés : `logs/gap-analysis-YYYYMMDD-HHMMSS.log`
 
 #### Exemples de commandes/scripts Go natif & Bash
-- Go natif :
-  ```go
-  go run cmd/gapanalyzer/gapanalyzer/main.go --input inventory-personas-modes.json --output gap-modes-comparatif.md --log logs/gap-analysis-$(date +%Y%m%d-%H%M%S).log
-  go run cmd/gapanalyzer/gapanalyzer/main.go --report gap-analysis-report.md --format json
-  ```
-- Bash :
-  ```bash
-  diff <(cat inventory-modes.md | grep Roo) <(cat inventory-modes.md | grep Kilo) > gap-modes-comparatif.txt
-  cp gap-analysis-report.md gap-analysis-report.bak
-  ```
+- [ ] Générer comparatif Markdown
+- [ ] Générer rapport JSON
+- [ ] Générer comparatif Bash
+- [ ] Sauvegarder rapport .bak
 
 #### Critères de validation
 - [x] Exhaustivité des comparatifs (tous modes et fonctionnalités)
@@ -260,17 +273,61 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
 
 ---
 
-### 3. Recueil des besoins
-- [ ] Collecter besoins utilisateurs/personas (`cmd/recueil-besoins`)
-- [ ] Livrable : `besoins-personas.json`, rapport HTML
-- [ ] Commande : `go run cmd/recueil-besoins/main.go --output besoins-personas.json`
-- [ ] Script Go natif à adapter : `cmd/recueil-besoins/main.go`
-- [ ] Format attendu : JSON, HTML
-- [ ] Critères : validation croisée, tests automatisés
-- [ ] Rollback : sauvegarde avant modification
-- [ ] CI/CD : job `besoins-check`
-- [ ] Documentation : `README-besoins.md`
-- [ ] Traçabilité : logs, feedback automatisé
+### 3. Spécification des évolutions et user stories
+
+#### User Story 1 : Gestion centralisée des préférences multi-personas
+- [ ] Rédiger la spécification détaillée
+- [ ] Implémenter l’espace de configuration dédié pour chaque persona
+- [ ] Développer la persistance et restauration des préférences
+- [ ] Créer l’interface de bascule rapide entre personas
+- [ ] Synchroniser les préférences entre modes et terminaux
+- [ ] Gérer les valeurs par défaut et les conflits de synchronisation
+- [ ] Restreindre les permissions de modification des préférences
+
+#### User Story 2 : Reporting croisé automatisé
+- [ ] Générer rapports croisés multi-personas/modes
+- [ ] Exporter les rapports en Markdown, CSV et JSON
+- [ ] Ajouter indicateurs de couverture, redondance et friction
+- [ ] Rendre les rapports accessibles depuis l’interface documentaire
+- [ ] Gérer les données manquantes/incomplètes
+- [ ] Sécuriser l’accès aux rapports sensibles
+- [ ] Optimiser la performance de génération
+
+#### User Story 3 : Documentation et traçabilité multi-mode
+- [ ] Rédiger documentation exhaustive sur la traçabilité multi-mode
+- [ ] Archiver et rendre consultables les logs d’exécution
+- [ ] Documenter les points de synchronisation et de rollback
+- [ ] Versionner et publier la documentation dans le dépôt
+- [ ] Documenter les cas d’erreur et rollbacks
+- [ ] Historiser les modifications et accès multi-utilisateur
+- [ ] Valider automatiquement la complétude documentaire
+
+#### User Story 4 : Clarification et fusion des managers redondants
+- [ ] Clarifier les responsabilités des managers NotificationManagerImpl et AlertManagerImpl
+- [ ] Fusionner ou supprimer les fonctionnalités redondantes
+- [ ] Harmoniser et tester les interfaces
+- [ ] Migrer les usages existants sans perte de fonctionnalité
+- [ ] Gérer la migration des données et API
+- [ ] Assurer la compatibilité ascendante avec les scripts existants
+- [ ] Documenter les changements pour les utilisateurs
+
+#### User Story 5 : Couverture de tests sur scripts critiques
+- [ ] Ajouter des tests unitaires pour tous les scripts Bash/Go critiques
+- [ ] Couvrir les cas d’usage principaux et erreurs
+- [ ] Intégrer les résultats des tests dans le reporting documentaire
+- [ ] Tester systématiquement les nouveaux scripts avant déploiement
+- [ ] Planifier la migration/refactoring des scripts legacy non testables
+- [ ] Gérer les dépendances et mocks pour les tests
+- [ ] Reporter les taux de couverture et anomalies détectées
+
+---
+
+Pour chaque user story, les livrables attendus sont :
+- [ ] Spécification détaillée (Markdown)
+- [ ] Artefacts de code ou de configuration (dossiers du projet)
+- [ ] Tests et logs associés (dossiers de tests, logs)
+- [ ] Documentation mise à jour (AGENTS.md, recueil-besoins.md, synthese-ecarts-recommandations.md)
+
 
 ### 4. Spécification
 - [ ] Rédiger spécifications détaillées (`specs/personas-modes-spec.md`)
