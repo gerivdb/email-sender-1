@@ -1,118 +1,87 @@
 // cmd/gap-analyzer/main.go
-// Script Go natif pour analyse d’écart entre besoins-personas.json et l’existant (AGENTS.md, modules)
-// Phase 3.2 - Roadmap v105h
-//
-// Usage : go run cmd/gap-analyzer/main.go --input besoins-personas.json --output gap-analysis-report.md
-//
-// Documentation : README-gap-analysis.md
+// Analyse d’écart entre inventaire et besoins cibles
 
 package main
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
-	"log"
 	"os"
-	"time"
 )
 
-// Structures
-type BesoinPersona struct {
-	Persona         string   `json:"persona"`
-	Besoins         []string `json:"besoins"`
-	Source          string   `json:"source"`
-	DateRecensement string   `json:"date_recensement"`
+type Inventory struct {
+	Modules      []string `json:"modules"`
+	Dependencies []string `json:"dependencies"`
+	Artefacts    []string `json:"artefacts"`
 }
 
-type Ecart struct {
-	Persona          string   `json:"persona"`
-	BesoinsManquants []string `json:"besoins_manquants"`
-	Commentaire      string   `json:"commentaire"`
-}
-
-// Extraction fictive de l’existant (à remplacer par parsing réel)
-func extractExistant() map[string][]string {
-	return map[string][]string{
-		"Architecte":  {"Vision système", "Diagrammes"},
-		"Développeur": {"Code modulaire", "Tests unitaires"},
-		"Utilisateur": {"Interface claire"},
-	}
-}
-
-// Analyse d’écart
-func analyzeGap(besoins []BesoinPersona, existant map[string][]string) []Ecart {
-	var ecarts []Ecart
-	for _, b := range besoins {
-		ex := existant[b.Persona]
-		manquants := []string{}
-		for _, besoin := range b.Besoins {
-			found := false
-			for _, exist := range ex {
-				if besoin == exist {
-					found = true
-					break
-				}
-			}
-			if !found {
-				manquants = append(manquants, besoin)
-			}
-		}
-		commentaire := "OK"
-		if len(manquants) > 0 {
-			commentaire = "Besoins non couverts"
-		}
-		ecarts = append(ecarts, Ecart{
-			Persona:          b.Persona,
-			BesoinsManquants: manquants,
-			Commentaire:      commentaire,
-		})
-	}
-	return ecarts
+type GapAnalysis struct {
+	MissingModules      []string `json:"missing_modules"`
+	MissingDependencies []string `json:"missing_dependencies"`
+	MissingArtefacts    []string `json:"missing_artefacts"`
 }
 
 func main() {
-	input := flag.String("input", "besoins-personas.json", "Fichier d’entrée JSON")
-	output := flag.String("output", "gap-analysis-report.md", "Fichier de sortie Markdown")
-	flag.Parse()
-
-	log.Printf("Début de l’analyse d’écart (%s)", time.Now().Format(time.RFC3339))
-
-	file, err := os.Open(*input)
+	f, err := os.Open("inventaire.json")
 	if err != nil {
-		log.Fatalf("Erreur ouverture fichier : %v", err)
+		fmt.Println("Erreur ouverture inventaire.json:", err)
+		return
 	}
-	defer file.Close()
+	defer f.Close()
+	var inv Inventory
+	json.NewDecoder(f).Decode(&inv)
 
-	var besoins []BesoinPersona
-	decoder := json.NewDecoder(file)
-	if err := decoder.Decode(&besoins); err != nil {
-		log.Fatalf("Erreur lecture JSON : %v", err)
+	// Besoins cibles fictifs
+	targetModules := []string{"manager-recensement", "manager-gap-analysis", "spec-generator", "reporting-final", "validate_components", "backup-modified-files", "auto-roadmap-runner", "module-x"}
+	targetDependencies := []string{"github.com/gorilla/websocket", "log", "os", "encoding/json", "fmt"}
+	targetArtefacts := []string{"besoins-personas.json", "gap-analysis-report.md", "user-stories.md", "specs/personas-modes-spec.md", "reporting-final.md", "validation-report.md", ".bak", "module-x-output.json"}
+
+	missing := GapAnalysis{
+		MissingModules:      diff(targetModules, inv.Modules),
+		MissingDependencies: diff(targetDependencies, inv.Dependencies),
+		MissingArtefacts:    diff(targetArtefacts, inv.Artefacts),
 	}
 
-	existant := extractExistant()
-	ecarts := analyzeGap(besoins, existant)
-
-	fout, err := os.Create(*output)
+	fjson, err := os.Create("gap-analysis.json")
 	if err != nil {
-		log.Fatalf("Erreur création fichier : %v", err)
+		fmt.Println("Erreur création gap-analysis.json:", err)
+		return
 	}
-	defer fout.Close()
+	defer fjson.Close()
+	json.NewEncoder(fjson).Encode(missing)
 
-	fmt.Fprintf(fout, "# Rapport d’analyse d’écart – Personas\n\n")
-	fmt.Fprintf(fout, "_Date de génération : %s_\n\n", time.Now().Format("2006-01-02 15:04:05"))
-	fmt.Fprintf(fout, "| Persona      | Besoins manquants                    | Commentaire           |\n")
-	fmt.Fprintf(fout, "|--------------|--------------------------------------|-----------------------|\n")
-	for _, e := range ecarts {
-		fmt.Fprintf(fout, "| %s | %s | %s |\n", e.Persona, fmt.Sprintf("%v", e.BesoinsManquants), e.Commentaire)
+	fmd, err := os.Create("gap-analysis.md")
+	if err != nil {
+		fmt.Println("Erreur création gap-analysis.md:", err)
+		return
 	}
+	defer fmd.Close()
+	fmt.Fprintf(fmd, "# Analyse d’écart\n\n")
+	fmt.Fprintf(fmd, "## Modules manquants\n")
+	for _, m := range missing.MissingModules {
+		fmt.Fprintf(fmd, "- %s\n", m)
+	}
+	fmt.Fprintf(fmd, "\n## Dépendances manquantes\n")
+	for _, d := range missing.MissingDependencies {
+		fmt.Fprintf(fmd, "- %s\n", d)
+	}
+	fmt.Fprintf(fmd, "\n## Artefacts manquants\n")
+	for _, a := range missing.MissingArtefacts {
+		fmt.Fprintf(fmd, "- %s\n", a)
+	}
+	fmt.Println("Analyse d’écart générée : gap-analysis.json, gap-analysis.md")
+}
 
-	fmt.Fprintf(fout, "\n---\n\n## Log d’exécution\n")
-	fmt.Fprintf(fout, "- Script utilisé : go run cmd/gap-analyzer/main.go --input %s --output %s\n", *input, *output)
-	fmt.Fprintf(fout, "- Fichier d’entrée : %s\n", *input)
-	fmt.Fprintf(fout, "- Fichier généré : %s\n", *output)
-	fmt.Fprintf(fout, "- Horodatage : %s\n", time.Now().Format(time.RFC3339))
-
-	log.Printf("Analyse d’écart terminée. Rapport généré : %s", *output)
-	fmt.Printf("Succès : rapport d’écart généré\n")
+func diff(target, actual []string) []string {
+	m := make(map[string]bool)
+	for _, a := range actual {
+		m[a] = true
+	}
+	var missing []string
+	for _, t := range target {
+		if !m[t] {
+			missing = append(missing, t)
+		}
+	}
+	return missing
 }

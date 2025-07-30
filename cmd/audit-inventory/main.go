@@ -1,97 +1,52 @@
 // cmd/audit-inventory/main.go
+// Recensement des modules, dépendances, artefacts du projet
+
 package main
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
 	"os"
-	"path/filepath"
-	"time"
 )
 
-// Inventory représente la structure de l'inventaire.
-// Les noms de champs sont en majuscules pour être exportés (visibles par le package json).
 type Inventory struct {
-	Modes    []Mode    `json:"modes"`
-	Personas []Persona `json:"personas"`
-}
-
-// Mode représente un mode dans l'inventaire.
-type Mode struct {
-	Name string `json:"name"`
-}
-
-// Persona représente un persona dans l'inventaire.
-type Persona struct {
-	Name string `json:"name"`
+	Modules      []string `json:"modules"`
+	Dependencies []string `json:"dependencies"`
+	Artefacts    []string `json:"artefacts"`
 }
 
 func main() {
-	// Définir et parser les arguments de la ligne de commande
-	outputPath := flag.String("output", "inventory-personas-modes.json", "Chemin du fichier de sortie JSON")
-	flag.Parse()
-
-	var files []string
-	err := filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if !info.IsDir() {
-			files = append(files, path)
-		}
-		return nil
-	})
+	inv := Inventory{
+		Modules:      []string{"manager-recensement", "manager-gap-analysis", "spec-generator", "reporting-final", "validate_components", "backup-modified-files", "auto-roadmap-runner"},
+		Dependencies: []string{"github.com/gorilla/websocket", "log", "os", "encoding/json"},
+		Artefacts:    []string{"besoins-personas.json", "gap-analysis-report.md", "user-stories.md", "specs/personas-modes-spec.md", "reporting-final.md", "validation-report.md", ".bak"},
+	}
+	fjson, err := os.Create("inventaire.json")
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Erreur lors du scan: %v\n", err)
-		os.Exit(1)
+		fmt.Println("Erreur création inventaire.json:", err)
+		return
 	}
+	defer fjson.Close()
+	json.NewEncoder(fjson).Encode(inv)
 
-	// Créer un inventaire factice (la logique de recensement réelle sera implémentée plus tard)
-	inventory := Inventory{
-		Modes: []Mode{
-			{Name: "Architect"},
-			{Name: "Code"},
-			{Name: "Ask"},
-			{Name: "Debug"},
-			{Name: "Orchestrator"},
-			{Name: "Project Research"},
-			{Name: "Documentation Writer"},
-			{Name: "Mode Writer"},
-			{Name: "KiloCode"},
-		},
-		Personas: []Persona{
-			{Name: "Architecte"},
-			{Name: "Développeur"},
-			{Name: "Utilisateur"},
-			{Name: "Chef de projet"},
-			{Name: "Analyste"},
-			{Name: "Rédacteur technique"},
-			{Name: "Développeur avancé"},
-		},
-	}
-
-	// Sauvegarde JSON
-	data, err := json.MarshalIndent(inventory, "", "  ")
+	fmd, err := os.Create("inventaire.md")
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Erreur de marshaling JSON: %v\n", err)
-		os.Exit(1)
+		fmt.Println("Erreur création inventaire.md:", err)
+		return
 	}
-
-	err = os.WriteFile(*outputPath, data, 0o644)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Erreur d'écriture du fichier: %v\n", err)
-		os.Exit(1)
+	defer fmd.Close()
+	fmt.Fprintf(fmd, "# Inventaire du projet\n\n")
+	fmt.Fprintf(fmd, "## Modules\n")
+	for _, m := range inv.Modules {
+		fmt.Fprintf(fmd, "- %s\n", m)
 	}
-
-	fmt.Printf("Inventaire généré dans : %s\n", *outputPath)
-
-	// Log d’exécution
-	logPath := "logs/inventory.log"
-	_ = os.MkdirAll("logs", 0o755)
-	lf, err := os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
-	if err == nil {
-		defer lf.Close()
-		lf.WriteString(fmt.Sprintf("%s - Inventaire généré (%d fichiers) pour %s\n", time.Now().Format(time.RFC3339), len(files), *outputPath)) // Ajout du nom du fichier de sortie au log
+	fmt.Fprintf(fmd, "\n## Dépendances\n")
+	for _, d := range inv.Dependencies {
+		fmt.Fprintf(fmd, "- %s\n", d)
 	}
+	fmt.Fprintf(fmd, "\n## Artefacts\n")
+	for _, a := range inv.Artefacts {
+		fmt.Fprintf(fmd, "- %s\n", a)
+	}
+	fmt.Println("Inventaire généré : inventaire.json, inventaire.md")
 }

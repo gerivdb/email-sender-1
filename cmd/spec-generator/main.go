@@ -1,50 +1,64 @@
+// cmd/spec-generator/main.go
+// Génération des spécifications détaillées à partir des besoins
+
 package main
 
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 )
 
-type PersonaNeeds struct {
-	Persona string   `json:"persona"`
-	Needs   []string `json:"needs"`
+type Besoin struct {
+	Type   string   `json:"type"`
+	Items  []string `json:"items"`
+	Source string   `json:"source"`
+}
+
+type Spec struct {
+	Type        string   `json:"type"`
+	Description string   `json:"description"`
+	Items       []string `json:"items"`
 }
 
 func main() {
-	// Lire le fichier besoins-personas.json
-	needsFile, err := ioutil.ReadFile("besoins-personas.json")
+	f, err := os.Open("besoins.json")
 	if err != nil {
-		fmt.Printf("Erreur lors de la lecture de besoins-personas.json: %v\n", err)
-		os.Exit(1)
+		fmt.Println("Erreur ouverture besoins.json:", err)
+		return
+	}
+	defer f.Close()
+	var besoins []Besoin
+	json.NewDecoder(f).Decode(&besoins)
+
+	var specs []Spec
+	for _, b := range besoins {
+		desc := fmt.Sprintf("Spécification pour %s (%s)", b.Type, b.Source)
+		specs = append(specs, Spec{Type: b.Type, Description: desc, Items: b.Items})
 	}
 
-	var personaNeedsList []PersonaNeeds
-	err = json.Unmarshal(needsFile, &personaNeedsList)
+	fjson, err := os.Create("specs.json")
 	if err != nil {
-		fmt.Printf("Erreur lors de la conversion JSON: %v\n", err)
-		os.Exit(1)
+		fmt.Println("Erreur création specs.json:", err)
+		return
 	}
+	defer fjson.Close()
+	json.NewEncoder(fjson).Encode(specs)
 
-	// Créer le fichier de spécifications
-	specFile, err := os.Create("personas-modes-spec.md")
+	fmd, err := os.Create("specs.md")
 	if err != nil {
-		fmt.Printf("Erreur lors de la création de personas-modes-spec.md: %v\n", err)
-		os.Exit(1)
+		fmt.Println("Erreur création specs.md:", err)
+		return
 	}
-	defer specFile.Close()
-
-	specFile.WriteString("# Spécifications des Personas et Modes\n\n")
-
-	for _, personaNeeds := range personaNeedsList {
-		specFile.WriteString(fmt.Sprintf("## Persona: %s\n\n", personaNeeds.Persona))
-		specFile.WriteString("### Besoins\n\n")
-		for _, need := range personaNeeds.Needs {
-			specFile.WriteString(fmt.Sprintf("- %s\n", need))
+	defer fmd.Close()
+	fmt.Fprintf(fmd, "# Spécifications détaillées\n\n")
+	for _, s := range specs {
+		fmt.Fprintf(fmd, "## %s\n", s.Type)
+		fmt.Fprintf(fmd, "%s\n", s.Description)
+		for _, item := range s.Items {
+			fmt.Fprintf(fmd, "- %s\n", item)
 		}
-		specFile.WriteString("\n")
+		fmt.Fprintf(fmd, "\n")
 	}
-
-	fmt.Println("Spécifications générées dans personas-modes-spec.md")
+	fmt.Println("Spécifications générées : specs.json, specs.md")
 }

@@ -1,74 +1,47 @@
 // cmd/recensement-besoins/main.go
-// Script Go natif pour recenser les besoins utilisateurs/personas et générer besoins-personas.json
-// Phase 3 - Roadmap v105h
-//
-// Usage : go run cmd/recensement-besoins/main.go --output besoins-personas.json
-//
-// Documentation : README-recueil-besoins.md
+// Recueil des besoins utilisateurs, techniques, d’intégration
 
 package main
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
-	"log"
 	"os"
-	"time"
 )
 
-// BesoinPersona structure
-type BesoinPersona struct {
-	Persona         string   `json:"persona"`
-	Besoins         []string `json:"besoins"`
-	Source          string   `json:"source"`
-	DateRecensement string   `json:"date_recensement"`
-}
-
-// Extraction fictive des besoins (à remplacer par parsing réel)
-func extractBesoins() []BesoinPersona {
-	return []BesoinPersona{
-		{
-			Persona:         "Architecte",
-			Besoins:         []string{"Vision système", "Diagrammes", "Validation specs"},
-			Source:          "AGENTS.md",
-			DateRecensement: time.Now().Format(time.RFC3339),
-		},
-		{
-			Persona:         "Développeur",
-			Besoins:         []string{"Code modulaire", "Tests unitaires", "Documentation"},
-			Source:          "AGENTS.md",
-			DateRecensement: time.Now().Format(time.RFC3339),
-		},
-		{
-			Persona:         "Utilisateur",
-			Besoins:         []string{"Interface claire", "Feedback", "Support"},
-			Source:          "Questionnaires",
-			DateRecensement: time.Now().Format(time.RFC3339),
-		},
-	}
+type Besoin struct {
+	Type   string   `json:"type"`
+	Items  []string `json:"items"`
+	Source string   `json:"source"`
 }
 
 func main() {
-	output := flag.String("output", "besoins-personas.json", "Fichier de sortie JSON")
-	flag.Parse()
-
-	log.Printf("Début du recensement des besoins (%s)", time.Now().Format(time.RFC3339))
-
-	besoins := extractBesoins()
-
-	file, err := os.Create(*output)
+	besoins := []Besoin{
+		{Type: "utilisateur", Items: []string{"Interface claire", "Feedback", "Support"}, Source: "questionnaires"},
+		{Type: "technique", Items: []string{"Tests unitaires", "Documentation", "API REST"}, Source: "AGENTS.md"},
+		{Type: "intégration", Items: []string{"Interopérabilité", "Formats JSON/CSV"}, Source: "audit-modules"},
+	}
+	fjson, err := os.Create("besoins.json")
 	if err != nil {
-		log.Fatalf("Erreur création fichier : %v", err)
+		fmt.Println("Erreur création besoins.json:", err)
+		return
 	}
-	defer file.Close()
+	defer fjson.Close()
+	json.NewEncoder(fjson).Encode(besoins)
 
-	encoder := json.NewEncoder(file)
-	encoder.SetIndent("", "  ")
-	if err := encoder.Encode(besoins); err != nil {
-		log.Fatalf("Erreur écriture JSON : %v", err)
+	fmd, err := os.Create("besoins.md")
+	if err != nil {
+		fmt.Println("Erreur création besoins.md:", err)
+		return
 	}
-
-	log.Printf("Recensement terminé. Fichier généré : %s", *output)
-	fmt.Printf("Succès : %d personas recensés\n", len(besoins))
+	defer fmd.Close()
+	fmt.Fprintf(fmd, "# Recueil des besoins\n\n")
+	for _, b := range besoins {
+		fmt.Fprintf(fmd, "## %s\n", b.Type)
+		for _, item := range b.Items {
+			fmt.Fprintf(fmd, "- %s\n", item)
+		}
+		fmt.Fprintf(fmd, "_Source : %s_\n\n", b.Source)
+	}
+	fmt.Println("Recueil des besoins généré : besoins.json, besoins.md")
 }
