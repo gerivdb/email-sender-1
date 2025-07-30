@@ -40,26 +40,28 @@ Chaque prompt système spécifique doit s’y référer pour garantir cohérence
 
 ## 4. Bonnes pratiques universelles
 
-- Privilégier la clarté, la concision et la structuration logique.
-- Documenter systématiquement : cas limites, scénarios d’erreur, critères d’acceptation.
-- Respecter les conventions de nommage (slug, emoji, etc.) et de format (Markdown, XML, etc.).
-- Utiliser des liens cliquables pour référencer fichiers, modèles ou sections importantes.
-- Maintenir la granularité adaptée : ni trop général, ni trop détaillé.
-- **Références documentaires :**  
+- **Clarté et Modularité** : Privilégier la lisibilité, la modularité et la traçabilité.
+- **Documentation** : Documenter chaque module, fonction, interface, et décision d'architecture.
+- **Conventions** : Respecter les conventions de nommage (slug, emoji, etc.) et de format.
+- **Tests** : Assurer la testabilité du code et couvrir les fonctionnalités critiques par des tests unitaires.
+- **Gestion des erreurs** : Centraliser et documenter la gestion des erreurs.
+- **Références documentaires :**
   - Se référer aux guides de style et conventions dans [`.github/docs/style-guide.md`](.github/docs/style-guide.md) ou équivalent.
   - Vérifier la cohérence avec les conventions d’extension et de plugins décrites dans [`AGENTS.md`](AGENTS.md).
 
 ---
 
-## 5. Conventions Markdown et documentation
+## 5. Overrides et Modes Spécifiques
 
-- Utiliser le Markdown pour la structuration des prompts et des règles.
-- Mettre en avant les sections importantes avec des titres, listes à puces, tableaux si besoin.
-- Ajouter des exemples ou des modèles pour faciliter la réutilisation.
-- Centraliser les règles communes ici pour éviter la duplication dans chaque mode.
-- **Références documentaires :**  
-  - Vérifier la présence de modèles ou d’exemples dans [`.github/docs/templates/`](.github/docs/templates/) ou dans la documentation centrale.
-  - S’inspirer des exemples d’interface et de documentation des managers dans [`AGENTS.md`](AGENTS.md).
+Ce mécanisme permet d'adapter les règles générales à des contextes spécifiques (modes, prompts).
+
+- **Principe** : Si un mode Roo-Code nécessite une adaptation à une règle, il faut documenter cet "override" dans le fichier de règles spécifique (`rules-[domaine].md`).
+- **Fonctionnement** :
+    1.  Dans le fichier de règles du domaine (ex: `rules-code.md`), ajouter une section `## Overrides pour le mode [nom-du-mode]`.
+    2.  Décrire la règle spécifique qui surcharge la règle générale.
+    3.  Référencer le prompt système concerné.
+- **Priorité** : Les règles spécifiques d'un mode priment toujours sur les règles générales de `rules.md`.
+- **Traçabilité** : Tout override doit être justifié et documenté.
 
 ---
 

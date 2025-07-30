@@ -2,96 +2,97 @@
 
 ## Objectif
 
-Garantir la robustesse, la traçabilité et l’auto-surveillance de l’écosystème Roo Code (.roo, managers, workflows, registry, prompts, etc.), en éliminant les bugs, overrides imprévus et comportements non maîtrisés. Ce plan complète le plan v105g en se concentrant sur la fiabilisation technique et documentaire.
+Garantir la robustesse, la traçabilité et l’auto-surveillance de l’écosystème Roo Code (.roo, managers, workflows, registry, prompts, etc.), en éliminant les bugs, les conflits, la redondance et les blocages pour les personas de l'extension VSIX Roo Code. Ce plan remplace les plans précédents en se concentrant sur la simplification, la clarification et l'automatisation.
 
 ---
 
 ## Sommaire
 
-1. Audit et fiabilisation des outils système et commandes critiques
-2. Vérification des overrides, héritages et prompts système
-3. Mise en place de l’auto-surveillance et de la régulation
-4. Test de l’orchestrator et des workflows complexes
-5. Documentation et synchronisation
-6. Checklist de validation finale
+1.  **Simplification et Centralisation des Règles**
+2.  **Amélioration et Intégration des Outils**
+3.  **Clarification des Personas et des Workflows**
+4.  **Mise en place de la Validation Sémantique**
+5.  **Documentation et Formation**
+6.  **Checklist de validation finale**
 
 ---
 
-## 1. Audit et fiabilisation des outils système et commandes critiques
+## 1. Simplification et Centralisation des Règles
 
-- **Actions :**
-  - Tester le fonctionnement de `write_file`, `read_file`, `cmd/cli` sur tous les modes Roo (sauf Ask), conformément à `.roo/tools-registry.md`.
-  - Mettre en place des tests unitaires et dry-run pour chaque commande critique.
-  - Ajouter des logs structurés (ErrorManager, MonitoringManager) pour chaque workflow et script système.
-- **Livrables :**
-  - Rapport d’audit des outils système
-  - Scripts de test dry-run et unitaires
-  - Fichiers de logs centralisés
-
----
-
-## 2. Vérification des overrides, héritages et prompts système
-
-- **Actions :**
-  - Auditer chaque mode Roo : vérifier que le system prompt, les rules enfants, et les exceptions sont bien gérés.
-  - Documenter les overrides et héritages dans `.roo/rules/` et dans la documentation centrale.
-  - S’assurer que les exceptions (ex : Ask, Orchestrator) sont bien respectées.
-- **Livrables :**
-  - Rapport d’audit des overrides et héritages
-  - Documentation des prompts et règles spécifiques
+-   **Actions :**
+    -   Fusionner les règles redondantes des fichiers `rules-*.md` dans `rules.md`.
+    -   Établir un mécanisme de surcharge (`override`) explicite et documenté pour les cas spécifiques.
+    -   Supprimer les fichiers de règles devenus obsolètes après la fusion.
+-   **Livrables :**
+    -   Un fichier `rules.md` centralisé et allégé.
+    -   Une documentation claire du mécanisme d'override.
+    -   Une structure de règles simplifiée.
 
 ---
 
-## 3. Mise en place de l’auto-surveillance et de la régulation
+## 2. Amélioration et Intégration des Outils
 
-- **Actions :**
-  - Activer le MonitoringManager et l’AlertManagerImpl pour surveiller en continu les workflows, registry, prompts et managers.
-  - Définir des alertes et des rapports automatiques en cas de bug, override non géré, ou comportement imprévu.
-- **Livrables :**
-  - Tableaux de bord de monitoring
-  - Configuration des alertes et rapports automatiques
-
----
-
-## 4. Test de l’orchestrator et des workflows complexes
-
-- **Actions :**
-  - Simuler des scénarios complexes : délégation de tâches, gestion des exceptions, rollback, reporting.
-  - Vérifier l’absence de bugs ou de comportements imprévus lors de l’orchestration.
-- **Livrables :**
-  - Rapport de tests d’orchestration
-  - Cas de test documentés
+-   **Actions :**
+    -   Faire de `refs_sync.go` l'unique outil de gestion des références croisées, en supprimant les rapports manuels.
+    -   Intégrer la sortie de `refs_sync.go` directement dans la documentation.
+    -   Remplacer `auto-roadmap-runner.go` par un script shell (`.sh`) ou un `Makefile` plus simple et standard.
+    -   Supprimer les fichiers de log et de rapport redondants (`crossrefs-gap-report.md`, `files-scan-log.md`, etc.).
+-   **Livrables :**
+    -   Un outil `refs_sync.go` amélioré et autonome.
+    -   Un script de build/orchestration simplifié.
+    -   Un dossier `.roo/tools` nettoyé.
 
 ---
 
-## 5. Documentation et synchronisation
+## 3. Clarification des Personas et des Workflows
 
-- **Actions :**
-  - Documenter chaque étape, chaque cas limite et chaque correction dans la documentation centrale et les README des managers.
-  - Synchroniser AGENTS.md, `.roo/rules/workflows-matrix.md` et le plan v105g.
-- **Livrables :**
-  - Documentation mise à jour
-  - Tableaux de synchronisation des plans et des workflows
+-   **Actions :**
+    -   Définir et documenter clairement les personas de l'extension VSIX (développeur, architecte, testeur, etc.).
+    -   Pour chaque persona, décrire les workflows typiques et les points de friction potentiels.
+    -   Simplifier les workflows en se basant sur les retours des personas.
+-   **Livrables :**
+    -   Une documentation des personas et de leurs workflows.
+    -   Des workflows simplifiés et documentés.
+
+---
+
+## 4. Mise en place de la Validation Sémantique
+
+-   **Actions :**
+    -   Développer un outil de validation sémantique des règles (`rules-validator.go`).
+    -   Cet outil vérifiera la cohérence entre les règles, la détection de conflits et le respect des dépendances.
+    -   Intégrer cet outil dans le processus de CI/CD pour une validation continue.
+-   **Livrables :**
+    -   Un outil `rules-validator.go` fonctionnel.
+    -   Un processus de CI/CD qui valide sémantiquement les règles à chaque commit.
+
+---
+
+## 5. Documentation et Formation
+
+-   **Actions :**
+    -   Créer une documentation "Getting Started" pour les nouveaux contributeurs, expliquant l'écosystème simplifié.
+    -   Mettre à jour toute la documentation pour refléter les changements.
+-   **Livrables :**
+    -   Un guide de démarrage rapide.
+    -   Une documentation projet à jour.
 
 ---
 
 ## 6. Checklist de validation finale
 
-- [ ] Tous les outils système fonctionnent sur les modes autorisés (sauf Ask)
-- [ ] Les tests unitaires et dry-run sont en place et validés
-- [ ] Les logs structurés sont centralisés et exploitables
-- [ ] Les overrides et héritages sont documentés et maîtrisés
-- [ ] L’auto-surveillance et les alertes sont opérationnelles
-- [ ] L’orchestrator fonctionne sans bug sur les scénarios complexes
-- [ ] La documentation centrale et les README sont à jour
-- [ ] Synchronisation avec le plan v105g et la roadmap globale
+-   [ ] Les règles sont centralisées et simplifiées.
+-   [ ] Le mécanisme d'override est clair et documenté.
+-   [ ] Les outils sont intégrés, simplifiés et ne sont plus redondants.
+-   [ ] Les personas et leurs workflows sont définis et documentés.
+-   [ ] La validation sémantique des règles est automatisée.
+-   [ ] La documentation est à jour et un guide de démarrage rapide est disponible.
 
 ---
 
 ## Notes et recommandations
 
-- Ce plan doit être mené en parallèle ou juste après le plan v105g, selon la charge et la priorité des équipes.
-- Il est recommandé d’intégrer les phases 1 et 2 dans v105g si possible, et de traiter les phases 3 à 6 dans ce plan dédié.
-- Toute anomalie ou suggestion d’amélioration doit être documentée dans `.github/docs/incidents/` et référencée dans la roadmap.
+-   Ce plan est conçu pour être itératif. Chaque étape peut être mise en œuvre et validée indépendamment.
+-   L'implication des utilisateurs finaux (les personas) est cruciale pour la réussite de ce plan.
 
 ---
