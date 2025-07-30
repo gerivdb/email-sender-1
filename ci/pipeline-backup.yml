@@ -1,0 +1,14 @@
+# ci/pipeline-backup.yml
+# Pipeline CI/CD pour backup et notification Kilo Code
+
+jobs:
+  backup:
+    steps:
+      - name: Run backup
+        run: go run cmd/backup-modified-files/main.go
+      - name: Test backup
+        run: go test ./cmd/backup-modified-files/
+      - name: Notify Kilo Code
+        run: go run cmd/backup-modified-files/notify_kilo.go
+      - name: Archive logs
+        run: cp rollback.log artifacts/rollback.log
