@@ -1,0 +1,46 @@
+name: Roo-Code Refs Sync
+
+on:
+  push:
+    paths:
+      - '.roo/tools/refs_sync.go'
+      - '.roo/tools/refs_sync_test.go'
+      - '.roo/tools/refs_sync.config.yaml'
+      - '.roo/tools/spec-crossrefs.md'
+      - '.roo/tools/auto-roadmap-runner.go'
+
+jobs:
+  refs-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+
+      - name: Scan des fichiers
+        run: go run .roo/tools/refs_sync.go --scan
+
+      - name: Injection des références croisées
+        run: go run .roo/tools/refs_sync.go --inject
+
+      - name: Vérification des verrous
+        run: go run .roo/tools/refs_sync.go --check-locks
+
+      - name: Dry-run
+        run: go run .roo/tools/refs_sync.go --dry-run
+
+      - name: Tests unitaires et intégration
+        run: go test .roo/tools/refs_sync_test.go
+
+      - name: Générer rapport d’exécution
+        run: cp .roo/tools/refs_sync_report.md .roo/tools/refs_sync_report_run.md
+
+      - name: Rollback si besoin
+        run: bash .roo/tools/rollback_refs_sync.sh
+
+      - name: Documentation usage
+        run: cp .roo/tools/refs_sync_usage.md .roo/tools/refs_sync_usage_run.md

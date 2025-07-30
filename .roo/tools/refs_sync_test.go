@@ -112,3 +112,21 @@ t.Errorf("Simulation incorrecte")
 }
 _ = os.Remove(testFile)
 }
+
+// Test d'intégration workflow complet
+func TestFullWorkflow(t *testing.T) {
+files, err := ScanRulesDir(".roo/rules/")
+if err != nil {
+t.Fatalf("ScanRulesDir failed: %v", err)
+}
+for _, f := range files {
+err := InjectCrossRefsSection(filepath.Join(".roo/rules/", f), files, "## Références croisées", "- [%s](%s): %s")
+if err != nil {
+t.Errorf("Injection failed for %s: %v", f, err)
+}
+sim, err := DryRunInject(filepath.Join(".roo/rules/", f), files, "## Références croisées", "- [%s](%s): %s")
+if err != nil || !strings.Contains(sim, "## Références croisées") {
+t.Errorf("DryRun failed for %s: %v", f, err)
+}
+}
+}
