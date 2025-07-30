@@ -1,4 +1,4 @@
-package validate_components
+package main
 
 import (
 	"fmt"

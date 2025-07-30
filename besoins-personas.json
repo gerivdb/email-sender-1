@@ -1,1 +1,32 @@
-null
+[
+  {
+    "persona": "Architecte",
+    "besoins": [
+      "Vision système",
+      "Diagrammes",
+      "Validation specs"
+    ],
+    "source": "AGENTS.md",
+    "date_recensement": "2025-07-30T16:25:16+02:00"
+  },
+  {
+    "persona": "Développeur",
+    "besoins": [
+      "Code modulaire",
+      "Tests unitaires",
+      "Documentation"
+    ],
+    "source": "AGENTS.md",
+    "date_recensement": "2025-07-30T16:25:16+02:00"
+  },
+  {
+    "persona": "Utilisateur",
+    "besoins": [
+      "Interface claire",
+      "Feedback",
+      "Support"
+    ],
+    "source": "Questionnaires",
+    "date_recensement": "2025-07-30T16:25:16+02:00"
+  }
+]

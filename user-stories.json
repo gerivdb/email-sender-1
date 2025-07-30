@@ -1,0 +1,32 @@
+[
+  {
+    "persona": "Architecte",
+    "story": "En tant qu'architecte, je veux valider les specs pour garantir la cohérence du système.",
+    "priorite": "Haute",
+    "dependances": [
+      "Vision système",
+      "Diagrammes"
+    ],
+    "date_generation": "2025-07-30T16:27:26+02:00"
+  },
+  {
+    "persona": "Développeur",
+    "story": "En tant que développeur, je veux disposer de tests unitaires pour sécuriser le code.",
+    "priorite": "Haute",
+    "dependances": [
+      "Code modulaire",
+      "Documentation"
+    ],
+    "date_generation": "2025-07-30T16:27:26+02:00"
+  },
+  {
+    "persona": "Utilisateur",
+    "story": "En tant qu'utilisateur, je veux une interface claire pour faciliter mon expérience.",
+    "priorite": "Moyenne",
+    "dependances": [
+      "Feedback",
+      "Support"
+    ],
+    "date_generation": "2025-07-30T16:27:26+02:00"
+  }
+]

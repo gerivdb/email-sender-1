@@ -1,0 +1,75 @@
+# Roadmap CI/CD Pipeline – Phase 3
+# Orchestration automatisée des étapes roadmap v105h
+
+name: Roadmap v105h CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+      - name: Build recensement
+        run: go build ./cmd/manager-recensement/
+      - name: Build gap analysis
+        run: go build ./cmd/manager-gap-analysis/
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+      - name: Run unit tests recensement
+        run: go test ./cmd/manager-recensement/
+      - name: Run unit tests gap analysis
+        run: go test ./cmd/manager-gap-analysis/
+
+  reporting:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Generate reporting
+        run: go run cmd/reporting-final/main.go --output reporting-final.md
+
+  backup:
+    runs-on: ubuntu-latest
+    needs: reporting
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Run backup
+        run: go run cmd/backup-modified-files/main.go
+
+  validate:
+    runs-on: ubuntu-latest
+    needs: backup
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Validate components
+        run: go run cmd/validate_components/validate_components.go
+
+  badges:
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - name: Generate badges (placeholder)
+        run: echo "Badges générés"

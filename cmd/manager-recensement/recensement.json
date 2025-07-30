@@ -1,0 +1,18 @@
+{
+  "managers": [
+    {
+      "name": "DocManager",
+      "paths": [
+        "docs/",
+        "README.md"
+      ]
+    },
+    {
+      "name": "ErrorManager",
+      "paths": [
+        "errors/",
+        "error.log"
+      ]
+    }
+  ]
+}

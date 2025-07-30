@@ -118,11 +118,11 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
 ### 3. Roadmap Granulaire – Recueil des besoins, User Stories et Spécification
 
 #### 3.1 Recensement des besoins
-- [ ] Recenser les besoins utilisateurs/personas (interviews, questionnaires, analyse AGENTS.md)
-- [ ] Recenser les besoins techniques (lecture des specs, analyse des dépendances, audit des modules)
-- [ ] Recenser les besoins d’intégration (API, interopérabilité, formats)
-- [ ] Recenser les besoins de reporting/traçabilité (logs, feedback, badges)
-- [ ] Générer le fichier `besoins-personas.json` via script Go natif
+- [x] Recenser les besoins utilisateurs/personas (interviews, questionnaires, analyse AGENTS.md)
+- [x] Recenser les besoins techniques (lecture des specs, analyse des dépendances, audit des modules)
+- [x] Recenser les besoins d’intégration (API, interopérabilité, formats)
+- [x] Recenser les besoins de reporting/traçabilité (logs, feedback, badges)
+- [x] Générer le fichier `besoins-personas.json` via script Go natif
 
   **Livrables**
   - `besoins-personas.json`
@@ -162,9 +162,9 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
   - Log horodaté, versionning Git, feedback automatisé
 
 #### 3.2 Analyse d’écart
-- [ ] Comparer besoins recensés vs existant (AGENTS.md, modules, scripts)
-- [ ] Générer tableau des écarts (fonctionnalités, interfaces, artefacts)
-- [ ] Générer rapport d’écart Markdown/CSV/JSON
+- [x] Comparer besoins recensés vs existant (AGENTS.md, modules, scripts)
+- [x] Générer tableau des écarts (fonctionnalités, interfaces, artefacts)
+- [x] Générer rapport d’écart Markdown/CSV/JSON
 
   **Livrables**
   - `gap-analysis-report.md`
@@ -202,9 +202,9 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
   - Log horodaté, versionning, feedback automatisé
 
 #### 3.3 Recueil des user stories
-- [ ] Formaliser les user stories à partir des besoins et écarts
-- [ ] Générer le fichier `user-stories.md` et `user-stories.json`
-- [ ] Ajouter les dépendances et priorités
+- [x] Formaliser les user stories à partir des besoins et écarts
+- [x] Générer le fichier `user-stories.md` et `user-stories.json`
+- [x] Ajouter les dépendances et priorités
 
   **Livrables**
   - `user-stories.md`
@@ -241,10 +241,10 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
   - Log horodaté, versionning, feedback automatisé
 
 #### 3.4 Spécification détaillée
-- [ ] Rédiger la spécification pour chaque user story
-- [ ] Générer le fichier `specs/personas-modes-spec.md`
-- [ ] Générer le fichier `specs/personas-modes-spec.json`
-- [ ] Lier chaque spec aux scripts, modules et tests
+- [x] Rédiger la spécification pour chaque user story
+- [x] Générer le fichier `specs/personas-modes-spec.md`
+- [x] Générer le fichier `specs/personas-modes-spec.json`
+- [x] Lier chaque spec aux scripts, modules et tests
 
   **Livrables**
   - `personas-modes-spec.md`
@@ -282,9 +282,9 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
   - Log horodaté, versionning, feedback automatisé
 
 #### 3.5 Développement modulaire
-- [ ] Implémenter chaque user story en module Go natif
-- [ ] Générer les scripts Go, outputs JSON/Markdown
-- [ ] Créer les tests unitaires et d’intégration
+- [x] Implémenter chaque user story en module Go natif
+- [x] Générer les scripts Go, outputs JSON/Markdown
+- [x] Créer les tests unitaires et d’intégration
 
   **Livrables**
   - Scripts Go natifs
@@ -324,9 +324,9 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
   - Log build, version Git
 
 #### 3.6 Tests automatisés
-- [ ] Écrire et exécuter tests unitaires et d’intégration
-- [ ] Générer rapports de tests, badge coverage
-- [ ] Intégrer les résultats dans le reporting documentaire
+- [x] Écrire et exécuter tests unitaires et d’intégration
+- [x] Générer rapports de tests, badge coverage
+- [x] Intégrer les résultats dans le reporting documentaire
 
   **Livrables**
   - Rapports de tests (Markdown, HTML)
@@ -362,9 +362,9 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
   - Logs tests, badge coverage
 
 #### 3.7 Reporting automatisé
-- [ ] Générer rapports consolidés (Markdown, HTML)
-- [ ] Générer badge reporting
-- [ ] Archiver les rapports et logs
+- [x] Générer rapports consolidés (Markdown, HTML)
+- [x] Générer badge reporting
+- [x] Archiver les rapports et logs
 
   **Livrables**
   - `reporting-final.md`
@@ -398,8 +398,8 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
   - Logs reporting, badge reporting
 
 #### 3.8 Validation croisée
-- [ ] Revue croisée, validation finale, badge
-- [ ] Générer rapport de validation
+- [x] Revue croisée, validation finale, badge
+- [x] Générer rapport de validation
 
   **Livrables**
   - Rapport de validation
@@ -433,8 +433,8 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
   - Logs validation, badge validation
 
 #### 3.9 Rollback & Versionnement
-- [ ] Sauvegarde automatique avant chaque étape majeure
-- [ ] Générer fichiers `.bak`, logs rollback
+- [x] Sauvegarde automatique avant chaque étape majeure
+- [x] Générer fichiers `.bak`, logs rollback
 
   **Livrables**
   - Fichiers `.bak`
@@ -465,9 +465,9 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
   - Logs backup, badge backup
 
 #### 3.10 Automatisation CI/CD & Orchestration
-- [ ] Définir pipeline CI/CD (`ci/scripts/roadmap-pipeline.yml`)
-- [ ] Orchestrateur global (`auto-roadmap-runner.go`) qui exécute tous les scans, analyses, tests, rapports, feedback, sauvegardes, notifications
-- [ ] Intégrer badges, triggers, reporting, feedback automatisé
+- [x] Définir pipeline CI/CD (`ci/scripts/roadmap-pipeline.yml`)
+- [x] Orchestrateur global (`auto-roadmap-runner.go`) qui exécute tous les scans, analyses, tests, rapports, feedback, sauvegardes, notifications
+- [x] Intégrer badges, triggers, reporting, feedback automatisé
 
   **Livrables**
   - Pipeline YAML
@@ -506,13 +506,13 @@ Structure conforme aux standards d’ingénierie, .clinerules, et automatisation
 
 ## Orchestration & CI/CD
 
-- [ ] Orchestrateur global : `auto-roadmap-runner.go` (`cmd/auto-roadmap-runner/`)
-- [ ] Pipeline CI/CD : `ci/scripts/roadmap-pipeline.yml`
-- [ ] Reporting automatisé : badge, logs, feedback
-- [ ] Sauvegardes automatiques : `.bak`, logs rollback
-- [ ] Notifications : intégration NotificationManagerImpl
-- [ ] Vérification état projet avant/après chaque modification majeure
-- [ ] Alternatives ou vérifications manuelles proposées si besoin
+- [x] Orchestrateur global : `auto-roadmap-runner.go` (`cmd/auto-roadmap-runner/`)
+- [x] Pipeline CI/CD : `ci/scripts/roadmap-pipeline.yml`
+- [x] Reporting automatisé : badge, logs, feedback
+- [x] Sauvegardes automatiques : `.bak`, logs rollback
+- [x] Notifications : intégration NotificationManagerImpl
+- [x] Vérification état projet avant/après chaque modification majeure
+- [x] Alternatives ou vérifications manuelles proposées si besoin
 
 ---
 
