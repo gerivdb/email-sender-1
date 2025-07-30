@@ -5,16 +5,7 @@ Il détaille les méthodologies, checklists et bonnes pratiques pour le diagnost
 
 ---
 
-## 1. Principes généraux
-
-- Toujours commencer par la reproduction du problème dans un environnement contrôlé.
-- Documenter chaque étape du diagnostic : symptômes, hypothèses, tests réalisés, résultats.
-- Utiliser des logs structurés et centralisés (voir ErrorManager).
-- Privilégier la traçabilité et la reproductibilité des scénarios d’erreur.
-
----
-
-## 2. Checklist de débogage
+## 1. Checklist de débogage
 
 - [ ] Identifier le contexte et les conditions d’apparition du bug.
 - [ ] Vérifier les logs et les métriques associées.
@@ -27,24 +18,10 @@ Il détaille les méthodologies, checklists et bonnes pratiques pour le diagnost
 
 ---
 
-## 3. Outils et conventions
+## 2. Outils et conventions
 
 - Utiliser les outils de log et de monitoring du projet (MonitoringManager, ErrorManager).
 - Centraliser les rapports d’incident et les solutions dans `.github/docs/incidents/` ou équivalent.
 - Ajouter des exemples de scénarios d’erreur et de résolution dans la documentation centrale.
-
----
-
-## 4. Overrides et modes spécifiques
-
-- Si un mode Roo-Code nécessite une méthodologie de debug particulière (ex : mode debug), ajouter une section dédiée et référencer le prompt système concerné.
-- Les prompts système doivent indiquer explicitement les adaptations ou exceptions à ces règles.
-
----
-
-## 5. Maintenance
-
-- Mettre à jour ce fichier à chaque évolution des outils ou des pratiques de diagnostic.
-- Documenter les nouveaux cas d’usage ou outils dans la documentation centrale.
 
 ---

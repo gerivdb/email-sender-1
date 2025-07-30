@@ -5,17 +5,7 @@ Il détaille les conventions, modèles et bonnes pratiques pour l’orchestratio
 
 ---
 
-## 1. Principes généraux
-
-- Centraliser l’orchestration via des managers dédiés (Orchestrator, ProcessManager, RoadmapManager).
-- Le mode Orchestrator coordonne les tâches complexes, délègue aux modes spécialisés, et garantit la cohérence et la traçabilité des opérations.
-- Toujours documenter chaque workflow : objectifs, étapes, entrées/sorties, managers impliqués.
-- Privilégier la modularité, la réutilisabilité et la clarté des workflows.
-- Utiliser des modèles ou diagrammes Mermaid pour clarifier les séquences complexes.
-
----
-
-## 2. Modèle de workflow Orchestrator Roo-Code
+## 1. Modèle de workflow Orchestrator Roo-Code
 
 ### Déroulement type :
 
@@ -45,7 +35,7 @@ flowchart TD
 
 ---
 
-## 3. Conventions d’intégration
+## 2. Conventions d’intégration
 
 - Chaque workflow doit référencer les managers/agents concernés (voir [`AGENTS.md`](../AGENTS.md)).
 - Les instructions de délégation doivent inclure : contexte, périmètre, consignes de signalement, et indiquer que ces instructions priment sur les consignes générales du mode cible.
@@ -54,26 +44,12 @@ flowchart TD
 
 ---
 
-## 4. Overrides et modes spécifiques
-
-- Si un mode Roo-Code nécessite un workflow particulier (ex : mode orchestrator, mode maintenance), ajouter une section dédiée et référencer le prompt système concerné.
-- Les prompts système doivent indiquer explicitement les adaptations ou exceptions à ces règles.
-
----
-
-## 5. Bonnes pratiques pour l’orchestration
+## 3. Bonnes pratiques pour l’orchestration
 
 - Toujours découper les tâches complexes en sous-tâches actionnables.
 - Déléguer chaque sous-tâche au mode le plus adapté, avec instructions précises.
 - Suivre et synthétiser les résultats pour garantir la cohérence globale.
 - Documenter chaque étape, chaque exception et chaque adaptation.
-- Mettre à jour ce fichier à chaque évolution des workflows ou des pratiques d’orchestration.
-- Ajouter les nouveaux modèles ou diagrammes dans la documentation centrale.
-
----
-
-## 6. Maintenance
-
 - Mettre à jour ce fichier à chaque évolution des workflows ou des pratiques d’orchestration.
 - Ajouter les nouveaux modèles ou diagrammes dans la documentation centrale.
 
