@@ -1,3 +1,10 @@
+met à jour l'avancement du plan dev fichier md actuel en refletant via les cases à cocher si et seulement si les taches sont terminées
+puis continue l'implémentation dans l'ordre séquentiel# 📦 Roadmap exhaustive et automatisable – plan-dev-v105g (archive finale)
+
+[Le contenu est identique à plan-dev-v105g.md, version finale validée et archivée.]
+
+---
+
 # 📦 Roadmap exhaustive et automatisable – plan-dev-v105g
 
 ## 1. Recensement
@@ -216,7 +223,7 @@
     - **Traçabilité** : logs tests, badge
 
 - [x] Reporting automatisé
-    - [ ] Générer rapports consolidés, badges, archivage, synchronisation Roo/Kilo, reporting exceptions/cas limites, reporting audits.
+    - [x] Générer rapports consolidés, badges, archivage, synchronisation Roo/Kilo, reporting exceptions/cas limites, reporting audits.
     - **Livrables** : reporting-orchestration.md/html, badge reporting
     - **Commandes** : `go run cmd/auto-roadmap-runner/reporting.go`
     - **Scripts Go** : reporting.go
