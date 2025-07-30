@@ -60,7 +60,7 @@ Développer un outil Go natif (`refs_sync.go`) pour automatiser la gestion, la m
 
 ### 3. Développement & Automatisation
 
-- [ ] **Développer le module de scan et de génération**
+- [x] **Développer le module de scan et de génération**
   - Livrable : `refs_sync.go`, tests `refs_sync_test.go`
   - Commande : `go build`, `go test`
   - Script : Go natif, modularisé
@@ -71,7 +71,7 @@ Développer un outil Go natif (`refs_sync.go`) pour automatiser la gestion, la m
   - Documentation : README usage, exemples
   - Traçabilité : logs, historique des runs
 
-- [ ] **Développer le module d’injection/mise à jour intelligente**
+- [x] **Développer le module d’injection/mise à jour intelligente**
   - Livrable : fonction Go, tests associés
   - Commande : `go run refs_sync.go --inject`
   - Script : injection en fin de fichier, détection des doublons, positionnement correct
@@ -82,7 +82,7 @@ Développer un outil Go natif (`refs_sync.go`) pour automatiser la gestion, la m
   - Documentation : guide d’injection
   - Traçabilité : log, backup, historique
 
-- [ ] **Développer le module de vérification des verrous/droits**
+- [x] **Développer le module de vérification des verrous/droits**
   - Livrable : fonction Go, tests
   - Commande : `go run refs_sync.go --check-locks`
   - Script : vérification accès, gestion des fichiers verrouillés
@@ -93,7 +93,7 @@ Développer un outil Go natif (`refs_sync.go`) pour automatiser la gestion, la m
   - Documentation : section "Gestion des verrous"
   - Traçabilité : log, rapport
 
-- [ ] **Développer le mode dry-run/audit**
+- [x] **Développer le mode dry-run/audit**
   - Livrable : option CLI, rapport Markdown
   - Commande : `go run refs_sync.go --dry-run`
   - Script : simulation sans écriture
@@ -106,7 +106,7 @@ Développer un outil Go natif (`refs_sync.go`) pour automatiser la gestion, la m
 
 ### 4. Tests (unitaires, intégration, robustesse)
 
-- [ ] **Écrire des tests unitaires pour chaque module**
+- [x] **Écrire des tests unitaires pour chaque module**
   - Livrable : `refs_sync_test.go`
   - Commande : `go test -v -cover`
   - Script : Go natif, mocks pour accès disque
@@ -117,7 +117,7 @@ Développer un outil Go natif (`refs_sync.go`) pour automatiser la gestion, la m
   - Documentation : README tests
   - Traçabilité : log, rapport de couverture
 
-- [ ] **Écrire des tests d’intégration (workflow complet)**
+- [x] **Écrire des tests d’intégration (workflow complet)**
   - Livrable : scénario Markdown, script Go
   - Commande : `go run refs_sync.go --full-test`
   - Script : simulation de bout en bout
@@ -130,7 +130,7 @@ Développer un outil Go natif (`refs_sync.go`) pour automatiser la gestion, la m
 
 ### 5. Reporting, Validation & Rollback
 
-- [ ] **Générer des rapports d’exécution et d’audit**
+- [x] **Générer des rapports d’exécution et d’audit**
   - Livrable : `refs_sync_report.md`, logs
   - Commande : `go run refs_sync.go --report`
   - Script : génération automatique
@@ -141,7 +141,7 @@ Développer un outil Go natif (`refs_sync.go`) pour automatiser la gestion, la m
   - Documentation : exemple de rapport
   - Traçabilité : log, historique
 
-- [ ] **Procédures de rollback/versionnement**
+- [x] **Procédures de rollback/versionnement**
   - Livrable : backups `.bak`, commits git
   - Commande : `cp file file.bak`, `git commit`
   - Script : backup avant modification, revert possible
@@ -153,7 +153,7 @@ Développer un outil Go natif (`refs_sync.go`) pour automatiser la gestion, la m
 
 ### 6. Orchestration & CI/CD
 
-- [ ] **Créer un orchestrateur global**
+- [x] **Créer un orchestrateur global**
   - Livrable : `auto-roadmap-runner.go`
   - Commande : `go run auto-roadmap-runner.go`
   - Script : exécution séquentielle de tous les jobs, gestion des dépendances
@@ -164,7 +164,7 @@ Développer un outil Go natif (`refs_sync.go`) pour automatiser la gestion, la m
   - Documentation : README orchestrateur
   - Traçabilité : log, rapport
 
-- [ ] **Intégrer dans le pipeline CI/CD**
+- [x] **Intégrer dans le pipeline CI/CD**
   - Livrable : `.github/workflows/refs_sync.yml`
   - Commande : jobs scan, audit, inject, test, report
   - Script : YAML, Go
@@ -176,7 +176,7 @@ Développer un outil Go natif (`refs_sync.go`) pour automatiser la gestion, la m
 
 ### 7. Documentation & Traçabilité
 
-- [ ] **Rédiger la documentation technique et utilisateur**
+- [x] **Rédiger la documentation technique et utilisateur**
   - Livrable : `README.md`, guides, FAQ
   - Commande : édition Markdown
   - Script : générateur d’exemples
@@ -187,7 +187,7 @@ Développer un outil Go natif (`refs_sync.go`) pour automatiser la gestion, la m
   - Documentation : complète, exemples, troubleshooting
   - Traçabilité : log, historique
 
-- [ ] **Assurer la traçabilité complète**
+- [x] **Assurer la traçabilité complète**
   - Livrable : logs, historiques, rapports archivés
   - Commande : automatisation dans scripts
   - Script : loggers Go, archivage
