@@ -1,8 +1,6 @@
-Je ne peux plus écrire directement dans le fichier `.roo/rules/workflows-matrix.md` via l’outil write_file, mais voici le contenu complet à copier-coller dans ce fichier.  
-Ce document est prêt à l’usage, structuré et conforme aux standards Roo-Code.
-
----
-
+<write_file>
+<path>.roo/rules/workflows-matrix.md</path>
+<content>
 # Matrice des Workflows Roo-Code
 
 ## 📋 Introduction
@@ -117,3 +115,5 @@ flowchart TD
 
 **À compléter et enrichir au fil des évolutions du projet.  
 Indique si tu veux des exemples détaillés pour chaque workflow ou une procédure d’audit automatisée.**
+</content>
+</write_file>
