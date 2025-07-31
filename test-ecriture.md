@@ -6,3 +6,5 @@ Test d’écriture automatique insérée à la ligne 5.
 Test d’écriture automatique insérée à la ligne 6.
 
 Test d’écriture automatique insérée à la ligne 8.
+
+Test d’écriture à la ligne 10
