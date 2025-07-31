@@ -1,0 +1,158 @@
+---
+description: Learn how to create and manage API configuration profiles to easily switch between different AI providers and models in Roo Code.
+keywords: API configuration,profiles,AI providers,model switching,API management
+image: /img/social-share.jpg
+---
+
+# API Configuration Profiles
+
+
+API Configuration Profiles allow you to create and switch between different sets of AI settings. Each profile can have different configurations for each mode, letting you optimize your experience based on the task at hand.
+
+
+infoHaving multiple configuration profiles lets you quickly switch between different AI providers, models, and settings without reconfiguring everything each time you want to change your setup.
+
+
+
+
+
+## How It Works​
+
+
+Configuration profiles can have their own:
+
+
+- API providers (OpenAI, Anthropic, OpenRouter, Glama, etc.)
+- API keys and authentication details
+- Model selections (o3-mini-high, Claude 3.7 Sonnet, DeepSeek R1, etc.)
+- Temperature settings for controlling response randomness
+- Thinking budgets
+- Provider-specific settings
+- Diff editing configuration
+- Rate limit settings
+
+
+Note that available settings vary by provider and model. Each provider offers different configuration options, and even within the same provider, different models may support different parameter ranges or features.
+
+
+
+## Creating and Managing Profiles​
+
+
+### Creating a Profile​
+
+
+1. 
+Open Settings by clicking the gear icon  → Providers
+
+2. 
+Click the "+" button next to the profile selector
+
+
+3. 
+Enter a name for your new profile
+
+
+4. 
+Configure the profile settings:
+
+
+Select your API provider
+
+
+
+Enter API key
+
+
+
+Choose a model
+
+
+
+Configure the Rate Limit for this profile:
+
+
+Default is 0 (disabled), which is suitable for most users. If needed, you can set a minimum time (in seconds) between API requests for this profile to help manage costs or avoid provider rate limits.
+
+
+A value of 0 disables rate limiting (default).
+
+
+Requests using other profiles follow their own rate limits.
+
+
+
+
+
+Adjust model parameters (like temperature)
+
+
+
+
+
+### Switching Profiles​
+
+
+Switch profiles in two ways:
+
+
+1. 
+From Settings panel: Select a different profile from the dropdown
+
+
+2. 
+During chat: Access the API Configuration dropdown in the chat interface
+
+
+
+
+### Pinning and Sorting Profiles​
+
+
+The API configuration dropdown now supports pinning your favorite profiles for quicker access:
+
+
+1. Hover over any profile in the dropdown to reveal the pin icon
+2. Click the pin icon to add the profile to your pinned list
+3. Pinned profiles appear at the top of the dropdown, sorted alphabetically
+4. Unpinned profiles appear below a separator, also sorted alphabetically
+5. You can unpin a profile by clicking the same icon again
+
+
+
+This feature makes it easier to navigate between commonly used profiles, especially when you have many configurations.
+
+
+### Editing and Deleting Profiles​
+
+
+
+- Select the profile in Settings to modify any settings
+- Click the pencil icon to rename a profile
+- Click the trash icon to delete a profile (you cannot delete the only remaining profile)
+
+
+
+## Linking Profiles to Modes​
+
+
+In the  Prompts tab, you can explicitly associate a specific Configuration Profile with each Mode. The system also automatically remembers which profile you last used with each mode, making your workflow more efficient.
+
+
+
+
+## Security Note​
+
+
+API keys are stored securely in VSCode's Secret Storage and are never exposed in plain text.
+
+
+
+## Related Features​
+
+
+- Works with custom modes you create
+- Integrates with local models for offline work
+- Supports temperature settings per mode
+- Supports per-profile rate limits (configured here) and general usage tracking/cost info
+- Supports Diff/Fast Edits for tailored code editing behavior.

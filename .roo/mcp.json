@@ -1,16 +1,132 @@
 {
   "mcpServers": {
-    "playwright": {
+    "filesystem": {
       "command": "npx",
       "args": [
-        "-y",
-        "@playwright/mcp@latest",
-        "--browser=chromium",
-        "--headless=true",
-        "--viewport-size=1280x720"
+        "@modelcontextprotocol/server-filesystem",
+        "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
       ],
       "disabled": false,
-      "alwaysAllow": []
+      "alwaysAllow": [
+        "read_multiple_files",
+        "edit_file",
+        "write_file",
+        "read_file",
+        "create_directory",
+        "get_file_info",
+        "list_allowed_directories",
+        "search_files",
+        "move_file",
+        "list_directory",
+        "directory_tree"
+      ]
+    },
+    "github.com/executeautomation/mcp-playwright": {
+      "command": "npx",
+      "args": [
+        "@executeautomation/playwright-mcp-server"
+      ],
+      "disabled": false,
+      "autoApprove": [
+        "list_tools"
+      ],
+      "alwaysAllow": [
+        "start_codegen_session",
+        "end_codegen_session",
+        "get_codegen_session",
+        "clear_codegen_session",
+        "playwright_navigate",
+        "playwright_screenshot",
+        "playwright_click",
+        "playwright_iframe_click",
+        "playwright_upload_file",
+        "playwright_hover",
+        "playwright_iframe_fill",
+        "playwright_fill",
+        "playwright_select",
+        "playwright_evaluate",
+        "playwright_console_logs",
+        "playwright_close",
+        "playwright_get",
+        "playwright_save_as_pdf",
+        "playwright_click_and_switch_tab",
+        "playwright_press_key",
+        "playwright_get_visible_text",
+        "playwright_custom_user_agent",
+        "playwright_put",
+        "playwright_patch",
+        "playwright_drag",
+        "playwright_go_forward",
+        "playwright_post",
+        "playwright_delete"
+      ]
+    },
+    "github.com/zcaceres/fetch-mcp": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\user\\Documents\\Cline\\MCP\\fetch-mcp\\dist\\index.js"
+      ],
+      "disabled": false,
+      "autoApprove": [
+        "fetch_html",
+        "fetch_txt",
+        "fetch_markdown"
+      ],
+      "alwaysAllow": [
+        "fetch_html",
+        "fetch_txt",
+        "fetch_json",
+        "fetch_markdown"
+      ]
+    },
+    "mcp-server-git": {
+      "command": "python",
+      "args": [
+        "-m",
+        "mcp_server_git",
+        "--repository",
+        "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
+      ],
+      "disabled": false,
+      "autoApprove": [],
+      "alwaysAllow": [
+        "git_diff",
+        "git_diff_staged",
+        "git_add",
+        "git_reset",
+        "git_commit",
+        "git_log",
+        "git_checkout",
+        "git_diff_unstaged",
+        "git_show",
+        "git_status",
+        "git_create_branch",
+        "git_init",
+        "git_branch"
+      ]
+    },
+    "desktopcommander": {
+      "command": "npx",
+      "args": [
+        "wonderwhy-er/DesktopCommanderMCP"
+      ],
+      "disabled": false,
+      "autoApprove": [],
+      "alwaysAllow": [
+        "set_config_value",
+        "get_config",
+        "read_file",
+        "read_multiple_files",
+        "move_file",
+        "search_files",
+        "write_file",
+        "create_directory",
+        "search_code",
+        "get_file_info",
+        "edit_block",
+        "list_directory",
+        "start_process"
+      ]
     }
   }
 }
