@@ -2,75 +2,49 @@ Voici le plan détaillé actionnable, structuré selon les standards d’ingéni
 
 ---
 
-### 1. Recensement & Analyse d’écart
-- [ ] Recenser tous les workflows d’écriture/validation sur fichier (ex : test-ecriture.md)
-- [ ] Livrable : rapport Markdown des workflows existants
-- [ ] Commande : `find . -name "*.md" | xargs grep "write_file"`
-- [ ] Script Go natif : scan des usages, output Markdown
-- [ ] Critère : rapport exhaustif, validé par revue croisée
+### 1. Analyse de la cause racine
+- [ ] **Action** : Analyser les logs pour identifier la boucle de validation.
+- [ ] **Action** : Examiner le code des outils `write_file` et `read_file` pour comprendre la gestion du cache.
+- [ ] **Livrable** : Rapport d'analyse documentant la cause de la boucle de validation.
+- [ ] **Critère** : Le rapport identifie clairement le mécanisme de cache et la raison de la validation en échec.
 
 ---
 
-### 2. Recueil des besoins & Spécification
-- [ ] Recueillir les besoins métier et techniques (validation, robustesse, automatisation)
-- [ ] Livrable : spécification Markdown/JSON
-- [ ] Commande : formulaire ou script Go natif pour recueil
-- [ ] Critère : feedback utilisateur, validation croisée
+### 2. Conception de la solution
+- [ ] **Action** : Définir une nouvelle stratégie de validation qui n'est pas basée sur une lecture immédiate.
+- [ ] **Option A** : Utiliser un signal de succès explicite (callback, événement).
+- [ ] **Option B** : Introduire une attente contrôlée avec plusieurs tentatives de lecture.
+- [ ] **Livrable** : Spécification de la nouvelle stratégie de validation.
+- [ ] **Critère** : La spécification est validée par l'équipe technique.
 
 ---
 
-### 3. Développement & Automatisation
-- [ ] Développer/adapter scripts Go natifs pour :
-    - Écriture sur fichier
-    - Lecture et validation synchronisée
-    - Gestion du cache et logs
-- [ ] Livrables : scripts Go, tests unitaires, outputs Markdown/JSON
-- [ ] Commandes : `go run`, `go test`
-- [ ] Critère : tests automatisés, badge de couverture
+### 3. Développement et tests
+- [ ] **Action** : Implémenter la nouvelle stratégie de validation dans les workflows concernés.
+- [ ] **Action** : Ajouter des logs détaillés pour tracer le processus d'écriture et de validation.
+- [ ] **Action** : Développer des tests unitaires pour le nouveau mécanisme de validation.
+- [ ] **Livrables** : Code mis à jour, nouveaux tests unitaires.
+- [ ] **Commandes** : `go test`, `go run`.
+- [ ] **Critère** : Les tests passent avec succès et la couverture de code est > 90%.
 
 ---
 
-### 4. Tests (unitaires/intégration)
-- [ ] Créer/adapter tests Go pour chaque script
-- [ ] Livrable : fichiers `_test.go`, rapport de couverture
-- [ ] Commande : `go test -cover`
-- [ ] Critère : couverture >90%, reporting CI/CD
+### 4. Documentation
+- [ ] **Action** : Documenter le nouvel incident dans `.github/docs/incidents/`.
+- [ ] **Action** : Mettre à jour la documentation des outils `write_file` et `read_file`.
+- [ ] **Livrable** : Fichier d'incident et documentation mise à jour.
+- [ ] **Critère** : La documentation est claire, concise et à jour.
 
 ---
 
-### 5. Reporting & Validation
-- [ ] Générer rapports automatisés (Markdown, JSON)
-- [ ] Livrable : rapport d’exécution, logs, badge CI
-- [ ] Commande : script Go/Bash, intégration CI
-- [ ] Critère : validation automatisée + revue croisée
+### 5. Déploiement et surveillance
+- [ ] **Action** : Déployer la solution en production.
+- [ ] **Action** : Surveiller les logs et les métriques pour s'assurer que la boucle de validation est résolue.
+- [ ] **Livrable** : Rapport de déploiement.
+- [ ] **Critère** : Aucune nouvelle boucle de validation n'est détectée après 24 heures de surveillance.
 
 ---
 
-### 6. Rollback & Versionnement
-- [ ] Mettre en place sauvegardes automatiques (.bak, git)
-- [ ] Livrable : fichiers .bak, commits git, logs rollback
-- [ ] Commande : script Go/Bash, `git commit`
-- [ ] Critère : rollback testé, traçabilité assurée
-
----
-
-### 7. Orchestration & CI/CD
-- [ ] Créer/adapter orchestrateur global (ex : `auto-roadmap-runner.go`)
-- [ ] Intégrer pipeline CI/CD : jobs, triggers, reporting, feedback automatisé
-- [ ] Livrable : scripts orchestrateur, config CI/CD, badge
-- [ ] Commande : `go run`, config YAML CI/CD
-- [ ] Critère : exécution bout-en-bout, reporting automatisé
-
----
-
-### 8. Documentation & Traçabilité
-- [ ] Documenter chaque étape (README, guides, logs)
-- [ ] Livrable : README, guides Markdown, historique outputs
-- [ ] Commande : script Go/Bash pour logs
-- [ ] Critère : documentation à jour, feedback automatisé
-
----
-
-Chaque étape est atomique, automatisable, validée et traçable.  
-Des scripts Go natifs et des tests sont proposés pour chaque action.  
+Chaque étape est atomique, automatisable, validée et traçable.
+Des scripts Go natifs et des tests sont proposés pour chaque action.
 La roadmap est prête à être exécutée ou adaptée selon les besoins du projet.
