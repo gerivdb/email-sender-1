@@ -1,14 +1,16 @@
 package main
 
+// Ajout de l'import "time" dans le bloc principal
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
+	"time"
 )
 
-// Event représente la structure d'un événement dans le bus
-type Event struct {
+// EventModel représente la structure d'un événement pour la génération
+type EventModel struct {
 	ID        string `json:"id"`
 	Type      string `json:"type"`
 	Source    string `json:"source"`
@@ -18,7 +20,7 @@ type Event struct {
 
 // EventBusSchema représente le schéma JSON du bus d'événements
 type EventBusSchema struct {
-	Events []Event `json:"events"`
+	Events []EventModel `json:"events"`
 }
 
 // readFile lit le contenu d'un fichier
@@ -30,9 +32,34 @@ func readFile(path string) (string, error) {
 	return string(content), nil
 }
 
-// writeFile écrit le contenu dans un fichier
-func writeFile(path, content string) error {
-	return ioutil.WriteFile(path, []byte(content), 0o644)
+// writeFile écrit le contenu dans un fichier, avec logs et validation robuste
+func writeFile(path, content string, onSuccess func(string)) error {
+	log.Printf("[writeFile] Début écriture : %s", path)
+	err := ioutil.WriteFile(path, []byte(content), 0o644)
+	if err != nil {
+		log.Printf("[writeFile] Échec écriture : %s, err=%v", path, err)
+		return err
+	}
+	log.Printf("[writeFile] Écriture réussie : %s", path)
+	if onSuccess != nil {
+		onSuccess(path)
+	} else {
+		// Validation par attente contrôlée
+		maxAttempts := 5
+		for i := 0; i < maxAttempts; i++ {
+			time.Sleep(100 * time.Millisecond)
+			_, err := ioutil.ReadFile(path)
+			if err == nil {
+				log.Printf("[writeFile] Validation lecture OK : %s (tentative %d)", path, i+1)
+				break
+			}
+			log.Printf("[writeFile] Validation lecture KO : %s (tentative %d)", path, i+1)
+			if i == maxAttempts-1 {
+				return fmt.Errorf("validation lecture échouée après %d tentatives : %s", maxAttempts, path)
+			}
+		}
+	}
+	return nil
 }
 
 // generateEventBusGo génère le fichier event_bus.go
@@ -61,7 +88,7 @@ func NewEventBus() *EventBus {
 }
 
 // generateEventBusSchema génère le schéma JSON
-func generateEventBusSchema(events []Event) (string, error) {
+func generateEventBusSchema(events []EventModel) (string, error) {
 	schema := EventBusSchema{Events: events}
 	data, err := json.MarshalIndent(schema, "", "  ")
 	if err != nil {
@@ -89,12 +116,12 @@ func generateEventBusSpec() (string, error) {
 }
 
 // parseEventHooks lit et parse le fichier event_hooks.json
-func parseEventHooks(path string) ([]Event, error) {
+func parseEventHooks(path string) ([]EventModel, error) {
 	content, err := readFile(path)
 	if err != nil {
 		return nil, err
 	}
-	var events []Event
+	var events []EventModel
 	if err := json.Unmarshal([]byte(content), &events); err != nil {
 		return nil, fmt.Errorf("erreur lors du parsing de %s: %v", path, err)
 	}
@@ -113,7 +140,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Erreur lors de la génération de event_bus.go: %v", err)
 	}
-	if err := writeFile("event_bus.go", eventBusGoContent); err != nil {
+	if err := writeFile("event_bus.go", eventBusGoContent, nil); err != nil {
 		log.Fatalf("Erreur lors de l'écriture de event_bus.go: %v", err)
 	}
 
@@ -122,7 +149,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Erreur lors de la génération de event_bus.schema.json: %v", err)
 	}
-	if err := writeFile("event_bus.schema.json", schemaContent); err != nil {
+	if err := writeFile("event_bus.schema.json", schemaContent, nil); err != nil {
 		log.Fatalf("Erreur lors de l'écriture de event_bus.schema.json: %v", err)
 	}
 
@@ -131,7 +158,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Erreur lors de la génération de EVENT_BUS_SPEC.md: %v", err)
 	}
-	if err := writeFile("EVENT_BUS_SPEC.md", specContent); err != nil {
+	if err := writeFile("EVENT_BUS_SPEC.md", specContent, nil); err != nil {
 		log.Fatalf("Erreur lors de l'écriture de EVENT_BUS_SPEC.md: %v", err)
 	}
 

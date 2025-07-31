@@ -17,13 +17,21 @@
       ],
       "disabled": false
     },
-    "awslabs.code-doc-gen-mcp-server": {
-      "command": "C:\\Python312\\Scripts\\awslabs.code-doc-gen-mcp-server.exe",
-      "env": {
-        "FASTMCP_LOG_LEVEL": "INFO"
-      },
-      "disabled": false,
-      "autoApprove": []
-    }
+  "awslabs.code-doc-gen-mcp-server": {
+    "command": "C:\\Python312\\Scripts\\awslabs.code-doc-gen-mcp-server.exe",
+    "env": {
+      "FASTMCP_LOG_LEVEL": "INFO"
+    },
+    "disabled": false,
+    "autoApprove": []
+  },
+  "github.com/executeautomation/mcp-playwright": {
+    "command": "npx",
+    "args": [
+      "@executeautomation/playwright-mcp-server"
+    ],
+    "disabled": false,
+    "autoApprove": []
+  }
   }
 }
