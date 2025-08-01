@@ -15,8 +15,8 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
-	"error-resolution-pipeline/pkg/detector"
-	"error-resolution-pipeline/pkg/resolver"
+	"github.com/gerivdb/email-sender-1/scripts/error-resolution-pipeline/pkg/detector"
+	"github.com/gerivdb/email-sender-1/scripts/error-resolution-pipeline/pkg/resolver"
 )
 
 const (

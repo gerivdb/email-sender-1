@@ -1,4 +1,4 @@
-package gen_orchestration_report
+package main
 
 import (
 	"fmt"

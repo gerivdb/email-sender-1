@@ -1,4 +1,4 @@
-package gen_rollback_report
+package main
 
 import (
 	"fmt"

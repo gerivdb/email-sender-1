@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"error-resolution-pipeline/pkg/detector"
+	"github.com/gerivdb/email-sender-1/scripts/error-resolution-pipeline/pkg/detector"
 )
 
 // AutoResolver représente le moteur de résolution automatique

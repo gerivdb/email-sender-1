@@ -7,7 +7,7 @@ import (
 	"go/token"
 	"time"
 
-	"error-resolution-pipeline/pkg/detector"
+	"github.com/gerivdb/email-sender-1/scripts/error-resolution-pipeline/pkg/detector"
 )
 
 // UnusedVariableFixer corrige les variables non utilisées
@@ -44,8 +44,8 @@ func (f *UnusedVariableFixer) Fix(ctx context.Context, error detector.DetectedEr
 		}, nil
 	}
 
-	modified := false
 	var changes []ChangeDetail
+	modified := false
 
 	// Parcourir l'AST pour trouver et supprimer la variable
 	ast.Inspect(file, func(n ast.Node) bool {
@@ -71,7 +71,7 @@ func (f *UnusedVariableFixer) Fix(ctx context.Context, error detector.DetectedEr
 									NewContent:  "// Variable " + variableName + " removed - was unused",
 									Description: "Removed unused variable declaration",
 								})
-								modified = true
+								modified = true // déclaration correcte dans la portée de la fonction
 							}
 						}
 						if len(newNames) > 0 {
@@ -126,8 +126,8 @@ func (f *TypeMismatchFixer) Fix(ctx context.Context, error detector.DetectedErro
 		}, err
 	}
 
-	modified := false
 	var changes []ChangeDetail
+	modified := false
 
 	// Chercher les conversions de type potentiellement dangereuses
 	ast.Inspect(file, func(n ast.Node) bool {
@@ -144,7 +144,7 @@ func (f *TypeMismatchFixer) Fix(ctx context.Context, error detector.DetectedErro
 						NewContent:  "type assertion with ok check",
 						Description: "Added type safety check",
 					})
-					modified = true
+					modified = true // déclaration correcte dans la portée de la fonction
 				}
 			}
 		}
@@ -200,7 +200,6 @@ func (f *ComplexityFixer) Fix(ctx context.Context, error detector.DetectedError,
 		}, nil
 	}
 
-	modified := false
 	var changes []ChangeDetail
 
 	// Chercher la fonction complexe

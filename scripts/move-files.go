@@ -13,8 +13,6 @@ import (
 	"io"
 	"os"
 	"time"
-
-	"gopkg.in/yaml.v3" // Dépendance standard Go pour YAML (go get gopkg.in/yaml.v3)
 )
 
 type Move struct {
@@ -103,32 +101,32 @@ func doRollback() {
 	}
 }
 
-func main() {
-	flag.Parse()
-	writeLog("=== Début du script move-files.go ===")
-	if rollback {
-		doRollback()
-		writeLog("Rollback terminé.")
-		return
-	}
-	f, err := os.Open(configPath)
-	if err != nil {
-		writeLog(fmt.Sprintf("ERREUR : ouverture config %s : %v", configPath, err))
-		os.Exit(1)
-	}
-	defer f.Close()
-	var cfg Config
-	dec := yaml.NewDecoder(f)
-	if err := dec.Decode(&cfg); err != nil {
-		writeLog(fmt.Sprintf("ERREUR : parsing YAML : %v", err))
-		os.Exit(1)
-	}
-	if len(cfg.Moves) == 0 {
-		writeLog("ERREUR : Section 'moves' manquante ou vide.")
-		os.Exit(1)
-	}
-	for _, mv := range cfg.Moves {
-		doMove(mv.Source, mv.Destination)
-	}
-	writeLog("=== Fin du script move-files.go ===")
-}
+// func main() {
+// 	flag.Parse()
+// 	writeLog("=== Début du script move-files.go ===")
+// 	if rollback {
+// 		doRollback()
+// 		writeLog("Rollback terminé.")
+// 		return
+// 	}
+// 	f, err := os.Open(configPath)
+// 	if err != nil {
+// 		writeLog(fmt.Sprintf("ERREUR : ouverture config %s : %v", configPath, err))
+// 		os.Exit(1)
+// 	}
+// 	defer f.Close()
+// 	var cfg Config
+// 	dec := yaml.NewDecoder(f)
+// 	if err := dec.Decode(&cfg); err != nil {
+// 		writeLog(fmt.Sprintf("ERREUR : parsing YAML : %v", err))
+// 		os.Exit(1)
+// 	}
+// 	if len(cfg.Moves) == 0 {
+// 		writeLog("ERREUR : Section 'moves' manquante ou vide.")
+// 		os.Exit(1)
+// 	}
+// 	for _, mv := range cfg.Moves {
+// 		doMove(mv.Source, mv.Destination)
+// 	}
+// 	writeLog("=== Fin du script move-files.go ===")
+// }

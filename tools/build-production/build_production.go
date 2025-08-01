@@ -1,9 +1,6 @@
-<<<<<<< HEAD:tools/build-production/build_production.go
-package build_production
+package main
 
 import (
-	"archive/tar"
-	"compress/gzip"
 	"crypto/sha256"
 	"encoding/json"
 	"flag"
@@ -12,49 +9,48 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"time"
 )
 
 // BuildConfig holds the configuration for building
 type BuildConfig struct {
-	Target		string
-	Compress	bool
-	Deploy		bool
-	OutputDir	string
-	Verbose		bool
-	ProjectRoot	string
-	Version		string
-	BuildTime	string
+	Target      string
+	Compress    bool
+	Deploy      bool
+	OutputDir   string
+	Verbose     bool
+	ProjectRoot string
+	Version     string
+	BuildTime   string
 }
 
 // Platform represents a target platform
 type Platform struct {
-	OS	string
-	Arch	string
-	Ext	string
+	OS   string
+	Arch string
+	Ext  string
 }
 
 // DeploymentInfo contains build information
 type DeploymentInfo struct {
-	Version		string		`json:"version"`
-	BuildTime	string		`json:"buildTime"`
-	Platforms	[]string	`json:"platforms"`
-	Files		[]FileInfo	`json:"files"`
+	Version   string     `json:"version"`
+	BuildTime string     `json:"buildTime"`
+	Platforms []string   `json:"platforms"`
+	Files     []FileInfo `json:"files"`
 }
 
 // FileInfo contains file metadata
 type FileInfo struct {
-	Name	string	`json:"name"`
-	Size	int64	`json:"size"`
-	Hash	string	`json:"hash"`
+	Name string `json:"name"`
+	Size int64  `json:"size"`
+	Hash string `json:"hash"`
 }
 
 var platforms = map[string]Platform{
-	"linux":	{OS: "linux", Arch: "amd64", Ext: ""},
-	"windows":	{OS: "windows", Arch: "amd64", Ext: ".exe"},
-	"darwin":	{OS: "darwin", Arch: "amd64", Ext: ""},
+	"linux":   {OS: "linux", Arch: "amd64", Ext: ""},
+	"windows": {OS: "windows", Arch: "amd64", Ext: ".exe"},
+	"darwin":  {OS: "darwin", Arch: "amd64", Ext: ""},
 }
 
 func main() {
@@ -172,8 +168,8 @@ func runBuild(config *BuildConfig) error {
 
 	// Build tools
 	tools := map[string]string{
-		"config-manager":	"./tools/config-manager",
-		"cache-analyzer":	"./tools/cache-analyzer",
+		"config-manager": "./tools/config-manager",
+		"cache-analyzer": "./tools/cache-analyzer",
 	}
 
 	for toolName, toolPackage := range tools {
@@ -322,10 +318,10 @@ func generateDeploymentInfo(config *BuildConfig, platforms []string) error {
 	fmt.Printf("🔄 Generating deployment information...\n")
 
 	deployInfo := DeploymentInfo{
-		Version:	config.Version,
-		BuildTime:	config.BuildTime,
-		Platforms:	platforms,
-		Files:		[]FileInfo{},
+		Version:   config.Version,
+		BuildTime: config.BuildTime,
+		Platforms: platforms,
+		Files:     []FileInfo{},
 	}
 
 	outputPath := filepath.Join(config.ProjectRoot, config.OutputDir)
@@ -341,9 +337,9 @@ func generateDeploymentInfo(config *BuildConfig, platforms []string) error {
 		}
 
 		deployInfo.Files = append(deployInfo.Files, FileInfo{
-			Name:	relPath,
-			Size:	info.Size(),
-			Hash:	hash,
+			Name: relPath,
+			Size: info.Size(),
+			Hash: hash,
 		})
 
 		return nil
@@ -575,21 +571,6 @@ func copyFile(src, dst string) error {
 	_, err = io.Copy(destFile, sourceFile)
 	return err
 }
-=======
-package main
-
-import (
-	"crypto/sha256"
-	"encoding/json"
-	"flag"
-	"fmt"
-	"io"
-	"os"
-	"os/exec"
-	"path/filepath"
-	"strings"
-	"time"
-)
 
 // BuildConfig holds the configuration for building
 type BuildConfig struct {
@@ -1147,4 +1128,3 @@ func copyFile(src, dst string) error {
 	_, err = io.Copy(destFile, sourceFile)
 	return err
 }
->>>>>>> migration/gateway-manager-v77:tools/build-production/main.go

@@ -1,6 +1,6 @@
-<<<<<<< HEAD:tools/cache-analyzer/cache_analyzer.go
+package main
+
 // Cache analyzer tool for TTL optimization
-package cache_analyzer
 
 import (
 	"context"
@@ -18,41 +18,41 @@ import (
 
 // AnalysisReport contains the results of cache analysis
 type AnalysisReport struct {
-	Timestamp		time.Time		`json:"timestamp"`
-	OverallMetrics		*ttl.MetricData		`json:"overall_metrics"`
-	TTLAnalysis		*ttl.AnalyzerMetrics	`json:"ttl_analysis"`
-	Recommendations		[]Recommendation	`json:"recommendations"`
-	PerformanceScore	float64			`json:"performance_score"`
-	Summary			string			`json:"summary"`
+	Timestamp        time.Time            `json:"timestamp"`
+	OverallMetrics   *ttl.MetricData      `json:"overall_metrics"`
+	TTLAnalysis      *ttl.AnalyzerMetrics `json:"ttl_analysis"`
+	Recommendations  []Recommendation     `json:"recommendations"`
+	PerformanceScore float64              `json:"performance_score"`
+	Summary          string               `json:"summary"`
 }
 
 // Recommendation represents an optimization recommendation
 type Recommendation struct {
-	Type		string	`json:"type"`
-	DataType	string	`json:"data_type,omitempty"`
-	Description	string	`json:"description"`
-	Impact		string	`json:"impact"`		// high, medium, low
-	Effort		string	`json:"effort"`		// high, medium, low
-	Priority	int	`json:"priority"`	// 1-10
-	Implementation	string	`json:"implementation"`
+	Type           string `json:"type"`
+	DataType       string `json:"data_type,omitempty"`
+	Description    string `json:"description"`
+	Impact         string `json:"impact"`   // high, medium, low
+	Effort         string `json:"effort"`   // high, medium, low
+	Priority       int    `json:"priority"` // 1-10
+	Implementation string `json:"implementation"`
 }
 
 // CacheAnalyzer performs comprehensive cache analysis
 type CacheAnalyzer struct {
-	redis		*redis.Client
-	ttlManager	*ttl.TTLManager
-	metrics		*ttl.CacheMetrics
-	analyzer	*ttl.TTLAnalyzer
+	redis      *redis.Client
+	ttlManager *ttl.TTLManager
+	metrics    *ttl.CacheMetrics
+	analyzer   *ttl.TTLAnalyzer
 }
 
 func main() {
 	var (
-		redisAddr	= flag.String("redis", "localhost:6379", "Redis address")
-		redisPassword	= flag.String("password", "", "Redis password")
-		redisDB		= flag.Int("db", 0, "Redis database")
-		outputFile	= flag.String("output", "cache_analysis_report.json", "Output file for analysis report")
-		duration	= flag.Duration("duration", 5*time.Minute, "Analysis duration")
-		verbose		= flag.Bool("verbose", false, "Verbose output")
+		redisAddr     = flag.String("redis", "localhost:6379", "Redis address")
+		redisPassword = flag.String("password", "", "Redis password")
+		redisDB       = flag.Int("db", 0, "Redis database")
+		outputFile    = flag.String("output", "cache_analysis_report.json", "Output file for analysis report")
+		duration      = flag.Duration("duration", 5*time.Minute, "Analysis duration")
+		verbose       = flag.Bool("verbose", false, "Verbose output")
 	)
 	flag.Parse()
 
@@ -61,9 +61,9 @@ func main() {
 
 	// Initialize Redis client
 	rdb := redis.NewClient(&redis.Options{
-		Addr:		*redisAddr,
-		Password:	*redisPassword,
-		DB:		*redisDB,
+		Addr:     *redisAddr,
+		Password: *redisPassword,
+		DB:       *redisDB,
 	})
 	defer rdb.Close()
 
@@ -99,18 +99,18 @@ func NewCacheAnalyzer(rdb *redis.Client) *CacheAnalyzer {
 	metrics := ttl.NewCacheMetrics(rdb)
 
 	return &CacheAnalyzer{
-		redis:		rdb,
-		ttlManager:	ttlManager,
-		metrics:	metrics,
-		analyzer:	ttl.NewTTLAnalyzer(ttlManager),
+		redis:      rdb,
+		ttlManager: ttlManager,
+		metrics:    metrics,
+		analyzer:   ttl.NewTTLAnalyzer(ttlManager),
 	}
 }
 
 // RunAnalysis performs comprehensive cache analysis
 func (ca *CacheAnalyzer) RunAnalysis(ctx context.Context, duration time.Duration, verbose bool) *AnalysisReport {
 	report := &AnalysisReport{
-		Timestamp:		time.Now(),
-		Recommendations:	make([]Recommendation, 0),
+		Timestamp:       time.Now(),
+		Recommendations: make([]Recommendation, 0),
 	}
 
 	if verbose {
@@ -170,25 +170,25 @@ func (ca *CacheAnalyzer) generateRecommendations(baseline, current *ttl.MetricDa
 	// Check overall hit rate
 	if current.HitRate < 0.8 {
 		rec := Recommendation{
-			Type:		"performance",
-			Description:	fmt.Sprintf("Cache hit rate is %.1f%%, below optimal threshold of 80%%", current.HitRate*100),
-			Impact:		"high",
-			Effort:		"medium",
-			Priority:	9,
-			Implementation:	"Consider increasing TTL for frequently accessed data types or improving cache warming strategies",
+			Type:           "performance",
+			Description:    fmt.Sprintf("Cache hit rate is %.1f%%, below optimal threshold of 80%%", current.HitRate*100),
+			Impact:         "high",
+			Effort:         "medium",
+			Priority:       9,
+			Implementation: "Consider increasing TTL for frequently accessed data types or improving cache warming strategies",
 		}
 		recommendations = append(recommendations, rec)
 	}
 
 	// Check memory usage
-	if current.MemoryUsage > 400 {	// 400MB threshold
+	if current.MemoryUsage > 400 { // 400MB threshold
 		rec := Recommendation{
-			Type:		"memory",
-			Description:	fmt.Sprintf("Memory usage is high: %.1f MB", current.MemoryUsage),
-			Impact:		"medium",
-			Effort:		"low",
-			Priority:	7,
-			Implementation:	"Reduce TTL for less critical data types or implement more aggressive eviction policies",
+			Type:           "memory",
+			Description:    fmt.Sprintf("Memory usage is high: %.1f MB", current.MemoryUsage),
+			Impact:         "medium",
+			Effort:         "low",
+			Priority:       7,
+			Implementation: "Reduce TTL for less critical data types or implement more aggressive eviction policies",
 		}
 		recommendations = append(recommendations, rec)
 	}
@@ -196,12 +196,12 @@ func (ca *CacheAnalyzer) generateRecommendations(baseline, current *ttl.MetricDa
 	// Check latency
 	if current.AvgLatency > 50*time.Millisecond {
 		rec := Recommendation{
-			Type:		"latency",
-			Description:	fmt.Sprintf("Average latency is high: %v", current.AvgLatency),
-			Impact:		"high",
-			Effort:		"high",
-			Priority:	8,
-			Implementation:	"Investigate network issues, optimize Redis configuration, or consider connection pooling",
+			Type:           "latency",
+			Description:    fmt.Sprintf("Average latency is high: %v", current.AvgLatency),
+			Impact:         "high",
+			Effort:         "high",
+			Priority:       8,
+			Implementation: "Investigate network issues, optimize Redis configuration, or consider connection pooling",
 		}
 		recommendations = append(recommendations, rec)
 	}
@@ -210,26 +210,26 @@ func (ca *CacheAnalyzer) generateRecommendations(baseline, current *ttl.MetricDa
 	for dataType, typeMetric := range current.TypeMetrics {
 		if typeMetric.HitRate < 0.7 {
 			rec := Recommendation{
-				Type:		"ttl_optimization",
-				DataType:	string(dataType),
-				Description:	fmt.Sprintf("%s has low hit rate: %.1f%%", dataType, typeMetric.HitRate*100),
-				Impact:		"medium",
-				Effort:		"low",
-				Priority:	6,
-				Implementation:	fmt.Sprintf("Increase TTL for %s from current average of %v", dataType, typeMetric.AvgTTL),
+				Type:           "ttl_optimization",
+				DataType:       string(dataType),
+				Description:    fmt.Sprintf("%s has low hit rate: %.1f%%", dataType, typeMetric.HitRate*100),
+				Impact:         "medium",
+				Effort:         "low",
+				Priority:       6,
+				Implementation: fmt.Sprintf("Increase TTL for %s from current average of %v", dataType, typeMetric.AvgTTL),
 			}
 			recommendations = append(recommendations, rec)
 		}
 
 		if typeMetric.AccessPattern == "rare" && typeMetric.AvgTTL > 1*time.Hour {
 			rec := Recommendation{
-				Type:		"ttl_optimization",
-				DataType:	string(dataType),
-				Description:	fmt.Sprintf("%s has rare access pattern but long TTL", dataType),
-				Impact:		"low",
-				Effort:		"low",
-				Priority:	4,
-				Implementation:	fmt.Sprintf("Reduce TTL for %s to save memory", dataType),
+				Type:           "ttl_optimization",
+				DataType:       string(dataType),
+				Description:    fmt.Sprintf("%s has rare access pattern but long TTL", dataType),
+				Impact:         "low",
+				Effort:         "low",
+				Priority:       4,
+				Implementation: fmt.Sprintf("Reduce TTL for %s to save memory", dataType),
 			}
 			recommendations = append(recommendations, rec)
 		}
@@ -238,12 +238,12 @@ func (ca *CacheAnalyzer) generateRecommendations(baseline, current *ttl.MetricDa
 	// Check throughput
 	if current.ThroughputPerSec < 1000 {
 		rec := Recommendation{
-			Type:		"throughput",
-			Description:	fmt.Sprintf("Throughput is low: %.0f ops/sec", current.ThroughputPerSec),
-			Impact:		"medium",
-			Effort:		"medium",
-			Priority:	5,
-			Implementation:	"Consider pipelining, connection pooling, or Redis cluster setup",
+			Type:           "throughput",
+			Description:    fmt.Sprintf("Throughput is low: %.0f ops/sec", current.ThroughputPerSec),
+			Impact:         "medium",
+			Effort:         "medium",
+			Priority:       5,
+			Implementation: "Consider pipelining, connection pooling, or Redis cluster setup",
 		}
 		recommendations = append(recommendations, rec)
 	}
@@ -267,19 +267,19 @@ func (ca *CacheAnalyzer) calculatePerformanceScore(metrics *ttl.MetricData) floa
 	score += latencyScore * 0.25
 
 	// Throughput score (20% weight)
-	throughputScore := min(100, metrics.ThroughputPerSec/50)	// 5000 ops/sec = 100%
+	throughputScore := min(100, metrics.ThroughputPerSec/50) // 5000 ops/sec = 100%
 	score += throughputScore * 0.2
 
 	// Memory efficiency score (15% weight)
 	memoryScore := 100.0
-	if metrics.MemoryUsage > 200 {	// 200MB baseline
+	if metrics.MemoryUsage > 200 { // 200MB baseline
 		memoryScore = max(0, 100-(metrics.MemoryUsage-200)/10)
 	}
 	score += memoryScore * 0.15
 
 	// Error rate score (10% weight)
 	errorRate := float64(metrics.ErrorCount) / float64(max64(metrics.TotalRequests, 1))
-	errorScore := max(0, 100-errorRate*1000)	// 1% error rate = 90 points
+	errorScore := max(0, 100-errorRate*1000) // 1% error rate = 90 points
 	score += errorScore * 0.1
 
 	return min(100, max(0, score))
@@ -392,25 +392,7 @@ func max64(a, b int64) int64 {
 	}
 	return b
 }
-=======
-// Cache analyzer tool for TTL optimization
-package main
 
-import (
-	"context"
-	"encoding/json"
-	"flag"
-	"fmt"
-	"log"
-	"os"
-	"time"
-
-	"github.com/gerivdb/email-sender-1/pkg/cache/ttl"
-
-	"github.com/redis/go-redis/v9"
-)
-
-// AnalysisReport contains the results of cache analysis
 type AnalysisReport struct {
 	Timestamp        time.Time            `json:"timestamp"`
 	OverallMetrics   *ttl.MetricData      `json:"overall_metrics"`
@@ -786,4 +768,3 @@ func max64(a, b int64) int64 {
 	}
 	return b
 }
->>>>>>> migration/gateway-manager-v77:tools/cache-analyzer/main.go

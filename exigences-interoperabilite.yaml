@@ -1,0 +1,357 @@
+exigences:
+  - agent: DocManager
+    interfaces:
+      - '`Store(*Document) error`, `Retrieve(string) (*Document, error)`'
+      - '`RegisterPlugin(PluginInterface) error`'
+  - agent: ConfigurableSyncRuleManager
+  - agent: SmartMergeManager
+  - agent: SyncHistoryManager
+  - agent: ConflictManager
+  - agent: ExtensibleManagerType
+    interfaces:
+      - '`RegisterPlugin(plugin PluginInterface) error`'
+      - '`UnregisterPlugin(name string) error`'
+      - '`ListPlugins() []PluginInfo`'
+      - '`GetPlugin(name string) (PluginInterface, error)`'
+  - agent: N8NManager
+    interfaces:
+      - '`Start(ctx context.Context) error`'
+      - '`Stop() error`'
+      - '`IsHealthy() bool`'
+      - '`GetStatus() ManagerStatus`'
+      - '`ExecuteWorkflow(ctx context.Context, request *WorkflowRequest) (*WorkflowResponse, error)`'
+      - '`ValidateWorkflow(ctx context.Context, workflow *WorkflowDefinition) (*ValidationResult, error)`'
+      - '`GetWorkflowStatus(workflowID string) (*WorkflowStatus, error)`'
+      - '`CancelWorkflow(ctx context.Context, workflowID string) error`'
+      - '`ConvertData(ctx context.Context, data *DataConversionRequest) (*DataConversionResponse, error)`'
+      - '`ValidateSchema(ctx context.Context, schema *SchemaValidationRequest) (*SchemaValidationResponse, error)`'
+      - '`MapParameters(ctx context.Context, params *ParameterMappingRequest) (*ParameterMappingResponse, error)`'
+      - '`ValidateParameters(ctx context.Context, params *ParameterValidationRequest) (*ParameterValidationResponse, error)`'
+      - '`EnqueueJob(ctx context.Context, job *Job) error`'
+      - '`DequeueJob(ctx context.Context, queueName string) (*Job, error)`'
+      - '`GetQueueStatus(queueName string) (*QueueStatus, error)`'
+      - '`GetMetrics() (*ManagerMetrics, error)`'
+      - '`GetLogs(ctx context.Context, filter *LogFilter) ([]*LogEntry, error)`'
+      - '`Subscribe(eventType EventType) (<-chan Event, error)`'
+  - agent: ErrorManager
+    interfaces:
+      - '`ProcessError(ctx context.Context, err error, component, operation string, hooks *ErrorHooks) error`'
+      - '`CatalogError(entry ErrorEntry) error`'
+      - '`ValidateErrorEntry(entry ErrorEntry) error`'
+    dependencies:
+      - 'Entrées : erreurs Go, entrées structurées (ErrorEntry), contexte d’exécution.'
+      - 'Sorties : erreurs Go standard (validation, journalisation, etc.).'
+  - agent: ScriptManager
+    interfaces:
+      - '`ExecuteScript(scriptID string, parameters map[string]interface{}) (*ExecutionResult, error)`'
+      - '`ListScripts() []*ManagedScript`'
+      - '`GetScript(scriptID string) (*ManagedScript, error)`'
+      - '`CreateScriptFromTemplate(templateID, scriptName string, parameters map[string]interface{}) (*ManagedScript, error)`'
+      - '`Shutdown() error`'
+    dependencies:
+      - 'Entrées : identifiants de scripts, paramètres d’exécution, templates, contexte d’exécution.'
+      - 'Sorties : résultats d’exécution, erreurs, logs, scripts générés.'
+  - agent: StorageManager
+    interfaces:
+      - '`Initialize(ctx context.Context) error`'
+      - '`GetPostgreSQLConnection() (interface{}, error)`'
+      - '`GetQdrantConnection() (interface{}, error)`'
+      - '`RunMigrations(ctx context.Context) error`'
+      - '`SaveDependencyMetadata(ctx context.Context, metadata *interfaces.DependencyMetadata) error`'
+      - '`GetDependencyMetadata(ctx context.Context, name string) (*interfaces.DependencyMetadata, error)`'
+      - '`QueryDependencies(ctx context.Context, query *DependencyQuery) ([]*interfaces.DependencyMetadata, error)`'
+      - '`HealthCheck(ctx context.Context) error`'
+      - '`Cleanup() error`'
+    dependencies:
+      - 'Entrées : contextes d’exécution, métadonnées, requêtes de dépendances, objets à stocker.'
+      - 'Sorties : statuts, objets/document récupérés, erreurs, logs.'
+  - agent: SecurityManager
+    interfaces:
+      - '`Initialize(ctx context.Context) error`'
+      - '`LoadSecrets(ctx context.Context) error`'
+      - '`GetSecret(key string) (string, error)`'
+      - '`GenerateAPIKey(ctx context.Context, scope string) (string, error)`'
+      - '`ValidateAPIKey(ctx context.Context, key string) (bool, error)`'
+      - '`EncryptData(data []byte) ([]byte, error)`'
+      - '`DecryptData(encryptedData []byte) ([]byte, error)`'
+      - '`ScanForVulnerabilities(ctx context.Context, dependencies []interfaces.DependencyMetadata) (*interfaces.VulnerabilityReport, error)`'
+      - '`HealthCheck(ctx context.Context) error`'
+      - '`Cleanup() error`'
+    dependencies:
+      - 'Entrées : contextes d’exécution, clés, secrets, dépendances, données à chiffrer.'
+      - 'Sorties : statuts, alertes, rapports de vulnérabilité, données chiffrées/déchiffrées, logs.'
+  - agent: MonitoringManager
+    interfaces:
+      - '`Initialize(ctx context.Context) error`'
+      - '`StartMonitoring(ctx context.Context) error`'
+      - '`StopMonitoring(ctx context.Context) error`'
+      - '`CollectMetrics(ctx context.Context) (*SystemMetrics, error)`'
+      - '`CheckSystemHealth(ctx context.Context) (*HealthStatus, error)`'
+      - '`ConfigureAlerts(ctx context.Context, config *AlertConfig) error`'
+      - '`GenerateReport(ctx context.Context, duration time.Duration) (*PerformanceReport, error)`'
+      - '`StartOperationMonitoring(ctx context.Context, operation string) (*OperationMetrics, error)`'
+      - '`StopOperationMonitoring(ctx context.Context, metrics *OperationMetrics) error`'
+      - '`GetMetricsHistory(ctx context.Context, duration time.Duration) ([]*SystemMetrics, error)`'
+      - '`HealthCheck(ctx context.Context) error`'
+      - '`Cleanup() error`'
+    dependencies:
+      - 'Entrées : contextes d’exécution, configurations d’alertes, opérations à monitorer.'
+      - 'Sorties : métriques, rapports, statuts de santé, alertes, logs.'
+  - agent: MaintenanceManager
+    interfaces:
+      - '`Start() error`'
+      - '`Stop() error`'
+      - '`PerformCleanup(level int) (*CleanupResult, error)`'
+      - '`GetHealthScore() *OrganizationHealth`'
+      - '`GetOperationHistory(limit int) []MaintenanceOperation`'
+    dependencies:
+      - 'Entrées : niveaux de nettoyage, configurations, contexte d’exécution.'
+      - 'Sorties : rapports, logs, résultats de nettoyage, score de santé, historique d’opérations.'
+  - agent: MigrationManager
+    interfaces:
+      - '`ExportData(ctx context.Context, name string, data interface{}) (string, error)`'
+      - '`ImportData(ctx context.Context, filename string, target interface{}) error`'
+      - '`ListExports() ([]string, error)`'
+    dependencies:
+      - 'Entrées : contextes d’exécution, noms/logiques d’export, données à migrer, fichiers d’export.'
+      - 'Sorties : chemins de fichiers exportés, erreurs, logs, données importées.'
+  - agent: NotificationManagerImpl
+    interfaces:
+      - '`Initialize(ctx context.Context) error`'
+      - '`SendNotification(ctx context.Context, notification *interfaces.Notification) error`'
+      - '`SendBulkNotifications(ctx context.Context, notifications []*interfaces.Notification) error`'
+      - '`ScheduleNotification(ctx context.Context, notification *interfaces.Notification, sendTime time.Time) error`'
+      - '`CancelNotification(ctx context.Context, notificationID string) error`'
+      - '`ListChannels(ctx context.Context) ([]*interfaces.NotificationChannel, error)`'
+      - '`TestChannel(ctx context.Context, channelID string) error`'
+      - '`CreateAlert(ctx context.Context, alert *interfaces.Alert) error`'
+      - '`UpdateAlert(ctx context.Context, alertID string, alert *interfaces.Alert) error`'
+      - '`DeleteAlert(ctx context.Context, alertID string) error`'
+      - '`TriggerAlert(ctx context.Context, alertID string, data map[string]interface{}) error`'
+      - '`GetAlertHistory(ctx context.Context, alertID string) ([]*interfaces.AlertEvent, error)`'
+    dependencies:
+      - 'Entrées : notifications, canaux, alertes, contextes d’exécution, paramètres de planification.'
+      - 'Sorties : statuts, logs, historiques d’alertes, statistiques, erreurs.'
+  - agent: ChannelManagerImpl
+    interfaces:
+      - '`Initialize(ctx context.Context) error`'
+      - '`RegisterChannel(ctx context.Context, channel *interfaces.NotificationChannel) error`'
+      - '`UpdateChannel(ctx context.Context, channelID string, channel *interfaces.NotificationChannel) error`'
+      - '`DeactivateChannel(ctx context.Context, channelID string) error`'
+      - '`GetChannel(ctx context.Context, channelID string) (*interfaces.NotificationChannel, error)`'
+      - '`ListChannels(ctx context.Context) ([]*interfaces.NotificationChannel, error)`'
+      - '`TestChannel(ctx context.Context, channelID string) error`'
+      - '`ValidateChannelConfig(ctx context.Context, channelType string, config map[string]interface{}) error`'
+    dependencies:
+      - 'Entrées : canaux, configurations, contextes d’exécution, identifiants de canaux.'
+      - 'Sorties : statuts, logs, listes de canaux, erreurs.'
+  - agent: AlertManagerImpl
+    interfaces:
+      - '`Initialize(ctx context.Context) error`'
+      - '`Shutdown(ctx context.Context) error`'
+      - '`GetID() string`'
+      - '`GetName() string`'
+      - '`GetVersion() string`'
+      - '`GetStatus() interfaces.ManagerStatus`'
+      - '`IsHealthy(ctx context.Context) bool`'
+      - '`GetMetrics() map[string]interface{}`'
+      - '`CreateAlert(ctx context.Context, alert *interfaces.Alert) error`'
+      - '`UpdateAlert(ctx context.Context, alertID string, alert *interfaces.Alert) error`'
+      - '`DeleteAlert(ctx context.Context, alertID string) error`'
+      - '`GetAlert(ctx context.Context, alertID string) (*interfaces.Alert, error)`'
+      - '`ListAlerts(ctx context.Context) ([]*interfaces.Alert, error)`'
+      - '`TriggerAlert(ctx context.Context, alertID string, data map[string]interface{}) error`'
+      - '`GetAlertHistory(ctx context.Context, alertID string) ([]*interfaces.AlertEvent, error)`'
+      - '`EvaluateAlertConditions(ctx context.Context) error`'
+    dependencies:
+      - 'Entrées : alertes, contextes d’exécution, conditions, actions, données d’évaluation, événements.'
+      - 'Sorties : statuts, logs, historiques d’alertes, erreurs, métriques.'
+  - agent: SmartVariableSuggestionManager
+    interfaces:
+      - '`Initialize(ctx context.Context) error`'
+      - '`Shutdown(ctx context.Context) error`'
+      - '`GetID() string`'
+      - '`GetName() string`'
+      - '`GetVersion() string`'
+      - '`GetStatus() interfaces.ManagerStatus`'
+      - '`IsHealthy(ctx context.Context) bool`'
+      - '`GetMetrics() map[string]interface{}`'
+      - '`AnalyzeContext(ctx context.Context, projectPath string) (*ContextAnalysis, error)`'
+      - '`SuggestVariables(ctx context.Context, context *ContextAnalysis, template string) (*VariableSuggestions, error)`'
+      - '`LearnFromUsage(ctx context.Context, variables map[string]interface{}, outcome *UsageOutcome) error`'
+      - '`GetVariablePatterns(ctx context.Context, filters *PatternFilters) (*VariablePatterns, error)`'
+      - '`ValidateVariableUsage(ctx context.Context, variables map[string]interface{}) (*ValidationReport, error)`'
+    dependencies:
+      - 'Entrées : contextes d’exécution, chemins de projet, templates, variables, historiques d’usage, filtres de patterns.'
+      - 'Sorties : suggestions de variables, rapports d’analyse, patterns, rapports de validation, logs, métriques.'
+  - agent: ProcessManager
+    interfaces:
+      - '`StartProcess(name, command string, args []string, env map[string]string) (*ManagedProcess, error)`'
+      - '`StopProcess(name string) error`'
+      - '`GetProcessStatus(name string) (*ManagedProcess, error)`'
+      - '`ListProcesses() map[string]*ManagedProcess`'
+      - '`LoadManifests() error`'
+      - '`ExecuteTask(managerName, taskName string, params map[string]interface{}) error`'
+      - '`HealthCheck() map[string]bool`'
+      - '`Shutdown() error`'
+    dependencies:
+      - 'Entrées : noms de processus, commandes, arguments, variables d’environnement, paramètres de tâches, contextes d’exécution.'
+      - 'Sorties : statuts, logs, objets ManagedProcess, résultats de tâches, rapports de santé, erreurs.'
+  - agent: ContextManager
+    interfaces:
+      - '`SaveState(pm *PanelManager, fm *FloatingManager, minimizer *PanelMinimizer) error`'
+      - '`LoadLatestState() (*ContextState, error)`'
+      - '`LoadStateByTime(timestamp time.Time) (*ContextState, error)`'
+      - '`RestoreState(state *ContextState, pm *PanelManager, fm *FloatingManager, minimizer *PanelMinimizer) error`'
+      - '`ListSavedStates() ([]time.Time, error)`'
+      - '`SetMaxSnapshots(max int)`'
+      - '`SetAutoSaveInterval(interval time.Duration)`'
+      - '`MarkDirty()`'
+      - '`ShouldAutoSave() bool`'
+      - '`DeleteState(timestamp time.Time) error`'
+      - '`GetStateInfo(timestamp time.Time) (*ContextState, error)`'
+    dependencies:
+      - 'Entrées : panels, managers, états UI, timestamps, configurations de sauvegarde.'
+      - 'Sorties : contextes restaurés, listes de snapshots, statuts, logs, erreurs.'
+  - agent: ModeManager
+    interfaces:
+      - '`SwitchMode(targetMode NavigationMode) tea.Cmd`'
+      - '`SwitchModeAdvanced(targetMode NavigationMode, options *TransitionOptions) tea.Cmd`'
+      - '`GetCurrentMode() NavigationMode`'
+      - '`GetModeConfig(mode NavigationMode) (*ModeConfig, error)`'
+      - '`UpdateModeConfig(mode NavigationMode, config *ModeConfig) error`'
+      - '`GetModeState(mode NavigationMode) (*ModeState, error)`'
+      - '`RestoreState(state *ModeState) tea.Cmd`'
+      - '`AddEventHandler(mode NavigationMode, handler ModeEventHandler) error`'
+      - '`TriggerEvent(eventType ModeEventType, data map[string]interface{}) []tea.Cmd`'
+      - '`GetAvailableModes() []NavigationMode`'
+      - '`GetTransitionHistory() []ModeTransition`'
+      - '`SetPreferences(prefs *ModePreferences)`'
+      - '`GetPreferences() *ModePreferences`'
+    dependencies:
+      - 'Entrées : modes, configurations, options de transition, événements, préférences, états, contextes d’exécution.'
+      - 'Sorties : statuts, logs, historiques de transitions, états de mode, commandes UI, erreurs.'
+  - agent: RoadmapManager
+    interfaces:
+      - '`Initialize(ctx context.Context) error`'
+      - '`SyncPlanToRoadmapManager(ctx context.Context, dynamicPlan interface{}) (*SyncResponse, error)`'
+      - '`SyncFromRoadmapManager(ctx context.Context, planID string) (*RoadmapPlan, error)`'
+      - '`GetStats() *ConnectorStats`'
+      - '`Close() error`'
+    dependencies:
+      - 'Entrées : contextes d’exécution, plans dynamiques, identifiants de plans, configurations de connexion.'
+      - 'Sorties : roadmaps, réponses de synchronisation, statistiques, logs, erreurs.'
+  - agent: RollbackManager
+    interfaces:
+      - '`RollbackLast() error`'
+    dependencies:
+      - 'Entrée : aucune (opère sur l’historique interne)'
+      - 'Sortie : erreur éventuelle si le rollback échoue.'
+  - agent: CleanupManager
+    interfaces:
+      - '`ScanForCleanup(ctx context.Context, directories []string) ([]CleanupTask, error)`'
+      - '`ExecuteTasks(ctx context.Context, tasks []CleanupTask, dryRun bool) error`'
+      - '`GetStats() CleanupStats`'
+      - '`GetHealthStatus(ctx context.Context) core.HealthStatus`'
+    dependencies:
+      - 'Entrées : contextes d’exécution, configurations, listes de répertoires, tâches de nettoyage.'
+      - 'Sorties : rapports, logs, statistiques, statuts de santé, erreurs éventuelles.'
+  - agent: QdrantManager
+    interfaces:
+      - '`Initialize(ctx context.Context) error`'
+      - '`StoreVector(ctx context.Context, collectionName string, point VectorPoint) error`'
+      - '`StoreBatch(ctx context.Context, collectionName string, points []VectorPoint) error`'
+      - '`Search(ctx context.Context, collectionName string, queryVector []float32, limit int, filter map[string]interface{}) ([]SearchResult, error)`'
+      - '`Delete(ctx context.Context, collectionName string, ids []string) error`'
+      - '`GetStats(ctx context.Context) (*VectorStats, error)`'
+      - '`GetCollections() map[string]*Collection`'
+      - '`CreateCollection(ctx context.Context, name string, vectorSize int, distance string) error`'
+      - '`GetHealth() core.HealthStatus`'
+      - '`GetMetrics() map[string]interface{}`'
+    dependencies:
+      - 'Entrées : contextes d’exécution, noms de collections, vecteurs, requêtes de recherche, configurations.'
+      - 'Sorties : résultats de recherche, statuts, logs, statistiques, erreurs éventuelles.'
+  - agent: SimpleAdvancedAutonomyManager
+    interfaces:
+      - '`OrchestrateAutonomousMaintenance(ctx context.Context) (*AutonomyResult, error)`'
+      - '`PredictMaintenanceNeeds(ctx context.Context, timeHorizon time.Duration) (*PredictionResult, error)`'
+      - '`ExecuteAutonomousDecisions(ctx context.Context, decisions []AutonomousDecision) error`'
+      - '`MonitorEcosystemHealth(ctx context.Context) (*EcosystemHealth, error)`'
+      - '`SetupSelfHealing(ctx context.Context, config *SelfHealingConfig) error`'
+      - '`OptimizeResourceAllocation(ctx context.Context) (*ResourceOptimizationResult, error)`'
+      - '`EstablishCrossManagerWorkflows(ctx context.Context, workflows []*CrossManagerWorkflow) error`'
+      - '`HandleEmergencySituations(ctx context.Context, severity EmergencySeverity) (*EmergencyResponse, error)`'
+    dependencies:
+      - 'Entrées : contextes d’exécution, décisions autonomes, configurations, workflows, niveaux de sévérité.'
+      - 'Sorties : résultats d’autonomie, prédictions, réponses d’urgence, tableaux de bord, logs, erreurs éventuelles.'
+  - agent: VersionManagerImpl
+    interfaces:
+      - '`CompareVersions(v1, v2 string) int`'
+      - '`IsCompatible(version string, constraints []string) bool`'
+      - '`GetLatestVersion(ctx context.Context, packageName string) (string, error)`'
+      - '`GetLatestStableVersion(ctx context.Context, packageName string) (string, error)`'
+      - '`FindBestVersion(versions []string, constraints []string) (string, error)`'
+    dependencies:
+      - 'Entrées : versions, contraintes, contextes d’exécution, noms de packages.'
+      - 'Sorties : résultats de comparaison, versions compatibles, erreurs éventuelles.'
+  - agent: VectorOperationsManager
+    interfaces:
+      - '`BatchUpsertVectors(ctx context.Context, vectors []Vector) error`'
+      - '`UpdateVector(ctx context.Context, vector Vector) error`'
+      - '`DeleteVector(ctx context.Context, vectorID string) error`'
+      - '`GetVector(ctx context.Context, vectorID string) (*Vector, error)`'
+      - '`SearchVectorsParallel(ctx context.Context, queries []Vector, topK int) ([][]SearchResult, error)`'
+      - '`BulkDelete(ctx context.Context, vectorIDs []string) error`'
+      - '`GetStats(ctx context.Context) (map[string]interface{}, error)`'
+    dependencies:
+      - '`BatchUpsertVectors`'
+      - 'Entrées :'
+      - '`ctx context.Context` : contexte d’exécution'
+      - '`vectors []Vector` : liste de vecteurs à insérer'
+      - 'Sortie :'
+      - '`error` : erreur éventuelle'
+      - '`UpdateVector`'
+      - 'Entrées :'
+      - '`ctx context.Context` : contexte d’exécution'
+      - '`vector Vector` : vecteur à mettre à jour'
+      - 'Sortie :'
+      - '`error` : erreur éventuelle'
+      - '`DeleteVector`'
+      - 'Entrées :'
+      - '`ctx context.Context` : contexte d’exécution'
+      - '`vectorID string` : identifiant du vecteur à supprimer'
+      - 'Sortie :'
+      - '`error` : erreur éventuelle'
+      - '`GetVector`'
+      - 'Entrées :'
+      - '`ctx context.Context` : contexte d’exécution'
+      - '`vectorID string` : identifiant du vecteur à récupérer'
+      - 'Sorties :'
+      - '`*Vector` : vecteur récupéré (ou nil)'
+      - '`error` : erreur éventuelle'
+      - '`SearchVectorsParallel`'
+      - 'Entrées :'
+      - '`ctx context.Context` : contexte d’exécution'
+      - '`queries []Vector` : requêtes de recherche'
+      - '`topK int` : nombre de résultats par requête'
+      - 'Sorties :'
+      - '`[][]SearchResult` : résultats de recherche pour chaque requête'
+      - '`error` : erreur éventuelle'
+      - '`BulkDelete`'
+      - 'Entrées :'
+      - '`ctx context.Context` : contexte d’exécution'
+      - '`vectorIDs []string` : identifiants des vecteurs à supprimer'
+      - 'Sortie :'
+      - '`error` : erreur éventuelle'
+      - '`GetStats`'
+      - 'Entrées :'
+      - '`ctx context.Context` : contexte d’exécution'
+      - 'Sorties :'
+      - '`map[string]interface{}` : statistiques diverses'
+      - '`error` : erreur éventuelle'
+  - agent: GatewayManager
+    interfaces:
+      - '`core.CacheManagerInterface` (gestion de cache)'
+      - '`core.LWMInterface` (gestion de workflows de cycle de vie)'
+      - '`core.RAGInterface` (génération augmentée par récupération)'
+      - '`core.BankAPIClient` (stockage/récupération de données)'
