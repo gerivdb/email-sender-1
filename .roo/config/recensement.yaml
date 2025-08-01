@@ -1,0 +1,12 @@
+# recensement.yaml
+# Roo-Code artefact : Fichier de configuration YAML pour le recensement documentaire
+# Statut : SQUELETTE - À compléter selon le plan-roadmap-actionnable.md
+#
+# TODO : Définir la structure et les paramètres du recensement documentaire
+# Traçabilité : Généré automatiquement selon le plan d’action Roo-Code
+
+recensement:
+  # TODO : Ajouter les paramètres requis (exemple)
+  # - chemin: ""
+  # - type: ""
+  # - options: {}

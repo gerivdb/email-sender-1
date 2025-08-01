@@ -1,19 +1,26 @@
-# Rapport consolidé du projet
+<!--
+reporting.md
+Roo-Code artefact : Rapport de reporting
+Statut : SQUELETTE - À compléter selon le plan-roadmap-actionnable.md
 
-## Inventaire
-- inventaire.json
-- inventaire.md
-## Analyse d'écart
-- gap-analysis.json
-- gap-analysis.md
-## Recueil des besoins
-- besoins.json
-- besoins.md
-## Spécifications
-- specs.json
-- specs.md
-## Développement
-- module-output.json
-- module-output.md
-## Tests
-- test OK
+TODO : Définir la structure du reporting (indicateurs, synthèse, anomalies, recommandations)
+Traçabilité : Généré automatiquement selon le plan d’action Roo-Code
+-->
+
+# Reporting
+
+## Indicateurs clés
+
+<!-- TODO : Lister les indicateurs de suivi -->
+
+## Synthèse des actions
+
+<!-- TODO : Résumer les actions réalisées et leur statut -->
+
+## Anomalies détectées
+
+<!-- TODO : Documenter les anomalies ou écarts -->
+
+## Recommandations
+
+<!-- TODO : Proposer des axes d’amélioration -->

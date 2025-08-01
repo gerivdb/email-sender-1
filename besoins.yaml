@@ -1,0 +1,11 @@
+# besoins.yaml
+# Roo-Code artefact : Définition des besoins (YAML)
+# Statut : SQUELETTE - À compléter selon le plan-roadmap-actionnable.md
+# TODO : Définir la structure des besoins (catégories, description, criticité)
+# Traçabilité : Généré automatiquement selon le plan d’action Roo-Code
+
+besoins:
+  - categorie: ""
+    description: ""
+    criticite: ""
+    # TODO : Compléter chaque besoin selon la session

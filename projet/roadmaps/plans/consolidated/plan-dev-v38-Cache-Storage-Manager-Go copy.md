@@ -1185,7 +1185,7 @@ Ce plan de développement détaille l'implémentation d'un système de cache et 
     - [ ] Sous-étape 3.5 : IncidentNotification pour rollback alerts
   - [ ] Entrées : Deployment requirements, rollback policies
   - [ ] Sorties : Files `.github/workflows/deploy.yml`, deployment scripts
-  - [ ] Scripts : `/scripts/deploy.sh`, `/scripts/rollback.sh`
+  - [ ] Scripts : `/scripts/deploy.sh`, `.roo/scripts/rollback.sh`
   - [ ] Méthodes : BlueGreenOrchestrator.SwitchTraffic(), RollbackTrigger.ExecuteRollback()
   - [ ] Conditions préalables : Deployment infrastructure, monitoring setup
 
