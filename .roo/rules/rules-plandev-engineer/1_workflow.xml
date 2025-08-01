@@ -1,0 +1,57 @@
+<workflow_instructions>
+  <mode_overview>
+    Ce mode génère des plans de développement structurés et impose l’utilisation d’un template documentaire défini dans la configuration du mode.
+  </mode_overview>
+  <initialization_steps>
+    <step number="1">
+      <action>Analyser la demande utilisateur</action>
+      <details>
+        Identifier l’objectif, les contraintes et le template à appliquer.
+      </details>
+    </step>
+    <step number="2">
+      <action>Charger le template défini dans la configuration du mode</action>
+      <details>
+        Vérifier la présence du champ <template> dans la configuration YAML du mode.
+      </details>
+    </step>
+  </initialization_steps>
+  <main_workflow>
+    <phase name="génération">
+      <description>Générer le plan en respectant strictement le template</description>
+      <steps>
+        <step>Générer le plan en suivant la structure, l’ordre et les balises du template</step>
+        <step>Inclure toutes les sections obligatoires du template</step>
+      </steps>
+    </phase>
+    <phase name="validation">
+      <description>Valider la conformité du plan généré avec le template</description>
+      <steps>
+        <step>Contrôler que toutes les sections du template sont présentes</step>
+        <step>Rejeter toute sortie non conforme et demander correction</step>
+      </steps>
+    </phase>
+    <phase name="export">
+      <description>Exporter uniquement si la validation est réussie</description>
+      <steps>
+        <step>Exporter le plan au format Markdown ou YAML selon le template</step>
+      </steps>
+    </phase>
+  </main_workflow>
+  <validation_rules>
+    <rule priority="high">
+      <description>Le plan généré doit respecter strictement le template défini dans la configuration du mode.</description>
+      <criteria>
+        <criterion>Toutes les sections obligatoires du template sont présentes</criterion>
+        <criterion>L’ordre et la structure correspondent au template</criterion>
+        <criterion>Les balises ou titres sont identiques</criterion>
+      </criteria>
+      <action>Si le plan ne respecte pas le template, générer un message d’erreur et demander une correction immédiate.</action>
+    </rule>
+  </validation_rules>
+  <completion_criteria>
+    <criterion>Le plan respecte le template imposé</criterion>
+    <criterion>La validation automatique bloque toute exportation non conforme</criterion>
+    <criterion>La documentation du mode précise cette contrainte</criterion>
+  </completion_criteria>
+</workflow_instructions>

@@ -1,0 +1,47 @@
+name: Déplacement documentaire Roo
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'file-moves.yaml'
+      - 'scripts/move-files.go'
+      - 'move-files.*'
+      - '.github/workflows/move-files-ci.yml'
+
+jobs:
+  move-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du dépôt
+        uses: actions/checkout@v4
+
+      - name: Installation Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Validation YAML (schéma)
+        run: |
+          pip install yamllint
+          yamllint file-moves.yaml
+          python scripts/validate-schema.py file-moves.yaml file-moves.schema.yaml
+
+      - name: Déplacement documentaire Roo (dry-run)
+        run: go run scripts/move-files.go --config file-moves.yaml --dry-run
+
+      - name: Déplacement documentaire Roo (exécution réelle)
+        if: github.event_name == 'workflow_dispatch'
+        run: go run scripts/move-files.go --config file-moves.yaml
+
+      - name: Archivage du rapport Markdown
+        uses: actions/upload-artifact@v4
+        with:
+          name: rapport-move-files
+          path: rapport-move-files.md
+
+      - name: Archivage du rapport JSON
+        uses: actions/upload-artifact@v4
+        with:
+          name: rapport-move-files-json
+          path: rapport-move-files.json

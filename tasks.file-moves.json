@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Déplacement documentaire Roo (dry-run)",
+      "type": "shell",
+      "command": "go run scripts/move-files.go --config file-moves.yaml --dry-run",
+      "group": "build",
+      "presentation": {
+        "reveal": "always"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Déplacement documentaire Roo (exécution réelle)",
+      "type": "shell",
+      "command": "go run scripts/move-files.go --config file-moves.yaml",
+      "group": "build",
+      "presentation": {
+        "reveal": "always"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Validation YAML (schéma)",
+      "type": "shell",
+      "command": "yamllint file-moves.yaml && python scripts/validate-schema.py file-moves.yaml file-moves.schema.yaml",
+      "group": "test",
+      "presentation": {
+        "reveal": "always"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

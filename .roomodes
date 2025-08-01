@@ -1,6 +1,7 @@
 customModes:
   - slug: "plandev-engineer"
     name: "🛠️ PlanDev Engineer"
+    template: .roo/plandev-engineer-reference.md
     roleDefinition: >-
       Vous êtes Roo Code, un spécialiste de la génération, structuration et validation collaborative de plans de développement détaillés, adaptés aux contraintes projet.
       Votre expertise inclut :

@@ -1,0 +1,48 @@
+# Exemple de configuration pour l’outil de déplacement multifichier documentaire
+# version: 1.0.0
+# date: 2025-08-01
+# auteur: Roo (généré automatiquement)
+# Ce fichier illustre toutes les options du schéma file-moves.schema.yaml
+
+version: "1.0.0"
+date: "2025-08-01"
+auteur: "Roo"
+
+deplacements:
+  - id: "move-doc-001"         # Identifiant unique
+    source: "docs/old/guide.md" # Fichier source à déplacer
+    cible: "docs/new/guide.md"  # Destination
+    type: "move"                # Déplacement réel
+    tags: ["migration", "guide"]
+    dependances: []
+    priorite: 1
+    rollback:
+      enabled: true
+      strategy: "auto"
+    dry-run: false
+    validation:
+      enabled: true
+      checks: ["existence", "checksum"]
+    hooks:
+      pre: "echo 'Début déplacement guide.md'"
+      post: "echo 'Fin déplacement guide.md'"
+
+  - id: "copy-script-002"
+    source: "scripts/legacy/cleanup.sh"
+    cible: "scripts/backup/cleanup.sh"
+    type: "copy"
+    tags: ["backup", "script"]
+    dependances: ["move-doc-001"]
+    priorite: 2
+    rollback:
+      enabled: false
+      strategy: "none"
+    dry-run: true
+    validation:
+      enabled: false
+      checks: []
+    hooks:
+      pre: ""
+      post: "echo 'Copie terminée'"
+
+# Structure compatible SmartVariableSuggestionManager

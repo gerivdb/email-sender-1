@@ -1,12 +1,56 @@
-# recensement.yaml
-# Roo-Code artefact : Fichier de configuration YAML pour le recensement documentaire
-# Statut : SQUELETTE - À compléter selon le plan-roadmap-actionnable.md
-#
-# TODO : Définir la structure et les paramètres du recensement documentaire
-# Traçabilité : Généré automatiquement selon le plan d’action Roo-Code
+# Recensement Roo Code - Customisation uniquement
+# Ce fichier liste tous les artefacts, scripts, règles et configurations
+# qui relèvent de la personnalisation Roo Code dans ce projet.
+# Sont exclus : dépendances tierces non modifiées, fichiers standards non adaptés.
 
-recensement:
-  # TODO : Ajouter les paramètres requis (exemple)
-  # - chemin: ""
-  # - type: ""
-  # - options: {}
+roo_code_custom:
+  description: >
+    Recensement strictement limité aux éléments créés, adaptés ou surchargés pour Roo Code.
+    Ce périmètre exclut tout ce qui n’est pas une customisation ou extension directe du framework Roo Code.
+  inclus:
+    - .roo/plandev-engineer-reference.md
+    - .roo/plan-migration-roo-code.md
+    - .roo/rules/rules.md
+    - .roo/rules/rules-agents.md
+    - .roo/rules/rules-code.md
+    - .roo/rules/rules-debug.md
+    - .roo/rules/rules-documentation.md
+    - .roo/rules/rules-maintenance.md
+    - .roo/rules/rules-migration.md
+    - .roo/rules/rules-orchestration.md
+    - .roo/rules/rules-plugins.md
+    - .roo/rules/rules-security.md
+    - .roo/rules/README.md
+    - .roo/rules/tools-registry.md
+    - .roo/rules/workflows-matrix.md
+    - .roo/personas.md
+    - .roo/config/recensement.yaml
+    - scripts/recensement.go
+    - scripts/recensement/main.go
+    - scripts/dev-check.go
+    - scripts/rollback.sh
+    - plan-roadmap-actionnable.md
+    - plan-recensement-developpement.md
+    - rapport-ecart.md
+    - reporting.md
+    - rollback.md
+    - test-ecriture.md
+    - besoins-session.md
+    - besoins.yaml
+    - spec-tech.md
+  checklist_methodologique:
+    - Analyser la structure documentaire existante et identifier les artefacts Roo Code custom.
+    - Vérifier l’absence d’éléments standards ou tiers non modifiés dans la liste.
+    - Documenter chaque inclusion avec justification (création, adaptation, surcharge).
+    - Valider la cohérence du recensement avec la roadmap et les plans d’action.
+    - Relire et valider la checklist avec l’équipe projet.
+    - Mettre à jour ce fichier à chaque évolution du périmètre custom Roo Code.
+  exclus:
+    - node_modules/
+    - vendor/
+    - .git/
+    - .github/
+    - .vscode/
+    - fichiers de dépendances non modifiés
+    - toute documentation ou script générique non Roo Code
+    - configurations système ou IDE non spécifiques Roo Code

@@ -1,0 +1,85 @@
+# Schéma YAML pour la configuration des déplacements multifichiers documentaire
+# version: 1.0.0
+# date: 2025-08-01
+# auteur: Roo (généré automatiquement)
+# Ce schéma décrit tous les champs attendus pour chaque opération de déplacement.
+# Utilisable pour validation automatique (ex : SmartVariableSuggestionManager).
+
+version:           # Version du schéma
+  type: string
+  description: "Version du schéma de configuration"
+date:              # Date de génération du schéma
+  type: string
+  format: date
+  description: "Date de création du fichier de configuration"
+auteur:            # Auteur ou générateur du fichier
+  type: string
+  description: "Auteur ou générateur du fichier"
+deplacements:      # Liste des déplacements à effectuer
+  type: array
+  items:
+    type: object
+    properties:
+      id:
+        type: string
+        description: "Identifiant unique du déplacement"
+      source:
+        type: string
+        description: "Chemin du fichier source à déplacer"
+      cible:
+        type: string
+        description: "Chemin de destination du fichier"
+      type:
+        type: string
+        enum: [move, copy, symlink]
+        description: "Type d’opération : move (déplacement), copy (copie), symlink (lien symbolique)"
+      tags:
+        type: array
+        items:
+          type: string
+        description: "Tags libres pour catégoriser l’opération"
+      dependances:
+        type: array
+        items:
+          type: string
+        description: "Liste d’identifiants d’opérations dont dépend ce déplacement"
+      priorite:
+        type: integer
+        description: "Priorité d’exécution (plus bas = plus prioritaire)"
+      rollback:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+            description: "Active la possibilité de rollback"
+          strategy:
+            type: string
+            enum: [auto, manual, none]
+            description: "Stratégie de rollback"
+        description: "Configuration du rollback pour ce déplacement"
+      dry-run:
+        type: boolean
+        description: "Si true, simule l’opération sans effet réel"
+      validation:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+            description: "Active la validation post-déplacement"
+          checks:
+            type: array
+            items:
+              type: string
+            description: "Liste des validations à effectuer (ex : checksum, existence, permissions)"
+        description: "Bloc de validation post-opération"
+      hooks:
+        type: object
+        properties:
+          pre:
+            type: string
+            description: "Commande ou script à exécuter avant l’opération"
+          post:
+            type: string
+            description: "Commande ou script à exécuter après l’opération"
+        description: "Hooks d’automatisation avant/après"
+    required: [id, source, cible, type]

@@ -1,0 +1,45 @@
+{
+  "date_execution": "2025-08-01",
+  "auteur": "Roo Engine",
+  "configuration": "file-moves.yaml",
+  "resume": {
+    "nombre_operations": 2,
+    "succes": 2,
+    "echecs": 0,
+    "dry_run": 1
+  },
+  "operations": [
+    {
+      "id": "move-doc-001",
+      "source": "docs/old/guide.md",
+      "cible": "docs/new/guide.md",
+      "type": "move",
+      "statut": "OK",
+      "validation": "OK",
+      "rollback": "OK",
+      "logs": "voir logs détaillés"
+    },
+    {
+      "id": "copy-script-002",
+      "source": "scripts/legacy/cleanup.sh",
+      "cible": "scripts/backup/cleanup.sh",
+      "type": "copy",
+      "statut": "DRY-RUN",
+      "validation": "OK",
+      "rollback": "N/A",
+      "logs": "voir logs détaillés"
+    }
+  ],
+  "logs": [
+    "Inclure ici les extraits de logs, erreurs, outputs de hooks, etc."
+  ],
+  "rollback": [
+    "Préciser les opérations ayant déclenché un rollback et leur résultat."
+  ],
+  "liens_utiles": [
+    "file-moves.yaml",
+    "file-moves.schema.yaml",
+    "file-moves.hooks.md",
+    "CHECKLIST.file-moves.md"
+  ]
+}

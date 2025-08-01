@@ -6,7 +6,7 @@
         "@modelcontextprotocol/server-filesystem",
         "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
       ],
-      "disabled": false,
+      "disabled": true,
       "alwaysAllow": [
         "read_multiple_files",
         "edit_file",
@@ -16,10 +16,11 @@
         "get_file_info",
         "list_allowed_directories",
         "search_files",
-        "move_file",
         "list_directory",
-        "directory_tree"
-      ]
+        "directory_tree",
+        "move_file"
+      ],
+      "timeout": 30
     },
     "github.com/executeautomation/mcp-playwright": {
       "command": "npx",
@@ -110,7 +111,7 @@
       "args": [
         "wonderwhy-er/DesktopCommanderMCP"
       ],
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [],
       "alwaysAllow": [
         "set_config_value",
