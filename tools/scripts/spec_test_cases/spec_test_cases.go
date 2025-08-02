@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	fmt.Println("# Spécification des cas de test\n")
+	fmt.Print("# Spécification des cas de test\n")
 	fmt.Println("- Test Authentification : succès et échec")
 	fmt.Println("- Test Orchestration : charge et erreurs")
 	fmt.Println("- Test API Upload : fichiers valides et corrompus")

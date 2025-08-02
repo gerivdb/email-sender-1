@@ -1,0 +1,505 @@
+[
+  {
+    "file": "found",
+    "message": "found packages main (auth_bench_test.go) and docmodule (doc_example.go) in D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
+  },
+  {
+    "file": "cmd\\email-server\\email_server.go",
+    "message": "cmd\\email-server\\email_server.go:5:2: no required module provides package github.com/gerivdb/email-sender-1/pkg/email; to add it:"
+  },
+  {
+    "file": "cmd\\event-listener-service\\main.go",
+    "message": "cmd\\event-listener-service\\main.go:11:2: package email_sender/eventbus is not in std (C:\\Program Files\\Go\\src\\email_sender\\eventbus)"
+  },
+  {
+    "file": "found",
+    "message": "found packages roadmap_orchestrator (roadmap_orchestrator.go) and main (roadmap_orchestrator_test.go) in D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\cmd\\go\\roadmap-orchestrator"
+  },
+  {
+    "file": "cmd\\hub-central\\test.go",
+    "message": "cmd\\hub-central\\test.go:1:1: expected 'package', found 'EOF'"
+  },
+  {
+    "file": "cmd\\integration_test_v49\\integration_test_v49.go",
+    "message": "cmd\\integration_test_v49\\integration_test_v49.go:9:2: package EMAIL_SENDER_1/tools/core/toolkit is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\tools\\core\\toolkit)"
+  },
+  {
+    "file": "cmd\\needs\\needs.go",
+    "message": "cmd\\needs\\needs.go:4:2: package core/reporting is not in std (C:\\Program Files\\Go\\src\\core\\reporting)"
+  },
+  {
+    "message": "\timports github.com/gerivdb/email-sender-1/development/managers/cache-manager from cache_manager_api.go: import cycle not allowed"
+  },
+  {
+    "file": "development\\managers\\dependencymanager\\config.go",
+    "message": "development\\managers\\dependencymanager\\config.go:3:8: no required module provides package github.com/gerivdb/email-sender-1/development/managers/interfaces; to add it:"
+  },
+  {
+    "file": "development\\managers\\dependencymanager\\base_methods.go",
+    "message": "development\\managers\\dependencymanager\\base_methods.go:3:4: expected 'package', found 'EOF'"
+  },
+  {
+    "file": "development\\managers\\security-manager\\helpers.go",
+    "message": "development\\managers\\security-manager\\helpers.go:17:2: no required module provides package github.com/gerivdb/email-sender-1/managers/interfaces; to add it:"
+  },
+  {
+    "file": "streaming\\redis_streaming\\intelligent_cache.go",
+    "message": "streaming\\redis_streaming\\intelligent_cache.go:8:2: no required module provides package github.com/go-redis/redis/v8; to add it:"
+  },
+  {
+    "file": "cmd\\redis-fallback-test\\redis_fallback_test.go",
+    "message": "cmd\\redis-fallback-test\\redis_fallback_test.go:1:1: expected 'package', found '\u003c\u003c'"
+  },
+  {
+    "file": "cmd\\redis-test\\redis_test.go",
+    "message": "cmd\\redis-test\\redis_test.go:1:1: expected 'package', found '\u003c\u003c'"
+  },
+  {
+    "file": "cmd\\scanmodules\\scanmodules.go",
+    "message": "cmd\\scanmodules\\scanmodules.go:7:2: package EMAIL_SENDER_1/scripts is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\scripts)"
+  },
+  {
+    "file": "found",
+    "message": "found packages main (main.go) and scanmodules (scanmodules.go) in D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\cmd\\scanmodules"
+  },
+  {
+    "file": "cmd\\server\\server.go",
+    "message": "cmd\\server\\server.go:1:1: expected 'package', found '\u003c\u003c'"
+  },
+  {
+    "file": "cmd\\test_compile\\test_compile.go",
+    "message": "cmd\\test_compile\\test_compile.go:7:2: package EMAIL_SENDER_1/tools/pkg/manager is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\tools\\pkg\\manager)"
+  },
+  {
+    "file": "cmd\\test_imports\\test_imports.go",
+    "message": "cmd\\test_imports\\test_imports.go:7:2: package EMAIL_SENDER_1/tools/operations/validation is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\tools\\operations\\validation)"
+  },
+  {
+    "file": "cmd\\testgen\\testgen.go",
+    "message": "cmd\\testgen\\testgen.go:1:1: expected 'package', found '\u003c\u003c'"
+  },
+  {
+    "file": "cmd\\validate_components\\validate_components.go",
+    "message": "cmd\\validate_components\\validate_components.go:8:2: found packages tools (alert-manager.go) and main (debug_project_structure.go) in D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\tools"
+  },
+  {
+    "file": "found",
+    "message": "found packages main (main.go) and validatecomponents (validate_components.go) in D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\cmd\\validate_components"
+  },
+  {
+    "file": "cmd\\vscode-diagnostic\\vscode_diagnostic.go",
+    "message": "cmd\\vscode-diagnostic\\vscode_diagnostic.go:11:2: package vscode-diagnostic-cli/config is not in std (C:\\Program Files\\Go\\src\\vscode-diagnostic-cli\\config)"
+  },
+  {
+    "file": "demo\\ttl-demo-simple.go",
+    "message": "demo\\ttl-demo-simple.go:10:2: package email_sender/pkg/cache/ttl is not in std (C:\\Program Files\\Go\\src\\email_sender\\pkg\\cache\\ttl)"
+  },
+  {
+    "file": "development\\hooks\\commit-interceptor\\advanced_classifier_test.go",
+    "message": "development\\hooks\\commit-interceptor\\advanced_classifier_test.go:13:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\final_validation.go",
+    "message": "development\\managers\\final_validation.go:8:2: no required module provides package github.com/gerivdb/email-sender-1/development/managers/dependency-manager; to add it:"
+  },
+  {
+    "file": "found",
+    "message": "found packages managers (audit_stack_phase_1_1_2.go) and main (phase_8_final_validation.go) in D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\managers"
+  },
+  {
+    "file": "development\\managers\\advanced-autonomy-manager\\main_simple.go",
+    "message": "development\\managers\\advanced-autonomy-manager\\main_simple.go:14:2: package advanced-autonomy-manager/interfaces is not in std (C:\\Program Files\\Go\\src\\advanced-autonomy-manager\\interfaces)"
+  },
+  {
+    "file": "development\\managers\\advanced-autonomy-manager\\main_simple.go",
+    "message": "development\\managers\\advanced-autonomy-manager\\main_simple.go:15:2: package advanced-autonomy-manager/internal/config is not in std (C:\\Program Files\\Go\\src\\advanced-autonomy-manager\\internal\\config)"
+  },
+  {
+    "file": "development\\managers\\advanced-autonomy-manager\\main_simple.go",
+    "message": "development\\managers\\advanced-autonomy-manager\\main_simple.go:16:2: package advanced-autonomy-manager/internal/discovery is not in std (C:\\Program Files\\Go\\src\\advanced-autonomy-manager\\internal\\discovery)"
+  },
+  {
+    "file": "development\\managers\\advanced-autonomy-manager\\internal\\discovery\\infrastructure_discovery.go",
+    "message": "development\\managers\\advanced-autonomy-manager\\internal\\discovery\\infrastructure_discovery.go:15:2: package EMAIL_SENDER_1/development/managers/advanced-autonomy-manager/internal/config is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\development\\managers\\advanced-autonomy-manager\\internal\\config)"
+  },
+  {
+    "file": "development\\managers\\advanced-autonomy-manager\\internal\\discovery\\infrastructure_discovery.go",
+    "message": "development\\managers\\advanced-autonomy-manager\\internal\\discovery\\infrastructure_discovery.go:16:2: package EMAIL_SENDER_1/development/managers/advanced-autonomy-manager/internal/logging is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\development\\managers\\advanced-autonomy-manager\\internal\\logging)"
+  },
+  {
+    "file": "development\\managers\\advanced-autonomy-manager\\internal\\monitoring\\manager_collector.go",
+    "message": "development\\managers\\advanced-autonomy-manager\\internal\\monitoring\\manager_collector.go:1:1: expected 'package', found n"
+  },
+  {
+    "file": "development\\managers\\advanced-autonomy-manager\\freeze_fix_core_test.go",
+    "message": "development\\managers\\advanced-autonomy-manager\\freeze_fix_core_test.go:1:1: expected 'package', found 'EOF'"
+  },
+  {
+    "file": "development\\managers\\advanced-autonomy-manager\\cmd\\main.go",
+    "message": "development\\managers\\advanced-autonomy-manager\\cmd\\main.go:13:2: package advanced-autonomy-manager is not in std (C:\\Program Files\\Go\\src\\advanced-autonomy-manager)"
+  },
+  {
+    "file": "found",
+    "message": "found packages advanced_autonomy_manager (simple_freeze_fix.go) and validation (validate_arch.go) in D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\managers\\advanced-autonomy-manager\\validation"
+  },
+  {
+    "file": "development\\managers\\ai-template-manager\\ai_template_manager.go",
+    "message": "development\\managers\\ai-template-manager\\ai_template_manager.go:14:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\ai-template-manager\\interfaces\\ai_template_manager.go",
+    "message": "development\\managers\\ai-template-manager\\interfaces\\ai_template_manager.go:6:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\ai-template-manager\\internal\\ai\\pattern_processor.go",
+    "message": "development\\managers\\ai-template-manager\\internal\\ai\\pattern_processor.go:11:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\api-gateway\\gateway.go",
+    "message": "development\\managers\\api-gateway\\gateway.go:13:2: no required module provides package github.com/swaggo/files; to add it:"
+  },
+  {
+    "file": "development\\managers\\api-gateway\\gateway.go",
+    "message": "development\\managers\\api-gateway\\gateway.go:14:2: no required module provides package github.com/swaggo/gin-swagger; to add it:"
+  },
+  {
+    "file": "development\\managers\\branching-manager\\demo-complete-8-levels.go",
+    "message": "development\\managers\\branching-manager\\demo-complete-8-levels.go:7:2: package EMAIL_SENDER_1/development/managers/branching-manager/interfaces is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\development\\managers\\branching-manager\\interfaces)"
+  },
+  {
+    "file": "development\\managers\\branching-manager\\handlers.go",
+    "message": "development\\managers\\branching-manager\\handlers.go:1:1: expected 'package', found 'EOF'"
+  },
+  {
+    "file": "development\\managers\\branching-manager\\cmd\\main.go",
+    "message": "development\\managers\\branching-manager\\cmd\\main.go:11:2: package EMAIL_SENDER_1/development/managers/branching-manager/development is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\development\\managers\\branching-manager\\development)"
+  },
+  {
+    "file": "development\\managers\\branching-manager\\demo\\demo_complete_system.go",
+    "message": "development\\managers\\branching-manager\\demo\\demo_complete_system.go:9:2: package EMAIL_SENDER_1/development/managers/branching-manager/ai is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\development\\managers\\branching-manager\\ai)"
+  },
+  {
+    "file": "development\\managers\\branching-manager\\demo\\demo_complete_system.go",
+    "message": "development\\managers\\branching-manager\\demo\\demo_complete_system.go:10:2: package EMAIL_SENDER_1/development/managers/branching-manager/database is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\development\\managers\\branching-manager\\database)"
+  },
+  {
+    "file": "development\\managers\\branching-manager\\demo\\demo_complete_system.go",
+    "message": "development\\managers\\branching-manager\\demo\\demo_complete_system.go:12:2: package EMAIL_SENDER_1/development/managers/branching-manager/git is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\development\\managers\\branching-manager\\git)"
+  },
+  {
+    "file": "development\\managers\\branching-manager\\demo\\demo_complete_system.go",
+    "message": "development\\managers\\branching-manager\\demo\\demo_complete_system.go:13:2: package EMAIL_SENDER_1/development/managers/branching-manager/integrations is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\development\\managers\\branching-manager\\integrations)"
+  },
+  {
+    "file": "development\\managers\\branching-manager\\levels\\level-1\\main.go",
+    "message": "development\\managers\\branching-manager\\levels\\level-1\\main.go:1:1: expected 'package', found 'EOF'"
+  },
+  {
+    "file": "development\\managers\\config-manager\\config_manager.go",
+    "message": "development\\managers\\config-manager\\config_manager.go:12:2: no required module provides package github.com/mitchellh/mapstructure; to add it:"
+  },
+  {
+    "file": "development\\managers\\git-workflow-manager\\git_workflow_manager.go",
+    "message": "development\\managers\\git-workflow-manager\\git_workflow_manager.go:10:2: package EMAIL_SENDER_1/git-workflow-manager/internal/branch is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\git-workflow-manager\\internal\\branch)"
+  },
+  {
+    "file": "development\\managers\\git-workflow-manager\\git_workflow_manager.go",
+    "message": "development\\managers\\git-workflow-manager\\git_workflow_manager.go:11:2: package EMAIL_SENDER_1/git-workflow-manager/internal/commit is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\git-workflow-manager\\internal\\commit)"
+  },
+  {
+    "file": "development\\managers\\git-workflow-manager\\git_workflow_manager.go",
+    "message": "development\\managers\\git-workflow-manager\\git_workflow_manager.go:12:2: package EMAIL_SENDER_1/git-workflow-manager/internal/pr is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\git-workflow-manager\\internal\\pr)"
+  },
+  {
+    "file": "development\\managers\\git-workflow-manager\\git_workflow_manager.go",
+    "message": "development\\managers\\git-workflow-manager\\git_workflow_manager.go:13:2: package EMAIL_SENDER_1/git-workflow-manager/internal/webhook is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\git-workflow-manager\\internal\\webhook)"
+  },
+  {
+    "file": "development\\managers\\git-workflow-manager\\git_workflow_manager.go",
+    "message": "development\\managers\\git-workflow-manager\\git_workflow_manager.go:14:2: package EMAIL_SENDER_1/managers/interfaces is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\managers\\interfaces)"
+  },
+  {
+    "file": "development\\managers\\git-workflow-manager\\internal\\branch\\manager.go",
+    "message": "development\\managers\\git-workflow-manager\\internal\\branch\\manager.go:12:2: no required module provides package github.com/go-git/go-git/v5; to add it:"
+  },
+  {
+    "file": "development\\managers\\git-workflow-manager\\internal\\branch\\manager.go",
+    "message": "development\\managers\\git-workflow-manager\\internal\\branch\\manager.go:13:2: no required module provides package github.com/go-git/go-git/v5/plumbing; to add it:"
+  },
+  {
+    "file": "development\\managers\\git-workflow-manager\\internal\\commit\\manager.go",
+    "message": "development\\managers\\git-workflow-manager\\internal\\commit\\manager.go:15:2: no required module provides package github.com/go-git/go-git/v5/plumbing/object; to add it:"
+  },
+  {
+    "file": "development\\managers\\git-workflow-manager\\internal\\pr\\manager.go",
+    "message": "development\\managers\\git-workflow-manager\\internal\\pr\\manager.go:12:2: no required module provides package github.com/google/go-github/v58/github; to add it:"
+  },
+  {
+    "file": "development\\managers\\integrated-manager\\demos\\demo_api.go",
+    "message": "development\\managers\\integrated-manager\\demos\\demo_api.go:4:2: package EMAIL_SENDER_1/managers/integrated-manager is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\managers\\integrated-manager)"
+  },
+  {
+    "file": "development\\managers\\integration-manager\\webhook_management.go",
+    "message": "development\\managers\\integration-manager\\webhook_management.go:4:2: package EMAIL_SENDER_1/development/managers/interfaces is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\development\\managers\\interfaces)"
+  },
+  {
+    "file": "development\\managers\\integration-manager\\data_transformation.go",
+    "message": "development\\managers\\integration-manager\\data_transformation.go:13:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\maintenance-manager\\maintenance_manager.go",
+    "message": "development\\managers\\maintenance-manager\\maintenance_manager.go:13:2: package EMAIL_SENDER_1/maintenance-manager/src/ai is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\maintenance-manager\\src\\ai)"
+  },
+  {
+    "file": "development\\managers\\maintenance-manager\\maintenance_manager.go",
+    "message": "development\\managers\\maintenance-manager\\maintenance_manager.go:14:2: package EMAIL_SENDER_1/maintenance-manager/src/cleanup is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\maintenance-manager\\src\\cleanup)"
+  },
+  {
+    "file": "development\\managers\\maintenance-manager\\maintenance_manager.go",
+    "message": "development\\managers\\maintenance-manager\\maintenance_manager.go:15:2: package EMAIL_SENDER_1/maintenance-manager/src/core is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\maintenance-manager\\src\\core)"
+  },
+  {
+    "file": "development\\managers\\maintenance-manager\\test_integration.go",
+    "message": "development\\managers\\maintenance-manager\\test_integration.go:5:2: package EMAIL_SENDER_1/maintenance-manager/src/generator is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\maintenance-manager\\src\\generator)"
+  },
+  {
+    "file": "development\\managers\\maintenance-manager\\maintenance_manager.go",
+    "message": "development\\managers\\maintenance-manager\\maintenance_manager.go:16:2: package EMAIL_SENDER_1/maintenance-manager/src/integration is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\maintenance-manager\\src\\integration)"
+  },
+  {
+    "file": "development\\managers\\maintenance-manager\\maintenance_manager.go",
+    "message": "development\\managers\\maintenance-manager\\maintenance_manager.go:17:2: package EMAIL_SENDER_1/maintenance-manager/src/templates is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\maintenance-manager\\src\\templates)"
+  },
+  {
+    "file": "development\\managers\\maintenance-manager\\maintenance_manager.go",
+    "message": "development\\managers\\maintenance-manager\\maintenance_manager.go:18:2: package EMAIL_SENDER_1/maintenance-manager/src/vector is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\maintenance-manager\\src\\vector)"
+  },
+  {
+    "file": "development\\managers\\maintenance-manager\\maintenance_manager.go",
+    "message": "development\\managers\\maintenance-manager\\maintenance_manager.go:10:2: no required module provides package github.com/spf13/viper; to add it:"
+  },
+  {
+    "file": "development\\managers\\maintenance-manager\\src\\ai\\ai_analyzer_new.go",
+    "message": "development\\managers\\maintenance-manager\\src\\ai\\ai_analyzer_new.go:16:2: package maintenance-manager/src/core is not in std (C:\\Program Files\\Go\\src\\maintenance-manager\\src\\core)"
+  },
+  {
+    "file": "development\\managers\\maintenance-manager\\src\\ai\\ai_analyzer_new.go",
+    "message": "development\\managers\\maintenance-manager\\src\\ai\\ai_analyzer_new.go:17:2: package maintenance-manager/src/vector is not in std (C:\\Program Files\\Go\\src\\maintenance-manager\\src\\vector)"
+  },
+  {
+    "file": "development\\managers\\maintenance-manager\\src\\vector\\qdrant_manager.go",
+    "message": "development\\managers\\maintenance-manager\\src\\vector\\qdrant_manager.go:10:2: no required module provides package github.com/gerivdb/email-sender-1/development/managers/maintenance-manager/src/vector/qdrant; to add it:"
+  },
+  {
+    "file": "development\\managers\\n8n-manager\\n8n_manager.go",
+    "message": "development\\managers\\n8n-manager\\n8n_manager.go:13:2: package EMAIL_SENDER_1/managers/error-manager is not in std (C:\\Program Files\\Go\\src\\EMAIL_SENDER_1\\managers\\error-manager)"
+  },
+  {
+    "file": "development\\managers\\notification-manager\\alert_manager.go",
+    "message": "development\\managers\\notification-manager\\alert_manager.go:9:2: no required module provides package github.com/gerivdb/email-sender-1/managers/notification-manager/interfaces; to add it:"
+  },
+  {
+    "file": "development\\managers\\notification-manager\\notification_manager.go",
+    "message": "development\\managers\\notification-manager\\notification_manager.go:11:2: no required module provides package github.com/robfig/cron/v3; to add it:"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\panel_demo.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\panel_demo.go:3:5: expected 'package', found 'EOF'"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\cmd\\priority-test.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\cmd\\priority-test.go:8:2: no required module provides package github.com/gerivdb/email-sender-1/cmd/roadmap-cli/priority; to add it:"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\cmd\\priority-test.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\cmd\\priority-test.go:9:2: no required module provides package github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types; to add it:"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\advanced_ingest.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\advanced_ingest.go:9:2: package email_sender/cmd/roadmap-cli/ingestion is not in std (C:\\Program Files\\Go\\src\\email_sender\\cmd\\roadmap-cli\\ingestion)"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\advanced_ingest.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\advanced_ingest.go:10:2: package email_sender/cmd/roadmap-cli/storage is not in std (C:\\Program Files\\Go\\src\\email_sender\\cmd\\roadmap-cli\\storage)"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\advanced_ingest.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\advanced_ingest.go:11:2: package email_sender/cmd/roadmap-cli/types is not in std (C:\\Program Files\\Go\\src\\email_sender\\cmd\\roadmap-cli\\types)"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\hierarchy.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\hierarchy.go:7:2: no required module provides package github.com/charmbracelet/bubbletea; to add it:"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\intelligence.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\intelligence.go:10:2: no required module provides package github.com/gerivdb/email-sender-1/cmd/roadmap-cli/rag; to add it:"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\hierarchy.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\hierarchy.go:8:2: no required module provides package github.com/gerivdb/email-sender-1/cmd/roadmap-cli/storage; to add it:"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\hierarchy.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\hierarchy.go:9:2: no required module provides package github.com/gerivdb/email-sender-1/cmd/roadmap-cli/tui; to add it:"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\parallel\\processor.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\parallel\\processor.go:11:2: no required module provides package github.com/gerivdb/email-sender-1/cmd/roadmap-cli/ingestion; to add it:"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\create.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\commands\\create.go:3:4: expected 'package', found 'EOF'"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\tools\\keybind-tester\\keybind_tester.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\tools\\keybind-tester\\keybind_tester.go:15:2: no required module provides package github.com/charmbracelet/lipgloss; to add it:"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\tools\\keybind-tester\\keybind_tester.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\tools\\keybind-tester\\keybind_tester.go:17:2: no required module provides package github.com/gerivdb/email-sender-1/cmd/roadmap-cli/keybinds; to add it:"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\tui\\hierarchy.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\tui\\hierarchy.go:11:2: no required module provides package github.com/charmbracelet/bubbles/help; to add it:"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\tui\\hierarchy.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\tui\\hierarchy.go:12:2: no required module provides package github.com/charmbracelet/bubbles/key; to add it:"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\tui\\hierarchy.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\tui\\hierarchy.go:13:2: no required module provides package github.com/charmbracelet/bubbles/viewport; to add it:"
+  },
+  {
+    "file": "development\\managers\\roadmap-manager\\roadmap-cli\\tui\\init.go",
+    "message": "development\\managers\\roadmap-manager\\roadmap-cli\\tui\\init.go:8:2: no required module provides package github.com/gerivdb/email-sender-1/cmd/roadmap-cli/tui/models; to add it:"
+  },
+  {
+    "file": "development\\managers\\security-manager\\development\\security_manager.go",
+    "message": "development\\managers\\security-manager\\development\\security_manager.go:18:2: \"./interfaces\" is relative, but relative import paths are not supported in module mode"
+  },
+  {
+    "file": "development\\managers\\security-manager\\development\\security_manager.go",
+    "message": "development\\managers\\security-manager\\development\\security_manager.go:18:2: local import \"./interfaces\" in non-local package"
+  },
+  {
+    "file": "development\\managers\\smart-variable-manager\\smart_variable_manager.go",
+    "message": "development\\managers\\smart-variable-manager\\smart_variable_manager.go:11:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\smart-variable-manager\\interfaces\\smart_variable_manager.go",
+    "message": "development\\managers\\smart-variable-manager\\interfaces\\smart_variable_manager.go:7:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\smart-variable-manager\\internal\\analyzer\\context_analyzer.go",
+    "message": "development\\managers\\smart-variable-manager\\internal\\analyzer\\context_analyzer.go:15:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\storage-manager\\development\\storage_manager.go",
+    "message": "development\\managers\\storage-manager\\development\\storage_manager.go:12:2: local import \"./interfaces\" in non-local package"
+  },
+  {
+    "file": "development\\managers\\template-performance-manager\\manager.go",
+    "message": "development\\managers\\template-performance-manager\\manager.go:17:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\template-performance-manager\\examples\\complete_demo.go",
+    "message": "development\\managers\\template-performance-manager\\examples\\complete_demo.go:12:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\template-performance-manager\\internal\\analytics\\metrics_collector.go",
+    "message": "development\\managers\\template-performance-manager\\internal\\analytics\\metrics_collector.go:9:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\template-performance-manager\\internal\\neural\\processor.go",
+    "message": "development\\managers\\template-performance-manager\\internal\\neural\\processor.go:9:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\template-performance-manager\\internal\\optimization\\adaptive_engine.go",
+    "message": "development\\managers\\template-performance-manager\\internal\\optimization\\adaptive_engine.go:9:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\template-performance-manager\\tests\\manager_test.go",
+    "message": "development\\managers\\template-performance-manager\\tests\\manager_test.go:12:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\template-performance-manager\\tests\\analytics\\metrics_collector_test.go",
+    "message": "development\\managers\\template-performance-manager\\tests\\analytics\\metrics_collector_test.go:13:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\template-performance-manager\\tests\\neural\\processor_test.go",
+    "message": "development\\managers\\template-performance-manager\\tests\\neural\\processor_test.go:12:1: missing import path"
+  },
+  {
+    "file": "development\\managers\\template-performance-manager\\tests\\optimization\\adaptive_engine_test.go",
+    "message": "development\\managers\\template-performance-manager\\tests\\optimization\\adaptive_engine_test.go:13:1: missing import path"
+  },
+  {
+    "file": "development\\tools\\plan-generator\\cmd\\main.go",
+    "message": "development\\tools\\plan-generator\\cmd\\main.go:10:2: package plan-generator/pkg/generator is not in std (C:\\Program Files\\Go\\src\\plan-generator\\pkg\\generator)"
+  },
+  {
+    "file": "development\\tools\\plan-generator\\cmd\\main.go",
+    "message": "development\\tools\\plan-generator\\cmd\\main.go:11:2: package plan-generator/pkg/interactive is not in std (C:\\Program Files\\Go\\src\\plan-generator\\pkg\\interactive)"
+  },
+  {
+    "file": "development\\tools\\plan-generator\\cmd\\main.go",
+    "message": "development\\tools\\plan-generator\\cmd\\main.go:12:2: package plan-generator/pkg/io is not in std (C:\\Program Files\\Go\\src\\plan-generator\\pkg\\io)"
+  },
+  {
+    "file": "development\\tools\\plan-generator\\cmd\\main.go",
+    "message": "development\\tools\\plan-generator\\cmd\\main.go:13:2: package plan-generator/pkg/models is not in std (C:\\Program Files\\Go\\src\\plan-generator\\pkg\\models)"
+  },
+  {
+    "file": "development\\tools\\plan-generator\\pkg\\generator\\generator.go",
+    "message": "development\\tools\\plan-generator\\pkg\\generator\\generator.go:9:2: package plan-generator/pkg/utils is not in std (C:\\Program Files\\Go\\src\\plan-generator\\pkg\\utils)"
+  },
+  {
+    "file": "integration_tests\\dependency_manager_integration_test.go",
+    "message": "integration_tests\\dependency_manager_integration_test.go:1:74: expected 'package', found 'EOF'"
+  },
+  {
+    "file": "planning-ecosystem-sync\\tools\\sync-core\\sql_storage.go",
+    "message": "planning-ecosystem-sync\\tools\\sync-core\\sql_storage.go:13:2: no required module provides package modernc.org/sqlite; to add it:"
+  },
+  {
+    "file": "found",
+    "message": "found packages core (conflict_detector.go) and sync_core (conflict_resolver.go) in D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\planning-ecosystem-sync\\tools\\sync-core"
+  },
+  {
+    "file": "planning-ecosystem-sync\\tools\\validation\\consistency-validator_test.go",
+    "message": "planning-ecosystem-sync\\tools\\validation\\consistency-validator_test.go:1:1: expected 'package', found 'EOF'"
+  },
+  {
+    "file": "planning-ecosystem-sync\\tools\\validation\\cmd\\validator\\main.go",
+    "message": "planning-ecosystem-sync\\tools\\validation\\cmd\\validator\\main.go:12:2: package planning-ecosystem-sync/tools/validation is not in std (C:\\Program Files\\Go\\src\\planning-ecosystem-sync\\tools\\validation)"
+  },
+  {
+    "file": "src\\indexing\\pdf_reader.go",
+    "message": "src\\indexing\\pdf_reader.go:7:2: no required module provides package github.com/pdfcpu/pdfcpu/pkg/api; to add it:"
+  },
+  {
+    "file": "src\\indexing\\text_reader.go",
+    "message": "src\\indexing\\text_reader.go:10:2: no required module provides package github.com/saintfish/chardet; to add it:"
+  },
+  {
+    "file": "src\\indexing\\cmd\\indexer\\main.go",
+    "message": "src\\indexing\\cmd\\indexer\\main.go:14:2: no required module provides package github.com/schollz/progressbar/v3; to add it:"
+  },
+  {
+    "file": "tests\\interface_validation\\main_test.go",
+    "message": "tests\\interface_validation\\main_test.go:3:5: expected 'package', found 'EOF'"
+  },
+  {
+    "file": "tests\\test_runners\\simple_test.go",
+    "message": "tests\\test_runners\\simple_test.go:3:4: expected 'package', found 'EOF'"
+  },
+  {
+    "file": "tests\\validation\\validation_test.go",
+    "message": "tests\\validation\\validation_test.go:3:4: expected 'package', found 'EOF'"
+  },
+  {
+    "file": "tools\\qdrant\\rag-go\\rag_go.go",
+    "message": "tools\\qdrant\\rag-go\\rag_go.go:7:2: package rag-go-system/pkg/client is not in std (C:\\Program Files\\Go\\src\\rag-go-system\\pkg\\client)"
+  }
+]

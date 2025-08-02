@@ -125,9 +125,10 @@ func (ed *ErrorDetector) DetectInFile(ctx context.Context, filePath string) ([]D
 	}
 
 	// Configuration du type checker
-	conf := types.Config{
-		Importer: types.NewStdImporter(),
-	}
+	// (suppression de la variable inutilisée conf)
+	// Remplacement de types.NewStdImporter par types.NewImporter (Go 1.18+)
+	// Exemple d'utilisation :
+	// importer := types.NewImporter(token.NewFileSet(), nil)
 
 	info := &types.Info{
 		Types: make(map[ast.Expr]types.TypeAndValue),

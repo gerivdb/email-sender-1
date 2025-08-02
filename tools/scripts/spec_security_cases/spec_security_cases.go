@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	fmt.Println("# Spécification des tests de sécurité\n")
+	fmt.Print("# Spécification des tests de sécurité\n")
 	fmt.Println("- Vérifier la résistance à l’injection SQL")
 	fmt.Println("- Tester la protection contre les attaques XSS")
 	fmt.Println("- Contrôler l’accès aux ressources sensibles")

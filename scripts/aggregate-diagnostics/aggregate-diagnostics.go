@@ -7,9 +7,22 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 )
+
+// Implémentation minimale de runAndWrite : exécute une commande et écrit la sortie dans le rapport.
+func runAndWrite(report *os.File, name string, args ...string) {
+	cmd := exec.Command(name, args...)
+	out, err := cmd.CombinedOutput()
+	report.WriteString(">>> " + name + " " + strings.Join(args, " ") + "\n")
+	report.Write(out)
+	if err != nil {
+		report.WriteString("Erreur d'exécution : " + err.Error() + "\n")
+	}
+	report.WriteString("\n")
+}
 
 func main() {
 	reportPath := "audit-reports/diagnostics-report.md"
@@ -44,13 +57,4 @@ func main() {
 	fmt.Fprintln(report, "```")
 
 	fmt.Printf("Rapport généré : %s\n", reportPath)
-}
-
-func runAndWrite(report *os.File, cmd string, args ...string) {
-	c := cmd + " " + strings.Join(args, " ")
-	out, err := os.Command(cmd, args...).CombinedOutput()
-	if err != nil {
-		fmt.Fprintf(report, "%s\n[ERREUR] %v\n", c, err)
-	}
-	report.Write(out)
 }

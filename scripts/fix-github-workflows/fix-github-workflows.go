@@ -1,10 +1,7 @@
-// scripts/fix-github-workflows.go
-// Détecte et suggère/corrige les accès contextuels invalides dans les workflows GitHub Actions.
-// Usage : go run scripts/fix-github-workflows.go
-
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -98,7 +95,6 @@ func main() {
 }
 
 // NewLineScanner est un wrapper pour bufio.Scanner qui gère les fins de ligne Windows/Linux/Mac.
-import "bufio"
 func NewLineScanner(f *os.File) *bufio.Scanner {
 	return bufio.NewScanner(f)
 }
