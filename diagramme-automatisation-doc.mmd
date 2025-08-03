@@ -1,0 +1,33 @@
+flowchart TD
+    subgraph Session
+        S1[SessionManager]
+    end
+    subgraph Pipeline
+        P1[DocManager] --> P2[ProcessManager] --> P3[ErrorManager]
+        P2 --> P4[MonitoringManager]
+        P2 --> P5[RollbackManager]
+    end
+    subgraph Batch
+        B1[BatchProcessor]
+    end
+    subgraph Cache
+        C1[CacheLayer]
+    end
+    subgraph Audit
+        A1[AuditLogger]
+    end
+    subgraph Reporting
+        R1[ReportingUI]
+    end
+    S1 --> P1
+    P1 --> B1
+    B1 --> C1
+    P3 --> A1
+    P4 --> R1
+    P5 --> R1
+    C1 --> P1
+    R1 --> S1
+    %% Points d’extension/plugins
+    P1 -.-> E1[PluginInterface]
+    P2 -.-> E1
+    R1 -.-> E1

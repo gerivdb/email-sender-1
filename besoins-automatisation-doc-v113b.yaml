@@ -1,0 +1,2098 @@
+version: v113b
+timestamp: "2025-08-04T00:31:14+02:00"
+metadata:
+  project_name: EMAIL_SENDER_1
+  version: v113b
+  description: Projet d'automatisation documentaire Roo Code avec orchestration avancée
+  authors:
+    - Roo Code Team
+    - Jules
+  dependencies:
+    - Go 1.21+
+    - GitHub Actions
+    - YAML
+    - Markdown
+  technical_stack:
+    - Go
+    - YAML
+    - Markdown
+    - GitHub Actions
+    - Docker
+  go_version: "1.21"
+managers:
+  - name: DocManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager DocManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/doc_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/doc_manager_test.go
+      schema: scripts/automatisation_doc/doc_manager_schema.yaml
+      documentation: scripts/automatisation_doc/doc_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: doc_manager_schema.yaml
+      report: doc_manager_report.md
+      rollback: doc_manager_rollback.md
+      spec: doc_manager_spec.md
+      examples: doc_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: ConfigurableSyncRuleManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager ConfigurableSyncRuleManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/configurablesyncrule_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/configurablesyncrule_manager_test.go
+      schema: scripts/automatisation_doc/configurablesyncrule_manager_schema.yaml
+      documentation: scripts/automatisation_doc/configurablesyncrule_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: configurablesyncrule_manager_schema.yaml
+      report: configurablesyncrule_manager_report.md
+      rollback: configurablesyncrule_manager_rollback.md
+      spec: configurablesyncrule_manager_spec.md
+      examples: configurablesyncrule_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: SmartMergeManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager SmartMergeManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/smartmerge_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/smartmerge_manager_test.go
+      schema: scripts/automatisation_doc/smartmerge_manager_schema.yaml
+      documentation: scripts/automatisation_doc/smartmerge_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: smartmerge_manager_schema.yaml
+      report: smartmerge_manager_report.md
+      rollback: smartmerge_manager_rollback.md
+      spec: smartmerge_manager_spec.md
+      examples: smartmerge_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: SyncHistoryManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager SyncHistoryManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/synchistory_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/synchistory_manager_test.go
+      schema: scripts/automatisation_doc/synchistory_manager_schema.yaml
+      documentation: scripts/automatisation_doc/synchistory_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: synchistory_manager_schema.yaml
+      report: synchistory_manager_report.md
+      rollback: synchistory_manager_rollback.md
+      spec: synchistory_manager_spec.md
+      examples: synchistory_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: ConflictManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager ConflictManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/conflict_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/conflict_manager_test.go
+      schema: scripts/automatisation_doc/conflict_manager_schema.yaml
+      documentation: scripts/automatisation_doc/conflict_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: conflict_manager_schema.yaml
+      report: conflict_manager_report.md
+      rollback: conflict_manager_rollback.md
+      spec: conflict_manager_spec.md
+      examples: conflict_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: ExtensibleManagerType
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager ExtensibleManagerType pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/extensible_managertype.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/extensible_managertype_test.go
+      schema: scripts/automatisation_doc/extensible_managertype_schema.yaml
+      documentation: scripts/automatisation_doc/extensible_managertype_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: extensible_managertype_schema.yaml
+      report: extensible_managertype_report.md
+      rollback: extensible_managertype_rollback.md
+      spec: extensible_managertype_spec.md
+      examples: extensible_managertype_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: N8NManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager N8NManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/n8n_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/n8n_manager_test.go
+      schema: scripts/automatisation_doc/n8n_manager_schema.yaml
+      documentation: scripts/automatisation_doc/n8n_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: n8n_manager_schema.yaml
+      report: n8n_manager_report.md
+      rollback: n8n_manager_rollback.md
+      spec: n8n_manager_spec.md
+      examples: n8n_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: ErrorManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager ErrorManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/error_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/error_manager_test.go
+      schema: scripts/automatisation_doc/error_manager_schema.yaml
+      documentation: scripts/automatisation_doc/error_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: error_manager_schema.yaml
+      report: error_manager_report.md
+      rollback: error_manager_rollback.md
+      spec: error_manager_spec.md
+      examples: error_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: ScriptManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager ScriptManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/script_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/script_manager_test.go
+      schema: scripts/automatisation_doc/script_manager_schema.yaml
+      documentation: scripts/automatisation_doc/script_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: script_manager_schema.yaml
+      report: script_manager_report.md
+      rollback: script_manager_rollback.md
+      spec: script_manager_spec.md
+      examples: script_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: StorageManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager StorageManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/storage_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/storage_manager_test.go
+      schema: scripts/automatisation_doc/storage_manager_schema.yaml
+      documentation: scripts/automatisation_doc/storage_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: storage_manager_schema.yaml
+      report: storage_manager_report.md
+      rollback: storage_manager_rollback.md
+      spec: storage_manager_spec.md
+      examples: storage_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: SecurityManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager SecurityManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/security_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/security_manager_test.go
+      schema: scripts/automatisation_doc/security_manager_schema.yaml
+      documentation: scripts/automatisation_doc/security_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: security_manager_schema.yaml
+      report: security_manager_report.md
+      rollback: security_manager_rollback.md
+      spec: security_manager_spec.md
+      examples: security_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: MonitoringManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager MonitoringManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/monitoring_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/monitoring_manager_test.go
+      schema: scripts/automatisation_doc/monitoring_manager_schema.yaml
+      documentation: scripts/automatisation_doc/monitoring_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: true
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: monitoring_manager_schema.yaml
+      report: monitoring_manager_report.md
+      rollback: monitoring_manager_rollback.md
+      spec: monitoring_manager_spec.md
+      examples: monitoring_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: MaintenanceManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager MaintenanceManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/maintenance_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/maintenance_manager_test.go
+      schema: scripts/automatisation_doc/maintenance_manager_schema.yaml
+      documentation: scripts/automatisation_doc/maintenance_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: maintenance_manager_schema.yaml
+      report: maintenance_manager_report.md
+      rollback: maintenance_manager_rollback.md
+      spec: maintenance_manager_spec.md
+      examples: maintenance_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: MigrationManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager MigrationManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/migration_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/migration_manager_test.go
+      schema: scripts/automatisation_doc/migration_manager_schema.yaml
+      documentation: scripts/automatisation_doc/migration_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: migration_manager_schema.yaml
+      report: migration_manager_report.md
+      rollback: migration_manager_rollback.md
+      spec: migration_manager_spec.md
+      examples: migration_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: NotificationManagerImpl
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager NotificationManagerImpl pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/notification_managerimpl.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/notification_managerimpl_test.go
+      schema: scripts/automatisation_doc/notification_managerimpl_schema.yaml
+      documentation: scripts/automatisation_doc/notification_managerimpl_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: notification_managerimpl_schema.yaml
+      report: notification_managerimpl_report.md
+      rollback: notification_managerimpl_rollback.md
+      spec: notification_managerimpl_spec.md
+      examples: notification_managerimpl_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: ChannelManagerImpl
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager ChannelManagerImpl pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/channel_managerimpl.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/channel_managerimpl_test.go
+      schema: scripts/automatisation_doc/channel_managerimpl_schema.yaml
+      documentation: scripts/automatisation_doc/channel_managerimpl_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: channel_managerimpl_schema.yaml
+      report: channel_managerimpl_report.md
+      rollback: channel_managerimpl_rollback.md
+      spec: channel_managerimpl_spec.md
+      examples: channel_managerimpl_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: AlertManagerImpl
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager AlertManagerImpl pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/alert_managerimpl.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/alert_managerimpl_test.go
+      schema: scripts/automatisation_doc/alert_managerimpl_schema.yaml
+      documentation: scripts/automatisation_doc/alert_managerimpl_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: alert_managerimpl_schema.yaml
+      report: alert_managerimpl_report.md
+      rollback: alert_managerimpl_rollback.md
+      spec: alert_managerimpl_spec.md
+      examples: alert_managerimpl_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: SmartVariableSuggestionManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager SmartVariableSuggestionManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/smartvariablesuggestion_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/smartvariablesuggestion_manager_test.go
+      schema: scripts/automatisation_doc/smartvariablesuggestion_manager_schema.yaml
+      documentation: scripts/automatisation_doc/smartvariablesuggestion_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: smartvariablesuggestion_manager_schema.yaml
+      report: smartvariablesuggestion_manager_report.md
+      rollback: smartvariablesuggestion_manager_rollback.md
+      spec: smartvariablesuggestion_manager_spec.md
+      examples: smartvariablesuggestion_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: ProcessManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager ProcessManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/process_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/process_manager_test.go
+      schema: scripts/automatisation_doc/process_manager_schema.yaml
+      documentation: scripts/automatisation_doc/process_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: process_manager_schema.yaml
+      report: process_manager_report.md
+      rollback: process_manager_rollback.md
+      spec: process_manager_spec.md
+      examples: process_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: ContextManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager ContextManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/context_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/context_manager_test.go
+      schema: scripts/automatisation_doc/context_manager_schema.yaml
+      documentation: scripts/automatisation_doc/context_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: context_manager_schema.yaml
+      report: context_manager_report.md
+      rollback: context_manager_rollback.md
+      spec: context_manager_spec.md
+      examples: context_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: ModeManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager ModeManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/mode_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/mode_manager_test.go
+      schema: scripts/automatisation_doc/mode_manager_schema.yaml
+      documentation: scripts/automatisation_doc/mode_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: mode_manager_schema.yaml
+      report: mode_manager_report.md
+      rollback: mode_manager_rollback.md
+      spec: mode_manager_spec.md
+      examples: mode_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: RoadmapManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager RoadmapManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/roadmap_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/roadmap_manager_test.go
+      schema: scripts/automatisation_doc/roadmap_manager_schema.yaml
+      documentation: scripts/automatisation_doc/roadmap_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: roadmap_manager_schema.yaml
+      report: roadmap_manager_report.md
+      rollback: roadmap_manager_rollback.md
+      spec: roadmap_manager_spec.md
+      examples: roadmap_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: RollbackManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager RollbackManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/rollback_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/rollback_manager_test.go
+      schema: scripts/automatisation_doc/rollback_manager_schema.yaml
+      documentation: scripts/automatisation_doc/rollback_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: rollback_manager_schema.yaml
+      report: rollback_manager_report.md
+      rollback: rollback_manager_rollback.md
+      spec: rollback_manager_spec.md
+      examples: rollback_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: CleanupManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager CleanupManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/cleanup_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/cleanup_manager_test.go
+      schema: scripts/automatisation_doc/cleanup_manager_schema.yaml
+      documentation: scripts/automatisation_doc/cleanup_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: cleanup_manager_schema.yaml
+      report: cleanup_manager_report.md
+      rollback: cleanup_manager_rollback.md
+      spec: cleanup_manager_spec.md
+      examples: cleanup_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: QdrantManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager QdrantManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/qdrant_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/qdrant_manager_test.go
+      schema: scripts/automatisation_doc/qdrant_manager_schema.yaml
+      documentation: scripts/automatisation_doc/qdrant_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: qdrant_manager_schema.yaml
+      report: qdrant_manager_report.md
+      rollback: qdrant_manager_rollback.md
+      spec: qdrant_manager_spec.md
+      examples: qdrant_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: SimpleAdvancedAutonomyManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager SimpleAdvancedAutonomyManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/simpleadvancedautonomy_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/simpleadvancedautonomy_manager_test.go
+      schema: scripts/automatisation_doc/simpleadvancedautonomy_manager_schema.yaml
+      documentation: scripts/automatisation_doc/simpleadvancedautonomy_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: simpleadvancedautonomy_manager_schema.yaml
+      report: simpleadvancedautonomy_manager_report.md
+      rollback: simpleadvancedautonomy_manager_rollback.md
+      spec: simpleadvancedautonomy_manager_spec.md
+      examples: simpleadvancedautonomy_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: VersionManagerImpl
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager VersionManagerImpl pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/version_managerimpl.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/version_managerimpl_test.go
+      schema: scripts/automatisation_doc/version_managerimpl_schema.yaml
+      documentation: scripts/automatisation_doc/version_managerimpl_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: version_managerimpl_schema.yaml
+      report: version_managerimpl_report.md
+      rollback: version_managerimpl_rollback.md
+      spec: version_managerimpl_spec.md
+      examples: version_managerimpl_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: VectorOperationsManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager VectorOperationsManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/vectoroperations_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/vectoroperations_manager_test.go
+      schema: scripts/automatisation_doc/vectoroperations_manager_schema.yaml
+      documentation: scripts/automatisation_doc/vectoroperations_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: vectoroperations_manager_schema.yaml
+      report: vectoroperations_manager_report.md
+      rollback: vectoroperations_manager_rollback.md
+      spec: vectoroperations_manager_spec.md
+      examples: vectoroperations_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: PipelineManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager PipelineManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/pipeline_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/pipeline_manager_test.go
+      schema: scripts/automatisation_doc/pipeline_manager_schema.yaml
+      documentation: scripts/automatisation_doc/pipeline_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: pipeline_manager_schema.yaml
+      report: pipeline_manager_report.md
+      rollback: pipeline_manager_rollback.md
+      spec: pipeline_manager_spec.md
+      examples: pipeline_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+  - name: FallbackManager
+    type: Manager
+    priority: medium
+    status: planned
+    description: Manager FallbackManager pour l'automatisation documentaire
+    interfaces:
+      - ManagerInterface
+    patterns:
+      - Factory
+      - Observer
+      - Strategy
+      - Command
+    dependencies: []
+    files:
+      implementation: scripts/automatisation_doc/fallback_manager.go
+      interface: scripts/automatisation_doc/interfaces.go
+      tests: scripts/automatisation_doc/fallback_manager_test.go
+      schema: scripts/automatisation_doc/fallback_manager_schema.yaml
+      documentation: scripts/automatisation_doc/fallback_manager_spec.md
+    tests:
+      unit: true
+      integration: true
+      performance: false
+      coverage: 85%
+      scenarios:
+        - nominal
+        - error
+        - edge_cases
+        - performance
+    artefacts:
+      schema: fallback_manager_schema.yaml
+      report: fallback_manager_report.md
+      rollback: fallback_manager_rollback.md
+      spec: fallback_manager_spec.md
+      examples: fallback_manager_examples.md
+    risks: []
+    extensions:
+      - name: PluginInterface
+        type: Plugin
+        description: Extension dynamique via plugins
+        interfaces:
+          - PluginInterface
+          - ExtensionPoint
+patterns:
+  - name: Session
+    type: Design Pattern
+    priority: medium
+    description: Pattern Session pour l'automatisation documentaire
+    use_cases:
+      - default
+    components: []
+    dependencies: []
+    files:
+      implementation: scripts/session-manager-v113b.go
+      tests: scripts/session_manager_v113b_test.go
+      documentation: docs/patterns/session.md
+      examples: examples/session_example.go
+    examples:
+      - Exemple Session basique
+      - Exemple Session avancé
+      - Intégration Session avec autres patterns
+  - name: Pipeline
+    type: Design Pattern
+    priority: medium
+    description: Pattern Pipeline pour l'automatisation documentaire
+    use_cases:
+      - default
+    components: []
+    dependencies: []
+    files:
+      implementation: scripts/pipeline-manager-v113b.go
+      tests: scripts/pipeline_manager_v113b_test.go
+      documentation: docs/patterns/pipeline.md
+      examples: examples/pipeline_example.go
+    examples:
+      - Exemple Pipeline basique
+      - Exemple Pipeline avancé
+      - Intégration Pipeline avec autres patterns
+  - name: Batch
+    type: Design Pattern
+    priority: medium
+    description: Pattern Batch pour l'automatisation documentaire
+    use_cases:
+      - default
+    components: []
+    dependencies: []
+    files:
+      implementation: scripts/batch-manager-v113b.go
+      tests: scripts/batch_manager_v113b_test.go
+      documentation: docs/patterns/batch.md
+      examples: examples/batch_example.go
+    examples:
+      - Exemple Batch basique
+      - Exemple Batch avancé
+      - Intégration Batch avec autres patterns
+  - name: Fallback
+    type: Design Pattern
+    priority: medium
+    description: Pattern Fallback pour l'automatisation documentaire
+    use_cases:
+      - default
+    components: []
+    dependencies: []
+    files:
+      implementation: scripts/fallback-manager-v113b.go
+      tests: scripts/fallback_manager_v113b_test.go
+      documentation: docs/patterns/fallback.md
+      examples: examples/fallback_example.go
+    examples:
+      - Exemple Fallback basique
+      - Exemple Fallback avancé
+      - Intégration Fallback avec autres patterns
+  - name: Monitoring
+    type: Design Pattern
+    priority: medium
+    description: Pattern Monitoring pour l'automatisation documentaire
+    use_cases:
+      - default
+    components: []
+    dependencies: []
+    files:
+      implementation: scripts/monitoring-manager-v113b.go
+      tests: scripts/monitoring_manager_v113b_test.go
+      documentation: docs/patterns/monitoring.md
+      examples: examples/monitoring_example.go
+    examples:
+      - Exemple Monitoring basique
+      - Exemple Monitoring avancé
+      - Intégration Monitoring avec autres patterns
+  - name: Audit
+    type: Design Pattern
+    priority: medium
+    description: Pattern Audit pour l'automatisation documentaire
+    use_cases:
+      - default
+    components: []
+    dependencies: []
+    files:
+      implementation: scripts/audit-manager-v113b.go
+      tests: scripts/audit_manager_v113b_test.go
+      documentation: docs/patterns/audit.md
+      examples: examples/audit_example.go
+    examples:
+      - Exemple Audit basique
+      - Exemple Audit avancé
+      - Intégration Audit avec autres patterns
+  - name: Rollback
+    type: Design Pattern
+    priority: medium
+    description: Pattern Rollback pour l'automatisation documentaire
+    use_cases:
+      - default
+    components: []
+    dependencies: []
+    files:
+      implementation: scripts/rollback-manager-v113b.go
+      tests: scripts/rollback_manager_v113b_test.go
+      documentation: docs/patterns/rollback.md
+      examples: examples/rollback_example.go
+    examples:
+      - Exemple Rollback basique
+      - Exemple Rollback avancé
+      - Intégration Rollback avec autres patterns
+  - name: UXMetrics
+    type: Design Pattern
+    priority: medium
+    description: Pattern UXMetrics pour l'automatisation documentaire
+    use_cases:
+      - default
+    components: []
+    dependencies: []
+    files:
+      implementation: scripts/uxmetrics-manager-v113b.go
+      tests: scripts/uxmetrics_manager_v113b_test.go
+      documentation: docs/patterns/uxmetrics.md
+      examples: examples/uxmetrics_example.go
+    examples:
+      - Exemple UXMetrics basique
+      - Exemple UXMetrics avancé
+      - Intégration UXMetrics avec autres patterns
+  - name: ProgressiveSync
+    type: Design Pattern
+    priority: medium
+    description: Pattern ProgressiveSync pour l'automatisation documentaire
+    use_cases:
+      - default
+    components: []
+    dependencies: []
+    files:
+      implementation: scripts/progressivesync-manager-v113b.go
+      tests: scripts/progressivesync_manager_v113b_test.go
+      documentation: docs/patterns/progressivesync.md
+      examples: examples/progressivesync_example.go
+    examples:
+      - Exemple ProgressiveSync basique
+      - Exemple ProgressiveSync avancé
+      - Intégration ProgressiveSync avec autres patterns
+  - name: Pooling
+    type: Design Pattern
+    priority: medium
+    description: Pattern Pooling pour l'automatisation documentaire
+    use_cases:
+      - default
+    components: []
+    dependencies: []
+    files:
+      implementation: scripts/pooling-manager-v113b.go
+      tests: scripts/pooling_manager_v113b_test.go
+      documentation: docs/patterns/pooling.md
+      examples: examples/pooling_example.go
+    examples:
+      - Exemple Pooling basique
+      - Exemple Pooling avancé
+      - Intégration Pooling avec autres patterns
+  - name: ReportingUI
+    type: Design Pattern
+    priority: medium
+    description: Pattern ReportingUI pour l'automatisation documentaire
+    use_cases:
+      - default
+    components: []
+    dependencies: []
+    files:
+      implementation: scripts/reportingui-manager-v113b.go
+      tests: scripts/reportingui_manager_v113b_test.go
+      documentation: docs/patterns/reportingui.md
+      examples: examples/reportingui_example.go
+    examples:
+      - Exemple ReportingUI basique
+      - Exemple ReportingUI avancé
+      - Intégration ReportingUI avec autres patterns
+scripts:
+  - name: Analyze-PullRequest.ps1
+    path: .build\ci\git-hooks\Analyze-PullRequest.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: Analyze-StagedFiles.ps1
+    path: .build\ci\git-hooks\Analyze-StagedFiles.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: Enrich-DevelopmentLog.ps1
+    path: .build\ci\git-hooks\Enrich-DevelopmentLog.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: Install-GitHooks.ps1
+    path: .build\ci\git-hooks\Install-GitHooks.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: Run-Tests.ps1
+    path: .build\ci\git-hooks\Run-Tests.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: Test-PostCommitHook.ps1
+    path: .build\ci\git-hooks\Test-PostCommitHook.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: Test-PreCommitHook.ps1
+    path: .build\ci\git-hooks\Test-PreCommitHook.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: Test-PullRequestAnalysis.ps1
+    path: .build\ci\git-hooks\Test-PullRequestAnalysis.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: test-script-with-errors.ps1
+    path: .build\ci\git-hooks\test-files\test-script-with-errors.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: test-script-without-errors.ps1
+    path: .build\ci\git-hooks\test-files\test-script-without-errors.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: Analyze-StagedFiles.Tests.ps1
+    path: .build\ci\git-hooks\tests\Analyze-StagedFiles.Tests.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: Enrich-DevelopmentLog.Tests.ps1
+    path: .build\ci\git-hooks\tests\Enrich-DevelopmentLog.Tests.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: Install-GitHooks.Tests.ps1
+    path: .build\ci\git-hooks\tests\Install-GitHooks.Tests.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: Simple-Tests.ps1
+    path: .build\ci\git-hooks\tests\Simple-Tests.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: Test-PreCommitHook.Tests.ps1
+    path: .build\ci\git-hooks\tests\Test-PreCommitHook.Tests.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: analyze-correlations.ps1
+    path: .github\analyze-correlations.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: algorithms_implementations.go
+    path: .github\docs\algorithms\algorithms_implementations.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: email_sender_analysis_pipeline.go
+    path: .github\docs\algorithms\analysis-pipeline\email_sender_analysis_pipeline.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: email_sender_auto_fixer.go
+    path: .github\docs\algorithms\auto-fix\email_sender_auto_fixer.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: email_sender_binary_search_debug.go
+    path: .github\docs\algorithms\binary-search\email_sender_binary_search_debug.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: email_sender_config_validator.go
+    path: .github\docs\algorithms\config-validator\email_sender_config_validator.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: Find-EmailSenderCircularDependencies.ps1
+    path: .github\docs\algorithms\dependency-analysis\Find-EmailSenderCircularDependencies.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: email_sender_dependency_analyzer.go
+    path: .github\docs\algorithms\dependency-analysis\email_sender_dependency_analyzer.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: email_sender_dependency_resolver.go
+    path: .github\docs\algorithms\dependency-resolution\email_sender_dependency_resolver.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: simple_test.go
+    path: .github\docs\algorithms\dependency-resolution\simple_test.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: email_sender_orchestrator.go
+    path: .github\docs\algorithms\email_sender_orchestrator.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: email_sender_parallel_adapter.go
+    path: .github\docs\algorithms\email_sender_parallel_adapter.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: email_sender_error_classifier.go
+    path: .github\docs\algorithms\error-triage\email_sender_error_classifier.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: error_debug_session.go
+    path: .github\docs\algorithms\error_debug_session\error_debug_session.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: orchestrator_main.go
+    path: .github\docs\algorithms\error_debug_session\orchestrator_main.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: final_go_validation.go
+    path: .github\docs\algorithms\final_go_validation.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: final_system_validation.go
+    path: .github\docs\algorithms\final_system_validation.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: native_suite_validator.go
+    path: .github\docs\algorithms\native_suite_validator.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: orchestrator_module.go
+    path: .github\docs\algorithms\orchestrator_module.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: orchestrator_standalone.go
+    path: .github\docs\algorithms\orchestrator_standalone\orchestrator_standalone.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: adaptive_parallelism_manager.go
+    path: .github\docs\algorithms\parallel\adaptive_parallelism_manager.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: email_sender_pipeline.go
+    path: .github\docs\algorithms\parallel\email_sender_pipeline.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: interrupt_handler.go
+    path: .github\docs\algorithms\parallel\interrupt_handler.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: parallel_orchestration_connector.go
+    path: .github\docs\algorithms\parallel\parallel_orchestration_connector.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: pipeline_orchestrator.go
+    path: .github\docs\algorithms\parallel\pipeline_orchestrator.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: worker_monitor.go
+    path: .github\docs\algorithms\parallel\worker_monitor.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: worker_pool.go
+    path: .github\docs\algorithms\parallel\worker_pool.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: email_sender_progressive_builder.go
+    path: .github\docs\algorithms\progressive-build\email_sender_progressive_builder.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: types.go
+    path: .github\docs\algorithms\shared\types.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: utils.go
+    path: .github\docs\algorithms\shared\utils.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: FINAL_VALIDATION_COMPLETE.go
+    path: .github\docs\algorithms\test\FINAL_VALIDATION_COMPLETE.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: test_main.go
+    path: .github\docs\algorithms\test\test_main.go
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: Test-UnifiedParallelGuide.ps1
+    path: .github\docs\guides\Test-UnifiedParallelGuide.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: fix-correlations.ps1
+    path: .github\fix-correlations.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+  - name: Complete-ModularExtraction.ps1
+    path: .github\scripts\Complete-ModularExtraction.ps1
+    type: utility
+    language: go
+    purpose: automation
+    dependencies: []
+    parameters: []
+    outputs: []
+    status: planned
+tests:
+  - name: Unit Tests
+    type: Unit
+    target: All Managers
+    framework: Go Testing
+    coverage: 85%
+    scenarios:
+      - nominal
+    status: planned
+  - name: Integration Tests
+    type: Integration
+    target: All Managers
+    framework: Go Testing
+    coverage: 85%
+    scenarios:
+      - nominal
+    status: planned
+  - name: Performance Tests
+    type: Performance
+    target: All Managers
+    framework: Go Testing
+    coverage: 85%
+    scenarios:
+      - nominal
+    status: planned
+  - name: Security Tests
+    type: Security
+    target: All Managers
+    framework: Go Testing
+    coverage: 85%
+    scenarios:
+      - nominal
+    status: planned
+  - name: E2E Tests
+    type: E2E
+    target: All Managers
+    framework: Go Testing
+    coverage: 85%
+    scenarios:
+      - nominal
+    status: planned
+reports:
+  - name: Execution Report
+    type: Execution
+    format: Markdown + JSON
+    frequency: Daily
+    recipients:
+      - Team
+      - Stakeholders
+    content:
+      - summary
+    status: planned
+  - name: Performance Report
+    type: Performance
+    format: Markdown + JSON
+    frequency: Daily
+    recipients:
+      - Team
+      - Stakeholders
+    content:
+      - summary
+    status: planned
+  - name: Security Report
+    type: Security
+    format: Markdown + JSON
+    frequency: Daily
+    recipients:
+      - Team
+      - Stakeholders
+    content:
+      - summary
+    status: planned
+  - name: Quality Report
+    type: Quality
+    format: Markdown + JSON
+    frequency: Daily
+    recipients:
+      - Team
+      - Stakeholders
+    content:
+      - summary
+    status: planned
+  - name: Coverage Report
+    type: Coverage
+    format: Markdown + JSON
+    frequency: Daily
+    recipients:
+      - Team
+      - Stakeholders
+    content:
+      - summary
+    status: planned
+ci_cd:
+  platform: GitHub Actions
+  workflows:
+    - name: CI
+      file: .github/workflows/ci.yml
+      purpose: Continuous Integration
+      jobs:
+        - build
+        - test
+        - lint
+      dependencies: []
+      status: planned
+  triggers:
+    - push
+    - pull_request
+  environments:
+    - dev
+    - prod
+  artifacts:
+    - coverage
+    - build
+  notifications:
+    - slack
+    - email
+rollback:
+  strategy: standard
+  procedures: []
+  tools:
+    - go
+    - bash
+  testing: true
+  documentation: docs/rollback.md
+monitoring:
+  metrics: []
+  alerts: []
+  dashboards: []
+  retention: 30d
+  integration:
+    - grafana
+    - prometheus
+summary:
+  total_managers: 30
+  total_patterns: 11
+  total_scripts: 50
+  total_tests: 5
+  priority_high: 3
+  priority_medium: 5
+  priority_low: 2
+  estimated_effort: 5j
+  key_risks:
+    - tech debt
+    - coverage
+  next_steps:
+    - review
+    - commit
