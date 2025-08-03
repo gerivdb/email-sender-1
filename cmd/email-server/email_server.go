@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"github.com/gerivdb/email-sender-1/pkg/email"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -12,6 +11,8 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/gerivdb/email-sender-1/pkg/email"
 
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"

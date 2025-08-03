@@ -78,24 +78,24 @@ func main() {
 		syntheseFile.WriteString("\n")
 	}
 
-        // Générer le contenu du fichier synthese-besoins.md
-        syntheseContent := "# Rapport de synthèse des besoins\n\n"
-        for _, personaNeeds := range personaNeedsList {
-            syntheseContent += fmt.Sprintf("## Persona: %s\n", personaNeeds.Persona)
-            syntheseContent += "\n"
-            syntheseContent += "### Besoins:\n"
-            for _, need := range personaNeeds.Needs {
-                syntheseContent += fmt.Sprintf("- %s\n", need)
-            }
-            syntheseContent += "\n"
-        }
+	// Générer le contenu du fichier synthese-besoins.md
+	syntheseContent := "# Rapport de synthèse des besoins\n\n"
+	for _, personaNeeds := range personaNeedsList {
+		syntheseContent += fmt.Sprintf("## Persona: %s\n", personaNeeds.Persona)
+		syntheseContent += "\n"
+		syntheseContent += "### Besoins:\n"
+		for _, need := range personaNeeds.Needs {
+			syntheseContent += fmt.Sprintf("- %s\n", need)
+		}
+		syntheseContent += "\n"
+	}
 
-        // Écrire le contenu dans le fichier synthese-besoins.md
-        err = ioutil.WriteFile("synthese-besoins.md", []byte(syntheseContent), 0644)
-        if err != nil {
-            fmt.Printf("Erreur lors de l'écriture du fichier synthese-besoins.md: %v\n", err)
-            os.Exit(1)
-        }
+	// Écrire le contenu dans le fichier synthese-besoins.md
+	err = ioutil.WriteFile("synthese-besoins.md", []byte(syntheseContent), 0644)
+	if err != nil {
+		fmt.Printf("Erreur lors de l'écriture du fichier synthese-besoins.md: %v\n", err)
+		os.Exit(1)
+	}
 
 	// Ouvrir le fichier de sortie pour les besoins Jan
 	outputFile, err := os.Create("besoins_jan.md")

@@ -1,4 +1,3 @@
-
 package main
 
 import (
@@ -68,4 +67,3 @@ func main() {
 
 	fmt.Printf("Rapport d'analyse des écarts généré dans %s\n", outputFile)
 }
-

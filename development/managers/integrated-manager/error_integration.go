@@ -20,11 +20,11 @@ type ConformityConfig struct {
 }
 type ConformityReport struct{}
 type EcosystemConformityReport struct{}
-type ReportFormat string // e.g., "json", "html", "pdf"
+type ReportFormat string    // e.g., "json", "html", "pdf"
 type ComplianceLevel string // e.g., "compliant", "non-compliant", "warning"
 type ConformityIssue struct{}
 type ConformityConfigManager struct{} // Stub definition
-type ConformityAPIServer struct{}   // Stub definition
+type ConformityAPIServer struct{}     // Stub definition
 // --- End Placeholder/Stub types ---
 
 // IConformityManager interface for conformity verification
