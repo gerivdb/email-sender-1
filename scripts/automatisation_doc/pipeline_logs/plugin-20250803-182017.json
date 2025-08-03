@@ -1,0 +1,24 @@
+{
+  "description": "",
+  "ended_at": "2025-08-03T18:20:17+02:00",
+  "error": "erreur étape p: plugin non trouvé: notfound",
+  "errors": [
+    "erreur étape p: plugin non trouvé: notfound"
+  ],
+  "pipeline_id": "plugin",
+  "roo_trace": "",
+  "started_at": "2025-08-03T18:20:17+02:00",
+  "status": "error",
+  "steps": [
+    {
+      "name": "p",
+      "type": "plugin",
+      "plugin": "notfound",
+      "started_at": "2025-08-03T18:20:17+02:00",
+      "ended_at": "2025-08-03T18:20:17+02:00",
+      "status": "error",
+      "error": "plugin non trouvé: notfound"
+    }
+  ],
+  "timestamp": "2025-08-03T18:20:17+02:00"
+}

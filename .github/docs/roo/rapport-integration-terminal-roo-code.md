@@ -1,3 +1,44 @@
+> **Correction Roo Code – Rapport d’intégration terminal VS Code**  
+> _Conforme au plan [`plan-dev-v114-correctif-roo-integ.md`](projet/roadmaps/plans/consolidated/plan-dev-v114-correctif-roo-integ.md) et aux standards Roo Code ([AGENTS.md](AGENTS.md), [plandev-engineer-reference.md](.roo/rules/rules-plandev-engineer/plandev-engineer-reference.md))._
+
+---
+
+## Synthèse des causes racines et contextes à risque
+
+- **Causes racines identifiées** :
+  - Incompatibilité entre l’intégration shell Roo Code et certaines versions de VS Code (≥1.99).
+  - Problèmes d’héritage d’environnement (`inheritEnv`), conflits de profils shell (bash, zsh, PowerShell).
+  - Scripts d’intégration non injectés ou mal appliqués selon l’OS ou le shell.
+  - Régressions lors de mises à jour VS Code ou extensions tierces.
+- **Contextes à risque** :
+  - Utilisation de WSL, Oh My Zsh, profils PowerShell personnalisés.
+  - Environnements multi-utilisateurs ou CI/CD sans shell interactif.
+  - Absence de rollback ou de sauvegarde des paramètres avant modification.
+
+---
+
+## Checklist actionnable Roo Code
+
+- [ ] Collecter les logs d’erreur et la version de VS Code/OS/shell.
+- [ ] Appliquer la configuration `terminal.integrated.inheritEnv: false`.
+- [ ] Sauvegarder les fichiers de configuration shell avant modification.
+- [ ] Injecter la ligne d’intégration adaptée dans :  
+    - [ ] `~/.bashrc` (Linux/macOS bash)  
+    - [ ] `~/.zshrc` (zsh/Oh My Zsh)  
+    - [ ] `$Profile` (PowerShell)  
+    - [ ] Procédure WSL (lancer VS Code depuis WSL)
+- [ ] Redémarrer VS Code et tous les terminaux.
+- [ ] Tester :  
+    - [ ] `echo "test"`  
+    - [ ] `ls -la`  
+    - [ ] Commandes Roo Code complexes
+- [ ] En cas d’échec, utiliser le terminal Roo Code natif ou exécuter manuellement les commandes.
+- [ ] Documenter toute modification et archiver les logs.
+- [ ] Procéder à la validation croisée sur plusieurs OS/shells.
+- [ ] Restaurer les paramètres d’origine en cas d’échec (rollback).
+
+---
+
 # Rapport d’intégration terminal Roo Code dans VS Code
 
 ## 1. Problème identifié
@@ -87,3 +128,91 @@ En cas de blocage, le terminal Roo Code natif reste la solution la plus robuste.
 ---
 
 **Toutes les solutions et procédures sont désormais documentées pour garantir une intégration fiable du terminal Roo Code dans VS Code.**
+---
+
+## Procédures de rollback et versionning
+
+- **Sauvegarde préalable** :  
+  - Avant toute modification, copier les fichiers de configuration (`.bashrc`, `.zshrc`, `$Profile`, settings VS Code) dans un dossier de backup daté.
+- **Restauration** :  
+  - En cas d’échec, restaurer les fichiers d’origine et relancer VS Code.
+  - Utiliser le script de rollback : [`scripts/backup/backup.go`](scripts/backup/backup.go)
+- **Suppression des modifications** :  
+  - Retirer la ligne d’intégration Roo Code des fichiers shell concernés.
+  - Réinitialiser la clé `terminal.integrated.inheritEnv` dans VS Code.
+
+---
+
+## Procédures spécifiques multi-OS et shells
+
+- **Linux/macOS (bash/zsh)** :  
+  - Modifier `~/.bashrc` ou `~/.zshrc` selon le shell détecté.
+  - Tester avec : `echo $SHELL`, `cat ~/.bashrc`, `cat ~/.zshrc`
+- **Windows (PowerShell)** :  
+  - Modifier le fichier `$Profile` utilisateur.
+  - Tester avec : `echo $PROFILE`, `cat $PROFILE`
+- **WSL** :  
+  - Lancer VS Code depuis WSL pour garantir l’environnement correct.
+  - Vérifier la propagation des variables d’environnement.
+- **CI/CD** :  
+  - Appliquer la configuration dans le pipeline (voir `.github/workflows/ci.yml`).
+
+---
+
+## Liens croisés et ressources
+
+- Plan source : [`plan-dev-v114-correctif-roo-integ.md`](projet/roadmaps/plans/consolidated/plan-dev-v114-correctif-roo-integ.md)
+- Référence managers : [`AGENTS.md`](AGENTS.md)
+- Checklist globale : [`checklist-actionnable.md`](checklist-actionnable.md)
+- Script de backup/rollback : [`scripts/backup/backup.go`](scripts/backup/backup.go)
+- Exemples de logs : [`fixes-applied.md`](fixes-applied.md)
+- Documentation centrale Roo Code : [`README.md`](README.md)
+- Spécification technique : [`plandev-engineer-reference.md`](.roo/rules/rules-plandev-engineer/plandev-engineer-reference.md)
+
+---
+
+## Reporting, logs et validation croisée
+
+- **Reporting** :  
+  - Documenter chaque étape dans un fichier de log dédié (ex : `fixes-applied.md`).
+  - Archiver les logs d’exécution et de validation dans la documentation centrale.
+- **Validation croisée** :  
+  - Faire relire la procédure par un pair sur chaque OS/shell.
+  - Vérifier la conformité avec la checklist globale et le plan source.
+- **Tests automatisés** :  
+  - Utiliser ou compléter les scripts de validation existants :  
+    - [`tools/scripts/spec_rollback_procedures/spec_rollback_procedures.go`](tools/scripts/spec_rollback_procedures/spec_rollback_procedures.go)
+    - [`tools/scripts/spec_test_cases/spec_test_cases.go`](tools/scripts/spec_test_cases/spec_test_cases.go)
+
+---
+
+## Auto-critique, limites et axes d’amélioration
+
+- **Limites** :  
+  - Certains environnements personnalisés (shells alternatifs, profils multiples) peuvent nécessiter une adaptation manuelle.
+  - Les mises à jour futures de VS Code ou des extensions peuvent réintroduire des régressions.
+- **Axes d’amélioration** :  
+  - Automatiser la détection du shell et l’injection de la configuration.
+  - Ajouter des tests de non-régression dans le pipeline CI/CD.
+  - Centraliser la gestion des logs et des backups.
+- **Questions ouvertes** :  
+  - Faut-il prévoir une interface graphique pour la gestion des intégrations ?
+  - Quels environnements non couverts doivent être ajoutés à la matrice de validation ?
+
+---
+## Diagnostic environnement terminal Roo Code (2025-08-03)
+
+- **Shell par défaut VS Code** : `C:\Windows\system32\cmd.exe`
+- **VS Code détecté** :  
+  - `C:\Users\user\AppData\Local\Programs\Microsoft VS Code\bin\code`
+  - Version : `1.102.2` (commit c306e94f98122556ca081f527b466015e1bc37b0, x64)
+- **Commandes exécutées** :
+  - `echo %COMSPEC%` → `C:\Windows\system32\cmd.exe`
+  - `where code` → `C:\Users\user\AppData\Local\Programs\Microsoft VS Code\bin\code`
+  - `code --version` → `1.102.2`
+- **Preuve d’exécution** : toutes les commandes ont retourné un code de sortie 0, sortie conforme attendue.
+- **Cause racine** : le terminal intégré utilise cmd.exe, pas PowerShell. Les scripts PowerShell échouent si lancés directement dans ce contexte.
+- **Solution** :  
+  - Adapter les scripts/tests à cmd.exe ou
+  - Forcer explicitement PowerShell lors de l’exécution de scripts nécessitant ce shell.
+- **Étape suivante** : appliquer la solution sur plusieurs environnements, documenter les résultats, compléter la checklist du plan [`plan-dev-v114-correctif-roo-integ.md`](projet/roadmaps/plans/consolidated/plan-dev-v114-correctif-roo-integ.md:1).

@@ -35,7 +35,30 @@ type FallbackConfig struct {
 	Strategies  []FallbackStrategy `yaml:"strategies"`
 }
 
-// FallbackManager centralise la gestion des fallback documentaire
+/*
+FallbackManager centralise la gestion des fallback documentaire.
+
+Convention d’extension Roo — Plugins de fallback personnalisés :
+  - Les plugins doivent implémenter PluginInterface (voir interfaces.go).
+  - L’enregistrement dynamique se fait via RegisterPlugin(plugin).
+  - Lorsqu’une stratégie de type "plugin" est activée dans la séquence de fallback,
+    le plugin est appelé via son nom (champ "plugin_name" dans la config YAML).
+  - Convention : le plugin peut modifier in-place la map d’entrée (input) pour transmettre un résultat.
+    Si le plugin ne modifie pas input, la valeur d’entrée est retournée telle quelle.
+  - Le plugin doit être idempotent et thread-safe.
+  - La sécurité, la validation et la gestion d’erreur sont à la charge du plugin.
+  - Hooks optionnels (BeforeStep, AfterStep, OnError) ne sont pas utilisés par FallbackManager mais peuvent l’être par d’autres managers Roo.
+
+Exemple d’enregistrement :
+
+	fm.RegisterPlugin(&MyFallbackPlugin{})
+
+Exemple d’appel YAML :
+  - type: plugin
+    enabled: true
+    config:
+    plugin_name: "MyFallbackPlugin"
+*/
 type FallbackManager struct {
 	mu      sync.RWMutex
 	config  FallbackConfig
@@ -106,6 +129,9 @@ func (fm *FallbackManager) ApplyFallback(ctx context.Context, input map[string]i
 				lastErr = fmt.Errorf("plugin %s non trouvé", pluginName)
 				continue
 			}
+			// Convention Roo : le plugin peut modifier in-place la map input pour transmettre un résultat.
+			// Si le plugin ne modifie pas input, la valeur d’entrée est retournée telle quelle.
+			// Le plugin doit être idempotent et thread-safe.
 			err := plugin.Execute(ctx, input)
 			if err == nil {
 				return input, nil
@@ -131,4 +157,131 @@ func (fm *FallbackManager) loadAlternate(ctx context.Context, source string) (ma
 		return nil, errors.New("source alternative non définie")
 	}
 	return map[string]interface{}{"source": source, "status": "alternate"}, nil
+}
+
+// --- Handlers Roo pour SmartMergeManager (stratégies fallback-strategies.yaml) ---
+
+// SmartMergeManager centralise les handlers Roo pour chaque stratégie de fallback documentaire.
+type SmartMergeManager struct {
+	FallbackMgr *FallbackManager
+	ErrorMgr    ErrorManager // Injection du gestionnaire d’erreurs Roo
+}
+
+// Handler pour fallback-corruption-detect
+// Détecte la corruption documentaire et déclenche la séquence de restauration.
+func (sm *SmartMergeManager) HandleCorruptionDetect(ctx context.Context, docID string, meta map[string]interface{}) error {
+	// Condition : détection d’une corruption (ex : checksum KO)
+	if meta["corruption_detected"] == true {
+		// Action : restauration depuis la dernière version saine
+		_, err := sm.FallbackMgr.ApplyFallback(ctx, map[string]interface{}{
+			"docID":  docID,
+			"action": "restore_last_valid",
+		})
+		if err != nil && sm.ErrorMgr != nil {
+			entry := ErrorEntry{
+				DocID:     docID,
+				Operation: "HandleCorruptionDetect",
+				Err:       err,
+				Meta:      meta,
+			}
+			_ = sm.ErrorMgr.ProcessError(ctx, err, "SmartMergeManager", "HandleCorruptionDetect", nil)
+			_ = sm.ErrorMgr.CatalogError(entry)
+			_ = sm.ErrorMgr.ValidateErrorEntry(entry)
+		}
+		return err
+	}
+	return nil
+}
+
+// Handler pour fallback-perte-document
+// Gère la perte d’un document (ex : suppression accidentelle, IO error).
+func (sm *SmartMergeManager) HandlePerteDocument(ctx context.Context, docID string, meta map[string]interface{}) error {
+	// Condition : document absent ou inaccessible
+	if meta["missing"] == true {
+		// Action : tentative de récupération depuis la sauvegarde
+		_, err := sm.FallbackMgr.ApplyFallback(ctx, map[string]interface{}{
+			"docID":  docID,
+			"action": "restore_from_backup",
+		})
+		if err != nil && sm.ErrorMgr != nil {
+			entry := ErrorEntry{
+				DocID:     docID,
+				Operation: "HandlePerteDocument",
+				Err:       err,
+				Meta:      meta,
+			}
+			_ = sm.ErrorMgr.ProcessError(ctx, err, "SmartMergeManager", "HandlePerteDocument", nil)
+			_ = sm.ErrorMgr.CatalogError(entry)
+			_ = sm.ErrorMgr.ValidateErrorEntry(entry)
+		}
+		return err
+	}
+	return nil
+}
+
+// Handler pour fallback-conflit-fusion
+// Résout un conflit de fusion documentaire avancé.
+func (sm *SmartMergeManager) HandleConflitFusion(ctx context.Context, docID string, meta map[string]interface{}) error {
+	// Condition : conflit détecté lors d’une fusion
+	if meta["merge_conflict"] == true {
+		// Action : appliquer une stratégie de smart-merge ou fallback manuel
+		_, err := sm.FallbackMgr.ApplyFallback(ctx, map[string]interface{}{
+			"docID":  docID,
+			"action": "smart_merge_or_manual",
+		})
+		if err != nil && sm.ErrorMgr != nil {
+			entry := ErrorEntry{
+				DocID:     docID,
+				Operation: "HandleConflitFusion",
+				Err:       err,
+				Meta:      meta,
+			}
+			_ = sm.ErrorMgr.ProcessError(ctx, err, "SmartMergeManager", "HandleConflitFusion", nil)
+			_ = sm.ErrorMgr.CatalogError(entry)
+			_ = sm.ErrorMgr.ValidateErrorEntry(entry)
+		}
+		return err
+	}
+	return nil
+}
+
+// Handler pour fallback-rollback-critique
+// Déclenche un rollback documentaire critique.
+func (sm *SmartMergeManager) HandleRollbackCritique(ctx context.Context, docID string, meta map[string]interface{}) error {
+	// Condition : échec critique ou validation KO
+	if meta["critical_failure"] == true {
+		// Action : rollback à l’état antérieur validé
+		_, err := sm.FallbackMgr.ApplyFallback(ctx, map[string]interface{}{
+			"docID":  docID,
+			"action": "rollback_to_previous",
+		})
+		if err != nil && sm.ErrorMgr != nil {
+			entry := ErrorEntry{
+				DocID:     docID,
+				Operation: "HandleRollbackCritique",
+				Err:       err,
+				Meta:      meta,
+			}
+			_ = sm.ErrorMgr.ProcessError(ctx, err, "SmartMergeManager", "HandleRollbackCritique", nil)
+			_ = sm.ErrorMgr.CatalogError(entry)
+			_ = sm.ErrorMgr.ValidateErrorEntry(entry)
+		}
+		return err
+	}
+	return nil
+}
+
+// Handler pour fallback-plugin-failure
+// Gère l’échec d’un plugin de fallback documentaire.
+func (sm *SmartMergeManager) HandlePluginFailure(ctx context.Context, docID string, meta map[string]interface{}) error {
+	// Condition : plugin de fallback en erreur
+	if meta["plugin_failure"] == true {
+		// Action : désactiver le plugin et appliquer une stratégie alternative
+		_, err := sm.FallbackMgr.ApplyFallback(ctx, map[string]interface{}{
+			"docID":  docID,
+			"action": "disable_plugin_and_alternate",
+		})
+		return err
+	}
+	return nil
 }

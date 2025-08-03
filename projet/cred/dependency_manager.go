@@ -51,8 +51,9 @@ var (
 //   - Entrées : erreurs Go, entrées structurées (ErrorEntry), contexte d’exécution.
 //   - Sorties : erreurs Go standard (validation, journalisation, etc.).
 //
-// Example d’injection :
-//   errorManager := &ErrorManagerImpl{logger: logger}
+// Example d’injection Roo :
+//   monitoringManager := automatisation_doc.NewMonitoringManager()
+//   errorManager := &ErrorManagerImpl{logger: logger, monitoringManager: monitoringManager}
 //   configManager := NewDepConfigManager(config, logger, errorManager)
 //
 // Voir aussi : ErrorManagerImpl, ErrorEntry, ErrorHooks
@@ -140,9 +141,11 @@ type ConfigManager interface {
 	GetLogger() *zap.Logger
 }
 
-// ErrorManagerImpl implements ErrorManager.
+// ErrorManagerImpl implements ErrorManager Roo.
+// Intègre MonitoringManager pour la supervision Roo : collecte des métriques à chaque traitement d’erreur.
 type ErrorManagerImpl struct {
-	logger *zap.Logger
+	logger            *zap.Logger
+	monitoringManager *automatisation_doc.MonitoringManager
 }
 
 // ErrorHooks defines callbacks for error handling.
@@ -170,6 +173,7 @@ func NewGoModManager(modFilePath string, config *Config) *GoModManager {
 }
 
 // ProcessError processes an error with centralized error handling.
+// Appelle MonitoringManager.CollectMetrics pour la traçabilité Roo.
 func (em *ErrorManagerImpl) ProcessError(ctx context.Context, err error, component, operation string, hooks *ErrorHooks) error {
 	if err == nil {
 		return nil
@@ -188,6 +192,11 @@ func (em *ErrorManagerImpl) ProcessError(ctx context.Context, err error, compone
 		ErrorCode:      errorCode,
 		ManagerContext: fmt.Sprintf("component=%s, operation=%s", component, operation),
 		Severity:       severity,
+	}
+
+	// Hook Roo : collecte des métriques à chaque erreur
+	if em.monitoringManager != nil {
+		_, _ = em.monitoringManager.CollectMetrics(ctx)
 	}
 
 	validationErr := em.ValidateErrorEntry(entry)
@@ -595,8 +604,8 @@ func getDefaultConfig() *Config {
 			VulnerabilityCheck bool   `json:"vulnerabilityCheck"`
 			BackupOnChange     bool   `json:"backupOnChange"`
 		},
-		}
-
+	}
+	
 // validateConfig validates the loaded configuration.
 func validateConfig(config *Config) error {
 	if config.Name == "" {

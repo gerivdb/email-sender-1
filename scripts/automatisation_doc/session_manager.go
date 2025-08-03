@@ -82,11 +82,29 @@ type PersistenceHook struct {
 	Hook SessionHook
 }
 
+/*
+SessionPersistencePlugin définit le contrat Roo pour un plugin de persistance session.
+Chaque plugin doit exposer un nom unique, un type de hook (Before/After/Error), et la fonction hook à exécuter.
+Permet l’extension dynamique du manager via PluginInterface Roo.
+*/
+type SessionPersistencePlugin interface {
+	// Name retourne le nom unique du plugin (pour la traçabilité et la gestion dynamique).
+	Name() string
+	// Type retourne le type de hook géré par ce plugin (BeforePersistHook, AfterPersistHook, OnPersistErrorHook).
+	Type() PersistenceHookType
+	// Hook retourne la fonction SessionHook à exécuter.
+	Hook() SessionHook
+}
+
 type SessionManager struct {
 	config           SessionConfig
 	hooks            []SessionHook
 	persistenceHooks []PersistenceHook
 	persistence      PersistenceEngine // Injection de la dépendance
+
+	// plugins de persistance dynamiques Roo (registre)
+	persistencePlugins map[string]SessionPersistencePlugin // clé = nom unique du plugin
+
 	// TODO: Ajouter les champs d’état, dépendances (ErrorManager, PipelineManager, etc.), logs, etc.
 }
 
@@ -95,12 +113,18 @@ NewSessionManager crée une nouvelle instance de SessionManager.
 Initialise les hooks de persistance.
 Permet d’injecter un PersistenceEngine : si nil, la persistance est simulée (aucune erreur).
 */
+/*
+NewSessionManager crée une nouvelle instance de SessionManager.
+Initialise les hooks de persistance et le registre dynamique de plugins Roo.
+Permet d’injecter un PersistenceEngine : si nil, la persistance est simulée (aucune erreur).
+*/
 func NewSessionManager(config SessionConfig, persistence PersistenceEngine) *SessionManager {
 	return &SessionManager{
-		config:           config,
-		hooks:            make([]SessionHook, 0),
-		persistenceHooks: make([]PersistenceHook, 0),
-		persistence:      persistence,
+		config:             config,
+		hooks:              make([]SessionHook, 0),
+		persistenceHooks:   make([]PersistenceHook, 0),
+		persistence:        persistence,
+		persistencePlugins: make(map[string]SessionPersistencePlugin),
 	}
 }
 
@@ -141,11 +165,51 @@ func (sm *SessionManager) RegisterHook(hook SessionHook) {
 }
 
 /*
-RegisterPersistenceHook permet d’injecter dynamiquement un hook de persistance typé.
+RegisterPersistenceHook permet d’injecter dynamiquement un hook de persistance typé (héritage historique).
+Préférer l’utilisation de RegisterPersistencePlugin pour la traçabilité Roo.
 Exemple : sm.RegisterPersistenceHook(BeforePersistHook, myHook)
 */
 func (sm *SessionManager) RegisterPersistenceHook(hookType PersistenceHookType, hook SessionHook) {
 	sm.persistenceHooks = append(sm.persistenceHooks, PersistenceHook{Type: hookType, Hook: hook})
+}
+
+/*
+RegisterPersistencePlugin ajoute dynamiquement un plugin de persistance Roo au registre.
+Si un plugin du même nom existe déjà, il est remplacé.
+Traçabilité Roo : chaque ajout/retrait est loggé (TODO: intégrer ErrorManager/logs).
+*/
+func (sm *SessionManager) RegisterPersistencePlugin(plugin SessionPersistencePlugin) {
+	if sm.persistencePlugins == nil {
+		sm.persistencePlugins = make(map[string]SessionPersistencePlugin)
+	}
+	sm.persistencePlugins[plugin.Name()] = plugin
+}
+
+/*
+UnregisterPersistencePlugin retire dynamiquement un plugin de persistance Roo du registre.
+Retourne true si le plugin existait et a été supprimé, false sinon.
+*/
+func (sm *SessionManager) UnregisterPersistencePlugin(name string) bool {
+	if sm.persistencePlugins == nil {
+		return false
+	}
+	if _, ok := sm.persistencePlugins[name]; ok {
+		delete(sm.persistencePlugins, name)
+		return true
+	}
+	return false
+}
+
+/*
+ListPersistencePlugins retourne la liste des plugins de persistance Roo actuellement enregistrés.
+Permet l’audit, la traçabilité et l’inspection dynamique.
+*/
+func (sm *SessionManager) ListPersistencePlugins() []SessionPersistencePlugin {
+	plugins := make([]SessionPersistencePlugin, 0, len(sm.persistencePlugins))
+	for _, p := range sm.persistencePlugins {
+		plugins = append(plugins, p)
+	}
+	return plugins
 }
 
 // persist effectue la persistance de la session en respectant la granularité Roo Code :

@@ -14,16 +14,6 @@ import (
 // Utiliser l’interface centralisée (voir pipeline_manager.go ou AGENTS.md).
 // L’interface est désormais factorisée dans interfaces.go et doit être importée via le package.
 
-// ErrorManager Roo pour gestion centralisée des erreurs.
-type ErrorManager interface {
-	ProcessError(ctx context.Context, err error, component, operation string, hooks *ErrorHooks) error
-}
-
-// ErrorHooks permet d’injecter des hooks personnalisés sur les erreurs.
-type ErrorHooks struct {
-	OnError func(error)
-}
-
 // DependencyQuery représente une requête sur les dépendances.
 type DependencyQuery struct {
 	// TODO: Définir les champs selon le modèle Roo

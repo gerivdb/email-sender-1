@@ -1,5 +1,5 @@
 // main_test.go — Test unitaire du point d’entrée reporting Roo
-package automatisation_doc
+package main
 
 import (
 	"testing"

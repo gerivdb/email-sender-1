@@ -24,6 +24,7 @@
     - [ ] Générer les tests unitaires
     - [ ] Mettre à jour la documentation technique
     - [ ] Valider via CI/CD (build, test, lint)
+    - [ ] Appliquer et valider le correctif d’intégration terminal Roo Code ([`rapport-integration-terminal-roo-code.md`](.github/docs/roo/rapport-integration-terminal-roo-code.md:1), [`checklist-actionnable.md`](checklist-actionnable.md:1))
 - [ ] **Tests**
     - [ ] Exécuter tous les tests (`go test ./...`, `npm test`)
     - [ ] Générer le rapport de couverture

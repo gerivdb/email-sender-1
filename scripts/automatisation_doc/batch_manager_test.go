@@ -1,221 +1,221 @@
-// batch_manager_test.go — Squelette Roo Code des tests unitaires BatchManager
+// SPDX-License-Identifier: Apache-2.0
+// Roo Code — Tests unitaires BatchManager
 //
-// Ce fichier définit la structure de base des tests unitaires pour le manager BatchManager.
-// Respecte les conventions Roo Code : lisibilité, documentation, traçabilité, structuration claire.
-// À compléter avec des cas de test réels, des mocks et des assertions selon les standards du projet.
+// Ce fichier couvre tous les scénarios critiques de robustesse du BatchManager Roo : gestion des hooks de rollback (PluginInterface), centralisation des logs/statuts, intégration plugins (mocks), couverture succès/échec/rollback/reporting.
+//
+// Les tests n’utilisent que des mocks et ne dépendent d’aucun autre manager Roo.
 
 package automatisation_doc
 
 import (
 	"context"
 	"errors"
+	"sync"
 	"testing"
+	"time"
 )
 
-// TestBatchManager — Tests unitaires Roo Code pour BatchManager.
+// mockPlugin est un mock complet de PluginInterface Roo, incluant RollbackHook.
 type mockPlugin struct {
-	name      string
-	shouldErr bool
+	name                string
+	executeErr          error
+	onErrorCalled       []string
+	rollbackHookCalled  []string
+	rollbackHookErr     error
+	executeCalledBefore bool
+	executeCalledAfter  bool
+	mu                  sync.Mutex
 }
 
-// Implémentation minimaliste de PluginInterface pour test
 func (m *mockPlugin) Name() string { return m.name }
 func (m *mockPlugin) Execute(ctx context.Context, params map[string]interface{}) error {
-	if m.shouldErr {
-		return errors.New("plugin error")
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	// On distingue les appels avant/après via un flag dans params
+	if params != nil && params["__after"] == true {
+		m.executeCalledAfter = true
+	} else {
+		m.executeCalledBefore = true
 	}
+	return m.executeErr
+}
+func (m *mockPlugin) BeforeStep(ctx context.Context, stepName string, params map[string]interface{}) error {
 	return nil
 }
-
-type mockErrorManager struct {
-	lastErr error
-}
-
-func (m *mockErrorManager) ProcessError(ctx context.Context, err error, component, operation string, hooks interface{}) error {
-	m.lastErr = err
+func (m *mockPlugin) AfterStep(ctx context.Context, stepName string, params map[string]interface{}) error {
 	return nil
 }
-
-func TestBatchManager(t *testing.T) {
-	t.Run("Initialisation correcte", func(t *testing.T) {
-		em := &mockErrorManager{}
-		bm := NewBatchManager(context.Background(), nil, em)
-		if err := bm.Init(); err != nil {
-			t.Fatalf("Init() doit réussir, erreur: %v", err)
-		}
-		if bm.Status() != "ready" {
-			t.Errorf("Status attendu 'ready', obtenu: %s", bm.Status())
-		}
-	})
-
-	t.Run("Erreur si ErrorManager absent", func(t *testing.T) {
-		bm := NewBatchManager(context.Background(), nil, nil)
-		if err := bm.Init(); err == nil {
-			t.Error("Init() doit échouer si ErrorManager absent")
-		}
-	})
-
-	t.Run("Exécution batch standard (succès plugin)", func(t *testing.T) {
-		em := &mockErrorManager{}
-		bm := NewBatchManager(context.Background(), nil, em)
-		_ = bm.Init()
-		_ = bm.RegisterPlugin(&mockPlugin{name: "ok", shouldErr: false})
-		if err := bm.Run(); err != nil {
-			t.Errorf("Run() doit réussir, erreur: %v", err)
-		}
-		if len(bm.batchResults) == 0 || bm.batchResults[len(bm.batchResults)-1].Status != "success" {
-			t.Error("BatchResult doit être 'success'")
-		}
-	})
-
-	t.Run("Erreur plugin batch et rollback déclenché", func(t *testing.T) {
-		em := &mockErrorManager{}
-		bm := NewBatchManager(context.Background(), nil, em)
-		_ = bm.Init()
-		rollbackCalled := false
-		bm.rollbackHooks = append(bm.rollbackHooks, func() error { rollbackCalled = true; return nil })
-		_ = bm.RegisterPlugin(&mockPlugin{name: "fail", shouldErr: true})
-		err := bm.Run()
-		if err == nil {
-			t.Error("Run() doit échouer si plugin retourne une erreur")
-		}
-		if !rollbackCalled {
-			t.Error("Le hook de rollback doit être appelé en cas d'erreur plugin")
-		}
-		if em.lastErr == nil {
-			t.Error("L'erreur doit être remontée à ErrorManager")
-		}
-	})
-
-	t.Run("Traçabilité et logs générés", func(t *testing.T) {
-		em := &mockErrorManager{}
-		bm := NewBatchManager(context.Background(), nil, em)
-		_ = bm.Init()
-		_ = bm.RegisterPlugin(&mockPlugin{name: "ok", shouldErr: false})
-		_ = bm.Run()
-		if len(bm.logs) == 0 {
-			t.Error("Des logs doivent être générés lors de l'exécution")
-		}
-	})
-
-	t.Run("Cas limites: plugin sans nom", func(t *testing.T) {
-		em := &mockErrorManager{}
-		bm := NewBatchManager(context.Background(), nil, em)
-		err := bm.RegisterPlugin(&mockPlugin{name: "", shouldErr: false})
-		if err == nil {
-			t.Error("RegisterPlugin doit échouer si le nom du plugin est vide")
-		}
-	})
-
-	// --- Extension Roo : hooks de reporting, batchResults multiples, plugins multiples, cas limites avancés ---
-
-	t.Run("Reporting hook appelé et erreur propagée", func(t *testing.T) {
-		em := &mockErrorManager{}
-		bm := NewBatchManager(context.Background(), nil, em)
-		_ = bm.Init()
-		reportingCalled := false
-		bm.reportingHooks = append(bm.reportingHooks, func() error { reportingCalled = true; return nil })
-		_ = bm.RegisterPlugin(&mockPlugin{name: "ok", shouldErr: false})
-		_ = bm.Run()
-		if !reportingCalled {
-			t.Error("Le hook de reporting doit être appelé après Run")
-		}
-	})
-
-	t.Run("Reporting hook retourne une erreur (non bloquant)", func(t *testing.T) {
-		em := &mockErrorManager{}
-		bm := NewBatchManager(context.Background(), nil, em)
-		_ = bm.Init()
-		bm.reportingHooks = append(bm.reportingHooks, func() error { return errors.New("reporting error") })
-		_ = bm.RegisterPlugin(&mockPlugin{name: "ok", shouldErr: false})
-		err := bm.Run()
-		if err != nil {
-			t.Error("Run ne doit pas échouer si le reporting hook retourne une erreur")
-		}
-	})
-
-	t.Run("BatchResults multiples et traçabilité", func(t *testing.T) {
-		em := &mockErrorManager{}
-		bm := NewBatchManager(context.Background(), nil, em)
-		_ = bm.Init()
-		_ = bm.RegisterPlugin(&mockPlugin{name: "p1", shouldErr: false})
-		_ = bm.Run()
-		_ = bm.RegisterPlugin(&mockPlugin{name: "p2", shouldErr: false})
-		_ = bm.Run()
-		if len(bm.batchResults) != 2 {
-			t.Errorf("On attend 2 batchResults, obtenu: %d", len(bm.batchResults))
-		}
-		for _, br := range bm.batchResults {
-			if br.Status != "success" && br.Status != "error" && br.Status != "started" {
-				t.Errorf("Status inattendu dans batchResults: %s", br.Status)
-			}
-		}
-	})
-
-	t.Run("Plugins multiples, dont un en erreur", func(t *testing.T) {
-		em := &mockErrorManager{}
-		bm := NewBatchManager(context.Background(), nil, em)
-		_ = bm.Init()
-		_ = bm.RegisterPlugin(&mockPlugin{name: "ok", shouldErr: false})
-		_ = bm.RegisterPlugin(&mockPlugin{name: "fail", shouldErr: true})
-		err := bm.Run()
-		if err == nil {
-			t.Error("Run doit échouer si un plugin retourne une erreur")
-		}
-		if em.lastErr == nil {
-			t.Error("L'erreur plugin doit être propagée à ErrorManager")
-		}
-	})
-
-	t.Run("Plugin dupliqué : écrasement silencieux", func(t *testing.T) {
-		em := &mockErrorManager{}
-		bm := NewBatchManager(context.Background(), nil, em)
-		_ = bm.Init()
-		_ = bm.RegisterPlugin(&mockPlugin{name: "dup", shouldErr: false})
-		err := bm.RegisterPlugin(&mockPlugin{name: "dup", shouldErr: true})
-		if err != nil {
-			t.Error("RegisterPlugin doit permettre l'écrasement d'un plugin du même nom")
-		}
-	})
-
-	t.Run("Rollback hook retourne une erreur (non bloquant)", func(t *testing.T) {
-		em := &mockErrorManager{}
-		bm := NewBatchManager(context.Background(), nil, em)
-		_ = bm.Init()
-		bm.rollbackHooks = append(bm.rollbackHooks, func() error { return errors.New("rollback error") })
-		_ = bm.RegisterPlugin(&mockPlugin{name: "fail", shouldErr: true})
-		err := bm.Run()
-		if err == nil {
-			t.Error("Run doit échouer si plugin retourne une erreur, même si rollback hook échoue")
-		}
-	})
-
-	t.Run("Vérification du contenu des logs et traçabilité", func(t *testing.T) {
-		em := &mockErrorManager{}
-		bm := NewBatchManager(context.Background(), nil, em)
-		_ = bm.Init()
-		_ = bm.RegisterPlugin(&mockPlugin{name: "ok", shouldErr: false})
-		_ = bm.Run()
-		found := false
-		for _, log := range bm.logs {
-			if log == "BatchManager prêt." {
-				found = true
-				break
-			}
-		}
-		if !found {
-			t.Error("Le log 'BatchManager prêt.' doit être présent dans les logs")
-		}
-	})
-
-	t.Run("Stop non implémenté", func(t *testing.T) {
-		em := &mockErrorManager{}
-		bm := NewBatchManager(context.Background(), nil, em)
-		err := bm.Stop()
-		if err == nil || err.Error() != "Stop non implémenté" {
-			t.Error("Stop doit retourner une erreur explicite")
-		}
-	})
+func (m *mockPlugin) OnError(ctx context.Context, stepName string, params map[string]interface{}, stepErr error) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.onErrorCalled = append(m.onErrorCalled, stepName)
+	return nil
+}
+func (m *mockPlugin) RollbackHook(ctx context.Context, batchID string, batch map[string]interface{}, reason error) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.rollbackHookCalled = append(m.rollbackHookCalled, batchID)
+	return m.rollbackHookErr
 }
 
-// Fin du squelette Roo Code — batch_manager_test.go
+// TestBatchManager_Success teste l’exécution d’un batch sans erreur, plugins appelés, logs centralisés.
+/*
+RooDoc : Vérifie qu’un batch valide s’exécute sans rollback, que les plugins sont appelés (avant/après), et que les logs/statuts sont cohérents.
+*/
+func TestBatchManager_Success(t *testing.T) {
+	bm := NewBatchManager()
+	plugin := &mockPlugin{name: "ok"}
+	if err := bm.RegisterPlugin(plugin); err != nil {
+		t.Fatalf("Échec RegisterPlugin: %v", err)
+	}
+	batch := &Batch{ID: "batch1", Docs: []string{"docA", "docB"}, CreatedAt: time.Now()}
+	res, err := bm.ExecuteBatch(context.Background(), batch)
+	if err != nil {
+		t.Fatalf("Échec ExecuteBatch: %v", err)
+	}
+	if !res.Success || res.RolledBack {
+		t.Errorf("Batch devrait réussir sans rollback, got Success=%v RolledBack=%v", res.Success, res.RolledBack)
+	}
+	if len(res.Logs) == 0 || res.Error != nil {
+		t.Errorf("Logs attendus et pas d’erreur, got logs=%v err=%v", res.Logs, res.Error)
+	}
+	if !plugin.executeCalledBefore {
+		t.Errorf("Plugin Execute (avant) non appelé")
+	}
+}
+
+// TestBatchManager_PluginFailAvant vérifie le rollback si un plugin échoue avant l’exécution principale.
+/*
+RooDoc : Simule un plugin qui échoue avant l’exécution du lot : rollback automatique, hook RollbackHook appelé, logs centralisés, reporting cohérent.
+*/
+func TestBatchManager_PluginFailAvant(t *testing.T) {
+	bm := NewBatchManager()
+	plugin := &mockPlugin{name: "fail", executeErr: errors.New("fail avant")}
+	if err := bm.RegisterPlugin(plugin); err != nil {
+		t.Fatalf("Échec RegisterPlugin: %v", err)
+	}
+	batch := &Batch{ID: "batch2", Docs: []string{"docA"}, CreatedAt: time.Now()}
+	res, err := bm.ExecuteBatch(context.Background(), batch)
+	if err == nil || res == nil || !res.RolledBack {
+		t.Fatalf("Batch devrait échouer et rollback, got err=%v rolledBack=%v", err, res != nil && res.RolledBack)
+	}
+	if len(plugin.rollbackHookCalled) == 0 {
+		t.Errorf("RollbackHook plugin non appelé")
+	}
+	if res.Error == nil || res.Error.Error() != "plugin fail (avant lot): fail avant" {
+		t.Errorf("Erreur attendue dans res.Error, got %v", res.Error)
+	}
+	if len(res.Logs) == 0 || res.Logs[0] == "" {
+		t.Errorf("Logs de rollback attendus")
+	}
+}
+
+// TestBatchManager_ExecFail vérifie le rollback si l’exécution principale échoue.
+/*
+RooDoc : Simule un échec de traitement documentaire (doc == "fail") : rollback automatique, hook RollbackHook appelé, logs/statuts cohérents.
+*/
+func TestBatchManager_ExecFail(t *testing.T) {
+	bm := NewBatchManager()
+	plugin := &mockPlugin{name: "ok"}
+	if err := bm.RegisterPlugin(plugin); err != nil {
+		t.Fatalf("Échec RegisterPlugin: %v", err)
+	}
+	batch := &Batch{ID: "batch3", Docs: []string{"docA", "fail"}, CreatedAt: time.Now()}
+	res, err := bm.ExecuteBatch(context.Background(), batch)
+	if err == nil || !res.RolledBack {
+		t.Fatalf("Batch devrait échouer et rollback, got err=%v rolledBack=%v", err, res.RolledBack)
+	}
+	if len(plugin.rollbackHookCalled) == 0 {
+		t.Errorf("RollbackHook plugin non appelé")
+	}
+	if res.Error == nil || res.Error.Error() != "échec traitement doc: fail" {
+		t.Errorf("Erreur attendue dans res.Error, got %v", res.Error)
+	}
+	if len(res.Logs) == 0 {
+		t.Errorf("Logs de rollback attendus")
+	}
+}
+
+// TestBatchManager_RollbackHookError vérifie que les erreurs de RollbackHook sont journalisées mais non bloquantes.
+/*
+RooDoc : Simule un plugin dont RollbackHook retourne une erreur : l’erreur est loggée, le rollback global n’est pas bloqué.
+*/
+func TestBatchManager_RollbackHookError(t *testing.T) {
+	bm := NewBatchManager()
+	plugin := &mockPlugin{name: "errhook", rollbackHookErr: errors.New("rollback fail")}
+	if err := bm.RegisterPlugin(plugin); err != nil {
+		t.Fatalf("Échec RegisterPlugin: %v", err)
+	}
+	batch := &Batch{ID: "batch4", Docs: []string{"fail"}, CreatedAt: time.Now()}
+	res, err := bm.ExecuteBatch(context.Background(), batch)
+	if err == nil || !res.RolledBack {
+		t.Fatalf("Batch devrait échouer et rollback, got err=%v rolledBack=%v", err, res.RolledBack)
+	}
+	found := false
+	for _, l := range res.Logs {
+		if l == "RollbackHook plugin errhook: rollback fail" {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Errorf("Erreur RollbackHook non loggée")
+	}
+}
+
+// TestBatchManager_Reporting vérifie la centralisation du reporting après rollback.
+/*
+RooDoc : Vérifie que Report retourne l’état complet du lot (succès, échec, rollback, logs) après exécution.
+*/
+func TestBatchManager_Reporting(t *testing.T) {
+	bm := NewBatchManager()
+	plugin := &mockPlugin{name: "ok"}
+	_ = bm.RegisterPlugin(plugin)
+	batch := &Batch{ID: "batch5", Docs: []string{"fail"}, CreatedAt: time.Now()}
+	_, _ = bm.ExecuteBatch(context.Background(), batch)
+	rep, err := bm.Report(context.Background(), "batch5")
+	if err != nil {
+		t.Fatalf("Échec Report: %v", err)
+	}
+	if !rep.RolledBack || rep.Success {
+		t.Errorf("Report incohérent: attendu RolledBack=true, Success=false, got %v/%v", rep.RolledBack, rep.Success)
+	}
+	if len(rep.Logs) == 0 {
+		t.Errorf("Logs attendus dans reporting")
+	}
+}
+
+// TestBatchManager_MultiPlugins vérifie la robustesse avec plusieurs plugins (succès et échec).
+/*
+RooDoc : Enregistre plusieurs plugins (dont un qui échoue), vérifie que tous les hooks sont appelés, rollback et logs centralisés.
+*/
+func TestBatchManager_MultiPlugins(t *testing.T) {
+	bm := NewBatchManager()
+	ok := &mockPlugin{name: "ok"}
+	fail := &mockPlugin{name: "fail", executeErr: errors.New("fail")}
+	_ = bm.RegisterPlugin(ok)
+	_ = bm.RegisterPlugin(fail)
+	batch := &Batch{ID: "batch6", Docs: []string{"docA"}, CreatedAt: time.Now()}
+	res, err := bm.ExecuteBatch(context.Background(), batch)
+	if err == nil || !res.RolledBack {
+		t.Fatalf("Batch devrait échouer et rollback, got err=%v rolledBack=%v", err, res.RolledBack)
+	}
+	if len(ok.rollbackHookCalled) == 0 || len(fail.rollbackHookCalled) == 0 {
+		t.Errorf("RollbackHook de tous les plugins doit être appelé")
+	}
+}
+
+// TestBatchManager_RegisterPlugin_Duplicate vérifie qu’on ne peut pas enregistrer deux plugins du même nom.
+/*
+RooDoc : Vérifie que RegisterPlugin refuse les doublons de nom de plugin.
+*/
+func TestBatchManager_RegisterPlugin_Duplicate(t *testing.T) {
+	bm := NewBatchManager()
+	plugin := &mockPlugin{name: "dup"}
+	if err := bm.RegisterPlugin(plugin); err != nil {
+		t.Fatalf("Échec RegisterPlugin: %v", err)
+	}
+	if err := bm.RegisterPlugin(plugin); err == nil {
+		t.Errorf("RegisterPlugin devrait échouer sur doublon")
+	}
+}

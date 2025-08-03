@@ -10,9 +10,9 @@
 - **Risques** : Variabilité selon version VS Code, shell, OS.
 - **Outils mobilisés** : Analyse documentaire, feedback utilisateur, tests manuels.
 - **Tâches** :
-  - [ ] Collecter les logs et retours d’expérience sur l’intégration terminal Roo Code.
-  - [ ] Identifier les causes d’échec (héritage env, shell, version VS Code…).
-  - [ ] Documenter les cas d’incompatibilité et les contextes à risque.
+  - [x] Collecter les logs et retours d’expérience sur l’intégration terminal Roo Code.
+  - [x] Identifier les causes d’échec (héritage env, shell, version VS Code…).
+  - [x] Documenter les cas d’incompatibilité et les contextes à risque.
 - **Commandes** :
   - `echo $SHELL`
   - `code --version`
@@ -36,10 +36,10 @@
 - **Risques** : Solutions non universelles, contournements temporaires.
 - **Outils mobilisés** : Documentation, scripts shell/PowerShell, guides Roo Code.
 - **Tâches** :
-  - [ ] Rédiger les solutions immédiates (paramétrage, redémarrage, shell).
-  - [ ] Détailler les procédures pour chaque OS/shell (bash, zsh, PowerShell, WSL).
-  - [ ] Proposer des contournements d’urgence et des tests de validation.
-  - [ ] Centraliser les liens et références utiles.
+  - [x] Rédiger les solutions immédiates (paramétrage, redémarrage, shell).
+  - [x] Détailler les procédures pour chaque OS/shell (bash, zsh, PowerShell, WSL).
+  - [x] Proposer des contournements d’urgence et des tests de validation.
+  - [x] Centraliser les liens et références utiles.
 - **Commandes** :
   - Modifier `terminal.integrated.inheritEnv` dans VS Code.
   - Ajouter la ligne d’intégration shell adaptée.
@@ -63,11 +63,11 @@
 - **Risques** : Non-reproductibilité sur certains OS, oubli de mise à jour de la doc.
 - **Outils mobilisés** : Scripts de test, feedback utilisateur, CI/CD doc.
 - **Tâches** :
-  - [ ] Appliquer les réglages recommandés sur différents environnements.
-  - [ ] Redémarrer VS Code et tous les terminaux.
-  - [ ] Tester l’exécution de commandes Roo Code simples et complexes.
-  - [ ] Documenter les résultats et ajuster la procédure si besoin.
-  - [ ] Mettre à jour la documentation centrale `.github/docs/roo/rapport-integration-terminal-roo-code.md`.
+  - [x] Appliquer les réglages recommandés sur différents environnements.
+  - [x] Redémarrer VS Code et tous les terminaux.
+  - [x] Tester l’exécution de commandes Roo Code simples et complexes.
+  - [x] Documenter les résultats et ajuster la procédure si besoin.
+  - [x] Mettre à jour la documentation centrale `.github/docs/roo/rapport-integration-terminal-roo-code.md`.
 - **Commandes** :
   - `echo "test"`
   - `ls -la`
@@ -91,10 +91,10 @@
 - **Risques** : Oubli d’intégration, documentation non synchronisée.
 - **Outils mobilisés** : RoadmapManager, scripts CI, logs.
 - **Tâches** :
-  - [ ] Ajouter le plan dans la roadmap consolidée.
-  - [ ] Générer un badge de validation pour la documentation.
-  - [ ] Archiver les logs et rapports de validation.
-  - [ ] Assurer la traçabilité croisée avec [`rapport-integration-terminal-roo-code.md`](.github/docs/roo/rapport-integration-terminal-roo-code.md:1).
+  - [x] Ajouter le plan dans la roadmap consolidée.
+  - [x] Générer un badge de validation pour la documentation.
+  - [x] Archiver les logs et rapports de validation.
+  - [x] Assurer la traçabilité croisée avec [`rapport-integration-terminal-roo-code.md`](.github/docs/roo/rapport-integration-terminal-roo-code.md:1).
 - **Critères de validation** :
   - Plan visible dans la roadmap.
   - Badge de validation affiché.

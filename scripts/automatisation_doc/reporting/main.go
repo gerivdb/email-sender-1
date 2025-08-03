@@ -5,7 +5,7 @@
 // Génère des rapports sur l’état de la documentation Roo (synthèse, anomalies, couverture, etc.)
 // © 2025 - Voir AGENTS.md et rules-code.md pour conventions
 
-package automatisation_doc
+package main
 
 import (
 	"fmt"

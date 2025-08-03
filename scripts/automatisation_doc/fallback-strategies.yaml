@@ -1,0 +1,106 @@
+# Stratégies Roo de fallback documentaire — v1.0
+---
+fallback_id: roo-fallback-20250803
+strategies:
+  - strategy_id: fallback-corruption-detect
+    type: restore
+    params:
+      description: >
+        Détection d’une corruption documentaire (hash, signature, structure non conforme).
+      conditions: >
+        Détection automatique par FallbackManager ou ErrorManager d’une corruption de fichier/document.
+      actions:
+        - Restaurer la dernière version saine depuis le backup ou l’historique.
+        - Notifier via ErrorManager et journaliser l’incident.
+      dependencies:
+        - FallbackManager
+        - ErrorManager
+      validation:
+        - Vérification de l’intégrité post-restauration (hash, schéma).
+        - Trace d’audit dans fallback_manager_report.md.
+      cross_links:
+        - scripts/automatisation_doc/fallback_manager.go:1
+        - scripts/automatisation_doc/error_manager.go:1
+  - strategy_id: fallback-perte-document
+    type: restore
+    params:
+      description: >
+        Perte ou suppression accidentelle d’un document critique.
+      conditions: >
+        Absence détectée lors d’une opération par FallbackManager ou SmartMergeManager.
+      actions:
+        - Restaurer depuis le backup le plus récent.
+        - Consigner l’opération dans le reporting.
+      dependencies:
+        - FallbackManager
+        - SmartMergeManager
+      validation:
+        - Présence du document restauré.
+        - Log dans fallback_manager_report.md.
+      cross_links:
+        - scripts/automatisation_doc/fallback_manager.go:1
+        - scripts/automatisation_doc/fallback_manager_report.md:1
+  - strategy_id: fallback-conflit-fusion
+    type: plugin
+    params:
+      description: >
+        Échec de fusion documentaire (conflit non résolu automatiquement).
+      conditions: >
+        SmartMergeManager signale un conflit non résolu.
+      actions:
+        - Déclencher un plugin de résolution assistée.
+        - Si échec, rollback automatique.
+      dependencies:
+        - SmartMergeManager
+        - FallbackManager
+      validation:
+        - Résolution effective ou rollback consigné.
+      cross_links:
+        - scripts/automatisation_doc/fallback_manager.go:1
+        - scripts/automatisation_doc/fallback_manager_report.md:1
+  - strategy_id: fallback-rollback-critique
+    type: rollback
+    params:
+      description: >
+        Échec critique nécessitant un retour à un état antérieur.
+      conditions: >
+        Détection d’un échec bloquant par ErrorManager ou FallbackManager.
+      actions:
+        - Exécuter la procédure rollback documentée.
+        - Générer un rapport d’audit.
+      dependencies:
+        - FallbackManager
+        - ErrorManager
+      validation:
+        - Succès du rollback (état restauré, logs).
+        - Rapport dans fallback_manager_rollback.md.
+      cross_links:
+        - scripts/automatisation_doc/fallback_manager_rollback.md:1
+        - scripts/automatisation_doc/error_manager.go:1
+  - strategy_id: fallback-plugin-failure
+    type: plugin
+    params:
+      description: >
+        Échec d’un plugin Roo lors d’une étape critique.
+      conditions: >
+        PluginInterface retourne une erreur lors d’un fallback.
+      actions:
+        - Passer à une stratégie de secours (plugin alternatif ou rollback).
+        - Notifier ErrorManager.
+      dependencies:
+        - FallbackManager
+        - ErrorManager
+      validation:
+        - Log d’incident et succès de la stratégie de secours.
+      cross_links:
+        - scripts/automatisation_doc/fallback_manager.go:1
+        - scripts/automatisation_doc/error_manager.go:1
+rollback:
+  enabled: true
+  procedure: >
+    Utiliser la procédure décrite dans fallback_manager_rollback.md pour tout rollback documentaire.
+reporting:
+  enabled: true
+  targets:
+    - fallback_manager_report.md
+    - fallback_manager_rollback.md

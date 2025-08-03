@@ -1,0 +1,24 @@
+{
+  "description": "",
+  "ended_at": "2025-08-03T18:22:14+02:00",
+  "error": "erreur étape pluginstep: fail plugin",
+  "errors": [
+    "erreur étape pluginstep: fail plugin"
+  ],
+  "pipeline_id": "integration",
+  "roo_trace": "",
+  "started_at": "2025-08-03T18:22:14+02:00",
+  "status": "error",
+  "steps": [
+    {
+      "name": "pluginstep",
+      "type": "plugin",
+      "plugin": "adv",
+      "started_at": "2025-08-03T18:22:14+02:00",
+      "ended_at": "2025-08-03T18:22:14+02:00",
+      "status": "error",
+      "error": "fail plugin"
+    }
+  ],
+  "timestamp": "2025-08-03T18:22:14+02:00"
+}

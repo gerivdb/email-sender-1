@@ -85,6 +85,75 @@ func TestFallbackManager_ApplyFallback_Plugin(t *testing.T) {
 	}
 }
 
+// --- Couverture Roo : mutation in-place et gestion d’erreur plugin ---
+
+type inPlacePlugin struct{}
+
+func (p *inPlacePlugin) Name() string { return "inplace" }
+func (p *inPlacePlugin) Execute(ctx context.Context, input map[string]interface{}) error {
+	input["mutated"] = true
+	return nil
+}
+
+type errorPlugin struct{}
+
+func (p *errorPlugin) Name() string { return "errorplugin" }
+func (p *errorPlugin) Execute(ctx context.Context, input map[string]interface{}) error {
+	return errors.New("plugin error")
+}
+
+func TestFallbackManager_RegisterPlugin_Dynamique(t *testing.T) {
+	fm := &FallbackManager{plugins: make(map[string]PluginInterface)}
+	plugin := &inPlacePlugin{}
+	err := fm.RegisterPlugin(plugin)
+	if err != nil {
+		t.Fatalf("RegisterPlugin dynamique échoue: %v", err)
+	}
+	if _, ok := fm.plugins["inplace"]; !ok {
+		t.Errorf("plugin non enregistré dynamiquement")
+	}
+	// Test plugin invalide
+	err = fm.RegisterPlugin(nil)
+	if err == nil {
+		t.Errorf("RegisterPlugin doit refuser un plugin nil")
+	}
+}
+
+func TestFallbackManager_ApplyFallback_PluginMutationInPlace(t *testing.T) {
+	cfg := FallbackConfig{
+		Strategies: []FallbackStrategy{
+			{Type: FallbackPluginType, Config: map[string]interface{}{"plugin_name": "inplace"}, Enabled: true},
+		},
+	}
+	fm := &FallbackManager{config: cfg, plugins: make(map[string]PluginInterface)}
+	plugin := &inPlacePlugin{}
+	_ = fm.RegisterPlugin(plugin)
+	input := map[string]interface{}{"foo": "bar"}
+	res, err := fm.ApplyFallback(context.Background(), input)
+	if err != nil {
+		t.Fatalf("ApplyFallback plugin mutation échoue: %v", err)
+	}
+	if !res["mutated"].(bool) {
+		t.Errorf("plugin n'a pas muté la map d'entrée in-place")
+	}
+}
+
+func TestFallbackManager_ApplyFallback_PluginError(t *testing.T) {
+	cfg := FallbackConfig{
+		Strategies: []FallbackStrategy{
+			{Type: FallbackPluginType, Config: map[string]interface{}{"plugin_name": "errorplugin"}, Enabled: true},
+		},
+	}
+	fm := &FallbackManager{config: cfg, plugins: make(map[string]PluginInterface)}
+	plugin := &errorPlugin{}
+	_ = fm.RegisterPlugin(plugin)
+	input := map[string]interface{}{"foo": "bar"}
+	_, err := fm.ApplyFallback(context.Background(), input)
+	if err == nil || err.Error() != "échec fallback: plugin error" {
+		t.Errorf("gestion d'erreur plugin incorrecte, got: %v", err)
+	}
+}
+
 func TestFallbackManager_ApplyFallback_PluginNotFound(t *testing.T) {
 	fm := NewFallbackManager()
 	strat := FallbackStrategy{

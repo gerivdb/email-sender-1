@@ -178,92 +178,195 @@ Ce document synthétise la démarche, les scripts, les corrections et la traçab
   - [`diagramme-automatisation-doc.mmd`](projet/roadmaps/plans/consolidated/diagramme-automatisation-doc.mmd)
 
 ---
-### 📦 API BatchManager Roo — Documentation d’usage et artefacts
+### 🛡️ Rollback/Versionning Pipeline
 
-#### Présentation et usage
+#### Présentation
 
-Le BatchManager Roo orchestre les traitements batch documentaires : exécution séquentielle ou parallèle de plugins, gestion centralisée des erreurs (ErrorManager), traçabilité complète, hooks de reporting et rollback, reporting automatisé, extension dynamique via PluginInterface Roo.
+La procédure de rollback/versionning pipeline permet de restaurer un pipeline YAML à partir d’une sauvegarde `.bak` fiable, en cas d’erreur, de corruption ou de modification non désirée. Elle s’appuie sur le script Go [`rollback_pipeline.go`](scripts/automatisation_doc/rollback_pipeline.go), qui automatise la restauration, consigne chaque opération dans un log dédié et garantit la traçabilité Roo.
 
-- **Principales méthodes Go** :
-  - `NewBatchManager(ctx context.Context, config interface{}, errorManager ErrorManagerInterface) *BatchManager`
-  - `Init() error`
-  - `Run() error`
-  - `Stop() error`
-  - `Status() string`
-  - `RegisterPlugin(plugin PluginInterface) error`
-  - **Structs** : `BatchResult`, gestion des logs, hooks, batchResults
+- **Nécessité** : Toujours disposer d’une sauvegarde `.bak` à jour avant toute modification critique du pipeline.
+- **Traçabilité** : Chaque restauration génère un log d’opération détaillé (succès, erreurs, timestamp).
 
-- **Artefacts générés** :
-  - **Logs d’exécution** :  
-    - Format : texte structuré, JSON possible  
-    - Emplacement : `logs/batch-execution-<timestamp>.log`  
-    - Contenu : statuts, erreurs, plugins, hooks, métriques Roo
-  - **Rapports Markdown** :  
-    - Format : Markdown Roo  
-    - Emplacement : [`scripts/automatisation_doc/batch_manager_report.md`](scripts/automatisation_doc/batch_manager_report.md)  
-    - Contenu : synthèse batchs, erreurs, hooks, plugins, validation Roo
-  - **Procédures rollback** :  
-    - Emplacement : [`scripts/automatisation_doc/batch_manager_rollback.md`](scripts/automatisation_doc/batch_manager_rollback.md)  
-    - Description : étapes de restauration, scripts, logs, points de reprise
-  - **Spécification technique** :  
-    - [`scripts/automatisation_doc/batch_manager_spec.md`](scripts/automatisation_doc/batch_manager_spec.md)
-  - **Tests unitaires Roo** :  
-    - [`scripts/automatisation_doc/batch_manager_test.go`](scripts/automatisation_doc/batch_manager_test.go)
+#### Procédure de restauration
 
-- **Hooks et extensions** :
-  - `rollbackHooks []func() error` : hooks de rollback/versionning
-  - `reportingHooks []func() error` : hooks de reporting automatisé
-  - Plugins dynamiques via `RegisterPlugin(plugin PluginInterface)`
+1. **Vérifier la présence de la sauvegarde**
+   - Le fichier `.bak` doit être généré automatiquement ou manuellement avant modification du pipeline principal.
+   - Exemple : `mon_pipeline.yaml.bak` pour `mon_pipeline.yaml`.
 
-- **Exemples d’appel**
+2. **Lancer la restauration via le script Go**
+   - Go natif :
+     ```go
+     import "scripts/automatisation_doc/rollback_pipeline.go"
 
-Go natif :
-```go
-import "scripts/automatisation_doc/batch_manager.go"
+     err := RestorePipeline("mon_pipeline.yaml")
+     if err != nil {
+         // Gestion d’erreur, consulter le log généré
+     }
+     ```
+   - CLI :
+     ```sh
+     go run scripts/automatisation_doc/rollback_pipeline.go --pipeline=mon_pipeline.yaml
+     ```
+   - Le script restaure le pipeline à partir du `.bak`, archive l’ancien fichier, et consigne l’opération dans un log (ex : `logs/rollback-pipeline-<timestamp>.log`).
 
-bm := NewBatchManager(ctx, config, errorManager)
-err := bm.Init()
-if err != nil { /* gestion d’erreur */ }
-err = bm.RegisterPlugin(monPlugin)
-if err != nil { /* gestion d’erreur */ }
-err = bm.Run()
-if err != nil { /* gestion d’erreur, rollback automatique */ }
-```
+3. **Vérifier le log d’opération**
+   - Consulter le log généré pour valider le succès ou diagnostiquer une erreur.
+   - Exemple : `logs/rollback-pipeline-20250803-160000.log`
 
-CLI (exemple générique) :
-```sh
-go run scripts/automatisation_doc/batch_manager.go --run --report=logs/batch-execution-$(date +%Y%m%d-%H%M%S).log
-```
+#### Exemples d’utilisation
 
-- **Cas limites couverts** :
-  - Plugins dupliqués ou absents
-  - Rollback échoué ou partiel
-  - Batch annulé, partiel, plugin en erreur
-  - Absence d’ErrorManager
-  - Hooks retournant une erreur (non bloquant)
-  - Multiples batchResults, logs volumineux
+- **Restauration standard** :
+  ```sh
+  go run scripts/automatisation_doc/rollback_pipeline.go --pipeline=mon_pipeline.yaml
+  ```
+- **Vérification post-restauration** :
+  - Contrôler le contenu du pipeline restauré et le log associé.
+  - Relancer les tests ou la validation YAML si besoin.
 
-- **Critères de validation** :
-  - Couverture complète par tests unitaires Roo (voir batch_manager_test.go)
-  - Validation automatique des métriques batch (voir batch_manager_report.md)
-  - Traçabilité des erreurs, logs, hooks, rollback
-  - Synchronisation avec la checklist-actionnable
+#### Cas limites & gestion des erreurs
 
-- **Risques & mitigation** :
-  - Risque de rollback non déclenché : tests unitaires, logs d’audit
-  - Risque de dérive documentaire : validation croisée, reporting Roo
-  - Risque de surcharge mémoire (logs, batchResults) : troncature, monitoring
+- **Absence de sauvegarde `.bak`** :
+  Le script échoue explicitement, logue l’erreur et propose une restauration manuelle (voir FAQ).
+- **Fichier pipeline verrouillé ou corrompu** :
+  L’opération est annulée, l’erreur est loguée, aucune modification destructive n’est appliquée.
+- **Erreur d’écriture log** :
+  Un message d’alerte est affiché, la restauration reste effective mais la traçabilité peut être partielle.
 
-- **Liens de traçabilité Roo** :
-  - Plan de référence : [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md)
-  - Checklist-actionnable : [`checklist-actionnable.md`](checklist-actionnable.md)
-  - Rapport d’audit : [`scripts/automatisation_doc/batch_manager_report.md`](scripts/automatisation_doc/batch_manager_report.md)
-  - Procédures rollback : [`scripts/automatisation_doc/batch_manager_rollback.md`](scripts/automatisation_doc/batch_manager_rollback.md)
-  - Spécification technique : [`scripts/automatisation_doc/batch_manager_spec.md`](scripts/automatisation_doc/batch_manager_spec.md)
-  - Tests unitaires : [`scripts/automatisation_doc/batch_manager_test.go`](scripts/automatisation_doc/batch_manager_test.go)
-  - Documentation croisée : [`AGENTS.md`](AGENTS.md:BatchManager), [`rules-plugins.md`](.roo/rules/rules-plugins.md), [`README.md`](README.md), [`workflows-matrix.md`](.roo/rules/workflows-matrix.md)
+#### Critères de validation
+
+- La restauration doit :
+  - Réécrire le pipeline à l’identique de la sauvegarde `.bak`.
+  - Archiver l’ancien fichier (timestamp).
+  - Générer un log d’opération détaillé.
+  - Remonter toute erreur de restauration ou d’écriture log.
+- La procédure est validée si :
+  - Le pipeline restauré est conforme au schéma YAML Roo.
+  - Le log d’opération est présent et complet.
+  - Les tests unitaires associés passent sans erreur.
+
+#### Liens croisés & traçabilité Roo
+
+- Script Go : [`rollback_pipeline.go`](scripts/automatisation_doc/rollback_pipeline.go)
+- Manager pipeline : [`pipeline_manager.go`](scripts/automatisation_doc/pipeline_manager.go)
+- Procédures rollback : [`pipeline_manager_rollback.md`](scripts/automatisation_doc/pipeline_manager_rollback.md)
+- Schéma YAML Roo : [`pipeline_schema.yaml`](scripts/automatisation_doc/pipeline_schema.yaml)
+- Rapport d’audit : [`pipeline_manager_report.md`](scripts/automatisation_doc/pipeline_manager_report.md)
+- Checklist-actionnable : [`checklist-actionnable.md`](checklist-actionnable.md)
+- Documentation centrale : [`AGENTS.md`](AGENTS.md:PipelineManager), [`README.md`](README.md), [`rules-plugins.md`](.roo/rules/rules-plugins.md)
+
+#### FAQ & restauration manuelle
+
+> **Que faire si la sauvegarde `.bak` est absente ou corrompue ?**
+>
+> - Restaurer manuellement le pipeline à partir d’une version archivée (Git, backup externe).
+> - Documenter l’incident dans le log d’opération ou dans [`corrections-report.md`](corrections-report.md).
+> - Recréer une sauvegarde `.bak` valide avant toute nouvelle modification.
+>
+> **Comment diagnostiquer une erreur de restauration ?**
+>
+> - Consulter le log généré pour le détail de l’erreur.
+> - Vérifier les permissions d’écriture sur le répertoire pipeline et logs.
+> - En cas d’échec persistant, contacter l’équipe technique ou consulter [`pipeline_manager_rollback.md`](scripts/automatisation_doc/pipeline_manager_rollback.md).
+>
+> **Bonnes pratiques**
+>
+> - Toujours valider la présence et l’intégrité de la sauvegarde `.bak` avant toute opération critique.
+> - Automatiser la génération des sauvegardes et l’archivage des logs.
+> - Synchroniser la documentation et la checklist-actionnable après chaque restauration.
 
 ---
+
+### 📦 API BatchManager Roo — Documentation d’usage et artefacts
+
+#### Présentation
+
+Le **BatchManager Roo** orchestre les traitements batch documentaires : exécution séquentielle/parallèle de plugins, gestion centralisée des erreurs via [`ErrorManager`](AGENTS.md:ErrorManager), traçabilité complète, hooks de reporting et rollback, reporting automatisé, extension dynamique via [`PluginInterface`](AGENTS.md:PluginInterface).
+
+- **Objectif** : Automatiser, tracer et fiabiliser les traitements batch documentaires, avec extension dynamique et reporting Roo.
+- **Artefacts principaux** :
+  - Implémentation Go : [`batch_manager.go`](scripts/automatisation_doc/batch_manager.go)
+  - Spécification technique : [`batch_manager_spec.md`](scripts/automatisation_doc/batch_manager_spec.md)
+  - Rapport d’audit : [`batch_manager_report.md`](scripts/automatisation_doc/batch_manager_report.md)
+  - Procédures rollback : [`batch_manager_rollback.md`](scripts/automatisation_doc/batch_manager_rollback.md)
+  - Tests unitaires Roo : [`batch_manager_test.go`](scripts/automatisation_doc/batch_manager_test.go)
+- **Conventions de logs** :
+  - Format : texte structuré ou JSON
+  - Emplacement : `logs/batch-execution-<timestamp>.log`
+  - Contenu : statuts, erreurs, plugins, hooks, métriques Roo
+
+#### Interfaces Go principales
+
+- `NewBatchManager(ctx context.Context, config interface{}, errorManager ErrorManagerInterface) *BatchManager`
+- `Init() error`
+- `Run() error`
+- `Stop() error`
+- `Status() string`
+- `RegisterPlugin(plugin PluginInterface) error`
+- **Structs** : `BatchResult`, gestion des logs, hooks, batchResults
+
+#### Hooks, plugins et extensions
+
+- `rollbackHooks []func() error` : hooks de rollback/versionning
+- `reportingHooks []func() error` : hooks de reporting automatisé
+- Plugins dynamiques via `RegisterPlugin(plugin PluginInterface)`
+- **PluginInterface Roo** : extension dynamique, hooks (avant/après, OnError, RollbackHook)
+- **Exemples de hooks** :
+  - `OnBatchRollback(ctx, batchID, error) error`
+  - `OnBatchResume(ctx, batchID, state) error`
+
+#### Exemples d’utilisation
+
+- **Go natif** :
+  ```go
+  import "scripts/automatisation_doc/batch_manager.go"
+
+  bm := NewBatchManager(ctx, config, errorManager)
+  err := bm.Init()
+  if err != nil { /* gestion d’erreur */ }
+  err = bm.RegisterPlugin(monPlugin)
+  if err != nil { /* gestion d’erreur */ }
+  err = bm.Run()
+  if err != nil { /* gestion d’erreur, rollback automatique */ }
+  ```
+- **CLI** :
+  ```sh
+  go run scripts/automatisation_doc/batch_manager.go --run --report=logs/batch-execution-$(date +%Y%m%d-%H%M%S).log
+  ```
+
+#### Cas limites & gestion des erreurs
+
+- Plugins dupliqués ou absents
+- Rollback échoué ou partiel
+- Batch annulé, partiel, plugin en erreur
+- Absence d’ErrorManager
+- Hooks retournant une erreur (non bloquant)
+- Multiples batchResults, logs volumineux
+
+#### Critères de validation
+
+- Couverture complète par tests unitaires Roo ([`batch_manager_test.go`](scripts/automatisation_doc/batch_manager_test.go))
+- Validation automatique des métriques batch ([`batch_manager_report.md`](scripts/automatisation_doc/batch_manager_report.md))
+- Traçabilité des erreurs, logs, hooks, rollback
+- Synchronisation avec la checklist-actionnable
+
+#### Risques & mitigation
+
+- Risque de rollback non déclenché : tests unitaires, logs d’audit
+- Risque de dérive documentaire : validation croisée, reporting Roo
+- Risque de surcharge mémoire (logs, batchResults) : troncature, monitoring
+
+#### Liens de traçabilité Roo
+
+- Plan de référence : [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md)
+- Checklist-actionnable : [`checklist-actionnable.md`](checklist-actionnable.md)
+- Rapport d’audit : [`batch_manager_report.md`](scripts/automatisation_doc/batch_manager_report.md)
+- Procédures rollback : [`batch_manager_rollback.md`](scripts/automatisation_doc/batch_manager_rollback.md)
+- Spécification technique : [`batch_manager_spec.md`](scripts/automatisation_doc/batch_manager_spec.md)
+- Tests unitaires : [`batch_manager_test.go`](scripts/automatisation_doc/batch_manager_test.go)
+- Documentation croisée : [`AGENTS.md`](AGENTS.md:BatchManager), [`rules-plugins.md`](.roo/rules/rules-plugins.md), [`README.md`](README.md), [`workflows-matrix.md`](.roo/rules/workflows-matrix.md)
+
+---
+
 
 ### 📦 API Pipeline Roo — Documentation d’usage et artefacts
 
@@ -325,6 +428,86 @@ Elle expose des méthodes Go natives et une interface CLI pour charger, valider 
 - Schéma YAML Roo : [`scripts/automatisation_doc/pipeline_schema.yaml`](scripts/automatisation_doc/pipeline_schema.yaml)
 - Tests unitaires : [`scripts/automatisation_doc/pipeline_manager_test.go`](scripts/automatisation_doc/pipeline_manager_test.go)
 - Documentation croisée : [`AGENTS.md`](AGENTS.md:PipelineManager), [`rules-plugins.md`](.roo/rules/rules-plugins.md), [`README.md`](README.md), [`workflows-matrix.md`](.roo/rules/workflows-matrix.md)
+---
+
+### Guide d’utilisation détaillé — PipelineManager Roo
+
+#### 1. Chargement et exécution d’un pipeline Roo
+
+- **Définir un pipeline YAML Roo** conforme au schéma [`pipeline_schema.yaml`](scripts/automatisation_doc/pipeline_schema.yaml).
+- **Charger le pipeline** :
+  - Go : `err := pipelineManager.LoadPipeline("mon_pipeline.yaml")`
+  - CLI : `go run scripts/automatisation_doc/pipeline_manager.go --pipeline=mon_pipeline.yaml`
+- **Exécuter le pipeline** :
+  - Go : `result, err := pipelineManager.Execute(ctx, &PipelineInput{...})`
+  - CLI : `go run scripts/automatisation_doc/pipeline_manager.go --pipeline=mon_pipeline.yaml --report=logs/pipeline-execution-$(date +%Y%m%d-%H%M%S).json`
+- **Consulter les logs JSON** dans `logs/pipeline-execution-<timestamp>.json` et le rapport Markdown dans [`pipeline_manager_report.md`](scripts/automatisation_doc/pipeline_manager_report.md).
+
+#### 2. Extension dynamique via plugins et hooks
+
+- **Enregistrer un plugin Roo** :  
+  Go : `err := pipelineManager.RegisterPlugin(monPlugin)`
+- **Hooks supportés** :
+  - `BeforeStep` : exécuté avant chaque étape
+  - `AfterStep` : exécuté après chaque étape
+  - `OnError` : déclenché en cas d’erreur sur une étape
+- **Développer un plugin** :  
+  Implémenter l’interface PluginInterface Roo (voir [`AGENTS.md`](AGENTS.md:PluginInterface)), puis enregistrer via `RegisterPlugin`.
+- **Cas d’usage** : audit, validation, transformation, gestion d’erreur personnalisée.
+
+#### 3. Gestion centralisée des erreurs et rollback
+
+- **Toutes les erreurs** sont remontées à ErrorManager Roo pour traçabilité.
+- **Rollback automatique** possible via `Rollback(ctx, id)` ou lors d’une erreur critique.
+- **Rapports d’erreur et rollback** : voir [`pipeline_manager_rollback.md`](scripts/automatisation_doc/pipeline_manager_rollback.md).
+
+#### 4. Validation Roo et conventions
+
+- **Validation automatique** du pipeline YAML : unicité des étapes, acyclicité du DAG, conformité au schéma Roo.
+- **Respect des conventions Roo Markdown** pour tous les rapports et logs.
+- **Traçabilité** : chaque exécution, plugin, hook et rollback est archivé et référencé dans la documentation centrale.
+
+---
+
+### FAQ & Cas limites — PipelineManager Roo
+
+- **Que faire si un plugin échoue ?**  
+  L’erreur est capturée par le hook `OnError`, loggée, puis transmise à ErrorManager. Le pipeline peut être rollbacké automatiquement selon la configuration.
+- **Comment valider un pipeline YAML Roo ?**  
+  Utiliser la méthode `LoadPipeline` : toute erreur de schéma, de cycle ou de duplication est explicitement remontée.
+- **Peut-on chaîner plusieurs plugins ou hooks ?**  
+  Oui, tous les plugins enregistrés sont appelés dans l’ordre d’enregistrement pour chaque hook.
+- **Comment diagnostiquer une étape bloquée ?**  
+  Consulter les logs JSON détaillés : chaque étape inclut son statut, son timing, les erreurs et les hooks déclenchés.
+- **Comment ajouter un type d’étape personnalisé ?**  
+  Étendre PluginInterface Roo et enregistrer le plugin via `RegisterPlugin`.
+- **Que se passe-t-il si le rollback échoue ?**  
+  L’erreur de rollback est loggée, transmise à ErrorManager, et un rapport détaillé est généré dans [`pipeline_manager_rollback.md`](scripts/automatisation_doc/pipeline_manager_rollback.md).
+- **Comment assurer la conformité Roo ?**  
+  Vérifier la présence des artefacts : logs JSON, rapports Markdown, synchronisation checklist, validation YAML, documentation croisée.
+
+---
+
+### Changelog PipelineManager Roo
+
+- **v1.3 (2025-08-03)**
+  - Intégration complète des hooks plugins : `BeforeStep`, `AfterStep`, `OnError`
+  - Gestion centralisée des erreurs via ErrorManager Roo
+  - Archivage automatique des logs JSON et rapports Markdown Roo
+  - Extension dynamique via PluginInterface Roo (support plugins personnalisés)
+  - Validation stricte du schéma YAML Roo (unicité, acyclicité, conformité)
+  - Ajout des stubs rollback/report, synchronisation checklist-actionnable
+  - Couverture complète par tests d’intégration avancés
+
+- **v1.2**
+  - Support du parallélisme d’étapes, reporting détaillé, logs structurés
+  - Documentation croisée, intégration CI/CD Roo
+
+- **v1.1**
+  - Première version stable, support DAG, artefacts Roo de base
+
+---
+
 
 ---
 ### ErrorManager Roo — Pattern manager/agent documentaire
@@ -483,4 +666,119 @@ Elle expose des méthodes Go natives et une interface CLI pour charger, valider 
 
 *Voir la roadmap détaillée et la checklist QA dans [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md:81)*
 
+---
+
+## 📦 API SessionManager Roo — Documentation d’usage et artefacts
+
+### Présentation
+
+Le **SessionManager Roo** orchestre la gestion des sessions d’automatisation documentaire : initialisation, cycle de vie, hooks d’extension, persistance typée, traçabilité stricte et extension dynamique via PluginInterface Roo. Il s’intègre nativement avec les autres managers Roo (ErrorManager, PipelineManager, etc.) et respecte les standards Roo Code (testabilité, audit, CI/CD).
+
+- **Objectif** : Centraliser la gestion du cycle de vie des sessions, permettre l’injection de hooks et plugins de persistance, garantir la traçabilité et la testabilité.
+- **Artefacts principaux** :
+  - Implémentation Go : [`session_manager.go`](scripts/automatisation_doc/session_manager.go)
+  - Schéma YAML Roo : [`session_schema.yaml`](scripts/automatisation_doc/session_schema.yaml)
+  - Plan de référence : [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md)
+  - Checklist-actionnable : [`checklist-actionnable.md`](checklist-actionnable.md)
+  - Documentation croisée : [`AGENTS.md`](AGENTS.md:SessionManager), [`rules-plugins.md`](.roo/rules/rules-plugins.md)
+
+### Interfaces principales
+
+- `SessionManagerInterface` :  
+  - `Init(ctx context.Context, config SessionConfig) error`
+  - `Start(ctx context.Context) error`
+  - `End(ctx context.Context) error`
+  - `RegisterHook(hook SessionHook)`
+- `SessionManager` :  
+  - `RegisterPersistenceHook(hookType PersistenceHookType, hook SessionHook)`
+  - `RegisterPersistencePlugin(plugin SessionPersistencePlugin)`
+  - `UnregisterPersistencePlugin(name string) bool`
+  - `ListPersistencePlugins() []SessionPersistencePlugin`
+
+#### Structures et types
+
+- `SessionConfig` : configuration de session (ID, métadonnées…)
+- `SessionHook` : fonction Go appelée sur événement session
+- `SessionEvent` : événement typé ("start", "end", "before_persist", etc.)
+- `PersistenceEngine` : interface d’abstraction de la persistance (mockable)
+- `SessionPersistencePlugin` : plugin Roo typé pour hooks de persistance
+
+### Exemples d’utilisation Go
+
+```go
+import "scripts/automatisation_doc/session_manager.go"
+
+config := SessionConfig{SessionID: "sess-001"}
+sm := NewSessionManager(config, myPersistenceEngine)
+
+// Ajout d’un hook d’extension
+sm.RegisterHook(func(event SessionEvent) error {
+    if event.Type == "start" { /* ... */ }
+    return nil
+})
+
+// Ajout d’un plugin de persistance Roo
+sm.RegisterPersistencePlugin(myPersistencePlugin)
+
+// Démarrage du cycle de vie
+_ = sm.Init(ctx, config)
+_ = sm.Start(ctx)
+_ = sm.End(ctx)
+```
+
+### Schéma YAML Roo (exemple simplifié)
+
+```yaml
+session:
+  id: "sess-001"
+  metadata:
+    user: "alice"
+    started_at: "2025-08-03T15:00:00Z"
+  options:
+    persist: true
+    plugins:
+      - name: "audit-persist"
+        type: "BeforePersistHook"
+        config:
+          level: "full"
+```
+
+### Conventions d’extension PluginInterface
+
+- **Hooks typés** :  
+  - `BeforePersistHook`, `AfterPersistHook`, `OnPersistErrorHook` (voir [`PersistenceHookType`](scripts/automatisation_doc/session_manager.go:61))
+- **Plugins dynamiques** :  
+  - Implémentent [`SessionPersistencePlugin`](scripts/automatisation_doc/session_manager.go:90)
+  - Enregistrement via `RegisterPersistencePlugin`
+  - Audit et retrait dynamique via `UnregisterPersistencePlugin`, `ListPersistencePlugins`
+- **Testabilité** :  
+  - Injection d’un mock [`PersistenceEngine`](scripts/automatisation_doc/session_manager.go:76) pour simuler succès/erreur et déclencher tous les hooks
+
+### Usages typiques
+
+- Orchestration de sessions documentaires avec hooks personnalisés (audit, reporting, rollback…)
+- Extension dynamique via plugins Roo pour la persistance, la traçabilité ou l’intégration tierce
+- Simulation de scénarios d’erreur et validation des hooks via injection de mocks
+- Intégration avec ErrorManager pour la gestion centralisée des erreurs
+
+### Cas limites couverts
+
+- Plugins de persistance dupliqués ou absents
+- Hooks Before/After/Error déclenchés selon le résultat de la persistance
+- Persistance simulée si aucun moteur injecté
+- Audit dynamique des plugins actifs
+
+### Critères de validation
+
+- Couverture complète par tests unitaires Roo (injection de mocks)
+- Validation automatique des hooks et plugins (audit, logs)
+- Synchronisation avec la checklist-actionnable et la documentation centrale
+
+### Liens de traçabilité Roo
+
+- Plan de référence : [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md)
+- Checklist-actionnable : [`checklist-actionnable.md`](checklist-actionnable.md)
+- Documentation croisée : [`AGENTS.md`](AGENTS.md:SessionManager), [`rules-plugins.md`](.roo/rules/rules-plugins.md), [`README.md`](README.md), [`workflows-matrix.md`](.roo/rules/workflows-matrix.md)
+
+> **Pour toute extension, se référer à la convention PluginInterface Roo et à la documentation centrale.**
 *Dernière mise à jour : 2025-08-02 00:47*

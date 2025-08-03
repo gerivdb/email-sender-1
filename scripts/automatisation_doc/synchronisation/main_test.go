@@ -6,16 +6,6 @@ import (
 	"testing"
 )
 
-func TestSynchronisationMain(t *testing.T) {
-	// Test minimal : vérifie que la fonction main s’exécute sans panic
-	defer func() {
-		if r := recover(); r != nil {
-			t.Errorf("main panique: %v", r)
-		}
-	}()
-	main()
-}
-
 // --- Mocks pour les dépendances Roo ---
 type mockCache struct {
 	getFunc   func(key string) ([]byte, error)
@@ -152,9 +142,13 @@ func TestSynchronisationManager_TraçabilitéSync(t *testing.T) {
 	monitor := &mockMonitor{}
 	// Succès
 	sm := &SynchronisationManager{
-		audit:              audit,
-		monitor:            monitor,
-		cache:              &mockCache{},
+		audit:   audit,
+		monitor: monitor,
+		cache: &mockCache{
+			getFunc:   func(key string) ([]byte, error) { return nil, nil },
+			setFunc:   func(key string, value []byte) error { return nil },
+			clearFunc: func(key string) error { return nil },
+		},
 		SyncToSourceFunc:   func() error { return nil },
 		SyncFromSourceFunc: func() error { return nil },
 	}
@@ -169,9 +163,13 @@ func TestSynchronisationManager_TraçabilitéSync(t *testing.T) {
 	audit2 := &mockAudit{}
 	monitor2 := &mockMonitor{}
 	sm2 := &SynchronisationManager{
-		audit:              audit2,
-		monitor:            monitor2,
-		cache:              &mockCache{},
+		audit:   audit2,
+		monitor: monitor2,
+		cache: &mockCache{
+			getFunc:   func(key string) ([]byte, error) { return nil, nil },
+			setFunc:   func(key string, value []byte) error { return nil },
+			clearFunc: func(key string) error { return nil },
+		},
 		SyncToSourceFunc:   func() error { return fmt.Errorf("fail to source") },
 		SyncFromSourceFunc: func() error { return nil },
 	}

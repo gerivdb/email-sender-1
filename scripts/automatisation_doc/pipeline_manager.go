@@ -272,13 +272,51 @@ func (pm *PipelineManager) Execute(ctx context.Context) error {
 }
 
 // executeStep exécute une étape individuelle (supporte plugins)
+/*
+executeStep exécute une étape individuelle du pipeline.
+Pour les étapes de type "plugin", il appelle dynamiquement les hooks Roo (BeforeStep, AfterStep, OnError) si présents.
+Traçabilité Roo : pattern manager/agent, extension dynamique, gestion robuste des erreurs de hook.
+*/
 func (pm *PipelineManager) executeStep(ctx context.Context, step *PipelineStep) error {
 	if step.Type == "plugin" {
 		plugin, ok := pm.Plugins[step.Plugin]
 		if !ok {
 			return fmt.Errorf("plugin non trouvé: %s", step.Plugin)
 		}
-		return plugin.Execute(ctx, step.Params)
+		// Hook BeforeStep (optionnel) - signature Roo: (ctx, stepName, params)
+		if before, ok := any(plugin).(interface {
+			BeforeStep(context.Context, string, map[string]interface{}) error
+		}); ok {
+			if err := before.BeforeStep(ctx, step.Name, step.Params); err != nil {
+				pm.LogError(fmt.Errorf("BeforeStep plugin %s: %w", step.Plugin, err))
+				// On continue sauf si erreur critique explicite
+				if errors.Is(err, context.Canceled) {
+					return err
+				}
+			}
+		}
+		// Exécution principale
+		err := plugin.Execute(ctx, step.Params)
+		if err != nil {
+			// Hook OnError (optionnel) - signature Roo: (ctx, stepName, params, err)
+			if onerr, ok := any(plugin).(interface {
+				OnError(context.Context, string, map[string]interface{}, error) error
+			}); ok {
+				if hookErr := onerr.OnError(ctx, step.Name, step.Params, err); hookErr != nil {
+					pm.LogError(fmt.Errorf("OnError plugin %s: %w", step.Plugin, hookErr))
+				}
+			}
+			return err
+		}
+		// Hook AfterStep (optionnel) - signature Roo: (ctx, stepName, params)
+		if after, ok := any(plugin).(interface {
+			AfterStep(context.Context, string, map[string]interface{}) error
+		}); ok {
+			if err := after.AfterStep(ctx, step.Name, step.Params); err != nil {
+				pm.LogError(fmt.Errorf("AfterStep plugin %s: %w", step.Plugin, err))
+			}
+		}
+		return nil
 	}
 	// Implémentations natives Roo (extraction, transformation, validation, export)
 	switch step.Type {
