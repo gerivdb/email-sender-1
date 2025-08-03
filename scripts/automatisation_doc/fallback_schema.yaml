@@ -1,0 +1,63 @@
+# Schéma YAML Roo — Fallback Pattern
+---
+metadata:
+  name: fallback
+  version: "1.0"
+  description: >
+    Schéma Roo pour la gestion des stratégies de fallback documentaire (repli automatique, gestion d’échec, restauration d’état, extension plugins).
+  manager: FallbackManager
+  labels:
+    - fallback
+    - documentaire
+    - roo
+
+spec:
+  fallback_id:
+    type: string
+    required: true
+    description: Identifiant unique de la stratégie de fallback.
+  strategies:
+    type: array
+    required: true
+    description: Liste ordonnée des stratégies de fallback à appliquer.
+    items:
+      type: object
+      properties:
+        strategy_id:
+          type: string
+          required: true
+          description: Identifiant unique de la stratégie.
+        type:
+          type: string
+          required: true
+          description: Type de fallback (restore, retry, plugin, etc.).
+        params:
+          type: object
+          required: false
+          description: Paramètres spécifiques à la stratégie.
+        plugins:
+          type: array
+          items:
+            type: string
+          required: false
+          description: Plugins Roo à charger pour cette stratégie.
+  rollback:
+    type: object
+    required: false
+    description: Configuration du rollback documentaire.
+  reporting:
+    type: object
+    required: false
+    description: Configuration du reporting d’audit et de statut.
+
+validation:
+  required:
+    - fallback_id
+    - strategies
+  properties:
+    fallback_id:
+      pattern: "^[a-zA-Z0-9\\-_]{8,64}$"
+    strategies:
+      minItems: 1
+      uniqueItems: true
+  additionalProperties: false

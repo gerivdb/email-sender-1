@@ -1,0 +1,65 @@
+# Schéma YAML Roo — Audit Pattern
+---
+metadata:
+  name: audit
+  version: "1.0"
+  description: >
+    Schéma Roo pour l’audit documentaire : traçabilité, journalisation structurée, gestion des événements, reporting, extension plugins.
+  manager: AuditManager
+  labels:
+    - audit
+    - documentaire
+    - roo
+
+spec:
+  audit_id:
+    type: string
+    required: true
+    description: Identifiant unique de la configuration d’audit.
+  events:
+    type: array
+    required: true
+    description: Liste des types d’événements à auditer.
+    items:
+      type: object
+      properties:
+        event_type:
+          type: string
+          required: true
+          description: Type d’événement (création, modification, suppression, accès, etc.).
+        fields:
+          type: array
+          required: false
+          description: Champs à journaliser pour cet événement.
+          items:
+            type: string
+  storage:
+    type: object
+    required: false
+    description: Configuration du stockage des logs d’audit (fichier, base, cloud).
+  plugins:
+    type: array
+    required: false
+    description: Plugins Roo à charger pour l’audit.
+    items:
+      type: string
+  reporting:
+    type: object
+    required: false
+    description: Configuration du reporting d’audit.
+  rollback:
+    type: object
+    required: false
+    description: Configuration du rollback documentaire.
+
+validation:
+  required:
+    - audit_id
+    - events
+  properties:
+    audit_id:
+      pattern: "^[a-zA-Z0-9\\-_]{8,64}$"
+    events:
+      minItems: 1
+      uniqueItems: true
+  additionalProperties: false

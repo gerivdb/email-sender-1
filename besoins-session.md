@@ -1,22 +1,36 @@
-<!--
-besoins-session.md
-Roo-Code artefact : Synthèse des besoins de session
-Statut : SQUELETTE - À compléter selon le plan-roadmap-actionnable.md
+# Besoins — Pattern Session
 
-TODO : Définir la structure de la synthèse des besoins (objectifs, besoins, contraintes)
-Traçabilité : Généré automatiquement selon le plan d’action Roo-Code
--->
-
-# Synthèse des besoins de session
+## Contexte
+Gestion de l’état documentaire d’une session utilisateur Roo Code : cohérence, persistance temporaire, traçabilité des modifications.
 
 ## Objectifs
+- Assurer la cohérence et la persistance temporaire des modifications utilisateur.
+- Permettre la restauration et la synchronisation de session.
+- Garantir la traçabilité et l’auditabilité des sessions.
 
-<!-- TODO : Lister les objectifs de la session -->
+## Besoins détaillés
+- Orchestration centralisée via DocManager et ContextManager.
+- Hooks de persistance et d’audit via PluginInterface.
+- Gestion des collisions d’ID et de la mémoire.
+- Intégration ErrorManager pour la gestion des erreurs de session.
+- Génération automatique de logs et d’audits de session.
+- Support de la sauvegarde/restauration intermédiaire.
+- Intégration CI/CD pour la validation et la traçabilité.
 
-## Besoins identifiés
+## Dépendances
+- DocManager, ContextManager, StorageManager, ScriptManager, ErrorManager.
+- PluginInterface pour extensions de validation/audit.
 
-<!-- TODO : Détail des besoins exprimés ou détectés -->
+## Risques
+- Perte de session, incohérence d’état, fuite mémoire, collision d’ID.
+- Risque de surcharge documentaire ou de logs.
 
-## Contraintes
+## Questions ouvertes, hypothèses
+- Hypothèse : Un utilisateur ne peut avoir qu’une session active.
+- Question : Faut-il permettre la reprise multi-session ?
+- Ambiguïté : Support du clustering multi-instance ?
 
-<!-- TODO : Lister les contraintes techniques, organisationnelles ou autres -->
+## Suggestions d’amélioration
+- Ajouter une extension pour la synchronisation distribuée.
+- Factoriser les patterns communs de gestion d’état.
+- Intégrer un agent LLM pour la détection d’anomalies de session.

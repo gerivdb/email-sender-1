@@ -1,0 +1,49 @@
+# ===========================================================
+# 🛠️ Roo Code — Schéma YAML BatchManager
+# Généré automatiquement pour documentation, validation et traçabilité.
+# Ce fichier définit la structure attendue pour BatchManager.
+# Ne pas inclure de données métier réelles.
+# ===========================================================
+
+docstring_roo_code:
+  # Docstring Roo Code :
+  description: |
+    Schéma de référence pour BatchManager.
+    - Objectif : Définir la structure, les sections de validation, la traçabilité et les liens croisés.
+    - Ce schéma est un point d’ancrage pour l’automatisation documentaire Roo.
+    - Voir [AGENTS.md](../../../../AGENTS.md) et [plan-dev-v107-rules-roo.md](../../projet/roadmaps/plans/consolidated/plan-dev-v107-rules-roo.md) pour conventions.
+
+batch_manager_schema:
+  # Section principale du schéma Roo Code pour BatchManager
+  metadata:
+    name: BatchManager
+    version: 0.1.0
+    description: Schéma Roo Code pour la configuration et la documentation de BatchManager.
+    # Ajoutez ici d’autres champs de métadonnées si besoin (exemple minimal)
+  spec:
+    # Structure attendue (exemple minimal, à compléter selon besoins réels)
+    jobs:
+      # Liste des jobs (exemple minimal)
+    parameters:
+      # Paramètres (exemple minimal)
+    # Ajoutez ici d’autres sections structurantes si besoin
+  validation:
+    # Section dédiée à la validation du schéma
+    enabled: true
+    rules:
+      # Ajouter ici les règles de validation YAML/JSON Schema si pertinent
+  traceability:
+    # Section traçabilité Roo Code
+    created_by: Roo Code
+    created_at: 2025-08-02
+    updated_at: ""
+    references:
+      AGENTS_md: ../../../../AGENTS.md
+      plan_dev_v107_rules_roo_md: ../../projet/roadmaps/plans/consolidated/plan-dev-v107-rules-roo.md
+      rules_plandev_engineer_reference_md: ../../../../.roo/rules/rules-plandev-engineer/plandev-engineer-reference.md
+  cross_links:
+    BatchManager_Spec: batch_manager_spec.md
+    BatchManager_Test: batch_manager_test.go
+    BatchManager_Rollback: batch_manager_rollback.md
+    Plan_Dev_V113: ../../projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md
+  # Fin du schéma Roo Code BatchManager

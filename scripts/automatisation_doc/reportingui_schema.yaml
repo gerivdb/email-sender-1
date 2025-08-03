@@ -1,0 +1,59 @@
+# Schéma YAML Roo — ReportingUI Pattern
+---
+metadata:
+  name: reportingui
+  version: "1.0"
+  description: >
+    Schéma Roo pour la configuration et l’orchestration des interfaces de reporting documentaire : widgets, permissions, intégration plugins, validation structurée.
+  manager: ReportingUIManager
+  labels:
+    - reporting
+    - ui
+    - dashboard
+    - roo
+
+spec:
+  ui_id:
+    type: string
+    required: true
+    description: "Identifiant unique de l’interface de reporting."
+  widgets:
+    type: array
+    required: true
+    description: "Liste des widgets de reporting à afficher."
+    items:
+      type: object
+      properties:
+        widget_id:
+          type: string
+          required: true
+          description: "Identifiant du widget."
+        type:
+          type: string
+          required: true
+          description: "Type de widget (graph, table, stat, custom)."
+        config:
+          type: object
+          required: false
+          description: "Configuration spécifique du widget."
+  permissions:
+    type: array
+    required: false
+    description: "Liste des rôles ou utilisateurs autorisés à accéder à l’UI."
+    items:
+      type: string
+  plugins:
+    type: array
+    required: false
+    description: "Plugins Roo à charger pour enrichir l’UI."
+
+validation:
+  required:
+    - ui_id
+    - widgets
+  properties:
+    ui_id:
+      pattern: "^[a-zA-Z0-9\\-_]{8,64}$"
+    widgets:
+      minItems: 1
+  additionalProperties: false

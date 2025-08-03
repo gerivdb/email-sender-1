@@ -1,0 +1,107 @@
+# Schéma Roo YAML — ErrorManager
+# Valide la configuration et la journalisation structurée des erreurs Roo.
+---
+$schema: "https://json-schema.org/draft/2020-12/schema"
+title: ErrorManager Roo Schema
+description: >
+  Schéma Roo pour la configuration, la validation et la journalisation structurée des erreurs.
+type: object
+required:
+  - id
+  - name
+  - errors
+properties:
+  id:
+    type: string
+    description: Identifiant unique de la configuration ErrorManager.
+  name:
+    type: string
+    description: Nom lisible de la configuration ErrorManager.
+  description:
+    type: string
+    description: Description fonctionnelle.
+  errors:
+    type: array
+    minItems: 1
+    description: Liste structurée des erreurs journalisées.
+    items:
+      type: object
+      required: [timestamp, component, operation, message, severity]
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Date/heure de l’erreur.
+        component:
+          type: string
+          description: Composant ou manager source de l’erreur.
+        operation:
+          type: string
+          description: Opération ou contexte lors de l’erreur.
+        message:
+          type: string
+          description: Message d’erreur détaillé.
+        severity:
+          type: string
+          enum: [info, warning, error, critical]
+          description: Niveau de gravité.
+        code:
+          type: string
+          description: Code d’erreur unique (optionnel).
+        metadata:
+          type: object
+          description: Métadonnées additionnelles (clé/valeur).
+        hooks:
+          type: array
+          description: Liste des hooks/plugins déclenchés.
+          items:
+            type: string
+  hooks:
+    type: array
+    description: Liste des plugins/hooks ErrorManager actifs.
+    items:
+      type: string
+  metadata:
+    type: object
+    description: Métadonnées additionnelles (auteur, date, version, tags).
+    properties:
+      author:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      tags:
+        type: array
+        items:
+          type: string
+
+examples:
+  - id: "error-manager-001"
+    name: "ErrorManager principal"
+    description: "Gestion centralisée des erreurs Roo"
+    errors:
+      - timestamp: "2025-08-02T18:30:00Z"
+        component: "GoModManager"
+        operation: "LoadDependencies"
+        message: "Fichier go.mod introuvable"
+        severity: "error"
+        code: "EM001"
+        metadata:
+          path: "backend/go.mod"
+        hooks: ["NotifySlack", "ArchiveError"]
+      - timestamp: "2025-08-02T18:35:00Z"
+        component: "ConfigManager"
+        operation: "ValidateConfig"
+        message: "Clé manquante dans config.yaml"
+        severity: "warning"
+        code: "EM002"
+        metadata:
+          key: "database_url"
+        hooks: ["NotifyDiscord"]
+    hooks: ["NotifySlack", "ArchiveError", "NotifyDiscord"]
+    metadata:
+      author: "Equipe Roo"
+      created_at: "2025-08-02T18:00:00Z"
+      tags: ["roo", "error", "validation", "plugin"]
+
+# Contraintes Roo : chaque erreur doit avoir un timestamp, un composant, une opération, un message et une sévérité. Les hooks/plugins sont extensibles dynamiquement.

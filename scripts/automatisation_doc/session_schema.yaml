@@ -1,0 +1,64 @@
+# Schéma YAML Roo — Session Pattern
+---
+metadata:
+  name: session
+  version: "1.0"
+  description: >
+    Schéma Roo pour la gestion des sessions documentaires (création, restauration, persistance, plugins).
+  manager: SessionManager
+  labels:
+    - session
+    - documentaire
+    - roo
+
+spec:
+  session_id:
+    type: string
+    required: true
+    description: Identifiant unique de la session documentaire.
+  user_id:
+    type: string
+    required: true
+    description: Identifiant de l’utilisateur ou de l’agent.
+  state:
+    type: object
+    required: true
+    description: État sérialisé de la session (snapshot, panels, UI, etc.).
+  created_at:
+    type: string
+    format: date-time
+    required: true
+    description: Date de création ISO8601.
+  expires_at:
+    type: string
+    format: date-time
+    required: false
+    description: Date d’expiration de la session.
+  auto_save:
+    type: boolean
+    required: false
+    default: true
+    description: Active la sauvegarde automatique de l’état.
+  plugins:
+    type: array
+    items:
+      type: string
+    required: false
+    description: Liste des plugins Roo à charger pour la session.
+
+validation:
+  required:
+    - session_id
+    - user_id
+    - state
+    - created_at
+  properties:
+    session_id:
+      pattern: "^[a-zA-Z0-9\\-_]{8,64}$"
+    user_id:
+      pattern: "^[a-zA-Z0-9\\-_]{3,64}$"
+    created_at:
+      format: date-time
+    expires_at:
+      format: date-time
+  additionalProperties: false

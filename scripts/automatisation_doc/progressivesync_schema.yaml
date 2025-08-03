@@ -1,0 +1,67 @@
+# Schéma YAML Roo — ProgressiveSync Pattern
+---
+metadata:
+  name: progressivesync
+  version: "1.0"
+  description: >
+    Schéma Roo pour la synchronisation documentaire progressive : gestion d’état, granularité des étapes, reprise sur incident, extension plugins.
+  manager: ConfigurableSyncRuleManager
+  labels:
+    - sync
+    - progressive
+    - state
+    - roo
+
+spec:
+  sync_id:
+    type: string
+    required: true
+    description: Identifiant unique de la configuration ProgressiveSync.
+  steps:
+    type: array
+    required: true
+    description: Liste ordonnée des étapes de synchronisation.
+    items:
+      type: object
+      properties:
+        step_id:
+          type: string
+          required: true
+          description: Identifiant de l’étape.
+        description:
+          type: string
+          required: false
+        dependencies:
+          type: array
+          required: false
+          description: Étapes prérequises (step_id).
+          items:
+            type: string
+        retry_policy:
+          type: object
+          required: false
+          description: Politique de reprise sur incident.
+        plugin:
+          type: string
+          required: false
+          description: Plugin Roo à utiliser pour cette étape.
+  state_tracking:
+    type: object
+    required: false
+    description: Configuration du suivi d’état (persistant, mémoire, etc.).
+  plugins:
+    type: array
+    required: false
+    description: Plugins Roo à charger pour enrichir la synchronisation.
+
+validation:
+  required:
+    - sync_id
+    - steps
+  properties:
+    sync_id:
+      pattern: "^[a-zA-Z0-9\\-_]{8,64}$"
+    steps:
+      minItems: 1
+      uniqueItems: false
+  additionalProperties: false

@@ -1,0 +1,82 @@
+# Schéma YAML Roo — Rollback Pattern
+---
+metadata:
+  name: rollback
+  version: "1.0"
+  description: >
+    Schéma Roo pour la gestion des rollbacks documentaires : restauration d’état, historique, points de restauration, intégration audit et reporting.
+  manager: RollbackManager
+  labels:
+    - rollback
+    - restauration
+    - roo
+
+spec:
+  rollback_id:
+    type: string
+    required: true
+    description: Identifiant unique de la configuration de rollback.
+  restore_points:
+    type: array
+    required: true
+    description: Liste des points de restauration disponibles.
+    items:
+      type: object
+      properties:
+        point_id:
+          type: string
+          required: true
+          description: Identifiant du point de restauration.
+        timestamp:
+          type: string
+          required: true
+          description: Date/heure du snapshot (ISO 8601).
+        description:
+          type: string
+          required: false
+          description: Description du contexte du snapshot.
+  history:
+    type: array
+    required: false
+    description: Historique des opérations de rollback.
+    items:
+      type: object
+      properties:
+        operation_id:
+          type: string
+          required: true
+        point_id:
+          type: string
+          required: true
+        timestamp:
+          type: string
+          required: true
+        status:
+          type: string
+          required: true
+  plugins:
+    type: array
+    required: false
+    description: Plugins Roo à charger pour la gestion des rollbacks.
+    items:
+      type: string
+  audit:
+    type: object
+    required: false
+    description: Configuration de l’intégration avec l’audit documentaire.
+  reporting:
+    type: object
+    required: false
+    description: Configuration du reporting de rollback.
+
+validation:
+  required:
+    - rollback_id
+    - restore_points
+  properties:
+    rollback_id:
+      pattern: "^[a-zA-Z0-9\\-_]{8,64}$"
+    restore_points:
+      minItems: 1
+      uniqueItems: true
+  additionalProperties: false

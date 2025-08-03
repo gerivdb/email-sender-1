@@ -1,0 +1,69 @@
+name: Roo Go CI
+
+on:
+  push:
+    paths:
+      - 'scripts/automatisation_doc/**'
+      - '.github/workflows/ci.yml'
+      - 'go.mod'
+      - 'go.sum'
+  pull_request:
+    paths:
+      - 'scripts/automatisation_doc/**'
+      - '.github/workflows/ci.yml'
+      - 'go.mod'
+      - 'go.sum'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Build scripts/automatisation_doc
+        run: go build ./scripts/automatisation_doc/...
+
+      - name: Run tests (unitaires)
+        run: go test -v ./scripts/automatisation_doc/...
+
+      - name: Upload test results (si générés)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: go-test-report
+          path: |
+            **/test-results/*.xml
+            scripts/automatisation_doc/pipeline_manager_report.md
+            scripts/automatisation_doc/pipeline_manager_rollback.md
+            scripts/automatisation_doc/pipeline_schema.yaml
+            scripts/automatisation_doc/fallback_manager_report.md
+            scripts/automatisation_doc/fallback_manager_rollback.md
+            scripts/automatisation_doc/fallback_schema.yaml
+            scripts/automatisation_doc/monitoring_manager_report.md
+            scripts/automatisation_doc/monitoring_manager_rollback.md
+            scripts/automatisation_doc/monitoring_schema.yaml
+            scripts/automatisation_doc/error_manager_report.md
+            scripts/automatisation_doc/error_manager_rollback.md
+            scripts/automatisation_doc/error_manager_schema.yaml
+            scripts/automatisation_doc/error_manager_spec.md
+            scripts/automatisation_doc/error_manager_test.md
+          if-no-files-found: ignore

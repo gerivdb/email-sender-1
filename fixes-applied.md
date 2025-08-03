@@ -85,6 +85,14 @@
 
 ---
 
+## [2025-08-02 18:10] — Synchronisation stricte des checklists Roo Code
+
+- [x] Synchronisation stricte effectuée pour BatchManager, SessionManager, SynchronisationManager.
+- [x] Seules les tâches dont l’artefact existe réellement dans `scripts/automatisation_doc/` sont considérées comme “appliquées”.
+- [x] Aucune case n’a été cochée pour des artefacts absents ou partiels.
+- [x] Alignement réalisé avec checklist-actionnable.md et plan-dev-v113-autmatisation-doc-roo.md (phase 3).
+- [x] Voir détails et artefacts dans checklist-actionnable.md.
+
 ## [2025-08-02 03:12] — Synchronisation de la checklist
 
 - [ ] Générer/mettre à jour la checklist à chaque étape (script Go ou manuel)

@@ -1,0 +1,44 @@
+# Schéma YAML SynchronisationManager — Roo Code
+# Phase 3 plan-dev-v113-autmatisation-doc-roo.md: SynchronisationManager
+# Conformité : granularité Roo, initialisation explicite, structure clé/valeur, hooks/plugins, rollback, validation, traçabilité
+
+synchronisation:
+  id: ""
+  name: ""
+  description: ""
+  version: "1.0.0"
+  created_at: ""
+  author: ""
+  status: "pending"           # pending, running, success, error
+  direction: "bidirectional"  # to_source, from_source, bidirectional
+  source: ""
+  destination: ""
+  cache_manager: ""
+  audit_manager: ""
+  monitoring_manager: ""
+  conflict_policy: "manual"   # manual, auto, hybrid
+  hooks:
+    sync_to_source: ""
+    sync_from_source: ""
+    pre_sync: ""
+    post_sync: ""
+    on_conflict: ""
+  rollback:
+    on_error: ""
+    on_conflict: ""
+  logs: []
+  metrics: {}
+  metadata:
+    tags: []
+    documentation: ""
+    related_specs: []
+  validation:
+    required_fields: ["id", "name", "direction", "source", "destination"]
+    schema_version: "1.0"
+    validator: ""
+  custom_fields: {}
+
+# Critères Roo :
+# - Tous champs initialisés explicitement
+# - Structure clé/valeur, pas de crochets inutiles
+# - Prêt pour validation, CI et documentation croisée

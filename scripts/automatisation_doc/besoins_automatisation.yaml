@@ -1,0 +1,893 @@
+phase: Phase 1 - Recensement des besoins d’automatisation documentaire Roo
+date: "2025-08-03"
+besoins:
+    - id: BA-001
+      description: '- **TODO** : Adapter la structure selon les besoins d’automatisation et d’audit.'
+      priorite: à qualifier
+      statut: à valider
+      fichier: batch_manager_report.md
+      contexte: Extraction automatique
+    - id: BA-002
+      description: 'phase: Phase 1 - Recensement des besoins d’automatisation documentaire Roo'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-003
+      description: 'description: ''- **TODO** : Adapter la structure selon les besoins d’automatisation et d’audit.'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-004
+      description: 'description: ''phase: Phase 1 - Recensement des besoins d’automatisation documentaire Roo'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-005
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-006
+      description: 'description: ''description: ''''- **TODO** : Adapter la structure selon les besoins d’automatisation et d’audit.'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-007
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-008
+      description: 'description: ''description: ''''phase: Phase 1 - Recensement des besoins d’automatisation documentaire Roo'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-009
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-010
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-011
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-012
+      description: 'description: ''description: ''''description: ''''''''- **TODO** : Adapter la structure selon les besoins d’automatisation et d’audit.'''''''''''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-013
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-014
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-015
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-016
+      description: 'description: ''description: ''''description: ''''''''phase: Phase 1 - Recensement des besoins d’automatisation documentaire Roo'''''''''''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-017
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-018
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-019
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-020
+      description: 'description: ''description: ''''fichier: besoins_automatisation.yaml'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-021
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-022
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-023
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-024
+      description: 'description: ''description: ''''description: ''''''''description: ''''''''''''''''- **TODO** : Adapter la structure selon les besoins d’automatisation et d’audit.'''''''''''''''''''''''''''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-025
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-026
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-027
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-028
+      description: 'description: ''description: ''''fichier: besoins_automatisation.yaml'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-029
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-030
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-031
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-032
+      description: 'description: ''description: ''''description: ''''''''description: ''''''''''''''''phase: Phase 1 - Recensement des besoins d’automatisation documentaire Roo'''''''''''''''''''''''''''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-033
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-034
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-035
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-036
+      description: 'description: ''description: ''''fichier: besoins_automatisation.yaml'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-037
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-038
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-039
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-040
+      description: 'description: ''description: ''''description: ''''''''fichier: besoins_automatisation.yaml'''''''''''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-041
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-042
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-043
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-044
+      description: 'description: ''description: ''''fichier: besoins_automatisation.yaml'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-045
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-046
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-047
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-048
+      description: 'description: ''description: ''''description: ''''''''description: ''''''''''''''''description: ''''''''''''''''''''''''''''''''- **TODO** : Adapter la structure selon les besoins d’automatisation et d’audit.'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-049
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-050
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-051
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-052
+      description: 'description: ''description: ''''fichier: besoins_automatisation.yaml'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-053
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-054
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-055
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-056
+      description: 'description: ''description: ''''description: ''''''''fichier: besoins_automatisation.yaml'''''''''''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-057
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-058
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-059
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-060
+      description: 'description: ''description: ''''fichier: besoins_automatisation.yaml'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-061
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-062
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-063
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-064
+      description: 'description: ''description: ''''description: ''''''''description: ''''''''''''''''description: ''''''''''''''''''''''''''''''''phase: Phase 1 - Recensement des besoins d’automatisation documentaire Roo'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-065
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-066
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-067
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-068
+      description: 'description: ''description: ''''fichier: besoins_automatisation.yaml'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-069
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-070
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-071
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-072
+      description: 'description: ''description: ''''description: ''''''''fichier: besoins_automatisation.yaml'''''''''''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-073
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-074
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-075
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-076
+      description: 'description: ''description: ''''fichier: besoins_automatisation.yaml'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-077
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-078
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-079
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-080
+      description: 'description: ''description: ''''description: ''''''''description: ''''''''''''''''fichier: besoins_automatisation.yaml'''''''''''''''''''''''''''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-081
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-082
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-083
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-084
+      description: 'description: ''description: ''''fichier: besoins_automatisation.yaml'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-085
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-086
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-087
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-088
+      description: 'description: ''description: ''''description: ''''''''fichier: besoins_automatisation.yaml'''''''''''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-089
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-090
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-091
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-092
+      description: 'description: ''description: ''''fichier: besoins_automatisation.yaml'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-093
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-094
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-095
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-096
+      description: 'description: ''description: ''''description: ''''''''description: ''''''''''''''''description: ''''''''''''''''''''''''''''''''description: ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''- **TODO** : Adapter la structure selon les besoins d’automatisation et d’audit.'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-097
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-098
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-099
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-100
+      description: 'description: ''description: ''''fichier: besoins_automatisation.yaml'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-101
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-102
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-103
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-104
+      description: 'description: ''description: ''''description: ''''''''fichier: besoins_automatisation.yaml'''''''''''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-105
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-106
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-107
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-108
+      description: 'description: ''description: ''''fichier: besoins_automatisation.yaml'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-109
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-110
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-111
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-112
+      description: 'description: ''description: ''''description: ''''''''description: ''''''''''''''''fichier: besoins_automatisation.yaml'''''''''''''''''''''''''''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-113
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-114
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-115
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-116
+      description: 'description: ''description: ''''fichier: besoins_automatisation.yaml'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-117
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-118
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-119
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-120
+      description: 'description: ''description: ''''description: ''''''''fichier: besoins_automatisation.yaml'''''''''''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-121
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-122
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-123
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-124
+      description: 'description: ''description: ''''fichier: besoins_automatisation.yaml'''''''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-125
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-126
+      description: 'description: ''fichier: besoins_automatisation.yaml'''
+      priorite: à qualifier
+      agents:
+        - ScriptManager
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+    - id: BA-127
+      description: 'fichier: besoins_automatisation.yaml'
+      priorite: à qualifier
+      statut: à valider
+      fichier: besoins_automatisation.yaml
+      contexte: Extraction automatique
+contexte: Scan initial automatisé, résultats à enrichir par feedback utilisateur.
+reference: plan-dev-v113-autmatisation-doc-roo.md

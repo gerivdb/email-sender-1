@@ -1,0 +1,85 @@
+# Schéma YAML Roo — UXMetrics Pattern
+---
+metadata:
+  name: uxmetrics
+  version: "1.0"
+  description: >
+    Schéma Roo pour la collecte, l’agrégation et le reporting des métriques UX (expérience utilisateur) : événements, sessions, intégration reporting, extension plugins.
+  manager: MonitoringManager
+  labels:
+    - ux
+    - metrics
+    - monitoring
+    - roo
+
+spec:
+  metrics_id:
+    type: string
+    required: true
+    description: Identifiant unique de la configuration UXMetrics.
+  events:
+    type: array
+    required: true
+    description: Liste des événements UX à collecter.
+    items:
+      type: object
+      properties:
+        event_type:
+          type: string
+          required: true
+          description: Type d’événement (click, scroll, navigation, etc.).
+        timestamp:
+          type: string
+          required: true
+          description: Date/heure de l’événement (ISO 8601).
+        user_id:
+          type: string
+          required: false
+          description: Identifiant utilisateur (anonymisé si besoin).
+        session_id:
+          type: string
+          required: false
+          description: Session utilisateur associée.
+        metadata:
+          type: object
+          required: false
+          description: Métadonnées additionnelles (device, contexte, etc.).
+  sessions:
+    type: array
+    required: false
+    description: Sessions utilisateur pour l’agrégation des métriques.
+    items:
+      type: object
+      properties:
+        session_id:
+          type: string
+          required: true
+        start_time:
+          type: string
+          required: true
+        end_time:
+          type: string
+          required: false
+        user_id:
+          type: string
+          required: false
+  reporting:
+    type: object
+    required: false
+    description: Configuration du reporting UX (fréquence, formats, destinataires).
+  plugins:
+    type: array
+    required: false
+    description: Plugins Roo à charger pour enrichir la collecte ou l’analyse UX.
+
+validation:
+  required:
+    - metrics_id
+    - events
+  properties:
+    metrics_id:
+      pattern: "^[a-zA-Z0-9\\-_]{8,64}$"
+    events:
+      minItems: 1
+      uniqueItems: false
+  additionalProperties: false

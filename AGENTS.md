@@ -36,8 +36,81 @@ Ce fichier documente les agents et managers principaux de l’architecture docum
 - SimpleAdvancedAutonomyManager
 - VersionManagerImpl
 - VectorOperationsManager
+- PipelineManager
 
 ---
+
+## Détail des managers
+
+### FallbackManager
+
+- **Rôle :** Gestionnaire Roo des stratégies de fallback documentaire (repli automatique, gestion d’échec, restauration d’état, extension plugins).
+- **Interfaces :**
+  - `RegisterPlugin(plugin PluginInterface) error`
+  - `ApplyFallback(ctx context.Context, docID string, state interface{}) error`
+  - `Rollback(ctx context.Context, id string) error`
+  - `Report(ctx context.Context, id string) (*FallbackReport, error)`
+- **Artefacts Roo :**
+  - Schéma YAML Roo : [`fallback_schema.yaml`](scripts/automatisation_doc/fallback_schema.yaml)
+  - Implémentation Go : [`fallback_manager.go`](scripts/automatisation_doc/fallback_manager.go)
+  - Tests unitaires : [`fallback_manager_test.go`](scripts/automatisation_doc/fallback_manager_test.go)
+  - Rapport d’audit : [`fallback_manager_report.md`](scripts/automatisation_doc/fallback_manager_report.md)
+  - Procédures rollback : [`fallback_manager_rollback.md`](scripts/automatisation_doc/fallback_manager_rollback.md)
+- **Utilisation :**
+  - Déclenchement automatique d’une stratégie de repli en cas d’échec documentaire.
+  - Extension dynamique via plugins pour personnaliser les stratégies de fallback.
+  - Restauration d’état, audit, rollback, reporting.
+- **Entrée/Sortie :**
+  - Entrées : fichiers YAML Roo, paramètres d’exécution, plugins, contexte d’exécution.
+  - Sorties : statuts, rapports, logs, rollback.
+- **Traçabilité Roo :**
+  - Plan de référence : [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md)
+  - Checklist-actionnable : [`checklist-actionnable.md`](checklist-actionnable.md)
+  - Documentation croisée : [`README.md`](README.md), [`rules-plugins.md`](.roo/rules/rules-plugins.md)
+  - CI/CD : [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+- **Points d’extension :**
+  - PluginInterface Roo (ajout dynamique de plugins, hooks, stratégies)
+  - Validation YAML Roo, reporting, rollback, audit
+  - Intégration avec les autres managers Roo (BatchManager, PipelineManager, etc.)
+- **Risques & mitigation :**
+  - Risque de fallback silencieux ou non déclenché : tests unitaires exhaustifs, logs d’audit, monitoring.
+  - Risque de dérive documentaire : reporting, validation croisée, audit.
+
+### PipelineManager
+
+- **Rôle :** Orchestrateur Roo des pipelines documentaires complexes (DAG, étapes séquentielles/parallèles, gestion d’erreur, extension plugins).
+- **Interfaces :**
+  - `LoadPipeline(yamlPath string) error`
+  - `Execute(ctx context.Context, input *PipelineInput) (*PipelineResult, error)`
+  - `RegisterPlugin(plugin PluginInterface) error`
+  - `Rollback(ctx context.Context, id string) error`
+  - `Report(ctx context.Context, id string) (*PipelineReport, error)`
+- **Artefacts Roo :**
+  - Schéma YAML Roo : [`pipeline_schema.yaml`](scripts/automatisation_doc/pipeline_schema.yaml)
+  - Implémentation Go : [`pipeline_manager.go`](scripts/automatisation_doc/pipeline_manager.go)
+  - Tests unitaires : [`pipeline_manager_test.go`](scripts/automatisation_doc/pipeline_manager_test.go)
+  - Rapport d’audit : [`pipeline_manager_report.md`](scripts/automatisation_doc/pipeline_manager_report.md)
+  - Procédures rollback : [`pipeline_manager_rollback.md`](scripts/automatisation_doc/pipeline_manager_rollback.md)
+- **Utilisation :**
+  - Chargement, validation et exécution de pipelines documentaires Roo (support DAG, séquences, parallélisme, plugins dynamiques).
+  - Gestion centralisée des erreurs, reporting détaillé, rollback automatisé.
+  - Extension dynamique via PluginInterface (ajout de nouveaux types d’étapes ou de hooks).
+- **Entrée/Sortie :**
+  - Entrées : fichiers YAML Roo, paramètres d’exécution, plugins, contexte d’exécution.
+  - Sorties : résultats d’exécution, rapports, logs, statuts, rollback.
+- **Traçabilité Roo :**
+  - Plan de référence : [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md)
+  - Checklist-actionnable : [`checklist-actionnable.md`](checklist-actionnable.md)
+  - Documentation croisée : [`README.md`](README.md), [`rules-plugins.md`](.roo/rules/rules-plugins.md)
+  - CI/CD : [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+- **Points d’extension :**
+  - PluginInterface Roo (ajout dynamique de plugins, hooks, stratégies)
+  - Validation YAML Roo, reporting, rollback, audit
+  - Intégration avec les autres managers Roo (BatchManager, SessionManager, etc.)
+- **Risques & mitigation :**
+  - Deadlock sur DAG : validation YAML, tests de cycle, rollback.
+  - Échec plugin : hooks d’erreur, logs, rollback.
+  - Dérive documentaire : reporting, validation croisée, audit.
 
 ## Détail des managers
 
@@ -114,6 +187,43 @@ Ce fichier documente les agents et managers principaux de l’architecture docum
 - **Utilisation :** Centralisation des appels, exécutions et gestion des erreurs n8n (API, queue, logs, monitoring).
 - **Entrée/Sortie :** Workflows, statuts, logs, métriques, jobs, événements.
 
+- **Artefacts Roo :**
+  - Schéma YAML Roo : [`error_manager_schema.yaml`](scripts/automatisation_doc/error_manager_schema.yaml)
+  - Spécification technique : [`error_manager_spec.md`](scripts/automatisation_doc/error_manager_spec.md)
+  - Plan de tests unitaires : [`error_manager_test.md`](scripts/automatisation_doc/error_manager_test.md)
+  - Rapport d’audit : [`error_manager_report.md`](scripts/automatisation_doc/error_manager_report.md)
+  - Procédures rollback : [`error_manager_rollback.md`](scripts/automatisation_doc/error_manager_rollback.md)
+- **Utilisation :**
+  - Injection dans GoModManager, ConfigManager, etc. pour uniformiser le traitement des erreurs et assurer la traçabilité.
+  - Centralisation des logs, reporting, rollback, audit.
+- **Entrée/Sortie :**
+  - Entrées : erreurs Go, entrées structurées (ErrorEntry), contexte d’exécution.
+  - Sorties : erreurs Go standard (validation, journalisation, etc.), rapports, logs, rollback.
+- **Traçabilité Roo :**
+  - Plan de référence : [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md)
+  - Checklist-actionnable : [`checklist-actionnable.md`](checklist-actionnable.md)
+  - Documentation croisée : [`README.md`](README.md), [`rules-plugins.md`](.roo/rules/rules-plugins.md)
+  - CI/CD : [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+- **Points d’extension :**
+  - PluginInterface Roo (ajout dynamique de hooks, stratégies de validation, reporting)
+  - Validation YAML Roo, reporting, rollback, audit
+  - Intégration avec les autres managers Roo (BatchManager, PipelineManager, MonitoringManager, etc.)
+- **Risques & mitigation :**
+  - Risque de non-détection ou de mauvaise catégorisation d’erreur : tests unitaires exhaustifs, logs d’audit, validation croisée.
+  - Risque de dérive documentaire ou de reporting incomplet : reporting, audit, feedback utilisateur.
+- **Références croisées :**
+  - [`error_manager_schema.yaml`](scripts/automatisation_doc/error_manager_schema.yaml)
+  - [`error_manager_spec.md`](scripts/automatisation_doc/error_manager_spec.md)
+  - [`error_manager_test.md`](scripts/automatisation_doc/error_manager_test.md)
+  - [`error_manager_report.md`](scripts/automatisation_doc/error_manager_report.md)
+  - [`error_manager_rollback.md`](scripts/automatisation_doc/error_manager_rollback.md)
+  - [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md)
+  - [`README.md`](README.md)
+  - [`checklist-actionnable.md`](checklist-actionnable.md)
+  - [`rules.md`](.roo/rules/rules.md)
+  - [`plandev-engineer-reference.md`](.roo/rules/rules-plandev-engineer/plandev-engineer-reference.md)
+  - [`workflows-matrix.md`](.roo/rules/workflows-matrix.md)
+  - [`plan-dev-v107-rules-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v107-rules-roo.md)
 ### ErrorManager
 
 - **Rôle :** Centralise la gestion, la validation et la journalisation structurée des erreurs dans le système de gestion des dépendances et autres modules.
@@ -180,6 +290,11 @@ Ce fichier documente les agents et managers principaux de l’architecture docum
 ### MonitoringManager
 
 - **Rôle :** Supervise et monitor l’écosystème documentaire, collecte des métriques système et applicatives, génère des rapports et gère les alertes.
+- **Artefacts Roo :**
+  - Schéma YAML Roo : [`monitoring_schema.yaml`](scripts/automatisation_doc/monitoring_schema.yaml)
+  - Spécification technique : [`monitoring_manager_spec.md`](scripts/automatisation_doc/monitoring_manager_spec.md)
+  - Rapport d’audit : [`monitoring_manager_report.md`](scripts/automatisation_doc/monitoring_manager_report.md)
+  - Procédures rollback : [`monitoring_manager_rollback.md`](scripts/automatisation_doc/monitoring_manager_rollback.md)
 - **Interfaces :**
   - `Initialize(ctx context.Context) error`
   - `StartMonitoring(ctx context.Context) error`
@@ -193,10 +308,43 @@ Ce fichier documente les agents et managers principaux de l’architecture docum
   - `GetMetricsHistory(ctx context.Context, duration time.Duration) ([]*SystemMetrics, error)`
   - `HealthCheck(ctx context.Context) error`
   - `Cleanup() error`
-- **Utilisation :** Collecte de métriques, surveillance continue, génération de rapports de performance, gestion des alertes, suivi d’opérations critiques.
+- **Utilisation :**
+  - Collecte et agrégation de métriques, génération de rapports, gestion d’alertes, suivi d’opérations critiques.
+  - Extension dynamique via PluginInterface Roo pour enrichir la supervision.
+  - Intégration CI/CD, reporting automatisé, rollback documentaire.
 - **Entrée/Sortie :**
   - Entrées : contextes d’exécution, configurations d’alertes, opérations à monitorer.
   - Sorties : métriques, rapports, statuts de santé, alertes, logs.
+- **Traçabilité Roo :**
+  - Plan de référence : [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md)
+  - Checklist-actionnable : [`checklist-actionnable.md`](checklist-actionnable.md)
+  - Documentation croisée : [`README.md`](README.md), [`rules-plugins.md`](.roo/rules/rules-plugins.md)
+  - CI/CD : [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+- **Points d’extension :**
+  - PluginInterface Roo (ajout dynamique de plugins, hooks, stratégies)
+  - Validation YAML Roo, reporting, rollback, audit
+  - Intégration avec les autres managers Roo (BatchManager, PipelineManager, etc.)
+- **Risques & mitigation :**
+  - Risque de métriques incomplètes ou non collectées : tests unitaires exhaustifs, logs d’audit, monitoring.
+  - Risque de dérive documentaire ou d’alertes non déclenchées : reporting, validation croisée, audit.
+- **Références croisées :**
+  - [`monitoring_schema.yaml`](scripts/automatisation_doc/monitoring_schema.yaml)
+  - [`monitoring_manager_spec.md`](scripts/automatisation_doc/monitoring_manager_spec.md)
+  - [`monitoring_manager_report.md`](scripts/automatisation_doc/monitoring_manager_report.md)
+  - [`monitoring_manager_rollback.md`](scripts/automatisation_doc/monitoring_manager_rollback.md)
+  - [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md)
+  - [`README.md`](README.md)
+  - [`checklist-actionnable.md`](checklist-actionnable.md)
+  - [`rules.md`](.roo/rules/rules.md)
+  - [`plandev-engineer-reference.md`](.roo/rules/rules-plandev-engineer/plandev-engineer-reference.md)
+  - [`workflows-matrix.md`](.roo/rules/workflows-matrix.md)
+  - [`plan-dev-v107-rules-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v107-rules-roo.md)
+  - [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+  - [`architecture-automatisation-doc.md`](projet/roadmaps/plans/consolidated/architecture-automatisation-doc.md)
+  - [`diagramme-automatisation-doc.mmd`](projet/roadmaps/plans/consolidated/diagramme-automatisation-doc.mmd)
+  - [`fixes-applied.md`](fixes-applied.md)
+  - [`corrections-report.md`](corrections-report.md)
+  - [`plan-roadmap-actionnable.md`](plan-roadmap-actionnable.md)
 
 ### MaintenanceManager
 

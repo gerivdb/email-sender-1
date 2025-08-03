@@ -1,0 +1,57 @@
+# Schéma YAML Roo — Pooling Pattern
+---
+metadata:
+  name: pooling
+  version: "1.0"
+  description: >
+    Schéma Roo pour la gestion de pools de ressources documentaires : allocation dynamique, configuration, monitoring, extension plugins.
+  manager: PoolingManager
+  labels:
+    - pooling
+    - resource
+    - allocation
+    - roo
+
+spec:
+  pool_id:
+    type: string
+    required: true
+    description: "Identifiant unique du pool documentaire."
+  resource_type:
+    type: string
+    required: true
+    description: "Type de ressource gérée par le pool (ex : document, connexion, worker)."
+  max_size:
+    type: integer
+    required: true
+    description: "Taille maximale du pool."
+  min_size:
+    type: integer
+    required: false
+    description: "Taille minimale du pool."
+  allocation_strategy:
+    type: string
+    required: false
+    description: "Stratégie d’allocation (round-robin, priorité, custom)."
+  monitoring:
+    type: object
+    required: false
+    description: "Configuration du monitoring du pool."
+  plugins:
+    type: array
+    required: false
+    description: "Plugins Roo à charger pour enrichir la gestion du pool."
+
+validation:
+  required:
+    - pool_id
+    - resource_type
+    - max_size
+  properties:
+    pool_id:
+      pattern: "^[a-zA-Z0-9\\-_]{8,64}$"
+    max_size:
+      minimum: 1
+    min_size:
+      minimum: 0
+  additionalProperties: false

@@ -1,0 +1,150 @@
+# Schéma Roo YAML — StorageManager
+# Valide la configuration, la connexion et la gestion de la persistance documentaire Roo.
+---
+$schema: "https://json-schema.org/draft/2020-12/schema"
+title: StorageManager Roo Schema
+description: >
+  Schéma Roo pour la configuration, la validation et la gestion centralisée de la persistance documentaire, des connexions (PostgreSQL, Qdrant, S3...), des métadonnées et des migrations.
+type: object
+required:
+  - id
+  - name
+  - storages
+properties:
+  id:
+    type: string
+    description: "Identifiant unique de la configuration StorageManager."
+  name:
+    type: string
+    description: "Nom lisible de la configuration StorageManager."
+  description:
+    type: string
+    description: "Description fonctionnelle."
+  storages:
+    type: array
+    minItems: 1
+    description: "Liste structurée des backends de stockage gérés."
+    items:
+      type: object
+      required: [type, config]
+      properties:
+        type:
+          type: string
+          description: "Type de backend (ex: postgresql, qdrant, s3, local)"
+          enum:
+            - postgresql
+            - qdrant
+            - s3
+            - local
+            - custom
+        config:
+          type: object
+          description: "Paramètres spécifiques au backend (clé/valeur)"
+          additionalProperties: true
+        status:
+          type: string
+          description: "Statut du backend (ex: actif, désactivé, erreur)"
+          enum:
+            - actif
+            - désactivé
+            - erreur
+        plugins:
+          type: array
+          description: "Plugins ou extensions associés à ce backend"
+          items:
+            type: string
+  connections:
+    type: array
+    description: "Liste des connexions documentées (DSN, secrets, validation)"
+    items:
+      type: object
+      required: [name, dsn]
+      properties:
+        name:
+          type: string
+          description: "Nom de la connexion"
+        dsn:
+          type: string
+          description: "Chaîne de connexion ou secret référencé"
+        validated:
+          type: boolean
+          description: "Validation de la connexion"
+        last_checked:
+          type: string
+          format: date-time
+  migrations:
+    type: array
+    description: "Scripts ou opérations de migration associées"
+    items:
+      type: object
+      required: [version, script]
+      properties:
+        version:
+          type: string
+          description: "Version cible de la migration"
+        script:
+          type: string
+          description: "Chemin ou contenu du script de migration"
+        applied_at:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - pending
+            - applied
+            - failed
+  metadata:
+    type: object
+    description: "Métadonnées additionnelles (auteur, date, version, tags)"
+    properties:
+      author:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      tags:
+        type: array
+        items:
+          type: string
+
+examples:
+  - id: "storage-manager-001"
+    name: "StorageManager principal"
+    description: "Gestion centralisée des backends Roo"
+    storages:
+      - type: "postgresql"
+        config:
+          host: "localhost"
+          port: 5432
+          database: "roo"
+          user: "roo"
+          password: "secret"
+        status: "actif"
+        plugins: ["AuditPlugin", "BackupPlugin"]
+      - type: "qdrant"
+        config:
+          host: "localhost"
+          port: 6333
+          collection: "documents"
+        status: "actif"
+    connections:
+      - name: "PostgreSQLMain"
+        dsn: "postgresql://roo:secret@localhost:5432/roo"
+        validated: true
+        last_checked: "2025-08-02T18:00:00Z"
+      - name: "QdrantMain"
+        dsn: "qdrant://localhost:6333/documents"
+        validated: true
+        last_checked: "2025-08-02T18:00:00Z"
+    migrations:
+      - version: "v1.1.0"
+        script: "migrations/001_init.sql"
+        applied_at: "2025-08-02T18:10:00Z"
+        status: "applied"
+    metadata:
+      author: "Equipe Roo"
+      created_at: "2025-08-02T18:00:00Z"
+      tags: ["roo", "storage", "persistence", "plugin"]
+
+# Contraintes Roo : chaque backend doit avoir un type et une config, chaque connexion un nom et un dsn, chaque migration une version et un script. Les plugins sont extensibles dynamiquement.

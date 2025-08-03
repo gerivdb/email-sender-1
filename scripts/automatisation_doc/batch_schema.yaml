@@ -1,0 +1,75 @@
+# Schéma YAML Roo Code — BatchManager
+# Version: 1.0
+# Auteur: Roo Code (mode plandev-engineer)
+# Date: 2025-08-02
+# Référence: [`batch_manager_spec.md`](scripts/automatisation_doc/batch_manager_spec.md)
+# Description: Schéma de configuration d’un batch documentaire automatisé Roo Code
+
+batch:
+  id: "batch-001"                # Identifiant unique du batch
+  name: "Batch de synchronisation documentaire"  # Nom lisible
+  description: "Synchronisation de lots de documents entre sources A et B"
+  version: "1.0.0"               # Version du batch
+  created_at: "2025-08-02T17:33:00Z" # Date de création ISO8601
+  author: "Equipe Roo Code"      # Auteur ou équipe responsable
+
+  steps:                         # Liste ordonnée des étapes du batch
+    - id: "step-1"
+      name: "Extraction"
+      action: "extract_documents"
+      params:
+        source: "A"
+      hooks:
+        pre: "validate_source"
+        post: "log_extraction"
+      rollback: "rollback_extraction"
+      description: "Extraction initiale des documents depuis la source A"
+    - id: "step-2"
+      name: "Transformation"
+      action: "transform_documents"
+      params:
+        format: "markdown"
+      hooks:
+        pre: "check_format"
+        post: "log_transformation"
+      rollback: "rollback_transformation"
+      description: "Transformation des documents extraits au format cible"
+    - id: "step-3"
+      name: "Chargement"
+      action: "load_documents"
+      params:
+        destination: "B"
+      hooks:
+        pre: "validate_destination"
+        post: "log_loading"
+      rollback: "rollback_loading"
+      description: "Chargement des documents transformés vers la destination B"
+
+  hooks:                         # Définition globale des hooks (PluginInterface)
+    validate_source: "scripts/hooks/validate_source.go"
+    log_extraction: "scripts/hooks/log_extraction.go"
+    check_format: "scripts/hooks/check_format.go"
+    log_transformation: "scripts/hooks/log_transformation.go"
+    validate_destination: "scripts/hooks/validate_destination.go"
+    log_loading: "scripts/hooks/log_loading.go"
+
+  rollback:                      # Procédures globales de rollback
+    rollback_extraction: "scripts/rollback/rollback_extraction.go"
+    rollback_transformation: "scripts/rollback/rollback_transformation.go"
+    rollback_loading: "scripts/rollback/rollback_loading.go"
+
+  metadata:                      # Métadonnées complémentaires
+    tags: ["sync", "batch", "roo-code"]
+    priority: "high"
+    documentation: "Voir batch_manager_spec.md"
+    related_specs:
+      - "batch_manager_spec.md"
+      - "batch_manager_report.md"
+
+  validation:                    # Schéma de validation (optionnel)
+    required_fields: ["id", "steps"]
+    schema_version: "1.0"
+    validator: "scripts/validators/batch_validator.go"
+
+# Exemple d’utilisation :
+#   go run scripts/automatisation_doc/batch_manager.go --config=scripts/automatisation_doc/batch_schema.yaml

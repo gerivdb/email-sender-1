@@ -1,0 +1,81 @@
+# Schéma YAML Roo — Monitoring Pattern
+---
+metadata:
+  name: monitoring
+  version: "1.0"
+  description: >
+    Schéma Roo pour la supervision documentaire : collecte de métriques, gestion d’alertes, reporting, extension plugins.
+  manager: MonitoringManager
+  labels:
+    - monitoring
+    - documentaire
+    - roo
+
+spec:
+  monitoring_id:
+    type: string
+    required: true
+    description: Identifiant unique de la configuration de monitoring.
+  metrics:
+    type: array
+    required: true
+    description: Liste des métriques à collecter.
+    items:
+      type: object
+      properties:
+        metric_id:
+          type: string
+          required: true
+          description: Identifiant de la métrique.
+        type:
+          type: string
+          required: true
+          description: Type de métrique (système, applicatif, custom).
+        params:
+          type: object
+          required: false
+          description: Paramètres spécifiques à la métrique.
+  alerts:
+    type: array
+    required: false
+    description: Liste des alertes à configurer.
+    items:
+      type: object
+      properties:
+        alert_id:
+          type: string
+          required: true
+        condition:
+          type: string
+          required: true
+        actions:
+          type: array
+          items:
+            type: string
+          required: false
+  plugins:
+    type: array
+    required: false
+    description: Plugins Roo à charger pour la supervision.
+    items:
+      type: string
+  reporting:
+    type: object
+    required: false
+    description: Configuration du reporting d’audit et de statut.
+  rollback:
+    type: object
+    required: false
+    description: Configuration du rollback documentaire.
+
+validation:
+  required:
+    - monitoring_id
+    - metrics
+  properties:
+    monitoring_id:
+      pattern: "^[a-zA-Z0-9\\-_]{8,64}$"
+    metrics:
+      minItems: 1
+      uniqueItems: true
+  additionalProperties: false

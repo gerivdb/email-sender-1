@@ -1,0 +1,71 @@
+# Schéma YAML Roo — Pipeline Pattern
+---
+metadata:
+  name: pipeline
+  version: "1.0"
+  description: >
+    Schéma Roo pour l’orchestration de pipelines documentaires complexes (DAG, séquences, parallélisme, plugins).
+  manager: PipelineManager
+  labels:
+    - pipeline
+    - documentaire
+    - roo
+
+spec:
+  pipeline_id:
+    type: string
+    required: true
+    description: Identifiant unique du pipeline documentaire.
+  steps:
+    type: array
+    required: true
+    description: Liste ordonnée des étapes du pipeline (DAG ou séquentiel).
+    items:
+      type: object
+      properties:
+        step_id:
+          type: string
+          required: true
+          description: Identifiant unique de l’étape.
+        type:
+          type: string
+          required: true
+          description: Type d’étape (action, validation, fork, join, etc.).
+        params:
+          type: object
+          required: false
+          description: Paramètres spécifiques à l’étape.
+        depends_on:
+          type: array
+          items:
+            type: string
+          required: false
+          description: Liste des étapes prérequises (pour DAG).
+  plugins:
+    type: array
+    items:
+      type: string
+    required: false
+    description: Plugins Roo à charger pour le pipeline.
+  error_handling:
+    type: object
+    required: false
+    description: Stratégies de gestion d’erreur (rollback, retry, hooks).
+  rollback:
+    type: object
+    required: false
+    description: Configuration du rollback documentaire.
+
+validation:
+  required:
+    - pipeline_id
+    - steps
+  properties:
+    pipeline_id:
+      pattern: "^[a-zA-Z0-9\\-_]{8,64}$"
+    steps:
+      minItems: 1
+      uniqueItems: true
+    plugins:
+      uniqueItems: true
+  additionalProperties: false

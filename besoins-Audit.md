@@ -1,0 +1,53 @@
+### Phase : Recensement des besoins — Pattern Audit
+
+- **Objectif** : Définir, tracer et valider les besoins pour l’audit documentaire Roo Code (traçabilité, conformité, reporting, intégrité, alertes).
+- **Livrables** : `audit_schema.yaml`, `audit_manager_spec.md`, `audit_manager_report.md`, `audit_manager_rollback.md`
+- **Dépendances** : MonitoringManager, ErrorManager, StorageManager, NotificationManagerImpl, artefacts YAML/Markdown d’audit.
+- **Risques** : Oubli de logs critiques, dérive de conformité, surcharge de reporting, faux positifs/alertes, défaut d’intégrité.
+- **Outils/Agents mobilisés** : Script Go d’audit, plugins d’analyse statique, feedback utilisateur, intégration CI/CD.
+- **Tâches** :
+  - [ ] Générer le schéma YAML Roo `audit_schema.yaml` pour la structure d’audit.
+  - [ ] Développer le module Go `audit_manager.go` pour la collecte et la validation des logs.
+  - [ ] Rédiger la spécification technique [`audit_manager_spec.md`](scripts/automatisation_doc/audit_manager_spec.md).
+  - [ ] Générer le rapport d’audit [`audit_manager_report.md`](scripts/automatisation_doc/audit_manager_report.md).
+  - [ ] Implémenter les procédures de rollback [`audit_manager_rollback.md`](scripts/automatisation_doc/audit_manager_rollback.md).
+  - [ ] Intégrer les tests unitaires et de conformité.
+  - [ ] Documenter la procédure dans [`README.md`](README.md).
+  - [ ] Collecter le feedback utilisateur et ajuster le module si besoin.
+- **Commandes** :
+  - `go run scripts/automatisation_doc/audit_manager.go`
+  - `go test scripts/automatisation_doc/audit_manager_test.go`
+- **Fichiers attendus** :
+  - `scripts/automatisation_doc/audit_schema.yaml`
+  - `scripts/automatisation_doc/audit_manager.go`
+  - `scripts/automatisation_doc/audit_manager_spec.md`
+  - `scripts/automatisation_doc/audit_manager_report.md`
+  - `scripts/automatisation_doc/audit_manager_rollback.md`
+  - `scripts/automatisation_doc/audit_manager_test.go`
+- **Critères de validation** :
+  - 100 % de couverture test sur la collecte et la validation des logs.
+  - Rapport d’audit généré conforme au schéma YAML.
+  - Revue croisée par un pair.
+  - Vérification de la traçabilité et de l’intégrité documentaire.
+- **Rollback/versionning** :
+  - Procédures détaillées dans [`audit_manager_rollback.md`](scripts/automatisation_doc/audit_manager_rollback.md).
+  - Sauvegarde automatique des logs avant modification.
+  - Commit Git avant toute opération critique.
+- **Orchestration & CI/CD** :
+  - Ajout du job d’audit dans [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
+  - Monitoring automatisé du pipeline d’audit.
+- **Documentation & traçabilité** :
+  - Documentation croisée dans [`README.md`](README.md), [`AGENTS.md`](AGENTS.md), [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md).
+  - Reporting automatisé, logs d’audit, feedback utilisateur.
+- **Risques & mitigation** :
+  - Risque de logs incomplets : tests exhaustifs, validation croisée, monitoring.
+  - Risque de dérive documentaire : reporting, audit, feedback continu.
+  - Risque de surcharge : optimisation des scripts, archivage périodique.
+- **Questions ouvertes, hypothèses & ambiguïtés** :
+  - Hypothèse : Les logs sont accessibles et structurés.
+  - Question : Existe-t-il des exigences réglementaires spécifiques à l’audit documentaire ?
+  - Ambiguïté : Le volume de logs attendu est-il compatible avec la capacité de stockage ?
+- **Auto-critique & raffinement** :
+  - Limite : Le module ne détecte pas les logs implicites ou hors standard.
+  - Suggestion : Ajouter une étape d’analyse sémantique ou d’audit externe.
+  - Feedback : Intégrer un agent LLM pour détecter les incohérences ou manques dans les logs.

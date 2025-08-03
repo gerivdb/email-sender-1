@@ -1,0 +1,21 @@
+# Configuration Roo-Code pour l’automatisation documentaire
+# Voir [AGENTS.md](../../AGENTS.md) et les standards Roo pour la structure attendue.
+
+synchronisation:
+  enabled: true
+  source_dir: "./"
+  target_dir: "./synced"
+  exclude_patterns:
+    - "*.tmp"
+    - "*.bak"
+
+reporting:
+  enabled: true
+  output: "./reporting/report-roo.yaml"
+  format: "yaml"
+  include_logs: true
+
+general:
+  log_level: "info"
+  dry_run: false
+  error_manager: "centralisé"
