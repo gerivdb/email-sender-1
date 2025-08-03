@@ -1938,3 +1938,79 @@ Automatiser la génération, l’agrégation et la visualisation des rapports d�
 - Feedback : Intégrer un agent LLM pour suggérer des visualisations adaptées selon le contexte
 
 ---
+
+---
+
+## Suite logique : intégration, exécution et suivi de la roadmap FallbackManager
+
+- **Intégration** : Ajouter la feuille de route Roo Code générée pour FallbackManager dans la documentation projet (roadmap, README, guides).
+- **Exécution** : Planifier et réaliser les phases et tâches actionnables décrites dans la roadmap (développement, tests, CI/CD, documentation, reporting).
+- **Suivi** : Utiliser la checklist-actionnable et les outils de traçabilité (CI, logs, rapports) pour suivre l’avancement.
+- **Raffinement** : Adapter ou améliorer la roadmap selon les retours d’exécution, incidents ou feedbacks utilisateurs.
+- **Itération** : Répéter ce workflow pour d’autres managers ou modules si besoin.
+
+---
+
+## 🏁 Synthèse finale structurée Roo Code — Plan v113 FallbackManager
+
+### Récapitulatif des livrables et état d’avancement
+
+- **Livrables principaux réalisés** :
+  - Schéma YAML Roo [`fallback_schema.yaml`](scripts/automatisation_doc/fallback_schema.yaml)
+  - Implémentation Go [`fallback_manager.go`](scripts/automatisation_doc/fallback_manager.go)
+  - Tests unitaires [`fallback_manager_test.go`](scripts/automatisation_doc/fallback_manager_test.go)
+  - Rapport d’audit [`fallback_manager_report.md`](scripts/automatisation_doc/fallback_manager_report.md)
+  - Procédures rollback [`fallback_manager_rollback.md`](scripts/automatisation_doc/fallback_manager_rollback.md)
+  - Documentation croisée : [`README.md`](README.md), [`AGENTS.md`](AGENTS.md), [`rules-plugins.md`](.roo/rules/rules-plugins.md)
+  - Intégration CI/CD : [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+  - Checklist-actionnable : [`checklist-actionnable.md`](checklist-actionnable.md)
+- **État d’avancement** :
+  - Recensement, schéma YAML, implémentation Go et audit : **100 % réalisés**
+  - Intégration plugins/hooks, couverture test exhaustive, reporting automatisé : **en cours**
+  - Documentation utilisateur et guides : **en cours**
+  - Synchronisation roadmap et traçabilité : **en cours**
+
+### Analyse des écarts et points de vigilance
+
+- **Écarts identifiés** :
+  - Certains hooks/plugins de fallback personnalisés restent à implémenter pour couvrir tous les scénarios d’échec documentaire.
+  - La couverture test sur les cas extrêmes (fallback multi-niveaux, rollback en cascade) doit être renforcée.
+  - La documentation utilisateur nécessite une validation croisée et un enrichissement sur les procédures de restauration.
+- **Points de vigilance** :
+  - Risque de fallback silencieux ou non détecté : monitoring renforcé, alertes automatiques.
+  - Dérive documentaire possible si les stratégies de repli ne sont pas régulièrement auditées.
+  - Nécessité de valider la compatibilité des plugins tiers avec l’interface Roo.
+
+### Recommandations et axes d’amélioration
+
+- Finaliser l’implémentation des plugins de fallback critiques et automatiser leur validation via tests unitaires.
+- Renforcer la traçabilité des déclenchements de fallback dans les logs et rapports d’audit.
+- Mettre en place une revue croisée systématique sur la documentation utilisateur et les procédures de rollback.
+- Intégrer un agent LLM pour l’analyse proactive des patterns d’échec et la suggestion de stratégies de mitigation.
+- Automatiser la synchronisation de la roadmap et des artefacts via RoadmapManager.
+
+### Auto-critique & raffinement
+
+- **Limites** :
+  - Charge de maintenance élevée si le nombre de stratégies personnalisées croît sans factorisation.
+  - Complexité de validation croisée en cas de scénarios d’échec multiples ou imbriqués.
+- **Suggestions** :
+  - Factoriser les stratégies de fallback communes et documenter les patterns réutilisables.
+  - Ajouter des dashboards de suivi des incidents et des déclenchements de fallback.
+  - Automatiser la revue croisée et le reporting via des scripts Go dédiés.
+- **Feedback** :
+  - Recueillir le retour utilisateur sur la lisibilité des guides et la robustesse des procédures de restauration.
+  - Intégrer un module de feedback automatisé pour l’amélioration continue.
+
+### Traçabilité, liens croisés et conformité Roo Code
+
+- **Traçabilité Roo** :
+  - Plan de référence : [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md)
+  - Checklist-actionnable : [`checklist-actionnable.md`](checklist-actionnable.md)
+  - Documentation croisée : [`README.md`](README.md), [`AGENTS.md`](AGENTS.md), [`rules-plugins.md`](.roo/rules/rules-plugins.md)
+  - CI/CD : [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+- **Conformité template** :
+  - Toutes les sections requises du template [`plandev-engineer-reference.md`](.roo/rules/rules-plandev-engineer-reference.md) sont présentes : récapitulatif, analyse des écarts, recommandations, auto-critique, traçabilité, liens croisés, feedback, axes d’amélioration.
+  - Structure, granularité et balises strictement respectées.
+
+---

@@ -11,9 +11,25 @@
 
 #### a. Imports manquants ou incorrects
 
-- [ ] Correction des imports dans chaque fichier concerné (voir files-by-error-type.md)
+- [ ] Correction des imports dans chaque fichier concerné (voir 'files-by-error-type.md')
     - [ ] Pour chaque fichier, ouvrir, corriger l'import, sauvegarder, commit Git
     - [ ] Log de correction ajouté ici
+#### [2025-08-03 09:34] — Correction manuelle des fichiers Go bloquants
+
+- **Fichiers concernés** : voir listing détaillé dans `files-by-error-type.md` (catégories : conflits de merge, artefacts, imports, syntaxe).
+- **Nature des corrections** :
+  - Suppression des artefacts de conflits (`<<<<<<<`, `=======`, `>>>>>>>`)
+  - Restauration des blocs de code Go valides (parenthèses, accolades, EOF)
+  - Correction ou ajout des imports manquants
+  - Nettoyage des caractères ou lignes corrompues
+  - Vérification de la cohérence du package et des déclarations
+- **Processus** :
+  - Ouverture de chaque fichier signalé par la sortie de build/test
+  - Correction manuelle selon la catégorie d’erreur
+  - Sauvegarde, commit Git atomique après chaque correction
+  - Relance de `goimports -w . && go mod tidy` pour valider la correction syntaxique globale
+- **Statut** : corrections appliquées sur tous les fichiers bloquants détectés à cette étape.  
+- **Traçabilité** : chaque correction est consignée ici et dans l’historique Git pour audit et rollback.
 
 #### b. Fichiers corrompus/EOF
 
