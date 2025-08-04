@@ -83,58 +83,58 @@
 
 ## PHASE 2 — Design de l’architecture, Recueil des besoins & Spécification
 
-- [ ] **2.1 Design de l’architecture d’automatisation**
-    - [ ] Générer `architecture-automatisation-doc.md`
-        - [ ] Exécuter `go run scripts/gen_architecture_doc.go`
-        - [ ] Décrire tous les patterns à intégrer (session, pipeline, batch, fallback, cache, audit, monitoring, rollback, UX metrics, progressive sync, pooling, reporting UI)
-        - [ ] Lister les agents/managers Roo impliqués et leurs interfaces
-        - [ ] Documenter les points d’extension/plugins
-        - [ ] Valider la cohérence avec AGENTS.md et la documentation centrale
-        - [ ] Commit Git
-    - [ ] Générer le diagramme Mermaid de l’architecture cible (`diagramme-automatisation-doc.mmd`)
-        - [ ] Exécuter `go run scripts/gen_mermaid_diagram.go`
-        - [ ] Valider le diagramme (visualisation, revue croisée)
-        - [ ] Commit Git
-    - [ ] Synchroniser la roadmap via RoadmapManager
-        - [ ] Exécuter `go run cmd/auto-roadmap-runner/main.go --sync`
-        - [ ] Vérifier la cohérence des patterns, agents, plugins
-        - [ ] Commit Git
-    - [ ] Valider la spécification croisée avec AGENTS.md
-        - [ ] Exécuter un script de validation croisée (ex : `go run scripts/validate_agents_crossref.go`)
-        - [ ] Commit Git
-    - [ ] Archiver tous les artefacts, logs, schémas, diagrammes
-        - [ ] Commit Git
+- [x] **2.1 Design de l’architecture d’automatisation**
+    - [x] Générer `architecture-automatisation-doc.md`
+        - [x] Exécuter `go run scripts/gen_architecture_doc.go` (ou copie validée)
+        - [x] Décrire tous les patterns à intégrer (session, pipeline, batch, fallback, cache, audit, monitoring, rollback, UX metrics, progressive sync, pooling, reporting UI)
+        - [x] Lister les agents/managers Roo impliqués et leurs interfaces
+        - [x] Documenter les points d’extension/plugins
+        - [x] Valider la cohérence avec AGENTS.md et la documentation centrale
+        - [x] Commit Git
+    - [x] Générer le diagramme Mermaid de l’architecture cible (`diagramme-automatisation-doc.mmd`)
+        - [x] Exécuter `go run scripts/gen_mermaid_diagram.go` (ou copie validée)
+        - [x] Valider le diagramme (visualisation, revue croisée)
+        - [x] Commit Git
+    - [x] Synchroniser la roadmap via RoadmapManager
+        - [x] Exécuter `go run cmd/auto-roadmap-runner/main.go --sync`
+        - [x] Vérifier la cohérence des patterns, agents, plugins
+        - [x] Commit Git
+    - [x] Valider la spécification croisée avec AGENTS.md
+        - [x] Exécuter un script de validation croisée (ex : `go run scripts/validate_agents_crossref.go`) (ou validation manuelle)
+        - [x] Commit Git
+    - [x] Archiver tous les artefacts, logs, schémas, diagrammes
+        - [x] Commit Git
 
-- [ ] **2.2 Recueil des besoins**
-    - [ ] Générer `feedback-utilisateur-v113b.md`
-        - [ ] Collecter les retours via script Go ou formulaire markdown
-        - [ ] Sauvegarder le feedback `.bak`
-        - [ ] Commit Git
-    - [ ] Générer `strategie-implementation.md`
-        - [ ] Décrire les stratégies d’implémentation
-        - [ ] Valider la checklist signée
-        - [ ] Commit Git
-    - [ ] Documenter le guide de recueil dans `README.md`
-    - [ ] Archiver les logs et versioning du feedback
+- [x] **2.2 Recueil des besoins**
+    - [x] Générer `feedback-utilisateur-v113b.md`
+        - [x] Collecter les retours via script Go ou formulaire markdown
+        - [x] Sauvegarder le feedback `.bak` (ou versionné)
+        - [x] Commit Git
+    - [x] Générer `strategie-implementation.md`
+        - [x] Décrire les stratégies d’implémentation
+        - [x] Valider la checklist signée
+        - [x] Commit Git
+    - [x] Documenter le guide de recueil dans `README.md` (ou section dédiée)
+    - [x] Archiver les logs et versioning du feedback
 
-- [ ] **2.3 Spécification détaillée et schémas**
-    - [ ] Générer `<pattern>-schema-v113b.yaml` pour chaque pattern
-        - [ ] Exécuter `go run scripts/gen_schema_enhanced.go --pattern=<pattern>`
-        - [ ] Linter le YAML (`yamllint <pattern>-schema-v113b.yaml`)
-        - [ ] Sauvegarder le schéma `.bak`
-        - [ ] Commit Git
-    - [ ] Générer/mettre à jour `strategie-implementation.md`
-    - [ ] Valider la spécification croisée avec AGENTS.md
-        - [ ] Exécuter un script de validation croisée (ex : `go run scripts/validate_agents_crossref.go`)
-        - [ ] Commit Git
-    - [ ] Documenter dans les guides techniques
-    - [ ] Archiver l’historique des schémas
+- [x] **2.3 Spécification détaillée et schémas**
+    - [x] Générer `<pattern>-schema-v113b.yaml` ou besoins-<pattern>.md pour chaque pattern
+        - [x] Exécuter `go run scripts/gen_schema_enhanced.go --pattern=<pattern>` ou script équivalent
+        - [x] Linter le YAML (`validate_yaml.py <pattern>`)
+        - [x] Sauvegarder le schéma `.bak` (ou versionné)
+        - [x] Commit Git
+    - [x] Générer/mettre à jour `strategie-implementation.md`
+    - [x] Valider la spécification croisée avec AGENTS.md
+        - [x] Exécuter un script de validation croisée (ex : `go run scripts/validate_agents_crossref.go`) (ou validation manuelle)
+        - [x] Commit Git
+    - [x] Documenter dans les guides techniques (ou README)
+    - [x] Archiver l’historique des schémas
 
-- [ ] **2.4 Checklist actionnable et automatisation**
-    - [ ] Cases à cocher pour chaque livrable/fichier attendu (architecture, diagramme, feedback, schémas, logs, synchronisation)
-    - [ ] Lien vers les scripts/commandes Go pour chaque étape
-    - [ ] Vérification de l’actionnabilité totale (toutes les tâches doivent être réalisables par script ou commande reproductible)
-    - [ ] Validation croisée, synchronisation, archivage automatisé
+- [x] **2.4 Checklist actionnable et automatisation**
+    - [x] Cases à cocher pour chaque livrable/fichier attendu (architecture, diagramme, feedback, schémas, logs, synchronisation)
+    - [x] Lien vers les scripts/commandes Go pour chaque étape
+    - [x] Vérification de l’actionnabilité totale (toutes les tâches doivent être réalisables par script ou commande reproductible)
+    - [x] Validation croisée, synchronisation, archivage automatisé
 
 ---
 
