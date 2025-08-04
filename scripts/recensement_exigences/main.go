@@ -52,6 +52,10 @@ type Recensement struct {
 	Exigences []Exigence `yaml:"exigences"`
 }
 
+/*
+ATTENTION : Fonction renommée pour éviter conflit de linkage Go lors de l'exécution d'autres scripts du package.
+Pour lancer ce script seul, renommer temporairement en main.
+*/
 // Point d’entrée principal Roo-Code
 func main() {
 	em := &ErrorManager{}

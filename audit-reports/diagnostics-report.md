@@ -3,12 +3,10 @@
 ```
 >>> golangci-lint run ./...
 level=warning msg="[linters_context] copyloopvar: this linter is disabled because the Go version (1.20) of your project is lower than Go 1.22"
-level=error msg="[linters_context] typechecking error: d:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\managers\\smart-variable-manager\\interfaces\\smart_variable_manager.go:7:1: missing import path"
-level=error msg="[linters_context] typechecking error: d:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\managers\\smart-variable-manager\\interfaces\\smart_variable_manager.go:8:1: missing import path"
-level=error msg="[linters_context] typechecking error: d:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\managers\\smart-variable-manager\\interfaces\\smart_variable_manager.go:11:1: missing import path"
+level=error msg="[linters_context] typechecking error: D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\managers\\branching-manager\\levels\\level-1\\main.go:1:1: expected 'package', found 'EOF'"
 level=warning msg="[linters_context] intrange: this linter is disabled because the Go version (1.20) of your project is lower than Go 1.22"
-development\managers\smart-variable-manager\interfaces\smart_variable_manager.go:7:1: missing import path (typecheck)
-<<<<<<< HEAD
+development\managers\branching-manager\levels\level-1\main.go:1:1: expected 'package', found 'EOF' (typecheck)
+
 ^
 1 issues:
 * typecheck: 1
@@ -20,7 +18,7 @@ Erreur d'exécution : exit status 1
 >>> go vet ./...
 main.go:10:2: no required module provides package github.com/gin-gonic/gin; to add it:
 	go get github.com/gin-gonic/gin
-found packages main (auth_bench_test.go) and docmodule (doc_example.go) in d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1
+found packages main (auth_bench_test.go) and docmodule (doc_example.go) in D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1
 cmd\backup-qdrant\backup_qdrant.go:7:2: no required module provides package github.com/qdrant/go-client/qdrant; to add it:
 	go get github.com/qdrant/go-client/qdrant
 cmd\cli\cli.go:9:2: no required module provides package github.com/spf13/cobra; to add it:
@@ -31,13 +29,13 @@ cmd\configapi\configapi.go:7:2: no required module provides package github.com/g
 	go get github.com/gerivdb/email-sender-1/core/config
 cmd\debug_cache\debug_cache.go:7:2: no required module provides package github.com/gerivdb/email-sender-1/src/providers; to add it:
 	go get github.com/gerivdb/email-sender-1/src/providers
-cmd\email-server\email_server.go:5:2: no required module provides package github.com/gerivdb/email-sender-1/pkg/email; to add it:
+cmd\email-server\email_server.go:15:2: no required module provides package github.com/gerivdb/email-sender-1/pkg/email; to add it:
 	go get github.com/gerivdb/email-sender-1/pkg/email
-cmd\email-server\email_server.go:16:2: no required module provides package github.com/gorilla/mux; to add it:
+cmd\email-server\email_server.go:17:2: no required module provides package github.com/gorilla/mux; to add it:
 	go get github.com/gorilla/mux
-cmd\email-server\email_server.go:17:2: no required module provides package github.com/prometheus/client_golang/prometheus/promhttp; to add it:
+cmd\email-server\email_server.go:18:2: no required module provides package github.com/prometheus/client_golang/prometheus/promhttp; to add it:
 	go get github.com/prometheus/client_golang/prometheus/promhttp
-cmd\email-server\email_server.go:18:2: no required module provides package github.com/redis/go-redis/v9; to add it:
+cmd\email-server\email_server.go:19:2: no required module provides package github.com/redis/go-redis/v9; to add it:
 	go get github.com/redis/go-redis/v9
 cmd\event-listener-service\main.go:11:2: package email_sender/eventbus is not in std (C:\Program Files\Go\src\email_sender\eventbus)
 cmd\gateway-manager-cli\main.go:7:2: no required module provides package github.com/gerivdb/email-sender-1/development/managers/gateway-manager; to add it:
@@ -50,7 +48,7 @@ cmd\go\extractionparser\extractionparser.go:12:2: no required module provides pa
 	go get github.com/gerivdb/email-sender-1/core/ports
 cmd\go\graphgenerator\graphgenerator.go:10:2: no required module provides package github.com/gerivdb/email-sender-1/core/graphgen; to add it:
 	go get github.com/gerivdb/email-sender-1/core/graphgen
-found packages roadmap_orchestrator (roadmap_orchestrator.go) and main (roadmap_orchestrator_test.go) in d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\cmd\go\roadmap-orchestrator
+found packages roadmap_orchestrator (roadmap_orchestrator.go) and main (roadmap_orchestrator_test.go) in D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\cmd\go\roadmap-orchestrator
 cmd\hub-central\test.go:1:1: expected 'package', found 'EOF'
 cmd\infrastructure-api-server\infrastructure_api_server.go:13:2: no required module provides package github.com/gerivdb/email-sender-1/internal/api; to add it:
 	go get github.com/gerivdb/email-sender-1/internal/api
@@ -77,14 +75,14 @@ cmd\redis-demo\redis_demo.go:10:2: no required module provides package github.co
 cmd\redis-fallback-test\redis_fallback_test.go:1:1: expected 'package', found '<<'
 cmd\redis-test\redis_test.go:1:1: expected 'package', found '<<'
 cmd\scanmodules\scanmodules.go:7:2: package EMAIL_SENDER_1/scripts is not in std (C:\Program Files\Go\src\EMAIL_SENDER_1\scripts)
-found packages main (main.go) and scanmodules (scanmodules.go) in d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\cmd\scanmodules
+found packages main (main.go) and scanmodules (scanmodules.go) in D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\cmd\scanmodules
 cmd\server\server.go:1:1: expected 'package', found '<<'
 cmd\test_compile\test_compile.go:7:2: package EMAIL_SENDER_1/tools/pkg/manager is not in std (C:\Program Files\Go\src\EMAIL_SENDER_1\tools\pkg\manager)
 cmd\test_imports\test_imports.go:7:2: package EMAIL_SENDER_1/tools/operations/validation is not in std (C:\Program Files\Go\src\EMAIL_SENDER_1\tools\operations\validation)
 cmd\testgen\testgen.go:1:1: expected 'package', found '<<'
 cmd\validate_components\validate_components.go:8:2: no required module provides package github.com/gerivdb/email-sender-1/tools; to add it:
 	go get github.com/gerivdb/email-sender-1/tools
-found packages main (main.go) and validatecomponents (validate_components.go) in d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\cmd\validate_components
+found packages main (main.go) and validatecomponents (validate_components.go) in D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\cmd\validate_components
 cmd\vscode-diagnostic\vscode_diagnostic.go:11:2: package vscode-diagnostic-cli/config is not in std (C:\Program Files\Go\src\vscode-diagnostic-cli\config)
 core\config\validate.go:6:2: no required module provides package github.com/xeipuuv/gojsonschema; to add it:
 	go get github.com/xeipuuv/gojsonschema
@@ -109,7 +107,7 @@ development\hooks\commit-interceptor\main\advanced_classifier_test_main.go:11:2:
 development\managers\test_import_management_integration.go:9:2: "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/interfaces" is not a package path; see 'go help packages'
 development\managers\final_validation.go:8:2: no required module provides package github.com/gerivdb/email-sender-1/development/managers/dependency-manager; to add it:
 	go get github.com/gerivdb/email-sender-1/development/managers/dependency-manager
-found packages managers (audit_stack_phase_1_1_2.go) and main (phase_8_final_validation.go) in d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\managers
+found packages managers (audit_stack_phase_1_1_2.go) and main (phase_8_final_validation.go) in D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\managers
 development\managers\advanced-autonomy-manager\main_simple.go:14:2: package advanced-autonomy-manager/interfaces is not in std (C:\Program Files\Go\src\advanced-autonomy-manager\interfaces)
 development\managers\advanced-autonomy-manager\main_simple.go:15:2: package advanced-autonomy-manager/internal/config is not in std (C:\Program Files\Go\src\advanced-autonomy-manager\internal\config)
 development\managers\advanced-autonomy-manager\main_simple.go:16:2: package advanced-autonomy-manager/internal/discovery is not in std (C:\Program Files\Go\src\advanced-autonomy-manager\internal\discovery)
@@ -132,7 +130,7 @@ development\managers\advanced-autonomy-manager\cmd\main.go:13:2: package advance
 development\managers\advanced-autonomy-manager\internal\discovery\infrastructure_discovery.go:15:2: package EMAIL_SENDER_1/development/managers/advanced-autonomy-manager/internal/config is not in std (C:\Program Files\Go\src\EMAIL_SENDER_1\development\managers\advanced-autonomy-manager\internal\config)
 development\managers\advanced-autonomy-manager\internal\discovery\infrastructure_discovery.go:16:2: package EMAIL_SENDER_1/development/managers/advanced-autonomy-manager/internal/logging is not in std (C:\Program Files\Go\src\EMAIL_SENDER_1\development\managers\advanced-autonomy-manager\internal\logging)
 development\managers\advanced-autonomy-manager\internal\monitoring\manager_collector.go:1:1: expected 'package', found n
-found packages advanced_autonomy_manager (simple_freeze_fix.go) and validation (validate_arch.go) in d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\managers\advanced-autonomy-manager\validation
+found packages advanced_autonomy_manager (simple_freeze_fix.go) and validation (validate_arch.go) in D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\managers\advanced-autonomy-manager\validation
 development\managers\ai-template-manager\ai_template_manager.go:14:1: missing import path
 development\managers\ai-template-manager\interfaces\ai_template_manager.go:6:1: missing import path
 development\managers\ai-template-manager\internal\ai\pattern_processor.go:11:1: missing import path
@@ -211,7 +209,7 @@ development\managers\notification-manager\alert_manager.go:9:2: no required modu
 	go get github.com/gerivdb/email-sender-1/managers/notification-manager/interfaces
 development\managers\notification-manager\notification_manager.go:11:2: no required module provides package github.com/robfig/cron/v3; to add it:
 	go get github.com/robfig/cron/v3
-development\managers\roadmap-manager\roadmap-cli\panel_demo.go:3:5: expected 'package', found 'EOF'
+development\managers\roadmap-manager\roadmap-cli\panel_demo.go:3:4: expected 'package', found 'EOF'
 development\managers\roadmap-manager\roadmap-cli\cmd\priority-test.go:8:2: no required module provides package github.com/gerivdb/email-sender-1/cmd/roadmap-cli/priority; to add it:
 	go get github.com/gerivdb/email-sender-1/cmd/roadmap-cli/priority
 development\managers\roadmap-manager\roadmap-cli\cmd\priority-test.go:9:2: no required module provides package github.com/gerivdb/email-sender-1/cmd/roadmap-cli/types; to add it:
@@ -307,17 +305,13 @@ planning-ecosystem-sync\tools\sync-core\sql_storage.go:12:2: no required module 
 	go get github.com/mattn/go-sqlite3
 planning-ecosystem-sync\tools\sync-core\sql_storage.go:13:2: no required module provides package modernc.org/sqlite; to add it:
 	go get modernc.org/sqlite
-found packages core (conflict_detector.go) and sync_core (conflict_resolver.go) in d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\planning-ecosystem-sync\tools\sync-core
+found packages core (conflict_detector.go) and sync_core (conflict_resolver.go) in D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\planning-ecosystem-sync\tools\sync-core
 planning-ecosystem-sync\tools\validation\consistency-validator_test.go:1:1: expected 'package', found 'EOF'
 planning-ecosystem-sync\tools\validation\cmd\validator\main.go:12:2: package planning-ecosystem-sync/tools/validation is not in std (C:\Program Files\Go\src\planning-ecosystem-sync\tools\validation)
 planning-ecosystem-sync\tools\workflow-orchestrator\cmd\main.go:15:2: no required module provides package github.com/gerivdb/email-sender-1/planning-ecosystem-sync/tools/workflow-orchestrator; to add it:
 	go get github.com/gerivdb/email-sender-1/planning-ecosystem-sync/tools/workflow-orchestrator
 projet\cred\dependency_manager.go:18:2: no required module provides package golang.org/x/mod/modfile; to add it:
 	go get golang.org/x/mod/modfile
-scripts\error-resolution-pipeline\cmd\pipeline\main.go:18:2: no required module provides package github.com/gerivdb/email-sender-1/scripts/error-resolution-pipeline/pkg/detector; to add it:
-	go get github.com/gerivdb/email-sender-1/scripts/error-resolution-pipeline/pkg/detector
-scripts\error-resolution-pipeline\cmd\pipeline\main.go:19:2: no required module provides package github.com/gerivdb/email-sender-1/scripts/error-resolution-pipeline/pkg/resolver; to add it:
-	go get github.com/gerivdb/email-sender-1/scripts/error-resolution-pipeline/pkg/resolver
 src\indexing\markdown_reader.go:6:2: no required module provides package github.com/gomarkdown/markdown/ast; to add it:
 	go get github.com/gomarkdown/markdown/ast
 src\indexing\markdown_reader.go:7:2: no required module provides package github.com/gomarkdown/markdown/parser; to add it:
@@ -344,12 +338,12 @@ streaming\redis_streaming\intelligent_cache.go:8:2: no required module provides 
 	go get github.com/go-redis/redis/v8
 tests\sync-integration-test.go:16:2: no required module provides package github.com/stretchr/testify/suite; to add it:
 	go get github.com/stretchr/testify/suite
-tests\interface_validation\main_test.go:3:5: expected 'package', found 'EOF'
+tests\interface_validation\main_test.go:3:4: expected 'package', found 'EOF'
 tests\test_runners\simple_test.go:3:4: expected 'package', found 'EOF'
 tests\validation\validation_test.go:3:4: expected 'package', found 'EOF'
 tools\realtime-dashboard.go:11:2: no required module provides package github.com/gorilla/websocket; to add it:
 	go get github.com/gorilla/websocket
-found packages tools (alert-manager.go) and main (debug_project_structure.go) in d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\tools
+found packages tools (alert-manager.go) and main (debug_project_structure.go) in D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\tools
 tools\db-integration-tests\testdb\setup.go:4:2: no required module provides package github.com/jmoiron/sqlx; to add it:
 	go get github.com/jmoiron/sqlx
 tools\diff_edit\go\main.go:8:2: no required module provides package github.com/gerivdb/email-sender-1/tools/diff_edit/go/diffeditgo; to add it:
@@ -591,6 +585,21 @@ CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
 Erreur d'exécution : exit status 1
 
 Fichier : azure-pipelines\mode-manager-tests.yml
+>>> go run scripts/lint-yaml.go
+CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
+Erreur d'exécution : exit status 1
+
+Fichier : backup\20250803-200038\.golangci.yaml
+>>> go run scripts/lint-yaml.go
+CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
+Erreur d'exécution : exit status 1
+
+Fichier : backup\20250803-200038\config.yaml
+>>> go run scripts/lint-yaml.go
+CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
+Erreur d'exécution : exit status 1
+
+Fichier : besoins-automatisation-doc-v113b.yaml
 >>> go run scripts/lint-yaml.go
 CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
 Erreur d'exécution : exit status 1
@@ -1400,6 +1409,11 @@ Fichier : projet\security\backups\sessions\20250603-114716-77f4019f-bcfc-4325-bc
 CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
 Erreur d'exécution : exit status 1
 
+Fichier : scripts\automatisation_doc\audit_schema.yaml
+>>> go run scripts/lint-yaml.go
+CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
+Erreur d'exécution : exit status 1
+
 Fichier : scripts\automatisation_doc\batch_manager_schema.yaml
 >>> go run scripts/lint-yaml.go
 CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
@@ -1425,6 +1439,11 @@ Fichier : scripts\automatisation_doc\error_manager_schema.yaml
 CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
 Erreur d'exécution : exit status 1
 
+Fichier : scripts\automatisation_doc\fallback-strategies.yaml
+>>> go run scripts/lint-yaml.go
+CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
+Erreur d'exécution : exit status 1
+
 Fichier : scripts\automatisation_doc\fallback_schema.yaml
 >>> go run scripts/lint-yaml.go
 CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
@@ -1440,6 +1459,26 @@ Fichier : scripts\automatisation_doc\pipeline_schema.yaml
 CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
 Erreur d'exécution : exit status 1
 
+Fichier : scripts\automatisation_doc\pooling_schema.yaml
+>>> go run scripts/lint-yaml.go
+CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
+Erreur d'exécution : exit status 1
+
+Fichier : scripts\automatisation_doc\progressivesync_schema.yaml
+>>> go run scripts/lint-yaml.go
+CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
+Erreur d'exécution : exit status 1
+
+Fichier : scripts\automatisation_doc\reportingui_schema.yaml
+>>> go run scripts/lint-yaml.go
+CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
+Erreur d'exécution : exit status 1
+
+Fichier : scripts\automatisation_doc\rollback_schema.yaml
+>>> go run scripts/lint-yaml.go
+CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
+Erreur d'exécution : exit status 1
+
 Fichier : scripts\automatisation_doc\session_schema.yaml
 >>> go run scripts/lint-yaml.go
 CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
@@ -1451,6 +1490,11 @@ CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
 Erreur d'exécution : exit status 1
 
 Fichier : scripts\automatisation_doc\synchronisation_schema.yaml
+>>> go run scripts/lint-yaml.go
+CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
+Erreur d'exécution : exit status 1
+
+Fichier : scripts\automatisation_doc\uxmetrics_schema.yaml
 >>> go run scripts/lint-yaml.go
 CreateFile scripts/lint-yaml.go: Le fichier spécifié est introuvable.
 Erreur d'exécution : exit status 1

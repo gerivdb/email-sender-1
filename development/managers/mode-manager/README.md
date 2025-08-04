@@ -78,6 +78,6 @@ jobs:
 Ajoutez ce badge en haut du README pour visualiser le statut CI :
 
 ```markdown
-[![Tests Go](https://github.com/<votre-org>/<votre-repo>/actions/workflows/go.yml/badge.svg)](https://github.com/<votre-org>/<votre-repo>/actions/workflows/go.yml)
+[![Tests Go](https://github.com/gerivdb/email-sender-1/actions/workflows/go.yml/badge.svg)](https://github.com/gerivdb/email-sender-1/actions/workflows/go.yml)
 ```
 Remplacez `<votre-org>` et `<votre-repo>` par les valeurs adaptées à votre dépôt GitHub.

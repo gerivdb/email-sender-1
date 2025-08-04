@@ -6,6 +6,57 @@ Ce document synthétise la démarche, les scripts, les corrections et la traçab
 
 ---
 
+## Procédure de feedback utilisateur et amélioration continue (Roo Code v113)
+
+### Objectif
+
+Formaliser la collecte, la traçabilité et l’intégration des retours utilisateurs/personas pour renforcer la robustesse, la pertinence et l’évolutivité documentaire Roo Code.
+
+### Étapes
+
+1. **Collecte structurée des feedbacks**
+   - Utiliser des formulaires, issues GitHub ou canaux dédiés pour centraliser les retours (bugs, suggestions, incompréhensions, besoins non couverts).
+   - Catégoriser chaque feedback : correction, amélioration, documentation, UX, sécurité, etc.
+
+2. **Traçabilité et historisation**
+   - Reporter chaque feedback dans le carnet de bord projet ou dans un fichier dédié (`feedback-utilisateurs.md` ou section dédiée du README).
+   - Lier chaque retour à une version, un artefact ou une phase du plan (ex : v113, rapport QA, batch, pipeline).
+
+3. **Analyse et priorisation**
+   - Évaluer l’impact et la fréquence des retours.
+   - Prioriser les actions correctives ou évolutives lors des revues de roadmap ou de sprint.
+
+4. **Intégration continue**
+   - Planifier les corrections/améliorations dans la checklist-actionnable et la roadmap.
+   - Documenter chaque action issue d’un feedback dans `fixes-applied.md`, `corrections-report.md` ou le changelog.
+   - Mettre à jour la documentation utilisateur et technique après chaque itération.
+
+5. **Boucle d’amélioration continue**
+   - Organiser des revues croisées régulières (reviewers, QA, utilisateurs clés).
+   - Intégrer les feedbacks dans les prompts, guides, scripts et modèles.
+   - Archiver les feedbacks traités et documenter les axes d’amélioration dans la section auto-critique.
+
+### Bonnes pratiques Roo
+
+- Impliquer systématiquement les personas (développeur, contributeur, architecte, QA) dans la validation des livrables.
+- Historiser tous les retours et décisions dans la documentation centrale ([AGENTS.md](AGENTS.md), [plan-dev-v113-autmatisation-doc-roo.md](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md), [checklist-actionnable.md](checklist-actionnable.md)).
+- Utiliser les managers Roo (DocManager, ErrorManager, MonitoringManager) pour centraliser logs, feedbacks et métriques.
+- Synchroniser la documentation après chaque phase de feedback (README, guides, rapports).
+- Prévoir une section “Questions ouvertes & axes d’amélioration” dans chaque rapport ou guide.
+
+### Références croisées
+
+- [Guide agents IA, personas & AGILE](.github/docs/guides/agents-ia-personas-agile.md)
+- [AGENTS.md](AGENTS.md)
+- [plan-dev-v113-autmatisation-doc-roo.md](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md)
+- [checklist-actionnable.md](checklist-actionnable.md)
+- [fixes-applied.md](fixes-applied.md)
+- [corrections-report.md](corrections-report.md)
+
+---
+
+---
+
 ## Scripts et livrables principaux
 
 - **Extraction des erreurs** : `scripts/extract_errors/main.go` → `errors-extracted.json`

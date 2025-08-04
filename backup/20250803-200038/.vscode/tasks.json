@@ -1,0 +1,87 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Nettoyage manuel des go.mod parasites",
+      "type": "shell",
+      "command": "bash cleanup-go-mods.sh",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      }
+    },
+    {
+      "label": "Codacy - Analyse statique complète",
+      "type": "shell",
+      "command": "java",
+      "args": [
+        "-jar",
+        "C:/Program Files/CodacyCLI/codacy-analysis-cli-assembly.jar",
+        "analyze",
+        "--directory",
+        ".",
+        "--output",
+        "results-codacy.json"
+      ],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Codacy - Sécurité des dépendances (Trivy)",
+      "type": "shell",
+      "command": "java",
+      "args": [
+        "-jar",
+        "C:/Program Files/CodacyCLI/codacy-analysis-cli-assembly.jar",
+        "analyze",
+        "--tool",
+        "trivy",
+        "--directory",
+        ".",
+        "--output",
+        "trivy-results.json"
+      ],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Codacy - Analyse d'un fichier",
+      "type": "shell",
+      "command": "java",
+      "args": [
+        "-jar",
+        "C:/Program Files/CodacyCLI/codacy-analysis-cli-assembly.jar",
+        "analyze",
+        "--directory",
+        "${file}",
+        "--output",
+        "result-${fileBasenameNoExtension}.json"
+      ],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Codacy - Duplication de code",
+      "type": "shell",
+      "command": "java",
+      "args": [
+        "-jar",
+        "C:/Program Files/CodacyCLI/codacy-analysis-cli-assembly.jar",
+        "analyze",
+        "--tool",
+        "duplication",
+        "--directory",
+        ".",
+        "--output",
+        "duplication.json"
+      ],
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}

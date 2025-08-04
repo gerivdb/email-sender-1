@@ -1,0 +1,43 @@
+version: "2"
+linters:
+  default: all
+  settings:
+    govet:
+      enable:
+        - shadow # Equivalent to check-shadowing: true
+    errcheck:
+      check-blank: true
+  exclusions:
+    paths:
+      - vendor
+      - test
+  disable:
+    - staticcheck # Temporarily disabled for import debugging
+    - prealloc
+    - gochecknoglobals
+    - gochecknoinits
+    - wrapcheck
+    - nlreturn
+    - funlen
+    - testpackage
+    - wsl
+    - paralleltest
+    - varnamelen
+    - depguard
+    - godox
+    - ireturn
+    - tagliatelle
+    - goheader
+    - nonamedreturns
+    - nakedret
+    - revive # golint is preferred
+    - rowserrcheck # Deprecated
+    - sqlclosecheck # Deprecated
+    - dupl
+    - lll
+    - cyclop
+    - gocognit
+run:
+  timeout: 5m
+  issues-exit-code: 1
+  tests: false

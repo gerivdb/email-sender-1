@@ -1,0 +1,37 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-filesystem",
+        "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
+      ],
+      "disabled": false
+    },
+    "git": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-git",
+        "--repository",
+        "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
+      ],
+      "disabled": false
+    },
+  "awslabs.code-doc-gen-mcp-server": {
+    "command": "C:\\Python312\\Scripts\\awslabs.code-doc-gen-mcp-server.exe",
+    "env": {
+      "FASTMCP_LOG_LEVEL": "INFO"
+    },
+    "disabled": false,
+    "autoApprove": []
+  },
+  "github.com/executeautomation/mcp-playwright": {
+    "command": "npx",
+    "args": [
+      "@executeautomation/playwright-mcp-server"
+    ],
+    "disabled": false,
+    "autoApprove": []
+  }
+  }
+}
