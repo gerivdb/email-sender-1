@@ -1,66 +1,20 @@
-### Phase 1 : Recensement des besoins ReportingUI
+# Besoins ReportingUI
 
-- **Objectif** : Recueillir, formaliser et valider les besoins pour le pattern ReportingUI (interface de reporting documentaire Roo).
-- **Livrables** : `besoins-ReportingUI.yaml`, `rapport-ecart-ReportingUI.md`
-- **Dépendances** : Spécifications UX, artefacts Roo ReportingUI, intégration avec MonitoringManager, accès aux métriques, dépendance à la stack CI/CD.
-- **Risques** : Ambiguïté des besoins utilisateurs, dérive UX, non-alignement avec les métriques collectées, dette technique sur la stack UI, dépendance à des APIs non stabilisées.
-- **Outils/Agents mobilisés** : Script Go, plugin d’analyse statique, feedback utilisateur, tests automatisés, intégration MonitoringManager, CI/CD.
-- **Tâches** :
-  - [ ] Générer le script Go `recensement_reportingui.go` pour scanner les besoins UI.
-  - [ ] Exécuter `go run scripts/recensement_reportingui.go --output=besoins-ReportingUI.yaml`
-  - [ ] Valider la complétude via `go test scripts/recensement_reportingui_test.go`
-  - [ ] Documenter la procédure dans `README.md`
-  - [ ] Collecter le feedback utilisateur sur les maquettes UI
-  - [ ] Vérifier l’alignement avec les artefacts Roo et la stack MonitoringManager
-  - [ ] Générer le rapport d’écart `rapport-ecart-ReportingUI.md`
-- **Commandes** :
-  - `go run scripts/recensement_reportingui.go`
-  - `go test scripts/recensement_reportingui_test.go`
-- **Fichiers attendus** :
-  - `besoins-ReportingUI.yaml`
-  - `rapport-ecart-ReportingUI.md`
-  - `scripts/recensement_reportingui.go`
-  - `scripts/recensement_reportingui_test.go`
-  - Documentation dans [`README.md`](README.md)
-- **Critères de validation** :
-  - 100 % de couverture test sur le parsing YAML
-  - Rapport généré conforme au schéma Roo
-  - Validation croisée avec les parties prenantes UX et Monitoring
-  - Revue croisée par un pair
-  - Alignement avec les artefacts Roo et la stack CI/CD
-- **Rollback/versionning** :
-  - Sauvegarde automatique `besoins-ReportingUI.yaml.bak`
-  - Commit Git avant modification
-  - Procédures rollback dans [`scripts/automatisation_doc/reportingui_manager_rollback.md`](scripts/automatisation_doc/reportingui_manager_rollback.md)
-- **Orchestration & CI/CD** :
-  - Ajout du job dans [`ci.yml`](.github/workflows/ci.yml)
-  - Monitoring automatisé du pipeline
-  - Badge de couverture test
-- **Documentation & traçabilité** :
-  - Documentation dans [`README.md`](README.md)
-  - Reporting automatisé dans `rapport-ecart-ReportingUI.md`
-  - Liens croisés vers [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md)
-- **Risques & mitigation** :
-  - Dérive UX : revue régulière avec les parties prenantes
-  - Non-alignement métriques/UI : tests d’intégration avec MonitoringManager
-  - Dette technique UI : refactoring planifié, documentation continue
-  - APIs instables : fallback, versionning, documentation des endpoints
-- **Questions ouvertes, hypothèses & ambiguïtés** :
-  - Hypothèse : Les besoins utilisateurs sont accessibles et documentés.
-  - Question : Existe-t-il une maquette validée pour le ReportingUI ?
-  - Ambiguïté : Les métriques à exposer sont-elles figées ou évolutives ?
-- **Auto-critique & raffinement** :
-  - Limite : Le script ne détecte pas les besoins implicites UX.
-  - Suggestion : Ajouter une étape d’interview utilisateur ou d’analyse sémantique.
-  - Feedback : Intégrer un agent LLM pour détecter incohérences ou manques dans les besoins UI.
-
----
-**Artefacts Roo ReportingUI** :
-- Schéma YAML Roo : [`reportingui_schema.yaml`](scripts/automatisation_doc/reportingui_schema.yaml)
-- Implémentation Go : [`reportingui_manager.go`](scripts/automatisation_doc/reportingui_manager.go)
-- Spécification technique : [`reportingui_manager_spec.md`](scripts/automatisation_doc/reportingui_manager_spec.md)
-- Tests unitaires : [`reportingui_manager_test.go`](scripts/automatisation_doc/reportingui_manager_test.go)
-- Rapport d’audit : [`reportingui_manager_report.md`](scripts/automatisation_doc/reportingui_manager_report.md)
-- Procédures rollback : [`reportingui_manager_rollback.md`](scripts/automatisation_doc/reportingui_manager_rollback.md)
-
-**Plan de référence** : [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md)
+reportingui:
+  description: >
+    Automatiser la génération, l’agrégation et la visualisation des rapports d’état documentaire Roo via une interface utilisateur dédiée (UI), intégrée à l’écosystème Roo Code, pour garantir la traçabilité, la transparence et l’aide à la décision.
+  exigences:
+    - génération rapports UI
+    - agrégation rapports
+    - visualisation interactive
+    - audit reporting UI
+    - reporting automatisé
+  risques:
+    - surcharge agrégation
+    - divergence données affichées
+    - faille de sécurité
+  dépendances:
+    - ReportingUIManager
+    - DocManager
+    - MonitoringManager
+    - AuditManager
