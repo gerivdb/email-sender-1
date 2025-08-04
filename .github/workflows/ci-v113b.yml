@@ -1,0 +1,24 @@
+name: Validation Conformité v113b
+
+on: [push, pull_request]
+
+jobs:
+  validate-conformity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validation Conformité Obligatoire
+        run: |
+          chmod +x validation-conformite-v113b.sh
+          ./validation-conformite-v113b.sh
+
+      - name: Blocage si non-conforme
+        if: failure()
+        run: |
+          echo "🚫 MERGE BLOQUÉ: v113b non conforme à v113"
+          echo "📋 Actions requises:"
+          echo "  1. Ajouter tous les patterns manquants"
+          echo "  2. Respecter la structure obligatoire par pattern"
+          echo "  3. Atteindre minimum 2000 lignes de contenu"
+          exit 1

@@ -138,83 +138,646 @@
 
 ---
 
-## PHASE 3 — Développement atomique & Automatisation
 
-- [ ] **3.1 Développement Go natif par pattern**
-    - [ ] Pour chaque pattern (`Session`, `Pipeline`, `Batch`, `Fallback`, `Monitoring`, `Audit`, `Rollback`, `UXMetrics`, `ProgressiveSync`, `Pooling`, `ReportingUI`) :
-        - [ ] **3.1.1 Création du manager Go**
-            - [ ] Créer `scripts/<pattern>-manager-v113b.go`
-                - [ ] Définir l’interface du manager
-                    - [ ] Lister les méthodes publiques attendues
-                    - [ ] Définir les structures de données internes
-                    - [ ] Documenter chaque méthode
-                - [ ] Implémenter la logique métier principale
-                    - [ ] Gérer les cas nominaux
-                    - [ ] Gérer les cas d’erreur et exceptions
-                    - [ ] Ajouter la journalisation contextuelle
-                - [ ] Sauvegarder le fichier `.bak`
-                - [ ] Commit Git
-            - [ ] Compiler le manager
-                - [ ] Exécuter `go build scripts/<pattern>-manager-v113b.go`
-                - [ ] Vérifier l’absence d’erreurs
-                - [ ] Générer le badge build
-            - [ ] Documenter (docstring, README, guides d’usage)
-            - [ ] Archiver le log build et versioning
+## PHASE 3 — Implémentation granularisée, automatisable et testée des patterns d’automatisation documentaire
 
-        - [ ] **3.1.2 Tests unitaires & intégration**
-            - [ ] Créer `<pattern>_manager_v113b_test.go`
-                - [ ] Couvrir chaque méthode publique
-                - [ ] Tester les cas limites et erreurs
-                - [ ] Générer un rapport de couverture
-            - [ ] Exécuter `go test -cover scripts/<pattern>_manager_v113b_test.go`
-            - [ ] Générer le badge coverage
-            - [ ] Sauvegarder les tests `.bak`
-            - [ ] Commit Git
-            - [ ] Documenter le guide de tests et exemples
-            - [ ] Archiver logs tests et rapports coverage
+> **Contrainte : Cette phase doit respecter la granularité, la structure et l’actionnabilité du plan v113 original. Chaque pattern ci-dessous doit être présent, détaillé et actionnable.**
 
-        - [ ] **3.1.3 Intégration hooks/plugins**
-            - [ ] Créer `plugins/<pattern>_enhanced_*.go`
-                - [ ] Définir les points d’extension
-                - [ ] Implémenter un plugin de test
-                - [ ] Documenter l’intégration plugin
-            - [ ] Compiler les plugins
-                - [ ] Exécuter `go build plugins/<pattern>_enhanced_*.go`
-                - [ ] Vérifier l’absence d’erreurs
-                - [ ] Générer le badge plugin
-            - [ ] Sauvegarder les plugins `.bak`
-            - [ ] Commit Git
-            - [ ] Documenter (doc plugin, README)
-            - [ ] Archiver log plugin et versioning
+---
 
-        - [ ] **3.1.4 Génération logs, rapports, badges**
-            - [ ] Générer `rapport-<pattern>-v113b.md`
-                - [ ] Exécuter `go run scripts/gen_report_enhanced.go --pattern=<pattern>`
-                - [ ] Vérifier la validité du rapport
-                - [ ] Générer le badge CI
-            - [ ] Sauvegarder le rapport `.bak`
-            - [ ] Commit Git
-            - [ ] Documenter le guide reporting
-            - [ ] Archiver logs/rapports
+### Pattern 1 : SessionManager
 
-        - [ ] **3.1.5 Documentation & guides d’usage**
-            - [ ] Générer/mettre à jour `README-v113b.md`
-                - [ ] Ajouter des exemples d’utilisation
-                - [ ] Mettre à jour la FAQ
-            - [ ] Générer automatiquement ou manuellement
-            - [ ] Sauvegarder le README `.bak`
-            - [ ] Commit Git
-            - [ ] Archiver historique docs
+#### Objectif
+Gérer l’état documentaire d’une session utilisateur, assurer la cohérence et la persistance temporaire des modifications.
 
-        - [ ] **3.1.6 Intégration SimpleAdvancedAutonomyManager**
-            - [ ] Intégrer l’orchestration autonome
-                - [ ] Exécuter `go run scripts/autonomous_orchestration.go --validate --patterns=all`
-                - [ ] Tester l’intégration autonome
-                - [ ] Générer le badge orchestration
-            - [ ] Sauvegarder la config `.bak`
-            - [ ] Commit Git
-            - [ ] Documenter la doc orchestration
-            - [ ] Archiver logs orchestration
+#### Livrables
+- `session-manager.go` (implémentation Go native)
+- `session-schema.yaml` (schéma YAML validé)
+- `session_manager_test.go` (tests unitaires 100% couverture)
+- `rapport-session.md` (rapport d'audit)
+- `session_manager_rollback.md` (procédures rollback)
+
+#### Dépendances
+- DocManager, ContextManager, StorageManager
+
+#### Risques & Mitigation
+- Perte de session, incohérence d’état, fuite mémoire, collision d’ID
+- Tests de charge, monitoring, génération UUID, validation
+
+#### Outils/Agents mobilisés
+- DocManager, ContextManager, ScriptManager, ErrorManager
+
+#### Tâches actionnables
+- [ ] Générer/valider `session-schema.yaml`
+- [ ] Implémenter `session-manager.go`
+- [ ] Ajouter hooks/plugins de persistance
+- [ ] Écrire `session_manager_test.go`
+- [ ] Générer `rapport-session.md`
+- [ ] Documenter l’API dans `README.md`
+- [ ] Procédures rollback dans `session_manager_rollback.md`
+- [ ] Commit Git à chaque étape
+
+#### Scripts/Commandes
+- `go run scripts/session_manager.go`
+- `go test scripts/session_manager_test.go`
+- `go run scripts/gen_report.go --pattern=session`
+
+#### Fichiers attendus
+- `scripts/session_manager.go`, `session-schema.yaml`, `session_manager_test.go`, `rapport-session.md`, `session_manager_rollback.md`, `README.md`
+
+#### Critères de validation
+- 100% couverture test sur la restauration de session
+- Compilation Go sans erreur, validation YAML réussie
+- Reporting automatisé fonctionnel
+
+#### Rollback/versionning
+- Sauvegarde automatique de l’état de session, commit Git avant modification
+
+#### Orchestration & CI/CD
+- Intégration du manager dans le pipeline CI/CD
+
+#### Documentation & traçabilité
+- Section session dans `README.md`, logs d’audit générés
+
+#### Questions ouvertes, hypothèses & ambiguïtés
+- Un utilisateur peut-il avoir plusieurs sessions actives ?
+
+#### Auto-critique & raffinement
+- Limite : Non prise en charge du clustering multi-instance
+
+---
+
+### Pattern 2 : PipelineManager
+
+#### Objectif
+Orchestrer le traitement séquentiel ou parallèle de documents via un pipeline automatisé, intégrant extensions, hooks et reporting.
+
+#### Livrables
+- `pipeline-manager.go`, `pipeline-schema.yaml`, `pipeline_manager_test.go`, `rapport-pipeline.md`, `pipeline_manager_rollback.md`
+
+#### Dépendances
+- N8NManager, DocManager, PluginInterface
+
+#### Risques & Mitigation
+- Dérive documentaire, échec pipeline, surcharge logs
+- Tests unitaires, reporting, monitoring
+
+#### Outils/Agents mobilisés
+- PipelineManager, PluginInterface, DocManager
+
+#### Tâches actionnables
+- [ ] Générer/valider `pipeline-schema.yaml`
+- [ ] Implémenter `pipeline-manager.go`
+- [ ] Ajouter hooks/plugins
+- [ ] Écrire `pipeline_manager_test.go`
+- [ ] Générer `rapport-pipeline.md`
+- [ ] Documenter l’API dans `README.md`
+- [ ] Procédures rollback dans `pipeline_manager_rollback.md`
+- [ ] Commit Git à chaque étape
+
+#### Scripts/Commandes
+- `go run scripts/pipeline_manager.go`
+- `go test scripts/pipeline_manager_test.go`
+- `go run scripts/gen_report.go --pattern=pipeline`
+
+#### Fichiers attendus
+- `scripts/pipeline_manager.go`, `pipeline-schema.yaml`, `pipeline_manager_test.go`, `rapport-pipeline.md`, `pipeline_manager_rollback.md`, `README.md`
+
+#### Critères de validation
+- 100% couverture test sur la synchronisation pipeline
+- Compilation Go sans erreur, validation YAML réussie
+
+#### Rollback/versionning
+- Sauvegarde automatique, commit Git avant modification
+
+#### Orchestration & CI/CD
+- Intégration dans le pipeline CI/CD
+
+#### Documentation & traçabilité
+- Section pipeline dans `README.md`, logs d’exécution
+
+#### Questions ouvertes, hypothèses & ambiguïtés
+- Pipelines dynamiques supportés ?
+
+#### Auto-critique & raffinement
+- Limite : Complexité de debug sur gros pipeline
+
+---
+
+### Pattern 3 : BatchManager
+
+#### Objectif
+Automatiser le traitement massif de lots documentaires, garantir la robustesse, la traçabilité et la reprise sur erreur.
+
+#### Livrables
+- `batch-manager.go`, `batch-schema.yaml`, `batch_manager_test.go`, `rapport-batch.md`, `batch_manager_rollback.md`
+
+#### Dépendances
+- ProcessManager, DocManager, ErrorManager, StorageManager
+
+#### Risques & Mitigation
+- Perte de données, surcharge mémoire, blocage de file
+- Limitation de taille de lot, monitoring
+
+#### Outils/Agents mobilisés
+- BatchManager, ProcessManager, ErrorManager
+
+#### Tâches actionnables
+- [ ] Générer/valider `batch-schema.yaml`
+- [ ] Implémenter `batch-manager.go`
+- [ ] Ajouter hooks/plugins de reprise
+- [ ] Écrire `batch_manager_test.go`
+- [ ] Générer `rapport-batch.md`
+- [ ] Documenter l’API dans `README.md`
+- [ ] Procédures rollback dans `batch_manager_rollback.md`
+- [ ] Commit Git à chaque étape
+
+#### Scripts/Commandes
+- `go run scripts/batch_manager.go`
+- `go test scripts/batch_manager_test.go`
+- `go run scripts/gen_report.go --pattern=batch`
+
+#### Fichiers attendus
+- `scripts/batch_manager.go`, `batch-schema.yaml`, `batch_manager_test.go`, `rapport-batch.md`, `batch_manager_rollback.md`, `README.md`
+
+#### Critères de validation
+- 100% couverture test sur la reprise batch
+- Compilation Go sans erreur, validation YAML réussie
+
+#### Rollback/versionning
+- Sauvegarde automatique, commit Git avant modification
+
+#### Orchestration & CI/CD
+- Intégration dans le pipeline CI/CD
+
+#### Documentation & traçabilité
+- Section batch dans `README.md`, logs batch
+
+#### Questions ouvertes, hypothèses & ambiguïtés
+- Traitement parallèle des lots ?
+
+#### Auto-critique & raffinement
+- Limite : Debug difficile sur échec partiel
+
+---
+
+### Pattern 4 : FallbackManager
+
+#### Objectif
+Garantir la continuité documentaire en cas d’échec d’un composant, d’un agent ou d’une opération critique, via des stratégies de repli automatisées, traçables et testées.
+
+#### Livrables
+- `fallback-manager.go`, `fallback-schema.yaml`, `fallback_manager_test.go`, `rapport-fallback.md`, `fallback_manager_rollback.md`
+
+#### Dépendances
+- SmartMergeManager, ErrorManager, DocManager, PluginInterface
+
+#### Risques & Mitigation
+- Fallback silencieux, perte de données
+- Monitoring renforcé, alertes automatiques
+
+#### Outils/Agents mobilisés
+- FallbackManager, SmartMergeManager, ErrorManager
+
+#### Tâches actionnables
+- [ ] Générer/valider `fallback-schema.yaml`
+- [ ] Implémenter `fallback-manager.go`
+- [ ] Ajouter hooks/plugins de fallback
+- [ ] Écrire `fallback_manager_test.go`
+- [ ] Générer `rapport-fallback.md`
+- [ ] Documenter l’API dans `README.md`
+- [ ] Procédures rollback dans `fallback_manager_rollback.md`
+- [ ] Commit Git à chaque étape
+
+#### Scripts/Commandes
+- `go run scripts/fallback_manager.go`
+- `go test scripts/fallback_manager_test.go`
+- `go run scripts/gen_report.go --pattern=fallback`
+
+#### Fichiers attendus
+- `scripts/fallback_manager.go`, `fallback-schema.yaml`, `fallback_manager_test.go`, `rapport-fallback.md`, `fallback_manager_rollback.md`, `README.md`
+
+#### Critères de validation
+- 100% couverture test sur les handlers de fallback
+- Compilation Go sans erreur, validation YAML réussie
+
+#### Rollback/versionning
+- Procédure de restauration documentaire, commit Git avant modification
+
+#### Orchestration & CI/CD
+- Intégration dans le pipeline CI/CD
+
+#### Documentation & traçabilité
+- Section fallback dans `README.md`, logs détaillés
+
+#### Questions ouvertes, hypothèses & ambiguïtés
+- Fallback multi-niveaux supporté ?
+
+#### Auto-critique & raffinement
+- Limite : Complexité si trop de stratégies personnalisées
+
+---
+
+### Pattern 5 : MonitoringManager
+
+#### Objectif
+Superviser en continu l’écosystème documentaire, collecter les métriques, détecter les incidents et générer des alertes/actionnables.
+
+#### Livrables
+- `monitoring-manager.go`, `monitoring-schema.yaml`, `monitoring_manager_test.go`, `rapport-monitoring.md`, `monitoring_manager_rollback.md`
+
+#### Dépendances
+- MonitoringManager, ErrorManager, NotificationManagerImpl, DocManager, PluginInterface
+
+#### Risques & Mitigation
+- Non-détection incidents, surcharge logs
+- Tests de couverture, rotation logs
+
+#### Outils/Agents mobilisés
+- MonitoringManager, ErrorManager, NotificationManagerImpl
+
+#### Tâches actionnables
+- [ ] Générer/valider `monitoring-schema.yaml`
+- [ ] Implémenter `monitoring-manager.go`
+- [ ] Ajouter hooks/plugins de monitoring
+- [ ] Écrire `monitoring_manager_test.go`
+- [ ] Générer `rapport-monitoring.md`
+- [ ] Documenter l’API dans `README.md`
+- [ ] Procédures rollback dans `monitoring_manager_rollback.md`
+- [ ] Commit Git à chaque étape
+
+#### Scripts/Commandes
+- `go run scripts/monitoring_manager.go`
+- `go test scripts/monitoring_manager_test.go`
+- `go run scripts/gen_report.go --pattern=monitoring`
+
+#### Fichiers attendus
+- `scripts/monitoring_manager.go`, `monitoring-schema.yaml`, `monitoring_manager_test.go`, `rapport-monitoring.md`, `monitoring_manager_rollback.md`, `README.md`
+
+#### Critères de validation
+- 100% couverture test sur la détection d’incidents
+- Compilation Go sans erreur, validation YAML réussie
+
+#### Rollback/versionning
+- Procédure de restauration des métriques/logs
+
+#### Orchestration & CI/CD
+- Intégration dans le pipeline CI/CD
+
+#### Documentation & traçabilité
+- Section monitoring dans `README.md`, logs détaillés
+
+#### Questions ouvertes, hypothèses & ambiguïtés
+- Seuils d’alerte dynamiques supportés ?
+
+#### Auto-critique & raffinement
+- Limite : Risque de bruit si trop d’alertes
+
+---
+
+### Pattern 6 : AuditManager
+
+#### Objectif
+Assurer la traçabilité, la conformité et l’analyse des opérations documentaires via un audit automatisé, centralisé et extensible.
+
+#### Livrables
+- `audit-manager.go`, `audit-schema.yaml`, `audit_manager_test.go`, `rapport-audit.md`, `audit_manager_rollback.md`
+
+#### Dépendances
+- AuditManager, DocManager, ErrorManager, StorageManager, PluginInterface
+
+#### Risques & Mitigation
+- Logs incomplets, surcharge stockage
+- Tests de couverture, rotation logs
+
+#### Outils/Agents mobilisés
+- AuditManager, DocManager, ErrorManager
+
+#### Tâches actionnables
+- [ ] Générer/valider `audit-schema.yaml`
+- [ ] Implémenter `audit-manager.go`
+- [ ] Ajouter hooks/plugins d’audit
+- [ ] Écrire `audit_manager_test.go`
+- [ ] Générer `rapport-audit.md`
+- [ ] Documenter l’API dans `README.md`
+- [ ] Procédures rollback dans `audit_manager_rollback.md`
+- [ ] Commit Git à chaque étape
+
+#### Scripts/Commandes
+- `go run scripts/audit_manager.go`
+- `go test scripts/audit_manager_test.go`
+- `go run scripts/gen_report.go --pattern=audit`
+
+#### Fichiers attendus
+- `scripts/audit_manager.go`, `audit-schema.yaml`, `audit_manager_test.go`, `rapport-audit.md`, `audit_manager_rollback.md`, `README.md`
+
+#### Critères de validation
+- 100% couverture test sur la collecte des logs
+- Compilation Go sans erreur, validation YAML réussie
+
+#### Rollback/versionning
+- Procédure de restauration des logs
+
+#### Orchestration & CI/CD
+- Intégration dans le pipeline CI/CD
+
+#### Documentation & traçabilité
+- Section audit dans `README.md`, logs détaillés
+
+#### Questions ouvertes, hypothèses & ambiguïtés
+- Règles d’audit dynamiques supportées ?
+
+#### Auto-critique & raffinement
+- Limite : Risque de bruit dans les logs
+
+---
+
+### Pattern 7 : RollbackManager
+
+#### Objectif
+Permettre la restauration rapide et fiable de l’état documentaire ou applicatif après une erreur, un incident ou une opération critique.
+
+#### Livrables
+- `rollback-manager.go`, `rollback-schema.yaml`, `rollback_manager_test.go`, `rapport-rollback.md`, `rollback_manager_rollback.md`
+
+#### Dépendances
+- RollbackManager, SyncHistoryManager, ConflictManager, ErrorManager, DocManager
+
+#### Risques & Mitigation
+- Perte de données, rollback partiel
+- Sauvegardes automatiques, tests de restauration
+
+#### Outils/Agents mobilisés
+- RollbackManager, SyncHistoryManager, ConflictManager
+
+#### Tâches actionnables
+- [ ] Générer/valider `rollback-schema.yaml`
+- [ ] Implémenter `rollback-manager.go`
+- [ ] Ajouter hooks/plugins de rollback
+- [ ] Écrire `rollback_manager_test.go`
+- [ ] Générer `rapport-rollback.md`
+- [ ] Documenter l’API dans `README.md`
+- [ ] Procédures rollback dans `rollback_manager_rollback.md`
+- [ ] Commit Git à chaque étape
+
+#### Scripts/Commandes
+- `go run scripts/rollback_manager.go`
+- `go test scripts/rollback_manager_test.go`
+- `go run scripts/gen_report.go --pattern=rollback`
+
+#### Fichiers attendus
+- `scripts/rollback_manager.go`, `rollback-schema.yaml`, `rollback_manager_test.go`, `rapport-rollback.md`, `rollback_manager_rollback.md`, `README.md`
+
+#### Critères de validation
+- 100% couverture test sur les scénarios de rollback
+- Compilation Go sans erreur, validation YAML réussie
+
+#### Rollback/versionning
+- Procédure de sauvegarde automatique, commit Git avant rollback
+
+#### Orchestration & CI/CD
+- Intégration dans le pipeline CI/CD
+
+#### Documentation & traçabilité
+- Section rollback dans `README.md`, logs détaillés
+
+#### Questions ouvertes, hypothèses & ambiguïtés
+- Rollback sélectif supporté ?
+
+#### Auto-critique & raffinement
+- Limite : Rollback manuel complexe
+
+---
+
+### Pattern 8 : UXMetricsManager
+
+#### Objectif
+Mesurer, collecter et analyser les métriques d’expérience utilisateur (UX) pour piloter l’amélioration continue.
+
+#### Livrables
+- `uxmetrics-manager.go`, `uxmetrics-schema.yaml`, `uxmetrics_manager_test.go`, `rapport-uxmetrics.md`, `uxmetrics_manager_rollback.md`
+
+#### Dépendances
+- UXMetricsManager, MonitoringManager, DocManager, NotificationManagerImpl
+
+#### Risques & Mitigation
+- Collecte incomplète, surcharge monitoring
+- Tests de couverture, anonymisation
+
+#### Outils/Agents mobilisés
+- UXMetricsManager, MonitoringManager
+
+#### Tâches actionnables
+- [ ] Générer/valider `uxmetrics-schema.yaml`
+- [ ] Implémenter `uxmetrics-manager.go`
+- [ ] Ajouter hooks/plugins UX
+- [ ] Écrire `uxmetrics_manager_test.go`
+- [ ] Générer `rapport-uxmetrics.md`
+- [ ] Documenter l’API dans `README.md`
+- [ ] Procédures rollback dans `uxmetrics_manager_rollback.md`
+- [ ] Commit Git à chaque étape
+
+#### Scripts/Commandes
+- `go run scripts/uxmetrics_manager.go`
+- `go test scripts/uxmetrics_manager_test.go`
+- `go run scripts/gen_report.go --pattern=uxmetrics`
+
+#### Fichiers attendus
+- `scripts/uxmetrics_manager.go`, `uxmetrics-schema.yaml`, `uxmetrics_manager_test.go`, `rapport-uxmetrics.md`, `uxmetrics_manager_rollback.md`, `README.md`
+
+#### Critères de validation
+- 100% couverture test sur la collecte UX
+- Compilation Go sans erreur, validation YAML réussie
+
+#### Rollback/versionning
+- Procédure de sauvegarde automatique, commit Git avant modification
+
+#### Orchestration & CI/CD
+- Intégration dans le pipeline CI/CD
+
+#### Documentation & traçabilité
+- Section UX dans `README.md`, logs détaillés
+
+#### Questions ouvertes, hypothèses & ambiguïtés
+- Fréquence de collecte optimale ?
+
+#### Auto-critique & raffinement
+- Limite : Métriques quantitatives insuffisantes
+
+---
+
+### Pattern 9 : ProgressiveSyncManager
+
+#### Objectif
+Permettre la synchronisation incrémentale et résiliente des documents et métadonnées Roo.
+
+#### Livrables
+- `progressivesync-manager.go`, `progressivesync-schema.yaml`, `progressivesync_manager_test.go`, `rapport-progressivesync.md`, `progressivesync_manager_rollback.md`
+
+#### Dépendances
+- ProgressiveSyncManager, SyncHistoryManager, DocManager, ConflictManager
+
+#### Risques & Mitigation
+- Incohérence documentaire, perte de données
+- Tests de reprise, audits réguliers
+
+#### Outils/Agents mobilisés
+- ProgressiveSyncManager, SyncHistoryManager
+
+#### Tâches actionnables
+- [ ] Générer/valider `progressivesync-schema.yaml`
+- [ ] Implémenter `progressivesync-manager.go`
+- [ ] Ajouter hooks/plugins de sync
+- [ ] Écrire `progressivesync_manager_test.go`
+- [ ] Générer `rapport-progressivesync.md`
+- [ ] Documenter l’API dans `README.md`
+- [ ] Procédures rollback dans `progressivesync_manager_rollback.md`
+- [ ] Commit Git à chaque étape
+
+#### Scripts/Commandes
+- `go run scripts/progressivesync_manager.go`
+- `go test scripts/progressivesync_manager_test.go`
+- `go run scripts/gen_report.go --pattern=progressivesync`
+
+#### Fichiers attendus
+- `scripts/progressivesync_manager.go`, `progressivesync-schema.yaml`, `progressivesync_manager_test.go`, `rapport-progressivesync.md`, `progressivesync_manager_rollback.md`, `README.md`
+
+#### Critères de validation
+- 100% couverture test sur la gestion des interruptions
+- Compilation Go sans erreur, validation YAML réussie
+
+#### Rollback/versionning
+- Checkpoints persistants, commit Git avant sync majeure
+
+#### Orchestration & CI/CD
+- Intégration dans le pipeline CI/CD
+
+#### Documentation & traçabilité
+- Section sync dans `README.md`, logs détaillés
+
+#### Questions ouvertes, hypothèses & ambiguïtés
+- Granularité de checkpoint optimale ?
+
+#### Auto-critique & raffinement
+- Limite : Scénarios extrêmes nécessitant intervention manuelle
+
+---
+
+### Pattern 10 : PoolingManager
+
+#### Objectif
+Optimiser la gestion des ressources et la résilience documentaire Roo via un mécanisme de pooling.
+
+#### Livrables
+- `pooling-manager.go`, `pooling-schema.yaml`, `pooling_manager_test.go`, `rapport-pooling.md`, `pooling_manager_rollback.md`
+
+#### Dépendances
+- PoolingManager, ProcessManager, DocManager, MonitoringManager
+
+#### Risques & Mitigation
+- Saturation, deadlock, fuite de ressources
+- Alertes proactives, audits réguliers
+
+#### Outils/Agents mobilisés
+- PoolingManager, ProcessManager, MonitoringManager
+
+#### Tâches actionnables
+- [ ] Générer/valider `pooling-schema.yaml`
+- [ ] Implémenter `pooling-manager.go`
+- [ ] Ajouter hooks/plugins de pooling
+- [ ] Écrire `pooling_manager_test.go`
+- [ ] Générer `rapport-pooling.md`
+- [ ] Documenter l’API dans `README.md`
+- [ ] Procédures rollback dans `pooling_manager_rollback.md`
+- [ ] Commit Git à chaque étape
+
+#### Scripts/Commandes
+- `go run scripts/pooling_manager.go`
+- `go test scripts/pooling_manager_test.go`
+- `go run scripts/gen_report.go --pattern=pooling`
+
+#### Fichiers attendus
+- `scripts/pooling_manager.go`, `pooling-schema.yaml`, `pooling_manager_test.go`, `rapport-pooling.md`, `pooling_manager_rollback.md`, `README.md`
+
+#### Critères de validation
+- 100% couverture test sur la gestion des pools
+- Compilation Go sans erreur, validation YAML réussie
+
+#### Rollback/versionning
+- Snapshots de configuration, commit Git avant modification
+
+#### Orchestration & CI/CD
+- Intégration dans le pipeline CI/CD
+
+#### Documentation & traçabilité
+- Section pooling dans `README.md`, logs détaillés
+
+#### Questions ouvertes, hypothèses & ambiguïtés
+- Stratégie de dimensionnement dynamique ?
+
+#### Auto-critique & raffinement
+- Limite : Contention nécessitant intervention manuelle
+
+---
+
+### Pattern 11 : ReportingUIManager
+
+#### Objectif
+Automatiser la génération, l’agrégation et la visualisation des rapports d’état documentaire Roo via une interface utilisateur dédiée.
+
+#### Livrables
+- `reportingui-manager.go`, `reportingui-schema.yaml`, `reportingui_manager_test.go`, `rapport-reportingui.md`, `reportingui_manager_rollback.md`
+
+#### Dépendances
+- ReportingUIManager, DocManager, MonitoringManager, AuditManager
+
+#### Risques & Mitigation
+- Surcharge agrégation, divergence données, faille sécurité
+- Optimisation requêtes, contrôle d’accès
+
+#### Outils/Agents mobilisés
+- ReportingUIManager, MonitoringManager, AuditManager
+
+#### Tâches actionnables
+- [ ] Générer/valider `reportingui-schema.yaml`
+- [ ] Implémenter `reportingui-manager.go`
+- [ ] Ajouter hooks/plugins de reporting
+- [ ] Écrire `reportingui_manager_test.go`
+- [ ] Générer `rapport-reportingui.md`
+- [ ] Documenter l’API dans `README.md`
+- [ ] Procédures rollback dans `reportingui_manager_rollback.md`
+- [ ] Commit Git à chaque étape
+
+#### Scripts/Commandes
+- `go run scripts/reportingui_manager.go`
+- `go test scripts/reportingui_manager_test.go`
+- `go run scripts/gen_report.go --pattern=reportingui`
+
+#### Fichiers attendus
+- `scripts/reportingui_manager.go`, `reportingui-schema.yaml`, `reportingui_manager_test.go`, `rapport-reportingui.md`, `reportingui_manager_rollback.md`, `README.md`
+
+#### Critères de validation
+- 100% couverture test sur l’agrégation et la sécurité d’accès
+- Compilation Go sans erreur, validation YAML réussie
+
+#### Rollback/versionning
+- Snapshots de configuration, commit Git avant modification
+
+#### Orchestration & CI/CD
+- Intégration dans le pipeline CI/CD
+
+#### Documentation & traçabilité
+- Section reporting UI dans `README.md`, logs détaillés
+
+#### Questions ouvertes, hypothèses & ambiguïtés
+- Personnalisation dynamique des widgets supportée ?
+
+#### Auto-critique & raffinement
+- Limite : Agrégation temps réel peut impacter la performance
+
+---
+
+> **Contrainte : Toute modification future de cette phase doit respecter la granularité, la structure et l’actionnabilité du plan v113 original. La validation automatisée de la conformité est obligatoire avant tout merge.**
 
 ---
 
