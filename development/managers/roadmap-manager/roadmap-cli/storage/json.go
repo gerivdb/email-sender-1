@@ -2,6 +2,7 @@ package storage
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"time"
 
@@ -64,8 +65,15 @@ func (js *JSONStorage) save() error {
 	return os.WriteFile(js.filePath, data, 0644)
 }
 
-// CreateItem adds a new roadmap item with basic fields
+// CreateItem adds a new roadmap item with basic fields, preventing duplicates by title+description
 func (js *JSONStorage) CreateItem(title, description, priority string, targetDate time.Time) (*types.RoadmapItem, error) {
+	// Vérifie unicité titre+description (idempotence)
+	for _, existing := range js.data.Items {
+		if existing.Title == title && existing.Description == description {
+			return nil, fmt.Errorf("duplicate item: title and description already exist")
+		}
+	}
+
 	item := types.RoadmapItem{
 		ID:          uuid.New().String(),
 		Title:       title,
@@ -129,6 +137,18 @@ func (js *JSONStorage) CreateEnrichedItems(enrichedItems []types.EnrichedItemOpt
 	var createdItems []types.RoadmapItem
 
 	for _, options := range enrichedItems {
+		// Vérifie unicité titre+description (idempotence batch)
+		duplicate := false
+		for _, existing := range js.data.Items {
+			if existing.Title == options.Title && existing.Description == options.Description {
+				duplicate = true
+				break
+			}
+		}
+		if duplicate {
+			continue // Ignore le doublon
+		}
+
 		item := types.RoadmapItem{
 			ID:            uuid.New().String(),
 			Title:         options.Title,

@@ -302,14 +302,17 @@ func generateMarkdownFromItems(items []types.RoadmapItem, milestones []types.Mil
 		statusItems := filterItemsByStatus(items, status)
 		if len(statusItems) > 0 {
 			content.WriteString(fmt.Sprintf("## %s\n\n", title))
+			fmt.Printf("[LOG] Génération section Markdown: %s (%d items)\n", title, len(statusItems))
 			for _, item := range statusItems {
 				checkbox := "- [ ]"
 				if status == types.StatusCompleted {
 					checkbox = "- [x]"
 				}
 				content.WriteString(fmt.Sprintf("%s %s\n", checkbox, item.Title))
+				fmt.Printf("[LOG]   Item: %s | Priority: %s | Created: %s\n", item.Title, item.Priority, item.CreatedAt.Format("2006-01-02"))
 				if item.Description != "" {
 					content.WriteString(fmt.Sprintf("  *%s*\n", item.Description))
+					fmt.Printf("[LOG]     Description: %s\n", item.Description)
 				}
 				content.WriteString(fmt.Sprintf("  **Priority:** %s | **Created:** %s\n\n",
 					item.Priority, item.CreatedAt.Format("2006-01-02")))

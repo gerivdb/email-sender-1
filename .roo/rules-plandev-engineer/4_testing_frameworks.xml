@@ -1,0 +1,542 @@
+<ultra_specialized_testing_frameworks>
+  <overview>
+    Instructions pour implémenter des frameworks de tests automatisés avec couverture 100%, 
+    génération automatique de mocks, factories de données de test et détection de régression.
+  </overview>
+
+  <test_framework_architecture>
+    <description>Architecture complète du framework de tests Roo-Code</description>
+    <components>
+      <component name="TestFrameworkCore">
+        <description>Noyau central du framework de tests</description>
+        <responsibilities>
+          <responsibility>Orchestration des tests</responsibility>
+          <responsibility>Génération automatique de suites de tests</responsibility>
+          <responsibility>Collecte et agrégation des métriques</responsibility>
+          <responsibility>Reporting détaillé avec visualisations</responsibility>
+        </responsibilities>
+      </component>
+
+      <component name="MockGenerator">
+        <description>Générateur automatique de mocks intelligents</description>
+        <features>
+          <feature>Analyse statique du code pour identifier les interfaces</feature>
+          <feature>Génération de mocks avec comportements réalistes</feature>
+          <feature>Support des assertions avancées</feature>
+          <feature>Simulation de conditions d'erreur</feature>
+        </features>
+      </component>
+
+      <component name="TestDataFactory">
+        <description>Factory de génération de données de test</description>
+        <capabilities>
+          <capability>Génération de données aléatoires cohérentes</capability>
+          <capability>Scénarios de test prédéfinis</capability>
+          <capability>Données de test reproductibles avec seeds</capability>
+          <capability>Support des contraintes de validation</capability>
+        </capabilities>
+      </component>
+
+      <component name="RegressionDetector">
+        <description>Détecteur de régressions automatique</description>
+        <functions>
+          <function>Comparaison de snapshots de résultats</function>
+          <function>Analyse des métriques de performance</function>
+          <function>Détection de changements comportementaux</function>
+          <function>Alertes automatiques en cas de régression</function>
+        </functions>
+      </component>
+    </components>
+  </test_framework_architecture>
+
+  <automatic_test_generation>
+    <description>Génération automatique de tests avec couverture complète</description>
+    <implementation><![CDATA[
+// Framework de génération automatique de tests
+package testgen
+
+import (
+    "fmt"
+    "go/ast"
+    "go/parser"
+    "go/token"
+    "reflect"
+    "strings"
+    "text/template"
+    "time"
+)
+
+// TestGenerator générateur automatique de tests
+type TestGenerator struct {
+    config         *TestConfig
+    mockGenerator  *MockGenerator
+    dataFactory    *TestDataFactory
+    coverage       *CoverageAnalyzer
+    templates      map[string]*template.Template
+}
+
+// TestConfig configuration du générateur de tests
+type TestConfig struct {
+    TargetPackage     string   `yaml:"target_package"`
+    OutputDir         string   `yaml:"output_dir"`
+    CoverageTarget    float64  `yaml:"coverage_target"` // 100% par défaut
+    TestTypes         []string `yaml:"test_types"`      // unit, integration, e2e
+    MockLibrary       string   `yaml:"mock_library"`    // testify, gomock, etc.
+    IncludePatterns   []string `yaml:"include_patterns"`
+    ExcludePatterns   []string `yaml:"exclude_patterns"`
+    GenerateExamples  bool     `yaml:"generate_examples"`
+    PerformanceTests  bool     `yaml:"performance_tests"`
+    ConcurrencyTests  bool     `yaml:"concurrency_tests"`
+}
+
+// GenerateTestSuite génère une suite de tests complète
+func (tg *TestGenerator) GenerateTestSuite(packagePath string) (*TestSuite, error) {
+    // Analyse du package cible
+    pkg, err := tg.analyzePackage(packagePath)
+    if err != nil {
+        return nil, fmt.Errorf("échec analyse package: %w", err)
+    }
+    
+    suite := &TestSuite{
+        Package:     pkg.Name,
+        Tests:       make([]*TestCase, 0),
+        Benchmarks:  make([]*BenchmarkCase, 0),
+        Examples:    make([]*ExampleCase, 0),
+    }
+    
+    // Génération des tests pour chaque fonction/méthode
+    for _, function := range pkg.Functions {
+        testCases, err := tg.generateFunctionTests(function)
+        if err != nil {
+            return nil, fmt.Errorf("échec génération tests pour %s: %w", function.Name, err)
+        }
+        suite.Tests = append(suite.Tests, testCases...)
+        
+        // Génération des benchmarks si activé
+        if tg.config.PerformanceTests {
+            benchmark := tg.generateBenchmark(function)
+            suite.Benchmarks = append(suite.Benchmarks, benchmark)
+        }
+        
+        // Génération des exemples si activé
+        if tg.config.GenerateExamples {
+            example := tg.generateExample(function)
+            if example != nil {
+                suite.Examples = append(suite.Examples, example)
+            }
+        }
+    }
+    
+    return suite, nil
+}
+
+// TestDataFactory factory de génération de données de test
+type TestDataFactory struct {
+    config     *DataFactoryConfig
+    generators map[reflect.Type]DataGenerator
+    seeds      map[string]int64
+}
+
+// DataFactoryConfig configuration de la factory
+type DataFactoryConfig struct {
+    SeedFixed       bool                   `yaml:"seed_fixed"`
+    DefaultSeed     int64                  `yaml:"default_seed"`
+    CustomGenerators map[string]interface{} `yaml:"custom_generators"`
+    ValidationRules map[string]interface{} `yaml:"validation_rules"`
+}
+
+// GenerateTestData génère des données de test pour un type donné
+func (tdf *TestDataFactory) GenerateTestData(targetType reflect.Type, scenario string) (interface{}, error) {
+    if generator, exists := tdf.generators[targetType]; exists {
+        return generator.Generate(scenario)
+    }
+    
+    // Génération automatique basée sur le type
+    switch targetType.Kind() {
+    case reflect.String:
+        return tdf.generateString(scenario), nil
+    case reflect.Int, reflect.Int64:
+        return tdf.generateInt(scenario), nil
+    case reflect.Bool:
+        return tdf.generateBool(scenario), nil
+    case reflect.Struct:
+        return tdf.generateStruct(targetType, scenario)
+    case reflect.Slice:
+        return tdf.generateSlice(targetType, scenario)
+    case reflect.Map:
+        return tdf.generateMap(targetType, scenario)
+    default:
+        return nil, fmt.Errorf("type non supporté: %v", targetType)
+    }
+}
+
+// RegressionDetector détecteur de régressions
+type RegressionDetector struct {
+    config      *RegressionConfig
+    baselines   map[string]*TestBaseline
+    snapshots   map[string]*TestSnapshot
+    metrics     *MetricsCollector
+}
+
+// RegressionConfig configuration du détecteur
+type RegressionConfig struct {
+    SnapshotDir        string  `yaml:"snapshot_dir"`
+    ToleranceThreshold float64 `yaml:"tolerance_threshold"`
+    MetricsToTrack     []string `yaml:"metrics_to_track"`
+    AlertWebhook       string  `yaml:"alert_webhook"`
+}
+
+// DetectRegressions détecte les régressions dans une suite de tests
+func (rd *RegressionDetector) DetectRegressions(currentResults *TestResults) (*RegressionReport, error) {
+    report := &RegressionReport{
+        TestRunID:    currentResults.RunID,
+        Timestamp:    time.Now(),
+        Regressions:  make([]*Regression, 0),
+        Improvements: make([]*Improvement, 0),
+    }
+    
+    // Comparaison avec les baselines
+    for testName, currentResult := range currentResults.TestCases {
+        if baseline, exists := rd.baselines[testName]; exists {
+            if regression := rd.compareWithBaseline(testName, currentResult, baseline); regression != nil {
+                report.Regressions = append(report.Regressions, regression)
+            }
+        }
+    }
+    
+    // Analyse des métriques de performance
+    perfRegressions := rd.analyzePerformanceMetrics(currentResults)
+    report.Regressions = append(report.Regressions, perfRegressions...)
+    
+    // Détection d'améliorations
+    improvements := rd.detectImprovements(currentResults)
+    report.Improvements = append(report.Improvements, improvements...)
+    
+    return report, nil
+}
+
+const testSuiteTemplate = `
+// Code généré automatiquement par Roo TestGenerator - NE PAS MODIFIER
+package {{.Package}}_test
+
+import (
+    "context"
+    "testing"
+    "time"
+    
+    "github.com/stretchr/testify/assert"
+    "github.com/stretchr/testify/require"
+    {{range .Imports}}
+    "{{.}}"{{end}}
+)
+
+{{range .TestCases}}
+// {{.Name}} teste {{.Function}} - Scénario: {{.Scenario}}
+func {{.Name}}(t *testing.T) {
+    // Arrange
+    {{range .SetupSteps}}
+    {{.}}{{end}}
+    
+    // Act
+    {{.ActStep}}
+    
+    // Assert
+    {{range .Assertions}}
+    {{.}}{{end}}
+    
+    // Cleanup
+    {{range .CleanupSteps}}
+    {{.}}{{end}}
+}
+{{end}}
+
+{{range .BenchmarkCases}}
+// {{.Name}} benchmark pour {{.Function}}
+func {{.Name}}(b *testing.B) {
+    // Setup
+    {{range .SetupSteps}}
+    {{.}}{{end}}
+    
+    b.ResetTimer()
+    
+    for i := 0; i < b.N; i++ {
+        {{.BenchmarkStep}}
+    }
+}
+{{end}}
+
+{{range .ExampleCases}}
+// {{.Name}} exemple d'utilisation de {{.Function}}
+func {{.Name}}() {
+    {{.ExampleCode}}
+    
+    // Output:
+    {{range .ExpectedOutput}}
+    // {{.}}{{end}}
+}
+{{end}}
+`
+
+// CoverageAnalyzer analyseur de couverture de code
+type CoverageAnalyzer struct {
+    config       *CoverageConfig
+    baseline     *CoverageBaseline
+    currentRun   *CoverageData
+    reporter     *CoverageReporter
+}
+
+// CoverageConfig configuration de l'analyseur de couverture
+type CoverageConfig struct {
+    Target           float64  `yaml:"target"`           // 100%
+    FailOnThreshold  bool     `yaml:"fail_on_threshold"`
+    ExcludePatterns  []string `yaml:"exclude_patterns"`
+    IncludePatterns  []string `yaml:"include_patterns"`
+    ReportFormats    []string `yaml:"report_formats"`   // html, json, xml
+    TrackByFunction  bool     `yaml:"track_by_function"`
+}
+
+// AnalyzeCoverage analyse la couverture de code et génère un rapport
+func (ca *CoverageAnalyzer) AnalyzeCoverage(testResults *TestResults) (*CoverageReport, error) {
+    report := &CoverageReport{
+        Timestamp:         time.Now(),
+        OverallCoverage:   ca.calculateOverallCoverage(testResults),
+        FunctionCoverage:  ca.calculateFunctionCoverage(testResults),
+        LineCoverage:      ca.calculateLineCoverage(testResults),
+        BranchCoverage:    ca.calculateBranchCoverage(testResults),
+        UncoveredLines:    ca.identifyUncoveredLines(testResults),
+        CoverageByPackage: ca.calculatePackageCoverage(testResults),
+    }
+    
+    // Vérification du seuil
+    if report.OverallCoverage < ca.config.Target {
+        report.ThresholdMet = false
+        report.Message = fmt.Sprintf("Couverture %.2f%% inférieure au seuil de %.2f%%", 
+            report.OverallCoverage*100, ca.config.Target*100)
+    } else {
+        report.ThresholdMet = true
+        report.Message = fmt.Sprintf("Couverture %.2f%% atteint le seuil de %.2f%%", 
+            report.OverallCoverage*100, ca.config.Target*100)
+    }
+    
+    return report, nil
+}
+    ]]></implementation>
+  </automatic_test_generation>
+
+  <mock_generation_system>
+    <description>Système de génération automatique de mocks intelligents</description>
+    <features>
+      <feature name="interface_analysis">
+        <description>Analyse automatique des interfaces pour génération de mocks</description>
+        <capabilities>
+          <capability>Détection automatique des interfaces publiques</capability>
+          <capability>Génération de mocks avec méthodes complètes</capability>
+          <capability>Support des types complexes et génériques</capability>
+          <capability>Gestion automatique des dépendances</capability>
+        </capabilities>
+      </feature>
+
+      <feature name="behavior_simulation">
+        <description>Simulation de comportements réalistes dans les mocks</description>
+        <behaviors>
+          <behavior>Réponses basées sur les paramètres d'entrée</behavior>
+          <behavior>Simulation de latence réseau</behavior>
+          <behavior>Génération d'erreurs aléatoires</behavior>
+          <behavior>État interne maintenu entre appels</behavior>
+        </behaviors>
+      </feature>
+
+      <feature name="assertion_framework">
+        <description>Framework d'assertions avancées pour les mocks</description>
+        <assertions>
+          <assertion>Vérification du nombre d'appels</assertion>
+          <assertion>Validation des paramètres passés</assertion>
+          <assertion>Ordre des appels de méthodes</assertion>
+          <assertion>Timeouts et durées d'exécution</assertion>
+        </assertions>
+      </feature>
+    </features>
+  </mock_generation_system>
+
+  <data_factory_system>
+    <description>Système de factory pour génération de données de test</description>
+    <generators>
+      <generator name="struct_generator">
+        <description>Génération automatique de structures complexes</description>
+        <example><![CDATA[
+// Génération automatique de données de test pour structures
+func (tdf *TestDataFactory) GenerateUserStruct(scenario string) *User {
+    switch scenario {
+    case "valid_user":
+        return &User{
+            ID:       tdf.generateUniqueID(),
+            Name:     tdf.generateValidName(),
+            Email:    tdf.generateValidEmail(),
+            Age:      tdf.generateValidAge(),
+            IsActive: true,
+        }
+    case "invalid_email":
+        return &User{
+            ID:       tdf.generateUniqueID(),
+            Name:     tdf.generateValidName(),
+            Email:    "invalid-email-format",
+            Age:      tdf.generateValidAge(),
+            IsActive: true,
+        }
+    case "edge_case_age":
+        return &User{
+            ID:       tdf.generateUniqueID(),
+            Name:     tdf.generateValidName(),
+            Email:    tdf.generateValidEmail(),
+            Age:      0, // Edge case
+            IsActive: true,
+        }
+    default:
+        return tdf.generateRandomUser()
+    }
+}
+        ]]></example>
+      </generator>
+
+      <generator name="constraint_aware_generator">
+        <description>Génération respectant les contraintes de validation</description>
+        <constraints>
+          <constraint>Validation JSON schema</constraint>
+          <constraint>Contraintes de base de données</constraint>
+          <constraint>Règles métier personnalisées</constraint>
+          <constraint>Formats et patterns requis</constraint>
+        </constraints>
+      </generator>
+
+      <generator name="scenario_generator">
+        <description>Génération de scénarios de test prédéfinis</description>
+        <scenarios>
+          <scenario name="happy_path">Données valides pour test de succès</scenario>
+          <scenario name="edge_cases">Valeurs limites et cas extrêmes</scenario>
+          <scenario name="error_conditions">Données invalides pour test d'erreur</scenario>
+          <scenario name="performance_load">Volumes importants pour tests de charge</scenario>
+        </scenarios>
+      </generator>
+    </generators>
+  </data_factory_system>
+
+  <regression_detection>
+    <description>Système de détection automatique de régressions</description>
+    <detection_methods>
+      <method name="snapshot_comparison">
+        <description>Comparaison avec des snapshots de référence</description>
+        <process>
+          <step>Capture des résultats de tests baseline</step>
+          <step>Comparaison avec les nouveaux résultats</step>
+          <step>Détection des différences significatives</step>
+          <step>Classification des changements</step>
+        </process>
+      </method>
+
+      <method name="performance_monitoring">
+        <description>Surveillance des métriques de performance</description>
+        <metrics>
+          <metric>Temps d'exécution des tests</metric>
+          <metric>Utilisation mémoire</metric>
+          <metric>Throughput des opérations</metric>
+          <metric>Latence des appels réseau</metric>
+        </metrics>
+      </method>
+
+      <method name="behavior_analysis">
+        <description>Analyse des changements comportementaux</description>
+        <indicators>
+          <indicator>Changement dans les valeurs de retour</indicator>
+          <indicator>Modification des side effects</indicator>
+          <indicator>Altération des patterns d'appel</indicator>
+          <indicator>Évolution des exceptions levées</indicator>
+        </indicators>
+      </method>
+    </detection_methods>
+  </regression_detection>
+
+  <integration_guidelines>
+    <guideline priority="critical">
+      <title>Couverture de Tests 100%</title>
+      <description>Tous les composants générés doivent atteindre 100% de couverture de code</description>
+      <requirements>
+        <requirement>Tests unitaires pour chaque fonction publique</requirement>
+        <requirement>Tests d'intégration pour les interactions</requirement>
+        <requirement>Tests de performance pour les opérations critiques</requirement>
+        <requirement>Tests de concurrence si applicable</requirement>
+        <requirement>Tests de cas limites et d'erreur</requirement>
+      </requirements>
+    </guideline>
+
+    <guideline priority="high">
+      <title>Automatisation Complète</title>
+      <description>Le framework doit fonctionner sans intervention manuelle</description>
+      <automation_targets>
+        <target>Génération automatique de tests</target>
+        <target>Exécution automatique des suites</target>
+        <target>Détection automatique de régressions</target>
+        <target>Reporting automatique des résultats</target>
+        <target>Intégration CI/CD transparente</target>
+      </automation_targets>
+    </guideline>
+
+    <guideline priority="medium">
+      <title>Performance et Scalabilité</title>
+      <description>Le framework doit être performant même sur de grandes bases de code</description>
+      <performance_requirements>
+        <requirement>Génération parallèle des tests</requirement>
+        <requirement>Exécution distribuée des suites</requirement>
+        <requirement>Cache intelligent des résultats</requirement>
+        <requirement>Optimisation mémoire pour gros volumes</requirement>
+      </performance_requirements>
+    </guideline>
+  </integration_guidelines>
+
+  <validation_checklist>
+    <category name="test_generation">
+      <item>Tous les types de tests sont générés (unit, integration, e2e)</item>
+      <item>Couverture de code atteint 100%</item>
+      <item>Mocks générés automatiquement pour toutes les dépendances</item>
+      <item>Données de test cohérentes et reproductibles</item>
+      <item>Tests de performance inclus</item>
+    </category>
+
+    <category name="regression_detection">
+      <item>Baselines établies pour tous les tests</item>
+      <item>Détection automatique des changements</item>
+      <item>Alertes configurées pour les régressions</item>
+      <item>Métriques de performance surveillées</item>
+      <item>Snapshots maintenus à jour</item>
+    </category>
+
+    <category name="integration_quality">
+      <item>Intégration CI/CD fonctionnelle</item>
+      <item>Reporting automatique des résultats</item>
+      <item>Rollback automatique en cas de régression</item>
+      <item>Documentation des tests générée</item>
+      <item>Performance acceptable sur grandes bases de code</item>
+    </category>
+  </validation_checklist>
+
+  <extension_points>
+    <extension name="custom_test_generators">
+      <description>Générateurs de tests personnalisés pour des besoins spécifiques</description>
+      <interface>TestGeneratorPlugin</interface>
+    </extension>
+    
+    <extension name="custom_mock_behaviors">
+      <description>Comportements de mocks personnalisés</description>
+      <interface>MockBehaviorPlugin</interface>
+    </extension>
+    
+    <extension name="custom_data_generators">
+      <description>Générateurs de données personnalisés</description>
+      <interface>DataGeneratorPlugin</interface>
+    </extension>
+
+    <extension name="custom_regression_detectors">
+      <description>Détecteurs de régression spécialisés</description>
+      <interface>RegressionDetectorPlugin</interface>
+    </extension>
+  </extension_points>
+</ultra_specialized_testing_frameworks>

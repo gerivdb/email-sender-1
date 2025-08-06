@@ -1,0 +1,75 @@
+{
+  "roo_directory": ".roo/",
+  "generated_at": "2025-08-05T13:59:49+02:00",
+  "structure": {
+    "files": [
+      "mcp.json",
+      "personas.md",
+      "plan-migration-roo-code.md",
+      "roo-structure-status.json"
+    ],
+    "config": [
+      "config/recensement.yaml"
+    ],
+    "overrides": [
+      "overrides/system-prompt-architect",
+      "overrides/system-prompt-ask",
+      "overrides/system-prompt-code",
+      "overrides/system-prompt-debug",
+      "overrides/system-prompt-documentation-writer",
+      "overrides/system-prompt-mode-writer",
+      "overrides/system-prompt-orchestrator",
+      "overrides/system-prompt-project-research",
+      "overrides/system-prompt-user-story-creator"
+    ],
+    "rules": [
+      "rules/README.md",
+      "rules/rules-agents.md",
+      "rules/rules-code.md",
+      "rules/rules-debug.md",
+      "rules/rules-documentation.md",
+      "rules/rules-maintenance.md",
+      "rules/rules-migration.md",
+      "rules/rules-orchestration.md",
+      "rules/rules-plugins.md",
+      "rules/rules-security.md",
+      "rules/rules.md",
+      "rules/tools-registry.md",
+      "rules/workflows-matrix.md"
+    ],
+    "rules-plandev-engineer": [
+      "rules-plandev-engineer/1_workflow.xml",
+      "rules-plandev-engineer/2_advanced_technical_specifications.xml",
+      "rules-plandev-engineer/3_cli_generators_and_templates.xml",
+      "rules-plandev-engineer/4_testing_frameworks.xml",
+      "rules-plandev-engineer/5_cicd_pipelines.xml",
+      "rules-plandev-engineer/plandev-engineer-reference.md"
+    ],
+    "scripts": [
+      "scripts/dev-check.go",
+      "scripts/main.go",
+      "scripts/rollback.sh"
+    ],
+    "tests": [
+      "tests/test-ecriture.md"
+    ],
+    "tools": [
+      "tools/audit_prompts.go",
+      "tools/files-list.bak",
+      "tools/files-list.json",
+      "tools/plan-tools.md",
+      "tools/README.md",
+      "tools/refs_sync_test.go",
+      "tools/refs_sync_trace.json",
+      "tools/refs_sync_usage.md",
+      "tools/refs_sync.config.yaml",
+      "tools/refs_sync.go",
+      "tools/rollback_refs_sync.sh",
+      "tools/rules-validator.go",
+      "tools/run_all.sh",
+      "tools/spec-crossrefs.md"
+    ]
+  },
+  "status": "OK",
+  "note": "Structure complète du dossier .roo générée automatiquement. Tous les fichiers et sous-dossiers sont listés pour garantir la traçabilité documentaire Roo-Code."
+}

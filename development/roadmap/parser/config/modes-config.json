@@ -100,6 +100,12 @@
       "IncludeCodeCoverage": true,
       "TestFramework": "Pester",
       "ParallelTests": true
+    },
+    "plandev-engineer": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\plandev-engineer-mode.ps1",
+      "Description": "Mode PlanDev Engineer personnalisé (exemple générique)",
+      "OutputFormats": ["Markdown", "JSON", "XML"]
     }
   },
   "Workflows": {

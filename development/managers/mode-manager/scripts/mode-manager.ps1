@@ -55,7 +55,7 @@
 [CmdletBinding(DefaultParameterSetName = "Execute")]
 param (
     [Parameter(Mandatory = $false, ParameterSetName = "Execute")]
-    [ValidateSet("ARCHI", "CHECK", "C-BREAK", "DEBUG", "DEV-R", "GRAN", "OPTI", "PREDIC", "REVIEW", "TEST")]
+    [ValidateSet("ARCHI", "CHECK", "C-BREAK", "DEBUG", "DEV-R", "GRAN", "OPTI", "PREDIC", "REVIEW", "TEST", "PLANDEV-ENGINEER")]
     [string]$Mode,
 
     [Parameter(Mandatory = $false, ParameterSetName = "Execute")]
@@ -204,6 +204,7 @@ function Get-ModeScriptPath {
         "PREDIC" { "Predic" }
         "REVIEW" { "Review" }
         "TEST" { "Test" }
+        "PLANDEV-ENGINEER" { "PlandevEngineer" }
         default { throw "Mode non reconnu : $Mode" }
     }
 

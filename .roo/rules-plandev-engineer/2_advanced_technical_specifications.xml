@@ -1,0 +1,232 @@
+<advanced_technical_specifications>
+  <overview>
+    Instructions avancées pour la génération de spécifications techniques ultra-détaillées 
+    avec interfaces Go complètes, validation automatique et génération de documentation.
+  </overview>
+
+  <ultra_detailed_interfaces>
+    <requirement priority="critical">
+      <description>Générer des interfaces Go complètes avec validation automatique intégrée</description>
+      <template><![CDATA[
+type {{.ManagerName}}Interface interface {
+    // Core lifecycle methods with comprehensive validation
+    Initialize(ctx context.Context, config *{{.ManagerName}}Config) error
+    Shutdown(ctx context.Context) error
+    IsHealthy(ctx context.Context) bool
+    
+    // Validation methods with automatic schema generation
+    ValidateConfig(config *{{.ManagerName}}Config) (*ValidationResult, error)
+    ValidateRequest(ctx context.Context, req interface{}) (*ValidationResult, error)
+    
+    // Metrics and monitoring integration
+    GetMetrics() map[string]interface{}
+    RegisterMetricsCollector(collector MetricsCollector) error
+    
+    // Plugin extension points
+    RegisterPlugin(plugin PluginInterface) error
+    ListPlugins() []PluginInfo
+    
+    // Auto-generated documentation hooks
+    GenerateDocumentation(format DocumentationFormat) (*GeneratedDocs, error)
+    GenerateOpenAPISpec() (*openapi.Spec, error)
+}
+
+// Auto-generated validation tags and schema
+type {{.ManagerName}}Config struct {
+    Name        string `json:"name" validate:"required,min=1,max=100" schema:"title:Manager Name,description:Unique identifier for the manager instance"`
+    Version     string `json:"version" validate:"required,semver" schema:"title:Version,description:Semantic version of the manager"`
+    Enabled     bool   `json:"enabled" default:"true" schema:"title:Enabled,description:Whether this manager is active"`
+    Timeout     time.Duration `json:"timeout" validate:"required,min=1s,max=5m" schema:"title:Timeout,description:Maximum operation timeout"`
+    Retries     int    `json:"retries" validate:"min=0,max=10" default:"3" schema:"title:Retries,description:Number of retry attempts"`
+    
+    // Auto-generated nested configuration with validation
+    Database    *DatabaseConfig    `json:"database,omitempty" validate:"omitempty,dive" schema:"title:Database Configuration"`
+    Cache       *CacheConfig       `json:"cache,omitempty" validate:"omitempty,dive" schema:"title:Cache Configuration"`
+    Monitoring  *MonitoringConfig  `json:"monitoring,omitempty" validate:"omitempty,dive" schema:"title:Monitoring Configuration"`
+    
+    // Extension points for custom configuration
+    Extensions  map[string]interface{} `json:"extensions,omitempty" schema:"title:Extensions,description:Custom configuration extensions"`
+}
+      ]]></template>
+    </requirement>
+
+    <automatic_validation>
+      <description>Intégrer validation automatique avec génération de schémas JSON</description>
+      <implementation><![CDATA[
+// Auto-generated validation functions
+func (c *{{.ManagerName}}Config) Validate() error {
+    validator := validator.New()
+    
+    // Register custom validators
+    validator.RegisterValidation("semver", validateSemVer)
+    validator.RegisterValidation("duration_range", validateDurationRange)
+    
+    if err := validator.Struct(c); err != nil {
+        return fmt.Errorf("configuration validation failed: %w", err)
+    }
+    
+    // Cross-field validation
+    if err := c.validateCrossFields(); err != nil {
+        return fmt.Errorf("cross-field validation failed: %w", err)
+    }
+    
+    return nil
+}
+
+// Auto-generated JSON schema generation
+func (c *{{.ManagerName}}Config) GenerateJSONSchema() (*jsonschema.Schema, error) {
+    reflector := jsonschema.Reflector{
+        AllowAdditionalProperties: false,
+        DoNotReference:           true,
+    }
+    
+    schema := reflector.Reflect(c)
+    
+    // Add custom validations to schema
+    if err := addCustomValidationsToSchema(schema); err != nil {
+        return nil, fmt.Errorf("failed to add custom validations: %w", err)
+    }
+    
+    return schema, nil
+}
+      ]]></implementation>
+    </automatic_validation>
+
+    <documentation_generation>
+      <description>Génération automatique de documentation complète</description>
+      <features>
+        <feature>Auto-génération des diagrammes UML/PlantUML</feature>
+        <feature>Documentation API avec exemples</feature>
+        <feature>Guides d'intégration step-by-step</feature>
+        <feature>Métriques et monitoring intégrés</feature>
+      </features>
+      <template><![CDATA[
+// Auto-generated documentation with PlantUML integration
+func (m *{{.ManagerName}}) GenerateDocumentation(format DocumentationFormat) (*GeneratedDocs, error) {
+    docs := &GeneratedDocs{
+        Timestamp: time.Now(),
+        Version:   m.config.Version,
+        Format:    format,
+    }
+    
+    switch format {
+    case DocumentationFormatMarkdown:
+        docs.Content = m.generateMarkdownDocs()
+    case DocumentationFormatHTML:
+        docs.Content = m.generateHTMLDocs()
+    case DocumentationFormatOpenAPI:
+        docs.Content = m.generateOpenAPIDocs()
+    case DocumentationFormatPlantUML:
+        docs.Content = m.generatePlantUMLDiagrams()
+    default:
+        return nil, fmt.Errorf("unsupported documentation format: %v", format)
+    }
+    
+    return docs, nil
+}
+
+// Auto-generated PlantUML class diagram
+func (m *{{.ManagerName}}) generatePlantUMLDiagrams() string {
+    return `
+@startuml {{.ManagerName}}_Architecture
+!define RECTANGLE class
+
+RECTANGLE {{.ManagerName}}Interface {
+    +Initialize(ctx, config) error
+    +Shutdown(ctx) error
+    +IsHealthy(ctx) bool
+    +ValidateConfig(config) ValidationResult
+    +GetMetrics() map[string]interface{}
+}
+
+RECTANGLE {{.ManagerName}}Config {
+    +Name string
+    +Version string
+    +Enabled bool
+    +Timeout Duration
+    +Retries int
+    +Validate() error
+}
+
+RECTANGLE ValidationResult {
+    +Valid bool
+    +Errors []ValidationError
+    +Warnings []ValidationWarning
+}
+
+{{.ManagerName}}Interface ||--|| {{.ManagerName}}Config
+{{.ManagerName}}Interface ||--|| ValidationResult
+@enduml
+    `
+}
+      ]]></template>
+    </documentation_generation>
+  </ultra_detailed_interfaces>
+
+  <integration_guidelines>
+    <guideline priority="high">
+      <title>Spécifications Go Ultra-Détaillées</title>
+      <description>Chaque interface doit inclure validation automatique, métriques et documentation auto-générée</description>
+      <checklist>
+        <item>Interfaces Go complètes avec tous les types</item>
+        <item>Validation automatique avec tags structuraux</item>
+        <item>Génération de schémas JSON automatique</item>
+        <item>Métriques intégrées pour chaque opération</item>
+        <item>Documentation auto-générée avec diagrammes UML</item>
+        <item>Tests unitaires avec coverage 100%</item>
+        <item>Intégration CI/CD avec quality gates</item>
+      </checklist>
+    </guideline>
+
+    <guideline priority="medium">
+      <title>Patterns de Code Standardisés</title>
+      <description>Utiliser des patterns cohérents pour tous les managers</description>
+      <patterns>
+        <pattern name="manager_lifecycle">Interface standardisée pour Initialize/Shutdown/IsHealthy</pattern>
+        <pattern name="validation_chain">Validation automatique avec chaînage d'erreurs</pattern>
+        <pattern name="metrics_collection">Collecte automatique des métriques d'opération</pattern>
+        <pattern name="plugin_system">Système d'extension unifié via PluginInterface</pattern>
+        <pattern name="documentation_hooks">Hooks pour génération automatique de documentation</pattern>
+      </patterns>
+    </guideline>
+  </integration_guidelines>
+
+  <validation_requirements>
+    <requirement type="interface_completeness">
+      <description>Toutes les interfaces doivent être complètes avec types Go</description>
+      <validation_method>Analyse statique avec go vet et golangci-lint</validation_method>
+    </requirement>
+    
+    <requirement type="documentation_coverage">
+      <description>100% de coverage de documentation pour les APIs publiques</description>
+      <validation_method>Génération automatique et vérification de la complétude</validation_method>
+    </requirement>
+    
+    <requirement type="test_coverage">
+      <description>Couverture de tests minimale de 90%</description>
+      <validation_method>go test -coverprofile avec vérification automatique</validation_method>
+    </requirement>
+
+    <requirement type="performance_benchmarks">
+      <description>Benchmarks de performance pour toutes les opérations critiques</description>
+      <validation_method>go test -bench avec seuils de performance définis</validation_method>
+    </requirement>
+  </validation_requirements>
+
+  <automation_hooks>
+    <hook name="pre_generation">
+      <description>Validation des inputs avant génération des spécifications</description>
+      <script>scripts/validate-inputs.sh</script>
+    </hook>
+    
+    <hook name="post_generation">
+      <description>Génération automatique des tests et de la documentation</description>
+      <script>scripts/generate-docs-and-tests.sh</script>
+    </hook>
+    
+    <hook name="validation">
+      <description>Validation complète des spécifications générées</description>
+      <script>scripts/validate-specifications.sh</script>
+    </hook>
+  </automation_hooks>
+</advanced_technical_specifications>

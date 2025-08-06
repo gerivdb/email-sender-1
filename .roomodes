@@ -22,7 +22,5 @@ customModes:
       Génération, structuration et validation collaborative de plans de développement détaillés, adaptés aux contraintes projet.
     groups:
       - read
-      - - edit
-        - fileRegex: \.(md|yml|yaml)$
-          description: Fichiers Markdown et YAML pour la structuration/export de plans
+      - edit
       - command

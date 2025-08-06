@@ -1,82 +1,15 @@
 # Principes transverses pour tous les modes Roo-Code
 
-Ce fichier regroupe les règles, méthodologies et bonnes pratiques communes à tous les modes personnalisés Roo-Code.  
-Chaque prompt système spécifique doit s’y référer pour garantir cohérence, clarté et maintenabilité.
+**Règle de traçabilité du mode d’exécution Roo :**
+Pour toute action critique (écriture, édition, suppression), le mode d’exécution doit être transmis explicitement à Roo afin de garantir la traçabilité et la conformité documentaire.
+Cette règle s’applique à tous les modes, notamment PlanDev Engineer.
+
+Ce fichier regroupe le pivot, le sommaire, le modèle de fiche mode et les liens croisés pour l’ensemble des règles Roo-Code.
+Les modules thématiques détaillent les pratiques avancées ou propres à chaque domaine.
 
 ---
 
-## 1. Recueil du besoin et du contexte
-
-- Toujours commencer par comprendre le contexte métier, les objectifs et les attentes du demandeur.
-- Poser des questions de clarification si nécessaire avant d’agir.
-- Identifier les parties prenantes et les utilisateurs concernés.
-- **Références documentaires :**  
-  - Consulte systématiquement la documentation centrale du projet dans [`.github/docs/`](.github/docs/) pour enrichir la compréhension du contexte, des standards et des dépendances.
-  - Consulte également [`AGENTS.md`](AGENTS.md) pour comprendre les rôles, interfaces et conventions des agents et managers, et garantir l’alignement avec l’architecture documentaire du projet.
-
----
-
-## 2. Décomposition en étapes claires
-
-- Découper chaque tâche complexe en étapes séquentielles et actionnables.
-- Documenter chaque étape : objectifs, entrées, sorties attendues.
-- Utiliser des checklists ou des workflows pour suivre l’avancement.
-- **Références documentaires :**  
-  - Vérifie dans [`.github/docs/workflows.md`](.github/docs/workflows.md) ou équivalent si des workflows ou modèles existent déjà.
-  - Vérifie dans [`AGENTS.md`](AGENTS.md) si des managers ou agents spécifiques sont concernés par le workflow.
-
----
-
-## 3. Validation systématique
-
-- Vérifier la cohérence, la clarté et la testabilité du résultat à chaque étape.
-- S’assurer que chaque livrable apporte une valeur métier ou technique.
-- Valider avec le demandeur ou l’équipe avant publication ou passage à l’étape suivante.
-- **Références documentaires :**  
-  - Utilise les critères d’acceptation et les standards de validation décrits dans [`.github/docs/standards.md`](.github/docs/standards.md) ou tout fichier pertinent.
-  - Vérifie la conformité avec les rôles et interfaces des managers dans [`AGENTS.md`](AGENTS.md).
-
----
-
-## 4. Bonnes pratiques universelles
-
-- **Clarté et Modularité** : Privilégier la lisibilité, la modularité et la traçabilité.
-- **Documentation** : Documenter chaque module, fonction, interface, et décision d'architecture.
-- **Conventions** : Respecter les conventions de nommage (slug, emoji, etc.) et de format.
-- **Tests** : Assurer la testabilité du code et couvrir les fonctionnalités critiques par des tests unitaires.
-- **Gestion des erreurs** : Centraliser et documenter la gestion des erreurs.
-- **Références documentaires :**
-  - Se référer aux guides de style et conventions dans [`.github/docs/style-guide.md`](.github/docs/style-guide.md) ou équivalent.
-  - Vérifier la cohérence avec les conventions d’extension et de plugins décrites dans [`AGENTS.md`](AGENTS.md).
-
----
-
-## 5. Overrides et Modes Spécifiques
-
-Ce mécanisme permet d'adapter les règles générales à des contextes spécifiques (modes, prompts).
-
-- **Principe** : Si un mode Roo-Code nécessite une adaptation à une règle, il faut documenter cet "override" dans le fichier de règles spécifique (`rules-[domaine].md`).
-- **Fonctionnement** :
-    1.  Dans le fichier de règles du domaine (ex: `rules-code.md`), ajouter une section `## Overrides pour le mode [nom-du-mode]`.
-    2.  Décrire la règle spécifique qui surcharge la règle générale.
-    3.  Référencer le prompt système concerné.
-- **Priorité** : Les règles spécifiques d'un mode priment toujours sur les règles générales de `rules.md`.
-- **Traçabilité** : Tout override doit être justifié et documenté.
-
----
-
-## 6. Maintenance et évolutivité
-
-- Mettre à jour ce fichier à chaque évolution des principes ou des pratiques.
-- Encourager la factorisation : tout ce qui est commun doit être ici, les spécificités dans chaque mode.
-- Faciliter l’intégration de nouveaux modes en s’appuyant sur ces principes.
-- **Références documentaires :**  
-  - Documenter toute évolution ou modification dans [`.github/docs/changelog.md`](.github/docs/changelog.md) ou dans le fichier de suivi des changements.
-  - Mettre à jour [`AGENTS.md`](AGENTS.md) lors de l’ajout ou modification d’agents/managers ou conventions.
-
----
-
-_Tip : Ce fichier est la référence centrale pour garantir la qualité et la cohérence des modes Roo-Code.  
+_Tip : Ce fichier est la référence centrale pour garantir la qualité et la cohérence des modes Roo-Code.
 Pour toute question ou doute, commence par explorer la documentation dans `.github/docs/` et le fichier [`AGENTS.md`](AGENTS.md)._
 
 ---
@@ -101,7 +34,7 @@ Pour toute question ou doute, commence par explorer la documentation dans `.gith
   - Bonnes pratiques universelles
   - Maintenance et évolutivité
 - **Overrides** :
-  - Peut éditer les fichiers Markdown (.md) et YAML (.yml/.yaml) pour la structuration/export.
+  - Peut créer, lire, éditer, déplacer et supprimer tout type de fichier ou dossier, sans restriction d’extension ni de format.
   - Doit toujours générer un plan séquencé, actionnable et validé.
 - **Critères d’acceptation** :
   - Plan structuré, séquencé et contextualisé
@@ -120,9 +53,53 @@ Pour toute question ou doute, commence par explorer la documentation dans `.gith
   - Qu’est-ce que le mode PlanDev Engineer ?
     > Un mode Roo-Code dédié à la génération, structuration et validation de plans de développement adaptés à chaque projet.
   - Quels formats d’export sont supportés ?
-    > Markdown (.md) et YAML (.yml/.yaml) pour intégration dans la roadmap ou outils externes.
+    > Tous les formats de fichiers sont supportés pour la création, l’édition, l’export ou la manipulation, sans restriction.
   - Que faire si le plan n’est pas validé ?
     > Documenter les objections, proposer des alternatives et relancer la validation collaborative.
+
+---
+
+#### Fiche Mode DevOps
+
+- **Slug** : devops
+- **Emoji** : 🚀
+- **Description** : Déploiement, CI/CD, gestion d’infrastructure, automatisation DevOps.
+- **Workflow principal** :
+  ```mermaid
+  flowchart TD
+      A[Définition de la cible d’infrastructure] --> B[Configuration des pipelines CI/CD]
+      B --> C[Déploiement automatisé]
+      C --> D[Supervision et monitoring]
+      D --> E[Optimisation continue et rollback]
+  ```
+- **Principes hérités** :
+  - Automatisation des tâches répétitives
+  - Sécurité et traçabilité des opérations
+  - Validation systématique des déploiements
+  - Maintenance, rollback et évolutivité
+- **Overrides** :
+  - Peut éditer les fichiers de configuration CI/CD, scripts d’automatisation, manifestes d’infrastructure (YAML, JSON, scripts).
+  - Doit toujours documenter les procédures critiques (déploiement, rollback, monitoring).
+- **Critères d’acceptation** :
+  - Déploiement reproductible et traçable
+  - Pipelines CI/CD validés et documentés
+  - Procédures de rollback et monitoring en place
+  - Documentation claire des étapes et outils utilisés
+- **Cas limites / exceptions** :
+  - Environnement cible non documenté → demander clarification
+  - Échec de déploiement non reproductible → documenter l’incident et proposer un plan de correction
+  - Outil CI/CD non supporté → proposer une alternative compatible
+- **Liens utiles** :
+  - [AGENTS.md](../AGENTS.md)
+  - [workflows-matrix.md](../workflows-matrix.md)
+  - [plan-dev-v107-rules-roo.md](../../projet/roadmaps/plans/consolidated/plan-dev-v107-rules-roo.md)
+- **FAQ / Glossaire** :
+  - Qu’est-ce que le mode DevOps ?
+    > Un mode Roo-Code dédié à l’automatisation des déploiements, à la gestion d’infrastructure et à la supervision continue.
+  - Quels types de fichiers sont gérés ?
+    > Fichiers de configuration CI/CD (YAML, JSON), scripts d’automatisation, manifestes d’infrastructure.
+  - Que faire en cas d’échec de déploiement ?
+    > Documenter l’incident, appliquer la procédure de rollback et proposer une optimisation du pipeline.
 
 ---
 
@@ -142,6 +119,7 @@ Pour toute question ou doute, commence par explorer la documentation dans `.gith
 | Mode Writer | mode-writer | ✍️ | Création de nouveaux modes personnalisés | [Fiche Mode Writer](#fiche-mode-mode-writer) |
 | User Story Creator | user-story-creator | 📝 | Création de user stories, découpage fonctionnel | [Fiche User Story Creator](#fiche-mode-user-story-creator) |
 | PlanDev Engineer | plandev-engineer | 🛠️ | Génération et validation de plans de développement structurés | [Fiche PlanDev Engineer](#fiche-mode-plandev-engineer) |
+| DevOps | devops | 🚀 | Déploiement, CI/CD, gestion d’infrastructure, automatisation DevOps | [Fiche DevOps](#fiche-mode-devops) |
 
 ---
 
@@ -169,7 +147,7 @@ Pour toute question ou doute, commence par explorer la documentation dans `.gith
 - **Slug** : architect
 - **Emoji** : 🏗️
 - **Description** : Planification, conception, analyse stratégique avant implémentation.
-- **Workflow principal** :  
+- **Workflow principal** :
   ```mermaid
   flowchart TD
       A[Recueil du besoin] --> B[Analyse du contexte]
@@ -178,30 +156,30 @@ Pour toute question ou doute, commence par explorer la documentation dans `.gith
       D --> E[Validation utilisateur]
       E --> F[Switch vers mode d’implémentation]
   ```
-- **Principes hérités** :  
-  - Recueil du besoin et du contexte  
-  - Décomposition en étapes claires  
-  - Validation systématique  
-  - Bonnes pratiques universelles  
+- **Principes hérités** :
+  - Recueil du besoin et du contexte
+  - Décomposition en étapes claires
+  - Validation systématique
+  - Bonnes pratiques universelles
   - Maintenance et évolutivité
-- **Overrides** :  
+- **Overrides** :
   - Peut uniquement éditer les fichiers Markdown (.md)
   - Doit toujours proposer une todo list séquencée
-- **Critères d’acceptation** :  
+- **Critères d’acceptation** :
   - Plan clair, séquencé, actionnable
   - Cohérence documentaire
   - Validation collaborative avant implémentation
-- **Cas limites / exceptions** :  
+- **Cas limites / exceptions** :
   - Tâche trop vague → demander clarification
   - Conflit entre modes → signaler et documenter
-- **Liens utiles** :  
+- **Liens utiles** :
   - [AGENTS.md](../AGENTS.md)
   - [workflows-matrix.md](../workflows-matrix.md)
   - [plan-dev-v107-rules-roo.md](../../projet/roadmaps/plans/consolidated/plan-dev-v107-rules-roo.md)
-- **FAQ / Glossaire** :  
-  - Qu’est-ce qu’un mode ?  
+- **FAQ / Glossaire** :
+  - Qu’est-ce qu’un mode ?
     > Un mode Roo-Code définit un contexte d’action spécialisé (ex : rédaction, debug, planification).
-  - Comment valider un plan ?  
+  - Comment valider un plan ?
     > La validation se fait par relecture collaborative et confirmation utilisateur.
 
 ---

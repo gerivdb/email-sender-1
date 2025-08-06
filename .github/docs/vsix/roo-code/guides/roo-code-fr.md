@@ -51,6 +51,7 @@ Roo Code s'adapte à vos besoins avec des [modes](doc://modes) spécialisés :
 - **Mode Architecte :** Pour la planification et le leadership technique
 - **Mode Question :** Pour répondre aux questions et fournir des informations
 - **Mode Débogage :** Pour le diagnostic systématique de problèmes
+- **Mode DevOps :** Pour le déploiement, la CI/CD, la gestion d’infrastructure et l’automatisation DevOps
 - **[Modes personnalisés](doc://modes-personnalises) :** Créez un nombre illimité de personnalités spécialisées pour l'audit de sécurité, l'optimisation des performances, la documentation ou toute autre tâche
 
 ### Outils intelligents
@@ -70,6 +71,21 @@ Faites fonctionner Roo Code à votre manière avec :
 - [Modes personnalisés](doc://modes-personnalises) pour des tâches spécialisées
 - [Modèles locaux](doc://modeles-locaux) pour une utilisation hors ligne
 - [Paramètres d'approbation automatique](doc://auto-approbation) pour des workflows plus rapides
+
+## 🧩 Inventaire dynamique des modes Roo et personnalisation avancée
+
+Roo Code gère dynamiquement l’ensemble des modes disponibles grâce à un inventaire centralisé :
+
+- **Inventaire dynamique** : La liste des modes Roo (standards et personnalisés) est générée et maintenue automatiquement pour garantir la cohérence de l’écosystème.
+- **Script de génération** : Le script [`scripts/generate-modes-inventory.ts`](../../../../scripts/generate-modes-inventory.ts) analyse les modes déclarés (y compris les personnalisés) et met à jour l’inventaire central.
+- **Modes personnalisés** : Vous pouvez définir vos propres modes dans le fichier `custom_modes.yaml` (stocké dans votre espace utilisateur VS Code). Toute modification de ce fichier est surveillée en temps réel : l’inventaire Roo se met à jour automatiquement sans redémarrage.
+- **Workflow de gestion** :
+  1. Ajoutez, modifiez ou supprimez un mode dans `custom_modes.yaml`.
+  2. Roo Code détecte le changement et déclenche le script d’inventaire.
+  3. L’inventaire dynamique est régénéré et immédiatement exploitable dans l’extension.
+  4. Toute incohérence ou erreur de déclaration est signalée dans l’interface ou les logs.
+
+🔗 Pour plus de détails sur la structure, la validation et les bonnes pratiques : voir la documentation centrale [.roo/README.md](../../../../.roo/README.md).
 
 ## Ressources
 

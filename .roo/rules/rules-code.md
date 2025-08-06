@@ -14,6 +14,8 @@ Il détaille les standards, conventions et bonnes pratiques spécifiques au dév
 - **Gestion des erreurs** :
   - Centraliser via ErrorManager.
   - Documenter les cas limites et scénarios d’échec.
+- **Traçabilité du mode d’exécution** :
+  - Pour toute action critique (écriture, édition, suppression), transmettre explicitement le mode d’exécution à Roo pour garantir la conformité et la traçabilité documentaire.
 
 ---
 

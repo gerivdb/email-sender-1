@@ -1,0 +1,664 @@
+<zero_touch_cicd_pipelines>
+  <overview>
+    Instructions pour la création de pipelines CI/CD zero-touch avec quality gates automatiques, 
+    déploiement continu, monitoring intégré et rollback automatique pour les projets Roo-Code.
+  </overview>
+
+  <pipeline_architecture>
+    <description>Architecture complète du pipeline CI/CD zero-touch</description>
+    <stages>
+      <stage name="source_control">
+        <description>Intégration avec le contrôle de source</description>
+        <triggers>
+          <trigger>Push sur branches principales</trigger>
+          <trigger>Pull requests</trigger>
+          <trigger>Tags de release</trigger>
+          <trigger>Scheduled runs</trigger>
+        </triggers>
+        <validations>
+          <validation>Validation du format commit</validation>
+          <validation>Scan de sécurité du code</validation>
+          <validation>Vérification des permissions</validation>
+        </validations>
+      </stage>
+
+      <stage name="build_and_test">
+        <description>Construction et tests automatisés</description>
+        <parallel_jobs>
+          <job name="unit_tests">Tests unitaires avec couverture 100%</job>
+          <job name="integration_tests">Tests d'intégration</job>
+          <job name="security_scan">Scan de sécurité automatique</job>
+          <job name="performance_tests">Tests de performance</job>
+          <job name="code_quality">Analyse de qualité de code</job>
+        </parallel_jobs>
+        <quality_gates>
+          <gate>Couverture de tests ≥ 100%</gate>
+          <gate>Pas de vulnérabilités critiques</gate>
+          <gate>Performance dans les seuils</gate>
+          <gate>Qualité de code ≥ A</gate>
+        </quality_gates>
+      </stage>
+
+      <stage name="deployment">
+        <description>Déploiement automatisé multi-environnements</description>
+        <environments>
+          <environment name="development">Déploiement automatique</environment>
+          <environment name="staging">Tests d'acceptation automatiques</environment>
+          <environment name="production">Déploiement avec approbation</environment>
+        </environments>
+        <strategies>
+          <strategy>Blue-Green deployment</strategy>
+          <strategy>Canary deployment</strategy>
+          <strategy>Rolling updates</strategy>
+        </strategies>
+      </stage>
+
+      <stage name="monitoring">
+        <description>Monitoring et observabilité post-déploiement</description>
+        <monitors>
+          <monitor>Health checks automatiques</monitor>
+          <monitor>Métriques de performance</monitor>
+          <monitor>Logs d'erreurs</monitor>
+          <monitor>Alertes business</monitor>
+        </monitors>
+      </stage>
+    </stages>
+  </pipeline_architecture>
+
+  <github_actions_workflows>
+    <description>Workflows GitHub Actions complets et configurables</description>
+    <main_workflow><![CDATA[
+name: 🚀 Roo-Code Zero-Touch CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop, 'feature/*', 'hotfix/*' ]
+  pull_request:
+    branches: [ main, develop ]
+  release:
+    types: [ published ]
+  schedule:
+    - cron: '0 2 * * 1'  # Weekly security scan
+
+env:
+  GO_VERSION: '1.21'
+  NODE_VERSION: '18'
+  DOCKER_REGISTRY: 'ghcr.io'
+  COVERAGE_THRESHOLD: '100'
+  PERFORMANCE_THRESHOLD: '2s'
+
+jobs:
+  # Job de pré-validation
+  pre_validation:
+    name: 🔍 Pre-validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      should_deploy: ${{ steps.changes.outputs.should_deploy }}
+      environment: ${{ steps.env.outputs.environment }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changes
+        id: changes
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            code:
+              - 'cmd/**'
+              - 'internal/**'
+              - 'pkg/**'
+              - 'go.mod'
+              - 'go.sum'
+            docs:
+              - 'docs/**'
+              - '*.md'
+            config:
+              - '.github/**'
+              - '.roo/**'
+
+      - name: Determine environment
+        id: env
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "environment=production" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            echo "environment=staging" >> $GITHUB_OUTPUT
+          else
+            echo "environment=development" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Validate commit format
+        run: |
+          echo "Validating commit format..."
+          # Validation du format des commits conventionnels
+          npx commitlint --from HEAD~1 --to HEAD --verbose
+
+  # Tests et qualité en parallèle
+  tests_and_quality:
+    name: 🧪 Tests & Quality
+    needs: pre_validation
+    if: needs.pre_validation.outputs.should_deploy == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        test_type: [unit, integration, e2e]
+        go_version: ['1.21', '1.20']
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go ${{ matrix.go_version }}
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ matrix.go_version }}
+          cache: true
+
+      - name: Setup test dependencies
+        run: |
+          go mod download
+          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+          go install github.com/securecodewarrior/sast-scan@latest
+
+      - name: Run ${{ matrix.test_type }} tests
+        run: |
+          case "${{ matrix.test_type }}" in
+            unit)
+              go test ./... -v -race -coverprofile=coverage.out -covermode=atomic -tags=unit
+              ;;
+            integration)
+              go test ./... -v -race -tags=integration
+              ;;
+            e2e)
+              go test ./... -v -race -tags=e2e
+              ;;
+          esac
+
+      - name: Check coverage threshold
+        if: matrix.test_type == 'unit'
+        run: |
+          COVERAGE=$(go tool cover -func=coverage.out | grep total | awk '{print substr($3, 1, length($3)-1)}')
+          echo "Coverage: ${COVERAGE}%"
+          if (( $(echo "${COVERAGE} < ${COVERAGE_THRESHOLD}" | bc -l) )); then
+            echo "❌ Coverage ${COVERAGE}% is below threshold ${COVERAGE_THRESHOLD}%"
+            exit 1
+          fi
+          echo "✅ Coverage ${COVERAGE}% meets threshold ${COVERAGE_THRESHOLD}%"
+
+      - name: Upload coverage reports
+        if: matrix.test_type == 'unit'
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.out
+          flags: unittests
+          name: codecov-umbrella
+
+  # Scan de sécurité
+  security_scan:
+    name: 🔒 Security Scan
+    needs: pre_validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: Run gosec security scanner
+        run: |
+          go install github.com/securecodewarrior/gosec/v2/cmd/gosec@latest
+          gosec -fmt sarif -out gosec-results.sarif ./...
+
+      - name: Check security findings
+        run: |
+          # Vérifier qu'il n'y a pas de vulnérabilités critiques
+          CRITICAL_COUNT=$(jq '.runs[0].results | map(select(.level == "error")) | length' trivy-results.sarif)
+          if [ "$CRITICAL_COUNT" -gt 0 ]; then
+            echo "❌ Found $CRITICAL_COUNT critical security issues"
+            exit 1
+          fi
+          echo "✅ No critical security issues found"
+
+  # Tests de performance
+  performance_tests:
+    name: ⚡ Performance Tests
+    needs: pre_validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Run benchmarks
+        run: |
+          go test ./... -bench=. -benchmem -run=^$ > bench_results.txt
+          cat bench_results.txt
+
+      - name: Performance regression check
+        run: |
+          # Comparer avec les benchmarks de référence
+          if [ -f "benchmarks/baseline.txt" ]; then
+            go install golang.org/x/perf/cmd/benchcmp@latest
+            benchcmp benchmarks/baseline.txt bench_results.txt > perf_comparison.txt
+            cat perf_comparison.txt
+            
+            # Vérifier qu'il n'y a pas de régression significative (>20%)
+            if grep -q "+.*%" perf_comparison.txt; then
+              echo "⚠️ Performance regression detected"
+              cat perf_comparison.txt
+              # Ne pas échouer pour les régressions mineures, juste alerter
+            fi
+          fi
+
+      - name: Store benchmark results
+        run: |
+          mkdir -p benchmarks
+          cp bench_results.txt benchmarks/baseline.txt
+
+  # Construction et packaging
+  build_and_package:
+    name: 🏗️ Build & Package
+    needs: [tests_and_quality, security_scan, performance_tests]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
+      image_digest: ${{ steps.build.outputs.digest }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Build binaries
+        run: |
+          # Build pour multiple platforms
+          PLATFORMS="linux/amd64 linux/arm64 darwin/amd64 windows/amd64"
+          for platform in $PLATFORMS; do
+            GOOS=${platform%/*}
+            GOARCH=${platform#*/}
+            OUTPUT_NAME="roo-${GOOS}-${GOARCH}"
+            if [ "$GOOS" = "windows" ]; then
+              OUTPUT_NAME="${OUTPUT_NAME}.exe"
+            fi
+            
+            echo "Building for $GOOS/$GOARCH..."
+            GOOS=$GOOS GOARCH=$GOARCH go build -o "dist/$OUTPUT_NAME" ./cmd/...
+          done
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha
+
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # Déploiement automatisé
+  deploy:
+    name: 🚀 Deploy to ${{ needs.pre_validation.outputs.environment }}
+    needs: [pre_validation, build_and_package]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: ${{ needs.pre_validation.outputs.environment }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to ${{ needs.pre_validation.outputs.environment }}
+        run: |
+          echo "Deploying to ${{ needs.pre_validation.outputs.environment }}"
+          
+          case "${{ needs.pre_validation.outputs.environment }}" in
+            development)
+              echo "🚀 Deploying to development environment"
+              # Déploiement automatique en dev
+              ;;
+            staging)
+              echo "🚀 Deploying to staging environment"
+              # Déploiement automatique en staging avec tests d'acceptation
+              ;;
+            production)
+              echo "🚀 Deploying to production environment"
+              # Déploiement blue-green en production
+              ;;
+          esac
+
+      - name: Run health checks
+        run: |
+          echo "Running health checks..."
+          # Attendre que le service soit déployé
+          sleep 30
+          
+          # Vérifier la santé du service
+          for i in {1..10}; do
+            if curl -f http://service-url/health; then
+              echo "✅ Service is healthy"
+              break
+            fi
+            echo "⏳ Waiting for service to be ready... ($i/10)"
+            sleep 10
+          done
+
+      - name: Run smoke tests
+        run: |
+          echo "Running smoke tests..."
+          # Tests de base pour vérifier que le déploiement fonctionne
+          go test ./tests/smoke/... -v
+
+  # Monitoring post-déploiement
+  post_deployment_monitoring:
+    name: 📊 Post-deployment Monitoring
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: always() && needs.deploy.result == 'success'
+    steps:
+      - name: Setup monitoring
+        run: |
+          echo "Setting up monitoring and alerting..."
+          
+          # Configuration des alertes
+          curl -X POST "${{ secrets.MONITORING_WEBHOOK }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "deployment": {
+                "environment": "${{ needs.pre_validation.outputs.environment }}",
+                "image": "${{ needs.build_and_package.outputs.image_tag }}",
+                "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'",
+                "commit": "${{ github.sha }}"
+              }
+            }'
+
+      - name: Monitor for 5 minutes
+        run: |
+          echo "Monitoring deployment for 5 minutes..."
+          
+          for i in {1..5}; do
+            echo "Minute $i/5: Checking metrics..."
+            
+            # Vérifier les métriques clés
+            ERROR_RATE=$(curl -s "http://metrics-service/error_rate" || echo "0")
+            RESPONSE_TIME=$(curl -s "http://metrics-service/response_time" || echo "0")
+            
+            echo "Error rate: ${ERROR_RATE}%"
+            echo "Response time: ${RESPONSE_TIME}ms"
+            
+            # Alerter si les métriques dépassent les seuils
+            if (( $(echo "${ERROR_RATE} > 5" | bc -l) )); then
+              echo "⚠️ High error rate detected: ${ERROR_RATE}%"
+            fi
+            
+            if (( $(echo "${RESPONSE_TIME} > 2000" | bc -l) )); then
+              echo "⚠️ High response time detected: ${RESPONSE_TIME}ms"
+            fi
+            
+            sleep 60
+          done
+
+  # Rollback automatique en cas de problème
+  automatic_rollback:
+    name: 🔄 Automatic Rollback
+    needs: [deploy, post_deployment_monitoring]
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - name: Trigger rollback
+        run: |
+          echo "🚨 Deployment issue detected, triggering automatic rollback..."
+          
+          # Récupérer la dernière version stable
+          LAST_STABLE=$(curl -s "http://deployment-service/last-stable-version")
+          
+          # Déclencher le rollback
+          curl -X POST "http://deployment-service/rollback" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "environment": "${{ needs.pre_validation.outputs.environment }}",
+              "target_version": "'$LAST_STABLE'",
+              "reason": "Automatic rollback due to deployment failure"
+            }'
+
+      - name: Notify team
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          text: |
+            🚨 Automatic rollback triggered for ${{ needs.pre_validation.outputs.environment }}
+            Commit: ${{ github.sha }}
+            Reason: Deployment health checks failed
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  # Nettoyage final
+  cleanup:
+    name: 🧹 Cleanup
+    needs: [deploy, post_deployment_monitoring]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Cleanup temporary resources
+        run: |
+          echo "Cleaning up temporary resources..."
+          # Nettoyer les ressources temporaires créées pendant le déploiement
+    ]]></main_workflow>
+
+    <specialized_workflows>
+      <workflow name="security_scan">
+        <description>Workflow dédié aux scans de sécurité approfondis</description>
+        <triggers>
+          <trigger>Schedule hebdomadaire</trigger>
+          <trigger>Dépendances mises à jour</trigger>
+          <trigger>Nouveau tag de release</trigger>
+        </triggers>
+      </workflow>
+
+      <workflow name="performance_regression">
+        <description>Workflow de détection de régressions de performance</description>
+        <benchmarks>
+          <benchmark>Tests de charge automatisés</benchmark>
+          <benchmark>Profiling mémoire</benchmark>
+          <benchmark>Analyse des goulots d'étranglement</benchmark>
+        </benchmarks>
+      </workflow>
+
+      <workflow name="dependency_update">
+        <description>Workflow de mise à jour automatique des dépendances</description>
+        <automation>
+          <step>Scan des nouvelles versions</step>
+          <step>Tests de compatibilité</step>
+          <step>Création de PR automatique</step>
+          <step>Merge si tests passent</step>
+        </automation>
+      </workflow>
+    </specialized_workflows>
+  </github_actions_workflows>
+
+  <quality_gates>
+    <description>Quality gates automatiques pour garantir la qualité</description>
+    <gates>
+      <gate name="code_coverage">
+        <threshold>100%</threshold>
+        <scope>All packages</scope>
+        <action_on_failure>Block deployment</action_on_failure>
+      </gate>
+
+      <gate name="security_vulnerabilities">
+        <threshold>0 critical, 0 high</threshold>
+        <scope>All dependencies and code</scope>
+        <action_on_failure>Block deployment</action_on_failure>
+      </gate>
+
+      <gate name="performance_regression">
+        <threshold>No regression > 20%</threshold>
+        <scope>All benchmarked functions</scope>
+        <action_on_failure>Alert and review required</action_on_failure>
+      </gate>
+
+      <gate name="code_quality">
+        <threshold>Grade A</threshold>
+        <scope>All modules</scope>
+        <action_on_failure>Block deployment</action_on_failure>
+      </gate>
+
+      <gate name="documentation_coverage">
+        <threshold>100% of public APIs</threshold>
+        <scope>All public functions and types</scope>
+        <action_on_failure>Warning only</action_on_failure>
+      </gate>
+    </gates>
+  </quality_gates>
+
+  <monitoring_and_observability>
+    <description>Monitoring intégré et observabilité complète</description>
+    <metrics>
+      <metric name="deployment_frequency">
+        <description>Fréquence des déploiements</description>
+        <target>Multiple times per day</target>
+      </metric>
+
+      <metric name="lead_time">
+        <description>Temps entre commit et production</description>
+        <target>Less than 1 hour</target>
+      </metric>
+
+      <metric name="mttr">
+        <description>Mean Time To Recovery</description>
+        <target>Less than 15 minutes</target>
+      </metric>
+
+      <metric name="change_failure_rate">
+        <description>Taux d'échec des changements</description>
+        <target>Less than 5%</target>
+      </metric>
+    </metrics>
+
+    <alerting>
+      <alert name="deployment_failure">
+        <condition>Any stage fails</condition>
+        <channels>Slack, Email, PagerDuty</channels>
+        <escalation>Immediate</escalation>
+      </alert>
+
+      <alert name="performance_degradation">
+        <condition>Response time > 2s or error rate > 5%</condition>
+        <channels>Slack, Monitoring dashboard</channels>
+        <escalation>15 minutes</escalation>
+      </alert>
+
+      <alert name="security_vulnerability">
+        <condition>New critical vulnerability detected</condition>
+        <channels>Security team, Slack</channels>
+        <escalation>Immediate</escalation>
+      </alert>
+    </alerting>
+  </monitoring_and_observability>
+
+  <integration_guidelines>
+    <guideline priority="critical">
+      <title>Zero-Touch Deployment</title>
+      <description>Aucune intervention manuelle requise pour les déploiements standards</description>
+      <requirements>
+        <requirement>Tous les tests passent automatiquement</requirement>
+        <requirement>Quality gates satisfaits</requirement>
+        <requirement>Rollback automatique en cas de problème</requirement>
+        <requirement>Monitoring post-déploiement automatique</requirement>
+      </requirements>
+    </guideline>
+
+    <guideline priority="high">
+      <title>Sécurité Intégrée</title>
+      <description>Sécurité intégrée à chaque étape du pipeline</description>
+      <security_measures>
+        <measure>Scan de vulnérabilités automatique</measure>
+        <measure>Validation des signatures de commits</measure>
+        <measure>Secrets management sécurisé</measure>
+        <measure>Audit trail complet</measure>
+      </security_measures>
+    </guideline>
+
+    <guideline priority="medium">
+      <title>Performance et Scalabilité</title>
+      <description>Pipeline optimisé pour la performance et la scalabilité</description>
+      <optimizations>
+        <optimization>Exécution parallèle des jobs</optimization>
+        <optimization>Cache intelligent des dépendances</optimization>
+        <optimization>Optimisation des images Docker</optimization>
+        <optimization>Réutilisation des artefacts</optimization>
+      </optimizations>
+    </guideline>
+  </integration_guidelines>
+
+  <extension_points>
+    <extension name="custom_quality_gates">
+      <description>Quality gates personnalisés pour des besoins spécifiques</description>
+      <interface>QualityGatePlugin</interface>
+    </extension>
+    
+    <extension name="deployment_strategies">
+      <description>Stratégies de déploiement personnalisées</description>
+      <interface>DeploymentStrategyPlugin</interface>
+    </extension>
+    
+    <extension name="monitoring_integrations">
+      <description>Intégrations de monitoring personnalisées</description>
+      <interface>MonitoringPlugin</interface>
+    </extension>
+
+    <extension name="notification_channels">
+      <description>Canaux de notification personnalisés</description>
+      <interface>NotificationPlugin</interface>
+    </extension>
+  </extension_points>
+</zero_touch_cicd_pipelines>

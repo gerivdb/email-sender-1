@@ -1,0 +1,491 @@
+<cli_generators_and_templates>
+  <overview>
+    Ce fichier fournit des instructions détaillées pour créer des générateurs CLI zero-touch 
+    et des templates configurables permettant de créer automatiquement des projets complets 
+    avec l'architecture Roo-Code.
+  </overview>
+
+  <roo_generator_tool>
+    <description>
+      Outil CLI principal roo-generator.go qui permet de créer automatiquement 
+      des projets, managers, services et autres composants avec templates configurables.
+    </description>
+    
+    <implementation>
+      <![CDATA[
+// roo-generator.go - Générateur CLI zero-touch pour projets Roo
+package main
+
+import (
+    "bufio"
+    "context"
+    "encoding/json"
+    "fmt"
+    "io/fs"
+    "log"
+    "os"
+    "path/filepath"
+    "strings"
+    "text/template"
+    "time"
+
+    "gopkg.in/yaml.v3"
+)
+
+// Configuration du générateur
+type GeneratorConfig struct {
+    ProjectName    string            `yaml:"project_name" json:"project_name"`
+    ModulePath     string            `yaml:"module_path" json:"module_path"`
+    Author         string            `yaml:"author" json:"author"`
+    License        string            `yaml:"license" json:"license"`
+    Templates      map[string]string `yaml:"templates" json:"templates"`
+    Plugins        []string          `yaml:"plugins" json:"plugins"`
+    Architecture   ArchitectureSpec  `yaml:"architecture" json:"architecture"`
+    CustomVars     map[string]string `yaml:"custom_vars" json:"custom_vars"`
+}
+
+type ArchitectureSpec struct {
+    Managers    []ManagerSpec    `yaml:"managers" json:"managers"`
+    Services    []ServiceSpec    `yaml:"services" json:"services"`
+    CLI         []CLISpec        `yaml:"cli" json:"cli"`
+    Libraries   []LibrarySpec    `yaml:"libraries" json:"libraries"`
+    Extensions  []ExtensionSpec  `yaml:"extensions" json:"extensions"`
+}
+
+type ManagerSpec struct {
+    Name        string   `yaml:"name" json:"name"`
+    Package     string   `yaml:"package" json:"package"`
+    Interfaces  []string `yaml:"interfaces" json:"interfaces"`
+    Plugins     bool     `yaml:"plugins" json:"plugins"`
+    Storage     bool     `yaml:"storage" json:"storage"`
+    Monitoring  bool     `yaml:"monitoring" json:"monitoring"`
+}
+
+type ServiceSpec struct {
+    Name        string   `yaml:"name" json:"name"`
+    Package     string   `yaml:"package" json:"package"`
+    Protocol    string   `yaml:"protocol" json:"protocol"` // HTTP, gRPC, etc.
+    Auth        bool     `yaml:"auth" json:"auth"`
+    Database    bool     `yaml:"database" json:"database"`
+}
+
+type CLISpec struct {
+    Name        string   `yaml:"name" json:"name"`
+    Package     string   `yaml:"package" json:"package"`
+    Commands    []string `yaml:"commands" json:"commands"`
+    Interactive bool     `yaml:"interactive" json:"interactive"`
+}
+
+type LibrarySpec struct {
+    Name        string   `yaml:"name" json:"name"`
+    Package     string   `yaml:"package" json:"package"`
+    Type        string   `yaml:"type" json:"type"` // utils, core, plugin
+    Dependencies []string `yaml:"dependencies" json:"dependencies"`
+}
+
+type ExtensionSpec struct {
+    Name        string            `yaml:"name" json:"name"`
+    Type        string            `yaml:"type" json:"type"` // plugin, middleware, hook
+    Target      string            `yaml:"target" json:"target"`
+    Config      map[string]string `yaml:"config" json:"config"`
+}
+
+// Template Engine
+type TemplateEngine struct {
+    templates map[string]*template.Template
+    funcs     template.FuncMap
+}
+
+func NewTemplateEngine() *TemplateEngine {
+    return &TemplateEngine{
+        templates: make(map[string]*template.Template),
+        funcs: template.FuncMap{
+            "title":     strings.Title,
+            "lower":     strings.ToLower,
+            "upper":     strings.ToUpper,
+            "snake":     toSnakeCase,
+            "camel":     toCamelCase,
+            "pascal":    toPascalCase,
+            "kebab":     toKebabCase,
+            "now":       time.Now,
+            "uuid":      generateUUID,
+            "join":      strings.Join,
+            "replace":   strings.ReplaceAll,
+            "contains":  strings.Contains,
+            "hasPrefix": strings.HasPrefix,
+            "hasSuffix": strings.HasSuffix,
+        },
+    }
+}
+
+// CLI Interface principale
+func main() {
+    if len(os.Args) < 2 {
+        printUsage()
+        return
+    }
+
+    command := os.Args[1]
+    switch command {
+    case "new":
+        handleNewProject()
+    case "generate":
+        handleGenerate()
+    case "template":
+        handleTemplate()
+    case "config":
+        handleConfig()
+    case "interactive":
+        handleInteractive()
+    case "validate":
+        handleValidate()
+    case "list":
+        handleList()
+    case "version":
+        handleVersion()
+    default:
+        fmt.Printf("Commande inconnue : %s\n", command)
+        printUsage()
+    }
+}
+
+func printUsage() {
+    fmt.Printf(`roo-generator - Générateur CLI zero-touch pour projets Roo
+
+Usage:
+  roo-generator new <project-name>              Créer un nouveau projet
+  roo-generator generate <type> <name>          Générer un composant
+  roo-generator template <action> <name>        Gérer les templates
+  roo-generator config <action>                 Gérer la configuration
+  roo-generator interactive                     Mode interactif
+  roo-generator validate <config-file>          Valider une configuration
+  roo-generator list <type>                     Lister les composants disponibles
+  roo-generator version                         Afficher la version
+
+Types de composants:
+  manager    - Manager Roo avec interfaces standard
+  service    - Service HTTP/gRPC
+  cli        - Application CLI
+  library    - Bibliothèque/utilitaire
+  plugin     - Plugin d'extension
+  test       - Framework de tests
+  docs       - Documentation
+
+Actions template:
+  create     - Créer un nouveau template
+  edit       - Éditer un template existant
+  delete     - Supprimer un template
+  list       - Lister les templates disponibles
+  validate   - Valider un template
+
+Actions config:
+  init       - Initialiser une configuration
+  edit       - Éditer la configuration
+  show       - Afficher la configuration
+  validate   - Valider la configuration
+
+Exemples:
+  roo-generator new my-project
+  roo-generator generate manager UserManager
+  roo-generator generate service AuthService
+  roo-generator interactive
+  roo-generator template create custom-manager
+  roo-generator validate config.yaml
+`)
+}
+
+// Gestionnaire de création de nouveau projet
+func handleNewProject() {
+    if len(os.Args) < 3 {
+        fmt.Println("Usage: roo-generator new <project-name>")
+        return
+    }
+
+    projectName := os.Args[2]
+    fmt.Printf("Création du projet : %s\n", projectName)
+    
+    // Mode interactif pour la configuration
+    config := collectProjectConfig(projectName)
+    
+    // Génération du projet
+    if err := generateProject(config); err != nil {
+        log.Fatalf("Erreur lors de la génération : %v", err)
+    }
+    
+    fmt.Printf("✅ Projet '%s' créé avec succès!\n", projectName)
+    printNextSteps(projectName)
+}
+
+// Collection interactive de la configuration
+func collectProjectConfig(projectName string) *GeneratorConfig {
+    reader := bufio.NewReader(os.Stdin)
+    
+    config := &GeneratorConfig{
+        ProjectName: projectName,
+        Templates:   make(map[string]string),
+        CustomVars:  make(map[string]string),
+    }
+    
+    // Module path
+    fmt.Print("Module path (ex: github.com/user/project): ")
+    modulePath, _ := reader.ReadString('\n')
+    config.ModulePath = strings.TrimSpace(modulePath)
+    
+    // Author
+    fmt.Print("Auteur: ")
+    author, _ := reader.ReadString('\n')
+    config.Author = strings.TrimSpace(author)
+    
+    // License
+    fmt.Print("License (MIT/Apache/GPL): ")
+    license, _ := reader.ReadString('\n')
+    config.License = strings.TrimSpace(license)
+    
+    // Architecture components
+    fmt.Println("\n=== Configuration de l'architecture ===")
+    config.Architecture = collectArchitectureConfig(reader)
+    
+    return config
+}
+
+func collectArchitectureConfig(reader *bufio.Reader) ArchitectureSpec {
+    arch := ArchitectureSpec{}
+    
+    // Managers
+    fmt.Print("Ajouter des managers ? (y/n): ")
+    if askYesNo(reader) {
+        arch.Managers = collectManagerSpecs(reader)
+    }
+    
+    // Services
+    fmt.Print("Ajouter des services ? (y/n): ")
+    if askYesNo(reader) {
+        arch.Services = collectServiceSpecs(reader)
+    }
+    
+    // CLI
+    fmt.Print("Ajouter des CLI ? (y/n): ")
+    if askYesNo(reader) {
+        arch.CLI = collectCLISpecs(reader)
+    }
+    
+    // Libraries
+    fmt.Print("Ajouter des libraries ? (y/n): ")
+    if askYesNo(reader) {
+        arch.Libraries = collectLibrarySpecs(reader)
+    }
+    
+    return arch
+}
+
+// Gestionnaire de génération de composants
+func handleGenerate() {
+    if len(os.Args) < 4 {
+        fmt.Println("Usage: roo-generator generate <type> <name>")
+        return
+    }
+
+    componentType := os.Args[2]
+    componentName := os.Args[3]
+    
+    switch componentType {
+    case "manager":
+        generateManager(componentName)
+    case "service":
+        generateService(componentName)
+    case "cli":
+        generateCLI(componentName)
+    case "library":
+        generateLibrary(componentName)
+    case "plugin":
+        generatePlugin(componentName)
+    case "test":
+        generateTestFramework(componentName)
+    case "docs":
+        generateDocumentation(componentName)
+    default:
+        fmt.Printf("Type de composant non supporté : %s\n", componentType)
+    }
+}
+
+// Mode interactif complet
+func handleInteractive() {
+    fmt.Println("🚀 Mode interactif du générateur Roo")
+    fmt.Println("===================================")
+    
+    reader := bufio.NewReader(os.Stdin)
+    
+    for {
+        fmt.Println("\nQue voulez-vous faire ?")
+        fmt.Println("1. Créer un nouveau projet")
+        fmt.Println("2. Générer un composant")
+        fmt.Println("3. Gérer les templates")
+        fmt.Println("4. Configuration")
+        fmt.Println("5. Validation")
+        fmt.Println("6. Quitter")
+        
+        fmt.Print("Votre choix (1-6): ")
+        choice, _ := reader.ReadString('\n')
+        choice = strings.TrimSpace(choice)
+        
+        switch choice {
+        case "1":
+            interactiveNewProject(reader)
+        case "2":
+            interactiveGenerate(reader)
+        case "3":
+            interactiveTemplate(reader)
+        case "4":
+            interactiveConfig(reader)
+        case "5":
+            interactiveValidation(reader)
+        case "6":
+            fmt.Println("Au revoir ! 👋")
+            return
+        default:
+            fmt.Println("Choix invalide, veuillez réessayer.")
+        }
+    }
+}
+
+// Génération de projet complet
+func generateProject(config *GeneratorConfig) error {
+    projectDir := config.ProjectName
+    
+    // Créer la structure de base
+    if err := createProjectStructure(projectDir); err != nil {
+        return fmt.Errorf("création structure: %w", err)
+    }
+    
+    // Générer les fichiers de base
+    if err := generateBaseFiles(projectDir, config); err != nil {
+        return fmt.Errorf("génération fichiers base: %w", err)
+    }
+    
+    // Générer les composants de l'architecture
+    if err := generateArchitectureComponents(projectDir, config); err != nil {
+        return fmt.Errorf("génération composants: %w", err)
+    }
+    
+    // Générer la documentation
+    if err := generateProjectDocumentation(projectDir, config); err != nil {
+        return fmt.Errorf("génération documentation: %w", err)
+    }
+    
+    // Générer les scripts de build et CI/CD
+    if err := generateBuildScripts(projectDir, config); err != nil {
+        return fmt.Errorf("génération scripts: %w", err)
+    }
+    
+    return nil
+}
+
+// Utilitaires de conversion de cas
+func toSnakeCase(s string) string {
+    // Implémentation conversion snake_case
+    return strings.ToLower(strings.ReplaceAll(s, " ", "_"))
+}
+
+func toCamelCase(s string) string {
+    // Implémentation conversion camelCase
+    words := strings.Fields(s)
+    if len(words) == 0 {
+        return s
+    }
+    result := strings.ToLower(words[0])
+    for _, word := range words[1:] {
+        result += strings.Title(strings.ToLower(word))
+    }
+    return result
+}
+
+func toPascalCase(s string) string {
+    // Implémentation conversion PascalCase
+    words := strings.Fields(s)
+    var result string
+    for _, word := range words {
+        result += strings.Title(strings.ToLower(word))
+    }
+    return result
+}
+
+func toKebabCase(s string) string {
+    // Implémentation conversion kebab-case
+    return strings.ToLower(strings.ReplaceAll(s, " ", "-"))
+}
+
+func generateUUID() string {
+    // Génération UUID simple
+    return fmt.Sprintf("%d", time.Now().UnixNano())
+}
+
+// Validation de configuration
+func validateConfig(configPath string) error {
+    // Charger et valider la configuration
+    data, err := os.ReadFile(configPath)
+    if err != nil {
+        return fmt.Errorf("lecture fichier: %w", err)
+    }
+    
+    var config GeneratorConfig
+    if err := yaml.Unmarshal(data, &config); err != nil {
+        return fmt.Errorf("parsing YAML: %w", err)
+    }
+    
+    // Validation des champs obligatoires
+    if config.ProjectName == "" {
+        return fmt.Errorf("project_name manquant")
+    }
+    
+    if config.ModulePath == "" {
+        return fmt.Errorf("module_path manquant")
+    }
+    
+    fmt.Println("✅ Configuration valide")
+    return nil
+}
+
+// Fonctions utilitaires
+func askYesNo(reader *bufio.Reader) bool {
+    response, _ := reader.ReadString('\n')
+    response = strings.ToLower(strings.TrimSpace(response))
+    return response == "y" || response == "yes"
+}
+
+func printNextSteps(projectName string) {
+    fmt.Printf(`
+🎉 Projet '%s' créé avec succès !
+
+Prochaines étapes :
+1. cd %s
+2. go mod tidy
+3. go run cmd/main.go
+4. Consultez le README.md pour plus d'informations
+
+Commandes utiles :
+- go test ./...                    # Lancer les tests
+- go run cmd/main.go --help        # Aide du CLI
+- roo-generator generate manager   # Ajouter un manager
+- roo-generator validate           # Valider la configuration
+
+`, projectName, projectName)
+}
+      ]]>
+    </implementation>
+  </roo_generator_tool>
+
+  <template_system>
+    <description>
+      Système de templates configurables pour générer automatiquement 
+      différents types de composants avec des structures standardisées.
+    </description>
+    
+    <manager_template>
+      <![CDATA[
+// templates/manager.go.tmpl
+package {{.Package}}
+
+import (
+    "context"
+    "fmt"
+    "sync"
