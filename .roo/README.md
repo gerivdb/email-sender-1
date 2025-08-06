@@ -74,3 +74,26 @@ L’inventaire des modes Roo-Code est généré automatiquement pour garantir la
 > **À noter** : Toute évolution des modes doit être suivie d’une régénération de l’inventaire pour garantir la cohérence documentaire.
 
 *Pour toute question, consulter la documentation centrale du projet ou contacter l’équipe documentaire Roo.*
+
+## 🚦 Restrictions par mode Roo-Code
+
+Cette section synthétise, pour chaque mode Roo, les restrictions, exceptions et points d’extension :  
+Consultez les fiches détaillées et le [registre des outils Roo](rules/tools-registry.md) pour les règles complètes.
+
+| Mode | Restrictions | Exceptions | Points d’extension |
+|------|--------------|------------|--------------------|
+| **Ask** | Accès limité aux outils système, pas d’édition de fichiers | Peut consulter la documentation centrale | Extension via navigation web limitée |
+| **Code** | Édition, création et suppression de code source, accès aux outils CLI | Peut manipuler tout type de fichier sauf restrictions système | Extension via PluginInterface, outils CLI |
+| **Architect** | Édition uniquement des fichiers Markdown (.md) | Peut générer des todo lists séquencées | Extension via documentation, prompts personnalisés |
+| **Debug** | Accès aux outils de diagnostic, édition limitée aux fichiers de debug | Peut utiliser les outils de log et monitoring | Extension via ErrorManager, outils de test |
+| **Orchestrator** | Coordination multi-modes, pas d’accès direct à l’édition de fichiers | Peut déléguer des tâches à d’autres modes | Extension via workflows, plugins |
+| **Project Research** | Lecture, analyse, onboarding, accès aux outils système | Peut consulter l’ensemble de la documentation | Extension via API externes, navigation web |
+| **Documentation Writer** | Édition et création de documentation, accès restreint aux outils système | Peut enrichir la documentation centrale | Extension via modèles, prompts |
+| **Mode Writer** | Création et modification de modes personnalisés | Peut éditer tous les fichiers de mode | Extension via PluginInterface, prompts |
+| **User Story Creator** | Création de user stories, édition de fichiers de spécification | Peut structurer les besoins fonctionnels | Extension via modèles, prompts |
+| **PlanDev Engineer** | Accès complet à tous les fichiers et dossiers, sans restriction d’extension | Peut générer, déplacer, supprimer tout type de fichier | Extension via PluginInterface, export roadmap |
+| **DevOps** | Édition des fichiers CI/CD, scripts, manifestes d’infrastructure | Peut documenter et automatiser les procédures critiques | Extension via outils CLI, monitoring |
+
+> Pour les restrictions détaillées par outil, consultez le [registre des outils Roo](rules/tools-registry.md) et les fiches modes dans [`rules.md`](rules/rules.md).
+
+---

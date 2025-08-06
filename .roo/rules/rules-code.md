@@ -16,6 +16,7 @@ Il détaille les standards, conventions et bonnes pratiques spécifiques au dév
   - Documenter les cas limites et scénarios d’échec.
 - **Traçabilité du mode d’exécution** :
   - Pour toute action critique (écriture, édition, suppression), transmettre explicitement le mode d’exécution à Roo pour garantir la conformité et la traçabilité documentaire.
+  - Source : [`rules.md`](rules.md:Principes transverses), applicable à tous les modes Roo.
 
 ---
 
@@ -26,3 +27,15 @@ Il détaille les standards, conventions et bonnes pratiques spécifiques au dév
 - Documenter les interfaces dans [`AGENTS.md`](../AGENTS.md) et référencer ici.
 
 ---
+
+## 3. Points d’extension
+
+- **PluginInterface** : Ajout dynamique de plugins, stratégies, managers (voir [`AGENTS.md`](../AGENTS.md), [`rules-plugins.md`](rules-plugins.md)).
+- **QualityGatePlugin** : Extension des quality gates CI/CD (voir [`rules-plugins.md`](rules-plugins.md), [`tools-registry.md`](tools-registry.md)).
+- **Autres points d’extension** : Définis dans chaque manager (voir [`AGENTS.md`](../AGENTS.md)), à documenter dans le fichier du domaine concerné.
+
+---
+
+## 4. Références croisées
+
+- Source : [`rules.md`](rules.md), [`tools-registry.md`](tools-registry.md), [`AGENTS.md`](../AGENTS.md), [`rules-plugins.md`](rules-plugins.md)

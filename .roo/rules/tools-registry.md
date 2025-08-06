@@ -1,76 +1,50 @@
-# Registre des outils Roo utilisables par les modes
+Voici une version améliorée du tableau central du registre des outils Roo, repensée pour une lisibilité optimale, une classification claire et une présentation contemporaine (SOTA). Cette refonte privilégie l’alignement des colonnes, la réduction des doublons, et la synthèse des points saillants, tout en préservant l’exhaustivité et la rigueur documentaire.
 
-## 📋 Introduction
+## 🗂️ Outils et Commandes — Vue Synthétique
 
-Ce registre centralise **tous les outils, commandes, plugins et interfaces** utilisables par Roo, classifiés par type, usage et mode d’accès.  
-Il vise à garantir la traçabilité, la sécurité et la clarté documentaire pour l’équipe.
+| **Outil / Commande**   | **Catégorie**      | **Modes Autorisés**                                                     | **Usage Principal**                     | **Restrictions**                          | **Références**                      |
+|------------------------|--------------------|-------------------------------------------------------------------------|------------------------------------------|--------------------------------------------|--------------------------------------|
+| **write_file**         | Système            | code, architect, debug, orchestrator, project-research, documentation-writer, mode-writer, user-story-creator, plandev-engineer, devops, maintenance, migration | Écriture sur disque                      | Non disponible en mode ask                | .roo/system-prompt-*                |
+| **read_file**          | Système            | code, documentation, project-research, maintenance, migration           | Lecture sur disque                       | Non dispo en ask, orchestrator             | .roo/system-prompt-*                |
+| **browser_action**     | Système            | ask, project-research                                                   | Navigation web, extraction de contenu    | Fermeture automatique, accès limité        | .roo/system-prompt-*                |
+| **cmd / cli**          | Commande CLI       | code, maintenance, migration, debug                                      | Exécution scripts/commandes système      | Restriction droits, dry-run conseillé      | .roo/rules/rules-code.md            |
+| **PluginInterface**    | Extension          | tous                                                                    | Plug-in dynamique, extensions            | Validation & sécurité                         | AGENTS.md, rules-plugins.md          |
+| **API HTTP / REST**    | Externe            | project-research, orchestrator, code                                     | Appel d’API externe                      | Revue de sécurité requise                  | .roo/rules/rules-orchestration.md    |
+| **ModeManager**        | Manager            | tous                                                                    | Orchestration des modes Roo              | Accès limité selon contexte                | AGENTS.md, rules-agents.md           |
+| **ErrorManager**       | Manager            | tous sauf ask                                                           | Gestion centralisée des erreurs          | Inaccessible en mode ask                   | AGENTS.md, rules-code.md             |
+| **CleanupManager**     | Manager            | maintenance, migration, code                                            | Nettoyage intelligent                    | Préconisation dry-run                      | AGENTS.md, rules-maintenance.md       |
+| **MigrationManager**   | Manager            | migration, maintenance, code                                            | Migration et transfert de données        | Fonctionnalité rollback possible           | AGENTS.md, rules-migration.md        |
 
----
+### 🏷️ **Catégories Simplifiées**
 
-## 🗂️ Table des outils et commandes
+- **Système** : write_file, read_file, browser_action
+- **CLI** : cmd / cli (shell, PowerShell)
+- **Extension** : PluginInterface, extensions IA/outils de formatage
+- **Manager** : ModeManager, ErrorManager, CleanupManager, MigrationManager
+- **Externe** : API HTTP / REST
 
-| Outil / Commande      | Type         | Modes autorisés         | Description / Usage           | Restrictions / Exceptions      | Fichier de référence |
-|-----------------------|--------------|-------------------------|-------------------------------|-------------------------------|---------------------|
-| write_file            | Système      | code, documentation, project-research, maintenance, migration | Écriture de fichiers sur le disque | Non accessible en ask | .roo/system-prompt-* |
-| browser_action        | Système      | ask, project-research   | Navigation web, récupération de contenu | Fermeture automatique, accès limité | .roo/system-prompt-* |
-| read_file             | Système      | code, documentation, project-research, maintenance, migration | Lecture de fichiers sur le disque | Non accessible en ask, orchestrator | .roo/system-prompt-* |
-| cmd/cli/...           | Commande CLI | code, maintenance, migration, debug | Exécution de scripts/commandes système | Selon droits d’accès, dry-run recommandé | cmd/, .roo/rules/rules-code.md |
-| PluginInterface       | Extension    | tous                    | Ajout dynamique de plugins, stratégies | Validation requise, sécurité à vérifier | AGENTS.md, rules-plugins.md |
-| API HTTP/REST         | Externe      | project-research, orchestrator, code | Appels API externes, intégration services | Selon configuration, sécurité à valider | .roo/rules/rules-orchestration.md |
-| ModeManager           | Manager      | tous                    | Gestion des modes Roo, transitions, préférences | Accès restreint selon contexte | AGENTS.md, rules-agents.md |
-| ErrorManager          | Manager      | tous sauf ask           | Centralisation et gestion des erreurs | Non accessible en ask | AGENTS.md, rules-code.md |
-| CleanupManager        | Manager      | maintenance, migration, code | Nettoyage, organisation intelligente | Accès restreint, dry-run recommandé | AGENTS.md, rules-maintenance.md |
-| MigrationManager      | Manager      | migration, maintenance, code | Import/export, migration de données | Accès restreint, rollback possible | AGENTS.md, rules-migration.md |
-| ...                   | ...          | ...                     | ...                           | ...                           | ...                 |
+### ⚠️ **Synthèse Sécurité et Gouvernance**
 
----
+- **Contrôle strict** des modes et restrictions pour chaque outil
+- **Validation obligatoire** pour tout ajout/plugin/extension
+- **Audit à jour** pour garantir conformité & traçabilité
 
-## 🧩 Classification des outils
+### ✅ **Instructions d’Actualisation**
 
-- **Outils système** : write_file, read_file, browser_action
-- **Commandes CLI** : cmd/cli, scripts shell, PowerShell, etc.
-- **Interfaces d’extension** : PluginInterface, points d’extension managers
-- **Managers Roo** : ModeManager, ErrorManager, CleanupManager, MigrationManager, etc.
-- **APIs externes** : HTTP/REST, intégrations tierces
-- **Plugins** : Extensions IA, formatage, conversion, etc.
+1. Inscrire tout nouvel outil/plugin dès intégration.
+2. Ajuster modes et restrictions correspondants.
+3. Aligner avec `.github/docs/` et prompts système lors des évolutions.
 
----
+### 📑 **Références Utiles**
 
-## 🔒 Sécurité et restrictions
+- AGENTS.md – Managers & orchestration
+- rules-plugins.md – Gestion des extensions/plugins
+- rules-orchestration.md – Workflows externes et sécurité
+- rules-code.md – Standards d’implémentation
+- rules-maintenance.md – Maintenance & nettoyage
+- rules-migration.md – Gestion et rollback migration
+- README.md – Guide général Roo-Code
 
-- Chaque outil doit être employé uniquement par les modes autorisés.
-- Les restrictions et exceptions sont à respecter strictement (voir tableau ci-dessus).
-- Toute extension ou nouveau plugin doit être validé et documenté ici.
+> **Astuce SOTA** : adosse systématiquement chaque outil à une politique d’usage et une référence documentaire, afin de garantir évolutivité, traçabilité, et sécurité, tout en facilitant le build d’outils dynamiques et adaptatifs pour l’équipe.
 
----
-
-## 📝 Procédure de mise à jour
-
-- Ajouter chaque nouvel outil, commande ou plugin dans ce registre dès son introduction.
-- Mettre à jour les modes autorisés et les restrictions à chaque évolution.
-- Synchroniser ce registre avec les prompts système et la documentation centrale `.github/docs/`.
-
----
-
-## 📚 Références croisées
-
-- [AGENTS.md](../AGENTS.md) : Liste des managers et interfaces
-- [rules-plugins.md](rules-plugins.md) : Convention d’extension et gestion des plugins
-- [rules-orchestration.md](rules-orchestration.md) : Workflows et intégration des managers
-- [rules-code.md](rules-code.md) : Standards de développement et outils CLI
-- [rules-maintenance.md](rules-maintenance.md) : Procédures de maintenance et outils associés
-- [rules-migration.md](rules-migration.md) : Outils et procédures de migration
-- [README.md](README.md) : Guide d’organisation des règles Roo-Code
-
----
-
-## 🚀 Notes d’évolutivité
-
-- Ce registre est la référence centrale pour la gouvernance des outils Roo.
-- Toute modification doit être validée par l’équipe et documentée ici.
-- Les outils doivent être conçus pour s’ajuster dynamiquement à la liste des modes disponibles.
-
----
-
-**À compléter et enrichir au fil des évolutions du projet.  
-Signaler toute anomalie ou suggestion d’amélioration à l’équipe documentaire.**
+**Ce registre doit être vivant, enrichi au fil de l’évolution du projet, et validé collégialement par les responsables technique et documentaire.**

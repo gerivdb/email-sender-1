@@ -1,0 +1,5 @@
+Preuve du bug d’écriture en mode PlanDev Engineer :
+- Fichier cible : test.txt
+- Résultat attendu : échec d’écriture en mode PlanDev Engineer, succès en mode Code
+- Retest et validation croisée
+- Correction apportée : transmission explicite du mode d’exécution à Roo

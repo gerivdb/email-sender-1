@@ -1,0 +1,6 @@
+Diagnostic technique complet du bug d’écriture en mode PlanDev Engineer :
+- Description du contexte et reproduction du bug
+- Tests croisés sur fichiers et dossiers
+- Vérification des attributs système
+- Identification de la cause : transmission du mode d’exécution à Roo
+- Solution : signalisation explicite du mode pour toute action critique

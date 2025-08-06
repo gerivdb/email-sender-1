@@ -1,0 +1,6 @@
+Diagnostic Roo :  
+- Test d’écriture en mode PlanDev Engineer et Code  
+- Résultat attendu : fichier créé sans restriction  
+- Cause du bug initial : absence de transmission explicite du mode d’exécution  
+- Solution : signalement du mode à Roo pour toute action critique  
+- Statut : workaround validé, écriture effective confirmée

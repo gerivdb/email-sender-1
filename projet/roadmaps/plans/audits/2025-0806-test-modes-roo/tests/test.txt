@@ -1,0 +1,86 @@
+# Test automatisé Roo-Code — Mode plandev-engineer
+
+## Objectif
+Valider la capacité du mode `plandev-engineer` à générer, structurer et valider un plan de développement conforme au template imposé, avec traçabilité, couverture de tests et reporting.
+
+---
+
+## Scénario de test
+
+### Phase 1 : Génération d’un plan minimal
+
+- [ ] Générer un plan de développement en Markdown avec au moins deux phases et trois tâches actionnables.
+- [ ] Vérifier que toutes les sections obligatoires du template sont présentes (titre, objectifs, livrables, tâches, critères de validation, rollback, orchestration, documentation, risques).
+- [ ] Documenter les hypothèses et ambiguïtés.
+
+### Phase 2 : Validation automatique
+
+- [ ] Contrôler la conformité du plan généré avec le template (structure, ordre, balises).
+- [ ] Rejeter toute sortie non conforme et demander correction.
+- [ ] Générer un rapport de validation (succès/échec, erreurs détectées).
+
+### Phase 3 : Export et reporting
+
+- [ ] Exporter le plan validé au format Markdown.
+- [ ] Générer un log de traçabilité (timestamp, mode d’exécution, utilisateur, fichiers générés).
+- [ ] Archiver le rapport de validation et le plan exporté.
+
+---
+
+## Commandes à exécuter
+
+```bash
+# Génération du plan
+roo-generator generate plan test-plan
+
+# Validation automatique
+roo-generator validate test-plan.md
+
+# Export et reporting
+roo-generator export test-plan.md --format=markdown
+roo-generator report test-plan.md --output=report-test-plan.md
+```
+
+---
+
+## Critères de réussite
+
+- [ ] Le plan généré respecte strictement le template du mode plandev-engineer.
+- [ ] La validation automatique bloque toute exportation non conforme.
+- [ ] Le rapport de validation est archivé et traçable.
+- [ ] Les logs incluent le mode d’exécution et les fichiers générés.
+- [ ] Les ambiguïtés et hypothèses sont documentées.
+
+---
+
+## Rollback
+
+- [ ] Sauvegarde automatique du plan avant modification.
+- [ ] Procédure de restauration via `roo-generator rollback test-plan.md`.
+
+---
+
+## Documentation & liens utiles
+
+- [Référentiel plandev-engineer](../../../../.roo/rules/rules-plandev-engineer/plandev-engineer-reference.md)
+- [Fiche mode](../../../../.roo/rules/rules.md)
+- [Checklist granulaire Roo Code](../../../../.roo/rules/rules-plandev-engineer/plandev-engineer-reference.md)
+- [Workflows CI/CD](../../../../.roo/rules-plandev-engineer/5_cicd_pipelines.xml)
+
+---
+
+## Questions ouvertes
+
+- Le template utilisé est-il à jour avec la dernière version du référentiel ?
+- Les scripts de validation couvrent-ils tous les cas limites ?
+- La traçabilité du mode d’exécution est-elle correctement archivée ?
+
+---
+
+## Auto-critique & axes d’amélioration
+
+- Limite : Ce test ne couvre pas les cas d’erreur réseau ou de permissions.
+- Suggestion : Ajouter des tests de performance et de sécurité.
+- Feedback : Intégrer un agent LLM pour la détection automatique des incohérences.
+
+---

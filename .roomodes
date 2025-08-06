@@ -24,3 +24,8 @@ customModes:
       - read
       - edit
       - command
+    capabilities:
+      - write_file
+      - execute_command
+    writeFileBehavior: execute_and_document
+    enableCLIDispatch: true
