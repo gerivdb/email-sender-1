@@ -1,0 +1,47 @@
+name: Roo Mode Template Lint & Validation
+
+on:
+  pull_request:
+    paths:
+      - '.roo/mode-template.md'
+      - '.roo/modes/**'
+      - '.roo/rules/**'
+  push:
+    paths:
+      - '.roo/mode-template.md'
+      - '.roo/modes/**'
+      - '.roo/rules/**'
+
+jobs:
+  lint-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install linters
+        run: |
+          pip install yamllint jsonlint
+
+      - name: Lint YAML templates
+        run: |
+          yamllint .roo/mode-template.md || true
+          yamllint .roo/modes/ || true
+
+      - name: Lint JSON templates
+        run: |
+          find .roo/modes/ -name '*.json' -exec jsonlint {} \; || true
+
+      - name: Checklist validation (Ready for prod, Security reviewed, Rollback OK)
+        run: |
+          python .roo/scripts/checklist_validate.py
+
+      - name: Publish validation report
+        run: |
+          mkdir -p .github/docs/validation
+          cp .roo/scripts/validation_report.md .github/docs/validation/validation_report.md
