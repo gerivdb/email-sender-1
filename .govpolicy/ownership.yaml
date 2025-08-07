@@ -1,0 +1,30 @@
+# Attribution des owners par module
+
+modules:
+  code:
+    owner: Jules Dupont
+    contact: jules.dupont@exemple.com
+  architect:
+    owner: Clara Martin
+    contact: clara.martin@exemple.com
+  debug:
+    owner: Sami Benali
+    contact: sami.benali@exemple.com
+  orchestrator:
+    owner: Jules Dupont
+    contact: jules.dupont@exemple.com
+  ask:
+    owner: Léa Rousseau
+    contact: lea.rousseau@exemple.com
+  devsecops:
+    owner: Clara Martin
+    contact: clara.martin@exemple.com
+  security:
+    owner: Sami Benali
+    contact: sami.benali@exemple.com
+
+# Modules additionnels :
+# - docmanager: Jules Dupont
+# - pipeline: Clara Martin
+# - error: Sami Benali
+# Pour toute modification, mettre à jour ce fichier et notifier le comité de gouvernance.

@@ -37,7 +37,7 @@ type StorageManager struct {
 	mu           sync.RWMutex
 	backends     map[string]*StorageBackend
 	plugins      map[string]PluginInterface
-	errorManager ErrorManager
+	errorManager *ErrorManager
 	postgresConn interface{}
 	qdrantConn   interface{}
 	hooks        *ErrorHooks
@@ -51,7 +51,7 @@ func NewStorageManager(errorManager ErrorManager, hooks *ErrorHooks) *StorageMan
 	return &StorageManager{
 		backends:     make(map[string]*StorageBackend),
 		plugins:      make(map[string]PluginInterface),
-		errorManager: errorManager,
+		errorManager: &errorManager,
 		hooks:        hooks,
 	}
 }

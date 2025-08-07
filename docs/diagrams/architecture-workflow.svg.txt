@@ -1,0 +1,14 @@
+<!-- SVG exporté du workflow architecture (exemple simplifié) -->
+<svg width="600" height="120" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="10" width="120" height="40" fill="#e0e0e0" stroke="#333"/>
+  <text x="20" y="35" font-size="16">Recensement</text>
+  <rect x="140" y="10" width="120" height="40" fill="#e0e0e0" stroke="#333"/>
+  <text x="150" y="35" font-size="16">Analyse d'écart</text>
+  <rect x="270" y="10" width="120" height="40" fill="#e0e0e0" stroke="#333"/>
+  <text x="280" y="35" font-size="16">Spécification</text>
+  <rect x="400" y="10" width="120" height="40" fill="#e0e0e0" stroke="#333"/>
+  <text x="410" y="35" font-size="16">Développement</text>
+  <line x1="130" y1="30" x2="140" y2="30" stroke="#333" stroke-width="2"/>
+  <line x1="260" y1="30" x2="270" y2="30" stroke="#333" stroke-width="2"/>
+  <line x1="390" y1="30" x2="400" y2="30" stroke="#333" stroke-width="2"/>
+</svg>

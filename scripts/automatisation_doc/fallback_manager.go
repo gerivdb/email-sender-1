@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"sync"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
@@ -132,7 +133,7 @@ func (fm *FallbackManager) ApplyFallback(ctx context.Context, input map[string]i
 			// Convention Roo : le plugin peut modifier in-place la map input pour transmettre un résultat.
 			// Si le plugin ne modifie pas input, la valeur d’entrée est retournée telle quelle.
 			// Le plugin doit être idempotent et thread-safe.
-			err := plugin.Execute(ctx, input)
+			_, err := plugin.Execute(ctx, input)
 			if err == nil {
 				return input, nil
 			}
@@ -164,7 +165,7 @@ func (fm *FallbackManager) loadAlternate(ctx context.Context, source string) (ma
 // SmartMergeManager centralise les handlers Roo pour chaque stratégie de fallback documentaire.
 type SmartMergeManager struct {
 	FallbackMgr *FallbackManager
-	ErrorMgr    ErrorManager // Injection du gestionnaire d’erreurs Roo
+	ErrorMgr    *ErrorManager // Injection du gestionnaire d’erreurs Roo (pointeur pour test != nil)
 }
 
 // Handler pour fallback-corruption-detect
@@ -179,10 +180,12 @@ func (sm *SmartMergeManager) HandleCorruptionDetect(ctx context.Context, docID s
 		})
 		if err != nil && sm.ErrorMgr != nil {
 			entry := ErrorEntry{
-				DocID:     docID,
+				ID:        docID,
+				Timestamp: time.Now(),
+				Component: "SmartMergeManager",
 				Operation: "HandleCorruptionDetect",
-				Err:       err,
-				Meta:      meta,
+				Message:   err.Error(),
+				Details:   meta, // Ajout champ Details pour conformité ErrorEntry
 			}
 			_ = sm.ErrorMgr.ProcessError(ctx, err, "SmartMergeManager", "HandleCorruptionDetect", nil)
 			_ = sm.ErrorMgr.CatalogError(entry)
@@ -205,10 +208,12 @@ func (sm *SmartMergeManager) HandlePerteDocument(ctx context.Context, docID stri
 		})
 		if err != nil && sm.ErrorMgr != nil {
 			entry := ErrorEntry{
-				DocID:     docID,
+				ID:        docID,
+				Timestamp: time.Now(),
+				Component: "SmartMergeManager",
 				Operation: "HandlePerteDocument",
-				Err:       err,
-				Meta:      meta,
+				Message:   err.Error(),
+				Details:   meta, // Ajout champ Details pour conformité ErrorEntry
 			}
 			_ = sm.ErrorMgr.ProcessError(ctx, err, "SmartMergeManager", "HandlePerteDocument", nil)
 			_ = sm.ErrorMgr.CatalogError(entry)
@@ -231,10 +236,12 @@ func (sm *SmartMergeManager) HandleConflitFusion(ctx context.Context, docID stri
 		})
 		if err != nil && sm.ErrorMgr != nil {
 			entry := ErrorEntry{
-				DocID:     docID,
+				ID:        docID,
+				Timestamp: time.Now(),
+				Component: "SmartMergeManager",
 				Operation: "HandleConflitFusion",
-				Err:       err,
-				Meta:      meta,
+				Message:   err.Error(),
+				Details:   meta, // Ajout champ Details pour conformité ErrorEntry
 			}
 			_ = sm.ErrorMgr.ProcessError(ctx, err, "SmartMergeManager", "HandleConflitFusion", nil)
 			_ = sm.ErrorMgr.CatalogError(entry)
@@ -257,10 +264,12 @@ func (sm *SmartMergeManager) HandleRollbackCritique(ctx context.Context, docID s
 		})
 		if err != nil && sm.ErrorMgr != nil {
 			entry := ErrorEntry{
-				DocID:     docID,
+				ID:        docID,
+				Timestamp: time.Now(),
+				Component: "SmartMergeManager",
 				Operation: "HandleRollbackCritique",
-				Err:       err,
-				Meta:      meta,
+				Message:   err.Error(),
+				Details:   meta, // Ajout champ Details pour conformité ErrorEntry
 			}
 			_ = sm.ErrorMgr.ProcessError(ctx, err, "SmartMergeManager", "HandleRollbackCritique", nil)
 			_ = sm.ErrorMgr.CatalogError(entry)

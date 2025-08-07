@@ -1,0 +1,18 @@
+template:
+  id: "roo-template-2025"
+  type: "doc"
+  variables:
+    - name: "project_name"
+      suggestion: "auto"
+    - name: "author"
+      suggestion: "context"
+  compliance:
+    - "rules-code"
+    - "rules-documentation"
+  audit:
+    enabled: true
+  rollback:
+    enabled: true
+  extensions:
+    - "plugin-intel-variable"
+    - "quality-gate"

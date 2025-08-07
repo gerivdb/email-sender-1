@@ -40,6 +40,36 @@ Ce fichier documente les agents et managers principaux de l’architecture docum
 
 ---
 
+### QualityGateManager
+
+- **Rôle :** Gestion centralisée des quality gates CI/CD, validation de conformité et extension dynamique via plugins spécialisés.
+- **Interfaces :**
+  - `RegisterPlugin(name string, plugin QualityGatePlugin) error`
+  - `UnregisterPlugin(name string) error`
+  - `ListPlugins() []string`
+  - `CheckAllCompliance(ctx context.Context, tpl *GeneratedTemplate) ([]*ValidationReport, error)`
+  - `RunAllTests(ctx context.Context, tpl *GeneratedTemplate) ([]*ValidationReport, error)`
+- **Artefacts Roo :**
+  - Implémentation Go : [`quality_gate_manager.go`](scripts/automatisation_doc/quality_gate_manager.go)
+  - Tests unitaires : [`quality_gate_manager_test.go`](scripts/automatisation_doc/quality_gate_manager_test.go)
+  - Rapport d’audit : [`quality_gate_manager_report.md`](scripts/automatisation_doc/quality_gate_manager_report.md)
+- **Utilisation :**
+  - Enregistrement explicite des plugins par nom pour garantir la traçabilité et éviter les conflits.
+  - Extension dynamique des contrôles de conformité et des tests CI/CD.
+  - Reporting, audit, rollback automatisé.
+- **Entrée/Sortie :**
+  - Entrées : plugins QualityGate, contextes d’exécution, templates à valider.
+  - Sorties : rapports de validation, logs, statuts, rollback.
+- **Traçabilité Roo :**
+  - Plan de référence : [`plan-dev-v113-autmatisation-doc-roo.md`](projet/roadmaps/plans/consolidated/plan-dev-v113-autmatisation-doc-roo.md)
+  - Documentation croisée : [`README.md`](README.md), [`rules-plugins.md`](.roo/rules/rules-plugins.md)
+- **Points d’extension :**
+  - QualityGatePlugin (ajout dynamique de plugins de validation)
+  - Reporting, rollback, audit
+  - Intégration avec MonitoringManager, ErrorManager, PipelineManager
+- **Risques & mitigation :**
+  - Risque de doublon ou de conflit de nom : contrôle strict à l’enregistrement.
+  - Risque de non-détection d’erreur : tests unitaires exhaustifs, logs d’audit.
 ## Détail des managers
 
 ### FallbackManager

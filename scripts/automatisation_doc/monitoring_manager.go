@@ -75,6 +75,50 @@ type MonitoringManager struct {
 	plugins []PluginInterface
 }
 
+// ExecutePlugins appelle Execute sur tous les plugins enregistrés.
+func (m *MonitoringManager) ExecutePlugins(ctx context.Context, params map[string]interface{}) error {
+	for _, p := range m.plugins {
+		_, err := p.Execute(ctx, params)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// CallBeforeStep appelle BeforeStep sur tous les plugins enregistrés.
+func (m *MonitoringManager) CallBeforeStep(ctx context.Context, stepName string, params interface{}) error {
+	for _, p := range m.plugins {
+		err := p.BeforeStep(ctx, stepName, params)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// CallAfterStep appelle AfterStep sur tous les plugins enregistrés.
+func (m *MonitoringManager) CallAfterStep(ctx context.Context, stepName string, params interface{}) error {
+	for _, p := range m.plugins {
+		err := p.AfterStep(ctx, stepName, params)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// CallOnError appelle OnError sur tous les plugins enregistrés.
+func (m *MonitoringManager) CallOnError(ctx context.Context, entry *ErrorEntry) error {
+	for _, p := range m.plugins {
+		err := p.OnError(ctx, entry)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // CallPluginsExecute appelle Execute sur tous les plugins enregistrés.
 // Retourne la première erreur rencontrée, ou nil si tout passe.
 func (m *MonitoringManager) CallPluginsExecute(ctx context.Context, params map[string]interface{}) error {
@@ -107,9 +151,9 @@ func (m *MonitoringManager) CallPluginsAfterStep(ctx context.Context, stepName s
 }
 
 // CallPluginsOnError appelle OnError sur tous les plugins enregistrés.
-func (m *MonitoringManager) CallPluginsOnError(ctx context.Context, stepName string, params map[string]interface{}, stepErr error) error {
+func (m *MonitoringManager) CallPluginsOnError(ctx context.Context, entry *ErrorEntry) error {
 	for _, p := range m.plugins {
-		if err := p.OnError(ctx, stepName, params, stepErr); err != nil {
+		if err := p.OnError(ctx, entry); err != nil {
 			return err
 		}
 	}

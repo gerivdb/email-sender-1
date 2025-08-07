@@ -1,0 +1,83 @@
+## Objectif
+Déployer une architecture plugin Go robuste, testable, évolutive et conforme aux standards SOTA, KISS, SOLID, avec granularité et assignation DRI.
+
+---
+
+## 1. **Définition des Interfaces SOTA**  
+- [x] Formaliser l’interface `PluginInterface` complète (toutes méthodes requises).  
+- [x] `interfaces.go` validé par compliance check compile-time.  
+- **DRI** : Lead Backend Go  
+- **Critère de succès** : Aucun plugin ne manque de méthode, compliance check OK.
+
+---
+
+## 2. **Refonte des Plugins Mock & Minimal**  
+- [x] Implémenter `MockPlugin` et `MinimalPlugin` avec toutes les méthodes, signatures harmonisées.  
+- [x] `mock_plugin.go`, `minimal_plugin.go`  
+- **DRI** : Test Engineer  
+- **Critère de succès** : Tests unitaires passent, coverage >90%.
+
+---
+
+## 3. **Modernisation du MonitoringManager**  
+- [x] Refactoriser `MonitoringManager` pour :  
+  - Injection de dépendances (Logger, Config)  
+  - Sécurité thread (RWMutex)  
+  - Méthodes harmonisées (`ExecutePlugins`, `CallBeforeStep`, etc.)  
+- [x] `monitoring_manager.go`  
+- **DRI** : Architecte Logiciel  
+- **Critère de succès** : Benchmarks OK, aucun data race détecté.
+
+---
+
+## 4. **Tests Unitaires SOTA**  
+- [x] Créer une suite de tests avec `testify/suite`, mocks avancés, propagation d’erreurs.  
+- [x] `monitoring_manager_test.go`  
+- **DRI** : QA Lead  
+- **Critère de succès** : Tous les cas d’erreur et succès couverts, CI verte.
+
+---
+
+## 5. **Automatisation & Génération**  
+- [x] Mettre en place Makefile SOTA :  
+  - Génération automatique (`go generate`)  
+  - Tests (`go test -race -cover`)  
+  - Build et clean  
+- [x] `Makefile`  
+- **DRI** : DevOps  
+- **Critère de succès** : Build/test automatisés, rapport coverage généré.
+
+---
+
+## 6. **Intégration des Outils Modernes**  
+- [x] Installer et documenter l’usage de `testify`, outils de plugin.  
+- [ ] Section outils dans README, scripts d’installation.  
+- **DRI** : Tech Lead  
+- **Critère de succès** : Outils installés, onboarding simplifié.
+
+---
+
+## 7. **Documentation & Patterns**  
+- [x] Documenter chaque module, expliquer les patterns SOTA utilisés (compliance, DI, test suite).  
+- [x] Documentation technique à jour (`README.md`).  
+- **DRI** : Documentation Owner  
+- **Critère de succès** : 20% de code commenté, doc validée en review.
+
+---
+
+## 8. **Revue & Validation Finale**  
+- [x] Revue croisée, validation par tests, audit architecture.  
+- [x] Rapport d’audit, validation finale.  
+- **DRI** : CTO  
+- **Critère de succès** : Audit SOTA validé, prêt pour déploiement.
+
+---
+
+### **Synthèse Granulaire**
+- Chaque étape = module indépendant, livrable, DRI assigné.
+- Respect KISS (simplicité), SOLID (modularité), granularité (petites unités <5KB).
+- Suivi par jalons, validation CI/CD, documentation continue.
+
+---
+
+**Références SOTA** : [1][2][4][5][6][35][40] (voir source .md pour liens complets)

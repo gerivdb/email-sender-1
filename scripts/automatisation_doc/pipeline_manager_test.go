@@ -15,29 +15,9 @@ import (
 )
 
 // MockPlugin pour tester l’intégration plugin
-type MockPlugin struct {
-	name    string
-	execErr error
-	called  bool
-}
+/* Utilise la struct MockPlugin définie dans monitoring_manager_test.go */
 
-func (m *MockPlugin) AfterStep(ctx context.Context, stepName string, params map[string]interface{}) error {
-	return nil
-}
-
-func (m *MockPlugin) BeforeStep(ctx context.Context, stepName string, params map[string]interface{}) error {
-	return nil
-}
-
-func (m *MockPlugin) OnError(ctx context.Context, stepName string, params map[string]interface{}, err error) error {
-	return nil
-}
-
-func (m *MockPlugin) Name() string { return m.name }
-func (m *MockPlugin) Execute(ctx context.Context, params map[string]interface{}) error {
-	m.called = true
-	return m.execErr
-}
+/* Utilise les méthodes de MockPlugin définies dans monitoring_manager_test.go */
 
 func TestNewPipelineManager_ValidYAML(t *testing.T) {
 	yamlData := []byte(`
