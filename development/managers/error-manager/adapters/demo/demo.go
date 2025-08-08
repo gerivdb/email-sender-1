@@ -1,7 +1,7 @@
 package demo
 
 import (
-	"development/managers/error-manager/adapters"
+	"github.com/gerivdb/email-sender-1/managers/error-manager/adapters"
 )
 
 func main() {

@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
-	autofix "EMAIL_SENDER_1/managers/error-manager/auto_fix"
+	autofix "email-sender-1/development/managers/error-manager/auto_fix"
 )
 
 const (

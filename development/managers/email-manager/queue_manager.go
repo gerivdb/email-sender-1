@@ -3,6 +3,7 @@ package email
 import (
 	"context"
 	"fmt"
+	"strings"
 	"sync"
 	"time"
 
@@ -148,7 +149,7 @@ func (qm *QueueManagerImpl) GetStatus() interfaces.ManagerStatus {
 func (qm *QueueManagerImpl) IsHealthy(ctx context.Context) bool {
 	qm.mu.RLock()
 	defer qm.mu.RUnlock()
-	return qm.status == interfaces.ManagerStatusRunning && qm.isInitialized
+	return qm.status.Status == interfaces.ManagerStatusRunning.Status && qm.isInitialized
 }
 
 // GetMetrics implémente BaseManager.GetMetrics
@@ -160,7 +161,7 @@ func (qm *QueueManagerImpl) GetMetrics() map[string]interface{} {
 		"queue_size":       len(qm.emailQueue),
 		"failed_emails":    len(qm.failedQueue),
 		"scheduled_emails": len(qm.scheduledQueue),
-		"total_processed":  qm.totalProcessed,
+		"total_processed":  int(qm.totalProcessed),
 		"total_failed":     qm.totalFailed,
 		"total_retries":    qm.totalRetries,
 		"is_paused":        qm.isPaused,
@@ -185,7 +186,7 @@ func (qm *QueueManagerImpl) EnqueueEmail(ctx context.Context, email *interfaces.
 	case qm.emailQueue <- email:
 		qm.logger.Debug("Email enqueued",
 			zap.String("email_id", email.ID),
-			zap.String("to", email.To))
+			zap.String("to", strings.Join(email.To, ",")))
 		return nil
 	default:
 		return fmt.Errorf("queue is full")
@@ -210,7 +211,7 @@ func (qm *QueueManagerImpl) DequeueEmail(ctx context.Context) (*interfaces.Email
 		if email != nil {
 			qm.logger.Debug("Email dequeued",
 				zap.String("email_id", email.ID),
-				zap.String("to", email.To))
+				zap.String("to", strings.Join(email.To, ",")))
 		}
 		return email, nil
 	case <-ctx.Done():
@@ -244,7 +245,7 @@ func (qm *QueueManagerImpl) GetQueueStatus(ctx context.Context) (*interfaces.Que
 		FailedEmails:    len(qm.failedQueue),
 		ScheduledEmails: len(qm.scheduledQueue),
 		IsPaused:        qm.isPaused,
-		TotalProcessed:  qm.totalProcessed,
+		TotalProcessed:  int(qm.totalProcessed),
 		TotalFailed:     qm.totalFailed,
 		TotalRetries:    qm.totalRetries,
 	}, nil
@@ -424,5 +425,5 @@ func (qm *QueueManagerImpl) MarkEmailFailed(email *interfaces.Email) {
 func (qm *QueueManagerImpl) MarkEmailProcessed() {
 	qm.mu.Lock()
 	defer qm.mu.Unlock()
-	qm.totalProcessed++
+	int(qm.totalProcessed)++
 }

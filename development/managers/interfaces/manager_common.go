@@ -44,6 +44,19 @@ type ManagerStatus struct {
 	Uptime    time.Duration `json:"uptime"`
 }
 
+// Constantes pour les statuts du manager (type ManagerStatus)
+var (
+	ManagerStatusStopped  = ManagerStatus{Status: "stopped"}
+	ManagerStatusRunning  = ManagerStatus{Status: "running"}
+	ManagerStatusStarting = ManagerStatus{Status: "starting"}
+	ManagerStatusStopping = ManagerStatus{Status: "stopping"}
+)
+
+// Méthode String() pour ManagerStatus, pour compatibilité email-manager
+func (ms ManagerStatus) String() string {
+	return ms.Status
+}
+
 // ManagerMetrics représente les métriques d'un manager
 type ManagerMetrics struct {
 	Name         string            `json:"name"`

@@ -1,0 +1,36 @@
+FAIL	github.com/contextual-memory-manager [setup failed]
+FAIL	github.com/contextual-memory-manager/cmd/ast-demo [setup failed]
+FAIL	github.com/contextual-memory-manager/cmd/cli [setup failed]
+FAIL	github.com/contextual-memory-manager/cmd/dashboard-demo [setup failed]
+FAIL	github.com/contextual-memory-manager/cmd/demo [setup failed]
+FAIL	github.com/contextual-memory-manager/development [setup failed]
+FAIL	github.com/contextual-memory-manager/example [setup failed]
+FAIL	github.com/contextual-memory-manager/internal/ast [setup failed]
+FAIL	github.com/contextual-memory-manager/internal/hybrid [setup failed]
+FAIL	github.com/contextual-memory-manager/internal/indexing [setup failed]
+FAIL	github.com/contextual-memory-manager/internal/integration [setup failed]
+FAIL	github.com/contextual-memory-manager/internal/monitoring [setup failed]
+FAIL	github.com/contextual-memory-manager/internal/retrieval [setup failed]
+FAIL	github.com/contextual-memory-manager/pkg/manager [setup failed]
+FAIL	github.com/contextual-memory-manager/tests [setup failed]
+FAIL	github.com/contextual-memory-manager/tests/ast [setup failed]
+FAIL	github.com/contextual-memory-manager/tests/hybrid [setup failed]
+FAIL	github.com/contextual-memory-manager/tests/integration [setup failed]
+FAIL	github.com/contextual-memory-manager/tests/monitoring [setup failed]
+?   	github.com/contextual-memory-manager/cmd/minimal-cli	[no test files]
+?   	github.com/contextual-memory-manager/cmd/simple-test	[no test files]
+?   	github.com/contextual-memory-manager/cmd/test-cli	[no test files]
+FAIL	github.com/contextual-memory-manager/interfaces [build failed]
+?   	github.com/contextual-memory-manager/pkg/interfaces	[no test files]
+=== RUN   TestContextualMemoryManager_Initialize
+    contextual_memory_manager_test.go:9: Test à implémenter
+--- SKIP: TestContextualMemoryManager_Initialize (0.00s)
+=== RUN   TestContextualMemoryManager_CaptureAction
+    contextual_memory_manager_test.go:14: Test à implémenter
+--- SKIP: TestContextualMemoryManager_CaptureAction (0.00s)
+=== RUN   TestContextualMemoryManager_SearchContext
+    contextual_memory_manager_test.go:19: Test à implémenter
+--- SKIP: TestContextualMemoryManager_SearchContext (0.00s)
+PASS
+ok  	github.com/contextual-memory-manager/tests/unit	0.042s
+FAIL

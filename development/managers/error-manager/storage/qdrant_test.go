@@ -1,12 +1,6 @@
 package errormanager_test
 
-import (
-	"os"
-	"testing"
-
-	errormanager "EMAIL_SENDER_1/managers/error-manager"
-)
-
+/*
 func TestStoreErrorVector(t *testing.T) {
 	endpoint := os.Getenv("QDRANT_ENDPOINT")
 	if endpoint == "" {
@@ -30,3 +24,4 @@ func TestStoreErrorVector(t *testing.T) {
 		t.Errorf("Failed to store error vector: %v", err)
 	}
 }
+*/

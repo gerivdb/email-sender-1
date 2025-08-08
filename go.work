@@ -1,5 +1,14 @@
-go 1.21
+go 1.23.9
+
+toolchain go1.24.4
 
 use (
-	./scripts/automatisation_doc
+	./development/managers/contextual-memory-manager
+	./development/managers/email-manager
+	./development/managers/error-manager
+	./development/managers/error-manager/auto_fix
+	./development/managers/interfaces
+	./development/managers/powershell-bridge
+	./development/managers/script-manager
+	./development/managers/tools
 )

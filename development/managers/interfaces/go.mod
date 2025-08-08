@@ -1,3 +1,3 @@
-module github.com/gerivdb/email-sender-1/development/managers/interfaces
+module github.com/gerivdb/email-sender-1/managers/interfaces
 
-go 1.23.9
+go 1.21

@@ -2,10 +2,11 @@
 # Validation Documentaire SOTA v3.0
 # Architecture modulaire et robuste
 # ========================================
+param([string]$PlanFile)
 
 #region Configuration
 $Global:ValidationConfig = @{
-    Colors   = @{ Error = "Red"; Warning = "Yellow"; Success = "Green"; Info = "Cyan" }
+    Colors   = @{ Error = "Red"; Warning = "Yellow"; Success = "Green"; Info = "Cyan"; FAILED = "Red" }
     Patterns = @{
         Phase         = "##\s+(Phase\s+\d+)"
         Task          = "- \[[x ]\]"
@@ -20,6 +21,8 @@ $Global:ValidationConfig = @{
 function Write-Status {
     param([string]$Message, [string]$Type = "Info")
     $color = $Global:ValidationConfig.Colors[$Type]
+    $validColors = @("Black", "DarkBlue", "DarkGreen", "DarkCyan", "DarkRed", "DarkMagenta", "DarkYellow", "Gray", "DarkGray", "Blue", "Green", "Cyan", "Red", "Magenta", "Yellow", "White")
+    if (-not $validColors -contains $color) { $color = "Gray" }
     $icon = @{Error = "❌"; Warning = "⚠️"; Success = "✅"; Info = "ℹ️" }[$Type]
     Write-Host "$icon $Message" -ForegroundColor $color
 }
@@ -130,16 +133,12 @@ function Invoke-Validation {
 }
 #endregion
 
-param(
-    [Parameter(Mandatory = $true)][string]$PlanFile,
-    [switch]$DetailedOutput
-)
 
 try {
     $success = Invoke-Validation -FilePath $PlanFile
     exit ($success ? 0 : 1)
 }
 catch {
-    Write-Host "❌ Erreur fatale: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host "❌ Erreur fatale: $($_.Exception.Message)" -ForegroundColor "Red"
     exit 2
 }

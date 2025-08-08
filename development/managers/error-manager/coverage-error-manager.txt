@@ -1,0 +1,5 @@
+ok  	github.com/gerivdb/email-sender-1/managers/error-manager	(cached)	coverage: 6.1% of statements
+ok  	github.com/gerivdb/email-sender-1/managers/error-manager/adapters	(cached)	coverage: 32.9% of statements
+	github.com/gerivdb/email-sender-1/managers/error-manager/adapters/demo		coverage: 0.0% of statements
+	github.com/gerivdb/email-sender-1/managers/error-manager/static		coverage: 0.0% of statements
+ok  	github.com/gerivdb/email-sender-1/managers/error-manager/storage	0.044s	coverage: 0.0% of statements

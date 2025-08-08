@@ -5,7 +5,8 @@ import (
 	"testing"
 	"time"
 
-	errormanager "EMAIL_SENDER_1/managers/error-manager"
+	errormanager "github.com/gerivdb/email-sender-1/managers/error-manager"
+	storage "github.com/gerivdb/email-sender-1/managers/error-manager/storage"
 )
 
 func TestPersistErrorToSQL(t *testing.T) {
@@ -14,7 +15,7 @@ func TestPersistErrorToSQL(t *testing.T) {
 		t.Skip("POSTGRES_CONN_STR environment variable is not set")
 	}
 
-	err := errormanager.InitializePostgres(connStr)
+	err := storage.InitializePostgres(connStr)
 	if err != nil {
 		t.Fatalf("Failed to initialize PostgreSQL: %v", err)
 	}
@@ -29,7 +30,7 @@ func TestPersistErrorToSQL(t *testing.T) {
 		ManagerContext: "{\"key\": \"value\"}",
 		Severity:       "ERROR"}
 
-	err = errormanager.PersistErrorToSQL(entry)
+	err = storage.PersistErrorToSQL(entry)
 	if err != nil {
 		t.Errorf("Failed to persist error to SQL: %v", err)
 	}

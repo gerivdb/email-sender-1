@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/gerivdb/email-sender-1/managers/interfaces"
+
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
@@ -27,6 +28,16 @@ type TemplateManagerImpl struct {
 	// Template manager specific fields
 	templates         map[string]*interfaces.EmailTemplate
 	compiledTemplates map[string]*template.Template
+}
+
+// Health implémente BaseManager.Health
+func (tm *TemplateManagerImpl) Health(ctx context.Context) error {
+	tm.mu.RLock()
+	defer tm.mu.RUnlock()
+	if tm.status.Status == interfaces.ManagerStatusRunning.Status && tm.isInitialized {
+		return nil
+	}
+	return fmt.Errorf("TemplateManager not healthy: status=%s, initialized=%v", tm.status.Status, tm.isInitialized)
 }
 
 // NewTemplateManager crée une nouvelle instance de TemplateManager
@@ -119,7 +130,7 @@ func (tm *TemplateManagerImpl) GetStatus() interfaces.ManagerStatus {
 func (tm *TemplateManagerImpl) IsHealthy(ctx context.Context) bool {
 	tm.mu.RLock()
 	defer tm.mu.RUnlock()
-	return tm.status == interfaces.ManagerStatusRunning && tm.isInitialized
+	return tm.status.Status == interfaces.ManagerStatusRunning.Status && tm.isInitialized
 }
 
 // GetMetrics implémente BaseManager.GetMetrics
