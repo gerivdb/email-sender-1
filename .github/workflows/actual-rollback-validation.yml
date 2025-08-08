@@ -1,0 +1,39 @@
+name: REAL Rollback Validation
+on: [push]
+jobs:
+  verify-implementation:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify scripts exist
+        run: |
+          if (-not (Test-Path "scripts\rollback.ps1")) { exit 1 }
+          if (-not (Test-Path "scripts\validate-rollback.ps1")) { exit 1 }
+      - name: Test PowerShell execution
+        run: |
+          pwsh -File scripts\validate-rollback.ps1
+          pwsh -File scripts\rollback.ps1
+      - name: Benchmark Rollback
+        run: |
+          $iterations = 10
+          $times = @()
+          for ($i = 1; $i -le $iterations; $i++) {
+            $start = Get-Date
+            pwsh -File scripts\rollback.ps1
+            $end = Get-Date
+            $duration = ($end - $start).TotalMilliseconds
+            $times += $duration
+          }
+          $avgTime = ($times | Measure-Object -Average).Average
+          if ($avgTime -gt 200) {
+            Write-Error "❌ PERFORMANCE NON CONFORME: ${avgTime}ms > 200ms"
+            exit 5
+          } else {
+            Write-Host "✅ PERFORMANCE VALIDÉE: ${avgTime}ms" -ForegroundColor Green
+          }
+      - name: Archive logs and reports
+        run: |
+          mkdir -Force dev\reports
+          Copy-Item logs\rollback-*.log dev\reports\ -Force
+          Copy-Item backups\latest\* dev\reports\ -Force
+          Write-Host "📝 Artefacts archivés"
