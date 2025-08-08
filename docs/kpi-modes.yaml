@@ -1,0 +1,7 @@
+kpi_modes:
+  - nom: "Taux de conformité documentaire"
+    description: "Pourcentage de livrables conformes aux exigences phase 2"
+  - nom: "Nombre de contrôles réalisés"
+    description: "Contrôles documentaires effectués sur la période"
+  - nom: "Incidents détectés"
+    description: "Nombre d’erreurs ou non-conformités relevées"

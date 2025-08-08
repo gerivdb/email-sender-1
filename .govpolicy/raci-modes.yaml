@@ -1,0 +1,14 @@
+# Matrice RACI minimale pour modes de gouvernance
+
+raci:
+  - activité: "Pilotage documentaire"
+    responsable: "Jules"
+    accountable: "Equipe Roo"
+    consulted: ["Audit externe", "Conformité"]
+    informed: ["Stakeholders"]
+
+  - activité: "Contrôles conformité"
+    responsable: "Equipe Roo"
+    accountable: "Audit externe"
+    consulted: ["Jules"]
+    informed: ["Stakeholders"]

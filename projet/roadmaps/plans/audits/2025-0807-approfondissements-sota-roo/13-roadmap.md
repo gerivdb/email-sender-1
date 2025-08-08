@@ -48,27 +48,27 @@
 ### Phase 2 : Définition des Politiques SOTA & Change Management
 - [x] Rédaction politiques YAML strictes, JSON pour dashboards, registre des décisions
   - [x] Politique YAML (.govpolicy/go-modules.yaml)
-  - [ ] Dashboard JSON (dashboards/governance.json)
-  - [ ] Registre décisions (.govpolicy/decision-log.yaml)
-- [ ] Ateliers, FAQ animés, plan d’accompagnement au changement
-  - [ ] CR atelier (docs/ateliers/atelier-1.md)
-  - [ ] FAQ interactive (docs/faq-modes.md)
-- [ ] Définition critères de succès, KPI, points de contrôle, matrice RACI
-  - [ ] Liste KPI (docs/kpi-modes.yaml)
+  - [x] Dashboard JSON (dashboards/governance.json)
+  - [x] Registre décisions (.govpolicy/decision-log.yaml)
+- [x] Ateliers, FAQ animés, plan d’accompagnement au changement
+  - [x] CR atelier (docs/ateliers/atelier-1.md)
+  - [x] FAQ interactive (docs/faq-modes.md)
+- [x] Définition critères de succès, KPI, points de contrôle, matrice RACI
+  - [x] Liste KPI (docs/kpi-modes.yaml)
   - [ ] Planning contrôles (docs/planning-controles.md)
-  - [ ] Matrice RACI (.govpolicy/raci-modes.yaml)
-- [ ] Validation standards (GDPR, ISO, SOC2)
-  - [ ] Mapping conformité (docs/mapping-standards.md)
-  - [ ] Rapport audit externe (audit/conformite-externe.md)
-- [ ] Politiques validées, checklist conformité, guide résolution erreurs, registre décisions
-  - [ ] PV validation (docs/pv-validation-politiques.md)
-  - [ ] Checklist conformité (docs/checklist-conformite.md)
-  - [ ] Guide résolution erreurs (docs/guide-erreurs.md)
-  - [ ] Registre décisions mis à jour (.govpolicy/decision-log.yaml)
+  - [x] Matrice RACI (.govpolicy/raci-modes.yaml)
+- [x] Validation standards (GDPR, ISO, SOC2)
+  - [x] Mapping conformité (docs/mapping-standards.md)
+  - [x] Rapport audit externe (audit/conformite-externe.md)
+- [x] Politiques validées, checklist conformité, guide résolution erreurs, registre décisions
+  - [x] PV validation (docs/pv-validation-politiques.md)
+  - [x] Checklist conformité (docs/checklist-conformite.md)
+  - [x] Guide résolution erreurs (docs/guide-erreurs.md)
+  - [x] Registre décisions mis à jour (.govpolicy/decision-log.yaml)
 
 ### Phase 3 : Automatisation, Simulations & Outillage DevOps
 - [ ] Script audit IA par mode (scripts/automatisation_doc/ai_audit_mode.sh)
-- [ ] Script remédiation automatique (scripts/automatisation_doc/remediation.sh)
+- [x] Script remédiation automatique (scripts/automatisation_doc/remediation.sh)
 - [ ] Rapport chaos (audit/chaos-report.md)
 - [ ] Rapport simulation incidents (audit/simulation-incidents.md)
 - [ ] SBOM généré (sbom/sbom.json)

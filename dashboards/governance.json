@@ -1,0 +1,10 @@
+{
+  "dashboard": "Gouvernance documentaire",
+  "version": "phase2",
+  "sections": [
+    "KPI",
+    "Contrôles",
+    "Conformité",
+    "Validation"
+  ]
+}
