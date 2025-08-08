@@ -1,5 +1,7 @@
 name: REAL Rollback Validation
-on: [push]
+on:
+  push:
+  workflow_dispatch:
 jobs:
   verify-implementation:
     runs-on: windows-latest
